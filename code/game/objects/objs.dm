@@ -47,6 +47,12 @@
 	/// Next pr after the network fix will have me refactor door interactions, so help me god.
 	var/id_tag = null
 
+	/// The sound this obj makes when something is buckled to it
+	var/buckle_sound = null
+
+	/// The sound this obj makes when something is unbuckled from it
+	var/unbuckle_sound = null
+
 	uses_integrity = TRUE
 
 /obj/vv_edit_var(vname, vval)
@@ -107,12 +113,16 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	// datum/air_group to tell lifeform to process using that breath return
 	//DEFAULT: Take air from turf to give to have mob process
 
-	if(breath_request>0)
-		var/datum/gas_mixture/environment = return_air()
-		var/breath_percentage = BREATH_VOLUME / environment.return_volume()
-		return remove_air(environment.total_moles() * breath_percentage)
-	else
+	if(breath_request <= 0)
 		return null
+
+	var/datum/gas_mixture/environment = return_air()
+	if(isnull(environment))
+		return null
+
+	// a little bit of handwaving is done here, exposing the mob to only a fraction (1 atm) of the total air
+	var/mols_requested = (ONE_ATMOSPHERE * breath_request) / (R_IDEAL_GAS_EQUATION * environment.return_temperature())
+	return remove_air(min(mols_requested, environment.total_moles()))
 
 /obj/proc/updateUsrDialog()
 	if(!(obj_flags & IN_USE))
@@ -222,9 +232,7 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		return
 
 	if(href_list[VV_HK_OSAY])
-		if(!check_rights(R_FUN, FALSE))
-			return
-		usr.client.object_say(src)
+		return SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/object_say, src)
 
 	if(href_list[VV_HK_MASS_DEL_TYPE])
 		if(!check_rights(R_DEBUG|R_SERVER))

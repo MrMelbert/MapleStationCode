@@ -1,5 +1,4 @@
 #define LINK_RANGE 2
-#define SCAN_EFFECT_DURATION 1 SECONDS
 
 /datum/design/board/vital_floor_scanner
 	name = "Vitals Scanning Pad"
@@ -53,6 +52,7 @@
 		COMSIG_ATOM_EXITED = PROC_REF(on_exited),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)
 	update_appearance(UPDATE_OVERLAYS)
 	register_context()
 
@@ -87,7 +87,7 @@
 		return
 
 	COOLDOWN_START(src, scan_cooldown, 5 SECONDS)
-	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 15, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	set_occupant(arrived)
 	use_power(active_power_usage)
 
@@ -114,6 +114,7 @@
 		if(isnull(reader.patient)) // It failed I guess
 			continue
 
+		reader.beeps = FALSE
 		var/scansound = 'maplestation_modules/sound/healthscanner_stable.ogg'
 		switch(reader.patient.stat)
 			if(DEAD)
@@ -128,7 +129,7 @@
 			else
 				reader.beep_message("lets out a beep.")
 
-		playsound(reader, scansound, 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		playsound(reader, scansound, 15, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 		return
 
 /obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)
@@ -165,24 +166,18 @@
 	if(QDELING(src))
 		return
 	if(!isnull(occupant))
-		addtimer(CALLBACK(src, PROC_REF(enable_vitals_nearby)), SCAN_EFFECT_DURATION, TIMER_UNIQUE)
+		addtimer(CALLBACK(src, PROC_REF(enable_vitals_nearby)), /obj/effect/temp_visual/vitals_scan_effect::duration, TIMER_UNIQUE)
 		scan_effect()
 
 	else if(!isnull(old_occupant))
 		disable_vitals_nearby(old_occupant)
+		for(var/obj/effect/temp_visual/vitals_scan_effect/effect in old_occupant)
+			animate(effect, alpha = 0, time = 0.2 SECONDS, flags = ANIMATION_PARALLEL)
 
 /obj/machinery/vital_floor_scanner/proc/scan_effect()
-	var/image/scan_effect = image(
-		icon = 'maplestation_modules/icons/obj/floor_scan.dmi',
-		loc = occupant,
-		icon_state = "scan_effect",
-		layer = ABOVE_ALL_MOB_LAYER,
-	)
-	scan_effect.alpha = 200
-	animate(scan_effect, alpha = 100, time = SCAN_EFFECT_DURATION * 0.25)
-	animate(scan_effect, alpha = 200, time = SCAN_EFFECT_DURATION * 0.25, loop = -1)
-	SET_PLANE_EXPLICIT(scan_effect, occupant.plane, occupant)
-	occupant.flick_overlay_view(scan_effect, SCAN_EFFECT_DURATION)
+	var/obj/effect/temp_visual/vitals_scan_effect/effect = new(occupant)
+	SET_PLANE_IMPLICIT(effect, plane)
+	occupant.vis_contents += effect
 
 /obj/machinery/vital_floor_scanner/screwdriver_act(mob/living/user, obj/item/tool)
 	balloon_alert(user, "deconstructing...")
@@ -192,5 +187,24 @@
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
+/obj/effect/temp_visual/vitals_scan_effect
+	duration = 1.1 SECONDS
+	alpha = 200
+	icon = 'maplestation_modules/icons/obj/floor_scan.dmi'
+	icon_state = "scan_effect.1"
+	base_icon_state = "scan_effect"
+	layer = ABOVE_ALL_MOB_LAYER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+/obj/effect/temp_visual/vitals_scan_effect/Initialize(mapload)
+	. = ..()
+	// we manually animate this, rather than just using an animated icon state or flick, to work around byond animated state memes
+	// (normally, all animated icon states are synced to the same time, which would bad here)
+	for(var/i in 2 to duration)
+		if(PERFORM_ALL_TESTS(focus_only/runtime_icon_states) && !icon_exists(icon, "[base_icon_state].[i]"))
+			stack_trace("Missing scan effect icon state: [base_icon_state].[i]")
+		animate(src, time = 0.1 SECONDS, icon_state = "[base_icon_state].[i]", flags = ANIMATION_CONTINUE)
+	if(PERFORM_ALL_TESTS(focus_only/runtime_icon_states) && icon_exists(icon, "[base_icon_state].[duration + 1]"))
+		stack_trace("Extra scan effect icon state: [base_icon_state].[duration + 1]")
+
 #undef LINK_RANGE
-#undef SCAN_EFFECT_DURATION

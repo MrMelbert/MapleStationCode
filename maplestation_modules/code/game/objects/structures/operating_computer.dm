@@ -32,21 +32,20 @@
 		return data
 
 	var/tank_exists = !isnull(table.attached_tank)
+	var/patient_exists = !isnull(table.patient)
 	data["anesthesia"] = list(
 		"has_tank" = tank_exists,
-		"open" = tank_exists && table.patient?.external == table.attached_tank,
-		"can_open_tank" = tank_exists && table.can_have_tank_opened(table.patient),
+		"open" = tank_exists && patient_exists && table.patient.external == table.attached_tank,
+		"can_open_tank" = tank_exists && patient_exists && table.can_have_tank_opened(table.patient),
 		"failsafe" = table.failsafe_time == INFINITY ? -1 : (table.failsafe_time / 10),
 	)
 
-	if(isnull(table.patient))
-		return data
-
-	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
-	data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
-	data["patient"]["bloodVolumePercent"] = round((table.patient.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-	data["patient"]["heartRate"] = table.patient.get_bpm()
-	// We can also show pain and stuff here if we want.
+	if(patient_exists)
+		var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
+		data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
+		data["patient"]["bloodVolumePercent"] = round((table.patient.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
+		data["patient"]["heartRate"] = table.patient.get_bpm()
+		// We can also show pain and stuff here if we want.
 
 	return data
 

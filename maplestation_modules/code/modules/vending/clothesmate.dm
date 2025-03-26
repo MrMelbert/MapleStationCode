@@ -8,6 +8,13 @@
 		),
 
 		list(
+			"name" = "Accessories",
+			"products" = list(
+				/obj/item/umbrella = 5,
+			),
+		),
+
+		list(
 			"name" = "Under",
 			"products" = list(
 				/obj/item/clothing/under/color/greyscale = 5,
@@ -37,12 +44,14 @@
 				/obj/item/clothing/shoes/heels = 3,
 			),
 		),
+#ifdef MAPLESTATION_STORY_CONTENT
 		list(
 			"name" = "Special",
 			"products" = list(
 				/obj/item/clothing/suit/hooded/acolyte = 20,
 			),
 		),
+#endif
 	)
 	added_premium = list(
 		/obj/item/clothing/shoes/heels/fancy = 2,

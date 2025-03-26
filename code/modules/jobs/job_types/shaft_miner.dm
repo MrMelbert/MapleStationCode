@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "SHAFT_MINER"
 
-	outfit = /datum/outfit/job/miner
+	base_outfit = /datum/outfit/job/miner
 	plasmaman_outfit = /datum/outfit/plasmaman/mining
 
 	paycheck = PAYCHECK_CREW

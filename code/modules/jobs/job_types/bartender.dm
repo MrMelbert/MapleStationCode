@@ -1,5 +1,8 @@
 /datum/job/bartender
 	title = JOB_BARTENDER
+	title_options = list(
+		"Barista",
+	)
 	description = "Serve booze, mix drinks, keep the crew drunk."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
@@ -9,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BARTENDER"
 
-	outfit = /datum/outfit/job/bartender
+	base_outfit = /datum/outfit/job/bartender
 	plasmaman_outfit = /datum/outfit/plasmaman/bar
 
 	paycheck = PAYCHECK_CREW

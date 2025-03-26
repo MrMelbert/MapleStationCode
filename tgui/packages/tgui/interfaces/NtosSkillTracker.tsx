@@ -1,5 +1,3 @@
-import { BooleanLike } from '../../common/react';
-import { useBackend } from '../backend';
 import {
   AnimatedNumber,
   BlockQuote,
@@ -7,7 +5,10 @@ import {
   ProgressBar,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 
 type Data = {
@@ -110,7 +111,7 @@ export const NtosSkillTracker = () => {
                     </Table.Row>
                     {!!skill.reward && (
                       <Table.Row className="candystripe">
-                        <Table.Cell textAlign="center" colspan="3">
+                        <Table.Cell textAlign="center" colspan={3}>
                           <Button
                             icon="trophy"
                             style={{ margin: '8px' }}

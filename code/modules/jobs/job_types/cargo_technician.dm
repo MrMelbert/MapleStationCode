@@ -11,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CARGO_TECHNICIAN"
 
-	outfit = /datum/outfit/job/cargo_tech
+	base_outfit = /datum/outfit/job/cargo_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
 	paycheck = PAYCHECK_CREW
@@ -39,6 +39,9 @@
 		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
 		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
 		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+	)
+	title_options = list(
+		"Mail Carrier",
 	)
 
 /datum/outfit/job/cargo_tech

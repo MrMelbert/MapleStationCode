@@ -1,4 +1,4 @@
-import { BooleanLike } from 'common/react';
+import { BooleanLike } from 'tgui-core/react';
 
 import { sendAct } from '../../backend';
 import { Language } from './_LanguagePicker'; // NON-MODULE CHANGE
@@ -79,6 +79,7 @@ export type Department = {
 export type Job = {
   description: string;
   department: string;
+  title_options: string[];
 };
 
 export type Quirk = {
@@ -94,6 +95,7 @@ export type QuirkInfo = {
   max_positive_quirks: number;
   quirk_info: Record<string, Quirk>;
   quirk_blacklist: string[][];
+  points_enabled: boolean;
 };
 
 export enum RandomSetting {
@@ -169,6 +171,7 @@ export type PreferencesMenuData = {
     }
   >;
   job_preferences: Record<string, JobPriority>;
+  job_titles: Record<string, string>;
 
   keybindings: Record<string, string[]>;
   overflow_role: string;

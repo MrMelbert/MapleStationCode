@@ -34,6 +34,8 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	GLOB.human_list += src
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
@@ -347,10 +349,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		if(!target_zone)
-			target_zone = get_bodypart(check_zone(user.zone_selected))
-		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.plaintext_zone]."))
+		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -447,6 +446,8 @@
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if(target.body_position != LYING_DOWN || target.on_fire || target == src)
 		return
 
 	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
@@ -737,6 +738,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 	VV_DROPDOWN_OPTION(VV_HK_APPLY_DNA_INFUSION, "Apply DNA Infusion")
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
+	VV_DROPDOWN_OPTION(VV_HK_MAKE_ME_TANKY, "Make This Mob Tankier")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -857,7 +859,66 @@
 
 		qdel(src)
 
+	if(href_list[VV_HK_MAKE_ME_TANKY])
+		var/list/options = list(
+			"More effective HP",
+			"Less brute",
+			"Less burn",
+			"Less toxin / oxygen / brain",
+			"Less pain",
+			"Less environmental",
+			"Tougher organs",
+			"Stun resistance",
+			"Health regen",
+		)
+		var/list/picked = list()
+		while(length(options))
+			var/result = tgui_input_list(usr, "Pick something. Select \"Done\" to finish your selection.", "Tanky", options + list("Done", "Cancel"))
+			if(QDELETED(src) || !result || result == "Cancel")
+				return
+			if(result == "Done")
+				break
+			picked += result
+			options -= result
 
+		if(!length(picked))
+			return
+		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
+		if(QDELETED(src) || !major)
+			return
+		major = (major == "Lot")
+		message_admins("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+		log_admin("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+
+		for(var/i in picked)
+			switch(i)
+				if("More effective HP")
+					add_consciousness_modifier("badmin", major ? 30 : 10)
+				if("Less brute")
+					physiology.brute_mod *= (major ? 0.5 : 0.75)
+					physiology.bleed_mod *= (major ? 0.6 : 0.8)
+				if("Less burn")
+					physiology.burn_mod *= (major ? 0.5 : 0.75)
+				if("Less toxin / oxygen / brain")
+					physiology.tox_mod *= (major ? 0.5 : 0.75)
+					physiology.oxy_mod *= (major ? 0.5 : 0.75)
+					physiology.brain_mod *= (major ? 0.5 : 0.75)
+				if("Less pain")
+					set_pain_mod("badmin", major ? 0.6 : 0.8)
+				if("Tougher organs")
+					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+						organ.maxHealth *= (major ? 1.5 : 1.25)
+				if("Less environmental")
+					physiology.pressure_mod *= (major ? 0.6 : 0.8)
+					physiology.heat_mod *= (major ? 0.6 : 0.8)
+					physiology.cold_mod *= (major ? 0.6 : 0.8)
+				if("Stun resistance")
+					ADD_TRAIT(src, TRAIT_BATON_RESISTANCE, "Badmin")
+					physiology.stamina_mod *= (major ? 0.5 : 0.75)
+					physiology.stun_mod *= (major ? 0.5 : 0.75)
+					physiology.knockdown_mod *= (major ? 0.5 : 0.75)
+				if("Health regen")
+					apply_status_effect(/datum/status_effect/basic_health_regen, major ? 1.5 : 0.5)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
@@ -928,12 +989,13 @@
 
 	return buckle_mob(target, TRUE, TRUE, RIDER_NEEDS_ARMS)
 
-/mob/living/carbon/human/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
-
-	if(!is_type_in_typecache(target, can_ride_typecache) && !force) //humans are only meant to be ridden through piggybacking and special cases + NON MODULE BUG FIX
+/mob/living/carbon/human/is_buckle_possible(mob/living/target, force, check_loc)
+	if(!HAS_TRAIT(target, TRAIT_CAN_MOUNT_HUMANS))
 		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
-		return
-
+		return FALSE
+	// if you don't invoke it with forced, IE via piggyback / fireman, always fail
+	if(!force)
+		return FALSE
 	return ..()
 
 /mob/living/carbon/human/reagent_check(datum/reagent/chem, seconds_per_tick, times_fired)

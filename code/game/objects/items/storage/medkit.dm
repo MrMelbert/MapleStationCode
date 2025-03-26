@@ -388,6 +388,7 @@
 		/obj/item/hemostat,
 		/obj/item/cautery,
 		/obj/item/autopsy_scanner,
+		/obj/item/clothing/mask/surgical,
 	))
 
 /obj/item/storage/medkit/coroner/PopulateContents()
@@ -415,15 +416,15 @@
 	///if you add a new one don't forget to update /datum/crafting_recipe/medbot/on_craft_completion()
 	var/obj/item/bot_assembly/medbot/medbot_assembly = new
 	if (istype(src, /obj/item/storage/medkit/fire))
-		medbot_assembly.set_skin("ointment")
+		medbot_assembly.set_skin("burn") // NON-MODULE CHANGE
 	else if (istype(src, /obj/item/storage/medkit/toxin))
 		medbot_assembly.set_skin("tox")
 	else if (istype(src, /obj/item/storage/medkit/o2))
-		medbot_assembly.set_skin("o2")
+		medbot_assembly.set_skin("oxy") // NON-MODULE CHANGE
 	else if (istype(src, /obj/item/storage/medkit/brute))
 		medbot_assembly.set_skin("brute")
 	else if (istype(src, /obj/item/storage/medkit/advanced))
-		medbot_assembly.set_skin("advanced")
+		medbot_assembly.set_skin("adv") // NON-MODULE CHANGE
 	else if (istype(src, /obj/item/storage/medkit/tactical))
 		medbot_assembly.set_skin("bezerk")
 	user.put_in_hands(medbot_assembly)

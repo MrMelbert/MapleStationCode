@@ -13,7 +13,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BRIDGE_ASSISTANT"
 
-	outfit = /datum/outfit/job/bridge_assistant
+	base_outfit = /datum/outfit/job/bridge_assistant
 	plasmaman_outfit = /datum/outfit/plasmaman/bridge_assistant
 
 	paycheck = PAYCHECK_CREW

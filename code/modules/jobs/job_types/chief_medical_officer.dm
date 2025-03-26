@@ -17,7 +17,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CHIEF_MEDICAL_OFFICER"
 
-	outfit = /datum/outfit/job/cmo
+	base_outfit = /datum/outfit/job/cmo
 	plasmaman_outfit = /datum/outfit/plasmaman/chief_medical_officer
 	departments_list = list(
 		/datum/job_department/medical,

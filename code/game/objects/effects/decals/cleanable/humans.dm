@@ -470,6 +470,10 @@
 	var/splatter_strength = 3
 	/// Insurance so that we don't keep moving once we hit a stoppoint
 	var/hit_endpoint = FALSE
+	/// How fast the splatter moves
+	var/splatter_speed = 0.1 SECONDS
+	/// Tracks what direction we're flying
+	var/flight_dir = NONE
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, splatter_strength)
 	. = ..()
@@ -480,14 +484,13 @@
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
-		if(blood_dna_info)
-			loc.add_blood_DNA(blood_dna_info)
+		loc.add_blood_DNA(blood_dna_info)
 	qdel(src)
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/fly_towards(turf/target_turf, range)
-	var/delay = 2
-	var/datum/move_loop/loop = SSmove_manager.move_towards(src, target_turf, delay, timeout = delay * range, priority = MOVEMENT_ABOVE_SPACE_PRIORITY, flags = MOVEMENT_LOOP_START_FAST)
+	flight_dir = get_dir(src, target_turf)
+	var/datum/move_loop/loop = SSmove_manager.move_towards(src, target_turf, splatter_speed, timeout = splatter_speed * range, priority = MOVEMENT_ABOVE_SPACE_PRIORITY, flags = MOVEMENT_LOOP_START_FAST)
 	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))
 	RegisterSignal(loop, COMSIG_QDELETING, PROC_REF(loop_done))
@@ -498,6 +501,9 @@
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
 	SIGNAL_HANDLER
+	if(loc == prev_loc)
+		return
+
 	for(var/atom/movable/iter_atom in loc)
 		if(hit_endpoint)
 			return
@@ -505,12 +511,21 @@
 			continue
 		if(splatter_strength <= 0)
 			break
-
 		iter_atom.add_blood_DNA(blood_dna_info)
-		splatter_strength--
 
-	if(splatter_strength <= 0) // we used all the puff so we delete it.
+	splatter_strength--
+	// we used all our blood so go away
+	if(splatter_strength <= 0)
 		expire()
+		return
+	// make a trail
+	var/obj/effect/decal/cleanable/blood/fly_trail = new(loc)
+	fly_trail.dir = dir
+	if(ISDIAGONALDIR(flight_dir))
+		fly_trail.transform = fly_trail.transform.Turn((flight_dir == NORTHEAST || flight_dir == SOUTHWEST) ? 135 : 45)
+	fly_trail.icon_state = pick("trails_1", "trails2")
+	fly_trail.adjust_bloodiness(fly_trail.bloodiness * -0.66)
+	fly_trail.add_blood_DNA(blood_dna_info)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER

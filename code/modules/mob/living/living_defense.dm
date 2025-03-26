@@ -751,6 +751,8 @@
 
 /// Helper to add a surgery speed modifier which is removed after a set duration.
 /mob/living/proc/add_timed_surgery_speed_mod(id, speed_mod, duration)
+	if(QDELING(src))
+		return
 	if(!add_surgery_speed_mod(id, speed_mod))
 		return
 	addtimer(CALLBACK(src, PROC_REF(remove_surgery_speed_mod), id), duration)

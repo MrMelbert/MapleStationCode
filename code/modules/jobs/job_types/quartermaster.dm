@@ -14,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "QUARTERMASTER"
 
-	outfit = /datum/outfit/job/quartermaster
+	base_outfit = /datum/outfit/job/quartermaster
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
 	paycheck = PAYCHECK_COMMAND

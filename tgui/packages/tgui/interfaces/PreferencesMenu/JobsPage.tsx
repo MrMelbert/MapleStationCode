@@ -1,9 +1,9 @@
 import { sortBy } from 'common/collections';
-import { classes } from 'common/react';
 import { PropsWithChildren, ReactNode } from 'react';
+import { Box, Button, Dropdown, Stack, Tooltip } from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { useBackend } from '../../backend';
-import { Box, Button, Dropdown, Stack, Tooltip } from '../../components';
 import {
   createSetPreference,
   Job,
@@ -14,10 +14,11 @@ import {
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 const sortJobs = (entries: [string, Job][], head?: string) =>
-  sortBy<[string, Job]>(
+  sortBy(
+    entries,
     ([key, _]) => (key === head ? -1 : 1),
     ([key, _]) => key,
-  )(entries);
+  );
 
 const PRIORITY_BUTTON_SIZE = '18px';
 
@@ -174,7 +175,7 @@ const PriorityButtons = (props: {
 };
 
 const JobRow = (props: { className?: string; job: Job; name: string }) => {
-  const { data } = useBackend<PreferencesMenuData>();
+  const { data, act } = useBackend<PreferencesMenuData>();
   const { className, job, name } = props;
 
   const isOverflow = data.overflow_role === name;
@@ -226,17 +227,31 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
   }
 
   return (
-    <Stack.Item className={className} height="100%" mt={0}>
+    <Box className={className} height="25px" mt={0}>
       <Stack fill align="center">
         <Tooltip content={job.description} position="bottom-start">
           <Stack.Item
             className="job-name"
-            width="50%"
+            width="63%"
             style={{
               paddingLeft: '0.3em',
             }}
           >
-            {name}
+            {job.title_options.length > 1 ? (
+              <Dropdown
+                width="100%"
+                options={job.title_options}
+                selected={data.job_titles[name] || name}
+                onSelected={(value) =>
+                  act('set_title_preference', {
+                    base_title: name,
+                    new_title: value,
+                  })
+                }
+              />
+            ) : (
+              name
+            )}
           </Stack.Item>
         </Tooltip>
 
@@ -244,7 +259,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
           {rightSide}
         </Stack.Item>
       </Stack>
-    </Stack.Item>
+    </Box>
   );
 };
 
@@ -277,21 +292,19 @@ const Department = (props: { department: string } & PropsWithChildren) => {
 
         return (
           <Box>
-            <Stack vertical fill>
-              {jobsForDepartment.map(([name, job]) => {
-                return (
-                  <JobRow
-                    className={classes([
-                      className,
-                      name === department.head && 'head',
-                    ])}
-                    key={name}
-                    job={job}
-                    name={name}
-                  />
-                );
-              })}
-            </Stack>
+            {jobsForDepartment.map(([name, job]) => {
+              return (
+                <JobRow
+                  className={classes([
+                    className,
+                    name === department.head && 'head',
+                  ])}
+                  key={name}
+                  job={job}
+                  name={name}
+                />
+              );
+            })}
 
             {children}
           </Box>
@@ -329,18 +342,17 @@ const JoblessRoleDropdown = (props) => {
     },
   ];
 
+  const selection = options?.find(
+    (option) => option.value === selected,
+  )!.displayText;
+
   return (
     <Box position="absolute" right={0} width="30%">
       <Dropdown
         width="100%"
-        selected={selected}
+        selected={selection}
         onSelected={createSetPreference(act, 'joblessrole')}
         options={options}
-        displayText={
-          <Box pr={1}>
-            {options.find((option) => option.value === selected)!.displayText}
-          </Box>
-        }
       />
     </Box>
   );

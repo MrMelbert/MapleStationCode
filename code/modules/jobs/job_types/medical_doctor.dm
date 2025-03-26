@@ -1,5 +1,10 @@
 /datum/job/doctor
 	title = JOB_MEDICAL_DOCTOR
+	title_options = list(
+		"Surgeon" = /datum/outfit/job/doctor/surgeon,
+		"Nurse" = /datum/outfit/job/doctor/nurse,
+		"Medical Resident" = /datum/outfit/job/doctor/nurse,
+	)
 	description = "Save lives, run around the station looking for victims, \
 		scan everyone in sight"
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
@@ -10,7 +15,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "MEDICAL_DOCTOR"
 
-	outfit = /datum/outfit/job/doctor
+	base_outfit = /datum/outfit/job/doctor
 	plasmaman_outfit = /datum/outfit/plasmaman/medical
 
 	paycheck = PAYCHECK_CREW
@@ -50,12 +55,11 @@
 	jobtype = /datum/job/doctor
 
 	id_trim = /datum/id_trim/job/medical_doctor
-	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
+	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat
 	suit_store = /obj/item/flashlight/pen
 	belt = /obj/item/modular_computer/pda/medical
 	ears = /obj/item/radio/headset/headset_med
-	head = /obj/item/clothing/head/utility/surgerycap
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_hand = /obj/item/storage/medkit/surgery
 
@@ -67,6 +71,24 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	skillchips = list(/obj/item/skillchip/entrails_reader)
+
+/datum/outfit/job/doctor/nurse
+	name = "Nurse"
+
+	suit = null
+	suit_store = null
+	id_trim = /datum/id_trim/job/medical_doctor/nurse
+	backpack_contents = list(/obj/item/flashlight/pen)
+
+/datum/outfit/job/doctor/surgeon
+	name = "Surgeon"
+
+	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
+	id_trim = /datum/id_trim/job/medical_doctor/surgeon
+	head = /obj/item/clothing/head/utility/surgerycap
+	suit = /obj/item/clothing/suit/apron/surgical
+	suit_store = null
+	backpack_contents = list(/obj/item/flashlight/pen)
 
 /datum/outfit/job/doctor/mod
 	name = "Medical Doctor (MODsuit)"

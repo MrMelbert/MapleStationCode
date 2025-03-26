@@ -176,7 +176,7 @@
 
 
 /// Called in burns.dm *if* the reagent has the REAGENT_AFFECTS_WOUNDS process flag
-/datum/reagent/proc/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+/datum/reagent/proc/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	return
 
 /*
@@ -273,7 +273,7 @@ Primarily used in reagents/reaction_agents
  */
 /datum/reagent/proc/get_inverse_purity(purity)
 	if(!inverse_chem || !inverse_chem_val)
-		return
+		return 0
 	if(!purity)
 		purity = src.purity
 	return min(1-inverse_chem_val + purity + 0.01, 1) //Gives inverse reactions a 1% purity threshold for being 100% pure to appease players with OCD.

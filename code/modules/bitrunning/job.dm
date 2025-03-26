@@ -8,7 +8,7 @@
 	supervisors = SUPERVISOR_QM
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BITRUNNER"
-	outfit = /datum/outfit/job/bitrunner
+	base_outfit = /datum/outfit/job/bitrunner
 	plasmaman_outfit = /datum/outfit/plasmaman/bitrunner
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_CAR

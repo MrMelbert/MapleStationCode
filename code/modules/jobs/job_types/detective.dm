@@ -2,6 +2,10 @@
 	title = JOB_DETECTIVE
 	description = "Investigate crimes, gather evidence, perform interrogations, \
 		look badass, smoke cigarettes."
+	title_options = list(
+		"Investigator",
+		"Inspector",
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
 	faction = FACTION_STATION
@@ -14,7 +18,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "DETECTIVE"
 
-	outfit = /datum/outfit/job/detective
+	base_outfit = /datum/outfit/job/detective
 	plasmaman_outfit = /datum/outfit/plasmaman/detective
 	departments_list = list(
 		/datum/job_department/security,

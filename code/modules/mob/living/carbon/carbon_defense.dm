@@ -294,13 +294,13 @@
 		var/wound_type
 		var/wound_name = ""
 		if(electrical_burn_roll > 150)
-			wound_type = /datum/wound/burn/flesh/critical
+			wound_type = /datum/wound/flesh/burn/critical
 			wound_name = "Arc Flash Electrical Burn"
 		else if(electrical_burn_roll > 80)
-			wound_type = /datum/wound/burn/flesh/severe
+			wound_type = /datum/wound/flesh/burn/severe
 			wound_name = "HV Electrical Burn"
 		else if(electrical_burn_roll > 20)
-			wound_type = /datum/wound/burn/flesh/moderate
+			wound_type = /datum/wound/flesh/burn/moderate
 			wound_name = "LV Electrical Burn"
 		if(wound_type)
 			var/datum/wound/the_wound = zapped.force_wound_upwards(wound_type, wound_source = source)
@@ -441,9 +441,9 @@
 	// Shake animation
 	if (incapacitated())
 		var/direction = prob(50) ? -1 : 1
-		animate(src, pixel_x = pixel_x + SHAKE_ANIMATION_OFFSET * direction, time = 1, easing = QUAD_EASING | EASE_OUT, flags = ANIMATION_PARALLEL)
-		animate(pixel_x = pixel_x - (SHAKE_ANIMATION_OFFSET * 2 * direction), time = 1)
-		animate(pixel_x = pixel_x + SHAKE_ANIMATION_OFFSET * direction, time = 1, easing = QUAD_EASING | EASE_IN)
+		animate(src, pixel_w = SHAKE_ANIMATION_OFFSET * direction, time = 0.1 SECONDS, easing = QUAD_EASING | EASE_OUT, flags = ANIMATION_PARALLEL|ANIMATION_RELATIVE)
+		animate(pixel_w = SHAKE_ANIMATION_OFFSET * -2 * direction, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+		animate(pixel_w = SHAKE_ANIMATION_OFFSET * direction, time = 0.1 SECONDS, easing = QUAD_EASING | EASE_IN, flags = ANIMATION_RELATIVE)
 
 /// Check ourselves to see if we've got any shrapnel, return true if we do. This is a much simpler version of what humans do, we only indicate we're checking ourselves if there's actually shrapnel
 /mob/living/carbon/proc/check_self_for_injuries()

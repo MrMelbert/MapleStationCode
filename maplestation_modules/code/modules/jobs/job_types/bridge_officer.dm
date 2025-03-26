@@ -9,6 +9,9 @@
 	title = JOB_BRIDGE_OFFICER
 	description = "File paperwork to Central Command via your fax machine. \
 		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	title_options = list(
+		"Bridge Assistant",
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -23,7 +26,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BRIDGE_OFFICER"
 
-	outfit = /datum/outfit/job/bridge_officer
+	base_outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND

@@ -216,10 +216,7 @@
 
 	if(humanc) //These procs all expect humans
 		GLOB.manifest.inject(humanc)
-		if(SSshuttle.arrivals)
-			SSshuttle.arrivals.QueueAnnounce(humanc, rank)
-		else
-			announce_arrival(humanc, rank)
+		announce_arrival(humanc, rank, try_queue = TRUE)
 		AddEmploymentContract(humanc)
 
 		humanc.increment_scar_slot()
@@ -495,11 +492,7 @@
 		to_chat(admin, span_nicegreen("[span_prefix("LOBBY (RELAYED):")] <em>[visible_name]:</em> [message]"), type = MESSAGE_TYPE_OOC)
 
 /// Allows admins in game to speak to people in lobby chat
-/client/proc/admin_lobby_chat(msg as text)
-	set name = "Lobby Chat Relay"
-	set category = "OOC"
-	set desc = "Relay a message to the lobby chat from in game."
-
-	lobby_chat(msg)
+ADMIN_VERB(admin_lobby_chat, R_ADMIN, "Lobby Chat Relay", "Relay a message to the lobby chat from in game.", "OOC", msg as text)
+	user.lobby_chat(msg)
 
 #undef RESET_HUD_INTERVAL

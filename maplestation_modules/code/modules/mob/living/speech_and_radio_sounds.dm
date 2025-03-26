@@ -146,7 +146,6 @@
 	the_sound.pitch = speech_sound_pitch_modifier
 	the_sound.frequency = sound_frequency * speech_sound_frequency_modifier
 	if(is_mouth_covered())
-		the_sound.echo[1] = -900
 		speech_sound_vol *= 1.5
 
 	playsound(

@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CORONER"
 
-	outfit = /datum/outfit/job/coroner
+	base_outfit = /datum/outfit/job/coroner
 	plasmaman_outfit = /datum/outfit/plasmaman/coroner
 
 	mind_traits = list(TRAIT_MORBID)

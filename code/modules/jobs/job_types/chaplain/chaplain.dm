@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CHAPLAIN"
 
-	outfit = /datum/outfit/job/chaplain
+	base_outfit = /datum/outfit/job/chaplain
 	plasmaman_outfit = /datum/outfit/plasmaman/chaplain
 
 	paycheck = PAYCHECK_CREW
@@ -36,11 +36,15 @@
 
 	job_tone = "holy"
 
+	// future todo : grant these skills when selecting a sect, not by default.
 	base_skills = list(
 		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // chaplain gun
 		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/cybernetics = SKILL_LEVEL_APPRENTICE, // robot sect
 		/datum/skill/botany = SKILL_LEVEL_APPRENTICE,
+	)
+	title_options = list(
+		"Magister",
 	)
 
 /datum/job/chaplain/after_spawn(mob/living/spawned, client/player_client)

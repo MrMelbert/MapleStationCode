@@ -23,6 +23,7 @@
 	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
 
 /// Various lists of body zones affected by pain.
+
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_LIMBS list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -147,3 +148,14 @@
 #define UPDATE_MEDHUD (UPDATE_MEDHUD_HEALTH | UPDATE_MEDHUD_STATUS)
 /// Updates associated self-huds on the mob
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
+
+/// Threshold that heart beat becomes "slow"
+#define SLOW_HEARTBEAT_THRESHOLD 6
+/// Threshold that heart beat becomes "fast"
+#define FAST_HEARTBEAT_THRESHOLD 11
+
+// Used in living mob offset list for determining pixel offsets
+#define PIXEL_W_OFFSET "w"
+#define PIXEL_X_OFFSET "x"
+#define PIXEL_Y_OFFSET "y"
+#define PIXEL_Z_OFFSET "z"

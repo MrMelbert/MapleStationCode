@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "PARAMEDIC"
 
-	outfit = /datum/outfit/job/paramedic
+	base_outfit = /datum/outfit/job/paramedic
 	plasmaman_outfit = /datum/outfit/plasmaman/paramedic
 
 	paycheck = PAYCHECK_CREW
