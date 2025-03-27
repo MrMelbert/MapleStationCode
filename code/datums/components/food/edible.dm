@@ -227,22 +227,29 @@ Behavior that's still missing from this component that original food items had t
 		examine_list += span_warning("You may die from eating this meal.")
 	else if (quality <= TOXIC_FOOD_QUALITY_THRESHOLD)
 		examine_list += span_warning("You find this meal disgusting!")
-	else
+	// NON-MODULE CHANGE
+	else if (quality <= GROSS_FOOD_QUALITY_THRESHOLD)
 		examine_list += span_warning("You find this meal inedible.")
+	else
+		examine_list += span_notice("You find this meal shoddy.")
 
 	if(owner.reagents.total_volume > 0)
 		var/purity = owner.reagents.get_average_purity(/datum/reagent/consumable)
 		switch(purity)
 			if(0 to 0.2)
 				examine_list += span_warning("It is made of terrible ingredients shortening the effect...")
+			// NON-MODULE CHANGE
 			if(0.2 to 0.4)
-				examine_list += span_warning("It is made of synthetic ingredients shortening the effect.")
+				examine_list += span_warning("It is made of poor ingredients shortening the effect.")
 			if(0.4 to 0.6)
 				examine_list += span_notice("It is made of average quality ingredients.")
 			if(0.6 to 0.8)
 				examine_list += span_green("It is made of organic ingredients prolonging the effect.")
 			if(0.8 to 1)
 				examine_list += span_green("It is made of finest ingredients prolonging the effect!")
+			// NON-MODULE CHANGE
+			if(1 to 1.5)
+				examine_list += span_green("A master chef using the finest ingredients to make this meal, prolonging the effect!")
 
 	var/datum/mind/mind = user.mind
 	if(mind && HAS_TRAIT_FROM(owner, TRAIT_FOOD_CHEF_MADE, REF(mind)))
@@ -568,25 +575,33 @@ Behavior that's still missing from this component that original food items had t
 		gourmand.add_mood_event("toxic_food", /datum/mood_event/disgusting_food)
 		return
 
-	if(food_quality < 0)
-		to_chat(gourmand,span_notice("That didn't taste very good..."))
+	// NON-MODULE CHANGE
+	if(food_quality <= GROSS_FOOD_QUALITY_THRESHOLD)
+		to_chat(gourmand, span_notice("That didn't taste very good..."))
 		gourmand.adjust_disgust(11 + 15 * fraction)
 		gourmand.add_mood_event("gross_food", /datum/mood_event/gross_food)
 		return
-
+	// NON-MODULE CHANGE
+	if(food_quality < 0)
+		to_chat(gourmand, span_notice("<i>That could've been better.</i>"))
+		gourmand.add_mood_event("gross_food", /datum/mood_event/bad_food)
+		return
+	// NON-MODULE CHANGE
 	if(food_quality == 0)
+		to_chat(gourmand, span_notice("<i>That's a mediocre meal.</i>"))
+		gourmand.add_mood_event("mid_food", /datum/mood_event/mid_food)
 		return // meh
 
-	food_quality = min(food_quality, FOOD_QUALITY_TOP)
+	// NON-MODULE CHANGES
 	var/atom/owner = parent
-	var/timeout_mod = owner.reagents.get_average_purity(/datum/reagent/consumable) * 2 // mood event duration is 100% at average purity of 50%
+	var/timeout_mod = owner.reagents.get_average_purity(/datum/reagent/consumable) * 1.5 // mood event duration is 100% at average purity of 50%
 	var/datum/mood_event/event = GLOB.food_quality_events[food_quality]
 	event = new event.type
 	event.timeout *= timeout_mod
 	gourmand.add_mood_event("quality_food", event)
 	gourmand.adjust_disgust(-5 + -2 * food_quality * fraction)
 	var/quality_label = GLOB.food_quality_description[food_quality]
-	to_chat(gourmand, span_notice("That's \an [quality_label] meal."))
+	to_chat(gourmand, span_notice("<i>That's \an [quality_label] meal.</i>"))
 
 /// Get the complexity of the crafted food
 /datum/component/edible/proc/get_recipe_complexity()
@@ -598,6 +613,13 @@ Behavior that's still missing from this component that original food items had t
 /// Get food quality adjusted according to eater's preferences
 /datum/component/edible/proc/get_perceived_food_quality(mob/living/carbon/human/eater)
 	var/food_quality = get_recipe_complexity()
+
+	// NON-MODULE CHANGE
+	if(HAS_MIND_TRAIT(eater, TRAIT_SNOB))
+		if(food_quality <= FOOD_QUALITY_VERYGOOD)
+			food_quality -= 0.5
+		else
+			food_quality += 0.5
 
 	if(HAS_TRAIT(parent, TRAIT_FOOD_SILVER)) // it's not real food
 		if(!isjellyperson(eater)) //if you aren't a jellyperson, it makes you sick no matter how nice it looks
@@ -616,17 +638,26 @@ Behavior that's still missing from this component that original food items had t
 			if(FOOD_ALLERGIC)
 				return FOOD_QUALITY_DANGEROUS
 
-	if(ishuman(eater))
-		if(foodtypes & eater.get_allergic_foodtypes())
-			return FOOD_QUALITY_DANGEROUS
-		if(count_matching_foodtypes(foodtypes, eater.get_toxic_foodtypes())) //if the food is toxic, we don't care about anything else
-			return TOXIC_FOOD_QUALITY_THRESHOLD
-		if(HAS_TRAIT(eater, TRAIT_AGEUSIA)) //if you can't taste it, it doesn't taste good
-			return 0
-		food_quality += DISLIKED_FOOD_QUALITY_CHANGE * count_matching_foodtypes(foodtypes, eater.get_disliked_foodtypes())
-		food_quality += LIKED_FOOD_QUALITY_CHANGE * count_matching_foodtypes(foodtypes, eater.get_liked_foodtypes())
+	// NON-MODULE CHANGES
+	if(HAS_TRAIT(eater, TRAIT_AGEUSIA)) //if you can't taste it, it doesn't taste good
+		return 0
+	if(foodtypes & eater.get_allergic_foodtypes())
+		return FOOD_QUALITY_DANGEROUS
+	if(count_matching_foodtypes(foodtypes, eater.get_toxic_foodtypes())) //if the food is toxic, we don't care about anything else
+		return TOXIC_FOOD_QUALITY_THRESHOLD
+	food_quality += DISLIKED_FOOD_QUALITY_CHANGE * count_matching_foodtypes(foodtypes, eater.get_disliked_foodtypes())
+	food_quality += LIKED_FOOD_QUALITY_CHANGE * count_matching_foodtypes(foodtypes, eater.get_liked_foodtypes())
 
-	return food_quality
+	// NON-MODULE CHANGES
+	var/obj/item/food = parent
+	var/reagent_quality_mod = INFINITY
+	for(var/datum/reagent/consumable/nutri in food.reagents?.reagent_list)
+		reagent_quality_mod = min(reagent_quality_mod, nutri.data?["quality_modifier"] || 0)
+
+	if(reagent_quality_mod != INFINITY)
+		food_quality += reagent_quality_mod
+
+	return min(floor(food_quality), FOOD_QUALITY_TOP)
 
 /// Get the number of matching food types in provided bitfields
 /datum/component/edible/proc/count_matching_foodtypes(bitfield_one, bitfield_two)
