@@ -37,6 +37,7 @@
 
 	base_skills = list(
 		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/bartender/award_service(client/winner, award)

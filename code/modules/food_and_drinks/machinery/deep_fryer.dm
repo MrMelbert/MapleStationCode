@@ -181,8 +181,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	// Give them reagents to put frying oil in
 	if(isnull(frying.reagents))
 		frying.create_reagents(50, INJECTABLE)
-	if(user.mind)
-		ADD_TRAIT(frying, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	// NON-MODULE CHANGE
+	handle_chef_made_food(frying, frying, user.mind)
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
 	flick("fryer_start", src) // NON-MODULE CHANGE

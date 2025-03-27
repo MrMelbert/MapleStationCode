@@ -50,6 +50,7 @@
 
 	base_skills = list(
 		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cooking = SKILL_LEVEL_EXPERT, // not all NT chefs are gordon ramsay
 	)
 
 /datum/job/cook/award_service(client/winner, award)

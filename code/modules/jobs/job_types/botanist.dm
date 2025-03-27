@@ -41,6 +41,7 @@
 
 	base_skills = list(
 		/datum/skill/botany = SKILL_LEVEL_EXPERT,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/outfit/job/botanist

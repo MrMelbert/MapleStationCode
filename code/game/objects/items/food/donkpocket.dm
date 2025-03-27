@@ -25,6 +25,11 @@
 	/// The reagents that most child types add when microwaved. Needed because you can't override static lists.
 	var/static/list/child_added_reagents = list(/datum/reagent/medicine/omnizine = 2)
 
+// NON-MODULE CHANGE
+/obj/item/food/donkpocket/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_FOOD_MUST_INHERIT_CHEF_MADE, INNATE_TRAIT)
+
 /obj/item/food/donkpocket/make_bakeable()
 	AddComponent(/datum/component/bakeable, warm_type, rand(baking_time_short, baking_time_long), TRUE, TRUE, added_reagents)
 
