@@ -630,9 +630,11 @@ Behavior that's still missing from this component that original food items had t
 		var/special_reaction = check_liked.Invoke(eater)
 		switch(special_reaction) //return early for special foods
 			if(FOOD_LIKED)
-				return LIKED_FOOD_QUALITY_CHANGE
+				// NON-MODULE CHANGE
+				return round(LIKED_FOOD_QUALITY_CHANGE * 1.25)
 			if(FOOD_DISLIKED)
-				return DISLIKED_FOOD_QUALITY_CHANGE
+				// NON-MODULE CHANGE
+				return round(DISLIKED_FOOD_QUALITY_CHANGE * 1.25)
 			if(FOOD_TOXIC)
 				return TOXIC_FOOD_QUALITY_THRESHOLD
 			if(FOOD_ALLERGIC)
