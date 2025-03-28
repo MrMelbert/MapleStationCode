@@ -582,11 +582,11 @@
 	completion = clamp(completion, 0, 100)
 
 ///update the vertical pixel position of both fish and bait, and the icon state of the completion bar
-/datum/fishing_challenge/proc/update_visuals()
-	var/bait_offset_mult = bait_position/FISHING_MINIGAME_AREA
-	fishing_hud.hud_bait.pixel_y = round(MINIGAME_SLIDER_HEIGHT * bait_offset_mult, 1)
-	var/fish_offset_mult = fish_position/FISHING_MINIGAME_AREA
-	fishing_hud.hud_fish.pixel_y = round(MINIGAME_SLIDER_HEIGHT * fish_offset_mult, 1)
+/datum/fishing_challenge/proc/update_visuals(seconds_per_tick)
+	var/bait_offset_mult = bait_position / FISHING_MINIGAME_AREA
+	animate(fishing_hud.hud_bait, pixel_z = MINIGAME_SLIDER_HEIGHT * bait_offset_mult, time = seconds_per_tick SECONDS)
+	var/fish_offset_mult = fish_position / FISHING_MINIGAME_AREA
+	animate(fishing_hud.hud_fish, pixel_z = MINIGAME_SLIDER_HEIGHT * fish_offset_mult, time = seconds_per_tick SECONDS)
 	fishing_hud.hud_completion.icon_state = "completion_[FLOOR(completion, 5)]"
 
 ///The screen object which bait, fish, and completion bar are visually attached to.
