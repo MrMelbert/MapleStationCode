@@ -409,7 +409,7 @@ type BackendState<TData> = {
       name: string;
       layout: string;
     };
-    refreshing: boolean;
+    refreshing: BooleanLike;
     window: {
       key: string;
       size: [number, number];

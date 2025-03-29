@@ -117,7 +117,7 @@ const storeWindowGeometry = async () => {
 // Recall window geometry from local storage and apply it
 export const recallWindowGeometry = async (
   options: {
-    fancy?: boolean;
+    fancy?: BooleanLike;
     pos?: [number, number];
     size?: [number, number];
     locked?: BooleanLike;
