@@ -28,7 +28,8 @@
 	var/quality = FOOD_QUALITY_NORMAL
 
 // NON-MODULE CHANGE
-/datum/mood_event/food/add_effects(param)
+/datum/mood_event/food/add_effects(timeout_mod = 1)
+	timeout *= timeout_mod
 	mood_change = floor(quality * 1.34)
 	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
 		if(quality <= FOOD_QUALITY_VERYGOOD)
