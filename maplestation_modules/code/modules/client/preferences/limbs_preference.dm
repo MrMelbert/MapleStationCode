@@ -38,15 +38,15 @@
 		var/obj/item/limb_path = input[limb_zone]
 		if(istext(limb_path))
 			// Loading from json loads as text rather than paths we love
-			limb_path_as_text = text2path(limb_path)
+			limb_path = text2path(limb_path)
 		if(!ispath(limb_path))
 			continue
 
-		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_path_as_text]
+		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_path]
 		if(!istype(limb_datum) || !limb_datum.can_be_selected(preferences))
 			continue
 
-		corrected_list[limb_zone] = limb_path_as_text
+		corrected_list[limb_zone] = limb_path
 
 	return corrected_list
 
