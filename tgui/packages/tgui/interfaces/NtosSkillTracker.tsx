@@ -111,7 +111,7 @@ export const NtosSkillTracker = () => {
                     </Table.Row>
                     {!!skill.reward && (
                       <Table.Row className="candystripe">
-                        <Table.Cell textAlign="center" colspan={3}>
+                        <Table.Cell textAlign="center" colSpan={3}>
                           <Button
                             icon="trophy"
                             style={{ margin: '8px' }}
