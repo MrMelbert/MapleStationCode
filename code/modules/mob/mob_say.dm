@@ -210,15 +210,14 @@
 			if(SSradio.saymodes[found_key])
 				var/datum/saymode/saymode = SSradio.saymodes[found_key]
 				if(stat <= saymode.req_stat)
-					mods[RADIO_KEY] = found_key
+					mods[SAY_KEY] = found_key
 			// here is where you are unable to radio while in crit
 			// hard crit check is for radio-deathgasping
-			else
-				if(stat <= HARD_CRIT)
-					mods[RADIO_KEY] = found_key
-					mods[RADIO_EXTENSION] = GLOB.department_radio_keys[found_key]
-					if(stat != CONSCIOUS)
-						mods[WHISPER_MODE] = MODE_WHISPER
+			if(stat <= HARD_CRIT)
+				mods[RADIO_KEY] = found_key
+				mods[RADIO_EXTENSION] = GLOB.department_radio_keys[found_key]
+				if(stat != CONSCIOUS)
+					mods[WHISPER_MODE] = MODE_WHISPER
 			chop_to = length(key) + 2
 		else if(key == "," && !mods[LANGUAGE_EXTENSION])
 			for(var/ld in GLOB.all_languages)

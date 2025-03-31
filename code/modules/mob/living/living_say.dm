@@ -93,7 +93,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	var/list/message_mods = list()
 	var/original_message = message
 	message = get_message_mods(message, message_mods)
-	saymode = SSradio.saymodes[message_mods[RADIO_KEY]]
+	saymode = SSradio.saymodes[message_mods[SAY_KEY]] // NON-MODULE CHANGE
 	if (!forced)
 		message = check_for_custom_say_emote(message, message_mods)
 
