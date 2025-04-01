@@ -11,7 +11,10 @@ again.
 /obj/effect/spawner/structure/Initialize(mapload)
 	. = ..()
 	for(var/spawn_type in spawn_list)
-		new spawn_type(loc)
+		spawn_thing(spawn_type, loc)
+
+/obj/effect/spawner/structure/proc/spawn_thing(spawn_type, turf/loc)
+	. = new spawn_type(loc)
 
 //normal windows
 
@@ -21,6 +24,12 @@ again.
 	name = "window spawner"
 	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile)
 	dir = SOUTH
+
+/obj/effect/spawner/structure/window/spawn_thing(spawn_type, turf/loc)
+	. = ..()
+	if(istype(., /obj/structure/window))
+		var/obj/window = .
+		window.color = src.color
 
 /obj/effect/spawner/structure/window/Initialize(mapload)
 	. = ..()

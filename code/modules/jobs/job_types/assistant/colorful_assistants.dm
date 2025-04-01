@@ -1,4 +1,6 @@
 /proc/get_configured_colored_assistant_type()
+	if(check_holidays(APRIL_FOOLS))
+		return /datum/colored_assistant/syndicate
 	return CONFIG_GET(flag/grey_assistants) ? /datum/colored_assistant/grey : /datum/colored_assistant/random
 
 /// Defines a style of jumpsuit/jumpskirt for assistants.
@@ -118,3 +120,17 @@
 
 	// Couldn't find a matching jumpskirt, oh well
 	jumpskirts = list(get_random_jumpskirt())
+
+/datum/colored_assistant/syndicate
+	jumpsuits = list(
+		/obj/item/clothing/under/syndicate,
+		/obj/item/clothing/under/syndicate/combat,
+		/obj/item/clothing/under/color/black,
+		/obj/item/clothing/under/color/maroon,
+	)
+	jumpskirts = list(
+		/obj/item/clothing/under/syndicate/skirt,
+		/obj/item/clothing/under/syndicate/combat,
+		/obj/item/clothing/under/color/jumpskirt/black,
+		/obj/item/clothing/under/color/jumpskirt/maroon,
+	)

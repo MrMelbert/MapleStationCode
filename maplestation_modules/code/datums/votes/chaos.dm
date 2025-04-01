@@ -6,6 +6,7 @@
 		"Low",
 		"Medium",
 		"High",
+		"Evil",
 	)
 	count_method = VOTE_COUNT_METHOD_MULTI
 	display_statistics = FALSE
