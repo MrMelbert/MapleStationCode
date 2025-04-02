@@ -52,6 +52,8 @@
 	saved_wanted_body = GLOB.news_network.wanted_issue.body
 	if(GLOB.news_network.wanted_issue.img)
 		saved_wanted_icon = GLOB.news_network.wanted_issue.img
+	AddElement(/datum/element/burn_on_item_ignition)
+	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 
 /obj/item/newspaper/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(held_item)
@@ -61,6 +63,10 @@
 		if(held_item.get_temperature())
 			context[SCREENTIP_CONTEXT_LMB] = "Burn"
 			return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/newspaper/proc/close_paper_ui()
+	SIGNAL_HANDLER
+	SStgui.close_uis(src)
 
 /obj/item/newspaper/suicide_act(mob/living/user)
 	user.visible_message(span_suicide(\
@@ -74,10 +80,32 @@
 	user.visible_message(span_suicide("[user] downs the contents of [last_drink.name] in one gulp! Shoulda stuck to sudoku!"))
 	return TOXLOSS
 
-/obj/item/newspaper/attackby(obj/item/attacking_item, mob/user, params)
-	if(burn_paper_product_attackby_check(attacking_item, user))
-		SStgui.close_uis(src)
-		return
+/obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (tool.tool_behaviour == TOOL_SCREWDRIVER || tool.tool_behaviour == TOOL_WIRECUTTER || tool.sharpness)
+		if (punctured)
+			balloon_alert(user, "already has holes!")
+			return ITEM_INTERACT_BLOCKING
+
+		var/used_verb = "cutting out"
+		if (tool.sharpness != SHARP_EDGED || tool.tool_behaviour == TOOL_SCREWDRIVER)
+			used_verb = "puncturing"
+
+		balloon_alert(user, "[used_verb] peekholes...")
+		if (!do_after(user, 3 SECONDS, src))
+			balloon_alert(user, "interrupted!")
+			return ITEM_INTERACT_BLOCKING
+
+		playsound(src, 'sound/items/duct_tape/duct_tape_rip.ogg', 50, TRUE)
+		punctured = TRUE
+		// User has additional arms or something, I dunno
+		if (isliving(loc))
+			var/mob/living/owner = loc
+			owner.remove_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+			owner.update_appearance(UPDATE_OVERLAYS)
+		return ITEM_INTERACT_SUCCESS
+
+	if (!user.can_write(tool))
+		return NONE
 
 	if(!user.can_write(attacking_item))
 		return ..()
@@ -137,6 +165,8 @@
 	identity[VISIBLE_NAME_ID] = ""
 
 /obj/item/newspaper/ui_interact(mob/user, datum/tgui/ui)
+	if(resistance_flags & ON_FIRE)
+		return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(ui)
 		return

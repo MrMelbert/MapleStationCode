@@ -9,21 +9,25 @@
 	///List of mobs that have already been mobbed.
 	var/static/list/mob_mobs = list()
 
-#define NICKNAME_CAP (MAX_NAME_LEN/2)
-/obj/item/virgin_mary/attackby(obj/item/W, mob/user, params)
+/obj/item/virgin_mary/Initialize(mapload)
 	. = ..()
-	if(resistance_flags & ON_FIRE)
+	AddElement(/datum/element/burn_on_item_ignition, bypass_clumsy = TRUE)
+	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(induct_new_initiate))
+
+#define NICKNAME_CAP (MAX_NAME_LEN/2)
+
+/obj/item/virgin_mary/proc/induct_new_initiate(datum/source, mob/living/user, obj/item/burning_tool)
+	SIGNAL_HANDLER
+
+	INVOKE_ASYNC(src, PROC_REF(induct_new_initiate_async), user, burning_tool)
+
+/obj/item/virgin_mary/proc/induct_new_initiate_async(mob/living/user, obj/item/burning_tool)
+	if(isnull(user.mind))
 		return
-	if(!burn_paper_product_attackby_check(W, user, TRUE))
+	if(HAS_TRAIT(user, TRAIT_MAFIAINITIATE)) //Only one nickname fuckhead
+		to_chat(user, span_warning("You have already been initiated into the mafioso life."))
 		return
 	if(used_up)
-		return
-	if(!isliving(user) || !user.mind) //A sentient mob needs to be burning it, ya cheezit.
-		return
-	var/mob/living/joe = user
-
-	if(joe in mob_mobs) //Only one nickname fuckhead
-		to_chat(joe, span_warning("You have already been initiated into the mafioso life."))
 		return
 
 	to_chat(joe, span_notice("As you burn the picture, a nickname comes to mind..."))
