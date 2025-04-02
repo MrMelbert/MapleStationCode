@@ -133,6 +133,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.force_say()
+	owner.set_headset_block_if_lower(6 SECONDS)
 	return TRUE
 
 /datum/status_effect/tased/on_remove()

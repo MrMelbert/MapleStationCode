@@ -136,6 +136,7 @@
 			attack_direction = hitting_projectile.dir,
 		)
 
+	// NON-MODULE CHANGES
 	var/extra_paralyze = 0 SECONDS
 	var/extra_knockdown = 0 SECONDS
 	if(hitting_projectile.damage_type == BRUTE && !hitting_projectile.grazing)
@@ -147,6 +148,8 @@
 		else if(damage_done >= 20)
 			if(!IsKnockdown() && prob(damage_done * 2))
 				extra_knockdown += 0.4 SECONDS
+	if(damage_done > 5 && !hitting_projectile.grazing && hitting_projectile.is_hostile_projectile())
+		set_headset_block_if_lower(hitting_projectile.damage_type == STAMINA ? 3 SECONDS : 5 SECONDS)
 
 	apply_effects(
 		stun = hitting_projectile.stun,
@@ -676,6 +679,7 @@
 		to_chat(src, span_danger("You kick [target.name] onto [target.p_their()] side!"))
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living, SetKnockdown), 0), SHOVE_CHAIN_PARALYZE)
 		log_combat(src, target, "kicks", "onto their side (paralyzing)")
+		target.set_headset_block_if_lower(3 SECONDS)
 		return
 
 	target.get_shoving_message(src, weapon, shove_flags)

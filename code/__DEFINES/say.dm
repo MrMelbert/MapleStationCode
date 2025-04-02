@@ -4,6 +4,7 @@
 */
 #define RADIO_EXTENSION "department specific"
 #define RADIO_KEY "department specific key"
+#define SAY_KEY "saymode key" // NON-MODULE CHANGE
 #define LANGUAGE_EXTENSION "language specific"
 #define SAY_MOD_VERB "say_mod_verb"
 
