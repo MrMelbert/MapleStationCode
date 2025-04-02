@@ -204,13 +204,13 @@
 	name = "cyborg energy sword"
 	sword_color_icon = "red"
 	/// The cell cost of hitting something.
-	var/hitcost = 50
+	var/hitcost = 0.05 * STANDARD_CELL_CHARGE
 
 /obj/item/melee/energy/sword/cyborg/attack(mob/target, mob/living/silicon/robot/user)
 	if(!user.cell)
 		return
 
-	var/obj/item/stock_parts/cell/our_cell = user.cell
+	var/obj/item/stock_parts/power_store/our_cell = user.cell
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && !(our_cell.use(hitcost)))
 		attack_self(user)
 		to_chat(user, span_notice("It's out of charge!"))
@@ -229,7 +229,7 @@
 	icon_state = "esaw"
 	hitsound = 'sound/weapons/circsawhit.ogg'
 	force = 18
-	hitcost = 75 // Costs more than a standard cyborg esword.
+	hitcost = 0.075 * STANDARD_CELL_CHARGE // Costs more than a standard cyborg esword.
 	w_class = WEIGHT_CLASS_NORMAL
 	sharpness = SHARP_EDGED
 	light_color = LIGHT_COLOR_LIGHT_CYAN
