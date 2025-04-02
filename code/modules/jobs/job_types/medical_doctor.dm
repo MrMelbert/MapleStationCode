@@ -43,6 +43,12 @@
 	rpg_title = "Cleric"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
+		/datum/skill/surgery = SKILL_LEVEL_EXPERT,
+	)
 
 /datum/outfit/job/doctor
 	name = "Medical Doctor"

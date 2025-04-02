@@ -32,6 +32,11 @@
 
 	job_tone = "slip"
 
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE, // i'd make this higher, but i think grinding cleaning skill IS janitor's gameplay
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // garbage day
+	)
+
 /datum/outfit/job/janitor
 	name = "Janitor"
 	jobtype = /datum/job/janitor
