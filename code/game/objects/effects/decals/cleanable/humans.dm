@@ -12,6 +12,7 @@
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	color = COLOR_BLOOD
 	flags_1 = UNPAINTABLE_1
+	gender = NEUTER
 	/// Can this blood dry out?
 	var/can_dry = TRUE
 	/// Is this blood dried out?
@@ -26,13 +27,14 @@
 	var/dry_prefix = "dried"
 	/// When dried, this becomes the desc of the blood
 	var/dry_desc = "Looks like it's been here a while. Eew."
-
+	/// If TRUE our bloodiness decreases over time as we dry out
+	var/decay_bloodiness = TRUE
 	/// How long it takes to dry out
 	var/drying_time = 5 MINUTES
 	/// The process to drying out, recorded in deciseconds
 	VAR_FINAL/drying_progress = 0
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload)
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	if(mapload)
 		add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
@@ -113,7 +115,8 @@
 	if(dried || !can_dry)
 		return PROCESS_KILL
 
-	adjust_bloodiness(-0.4 * BLOOD_PER_UNIT_MODIFIER * seconds_per_tick)
+	if(decay_bloodiness)
+		adjust_bloodiness(-0.4 * BLOOD_PER_UNIT_MODIFIER * seconds_per_tick)
 	drying_progress += (seconds_per_tick * 1 SECONDS)
 	// Finish it next tick when we're all done
 	if(drying_progress >= drying_time + SSblood_drying.wait)
@@ -200,12 +203,116 @@
 
 /obj/effect/decal/cleanable/blood/trail_holder
 	name = "trail of blood"
-	desc = "Your instincts say you shouldn't be following these."
+	desc = "Your instincts say you shouldn't be following this."
 	beauty = -50
-	icon_state = null
+	icon_state = "trails_1"
 	random_icon_states = null
 	base_name = "trail of"
-	var/list/existing_dirs = list()
+	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.1
+	/// All the components of the trail
+	var/list/obj/effect/decal/cleanable/blood/trail/trail_components
+
+/obj/effect/decal/cleanable/blood/trail_holder/Initialize(mapload)
+	. = ..()
+	icon_state = ""
+	if(mapload)
+		add_dir_to_trail(dir)
+
+/obj/effect/decal/cleanable/blood/trail_holder/Destroy()
+	QDEL_LIST_ASSOC_VAL(trail_components)
+	return ..()
+
+/**
+ * Returns the trail component corresponding to the given direction
+ *
+ * * for_dir: The direction to get the trail for
+ * * check_reverse: If TRUE, will also check for the reverse direction
+ * For example if you pass dir = EAST it will return the first EAST or WEST trail component
+ * * check_diagonals: If TRUE, will also check for any diagonal directions
+ * For example if you pass dir = EAST it will return the first EAST, NORTHEAST, or SOUTHEAST trail component
+ * * check_reverse_diagonals: If TRUE, will also check for any reverse diagonal directions
+ * For example if you pass dir = EAST it will return the first SOUTHEAST, EAST, NORTHEAST, WEST, SOUTHWEST, or NORTHWEST trail component
+ */
+/obj/effect/decal/cleanable/blood/trail_holder/proc/get_trail_component(for_dir, check_reverse = FALSE, check_diagonals = FALSE, check_reverse_diagonals = FALSE)
+	. = LAZYACCESS(trail_components, "[for_dir]")
+	if(.)
+		return .
+	if(check_reverse)
+		. = LAZYACCESS(trail_components, "[REVERSE_DIR(for_dir)]")
+		if(.)
+			return .
+	if(check_diagonals)
+		for(var/comp_dir_txt in trail_components)
+			var/comp_dir = text2num(comp_dir_txt)
+			if(comp_dir < 0)
+				continue
+			if(comp_dir & for_dir)
+				return LAZYACCESS(trail_components, comp_dir_txt)
+			if(check_reverse_diagonals && (comp_dir & REVERSE_DIR(for_dir)))
+				return LAZYACCESS(trail_components, comp_dir_txt)
+
+	return null
+
+/**
+ * Add a new direction to this trail
+ *
+ * * new_dir: The direction to add
+ * This can be a cardinal direction, a diagonal direction, or a negative number to denote a cardinal direction angled 45 degrees.
+ *
+ * Returns the new trail, a [/obj/effect/decal/cleanable/blood/trail]
+ */
+/obj/effect/decal/cleanable/blood/trail_holder/proc/add_dir_to_trail(new_dir = NORTH)
+	. = get_trail_component(new_dir, check_reverse = TRUE)
+	if(.)
+		return .
+
+	var/obj/effect/decal/cleanable/blood/trail/new_trail = new(src)
+	if(new_dir > 0)
+		// add some free sprite variation by flipping it around
+		if((new_dir in GLOB.cardinals) && prob(50))
+			new_trail.setDir(REVERSE_DIR(new_dir))
+		// otherwise the dir is the same
+		else
+			new_trail.setDir(new_dir)
+	// negative dirs denote "straight diagonal" dirs
+	else
+		var/real_dir = abs(new_dir)
+		new_trail.setDir(real_dir & (EAST|WEST))
+		switch(real_dir)
+			if(NORTHEAST)
+				new_trail.transform = new_trail.transform.Turn(-45)
+			if(NORTHWEST)
+				new_trail.transform = new_trail.transform.Turn(45)
+			if(SOUTHEAST)
+				new_trail.transform = new_trail.transform.Turn(-135)
+			if(SOUTHWEST)
+				new_trail.transform = new_trail.transform.Turn(135)
+
+	LAZYSET(trail_components, "[new_dir]", new_trail)
+	vis_contents += new_trail
+	return new_trail
+
+/obj/effect/decal/cleanable/blood/trail
+	name = "blood trail"
+	desc = "A trail of blood."
+	beauty = -50
+	decay_bloodiness = FALSE // bloodiness is used as a metric for for how big the sprite is, so don't decay passively
+	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.1
+	icon_state = "ltrails_1"
+	random_icon_states = list("ltrails_1", "ltrails_2")
+	base_name = ""
+	vis_flags = VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID
+	appearance_flags = parent_type::appearance_flags | RESET_COLOR
+	/// Beyond a threshold we change to a bloodier icon state
+	var/very_bloody = FALSE
+
+/obj/effect/decal/cleanable/blood/trail/adjust_bloodiness(by_amount)
+	. = ..()
+	if(very_bloody)
+		return
+	if(bloodiness >= 0.25 * BLOOD_AMOUNT_PER_DECAL)
+		very_bloody = TRUE
+		icon_state = pick("trails_1", "trails_2")
 
 /obj/effect/decal/cleanable/blood/gibs
 	name = "gibs"
@@ -329,12 +436,12 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
 
 /obj/effect/decal/cleanable/blood/drip
-	name = "drips of blood"
+	name = "drop of blood"
 	desc = "A spattering."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
 	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.2 * BLOOD_PER_UNIT_MODIFIER
-	base_name = "drips of"
+	base_name = "drop of"
 	dry_desc = "A dried spattering."
 	drying_time = 1 MINUTES
 
@@ -475,7 +582,7 @@
 	/// Tracks what direction we're flying
 	var/flight_dir = NONE
 
-/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, splatter_strength)
+/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, list/datum/disease/diseases, splatter_strength)
 	. = ..()
 	prev_loc = loc //Just so we are sure prev_loc exists
 	if(splatter_strength)
