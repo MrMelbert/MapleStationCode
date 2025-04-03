@@ -5,3 +5,6 @@
 PROCESSING_SUBSYSTEM_DEF(fishing)
 	name = "Fishing"
 	wait = 0.1 SECONDS
+	dependencies = list(
+		/datum/controller/subsystem/atoms
+	)
