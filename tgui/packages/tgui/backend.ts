@@ -13,6 +13,7 @@
 import { perf } from 'common/perf';
 import { createAction } from 'common/redux';
 import { globalEvents } from 'tgui-core/events';
+import { BooleanLike } from 'tgui-core/react';
 
 import { setupDrag } from './drag';
 import { focusMap } from './focus';
@@ -412,8 +413,9 @@ type BackendState<TData> = {
     window: {
       key: string;
       size: [number, number];
-      fancy: boolean;
-      locked: boolean;
+      fancy: BooleanLike;
+      locked: BooleanLike;
+      scale: BooleanLike;
     };
     client: {
       ckey: string;

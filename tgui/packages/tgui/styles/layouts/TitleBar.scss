@@ -6,6 +6,7 @@
 @use 'sass:color';
 @use '../base';
 @use '../colors';
+@use '../functions.scss' as *;
 
 $text-color: hsla(0, 0%, 100%, 0.75) !default;
 $background-color: hsl(0, 0%, 21%) !default;
@@ -13,6 +14,11 @@ $shadow-color-core: hsl(0, 0%, 8.6%) !default;
 $shadow-color: hsla(0, 0%, 0%, 0.1) !default;
 
 .TitleBar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: vp(100vw);
+  height: base.rem(32px);
   background-color: $background-color;
   border-bottom: 1px solid $shadow-color-core;
   box-shadow: 0 2px 2px $shadow-color;
