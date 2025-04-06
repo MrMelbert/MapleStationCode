@@ -12,7 +12,7 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = FIRE_PROOF
-	clothing_flags = STOPSPRESSUREDAMAGE
+	clothing_flags = parent_type::clothing_flags | STOPSPRESSUREDAMAGE
 	slowdown = SHOES_SLOWDOWN
 	drop_sound = 'maplestation_modules/sound/items/drop/boots.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/boots.ogg'

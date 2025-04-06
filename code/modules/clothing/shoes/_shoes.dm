@@ -7,10 +7,9 @@
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
-
+	clothing_flags = CLOTHING_MOD_OVERSLOTTING
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
-
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
