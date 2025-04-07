@@ -69,7 +69,7 @@
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
 			if(embedded.get_embed().stealthy_embed)
 				continue
-			var/harmless = embedded.get_embed().is_harmless()
+			var/harmless = embedded.is_embed_harmless()
 			var/stuck_wordage = harmless ? "stuck to" : "embedded in"
 			var/span_to_use = harmless ? "notice" : "boldwarning"
 			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"

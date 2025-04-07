@@ -75,7 +75,7 @@
 				organ_owner.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = 95)
 				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 15)
 
-/obj/item/organ/appendix/feel_for_damage(self_aware)
+/obj/item/organ/internal/appendix/feel_for_damage(self_aware)
 	var/effective_stage = floor(inflamation_stage + (damage / maxHealth))
 	switch(effective_stage)
 		if(1)

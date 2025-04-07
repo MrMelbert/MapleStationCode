@@ -376,13 +376,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
 /obj/item/organ/proc/feel_for_damage(self_aware)
-	if(organ_flags & ORGAN_EXTERNAL)
-		return ""
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
 		return span_warning("[self_aware ? "[capitalize(slot)]" : "It"] feels a bit off.")
 	return span_boldwarning("[self_aware ? "[capitalize(slot)]" : "It"] feels terrible!")
+
+/obj/item/organ/external/feel_for_damage(self_aware)
+	return ""
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)

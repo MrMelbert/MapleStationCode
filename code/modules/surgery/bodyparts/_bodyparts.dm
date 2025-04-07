@@ -358,7 +358,7 @@
 	for(var/obj/item/embedded_thing as anything in embedded_objects)
 		if(embedded_thing.get_embed().stealthy_embed)
 			continue
-		var/harmless = embedded_thing.get_embed().is_harmless()
+		var/harmless = embedded_thing.is_embed_harmless()
 		var/stuck_wordage = harmless ? "stuck to" : "embedded in"
 		var/span_to_use = harmless ? "notice" : "boldwarning"
 		check_list += "\t<span class='[span_to_use]'><a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [plaintext_zone]!</a></span>"

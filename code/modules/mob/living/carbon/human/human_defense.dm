@@ -606,7 +606,7 @@
 		else
 			combined_msg += span_info("You feel fatigued.")
 
-	to_chat(src, boxed_message(combined_msg.Join("<br>")))
+	to_chat(src, examine_block(combined_msg.Join("<br>")))
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
 	if(damage_type != BRUTE && damage_type != BURN)

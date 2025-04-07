@@ -159,11 +159,11 @@
 	. = ..()
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))
 		sound_type = pick(
-			'sound/machines/beep/twobeep_voice1.ogg',
-			'sound/machines/beep/twobeep_voice2.ogg',
+			'sound/machines/twobeep_voice1.ogg',
+			'sound/machines/twobeep_voice2.ogg',
 		)
 	else
-		sound_type = 'sound/machines/beep/twobeep_high.ogg'
+		sound_type = 'sound/machines/twobeep_high.ogg'
 
 /datum/hallucination/fake_sound/normal/ringtone/play_fake_sound(turf/source, sound_to_play = sound_type)
 	if(prob(33))

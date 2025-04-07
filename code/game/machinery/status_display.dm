@@ -446,7 +446,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 					// not seen, primarily for VV
 					speakers.name = "[name] speakers"
 					// to allow centcom cameras to reach the station
-					speakers.special_channels |= RADIO_SPECIAL_CENTCOM
+					speakers.independent = TRUE
 					speakers.set_frequency(FREQ_STATUS_DISPLAYS)
 				LAZYOR(active_displays, new_display)
 			current_mode = SD_GREENSCREEN
@@ -804,14 +804,14 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 			return
 		activate_feed()
 		if(isnull(display))
-			playsound(src, 'sound/machines/terminal/terminal_on.ogg', 33, TRUE, frequency = 0.5)
+			playsound(src, 'sound/machines/terminal_on.ogg', 33, TRUE, frequency = 0.5)
 			balloon_alert_to_viewers("no backdrop, can't broadcast!")
 			return
-		playsound(src, 'sound/machines/terminal/terminal_on.ogg', 33, FALSE)
+		playsound(src, 'sound/machines/terminal_on.ogg', 33, FALSE)
 		use_power = ACTIVE_POWER_USE
 	else
 		deactivate_feed()
-		playsound(src, 'sound/machines/terminal/terminal_off.ogg', 33, FALSE)
+		playsound(src, 'sound/machines/terminal_off.ogg', 33, FALSE)
 		use_power = IDLE_POWER_USE
 	balloon_alert_to_viewers("feed [isnull(display) ? "de" : ""]activated")
 
@@ -825,7 +825,7 @@ GLOBAL_LIST_EMPTY_TYPED(greenscreen_displays, /obj/effect/abstract/greenscreen_d
 	// not seen, primarily for VV
 	mic.name = "[name] microphone"
 	// allows centcom cameras to reach the station + keeps transmission active even if comms are out
-	mic.special_channels |= RADIO_SPECIAL_CENTCOM
+	mic.independent = TRUE
 	mic.set_frequency(FREQ_STATUS_DISPLAYS)
 	display = new()
 	display.dir = dir

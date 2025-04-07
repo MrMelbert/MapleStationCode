@@ -68,7 +68,7 @@
 		wings.burnt = FALSE
 		burnt = FALSE
 
-/obj/item/organ/wings/moth/feel_for_damage(self_aware)
+/obj/item/organ/external/wings/moth/feel_for_damage(self_aware)
 	if(burnt)
 		return "Your wings are all burnt up!"
 	return ..()
