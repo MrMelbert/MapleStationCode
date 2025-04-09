@@ -139,7 +139,7 @@
 	if(isnull(antagonists))
 		antagonists = list(
 			// These antags don't have a job rank / are based on an existing antag in a different context, but they still count
-			ROLE_CHANGELING_MIDROUND = /datum/antagonist/changeling,
+			ROLE_CHANGELING_MIDROUND = /datum/antagonist/changeling/space,
 			ROLE_CLOWN_OPERATIVE = /datum/antagonist/nukeop/clownop,
 			ROLE_HERETIC_SMUGGLER = /datum/antagonist/heretic,
 			ROLE_LONE_OPERATIVE = /datum/antagonist/nukeop/lone,
