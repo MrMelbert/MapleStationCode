@@ -67,8 +67,7 @@ function QuirkList(props: QuirkProps & QuirkListProps) {
   } = props;
 
   return (
-    // Stack is not used here for a variety of IE flex bugs
-    <Box className="PreferencesMenu__Quirks__QuirkList">
+    <Stack vertical g={0}>
       {quirks.map(([quirkKey, quirk]) => (
         <QuirkDisplay
           key={quirkKey}
