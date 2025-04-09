@@ -1,6 +1,6 @@
 /datum/antagonist/pirate
 	name = "\improper Space Pirate"
-	job_rank = ROLE_TRAITOR
+	job_rank = ROLE_SPACE_PIRATE // NON-MODULE CHANGE / Was ROLE_TRAITOR
 	roundend_category = "space pirates"
 	antagpanel_category = ANTAG_GROUP_PIRATES
 	show_in_antagpanel = FALSE

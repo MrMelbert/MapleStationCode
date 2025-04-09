@@ -38,9 +38,10 @@
 	var/static/list/doom_options = list()
 	if (!length(doom_options))
 		doom_options = list(DOOM_SINGULARITY, DOOM_TESLA)
+/*
 		if (!SSmapping.config.planetary)
 			doom_options += DOOM_METEORS
-
+*/
 	switch(pick(doom_options))
 		if (DOOM_SINGULARITY)
 			var/obj/singularity/singulo = new(current_location)
@@ -48,11 +49,13 @@
 		if (DOOM_TESLA)
 			var/obj/energy_ball/tesla = new (current_location)
 			tesla.energy = 200
+/*
 		if (DOOM_METEORS)
 			var/datum/dynamic_ruleset/roundstart/meteor/meteors = new()
 			meteors.meteordelay = 0
 			SSdynamic.execute_roundstart_rule(meteors) // Meteors will continue until morale is crushed.
 			priority_announce("Meteors have been detected on collision course with the station.", "Meteor Alert", ANNOUNCER_METEORS)
+*/
 
 #undef DOOM_SINGULARITY
 #undef DOOM_TESLA

@@ -24,7 +24,7 @@
 	var/mob/living/carbon/human/scientist = make_body(pick_n_take(candidates))
 
 	var/datum/team/abductor_team/T = new
-	if(T.team_number > ABDUCTOR_MAX_TEAMS)
+	if(T.team_number > 2)
 		return MAP_ERROR
 
 	scientist.log_message("has been selected as [T.name] abductor scientist.", LOG_GAME)
