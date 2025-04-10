@@ -41,61 +41,53 @@
     color: var(--titlebar-text);
     font-size: base.rem(14px);
   }
-}
 
-&__buttons {
-  pointer-events: all;
-  overflow: hidden;
-  white-space: nowrap;
-  display: inline-block;
-  margin: 0 base.rem(9px);
-  z-index: 102;
-}
-
-&__KitchenSink {
-  background-color: hsl(
-    from var(--color-green) h s calc(l - var(--adjust-hover))
-  );
-  color: var(--color-text-fixed-white);
-  text-align: center;
-  border-radius: 0;
-
-  &:hover {
-    background-color: var(--color-green) !important;
+  &__buttons {
+    pointer-events: all;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    margin: 0 base.rem(9px);
+    z-index: 102;
   }
-}
 
-&__close {
-  cursor: var(--cursor-pointer);
-  opacity: 0.5;
-  pointer-events: all;
-  align-content: center;
-  text-align: center;
-  font-size: base.rem(16px);
-  height: 100%;
-  color: var(--color-text);
-  transition-property: background-color, opacity;
-  transition-duration: var(--transition-time-medium);
-  z-index: 102;
+  &__KitchenSink {
+    background-color: hsl(
+      from var(--color-green) h s calc(l - var(--adjust-hover))
+    );
+    color: var(--color-text-fixed-white);
+    text-align: center;
+    border-radius: 0;
 
-  &:hover {
-    opacity: 1;
-    background-color: var(--button-background-danger);
-    transition-duration: 0s;
+    &:hover {
+      background-color: var(--color-green) !important;
+    }
   }
-}
 
-.TitleBar__devBuildIndicator {
-  position: absolute;
-  top: 6px;
-  top: base.rem(6px);
-  right: 52px;
-  right: base.rem(52px);
-  min-width: 20px;
-  min-width: base.rem(20px);
-  padding: 2px 4px;
-  padding: base.rem(2px) base.rem(4px);
-  background-color: color.adjust(colors.$good, $lightness: -10%, $space: hsl);
-  color: hsl(120, 100%, 100%);
-  text-align: center;
+  &__close {
+    cursor: var(--cursor-pointer);
+    opacity: 0.5;
+    pointer-events: all;
+    align-content: center;
+    text-align: center;
+    font-size: base.rem(16px);
+    height: 100%;
+    color: var(--color-text);
+    transition-property: background-color, opacity;
+    transition-duration: var(--transition-time-medium);
+    z-index: 102;
+
+    &:hover {
+      opacity: 1;
+      background-color: var(--button-background-danger);
+      transition-duration: 0s;
+    }
+  }
+
+  &__statusIcon,
+  &__close {
+    width: base.rem(45px);
+    min-width: base.rem(45px);
+    max-width: base.rem(45px);
+  }
 }

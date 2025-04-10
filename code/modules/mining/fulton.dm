@@ -79,7 +79,7 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 		balloon_alert(user, "too heavy!")
 		return .
 	balloon_alert_to_viewers("attaching...")
-	playsound(thing, 'sound/items/zip/zip.ogg', vol = 50, vary = TRUE)
+	playsound(thing, 'sound/items/zip.ogg', vol = 50, vary = TRUE)
 	if(isliving(thing))
 		var/mob/living/creature = thing
 		if(creature.mind)

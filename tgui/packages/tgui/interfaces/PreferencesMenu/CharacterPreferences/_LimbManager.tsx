@@ -8,10 +8,10 @@ import {
   Stack,
 } from 'tgui-core/components';
 
-import { resolveAsset } from '../../assets';
-import { useBackend } from '../../backend';
-import { Connections } from '../common/Connections';
-import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
+import { resolveAsset } from '../../../assets';
+import { useBackend } from '../../../backend';
+import { Connections } from '../../common/Connections';
+import { useServerPrefs } from '../useServerPrefs';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
   switch (cat) {
@@ -358,19 +358,15 @@ class LimbManagerInner extends Component<
 export const LimbManagerPage = () => {
   const { data } = useBackend<Data>();
 
-  return (
-    <ServerPreferencesFetcher
-      render={(serverData) => {
-        return serverData ? (
-          <LimbManagerInner
-            limbs={serverData.limbs.limbs}
-            selected_limbs={data.selected_limbs}
-            preview_flat_icon={data.preview_flat_icon}
-          />
-        ) : (
-          <NoticeBox>Loading...</NoticeBox>
-        );
-      }}
+  const server_data = useServerPrefs();
+
+  return server_data ? (
+    <LimbManagerInner
+      limbs={server_data.limbs.limbs}
+      selected_limbs={data.selected_limbs}
+      preview_flat_icon={data.preview_flat_icon}
     />
+  ) : (
+    <NoticeBox>Loading...</NoticeBox>
   );
 };

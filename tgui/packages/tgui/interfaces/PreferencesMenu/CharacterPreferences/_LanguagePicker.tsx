@@ -9,8 +9,8 @@ import {
 } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
 
-import { useBackend } from '../../backend';
-import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
+import { useBackend } from '../../../backend';
+import { useServerPrefs } from '../useServerPrefs';
 
 type typePath = string;
 
@@ -398,21 +398,15 @@ You may want to select at least one language to understand.`}
 };
 
 export const LanguagePage = () => {
-  return (
-    <ServerPreferencesFetcher
-      render={(serverData) => {
-        return serverData ? (
-          <LanguagePageInner
-            base_languages={serverData.language.base_languages}
-            max_spoken_languages={serverData.language.max_spoken_languages}
-            max_understood_languages={
-              serverData.language.max_understood_languages
-            }
-          />
-        ) : (
-          <NoticeBox>Loading...</NoticeBox>
-        );
-      }}
+  const server_data = useServerPrefs();
+
+  return server_data ? (
+    <LanguagePageInner
+      base_languages={server_data.language.base_languages}
+      max_spoken_languages={server_data.language.max_spoken_languages}
+      max_understood_languages={server_data.language.max_understood_languages}
     />
+  ) : (
+    <NoticeBox>Loading...</NoticeBox>
   );
 };
