@@ -4,6 +4,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Head Tentacles"
 	should_generate_icons = TRUE
+	relevant_external_organ = /obj/item/organ/external/head_tentacles
 
 /datum/preference/choiced/skrell_hair/init_possible_values()
 	return assoc_to_keys(GLOB.head_tentacles_list)

@@ -352,10 +352,10 @@
 		if(embedded_thing.get_embed().hidden_embed)
 			continue
 		var/stuck_word = embedded_thing.is_embed_harmless() ? "stuck" : "embedded"
-		check_list += "\t\t<a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in it!</a>"
+		check_list += "\t\t<a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in it!</a>"
 
 	if(current_gauze)
-		check_list += span_notice("\t\tThere is some <a href='?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
+		check_list += span_notice("\t\tThere is some <a href='byond://?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
 	else if(can_bleed())
 		switch(get_modified_bleed_rate())
 			if(0.2 to 1)
@@ -965,8 +965,8 @@
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
 	for(var/image/img as anything in standing)
-		img.pixel_x += px_x
-		img.pixel_y += px_y
+		img.pixel_w += px_x
+		img.pixel_z += px_y
 	add_overlay(standing)
 
 ///Generates an /image for the limb to be used as an overlay

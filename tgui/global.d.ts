@@ -42,6 +42,21 @@ type ByondType = {
   windowId: string;
 
   /**
+   * True if javascript is running in BYOND.
+   */
+  IS_BYOND: boolean;
+
+  /**
+   * Version of Trident engine of Internet Explorer. Null if N/A.
+   */
+  TRIDENT: number | null;
+
+  /**
+   * Version of Blink engine of WebView2. Null if N/A.
+   */
+  BLINK: number | null;
+
+  /**
    * If `true`, unhandled errors and common mistakes result in a blue screen
    * of death, which stops this window from handling incoming messages and
    * closes the active instance of tgui datum if there was one.
@@ -163,6 +178,11 @@ type ByondType = {
    * Maps icons to their ref
    */
   iconRefMap: Record<string, string>;
+
+  /**
+   * Downloads a blob, platform-agnostic
+   */
+  saveBlob(blob: Blob, filename: string, ext: string): void;
 };
 
 /**
@@ -175,4 +195,13 @@ interface Window {
   Byond: ByondType;
   __store__: Store<unknown, AnyAction>;
   __augmentStack__: (store: Store) => StackAugmentor;
+
+  // IE IndexedDB stuff.
+  msIndexedDB: IDBFactory;
+  msIDBTransaction: IDBTransaction;
+
+  // 516 byondstorage API.
+  hubStorage: Storage;
+  domainStorage: Storage;
+  serverStorage: Storage;
 }

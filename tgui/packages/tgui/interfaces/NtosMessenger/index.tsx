@@ -49,7 +49,7 @@ export const NtosMessenger = (props) => {
     sending_virus,
   } = data;
 
-  let content: JSX.Element;
+  let content: React.JSX.Element;
   if (open_chat !== null) {
     const openChat = saved_chats[open_chat];
     const temporaryRecipient = messengers[open_chat];

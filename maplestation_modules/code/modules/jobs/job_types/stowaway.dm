@@ -31,7 +31,7 @@
 /datum/job/stowaway/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
 	var/datum/status_effect/backstory/backstory = spawned.apply_status_effect(/datum/status_effect/backstory)
-	var/backstory_ref = "<a href='?src=[REF(backstory)];backstory=1'>click here</a>"
+	var/backstory_ref = "<a href='byond://?src=[REF(backstory)];backstory=1'>click here</a>"
 	to_chat(player_client, examine_block("\
 		[span_boldnotice("You find yourself stown away in [get_area_name(spawned)] on [station_name()].")]\n\
 		[span_notice("All you have to your name is the clothes on your back, some tools, and a small amount of cash.")]\n\

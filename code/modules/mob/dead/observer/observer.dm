@@ -233,7 +233,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 				if(hair_color)
 					hair_overlay.color = hair_color
 				hair_overlay.alpha = 200
-				hair_overlay.pixel_y = S.y_offset
+				hair_overlay.pixel_z = S.y_offset
 				add_overlay(hair_overlay)
 
 /*
@@ -453,7 +453,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				A.add_overlay(source)
 				source.layer = old_layer
 				source.plane = old_plane
-	to_chat(src, span_ghostalert("<a href=?src=[REF(src)];reenter=1>(Click to re-enter)</a>"))
+	to_chat(src, span_ghostalert("<a href=byond://?src=[REF(src)];reenter=1>(Click to re-enter)</a>"))
 	if(sound)
 		SEND_SOUND(src, sound(sound))
 

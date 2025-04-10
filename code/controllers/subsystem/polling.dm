@@ -145,11 +145,11 @@ SUBSYSTEM_DEF(polling)
 		// Chat message
 		var/act_jump = ""
 		if(isatom(pic_source) && isobserver(candidate_mob))
-			act_jump = "<a href='?src=[REF(poll_alert_button)];jump=1'>\[Teleport\]</a>"
-		var/act_signup = "<a href='?src=[REF(poll_alert_button)];signup=1'>\[[start_signed_up ? "Opt out" : "Sign Up"]\]</a>"
+			act_jump = "<a href='byond://?src=[REF(poll_alert_button)];jump=1'>\[Teleport\]</a>"
+		var/act_signup = "<a href='byond://?src=[REF(poll_alert_button)];signup=1'>\[[start_signed_up ? "Opt out" : "Sign Up"]\]</a>"
 		var/act_never = ""
 		if(ignore_category)
-			act_never = "<a href='?src=[REF(poll_alert_button)];never=1'>\[Never For This Round\]</a>"
+			act_never = "<a href='byond://?src=[REF(poll_alert_button)];never=1'>\[Never For This Round\]</a>"
 
 		SEND_SOUND(candidate_mob, 'sound/misc/notice2.ogg')
 		to_chat(candidate_mob, span_boldnotice(examine_block("Now looking for candidates [role_name_text ? "to play as \an [role_name_text]." : "\"[question]\""] [act_jump] [act_signup] [act_never]")))

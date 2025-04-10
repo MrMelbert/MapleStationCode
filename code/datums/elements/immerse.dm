@@ -189,13 +189,13 @@
 	var/last_i = width/world.icon_size
 	for(var/i in -1 to last_i)
 		var/mutable_appearance/underwater = mutable_appearance(icon, icon_state)
-		underwater.pixel_x = world.icon_size * i - extra_width
-		underwater.pixel_y = -world.icon_size - extra_height
+		underwater.pixel_w = world.icon_size * i - extra_width
+		underwater.pixel_z = -world.icon_size - extra_height
 		overlay_appearance.overlays += underwater
 
 		var/mutable_appearance/water_level = is_below_water ? underwater : mutable_appearance(immerse_icon)
-		water_level.pixel_x = world.icon_size * i - extra_width
-		water_level.pixel_y = -extra_height
+		water_level.pixel_w = world.icon_size * i - extra_width
+		water_level.pixel_z = -extra_height
 		overlay_appearance.overlays += water_level
 
 
