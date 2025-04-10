@@ -199,6 +199,10 @@
 /proc/get_rand_frequency()
 	return rand(32000, 55000)
 
+///get_rand_frequency but lower range.
+/proc/get_rand_frequency_low_range()
+	return rand(38000, 45000)
+
 /proc/get_sfx(soundin)
 	if(!istext(soundin))
 		return soundin

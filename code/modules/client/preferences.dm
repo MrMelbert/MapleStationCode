@@ -448,7 +448,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		LAZYADD(feedback, "Your quirks have been reset.")
 		all_quirks = list()
 	if(LAZYLEN(feedback))
-		to_chat(parent, boxed_message(span_greentext(feedback.Join("\n"))))
+		to_chat(parent, examine_block(span_greentext(feedback.Join("\n"))))
 
 
 /**

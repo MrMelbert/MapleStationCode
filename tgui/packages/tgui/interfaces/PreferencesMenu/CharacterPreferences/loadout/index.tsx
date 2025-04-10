@@ -270,7 +270,8 @@ function LoadoutSelectedSection(props: LoadoutSelectedSectionProps) {
 
   return (
     <Section
-      title="Selected Items"
+      // title="Selected Items"
+      title="&nbsp;"
       scrollable
       fill
       buttons={
@@ -280,6 +281,7 @@ function LoadoutSelectedSection(props: LoadoutSelectedSectionProps) {
               <Button
                 key={slot}
                 height="92%"
+                mr={0.5}
                 color={
                   active_loadout === slot
                     ? 'green'
@@ -335,7 +337,8 @@ function LoadoutPreviewSection() {
   return (
     <Section
       fill
-      title="Preview"
+      // title="Preview"
+      title="&nbsp;"
       buttons={
         <Button.Checkbox
           align="center"

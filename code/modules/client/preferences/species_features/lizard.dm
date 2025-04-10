@@ -63,7 +63,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Frills"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/frills
+	relevant_external_organ = /obj/item/organ/external/frills
 
 /datum/preference/choiced/lizard_frills/init_possible_values()
 	return assoc_to_keys_features(GLOB.frills_list)
@@ -80,7 +80,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Horns"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/horns
+	relevant_external_organ = /obj/item/organ/external/horns
 
 /datum/preference/choiced/lizard_horns/init_possible_values()
 	return assoc_to_keys_features(GLOB.horns_list)
@@ -109,7 +109,7 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Snout"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/snout
+	relevant_external_organ = /obj/item/organ/external/snout
 
 /datum/preference/choiced/lizard_snout/init_possible_values()
 	return assoc_to_keys_features(GLOB.snouts_list)

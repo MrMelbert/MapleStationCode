@@ -57,12 +57,13 @@
 		return ..()
 
 	// now that the wig is properly equipped, try attaching the old job / loadout hat via the component
-	var/datum/component/hat_stabilizer/comp = quirk_item.GetComponent(/datum/component/hat_stabilizer)
+	var/datum/component/stackable_item/comp = quirk_item.GetComponent(/datum/component/stackable_item)
 	// nvm i guess someone removed that feature (futureproofed comment)
 	if(isnull(comp))
 		return ..()
 
-	comp.attach_hat(existing)
+	// melbert todo : make less hacky
+	comp.item_attackby(quirk_item, existing, quirk_holder)
 
 /datum/quirk/item_quirk/bald/remove()
 	. = ..()

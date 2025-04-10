@@ -221,7 +221,6 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
             style={{
               width: '100%',
               height: '100%',
-              position: 'relative',
               zIndex: '1',
             }}
           >
@@ -232,7 +231,6 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               width={height}
               fixBlur
               style={{
-                position: 'absolute',
                 zIndex: '1',
               }}
               onClick={(event) => {
@@ -256,6 +254,8 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
                   pointerEvents: 'none',
                   position: 'absolute',
                   zIndex: '3',
+                  left: '5px',
+                  top: '10px',
                 }}
               />
             )}
@@ -271,6 +271,8 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
                   position: 'absolute',
                   zIndex: '2',
                   opacity: '0.5',
+                  left: '5px',
+                  top: '10px',
                 }}
               />
             )}

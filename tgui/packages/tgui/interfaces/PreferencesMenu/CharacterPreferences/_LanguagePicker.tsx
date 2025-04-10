@@ -48,6 +48,13 @@ const StateToIcon = {
   [LanguageState.NONE]: 'square-o',
 };
 
+function StateToColorDisabled(state: LanguageState, disabled: boolean) {
+  if (disabled && state === LanguageState.NONE) {
+    return 'grey';
+  }
+  return StateToColor[state];
+}
+
 const StateToColor = {
   [LanguageState.DEFAULT]: 'good',
   [LanguageState.DISABLED]: 'bad',
@@ -205,7 +212,12 @@ const LanguageRow = (props: {
             (pref_spoken_languages.length >= spoken_cap && !ignore_spoken_cap)
           }
           icon={StateToIcon[spoken_state]}
-          color={StateToColor[spoken_state]}
+          color={StateToColorDisabled(
+            spoken_state,
+            !displayed_language.unlocked ||
+              (pref_spoken_languages.length >= spoken_cap &&
+                !ignore_spoken_cap),
+          )}
           tooltip={StateToTooltipSpeech[spoken_state]}
           tooltipPosition={'right'}
           onClick={() =>
@@ -224,7 +236,12 @@ const LanguageRow = (props: {
               !ignore_undersood_cap)
           }
           icon={StateToIcon[understood_state]}
-          color={StateToColor[understood_state]}
+          color={StateToColorDisabled(
+            understood_state,
+            !displayed_language.unlocked ||
+              (pref_understood_languages.length >= understood_cap &&
+                !ignore_undersood_cap),
+          )}
           tooltip={StateToTooltipUnderstanding[understood_state]}
           tooltipPosition={'right'}
           onClick={() =>
