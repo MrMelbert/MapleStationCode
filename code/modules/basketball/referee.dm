@@ -34,7 +34,7 @@
 
 /datum/action/innate/timeout/do_ability(mob/living/clicker, mob/living/carbon/human/target)
 	clicker.say("FOUL BY [target]!", forced = "whistle")
-	playsound(clicker, 'sound/whistle/whistle.ogg', 30, FALSE, 4)
+	playsound(clicker, 'sound/misc/whistle.ogg', 30, FALSE, 4)
 
 	new /obj/effect/timestop(get_turf(target), 0, 5 SECONDS, list(clicker), TRUE, TRUE)
 

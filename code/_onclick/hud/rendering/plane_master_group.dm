@@ -61,7 +61,7 @@
 	rebuild_plane_masters()
 	show_hud()
 	our_hud.update_parallax_pref()
-	build_planes_offset(our_hud, active_offset)
+	transform_lower_turfs(our_hud, active_offset)
 
 /// Regenerate our plane masters, this is useful if we don't have a mob but still want to rebuild. Such in the case of changing the screen_loc of relays
 /datum/plane_master_group/proc/rebuild_plane_masters()
