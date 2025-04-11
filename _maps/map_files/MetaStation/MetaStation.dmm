@@ -9739,6 +9739,14 @@
 	},
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/surgery/theatre)
+"cnA" = (
+/obj/machinery/greenscreen_camera{
+	dir = 1;
+	pixel_x = 4;
+	pixel_y = 16
+	},
+/turf/open/floor/carpet,
+/area/station/command/heads_quarters/captain/private)
 "cnB" = (
 /obj/effect/turf_decal/trimline/blue/filled/corner,
 /obj/machinery/camera/directional/east{
@@ -51358,6 +51366,7 @@
 "rDv" = (
 /obj/structure/table/wood,
 /obj/machinery/newscaster/directional/west,
+/obj/machinery/computer/security/wooden_tv,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain/private)
 "rDC" = (
@@ -68338,7 +68347,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "ylr" = (
-/obj/machinery/computer/security/wooden_tv,
+/obj/structure/sign/poster/greenscreen/directional/north,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain/private)
 "yls" = (
@@ -98879,7 +98888,7 @@ aZa
 ltn
 hbO
 ylr
-gWx
+cnA
 mcQ
 czk
 mjV

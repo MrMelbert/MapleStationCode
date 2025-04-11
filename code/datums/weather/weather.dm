@@ -18,6 +18,8 @@
 	var/telegraph_duration = 300
 	/// The sound file played to everyone on an affected z-level
 	var/telegraph_sound
+	/// Volume of the telegraph sound
+	var/telegraph_sound_vol
 	/// The overlay applied to all tiles on the z-level
 	var/telegraph_overlay
 
@@ -42,6 +44,8 @@
 	var/end_duration = 300
 	/// Sound that plays while weather is ending
 	var/end_sound
+	/// Volume of the sound that plays while weather is ending
+	var/end_sound_vol
 	/// Area overlay while weather is ending
 	var/end_overlay
 
@@ -116,7 +120,7 @@
 	SSweather.processing |= src
 	update_areas()
 	if(telegraph_duration)
-		send_alert(telegraph_message, telegraph_sound)
+		send_alert(telegraph_message, telegraph_sound, telegraph_sound_vol)
 	addtimer(CALLBACK(src, PROC_REF(start)), telegraph_duration)
 
 /**
@@ -151,7 +155,7 @@
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_WINDDOWN(type))
 	stage = WIND_DOWN_STAGE
 	update_areas()
-	send_alert(end_message, end_sound)
+	send_alert(end_message, end_sound, end_sound_vol)
 	addtimer(CALLBACK(src, PROC_REF(end)), end_duration)
 
 /**
@@ -172,7 +176,7 @@
 		SEND_SIGNAL(impacted_area, COMSIG_WEATHER_ENDED_IN_AREA(type))
 
 // handles sending all alerts
-/datum/weather/proc/send_alert(alert_msg, alert_sfx)
+/datum/weather/proc/send_alert(alert_msg, alert_sfx, alert_sfx_vol = 100)
 	for(var/z_level in impacted_z_levels)
 		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
 			if(!can_get_alert(player))
@@ -180,7 +184,8 @@
 			if(alert_msg)
 				to_chat(player, alert_msg)
 			if(alert_sfx)
-				SEND_SOUND(player, sound(alert_sfx))
+				player.stop_sound_channel(CHANNEL_WEATHER)
+				SEND_SOUND(player, sound(alert_sfx, channel = CHANNEL_WEATHER, volume = alert_sfx_vol))
 
 // the checks for if a mob should receive alerts, returns TRUE if can
 /datum/weather/proc/can_get_alert(mob/player)

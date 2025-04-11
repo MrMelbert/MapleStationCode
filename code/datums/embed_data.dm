@@ -39,7 +39,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	var/pain_stam_pct = 0
 	/// The embed doesn't show up on examine, only on health analyze
 	/// (Note: This means you can't rip it out)
-	var/hidden_embed = FALSE
+	var/stealthy_embed = FALSE
 	/// How much blood is lost per life tick while embedded
 	var/blood_loss = 0.25
 
@@ -55,7 +55,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	jostle_chance = src.jostle_chance,
 	jostle_pain_mult = src.jostle_pain_mult,
 	pain_stam_pct = src.pain_stam_pct,
-	hidden_embed = src.hidden_embed,
+	stealthy_embed = src.stealthy_embed,
 	force_new = FALSE,
 )
 	var/datum/embed_data/data = (isnull(GLOB.embed_by_type[type]) && !force_new) ? new() : src
@@ -71,7 +71,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	data.jostle_chance = jostle_chance
 	data.jostle_pain_mult = jostle_pain_mult
 	data.pain_stam_pct = pain_stam_pct
-	data.hidden_embed = hidden_embed
+	data.stealthy_embed = stealthy_embed
 	return data
 
 /datum/embed_data/proc/on_embed(

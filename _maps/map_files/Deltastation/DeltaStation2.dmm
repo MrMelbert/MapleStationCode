@@ -8826,13 +8826,14 @@
 /obj/structure/table/wood,
 /obj/item/paper_bin,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/status_display/ai/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
 "bMy" = (
 /obj/structure/table/wood,
 /obj/item/folder/blue,
 /obj/item/pen,
-/obj/item/radio/intercom/directional/north,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/tcommsat/computer)
 "bMA" = (
@@ -8856,14 +8857,14 @@
 /obj/item/radio{
 	pixel_y = 5
 	},
-/obj/item/radio/intercom/directional/north,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/tcommsat/computer)
 "bMF" = (
 /obj/item/flashlight/lamp,
-/obj/machinery/airalarm/directional/east,
 /obj/structure/table/wood,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
 "bMO" = (
@@ -9119,7 +9120,6 @@
 /area/station/hallway/primary/central/fore)
 "bOG" = (
 /obj/machinery/announcement_system,
-/obj/machinery/status_display/ai/directional/west,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
@@ -9151,7 +9151,6 @@
 /obj/machinery/computer/telecomms/monitor{
 	dir = 8
 	},
-/obj/machinery/status_display/evac/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
@@ -9488,9 +9487,9 @@
 	dir = 4
 	},
 /obj/item/paper/monitorkey,
-/obj/machinery/newscaster/directional/west,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/light/dim/directional/west,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
 "bQI" = (
@@ -9514,9 +9513,9 @@
 /obj/machinery/computer/telecomms/server{
 	dir = 8
 	},
-/obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/light/dim/directional/east,
+/obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
 "bQT" = (
@@ -40076,6 +40075,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/closed/wall/r_wall,
 /area/station/engineering/atmos/mix)
+"ilY" = (
+/obj/machinery/greenscreen_camera{
+	dir = 8;
+	pixel_x = -8;
+	pixel_y = 6
+	},
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "ima" = (
 /obj/effect/turf_decal/stripes/white/line,
 /obj/structure/sign/directions/upload{
@@ -44976,10 +44983,9 @@
 /turf/open/floor/iron,
 /area/station/science/robotics/mechbay)
 "jKw" = (
-/obj/structure/table/wood,
-/obj/item/storage/photo_album,
-/obj/item/camera,
-/turf/open/floor/wood,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/vending/cigarette,
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "jKz" = (
 /obj/structure/disposalpipe/segment{
@@ -44998,8 +45004,11 @@
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "jLq" = (
-/obj/machinery/vending/boozeomat,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/status_display/evac/directional/west,
+/obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "jLu" = (
@@ -47430,9 +47439,9 @@
 /turf/open/floor/circuit/green,
 /area/station/ai_monitored/turret_protected/ai)
 "kue" = (
-/obj/structure/table/wood,
-/obj/machinery/recharger,
-/turf/open/floor/wood,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/vending/boozeomat,
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "kuj" = (
 /obj/structure/sign/poster/official/random/directional/north,
@@ -57161,6 +57170,9 @@
 "ngz" = (
 /obj/machinery/light/directional/east,
 /obj/structure/extinguisher_cabinet/directional/east,
+/obj/structure/table/wood,
+/obj/item/storage/photo_album,
+/obj/item/camera,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "ngQ" = (
@@ -61328,7 +61340,9 @@
 /area/station/service/chapel)
 "omM" = (
 /obj/machinery/status_display/ai/directional/north,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "onc" = (
@@ -64338,7 +64352,7 @@
 /area/station/engineering/atmos/hfr_room)
 "pbx" = (
 /obj/structure/fireplace,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "pbK" = (
@@ -66193,8 +66207,8 @@
 "pGB" = (
 /obj/structure/bed/dogbed/renault,
 /obj/machinery/newscaster/directional/south,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
 /mob/living/basic/pet/fox/renault,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "pGD" = (
@@ -68777,8 +68791,10 @@
 	},
 /area/station/medical/medbay/lobby)
 "qqj" = (
-/obj/machinery/vending/cigarette,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/sign/poster/greenscreen/directional/west,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "qqs" = (
@@ -71088,6 +71104,8 @@
 /area/space/nearstation)
 "qYu" = (
 /obj/machinery/airalarm/directional/east,
+/obj/structure/table/wood,
+/obj/machinery/recharger,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "qYD" = (
@@ -85454,7 +85472,7 @@
 /area/station/hallway/primary/central/aft)
 "vgM" = (
 /obj/machinery/status_display/evac/directional/north,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "vgS" = (
@@ -86924,6 +86942,7 @@
 /area/station/engineering/storage/tech)
 "vDu" = (
 /obj/machinery/firealarm/directional/north,
+/obj/item/kirbyplants/random,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "vDG" = (
@@ -95681,6 +95700,7 @@
 /obj/structure/plaque/static_plaque/golden/captain{
 	pixel_x = 32
 	},
+/obj/item/kirbyplants/random,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "xVh" = (
@@ -137986,7 +138006,7 @@ vfg
 glH
 mYI
 lrp
-gaN
+ilY
 gaN
 fwz
 jpd
