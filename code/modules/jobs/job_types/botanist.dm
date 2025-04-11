@@ -39,6 +39,11 @@
 	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Gardener"
 
+	base_skills = list(
+		/datum/skill/botany = SKILL_LEVEL_EXPERT,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/botanist
 	name = "Botanist"
 	jobtype = /datum/job/botanist

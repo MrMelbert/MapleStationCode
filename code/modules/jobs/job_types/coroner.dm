@@ -43,6 +43,11 @@
 
 	rpg_title = "Undertaker"
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/coroner
 	name = "Coroner"
 	jobtype = /datum/job/coroner
