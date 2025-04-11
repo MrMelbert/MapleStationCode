@@ -240,7 +240,7 @@
 	// Instantly lie down, also go unconscious from the pain, before you die.
 	if(!issilicon(L))
 		L.Unconscious(10 SECONDS)
-	L.apply_damage(crush_damage)
+	L.apply_damage(crush_damage, BRUTE, spread_damage = TRUE)
 
 /obj/machinery/recycler/on_deconstruction(disassembled)
 	safety_mode = TRUE

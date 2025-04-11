@@ -3,6 +3,7 @@
 	title_options = list(
 		"Surgeon" = /datum/outfit/job/doctor/surgeon,
 		"Nurse" = /datum/outfit/job/doctor/nurse,
+		"Medical Resident" = /datum/outfit/job/doctor/nurse,
 	)
 	description = "Save lives, run around the station looking for victims, \
 		scan everyone in sight"

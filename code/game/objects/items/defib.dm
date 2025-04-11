@@ -652,7 +652,7 @@
 			H.emote("gasp")
 			H.Knockdown(8 SECONDS)
 			H.set_jitter_if_lower(200 SECONDS)
-			heart.apply_organ_damage(10, 95, ORGAN_ORGANIC)
+			heart?.apply_organ_damage(10, 95, ORGAN_ORGANIC)
 			SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 			if(HAS_MIND_TRAIT(user, TRAIT_MORBID))
 				user.add_mood_event("morbid_saved_life", /datum/mood_event/morbid_saved_life)
@@ -675,7 +675,7 @@
 			H.emote("gasp")
 			H.Knockdown(8 SECONDS)
 			H.set_jitter_if_lower(200 SECONDS)
-			heart.apply_organ_damage(10, 95, ORGAN_ORGANIC)
+			heart?.apply_organ_damage(10, 95, ORGAN_ORGANIC)
 			SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 			do_success()
 		else

@@ -104,7 +104,7 @@
 
 /obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
 	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Apply defibrillation immediately. Similar electric shocks may work in emergencies.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Defibrillate immediately. Similar electric shocks may work in emergencies.", add_tooltips)
 	return ..()
 
 /obj/item/organ/internal/heart/show_on_condensed_scans()
@@ -131,15 +131,15 @@
 
 	var/heartrate = get_heart_rate()
 	switch(heartrate)
-		if(1 to 6)
+		if(1 to SLOW_HEARTBEAT_THRESHOLD)
 			if(playing_heartbeat_sfx != BEAT_SLOW)
 				playing_heartbeat_sfx = BEAT_SLOW
 				SEND_SOUND(owner, sound('sound/health/slowbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
-		if(0, 6 to 11)
+		if(0, SLOW_HEARTBEAT_THRESHOLD to FAST_HEARTBEAT_THRESHOLD)
 			if(playing_heartbeat_sfx != BEAT_NONE)
 				playing_heartbeat_sfx = BEAT_NONE
 				owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-		if(11 to INFINITY)
+		if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
 			if(playing_heartbeat_sfx != BEAT_FAST)
 				playing_heartbeat_sfx = BEAT_FAST
 				SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
@@ -178,10 +178,22 @@
 	base_amount += round(owner.pain_controller?.get_total_pain() / 50, 0.5)
 	base_amount += round(owner.pain_controller?.traumatic_shock / 25, 0.5)
 	base_amount += round((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 250, 0.5)
-	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 25, 0.5)
-	var/damage_multiplier = clamp(1.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
+	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 33, 0.5)
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		base_amount += round((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max, 0.1)
+	var/damage_multiplier = clamp(2.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
 
 	return clamp(round(base_amount * damage_multiplier, 0.5), 1, 100)
+
+/obj/item/organ/internal/heart/feel_for_damage(self_aware)
+	if(owner.needs_heart() && (!beating || (organ_flags & ORGAN_FAILING)))
+		return span_boldwarning("[self_aware ? "Your heart is not beating!" : "You don't feel your heart beating."]")
+	if(damage < low_threshold)
+		return ""
+	if(damage < high_threshold)
+		return span_warning("[self_aware ? "Your heart hurts." : "It hurts, and your heart rate feels irregular."]")
+	return span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts, and your heart rate is all over the place."]")
 
 /obj/item/organ/internal/heart/cursed
 	name = "cursed heart"

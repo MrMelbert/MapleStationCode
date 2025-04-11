@@ -9,9 +9,9 @@
 /datum/wound/bleed_internal
 	name = "Internal Bleeding"
 	desc = "The patient is bleeding internally, causing severe pain and difficulty breathing."
-	treat_text = "May heal over time through rest, but can be repaired surgically. \
-		Blood clotting medication may slow the bleeding, but only very rare and advanced medication can repair it on its own."
-	treat_text_short = "Rest or repair surgically."
+	treat_text = "May heal over time through rest or use of blood clotting medication, but can be repaired surgically. \
+		If left untreated, it may worsen and require surgery."
+	treat_text_short = "Supply blood clotting medication, repair surgically, or wait and rest."
 	examine_desc = ""
 	scar_keyword = ""
 	severity = WOUND_SEVERITY_TRIVIAL
@@ -38,6 +38,13 @@
 /datum/wound/bleed_internal/get_self_check_description(mob/user)
 	return span_warning("It feels tense to the touch.") // same as rib fracture!
 
+/datum/wound/bleed_internal/severity_text()
+	// "minor" = trivial but won't heal passively
+	if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity != WOUND_SEVERITY_TRIVIAL)
+		return "Minor"
+	// "trivial" = trivial, and it'll heal passively
+	return ..()
+
 /datum/wound/bleed_internal/proc/upgrade_severity(new_severity)
 	if(new_severity == severity)
 		return
@@ -46,7 +53,7 @@
 
 	severity = new_severity
 	bleed_amount = initial(bleed_amount)
-	if(severity == WOUND_SEVERITY_TRIVIAL)
+	if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
 		treat_text_short = initial(treat_text_short)
 		treat_text = initial(treat_text)
 	else
@@ -60,7 +67,13 @@
 	var/severity_mod = (severity + 1)
 	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, drip = FALSE)
 	if(severity == WOUND_SEVERITY_TRIVIAL)
-		heal_percent(0.01 * seconds_per_tick)
+		if(highest_severity == WOUND_SEVERITY_TRIVIAL)
+			var/percent = 0.01
+			if(victim.body_position == LYING_DOWN)
+				percent *= 2
+			if(HAS_TRAIT(victim, TRAIT_KNOCKEDOUT))
+				percent *= 2
+			heal_percent(percent * seconds_per_tick)
 		if(QDELETED(src))
 			return
 

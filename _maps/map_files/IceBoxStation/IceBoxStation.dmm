@@ -2788,8 +2788,20 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "aTw" = (
-/obj/structure/displaycase/captain,
-/turf/open/floor/wood,
+/obj/structure/sign/nanotrasen{
+	pixel_x = 32
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/table/wood,
+/obj/item/storage/photo_album{
+	pixel_y = -1
+	},
+/obj/item/camera{
+	pixel_x = -4
+	},
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "aTA" = (
 /obj/structure/disposalpipe/segment{
@@ -15782,7 +15794,10 @@
 	fax_name = "Captain's Office";
 	name = "Captain's Fax Machine"
 	},
-/turf/open/floor/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "eEO" = (
 /obj/structure/cable,
@@ -17559,7 +17574,10 @@
 /obj/structure/table/wood,
 /obj/structure/secure_safe/directional/east,
 /obj/machinery/light/directional/east,
-/turf/open/floor/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "fiO" = (
 /obj/structure/disposalpipe/segment{
@@ -17912,6 +17930,14 @@
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
+"fpe" = (
+/obj/machinery/greenscreen_camera{
+	dir = 4;
+	pixel_x = -4;
+	pixel_y = 6
+	},
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "fpp" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 10
@@ -22375,6 +22401,15 @@
 	},
 /turf/open/floor/plating,
 /area/station/commons/dorms/laundry)
+"gJM" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/station/command/heads_quarters/captain)
 "gJT" = (
 /obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron/white/side{
@@ -24256,7 +24291,10 @@
 /obj/item/disk/nuclear{
 	pixel_y = -8
 	},
-/turf/open/floor/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "hpm" = (
 /obj/machinery/camera/directional/north{
@@ -28637,7 +28675,11 @@
 "iFL" = (
 /obj/structure/bed/dogbed/renault,
 /mob/living/basic/pet/fox/renault,
-/turf/open/floor/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/displaycase/captain,
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "iFX" = (
 /obj/structure/disposalpipe/segment{
@@ -41737,12 +41779,11 @@
 /turf/open/floor/plating,
 /area/station/hallway/primary/starboard)
 "mBX" = (
-/obj/structure/table/wood,
-/obj/machinery/airalarm/directional/east,
-/obj/item/storage/photo_album{
-	pixel_y = -1
+/obj/structure/sign/poster/greenscreen/directional/east,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
 	},
-/turf/open/floor/wood,
+/turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "mCw" = (
 /obj/machinery/door/firedoor,
@@ -45369,6 +45410,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/break_room)
+"nEn" = (
+/obj/machinery/holopad/secure,
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "nEo" = (
 /obj/machinery/light/directional/east,
 /obj/structure/cable,
@@ -54234,11 +54279,6 @@
 /obj/structure/girder,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
-"qjx" = (
-/obj/structure/cable,
-/obj/machinery/holopad/secure,
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain)
 "qjC" = (
 /obj/structure/sign/nanotrasen{
 	pixel_x = -32
@@ -64596,6 +64636,15 @@
 /obj/structure/cable,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
+"tmV" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/airalarm/directional/east,
+/obj/structure/bed/dogbed/renault,
+/mob/living/basic/pet/fox/renault,
+/turf/open/floor/iron/dark,
+/area/station/command/heads_quarters/captain)
 "tna" = (
 /obj/structure/sign/warning/cold_temp/directional/south,
 /turf/open/floor/plating,
@@ -243034,7 +243083,7 @@ aVH
 lpM
 rCD
 uEm
-uEm
+nEn
 mvc
 hCV
 nkb
@@ -243808,7 +243857,7 @@ rXi
 rXi
 wma
 heX
-qjx
+heX
 heX
 viQ
 lpM
@@ -244065,7 +244114,7 @@ uEm
 uEm
 uEm
 uEm
-uEm
+fpe
 uEm
 eqU
 log
@@ -244323,8 +244372,8 @@ iFL
 hpe
 fiN
 mBX
-uEm
-viQ
+tmV
+gJM
 dGU
 wdg
 bVv

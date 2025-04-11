@@ -294,13 +294,13 @@
 		var/wound_type
 		var/wound_name = ""
 		if(electrical_burn_roll > 150)
-			wound_type = /datum/wound/burn/flesh/critical
+			wound_type = /datum/wound/flesh/burn/critical
 			wound_name = "Arc Flash Electrical Burn"
 		else if(electrical_burn_roll > 80)
-			wound_type = /datum/wound/burn/flesh/severe
+			wound_type = /datum/wound/flesh/burn/severe
 			wound_name = "HV Electrical Burn"
 		else if(electrical_burn_roll > 20)
-			wound_type = /datum/wound/burn/flesh/moderate
+			wound_type = /datum/wound/flesh/burn/moderate
 			wound_name = "LV Electrical Burn"
 		if(wound_type)
 			var/datum/wound/the_wound = zapped.force_wound_upwards(wound_type, wound_source = source)

@@ -1,26 +1,6 @@
 
 ///Default override for echo
 /sound
-	echo = list(
-		0, // Direct
-		0, // DirectHF
-		-10000, // Room, -10000 means no low frequency sound reverb
-		-10000, // RoomHF, -10000 means no high frequency sound reverb
-		0, // Obstruction
-		0, // ObstructionLFRatio
-		0, // Occlusion
-		0.25, // OcclusionLFRatio
-		1.5, // OcclusionRoomRatio
-		1.0, // OcclusionDirectRatio
-		0, // Exclusion
-		1.0, // ExclusionLFRatio
-		0, // OutsideVolumeHF
-		0, // DopplerFactor
-		0, // RolloffFactor
-		0, // RoomRolloffFactor
-		1.0, // AirAbsorptionFactor
-		0, // Flags (1 = Auto Direct, 2 = Auto Room, 4 = Auto RoomHF)
-	)
 	environment = SOUND_ENVIRONMENT_NONE //Default to none so sounds without overrides dont get reverb
 
 /**
@@ -184,9 +164,11 @@
 			var/area/A = get_area(src)
 			sound_to_use.environment = A.sound_environment
 
-		if(use_reverb && sound_to_use.environment != SOUND_ENVIRONMENT_NONE) //We have reverb, reset our echo setting
-			sound_to_use.echo[3] = 0 //Room setting, 0 means normal reverb
-			sound_to_use.echo[4] = 0 //RoomHF setting, 0 means normal reverb.
+		if(!use_reverb || sound_to_use.environment == SOUND_ENVIRONMENT_NONE) // Disable revert
+			sound_to_use.echo ||= EAX2_DEFAULT_ECHO
+			sound_to_use.echo[ECHO_INDEX_ROOM] = -10000 // -10000 = no reverb
+			sound_to_use.echo[ECHO_INDEX_ROOMHF] = -10000 // -10000 = no reverb
+			sound_to_use.echo[ECHO_INDEX_FLAGS] = NONE
 
 	SEND_SOUND(src, sound_to_use)
 
@@ -535,6 +517,13 @@
 				'sound/effects/writing_pen/writing_pen5.ogg',
 				'sound/effects/writing_pen/writing_pen6.ogg',
 				'sound/effects/writing_pen/writing_pen7.ogg',
+			)
+		if(SFX_CLOTH_RIP)
+			soundin = pick(
+				'maplestation_modules/sound/items/rip1.ogg',
+				'maplestation_modules/sound/items/rip2.ogg',
+				'maplestation_modules/sound/items/rip3.ogg',
+				'maplestation_modules/sound/items/rip4.ogg',
 			)
 		if(SFX_SEATBELT_BUCKLE)
 			soundin = pick(
