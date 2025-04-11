@@ -1,4 +1,5 @@
 /datum/component/infective
+	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
 	var/list/datum/disease/diseases //make sure these are the static, non-processing versions!
 	var/expire_time
 	var/required_clean_types = CLEAN_TYPE_DISEASE
@@ -47,6 +48,14 @@
 				RegisterSignal(parent, COMSIG_ORGAN_IMPLANTED, PROC_REF(on_organ_insertion))
 		else if(istype(parent, /obj/effect/decal/cleanable/blood/gibs))
 			RegisterSignal(parent, COMSIG_GIBS_STREAK, PROC_REF(try_infect_streak))
+
+/datum/component/infective/InheritComponent(datum/component/C, i_am_original, list/datum/disease/new_diseases)
+	for(var/datum/disease/new_disease as anything in new_diseases)
+		for(var/datum/disease/old_disease as anything in diseases)
+			if(new_disease.IsSame(old_disease))
+				new_diseases -= new_disease
+
+	diseases += new_diseases
 
 /datum/component/infective/proc/on_organ_insertion(obj/item/organ/target, mob/living/carbon/receiver)
 	SIGNAL_HANDLER

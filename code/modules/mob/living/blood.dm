@@ -118,8 +118,11 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		iter_part.update_part_wound_overlay()
 
-//Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/carbon/proc/bleed(amt, drip = TRUE)
+/// Makes a blood drop, leaking amt units of blood from the mob
+/mob/living/proc/bleed(amt, drip = TRUE)
+	return
+
+/mob/living/carbon/bleed(amt, drip = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
@@ -132,7 +135,10 @@
 	return ..()
 
 /// A helper to see how much blood we're losing per tick
-/mob/living/carbon/proc/get_bleed_rate()
+/mob/living/proc/get_bleed_rate()
+	return 0
+
+/mob/living/carbon/get_bleed_rate()
 	var/bleed_amt = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/iter_bodypart = X
