@@ -1,0 +1,9 @@
+{
+	slime_1.ogg
+	slime_2.ogg
+	slime_3.ogg
+	slime_ask.ogg
+} - Slime Creature Movement (small and cute).wav by SilverIllusionist -- https://freesound.org/s/671111/ -- License: Attribution 4.0
+{
+	slime_exclaim.ogg
+} - Slime Creature Movement (small and musical) by SilverIllusionist -- https://freesound.org/s/671110/ -- License: Attribution 4.0
