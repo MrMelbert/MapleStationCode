@@ -53,7 +53,8 @@
 	return special_voice
 
 /mob/living/carbon/human/binarycheck()
-	if(stat >= SOFT_CRIT || !ears)
+	// NON-MODULE CHANGE
+	if(stat >= HARD_CRIT || !ears)
 		return FALSE
 	var/obj/item/radio/headset/dongle = ears
 	if(!istype(dongle))
@@ -63,19 +64,22 @@
 /mob/living/carbon/human/radio(message, list/message_mods = list(), list/spans, language) //Poly has a copy of this, lazy bastard
 	. = ..()
 	if(.)
-		return
-
+		return .
+	// NON-MODULE CHANGE
+	if(isnull(ears))
+		return NONE
+	if(HAS_TRAIT(src, TRAIT_BLOCK_HEADSET_USE))
+		// adding a to-chat as well as a balloon alert, as they might have split attention
+		to_chat(src, span_warning("You can't use your headset right now!"))
+		balloon_alert(src, "can't use headset!")
+		return ITALICS | REDUCE_RANGE
 	if(message_mods[MODE_HEADSET])
-		if(ears)
-			ears.talk_into(src, message, , spans, language, message_mods)
+		ears.talk_into(src, message, , spans, language, message_mods)
 		return ITALICS | REDUCE_RANGE
 	else if(message_mods[RADIO_EXTENSION] == MODE_DEPARTMENT)
-		if(ears)
-			ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
+		ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
 		return ITALICS | REDUCE_RANGE
 	else if(GLOB.radiochannels[message_mods[RADIO_EXTENSION]])
-		if(ears)
-			ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
-			return ITALICS | REDUCE_RANGE
-
-	return FALSE
+		ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
+		return ITALICS | REDUCE_RANGE
+	return NONE
