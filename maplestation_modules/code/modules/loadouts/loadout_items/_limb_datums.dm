@@ -44,6 +44,21 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	if(isnull(desc))
 		desc = initial(limb_path.desc)
 
+/*
+ * Can this datum be selected by the user?
+ *
+ * Return LIMB_AVAILABLE if the user can select this datum
+ *
+ * Return a string if the user cannot select this datum
+ * The string should be a reason why the user cannot select this datum
+ */
+/datum/limb_option_datum/proc/can_be_selected(datum/preferences/prefs)
+	return LIMB_AVAILABLE
+
+/// Can this datum be applied to the mob?
+/datum/limb_option_datum/proc/can_be_applied(mob/living/carbon/human/apply_to)
+	return TRUE
+
 /// Applies the datum to the mob.
 /datum/limb_option_datum/proc/apply_limb(mob/living/carbon/human/apply_to)
 	return
