@@ -3,6 +3,7 @@
 	show_in_antagpanel = FALSE
 	show_in_roundend = FALSE
 	count_against_dynamic_roll_chance = FALSE
+	job_rank = ROLE_SENTIENCE
 	ui_name = "AntagInfoSentient"
 
 /datum/antagonist/sentient_creature/get_preview_icon()

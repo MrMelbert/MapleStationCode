@@ -858,6 +858,8 @@
  * hacker - the mob that caused the hack
  */
 /obj/machinery/computer/communications/proc/hack_console(mob/living/hacker)
+	to_chat(hacker, span_notice("You hack into the communications console. Nothing actually happens."))
+/*
 	// All hack results we'll choose from.
 	var/list/hack_options = list(HACK_THREAT)
 
@@ -934,6 +936,7 @@
 					"Attention crew, it appears that someone on your station has hijacked your telecommunications and broadcasted an unknown signal.",
 					"[command_name()] High-Priority Update",
 				)
+*/
 
 #undef HACK_PIRATE
 #undef HACK_FUGITIVES

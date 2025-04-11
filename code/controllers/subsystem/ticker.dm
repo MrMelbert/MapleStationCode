@@ -232,8 +232,8 @@ SUBSYSTEM_DEF(ticker)
 		return TRUE
 	if(GLOB.station_was_nuked)
 		return TRUE
-	if(GLOB.revolutionary_win)
-		return TRUE
+//	if(GLOB.revolutionary_win)
+//		return TRUE
 	return FALSE
 
 /datum/controller/subsystem/ticker/proc/setup()
@@ -243,7 +243,8 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	//Configure mode and assign player to antagonists
 	var/can_continue = FALSE
-	can_continue = SSdynamic.pre_setup() //Choose antagonists
+	// This is where you assign antags if you want that
+	can_continue = TRUE
 	CHECK_TICK
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_PRE_JOBS_ASSIGNED, src)
 	can_continue = can_continue && SSjob.DivideOccupations() //Distribute jobs
@@ -309,7 +310,8 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
 	set waitfor = FALSE
-	SSdynamic.post_setup()
+
+	SScommunications.send_roundstart_report()
 	GLOB.start_state = new /datum/station_state()
 	GLOB.start_state.count()
 
