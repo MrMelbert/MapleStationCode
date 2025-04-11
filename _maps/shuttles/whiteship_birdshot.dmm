@@ -16,7 +16,7 @@
 	pixel_x = 4;
 	pixel_y = 11
 	},
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 11
 	},
@@ -956,9 +956,7 @@
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
 "Ge" = (
-/obj/machinery/power/smes/engineering{
-	charge = 1e+006
-	},
+/obj/machinery/power/smes/ship,
 /obj/structure/cable,
 /turf/open/floor/catwalk_floor,
 /area/shuttle/abandoned/engine)
@@ -1122,7 +1120,7 @@
 /obj/machinery/cell_charger{
 	pixel_y = 11
 	},
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_y = 11
 	},
 /obj/item/stack/cable_coil{

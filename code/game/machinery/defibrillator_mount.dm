@@ -8,6 +8,7 @@
 	icon_state = "defibrillator_mount"
 	density = FALSE
 	use_power = NO_POWER_USE
+	active_power_usage = 40 * BASE_MACHINE_ACTIVE_CONSUMPTION
 	power_channel = AREA_USAGE_EQUIP
 	req_one_access = list(ACCESS_MEDICAL, ACCESS_COMMAND, ACCESS_SECURITY) //used to control clamps
 	processing_flags = NONE
@@ -56,7 +57,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	var/mutable_appearance/defib_overlay = mutable_appearance(icon, "defib", layer = layer+0.01, offset_spokesman = src)
 
 	if(defib.powered)
-		var/obj/item/stock_parts/cell/cell = defib.cell
+		var/obj/item/stock_parts/power_store/cell = defib.cell
 		var/mutable_appearance/safety = mutable_appearance(icon, defib.safety ? "online" : "emagged", offset_spokesman = src)
 		var/mutable_appearance/charge_overlay = mutable_appearance(icon, "charge[CEILING((cell.charge / cell.maxcharge) * 4, 1) * 25]", offset_spokesman = src)
 
@@ -194,12 +195,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 
 
 /obj/machinery/defibrillator_mount/charging/process(seconds_per_tick)
-	var/obj/item/stock_parts/cell/C = get_cell()
-	if(!C || !is_operational)
+	var/obj/item/stock_parts/power_store/cell = get_cell()
+	if(!cell || !is_operational)
 		return PROCESS_KILL
-	if(C.charge < C.maxcharge)
-		use_power(active_power_usage * seconds_per_tick)
-		C.give(40 * seconds_per_tick)
+	if(cell.charge < cell.maxcharge)
+		charge_cell(active_power_usage * seconds_per_tick, cell)
 		defib.update_power()
 
 //wallframe, for attaching the mounts easily
