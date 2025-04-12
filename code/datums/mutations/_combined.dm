@@ -52,3 +52,11 @@
 /datum/generecipe/heckacious
 	required = "/datum/mutation/human/wacky; /datum/mutation/human/trichromatic"
 	result = /datum/mutation/human/heckacious
+
+/datum/generecipe/ork
+	required = "/datum/mutation/human/hulk; /datum/mutation/human/clumsy"
+	result = /datum/mutation/human/hulk/ork
+
+/datum/generecipe/rock_absorber
+	required = "/datum/mutation/human/rock_eater; /datum/mutation/human/stoner"
+	result = /datum/mutation/human/rock_absorber
