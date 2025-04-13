@@ -46,7 +46,7 @@
 	. = ..()
 	var/mob/caster = usr || owner
 
-	if(!do_after(caster, 5))
+	if(!do_after(caster, 3))
 		return . | SPELL_CANCEL_CAST
 
 	var/datum/effect_system/steam_spread/steam = new()
