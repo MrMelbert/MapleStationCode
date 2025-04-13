@@ -48,6 +48,8 @@
 
 	if(!do_after(caster, 3 SECONDS))
 		return . | SPELL_CANCEL_CAST
+	if(!can_see(caster, target, 10))
+		return . | SPELL_CANCEL_CAST
 
 	var/datum/effect_system/steam_spread/steam = new()
 	steam.set_up(10, FALSE, target.loc)
