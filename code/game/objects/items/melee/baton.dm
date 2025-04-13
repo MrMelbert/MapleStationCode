@@ -212,6 +212,9 @@
 			var/mob/living/carbon/human/human_target = target
 			if(prob(force_say_chance))
 				human_target.force_say()
+		// NON-MODULE CHANGES
+		if(target != user)
+			target.set_headset_block_if_lower(4 SECONDS)
 		target.apply_damage(stamina_damage, PAIN, spread_damage = TRUE)
 		if(!trait_check)
 			target.Knockdown((isnull(stun_override) ? knockdown_time : stun_override))
