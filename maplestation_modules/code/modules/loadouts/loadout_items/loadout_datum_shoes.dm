@@ -100,3 +100,22 @@
 /datum/loadout_item/shoes/fancy_heels
 	name = "Fancy High Heels"
 	item_path = /obj/item/clothing/shoes/heels/fancy
+
+/datum/loadout_item/shoes/barefoot
+	name = "Barefoot"
+	item_path = /obj/item/clothing/shoes/barefoot
+	ui_icon = 'icons/mob/landmarks.dmi'
+	ui_icon_state = "x"
+
+/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, datum/preferences/preference_source, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+	return
+
+/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+	outfit.shoes = null
+
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL
