@@ -24,7 +24,8 @@
 	/// If this attacks a human with no wound armor on the affected body part, add this to the wound mod. Some attacks may be significantly worse at wounding if there's even a slight layer of armor to absorb some of it vs bare flesh
 	var/bare_wound_bonus = 0
 
-	/// A multiplier to an objecet's force when used against a stucture, vechicle, machine, or robot.
+	/// A multiplier to an object's force when used against a structure, vehicle, machine, or robot.
+	/// Use [/obj/proc/get_demolition_modifier] to get the value.
 	var/demolition_mod = 1
 
 	// Access levels, used in modules\jobs\access.dm
@@ -82,15 +83,22 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	if(!attacking_item.force)
 		return
 
-	var/total_force = (attacking_item.force * attacking_item.demolition_mod)
+	var/demo_mod = attacking_item.get_demolition_modifier(src)
+	var/total_force = (attacking_item.force * demo_mod)
+	var/damage = take_damage(total_force, attacking_item.damtype, MELEE, TRUE, get_dir(src, user), attacking_item.armour_penetration)
 
-	var/damage = take_damage(total_force, attacking_item.damtype, MELEE, 1, get_dir(src, user))
+	// Sanity in case one is null for some reason
+	var/picked_index = rand(max(length(attacking_item.attack_verb_simple), length(attacking_item.attack_verb_continuous)))
 
 	var/damage_verb = "hit"
 
-	if(attacking_item.demolition_mod > 1 && damage)
-		damage_verb = "pulverise"
-	if(attacking_item.demolition_mod < 1)
+	if(demo_mod > 1 && prob(damage * 5))
+		if(HAS_TRAIT(src, TRAIT_INVERTED_DEMOLITION))
+			damage_verb = "shred"
+		else
+			damage_verb = "pulverise"
+
+	if(demo_mod < 1)
 		damage_verb = "ineffectively pierce"
 
 	user.visible_message(span_danger("[user] [damage_verb][plural_s(damage_verb)] [src] with [attacking_item][damage ? "." : ", [no_damage_feedback]!"]"), \
@@ -378,3 +386,9 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		pixel_z = anchored_tabletop_offset
 	else
 		pixel_z = initial(pixel_z)
+
+/// Returns modifier to how much damage this object does to a target considered vulnerable to "demolition" (other objects, robots, etc)
+/obj/proc/get_demolition_modifier(obj/target)
+	if(HAS_TRAIT(target, TRAIT_INVERTED_DEMOLITION))
+		return (1 / demolition_mod)
+	return demolition_mod

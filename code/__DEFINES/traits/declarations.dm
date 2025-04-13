@@ -1249,4 +1249,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Doesn't need to be applied to any turfs that override can_cross_safely
 #define TRAIT_AI_AVOID_TURF "warning_turf"
 
+/// Demolition modifier when hitting this object is inverted (ie, 1 / demolition)
+#define TRAIT_INVERTED_DEMOLITION "demolition_inverted"
+
 // END TRAIT DEFINES

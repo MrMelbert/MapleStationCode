@@ -314,7 +314,7 @@
 
 	var/damage = attacking_item.force * user.outgoing_damage_mod
 	if(mob_biotypes & MOB_ROBOTIC)
-		damage *= attacking_item.demolition_mod
+		damage *= attacking_item.get_demolition_modifier(src)
 
 	var/wounding = attacking_item.wound_bonus
 	if((attacking_item.item_flags & SURGICAL_TOOL) && !user.combat_mode && HAS_TRAIT(user, TRAIT_READY_TO_OPERATE))
