@@ -50,6 +50,9 @@
 	steam.set_up(10, FALSE, target.loc)
 	steam.start()
 
+	if(!do_after(caster, 5))
+		return . | SPELL_CANCEL_CAST
+
 	if (target == caster)
 		caster.visible_message(
 			span_danger("[caster] freezes [caster.p_them()]self into a cube!"),
@@ -75,7 +78,7 @@
 
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
-	desc = "You're frozen inside an ice cube, and cannot move."
+	desc = "You're frozen inside an ice cube, and cannot move. Resist to break out faster!"
 	icon_state = "frozen"
 
 /datum/status_effect/freon/magic/on_apply()
