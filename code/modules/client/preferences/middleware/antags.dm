@@ -59,14 +59,8 @@
 /datum/preference_middleware/antags/proc/get_antag_bans()
 	var/list/antag_bans = list()
 
-	for (var/datum/dynamic_ruleset/dynamic_ruleset as anything in subtypesof(/datum/dynamic_ruleset))
-		var/antag_flag = initial(dynamic_ruleset.antag_flag)
-		var/antag_flag_override = initial(dynamic_ruleset.antag_flag_override)
-
-		if (isnull(antag_flag))
-			continue
-
-		if (is_banned_from(preferences.parent.ckey, list(antag_flag_override || antag_flag, ROLE_SYNDICATE)))
+	for (var/antag_flag in get_selectable_antags())
+		if (is_banned_from(preferences.parent.ckey, list(antag_flag, ROLE_SYNDICATE)))
 			antag_bans += serialize_antag_name(antag_flag)
 
 	return antag_bans
@@ -77,24 +71,15 @@
 
 	var/list/antag_days_left = list()
 
-	for (var/datum/dynamic_ruleset/dynamic_ruleset as anything in subtypesof(/datum/dynamic_ruleset))
-		var/antag_flag = initial(dynamic_ruleset.antag_flag)
-		var/antag_flag_override = initial(dynamic_ruleset.antag_flag_override)
-
-		if (isnull(antag_flag))
-			continue
-
-		var/days_needed = preferences.parent?.get_remaining_days(
-			GLOB.special_roles[antag_flag_override || antag_flag]
-		)
-
+	for (var/antag_flag in get_selectable_antags())
+		var/days_needed = preferences.parent?.get_remaining_days(GLOB.special_roles[antag_flag])
 		if (days_needed > 0)
 			antag_days_left[serialize_antag_name(antag_flag)] = days_needed
 
 	return antag_days_left
 
 /datum/preference_middleware/antags/proc/get_serialized_antags()
-	var/list/serialized_antags
+	var/static/list/serialized_antags
 
 	if (isnull(serialized_antags))
 		serialized_antags = list()
@@ -113,26 +98,8 @@
 	var/list/antag_icons = list()
 
 /datum/asset/spritesheet/antagonists/create_spritesheets()
-	// Antagonists that don't have a dynamic ruleset, but do have a preference
-	var/static/list/non_ruleset_antagonists = list(
-		ROLE_GLITCH = /datum/antagonist/bitrunning_glitch,
-		ROLE_FUGITIVE = /datum/antagonist/fugitive,
-		ROLE_LONE_OPERATIVE = /datum/antagonist/nukeop/lone,
-		ROLE_SENTIENCE = /datum/antagonist/sentient_creature,
-	)
-
-	var/list/antagonists = non_ruleset_antagonists.Copy()
-
-	for (var/datum/dynamic_ruleset/ruleset as anything in subtypesof(/datum/dynamic_ruleset))
-		var/datum/antagonist/antagonist_type = initial(ruleset.antag_datum)
-		if (isnull(antagonist_type))
-			continue
-
-		// antag_flag is guaranteed to be unique by unit tests.
-		antagonists[initial(ruleset.antag_flag)] = antagonist_type
-
+	var/list/antagonists = get_selectable_antags()
 	var/list/generated_icons = list()
-
 	for (var/antag_flag in antagonists)
 		var/datum/antagonist/antagonist_type = antagonists[antag_flag]
 
@@ -164,3 +131,32 @@
 /proc/serialize_antag_name(antag_name)
 	// These are sent through CSS, so they need to be safe to use as class names.
 	return lowertext(sanitize_css_class_name(antag_name))
+
+/// Returns a list of all antags that can be selected in prefs indexed by job_rank
+/proc/get_selectable_antags()
+	var/static/list/antagonists
+
+	if(isnull(antagonists))
+		antagonists = list(
+			// These antags don't have a job rank / are based on an existing antag in a different context, but they still count
+			ROLE_CHANGELING_MIDROUND = /datum/antagonist/changeling/space,
+			ROLE_CLOWN_OPERATIVE = /datum/antagonist/nukeop/clownop,
+			ROLE_HERETIC_SMUGGLER = /datum/antagonist/heretic,
+			ROLE_LONE_OPERATIVE = /datum/antagonist/nukeop/lone,
+			ROLE_MALF_MIDROUND = /datum/antagonist/malf_ai,
+			ROLE_OPERATIVE_MIDROUND = /datum/antagonist/nukeop,
+			ROLE_PROVOCATEUR = /datum/antagonist/rev/head,
+			ROLE_SLEEPER_AGENT = /datum/antagonist/traitor,
+			ROLE_STOWAWAY_CHANGELING = /datum/antagonist/changeling,
+			ROLE_SYNDICATE_INFILTRATOR = /datum/antagonist/traitor,
+			ROLE_WIZARD_MIDROUND = /datum/antagonist/wizard,
+		)
+
+		for (var/datum/antagonist/antagonist_type as anything in subtypesof(/datum/antagonist))
+			var/antag_rank = initial(antagonist_type.job_rank)
+			if(!antag_rank || antagonists[antag_rank])
+				continue
+			// antag_flag is guaranteed to be unique by unit tests.
+			antagonists[antag_rank] = antagonist_type
+
+	return antagonists

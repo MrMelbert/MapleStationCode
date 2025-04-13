@@ -2,7 +2,7 @@
 	name = "\improper Slaughter Demon"
 	show_name_in_check_antagonists = TRUE
 	ui_name = "AntagInfoDemon"
-	job_rank = ROLE_ALIEN
+	job_rank = ROLE_SLAUGHTER_DEMON // NON-MODULE CHANGE / Was ROLE_ALIEN
 	show_in_antagpanel = FALSE
 	show_to_ghosts = TRUE
 	antagpanel_category = ANTAG_GROUP_WIZARDS

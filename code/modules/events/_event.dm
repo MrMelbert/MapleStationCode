@@ -86,10 +86,6 @@
 		return FALSE
 	if(ispath(typepath, /datum/round_event/ghost_role) && !(GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT))
 		return FALSE
-
-	if (dynamic_should_hijack && SSdynamic.random_event_hijacked != HIJACKED_NOTHING)
-		return FALSE
-
 	return TRUE
 
 /datum/round_event_control/proc/preRunEvent()

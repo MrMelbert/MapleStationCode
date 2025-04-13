@@ -4,6 +4,7 @@
 	show_name_in_check_antagonists = TRUE
 	show_to_ghosts = TRUE
 	antagpanel_category = ANTAG_GROUP_HORRORS
+	job_rank = ROLE_REVENANT
 
 /datum/antagonist/revenant/greet()
 	. = ..()

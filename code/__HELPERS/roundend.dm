@@ -241,9 +241,6 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 	CHECK_TICK
 
-	//Set news report and mode result
-	SSdynamic.set_round_result()
-
 	to_chat(world, span_infoplain(span_big(span_bold("<BR><BR><BR>The round has ended."))))
 	log_game("The round has ended.")
 	send2chat(new /datum/tgs_message_content("[GLOB.round_id ? "Round [GLOB.round_id]" : "The round has"] just ended."), CONFIG_GET(string/channel_announce_end_game))
@@ -353,16 +350,6 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 			//ignore this comment, it fixes the broken sytax parsing caused by the " above
 			else
 				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
-
-	parts += "[FOURSPACES]Threat level: [SSdynamic.threat_level]"
-	parts += "[FOURSPACES]Threat left: [SSdynamic.mid_round_budget]"
-	if(SSdynamic.roundend_threat_log.len)
-		parts += "[FOURSPACES]Threat edits:"
-		for(var/entry as anything in SSdynamic.roundend_threat_log)
-			parts += "[FOURSPACES][FOURSPACES][entry]<BR>"
-	parts += "[FOURSPACES]Executed rules:"
-	for(var/datum/dynamic_ruleset/rule in SSdynamic.executed_rules)
-		parts += "[FOURSPACES][FOURSPACES][rule.ruletype] - <b>[rule.name]</b>: -[rule.cost + rule.scaled_times * rule.scaling_cost] threat"
 
 	return parts.Join("<br>")
 
