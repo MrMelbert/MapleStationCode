@@ -1,6 +1,7 @@
 /datum/saymode
 	var/key
 	var/mode
+	var/req_stat = SOFT_CRIT
 
 //Return FALSE if you have handled the message. Otherwise, return TRUE and saycode will continue doing saycode things.
 //user = whoever said the message

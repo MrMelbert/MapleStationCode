@@ -2072,6 +2072,11 @@
 	},
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
+"aIW" = (
+/obj/structure/cable,
+/obj/structure/sign/poster/greenscreen/directional/north,
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "aJc" = (
 /obj/machinery/door/airlock/research/glass{
 	name = "Robotics Lab"
@@ -26832,10 +26837,6 @@
 /obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/iron,
 /area/station/science/robotics/mechbay)
-"iOL" = (
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain)
 "iOP" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -30526,6 +30527,15 @@
 "jXB" = (
 /turf/open/floor/engine/co2,
 /area/station/engineering/atmos)
+"jXJ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/siding/wood,
+/obj/machinery/greenscreen_camera{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "jXT" = (
 /obj/effect/decal/cleanable/glass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -49703,6 +49713,11 @@
 /obj/item/queen_bee/bought,
 /turf/open/floor/iron/checker,
 /area/station/service/hydroponics)
+"pXJ" = (
+/obj/effect/turf_decal/trimline/blue/filled/line,
+/obj/structure/extinguisher_cabinet/directional/south,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/command)
 "pXO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -53990,7 +54005,6 @@
 "rmI" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/trimline/blue/filled/line,
-/obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "rmK" = (
@@ -176663,7 +176677,7 @@ gLV
 ari
 rmI
 bXb
-iOL
+mvC
 umt
 toD
 jQk
@@ -176920,8 +176934,8 @@ ect
 ari
 tCH
 bXb
-mvC
-umt
+aIW
+jXJ
 toD
 vSO
 nDa
@@ -177946,7 +177960,7 @@ syD
 clG
 rnx
 ari
-nEP
+pXJ
 whG
 mJG
 vJh

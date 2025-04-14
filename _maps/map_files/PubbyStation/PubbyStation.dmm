@@ -8298,6 +8298,10 @@
 /obj/effect/turf_decal/tile/blue/half{
 	dir = 1
 	},
+/obj/machinery/greenscreen_camera{
+	dir = 8;
+	pixel_y = -12
+	},
 /turf/open/floor/iron/dark/smooth_half,
 /area/station/command/heads_quarters/captain)
 "aBm" = (
@@ -8654,6 +8658,7 @@
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 8
 	},
+/obj/structure/sign/poster/greenscreen/directional/west,
 /turf/open/floor/iron/dark/smooth_corner{
 	dir = 4
 	},
@@ -8920,6 +8925,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/item/kirbyplants/organic/plant20{
+	pixel_y = 3
 	},
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
@@ -9687,6 +9695,7 @@
 /area/station/command/heads_quarters/captain)
 "aFz" = (
 /obj/effect/turf_decal/tile/blue/anticorner,
+/obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/iron/dark/smooth_corner{
 	dir = 1
 	},
@@ -43803,10 +43812,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/obj/item/kirbyplants/organic/plant20{
-	pixel_y = 3
-	},
-/obj/structure/extinguisher_cabinet/directional/west,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -43817,6 +43822,7 @@
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 1
 	},
+/obj/structure/sign/poster/greenscreen/directional/west,
 /turf/open/floor/iron/dark/smooth_corner,
 /area/station/command/heads_quarters/captain)
 "lGp" = (

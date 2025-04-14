@@ -62,19 +62,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	"з" = RADIO_CHANNEL_ENTERTAINMENT,
 ))
 
-/**
- * Whitelist of saymodes or radio extensions that can be spoken through even if not fully conscious.
- * Associated values are their maximum allowed mob stats.
- */
-GLOBAL_LIST_INIT(message_modes_stat_limits, list(
-	MODE_INTERCOM = HARD_CRIT,
-	MODE_CHANGELING = HARD_CRIT,
-	MODE_ALIEN = HARD_CRIT,
-	MODE_BINARY = HARD_CRIT, //extra stat check on human/binarycheck()
-	MODE_MONKEY = HARD_CRIT,
-	MODE_MAFIA = HARD_CRIT
-))
-
 /mob/living/proc/Ellipsis(original_msg, chance = 50, keep_words)
 	if(chance <= 0)
 		return "..."
@@ -106,7 +93,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/list/message_mods = list()
 	var/original_message = message
 	message = get_message_mods(message, message_mods)
-	saymode = SSradio.saymodes[message_mods[RADIO_KEY]]
+	saymode = SSradio.saymodes[message_mods[SAY_KEY]] // NON-MODULE CHANGE
 	if (!forced)
 		message = check_for_custom_say_emote(message, message_mods)
 
@@ -124,14 +111,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	// dead is the only state you can never emote
 	if(stat != DEAD && check_emote(original_message, forced))
 		return
-
-	// Checks if the saymode or channel extension can be used even if not totally conscious.
-	var/say_radio_or_mode = saymode || message_mods[RADIO_EXTENSION]
-	if(say_radio_or_mode)
-		var/mob_stat_limit = GLOB.message_modes_stat_limits[say_radio_or_mode]
-		if(stat > (isnull(mob_stat_limit) ? CONSCIOUS : mob_stat_limit))
-			saymode = null
-			message_mods -= RADIO_EXTENSION
 
 	switch(stat)
 		if(SOFT_CRIT)
@@ -174,7 +153,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			message_range = 1
 			log_talk(message, LOG_WHISPER, forced_by = forced, custom_say_emote = message_mods[MODE_CUSTOM_SAY_EMOTE])
 			if(stat == HARD_CRIT)
-				var/health_diff = round(-HEALTH_THRESHOLD_LIKELY_CRIT + health) // melbert todo : audit
+				var/health_diff = round(3 * consciousness)
 				// If we cut our message short, abruptly end it with a-..
 				var/message_len = length_char(message)
 				message = copytext_char(message, 1, health_diff) + "[message_len > health_diff ? "-.." : "..."]"

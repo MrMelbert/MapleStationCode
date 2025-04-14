@@ -2,6 +2,7 @@
 	name = "Blunt Wound"
 	undiagnosed_name = "Painful Bruising"
 	sound_effect = 'sound/effects/wounds/crack1.ogg'
+	a_or_from = "some"
 
 /datum/wound/blunt/wound_injury(datum/wound/old_wound, attack_direction)
 	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
