@@ -165,6 +165,10 @@
 	cell_line = NONE
 	regenerate_colour = "#ffffff"
 
+/mob/living/basic/carp/holographic/Initialize(mapload, mob/tamer)
+	. = ..()
+	AddComponent(/datum/component/holographic_nature)
+
 /// Holocarp don't eat food
 /mob/living/basic/carp/holographic/setup_eating()
 	return FALSE
