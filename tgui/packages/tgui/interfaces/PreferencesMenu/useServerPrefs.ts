@@ -21,6 +21,7 @@ export const ServerPrefs = createContext<ServerData | undefined>({
   },
   loadout: {
     loadout_tabs: [],
+    max_loadouts: 0,
   },
   species: {},
 });

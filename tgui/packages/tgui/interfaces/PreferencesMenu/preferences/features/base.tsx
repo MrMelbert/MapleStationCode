@@ -15,6 +15,7 @@ import {
   NumberInput,
   Slider,
   Stack,
+  TextArea,
 } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
 
@@ -260,3 +261,30 @@ export function FeatureShortTextInput(
     />
   );
 }
+
+// NON-MODULE CHANGE
+export type FeatureMultiline = Feature<string, string, FeatureShortTextData>;
+export type FeatureMultilineProps = FeatureValueProps<
+  string,
+  string,
+  FeatureShortTextData
+>;
+
+export const MultilineText = (
+  props: FeatureMultilineProps & {
+    box_height: string | null;
+  },
+) => {
+  return (
+    <TextArea
+      width="80%"
+      height={props.box_height || '36px'}
+      disabled={!props.serverData}
+      value={props.value}
+      maxLength={props.serverData?.maximum_length || 1024}
+      onChange={(_, new_value) => {
+        props.handleSetValue(new_value);
+      }}
+    />
+  );
+};
