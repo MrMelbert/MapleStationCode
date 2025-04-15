@@ -74,6 +74,7 @@
 	RegisterSignal(current_beam, COMSIG_QDELETING, PROC_REF(beam_died))//this is a WAY better rangecheck than what was done before (process check)
 
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
+	return TRUE
 
 /obj/item/gun/medbeam/process()
 	if(!mounted && !isliving(loc))
