@@ -184,7 +184,7 @@ type JobRowProps = {
 };
 
 function JobRow(props: JobRowProps) {
-  const { data } = useBackend<PreferencesMenuData>();
+  const { act, data } = useBackend<PreferencesMenuData>();
   const { className, job, name } = props;
 
   const isOverflow = data.overflow_role === name;

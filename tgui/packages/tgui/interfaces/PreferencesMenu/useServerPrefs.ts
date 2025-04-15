@@ -24,6 +24,16 @@ export const ServerPrefs = createContext<ServerData | undefined>({
     max_loadouts: 0,
   },
   species: {},
+  // NON-MODULE CHANGE START
+  limbs: {
+    limbs: [],
+  },
+  language: {
+    base_languages: [],
+    max_spoken_languages: 0,
+    max_understood_languages: 0,
+  },
+  // NON-MODULE CHANGE END
 });
 
 export function useServerPrefs() {
