@@ -51,17 +51,26 @@
 /datum/loadout_item/head/sweet_bow
 	name = "Sweet Bow"
 	item_path = /obj/item/clothing/head/bow/sweet
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/sweet_bow/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/under/jumpsuit/green_paramedic
 	name = "Green Paramedic Jumpsuit"
 	item_path = /obj/item/clothing/under/rank/medical/paramedic/green
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/green_paramedic/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/suit/green_labcoat
 	name = "Green Medical Labcoat"
 	item_path = /obj/item/clothing/suit/toggle/labcoat/medical/green
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/green_labcoat/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/neck/mantle
 	name = "Hazard Mantle"
@@ -70,12 +79,18 @@
 /datum/loadout_item/gloves/green_nitrile
 	name = "Green Nitrile Gloves"
 	item_path = /obj/item/clothing/gloves/latex/nitrile/green
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/gloves/green_nitrile/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/shoes/green_medical
 	name = "green medical shoes"
 	item_path = /obj/item/clothing/shoes/medical/green
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/green_medical/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/sprite_accessory/hair/nia
 	name = "Nia"

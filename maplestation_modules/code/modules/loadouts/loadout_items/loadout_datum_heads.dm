@@ -201,14 +201,12 @@
 	item_path = /obj/item/food/grown/harebell
 
 /datum/loadout_item/head/rainbow_bunch
-	name = "Rainbow Bunch"
+	name = "Random Rainbow Bunch"
 	item_path = /obj/item/food/grown/rainbow_flower
-	additional_displayed_text = list("Random Color")
 
 /datum/loadout_item/head/wig
-	name = "Wig"
+	name = "Hair Color Wig"
 	item_path = /obj/item/clothing/head/wig/natural
-	additional_displayed_text = list("Hair Color")
 
 /datum/loadout_item/head/cowboy
 	name = "Cowboy Hat (Brown)"

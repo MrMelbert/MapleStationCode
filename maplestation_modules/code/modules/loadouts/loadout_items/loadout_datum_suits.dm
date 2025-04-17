@@ -26,7 +26,6 @@
 /datum/loadout_item/suit/parade_jacket_greyscale
 	name = "Greyscale Parade Jacket"
 	item_path = /obj/item/clothing/suit/greyscale_parade
-	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/suit/big_jacket
 	name = "Greyscale Jacket Large"
@@ -81,11 +80,13 @@
 	item_path = /obj/item/clothing/suit/toggle/labcoat/ce
 
 
-// MELBERT TODO: These hard delete. Interesting
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
 	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/suit/goliath_cloak/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/suit/poncho
 	name = "Poncho"

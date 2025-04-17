@@ -39,7 +39,6 @@
 	name = "Random Jumpsuit"
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/random
-	additional_displayed_text = list("Random Color")
 
 /datum/loadout_item/under/jumpsuit/random/on_equip_item(
 	obj/item/equipped_item,

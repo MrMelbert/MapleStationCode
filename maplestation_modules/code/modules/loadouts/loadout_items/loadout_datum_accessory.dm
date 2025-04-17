@@ -83,7 +83,6 @@
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_displayed_text = list("Contains pens")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
@@ -128,12 +127,18 @@
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/accessory/bone_charm/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/accessory/bone_codpiece/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"

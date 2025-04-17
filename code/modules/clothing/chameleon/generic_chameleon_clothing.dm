@@ -296,7 +296,7 @@ do { \
 /obj/item/modular_computer/pda/chameleon
 	name = "tablet"
 	actions_types = list(/datum/action/item_action/chameleon/change/tablet)
-	action_slots = ALL
+	// action_slots = ALL
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/modular_computer/pda/chameleon/broken

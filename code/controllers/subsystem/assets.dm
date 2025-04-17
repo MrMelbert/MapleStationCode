@@ -25,8 +25,6 @@ SUBSYSTEM_DEF(assets)
 		transport = newtransport
 	transport.Load()
 
-
-
 /datum/controller/subsystem/assets/Initialize()
 	for(var/datum/asset/asset_type as anything in typesof(/datum/asset))
 		if (asset_type == initial(asset_type._abstract))

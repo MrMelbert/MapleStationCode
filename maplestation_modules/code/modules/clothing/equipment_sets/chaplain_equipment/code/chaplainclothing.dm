@@ -308,7 +308,10 @@
 /datum/loadout_item/neck/cremona_necklace
 	name = "Puligard Holy Necklace"
 	item_path = /obj/item/clothing/neck/cremona
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/cremona_necklace/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/storage/bag/garment/pulimed
 	name = "Puligard Medical garment bag"

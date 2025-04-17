@@ -119,7 +119,10 @@
 /datum/loadout_item/pocket_items/lipstick
 	name = "Lipstick"
 	item_path = /obj/item/lipstick
-	additional_displayed_text = list("Recolorable")
+
+/datum/loadout_item/pocket_items/lipstick/get_item_information()
+	. = ..()
+	.[FA_ICON_PALETTE] = "Recolorable"
 
 /datum/loadout_item/pocket_items/lipstick/on_equip_item(
 	obj/item/lipstick/equipped_item,
@@ -210,7 +213,8 @@
 	name = "Plush (Lizard, Random)"
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/toy/plush/lizard_plushie
-	additional_displayed_text = list("Random color")
+	ui_icon = /obj/item/toy/plush/lizard_plushie/greyscale::icon
+	ui_icon_state = /obj/item/toy/plush/lizard_plushie/greyscale::icon_state
 
 /datum/loadout_item/pocket_items/plush/moth
 	name = "Plush (Moth)"
