@@ -151,6 +151,9 @@
 		if(bodypart_overlay.layers & external_layer)
 			. += bodypart_overlay.get_overlay(external_layer, bodypart_owner)
 
+/obj/item/organ/external/exit_wardrobe()
+	bodypart_overlay?.imprint_on_next_insertion = TRUE
+
 ///The horns of a lizard!
 /obj/item/organ/external/horns
 	name = "horns"
