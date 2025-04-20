@@ -276,8 +276,12 @@ export const MultilineText = (
     box_height: string | null;
   },
 ) => {
-  if(!props.serverData) {
-    return <NoticeBox height={props.box_height || '36px'} width="80%">Loading...</NoticeBox>;
+  if (!props.serverData) {
+    return (
+      <NoticeBox height={props.box_height || '36px'} width="80%">
+        Loading...
+      </NoticeBox>
+    );
   }
   return (
     <TextArea
