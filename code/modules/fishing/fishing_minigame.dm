@@ -306,8 +306,8 @@
 	deltimer(next_phase_timer)
 	phase = WAIT_PHASE
 	//Bobbing animation
-	animate(lure, pixel_y = 1, time = 1 SECONDS, loop = -1, flags = ANIMATION_RELATIVE)
-	animate(pixel_y = -1, time = 1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(lure, pixel_z = 1, time = 1 SECONDS, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -1, time = 1 SECONDS, flags = ANIMATION_RELATIVE)
 	//Setup next phase
 	var/wait_time = rand(1 SECONDS, 30 SECONDS)
 	next_phase_timer = addtimer(CALLBACK(src, PROC_REF(start_biting_phase)), wait_time, TIMER_STOPPABLE)
@@ -340,8 +340,8 @@
 				send_alert("bones!!!")
 	else
 		send_alert("!!!")
-	animate(lure, pixel_y = 3, time = 5, loop = -1, flags = ANIMATION_RELATIVE)
-	animate(pixel_y = -3, time = 5, flags = ANIMATION_RELATIVE)
+	animate(lure, pixel_z = 3, time = 5, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -3, time = 5, flags = ANIMATION_RELATIVE)
 	// Setup next phase
 	var/wait_time = rand(3 SECONDS, 6 SECONDS)
 	next_phase_timer = addtimer(CALLBACK(src, PROC_REF(start_baiting_phase)), wait_time, TIMER_STOPPABLE)
@@ -582,11 +582,11 @@
 	completion = clamp(completion, 0, 100)
 
 ///update the vertical pixel position of both fish and bait, and the icon state of the completion bar
-/datum/fishing_challenge/proc/update_visuals()
-	var/bait_offset_mult = bait_position/FISHING_MINIGAME_AREA
-	fishing_hud.hud_bait.pixel_y = round(MINIGAME_SLIDER_HEIGHT * bait_offset_mult, 1)
-	var/fish_offset_mult = fish_position/FISHING_MINIGAME_AREA
-	fishing_hud.hud_fish.pixel_y = round(MINIGAME_SLIDER_HEIGHT * fish_offset_mult, 1)
+/datum/fishing_challenge/proc/update_visuals(seconds_per_tick)
+	var/bait_offset_mult = bait_position / FISHING_MINIGAME_AREA
+	animate(fishing_hud.hud_bait, pixel_z = MINIGAME_SLIDER_HEIGHT * bait_offset_mult, time = seconds_per_tick SECONDS)
+	var/fish_offset_mult = fish_position / FISHING_MINIGAME_AREA
+	animate(fishing_hud.hud_fish, pixel_z = MINIGAME_SLIDER_HEIGHT * fish_offset_mult, time = seconds_per_tick SECONDS)
 	fishing_hud.hud_completion.icon_state = "completion_[FLOOR(completion, 5)]"
 
 ///The screen object which bait, fish, and completion bar are visually attached to.
@@ -690,4 +690,3 @@
 #undef REELING_STATE_IDLE
 #undef REELING_STATE_UP
 #undef REELING_STATE_DOWN
-

@@ -1,13 +1,6 @@
 import { Box, TextArea } from 'tgui-core/components';
 
-import { Feature, FeatureShortTextData, FeatureValueProps } from '../base';
-
-export type FeatureMultiline = Feature<string, string, FeatureShortTextData>;
-export type FeatureMultilineProps = FeatureValueProps<
-  string,
-  string,
-  FeatureShortTextData
->;
+import { FeatureMultiline, FeatureMultilineProps } from '../base';
 
 export const MultilineText = (
   props: FeatureMultilineProps & {

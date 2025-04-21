@@ -58,3 +58,18 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
 	)
+
+
+/obj/item/organ/internal/tongue/jelly
+	// Sounds made by https://freesound.org/people/SilverIllusionist/
+	speech_sound_list = list(
+		'maplestation_modules/sound/voice/slime_1.ogg' = 80,
+		'maplestation_modules/sound/voice/slime_2.ogg' = 80,
+		'maplestation_modules/sound/voice/slime_3.ogg' = 80,
+	)
+	speech_sound_list_question = list(
+		'maplestation_modules/sound/voice/slime_ask.ogg' = 80,
+	)
+	speech_sound_list_exclamation = list(
+		'maplestation_modules/sound/voice/slime_exclaim.ogg' = 80,
+	)

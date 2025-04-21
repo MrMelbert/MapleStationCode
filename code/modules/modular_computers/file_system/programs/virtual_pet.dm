@@ -195,7 +195,7 @@ GLOBAL_LIST_EMPTY(virtual_pets_list)
 	if(length(selected_hat))
 		var/mutable_appearance/our_selected_hat = selected_hat["appearance"]
 		var/mutable_appearance/hat_preview = mutable_appearance(our_selected_hat.icon, our_selected_hat.icon_state)
-		hat_preview.pixel_y = -9
+		hat_preview.pixel_z = -9
 		pet_preview.add_overlay(hat_preview)
 
 	profile_picture = getFlatIcon(pet_preview)
