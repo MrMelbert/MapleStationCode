@@ -6642,4 +6642,5 @@
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
+#endif // MAPLESTATION_STORY_CONTENT
 // END_INCLUDE
