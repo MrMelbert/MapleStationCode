@@ -251,6 +251,7 @@ type MainFeatureProps = {
   handleSelect: (newClothing: string) => void;
   randomization?: RandomSetting;
   setRandomization: (newSetting: RandomSetting) => void;
+  placement?: string;
 };
 
 function MainFeature(props: MainFeatureProps) {
@@ -261,6 +262,7 @@ function MainFeature(props: MainFeatureProps) {
     handleSelect,
     randomization,
     setRandomization,
+    placement = 'right-start',
   } = props;
 
   const supplementalFeature = catalog.supplemental_feature;
@@ -268,7 +270,7 @@ function MainFeature(props: MainFeatureProps) {
   return (
     <Floating
       stopChildPropagation
-      placement="right-start"
+      placement={placement}
       content={
         <ChoicedSelection
           name={catalog.name}
@@ -564,7 +566,7 @@ export function MainPage(props: MainPageProps) {
 
         <Stack.Item>
           <Stack fill vertical wrap>
-            {mainFeatures.map(([clothingKey, clothing]) => {
+            {mainFeatures.map(([clothingKey, clothing], index) => {
               const catalog = serverData?.[
                 clothingKey
               ] as FeatureChoicedServerData & {
@@ -586,6 +588,7 @@ export function MainPage(props: MainPageProps) {
                         act,
                         clothingKey,
                       )}
+                      placement={index >= 8 ? 'right-end' : 'right-start'}
                     />
                   )}
                 </Stack.Item>
