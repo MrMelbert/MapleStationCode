@@ -5,6 +5,7 @@
 	title_options = list(
 		"Investigator",
 		"Inspector",
+		"Sheriff" = /datum/outfit/job/detective/sheriff,
 	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
@@ -91,3 +92,10 @@
 
 	if(visualsOnly)
 		return
+
+/datum/outfit/job/detective/sheriff
+	name = "Sheriff"
+	shoes = /obj/item/clothing/shoes/cowboy/sheriff
+	head = /obj/item/clothing/head/cowboy/brown
+	mask = /obj/item/clothing/mask/facescarf
+	suit = /obj/item/clothing/suit/costume/poncho/sheriff
