@@ -128,6 +128,7 @@
 /datum/transport_controller/linear/tram/Destroy()
 	paired_cabinet = null
 	set_status_code(SYSTEM_FAULT, TRUE)
+	SEND_SIGNAL(SStransport, COMSIG_TRANSPORT_ACTIVE, src, FALSE, controller_status, travel_direction, destination_platform)
 	tram_registration.active = FALSE
 	SSblackbox.record_feedback("amount", "tram_destroyed", 1)
 	SSpersistence.save_tram_history(specific_transport_id)
@@ -528,6 +529,7 @@
 	paired_cabinet = null
 	log_transport("TC: [specific_transport_id] received QDEL from controller cabinet.")
 	set_status_code(SYSTEM_FAULT, TRUE)
+	send_transport_active_signal()
 
 /**
  * Tram malfunction random event. Set comm error, increase tram lethality.
@@ -686,8 +688,8 @@
 	integrity_failure = 0.25
 	layer = SIGN_LAYER
 	req_access = list(ACCESS_TCOMMS)
-	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 4.8
-	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 4.8
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.25
+	power_channel = AREA_USAGE_ENVIRON
 	var/datum/transport_controller/linear/tram/controller_datum
 	/// If the cover is open
 	var/cover_open = FALSE
@@ -704,12 +706,11 @@
 	register_context()
 	if(!id_tag)
 		id_tag = assign_random_name()
-	return INITIALIZE_HINT_LATELOAD
 
 /**
  * Mapped or built tram cabinet isn't located on a transport module.
  */
-/obj/machinery/transport/tram_controller/LateInitialize(mapload)
+/obj/machinery/transport/tram_controller/post_machine_initialize()
 	. = ..()
 	SStransport.hello(src, name, id_tag)
 	find_controller()
@@ -741,6 +742,9 @@
 		context[SCREENTIP_CONTEXT_LMB] = "emag controller"
 
 	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/machinery/transport/tram_controller/update_current_power_usage()
+	return // We get power from area rectifiers
 
 /obj/machinery/transport/tram_controller/examine(mob/user)
 	. = ..()
@@ -847,10 +851,7 @@
 	balloon_alert(user, "[panel_open ? "mounting bolts exposed" : "mounting bolts hidden"]")
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/transport/tram_controller/deconstruct(disassembled = TRUE)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
-
+/obj/machinery/transport/tram_controller/on_deconstruction(disassembled)
 	var/turf/drop_location = find_obstruction_free_location(1, src)
 
 	if(disassembled)
@@ -858,7 +859,6 @@
 	else
 		new /obj/item/stack/sheet/mineral/titanium(drop_location, 2)
 		new /obj/item/stack/sheet/iron(drop_location, 1)
-	qdel(src)
 
 /**
  * Update the blinky lights based on the controller status, allowing to quickly check without opening up the cabinet.
@@ -945,7 +945,7 @@
  * Since the machinery obj is a dumb terminal for the controller datum, sync the display with the status bitfield of the tram
  */
 /obj/machinery/transport/tram_controller/proc/sync_controller(source, controller, controller_status, travel_direction, destination_platform)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	if(controller != controller_datum)
 		return
 	update_appearance()

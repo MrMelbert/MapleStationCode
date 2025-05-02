@@ -68,7 +68,7 @@
 	return TRUE
 
 /obj/item/mod/core/infinite/subtract_charge(amount)
-	return TRUE
+	return amount
 
 /obj/item/mod/core/infinite/check_charge(amount)
 	return TRUE
@@ -85,7 +85,7 @@
 		Which one you have in your suit is unclear, but either way, \
 		it's been repurposed to be an internal power source for a Modular Outerwear Device."
 	/// Installed cell.
-	var/obj/item/stock_parts/cell/cell
+	var/obj/item/stock_parts/power_store/cell
 
 /obj/item/mod/core/standard/Destroy()
 	QDEL_NULL(cell)
@@ -114,15 +114,15 @@
 	return cell
 
 /obj/item/mod/core/standard/charge_amount()
-	var/obj/item/stock_parts/cell/charge_source = charge_source()
+	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	return charge_source?.charge || 0
 
 /obj/item/mod/core/standard/max_charge_amount(amount)
-	var/obj/item/stock_parts/cell/charge_source = charge_source()
+	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	return charge_source?.maxcharge || 1
 
 /obj/item/mod/core/standard/add_charge(amount)
-	var/obj/item/stock_parts/cell/charge_source = charge_source()
+	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
 	. = charge_source.give(amount)
@@ -131,7 +131,7 @@
 	return .
 
 /obj/item/mod/core/standard/subtract_charge(amount)
-	var/obj/item/stock_parts/cell/charge_source = charge_source()
+	var/obj/item/stock_parts/power_store/charge_source = charge_source()
 	if(isnull(charge_source))
 		return FALSE
 	. = charge_source.use(amount, TRUE)
@@ -166,7 +166,6 @@
 /obj/item/mod/core/standard/proc/uninstall_cell()
 	if(!cell)
 		return
-	cell.update_appearance()
 	cell = null
 	mod.update_charge_alert()
 
@@ -209,7 +208,7 @@
 /obj/item/mod/core/standard/proc/on_attackby(datum/source, obj/item/attacking_item, mob/user)
 	SIGNAL_HANDLER
 
-	if(istype(attacking_item, /obj/item/stock_parts/cell))
+	if(istype(attacking_item, /obj/item/stock_parts/power_store/cell))
 		if(!mod.open)
 			mod.balloon_alert(user, "open the cover first!")
 			playsound(mod, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -236,11 +235,15 @@
 	UnregisterSignal(mod.wearer, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(mod, COMSIG_MOD_WEARER_UNSET)
 
-/obj/item/mod/core/standard/proc/on_borg_charge(datum/source, amount)
+/obj/item/mod/core/standard/proc/on_borg_charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
 	SIGNAL_HANDLER
 
-	add_charge(amount)
-	mod.update_charge_alert()
+	var/obj/item/stock_parts/power_store/target_cell = charge_source()
+	if(isnull(target_cell))
+		return
+
+	if(charge_cell.Invoke(target_cell, seconds_per_tick))
+		mod.update_charge_alert()
 
 /obj/item/mod/core/ethereal
 	name = "MOD ethereal core"
@@ -258,7 +261,7 @@
 
 /obj/item/mod/core/ethereal/charge_amount()
 	var/obj/item/organ/internal/stomach/ethereal/charge_source = charge_source()
-	return charge_source?.crystal_charge || ETHEREAL_CHARGE_NONE
+	return charge_source?.cell.charge() || ETHEREAL_CHARGE_NONE
 
 /obj/item/mod/core/ethereal/max_charge_amount()
 	return ETHEREAL_CHARGE_FULL
@@ -274,8 +277,7 @@
 	var/obj/item/organ/internal/stomach/ethereal/charge_source = charge_source()
 	if(!charge_source)
 		return FALSE
-	charge_source.adjust_charge(-amount*charge_modifier)
-	return TRUE
+	return -charge_source.adjust_charge(-amount*charge_modifier)
 
 /obj/item/mod/core/ethereal/check_charge(amount)
 	return charge_amount() >= amount*charge_modifier
@@ -283,8 +285,8 @@
 /obj/item/mod/core/ethereal/get_charge_icon_state()
 	return charge_source() ? "0" : "missing"
 
-#define PLASMA_CORE_ORE_CHARGE 1500
-#define PLASMA_CORE_SHEET_CHARGE 2000
+#define PLASMA_CORE_ORE_CHARGE (1.5 * STANDARD_CELL_CHARGE)
+#define PLASMA_CORE_SHEET_CHARGE (2 * STANDARD_CELL_CHARGE)
 
 /obj/item/mod/core/plasma
 	name = "MOD plasma core"
@@ -292,9 +294,9 @@
 	desc = "Nanotrasen's attempt at capitalizing on their plasma research. These plasma cores are refueled \
 		through plasma fuel, allowing for easy continued use by their mining squads."
 	/// How much charge we can store.
-	var/maxcharge = 10000
+	var/maxcharge = 10 * STANDARD_CELL_CHARGE
 	/// How much charge we are currently storing.
-	var/charge = 10000
+	var/charge = 10 * STANDARD_CELL_CHARGE
 	/// Associated list of charge sources and how much they charge, only stacks allowed.
 	var/list/charger_list = list(/obj/item/stack/ore/plasma = PLASMA_CORE_ORE_CHARGE, /obj/item/stack/sheet/mineral/plasma = PLASMA_CORE_SHEET_CHARGE)
 
@@ -326,9 +328,10 @@
 	return TRUE
 
 /obj/item/mod/core/plasma/subtract_charge(amount)
-	charge = max(0, charge - amount)
+	amount = min(amount, charge)
+	charge -= amount
 	mod.update_charge_alert()
-	return TRUE
+	return amount
 
 /obj/item/mod/core/plasma/check_charge(amount)
 	return charge_amount() >= amount
@@ -377,8 +380,8 @@
 	light_range = 2
 	// Slightly better than the normal plasma core.
 	// Not super sure if this should just be the same, but will see.
-	maxcharge = 15000
-	charge = 15000
+	maxcharge = 15 * STANDARD_CELL_CHARGE
+	charge = 15 * STANDARD_CELL_CHARGE
 	/// The mob to be spawned by the core
 	var/mob/living/spawned_mob_type = /mob/living/basic/butterfly/lavaland/temporary
 	/// Max number of mobs it can spawn

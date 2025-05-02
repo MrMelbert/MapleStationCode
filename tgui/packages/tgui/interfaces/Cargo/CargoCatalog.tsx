@@ -231,16 +231,15 @@ function CatalogList(props: CatalogListProps) {
               <Stack.Item grow textAlign="left">
                 {pack.name}
               </Stack.Item>
-              {(!!pack.small_item ||
-                !!pack.access) /* || !!pack.contraband // Non-module change : look, blame the formatting. */ && (
+              {(!!pack.small_item || !!pack.access || !!pack.contraband) && (
                 <Stack.Item>
                   <Stack reverse>
                     {!!pack.small_item &&
                       tooltipIcon('Small Item', 'compress-alt', 'purple')}
                     {!!pack.access &&
                       tooltipIcon('Restricted', 'lock', 'average')}
-                    {/* !!pack.contraband && // Non-module change
-                      tooltipIcon('Contraband', 'pastafarianism', 'bad')*/}
+                    {!!pack.contraband &&
+                      tooltipIcon('Contraband', 'pastafarianism', 'bad')}
                   </Stack>
                 </Stack.Item>
               )}

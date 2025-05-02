@@ -88,7 +88,7 @@
 		timer_light.pixel_w = (i - 1) * 2
 		. += timer_light
 
-/obj/item/assembly/timer/ui_status(mob/user)
+/obj/item/assembly/timer/ui_status(mob/user, datum/ui_state/state)
 	if(is_secured(user))
 		return ..()
 	return UI_CLOSE

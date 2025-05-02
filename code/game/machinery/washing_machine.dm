@@ -226,7 +226,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		qdel(color_source)
 		color_source = null
 	update_appearance()
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /obj/item/proc/dye_item(dye_color, dye_key_override)
 	var/dye_key_selector = dye_key_override ? dye_key_override : dying_key
@@ -415,10 +415,8 @@ GLOBAL_LIST_INIT(dye_registry, list(
 /obj/machinery/washing_machine/attack_ai_secondary(mob/user, modifiers)
 	return attack_hand_secondary(user, modifiers)
 
-/obj/machinery/washing_machine/deconstruct(disassembled = TRUE)
-	if (!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(drop_location(), 2)
-	qdel(src)
+/obj/machinery/washing_machine/on_deconstruction(disassembled)
+	new /obj/item/stack/sheet/iron(drop_location(), 2)
 
 /obj/machinery/washing_machine/open_machine(drop = TRUE, density_to_set = FALSE)
 	. = ..()
