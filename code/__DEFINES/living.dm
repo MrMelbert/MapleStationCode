@@ -1,6 +1,8 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Nutrition changed last life tick, so we should bulk update this tick
+#define QUEUE_NUTRITION_UPDATE (1<<3)
 
 // NON-MODULE CHANGE
 // Sticking these here for now because i'm dumb
@@ -23,6 +25,7 @@
 	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
 
 /// Various lists of body zones affected by pain.
+
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_LIMBS list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -146,8 +149,16 @@
 /// Updates associated self-huds on the mob
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
+/// Threshold that heart beat becomes "slow"
+#define SLOW_HEARTBEAT_THRESHOLD 6
+/// Threshold that heart beat becomes "fast"
+#define FAST_HEARTBEAT_THRESHOLD 11
+
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"
 #define PIXEL_X_OFFSET "x"
 #define PIXEL_Y_OFFSET "y"
 #define PIXEL_Z_OFFSET "z"
+
+/// Disables headset use, but not internal radio / intercom use
+#define TRAIT_BLOCK_HEADSET_USE "block_headset_use"

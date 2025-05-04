@@ -275,9 +275,6 @@ GLOBAL_LIST_INIT(admin_visible_traits, list(
 		"TRAIT_PRETENDER_ROYAL_METABOLISM" = TRAIT_PRETENDER_ROYAL_METABOLISM,
 		"TRAIT_ROYAL_METABOLISM" = TRAIT_ROYAL_METABOLISM,
 	),
-	/obj/item/organ/internal/lungs = list(
-		"TRAIT_SPACEBREATHING" = TRAIT_SPACEBREATHING,
-	),
 ))
 
 /// value -> trait name, generated as needed for adminning.

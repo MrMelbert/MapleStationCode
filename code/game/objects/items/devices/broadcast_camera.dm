@@ -115,7 +115,6 @@
 
 /obj/item/broadcast_camera/click_alt(mob/user)
 	active_microphone = !active_microphone
-
 	/// Text popup for letting the user know that the microphone has changed state
 	balloon_alert(user, "microphone [active_microphone ? "" : "de"]activated")
 

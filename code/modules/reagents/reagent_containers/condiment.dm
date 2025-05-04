@@ -285,6 +285,8 @@
 	icon_state = "oliveoil"
 	list_reagents = list(/datum/reagent/consumable/nutriment/fat/oil/olive = 50)
 	fill_icon_thresholds = null
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/condiment/yoghurt
 	name = "yoghurt carton"

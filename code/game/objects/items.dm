@@ -969,9 +969,18 @@
 		var/ash_type = /obj/effect/decal/cleanable/ash
 		if(w_class == WEIGHT_CLASS_HUGE || w_class == WEIGHT_CLASS_GIGANTIC)
 			ash_type = /obj/effect/decal/cleanable/ash/large
+		// NON-MODULE CHANGE
 		var/obj/effect/decal/cleanable/ash/A = new ash_type(T)
-		A.desc += "\nLooks like this used to be \an [name] some time ago."
+		A.desc += "\nLooks like this used to be \an [get_ash_name()] some time ago."
 		..()
+
+// NON-MODULE CHANGE
+/// Return what - when this item is burned into ash - is displayed in the ash's description
+/obj/item/proc/get_ash_name()
+	return name
+
+/obj/item/paper/get_ash_name()
+	return "sheet of paper"
 
 /obj/item/acid_melt()
 	if(!QDELETED(src))
@@ -1736,3 +1745,14 @@
 		qdel(embed_data)
 	embed_data = ispath(embed) ? get_embed_by_type(embed) : embed
 	SEND_SIGNAL(src, COMSIG_ITEM_EMBEDDING_UPDATE)
+
+/obj/item/vv_get_header()
+	. = ..()
+	. += {"
+		<br><font size='1'>
+			DAMTYPE: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=damtype' id='damtype'>[uppertext(damtype)]</a>
+			FORCE: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=force' id='force'>[force]</a>
+			WOUND: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=wound' id='wound'>[wound_bonus]</a>
+			BARE WOUND: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=bare wound' id='bare wound'>[bare_wound_bonus]</a>
+		</font>
+	"}

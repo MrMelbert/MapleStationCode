@@ -1,6 +1,9 @@
 // Adds some modular languages to tongue languages
 // also speech sounds
 /obj/item/organ/internal/tongue
+	// Sounds weird BUT we need dummies to have their tongues for speech sound preview
+	visual = TRUE
+
 	/// Use speech sounds, if false, well, dont.
 	var/speech_sounds_enabled = TRUE
 	var/list/speech_sound_list = list(

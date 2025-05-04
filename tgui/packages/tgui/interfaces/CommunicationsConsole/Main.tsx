@@ -15,6 +15,7 @@ export function PageMain(props) {
     canBuyShuttles,
     canMakeAnnouncement,
     canMessageAssociates,
+    canMessageMu,
     canRecallShuttles,
     canRequestNuke,
     canSendToSectors,
@@ -34,6 +35,7 @@ export function PageMain(props) {
 
   const [callingShuttle, setCallingShuttle] = useState(false);
   const [messagingAssociates, setMessagingAssociates] = useState(false);
+  const [messagingMu, setMessagingMu] = useState(false);
   const [messagingSector, setMessagingSector] = useState('');
   const [requestingNukeCodes, setRequestingNukeCodes] = useState(false);
 
@@ -178,6 +180,16 @@ export function PageMain(props) {
             </Button>
           )}
 
+          {!!canMessageMu && (
+            <Button
+              icon="comment-o"
+              disabled={!importantActionReady}
+              onClick={() => setMessagingMu(true)}
+            >
+              Send message to {'Mu'}
+            </Button>
+          )}
+
           {!!canRequestNuke && (
             <Button
               icon="radiation"
@@ -208,6 +220,22 @@ export function PageMain(props) {
           onSubmit={(message) => {
             setMessagingAssociates(false);
             act('messageAssociates', {
+              message,
+            });
+          }}
+        />
+      )}
+
+      {!!canMessageMu && messagingMu && (
+        <MessageModal
+          label={`Message to transmit to the Aristocracy of Mu via quantum entanglement`}
+          notice="Please be aware that this process is very expensive, and abuse will lead to immediate auditing. Transmission does not guarantee a response."
+          icon="bullhorn"
+          buttonText="Send"
+          onBack={() => setMessagingMu(false)}
+          onSubmit={(message) => {
+            setMessagingMu(false);
+            act('messageMu', {
               message,
             });
           }}

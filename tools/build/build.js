@@ -204,6 +204,8 @@ export const DmTarget = new Juke.Target({
     'icons/**',
     'interface/**',
     'maplestation_modules/**', // NON-MODULE CHANGE : BUILD OUR FILES
+    'sound/**',
+    'tgui/public/tgui.html',
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],

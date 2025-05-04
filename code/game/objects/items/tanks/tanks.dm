@@ -314,7 +314,7 @@
 	// (kpa * L * K * mol) / (kpa * L * K)
 	// If we cancel it all out, we get moles, which is the expected unit
 	// This sort of thing comes up often in atmos, keep the tool in mind for other bits of code
-	var/moles_needed = actual_distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
+	var/moles_needed = (actual_distribute_pressure * volume_to_return) / (R_IDEAL_GAS_EQUATION * air_contents.return_temperature())
 
 	return remove_air(moles_needed)
 

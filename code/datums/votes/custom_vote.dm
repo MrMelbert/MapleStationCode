@@ -102,6 +102,6 @@
 
 /datum/vote/custom_vote/initiate_vote(initiator, duration)
 	. = ..()
-	. += "\n[override_question]"
+	. += "<br>[override_question]"
 
 #undef MAX_CUSTOM_VOTE_OPTIONS

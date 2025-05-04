@@ -501,6 +501,9 @@ Difficulty: Hard
 	burst_range = initial(burst_range) + round(anger_modifier * 0.08)
 	beam_range = initial(beam_range) + round(anger_modifier * 0.12)
 
+/mob/living/simple_animal/hostile/megafauna/hierophant/get_blood_type()
+	return null
+
 //Hierophant overlays
 /obj/effect/temp_visual/hierophant
 	name = "vortex energy"

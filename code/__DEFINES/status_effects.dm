@@ -6,8 +6,6 @@
 #define STATUS_EFFECT_REPLACE 2
 /// if it only allows one, and new instances just instead refresh the timer
 #define STATUS_EFFECT_REFRESH 3
-/// Like [STATUS_EFFECT_REPLACE] but only for differing types - Only replace if the new effect is of a different typepath
-#define STATUS_EFFECT_LOOSE_REPLACE 4
 
 ///Processing flags - used to define the speed at which the status will work
 ///This is fast - 0.2s between ticks (I believe!)
@@ -173,3 +171,8 @@
 #define adjust_static_vision_up_to(duration, up_to) adjust_timed_status_effect(duration, /datum/status_effect/static_vision, up_to)
 #define set_static_vision(duration) set_timed_status_effect(duration, /datum/status_effect/static_vision)
 #define set_static_vision_if_lower(duration) set_timed_status_effect(duration, /datum/status_effect/static_vision, TRUE)
+
+#define adjust_headset_block(duration) adjust_timed_status_effect(duration, /datum/status_effect/block_headset_use)
+#define adjust_headset_block_up_to(duration, up_to) adjust_timed_status_effect(duration, /datum/status_effect/block_headset_use, up_to)
+#define set_headset_block(duration) set_timed_status_effect(duration, /datum/status_effect/block_headset_use)
+#define set_headset_block_if_lower(duration) set_timed_status_effect(duration, /datum/status_effect/block_headset_use, TRUE)

@@ -15,6 +15,13 @@
 /obj/item/organ/proc/Insert(mob/living/carbon/receiver, special = FALSE, movement_flags)
 	SHOULD_CALL_PARENT(TRUE)
 
+	// melbert todo : the proper fix later
+	if(!iscarbon(receiver))
+		//We try to insert the organ in a corgi when running the test, expecting it to return FALSE.
+		if(!PERFORM_ALL_TESTS(organ_sanity))
+			stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
+		return FALSE
+
 	mob_insert(receiver, special, movement_flags)
 	bodypart_insert(limb_owner = receiver, movement_flags = movement_flags)
 

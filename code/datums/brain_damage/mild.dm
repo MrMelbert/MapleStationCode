@@ -11,14 +11,17 @@
 	scan_desc = "schizophrenia"
 	gain_text = span_warning("You feel your grip on reality slipping...")
 	lose_text = span_notice("You feel more grounded.")
+	/// Whether the hallucinations we give are uncapped, ie all the wacky ones
+	var/uncapped = FALSE
 
 /datum/brain_trauma/mild/hallucinations/on_life(seconds_per_tick, times_fired)
-	if(owner.stat != CONSCIOUS || owner.IsSleeping() || owner.IsUnconscious())
+	if(owner.stat >= UNCONSCIOUS)
 		return
 	if(HAS_TRAIT(owner, TRAIT_RDS_SUPPRESSED))
+		owner.adjust_hallucinations(-10 SECONDS * seconds_per_tick)
 		return
 
-	owner.adjust_hallucinations_up_to(10 SECONDS * seconds_per_tick, 100 SECONDS)
+	owner.adjust_hallucinations_up_to(((uncapped ? 12 SECONDS : 5 SECONDS) * seconds_per_tick), (uncapped ? 240 SECONDS : 60 SECONDS))
 
 /datum/brain_trauma/mild/hallucinations/on_lose()
 	owner.remove_status_effect(/datum/status_effect/hallucination)
@@ -136,7 +139,7 @@
 	var/fall_chance = 1
 	if(owner.move_intent == MOVE_INTENT_RUN)
 		fall_chance += 2
-	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && owner.body_position == STANDING_UP)
+	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && owner.body_position == STANDING_UP && !owner.buckled)
 		to_chat(owner, span_warning("Your leg gives out!"))
 		owner.Paralyze(35)
 
@@ -147,7 +150,7 @@
 		if(SPT_PROB(0.5 * drop_chance, seconds_per_tick) && owner.dropItemToGround(I))
 			to_chat(owner, span_warning("You drop [I]!"))
 
-	else if(SPT_PROB(1.5, seconds_per_tick))
+	else if(SPT_PROB(1.5, seconds_per_tick) && owner.getStaminaLoss() < 100)
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
 		owner.apply_damage(25, STAMINA, BODY_ZONE_L_LEG)
 		owner.apply_damage(25, STAMINA, BODY_ZONE_R_LEG)

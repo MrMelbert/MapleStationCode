@@ -33,6 +33,7 @@
 		"normtrash",
 		"wirebrush",
 		"flashlight",
+		"barber_scissors",
 	)
 
 /datum/techweb_node/sanitation

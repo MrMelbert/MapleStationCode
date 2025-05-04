@@ -440,6 +440,9 @@
 	// Triggers force say events
 	if(damage_done > 10 || (damage_done >= 5 && prob(33)))
 		force_say()
+	// NON-MODULE CHANGES
+	if(damage_done > 5 && attacker != src)
+		set_headset_block_if_lower(5 SECONDS)
 
 /**
  * Last proc in the [/obj/item/proc/melee_attack_chain].

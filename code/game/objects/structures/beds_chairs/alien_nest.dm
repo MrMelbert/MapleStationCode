@@ -38,7 +38,7 @@
 		unbuckle_mob(captive)
 		add_fingerprint(hero)
 		return
-	
+
 	captive.visible_message(span_warning("[captive.name] struggles to break free from the gelatinous resin!"),
 		span_notice("You struggle to break free from the gelatinous resin... (Stay still for about a minute and a half.)"),
 		span_hear("You hear squelching..."))
