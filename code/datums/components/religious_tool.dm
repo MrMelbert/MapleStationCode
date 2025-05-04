@@ -25,13 +25,13 @@
 	var/list/rite_types_allowlist
 
 /datum/component/religious_tool/Initialize(
-		operation_flags = ALL,
-		force_catalyst_afterattack = FALSE,
-		after_sect_select_cb = null,
-		catalyst_type = /obj/item/book/bible,
-		charges = -1,
-		rite_types_allowlist = null,
-	)
+	operation_flags = ALL,
+	force_catalyst_afterattack = FALSE,
+	after_sect_select_cb = null,
+	catalyst_type = /obj/item/book/bible,
+	charges = -1,
+	rite_types_allowlist = null,
+)
 	. = ..()
 	SetGlobalToLocal() //attempt to connect on start in case one already exists!
 	src.operation_flags = operation_flags
@@ -44,8 +44,8 @@
 	RegisterSignal(SSdcs, COMSIG_RELIGIOUS_SECT_RESET, PROC_REF(on_sect_reset))
 
 /datum/component/religious_tool/Destroy(force)
+	QDEL_NULL(performing_rite)
 	easy_access_sect = null
-	performing_rite = null
 	catalyst_type = null
 	after_sect_select_cb = null
 	return ..()
@@ -166,15 +166,18 @@
 	if(rite_types_allowlist && !is_path_in_list(path, rite_types_allowlist))
 		to_chat(user, span_warning("This cannot perform that kind of rite."))
 		return
-	if(performing_rite)
-		to_chat(user, "<span class='notice'>There is a rite currently being performed here already.")
-		return
 	if(!user.can_perform_action(parent, FORBID_TELEKINESIS_REACH))
 		to_chat(user,span_warning("You are not close enough to perform the rite."))
 		return
-	performing_rite = new path(parent)
-	if(!performing_rite.perform_rite(user, parent))
+	//we have a rite already, but we want to do a new one.
+	if(performing_rite && !ispath(performing_rite.type, path))
 		QDEL_NULL(performing_rite)
+	if(!performing_rite)
+		performing_rite = new path(parent)
+
+	if(!performing_rite.perform_rite(user, parent))
+		if(!(performing_rite.rite_flags & RITE_ALLOW_MULTIPLE_PERFORMS))
+			QDEL_NULL(performing_rite)
 		return
 
 	if(performing_rite.invoke_effect(user, parent))
