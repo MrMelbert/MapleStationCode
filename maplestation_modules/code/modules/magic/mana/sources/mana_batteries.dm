@@ -124,7 +124,7 @@
 	icon_state = "lignite"
 	grind_results = list(/datum/reagent/volite_powder = 5, /datum/reagent/carbon = 5)
 
-///Just like coal, if the temperature of the object is over 300, then ignite
+///Just like coal, if the temperature of the Volicious lignite is over 300, then ignite
 /obj/item/mana_battery/mana_crystal/lignite/attackby(obj/item/W, mob/user, params)
 	if(W.get_temperature() > 300)
 		var/turf/T = get_turf(src)
