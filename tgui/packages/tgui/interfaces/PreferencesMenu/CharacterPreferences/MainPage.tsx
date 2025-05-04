@@ -251,7 +251,7 @@ type MainFeatureProps = {
   handleSelect: (newClothing: string) => void;
   randomization?: RandomSetting;
   setRandomization: (newSetting: RandomSetting) => void;
-  placement?: string;
+  placement_index: number;
 };
 
 function MainFeature(props: MainFeatureProps) {
@@ -262,7 +262,7 @@ function MainFeature(props: MainFeatureProps) {
     handleSelect,
     randomization,
     setRandomization,
-    placement = 'right-start',
+    placement_index,
   } = props;
 
   const supplementalFeature = catalog.supplemental_feature;
@@ -270,7 +270,7 @@ function MainFeature(props: MainFeatureProps) {
   return (
     <Floating
       stopChildPropagation
-      placement={placement}
+      placement={placement_index >= 8 ? 'right-end' : 'right-start'}
       content={
         <ChoicedSelection
           name={catalog.name}
@@ -588,7 +588,7 @@ export function MainPage(props: MainPageProps) {
                         act,
                         clothingKey,
                       )}
-                      placement={index >= 8 ? 'right-end' : 'right-start'}
+                      placement_index={index}
                     />
                   )}
                 </Stack.Item>
