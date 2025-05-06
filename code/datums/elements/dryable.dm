@@ -56,4 +56,4 @@
 	ADD_TRAIT(target, TRAIT_DRIED, ELEMENT_TRAIT(type))
 	// NON-MODULE CHANGE
 	if(istype(chef) && istype(target, /obj/item/food))
-		handle_chef_made_food(target, source, chef)
+		handle_chef_made_food(target, source, chef, 0.25)

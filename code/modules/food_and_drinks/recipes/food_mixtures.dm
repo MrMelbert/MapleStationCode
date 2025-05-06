@@ -6,7 +6,12 @@
 	. = ..()
 	// NON-MODULE CHANGE
 	if(istype(result))
-		handle_chef_made_food(result, result, user.mind)
+		var/complexity = 1
+		if(istype(result, /obj/item/food))
+			var/obj/item/food/food = result
+			complexity = food.crafting_complexity
+
+		handle_chef_made_food(result, result, user.mind, complexity)
 
 /datum/crafting_recipe/food/New()
 	. = ..()

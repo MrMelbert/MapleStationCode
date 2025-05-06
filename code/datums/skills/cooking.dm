@@ -2,7 +2,7 @@
 	name = "Cooking"
 	title = "Chef"
 	blurb = "Everyone can cook."
-	earned_by = "cooking food"
+	earned_by = "cooking and mixing food"
 	grants_you = "tastier food"
 	modifiers = list(
 		// modifiers food reagent purity in cooked products
@@ -32,13 +32,14 @@
 	)
 
 /// Mark a food item as "made by a chef", modify its quality
-/proc/handle_chef_made_food(obj/item/food, obj/item/source, datum/mind/chef)
+/proc/handle_chef_made_food(obj/item/food, obj/item/source, datum/mind/chef, xp_mod = 1)
 	modify_food_quality(food, chef)
 	if(isnull(chef))
 		return
 	if(HAS_TRAIT(source, TRAIT_FOOD_MUST_INHERIT_CHEF_MADE) && !HAS_TRAIT(source, TRAIT_FOOD_CHEF_MADE))
 		return
 	ADD_TRAIT(food, TRAIT_FOOD_CHEF_MADE, REF(chef))
+	chef.adjust_experience(/datum/skill/cooking, 20 * xp_mod)
 
 /// When given some item with reagents (normally food),
 /// modifies the quality of the reagents according to the passed chef's mind's cooking skill

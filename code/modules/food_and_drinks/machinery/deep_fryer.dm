@@ -182,7 +182,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	if(isnull(frying.reagents))
 		frying.create_reagents(50, INJECTABLE)
 	// NON-MODULE CHANGE
-	handle_chef_made_food(frying, frying, user.mind)
+	handle_chef_made_food(frying, frying, user.mind, 0.25)
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
 	flick("fryer_start", src) // NON-MODULE CHANGE

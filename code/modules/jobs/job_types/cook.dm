@@ -49,6 +49,7 @@
 	job_flags = STATION_JOB_FLAGS
 
 	base_skills = list(
+		/datum/skill/bartending = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/cooking = SKILL_LEVEL_EXPERT, // not all NT chefs are gordon ramsay
 	)

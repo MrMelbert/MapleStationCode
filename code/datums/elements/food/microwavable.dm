@@ -52,7 +52,7 @@
 		if(added_reagents) // Add any new reagents that should be added
 			result.reagents.add_reagent_list(added_reagents)
 
-		handle_chef_made_food(result, source, microwaver?.mind)
+		handle_chef_made_food(result, source, microwaver?.mind, 0.75)
 
 	qdel(source)
 

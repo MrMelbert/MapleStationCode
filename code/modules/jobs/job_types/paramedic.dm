@@ -41,6 +41,7 @@
 	base_skills = list(
 		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
+		/datum/skill/chemistry = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/outfit/job/paramedic
