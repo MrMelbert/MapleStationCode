@@ -489,7 +489,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 		fail_invoke()
 		return
 	var/obj/effect/rune/teleport/actual_selected_rune = potential_runes[input_rune_key] //what rune does that key correspond to?
-	if(!Adjacent(user) || !src || QDELETED(src) || user.incapacitated() || !actual_selected_rune)
+	if(!Adjacent(user) || QDELETED(src) || user.incapacitated() || !actual_selected_rune)
 		fail_invoke()
 		return
 
@@ -576,7 +576,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	color = RUNE_COLOR_DARKRED
 	icon_state = "rune_large"
 	pixel_x = -32 //So the big ol' 96x96 sprite shows up right
-	pixel_y = -32
+	pixel_y = 16
+	pixel_z = -48
 	scribe_delay = 50 SECONDS //how long the rune takes to create
 	scribe_damage = 40.1 //how much damage you take doing it
 	log_when_erased = TRUE
@@ -1079,7 +1080,8 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	icon = 'icons/effects/96x96.dmi'
 	icon_state = "apoc"
 	pixel_x = -32
-	pixel_y = -32
+	pixel_y = 16
+	pixel_z = -48
 	color = RUNE_COLOR_DARKRED
 	req_cultists = 3
 	scribe_delay = 100

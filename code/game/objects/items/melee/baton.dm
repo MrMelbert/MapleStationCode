@@ -212,6 +212,9 @@
 			var/mob/living/carbon/human/human_target = target
 			if(prob(force_say_chance))
 				human_target.force_say()
+		// NON-MODULE CHANGES
+		if(target != user)
+			target.set_headset_block_if_lower(4 SECONDS)
 		target.apply_damage(stamina_damage, PAIN, spread_damage = TRUE)
 		if(!trait_check)
 			target.Knockdown((isnull(stun_override) ? knockdown_time : stun_override))
@@ -439,9 +442,9 @@
 	equip_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 	var/throw_stun_chance = 35
-	var/obj/item/stock_parts/cell/cell
+	var/obj/item/stock_parts/power_store/cell
 	var/preload_cell_type //if not empty the baton starts with this type of cell
-	var/cell_hit_cost = 1000
+	var/cell_hit_cost = STANDARD_CELL_CHARGE
 	var/can_remove_cell = TRUE
 	var/convertible = TRUE //if it can be converted with a conversion kit
 
@@ -453,7 +456,7 @@
 /obj/item/melee/baton/security/Initialize(mapload)
 	. = ..()
 	if(preload_cell_type)
-		if(!ispath(preload_cell_type, /obj/item/stock_parts/cell))
+		if(!ispath(preload_cell_type, /obj/item/stock_parts/power_store/cell))
 			log_mapping("[src] at [AREACOORD(src)] had an invalid preload_cell_type: [preload_cell_type].")
 		else
 			cell = new preload_cell_type(src)
@@ -495,7 +498,6 @@
 /obj/item/melee/baton/security/Exited(atom/movable/mov_content)
 	. = ..()
 	if(mov_content == cell)
-		cell.update_appearance()
 		cell = null
 		active = FALSE
 		update_appearance()
@@ -523,8 +525,8 @@
 	return TRUE
 
 /obj/item/melee/baton/security/attackby(obj/item/item, mob/user, params)
-	if(istype(item, /obj/item/stock_parts/cell))
-		var/obj/item/stock_parts/cell/active_cell = item
+	if(istype(item, /obj/item/stock_parts/power_store/cell))
+		var/obj/item/stock_parts/power_store/cell/active_cell = item
 		if(cell)
 			to_chat(user, span_warning("[src] already has a cell!"))
 		else
@@ -650,7 +652,7 @@
 	if (!cell)
 		return
 	if (!(. & EMP_PROTECT_SELF))
-		deductcharge(1000 / severity)
+		deductcharge(STANDARD_CELL_CHARGE / severity)
 	if (cell.charge >= cell_hit_cost)
 		var/scramble_time
 		scramble_mode()
@@ -666,7 +668,7 @@
 	update_appearance()
 
 /obj/item/melee/baton/security/loaded //this one starts with a cell pre-installed.
-	preload_cell_type = /obj/item/stock_parts/cell/high
+	preload_cell_type = /obj/item/stock_parts/power_store/cell/high
 
 //Makeshift stun baton. Replacement for stun gloves.
 /obj/item/melee/baton/security/cattleprod
@@ -682,7 +684,7 @@
 	w_class = WEIGHT_CLASS_HUGE
 	force = 3
 	throwforce = 5
-	cell_hit_cost = 2000
+	cell_hit_cost = STANDARD_CELL_CHARGE * 2
 	throw_stun_chance = 10
 	slot_flags = ITEM_SLOT_BACK
 	convertible = FALSE
@@ -746,7 +748,7 @@
 	force = 5
 	throwforce = 5
 	throw_range = 5
-	cell_hit_cost = 2000
+	cell_hit_cost = STANDARD_CELL_CHARGE * 2
 	throw_stun_chance = 99  //Have you prayed today?
 	convertible = FALSE
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT*2, /datum/material/silver = SHEET_MATERIAL_AMOUNT*5, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
@@ -764,7 +766,7 @@
 		finalize_baton_attack(hit_atom, thrown_by, in_attack_chain = FALSE)
 
 /obj/item/melee/baton/security/boomerang/loaded //Same as above, comes with a cell.
-	preload_cell_type = /obj/item/stock_parts/cell/high
+	preload_cell_type = /obj/item/stock_parts/power_store/cell/high
 
 /obj/item/melee/baton/security/cattleprod/teleprod
 	name = "teleprod"

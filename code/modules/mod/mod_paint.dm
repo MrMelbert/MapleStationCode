@@ -47,7 +47,6 @@
 
 	proxy_view.appearance = editing_mod.appearance
 	proxy_view.color = null
-	proxy_view.display_to(user)
 	ui_interact(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -58,6 +57,7 @@
 	if(!ui)
 		ui = new(user, src, "MODpaint", name)
 		ui.open()
+		proxy_view.display_to(user, ui.window)
 
 /obj/item/mod/paint/ui_host()
 	return editing_mod
@@ -68,7 +68,7 @@
 	QDEL_NULL(proxy_view)
 	current_color = COLOR_MATRIX_IDENTITY
 
-/obj/item/mod/paint/ui_status(mob/user)
+/obj/item/mod/paint/ui_status(mob/user, datum/ui_state/state)
 	if(check_menu(editing_mod, user))
 		return ..()
 	return UI_CLOSE

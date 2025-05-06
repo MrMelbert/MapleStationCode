@@ -37,7 +37,7 @@
 	///Count of number of times switched on/off, this is used to calculate the probability the light burns out
 	var/switchcount = 0
 	///Cell reference
-	var/obj/item/stock_parts/cell/cell
+	var/obj/item/stock_parts/power_store/cell
 	/// If TRUE, then cell is null, but one is pretending to exist.
 	/// This is to defer emergency cell creation unless necessary, as it is very expensive.
 	var/has_mock_cell = TRUE
@@ -118,9 +118,8 @@
 	RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	find_and_hang_on_wall(custom_drop_callback = CALLBACK(src, PROC_REF(knock_down)))
-	return INITIALIZE_HINT_LATELOAD
 
-/obj/machinery/light/LateInitialize()
+/obj/machinery/light/post_machine_initialize()
 	. = ..()
 #ifndef MAP_TEST
 	switch(fitting)
@@ -292,11 +291,11 @@
 		if(cell)
 			if(cell.charge == cell.maxcharge && !reagents) //If the cell is done mooching station power, and reagents don't need processing, stop processing
 				return PROCESS_KILL
-			cell.charge = min(cell.maxcharge, cell.charge + LIGHT_EMERGENCY_POWER_USE) //Recharge emergency power automatically while not using it
+			charge_cell(LIGHT_EMERGENCY_POWER_USE * seconds_per_tick, cell = cell) //Recharge emergency power automatically while not using it
 	if(reagents) //with most reagents coming out at 300, and with most meaningful reactions coming at 370+, this rate gives a few seconds of time to place it in and get out of dodge regardless of input.
 		reagents.adjust_thermal_energy(8 * reagents.total_volume * SPECIFIC_HEAT_DEFAULT * seconds_per_tick)
 		reagents.handle_reactions()
-	if(low_power_mode && !use_emergency_power(LIGHT_EMERGENCY_POWER_USE))
+	if(low_power_mode && !use_emergency_power(LIGHT_EMERGENCY_POWER_USE * seconds_per_tick))
 		update(FALSE) //Disables emergency mode and sets the color to normal
 
 /obj/machinery/light/proc/burn_out()
@@ -314,7 +313,7 @@
 
 /obj/machinery/light/get_cell()
 	if (has_mock_cell)
-		cell = new /obj/item/stock_parts/cell/emergency_light(src)
+		cell = new /obj/item/stock_parts/power_store/cell/emergency_light(src)
 		has_mock_cell = FALSE
 
 	return cell
@@ -386,10 +385,7 @@
 		if (prob(75))
 			electrocute_mob(user, get_area(src), src, (rand(7,10) * 0.1), TRUE)
 
-/obj/machinery/light/deconstruct(disassembled = TRUE)
-	if(obj_flags & NO_DECONSTRUCTION)
-		qdel(src)
-		return
+/obj/machinery/light/on_deconstruction(disassembled)
 	var/obj/structure/light_construct/new_light = null
 	var/current_stage = 2
 	if(!disassembled)
@@ -413,12 +409,11 @@
 		new /obj/item/stack/cable_coil(loc, 1, "red")
 	transfer_fingerprints_to(new_light)
 
-	var/obj/item/stock_parts/cell/real_cell = get_cell()
+	var/obj/item/stock_parts/power_store/real_cell = get_cell()
 	if(!QDELETED(real_cell))
 		new_light.cell = real_cell
 		real_cell.forceMove(new_light)
 		cell = null
-	qdel(src)
 
 /obj/machinery/light/attacked_by(obj/item/attacking_object, mob/living/user)
 	..()
@@ -475,8 +470,8 @@
 /obj/machinery/light/proc/use_emergency_power(power_usage_amount = LIGHT_EMERGENCY_POWER_USE)
 	if(!has_emergency_power(power_usage_amount))
 		return FALSE
-	var/obj/item/stock_parts/cell/real_cell = get_cell()
-	if(real_cell.charge > 300) //it's meant to handle 120 W, ya doofus
+	var/obj/item/stock_parts/power_store/real_cell = get_cell()
+	if(real_cell.charge > 2.5 * /obj/item/stock_parts/power_store/cell/emergency_light::maxcharge) //it's meant to handle 120 W, ya doofus
 		visible_message(span_warning("[src] short-circuits from too powerful of a power cell!"))
 		burn_out()
 		return FALSE

@@ -93,20 +93,20 @@
 		if(NORTH,SOUTH)
 			if(unres_sides & NORTH)
 				var/image/side_overlay = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_n")
-				side_overlay.pixel_y = dir == NORTH ? 31 : 6
+				side_overlay.pixel_z = dir == NORTH ? 31 : 6
 				. += side_overlay
 			if(unres_sides & SOUTH)
 				var/image/side_overlay = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_s")
-				side_overlay.pixel_y = dir == NORTH ? -6 : -31
+				side_overlay.pixel_z = dir == NORTH ? -6 : -31
 				. += side_overlay
 		if(EAST,WEST)
 			if(unres_sides & EAST)
 				var/image/side_overlay = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_e")
-				side_overlay.pixel_x = dir == EAST ? 31 : 6
+				side_overlay.pixel_w = dir == EAST ? 31 : 6
 				. += side_overlay
 			if(unres_sides & WEST)
 				var/image/side_overlay = image(icon='icons/obj/doors/airlocks/station/overlays.dmi', icon_state="unres_w")
-				side_overlay.pixel_x = dir == EAST ? -6 : -31
+				side_overlay.pixel_w = dir == EAST ? -6 : -31
 				. += side_overlay
 
 /obj/machinery/door/window/proc/open_and_close()
@@ -303,15 +303,16 @@
 			playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 
 
-/obj/machinery/door/window/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION) && !disassembled)
-		for(var/i in 1 to shards)
-			drop_debris(new /obj/item/shard(src))
-		if(rods)
-			drop_debris(new /obj/item/stack/rods(src, rods))
-		if(cable)
-			drop_debris(new /obj/item/stack/cable_coil(src, cable))
-	qdel(src)
+/obj/machinery/door/window/on_deconstruction(disassembled)
+	if(disassembled)
+		return
+
+	for(var/i in 1 to shards)
+		drop_debris(new /obj/item/shard(src))
+	if(rods)
+		drop_debris(new /obj/item/stack/rods(src, rods))
+	if(cable)
+		drop_debris(new /obj/item/stack/cable_coil(src, cable))
 
 /obj/machinery/door/window/proc/drop_debris(obj/item/debris)
 	debris.forceMove(loc)

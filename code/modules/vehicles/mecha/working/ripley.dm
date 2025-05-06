@@ -265,8 +265,6 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 
 /obj/vehicle/sealed/mecha/ripley/cargo/Initialize(mapload)
 	. = ..()
-	if(cell)
-		cell.charge = FLOOR(cell.charge * 0.25, 1) //Starts at very low charge
 
 	//Attach hydraulic clamp ONLY
 	var/obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/HC = new
@@ -283,7 +281,7 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	return ..()
 
 /obj/vehicle/sealed/mecha/ripley/cargo/populate_parts()
-	cell = new /obj/item/stock_parts/cell/high(src)
+	cell = new /obj/item/stock_parts/power_store/cell/high(src)
 	//No scanmod for Big Bess
 	capacitor = new /obj/item/stock_parts/capacitor(src)
 	servo = new /obj/item/stock_parts/servo(src)

@@ -16,13 +16,13 @@
 		machine.check_eye(src)
 
 	// Handle power damage (oxy)
+	if (battery <= 0)
+		to_chat(src, span_warning("Your backup battery's output drops below usable levels. It takes only a moment longer for your systems to fail, corrupted and unusable."))
+		adjustOxyLoss(200)
+
 	if(aiRestorePowerRoutine)
 		// Lost power
-		if (!battery)
-			to_chat(src, span_warning("Your backup battery's output drops below usable levels. It takes only a moment longer for your systems to fail, corrupted and unusable."))
-			adjustOxyLoss(200)
-		else
-			battery--
+		battery--
 	else
 		// Gain Power
 		if (battery < 200)
@@ -31,7 +31,7 @@
 	if(!lacks_power())
 		var/area/home = get_area(src)
 		if(home.powered(AREA_USAGE_EQUIP))
-			home.use_power(500 * seconds_per_tick, AREA_USAGE_EQUIP)
+			home.apc?.terminal?.use_energy(500 WATTS * seconds_per_tick, channel = AREA_USAGE_EQUIP)
 
 		if(aiRestorePowerRoutine >= POWER_RESTORATION_SEARCH_APC)
 			ai_restore_power()
@@ -137,7 +137,7 @@
 				sleep(5 SECONDS)
 				to_chat(src, span_notice("Receiving control information from APC."))
 				sleep(0.2 SECONDS)
-				to_chat(src, "<A HREF=?src=[REF(src)];emergencyAPC=[TRUE]>APC ready for connection.</A>")
+				to_chat(src, "<A href=byond://?src=[REF(src)];emergencyAPC=[TRUE]>APC ready for connection.</A>")
 				apc_override = theAPC
 				apc_override.ui_interact(src)
 				setAiRestorePowerRoutine(POWER_RESTORATION_APC_FOUND)

@@ -387,7 +387,7 @@
 
 				else if(istype(tool, /obj/item/electroadaptive_pseudocircuit))
 					var/obj/item/electroadaptive_pseudocircuit/pseudoc = tool
-					if(!pseudoc.adapt_circuit(user, 15))
+					if(!pseudoc.adapt_circuit(user, circuit_cost = 0.015 * STANDARD_CELL_CHARGE))
 						return
 					user.visible_message(span_notice("[user] fabricates a circuit and places it into [src]."), \
 					span_notice("You adapt a fire alarm circuit and slot it into the assembly."))
@@ -436,16 +436,14 @@
 		return
 	return ..()
 
-/obj/machinery/firealarm/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, 1)
-		if(buildstage > FIRE_ALARM_BUILD_NO_CIRCUIT)
-			var/obj/item/item = new /obj/item/electronics/firealarm(loc)
-			if(!disassembled)
-				item.update_integrity(item.max_integrity * 0.5)
-		if(buildstage > FIRE_ALARM_BUILD_NO_WIRES)
-			new /obj/item/stack/cable_coil(loc, 3)
-	qdel(src)
+/obj/machinery/firealarm/on_deconstruction(disassembled)
+	new /obj/item/stack/sheet/iron(loc, 1)
+	if(buildstage > FIRE_ALARM_BUILD_NO_CIRCUIT)
+		var/obj/item/item = new /obj/item/electronics/firealarm(loc)
+		if(!disassembled)
+			item.update_integrity(item.max_integrity * 0.5)
+	if(buildstage > FIRE_ALARM_BUILD_NO_WIRES)
+		new /obj/item/stack/cable_coil(loc, 3)
 
 // Allows users to examine the state of the thermal sensor
 /obj/machinery/firealarm/examine(mob/user)

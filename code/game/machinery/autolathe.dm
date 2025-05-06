@@ -4,7 +4,8 @@
 	icon = 'icons/obj/machines/lathes.dmi'
 	icon_state = "autolathe"
 	density = TRUE
-	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.5
+	///Energy cost per full stack of sheets worth of materials used. Material insertion is 40% of this.
+	active_power_usage = 0.025 * STANDARD_CELL_RATE
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
@@ -27,8 +28,11 @@
 	var/datum/component/material_container/materials
 	///direction we output onto (if 0, on top of us)
 	var/drop_direction = 0
+	//looping sound for printing items
+	var/datum/looping_sound/lathe_print/print_sound
 
 /obj/machinery/autolathe/Initialize(mapload)
+	print_sound = new(src,  FALSE)
 	materials = AddComponent( \
 		/datum/component/material_container, \
 		SSmaterials.materials_by_category[MAT_CATEGORY_ITEM_MATERIAL], \
@@ -46,6 +50,7 @@
 	register_context()
 
 /obj/machinery/autolathe/Destroy()
+	QDEL_NULL(print_sound)
 	materials = null
 	return ..()
 
@@ -94,10 +99,19 @@
 /obj/machinery/autolathe/proc/AfterMaterialInsert(container, obj/item/item_inserted, last_inserted_id, mats_consumed, amount_inserted, atom/context)
 	SIGNAL_HANDLER
 
-	flick("autolathe_[item_inserted.has_material_type(/datum/material/glass) ? "r" : "o"]", src)
-
 	//we use initial(active_power_usage) because higher tier parts will have higher active usage but we have no benifit from it
-	directly_use_power(ROUND_UP((amount_inserted / (MAX_STACK_SIZE * SHEET_MATERIAL_AMOUNT)) * 0.01 * initial(active_power_usage)))
+	if(directly_use_energy(ROUND_UP((amount_inserted / (MAX_STACK_SIZE * SHEET_MATERIAL_AMOUNT)) * 0.4 * initial(active_power_usage))))
+		flick_overlay_view(mutable_appearance('icons/obj/machines/lathes.dmi', "autolathe_mat"), 1 SECONDS)
+
+		var/datum/material/highest_mat_ref
+		var/highest_mat = 0
+		for(var/datum/material/mat as anything in mats_consumed)
+			var/present_mat = mats_consumed[mat]
+			if(present_mat > highest_mat)
+				highest_mat = present_mat
+				highest_mat_ref = mat
+
+		flick_overlay_view(material_insertion_animation(highest_mat_ref.greyscale_colors), 1 SECONDS)
 
 /obj/machinery/autolathe/ui_interact(mob/user, datum/tgui/ui)
 	if(!is_operational)
@@ -273,13 +287,15 @@
 	var/charge_per_item = 0
 	for(var/material in design.materials)
 		charge_per_item += design.materials[material]
-	charge_per_item = ROUND_UP((charge_per_item / (MAX_STACK_SIZE * SHEET_MATERIAL_AMOUNT)) * material_cost_coefficient * 0.05 * active_power_usage)
+	charge_per_item = ROUND_UP((charge_per_item / (MAX_STACK_SIZE * SHEET_MATERIAL_AMOUNT)) * material_cost_coefficient * active_power_usage)
 	var/build_time_per_item = (design.construction_time * design.lathe_time_factor) ** 0.8
 
 	//do the printing sequentially
 	busy = TRUE
 	icon_state = "autolathe_n"
 	SStgui.update_uis(src)
+	// play this after all checks passed individually for each item.
+	print_sound.start()
 	var/turf/target_location
 	if(drop_direction)
 		target_location = get_step(src, drop_direction)
@@ -310,14 +326,29 @@
 		finalize_build()
 		return
 
-	if(!is_operational || !directly_use_power(charge_per_item))
+	if(!is_operational)
 		say("Unable to continue production, power failure.")
+		finalize_build()
+		return
+
+	if(!directly_use_energy(charge_per_item)) // provide the wait time until lathe is ready
+		var/area/my_area = get_area(src)
+		var/obj/machinery/power/apc/my_apc = my_area.apc
+		if(!QDELETED(my_apc))
+			var/charging_wait = my_apc.time_to_charge(charge_per_item)
+			if(!isnull(charging_wait))
+				say("Unable to continue production, APC overload. Wait [DisplayTimeText(charging_wait, round_seconds_to = 1)] and try again.")
+			else
+				say("Unable to continue production, power grid overload.")
+		else
+			say("Unable to continue production, no APC in area.")
 		finalize_build()
 		return
 
 	var/is_stack = ispath(design.build_path, /obj/item/stack)
 	if(!materials.has_materials(materials_needed, material_cost_coefficient, is_stack ? items_remaining : 1))
 		say("Unable to continue production, missing materials.")
+		finalize_build()
 		return
 	materials.use_materials(materials_needed, material_cost_coefficient, is_stack ? items_remaining : 1)
 
@@ -348,7 +379,7 @@
 */
 /obj/machinery/autolathe/proc/finalize_build()
 	PROTECTED_PROC(TRUE)
-
+	print_sound.stop()
 	icon_state = initial(icon_state)
 	busy = FALSE
 	SStgui.update_uis(src)

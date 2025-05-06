@@ -45,7 +45,7 @@
 	QDEL_NULL(beaker2)
 	return ..()
 
-/obj/machinery/chem_mass_spec/on_deconstruction() // Non-module change
+/obj/machinery/chem_mass_spec/on_deconstruction(disassembled)
 	var/location = drop_location()
 	beaker1?.forceMove(location)
 	beaker2?.forceMove(location)
@@ -494,4 +494,4 @@
 		update_appearance()
 		return PROCESS_KILL
 
-	use_power(active_power_usage * seconds_per_tick) // Non-module change
+	use_energy(active_power_usage * seconds_per_tick)

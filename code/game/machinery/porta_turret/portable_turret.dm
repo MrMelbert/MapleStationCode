@@ -402,9 +402,6 @@ DEFINE_BITFIELD(turret_flags, list(
 /obj/machinery/porta_turret/proc/reset_attacked()
 	turret_flags &= ~TURRET_FLAG_SHOOT_ALL_REACT
 
-/obj/machinery/porta_turret/deconstruct(disassembled = TRUE)
-	qdel(src)
-
 /obj/machinery/porta_turret/atom_break(damage_flag)
 	. = ..()
 	if(.)
@@ -629,11 +626,11 @@ DEFINE_BITFIELD(turret_flags, list(
 	var/obj/projectile/A
 	//any emagged turrets drains 2x power and uses a different projectile?
 	if(mode == TURRET_STUN)
-		use_power(reqpower)
+		use_energy(reqpower)
 		A = new stun_projectile(T)
 		playsound(loc, stun_projectile_sound, 75, TRUE)
 	else
-		use_power(reqpower * 2)
+		use_energy(reqpower * 2)
 		A = new lethal_projectile(T)
 		playsound(loc, lethal_projectile_sound, 75, TRUE)
 
@@ -710,13 +707,13 @@ DEFINE_BITFIELD(turret_flags, list(
 	remote_controller = null
 	return TRUE
 
-/obj/machinery/porta_turret/proc/InterceptClickOn(mob/living/caller, params, atom/A)
+/obj/machinery/porta_turret/proc/InterceptClickOn(mob/living/clicker, params, atom/A)
 	if(!manual_control)
 		return FALSE
-	if(!can_interact(caller))
+	if(!can_interact(clicker))
 		remove_control()
 		return FALSE
-	log_combat(caller,A,"fired with manual turret control at")
+	log_combat(clicker, A, "fired with manual turret control at")
 	target(A)
 	return TRUE
 
@@ -1171,7 +1168,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	if(properties["team_color"])
 		team_color = properties["team_color"]
 
-/obj/machinery/porta_turret/lasertag/ui_status(mob/user)
+/obj/machinery/porta_turret/lasertag/ui_status(mob/user, datum/ui_state/state)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(team_color == "blue" && istype(H.wear_suit, /obj/item/clothing/suit/redtag))

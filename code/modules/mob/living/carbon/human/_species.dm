@@ -1132,6 +1132,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(user.limb_destroyer)
 			target.dismembering_strike(user, affecting.body_zone)
 
+
+		// NON-MODULE CHANGES
 		var/attack_direction = get_dir(user, target)
 		var/attack_type = attacking_bodypart.attack_type
 		var/attack_sharp = NONE
@@ -1153,6 +1155,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if(damage >= 9)
 				target.force_say()
 			log_combat(user, target, "punched")
+
+		// NON-MODULE CHANGES
+		if(damage > 5 && target != user)
+			target.set_headset_block_if_lower(4 SECONDS)
 
 		//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
 		if(prob(limb_accuracy) && target.stat != DEAD && armor_block < 100 && staggered && (target.getStaminaLoss() + user.getBruteLoss()) >= 40)

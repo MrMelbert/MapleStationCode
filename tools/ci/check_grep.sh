@@ -123,6 +123,14 @@ if $grep 'allocate\(/mob/living/carbon/human[,\)]' $unit_test_files ||
 	st=1
 fi;
 
+section "516 Href Styles"
+part "byond href styles"
+if $grep "href[\s='\"\\\\]*\?" $code_files ; then
+    echo
+    echo -e "${RED}ERROR: BYOND requires internal href links to begin with \"byond://\".${NC}"
+    st=1
+fi;
+
 section "common mistakes"
 part "global vars"
 if $grep '^/*var/' $code_files; then
@@ -272,7 +280,7 @@ if [ "$pcre2_support" -eq 1 ]; then
 		st=1
 	fi
 	part "datum stockpart sanity"
-	if $grep -P 'for\b.*/obj/item/stock_parts/(?!cell)(?![\w_]+ in )' $code_files; then
+	if $grep -P 'for\b.*/obj/item/stock_parts/(?!power_store)(?![\w_]+ in )' $code_files; then
 		echo
 		echo -e "${RED}ERROR: Should be using datum/stock_part instead"
 		st=1

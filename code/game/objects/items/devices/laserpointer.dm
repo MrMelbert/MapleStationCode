@@ -254,7 +254,7 @@
 	//cameras: chance to EMP the camera
 	else if(istype(target, /obj/machinery/camera))
 		var/obj/machinery/camera/target_camera = target
-		if(!target_camera.status && !target_camera.emped)
+		if(!target_camera.camera_enabled && !target_camera.emped)
 			outmsg = span_notice("You point [src] at [target_camera], but it seems to be disabled.")
 		else if(prob(effectchance * diode.rating))
 			target_camera.emp_act(EMP_HEAVY)
@@ -285,12 +285,12 @@
 	var/list/modifiers = params2list(params)
 	if(modifiers)
 		if(LAZYACCESS(modifiers, ICON_X))
-			laser.pixel_x = (text2num(LAZYACCESS(modifiers, ICON_X)) - 16)
+			laser.pixel_w = (text2num(LAZYACCESS(modifiers, ICON_X)) - 16)
 		if(LAZYACCESS(modifiers, ICON_Y))
-			laser.pixel_y = (text2num(LAZYACCESS(modifiers, ICON_Y)) - 16)
+			laser.pixel_z = (text2num(LAZYACCESS(modifiers, ICON_Y)) - 16)
 	else
-		laser.pixel_x = target.pixel_x + rand(-5,5)
-		laser.pixel_y = target.pixel_y + rand(-5,5)
+		laser.pixel_w = target.pixel_w + rand(-5,5)
+		laser.pixel_z = target.pixel_z + rand(-5,5)
 
 	if(outmsg)
 		to_chat(user, outmsg)

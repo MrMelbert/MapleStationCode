@@ -145,6 +145,10 @@
 /obj/item/organ/internal/ears/invincible
 	damage_multiplier = 0
 
+/obj/item/organ/internal/ears/feel_for_damage(self_aware)
+	// Ear damage has audible effects, so we don't really need to "feel" it when self-examining
+	return ""
+
 /obj/item/organ/internal/ears/cat
 	name = "cat ears"
 	icon = 'icons/obj/clothing/head/costume.dmi'

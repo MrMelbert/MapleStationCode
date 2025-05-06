@@ -186,8 +186,8 @@
 			overlay.dir = direction
 
 		overlay.color = color
-		overlay.pixel_x = duct_x
-		overlay.pixel_y = duct_y
+		overlay.pixel_w = duct_x
+		overlay.pixel_z = duct_y
 
 		overlays += overlay
 
@@ -196,8 +196,8 @@
 			var/image/edge_overlay = image('icons/obj/pipes_n_cables/hydrochem/connects.dmi', "edge-extension", layer = duct_layer)
 			edge_overlay.dir = parent_movable.dir
 			edge_overlay.color = color
-			edge_overlay.pixel_x = -parent_movable.pixel_x - parent_movable.pixel_w
-			edge_overlay.pixel_y = -parent_movable.pixel_y - parent_movable.pixel_z
+			edge_overlay.pixel_w = -parent_movable.pixel_x - parent_movable.pixel_w
+			edge_overlay.pixel_z = -parent_movable.pixel_y - parent_movable.pixel_z
 			overlays += edge_overlay
 			// only show extension for the first pipe. This means we'll only reflect that color.
 			extension_handled = TRUE
@@ -335,7 +335,7 @@
 		tile_covered = should_hide
 		parent_obj.update_appearance()
 
-/datum/component/plumbing/proc/change_ducting_layer(obj/caller, obj/changer, new_layer = DUCT_LAYER_DEFAULT)
+/datum/component/plumbing/proc/change_ducting_layer(obj/source, obj/changer, new_layer = DUCT_LAYER_DEFAULT)
 	SIGNAL_HANDLER
 	ducting_layer = new_layer
 
@@ -398,7 +398,7 @@
 	demand_connects = SOUTH
 	supply_connects = NORTH
 
-/datum/component/plumbing/manifold/change_ducting_layer(obj/caller, obj/changer, new_layer)
+/datum/component/plumbing/manifold/change_ducting_layer(obj/source, obj/changer, new_layer)
 	return
 
 #define READY 2

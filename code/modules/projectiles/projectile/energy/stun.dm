@@ -92,7 +92,7 @@
 		return FALSE
 	if(istype(with_what, /obj/item/gun/energy))
 		var/obj/item/gun/energy/taser_gun = with_what
-		if(!taser_gun.cell?.use(60 * seconds_between_ticks))
+		if(!taser_gun.cell?.use(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks))
 			return FALSE
 		taser_gun.update_appearance()
 		return TRUE
@@ -102,7 +102,7 @@
 		if(!taser_machine.is_operational)
 			return FALSE
 		// We can't measure the output of this but if we use too much power the area will depower -> depower the machine -> stop taze next tick
-		taser_machine.use_power(60 * seconds_between_ticks)
+		taser_machine.use_energy(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks)
 		return TRUE
 
 	if(istype(taser, /obj/item/mecha_parts/mecha_equipment))
@@ -112,7 +112,7 @@
 			|| taser_equipment.get_integrity() <= 1 \
 			|| taser_equipment.chassis.is_currently_ejecting \
 			|| taser_equipment.chassis.equipment_disabled \
-			|| !taser_equipment.chassis.use_power(60 * seconds_between_ticks))
+			|| !taser_equipment.chassis.use_energy(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks))
 			return FALSE
 		return TRUE
 
@@ -133,6 +133,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.force_say()
+	owner.set_headset_block_if_lower(6 SECONDS)
 	return TRUE
 
 /datum/status_effect/tased/on_remove()

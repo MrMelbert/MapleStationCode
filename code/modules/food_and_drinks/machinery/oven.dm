@@ -58,7 +58,7 @@
 	. = ..()
 	if(open)
 		var/mutable_appearance/door_overlay = mutable_appearance(icon, "[base_icon_state]_lid_open")
-		door_overlay.pixel_y = OVEN_LID_Y_OFFSET
+		door_overlay.pixel_z = OVEN_LID_Y_OFFSET
 		. += door_overlay
 	else
 		. += mutable_appearance(icon, "[base_icon_state]_lid_closed")
@@ -93,7 +93,7 @@
 			visible_message(span_danger("You smell a burnt smell coming from [src]!"))
 	set_smoke_state(worst_cooked_food_state)
 	update_appearance()
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 
 /obj/machinery/oven/attackby(obj/item/I, mob/user, params)

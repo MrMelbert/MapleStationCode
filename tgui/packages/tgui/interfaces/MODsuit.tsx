@@ -98,7 +98,7 @@ type Module = {
   pinned: BooleanLike;
   idle_power: number;
   active_power: number;
-  use_power: number;
+  use_energy: number;
   module_complexity: number;
   cooldown_time: number;
   cooldown: number;
@@ -403,11 +403,11 @@ const SuitStatusSection = (props) => {
                 : cell_charge_current === 1e31
                   ? 'Infinite'
                   : `${formatSiUnit(
-                      cell_charge_current * 1000,
+                      cell_charge_current,
                       0,
                       'J',
                     )} of ${formatSiUnit(
-                      cell_charge_max * 1000,
+                      cell_charge_max,
                       0,
                       'J',
                     )} (${charge_percent}%)`}
@@ -695,7 +695,7 @@ const ModuleSection = (props) => {
               <Button
                 color="transparent"
                 icon="plug"
-                tooltip="Idle Power Cost"
+                tooltip="Idle Power Cost (Watts)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -703,7 +703,7 @@ const ModuleSection = (props) => {
               <Button
                 color="transparent"
                 icon="lightbulb"
-                tooltip="Active Power Cost"
+                tooltip="Active Power Cost (Watts)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -711,7 +711,7 @@ const ModuleSection = (props) => {
               <Button
                 color="transparent"
                 icon="bolt"
-                tooltip="Use Power Cost"
+                tooltip="Use Energy Cost (Joules)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -782,11 +782,15 @@ const ModuleSection = (props) => {
                     />
                   )}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{module.idle_power}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {module.active_power}
+                  {formatSiUnit(module.idle_power, 0)}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{module.use_power}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {formatSiUnit(module.active_power, 0)}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {formatSiUnit(module.use_energy, 0)}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {module.module_complexity}
                 </Table.Cell>

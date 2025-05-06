@@ -500,7 +500,7 @@
 		else
 			var/t_growthstate = clamp(round((age / myseed.maturation) * myseed.growthstages), 1, myseed.growthstages)
 			plant_overlay.icon_state = "[myseed.icon_grow][t_growthstate]"
-	plant_overlay.pixel_y = myseed.plant_icon_offset
+	plant_overlay.pixel_z = myseed.plant_icon_offset
 	return plant_overlay
 
 /obj/machinery/hydroponics/proc/update_status_light_overlays()
@@ -1184,9 +1184,8 @@
 /obj/machinery/hydroponics/soil/CtrlClick(mob/user)
 	return //Soil has no electricity.
 
-/obj/machinery/hydroponics/soil/deconstruct(disassembled)
+/obj/machinery/hydroponics/soil/on_deconstruction(disassembled)
 	new /obj/item/stack/ore/glass(drop_location(), 3)
-	return ..()
 
 ///The usb port circuit
 

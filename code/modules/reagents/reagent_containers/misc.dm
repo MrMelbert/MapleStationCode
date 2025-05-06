@@ -8,13 +8,13 @@
 	reagent_flags = OPENCONTAINER
 	fill_icon_state = "maunafilling"
 	fill_icon_thresholds = list(25)
-	var/obj/item/stock_parts/cell/cell
+	var/obj/item/stock_parts/power_store/cell
 	var/open = FALSE
 	var/on = FALSE
 
 /obj/item/reagent_containers/cup/maunamug/Initialize(mapload, vol)
 	. = ..()
-	cell = new /obj/item/stock_parts/cell(src)
+	cell = new /obj/item/stock_parts/power_store/cell(src)
 
 /obj/item/reagent_containers/cup/maunamug/get_cell()
 	return cell
@@ -32,7 +32,7 @@
 	if(on && (!cell || cell.charge <= 0)) //Check if we ran out of power
 		change_power_status(FALSE)
 		return FALSE
-	cell.use(5 * seconds_per_tick) //Basic cell goes for like 200 seconds, bluespace for 8000
+	cell.use(0.005 * STANDARD_CELL_RATE * seconds_per_tick) //Basic cell goes for like 200 seconds, bluespace for 8000
 	if(!reagents.total_volume)
 		return FALSE
 	var/max_temp = min(500 + (500 * (0.2 * cell.rating)), 1000) // 373 to 1000
@@ -74,7 +74,7 @@
 
 /obj/item/reagent_containers/cup/maunamug/attackby(obj/item/I, mob/user, params)
 	add_fingerprint(user)
-	if(!istype(I, /obj/item/stock_parts/cell))
+	if(!istype(I, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(!open)
 		to_chat(user, span_warning("The battery case must be open to insert a power cell!"))
@@ -90,7 +90,6 @@
 
 /obj/item/reagent_containers/cup/maunamug/attack_hand(mob/living/user, list/modifiers)
 	if(cell && open)
-		cell.update_appearance()
 		user.put_in_hands(cell)
 		cell = null
 		to_chat(user, span_notice("You remove the power cell from [src]."))

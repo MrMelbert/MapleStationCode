@@ -50,7 +50,7 @@
 	///flags of mulebot mode
 	var/mulebot_delivery_flags = MULEBOT_RETURN_MODE | MULEBOT_AUTO_PICKUP_MODE | MULEBOT_REPORT_DELIVERY_MODE
 
-	var/obj/item/stock_parts/cell/cell /// Internal Powercell
+	var/obj/item/stock_parts/power_store/cell /// Internal Powercell
 	var/cell_move_power_usage = 1///How much power we use when we move.
 	var/num_steps = 0 ///The amount of steps we should take until we rest for a time.
 
@@ -76,7 +76,7 @@
 	access_card.add_access(cargo_trim.access + cargo_trim.wildcard_access)
 	prev_access = access_card.access.Copy()
 
-	cell = new /obj/item/stock_parts/cell/upgraded(src, 2000)
+	cell = new /obj/item/stock_parts/power_store/cell/upgraded(src, 2000)
 
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/mulebot)
 	diag_hud_set_mulebotcell()
@@ -178,7 +178,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /mob/living/simple_animal/bot/mulebot/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/stock_parts/cell) && bot_cover_flags & BOT_COVER_OPEN)
+	if(istype(I, /obj/item/stock_parts/power_store/cell) && bot_cover_flags & BOT_COVER_OPEN)
 		if(cell)
 			to_chat(user, span_warning("[src] already has a power cell!"))
 			return TRUE
@@ -225,7 +225,7 @@
 	if(!load || ismob(load)) //mob offsets and such are handled by the riding component / buckling
 		return
 	var/mutable_appearance/load_overlay = mutable_appearance(load.icon, load.icon_state, layer + 0.01)
-	load_overlay.pixel_y = initial(load.pixel_y) + 11
+	load_overlay.pixel_z = initial(load.pixel_z) + 11
 	. += load_overlay
 
 /mob/living/simple_animal/bot/mulebot/ex_act(severity)
@@ -758,7 +758,6 @@
 	new /obj/item/stack/cable_coil/cut(Tsec)
 	if(cell)
 		cell.forceMove(Tsec)
-		cell.update_appearance()
 		cell = null
 
 	new /obj/effect/decal/cleanable/oil(loc)
@@ -858,7 +857,7 @@
 	if(!isobserver(load))
 		return
 	var/mutable_appearance/ghost_overlay = mutable_appearance('icons/mob/simple/mob.dmi', "ghost", layer + 0.01) //use a generic ghost icon, otherwise you can metagame who's dead if they have a custom ghost set
-	ghost_overlay.pixel_y = 12
+	ghost_overlay.pixel_z = 12
 	. += ghost_overlay
 
 /mob/living/simple_animal/bot/mulebot/paranormal/get_load_name() //Don't reveal the name of ghosts so we can't metagame who died and all that.
