@@ -39,7 +39,7 @@ export const NtosSkillTracker = () => {
           {skills
             .sort((a, b) => (a.name > b.name ? 1 : -1))
             .map((skill, idx) => (
-              <Section key={idx} level={2} title={skill.name}>
+              <Section key={idx} title={skill.name}>
                 <BlockQuote>
                   <i>{skill.blurb}</i>
                 </BlockQuote>
