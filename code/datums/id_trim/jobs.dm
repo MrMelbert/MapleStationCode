@@ -583,7 +583,7 @@
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
 
-/datum/id_trim/job/medical_doctor/sheriff
+/datum/id_trim/job/detective/sheriff
 	assignment = "Sheriff"
 
 /datum/id_trim/job/geneticist

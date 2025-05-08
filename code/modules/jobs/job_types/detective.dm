@@ -99,3 +99,4 @@
 	head = /obj/item/clothing/head/cowboy/brown
 	mask = /obj/item/clothing/mask/facescarf
 	suit = /obj/item/clothing/suit/costume/poncho/sheriff
+	id_trim = /datum/id_trim/job/detective/sheriff
