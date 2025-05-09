@@ -14,6 +14,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.72
 	anchored = TRUE
 	density = FALSE
+	interaction_flags_machine = INTERACT_MACHINE_OPEN
 	circuit = /obj/item/circuitboard/machine/crossing_signal
 	// pointless if it only takes 2 seconds to cross but updates every 2 seconds
 	subsystem_type = /datum/controller/subsystem/processing/fastprocess
@@ -168,18 +169,16 @@
 	obj_flags |= EMAGGED
 	return TRUE
 
-/obj/machinery/transport/crossing_signal/AltClick(mob/living/user)
-	. = ..()
-
+/obj/machinery/transport/crossing_signal/click_alt(mob/living/user)
 	var/obj/item/tool = user.get_active_held_item()
 	if(!panel_open || tool?.tool_behaviour != TOOL_WRENCH)
-		return FALSE
+		return CLICK_ACTION_BLOCKING
 
 	tool.play_tool_sound(src, 50)
 	setDir(turn(dir,-90))
-	to_chat(user, span_notice("You rotate [src]."))
+	balloon_alert(user, "rotated")
 	find_uplink()
-	return TRUE
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/transport/crossing_signal/attackby_secondary(obj/item/weapon, mob/user, params)
 	. = ..()

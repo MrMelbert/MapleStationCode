@@ -75,7 +75,7 @@
 	QDEL_LIST(stored_things)
 	return ..()
 
-/obj/structure/item_dispenser/deconstruct(disassembled)
+/obj/structure/item_dispenser/atom_deconstruct(disassembled)
 	// don't waste time trying to drop stuff when we have no charges
 	if(curr_charges <= 0)
 		return ..()
@@ -85,7 +85,6 @@
 		var/obj/item/thing = dispense_item(below)
 		if(!disassembled)
 			thing.take_damage(thing.max_integrity * 0.65, BRUTE, MELEE)
-	return ..()
 
 /obj/structure/item_dispenser/atom_break(damage_flag)
 	// don't waste time trying to drop stuff when we have no charges

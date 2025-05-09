@@ -45,16 +45,16 @@
 	. = ..()
 	switch(stage)
 		if(LIGHT_CONSTRUCT_EMPTY)
-			. += "It's an empty frame."
+			. += span_notice("It's an empty frame with no wires.")
 		if(LIGHT_CONSTRUCT_WIRED)
-			. += "It's wired."
+			. += span_notice("It is wired, but the bolts are not screwed in.")
 		if(LIGHT_CONSTRUCT_CLOSED)
-			. += "The casing is closed."
+			. += span_notice("The casing is closed.")
 	if(cell_connectors)
 		if(cell)
-			. += "You see [cell] inside the casing."
+			. += span_notice("You see [cell] inside the casing.")
 		else
-			. += "The casing has no power cell for backup power."
+			. += span_notice("The casing has no power cell for backup power.")
 	else
 		. += span_danger("This casing doesn't support power cells for backup power.")
 
@@ -161,10 +161,8 @@
 	if(attacking_blob && attacking_blob.loc == loc)
 		qdel(src)
 
-/obj/structure/light_construct/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, sheets_refunded)
-	qdel(src)
+/obj/structure/light_construct/atom_deconstruct(disassembled = TRUE)
+	new /obj/item/stack/sheet/iron(loc, sheets_refunded)
 
 /obj/structure/light_construct/small
 	name = "small light fixture frame"

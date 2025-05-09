@@ -81,32 +81,33 @@
 /datum/component/surgery_initiator/proc/get_available_surgeries(mob/user, mob/living/target)
 	var/list/available_surgeries = list()
 
-	var/mob/living/carbon/carbon_target
-	var/obj/item/bodypart/affecting
-	if (iscarbon(target))
-		carbon_target = target
-		affecting = carbon_target.get_bodypart(check_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = target.get_bodypart(check_zone(user.zone_selected))
 
 	for(var/datum/surgery/surgery as anything in GLOB.surgeries_list)
 		if(!surgery.possible_locs.Find(user.zone_selected))
 			continue
-		if(affecting)
-			if(!(surgery.surgery_flags & SURGERY_REQUIRE_LIMB))
+		if(!is_type_in_list(target, surgery.target_mobtypes))
+			continue
+		if(user == target && !(surgery.surgery_flags & SURGERY_SELF_OPERABLE))
+			continue
+
+		if(isnull(affecting))
+			if(surgery.surgery_flags & SURGERY_REQUIRE_LIMB)
 				continue
+		else
 			if(surgery.requires_bodypart_type && !(affecting.bodytype & surgery.requires_bodypart_type))
+				continue
+			if(surgery.targetable_wound && !affecting.get_wound_type(surgery.targetable_wound))
 				continue
 			if((surgery.surgery_flags & SURGERY_REQUIRES_REAL_LIMB) && (affecting.bodypart_flags & BODYPART_PSEUDOPART))
 				continue
-		else if(carbon_target && (surgery.surgery_flags & SURGERY_REQUIRE_LIMB)) //mob with no limb in surgery zone when we need a limb
-			continue
+
 		if(IS_IN_INVALID_SURGICAL_POSITION(target, surgery))
 			continue
 		if(!surgery.can_start(user, target))
 			continue
-		for(var/path in surgery.target_mobtypes)
-			if(istype(target, path))
-				available_surgeries += surgery
-				break
+
+		available_surgeries += surgery
 
 	return available_surgeries
 
@@ -133,12 +134,7 @@
 	if(is_robotic)
 		required_tool_type = TOOL_SCREWDRIVER
 
-	if(iscyborg(user))
-		close_tool = locate(/obj/item/cautery) in user.held_items
-		if(!close_tool)
-			patient.balloon_alert(user, "need a cautery in an inactive slot to stop the surgery!")
-			return
-	else if(!close_tool || close_tool.tool_behaviour != required_tool_type)
+	if(!close_tool || close_tool.tool_behaviour != required_tool_type)
 		patient.balloon_alert(user, "need a [is_robotic ? "screwdriver": "cautery"] in your inactive hand to stop the surgery!")
 		return
 
@@ -221,7 +217,7 @@
 	)
 
 /datum/component/surgery_initiator/ui_data(mob/user)
-	var/mob/living/surgery_target = surgery_target_ref.resolve()
+	var/mob/living/surgery_target = surgery_target_ref?.resolve()
 
 	var/list/surgeries = list()
 	if (!isnull(surgery_target))
@@ -248,10 +244,6 @@
 	return ..()
 
 /datum/component/surgery_initiator/ui_status(mob/user, datum/ui_state/state)
-	var/obj/item/item_parent = parent
-	if (user != item_parent.loc)
-		return UI_CLOSE
-
 	var/mob/living/surgery_target = surgery_target_ref?.resolve()
 	if (isnull(surgery_target))
 		return UI_CLOSE
@@ -266,7 +258,8 @@
 		return FALSE
 
 	// The item was moved somewhere else
-	if (!(parent in user))
+	var/atom/movable/tool = parent
+	if (tool.loc != user)
 		return FALSE
 
 	// While we were choosing, another surgery was started at the same location
@@ -283,24 +276,20 @@
 		target.balloon_alert(user, "can't start the surgery!")
 		return
 
-	var/obj/item/bodypart/affecting_limb
-
 	var/selected_zone = user.zone_selected
+	var/obj/item/bodypart/affecting_limb = target.get_bodypart(check_zone(selected_zone))
 
-	if (iscarbon(target))
-		var/mob/living/carbon/carbon_target = target
-		affecting_limb = carbon_target.get_bodypart(check_zone(selected_zone))
-
-	if ((surgery.surgery_flags & SURGERY_REQUIRE_LIMB) == isnull(affecting_limb))
-		if (surgery.surgery_flags & SURGERY_REQUIRE_LIMB)
-			target.balloon_alert(user, "patient has no [parse_zone(selected_zone)]!")
-		else
-			target.balloon_alert(user, "patient has \a [parse_zone(selected_zone)]!")
+	if ((surgery.surgery_flags & SURGERY_REQUIRE_LIMB) && isnull(affecting_limb))
+		target.balloon_alert(user, "patient has no [parse_zone(selected_zone)]!")
 		return
 
-	if (!isnull(affecting_limb) && surgery.requires_bodypart_type && !(affecting_limb.bodytype & surgery.requires_bodypart_type))
-		target.balloon_alert(user, "not the right type of limb!")
-		return
+	if (!isnull(affecting_limb))
+		if(surgery.requires_bodypart_type && !(affecting_limb.bodytype & surgery.requires_bodypart_type))
+			target.balloon_alert(user, "not the right type of limb!")
+			return
+		if(surgery.targetable_wound && !affecting_limb.get_wound_type(surgery.targetable_wound))
+			target.balloon_alert(user, "no wound to operate on!")
+			return
 
 	if (IS_IN_INVALID_SURGICAL_POSITION(target, surgery))
 		target.balloon_alert(user, "patient is not lying down!")

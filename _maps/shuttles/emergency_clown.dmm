@@ -174,13 +174,13 @@
 /area/shuttle/escape)
 "aM" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "aN" = (
 /obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "aO" = (
@@ -188,7 +188,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/random{
+/obj/effect/spawner/random/bedsheet/any{
 	dir = 4
 	},
 /turf/open/floor/mineral/bananium,
@@ -280,7 +280,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/random{
+/obj/effect/spawner/random/bedsheet/any{
 	dir = 4
 	},
 /turf/open/floor/mineral/bananium,
@@ -304,7 +304,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/random{
+/obj/effect/spawner/random/bedsheet/any{
 	dir = 4
 	},
 /obj/machinery/light/small/directional/west,
@@ -319,7 +319,7 @@
 /area/shuttle/escape)
 "Vv" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)

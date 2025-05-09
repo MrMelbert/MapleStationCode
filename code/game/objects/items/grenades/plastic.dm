@@ -96,19 +96,17 @@
 	det_time = newtime
 	to_chat(user, "Timer set for [det_time] seconds.")
 
-/obj/item/grenade/c4/afterattack(atom/movable/bomb_target, mob/user, flag)
-	. = ..()
-	aim_dir = get_dir(user, bomb_target)
-	if(isdead(bomb_target))
-		return
-	if(!flag)
-		return
+/obj/item/grenade/c4/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	// Here lies C4 ghosts. We hardly knew ye
+	if(isdead(interacting_with))
+		return NONE
+	aim_dir = get_dir(user, interacting_with)
+	return plant_c4(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/grenade/c4/proc/plant_c4(atom/bomb_target, mob/living/user)
 	if(bomb_target != user && HAS_TRAIT(user, TRAIT_PACIFISM) && isliving(bomb_target))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
-		return .
+		return FALSE
 
 	to_chat(user, span_notice("You start planting [src]. The timer is set to [det_time]..."))
 

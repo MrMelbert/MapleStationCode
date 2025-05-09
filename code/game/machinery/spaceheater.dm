@@ -16,6 +16,7 @@
 	max_integrity = 250
 	armor_type = /datum/armor/machinery_space_heater
 	circuit = /obj/item/circuitboard/machine/space_heater
+	interaction_flags_click = ALLOW_SILICON_REACH
 	//We don't use area power, we always use the cell
 	use_power = NO_POWER_USE
 	///The cell we spawn with
@@ -70,6 +71,8 @@
 		),
 	)
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
+	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 8)
 
 /obj/machinery/space_heater/Destroy()
 	SSair.stop_processing_machine(src)
@@ -313,6 +316,7 @@
 	panel_open = TRUE //This is always open - since we've injected wires in the panel
 	//We inherit the cell from the heater prior
 	cell = null
+	interaction_flags_click = FORBID_TELEKINESIS_REACH
 	display_panel = FALSE
 	settable_temperature_range = 50
 	///The beaker within the heater
@@ -422,7 +426,7 @@
 	//Dropper tools
 	if(beaker)
 		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/ph_meter, /obj/item/ph_paper, /obj/item/reagent_containers/syringe)))
-			item.afterattack(beaker, user, 1)
+			item.interact_with_atom(beaker, user)
 		return
 
 /obj/machinery/space_heater/improvised_chem_heater/on_deconstruction(disassembled = TRUE)
@@ -451,11 +455,9 @@
 	update_appearance()
 	return TRUE
 
-/obj/machinery/space_heater/improvised_chem_heater/AltClick(mob/living/user)
-	. = ..()
-	if(!can_interact(user) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
-		return
+/obj/machinery/space_heater/improvised_chem_heater/click_alt(mob/living/user)
 	replace_beaker(user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/space_heater/improvised_chem_heater/update_icon_state()
 	. = ..()

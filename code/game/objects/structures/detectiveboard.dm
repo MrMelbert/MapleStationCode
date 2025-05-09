@@ -247,14 +247,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	cases[current_case].notices--
 	update_appearance(UPDATE_ICON)
 
-/obj/structure/detectiveboard/deconstruct(disassembled)
+/obj/structure/detectiveboard/atom_deconstruct(disassembled)
 	if(!disassembled)
 		new /obj/item/stack/sheet/mineral/wood(loc)
 	else
 		new /obj/item/wallframe/detectiveboard(loc)
 	for(var/obj/item/content in contents)
 		remove_item(content)
-	return ..()
 
 /obj/item/wallframe/detectiveboard
 	name = "detective notice board"

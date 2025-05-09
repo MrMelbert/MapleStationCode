@@ -16,11 +16,11 @@
 	else
 		deploy_bodybag(user, get_turf(src))
 
-/obj/item/bodybag/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(proximity)
-		if(isopenturf(target))
-			deploy_bodybag(user, target)
+/obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, flags)
+	if(isopenturf(interacting_with))
+		deploy_bodybag(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
 /obj/item/bodybag/attempt_pickup(mob/user)
 	// can't pick ourselves up if we are inside of the bodybag, else very weird things may happen
@@ -81,12 +81,11 @@
 	if(length(contents))
 		. += span_notice("You can make out the shape of [length(contents)] object\s through the fabric.")
 
-/obj/item/bodybag/bluespace/deconstruct(disassembled)
+/obj/item/bodybag/bluespace/atom_deconstruct(disassembled)
 	for(var/atom/movable/inside in src)
 		inside.forceMove(get_turf(src))
 		if(isliving(inside))
 			to_chat(inside, span_notice("You suddenly feel the space around you torn apart! You're free!"))
-	return ..()
 
 /obj/item/bodybag/bluespace/Destroy()
 	for(var/mob/living/leftover in src)
