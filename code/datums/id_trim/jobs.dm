@@ -570,7 +570,7 @@
 		ACCESS_HOS,
 	)
 	job = /datum/job/detective
-	honorifics = list("Detective", "Investigator")
+	honorifics = list("Detective", "Investigator", "Sheriff")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/detective/refresh_trim_access()
@@ -582,6 +582,9 @@
 	// Config check for if sec has maint access.
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
+
+/datum/id_trim/job/detective/sheriff
+	assignment = "Sheriff"
 
 /datum/id_trim/job/geneticist
 	assignment = "Geneticist"
