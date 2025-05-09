@@ -9,8 +9,8 @@
 
 	gets_the_help.forceMove(locate(helps_the_guy.x + 1, helps_the_guy.y, helps_the_guy.z))
 
-	RegisterSignal(helps_the_guy, COMSIG_CARBON_PRE_MISC_HELP, PROC_REF(helper_help_received))
-	RegisterSignal(gets_the_help, COMSIG_CARBON_PRE_MISC_HELP, PROC_REF(helpee_help_received))
+	RegisterSignal(helps_the_guy, COMSIG_CARBON_PRE_HELP, PROC_REF(helper_help_received))
+	RegisterSignal(gets_the_help, COMSIG_CARBON_PRE_HELP, PROC_REF(helpee_help_received))
 
 	// Click on self
 	click_wrapper(helps_the_guy, helps_the_guy)
