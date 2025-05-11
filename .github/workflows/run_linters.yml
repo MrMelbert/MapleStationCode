@@ -60,13 +60,16 @@ jobs:
       - name: Give Linters A Go
         id: linter-setup
         run: ":"
-      - name: Run Grep Checks
+      - name: Run Grep Checks # // NON-MODULE CHANGE
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: bash tools/ci/check_grep.sh
-      - name: Ticked File Enforcement
+        run: |
+          bash tools/ci/check_grep.sh 'code/**/**.dm' '_maps/**/**.dmm'
+          bash tools/ci/check_grep.sh 'maplestation_modules/**/**.dm' '_maps/**/**.dmm'
+      - name: Ticked File Enforcement  # // NON-MODULE CHANGE
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: |
           tools/bootstrap/python tools/ticked_file_enforcement/ticked_file_enforcement.py < tools/ticked_file_enforcement/schemas/tgstation_dme.json
+          tools/bootstrap/python tools/ticked_file_enforcement/ticked_file_enforcement.py < tools/ticked_file_enforcement/schemas/maplestation_dme.json
           tools/bootstrap/python tools/ticked_file_enforcement/ticked_file_enforcement.py < tools/ticked_file_enforcement/schemas/unit_tests.json
       - name: Check Define Sanity
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
@@ -78,9 +81,9 @@ jobs:
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         shell: bash
         run: ~/dreamchecker 2>&1 | bash tools/ci/annotate_dm.sh
-      - name: Run OpenDream
+      - name: Run OpenDream # // NON-MODULE CHANGE
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: ./DMCompiler_linux-x64/DMCompiler tgstation.dme --suppress-unimplemented --define=CIBUILDING | bash tools/ci/annotate_od.sh
+        run: ./DMCompiler_linux-x64/DMCompiler maplestation.dme --suppress-unimplemented --define=CIBUILDING | bash tools/ci/annotate_od.sh
       - name: Run Map Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: |
@@ -92,9 +95,9 @@ jobs:
       - name: Run DMI Tests
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: tools/bootstrap/python -m dmi.test
-      - name: Check File Directories
+      - name: Check File Directories # // NON-MODULE CHANGE
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: bash tools/ci/check_filedirs.sh tgstation.dme
+        run: bash tools/ci/check_filedirs.sh maplestation.dme
       - name: Check Changelogs
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: bash tools/ci/check_changelogs.sh
