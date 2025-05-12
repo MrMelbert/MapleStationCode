@@ -79,15 +79,20 @@
 	var/obj/machinery/power/emitter/energycannon/magical/our_statue
 	var/list/mob/living/sleepers = list()
 	var/never_spoken = TRUE
-	obj_flags = /obj::obj_flags | NO_DECONSTRUCTION
 
-/obj/structure/table/abductor/wabbajack/Initialize(mapload)
+/obj/structure/table/abductor/wabbajack/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/table/abductor/wabbajack/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
+
+/obj/structure/table/abductor/wabbajack/screwdriver_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/structure/table/abductor/wabbajack/wrench_act(mob/living/user, obj/item/tool)
+	return NONE
 
 /obj/structure/table/abductor/wabbajack/process()
 	if(isnull(our_statue))
@@ -112,7 +117,7 @@
 		L.visible_message(span_revennotice("A strange purple glow wraps itself around [L] as [L.p_they()] suddenly fall[L.p_s()] unconscious."),
 			span_revendanger("[desc]"))
 		// Don't let them sit suround unconscious forever
-		addtimer(CALLBACK(src, PROC_REF(sleeper_dreams), L), 100)
+		addtimer(CALLBACK(src, PROC_REF(sleeper_dreams), L), 10 SECONDS)
 
 	// Existing sleepers
 	for(var/i in found)
@@ -198,16 +203,21 @@
 
 /obj/structure/table/wood/shuttle_bar
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-	obj_flags = /obj::obj_flags | NO_DECONSTRUCTION
 	max_integrity = 1000
 	var/boot_dir = 1
 
-/obj/structure/table/wood/shuttle_bar/Initialize(mapload, _buildstack)
+/obj/structure/table/wood/shuttle_bar/Initialize(mapload, obj/structure/table_frame/frame_used, obj/item/stack/stack_used)
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/structure/table/wood/shuttle_bar/screwdriver_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/structure/table/wood/shuttle_bar/wrench_act(mob/living/user, obj/item/tool)
+	return NONE
 
 /obj/structure/table/wood/shuttle_bar/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER

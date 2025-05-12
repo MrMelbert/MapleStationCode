@@ -16,6 +16,7 @@ Slimecrossing Armor
 	armor_type = /datum/armor/mask_nobreath
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = NONE
+	interaction_flags_mouse_drop = NEED_HANDS
 
 /datum/armor/mask_nobreath
 	bio = 50
@@ -114,8 +115,8 @@ Slimecrossing Armor
 		return
 	return ..()
 
-/obj/item/clothing/head/peaceflower/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	if(at_peace_check(usr))
+/obj/item/clothing/head/peaceflower/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	if(at_peace_check(user))
 		return
 	return ..()
 
@@ -127,7 +128,7 @@ Slimecrossing Armor
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
 	inhand_icon_state = null
 	flags_inv = NONE
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 	slowdown = 4
 	var/hit_reflect_chance = 40
 

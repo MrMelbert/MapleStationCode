@@ -86,7 +86,7 @@
 
 // adapted from APC item interacts for cable act handling
 /obj/machinery/power/smes/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-module change
+	. = NONE
 	if(istype(tool, /obj/item/stack/cable_coil))
 		. = cable_act(user, tool, LAZYACCESS(modifiers, RIGHT_CLICK))
 	if(.)

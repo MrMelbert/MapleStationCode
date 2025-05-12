@@ -79,7 +79,7 @@
 	P.decayedRange = max(P.decayedRange--, 0)
 	return BULLET_ACT_FORCE_PIERCE
 
-/obj/structure/reflector/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/structure/reflector/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(admin && tool.tool_behaviour)
 		return ITEM_INTERACT_BLOCKING
 	return ..()
@@ -96,7 +96,7 @@
 		return ITEM_INTERACT_SUCCESS
 	user.visible_message(span_notice("[user] starts to dismantle [src]."), span_notice("You start to dismantle [src]..."))
 	if(!tool.use_tool(src, user, 8 SECONDS, volume=50))
-		return
+		return ITEM_INTERACT_BLOCKING
 	to_chat(user, span_notice("You dismantle [src]."))
 	new framebuildstacktype(drop_location(), framebuildstackamount)
 	if(buildstackamount)
@@ -106,7 +106,7 @@
 
 /obj/structure/reflector/welder_act(mob/living/user, obj/item/tool)
 	if(!tool.tool_start_check(user, amount=1))
-		return
+		return ITEM_INTERACT_BLOCKING
 	if(atom_integrity < max_integrity)
 		user.visible_message(span_notice("[user] starts to repair [src]."),
 							span_notice("You begin repairing [src]..."),

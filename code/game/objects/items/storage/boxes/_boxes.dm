@@ -53,8 +53,3 @@
 	playsound(src, 'maplestation_modules/sound/items/storage/boxfold.ogg', 50, TRUE)
 	qdel(src)
 	user.put_in_hands(result)
-
-/obj/item/storage/box/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/stack/package_wrap))
-		return FALSE
-	return ..()
