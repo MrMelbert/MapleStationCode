@@ -705,6 +705,9 @@
 		/obj/item/canvas/twentyfour_twentyfour,
 	)
 
+/obj/structure/sign/painting/get_save_vars()
+	return ..() - NAMEOF(src, icon)
+
 /obj/structure/sign/painting/Initialize(mapload, dir, building)
 	. = ..()
 	SSpersistent_paintings.painting_frames += src

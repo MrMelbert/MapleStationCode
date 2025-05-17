@@ -465,6 +465,9 @@
 	/// List of species that have made footprints here.
 	var/list/species_types
 
+/obj/effect/decal/cleanable/blood/footprints/get_save_vars()
+	return ..() - NAMEOF(src, icon_state)
+
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
