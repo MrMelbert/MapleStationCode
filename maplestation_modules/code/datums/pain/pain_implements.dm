@@ -305,7 +305,8 @@
 
 /obj/item/reagent_containers/hypospray/medipen/brute_painkiller
 	name = "ibaltifen painkiller medipen"
-	desc = "An autoinjector containing ibaltifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	desc = "An autoinjector containing Ibaltifen, used to treat pain caused by bruises and broken limbs. \
+		WARNING: Do not use in combination with alcohol."
 	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "burn_painkiller_pen"
 	base_icon_state = "burn_painkiller_pen"
@@ -314,7 +315,8 @@
 
 /obj/item/reagent_containers/hypospray/medipen/burn_painkiller
 	name = "anurifen painkiller medipen"
-	desc = "An autoinjector containing anurifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	desc = "An autoinjector containing Anurifen, used to treat pain caused by burns. \
+		WARNING: Do not use in combination with alcohol."
 	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "brute_painkiller_pen"
 	base_icon_state = "brute_painkiller_pen"
