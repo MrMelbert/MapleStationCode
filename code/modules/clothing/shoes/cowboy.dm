@@ -103,3 +103,7 @@
 	desc = "And they sing, oh, ain't you glad you're single? And that song ain't so very far from wrong."
 	armor_type = /datum/armor/shoes_combat
 	has_spurs = TRUE
+
+/obj/item/clothing/shoes/cowboy/sheriff
+	name = "sheriff's boots"
+	has_spurs = TRUE
