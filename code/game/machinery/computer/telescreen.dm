@@ -49,10 +49,8 @@
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Toggle mute button"
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/computer/security/telescreen/entertainment/CtrlClick(mob/user)
+/obj/machinery/computer/security/telescreen/entertainment/click_ctrl(mob/user)
 	. = ..()
-	if(. == FALSE || !is_operational || !user.can_perform_action(src, NEED_DEXTERITY|ALLOW_SILICON_REACH))
-		return
 	balloon_alert(user, speakers.should_be_listening ? "muted" : "unmuted")
 	speakers.toggle_mute()
 

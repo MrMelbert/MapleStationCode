@@ -9,6 +9,7 @@
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
 
 	///Is the autolathe hacked via wiring
 	var/hacked = FALSE
@@ -79,7 +80,7 @@
 		return NONE
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_RMB] = "[panel_open ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(panel_open && held_item.tool_behaviour == TOOL_CROWBAR)
@@ -87,11 +88,11 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/autolathe/crowbar_act(mob/living/user, obj/item/tool)
-	. = ITEM_INTERACT_BLOCKING
+	. = NONE
 	if(default_deconstruction_crowbar(tool))
 		return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/autolathe/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+/obj/machinery/autolathe/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if(default_deconstruction_screwdriver(user, "autolathe_t", "autolathe", tool))
 		return ITEM_INTERACT_SUCCESS
@@ -384,70 +385,77 @@
 	busy = FALSE
 	SStgui.update_uis(src)
 
-/obj/machinery/autolathe/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	. = ..()
-	if((!issilicon(usr) && !isAdminGhostAI(usr)) && !Adjacent(usr))
+/obj/machinery/autolathe/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	if(!can_interact(user) || (!issilicon(user) && !isAdminGhostAI(user)) && !Adjacent(user)) // Non-modular change
 		return
 	if(busy)
-		balloon_alert(usr, "printing started!")
+		balloon_alert(user, "printing started!")
 		return
 	var/direction = get_dir(src, over_location)
 	if(!direction)
 		return
 	drop_direction = direction
-	balloon_alert(usr, "dropping [dir2text(drop_direction)]")
+	balloon_alert(user, "dropping [dir2text(drop_direction)]")
 
-/obj/machinery/autolathe/AltClick(mob/user)
-	. = ..()
-	if(!drop_direction || !can_interact(user))
-		return
+/obj/machinery/autolathe/click_alt(mob/user)
+	if(!drop_direction)
+		return CLICK_ACTION_BLOCKING
 	if(busy)
 		balloon_alert(user, "busy printing!")
-		return
+		return CLICK_ACTION_SUCCESS
 	balloon_alert(user, "drop direction reset")
 	drop_direction = 0
+	return CLICK_ACTION_SUCCESS
 
-/obj/machinery/autolathe/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(user.combat_mode) //so we can hit the machine
+/obj/machinery/autolathe/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
 		return ..()
 
 	if(busy)
 		balloon_alert(user, "it's busy!")
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
-	if(panel_open && is_wire_tool(attacking_item))
+	if(panel_open && is_wire_tool(tool))
 		wires.interact(user)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
 
 	if(machine_stat)
-		return TRUE
+		return ..()
 
-	if(istype(attacking_item, /obj/item/disk/design_disk))
-		user.visible_message(span_notice("[user] begins to load \the [attacking_item] in \the [src]..."),
-			balloon_alert(user, "uploading design..."),
-			span_hear("You hear the chatter of a floppy drive."))
-		busy = TRUE
-		if(do_after(user, 14.4, target = src))
-			var/obj/item/disk/design_disk/disky = attacking_item
-			var/list/not_imported
-			for(var/datum/design/blueprint as anything in disky.blueprints)
-				if(!blueprint)
-					continue
-				if(blueprint.build_type & AUTOLATHE)
-					imported_designs[blueprint.id] = TRUE
-				else
-					LAZYADD(not_imported, blueprint.name)
-			if(not_imported)
-				to_chat(user, span_warning("The following design[length(not_imported) > 1 ? "s" : ""] couldn't be imported: [english_list(not_imported)]"))
-		busy = FALSE
-		update_static_data_for_all_viewers()
-		return TRUE
+	if(!istype(tool, /obj/item/disk/design_disk))
+		return ..()
 
 	if(panel_open)
 		balloon_alert(user, "close the panel first!")
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	user.visible_message(span_notice("[user] begins to load \the [tool] in \the [src]..."),
+		balloon_alert(user, "uploading design..."),
+		span_hear("You hear the chatter of a floppy drive."))
+	busy = TRUE
+
+	if(!do_after(user, 1.5 SECONDS, target = src))
+		busy = FALSE
+		update_static_data_for_all_viewers()
+		balloon_alert(user, "interrupted!")
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/disk/design_disk/disky = tool
+	var/list/not_imported
+	for(var/datum/design/blueprint as anything in disky.blueprints)
+		if(!blueprint)
+			continue
+		if(blueprint.build_type & AUTOLATHE)
+			imported_designs[blueprint.id] = TRUE
+		else
+			LAZYADD(not_imported, blueprint.name)
+
+	if(not_imported)
+		to_chat(user, span_warning("The following design[length(not_imported) > 1 ? "s" : ""] couldn't be imported: [english_list(not_imported)]"))
+
+	busy = FALSE
+	update_static_data_for_all_viewers()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/autolathe/RefreshParts()
 	. = ..()

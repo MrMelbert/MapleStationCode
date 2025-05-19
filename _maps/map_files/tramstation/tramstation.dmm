@@ -11998,7 +11998,7 @@
 /area/station/medical/morgue)
 "ddp" = (
 /obj/structure/bed/double,
-/obj/item/bedsheet/dorms_double,
+/obj/effect/spawner/random/bedsheet/double,
 /obj/effect/landmark/start/assistant,
 /obj/structure/sign/clock/directional/north,
 /obj/item/pillow/random,
@@ -12840,7 +12840,7 @@
 /obj/structure/bed{
 	dir = 8
 	},
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/structure/sign/clock/directional/east,
 /obj/item/pillow/random,
 /turf/open/floor/wood,
@@ -14468,7 +14468,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/effect/landmark/start/assistant,
@@ -15255,7 +15255,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/structure/sign/clock/directional/south,
@@ -21730,7 +21730,7 @@
 /obj/structure/bed/double{
 	dir = 4
 	},
-/obj/item/bedsheet/dorms_double{
+/obj/effect/spawner/random/bedsheet/double{
 	dir = 4
 	},
 /obj/structure/sign/clock/directional/north,
@@ -40736,7 +40736,7 @@
 /area/station/commons/dorms)
 "nwe" = (
 /obj/structure/bed/double,
-/obj/item/bedsheet/dorms_double,
+/obj/effect/spawner/random/bedsheet/double,
 /obj/structure/sign/clock/directional/north,
 /obj/item/pillow/random,
 /turf/open/floor/carpet,
@@ -47099,7 +47099,7 @@
 /obj/structure/bed{
 	dir = 8
 	},
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/assistant,
 /obj/structure/sign/clock/directional/east,
 /obj/item/pillow/random,
@@ -47417,7 +47417,7 @@
 /obj/structure/bed{
 	dir = 8
 	},
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/structure/sign/clock/directional/east,
 /obj/item/pillow/random,
 /turf/open/floor/carpet,
@@ -50113,7 +50113,7 @@
 /obj/structure/bed{
 	dir = 8
 	},
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/assistant,
 /obj/structure/sign/clock/directional/east,
 /obj/item/pillow/random,
@@ -53219,7 +53219,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/structure/sign/clock/directional/west,
@@ -57012,7 +57012,7 @@
 /turf/open/floor/iron/smooth,
 /area/station/service/chapel/office)
 "tpP" = (
-/obj/item/bedsheet/dorms_double{
+/obj/effect/spawner/random/bedsheet/double{
 	dir = 4
 	},
 /obj/structure/bed/double{
@@ -60221,7 +60221,7 @@
 /area/station/maintenance/department/cargo)
 "usZ" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/hangover,
 /obj/structure/sign/clock/directional/south,
 /obj/item/pillow/random,
@@ -68940,7 +68940,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/structure/sign/clock/directional/west,
@@ -70719,7 +70719,7 @@
 /area/station/science/ordnance/storage)
 "yfV" = (
 /obj/structure/bed/double,
-/obj/item/bedsheet/dorms_double,
+/obj/effect/spawner/random/bedsheet/double,
 /obj/effect/landmark/start/hangover,
 /obj/structure/sign/clock/directional/north,
 /obj/item/pillow/random,

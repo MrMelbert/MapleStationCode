@@ -11,7 +11,7 @@
 /obj/item/borg/upgrade/thrusters
 	icon_state = "module_general"
 
-/obj/item/borg/upgrade/ddrill
+/obj/item/borg/upgrade/diamond_drill
 	icon_state = "module_miner"
 
 /obj/item/borg/upgrade/soh

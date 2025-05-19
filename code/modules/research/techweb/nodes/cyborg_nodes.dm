@@ -57,6 +57,7 @@
 		"borg_upgrade_service_apparatus",
 		"borg_upgrade_drink_apparatus",
 		"borg_upgrade_service_cookbook",
+		"borg_upgrade_botany",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
 
@@ -116,7 +117,7 @@
 	prereq_ids = list(TECHWEB_NODE_BORG_MINING, TECHWEB_NODE_PARTS_UPG)
 	design_ids = list(
 		"borg_upgrade_rped",
-//		"borg_upgrade_engineeringomnitool",
+		"borg_upgrade_engineeringomnitool",
 		"borg_upgrade_circuitapp",
 		"borg_upgrade_inducer",
 	)

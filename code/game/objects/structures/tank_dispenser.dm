@@ -71,7 +71,7 @@
 			oxygentanks++
 		else
 			full = TRUE
-	else if(!user.combat_mode)
+	else if(!user.combat_mode || (I.item_flags & NOBLUDGEON))
 		balloon_alert(user, "can't insert!")
 		return
 	else
@@ -85,13 +85,11 @@
 	balloon_alert(user, "tank inserted")
 	update_appearance()
 
-/obj/structure/tank_dispenser/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		for(var/X in src)
-			var/obj/item/I = X
-			I.forceMove(loc)
-		new /obj/item/stack/sheet/iron (loc, 2)
-	qdel(src)
+/obj/structure/tank_dispenser/atom_deconstruct(disassembled = TRUE)
+	for(var/X in src)
+		var/obj/item/I = X
+		I.forceMove(loc)
+	new /obj/item/stack/sheet/iron (loc, 2)
 
 /obj/structure/tank_dispenser/examine(mob/user)
 	. = ..()

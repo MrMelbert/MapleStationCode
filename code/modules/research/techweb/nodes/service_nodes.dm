@@ -131,7 +131,7 @@
 		"oven",
 		"stove",
 		"range",
-//		"souppot",
+		"souppot",
 		"processor",
 		"gibber",
 		"monkey_recycler",
@@ -165,7 +165,7 @@
 	design_ids = list(
 		"fishing_rod_tech",
 		"stabilized_hook",
-//		"auto_reel",
+		"auto_reel",
 		"fish_analyzer",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)

@@ -26,6 +26,7 @@
 	damage_deflection = 10
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
+	interaction_flags_click = ALLOW_SILICON_REACH
 	processing_flags = START_PROCESSING_MANUALLY
 
 	///Range of the light emitted when on
@@ -223,7 +224,7 @@
 
 	//Make the apc visually interactive
 	register_context()
-	addtimer(CALLBACK(src, PROC_REF(update)), 5)
+	addtimer(CALLBACK(src, PROC_REF(update)), 0.5 SECONDS)
 	RegisterSignal(SSdcs, COMSIG_GLOB_GREY_TIDE, PROC_REF(grey_tide))
 	update_appearance()
 
@@ -252,6 +253,12 @@
 	if(terminal)
 		disconnect_terminal()
 	return ..()
+
+/obj/machinery/power/apc/proc/on_saboteur(datum/source, disrupt_duration)
+	SIGNAL_HANDLER
+	disrupt_duration *= 0.1 // so, turns out, failure timer is in seconds, not deciseconds; without this, disruptions last 10 times as long as they probably should
+	energy_fail(disrupt_duration)
+	return TRUE
 
 /obj/machinery/power/apc/on_set_is_operational(old_value)
 	update_area_power_usage(!old_value)

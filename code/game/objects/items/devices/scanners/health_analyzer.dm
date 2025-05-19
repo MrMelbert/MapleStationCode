@@ -27,8 +27,12 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
+	interaction_flags_click = NEED_LITERACY|NEED_LIGHT|ALLOW_RESTING
+	/// Verbose/condensed
 	var/mode = SCANNER_VERBOSE
+	/// HEALTH/WOUND
 	var/scanmode = SCANMODE_HEALTH
+	/// Advanced health analyzer
 	var/advanced = FALSE
 	custom_price = PAYCHECK_COMMAND
 	/// If this analyzer will give a bonus to wound treatments apon woundscan.
@@ -62,7 +66,7 @@
 		if(SCANMODE_WOUND)
 			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
 
-/obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -108,7 +112,7 @@
 
 	add_fingerprint(user)
 
-/obj/item/healthanalyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(user.can_read(src) && !user.is_blind())
@@ -440,10 +444,7 @@
 		to_chat(user, examine_block(.), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 	return .
 
-/obj/item/healthanalyzer/CtrlShiftClick(mob/user)
-	. = ..()
-	if(. == FALSE)
-		return
+/obj/item/healthanalyzer/click_ctrl_shift(mob/user)
 	if(!length(last_scan_text))
 		balloon_alert(user, "no scans!")
 		return
@@ -543,17 +544,13 @@
 			return jointext(render_list, "")
 		// NON-MODULE CHANGE END
 
-/obj/item/healthanalyzer/AltClick(mob/user)
-	..()
-
-	if(!user.can_perform_action(src, NEED_LITERACY|NEED_LIGHT) || user.is_blind())
-		return
-
+/obj/item/healthanalyzer/click_alt(mob/user)
 	if(mode == SCANNER_NO_MODE)
-		return
+		return CLICK_ACTION_BLOCKING
 
 	mode = !mode
 	to_chat(user, mode == SCANNER_VERBOSE ? "The scanner now shows specific limb damage." : "The scanner no longer shows limb damage.")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/healthanalyzer/advanced
 	name = "advanced health analyzer"
@@ -648,7 +645,7 @@
 /obj/item/healthanalyzer/simple/proc/violence_damage(mob/living/user)
 	user.adjustBruteLoss(4)
 
-/obj/item/healthanalyzer/simple/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/simple/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())

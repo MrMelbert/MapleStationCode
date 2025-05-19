@@ -6,6 +6,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	"home" = "RETURN HOME",
 ))
 
+#define SENTIENT_BOT_RESET_TIMER 45 SECONDS
 
 /mob/living/basic/bot
 	icon = 'icons/mob/silicon/aibots.dmi'
@@ -41,6 +42,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	speed = 3
 	///Access required to access this Bot's maintenance protocols
 	var/maints_access_required = list(ACCESS_ROBOTICS)
+	interaction_flags_click = ALLOW_SILICON_REACH
 	///The Robot arm attached to this robot - has a 50% chance to drop on death.
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
 	///The inserted (if any) pAI in this bot.
@@ -103,7 +105,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	AddElement(/datum/element/relay_attackers)
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(handle_loop_movement))
 	RegisterSignal(src, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(after_attacked))
-	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
+	RegisterSignal(src, COMSIG_OBJ_ALLOWED, PROC_REF(attempt_access))
 	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
 	LoadComponent(/datum/component/bloodysoles/bot)
 	GLOB.bots_list += src
@@ -376,13 +378,9 @@ GLOBAL_LIST_INIT(command_strings, list(
 		ui = new(user, src, "SimpleBot", name)
 		ui.open()
 
-/mob/living/basic/bot/AltClick(mob/user)
-	. = ..()
-	if(!can_interact(user))
-		return
-	if(!user.can_perform_action(src, ALLOW_SILICON_REACH))
-		return
+/mob/living/basic/bot/click_alt(mob/user)
 	unlock_with_id(user)
+	return CLICK_ACTION_SUCCESS
 
 /mob/living/basic/bot/proc/unlock_with_id(mob/living/user)
 	if(bot_access_flags & BOT_COVER_EMAGGED)
@@ -774,9 +772,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/proc/attempt_access(mob/bot, obj/door_attempt)
 	SIGNAL_HANDLER
 
-	if(door_attempt.check_access(access_card))
-		return ACCESS_ALLOWED
-	return ACCESS_DISALLOWED
+	return (door_attempt.check_access(access_card) ? COMPONENT_OBJ_ALLOW : COMPONENT_OBJ_DISALLOW)
 
 /mob/living/basic/bot/proc/generate_speak_list()
 	return null
@@ -799,6 +795,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	access_card.set_access(access_to_grant)
 	speak("Responding.", radio_channel)
 	update_bot_mode(new_mode = BOT_SUMMON)
+	if(client) //if we're sentient, we reset ourselves after a short period
+		addtimer(CALLBACK(src, PROC_REF(bot_reset)), SENTIENT_BOT_RESET_TIMER)
 	return TRUE
 
 /mob/living/basic/bot/proc/set_ai_caller(mob/living/ai_caller)
@@ -823,5 +821,12 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/spawn_gibs(drop_bitflags = NONE)
 	new /obj/effect/gibspawner/robot(drop_location(), src)
 
+/mob/living/basic/bot/get_hit_area_message(input_area)
+	// we just get hit, there's no complexity for hitting an arm (if it exists) or anything.
+	// we also need to return an empty string as otherwise it would falsely say that we get hit in the chest or something strange like that (bots don't have "chests")
+	return ""
+
 /mob/living/basic/bot/proc/on_bot_movement(atom/movable/source, atom/oldloc, dir, forced)
 	return
+
+#undef SENTIENT_BOT_RESET_TIMER

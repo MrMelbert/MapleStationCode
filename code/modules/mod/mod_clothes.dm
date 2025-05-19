@@ -7,7 +7,7 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HEAD
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 
 /obj/item/clothing/suit/mod
 	name = "MOD chestplate"
@@ -24,7 +24,7 @@
 	)
 	armor_type = /datum/armor/none
 	body_parts_covered = CHEST|GROIN|LEGS // NON-MODULE CHANGE
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 
 /obj/item/clothing/gloves/mod
@@ -36,7 +36,7 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HANDS|ARMS
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 
 /obj/item/clothing/shoes/mod
 	name = "MOD boots"
@@ -47,6 +47,6 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = FEET|LEGS
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 	can_be_tied = FALSE

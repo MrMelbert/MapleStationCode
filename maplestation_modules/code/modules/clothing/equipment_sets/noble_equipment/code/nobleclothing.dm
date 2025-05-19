@@ -385,12 +385,9 @@
 	inhand_icon_state = "voidextract"
 	force = 0
 
-/obj/item/philemon_extract/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag || !isliving(target))
+/obj/item/philemon_extract/interact_with_atom(mob/living/healing, mob/living/user, list/modifiers)
+	if(!isliving(healing))
 		return
-
-	var/mob/living/healing = target
 	if(healing == user)
 		user.visible_message(
 			span_notice("[user] slathers [src] over [user.p_them()]self, the butterfly detaches and flies away after [user.p_their()] injuries!"),

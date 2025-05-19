@@ -672,6 +672,11 @@
 	dispatch_transport(destination_platform = push_destination)
 	return push_destination
 
+
+/datum/transport_controller/linear/tram/slow //for some reason speed is set to initial() in the code but if i touched it it would probably break so
+	speed_limiter = 3
+	base_speed_limiter = 3
+
 /**
  * The physical cabinet on the tram. Acts as the interface between players and the controller datum.
  */
@@ -699,7 +704,9 @@
 
 /obj/machinery/transport/tram_controller/hilbert
 	configured_transport_id = HILBERT_LINE_1
-	obj_flags = /obj::obj_flags | NO_DECONSTRUCTION
+
+/obj/machinery/transport/tram_controller/wrench_act_secondary(mob/living/user, obj/item/tool)
+	return NONE
 
 /obj/machinery/transport/tram_controller/Initialize(mapload)
 	. = ..()
@@ -838,7 +845,7 @@
 			return
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, vary = TRUE)
 		balloon_alert(user, "unsecured")
-		deconstruct()
+		deconstruct(TRUE)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/transport/tram_controller/screwdriver_act_secondary(mob/living/user, obj/item/tool)
