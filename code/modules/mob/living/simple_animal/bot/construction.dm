@@ -10,7 +10,7 @@
 	var/build_step = ASSEMBLY_FIRST_STEP
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
 
-/obj/item/bot_assembly/attackby(obj/item/I, mob/user, list/modifiers)
+/obj/item/bot_assembly/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	if(IS_WRITING_UTENSIL(I))
 		rename_bot()
@@ -73,7 +73,7 @@
 	return ..()
 
 
-/obj/item/bot_assembly/cleanbot/attackby(obj/item/item_attached, mob/user, list/modifiers)
+/obj/item/bot_assembly/cleanbot/attackby(obj/item/item_attached, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	if(!istype(item_attached, /obj/item/bodypart/arm/left/robot) && !istype(item_attached, /obj/item/bodypart/arm/right/robot))
 		return
@@ -98,7 +98,7 @@
 	var/lasercolor = ""
 	var/vest_type = /obj/item/clothing/suit/armor/vest
 
-/obj/item/bot_assembly/ed209/attackby(obj/item/W, mob/user, list/modifiers)
+/obj/item/bot_assembly/ed209/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP, ASSEMBLY_SECOND_STEP)
@@ -228,7 +228,7 @@
 		if(ASSEMBLY_SECOND_STEP)
 			icon_state = "[toolbox_color]toolbox_tiles_sensor"
 
-/obj/item/bot_assembly/floorbot/attackby(obj/item/W, mob/user, list/modifiers)
+/obj/item/bot_assembly/floorbot/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -268,7 +268,7 @@
 	if(skin)
 		icon_state = "[base_icon_state]_[skin]" // NON-MODULE CHANGE
 
-/obj/item/bot_assembly/medbot/attackby(obj/item/W, mob/user, list/modifiers)
+/obj/item/bot_assembly/medbot/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -305,7 +305,7 @@
 	icon_state = "honkbot_arm"
 	created_name = "Honkbot"
 
-/obj/item/bot_assembly/honkbot/attackby(obj/item/attacking_item, mob/user, list/modifiers)
+/obj/item/bot_assembly/honkbot/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -344,7 +344,7 @@
 	var/swordamt = 0 //If you're converting it into a grievousbot, how many swords have you attached
 	var/toyswordamt = 0 //honk
 
-/obj/item/bot_assembly/secbot/attackby(obj/item/I, mob/user, list/modifiers)
+/obj/item/bot_assembly/secbot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	var/atom/Tsec = drop_location()
 	switch(build_step)
@@ -478,7 +478,7 @@
 	icon_state = "firebot_arm"
 	created_name = "Firebot"
 
-/obj/item/bot_assembly/firebot/attackby(obj/item/I, mob/user, list/modifiers)
+/obj/item/bot_assembly/firebot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	switch(build_step)
 		if(ASSEMBLY_FIRST_STEP)
@@ -508,7 +508,7 @@
 	icon_state = "hygienebot"
 	created_name = "Hygienebot"
 
-/obj/item/bot_assembly/hygienebot/attackby(obj/item/I, mob/user, list/modifiers)
+/obj/item/bot_assembly/hygienebot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	var/atom/Tsec = drop_location()
 	switch(build_step)
@@ -563,7 +563,7 @@
 	icon_state = "vim_0"
 	created_name = "\improper Vim"
 
-/obj/item/bot_assembly/vim/attackby(obj/item/part, mob/user, list/modifiers)
+/obj/item/bot_assembly/vim/attackby(obj/item/part, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

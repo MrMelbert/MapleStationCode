@@ -212,7 +212,7 @@
 	effectiveness = 80, \
 	)
 
-/obj/item/melee/arm_blade/afterattack(atom/target, mob/user, list/modifiers)
+/obj/item/melee/arm_blade/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(target, /obj/structure/table))
 		var/obj/smash = target
 		smash.deconstruct(FALSE)

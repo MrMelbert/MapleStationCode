@@ -675,7 +675,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/photocopier/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+/obj/machinery/photocopier/item_interaction(mob/living/user, obj/item/tool, list/modifiers, list/attack_modifiers)
 	// No infinite paper chain. You need the original paperwork to make more copies.
 	if(istype(tool, /obj/item/paperwork/photocopy))
 		balloon_alert(user, "too blurry!")

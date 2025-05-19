@@ -402,7 +402,7 @@
 		icon_state = base_icon_state
 	return ..()
 
-/obj/item/fish/attackby(obj/item/item, mob/living/user, list/modifiers)
+/obj/item/fish/attackby(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!istype(item, /obj/item/fish_feed))
 		return ..()
 	if(!item.reagents.total_volume)

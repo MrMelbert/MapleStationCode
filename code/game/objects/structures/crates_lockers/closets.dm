@@ -663,7 +663,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		req_access = accesses
 		req_one_access = null
 
-/obj/structure/closet/attackby(obj/item/W, mob/user, list/modifiers)
+/obj/structure/closet/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(user in src)
 		return
 	if(src.tool_interact(W,user))

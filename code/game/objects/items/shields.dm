@@ -147,7 +147,7 @@
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
-/obj/item/shield/riot/attackby(obj/item/attackby_item, mob/user, list/modifiers)
+/obj/item/shield/riot/attackby(obj/item/attackby_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(attackby_item, /obj/item/melee/baton))
 		if(!COOLDOWN_FINISHED(src, baton_bash))
 			return

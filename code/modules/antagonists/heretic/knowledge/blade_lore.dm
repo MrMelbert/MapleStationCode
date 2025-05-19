@@ -370,14 +370,8 @@
 			offand_force_decrement += 2
 			hits_to_crit_on_average = ROUND_UP(100 / (blade.force * 2 - offand_force_decrement))
 
-	// Save the force as our last weapon force
-	last_weapon_force = blade.force
-	// Subtract the decrement
-	blade.force -= offand_force_decrement
 	// Perform the offhand attack
-	blade.melee_attack_chain(source, target)
-	// Restore the force.
-	blade.force = last_weapon_force
+	blade.melee_attack_chain(source, target, null, list(FORCE_MODIFIER = -offand_force_decrement))
 
 /datum/heretic_knowledge/spell/furious_steel
 	name = "Furious Steel"

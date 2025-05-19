@@ -62,7 +62,7 @@
 	// How much damage does this item do to the targets sanity?
 	var/sanity_damage = 20
 
-/obj/item/clothing/neck/heretic_focus/moon_amulette/attack(mob/living/target, mob/living/user, list/modifiers)
+/obj/item/clothing/neck/heretic_focus/moon_amulette/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	var/mob/living/carbon/human/hit = target
 	if(!IS_HERETIC(user))
 		user.balloon_alert(user, "you feel a presence watching you")

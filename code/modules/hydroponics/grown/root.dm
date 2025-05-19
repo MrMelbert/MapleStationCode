@@ -25,7 +25,7 @@
 	juice_typepath = /datum/reagent/consumable/carrotjuice
 	wine_power = 30
 
-/obj/item/food/grown/carrot/attackby(obj/item/I, mob/user, list/modifiers)
+/obj/item/food/grown/carrot/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(I.get_sharpness())
 		var/carrot_blade
 		var/carrot_sword_chance = (max(0, seed.potency - 50) / 50)

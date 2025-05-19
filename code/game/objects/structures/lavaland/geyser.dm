@@ -58,7 +58,7 @@
 	else
 		stop_chemming() //we're full
 
-/obj/structure/geyser/attackby(obj/item/item, mob/user, list/modifiers)
+/obj/structure/geyser/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(!istype(item, /obj/item/mining_scanner) && !istype(item, /obj/item/t_scanner/adv_mining_scanner))
 		playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 		return ..() //this runs the plunger code
@@ -142,7 +142,7 @@
 	///What layer we set it to
 	var/target_layer = DUCT_LAYER_DEFAULT
 
-/obj/item/plunger/attack_atom(obj/O, mob/living/user, list/modifiers)
+/obj/item/plunger/attack_atom(obj/O, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(layer_mode)
 		SEND_SIGNAL(O, COMSIG_MOVABLE_CHANGE_DUCT_LAYER, O, target_layer)
 		return ..()

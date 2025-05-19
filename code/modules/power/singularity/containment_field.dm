@@ -50,7 +50,7 @@
 		yeet_shock(user)
 		return TRUE
 
-/obj/machinery/field/containment/attackby(obj/item/W, mob/user, list/modifiers)
+/obj/machinery/field/containment/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	yeet_shock(user)
 	return TRUE
 

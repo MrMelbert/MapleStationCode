@@ -168,7 +168,7 @@
 			Caveat emptor." \
 	)
 
-/obj/item/gun/energy/recharge/fisher/attack(mob/living/target_mob, mob/living/user, list/modifiers)
+/obj/item/gun/energy/recharge/fisher/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

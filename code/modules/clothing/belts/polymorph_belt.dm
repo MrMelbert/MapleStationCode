@@ -48,7 +48,7 @@
 	update_transform_action()
 	playsound(src, 'sound/machines/crate_open.ogg', 50, FALSE)
 
-/obj/item/polymorph_belt/attack(mob/living/target_mob, mob/living/user, list/modifiers)
+/obj/item/polymorph_belt/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if (.)
 		return

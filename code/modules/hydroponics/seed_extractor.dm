@@ -94,7 +94,7 @@
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/seed_extractor/attackby(obj/item/attacking_item, mob/living/user, list/modifiers)
+/obj/machinery/seed_extractor/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!isliving(user) || user.combat_mode)
 		return ..()
 

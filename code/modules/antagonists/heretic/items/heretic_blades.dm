@@ -24,7 +24,7 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
 	var/after_use_message = ""
 
-/obj/item/melee/sickly_blade/pre_attack(atom/A, mob/living/user, params)
+/obj/item/melee/sickly_blade/pre_attack(atom/A, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return .
