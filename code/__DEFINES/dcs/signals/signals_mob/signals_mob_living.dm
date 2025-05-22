@@ -266,25 +266,6 @@
 	///cancel post eating
 	#define COMSIG_MOB_TERMINATE_EAT (1<<0)
 
-///From mob/living/carbon/proc/throw_mode_on and throw_mode_off
-#define COMSIG_LIVING_THROW_MODE_TOGGLE "living_throw_mode_toggle"
-/// From mob/living/proc/on_fall
-#define COMSIG_LIVING_THUD "living_thud"
-///From /datum/component/happiness()
-#define COMSIG_MOB_HAPPINESS_CHANGE "happiness_change"
-/// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
-#define COMSIG_MOB_BATONED "mob_batoned"
-
-/// From /obj/machinery/gibber/startgibbing(): (mob/living/user, /obj/machinery/gibber, list/results)
-#define COMSIG_LIVING_GIBBER_ACT "living_gibber_act"
-
-/// Sent to the mob when their mind is slaved
-#define COMSIG_MOB_ENSLAVED_TO "mob_enslaved_to"
-/// From /obj/item/proc/attack_atom: (mob/living/attacker, atom/attacked)
-#define COMSIG_LIVING_ATTACK_ATOM "living_attack_atom"
-/// From /mob/living/proc/stop_leaning()
-#define COMSIG_LIVING_STOPPED_LEANING "living_stopped_leaning"
-
 /// From /mob/living/get_examine_name(mob/user) : (mob/examined, visible_name, list/name_override)
 /// Allows mobs to override how they perceive others when examining
 #define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"
