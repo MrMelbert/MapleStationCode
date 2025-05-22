@@ -6651,7 +6651,6 @@
 #include "maplestation_modules\code\modules\vending\wardrobes.dm"
 #include "maplestation_modules\code\modules\wiremod\component_printer.dm"
 #include "maplestation_modules\code\modules\wiremod\shells.dm"
-#ifdef MAPLESTATION_STORY_CONTENT
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
 #include "maplestation_modules\story_content\alraune_miscitems\code\alrmiscitem.dm"
@@ -6661,6 +6660,7 @@
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\ppc_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\melee\void_blade.dm"
 #include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
+#include "maplestation_modules\story_content\eveleen_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\grey_equipment\code\greyclothing.dm"
 #include "maplestation_modules\story_content\isaac_equipment\code\isaacclothing.dm"
 #include "maplestation_modules\story_content\jessie_equipment\code\jessie_clothing.dm"
@@ -6688,5 +6688,4 @@
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
 #include "maplestation_modules\story_content\volkan_equipment\datums\loadout_datum.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
-#endif // MAPLESTATION_STORY_CONTENT
 // END_INCLUDE
