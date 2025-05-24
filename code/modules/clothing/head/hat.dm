@@ -84,9 +84,9 @@
 /obj/item/clothing/head/flatcap
 	name = "flat cap"
 	desc = "A working man's cap."
-	icon_state = "beret_flat"
-	icon_preview = 'icons/obj/clothing/head/beret.dmi'
-	icon_state_preview = "beret_flat"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/flatcap"
+	post_init_icon_state = "beret_flat"
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
 	greyscale_colors = "#8F7654"
@@ -187,11 +187,12 @@
 /obj/item/clothing/head/costume/santa/gags
 	name = "santa hat"
 	desc = "On the first day of christmas my employer gave to me!"
-	icon_state = "santa_hat"
-	icon_state_preview = "santahatnorm"
-	greyscale_colors = "#cc0000#f8f8f8"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/costume/santa/gags"
+	post_init_icon_state = "santa_hat"
 	greyscale_config = /datum/greyscale_config/santa_hat
 	greyscale_config_worn = /datum/greyscale_config/santa_hat/worn
+	greyscale_colors = "#cc0000#f8f8f8"
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/head/costume/jester

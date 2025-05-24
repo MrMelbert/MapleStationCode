@@ -157,7 +157,7 @@
  * Holographic carp from the holodeck
  */
 /mob/living/basic/carp/holographic
-	icon_state = "holocarp"
+	icon_state = "base_friend"
 	icon_living = "holocarp"
 	gold_core_spawnable = NO_SPAWN
 	greyscale_config = NONE
@@ -194,10 +194,10 @@
 	faction = list(FACTION_NEUTRAL)
 	maxHealth = 200
 	health = 200
+	icon_state = "magicarp"
 	icon_dead = "magicarp_dead"
 	icon_gib = "magicarp_gib"
 	icon_living = "magicarp"
-	icon_state = "magicarp"
 	greyscale_config = NONE
 
 /// Boosted chance for Cayenne to be silver

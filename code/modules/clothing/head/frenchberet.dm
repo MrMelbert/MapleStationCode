@@ -1,13 +1,13 @@
-/obj/item/clothing/head/frenchberet
+/obj/item/clothing/head/beret/frenchberet
 	name = "french beret"
 	desc = "A quality beret, infused with the aroma of chain-smoking, wine-swilling Parisians. You feel less inclined to engage in military conflict, for some reason."
-	icon_state = "beret"
-	greyscale_config = /datum/greyscale_config/beret
-	greyscale_config_worn = /datum/greyscale_config/beret/worn
-	greyscale_colors = "#972A2A"
+	// icon_state = "beret"
+	// greyscale_config = /datum/greyscale_config/beret
+	// greyscale_config_worn = /datum/greyscale_config/beret/worn
+	// greyscale_colors = "#972A2A"
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
-
-/obj/item/clothing/head/frenchberet/equipped(mob/M, slot)
+/obj/item/clothing/head/beret/frenchberet/equipped(mob/user, slot, initial)
 	. = ..()
 	if (slot & ITEM_SLOT_HEAD)
 		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
@@ -16,7 +16,7 @@
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 		REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)
 
-/obj/item/clothing/head/frenchberet/dropped(mob/M)
+/obj/item/clothing/head/beret/frenchberet/dropped(mob/user, silent)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)

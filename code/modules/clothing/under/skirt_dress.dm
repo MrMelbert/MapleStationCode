@@ -42,7 +42,8 @@
 /obj/item/clothing/under/dress/skirt/plaid
 	name = "plaid skirt"
 	desc = "A preppy plaid skirt with a white blouse."
-	icon_state = "plaidskirt"
+	icon_state = "/obj/item/clothing/under/dress/skirt/plaid"
+	post_init_icon_state = "plaidskirt"
 	can_adjust = TRUE
 	alt_covers_chest = TRUE
 	custom_price = PAYCHECK_CREW
@@ -54,11 +55,11 @@
 /obj/item/clothing/under/dress/skirt/turtleskirt
 	name = "turtleneck skirt"
 	desc = "A casual turtleneck skirt."
-	icon_state = "turtleskirt"
-	icon_preview = 'icons/obj/clothing/under/dress.dmi'
-	icon_state_preview = "turtleskirt_top"
 	custom_price = PAYCHECK_CREW
 	greyscale_colors = "#cc0000#5f5f5f"
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/skirt/turtleskirt"
+	post_init_icon_state = "turtleskirt"
 	greyscale_config = /datum/greyscale_config/turtleskirt
 	greyscale_config_worn = /datum/greyscale_config/turtleskirt/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
@@ -66,11 +67,12 @@
 /obj/item/clothing/under/dress/tango
 	name = "tango dress"
 	desc = "Filled with Latin fire."
-	icon_state = "tango"
-	icon_preview = 'icons/obj/clothing/under/dress.dmi'
-	icon_state_preview = "tango_base"
+	alternate_worn_layer = UNDER_SUIT_LAYER
 	custom_price = PAYCHECK_CREW
 	greyscale_colors = "#ff0000#1c1c1c"
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/tango"
+	post_init_icon_state = "tango"
 	greyscale_config = /datum/greyscale_config/tango
 	greyscale_config_worn = /datum/greyscale_config/tango/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
@@ -78,11 +80,11 @@
 /obj/item/clothing/under/dress/sundress
 	name = "sundress"
 	desc = "Makes you want to frolic in a field of daisies."
-	icon_state = "sundress"
-	icon_preview = 'icons/obj/clothing/under/dress.dmi'
-	icon_state_preview = "sundress_base"
 	custom_price = PAYCHECK_CREW
 	greyscale_colors = "#FFE60F#9194A5#1F243C"
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/sundress"
+	post_init_icon_state = "sundress"
 	greyscale_config = /datum/greyscale_config/sundress
 	greyscale_config_worn = /datum/greyscale_config/sundress/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
