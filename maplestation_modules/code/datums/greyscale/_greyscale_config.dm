@@ -59,3 +59,12 @@
 	name = "Held Umbrella, Right, Closed"
 	icon_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
 	json_config = 'code/datums/greyscale/json_configs/_umbrella_inhand.json'
+
+/datum/greyscale_config/sweet_bow
+	name = "Sweet Bow"
+	icon_file = 'maplestation_modules/story_content/eveleen_equipment/icons/obj/head.dmi'
+	json_config = 'code/datums/greyscale/json_configs/sweet_bow.json'
+
+/datum/greyscale_config/sweet_bow/worn
+	name = "Sweet Bow (Worn)"
+	icon_file = 'maplestation_modules/story_content/eveleen_equipment/icons/mob/head.dmi'
