@@ -1,24 +1,13 @@
-///obj/item/clothing/head/bow/sweet
-//	name = "sweet bow"
-//	desc = "A sweet bow that you can place on the back of your head."
-//	icon_state = "sweet_bow"
-//	icon_preview = 'modular_doppler/modular_cosmetics/GAGS/icons/obj/head.dmi'
-//	icon_state_preview = "sweet_bow"
-//	greyscale_config = /datum/greyscale_config/sweet_bow
-//	greyscale_config_worn = /datum/greyscale_config/sweet_bow/worn
-//	greyscale_colors = "#7b9ab5"
-//	flags_1 = IS_PLAYER_COLORABLE_1
-
-///datum/greyscale_config/sweet_bow
-//	name = "Sweet Bow"
-//	icon_file = 'modular_doppler/modular_cosmetics/GAGS/icons/obj/head.dmi'
-//	json_config = 'modular_doppler/modular_cosmetics/GAGS/json_configs/head/sweet_bow.json'
-
-///datum/greyscale_config/sweet_bow/worn
-//	name = "Sweet Bow (Worn)"
-//	icon_file = 'modular_doppler/modular_cosmetics/GAGS/icons/mob/head.dmi'
-
-// TODO: all of the above
+/obj/item/clothing/head/bow/sweet
+	name = "sweet bow"
+	desc = "A sweet bow that you can place on the back of your head."
+	icon_state = "sweet_bow"
+	icon_preview = 'maplestation_modules/story_content/eveleen_equipment/icons/obj/head.dmi'
+	icon_state_preview = "sweet_bow"
+	greyscale_config = /datum/greyscale_config/sweet_bow
+	greyscale_config_worn = /datum/greyscale_config/sweet_bow/worn
+	greyscale_colors = "#7b9ab5"
+	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/under/rank/medical/paramedic/green
 	name = "green paramedic jumpsuit"
@@ -58,3 +47,37 @@
 	icon = 'maplestation_modules/story_content/eveleen_equipment/icons/obj/shoes.dmi'
 	icon_state = "medical"
 	worn_icon = 'maplestation_modules/story_content/eveleen_equipment/icons/mob/shoes.dmi'
+
+/datum/loadout_item/head/sweet_bow
+	name = "Sweet Bow"
+	item_path = /obj/item/clothing/head/bow/sweet
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/green_paramedic
+	name = "Green Paramedic Jumpsuit"
+	item_path = /obj/item/clothing/under/rank/medical/paramedic/green
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/green_labcoat
+	name = "Green Medical Labcoat"
+	item_path = /obj/item/clothing/suit/toggle/labcoat/medical/green
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/mantle
+	name = "Hazard Mantle"
+	item_path = /obj/item/clothing/neck/mantle
+
+/datum/loadout_item/gloves/green_nitrile
+	name = "Green Nitrile Gloves"
+	item_path = /obj/item/clothing/gloves/latex/nitrile/green
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/green_medical
+	name = "green medical shoes"
+	item_path = /obj/item/clothing/shoes/medical/green
+	additional_displayed_text = list("Character Item")
+
+/datum/sprite_accessory/hair/nia
+	name = "Nia"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nia"
