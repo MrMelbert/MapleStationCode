@@ -38,6 +38,10 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 	ignore_human_authority = TRUE
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/quartermaster
 	name = "Quartermaster"
 	jobtype = /datum/job/quartermaster

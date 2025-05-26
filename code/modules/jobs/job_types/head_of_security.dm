@@ -39,6 +39,10 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_MASTER,
+		/datum/skill/first_aid = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/job/head_of_security/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
