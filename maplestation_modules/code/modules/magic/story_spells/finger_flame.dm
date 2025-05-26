@@ -13,7 +13,7 @@
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
 
-	hand_path = /obj/item/lighter/finger/magic
+	hand_path = /obj/item/lighter/spell/finger/magic
 	draw_message = null
 	drop_message = null
 	can_cast_on_self = TRUE // self burn
@@ -36,8 +36,6 @@
 /datum/action/cooldown/spell/touch/finger_flame/is_valid_target(atom/cast_on)
 	return ismovable(cast_on)
 
-/datum/action/cooldown/spell/touch/finger_flame/cast_on_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
-	return TRUE // essentially, if we touch something with the flame it goes away.
 
 /datum/action/cooldown/spell/touch/finger_flame/proc/do_snap(mob/living/carbon/cast_on)
 	set waitfor = FALSE
@@ -60,14 +58,14 @@
 	. = ..()
 	if(!.)
 		return
-	var/obj/item/lighter/finger/lighter = attached_hand
+	var/obj/item/lighter/spell/finger/lighter = attached_hand
 	lighter.set_lit(TRUE)
 
 /datum/action/cooldown/spell/touch/finger_flame/remove_hand(mob/living/hand_owner, reset_cooldown_after)
 	if(QDELETED(src) || QDELETED(hand_owner) || QDELETED(attached_hand))
 		return ..()
 
-	var/obj/item/lighter/finger/lighter = attached_hand
+	var/obj/item/lighter/spell/finger/lighter = attached_hand
 	lighter.set_lit(FALSE) // not strictly necessary as we qdel, but for the sound fx
 	if(reset_cooldown_after)
 		do_unsnap(hand_owner)
@@ -107,7 +105,7 @@
 
 	cooldown_time = 5 SECONDS
 
-	hand_path = /obj/item/lighter/flame
+	hand_path = /obj/item/lighter/spell/flame
 
 	/// Assoc list of [possible accelerant] to [how much of it is required to cast the spell]
 	var/static/list/required_accelerant = list(
