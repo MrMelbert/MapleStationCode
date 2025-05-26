@@ -152,6 +152,8 @@
 	if(!QDELETED(parent))
 		if(!special && !(HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (lost_limb.bodytype & BODYTYPE_ROBOTIC)))
 			var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
+			var/datum/mutation/human/autotomy = source.dna?.get_mutation(/datum/mutation/human/self_amputation)
+			limb_removed_pain *= (autotomy ? (0.5 * GET_MUTATION_SYNCHRONIZER(autotomy)) : 1)
 			adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 			adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
 			adjust_traumatic_shock(limb_removed_pain / 4)
