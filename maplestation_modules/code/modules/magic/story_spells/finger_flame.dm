@@ -36,7 +36,6 @@
 /datum/action/cooldown/spell/touch/finger_flame/is_valid_target(atom/cast_on)
 	return ismovable(cast_on)
 
-
 /datum/action/cooldown/spell/touch/finger_flame/proc/do_snap(mob/living/carbon/cast_on)
 	set waitfor = FALSE
 	cast_on.emote("snap")

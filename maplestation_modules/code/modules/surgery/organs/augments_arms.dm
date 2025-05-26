@@ -106,6 +106,8 @@
 
 /obj/item/lighter/spell/finger/magic/ignition_effect(atom/A, mob/user)
 	. = ..()
+	if(!.)
+		return
 	clear_up(user, do_message = FALSE)
 
 // Used for lizard mouth breathing
@@ -122,13 +124,6 @@
 	VAR_FINAL/world_time_lit = -1
 	/// Tracks seconds between times we've burned someone holding the flame.
 	VAR_FINAL/seconds_burning = 0
-
-/obj/item/lighter/spell/flame/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/lizard/origin)
-	. = ..()
-	if(origin)
-		origin_ref = WEAKREF(origin)
-	else
-		item_flags |= DROPDEL
 
 /obj/item/lighter/spell/flame/ignition_effect(atom/A, mob/user)
 	if(!get_temperature())
