@@ -101,7 +101,6 @@
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
 	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
 
-	user.update_glasses_color(src, TRUE)
 	return TRUE
 
 /**
@@ -113,7 +112,6 @@
 		removed_hud.hide_from(user)
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
-	user.update_glasses_color(src, FALSE)
 	return TRUE
 
 /**
