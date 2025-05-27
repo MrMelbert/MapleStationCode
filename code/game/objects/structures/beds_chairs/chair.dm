@@ -66,8 +66,8 @@
 	if(!user.temporarilyRemoveItemFromInventory(input_shock_kit))
 		return
 	if(!overlays_from_child_procs || overlays_from_child_procs.len == 0)
-		var/image/echair_over_overlay = image('icons/obj/chairs.dmi', loc, "echair_over", OBJ_LAYER)
-		AddComponent(/datum/component/electrified_buckle, (SHOCK_REQUIREMENT_ITEM | SHOCK_REQUIREMENT_LIVE_CABLE | SHOCK_REQUIREMENT_SIGNAL_RECEIVED_TOGGLE), input_shock_kit, list(echair_over_overlay), FALSE)
+		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
+		AddComponent(/datum/component/electrified_buckle, (SHOCK_REQUIREMENT_ITEM | SHOCK_REQUIREMENT_LIVE_CABLE | SHOCK_REQUIREMENT_SIGNAL_RECEIVED_TOGGLE), input_shock_kit, list(echair_overlay), FALSE)
 	else
 		AddComponent(/datum/component/electrified_buckle, (SHOCK_REQUIREMENT_ITEM | SHOCK_REQUIREMENT_LIVE_CABLE | SHOCK_REQUIREMENT_SIGNAL_RECEIVED_TOGGLE), input_shock_kit, overlays_from_child_procs, FALSE)
 
@@ -163,7 +163,7 @@
 	return ..()
 
 /obj/structure/chair/comfy/proc/generate_armrest()
-	return mutable_appearance(icon, "[icon_state]_armrest", ABOVE_MOB_LAYER)
+	return mutable_appearance(icon, "[icon_state]_armrest", ABOVE_MOB_LAYER, appearance_flags = KEEP_APART)
 
 /obj/structure/chair/comfy/post_buckle_mob(mob/living/M)
 	. = ..()
@@ -197,8 +197,11 @@
 	unbuckle_sound = SFX_SEATBELT_UNBUCKLE
 
 /obj/structure/chair/comfy/shuttle/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
-	overlays_from_child_procs ||= list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1, layer = OBJ_LAYER))
-	return ..()
+	if(!overlays_from_child_procs)
+		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
+		echair_overlay.pixel_x = -1
+		overlays_from_child_procs = list(echair_overlay)
+	. = ..()
 
 /obj/structure/chair/comfy/shuttle/Initialize(mapload)
 	. = ..()
@@ -207,8 +210,8 @@
 /obj/structure/chair/comfy/shuttle/update_overlays()
 	. = ..()
 	if(has_buckled_mobs())
-		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01)
-		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_behind", src.layer + 0.01)
+		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01, appearance_flags = KEEP_APART)
+		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_behind", src.layer + 0.01, appearance_flags = KEEP_APART)
 	else
 		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_up", src.layer + 0.01)
 
@@ -233,7 +236,9 @@
 
 /obj/structure/chair/office/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
 	if(!overlays_from_child_procs)
-		overlays_from_child_procs = list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1, layer = OBJ_LAYER))
+		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
+		echair_overlay.pixel_x = -1
+		overlays_from_child_procs = list(echair_overlay)
 	. = ..()
 
 /obj/structure/chair/office/tactical
