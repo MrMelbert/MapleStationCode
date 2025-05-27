@@ -289,3 +289,6 @@
 
 /// Trait when a drink was renamed by a shaker
 #define SHAKER_LABEL_TRAIT "shaker_trait"
+
+/// Trait aquired from being painted a certain color
+#define ATOM_COLOR_TRAIT "atom_color"
