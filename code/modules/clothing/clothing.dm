@@ -360,7 +360,7 @@
 		.["pressureproof"] = "Protects the wearer from extremely low or high pressure, such as vacuum of space."
 	if(flags_cover & PEPPERPROOF)
 		.["pepperproof"] = "Protects the wearer from the effects of pepperspray."
-	if (heat_protection || cold_protection)
+	if (max_heat_protection_temperature || min_cold_protection_temperature)
 		var/heat_desc
 		var/cold_desc
 		switch (max_heat_protection_temperature)
@@ -444,7 +444,7 @@
 			if (1601 to 35000)
 				heat_prot = "extreme"
 		if (heat_prot)
-			. += "[src] offers the wearer [heat_protection] protection from heat, up to [max_heat_protection_temperature] kelvin."
+			. += "[src] offers the wearer [heat_prot] protection from heat, up to [max_heat_protection_temperature] kelvin."
 
 		if(min_cold_protection_temperature)
 			readout += "It will insulate the wearer from [min_cold_protection_temperature <= SPACE_SUIT_MIN_TEMP_PROTECT ? span_tooltip("While not as dangerous as the lack of pressure, the extremely low temperature of space is also a hazard.", "the cold of space, down to [min_cold_protection_temperature] kelvin") : "cold, down to [min_cold_protection_temperature] kelvin"]."
