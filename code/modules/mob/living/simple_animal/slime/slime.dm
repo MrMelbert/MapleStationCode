@@ -248,12 +248,12 @@
 			. += "Power Level: [powerlevel]"
 
 
-/mob/living/simple_animal/slime/MouseDrop(atom/movable/target_atom as mob|obj)
-	if(isliving(target_atom) && target_atom != src && usr == src)
-		var/mob/living/Food = target_atom
-		if(can_feed_on(Food))
-			start_feeding(Food)
-	return ..()
+/mob/living/simple_animal/slime/mouse_drop_dragged(atom/target_atom, mob/user) // Non-module change : porting drag & drop changes, we don't  have basic slimes yet
+	if(isliving(target_atom) && target_atom != src && user == src)
+		var/mob/living/food = target_atom
+		if(can_feed_on(food))
+			start_feeding(food)
+
 
 /mob/living/simple_animal/slime/doUnEquip(obj/item/unequipped_item, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	return

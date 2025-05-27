@@ -32,9 +32,14 @@
 	/// A filler object used to fill the space of multi-tile airlocks
 	var/obj/structure/fluff/airlock_filler/filler
 	var/welded = FALSE
-	var/heat_proof = FALSE // For rglass-windowed airlocks and firedoors
-	var/emergency = FALSE // Emergency access override
-	var/sub_door = FALSE // true if it's meant to go under another door.
+	///Whether this door has a panel or not; FALSE also stops the examine blurb about the panel from showing up
+	var/has_access_panel = TRUE
+	/// For rglass-windowed airlocks and firedoors
+	var/heat_proof = FALSE
+	/// Emergency access override
+	var/emergency = FALSE
+	/// true if it's meant to go under another door.
+	var/sub_door = FALSE
 	var/closingLayer = CLOSED_DOOR_LAYER
 	var/autoclose = FALSE //does it automatically close after some time
 	var/safe = TRUE //whether the door detects things and mobs in its way and reopen or crushes them.
@@ -108,7 +113,8 @@
 			. += span_notice("Due to a security threat, its access requirements have been lifted!")
 		else
 			. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
-	. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
+	if(has_access_panel)
+		. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
 
 /obj/machinery/door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -360,6 +366,12 @@
 		return ..() // we need this so our can_barricade element can be called using COMSIG_ATOM_ATTACKBY
 	else if(try_to_activate_door(user))
 		return TRUE
+	return ..()
+
+/obj/machinery/door/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	// allows you to crowbar doors while in combat mode
+	if(user.combat_mode && tool.tool_behaviour == TOOL_CROWBAR)
+		return crowbar_act_secondary(user, tool)
 	return ..()
 
 /obj/machinery/door/welder_act_secondary(mob/living/user, obj/item/tool)

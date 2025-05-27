@@ -475,3 +475,9 @@
 /datum/mood_event/all_nighter
 	description = "I didn't sleep at all last night. I'm exhausted."
 	mood_change = -5
+
+//Used for the psychotic brawling martial art, if the person is a pacifist.
+/datum/mood_event/pacifism_bypassed
+	description = "I DIDN'T MEAN TO HURT THEM!"
+	mood_change = -20
+	timeout = 10 MINUTES

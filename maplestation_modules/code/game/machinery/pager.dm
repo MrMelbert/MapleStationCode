@@ -50,11 +50,8 @@
 			return ITEM_INTERACT_BLOCKING
 	return NONE
 
-/obj/structure/desk_bell/ringer/MouseDrop(obj/over_object, src_location, over_location)
-	. = ..()
-	if(!isliving(usr) || usr.incapacitated())
-		return
-	if(!Adjacent(usr) || !over_object.Adjacent(usr) || anchored)
+/obj/structure/desk_bell/ringer/mouse_drop_dragged(atom/over_object, mob/user)
+	if(!isliving(user) || anchored)
 		return
 	if(iswallturf(over_object))
 		var/new_x = 0

@@ -183,7 +183,7 @@
 			tool_tip_set = TRUE
 
 	else if(held_item.tool_behaviour == TOOL_WRENCH)
-		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchore"
+		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Una" : "A"]nchor"
 		tool_tip_set = TRUE
 
 	return tool_tip_set ? CONTEXTUAL_SCREENTIP_SET : NONE
@@ -313,7 +313,7 @@
 		to_chat(user, span_warning("\The [src]'s magnetic door won't open without power!"))
 		return FALSE
 
-	if(!user.combat_mode)
+	if(!user.combat_mode || (weapon.item_flags & NOBLUDGEON))
 		to_chat(user, span_warning("\The [src] smartly refuses [weapon]."))
 		return FALSE
 

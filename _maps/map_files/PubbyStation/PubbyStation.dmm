@@ -2861,7 +2861,7 @@
 "ajE" = (
 /obj/structure/bed,
 /obj/structure/sign/poster/contraband/random/directional/east,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "ajG" = (
@@ -3170,7 +3170,7 @@
 /area/station/maintenance/department/security/brig)
 "akt" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/item/radio/intercom/directional/south,
 /obj/machinery/button/door/directional/east{
 	id = "mainthideout";
@@ -6455,7 +6455,7 @@
 /area/station/commons/dorms)
 "ave" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/north{
 	id = "Dorm3Shutters";
 	name = "Privacy Shutters Control"
@@ -7462,7 +7462,7 @@
 /area/station/commons/dorms)
 "ayj" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/north{
 	id = "Dorm2Shutters";
 	name = "Privacy Shutters Control"
@@ -8454,7 +8454,7 @@
 /area/station/commons/dorms)
 "aBM" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/north{
 	id = "Dorm1Shutters";
 	name = "Privacy Shutters Control"
@@ -28192,7 +28192,7 @@
 /area/station/maintenance/department/engine)
 "ccO" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/structure/table/optable,
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)
@@ -56290,7 +56290,7 @@
 "uqf" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/brown/visible/layer2,
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)

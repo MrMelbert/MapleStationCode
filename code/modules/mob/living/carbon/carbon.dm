@@ -23,19 +23,17 @@
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
 
-/mob/living/carbon/item_tending(mob/living/user, obj/item/tool, list/modifiers)
+/mob/living/carbon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
-
+	// Needs to happen after parent call otherwise wounds are prioritized over surgery
 	for(var/datum/wound/wound as anything in shuffle(all_wounds))
 		if(wound.try_treating(tool, user))
 			return ITEM_INTERACT_SUCCESS
-
 	return .
 
-/mob/living/carbon/CtrlShiftClick(mob/user)
-	..()
+/mob/living/carbon/click_ctrl_shift(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
 		carbon_user.give(src)
@@ -61,7 +59,7 @@
 		else if(!iscarbon(hit_atom) && extra_speed)
 			damage_random_bodypart(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		visible_message(
-			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!"),
+			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!!"),
 			span_userdanger("You[extra_speed ? " violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
 		)
 		log_combat(hit_atom, src, "crashes ")
@@ -1605,3 +1603,13 @@
 	if(!unwagged)
 		return FALSE
 	return unwagged.stop_wag(src)
+
+/mob/living/carbon/ominous_nosebleed()
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(head))
+		return ..()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		to_chat(src, span_notice("You get a headache."))
+		return
+	head.adjustBleedStacks(5)
+	visible_message(span_notice("[src] gets a nosebleed."), span_warning("You get a nosebleed."))

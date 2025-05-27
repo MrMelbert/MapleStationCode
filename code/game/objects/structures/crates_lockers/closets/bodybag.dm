@@ -266,7 +266,7 @@
 		return FALSE // blocked the open action
 	return TRUE
 
-/obj/structure/closet/body_bag/deconstruct(disassembled)
+/obj/structure/closet/body_bag/atom_deconstruct(disassembled)
 	. = ..()
 	pinned?.forceMove(drop_location())
 
@@ -611,15 +611,13 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/closet/body_bag/environmental/stasis/deconstruct(disassembled = TRUE)
-	if (!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/effect/decal/cleanable/shreds(loc, name)
-		new /obj/item/stack/sheet/cloth(loc, 4)
-		playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
-		for(var/mob/living/left_behind in src)
-			left_behind.Knockdown(3 SECONDS)
-
-	return ..()
+/obj/structure/closet/body_bag/environmental/stasis/atom_deconstruct(disassembled = TRUE)
+	new /obj/effect/decal/cleanable/shreds(loc, name)
+	new /obj/item/stack/sheet/cloth(loc, 4)
+	playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
+	for(var/mob/living/left_behind in src)
+		left_behind.Knockdown(3 SECONDS)
+	. = ..()
 
 /obj/structure/closet/body_bag/environmental/stasis/get_remote_view_fullscreens(mob/user)
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))

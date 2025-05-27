@@ -14,10 +14,7 @@
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 
-/obj/item/clothing/under/rank/rnd/research_director/jessie_turtleneck/alt_click_secondary(mob/user)
-	. = ..()
-	if(.)
-		return
+/obj/item/clothing/under/rank/rnd/research_director/jessie_turtleneck/click_alt_secondary(mob/user)
 	projectors_enabled = !projectors_enabled
 	update_appearance()
 	if (user == loc)
@@ -56,10 +53,7 @@
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 
-/obj/item/clothing/gloves/black/jessie_gloves/alt_click_secondary(mob/user)
-	. = ..()
-	if(.)
-		return
+/obj/item/clothing/gloves/black/jessie_gloves/click_alt_secondary(mob/user)
 	projectors_enabled = !projectors_enabled
 	update_appearance()
 	if (user == loc)

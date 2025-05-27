@@ -249,7 +249,7 @@
 		installed_part = null
 
 /obj/machinery/power/turbine/item_interaction(mob/living/user, obj/item/turbine_parts/object, list/modifiers)
-	. = ..() // Non-module change
+	. = NONE
 	if(!istype(object, part_path))
 		return
 
