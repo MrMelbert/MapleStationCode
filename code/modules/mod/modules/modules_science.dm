@@ -109,7 +109,7 @@
 	if(!istype(target_turf))
 		balloon_alert(mod.wearer, "invalid target!")
 		return
-	if(target_turf.is_blocked_turf_ignore_climbable() || !los_check(mod.wearer, target, pass_args = PASSTABLE|PASSGLASS|PASSGRILLE|PASSMOB|PASSMACHINE|PASSSTRUCTURE|PASSFLAPS|PASSWINDOW))
+	if(target_turf.is_blocked_turf_ignore_climbable() || !los_check(mod.wearer, target, pass_args = PASSTABLE|PASSGLASS|PASSGRILLE|PASSMOB|PASSMACHINE|PASSSTRUCTURE|PASSFLAPS)) // Non-module change : no PASSWINDOW
 		balloon_alert(mod.wearer, "blocked destination!")
 		return
 	// check early so we don't go through the whole loops
