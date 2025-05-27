@@ -291,7 +291,7 @@
 	return !!locate(/obj/item) in held_items
 
 /mob/proc/drop_all_held_items()
-	. = FALSE
+	. = list()
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
 
@@ -319,24 +319,25 @@
 
 /**
  * Used to drop an item (if it exists) to the ground.
- * * Will pass as TRUE is successfully dropped, or if there is no item to drop.
- * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via doUnEquip()
+ * * Will return null if the item wasn't dropped.
+ * * If it was, returns the item.
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
 /mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
 	if (isnull(I))
-		return TRUE
+		return
 
 	SEND_SIGNAL(src, COMSIG_MOB_DROPPING_ITEM)
-	. = doUnEquip(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
+	var/try_uneqip = doUnEquip(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
 
-	if(!. || !I) //ensure the item exists and that it was dropped properly.
+	if(!try_uneqip || !I) //ensure the item exists and that it was dropped properly.
 		return
 
 	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
 		I.pixel_x = I.base_pixel_x + rand(-6, 6)
 		I.pixel_y = I.base_pixel_y + rand(-6, 6)
 	I.do_drop_animation(src)
+	return I
 
 //for when the item will be immediately placed in a loc other than the ground
 /mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE)
@@ -400,9 +401,14 @@
 		items -= held_items
 	return items
 
+/**
+ * Returns the items that were succesfully unequipped.
+ */
 /mob/living/proc/unequip_everything()
 	var/list/items = list()
 	items |= get_equipped_items(INCLUDE_POCKETS)
+	// In case something isn't actually unequipped somehow
+	var/list/dropped_items = list()
 	for(var/I in items)
 		var/return_val = dropItemToGround(I)
 		if(!isitem(return_val))
