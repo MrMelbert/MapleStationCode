@@ -429,7 +429,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	QDEL_IN(big_smoke, big_smoke.particles.lifespan)
 
 /// Checks if the passed mob with the passed lungs can smoke this cigarette.
-/obj/item/clothing/mask/cigarette/proc/can_be_smoked_by(mob/living/carbon/smoker)
+/obj/item/cigarette/proc/can_be_smoked_by(mob/living/carbon/smoker)
 	if(!istype(smoker))
 		return FALSE
 	if(isnull(smoker.get_organ_slot(ORGAN_SLOT_LUNGS)))
