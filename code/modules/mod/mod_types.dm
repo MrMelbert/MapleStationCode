@@ -205,6 +205,7 @@
 		/obj/item/mod/module/storage,
 		/obj/item/mod/module/waddle,
 		/obj/item/mod/module/bikehorn,
+		/obj/item/mod/module/balloon_advanced,
 	)
 
 /obj/item/mod/control/pre_equipped/traitor
