@@ -34,7 +34,7 @@
 	RemoveInvisibility(type)
 	set_species(dna.species.monkey_type)
 	to_chat(src, span_boldnotice("You are now \a [dna.species.name]."))
-	name = LOWERTEXT(dna.species.name)
+	name = LOWER_TEXT(dna.species.name)
 	regenerate_icons()
 	set_name()
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)

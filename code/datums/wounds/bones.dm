@@ -120,7 +120,7 @@
 		if(!victim || !limb)
 			qdel(src)
 			return
-		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWERTEXT(undiagnosed_name || name)]!"))
+		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWER_TEXT(undiagnosed_name || name)]!"))
 		remove_wound()
 
 /// If we're a human who's punching something with a broken arm, we might hurt ourselves doing so

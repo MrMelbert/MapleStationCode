@@ -115,7 +115,7 @@
 			did_alert = TRUE
 
 	if(wetness_pool.total_volume <= 0)
-		owner?.balloon_alert(owner, "not enough [LOWERTEXT(initial(water_type.name))]!")
+		owner?.balloon_alert(owner, "not enough [LOWER_TEXT(initial(water_type.name))]!")
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/cast(atom/cast_on)
@@ -159,7 +159,7 @@
 	if(QDELETED(src) || QDELETED(wetness_pool))
 		return
 	wetness_pool.add_reagent(water_type, INFINITY)
-	owner?.balloon_alert(owner, "[LOWERTEXT(initial(water_type.name))] regenerated")
+	owner?.balloon_alert(owner, "[LOWER_TEXT(initial(water_type.name))] regenerated")
 
 /obj/effect/temp_visual/splashie
 	name = "splash"
