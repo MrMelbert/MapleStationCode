@@ -31481,7 +31481,7 @@
 /obj/structure/table/wood,
 /obj/item/storage/box/matches,
 /obj/item/reagent_containers/cup/glass/flask/gold,
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /obj/item/radio/intercom/command/directional/south,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain/private)
@@ -74793,7 +74793,7 @@
 /area/station/maintenance/starboard/lower)
 "xVi" = (
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /turf/open/floor/carpet/cyan,
 /area/station/hallway/primary/starboard)
 "xVk" = (

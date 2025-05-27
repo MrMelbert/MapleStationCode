@@ -1173,7 +1173,7 @@
 	pixel_x = -7;
 	pixel_y = 5
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4
 	},
 /obj/structure/table/wood,
