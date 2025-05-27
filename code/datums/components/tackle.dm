@@ -400,7 +400,7 @@
 			defense_mod += 2
 		if(tackle_target.mob_negates_gravity())
 			defense_mod += 1
-		if(HAS_TRAIT(tackle_target, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // riot armor and such
+		if(HAS_TRAIT(tackle_target, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // riot armor and such
 			defense_mod += 5
 
 		var/obj/item/organ/external/tail/lizard/el_tail = tackle_target.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
@@ -451,7 +451,7 @@
 			attack_mod += 15
 			human_sacker.adjustStaminaLoss(100) //AHAHAHAHAHAHAHAHA
 
-		if(HAS_TRAIT(human_sacker, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
+		if(HAS_TRAIT(human_sacker, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
 			attack_mod += 2
 			human_sacker.adjustStaminaLoss(20)
 
@@ -493,8 +493,8 @@
 	var/danger_zone = (speed - 1) * 13 // for every extra speed we have over 1, take away 13 of the safest chance
 	danger_zone = max(min(danger_zone, 100), 1)
 
-	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
 	oopsie_mod -= floor(user.getarmor(BODY_ZONE_CHEST, MELEE) * 0.12)
+	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
 
 	if(HAS_TRAIT(user, TRAIT_CLUMSY))
 		oopsie_mod += 6 //honk!
