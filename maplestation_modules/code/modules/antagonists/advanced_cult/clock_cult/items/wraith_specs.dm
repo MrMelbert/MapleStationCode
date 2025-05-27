@@ -21,7 +21,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle))
+	visor_toggling()
 
 /obj/item/clothing/glasses/wraith_specs/examine(mob/user)
 	. = ..()
@@ -29,9 +29,8 @@
 		. += span_brass("Grants the wearer diagnostic hud, medical hud, night vision, and x-ray vision. Also corrects nearsighted-ness.")
 		. += span_brasstalics("Examining things only visible to you via x-ray vision will harm your eyes.")
 
-/obj/item/clothing/glasses/wraith_specs/attack_self(mob/user, modifiers)
-	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle), user)
+/obj/item/clothing/glasses/wraith_specs/attack_self(mob/user)
+	adjust_visor(user)
 
 /obj/item/clothing/glasses/wraith_specs/equipped(mob/user, slot)
 	. = ..()
@@ -48,11 +47,9 @@
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
-/obj/item/clothing/glasses/wraith_specs/weldingvisortoggle(mob/user)
-	if(!can_use(user))
-		return FALSE
-
-	if(ishuman(user) && loc == user)
+/obj/item/clothing/glasses/wraith_specs/adjust_visor(mob/living/user)
+	. = ..()
+	if(. && ishuman(user) && !user.is_holding(src))
 		var/mob/living/carbon/human/human_user = user
 		if(human_user.glasses == src)
 			if(up) //up = we're putting the glasses down (over our eyes)
@@ -61,8 +58,6 @@
 
 			else // not up = we're putting the glasses up (off our eyes)
 				disable_glasses(user)
-
-	return ..()
 
 /obj/item/clothing/glasses/wraith_specs/visor_toggling()
 	. = ..()
