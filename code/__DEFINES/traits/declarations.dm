@@ -604,6 +604,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DISABLED_BY_WOUND "disabled-by-wound"
 /// This movable atom has the explosive block element
 #define TRAIT_BLOCKING_EXPLOSIVES "blocking_explosives"
+/// This object has been slathered with a speed potion
+#define TRAIT_SPEED_POTIONED "speed_potioned"
 
 ///Lava will be safe to cross while it has this trait.
 #define TRAIT_LAVA_STOPPED "lava_stopped"

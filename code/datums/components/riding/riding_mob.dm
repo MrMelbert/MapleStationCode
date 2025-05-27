@@ -8,7 +8,7 @@
 	/// list of blacklisted abilities that cant be shared
 	var/list/blacklist_abilities = list()
 
-/datum/component/riding/creature/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -193,7 +193,7 @@
 /datum/component/riding/creature/human
 	can_be_driven = FALSE
 
-/datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	. = ..()
 	var/mob/living/carbon/human/human_parent = parent
 	if(ride_check_flags & RIDER_NEEDS_ARMS) // piggyback
@@ -482,7 +482,7 @@
 	keytype = /obj/item/key/lasso
 	vehicle_move_delay = 4
 
-/datum/component/riding/creature/goliath/Initialize(mob/living/riding_mob, force, ride_check_flags, potion_boost)
+/datum/component/riding/creature/goliath/Initialize(mob/living/riding_mob, force, ride_check_flags)
 	. = ..()
 	var/mob/living/basic/mining/goliath/goliath = parent
 	goliath.add_movespeed_modifier(/datum/movespeed_modifier/goliath_mount)
@@ -583,7 +583,7 @@
 		TEXT_WEST =  list( 6, 46),
 	)
 
-/datum/component/riding/creature/leaper/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/leaper/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	. = ..()
 	RegisterSignal(riding_mob, COMSIG_MOB_POINTED, PROC_REF(attack_pointed))
 
