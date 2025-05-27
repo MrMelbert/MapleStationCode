@@ -112,7 +112,7 @@
 		var/new_name = ""
 		for(var/j in 1 to rand(default_name_syllable_min, default_name_syllable_max))
 			new_name += pick_weight_recursive(syllables)
-		full_name += capitalize(lowertext(new_name))
+		full_name += capitalize(LOWERTEXT(new_name))
 
 	return jointext(full_name, random_name_spacer)
 
@@ -142,7 +142,7 @@
 /// Adds a word to the cache
 /datum/language/proc/write_word_cache(input, scrambled_text)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	if(GLOB.most_common_words[lowertext(input)])
+	if(GLOB.most_common_words[LOWERTEXT(input)])
 		most_common_cache[input] = scrambled_text
 		return
 	// Add it to cache, cutting old entries if the list is too long
@@ -204,7 +204,7 @@
 	for(var/word in real_words)
 		var/translate_prob = mutual_languages?[type] || 0
 		if(translate_prob > 0)
-			var/base_word = lowertext(strip_punctuation(word))
+			var/base_word = LOWERTEXT(strip_punctuation(word))
 			// the probability of managing to understand a word is based on how common it is
 			// 1000 words in the list, so words outside the list are just treated as "the 1500th most common word"
 			var/commonness = GLOB.most_common_words[base_word] || 1500

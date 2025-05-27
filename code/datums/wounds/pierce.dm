@@ -11,13 +11,13 @@
 
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return span_danger("It's leaking blood from a small [lowertext(undiagnosed_name || name)].")
+			return span_danger("It's leaking blood from a small [LOWERTEXT(undiagnosed_name || name)].")
 		if(WOUND_SEVERITY_MODERATE)
-			return span_warning("It's leaking blood from a [lowertext(undiagnosed_name || name)].")
+			return span_warning("It's leaking blood from a [LOWERTEXT(undiagnosed_name || name)].")
 		if(WOUND_SEVERITY_SEVERE)
-			return span_boldwarning("It's leaking blood from a serious [lowertext(undiagnosed_name || name)]!")
+			return span_boldwarning("It's leaking blood from a serious [LOWERTEXT(undiagnosed_name || name)]!")
 		if(WOUND_SEVERITY_CRITICAL)
-			return span_boldwarning("It's leaking blood from a major [lowertext(undiagnosed_name || name)]!!")
+			return span_boldwarning("It's leaking blood from a major [LOWERTEXT(undiagnosed_name || name)]!!")
 
 /datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
 	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))

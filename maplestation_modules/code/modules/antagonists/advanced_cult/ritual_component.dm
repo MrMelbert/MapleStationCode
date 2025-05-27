@@ -109,7 +109,7 @@
 	if(our_theme.scribing_takes_blood)
 		made_rune.add_mob_blood(cultist)
 
-	to_chat(cultist, our_theme.our_cult_span("The [lowertext(made_rune.cultist_name)] rune [made_rune.cultist_desc]"))
+	to_chat(cultist, our_theme.our_cult_span("The [LOWERTEXT(made_rune.cultist_name)] rune [made_rune.cultist_desc]"))
 	SSblackbox.record_feedback("tally", "cult_runes_scribed", 1, made_rune.cultist_name)
 
 	return TRUE

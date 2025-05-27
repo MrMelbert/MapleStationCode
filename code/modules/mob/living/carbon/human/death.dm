@@ -92,7 +92,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 					most_toxic = poison
 
 			if(most_toxic)
-				return "[lowertext(most_toxic.name)] poisoning"
+				return "[LOWERTEXT(most_toxic.name)] poisoning"
 
 		if("heart_attack")
 			return "cardiac arrest"
@@ -104,7 +104,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 					most_alcohol = alcohol
 
 			if(most_alcohol)
-				return "alcohol poisoning ([lowertext(most_alcohol.name)])"
+				return "alcohol poisoning ([LOWERTEXT(most_alcohol.name)])"
 
 			return "alcohol poisoning"
 
