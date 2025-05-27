@@ -125,7 +125,7 @@
 		if(!user)
 			return FALSE
 		balloon_alert(user, "already retracted!")
-		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
+		playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
 	if(active && part_datum.sealed)
 		if(instant)

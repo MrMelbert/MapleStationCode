@@ -349,7 +349,7 @@
 			return "teal"
 
 /obj/item/mod/core/ethereal/get_chargebar_string()
-	var/obj/item/organ/stomach/ethereal/charge_source = charge_source()
+	var/obj/item/organ/internal/stomach/ethereal/charge_source = charge_source()
 	if(isnull(charge_source()) || isnull(charge_source.cell))
 		return "Biological Battery Missing"
 	return ..()
