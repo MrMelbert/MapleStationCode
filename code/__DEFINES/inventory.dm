@@ -255,7 +255,7 @@ GLOBAL_LIST_INIT(mining_suit_allowed, list(
 	/obj/item/melee/cleaving_saw,
 	/obj/item/climbing_hook,
 	/obj/item/flashlight,
-	/obj/item/grapple_gun,
+//	/obj/item/grapple_gun, // Non-module change : don't have this yet
 	/obj/item/tank/internals,
 	/obj/item/gun/energy/recharge/kinetic_accelerator,
 	/obj/item/kinetic_crusher,
