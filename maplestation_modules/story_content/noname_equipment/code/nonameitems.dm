@@ -11,7 +11,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_color = LIGHT_COLOR_BLUE
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 3
 	light_power = 1
 	light_on = FALSE
@@ -64,7 +64,7 @@
 	else
 		icon_state = initial(icon_state)
 	set_light_on(on)
-	if(light_system == STATIC_LIGHT)
+	if(light_system == COMPLEX_LIGHT)
 		update_light()
 
 /obj/item/storage/book/nonamebook/attack_self(mob/user)
