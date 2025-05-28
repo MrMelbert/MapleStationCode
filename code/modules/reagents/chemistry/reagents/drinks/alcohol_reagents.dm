@@ -347,7 +347,7 @@
 	taste_description = "extra-spiked butterscotch"
 	default_container = /obj/item/reagent_containers/cup/glass/bottle/rum/aged
 	quality = DRINK_FANTASTIC
-	metabolized_traits = list(TRAIT_STRONG_STOMACH)
+	var/metabolized_traits = list(TRAIT_STRONG_STOMACH) // Non-module change : double definition to error if/when we get this var
 
 /datum/reagent/consumable/ethanol/rum/aged/on_mob_metabolize(mob/living/drinker)
 	. = ..()
