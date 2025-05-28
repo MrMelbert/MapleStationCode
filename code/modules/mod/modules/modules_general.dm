@@ -939,7 +939,7 @@
 	icon_state = "fishing_glove"
 	complexity = 1
 	overlay_state_inactive = "fishing_glove"
-	incompatible_modules = (/obj/item/mod/module/fishing_glove)
+	incompatible_modules = list(/obj/item/mod/module/fishing_glove)
 	required_slots = list(ITEM_SLOT_GLOVES)
 	var/obj/item/fishing_rod/equipped
 
@@ -965,7 +965,7 @@
 	if(!istype(tool, /obj/item/fishing_rod))
 		return ..()
 	if(equipped)
-		balloon_alert(user, "remove current rod first!")
+		balloon_alert(user, "already has rod!")
 	if(!user.transferItemToLoc(tool, src))
 		user.balloon_alert(user, "it's stuck!")
 	equipped = tool
@@ -991,14 +991,14 @@
 		if(gloves && !QDELETED(mod))
 			qdel(gloves.GetComponent(/datum/component/profound_fisher))
 
-/obj/item/mod/module/fishing_glove/on_suit_activation()
+/obj/item/mod/module/fishing_glove/on_part_activation()
 	if(!equipped)
 		return
 	var/obj/item/gloves = mod.get_part_from_slot(ITEM_SLOT_GLOVES)
 	if(gloves)
 		gloves.AddComponent(/datum/component/profound_fisher, equipped)
 
-/obj/item/mod/module/fishing_glove/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/fishing_glove/on_part_deactivation(deleting = FALSE)
 	var/obj/item/gloves = mod.get_part_from_slot(ITEM_SLOT_GLOVES)
 	if(gloves && !deleting)
 		qdel(gloves.GetComponent(/datum/component/profound_fisher))
