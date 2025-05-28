@@ -32,8 +32,8 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	combat_mode = TRUE
 	mob_size = MOB_SIZE_LARGE
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = BODYTEMP_COLD_ICEBOX_SAFE
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = BODYTEMP_COLD_ICEBOX_SAFE
+	bodytemp_heat_damage_limit = INFINITY
 	attack_verb_continuous = "pecks"
 	attack_verb_simple = "chomps"
 	attack_sound = 'sound/weapons/punch1.ogg'

@@ -280,7 +280,7 @@ GLOBAL_LIST_INIT(spontaneous_fish_traits, populate_spontaneous_fish_traits())
 	var/datum/gas_mixture/stench = new
 	ADD_GAS(/datum/gas/miasma, stench.gases)
 	stench.gases[/datum/gas/miasma][MOLES] = MIASMA_CORPSE_MOLES * 2 * seconds_per_tick
-	stench.temperature = mob.bodytemperature
+	stench.temperature = mob.body_temperature
 	our_turf.assume_air(stench)
 
 /datum/fish_trait/necrophage
