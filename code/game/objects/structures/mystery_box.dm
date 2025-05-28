@@ -92,31 +92,6 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 	/obj/item/stack/cannonball/four,
 ))
 
-GLOBAL_LIST_INIT(mystery_fishing, list(
-	/obj/item/storage/toolbox/fishing/master,
-	/obj/item/storage/box/fish_revival_kit,
-	/obj/item/circuitboard/machine/fishing_portal_generator/emagged,
-	/obj/item/fishing_rod/telescopic/master,
-	/obj/item/bait_can/super_baits,
-	/obj/item/storage/fish_case/tiziran,
-	/obj/item/storage/fish_case/syndicate,
-	/obj/item/claymore/cutlass/old,
-	/obj/item/gun/energy/laser/retro/old,
-	/obj/item/gun/energy/laser/musket,
-	/obj/item/gun/energy/disabler/smoothbore,
-	/obj/item/gun/ballistic/rifle/boltaction/surplus,
-	/obj/item/food/rationpack,
-	/obj/item/food/canned/squid_ink,
-	/obj/item/reagent_containers/cup/glass/bottle/rum/aged,
-	/obj/item/storage/bag/money/dutchmen,
-	/obj/item/language_manual/piratespeak,
-	/obj/item/clothing/head/costume/pirate/armored,
-	/obj/item/clothing/suit/costume/pirate/armored,
-	/obj/structure/cannon/mystery_box,
-	/obj/item/stack/cannonball/trashball/four,
-	/obj/item/stack/cannonball/four,
-))
-
 /obj/structure/mystery_box
 	name = "mystery box"
 	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different pieces of gear."
