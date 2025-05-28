@@ -130,10 +130,10 @@ GLOBAL_LIST_INIT(creamable, typecacheof(list(
 
 /datum/component/face_decal/creampie/get_normal_overlay()
 	if(iscorgi(parent))
-		return mutable_appearance('icons/mob/effects/creampie.dmi', "[icon_state]_corgi")
+		return mutable_appearance('icons/effects/creampie.dmi', "[icon_state]_corgi")
 
 	if(isAI(parent))
-		return mutable_appearance('icons/mob/effects/creampie.dmi', "[icon_state]_ai")
+		return mutable_appearance('icons/effects/creampie.dmi', "[icon_state]_ai")
 
 /datum/component/face_decal/creampie/RegisterWithParent()
 	. = ..()
