@@ -203,7 +203,8 @@
 		// melbert todo : tweak this value
 		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, round(HUMAN_CARRY_SLOWDOWN * 1.33, 0.1))
 
-/datum/component/riding/creature/post_vehicle_mob_buckle(mob/living/ridden, mob/living/rider)
+/datum/component/riding/creature/handle_buckle(mob/living/rider)
+	var/mob/living/ridden = parent
 	if(!require_minigame || ridden.faction.Find(REF(rider)))
 		return
 	ridden.Shake(pixelshiftx = 1, pixelshifty = 0, duration = 1 SECONDS)
