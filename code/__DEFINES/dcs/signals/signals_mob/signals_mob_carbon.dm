@@ -128,6 +128,8 @@
 #define COMSIG_HUMAN_BURNING "human_burning"
 	/// Return to do no burn damage
 	#define BURNING_HANDLED (1<<0)
+	/// Return to skip protection check (ie, cause damage even if wearing fireproof clothing)
+	#define BURNING_SKIP_PROTECTION (1<<1)
 ///from /mob/living/carbon/human/proc/force_say(): ()
 #define COMSIG_HUMAN_FORCESAY "human_forcesay"
 

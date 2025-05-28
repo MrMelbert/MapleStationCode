@@ -1046,7 +1046,7 @@
 /obj/item/fish/chainsawfish
 	name = "chainsawfish"
 	desc = "A very, very angry bioweapon, whose sole purpose is to rip and tear."
-	icon = 'icons/obj/structures/aquarium/wide.dmi'
+	icon = 'icons/obj/aquarium/wide.dmi'
 	icon_state = "chainsawfish"
 	inhand_icon_state = "chainsawfish"
 	icon_state_dead = "chainsawfish_dead"

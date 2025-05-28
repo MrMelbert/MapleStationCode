@@ -195,7 +195,6 @@
 	parent = new_parent
 	ADD_TRAIT(parent, TRAIT_COMBAT_MODE_SKIP_INTERACTION, REF(src))
 	// a few of theses should probably be on the real_location rather than the parent
-	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignals(parent, list(COMSIG_ATOM_ATTACK_PAW, COMSIG_ATOM_ATTACK_HAND), PROC_REF(on_attack))
 	RegisterSignal(parent, COMSIG_MOUSEDROP_ONTO, PROC_REF(on_mousedrop_onto))
 	RegisterSignal(parent, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(on_mousedropped_onto))

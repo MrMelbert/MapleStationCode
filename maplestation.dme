@@ -1226,6 +1226,7 @@
 #include "code\datums\components\temporary_description.dm"
 #include "code\datums\components\tether.dm"
 #include "code\datums\components\thermite.dm"
+#include "code\datums\components\throwbonus_on_windup.dm"
 #include "code\datums\components\tippable.dm"
 #include "code\datums\components\toggle_attached_clothing.dm"
 #include "code\datums\components\toggle_suit.dm"

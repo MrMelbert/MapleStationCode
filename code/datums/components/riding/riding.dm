@@ -107,7 +107,6 @@
 		if (HAS_TRAIT(parent, trait))
 			ADD_TRAIT(rider, trait, REF(src))
 	rider.add_traits(rider_traits, REF(src))
-	post_vehicle_mob_buckle(movable_parent, rider)
 
 /// This proc is called when the rider attempts to grab the thing they're riding, preventing them from doing so.
 /datum/component/riding/proc/on_rider_try_pull(mob/living/rider_pulling, atom/movable/target, force)
@@ -116,10 +115,6 @@
 		var/mob/living/ridden = parent
 		ridden.balloon_alert(rider_pulling, "not while riding it!")
 		return COMSIG_LIVING_CANCEL_PULL
-
-///any behavior we want to happen after buckling the mob
-/datum/component/riding/proc/post_vehicle_mob_buckle(atom/movable/ridden, atom/movable/rider)
-	return TRUE
 
 /// This is called after the ridden atom is successfully moved and is used to handle icon stuff
 /datum/component/riding/proc/vehicle_moved(datum/source, oldloc, dir, forced)

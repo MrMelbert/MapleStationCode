@@ -64,7 +64,7 @@
 /mob/living/basic/mining/lobstrosity/ranged_secondary_attack(atom/atom_target, modifiers)
 	charge.Trigger(target = atom_target)
 
-/mob/living/basic/mining/lobstrosity/tamed(mob/living/tamer, obj/item/food)
+/mob/living/basic/mining/lobstrosity/proc/tamed(mob/living/tamer, obj/item/food) // Non-module change : PR that added modifiers to deathamtch reworked this to be atom level??
 	new /obj/effect/temp_visual/heart(loc)
 	/// Pet commands for this mob, however you'll have to tame juvenile lobstrosities to a trained adult one.
 	var/list/pet_commands = list(
