@@ -736,7 +736,7 @@
 		return 0
 
 	burn_clothing(seconds_per_tick, fire_handler.stacks)
-	if(!(HAS_TRAIT(src, TRAIT_IGNORE_FIRE_PROTECTION)))
+	if(!(sigreturn & BURNING_SKIP_PROTECTION))
 		if(get_insulation(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
 			return 0
 		if(get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)

@@ -7,6 +7,8 @@
 	/// Default value is 10 / 6 (default amount of limbs)
 	var/fire_stacks_loss = 1.66
 
+	var/active_burning = FALSE
+
 /datum/component/self_ignition/Initialize(fire_stacks_per_second = 0.0416, fire_stacks_loss = 1.66)
 	. = ..()
 	if(!isbodypart(parent))
@@ -21,11 +23,12 @@
 /datum/component/self_ignition/proc/on_attached(datum/source, mob/living/carbon/human/new_owner)
 	SIGNAL_HANDLER
 	RegisterSignal(new_owner, COMSIG_LIVING_LIFE, PROC_REF(on_life))
+	RegisterSignal(new_owner, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
 
 /datum/component/self_ignition/proc/on_detached(datum/source, mob/living/carbon/human/old_owner)
 	SIGNAL_HANDLER
 	UnregisterSignal(old_owner, COMSIG_LIVING_LIFE)
-	REMOVE_TRAIT(old_owner, TRAIT_IGNORE_FIRE_PROTECTION, REF(parent))
+	UnregisterSignal(old_owner, COMSIG_HUMAN_BURNING)
 
 /datum/component/self_ignition/proc/on_life(mob/living/carbon/human/owner, seconds_per_tick, times_fired)
 	SIGNAL_HANDLER
@@ -35,7 +38,7 @@
 
 	if (owner.is_atmos_sealed(additional_flags = PLASMAMAN_PREVENT_IGNITION, check_hands = TRUE, alt_flags = TRUE))
 		if (!owner.on_fire)
-			REMOVE_TRAIT(owner, TRAIT_IGNORE_FIRE_PROTECTION, REF(parent))
+			active_burning = FALSE
 		return
 
 	var/datum/gas_mixture/environment = owner.loc.return_air()
@@ -50,7 +53,7 @@
 	if (HAS_TRAIT(owner, TRAIT_NOFIRE))
 		return
 
-	ADD_TRAIT(owner, TRAIT_IGNORE_FIRE_PROTECTION, REF(parent))
+	active_burning = TRUE
 
 	if(!environment.gases[/datum/gas/oxygen] || environment.gases[/datum/gas/oxygen][MOLES] < 1) //Same threshhold that extinguishes fire
 		return
@@ -58,3 +61,8 @@
 	owner.adjust_fire_stacks(fire_stacks_per_second * seconds_per_tick)
 	if(owner.ignite_mob())
 		owner.visible_message(span_danger("[owner]'s body reacts with the atmosphere and bursts into flames!"), span_userdanger("Your body reacts with the atmosphere and bursts into flame!"))
+
+/datum/component/self_ignition/proc/on_burn(datum/source, mob/living/carbon/human/owner, fire_stacks)
+	SIGNAL_HANDLER
+
+	return active_burning ? BURNING_SKIP_PROTECTION : NONE
