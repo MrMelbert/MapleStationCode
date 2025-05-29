@@ -71,9 +71,10 @@
 				physiology.stun_mod = 0.5
 				physiology.bleed_mod = 0
 				set_pain_mod("badmin", 0.6)
+				add_consciousness_modifier("badmin", 30)
 
 				var/obj/item/bodypart/arm/left_arm = get_bodypart(BODY_ZONE_L_ARM) // your fists are now claws
-				left_arm.unarmed_attack_verb = "slash"
+				left_arm.unarmed_attack_verbs = list("slash")
 				left_arm.grappled_attack_verb = "lacerate"
 				left_arm.unarmed_attack_effect = ATTACK_EFFECT_CLAW
 				left_arm.unarmed_attack_sound = 'sound/weapons/slash.ogg'
@@ -81,9 +82,10 @@
 				left_arm.unarmed_damage_low = 25
 				left_arm.unarmed_damage_high = 25
 				left_arm.unarmed_effectiveness = 30
+				left_arm.appendage_noun = "clawed hand"
 
 				var/obj/item/bodypart/arm/right_arm = get_bodypart(BODY_ZONE_R_ARM)
-				right_arm.unarmed_attack_verb = "slash"
+				right_arm.unarmed_attack_verbs = list("slash")
 				right_arm.grappled_attack_verb = "lacerate"
 				right_arm.unarmed_attack_effect = ATTACK_EFFECT_CLAW
 				right_arm.unarmed_attack_sound = 'sound/weapons/slash.ogg'
@@ -91,6 +93,17 @@
 				right_arm.unarmed_damage_low = 25
 				right_arm.unarmed_damage_high = 25
 				right_arm.unarmed_effectiveness = 30
+				right_arm.appendage_noun = "clawed hand"
+
+				var/obj/item/bodypart/leg/left_leg = get_bodypart(BODY_ZONE_L_LEG) // weaker, but allows proper damage after downing somebody
+				left_leg.unarmed_damage_low = 18
+				left_leg.unarmed_damage_high = 18
+				left_leg.unarmed_effectiveness = 20
+
+				var/obj/item/bodypart/leg/right_leg = get_bodypart(BODY_ZONE_R_LEG)
+				right_leg.unarmed_damage_low = 18
+				right_leg.unarmed_damage_high = 18
+				right_leg.unarmed_effectiveness = 20
 
 				ADD_TRAIT(src, TRAIT_SLEEPIMMUNE, REF(src)) //needed to prevent chem cheese using wellcheers and sulfonal
 
