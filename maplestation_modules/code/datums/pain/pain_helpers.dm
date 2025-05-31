@@ -28,6 +28,11 @@
 	ASSERT(isnum(amount))
 	return pain_controller?.adjust_bodypart_pain(target_zone, amount, dam_type)
 
+/mob/living/proc/heal_pain(amount, target_zone = BODY_ZONES_ALL)
+	ASSERT(!isnull(target_zone))
+	ASSERT(isnum(amount))
+	return pain_controller?.adjust_bodypart_pain(target_zone, abs(amount) * -1)
+
 /**
  * Runs an emote on the pain emote cooldown
  * Emote supplied does NOT need to be a pain emote

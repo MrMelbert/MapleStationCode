@@ -54,8 +54,8 @@
 	// Morphine heals a very tiny bit
 	M.adjustBruteLoss(-0.2 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.1 * REM * seconds_per_tick, FALSE)
-	// Morphine heals pain, dur
-	M.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
+	// Morphine heals pain obviously
+	M.heal_pain(-2 * REM * seconds_per_tick)
 	// Morphine causes a bit of disgust
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(50 * (2 - creation_purity), seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -111,9 +111,9 @@
 	M.adjustBruteLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	// Numbers seem low, but our metabolism is very slow
-	M.cause_pain(BODY_ZONE_HEAD, -0.04 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.08 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONE_CHEST, -0.16 * REM * seconds_per_tick)
+	M.heal_pain(-0.1 * REM * seconds_per_tick, BODY_ZONE_HEAD)
+	M.heal_pain(-0.2 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
+	M.heal_pain(-0.45 * REM * seconds_per_tick, BODY_ZONE_CHEST)
 	// Okay at fevers.
 	M.adjust_body_temperature(-0.1 KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(66 * max(1 - creation_purity, 0.5), seconds_per_tick))
@@ -163,7 +163,7 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.05 * REM * seconds_per_tick, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -0.1 * REM * seconds_per_tick)
+	M.heal_pain(-0.5 * REM * seconds_per_tick)
 	// Not very good at treating fevers.
 	M.adjust_body_temperature(-0.05 KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -203,9 +203,9 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Heals pain, numbers seem low but our metabolism is very slow
-	M.cause_pain(BODY_ZONE_HEAD, -0.16 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONE_CHEST, -0.08 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.04 * REM * seconds_per_tick)
+	M.heal_pain(-0.45 * REM * seconds_per_tick, BODY_ZONE_HEAD)
+	M.cause_pain(-0.2 * REM * seconds_per_tick, BODY_ZONE_CHEST)
+	M.cause_pain(-0.1 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.25 * REM * seconds_per_tick)
 	// Really good at treating fevers.
@@ -255,7 +255,7 @@
 	if(volume <= 10)
 		// Number looks high, compared to other painkillers,
 		// but we have a comparatively much higher metabolism than them.
-		M.cause_pain(BODY_ZONES_ALL, -1.5 * REM * seconds_per_tick)
+		M.heal_pain(-5 * REM * seconds_per_tick)
 	// Mildly toxic in higher dosages.
 	else if(SPT_PROB(volume * 3, seconds_per_tick))
 		M.apply_damage(3 * REM * seconds_per_tick, TOX)
@@ -279,7 +279,7 @@
 /datum/reagent/medicine/painkiller/oxycodone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.adjustBruteLoss(-0.3 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.2 * REM * seconds_per_tick, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -1.25 * REM * seconds_per_tick)
+	M.heal_pain(-4 * REM * seconds_per_tick)
 	M.set_drugginess(20 SECONDS * REM * seconds_per_tick)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(40, seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -354,13 +354,13 @@
 		if(!IS_ORGANIC_LIMB(part))
 			continue
 
-		var/final_pain_heal_amount = -1 * pain_heal_amount * REM * seconds_per_tick
+		var/final_pain_heal_amount = -2 * pain_heal_amount * REM * seconds_per_tick
 		if(pain_type_to_look_for && (part.last_received_pain_type != pain_type_to_look_for))
 			final_pain_heal_amount *= 0.1
 		if(wound_type_to_look_for && (locate(wound_type_to_look_for) in part.wounds))
 			final_pain_heal_amount *= 1.5
 
-		M.cause_pain(part.body_zone, final_pain_heal_amount)
+		M.heal_pain(final_pain_heal_amount, part.body_zone)
 
 // Libital, but helps pain: ib-alti-fen
 // Heals lots of pain for bruise pain, otherwise lower
