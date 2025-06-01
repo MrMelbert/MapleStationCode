@@ -1363,7 +1363,7 @@
 			continue
 		if(!(covered & slot))
 			// /obj/item/wash() already updates our clothing slot
-			. ||= worn.wash(clean_types)
+			. = worn.wash(clean_types) || .
 
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
