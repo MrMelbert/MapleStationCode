@@ -51,7 +51,7 @@
 		slowdown += slowdown_active
 	else
 		detach_clothing_traits(active_traits)
-		slowdown = max(initial(slowdown), slowdown - slowdown_active) // Just in case, for speed pot shenanigans
+		slowdown -= slowdown_active
 
 	update_appearance()
 	balloon_alert(user, "mag-pulse [magpulse ? "enabled" : "disabled"]")
@@ -71,7 +71,7 @@
 	desc = "Advanced magnetic boots that have a lighter magnetic pull, placing less burden on the wearer."
 	icon_state = "advmag0"
 	base_icon_state = "advmag"
-	slowdown_active = SHOES_SLOWDOWN // ZERO active slowdown
+	slowdown_active = 0 // ZERO active slowdown
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/shoes/magboots/syndie
