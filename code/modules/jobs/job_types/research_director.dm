@@ -50,6 +50,7 @@
 		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/cybernetics = SKILL_LEVEL_MASTER,
 		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
 		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
 		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 		/datum/skill/robotics = SKILL_LEVEL_EXPERT,

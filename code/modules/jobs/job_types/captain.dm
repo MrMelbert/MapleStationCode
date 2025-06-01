@@ -49,8 +49,10 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 
 	base_skills = list(
+		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/firearms = SKILL_LEVEL_MASTER,
 		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)

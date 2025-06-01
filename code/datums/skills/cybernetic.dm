@@ -1,7 +1,7 @@
 /datum/skill/cybernetics
 	name = "Cybernetics"
 	title = "Cyberneticist"
-	blurb = "You can build and repair cybernetic implants."
+	blurb = "From the moment I realized the weakness of flesh, it disgusted me. I craved a better way to be."
 	earned_by = "installing and repairing cybernetic implants"
 	grants_you = "less pain when installing cybernetic implants on yourself and others"
 	modifiers = list(

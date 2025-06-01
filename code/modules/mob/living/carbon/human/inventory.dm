@@ -205,9 +205,8 @@
 
 /mob/living/carbon/human/equipped_speed_mods()
 	. = ..()
-	for(var/sloties in get_all_worn_items() - list(l_store, r_store, s_store))
-		var/obj/item/thing = sloties
-		. += thing?.slowdown
+	for(var/obj/item/thing in get_all_worn_items() - list(l_store, r_store, s_store))
+		. += thing.get_slowdown(src) // NON-MODULE CHANGE
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.

@@ -9,7 +9,7 @@
 	modifiers = list(
 		// modifier to surgery speed
 		SKILL_SPEED_MODIFIER = list(
-			SKILL_LEVEL_NONE = 1.1,
+			SKILL_LEVEL_NONE = 1.15,
 			SKILL_LEVEL_NOVICE = 1.1,
 			SKILL_LEVEL_APPRENTICE = 1,
 			SKILL_LEVEL_JOURNEYMAN = 0.9,

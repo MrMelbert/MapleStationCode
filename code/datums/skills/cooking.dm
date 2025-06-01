@@ -1,7 +1,7 @@
 /datum/skill/cooking
 	name = "Cooking"
 	title = "Chef"
-	blurb = "Everyone can cook."
+	blurb = "Anyone can cook."
 	earned_by = "cooking and mixing food"
 	grants_you = "tastier food"
 	modifiers = list(

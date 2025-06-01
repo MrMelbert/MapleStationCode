@@ -1558,7 +1558,7 @@
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = equipped_speed_mods()
 	if(speedies > 0 && HAS_TRAIT(src, TRAIT_SETTLER)) //if our movespeed mod is in the negatives, we don't modify it since that's a benefit
-		speedies *= 0.2
+		speedies *= 0.8
 	if(!speedies)
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 	else
@@ -1569,7 +1569,7 @@
 /mob/proc/equipped_speed_mods()
 	for(var/obj/item/I in held_items)
 		if(I.item_flags & SLOWS_WHILE_IN_HAND)
-			. += I.slowdown
+			. += I.get_slowdown(src) // NON-MODULE CHANGE
 
 /mob/proc/set_stat(new_stat)
 	PROTECTED_PROC(TRUE)

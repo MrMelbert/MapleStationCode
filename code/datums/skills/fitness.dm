@@ -17,6 +17,7 @@
 			SKILL_LEVEL_LEGENDARY = 5 MINUTES,
 		),
 	)
+	skill_flags = SKILL_ALWAYS_PRINT
 
 /datum/skill/fitness/New()
 	. = ..()

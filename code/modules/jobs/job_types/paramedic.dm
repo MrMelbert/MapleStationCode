@@ -39,9 +39,11 @@
 	job_flags = STATION_JOB_FLAGS
 
 	base_skills = list(
-		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
-		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
 		/datum/skill/chemistry = SKILL_LEVEL_NOVICE,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
+		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/outfit/job/paramedic

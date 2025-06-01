@@ -1,7 +1,7 @@
 /datum/skill/first_aid
 	name = "First Aid"
 	title = "Medic"
-	blurb = "You can stop the bleeding, but you can't fix the broken bones."
+	blurb = "A stitch in time saves nine."
 	earned_by = "healing members of the crew with sutures or bandages"
 	grants_you = "an improved proficiency medical tools such as sutures or bandages"
 	higher_levels_grant_you = "the ability do CPR without harming the patient"

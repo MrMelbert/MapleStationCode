@@ -50,8 +50,10 @@
 
 	base_skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_MASTER,
-		/datum/skill/mechanics = SKILL_LEVEL_MASTER,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
 		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_MASTER,
 	)
 
 /datum/job/chief_engineer/after_spawn(mob/living/spawned, client/player_client)

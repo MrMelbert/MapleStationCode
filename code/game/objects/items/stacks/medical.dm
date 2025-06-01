@@ -133,7 +133,7 @@
 		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			self_delay * (auto_change_zone ? 1 : 0.9) * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
+			self_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -153,7 +153,7 @@
 		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			other_delay * (auto_change_zone ? 1 : 0.9) * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
+			other_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -452,7 +452,7 @@
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, healed_zone, silent, auto_change_zone)
 	var/obj/item/bodypart/limb = patient.get_bodypart(healed_zone)
 	// NON-MODULE CHANGE
-	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1)
+	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER))
 	var/any_scanned = FALSE
 	for(var/datum/wound/woundies as anything in limb.wounds)
 		if(HAS_TRAIT(woundies, TRAIT_WOUND_SCANNED))

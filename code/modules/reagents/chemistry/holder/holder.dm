@@ -541,8 +541,6 @@
 	if(!no_react)
 		target_holder.handle_reactions()
 		src.handle_reactions()
-		if(transferred_by?.mind && length(reaction_list))
-			award_mixing_exp(transferred_by)
 
 	return round(total_transfered_amount, CHEMICAL_VOLUME_ROUNDING)
 

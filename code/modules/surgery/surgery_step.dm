@@ -95,10 +95,10 @@
 
 	// NON-MODULE CHANGE
 	if(implement_type && (implements[implement_type] > 0)) //this means it isn't a require hand or any item step.
-		speed_mod *= (1 / ((implements[implement_type] + user.mind?.get_skill_modifier(/datum/skill/surgery, SKILL_VALUE_MODIFIER)) / 100.0))
+		speed_mod *= (1 / ((implements[implement_type] + user.get_skill_modifier(/datum/skill/surgery, SKILL_VALUE_MODIFIER)) / 100.0))
 
 	// NON-MODULE CHANGE
-	speed_mod *= (user.mind?.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER) || 1)
+	speed_mod *= user.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
 
 	speed_mod *= surgery.speed_modifier
 

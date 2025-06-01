@@ -1,7 +1,7 @@
 /datum/skill/firearms
 	name = "Firearms"
 	title = "Gunner"
-	blurb = "Don't shoot yourself in the foot."
+	blurb = "Did I fire six shots or only five? I lost count."
 	earned_by = "training at the firing range (or shooting people)"
 	grants_you = "reduced accuracy penalties when using firearms while wounded"
 	modifiers = list(

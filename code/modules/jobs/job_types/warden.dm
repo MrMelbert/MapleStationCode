@@ -45,6 +45,7 @@
 	base_skills = list(
 		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
 		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/outfit/job/warden

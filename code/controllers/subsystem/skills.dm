@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(skills)
 	flags = SS_NO_FIRE
 	init_order = INIT_ORDER_SKILLS
 	///Dictionary of skill.type || skill ref
-	var/list/all_skills = list()
+	var/list/datum/skill/all_skills = list()
 	///List of level names with index corresponding to skill level
 	var/list/level_names = list(
 		SKILL_LEVEL_NONE = "Untrained",

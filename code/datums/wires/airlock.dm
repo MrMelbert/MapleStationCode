@@ -140,7 +140,7 @@
 			if(!A.secondsElectrified)
 				A.set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, usr)
 			// NON-MODULE CHANGE
-			A.shock(usr, 100- usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 100 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_SAFETY)
 			A.safe = !A.safe
 			if(!A.density)
@@ -171,14 +171,14 @@
 			else
 				A.loseMainPower()
 			// NON-MODULE CHANGE
-			A.shock(usr, 50- usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 50 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_BACKUP1, WIRE_BACKUP2) // Cut to lose backup power, repair all to gain backup power.
 			if(mend && !is_cut(WIRE_BACKUP1) && !is_cut(WIRE_BACKUP2))
 				A.regainBackupPower()
 			else
 				A.loseBackupPower()
 			// NON-MODULE CHANGE
-			A.shock(usr, 50 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 50 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_BOLTS) // Cut to engage bolts, mend does nothing.
 			if(!mend)
 				A.bolt()
@@ -203,7 +203,7 @@
 				if(A.secondsElectrified != MACHINE_ELECTRIFIED_PERMANENT)
 					A.set_electrified(MACHINE_ELECTRIFIED_PERMANENT, usr)
 				// NON-MODULE CHANGE
-				A.shock(usr, 100 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+				A.shock(usr, 100 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_SAFETY) // Cut to disable safeties, mend to re-enable.
 			A.safe = mend
 			if (!isnull(source))
@@ -217,7 +217,7 @@
 			A.update_appearance()
 		if(WIRE_ZAP1, WIRE_ZAP2) // Ouch.
 			// NON-MODULE CHANGE
-			A.shock(usr, 50 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 50 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_UNRESTRICTED_EXIT) // If this wire is cut, the unrestricted helper goes away. If you mend it, it'll go "haywire" and pick a new direction at random. Might have to cut/mend a time or two to get the direction you want.
 			if(!A.unres_sensor) //only works if the "sensor" is installed (a variable that we assign to the door either upon creation of a door with unrestricted directions, or if an unrestricted helper is added to a door in mapping)
 				return

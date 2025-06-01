@@ -21,7 +21,7 @@
 	var/mob/living/carbon/human/human_quirkholder = quirk_holder
 	human_quirkholder.set_mob_height(HUMAN_HEIGHT_SHORTEST)
 	human_quirkholder.add_movespeed_modifier(/datum/movespeed_modifier/settler)
-	human_quirkholder.physiology.hunger_mod *= 0.5 //good for you, shortass, you don't get hungry nearly as often
+	human_quirkholder.physiology.hunger_mod *= 0.75 //good for you, shortass, you don't get hungry nearly as often
 
 /datum/quirk/item_quirk/settler/remove()
 	if(QDELING(quirk_holder))
@@ -29,4 +29,4 @@
 	var/mob/living/carbon/human/human_quirkholder = quirk_holder
 	human_quirkholder.set_mob_height(HUMAN_HEIGHT_MEDIUM)
 	human_quirkholder.remove_movespeed_modifier(/datum/movespeed_modifier/settler)
-	human_quirkholder.physiology.hunger_mod *= 2
+	human_quirkholder.physiology.hunger_mod /= 0.75

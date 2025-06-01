@@ -1,10 +1,11 @@
 /datum/skill/bartending
 	name = "Bartending"
 	title = "Bartender"
-	blurb = "Time to mix drinks and change lives."
+	blurb = "It's time to mix drinks and change lives."
 	earned_by = "mixing drinks"
 	// grants_you = "tastier drinks"
 	modifiers = list()
+	skill_flags = SKILL_ALWAYS_PRINT
 
 /**
  * Grants xp to the user for initiating a reaction

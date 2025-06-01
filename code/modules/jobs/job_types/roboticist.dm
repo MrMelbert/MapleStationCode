@@ -40,9 +40,11 @@
 	base_skills = list(
 		/datum/skill/cybernetics = SKILL_LEVEL_EXPERT,
 		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
+		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 		/datum/skill/robotics = SKILL_LEVEL_EXPERT,
 		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/roboticist/New()

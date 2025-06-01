@@ -649,7 +649,7 @@
 	penalty /= 3
 	// Factor in firearms skill
 	if(penalty > 0)
-		penalty += user.mind?.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
+		penalty += user.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
 	if(penalty <= 0)
 		return
 	// Applying min and max

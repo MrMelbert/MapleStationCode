@@ -48,4 +48,4 @@
 			A.disabled = !mend
 		if(WIRE_ZAP)
 			// NON-MODULE CHANGE
-			A.shock(usr, 50 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 50 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))

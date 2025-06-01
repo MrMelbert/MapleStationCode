@@ -1758,6 +1758,7 @@
 #include "code\datums\skills\cooking.dm"
 #include "code\datums\skills\cybernetic.dm"
 #include "code\datums\skills\electrics.dm"
+#include "code\datums\skills\eva.dm"
 #include "code\datums\skills\firearms.dm"
 #include "code\datums\skills\fishing.dm"
 #include "code\datums\skills\fitness.dm"

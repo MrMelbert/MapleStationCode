@@ -30,7 +30,7 @@
 	var/obj/machinery/vending/vending_machine = holder
 	if(vending_machine.seconds_electrified)
 		// NON-MODULE CHANGE
-		if(vending_machine.shock(user, 100 - user.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
+		if(vending_machine.shock(user, 100 - user.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
 			return FALSE
 	if(vending_machine.panel_open)
 		return TRUE
