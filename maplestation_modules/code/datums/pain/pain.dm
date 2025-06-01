@@ -945,8 +945,8 @@
 	amount = clamp(amount, -200, 200)
 
 	if(zone == "All")
-		for(var/zone in BODY_ZONES_ALL)
-			adjust_bodypart_pain(zone, amount)
+		for(var/i_zone in BODY_ZONES_ALL)
+			adjust_bodypart_pain(i_zone, amount)
 		return
 
 	adjust_bodypart_pain(zone, amount)
