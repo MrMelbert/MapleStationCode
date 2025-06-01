@@ -1,7 +1,7 @@
 
 #define ROBOTIC_LIGHT_BRUTE_MSG "marred"
 #define ROBOTIC_MEDIUM_BRUTE_MSG "dented"
-#define ROBOTIC_HEAVY_BRUTE_MSG "falling apart"
+#define ROBOTIC_HEAVY_BRUTE_MSG "like its falling apart"
 
 #define ROBOTIC_LIGHT_BURN_MSG "scorched"
 #define ROBOTIC_MEDIUM_BURN_MSG "charred"
@@ -217,7 +217,7 @@
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT) // NON-MODULE CHANGE but it should be like this anyways
 
 	var/wired = FALSE
-	var/obj/item/stock_parts/cell/cell = null
+	var/obj/item/stock_parts/power_store/cell = null
 
 /obj/item/bodypart/chest/robot/emp_act(severity)
 	. = ..()
@@ -292,7 +292,7 @@
 			), AUGMENTATION_TRAIT)
 
 /obj/item/bodypart/chest/robot/attackby(obj/item/weapon, mob/user, params)
-	if(istype(weapon, /obj/item/stock_parts/cell))
+	if(istype(weapon, /obj/item/stock_parts/power_store/cell))
 		if(cell)
 			to_chat(user, span_warning("You have already inserted a cell!"))
 			return

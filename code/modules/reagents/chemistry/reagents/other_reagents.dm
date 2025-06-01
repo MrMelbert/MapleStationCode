@@ -348,7 +348,7 @@
 	adjust_blood_flow(-0.1 * reac_volume, initial_flow * 0.5)
 	to_chat(carbies, span_notice("The salt water splashes over [lowertext(src)], soaking up the blood."))
 
-/datum/wound/burn/flesh/on_saltwater(reac_volume)
+/datum/wound/flesh/burn/on_saltwater(reac_volume)
 	// Similar but better stats from normal salt.
 	sanitization += VALUE_PER(0.6, 30) * reac_volume
 	infestation -= max(VALUE_PER(0.5, 30) * reac_volume, 0)
@@ -1177,9 +1177,9 @@
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.8, reac_volume * 1 MINUTES)
+	exposed_mob.add_timed_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
-/datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+/datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.9
 
 /datum/reagent/iron
@@ -1280,7 +1280,7 @@
 		to_chat(affected_mob, span_warning("You feel unstable..."))
 		affected_mob.set_jitter_if_lower(2 SECONDS)
 		current_cycle = 1
-		addtimer(CALLBACK(affected_mob, TYPE_PROC_REF(/mob/living, bluespace_shuffle)), 30)
+		addtimer(CALLBACK(affected_mob, TYPE_PROC_REF(/mob/living, bluespace_shuffle)), 3 SECONDS)
 
 /mob/living/proc/bluespace_shuffle()
 	do_teleport(src, get_turf(src), 5, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
@@ -1379,7 +1379,7 @@
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.wash(clean_types)
 
-/datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+/datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.3
 	if(prob(5))
 		to_chat(burn_wound.victim, span_notice("Your [burn_wound] stings and burns from the [src] covering it! It does look pretty clean though."))
@@ -2578,10 +2578,9 @@
 
 /datum/reagent/bz_metabolites/on_mob_life(mob/living/carbon/target, seconds_per_tick, times_fired)
 	. = ..()
-	if(target.mind)
-		var/datum/antagonist/changeling/changeling = target.mind.has_antag_datum(/datum/antagonist/changeling)
-		if(changeling)
-			changeling.adjust_chemicals(-2 * REM * seconds_per_tick)
+	target.adjust_hallucinations(5 SECONDS * REM * seconds_per_tick)
+	var/datum/antagonist/changeling/changeling = IS_CHANGELING(target)
+	changeling?.adjust_chemicals(-2 * REM * seconds_per_tick)
 
 /datum/reagent/pax/peaceborg
 	name = "Synthpax"

@@ -10,6 +10,7 @@
 	worn_icon_state = "radio"
 	desc = "A basic handheld radio that communicates with local telecommunication networks."
 	dog_fashion = /datum/dog_fashion/back
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_ALLOW_USER_LOCATION | INTERACT_ATOM_IGNORE_MOBILITY
 
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
@@ -329,8 +330,7 @@
 	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, radio_message, spans, message_mods)
 
 	// Independent radios, on the CentCom frequency, reach all independent radios
-	//NON-MODULE CHANGE : Adds Mu to the list of frequencies
-	if (independent && (freq == FREQ_CENTCOM || freq == FREQ_MU || freq == FREQ_CTF_RED || freq == FREQ_CTF_BLUE || freq == FREQ_CTF_GREEN || freq == FREQ_CTF_YELLOW))
+	if (independent && (freq == FREQ_CENTCOM ||freq == FREQ_MU ||  freq == FREQ_STATUS_DISPLAYS))
 		signal.data["compression"] = 0
 		signal.transmission_method = TRANSMISSION_SUPERSPACE
 		signal.levels = list(0)
@@ -346,7 +346,7 @@
 
 	// Non-subspace radios will check in a couple of seconds, and if the signal
 	// was never received, send a mundane broadcast (no headsets).
-	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 20)
+	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 2 SECONDS)
 	return TRUE
 
 /obj/item/radio/proc/backup_transmission(datum/signal/subspace/vocal/signal)
@@ -527,7 +527,7 @@
 	for (var/ch_name in channels)
 		channels[ch_name] = 0
 	set_on(FALSE)
-	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 200)
+	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 20 SECONDS)
 
 /obj/item/radio/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] starts bouncing [src] off [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!"))

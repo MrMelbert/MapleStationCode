@@ -352,7 +352,7 @@
 /datum/status_effect/crusher_mark
 	id = "crusher_mark"
 	duration = 300 //if you leave for 30 seconds you lose the mark, deal with it
-	status_type = STATUS_EFFECT_REPLACE
+	status_type = STATUS_EFFECT_MULTIPLE
 	alert_type = null
 	var/mutable_appearance/marked_underlay
 	var/obj/item/kinetic_crusher/hammer_synced
@@ -366,8 +366,8 @@
 /datum/status_effect/crusher_mark/on_apply()
 	if(owner.mob_size >= MOB_SIZE_LARGE)
 		marked_underlay = mutable_appearance('icons/effects/effects.dmi', "shield2")
-		marked_underlay.pixel_x = -owner.pixel_x
-		marked_underlay.pixel_y = -owner.pixel_y
+		marked_underlay.pixel_w = -owner.pixel_x
+		marked_underlay.pixel_z = -owner.pixel_y
 		owner.underlays += marked_underlay
 		return TRUE
 	return FALSE
@@ -379,9 +379,9 @@
 	QDEL_NULL(marked_underlay)
 	return ..()
 
-/datum/status_effect/crusher_mark/be_replaced()
-	owner.underlays -= marked_underlay //if this is being called, we should have an owner at this point.
-	..()
+//we will only clear ourselves if the crusher is the one that owns us.
+/datum/status_effect/crusher_mark/before_remove(obj/item/kinetic_crusher/attacking_hammer)
+	return (attacking_hammer == hammer_synced)
 
 /datum/status_effect/stacking/saw_bleed
 	id = "saw_bleed"
@@ -610,7 +610,7 @@
 	// The brain trauma itself does its own set of logging, but this is the only place the source of the hypnosis phrase can be found.
 	hearing_speaker.log_message("hypnotised [key_name(C)] with the phrase '[hearing_args[HEARING_RAW_MESSAGE]]'", LOG_ATTACK, color="red")
 	C.log_message("has been hypnotised by the phrase '[hearing_args[HEARING_RAW_MESSAGE]]' spoken by [key_name(hearing_speaker)]", LOG_VICTIM, color="orange", log_globally = FALSE)
-	addtimer(CALLBACK(C, TYPE_PROC_REF(/mob/living/carbon, gain_trauma), /datum/brain_trauma/hypnosis, TRAUMA_RESILIENCE_SURGERY, hearing_args[HEARING_RAW_MESSAGE]), 10)
+	addtimer(CALLBACK(C, TYPE_PROC_REF(/mob/living/carbon, gain_trauma), /datum/brain_trauma/hypnosis, TRAUMA_RESILIENCE_SURGERY, hearing_args[HEARING_RAW_MESSAGE]), 1 SECONDS)
 	addtimer(CALLBACK(C, TYPE_PROC_REF(/mob/living, Stun), 60, TRUE, TRUE), 15) //Take some time to think about it
 	qdel(src)
 
@@ -887,6 +887,9 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/ants/Click()
+	. = ..()
+	if(!.)
+		return
 	var/mob/living/living = owner
 	if(!istype(living) || !living.can_resist() || living != owner)
 		return

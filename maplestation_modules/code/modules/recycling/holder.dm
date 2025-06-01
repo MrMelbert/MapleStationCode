@@ -26,8 +26,23 @@
 			playsound(loc, 'sound/effects/clang.ogg', 30, TRUE, FALSE)
 		else if(prob(CONFIG_GET(number/disposals_damage_chance)))
 			trashed_individual.apply_damage(2 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
-			playsound(loc, 'sound/effects/wounds/crack2.ogg', 50, TRUE, FALSE)
+			if(trashed_individual.has_bones())
+				playsound(loc, 'sound/effects/wounds/crack2.ogg', 50, TRUE, FALSE)
 		else if(prob(CONFIG_GET(number/disposals_pain_chance)))
 			var/mob/living/carbon/carbon_trashed = trashed_individual
-			playsound(loc, 'sound/effects/wounds/crack1.ogg', 50, TRUE, FALSE)
+			if(trashed_individual.has_bones())
+				playsound(loc, 'sound/effects/wounds/crack1.ogg', 50, TRUE, FALSE)
 			carbon_trashed.sharp_pain(pick(BODY_ZONES_ALL), 4 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
+
+/// Check if the mob has any bones
+/mob/living/proc/has_bones()
+	return (mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD|MOB_BEAST))
+
+/mob/living/silicon/has_bones()
+	return FALSE
+
+/mob/living/carbon/has_bones()
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		if(part.biological_state & BIO_BONE)
+			return TRUE
+	return FALSE

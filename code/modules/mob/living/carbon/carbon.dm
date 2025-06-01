@@ -23,19 +23,17 @@
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
 
-/mob/living/carbon/item_tending(mob/living/user, obj/item/tool, list/modifiers)
+/mob/living/carbon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
-
+	// Needs to happen after parent call otherwise wounds are prioritized over surgery
 	for(var/datum/wound/wound as anything in shuffle(all_wounds))
 		if(wound.try_treating(tool, user))
 			return ITEM_INTERACT_SUCCESS
-
 	return .
 
-/mob/living/carbon/CtrlShiftClick(mob/user)
-	..()
+/mob/living/carbon/click_ctrl_shift(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
 		carbon_user.give(src)
@@ -61,7 +59,7 @@
 		else if(!iscarbon(hit_atom) && extra_speed)
 			damage_random_bodypart(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		visible_message(
-			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!"),
+			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!!"),
 			span_userdanger("You[extra_speed ? " violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
 		)
 		log_combat(hit_atom, src, "crashes ")
@@ -255,25 +253,34 @@
 			return TRUE
 	return FALSE
 
+
 /mob/living/carbon/resist_buckle()
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
-		changeNext_move(CLICK_CD_BREAKOUT)
-		last_special = world.time + CLICK_CD_BREAKOUT
-		var/buckle_cd = 60 SECONDS
-		if(handcuffed)
-			var/obj/item/restraints/O = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
-			buckle_cd = O.breakouttime
-		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
-					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
-		if(do_after(src, buckle_cd, target = src, timed_action_flags = IGNORE_HELD_ITEM))
-			if(!buckled)
-				return
-			buckled.user_unbuckle_mob(src,src)
-		else
-			if(src && buckled)
-				to_chat(src, span_warning("You fail to unbuckle yourself!"))
-	else
-		buckled.user_unbuckle_mob(src,src)
+	if(!HAS_TRAIT(src, TRAIT_RESTRAINED))
+		buckled.user_unbuckle_mob(src, src)
+		return
+
+	changeNext_move(CLICK_CD_BREAKOUT)
+	last_special = world.time + CLICK_CD_BREAKOUT
+	var/buckle_cd = 1 MINUTES
+
+	if(handcuffed)
+		var/obj/item/restraints/cuffs = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
+		buckle_cd = cuffs.breakouttime
+
+	visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"),
+				span_notice("You attempt to unbuckle yourself... \
+				(This will take around [DisplayTimeText(buckle_cd)] and you must stay still.)"))
+
+	if(!do_after(src, buckle_cd, target = src, timed_action_flags = IGNORE_HELD_ITEM, hidden = TRUE))
+		if(buckled)
+			to_chat(src, span_warning("You fail to unbuckle yourself!"))
+		return
+
+	if(QDELETED(src) || isnull(buckled))
+		return
+
+	buckled.user_unbuckle_mob(src, src)
+
 
 /mob/living/carbon/resist_fire()
 	return !!apply_status_effect(/datum/status_effect/stop_drop_roll)
@@ -297,34 +304,40 @@
 		cuff_resist(I)
 
 
-/mob/living/carbon/proc/cuff_resist(obj/item/I, breakouttime = 1 MINUTES, cuff_break = 0)
-	if((cuff_break != INSTANT_CUFFBREAK) && (SEND_SIGNAL(src, COMSIG_MOB_REMOVING_CUFFS, I) & COMSIG_MOB_BLOCK_CUFF_REMOVAL))
+/**
+ * Helper to break the cuffs from hands
+ * @param {obj/item} cuffs - The cuffs to break
+ * @param {number} breakouttime - The time it takes to break the cuffs. Use SECONDS/MINUTES defines
+ * @param {number} cuff_break - Speed multiplier, 0 is default, see _DEFINES\combat.dm
+ */
+/mob/living/carbon/proc/cuff_resist(obj/item/cuffs, breakouttime = 1 MINUTES, cuff_break = 0)
+	if((cuff_break != INSTANT_CUFFBREAK) && (SEND_SIGNAL(src, COMSIG_MOB_REMOVING_CUFFS, cuffs) & COMSIG_MOB_BLOCK_CUFF_REMOVAL))
 		return //The blocking object should sent a fluff-appropriate to_chat about cuff removal being blocked
-	if(I.item_flags & BEING_REMOVED)
-		to_chat(src, span_warning("You're already attempting to remove [I]!"))
+	if(cuffs.item_flags & BEING_REMOVED)
+		to_chat(src, span_warning("You're already attempting to remove [cuffs]!"))
 		return
-	I.item_flags |= BEING_REMOVED
-	breakouttime = I.breakouttime
+	cuffs.item_flags |= BEING_REMOVED
+	breakouttime = cuffs.breakouttime
 	if(!cuff_break)
-		visible_message(span_warning("[src] attempts to remove [I]!"))
-		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
-		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM))
-			. = clear_cuffs(I, cuff_break)
+		visible_message(span_warning("[src] attempts to remove [cuffs]!"))
+		to_chat(src, span_notice("You attempt to remove [cuffs]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
+		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM, hidden = TRUE))
+			. = clear_cuffs(cuffs, cuff_break)
 		else
-			to_chat(src, span_warning("You fail to remove [I]!"))
+			to_chat(src, span_warning("You fail to remove [cuffs]!"))
 
 	else if(cuff_break == FAST_CUFFBREAK)
-		breakouttime = 50
-		visible_message(span_warning("[src] is trying to break [I]!"))
-		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
+		breakouttime = 5 SECONDS
+		visible_message(span_warning("[src] is trying to break [cuffs]!"))
+		to_chat(src, span_notice("You attempt to break [cuffs]... (This will take around 5 seconds and you need to stand still.)"))
 		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM))
-			. = clear_cuffs(I, cuff_break)
+			. = clear_cuffs(cuffs, cuff_break)
 		else
-			to_chat(src, span_warning("You fail to break [I]!"))
+			to_chat(src, span_warning("You fail to break [cuffs]!"))
 
 	else if(cuff_break == INSTANT_CUFFBREAK)
-		. = clear_cuffs(I, cuff_break)
-	I.item_flags &= ~BEING_REMOVED
+		. = clear_cuffs(cuffs, cuff_break)
+	cuffs.item_flags &= ~BEING_REMOVED
 
 /mob/living/carbon/proc/uncuff()
 	if (handcuffed)
@@ -602,6 +615,22 @@
 
 		if(num_seared_parts >= 3)
 			become_husk(BURN)
+
+#ifdef HEALTH_DEBUG
+	if(client && hud_used)
+		hud_used.healthdoll.maptext_x = -50
+		hud_used.healthdoll.maptext_height = 200
+		hud_used.healthdoll.maptext_width = 75
+		hud_used.healthdoll.maptext = MAPTEXT("Th: [health]\
+			<br>Br: [total_brute]\
+			<br>Bu: [total_burn]\
+			<br>O: [total_oxy]\
+			<br>T: [total_tox]\
+			<br>Con: [consciousness]\
+			<br>Pain: [pain_controller.get_total_pain()]\
+			<br>Shock: [pain_controller.traumatic_shock]\
+		")
+#endif
 
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
@@ -987,7 +1016,8 @@
 
 			target_organ.apply_organ_damage(excess_healing * -1, required_organ_flag = ORGAN_ORGANIC) //1 excess = 5 organ damage healed
 
-	return ..()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
 	// We can't heal them if they're missing a heart
@@ -1051,7 +1081,7 @@
 /mob/living/carbon/can_be_revived()
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-	if(!get_organ_by_type(/obj/item/organ/internal/brain) && !mind?.has_antag_datum(/datum/antagonist/changeling))
+	if(!get_organ_by_type(/obj/item/organ/internal/brain) && (!IS_CHANGELING(src)))
 		return FALSE
 	return TRUE
 
@@ -1463,12 +1493,15 @@
 	else if(handcuffed)
 		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
 
+/mob/living/carbon/on_standing_up()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
 	. = ..()
 	if(!buckled || buckled.buckle_lying != 0)
 		lying_angle_on_lying_down(new_lying_angle)
-
+	update_bodypart_bleed_overlays()
 
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)
@@ -1543,7 +1576,7 @@
 /mob/living/carbon/proc/spray_blood(splatter_direction, splatter_strength = 3)
 	if(!isturf(loc))
 		return
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, splatter_strength)
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, get_static_viruses(), splatter_strength)
 	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	our_splatter.blood_dna_info = get_blood_dna_list()
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
@@ -1570,3 +1603,13 @@
 	if(!unwagged)
 		return FALSE
 	return unwagged.stop_wag(src)
+
+/mob/living/carbon/ominous_nosebleed()
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(head))
+		return ..()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		to_chat(src, span_notice("You get a headache."))
+		return
+	head.adjustBleedStacks(5)
+	visible_message(span_notice("[src] gets a nosebleed."), span_warning("You get a nosebleed."))

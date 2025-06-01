@@ -57,13 +57,13 @@
  *
  *
  *     Default definition uses 'use_power', 'power_channel', 'active_power_usage',
- *     'idle_power_usage', 'powered()', and 'use_power()' implement behavior.
+ *     'idle_power_usage', 'powered()', and 'use_energy()' implement behavior.
  *
  *  powered(chan = -1)         'modules/power/power.dm'
  *     Checks to see if area that contains the object has power available for power
  *     channel given in 'chan'. -1 defaults to power_channel
  *
- *  use_power(amount, chan=-1)   'modules/power/power.dm'
+ *  use_energy(amount, chan=-1)   'modules/power/power.dm'
  *     Deducts 'amount' from the power channel 'chan' of the area that contains the object.
  *
  *  power_change()               'modules/power/power.dm'
@@ -186,22 +186,31 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	. = ..()
+	SHOULD_NOT_OVERRIDE(TRUE)
+	post_machine_initialize()
+
+/obj/machinery/Destroy(force)
+	SSmachines.unregister_machine(src)
+	end_processing()
+
+	clear_components()
+	unset_static_power()
+
+	return ..()
+
+/**
+ * Called in LateInitialize meant to be the machine replacement to it
+ * This sets up power for the machine and requires parent be called,
+ * ensuring power works on all machines unless exempted with NO_POWER_USE.
+ * This is the proc to override if you want to do anything in LateInitialize.
+ */
+/obj/machinery/proc/post_machine_initialize()
+	SHOULD_CALL_PARENT(TRUE)
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return
 	update_current_power_usage()
 	setup_area_power_relationship()
-
-/obj/machinery/Destroy()
-	SSmachines.unregister_machine(src)
-	end_processing()
-
-	clear_components()
-	dump_contents()
-
-	unset_static_power()
-	return ..()
 
 /**
  * proc to call when the machine starts to require power after a duration of not requiring power
@@ -277,7 +286,15 @@
 /obj/machinery/proc/locate_machinery()
 	return
 
+///Early process for machines added to SSmachines.processing_early to prioritize power draw
+/obj/machinery/proc/process_early()
+	return PROCESS_KILL
+
 /obj/machinery/process()//If you dont use process or power why are you here
+	return PROCESS_KILL
+
+///Late process for machines added to SSmachines.processing_late to gather accurate recordings
+/obj/machinery/proc/process_late()
 	return PROCESS_KILL
 
 /obj/machinery/proc/process_atmos()//If you dont use process why are you here
@@ -307,7 +324,7 @@
 	. = ..()
 	if(!use_power || machine_stat || (. & EMP_PROTECT_SELF))
 		return
-	use_power(7500/severity)
+	use_energy(7.5 KILO JOULES / severity)
 	new /obj/effect/temp_visual/emp(loc)
 
 	if(!prob(70/severity))
@@ -316,6 +333,13 @@
 		return
 	remove_all_languages(source = LANGUAGE_EMP)
 	grant_random_uncommon_language(source = LANGUAGE_EMP)
+
+/obj/machinery/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	//takes priority in case material container or other atoms that hook onto item interaction signals won't give it a chance
+	if(istype(tool, /obj/item/storage/part_replacer))
+		return tool.interact_with_atom(src, user, modifiers)
+
+	return ..()
 
 /**
  * Opens the machine.
@@ -399,6 +423,10 @@
 /obj/machinery/proc/close_machine(atom/movable/target, density_to_set = TRUE)
 	state_open = FALSE
 	set_density(density_to_set)
+	if (!density)
+		update_appearance()
+		return
+
 	if(!target)
 		for(var/atom in loc)
 			if (!(can_be_occupant(atom)))
@@ -698,8 +726,8 @@
 			hit_with_what_noun += plural_s(hit_with_what_noun) // hit with "their hands"
 
 	user.visible_message(
-		span_danger("[user] smashes [src] with [user.p_their()] [hit_with_what_noun][damage ? "." : ", without leaving a mark!"]"),
-		span_danger("You smash [src] with your [hit_with_what_noun][damage ? "." : ", without leaving a mark!"]"),
+		span_danger("[user] smashes [src] with [user.p_their()] [hit_with_what_noun][damage ? "." : ", [no_damage_feedback]!"]"),
+		span_danger("You smash [src] with your [hit_with_what_noun][damage ? "." : ", [no_damage_feedback]!"]"),
 		span_hear("You hear a [damage ? "smash" : "thud"]."),
 		COMBAT_MESSAGE_RANGE,
 	)
@@ -752,13 +780,14 @@
 		return
 	update_last_used(user)
 
-/obj/machinery/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/machinery/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
-		return ITEM_INTERACT_ANY_BLOCKER
+		return ITEM_INTERACT_BLOCKING
+
 	. = ..()
-	if(. & ITEM_INTERACT_BLOCKING)
-		return
-	update_last_used(user)
+	if(.)
+		update_last_used(user)
+	return .
 
 /obj/machinery/_try_interact(mob/user)
 	if((interaction_flags_machine & INTERACT_MACHINE_WIRES_IF_OPEN) && panel_open && (attempt_wire_interaction(user) == WIRE_INTERACTION_BLOCK))
@@ -792,7 +821,7 @@
 	SEND_SIGNAL(src, COMSIG_MACHINERY_REFRESH_PARTS)
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar, close_after_pry = FALSE, open_density = FALSE, closed_density = TRUE)
-	. = !(state_open || panel_open || is_operational || (obj_flags & NO_DECONSTRUCTION)) && crowbar.tool_behaviour == TOOL_CROWBAR
+	. = !(state_open || panel_open || is_operational) && crowbar.tool_behaviour == TOOL_CROWBAR
 	if(!.)
 		return
 	crowbar.play_tool_sound(src, 50)
@@ -802,19 +831,23 @@
 		close_machine(density_to_set = closed_density)
 
 /obj/machinery/proc/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel = 0, custom_deconstruct = FALSE)
-	. = (panel_open || ignore_panel) && !(obj_flags & NO_DECONSTRUCTION) && crowbar.tool_behaviour == TOOL_CROWBAR
+	. = (panel_open || ignore_panel) && crowbar.tool_behaviour == TOOL_CROWBAR
 	if(!. || custom_deconstruct)
 		return
 	crowbar.play_tool_sound(src, 50)
 	deconstruct(TRUE)
 
-/obj/machinery/deconstruct(disassembled = TRUE)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return ..() //Just delete us, no need to call anything else.
+/obj/machinery/handle_deconstruct(disassembled = TRUE)
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	on_deconstruction()
+	if(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION)
+		dump_inventory_contents() //drop stuff we consider important
+		return //Just delete us, no need to call anything else.
+
+	on_deconstruction(disassembled)
 	if(!LAZYLEN(component_parts))
-		return ..() //we don't have any parts.
+		dump_contents() //drop everything inside us
+		return //we don't have any parts.
 	spawn_frame(disassembled)
 
 	for(var/part in component_parts)
@@ -832,9 +865,11 @@
 						continue
 					var/obj/item/stack/stack_path = component
 					new stack_path(loc, board.req_components[component])
-
 	LAZYCLEARLIST(component_parts)
-	return ..()
+
+	//drop everything inside us. we do this last to give machines a chance
+	//to handle their contents before we dump them
+	dump_contents()
 
 /**
  * Spawns a frame where this machine is. If the machine was not disassmbled, the
@@ -847,7 +882,7 @@
 /obj/machinery/proc/spawn_frame(disassembled)
 	var/obj/structure/frame/machine/new_frame = new /obj/structure/frame/machine(loc)
 
-	new_frame.state = 2
+	new_frame.state = FRAME_STATE_WIRED
 
 	// If the new frame shouldn't be able to fit here due to the turf being blocked, spawn the frame deconstructed.
 	if(isturf(loc))
@@ -857,7 +892,7 @@
 			new_frame.deconstruct(disassembled)
 			return
 
-	new_frame.icon_state = "box_1"
+	new_frame.update_appearance(UPDATE_ICON_STATE)
 	. = new_frame
 	new_frame.set_anchored(anchored)
 	if(!disassembled)
@@ -867,7 +902,7 @@
 
 /obj/machinery/atom_break(damage_flag)
 	. = ..()
-	if(!(machine_stat & BROKEN) && !(obj_flags & NO_DECONSTRUCTION))
+	if(!(machine_stat & BROKEN))
 		set_machine_stat(machine_stat | BROKEN)
 		SEND_SIGNAL(src, COMSIG_MACHINERY_BROKEN, damage_flag)
 		update_appearance()
@@ -914,7 +949,7 @@
 		qdel(atom_part)
 
 /obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
-	if((obj_flags & NO_DECONSTRUCTION) || screwdriver.tool_behaviour != TOOL_SCREWDRIVER)
+	if(screwdriver.tool_behaviour != TOOL_SCREWDRIVER)
 		return FALSE
 
 	screwdriver.play_tool_sound(src, 50)
@@ -939,9 +974,6 @@
 
 /obj/machinery/proc/exchange_parts(mob/user, obj/item/storage/part_replacer/replacer_tool)
 	if(!istype(replacer_tool))
-		return FALSE
-
-	if((obj_flags & NO_DECONSTRUCTION) && !replacer_tool.works_from_distance)
 		return FALSE
 
 	var/shouldplaysound = FALSE
@@ -996,8 +1028,8 @@
 			if(!istype(secondary_part, required_type))
 				continue
 			// If it's a corrupt or rigged cell, attempting to send it through Bluespace could have unforeseen consequences.
-			if(istype(secondary_part, /obj/item/stock_parts/cell) && replacer_tool.works_from_distance)
-				var/obj/item/stock_parts/cell/checked_cell = secondary_part
+			if(istype(secondary_part, /obj/item/stock_parts/power_store/cell) && replacer_tool.works_from_distance)
+				var/obj/item/stock_parts/power_store/cell/checked_cell = secondary_part
 				// If it's rigged or corrupted, max the charge. Then explode it.
 				if(checked_cell.rigged || checked_cell.corrupted)
 					checked_cell.charge = checked_cell.maxcharge
@@ -1119,12 +1151,15 @@
 /obj/machinery/proc/on_construction(mob/user)
 	return
 
-//called on deconstruction before the final deletion
-/obj/machinery/proc/on_deconstruction()
+/**
+ * called on deconstruction before the final deletion
+ * Arguments
+ *
+ * * disassembled - if TRUE means we used tools to deconstruct it, FALSE means it got destroyed by other means
+ */
+/obj/machinery/proc/on_deconstruction(disassembled)
+	PROTECTED_PROC(TRUE)
 	return
-
-/obj/machinery/proc/can_be_overridden()
-	. = 1
 
 /obj/machinery/zap_act(power, zap_flags)
 	if(prob(85) && (zap_flags & ZAP_MACHINE_EXPLOSIVE) && !(resistance_flags & INDESTRUCTIBLE))

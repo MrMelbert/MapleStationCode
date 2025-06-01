@@ -74,7 +74,7 @@
 	if(!..())
 		return FALSE
 	var/obj/machinery/door/airlock/airlock = holder
-	if(!issilicon(user) && !isdrone(user) && airlock.isElectrified())
+	if(!issilicon(user) && !isdrone(user) && airlock.isElectrified() && airlock.hasPower())
 		var/mob/living/carbon/carbon_user = user
 		if (!istype(carbon_user) || carbon_user.should_electrocute(src))
 			return FALSE

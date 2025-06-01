@@ -5,13 +5,13 @@
 
 /// The max damage a limb can take before it stops taking damage.
 /// Used by the max_damage var.
-#define LIMB_MAX_HP_DEFAULT 150 //
-#define LIMB_MAX_HP_CORE 600 //
+#define LIMB_MAX_HP_DEFAULT 75
+#define LIMB_MAX_HP_CORE LIMB_MAX_HP_DEFAULT * 3
 
 /// Xenomorph Limbs
-#define LIMB_MAX_HP_ALIEN_LARVA 100 // 50 //Used by the weird larva chest and head. Did you know they have those?
-#define LIMB_MAX_HP_ALIEN_LIMBS 300 // 100 //Used by xenomorph limbs.
-#define LIMB_MAX_HP_ALIEN_CORE 1500 // 500 //Used by xenomorph chests and heads
+#define LIMB_MAX_HP_ALIEN_LARVA 50 //Used by the weird larva chest and head. Did you know they have those?
+#define LIMB_MAX_HP_ALIEN_LIMBS 100 //Used by xenomorph limbs.
+#define LIMB_MAX_HP_ALIEN_CORE 500 //Used by xenomorph chests and heads
 
 // EMP
 // Note most of these values are doubled on heavy EMP

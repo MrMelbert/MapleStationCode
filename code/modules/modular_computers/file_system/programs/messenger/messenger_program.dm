@@ -709,7 +709,7 @@
 
 
 		if (isAI(messaged_mob))
-			sender_title = "<a href='?src=[REF(messaged_mob)];track=[html_encode(sender_name)]'>[sender_title]</a>"
+			sender_title = "<a href='byond://?src=[REF(messaged_mob)];track=[html_encode(sender_name)]'>[sender_title]</a>"
 
 		var/inbound_message = "[signal.format_message()]"
 

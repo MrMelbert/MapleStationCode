@@ -26,7 +26,7 @@
 	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-// Manually adding the hair related preferences to the lizard features list
+// Manually adding the hair related preferences to the lizard features list // melbert todo refactor later
 /datum/species/lizard/get_features()
 	return ..() | list(
 		"hair_color",

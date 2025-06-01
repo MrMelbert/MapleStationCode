@@ -17,6 +17,7 @@
 	anchored = TRUE
 	density = TRUE
 	layer = ABOVE_MOB_LAYER
+	interaction_flags_click = NEED_DEXTERITY | NEED_HANDS | FORBID_TELEKINESIS_REACH
 	/// Keeps track of the total points scored
 	var/total_score = 0
 	/// The chance to score a ball into the hoop based on distance
@@ -24,7 +25,7 @@
 
 /obj/structure/hoop/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED, AfterRotation = CALLBACK(src, PROC_REF(reset_appearance)))
+	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED, post_rotation = CALLBACK(src, PROC_REF(reset_appearance)))
 	update_appearance()
 	register_context()
 
@@ -53,38 +54,38 @@
 /obj/structure/hoop/update_overlays()
 	. = ..()
 
-	var/dir_offset_x = 0
-	var/dir_offset_y = 0
+	var/dir_offset_w = 0
+	var/dir_offset_z = 0
 
 	switch(dir)
 		if(NORTH)
-			dir_offset_y = -32
+			dir_offset_z = -32
 		if(SOUTH)
-			dir_offset_y = 32
+			dir_offset_z = 32
 		if(EAST)
-			dir_offset_x = -32
+			dir_offset_w = -32
 		if(WEST)
-			dir_offset_x = 32
+			dir_offset_w = 32
 
 	var/mutable_appearance/scoreboard = mutable_appearance('icons/obj/signs.dmi', "basketball_scorecard")
-	scoreboard.pixel_x = dir_offset_x
-	scoreboard.pixel_y = dir_offset_y
+	scoreboard.pixel_w = dir_offset_w
+	scoreboard.pixel_z = dir_offset_z
 	. += scoreboard
 
 	var/ones = total_score % 10
 	var/mutable_appearance/ones_overlay = mutable_appearance('icons/obj/signs.dmi', "days_[ones]", layer + 0.01)
-	ones_overlay.pixel_x = 4
+	ones_overlay.pixel_w = 4
 	var/mutable_appearance/emissive_ones_overlay  = emissive_appearance('icons/obj/signs.dmi', "days_[ones]", src, alpha = src.alpha)
-	emissive_ones_overlay.pixel_x = 4
+	emissive_ones_overlay.pixel_w = 4
 	scoreboard.add_overlay(ones_overlay)
 	scoreboard.add_overlay(emissive_ones_overlay)
 
 	var/tens = (total_score / 10) % 10
 	var/mutable_appearance/tens_overlay = mutable_appearance('icons/obj/signs.dmi', "days_[tens]", layer + 0.01)
-	tens_overlay.pixel_x = -5
+	tens_overlay.pixel_w = -5
 
 	var/mutable_appearance/emissive_tens_overlay  = emissive_appearance('icons/obj/signs.dmi', "days_[tens]", src, alpha = src.alpha)
-	emissive_tens_overlay.pixel_x = -5
+	emissive_tens_overlay.pixel_w = -5
 	scoreboard.add_overlay(tens_overlay)
 	scoreboard.add_overlay(emissive_tens_overlay)
 
@@ -129,16 +130,13 @@
 	baller.adjustStaminaLoss(STAMINA_COST_DUNKING_MOB)
 	baller.stop_pulling()
 
-/obj/structure/hoop/CtrlClick(mob/living/user)
-	if(!user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH|NEED_HANDS))
-		return
-
+/obj/structure/hoop/click_ctrl(mob/user)
 	user.balloon_alert_to_viewers("resetting score...")
 	playsound(src, 'sound/machines/locktoggle.ogg', 50, TRUE)
 	if(do_after(user, 5 SECONDS, target = src))
 		total_score = 0
 		update_appearance()
-	return ..()
+	return CLICK_ACTION_SUCCESS
 
 /obj/structure/hoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(!isitem(AM))
@@ -178,8 +176,8 @@
 	return NONE
 
 // No resetting the score for minigame hoops
-/obj/structure/hoop/minigame/CtrlClick(mob/living/user)
-	return
+/obj/structure/hoop/minigame/click_ctrl(mob/user)
+	return CLICK_ACTION_BLOCKING
 
 /obj/structure/hoop/minigame/score(obj/item/toy/basketball/ball, mob/living/baller, points)
 	var/is_team_hoop = !(baller.ckey in team_ckeys)

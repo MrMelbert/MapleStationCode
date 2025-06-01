@@ -247,15 +247,22 @@
 
 /obj/item/organ/internal/stomach/Insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
-	receiver.hud_used?.hunger?.update_appearance()
+	receiver.hud_used?.hunger?.update_hunger_bar()
 
 /obj/item/organ/internal/stomach/Remove(mob/living/carbon/stomach_owner, special, movement_flags)
 	if(ishuman(stomach_owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.clear_alert(ALERT_DISGUST)
 		human_owner.clear_mood_event("disgust")
-	stomach_owner.hud_used?.hunger?.update_appearance()
+	stomach_owner.hud_used?.hunger?.update_hunger_bar()
 	return ..()
+
+/obj/item/organ/internal/stomach/feel_for_damage(self_aware)
+	if(damage < low_threshold)
+		return ""
+	if(damage < high_threshold)
+		return span_warning("Your stomach hurts.")
+	return span_boldwarning("Your stomach cramps in pain!")
 
 /obj/item/organ/internal/stomach/bone
 	name = "mass of bones"

@@ -2072,6 +2072,11 @@
 	},
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
+"aIW" = (
+/obj/structure/cable,
+/obj/structure/sign/poster/greenscreen/directional/north,
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "aJc" = (
 /obj/machinery/door/airlock/research/glass{
 	name = "Robotics Lab"
@@ -4697,7 +4702,7 @@
 	specialfunctions = 4
 	},
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -5689,6 +5694,9 @@
 	dir = 1
 	},
 /obj/structure/table/glass,
+/obj/item/reagent_containers/dropper{
+	pixel_y = -4
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/pharmacy)
 "bSZ" = (
@@ -6052,7 +6060,7 @@
 /area/station/cargo/storage)
 "caG" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/landmark/start/prisoner,
 /obj/structure/sign/poster/contraband/random/directional/north,
 /obj/effect/spawner/random/contraband/prison,
@@ -6427,7 +6435,7 @@
 /area/station/security/prison/safe)
 "chK" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -9903,7 +9911,7 @@
 /area/station/science/breakroom)
 "dpc" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/spawner/random/contraband/prison,
 /turf/open/floor/iron/grimy,
 /area/station/security/prison/safe)
@@ -11500,7 +11508,7 @@
 /area/station/security/warden)
 "dSX" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/carpet/black,
 /area/station/maintenance/starboard/aft)
 "dTe" = (
@@ -16938,9 +16946,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/cryo)
 "fIP" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/machinery/light/cold/directional/east,
 /obj/effect/turf_decal/delivery/red,
 /obj/structure/cable,
@@ -17909,12 +17915,14 @@
 /obj/structure/table,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/item/ashtray{
-	pixel_y = 5;
+	pixel_y = 13;
 	pixel_x = 5
 	},
-/obj/item/implant/radio{
-	pixel_y = 5;
-	pixel_x = -5
+/obj/item/radio{
+	desc = "An old handheld radio. You could use it, if you really wanted to.";
+	icon_state = "radio";
+	name = "old radio";
+	pixel_y = 2
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/break_room)
@@ -20514,10 +20522,10 @@
 /obj/machinery/cell_charger{
 	pixel_y = 5
 	},
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_y = 3
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
 	},
@@ -25111,8 +25119,14 @@
 /obj/effect/turf_decal/trimline/yellow/filled/line,
 /obj/structure/table/glass,
 /obj/machinery/reagentgrinder{
-	pixel_y = 8
+	pixel_y = 10
 	},
+/obj/item/reagent_containers/cup/beaker/large{
+	pixel_y = 2;
+	pixel_x = -4
+	},
+/obj/item/reagent_containers/cup/beaker/large,
+/obj/item/stack/sheet/mineral/plasma,
 /turf/open/floor/iron/showroomfloor,
 /area/station/medical/pharmacy)
 "iot" = (
@@ -26821,10 +26835,6 @@
 /obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/iron,
 /area/station/science/robotics/mechbay)
-"iOL" = (
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain)
 "iOP" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -28350,7 +28360,7 @@
 "jqO" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/station/science/robotics/abandoned)
@@ -30515,6 +30525,15 @@
 "jXB" = (
 /turf/open/floor/engine/co2,
 /area/station/engineering/atmos)
+"jXJ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/siding/wood,
+/obj/machinery/greenscreen_camera{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/captain)
 "jXT" = (
 /obj/effect/decal/cleanable/glass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -32015,7 +32034,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/machinery/light/small/directional/north,
 /obj/machinery/camera/directional/north{
-	default_camera_icon = "Courtroom - Fore";
+	name = "Courtroom - Fore";
 	network = list("ss13", "court")
 	},
 /turf/open/floor/wood/parquet,
@@ -33769,9 +33788,7 @@
 /area/station/cargo/sorting)
 "kYZ" = (
 /obj/structure/cable,
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/box/red/corners{
 	dir = 1
 	},
@@ -35739,7 +35756,7 @@
 /area/station/security/brig)
 "lGt" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/landmark/start/prisoner,
 /obj/effect/spawner/random/contraband/prison,
 /turf/open/floor/iron/grimy,
@@ -40804,19 +40821,19 @@
 "nkm" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/stock_parts/cell/crap/empty{
+/obj/item/stock_parts/power_store/cell/crap/empty{
 	pixel_y = 10;
 	pixel_x = 6
 	},
-/obj/item/stock_parts/cell/crap/empty{
+/obj/item/stock_parts/power_store/cell/crap/empty{
 	pixel_y = 2;
 	pixel_x = 6
 	},
-/obj/item/stock_parts/cell/crap/empty{
+/obj/item/stock_parts/power_store/cell/crap/empty{
 	pixel_y = 7;
 	pixel_x = -7
 	},
-/obj/item/stock_parts/cell/crap/empty{
+/obj/item/stock_parts/power_store/cell/crap/empty{
 	pixel_y = -2;
 	pixel_x = -2
 	},
@@ -42708,7 +42725,7 @@
 	specialfunctions = 4
 	},
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -47133,7 +47150,7 @@
 /area/station/service/hydroponics)
 "piM" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "piN" = (
@@ -48593,7 +48610,7 @@
 /area/station/hallway/secondary/service)
 "pFc" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 5
 	},
@@ -49692,6 +49709,11 @@
 /obj/item/queen_bee/bought,
 /turf/open/floor/iron/checker,
 /area/station/service/hydroponics)
+"pXJ" = (
+/obj/effect/turf_decal/trimline/blue/filled/line,
+/obj/structure/extinguisher_cabinet/directional/south,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/command)
 "pXO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -51815,9 +51837,7 @@
 /turf/open/floor/plating/airless,
 /area/station/maintenance/starboard/lower)
 "qEq" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/delivery/red,
 /obj/effect/turf_decal/stripes{
 	dir = 8
@@ -53979,7 +53999,6 @@
 "rmI" = (
 /obj/effect/landmark/start/hangover,
 /obj/effect/turf_decal/trimline/blue/filled/line,
-/obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "rmK" = (
@@ -60083,8 +60102,8 @@
 /area/space/nearstation)
 "tcc" = (
 /obj/machinery/power/smes{
-	capacity = 9e+006;
-	charge = 10000
+	capacity = 1.8e+008;
+	charge = 2e+005
 	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
@@ -72427,12 +72446,6 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/north,
-/obj/structure/table/glass,
-/obj/item/stack/sheet/mineral/plasma,
-/obj/item/reagent_containers/cup/beaker/large,
-/obj/item/reagent_containers/cup/beaker/large,
-/obj/item/reagent_containers/dropper,
-/obj/item/reagent_containers/dropper,
 /obj/machinery/requests_console{
 	department = "Pharmacy";
 	name = "Pharmacy RC";
@@ -72450,6 +72463,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
 	},
+/obj/structure/filingcabinet/chestdrawer,
 /turf/open/floor/iron/dark,
 /area/station/medical/pharmacy)
 "xiH" = (
@@ -74219,7 +74233,7 @@
 "xMr" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	charge = 100;
 	maxcharge = 15000
 	},
@@ -176657,7 +176671,7 @@ gLV
 ari
 rmI
 bXb
-iOL
+mvC
 umt
 toD
 jQk
@@ -176914,8 +176928,8 @@ ect
 ari
 tCH
 bXb
-mvC
-umt
+aIW
+jXJ
 toD
 vSO
 nDa
@@ -177940,7 +177954,7 @@ syD
 clG
 rnx
 ari
-nEP
+pXJ
 whG
 mJG
 vJh

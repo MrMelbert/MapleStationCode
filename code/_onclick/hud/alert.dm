@@ -342,7 +342,10 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!(living_owner.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
-	return living_owner.resist_fire()
+	return handle_stop_drop_roll(owner)
+
+/atom/movable/screen/alert/fire/proc/handle_stop_drop_roll(mob/living/roller)
+	return roller.resist_fire()
 
 /atom/movable/screen/alert/give // information set when the give alert is made
 	icon_state = "default"
@@ -1136,6 +1139,9 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return TRUE
 
 /atom/movable/screen/alert/Click(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+
+	..()
 	if(!usr || !usr.client)
 		return FALSE
 	if(usr != owner)

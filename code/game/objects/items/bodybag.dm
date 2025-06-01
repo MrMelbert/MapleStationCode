@@ -16,11 +16,11 @@
 	else
 		deploy_bodybag(user, get_turf(src))
 
-/obj/item/bodybag/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(proximity)
-		if(isopenturf(target))
-			deploy_bodybag(user, target)
+/obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, flags)
+	if(isopenturf(interacting_with))
+		deploy_bodybag(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
 /obj/item/bodybag/attempt_pickup(mob/user)
 	// can't pick ourselves up if we are inside of the bodybag, else very weird things may happen
@@ -61,23 +61,50 @@
 	unfoldedbag_path = /obj/structure/closet/body_bag/bluespace
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NO_MAT_REDEMPTION
+	/// Tracks the air from the bodybag
+	var/datum/gas_mixture/internal_air
+
+/obj/item/bodybag/bluespace/return_air()
+	return internal_air || ..()
+
+/obj/item/bodybag/bluespace/return_analyzable_air()
+	return internal_air || ..()
+
+/obj/item/bodybag/bluespace/assume_air(datum/gas_mixture/giver)
+	return internal_air ? internal_air.merge(giver) : ..()
+
+/obj/item/bodybag/bluespace/remove_air(amount)
+	return internal_air ? internal_air.remove(amount) : ..()
 
 /obj/item/bodybag/bluespace/examine(mob/user)
 	. = ..()
-	if(contents.len)
-		var/s = contents.len == 1 ? "" : "s"
-		. += span_notice("You can make out the shape[s] of [contents.len] object[s] through the fabric.")
+	if(length(contents))
+		. += span_notice("You can make out the shape of [length(contents)] object\s through the fabric.")
+
+/obj/item/bodybag/bluespace/atom_deconstruct(disassembled)
+	for(var/atom/movable/inside in src)
+		inside.forceMove(get_turf(src))
+		if(isliving(inside))
+			to_chat(inside, span_notice("You suddenly feel the space around you torn apart! You're free!"))
 
 /obj/item/bodybag/bluespace/Destroy()
-	for(var/atom/movable/A in contents)
-		A.forceMove(get_turf(src))
-		if(isliving(A))
-			to_chat(A, span_notice("You suddenly feel the space around you torn apart! You're free!"))
+	for(var/mob/living/leftover in src)
+		stack_trace("Bluespace Bodybag qdeleted before dumping mobs!")
+		leftover.forceMove(get_turf(src))
+	QDEL_NULL(internal_air)
 	return ..()
 
 /obj/item/bodybag/bluespace/deploy_bodybag(mob/user, atom/location)
 	var/obj/structure/closet/body_bag/item_bag = new unfoldedbag_path(location)
-	for(var/atom/movable/inside in contents)
+	if(internal_air)
+		// get rid of any air it might have collected in init
+		if(item_bag.internal_air)
+			location.assume_air(item_bag.internal_air)
+		// replace it with our air
+		item_bag.internal_air = internal_air
+		internal_air = null
+
+	for(var/atom/movable/inside in src)
 		inside.forceMove(item_bag)
 		if(isliving(inside))
 			to_chat(inside, span_notice("You suddenly feel air around you! You're free!"))

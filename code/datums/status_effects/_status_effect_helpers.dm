@@ -37,11 +37,6 @@
 				if(STATUS_EFFECT_REFRESH)
 					existing_effect.refresh(arglist(arguments))
 					return
-				// Replace but only if the type differs
-				if(STATUS_EFFECT_LOOSE_REPLACE)
-					if(existing_effect.type == new_effect)
-						return
-					existing_effect.be_replaced()
 
 	// Create the status effect with our mob + our arguments
 	var/datum/status_effect/new_instance = new new_effect(arguments)
@@ -88,6 +83,17 @@
 			return present_effect
 
 	return null
+
+///Gets every status effect of an ID and returns all of them in a list, rather than the individual 'has_status_effect'
+/mob/living/proc/get_all_status_effect_of_id(datum/status_effect/checked_effect)
+	RETURN_TYPE(/list/datum/status_effect)
+
+	var/list/all_effects_of_type = list()
+	for(var/datum/status_effect/present_effect as anything in status_effects)
+		if(present_effect.id == initial(checked_effect.id))
+			all_effects_of_type += present_effect
+
+	return all_effects_of_type
 
 /**
  * Checks if this mob has a status effect that shares the passed effect's ID

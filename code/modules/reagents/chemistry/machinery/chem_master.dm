@@ -1,3 +1,5 @@
+#define MAX_CONTAINER_PRINT_AMOUNT 50
+
 /obj/machinery/chem_master
 	name = "ChemMaster 3000"
 	desc = "Used to separate chemicals and distribute them in a variety of forms."
@@ -26,8 +28,8 @@
 	var/printing_progress
 	/// Number of containers to be printed
 	var/printing_total
-	/// The amount of containers that can be printed in 1 cycle
-	var/printing_amount = 1
+	/// The time it takes to print a container
+	var/printing_speed = 0.75 SECONDS
 
 /obj/machinery/chem_master/Initialize(mapload)
 	create_reagents(100)
@@ -76,7 +78,7 @@
 /obj/machinery/chem_master/examine(mob/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads:<br>Reagent buffer capacity: <b>[reagents.maximum_volume]</b> units.<br>Number of containers printed per cycle <b>[printing_amount]</b>.")
+		. += span_notice("The status display reads:<br>Reagent buffer capacity: <b>[reagents.maximum_volume]</b> units.<br>Printing speed: <b>[0.75 SECONDS / printing_speed * 100]%</b>.")
 		if(!QDELETED(beaker))
 			. += span_notice("[beaker] of <b>[beaker.reagents.maximum_volume]u</b> capacity inserted")
 			. += span_notice("Right click with empty hand to remove beaker")
@@ -143,10 +145,11 @@
 	for(var/obj/item/reagent_containers/cup/beaker/beaker in component_parts)
 		reagents.maximum_volume += beaker.reagents.maximum_volume
 
-	printing_amount = 0
+	//Servo tier determines printing speed
+	printing_speed = 1 SECONDS
 	for(var/datum/stock_part/servo/servo in component_parts)
-		printing_amount += servo.tier * 12.5
-	printing_amount = min(50, ROUND_UP(printing_amount))
+		printing_speed -= servo.tier * 0.25 SECONDS
+	printing_speed = max(printing_speed, 0.25 SECONDS)
 
 ///Return a map of category->list of containers this machine can print
 /obj/machinery/chem_master/proc/load_printable_containers()
@@ -162,9 +165,9 @@
 		)
 	return containers
 
-/obj/machinery/chem_master/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/machinery/chem_master/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(user.combat_mode || (tool.item_flags & ABSTRACT) || (tool.flags_1 & HOLOGRAM_1) || !can_interact(user) || !user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
-		return ..()
+		return NONE
 
 	if(is_reagent_container(tool) && tool.is_open_container())
 		replace_beaker(user, tool)
@@ -174,7 +177,7 @@
 		else
 			return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	return NONE
 
 /obj/machinery/chem_master/wrench_act(mob/living/user, obj/item/tool)
 	if(user.combat_mode)
@@ -253,6 +256,7 @@
 /obj/machinery/chem_master/ui_static_data(mob/user)
 	var/list/data = list()
 
+	data["maxPrintable"] = MAX_CONTAINER_PRINT_AMOUNT
 	data["categories"] = list()
 	for(var/category in printable_containers)
 		//make the category
@@ -283,7 +287,6 @@
 	.["isPrinting"] = is_printing
 	.["printingProgress"] = printing_progress
 	.["printingTotal"] = printing_total
-	.["maxPrintable"] = printing_amount
 
 	//contents of source beaker
 	var/list/beaker_data = null
@@ -376,7 +379,8 @@
 		return FALSE
 
 	//use energy
-	use_power(active_power_usage) // Non-module change
+	if(!use_energy(active_power_usage, force = FALSE))
+		return FALSE
 
 	//do the operation
 	. = FALSE
@@ -397,6 +401,10 @@
 
 	switch(action)
 		if("eject")
+			if(is_printing)
+				say("The buffer is locked while printing.")
+				return
+
 			replace_beaker(ui.user)
 			return TRUE
 
@@ -411,7 +419,7 @@
 
 			if(amount == -1) // Set custom amount
 				var/mob/user = ui.user //Hold a reference of the user if the UI is closed
-				amount = tgui_input_number(user, "Enter amount to transfer", "Transfer amount")
+				amount = FLOOR(tgui_input_number(user, "Enter amount to transfer", "Transfer amount", round_value = FALSE), CHEMICAL_VOLUME_ROUNDING)
 				if(!amount || !user.can_perform_action(src))
 					return FALSE
 
@@ -472,8 +480,8 @@
 			item_count = text2num(item_count)
 			if(isnull(item_count) || item_count <= 0)
 				return FALSE
-			item_count = min(item_count, printing_amount)
-			var/volume_in_each = round(reagents.total_volume / item_count, CHEMICAL_VOLUME_ROUNDING)
+			item_count = min(item_count, MAX_CONTAINER_PRINT_AMOUNT)
+			var/volume_in_each = min(round(reagents.total_volume / item_count, CHEMICAL_VOLUME_ROUNDING), initial(selected_container.volume))
 
 			// Generate item name
 			var/item_name_default = initial(selected_container.name)
@@ -486,8 +494,10 @@
 				"Container name",
 				"Name",
 				item_name_default,
-				MAX_NAME_LEN)
-			if(!item_name)
+				max_length = MAX_NAME_LEN,
+			)
+
+			if(!item_name || is_printing)
 				return FALSE
 
 			//start printing
@@ -495,7 +505,7 @@
 			printing_progress = 0
 			printing_total = item_count
 			update_appearance(UPDATE_OVERLAYS)
-			create_containers(ui.user, item_count, item_name, volume_in_each)
+			create_containers(ui.user, item_count, item_name, volume_in_each, selected_container)
 			return TRUE
 
 /**
@@ -506,8 +516,9 @@
  * * item_count - number of containers to print
  * * item_name - the name for each container printed
  * * volume_in_each - volume in each container created
+ * * chosen_container - type of the container we're going to print
  */
-/obj/machinery/chem_master/proc/create_containers(mob/user, item_count, item_name, volume_in_each)
+/obj/machinery/chem_master/proc/create_containers(mob/user, item_count, item_name, volume_in_each, chosen_container)
 	PRIVATE_PROC(TRUE)
 
 	//lost power or manually stopped
@@ -515,10 +526,13 @@
 		return
 
 	//use power
-	use_power(active_power_usage) // Non-module change : can't if use_power, it doesn't return anything, wasn't invented yet
+	if(!use_energy(active_power_usage, force = FALSE))
+		is_printing = FALSE
+		update_appearance(UPDATE_OVERLAYS)
+		return
 
 	//print the stuff
-	var/obj/item/reagent_containers/item = new selected_container(drop_location())
+	var/obj/item/reagent_containers/item = new chosen_container(drop_location())
 	adjust_item_drop_location(item)
 	item.name = item_name
 	item.reagents.clear_reagents()
@@ -529,7 +543,7 @@
 	//print more items
 	item_count --
 	if(item_count > 0)
-		addtimer(CALLBACK(src, PROC_REF(create_containers), user, item_count, item_name, volume_in_each), 0.75 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(create_containers), user, item_count, item_name, volume_in_each, chosen_container), printing_speed)
 	else
 		is_printing = FALSE
 		update_appearance(UPDATE_OVERLAYS)
@@ -544,3 +558,5 @@
 	if(!length(containers))
 		containers = list(CAT_CONDIMENTS = GLOB.reagent_containers[CAT_CONDIMENTS])
 	return containers
+
+#undef MAX_CONTAINER_PRINT_AMOUNT

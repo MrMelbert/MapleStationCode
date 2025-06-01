@@ -184,7 +184,7 @@
 			exposed_mob.emote("scream")
 		playsound(exposed_mob, 'sound/machines/fryer/deep_fryer_emerge.ogg', 25, TRUE)
 		ADD_TRAIT(exposed_mob, TRAIT_OIL_FRIED, "cooking_oil_react")
-		addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living, unfry_mob)), 3)
+		addtimer(CALLBACK(exposed_mob, TYPE_PROC_REF(/mob/living, unfry_mob)), 0.3 SECONDS)
 	if(FryLoss)
 		exposed_mob.adjustFireLoss(FryLoss)
 
@@ -492,7 +492,7 @@
 	clot_rate *= 0.75
 	to_chat(carbies, span_notice("The salt bits seep in and stick to [lowertext(src)], painfully irritating the skin but soaking up most of the blood."))
 
-/datum/wound/burn/flesh/on_salt(reac_volume)
+/datum/wound/flesh/burn/on_salt(reac_volume)
 	// Slightly sanitizes and disinfects, but also increases infestation rate (some bacteria are aided by salt), and decreases flesh healing (can damage the skin from moisture absorption)
 	sanitization += VALUE_PER(0.4, 30) * reac_volume
 	infestation -= max(VALUE_PER(0.3, 30) * reac_volume, 0)
@@ -666,7 +666,7 @@
 
 // Don't pour flour onto burn wounds, it increases infection risk! Very unwise. Backed up by REAL info from REAL professionals.
 // https://www.reuters.com/article/uk-factcheck-flour-burn-idUSKCN26F2N3
-/datum/wound/burn/flesh/on_flour(reac_volume)
+/datum/wound/flesh/burn/on_flour(reac_volume)
 	to_chat(victim, span_notice("The flour seeps into [lowertext(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 1)
 	infestation += 0.2
@@ -772,7 +772,7 @@
 	// When some nerd adds infection for wounds, make this increase the infection
 	return
 
-/datum/wound/burn/flesh/on_starch(reac_volume, mob/living/carbon/carbies)
+/datum/wound/flesh/burn/on_starch(reac_volume, mob/living/carbon/carbies)
 	to_chat(carbies, span_notice("The slimey starch seeps into [lowertext(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 0.5)
 	infestation += 0.1
@@ -826,7 +826,7 @@
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
 
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.4, reac_volume * 1 MINUTES)
+	exposed_mob.add_timed_surgery_speed_mod(type, 0.4, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"
@@ -951,7 +951,7 @@
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
-		stomach.adjust_charge(reac_volume * 30)
+		stomach.adjust_charge(reac_volume * 30 * ETHEREAL_DISCHARGE_RATE)
 
 /datum/reagent/consumable/liquidelectricity/enriched/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()

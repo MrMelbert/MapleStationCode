@@ -189,7 +189,7 @@
 				target.sharp_pain(BODY_ZONE_CHEST, 75, BRUTE, 20 SECONDS)
 
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Grant Powers", "[i]"))
-		if(!do_after(owner, (i * 8 SECONDS), target))
+		if(!do_after(owner, (i * 8 SECONDS), target, hidden = TRUE))
 			to_chat(owner, span_warning("Our uplifting of [target] has been interrupted!"))
 			return FALSE
 		if(QDELETED(src))

@@ -16,9 +16,6 @@
 	AddElement(/datum/element/item_scaling, 0.4, 1)
 	AddComponent(/datum/component/simple_rotation)
 
-/obj/item/statue/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
-
 /obj/item/statue/custom/Destroy()
 	content_ma = null
 	return ..()
@@ -113,21 +110,15 @@
 	return ..()
 
 // We aim at something nearby to turn into our sculpting target and not bop it
-/obj/item/modeling_block/pre_attack(atom/target, mob/user)
-	. = ..()
-	if(.)
-		return .
-	if (!sculpting && ismovable(target))
-		set_target(target,user)
-	return TRUE
+/obj/item/modeling_block/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 // We aim at something to turn into our sculpting target
-/obj/item/modeling_block/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-
-	if (!sculpting && ismovable(target))
-		set_target(target,user)
-	return . | AFTERATTACK_PROCESSED_ITEM
+/obj/item/modeling_block/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if (!sculpting && ismovable(interacting_with))
+		set_target(interacting_with,user)
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/modeling_block/proc/is_viable_target(mob/living/user, atom/movable/target)
 	//Only things on turfs

@@ -48,12 +48,12 @@
 		/obj/item/stack/rods = 8,
 		/obj/item/stock_parts/servo = 2,
 		/obj/item/stock_parts/capacitor = 1,
-		/obj/item/stock_parts/cell = 1,
+		/obj/item/stock_parts/power_store/cell = 1,
 	)
 	parts = list(
 		/obj/item/stock_parts/servo = 2,
 		/obj/item/stock_parts/capacitor = 1,
-		/obj/item/stock_parts/cell = 1,
+		/obj/item/stock_parts/power_store/cell = 1,
 	)
 	tool_behaviors = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WRENCH)
 	time = 20 SECONDS
@@ -71,6 +71,17 @@
 		/obj/item/electronics/airlock = 1,
 	)
 	time = 5 SECONDS
+	category = CAT_EQUIPMENT
+
+/datum/crafting_recipe/barbeque_grill
+	name = "Barbeque grill"
+	result = /obj/machinery/grill
+	reqs = list(
+		/obj/item/stack/sheet/iron = 5,
+		/obj/item/stack/rods = 5,
+		/obj/item/assembly/igniter = 1,
+	)
+	time = 7 SECONDS
 	category = CAT_EQUIPMENT
 
 /datum/crafting_recipe/secure_closet

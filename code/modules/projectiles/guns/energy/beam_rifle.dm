@@ -29,7 +29,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	ammo_type = list(/obj/item/ammo_casing/energy/beam_rifle/hitscan)
 	actions_types = list(/datum/action/item_action/zoom_lock_action)
-	cell_type = /obj/item/stock_parts/cell/beam_rifle
+	cell_type = /obj/item/stock_parts/power_store/cell/beam_rifle // Non-module change : this'll conflict if you're porting the new one
 	var/aiming = FALSE
 	var/aiming_time = 12
 	var/aiming_time_fire_threshold = 5
@@ -85,7 +85,7 @@
 
 /obj/item/gun/energy/beam_rifle/debug
 	delay = 0
-	cell_type = /obj/item/stock_parts/cell/infinite
+	cell_type = /obj/item/stock_parts/power_store/cell/infinite // Non-module change
 	aiming_time = 0
 	recoil = 0
 	pin = /obj/item/firing_pin
@@ -321,26 +321,27 @@
 		sync_ammo()
 		var/atom/target = source.mouse_object_ref?.resolve()
 		if(target)
-			INVOKE_ASYNC(src, PROC_REF(afterattack), target, source.mob, FALSE, source.mouseParams, passthrough = TRUE)
+			INVOKE_ASYNC(src, PROC_REF(try_fire_gun), target, source.mob, source.mouseParams, TRUE)
 	stop_aiming()
 	QDEL_LIST(current_tracers)
 
-/obj/item/gun/energy/beam_rifle/afterattack(atom/target, mob/living/user, flag, params, passthrough = FALSE)
-	. |= AFTERATTACK_PROCESSED_ITEM
-	if(flag) //It's adjacent, is the user, or is on the user's person
+/obj/item/gun/energy/beam_rifle/try_fire_gun(atom/target, mob/living/user, params, passthrough = FALSE)
+	if(user.Adjacent(target)) //It's adjacent, is the user, or is on the user's person
 		if(target in user.contents) //can't shoot stuff inside us.
-			return
+			return FALSE
 		if(!ismob(target) || user.combat_mode) //melee attack
-			return
+			return FALSE
 		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
-			return
+			return FALSE
 	if(!passthrough && (aiming_time > aiming_time_fire_threshold))
-		return
+		return FALSE
 	if(lastfire > world.time + delay)
-		return
+		return FALSE
+	if(!..())
+		return FALSE
 	lastfire = world.time
-	. = ..()
 	stop_aiming()
+	return TRUE
 
 /obj/item/gun/energy/beam_rifle/proc/sync_ammo()
 	for(var/obj/item/ammo_casing/energy/beam_rifle/AC in contents)

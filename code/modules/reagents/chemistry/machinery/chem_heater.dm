@@ -31,7 +31,7 @@
 		QDEL_NULL(beaker)
 	return ..()
 
-/obj/machinery/chem_heater/on_deconstruction() // Non-module change
+/obj/machinery/chem_heater/on_deconstruction(disassembled)
 	beaker?.forceMove(drop_location())
 
 /obj/machinery/chem_heater/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -94,14 +94,14 @@
 		heater_coefficient *= micro_laser.tier
 
 
-/obj/machinery/chem_heater/item_interaction(mob/living/user, obj/item/held_item, list/modifiers, is_right_clicking)
+/obj/machinery/chem_heater/item_interaction(mob/living/user, obj/item/held_item, list/modifiers)
 	if((held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
-		return ..()
+		return NONE
 
 	if(QDELETED(beaker))
 		if(istype(held_item, /obj/item/reagent_containers/dropper) || istype(held_item, /obj/item/reagent_containers/syringe))
 			var/obj/item/reagent_containers/injector = held_item
-			injector.afterattack(beaker, user, proximity_flag = TRUE)
+			injector.interact_with_atom(beaker, user, modifiers)
 			return ITEM_INTERACT_SUCCESS
 
 	if(is_reagent_container(held_item)  && held_item.is_open_container())
@@ -110,7 +110,7 @@
 		balloon_alert(user, "beaker added")
 		return ITEM_INTERACT_SUCCESS
 
-	return ..()
+	return NONE
 
 /obj/machinery/chem_heater/wrench_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
@@ -179,7 +179,7 @@
 
 	//heat the beaker and use some power. we want to use only a small amount of power since this proc gets called frequently
 	beaker.reagents.adjust_thermal_energy((target_temperature - beaker.reagents.chem_temp) * heater_coefficient * seconds_per_tick * SPECIFIC_HEAT_DEFAULT * beaker.reagents.total_volume)
-	use_power(active_power_usage * seconds_per_tick * 0.3)
+	use_energy(active_power_usage * seconds_per_tick * 0.3)
 	return TRUE
 
 /obj/machinery/chem_heater/proc/on_reaction_step(datum/reagents/holder, num_reactions, seconds_per_tick)

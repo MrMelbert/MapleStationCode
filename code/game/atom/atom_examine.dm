@@ -108,7 +108,7 @@
 	if(href)
 		var/list/hrefs = examine_hrefs(user, thats)
 		if(length(hrefs))
-			href_text += "<a href='?"
+			href_text += "<a href='byond://?" // Non-module change : 516 byond://
 			href_text += "src=[REF(src)];"
 			for(var/key in hrefs)
 				href_text += "[key]=[hrefs[key]];"

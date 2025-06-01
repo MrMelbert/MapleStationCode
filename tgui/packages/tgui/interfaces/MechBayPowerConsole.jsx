@@ -1,5 +1,4 @@
 import {
-  AnimatedNumber,
   Button,
   LabeledList,
   NoticeBox,
@@ -60,8 +59,9 @@ export const MechBayPowerConsole = (props) => {
                       bad: [-Infinity, 0.3],
                     }}
                   >
-                    <AnimatedNumber value={cell.charge} />
-                    {' / ' + cell.maxcharge}
+                    {formatEnergy(cell.charge) +
+                      '/' +
+                      formatEnergy(cell.maxcharge)}
                   </ProgressBar>
                 )}
             </LabeledList.Item>
