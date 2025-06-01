@@ -31,7 +31,7 @@
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slash.ogg'
@@ -45,7 +45,7 @@
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slash.ogg'
