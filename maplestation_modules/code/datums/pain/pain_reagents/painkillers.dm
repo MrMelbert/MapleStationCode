@@ -55,7 +55,7 @@
 	M.adjustBruteLoss(-0.2 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Morphine heals pain obviously
-	M.heal_pain(-2 * REM * seconds_per_tick)
+	M.heal_pain(1 * REM * seconds_per_tick)
 	// Morphine causes a bit of disgust
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(50 * (2 - creation_purity), seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -111,9 +111,9 @@
 	M.adjustBruteLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	// Numbers seem low, but our metabolism is very slow
-	M.heal_pain(-0.1 * REM * seconds_per_tick, BODY_ZONE_HEAD)
-	M.heal_pain(-0.2 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
-	M.heal_pain(-0.45 * REM * seconds_per_tick, BODY_ZONE_CHEST)
+	M.heal_pain(0.1 * REM * seconds_per_tick, BODY_ZONE_HEAD)
+	M.heal_pain(0.2 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
+	M.heal_pain(0.4 * REM * seconds_per_tick, BODY_ZONE_CHEST)
 	// Okay at fevers.
 	M.adjust_body_temperature(-0.1 KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(66 * max(1 - creation_purity, 0.5), seconds_per_tick))
@@ -163,7 +163,7 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.05 * REM * seconds_per_tick, FALSE)
-	M.heal_pain(-0.5 * REM * seconds_per_tick)
+	M.heal_pain(0.2 * REM * seconds_per_tick)
 	// Not very good at treating fevers.
 	M.adjust_body_temperature(-0.05 KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -203,9 +203,9 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Heals pain, numbers seem low but our metabolism is very slow
-	M.heal_pain(-0.45 * REM * seconds_per_tick, BODY_ZONE_HEAD)
-	M.cause_pain(-0.2 * REM * seconds_per_tick, BODY_ZONE_CHEST)
-	M.cause_pain(-0.1 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
+	M.heal_pain(0.4 * REM * seconds_per_tick, BODY_ZONE_HEAD)
+	M.cause_pain(0.2 * REM * seconds_per_tick, BODY_ZONE_CHEST)
+	M.cause_pain(0.1 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.25 * REM * seconds_per_tick)
 	// Really good at treating fevers.
@@ -255,7 +255,7 @@
 	if(volume <= 10)
 		// Number looks high, compared to other painkillers,
 		// but we have a comparatively much higher metabolism than them.
-		M.heal_pain(-5 * REM * seconds_per_tick)
+		M.heal_pain(2 * REM * seconds_per_tick)
 	// Mildly toxic in higher dosages.
 	else if(SPT_PROB(volume * 3, seconds_per_tick))
 		M.apply_damage(3 * REM * seconds_per_tick, TOX)
@@ -279,7 +279,7 @@
 /datum/reagent/medicine/painkiller/oxycodone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.adjustBruteLoss(-0.3 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.2 * REM * seconds_per_tick, FALSE)
-	M.heal_pain(-4 * REM * seconds_per_tick)
+	M.heal_pain(2 * REM * seconds_per_tick)
 	M.set_drugginess(20 SECONDS * REM * seconds_per_tick)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(40, seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -354,7 +354,7 @@
 		if(!IS_ORGANIC_LIMB(part))
 			continue
 
-		var/final_pain_heal_amount = -2 * pain_heal_amount * REM * seconds_per_tick
+		var/final_pain_heal_amount = 1.5 * pain_heal_amount * REM * seconds_per_tick
 		if(pain_type_to_look_for && (part.last_received_pain_type != pain_type_to_look_for))
 			final_pain_heal_amount *= 0.1
 		if(wound_type_to_look_for && (locate(wound_type_to_look_for) in part.wounds))
@@ -403,3 +403,93 @@
 	M.adjustFireLoss(-0.5 * REM * normalise_creation_purity() * seconds_per_tick)
 	..()
 	return TRUE
+
+/// Painkillers which target a specific limb, instead of the whole body
+/datum/reagent/medicine/painkiller/local_anesthetic
+	/// How much to reduce the pain modifier of the bodypart by
+	var/bodypart_pain_modifier = 1
+	/// The methods that can apply this reagent to a bodypart
+	var/required_methods = TOUCH
+	/// The bodypart affected by this reagent
+	VAR_PRIVATE/obj/item/bodypart/active
+	/// If applied incorrectly, starts causing nausea and dizziness
+	VAR_PRIVATE/toxic = FALSE
+
+/datum/reagent/medicine/painkiller/local_anesthetic/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection, exposed_zone)
+	. = ..()
+	var/obj/item/bodypart/part = exposed_mob.get_bodypart(exposed_zone) || exposed_mob.get_bodypart(BODY_ZONE_CHEST)
+	if(isnull(part) || !IS_ORGANIC_LIMB(part))
+		return
+	if(active)
+		stack_trace("Attempted to apply [src] to [part] while already applied to [active].")
+		return
+
+	if(methods & required_methods)
+		part.bodypart_pain_modifier *= bodypart_pain_modifier
+		part.unarmed_effectiveness *= bodypart_pain_modifier // makes you less likely to hit punches
+		active = part
+		RegisterSignals(part, list(COMSIG_BODYPART_REMOVED, COMSIG_QDELETING), PROC_REF(clear_ref))
+		if(bodypart_pain_modifier <= 0.33)
+			ADD_TRAIT(part, TRAIT_PARALYSIS, type)
+			part.update_disabled()
+		return
+
+	toxic = TRUE
+
+/datum/reagent/medicine/painkiller/local_anesthetic/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	. = ..()
+	if(SPT_PROB(4, seconds_per_tick) && active && HAS_TRAIT_FROM_ONLY(active, TRAIT_PARALYSIS, type))
+		to_chat(M, span_green(pick("Your [active.plaintext_zone] feels numb.", "You can hardly feel your [active.plaintext_zone].", "Your [active.plaintext_zone] feels like it's not there.")))
+
+/datum/reagent/medicine/painkiller/local_anesthetic/on_mob_delete(mob/living/affected_mob)
+	. = ..()
+	clear_ref()
+
+/datum/reagent/medicine/painkiller/local_anesthetic/proc/clear_ref()
+	SIGNAL_HANDLER
+
+	if(isnull(active))
+		return
+
+	active.bodypart_pain_modifier /= bodypart_pain_modifier
+	active.unarmed_effectiveness /= bodypart_pain_modifier
+	UnregisterSignal(active, list(COMSIG_BODYPART_REMOVED, COMSIG_QDELETING))
+	REMOVE_TRAIT(active, TRAIT_PARALYSIS, type)
+	active.update_disabled()
+	active = null
+
+/datum/reagent/medicine/painkiller/local_anesthetic/lidocaine
+	name = "Lidocaine"
+	description = "A local anesthetic that numbs the area it is applied to. \
+		Can be used to initiate surgery on a bodypart without general anesthesia. \
+		Must be applied via patch or gel - if ingested or injected, instead causes nausea and dizziness."
+	reagent_state = LIQUID
+	color = "#b3d9ff"
+	metabolization_rate = 0.2 * REAGENTS_METABOLISM
+	overdose_threshold = 24
+	ph = 6.5
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	bodypart_pain_modifier = 0.2 // Makes the bodypart feel no pain at all, but only for the bodypart it's applied to.
+	required_methods = TOUCH|PATCH
+
+/datum/reagent/medicine/painkiller/local_anesthetic/lidocaine/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	. = ..()
+	if(!toxic)
+		M.heal_pain(1.2 * REM * seconds_per_tick, active.body_zone)
+		return
+	if(SPT_PROB(10, seconds_per_tick))
+		M.adjust_dizzy_up_to(8 SECONDS * REM * seconds_per_tick, 12 SECONDS)
+		M.adjust_confusion_up_to(4 SECONDS * REM * seconds_per_tick, 10 SECONDS)
+	if(SPT_PROB(12, seconds_per_tick))
+		M.adjust_eye_blur_up_to(4 SECONDS * REM * seconds_per_tick, 8 SECONDS)
+	if(SPT_PROB(5, seconds_per_tick))
+		if(M.disgust > DISGUST_LEVEL_GROSS)
+			M.vomit(purge_ratio = 0.5)
+		else if(M.disgust < DISGUST_LEVEL_VERYGROSS)
+			M.adjust_disgust(20 * REM * seconds_per_tick)
+	if(SPT_PROB(4, seconds_per_tick))
+		to_chat(M, span_warning(pick("You feel a bit nauseous.", "You feel a bit dizzy.", "You feel a bit off.")))
+
+/datum/reagent/medicine/painkiller/local_anesthetic/lidocaine/overdose_start(mob/living/affected_mob)
+	. = ..()
+	toxic = TRUE

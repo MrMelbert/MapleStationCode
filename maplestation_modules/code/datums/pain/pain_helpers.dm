@@ -22,16 +22,64 @@
  * * target_zone - required, which zone or zones to afflict pain to
  * * amount - how much pain to inflict
  * * dam_type - the type of pain to inflict. Only [BRUTE] and [BURN] really matters.
+ *
+ * Returns the amount of pain caused, or 0 if nothing was caused or no pain controller exists.
  */
 /mob/living/proc/cause_pain(target_zone, amount, dam_type = BRUTE)
-	ASSERT(!isnull(target_zone))
+	ASSERT(istext(target_zone) || islist(target_zone))
 	ASSERT(isnum(amount))
+	if(isnull(pain_controller))
+		return 0
+
+	amount = abs(amount)
+
+	if(islist(target_zone))
+		var/sum_heal = 0
+		for(var/zone in shuffle(target_zone))
+			sum_heal += pain_controller?.adjust_bodypart_pain(target_zone, amount, dam_type)
+		return sum_heal
+
 	return pain_controller?.adjust_bodypart_pain(target_zone, amount, dam_type)
 
+/**
+ * Heals pain on the mob.
+ *
+ * Converts excess healing to shock healing
+ *
+ * * amount - how much pain to heal
+ * * target_zone - which zone or zones to heal pain from. Defaults to all zones.
+ * If you pass it multiple zones, the amount will be divided evenly between them.
+ *
+ * Returns the amount of pain healed, or 0 if nothing was healed or no pain controller exists.
+ */
 /mob/living/proc/heal_pain(amount, target_zone = BODY_ZONES_ALL)
-	ASSERT(!isnull(target_zone))
+	ASSERT(istext(target_zone) || islist(target_zone))
 	ASSERT(isnum(amount))
-	return pain_controller?.adjust_bodypart_pain(target_zone, abs(amount) * -1)
+	if(isnull(pain_controller))
+		return 0
+
+	amount = abs(amount) * -1
+
+	var/sum_heal = 0
+	if(islist(target_zone))
+		var/num_zones = length(target_zone)
+		var/list/target_zones = shuffle(target_zone)
+		var/per_bodypart = amount / num_zones
+		for(var/i in 1 to num_zones)
+			var/heal = pain_controller.adjust_bodypart_pain(target_zones[i], per_bodypart)
+			sum_heal += heal
+			// some was left over, let remaining zones pick it up before putting it to shock
+			if(heal < abs(per_bodypart) && i != num_zones)
+				per_bodypart = (amount - heal) / (num_zones - i)
+
+	else
+		sum_heal += pain_controller.adjust_bodypart_pain(target_zone, amount)
+
+	var/leftover = abs(amount) - sum_heal
+	if(leftover > 0)
+		pain_controller.adjust_traumatic_shock(leftover * -0.1, down_to = 30)
+
+	return sum_heal
 
 /**
  * Runs an emote on the pain emote cooldown

@@ -431,7 +431,7 @@
 	if (slot & ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
 			to_chat(user, span_userdanger("[src]'s contents spill all over you!"))
-			reagents.expose(user, TOUCH)
+			reagents.expose(user, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
