@@ -111,7 +111,7 @@
 	return ..()
 
 /datum/status_effect/incapacitating/unconscious/tick(seconds_between_ticks)
-	owner.cause_pain(BODY_ZONES_ALL, -0.05 * seconds_between_ticks)
+	owner.heal_pain(0.1 * seconds_between_ticks)
 
 //SLEEPING
 /datum/status_effect/incapacitating/sleeping
@@ -226,7 +226,7 @@
 				need_mob_update += owner.adjustFireLoss(-0.4 * sleep_quality * seconds_between_ticks, updating_health = FALSE, required_bodytype = BODYTYPE_ORGANIC)
 				need_mob_update += owner.adjustToxLoss(-0.2 * sleep_quality * seconds_between_ticks, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
 		need_mob_update += owner.adjustStaminaLoss(min(-0.4 * sleep_quality * seconds_between_ticks, -0.4 * HEALING_SLEEP_DEFAULT * seconds_between_ticks), updating_stamina = FALSE)
-		owner.cause_pain(BODY_ZONES_ALL, -0.15 * sleep_quality * seconds_between_ticks)
+		owner.heal_pain(-0.2 * sleep_quality * seconds_between_ticks)
 		if(need_mob_update)
 			owner.updatehealth()
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)

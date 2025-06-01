@@ -57,5 +57,5 @@
 	if(QDELING(owner) || no_refunds)
 		return
 
-	owner.cause_pain(targeted_zone_or_zones, pain_amount * return_mod * -1, pain_type)
+	owner.heal_pain(pain_amount * return_mod, targeted_zone_or_zones)
 	owner.adjust_traumatic_shock(pain_amount * 0.125 * -1, 0)
