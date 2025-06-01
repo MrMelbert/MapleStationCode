@@ -114,3 +114,4 @@
 	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+

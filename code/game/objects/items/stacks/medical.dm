@@ -42,7 +42,7 @@
 	/// Optional flags to supply to can_inject
 	var/can_inject_flags = NONE
 
-/obj/item/stack/medical/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/stack/medical/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(!begin_heal_loop(interacting_with, user, auto_change_zone = TRUE))
@@ -651,11 +651,11 @@
 		return FALSE
 	return ..()
 
-/obj/item/stack/medical/mesh/AltClick(mob/living/user)
+/obj/item/stack/medical/mesh/click_alt(mob/living/user)
 	if(!is_open)
 		balloon_alert(user, "open it first!")
-		return
-	return ..()
+		return CLICK_ACTION_BLOCKING
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/stack/medical/mesh/attack_hand(mob/user, list/modifiers)
 	if(!is_open && user.get_inactive_held_item() == src)

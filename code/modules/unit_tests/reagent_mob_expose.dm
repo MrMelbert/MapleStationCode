@@ -30,7 +30,7 @@
 
 	// TOUCH
 	dropper.reagents.add_reagent(/datum/reagent/water, 5)
-	dropper.afterattack(human, human, TRUE)
+	dropper.melee_attack_chain(human, human)
 	TEST_ASSERT(human.fire_stacks < 0, "Human still has fire stacks after touching water")
 
 	// VAPOR
@@ -50,7 +50,7 @@
 	TEST_ASSERT_EQUAL(human.health, 100, "Human health did not set properly")
 	patch.reagents.add_reagent(/datum/reagent/method_patch_test, 1)
 	patch.self_delay = 0
-	patch.attack(human, human)
+	patch.interact_with_atom(human, human)
 	TEST_ASSERT_EQUAL(human.health, 90, "Human health did not update after patch was applied")
 
 	// INJECT

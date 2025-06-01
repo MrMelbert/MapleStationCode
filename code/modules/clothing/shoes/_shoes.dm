@@ -199,7 +199,6 @@
 			to_chat(our_guy, span_userdanger("You stamp on [user]'s hand! What the- [user.p_they()] [user.p_were()] [tied ? "knotting" : "untying"] your shoelaces!"))
 			user.emote("scream")
 			if(istype(living_user))
-				// NON-MODULE CHANGE
 				var/damage_what = living_user.get_active_hand()
 				living_user.apply_damage(10, BRUTE, damage_what)
 				living_user.apply_damage(40, PAIN, damage_what)
