@@ -90,7 +90,7 @@
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/update_overlays()
 	. = ..()
-	if(!showpipe)
+	if(!underfloor_state)
 		return
 
 	var/mutable_appearance/distro_pipe_appearance = get_pipe_image(icon, "pipe_[nodes[1] ? "intact" : "exposed"]", dir, nodes[1]?.color || COLOR_BLUE, piping_layer = 4)
