@@ -360,7 +360,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 8
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "abn" = (
@@ -1621,7 +1621,7 @@
 /turf/open/floor/iron/dark/side,
 /area/station/command/heads_quarters/hop)
 "aeL" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark/side,
 /area/station/command/heads_quarters/hop)
@@ -2853,7 +2853,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/newscaster/directional/south,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/grimy,
 /area/station/command/heads_quarters/captain/private)
 "ahM" = (
@@ -3630,7 +3630,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "ajO" = (
@@ -3646,7 +3646,7 @@
 /turf/open/floor/plating,
 /area/station/security/prison)
 "ajR" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/firealarm/directional/west{
 	pixel_y = -5
 	},
@@ -7503,7 +7503,7 @@
 "atC" = (
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/mapping_helpers/broken_floor,
-/obj/machinery/photocopier/gratis,
+/obj/machinery/photocopier/gratis/prebuilt,
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/wood,
 /area/station/maintenance/department/science)
@@ -16940,7 +16940,7 @@
 /turf/closed/wall/rust,
 /area/station/maintenance/department/engine)
 "aUj" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
@@ -22521,7 +22521,7 @@
 /turf/open/floor/circuit/telecomms,
 /area/station/science/xenobiology)
 "bjJ" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/radio/intercom/directional/west,
 /obj/machinery/computer/security/telescreen/entertainment/directional/south,
 /turf/open/floor/iron/grimy,
@@ -24003,7 +24003,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/newspaper{
 	pixel_x = 3;
 	pixel_y = 3
@@ -32663,7 +32663,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "qRz" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/newscaster/directional/east,
 /turf/open/floor/carpet/green,
 /area/station/service/lawoffice)

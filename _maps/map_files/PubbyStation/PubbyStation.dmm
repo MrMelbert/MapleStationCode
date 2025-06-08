@@ -2685,7 +2685,7 @@
 /turf/open/floor/iron/large,
 /area/station/security)
 "ajp" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/large,
 /area/station/security)
@@ -7981,7 +7981,7 @@
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aBC" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
@@ -10460,7 +10460,7 @@
 /turf/open/floor/iron,
 /area/station/commons/storage/art)
 "aLz" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -21119,7 +21119,7 @@
 /obj/machinery/light_switch/directional/east{
 	name = "Light Switch"
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "bDy" = (
@@ -28283,7 +28283,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "ckl" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library/lounge)
@@ -33008,7 +33008,7 @@
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/cargo/sorting)
 "dWk" = (
@@ -40117,7 +40117,7 @@
 /area/station/cargo/storage)
 "jdj" = (
 /obj/structure/disposalpipe/segment,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 8
 	},
@@ -42600,7 +42600,7 @@
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 4
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -42979,7 +42979,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
 "lui" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "luA" = (
@@ -59405,7 +59405,7 @@
 /turf/open/floor/iron/dark/smooth_edge,
 /area/station/command/heads_quarters/rd)
 "wrU" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
 /turf/open/floor/wood,
