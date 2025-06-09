@@ -17,6 +17,39 @@
 	var/buildstackamount = 1
 	var/item_chair = /obj/item/chair // if null it can't be picked up
 
+/obj/structure/chair/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_buckled == buckler)
+		being_buckled.visible_message(
+			span_notice("[buckler] sits down on [src]."),
+			span_notice("You sit down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_buckled.visible_message(
+			span_notice("[buckler] sits [being_buckled] down on [src]."),
+			span_notice("[buckler] sits you down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/chair/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] stands up from [src]."),
+			span_notice("You stand up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] stands [being_unbuckled] up from [src]."),
+			span_notice("[unbuckler] stands you up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
 
 /obj/structure/chair/examine(mob/user)
 	. = ..()
@@ -195,6 +228,9 @@
 	buildstacktype = /obj/item/stack/sheet/mineral/titanium
 	buckle_sound = SFX_SEATBELT_BUCKLE
 	unbuckle_sound = SFX_SEATBELT_UNBUCKLE
+	resistance_flags = FIRE_PROOF
+	max_integrity = 120
+	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/chair/comfy/shuttle/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
 	overlays_from_child_procs ||= list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1))
@@ -211,6 +247,42 @@
 		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_behind", src.layer + 0.01)
 	else
 		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_up", src.layer + 0.01)
+
+/obj/structure/chair/comfy/shuttle/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	if(being_buckled == buckler)
+		being_buckled.visible_message(
+			span_notice("[buckler] sits down on [src], pulling the overhead restraint down to secure [buckler.p_them()]self."),
+			span_notice("You sit down on [src], pulling the overhead restraint down to secure yourself."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_buckled.visible_message(
+			span_notice("[buckler] sits [being_buckled] down on [src], pulling the overhead restraint down to secure [buckler.p_them()]."),
+			span_notice("[buckler] sits you down on [src], pulling the overhead restraint down to secure you."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/chair/comfy/shuttle/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] flips the overhead restraint up, standing up from [src]."),
+			span_notice("You flip the overhead restraint up, standing up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] flips the overhead restraint up, standing [being_unbuckled] up from [src]."),
+			span_notice("[unbuckler] flips the overhead restraint up, standing you up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/chair/comfy/shuttle/update_overlays()
+	. = ..()
+	if(has_buckled_mobs())
+		. += mutable_appearance(icon, "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01)
+		. += mutable_appearance(icon, "[icon_state]_down_behind", src.layer + 0.01)
+	else
+		. += mutable_appearance(icon, "[icon_state]_up", src.layer + 0.01)
 
 /obj/structure/chair/comfy/shuttle/tactical
 	name = "tactical chair"
@@ -549,3 +621,76 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	desc = "Oh, so this is like the fucked up Monopoly rules where there are no rules and you can pick up and place the musical chairs as you please."
 	particles = new /particles/musical_notes
 	origin_type = /obj/structure/chair/musical
+
+/obj/structure/handrail
+	name = "handrail"
+	desc = "Hold on tight!"
+	icon = 'icons/obj/handrail.dmi'
+	icon_state = "handrail"
+	anchored = TRUE
+	can_buckle = TRUE
+	buckle_lying = NO_BUCKLE_LYING
+	resistance_flags = FIRE_PROOF
+	max_integrity = 50
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT)
+	layer = OBJ_LAYER
+
+/obj/structure/handrail/attack_hand(mob/living/user, list/modifiers)
+	return ..() || mouse_buckle_handling(user, user)
+
+/obj/structure/handrail/is_user_buckle_possible(mob/living/target, mob/user, check_loc = TRUE)
+	return ..() && user == target && !HAS_TRAIT(target, TRAIT_HANDS_BLOCKED)
+
+/obj/structure/handrail/post_buckle_mob(mob/living/buckled_mob)
+	RegisterSignal(buckled_mob, SIGNAL_ADDTRAIT(TRAIT_HANDS_BLOCKED), PROC_REF(stop_buckle))
+
+	var/z_offset = 0
+	var/w_offset = 0
+	if(dir & NORTH)
+		z_offset = -4
+	else if(dir & SOUTH)
+		z_offset = 8
+	if(dir & EAST)
+		w_offset = -8
+	else if(dir & WEST)
+		w_offset = 8
+
+	buckled_mob.add_offsets(type, z_add = z_offset, w_add = w_offset)
+
+/obj/structure/handrail/post_unbuckle_mob(mob/living/unbuckled_mob)
+	UnregisterSignal(unbuckled_mob, SIGNAL_ADDTRAIT(TRAIT_HANDS_BLOCKED))
+	unbuckled_mob.remove_offsets(type)
+
+/obj/structure/handrail/proc/stop_buckle(mob/living/source, ...)
+	SIGNAL_HANDLER
+	source.visible_message(
+		span_warning("[source] loses [source.p_their()] grip on [src]!"),
+		span_warning("You lose your grip on [src]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
+	unbuckle_mob(source, TRUE, TRUE)
+
+/obj/structure/handrail/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	buckler.visible_message(
+		span_notice("[buckler] grabs [src] tight, keeping [buckler.p_them()]self upright."),
+		span_notice("You grab [src] tight, keeping yourself upright."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
+
+/obj/structure/handrail/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] lets go of [src]."),
+			span_notice("You let go of [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_warning("[unbuckler] forces [being_unbuckled] to let go of [src]!"),
+			span_warning("[unbuckler] forces you to let go of [src]!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
