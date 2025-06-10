@@ -1,3 +1,4 @@
+// NON-MODULE CHANGEs hitscan lasers
 /obj/projectile/beam
 	name = "laser"
 	icon_state = "laser"
@@ -47,8 +48,10 @@
 		return ..()
 	var/turf/location = get_turf(src)
 	var/environment_pressure = location?.return_air()?.return_pressure()
-	if(environment_pressure >= LAVALAND_EQUIPMENT_EFFECT_PRESSURE && (decayedRange - range) >= 4)
+	if(environment_pressure >= LAVALAND_EQUIPMENT_EFFECT_PRESSURE && (decayedRange - range) >= 3)
 		damage = round(damage * hitscan_damage_range_mult, DAMAGE_PRECISION)
+		stamina = round(stamina * hitscan_damage_range_mult, DAMAGE_PRECISION)
+		pain = round(pain * hitscan_damage_range_mult, DAMAGE_PRECISION)
 	return ..()
 
 /obj/projectile/beam/laser
@@ -139,8 +142,9 @@
 	damage = 7.5
 	wound_bonus = 5
 	bare_wound_bonus = 5
-	damage_falloff_tile = -0.45
+	// damage_falloff_tile = -0.45
 	wound_falloff_tile = -2.5
+	hitscan_damage_range_mult = 0.95
 
 /obj/projectile/beam/scatter/pathetic
 	name = "extremely weak laser pellet"
@@ -150,6 +154,7 @@
 	color = "#dbc11d"
 	hitsound = 'sound/items/bikehorn.ogg' //honk
 	hitsound_wall = 'sound/items/bikehorn.ogg'
+	hitscan_damage_range_mult = 1
 
 /obj/projectile/beam/xray
 	name = "\improper X-ray beam"
