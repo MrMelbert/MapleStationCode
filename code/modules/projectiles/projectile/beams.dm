@@ -19,6 +19,31 @@
 	wound_bonus = -20
 	bare_wound_bonus = 10
 
+	hitscan = TRUE
+	tracer_type = /obj/effect/projectile/tracer/laser
+	muzzle_type = /obj/effect/projectile/muzzle/laser
+	impact_type = /obj/effect/projectile/impact/laser
+	hitscan_light_intensity = 2
+	hitscan_light_range = 0.50
+	hitscan_light_color_override = COLOR_SOFT_RED
+	muzzle_flash_intensity = 4
+	muzzle_flash_range = 1
+	muzzle_flash_color_override = COLOR_SOFT_RED
+	impact_light_intensity = 5
+	impact_light_range = 1.25
+	impact_light_color_override = COLOR_SOFT_RED
+	range = 12
+	/// Damage penalty applied at long ranges while in a high-pressure environment.
+	var/damage_constant = 0.8
+
+/obj/projectile/beam/Range()
+	if(!hitscan)
+		return ..()
+	var/turf/location = get_turf(src)
+	var/environment_pressure = location?.return_air()?.return_pressure()
+	if(environment_pressure >= 50 && (decayedRange - range) >= 4)
+		damage *= damage_constant
+	return ..()
 
 /obj/projectile/beam/laser
 	generic_name = "laser beam"
@@ -26,13 +51,14 @@
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
 	wound_bonus = -20
-	damage = 25
 	bare_wound_bonus = 40
 
 /obj/projectile/beam/laser/carbine
 	icon_state = "carbine_laser"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
 	damage = 10
+	hitscan = FALSE
+	range = 20
 
 /obj/projectile/beam/laser/carbine/practice
 	name = "practice laser"
@@ -43,8 +69,11 @@
 /obj/projectile/beam/laser/hellfire
 	name = "hellfire laser"
 	wound_bonus = 0
-	damage = 30
+	damage = 25
 	speed = 0.6 // higher power = faster, that's how light works right
+	hitscan_light_color_override = COLOR_DARK_RED
+	muzzle_flash_color_override = COLOR_DARK_RED
+	impact_light_color_override = COLOR_DARK_RED
 
 /obj/projectile/beam/laser/hellfire/Initialize(mapload)
 	. = ..()
@@ -53,7 +82,7 @@
 /obj/projectile/beam/laser/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"
-	damage = 40
+	damage = 30
 	tracer_type = /obj/effect/projectile/tracer/heavy_laser
 	muzzle_type = /obj/effect/projectile/muzzle/heavy_laser
 	impact_type = /obj/effect/projectile/impact/heavy_laser
@@ -74,6 +103,9 @@
 	stamina = 35
 	light_color = COLOR_STRONG_VIOLET
 	weak_against_armour = TRUE
+	hitscan_light_color_override = COLOR_STRONG_VIOLET
+	muzzle_flash_color_override = COLOR_STRONG_VIOLET
+	impact_light_color_override = COLOR_STRONG_VIOLET
 
 /obj/projectile/beam/laser/musket/prime
 	name = "mid-power laser"
@@ -82,7 +114,7 @@
 	weak_against_armour = FALSE
 
 /obj/projectile/beam/weak
-	damage = 15
+	damage = 12
 
 /obj/projectile/beam/weak/penetrator
 	armour_penetration = 50
@@ -124,6 +156,11 @@
 	muzzle_type = /obj/effect/projectile/muzzle/xray
 	impact_type = /obj/effect/projectile/impact/xray
 
+	hitscan_light_color_override = LIGHT_COLOR_GREEN
+	muzzle_flash_color_override = LIGHT_COLOR_GREEN
+	impact_light_color_override = LIGHT_COLOR_GREEN
+	damage_constant = 0.5
+
 /obj/projectile/beam/disabler
 	name = "disabler beam"
 	icon_state = "omnilaser"
@@ -137,8 +174,16 @@
 	muzzle_type = /obj/effect/projectile/muzzle/disabler
 	impact_type = /obj/effect/projectile/impact/disabler
 
+	hitscan_light_color_override = LIGHT_COLOR_BLUE
+	muzzle_flash_color_override = LIGHT_COLOR_BLUE
+	impact_light_color_override = LIGHT_COLOR_BLUE
+
 /obj/projectile/beam/disabler/weak
 	damage = 15
+
+/obj/projectile/beam/disabler/weak/carbine
+	hitscan = FALSE
+	range = 20
 
 /obj/projectile/beam/disabler/smoothbore
 	name = "unfocused disabler beam"
@@ -160,6 +205,10 @@
 	muzzle_type = /obj/effect/projectile/muzzle/pulse
 	impact_type = /obj/effect/projectile/impact/pulse
 	wound_bonus = 10
+
+	hitscan_light_color_override = LIGHT_COLOR_BLUE
+	muzzle_flash_color_override = LIGHT_COLOR_BLUE
+	impact_light_color_override = LIGHT_COLOR_BLUE
 
 /obj/projectile/beam/pulse/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
@@ -192,6 +241,10 @@
 	light_color = LIGHT_COLOR_GREEN
 	wound_bonus = -40
 	bare_wound_bonus = 70
+
+	hitscan_light_color_override = LIGHT_COLOR_GREEN
+	muzzle_flash_color_override = LIGHT_COLOR_GREEN
+	impact_light_color_override = LIGHT_COLOR_GREEN
 
 /obj/projectile/beam/emitter/singularity_pull()
 	return //don't want the emitters to miss
