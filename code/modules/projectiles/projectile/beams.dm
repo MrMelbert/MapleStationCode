@@ -33,16 +33,22 @@
 	impact_light_range = 1.25
 	impact_light_color_override = COLOR_SOFT_RED
 	range = 12
-	/// Damage penalty applied at long ranges while in a high-pressure environment.
-	var/damage_constant = 0.8
+	/**
+	 * Damage penalty applied to hitscan beams per tile of travel in standard-pressure environments (after the first four tiles).
+	 *
+	 * The fifth tile will deal (damage * mult),
+	 * the sixth tile will deal (damage * (mult ^ 2)),
+	 * the seventh tile will deal (damage * (mult ^ 3)), and so on.
+	 */
+	var/hitscan_damage_range_mult = 0.8
 
 /obj/projectile/beam/Range()
 	if(!hitscan)
 		return ..()
 	var/turf/location = get_turf(src)
 	var/environment_pressure = location?.return_air()?.return_pressure()
-	if(environment_pressure >= 50 && (decayedRange - range) >= 4)
-		damage *= damage_constant
+	if(environment_pressure >= LAVALAND_EQUIPMENT_EFFECT_PRESSURE && (decayedRange - range) >= 4)
+		damage = round(damage * hitscan_damage_range_mult, DAMAGE_PRECISION)
 	return ..()
 
 /obj/projectile/beam/laser
@@ -162,7 +168,7 @@
 	hitscan_light_color_override = LIGHT_COLOR_GREEN
 	muzzle_flash_color_override = LIGHT_COLOR_GREEN
 	impact_light_color_override = LIGHT_COLOR_GREEN
-	damage_constant = 0.5
+	hitscan_damage_range_mult = 0.9
 
 /obj/projectile/beam/disabler
 	name = "disabler beam"
