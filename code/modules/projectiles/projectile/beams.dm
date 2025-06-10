@@ -53,6 +53,9 @@
 	wound_bonus = -20
 	bare_wound_bonus = 40
 
+/obj/projectile/beam/laser/no_hitscan
+	hitscan = FALSE
+
 /obj/projectile/beam/laser/carbine
 	icon_state = "carbine_laser"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser

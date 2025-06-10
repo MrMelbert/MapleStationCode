@@ -13,6 +13,9 @@
 	e_cost = LASER_SHOTS(16, STANDARD_CELL_CHARGE)
 	select_name = "kill"
 
+/obj/item/ammo_casing/energy/lasergun/retro
+	projectile_type = /obj/projectile/beam/laser/no_hitscan
+
 /obj/item/ammo_casing/energy/lasergun/carbine
 	projectile_type = /obj/projectile/beam/laser/carbine
 	e_cost = LASER_SHOTS(40, STANDARD_CELL_CHARGE)
