@@ -1,5 +1,4 @@
 import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
 import { useState } from 'react';
 import { useBackend, useLocalState } from 'tgui/backend';
 import {
@@ -11,7 +10,7 @@ import {
   Section,
   Stack,
   Tabs,
-} from 'tgui/components';
+} from 'tgui-core/components';
 
 import { JOB2ICON } from '../common/JobToIcon';
 import { isRecordMatch } from '../SecurityRecords/helpers';
@@ -28,10 +27,10 @@ export const MedicalRecordTabs = (props) => {
 
   const [search, setSearch] = useState('');
 
-  const sorted: MedicalRecord[] = flow([
-    filter((record: MedicalRecord) => isRecordMatch(record, search)),
-    sortBy((record: MedicalRecord) => record.name?.toLowerCase()),
-  ])(records);
+  const sorted: MedicalRecord[] = sortBy(
+    filter(records, (record) => isRecordMatch(record, search)),
+    (record) => record.name?.toLowerCase(),
+  );
 
   return (
     <Stack fill vertical>
@@ -90,13 +89,26 @@ const CrewTab = (props: { record: MedicalRecord }) => {
   const { act, data } = useBackend<MedicalRecordData>();
   const { assigned_view } = data;
   const { record } = props;
-  const { crew_ref, name, rank } = record;
+  const { crew_ref, name, trim } = record;
 
   /** Sets the record to preview */
   const selectRecord = (record: MedicalRecord) => {
     if (selectedRecord?.crew_ref === crew_ref) {
       setSelectedRecord(undefined);
     } else {
+      // GOD, I REALLY HATE IT!
+      // THIS FUCKING HACK NEEDED CAUSE "WINSET MAP"
+      // MAKING UI DISAPPEAR, AND WE NEED RE-RENDER SHIT
+      // AFTER BYOND DONE MAKING THEIR SHIT
+      // Anyway... that's better than hack before
+      if (selectedRecord === undefined) {
+        setTimeout(() => {
+          act('view_record', {
+            assigned_view: assigned_view,
+            crew_ref: crew_ref,
+          });
+        });
+      }
       setSelectedRecord(record);
       act('view_record', { assigned_view: assigned_view, crew_ref: crew_ref });
     }
@@ -109,7 +121,7 @@ const CrewTab = (props: { record: MedicalRecord }) => {
       selected={selectedRecord?.crew_ref === crew_ref}
     >
       <Box>
-        <Icon name={JOB2ICON[rank] || 'question'} /> {name}
+        <Icon name={JOB2ICON[trim] || 'question'} /> {name}
       </Box>
     </Tabs.Tab>
   );

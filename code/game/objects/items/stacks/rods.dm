@@ -32,7 +32,7 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	attack_verb_continuous = list("hits", "bludgeons", "whacks")
 	attack_verb_simple = list("hit", "bludgeon", "whack")
 	hitsound = 'sound/weapons/gun/general/grenade_launch.ogg'
-	embedding = list(embed_chance = 50)
+	embed_type = /datum/embed_data/rods
 	novariants = TRUE
 	matter_amount = 2
 	cost = HALF_SHEET_MATERIAL_AMOUNT
@@ -40,6 +40,9 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	merge_type = /obj/item/stack/rods
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
+/datum/embed_data/rods
+	embed_chance = 50
 
 /obj/item/stack/rods/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to stuff \the [src] down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide!"))//it looks like theyre ur mum
@@ -64,9 +67,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
-/obj/item/stack/rods/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)
-	if(proximity_flag)
-		target.attackby(src, user, click_parameters)
+/obj/item/stack/rods/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	target.attackby(src, user, list2params(modifiers))
 
 /obj/item/stack/rods/get_main_recipes()
 	. = ..()

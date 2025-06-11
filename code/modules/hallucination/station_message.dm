@@ -1,6 +1,7 @@
 /datum/hallucination/station_message
 	abstract_hallucination_parent = /datum/hallucination/station_message
 	random_hallucination_weight = 1
+	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/station_message/start()
 	qdel(src) // To be implemented by subtypes, call parent for easy cleanup
@@ -80,7 +81,7 @@
 	priority_announce(
 		text = "Figments from an eldritch god are being summoned by [totally_real_cult_leader.real_name] into [fake_summon_area] from an unknown dimension. Disrupt the ritual at all costs!",
 		title = "[command_name()] Higher Dimensional Affairs",
-		sound = 'sound/ambience/antag/bloodcult/bloodcult_scribe.ogg',
+		sound = /*'sound/ambience/antag/bloodcult/bloodcult_scribe.ogg'*/ANNOUNCER_SPANOMALIES,
 		has_important_message = TRUE,
 		players = list(hallucinator),
 	)

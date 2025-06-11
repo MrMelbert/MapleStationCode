@@ -567,9 +567,13 @@
 	w_class = WEIGHT_CLASS_TINY
 	crafting_complexity = FOOD_COMPLEXITY_3
 
+//NON-MODULE CHANGE START : Use our own code for macaron randomization
+/*
 /obj/item/food/cookie/macaron/Initialize(mapload)
 	. = ..()
 	icon_state = "[base_icon_state]_[rand(1, 4)]"
+*/
+// NON-MODULE CHANGE END
 
 /obj/item/food/cookie/thumbprint_cookie
 	name = "thumbprint cookie"

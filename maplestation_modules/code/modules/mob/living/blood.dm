@@ -121,8 +121,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * * drip - whether to spawn a drip or a splatter
  */
 /datum/blood_type/proc/make_blood_splatter(mob/living/bleeding, turf/blood_turf, drip)
-	if(HAS_TRAIT(bleeding, TRAIT_NOBLOOD))
-		return
 	if(isgroundlessturf(blood_turf))
 		blood_turf = GET_TURF_BELOW(blood_turf)
 	if(isnull(blood_turf) || isclosedturf(blood_turf))
@@ -135,7 +133,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in blood_turf
 		if(isnull(drop))
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
-			if(!QDELETED(splatter))
+			if(!QDELETED(splatter) && !splatter.dried)
 				splatter.add_mob_blood(bleeding)
 				splatter.adjust_bloodiness(new_blood)
 				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
@@ -151,15 +149,19 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			// Handle adding a single drip to the base atom
 			// Makes use of viscontents so every drip can dry at an individual rate (with an individual color)
 			var/obj/effect/decal/cleanable/blood/drip/new_drop = new(drop)
+			new_drop.bloodiness = 0
 			new_drop.icon_state = pick_n_take(drop.random_icon_states)
 			new_drop.color = color
 			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
 			new_drop.appearance_flags |= (RESET_COLOR)
 			new_drop.add_mob_blood(bleeding)
+			drop.gender = PLURAL
+			drop.base_name = "drips of"
 			drop.vis_contents += new_drop
 			// Handle adding blood to the base atom
 			drop.adjust_bloodiness(new_blood)
 			drop.add_mob_blood(bleeding)
+			drop.add_viruses(bleeding.get_static_viruses())
 			return drop
 
 		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
@@ -167,12 +169,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
-	if(isnull(splatter))
+	if(isnull(splatter) || splatter.dried)
 		splatter = new(blood_turf, bleeding.get_static_viruses())
 		if(QDELETED(splatter)) //Give it up
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
+		splatter.add_viruses(bleeding.get_static_viruses())
 		splatter.slow_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
 	if(LAZYLEN(temp_blood_DNA))

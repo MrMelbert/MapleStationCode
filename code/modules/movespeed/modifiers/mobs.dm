@@ -30,9 +30,13 @@
 	movetypes = FLYING
 	variable = TRUE
 
+/// Movespeed modifier applied by worn equipment.
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
 	blacklisted_movetypes = FLOATING
+
+/// Movespeed modifier applied by immutably slow worn equipment. Should never be ignored, because that's the point.
+/datum/movespeed_modifier/equipment_speedmod/immutable
 
 /datum/movespeed_modifier/grab_slowdown
 	id = MOVESPEED_ID_MOB_GRAB_STATE
@@ -122,10 +126,6 @@
 /datum/movespeed_modifier/gravity
 	blacklisted_movetypes = FLOATING
 	variable = TRUE
-	flags = IGNORE_NOSLOW
-
-/datum/movespeed_modifier/carbon_softcrit
-	multiplicative_slowdown = SOFTCRIT_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/slime_tempmod

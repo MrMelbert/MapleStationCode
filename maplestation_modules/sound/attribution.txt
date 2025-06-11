@@ -8,11 +8,13 @@
 - rip1.ogg through rip4.ogg
 - inhale.ogg
 - the contents of `item/ambience`
+- the contents of `item/bullets`
 - the contents of `item/drop`
 - the contents of `item/lighters`
 - the contents of `item/storage`
 - the contents of `item/pickup`
 - all healthscanner_x.oggs
+-tile1.ogg through tile4.ogg
 
 Have been ported from other stations, and given a lack of existing attribution,
 are assumed to be CC-BY-SA 3.0 unless stated otherwise below

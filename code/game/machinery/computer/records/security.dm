@@ -77,7 +77,6 @@
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		character_preview_view = create_character_preview_view(user)
 		ui = new(user, src, "SecurityRecords")
 		ui.set_autoupdate(FALSE)
 		ui.open()
@@ -126,6 +125,7 @@
 			note = target.security_note,
 			rank = target.rank,
 			species = target.species,
+			trim = target.trim,
 			wanted_status = target.wanted_status,
 		))
 

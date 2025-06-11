@@ -34,12 +34,17 @@
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"
 
+#define VENDING_MACHINE_TRAIT "vending_machine"
+
 #define ABSTRACT_ITEM_TRAIT "abstract-item"
 /// A trait given by any status effect
 #define STATUS_EFFECT_TRAIT "status-effect"
 
 /// Trait from light debugging
 #define LIGHT_DEBUG_TRAIT "light-debug"
+
+/// Trait given by an Action datum
+#define ACTION_TRAIT "action"
 
 #define CLOTHING_TRAIT "clothing"
 #define HELMET_TRAIT "helmet"
@@ -53,8 +58,6 @@
 /// inherited from riding vehicles
 #define VEHICLE_TRAIT "vehicle"
 #define INNATE_TRAIT "innate"
-#define CRIT_HEALTH_TRAIT "crit_health"
-#define OXYLOSS_TRAIT "oxyloss"
 /// Trait sorce for "was recently shocked by something"
 #define WAS_SHOCKED "was_shocked"
 #define TURF_TRAIT "turf"
@@ -138,6 +141,8 @@
 
 /// A trait gained from a mob's leap action, like the leaper
 #define LEAPING_TRAIT "leaping"
+/// From grabbing someone
+#define GRABBING_TRAIT "grabbing"
 /// A trait gained from a mob's vanish action, like the herophant
 #define VANISHING_TRAIT "vanishing"
 /// A trait gained from a mob's swoop action, like the ash drake
@@ -177,6 +182,13 @@
 #define TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM "element-required"
 /// Trait applied by MODsuits.
 #define MOD_TRAIT "mod"
+/// Trait given by a fulton extraction pack
+#define FULTON_PACK_TRAIT "fulton-pack"
+
+/// Trait from mob/living/update_transform()
+#define UPDATE_TRANSFORM_TRAIT "update_transform"
+/// Trait from mob/living/update_offsets()
+#define UPDATE_OFFSET_TRAIT "update_offset"
 
 /// Trait granted by the berserker hood.
 #define BERSERK_TRAIT "berserk_trait"
@@ -210,8 +222,6 @@
 #define SPEED_TRAIT "speed_trait"
 /// Trait given to mobs that have been autopsied
 #define AUTOPSY_TRAIT "autopsy_trait"
-/// Trait given by [/datum/status_effect/blessing_of_insanity]
-#define MAD_WIZARD_TRAIT "mad_wizard_trait"
 
 ///From the market_crash event
 #define MARKET_CRASH_EVENT_TRAIT "crashed_market_event"
@@ -274,5 +284,8 @@
 
 /// Trait from an organ being inside a bodypart
 #define ORGAN_INSIDE_BODY_TRAIT "organ_inside_body"
-/// Trait when something was labelled by a pen.
-#define PEN_LABEL_TRAIT "pen_label"
+/// Trait when something was labelled by the /datum/element/tool_renaming element.
+#define RENAMING_TOOL_LABEL_TRAIT "renaming_tool_label"
+
+/// Trait when a drink was renamed by a shaker
+#define SHAKER_LABEL_TRAIT "shaker_trait"

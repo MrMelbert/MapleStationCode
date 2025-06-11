@@ -1,14 +1,6 @@
 // -- Lizardperson species additions --
 /datum/species/lizard
 
-/datum/species/lizard/get_species_speech_sounds(sound_type)
-	// These sounds have been ported from Goonstation.
-	return string_assoc_list(list(
-		'maplestation_modules/sound/voice/lizard_1.ogg' = 80,
-		'maplestation_modules/sound/voice/lizard_2.ogg' = 80,
-		'maplestation_modules/sound/voice/lizard_3.ogg' = 80,
-	))
-
 /datum/species/lizard/replace_body(mob/living/carbon/target, datum/species/new_species)
 	. = ..()
 	if(target.dna?.features["lizard_has_hair"])
@@ -26,11 +18,12 @@
 
 	human.update_body(is_creating = TRUE)
 
-// Same for the small ones
-/datum/species/monkey/lizard/get_species_speech_sounds(sound_type)
+/obj/item/organ/internal/tongue/lizard
 	// These sounds have been ported from Goonstation.
-	return string_assoc_list(list(
+	speech_sound_list = list(
 		'maplestation_modules/sound/voice/lizard_1.ogg' = 80,
 		'maplestation_modules/sound/voice/lizard_2.ogg' = 80,
 		'maplestation_modules/sound/voice/lizard_3.ogg' = 80,
-	))
+	)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null

@@ -65,9 +65,8 @@
 		if(BURN)
 			playsound(loc, 'sound/weapons/egloves.ogg', 80, TRUE)
 
-/obj/structure/holopay/deconstruct()
+/obj/structure/holopay/atom_deconstruct(dissambled = TRUE)
 	dissipate()
-	return ..()
 
 /obj/structure/holopay/Destroy()
 	linked_card?.my_store = null
@@ -137,7 +136,7 @@
 		ui = new(user, src, "HoloPay")
 		ui.open()
 
-/obj/structure/holopay/ui_status(mob/user)
+/obj/structure/holopay/ui_status(mob/user, datum/ui_state/state)
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return UI_CLOSE

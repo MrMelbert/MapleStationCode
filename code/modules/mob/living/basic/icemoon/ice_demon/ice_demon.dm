@@ -18,6 +18,8 @@
 	attack_verb_simple = "slice"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = -10
 	move_force = MOVE_FORCE_VERY_STRONG
 	move_resist = MOVE_FORCE_VERY_STRONG
 	pull_force = MOVE_FORCE_VERY_STRONG
@@ -48,6 +50,9 @@
 	if(prob(5))
 		new /obj/item/raw_anomaly_core/bluespace(loc)
 	return ..()
+
+/mob/living/basic/mining/ice_demon/get_blood_type()
+	return null
 
 /mob/living/basic/mining/demon_afterimage
 	name = "afterimage demonic watcher"
@@ -85,3 +90,6 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	existence_period = 7 SECONDS
+
+/mob/living/basic/mining/demon_afterimage/get_blood_type()
+	return null

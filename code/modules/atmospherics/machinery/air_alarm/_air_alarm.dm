@@ -8,7 +8,7 @@
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
-	req_access = list(ACCESS_ATMOSPHERICS)
+	req_access = list(ACCESS_ENGINEERING)
 	max_integrity = 250
 	integrity_failure = 0.33
 	armor_type = /datum/armor/machinery_airalarm
@@ -186,7 +186,7 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		if(AIR_ALARM_BUILD_COMPLETE)
 			. += span_notice("Right-click to [locked ? "unlock" : "lock"] the interface.")
 
-/obj/machinery/airalarm/ui_status(mob/user)
+/obj/machinery/airalarm/ui_status(mob/user, datum/ui_state/state)
 	if(user.has_unlimited_silicon_privilege && aidisabled)
 		to_chat(user, "AI control has been disabled.")
 	else if(!shorted)
@@ -233,6 +233,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	data["dangerLevel"] = danger_level
 	data["atmosAlarm"] = !!my_area.active_alarms[ALARM_ATMOS]
 	data["fireAlarm"] = my_area.fire
+	data["faultStatus"] = my_area.fault_status
+	data["faultLocation"] = my_area.fault_location
 	data["sensor"] = !!connected_sensor
 	data["allowLinkChange"] = allow_link_change
 

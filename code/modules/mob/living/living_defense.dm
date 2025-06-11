@@ -107,41 +107,95 @@
 
 	// we need a second, silent armor check to actually know how much to reduce damage taken, as opposed to
 	// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
-	var/armor_check = check_projectile_armor(def_zone, hitting_projectile, is_silent = TRUE)
+	var/armor_check = min(ARMOR_MAX_BLOCK, check_projectile_armor(def_zone, hitting_projectile, is_silent = TRUE))
 
-	apply_damage(
+	var/damage_done = apply_damage(
 		damage = hitting_projectile.damage,
 		damagetype = hitting_projectile.damage_type,
 		def_zone = def_zone,
-		blocked = min(ARMOR_MAX_BLOCK, armor_check),  //cap damage reduction at 90%
+		blocked = armor_check,
 		wound_bonus = hitting_projectile.wound_bonus,
 		bare_wound_bonus = hitting_projectile.bare_wound_bonus,
 		sharpness = hitting_projectile.sharpness,
-		attack_direction = get_dir(hitting_projectile.starting, src),
+		attack_direction = hitting_projectile.dir,
 	)
+	if(hitting_projectile.stamina)
+		apply_damage(
+			damage = hitting_projectile.stamina,
+			damagetype = STAMINA,
+			def_zone = def_zone,
+			blocked = armor_check,
+			attack_direction = hitting_projectile.dir,
+		)
+	if(hitting_projectile.pain)
+		apply_damage(
+			damage = hitting_projectile.pain,
+			damagetype = PAIN,
+			def_zone = def_zone,
+			// blocked = armor_check, // Batons don't factor in armor, soooo we shouldn't?
+			attack_direction = hitting_projectile.dir,
+		)
+
+	// NON-MODULE CHANGES
+	var/extra_paralyze = 0 SECONDS
+	var/extra_knockdown = 0 SECONDS
+	if(hitting_projectile.damage_type == BRUTE && !hitting_projectile.grazing)
+		// melbert todo scale on pain of bodypart?
+		if(damage_done >= 60)
+			if(!IsParalyzed() && prob(damage_done))
+				extra_paralyze += 0.4 SECONDS
+				extra_knockdown += 0.8 SECONDS
+		else if(damage_done >= 20)
+			if(!IsKnockdown() && prob(damage_done * 2))
+				extra_knockdown += 0.4 SECONDS
+	if(damage_done > 5 && !hitting_projectile.grazing && hitting_projectile.is_hostile_projectile())
+		set_headset_block_if_lower(hitting_projectile.damage_type == STAMINA ? 3 SECONDS : 5 SECONDS)
+
 	apply_effects(
 		stun = hitting_projectile.stun,
-		knockdown = hitting_projectile.knockdown,
+		knockdown = hitting_projectile.knockdown + extra_knockdown,
 		unconscious = hitting_projectile.unconscious,
 		slur = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.slur, // Don't want your cyborgs to slur from being ebow'd
 		stutter = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.stutter, // Don't want your cyborgs to stutter from being tazed
 		eyeblur = hitting_projectile.eyeblur,
 		drowsy = hitting_projectile.drowsy,
 		blocked = armor_check,
-		stamina = hitting_projectile.stamina,
 		jitter = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.jitter, // Cyborgs can jitter but not from being shot
-		paralyze = hitting_projectile.paralyze,
+		paralyze = hitting_projectile.paralyze + extra_paralyze,
 		immobilize = hitting_projectile.immobilize,
 	)
-	if(hitting_projectile.dismemberment)
+	if(hitting_projectile.dismemberment > 0 && !hitting_projectile.grazing)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
 	return BULLET_ACT_HIT
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
-	return run_armor_check(def_zone, impacting_projectile.armor_flag, "","",impacting_projectile.armour_penetration, "", is_silent, impacting_projectile.weak_against_armour)
+	. = run_armor_check(
+		def_zone = def_zone,
+		attack_flag = impacting_projectile.armor_flag,
+		armour_penetration = impacting_projectile.armour_penetration,
+		silent = is_silent,
+		weak_against_armour = impacting_projectile.weak_against_armour,
+	)
+	if(impacting_projectile.grazing)
+		. += 50
+	return .
 
-/mob/living/proc/check_projectile_dismemberment(obj/projectile/P, def_zone)
-	return 0
+/// Attempts to dismember a limb if hit with a projectile that has a dismemberment value.
+/mob/living/proc/check_projectile_dismemberment(obj/projectile/incoming_projectile, def_zone)
+	var/obj/item/bodypart/affecting = get_bodypart(def_zone)
+	if(isnull(affecting) || !affecting.can_dismember())
+		return
+	if((100 * (affecting.get_damage() / affecting.max_damage)) < (100 - incoming_projectile.dismemberment))
+		return
+	affecting.dismember(incoming_projectile.damtype)
+	if(incoming_projectile.catastropic_dismemberment)
+		//stops a projectile blowing off a limb effectively doing no damage. Mostly relevant for sniper rifles.
+		apply_damage(
+			incoming_projectile.damage,
+			incoming_projectile.damtype,
+			BODY_ZONE_CHEST,
+			wound_bonus = incoming_projectile.wound_bonus,
+		)
 
 /obj/item/proc/get_volume_by_throwforce_and_or_w_class()
 		if(throwforce && w_class)
@@ -217,18 +271,53 @@
 		hitpush = FALSE
 	return ..()
 
+///The core of catching thrown items, which non-carbons cannot without the help of items or abilities yet, as they've no throw mode.
+/mob/living/proc/try_catch_item(obj/item/item, skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	if(!can_catch_item(skip_throw_mode_check, try_offhand) || !isitem(item) || HAS_TRAIT(item, TRAIT_UNCATCHABLE) || !isturf(item.loc))
+		return FALSE
+	if(!can_hold_items(item))
+		return FALSE
+	INVOKE_ASYNC(item, TYPE_PROC_REF(/obj/item, attempt_pickup), src, TRUE)
+	if(get_active_held_item() == item) //if our attack_hand() picks up the item...
+		visible_message(span_warning("[src] catches [item]!"), \
+						span_userdanger("You catch [item] in mid-air!"))
+		return TRUE
+
+///Checks the requites for catching a throw item.
+/mob/living/proc/can_catch_item(skip_throw_mode_check = FALSE, try_offhand = FALSE)
+	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+		return FALSE
+	if(get_active_held_item() && (!try_offhand || get_inactive_held_item() || !swap_hand()))
+		return FALSE
+	return TRUE
+
 /mob/living/fire_act()
 	. = ..()
 	adjust_fire_stacks(3)
 	ignite_mob()
 
-/mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
+/**
+ * Called when a mob is grabbing another mob.
+ */
+/mob/living/proc/grab(mob/living/target)
+	if(!istype(target))
+		return FALSE
+	if(SEND_SIGNAL(src, COMSIG_LIVING_GRAB, target) & (COMPONENT_CANCEL_ATTACK_CHAIN|COMPONENT_SKIP_ATTACK))
+		return FALSE
+	if(target.check_block(src, 0, "[src]'s grab"))
+		return FALSE
+	target.grabbedby(src)
+	return TRUE
+
+/**
+ * Called when this mob is grabbed by another mob.
+ */
+/mob/living/proc/grabbedby(mob/living/user, supress_message = FALSE)
 	if(user == src || anchored || !isturf(user.loc) || (src in user.buckled_mobs))
 		return FALSE
 	if(user.has_limbs && !user.get_empty_held_indexes() && !user.is_holding_item_of_type(/obj/item/grabbing_hand))
 		to_chat(user, span_warning("Your hands are full!"))
 		return FALSE
-
 	user.start_pulling(src, supress_message = supress_message)
 	return TRUE
 
@@ -301,17 +390,9 @@
 		if(operations.next_step(user, modifiers))
 			return TRUE
 
-	var/martial_result = user.apply_martial_art(src, modifiers)
-	if (martial_result != MARTIAL_ATTACK_INVALID)
-		return martial_result
-
 	return FALSE
 
 /mob/living/attack_paw(mob/living/carbon/human/user, list/modifiers)
-	var/martial_result = user.apply_martial_art(src, modifiers)
-	if (martial_result != MARTIAL_ATTACK_INVALID)
-		return martial_result
-
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		user.disarm(src)
 		return TRUE
@@ -408,7 +489,7 @@
 	return ..()
 
 /mob/living/acid_act(acidpwr, acid_volume)
-	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
+	damage_random_bodypart(acidpwr * min(1, acid_volume * 0.1))
 	return TRUE
 
 ///As the name suggests, this should be called to apply electric shocks.
@@ -421,17 +502,18 @@
 		return FALSE
 	if(shock_damage < 1)
 		return FALSE
-	if(!(flags & SHOCK_ILLUSION))
-		adjustFireLoss(shock_damage)
+	if(flags & SHOCK_ILLUSION)
+		. = apply_damage(shock_damage, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	else
-		adjustStaminaLoss(shock_damage)
+		set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
+		. = apply_damage(shock_damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	if(!(flags & SHOCK_SUPPRESS_MESSAGE))
 		visible_message(
 			span_danger("[src] was shocked by \the [source]!"), \
 			span_userdanger("You feel a powerful shock coursing through your body!"), \
 			span_hear("You hear a heavy electrical crack.") \
 		)
-	return shock_damage
+	return .
 
 /mob/living/emp_act(severity)
 	. = ..()
@@ -457,10 +539,10 @@
 		if((GLOB.cult_narsie.souls == GLOB.cult_narsie.soul_goal) && (GLOB.cult_narsie.resolved == FALSE))
 			GLOB.cult_narsie.resolved = TRUE
 			sound_to_playing_players('sound/machines/alarm.ogg')
-			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), CULT_VICTORY_MASS_CONVERSION), 120)
-			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)), 270)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), CULT_VICTORY_MASS_CONVERSION), 12 SECONDS)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)), 27 SECONDS)
 	if(client)
-		makeNewConstruct(/mob/living/basic/construct/harvester, src, cultoverride = TRUE)
+		make_new_construct(/mob/living/basic/construct/harvester, src, cultoverride = TRUE)
 	else
 		switch(rand(1, 4))
 			if(1)
@@ -521,8 +603,8 @@
 /mob/living/proc/do_slap_animation(atom/slapped)
 	do_attack_animation(slapped, no_effect=TRUE)
 	var/mutable_appearance/glove_appearance = mutable_appearance('icons/effects/effects.dmi', "slapglove")
-	glove_appearance.pixel_y = 10 // should line up with head
-	glove_appearance.pixel_x = 10
+	glove_appearance.pixel_z = 10 // should line up with head
+	glove_appearance.pixel_w = 10
 	var/atom/movable/flick_visual/glove = slapped.flick_overlay_view(glove_appearance, 1 SECONDS)
 
 	// And animate the attack!
@@ -624,6 +706,7 @@
 		to_chat(src, span_danger("You kick [target.name] onto [target.p_their()] side!"))
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living, SetKnockdown), 0), SHOVE_CHAIN_PARALYZE)
 		log_combat(src, target, "kicks", "onto their side (paralyzing)")
+		target.set_headset_block_if_lower(3 SECONDS)
 		return
 
 	target.get_shoving_message(src, weapon, shove_flags)
@@ -671,3 +754,35 @@
 		return TRUE
 
 	return FALSE
+
+/// Adds a modifier to the mob's surgery and updates any ongoing surgeries.
+/// Multiplicative, so two 0.8 modifiers would result in a 0.64 speed modifier, meaning surgery is 0.64x faster.
+/mob/living/proc/add_surgery_speed_mod(id, speed_mod)
+	if(LAZYACCESS(mob_surgery_speed_mods, id) == speed_mod)
+		return FALSE
+	if(LAZYACCESS(mob_surgery_speed_mods, id))
+		remove_surgery_speed_mod(id)
+
+	LAZYSET(mob_surgery_speed_mods, id, speed_mod)
+	for(var/datum/surgery/ongoing as anything in surgeries)
+		ongoing.speed_modifier *= speed_mod
+	return TRUE
+
+/// Removes a modifier from the mob's surgery and updates any ongoing surgeries.
+/mob/living/proc/remove_surgery_speed_mod(id)
+	var/removing_mod = LAZYACCESS(mob_surgery_speed_mods, id)
+	if(!removing_mod)
+		return FALSE
+
+	LAZYREMOVE(mob_surgery_speed_mods, id)
+	for(var/datum/surgery/ongoing as anything in surgeries)
+		ongoing.speed_modifier /= removing_mod
+	return TRUE
+
+/// Helper to add a surgery speed modifier which is removed after a set duration.
+/mob/living/proc/add_timed_surgery_speed_mod(id, speed_mod, duration)
+	if(QDELING(src))
+		return
+	if(!add_surgery_speed_mod(id, speed_mod))
+		return
+	addtimer(CALLBACK(src, PROC_REF(remove_surgery_speed_mod), id), duration)

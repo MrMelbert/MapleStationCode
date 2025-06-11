@@ -35,7 +35,7 @@
 	var/list/spawned_paths = list(spawned_locker_path)
 	podspawn(list(
 		"target" = get_turf(user),
-		"style" = STYLE_CENTCOM,
+		"style" = /datum/pod_style/centcom,
 		"spawn" = spawned_paths,
 		"delays" = list(POD_TRANSIT = 20, POD_FALLING = 50, POD_OPENING = 20, POD_LEAVING = 10)
 	))

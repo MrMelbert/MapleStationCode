@@ -8,16 +8,14 @@
 	circuit = /obj/item/circuitboard/computer/security
 	light_color = COLOR_SOFT_RED
 
-	var/list/network = list("ss13")
+	var/list/network = list(CAMERANET_NETWORK_SS13)
 	var/obj/machinery/camera/active_camera
 	/// The turf where the camera was last updated.
 	var/turf/last_camera_turf
 	var/list/concurrent_users = list()
 
 	// Stuff needed to render the map
-	var/atom/movable/screen/map_view/cam_screen
-	/// All the plane masters that need to be applied.
-	var/atom/movable/screen/background/cam_background
+	var/atom/movable/screen/map_view/camera/cam_screen
 
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_REQUIRES_SIGHT
 
@@ -34,13 +32,9 @@
 	// Initialize map objects
 	cam_screen = new
 	cam_screen.generate_view(map_name)
-	cam_background = new
-	cam_background.assigned_map = map_name
-	cam_background.del_on_map_removal = FALSE
 
 /obj/machinery/computer/security/Destroy()
 	QDEL_NULL(cam_screen)
-	QDEL_NULL(cam_background)
 	return ..()
 
 /obj/machinery/computer/security/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
@@ -68,15 +62,14 @@
 		// Turn on the console
 		if(length(concurrent_users) == 1 && is_living)
 			playsound(src, 'sound/machines/terminal_on.ogg', 25, FALSE)
-			use_power(active_power_usage)
-		// Register map objects
-		cam_screen.display_to(user)
-		user.client.register_map_obj(cam_background)
+			use_energy(active_power_usage)
 		// Open UI
 		ui = new(user, src, "CameraConsole", name)
 		ui.open()
+		// Register map objects
+		cam_screen.display_to(user, ui.window)
 
-/obj/machinery/computer/security/ui_status(mob/user)
+/obj/machinery/computer/security/ui_status(mob/user, datum/ui_state/state)
 	. = ..()
 	if(. == UI_DISABLED)
 		return UI_CLOSE
@@ -89,7 +82,7 @@
 		data["activeCamera"] = list(
 			name = active_camera.c_tag,
 			ref = REF(active_camera),
-			status = active_camera.status,
+			status = active_camera.camera_enabled,
 		)
 	return data
 
@@ -128,7 +121,7 @@
 /obj/machinery/computer/security/proc/update_active_camera_screen()
 	// Show static if can't use the camera
 	if(!active_camera?.can_use())
-		show_camera_static()
+		cam_screen.show_camera_static()
 		return
 
 	var/list/visible_turfs = list()
@@ -156,9 +149,7 @@
 	var/size_x = bbox[3] - bbox[1] + 1
 	var/size_y = bbox[4] - bbox[2] + 1
 
-	cam_screen.vis_contents = visible_turfs
-	cam_background.icon_state = "clear"
-	cam_background.fill_rect(1, 1, size_x, size_y)
+	cam_screen.show_camera(visible_turfs, size_x, size_y)
 
 /obj/machinery/computer/security/ui_close(mob/user)
 	. = ..()
@@ -173,15 +164,36 @@
 		active_camera = null
 		last_camera_turf = null
 		playsound(src, 'sound/machines/terminal_off.ogg', 25, FALSE)
-		use_power(0)
 
-/obj/machinery/computer/security/proc/show_camera_static()
-	cam_screen.vis_contents.Cut()
+/atom/movable/screen/map_view/camera
+	/// All the plane masters that need to be applied.
+	var/atom/movable/screen/background/cam_background
+
+/atom/movable/screen/map_view/camera/Destroy()
+	QDEL_NULL(cam_background)
+	return ..()
+
+/atom/movable/screen/map_view/camera/generate_view(map_key)
+	. = ..()
+	cam_background = new
+	cam_background.del_on_map_removal = FALSE
+	cam_background.assigned_map = assigned_map
+
+/atom/movable/screen/map_view/camera/display_to_client(client/show_to)
+	show_to.register_map_obj(cam_background)
+	. = ..()
+
+/atom/movable/screen/map_view/camera/proc/show_camera(list/visible_turfs, size_x, size_y)
+	vis_contents = visible_turfs
+	cam_background.icon_state = "clear"
+	cam_background.fill_rect(1, 1, size_x, size_y)
+
+/atom/movable/screen/map_view/camera/proc/show_camera_static()
+	vis_contents.Cut()
 	cam_background.icon_state = "scanline2"
 	cam_background.fill_rect(1, 1, DEFAULT_MAP_SIZE, DEFAULT_MAP_SIZE)
 
 // SECURITY MONITORS
-
 /obj/machinery/computer/security/wooden_tv
 	name = "security camera monitor"
 	desc = "An old TV hooked into the station's camera network."
@@ -195,31 +207,31 @@
 	desc = "Used to access the various cameras on the outpost."
 	icon_screen = "mining"
 	icon_keyboard = "mining_key"
-	network = list("mine", "auxbase")
+	network = list(CAMERANET_NETWORK_MINE, CAMERANET_NETWORK_AUXBASE)
 	circuit = /obj/item/circuitboard/computer/mining
 
 /obj/machinery/computer/security/research
 	name = "research camera console"
 	desc = "Used to access the various cameras in science."
-	network = list("rd")
+	network = list(CAMERANET_NETWORK_RD)
 	circuit = /obj/item/circuitboard/computer/research
 
 /obj/machinery/computer/security/hos
 	name = "\improper Head of Security's camera console"
 	desc = "A custom security console with added access to the labor camp network."
-	network = list("ss13", "labor")
+	network = list(CAMERANET_NETWORK_SS13, CAMERANET_NETWORK_LABOR)
 	circuit = null
 
 /obj/machinery/computer/security/labor
 	name = "labor camp monitoring"
 	desc = "Used to access the various cameras on the labor camp."
-	network = list("labor")
+	network = list(CAMERANET_NETWORK_LABOR)
 	circuit = null
 
 /obj/machinery/computer/security/qm
 	name = "\improper Quartermaster's camera console"
 	desc = "A console with access to the mining, auxiliary base and vault camera networks."
-	network = list("mine", "auxbase", "vault")
+	network = list(CAMERANET_NETWORK_MINE, CAMERANET_NETWORK_AUXBASE, CAMERANET_NETWORK_VAULT)
 	circuit = null
 
 #undef DEFAULT_MAP_SIZE

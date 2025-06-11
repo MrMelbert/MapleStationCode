@@ -1,7 +1,4 @@
-import { BooleanLike } from 'common/react';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -18,8 +15,11 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
-import { formatSiUnit } from '../format';
+} from 'tgui-core/components';
+import { formatSiUnit } from 'tgui-core/format';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type MODsuitData = {
@@ -98,7 +98,7 @@ type Module = {
   pinned: BooleanLike;
   idle_power: number;
   active_power: number;
-  use_power: number;
+  use_energy: number;
   module_complexity: number;
   cooldown_time: number;
   cooldown: number;
@@ -171,9 +171,10 @@ const ConfigureNumberEntry = (props) => {
       value={value}
       minValue={-50}
       maxValue={50}
+      step={1}
       stepPixelSize={5}
       width="39px"
-      onChange={(e, value) =>
+      onChange={(value) =>
         act('configure', {
           key: name,
           value: value,
@@ -225,7 +226,7 @@ const ConfigureListEntry = (props) => {
   const { act } = useBackend();
   return (
     <Dropdown
-      displayText={value}
+      selected={value}
       options={values}
       onSelected={(value) =>
         act('configure', {
@@ -402,11 +403,11 @@ const SuitStatusSection = (props) => {
                 : cell_charge_current === 1e31
                   ? 'Infinite'
                   : `${formatSiUnit(
-                      cell_charge_current * 1000,
+                      cell_charge_current,
                       0,
                       'J',
                     )} of ${formatSiUnit(
-                      cell_charge_max * 1000,
+                      cell_charge_max,
                       0,
                       'J',
                     )} (${charge_percent}%)`}
@@ -688,13 +689,13 @@ const ModuleSection = (props) => {
       ) : (
         <Table>
           <Table.Row header>
-            <Table.Cell colspan={3}>Actions</Table.Cell>
+            <Table.Cell colSpan={3}>Actions</Table.Cell>
             <Table.Cell>Name</Table.Cell>
             <Table.Cell width={1} textAlign="center">
               <Button
                 color="transparent"
                 icon="plug"
-                tooltip="Idle Power Cost"
+                tooltip="Idle Power Cost (Watts)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -702,7 +703,7 @@ const ModuleSection = (props) => {
               <Button
                 color="transparent"
                 icon="lightbulb"
-                tooltip="Active Power Cost"
+                tooltip="Active Power Cost (Watts)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -710,7 +711,7 @@ const ModuleSection = (props) => {
               <Button
                 color="transparent"
                 icon="bolt"
-                tooltip="Use Power Cost"
+                tooltip="Use Energy Cost (Joules)"
                 tooltipPosition="top"
               />
             </Table.Cell>
@@ -781,11 +782,15 @@ const ModuleSection = (props) => {
                     />
                   )}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{module.idle_power}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {module.active_power}
+                  {formatSiUnit(module.idle_power, 0)}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{module.use_power}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {formatSiUnit(module.active_power, 0)}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {formatSiUnit(module.use_energy, 0)}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {module.module_complexity}
                 </Table.Cell>

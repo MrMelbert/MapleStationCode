@@ -67,9 +67,15 @@
 	if(stat != DEAD)
 		body_temperature_alerts()
 	handle_wounds(seconds_per_tick, times_fired)
-
+	if(staminaloss)
+		adjustStaminaLoss(-1 * (stat == DEAD ? 100 : 2.5) * seconds_per_tick)
 	if(machine)
 		machine.check_eye(src)
+
+	if(living_flags & QUEUE_NUTRITION_UPDATE)
+		mob_mood?.update_nutrition_moodlets()
+		hud_used?.hunger?.update_hunger_bar()
+		living_flags &= ~QUEUE_NUTRITION_UPDATE
 
 	if(stat != DEAD)
 		return 1
@@ -105,7 +111,7 @@
 			var/expected_temp = get_temperature(loc?.return_air())
 			var/insulation = get_insulation(expected_temp)
 			if(insulation > 0.5 && expected_temp < body_temperature)
-				to_chat(src, span_danger("Your clothing is insulating you, keeping you warmer!"))
+				to_chat(src, span_danger("Your insulation is keeping you warmer!"))
 
 		if(effective_temp > heat_threshold_medium)
 			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
@@ -132,7 +138,14 @@
 			var/expected_temp = get_temperature(loc?.return_air())
 			var/insulation = get_insulation(expected_temp)
 			if(insulation > 0.5 && expected_temp > body_temperature)
-				to_chat(src, span_danger("Your clothing is insulating you, keeping you colder!"))
+				to_chat(src, span_danger("You insulation is keeping you cooler!"))
+
+/mob/living/carbon/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	if(body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+		apply_status_effect(/datum/status_effect/thermia/hyper)
+
+	if(body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
+		apply_status_effect(/datum/status_effect/thermia/hypo)
 
 /// Applies damage to the mob due to being too cold
 /mob/living/proc/temperature_cold_damage(damage)
@@ -306,12 +319,15 @@
 /**
  * Get the fullness of the mob
  *
- * This returns a value form 0 upwards to represent how full the mob is.
- * The value is a total amount of consumable reagents in the body combined
- * with the total amount of nutrition they have.
- * This does not have an upper limit.
+ * Fullness is a representation of how much nutrition the mob has,
+ * including the nutrition of stuff yet to be digested (reagents in blood / stomach)
+ *
+ * * only_consumable - if TRUE, only consumable reagents are counted.
+ * Otherwise, all reagents contribute to fullness, despite not adding nutrition as they process.
+ *
+ * Returns a number representing fullness, scaled similarly to nutrition.
  */
-/mob/living/proc/get_fullness()
+/mob/living/proc/get_fullness(only_consumable)
 	var/fullness = nutrition
 	// we add the nutrition value of what we're currently digesting
 	for(var/datum/reagent/consumable/bits in reagents.reagent_list)
@@ -330,8 +346,6 @@
 /mob/living/proc/has_reagent(reagent, amount = -1, needs_metabolizing = FALSE)
 	return reagents.has_reagent(reagent, amount, needs_metabolizing)
 
-/mob/living/proc/update_damage_hud()
-	return
 
 /mob/living/proc/handle_gravity(seconds_per_tick, times_fired)
 	if(gravity_state > STANDARD_GRAVITY)

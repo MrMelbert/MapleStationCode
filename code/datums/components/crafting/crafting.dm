@@ -10,7 +10,7 @@
 	C.icon = H.ui_style
 	H.static_inventory += C
 	CL.screen += C
-	RegisterSignal(C, COMSIG_CLICK, PROC_REF(component_ui_interact))
+	RegisterSignal(C, COMSIG_SCREEN_ELEMENT_CLICK, PROC_REF(component_ui_interact))
 
 #define COOKING TRUE
 #define CRAFTING FALSE
@@ -440,11 +440,25 @@
 	var/list/atoms = mode ? GLOB.cooking_recipes_atoms : GLOB.crafting_recipes_atoms
 
 	// Prepare atom data
+
+	//load sprite sheets and select the correct one based on the mode
+	var/static/list/sprite_sheets
+	if(isnull(sprite_sheets))
+		sprite_sheets = ui_assets()
+	var/datum/asset/spritesheet/sheet = sprite_sheets[mode ? 2 : 1]
+
+	data["icon_data"] = list()
 	for(var/atom/atom as anything in atoms)
+		var/atom_id = atoms.Find(atom)
+
 		data["atom_data"] += list(list(
 			"name" = initial(atom.name),
-			"is_reagent" = ispath(atom, /datum/reagent/)
+			"is_reagent" = ispath(atom, /datum/reagent/),
 		))
+
+		var/icon_size = sheet.icon_size_id("a[atom_id]")
+		if(!endswith(icon_size, "32x32"))
+			data["icon_data"]["[atom_id]"] = "[icon_size] a[atom_id]"
 
 	// Prepare materials data
 	for(var/atom/atom as anything in material_occurences)
@@ -458,28 +472,39 @@
 
 	return data
 
+/datum/component/personal_crafting/proc/make_action(datum/crafting_recipe/recipe, mob/user)
+	var/atom/movable/result = construct_item(user, recipe)
+	if(istext(result)) //We failed to make an item and got a fail message
+		to_chat(user, span_warning("Construction failed[result]"))
+		return FALSE
+	if(ismob(user) && isitem(result)) //In case the user is actually possessing a non mob like a machine
+		user.put_in_hands(result)
+	else if(!istype(result, /obj/effect/spawner))
+		result.forceMove(user.drop_location())
+	to_chat(user, span_notice("[recipe.name] crafted."))
+	user.investigate_log("crafted [recipe]", INVESTIGATE_CRAFTING)
+	recipe.on_craft_completion(user, result)
+	return TRUE
+
+
 /datum/component/personal_crafting/ui_act(action, params)
 	. = ..()
 	if(.)
 		return
 	switch(action)
-		if("make")
+		if("make", "make_mass")
 			var/mob/user = usr
 			var/datum/crafting_recipe/crafting_recipe = locate(params["recipe"]) in (mode ? GLOB.cooking_recipes : GLOB.crafting_recipes)
 			busy = TRUE
 			ui_interact(user)
-			var/atom/movable/result = construct_item(user, crafting_recipe)
-			if(!istext(result)) //We made an item and didn't get a fail message
-				if(ismob(user) && isitem(result)) //In case the user is actually possessing a non mob like a machine
-					user.put_in_hands(result)
-				else
-					if(!istype(result, /obj/effect/spawner))
-						result.forceMove(user.drop_location())
-				to_chat(user, span_notice("[crafting_recipe.name] crafted."))
-				user.investigate_log("crafted [crafting_recipe]", INVESTIGATE_CRAFTING)
-				crafting_recipe.on_craft_completion(user, result)
+			if(action == "make_mass")
+				var/crafted_items = 0
+				while(make_action(crafting_recipe, user))
+					crafted_items++
+				if(crafted_items)
+					to_chat(user, span_notice("You made [crafted_items] item\s."))
 			else
-				to_chat(user, span_warning("Construction failed[result]"))
+				make_action(crafting_recipe, user)
 			busy = FALSE
 		if("toggle_recipes")
 			display_craftable_only = !display_craftable_only
@@ -508,16 +533,7 @@
 	data["ref"] = "[REF(recipe)]"
 	var/atom/atom = recipe.result
 
-	//load sprite sheets and select the correct one based on the mode
-	var/static/list/sprite_sheets
-	if(isnull(sprite_sheets))
-		sprite_sheets = ui_assets()
-	var/datum/asset/spritesheet/sheet = sprite_sheets[mode ? 2 : 1]
-
-	//infer icon size of this atom
-	var/atom_id = atoms.Find(atom)
-	var/icon_size = sheet.icon_size_id("a[atom_id]")
-	data["icon"] = "[icon_size] a[atom_id]"
+	data["id"] = atoms.Find(atom)
 
 	var/recipe_data = recipe.crafting_ui_data()
 	for(var/new_data in recipe_data)
@@ -549,6 +565,7 @@
 	// Crafting
 	if(recipe.non_craftable)
 		data["non_craftable"] = recipe.non_craftable
+	data["mass_craftable"] = recipe.mass_craftable
 	if(recipe.steps)
 		data["steps"] = recipe.steps
 

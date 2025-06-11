@@ -6,7 +6,7 @@
 /datum/brain_trauma/severe/split_personality/orderly/on_life(seconds_per_tick, times_fired)
 	return //no random switching
 
-/datum/brain_trauma/severe/split_personality/orderly/on_gain()
+/datum/brain_trauma/severe/split_personality/orderly/make_backseats()
 	. = ..()
 	var/datum/action/request_switch/stranger/strangerseat_spell = new(src)
 	strangerseat_spell.Grant(stranger_backseat)

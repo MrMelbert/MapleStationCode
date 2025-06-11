@@ -1,6 +1,9 @@
 /datum/job/scientist
 	title = JOB_SCIENTIST
 	description = "Do experiments, perform research, feed the slimes, make bombs."
+	title_options = list(
+		"Junior Scientist",
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -11,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "SCIENTIST"
 
-	outfit = /datum/outfit/job/scientist
+	base_outfit = /datum/outfit/job/scientist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW

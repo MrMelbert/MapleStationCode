@@ -46,6 +46,11 @@
 
 ///Basic Mob Keys
 
+/// How long to wait before attacking a target in range
+#define BB_BASIC_MOB_MELEE_DELAY "BB_basic_melee_delay"
+/// Key used to store the time we can actually attack
+#define BB_BASIC_MOB_MELEE_COOLDOWN_TIMER "BB_basic_melee_cooldown_timer"
+
 ///Targeting subtrees
 #define BB_BASIC_MOB_CURRENT_TARGET "BB_basic_current_target"
 #define BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION "BB_basic_current_target_hiding_location"
@@ -141,5 +146,13 @@
 /// The next time at which this mob can call for reinforcements
 #define BB_BASIC_MOB_REINFORCEMENTS_COOLDOWN "BB_basic_mob_reinforcements_cooldown"
 
+/// the direction we started when executing stare at things
+#define BB_STARTING_DIRECTION "BB_startdir"
+
 ///Text we display when we befriend someone
 #define BB_FRIENDLY_MESSAGE "friendly_message"
+
+// Keys used by one and only one behavior
+// Used to hold state without making bigass lists
+/// For /datum/ai_behavior/find_potential_targets, what if any field are we using currently
+#define BB_FIND_TARGETS_FIELD(type) "bb_find_targets_field_[type]"

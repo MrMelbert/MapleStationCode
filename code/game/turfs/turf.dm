@@ -3,6 +3,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// Any floor or wall. What makes up the station and the rest of the map.
 /turf
 	icon = 'icons/turf/floors.dmi'
+	datum_flags = DF_STATIC_OBJECT
 	vis_flags = VIS_INHERIT_ID // Important for interaction with and visualization of openspace.
 	luminosity = 1
 	light_height = LIGHTING_HEIGHT_FLOOR
@@ -561,7 +562,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(EXPLODE_LIGHT)
 				SSexplosions.low_mov_atom += movable_thing
 
-
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)
 	for(var/I in src)
@@ -724,16 +724,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * Returns adjacent turfs to this turf that are reachable, in all cardinal directions
  *
  * Arguments:
- * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
+ * * requester: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * access: A list that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
 */
-/turf/proc/reachableAdjacentTurfs(atom/movable/caller, list/access, simulated_only, no_id = FALSE)
+/turf/proc/reachableAdjacentTurfs(atom/movable/requester, list/access, simulated_only, no_id = FALSE)
 	var/static/space_type_cache = typecacheof(/turf/open/space)
 	. = list()
 
-	var/datum/can_pass_info/pass_info = new(caller, access, no_id)
+	var/datum/can_pass_info/pass_info = new(requester, access, no_id)
 	for(var/iter_dir in GLOB.cardinals)
 		var/turf/turf_to_check = get_step(src,iter_dir)
 		if(!turf_to_check || (simulated_only && space_type_cache[turf_to_check.type]))

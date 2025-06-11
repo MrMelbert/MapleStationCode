@@ -107,10 +107,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		return
 	return attack_hand(user)
 
-/obj/structure/bodycontainer/deconstruct(disassembled = TRUE)
-	if (!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, 5)
-	qdel(src)
+/obj/structure/bodycontainer/atom_deconstruct(disassembled = TRUE)
+	new /obj/item/stack/sheet/iron(loc, 5)
 
 /obj/structure/bodycontainer/container_resist_act(mob/living/user)
 	if(!locked)
@@ -235,6 +233,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	icon_state = "morgue1"
 	base_icon_state = "morgue"
 	dir = EAST
+	interaction_flags_click = ALLOW_SILICON_REACH|ALLOW_RESTING
 
 	connected = /obj/structure/tray/m_tray
 
@@ -251,17 +250,15 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	var/datum/gas_mixture/internal_air
 
 	/// The rate at which the internal air mixture cools
-	var/cooling_rate_per_second = 4
+	var/cooling_rate_per_second = 4 CELCIUS
 	/// Minimum temperature of the internal air mixture
-	var/minimum_temperature = T0C - 60
-
+	var/minimum_temperature = BODY_PRESERVATION_TEMP
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/bodycontainer/morgue/LateInitialize()
-	. = ..()
 	var/datum/gas_mixture/external_air = loc.return_air()
 	if(external_air)
 		internal_air = external_air.copy()
@@ -365,12 +362,10 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	. = ..()
 	. += span_notice("The speaker is [beeper ? "enabled" : "disabled"]. Alt-click to toggle it.")
 
-/obj/structure/bodycontainer/morgue/AltClick(mob/user)
-	..()
-	if(!user.can_perform_action(src, (ALLOW_SILICON_REACH|ALLOW_RESTING)))
-		return
+/obj/structure/bodycontainer/morgue/click_alt(mob/user)
 	beeper = !beeper
 	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))
+	return CLICK_ACTION_SUCCESS
 
 /obj/structure/bodycontainer/morgue/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
@@ -482,7 +477,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 
 			if(user.stat != DEAD)
 				user.investigate_log("has died from being cremated.", INVESTIGATE_DEATHS)
-			M.death(TRUE)
+			M.death(TRUE, "cremation")
 			if(M) //some animals get automatically deleted on death.
 				M.ghostize()
 				qdel(M)
@@ -528,6 +523,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	density = TRUE
 	anchored = TRUE
 	pass_flags_self = PASSTABLE | LETPASSTHROW
+
 	max_integrity = 350
 
 	///The bodycontainer we are a tray to.
@@ -540,9 +536,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		connected = null
 	return ..()
 
-/obj/structure/tray/deconstruct(disassembled = TRUE)
+/obj/structure/tray/atom_deconstruct(disassembled = TRUE)
 	new /obj/item/stack/sheet/iron (loc, 2)
-	qdel(src)
 
 /obj/structure/tray/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -583,10 +578,10 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	if(carried_mob == user) //Piggyback user.
 		return
 	user.unbuckle_mob(carried_mob)
-	MouseDrop_T(carried_mob, user)
+	mouse_drop_receive(carried_mob, user)
 
-/obj/structure/tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
-	if(!ismovable(O) || O.anchored || !Adjacent(user) || !user.Adjacent(O) || O.loc == user)
+/obj/structure/tray/mouse_drop_receive(atom/movable/O as mob|obj, mob/user, params)
+	if(!ismovable(O) || O.anchored || O.loc == user)
 		return
 	if(!ismob(O))
 		if(!istype(O, /obj/structure/closet/body_bag))
@@ -595,16 +590,9 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		var/mob/M = O
 		if(M.buckled)
 			return
-	if(!ismob(user) || user.incapacitated())
-		return
-	if(isliving(user))
-		var/mob/living/L = user
-		if(L.body_position == LYING_DOWN)
-			return
 	O.forceMove(src.loc)
 	if (user != O)
 		visible_message(span_warning("[user] stuffs [O] into [src]."))
-	return
 
 /*
  * Crematorium tray

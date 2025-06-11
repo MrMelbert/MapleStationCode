@@ -34,6 +34,8 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	GLOB.human_list += src
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
@@ -54,6 +56,10 @@
 	become_blind(NO_EYES)
 	// Mobs cannot taste anything without a tongue; the tongue organ removes this on Insert
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
+	// No lungs until you get lungs
+	apply_status_effect(/datum/status_effect/lungless)
+	// No heart until you get a heart // Except this is probably unnecessary so we'll skip it
+	// apply_status_effect(/datum/status_effect/heart_attack)
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	randomize_human_normie(src, randomize_mutations = TRUE)
@@ -343,10 +349,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		if(!target_zone)
-			target_zone = get_bodypart(check_zone(user.zone_selected))
-		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
+		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -440,75 +443,96 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
-
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
-	if(target == src)
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if(target.body_position != LYING_DOWN || target.on_fire || target == src)
 		return
 
-	var/panicking = FALSE
+	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
 
-	do
-		CHECK_DNA_AND_SPECIES(target)
+/mob/living/carbon/human/proc/do_pat_fire(mob/living/carbon/target, obj/item/patting_with)
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if((on_fire || (patting_with?.resistance_flags & ON_FIRE)) && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+		to_chat(src, span_warning("You have your own fire to worry about!"))
+		return
 
-		if (DOING_INTERACTION_WITH_TARGET(src,target))
-			return FALSE
+	visible_message(
+		span_notice("[src] pats at the fire engulfing [target]!"),
+		span_notice("You try to pat out the fire on [target]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 
-		if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-			to_chat(src, span_warning("[target.name] is dead!"))
-			return FALSE
-
-		if (is_mouth_covered())
-			to_chat(src, span_warning("Remove your mask first!"))
-			return FALSE
-
-		if (target.is_mouth_covered())
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-			return FALSE
-
-		if (!get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-			return FALSE
-
-		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-			return FALSE
-
-		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
-						span_notice("You try to perform CPR on [target.name]... Hold still!"))
-
-		if (!do_after(src, delay = panicking ? CPR_PANIC_SPEED : (3 SECONDS), target = target))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			return FALSE
-
-		if (target.health > target.crit_threshold)
-			return FALSE
-
-		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
-		if(HAS_MIND_TRAIT(src, TRAIT_MORBID))
-			add_mood_event("morbid_saved_life", /datum/mood_event/morbid_saved_life)
+	while(do_after(src, 1 SECONDS, target, extra_checks = CALLBACK(src, PROC_REF(pat_fire_check), target),))
+		// check if we're using heatproof stuff (gloves or firesuit)
+		var/using_protection = FALSE
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE)) // slapping them with something and it's not burning
+			using_protection = patting_with.max_heat_protection_temperature >= target.get_skin_temperature() || (patting_with.resistance_flags & FIRE_PROOF)
 		else
-			add_mood_event("saved_life", /datum/mood_event/saved_life)
-		log_combat(src, target, "CPRed")
+			var/their_temp = target.get_skin_temperature()
+			for(var/obj/item/clothing/thing as anything in get_clothing_on_part(get_active_hand()))
+				if(thing.max_heat_protection_temperature >= their_temp || (thing.resistance_flags & FIRE_PROOF))
+					using_protection = TRUE
+					break
+		// actually do the patting and extinguishing
+		do_attack_animation(target, "grab")
+		playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		var/fire_heal = -1
+		if(using_protection)
+			fire_heal *= 1.5
+		if(on_fire || (patting_with?.resistance_flags & ON_FIRE))
+			fire_heal *= 0.25
+		target.adjust_fire_stacks(fire_heal)
+		if(!target.on_fire)
+			break
+		// either using heatproof stuff or we straight up can't catch fire from them
+		if(using_protection || HAS_TRAIT(target, TRAIT_NOFIRE_SPREAD))
+			continue
+		if(!prob(5 * target.fire_stacks))
+			continue
+		// check if our item catches fire before our mob does
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE))
+			var/set_alight = patting_with.fire_act(pick(40, 50, 60) * target.fire_stacks)
+			visible_message(
+				span_danger("[src]'s [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				span_danger("Your [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			// fire claimed us entirely
+			if(QDELETED(patting_with))
+				break
+			// A. was flammable and is now on fire - next loop, we will take direct fire damage from it (if unprotected)
+			// B. is not flammable - we will continue to burn it, and deal no direct damage
+			if(set_alight || !(patting_with.resistance_flags & FLAMMABLE))
+				continue
 
-		if (HAS_TRAIT(target, TRAIT_NOBREATH))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
-		else if (!target.get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
-		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
+		// now WE'RE catching fire (and taking some minor damage if possible)
+		// it doesn't stop you from continuing, but you're on fire man, what are you doing?
+		if(!HAS_TRAIT(src, TRAIT_RESISTHEAT) && !HAS_TRAIT(src, TRAIT_RESISTHEATHANDS))
+			apply_damage(round(target.fire_stacks * 0.5, 0.5), BURN, get_active_hand())
+			playsound(src, SFX_SEAR, 50, TRUE)
+		if(!HAS_TRAIT(src, TRAIT_NOFIRE) && !HAS_TRAIT(src, TRAIT_NOFIRE_SPREAD))
+			adjust_fire_stacks(round(target.fire_stacks * 0.2, 0.1))
+			ignite_mob(silent = TRUE)
+		visible_message(
+			span_danger("[src] [on_fire ? "catches fire from patting at" : "burns [p_their()] hand on"] [target]!"),
+			span_danger("You [on_fire ? "catch fire from patting at" : " burn your hand on"] [target]!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
 
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-	while (panicking)
+	if(QDELETED(src) || QDELETED(target) || incapacitated() || target.on_fire)
+		return
+	visible_message(
+		span_notice("[src] pats out the fire on [target]."),
+		span_notice("You pat out the fire on [target]."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 
-#undef CPR_PANIC_SPEED
+/mob/living/carbon/human/proc/pat_fire_check(mob/living/carbon/target)
+	PRIVATE_PROC(TRUE)
+	return target.on_fire
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
@@ -714,6 +738,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 	VV_DROPDOWN_OPTION(VV_HK_APPLY_DNA_INFUSION, "Apply DNA Infusion")
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
+	VV_DROPDOWN_OPTION(VV_HK_MAKE_ME_TANKY, "Make This Mob Tankier")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -834,7 +859,66 @@
 
 		qdel(src)
 
+	if(href_list[VV_HK_MAKE_ME_TANKY])
+		var/list/options = list(
+			"More effective HP",
+			"Less brute",
+			"Less burn",
+			"Less toxin / oxygen / brain",
+			"Less pain",
+			"Less environmental",
+			"Tougher organs",
+			"Stun resistance",
+			"Health regen",
+		)
+		var/list/picked = list()
+		while(length(options))
+			var/result = tgui_input_list(usr, "Pick something. Select \"Done\" to finish your selection.", "Tanky", options + list("Done", "Cancel"))
+			if(QDELETED(src) || !result || result == "Cancel")
+				return
+			if(result == "Done")
+				break
+			picked += result
+			options -= result
 
+		if(!length(picked))
+			return
+		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
+		if(QDELETED(src) || !major)
+			return
+		major = (major == "Lot")
+		message_admins("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+		log_admin("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+
+		for(var/i in picked)
+			switch(i)
+				if("More effective HP")
+					add_consciousness_modifier("badmin", major ? 30 : 10)
+				if("Less brute")
+					physiology.brute_mod *= (major ? 0.5 : 0.75)
+					physiology.bleed_mod *= (major ? 0.6 : 0.8)
+				if("Less burn")
+					physiology.burn_mod *= (major ? 0.5 : 0.75)
+				if("Less toxin / oxygen / brain")
+					physiology.tox_mod *= (major ? 0.5 : 0.75)
+					physiology.oxy_mod *= (major ? 0.5 : 0.75)
+					physiology.brain_mod *= (major ? 0.5 : 0.75)
+				if("Less pain")
+					set_pain_mod("badmin", major ? 0.6 : 0.8)
+				if("Tougher organs")
+					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+						organ.maxHealth *= (major ? 1.5 : 1.25)
+				if("Less environmental")
+					physiology.pressure_mod *= (major ? 0.6 : 0.8)
+					physiology.heat_mod *= (major ? 0.6 : 0.8)
+					physiology.cold_mod *= (major ? 0.6 : 0.8)
+				if("Stun resistance")
+					ADD_TRAIT(src, TRAIT_BATON_RESISTANCE, "Badmin")
+					physiology.stamina_mod *= (major ? 0.5 : 0.75)
+					physiology.stun_mod *= (major ? 0.5 : 0.75)
+					physiology.knockdown_mod *= (major ? 0.5 : 0.75)
+				if("Health regen")
+					apply_status_effect(/datum/status_effect/basic_health_regen, major ? 1.5 : 0.5)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
@@ -905,12 +989,13 @@
 
 	return buckle_mob(target, TRUE, TRUE, RIDER_NEEDS_ARMS)
 
-/mob/living/carbon/human/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
-
-	if(!is_type_in_typecache(target, can_ride_typecache) && !force) //humans are only meant to be ridden through piggybacking and special cases + NON MODULE BUG FIX
+/mob/living/carbon/human/is_buckle_possible(mob/living/target, force, check_loc)
+	if(!HAS_TRAIT(target, TRAIT_CAN_MOUNT_HUMANS))
 		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
-		return
-
+		return FALSE
+	// if you don't invoke it with forced, IE via piggyback / fireman, always fail
+	if(!force)
+		return FALSE
 	return ..()
 
 /mob/living/carbon/human/reagent_check(datum/reagent/chem, seconds_per_tick, times_fired)
@@ -921,15 +1006,17 @@
 
 /mob/living/carbon/human/updatehealth()
 	. = ..()
-	if(HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
-		return
-	var/health_deficiency = max((maxHealth - health), staminaloss)
-	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
-	else
+	update_damage_movespeed()
+
+/mob/living/carbon/human/update_stamina()
+	update_damage_movespeed()
+
+/mob/living/carbon/human/proc/update_damage_movespeed()
+	var/health_deficiency = max((maxHealth - health), staminaloss * 2)
+	if(health_deficiency > 0)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 150)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 50)
+	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/damage_slowdown]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 

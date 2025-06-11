@@ -70,9 +70,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "as" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
@@ -106,6 +104,11 @@
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron,
 /area/station/engineering/main)
+"aB" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/turf/open/floor/iron,
+/area/station/hallway/primary/central)
 "aC" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -187,7 +190,7 @@
 	pixel_y = 5
 	},
 /obj/item/storage/toolbox/syndicate,
-/obj/item/stock_parts/cell/infinite,
+/obj/item/stock_parts/power_store/cell/infinite,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "aT" = (
@@ -767,10 +770,6 @@
 "cN" = (
 /turf/closed/wall/r_wall,
 /area/station/construction)
-"cP" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/turf/closed/wall/r_wall,
-/area/station/construction)
 "cS" = (
 /turf/closed/wall/r_wall,
 /area/station/commons/storage/primary)
@@ -793,10 +792,11 @@
 /area/station/construction)
 "cX" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable,
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron,
 /area/station/construction)
 "cY" = (
@@ -1063,6 +1063,7 @@
 "dW" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/camera/directional/north,
+/obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron,
 /area/station/construction)
 "dX" = (
@@ -1855,6 +1856,14 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/cargo/bitrunning/den)
+"iM" = (
+/obj/effect/turf_decal/siding/dark{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/sign/poster/greenscreen/directional/north,
+/turf/open/floor/greenscreen,
+/area/station/construction)
 "jb" = (
 /obj/machinery/door/airlock,
 /obj/structure/cable,
@@ -1908,6 +1917,11 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/main)
+"lk" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/machinery/status_display/evac/directional/north,
+/turf/open/floor/iron,
+/area/station/construction)
 "lX" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 1
@@ -2272,6 +2286,7 @@
 "EA" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/iron,
 /area/station/construction)
 "EB" = (
@@ -2409,15 +2424,29 @@
 "Ov" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/bluespace,
-/obj/item/stock_parts/cell/bluespace,
-/obj/item/stock_parts/cell/bluespace,
+/obj/item/stock_parts/power_store/cell/bluespace,
+/obj/item/stock_parts/power_store/cell/bluespace,
+/obj/item/stock_parts/power_store/cell/bluespace,
 /turf/open/floor/iron/dark,
 /area/station/science/explab)
+"OP" = (
+/obj/machinery/greenscreen_camera{
+	dir = 1
+	},
+/turf/open/floor/plating,
+/area/station/construction)
 "OU" = (
 /obj/item/disk/tech_disk/debug,
 /turf/open/floor/iron,
 /area/station/science)
+"Qg" = (
+/obj/effect/turf_decal/siding/dark{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/sign/poster/greenscreen/directional/north,
+/turf/open/floor/greenscreen,
+/area/station/construction)
 "Qi" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -2491,6 +2520,7 @@
 "TV" = (
 /obj/machinery/door/airlock,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/iron,
 /area/station/construction)
 "Ut" = (
@@ -2598,6 +2628,11 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
+"XX" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/structure/sign/poster/greenscreen/directional/north,
+/turf/open/floor/greenscreen,
+/area/station/construction)
 "XZ" = (
 /obj/effect/landmark/blobstart,
 /turf/open/floor/iron,
@@ -6061,7 +6096,7 @@ pA
 kQ
 ES
 rL
-cP
+cN
 cX
 dn
 dn
@@ -6152,7 +6187,7 @@ gY
 jb
 ES
 bE
-Mh
+aB
 TV
 EA
 dn
@@ -6430,7 +6465,7 @@ cB
 bE
 bE
 cN
-cY
+iM
 dn
 dn
 dn
@@ -6522,8 +6557,8 @@ cC
 lX
 bE
 cN
-cY
-dn
+XX
+OP
 dn
 dn
 dn
@@ -6614,7 +6649,7 @@ dU
 bE
 bE
 cN
-cY
+Qg
 dn
 dn
 dn
@@ -6706,7 +6741,7 @@ dU
 bE
 bE
 cN
-cY
+lk
 dn
 dn
 dn

@@ -2,8 +2,9 @@
 	see_invisible = SEE_INVISIBLE_LIVING
 	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
 	pressure_resistance = 10
-
 	hud_type = /datum/hud/living
+	interaction_flags_click = ALLOW_RESTING
+	interaction_flags_mouse_drop = ALLOW_RESTING
 
 	///Tracks the current size of the mob in relation to its original size. Use update_transform(resize) to change it.
 	var/current_size = RESIZE_DEFAULT_SIZE
@@ -16,10 +17,32 @@
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
-	/// The max amount of stamina damage we can have at once (Does NOT effect stamcrit thresholds. See crit_threshold)
+	/// The max amount of stamina damage we can have at once
 	var/max_stamina = 120
-	///Stamina damage, or exhaustion. You recover it slowly naturally, and are knocked down if it gets too high. Holodeck and hallucinations deal this.
+	/// Basically, amount of fatigue
+	/// Having a lot of it slows down your movement speed
+	/// Also often used for "fake damage"
 	var/staminaloss = 0
+
+	/**
+	 * How conscious is the mob?
+	 *
+	 * This is, effectively, the mob's REAL health.
+	 * It is a cumulative value of many factors, including health, wounds, diseases, and so on.
+	 *
+	 * 0 is death. 100 is default. 150 is the maximum.
+	 */
+	var/consciousness = CONSCIOUSNESS_MAX
+	/// Assoc Lazylist of flat modifiers to consciousness.
+	var/list/consciousness_modifiers
+	/// Assoc Lazylist of multipliers to consciousness. Applied after modifiers.
+	var/list/consciousness_multipliers
+	/// Assoc Lazylist of max consciousness values. Smallest one is used, but not beyond 10.
+	/// Don't increase max consciousness (over 150), that makes no sense.
+	var/list/max_consciousness_values
+
+	/// Modified applied to attacks with items or fists
+	var/outgoing_damage_mod = 1
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
@@ -36,11 +59,6 @@
 
 	/// Rate at which fire stacks should decay from this mob
 	var/fire_stack_decay_rate = -0.05
-
-	/// when the mob goes from "normal" to crit
-	var/crit_threshold = HEALTH_THRESHOLD_CRIT
-	///When the mob enters hard critical state and is fully incapacitated.
-	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT
 
 	//Damage dealing vars! These are meaningless outside of specific instances where it's checked and defined.
 	/// Lower bound of damage done by unarmed melee attacks. Mob code is a mess, only works where this is checked for.
@@ -84,11 +102,11 @@
 	  */
 	var/incorporeal_move = FALSE
 
-	var/list/quirks = list()
+	var/list/quirks
 	///a list of surgery datums. generally empty, they're added when the player wants them.
 	var/list/surgeries = list()
-	///Mob specific surgery speed modifier
-	var/mob_surgery_speed_mod = 1
+	/// Lazylist of surgery speed modifiers
+	var/list/mob_surgery_speed_mods
 
 	/// Used by [living/Bump()][/mob/living/proc/Bump] and [living/PushAM()][/mob/living/proc/PushAM] to prevent potential infinite loop.
 	var/now_pushing = null
@@ -198,10 +216,6 @@
 	/// Is this mob allowed to be buckled/unbuckled to/from things?
 	var/can_buckle_to = TRUE
 
-	///The x amount a mob's sprite should be offset due to the current position they're in
-	var/body_position_pixel_x_offset = 0
-	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
-	var/body_position_pixel_y_offset = 0
 	///The height offset of a mob's maptext due to their current size.
 	var/body_maptext_height_offset = 0
 
@@ -248,3 +262,8 @@
 
 	/// Whether we currently have temp alerts, minor optimization
 	VAR_PRIVATE/temp_alerts = FALSE
+
+	/// Lazylists of pixel offsets this mob is currently using
+	/// Modify this via add_offsets and remove_offsets,
+	/// NOT directly (and definitely avoid modifying offsets directly)
+	VAR_PRIVATE/list/offsets

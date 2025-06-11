@@ -30,6 +30,7 @@
 	grind_results = list(/datum/reagent/cellulose = 3)
 	color = COLOR_WHITE
 	item_flags = SKIP_FANTASY_ON_SPAWN
+	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 
 	/// Lazylist of raw, unsanitised, unparsed text inputs that have been made to the paper.
 	var/list/datum/paper_input/raw_text_inputs
@@ -154,7 +155,7 @@
 	new_paper.raw_stamp_data = copy_raw_stamps()
 	new_paper.stamp_cache = stamp_cache?.Copy()
 	new_paper.update_icon_state()
-	copy_overlays(new_paper, TRUE)
+	new_paper.copy_overlays(src)
 	return new_paper
 
 /**
@@ -204,8 +205,17 @@
 	var/datum/paper_field/field_data_datum = null
 
 	var/is_signature = ((text == "%sign") || (text == "%s"))
+	var/is_date = ((text == "%date") || (text == "%d"))
+	var/is_time = ((text == "%time") || (text == "%t"))
 
-	var/field_text = is_signature ? signature_name : text
+	var/field_text = text
+	if(is_signature)
+		field_text = signature_name
+	else if(is_date)
+		field_text = "[time2text(world.timeofday, "DD/MM")]/[CURRENT_STATION_YEAR]"
+	else if(is_time)
+		field_text = time2text(world.timeofday, "hh:mm")
+
 	var/field_font = is_signature ? SIGNATURE_FONT : font
 
 	for(var/datum/paper_field/field_input in raw_field_input_data)
@@ -261,9 +271,9 @@
 	if(LAZYLEN(stamp_cache) > MAX_PAPER_STAMPS_OVERLAYS)
 		return
 
-	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]")
-	stamp_overlay.pixel_x = rand(-2, 2)
-	stamp_overlay.pixel_y = rand(-3, 2)
+	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]", appearance_flags = KEEP_APART | RESET_COLOR)
+	stamp_overlay.pixel_w = rand(-2, 2)
+	stamp_overlay.pixel_z = rand(-3, 2)
 	add_overlay(stamp_overlay)
 	LAZYADD(stamp_cache, stamp_icon_state)
 
@@ -289,6 +299,8 @@
 /obj/item/paper/update_icon_state()
 	if(LAZYLEN(raw_text_inputs) && show_written_words)
 		icon_state = "[initial(icon_state)]_words"
+	else
+		icon_state = initial(icon_state)
 	return ..()
 
 /obj/item/paper/verb/rename()
@@ -319,6 +331,7 @@
 
 /obj/item/paper/examine(mob/user)
 	. = ..()
+	. += span_notice("Alt-click [src] to fold it into a paper plane.")
 	if(!in_range(user, src) && !isobserver(user))
 		. += span_warning("You're too far away to read it!")
 		return
@@ -332,7 +345,7 @@
 		return
 	. += span_warning("You cannot read it!")
 
-/obj/item/paper/ui_status(mob/user,/datum/ui_state/state)
+/obj/item/paper/ui_status(mob/user, datum/ui_state/state)
 	// Are we on fire?  Hard to read if so
 	if(resistance_flags & ON_FIRE)
 		return UI_CLOSE
@@ -357,6 +370,31 @@
 	if(in_contents_of(/obj/machinery/door/airlock))
 		return TRUE
 	return ..()
+
+/obj/item/paper/click_alt(mob/living/user)
+	if(HAS_TRAIT(user, TRAIT_PAPER_MASTER))
+		make_plane(user, /obj/item/paperplane/syndicate)
+		return CLICK_ACTION_SUCCESS
+	make_plane(user, /obj/item/paperplane)
+	return CLICK_ACTION_SUCCESS
+
+
+
+/**
+ * Paper plane folding
+ * Makes a paperplane depending on args and returns it.
+ *
+ * Arguments:
+ * * mob/living/user - who's folding
+ * * plane_type - what it will be folded into (path)
+ */
+/obj/item/paper/proc/make_plane(mob/living/user, plane_type = /obj/item/paperplane)
+	balloon_alert(user, "folded into a plane")
+	user.temporarilyRemoveItemFromInventory(src)
+	var/obj/item/paperplane/new_plane = new plane_type(loc, src)
+	if(user.Adjacent(new_plane))
+		user.put_in_hands(new_plane)
+	return new_plane
 
 /obj/item/proc/burn_paper_product_attackby_check(obj/item/attacking_item, mob/living/user, bypass_clumsy = FALSE)
 	//can't be put on fire!
@@ -414,8 +452,8 @@
 	// Handle stamping items.
 	if(writing_stats["interaction_mode"] == MODE_STAMPING)
 		if(!user.can_read(src) || user.is_blind())
-			//The paper's stampable window area is assumed approx 400x500
-			add_stamp(writing_stats["stamp_class"], rand(0, 400), rand(0, 500), rand(0, 360), writing_stats["stamp_icon_state"])
+			//The paper's stampable window area is assumed approx 300x400
+			add_stamp(writing_stats["stamp_class"], rand(0, 300), rand(0, 400), rand(0, 360), writing_stats["stamp_icon_state"])
 			user.visible_message(span_notice("[user] blindly stamps [src] with \the [attacking_item]!"))
 			to_chat(user, span_notice("You stamp [src] with \the [attacking_item] the best you can!"))
 			playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
@@ -427,6 +465,25 @@
 	ui_interact(user)
 	return ..()
 
+/// Secondary right click interaction to quickly stamp things
+/obj/item/paper/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	var/list/writing_stats = tool.get_writing_implement_details()
+
+	if(!length(writing_stats))
+		return NONE
+	if(writing_stats["interaction_mode"] != MODE_STAMPING)
+		return NONE
+	if(!user.can_read(src) || user.is_blind()) // Just leftclick instead
+		return NONE
+
+	add_stamp(writing_stats["stamp_class"], rand(1, 300), rand(1, 400), stamp_icon_state = writing_stats["stamp_icon_state"])
+	user.visible_message(
+		span_notice("[user] quickly stamps [src] with [tool] without looking."),
+		span_notice("You quickly stamp [src] with [tool] without looking."),
+	)
+	playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
+
+	return ITEM_INTERACT_BLOCKING // Stop the UI from opening.
 /**
  * Attempts to ui_interact the paper to the given user, with some sanity checking
  * to make sure the camera still exists via the weakref and that this paper is still
@@ -547,7 +604,7 @@
 			var/stamp_icon_state = stamp_info["stamp_icon_state"]
 
 			if (LAZYLEN(raw_stamp_data) >= MAX_PAPER_STAMPS)
-				to_chat(usr, pick("You try to stamp but you miss!", "There is no where else you can stamp!"))
+				to_chat(usr, pick("You try to stamp but you miss!", "There is nowhere else you can stamp!"))
 				return TRUE
 
 			add_stamp(stamp_class, stamp_x, stamp_y, stamp_rotation, stamp_icon_state)
@@ -562,7 +619,7 @@
 			var/this_input_length = length_char(paper_input)
 
 			if(this_input_length == 0)
-				to_chat(user, pick("Writing block strikes again!", "You forgot to write anthing!"))
+				to_chat(user, pick("Writing block strikes again!", "You forgot to write anything!"))
 				return TRUE
 
 			// If the paper is on an unwritable noticeboard, this usually shouldn't be possible.
@@ -595,6 +652,8 @@
 
 			// Safe to assume there are writing implement details as user.can_write(...) fails with an invalid writing implement.
 			var/writing_implement_data = holding.get_writing_implement_details()
+
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 
 			add_raw_text(paper_input, writing_implement_data["font"], writing_implement_data["color"], writing_implement_data["use_bold"], check_rights_for(user?.client, R_FUN))
 

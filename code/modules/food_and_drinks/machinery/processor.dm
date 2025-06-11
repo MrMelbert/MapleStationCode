@@ -90,7 +90,7 @@
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return TRUE
-	if(default_deconstruction_screwdriver(user, "processor", "processor1", attacking_item) || default_pry_open(attacking_item, close_after_pry = TRUE) || default_deconstruction_crowbar(attacking_item))
+	if(default_deconstruction_screwdriver(user, base_icon_state + "_open", base_icon_state, attacking_item) || default_pry_open(attacking_item, close_after_pry = TRUE) || default_deconstruction_crowbar(attacking_item)) // NON-MODULE CHANGE
 		return
 
 	if(istype(attacking_item, /obj/item/storage/bag/tray))
@@ -146,7 +146,7 @@
 		span_notice("You turn on [src]."), \
 		span_hear("You hear a food processor."))
 	playsound(src.loc, 'sound/machines/blender.ogg', 50, TRUE)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	var/total_time = 0
 	for(var/atom/movable/movable_input as anything in processor_contents)
 		var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(movable_input)
@@ -156,7 +156,7 @@
 		total_time += recipe.time
 
 	var/duration = (total_time / rating_speed)
-	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, Shake), 2, 2, duration, max(duration*0.02, 0.01)) //initial values work out to duration 4 seconds, interval 0.8
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, Shake), 1, 0, duration) // NON-MODULE CHANGE
 	sleep(duration)
 	for(var/atom/movable/content_item in processor_contents)
 		var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(content_item)

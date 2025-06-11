@@ -13,10 +13,9 @@
 
 /datum/surgery/lobectomy/can_start(mob/user, mob/living/carbon/target)
 	var/obj/item/organ/internal/lungs/target_lungs = target.get_organ_slot(ORGAN_SLOT_LUNGS)
-	if(target_lungs)
-		if(target_lungs.damage > 60 && !target_lungs.operated)
-			return TRUE
-	return FALSE
+	if(isnull(target_lungs) || target_lungs.damage < 60 || target_lungs.operated)
+		return FALSE
+	return ..()
 
 
 //lobectomy, removes the most damaged lung lobe with a 95% base success chance
@@ -40,7 +39,13 @@
 		span_notice("[user] begins to make an incision in [target]."),
 		span_notice("[user] begins to make an incision in [target]."),
 	)
-	display_pain(target, "You feel a stabbing pain in your chest!", target_zone = target_zone) // NON-MODULE CHANGE
+	display_pain(
+		target = target,
+		target_zone = target_zone,
+		pain_message = "You feel a stabbing pain in your [parse_zone(target_zone)]!",
+		pain_amount = SURGERY_PAIN_HIGH,
+		surgery_moodlet = /datum/mood_event/surgery/major,
+	)
 
 /datum/surgery_step/lobectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))
@@ -55,7 +60,12 @@
 			span_notice("Successfully removes a piece of [human_target]'s lungs."),
 			"",
 		)
-		display_pain(target, "Your chest hurts like hell, but breathing becomes slightly easier.", target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "Your [parse_zone(target_zone)] hurts like hell, but breathing becomes slightly easier.",
+			surgery_moodlet = /datum/mood_event/surgery/major,
+		)
 	return ..()
 
 /datum/surgery_step/lobectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -68,7 +78,13 @@
 			span_warning("[user] screws up!"),
 			span_warning("[user] screws up!"),
 		)
-		display_pain(target, "You feel a sharp stab in your chest; the wind is knocked out of you and it hurts to catch your breath!", target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "You feel a sharp stab in your [parse_zone(target_zone)]; the wind is knocked out of you and it hurts to catch your breath!",
+			pain_amount = SURGERY_PAIN_HIGH,
+			surgery_moodlet = /datum/mood_event/surgery/major,
+		)
 		human_target.losebreath += 4
 		human_target.adjustOrganLoss(ORGAN_SLOT_LUNGS, 10)
 	return FALSE

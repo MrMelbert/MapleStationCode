@@ -13,7 +13,7 @@
 	result = /obj/item/melee/baseball_bat/homerun
 	reqs = list(/obj/item/melee/baseball_bat = 1,
 				/obj/item/toy/crayon/red = 1,
-				/obj/item/stock_parts/cell/hyper = 1,
+				/obj/item/stock_parts/power_store/cell/hyper = 1,
 				)
 	tool_behaviors = list(TOOL_WIRECUTTER, TOOL_SCREWDRIVER)
 	time = 2 SECONDS
@@ -37,5 +37,16 @@
 		/obj/item/stack/sheet/mineral/gold = 1, // cheap for now
 	)
 	tool_behaviors = list(TOOL_SCREWDRIVER)
+	time = 5 SECONDS
+	category = CAT_EQUIPMENT
+
+/datum/crafting_recipe/umbrella
+	name = "Umbrella"
+	result = /obj/item/umbrella
+	reqs = list(
+		/obj/item/stack/sheet/cloth = 3,
+		/obj/item/stack/rods = 1,
+	)
+	tool_behaviors = list(TOOL_CROWBAR)
 	time = 5 SECONDS
 	category = CAT_EQUIPMENT

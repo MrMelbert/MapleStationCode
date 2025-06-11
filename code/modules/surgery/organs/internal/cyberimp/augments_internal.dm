@@ -17,6 +17,10 @@
 		add_overlay(overlay)
 	return ..()
 
+/obj/item/organ/cyberimp/feel_for_damage(self_aware)
+	// No feeling in implants (yet?)
+	return ""
+
 //[[[[BRAIN]]]]
 
 /obj/item/organ/internal/cyberimp/brain
@@ -151,12 +155,13 @@
 	icon_state = "implant_mask"
 	slot = ORGAN_SLOT_BREATHING_TUBE
 	w_class = WEIGHT_CLASS_TINY
+	organ_traits = list(TRAIT_ASSISTED_BREATHING)
 
 /obj/item/organ/internal/cyberimp/mouth/breathing_tube/emp_act(severity)
 	. = ..()
-	if(!owner || . & EMP_PROTECT_SELF)
+	if(!owner || (. & EMP_PROTECT_SELF))
 		return
-	if(prob(60/severity))
+	if(prob(60 / severity))
 		to_chat(owner, span_warning("Your breathing tube suddenly closes!"))
 		owner.losebreath += 2
 

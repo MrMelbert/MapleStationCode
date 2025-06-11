@@ -67,17 +67,23 @@
 			disabled += body_part
 		missing -= body_part.body_zone
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
-			var/stuck_wordage = embedded.isEmbedHarmless() ? "stuck to" : "embedded in"
-			. += span_boldwarning("[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!")
+			if(embedded.get_embed().stealthy_embed)
+				continue
+			var/harmless = embedded.is_embed_harmless()
+			var/stuck_wordage = harmless ? "stuck to" : "embedded in"
+			var/span_to_use = harmless ? "notice" : "boldwarning"
+			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"
 
 		if(body_part.current_gauze)
 			var/gauze_href = body_part.current_gauze.name
 			if(adjacent && isliving(user)) // only shows the href if we're adjacent
-				gauze_href = "<a href='?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
-			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
+				gauze_href = "<a href='byond://?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
+			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
-			. += span_danger(iter_wound.get_examine_description(user))
+			var/wound_msg = iter_wound.get_examine_description(user)
+			if(wound_msg)
+				. += span_danger("[wound_msg]")
 
 	for(var/obj/item/bodypart/body_part as anything in disabled)
 		var/damage_text
@@ -87,7 +93,7 @@
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
-		. += span_boldwarning("[capitalize(t_his)] [body_part.plaintext_zone] is [damage_text]!")
+		. += span_boldwarning("[capitalize(t_his)] [body_part.plaintext_zone] looks [damage_text]!")
 
 	//stores missing limbs
 	var/l_limbs_missing = 0
@@ -167,7 +173,7 @@
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.get_modified_bleed_rate())
+			if(!body_part.current_gauze && body_part.get_modified_bleed_rate())
 				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
 				grasped_limbs += body_part.plaintext_zone
@@ -208,7 +214,7 @@
 			if(HAS_TRAIT(user, TRAIT_EMPATH))
 				if (combat_mode)
 					. += "[t_He] seem[p_s()] to be on guard."
-				if (getOxyLoss() >= 10)
+				if (getOxyLoss() >= 10 || getStaminaLoss() >= 25)
 					. += "[t_He] seem[p_s()] winded."
 				if (getToxLoss() >= 10)
 					. += "[t_He] seem[p_s()] sickly."
@@ -435,8 +441,9 @@
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		var/obj/item/card/id/id = wear_id.GetID()
 		if(id && get_dist(user, src) <= ID_EXAMINE_DISTANCE)
-			var/id_href = "<a href='?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user, href = TRUE)]</a>"
+			var/id_href = "<a href='byond://?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user, href = TRUE)]</a>"
 			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [id_href]."
+
 		else
 			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [wear_id.examine_title(user, href = TRUE)]."
 	//gloves
@@ -469,7 +476,7 @@
 		var/datum/record/crew/target_record = find_record(perpname)
 		if(target_record)
 			. += "Rank: [target_record.rank]"
-			. += "<a href='?src=[REF(src)];hud=1;photo_front=1;examine_time=[world.time]'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1;examine_time=[world.time]'>\[Side photo\]</a>"
+			. += "<a href='byond://?src=[REF(src)];hud=1;photo_front=1;examine_time=[world.time]'>\[Front photo\]</a><a href='byond://?src=[REF(src)];hud=1;photo_side=1;examine_time=[world.time]'>\[Side photo\]</a>"
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD) && HAS_TRAIT(user, TRAIT_SECURITY_HUD))
 			title = separator_hr("Medical & Security Analysis")
 			. += get_medhud_examine_info(user, target_record)
@@ -500,13 +507,13 @@
 		. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
 		. += "<span class='notice ml-2'>[english_list(cybers, and_text = ", and")]</span>"
 	if(target_record)
-		. += "<a href='?src=[REF(src)];hud=m;physical_status=1;examine_time=[world.time]'>\[[target_record.physical_status]\]</a>"
-		. += "<a href='?src=[REF(src)];hud=m;mental_status=1;examine_time=[world.time]'>\[[target_record.mental_status]\]</a>"
+		. += "<a href='byond://?src=[REF(src)];hud=m;physical_status=1;examine_time=[world.time]'>\[[target_record.physical_status]\]</a>"
+		. += "<a href='byond://?src=[REF(src)];hud=m;mental_status=1;examine_time=[world.time]'>\[[target_record.mental_status]\]</a>"
 	else
 		. += "\[Record Missing\]"
 		. += "\[Record Missing\]"
-	. += "<a href='?src=[REF(src)];hud=m;evaluation=1;examine_time=[world.time]'>\[Medical evaluation\]</a>"
-	. += "<a href='?src=[REF(src)];hud=m;quirk=1;examine_time=[world.time]'>\[See quirks\]</a>"
+	. += "<a href='byond://?src=[REF(src)];hud=m;evaluation=1;examine_time=[world.time]'>\[Medical evaluation\]</a>"
+	. += "<a href='byond://?src=[REF(src)];hud=m;quirk=1;examine_time=[world.time]'>\[See quirks\]</a>"
 
 /// Collects information displayed about src when examined by a user with a security HUD.
 /mob/living/carbon/proc/get_sechud_examine_info(mob/living/user, datum/record/crew/target_record)
@@ -520,15 +527,15 @@
 		if(target_record.security_note)
 			security_note = target_record.security_note
 	if(ishuman(user))
-		. += "Criminal status: <a href='?src=[REF(src)];hud=s;status=1;examine_time=[world.time]'>\[[wanted_status]\]</a>"
+		. += "Criminal status: <a href='byond://?src=[REF(src)];hud=s;status=1;examine_time=[world.time]'>\[[wanted_status]\]</a>"
 	else
 		. += "Criminal status: [wanted_status]"
 	. += "Important Notes: [security_note]"
-	. += "Security record: <a href='?src=[REF(src)];hud=s;view=1;examine_time=[world.time]'>\[View\]</a>"
+	. += "Security record: <a href='byond://?src=[REF(src)];hud=s;view=1;examine_time=[world.time]'>\[View\]</a>"
 	if(ishuman(user))
-		. += "<a href='?src=[REF(src)];hud=s;add_citation=1;examine_time=[world.time]'>\[Add citation\]</a>\
-			<a href='?src=[REF(src)];hud=s;add_crime=1;examine_time=[world.time]'>\[Add crime\]</a>\
-			<a href='?src=[REF(src)];hud=s;add_note=1;examine_time=[world.time]'>\[Add note\]</a>"
+		. += "<a href='byond://?src=[REF(src)];hud=s;add_citation=1;examine_time=[world.time]'>\[Add citation\]</a>\
+			<a href='byond://?src=[REF(src)];hud=s;add_crime=1;examine_time=[world.time]'>\[Add crime\]</a>\
+			<a href='byond://?src=[REF(src)];hud=s;add_note=1;examine_time=[world.time]'>\[Add note\]</a>"
 
 /mob/living/carbon/human/examine_more(mob/user)
 	. = ..()

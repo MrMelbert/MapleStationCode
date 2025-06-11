@@ -173,6 +173,10 @@
 /obj/item/organ/internal/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutanttongue
 
+/obj/item/organ/internal/tongue/feel_for_damage(self_aware)
+	// No effect
+	return ""
+
 /obj/item/organ/internal/tongue/lizard
 	name = "forked tongue"
 	desc = "A thin and long muscle typically found in reptilian races, apparently moonlights as a nose."
@@ -296,6 +300,7 @@
 		)
 		statue.set_visuals(owner.appearance)
 		statue.forceMove(get_turf(owner))
+		SET_PLANE_EXPLICIT(statue, owner.plane, owner)
 		owner.forceMove(statue)
 		RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(human_left_statue))
 
@@ -321,6 +326,7 @@
 
 	to_chat(carbon_owner, span_userdanger("Your existence as a living creature snaps as your statue form crumbles!"))
 	carbon_owner.forceMove(get_turf(statue))
+	carbon_owner.death(null, "being deconstructed")
 	carbon_owner.dust(just_ash = TRUE, drop_items = TRUE)
 	carbon_owner.investigate_log("has been dusted from having their Silverscale Statue deconstructed / destroyed.", INVESTIGATE_DEATHS)
 

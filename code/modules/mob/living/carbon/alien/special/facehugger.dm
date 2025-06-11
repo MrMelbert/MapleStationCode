@@ -108,7 +108,7 @@
 		return
 	if(stat == CONSCIOUS)
 		icon_state = "[base_icon_state]_thrown"
-		addtimer(CALLBACK(src, PROC_REF(clear_throw_icon_state)), 15)
+		addtimer(CALLBACK(src, PROC_REF(clear_throw_icon_state)), 1.5 SECONDS)
 
 /obj/item/clothing/mask/facehugger/proc/clear_throw_icon_state()
 	if(icon_state == "[base_icon_state]_thrown")
@@ -181,7 +181,7 @@
 
 
 	if(!sterile)
-		M.take_bodypart_damage(strength,0) //done here so that humans in helmets take damage
+		M.damage_random_bodypart(strength) //done here so that humans in helmets take damage
 		M.Unconscious(MAX_IMPREGNATION_TIME/0.3) //something like 25 ticks = 20 seconds with the default settings
 
 	GoIdle() //so it doesn't jump the people that tear it off

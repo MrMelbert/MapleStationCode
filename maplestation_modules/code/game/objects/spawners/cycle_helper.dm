@@ -105,8 +105,8 @@
 	outer_button.controller = inner_controller
 	inner_button.door = inner
 	outer_button.door = outer
-	inner_controller.interiorAirlock = inner
-	inner_controller.exteriorAirlock = outer
+	inner_controller.interior_airlock = inner
+	inner_controller.exterior_airlock = outer
 	// And handle access
 	inner.req_access = LAZYLISTDUPLICATE(access)
 	outer.req_access = LAZYLISTDUPLICATE(access)

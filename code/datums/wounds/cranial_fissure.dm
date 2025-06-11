@@ -4,8 +4,6 @@
 
 	required_wounding_types = list(WOUND_ALL)
 
-	wound_series = WOUND_SERIES_CRANIAL_FISSURE
-
 	threshold_minimum = 150
 	weight = 10
 

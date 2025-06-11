@@ -124,7 +124,7 @@
 			//Overlay
 			hair_overlay = image(hair_sprite_accessory.icon, hair_sprite_accessory.icon_state, -HAIR_LAYER, image_dir)
 			hair_overlay.alpha = hair_alpha
-			hair_overlay.pixel_y = hair_sprite_accessory.y_offset
+			hair_overlay.pixel_z = hair_sprite_accessory.y_offset
 			//Emissive blocker
 			if(blocks_emissive != EMISSIVE_BLOCK_NONE)
 				hair_overlay.overlays += emissive_blocker(hair_overlay.icon, hair_overlay.icon_state, location, alpha = hair_alpha)
@@ -136,7 +136,7 @@
 			if(hair_gradient_style)
 				var/hair_gradient_color = LAZYACCESS(gradient_colors, GRADIENT_HAIR_KEY)
 				var/image/hair_gradient_overlay = get_gradient_overlay(hair_sprite_accessory.icon, hair_sprite_accessory.icon_state, -HAIR_LAYER, GLOB.hair_gradients_list[hair_gradient_style], hair_gradient_color, image_dir)
-				hair_gradient_overlay.pixel_y = hair_sprite_accessory.y_offset
+				hair_gradient_overlay.pixel_z = hair_sprite_accessory.y_offset
 				. += hair_gradient_overlay
 
 	if(show_debrained && (head_flags & HEAD_DEBRAIN))
@@ -187,7 +187,7 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = owner?.missing_eye_file || 'icons/mob/human/human_face.dmi' // NON-MODULE CHANGE
+	var/eyeless_icon = missing_eye_file || 'icons/mob/human/human_face.dmi' // NON-MODULE CHANGE
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay

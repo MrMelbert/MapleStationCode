@@ -7,16 +7,15 @@
 	action_cooldown = 2 SECONDS
 
 /datum/ai_behavior/find_and_set/perform(seconds_per_tick, datum/ai_controller/controller, set_key, locate_path, search_range)
-	. = ..()
 	if (controller.blackboard_key_exists(set_key))
-		finish_action(controller, TRUE)
-		return
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
+	if(QDELETED(controller.pawn))
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 	var/find_this_thing = search_tactic(controller, locate_path, search_range)
-	if(QDELETED(controller.pawn) || isnull(find_this_thing))
-		finish_action(controller, FALSE)
-		return
+	if(isnull(find_this_thing))
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 	controller.set_blackboard_key(set_key, find_this_thing)
-	finish_action(controller, TRUE)
+	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
 	return locate(locate_path) in oview(search_range, controller.pawn)
@@ -39,19 +38,16 @@
 
 /datum/ai_behavior/find_and_set/edible/search_tactic(datum/ai_controller/controller, locate_path, search_range)
 	var/mob/living/living_pawn = controller.pawn
-	var/list/food_candidates = list()
-	for(var/held_candidate as anything in living_pawn.held_items)
-		if(!held_candidate || !IsEdible(held_candidate))
-			continue
-		food_candidates += held_candidate
 
-	var/list/local_results = locate(locate_path) in oview(search_range, controller.pawn)
-	for(var/local_candidate in local_results)
-		if(!IsEdible(local_candidate))
-			continue
-		food_candidates += local_candidate
-	if(food_candidates.len)
-		return pick(food_candidates)
+	for(var/atom/held_candidate as anything in living_pawn.held_items)
+		if(IsEdible(held_candidate))
+			return held_candidate
+
+	for(var/atom/local_candidate as anything in oview(search_range, controller.pawn))
+		if(IsEdible(local_candidate) && istype(local_candidate, locate_path))
+			return local_candidate
+
+	return null
 
 /**
  * Variant of find and set that only checks in hands, search range should be excluded for this

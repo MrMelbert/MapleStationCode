@@ -49,9 +49,13 @@
 	. = ..()
 	var/static/list/reflection_filter = alpha_mask_filter(icon = icon('icons/obj/watercloset.dmi', "mirror_mask"))
 	var/static/matrix/reflection_matrix = matrix(0.75, 0, 0, 0, 0.75, 0)
-	var/datum/callback/can_reflect = CALLBACK(src, PROC_REF(can_reflect))
-	var/list/update_signals = list(COMSIG_ATOM_BREAK)
-	AddComponent(/datum/component/reflection, reflection_filter = reflection_filter, reflection_matrix = reflection_matrix, can_reflect = can_reflect, update_signals = update_signals)
+	AddComponent(/datum/component/reflection, \
+		reflection_filter = reflection_filter, \
+		reflection_matrix = reflection_matrix, \
+		can_reflect = CALLBACK(src, PROC_REF(can_reflect)), \
+		update_signals = list(COMSIG_ATOM_BREAK), \
+		check_reflect_signals = list(SIGNAL_ADDTRAIT(TRAIT_NO_MIRROR_REFLECTION), SIGNAL_REMOVETRAIT(TRAIT_NO_MIRROR_REFLECTION)), \
+	)
 
 /obj/structure/mirror/proc/can_reflect(atom/movable/target)
 	///I'm doing it this way too, because the signal is sent before the broken variable is set to TRUE.
@@ -261,7 +265,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 
 /obj/structure/mirror/atom_break(damage_flag, mapload)
 	. = ..()
-	if(broken || (obj_flags & NO_DECONSTRUCTION))
+	if(broken)
 		return
 	icon_state = "mirror_broke"
 	if(!mapload)
@@ -270,13 +274,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 		desc = "Oh no, seven years of bad luck!"
 	broken = TRUE
 
-/obj/structure/mirror/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(!disassembled)
-			new /obj/item/shard(loc)
-		else
-			new /obj/item/wallframe/mirror(loc)
-	qdel(src)
+/obj/structure/mirror/atom_deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		new /obj/item/shard(loc)
+	else
+		new /obj/item/wallframe/mirror(loc)
 
 /obj/structure/mirror/welder_act(mob/living/user, obj/item/I)
 	..()
