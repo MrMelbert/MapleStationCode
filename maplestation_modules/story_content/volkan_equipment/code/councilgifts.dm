@@ -12,6 +12,7 @@
 
 /datum/greyscale_config/tablet/big
 	name = "Robust PDA"
+	icon_file = 'maplestation_modules/story_content/volkan_equipment/icons/pda.dmi'
 	json_config = 'maplestation_modules/story_content/volkan_equipment/datums/_pda_big.json'
 
 
