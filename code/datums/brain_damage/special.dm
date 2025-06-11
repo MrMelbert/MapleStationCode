@@ -220,7 +220,7 @@
 	to_chat(owner, span_warning("Your connection to [linked_target] suddenly feels extremely strong... you can feel it pulling you!"))
 	owner.playsound_local(owner, 'sound/magic/lightning_chargeup.ogg', 75, FALSE)
 	returning = TRUE
-	addtimer(CALLBACK(src, PROC_REF(snapback)), 100)
+	addtimer(CALLBACK(src, PROC_REF(snapback)), 10 SECONDS)
 
 /datum/brain_trauma/special/quantum_alignment/proc/snapback()
 	returning = FALSE
@@ -245,14 +245,15 @@
 
 /datum/brain_trauma/special/psychotic_brawling/on_gain()
 	..()
-	psychotic_brawling = new(null)
+	psychotic_brawling = new()
+	psychotic_brawling.allow_temp_override = FALSE
 	if(!psychotic_brawling.teach(owner, TRUE))
 		to_chat(owner, span_notice("But your martial knowledge keeps you grounded."))
 		qdel(src)
 
 /datum/brain_trauma/special/psychotic_brawling/on_lose()
 	..()
-	psychotic_brawling.remove(owner)
+	psychotic_brawling.fully_remove(owner)
 	QDEL_NULL(psychotic_brawling)
 
 /datum/brain_trauma/special/psychotic_brawling/bath_salts
@@ -296,7 +297,7 @@
 /datum/brain_trauma/special/death_whispers/proc/whispering()
 	ADD_TRAIT(owner, TRAIT_SIXTHSENSE, TRAUMA_TRAIT)
 	active = TRUE
-	addtimer(CALLBACK(src, PROC_REF(cease_whispering)), rand(50, 300))
+	addtimer(CALLBACK(src, PROC_REF(cease_whispering)), rand(5 SECONDS, 30 SECONDS))
 
 /datum/brain_trauma/special/death_whispers/proc/cease_whispering()
 	REMOVE_TRAIT(owner, TRAIT_SIXTHSENSE, TRAUMA_TRAIT)

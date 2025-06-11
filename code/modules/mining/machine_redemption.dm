@@ -203,18 +203,16 @@
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/mineral/ore_redemption/AltClick(mob/living/user)
-	. = ..()
-	if(!user.can_perform_action(src))
-		return
-	if(panel_open)
-		input_dir = turn(input_dir, -90)
-		output_dir = turn(output_dir, -90)
-		to_chat(user, span_notice("You change [src]'s I/O settings, setting the input to [dir2text(input_dir)] and the output to [dir2text(output_dir)]."))
-		unregister_input_turf() // someone just rotated the input and output directions, unregister the old turf
-		register_input_turf() // register the new one
-		update_appearance(UPDATE_OVERLAYS)
-		return TRUE
+/obj/machinery/mineral/ore_redemption/click_alt(mob/living/user)
+	if(!panel_open)
+		return CLICK_ACTION_BLOCKING
+	input_dir = turn(input_dir, -90)
+	output_dir = turn(output_dir, -90)
+	to_chat(user, span_notice("You change [src]'s I/O settings, setting the input to [dir2text(input_dir)] and the output to [dir2text(output_dir)]."))
+	unregister_input_turf() // someone just rotated the input and output directions, unregister the old turf
+	register_input_turf() // register the new one
+	update_appearance(UPDATE_OVERLAYS)
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/mineral/ore_redemption/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -375,26 +373,26 @@
 
 	switch(input_dir)
 		if(NORTH)
-			ore_input.pixel_y = 32
-			ore_output.pixel_y = -32
+			ore_input.pixel_z = 32
+			ore_output.pixel_z = -32
 		if(SOUTH)
-			ore_input.pixel_y = -32
-			ore_output.pixel_y = 32
+			ore_input.pixel_z = -32
+			ore_output.pixel_z = 32
 		if(EAST)
-			ore_input.pixel_x = 32
-			ore_output.pixel_x = -32
+			ore_input.pixel_w = 32
+			ore_output.pixel_w = -32
 		if(WEST)
-			ore_input.pixel_x = -32
-			ore_output.pixel_x = 32
+			ore_input.pixel_w = -32
+			ore_output.pixel_w = 32
 
 	ore_input.color = COLOR_MODERATE_BLUE
 	ore_output.color = COLOR_SECURITY_RED
 	var/mutable_appearance/light_in = emissive_appearance(ore_input.icon, ore_input.icon_state, offset_spokesman = src, alpha = ore_input.alpha)
-	light_in.pixel_y = ore_input.pixel_y
-	light_in.pixel_x = ore_input.pixel_x
+	light_in.pixel_z = ore_input.pixel_z
+	light_in.pixel_w = ore_input.pixel_w
 	var/mutable_appearance/light_out = emissive_appearance(ore_output.icon, ore_output.icon_state, offset_spokesman = src, alpha = ore_output.alpha)
-	light_out.pixel_y = ore_output.pixel_y
-	light_out.pixel_x = ore_output.pixel_x
+	light_out.pixel_z = ore_output.pixel_z
+	light_out.pixel_w = ore_output.pixel_w
 	. += ore_input
 	. += ore_output
 	. += light_in

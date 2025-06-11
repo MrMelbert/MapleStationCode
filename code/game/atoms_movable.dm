@@ -69,7 +69,7 @@
 	var/movement_type = GROUND
 
 	var/atom/movable/pulling
-	var/grab_state = 0
+	var/grab_state = GRAB_PASSIVE
 	/// The strongest grab we can acomplish
 	var/max_grab = GRAB_KILL
 	var/throwforce = 0
@@ -1590,8 +1590,14 @@
 
 /* End language procs */
 
-//Returns an atom's power cell, if it has one. Overload for individual items.
-/atom/movable/proc/get_cell()
+/**
+ * Returns an atom's power cell, if it has one. Overload for individual items.
+ * Args
+ *
+ * * /atom/movable/interface - the atom that is trying to interact with this cell
+ * * mob/user - the mob that is holding the interface
+ */
+/atom/movable/proc/get_cell(atom/movable/interface, mob/user)
 	return
 
 /atom/movable/proc/can_be_pulled(user, grab_state, force)

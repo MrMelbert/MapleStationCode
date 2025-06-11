@@ -14,6 +14,20 @@
 		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
 	return ..()
 
+/datum/wound/slash/get_self_check_description(self_aware)
+	if(!limb.can_bleed())
+		return ..()
+
+	switch(severity)
+		if(WOUND_SEVERITY_TRIVIAL)
+			return span_danger("It's leaking blood from a small [lowertext(undiagnosed_name || name)].")
+		if(WOUND_SEVERITY_MODERATE)
+			return span_warning("It's leaking blood from a [lowertext(undiagnosed_name || name)].")
+		if(WOUND_SEVERITY_SEVERE)
+			return span_boldwarning("It's leaking blood from a serious [lowertext(undiagnosed_name || name)]!")
+		if(WOUND_SEVERITY_CRITICAL)
+			return span_boldwarning("It's leaking blood from a major [lowertext(undiagnosed_name || name)]!!")
+
 /datum/wound_pregen_data/flesh_slash
 	abstract = TRUE
 

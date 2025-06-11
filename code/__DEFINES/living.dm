@@ -1,6 +1,8 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Nutrition changed last life tick, so we should bulk update this tick
+#define QUEUE_NUTRITION_UPDATE (1<<3)
 
 // NON-MODULE CHANGE
 // Sticking these here for now because i'm dumb
@@ -157,3 +159,6 @@
 #define PIXEL_X_OFFSET "x"
 #define PIXEL_Y_OFFSET "y"
 #define PIXEL_Z_OFFSET "z"
+
+/// Disables headset use, but not internal radio / intercom use
+#define TRAIT_BLOCK_HEADSET_USE "block_headset_use"

@@ -119,14 +119,11 @@ export const _OperatingComputer = (props, context) => {
   );
 };
 
-const PatientStateView = (
-  props: {
-    patient: Patient | null;
-    procedures: Procedure[] | null;
-    anesthesia: AnesthesiaStatus | null;
-  },
-  context,
-) => {
+const PatientStateView = (props: {
+  patient: Patient | null;
+  procedures: Procedure[] | null;
+  anesthesia: AnesthesiaStatus | null;
+}) => {
   const { act, data } = useBackend<Patient>();
   const { patient, procedures, anesthesia } = props;
 
@@ -295,7 +292,7 @@ const PatientStateView = (
   );
 };
 
-const SurgeryProceduresView = (props: { surgeries: Surgery[] }, context) => {
+const SurgeryProceduresView = (props: { surgeries: Surgery[] }) => {
   const { act, data } = useBackend();
   const { surgeries } = props;
   return (

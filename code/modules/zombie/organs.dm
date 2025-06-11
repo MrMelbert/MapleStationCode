@@ -23,6 +23,10 @@
 	GLOB.zombie_infection_list -= src
 	. = ..()
 
+/obj/item/organ/internal/zombie_infection/feel_for_damage(self_aware)
+	// keep stealthy for now, revisit later
+	return ""
+
 /obj/item/organ/internal/zombie_infection/on_mob_insert(mob/living/carbon/M, special = FALSE, movement_flags)
 	. = ..()
 

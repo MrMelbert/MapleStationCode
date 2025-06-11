@@ -49,7 +49,7 @@
 		return
 	var/mutable_appearance/appearance = new()
 	appearance.copy_overlays(victim)
-	appearance.pixel_y = 12
+	appearance.pixel_z = 12
 	appearance.layer = layer + 0.1
 	. += appearance
 
@@ -64,7 +64,7 @@
 	if(!QDELETED(src))
 		deconstruct(TRUE)
 
-/obj/structure/headpike/deconstruct(disassembled)
+/obj/structure/headpike/atom_deconstruct(disassembled)
 	var/obj/item/bodypart/head/our_head = victim
 	var/obj/item/spear/our_spear = spear
 	victim = null
@@ -73,7 +73,6 @@
 	if(!disassembled)
 		return ..()
 	our_spear?.forceMove(drop_location())
-	return ..()
 
 /obj/structure/headpike/attack_hand(mob/user, list/modifiers)
 	. = ..()

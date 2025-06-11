@@ -60,7 +60,7 @@
 
 /obj/machinery/rnd/experimentor/proc/generate_valid_items_and_item_reactions()
 	var/static/list/banned_typecache = typecacheof(list(
-		/obj/item/stock_parts/cell/infinite,
+		/obj/item/stock_parts/power_store/cell/infinite,
 		/obj/item/grenade/chem_grenade/tuberculosis
 	))
 
@@ -98,7 +98,6 @@
 		/obj/item/aicard,
 		/obj/item/storage/backpack/holding,
 		/obj/item/slime_extract,
-		/obj/item/onetankbomb,
 		/obj/item/transfer_valve))
 
 /obj/machinery/rnd/experimentor/RefreshParts()
@@ -236,7 +235,7 @@
 		stored_research.unhide_node(SSresearch.techweb_node_by_id(picked_node_id))
 
 	experiment(reaction, loaded_item)
-	use_power(750)
+	use_energy(750 JOULES)
 
 /obj/machinery/rnd/experimentor/proc/throwSmoke(turf/where)
 	var/datum/effect_system/fluid_spread/smoke/smoke = new
@@ -506,14 +505,14 @@
 			ejectItem(TRUE)
 		if(globalMalf > 76 && globalMalf < 98)
 			visible_message(span_warning("[src] begins to smoke and hiss, shaking violently!"))
-			use_power(500000)
+			use_energy(500 KILO JOULES)
 			investigate_log("Experimentor has drained power from its APC", INVESTIGATE_EXPERIMENTOR)
 		if(globalMalf == 99)
 			visible_message(span_warning("[src] begins to glow and vibrate. It's going to blow!"))
-			addtimer(CALLBACK(src, PROC_REF(boom)), 50)
+			addtimer(CALLBACK(src, PROC_REF(boom)), 5 SECONDS)
 		if(globalMalf == 100)
 			visible_message(span_warning("[src] begins to glow and vibrate. It's going to blow!"))
-			addtimer(CALLBACK(src, PROC_REF(honk)), 50)
+			addtimer(CALLBACK(src, PROC_REF(honk)), 5 SECONDS)
 
 	addtimer(CALLBACK(src, PROC_REF(reset_exp)), resetTime)
 
@@ -714,7 +713,7 @@
 
 /obj/item/relic/proc/uncontrolled_teleport(mob/user)
 	to_chat(user, span_notice("[src] begins to vibrate!"))
-	addtimer(CALLBACK(src, PROC_REF(do_the_teleport), user), rand(10, 30))
+	addtimer(CALLBACK(src, PROC_REF(do_the_teleport), user), rand(1 SECONDS, 3 SECONDS))
 
 /obj/item/relic/proc/do_the_teleport(mob/user)
 	var/turf/userturf = get_turf(user)

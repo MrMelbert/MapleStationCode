@@ -15,7 +15,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
-/obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())

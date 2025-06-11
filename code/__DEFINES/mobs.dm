@@ -267,6 +267,7 @@
 #define NUTRITION_LEVEL_WELL_FED 450
 #define NUTRITION_LEVEL_FED 350
 #define NUTRITION_LEVEL_HUNGRY 250
+#define NUTRITION_LEVEL_VERY_HUNGRY 200
 #define NUTRITION_LEVEL_STARVING 150
 
 #define NUTRITION_LEVEL_START_MIN 275
@@ -281,14 +282,16 @@
 //Used as an upper limit for species that continuously gain nutriment
 #define NUTRITION_LEVEL_ALMOST_FULL 535
 
-//Charge levels for Ethereals
+// The standard charge all other Ethereal charge defines are scaled against.
+#define STANDARD_ETHEREAL_CHARGE (1 * STANDARD_CELL_CHARGE)
+// Charge levels for Ethereals, in joules.
 #define ETHEREAL_CHARGE_NONE 0
-#define ETHEREAL_CHARGE_LOWPOWER 400
-#define ETHEREAL_CHARGE_NORMAL 1000
-#define ETHEREAL_CHARGE_ALMOSTFULL 1500
-#define ETHEREAL_CHARGE_FULL 2000
-#define ETHEREAL_CHARGE_OVERLOAD 2500
-#define ETHEREAL_CHARGE_DANGEROUS 3000
+#define ETHEREAL_CHARGE_LOWPOWER (0.4 * STANDARD_ETHEREAL_CHARGE)
+#define ETHEREAL_CHARGE_NORMAL (1 * STANDARD_ETHEREAL_CHARGE)
+#define ETHEREAL_CHARGE_ALMOSTFULL (1.5 * STANDARD_ETHEREAL_CHARGE)
+#define ETHEREAL_CHARGE_FULL (2 * STANDARD_ETHEREAL_CHARGE)
+#define ETHEREAL_CHARGE_OVERLOAD (2.5 * STANDARD_ETHEREAL_CHARGE)
+#define ETHEREAL_CHARGE_DANGEROUS (3 * STANDARD_ETHEREAL_CHARGE)
 
 
 #define CRYSTALIZE_COOLDOWN_LENGTH (120 SECONDS)
@@ -450,7 +453,7 @@
 #define MOVEMENT_HUNGER_MULTIPLIER 0.1
 
 /// Factor at which ethereal's charge decreases per second
-#define ETHEREAL_CHARGE_FACTOR 0.8
+#define ETHEREAL_DISCHARGE_RATE (1e-3 * STANDARD_ETHEREAL_CHARGE) // Rate at which ethereal stomach charge decreases
 /// How much nutrition eating clothes as moth gives and drains
 #define CLOTHING_NUTRITION_GAIN 15
 #define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.
@@ -870,6 +873,14 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 #define ALLOW_SILICON_REACH (1<<6)
 /// If resting on the floor is allowed to perform action (pAIs can play music while resting)
 #define ALLOW_RESTING (1<<7)
+/// If this is accessible to creatures with ventcrawl capabilities
+#define NEED_VENTCRAWL (1<<8)
+/// Skips adjacency checks
+#define BYPASS_ADJACENCY (1<<9)
+/// Skips reccursive loc checks
+#define NOT_INSIDE_TARGET (1<<10)
+/// Checks for base adjacency, but silences the error
+#define SILENT_ADJACENCY (1<<11)
 
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
@@ -904,6 +915,8 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 
 /// Possible value of [/atom/movable/buckle_lying]. If set to a different (positive-or-zero) value than this, the buckling thing will force a lying angle on the buckled.
 #define NO_BUCKLE_LYING -1
+/// Possible value of [/atom/movable/buckle_dir]. If set to a different (positive-or-zero) value than this, the buckling thing will force a dir on the buckled.
+#define BUCKLE_MATCH_DIR -1
 
 // Flags for fully_heal().
 

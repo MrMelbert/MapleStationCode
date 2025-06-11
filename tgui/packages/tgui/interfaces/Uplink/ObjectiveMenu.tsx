@@ -349,7 +349,7 @@ type ObjectiveElementProps = {
   description: string;
   telecrystalReward: number;
   progressionReward: number;
-  uiButtons?: JSX.Element;
+  uiButtons?: React.JSX.Element;
   objectiveState?: ObjectiveState;
   originalProgression: number;
   telecrystalPenalty: number;

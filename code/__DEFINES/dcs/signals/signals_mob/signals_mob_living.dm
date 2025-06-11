@@ -36,8 +36,10 @@
 #define COMSIG_LIVING_SET_BUCKLED "living_set_buckled"
 ///from base of mob/living/set_body_position()
 #define COMSIG_LIVING_SET_BODY_POSITION  "living_set_body_position"
-///From post-can inject check of syringe after attack (mob/user)
-#define COMSIG_LIVING_TRY_SYRINGE "living_try_syringe"
+/// Sent to a mob being injected with a syringe when the do_after initiates
+#define COMSIG_LIVING_TRY_SYRINGE_INJECT "living_try_syringe_inject"
+/// Sent to a mob being withdrawn from with a syringe when the do_after initiates
+#define COMSIG_LIVING_TRY_SYRINGE_WITHDRAW "living_try_syringe_withdraw"
 ///From living/Life(). (deltatime, times_fired)
 #define COMSIG_LIVING_LIFE "living_life"
 	/// Block the Life() proc from proceeding... this should really only be done in some really wacky situations.
@@ -247,8 +249,12 @@
 
 /// Sent from a mob to their loc when starting to remove cuffs on itself
 #define COMSIG_MOB_REMOVING_CUFFS "living_removing_cuffs"
-/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
-#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+	/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
+	#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+
+/// Sent to a mob grabbing another mob: (mob/living/grabbing)
+#define COMSIG_LIVING_GRAB "living_grab"
+	// Return COMPONENT_CANCEL_ATTACK_CHAIN / COMPONENT_SKIP_ATTACK_CHAIN to stop the grab
 
 /// From /datum/element/basic_eating/try_eating()
 #define COMSIG_MOB_PRE_EAT "mob_pre_eat"

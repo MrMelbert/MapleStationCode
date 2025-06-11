@@ -103,9 +103,9 @@
 		return
 	return TRUE
 
-/obj/item/tk_grab/tractor/afterattack(atom/target, mob/user, proximity, params)
+/obj/item/tk_grab/tractor/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	move_object(user, target)
+	move_object(user, interacting_with)
 
 ///Moving an object around
 /obj/item/tk_grab/tractor/proc/move_object(mob/user, atom/target)

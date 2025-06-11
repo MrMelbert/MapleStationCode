@@ -11,14 +11,17 @@
 	scan_desc = "schizophrenia"
 	gain_text = span_warning("You feel your grip on reality slipping...")
 	lose_text = span_notice("You feel more grounded.")
+	/// Whether the hallucinations we give are uncapped, ie all the wacky ones
+	var/uncapped = FALSE
 
 /datum/brain_trauma/mild/hallucinations/on_life(seconds_per_tick, times_fired)
-	if(owner.stat != CONSCIOUS || owner.IsSleeping() || owner.IsUnconscious())
+	if(owner.stat >= UNCONSCIOUS)
 		return
 	if(HAS_TRAIT(owner, TRAIT_RDS_SUPPRESSED))
+		owner.adjust_hallucinations(-10 SECONDS * seconds_per_tick)
 		return
 
-	owner.adjust_hallucinations_up_to(10 SECONDS * seconds_per_tick, 100 SECONDS)
+	owner.adjust_hallucinations_up_to(((uncapped ? 12 SECONDS : 5 SECONDS) * seconds_per_tick), (uncapped ? 240 SECONDS : 60 SECONDS))
 
 /datum/brain_trauma/mild/hallucinations/on_lose()
 	owner.remove_status_effect(/datum/status_effect/hallucination)
@@ -181,8 +184,8 @@
 			to_chat(owner, span_warning("[pick("You have a coughing fit!", "You can't stop coughing!")]"))
 			owner.Immobilize(20)
 			owner.emote("cough")
-			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 6)
-			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 12)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 0.6 SECONDS)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 1.2 SECONDS)
 		owner.emote("cough")
 	..()
 

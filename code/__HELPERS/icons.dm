@@ -827,10 +827,10 @@ world
 				continue
 
 			// Find the new dimensions of the flat icon to fit the added overlay
-			addX1 = min(flatX1, layer_image.pixel_x + 1)
-			addX2 = max(flatX2, layer_image.pixel_x + add.Width())
-			addY1 = min(flatY1, layer_image.pixel_y + 1)
-			addY2 = max(flatY2, layer_image.pixel_y + add.Height())
+			addX1 = min(flatX1, layer_image.pixel_x + layer_image.pixel_w + 1)
+			addX2 = max(flatX2, layer_image.pixel_x + layer_image.pixel_w + add.Width())
+			addY1 = min(flatY1, layer_image.pixel_y + layer_image.pixel_z + 1)
+			addY2 = max(flatY2, layer_image.pixel_y + layer_image.pixel_z + add.Height())
 
 			if (
 				addX1 != flatX1 \
@@ -852,7 +852,7 @@ world
 				flatY2 = addY2
 
 			// Blend the overlay into the flattened icon
-			flat.Blend(add, blendMode2iconMode(curblend), layer_image.pixel_x + 2 - flatX1, layer_image.pixel_y + 2 - flatY1)
+			flat.Blend(add, blendMode2iconMode(curblend), layer_image.pixel_x + layer_image.pixel_w + 2 - flatX1, layer_image.pixel_y + layer_image.pixel_z + 2 - flatY1)
 
 		if(appearance.color)
 			if(islist(appearance.color))
@@ -1417,7 +1417,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 		filters -= filters[filter_index]
 
 /**
- * Center's an image.
+ * Center's an image. Only run this on float overlays and not physical
  * Requires:
  * The Image
  * The x dimension of the icon file used in the image
@@ -1447,8 +1447,8 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	if(y_dimension < world.icon_size)
 		y_offset *= -1
 
-	image_to_center.pixel_x = x_offset
-	image_to_center.pixel_y = y_offset
+	image_to_center.pixel_w = x_offset
+	image_to_center.pixel_z = y_offset
 
 	return image_to_center
 
@@ -1546,9 +1546,9 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	var/height = icon_dimensions["height"]
 
 	if(width > world.icon_size)
-		alert_overlay.pixel_x = -(world.icon_size / 2) * ((width - world.icon_size) / world.icon_size)
+		alert_overlay.pixel_w = -(world.icon_size / 2) * ((width - world.icon_size) / world.icon_size)
 	if(height > world.icon_size)
-		alert_overlay.pixel_y = -(world.icon_size / 2) * ((height - world.icon_size) / world.icon_size)
+		alert_overlay.pixel_z = -(world.icon_size / 2) * ((height - world.icon_size) / world.icon_size)
 	if(width > world.icon_size || height > world.icon_size)
 		if(width >= height)
 			scale = world.icon_size / width
@@ -1557,3 +1557,41 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	alert_overlay.transform = alert_overlay.transform.Scale(scale)
 
 	return alert_overlay
+
+/// Strips all underlays on a different plane from an appearance.
+/// Returns the stripped appearance.
+/proc/strip_appearance_underlays(mutable_appearance/appearance)
+	var/base_plane = PLANE_TO_TRUE(appearance.plane)
+	for(var/mutable_appearance/underlay as anything in appearance.underlays)
+		if(PLANE_TO_TRUE(underlay.plane) != base_plane)
+			appearance.underlays -= underlay
+	return appearance
+
+/**
+ * Copies the passed /appearance, returns a /mutable_appearance
+ *
+ * Filters out certain overlays from the copy, depending on their planes
+ * Prevents stuff like lighting from being copied to the new appearance
+ */
+/proc/copy_appearance_filter_overlays(appearance_to_copy)
+	var/mutable_appearance/copy = new(appearance_to_copy)
+	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
+
+	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
+	var/list/overlays_to_keep = list()
+	for(var/mutable_appearance/special_overlay as anything in copy.overlays)
+		var/mutable_appearance/real = new()
+		real.appearance = special_overlay
+		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
+			overlays_to_keep += real
+	copy.overlays = overlays_to_keep
+
+	var/list/underlays_to_keep = list()
+	for(var/mutable_appearance/special_underlay as anything in copy.underlays)
+		var/mutable_appearance/real = new()
+		real.appearance = special_underlay
+		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
+			underlays_to_keep += real
+	copy.underlays = underlays_to_keep
+
+	return copy

@@ -1045,8 +1045,8 @@
 			buckled.moving_from_pull = null
 		return
 
-	var/old_direction = dir
-	var/turf/T = loc
+	var/was_facing = dir
+	var/turf/was_loc = loc
 
 	if(pulling)
 		update_pull_movespeed()
@@ -1063,8 +1063,13 @@
 		if(!storage_is_important_recurisve && !can_reach_active_storage)
 			active_storage.hide_contents(src)
 
-	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
-		makeTrail(newloc, T, old_direction)
+	if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && !buckled && !moving_diagonally && get_turf(src) != was_loc)
+		// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
+		var/blood_flow = get_bleed_rate()
+		var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
+		var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
+		if(health_check || bleeding_check)
+			make_blood_trail(newloc, was_loc, was_facing, direct)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
@@ -1076,48 +1081,90 @@
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
+/mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
 	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		return
 
-	var/blood_exists = locate(/obj/effect/decal/cleanable/blood/trail_holder) in start // NON-MODULE CHANGE : Repathing trail to blood
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
 
-	var/trail_type = getTrail()
-	if(!trail_type)
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
 		return
 
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL*(1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
+	var/blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+	if(body_position == LYING_DOWN)
+		blood_to_add += bleedDragAmount()
+		bleed(blood_to_add, drip = FALSE)
+	else
+		blood_to_add += base_bleed_rate
+	// if we're very damaged or bleeding a lot, add even more blood to the trail
+	if(base_brute >= 300 || base_bleed_rate >= 7)
+		blood_to_add *= 2
+
+	var/trail_dir = REVERSE_DIR(movement_direction)
+	// the mob is performing a diagonal movement so we need to make a diagonal trail
+	// this is not the same as a diagonal dir. sorry.
+	// this is insteasd denoted by a negative direction (so we don't conflict with real dirs)
+	if(movement_direction in GLOB.diagonals)
+		trail_dir = -1 * movement_direction
+	// the mob is going a direction they were not previously facing
+	// we now factor in their facing direction to make a trail that looks like they're turning
+	// this is done by creating a diagonal dir
+	else if(trail_dir != was_facing)
+		// look a step back to see if we should be constructing a diagonal dir
+		// if there's no existing trail making a curve would look weird
+		// melbert todo : the illusion breaks if you turn around, but then keep going your initial facing
+		for(var/obj/effect/decal/cleanable/blood/trail_holder/past_trail in get_step(start, REVERSE_DIR(was_facing)))
+			if(past_trail.get_trail_component(was_facing, check_reverse = TRUE, check_diagonals = TRUE, check_reverse_diagonals = TRUE))
+				trail_dir |= was_facing
+				// in case we produced an invalid dir: go back on relevant axis
+				if((trail_dir & (NORTH|SOUTH)) == (NORTH|SOUTH))
+					trail_dir &= ~(was_facing & (NORTH|SOUTH))
+				if((trail_dir & (EAST|WEST)) == (EAST|WEST))
+					trail_dir &= ~(was_facing & (EAST|WEST))
+				break
+
+	var/obj/effect/decal/cleanable/blood/trail_holder/trail
+	// pick any trail in the turf to add onto
+	for(var/obj/effect/decal/cleanable/blood/trail_holder/any_trail in start)
+		// if there exists a trail already, we will add onto the trial
+		// UNLESS that trail has the same direction component and it is already dried
+		//
+		// if that is the case we will look for another trail (or create a new one)
+		// (this will let fresh blood be laid over very dried blood)
+		var/obj/effect/decal/cleanable/blood/trail/any_trail_component = any_trail.get_trail_component(trail_dir, check_reverse = TRUE)
+		if(isnull(any_trail_component) || !any_trail_component.dried)
+			trail = any_trail
+			break
+
+	if(isnull(trail))
+		trail = new(start, get_static_viruses())
+		if(QDELETED(trail))
+			return
+		trail.bloodiness = blood_to_add
+	else
+		trail.add_viruses(get_static_viruses())
+
+	// update the holder with our new dna and bloodiness
+	trail.add_mob_blood(src)
+	trail.adjust_bloodiness(blood_to_add)
+	// also update the trail component, this is what matters for its appearance
+	var/obj/effect/decal/cleanable/blood/trail/trail_component = trail.add_dir_to_trail(trail_dir, blood_to_add)
+	if(isnull(trail_component))
 		return
+	trail_component.add_mob_blood(src)
+	trail_component.adjust_bloodiness(blood_to_add)
 
-	var/bleed_amount = bleedDragAmount()
-	blood_volume = max(blood_volume - bleed_amount, 0) //that depends on our brute damage.
-	var/newdir = get_dir(target_turf, start)
-	if(newdir != direction)
-		newdir = newdir | direction
-		if(newdir == (NORTH|SOUTH))
-			newdir = NORTH
-		else if(newdir == (EAST|WEST))
-			newdir = EAST
-	if((newdir in GLOB.cardinals) && (prob(50)))
-		newdir = REVERSE_DIR(get_dir(target_turf, start))
-	if(!blood_exists)
-		new /obj/effect/decal/cleanable/blood/trail_holder(start, get_static_viruses()) // NON-MODULE CHANGE : Repathing trail to blood
-
-	for(var/obj/effect/decal/cleanable/blood/trail_holder/TH in start) // NON-MODULE CHANGE : Repathing trail to blood
-		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
-			TH.existing_dirs += newdir
-			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
-			TH.add_mob_blood(src)
-
-// NON-MODULE CHANGE
-/mob/living/carbon/human/makeTrail(turf/target_turf, turf/start, direction)
+/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
 	if(!is_bleeding())
 		return
 	return ..()
-// NON-MODULE CHANGE END
 
-///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
+///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/make_blood_trail]
 /mob/living/proc/bleedDragAmount()
 	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
 	return max(1, brute_ratio * 2)
@@ -1128,12 +1175,6 @@
 		var/datum/wound/iter_wound = i
 		bleed_amount += iter_wound.drag_bleed_amount()
 	return bleed_amount
-
-/mob/living/proc/getTrail()
-	if(getBruteLoss() < 300)
-		return pick("ltrails_1", "ltrails_2")
-	else
-		return pick("trails_1", "trails_2")
 
 /mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
 	playsound(src, 'sound/effects/space_wind.ogg', 50, TRUE)
@@ -1381,33 +1422,58 @@
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
+	if(stat != CONSCIOUS)
+		to_chat(src, span_warning("You are not conscious enough for this action!"))
+		return FALSE
+
+	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
+		var/ignore_flags = NONE
+		if(interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED)
+			ignore_flags |= IGNORE_RESTRAINTS
+		if(!(interaction_flags_atom & INTERACT_ATOM_CHECK_GRAB))
+			ignore_flags |= IGNORE_GRAB
+
+		if(incapacitated(ignore_flags))
+			to_chat(src, span_warning("You are incapacitated at the moment!"))
+			return FALSE
+
 	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
 	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
 	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
 	if(!(mobility_flags & MOBILITY_UI) && !(action_bitflags & ALLOW_RESTING))
-		to_chat(src, span_warning("You can't do that right now!"))
+		to_chat(src, span_warning("You don't have the mobility for this!"))
 		return FALSE
 
 	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
 	if((action_bitflags & NEED_HANDS))
+		if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+			to_chat(src, span_warning("You hands are blocked for this action!"))
+			return FALSE
 		if(!can_hold_items(isitem(target) ? target : null)) // almost redundant if it weren't for mobs
-			to_chat(src, span_warning("You don't have the physical ability to do this!"))
+			to_chat(src, span_warning("You don't have the hands for this action!"))
 			return FALSE
 
-	if(!Adjacent(target) && (target.loc != src) && !recursive_loc_check(src, target))
+	if(!(action_bitflags & BYPASS_ADJACENCY) && ((action_bitflags & NOT_INSIDE_TARGET) || !recursive_loc_check(src, target)) && !CanReach(target))
 		if(issilicon(src) && !ispAI(src))
 			if(!(action_bitflags & ALLOW_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
-				to_chat(src, span_warning("You are too far away!"))
+				if(!(action_bitflags & SILENT_ADJACENCY))
+					to_chat(src, span_warning("You are too far away!"))
 				return FALSE
 		else // just a normal carbon mob
 			if((action_bitflags & FORBID_TELEKINESIS_REACH))
-				to_chat(src, span_warning("You are too far away!"))
+				if(!(action_bitflags & SILENT_ADJACENCY))
+					to_chat(src, span_warning("You are too far away!"))
 				return FALSE
 
 			var/datum/dna/mob_DNA = has_dna()
 			if(!mob_DNA || !mob_DNA.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
-				to_chat(src, span_warning("You are too far away!"))
+				if(!(action_bitflags & SILENT_ADJACENCY))
+					to_chat(src, span_warning("You are too far away!"))
 				return FALSE
+
+	if((action_bitflags & NEED_VENTCRAWL) && !HAS_TRAIT(src, TRAIT_VENTCRAWLER_NUDE) && !HAS_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS))
+		to_chat(src, span_warning("You wouldn't fit!"))
+		return FALSE
 
 	if((action_bitflags & NEED_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
 		to_chat(src, span_warning("You don't have the dexterity to do this!"))
@@ -1872,7 +1938,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	..()
 	update_z(new_turf?.z)
 
-/mob/living/MouseDrop_T(atom/dropping, atom/user)
+/mob/living/mouse_drop_receive(atom/dropping, atom/user, params)
 	var/mob/living/U = user
 	if(isliving(dropping))
 		var/mob/living/M = dropping
@@ -1989,12 +2055,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. += {"
 		<br><font size='1'>[VV_HREF_TARGETREF(refid, VV_HK_GIVE_DIRECT_CONTROL, "[ckey || "no ckey"]")] / [VV_HREF_TARGETREF_1V(refid, VV_HK_BASIC_EDIT, "[real_name || "no real name"]", NAMEOF(src, real_name))]</font>
 		<br><font size='1'>
-			BRUTE:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brute' id='brute'>[getBruteLoss()]</a>
-			FIRE:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=fire' id='fire'>[getFireLoss()]</a>
-			TOXIN:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=toxin' id='toxin'>[getToxLoss()]</a>
-			OXY:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[getOxyLoss()]</a>
-			BRAIN:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brain' id='brain'>[get_organ_loss(ORGAN_SLOT_BRAIN)]</a>
-			STAMINA:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[getStaminaLoss()]</a>
+			BRUTE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brute' id='brute'>[getBruteLoss()]</a>
+			FIRE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=fire' id='fire'>[getFireLoss()]</a>
+			TOXIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=toxin' id='toxin'>[getToxLoss()]</a>
+			OXY:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[getOxyLoss()]</a>
+			BRAIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brain' id='brain'>[get_organ_loss(ORGAN_SLOT_BRAIN)]</a>
+			STAMINA:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[getStaminaLoss()]</a>
 		</font>
 	"}
 
@@ -2418,31 +2484,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_attack_type()
 	return BRUTE
 
-
-/**
- * Apply a martial art move from src to target.
- *
- * This is used to process martial art attacks against nonhumans.
- * It is also used to process martial art attacks by nonhumans, even against humans
- * Human vs human attacks are handled in species code right now.
- */
-/mob/living/proc/apply_martial_art(mob/living/target, modifiers, is_grab = FALSE)
-	if(HAS_TRAIT(target, TRAIT_MARTIAL_ARTS_IMMUNE))
-		return MARTIAL_ATTACK_INVALID
-	var/datum/martial_art/style = mind?.martial_art
-	if (!style)
-		return MARTIAL_ATTACK_INVALID
-	// will return boolean below since it's not invalid
-	if (is_grab)
-		return style.grab_act(src, target)
-	if (LAZYACCESS(modifiers, RIGHT_CLICK))
-		return style.disarm_act(src, target)
-	if(combat_mode)
-		if (HAS_TRAIT(src, TRAIT_PACIFISM))
-			return FALSE
-		return style.harm_act(src, target)
-	return style.help_act(src, target)
-
 /**
  * Returns an assoc list of assignments and minutes for updating a client's exp time in the databse.
  *
@@ -2482,6 +2523,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			span_userdanger("You're thrown violently into [lattice], smashing through it and punching straight through!"))
 		apply_damage(rand(5,10), BRUTE, BODY_ZONE_CHEST)
 		lattice.deconstruct(FALSE)
+
+/// Prints an ominous message if something bad is going to happen to you
+/mob/living/proc/ominous_nosebleed()
+	to_chat(src, span_warning("You feel a bit nauseous for just a moment."))
 
 /**
  * Proc used by different station pets such as Ian and Poly so that some of their data can persist between rounds.

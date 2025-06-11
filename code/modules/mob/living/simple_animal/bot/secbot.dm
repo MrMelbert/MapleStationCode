@@ -109,7 +109,7 @@
 
 /mob/living/simple_animal/bot/secbot/beepsky/explode()
 	var/atom/Tsec = drop_location()
-	new /obj/item/stock_parts/cell/potato(Tsec)
+	new /obj/item/stock_parts/power_store/cell/potato(Tsec)
 	var/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/drinking_oil = new(Tsec)
 	drinking_oil.reagents.add_reagent(/datum/reagent/consumable/ethanol/whiskey, 15)
 	return ..()
@@ -155,7 +155,7 @@
 /mob/living/simple_animal/bot/secbot/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)//shocks only make him angry
 	if(base_speed < initial(base_speed) + 3)
 		base_speed += 3
-		addtimer(VARSET_CALLBACK(src, base_speed, base_speed - 3), 60)
+		addtimer(VARSET_CALLBACK(src, base_speed, base_speed - 3), 6 SECONDS)
 		playsound(src, 'sound/machines/defib_zap.ogg', 50)
 		visible_message(span_warning("[src] shakes and speeds up!"))
 

@@ -614,7 +614,7 @@
 /obj/item/stack/cable_coil{
 	pixel_x = 2
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
@@ -1165,7 +1165,7 @@
 	pixel_x = 2;
 	pixel_y = 6
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/engine)
 "cz" = (
@@ -1196,7 +1196,7 @@
 /obj/machinery/light/small/built/directional/west,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/radio/off{
 	pixel_x = 6;
 	pixel_y = 7
@@ -1394,9 +1394,7 @@
 /area/shuttle/abandoned/bar)
 "cX" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/power/smes/engineering{
-	charge = 1e+006
-	},
+/obj/machinery/power/smes/ship,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/bot,
@@ -1410,7 +1408,7 @@
 /obj/structure/table,
 /obj/machinery/cell_charger,
 /obj/item/stack/cable_coil,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/multitool,
 /obj/structure/cable,
 /turf/open/floor/plating,

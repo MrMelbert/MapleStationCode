@@ -23,19 +23,17 @@
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
 
-/mob/living/carbon/item_tending(mob/living/user, obj/item/tool, list/modifiers)
+/mob/living/carbon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
-
+	// Needs to happen after parent call otherwise wounds are prioritized over surgery
 	for(var/datum/wound/wound as anything in shuffle(all_wounds))
 		if(wound.try_treating(tool, user))
 			return ITEM_INTERACT_SUCCESS
-
 	return .
 
-/mob/living/carbon/CtrlShiftClick(mob/user)
-	..()
+/mob/living/carbon/click_ctrl_shift(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
 		carbon_user.give(src)
@@ -61,7 +59,7 @@
 		else if(!iscarbon(hit_atom) && extra_speed)
 			damage_random_bodypart(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		visible_message(
-			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!"),
+			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!!"),
 			span_userdanger("You[extra_speed ? " violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
 		)
 		log_combat(hit_atom, src, "crashes ")
@@ -269,7 +267,7 @@
 		var/obj/item/restraints/cuffs = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 		buckle_cd = cuffs.breakouttime
 
-	visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), 
+	visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"),
 				span_notice("You attempt to unbuckle yourself... \
 				(This will take around [DisplayTimeText(buckle_cd)] and you must stay still.)"))
 
@@ -277,7 +275,7 @@
 		if(buckled)
 			to_chat(src, span_warning("You fail to unbuckle yourself!"))
 		return
-	
+
 	if(QDELETED(src) || isnull(buckled))
 		return
 
@@ -1018,7 +1016,8 @@
 
 			target_organ.apply_organ_damage(excess_healing * -1, required_organ_flag = ORGAN_ORGANIC) //1 excess = 5 organ damage healed
 
-	return ..()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
 	// We can't heal them if they're missing a heart
@@ -1082,7 +1081,7 @@
 /mob/living/carbon/can_be_revived()
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-	if(!get_organ_by_type(/obj/item/organ/internal/brain) && !mind?.has_antag_datum(/datum/antagonist/changeling))
+	if(!get_organ_by_type(/obj/item/organ/internal/brain) && (!IS_CHANGELING(src)))
 		return FALSE
 	return TRUE
 
@@ -1494,12 +1493,15 @@
 	else if(handcuffed)
 		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
 
+/mob/living/carbon/on_standing_up()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
 	. = ..()
 	if(!buckled || buckled.buckle_lying != 0)
 		lying_angle_on_lying_down(new_lying_angle)
-
+	update_bodypart_bleed_overlays()
 
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)
@@ -1574,7 +1576,7 @@
 /mob/living/carbon/proc/spray_blood(splatter_direction, splatter_strength = 3)
 	if(!isturf(loc))
 		return
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, splatter_strength)
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, get_static_viruses(), splatter_strength)
 	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	our_splatter.blood_dna_info = get_blood_dna_list()
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
@@ -1601,3 +1603,13 @@
 	if(!unwagged)
 		return FALSE
 	return unwagged.stop_wag(src)
+
+/mob/living/carbon/ominous_nosebleed()
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(head))
+		return ..()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		to_chat(src, span_notice("You get a headache."))
+		return
+	head.adjustBleedStacks(5)
+	visible_message(span_notice("[src] gets a nosebleed."), span_warning("You get a nosebleed."))

@@ -46,7 +46,7 @@
 
 /mob/living/carbon/human/proc/on_fat(datum/source)
 	SIGNAL_HANDLER
-	hud_used?.hunger?.update_appearance()
+	hud_used?.hunger?.update_hunger_bar()
 	mob_mood?.update_nutrition_moodlets()
 
 	if(HAS_TRAIT(src, TRAIT_FAT))
@@ -64,7 +64,7 @@
 		REMOVE_TRAIT(src, TRAIT_FAT, OBESITY)
 		remove_consciousness_modifier("hunger")
 	else
-		hud_used?.hunger?.update_appearance()
+		hud_used?.hunger?.update_hunger_bar()
 		mob_mood?.update_nutrition_moodlets()
 
 /// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to check if an item is suddenly too heavy for our pockets

@@ -65,7 +65,6 @@
 	)
 
 	AddComponent(/datum/component/ai_target_timer)
-	AddComponent(/datum/component/basic_mob_attack_telegraph)
 	AddComponentFrom(INNATE_TRAIT, /datum/component/shovel_hands)
 	if (tameable)
 		AddComponent(\
