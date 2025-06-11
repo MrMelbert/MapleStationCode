@@ -4,7 +4,14 @@
 
 //the BIG PDA that CaLE made for Airi.
 /obj/item/modular_computer/pda/big
-	name = "Big Robust PDA"
+	name = "Robust PDA"
 	desc = "A heavyduty PDA with big buttons, a super thick case, and big connectors."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/pda.dmi'
+	base_icon_state = "tablet"
+	greyscale_config = /datum/greyscale_config/tablet/big
+
+/datum/greyscale_config/tablet/big
+	name = "Robust PDA"
+	json_config = 'maplestation_modules/story_content/volkan_equipment/datums/_pda_big.json'
+
 
