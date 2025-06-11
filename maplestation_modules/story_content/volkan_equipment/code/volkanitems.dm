@@ -102,6 +102,17 @@
 
 
 //--other misc--
+//CE labcoat
+//A CE labcoat that is black and white, fits the modsuit and other white CE items with style. Volkan version: No gold/yellow.
+//TODO: Make a generic version which has gold in it.
+/obj/item/clothing/suit/toggle/labcoat/ce
+	name = "chief engineer's labcoat"
+	desc = "Has black panels unlike the standard model."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi'
+	icon_state = "labcoat_ce"
+	inhand_icon_state = null
+	resistance_flags = FIRE_PROOF //all CE items are fireproof
+
 //Imprint Key
 //A key used to imprint a Volkan bot to whoever has it.
 /obj/item/circuitboard/volkan/imprint_key
