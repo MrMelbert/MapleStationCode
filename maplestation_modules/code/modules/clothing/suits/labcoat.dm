@@ -10,7 +10,7 @@
 	name = "chief engineer's labcoat"
 	desc = "Has black and gold panels unlike the standard labcoat model."
 	icon_state = "labcoat_ce"
-	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
+	icon = 'maplestation_modules/icons/mob/clothing/suit.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 	resistance_flags = FIRE_PROOF //all CE items should be fireproof
 

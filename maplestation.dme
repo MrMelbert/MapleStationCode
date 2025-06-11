@@ -6678,5 +6678,6 @@
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanitems.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
+#include "maplestation_modules\story_content\volkan_equipment\datums\loadout_datum.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
 // END_INCLUDE

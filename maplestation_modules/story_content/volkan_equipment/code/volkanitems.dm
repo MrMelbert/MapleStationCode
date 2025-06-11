@@ -108,10 +108,8 @@
 /obj/item/clothing/suit/toggle/labcoat/ce/volkan
 	name = "modified chief engineer's labcoat"
 	desc = "Has black panels unlike the standard labcoat model. All gold patchwork has been removed compared to the standard CE labcoat."
-	icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi'
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.
 	worn_icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi'
-	icon_state = "labcoat_ce"
-	resistance_flags = FIRE_PROOF //all CE items should be fireproof
 
 //Imprint Key
 //A key used to imprint a Volkan bot to whoever has it.
@@ -159,10 +157,6 @@
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
-/datum/loadout_item/pocket_items/rad_umbrella
-	name = "Umbrella (Radiation Shielded)"
-	item_path = /obj/item/umbrella/volkan
-	additional_displayed_text = list("Character Item")
 
 //---------------------cool boxes!-----------------------
 //Unfoldable Box.
