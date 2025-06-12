@@ -87,8 +87,6 @@
 	new /obj/item/clothing/gloves/latex/nitrile/special(src)
 	new /obj/item/clothing/suit/toggle/labcoat/cmo/special(src)
 
-/obj/item/storage/bag/garment/chief_medical/PopulateContents()
-
 // Belt to the locker
 /obj/structure/closet/secure_closet/chief_medical/PopulateContents()
 	. = ..()
