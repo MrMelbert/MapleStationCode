@@ -2,6 +2,7 @@
 /// This event spawns multiple cargo pods containing a few resources.
 /datum/round_event_control/resource_pods
 	name = "Resource Pods"
+	category = "Resources"
 	typepath = /datum/round_event/resource_pods
 	// Relatively common, can start early
 	weight = 25
