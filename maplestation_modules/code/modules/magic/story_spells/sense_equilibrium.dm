@@ -13,7 +13,8 @@
 	school = SCHOOL_PSYCHIC
 	spell_requirements = SPELL_REQUIRES_MIND
 	antimagic_flags = MAGIC_RESISTANCE_MIND
-	cooldown_time = 5 MINUTES
+	//cooldown_time = 5 MINUTES
+	cooldown_time = 5 SECONDS
 	/// Costs this much to use
 	var/mana_cost = EQUILIBRIUM_MANA_COST
 
@@ -24,6 +25,13 @@
 	var/is_boon = TRUE
 	/// The length that the boon & debuff last
 	var/spell_duration = 3 MINUTES
+	/// List of senses
+	var/static/list/all_senses = list(
+		SENSE_HEARING,
+		SENSE_SIGHT,
+		SENSE_TOUCH,
+		SENSE_TASTE,
+	)
 	/// The possible enhancements you can give to a person
 	var/static/list/possible_boons = list(
 		SENSE_HEARING = list(
@@ -72,7 +80,7 @@
 			"Illiteracy" = /datum/status_effect/trait_effect/illiterate,
 		),
 		SENSE_TOUCH = list(
-			"Hyperalgesia", /datum/status_effect/hyperalgesia,
+			"Hyperalgesia" = /datum/status_effect/hyperalgesia,
 			"Congenital Analgesia" = /datum/status_effect/grouped/screwy_hud/fake_healthy/equilibrium,
 			"Decreased Motor Skills" = /datum/status_effect/confusion,
 			"Clumsiness" = /datum/status_effect/trait_effect/clumsiness,
@@ -88,21 +96,19 @@
 		),
 	)
 	/// The sense we're going to apply the boon to
-	var/list/boon_to_apply
+	var/list/sense_to_edit
 	/// If we're using Greater, then we also pass the boon
 	var/specific_boon
 
 /// Variant that lets you be more specific at a higher cost & lower duration
-/datum/action/cooldown/spell/list_target/sense_equilibrium/apply_params(/datum/action/cooldown/spell/list_target/sense_equilibrium/our_spell, greater)
+/datum/spellbook_item/spell/sense_equilibrium/apply_params(datum/action/cooldown/spell/list_target/sense_equilibrium/our_spell, greater)
 	if(greater)
 		our_spell.mana_cost = EQUILIBRIUM_MANA_COST * 2
 		our_spell.is_greater = TRUE
 		our_spell.spell_duration = 1.5 MINUTES
 		our_spell.name = "Greater Sense Equilibrium"
-		our_spell.desc = "Divert pathways in a person's brain from one area to another, enhancing the first at the cost of a second. \
-		This variant allows the caster to pinpoint specific effects on the chosen sense, at the cost of higher mana drain and lower effect duration."
+		our_spell.desc = "Divert specific pathways in a person's brain from one area to another, enhancing the first at the cost of a second."
 	return
-
 
 /datum/action/cooldown/spell/list_target/sense_equilibrium/New(Target, original)
 	. = ..()
@@ -112,7 +118,6 @@
 		mana_required = mana_cost, \
 	)
 
-
 /datum/action/cooldown/spell/list_target/sense_equilibrium/before_cast(atom/cast_on)
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
@@ -121,47 +126,81 @@
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(cast_on) || !can_cast_spell())
 		return . | SPELL_CANCEL_CAST
 
-	if(get_dist(cast_on, owner) > target_radius)
-		owner.balloon_alert(owner, "they're too far!")
+	if(!ishuman(cast_on))
+		owner.balloon_alert(owner, "target must be humanoid")
+		to_chat(owner, span_warning("You can only alter the senses of humanoids!"))
+		reset_spell_cooldown()
 		return . | SPELL_CANCEL_CAST
-	var/check_type = tgui_alert(user, "Positive or Negative?","Help or Hinder", list("Positive", "Negative"))
-	if(check_type == "Negative")
-		is_boon = FALSE
-	boon_to_apply = tgui_input_list(owner, "Enhance which sense?", "Sense Equilibrium", is_boon ? possible_boons : possible_detriments)
+
+	if(get_dist(cast_on, owner) > target_radius)
+		owner.balloon_alert(owner, "too far!")
+		reset_spell_cooldown()
+		return . | SPELL_CANCEL_CAST
+	var/check_type = tgui_alert(owner, "Positive or Negative?", "Help or Hinder", list("Positive", "Negative"))
+	is_boon = (check_type == "Positive")
+	sense_to_edit = tgui_input_list(owner, "Enhance which sense?", "Sense Equilibrium", all_senses)
 	if(is_greater)
-		specific_boon = tgui_input_list(owner, "Which boon to apply?", "Greater Sense Equilibrium", boon_to_apply)
-	if(!boon_to_apply || (is_greater && !specific_boon))
+		specific_boon = tgui_input_list(owner, "Which boon to apply?", "Greater Sense Equilibrium", is_boon ? possible_boons[sense_to_edit] : possible_detriments[sense_to_edit])
+	if(!sense_to_edit || (is_greater && !specific_boon))
 		reset_spell_cooldown()
 		return . | SPELL_CANCEL_CAST
 
 /// If the debuff is the same sense as the buff, reroll until we hit a sense we're not already using
 /datum/action/cooldown/spell/list_target/sense_equilibrium/proc/roll_for_opposite()
-	var/sense_to_debuff = pick(is_boon ? possible_detriments : possible_boons)
-	while(sense_to_debuff == boon_to_apply)
-		sense_to_debuff = pick(is_boon ? possible_detriments : possible_boons)
-	return pick(sense_to_debuff)
+	var/sense_to_debuff = pick(all_senses)
+	while(sense_to_debuff == sense_to_edit)
+		sense_to_debuff = pick(all_senses)
+	return sense_to_debuff
 
+/// Horrifying spaghetti because we need to juggle 2 assoc lists
 /datum/action/cooldown/spell/list_target/sense_equilibrium/cast(mob/living/cast_on)
 	. = ..()
-	owner.emote("snap")
+	var/main_effect = is_boon ? possible_boons[sense_to_edit] : possible_detriments[sense_to_edit]
 	if(!specific_boon)
-		specific_boon = pick(boon_to_apply)
-	var/sense_to_debuff = roll_for_debuff()
+		specific_boon = pick(is_boon ? possible_boons[sense_to_edit] : possible_detriments[sense_to_edit])
 
+	var/debuffed_sense = roll_for_opposite()
+	var/secondary_effect = is_boon ? possible_detriments[debuffed_sense] : possible_boons[debuffed_sense]
+	var/sense_to_debuff_key = pick(secondary_effect)
+
+	var/datum/status_effect/specific_boon_datum = main_effect[specific_boon]
+	var/datum/status_effect/sense_to_debuff = secondary_effect[sense_to_debuff_key]
+	owner.emote("snap")
 	if(!cast_on.can_block_magic(antimagic_flags, charge_cost = 1))
 		cast_on.balloon_alert(cast_on, "you feel different")
-		to_chat(cast_on, span_notice("Something's giving you a headache..."))
-		cast_on.set_timed_status_effect(spell_duration, specific_boon, TRUE)
+		to_chat(cast_on, span_warning("Something's giving you a headache..."))
+		cast_on.set_timed_status_effect(spell_duration, specific_boon_datum, TRUE)
 		cast_on.set_timed_status_effect(spell_duration, sense_to_debuff, TRUE)
-		to_chat(owner, span_notice("[cast_on] gained [LAZYFIND(specific_boon)] and [LAZYFIND(sense_to_debuff)]!"))
+		to_chat(owner, span_notice("[cast_on] gained [specific_boon] and [sense_to_debuff_key]!"))
+
+		// Mood event related stuff
+		var/is_psych = FALSE
+		if(ishuman(cast_on))
+			var/mob/living/carbon/human/human_cast = cast_on
+			is_psych = istype(human_cast?.mind?.assigned_role.type, /datum/job/psychologist)
+
+		cast_on.add_mood_event("sense_equilibrium", /datum/mood_event/sense_equilibrium, sense_to_edit, debuffed_sense, is_psych, spell_duration)
+
 	else
 		owner.balloon_alert(owner, "spell blocked!")
 		to_chat(owner, span_warning("Something blocked your attempt to rewire [cast_on]'s brain!"))
+	sense_to_edit = null
+	specific_boon = null
 
+/datum/mood_event/sense_equilibrium
+	description = "I have the worst headache..."
+	mood_change = -2
+	timeout = 1 MINUTES
+
+/datum/mood_event/sense_equilibrium/add_effects(first_sense, second_sense, is_psych, spell_duration)
+	/// Not actually sure if this happens in time for the mood datum to use this instead of the normal
+	timeout = spell_duration
+	/// If the person knows a thing or two about brains, they should know what's going on with themselves.
+	if(is_psych)
+		description = "I feel like my [first_sense] is crossed with my [second_sense]... It's giving me a headache!"
 
 #undef EQUILIBRIUM_MANA_COST
 #undef SENSE_HEARING
 #undef SENSE_SIGHT
 #undef SENSE_TOUCH
 #undef SENSE_TASTE
-#undef SENSE_SMELL

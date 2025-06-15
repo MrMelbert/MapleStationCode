@@ -15,7 +15,7 @@
 	if(!trait_to_add)
 		return FALSE
 	if(islist(trait_to_add))
-		for(status_trait in trait_to_add)
+		for(var/status_trait in trait_to_add)
 			ADD_TRAIT(owner, status_trait, type)
 		return ..()
 	ADD_TRAIT(owner, trait_to_add, type)
@@ -25,7 +25,7 @@
 	if(!trait_to_add)
 		return FALSE
 	if(islist(trait_to_add))
-		for(status_trait in trait_to_add)
+		for(var/status_trait in trait_to_add)
 			REMOVE_TRAIT(owner, status_trait, type)
 		return ..()
 	REMOVE_TRAIT(owner, trait_to_add, type)

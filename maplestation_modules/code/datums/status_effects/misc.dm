@@ -1,3 +1,4 @@
+// If there's a way to apply status effects from the varedit verbs dropdown please god tell me
 /// ++ Effects used by the Sense Equilibrium spell ++
 //* + Positive +
 
@@ -166,7 +167,7 @@
 	if(LAZYLEN(tracked_mobs))
 		for(var/mob/living/creature in tracked_mobs)
 			if(!(creature in heard_atoms))
-				LAZYREMOVE(creature)
+				LAZYREMOVE(tracked_mobs, creature)
 				UnregisterSignal(creature, COMSIG_MOVABLE_MOVED)
 	// If something isn't visible & it isn't already in the list, add it
 	for(var/mob/living/creature in heard_atoms)
@@ -201,8 +202,8 @@
 	creature_movement_x = creature.x
 	creature_movement_y = creature.y
 
-	echo_image.pixel_w = ((creature.x - looker.x) * ICON_SIZE_X) + creature.pixel_w
-	echo_image.pixel_z = ((creature.y - looker.y) * ICON_SIZE_Y) + creature.pixel_y
+	echo_image.pixel_w = ((creature.x - looker.x) * 32) + creature.pixel_w
+	echo_image.pixel_z = ((creature.y - looker.y) * 32) + creature.pixel_y
 
 	SET_PLANE_EXPLICIT(echo_image, ABOVE_LIGHTING_PLANE, creature)
 	owner = WEAKREF(looker)
@@ -215,8 +216,8 @@
 	SIGNAL_HANDLER
 
 	echo_image.loc = source.loc
-	echo_image.pixel_w = ((creature_movement_x - source.x) * ICON_SIZE_X)
-	echo_image.pixel_z = ((creature_movement_y - source.y) * ICON_SIZE_Y)
+	echo_image.pixel_w = ((creature_movement_x - source.x) * 32)
+	echo_image.pixel_z = ((creature_movement_y - source.y) * 32)
 
 /obj/effect/temp_visual/echolocation_ring/Destroy()
 	var/mob/living/previous_user = owner?.resolve()
@@ -278,11 +279,17 @@
 	return ..()
 
 /datum/status_effect/sudden_phobia/on_apply()
-	owner.gain_trauma(/datum/brain_trauma/mild/phobia, TRAUMA_RESILIENCE_MAGIC)
+	if(!ishuman(owner))
+		return FALSE
+	var/mob/living/carbon/human/afflicted = owner
+	afflicted.gain_trauma(/datum/brain_trauma/mild/phobia, TRAUMA_RESILIENCE_MAGIC)
 	return ..()
 
 /datum/status_effect/sudden_phobia/on_remove()
-	owner.cure_trauma_type(/datum/brain_trauma/mild/phobia, resilience = TRAUMA_RESILIENCE_MAGIC)
+	if(!ishuman(owner))
+		return ..()
+	var/mob/living/carbon/human/afflicted = owner
+	afflicted.cure_trauma_type(/datum/brain_trauma/mild/phobia, resilience = TRAUMA_RESILIENCE_MAGIC)
 	return ..()
 
 /// Nightmare Vision Goggles effect but a temporary status effect
@@ -487,15 +494,21 @@
 
 // No matter your race you're gonna get hit HARD by this
 /datum/status_effect/thermal_weakness/on_apply()
-	start_cold_mod = owner.physiology?.cold_mod
-	start_heat_mod = owner.physiology?.heat_mod
-	owner.physiology?.cold_mod = 5
-	owner.physiology?.heat_mod = 5
+	if(!ishuman(owner))
+		return FALSE
+	var/mob/living/carbon/human/afflicted = owner
+	start_cold_mod = afflicted.physiology?.cold_mod
+	start_heat_mod = afflicted.physiology?.heat_mod
+	afflicted.physiology?.cold_mod = 5
+	afflicted.physiology?.heat_mod = 5
 	return ..()
 
 /datum/status_effect/thermal_weakness/on_remove()
-	owner.physiology?.cold_mod = start_cold_mod
-	owner.physiology?.heat_mod = start_heat_mod
+	if(!ishuman(owner))
+		return ..()
+	var/mob/living/carbon/human/afflicted = owner
+	afflicted.physiology?.cold_mod = start_cold_mod
+	afflicted.physiology?.heat_mod = start_heat_mod
 	return ..()
 
 /// Hyperalgesia
