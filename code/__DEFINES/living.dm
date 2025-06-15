@@ -61,6 +61,7 @@
 #define PAIN_MOD_QUIRK "quirk"
 #define PAIN_MOD_SPECIES "species"
 #define PAIN_MOD_OFF_STATION "off-station-pain-resistance"
+#define PAIN_MOD_STATUS_EFFECT "status_effect"
 
 // ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
