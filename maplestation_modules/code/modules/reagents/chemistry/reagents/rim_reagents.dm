@@ -66,7 +66,7 @@
 		return ..()
 
 	// Heals pain and tons of damage (based on purity)
-	user.cause_pain(BODY_ZONES_ALL, -2 * REM * seconds_per_tick)
+	user.heal_pain(4 * REM * seconds_per_tick)
 	user.adjustBruteLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustFireLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustOxyLoss(-3 * REM * seconds_per_tick, FALSE)

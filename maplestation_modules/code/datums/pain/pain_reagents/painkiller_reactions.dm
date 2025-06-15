@@ -78,3 +78,8 @@
 	results = list(/datum/reagent/medicine/buproprion = 3)
 	required_reagents = list(/datum/reagent/propionic_acid = 1, /datum/reagent/hydrogen = 1, /datum/reagent/chlorine = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
+
+/datum/chemical_reaction/medicine/lidocaine
+	results = list(/datum/reagent/medicine/painkiller/local_anesthetic/lidocaine = 3)
+	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/hydrogen = 1, /datum/reagent/consumable/salt  = 1)
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG | REACTION_TAG_PAIN
