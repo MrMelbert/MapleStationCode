@@ -7,8 +7,8 @@
 /datum/action/cooldown/spell/list_target/sense_equilibrium
 	name = "Sense Equilibrium"
 	desc = "Divert pathways in a person's brain from one area to another, enhancing one at the cost of the other."
-	button_icon = 'icons/mob/actions/actions_revenant.dmi'
-	button_icon_state = "r_transmit"
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "senses"
 
 	school = SCHOOL_PSYCHIC
 	spell_requirements = SPELL_REQUIRES_MIND
@@ -28,53 +28,66 @@
 	var/static/list/possible_boons = list(
 		SENSE_HEARING = list(
 			"Language Comprehension" = /datum/status_effect/language_comprehension,
-			"Echolocation" = ,
+			"Echolocation" = /datum/status_effect/basic_echolocation,
+			"Enhanced Eavesdropping" = /datum/status_effect/trait_effect/eavesdropping,
 		),
 		SENSE_SIGHT = list(
-			"Night Vision" = "",
-			"Structural Inferrence" = "", // Mesons
-			"Medicinal Attunement" = , // Medhud
-			"Electrical Attunement" = , // Diagnostic Hud
-			"Beurocratic Inferrence" = , // Sechud
+			"Night Vision" = /datum/status_effect/night_vision,
+			"Structural Inferrence" = /datum/status_effect/mesons,
+			"Medicinal Attunement" = /datum/status_effect/temporary_hud/med,
+			"Electrical Attunement" = /datum/status_effect/temporary_hud/diag,
+			"Beurocratic Inferrence" = /datum/status_effect/temporary_hud/sec,
+			"Enhanced Empathy" = /datum/status_effect/trait_effect/empath,
 		),
 		SENSE_TOUCH = list(
-			"Self-Awareness" = , // The trait
-			""
+			"Self-Awareness" = /datum/status_effect/trait_effect/self_aware,
+			"Strong Hugger" = /datum/status_effect/trait_effect/good_hugs,
+			"Spatial Awareness" = /datum/status_effect/trait_effect/light_step,
+			"Sturdy Stance" = /datum/status_effect/trait_effect/push_immunity,
+			"Quick Hands" = /datum/status_effect/trait_effect/quick_hands,
 		),
 		SENSE_TASTE = list(
-			"Enhanced Palette" = , // Can identify all chems by taste
+			"Enhanced Palette" = /datum/status_effect/trait_effect/enhanced_tastebuds,
+			"Ananas Affinity" = /datum/status_effect/ananas_affinity,
+			"Ananas Aversion" = /datum/status_effect/ananas_aversion,
 		),
 	)
 	/// The possible debuffs that can be applied to a person
 	var/static/list/possible_detriments = list(
 		SENSE_HEARING = list(
-			"Deafness",
-			"Muted Vocals",
-			"Auditory Hallucinations",
+			"Deafened" = /datum/status_effect/trait_effect/deafened,
+			"Silenced Speech" = /datum/status_effect/silenced,
 			"Language Reshuffling" = /datum/status_effect/tower_of_babel/equilibrium,
 			"Auditory Distress" = /datum/status_effect/sudden_phobia,
+			"Suttering" = /datum/status_effect/speech/stutter,
+			"Inside Voice" = /datum/status_effect/trait_effect/whispering,
 		),
 		SENSE_SIGHT = list(
-			"Blindness",
-			"Colorblindness",
-			"Faceblindness",
-			"Visual Hallucinations",
-			"Blurry Vision",
+			"Blindness" = /datum/status_effect/temporary_blindness,
+			"Colorblindness" = /datum/status_effect/color_blindness,
+			"Prosopagnosia" = /datum/status_effect/trait_effect/prosopagnosia,
+			"Hallucinations" = /datum/status_effect/hallucination,
+			"Blurry Vision" = /datum/status_effect/eye_blur,
+			"Nightmare Vision" = /datum/status_effect/nightmare_vision,
+			"Illiteracy" = /datum/status_effect/trait_effect/illiterate,
 		),
 		SENSE_TOUCH = list(
-			"Hyperpain",
-			"That one brain damage where you can't see your own damage at all",
+			"Hyperalgesia", /datum/status_effect/hyperalgesia,
+			"Congenital Analgesia" = /datum/status_effect/grouped/screwy_hud/fake_healthy/equilibrium,
 			"Decreased Motor Skills" = /datum/status_effect/confusion,
-			"Clumsiness",
-			"Heat/Cold Sensitivity"
+			"Clumsiness" = /datum/status_effect/trait_effect/clumsiness,
+			"Hemiplegia" = /datum/status_effect/trait_effect/hemiplegia,
+			"Discoordinated" = /datum/status_effect/discoordinated/equilibrium,
+			"Thermal Deregulation" = /datum/status_effect/thermal_weakness,
 		),
 		SENSE_TASTE = list(
-			"Taste Loss",
-			"Ananas Affinity",
-			"Temporarily hating every foodtype in the game"
+			"Ageusia" = /datum/status_effect/trait_effect/tasteless,
+			"Ananas Affinity" = /datum/status_effect/ananas_affinity,
+			"Ananas Aversion" = /datum/status_effect/ananas_aversion,
+			"Reversed Palette" = /datum/status_effect/reversed_palette,
 		),
 	)
-	/// The boon we're going to apply
+	/// The sense we're going to apply the boon to
 	var/list/boon_to_apply
 	/// If we're using Greater, then we also pass the boon
 	var/specific_boon
@@ -140,6 +153,7 @@
 		to_chat(cast_on, span_notice("Something's giving you a headache..."))
 		cast_on.set_timed_status_effect(spell_duration, specific_boon, TRUE)
 		cast_on.set_timed_status_effect(spell_duration, sense_to_debuff, TRUE)
+		to_chat(owner, span_notice("[cast_on] gained [LAZYFIND(specific_boon)] and [LAZYFIND(sense_to_debuff)]!"))
 	else
 		owner.balloon_alert(owner, "spell blocked!")
 		to_chat(owner, span_warning("Something blocked your attempt to rewire [cast_on]'s brain!"))

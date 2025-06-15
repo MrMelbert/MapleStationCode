@@ -144,6 +144,16 @@
 
 // NON-MODULE CHANGE END
 
+/datum/reagent/blood/get_taste_description(mob/living/taster)
+	if(isnull(taster))
+		return ..()
+	if(!HAS_TRAIT(taster, TRAIT_DETECTIVES_TASTE))
+		return ..()
+	var/blood_type = data?["blood_type"]
+	if(!blood_type)
+		return ..()
+	return list("[blood_type] type blood" = 1)
+
 /datum/reagent/consumable/liquidgibs
 	name = "Liquid Gibs"
 	color = "#CC4633"
