@@ -1,4 +1,4 @@
-#define EQUILIBRIUM_MANA_COST 25
+#define EQUILIBRIUM_MANA_COST 20
 #define SENSE_HEARING "Hearing"
 #define SENSE_SIGHT "Sight"
 #define SENSE_TOUCH "Touch"
@@ -13,8 +13,7 @@
 	school = SCHOOL_PSYCHIC
 	spell_requirements = SPELL_REQUIRES_MIND
 	antimagic_flags = MAGIC_RESISTANCE_MIND
-	//cooldown_time = 5 MINUTES
-	cooldown_time = 5 SECONDS
+	cooldown_time = 4 MINUTES
 	/// Costs this much to use
 	var/mana_cost = EQUILIBRIUM_MANA_COST
 
@@ -103,7 +102,7 @@
 /// Variant that lets you be more specific at a higher cost & lower duration
 /datum/spellbook_item/spell/sense_equilibrium/apply_params(datum/action/cooldown/spell/list_target/sense_equilibrium/our_spell, greater)
 	if(greater)
-		our_spell.mana_cost = EQUILIBRIUM_MANA_COST * 2
+		our_spell.mana_cost = round(EQUILIBRIUM_MANA_COST * 1.5)
 		our_spell.is_greater = TRUE
 		our_spell.spell_duration = 1.5 MINUTES
 		our_spell.name = "Greater Sense Equilibrium"
