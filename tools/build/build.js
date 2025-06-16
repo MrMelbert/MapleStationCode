@@ -6,33 +6,15 @@
  * https://github.com/stylemistake/juke-build
  */
 
-import fs from 'fs';
-import https from 'https';
-import { env } from 'process';
-import Juke from './juke/index.js';
-import { DreamDaemon, DreamMaker, NamedVersionFile } from './lib/byond.js';
-import { yarn } from './lib/yarn.js';
+import fs from "node:fs";
+import https from "node:https";
+import Juke from "./juke/index.js";
+import { DreamDaemon, DreamMaker, NamedVersionFile } from "./lib/byond.js";
+import { bun } from "./lib/bun.js";
 
 const TGS_MODE = process.env.CBT_BUILD_MODE === 'TGS';
 
-Juke.chdir('../..', import.meta.url);
-Juke.setup({ file: import.meta.url }).then((code) => {
-  // We're using the currently available quirk in Juke Build, which
-  // prevents it from exiting on Windows, to wait on errors.
-  if (code !== 0 && process.argv.includes('--wait-on-error')) {
-    Juke.logger.error('Please inspect the error and close the window.');
-    return;
-  }
-
-  if (TGS_MODE) {
-    // workaround for ESBuild process lingering
-    // Once https://github.com/privatenumber/esbuild-loader/pull/354 is merged and updated to, this can be removed
-    setTimeout(() => process.exit(code), 10000);
-  }
-  else {
-    process.exit(code);
-  }
-});
+Juke.chdir("../..", import.meta.url);
 
 const DME_NAME = 'maplestation';  // NON-MODULE CHANGE : DUH
 const CUTTER_SUFFIX = '.png.toml'
@@ -118,20 +100,24 @@ export const CutterTarget = new Juke.Target({
 async function download_file(url, file) {
   return new Promise((resolve, reject) => {
     let file_stream = fs.createWriteStream(file);
-    https.get(url, function(response) {
-      if (response.statusCode === 302) {
-        file_stream.close();
-        download_file(response.headers.location, file)
-          .then((value) => resolve());
-        return;
-      }
-      if (response.statusCode !== 200) {
-        Juke.logger.error(`Failed to download ${url}: Status ${response.statusCode}`);
-        file_stream.close();
-        reject()
-        return
-      }
-      response.pipe(file_stream);
+    https
+      .get(url, function (response) {
+        if (response.statusCode === 302) {
+          file_stream.close();
+          download_file(response.headers.location, file).then((value) =>
+            resolve()
+          );
+          return;
+        }
+        if (response.statusCode !== 200) {
+          Juke.logger.error(
+            `Failed to download ${url}: Status ${response.statusCode}`
+          );
+          file_stream.close();
+          reject();
+          return;
+        }
+        response.pipe(file_stream);
 
       // after download completed close filestream
       file_stream.on("finish", () => {
@@ -254,8 +240,11 @@ export const DmTestTarget = new Juke.Target({
     }
     await DreamDaemon(
       options,
-      '-close', '-trusted', '-verbose',
-      '-params', 'log-directory=ci'
+      "-close",
+      "-trusted",
+      "-verbose",
+      "-params",
+      "log-directory=ci"
     );
     Juke.rm('*.test.*');
     try {
@@ -296,8 +285,11 @@ export const AutowikiTarget = new Juke.Target({
     }
     await DreamDaemon(
       options,
-      '-close', '-trusted', '-verbose',
-      '-params', 'log-directory=ci',
+      "-close",
+      "-trusted",
+      "-verbose",
+      "-params",
+      "log-directory=ci"
     );
     Juke.rm('*.test.*');
     if (!fs.existsSync('data/autowiki_edits.txt')) {
@@ -307,45 +299,44 @@ export const AutowikiTarget = new Juke.Target({
   },
 })
 
-export const YarnTarget = new Juke.Target({
+export const BunTarget = new Juke.Target({
   parameters: [CiParameter],
-  inputs: [
-    'tgui/.yarn/+(cache|releases|plugins|sdks)/**/*',
-    'tgui/**/package.json',
-    'tgui/yarn.lock',
-  ],
-  outputs: [
-    'tgui/.yarn/install-target',
-  ],
-  executes: ({ get }) => yarn('install', get(CiParameter) && '--immutable'),
+  inputs: ["tgui/**/package.json"],
+  executes: ({ get }) => {
+    return bun("install", get(CiParameter));
+  },
 });
 
 export const TgFontTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
+  dependsOn: [BunTarget],
   inputs: [
-    'tgui/.yarn/install-target',
-    'tgui/packages/tgfont/**/*.+(js|mjs|svg)',
-    'tgui/packages/tgfont/package.json',
+    "tgui/packages/tgfont/**/*.+(js|mjs|svg)",
+    "tgui/packages/tgfont/package.json",
   ],
   outputs: [
     'tgui/packages/tgfont/dist/tgfont.css',
     'tgui/packages/tgfont/dist/tgfont.woff2',
   ],
   executes: async () => {
-    await yarn('tgfont:build');
-    fs.mkdirSync('tgui/packages/tgfont/static', { recursive: true });
-    fs.copyFileSync('tgui/packages/tgfont/dist/tgfont.css', 'tgui/packages/tgfont/static/tgfont.css');
-    fs.copyFileSync('tgui/packages/tgfont/dist/tgfont.woff2', 'tgui/packages/tgfont/static/tgfont.woff2');
-  }
+    await bun("tgfont:build");
+    fs.mkdirSync("tgui/packages/tgfont/static", { recursive: true });
+    fs.copyFileSync(
+      "tgui/packages/tgfont/dist/tgfont.css",
+      "tgui/packages/tgfont/static/tgfont.css"
+    );
+    fs.copyFileSync(
+      "tgui/packages/tgfont/dist/tgfont.woff2",
+      "tgui/packages/tgfont/static/tgfont.woff2"
+    );
+  },
 });
 
 export const TguiTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
+  dependsOn: [BunTarget],
   inputs: [
-    'tgui/.yarn/install-target',
-    'tgui/rspack.config.cjs',
-    'tgui/**/package.json',
-    'tgui/packages/**/*.+(js|cjs|ts|tsx|jsx|scss)',
+    "tgui/webpack.config.js",
+    "tgui/**/package.json",
+    "tgui/packages/**/*.+(js|cjs|ts|tsx|jsx|scss)",
   ],
   outputs: [
     'tgui/public/tgui.bundle.css',
@@ -355,53 +346,53 @@ export const TguiTarget = new Juke.Target({
     'tgui/public/tgui-say.bundle.css',
     'tgui/public/tgui-say.bundle.js',
   ],
-  executes: () => yarn('tgui:build'),
+  executes: () => bun("tgui:build"),
 });
 
 export const TguiEslintTarget = new Juke.Target({
   parameters: [CiParameter],
-  dependsOn: [YarnTarget],
-  executes: ({ get }) => yarn('tgui:lint', !get(CiParameter) && '--fix'),
+  dependsOn: [BunTarget],
+  executes: ({ get }) => bun("tgui:lint", !get(CiParameter) && "--fix"),
 });
 
 export const TguiPrettierTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn('tgui:prettier'),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:prettier"),
 });
 
 export const TguiSonarTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn('tgui:sonar'),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:sonar"),
 });
 
 export const TguiTscTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn('tgui:tsc'),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:tsc"),
 });
 
 export const TguiTestTarget = new Juke.Target({
   parameters: [CiParameter],
-  dependsOn: [YarnTarget],
-  executes: ({ get }) => yarn(`tgui:test-${get(CiParameter) ? 'ci' : 'simple'}`),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:test"),
 });
 
 export const TguiLintTarget = new Juke.Target({
-  dependsOn: [YarnTarget, TguiPrettierTarget, TguiEslintTarget, TguiTscTarget],
+  dependsOn: [BunTarget, TguiPrettierTarget, TguiEslintTarget, TguiTscTarget],
 });
 
 export const TguiDevTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: ({ args }) => yarn('tgui:dev', ...args),
+  dependsOn: [BunTarget],
+  executes: ({ args }) => bun("tgui:dev", ...args),
 });
 
 export const TguiAnalyzeTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn('tgui:analyze'),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:analyze"),
 });
 
 export const TguiBenchTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn('tgui:bench'),
+  dependsOn: [BunTarget],
+  executes: () => bun("tgui:bench"),
 });
 
 export const TestTarget = new Juke.Target({
@@ -435,15 +426,11 @@ export const AllTarget = new Juke.Target({
 
 export const TguiCleanTarget = new Juke.Target({
   executes: async () => {
-    Juke.rm('tgui/public/.tmp', { recursive: true });
-    Juke.rm('tgui/public/*.map');
-    Juke.rm('tgui/public/*.{chunk,bundle,hot-update}.*');
-    Juke.rm('tgui/packages/tgfont/dist', { recursive: true });
-    Juke.rm('tgui/.yarn/{cache,unplugged,rspack}', { recursive: true });
-    Juke.rm('tgui/.yarn/build-state.yml');
-    Juke.rm('tgui/.yarn/install-state.gz');
-    Juke.rm('tgui/.yarn/install-target');
-    Juke.rm('tgui/.pnp.*');
+    Juke.rm("tgui/public/.tmp", { recursive: true });
+    Juke.rm("tgui/public/*.map");
+    Juke.rm("tgui/public/*.{chunk,bundle,hot-update}.*");
+    Juke.rm("tgui/packages/tgfont/dist", { recursive: true });
+    Juke.rm("tgui/node_modules", { recursive: true });
   },
 });
 
@@ -461,10 +448,8 @@ export const CleanTarget = new Juke.Target({
 export const CleanAllTarget = new Juke.Target({
   dependsOn: [CleanTarget],
   executes: async () => {
-    Juke.logger.info('Cleaning up data/logs');
-    Juke.rm('data/logs', { recursive: true });
-    Juke.logger.info('Cleaning up global yarn cache');
-    await yarn('cache', 'clean', '--all');
+    Juke.logger.info("Cleaning up data/logs");
+    Juke.rm("data/logs", { recursive: true });
   },
 });
 
@@ -487,5 +472,21 @@ export const TgsTarget = new Juke.Target({
   },
 });
 
+Juke.setup({ file: import.meta.url }).then((code) => {
+  // We're using the currently available quirk in Juke Build, which
+  // prevents it from exiting on Windows, to wait on errors.
+  if (code !== 0 && process.argv.includes("--wait-on-error")) {
+    Juke.logger.error("Please inspect the error and close the window.");
+    return;
+  }
+
+  if (TGS_MODE) {
+    // workaround for ESBuild process lingering
+    // Once https://github.com/privatenumber/esbuild-loader/pull/354 is merged and updated to, this can be removed
+    setTimeout(() => process.exit(code), 10000);
+  } else {
+    process.exit(code);
+  }
+});
 
 export default TGS_MODE ? TgsTarget : BuildTarget;
