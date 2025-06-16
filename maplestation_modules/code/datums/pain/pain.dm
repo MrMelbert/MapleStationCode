@@ -279,9 +279,11 @@
  * Adjusts the progress of pain shock on the current mob.
  *
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
- * * down_to - the minimum amount of pain shock the mob can have.
+ * * down_to - shock will be healed down to this amount, but not beyond it.
  */
 /datum/pain/proc/adjust_traumatic_shock(amount, down_to = 0)
+	if(traumatic_shock <= down_to)
+		return
 	if(amount > 0)
 		amount *= max(pain_modifier, 0.33)
 
