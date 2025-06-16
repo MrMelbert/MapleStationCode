@@ -65,6 +65,9 @@
 		return SSskills.all_skills[skill].get_skill_modifier(modifier, SKILL_LEVEL_NONE)
 	return mind.get_skill_modifier(skill, modifier)
 
+/mob/living/carbon/human/dummy/get_skill_modifier(skill, modifier)
+	return 1
+
 ///Gets the player's current level number from the relevant skill
 /datum/mind/proc/get_skill_level(skill)
 	return known_skills[skill][SKILL_LVL]
