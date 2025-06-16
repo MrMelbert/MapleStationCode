@@ -396,6 +396,7 @@
 	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
+	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
 	likes_before_spell = tongue.liked_foodtypes
 	disliked_before_spell = tongue.disliked_foodtypes
 	tongue.disliked_foodtypes = likes_before_spell
@@ -403,12 +404,28 @@
 	return ..()
 
 /datum/status_effect/reversed_palette/on_remove()
+	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
 	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return ..()
 	tongue.disliked_foodtypes = disliked_before_spell
 	tongue.liked_foodtypes = likes_before_spell
 	return ..()
+
+/datum/status_effect/reversed_palette/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
+	SIGNAL_HANDLER
+
+	if(!istype(source, /obj/item/organ/internal/tongue))
+		return
+	var/obj/item/organ/internal/tongue/tongue = source
+	if(likes_before_spell)
+		tongue.liked_foodtypes = likes_before_spell
+	if(disliked_before_spell)
+		tongue.disliked_foodtypes = disliked_before_spell
+
+	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
+	qdel()
+	return
 
 /// Fake Healthiness
 /datum/status_effect/grouped/screwy_hud/fake_healthy/equilibrium
@@ -518,14 +535,14 @@
 	alert_type = null
 	duration = 30 SECONDS
 
-/datum/status_effect/thermal_weakness/on_creation(mob/living/new_owner, duration = 30 SECONDS)
+/datum/status_effect/hyperalgesia/on_creation(mob/living/new_owner, duration = 30 SECONDS)
 	src.duration = duration
 	return ..()
 
-/datum/status_effect/thermal_weakness/on_apply()
+/datum/status_effect/hyperalgesia/on_apply()
 	owner.set_pain_mod(PAIN_MOD_STATUS_EFFECT, 2)
 	return ..()
 
-/datum/status_effect/thermal_weakness/on_remove()
+/datum/status_effect/hyperalgesia/on_remove()
 	owner.unset_pain_mod(PAIN_MOD_STATUS_EFFECT)
 	return ..()

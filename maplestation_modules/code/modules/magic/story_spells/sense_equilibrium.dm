@@ -40,10 +40,10 @@
 		),
 		SENSE_SIGHT = list(
 			"Night Vision" = /datum/status_effect/night_vision,
-			"Structural Inferrence" = /datum/status_effect/mesons,
+			"Structural Inference" = /datum/status_effect/mesons,
 			"Medicinal Attunement" = /datum/status_effect/temporary_hud/med,
 			"Electrical Attunement" = /datum/status_effect/temporary_hud/diag,
-			"Beurocratic Inferrence" = /datum/status_effect/temporary_hud/sec,
+			"Bureaucratic Inference" = /datum/status_effect/temporary_hud/sec,
 			"Enhanced Empathy" = /datum/status_effect/trait_effect/empath,
 		),
 		SENSE_TOUCH = list(
@@ -66,7 +66,7 @@
 			"Silenced Speech" = /datum/status_effect/silenced,
 			"Language Reshuffling" = /datum/status_effect/tower_of_babel/equilibrium,
 			"Auditory Distress" = /datum/status_effect/sudden_phobia,
-			"Suttering" = /datum/status_effect/speech/stutter,
+			"Stuttering" = /datum/status_effect/speech/stutter,
 			"Inside Voice" = /datum/status_effect/trait_effect/whispering,
 		),
 		SENSE_SIGHT = list(
@@ -126,8 +126,7 @@
 		return . | SPELL_CANCEL_CAST
 
 	if(!ishuman(cast_on))
-		owner.balloon_alert(owner, "target must be humanoid")
-		to_chat(owner, span_warning("You can only alter the senses of humanoids!"))
+		owner.balloon_alert(owner, "target must be humanoid!")
 		reset_spell_cooldown()
 		return . | SPELL_CANCEL_CAST
 
@@ -140,7 +139,7 @@
 	sense_to_edit = tgui_input_list(owner, "Enhance which sense?", "Sense Equilibrium", all_senses)
 	if(is_greater)
 		specific_boon = tgui_input_list(owner, "Which boon to apply?", "Greater Sense Equilibrium", is_boon ? possible_boons[sense_to_edit] : possible_detriments[sense_to_edit])
-	if(!sense_to_edit || (is_greater && !specific_boon))
+	if(!sense_to_edit || (is_greater && !specific_boon) || QDELETED(src) || QDELETED(owner) || QDELETED(cast_on) || !can_cast_spell())
 		reset_spell_cooldown()
 		return . | SPELL_CANCEL_CAST
 
