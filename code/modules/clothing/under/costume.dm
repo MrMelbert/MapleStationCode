@@ -424,5 +424,6 @@
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
 	icon_state = "henchmen"
 	inhand_icon_state = null
+	can_adjust = FALSE
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS|HEAD
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEEARS|HIDEEYES|HIDEHAIR
