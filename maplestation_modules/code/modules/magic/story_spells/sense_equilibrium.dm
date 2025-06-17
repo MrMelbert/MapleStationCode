@@ -80,7 +80,7 @@
 		),
 		SENSE_TOUCH = list(
 			"Hyperalgesia" = /datum/status_effect/hyperalgesia,
-			"Congenital Analgesia" = /datum/status_effect/grouped/screwy_hud/fake_healthy/equilibrium,
+			"Analgesia" = /datum/status_effect/grouped/screwy_hud/fake_healthy/equilibrium,
 			"Decreased Motor Skills" = /datum/status_effect/confusion,
 			"Clumsiness" = /datum/status_effect/trait_effect/clumsiness,
 			"Hemiplegia" = /datum/status_effect/trait_effect/hemiplegia,

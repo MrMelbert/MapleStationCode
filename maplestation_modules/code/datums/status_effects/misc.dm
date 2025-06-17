@@ -182,6 +182,7 @@
 	anchored = TRUE
 	randomdir = FALSE
 	icon = 'maplestation_modules/icons/effects/misc.dmi'
+	icon_state = null
 	/// The image shown the echolocator
 	var/image/echo_image
 	/// The person in the modsuit at the moment, really just used to remove this from their screen
