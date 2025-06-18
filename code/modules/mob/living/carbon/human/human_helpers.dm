@@ -89,10 +89,6 @@
 /mob/living/carbon/human/get_id_name(if_no_id = "Unknown")
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
 		. = if_no_id //You get NOTHING, no id name, good day sir
-		var/list/identity = list(null, null, null)
-		SEND_SIGNAL(src, COMSIG_HUMAN_GET_FORCED_NAME, identity)
-		if(identity[VISIBLE_NAME_FORCED])
-			return identity[VISIBLE_NAME_FACE] // to return forced names when unknown, instead of ID
 	else
 		var/obj/item/card/id/id = astype(wear_id, /obj/item/card/id) \
 			|| astype(wear_id, /obj/item/storage/wallet)?.front_id \

@@ -75,6 +75,7 @@
 			if(uncon_aa.target == src)
 				continue
 			uncon_aa.show_to(src)
+		apply_status_effect(/datum/status_effect/grouped/see_no_names, "[REF(src)]_is_unconscious")
 
 	else
 		cure_blind(UNCONSCIOUS_TRAIT)
@@ -83,6 +84,7 @@
 		update_body() // Update eyelids
 		for(var/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/uncon_aa in GLOB.active_alternate_appearances)
 			uncon_aa.hide_from(src, absolute = TRUE)
+		remove_status_effect(/datum/status_effect/grouped/see_no_names, "[REF(src)]_is_unconscious")
 
 /// Called when [TRAIT_DEATHCOMA] is added to the mob.
 /mob/living/proc/on_deathcoma_trait_gain(datum/source)
