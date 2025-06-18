@@ -71,12 +71,18 @@
 		set_pain_mod(PAIN_MOD_KOD, 0.8)
 		add_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_IMMOBILIZED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_HEART_RATE_SLOW), TRAIT_KNOCKEDOUT)
 		update_body() // Update eyelids
+		for(var/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/uncon_aa in GLOB.active_alternate_appearances)
+			if(uncon_aa.target == src)
+				continue
+			uncon_aa.show_to(src)
 
 	else
 		cure_blind(UNCONSCIOUS_TRAIT)
 		unset_pain_mod(PAIN_MOD_KOD)
 		remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_IMMOBILIZED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_HEART_RATE_SLOW), TRAIT_KNOCKEDOUT)
 		update_body() // Update eyelids
+		for(var/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/uncon_aa in GLOB.active_alternate_appearances)
+			uncon_aa.hide_from(src, absolute = TRUE)
 
 /// Called when [TRAIT_DEATHCOMA] is added to the mob.
 /mob/living/proc/on_deathcoma_trait_gain(datum/source)
