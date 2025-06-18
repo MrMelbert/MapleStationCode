@@ -6663,6 +6663,7 @@
 #include "maplestation_modules\story_content\laurence_equipment\code\laurence_clothing.dm"
 #include "maplestation_modules\story_content\lini_equipment\code\liniclothing.dm"
 #include "maplestation_modules\story_content\localnode_equipment\localnode_core.dm"
+#include "maplestation_modules\story_content\molly_equipment\code\mollyclothing.dm"
 #include "maplestation_modules\story_content\noname_equipment\code\nonameclothing.dm"
 #include "maplestation_modules\story_content\noname_equipment\code\nonameitems.dm"
 #include "maplestation_modules\story_content\nurse_equipment\code\vinceclothing.dm"
