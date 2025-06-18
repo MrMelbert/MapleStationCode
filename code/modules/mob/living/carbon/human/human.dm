@@ -40,6 +40,7 @@
 	// NON-MODULE CHANGE: Unconscious appearance
 	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
 	static_image.override = TRUE
+	static_image.name = "Unknown"
 	add_alt_appearance(
 		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
 		"[REF(src)]_unconscious",
