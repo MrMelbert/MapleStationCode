@@ -399,6 +399,13 @@
 		if(clothes[CLOTHING_SLOT(HANDS)])
 			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
 		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_is] holding [held_thing.examine_title(user, href = TRUE)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
+	for(var/obj/item/bodypart/arm/part in bodyparts)
+		if(!(part.bodypart_flags & BODYPART_PSEUDOPART))
+			continue
+		var/obj/item/corresponding_item = get_item_for_held_index(part.held_index) || part
+		if(clothes[CLOTHING_SLOT(HANDS)])
+			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
+		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_has] a [corresponding_item.examine_title(user, href = TRUE)] in place of [t_his] [initial(part.plaintext_zone)]."
 	//gloves
 	if(gloves && !(obscured_slots & HIDEGLOVES) && !HAS_TRAIT(gloves, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
