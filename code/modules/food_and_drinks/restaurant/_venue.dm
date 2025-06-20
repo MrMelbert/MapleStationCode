@@ -182,6 +182,11 @@
 	turned_on_portal = null
 	linked_venue.restaurant_portal = null
 	linked_venue = null
+	return ..()
+
+/obj/machinery/restaurant_portal/on_construction(mob/user, from_flatpack = FALSE)
+	. = ..()
+	circuit.configure_machine(src)
 
 /obj/machinery/restaurant_portal/update_overlays()
 	. = ..()

@@ -100,7 +100,7 @@
 	airs[i] = null
 	return ..()
 
-/obj/machinery/atmospherics/components/on_construction(mob/user)
+/obj/machinery/atmospherics/components/on_construction(mob/user, from_flatpack = FALSE)
 	. = ..()
 	update_parents()
 
