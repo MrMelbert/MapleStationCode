@@ -406,6 +406,7 @@
 
 /// Painkillers which target a specific limb, instead of the whole body
 /datum/reagent/medicine/painkiller/local_anesthetic
+	name = "local anesthetic"
 	/// How much to reduce the pain modifier of the bodypart by
 	var/bodypart_pain_modifier = 1
 	/// The methods that can apply this reagent to a bodypart
