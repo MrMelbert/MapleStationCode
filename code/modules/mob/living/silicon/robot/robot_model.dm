@@ -82,6 +82,8 @@
 	for(var/module in get_usable_modules())
 		if(!(module in cyborg.held_items))
 			. += module
+	if(!cyborg.emagged)
+		. += emag_modules
 
 /obj/item/robot_model/proc/add_module(obj/item/added_module, nonstandard, requires_rebuild)
 	if(isstack(added_module))
@@ -121,16 +123,15 @@
 	var/active_module = cyborg.module_active
 	cyborg.drop_all_held_items()
 	modules = list()
-	for(var/obj/item/module in basic_modules)
+	for(var/obj/item/module as anything in basic_modules)
 		add_module(module, FALSE, FALSE)
 	if(cyborg.emagged)
-		for(var/obj/item/module in emag_modules)
+		for(var/obj/item/module as anything in emag_modules)
 			add_module(module, FALSE, FALSE)
-	for(var/obj/item/module in added_modules)
+	for(var/obj/item/module as anything in added_modules)
 		add_module(module, FALSE, FALSE)
-	for(var/module in held_modules)
-		if(module)
-			cyborg.equip_module_to_slot(module, held_modules.Find(module))
+	for(var/obj/item/module as anything in held_modules & modules)
+		cyborg.equip_module_to_slot(module, held_modules.Find(module))
 	if(active_module)
 		cyborg.select_module(held_modules.Find(active_module))
 	if(cyborg.hud_used)
@@ -222,13 +223,14 @@
 		module.emp_act(severity)
 	..()
 
-/obj/item/robot_model/proc/transform_to(new_config_type, forced = FALSE)
+/obj/item/robot_model/proc/transform_to(new_config_type, forced = FALSE, transform = TRUE)
 	var/mob/living/silicon/robot/cyborg = loc
 	var/obj/item/robot_model/new_model = new new_config_type(cyborg)
 	new_model.robot = cyborg
 	if(!new_model.be_transformed_to(src, forced))
 		qdel(new_model)
 		return
+	cyborg.drop_all_held_items()
 	cyborg.model = new_model
 	cyborg.update_module_innate()
 	new_model.rebuild_modules()
@@ -240,7 +242,8 @@
 	cyborg.diag_hud_set_aishell()
 	log_silicon("CYBORG: [key_name(cyborg)] has transformed into the [new_model] model.")
 
-	INVOKE_ASYNC(new_model, PROC_REF(do_transform_animation))
+	if(transform)
+		INVOKE_ASYNC(new_model, PROC_REF(do_transform_animation))
 	qdel(src)
 	return new_model
 
@@ -375,11 +378,8 @@
 		/obj/item/pipe_dispenser,
 		/obj/item/extinguisher,
 		/obj/item/weldingtool/largetank/cyborg,
-		/obj/item/screwdriver/cyborg,
-		/obj/item/wrench/cyborg,
-		/obj/item/crowbar/cyborg,
-		/obj/item/wirecutters/cyborg,
-		/obj/item/multitool/cyborg,
+		/obj/item/borg/cyborg_omnitool/engineering,
+		/obj/item/borg/cyborg_omnitool/engineering,
 		/obj/item/t_scanner,
 		/obj/item/analyzer,
 		/obj/item/assembly/signaler/cyborg,
@@ -389,7 +389,7 @@
 		/obj/item/stack/sheet/glass,
 		/obj/item/borg/apparatus/sheet_manipulator,
 		/obj/item/stack/rods/cyborg,
-		/obj/item/stack/tile/iron/base/cyborg,
+		/obj/item/construction/rtd/borg,
 		/obj/item/stack/cable_coil,
 	)
 	radio_channels = list(RADIO_CHANNEL_ENGINEERING)
@@ -407,7 +407,7 @@
 		/obj/item/assembly/flash/cyborg,
 		/obj/item/screwdriver/cyborg,
 		/obj/item/crowbar/cyborg,
-		/obj/item/stack/tile/iron/base/cyborg,
+		/obj/item/stack/tile/iron/base/cyborg, // haha jani will have old tiles >:D
 		/obj/item/soap/nanotrasen/cyborg,
 		/obj/item/storage/bag/trash/cyborg,
 		/obj/item/melee/flyswatter,
@@ -678,14 +678,8 @@
 		/obj/item/borg/apparatus/beaker,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/surgical_drapes,
-		/obj/item/retractor,
-		/obj/item/hemostat,
-		/obj/item/cautery,
-		/obj/item/surgicaldrill,
-		/obj/item/scalpel,
-		/obj/item/circular_saw,
-		/obj/item/bonesetter,
+		/obj/item/borg/cyborg_omnitool/medical,
+		/obj/item/borg/cyborg_omnitool/medical,
 		/obj/item/blood_filter,
 		/obj/item/extinguisher/mini,
 		/obj/item/emergency_bed/silicon,
@@ -847,6 +841,7 @@
 		"Kent" = list(SKIN_ICON_STATE = "kent", SKIN_LIGHT_KEY = "medical", SKIN_HAT_OFFSET = 3),
 		"Tophat" = list(SKIN_ICON_STATE = "tophat", SKIN_LIGHT_KEY = NONE, SKIN_HAT_OFFSET = INFINITY),
 		"Waitress" = list(SKIN_ICON_STATE = "service_f"),
+		"Gardener" = list(SKIN_ICON_STATE = "gardener", SKIN_HAT_OFFSET = INFINITY),
 	)
 
 /obj/item/robot_model/service/respawn_consumable(mob/living/silicon/robot/cyborg, coeff = 1)
@@ -892,15 +887,10 @@
 		/obj/item/reagent_containers/borghypo/syndicate,
 		/obj/item/shockpaddles/syndicate/cyborg,
 		/obj/item/healthanalyzer,
-		/obj/item/surgical_drapes,
-		/obj/item/retractor,
-		/obj/item/hemostat,
-		/obj/item/cautery,
-		/obj/item/surgicaldrill,
-		/obj/item/scalpel,
-		/obj/item/melee/energy/sword/cyborg/saw,
-		/obj/item/bonesetter,
+		/obj/item/borg/cyborg_omnitool/medical,
+		/obj/item/borg/cyborg_omnitool/medical,
 		/obj/item/blood_filter,
+		/obj/item/melee/energy/sword/cyborg/saw,
 		/obj/item/emergency_bed/silicon,
 		/obj/item/crowbar/cyborg,
 		/obj/item/extinguisher/mini,
@@ -925,17 +915,14 @@
 		/obj/item/restraints/handcuffs/cable/zipties,
 		/obj/item/extinguisher,
 		/obj/item/weldingtool/largetank/cyborg,
-		/obj/item/screwdriver/nuke,
-		/obj/item/wrench/cyborg,
-		/obj/item/crowbar/cyborg,
-		/obj/item/wirecutters/cyborg,
 		/obj/item/analyzer,
-		/obj/item/multitool/cyborg,
+		/obj/item/borg/cyborg_omnitool/engineering,
+		/obj/item/borg/cyborg_omnitool/engineering,
 		/obj/item/stack/sheet/iron,
 		/obj/item/stack/sheet/glass,
 		/obj/item/borg/apparatus/sheet_manipulator,
 		/obj/item/stack/rods/cyborg,
-		/obj/item/stack/tile/iron/base/cyborg,
+		/obj/item/construction/rtd/borg,
 		/obj/item/dest_tagger/borg,
 		/obj/item/stack/cable_coil,
 		/obj/item/pinpointer/syndicate_cyborg,

@@ -447,6 +447,12 @@
 				'sound/items/reel4.ogg',
 				'sound/items/reel5.ogg',
 			)
+		if(SFX_RATTLE)
+			soundin = pick(
+				'sound/items/rattle1.ogg',
+				'sound/items/rattle2.ogg',
+				'sound/items/rattle3.ogg',
+			)
 		if(SFX_PORTAL_CLOSE)
 			soundin = 'sound/effects/portal_close.ogg'
 		if(SFX_PORTAL_ENTER)

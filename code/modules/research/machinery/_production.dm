@@ -3,6 +3,7 @@
 	desc = "Makes researched and prototype items with materials and energy."
 	/// Energy cost per full stack of materials spent. Material insertion is 40% of this.
 	active_power_usage = 0.05 * STANDARD_CELL_RATE
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
 
 	/// The efficiency coefficient. Material costs and print times are multiplied by this number;
 	var/efficiency_coeff = 1
@@ -402,6 +403,7 @@
 		return
 
 	if(!materials.can_use_resource())
+		say("Unable to continue production, materials on hold.")
 		finalize_build()
 		return
 
@@ -409,6 +411,7 @@
 	var/list/design_materials = design.materials
 	if(!materials.mat_container.has_materials(design_materials, material_cost_coefficient, is_stack ? items_remaining : 1))
 		say("Unable to continue production, missing materials.")
+		finalize_build()
 		return
 	materials.use_materials(design_materials, material_cost_coefficient, is_stack ? items_remaining : 1, "built", "[design.name]")
 
@@ -441,25 +444,24 @@
 	SStgui.update_uis(src)
 	icon_state = initial(icon_state)
 
-/obj/machinery/rnd/production/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	. = ..()
-	if((!issilicon(usr) && !isAdminGhostAI(usr)) && !Adjacent(usr))
+/obj/machinery/rnd/production/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	if(!can_interact(user) || (!issilicon(user) && !isAdminGhostAI(user)) && !Adjacent(user)) // Non-module change
 		return
 	if(busy)
-		balloon_alert(usr, "busy printing!")
+		balloon_alert(user, "busy printing!")
 		return
 	var/direction = get_dir(src, over_location)
 	if(!direction)
 		return
 	drop_direction = direction
-	balloon_alert(usr, "dropping [dir2text(drop_direction)]")
+	balloon_alert(user, "dropping [dir2text(drop_direction)]")
 
-/obj/machinery/rnd/production/AltClick(mob/user)
-	. = ..()
-	if(!drop_direction || !can_interact(user))
-		return
+/obj/machinery/rnd/production/click_alt(mob/user)
+	if(drop_direction == 0)
+		return CLICK_ACTION_BLOCKING
 	if(busy)
 		balloon_alert(user, "busy printing!")
-		return
+		return CLICK_ACTION_BLOCKING
 	balloon_alert(user, "drop direction reset")
 	drop_direction = 0
+	return CLICK_ACTION_SUCCESS

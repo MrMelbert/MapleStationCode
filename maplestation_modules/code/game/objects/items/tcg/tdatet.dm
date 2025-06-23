@@ -198,6 +198,7 @@ Check out the other color set packs at your local game vendor or order online to
 	custom_price = PAYCHECK_LOWER
 	w_class = WEIGHT_CLASS_SMALL
 	obj_flags = UNIQUE_RENAME
+	interaction_flags_click = NEED_HANDS
 	var/base_name = "counter"
 	var/current_number = 0
 
@@ -225,9 +226,9 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/update_name()
 	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_WAS_RENAMED, PEN_LABEL_TRAIT))
+	if(HAS_TRAIT_FROM(src, TRAIT_WAS_RENAMED, RENAMING_TOOL_LABEL_TRAIT))
 		base_name = name
-		REMOVE_TRAIT(src, TRAIT_WAS_RENAMED, PEN_LABEL_TRAIT)
+		REMOVE_TRAIT(src, TRAIT_WAS_RENAMED, RENAMING_TOOL_LABEL_TRAIT)
 	name = "[base_name] - [current_number]"
 
 /obj/item/toy/counter/attack_hand(mob/living/user)
@@ -249,10 +250,7 @@ Check out the other color set packs at your local game vendor or order online to
 	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/item/toy/counter/AltClick(mob/living/user)
-	. = ..()
-	if(!user.can_perform_action(src, iscyborg(user) ? NONE : NEED_HANDS))
-		return
+/obj/item/toy/counter/click_alt(mob/living/user)
 	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
 	if(!isnull(amount))
 		current_number = amount
@@ -260,6 +258,7 @@ Check out the other color set packs at your local game vendor or order online to
 		update_appearance(UPDATE_NAME)
 		balloon_alert(user, "set to [current_number]")
 	playsound(src, 'sound/misc/knuckles.ogg', 5, TRUE)
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/toy/counter/update_overlays()
 	. = ..()

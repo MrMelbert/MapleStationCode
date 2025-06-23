@@ -57,7 +57,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 /obj/item/bodypart/arm/left/ornithid
 	limb_id = SPECIES_ORNITHID
 	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
@@ -66,7 +66,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 /obj/item/bodypart/arm/right/ornithid
 	limb_id = SPECIES_ORNITHID
 	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
