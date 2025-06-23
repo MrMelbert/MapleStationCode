@@ -116,7 +116,7 @@
 
 ///Volkan's umbrella. Stops radiation.
 /obj/item/umbrella/volkan
-	name = "Volkan's umbrella"
+	name = "radiation shielded umbrella"
 	desc = "A very thick, almost metallic umbrella. It has a dark black plasticky rim on the edge."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas.dmi'
 	icon_state = "umbrella_volkan"
