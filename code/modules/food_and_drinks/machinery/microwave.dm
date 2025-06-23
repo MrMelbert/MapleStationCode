@@ -31,6 +31,7 @@
 	light_color = LIGHT_COLOR_DIM_YELLOW
 	light_power = 3
 	anchored_tabletop_offset = 6
+	interaction_flags_click = ALLOW_SILICON_REACH
 	/// Is its function wire cut?
 	var/wire_disabled = FALSE
 	/// Wire cut to run mode backwards
@@ -363,31 +364,36 @@
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/microwave/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/machinery/microwave/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	if(!tool.tool_behaviour)
+		return ..()
 	if(operating)
-		return
+		return ITEM_INTERACT_SKIP_TO_ATTACK // Don't use tools if we're operating
 	if(dirty >= MAX_MICROWAVE_DIRTINESS)
-		return
-
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
-
+		return ITEM_INTERACT_SKIP_TO_ATTACK // Don't insert items if we're dirty
 	if(panel_open && is_wire_tool(tool))
 		wires.interact(user)
 		return ITEM_INTERACT_SUCCESS
+	return ..()
 
-	return .
-
-/obj/machinery/microwave/attackby(obj/item/item, mob/living/user, params)
+/obj/machinery/microwave/item_interaction(mob/living/user, obj/item/item, list/modifiers)
 	if(operating)
-		return
+		return NONE
+
+	if(item.item_flags & ABSTRACT)
+		return NONE
+
+	if(dirty >= MAX_MICROWAVE_DIRTINESS) // The microwave is all dirty so can't be used!
+		if(IS_EDIBLE(item))
+			balloon_alert(user, "it's too dirty!")
+			return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	if(broken > NOT_BROKEN)
 		if(IS_EDIBLE(item))
 			balloon_alert(user, "it's broken!")
-			return TRUE
-		return ..()
+			return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	if(istype(item, /obj/item/stock_parts/power_store/cell) && cell_powered)
 		var/swapped = FALSE
@@ -399,68 +405,72 @@
 			swapped = TRUE
 		if(!user.transferItemToLoc(item, src))
 			update_appearance()
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
 		cell = item
 		balloon_alert(user, "[swapped ? "swapped" : "inserted"] cell")
 		update_appearance()
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
 
 	if(!anchored)
 		if(IS_EDIBLE(item))
 			balloon_alert(user, "not secured!")
-			return TRUE
-		return ..()
-
-	if(dirty >= MAX_MICROWAVE_DIRTINESS) // The microwave is all dirty so can't be used!
-		if(IS_EDIBLE(item))
-			balloon_alert(user, "it's too dirty!")
-			return TRUE
-		return ..()
+			return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	if(vampire_charging_capable && istype(item, /obj/item/modular_computer) && ingredients.len > 0)
 		balloon_alert(user, "max 1 device!")
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
-	if(istype(item, /obj/item/storage))
-		var/obj/item/storage/tray = item
-		var/loaded = 0
-
-		if(!istype(item, /obj/item/storage/bag/tray))
-			// Non-tray dumping requires a do_after
-			to_chat(user, span_notice("You start dumping out the contents of [item] into [src]..."))
-			if(!do_after(user, 2 SECONDS, target = tray))
-				return
-
-		for(var/obj/tray_item in tray.contents)
-			if(!IS_EDIBLE(tray_item))
-				continue
-			if(ingredients.len >= max_n_of_items)
-				balloon_alert(user, "it's full!")
-				return TRUE
-			if(tray.atom_storage.attempt_remove(tray_item, src))
-				loaded++
-				ingredients += tray_item
-		if(loaded)
-			open(autoclose = 0.6 SECONDS)
-			to_chat(user, span_notice("You insert [loaded] items into \the [src]."))
-			update_appearance()
-		return
-
-	if(item.w_class <= WEIGHT_CLASS_NORMAL && !istype(item, /obj/item/storage) && !user.combat_mode)
+	if(item.w_class <= WEIGHT_CLASS_NORMAL && !user.combat_mode && isnull(item.atom_storage))
 		if(ingredients.len >= max_n_of_items)
 			balloon_alert(user, "it's full!")
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
 		if(!user.transferItemToLoc(item, src))
 			balloon_alert(user, "it's stuck to your hand!")
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
 
 		ingredients += item
 		open(autoclose = 0.6 SECONDS)
 		user.visible_message(span_notice("[user] adds \a [item] to \the [src]."), span_notice("You add [item] to \the [src]."))
 		update_appearance()
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/microwave/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	if (isnull(tool.atom_storage))
+		return
+	handle_dumping(user, tool)
+	return ITEM_INTERACT_BLOCKING
+
+/obj/machinery/microwave/proc/handle_dumping(mob/living/user, obj/item/tool)
+	if(isnull(tool.atom_storage))
 		return
 
-	return ..()
+	var/loaded = 0
+	if(!istype(tool, /obj/item/storage/bag/tray))
+		// Non-tray dumping requires a do_after
+		to_chat(user, span_notice("You start dumping out the contents of [tool] into [src]..."))
+		if(!do_after(user, 2 SECONDS, target = tool))
+			return
+
+	for(var/obj/tray_item in tool.contents)
+		if(!IS_EDIBLE(tray_item))
+			continue
+		if(ingredients.len >= max_n_of_items)
+			balloon_alert(user, "it's full!")
+			return
+		if(tool.atom_storage.attempt_remove(tray_item, src))
+			loaded++
+			ingredients += tray_item
+
+	if(loaded)
+		open(autoclose = 0.6 SECONDS)
+		to_chat(user, span_notice("You insert [loaded] items into \the [src]."))
+		update_appearance()
+
+/obj/machinery/microwave/mouse_drop_receive(obj/item/tool, mob/user, params)
+	if (!istype(tool) || isnull(tool.atom_storage))
+		return
+	handle_dumping(user, tool)
 
 /obj/machinery/microwave/attack_hand_secondary(mob/user, list/modifiers)
 	if(user.can_perform_action(src, ALLOW_SILICON_REACH))
@@ -472,24 +482,29 @@
 
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/microwave/AltClick(mob/user, list/modifiers)
-	if(user.can_perform_action(src, ALLOW_SILICON_REACH))
-		if(!vampire_charging_capable)
-			return
+/obj/machinery/microwave/click_alt(mob/user, list/modifiers)
+	if(!vampire_charging_capable)
+		return NONE
 
-		vampire_charging_enabled = !vampire_charging_enabled
-		balloon_alert(user, "set to [vampire_charging_enabled ? "charge" : "cook"]")
-		playsound(src, 'sound/machines/twobeep_high.ogg', 50, FALSE)
-		if(issilicon(user))
-			visible_message(span_notice("[user] sets \the [src] to [vampire_charging_enabled ? "charge" : "cook"]."), blind_message = span_notice("You hear \the [src] make an informative beep!"))
+	vampire_charging_enabled = !vampire_charging_enabled
+	balloon_alert(user, "set to [vampire_charging_enabled ? "charge" : "cook"]")
+	playsound(src, 'sound/machines/twobeep_high.ogg', 50, FALSE)
+	if(issilicon(user)) // Non-module change
+		visible_message(span_notice("[user] sets \the [src] to [vampire_charging_enabled ? "charge" : "cook"]."), blind_message = span_notice("You hear \the [src] make an informative beep!"))
+	return CLICK_ACTION_SUCCESS
 
-/obj/machinery/microwave/CtrlClick(mob/user)
-	. = ..()
-	if(user.can_perform_action(src) && cell_powered && !isnull(cell) && anchored)
+/obj/machinery/microwave/click_ctrl(mob/user)
+	if(!anchored)
+		return NONE
+
+	if(cell_powered && !isnull(cell))
 		user.put_in_hands(cell)
 		balloon_alert(user, "removed cell")
 		cell = null
 		update_appearance()
+		return CLICK_ACTION_SUCCESS
+
+	return CLICK_ACTION_BLOCKING
 
 /obj/machinery/microwave/ui_interact(mob/user)
 	. = ..()

@@ -154,6 +154,7 @@
 		new /obj/effect/temp_visual/portal_animation(start_turf, src, M)
 		playsound(start_turf, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		playsound(real_target, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		Beam(real_target, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS) //NON-MODULAR CHANGE
 		return TRUE
 	return FALSE
 

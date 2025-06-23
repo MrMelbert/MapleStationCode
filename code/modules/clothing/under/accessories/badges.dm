@@ -187,6 +187,13 @@
 		"Lesbian Pride" = "pride_lesbian",
 	)
 
+/obj/item/clothing/accessory/pride/setup_reskinning()
+	if(!check_setup_reskinning())
+		return
+
+	// We already register context regardless in Initialize.
+	RegisterSignal(src, COMSIG_CLICK_ALT, PROC_REF(on_click_alt_reskin))
+
 /obj/item/clothing/accessory/deaf_pin
 	name = "deaf personnel pin"
 	desc = "Indicates that the wearer is deaf."

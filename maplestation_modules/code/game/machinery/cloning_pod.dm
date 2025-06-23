@@ -7,7 +7,7 @@
 	base_icon_state = "pod"
 	verb_say = "states"
 	// circuit = /obj/item/circuitboard/machine/clonepod
-	obj_flags = NO_DECONSTRUCTION
+	obj_flags = NO_DEBRIS_AFTER_DECONSTRUCTION
 	resistance_flags = INDESTRUCTIBLE
 
 	var/obj/item/radio/radio

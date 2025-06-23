@@ -35,8 +35,8 @@
 		to_chat(user, span_warning("You need to wait before using [src] on [A] again!"))
 		return TRUE
 
-/obj/item/melee/blood_magic/disable/afterattack(atom/target, mob/living/carbon/user, proximity)
-	if(!isliving(target) || !proximity || target == user)
+/obj/item/melee/blood_magic/disable/cast_spell(atom/target, mob/living/carbon/user)
+	if(!isliving(target) || target == user)
 		return
 	var/mob/living/living_target = target
 	if(IS_CULTIST(living_target))
@@ -86,7 +86,7 @@
 		health_cost = 0
 
 	uses--
-	. = ..()
+	return ..()
 
 /obj/item/melee/blood_magic/disable/proc/apply_side_effects_to_target(mob/living/target, mob/living/user)
 

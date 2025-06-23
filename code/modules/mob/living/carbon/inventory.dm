@@ -162,6 +162,9 @@
 
 	return not_handled
 
+/mob/living/carbon/get_equipped_speed_mod_items()
+	return ..() + get_all_worn_items()
+
 /// This proc is called after an item has been successfully handled and equipped to a slot.
 /mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
 	return item.on_equipped(src, slot, initial)
@@ -428,6 +431,7 @@
 	if(offered_item.on_offered(src)) // see if the item interrupts with its own behavior
 		return
 
+	balloon_alert_to_viewers("offers something")
 	visible_message(span_notice("[src] is offering [offered ? "[offered] " : ""][offered_item]."), \
 					span_notice("You offer [offered ? "[offered] " : ""][offered_item]."), null, 2)
 

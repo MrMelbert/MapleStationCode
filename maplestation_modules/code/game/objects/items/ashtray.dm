@@ -125,10 +125,7 @@
 
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/ashtray/deconstruct(disassembled)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return ..()
-
+/obj/item/ashtray/atom_deconstruct(disassembled)
 	dump_contents()
 	if(disassembled)
 		return ..()
@@ -143,7 +140,6 @@
 		shard.pixel_x = scatter_vector[1]
 		shard.pixel_y = scatter_vector[2]
 	playsound(drop_loc, 'sound/items/ceramic_break.ogg', 33, TRUE)
-	return ..()
 
 /obj/item/ashtray/dump_contents()
 	if(!length(contents))
