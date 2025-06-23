@@ -204,8 +204,8 @@
 	M.adjustToxLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Heals pain, numbers seem low but our metabolism is very slow
 	M.heal_pain(0.4 * REM * seconds_per_tick, BODY_ZONE_HEAD)
-	M.cause_pain(0.2 * REM * seconds_per_tick, BODY_ZONE_CHEST)
-	M.cause_pain(0.1 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
+	M.heal_pain(0.2 * REM * seconds_per_tick, BODY_ZONE_CHEST)
+	M.heal_pain(0.1 * REM * seconds_per_tick, BODY_ZONES_LIMBS)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.25 * REM * seconds_per_tick)
 	// Really good at treating fevers.
