@@ -166,6 +166,20 @@
 		return ai.client
 	return null
 
+/mob/camera/ai_eye/proc/set_telegraph(state)
+	if(telegraph_cameras == state)
+		return
+
+	telegraph_cameras = state
+	if(telegraph_cameras)
+		for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+			cam.in_use_lights++
+			cam.update_appearance()
+	else
+		for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+			cam.in_use_lights--
+			cam.update_appearance()
+
 /mob/camera/ai_eye/Destroy()
 	for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
 		if(ai?.camera_light_on && cam.internal_light)

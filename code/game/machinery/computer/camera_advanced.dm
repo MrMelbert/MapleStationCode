@@ -24,6 +24,8 @@
 	///Should we supress any view changes?
 	var/should_supress_view_changes = TRUE
 
+	var/alerts_cameras = TRUE
+
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_REQUIRES_SIGHT
 
 /obj/machinery/computer/camera_advanced/Initialize(mapload)
@@ -58,6 +60,7 @@
 /obj/machinery/computer/camera_advanced/syndie
 	icon_keyboard = "syndie_key"
 	circuit = /obj/item/circuitboard/computer/advanced_camera
+	alerts_cameras = FALSE
 
 /obj/machinery/computer/camera_advanced/syndie/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	return //For syndie nuke shuttle, to spy for station.
@@ -65,6 +68,7 @@
 /obj/machinery/computer/camera_advanced/proc/CreateEye()
 	eyeobj = new()
 	eyeobj.origin = src
+	eyeobj.set_telegraph(alerts_cameras)
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/user)
 	for(var/datum/action/to_grant as anything in actions)
