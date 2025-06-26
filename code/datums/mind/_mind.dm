@@ -48,8 +48,6 @@
 
 	/// Job datum indicating the mind's role. This should always exist after initialization, as a reference to a singleton.
 	var/datum/job/assigned_role
-	var/special_role
-	var/list/restricted_roles = list()
 
 	/// List of antag datums on this mind
 	var/list/antag_datums
@@ -90,7 +88,9 @@
 	///Skill multiplier list, just slap your multiplier change onto this with the type it is coming from as key.
 	var/list/experience_multiplier_reasons = list()
 
-	/// A lazy list of statuses to add next to this mind in the traitor panel
+	/// A lazy list of roles to display that this mind has, stuff like "Traitor" or "Special Creature"
+	var/list/special_roles
+	/// A lazy list of statuses to display that this mind has, stuff like "Infected" or "Mindshielded"
 	var/list/special_statuses
 
 	///Assoc list of addiction values, key is the type of withdrawal (as singleton type), and the value is the amount of addiction points (as number)
@@ -105,7 +105,7 @@
 /datum/mind/New(_key)
 	key = _key
 	init_known_skills()
-	set_assigned_role(SSjob.GetJobType(/datum/job/unassigned)) // Unassigned by default.
+	set_assigned_role(SSjob.get_job_type(/datum/job/unassigned)) // Unassigned by default.
 
 /datum/mind/Destroy()
 	SSticker.minds -= src
@@ -125,7 +125,7 @@
 	.["memories"] = memories
 	.["antag_datums"] = antag_datums
 	.["holy_role"] = holy_role
-	.["special_role"] = special_role
+	.["special_role"] = jointext(get_special_roles(), " | ")
 	.["assigned_role"] = assigned_role.title
 	.["current"] = current
 
@@ -249,7 +249,7 @@
 		var/new_role = input("Select new role", "Assigned role", assigned_role.title) as null|anything in sort_list(SSjob.name_occupations)
 		if(isnull(new_role))
 			return
-		var/datum/job/new_job = SSjob.GetJob(new_role)
+		var/datum/job/new_job = SSjob.get_job(new_role)
 		if (!new_job)
 			to_chat(usr, span_warning("Job not found."))
 			return
@@ -477,7 +477,6 @@
 	LAZYSET(addiction_points, type, max(LAZYACCESS(addiction_points, type) - amount, 0))
 	var/datum/addiction/affected_addiction = SSaddiction.all_addictions[type]
 	return affected_addiction.on_lose_addiction_points(src)
-
 
 /// Setter for the assigned_role job datum.
 /datum/mind/proc/set_assigned_role(datum/job/new_role)

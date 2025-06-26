@@ -1,7 +1,3 @@
-#define CAN_ROLL_ALWAYS 1 //always can roll for antag
-#define CAN_ROLL_PROTECTED 2 //can roll if config lets protected roles roll
-#define CAN_ROLL_NEVER 3 //never roll antag
-
 /**
  * A station trait which enables a temporary job
  * Generally speaking these should always all be mutually exclusive, don't have too many at once
@@ -11,8 +7,6 @@
 	abstract_type = /datum/station_trait/job
 	/// What tooltip to show on the button
 	var/button_desc = "Sign up to gain some kind of unusual job, not available in most rounds."
-	/// Can this job roll antag?
-	var/can_roll_antag = CAN_ROLL_ALWAYS
 	/// How many positions to spawn?
 	var/position_amount = 1
 	/// Type of job to enable
@@ -22,11 +16,6 @@
 
 /datum/station_trait/job/New()
 	. = ..()
-	switch(can_roll_antag)
-		if(CAN_ROLL_PROTECTED)
-			SSstation.antag_protected_roles += job_to_add::title
-		if(CAN_ROLL_NEVER)
-			SSstation.antag_restricted_roles += job_to_add::title
 	blacklist += subtypesof(/datum/station_trait/job) - type // All but ourselves
 	RegisterSignal(SSdcs, COMSIG_GLOB_PRE_JOBS_ASSIGNED, PROC_REF(pre_jobs_assigned))
 
@@ -61,7 +50,7 @@
 		if (isnull(signee) || !signee.client || !signee.mind || signee.ready != PLAYER_READY_TO_PLAY)
 			LAZYREMOVE(lobby_candidates, signee)
 
-	var/datum/job/our_job = SSjob.GetJobType(job_to_add)
+	var/datum/job/our_job = SSjob.get_job_type(job_to_add)
 	while(length(lobby_candidates) && position_amount > 0)
 		var/mob/dead/new_player/picked_player = pick_n_take(lobby_candidates)
 		picked_player.mind.set_assigned_role(our_job)
@@ -71,7 +60,7 @@
 	lobby_candidates = null
 
 /datum/station_trait/job/can_display_lobby_button(client/player)
-	var/datum/job/our_job = SSjob.GetJobType(job_to_add)
+	var/datum/job/our_job = SSjob.get_job_type(job_to_add)
 	return our_job.player_old_enough(player) && ..()
 
 /// Adds a gorilla to the cargo department, replacing the sloth and the mech
@@ -80,7 +69,6 @@
 	button_desc = "Sign up to become the Cargo Gorilla, a peaceful shepherd of boxes."
 	weight = 1
 	show_in_report = FALSE // Selective attention test. Did you spot the gorilla?
-	can_roll_antag = CAN_ROLL_NEVER
 	job_to_add = /datum/job/cargo_gorilla
 
 /datum/station_trait/job/cargorilla/New()
@@ -113,7 +101,6 @@
 	weight = 2
 	report_message = "We have installed a Bridge Assistant on your station."
 	show_in_report = TRUE
-	can_roll_antag = CAN_ROLL_PROTECTED
 	job_to_add = /datum/job/bridge_assistant
 
 /datum/station_trait/job/bridge_assistant/New()
@@ -167,13 +154,8 @@
 	weight = 2
 	report_message = "Veteran Security Advisor has been assigned to your station to help with Security matters."
 	show_in_report = TRUE
-	can_roll_antag = CAN_ROLL_PROTECTED
 	job_to_add = /datum/job/veteran_advisor
 
 /datum/station_trait/job/veteran_advisor/on_lobby_button_update_overlays(atom/movable/screen/lobby/button/sign_up/lobby_button, list/overlays)
 	. = ..()
 	overlays += "veteran_advisor"
-
-#undef CAN_ROLL_ALWAYS
-#undef CAN_ROLL_PROTECTED
-#undef CAN_ROLL_NEVER

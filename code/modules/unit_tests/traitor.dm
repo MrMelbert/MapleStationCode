@@ -1,7 +1,7 @@
 /datum/unit_test/traitor/Run()
 	var/datum/dynamic_ruleset/roundstart/traitor/traitor_ruleset = allocate(/datum/dynamic_ruleset/roundstart/traitor)
 	var/list/possible_jobs = list()
-	var/list/restricted_roles = traitor_ruleset.restricted_roles
+	var/list/restricted_roles = traitor_ruleset.get_blacklisted_roles()
 	for(var/datum/job/job as anything in SSjob.joinable_occupations)
 		if(!(job.job_flags & JOB_CREW_MEMBER))
 			continue
@@ -11,7 +11,7 @@
 		possible_jobs += rank
 
 	for(var/job_name in possible_jobs)
-		var/datum/job/job = SSjob.GetJob(job_name)
+		var/datum/job/job = SSjob.get_job(job_name)
 		var/mob/living/player = allocate(job.spawn_type)
 		player.mind_initialize()
 		var/datum/mind/mind = player.mind

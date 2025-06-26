@@ -166,7 +166,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	SIGNAL_HANDLER
 
 	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
-		var/datum/job/job = SSjob.GetJobType(jobtype)
+		var/datum/job/job = SSjob.get_job_type(jobtype)
 		if(isnull(job))
 			continue
 		var/job_prio = isnum(job.crewmonitor_priority) ? job.crewmonitor_priority : jobs[job.title]

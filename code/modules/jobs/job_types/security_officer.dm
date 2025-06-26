@@ -45,7 +45,7 @@
 		/obj/item/melee/baton/security/boomerang/loaded = 1
 	)
 	rpg_title = "Guard"
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 /datum/job/security_officer/get_titles(only_selectable = FALSE)
 	. = ..()

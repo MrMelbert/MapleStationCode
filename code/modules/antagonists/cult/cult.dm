@@ -5,7 +5,7 @@
 	antag_moodlet = /datum/mood_event/cult
 	suicide_cry = "FOR NAR'SIE!!"
 	preview_outfit = /datum/outfit/cultist
-	job_rank = ROLE_CULTIST
+	pref_flag = ROLE_CULTIST
 	antag_hud_name = "cult"
 
 	///The vote ability Cultists have to elect someone to be the leader.

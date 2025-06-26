@@ -5,7 +5,7 @@
 	name = "\improper Malfunctioning AI"
 	roundend_category = "traitors"
 	antagpanel_category = "Malf AI"
-	job_rank = ROLE_MALF
+	pref_flag = ROLE_MALF
 	antag_hud_name = "traitor"
 	ui_name = "AntagInfoMalf"
 	can_assign_self_objectives = TRUE
@@ -30,7 +30,6 @@
 		stack_trace("Attempted to give malf AI antag datum to \[[owner]\], who did not meet the requirements.")
 		return ..()
 
-	owner.special_role = job_rank
 	if(give_objectives)
 		forge_ai_objectives()
 
@@ -45,8 +44,6 @@
 		malf_ai.set_zeroth_law("")
 		malf_ai.remove_malf_abilities()
 		QDEL_NULL(malf_ai.malf_picker)
-
-	owner.special_role = null
 
 	return ..()
 
