@@ -210,24 +210,27 @@
 	return null
 
 /mob/camera/ai_eye/remote/setLoc(turf/destination, force_update = FALSE)
-	if(eye_user)
-		destination = get_turf(destination)
-		if (destination)
-			abstract_move(destination)
-		else
-			moveToNullspace()
+	if(isnull(eye_user))
+		return
+	destination = get_turf(destination)
+	if (destination)
+		abstract_move(destination)
+	else
+		moveToNullspace()
 
-		update_ai_detect_hud()
+	update_ai_detect_hud()
 
-		if(use_static)
-			GLOB.cameranet.visibility(src, GetViewerClient(), null, use_static)
+	if(use_static)
+		GLOB.cameranet.visibility(src, GetViewerClient(), null, use_static)
 
-		if(visible_icon)
-			if(eye_user.client)
-				eye_user.client.images -= user_image
-				user_image = image(icon,loc,icon_state, FLY_LAYER)
-				SET_PLANE(user_image, ABOVE_GAME_PLANE, destination)
-				eye_user.client.images += user_image
+	if(visible_icon)
+		if(eye_user.client)
+			eye_user.client.images -= user_image
+			user_image = image(icon,loc,icon_state, FLY_LAYER)
+			SET_PLANE(user_image, ABOVE_GAME_PLANE, destination)
+			eye_user.client.images += user_image
+
+	update_cameras()
 
 /mob/camera/ai_eye/remote/relaymove(mob/living/user, direction)
 	var/initial = initial(sprint)

@@ -108,13 +108,8 @@
 
 	if(action == "switch_camera")
 		var/obj/machinery/camera/selected_camera = locate(params["camera"]) in GLOB.cameranet.cameras
-		active_camera = selected_camera
+		set_active_camera(selected_camera)
 		playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)
-
-		if(isnull(active_camera))
-			return TRUE
-
-		update_active_camera_screen()
 
 		return TRUE
 
@@ -161,9 +156,33 @@
 	cam_screen.hide_from(user)
 	// Turn off the console
 	if(length(concurrent_users) == 0 && is_living)
-		active_camera = null
-		last_camera_turf = null
+		clear_active_camera()
 		playsound(src, 'sound/machines/terminal_off.ogg', 25, FALSE)
+
+/obj/machinery/computer/security/proc/set_active_camera(obj/machinery/camera/new_cam)
+	if(active_camera)
+		clear_active_camera()
+
+	if(isnull(new_cam))
+		return
+
+	active_camera = new_cam
+	active_camera.in_use_lights++
+	active_camera.update_appearance()
+	RegisterSignal(new_cam, COMSIG_QDELETING, PROC_REF(clear_active_camera))
+	update_active_camera_screen()
+
+/obj/machinery/computer/security/proc/clear_active_camera()
+	SIGNAL_HANDLER
+	if(isnull(active_camera))
+		return
+	active_camera.in_use_lights--
+	active_camera.update_appearance()
+	active_camera = null
+	last_camera_turf = null
+	if(QDELING(src))
+		return
+	update_active_camera_screen()
 
 /atom/movable/screen/map_view/camera
 	/// All the plane masters that need to be applied.

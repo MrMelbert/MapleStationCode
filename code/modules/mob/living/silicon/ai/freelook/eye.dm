@@ -10,12 +10,15 @@
 	invisibility = INVISIBILITY_MAXIMUM
 	hud_possible = list(ANTAG_HUD, AI_DETECT_HUD = HUD_LIST_LIST)
 	var/list/visibleCameraChunks = list()
+	var/list/obj/machinery/camera/cameras_near_eye = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE
 	var/use_static = TRUE
 	var/static_visibility_range = 16
 	var/ai_detector_visible = TRUE
 	var/ai_detector_color = COLOR_RED
+	var/telegraph_cameras = TRUE
+	var/telegraph_range = 5
 	interaction_range = INFINITY
 
 /mob/camera/ai_eye/Initialize(mapload)
@@ -116,8 +119,7 @@
 		if(!H.move_hologram(ai, destination))
 			H.clear_holo(ai)
 
-	if(ai.camera_light_on)
-		ai.light_cameras()
+	update_cameras()
 	if(ai.master_multicam)
 		ai.master_multicam.refresh_view()
 
@@ -125,6 +127,36 @@
 	. = ..()
 	if(.)
 		setLoc(loc, force_update = TRUE)
+
+/// Updates the list of cameras near the AI eye object, also updating lights if those are on
+/mob/camera/ai_eye/proc/update_cameras()
+	var/list/obj/machinery/camera/add = list()
+	var/list/obj/machinery/camera/remove = list()
+	var/list/obj/machinery/camera/visible = list()
+	for (var/datum/camerachunk/chunk as anything in visibleCameraChunks)
+		for (var/z_key in chunk.cameras)
+			for(var/obj/machinery/camera/camera in chunk.cameras[z_key]) // might have nulls in this apparently?
+				if(!camera.can_use() || get_dist(camera, src) > telegraph_range)
+					continue
+				visible |= camera
+
+	add = visible - cameras_near_eye
+	remove = cameras_near_eye - visible
+
+	for (var/obj/machinery/camera/cam as anything in remove)
+		cameras_near_eye -= cam //Removed from list before turning off the light so that it doesn't check the AI looking away.
+		if(ai?.camera_light_on)
+			cam.toggle_ai_light(ai, FALSE)
+		if(telegraph_cameras)
+			cam.in_use_lights--
+			cam.update_appearance()
+	for (var/obj/machinery/camera/cam as anything in add)
+		cameras_near_eye += cam
+		if(ai?.camera_light_on)
+			cam.toggle_ai_light(ai, TRUE)
+		if(telegraph_cameras)
+			cam.in_use_lights++
+			cam.update_appearance()
 
 /mob/camera/ai_eye/Move()
 	return
@@ -135,12 +167,17 @@
 	return null
 
 /mob/camera/ai_eye/Destroy()
-	if(ai)
-		ai.all_eyes -= src
-		ai = null
-	for(var/V in visibleCameraChunks)
-		var/datum/camerachunk/c = V
-		c.remove(src)
+	for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+		if(ai?.camera_light_on && cam.internal_light)
+			cam.toggle_ai_light(ai, FALSE)
+		if(telegraph_cameras)
+			cam.in_use_lights--
+			cam.update_appearance()
+		cameras_near_eye -= cam
+	ai?.all_eyes -= src
+	ai = null
+	for(var/datum/camerachunk/chunk as anything in visibleCameraChunks)
+		chunk.remove(src)
 	GLOB.aiEyes -= src
 	if(ai_detector_visible)
 		var/datum/atom_hud/ai_detector/hud = GLOB.huds[DATA_HUD_AI_DETECT]
