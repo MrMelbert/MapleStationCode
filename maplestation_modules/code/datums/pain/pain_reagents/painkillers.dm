@@ -476,7 +476,7 @@
 /datum/reagent/medicine/painkiller/local_anesthetic/lidocaine/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
 	if(!toxic)
-		M.heal_pain(1.2 * REM * seconds_per_tick, active.body_zone)
+		M.heal_pain(1.2 * REM * seconds_per_tick, active?.body_zone || BODY_ZONE_CHEST)
 		return
 	if(SPT_PROB(10, seconds_per_tick))
 		M.adjust_dizzy_up_to(8 SECONDS * REM * seconds_per_tick, 12 SECONDS)
