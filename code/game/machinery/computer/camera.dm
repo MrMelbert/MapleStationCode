@@ -13,7 +13,7 @@
 	/// The turf where the camera was last updated.
 	var/turf/last_camera_turf
 	var/list/concurrent_users = list()
-
+	var/telegraph_cameras = TRUE
 	// Stuff needed to render the map
 	var/atom/movable/screen/map_view/camera/cam_screen
 
@@ -167,8 +167,9 @@
 		return
 
 	active_camera = new_cam
-	active_camera.in_use_lights++
-	active_camera.update_appearance()
+	if(telegraph_cameras)
+		active_camera.in_use_lights++
+		active_camera.update_appearance()
 	RegisterSignal(new_cam, COMSIG_QDELETING, PROC_REF(clear_active_camera))
 	update_active_camera_screen()
 
@@ -176,8 +177,9 @@
 	SIGNAL_HANDLER
 	if(isnull(active_camera))
 		return
-	active_camera.in_use_lights--
-	active_camera.update_appearance()
+	if(telegraph_cameras)
+		active_camera.in_use_lights--
+		active_camera.update_appearance()
 	active_camera = null
 	last_camera_turf = null
 	if(QDELING(src))
@@ -220,6 +222,7 @@
 	icon_keyboard = null
 	icon_screen = "detective_tv"
 	pass_flags = PASSTABLE
+	telegraph_cameras = FALSE
 
 /obj/machinery/computer/security/mining
 	name = "outpost camera console"

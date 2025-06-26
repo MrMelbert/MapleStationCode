@@ -91,6 +91,7 @@
 		user.client.images -= eyeobj.user_image
 	user.client.view_size.unsupress()
 
+	eyeobj.set_telegraph(FALSE)
 	eyeobj.eye_user = null
 	user.remote_control = null
 	current_user = null
@@ -177,6 +178,7 @@
 	GrantActions(user)
 	current_user = user
 	eyeobj.eye_user = user
+	eyeobj.set_telegraph(alerts_cameras)
 	eyeobj.name = "Camera Eye ([user.name])"
 	user.remote_control = eyeobj
 	user.reset_perspective(eyeobj)
