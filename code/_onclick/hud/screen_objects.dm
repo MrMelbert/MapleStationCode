@@ -149,6 +149,9 @@
 /atom/movable/screen/language_menu/Click()
 	usr.get_language_holder().open_language_menu(usr)
 
+/atom/movable/screen/language_menu/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
+
 /atom/movable/screen/inventory
 	/// The identifier for the slot. It has nothing to do with ID cards.
 	var/slot_id
@@ -373,6 +376,9 @@
 /atom/movable/screen/floor_changer/vertical
 	icon_state = "floor_change_v"
 	vertical = TRUE
+
+/atom/movable/screen/floor_changer/vertical/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
 
 /atom/movable/screen/spacesuit
 	name = "Space suit cell status"
