@@ -339,6 +339,7 @@
 	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
+	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
 	likes_before_spell = tongue.liked_foodtypes
 	tongue.liked_foodtypes |= PINEAPPLE
 	return ..()
@@ -349,6 +350,19 @@
 		return ..()
 	tongue.liked_foodtypes = likes_before_spell
 	return ..()
+
+/datum/status_effect/ananas_affinity/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
+	SIGNAL_HANDLER
+
+	if(!istype(source, /obj/item/organ/internal/tongue))
+		return
+	var/obj/item/organ/internal/tongue/tongue = source
+	if(likes_before_spell)
+		tongue.liked_foodtypes = likes_before_spell
+
+	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
+	qdel(src)
+	return
 
 /// Ananas Aversion
 /datum/status_effect/ananas_aversion
@@ -367,6 +381,7 @@
 	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
+	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
 	disliked_before_spell = tongue.disliked_foodtypes
 	tongue.disliked_foodtypes |= PINEAPPLE
 	return ..()
@@ -377,6 +392,19 @@
 		return ..()
 	tongue.disliked_foodtypes = disliked_before_spell
 	return ..()
+
+/datum/status_effect/ananas_aversion/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
+	SIGNAL_HANDLER
+
+	if(!istype(source, /obj/item/organ/internal/tongue))
+		return
+	var/obj/item/organ/internal/tongue/tongue = source
+	if(disliked_before_spell)
+		tongue.disliked_foodtypes = disliked_before_spell
+
+	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
+	qdel(src)
+	return
 
 /// Reversed Palette
 /datum/status_effect/reversed_palette
@@ -425,7 +453,7 @@
 		tongue.disliked_foodtypes = disliked_before_spell
 
 	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
-	qdel()
+	qdel(src)
 	return
 
 /// Fake Healthiness
