@@ -12,6 +12,7 @@
 	greyscale_config_worn = /datum/greyscale_config/waistcoat/worn
 	greyscale_colors = "#414344"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/clothing/accessory/vest_sheriff
 	name = "sheriff vest"
@@ -22,6 +23,7 @@
 	inhand_icon_state = "vest_sheriff"
 	minimize_when_attached = TRUE
 	attachment_slot = NONE
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/clothing/accessory/maidcorset
 	name = "maid corset"
@@ -32,6 +34,7 @@
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
 	minimize_when_attached = FALSE
 	attachment_slot = NONE
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/clothing/accessory/maidapron
 	name = "maid apron"
@@ -42,3 +45,4 @@
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
 	minimize_when_attached = FALSE
 	attachment_slot = NONE
+	w_class = WEIGHT_CLASS_NORMAL

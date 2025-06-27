@@ -6277,6 +6277,7 @@
 #include "maplestation_modules\code\game\objects\items\storage\boxes.dm"
 #include "maplestation_modules\code\game\objects\items\storage\garment.dm"
 #include "maplestation_modules\code\game\objects\items\storage\medkit.dm"
+#include "maplestation_modules\code\game\objects\items\storage\pouch.dm"
 #include "maplestation_modules\code\game\objects\items\storage\storage.dm"
 #include "maplestation_modules\code\game\objects\items\tcg\tdatet.dm"
 #include "maplestation_modules\code\game\objects\spawners\cycle_helper.dm"
@@ -6641,7 +6642,6 @@
 #include "maplestation_modules\code\modules\vending\wardrobes.dm"
 #include "maplestation_modules\code\modules\wiremod\component_printer.dm"
 #include "maplestation_modules\code\modules\wiremod\shells.dm"
-#ifdef MAPLESTATION_STORY_CONTENT
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
 #include "maplestation_modules\story_content\alraune_miscitems\code\alrmiscitem.dm"
@@ -6675,5 +6675,4 @@
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
-#endif // MAPLESTATION_STORY_CONTENT
 // END_INCLUDE
