@@ -84,7 +84,8 @@
 	var/firing_dir
 	if(loaded_projectile.firer)
 		firing_dir = get_dir(fired_from, target)
-	if(!loaded_projectile.suppressed && firing_effect_type && !tk_firing(user, fired_from))
+	// NON-MODULE CHANGE hitscan muzzle flash suppression
+	if(!loaded_projectile.suppressed && firing_effect_type && (!loaded_projectile.hitscan || !loaded_projectile.muzzle_type) && !tk_firing(user, fired_from))
 		new firing_effect_type(get_turf(src), firing_dir)
 
 	var/direct_target
