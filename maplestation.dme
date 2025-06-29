@@ -6660,6 +6660,7 @@
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\laser_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\ppc_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\melee\void_blade.dm"
+#include "maplestation_modules\story_content\eveleen_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
 #include "maplestation_modules\story_content\grey_equipment\code\greyclothing.dm"
 #include "maplestation_modules\story_content\isaac_equipment\code\isaacclothing.dm"
