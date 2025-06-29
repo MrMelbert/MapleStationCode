@@ -37,6 +37,11 @@
 	)
 	result_path = /obj/machinery/computer/vitals_reader
 
+/obj/item/wallframe/status_display/vitals/after_attach(obj/machinery/computer/vitals_reader/attached_to)
+	. = ..()
+	if(istype(attached_to))
+		attached_to.beeps = FALSE
+
 /obj/item/wallframe/status_display/vitals/advanced
 	name = "advanced vitals display frame"
 	desc = "Used to build advanced vitals displays. Performs a more detailed scan of the patient than the basic display."
@@ -61,6 +66,7 @@
 	layer = ABOVE_WINDOW_LAYER
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_REQUIRES_DEXTERITY
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
+	interaction_flags_click = ALLOW_SILICON_REACH | NEED_DEXTERITY
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 0
 	active_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
@@ -140,8 +146,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return FALSE
 	if(user.combat_mode)
 		return FALSE
 	balloon_alert(user, "detaching...")
@@ -150,9 +154,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		deconstruct(TRUE)
 	return TRUE
 
-/obj/machinery/computer/vitals_reader/deconstruct(disassembled)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
+/obj/machinery/computer/vitals_reader/on_deconstruction(disassembled)
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
 		new frame(drop_loc)
@@ -418,7 +420,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			var/obj/machinery/computer/operating/op = nearby_thing
 			patient = op.table?.patient
 
-		if(!istype(patient) || (patient.mob_biotypes & MOB_ROBOTIC))
+		if(!istype(patient))
+			continue
+		// skips bots, borgs, and drones - not synths and androids
+		if((patient.mob_biotypes & MOB_ROBOTIC) && !(patient.mob_biotypes & MOB_HUMANOID))
 			continue
 
 		set_patient(patient)
@@ -467,7 +472,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 				beep_message("lets out a beep.")
 				last_reported_stat = CONSCIOUS
 
-	playsound(src, beepsound, 25, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(src, beepsound, 15, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/machinery/computer/vitals_reader/proc/beep_message(message)
 	for(var/mob/viewer as anything in viewers(src))
@@ -481,15 +486,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			runechat_flags = EMOTE_MESSAGE,
 		)
 
-/obj/machinery/computer/vitals_reader/AltClick(mob/user)
+/obj/machinery/computer/vitals_reader/click_alt(mob/user)
 	if(!(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND))
-		return ..() // assuming direct control
-	if(user.can_perform_action(src, ALLOW_SILICON_REACH|NEED_DEXTERITY))
-		beeps = !beeps
-		balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
-		playsound(src, 'sound/machines/click.ogg', 50)
-		return TRUE
-	return FALSE
+		return CLICK_ACTION_BLOCKING
+	beeps = !beeps
+	balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
+	playsound(src, 'sound/machines/click.ogg', 50)
+	return CLICK_ACTION_SUCCESS
 
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.

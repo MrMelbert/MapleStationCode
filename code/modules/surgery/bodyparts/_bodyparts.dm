@@ -117,13 +117,13 @@
 	var/bleed_overlay_icon
 
 	//Damage messages used by help_shake_act()
-	var/light_brute_msg = "bruised"
+	var/light_brute_msg = "bruised and feels sore"
 	var/medium_brute_msg = "battered"
 	var/heavy_brute_msg = "mangled"
 
-	var/light_burn_msg = "numb"
+	var/light_burn_msg = "red and feels numb"
 	var/medium_burn_msg = "blistered"
-	var/heavy_burn_msg = "peeling away"
+	var/heavy_burn_msg = "like its peeling away"
 
 	//Damage messages used by examine(). the desc that is most common accross all bodyparts gets shown
 	var/list/damage_examines = list(
@@ -165,8 +165,8 @@
 
 	/// Type of an attack from this limb does. Arms will do punches, Legs for kicks, and head for bites. (TO ADD: tactical chestbumps)
 	var/attack_type = BRUTE
-	/// the verb used for an unarmed attack when using this limb, such as arm.unarmed_attack_verb = punch
-	var/unarmed_attack_verb = "bump"
+	/// the verbs used for an unarmed attack when using this limb, such as arm.unarmed_attack_verbs = list("punch")
+	var/list/unarmed_attack_verbs = list("bump")
 	/// if we have a special attack verb for hitting someone who is grappled by us, it goes here.
 	var/grappled_attack_verb
 	/// what visual effect is used when this limb is used to strike someone.
@@ -286,11 +286,10 @@
 
 /**
  * Called when a bodypart is checked for injuries.
- *
- * Modifies the check_list list with the resulting report of the limb's status.
  */
-/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
+/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner)
 
+	var/list/check_list = list()
 	var/list/limb_damage = list(BRUTE = brute_dam, BURN = burn_dam)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_CHECKED_FOR_INJURY, examiner, check_list, limb_damage)
@@ -340,32 +339,44 @@
 		else
 			is_disabled += " and"
 
-	// melbert todo : if you have clothes covering, it's harder to diagnose
-	check_list += "\t<span class='[no_damage ? "notice" : "warning"]'>Your [name][is_disabled][self_aware ? " has " : " is "][status].</span>"
+	check_list += "<span class='[no_damage ? "notice" : "warning"]'>Your [plaintext_zone][is_disabled][self_aware ? " has " : " looks "][status].</span>"
 
+	var/adept_organ_feeler = owner == examiner && HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
+	for(var/obj/item/organ/organ in src)
+		if(organ.organ_flags & ORGAN_HIDDEN)
+			continue
+		var/feeling = organ.feel_for_damage(adept_organ_feeler)
+		if(feeling)
+			check_list += "\t[feeling]"
+
+	// melbert todo : if you have clothes covering, it's harder to diagnose
 	for(var/datum/wound/wound as anything in wounds)
-		var/wound_desc = wound.get_self_check_description(src, examiner)
+		var/wound_desc = wound.get_self_check_description(adept_organ_feeler)
 		if(wound_desc)
-			check_list += "\t\t[wound_desc]"
+			check_list += "\t[wound_desc]"
 
 	for(var/obj/item/embedded_thing as anything in embedded_objects)
-		if(embedded_thing.get_embed().hidden_embed)
+		if(embedded_thing.get_embed().stealthy_embed)
 			continue
-		var/stuck_word = embedded_thing.is_embed_harmless() ? "stuck" : "embedded"
-		check_list += "\t\t<a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in it!</a>"
+		var/harmless = embedded_thing.is_embed_harmless()
+		var/stuck_wordage = harmless ? "stuck to" : "embedded in"
+		var/span_to_use = harmless ? "notice" : "boldwarning"
+		check_list += "\t<span class='[span_to_use]'><a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [plaintext_zone]!</a></span>"
 
 	if(current_gauze)
-		check_list += span_notice("\t\tThere is some <a href='?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
+		check_list += span_notice("\t\tThere is some <a href='byond://?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
 	else if(can_bleed())
 		switch(get_modified_bleed_rate())
 			if(0.2 to 1)
-				check_list += span_warning("\t\tIt's lightly bleeding.")
+				check_list += span_warning("\tIt's lightly bleeding.")
 			if(1 to 2)
-				check_list += span_warning("\t\tIt's bleeding.")
+				check_list += span_warning("\tIt's bleeding.")
 			if(3 to 4)
-				check_list += span_warning("\t\tIt's bleeding heavily!")
+				check_list += span_warning("\tIt's bleeding heavily!")
 			if(4 to INFINITY)
-				check_list += span_warning("\t\tIt's bleeding profusely!")
+				check_list += span_warning("\tIt's bleeding profusely!")
+
+	return jointext(check_list, "<br>")
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)
@@ -408,7 +419,7 @@
 		playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
 		user.visible_message(span_warning("[user] begins to cut open [src]."),\
 			span_notice("You begin to cut open [src]..."))
-		if(do_after(user, 54, target = src))
+		if(do_after(user, 5.4 SECONDS, target = src))
 			drop_organs(user, TRUE)
 	else
 		return ..()
@@ -458,23 +469,24 @@
  * called when a bodypart is taking damage
  * Damage will not exceed max_damage using this proc, and negative damage cannot be used to heal
  * Returns TRUE if damage icon states changes
+ *
  * Args:
- * brute - The amount of brute damage dealt.
- * burn - The amount of burn damage dealt.
- * blocked - The amount of damage blocked by armor.
- * update_health - Whether to update the owner's health from receiving the hit.
- * required_bodytype - A bodytype flag requirement to get this damage (ex: BODYTYPE_ORGANIC)
- * wound_bonus - Additional bonus chance to get a wound.
- * bare_wound_bonus - Additional bonus chance to get a wound if the bodypart is naked.
- * sharpness - Flag on whether the attack is edged or pointy
- * attack_direction - The direction the bodypart is attacked from, used to send blood flying in the opposite direction.
- * damage_source - The source of damage, typically a weapon.
+ * * brute - The amount of brute damage dealt.
+ * * burn - The amount of burn damage dealt.
+ * * blocked - The amount of damage blocked by armor.
+ * * update_health - Whether to update the owner's health from receiving the hit.
+ * * required_bodytype - A bodytype flag requirement to get this damage (ex: BODYTYPE_ORGANIC)
+ * * wound_bonus - Additional bonus chance to get a wound.
+ * * bare_wound_bonus - Additional bonus chance to get a wound if the bodypart is naked.
+ * * sharpness - Flag on whether the attack is edged or pointy
+ * * attack_direction - The direction the bodypart is attacked from, used to send blood flying in the opposite direction.
+ * * damage_source - The source of damage, typically a weapon.
  */
 /obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, forced = FALSE, required_bodytype = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null, damage_source)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/hit_percent = forced ? 1 : (100-blocked)/100
-	if((!brute && !burn) || hit_percent <= 0)
+	if((brute <= 0 && burn <= 0) || hit_percent <= 0)
 		return FALSE
 	if (!forced)
 		if(!isnull(owner))
@@ -488,7 +500,7 @@
 	brute = round(max(brute * hit_percent * brute_modifier, 0), DAMAGE_PRECISION)
 	burn = round(max(burn * hit_percent * burn_modifier, 0), DAMAGE_PRECISION)
 
-	if(!brute && !burn)
+	if(brute <= 0 && burn <= 0)
 		return FALSE
 
 	brute *= wound_damage_multiplier
@@ -511,22 +523,27 @@
 	var/can_inflict = max_damage - get_damage()
 	var/total_damage = brute + burn
 	if(total_damage > can_inflict && total_damage > 0) // TODO: the second part of this check should be removed once disabling is all done
-		brute = round(brute * (can_inflict / total_damage),DAMAGE_PRECISION)
-		burn = round(burn * (can_inflict / total_damage),DAMAGE_PRECISION)
+		var/new_brute = round(brute * (can_inflict / total_damage), DAMAGE_PRECISION)
+		var/new_burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
+		// going over the limb limit causes direct shock
+		owner?.adjust_traumatic_shock(max(0.5, (brute + burn - new_brute - new_burn) * 0.5))
+		// and now update these values to reflect the new damage
+		brute = new_brute
+		burn = new_burn
+		total_damage = brute + burn
 
-	if(can_inflict <= 0)
+	// if we're not doing any damage (now), we don't need to do anything else
+	if(total_damage <= 0)
 		return FALSE
 	if(brute)
 		set_brute_dam(brute_dam + brute)
 	if(burn)
 		set_burn_dam(burn_dam + burn)
-
-	if(owner)
-		if(can_be_disabled)
-			update_disabled()
-		if(updating_health)
-			owner.updatehealth()
-	return update_bodypart_damage_state() || .
+	if(can_be_disabled)
+		update_disabled()
+	if(updating_health)
+		owner?.updatehealth()
+	return update_bodypart_damage_state()
 
 /// Returns a bitflag using ANATOMY_EXTERIOR or ANATOMY_INTERIOR. Used to determine if we as a whole have a interior or exterior biostate, or both.
 /obj/item/bodypart/proc/get_bio_state_status()
@@ -900,6 +917,8 @@
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	SEND_SIGNAL(src, COMSIG_BODYPART_UPDATED, dropping_limb, is_creating)
+
 	if(IS_ORGANIC_LIMB(src))
 		if(!(bodypart_flags & BODYPART_UNHUSKABLE) && owner && HAS_TRAIT(owner, TRAIT_HUSK))
 			dmg_overlay_type = "" //no damage overlay shown when husked
@@ -959,8 +978,8 @@
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
 	for(var/image/img as anything in standing)
-		img.pixel_x += px_x
-		img.pixel_y += px_y
+		img.pixel_w += px_x
+		img.pixel_z += px_y
 	add_overlay(standing)
 
 ///Generates an /image for the limb to be used as an overlay
@@ -1099,10 +1118,11 @@
 	bodypart_overlays -= overlay
 	overlay.removed_from_limb(src)
 
-/obj/item/bodypart/deconstruct(disassembled = TRUE)
+/obj/item/bodypart/atom_deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	drop_organs()
+
 	return ..()
 
 /// INTERNAL PROC, DO NOT USE
@@ -1230,7 +1250,7 @@
 			else
 				new_bleed_icon = "[body_zone]_2"
 		if(BLEED_OVERLAY_GUSH to INFINITY)
-			if(HAS_TRAIT(owner, TRAIT_STASIS) || owner.stat == DEAD)
+			if(owner.body_position == LYING_DOWN || HAS_TRAIT(owner, TRAIT_STASIS) || owner.stat == DEAD)
 				new_bleed_icon = "[body_zone]_2s"
 			else
 				new_bleed_icon = "[body_zone]_3"

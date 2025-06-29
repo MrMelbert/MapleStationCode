@@ -49,7 +49,7 @@ export const NtosMessenger = (props) => {
     sending_virus,
   } = data;
 
-  let content: JSX.Element;
+  let content: React.JSX.Element;
   if (open_chat !== null) {
     const openChat = saved_chats[open_chat];
     const temporaryRecipient = messengers[open_chat];
@@ -315,7 +315,6 @@ const SendToAllSection = (props) => {
               icon="arrow-right"
               disabled={on_spam_cooldown || message === ''}
               tooltip={on_spam_cooldown && 'Wait before sending more messages!'}
-              tooltipPosition="auto-start"
               onClick={() => {
                 act('PDA_sendEveryone', { message: message });
                 setmessage('');

@@ -51,6 +51,9 @@
 		new /obj/item/raw_anomaly_core/bluespace(loc)
 	return ..()
 
+/mob/living/basic/mining/ice_demon/get_blood_type()
+	return null
+
 /mob/living/basic/mining/demon_afterimage
 	name = "afterimage demonic watcher"
 	desc = "Is this some sort of illusion?"
@@ -87,3 +90,6 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	existence_period = 7 SECONDS
+
+/mob/living/basic/mining/demon_afterimage/get_blood_type()
+	return null

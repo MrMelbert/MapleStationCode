@@ -38,24 +38,27 @@
 	else
 		. += span_notice("An item can be loaded inside via [EXAMINE_HINT("Left-Click")].")
 
-/obj/machinery/rnd/destructive_analyzer/attackby(obj/item/weapon, mob/living/user, params)
+/obj/machinery/rnd/destructive_analyzer/base_item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		return ..()
 	if(user.combat_mode)
 		return ..()
 	if(!is_insertion_ready(user))
 		return ..()
 	if(!user.transferItemToLoc(weapon, src))
 		to_chat(user, span_warning("\The [weapon] is stuck to your hand, you cannot put it in the [name]!"))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
+
 	busy = TRUE
 	loaded_item = weapon
 	to_chat(user, span_notice("You place the [weapon.name] inside the [name]."))
 	flick("[base_icon_state]_la", src)
 	addtimer(CALLBACK(src, PROC_REF(finish_loading)), 1 SECONDS)
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/rnd/destructive_analyzer/AltClick(mob/user)
-	. = ..()
+/obj/machinery/rnd/destructive_analyzer/click_alt(mob/user)
 	unload_item()
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/rnd/destructive_analyzer/update_icon_state()
 	icon_state = "[base_icon_state][loaded_item ? "_l" : null]"
@@ -115,11 +118,11 @@
 				say("Destructive analysis failed!")
 			return TRUE
 
-//Let emags in on a right click
-/obj/machinery/rnd/destructive_analyzer/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	if(is_right_clicking && istype(tool, /obj/item/card/emag))
-		return NONE
-	return ..()
+/obj/machinery/rnd/destructive_analyzer/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	// Cringe way to let emags insert on RMB because we still use attackby to insert
+	if(istype(tool, /obj/item/card/emag))
+		return ITEM_INTERACT_SKIP_TO_ATTACK
+	return NONE
 
 //This allows people to put syndicate screwdrivers in the machine. Secondary act still passes.
 /obj/machinery/rnd/destructive_analyzer/screwdriver_act(mob/living/user, obj/item/tool)
@@ -162,7 +165,7 @@
 	flick("[base_icon_state]_process", src)
 	busy = TRUE
 	addtimer(CALLBACK(src, PROC_REF(reset_busy)), 2.4 SECONDS)
-	use_power(DESTRUCTIVE_ANALYZER_POWER_USAGE)
+	use_energy(DESTRUCTIVE_ANALYZER_POWER_USAGE)
 	var/list/all_contents = loaded_item.get_all_contents()
 	for(var/innerthing in all_contents)
 		destroy_item_individual(innerthing, gain_research_points)

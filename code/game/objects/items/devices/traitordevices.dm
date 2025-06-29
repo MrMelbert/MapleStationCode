@@ -76,7 +76,7 @@ effective or pretty fucking useless.
 	var/intensity = 10 // how much damage the radiation does
 	var/wavelength = 10 // time it takes for the radiation to kick in, in seconds
 
-/obj/item/healthanalyzer/rad_laser/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/rad_laser/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!stealth || !irradiate)
 		. = ..()
 
@@ -316,29 +316,32 @@ effective or pretty fucking useless.
 	new /obj/item/analyzer(src)
 	new /obj/item/wirecutters(src)
 
-/obj/item/storage/toolbox/emergency/turret/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(!istype(attacking_item, /obj/item/wrench/combat))
-		return ..()
-
+/obj/item/storage/toolbox/emergency/turret/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/wrench/combat))
+		return NONE
 	if(!user.combat_mode)
-		return
-
-	if(!attacking_item.toolspeed)
-		return
-
+		return NONE
+	if(!tool.toolspeed)
+		return ITEM_INTERACT_BLOCKING
 	balloon_alert(user, "constructing...")
-	if(!attacking_item.use_tool(src, user, 2 SECONDS, volume = 20))
-		return
+	if(!tool.use_tool(src, user, 2 SECONDS, volume = 20))
+		return ITEM_INTERACT_BLOCKING
 
 	balloon_alert(user, "constructed!")
-	user.visible_message(span_danger("[user] bashes [src] with [attacking_item]!"), \
-		span_danger("You bash [src] with [attacking_item]!"), null, COMBAT_MESSAGE_RANGE)
+	user.visible_message(
+		span_danger("[user] bashes [src] with [tool]!"),
+		span_danger("You bash [src] with [tool]!"),
+		null,
+		COMBAT_MESSAGE_RANGE,
+	)
 
 	playsound(src, 'sound/items/drill_use.ogg', 80, TRUE, -1)
 	var/obj/machinery/porta_turret/syndicate/toolbox/turret = new(get_turf(loc))
 	set_faction(turret, user)
 	turret.toolbox = src
 	forceMove(turret)
+	return ITEM_INTERACT_SUCCESS
+
 
 /obj/item/storage/toolbox/emergency/turret/proc/set_faction(obj/machinery/porta_turret/turret, mob/user)
 	turret.faction = list("[REF(user)]")
@@ -410,7 +413,7 @@ effective or pretty fucking useless.
 
 		balloon_alert(user, "repaired!")
 
-/obj/machinery/porta_turret/syndicate/toolbox/deconstruct(disassembled)
+/obj/machinery/porta_turret/syndicate/toolbox/on_deconstruction(disassembled)
 	if(disassembled)
 		var/atom/movable/old_toolbox = toolbox
 		toolbox = null
@@ -431,7 +434,7 @@ effective or pretty fucking useless.
 		toolbox = null
 		qdel(src)
 
-/obj/machinery/porta_turret/syndicate/toolbox/ui_status(mob/user)
+/obj/machinery/porta_turret/syndicate/toolbox/ui_status(mob/user, datum/ui_state/state)
 	if(faction_check(user.faction, faction))
 		return ..()
 

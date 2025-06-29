@@ -146,7 +146,7 @@
  * Close the camera state (only if it's already active)
  */
 /obj/item/circuit_component/remotecam/proc/close_camera()
-	if(shell_camera?.status)
+	if(shell_camera?.camera_enabled)
 		shell_camera.toggle_cam(null, 0)
 
 /**
@@ -262,7 +262,7 @@
 	if (current_camera_emp)
 		close_camera()
 		return
-	var/obj/item/stock_parts/cell/cell = parent.get_cell()
+	var/obj/item/stock_parts/power_store/cell = parent.get_cell()
 	//If cell doesn't exist, or we ran out of power
 	if(!cell?.use(current_camera_range > 0 ? REMOTECAM_ENERGY_USAGE_FAR : REMOTECAM_ENERGY_USAGE_NEAR))
 		close_camera()
@@ -273,7 +273,7 @@
 			current_camera_range = camera_range.value
 			update_camera_range()
 	//Set the camera state (if state has been changed)
-	if(current_camera_state ^ shell_camera.status)
+	if(current_camera_state ^ shell_camera.camera_enabled)
 		shell_camera.toggle_cam(null, 0)
 
 /obj/item/circuit_component/remotecam/bci
@@ -393,7 +393,7 @@
 	if(!bci.owner || bci.owner.is_blind() || bci.owner.stat >= UNCONSCIOUS)
 		close_camera()
 		return
-	var/obj/item/stock_parts/cell/cell = parent.get_cell()
+	var/obj/item/stock_parts/power_store/cell = parent.get_cell()
 	//If cell doesn't exist, or we ran out of power
 	if(!cell?.use(current_camera_range > 0 ? REMOTECAM_ENERGY_USAGE_FAR : REMOTECAM_ENERGY_USAGE_NEAR))
 		close_camera()
@@ -408,7 +408,7 @@
 		current_camera_range = camera_range.value
 		update_camera_range()
 	//Set the camera state (if state has been changed)
-	if(current_camera_state ^ shell_camera.status)
+	if(current_camera_state ^ shell_camera.camera_enabled)
 		shell_camera.toggle_cam(null, 0)
 
 /obj/item/circuit_component/remotecam/polaroid/process(seconds_per_tick)
@@ -422,13 +422,13 @@
 	if(shell_parent.loc.atom_storage)
 		close_camera()
 		return
-	var/obj/item/stock_parts/cell/cell = parent.get_cell()
+	var/obj/item/stock_parts/power_store/cell = parent.get_cell()
 	//If cell doesn't exist, or we ran out of power
 	if(!cell?.use(REMOTECAM_ENERGY_USAGE_NEAR))
 		close_camera()
 		return
 	//Set the camera state (if state has been changed)
-	if(current_camera_state ^ shell_camera.status)
+	if(current_camera_state ^ shell_camera.camera_enabled)
 		shell_camera.toggle_cam(null, 0)
 
 #undef REMOTECAM_RANGE_FAR

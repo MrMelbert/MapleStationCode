@@ -317,26 +317,36 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
 /obj/item/organ/proc/get_status_text(advanced, add_tooltips)
 	if(advanced && (organ_flags & ORGAN_HAZARDOUS))
-		return conditional_tooltip("<font color='#cc3333'>Harmful Foreign Body</font>", "Remove surgically.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>Harmful Foreign Body</font>", \
+			"Remove surgically.", add_tooltips)
 
 	if(organ_flags & ORGAN_IRRADIATED)
-		return conditional_tooltip("<font color='#29b90f'>Irradiated</font>", "Replace or use specialty medication, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", add_tooltips)
+		return conditional_tooltip("<font color='#29b90f'>Irradiated</font>", \
+			"Replace or use specialty medication, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", add_tooltips)
 
 	if(organ_flags & ORGAN_EMP)
-		return conditional_tooltip("<font color='#cc3333'>EMP-Derived Failure</font>", "Repair or replace surgically.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>EMP-Derived Failure</font>", \
+			"Repair or replace surgically.", add_tooltips)
 
 	var/tech_text = ""
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
 		tech_text = "[round((damage / maxHealth) * 100, 1)]% damaged"
 
 	if(organ_flags & ORGAN_FAILING)
-		return conditional_tooltip("<font color='#cc3333'>[tech_text || "Non-Functional"]</font>", "Repair or replace surgically.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>[tech_text || "Non-Functional"]</font>", \
+			"Repair or replace surgically.", add_tooltips)
 
 	if(damage > high_threshold)
-		return conditional_tooltip("<font color='#ff9933'>[tech_text || "Severely Damaged"]</font>", "[healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."]", add_tooltips && owner.stat != DEAD)
+		var/dead_tooltip = "Ignore until revived, but be careful not to cause further damage."
+		var/alive_tooltip = healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."
+		return conditional_tooltip("<font color='#ff9933'>[tech_text || "Severely Damaged"]</font>", \
+			"[owner.stat == DEAD ? dead_tooltip : alive_tooltip]", add_tooltips)
 
 	if(damage > low_threshold)
-		return conditional_tooltip("<font color='#ffcc33'>[tech_text || "Mildly Damaged"] </font>", "[healing_factor ? "Treat with rest." : "Use specialty medication."]", add_tooltips && owner.stat != DEAD)
+		var/dead_tooltip = "Ignore until revived."
+		var/alive_tooltip = healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."
+		return conditional_tooltip("<font color='#ffcc33'>[tech_text || "Mildly Damaged"] </font>", \
+			"[owner.stat == DEAD ? dead_tooltip : alive_tooltip]", add_tooltips)
 
 	if(tech_text)
 		return "<font color='#33cc33'>[tech_text]</font>"
@@ -351,6 +361,29 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /// Similar to get_status_text, but appends the text after the damage report, for additional status info
 /obj/item/organ/proc/get_status_appendix(advanced, add_tooltips)
 	return
+
+/**
+ * Used when a mob is examining themselves / their limbs
+ *
+ * Reports how they feel based on how the status of this organ
+ *
+ * It should be formatted as an extension of the limb:
+ * Input is something like "Your chest is bruised. It is bleeding.",
+ * you would add something like "It hurts a little, and your stomach cramps."
+ *
+ * * self_aware - if TRUE, the examiner is more aware of themselves and thus may get more detailed information
+ *
+ * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
+ */
+/obj/item/organ/proc/feel_for_damage(self_aware)
+	if(damage < low_threshold)
+		return ""
+	if(damage < high_threshold)
+		return span_warning("[self_aware ? "[capitalize(slot)]" : "It"] feels a bit off.")
+	return span_boldwarning("[self_aware ? "[capitalize(slot)]" : "It"] feels terrible!")
+
+/obj/item/organ/external/feel_for_damage(self_aware)
+	return ""
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)

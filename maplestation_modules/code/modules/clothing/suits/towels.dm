@@ -324,8 +324,7 @@
 	. += span_notice("Drag [src] to you to pick it up.")
 
 /// On click-drag, try to pick up the towel.
-/obj/structure/beach_towel/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	. = ..()
+/obj/structure/beach_towel/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
 	var/mob/living/carbon/picker_up = usr
 
 	if(!istype(picker_up))

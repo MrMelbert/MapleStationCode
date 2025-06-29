@@ -117,6 +117,9 @@ https://freesound.org/people/humanoide9000/sounds/330293/
 reel1.ogg, reel2.ogg, reel3.ogg, reel4.ogg and reel5.ogg adapted from pixabay. Free for use under the Pixabay Content License (https://pixabay.com/service/license-summary/):
 https://pixabay.com/sound-effects/reel-78063/
 
+rattle1.ogg, rattle2.ogg and rattle3.ogg adapted from pixabay. Free for use under the Pixabay Content License (https://pixabay.com/service/license-summary/):
+https://pixabay.com/sound-effects/chain-6073/
+
 throw.ogg, throwhard.ogg and throwsoft.ogg (Royalty-Free and Copyright-Free) are adapted from Jam FX, SmartSound FX and Epic Stock Media in :
 https://uppbeat.io/sfx/whoosh-swift-cut/7727/23617
 https://uppbeat.io/sfx/whoosh-air-punch/114/1168
@@ -189,3 +192,6 @@ scifi_scare_a.aiff by realtheremin under CC0 -- https://freesound.org/people/Fun
 
 paper_flip.ogg is made by gynation from Freesound.org, CC0
 https://freesound.org/people/gynation/sounds/82378/
+
+cryo_1.ogg, cryo_2.ogg, cryo_3.ogg, cryo_4.ogg, cryo_5.ogg, cryo_6.ogg, cryo_7.ogg, cryo_8.ogg, cryo_9.ogg, cryo_10.ogg:
+converted to OGG / split apart (but is otherwise unchanged) -- original from https://freesound.org/people/DudeAwesome/sounds/386023/ by DudeAwesome -- License: CC BY 4.0

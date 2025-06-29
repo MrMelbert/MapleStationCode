@@ -128,7 +128,7 @@
 	item_module.forceMove(model) //Return item to configuration so it appears in its contents, so it can be taken out again.
 
 	observer_screen_update(item_module, FALSE)
-	hud_used.update_robot_modules_display()
+	hud_used?.update_robot_modules_display()
 	return TRUE
 
 /**
@@ -157,7 +157,7 @@
 			audible_message(span_warning("[src] sounds an alarm! \"CRITICAL ERROR: ALL modules OFFLINE.\""))
 
 			if(builtInCamera)
-				builtInCamera.status = FALSE
+				builtInCamera.camera_enabled = FALSE
 				to_chat(src, span_userdanger("CRITICAL ERROR: Built in security camera OFFLINE."))
 
 			to_chat(src, span_userdanger("CRITICAL ERROR: ALL modules OFFLINE."))
@@ -211,7 +211,7 @@
 			inv1.icon_state = initial(inv1.icon_state)
 			disabled_modules &= ~BORG_MODULE_ALL_DISABLED
 			if(builtInCamera)
-				builtInCamera.status = TRUE
+				builtInCamera.camera_enabled = TRUE
 				to_chat(src, span_notice("You hear your built in security camera focus adjust as it comes back online!"))
 		if(BORG_CHOOSE_MODULE_TWO)
 			if(!(disabled_modules & BORG_MODULE_TWO_DISABLED))
