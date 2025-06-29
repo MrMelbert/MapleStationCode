@@ -13,3 +13,6 @@
 
 /obj/item/clothing/under/spacer_turtleneck/get_general_color(icon/base_icon)
 	return "#5e483c"
+
+/obj/item/clothing/under/rank/rnd/roboticist/get_general_color(icon/base_icon)
+	return "#303030"

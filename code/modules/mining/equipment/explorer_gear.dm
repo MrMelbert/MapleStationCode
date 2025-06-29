@@ -10,7 +10,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
-	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER
 	hoodtype = /obj/item/clothing/head/hooded/explorer
 	armor_type = /datum/armor/hooded_explorer
 	allowed = list(
