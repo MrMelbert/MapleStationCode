@@ -147,7 +147,7 @@
 		owner.updatehealth()
 
 	// Heal some pain too
-	owner.cause_pain(BODY_ZONES_ALL, -3)
+	owner.heal_pain(3)
 
 /datum/status_effect/fleshmend/proc/on_ignited(datum/source)
 	SIGNAL_HANDLER
@@ -386,9 +386,8 @@
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	owner.heal_overall_damage(25, 25)
 	owner.fully_heal(HEAL_CC_STATUS|HEAL_TEMP)
-	owner.cause_pain(BODY_ZONES_LIMBS, -30)
-	owner.cause_pain(BODY_ZONE_CHEST, -40)
-	owner.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
+	for(var/zone in BODY_ZONES_ALL)
+		owner.heal_pain(zone == BODY_ZONE_CHEST ? 40 : 15, zone)
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
@@ -624,4 +623,4 @@
 	owner.adjustOxyLoss(-1 * modifier * seconds_between_ticks)
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume += modifier * seconds_between_ticks
-	owner.cause_pain(BODY_ZONES_ALL, -0.5 * modifier * seconds_between_ticks)
+	owner.heal_pain(0.5 * modifier * seconds_between_ticks)

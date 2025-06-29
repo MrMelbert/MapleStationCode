@@ -171,7 +171,7 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.expose(target, TOUCH)
+	reagents.expose(target, TOUCH, exposed_zone = user.zone_selected) // NON-MODULE CHANGE
 	log_combat(user, target, "splashed", reagent_text)
 	reagents.clear_reagents()
 
@@ -237,8 +237,8 @@
 
 		if(thrown_by)
 			log_combat(thrown_by, M, "splashed", R)
-		reagents.expose(target, TOUCH, splash_multiplier)
-		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier)) // 1 - splash_multiplier because it's what didn't hit the target
+		reagents.expose(target, TOUCH, splash_multiplier, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
+		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier), exposed_zone = ran_zone(thrown_by?.zone_selected)) // 1 - splash_multiplier because it's what didn't hit the target // NON-MODULE CHANGE
 
 	else if(bartender_check(target) && thrown)
 		visible_message(span_notice("[src] lands onto the [target.name] without spilling a single drop."))
@@ -250,7 +250,7 @@
 			thrown_by.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
 			message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 		visible_message(span_notice("[src] spills its contents all over [target]."))
-		reagents.expose(target, TOUCH)
+		reagents.expose(target, TOUCH, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
 		if(QDELETED(src))
 			return
 

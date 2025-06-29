@@ -76,7 +76,7 @@
 	. = ..()
 	var/mob/living/carbon/human/our_ling = user
 	to_chat(our_ling, span_notice("We reboot our nervous system, completely removing all pain affecting us."))
-	our_ling.cause_pain(BODY_ZONES_ALL, -500)
+	our_ling.cause_pain(-500)
 	COOLDOWN_START(src, pain_clear_cooldown, PAIN_CLEAR_COOLDOWN)
 	return TRUE
 
