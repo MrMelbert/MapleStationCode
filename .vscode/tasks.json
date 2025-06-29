@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "process",
-			"command": "tools/build/build",
+			"command": "tools/build/build.sh",
 			"windows": {
 				"command": ".\\tools\\build\\build.bat"
 			},
@@ -26,7 +26,7 @@
 		},
 		{
 			"type": "process",
-			"command": "tools/build/build",
+			"command": "tools/build/build.sh",
 			"args": ["-DLOWMEMORYMODE"],
 			"windows": {
 				"command": ".\\tools\\build\\build.bat",
@@ -50,8 +50,13 @@
 		},
 		{
 			"type": "process",
-			"command": "tools/build/build",
-			"args": ["-DTESTING","-DREAGENTS_TESTING","-DTIMER_DEBUG","-DREFERENCE_DOING_IT_LIVE"],
+			"command": "tools/build/build.sh",
+			"args": [
+				"-DTESTING",
+				"-DREAGENTS_TESTING",
+				"-DTIMER_DEBUG",
+				"-DREFERENCE_DOING_IT_LIVE"
+			],
 			"windows": {
 				"command": ".\\tools\\build\\build.bat",
 				"args": ["-DTESTING","-DREAGENTS_TESTING","-DTIMER_DEBUG","-DREFERENCE_DOING_IT_LIVE"]
@@ -74,8 +79,14 @@
 		},
 		{
 			"type": "process",
-			"command": "tools/build/build",
-			"args": ["-DLOWMEMORYMODE","-DTESTING","-DREAGENTS_TESTING","-DTIMER_DEBUG","-DREFERENCE_DOING_IT_LIVE"],
+			"command": "tools/build/build.sh",
+			"args": [
+				"-DLOWMEMORYMODE",
+				"-DTESTING",
+				"-DREAGENTS_TESTING",
+				"-DTIMER_DEBUG",
+				"-DREFERENCE_DOING_IT_LIVE"
+			],
 			"windows": {
 				"command": ".\\tools\\build\\build.bat",
 				"args": ["-DLOWMEMORYMODE","-DTESTING","-DREAGENTS_TESTING","-DTIMER_DEBUG","-DREFERENCE_DOING_IT_LIVE"]
@@ -98,8 +109,8 @@
 		},
 		{
 			"type": "process",
-			"command": "tools/build/build",
-			"args": ["-DTESTING","-DMAP_TEST"],
+			"command": "tools/build/build.sh",
+			"args": ["-DTESTING", "-DMAP_TEST"],
 			"windows": {
 				"command": ".\\tools\\build\\build.bat",
 				"args": ["-DTESTING","-DMAP_TEST"]
