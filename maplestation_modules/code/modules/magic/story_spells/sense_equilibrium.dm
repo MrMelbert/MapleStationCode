@@ -3,7 +3,7 @@
 #define SENSE_SIGHT "Sight"
 #define SENSE_TOUCH "Touch"
 #define SENSE_TASTE "Taste"
-/// Enhance one sense at the cost of another
+/// Enhance one sense at the cost of another (Give a buff & debuff)
 /datum/action/cooldown/spell/list_target/sense_equilibrium
 	name = "Sense Equilibrium"
 	desc = "Divert pathways in a person's brain from one area to another, enhancing one at the cost of the other."
