@@ -19,8 +19,9 @@
 	///An override that, if set modifies the amount of wisdow the cow will add/remove, if not set will default to 500.
 	var/selected_experience
 
-/datum/round_event/wisdomcow/announce(fake)
-	priority_announce("A wise cow has been spotted in the area. Be sure to ask for her advice.", "Nanotrasen Cow Ranching Agency")
+// NON-MODULE CHANGE
+// /datum/round_event/wisdomcow/announce(fake)
+// 	priority_announce("A wise cow has been spotted in the area. Be sure to ask for her advice.", "Nanotrasen Cow Ranching Agency")
 
 /datum/round_event/wisdomcow/start()
 	var/turf/targetloc
@@ -56,5 +57,3 @@
 
 /datum/event_admin_setup/input_number/wisdom_cow/apply_to_event(datum/round_event/wisdomcow/event)
 	event.selected_experience = chosen_value
-	
-	
