@@ -22,11 +22,11 @@
 	buckle_requires_restraints = TRUE
 	buckle_lying = NO_BUCKLE_LYING
 
-/obj/machinery/atmospherics/pipe/New()
+/obj/machinery/atmospherics/pipe/Initialize(mapload, process, setdir, init_dir)
 	add_atom_colour(pipe_color, FIXED_COLOUR_PRIORITY)
 	if (!volume) // Pipes can have specific volumes or have it determined by their device_type.
 		volume = UNARY_PIPE_VOLUME * device_type
-	. = ..()
+	return ..()
 
 ///I have no idea why there's a new and at this point I'm too afraid to ask
 /obj/machinery/atmospherics/pipe/Initialize(mapload)
