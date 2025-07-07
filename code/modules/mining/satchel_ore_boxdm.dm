@@ -88,12 +88,11 @@
 			dump_box_contents()
 			to_chat(usr, span_notice("You open the release hatch on the box.."))
 
-/obj/structure/ore_box/deconstruct(disassembled = TRUE, mob/user)
+/obj/structure/ore_box/atom_deconstruct(disassembled = TRUE, mob/user)
 	var/obj/item/stack/sheet/mineral/wood/WD = new (loc, 4)
 	if(user && !QDELETED(WD))
 		WD.add_fingerprint(user)
 	dump_box_contents()
-	qdel(src)
 
 /// Special override for notify_contents = FALSE.
 /obj/structure/ore_box/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents = FALSE)

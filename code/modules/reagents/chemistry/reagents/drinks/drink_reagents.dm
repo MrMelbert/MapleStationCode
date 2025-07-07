@@ -55,8 +55,6 @@
 	affected_mob.adjust_temp_blindness(-2 SECONDS * REM * seconds_per_tick)
 	var/need_mob_update
 	switch(current_cycle)
-		if(1 to 20)
-			//nothing
 		if(21 to 110)
 			if(SPT_PROB(100 * (1 - (sqrt(110 - current_cycle) / 10)), seconds_per_tick))
 				need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_EYES, -2 * REM * seconds_per_tick)
@@ -149,6 +147,10 @@
 	. = ..()
 	affected_mob.emote("laugh")
 	affected_mob.add_mood_event("chemical_laughter", /datum/mood_event/chemical_laughter)
+
+/datum/reagent/consumable/laughter/on_mob_metabolize(mob/living/carbon/user)
+	pain_modifier = pick(0.8, 1, 1, 1, 1, 1.2)
+	return ..()
 
 /datum/reagent/consumable/superlaughter
 	name = "Super Laughter"
@@ -276,8 +278,15 @@
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
 	affected_mob.adjust_body_temperature(1.5 * WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
-	if(holder.has_reagent(/datum/reagent/consumable/frostoil))
-		holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * REM * seconds_per_tick)
+	holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * REM * seconds_per_tick)
+
+/datum/reagent/consumable/coffee/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	ADD_TRAIT(user, TRAIT_HEART_RATE_BOOST, type)
+
+/datum/reagent/consumable/coffee/on_mob_end_metabolize(mob/living/carbon/user)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_HEART_RATE_BOOST, type)
 
 /datum/reagent/consumable/tea
 	name = "Tea"
@@ -324,7 +333,7 @@
 	return TRUE
 
 // There's a designated burn process, but I felt this would be better for consistency with the rest of the reagent's procs
-/datum/wound/burn/flesh/tea_life_process()
+/datum/wound/flesh/burn/tea_life_process()
 	// Sanitizes and heals, but with a limit
 	flesh_healing = (flesh_healing > 0.1) ? flesh_healing : flesh_healing + 0.02
 	infestation_rate = max(infestation_rate - 0.005, 0)
@@ -1249,4 +1258,4 @@
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
-		stomach.adjust_charge(reac_volume * 3)
+		stomach.adjust_charge(reac_volume * 20 * ETHEREAL_DISCHARGE_RATE)

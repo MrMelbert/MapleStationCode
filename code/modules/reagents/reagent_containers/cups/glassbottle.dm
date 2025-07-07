@@ -4,18 +4,6 @@
 //Functionally identical to regular drinks. The only difference is that the default bottle size is 100. - Darem
 //Bottles now knockdown and break when smashed on people's heads. - Giacom
 
-/// Initializes GLOB.alcohol_containers, only containers that actually have reagents are added to the list.
-/proc/init_alcohol_containers()
-	var/list/containers = subtypesof(/obj/item/reagent_containers/cup/glass/bottle)
-	for(var/typepath in containers)
-		containers -= typepath
-		var/obj/item/reagent_containers/cup/glass/bottle/instance = new typepath
-		if(!length(instance.list_reagents))
-			qdel(instance)
-			continue
-		containers[typepath] = instance
-	return containers
-
 /obj/item/reagent_containers/cup/glass/bottle
 	name = "glass bottle"
 	desc = "This blank bottle is unyieldingly anonymous, offering no clues to its contents."
@@ -159,8 +147,8 @@
 			intensity_state = "high"
 	///The froth fountain that we are sticking onto the bottle
 	var/mutable_appearance/froth = mutable_appearance('icons/obj/drinks/drink_effects.dmi', "froth_bottle_[intensity_state]")
-	froth.pixel_x = offset_x
-	froth.pixel_y = offset_y
+	froth.pixel_w = offset_x
+	froth.pixel_z = offset_y
 	add_overlay(froth)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, cut_overlay), froth), 2 SECONDS)
 
@@ -411,7 +399,7 @@
 	return "[year] [origin] [type]"
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe
-	name = "extra-strong absinthe"
+	name = "Extra-strong absinthe"
 	desc = "A strong alcoholic drink brewed and distributed by"
 	icon_state = "absinthebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/absinthe = 100)

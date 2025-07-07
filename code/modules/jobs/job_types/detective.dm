@@ -2,6 +2,11 @@
 	title = JOB_DETECTIVE
 	description = "Investigate crimes, gather evidence, perform interrogations, \
 		look badass, smoke cigarettes."
+	title_options = list(
+		"Investigator",
+		"Inspector",
+		"Sheriff" = /datum/outfit/job/detective/sheriff,
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
 	faction = FACTION_STATION
@@ -14,7 +19,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "DETECTIVE"
 
-	outfit = /datum/outfit/job/detective
+	base_outfit = /datum/outfit/job/detective
 	plasmaman_outfit = /datum/outfit/plasmaman/detective
 	departments_list = list(
 		/datum/job_department/security,
@@ -72,6 +77,8 @@
 		/obj/item/gun/ballistic/revolver/c38/detective,
 		)
 	implants = list(/obj/item/implant/mindshield)
+	
+	skillchips = list(/obj/item/skillchip/job/detectives_taste)
 
 /datum/outfit/job/detective/pre_equip(mob/living/carbon/human/human, visualsOnly = FALSE)
 	. = ..()
@@ -87,3 +94,11 @@
 
 	if(visualsOnly)
 		return
+
+/datum/outfit/job/detective/sheriff
+	name = "Sheriff"
+	shoes = /obj/item/clothing/shoes/cowboy/sheriff
+	head = /obj/item/clothing/head/cowboy/brown
+	mask = /obj/item/clothing/mask/facescarf
+	suit = /obj/item/clothing/suit/costume/poncho/sheriff
+	id_trim = /datum/id_trim/job/detective/sheriff

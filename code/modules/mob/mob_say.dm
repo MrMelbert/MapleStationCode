@@ -196,11 +196,28 @@
 		else if(key == "%" && !mods[MODE_SING])
 			mods[MODE_SING] = TRUE
 		else if(key == ";" && !mods[MODE_HEADSET])
-			if(stat == CONSCIOUS) //necessary indentation so it gets stripped of the semicolon anyway.
+			// NON-MODULE CHANGE
+			// here is where you are unable to radio while in crit
+			// hard crit check is for radio-deathgasping
+			if(stat <= HARD_CRIT)
 				mods[MODE_HEADSET] = TRUE
+				if(stat != CONSCIOUS)
+					mods[WHISPER_MODE] = MODE_WHISPER
 		else if((key in GLOB.department_radio_prefixes) && length(message) > length(key) + 1 && !mods[RADIO_EXTENSION])
-			mods[RADIO_KEY] = lowertext(message[1 + length(key)])
-			mods[RADIO_EXTENSION] = GLOB.department_radio_keys[mods[RADIO_KEY]]
+			// NON-MODULE CHANGE
+			var/found_key = lowertext(message[1 + length(key)])
+			// here is where you are unable to ling hive speak in crit
+			if(SSradio.saymodes[found_key])
+				var/datum/saymode/saymode = SSradio.saymodes[found_key]
+				if(stat <= saymode.req_stat)
+					mods[SAY_KEY] = found_key
+			// here is where you are unable to radio while in crit
+			// hard crit check is for radio-deathgasping
+			if(stat <= HARD_CRIT)
+				mods[RADIO_KEY] = found_key
+				mods[RADIO_EXTENSION] = GLOB.department_radio_keys[found_key]
+				if(stat != CONSCIOUS)
+					mods[WHISPER_MODE] = MODE_WHISPER
 			chop_to = length(key) + 2
 		else if(key == "," && !mods[LANGUAGE_EXTENSION])
 			for(var/ld in GLOB.all_languages)

@@ -1,6 +1,4 @@
 import { sortBy } from 'common/collections';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -8,9 +6,12 @@ import {
   Icon,
   LabeledList,
   Section,
+  Stack,
   Table,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 const ExperimentStages = (props) => {
@@ -109,7 +110,7 @@ export const ExperimentConfigure = (props) => {
   const { always_active, has_start_callback } = data;
   let techwebs = data.techwebs ?? [];
 
-  const experiments = sortBy((exp) => exp.name)(data.experiments ?? []);
+  const experiments = sortBy(data.experiments ?? [], (exp) => exp.name);
 
   // Group servers together by web
   let webs = new Map();
@@ -141,25 +142,20 @@ export const ExperimentConfigure = (props) => {
           </Flex.Item>
           <Flex.Item mb={has_start_callback ? 1 : 0} grow={1}>
             {techwebs.some((e) => e.selected) && (
-              <Section
-                title="Experiments"
-                className="ExperimentConfigure__ExperimentsContainer"
-              >
-                <Flex.Item mb={1}>
-                  {(experiments.length &&
-                    always_active &&
-                    'This device is configured to attempt to perform all available' +
-                      ' experiments, so no further configuration is necessary.') ||
-                    (experiments.length &&
-                      'Select one of the following experiments...') ||
-                    'No experiments found on this web'}
-                </Flex.Item>
-                <Flex.Item>
-                  {experiments.map((exp, i) => {
-                    return <Experiment key={i} exp={exp} />;
-                  })}
-                </Flex.Item>
-              </Section>
+              <Stack.Item>
+                <Section
+                  title="Experiments"
+                  className="ExperimentConfigure__ExperimentsContainer"
+                  fill
+                >
+                  {/* <Box mb={1} color="label">
+                    {textContent}
+                  </Box> */}
+                  {experiments.map((exp, i) => (
+                    <Experiment key={i} exp={exp} />
+                  ))}
+                </Section>
+              </Stack.Item>
             )}
           </Flex.Item>
           {!!has_start_callback && (
@@ -203,11 +199,15 @@ export const Experiment = (props) => {
           <Flex.Item color={'white'}>{name}</Flex.Item>
           <Flex.Item color={'rgba(255, 255, 255, 0.5)'}>
             <Box className="ExperimentConfigure__TagContainer">
-              {tag}
-              <Tooltip content={performance_hint} position="bottom-start">
-                <Icon name="question-circle" mx={0.5} />
-                <Box className="ExperimentConfigure__PerformanceHint" />
-              </Tooltip>
+              <Stack>
+                <Stack.Item>{tag}</Stack.Item>
+                <Stack.Item>
+                  <Tooltip content={performance_hint} position="bottom-start">
+                    <Icon name="question-circle" mx={0.5} />
+                    <div className="ExperimentConfigure__PerformanceHint" />
+                  </Tooltip>
+                </Stack.Item>
+              </Stack>
             </Box>
           </Flex.Item>
         </Flex>

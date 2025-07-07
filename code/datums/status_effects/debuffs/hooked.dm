@@ -29,8 +29,12 @@
 	name = "Snagged By Hook"
 	desc = "You're being caught like a fish by some asshat! Click to safely remove the hook or move away far enough to snap it off."
 	icon_state = "hooked"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/hooked/Click()
+	. = ..()
+	if(!.)
+		return
 	if(!owner.can_resist())
 		return
 	owner.balloon_alert(owner, "removing hook...")

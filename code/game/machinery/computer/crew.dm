@@ -1,7 +1,7 @@
 /// How often the sensor data is updated
 #define SENSORS_UPDATE_PERIOD (10 SECONDS) //How often the sensor data updates.
 /// The job sorting ID associated with otherwise unknown jobs
-#define UNKNOWN_JOB_ID 81
+#define UNKNOWN_JOB_ID 998
 
 /obj/machinery/computer/crew
 	name = "crew monitoring console"
@@ -94,16 +94,12 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	/// Map of job to ID for sorting purposes
 	var/list/jobs = list(
 		// Note that jobs divisible by 10 are considered heads of staff, and bolded
-		// 00: Captain
-		JOB_CAPTAIN = 00,
+		// 01: Captain
+		JOB_CAPTAIN = 01,
 		// 10-19: Security
 		JOB_HEAD_OF_SECURITY = 10,
 		JOB_WARDEN = 11,
 		JOB_SECURITY_OFFICER = 12,
-		JOB_SECURITY_OFFICER_MEDICAL = 13,
-		JOB_SECURITY_OFFICER_ENGINEERING = 14,
-		JOB_SECURITY_OFFICER_SCIENCE = 15,
-		JOB_SECURITY_OFFICER_SUPPLY = 16,
 		JOB_DETECTIVE = 17,
 		// 20-29: Medbay
 		JOB_CHIEF_MEDICAL_OFFICER = 20,
@@ -126,7 +122,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		JOB_SHAFT_MINER = 51,
 		JOB_CARGO_TECHNICIAN = 52,
 		JOB_BITRUNNER = 53,
-		// 60+: Civilian/other
+		// 60+: Service
 		JOB_HEAD_OF_PERSONNEL = 60,
 		JOB_BARTENDER = 61,
 		JOB_COOK = 62,
@@ -159,6 +155,29 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		// ANYTHING ELSE = UNKNOWN_JOB_ID, Unknowns/custom jobs will appear after civilians, and before assistants
 		JOB_ASSISTANT = 999,
 	)
+
+/datum/crewmonitor/New()
+	if(SSjob.initialized)
+		setup_jobs()
+	else
+		RegisterSignal(SSjob, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(setup_jobs))
+
+/datum/crewmonitor/proc/setup_jobs()
+	SIGNAL_HANDLER
+
+	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
+		var/datum/job/job = SSjob.GetJobType(jobtype)
+		if(isnull(job))
+			continue
+		var/job_prio = isnum(job.crewmonitor_priority) ? job.crewmonitor_priority : jobs[job.title]
+		if(!isnum(job_prio))
+			continue
+
+		var/list/all_titles = job.get_titles()
+		for(var/i in 1 to length(all_titles))
+			jobs[all_titles[i]] = job_prio + (0.1 * (i - 1))
+
+	UnregisterSignal(SSjob, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 
 /datum/crewmonitor/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -232,7 +251,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		var/list/entry = list(
 			"ref" = REF(tracked_living_mob),
 			"name" = "Unknown",
-			"ijob" = UNKNOWN_JOB_ID
+			"ijob" = UNKNOWN_JOB_ID,
 		)
 
 		// ID and id-related data

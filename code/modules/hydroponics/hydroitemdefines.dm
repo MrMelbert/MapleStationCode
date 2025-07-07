@@ -470,6 +470,11 @@
 		H.visible_message(span_warning("[H] steps on [src] causing the handle to hit [H.p_them()] right in the face!"), \
 						  span_userdanger("You step on [src] causing the handle to hit you right in the face!"))
 
+/obj/item/cultivator/cyborg
+	name = "cyborg cultivator"
+	icon = 'icons/obj/items_cyborg.dmi'
+	icon_state = "sili_cultivator"
+
 /obj/item/hatchet
 	name = "hatchet"
 	desc = "A very sharp axe blade upon a short fibremetal handle. It has a long history of chopping things, but now it is used for chopping wood."
@@ -484,7 +489,7 @@
 	throwforce = 15
 	throw_speed = 4
 	throw_range = 7
-	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
+	embed_type = /datum/embed_data/hatchet
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*7.5)
 	attack_verb_continuous = list("chops", "tears", "lacerates", "cuts")
 	attack_verb_simple = list("chop", "tear", "lacerate", "cut")
@@ -492,6 +497,11 @@
 	sharpness = SHARP_EDGED
 	drop_sound = 'maplestation_modules/sound/items/drop/axe.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
+/datum/embed_data/hatchet
+	pain_mult = 4
+	embed_chance = 35
+	fall_chance = 10
 
 /obj/item/hatchet/Initialize(mapload)
 	. = ..()
@@ -513,6 +523,11 @@
 	flags_1 = NONE
 	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+
+/obj/item/hatchet/cyborg
+	name = "cyborg hatchet"
+	icon = 'icons/obj/items_cyborg.dmi'
+	icon_state = "sili_hatchet"
 
 /obj/item/scythe
 	name = "scythe"
@@ -612,6 +627,11 @@
 ///Send a signal to whatever we clicked and ask them if they wanna be PLANT RESTYLED YEAAAAAAAH
 /obj/item/secateurs/proc/restyle(atom/target, mob/living/user)
 	SEND_SIGNAL(target, COMSIG_ATOM_RESTYLE, user, target, user.zone_selected, EXTERNAL_RESTYLE_PLANT, 6 SECONDS)
+
+/obj/item/secateurs/cyborg
+	name = "cyborg secateurs"
+	icon = 'icons/obj/items_cyborg.dmi'
+	icon_state = "sili_secateur"
 
 /obj/item/geneshears
 	name = "Botanogenetic Plant Shears"

@@ -740,6 +740,11 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/admin)
+"gh" = (
+/obj/machinery/newscaster/directional/north,
+/obj/structure/chair,
+/turf/open/floor/iron/grimy,
+/area/centcom/tdome/administration)
 "gm" = (
 /obj/structure/table/wood,
 /obj/item/storage/dice,
@@ -962,6 +967,13 @@
 /obj/structure/flora/bush/generic/style_random,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/prison)
+"hQ" = (
+/obj/structure/sign/flag/nanotrasen/directional/east,
+/obj/effect/turf_decal/siding/dark{
+	dir = 1
+	},
+/turf/open/floor/greenscreen,
+/area/centcom/tdome/administration)
 "hT" = (
 /obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/wood,
@@ -1963,6 +1975,14 @@
 /obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron/grimy,
 /area/centcom/central_command_areas/courtroom)
+"ll" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/door/airlock/centcom{
+	name = "Sound Stage"
+	},
+/obj/machinery/door/firedoor,
+/turf/open/floor/iron/dark,
+/area/centcom/tdome/administration)
 "lm" = (
 /obj/structure/reagent_dispensers/fueltank,
 /obj/effect/turf_decal/stripes/line{
@@ -3006,6 +3026,12 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/ferry)
+"oZ" = (
+/obj/machinery/greenscreen_camera{
+	name = "centcom-caster"
+	},
+/turf/open/floor/iron/grimy,
+/area/centcom/tdome/administration)
 "pe" = (
 /obj/effect/turf_decal/delivery,
 /obj/effect/light_emitter/podbay,
@@ -5149,6 +5175,12 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/courtroom)
+"xI" = (
+/obj/effect/turf_decal/siding/dark{
+	dir = 1
+	},
+/turf/open/floor/greenscreen,
+/area/centcom/tdome/administration)
 "xN" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/table/reinforced,
@@ -8656,6 +8688,10 @@
 	},
 /turf/open/space/basic,
 /area/space)
+"Lr" = (
+/obj/structure/sign/poster/greenscreen/directional/south,
+/turf/open/floor/greenscreen,
+/area/centcom/tdome/administration)
 "Lt" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/centcom/central_command_areas/evacuation/ship)
@@ -8783,6 +8819,10 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/centcom/central_command_areas/courtroom)
+"Mq" = (
+/obj/structure/chair/stool/directional/south,
+/turf/open/floor/iron/grimy,
+/area/centcom/tdome/administration)
 "Mt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -9243,6 +9283,13 @@
 /obj/machinery/light/directional/north,
 /turf/open/misc/asteroid,
 /area/centcom/tdome/observation)
+"Pg" = (
+/obj/structure/sign/flag/nanotrasen/directional/west,
+/obj/effect/turf_decal/siding/dark{
+	dir = 1
+	},
+/turf/open/floor/greenscreen,
+/area/centcom/tdome/administration)
 "Ph" = (
 /obj/structure/filingcabinet/security,
 /obj/machinery/status_display/evac/directional/south,
@@ -10316,6 +10363,11 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/armory)
+"Wj" = (
+/obj/item/radio/intercom/directional/north,
+/obj/structure/chair,
+/turf/open/floor/iron/grimy,
+/area/centcom/tdome/administration)
 "Wl" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/effect/turf_decal/siding/yellow{
@@ -10585,6 +10637,12 @@
 /obj/effect/light_emitter/podbay,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/supplypod/loading/one)
+"XJ" = (
+/obj/machinery/status_display/evac/directional/north,
+/obj/machinery/light/cold/directional/north,
+/obj/structure/chair,
+/turf/open/floor/iron/grimy,
+/area/centcom/tdome/administration)
 "XL" = (
 /obj/structure/chair/comfy/brown{
 	dir = 8
@@ -57699,9 +57757,9 @@ JG
 Iv
 Iv
 Iv
-aa
-aa
-aa
+Iv
+Iv
+Iv
 aa
 aa
 aa
@@ -57954,11 +58012,11 @@ Iv
 JX
 JX
 Iv
-aa
-aa
-aa
-aa
-aa
+Wj
+Ka
+Pg
+Lr
+Iv
 aa
 aa
 aa
@@ -58211,11 +58269,11 @@ JG
 JG
 JG
 Iv
-aa
-aa
-aa
-aa
-aa
+XJ
+Ka
+xI
+Lr
+Iv
 aa
 aa
 aa
@@ -58467,12 +58525,12 @@ JG
 JG
 JG
 JG
+ll
+Ka
+oZ
+xI
+Lr
 Iv
-aa
-aa
-aa
-aa
-aa
 aa
 aa
 aa
@@ -58725,11 +58783,11 @@ JG
 Iv
 Kg
 Iv
-aa
-aa
-aa
-aa
-aa
+XJ
+Mq
+xI
+Lr
+Iv
 aa
 aa
 aa
@@ -58982,11 +59040,11 @@ JG
 Iv
 JG
 Iv
-aa
-aa
-aa
-aa
-aa
+gh
+Ka
+hQ
+Lr
+Iv
 aa
 aa
 aa
@@ -59239,11 +59297,11 @@ IR
 Iv
 JG
 Iv
-aa
-aa
-aa
-aa
-aa
+Iv
+Iv
+Iv
+Iv
+Iv
 aa
 aa
 aa

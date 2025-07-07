@@ -46,3 +46,28 @@ GLOBAL_LIST_INIT(spellbook_misc_items, generate_spellbook_items(SPELLBOOK_CATEGO
 	category = SPELLBOOK_CATEGORY_MISC
 
 	our_action_typepath = /datum/action/cooldown/spell/pointed/mana_sense
+
+/datum/spellbook_item/spell/sending
+	name = "Sending"
+	description = "Its Telepathy, but with magic."
+	lore = "Using your magical attunement (or other aptitudes) \
+	you can send a message to another creature within a short radius. "
+
+	category = SPELLBOOK_CATEGORY_MISC
+
+	our_action_typepath = /datum/action/cooldown/spell/list_target/telepathy/mana
+
+/datum/spellbook_item/spell/sense_equilibrium
+	name = "Sense Equilibrium"
+	description = "Divert pathways in a person's brain from one area to another, enhancing one at the cost of the other."
+	lore = "Shape the power of the mind to your will." // I ain't writing all that.
+
+	category = SPELLBOOK_CATEGORY_MISC
+	has_params = TRUE
+
+	our_action_typepath = /datum/action/cooldown/spell/list_target/sense_equilibrium
+
+// Customization to allow greater sense equilibrium
+/datum/spellbook_item/spell/sense_equilibrium/generate_customization_params()
+	. = list()
+	.["greater"] = new /datum/spellbook_customization_entry/boolean("greater", "Greater, stronger, shorter lasting version", "A more expensive and shorter lasting form of Sense Equilibrium which allows the user to pinpoint the exact effect they wish the spell to have.")

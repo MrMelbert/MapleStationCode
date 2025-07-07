@@ -11,6 +11,7 @@
 	usable_hands = 0 //Populated on init through list/bodyparts
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	blocks_emissive = EMISSIVE_BLOCK_NONE
+	mouse_drop_zone = TRUE
 	///List of [/obj/item/organ]s in the mob. They don't go in the contents for some reason I don't want to know.
 	var/list/obj/item/organ/organs = list()
 	///Same as [above][/mob/living/carbon/var/organs], but stores "slot ID" - "organ" pairs for easy access.
@@ -86,9 +87,6 @@
 	/// This number is also reset to 0 every tick of carbon Life(). Pain.
 	var/damageoverlaytemp = 0
 
-	///used to halt stamina regen temporarily
-	var/stam_regen_start_time = 0
-
 	/// Timer id of any transformation
 	var/transformation_timer
 
@@ -116,3 +114,4 @@
 	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+

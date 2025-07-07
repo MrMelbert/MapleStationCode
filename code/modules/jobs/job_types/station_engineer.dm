@@ -2,6 +2,11 @@
 	title = JOB_STATION_ENGINEER
 	description = "Start the Supermatter, wire the solars, repair station hull \
 		and wiring damage."
+	title_options = list(
+		"Junior Engineer",
+		"Station Electrician",
+		"Station Mechanic",
+	)
 	department_head = list(JOB_CHIEF_ENGINEER)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -12,7 +17,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "STATION_ENGINEER"
 
-	outfit = /datum/outfit/job/engineer
+	base_outfit = /datum/outfit/job/engineer
 	plasmaman_outfit = /datum/outfit/plasmaman/engineering
 
 	paycheck = PAYCHECK_CREW

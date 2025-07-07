@@ -27,14 +27,20 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
+	interaction_flags_click = NEED_LITERACY|NEED_LIGHT|ALLOW_RESTING
+	/// Verbose/condensed
 	var/mode = SCANNER_VERBOSE
+	/// HEALTH/WOUND
 	var/scanmode = SCANMODE_HEALTH
+	/// Advanced health analyzer
 	var/advanced = FALSE
 	custom_price = PAYCHECK_COMMAND
 	/// If this analyzer will give a bonus to wound treatments apon woundscan.
 	var/give_wound_treatment_bonus = FALSE
 	var/last_scan_text
 	var/scanner_busy = FALSE
+
+	var/print = FALSE
 
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
@@ -60,7 +66,7 @@
 		if(SCANMODE_WOUND)
 			to_chat(user, span_notice("You switch the health analyzer to report extra info on wounds."))
 
-/obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 
@@ -106,7 +112,7 @@
 
 	add_fingerprint(user)
 
-/obj/item/healthanalyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(user.can_read(src) && !user.is_blind())
@@ -182,11 +188,6 @@
 		else
 			render_list += "<span class='alert ml-1'>Subject has been husked.</span><br>"
 
-	if(target.getStaminaLoss())
-		if(advanced)
-			render_list += "<span class='alert ml-1'>Fatigue level: [target.getStaminaLoss()]%.</span><br>"
-		else
-			render_list += "<span class='alert ml-1'>Subject appears to be suffering from fatigue.</span><br>"
 	if (!target.get_organ_slot(ORGAN_SLOT_BRAIN)) // kept exclusively for soul purposes
 		render_list += "<span class='alert ml-1'>Subject lacks a brain.</span><br>"
 
@@ -341,13 +342,16 @@
 
 		//Genetic stability
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
-			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span><br>"
+			if(humantarget.dna.stability <= 0)
+				render_list += conditional_tooltip("<span class='alert ml-1'>Genetic Stability: CRITICAL [humantarget.dna.stability] %</span><br>", "Supply [/datum/reagent/medicine/mutadone::name].", tochat)
+			else
+				render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability] %</span><br>"
 
 		render_list += "<span class='info ml-1'>Species: [humantarget.dna.species.name][HAS_TRAIT(target, TRAIT_HULK) ? "-derived mutant" : ""]</span><br>"
 
 	// NON-MODULE CHANGE
 	var/skin_temp = target.get_skin_temperature()
-	var/skin_temperature_message = "Skin temperature: [round(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"
+	var/skin_temperature_message = "Skin temperature: [round_and_format_decimal(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round_and_format_decimal(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"
 	if(skin_temp >= target.bodytemp_heat_damage_limit)
 		render_list += "<span class='alert ml-1'>☼ [skin_temperature_message] ☼</span><br>"
 	else if(skin_temp <= target.bodytemp_cold_damage_limit)
@@ -355,7 +359,7 @@
 	else
 		render_list += "<span class='info ml-1'>[skin_temperature_message]</span><br>"
 
-	var/body_temperature_message = "Body temperature: [round(KELVIN_TO_CELCIUS(target.body_temperature), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(target.body_temperature), 0.1)] &deg;F)"
+	var/body_temperature_message = "Body temperature: [round_and_format_decimal(KELVIN_TO_CELCIUS(target.body_temperature), 0.1)] &deg;C ([round_and_format_decimal(KELVIN_TO_FAHRENHEIT(target.body_temperature), 0.1)] &deg;F)"
 	if(target.body_temperature >= target.bodytemp_heat_damage_limit)
 		render_list += "<span class='alert ml-1'>☼ [body_temperature_message] ☼</span><br>"
 	else if(target.body_temperature <= target.bodytemp_cold_damage_limit)
@@ -364,23 +368,53 @@
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span><br>"
 
 	// Blood Level
-	if(target.get_blood_type())
-		var/blood_percent = round((target.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-		var/blood_type = "[target.get_blood_type() || "None"]"
-		if(target.blood_volume <= BLOOD_VOLUME_SAFE && target.blood_volume > BLOOD_VOLUME_OKAY)
-			render_list += "<span class='alert ml-1'>Blood level: LOW [blood_percent] %, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]<br>"
-		else if(target.blood_volume <= BLOOD_VOLUME_OKAY)
-			render_list += "<span class='alert ml-1'>Blood level: <b>CRITICAL [blood_percent] %</b>, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]<br>"
-		else
-			render_list += "<span class='info ml-1'>Blood level: [blood_percent] %, [target.blood_volume] cl, type: [blood_type]</span><br>"
+	var/datum/blood_type/target_blood_type = target.get_blood_type()
+	if(target_blood_type)
+		var/bpm = target.get_bpm()
+		var/needs_heart = TRUE
+		if(ishuman(target))
+			var/mob/living/carbon/human/humantarget = target
+			needs_heart = humantarget.needs_heart()
+
+		var/bpm_format = "[needs_heart ? bpm : "n/a"] bpm"
+		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)] cl" // round to 0.1 but also print "100.0" and not "100"
+		var/blood_type_format = "[target_blood_type.name]"
+
+		if(needs_heart && (bpm < 60 || bpm > 100))
+			bpm_format = span_alert(bpm_format)
+
+		switch(target.blood_volume)
+			if(BLOOD_VOLUME_EXCESS to INFINITY)
+				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Alert: Hypervolemic)")), "Siphon blood via IV, or induce bleeding.", tochat)
+			if(BLOOD_VOLUME_MAXIMUM - 100 to BLOOD_VOLUME_EXCESS)
+				level_format = conditional_tooltip(span_alert("[level_format] (Warning: Hypervolemic)"), "Siphon blood via IV.", tochat)
+			if(BLOOD_VOLUME_SAFE - 30 to BLOOD_VOLUME_SAFE)
+				level_format = conditional_tooltip(span_alert(level_format), "Supply [target_blood_type.restoration_chem::name] supplements.", tochat)
+			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE - 30)
+				level_format = conditional_tooltip(span_alert("[level_format] (Warning: Hypovolemic shock)"), "Supply [/datum/reagent/medicine/salglu_solution::name] or [target_blood_type.restoration_chem::name] supplements.", tochat)
+			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
+				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Alert: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
+			if(-INFINITY to BLOOD_VOLUME_BAD)
+				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Critical: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
+
+		if(tochat && length(target_blood_type.compatible_types))
+			var/list/compatible_types_readable = list()
+			for(var/datum/blood_type/blood_type as anything in target_blood_type.compatible_types)
+				compatible_types_readable |= initial(blood_type.name)
+			blood_type_format = span_tooltip("Can receive from types [english_list(compatible_types_readable)].", blood_type_format)
+
+		render_list += "<span class='info ml-1'>Heart rate: [bpm_format]</span><br>"
+		render_list += "<span class='info ml-1'>Blood level: [level_format]</span><br>"
+		render_list += "<span class='info ml-1'>Blood type: [blood_type_format]</span><br>"
+
 	// NON-MODULE CHANGE END
 
 	var/blood_alcohol_content = target.get_blood_alcohol_content()
 	if(blood_alcohol_content > 0)
 		if(blood_alcohol_content >= 0.24)
-			render_list += "<span class='alert ml-1'>Blood alcohol content: <b>CRITICAL [blood_alcohol_content]%</b></span><br>"
+			render_list += conditional_tooltip("<span class='alert ml-1'>Blood alcohol content: <b>CRITICAL [blood_alcohol_content] %</b></span><br>", "Supply [/datum/reagent/medicine/antihol::name], stomach pump, or blood filter.", tochat)
 		else
-			render_list += "<span class='info ml-1'>Blood alcohol content: [blood_alcohol_content]%</span><br>"
+			render_list += "<span class='info ml-1'>Blood alcohol content: [blood_alcohol_content] %</span><br>"
 
 	//Diseases
 	var/disease_hr = FALSE
@@ -410,10 +444,7 @@
 		to_chat(user, examine_block(.), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 	return .
 
-/obj/item/healthanalyzer/CtrlShiftClick(mob/user)
-	. = ..()
-	if(. == FALSE)
-		return
+/obj/item/healthanalyzer/click_ctrl_shift(mob/user)
 	if(!length(last_scan_text))
 		balloon_alert(user, "no scans!")
 		return
@@ -513,17 +544,13 @@
 			return jointext(render_list, "")
 		// NON-MODULE CHANGE END
 
-/obj/item/healthanalyzer/AltClick(mob/user)
-	..()
-
-	if(!user.can_perform_action(src, NEED_LITERACY|NEED_LIGHT) || user.is_blind())
-		return
-
+/obj/item/healthanalyzer/click_alt(mob/user)
 	if(mode == SCANNER_NO_MODE)
-		return
+		return CLICK_ACTION_BLOCKING
 
 	mode = !mode
 	to_chat(user, mode == SCANNER_VERBOSE ? "The scanner now shows specific limb damage." : "The scanner no longer shows limb damage.")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/healthanalyzer/advanced
 	name = "advanced health analyzer"
@@ -544,11 +571,9 @@
 
 	var/render_list = ""
 	var/advised = FALSE
-	for(var/limb in patient.get_wounded_bodyparts())
-		var/obj/item/bodypart/wounded_part = limb
-		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1? "s" : ""] detected in [wounded_part.name]</b>"
-		for(var/limb_wound in wounded_part.wounds)
-			var/datum/wound/current_wound = limb_wound
+	for(var/obj/item/bodypart/wounded_part as anything in patient.get_wounded_bodyparts())
+		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.plaintext_zone]</b>"
+		for(var/datum/wound/current_wound as anything in wounded_part.wounds)
 			render_list += "<div class='ml-2'>[simple_scan ? current_wound.get_simple_scanner_description() : current_wound.get_scanner_description()]</div><br>"
 			if (scanner.give_wound_treatment_bonus)
 				ADD_TRAIT(current_wound, TRAIT_WOUND_SCANNED, ANALYZER_TRAIT)
@@ -620,7 +645,7 @@
 /obj/item/healthanalyzer/simple/proc/violence_damage(mob/living/user)
 	user.adjustBruteLoss(4)
 
-/obj/item/healthanalyzer/simple/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/healthanalyzer/simple/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())

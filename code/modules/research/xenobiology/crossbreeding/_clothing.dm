@@ -12,24 +12,14 @@ Slimecrossing Armor
 	inhand_icon_state = "b_mask"
 	body_parts_covered = NONE
 	w_class = WEIGHT_CLASS_SMALL
-	clothing_traits = list(TRAIT_NOBREATH)
+	clothing_traits = list(TRAIT_ASSISTED_BREATHING)
 	armor_type = /datum/armor/mask_nobreath
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = NONE
+	interaction_flags_mouse_drop = NEED_HANDS
 
 /datum/armor/mask_nobreath
 	bio = 50
-
-/obj/item/clothing/mask/nobreath/equipped(mob/living/carbon/human/user, slot)
-	. = ..()
-	if(slot & ITEM_SLOT_MASK)
-		user.failed_last_breath = FALSE
-		user.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
-		user.apply_status_effect(/datum/status_effect/rebreathing)
-
-/obj/item/clothing/mask/nobreath/dropped(mob/living/carbon/human/user)
-	..()
-	user.remove_status_effect(/datum/status_effect/rebreathing)
 
 /obj/item/clothing/glasses/prism_glasses
 	name = "prism glasses"
@@ -125,8 +115,8 @@ Slimecrossing Armor
 		return
 	return ..()
 
-/obj/item/clothing/head/peaceflower/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	if(at_peace_check(usr))
+/obj/item/clothing/head/peaceflower/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	if(at_peace_check(user))
 		return
 	return ..()
 
@@ -138,12 +128,12 @@ Slimecrossing Armor
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
 	inhand_icon_state = null
 	flags_inv = NONE
-	obj_flags = IMMUTABLE_SLOW
+	item_flags = IMMUTABLE_SLOW
 	slowdown = 4
 	var/hit_reflect_chance = 40
 
 /obj/item/clothing/suit/armor/heavy/adamantine/IsReflect(def_zone)
-	if(def_zone in list(BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG) && prob(hit_reflect_chance))
+	if((def_zone in list(BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)) && prob(hit_reflect_chance))
 		return TRUE
 	else
 		return FALSE

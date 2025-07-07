@@ -88,8 +88,8 @@
 
 	// common code for the food thoughts appearance
 	food_image.loc = customer_pawn
-	food_image.pixel_y = 32
-	food_image.pixel_x = 16
+	food_image.pixel_w = 16
+	food_image.pixel_z = 32
 	SET_PLANE_EXPLICIT(food_image, HUD_PLANE, customer_pawn)
 	food_image.plane = HUD_PLANE
 	food_image.appearance_flags = RESET_COLOR
@@ -271,10 +271,10 @@
 /obj/structure/holosign/robot_seat/attack_holosign(mob/living/user, list/modifiers)
 	return
 
-/obj/structure/holosign/robot_seat/attacked_by(obj/item/I, mob/living/user)
-	. = ..()
-	if(I.type == projector?.type && !linked_venue.linked_seats[src])
+/obj/structure/holosign/robot_seat/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(tool.type == projector?.type && !linked_venue.linked_seats[src])
 		qdel(src)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/holosign/robot_seat/Destroy()
 	linked_venue.linked_seats -= src

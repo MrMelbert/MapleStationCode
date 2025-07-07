@@ -208,6 +208,19 @@
 		/obj/item/storage/pill_bottle/prescription/buproprion,
 	)
 
+/obj/item/storage/pill_bottle/prescription/nitroglycerin
+	pill_type = /obj/item/reagent_containers/pill/nitroglycerin
+	num_pills = 5
+
+/datum/supply_pack/goody/nitroglycerin
+	name = "Nitroglycerin Prescription"
+	desc = "Contains a pill bottle of Nitroglycerin, which helps with heart conditions."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 10
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/nitroglycerin,
+	)
+
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
 	desc = "Contains six syringes of general medicinal painkillers - Ibuprofen, Paracetamol, and Aspirin."
@@ -303,3 +316,47 @@
 		/obj/item/mana_battery/mana_crystal/cut,
 		/obj/item/mana_battery/mana_crystal/cut,
 	)
+
+/datum/supply_pack/imports/starfruit_seed
+	name = "Murian Starfruit Seeds"
+	desc = "A seed of juicy Murian Starfruit, imported from the agricultural world of Cremona's Bounty. \
+	Has major significance to the peoples of Mu and is used in a wide variety of drinks and dishes."
+	cost = PAYCHECK_COMMAND * 5
+	contains = list(
+		/obj/item/seeds/starfruit = 2,
+		/obj/item/book/manual/starfruit = 1,
+	)
+
+/datum/supply_pack/security/specialty_c38_ammo
+	name = "Specialty OPS .38 Ammo"
+	desc = "A pack of specialty ammo produced by OPS Industries, a partner high-end equipment workshop. Contains two speedloaders of .38 HV-DS and .38 Maginull rounds. \
+		Cannot be department ordered."
+	cost = PAYCHECK_COMMAND * 50
+	no_departmental_orders = TRUE // intentionally harder to get and requires spending
+	crate_type = /obj/structure/closet/crate/secure/ops_industries
+	contains = list(
+		/obj/item/ammo_box/c38/dual_stage,
+		/obj/item/ammo_box/c38/dual_stage,
+		/obj/item/ammo_box/c38/maginull,
+		/obj/item/ammo_box/c38/maginull,
+	)
+
+/obj/structure/closet/crate/secure/ops_industries
+	name = "OPS Industries crate"
+	desc = "A secure crate with the logo of OPS Industries."
+	icon = 'maplestation_modules/icons/obj/storage/crates.dmi'
+	icon_state = "opscrate"
+	base_icon_state = "opscrate"
+
+/datum/supply_pack/science/volitious_lignite_single_pack
+	name = "Volitious Lignite Pack"
+	desc = "A bundle containing 5 pieces of a natural source of volite, volitious lignite."
+	cost = PAYCHECK_COMMAND * 2
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+	)
+

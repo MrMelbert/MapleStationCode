@@ -3,16 +3,18 @@
 	desc = "Allows you to light cigarettes with the snap of a finger."
 	extend_sound = 'sound/items/welderactivate.ogg'
 	retract_sound = 'sound/items/welderdeactivate.ogg'
-	items_to_create = list(/obj/item/lighter/finger)
+	items_to_create = list(/obj/item/lighter/spell/finger)
 
 /obj/item/organ/internal/cyberimp/arm/lighter/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
+	if(isnull(owner))
+		return
 	var/obj/item/bodypart/real_hand = hand
 	if(!istype(real_hand))
 		return
-	real_hand.receive_damage(burn = 10 / severity, wound_bonus = 10, damage_source = src)
+	owner.apply_damage(10 / severity, BURN, real_hand, attacking_item = src)
 	to_chat(owner, span_warning("You feel your [parse_zone(zone)] begin to burn up!"))
 
 /obj/item/organ/internal/cyberimp/arm/lighter/on_mob_insert(mob/living/carbon/arm_owner)
@@ -25,14 +27,14 @@
 
 /obj/item/organ/internal/cyberimp/arm/lighter/Extend(obj/item/augment)
 	. = ..()
-	var/obj/item/lighter/finger/lighter = augment
+	var/obj/item/lighter/spell/finger/lighter = augment
 	if(!istype(augment) || augment.loc == src)
 		return
 	lighter.name = "[owner]'s [name]"
 	lighter.set_lit(TRUE)
 
 /obj/item/organ/internal/cyberimp/arm/lighter/Retract()
-	var/obj/item/lighter/finger/lighter = active_item
+	var/obj/item/lighter/spell/finger/lighter = active_item
 	if(istype(lighter))
 		lighter.set_lit(FALSE)
 		lighter.name = initial(lighter.name)
@@ -61,8 +63,27 @@
 /obj/item/organ/internal/cyberimp/arm/lighter/left
 	zone = BODY_ZONE_L_ARM
 
+/obj/item/lighter/spell
+	/// Weakref to the action that created us
+	VAR_FINAL/datum/weakref/origin_ref
+
+/obj/item/lighter/spell/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
+	. = ..()
+	if(origin)
+		origin_ref = WEAKREF(origin)
+	else
+		item_flags |= DROPDEL
+
+/obj/item/lighter/spell/proc/clear_up(mob/user, do_message = FALSE)
+	var/datum/action/cooldown/spell/touch/finger_flame/origin = origin_ref?.resolve()
+	if(!QDELETED(origin))
+		origin.remove_hand(user, do_message)
+		return
+
+	qdel(src)
+
 // Used for finger lighter implant and spell
-/obj/item/lighter/finger
+/obj/item/lighter/spell/finger
 	name = "finger light"
 	desc = "Fire at your fingertips!"
 	inhand_icon_state = "nothing"
@@ -70,21 +91,27 @@
 	light_sound_on = null
 	light_sound_off = null
 
-/obj/item/lighter/finger/ignition_effect(atom/A, mob/user)
+/obj/item/lighter/spell/finger/ignition_effect(atom/A, mob/user)
 	if(get_temperature())
 		playsound(user, pick('sound/misc/fingersnap1.ogg', 'sound/misc/fingersnap2.ogg'), 50, TRUE)
 		return span_infoplain(span_rose(
 			"With a snap, [user]'s finger emits a low flame, which they use to light [A] ablaze. \
 			Hot damn, [user.p_theyre()] badass."))
 
-/obj/item/lighter/finger/attack_self(mob/living/user)
+/obj/item/lighter/spell/finger/attack_self(mob/living/user)
 	return
 
-/obj/item/lighter/finger/magic
+/obj/item/lighter/spell/finger/magic
 	name = "finger flame"
 
+/obj/item/lighter/spell/finger/magic/ignition_effect(atom/A, mob/user)
+	. = ..()
+	if(!.)
+		return
+	clear_up(user, do_message = FALSE)
+
 // Used for lizard mouth breathing
-/obj/item/lighter/flame
+/obj/item/lighter/spell/flame
 	name = "flame"
 	desc = "Your ancestors would be proud."
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
@@ -97,35 +124,18 @@
 	VAR_FINAL/world_time_lit = -1
 	/// Tracks seconds between times we've burned someone holding the flame.
 	VAR_FINAL/seconds_burning = 0
-	/// Weakref to the action that created us
-	VAR_FINAL/datum/weakref/origin_ref
 
-/obj/item/lighter/flame/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/lizard/origin)
-	. = ..()
-	if(origin)
-		origin_ref = WEAKREF(origin)
-	else
-		item_flags |= DROPDEL
-
-/obj/item/lighter/flame/proc/clear_up(mob/user, do_message = FALSE)
-	var/datum/action/cooldown/spell/touch/finger_flame/lizard/origin = origin_ref?.resolve()
-	if(!QDELETED(origin))
-		origin.remove_hand(user, do_message)
-		return
-
-	qdel(src)
-
-/obj/item/lighter/flame/ignition_effect(atom/A, mob/user)
+/obj/item/lighter/spell/flame/ignition_effect(atom/A, mob/user)
 	if(!get_temperature())
 		return
 
 	. = span_infoplain(span_rose("[user] breathes a small mote of fire at [A], setting it ablaze. Prehistoric."))
 	clear_up(user, do_message = FALSE)
 
-/obj/item/lighter/flame/attack_self(mob/living/user)
+/obj/item/lighter/spell/flame/attack_self(mob/living/user)
 	clear_up(user, do_message = TRUE)
 
-/obj/item/lighter/flame/set_lit(new_lit)
+/obj/item/lighter/spell/flame/set_lit(new_lit)
 	if(lit == new_lit)
 		return
 
@@ -133,7 +143,7 @@
 	if(lit)
 		world_time_lit = world.time
 
-/obj/item/lighter/flame/process(seconds_per_tick)
+/obj/item/lighter/spell/flame/process(seconds_per_tick)
 	. = ..()
 	if(world_time_lit + 30 SECONDS > world.time)
 		return
@@ -155,3 +165,23 @@
 
 	to_chat(holder, span_warning("The flame burns out in your mouth."))
 	clear_up(holder, do_message = FALSE)
+
+// + Resprites + //
+/obj/item/organ/internal/cyberimp/arm
+	icon = 'maplestation_modules/icons/obj/organs.dmi'
+	icon_state = "toolkit_generic"
+
+/obj/item/organ/internal/cyberimp/arm/toolset
+	icon_state = "toolkit_engineering"
+
+/obj/item/organ/internal/cyberimp/arm/surgery
+	icon_state = "toolkit_surgical"
+
+/obj/item/organ/internal/cyberimp/arm/muscle
+	icon_state = "muscle_implant"
+
+/obj/item/organ/internal/cyberimp/arm/gun/taser
+	icon = 'icons/obj/medical/organs/organs.dmi'
+
+/obj/item/organ/internal/cyberimp/arm/gun/laser
+	icon = 'icons/obj/medical/organs/organs.dmi'

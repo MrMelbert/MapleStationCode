@@ -93,18 +93,6 @@
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
 
-/datum/loadout_item/shoes/blacksandals
-	name = "Black Sandals"
-	item_path = /obj/item/clothing/shoes/sandal/black
-
-/datum/loadout_item/shoes/trainers
-	name = "Workout Trainers"
-	item_path = /obj/item/clothing/shoes/trainers
-
-/datum/loadout_item/shoes/sneaker
-	name = "Casual Sneakers"
-	item_path = /obj/item/clothing/shoes/trainers/casual
-
 /datum/loadout_item/shoes/heels
 	name = "High Heels"
 	item_path = /obj/item/clothing/shoes/heels
@@ -113,25 +101,21 @@
 	name = "Fancy High Heels"
 	item_path = /obj/item/clothing/shoes/heels/fancy
 
-/datum/loadout_item/shoes/mrashoes
-	name = "Malheur Research Association boots"
-	item_path = /obj/item/clothing/shoes/mrashoes
-	additional_displayed_text = list("Character Item")
+/datum/loadout_item/shoes/barefoot
+	name = "Barefoot"
+	item_path = /obj/item/clothing/shoes/barefoot
+	ui_icon = 'icons/mob/landmarks.dmi'
+	ui_icon_state = "x"
 
-/datum/loadout_item/shoes/reshiaboot
-	name = "Short Brown Boots"
-	item_path = /obj/item/clothing/shoes/reshiaboot
+/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, datum/preferences/preference_source, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+	return
 
-/datum/loadout_item/shoes/grey
-	name = "Designer Boots"
-	item_path = /obj/item/clothing/shoes/greyboots
+/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+	outfit.shoes = null
 
-/datum/loadout_item/shoes/lini
-	name = "Berbier Boots"
-	item_path = /obj/item/clothing/shoes/liniboots
-	additional_displayed_text = list("Character Item")
-
-/datum/loadout_item/shoes/vince
-	name = "Slick Syringe Heels"
-	item_path = /obj/item/clothing/shoes/vince
-	additional_displayed_text = list("Character Item")
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL

@@ -20,14 +20,12 @@
 	QDEL_LIST(towels)
 	return ..()
 
-/obj/structure/towel_rack/deconstruct(disassembled)
+/obj/structure/towel_rack/atom_deconstruct(disassembled)
 	var/atom/drop_loc = drop_location()
 	for(var/obj/item/towel/dropped_towel as anything in towels)
 		dropped_towel.forceMove(drop_loc)
 		dropped_towel.pixel_x = rand(-8, 8)
 		dropped_towel.pixel_y = rand(-8, 8)
-
-	return ..()
 
 /obj/structure/towel_rack/Exited(atom/movable/gone, direction)
 	. = ..()

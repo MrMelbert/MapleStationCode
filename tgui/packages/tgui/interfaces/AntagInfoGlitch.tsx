@@ -1,5 +1,6 @@
+import { Divider, Section, Stack } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Divider, Section, Stack } from '../components';
 import { Window } from '../layouts';
 import { Objective } from './common/Objectives';
 
@@ -37,10 +38,13 @@ export const AntagInfoGlitch = (props) => {
               organic intruders to maintain the integrity of the system.
             </Stack.Item>
             <SpecificInfo />
-            <Stack.Item>
-              <marquee scrollamount="2">{objectives[0]?.explanation}</marquee>
-            </Stack.Item>
+
             <Divider />
+            <Stack.Item>
+              <span style={{ opacity: 0.6 }}>
+                &#47;&#47; {objectives[0]?.explanation}
+              </span>
+            </Stack.Item>
             <Stack.Item>
               const <span style={textStyles.variable}>TARGETS</span> ={' '}
             </Stack.Item>

@@ -337,6 +337,16 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_obsess"
 
+/datum/sprite_accessory/hair/elven_ponytail
+	name = "Elven Ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elf"
+
+/datum/sprite_accessory/hair/toxic_wisp
+	name = "Toxic Wisp"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxic"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
@@ -513,3 +523,9 @@
 	name = "High Black Stockings"
 	icon_state = "highblackstocking"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+
+/// --- Facial Hair ---
+/datum/sprite_accessory/facial_hair/foxmarkings // not exactly hair but i'm not coding a unique system for this *yet*
+	name = "Facial Markings"
+	icon_state = "facial_foxmarkings"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'

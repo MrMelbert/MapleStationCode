@@ -67,22 +67,19 @@
 				H.set_eye_blur_if_lower(10 SECONDS)
 				eyes.apply_organ_damage(5)
 
-/obj/item/clothing/glasses/AltClick(mob/user)
-	if(glass_colour_type && !forced_glass_color && ishuman(user))
-		var/mob/living/carbon/human/human_user = user
+/obj/item/clothing/glasses/click_alt(mob/user)
+	if(isnull(glass_colour_type) || forced_glass_color || !ishuman(user))
+		return NONE
+	var/mob/living/carbon/human/human_user = user
 
-		if (human_user.glasses != src)
-			return ..()
-
-		if (HAS_TRAIT_FROM(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT))
-			REMOVE_TRAIT(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT)
-			to_chat(human_user, span_notice("You will no longer see glasses colors."))
-		else
-			ADD_TRAIT(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT)
-			to_chat(human_user, span_notice("You will now see glasses colors."))
-		human_user.update_glasses_color(src, TRUE)
+	if (HAS_TRAIT_FROM(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT))
+		REMOVE_TRAIT(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT)
+		to_chat(human_user, span_notice("You will no longer see glasses colors."))
 	else
-		return ..()
+		ADD_TRAIT(human_user, TRAIT_SEE_GLASS_COLORS, GLASSES_TRAIT)
+		to_chat(human_user, span_notice("You will now see glasses colors."))
+	human_user.update_glasses_color(src, TRUE)
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/glasses/proc/change_glass_color(mob/living/carbon/human/H, datum/client_colour/glass_colour/new_color_type)
 	var/old_colour_type = glass_colour_type
@@ -641,18 +638,19 @@
 			var/datum/atom_hud/our_hud = GLOB.huds[hud]
 			our_hud.hide_from(user)
 
-/obj/item/clothing/glasses/debug/AltClick(mob/user)
-	. = ..()
-	if(ishuman(user))
-		if(xray)
-			vision_flags &= ~SEE_MOBS|SEE_OBJS
-			REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
-		else
-			vision_flags |= SEE_MOBS|SEE_OBJS
-			ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
-		xray = !xray
-		var/mob/living/carbon/human/human_user = user
-		human_user.update_sight()
+/obj/item/clothing/glasses/debug/click_alt(mob/user)
+	if(!ishuman(user))
+		return CLICK_ACTION_BLOCKING
+	if(xray)
+		vision_flags &= ~SEE_MOBS|SEE_OBJS
+		REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+	else
+		vision_flags |= SEE_MOBS|SEE_OBJS
+		ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+	xray = !xray
+	var/mob/living/carbon/human/human_user = user
+	human_user.update_sight()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/glasses/regular/kim
 	name = "binoclard lenses"
@@ -666,33 +664,32 @@
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
 	flags_cover = GLASSESCOVERSEYES
-	///Tells us who the current wearer([BIGSHOT]) is.
-	var/mob/living/carbon/human/bigshot
 
 /obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
-	..()
+	. = ..()
 	if(!(slot & ITEM_SLOT_EYES))
 		return
-	bigshot = user
-	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
+	if(isnull(user.mob_mood))
+		return
+	RegisterSignal(user, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
+	moodshift(user, user.mob_mood.sanity)
 
 /obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
-	..()
-	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
-	bigshot = initial(bigshot)
+	. = ..()
+	UnregisterSignal(user, COMSIG_CARBON_SANITY_UPDATE)
 	icon_state = initial(icon_state)
 	desc = initial(desc)
 
-/obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
+/obj/item/clothing/glasses/salesman/proc/moodshift(mob/living/source, amount)
 	SIGNAL_HANDLER
 	if(amount < SANITY_UNSTABLE)
 		icon_state = "salesman_fzz"
 		desc = "A pair of glasses, the lenses are full of TV static. They've certainly seen better days..."
-		bigshot.update_worn_glasses()
+		source.update_worn_glasses()
 	else
 		icon_state = initial(icon_state)
 		desc = initial(desc)
-		bigshot.update_worn_glasses()
+		source.update_worn_glasses()
 
 /obj/item/clothing/glasses/nightmare_vision
 	name = "nightmare vision goggles"

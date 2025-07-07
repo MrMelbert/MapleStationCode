@@ -41,9 +41,25 @@
 	var/goody = FALSE
 	/// Can coupons target this pack? If so, how rarely?
 	var/discountable = SUPPLY_PACK_NOT_DISCOUNTABLE
+	/// NON-MODULE CHANGE : Does this override departmental orders to be unavailable from them?
+	var/no_departmental_orders = FALSE
 
 /datum/supply_pack/New()
 	id = type
+
+/// Returns data used for cargo purchasing UI
+/datum/supply_pack/proc/get_contents_ui_data()
+	var/list/data = list()
+	for(var/obj/item/item as anything in contains)
+		var/list/item_data = list(
+			"name" = item.name,
+			"icon" = item.greyscale_config ? null : item.icon,
+			"icon_state" = item.greyscale_config ? null : item.icon_state,
+			"amount" = contains[item]
+		)
+		UNTYPED_LIST_ADD(data, item_data)
+
+	return data
 
 /datum/supply_pack/proc/generate(atom/A, datum/bank_account/paying_account)
 	var/obj/structure/closet/crate/C
@@ -148,6 +164,7 @@
 		var/fraction = available_quantity
 		if(market_quantity != available_quantity) //to avoid division by zero error
 			fraction /= (market_quantity - available_quantity)
-		SSstock_market.materials_prices[material_type] += round(SSstock_market.materials_prices[material_type] * fraction)
+		SSstock_market.adjust_material_price(material_type, SSstock_market.materials_prices[material_type] * fraction)
+
 		//We decrease the quantity only after adjusting our prices for accurate values
-		SSstock_market.materials_quantity[material_type] -= available_quantity
+		SSstock_market.adjust_material_quantity(material_type, -available_quantity)

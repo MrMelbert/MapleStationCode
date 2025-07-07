@@ -1,9 +1,4 @@
-import { BooleanLike, classes } from 'common/react';
-import { multiline } from 'common/string';
-import { capitalizeAll } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -13,7 +8,11 @@ import {
   Stack,
   Table,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike, classes } from 'tgui-core/react';
+import { capitalizeAll } from 'tgui-core/string';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 const ROOT_CATEGORIES = ['Atmospherics', 'Disposals', 'Transit Tubes'];
@@ -347,11 +346,10 @@ export const SmartPipeBlockSection = (props) => {
                 color="transparent"
                 icon="info"
                 tooltipPosition="right"
-                tooltip={multiline`
-                This is a panel for blocking certain connection
+                tooltip="This is a panel for blocking certain connection
                 directions for the smart pipes.
                 The button in the center resets to
-                default (all directions can connect)`}
+                default (all directions can connect)"
               />
             </Stack.Item>
             <Stack.Item>

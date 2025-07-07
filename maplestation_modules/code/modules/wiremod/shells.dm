@@ -27,6 +27,7 @@
 	var/datum/port/output/spoken_into
 	var/datum/port/output/sent_message
 	var/datum/port/output/failure
+	var/datum/port/output/entity
 
 	var/blocking_radio = FALSE
 	var/obj/item/radio/headset/shell/attached_shell
@@ -34,10 +35,11 @@
 /obj/item/circuit_component/headset/register_shell(atom/movable/shell)
 	RegisterSignal(shell, COMSIG_RADIO_NEW_MESSAGE, PROC_REF(new_message))
 	RegisterSignal(shell, COMSIG_RADIO_RECEIVE_MESSAGE, PROC_REF(received_message))
+	RegisterSignal(shell, COMSIG_ITEM_EQUIPPED, PROC_REF(equipped_headset))
 	attached_shell = shell
 
 /obj/item/circuit_component/headset/unregister_shell(atom/movable/shell)
-	UnregisterSignal(shell, list(COMSIG_RADIO_NEW_MESSAGE, COMSIG_RADIO_RECEIVE_MESSAGE))
+	UnregisterSignal(shell, list(COMSIG_RADIO_NEW_MESSAGE, COMSIG_RADIO_RECEIVE_MESSAGE, COMSIG_ITEM_EQUIPPED))
 	attached_shell = null
 
 /obj/item/circuit_component/headset/populate_ports()
@@ -54,6 +56,7 @@
 	spoken_into = add_output_port("Spoken Into", PORT_TYPE_SIGNAL)
 	failure = add_output_port("Failed To Radio", PORT_TYPE_SIGNAL)
 	sent_message = add_output_port("Successfully Sent Message", PORT_TYPE_SIGNAL)
+	entity = add_output_port("User", PORT_TYPE_USER)
 
 /obj/item/circuit_component/headset/proc/new_message(atom/source, mob/living/user, message, channel)
 	SIGNAL_HANDLER
@@ -108,3 +111,10 @@
 /obj/item/circuit_component/headset/proc/send_signal(datum/signal/subspace/vocal/signal)
 	signal.send_to_receivers()
 	sent_message.set_output(COMPONENT_SIGNAL)
+
+/obj/item/circuit_component/headset/proc/equipped_headset(atom/source, mob/user, slot)
+	SIGNAL_HANDLER
+
+	if(!(slot & ITEM_SLOT_EARS))
+		return
+	entity.set_output(user)

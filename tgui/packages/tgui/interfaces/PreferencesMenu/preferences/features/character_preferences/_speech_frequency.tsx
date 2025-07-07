@@ -1,4 +1,6 @@
-import { Button, Stack } from '../../../../../components';
+import { useBackend } from 'tgui/backend';
+import { Button, Stack } from 'tgui-core/components';
+
 import {
   FeatureNumberInput,
   FeatureNumeric,
@@ -9,12 +11,14 @@ import {
 const FeatureSpeechSound = (
   props: FeatureValueProps<number, number, FeatureNumericData>,
 ) => {
+  const { act } = useBackend();
+
   return (
     <Stack>
       <Stack.Item>
         <Button
           onClick={() => {
-            props.act('play_test_speech_sound');
+            act('play_test_speech_sound');
           }}
           icon="play"
         />

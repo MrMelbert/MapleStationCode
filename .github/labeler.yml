@@ -1,0 +1,43 @@
+﻿Kilo Station:
+  - changed-files:
+    - any-glob-to-any-file: '_maps/map_files/KiloStation/KiloStation.dmm'
+
+Lima Station:
+  - changed-files:
+    - any-glob-to-any-file: '_maps/map_files/LimaStation/LimaStation.dmm'
+
+Pubby Station:
+  - changed-files:
+    - any-glob-to-any-file: '_maps/map_files/PubbyStation/PubbyStation.dmm'
+
+Map:
+  - changed-files:
+    - any-glob-to-any-file: '_maps/**'
+
+Non-Module Code:
+  - changed-files:
+    - any-glob-to-any-file: 'code/**'
+
+Modularity Suggested:
+  - changed-files:
+    - any-glob-to-any-file: 'icons/**'
+
+Sprites:
+  - changed-files:
+    - any-glob-to-any-file: ['maplestation_modules/icons/**', 'sprites/**']
+
+Sounds:
+  - changed-files:
+    - any-glob-to-any-file: ['maplestation_modules/sounds/**', 'sounds/**']
+
+Story Content:
+  - changed-files:
+    - any-glob-to-any-file: 'maplestation_modules/story_content/**'
+
+Maintenance:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/**', 'tools/**', '.vscode/**']
+
+Cherry Picked:
+  - changed-files:
+    - any-glob-to-any-file: 'tgstation.dme'

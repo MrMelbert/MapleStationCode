@@ -41,6 +41,7 @@
 #define RADIO_KEY_ENTERTAINMENT "p"
 #define RADIO_TOKEN_ENTERTAINMENT ":p"
 
+#define STATUS_DISPLAY_RELAY "Captain-Cast"
 
 #define RADIO_CHANNEL_SYNDICATE "Syndicate"
 #define RADIO_KEY_SYNDICATE "t"

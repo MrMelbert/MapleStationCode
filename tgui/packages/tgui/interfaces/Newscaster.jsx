@@ -5,10 +5,7 @@
  * @license MIT
  */
 
-import { decodeHtmlEntities } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -21,7 +18,10 @@ import {
   Stack,
   Tabs,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
+
+import { useBackend, useSharedState } from '../backend';
 import { processedText } from '../process';
 import { BountyBoardContent } from './BountyBoard';
 import { UserDetails } from './Vending';
@@ -326,9 +326,11 @@ const NewscasterWantedScreen = (props) => {
         </>
       ) : (
         <Box>
-          {wanted.active
-            ? 'Please contact your local security officer if spotted.'
-            : 'No wanted issue posted. Have a secure day.'}
+          {wanted.map((activeWanted) =>
+            activeWanted.active
+              ? 'Please contact your local security officer if spotted.'
+              : 'No wanted issue posted. Have a secure day.',
+          )}
         </Box>
       )}
     </Modal>

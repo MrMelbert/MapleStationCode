@@ -2,6 +2,7 @@
 /// This event spawns multiple cargo pods containing a few resources.
 /datum/round_event_control/resource_pods
 	name = "Resource Pods"
+	category = "Resources"
 	typepath = /datum/round_event/resource_pods
 	// Relatively common, can start early
 	weight = 25
@@ -14,7 +15,7 @@
 	/// The number of pods
 	var/num_pods = 1
 	/// The style the pod uses
-	var/pod_style = STYLE_STANDARD
+	var/pod_style = /datum/pod_style
 	/// The area the pods are landing in
 	var/area/impact_area
 	/// The list of possible crates to draw from
@@ -26,10 +27,10 @@
 
 /datum/round_event/resource_pods/announce(fake)
 	switch(pod_style)
-		if(STYLE_SYNDICATE)
+		if(/datum/pod_style/syndicate)
 			priority_announce("A recent raid on a [source] in your sector resulted in a [get_num_pod_identifier()] of resources confiscated by Nanotrasen strike team personnel. \
 							Given the occurance of the raid in your sector, we're sharing [num_pods] of the resource caches. They'll arrive shortly in: [impact_area.name].", "Nanotrasen News Network")
-		if(STYLE_CENTCOM)
+		if(/datum/pod_style/centcom)
 			priority_announce("Recent company activity [source] in your sector resulted in a [get_num_pod_identifier()] of resources obtained by Nanotrasen shareholders. \
 							[num_pods] of the resource caches are being shared with your station as an investment. They'll arrive shortly in: [impact_area.name].", "Nanotrasen News Network")
 		else
@@ -53,16 +54,16 @@
 	// Get a random style of the pod. Different styles have different potential crates and reports.
 	switch(rand(1, 100))
 		if(1 to 24)
-			pod_style = STYLE_SYNDICATE
+			pod_style = /datum/pod_style/syndicate
 			source = get_syndicate_sources()
 		if(25 to 69)
-			pod_style = STYLE_CENTCOM
+			pod_style = /datum/pod_style/centcom
 			source = get_nanotrasen_sources()
 		if(70 to 95)
-			pod_style = STYLE_STANDARD
+			pod_style = /datum/pod_style
 			source = get_company_sources()
 		if(96 to 100)
-			pod_style = STYLE_CULT
+			pod_style = /datum/pod_style/cultist
 			source = "Nanotrasen inquisitor mission, investigating traces of [pick("Nar'sian", "Wizard Federation")] influence,"
 
 	//Clear and reset the list.
@@ -72,15 +73,15 @@
 	possible_crates = subtypesof(/obj/structure/closet/crate/resource_cache/normal)
 	// Add in extra subtypes based on the type of pod we have.
 	switch(pod_style)
-		if(STYLE_SYNDICATE)
+		if(/datum/pod_style/syndicate)
 			possible_crates += subtypesof(/obj/structure/closet/crate/resource_cache/syndicate)
-		if(STYLE_CENTCOM)
+		if(/datum/pod_style/centcom)
 			possible_crates += subtypesof(/obj/structure/closet/crate/resource_cache/centcom)
-		if(STYLE_STANDARD)
+		if(/datum/pod_style)
 			possible_crates += subtypesof(/obj/structure/closet/crate/resource_cache/special)
 			if(source == "Lizard Empire trade route")
 				priority_crates += /obj/structure/closet/crate/resource_cache/lizard_things
-		if(STYLE_CULT)
+		if(/datum/pod_style/cultist)
 			priority_crates += /obj/structure/closet/crate/resource_cache/magic_things
 
 	if(!possible_crates.len)
@@ -117,9 +118,9 @@
 	pod.explosionSize = list(0, 0, 1, 2)
 	var/new_desc = "A standard-style drop pod dropped by the company directly to your station."
 	switch(pod_style)
-		if(STYLE_SYNDICATE)
+		if(/datum/pod_style/syndicate)
 			new_desc = "A syndicate-style drop pod reposessed by a Nanotrasen strike force and redirected directly to your station."
-		if(STYLE_CENTCOM)
+		if(/datum/pod_style/centcom)
 			new_desc = "A nanotrasen-style drop pod dropped by the company directly to your station."
 
 	pod.desc = new_desc

@@ -5,7 +5,7 @@
 	requires_bodypart_type = NONE
 	possible_locs = list(BODY_ZONE_CHEST)
 	target_mobtypes = list(/mob/living)
-	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_MORBID_CURIOSITY
+	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_MORBID_CURIOSITY
 	steps = list(
 		/datum/surgery_step/incise,
 		/datum/surgery_step/retract_skin,
@@ -91,9 +91,16 @@
 		span_notice("[user] send a powerful shock to [target]'s brain with [tool]..."),
 		span_notice("[user] send a powerful shock to [target]'s brain with [tool]..."),
 	)
+	if(target.getOxyLoss() > 50)
+		target.setOxyLoss(50)
+	if(target.getToxLoss() > 50)
+		target.setToxLoss(50)
 	target.grab_ghost()
-	target.adjustOxyLoss(-50, 0)
+	target.apply_status_effect(/datum/status_effect/recent_defib)
 	target.updatehealth()
+	if(iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		carbon_target.set_heartattack(FALSE)
 	if(target.revive())
 		on_revived(user, target)
 		return TRUE
@@ -123,6 +130,7 @@
 /datum/surgery/revival/carbon
 	possible_locs = list(BODY_ZONE_HEAD)
 	target_mobtypes = list(/mob/living/carbon)
+	surgery_flags = parent_type::surgery_flags | SURGERY_REQUIRE_LIMB
 
 /datum/surgery/revival/carbon/is_valid_target(mob/living/carbon/patient)
 	var/obj/item/organ/internal/brain/target_brain = patient.get_organ_slot(ORGAN_SLOT_BRAIN)

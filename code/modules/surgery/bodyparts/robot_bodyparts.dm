@@ -1,7 +1,7 @@
 
 #define ROBOTIC_LIGHT_BRUTE_MSG "marred"
 #define ROBOTIC_MEDIUM_BRUTE_MSG "dented"
-#define ROBOTIC_HEAVY_BRUTE_MSG "falling apart"
+#define ROBOTIC_HEAVY_BRUTE_MSG "like its falling apart"
 
 #define ROBOTIC_LIGHT_BURN_MSG "scorched"
 #define ROBOTIC_MEDIUM_BURN_MSG "charred"
@@ -112,6 +112,10 @@
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
+/obj/item/bodypart/leg/left/robot/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+
 /obj/item/bodypart/leg/left/robot/emp_act(severity)
 	. = ..()
 	if(!. || isnull(owner))
@@ -158,6 +162,10 @@
 
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
+
+/obj/item/bodypart/leg/right/robot/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
 
 /obj/item/bodypart/leg/right/robot/emp_act(severity)
 	. = ..()
@@ -209,7 +217,7 @@
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT) // NON-MODULE CHANGE but it should be like this anyways
 
 	var/wired = FALSE
-	var/obj/item/stock_parts/cell/cell = null
+	var/obj/item/stock_parts/power_store/cell = null
 
 /obj/item/bodypart/chest/robot/emp_act(severity)
 	. = ..()
@@ -284,7 +292,7 @@
 			), AUGMENTATION_TRAIT)
 
 /obj/item/bodypart/chest/robot/attackby(obj/item/weapon, mob/user, params)
-	if(istype(weapon, /obj/item/stock_parts/cell))
+	if(istype(weapon, /obj/item/stock_parts/power_store/cell))
 		if(cell)
 			to_chat(user, span_warning("You have already inserted a cell!"))
 			return
@@ -479,8 +487,7 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 5
 	unarmed_effectiveness = 0 //Bro, you look huge.
-	max_damage = LIMB_MAX_HP_PROSTHESIS
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_PROSTHESIS
+	wound_modifier = 0.5
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
 
@@ -489,13 +496,12 @@
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	burn_modifier = 1
-	brute_modifier = 1
+	burn_modifier = 2
+	brute_modifier = 2
 	unarmed_damage_low = 1
 	unarmed_damage_high = 5
 	unarmed_effectiveness = 0
-	max_damage = LIMB_MAX_HP_PROSTHESIS
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_PROSTHESIS
+	wound_modifier = 0.5
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
 
@@ -504,30 +510,36 @@
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_modifier = 1
-	burn_modifier = 1
+	burn_modifier = 2
+	brute_modifier = 2
 	unarmed_damage_low = 2
 	unarmed_damage_high = 10
 	unarmed_effectiveness = 0
-	max_damage = LIMB_MAX_HP_PROSTHESIS
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_PROSTHESIS
+	wound_modifier = 0.5
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
+
+/obj/item/bodypart/leg/left/robot/surplus/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, -5)
 
 /obj/item/bodypart/leg/right/robot/surplus
 	name = "surplus prosthetic right leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_modifier = 1
-	burn_modifier = 1
+	burn_modifier = 2
+	brute_modifier = 2
 	unarmed_damage_low = 2
 	unarmed_damage_high = 10
 	unarmed_effectiveness = 0
-	max_damage = LIMB_MAX_HP_PROSTHESIS
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_PROSTHESIS
+	wound_modifier = 0.5
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
+
+/obj/item/bodypart/leg/right/robot/surplus/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, -5)
 
 // Advanced Limbs: More durable, high punching force
 
@@ -539,8 +551,6 @@
 	unarmed_damage_low = 5
 	unarmed_damage_high = 13
 	unarmed_effectiveness = 20
-	max_damage = LIMB_MAX_HP_ADVANCED
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_ADVANCED
 
 /obj/item/bodypart/arm/right/robot/advanced
 	name = "advanced robotic right arm"
@@ -550,8 +560,6 @@
 	unarmed_damage_low = 5
 	unarmed_damage_high = 13
 	unarmed_effectiveness = 20
-	max_damage = LIMB_MAX_HP_ADVANCED
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_ADVANCED
 
 /obj/item/bodypart/leg/left/robot/advanced
 	name = "advanced robotic left leg"
@@ -561,8 +569,10 @@
 	unarmed_damage_low = 7
 	unarmed_damage_high = 17
 	unarmed_effectiveness = 20
-	max_damage = LIMB_MAX_HP_ADVANCED
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_ADVANCED
+
+/obj/item/bodypart/leg/left/robot/advanced/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 10)
 
 /obj/item/bodypart/leg/right/robot/advanced
 	name = "heavy robotic right leg"
@@ -572,8 +582,10 @@
 	unarmed_damage_low = 7
 	unarmed_damage_high = 17
 	unarmed_effectiveness = 20
-	max_damage = LIMB_MAX_HP_ADVANCED
-	body_damage_coeff = LIMB_BODY_DAMAGE_COEFFICIENT_ADVANCED
+
+/obj/item/bodypart/leg/right/robot/advanced/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 10)
 
 #undef ROBOTIC_LIGHT_BRUTE_MSG
 #undef ROBOTIC_MEDIUM_BRUTE_MSG

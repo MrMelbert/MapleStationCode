@@ -61,11 +61,10 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	QDEL_NULL(frying)
 	return ..()
 
-/obj/machinery/deepfryer/deconstruct(disassembled)
+/obj/machinery/deepfryer/on_deconstruction(disassembled)
 	// This handles nulling out frying via exited
 	if(frying)
 		frying.forceMove(drop_location())
-	return ..()
 
 /obj/machinery/deepfryer/RefreshParts()
 	. = ..()
@@ -149,7 +148,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		frying_burnt = TRUE
 		visible_message(span_warning("[src] emits an acrid smell!"))
 
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /obj/machinery/deepfryer/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -165,6 +164,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	frying_burnt = FALSE
 	fry_loop.stop()
 	cook_time = 0
+	flick("fryer_stop", src) // NON-MODULE CHANGE
 	icon_state = "fryer_off"
 
 /obj/machinery/deepfryer/proc/start_fry(obj/item/frying_item, mob/user)
@@ -184,6 +184,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		ADD_TRAIT(frying, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
+	flick("fryer_start", src) // NON-MODULE CHANGE
 	icon_state = "fryer_on"
 	fry_loop.start()
 

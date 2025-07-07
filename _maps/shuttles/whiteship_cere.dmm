@@ -43,7 +43,7 @@
 /area/shuttle/abandoned/cargo)
 "ah" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/machinery/light/small/directional/east,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
@@ -194,7 +194,7 @@
 "aB" = (
 /obj/machinery/light/small/directional/south,
 /obj/machinery/power/smes{
-	charge = 5e+006;
+	charge = 5e+007;
 	output_level = 20000
 	},
 /obj/structure/cable,
@@ -894,7 +894,7 @@
 /obj/structure/table/reinforced/titaniumglass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/shuttle/abandoned/cargo)
 "Sw" = (

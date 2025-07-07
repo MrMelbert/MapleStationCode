@@ -19,6 +19,7 @@
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/pat_out_fire)
 	allowed += list(
 		/obj/item/flashlight,
 		/obj/item/lighter,
@@ -46,12 +47,7 @@
 	. += span_notice("<b>Alt-click</b> to [zipped ? "un" : ""]zip.")
 
 
-/obj/item/clothing/suit/hooded/wintercoat/AltClick(mob/user)
-	. = ..()
-
-	if (. == FALSE) // Direct check for FALSE, because that's the specific case we want to propagate, not just null.
-		return FALSE
-
+/obj/item/clothing/suit/hooded/wintercoat/click_alt(mob/user)
 	zipped = !zipped
 	playsound(src, 'sound/items/zip_up.ogg', 30, TRUE, -3)
 	worn_icon_state = "[initial(icon_state)][zipped ? "_t" : ""]"
@@ -60,6 +56,7 @@
 	if(ishuman(loc))
 		var/mob/living/carbon/human/wearer = loc
 		wearer.update_worn_oversuit()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/head/hooded/winterhood
 	name = "winter hood"
@@ -170,13 +167,15 @@
 	armor_type = /datum/armor/wintercoat_captain
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 
-/datum/armor/wintercoat_captain
-	melee = 25
+/datum/armor/wintercoat_captain //downstream edit to make it closer to the carapace values, but less because of the bonus of being a winter coat
+	melee = 40
 	bullet = 30
-	laser = 30
+	laser = 40
 	energy = 40
-	bomb = 25
-	acid = 50
+	bomb = 20
+	fire = 100
+	acid = 90
+	wound = 10
 
 /obj/item/clothing/suit/hooded/wintercoat/captain/Initialize(mapload)
 	. = ..()
