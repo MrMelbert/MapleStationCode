@@ -165,7 +165,7 @@
 		else if (parent.mana_overloaded)
 			parent.stop_mana_overload()
 
-	if (amount > softcap) // why was this amount < softcap
+	if (amount > softcap)
 	// exponential decay
 	// exponentially decays amount when amount surpasses softcap, with [exponential_decay_divisor] being the (inverse) decay factor
 	// can only decay however much amount we are over softcap
