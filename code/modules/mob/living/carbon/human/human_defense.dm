@@ -122,6 +122,9 @@
 					span_userdanger("[user] [hulk_verb]ed [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 	to_chat(user, span_danger("You [hulk_verb] [src]!"))
 	apply_damage(15, BRUTE, wound_bonus=10)
+	// NON-MODULE CHANGES
+	if(user != src)
+		set_headset_block_if_lower(5 SECONDS)
 
 /mob/living/carbon/human/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -152,10 +155,6 @@
 /mob/living/carbon/human/attack_paw(mob/living/carbon/human/user, list/modifiers)
 	var/dam_zone = pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/obj/item/bodypart/affecting = get_bodypart(get_random_valid_zone(dam_zone))
-
-	var/martial_result = user.apply_martial_art(src, modifiers)
-	if (martial_result != MARTIAL_ATTACK_INVALID)
-		return martial_result
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK)) //Always drop item in hand, if no item, get stunned instead.
 		var/obj/item/I = get_active_held_item()
@@ -196,6 +195,9 @@
 			if(check_block(user, damage, "the [user.name]"))
 				return FALSE
 			apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, MELEE))
+			// NON-MODULE CHANGES
+			if(damage > 5 && user != src)
+				set_headset_block_if_lower(5 SECONDS)
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
@@ -575,77 +577,38 @@
 		if(body_part.bodypart_flags & BODYPART_PSEUDOPART) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
 			continue
 
-		body_part.check_for_injuries(src, combined_msg)
+		var/bodypart_report = body_part.check_for_injuries(src)
+		if(bodypart_report)
+			combined_msg += "[span_notice("&rdsh;")] [bodypart_report]"
 
 	for(var/t in missing)
-		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")
+		combined_msg += span_boldannounce("&rdsh; Your [parse_zone(t)] is missing!")
 
-	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
-		var/tox = getToxLoss() + (disgust / 5)
-		switch(tox)
-			if(10 to 20)
-				combined_msg += span_danger("You feel sick.")
-			if(20 to 40)
-				combined_msg += span_danger("You feel nauseated.")
-			if(40 to INFINITY)
-				combined_msg += span_danger("You feel very unwell!")
+	var/tox = getToxLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
+	switch(tox)
+		if(10 to 20)
+			combined_msg += span_danger("You feel sick.")
+		if(20 to 40)
+			combined_msg += span_danger("You feel nauseated.")
+		if(40 to INFINITY)
+			combined_msg += span_danger("You feel very unwell!")
 
-		var/oxy = getOxyLoss() + (losebreath * 4) + (blood_volume < BLOOD_VOLUME_NORMAL ? ((BLOOD_VOLUME_NORMAL - blood_volume) * 10) : 0)
-		switch(oxy)
-			if(10 to 20)
-				combined_msg += span_danger("You feel lightheaded.")
-			if(20 to 40)
-				combined_msg += span_danger("Your thinking is clouded and distant.")
-			if(40 to INFINITY)
-				combined_msg += losebreath ? span_danger("You're choking!") : span_danger("It's getting hard to breathe!")
+	var/oxy = getOxyLoss() + (losebreath * 4) + (blood_volume < BLOOD_VOLUME_NORMAL ? ((BLOOD_VOLUME_NORMAL - blood_volume) * 0.1) : 0) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
+	switch(oxy)
+		if(10 to 20)
+			combined_msg += span_danger("You feel lightheaded.")
+		if(20 to 40)
+			combined_msg += losebreath ? span_danger("You're choking!") : span_danger("Your thinking is clouded and distant.")
+		if(40 to INFINITY)
+			combined_msg += span_danger("You feel like you're about to pass out!")
 
-/*
-	// melbert todo : you shouldn't be perfectly aware of how damaged your organs are BUT you should feel them (discomfort or w/e)
-
-	//Compiles then shows the list of damaged organs and broken organs
-	var/list/broken = list()
-	var/list/damaged = list()
-	var/broken_message
-	var/damaged_message
-	var/broken_plural
-	var/damaged_plural
-	//Sets organs into their proper list
-	for(var/obj/item/organ/organ as anything in organs)
-		if(organ.organ_flags & ORGAN_FAILING)
-			if(broken.len)
-				broken += ", "
-			broken += organ.name
-		else if(organ.damage > organ.low_threshold)
-			if(damaged.len)
-				damaged += ", "
-			damaged += organ.name
-	//Checks to enforce proper grammar, inserts words as necessary into the list
-	if(broken.len)
-		if(broken.len > 1)
-			broken.Insert(broken.len, "and ")
-			broken_plural = TRUE
+	if(getStaminaLoss())
+		if(getStaminaLoss() > 30)
+			combined_msg += span_info("You're completely exhausted.")
 		else
-			var/holder = broken[1] //our one and only element
-			if(holder[length(holder)] == "s")
-				broken_plural = TRUE
-		//Put the items in that list into a string of text
-		for(var/B in broken)
-			broken_message += B
-		combined_msg += span_warning("Your [broken_message] [broken_plural ? "are" : "is"] non-functional!")
-	if(damaged.len)
-		if(damaged.len > 1)
-			damaged.Insert(damaged.len, "and ")
-			damaged_plural = TRUE
-		else
-			var/holder = damaged[1]
-			if(holder[length(holder)] == "s")
-				damaged_plural = TRUE
-		for(var/D in damaged)
-			damaged_message += D
-		combined_msg += span_info("Your [damaged_message] [damaged_plural ? "are" : "is"] hurt.")
-*/
+			combined_msg += span_info("You feel fatigued.")
 
-	to_chat(src, examine_block(combined_msg.Join("\n")))
+	to_chat(src, examine_block(combined_msg.Join("<br>")))
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
 	if(damage_type != BRUTE && damage_type != BURN)

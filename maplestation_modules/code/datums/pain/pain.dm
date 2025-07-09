@@ -1,6 +1,3 @@
-// For debugging pain
-// #define PAIN_DEBUG
-
 /**
  * # Pain controller
  *
@@ -155,8 +152,11 @@
 	if(!QDELETED(parent))
 		if(!special && !(HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (lost_limb.bodytype & BODYTYPE_ROBOTIC)))
 			var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
+			var/datum/mutation/human/autotomy = source.dna?.get_mutation(/datum/mutation/human/self_amputation)
+			limb_removed_pain *= (autotomy ? (0.5 * GET_MUTATION_SYNCHRONIZER(autotomy)) : 1)
 			adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 			adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
+			adjust_traumatic_shock(limb_removed_pain / 4)
 
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
@@ -277,6 +277,10 @@
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
+#ifdef HEALTH_DEBUG
+	// solely for updating the debug view
+	parent.updatehealth()
+#endif
 
 	return TRUE
 
@@ -286,7 +290,7 @@
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
  * * down_to - the minimum amount of pain shock the mob can have.
  */
-/datum/pain/proc/adjust_traumatic_shock(amount, down_to = -20)
+/datum/pain/proc/adjust_traumatic_shock(amount, down_to = 0)
 	if(amount > 0)
 		amount *= max(pain_modifier, 0.33)
 
@@ -295,7 +299,7 @@
 	if(traumatic_shock <= 0)
 		parent.remove_consciousness_modifier(PAINSHOCK)
 	else
-		parent.add_consciousness_modifier(PAINSHOCK, -0.33 * traumatic_shock)
+		parent.add_consciousness_modifier(PAINSHOCK, -0.15 * traumatic_shock)
 	// Soft crit
 	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
@@ -310,6 +314,12 @@
 			parent.remove_max_consciousness_value(PAINSHOCK)
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
+#ifdef HEALTH_DEBUG
+	// solely for updating the debug view
+	parent.updatehealth()
+#endif
+
 /**
  * Set the minimum amount of pain in all [def_zones] by [amount].
  *
@@ -461,14 +471,15 @@
 #endif
 
 	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(applied_wound.severity) * 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, (applied_wound.severity) * 7.5)
+	adjust_bodypart_pain(wounded_limb.body_zone, initial(applied_wound.severity) * 7.5)
+	adjust_traumatic_shock(initial(applied_wound.severity) * 4)
 
 /// Removes pain when a wound is healed.
 /datum/pain/proc/remove_wound_pain(mob/living/carbon/source, datum/wound/removed_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
-	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
+	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(removed_wound.severity) * -5)
+	adjust_bodypart_pain(wounded_limb.body_zone, initial(removed_wound.severity) * -5)
 
 /datum/pain/process(seconds_per_tick)
 	if(parent.stat == DEAD)
@@ -512,9 +523,9 @@
 		shock_mod *= 0.5
 	if(parent.health > 0)
 		shock_mod *= 0.25
-	if(parent.health <= parent.maxHealth * -2 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_BAD))
+	if(parent.health <= parent.maxHealth * -2)
 		shock_mod *= 2
-	if(parent.health <= parent.maxHealth * -4 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_SURVIVE))
+	if(parent.health <= parent.maxHealth * -4)
 		shock_mod *= 3 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < 25)
@@ -755,10 +766,7 @@
 	if(!length(phrase))
 		return
 
-	var/num_repeats = floor(((get_total_pain() / 75) + (traumatic_shock / 75)) * pain_modifier)
-	if(traumatic_shock < 90)
-		num_repeats *= 0.5
-
+	var/num_repeats = floor(((get_total_pain() / 50) + (traumatic_shock / 50)) * pain_modifier)
 	num_repeats = clamp(num_repeats, 1, 6)
 	if(num_repeats <= 1)
 		return

@@ -13,7 +13,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ring.ogg'
 
-/obj/item/stack/telecrystal/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/stack/telecrystal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(interacting_with != user) //You can't go around smacking people with crystals to find out if they have an uplink or not.
 		return NONE
 

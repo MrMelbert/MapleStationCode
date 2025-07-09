@@ -33,8 +33,7 @@
 
 	var/list/dent_decals
 
-/turf/closed/wall/MouseDrop_T(atom/dropping, mob/user, params)
-	..()
+/turf/closed/wall/mouse_drop_receive(atom/dropping, mob/user, params)
 	if(dropping != user)
 		return
 	if(!iscarbon(dropping) && !iscyborg(dropping))
@@ -248,23 +247,18 @@
 	playsound(src, 'sound/weapons/genhit.ogg', 25, TRUE)
 	add_fingerprint(user)
 
-/turf/closed/wall/attackby(obj/item/W, mob/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
+/turf/closed/wall/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
-		return
-
-	//get the user's location
-	if(!isturf(user.loc))
-		return //can't do this stuff whilst inside objects and such
+		return ITEM_INTERACT_BLOCKING
 
 	add_fingerprint(user)
 
 	//the istype cascade has been spread among various procs for easy overriding
-	if(try_clean(W, user) || try_wallmount(W, user) || try_decon(W, user))
-		return
+	if(try_clean(tool, user) || try_wallmount(tool, user) || try_decon(tool, user))
+		return ITEM_INTERACT_SUCCESS
 
-	return ..()
+	return NONE
 
 /turf/closed/wall/proc/try_clean(obj/item/W, mob/living/user)
 	if((user.combat_mode) || !LAZYLEN(dent_decals))
@@ -366,8 +360,8 @@
 		if(WALL_DENT_HIT)
 			decal.icon_state = "impact[rand(1, 3)]"
 
-	decal.pixel_x = x
-	decal.pixel_y = y
+	decal.pixel_w = x
+	decal.pixel_z = y
 
 	if(LAZYLEN(dent_decals))
 		cut_overlay(dent_decals)

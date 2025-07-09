@@ -73,7 +73,7 @@
 /obj/item/clothing/shoes/visual_equipped(mob/user, slot)
 	. = ..()
 	if(offset && (slot_flags & slot))
-		user.pixel_y += offset
+		user.pixel_z += offset
 		worn_y_dimension -= (offset * 2)
 		user.update_worn_shoes()
 		equipped_before_drop = TRUE
@@ -86,7 +86,7 @@
 
 /obj/item/clothing/shoes/proc/restore_offsets(mob/user)
 	equipped_before_drop = FALSE
-	user.pixel_y -= offset
+	user.pixel_z -= offset
 	worn_y_dimension = world.icon_size
 
 /obj/item/clothing/shoes/dropped(mob/user)
@@ -199,7 +199,6 @@
 			to_chat(our_guy, span_userdanger("You stamp on [user]'s hand! What the- [user.p_they()] [user.p_were()] [tied ? "knotting" : "untying"] your shoelaces!"))
 			user.emote("scream")
 			if(istype(living_user))
-				// NON-MODULE CHANGE
 				var/damage_what = living_user.get_active_hand()
 				living_user.apply_damage(10, BRUTE, damage_what)
 				living_user.apply_damage(40, PAIN, damage_what)

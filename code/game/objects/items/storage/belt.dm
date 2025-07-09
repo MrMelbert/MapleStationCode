@@ -49,35 +49,9 @@
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	atom_storage.max_total_storage = 21
-	atom_storage.set_holdable(list(
-		/obj/item/airlock_painter,
-		/obj/item/analyzer,
-		/obj/item/assembly/signaler,
+	atom_storage.set_holdable(GLOB.tool_items + list(
 		/obj/item/clothing/gloves,
-		/obj/item/construction/rcd,
-		/obj/item/construction/rld,
-		/obj/item/construction/rtd,
-		/obj/item/crowbar,
-		/obj/item/extinguisher/mini,
-		/obj/item/flashlight,
-		/obj/item/forcefield_projector,
-		/obj/item/geiger_counter,
-		/obj/item/holosign_creator/atmos,
-		/obj/item/holosign_creator/engineering,
-		/obj/item/inducer,
-		/obj/item/lightreplacer,
-		/obj/item/multitool,
-		/obj/item/pipe_dispenser,
-		/obj/item/pipe_painter,
-		/obj/item/plunger,
 		/obj/item/radio,
-		/obj/item/screwdriver,
-		/obj/item/stack/cable_coil,
-		/obj/item/t_scanner,
-		/obj/item/weldingtool,
-		/obj/item/wirecutters,
-		/obj/item/wrench,
-		/obj/item/spess_knife,
 		/obj/item/melee/sickly_blade/lock,
 	))
 
@@ -288,6 +262,7 @@
 		/obj/item/surgicaldrill,
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/wrench/medical,
+		/obj/item/razor/scissors,
 	))
 
 /obj/item/storage/belt/medical/paramedic
@@ -300,7 +275,7 @@
 /obj/item/storage/belt/medical/paramedic/PopulateContents()
 	SSwardrobe.provide_type(/obj/item/sensor_device, src)
 	SSwardrobe.provide_type(/obj/item/stack/medical/gauze/twelve, src)
-	SSwardrobe.provide_type(/obj/item/stack/medical/bone_gel, src)
+	SSwardrobe.provide_type(/obj/item/razor/scissors/medical/trauma, src)
 	SSwardrobe.provide_type(/obj/item/stack/sticky_tape/surgical, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/syringe, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/cup/bottle/ammoniated_mercury, src)
@@ -815,6 +790,7 @@
 	inhand_icon_state = "sheath"
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
+	interaction_flags_click = parent_type::interaction_flags_click | NEED_DEXTERITY | NEED_HANDS
 
 /obj/item/storage/belt/sabre/Initialize(mapload)
 	. = ..()
@@ -824,15 +800,14 @@
 	atom_storage.rustle_sound = FALSE
 	atom_storage.max_specific_storage = WEIGHT_CLASS_BULKY
 	atom_storage.set_holdable(/obj/item/melee/sabre)
+	atom_storage.click_alt_open = FALSE
 
 /obj/item/storage/belt/sabre/examine(mob/user)
 	. = ..()
 	if(length(contents))
 		. += span_notice("Alt-click it to quickly draw the blade.")
 
-/obj/item/storage/belt/sabre/AltClick(mob/user)
-	if(!user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS))
-		return
+/obj/item/storage/belt/sabre/click_alt(mob/user)
 	if(length(contents))
 		var/obj/item/I = contents[1]
 		user.visible_message(span_notice("[user] takes [I] out of [src]."), span_notice("You take [I] out of [src]."))
@@ -840,6 +815,7 @@
 		update_appearance()
 	else
 		balloon_alert(user, "it's empty!")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/belt/sabre/update_icon_state()
 	icon_state = initial(inhand_icon_state)

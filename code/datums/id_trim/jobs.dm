@@ -316,7 +316,7 @@
 		// Sikh
 		"Gyani",
 		// Shinto
-		"Kannushi",
+		"Kannushi", "Miko",
 		// Muslim
 		"Imam",
 		// Generic / Ancient
@@ -356,6 +356,8 @@
 		ACCESS_CMO,
 		)
 	job = /datum/job/chemist
+	honorifics = list("Chemist", "Pharmacist", ", PhD.")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/chief_engineer
 	assignment = "Chief Engineer"
@@ -438,8 +440,8 @@
 		ACCESS_CHANGE_IDS,
 	)
 	job = /datum/job/chief_medical_officer
-	honorifics = list(", PhD.", ", MD.")
-	honorific_positions = HONORIFIC_POSITION_LAST_FULL
+	honorifics = list(", PhD.", ", MD.", "Doctor", "Chief Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/clown
 	assignment = "Clown"
@@ -517,6 +519,8 @@
 		ACCESS_HOP,
 	)
 	job = /datum/job/coroner
+	honorifics = list(", PhD.", "Coroner")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/curator
 	assignment = "Curator"
@@ -566,7 +570,7 @@
 		ACCESS_HOS,
 	)
 	job = /datum/job/detective
-	honorifics = list("Detective", "Investigator")
+	honorifics = list("Detective", "Investigator", "Sheriff")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/detective/refresh_trim_access()
@@ -578,6 +582,9 @@
 	// Config check for if sec has maint access.
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
+
+/datum/id_trim/job/detective/sheriff
+	assignment = "Sheriff"
 
 /datum/id_trim/job/geneticist
 	assignment = "Geneticist"
@@ -606,6 +613,8 @@
 		ACCESS_RD,
 		)
 	job = /datum/job/geneticist
+	honorifics = list("Researcher", "Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/head_of_personnel
 	assignment = "Head of Personnel"
@@ -659,6 +668,8 @@
 		ACCESS_CHANGE_IDS,
 	)
 	job = /datum/job/head_of_personnel
+	honorifics = list("Lieutenant", "Lt.", "Personnel Officer")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/head_of_security
 	assignment = "Head of Security"
@@ -960,7 +971,7 @@
 		ACCESS_CHANGE_IDS,
 	)
 	job = /datum/job/quartermaster
-	honorifics = list("Manager", "Quartermaster")
+	honorifics = list("Manager", "Quartermaster", "Postmaster")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/research_director
@@ -1010,8 +1021,8 @@
 		ACCESS_CHANGE_IDS,
 		)
 	job = /datum/job/research_director
-	honorifics = list("Director", "Dir.")
-	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
+	honorifics = list("Director", "Dir.", "Head Researcher", ", PhD.", "Professor", "Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/roboticist
 	assignment = "Roboticist"
@@ -1042,6 +1053,18 @@
 		ACCESS_RD,
 		)
 	job = /datum/job/roboticist
+	honorifics = list("Researcher", "Engineer", "Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
+
+/datum/id_trim/job/roboticist/prosthetist
+	assignment = "Prosthetist"
+	honorifics = list("Prosthetician", "Doctor", ", PhD.", ", MD.")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
+
+/datum/id_trim/job/roboticist/prosthetist/New()
+	. = ..()
+	minimal_access |= ACCESS_MEDICAL
+	extra_access |= ACCESS_SURGERY
 
 /datum/id_trim/job/scientist
 	assignment = "Scientist"
@@ -1069,7 +1092,7 @@
 		ACCESS_RD,
 		)
 	job = /datum/job/scientist
-	honorifics = list("Researcher")
+	honorifics = list("Researcher", "Doctor", "Physicist", "Telescientist")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
@@ -1289,6 +1312,8 @@
 		ACCESS_CMO,
 		)
 	job = /datum/job/virologist
+	honorifics = list(", PhD.", "Doctor", "Virologist", "Pathologist")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/warden
 	assignment = "Warden"

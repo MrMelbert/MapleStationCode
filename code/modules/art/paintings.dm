@@ -349,16 +349,16 @@
 	. = ..()
 	if(icon_generated)
 		var/mutable_appearance/detail = mutable_appearance(generated_icon)
-		detail.pixel_x = 1
-		detail.pixel_y = 1
+		detail.pixel_w = 1
+		detail.pixel_z = 1
 		. += detail
 		return
 	if(!used)
 		return
 
 	var/mutable_appearance/detail = mutable_appearance(icon, "[icon_state]wip")
-	detail.pixel_x = 1
-	detail.pixel_y = 1
+	detail.pixel_w = 1
+	detail.pixel_z = 1
 	. += detail
 
 /obj/item/canvas/proc/generate_proper_overlay()
@@ -590,10 +590,12 @@
 		current_canvas = null
 		update_appearance()
 
-/obj/structure/sign/painting/AltClick(mob/user)
-	. = ..()
-	if(current_canvas?.can_select_frame(user))
-		INVOKE_ASYNC(current_canvas, TYPE_PROC_REF(/obj/item/canvas, select_new_frame), user)
+/obj/structure/sign/painting/click_alt(mob/user)
+	if(!current_canvas?.can_select_frame(user))
+		return CLICK_ACTION_BLOCKING
+
+	INVOKE_ASYNC(current_canvas, TYPE_PROC_REF(/obj/item/canvas, select_new_frame), user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/structure/sign/painting/proc/frame_canvas(mob/user, obj/item/canvas/new_canvas)
 	if(!(new_canvas.type in accepted_canvas_types))
@@ -635,8 +637,8 @@
 		return
 
 	var/mutable_appearance/painting = mutable_appearance(current_canvas.generated_icon)
-	painting.pixel_x = current_canvas.framed_offset_x
-	painting.pixel_y = current_canvas.framed_offset_y
+	painting.pixel_w = current_canvas.framed_offset_x
+	painting.pixel_z = current_canvas.framed_offset_y
 	. += painting
 	var/frame_type = current_canvas.painting_metadata.frame_type
 	. += mutable_appearance(current_canvas.icon,"[current_canvas.icon_state]frame_[frame_type]") //add the frame

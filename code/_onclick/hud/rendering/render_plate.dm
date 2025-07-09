@@ -349,7 +349,7 @@
 	if(!.)
 		return
 
-	RegisterSignal(mymob, COMSIG_MOB_SIGHT_CHANGE, PROC_REF(handle_sight))
+	RegisterSignal(mymob, COMSIG_MOB_SIGHT_CHANGE, PROC_REF(handle_sight), override = TRUE)
 	handle_sight(mymob, mymob.sight, NONE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/hide_from(mob/oldmob)
@@ -386,7 +386,7 @@
 	render_relay_planes = list(RENDER_PLANE_MASTER)
 
 /**
- * Plane master proc called in Initialize() that creates relay objects, and sets them uo as needed
+ * Plane master proc called in Initialize() that creates relay objects, and sets them up as needed
  * Sets:
  * * layer from plane to avoid z-fighting
  * * planes to relay the render to
@@ -396,7 +396,7 @@
  * Other vars such as alpha will automatically be applied with the render source
  */
 /atom/movable/screen/plane_master/proc/generate_render_relays()
-	var/relay_loc = home?.relay_loc || "CENTER"
+	var/relay_loc = home?.relay_loc || "1,1"
 	// If we're using a submap (say for a popup window) make sure we draw onto it
 	if(home?.map)
 		relay_loc = "[home.map]:[relay_loc]"
@@ -430,7 +430,7 @@
 	if(!length(relays) && !initial(render_target))
 		render_target = OFFSET_RENDER_TARGET(get_plane_master_render_base(name), offset)
 	if(!relay_loc)
-		relay_loc = "CENTER"
+		relay_loc = "1,1"
 		// If we're using a submap (say for a popup window) make sure we draw onto it
 		if(home?.map)
 			relay_loc = "[home.map]:[relay_loc]"

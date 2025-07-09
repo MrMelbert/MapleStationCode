@@ -71,14 +71,11 @@
 		diode = null
 		return TRUE
 
-/obj/item/laser_pointer/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
+/obj/item/laser_pointer/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(isnull(crystal_lens))
-		return .
+		return ..()
 	if(tool_behaviour != TOOL_WIRECUTTER && tool_behaviour != TOOL_HEMOSTAT)
-		return .
+		return ..()
 	tool.play_tool_sound(src)
 	balloon_alert(user, "removed crystal lens")
 	crystal_lens.forceMove(drop_location())
@@ -176,13 +173,17 @@
 			. += "<i>\The [diode.name]'s size is much smaller compared to the previous generation lasers, \
 			and the wide margin between it and the focus lens could probably house <b>a crystal</b> of some sort.</i>"
 
-/obj/item/laser_pointer/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
-	. |= AFTERATTACK_PROCESSED_ITEM
-	laser_act(target, user, params)
+/obj/item/laser_pointer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	laser_act(interacting_with, user, modifiers)
+	return ITEM_INTERACT_BLOCKING
+
+/obj/item/laser_pointer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
+		return NONE
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 ///Handles shining the clicked atom,
-/obj/item/laser_pointer/proc/laser_act(atom/target, mob/living/user, params)
+/obj/item/laser_pointer/proc/laser_act(atom/target, mob/living/user, list/modifiers)
 	if(isnull(diode))
 		to_chat(user, span_notice("You point [src] at [target], but nothing happens!"))
 		return
@@ -254,7 +255,7 @@
 	//cameras: chance to EMP the camera
 	else if(istype(target, /obj/machinery/camera))
 		var/obj/machinery/camera/target_camera = target
-		if(!target_camera.status && !target_camera.emped)
+		if(!target_camera.camera_enabled && !target_camera.emped)
 			outmsg = span_notice("You point [src] at [target_camera], but it seems to be disabled.")
 		else if(prob(effectchance * diode.rating))
 			target_camera.emp_act(EMP_HEAVY)
@@ -282,15 +283,14 @@
 
 	//setup pointer blip
 	var/mutable_appearance/laser = mutable_appearance('icons/obj/weapons/guns/projectiles.dmi', pointer_icon_state)
-	var/list/modifiers = params2list(params)
 	if(modifiers)
 		if(LAZYACCESS(modifiers, ICON_X))
-			laser.pixel_x = (text2num(LAZYACCESS(modifiers, ICON_X)) - 16)
+			laser.pixel_w = (text2num(LAZYACCESS(modifiers, ICON_X)) - 16)
 		if(LAZYACCESS(modifiers, ICON_Y))
-			laser.pixel_y = (text2num(LAZYACCESS(modifiers, ICON_Y)) - 16)
+			laser.pixel_z = (text2num(LAZYACCESS(modifiers, ICON_Y)) - 16)
 	else
-		laser.pixel_x = target.pixel_x + rand(-5,5)
-		laser.pixel_y = target.pixel_y + rand(-5,5)
+		laser.pixel_w = target.pixel_w + rand(-5,5)
+		laser.pixel_z = target.pixel_z + rand(-5,5)
 
 	if(outmsg)
 		to_chat(user, outmsg)

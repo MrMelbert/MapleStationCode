@@ -38,10 +38,10 @@ GLOBAL_VAR(captain_weapon_picked)
 	block_chance = 10 //Compared to the sabre's 50, yikes.
 
 /obj/item/melee/energy/sword/captain_rapier/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		return
+
+	if(QDELETED(target))
 		return
 
 	//deals double damage to cameras

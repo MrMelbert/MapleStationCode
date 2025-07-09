@@ -6,7 +6,8 @@
 #define AREA_USAGE_STATIC_EQUIP 4
 #define AREA_USAGE_STATIC_LIGHT 5
 #define AREA_USAGE_STATIC_ENVIRON 6
-#define AREA_USAGE_LEN AREA_USAGE_STATIC_ENVIRON // largest idx
+#define AREA_USAGE_APC_CHARGE 7
+#define AREA_USAGE_LEN AREA_USAGE_APC_CHARGE // largest idx
 
 /// Index of the first dynamic usage channel
 #define AREA_USAGE_DYNAMIC_START AREA_USAGE_EQUIP
@@ -28,8 +29,8 @@
 #define ACTIVE_POWER_USE 2
 
 ///Base global power consumption for idling machines
-#define BASE_MACHINE_IDLE_CONSUMPTION 100
-///Base global power consumption for active machines
+#define BASE_MACHINE_IDLE_CONSUMPTION (100 WATTS)
+///Base global power consumption for active machines. The unit is ambiguous (joules or watts) depending on the use case for dynamic users.
 #define BASE_MACHINE_ACTIVE_CONSUMPTION (BASE_MACHINE_IDLE_CONSUMPTION * 10)
 
 /// Bitflags for a machine's preferences on when it should start processing. For use with machinery's `processing_flags` var.
@@ -146,3 +147,5 @@
 #define SD_MESSAGE 2
 /// Shows an alert picture (e.g. red alert, radiation, etc.)
 #define SD_PICTURE 3
+/// Shows whoever or whatever is on the green screen in the captain's office
+#define SD_GREENSCREEN 4

@@ -66,6 +66,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	power_channel = AREA_USAGE_EQUIP
 	max_integrity = 300
 	integrity_failure = 0.33
+	interaction_flags_mouse_drop = NEED_DEXTERITY | ALLOW_RESTING
+
 	/// A reference to a mob on top of the photocopier trying to copy their ass. Null if there is no mob.
 	var/mob/living/ass
 	/// A reference to the toner cartridge that's inserted into the copier. Null if there is no cartridge.
@@ -84,6 +86,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	var/starting_paper = 30
 	/// A stack for all the empty paper we have newly inserted (LIFO)
 	var/list/paper_stack = list()
+
 
 /obj/machinery/photocopier/Initialize(mapload)
 	. = ..()
@@ -591,9 +594,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		new /obj/effect/decal/cleanable/oil(get_turf(src))
 		toner_cartridge.charges = 0
 
-/obj/machinery/photocopier/MouseDrop_T(mob/target, mob/user)
-	check_ass() //Just to make sure that you can re-drag somebody onto it after they moved off.
-	if(!istype(target) || target.anchored || target.buckled || !Adjacent(target) || !user.can_perform_action(src) || target == ass || copier_blocked())
+/obj/machinery/photocopier/mouse_drop_receive(mob/target, mob/user, params)
+	if(!istype(target) || target.anchored || target.buckled || target == ass || copier_blocked())
 		return
 	add_fingerprint(user)
 	if(target == user)
@@ -601,7 +603,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	else
 		user.visible_message(span_warning("[user] starts putting [target] onto the photocopier!"), span_notice("You start putting [target] onto the photocopier..."))
 
-	if(do_after(user, 20, target = src))
+	if(do_after(user, 2 SECONDS, target = src))
 		if(!target || QDELETED(target) || QDELETED(src) || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 
@@ -632,7 +634,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	return TRUE
 
 /**
- * Checks if the copier is deleted, or has something dense at its location. Called in `MouseDrop_T()`
+ * Checks if the copier is deleted, or has something dense at its location. Called in `mouse_drop_receive()`
  */
 /obj/machinery/photocopier/proc/copier_blocked()
 	if(QDELETED(src))
