@@ -7,7 +7,7 @@
 	burn_modifier = 0.9
 	brute_modifier = 0.8
 	unarmed_attack_verbs = list("bite")
-	grappled_attack_verbs = list("maul")
+	grappled_attack_verb = "maul"
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
 	unarmed_attack_sound = 'sound/weapons/bite.ogg'
 	unarmed_miss_sound = 'sound/weapons/bite.ogg'
