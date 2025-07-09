@@ -6,8 +6,8 @@
 	should_draw_greyscale = TRUE
 	burn_modifier = 0.9
 	brute_modifier = 0.8
-	unarmed_attack_verb = "bite"
-	grappled_attack_verb = "maul"
+	unarmed_attack_verbs = list("bite")
+	grappled_attack_verbs = list("maul")
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
 	unarmed_attack_sound = 'sound/weapons/bite.ogg'
 	unarmed_miss_sound = 'sound/weapons/bite.ogg'
@@ -45,7 +45,7 @@
 	limb_id = SPECIES_WEREWOLF
 	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -70,7 +70,7 @@
 	limb_id = SPECIES_WEREWOLF
 	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
