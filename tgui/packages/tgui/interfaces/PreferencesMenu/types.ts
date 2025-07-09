@@ -1,13 +1,13 @@
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 
-import { sendAct } from '../../backend';
+import type { sendAct } from '../../backend';
 import { Language } from './CharacterPreferences/_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbCategory } from './CharacterPreferences/_LimbManager'; // NON-MODULE CHANGE
-import {
+import type {
   LoadoutCategory,
   LoadoutList,
 } from './CharacterPreferences/loadout/base';
-import { Gender } from './preferences/gender';
+import type { Gender } from './preferences/gender';
 
 export enum Food {
   Alcohol = 'ALCOHOL',

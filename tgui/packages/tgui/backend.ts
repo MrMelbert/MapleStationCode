@@ -12,8 +12,8 @@
  */
 import { perf } from 'common/perf';
 import { createAction } from 'common/redux';
-import { globalEvents } from 'tgui-core/events';
-import { BooleanLike } from 'tgui-core/react';
+import type { globalEvents } from 'tgui-core/events';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { setupDrag } from './drag';
 import { focusMap } from './focus';

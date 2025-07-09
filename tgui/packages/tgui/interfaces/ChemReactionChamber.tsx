@@ -13,7 +13,7 @@ import { round, toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
-import { MixingData } from './ChemMixingChamber';
+import type { MixingData } from './ChemMixingChamber';
 
 type ReactingData = MixingData & {
   ph: number;
