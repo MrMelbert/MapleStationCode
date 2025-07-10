@@ -8,7 +8,7 @@
 	icon_state = "liver"
 	organ_flags = ORGAN_UNREMOVABLE
 	// this is a major stop gap: i do want down the line for this to be removable, but this is the easiest way to keep liver in even when untransformed, and prevent werewolves from removing it for 0 downsides
-	organ_traits = list(TRAIT_STABLELIVER, TRAIT_SILVER_VULNERABLE)
+	organ_traits = list(TRAIT_SILVER_VULNERABLE)
 
 /obj/item/organ/internal/liver/werewolf/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()

@@ -102,9 +102,9 @@
 			continue
 
 		to_chat(nearby_human, span_danger("Your mind recoils as it is filled with a primordial terror!"))
-		// if you aren't, you'll become dizzy and jittery, alongside get a -10 negative moodlet
-		nearby_human.set_jitter_if_lower(15 SECONDS)
-		nearby_human.set_dizzy_if_lower(7 SECONDS)
+		// if you aren't, you'll become dizzy and jittery, alongside get a -5 negative moodlet
+		nearby_human.set_jitter_if_lower(7 SECONDS)
+		nearby_human.set_dizzy_if_lower(3 SECONDS)
 		nearby_human.add_mood_event("werewolf_delirium", /datum/mood_event/werewolf_delirium)
 		// and a chance to involuntarily scream
 		if(prob(4))
