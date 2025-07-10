@@ -76,39 +76,42 @@
 	..()
 
 	to_chat(user, span_green("You begin to dredge up the supernatural fury that boils within your body..."))
-
-	for(var/mob/living/carbon/human/nearby_human in view(scare_radius, user))
-		if(HAS_TRAIT(nearby_human, TRAIT_WEREWOLF) || HAS_TRAIT(nearby_human, TRAIT_MINDSHIELD) || HAS_TRAIT(nearby_human, TRAIT_DEAF) || HAS_TRAIT(nearby_human, TRAIT_FEARLESS) || nearby_human == user)
-			continue
-		to_chat(nearby_human, span_warning("You feel an unknown, primal terror building up within you..."))
+	if(is_species(user, /datum/species/werewolf))
+		for(var/mob/living/carbon/human/nearby_human in view(scare_radius, user))
+			if(HAS_TRAIT(nearby_human, TRAIT_WEREWOLF) || HAS_TRAIT(nearby_human, TRAIT_MINDSHIELD) || HAS_TRAIT(nearby_human, TRAIT_DEAF) || HAS_TRAIT(nearby_human, TRAIT_FEARLESS) || nearby_human == user)
+				continue
+			to_chat(nearby_human, span_warning("You feel an unknown, primal terror building up within you..."))
 
 	if(!do_after(user, 2 SECONDS))
 		to_chat(user, span_warning("Your focus is broken, and you settle back down."))
 		return
 
-
 	to_chat(user, span_notice("You release the supernatural wrath within you!"))
 	user.apply_status_effect(/datum/status_effect/werewolf_rage)
-	user.say("RRRRAGGGGHHHH!!", forced = "spell ([src])")
-	playsound(user.loc, 'sound/creatures/space_dragon_roar.ogg', 40, use_reverb = TRUE)
 
-	// hearing a werewolf violently howl- and enter its enraged state, forces unprotected normal humans to panic
-	for(var/mob/living/carbon/human/nearby_human in view(scare_radius, user))
-		if(nearby_human == user)
-			continue
-		// if you are: mentally protected, fearless, deaf, or a werewolf yourself (or the person who used this) you aren't affected.
-		if(HAS_TRAIT(nearby_human, TRAIT_WEREWOLF) || HAS_TRAIT(nearby_human, TRAIT_MINDSHIELD) || HAS_TRAIT(nearby_human, TRAIT_DEAF) || HAS_TRAIT(nearby_human, TRAIT_FEARLESS))
-			to_chat(nearby_human, span_warning("You feel something horrible pass over you."))
-			continue
+	if(is_species(user, /datum/species/werewolf))
+		user.say("RRRRAGGGGHHHH!!", forced = "spell ([src])")
+		playsound(user.loc, 'sound/creatures/space_dragon_roar.ogg', 40, use_reverb = TRUE)
+		// hearing a werewolf violently howl- and enter its enraged state, forces unprotected normal humans to panic
+		for(var/mob/living/carbon/human/nearby_human in view(scare_radius, user))
+			if(nearby_human == user)
+				continue
+			// if you are: mentally protected, fearless, deaf, or a werewolf yourself (or the person who used this) you aren't affected.
+			if(HAS_TRAIT(nearby_human, TRAIT_WEREWOLF) || HAS_TRAIT(nearby_human, TRAIT_MINDSHIELD) || HAS_TRAIT(nearby_human, TRAIT_DEAF) || HAS_TRAIT(nearby_human, TRAIT_FEARLESS))
+				to_chat(nearby_human, span_warning("You feel something horrible pass over you."))
+				continue
 
-		to_chat(nearby_human, span_danger("Your mind recoils as it is filled with a primordial terror!"))
-		// if you aren't, you'll become dizzy and jittery, alongside get a -5 negative moodlet
-		nearby_human.set_jitter_if_lower(7 SECONDS)
-		nearby_human.set_dizzy_if_lower(3 SECONDS)
-		nearby_human.add_mood_event("werewolf_delirium", /datum/mood_event/werewolf_delirium)
-		// and a chance to involuntarily scream
-		if(prob(4))
-			nearby_human.emote("scream")
+			to_chat(nearby_human, span_danger("Your mind recoils as it is filled with a primordial terror!"))
+			// if you aren't, you'll become dizzy and jittery, alongside get a -5 negative moodlet
+			nearby_human.set_jitter_if_lower(7 SECONDS)
+			nearby_human.set_dizzy_if_lower(3 SECONDS)
+			nearby_human.add_mood_event("werewolf_delirium", /datum/mood_event/werewolf_delirium)
+			// and a chance to involuntarily scream
+			if(prob(4))
+				nearby_human.emote("scream")
+	else
+		user.say("REEEEEEEEE!!!!", forced = "spell([src])")
+		playsound(user.loc, 'sound/effects/reee.ogg', 40, use_reverb = TRUE)
 
 /datum/status_effect/werewolf_rage
 	id = "blooddrunk"
