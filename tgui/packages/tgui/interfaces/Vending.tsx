@@ -212,7 +212,7 @@ const ProductDisplay = (props: {
         <Stack>
           {!!onstation && user && (
             <Stack.Item fontSize="16px" color="green">
-              {(user && user.cash) || 0}
+              {user?.cash || 0}
               {displayed_currency_name}
               <Icon name={displayed_currency_icon} color="gold" />
             </Stack.Item>
