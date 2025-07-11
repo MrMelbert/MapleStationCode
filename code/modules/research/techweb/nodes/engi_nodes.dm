@@ -154,6 +154,7 @@
 		"tram_display",
 		"crossing_signal",
 		"guideway_sensor",
+		"mailsorter",
 	)
 
 /datum/techweb_node/energy_manipulation
