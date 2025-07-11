@@ -665,6 +665,7 @@
 	build_path = typepath
 	name = "[typepath::name] Vendor"
 	req_components = list(initial(typepath.refill_canister) = 1)
+	flatpack_components = list(initial(typepath.refill_canister))
 
 /obj/item/circuitboard/machine/vendor/apply_default_parts(obj/machinery/machine)
 	for(var/key in valid_vendor_names_paths)
