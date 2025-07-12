@@ -27,7 +27,7 @@
 		log_admin("[key_name(usr)] has rapidly given [key_name(src)] the following preset: [picked]")
 
 		switch(picked)
-			if("Herald of Cosmos") // kind of like a super-ascended cosmic heretic without a stargazer and a bit of void sidepathing, no regeneration or protection beyond ehp/speed means they can be worn down. very op
+			if("Herald of Cosmos") // kind of like a super-ascended cosmic heretic without a stargazer and a bit of void sidepathing, no regeneration or total protection beyond ehp/speed means they can be worn down. very op
 				src?.mind.add_antag_datum(/datum/antagonist/heretic)
 				var/datum/antagonist/heretic/our_heretic = src?.mind.has_antag_datum(/datum/antagonist/heretic)
 				var/list/knowledges_to_grant = list( // cosmic heretic with a sidepath, some void spells and no ascension
