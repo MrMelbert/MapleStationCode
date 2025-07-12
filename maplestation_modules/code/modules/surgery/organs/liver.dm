@@ -19,3 +19,9 @@
 		organ_owner.adjustStaminaLoss(2 * REM * seconds_per_tick, updating_stamina = TRUE)
 		organ_owner.adjustFireLoss(2 * REM * seconds_per_tick, updating_health = TRUE)
 		organ_owner.cause_pain(BODY_ZONES_ALL, 1 * REM * seconds_per_tick)
+
+/datum/reagent/silver/on_mob_metabolize(mob/living/exposed) // putting it here just because its relevant- move it down the line
+	. = ..()
+	if(HAS_TRAIT(exposed, TRAIT_SILVER_VULNERABLE)) // this is just a notifier the mob is silver vulnerable, unless impossible, what the silver actually DOES to them is decided on the mob itself
+		exposed.visible_message(span_warning("[exposed] recoils in agony!"), span_notice("Your body shudders upon exposure to pure [lowertext(name)]!"))
+		exposed.emote("scream")
