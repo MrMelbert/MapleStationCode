@@ -130,7 +130,6 @@ There are several things that need to be remembered:
 		var/obj/item/bodypart/chest/my_chest = get_bodypart(BODY_ZONE_CHEST)
 		my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
-		apply_overlay(UNIFORM_LAYER)
 
 	apply_overlay(UNIFORM_LAYER)
 	check_body_shape(BODYTYPE_DIGITIGRADE, ITEM_SLOT_ICLOTHING)
