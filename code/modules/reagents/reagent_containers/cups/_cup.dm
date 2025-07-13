@@ -86,14 +86,10 @@
 		var/post_volume_percent = (reagents.total_volume - gulp_size) / reagents.maximum_volume
 		if(post_volume_percent <= 0)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's empty."))
-		else if(post_volume_percent <= 0.1 && pre_volume_percent > 0.1)
+		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
-		else if(post_volume_percent <= 0.25 && pre_volume_percent > 0.25)
-			to_chat(user, span_notice("You swallow a gulp of [src]. It's still about a quarter full."))
 		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's about half full."))
-		else if(post_volume_percent <= 0.75 && pre_volume_percent > 0.75)
-			to_chat(user, span_notice("You swallow a gulp of [src]. It's about three-quarters full."))
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
 	// NON-MODULE CHANGE END
