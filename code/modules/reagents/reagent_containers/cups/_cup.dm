@@ -89,7 +89,7 @@
 		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
 		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
-			to_chat(user, span_notice("You swallow a gulp of [src]. It's about half full."))
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
 	// NON-MODULE CHANGE END
