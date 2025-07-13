@@ -67,17 +67,25 @@
 	limb_id = BODYPART_ID_DIGITIGRADE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 20
 
-/obj/item/bodypart/leg/left/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
+/obj/item/bodypart/leg/left/digitigrade/Initialize(mapload)
 	. = ..()
-	limb_id = owner?.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 20
 
-/obj/item/bodypart/leg/right/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
+/obj/item/bodypart/leg/right/digitigrade/Initialize(mapload)
 	. = ..()
-	limb_id = owner?.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
