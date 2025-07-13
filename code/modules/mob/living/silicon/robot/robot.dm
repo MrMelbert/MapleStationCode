@@ -367,7 +367,7 @@
 	log_message("was detonated by [key_name(user)]!", LOG_ATTACK, log_globally = FALSE)
 
 	log_combat(user, src, "detonated cyborg")
-	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(uusersr)].")
+	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(user)].")
 	if(connected_ai)
 		to_chat(connected_ai, "<br><br>[span_alert("ALERT - Cyborg detonation detected: [name]")]<br>")
 
