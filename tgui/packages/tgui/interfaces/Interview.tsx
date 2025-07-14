@@ -46,7 +46,7 @@ const linkifyText = (text: string) => {
     if (!match) continue;
 
     parts[i] = (
-      <a key={'link' + i} href={match[2]}>
+      <a key={`link${i}`} href={match[2]}>
         {match[1]}
       </a>
     );
