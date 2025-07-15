@@ -6450,11 +6450,13 @@
 #include "maplestation_modules\code\modules\food_and_drinks\containers.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\food\eggs.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\food\pastries.dm"
+#include "maplestation_modules\code\modules\food_and_drinks\food\pizza.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\food\resprites.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\food\starfruit.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\machinery\kitchen.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\recipes\drinks_recipes.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\recipes\food\egg_recipes.dm"
+#include "maplestation_modules\code\modules\food_and_drinks\recipes\food\pizza_recipes.dm"
 #include "maplestation_modules\code\modules\food_and_drinks\recipes\food\starfruit_recipes.dm"
 #include "maplestation_modules\code\modules\hydroponics\hydroponics.dm"
 #include "maplestation_modules\code\modules\hydroponics\plant_genes.dm"
@@ -6651,7 +6653,6 @@
 #include "maplestation_modules\code\modules\vending\wardrobes.dm"
 #include "maplestation_modules\code\modules\wiremod\component_printer.dm"
 #include "maplestation_modules\code\modules\wiremod\shells.dm"
-#ifdef MAPLESTATION_STORY_CONTENT
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
 #include "maplestation_modules\story_content\alraune_miscitems\code\alrmiscitem.dm"
@@ -6689,5 +6690,4 @@
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
 #include "maplestation_modules\story_content\volkan_equipment\datums\loadout_datum.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
-#endif // MAPLESTATION_STORY_CONTENT
 // END_INCLUDE
