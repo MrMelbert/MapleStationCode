@@ -25,11 +25,6 @@
 /datum/greyscale_config/tablet/stripe_two_color
 	json_config = 'code/datums/greyscale/json_configs/_pda_stripe_two_color.json'
 
-/datum/greyscale_config/jumpsuit_worn_digi
-	name = "Digitigrate Jumpsuit Worn"
-	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_gags.dmi'
-	json_config = 'code/datums/greyscale/json_configs/_jumpsuit_worn_digi.json'
-
 /datum/greyscale_config/heels
 	name = "Heels"
 	icon_file = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
