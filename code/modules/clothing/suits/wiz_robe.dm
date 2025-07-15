@@ -226,10 +226,3 @@
 	sleep(3 SECONDS)
 	robe_charge = TRUE
 	to_chat(usr, span_notice("The robe hums, its internal magic supply restored."))
-
-// The actual code for this is handled in the shielded component, see [/datum/component/shielded/proc/check_recharge_rune]
-/obj/item/wizard_armour_charge
-	name = "battlemage shield charges"
-	desc = "A powerful rune that will increase the number of hits a suit of battlemage armour can take before failing.."
-	icon = 'icons/effects/anomalies.dmi'
-	icon_state = "flux"

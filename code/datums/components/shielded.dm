@@ -70,7 +70,6 @@
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(lost_wearer))
 	RegisterSignal(parent, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_react))
-	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(check_recharge_rune))
 	var/atom/shield = parent
 	if(ismob(shield.loc))
 		var/mob/holder = shield.loc
@@ -79,7 +78,7 @@
 		set_wearer(holder)
 
 /datum/component/shielded/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_HIT_REACT, COMSIG_ATOM_ATTACKBY))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_HIT_REACT))
 	var/atom/shield = parent
 	if(shield.loc == wearer)
 		lost_wearer(src, wearer)
@@ -172,6 +171,9 @@
 	if(lose_multiple_charges) // if the shield has health like damage we'll lose charges equal to the damage of the hit
 		charge_loss = damage
 
+	else if(damage < 3)
+		charge_loss = 0
+
 	adjust_charge(-charge_loss)
 
 	INVOKE_ASYNC(src, PROC_REF(actually_run_hit_callback), owner, attack_text, current_charges)
@@ -191,14 +193,3 @@
 	owner.visible_message(span_danger("[owner]'s shields deflect [attack_text] in a shower of sparks!"))
 	if(current_charges <= 0)
 		owner.visible_message(span_warning("[owner]'s shield overloads!"))
-
-/datum/component/shielded/proc/check_recharge_rune(datum/source, obj/item/recharge_rune, mob/living/user)
-	SIGNAL_HANDLER
-
-	if(!istype(recharge_rune, recharge_path))
-		return
-	. = COMPONENT_NO_AFTERATTACK
-
-	adjust_charge(charge_recovery)
-	to_chat(user, span_notice("You charge \the [parent]. It can now absorb [current_charges] hits."))
-	qdel(recharge_rune)
