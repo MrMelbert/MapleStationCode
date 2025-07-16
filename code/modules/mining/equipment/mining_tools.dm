@@ -167,6 +167,13 @@
 	throwforce = 7
 	w_class = WEIGHT_CLASS_SMALL
 
+/obj/item/shovel/spade/cyborg
+	name = "cyborg spade"
+	icon = 'icons/obj/items_cyborg.dmi'
+	icon_state = "sili_shovel"
+	toolspeed = 0.6
+	worn_icon_state = null
+
 /obj/item/shovel/serrated
 	name = "serrated bone shovel"
 	desc = "A wicked tool that cleaves through dirt just as easily as it does flesh. The design was styled after ancient lavaland tribal designs. \
@@ -320,8 +327,7 @@
 	pickup_sound = 'sound/items/handling/crowbar_pickup.ogg'
 	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	block_sound = 'sound/weapons/sonic_jackhammer.ogg'
-	obj_flags = IMMUTABLE_SLOW
-	item_flags = SLOWS_WHILE_IN_HAND
+	item_flags = SLOWS_WHILE_IN_HAND | IMMUTABLE_SLOW
 	slowdown = 3
 	attack_speed = 1.2 SECONDS
 	/// The factor at which the recoil becomes less.

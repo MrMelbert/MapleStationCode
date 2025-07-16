@@ -8,6 +8,7 @@
 
 /datum/round_event_control/resource_drift
 	name = "Resource Drift"
+	category = "Resources"
 	typepath = /datum/round_event/resource_drift
 	weight = 18
 	max_occurrences = 3

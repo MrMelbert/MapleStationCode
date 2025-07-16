@@ -39,7 +39,7 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
-/obj/structure/chem_separator/deconstruct(disassembled) // Non-module change
+/obj/structure/chem_separator/atom_deconstruct(disassembled)
 	var/atom/drop = drop_location()
 
 	new /obj/item/stack/sheet/mineral/wood(drop, 1)
@@ -256,9 +256,7 @@
 	toggle_burner(FALSE)
 
 /obj/structure/chem_separator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-module change
-	if(LAZYACCESS(modifiers, RIGHT_CLICK)) // Non-module change
-		return item_interaction_secondary(user, tool, modifiers) // Non-module change
+	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -315,7 +313,7 @@
 
 	return ..()
 
-/obj/structure/chem_separator/proc/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers) // Non-module change : don't have this yet, have to improvise
+/obj/structure/chem_separator/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
 	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -534,11 +532,11 @@
 			condenser_on = !condenser_on
 			return TRUE
 
-/obj/structure/chem_separator/AltClick(mob/user) // Non-module change
+/obj/structure/chem_separator/click_alt(mob/user)
 	if(!burner_on)
-		return TRUE // Non-module change
+		return CLICK_ACTION_BLOCKING
 
 	toggle_burner(FALSE)
-	return TRUE // Non-module change
+	return CLICK_ACTION_SUCCESS
 
 #undef MAX_BURNER_KNOB_SETTINGS

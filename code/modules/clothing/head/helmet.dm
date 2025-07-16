@@ -62,10 +62,7 @@
 
 	return ..()
 
-/obj/item/clothing/head/helmet/sec/AltClick(mob/user)
-	. = ..()
-	if(. == FALSE || !user.can_perform_action(src, NEED_HANDS|ALLOW_RESTING))
-		return
+/obj/item/clothing/head/helmet/sec/click_alt(mob/user)
 	flipped_visor = !flipped_visor
 	balloon_alert(user, "visor flipped")
 	// base_icon_state is modified for seclight attachment component
@@ -76,6 +73,7 @@
 	else
 		flags_cover |= HEADCOVERSEYES
 	update_appearance()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/head/helmet/press
 	name = "press helmet"

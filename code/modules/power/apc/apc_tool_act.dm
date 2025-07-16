@@ -1,10 +1,7 @@
 //attack with an item - open/close cover, insert cell, or (un)lock interface
 
-/obj/machinery/power/apc/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(.)
-		return .
-
+/obj/machinery/power/apc/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = NONE
 	if(HAS_TRAIT(tool, TRAIT_APC_SHOCKING))
 		. = fork_outlet_act(user, tool)
 		if(.)
@@ -17,7 +14,7 @@
 	if(istype(tool, /obj/item/stock_parts/power_store))
 		. = cell_act(user, tool)
 	else if(istype(tool, /obj/item/stack/cable_coil))
-		. = cable_act(user, tool, is_right_clicking)
+		. = cable_act(user, tool, LAZYACCESS(modifiers, RIGHT_CLICK))
 	else if(istype(tool, /obj/item/electronics/apc))
 		. = electronics_act(user, tool)
 	else if(istype(tool, /obj/item/electroadaptive_pseudocircuit))
@@ -123,7 +120,7 @@
 	balloon_alert(user, "adding cables...")
 	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 
-	if(!do_after(user, 20, target = src))
+	if(!do_after(user, 2 SECONDS, target = src))
 		return ITEM_INTERACT_BLOCKING
 	if(!can_place_terminal(user, installing_cable, silent = TRUE))
 		return ITEM_INTERACT_BLOCKING
@@ -156,7 +153,7 @@
 	balloon_alert(user, "inserting the board...")
 	playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 
-	if(!do_after(user, 10, target = src) || has_electronics)
+	if(!do_after(user, 1 SECONDS, target = src) || has_electronics)
 		return ITEM_INTERACT_BLOCKING
 
 	has_electronics = APC_ELECTRONICS_INSTALLED
@@ -211,7 +208,7 @@
 	if((machine_stat & BROKEN) && opened == APC_COVER_REMOVED && has_electronics && terminal) // Cover is the only thing broken, we do not need to remove elctronicks to replace cover
 		user.visible_message(span_notice("[user.name] replaces missing APC's cover."))
 		balloon_alert(user, "replacing APC's cover...")
-		if(!do_after(user, 20, target = src)) // replacing cover is quicker than replacing whole frame
+		if(!do_after(user, 2 SECONDS, target = src)) // replacing cover is quicker than replacing whole frame
 			return ITEM_INTERACT_BLOCKING
 		balloon_alert(user, "cover replaced")
 		qdel(wallframe)
@@ -225,7 +222,7 @@
 		return ITEM_INTERACT_BLOCKING
 	user.visible_message(span_notice("[user.name] replaces the damaged APC frame with a new one."))
 	balloon_alert(user, "replacing damaged frame...")
-	if(!do_after(user, 50, target = src))
+	if(!do_after(user, 5 SECONDS, target = src))
 		return ITEM_INTERACT_BLOCKING
 	balloon_alert(user, "replaced frame")
 	qdel(wallframe)
@@ -473,7 +470,7 @@
 	environ = APC_CHANNEL_OFF
 	update_appearance()
 	update()
-	addtimer(CALLBACK(src, PROC_REF(reset), APC_RESET_EMP), 600)
+	addtimer(CALLBACK(src, PROC_REF(reset), APC_RESET_EMP), 60 SECONDS)
 
 /obj/machinery/power/apc/proc/togglelock(mob/living/user)
 	if(obj_flags & EMAGGED)
