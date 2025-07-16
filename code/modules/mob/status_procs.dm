@@ -82,7 +82,7 @@
 		return 0
 	amount = round(amount, 0.01)
 	min_temp = max(min_temp, TCMB)
-	max_temp = max(max_temp, CELCIUS_TO_KELVIN(330 CELCIUS))
+	max_temp = min(max_temp, CELCIUS_TO_KELVIN(330 CELCIUS))
 
 	if(body_temperature >= min_temp && body_temperature <= max_temp)
 		var/old_temp = body_temperature
