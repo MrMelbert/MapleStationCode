@@ -8,6 +8,8 @@
 	category = /datum/uplink_category/suits
 	surplus = 40
 
+//---- SUITS
+
 /datum/uplink_item/suits/infiltrator_bundle
 	name = "Infiltrator MODsuit"
 	desc = "Developed by the Roseus Galactic Actors Guild in conjunction with the Gorlex Marauders to produce a functional suit for urban operations, \
@@ -34,41 +36,37 @@
 	cost = 8
 	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS) //you can't buy it in nuke, because the elite modsuit costs the same while being better
 
+//---- MODULES
+
 /datum/uplink_item/suits/thermal
 	name = "MODsuit Thermal Visor Module"
 	desc = "A visor for a MODsuit. Lets you see living beings through walls."
 	item = /obj/item/mod/module/visor/thermal
-	cost = 3
-
-/datum/uplink_item/suits/night
-	name = "MODsuit Night Visor Module"
-	desc = "A visor for a MODsuit. Lets you see clearer in the dark."
-	item = /obj/item/mod/module/visor/night
 	cost = 2
 
 /datum/uplink_item/suits/chameleon
 	name = "MODsuit Chameleon Module"
 	desc = "A MODsuit module that lets the suit disguise itself as other objects."
 	item = /obj/item/mod/module/chameleon
-	cost = 2
+	cost = 1
 
 /datum/uplink_item/suits/plate_compression
 	name = "MODsuit Plate Compression Module"
 	desc = "A MODsuit module that lets the suit compress into a smaller size. Not compatible with storage modules or the Infiltrator MODsuit."
 	item = /obj/item/mod/module/plate_compression
-	cost = 2
+	cost = 1
 
 /datum/uplink_item/suits/noslip
 	name = "MODsuit Anti-Slip Module"
 	desc = "A MODsuit module preventing the user from slipping on water."
 	item = /obj/item/mod/module/noslip
-	cost = 2
+	cost = 1
 
 /datum/uplink_item/suits/shock_absorber
 	name = "MODsuit Shock-Absorber Module"
 	desc = "A MODsuit module preventing the user from getting knocked down by batons."
 	item = /obj/item/mod/module/shock_absorber
-	cost = 2
+	cost = 1
 
 /datum/uplink_item/suits/modsuit/elite_traitor
 	name = "Elite Syndicate MODsuit"
@@ -85,4 +83,4 @@
 	desc = "A MODsuit module that grants to the user Optical camouflage and the ability to overload light sources to recharge suit power. \
 		Incompatible with armored MODsuits."
 	item = /obj/item/mod/module/stealth/wraith
-	cost = 3
+	cost = 2
