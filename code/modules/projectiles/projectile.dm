@@ -1092,8 +1092,7 @@
 		for(var/datum/point/p in beam_segments)
 			// NON-MODULE CHANGE
 			var/obj/effect/tracer = generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
-			animate(tracer, time = round(duration / 3, 0.1))
-			animate(alpha = 0, time = round(2 * duration / 3, 0.1), easing = SINE_EASING|EASE_IN)
+			animate(tracer, alpha = 0, time = duration, easing = SINE_EASING|EASE_IN)
 	if(muzzle_type && duration > 0)
 		var/datum/point/p = beam_segments[1]
 		var/atom/movable/thing = new muzzle_type
@@ -1104,8 +1103,7 @@
 		thing.color = color
 		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
 		// NON-MODULE CHANGE
-		animate(thing, time = round(duration / 3, 0.1))
-		animate(alpha = 0, time = round(2 * duration / 3, 0.1), easing = SINE_EASING|EASE_IN)
+		animate(thing, alpha = 0, time = duration, easing = SINE_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
@@ -1117,8 +1115,7 @@
 		thing.color = color
 		thing.set_light(impact_light_range, impact_light_intensity, impact_light_color_override? impact_light_color_override : color)
 		// NON-MODULE CHANGE
-		animate(thing, time = round(duration / 3, 0.1))
-		animate(alpha = 0, time = round(2 * duration / 3, 0.1), easing = SINE_EASING|EASE_IN)
+		animate(thing, alpha = 0, time = duration, easing = SINE_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
 	if(cleanup)
 		cleanup_beam_segments()
