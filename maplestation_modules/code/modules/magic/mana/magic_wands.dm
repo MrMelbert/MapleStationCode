@@ -33,10 +33,10 @@
 	balloon_alert(user, "transferring mana....")
 	target_mana_pool.start_transfer(user_pool)
 
-/obj/item/magic_wand/attack_self(mob/user, modifiers)
+/* /obj/item/magic_wand/attack_self(mob/user, modifiers)
 	. = ..()
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
 		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
-		return
+		return */
