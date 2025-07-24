@@ -2,7 +2,7 @@
 // this is where the base types of non-special ones and relevant documentation will be stored
 
 /datum/mana_pool/magic_altar
-	amount = 0
+	amount = 200
 
 /datum/mana_pool/magic_altar/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -18,7 +18,7 @@
 
 /obj/structure/magic_altar/
 	name = "magic altar basetype"
-	desc = "an honestly quite dull magic altar, actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
+	desc = "an honestly quite dull magic altar; actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
 	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
 	icon_state = "goner"
 	has_initial_mana_pool = TRUE
