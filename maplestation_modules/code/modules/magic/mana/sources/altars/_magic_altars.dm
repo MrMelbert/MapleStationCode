@@ -7,7 +7,7 @@
 /datum/mana_pool/magic_altar/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
 		return FALSE
-	var/obj/item/magic_altar/altar = parent
+	var/obj/structure/magic_altar/altar = parent
 
 	if (altar.loc == target_pool.parent.loc) // yeah sure i copypasta from battery code, but if you manage to occupy the same tile as an altar you deserve a guranteed transfer
 		return TRUE

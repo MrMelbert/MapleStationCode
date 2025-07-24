@@ -2,12 +2,13 @@
 /obj/item/magic_wand
 	name = "Makeshift Wand"
 	desc = "A 'wand' made out of scraps and reused office materials. Unless this is a part of your religion or something, you should probably ditch this for something better."
-	icon = 'maplestation_modules/icons/obj/magic/wands.dmi/'
+	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "makeshift"
+	w_class = WEIGHT_CLASS_NORMAL // meant to be big and hard to store, additional reason to not use this
 
 /obj/item/magic_wand/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
-	var/target_mana_pool = interacting_with.mana_pool
-	var/user_pool = user.mana_pool
+	var/datum/mana_pool/target_mana_pool = interacting_with.mana_pool
+	var/datum/mana_pool/user_pool = user.mana_pool
 	var/already_transferring = (user in mana_pool.transferring_to)
 
 	if(!target_mana_pool)
