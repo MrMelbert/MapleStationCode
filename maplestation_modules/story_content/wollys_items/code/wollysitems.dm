@@ -93,10 +93,11 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	can_adjust = FALSE
 
 /obj/item/clothing/mask/elikitsune
-	name = "advanced kitsune mask" // todo
-	desc = "todo"
+	name = "advanced kitsune mask"
+	desc = "A hand made mask put together by Elijah Malkovich. An advanced set of mechanics, incomprehensible to the naked eye, allow for one to eat, drink, and breathe without being fettered by the mask, line the insides."
 	w_class = WEIGHT_CLASS_SMALL
 	flags_inv = HIDEFACE|HIDEFACIALHAIR
+	clothing_flags = MASKINTERNALS
 	icon = 'maplestation_modules/story_content/wollys_items/icons/obj/clothing/mask.dmi'
 	worn_icon = 'maplestation_modules/story_content/wollys_items/icons/mob/clothing/mask.dmi'
 	icon_state = "eli_mask"
