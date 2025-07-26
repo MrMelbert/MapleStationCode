@@ -9,7 +9,7 @@
 /obj/item/magic_wand/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
 	var/datum/mana_pool/target_mana_pool = interacting_with.mana_pool
 	var/datum/mana_pool/user_pool = user.mana_pool
-	var/already_transferring = (user in mana_pool.transferring_to)
+	var/already_transferring = (user in target_mana_pool.transferring_to)
 
 	if(!target_mana_pool)
 		return  // no response for this failing, as else it would proc on ~70% of things in the codebase
@@ -19,13 +19,14 @@
 	if(ismob(interacting_with)) // todo: add exceptions for if we want leeching from mob pools
 		balloon_alert(user, "can't take from this!")
 		return
+
 	if (already_transferring)
 		balloon_alert(user, "canceled draw")
-		mana_pool.stop_transfer(user.mana_pool)
+		target_mana_pool.stop_transfer(user_pool)
 		return
-	if(!user.is_holding(src))
+/*	if(!user.is_holding(src))
 		balloon_alert(user, "firmly grasp it!")
-		return
+		return */
 
 	var/static/list/options = list("Yes", "No")
 	var/transfer_confirmation = (tgui_alert(user, "Do you want to transfer mana from [interacting_with]?", "Transfer Mana?", options) == "Yes")
