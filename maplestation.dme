@@ -6393,6 +6393,7 @@
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook_manager.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_cantrips.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_entry.dm"
+#include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_manipulation.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_spell_entry.dm"
 #include "maplestation_modules\code\modules\client\verbs\looc.dm"
 #include "maplestation_modules\code\modules\clothing\digi_clothing.dm"

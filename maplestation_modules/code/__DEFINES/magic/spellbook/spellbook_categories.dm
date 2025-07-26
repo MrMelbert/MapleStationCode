@@ -1,4 +1,4 @@
-#define SPELLBOOK_CATEGORY_THERMOKINESIS "Thermokinesis"
+/* #define SPELLBOOK_CATEGORY_THERMOKINESIS "Thermokinesis"
 #define SPELLBOOK_CATEGORY_CRYOKINESIS "Cryokinesis"
 #define SPELLBOOK_CATEGORY_HYDROKINESIS "Hydrokinesis"
 #define SPELLBOOK_CATEGORY_THAUMATURGY "Thaumaturgy"
@@ -7,7 +7,8 @@
 #define SPELLBOOK_CATEGORY_GEOMANCY "Geomancy"
 #define SPELLBOOK_CATEGORY_ELECTROKINESIS "Electrokinesis"
 #define SPELLBOOK_CATEGORY_LIFE_MAGIC "Life Magic"
-#define SPELLBOOK_CATEGORY_MISC "Misc. Spells"
+#define SPELLBOOK_CATEGORY_MISC "Misc. Spells" */
 
 // todo: clear out the above
 #define SPELLBOOK_CATEGORY_CANTRIPS "Cantrips"
+#define SPELLBOOK_CATEGORY_MANIPULATION "Manipulation"

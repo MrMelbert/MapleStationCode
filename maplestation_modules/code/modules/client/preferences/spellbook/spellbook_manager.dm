@@ -142,6 +142,7 @@
 
 	var/list/spellbook_tabs = list()
 	spellbook_tabs += list(list("name" = "Cantrips", "title" = "Simple spells that require little preparation or components to cast", "contents" = list_to_data(GLOB.spellbook_cantrip_items)))
+	spellbook_tabs += list(list("name" = "Manipulation", "title" = "Capabilities that typically involve the manipulation of or other use of mana", "contents" = list_to_data(GLOB.spellbook_manipulation_items)))
 	/*
 	spellbook_tabs += list(list("name" = "Aeromancy", "title" = "Items related to manipulation of air and motion", "contents" = list_to_data(GLOB.spellbook_aeromancy_items)))
 	spellbook_tabs += list(list("name" = "Cryokinesis", "title" = "Items related to manipulation of ice", "contents" = list_to_data(GLOB.spellbook_cryokinesis_items)))
