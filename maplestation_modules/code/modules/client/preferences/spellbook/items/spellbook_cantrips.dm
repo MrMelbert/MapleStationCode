@@ -222,3 +222,50 @@ GLOBAL_LIST_INIT(spellbook_cantrip_items, generate_spellbook_items(SPELLBOOK_CAT
 	category = SPELLBOOK_CATEGORY_MISC
 
 	our_action_typepath = /datum/action/cooldown/spell/leyline_charge */ // disabled because leylines are weirda
+
+/datum/spellbook_item/spell/meditate
+	name = "Magic Meditation"
+	description = "Use mental focus to draw mana within yourself"
+	lore = "The most basic method of regenerating mana on your own. \
+	Casting this invocation- while focusing- will allow you to draw mana from the ambient environment. \
+	Do note that this will take a while between casts, and you should still find other methods of regeneration."
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+
+	our_action_typepath = /datum/action/cooldown/spell/meditate
+
+/datum/spellbook_item/spell/mana_sense
+	name = "Mana Sense"
+	description = "Sense other mana pools present"
+	lore = "Using your magical attunement (or other aptitudes) \
+	you can sense if a creature or object has a mana pool present; and what amount of mana the pool has. \
+	Do note that this will require a reprieve between casts, and it will take a second to discern the amount of mana a pool has."
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+
+	our_action_typepath = /datum/action/cooldown/spell/pointed/mana_sense
+
+/datum/spellbook_item/spell/sending
+	name = "Sending"
+	description = "Its Telepathy, but with magic."
+	lore = "Using your magical attunement (or other aptitudes) \
+	you can send a message to another creature within a short radius. "
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+
+	our_action_typepath = /datum/action/cooldown/spell/list_target/telepathy/mana
+
+/datum/spellbook_item/spell/sense_equilibrium
+	name = "Sense Equilibrium"
+	description = "Divert pathways in a person's brain from one area to another, enhancing one at the cost of the other."
+	lore = "Shape the power of the mind to your will." // I ain't writing all that.
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+	has_params = TRUE
+
+	our_action_typepath = /datum/action/cooldown/spell/list_target/sense_equilibrium
+
+// Customization to allow greater sense equilibrium
+/datum/spellbook_item/spell/sense_equilibrium/generate_customization_params()
+	. = list()
+	.["greater"] = new /datum/spellbook_customization_entry/boolean("greater", "Greater, stronger, shorter lasting version", "A more expensive and shorter lasting form of Sense Equilibrium which allows the user to pinpoint the exact effect they wish the spell to have.")
