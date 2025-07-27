@@ -10,6 +10,7 @@
 	density = FALSE
 	circuit = null
 	light_power = 0
+	telegraph_cameras = FALSE
 	/// The kind of wallframe that this telescreen drops
 	var/frame_type = /obj/item/wallframe/telescreen
 
