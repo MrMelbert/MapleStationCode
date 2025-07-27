@@ -143,17 +143,6 @@
 	var/list/spellbook_tabs = list()
 	spellbook_tabs += list(list("name" = "Cantrips", "title" = "Simple spells that require little preparation or components to cast", "contents" = list_to_data(GLOB.spellbook_cantrip_items)))
 	spellbook_tabs += list(list("name" = "Manipulation", "title" = "Capabilities that typically involve the manipulation of or other use of mana", "contents" = list_to_data(GLOB.spellbook_manipulation_items)))
-	/*
-	spellbook_tabs += list(list("name" = "Aeromancy", "title" = "Items related to manipulation of air and motion", "contents" = list_to_data(GLOB.spellbook_aeromancy_items)))
-	spellbook_tabs += list(list("name" = "Cryokinesis", "title" = "Items related to manipulation of ice", "contents" = list_to_data(GLOB.spellbook_cryokinesis_items)))
-	spellbook_tabs += list(list("name" = "Thermokinesis", "title" = "Items related to manipulation of temperature", "contents" = list_to_data(GLOB.spellbook_thermokinesis_items)))
-	spellbook_tabs += list(list("name" = "Hydrokinesis", "title" = "Items related to manipulation of water", "contents" = list_to_data(GLOB.spellbook_hydrokinesis_items)))
-	spellbook_tabs += list(list("name" = "Lumenomancy", "title" = "Items related to manipulation of light", "contents" = list_to_data(GLOB.spellbook_lumenomancy_items)))
-	spellbook_tabs += list(list("name" = "Geomancy", "title" = "Items related to manipulation of earth", "contents" = list_to_data(GLOB.spellbook_geomancy_items)))
-	spellbook_tabs += list(list("name" = "Electrokinesis", "title" = "Items related to manipulation of electricity", "contents" = list_to_data(GLOB.spellbook_electrokinesis_items)))
-	spellbook_tabs += list(list("name" = "Life Magic", "title" = "Items related to Life and Healing magic", "contents" = list_to_data(GLOB.spellbook_healing_items)))
-	spellbook_tabs += list(list("name" = "Misc. Spells", "title" = "Other miscellaneous spells, not associated with any attunements", "contents" = list_to_data(GLOB.spellbook_misc_items)))
-	*/
 
 	data["spellbook_tabs"] = spellbook_tabs
 
