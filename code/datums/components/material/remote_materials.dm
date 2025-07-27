@@ -29,7 +29,7 @@ handles linking back and forth.
 	allow_standalone = TRUE,
 	force_connect = FALSE,
 	mat_container_flags = NONE,
-	list/mat_container_signals = null
+	list/mat_container_signals = null,
 )
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -108,8 +108,7 @@ handles linking back and forth.
 		allowed_items = /obj/item/stack \
 	)
 
-/// Adds/Removes this connection from the silo
-/datum/component/remote_materials/proc/toggle_holding()
+/datum/component/remote_materials/proc/toggle_holding(force_hold = FALSE)
 	if(isnull(silo))
 		return
 
@@ -146,6 +145,19 @@ handles linking back and forth.
 
 	if (allow_standalone)
 		_MakeLocal()
+
+///Insert mats into silo
+/datum/component/remote_materials/proc/SiloAttackBy(datum/source, obj/item/target, mob/living/user)
+	SIGNAL_HANDLER
+
+	//Allows you to attack the machine with iron sheets for e.g.
+	if(!(mat_container_flags & MATCONTAINER_ANY_INTENT) && user.combat_mode)
+		return
+
+	if(silo)
+		mat_container.user_insert(target, user, parent)
+
+	return COMPONENT_NO_AFTERATTACK
 
 /datum/component/remote_materials/proc/OnMultitool(datum/source, mob/user, obj/item/multitool/M)
 	SIGNAL_HANDLER
