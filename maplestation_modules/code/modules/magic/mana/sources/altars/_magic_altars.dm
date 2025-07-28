@@ -2,7 +2,8 @@
 // this is where the base types of non-special ones and relevant documentation will be stored
 
 /datum/mana_pool/magic_altar
-	amount = 200
+	amount = 500
+	max_donation_rate_per_second = 2 // pretty slow, but a solid source of mana
 
 /datum/mana_pool/magic_altar/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))

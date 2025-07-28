@@ -230,6 +230,7 @@
 	if (target_pool in transferring_to)
 		return MANA_POOL_ALREADY_TRANSFERRING
 
+	transferring_to += target_pool
 	target_pool.incoming_transfer_start(src)
 
 	RegisterSignal(target_pool, COMSIG_QDELETING, PROC_REF(stop_transfer))
