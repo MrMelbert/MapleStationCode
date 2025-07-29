@@ -241,6 +241,7 @@
 	extra_price = PAYCHECK_COMMAND
 	payment_department = ACCOUNT_SRV
 	light_mask = "theater-light-mask"
+	allow_custom = TRUE
 
 /obj/item/vending_refill/autodrobe
 	machine_name = "AutoDrobe"

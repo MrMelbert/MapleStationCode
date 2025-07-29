@@ -220,6 +220,9 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	/// used for narcing on underages
 	var/obj/item/radio/sec_radio
 
+	///Whether this vendor can be selected when building a custom vending machine
+	var/allow_custom = FALSE
+
 /datum/armor/machinery_vending
 	melee = 20
 	fire = 50
@@ -1690,6 +1693,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	/// Base64 cache of custom icons.
 	var/list/base64_cache = list()
 	panel_type = "panel20"
+	allow_custom = TRUE
 
 /obj/machinery/vending/custom/compartmentLoadAccessCheck(mob/user)
 	. = FALSE
@@ -1846,6 +1850,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 /obj/machinery/vending/custom/unbreakable
 	name = "Indestructible Vendor"
 	resistance_flags = INDESTRUCTIBLE
+	allow_custom = FALSE
 
 /obj/item/vending_refill/custom
 	machine_name = "Custom Vendor"
@@ -1860,6 +1865,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	max_loaded_items = 40
 	light_mask = "greed-light-mask"
 	custom_materials = list(/datum/material/gold = SHEET_MATERIAL_AMOUNT * 5)
+	allow_custom = FALSE
 
 /obj/machinery/vending/custom/greed/Initialize(mapload)
 	. = ..()
