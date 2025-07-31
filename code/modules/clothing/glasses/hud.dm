@@ -75,7 +75,6 @@
 	color_cutoffs = list(20, 20, 45)
 	glass_colour_type = /datum/client_colour/glass_colour/lightgreen
 	actions_types = list(/datum/action/item_action/toggle_nv)
-	forced_glass_color = TRUE
 
 /obj/item/clothing/glasses/hud/health/night/update_icon_state()
 	. = ..()
@@ -91,7 +90,6 @@
 	desc = "An clandestine medical science heads-up display that allows operatives to find \
 		dying captains and the perfect poison to finish them off in complete darkness."
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_MEDICAL_HUD)
-	forced_glass_color = FALSE
 
 /obj/item/clothing/glasses/hud/health/sunglasses
 	name = "medical HUDSunglasses"
@@ -129,7 +127,6 @@
 	color_cutoffs = list(25, 15, 5)
 	glass_colour_type = /datum/client_colour/glass_colour/lightyellow
 	actions_types = list(/datum/action/item_action/toggle_nv)
-	forced_glass_color = TRUE
 
 /obj/item/clothing/glasses/hud/diagnostic/night/update_icon_state()
 	. = ..()
@@ -206,7 +203,6 @@
 	color_cutoffs = list(40, 15, 10)
 	glass_colour_type = /datum/client_colour/glass_colour/lightred
 	actions_types = list(/datum/action/item_action/toggle_nv)
-	forced_glass_color = TRUE
 
 /obj/item/clothing/glasses/hud/security/night/update_icon_state()
 	. = ..()
