@@ -55,12 +55,15 @@
 
 ///Gets the skill's singleton and returns the result of its get_skill_modifier
 /datum/mind/proc/get_skill_modifier(skill, modifier)
-	var/datum/skill/S = GetSkillRef(skill)
-	return S.get_skill_modifier(modifier, known_skills[skill][SKILL_LVL])
+	if(!SSskills.initialized)
+		return 1
+	return SSskills.all_skills[skill].get_skill_modifier(modifier, known_skills[skill][SKILL_LVL])
 
 /// Gets the skill's singleton and returns the result of its get_skill_modifier
 /// If the mind is null, assume as little experience as possible ([SKILL_LEVEL_NONE])
 /mob/proc/get_skill_modifier(skill, modifier)
+	if(!SSskills.initialized)
+		return 1
 	if(isnull(mind))
 		return SSskills.all_skills[skill].get_skill_modifier(modifier, SKILL_LEVEL_NONE)
 	return mind.get_skill_modifier(skill, modifier)
