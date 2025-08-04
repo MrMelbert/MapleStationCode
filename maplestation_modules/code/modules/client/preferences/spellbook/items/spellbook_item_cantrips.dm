@@ -235,3 +235,12 @@ GLOBAL_LIST_INIT(spellbook_cantrip_items, generate_spellbook_items(SPELLBOOK_CAT
 /datum/spellbook_item/spell/sense_equilibrium/generate_customization_params()
 	. = list()
 	.["greater"] = new /datum/spellbook_customization_entry/boolean("greater", "Greater, stronger, shorter lasting version", "A more expensive and shorter lasting form of Sense Equilibrium which allows the user to pinpoint the exact effect they wish the spell to have.")
+
+/datum/spellbook_item/spell/eyes_of_night
+	name "Eyes of Night"
+	description = "Attune your eyes to see better in the dark."
+	lore = "A staple of dark mages, and one of the most commonly used dark magic spells, this spell allows one to see within the dark without illuminating the surronding area."
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+
+	our_action_typepath = /datum/action/cooldown/spell/eyes_of_night

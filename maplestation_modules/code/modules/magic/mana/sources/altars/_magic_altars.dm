@@ -2,6 +2,8 @@
 // this is where the base types of non-special ones and relevant documentation will be stored
 
 /datum/mana_pool/magic_altar
+	maximum_mana_capacity = 500
+	softcap = 500
 	amount = 500
 	max_donation_rate_per_second = 2 // pretty slow, but a solid source of mana
 
