@@ -25,7 +25,7 @@
 	firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect/blue
 
 /obj/item/ammo_casing/energy/disabler/smg
-	projectile_type = /obj/projectile/beam/disabler/weak
+	projectile_type = /obj/projectile/beam/disabler/weak/carbine
 	e_cost = LASER_SHOTS(40, STANDARD_CELL_CHARGE)
 	fire_sound = 'sound/weapons/taser3.ogg'
 
