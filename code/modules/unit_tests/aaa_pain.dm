@@ -12,7 +12,8 @@
 	dummy.pain_controller.base_pain_decay = 0
 	dummy.pain_controller.natural_pain_decay = 0
 
-	dummy.cause_pain(BODY_ZONES_ALL, 25)
+	for(var/zone in BODY_ZONES_ALL)
+		dummy.cause_pain(zone, 25)
 	for(var/obj/item/bodypart/part as anything in dummy.bodyparts)
 		TEST_ASSERT_EQUAL(part.pain, 25, "Dummy had an unexpected amount of pain.")
 
