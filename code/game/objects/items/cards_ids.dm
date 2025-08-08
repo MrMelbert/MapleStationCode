@@ -1762,14 +1762,22 @@
 	to_chat(user, span_notice("You successfully forge the ID card."))
 	user.log_message("forged \the [initial(name)] with name \"[registered_name]\", occupation \"[assignment]\" and trim \"[trim?.assignment]\".", LOG_GAME)
 
-	if(!registered_account && ishuman(user))
-		var/mob/living/carbon/human/accountowner = user
+	if(!ishuman(user))
+		return
 
-		var/datum/bank_account/account = SSeconomy.bank_accounts_by_id["[accountowner.account_id]"]
-		if(account)
-			account.bank_cards += src
-			registered_account = account
-			to_chat(user, span_notice("Your account number has been automatically assigned."))
+	var/mob/living/carbon/human/owner = user
+	if (!selected_trim_path) // Ensure that even without a trim update, we update user's sechud
+		owner.update_ID_card()
+
+	if (registered_account)
+		return
+
+	var/datum/bank_account/account = SSeconomy.bank_accounts_by_id["[owner.account_id]"]
+	if(account)
+		account.bank_cards += src
+		registered_account = account
+		to_chat(user, span_notice("Your account number has been automatically assigned."))
+
 
 /obj/item/card/id/advanced/chameleon/proc/after_input_check(mob/user)
 	if(QDELETED(user) || QDELETED(src) || !user.client || !user.can_perform_action(src, NEED_DEXTERITY|FORBID_TELEKINESIS_REACH))
@@ -1858,13 +1866,20 @@
 
 /obj/item/card/cardboard/equipped(mob/user, slot, initial = FALSE)
 	. = ..()
-	if(slot == ITEM_SLOT_ID)
-		RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(return_visible_name))
-		RegisterSignal(user, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, PROC_REF(return_message_name_part))
+	if(slot != ITEM_SLOT_ID)
+		return
+	RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(return_visible_name))
+	RegisterSignal(user, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, PROC_REF(return_message_name_part))
+	if(ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /obj/item/card/cardboard/dropped(mob/user, silent = FALSE)
 	. = ..()
 	UnregisterSignal(user, list(COMSIG_HUMAN_GET_VISIBLE_NAME, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART))
+	if(ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /obj/item/card/cardboard/proc/return_visible_name(mob/living/carbon/human/source, list/identity)
 	SIGNAL_HANDLER

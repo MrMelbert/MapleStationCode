@@ -169,6 +169,9 @@
 /// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
 #define COLD_DAMAGE 0.25
 
+/// Combined brute and burn damage states on a human's head after which they become disfigured
+#define HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES 3
+
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 50
 #define BRAIN_DAMAGE_SEVERE 150

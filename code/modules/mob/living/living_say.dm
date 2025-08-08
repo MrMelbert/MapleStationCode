@@ -271,6 +271,11 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			understood = FALSE
 
 	var/speaker_is_signing = HAS_TRAIT(speaker, TRAIT_SIGN_LANG)
+	var/use_runechat = client?.prefs.read_preference(/datum/preference/toggle/enable_runechat)
+	if (stat == UNCONSCIOUS || stat == HARD_CRIT)
+		use_runechat = FALSE
+	else if (!ismob(speaker) && !client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs))
+		use_runechat = FALSE
 
 	var/message = ""
 	var/raw_dist = get_dist(speaker, src)
@@ -292,10 +297,11 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 				deaf_message = "[span_name("[speaker]")] [speaker.get_default_say_verb()] something, but the motions are too subtle to make out from afar."
 			// If we can't hear we want to continue to the default deaf message
 			else if(can_hear())
-				var/mob/living/living_speaker = speaker
-				// Can't see them speak if their mouth is covered. No message
-				if(istype(living_speaker) && living_speaker.is_mouth_covered())
-					return FALSE
+				if(isliving(speaker))
+					var/mob/living/living_speaker = speaker
+					var/mouth_hidden = living_speaker.is_mouth_covered() || HAS_TRAIT(living_speaker, TRAIT_FACE_COVERED)
+					if(/*!HAS_TRAIT(src, TRAIT_EMPATH) && */mouth_hidden) // Can't see them speak if their mouth is covered or hidden, unless we're an empath
+						return FALSE
 				// Out of range but we can see them talking - display a message
 				deaf_message = "[span_name("[speaker]")] [speaker.verb_whisper] something, but you are too far away to hear [speaker.p_them()]."
 
@@ -337,7 +343,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			deaf_type = MSG_AUDIBLE
 
 		// Create map text prior to modifying message for goonchat, sign lang edition
-		if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || stat == HARD_CRIT || is_blind()) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
+		if (use_runechat && !is_blind())
 			if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 				create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
 			else
@@ -360,7 +366,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		deaf_type = MSG_AUDIBLE // Since you should be able to hear yourself without looking
 
 	// Create map text prior to modifying message for goonchat
-	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || stat == HARD_CRIT) && (ismob(speaker) || client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)) && can_hear())
+	if (use_runechat && can_hear())
 		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 			create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
 		else

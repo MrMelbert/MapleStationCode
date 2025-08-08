@@ -81,6 +81,20 @@
 	return TOXLOSS
 
 /obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (tool.tool_behaviour == TOOL_SCREWDRIVER || tool.tool_behaviour == TOOL_WIRECUTTER || tool.sharpness)
+		if (punctured)
+			balloon_alert(user, "already has holes!")
+			return ITEM_INTERACT_BLOCKING
+
+		var/used_verb = "cutting out"
+		if (tool.sharpness != SHARP_EDGED || tool.tool_behaviour == TOOL_SCREWDRIVER)
+			used_verb = "puncturing"
+
+		balloon_alert(user, "[used_verb] peekholes...")
+		if (!do_after(user, 3 SECONDS, src))
+			balloon_alert(user, "interrupted!")
+			return ITEM_INTERACT_BLOCKING
+
 	if (!user.can_write(tool))
 		return NONE
 
@@ -121,22 +135,39 @@
 
 /// Called when you start reading the paper with both hands
 /obj/item/newspaper/proc/on_wielded(obj/item/source, mob/user)
+	ADD_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	RegisterSignal(user, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(holder_updated_overlays))
 	RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(holder_checked_name))
 	user.update_appearance(UPDATE_OVERLAYS)
-	user.name = user.get_visible_name()
+	if (!punctured)
+		user.add_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+	if (ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /// Called when you stop doing that
 /obj/item/newspaper/proc/on_unwielded(obj/item/source, mob/user)
+	REMOVE_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	UnregisterSignal(user, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_HUMAN_GET_VISIBLE_NAME))
 	user.update_appearance(UPDATE_OVERLAYS)
-	user.name = user.get_visible_name()
+	if (!punctured)
+		user.remove_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+	if (ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /// Called when we're being read and overlays are updated, we should show a big newspaper over the reader
 /obj/item/newspaper/proc/holder_updated_overlays(atom/reader, list/overlays)
 	SIGNAL_HANDLER
-	overlays += mutable_appearance(icon, "newspaper_held_over", ABOVE_MOB_LAYER)
-	overlays += mutable_appearance(icon, "newspaper_held_under", BELOW_MOB_LAYER)
+	overlays += mutable_appearance(icon, "newspaper_held_over[punctured ? "_holed" : ""]", ABOVE_MOB_LAYER)
+	overlays += mutable_appearance(icon, "newspaper_held_under[punctured ? "_holed" : ""]", BELOW_MOB_LAYER)
+
+/obj/item/newspaper/examine(mob/user)
+	. = ..()
+	if (punctured)
+		. += span_notice("It has a pair of small peek holes punctured near the top.")
+	else
+		. += span_notice("You can cut out some peek holes using something [span_bolditalic("sharp")] or [span_bolditalic("pointy")]...")
 
 /// Called when someone tries to figure out what our identity is, but they can't see it because of the newspaper
 /obj/item/newspaper/proc/holder_checked_name(mob/living/carbon/human/source, list/identity)

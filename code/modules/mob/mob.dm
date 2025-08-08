@@ -1470,7 +1470,12 @@
 	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
 	add_consciousness_modifier(HUNGER, round(hungermod, 0.01))
 
-///Apply a proper movespeed modifier based on items we have equipped
+/// Update mob stats based on equipment we are wearing when an item is equipped/dropped, to be overriden by children
+/// source - Item that caused the update by being equipped/dropped
+/mob/proc/update_equipment(obj/item/source)
+	update_equipment_speed_mods()
+
+/// Apply a proper movespeed modifier based on items we have equipped
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = 0
 	var/immutable_speedies = 0

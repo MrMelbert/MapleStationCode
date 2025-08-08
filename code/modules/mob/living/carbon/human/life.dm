@@ -6,6 +6,7 @@
 		return
 
 	. = ..()
+
 	if(QDELETED(src))
 		return FALSE
 
@@ -22,13 +23,22 @@
 	else
 		for(var/datum/wound/iter_wound as anything in all_wounds)
 			iter_wound.on_stasis(seconds_per_tick, times_fired)
+		return stat != DEAD
 
-	//Update our name based on whether our face is obscured/disfigured
-	name = get_visible_name()
+	if(stat == DEAD)
+		return FALSE
 
-	if(stat != DEAD)
-		return TRUE
+	// Handle active mutations
+	for(var/datum/mutation/mutation as anything in dna.mutations)
+		mutation.on_life(seconds_per_tick, times_fired)
 
+	// Heart attack stuff
+	handle_heart(seconds_per_tick, times_fired)
+	// Handles liver failure effects, if we lack a liver
+	handle_liver(seconds_per_tick, times_fired)
+	// For special species interactions
+	dna.species.spec_life(src, seconds_per_tick, times_fired)
+	return stat != DEAD
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
 	var/chest_covered = !get_bodypart(BODY_ZONE_CHEST)
