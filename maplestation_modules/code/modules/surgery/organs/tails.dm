@@ -6,6 +6,7 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/fox
 	wag_flags = WAG_ABLE
+	preference = "feature_human_tail"
 
 
 /datum/bodypart_overlay/mutant/tail/fox // also redundant, used exclusively for above, the ones accesible through character creator are just different sprite_accessories on cat_tail
@@ -36,7 +37,7 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat/fivefox
 	wag_flags = WAG_ABLE
-
+	preference = "feature_human_tail"
 
 /datum/bodypart_overlay/mutant/tail/cat/fivefox // ditto.
 	feature_key = "tail_cat"
@@ -54,6 +55,6 @@
 	id = "fivefoxtails"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/fox
+	build_path = /obj/item/organ/external/tail/fivefox
 	category = list(SPECIES_HUMAN)
 
