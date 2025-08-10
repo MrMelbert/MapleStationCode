@@ -16092,7 +16092,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
-/obj/machinery/door/airlock/security/glass{
+/obj/machinery/door/airlock/security{
 	name = "Security Office"
 	},
 /turf/open/floor/iron/dark,
@@ -21244,6 +21244,9 @@
 /obj/effect/landmark/start/security_officer,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 8
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/office)
@@ -54418,7 +54421,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "nhN" = (
-/obj/structure/disposalpipe/segment,
 /obj/effect/mapping_helpers/airlock/access/any/security/maintenance,
 /obj/machinery/door/airlock/maintenance{
 	name = "Security Maintenance"
