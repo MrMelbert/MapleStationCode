@@ -29615,10 +29615,9 @@
 	name = "Chemistry Desk";
 	req_access = list("pharmacy")
 	},
-/obj/structure/desk_bell/ringer/botany{
-	dir = 1;
-	pixel_x = 4;
-	pixel_y = 7
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_y = 6;
+	pixel_x = 4
 	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
