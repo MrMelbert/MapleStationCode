@@ -240,14 +240,6 @@
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
 
-/obj/structure/chair/comfy/shuttle/update_overlays()
-	. = ..()
-	if(has_buckled_mobs())
-		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01)
-		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_behind", src.layer + 0.01)
-	else
-		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_up", src.layer + 0.01)
-
 /obj/structure/chair/comfy/shuttle/buckle_feedback(mob/living/being_buckled, mob/buckler)
 	if(being_buckled == buckler)
 		being_buckled.visible_message(
