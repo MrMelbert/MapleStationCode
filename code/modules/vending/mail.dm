@@ -88,7 +88,6 @@
 	var/turf/unload_turf = get_unload_turf()
 	for(var/obj/item/mail in mail_list)
 		mail.forceMove(unload_turf)
-		mail.throw_at(unload_turf, 2, 3)
 		mail_list -= mail
 
 /// Validates whether the inserted item is acceptable.
@@ -109,7 +108,7 @@
 		user,
 		src,
 		choices,
-		require_near = !HAS_SILICON_ACCESS(user),
+		require_near = !issilicon(user),
 		autopick_single_option = FALSE,
 	)
 	if (!choice)
@@ -118,7 +117,7 @@
 		if ("Eject")
 			pick_mail(user)
 		if ("Dump")
-			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 20, TRUE)
+			playsound(src, 'sound/machines/buzz-sigh.ogg', 20, TRUE)
 			to_chat(user, span_notice("[src] dumps [length(mail_list)] envelope\s on the floor."))
 			dump_all_mail()
 		if ("Sort")
@@ -161,7 +160,7 @@
 	if (length(sorted_mail) == 0)
 		currentstate = STATE_NO
 		update_appearance(UPDATE_OVERLAYS)
-		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 20, TRUE)
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 20, TRUE)
 		say("No mail for the following department: [sorting_dept].")
 	else
 		currentstate = STATE_YES
@@ -179,7 +178,7 @@
 /// Informs the player of the amount of processed envelopes.
 /obj/machinery/mailsorter/proc/check_sorted(mob/user, unable_to_sort, total_to_sort)
 	if (unable_to_sort > 0)
-		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 20, TRUE)
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 20, TRUE)
 		say("Couldn't sort [unable_to_sort] envelope\s.")
 	else
 		playsound(src, 'sound/machines/ping.ogg', 20, TRUE)
