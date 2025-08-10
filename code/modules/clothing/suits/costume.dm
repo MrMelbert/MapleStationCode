@@ -236,6 +236,15 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, SHAMEBRERO_TRAIT)
 
+/obj/item/clothing/suit/costume/poncho/sheriff
+	name = "sheriff's poncho"
+	desc = "A poncho lined with protective weaving, all the better to wander a lawless land."
+	armor_type = /datum/armor/jacket_det_suit
+
+/obj/item/clothing/suit/costume/poncho/sheriff/Initialize(mapload)
+	. = ..()
+	allowed = GLOB.detective_vest_allowed
+
 /obj/item/clothing/suit/costume/whitedress
 	name = "white dress"
 	desc = "A fancy white dress."
