@@ -14,7 +14,7 @@
 	inhand_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
-	custom_materials = list(/datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
+	custom_materials = list(/datum/material/glass = 10) // Was HALF_SHEET_MATERIAL_AMOUNT but that meant you could infinitely create more glass
 
 	/// The name of the component shown on the UI
 	var/display_name = "Generic"

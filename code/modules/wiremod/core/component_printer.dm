@@ -68,7 +68,7 @@
 
 /obj/machinery/component_printer/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	//to allow quick recycling of circuits
-	if(istype(tool, /obj/item/circuit_component))
+	if(istype(tool, /obj/item/circuit_component) && !istype(tool, /obj/item/circuit_component/module))
 		var/amount_inserted = materials.insert_item(tool)
 
 		if(amount_inserted)
