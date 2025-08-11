@@ -21,7 +21,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(adjust_visor))
+	visor_toggling()
 
 /obj/item/clothing/glasses/wraith_specs/examine(mob/user)
 	. = ..()
