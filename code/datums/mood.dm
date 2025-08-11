@@ -520,6 +520,10 @@
 
 	update_mood_icon()
 
+/// Adjusts sanity by a value
+/datum/mood/proc/adjust_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
+	set_sanity(sanity + amount, minimum, maximum, override)
+
 /// Sets the insanity effect on the mob
 /datum/mood/proc/set_insanity_effect(newval)
 	if (newval == insanity_effect)
