@@ -484,7 +484,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(newblood_type)
 		human_blood_type = newblood_type
 	if(create_mutation_blocks) //I hate this
-		generate_dna_blocks(mutation_blacklist = list(/datum/mutation/headless))
+		generate_dna_blocks(mutation_blacklist = list(/datum/mutation/human/headless))
 	if(randomize_features)
 		for(var/species_type in GLOB.species_prototypes)
 			var/list/new_features = GLOB.species_prototypes[species_type].randomize_features()

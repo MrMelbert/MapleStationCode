@@ -81,48 +81,28 @@
 	return TOXLOSS
 
 /obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if (tool.tool_behaviour == TOOL_SCREWDRIVER || tool.tool_behaviour == TOOL_WIRECUTTER || tool.sharpness)
-		if (punctured)
-			balloon_alert(user, "already has holes!")
-			return ITEM_INTERACT_BLOCKING
-
-		var/used_verb = "cutting out"
-		if (tool.sharpness != SHARP_EDGED || tool.tool_behaviour == TOOL_SCREWDRIVER)
-			used_verb = "puncturing"
-
-		balloon_alert(user, "[used_verb] peekholes...")
-		if (!do_after(user, 3 SECONDS, src))
-			balloon_alert(user, "interrupted!")
-			return ITEM_INTERACT_BLOCKING
-
-		playsound(src, 'sound/items/duct_tape/duct_tape_rip.ogg', 50, TRUE)
-		punctured = TRUE
-		// User has additional arms or something, I dunno
-		if (isliving(loc))
-			var/mob/living/owner = loc
-			owner.remove_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
-			owner.update_appearance(UPDATE_OVERLAYS)
-		return ITEM_INTERACT_SUCCESS
-
 	if (!user.can_write(tool))
 		return NONE
 
-	if(!user.can_write(attacking_item))
-		return ..()
-	if(scribble_page == current_page)
+	if (scribble_page == current_page)
 		user.balloon_alert(user, "already scribbled!")
-		return
-	var/new_scribble_text = tgui_input_text(user, "What do you want to scribble?", "Write something")
-	if(isnull(new_scribble_text))
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/new_scribble_text = tgui_input_text(user, "What do you want to scribble?", "Write something", max_length = MAX_MESSAGE_LEN)
+	if (isnull(new_scribble_text))
+		return ITEM_INTERACT_BLOCKING
+
 	add_fingerprint(user)
 	user.balloon_alert(user, "scribbling...")
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
-	if(!do_after(user, 2 SECONDS, src))
-		return
+	if (!do_after(user, 2 SECONDS, src))
+		balloon_alert(user, "interrupted!")
+		return ITEM_INTERACT_BLOCKING
+
 	user.balloon_alert(user, "scribbled!")
 	scribble_page = current_page
 	scribble_text = new_scribble_text
+	return ITEM_INTERACT_SUCCESS
 
 ///Checks the creation time of the newspaper and compares it to list to see if the list is meant to be censored at the time of printing.
 /obj/item/newspaper/proc/censored_check(list/times_censored)

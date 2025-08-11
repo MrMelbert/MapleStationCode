@@ -21,7 +21,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle))
+	INVOKE_ASYNC(src, PROC_REF(adjust_visor))
 
 /obj/item/clothing/glasses/wraith_specs/examine(mob/user)
 	. = ..()
@@ -30,8 +30,7 @@
 		. += span_brasstalics("Examining things only visible to you via x-ray vision will harm your eyes.")
 
 /obj/item/clothing/glasses/wraith_specs/attack_self(mob/user, modifiers)
-	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle), user)
+	adjust_visor(user)
 
 /obj/item/clothing/glasses/wraith_specs/equipped(mob/user, slot)
 	. = ..()
@@ -48,7 +47,7 @@
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
-/obj/item/clothing/glasses/wraith_specs/weldingvisortoggle(mob/user)
+/obj/item/clothing/glasses/wraith_specs/adjust_visor(mob/living/user)
 	if(!can_use(user))
 		return FALSE
 
