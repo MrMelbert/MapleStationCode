@@ -298,16 +298,6 @@
 	COOLDOWN_START(src, disabled_time, disrupt_duration)
 	return COMSIG_SABOTEUR_SUCCESS
 
-/obj/item/flashlight/update_atom_colour()
-	. = ..()
-	if (ignore_base_color)
-		return
-	var/list/applied_matrix = cached_color_filter
-	if (!applied_matrix)
-		applied_matrix = color_transition_filter(color, SATURATION_OVERRIDE)
-	var/new_light_color = apply_matrix_to_color(initial(light_color), applied_matrix["color"], applied_matrix["space"] || COLORSPACE_RGB)
-	set_light_color(new_light_color)
-
 /obj/item/flashlight/pen
 	name = "penlight"
 	desc = "A pen-sized light, used by medical staff. It can also be used to create a hologram to alert people of incoming medical assistance."
