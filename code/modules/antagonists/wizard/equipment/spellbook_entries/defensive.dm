@@ -148,5 +148,3 @@
 	mod.quick_activation()
 	var/obj/item/mod/module/eradication_lock/lock_module = locate() in mod.modules
 	lock_module.used()
-
-#undef SPELLBOOK_CATEGORY_DEFENSIVE
