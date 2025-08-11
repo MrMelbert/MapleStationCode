@@ -1,4 +1,3 @@
-import { capitalizeFirst } from 'common/string';
 import {
   Box,
   Button,
