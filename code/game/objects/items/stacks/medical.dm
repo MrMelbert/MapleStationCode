@@ -181,7 +181,7 @@
 		CRASH("Stack medical item healing a non-carbon, non-animal mob [patient] ([patient.type])")
 
 	// NON-MODULE CHANGE
-	user.mind?.adjust_experience(/datum/skill/first_aid, 50)
+	user.mind?.adjust_experience(/datum/skill/first_aid, 20)
 	log_combat(user, patient, "healed", src)
 	if(!use(1) || !repeating || amount <= 0)
 		var/atom/alert_loc = QDELETED(src) ? user : src

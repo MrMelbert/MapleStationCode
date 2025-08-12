@@ -19,6 +19,13 @@
 /obj/machinery/quantum_server/proc/generate_avatar(obj/structure/hololadder/wayout, datum/outfit/netsuit)
 	var/mob/living/carbon/human/avatar = new(wayout.loc)
 
+	avatar.mind_initialize()
+	avatar.mind.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
+	avatar.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
+	avatar.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
+	avatar.mind.set_level(/datum/skill/fishing, SKILL_LEVEL_JOURNEYMAN, silent = TRUE)
+	avatar.mind.set_level(/datum/skill/fitness, SKILL_LEVEL_EXPERT, silent = TRUE)
+
 	var/outfit_path = generated_domain.forced_outfit || netsuit
 	var/datum/outfit/to_wear = new outfit_path()
 
