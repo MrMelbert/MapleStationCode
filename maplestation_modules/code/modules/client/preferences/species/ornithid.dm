@@ -33,10 +33,10 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
-	return assoc_to_keys_features(GLOB.arm_wings_list)
+	return assoc_to_keys_features(SSaccessories.arm_wings_list)
 
 /datum/preference/choiced/ornithid_wings/icon_for(value)
-	var/datum/sprite_accessory/the_accessory = GLOB.arm_wings_list[value]
+	var/datum/sprite_accessory/the_accessory = SSaccessories.arm_wings_list[value]
 	var/icon/body_icon = get_basic_body_icon(
 		bodypart_list = list(/obj/item/bodypart/chest, /obj/item/bodypart/arm/left, /obj/item/bodypart/arm/right),
 		skintone = "asian1",
