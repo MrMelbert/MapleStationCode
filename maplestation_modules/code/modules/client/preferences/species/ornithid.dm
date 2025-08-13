@@ -81,10 +81,10 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_avian/init_possible_values()
-	return assoc_to_keys_features(GLOB.tails_list_avian)
+	return assoc_to_keys_features(SSaccessories.tails_list_avian)
 
 /datum/preference/choiced/tail_avian/icon_for(value)
-	var/datum/sprite_accessory/the_accessory = GLOB.tails_list_avian[value]
+	var/datum/sprite_accessory/the_accessory = SSaccessories.tails_list_avian[value]
 	var/icon/body_icon = get_basic_body_icon(
 		bodypart_list = list(/obj/item/bodypart/chest, /obj/item/bodypart/leg/left, /obj/item/bodypart/leg/right),
 		skintone = "asian1",
@@ -120,10 +120,10 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/plumage/init_possible_values()
-	return assoc_to_keys_features(GLOB.avian_ears_list)
+	return assoc_to_keys_features(SSaccessories.avian_ears_list)
 
 /datum/preference/choiced/plumage/icon_for(value)
-	var/datum/sprite_accessory/the_accessory = GLOB.avian_ears_list[value]
+	var/datum/sprite_accessory/the_accessory = SSaccessories.avian_ears_list[value]
 	var/icon/head_icon = get_basic_body_icon(list(/obj/item/bodypart/head), "asian1", EAST)
 	var/icon/eyes = icon('icons/mob/human/human_face.dmi', "eyes", EAST)
 	var/icon/ears = icon(the_accessory.icon, "m_ears_avian_[the_accessory.icon_state]_FRONT", EAST)

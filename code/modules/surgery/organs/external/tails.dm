@@ -148,9 +148,6 @@
 		return FALSE
 	return TRUE
 
-/datum/bodypart_overlay/mutant/tail/get_global_feature_list()
-	return GLOB.tails_list_human
-
 /obj/item/organ/external/tail/cat
 	name = "tail"
 	preference = "feature_human_tail"
@@ -161,9 +158,6 @@
 
 /datum/bodypart_overlay/mutant/tail/get_global_feature_list()
 	return SSaccessories.tails_list_human
-
-/obj/item/organ/external/tail/cat/get_butt_sprite()
-	return BUTT_SPRITE_CAT
 
 ///Cat tail bodypart overlay
 /datum/bodypart_overlay/mutant/tail/cat

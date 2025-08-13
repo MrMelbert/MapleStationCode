@@ -384,17 +384,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(SSaccessories.pod_hair_list.Find(features["pod_hair"]), length(SSaccessories.pod_hair_list)))
 		if(DNA_HEAD_TENTACLES_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.head_tentacles_list.Find(features["head_tentacles"]), length(SSaccessories.head_tentacles_list))
 		if(DNA_ARM_WINGS_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.arm_wings_list.Find(features["arm_wings"]), GLOB.arm_wings_list.len))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.arm_wings_list.Find(features["arm_wings"]), length(SSaccessories.arm_wings_list)))
 		if(DNA_AVIAN_TAIL_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_avian.Find(features["tail_avian"]), GLOB.tails_list_avian.len))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.tails_list_avian.Find(features["tail_avian"]), length(SSaccessories.tails_list_avian)))
 		if(DNA_AVIAN_EARS_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.avian_ears_list.Find(features["ears_avian"]), length(SSaccessories.avian_ears_list)))
 		if(DNA_FEATHER_COLOR_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["feathers"], include_crunch = FALSE))
 		if(DNA_SYNTH_HEAD_COVER_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.synth_head_cover_list.Find(features["head_tentacles"]), GLOB.synth_head_cover_list.len))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.synth_head_cover_list.Find(features["head_tentacles"]), length(SSaccessories.synth_head_cover_list)))
 
 
 //Please use add_mutation or activate_mutation instead
