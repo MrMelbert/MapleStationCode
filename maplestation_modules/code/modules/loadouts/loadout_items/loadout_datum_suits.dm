@@ -76,6 +76,11 @@
 	name = "Green Labcoat"
 	item_path = /obj/item/clothing/suit/toggle/labcoat/mad
 
+/datum/loadout_item/suit/ce
+	name = "CE Labcoat"
+	item_path = /obj/item/clothing/suit/toggle/labcoat/ce
+
+
 // MELBERT TODO: These hard delete. Interesting
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
