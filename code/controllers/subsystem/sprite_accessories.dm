@@ -96,7 +96,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	body_markings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings)[DEFAULT_SPRITE_LIST]
 	tails_list_human = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	tails_list_lizard = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
-	tails_list_monkey = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	tails_list_monkey = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey)[DEFAULT_SPRITE_LIST]
 	snouts_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts)[DEFAULT_SPRITE_LIST]
 	horns_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/horns)[DEFAULT_SPRITE_LIST]
 	ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears)[DEFAULT_SPRITE_LIST]
