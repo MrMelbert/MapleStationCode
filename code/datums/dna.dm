@@ -384,7 +384,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(SSaccessories.pod_hair_list.Find(features["pod_hair"]), length(SSaccessories.pod_hair_list)))
 		if(DNA_HEAD_TENTACLES_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(SSaccessories.head_tentacles_list.Find(features["head_tentacles"]), length(SSaccessories.head_tentacles_list))
+			set_uni_feature_block(blocknumber, construct_block(SSaccessories.head_tentacles_list.Find(features["head_tentacles"]), length(SSaccessories.head_tentacles_list)))
 		if(DNA_ARM_WINGS_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, construct_block(SSaccessories.arm_wings_list.Find(features["arm_wings"]), length(SSaccessories.arm_wings_list)))
 		if(DNA_AVIAN_TAIL_BLOCK) // NON-MODULE CHANGE
@@ -703,7 +703,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["feathers"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_FEATHER_COLOR_BLOCK))
 	if(dna.features["synth_head_cover"]) // NON-MODULE CHANGE
 		dna.features["synth_head_cover"] = SSaccessories.synth_head_cover_list[deconstruct_block(get_uni_feature_block(features, DNA_SYNTH_HEAD_COVER_BLOCK), length(SSaccessories.synth_head_cover_list))]
-
 	for(var/obj/item/organ/external/external_organ in organs)
 		external_organ.mutate_feature(features, src)
 
