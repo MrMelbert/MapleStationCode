@@ -16092,7 +16092,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
-/obj/machinery/door/airlock/security/glass{
+/obj/machinery/door/airlock/security{
 	name = "Security Office"
 	},
 /turf/open/floor/iron/dark,
@@ -21244,6 +21244,9 @@
 /obj/effect/landmark/start/security_officer,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 8
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/office)
@@ -29235,17 +29238,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/security/prison/shower)
-"eOM" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/structure/railing{
-	dir = 1
-	},
-/obj/machinery/rnd/experimentor,
-/turf/open/floor/iron/dark,
-/area/station/science/research)
 "eOQ" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 1
@@ -29623,10 +29615,9 @@
 	name = "Chemistry Desk";
 	req_access = list("pharmacy")
 	},
-/obj/structure/desk_bell/ringer/botany{
-	dir = 1;
-	pixel_x = 4;
-	pixel_y = 7
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_y = 6;
+	pixel_x = 4
 	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
@@ -54418,7 +54409,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "nhN" = (
-/obj/structure/disposalpipe/segment,
 /obj/effect/mapping_helpers/airlock/access/any/security/maintenance,
 /obj/machinery/door/airlock/maintenance{
 	name = "Security Maintenance"
@@ -83638,6 +83628,16 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/evidence)
+"xaw" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/rnd/experimentor,
+/turf/open/floor/iron/dark,
+/area/station/science/research)
 "xaz" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/department/security/brig)
@@ -125768,7 +125768,7 @@ rCr
 xYR
 xYR
 rvF
-bbl
+xaw
 wJd
 akg
 aYe
@@ -126024,7 +126024,7 @@ vlS
 vlS
 vlS
 vlS
-eOM
+njW
 ixb
 wJd
 akg
