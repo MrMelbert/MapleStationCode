@@ -940,6 +940,16 @@ generate/load female uniform sprites matching all previously decided variables
 				continue
 			if(thing.supports_variations_flags & DIGITIGRADE_VARIATIONS)
 				thing.update_slot_icon()
+		// NON-MODULE CHANGE for digi wound overlays
+		update_damage_overlays()
+
+// NON-MODULE CHANGE for digi wound overlays
+/mob/living/carbon/human/setDir(newdir)
+	var/olddir = dir
+	. = ..()
+	if(dir == olddir || !(bodytype & BODYTYPE_DIGITIGRADE))
+		return
+	update_damage_overlays()
 
 // Hooks into human apply overlay so that we can modify all overlays applied through standing overlays to our height system.
 // Some of our overlays will be passed through a displacement filter to make our mob look taller or shorter.
