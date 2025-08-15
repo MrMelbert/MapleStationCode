@@ -246,6 +246,7 @@
 					burn_out()
 			else
 				use_power = ACTIVE_POWER_USE
+				playsound(src, 'maplestation_modules/sound/machines/lightson.ogg', 50, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE) // NON-MODULE CHANGE
 				set_light(
 					l_range = brightness_set,
 					l_power = power_set,
