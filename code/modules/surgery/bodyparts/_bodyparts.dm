@@ -900,11 +900,12 @@
 			override_file = 'maplestation_modules/icons/mob/bandage.dmi',
 			override_state = current_gauze.worn_icon_state, // future todo : icon states for dirty bandages as well
 		)
+		gauze_overlay.color = current_gauze.color
 		LAZYADD(overlays, gauze_overlay)
 	return overlays
 
 /obj/item/bodypart/leg/get_bodypart_damage_state()
-	if(!(bodytype & BODYTYPE_DIGITIGRADE) || (owner.is_digitigrade_squished()))
+	if(!(bodytype & BODYTYPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
 		return ..()
 
 	. = ..()

@@ -17,7 +17,8 @@
 
 /obj/item/photo/Initialize(mapload, datum/picture/P, datum_name = TRUE, datum_desc = TRUE)
 	set_picture(P, datum_name, datum_desc, TRUE)
-	return ..()
+	. = ..()
+	AddElement(/datum/element/burn_on_item_ignition)
 
 /obj/item/photo/proc/set_picture(datum/picture/P, setname, setdesc, name_override = FALSE)
 	if(!istype(P))
@@ -68,8 +69,6 @@
 	user.examinate(src)
 
 /obj/item/photo/attackby(obj/item/P, mob/user, params)
-	if(burn_paper_product_attackby_check(P, user))
-		return
 	if(IS_WRITING_UTENSIL(P))
 		if(!user.can_write(P))
 			return

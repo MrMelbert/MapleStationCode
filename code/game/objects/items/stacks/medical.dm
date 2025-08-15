@@ -401,6 +401,19 @@
 	else
 		name = initial(name)
 
+/obj/item/stack/medical/gauze/update_icon(updates)
+	. = ..()
+	var/base_cap = initial(absorption_capacity)
+	if(!base_cap)
+		return
+
+	if(absorption_capacity <= base_cap * 0.2)
+		add_atom_colour(COLOR_DARK_BROWN, TEMPORARY_COLOUR_PRIORITY)
+	else if(absorption_capacity <= base_cap * 0.8)
+		add_atom_colour(COLOR_BROWN, TEMPORARY_COLOUR_PRIORITY)
+	else
+		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
+
 /obj/item/stack/medical/gauze/can_merge(obj/item/stack/medical/gauze/check, inhand)
 	. = ..()
 	if(!.)
@@ -421,7 +434,7 @@
 	var/clean_to = initial(absorption_capacity) * (3 / (times_cleaned + 3))
 	if(absorption_capacity < clean_to)
 		absorption_capacity = clean_to
-		update_appearance(UPDATE_NAME)
+		update_appearance()
 		. = TRUE
 
 	return .
