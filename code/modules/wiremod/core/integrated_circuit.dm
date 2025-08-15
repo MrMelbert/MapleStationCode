@@ -80,6 +80,9 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	/// The Y position of the screen. Used for adding components.
 	var/screen_y = 0
 
+	/// The grid mode state for the circuit.
+	var/grid_mode = TRUE
+
 	/// The current size of the circuit.
 	var/current_size = 0
 
@@ -272,6 +275,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	to_add.rel_x = rand(COMPONENT_MIN_RANDOM_POS, COMPONENT_MAX_RANDOM_POS) - screen_x
 	to_add.rel_y = rand(COMPONENT_MIN_RANDOM_POS, COMPONENT_MAX_RANDOM_POS) - screen_y
+	SEND_SIGNAL(to_add, COMSIG_CIRCUIT_COMPONENT_ADDED, src)
 	to_add.parent = src
 	attached_components += to_add
 	current_size += to_add.circuit_size
@@ -402,6 +406,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	.["examined_notices"] = examined?.get_ui_notices()
 	.["examined_rel_x"] = examined_rel_x
 	.["examined_rel_y"] = examined_rel_y
+	.["grid_mode"] = grid_mode
 
 	.["is_admin"] = (admin_only || isAdminGhostAI(user)) && check_rights_for(user.client, R_VAREDIT)
 
@@ -498,8 +503,13 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 				return
 			component.disconnect()
 			remove_component(component)
+
+			var/mob/user = ui.user
 			if(component.loc == src)
-				usr.put_in_hands(component)
+				user.put_in_hands(component)
+			var/obj/machinery/component_printer/printer = linked_component_printer?.resolve()
+			if (!isnull(printer))
+				printer.base_item_interaction(user, component)
 			. = TRUE
 		if("set_component_coordinates")
 			var/component_id = text2num(params["component_id"])
@@ -578,6 +588,9 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 				set_display_name(params["display_name"])
 			else
 				set_display_name("")
+			. = TRUE
+		if("toggle_grid_mode")
+			toggle_grid_mode()
 			. = TRUE
 		if("set_examined_component")
 			var/component_id = text2num(params["component_id"])
@@ -710,6 +723,10 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			shell.name = display_name
 	else
 		shell.name = initial(shell.name)
+
+/// Toggles the grid mode property for this circuit.
+/obj/item/integrated_circuit/proc/toggle_grid_mode()
+	grid_mode = !grid_mode
 
 /**
  * Returns the creator of the integrated circuit. Used in admin messages and other related things.
