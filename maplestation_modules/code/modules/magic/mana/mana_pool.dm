@@ -165,7 +165,7 @@
 		else if (parent.mana_overloaded)
 			parent.stop_mana_overload()
 
-	if (amount > softcap) // why was this amount < softcap
+	if (amount > softcap)
 	// exponential decay
 	// exponentially decays amount when amount surpasses softcap, with [exponential_decay_divisor] being the (inverse) decay factor
 	// can only decay however much amount we are over softcap
@@ -230,6 +230,7 @@
 	if (target_pool in transferring_to)
 		return MANA_POOL_ALREADY_TRANSFERRING
 
+	transferring_to += target_pool
 	target_pool.incoming_transfer_start(src)
 
 	RegisterSignal(target_pool, COMSIG_QDELETING, PROC_REF(stop_transfer))
