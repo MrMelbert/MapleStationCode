@@ -28,7 +28,7 @@
 	return TRUE
 
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
-	return GLOB.avian_ears_list
+	return SSaccessories.avian_ears_list
 
 /datum/sprite_accessory/plumage
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'

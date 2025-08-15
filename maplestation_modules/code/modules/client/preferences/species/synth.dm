@@ -90,10 +90,10 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/synth_head_cover/init_possible_values()
-	return assoc_to_keys(GLOB.synth_head_cover_list)
+	return assoc_to_keys(SSaccessories.synth_head_cover_list)
 
 /datum/preference/choiced/synth_head_cover/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = GLOB.synth_head_cover_list[value]
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.synth_head_cover_list[value]
 	var/icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
 
 	var/icon/final_icon = icon(head)
