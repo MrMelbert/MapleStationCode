@@ -1561,13 +1561,13 @@
 	var/immutable_speedies = 0
 	for(var/obj/item/thing in get_equipped_speed_mod_items())
 		if(thing.item_flags & IMMUTABLE_SLOW)
-			immutable_speedies += thing.slowdown
+			immutable_speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 		else
-			speedies += thing.slowdown
+			speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 
 	//if our movespeed mod is in the negatives, we don't modify it since that's a benefit
 	if(speedies > 0 && HAS_TRAIT(src, TRAIT_SETTLER))
-		speedies *= 0.2
+		speedies *= 0.8 // NON-MODULE CHANGE
 
 	if(immutable_speedies)
 		add_or_update_variable_movespeed_modifier(

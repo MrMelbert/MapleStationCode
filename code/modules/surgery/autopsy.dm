@@ -33,17 +33,29 @@
 		span_notice("[user] uses [tool] on [target]'s chest."),
 	)
 
-/datum/surgery_step/autopsy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/autopsy_scanner/tool, datum/surgery/surgery, default_display_results = FALSE)
+/datum/surgery_step/autopsy/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/autopsy_scanner/tool, datum/surgery/surgery, default_display_results = FALSE)
+	// NON-MODULE CHANGE
+	var/xp_given = 200 // some alien species
+	if(isalien(target))
+		xp_given *= 2.5 // truly foreign
+	if(ishumanbasic(target) || isfelinid(target) || ismonkey(target))
+		xp_given *= 0.25 // well documented
+	if(HAS_TRAIT(target, TRAIT_SURGICALLY_ANALYZED))
+		xp_given *= 0 // this body has already been cut open! useless
+
 	ADD_TRAIT(target, TRAIT_DISSECTED, AUTOPSY_TRAIT)
-	if(!HAS_TRAIT(src, TRAIT_SURGICALLY_ANALYZED))
-		ADD_TRAIT(target, TRAIT_SURGICALLY_ANALYZED, AUTOPSY_TRAIT)
+	ADD_TRAIT(target, TRAIT_SURGICALLY_ANALYZED, AUTOPSY_TRAIT)
+
 	tool.scan_cadaver(user, target)
 	var/obj/machinery/computer/operating/operating_computer = surgery.locate_operating_computer(get_turf(target))
 	if (!isnull(operating_computer))
 		SEND_SIGNAL(operating_computer, COMSIG_OPERATING_COMPUTER_AUTOPSY_COMPLETE, target)
-	if(HAS_MIND_TRAIT(user, TRAIT_MORBID) && ishuman(user))
-		var/mob/living/carbon/human/morbid_weirdo = user
-		morbid_weirdo.add_mood_event("morbid_dissection_success", /datum/mood_event/morbid_dissection_success)
+
+	if(HAS_MIND_TRAIT(user, TRAIT_MORBID))
+		user.add_mood_event("morbid_dissection_success", /datum/mood_event/morbid_dissection_success)
+		xp_given *= 1.5 // truly something worth seeing!
+
+	user.mind?.adjust_experience(/datum/skill/surgery, xp_given)
 	return ..()
 
 /datum/surgery_step/autopsy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

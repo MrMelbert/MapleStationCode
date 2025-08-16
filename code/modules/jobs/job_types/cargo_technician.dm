@@ -35,6 +35,12 @@
 	rpg_title = "Merchantman"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+	)
 	title_options = list(
 		"Mail Carrier",
 	)
