@@ -80,6 +80,19 @@
 		target_mob.visible_message(span_danger("[user] feeds [target_mob] something from [src]."), \
 					span_userdanger("[user] feeds you something from [src]."))
 		log_combat(user, target_mob, "fed", reagents.get_reagent_log_string())
+	// NON-MODULE CHANGE
+	else if(isGlass || (reagent_flags & OPENCONTAINER))
+		var/pre_volume_percent = reagents.total_volume / reagents.maximum_volume
+		var/post_volume_percent = (reagents.total_volume - gulp_size) / reagents.maximum_volume
+		if(post_volume_percent <= 0)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's empty."))
+		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
+		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
+		else
+			to_chat(user, span_notice("You swallow a gulp of [src]."))
+	// NON-MODULE CHANGE END
 	else
 		to_chat(user, span_notice("You swallow a gulp of [src]."))
 
