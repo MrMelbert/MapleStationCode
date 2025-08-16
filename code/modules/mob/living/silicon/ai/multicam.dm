@@ -133,8 +133,6 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 	icon_state = "ai_pip_camera"
 	var/atom/movable/screen/movable/pic_in_pic/ai/screen
 	var/list/cameras_telegraphed = list()
-	var/telegraph_cameras = TRUE
-	var/telegraph_range = 7
 	ai_detector_color = COLOR_ORANGE
 
 /mob/camera/ai_eye/pic_in_pic/GetViewerClient()
@@ -150,53 +148,11 @@ GLOBAL_DATUM(ai_camera_room_landmark, /obj/effect/landmark/ai_multicam_room)
 		screen.ai.camera_visibility(src)
 	else
 		GLOB.cameranet.visibility(src)
-	update_camera_telegraphing()
+	update_cameras()
 	update_ai_detect_hud()
 
 /mob/camera/ai_eye/pic_in_pic/get_visible_turfs()
 	return screen ? screen.get_visible_turfs() : list()
-
-/mob/camera/ai_eye/pic_in_pic/proc/update_camera_telegraphing()
-	if(!telegraph_cameras)
-		return
-	var/list/obj/machinery/camera/add = list()
-	var/list/obj/machinery/camera/remove = list()
-	var/list/obj/machinery/camera/visible = list()
-	for (var/datum/camerachunk/chunk as anything in visibleCameraChunks)
-		for (var/z_key in chunk.cameras)
-			for(var/obj/machinery/camera/camera as anything in chunk.cameras[z_key])
-				if (!camera.can_use() || (get_dist(camera, src) > telegraph_range))
-					continue
-				visible |= camera
-
-	add = visible - cameras_telegraphed
-	remove = cameras_telegraphed - visible
-
-	for (var/obj/machinery/camera/C as anything in remove)
-		if(QDELETED(C))
-			continue
-		cameras_telegraphed -= C
-		C.in_use_lights--
-		C.update_appearance()
-	for (var/obj/machinery/camera/C as anything in add)
-		if(QDELETED(C))
-			continue
-		cameras_telegraphed |= C
-		C.in_use_lights++
-		C.update_appearance()
-
-/mob/camera/ai_eye/pic_in_pic/proc/disable_camera_telegraphing()
-	telegraph_cameras = FALSE
-	for (var/obj/machinery/camera/C as anything in cameras_telegraphed)
-		if(QDELETED(C))
-			continue
-		C.in_use_lights--
-		C.update_appearance()
-	cameras_telegraphed.Cut()
-
-/mob/camera/ai_eye/pic_in_pic/Destroy()
-	disable_camera_telegraphing()
-	return ..()
 
 //AI procs
 
