@@ -24,6 +24,8 @@
 	///Message sent when a user enters the machine.
 	var/enter_message = span_boldnotice("You feel cool air surround you. You go numb as your senses turn inward.")
 
+	var/resist_time = 0 SECONDS
+
 	///List of currently available chems.
 	var/list/available_chems = list()
 	///Used when emagged to scramble which chem is used, eg: mutadone -> morphine
@@ -62,6 +64,13 @@
 	update_appearance()
 	reset_chem_buttons()
 
+/obj/machinery/sleeper/on_set_panel_open(old_value)
+	. = ..()
+	if(panel_open)
+		set_machine_stat(machine_stat | MAINT)
+	else
+		set_machine_stat(machine_stat & ~MAINT)
+
 /obj/machinery/sleeper/RefreshParts()
 	. = ..()
 	var/matterbin_rating
@@ -82,8 +91,15 @@
 	return ..()
 
 /obj/machinery/sleeper/container_resist_act(mob/living/user)
-	visible_message(span_notice("[occupant] emerges from [src]!"),
-		span_notice("You climb out of [src]!"))
+	if(resist_time > 0)
+		to_chat(user, span_notice("You pull at the release lever."))
+		if(!do_after(user, resist_time, src))
+			return
+	user.visible_message(
+		span_notice("[occupant] emerges from [src]!"),
+		span_notice("You climb out of [src]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 	open_machine()
 
 /obj/machinery/sleeper/Exited(atom/movable/gone, direction)
@@ -367,3 +383,153 @@
 			log_combat(user, occupant, "sprayed [chem] into", addition = "via [src]")
 		return TRUE
 	return ..()
+
+#define IS_SPAWNING "spawning"
+
+/obj/machinery/sleeper/cryo
+	name = "cryogenic pod"
+	desc = "An enclosed machine designed to put subjects in a state of suspended animation for long-term storage."
+	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
+	icon_state = "cryopod"
+	base_icon_state = "cryopod"
+	// circuit = /obj/item/circuitboard/machine/sleeper/cryo
+	enter_message = span_boldnotice("You feel a cold chill as you enter the pod. \
+		You feel your body go numb as you enter a state of suspended animation.")
+	possible_chems = null
+	state_open = FALSE
+	density = TRUE
+	resist_time = 0.5 SECONDS
+
+	var/throw_alert = TRUE
+
+/obj/machinery/sleeper/cryo/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
+
+/obj/machinery/sleeper/cryo/examine(mob/user)
+	. = ..()
+	if(isliving(occupant) && user != occupant)
+		var/mob/living/occupant_l = occupant
+		var/obj/item/card/id/their_id = occupant_l.get_idcard()
+		. += span_notice("Inside, you can see [occupant][their_id ? ", the [their_id.assignment]" : ""][HAS_TRAIT(occupant, TRAIT_KNOCKEDOUT) ? " - sound asleep" : ""].")
+
+/obj/machinery/sleeper/cryo/set_occupant(atom/movable/new_occupant)
+	var/mob/living/old_occupant = occupant
+	. = ..()
+	var/mob/living/new_occupant_l = new_occupant
+	var/skey = REF(src)
+	if(istype(old_occupant))
+		old_occupant.remove_status_effect(/datum/status_effect/grouped/stasis, skey)
+		// REMOVE_TRAIT(old_occupant, TRAIT_KNOCKEDOUT, IS_SPAWNING)
+		// REMOVE_TRAIT(old_occupant, TRAIT_MUTE, skey)
+		REMOVE_TRAIT(old_occupant, TRAIT_BLOCK_HEADSET_USE, skey)
+		REMOVE_TRAIT(old_occupant, TRAIT_SOFTSPOKEN, skey)
+		UnregisterSignal(old_occupant, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE)
+		if(throw_alert)
+			old_occupant.clear_alert(skey)
+	if(istype(new_occupant_l))
+		new_occupant_l.apply_status_effect(/datum/status_effect/grouped/stasis, skey)
+		// ADD_TRAIT(new_occupant_l, TRAIT_MUTE, skey)
+		ADD_TRAIT(new_occupant_l, TRAIT_BLOCK_HEADSET_USE, skey)
+		ADD_TRAIT(new_occupant_l, TRAIT_SOFTSPOKEN, skey)
+		RegisterSignal(new_occupant_l, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(early_move_check))
+		if(throw_alert)
+			new_occupant_l.throw_alert(skey, /atom/movable/screen/alert/cryosleep)
+
+/obj/machinery/sleeper/cryo/proc/early_move_check(mob/living/mob_occupant, new_loc, direct)
+	SIGNAL_HANDLER
+
+	if(mob_occupant.incapacitated(IGNORE_STASIS) || DOING_INTERACTION_WITH_TARGET(mob_occupant, src))
+		return NONE
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, relaymove), mob_occupant, direct)
+	return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE
+
+/obj/machinery/sleeper/cryo/close_machine(mob/user, density_to_set)
+	. = ..()
+	if(isliving(occupant))
+		playsound(src, 'sound/effects/spray.ogg', 5, TRUE, frequency = 0.5)
+
+/obj/machinery/sleeper/cryo/close_machine(mob/user, density_to_set)
+	. = ..()
+	if(isliving(occupant))
+		playsound(src, 'sound/machines/fan_stop.ogg', 50, TRUE)
+
+/obj/machinery/sleeper/cryo/JoinPlayerHere(mob/living/joining_mob, buckle)
+	if(occupant || !ishuman(joining_mob))
+		return ..()
+	throw_alert = FALSE
+	if(state_open)
+		close_machine()
+	set_occupant(joining_mob)
+	joining_mob.forceMove(src)
+	ADD_TRAIT(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING)
+	addtimer(TRAIT_CALLBACK_REMOVE(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING), rand(8, 15) * 1 SECONDS)
+	throw_alert = TRUE
+
+/obj/machinery/sleeper/cryo/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel = 0, custom_deconstruct = FALSE)
+	return FALSE
+
+/obj/machinery/sleeper/cryo/default_deconstruction_screwdriver(mob/living/user, icon_state, base_icon_state, obj/item/screwdriver)
+	return FALSE
+
+/obj/machinery/sleeper/cryo/default_change_direction_wrench(mob/living/user, obj/item/wrench)
+	return FALSE
+
+/obj/machinery/sleeper/cryo/proc/saveable_item(obj/item/save_me)
+	if(save_me.resistance_flags & INDESTRUCTIBLE)
+		return TRUE
+	if(GLOB.steal_item_handler.objectives_by_path[save_me.type])
+		return TRUE
+	return FALSE
+
+/obj/machinery/sleeper/cryo/proc/despawn_occupant()
+	if(!isliving(occupant))
+		return
+	var/drop_loc = drop_location()
+	var/mob/living/mob_occupant = occupant
+
+	set_occupant(null)
+	mob_occupant.ghostize(FALSE)
+
+	for(var/obj/item/save_me in mob_occupant.get_all_contents())
+		if(saveable_item(save_me))
+			mob_occupant.transferItemToLoc(save_me, drop_loc, force = TRUE, silent = TRUE)
+
+	qdel(mob_occupant)
+	open_machine()
+
+	var/datum/record/associated_record = find_record(mob_occupant.real_name)
+	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+	if(!QDELETED(associated_record) && !QDELETED(announcer))
+		announcer.announce("DESPAWN", mob_occupant.name, associated_record.rank, list())
+
+	deadchat_broadcast(
+		"<span class='game'> has entered cryogenic storage.</span>",
+		"<span class='game'><span class='name'>[mob_occupant.real_name]</span> ([associated_record?.rank || "Unknown"])</span>",
+		turf_target = get_turf(src),
+		message_type = DEADCHAT_ARRIVALRATTLE,
+	)
+
+#undef IS_SPAWNING
+
+/atom/movable/screen/alert/cryosleep
+	name = "Cryosleep"
+	desc = "Click this button to despawn your character."
+	mouse_over_pointer = MOUSE_HAND_POINTER
+	icon_state = "cold"
+
+/atom/movable/screen/alert/cryosleep/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return .
+	var/obj/machinery/sleeper/cryo/sleeper = owner.loc
+	if(!istype(sleeper))
+		stack_trace("[type] was clicked by [usr] without being in a sleeper.")
+		return FALSE
+
+	var/are_you_sure = tgui_alert(usr, "Are you sure you want to despawn your character?", "Despawn Character", list("Yes", "No"), 5 SECONDS)
+	if(are_you_sure != "Yes" || QDELETED(src) || QDELETED(sleeper) || sleeper.occupant != usr)
+		return FALSE
+
+	sleeper.despawn_occupant()
+	return TRUE
