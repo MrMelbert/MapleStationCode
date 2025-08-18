@@ -81,7 +81,7 @@
 
 	available_chems.Cut()
 	for(var/datum/stock_part/servo/servos in component_parts)
-		for(var/i in 1 to servos.tier)
+		for(var/i in 1 to min(servos.tier, length(possible_chems)))
 			available_chems |= possible_chems[i]
 
 	reset_chem_buttons()
@@ -384,6 +384,8 @@
 		return TRUE
 	return ..()
 
+GLOBAL_LIST_INIT(cryo_sleepers, list())
+
 #define IS_SPAWNING "spawning"
 
 /obj/machinery/sleeper/cryo
@@ -405,6 +407,12 @@
 /obj/machinery/sleeper/cryo/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
+	GLOB.cryo_sleepers += src
+	open_machine()
+
+/obj/machinery/sleeper/cryo/Destroy()
+	GLOB.cryo_sleepers -= src
+	return ..()
 
 /obj/machinery/sleeper/cryo/examine(mob/user)
 	. = ..()
@@ -463,7 +471,7 @@
 	set_occupant(joining_mob)
 	joining_mob.forceMove(src)
 	ADD_TRAIT(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING)
-	addtimer(TRAIT_CALLBACK_REMOVE(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING), rand(8, 15) * 1 SECONDS)
+	addtimer(TRAIT_CALLBACK_REMOVE(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING), rand(8, 12) * 1 SECONDS)
 	throw_alert = TRUE
 
 /obj/machinery/sleeper/cryo/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel = 0, custom_deconstruct = FALSE)
@@ -475,6 +483,23 @@
 /obj/machinery/sleeper/cryo/default_change_direction_wrench(mob/living/user, obj/item/wrench)
 	return FALSE
 
+/obj/machinery/sleeper/cryo/open_machine(drop = TRUE, density_to_set = FALSE)
+	density_to_set = TRUE
+	return ..()
+
+/// Checks if this can generically be used as a latejoin spawnpoint
+/obj/machinery/sleeper/cryo/proc/can_latejoin(datum/job/joining)
+	if(!isnull(occupant))
+		return FALSE
+	if(istype(joining, /datum/job/prisoner))
+		if(!istype(get_area(src), /area/station/security/prison))
+			return FALSE
+	else
+		if(!istype(get_area(src), /area/station/commons))
+			return FALSE
+	return TRUE
+
+/// Checks if the passed item should avoid deletion when being despawned
 /obj/machinery/sleeper/cryo/proc/saveable_item(obj/item/save_me)
 	if(save_me.resistance_flags & INDESTRUCTIBLE)
 		return TRUE

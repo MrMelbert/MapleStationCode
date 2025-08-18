@@ -12446,6 +12446,7 @@
 	dir = 8
 	},
 /obj/item/radio/intercom/directional/east,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/wood/parquet,
 /area/station/commons/locker)
 "bvi" = (
@@ -80759,6 +80760,16 @@
 /obj/effect/landmark/event_spawn,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/lockers)
+"weW" = (
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/wood/parquet,
+/area/station/commons/locker)
 "weX" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -110353,7 +110364,7 @@ vhx
 bAN
 teb
 bAN
-kDD
+weW
 kDD
 bve
 wEY

@@ -6397,6 +6397,7 @@
 #include "maplestation_modules\code\modules\client\preferences\ready_anominity.dm"
 #include "maplestation_modules\code\modules\client\preferences\runechat_color.dm"
 #include "maplestation_modules\code\modules\client\preferences\sound_frequency.dm"
+#include "maplestation_modules\code\modules\client\preferences\spawn_location.dm"
 #include "maplestation_modules\code\modules\client\preferences\toggle_radio.dm"
 #include "maplestation_modules\code\modules\client\preferences\toggle_speech.dm"
 #include "maplestation_modules\code\modules\client\preferences\species\lizard.dm"
