@@ -76,7 +76,7 @@
 		var/mob/living/carbon/C = mover
 		if(C.stat) // Lets not prevent dragging unconscious/dead people.
 			return TRUE
-		if(allow_walk && C.move_intent == MOVE_INTENT_WALK)
+		if(allow_walk && C.move_intent == MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
 			return TRUE
 
 /obj/structure/holosign/barrier/wetsign

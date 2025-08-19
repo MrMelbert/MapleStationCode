@@ -211,7 +211,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		var/mob/living/carbon/dunking_target = user.pulling
 		log_combat(user, dunking_target, "dunked", null, "into [src]")
 		user.visible_message(span_danger("[user] dunks [dunking_target]'s face in [src]!"))
-		reagents.expose(dunking_target, TOUCH)
+		reagents.expose(dunking_target, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 		var/bio_multiplier = dunking_target.getarmor(BODY_ZONE_HEAD, BIO) * 0.01
 		var/target_temp = dunking_target.body_temperature
 		var/cold_multiplier = 1

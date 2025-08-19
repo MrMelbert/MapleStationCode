@@ -106,6 +106,10 @@ DEFINE_BITFIELD(no_equip_flags, list(
 #define HIDESNOUT (1<<12)
 ///hides mutant/moth wings, does not apply to functional wings
 #define HIDEMUTWINGS (1<<13)
+///hides belts and riggings
+#define HIDEBELT (1<<14)
+///hides antennae
+#define HIDEANTENNAE (1<<15)
 
 //bitflags for clothing coverage - also used for limbs
 #define HEAD (1<<0)
@@ -152,10 +156,10 @@ DEFINE_BITFIELD(no_equip_flags, list(
 #define CLOTHING_DIGITIGRADE_VARIATION (1<<1)
 ///The sprite works fine for digitigrade legs as-is.
 #define CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON (1<<2)
-/// When worn by a mob with digitigrade, apply a filter
-#define CLOTHING_DIGITIGRADE_FILTER (1<<3)
 /// Auto-generates the leg portion of the sprite with GAGS
-#define CLOTHING_DIGITIGRADE_MASK (1<<4)
+#define CLOTHING_DIGITIGRADE_MASK (1<<3)
+/// When worn by a mob with digitigrade, apply a filter
+#define CLOTHING_DIGITIGRADE_FILTER (1<<4)
 
 /// All variation flags which render correctly on a digitigrade leg setup
 #define DIGITIGRADE_VARIATIONS (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_FILTER|CLOTHING_DIGITIGRADE_MASK)

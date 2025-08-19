@@ -49,6 +49,8 @@
 
 /// Cap on shock level
 #define MAX_TRAUMATIC_SHOCK 200
+/// Hard cap on pain level
+#define MAX_LIMB_PAIN 300
 
 /// Checks if a mob can feel pain.
 #define CAN_FEEL_PAIN(mob) (mob?.stat <= SOFT_CRIT && mob?.pain_controller?.pain_modifier > 0.33)
@@ -61,6 +63,7 @@
 #define PAIN_MOD_QUIRK "quirk"
 #define PAIN_MOD_SPECIES "species"
 #define PAIN_MOD_OFF_STATION "off-station-pain-resistance"
+#define PAIN_MOD_STATUS_EFFECT "status_effect"
 
 // ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"

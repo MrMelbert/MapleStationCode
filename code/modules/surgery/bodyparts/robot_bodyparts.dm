@@ -112,6 +112,10 @@
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
+/obj/item/bodypart/leg/left/robot/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+
 /obj/item/bodypart/leg/left/robot/emp_act(severity)
 	. = ..()
 	if(!. || isnull(owner))
@@ -158,6 +162,10 @@
 
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
+
+/obj/item/bodypart/leg/right/robot/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
 
 /obj/item/bodypart/leg/right/robot/emp_act(severity)
 	. = ..()
@@ -511,6 +519,10 @@
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
 
+/obj/item/bodypart/leg/left/robot/surplus/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, -5)
+
 /obj/item/bodypart/leg/right/robot/surplus
 	name = "surplus prosthetic right leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
@@ -524,6 +536,10 @@
 	wound_modifier = 0.5
 
 	biological_state = (BIO_METAL|BIO_JOINTED)
+
+/obj/item/bodypart/leg/right/robot/surplus/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, -5)
 
 // Advanced Limbs: More durable, high punching force
 
@@ -554,6 +570,10 @@
 	unarmed_damage_high = 17
 	unarmed_effectiveness = 20
 
+/obj/item/bodypart/leg/left/robot/advanced/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 10)
+
 /obj/item/bodypart/leg/right/robot/advanced
 	name = "heavy robotic right leg"
 	desc = "An advanced cybernetic leg, capable of greater feats of strength and durability."
@@ -562,6 +582,10 @@
 	unarmed_damage_low = 7
 	unarmed_damage_high = 17
 	unarmed_effectiveness = 20
+
+/obj/item/bodypart/leg/right/robot/advanced/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bodypart_sprint_buff, 10)
 
 #undef ROBOTIC_LIGHT_BRUTE_MSG
 #undef ROBOTIC_MEDIUM_BRUTE_MSG

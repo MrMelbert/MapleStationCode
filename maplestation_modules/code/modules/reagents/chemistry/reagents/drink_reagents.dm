@@ -391,7 +391,7 @@
 	description = "A subtly sweet coffee seemingly out of this world."
 	nutriment_factor = 8
 	color = "#361329"
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "hauntingly familiar allure"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -407,7 +407,7 @@
 	description = "A delightful shake made with a rare starfruit."
 	color = "#a551be"
 	nutriment_factor = 0
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "smooth starlight"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -423,7 +423,7 @@
 	description = "A cosmic cry of a bygone era."
 	boozepwr = 55
 	color = "#434294"
-	quality = DRINK_GOOD
+	quality = DRINK_FANTASTIC
 	taste_description = "dreamy, tropical starlit sweetness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -439,7 +439,7 @@
 	description = "Enticing flames."
 	boozepwr = 55
 	color = "#6b3481"
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "enticing warmth"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
