@@ -93,6 +93,8 @@
 	name = "pouch"
 	desc = "A pocket sized pouch."
 	icon = 'maplestation_modules/icons/obj/storage/pouch.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/storage/pouch.dmi'
+	mirror_icon = 'maplestation_modules/icons/mob/storage/pouch_mirror.dmi'
 	icon_state = "pouch"
 	base_icon_state = "pouch"
 	inhand_icon_state = "syringe_kit"
@@ -137,6 +139,8 @@
 	name = "tool pouch"
 	desc = "A pocket sized pouch, perfectly capable of holding a few tools."
 	overlay_state = "wrench"
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/storage/pouch/survival
 	name = "surival pouch"
@@ -247,3 +251,13 @@
 /obj/structure/closet/secure_closet/engineering_personal/PopulateContents()
 	. = ..()
 	new /obj/item/storage/pouch/tools(src)
+
+/obj/machinery/vending/tool
+	added_premium = list(
+		/obj/item/storage/pouch/tools = 3,
+	)
+
+/obj/machinery/vending/engivend
+	added_premium = list(
+		/obj/item/storage/pouch/tools = 5,
+	)

@@ -210,10 +210,11 @@ GLOBAL_LIST_INIT(any_suit_storage, typecacheof(list(
 	/obj/item/storage/wallet,
 	/obj/item/folder,
 	/obj/item/storage/box/matches,
-	/obj/item/cigarette,
+	/obj/item/clothing/mask/cigarette,
 	/obj/item/gun/energy/laser/bluetag,
 	/obj/item/gun/energy/laser/redtag,
-	/obj/item/storage/belt/holster
+	/obj/item/storage/belt/holster,
+	/obj/item/storage/pouch,
 )))
 
 //Allowed equipment lists for security vests.
