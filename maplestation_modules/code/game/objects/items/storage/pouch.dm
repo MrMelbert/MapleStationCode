@@ -151,30 +151,46 @@
 	var/internal_type = /obj/item/tank/internals/emergency_oxygen
 	/// What medipen should be present in this box?
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
+	/// Whether or not this pouch should contain a radio
+	var/radio = FALSE
 
 /obj/item/storage/pouch/survival/Initialize(mapload)
+	if(isplasmaman(loc))
+		internal_type = /obj/item/tank/internals/plasmaman/belt
 	. = ..()
-	if(!HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
+
+	var/extra_slots_needed = length(contents) - atom_storage.max_slots
+	if(extra_slots_needed > 0)
+		atom_storage.max_slots += extra_slots_needed
+		atom_storage.max_total_storage += extra_slots_needed * 2
+	if(HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
+		atom_storage.max_slots += 2
+		atom_storage.max_total_storage += 4
+		name = "large [name]"
+		transform = transform.Scale(1.25, 1)
+
+/obj/item/storage/pouch/survival/proc/wardrobe_removal()
+	if(!isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
 		return
-	atom_storage.max_slots += 2
-	atom_storage.max_total_storage += 4
-	name = "large [name]"
-	transform = transform.Scale(1.25, 1)
+	var/obj/item/mask = locate(mask_type) in src
+	var/obj/item/internals = locate(internal_type) in src
+	new /obj/item/tank/internals/plasmaman/belt(src)
+	qdel(mask) // Get rid of the items that shouldn't be
+	qdel(internals)
 
 /obj/item/storage/pouch/survival/PopulateContents()
 	if(!isnull(mask_type))
 		new mask_type(src)
 
-	if(!isplasmaman(loc))
+	if(!isnull(internal_type))
 		new internal_type(src)
-	else
-		new /obj/item/tank/internals/plasmaman/belt(src)
 
 	if(!isnull(medipen_type))
 		new medipen_type(src)
 
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
 		new /obj/item/flashlight/flare(src)
+	if(radio || HAS_TRAIT(SSstation, STATION_TRAIT_PREMIUM_INTERNALS))
 		new /obj/item/radio/off(src)
 
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_RADIOACTIVE_NEBULA))
@@ -182,3 +198,52 @@
 
 	if(SSmapping.is_planetary() && LAZYLEN(SSmapping.multiz_levels))
 		new /obj/item/climbing_hook/emergency(src)
+
+/obj/item/storage/pouch/survival/engineer
+	internal_type = /obj/item/tank/internals/emergency_oxygen/engi
+	radio = TRUE
+
+/obj/item/storage/pouch/survival/mining
+	mask_type = /obj/item/clothing/mask/gas/explorer/folded
+
+/obj/item/storage/pouch/survival/mining/bonus
+	mask_type = null
+	internal_type = /obj/item/tank/internals/emergency_oxygen/double
+
+/obj/item/storage/pouch/survival/mining/bonus/PopulateContents()
+	. = ..()
+	new /obj/item/gps/mining(src)
+	new /obj/item/t_scanner/adv_mining_scanner(src)
+
+/obj/item/storage/pouch/survival/medical
+	mask_type = /obj/item/clothing/mask/breath/medical
+
+/obj/item/storage/pouch/survival/security
+	mask_type = /obj/item/clothing/mask/gas/sechailer
+	radio = TRUE
+
+/obj/item/storage/pouch/survival/syndie
+	// icon_state = "syndiebox"
+	mask_type = /obj/item/clothing/mask/gas/syndicate
+	internal_type = /obj/item/tank/internals/emergency_oxygen/engi
+	medipen_type =  /obj/item/reagent_containers/hypospray/medipen/atropine
+	radio = TRUE
+
+/obj/item/storage/pouch/survival/syndie/PopulateContents()
+	. = ..()
+	new /obj/item/crowbar/red(src)
+	new /obj/item/screwdriver/red(src)
+	new /obj/item/weldingtool/mini(src)
+	new /obj/item/paper/fluff/operative(src)
+
+/obj/item/storage/pouch/survival/centcom
+	internal_type = /obj/item/tank/internals/emergency_oxygen/double
+	radio = TRUE
+
+/obj/item/storage/pouch/survival/centcom/PopulateContents()
+	. = ..()
+	new /obj/item/crowbar(src)
+
+/obj/structure/closet/secure_closet/engineering_personal/PopulateContents()
+	. = ..()
+	new /obj/item/storage/pouch/tools(src)

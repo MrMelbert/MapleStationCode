@@ -357,7 +357,7 @@
 	belt = /obj/item/modular_computer/pda
 	back = /obj/item/storage/backpack
 	shoes = /obj/item/clothing/shoes/sneakers/black
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 

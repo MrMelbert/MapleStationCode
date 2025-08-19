@@ -48,7 +48,7 @@
 	jobtype = /datum/job/coroner
 	id_trim = /datum/id_trim/job/coroner
 
-	box = /obj/item/storage/box/survival/medical
+	box = /obj/item/storage/pouch/survival/medical
 	backpack_contents = list(
 		/obj/item/storage/box/bodybags = 1,
 		/obj/item/autopsy_scanner = 1,

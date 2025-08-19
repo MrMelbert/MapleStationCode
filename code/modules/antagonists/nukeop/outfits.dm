@@ -12,7 +12,7 @@
 	belt = /obj/item/gun/ballistic/automatic/pistol/clandestine
 
 	skillchips = list(/obj/item/skillchip/disk_verifier)
-	box = /obj/item/storage/box/survival/syndie
+	box = /obj/item/storage/pouch/survival/syndie
 	/// Amount of TC to automatically store in this outfit's uplink.
 	var/tc = 25
 	/// Enables big voice on this outfit's headset, used for nukie leaders.

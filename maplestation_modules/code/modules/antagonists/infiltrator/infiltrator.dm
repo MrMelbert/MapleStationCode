@@ -160,7 +160,7 @@
 	id = /obj/item/card/id/advanced/black
 	id_trim = /datum/id_trim/syndicom/infiltrator
 	skillchips = list(/obj/item/skillchip/disk_verifier)
-	backpack_contents = list(/obj/item/storage/box/survival/syndie = 1, /obj/item/knife/combat/survival)
+	backpack_contents = list(/obj/item/storage/pouch/survival/syndie = 1, /obj/item/knife/combat/survival)
 
 /datum/outfit/syndicate_infiltrator/post_equip(mob/living/carbon/human/human_equipper, visualsOnly)
 	. = ..()

@@ -53,7 +53,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
 	messenger = /obj/item/storage/backpack/messenger/explorer
 
-	box = /obj/item/storage/box/survival/mining
+	box = /obj/item/storage/pouch/survival/mining
 	chameleon_extras = /obj/item/gun/energy/recharge/kinetic_accelerator
 
 /datum/outfit/job/miner/equipped
@@ -90,7 +90,7 @@
 		/obj/item/kinetic_crusher/compact = 1,
 		/obj/item/resonator/upgraded = 1,
 	)
-	box = /obj/item/storage/box/survival/mining/bonus
+	box = /obj/item/storage/pouch/survival/mining/bonus
 	l_pocket = /obj/item/modular_computer/pda/shaftminer
 	r_pocket = /obj/item/extinguisher/mini
 	belt = /obj/item/storage/belt/mining/healing
