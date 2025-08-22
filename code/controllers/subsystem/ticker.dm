@@ -237,7 +237,7 @@ SUBSYSTEM_DEF(ticker)
 	return FALSE
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, span_boldannounce("Starting game..."))
+	to_chat(world, span_boldannounce(separator_hr("Starting game...")))
 	var/init_start = world.timeofday
 
 	CHECK_TICK
@@ -494,8 +494,8 @@ SUBSYSTEM_DEF(ticker)
 			qdel(player)
 			ADD_TRAIT(living, TRAIT_NO_TRANSFORM, SS_TICKER_TRAIT)
 			if(living.client)
-				var/atom/movable/screen/splash/S = new(null, living.client, TRUE)
-				S.Fade(TRUE)
+				var/atom/movable/screen/splash/S = new(null, null, living.client, TRUE)
+				S.fade(TRUE)
 				living.client.init_verbs()
 			livings += living
 	if(livings.len)

@@ -1,8 +1,8 @@
 // -- Xenobiologist job & outfit datum --
 /datum/job/xenobiologist
 	title = JOB_XENOBIOLOGIST
-	description = "Feed slimes all shift, never exit xenobiology for any reason. \
-		Leave after two hours as an unkillable god with an army of monsters."
+	description = "Study and feed slimes, never exit xenobiology for any reason. \
+		Become an unkillable god with an army of monsters."
 	title_options = list(
 		"Microbiologist",
 		"Cytologist",

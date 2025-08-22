@@ -1,6 +1,6 @@
 /datum/job/roboticist
 	title = JOB_ROBOTICIST
-	description = "Build and repair the AI and cyborgs, create mechs."
+	description = "Build and repair the AI and cyborgs, create mechs, augment the crew."
 	title_options = list(
 		"Mechanist",
 		"Prosthetist" = /datum/outfit/job/roboticist/prosthetist,
