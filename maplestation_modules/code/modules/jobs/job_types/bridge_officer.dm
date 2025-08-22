@@ -76,7 +76,7 @@
 	shoes = /obj/item/clothing/shoes/laceup
 	head = /obj/item/clothing/head/beret/black/bridge_officer
 	id_trim = /datum/id_trim/job/bridge_officer
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 
 	backpack_contents = list(/obj/item/melee/baton/telescopic = 1, /obj/item/gun/energy/disabler = 1)
 

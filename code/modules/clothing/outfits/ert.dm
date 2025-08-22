@@ -41,7 +41,7 @@
 	id = /obj/item/card/id/advanced/centcom/ert
 	back = /obj/item/mod/control/pre_equipped/responsory/commander
 	l_hand = /obj/item/gun/energy/e_gun
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/melee/baton/security/loaded = 1,
 	)
@@ -66,7 +66,7 @@
 	id = /obj/item/card/id/advanced/centcom/ert/security
 	back = /obj/item/mod/control/pre_equipped/responsory/security
 	l_hand = /obj/item/gun/energy/e_gun/stun
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/storage/box/handcuffs = 1,
@@ -90,7 +90,7 @@
 
 	id = /obj/item/card/id/advanced/centcom/ert/medical
 	back = /obj/item/mod/control/pre_equipped/responsory/medic
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/gun/medbeam = 1,
 		/obj/item/melee/baton/security/loaded = 1,
@@ -122,7 +122,7 @@
 	id = /obj/item/card/id/advanced/centcom/ert/engineer
 	back = /obj/item/mod/control/pre_equipped/responsory/engineer
 	l_hand = /obj/item/gun/energy/e_gun
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/construction/rcd/loaded/upgraded = 1,
 		/obj/item/melee/baton/security/loaded = 1,
@@ -150,7 +150,7 @@
 	id_trim = /datum/id_trim/centcom/official
 	uniform = /obj/item/clothing/under/rank/centcom/official
 	back = /obj/item/storage/backpack/satchel
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 	backpack_contents = list(
 		/obj/item/stamp/centcom = 1,
 	)
@@ -212,7 +212,7 @@
 	l_hand = /obj/item/gun/energy/e_gun
 	belt = /obj/item/storage/belt/soulstone
 	glasses = /obj/item/clothing/glasses/hud/health
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/nullrod = 1,
 	)
@@ -233,7 +233,7 @@
 
 	id = /obj/item/card/id/advanced/centcom/ert/janitor
 	back = /obj/item/mod/control/pre_equipped/responsory/janitor
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/grenade/clusterbuster/cleaner = 1,
 		/obj/item/melee/baton/security/loaded = 1,
@@ -263,7 +263,7 @@
 
 	id = /obj/item/card/id/advanced/centcom/ert/clown
 	back = /obj/item/mod/control/pre_equipped/responsory/clown
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/gun/ballistic/revolver/reverse = 1,
 		/obj/item/melee/energy/sword/bananium = 1,
@@ -293,7 +293,7 @@
 	id_trim = /datum/id_trim/centcom/intern
 	uniform = /obj/item/clothing/under/rank/centcom/intern
 	back = /obj/item/storage/backpack/satchel
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 	belt = /obj/item/melee/baton
 	ears = /obj/item/radio/headset/headset_cent
 	glasses = /obj/item/clothing/glasses/sunglasses
@@ -427,7 +427,7 @@
 	id_trim = /datum/id_trim/centcom/deathsquad
 	uniform = /obj/item/clothing/under/rank/centcom/commander
 	back = /obj/item/mod/control/pre_equipped/apocryphal
-	box = /obj/item/storage/box/survival/centcom
+	box = /obj/item/storage/pouch/survival/centcom
 	backpack_contents = list(
 		/obj/item/ammo_box/a357 = 1,
 		/obj/item/flashlight = 1,
@@ -545,7 +545,7 @@
 	shoes = /obj/item/clothing/shoes/cowboy
 	gloves = /obj/item/clothing/gloves/combat
 	back = /obj/item/storage/backpack/satchel/leather
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 	l_pocket = /obj/item/switchblade
 	r_pocket = /obj/item/reagent_containers/hypospray/medipen/salacid
 	ears = /obj/item/radio/headset

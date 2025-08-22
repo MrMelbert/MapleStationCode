@@ -70,7 +70,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/sec
 	messenger = /obj/item/storage/backpack/messenger/sec
 
-	box = /obj/item/storage/box/survival/security
+	box = /obj/item/storage/pouch/survival/security
 	chameleon_extras = list(
 		/obj/item/gun/energy/e_gun/hos,
 		/obj/item/stamp/head/hos,

@@ -9,7 +9,7 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*3, /datum/material/glass =SHEET_MATERIAL_AMOUNT * 1.5)
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = SURGICAL_TOOL
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	tool_behaviour = TOOL_RETRACTOR
 	toolspeed = 1
 	drop_sound = 'maplestation_modules/sound/items/drop/knife3.ogg'
@@ -40,7 +40,7 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.25)
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = SURGICAL_TOOL
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("attacks", "pinches")
 	attack_verb_simple = list("attack", "pinch")
 	tool_behaviour = TOOL_HEMOSTAT
@@ -73,7 +73,7 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*1.25, /datum/material/glass = SMALL_MATERIAL_AMOUNT*7.5)
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = SURGICAL_TOOL
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("burns")
 	attack_verb_simple = list("burn")
 	tool_behaviour = TOOL_CAUTERY
@@ -212,7 +212,7 @@
 	item_flags = SURGICAL_TOOL
 	force = 10
 	demolition_mod = 0.25
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 5
@@ -323,7 +323,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	inhand_icon_state = "drapes"
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("slaps")
 	attack_verb_simple = list("slap")
 	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'

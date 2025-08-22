@@ -59,7 +59,7 @@
 	id_trim = /datum/id_trim/chameleon/operative
 
 	backpack_contents = list(
-		/obj/item/storage/box/survival,
+		/obj/item/storage/pouch/survival,
 		/obj/item/implanter/uplink,
 		/obj/item/clothing/mask/chameleon,
 		/obj/item/storage/fancy/cigarettes/cigpack_syndicate,

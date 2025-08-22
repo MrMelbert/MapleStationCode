@@ -48,6 +48,7 @@
 	base_icon_state = "a7mm"
 	ammo_type = /obj/item/ammo_casing/foam_dart
 	max_ammo = 50
+	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/ammo_box/magazine/toy/m762/update_icon_state()
 	. = ..()
