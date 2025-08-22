@@ -11,8 +11,8 @@
 	sound = 'sound/magic/blind.ogg'
 	school = SCHOOL_FORBIDDEN
 	cooldown_time = 20 SECONDS
-
-	invocation = "Mo'N S'M'LE"
+	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
+	invocation = "M'N S'M'LE!"
 	invocation_type = INVOCATION_SHOUT
 	spell_requirements = NONE
 	cast_range = 6

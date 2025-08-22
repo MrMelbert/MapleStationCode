@@ -520,9 +520,16 @@
 	return ..()
 
 /// Prosopagnosia
-/datum/status_effect/trait_effect/prosopagnosia
+/datum/status_effect/prosopagnosia
 	id = "prosopagnosia"
-	trait_to_add = TRAIT_PROSOPAGNOSIA
+
+/datum/status_effect/prosopagnosia/on_apply()
+	. = ..()
+	owner.apply_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
+
+/datum/status_effect/prosopagnosia/on_remove()
+	. = ..()
+	owner.remove_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
 
 /// Thermal Weakness
 /datum/status_effect/thermal_weakness
