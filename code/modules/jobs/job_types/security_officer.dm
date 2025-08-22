@@ -1,7 +1,7 @@
 /datum/job/security_officer
 	title = JOB_SECURITY_OFFICER
-	description = "Protect company assets, follow the Standard Operating \
-		Procedure, eat donuts."
+	description = "Protect company assets, follow Standard Operating \
+		Procedure, uphold Space Law, eat plenty donuts."
 	title_options = list(
 		"Junior Officer",
 	)

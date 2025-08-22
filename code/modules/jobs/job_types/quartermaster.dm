@@ -1,7 +1,7 @@
 /datum/job/quartermaster
 	title = JOB_QUARTERMASTER
-	description = "Coordinate cargo technicians and shaft miners, assist with \
-		economical purchasing."
+	description = "Coordinate your technicians and other cargo personnel, \
+		budget economically for the crew, waste money on inane things or firearms."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SUPPLY)

@@ -1,7 +1,7 @@
 /datum/job/virologist
 	title = JOB_VIROLOGIST
-	description = "Study the effects of various diseases and synthesize a \
-		vaccine for them. Engineer beneficial viruses."
+	description = "Study the effects of various diseases, synthesize vaccines, \
+		engineer (hopefully) beneficial viruses."
 	title_options = list(
 		"Pathologist",
 	)

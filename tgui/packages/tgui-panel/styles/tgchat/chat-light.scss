@@ -1010,13 +1010,14 @@ h2.alert {
   display: flex;
   align-items: center;
   text-align: center;
+  --separator-color: hsl(215.5, 39.3%, 11%);
 }
 
 .separator::before,
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid hsl(215.5, 39.3%, 11%);
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .separator:not(:empty)::before {
@@ -1025,6 +1026,10 @@ h2.alert {
 
 .separator:not(:empty)::after {
   margin-left: 0.25em;
+}
+
+.separator.danger {
+  --separator-color: hsl(0, 100%, 50%);
 }
 
 // Used to display images besides text
