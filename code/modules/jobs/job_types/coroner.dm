@@ -1,7 +1,7 @@
 /datum/job/coroner
 	title = JOB_CORONER
-	description = "Perform Autopsies whenever needed. \
-		Update medical records accordingly. Apply plenty formaldehyde."
+	description = "Perform autopsies, update medical records, \
+		apply buckets of formaldehyde, harvest organs."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 1

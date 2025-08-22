@@ -1,7 +1,7 @@
 /datum/job/stowaway
 	title = "Stowaway"
 	description = "Sneak aboard the station, end up worse off than you had it before. \
-		Spawn randomly in the maintenance tunnels, with no radio, no PDA, \
+		Spawn randomly in the maintenance tunnels with no radio, no PDA, \
 		no bank account, and no records in the crew database."
 	rpg_title = "Stowaway" // TES4: Oblivion
 	paycheck = PAYCHECK_ZERO

@@ -1,8 +1,8 @@
 // -- Ordnance Tech job & outfit datum --
 /datum/job/ordnance_tech
 	title = JOB_ORDNANCE_TECH
-	description = "Further plasma research. \
-		Make the station shake repeatedly as you refine cores."
+	description = "Further plasma research explosively. \
+		Make the station shake repeatedly as you refine anomaly cores."
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 1
