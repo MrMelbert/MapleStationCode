@@ -8865,7 +8865,7 @@
 	department = "Dormitories";
 	name = "Dorms Requests Console"
 	},
-/obj/structure/tank_holder/extinguisher,
+/obj/machinery/vending/snack/blue,
 /turf/open/floor/iron/corner{
 	dir = 1
 	},
@@ -34311,16 +34311,11 @@
 /turf/open/floor/iron/edge,
 /area/station/security/brig)
 "emV" = (
-/obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
 /obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/iron,
-/area/station/commons/fitness/recreation)
-"enI" = (
-/obj/machinery/vending/cola/red,
-/turf/open/floor/iron/white/smooth_large,
 /area/station/commons/fitness/recreation)
 "enO" = (
 /obj/effect/turf_decal/stripes/corner{
@@ -39370,6 +39365,15 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/virology)
+"ibu" = (
+/obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/sleeper/cryo{
+	dir = 8
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/station/security/prison)
 "ibw" = (
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible{
 	dir = 4
@@ -43332,7 +43336,7 @@
 /turf/open/floor/iron/smooth_half,
 /area/station/science/robotics/mechbay)
 "low" = (
-/obj/machinery/vending/snack/blue,
+/obj/machinery/sleeper/cryo,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/commons/fitness/recreation)
 "lpB" = (
@@ -43884,11 +43888,6 @@
 /obj/item/wrench,
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
-"lJM" = (
-/obj/machinery/door/firedoor,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/station/commons/fitness/recreation)
 "lJR" = (
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 1
@@ -48105,10 +48104,6 @@
 "oMN" = (
 /turf/open/floor/iron/stairs/left,
 /area/station/service/abandoned_gambling_den)
-"oNs" = (
-/obj/machinery/vending/cigarette,
-/turf/open/floor/iron/white/smooth_large,
-/area/station/commons/fitness/recreation)
 "oND" = (
 /obj/machinery/meter,
 /obj/effect/decal/cleanable/dirt,
@@ -56822,6 +56817,7 @@
 /area/station/medical/medbay/central)
 "uFi" = (
 /obj/item/radio/intercom/directional/east,
+/obj/structure/tank_holder/extinguisher,
 /turf/open/floor/iron/corner{
 	dir = 8
 	},
@@ -59327,7 +59323,7 @@
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
 "wwE" = (
-/obj/structure/table,
+/obj/machinery/vending/cola/red,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -60110,7 +60106,6 @@
 "wRG" = (
 /obj/structure/closet/lasertag/red,
 /obj/effect/turf_decal/tile/blue,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/corner{
 	dir = 4
 	},
@@ -84542,7 +84537,7 @@ aem
 nud
 iTv
 agd
-agp
+ibu
 ahp
 agM
 asA
@@ -103322,10 +103317,10 @@ sFK
 sFK
 sFK
 aiS
-enI
+low
 fVJ
 lFK
-lJM
+lFK
 duC
 rrM
 pcg
@@ -103579,7 +103574,7 @@ aiT
 aiS
 sFK
 aiS
-oNs
+low
 eHq
 wKP
 wRG

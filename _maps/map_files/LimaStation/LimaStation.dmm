@@ -132,6 +132,13 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"acU" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/machinery/sleeper/cryo{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/station/security/prison)
 "adb" = (
 /obj/machinery/firealarm/directional/south,
 /obj/machinery/vending/tool,
@@ -1018,7 +1025,7 @@
 	},
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
-/obj/effect/spawner/random/entertainment/arcade{
+/obj/machinery/sleeper/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,
@@ -3565,7 +3572,7 @@
 	dir = 8
 	},
 /obj/machinery/airalarm/directional/south,
-/obj/effect/spawner/random/entertainment/arcade{
+/obj/machinery/sleeper/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron/freezer,
@@ -9774,13 +9781,13 @@
 /turf/open/floor/wood/large,
 /area/station/maintenance/old_rec)
 "dmO" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 1
-	},
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/camera/directional/south{
 	c_tag = "Prison Wing - Foyer";
 	network = list("ss13", "prison")
+	},
+/obj/machinery/sleeper/cryo{
+	dir = 4
 	},
 /turf/open/floor/iron,
 /area/station/security/prison)
@@ -16354,6 +16361,9 @@
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/neutral,
 /obj/structure/noticeboard/directional/south,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
 /turf/open/floor/iron,
 /area/station/security/prison)
 "fze" = (
@@ -36194,16 +36204,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/port/lower)
-"lOt" = (
-/obj/effect/turf_decal/siding/wideplating{
-	dir = 1
-	},
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/station/security/prison)
 "lOB" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 4
@@ -37826,7 +37826,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/effect/spawner/random/entertainment/arcade{
+/obj/machinery/sleeper/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron/freezer,
@@ -52305,6 +52305,12 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"qMm" = (
+/obj/machinery/duct,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron/checker,
+/area/station/security/prison)
 "qMo" = (
 /obj/effect/mapping_helpers/broken_floor,
 /obj/effect/decal/cleanable/dirt,
@@ -71327,7 +71333,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/newscaster/directional/east,
-/obj/effect/spawner/random/entertainment/arcade{
+/obj/machinery/sleeper/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,
@@ -72785,6 +72791,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron,
 /area/station/security/prison)
 "xon" = (
@@ -73587,7 +73594,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/firealarm/directional/east,
-/obj/effect/spawner/random/entertainment/arcade{
+/obj/machinery/sleeper/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,
@@ -94629,7 +94636,7 @@ iIy
 sJB
 sJB
 qQq
-dzL
+acU
 eyn
 cYc
 wOX
@@ -95396,7 +95403,7 @@ riq
 vLL
 hrv
 xoh
-lhT
+qMm
 aRO
 aRO
 mFV
@@ -95909,7 +95916,7 @@ bID
 nkV
 jzw
 aJs
-lOt
+iQf
 vis
 dzL
 dzL
