@@ -1,8 +1,5 @@
 // -- Synth additions (though barely functional) --
 
-/// GLOB list of head options
-GLOBAL_LIST_EMPTY(synth_head_cover_list)
-
 #define BODYPART_ID_SYNTH "synth"
 
 /mob/living/carbon/human/species/synth
@@ -496,7 +493,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 //-- overlay --
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
-	return GLOB.synth_head_cover_list
+	return SSaccessories.synth_head_cover_list
 
 /datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))

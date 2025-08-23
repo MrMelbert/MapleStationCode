@@ -1,9 +1,3 @@
-/// GLOB list of armwings sprites / options
-GLOBAL_LIST_EMPTY(arm_wings_list)
-GLOBAL_LIST_EMPTY(arm_wingsopen_list)
-/// GLOB list of other features (ears, tails)
-GLOBAL_LIST_EMPTY(avian_ears_list)
-GLOBAL_LIST_EMPTY(tails_list_avian)
 
 /datum/species/ornithid
 	// the biggest bird
