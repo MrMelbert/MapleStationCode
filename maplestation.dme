@@ -6261,6 +6261,7 @@
 #include "maplestation_modules\code\game\machinery\guess_pass.dm"
 #include "maplestation_modules\code\game\machinery\pager.dm"
 #include "maplestation_modules\code\game\machinery\towel_rack.dm"
+#include "maplestation_modules\code\game\machinery\computer\dna_console.dm"
 #include "maplestation_modules\code\game\machinery\computer\slots.dm"
 #include "maplestation_modules\code\game\objects\unique_examine_items.dm"
 #include "maplestation_modules\code\game\objects\effects\landmarks.dm"
