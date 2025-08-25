@@ -80,9 +80,6 @@
 /obj/item/clothing/mask/visor_toggling(mob/living/user)
 	. = ..()
 	if(up)
-/obj/item/clothing/mask/visor_toggling(mob/living/user)
-	. = ..()
-	if(up)
 		if(adjusted_flags)
 			slot_flags = adjusted_flags
 	else
