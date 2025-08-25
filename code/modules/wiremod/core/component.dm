@@ -14,6 +14,7 @@
 	inhand_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
+	custom_materials = list(/datum/material/glass = 10) // Was HALF_SHEET_MATERIAL_AMOUNT but that meant you could infinitely create more glass
 
 	/// The name of the component shown on the UI
 	var/display_name = "Generic"
@@ -423,3 +424,14 @@
  */
 /obj/item/circuit_component/proc/unregister_usb_parent(atom/movable/shell)
 	return
+
+/**
+ * Called when a circuit component requests to send Ntnet data signal.
+ *
+ * Arguments:
+ * * port - The required list port needed by the Ntnet recieve
+ * * key - The encryption key
+ * * signal_type - The signal type used for sending this global signal (optional, default is COMSIG_GLOB_CIRCUIT_NTNET_DATA_SENT)
+ */
+/obj/item/circuit_component/proc/send_ntnet_data(datum/port/input/port, key, signal_type = COMSIG_GLOB_CIRCUIT_NTNET_DATA_SENT)
+	SEND_GLOBAL_SIGNAL(signal_type, list("data" = port.value, "enc_key" = key, "port" = WEAKREF(port)))

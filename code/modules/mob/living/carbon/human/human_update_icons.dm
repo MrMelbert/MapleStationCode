@@ -92,7 +92,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(uniform.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_ICLOTHING)
+		if(check_obscured_slots() & ITEM_SLOT_ICLOTHING)
 			return
 
 		var/target_overlay = uniform.icon_state
@@ -202,7 +202,7 @@ There are several things that need to be remembered:
 	if(update_obscured)
 		update_obscured_slots(worn_item.flags_inv)
 
-	if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_GLOVES)
+	if(check_obscured_slots() & ITEM_SLOT_GLOVES)
 		return
 
 	var/icon_file = 'icons/mob/clothing/hands.dmi'
@@ -234,7 +234,6 @@ There are several things that need to be remembered:
 	apply_overlay(GLOVES_LAYER)
 	// NON-MODULE CHANGE END
 
-
 /mob/living/carbon/human/update_worn_glasses(update_obscured = TRUE)
 	remove_overlay(GLASSES_LAYER)
 
@@ -253,7 +252,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EYES)
+		if(check_obscured_slots() & ITEM_SLOT_EYES)
 			return
 
 		var/icon_file = 'icons/mob/clothing/eyes.dmi'
@@ -282,7 +281,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EARS)
+		if(check_obscured_slots() & ITEM_SLOT_EARS)
 			return
 
 		var/icon_file = 'icons/mob/clothing/ears.dmi'
@@ -306,7 +305,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_NECK)
+		if(check_obscured_slots() & ITEM_SLOT_NECK)
 			return
 
 		var/icon_file = 'icons/mob/clothing/neck.dmi'
@@ -335,7 +334,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_FEET)
+		if(check_obscured_slots() & ITEM_SLOT_FEET)
 			return
 
 		var/icon_file = DEFAULT_SHOES_FILE
@@ -379,7 +378,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_SUITSTORE)
+		if(check_obscured_slots() & ITEM_SLOT_SUITSTORE)
 			return
 
 		var/mutable_appearance/s_store_overlay = worn_item.build_worn_icon(default_layer = SUIT_STORE_LAYER, default_icon_file = 'icons/mob/clothing/belt_mirror.dmi')
@@ -401,7 +400,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_HEAD)
+		if(check_obscured_slots() & ITEM_SLOT_HEAD)
 			return
 
 		var/icon_file = 'icons/mob/clothing/head/default.dmi'
@@ -428,7 +427,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_BELT)
+		if(check_obscured_slots() & ITEM_SLOT_BELT)
 			return
 
 		var/icon_file = 'icons/mob/clothing/belt.dmi'
@@ -507,7 +506,7 @@ There are several things that need to be remembered:
 		if(update_obscured)
 			update_obscured_slots(worn_item.flags_inv)
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_MASK)
+		if(check_obscured_slots() & ITEM_SLOT_MASK)
 			return
 
 		var/icon_file = 'icons/mob/clothing/mask.dmi'
@@ -962,6 +961,16 @@ generate/load female uniform sprites matching all previously decided variables
 				continue
 			if(thing.supports_variations_flags & DIGITIGRADE_VARIATIONS)
 				thing.update_slot_icon()
+		// NON-MODULE CHANGE for digi wound overlays
+		update_damage_overlays()
+
+// NON-MODULE CHANGE for digi wound overlays
+/mob/living/carbon/human/setDir(newdir)
+	var/olddir = dir
+	. = ..()
+	if(dir == olddir || !(bodytype & BODYTYPE_DIGITIGRADE))
+		return
+	update_damage_overlays()
 
 // Hooks into human apply overlay so that we can modify all overlays applied through standing overlays to our height system.
 // Some of our overlays will be passed through a displacement filter to make our mob look taller or shorter.

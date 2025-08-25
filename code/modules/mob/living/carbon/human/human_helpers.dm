@@ -87,20 +87,15 @@
 	return
 
 /mob/living/carbon/human/get_id_name(if_no_id = "Unknown")
-	var/obj/item/storage/wallet/wallet = wear_id
-	var/obj/item/modular_computer/pda = wear_id
-	var/obj/item/card/id/id = wear_id
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
 		. = if_no_id //You get NOTHING, no id name, good day sir
-	if(istype(wallet))
-		id = wallet.front_id
-	if(istype(id))
-		. = id.registered_name
-	else if(istype(pda) && pda.computer_id_slot)
-		. = pda.computer_id_slot.registered_name
+	else
+		var/obj/item/card/id/id = astype(wear_id, /obj/item/card/id) \
+			|| astype(wear_id, /obj/item/storage/wallet)?.front_id \
+			|| astype(wear_id, /obj/item/modular_computer)?.computer_id_slot
+		. = id?.registered_name
 	if(!.)
 		. = if_no_id //to prevent null-names making the mob unclickable
-	return
 
 /mob/living/carbon/human/get_idcard(hand_first = TRUE)
 	. = ..()
@@ -302,7 +297,7 @@
 	clone.dress_up_as_job(SSjob.GetJob(job))
 
 	for(var/datum/quirk/original_quircks as anything in quirks)
-		clone.add_quirk(original_quircks.type, override_client = client)
+		clone.add_quirk(original_quircks.type, override_client = client, announce = FALSE)
 	for(var/datum/mutation/human/mutations in dna.mutations)
 		clone.dna.add_mutation(mutations)
 

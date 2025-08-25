@@ -54,7 +54,7 @@
 			if(!infinite)
 				trans = reagents.trans_to(affected_mob, amount_per_transfer_from_this, transferred_by = user, methods = INJECT)
 			else
-				reagents.expose(affected_mob, INJECT, fraction)
+				reagents.expose(affected_mob, INJECT, fraction, exposed_zone = user.zone_selected) // NON-MODULE CHANGE
 				trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
 			to_chat(user, span_notice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
 			log_combat(user, affected_mob, "injected", src, "([contained])")

@@ -52,6 +52,8 @@
 	saved_wanted_body = GLOB.news_network.wanted_issue.body
 	if(GLOB.news_network.wanted_issue.img)
 		saved_wanted_icon = GLOB.news_network.wanted_issue.img
+	AddElement(/datum/element/burn_on_item_ignition)
+	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 
 /obj/item/newspaper/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(held_item)
@@ -61,6 +63,10 @@
 		if(held_item.get_temperature())
 			context[SCREENTIP_CONTEXT_LMB] = "Burn"
 			return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/newspaper/proc/close_paper_ui()
+	SIGNAL_HANDLER
+	SStgui.close_uis(src)
 
 /obj/item/newspaper/suicide_act(mob/living/user)
 	user.visible_message(span_suicide(\
@@ -74,27 +80,29 @@
 	user.visible_message(span_suicide("[user] downs the contents of [last_drink.name] in one gulp! Shoulda stuck to sudoku!"))
 	return TOXLOSS
 
-/obj/item/newspaper/attackby(obj/item/attacking_item, mob/user, params)
-	if(burn_paper_product_attackby_check(attacking_item, user))
-		SStgui.close_uis(src)
-		return
+/obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (!user.can_write(tool))
+		return NONE
 
-	if(!user.can_write(attacking_item))
-		return ..()
-	if(scribble_page == current_page)
+	if (scribble_page == current_page)
 		user.balloon_alert(user, "already scribbled!")
-		return
-	var/new_scribble_text = tgui_input_text(user, "What do you want to scribble?", "Write something")
-	if(isnull(new_scribble_text))
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/new_scribble_text = tgui_input_text(user, "What do you want to scribble?", "Write something", max_length = MAX_MESSAGE_LEN)
+	if (isnull(new_scribble_text))
+		return ITEM_INTERACT_BLOCKING
+
 	add_fingerprint(user)
 	user.balloon_alert(user, "scribbling...")
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
-	if(!do_after(user, 2 SECONDS, src))
-		return
+	if (!do_after(user, 2 SECONDS, src))
+		balloon_alert(user, "interrupted!")
+		return ITEM_INTERACT_BLOCKING
+
 	user.balloon_alert(user, "scribbled!")
 	scribble_page = current_page
 	scribble_text = new_scribble_text
+	return ITEM_INTERACT_SUCCESS
 
 ///Checks the creation time of the newspaper and compares it to list to see if the list is meant to be censored at the time of printing.
 /obj/item/newspaper/proc/censored_check(list/times_censored)
@@ -137,6 +145,8 @@
 	identity[VISIBLE_NAME_ID] = ""
 
 /obj/item/newspaper/ui_interact(mob/user, datum/tgui/ui)
+	if(resistance_flags & ON_FIRE)
+		return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(ui)
 		return

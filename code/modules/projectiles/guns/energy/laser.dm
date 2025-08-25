@@ -34,6 +34,7 @@
 	icon_state = "retro"
 	desc = "An older model of the basic lasergun, no longer used by Nanotrasen's private security or military forces. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	ammo_x_offset = 3
+	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/retro)
 
 /obj/item/gun/energy/laser/carbine
 	name = "laser carbine"
@@ -138,6 +139,7 @@
 	icon_state = "scatterlaser"
 	range = 255
 	damage = 6
+	hitscan = FALSE
 
 /obj/projectile/beam/laser/accelerator/Range()
 	..()

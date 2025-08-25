@@ -48,8 +48,10 @@
 		disable_glasses(user)
 
 /obj/item/clothing/glasses/wraith_specs/adjust_visor(mob/living/user)
-	. = ..()
-	if(. && ishuman(user) && !user.is_holding(src))
+	if(!can_use(user))
+		return FALSE
+
+	if(ishuman(user) && loc == user)
 		var/mob/living/carbon/human/human_user = user
 		if(human_user.glasses == src)
 			if(up) //up = we're putting the glasses down (over our eyes)

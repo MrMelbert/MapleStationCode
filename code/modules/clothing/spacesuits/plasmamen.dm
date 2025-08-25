@@ -142,11 +142,6 @@
 	playsound(src, up ? SFX_VISOR_UP : SFX_VISOR_DOWN, 50, TRUE)
 	update_appearance()
 
-/obj/item/clothing/head/helmet/space/plasmaman/update_icon_state()
-	. = ..()
-	icon_state = "[initial(icon_state)][helmet_on ? "-light":""]"
-	inhand_icon_state = icon_state
-
 /obj/item/clothing/head/helmet/space/plasmaman/update_overlays()
 	. = ..()
 	if(!up)

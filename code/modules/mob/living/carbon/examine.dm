@@ -1,11 +1,9 @@
 /// Adds a newline to the examine list if the above entry is not empty and it is not the first element in the list
 #define ADD_NEWLINE_IF_NECESSARY(list) if(length(list) > 0 && list[length(list)]) { list += "" }
 
+// NON-MODULE CHANGE
 /mob/living/carbon/human/get_examine_name(mob/user)
-	if(!HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
-		return "[..()] ([p_they()]/[p_them()])"
-
-	return "Unknown"
+	return "[..()] ([p_they()]/[p_them()])"
 
 /mob/living/carbon/human/get_examine_icon(mob/user)
 	return null

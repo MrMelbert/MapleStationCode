@@ -117,14 +117,16 @@
 /obj/item/gun/medbeam/proc/on_beam_tick(mob/living/target)
 	if(target.health != target.maxHealth)
 		new /obj/effect/temp_visual/heal(get_turf(target), COLOR_HEALING_CYAN)
-	var/need_mob_update
-	need_mob_update = target.adjustBruteLoss(-4, updating_health = FALSE, forced = TRUE)
-	need_mob_update += target.adjustFireLoss(-4, updating_health = FALSE, forced = TRUE)
-	need_mob_update += target.adjustToxLoss(-1, updating_health = FALSE, forced = TRUE)
-	need_mob_update += target.adjustOxyLoss(-1, updating_health = FALSE, forced = TRUE)
-	if(need_mob_update)
-		target.updatehealth()
-	return
+	// NON-MODULE CHANGE
+	target.adjustBruteLoss(-4, forced = TRUE)
+	target.adjustFireLoss(-4, forced = TRUE)
+	target.adjustToxLoss(-1, forced = TRUE)
+	target.adjustOxyLoss(-1, forced = TRUE)
+	target.heal_pain(1)
+	if(iscarbon(target))
+		var/mob/living/carbon/carbtarget = target
+		for(var/datum/wound/bleed_internal/ib in carbtarget.all_wounds)
+			ib.heal_percent(0.1)
 
 /obj/item/gun/medbeam/proc/on_beam_release(mob/living/target)
 	return

@@ -7,6 +7,7 @@
 	slot_flags = ITEM_SLOT_MASK
 	strip_delay = 40
 	equip_delay_other = 40
+	visor_vars_to_toggle = NONE
 	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
@@ -76,6 +77,9 @@
 		M.update_worn_mask()
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
+/obj/item/clothing/mask/visor_toggling(mob/living/user)
+	. = ..()
+	if(up)
 /obj/item/clothing/mask/visor_toggling(mob/living/user)
 	. = ..()
 	if(up)
