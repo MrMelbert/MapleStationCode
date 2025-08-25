@@ -615,8 +615,8 @@
 
 /obj/item/flashlight/flare/candle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(get_temperature())
-		if(istype(tool, /obj/item/clothing/mask/cigarette))
-			var/obj/item/clothing/mask/cigarette/cig = tool
+		if(istype(tool, /obj/item/cigarette))
+			var/obj/item/cigarette/cig = tool
 			if(cig.lit)
 				return NONE
 			cig.light()
