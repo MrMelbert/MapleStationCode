@@ -408,6 +408,7 @@
 	plane = TURF_LIGHTING_PLATE
 	render_relay_planes = list(RENDER_PLANE_LIGHTING)
 	blend_mode = BLEND_ADD
+	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/lit_game
 	name = "Lit game rendering plate"
