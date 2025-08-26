@@ -410,6 +410,7 @@ There are several things that need to be remembered:
 		my_head?.worn_head_offset?.apply_offset(head_overlay)
 		overlays_standing[HEAD_LAYER] = head_overlay
 
+	update_mutant_bodyparts() // only exists to facilitate cat ears rn
 	apply_overlay(HEAD_LAYER)
 	check_body_shape(BODYTYPE_SNOUTED, ITEM_SLOT_HEAD)
 
