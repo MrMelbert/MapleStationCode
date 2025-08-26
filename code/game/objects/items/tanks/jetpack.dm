@@ -147,7 +147,7 @@
 	suffocater.say("WHAT THE FUCK IS CARBON DIOXIDE?")
 	suffocater.visible_message(span_suicide("[user] is suffocating [user.p_them()]self with [src]! It looks like [user.p_they()] didn't read what that jetpack says!"))
 	return OXYLOSS
-
+/* // Non-module change start : kills jetpack emp_act
 /obj/item/tank/jetpack/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_CONTENTS)
@@ -164,7 +164,7 @@
 ///Removes the disabled flag after getting EMPd
 /obj/item/tank/jetpack/proc/remove_emp()
 	disabled = FALSE
-
+*/ // Non-module change end
 /obj/item/tank/jetpack/improvised
 	name = "improvised jetpack"
 	desc = "A jetpack made from two air tanks, a fire extinguisher and some atmospherics equipment. It doesn't look like it can hold much."
