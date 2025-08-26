@@ -52711,7 +52711,7 @@
 /area/station/maintenance/port/fore)
 "qTe" = (
 /obj/effect/decal/remains/human,
-/obj/item/clothing/under/dress/redeveninggown,
+/obj/item/clothing/under/dress/eveninggown,
 /obj/item/clothing/shoes/roman,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
