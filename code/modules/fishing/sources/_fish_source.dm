@@ -260,8 +260,6 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 	else if(istype(reward, /obj/effect/spawner)) // Do not attempt to forceMove() a spawner. It will break things, and the spawned item should already be at the mob's turf by now.
 		fisherman.balloon_alert(fisherman, "caught something!")
 		return
-	else // for fishing things like corpses, move them to the turf of the fisherman
-		INVOKE_ASYNC(reward, TYPE_PROC_REF(/atom/movable, forceMove), get_turf(fisherman))
 	fisherman.balloon_alert(fisherman, "caught [reward]!")
 
 	return reward
@@ -301,6 +299,10 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 /datum/fish_source/proc/spawn_reward(reward_path, atom/spawn_location, turf/fishing_spot)
 	if(reward_path == FISHING_DUD)
 		return
+	if(ismovable(reward_path))
+		var/atom/movable/reward = reward_path
+		reward.forceMove(spawn_location)
+		return reward
 	if(ispath(reward_path, /datum/chasm_detritus))
 		return GLOB.chasm_detritus_types[reward_path].dispense_detritus(spawn_location, fishing_spot)
 	if(!ispath(reward_path, /atom/movable))
