@@ -76,6 +76,20 @@
 		balloon_alert(neo, "nothing loaded!")
 		return
 
+	balloon_alert(neo, "establishing connection...")
+
+	// Prevent hand interactions during loading to stop smuggling exploits into virtual domain
+	ADD_TRAIT(neo, TRAIT_HANDS_BLOCKED, TRAIT_GENERIC)
+
+	var/connection_successful = do_after(neo, 2 SECONDS, src)
+
+	// Re-enable hand interactions after loading attempt
+	REMOVE_TRAIT(neo, TRAIT_HANDS_BLOCKED, TRAIT_GENERIC)
+
+	if(!connection_successful)
+		open_machine()
+		return
+
 	var/mob/living/carbon/current_avatar = avatar_ref?.resolve()
 	if(isnull(current_avatar) || current_avatar.stat != CONSCIOUS) // We need a viable avatar
 		current_avatar = server.start_new_connection(neo, netsuit)
