@@ -517,7 +517,7 @@
 	if(make_edible)
 		make_edible()
 
-	if(weight >= FISH_WEIGHT_SLOWDOWN)
+	if(weight >= FISH_WEIGHT_SLOWDOWN && !HAS_TRAIT(src, TRAIT_SPEED_POTIONED))
 		slowdown = round(((weight/FISH_WEIGHT_SLOWDOWN_DIVISOR)**FISH_WEIGHT_SLOWDOWN_EXPONENT)-1.3, 0.1)
 		drag_slowdown = round(slowdown * 0.5, 1)
 	else
