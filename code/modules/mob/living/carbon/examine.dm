@@ -20,7 +20,7 @@
 	var/t_is = p_are()
 
 	. = list()
-	var/list/clothes_info = get_clothing_examine_info(user, check_obscured_slots())
+	var/list/clothes_info = get_clothing_examine_info(user, hidden_slots_to_inventory_slots(obscured_slots))
 	for(var/slot in clothes_info)
 		var/slot_text = clothes_info[slot]
 		if(slot_text)
@@ -537,7 +537,7 @@
 
 /mob/living/carbon/human/examine_more(mob/user)
 	. = ..()
-	if((wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE)))
+	if(obscured_slots & HIDEFACE)
 		return
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
 		return

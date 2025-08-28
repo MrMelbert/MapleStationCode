@@ -499,7 +499,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	return GLOB.synth_head_cover_list
 
 /datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 

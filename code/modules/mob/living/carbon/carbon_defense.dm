@@ -47,7 +47,7 @@
 /mob/living/carbon/is_eyes_visible()
 	if(istype(glasses) && (glasses.flags_cover & GLASSESCOVERSEYES) && glasses.tint)
 		return FALSE
-	if(check_obscured_slots() & ITEM_SLOT_EYES)
+	if(hidden_slots_to_inventory_slots(obscured_slots) & ITEM_SLOT_EYES)
 		return FALSE
 	return TRUE
 

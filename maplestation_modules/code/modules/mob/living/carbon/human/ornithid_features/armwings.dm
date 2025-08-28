@@ -80,6 +80,6 @@
 		return GLOB.arm_wings_list
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
-		return TRUE
-	return FALSE
+	if(human.obscured_slots & HIDEMUTWINGS)
+		return FALSE
+	return TRUE

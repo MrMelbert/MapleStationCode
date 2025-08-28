@@ -35,6 +35,6 @@
 	return GLOB.spines_list
 
 /datum/bodypart_overlay/mutant/spines/can_draw_on_bodypart(mob/living/carbon/human/human)
-	. = ..()
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(human.obscured_slots & HIDEJUMPSUIT)
 		return FALSE
+	return TRUE

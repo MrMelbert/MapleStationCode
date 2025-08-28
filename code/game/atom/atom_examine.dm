@@ -171,7 +171,7 @@
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		return ..()
-	if(wearer.check_obscured_slots() & slot_flags)
+	if(hidden_slots_to_inventory_slots(wearer.obscured_slots) & slot_flags)
 		return FALSE
 	return ..()
 

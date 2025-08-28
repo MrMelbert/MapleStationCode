@@ -10,6 +10,13 @@
 
 	RegisterSignal(src, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, PROC_REF(check_pocket_weght))
 
+	RegisterSignals(src, list(
+		SIGNAL_ADDTRAIT(TRAIT_HUSK),
+		SIGNAL_REMOVETRAIT(TRAIT_HUSK),
+		SIGNAL_ADDTRAIT(TRAIT_INVISIBLE_MAN),
+		SIGNAL_REMOVETRAIT(TRAIT_INVISIBLE_MAN),
+	), PROC_REF(refresh_obscured))
+
 /// Gaining or losing [TRAIT_UNKNOWN] updates our name and our sechud
 /mob/living/carbon/human/proc/on_unknown_trait(datum/source)
 	SIGNAL_HANDLER

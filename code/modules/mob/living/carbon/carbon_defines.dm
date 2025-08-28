@@ -115,3 +115,7 @@
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
 
+	/// Tracks all equipment slots which are obscured (can't be seen, can't be interacted with)
+	var/obscured_slots = NONE
+	/// Tracks all equipment slots which are covered (can be seen, but can be interacted with)
+	var/covered_slots = NONE

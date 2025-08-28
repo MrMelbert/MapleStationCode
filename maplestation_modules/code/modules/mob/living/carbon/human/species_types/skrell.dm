@@ -91,9 +91,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	feature_key = "head_tentacles"
 
 /datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
-		return FALSE
-	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
 	if(!IS_ORGANIC_LIMB(our_head))

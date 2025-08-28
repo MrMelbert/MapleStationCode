@@ -659,7 +659,6 @@
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
-	user?.update_equipment_speed_mods()
 
 	if(supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER)
 		UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
@@ -731,7 +730,6 @@
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, ignore_walls = FALSE)
 		else if(slot & ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
-	user.update_equipment_speed_mods()
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)
