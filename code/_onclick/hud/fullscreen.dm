@@ -126,6 +126,9 @@
 	layer = BLIND_LAYER
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/screen/fullscreen/blind/cyborg
+	show_when_dead = TRUE
+
 /atom/movable/screen/fullscreen/curse
 	icon_state = "curse"
 	layer = CURSE_LAYER
@@ -247,3 +250,8 @@
 	icon_state = "noise"
 	color = "#04a8d1"
 	alpha = 80
+
+/atom/movable/screen/fullscreen/static_vision/cyborg
+	show_when_dead = TRUE
+	color = "#c90000"
+	alpha = 0
