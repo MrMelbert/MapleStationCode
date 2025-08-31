@@ -900,11 +900,12 @@
 			override_file = 'maplestation_modules/icons/mob/bandage.dmi',
 			override_state = current_gauze.worn_icon_state, // future todo : icon states for dirty bandages as well
 		)
+		gauze_overlay.color = current_gauze.color
 		LAZYADD(overlays, gauze_overlay)
 	return overlays
 
 /obj/item/bodypart/leg/get_bodypart_damage_state()
-	if(!(bodytype & BODYTYPE_DIGITIGRADE) || (owner.is_digitigrade_squished()))
+	if(!(bodytype & BODYTYPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
 		return ..()
 
 	. = ..()
@@ -916,6 +917,8 @@
 //set is_creating to true if you want to change the appearance of the limb outside of mutation changes or forced changes.
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_BODYPART_UPDATED, dropping_limb, is_creating)
 
 	if(IS_ORGANIC_LIMB(src))
 		if(!(bodypart_flags & BODYPART_UNHUSKABLE) && owner && HAS_TRAIT(owner, TRAIT_HUSK))

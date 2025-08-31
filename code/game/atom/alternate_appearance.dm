@@ -177,3 +177,17 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	return M != seer
 
 /datum/atom_hud/alternate_appearance/basic/food_demands
+
+/// Hud specifically used for humans when unconscious to hide other humans
+/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud
+
+/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/New(key, image/I, options)
+	. = ..()
+	RegisterSignal(target, COMSIG_LIVING_POST_UPDATE_TRANSFORM, PROC_REF(turn_image))
+
+/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/proc/turn_image(datum/source, ...)
+	SIGNAL_HANDLER
+	image.transform = target.transform
+
+/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/mobShouldSee(mob/M)
+	return FALSE // this hud is managed manually, so don't show it generically

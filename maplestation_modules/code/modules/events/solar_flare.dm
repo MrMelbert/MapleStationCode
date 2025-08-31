@@ -1,6 +1,7 @@
 /// -- Solar flare event. spawns fire in a department. --
 /datum/round_event_control/solar_flare
 	name = "Solar Flare"
+	category = EVENT_CATEGORY_SPACE
 	typepath = /datum/round_event/solar_flare
 
 	weight = 10

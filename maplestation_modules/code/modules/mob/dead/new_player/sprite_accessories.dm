@@ -342,6 +342,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_elf"
 
+/datum/sprite_accessory/hair/elven_mess
+	name = "Elven Mess"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfmess"
+
 /datum/sprite_accessory/hair/toxic_wisp
 	name = "Toxic Wisp"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'

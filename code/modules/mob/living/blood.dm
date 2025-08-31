@@ -305,6 +305,9 @@
 /mob/living/basic/drone/get_blood_type()
 	return find_blood_type(/datum/blood_type/oil)
 
+/mob/living/basic/hivebot/get_blood_type()
+	return find_blood_type(/datum/blood_type/oil)
+
 /mob/living/carbon/alien/get_blood_type()
 	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
