@@ -609,11 +609,11 @@
 					if(-INFINITY to 0)
 						pass()
 					if(1)
-						to_chat(parent, span_userdanger("You feel your heart beat irregularly."))
+						to_chat(parent, span_userdanger("Your pulse starts to feel irregular."))
 					if(2)
-						to_chat(parent, span_userdanger("You feel your heart skip a beat."))
+						to_chat(parent, span_userdanger("Your heart skips a beat."))
 					else
-						to_chat(parent, span_userdanger("You feel your body shutting down!"))
+						to_chat(parent, span_userdanger("Your body starts shutting down!"))
 	else
 		heart_attack_counter = 0
 
