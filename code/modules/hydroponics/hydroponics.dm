@@ -109,16 +109,16 @@
 		if(issilicon(user))
 			return NONE
 
+		context[SCREENTIP_CONTEXT_RMB] = "Empty nutrients"
+
 		switch(plant_status)
 			if(HYDROTRAY_PLANT_DEAD)
 				context[SCREENTIP_CONTEXT_LMB] = "Remove dead plant"
-				return CONTEXTUAL_SCREENTIP_SET
 
 			if(HYDROTRAY_PLANT_HARVESTABLE)
 				context[SCREENTIP_CONTEXT_LMB] = "Harvest plant"
-				return CONTEXTUAL_SCREENTIP_SET
 
-		return NONE
+		return CONTEXTUAL_SCREENTIP_SET
 
 	// If the plant is harvestable, we can graft it with secateurs or harvest it with a plant bag.
 	if(plant_status == HYDROTRAY_PLANT_HARVESTABLE)

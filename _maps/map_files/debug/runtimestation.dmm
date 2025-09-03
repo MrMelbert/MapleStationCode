@@ -1751,15 +1751,8 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "gw" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on{
-	dir = 4
-	},
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron,
-/area/station/hallway/secondary/entry)
-"gx" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
-	dir = 4
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
 	},
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
@@ -1831,6 +1824,11 @@
 /obj/item/paper/guides/jobs/security/labor_camp,
 /turf/open/floor/iron,
 /area/station/security/brig)
+"gQ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/entry)
 "gW" = (
 /turf/open/floor/iron,
 /area/station/engineering/main)
@@ -1841,6 +1839,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/science)
+"gZ" = (
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
+"he" = (
+/obj/machinery/door/airlock,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "hD" = (
 /obj/structure/closet/secure_closet/chemical/heisenberg{
 	locked = 0
@@ -1919,6 +1926,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
+"kG" = (
+/obj/structure/cable,
+/obj/machinery/light/directional/east,
+/obj/item/gun/energy/floragun,
+/obj/item/geneshears,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "kQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
@@ -2216,6 +2230,18 @@
 "wU" = (
 /turf/closed/wall/r_wall,
 /area/station/science/explab)
+"yg" = (
+/obj/machinery/vending/hydronutrients{
+	all_products_free = 1
+	},
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
+"yi" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "yK" = (
 /obj/structure/fans/tiny/invisible,
 /obj/effect/turf_decal/stripes/line{
@@ -2223,6 +2249,9 @@
 	},
 /turf/open/floor/engine,
 /area/station/hallway/secondary/entry)
+"zh" = (
+/turf/closed/wall/r_wall,
+/area/station/service/hydroponics)
 "zo" = (
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
@@ -2264,6 +2293,7 @@
 /area/station/science)
 "Cx" = (
 /obj/structure/cable,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
 "CQ" = (
@@ -2345,6 +2375,27 @@
 	},
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
+"Fh" = (
+/obj/structure/sink/directional/south,
+/obj/item/storage/bag/plants,
+/obj/item/reagent_containers/cup/watering_can/advanced,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
+"GZ" = (
+/obj/item/shovel/spade{
+	pixel_y = 4;
+	pixel_x = 3
+	},
+/obj/item/secateurs,
+/obj/item/cultivator{
+	pixel_x = -6
+	},
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
+"Hp" = (
+/obj/machinery/smartfridge/food,
+/turf/open/floor/plating,
+/area/station/service/hydroponics)
 "If" = (
 /obj/machinery/rnd/production/techfab/department,
 /turf/open/floor/iron,
@@ -2360,6 +2411,10 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron,
 /area/station/command/bridge)
+"IH" = (
+/obj/machinery/seed_extractor,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "II" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -2380,7 +2435,6 @@
 /area/station/cargo/miningoffice)
 "Ks" = (
 /obj/structure/table/reinforced,
-/obj/machinery/light/directional/south,
 /obj/item/bitrunning_debug,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
@@ -2433,6 +2487,12 @@
 /obj/machinery/chem_recipe_debug,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
+"Nd" = (
+/obj/machinery/vending/hydroseeds{
+	all_products_free = 1
+	},
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "Ns" = (
 /obj/machinery/door/airlock/public/glass,
 /obj/structure/cable,
@@ -2460,6 +2520,11 @@
 /obj/item/disk/tech_disk/debug,
 /turf/open/floor/iron,
 /area/station/science)
+"Ps" = (
+/obj/item/wrench,
+/obj/item/plant_analyzer,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "Qg" = (
 /obj/effect/turf_decal/siding/dark{
 	dir = 4
@@ -2487,6 +2552,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
+"QB" = (
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/structure/cable,
+/obj/machinery/airalarm/directional/east,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "Rb" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2580,6 +2651,11 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
+"Wk" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "Wq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
@@ -3269,12 +3345,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+zh
+zh
+zh
+zh
+zh
+zh
 aa
 aa
 aa
@@ -3361,12 +3437,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+zh
+yg
+Nd
+Ps
+gZ
+zh
 aa
 aa
 aa
@@ -3453,12 +3529,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+zh
+Fh
+yi
+GZ
+gZ
+zh
 aa
 aa
 aa
@@ -3545,12 +3621,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+zh
+IH
+Wk
+kG
+QB
+zh
 aa
 aa
 aa
@@ -3637,12 +3713,12 @@ Tj
 Tj
 Tj
 Tj
-dY
-en
-dY
-dY
-aa
-aa
+zh
+Hp
+he
+zh
+zh
+zh
 aa
 aa
 aa
@@ -3731,7 +3807,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 dY
 aa
 aa
@@ -3823,7 +3899,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 en
 aa
 aa
@@ -3915,7 +3991,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 en
 aa
 aa
@@ -4007,7 +4083,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 dY
 aa
 aa
@@ -4099,7 +4175,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 en
 aa
 aa
@@ -4191,7 +4267,7 @@ lc
 lc
 wB
 eh
-eh
+gQ
 en
 aa
 aa
@@ -4282,8 +4358,8 @@ lc
 lc
 lc
 wB
-eh
-eh
+gQ
+gQ
 en
 aa
 aa
@@ -4374,7 +4450,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 eh
 dY
 aa
@@ -4466,7 +4542,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 eh
 en
 aa
@@ -4558,7 +4634,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 eh
 en
 aa
@@ -4650,7 +4726,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 gv
 dY
 aa
@@ -4742,7 +4818,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 eh
 en
 aa
@@ -4834,7 +4910,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 gF
 fj
 aa
@@ -4926,7 +5002,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 eh
 en
 aa
@@ -5018,7 +5094,7 @@ lc
 lc
 lc
 wB
-eh
+gQ
 gw
 dY
 aa
@@ -5110,8 +5186,8 @@ lc
 lc
 lc
 wB
+gQ
 eh
-ek
 en
 aa
 aa
@@ -5202,8 +5278,8 @@ lc
 lc
 lc
 wB
+gQ
 eh
-ek
 en
 aa
 aa
@@ -5294,8 +5370,8 @@ lc
 lc
 lc
 wB
+gQ
 eh
-ek
 en
 aa
 aa
@@ -5386,8 +5462,8 @@ lc
 lc
 lc
 wB
-eh
-gx
+gQ
+gv
 dY
 aa
 aa
@@ -5478,8 +5554,8 @@ lc
 lc
 lc
 wB
+gQ
 eh
-ek
 en
 aa
 aa
@@ -5570,8 +5646,8 @@ en
 en
 dY
 wB
+gQ
 eh
-ek
 dY
 dY
 fn
@@ -5662,8 +5738,8 @@ eh
 eh
 eV
 eh
+gQ
 eh
-ek
 eh
 eV
 eh
