@@ -52,7 +52,7 @@
 	SIGNAL_HANDLER
 
 	var/obj/item/carried_item = get_held_item(source)
-	if (!carried_item || (carried_item.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM)))
+	if (!carried_item || (carried_item.item_flags & (ABSTRACT|HAND_ITEM)) || HAS_TRAIT(carried_item, TRAIT_EXAMINE_SKIP))
 		return
 	examine_text += span_notice("[source.p_They()] [source.p_are()] carrying [carried_item.examine_title(user)].")
 

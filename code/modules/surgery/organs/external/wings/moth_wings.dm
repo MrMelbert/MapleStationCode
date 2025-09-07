@@ -40,6 +40,18 @@
 
 	REMOVE_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
 
+/obj/item/organ/wings/moth/proc/allow_flight()
+	if(!owner || !owner.client)
+		return FALSE
+	if(owner.has_gravity())
+		return FALSE
+	if((owner.obscured_slots & HIDEMUTWINGS) || burnt)
+		return FALSE
+	var/datum/gas_mixture/current = owner.loc.return_air()
+	if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85))
+		return TRUE
+	return FALSE
+
 ///check if our wings can burn off ;_;
 /obj/item/organ/external/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
 	SIGNAL_HANDLER
@@ -91,9 +103,7 @@
 	return SSaccessories.moth_wings_list
 
 /datum/bodypart_overlay/mutant/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
-		return TRUE
-	return FALSE
+	return !(human.obscured_slots & HIDEMUTWINGS)
 
 /datum/bodypart_overlay/mutant/wings/moth/get_base_icon_state()
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state

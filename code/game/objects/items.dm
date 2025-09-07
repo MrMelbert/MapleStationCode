@@ -693,10 +693,10 @@
 	if(item_flags & DROPDEL && !QDELETED(src))
 		qdel(src)
 	item_flags &= ~IN_INVENTORY
+	UnregisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)))
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, vary = sound_vary, ignore_walls = FALSE)
-	user?.update_equipment(src)
 
 	if(supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER)
 		UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
@@ -740,6 +740,7 @@
 
 	if(ishuman(user) && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
 		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
+	return TRUE
 
 /**
  * Called by on_equipped. Don't call this directly, we want the ITEM_POST_EQUIPPED signal to be sent after everything else.
@@ -764,8 +765,6 @@
 
 	item_flags |= IN_INVENTORY
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)), PROC_REF(update_slot_icon), override = TRUE)
-
-	user.update_equipment(src)
 
 	if(!initial)
 		if(equip_sound && ((slot_flags|ITEM_SLOT_POCKETS|ITEM_SLOT_SUITSTORE) & slot))
