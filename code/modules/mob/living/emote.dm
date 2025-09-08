@@ -362,6 +362,12 @@
 				H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
 	return ..()
 
+/datum/emote/living/wheeze
+	key = "wheeze"
+	key_third_person = "wheezes"
+	message = "wheezes!"
+	emote_type = EMOTE_AUDIBLE
+
 /datum/emote/living/pout
 	key = "pout"
 	key_third_person = "pouts"

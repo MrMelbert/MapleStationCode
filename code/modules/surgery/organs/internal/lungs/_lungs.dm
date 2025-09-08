@@ -65,6 +65,10 @@
 	///Whether these lungs react negatively to miasma
 	var/suffers_miasma = TRUE
 
+	/// All incoming breaths will have their pressure multiplied against this. Higher values allow more air to be breathed at once,
+	/// while lower values can cause suffocation in low pressure environments.
+	var/received_pressure_mult = 1
+
 	var/oxy_breath_dam_min = MIN_TOXIC_GAS_DAMAGE
 	var/oxy_breath_dam_max = MAX_TOXIC_GAS_DAMAGE
 	var/oxy_damage_type = OXY
@@ -178,8 +182,9 @@
 	organ_owner.clear_alert(ALERT_NOT_ENOUGH_N2O)
 	RegisterSignal(organ_owner, COMSIG_CARBON_ATTEMPT_BREATHE, PROC_REF(block_breath))
 	organ_owner.remove_status_effect(/datum/status_effect/lungless)
+	update_bronchodilation_alerts()
 
-/obj/item/organ/lungs/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/lungs/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	// This is very "manual" I realize, but it's useful to ensure cleanup for gases we're removing happens
 	// Avoids stuck alerts and such
@@ -667,7 +672,7 @@
 	// Build out our partial pressures, for use as we go
 	var/list/partial_pressures = list()
 	for(var/gas_id in breath_gases)
-		partial_pressures[gas_id] = breath.get_breath_partial_pressure(breath_gases[gas_id][MOLES])
+		partial_pressures[gas_id] = breath.get_breath_partial_pressure(breath_gases[gas_id][MOLES] * received_pressure_mult)
 
 	// Treat gas as other types of gas
 	for(var/list/conversion_packet in treat_as)
@@ -924,6 +929,35 @@
 		return span_boldwarning("Your lungs feel extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 	return span_boldwarning("It feels extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 
+/obj/item/organ/lungs/get_status_appendix(advanced, add_tooltips)
+	var/initial_pressure_mult = initial(received_pressure_mult)
+	if (received_pressure_mult == initial_pressure_mult)
+		return
+
+	var/tooltip
+	var/dilation_text
+	var/beginning_text = "Lung Dilation: "
+	if (lungs.received_pressure_mult > initial_pressure_mult) // higher than usual
+		beginning_text = span_blue("<b>[beginning_text]</b>")
+		dilation_text = span_blue("[(lungs.received_pressure_mult * 100) - 100]%")
+		tooltip = "Subject's lungs are dilated and breathing more air than usual. \
+			Increases the effectiveness of healium and other gases."
+
+	else
+		beginning_text = span_danger("<b>[beginning_text]</b>")
+		if (lungs.received_pressure_mult <= 0) // lethal
+			dilation_text = span_bolddanger("[lungs.received_pressure_mult * 100]%")
+			tooltip = "Subject's lungs are completely shut. Subject is unable to breathe and requires emergency surgery. \
+				If asthmatic, perform asthmatic bypass surgery and adminster albuterol inhalant. \
+				Otherwise, replace lungs."
+		else
+			dilation_text = span_danger("[lungs.received_pressure_mult * 100]%")
+			tooltip = "Subject's lungs are partially shut. \
+				If unable to breathe, administer a high-pressure internals tank or replace lungs. \
+				If asthmatic, inhaled albuterol or bypass surgery will likely help."
+
+	return beginning_text + conditional_tooltip(dilation_text, tooltip, add_tooltips)
+
 #define SMOKER_ORGAN_HEALTH (STANDARD_ORGAN_THRESHOLD * 0.75)
 #define SMOKER_LUNG_HEALING (STANDARD_ORGAN_HEALING * 0.75)
 
@@ -1078,6 +1112,38 @@
 
 
 #undef GAS_TOLERANCE
+
+/// Adjusting proc for [received_pressure_mult]. Updates bronchodilation alerts.
+/obj/item/organ/lungs/proc/adjust_received_pressure_mult(adjustment)
+	received_pressure_mult = max(received_pressure_mult + adjustment, 0)
+	update_bronchodilation_alerts()
+
+/// Setter proc for [received_pressure_mult]. Updates bronchodilation alerts.
+/obj/item/organ/lungs/proc/set_received_pressure_mult(new_value)
+	received_pressure_mult = max(new_value, 0)
+	update_bronchodilation_alerts()
+
+#define LUNG_CAPACITY_ALERT_BUFFER 0.003
+/// Depending on [received_pressure_mult], gives either a bronchocontraction or bronchoconstriction alert to our owner (if we have one), or clears the alert
+/// if [received_pressure_mult] is near 1.
+/obj/item/organ/lungs/proc/update_bronchodilation_alerts()
+	if (!owner)
+		return
+
+	var/initial_value = initial(received_pressure_mult)
+
+	// you wont really notice if youre only breathing a bit more or a bit less
+	var/dilated = (received_pressure_mult > (initial_value + LUNG_CAPACITY_ALERT_BUFFER))
+	var/constricted = (received_pressure_mult < (initial_value - LUNG_CAPACITY_ALERT_BUFFER))
+
+	if (dilated)
+		owner.throw_alert(ALERT_BRONCHODILATION, /atom/movable/screen/alert/bronchodilated)
+	else if (constricted)
+		owner.throw_alert(ALERT_BRONCHODILATION, /atom/movable/screen/alert/bronchoconstricted)
+	else
+		owner.clear_alert(ALERT_BRONCHODILATION)
+
+#undef LUNG_CAPACITY_ALERT_BUFFER
 
 /obj/item/organ/lungs/ethereal
 	name = "aeration reticulum"

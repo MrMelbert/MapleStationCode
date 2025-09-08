@@ -180,3 +180,6 @@
 #define COMSIG_HUMAN_GOT_PUNCHED "human_got_punched"
 /// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacked, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
 #define COMSIG_HUMAN_PUNCHED "human_punched"
+
+//from base of [/obj/effect/particle_effect/fluid/smoke/proc/smoke_mob]: (seconds_per_tick)
+#define COMSIG_CARBON_EXPOSED_TO_SMOKE "carbon_exposed_to_smoke"
