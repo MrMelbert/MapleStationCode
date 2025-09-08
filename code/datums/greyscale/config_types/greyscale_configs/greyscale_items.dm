@@ -231,7 +231,8 @@
 
 /datum/greyscale_config/plush_lizard
 	name = "Plushie Lizard"
-	icon_file = 'icons/obj/toys/plushes.dmi'
+	// icon_file = 'icons/obj/toys/plushes.dmi'
+	icon_file = 'maplestation_modules/icons/obj/plushes.dmi'
 	json_config = 'code/datums/greyscale/json_configs/plushie_lizard.json'
 
 /datum/greyscale_config/plush_slime

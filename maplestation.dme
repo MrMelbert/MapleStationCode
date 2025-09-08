@@ -6387,7 +6387,6 @@
 #include "maplestation_modules\code\modules\antagonists\infiltrator\advanced_infiltrator.dm"
 #include "maplestation_modules\code\modules\antagonists\infiltrator\infiltrator.dm"
 #include "maplestation_modules\code\modules\art\statuettes.dm"
-#include "maplestation_modules\code\modules\atmospherics\machinery.dm"
 #include "maplestation_modules\code\modules\cargo\costumes_toys.dm"
 #include "maplestation_modules\code\modules\cargo\goodies.dm"
 #include "maplestation_modules\code\modules\cargo\packs.dm"
