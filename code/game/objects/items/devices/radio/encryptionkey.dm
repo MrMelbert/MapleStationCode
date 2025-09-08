@@ -313,7 +313,8 @@
 // This is used for cargo goodies
 /obj/item/encryptionkey/language
 	desc = "An encryption key that automatically translate some language into some other language you can hopefully understand."
-	icon_state = "cypherkey_cube"
+	icon_state = "/obj/item/encryptionkey/language"
+	post_init_icon_state = "cypherkey_cube"
 	greyscale_config = /datum/greyscale_config/encryptionkey_cube
 	greyscale_colors = "#339900#246202"
 

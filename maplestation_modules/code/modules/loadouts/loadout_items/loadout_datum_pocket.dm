@@ -28,6 +28,7 @@
 
 /datum/loadout_item/pocket_items
 	abstract_type = /datum/loadout_item/pocket_items
+	group = "Other"
 
 /datum/loadout_item/pocket_items/on_equip_item(
 	obj/item/equipped_item,
@@ -196,6 +197,7 @@
 /datum/loadout_item/pocket_items/plush
 	abstract_type = /datum/loadout_item/pocket_items/plush
 	can_be_named = TRUE
+	group = "Plushes"
 
 /datum/loadout_item/pocket_items/plush/bee
 	name = "Plush (Bee)"
@@ -248,91 +250,99 @@
 	name = "Plush (Snake)"
 	item_path = /obj/item/toy/plush/snakeplushie
 
-/datum/loadout_item/pocket_items/card_binder
+/datum/loadout_item/pocket_items/cards
+	abstract_type = /datum/loadout_item/pocket_items/cards
+	group = "Card Games"
+
+/datum/loadout_item/pocket_items/cards/card_binder
 	name = "Card Binder"
 	item_path = /obj/item/storage/card_binder
 
-/datum/loadout_item/pocket_items/card_deck
+/datum/loadout_item/pocket_items/cards/card_deck
 	name = "Playing Card Deck"
 	item_path = /obj/item/toy/cards/deck
 
-/datum/loadout_item/pocket_items/kotahi_deck
+/datum/loadout_item/pocket_items/cards/kotahi_deck
 	name = "Kotahi Deck"
 	item_path = /obj/item/toy/cards/deck/kotahi
 
-/datum/loadout_item/pocket_items/wizoff_deck
+/datum/loadout_item/pocket_items/cards/wizoff_deck
 	name = "Wizoff Deck"
 	item_path = /obj/item/toy/cards/deck/wizoff
 
-/datum/loadout_item/pocket_items/dice_bag
+/datum/loadout_item/pocket_items/dice
+	abstract_type = /datum/loadout_item/pocket_items/dice
+	group = "Dice"
+
+/datum/loadout_item/pocket_items/dice/dice_bag
 	name = "Dice Bag"
 	item_path = /obj/item/storage/dice
 
-/datum/loadout_item/pocket_items/d1
+/datum/loadout_item/pocket_items/dice/d1
 	name = "D1"
 	item_path = /obj/item/dice/d1
 
-/datum/loadout_item/pocket_items/d2
+/datum/loadout_item/pocket_items/dice/d2
 	name = "D2"
 	item_path = /obj/item/dice/d2
 
-/datum/loadout_item/pocket_items/d4
+/datum/loadout_item/pocket_items/dice/d4
 	name = "D4"
 	item_path = /obj/item/dice/d4
 
-/datum/loadout_item/pocket_items/d6
+/datum/loadout_item/pocket_items/dice/d6
 	name = "D6"
 	item_path = /obj/item/dice/d6
 
-/datum/loadout_item/pocket_items/d6_ebony
+/datum/loadout_item/pocket_items/dice/d6_ebony
 	name = "D6 (Ebony)"
 	item_path = /obj/item/dice/d6/ebony
 
-/datum/loadout_item/pocket_items/d6_space
+/datum/loadout_item/pocket_items/dice/d6_space
 	name = "D6 (Space)"
 	item_path = /obj/item/dice/d6/space
 
-/datum/loadout_item/pocket_items/d8
+/datum/loadout_item/pocket_items/dice/d8
 	name = "D8"
 	item_path = /obj/item/dice/d8
 
-/datum/loadout_item/pocket_items/d10
+/datum/loadout_item/pocket_items/dice/dice/d10
 	name = "D10"
 	item_path = /obj/item/dice/d10
 
-/datum/loadout_item/pocket_items/d12
+/datum/loadout_item/pocket_items/dice/d12
 	name = "D12"
 	item_path = /obj/item/dice/d12
 
-/datum/loadout_item/pocket_items/d20
+/datum/loadout_item/pocket_items/dice/d20
 	name = "D20"
 	item_path = /obj/item/dice/d20
 
-/datum/loadout_item/pocket_items/d100
+/datum/loadout_item/pocket_items/dice/d100
 	name = "D100"
 	item_path = /obj/item/dice/d100
 
-/datum/loadout_item/pocket_items/d00
+/datum/loadout_item/pocket_items/dice/d00
 	name = "D00"
 	item_path = /obj/item/dice/d00
 
-/datum/loadout_item/pocket_items/tdatet_pack_red
+/datum/loadout_item/pocket_items/cards/tdatet_pack_red
 	name = "TDATET Red Pack"
 	item_path = /obj/item/cardpack/tdatet
 
-/datum/loadout_item/pocket_items/tdatet_pack_green
+/datum/loadout_item/pocket_items/cards/tdatet_pack_green
 	name = "TDATET Green Pack"
 	item_path = /obj/item/cardpack/tdatet/green
 
-/datum/loadout_item/pocket_items/tdatet_pack_blue
+/datum/loadout_item/pocket_items/cards/tdatet_pack_blue
 	name = "TDATET Blue Pack"
 	item_path = /obj/item/cardpack/tdatet/blue
 
-/datum/loadout_item/pocket_items/tdatet_pack_mixed
+/datum/loadout_item/pocket_items/cards/tdatet_pack_mixed
 	name = "TDATET Mixed Pack"
 	item_path = /obj/item/cardpack/tdatet/mixed
 
-/datum/loadout_item/pocket_items/counter
+/datum/loadout_item/pocket_items/cards/counter
 	name = "Counter"
 	item_path = /obj/item/toy/counter
 

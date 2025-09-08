@@ -19,7 +19,7 @@
 	icon = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
 	icon_state = "heels"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/shoes/heels.dmi'
-	flags_1 = IS_PLAYER_COLORABLE_1
+	flags_1 = IS_PLAYER_COLORABLE_1 | NO_NEW_GAGS_PREVIEW_1
 	greyscale_colors = "#eeeeee"
 	greyscale_config = /datum/greyscale_config/heels
 	greyscale_config_worn = /datum/greyscale_config/heels_worn

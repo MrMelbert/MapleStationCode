@@ -13,11 +13,12 @@
 
 /datum/loadout_item/shoes/New()
 	. = ..()
-	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
+	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & DIGITIGRADE_VARIATIONS)
 
 /datum/loadout_item/shoes/get_item_information()
 	. = ..()
-	.[FA_ICON_DRAGON] = "Supports digitigrade legs"
+	if(supports_digitigrade)
+		.[FA_ICON_DRAGON] = "Supports digitigrade legs"
 
 // This is snowflake but digitigrade is in general
 // Need to handle shoes that don't fit digitigrade being selected

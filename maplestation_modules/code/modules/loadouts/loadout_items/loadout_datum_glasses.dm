@@ -16,7 +16,7 @@
 	name = "Glasses"
 	item_path = /obj/item/clothing/glasses/regular
 
-/datum/loadout_item/glasses/get_item_information()
+/datum/loadout_item/glasses/prescription_glasses/get_item_information()
 	. = ..()
 	.[FA_ICON_GLASSES] = "Prescription"
 

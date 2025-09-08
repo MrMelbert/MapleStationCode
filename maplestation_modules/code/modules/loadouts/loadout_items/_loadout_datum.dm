@@ -307,6 +307,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	formatted_item["reskins"] = get_reskin_options()
 	formatted_item["icon"] = ui_icon
 	formatted_item["icon_state"] = ui_icon_state
+	formatted_item["disabled"] = is_disabled()
 	return formatted_item
 
 /**
@@ -325,7 +326,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 		displayed_text[FA_ICON_SWATCHBOOK] = "Reskinnable"
 
 	if(required_holiday)
-		displayed_text[check_holidays(required_holiday) ? FA_ICON_CALENDAR_PLUS : FA_ICON_CALENDAR_XMARK] = "Only available during [required_holiday]"
+		displayed_text[check_holidays(required_holiday) ? FA_ICON_CALENDAR_CHECK : FA_ICON_CALENDAR_XMARK] = "Only available during [required_holiday]"
 
 	return displayed_text
 
@@ -333,6 +334,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  * Checks if this item is disabled and cannot be selected or granted
  */
 /datum/loadout_item/proc/is_disabled()
+	SHOULD_CALL_PARENT(TRUE)
 	return required_holiday && !check_holidays(required_holiday)
 
 /**

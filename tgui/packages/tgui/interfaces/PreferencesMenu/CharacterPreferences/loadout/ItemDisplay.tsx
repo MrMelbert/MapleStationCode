@@ -62,12 +62,13 @@ export function ItemDisplay(props: DisplayProps) {
     <div style={{ position: 'relative' }}>
       <ImageButton
         imageSize={scale * 32}
-        color={active ? 'green' : 'default'}
+        color={active ? 'green' : item.disabled ? 'red' : 'default'}
         style={{ textTransform: 'capitalize', zIndex: '1' }}
         tooltip={item.name}
         tooltipPosition={'bottom'}
         dmIcon={item.icon}
         dmIconState={item.icon_state}
+        disabled={item.disabled}
         onClick={() =>
           act('select_item', {
             path: item.path,
@@ -156,7 +157,7 @@ export function ItemListDisplay(props: ListProps) {
                     <ItemDisplay
                       item={item}
                       active={
-                        active_loadout_list &&
+                        active_loadout_list !== null &&
                         active_loadout_list[item.path] !== undefined
                       }
                     />
