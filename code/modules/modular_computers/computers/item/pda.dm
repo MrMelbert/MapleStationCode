@@ -12,7 +12,7 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	inhand_icon_state = "electronic"
 
-	overlays_icon = 'icons/obj/devices/modular_pda.dmi'
+	overlays_icon = 'icons/obj/modular_pda.dmi'
 
 	steel_sheet_cost = 2
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 3, /datum/material/glass=SMALL_MATERIAL_AMOUNT, /datum/material/plastic=SMALL_MATERIAL_AMOUNT)
@@ -308,7 +308,7 @@
  */
 /obj/item/modular_computer/pda/silicon
 	name = "modular interface"
-	icon = 'icons/obj/devices/modular_pda.dmi'
+	icon = 'icons/obj/modular_pda.dmi'
 	icon_state = "tablet-silicon"
 	post_init_icon_state = null
 	base_icon_state = "tablet-silicon"

@@ -19,7 +19,7 @@
 	eye_color_left = "#000000"
 	eye_color_right = "#000000"
 
-	iris_overlay = null
+	iris_overlays = FALSE
 	icon = 'icons/map_icons/items/_item.dmi'
 	icon_state = "/obj/item/organ/eyes/night_vision/rat"
 	post_init_icon_state = "eyes"

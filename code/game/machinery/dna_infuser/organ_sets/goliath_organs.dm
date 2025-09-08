@@ -16,7 +16,7 @@
 	name = "goliath eyes"
 	desc = "goliath DNA infused into what was once some normal eyes."
 
-	iris_overlay = null
+	iris_overlays = FALSE
 	icon = 'icons/map_icons/items/_item.dmi'
 	icon_state = "/obj/item/organ/eyes/night_vision/goliath"
 	post_init_icon_state = "eyes"

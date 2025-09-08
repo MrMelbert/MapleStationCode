@@ -7,7 +7,7 @@
 	// greyscale_colors = "#972A2A"
 	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
-/obj/item/clothing/head/beret/frenchberet/equipped(mob/user, slot, initial)
+/obj/item/clothing/head/beret/frenchberet/equipped(mob/M, slot, initial)
 	. = ..()
 	if (slot & ITEM_SLOT_HEAD)
 		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
@@ -16,7 +16,7 @@
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 		REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)
 
-/obj/item/clothing/head/beret/frenchberet/dropped(mob/user, silent)
+/obj/item/clothing/head/beret/frenchberet/dropped(mob/M, silent)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)

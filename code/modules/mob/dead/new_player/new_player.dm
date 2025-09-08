@@ -456,7 +456,7 @@
 		player_name = "[span_tooltip(holder.rank_names(), "STAFF")] [key]"
 
 	if(prefs.hearted)
-		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
+		var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
 		player_name = "[sheet.icon_tag("emoji-heart")] [player_name]"
 	if(prefs.unlock_content && (prefs.toggles & MEMBER_PUBLIC))
 		player_name = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color)]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")] [player_name]</font>"
