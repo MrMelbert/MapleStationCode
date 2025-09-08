@@ -37,7 +37,6 @@
 	icon_state = "/obj/item/clothing/under/spacer_turtleneck"
 	post_init_icon_state = "turtleneck"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
-	icon_state = "turtleneck"
 	greyscale_config = /datum/greyscale_config/spacer_turtleneck
 	greyscale_config_worn = /datum/greyscale_config/spacer_turtleneck_worn
 	greyscale_colors = "#5e483c#1c1c1c#4fb4e6"

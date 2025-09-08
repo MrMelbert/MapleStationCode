@@ -23,6 +23,19 @@
 	abstract_type = /datum/loadout_item/under/jumpsuit
 	group = "Jumpsuits"
 
+/datum/loadout_item/under/plainclothes
+	abstract_type = /datum/loadout_item/under/plainclothes
+	group = "Plainclothes"
+
+// formal undersuits
+/datum/loadout_item/under/formal
+	abstract_type = /datum/loadout_item/under/formal
+	group = "Formal"
+
+/datum/loadout_item/under/pants
+	abstract_type = /datum/loadout_item/under/pants
+	group = "Pants"
+
 /datum/loadout_item/under/jumpsuit/greyscale
 	name = "Greyscale Jumpsuit"
 	item_path = /obj/item/clothing/under/color/greyscale
@@ -56,10 +69,6 @@
 /datum/loadout_item/under/jumpsuit/rainbow_skirt
 	name = "Rainbow Jumpskirt"
 	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
-
-/datum/loadout_item/under/pants
-	abstract_type = /datum/loadout_item/under/pants
-	group = "Pants"
 
 /datum/loadout_item/under/pants/jeans
 	name = "Jeans"
@@ -132,11 +141,6 @@
 /datum/loadout_item/under/plainclothes/spacer_turtleneck_skirt
 	name = "Spacer's Skirtleneck"
 	item_path = /obj/item/clothing/under/spacer_turtleneck/skirt
-
-// formal undersuits
-/datum/loadout_item/under/formal
-	abstract_type = /datum/loadout_item/under/formal
-	group = "Formal"
 
 /datum/loadout_item/under/formal/assistant
 	name = "Assistant Formal"

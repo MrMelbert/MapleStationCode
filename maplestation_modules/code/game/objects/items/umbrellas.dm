@@ -8,8 +8,9 @@
 /obj/item/umbrella
 	name = "umbrella"
 	desc = "A plain umbrella."
-	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
-	icon_state = "umbrella"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/umbrella"
+	post_init_icon_state = "umbrella"
 	inhand_icon_state = "umbrella_closed"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'

@@ -9,9 +9,9 @@
  * * dir - (optional) direction of all the icons
  */
 /proc/get_basic_body_icon(list/bodypart_list, skintone = "caucasian1", icon_dir = NORTH)
-	var/icon/base_icon
+	var/datum/universal_icon/base_icon
 	for(var/obj/item/bodypart/other_bodypart as anything in bodypart_list)
-		var/icon/generated_icon = icon(
+		var/datum/universal_icon/generated_icon = uni_icon(
 			icon = UNLINT(initial(other_bodypart.icon_greyscale)),
 			icon_state = UNLINT("[initial(other_bodypart.limb_id)]_[initial(other_bodypart.body_zone)][initial(other_bodypart.is_dimorphic) ? "_m" : ""]"),
 			dir = icon_dir,
@@ -37,12 +37,12 @@
 
 /datum/preference/choiced/ornithid_wings/icon_for(value)
 	var/datum/sprite_accessory/the_accessory = SSaccessories.arm_wings_list[value]
-	var/icon/body_icon = get_basic_body_icon(
+	var/datum/universal_icon/body_icon = get_basic_body_icon(
 		bodypart_list = list(/obj/item/bodypart/chest, /obj/item/bodypart/arm/left, /obj/item/bodypart/arm/right),
 		skintone = "asian1",
 		icon_dir = NORTH,
 	)
-	var/icon/wing_icon = icon(
+	var/datum/universal_icon//wing_icon = uni_icon(
 		icon = 'maplestation_modules/icons/mob/armwings.dmi',
 		icon_state = "m_arm_wings_[the_accessory.icon_state]_FRONT",
 		dir = SOUTH,

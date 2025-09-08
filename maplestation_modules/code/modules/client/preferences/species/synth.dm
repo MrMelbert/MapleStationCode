@@ -94,13 +94,13 @@
 
 /datum/preference/choiced/synth_head_cover/icon_for(value)
 	var/datum/sprite_accessory/sprite_accessory = SSaccessories.synth_head_cover_list[value]
-	var/icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
+	var/datum/universal_icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
 
-	var/icon/final_icon = icon(head)
+	var/datum/universal_icon/final_icon = head.copy()
 
 	if (!isnull(sprite_accessory))
 		for(var/side in list("ADJ", "FRONT"))
-			var/icon/accessory_icon = icon(
+			var/datum/universal_icon//accessory_icon = uni_icon(
 				icon = 'maplestation_modules/icons/mob/synth_heads.dmi',
 				icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_ADJ",
 				dir = SOUTH,
