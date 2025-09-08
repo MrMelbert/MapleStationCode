@@ -1,6 +1,4 @@
 // -- Modular Skrell species --
-/// GLOB list of head tentacle sprites / options
-GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 // The datum for Skrell.
 /datum/species/skrell
@@ -101,7 +99,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	return TRUE
 
 /datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
-	return GLOB.head_tentacles_list
+	return SSaccessories.head_tentacles_list
 
 /obj/item/bodypart/arm/left/skrell
 	limb_id = SPECIES_SKRELL
