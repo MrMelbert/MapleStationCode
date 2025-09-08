@@ -157,8 +157,10 @@ export function ItemListDisplay(props: ListProps) {
                     <ItemDisplay
                       item={item}
                       active={
-                        active_loadout_list &&
-                        active_loadout_list[item.path] !== undefined
+                        !!(
+                          active_loadout_list &&
+                          active_loadout_list[item.path] !== undefined
+                        )
                       }
                     />
                   </Stack.Item>
