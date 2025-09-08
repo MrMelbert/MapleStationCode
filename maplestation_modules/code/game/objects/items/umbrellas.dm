@@ -133,6 +133,7 @@
 /obj/item/umbrella/parasol
 	name = "parasol"
 	desc = "A black laced parsol, how intricate."
+	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
 	icon_state = "parasol"
 	inhand_icon_state = "parasol_closed"
 	on_inhand_icon_state = "parasol_on"

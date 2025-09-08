@@ -1,9 +1,9 @@
 /obj/item/clothing/head/bow/sweet
 	name = "sweet bow"
 	desc = "A sweet bow that you can place on the back of your head."
-	icon_state = "sweet_bow"
-	icon_preview = 'maplestation_modules/story_content/eveleen_equipment/icons/obj/head.dmi'
-	icon_state_preview = "sweet_bow"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/bow/sweet"
+	post_init_icon_state = "sweet_bow"
 	greyscale_config = /datum/greyscale_config/sweet_bow
 	greyscale_config_worn = /datum/greyscale_config/sweet_bow/worn
 	greyscale_colors = "#7b9ab5"

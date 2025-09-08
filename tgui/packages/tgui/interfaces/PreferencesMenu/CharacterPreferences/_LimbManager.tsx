@@ -19,7 +19,7 @@ import { useBackend } from '../../../backend';
 import { Connection, Connections } from '../../common/Connections';
 import { useServerPrefs } from '../useServerPrefs';
 
-const makeCategoryReadable = (cat: string | null): string | null => {
+const makeCategoryReadable = (cat: string): string => {
   switch (cat) {
     case 'chest':
       return 'Chest';

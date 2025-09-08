@@ -10,6 +10,6 @@
 	name = "Plush (Albus)"
 	item_path = /obj/item/toy/plush/albertcat
 
-/datum/loadout_item/pocket_items/plush/get_item_information()
+/datum/loadout_item/pocket_items/plush/albertcat/get_item_information()
 	. = ..()
 	.[FA_ICON_MASKS_THEATER] = "Character item"

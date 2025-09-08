@@ -6,7 +6,7 @@
 
 	icon = 'icons/map_icons/objects.dmi'
 	icon_state = "/obj/machinery/atmospherics/components/tank"
-	post_init_icon_state = "canister-0"
+	post_init_icon_state = "smooth"
 	base_icon_state = "canister"
 
 	max_integrity = 800

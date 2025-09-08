@@ -139,6 +139,7 @@
 		equipped_item.style = picked_style
 		equipped_item.lipstick_color = picked_color
 	equipper.update_lips(picked_style, picked_color)
+	equipped_item.name = "custom lipstick"
 
 /// Converts style (readable) to style (internal)
 /datum/loadout_item/pocket_items/lipstick/proc/style_to_style(style)
@@ -306,7 +307,7 @@
 	name = "D8"
 	item_path = /obj/item/dice/d8
 
-/datum/loadout_item/pocket_items/dice/dice/d10
+/datum/loadout_item/pocket_items/dice/d10
 	name = "D10"
 	item_path = /obj/item/dice/d10
 
