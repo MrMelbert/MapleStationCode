@@ -137,6 +137,7 @@
 	inhand_icon_state = "parasol_closed"
 	on_inhand_icon_state = "parasol_on"
 	random_color = FALSE
+	post_init_icon_state = null
 	greyscale_config = null
 	greyscale_config_inhand_left = null
 	greyscale_config_inhand_right = null

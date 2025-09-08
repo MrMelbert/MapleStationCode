@@ -40,11 +40,7 @@
 	var/datum/universal_icon/final_icon = uni_icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m")
 
 	if (sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
-		var/datum/universal_icon/body_markings_icon = uni_icon(
-			sprite_accessory.icon,
-			"male_[sprite_accessory.icon_state]_chest",
-		)
-
+		var/datum/universal_icon/body_markings_icon = uni_icon(sprite_accessory.icon, "m_body_markings_[sprite_accessory.icon_state]_ADJ")
 		final_icon.blend_icon(body_markings_icon, ICON_OVERLAY)
 
 	final_icon.blend_color(COLOR_VIBRANT_LIME, ICON_MULTIPLY)

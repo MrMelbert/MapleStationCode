@@ -503,7 +503,8 @@ GLOBAL_LIST_INIT(paintable_decals, init_subtypes(/datum/paintable_decal_category
 
 /datum/paintable_decal/colored_siding/line_inner_corner
 	name = "Siding Inner Corner"
-	icon_state = "siding_plain_corner_inner"
+	// icon_state = "siding_plain_corner_inner"
+	icon_state = "siding_plain__8" // 8 dir sprite
 
 // Sidings which are not colored / have a specific pattern, texture, etc
 /datum/paintable_decal/siding

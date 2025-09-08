@@ -324,18 +324,21 @@
 	language_data = list(
 		/datum/language/moffic = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/moth/budget
 	name = "budget Moffic translation key"
 	language_data = list(
 		/datum/language/moffic = 50,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/draconic
 	name = "\improper Draconic translation key"
 	language_data = list(
 		/datum/language/draconic = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/draconic/budget
 	name = "budget Draconic translation key"
@@ -348,6 +351,7 @@
 	language_data = list(
 		/datum/language/calcic = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/plasmaman/budget
 	name = "budget Calcic translation key"
@@ -360,6 +364,7 @@
 	language_data = list(
 		/datum/language/voltaic = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/ethereal/budget
 	name = "budget Ethereal translation key"
@@ -372,6 +377,7 @@
 	language_data = list(
 		/datum/language/nekomimetic = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/felinid/budget
 	name = "budget Felinid translation key"
@@ -384,6 +390,7 @@
 	language_data = list(
 		/datum/language/uncommon = 100,
 	)
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/uncommon/budget
 	name = "budget Uncommon translation key"
@@ -395,6 +402,7 @@
 /obj/item/encryptionkey/language/all_crew
 	name = "crew cohesion translation key"
 	desc = "An encryption key that'll translate a little bit of a lot of languages. Might give you a hint of what's going on, maybe."
+	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/language/all_crew/Initialize(mapload)
 	. = ..()

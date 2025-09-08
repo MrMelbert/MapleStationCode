@@ -2,7 +2,7 @@
 	var/datum/universal_icon/final_icon = base_icon.copy()
 
 	if (!isnull(accessory))
-		var/datum/universal_icon/accessory_icon = uni_icon('icons/mob/clothing/underwear.dmi', accessory.icon_state)
+		var/datum/universal_icon/accessory_icon = uni_icon(accessory.icon, accessory.icon_state)
 		if (color && !accessory.use_static)
 			accessory_icon.blend_color(color, ICON_MULTIPLY)
 		final_icon.blend_icon(accessory_icon, ICON_OVERLAY)
@@ -167,7 +167,7 @@
 
 	if (value != "Nude")
 		var/datum/sprite_accessory/accessory = SSaccessories.undershirt_list[value]
-		icon_with_undershirt.blend_icon(uni_icon('icons/mob/clothing/underwear.dmi', accessory.icon_state), ICON_OVERLAY)
+		icon_with_undershirt.blend_icon(uni_icon(accessory.icon, accessory.icon_state), ICON_OVERLAY)
 
 	icon_with_undershirt.crop(9, 9, 23, 23)
 	icon_with_undershirt.scale(32, 32)

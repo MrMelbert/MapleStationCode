@@ -5,10 +5,9 @@
 /obj/item/pet_carrier
 	name = "pet carrier"
 	desc = "A big white-and-blue pet carrier. Good for carrying <s>meat to the chef</s> cute animals around."
-	icon = 'icons/map_icons/items/_item.dmi'
-	icon_state = "/obj/item/pet_carrier"
-	post_init_icon_state = "pet_carrier_open"
+	icon = 'icons/obj/pet_carrier.dmi'
 	base_icon_state = "pet_carrier"
+	icon_state = "pet_carrier_open"
 	inhand_icon_state = "pet_carrier"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
@@ -200,14 +199,8 @@
 /obj/item/pet_carrier/biopod
 	name = "biopod"
 	desc = "Alien device used for undescribable purpose. Or carrying pets."
-	icon = 'icons/obj/pet_carrier.dmi'
-	icon_state = "biopod_open"
-	post_init_icon_state = null
 	base_icon_state = "biopod"
+	icon_state = "biopod_open"
 	inhand_icon_state = "biopod"
-	greyscale_config = null
-	greyscale_config_inhand_left = null
-	greyscale_config_inhand_right = null
-	greyscale_colors = null
 
 #undef pet_carrier_full
