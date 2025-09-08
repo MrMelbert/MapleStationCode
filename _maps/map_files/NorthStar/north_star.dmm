@@ -25733,9 +25733,6 @@
 /area/station/service/theater)
 "gIg" = (
 /obj/structure/table/wood,
-/obj/item/airlock_painter/decal/tile{
-	pixel_y = -5
-	},
 /obj/item/airlock_painter,
 /obj/item/airlock_painter/decal{
 	pixel_y = 5
@@ -27860,7 +27857,7 @@
 /obj/item/storage/toolbox/electrical{
 	pixel_y = 10
 	},
-/obj/item/airlock_painter/decal/tile,
+/obj/item/airlock_painter/decal,
 /turf/open/floor/iron/dark,
 /area/station/commons/storage/primary)
 "hmn" = (
