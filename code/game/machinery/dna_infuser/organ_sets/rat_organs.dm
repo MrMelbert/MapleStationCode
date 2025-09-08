@@ -112,7 +112,7 @@
 	if(!check_holidays(APRIL_FOOLS))
 		return
 	var/message = lowertext(speech_args[SPEECH_MESSAGE])
-	if(message == "hi" || message == "hi." || message = "hi!")
+	if(message == "hi" || message == "hi." || message == "hi!")
 		speech_args[SPEECH_MESSAGE] = "Cheesed to meet you!"
 	if(message == "hi?")
 		speech_args[SPEECH_MESSAGE] = "Um... cheesed to meet you?"
