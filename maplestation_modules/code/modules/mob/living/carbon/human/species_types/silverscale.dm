@@ -230,7 +230,7 @@
 	. = ..()
 	// Would've thought they already get this... but I guess not?
 	var/obj/item/organ/internal/tongue/lizard/silver/the_silver_thing = new(human)
-	the_silver_thing.Insert(human, TRUE, FALSE)
+	the_silver_thing.Insert(human, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 // LIZARD CODE END
 
