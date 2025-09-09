@@ -27,6 +27,8 @@ fi
 # Find dmis from module subfolders
 mkdir -p $1/maplestation_modules
 find maplestation_modules/ -name \*.dmi -exec cp --parents {} $1 \;
+mkdir -p $1/goon
+find goon/ -name \*.dmi -exec cp --parents {} $1 \;
 
 cp maplestation.dmb maplestation.rsc $1/
 cp -r _maps/* $1/_maps/
