@@ -5,7 +5,7 @@
 	maximum_mana_capacity = 750
 	softcap = 500
 	amount = 0
-	max_donation_rate_per_second = 2
+	max_donation_rate_per_second = 4
 
 /obj/structure/magic_altar/nature
 	name = "The Stump Which Watches"
@@ -33,17 +33,18 @@
 /obj/structure/magic_altar/nature/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/nature
 
-/obj/structure/magic_altar/nature/item_interaction( mob/living/user, obj/item/sacrifice, list/modifiers)
+/obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
 	..()
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_high)) // todo: add feedback to the player for this
-		mana_pool.amount += nature_shrine_mana_high_count
-		QDEL_NULL(sacrifice)
+		accept_sacrifice(sacrifice, nature_shrine_mana_high)
 		return
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_med))
-		mana_pool.amount += nature_shrine_mana_med_count
-		QDEL_NULL(sacrifice)
+		accept_sacrifice(sacrifice, nature_shrine_mana_med)
 		return
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_low))
-		mana_pool.amount += nature_shrine_mana_low_count
-		QDEL_NULL(sacrifice)
+		accept_sacrifice(sacrifice, nature_shrine_mana_low)
 		return
+
+/obj/structure/magic_altar/nature/proc/accept_sacrifice(obj/item/sacrifice, mana_value)
+	QDEL_NULL(sacrifice)
+	mana_pool.amount += mana_value

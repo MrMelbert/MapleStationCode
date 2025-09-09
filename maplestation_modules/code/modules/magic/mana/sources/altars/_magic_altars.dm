@@ -6,6 +6,8 @@
 	softcap = 500
 	amount = 500
 	max_donation_rate_per_second = 2 // pretty slow, but a solid source of mana
+	intrinsic_recharge_sources = NONE // it generate magic stoopid
+	discharge_destinations = NONE // yeah no i don't want the default to be dumping it into the leylines w/o being balanced around it
 
 /datum/mana_pool/magic_altar/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -29,3 +31,19 @@
 
 /obj/structure/magic_altar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar
+
+/obj/machinery/power/magic_contraption // used for magitech stuff that needs to process.
+	name = "magic contraption basetype"
+	desc = "an honestly quite dull magic altar; actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
+	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
+	icon_state = "goner"
+
+	use_power = NO_POWER_USE
+	anchored = FALSE
+
+	has_initial_mana_pool = TRUE
+	var/max_allowed_transfer_distance = MAGIC_ALTAR_MAX_TRANSFER_DISTANCE
+
+/obj/machinery/power/magic_contraption/get_initial_mana_pool_type()
+	return /datum/mana_pool/magic_altar
+
