@@ -16,9 +16,9 @@
 /obj/item/clothing/shoes/heels //heels
 	name = "high heels"
 	desc = "Shoes with tall heels. Useful for looking cool or stupid, depending on how high the heels are."
-	icon = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
-	icon_state = "heels"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/shoes/heels.dmi'
+	icon = 'icon/map_icons/obj/clothing/shoes/_shoes.dmi'
+	icon_state = "/obj/item/clothing/shoes/heels"
+	post_init_icon_state = "heels"
 	flags_1 = IS_PLAYER_COLORABLE_1 | NO_NEW_GAGS_PREVIEW_1
 	greyscale_colors = "#eeeeee"
 	greyscale_config = /datum/greyscale_config/heels
@@ -40,4 +40,5 @@
 /obj/item/clothing/shoes/heels/fancy //the cooler heels
 	name = "fancy high heels"
 	desc = "Fancy high heels. Despite the looks, these weren't tailor-made for you by a fairy godmother."
-	icon_state = "fancy_heels"
+	icon_state = "/obj/item/clothing/shoes/heels/fancy"
+	post_init_icon_state = "fancy_heels"
