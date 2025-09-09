@@ -19,7 +19,7 @@
 	icon = 'icons/map_icons/clothing/shoes.dmi'
 	icon_state = "/obj/item/clothing/shoes/heels"
 	post_init_icon_state = "heels"
-	flags_1 = IS_PLAYER_COLORABLE_1 | NO_NEW_GAGS_PREVIEW_1
+	flags_1 = IS_PLAYER_COLORABLE_1
 	greyscale_colors = "#eeeeee"
 	greyscale_config = /datum/greyscale_config/heels
 	greyscale_config_worn = /datum/greyscale_config/heels_worn
