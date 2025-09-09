@@ -877,7 +877,7 @@ ADMIN_VERB(check_missing_sprites, R_DEBUG, "Debug Worn Item Sprites", "We're can
 		ui.open()
 
 /datum/mc_dependency_ui/ui_state(mob/user)
-	return ADMIN_STATE(R_DEBUG)
+	return GLOB.admin_state // ADMIN_STATE(R_DEBUG)
 
 /datum/mc_dependency_ui/ui_data(mob/user)
 	var/list/data = list()
