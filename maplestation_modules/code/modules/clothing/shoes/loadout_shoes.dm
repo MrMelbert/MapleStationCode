@@ -16,7 +16,7 @@
 /obj/item/clothing/shoes/heels //heels
 	name = "high heels"
 	desc = "Shoes with tall heels. Useful for looking cool or stupid, depending on how high the heels are."
-	icon = 'icon/map_icons/obj/clothing/shoes/_shoes.dmi'
+	icon = 'icons/map_icons/clothing/shoes.dmi'
 	icon_state = "/obj/item/clothing/shoes/heels"
 	post_init_icon_state = "heels"
 	flags_1 = IS_PLAYER_COLORABLE_1 | NO_NEW_GAGS_PREVIEW_1
