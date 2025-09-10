@@ -3,7 +3,7 @@
 	title_options = list(
 		"Barista",
 	)
-	description = "Serve booze, mix drinks, keep the crew drunk."
+	description = "Mix drinks and (pretend to) save lives. Keep the crew drunk and happy."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1

@@ -5,8 +5,7 @@
 		"Nurse" = /datum/outfit/job/doctor/nurse,
 		"Medical Resident" = /datum/outfit/job/doctor/nurse,
 	)
-	description = "Save lives, run around the station looking for victims, \
-		scan everyone in sight"
+	description = "Heal everyone, save lives, revive people who you couldn't save, keep malpractice to a minimum."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 5

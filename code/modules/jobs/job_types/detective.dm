@@ -1,7 +1,7 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
 	description = "Investigate crimes, gather evidence, perform interrogations, \
-		look badass, smoke cigarettes."
+		smoke cigarettes, look badass."
 	title_options = list(
 		"Investigator",
 		"Inspector",
@@ -77,7 +77,7 @@
 		/obj/item/gun/ballistic/revolver/c38/detective,
 		)
 	implants = list(/obj/item/implant/mindshield)
-	
+
 	skillchips = list(/obj/item/skillchip/job/detectives_taste)
 
 /datum/outfit/job/detective/pre_equip(mob/living/carbon/human/human, visualsOnly = FALSE)
