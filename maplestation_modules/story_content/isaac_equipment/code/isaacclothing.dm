@@ -4,6 +4,8 @@
 	icon = 'maplestation_modules/story_content/isaac_equipment/icons/isaacclothing_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/isaac_equipment/icons/isaacclothing_worn.dmi'
 	icon_state = "paintersuit"
+	body_parts_covered = CHEST|GROIN|ARMS
+	alternate_worn_layer = ABOVE_SHOES_LAYER
 	inhand_icon_state = null
 
 /datum/loadout_item/under/formal/isaac

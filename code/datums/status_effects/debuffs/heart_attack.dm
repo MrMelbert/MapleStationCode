@@ -28,7 +28,7 @@
 	))
 
 	if(!QDELING(owner))
-		owner.cause_pain(BODY_ZONE_CHEST, -20)
+		owner.heal_pain(20, BODY_ZONE_CHEST)
 		owner.remove_consciousness_multiplier(id)
 		owner.remove_max_consciousness_value(id)
 		REMOVE_TRAIT(owner, TRAIT_SOFT_CRIT, id)

@@ -86,7 +86,7 @@
 		return TRUE
 	return ..()
 
-/mob/living/basic/spider/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/mob/living/basic/spider/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_zone = BODY_ZONE_CHEST)
 	. = ..()
 	for(var/datum/reagent/toxin/pestkiller/current_reagent in reagents)
 		apply_damage(50 * volume_modifier, STAMINA, BODY_ZONE_CHEST)

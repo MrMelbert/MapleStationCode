@@ -96,6 +96,11 @@
 	liked_foodtypes = DAIRY //mmm, cheese. doesn't especially like anything else
 	disliked_foodtypes = NONE //but a rat can eat anything without issue
 	toxic_foodtypes = NONE
+	speech_sound_list = list(
+		'sound/creatures/mousesqueek.ogg' = 100,
+	)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null
 
 /obj/item/organ/internal/tongue/rat/Initialize(mapload)
 	. = ..()
@@ -104,8 +109,10 @@
 
 /obj/item/organ/internal/tongue/rat/modify_speech(datum/source, list/speech_args)
 	. = ..()
+	if(!check_holidays(APRIL_FOOLS))
+		return
 	var/message = lowertext(speech_args[SPEECH_MESSAGE])
-	if(message == "hi" || message == "hi.")
+	if(message == "hi" || message == "hi." || message == "hi!")
 		speech_args[SPEECH_MESSAGE] = "Cheesed to meet you!"
 	if(message == "hi?")
 		speech_args[SPEECH_MESSAGE] = "Um... cheesed to meet you?"
@@ -123,6 +130,8 @@
 	INVOKE_ASYNC(src, PROC_REF(its_on_the_mouse), offerer, taker)
 
 /obj/item/organ/internal/tongue/rat/proc/its_on_the_mouse(mob/living/carbon/offerer, mob/living/taker)
+	if(!check_holidays(APRIL_FOOLS))
+		return
 	offerer.say("For you, it's on the mouse.")
 	taker.add_mood_event("it_was_on_the_mouse", /datum/mood_event/it_was_on_the_mouse)
 

@@ -242,7 +242,7 @@
 	// Give reagents
 	if(mode)
 		if(drip_reagents.total_volume)
-			drip_reagents.trans_to(attached_to, transfer_rate * seconds_per_tick, methods = INJECT, show_message = FALSE) //make reagents reacts, but don't spam messages
+			drip_reagents.trans_to(attached_to, transfer_rate * seconds_per_tick, methods = INJECT, show_message = FALSE, zone_override = pick(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)) //make reagents reacts, but don't spam messages // NON-MODULE CHANGE
 			update_appearance(UPDATE_ICON)
 
 	// Take blood

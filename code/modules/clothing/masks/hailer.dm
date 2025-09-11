@@ -56,6 +56,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	flags_cover = MASKCOVERSMOUTH | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | PEPPERPROOF
 	tint = 0
+	pepper_tint = FALSE
 	unique_death = 'sound/voice/sec_death.ogg'
 	COOLDOWN_DECLARE(hailer_cooldown)
 	///Decides the phrases available for use; defines used are the last index of a category of available phrases
@@ -126,7 +127,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	if(istype(action, /datum/action/item_action/halt))
 		halt()
 	else
-		adjustmask(user)
+		adjust_visor(user)
 
 /obj/item/clothing/mask/gas/sechailer/attack_self()
 	halt()
