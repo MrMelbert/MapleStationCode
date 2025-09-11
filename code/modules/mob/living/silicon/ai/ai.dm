@@ -763,7 +763,10 @@
 				"floating face" = 'icons/mob/silicon/ai.dmi',
 				"xeno queen" = 'icons/mob/nonhuman-player/alien.dmi',
 				"horror" = 'icons/mob/silicon/ai.dmi',
-				"clock" = 'icons/mob/silicon/ai.dmi'
+				"clock" = 'icons/mob/silicon/ai.dmi',
+				"triangle" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"cube" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"BH" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
 				)
 
 			input = tgui_input_list(usr, "Select a hologram", "Hologram", sort_list(icon_list))
