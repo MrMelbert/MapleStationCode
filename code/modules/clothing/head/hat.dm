@@ -54,11 +54,13 @@
 
 /obj/item/clothing/head/bio_hood/plague
 	name = "plague doctor's hat"
-	desc = "These were once used by plague doctors. Will protect you from exposure to the Pestilence."
+	desc = "These were once used by plague doctors. This hat will only slightly protect you from exposure to the Pestilence."
 	icon_state = "plaguedoctor"
-	clothing_flags = THICKMATERIAL | BLOCK_GAS_SMOKE_EFFECT | SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	armor_type = /datum/armor/bio_hood_plague
 	flags_inv = NONE
+	clothing_flags = SNUG_FIT
+	flags_cover = NONE
+	dirt_state = null
 
 /datum/armor/bio_hood_plague
 	bio = 100
@@ -197,9 +199,15 @@
 /obj/item/clothing/head/costume/jester
 	name = "jester hat"
 	desc = "A hat with bells, to add some merriness to the suit."
-	icon_state = "jester_hat"
+	icon_state = "jester_map"
+	greyscale_colors = "#00ff00#ff0000"
+	greyscale_config = /datum/greyscale_config/jester_hat
+	greyscale_config_worn = /datum/greyscale_config/jester_hat/worn
+	flags_1 = IS_PLAYER_COLORABLE_1
 
-/obj/item/clothing/head/costume/jester/alt
+/obj/item/clothing/head/costume/jesteralt
+	name = "jester hat"
+	desc = "A hat with bells, to add some merriness to the suit."
 	icon_state = "jester2"
 
 /obj/item/clothing/head/costume/rice_hat
@@ -323,6 +331,13 @@
 /obj/item/clothing/head/costume/nightcap
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
+
+/obj/item/clothing/head/costume/ushanka/polar
+	name = "bear hunter's ushanka"
+	desc = "Handcrafted in Siberia from real polar bears."
+	icon_state = "ushankadown_polar"
+	upsprite = "ushankaup_polar"
+	downsprite = "ushankadown_polar"
 
 /obj/item/clothing/head/costume/nightcap/blue
 	name = "blue nightcap"

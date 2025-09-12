@@ -177,11 +177,11 @@ Lizard subspecies: ASHWALKERS
 	mutantlungs = /obj/item/organ/internal/lungs/lavaland
 	mutantbrain = /obj/item/organ/internal/brain/primitive
 	inherent_traits = list(
-		TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION,
 		TRAIT_MUTANT_COLORS,
 		TRAIT_TACKLING_TAILED_DEFENDER,
 		TRAIT_VIRUSIMMUNE,
 	)
+	inherent_factions = list(FACTION_ASHWALKER)
 	species_language_holder = /datum/language_holder/lizard/ash
 	digitigrade_customization = DIGITIGRADE_FORCED
 	examine_limb_id = SPECIES_LIZARD

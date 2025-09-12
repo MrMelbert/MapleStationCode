@@ -226,7 +226,10 @@
 		if(SFX_CLOWN_STEP)
 			soundin = pick('sound/effects/footstep/clownstep1.ogg','sound/effects/footstep/clownstep2.ogg')
 		if(SFX_SUIT_STEP)
-			soundin = pick('sound/effects/suitstep1.ogg','sound/effects/suitstep2.ogg')
+			soundin = pick(
+			'sound/items/handling/armor_rustle/riot_armor/suitstep1.ogg',
+			'sound/items/handling/armor_rustle/riot_armor/suitstep2.ogg',
+			)
 		if(SFX_SWING_HIT)
 			soundin = pick('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg')
 		if(SFX_HISS)
@@ -485,6 +488,15 @@
 				'sound/effects/muffspeech/muffspeech8.ogg',
 				'sound/effects/muffspeech/muffspeech9.ogg',
 			)
+		if(SFX_DEFAULT_FISH_SLAP)
+			soundin = 'sound/creatures/fish/fish_slap1.ogg'
+		if(SFX_ALT_FISH_SLAP)
+			soundin = 'sound/creatures/fish/fish_slap2.ogg'
+		if(SFX_FISH_PICKUP)
+			soundin = pick(
+				'sound/creatures/fish/fish_pickup1.ogg',
+				'sound/creatures/fish/fish_pickup2.ogg',
+			)
 		if(SFX_LIQUID_POUR)
 			soundin = pick(
 				'sound/effects/liquid_pour1.ogg',
@@ -548,4 +560,23 @@
 				'sound/machines/buckle/unbuckle2.ogg',
 				'sound/machines/buckle/unbuckle3.ogg',
 			)
+		if(SFX_VISOR_DOWN)
+			soundin = pick(
+				'sound/items/handling/helmet/visor_down1.ogg',
+				'sound/items/handling/helmet/visor_down2.ogg',
+				'sound/items/handling/helmet/visor_down3.ogg',
+			)
+		if(SFX_VISOR_UP)
+			soundin = pick(
+				'sound/items/handling/helmet/visor_up1.ogg',
+				'sound/items/handling/helmet/visor_up2.ogg',
+			)
+		if(SFX_PLATE_ARMOR_RUSTLE)
+			soundin = pick_weight(list(
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle1.ogg' = 8, //longest sound is rarer.
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle2.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle3.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle4.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle5.ogg' = 23,
+			))
 	return soundin

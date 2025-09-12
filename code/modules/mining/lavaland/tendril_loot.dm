@@ -147,9 +147,6 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/mob/living/carbon/human/active_owner
 
-/obj/item/clothing/neck/necklace/memento_mori/item_action_slot_check(slot)
-	return (slot & ITEM_SLOT_NECK)
-
 /obj/item/clothing/neck/necklace/memento_mori/dropped(mob/user)
 	..()
 	if(active_owner)
@@ -215,12 +212,13 @@
 	name = "Memento Mori"
 	desc = "Bind your life to the pendant."
 
-/datum/action/item_action/hands_free/memento_mori/Trigger(trigger_flags)
-	var/obj/item/clothing/neck/necklace/memento_mori/MM = target
-	if(!MM.active_owner)
-		if(ishuman(owner))
-			MM.memento(owner)
-			Remove(MM.active_owner) //Remove the action button, since there's no real use in having it now.
+/datum/action/item_action/hands_free/memento_mori/do_effect(trigger_flags)
+	var/obj/item/clothing/neck/necklace/memento_mori/memento = target
+	if(memento.active_owner || !ishuman(owner))
+		return FALSE
+	memento.memento(owner)
+	Remove(memento.active_owner) //Remove the action button, since there's no real use in having it now.
+	return TRUE
 
 //Wisp Lantern
 /obj/item/wisp_lantern
@@ -271,8 +269,10 @@
 	desc = "Happy to light your way."
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "orb"
-	light_system = MOVABLE_LIGHT
-	light_range = 7
+	light_system = OVERLAY_LIGHT
+	light_range = 6
+	light_power = 1.2
+	light_color = "#79f1ff"
 	light_flags = LIGHT_ATTACHED
 	layer = ABOVE_ALL_MOB_LAYER
 	plane = ABOVE_GAME_PLANE
@@ -623,6 +623,7 @@
 	equip_delay_other = 20
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
+	body_parts_covered = HANDS|ARMS
 	resistance_flags = LAVA_PROOF | FIRE_PROOF //they are from lavaland after all
 	armor_type = /datum/armor/gloves_gauntlets
 
@@ -664,7 +665,10 @@
 
 /obj/item/clothing/suit/hooded/berserker
 	name = "berserker armor"
-	desc = "Voices echo from the armor, driving the user insane. Is not space-proof."
+	desc = "This hulking armor seems to possess some kind of dark force within; howling in rage, hungry for carnage. \
+		The self-sealing stem bolts that allowed this suit to be spaceworthy have long since corroded. However, the entity \
+		sealed within the suit seems to hunger for the fleeting lifeforce found in the remains left within drake armor. \
+		Feeding it seems to empower a suit piece, though turns the drake armor back to lifeless ash."
 	icon_state = "berserker"
 	icon = 'icons/obj/clothing/suits/armor.dmi'
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
@@ -673,19 +677,9 @@
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	resistance_flags = FIRE_PROOF
-	clothing_flags = THICKMATERIAL
-	allowed = list(
-		/obj/item/flashlight,
-		/obj/item/tank/internals,
-		/obj/item/pickaxe,
-		/obj/item/spear,
-		/obj/item/organ/internal/monster_core,
-		/obj/item/knife,
-		/obj/item/kinetic_crusher,
-		/obj/item/resonator,
-		/obj/item/melee/cleaving_saw,
-	)
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+	clothing_flags = THICKMATERIAL|HEADINTERNALS
 
 /datum/armor/hooded_berserker
 	melee = 30
@@ -693,23 +687,35 @@
 	laser = 10
 	energy = 20
 	bomb = 50
+	bio = 60
 	fire = 100
 	acid = 100
+	wound = 10
+
+/datum/armor/drake_empowerment
+	melee = 35
+	laser = 30
+	energy = 20
+	bomb = 20
 
 /obj/item/clothing/suit/hooded/berserker/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/anti_magic, ALL, inventory_flags = ITEM_SLOT_OCLOTHING)
+	AddComponent(/datum/component/armor_plate, maxamount = 1, upgrade_item = /obj/item/clothing/suit/hooded/cloak/drake, armor_mod = /datum/armor/drake_empowerment, upgrade_prefix = "empowered")
+	allowed = GLOB.mining_suit_allowed
 
 #define MAX_BERSERK_CHARGE 100
 #define PROJECTILE_HIT_MULTIPLIER 1.5
 #define DAMAGE_TO_CHARGE_SCALE 0.75
 #define CHARGE_DRAINED_PER_SECOND 5
-#define BERSERK_MELEE_ARMOR_ADDED 50
 #define BERSERK_ATTACK_SPEED_MODIFIER 0.25
 
 /obj/item/clothing/head/hooded/berserker
 	name = "berserker helmet"
-	desc = "Peering into the eyes of the helmet is enough to seal damnation."
+	desc = "This burdensome helmet seems to possess some kind of dark force within; howling in rage, hungry for carnage. \
+		The self-sealing stem bolts that allowed this helmet to be spaceworthy have long since corroded. However, the entity \
+		sealed within the suit seems to hunger for the fleeting lifeforce found in the remains left within drake armor. \
+		Feeding it seems to empower a suit piece, though turns the drake armor back to lifeless ash."
 	icon_state = "berserker"
 	icon = 'icons/obj/clothing/head/helmet.dmi'
 	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
@@ -717,7 +723,8 @@
 	actions_types = list(/datum/action/item_action/berserk_mode)
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
-	resistance_flags = FIRE_PROOF
+	flags_inv = HIDEHAIR|HIDEFACE|HIDEEARS|HIDESNOUT
+	resistance_flags = FIRE_PROOF | ACID_PROOF
 	clothing_flags = SNUG_FIT|THICKMATERIAL
 	/// Current charge of berserk, goes from 0 to 100
 	var/berserk_charge = 0
@@ -727,6 +734,8 @@
 /obj/item/clothing/head/hooded/berserker/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, LOCKED_HELMET_TRAIT)
+	AddComponent(/datum/component/armor_plate, maxamount = 1, upgrade_item = /obj/item/clothing/suit/hooded/cloak/drake, armor_mod = /datum/armor/drake_empowerment, upgrade_prefix = "empowered")
+	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/head/hooded/berserker/examine()
 	. = ..()
@@ -751,25 +760,29 @@
 		berserk_value *= PROJECTILE_HIT_MULTIPLIER
 	berserk_charge = clamp(round(berserk_charge + berserk_value), 0, MAX_BERSERK_CHARGE)
 	if(berserk_charge >= MAX_BERSERK_CHARGE)
+		var/datum/action/item_action/berserk_mode/ragemode = locate() in actions
 		to_chat(owner, span_notice("Berserk mode is fully charged."))
 		balloon_alert(owner, "berserk charged")
+		ragemode?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /obj/item/clothing/head/hooded/berserker/IsReflect()
 	if(berserk_active)
 		return TRUE
 
-/// Starts berserk, giving the wearer 50 melee armor, doubled attacking speed, NOGUNS trait, adding a color and giving them the berserk movespeed modifier
+/// Starts berserk, reducing incoming brute by 50%, doubled attacking speed, NOGUNS trait, adding a color and giving them the berserk movespeed modifier
 /obj/item/clothing/head/hooded/berserker/proc/berserk_mode(mob/living/carbon/human/user)
+	var/datum/action/item_action/berserk_mode/ragemode = locate() in actions
 	to_chat(user, span_warning("You enter berserk mode."))
 	playsound(user, 'sound/magic/staff_healing.ogg', 50)
 	user.add_movespeed_modifier(/datum/movespeed_modifier/berserk)
-	user.physiology.armor = user.physiology.armor.generate_new_with_modifiers(list(MELEE = BERSERK_MELEE_ARMOR_ADDED))
+	user.physiology.brute_mod *= 0.5
 	user.next_move_modifier *= BERSERK_ATTACK_SPEED_MODIFIER
 	user.add_atom_colour(COLOR_BUBBLEGUM_RED, TEMPORARY_COLOUR_PRIORITY)
 	user.add_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), BERSERK_TRAIT)
 	ADD_TRAIT(src, TRAIT_NODROP, BERSERK_TRAIT)
 	berserk_active = TRUE
 	START_PROCESSING(SSobj, src)
+	ragemode?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 
 /// Ends berserk, reverting the changes from the proc [berserk_mode]
 /obj/item/clothing/head/hooded/berserker/proc/end_berserk(mob/living/carbon/human/user)
@@ -778,10 +791,12 @@
 	berserk_active = FALSE
 	if(QDELETED(user))
 		return
+	var/datum/action/item_action/berserk_mode/ragemode = locate() in actions
+	ragemode?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 	to_chat(user, span_warning("You exit berserk mode."))
 	playsound(user, 'sound/magic/summonitems_generic.ogg', 50)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/berserk)
-	user.physiology.armor = user.physiology.armor.generate_new_with_modifiers(list(MELEE = -BERSERK_MELEE_ARMOR_ADDED))
+	user.physiology.brute_mod *= 2
 	user.next_move_modifier /= BERSERK_ATTACK_SPEED_MODIFIER
 	user.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BUBBLEGUM_RED)
 	user.remove_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), BERSERK_TRAIT)
@@ -792,7 +807,6 @@
 #undef PROJECTILE_HIT_MULTIPLIER
 #undef DAMAGE_TO_CHARGE_SCALE
 #undef CHARGE_DRAINED_PER_SECOND
-#undef BERSERK_MELEE_ARMOR_ADDED
 #undef BERSERK_ATTACK_SPEED_MODIFIER
 
 /obj/item/clothing/glasses/godeye
@@ -801,11 +815,12 @@
 	icon_state = "godeye"
 	inhand_icon_state = null
 	vision_flags = SEE_TURFS
+	clothing_traits = list(TRAIT_MADNESS_IMMUNE)
 	// Blue, light blue
 	color_cutoffs = list(15, 30, 40)
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	custom_materials = null
-	var/datum/action/cooldown/scan/scan_ability
+	var/datum/action/cooldown/spell/pointed/scan/scan_ability
 
 /obj/item/clothing/glasses/godeye/Initialize(mapload)
 	. = ..()
@@ -836,49 +851,60 @@
 	victim.emote("scream")
 	victim.flash_act()
 
-/datum/action/cooldown/scan
+/datum/action/cooldown/spell/pointed/scan
 	name = "Scan"
-	desc = "Scan an enemy, to get their location and stagger them, increasing their time between attacks."
+	desc = "Scan an enemy, to get their location and rebuke them, increasing their time between attacks."
 	background_icon_state = "bg_clock"
 	overlay_icon_state = "bg_clock_border"
 	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "scan"
+	school = SCHOOL_HOLY
+	cooldown_time = 35 SECONDS
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	antimagic_flags = MAGIC_RESISTANCE_MIND //Even god cannot penetrate the tin foil hat
 
-	click_to_activate = TRUE
-	cooldown_time = 45 SECONDS
 	ranged_mousepointer = 'icons/effects/mouse_pointers/scan_target.dmi'
 
-/datum/action/cooldown/scan/IsAvailable(feedback = FALSE)
-	return ..() && isliving(owner)
-
-/datum/action/cooldown/scan/Activate(atom/scanned)
-	StartCooldown(15 SECONDS)
-
-	if(owner.stat != CONSCIOUS)
+/datum/action/cooldown/spell/pointed/scan/is_valid_target(atom/cast_on)
+	if(!isliving(cast_on))
+		owner.balloon_alert(owner, "not a valid target!")
 		return FALSE
-	if(!isliving(scanned) || scanned == owner)
-		owner.balloon_alert(owner, "invalid scanned!")
+	var/mob/living/living_cast_on = cast_on
+	if(living_cast_on.stat == DEAD)
+		owner.balloon_alert(owner, "target is dead!")
 		return FALSE
+
+	return TRUE
+
+/datum/action/cooldown/spell/pointed/scan/cast(mob/living/cast_on)
+	. = ..()
+
+	if(cast_on.can_block_magic(MAGIC_RESISTANCE_MIND, charge_cost = 0))
+		to_chat(owner, span_warning("As we apply our dissecting vision, we are abruptly cut short. \
+			They have some kind of enigmatic mental defense. It seems we've been foiled."))
+		return
+
+	if(cast_on == owner)
+		to_chat(owner, span_warning("The last time a god stared too closely into their own reflection, they became transfixed for all of time. Do not let us become like them."))
+		return
 
 	var/mob/living/living_owner = owner
-	var/mob/living/living_scanned = scanned
-	living_scanned.apply_status_effect(/datum/status_effect/stagger)
+	var/mob/living/living_scanned = cast_on
+	living_scanned.apply_status_effect(/datum/status_effect/rebuked)
 	var/datum/status_effect/agent_pinpointer/scan_pinpointer = living_owner.apply_status_effect(/datum/status_effect/agent_pinpointer/scan)
 	scan_pinpointer.scan_target = living_scanned
 
-	living_scanned.set_jitter_if_lower(100 SECONDS)
-	to_chat(living_scanned, span_warning("You've been staggered!"))
-	living_scanned.add_filter("scan", 2, list("type" = "outline", "color" = COLOR_YELLOW, "size" = 1))
+	to_chat(living_scanned, span_warning("You briefly see a flash of [living_owner]'s face before being knocked off-balance by an unseen force!"))
+	living_scanned.add_filter("scan", 2, list("type" = "outline", "color" = COLOR_RED, "size" = 1))
 	addtimer(CALLBACK(living_scanned, TYPE_PROC_REF(/datum, remove_filter), "scan"), 30 SECONDS)
+
+	healthscan(living_owner, living_scanned, 1, TRUE)
 
 	owner.playsound_local(get_turf(owner), 'sound/magic/smoke.ogg', 50, TRUE)
 	owner.balloon_alert(owner, "[living_scanned] scanned")
 	addtimer(CALLBACK(src, PROC_REF(send_cooldown_end_message), cooldown_time))
 
-	StartCooldown()
-	return TRUE
-
-/datum/action/cooldown/scan/proc/send_cooldown_end_message()
+/datum/action/cooldown/spell/pointed/scan/proc/send_cooldown_end_message()
 	owner?.balloon_alert(owner, "scan recharged")
 
 /datum/status_effect/agent_pinpointer/scan

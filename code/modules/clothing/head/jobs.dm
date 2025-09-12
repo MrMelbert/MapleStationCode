@@ -131,6 +131,7 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#41579A#F0CC8F"
+	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
 
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
@@ -177,7 +178,6 @@
 	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
 	armor_type = /datum/armor/fedora_det_hat
 	icon_state = "detective"
-	inhand_icon_state = "det_hat"
 	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 	dog_fashion = /datum/dog_fashion/head/detective
 	/// Path for the flask that spawns inside their hat roundstart
@@ -244,7 +244,6 @@
 	desc = "There's only one man can try to stop an evil villian."
 	armor_type = /datum/armor/fedora_det_hat
 	icon_state = "detective"
-	inhand_icon_state = "det_hat"
 	dog_fashion = /datum/dog_fashion/head/detective
 	interaction_flags_click = FORBID_TELEKINESIS_REACH|ALLOW_RESTING
 	///prefix our phrases must begin with
@@ -361,6 +360,7 @@
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
 	greyscale_colors = "#972A2A"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
 
 //Security
 /obj/item/clothing/head/hats/hos
@@ -381,8 +381,8 @@
 		/datum/crafting_recipe/sturdy_shako,\
 		)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -416,6 +416,7 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#39393f#f0cc8f"
+	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
 
 /obj/item/clothing/head/hats/hos/beret/navyhos
 	name = "head of security's formal beret"
@@ -591,8 +592,13 @@
 	icon_state = "surgicalcap"
 	desc = "A blue medical surgery cap to prevent the surgeon's hair from entering the insides of the patient!"
 	flags_inv = HIDEHAIR //Cover your head doctor!
+	w_class = WEIGHT_CLASS_SMALL //surgery cap can be easily crumpled
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+
+/obj/item/clothing/head/utility/surgerycap/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
 
 /obj/item/clothing/head/utility/surgerycap/attack_self(mob/user)
 	. = ..()
@@ -637,6 +643,10 @@
 	body_parts_covered = NONE
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+
+/obj/item/clothing/head/utility/head_mirror/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
 
 /obj/item/clothing/head/utility/head_mirror/examine(mob/user)
 	. = ..()

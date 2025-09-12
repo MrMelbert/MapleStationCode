@@ -7,10 +7,11 @@
 	icon = 'icons/obj/machines/computer.dmi'
 	icon_state = "laptop"
 	light_on = FALSE
+	light_power = 1.2
 	integrity_failure = 0.5
 	max_integrity = 100
 	armor_type = /datum/armor/item_modular_computer
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	interaction_flags_mouse_drop = NEED_HANDS | ALLOW_RESTING
 
 	///The ID currently stored in the computer.
@@ -138,7 +139,6 @@
 	UpdateDisplay()
 	if(has_light)
 		add_item_action(/datum/action/item_action/toggle_computer_light)
-		RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
 	if(inserted_disk)
 		inserted_disk = new inserted_disk(src)
 	if(internal_cell)
@@ -738,20 +738,16 @@
 	update_item_action_buttons(force = TRUE) //force it because we added an overlay, not changed its icon
 	return TRUE
 
-/**
- * Disables the computer's flashlight/LED light, if it has one, for a given disrupt_duration.
- *
- * Called when sent COMSIG_HIT_BY_SABOTEUR.
- */
-/obj/item/modular_computer/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
+//Disables the computer's flashlight/LED light, if it has one, for a given disrupt_duration.
+/obj/item/modular_computer/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	if(!has_light)
 		return
 	set_light_on(FALSE)
 	update_appearance()
 	update_item_action_buttons(force = TRUE) //force it because we added an overlay, not changed its icon
 	COOLDOWN_START(src, disabled_time, disrupt_duration)
-	return COMSIG_SABOTEUR_SUCCESS
+	return TRUE
 
 /**
  * Sets the computer's light color, if it has a light.

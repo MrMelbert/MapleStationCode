@@ -34,7 +34,7 @@
 	RemoveInvisibility(type)
 	set_species(dna.species.monkey_type)
 	to_chat(src, span_boldnotice("You are now \a [dna.species.name]."))
-	name = lowertext(dna.species.name)
+	name = LOWER_TEXT(dna.species.name)
 	regenerate_icons()
 	set_name()
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)
@@ -297,7 +297,7 @@
 
 	SSblackbox.record_feedback("amount", "gorillas_created", 1)
 
-	var/Itemlist = get_equipped_items(include_pockets = TRUE)
+	var/Itemlist = get_equipped_items(INCLUDE_POCKETS)
 	Itemlist += held_items
 	for(var/obj/item/W in Itemlist)
 		dropItemToGround(W, TRUE)

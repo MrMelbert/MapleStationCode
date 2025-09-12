@@ -36,9 +36,9 @@ GLOBAL_LIST_INIT(command_strings, list(
 	bubble_icon = "machine"
 	speech_span = SPAN_ROBOT
 	faction = list(FACTION_NEUTRAL, FACTION_SILICON, FACTION_TURRET)
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 3
-	light_power = 0.9
+	light_power = 0.6
 	speed = 3
 	///Access required to access this Bot's maintenance protocols
 	var/maints_access_required = list(ACCESS_ROBOTICS)
@@ -81,7 +81,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	var/list/current_pathed_turfs = list()
 
 	///The type of data HUD the bot uses. Diagnostic by default.
-	var/data_hud_type = DATA_HUD_DIAGNOSTIC_BASIC
+	var/data_hud_type = DATA_HUD_DIAGNOSTIC
 	/// If true we will allow ghosts to control this mob
 	var/can_be_possessed = FALSE
 	/// Message to display upon possession
