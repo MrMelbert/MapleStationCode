@@ -1,6 +1,8 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Nutrition changed last life tick, so we should bulk update this tick
+#define QUEUE_NUTRITION_UPDATE (1<<3)
 
 // NON-MODULE CHANGE
 // Sticking these here for now because i'm dumb
@@ -21,8 +23,24 @@
 	#define HANDLE_BLOOD_HANDLED (1<<0)
 	#define HANDLE_BLOOD_NO_NUTRITION_DRAIN (1<<1)
 	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
+#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+
+#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
+	/// Return to do no homeostasis at all
+	#define HOMEOSTASIS_HANDLED (1<<0)
+	/// Return to not reduce hunger at all
+	#define HOMEOSTASIS_NO_HUNGER (1<<1)
+
+//from base of living/set_pull_offset(): (mob/living/pull_target, grab_state)
+#define COMSIG_LIVING_SET_PULL_OFFSET "living_set_pull_offset"
+//from base of living/reset_pull_offsets(): (mob/living/pull_target, override)
+#define COMSIG_LIVING_RESET_PULL_OFFSETS "living_reset_pull_offsets"
+//from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
+#define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
+	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
 /// Various lists of body zones affected by pain.
+
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_LIMBS list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -46,6 +64,8 @@
 
 /// Cap on shock level
 #define MAX_TRAUMATIC_SHOCK 200
+/// Hard cap on pain level
+#define MAX_LIMB_PAIN 300
 
 /// Checks if a mob can feel pain.
 #define CAN_FEEL_PAIN(mob) (mob?.stat <= SOFT_CRIT && mob?.pain_controller?.pain_modifier > 0.33)
@@ -58,6 +78,7 @@
 #define PAIN_MOD_QUIRK "quirk"
 #define PAIN_MOD_SPECIES "species"
 #define PAIN_MOD_OFF_STATION "off-station-pain-resistance"
+#define PAIN_MOD_STATUS_EFFECT "status_effect"
 
 // ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
@@ -146,8 +167,16 @@
 /// Updates associated self-huds on the mob
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
+/// Threshold that heart beat becomes "slow"
+#define SLOW_HEARTBEAT_THRESHOLD 6
+/// Threshold that heart beat becomes "fast"
+#define FAST_HEARTBEAT_THRESHOLD 11
+
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"
 #define PIXEL_X_OFFSET "x"
 #define PIXEL_Y_OFFSET "y"
 #define PIXEL_Z_OFFSET "z"
+
+/// Disables headset use, but not internal radio / intercom use
+#define TRAIT_BLOCK_HEADSET_USE "block_headset_use"

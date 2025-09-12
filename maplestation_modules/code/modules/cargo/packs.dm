@@ -208,6 +208,19 @@
 		/obj/item/storage/pill_bottle/prescription/buproprion,
 	)
 
+/obj/item/storage/pill_bottle/prescription/nitroglycerin
+	pill_type = /obj/item/reagent_containers/pill/nitroglycerin
+	num_pills = 5
+
+/datum/supply_pack/goody/nitroglycerin
+	name = "Nitroglycerin Prescription"
+	desc = "Contains a pill bottle of Nitroglycerin, which helps with heart conditions."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 10
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/nitroglycerin,
+	)
+
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
 	desc = "Contains six syringes of general medicinal painkillers - Ibuprofen, Paracetamol, and Aspirin."
@@ -334,3 +347,16 @@
 	icon = 'maplestation_modules/icons/obj/storage/crates.dmi'
 	icon_state = "opscrate"
 	base_icon_state = "opscrate"
+
+/datum/supply_pack/science/volitious_lignite_single_pack
+	name = "Volitious Lignite Pack"
+	desc = "A bundle containing 5 pieces of a natural source of volite, volitious lignite."
+	cost = PAYCHECK_COMMAND * 2
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+	)
+

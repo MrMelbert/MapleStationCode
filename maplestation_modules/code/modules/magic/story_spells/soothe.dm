@@ -65,8 +65,9 @@
 		delay = 5 SECONDS,
 		target = cast_on,
 		timed_action_flags = IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_SLOWDOWNS,
-		extra_checks = CALLBACK(src, PROC_REF(block_cast), caster, cast_on), \
-		interaction_key = REF(src), \
+		extra_checks = CALLBACK(src, PROC_REF(block_cast), caster, cast_on),
+		interaction_key = REF(src),
+		hidden = TRUE,
 	))
 		. |= SPELL_CANCEL_CAST
 
@@ -132,6 +133,9 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/being_soothed/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return
 	if(usr != owner || !isliving(owner))
 		return FALSE
 

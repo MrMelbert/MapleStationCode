@@ -251,7 +251,7 @@ Behavior that's still missing from this component that original food items had t
 	if(!(food_flags & FOOD_IN_CONTAINER))
 		switch(bitecount)
 			if(0)
-				// pass
+				pass()
 			if(1)
 				examine_list += span_notice("[owner] was bitten by someone!")
 			if(2, 3)
@@ -476,6 +476,7 @@ Behavior that's still missing from this component that original food items had t
 
 	var/fraction = min(bite_consumption / owner.reagents.total_volume, 1)
 	owner.reagents.trans_to(eater, bite_consumption, transferred_by = feeder, methods = INGEST)
+	eater.hud_used?.hunger?.update_hunger_bar()
 	bitecount++
 
 	checkLiked(fraction, eater)

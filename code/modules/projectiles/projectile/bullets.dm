@@ -26,7 +26,7 @@
 	pain_stam_pct = 0.5
 	pain_mult = 3
 	rip_time = 10 SECONDS
-	hidden_embed = TRUE
+	stealthy_embed = TRUE
 	blood_loss = 0.05
 
 /datum/embed_data/bullet/on_embed(

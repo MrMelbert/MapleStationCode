@@ -34,6 +34,8 @@
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"
 
+#define VENDING_MACHINE_TRAIT "vending_machine"
+
 #define ABSTRACT_ITEM_TRAIT "abstract-item"
 /// A trait given by any status effect
 #define STATUS_EFFECT_TRAIT "status-effect"
@@ -43,6 +45,7 @@
 
 /// Trait given by an Action datum
 #define ACTION_TRAIT "action"
+
 #define CLOTHING_TRAIT "clothing"
 #define HELMET_TRAIT "helmet"
 /// inherited from the mask
@@ -179,6 +182,8 @@
 #define TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM "element-required"
 /// Trait applied by MODsuits.
 #define MOD_TRAIT "mod"
+/// Trait given by a fulton extraction pack
+#define FULTON_PACK_TRAIT "fulton-pack"
 
 /// Trait from mob/living/update_transform()
 #define UPDATE_TRANSFORM_TRAIT "update_transform"
@@ -279,5 +284,8 @@
 
 /// Trait from an organ being inside a bodypart
 #define ORGAN_INSIDE_BODY_TRAIT "organ_inside_body"
-/// Trait when something was labelled by a pen.
-#define PEN_LABEL_TRAIT "pen_label"
+/// Trait when something was labelled by the /datum/element/tool_renaming element.
+#define RENAMING_TOOL_LABEL_TRAIT "renaming_tool_label"
+
+/// Trait when a drink was renamed by a shaker
+#define SHAKER_LABEL_TRAIT "shaker_trait"

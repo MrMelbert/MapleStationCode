@@ -183,7 +183,7 @@
 	var/mutable_appearance/eye_right = mutable_appearance(eye_overlay_file, "[eye_icon_state]_r", -BODY_LAYER, parent) // NON-MODULE CHANGE / UPSTREAM ME
 	var/list/overlays = list(eye_left, eye_right)
 
-	var/obscured = parent.check_obscured_slots(TRUE)
+	var/obscured = parent.check_obscured_slots()
 	if(overlay_ignore_lighting && !(obscured & ITEM_SLOT_EYES))
 		overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, parent, -BODY_LAYER, alpha = eye_left.alpha)
 		overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, parent, -BODY_LAYER, alpha = eye_right.alpha)
@@ -269,6 +269,10 @@
 		nearsightedness.set_nearsighted_severity(damage > high_threshold ? 2 : 1)
 
 	damaged = TRUE
+
+/obj/item/organ/eyes/feel_for_damage(self_aware)
+	// Eye damage has visual effects, so we don't really need to "feel" it when self-examining
+	return ""
 
 #define BASE_BLINKING_DELAY 5 SECONDS
 #define RAND_BLINKING_DELAY 1 SECONDS
@@ -607,7 +611,7 @@
 /obj/item/organ/internal/eyes/robotic/glow/ui_state(mob/user)
 	return GLOB.default_state
 
-/obj/item/organ/internal/eyes/robotic/glow/ui_status(mob/user)
+/obj/item/organ/internal/eyes/robotic/glow/ui_status(mob/user, datum/ui_state/state)
 	if(!QDELETED(owner))
 		if(owner == user)
 			return min(

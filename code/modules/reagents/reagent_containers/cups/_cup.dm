@@ -80,6 +80,19 @@
 		target_mob.visible_message(span_danger("[user] feeds [target_mob] something from [src]."), \
 					span_userdanger("[user] feeds you something from [src]."))
 		log_combat(user, target_mob, "fed", reagents.get_reagent_log_string())
+	// NON-MODULE CHANGE
+	else if(isGlass || (reagent_flags & OPENCONTAINER))
+		var/pre_volume_percent = reagents.total_volume / reagents.maximum_volume
+		var/post_volume_percent = (reagents.total_volume - gulp_size) / reagents.maximum_volume
+		if(post_volume_percent <= 0)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's empty."))
+		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
+		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
+		else
+			to_chat(user, span_notice("You swallow a gulp of [src]."))
+	// NON-MODULE CHANGE END
 	else
 		to_chat(user, span_notice("You swallow a gulp of [src]."))
 
@@ -101,67 +114,67 @@
 	if(LAZYLEN(diseases_to_add))
 		AddComponent(/datum/component/infective, diseases_to_add)
 
-/obj/item/reagent_containers/cup/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag)
-		return
-
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/reagent_containers/cup/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(!check_allowed_items(target, target_self = TRUE))
-		return
-
+		return NONE
 	if(!spillable)
-		return
+		return NONE
 
 	if(target.is_refillable()) //Something like a glass. Player probably wants to transfer TO it.
 		if(!reagents.total_volume)
 			to_chat(user, span_warning("[src] is empty!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(target.reagents.holder_full())
 			to_chat(user, span_warning("[target] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transferred_by = user)
 		playsound(target.loc, SFX_LIQUID_POUR, 50)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
+		SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_TO, target)
+		target.update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
-	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
+	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty and can't be refilled!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
+		SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_FROM, target)
+		target.update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
-	target.update_appearance()
+	return NONE
 
-/obj/item/reagent_containers/cup/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	if((!proximity_flag) || !check_allowed_items(target, target_self = TRUE))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
+/obj/item/reagent_containers/cup/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+	if(!check_allowed_items(target, target_self = TRUE))
+		return NONE
 	if(!spillable)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return NONE
 
 	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty!"))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
 
 	target.update_appearance()
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/attackby(obj/item/attacking_item, mob/user, params)
 	var/hotness = attacking_item.get_temperature()
@@ -431,7 +444,7 @@
 	if (slot & ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
 			to_chat(user, span_userdanger("[src]'s contents spill all over you!"))
-			reagents.expose(user, TOUCH)
+			reagents.expose(user, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
@@ -472,11 +485,13 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 	var/obj/item/grinded
 
-/obj/item/reagent_containers/cup/mortar/AltClick(mob/user)
-	if(grinded)
-		grinded.forceMove(drop_location())
-		grinded = null
-		to_chat(user, span_notice("You eject the item inside."))
+/obj/item/reagent_containers/cup/mortar/click_alt(mob/user)
+	if(!grinded)
+		return CLICK_ACTION_BLOCKING
+	grinded.forceMove(drop_location())
+	grinded = null
+	balloon_alert(user, "ejected")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/mortar/attackby(obj/item/I, mob/living/carbon/human/user)
 	..()
@@ -492,7 +507,7 @@
 			var/picked_option = show_radial_menu(user, src, choose_options, radius = 38, require_near = TRUE)
 			if(grinded && in_range(src, user) && user.is_holding(I) && picked_option)
 				to_chat(user, span_notice("You start grinding..."))
-				if(do_after(user, 25, target = src))
+				if(do_after(user, 2.5 SECONDS, target = src))
 					user.adjustStaminaLoss(40)
 					switch(picked_option)
 						if("Juice")

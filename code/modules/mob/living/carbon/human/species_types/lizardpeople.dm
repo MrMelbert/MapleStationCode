@@ -62,7 +62,7 @@
 
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()
-	features["body_markings"] = pick(GLOB.body_markings_list)
+	features["body_markings"] = pick(SSaccessories.body_markings_list)
 	return features
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -206,9 +206,7 @@ Lizard subspecies: SILVER SCALED
 	id = SPECIES_LIZARD_SILVER
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(
-		TRAIT_HOLY,
-		TRAIT_NOBREATH,
-		TRAIT_PIERCEIMMUNE,
+		TRAIT_PIERCEIMMUNE, // future todo : someone should make pierce immunity per-bodypart rather than blanket
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_TACKLING_TAILED_DEFENDER,

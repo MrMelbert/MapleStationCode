@@ -140,7 +140,7 @@
 
 	for(var/datum/crafting_recipe/recipe as anything in slapcraft_recipes)
 		var/atom/result = initial(recipe.result)
-		examine_list += "<a href='?src=[REF(source)];check_recipe=[REF(recipe)]'>See Recipe For [initial(result.name)]</a>"
+		examine_list += "<a href='byond://?src=[REF(source)];check_recipe=[REF(recipe)]'>See Recipe For [initial(result.name)]</a>"
 
 /datum/component/slapcrafting/proc/topic_handler(atom/source, user, href_list)
 	SIGNAL_HANDLER
@@ -203,4 +203,3 @@
 		to_chat(user, examine_block(span_notice(tool_list)))
 
 	qdel(cur_recipe)
-

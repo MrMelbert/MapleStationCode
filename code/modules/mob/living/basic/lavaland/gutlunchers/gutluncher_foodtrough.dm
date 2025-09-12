@@ -22,11 +22,8 @@
 	list_of_materials -= mover.type
 	return ..()
 
-/obj/structure/ore_container/gutlunch_trough/deconstruct(disassembled = TRUE)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
+/obj/structure/ore_container/gutlunch_trough/atom_deconstruct(disassembled = TRUE)
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 5)
-	qdel(src)
 
 /obj/structure/ore_container/gutlunch_trough/update_overlays()
 	. = ..()
@@ -35,6 +32,6 @@
 		var/image/ore_icon = image(icon = initial(ore_item.icon), icon_state = initial(ore_item.icon_state), layer = LOW_ITEM_LAYER)
 		var/list/pixel_positions = list_of_materials[ore_entry]
 		ore_icon.transform = ore_icon.transform.Scale(0.4, 0.4)
-		ore_icon.pixel_x = pixel_positions["pixel_x"]
-		ore_icon.pixel_y = pixel_positions["pixel_y"]
+		ore_icon.pixel_w = pixel_positions["pixel_x"]
+		ore_icon.pixel_z = pixel_positions["pixel_y"]
 		. += ore_icon

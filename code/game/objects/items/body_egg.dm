@@ -10,6 +10,10 @@
 	..()
 	to_chat(finder, span_warning("You found an unknown alien organism in [owner]'s [zone]!"))
 
+/obj/item/organ/internal/body_egg/feel_for_damage(self_aware)
+	// keep these stealthy for now, revisit later
+	return ""
+
 /obj/item/organ/internal/body_egg/Initialize(mapload)
 	. = ..()
 	if(iscarbon(loc))

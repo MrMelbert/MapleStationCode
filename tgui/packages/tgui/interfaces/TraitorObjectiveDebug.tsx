@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { Box, LabeledList, Stack, Tabs, Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Box, LabeledList, Stack, Tabs, Tooltip } from '../components';
 import { Window } from '../layouts';
 import { getDangerLevel } from './Uplink/calculateDangerLevel';
 
@@ -131,7 +131,7 @@ const sortingOptions: SortingOption[] = [
 export const TraitorObjectiveDebug = (props) => {
   const { data, act } = useBackend<ObjectiveData>();
   const { objective_data, player_data, current_progression } = data;
-  const lines: JSX.Element[] = [];
+  const lines: React.JSX.Element[] = [];
   lines.sort();
   for (let i = 10; i < 100; i += 10) {
     lines.push(

@@ -4,7 +4,7 @@
 	icon_state = "mousetrap"
 	inhand_icon_state = "mousetrap"
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT)
-	attachable = TRUE
+	assembly_behavior = ASSEMBLY_TOGGLEABLE_INPUT
 	var/armed = FALSE
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
@@ -152,7 +152,7 @@
  * * user: The mob handling the trap
  */
 /obj/item/assembly/mousetrap/proc/clumsy_check(mob/living/carbon/human/user)
-	if(!armed)
+	if(!armed || !user)
 		return FALSE
 	if((HAS_TRAIT(user, TRAIT_DUMB) || HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
 		var/which_hand = BODY_ZONE_PRECISE_L_HAND

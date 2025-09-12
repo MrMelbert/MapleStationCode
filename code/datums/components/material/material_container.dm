@@ -52,7 +52,8 @@
 		else
 			allowed_item_typecache = typecacheof(allowed_items)
 
-	for(var/mat in init_mats) //Make the assoc list material reference -> amount
+	//Make the assoc list material reference -> amount
+	for(var/mat in init_mats)
 		var/mat_ref = GET_MATERIAL_REF(mat)
 		if(isnull(mat_ref))
 			continue
@@ -66,16 +67,7 @@
 		for(var/signal in container_signals)
 			parent.RegisterSignal(src, signal, container_signals[signal])
 
-	if(_mat_container_flags & MATCONTAINER_NO_INSERT)
-		return
-
-	var/atom/atom_target = parent
-	atom_target.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
-
-	RegisterSignal(atom_target, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
-
 /datum/component/material_container/Destroy(force)
-	retrieve_all()
 	materials = null
 	allowed_materials = null
 	return ..()
@@ -83,10 +75,42 @@
 /datum/component/material_container/RegisterWithParent()
 	. = ..()
 
+	var/atom/atom_target = parent
+
+	//can we insert into this container
 	if(!(mat_container_flags & MATCONTAINER_NO_INSERT))
-		RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
+		//to insert stuff into the container
+		RegisterSignal(atom_target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_insert))
+		RegisterSignal(atom_target, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY, PROC_REF(on_secondary_insert))
+
+		//screen tips for inserting items
+		atom_target.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
+		RegisterSignal(atom_target, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
+
+	//to see available materials
 	if(mat_container_flags & MATCONTAINER_EXAMINE)
-		RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+		RegisterSignal(atom_target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+
+	//drop sheets when the object is deconstructed but not deleted
+	RegisterSignal(parent, COMSIG_OBJ_DECONSTRUCT, PROC_REF(drop_sheets))
+
+/datum/component/material_container/UnregisterFromParent()
+	var/list/signals = list()
+
+	if(!(mat_container_flags & MATCONTAINER_NO_INSERT))
+		signals += COMSIG_ATOM_ITEM_INTERACTION
+		signals += COMSIG_ATOM_ITEM_INTERACTION_SECONDARY
+		signals +=  COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM
+	if(mat_container_flags & MATCONTAINER_EXAMINE)
+		signals +=  COMSIG_ATOM_EXAMINE
+	signals += COMSIG_OBJ_DECONSTRUCT
+
+	UnregisterSignal(parent, signals)
+
+/datum/component/material_container/proc/drop_sheets()
+	SIGNAL_HANDLER
+
+	retrieve_all()
 
 /datum/component/material_container/proc/on_examine(datum/source, mob/user, list/examine_texts)
 	SIGNAL_HANDLER
@@ -107,9 +131,10 @@
 			UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 
 		if(old_flags & MATCONTAINER_NO_INSERT && !(mat_container_flags & MATCONTAINER_NO_INSERT))
-			RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
+			RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_insert))
+			RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY, PROC_REF(on_secondary_insert))
 		else if(!(old_flags & MATCONTAINER_NO_INSERT) && mat_container_flags & MATCONTAINER_NO_INSERT)
-			UnregisterSignal(parent, COMSIG_ATOM_ATTACKBY)
+			UnregisterSignal(parent, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY))
 
 /**
  * 3 Types of Procs
@@ -268,9 +293,10 @@
 	var/inserted = 0
 	//All messages to be displayed to chat
 	var/list/chat_msgs = list()
-
 	//differs from held_item when using TK
-	var/active_held = user.get_active_held_item()
+	var/obj/item/active_held = user.get_active_held_item()
+	//omni tools can act as any tool so get its real behaviour
+	active_held = active_held.get_proxy_attacker_for(held_item)
 
 	var/static/list/storage_items
 	if(isnull(storage_items))
@@ -281,7 +307,7 @@
 		)
 
 	//1st iteration consumes all items that do not have contents inside
-	//2nd iteration consumes items who do have contents inside(but they were consumed in the 1st iteration si its empty now)
+	//2nd iteration consumes items who do have contents inside(but they were consumed in the 1st iteration so its empty now)
 	for(var/i in 1 to 2)
 		//no point inserting more items
 		if(inserted == MATERIAL_INSERT_ITEM_NO_SPACE)
@@ -304,15 +330,11 @@
 			//can't allow abstract, hologram items
 			if((target_item.item_flags & ABSTRACT) || (target_item.flags_1 & HOLOGRAM_1))
 				continue
-			//untouchable, move it out the way, code copied from recycler
-			if(target_item.resistance_flags & INDESTRUCTIBLE)
-				target_item.forceMove(get_turf(parent))
-				continue
 			//user defined conditions
 			if(SEND_SIGNAL(src, COMSIG_MATCONTAINER_PRE_USER_INSERT, target_item, user) & MATCONTAINER_BLOCK_INSERT)
 				continue
-			//item is either not allowed for redemption, not in the allowed types
-			if((target_item.item_flags & NO_MAT_REDEMPTION) || (allowed_item_typecache && !is_type_in_typecache(target_item, allowed_item_typecache)))
+			//item is either indestructible, not allowed for redemption or not in the allowed types
+			if((target_item.resistance_flags & INDESTRUCTIBLE) || (target_item.item_flags & NO_MAT_REDEMPTION) || (allowed_item_typecache && !is_type_in_typecache(target_item, allowed_item_typecache)))
 				if(!(mat_container_flags & MATCONTAINER_SILENT) && i == 1) //count only child items the 1st time around
 					var/list/status_data = chat_msgs["[MATERIAL_INSERT_ITEM_FAILURE]"] || list()
 					var/list/item_data = status_data[target_item.name] || list()
@@ -320,6 +342,10 @@
 					status_data[target_item.name] = item_data
 					chat_msgs["[MATERIAL_INSERT_ITEM_FAILURE]"] = status_data
 
+				if(target_item.resistance_flags & INDESTRUCTIBLE)
+					if(i == 1 && target_item != active_held) //move it out of any storage medium its in so it doesn't get consumed with its parent, but only if that storage medium is not our hand
+						target_item.forceMove(get_turf(context))
+					continue
 				//storage items usually come here but we make the exception only on the 1st iteration
 				//this is so players can insert items from their bags into machines for convinience
 				if(!is_type_in_list(target_item, storage_items))
@@ -459,9 +485,9 @@
 					if(MATERIAL_INSERT_ITEM_SUCCESS) //no problems full item was consumed
 						if(chat_data["stack"])
 							var/sheets = min(count, amount) //minimum between sheets inserted vs sheets consumed(values differ for alloys)
-							to_chat(user, span_notice("[sheets > 1 ? sheets : ""] [item_name][sheets > 1 ? "'s" : ""] was consumed by [parent]"))
+							to_chat(user, span_notice("[sheets > 1 ? "[sheets] " : ""][item_name][sheets > 1 ? "s were" : " was"] added to [parent]."))
 						else
-							to_chat(user, span_notice("[count > 1 ? count : ""] [item_name][count > 1 ? "'s" : ""] worth [amount] sheets of material was consumed by [parent]"))
+							to_chat(user, span_notice("[count > 1 ? "[count] " : ""][item_name][count > 1 ? "s" : ""], worth [amount] sheets, [count > 1 ? "were" : "was"] added to [parent]."))
 					if(MATERIAL_INSERT_ITEM_NO_SPACE) //no space
 						to_chat(user, span_warning("[parent] has no space to accept [item_name]"))
 					if(MATERIAL_INSERT_ITEM_NO_MATS) //no materials inside these items
@@ -469,17 +495,29 @@
 					if(MATERIAL_INSERT_ITEM_FAILURE) //could be because the material type was not accepted or other stuff
 						to_chat(user, span_warning("[count > 1 ? count : ""] [item_name][count > 1 ? "'s" : ""] was rejected by [parent]"))
 
-/// Proc that allows players to fill the parent with mats
-/datum/component/material_container/proc/on_attackby(datum/source, obj/item/weapon, mob/living/user)
+/datum/component/material_container/proc/on_item_insert(datum/source, mob/living/user, obj/item/weapon)
 	SIGNAL_HANDLER
+	// Don't insert material items with left click
+	if (isstack(weapon))
+		return attempt_insert(user, weapon)
 
+/datum/component/material_container/proc/on_secondary_insert(datum/source, mob/living/user, obj/item/weapon)
+	SIGNAL_HANDLER
+	return attempt_insert(user, weapon)
+
+/// Proc that allows players to fill the parent with mats
+/datum/component/material_container/proc/attempt_insert(mob/living/user, obj/item/weapon)
 	//Allows you to attack the machine with iron sheets for e.g.
 	if(!(mat_container_flags & MATCONTAINER_ANY_INTENT) && user.combat_mode)
 		return
 
-	user_insert(weapon, user)
+	if(ismachinery(parent))
+		var/obj/machinery/machine = parent
+		if(machine.machine_stat || machine.panel_open)
+			return
 
-	return COMPONENT_NO_AFTERATTACK
+	user_insert(weapon, user)
+	return ITEM_INTERACT_SUCCESS
 //===============================================================================================
 
 
@@ -754,7 +792,9 @@
 			continue
 		return NONE
 
-	context[SCREENTIP_CONTEXT_LMB] = "Insert"
+	if (isstack(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Insert stack"
+	context[SCREENTIP_CONTEXT_RMB] = "Insert"
 
 	return CONTEXTUAL_SCREENTIP_SET
 

@@ -424,52 +424,45 @@
 		dropItemToGround(I)
 	drop_all_held_items()
 
-
-/mob/living/carbon/proc/check_obscured_slots(transparent_protection)
-	var/obscured = NONE
-	var/hidden_slots = NONE
-
-	for(var/obj/item/I in get_all_worn_items())
-		hidden_slots |= I.flags_inv
-		if(transparent_protection)
-			hidden_slots |= I.transparent_protection
-
-	if(hidden_slots & HIDENECK)
-		obscured |= ITEM_SLOT_NECK
-	if(hidden_slots & HIDEMASK)
-		obscured |= ITEM_SLOT_MASK
-	if(hidden_slots & HIDEEYES)
-		obscured |= ITEM_SLOT_EYES
-	if(hidden_slots & HIDEEARS)
-		obscured |= ITEM_SLOT_EARS
-	if(hidden_slots & HIDEGLOVES)
-		obscured |= ITEM_SLOT_GLOVES
-	if(hidden_slots & HIDEJUMPSUIT)
-		obscured |= ITEM_SLOT_ICLOTHING
-	if(hidden_slots & HIDESHOES)
-		obscured |= ITEM_SLOT_FEET
-	if(hidden_slots & HIDESUITSTORAGE)
-		obscured |= ITEM_SLOT_SUITSTORE
-	if(hidden_slots & HIDEHEADGEAR)
-		obscured |= ITEM_SLOT_HEAD
-
-	return obscured
-
-
 /// Tries to equip an item, store it in open storage, or in next best storage
 /obj/item/proc/equip_to_best_slot(mob/user)
+// NON-MODULE CHANGE START : prioritize active storage over suit storage and pockets
+	var/slot_priority = src.slot_equipment_priority
+
+	if(!slot_priority)
+		slot_priority = list( \
+			ITEM_SLOT_BACK, ITEM_SLOT_ID,\
+			ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
+			ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
+			ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
+			ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
+			ITEM_SLOT_BELT\
+		)
+
+	var/can_equip = FALSE
+
+	for(var/slot in slot_priority)
+		if(src.mob_can_equip(user, slot, TRUE, TRUE))
+			can_equip = TRUE
+			break
+
+	if(!can_equip && user.active_storage?.attempt_insert(src, user, messages = FALSE))
+		return TRUE
+
 	if(user.equip_to_appropriate_slot(src))
 		user.update_held_items()
 		return TRUE
 	else
 		if(equip_delay_self)
 			return
-
+/*
 	if(user.active_storage?.attempt_insert(src, user, messages = FALSE))
 		return TRUE
-
+*/
+// NON-MODULE CHANGE END
 	var/list/obj/item/possible = list(
 		user.get_inactive_held_item(),
+		user.get_item_by_slot(ITEM_SLOT_SUITSTORE), // NON-MODULE CHANGE : holsters, *maybe* some other things?
 		user.get_item_by_slot(ITEM_SLOT_BELT),
 		user.get_item_by_slot(ITEM_SLOT_DEX_STORAGE),
 		user.get_item_by_slot(ITEM_SLOT_BACK),
@@ -502,17 +495,21 @@
 			. += item
 
 ///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+
+// NON-MODULE CHANGE START : quick equip to active storage if available
 /mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
-		return
-	if (temporarilyRemoveItemFromInventory(I) && !QDELETED(I))
-		if(I.equip_to_best_slot(src))
-			return
-		if(put_in_active_hand(I))
-			return
-		I.forceMove(drop_location())
+		var/datum/storage/storage = src.active_storage
+		if(storage?.real_location.contents.len)
+			var/obj/item/stored = storage.real_location.contents[storage.real_location.contents.len]
+			if(!stored || stored.on_found(src))
+				to_chat(src, span_warning("You are not holding anything to equip!"))
+				return
+			stored.attack_hand(src) // take out thing from item in storage slot
+	if(!QDELETED(I))
+		I.equip_to_best_slot(src)
+// NON-MODULE CHANGE END
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()

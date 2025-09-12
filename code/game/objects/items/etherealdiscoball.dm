@@ -31,6 +31,9 @@
 
 /obj/structure/etherealball/attack_hand(mob/living/carbon/human/user, list/modifiers)
 	. = ..()
+	if(!can_interact(user))
+		return
+
 	if(TurnedOn)
 		TurnOff()
 		to_chat(user, span_notice("You turn the disco ball off!"))
@@ -38,10 +41,10 @@
 		TurnOn()
 		to_chat(user, span_notice("You turn the disco ball on!"))
 
-/obj/structure/etherealball/AltClick(mob/living/carbon/human/user)
-	. = ..()
+/obj/structure/etherealball/click_alt(mob/living/carbon/human/user)
 	set_anchored(!anchored)
 	to_chat(user, span_notice("You [anchored ? null : "un"]lock the disco ball."))
+	return CLICK_ACTION_SUCCESS
 
 /obj/structure/etherealball/proc/TurnOn()
 	TurnedOn = TRUE //Same

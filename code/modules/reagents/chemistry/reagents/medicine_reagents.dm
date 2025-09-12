@@ -163,7 +163,7 @@
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
-	affected_mob.cause_pain(BODY_ZONES_ALL, -0.5 * power * REM * seconds_per_tick)
+	affected_mob.cause_pain(1 * power * REM * seconds_per_tick)
 	affected_mob.adjust_traumatic_shock(-0.12 * power * REM * seconds_per_tick)
 
 	if(need_mob_update)
@@ -388,7 +388,7 @@
 			to_chat(exposed_mob, span_warning("Your stomach feels empty and cramps!"))
 
 	if(methods & (PATCH|TOUCH))
-		exposed_mob.add_timed_surgery_speed_mod(type, 0.9, reac_volume * 1 MINUTES)
+		exposed_mob.add_timed_surgery_speed_mod(type, 0.9, min(reac_volume * 1 MINUTES, 5 MINUTES))
 		if(show_message)
 			to_chat(exposed_mob, span_danger("You feel your injuries fade away to nothing!") )
 
@@ -400,7 +400,7 @@
 	. = ..()
 	affected_mob.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
 
-/datum/reagent/medicine/mine_salve/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+/datum/reagent/medicine/mine_salve/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.3
 	burn_wound.flesh_healing += 0.5
 
@@ -1203,7 +1203,7 @@
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 1.1, reac_volume * 1 MINUTES)
+	exposed_mob.add_timed_surgery_speed_mod(type, 1.1, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/medicine/stimulants
 	name = "Stimulants"

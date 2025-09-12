@@ -4,12 +4,13 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Head Tentacles"
 	should_generate_icons = TRUE
+	relevant_external_organ = /obj/item/organ/external/head_tentacles
 
 /datum/preference/choiced/skrell_hair/init_possible_values()
-	return assoc_to_keys(GLOB.head_tentacles_list)
+	return assoc_to_keys(SSaccessories.head_tentacles_list)
 
 /datum/preference/choiced/skrell_hair/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = GLOB.head_tentacles_list[value]
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.head_tentacles_list[value]
 	var/icon/skrell = icon('maplestation_modules/icons/mob/skrell_parts_greyscale.dmi', "skrell_head_m", EAST)
 	var/icon/eyes = icon('maplestation_modules/icons/mob/skrell_eyes.dmi', "eyes", EAST)
 

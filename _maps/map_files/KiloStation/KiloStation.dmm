@@ -3,8 +3,7 @@
 /turf/open/space/basic,
 /area/space)
 "aac" = (
-/obj/machinery/power/smes{
-	charge = 5e+006;
+/obj/machinery/power/smes/super/full{
 	name = "ai power storage unit"
 	},
 /obj/structure/cable,
@@ -9036,11 +9035,11 @@
 	dir = 4
 	},
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
 "aXo" = (
@@ -9715,12 +9714,12 @@
 /obj/machinery/cell_charger{
 	pixel_y = 5
 	},
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 8;
 	pixel_y = -2
 	},
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 8;
 	pixel_y = 9
 	},
@@ -16093,7 +16092,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
-/obj/machinery/door/airlock/security/glass{
+/obj/machinery/door/airlock/security{
 	name = "Security Office"
 	},
 /turf/open/floor/iron/dark,
@@ -20034,7 +20033,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/assistant,
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/effect/landmark/start/hangover,
@@ -21245,6 +21244,9 @@
 /obj/effect/landmark/start/security_officer,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 8
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/office)
@@ -25152,7 +25154,7 @@
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/electronics/airlock,
 /obj/item/electronics/airlock,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/stack/sheet/mineral/plasma{
 	amount = 30
 	},
@@ -26201,7 +26203,7 @@
 	},
 /obj/machinery/airalarm/directional/west,
 /obj/effect/landmark/start/assistant,
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 4
 	},
 /obj/effect/landmark/start/hangover,
@@ -29236,17 +29238,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/security/prison/shower)
-"eOM" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/structure/railing{
-	dir = 1
-	},
-/obj/machinery/rnd/experimentor,
-/turf/open/floor/iron/dark,
-/area/station/science/research)
 "eOQ" = (
 /obj/effect/turf_decal/loading_area{
 	dir = 1
@@ -29624,10 +29615,9 @@
 	name = "Chemistry Desk";
 	req_access = list("pharmacy")
 	},
-/obj/structure/desk_bell/ringer/botany{
-	dir = 1;
-	pixel_x = 4;
-	pixel_y = 7
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_y = 6;
+	pixel_x = 4
 	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
@@ -30277,18 +30267,18 @@
 	},
 /obj/item/electronics/airlock,
 /obj/item/electronics/airlock,
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/machinery/camera/directional/south{
 	c_tag = "Engineering Storage";
 	name = "engineering camera";
 	network = list("ss13","engine")
 	},
-/obj/item/stock_parts/cell/emproof{
+/obj/item/stock_parts/power_store/cell/emproof{
 	pixel_x = 3;
 	pixel_y = 7
 	},
-/obj/item/stock_parts/cell/emproof{
+/obj/item/stock_parts/power_store/cell/emproof{
 	pixel_x = -6;
 	pixel_y = 5
 	},
@@ -36160,7 +36150,7 @@
 /area/station/command/bridge)
 "hcG" = (
 /obj/structure/table,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -38189,11 +38179,11 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/department/electrical)
@@ -38521,10 +38511,7 @@
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/contraband/the_griffin/directional/north,
-/mob/living/simple_animal/bot/mulebot{
-	home_destination = "QM #1";
-	suffix = "#1"
-	},
+/mob/living/simple_animal/bot/mulebot,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/cargo/storage)
@@ -38735,15 +38722,10 @@
 /turf/open/floor/iron,
 /area/station/security/office)
 "hXE" = (
-/obj/structure/bed/dogbed/renault,
-/obj/machinery/button/door/directional/south{
-	id = "captain_escape";
-	name = "Tactical Relocation Toggle"
-	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/mob/living/basic/pet/fox/renault,
+/obj/structure/sign/poster/greenscreen/directional/south,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "hXI" = (
@@ -42073,9 +42055,7 @@
 /turf/open/floor/grass,
 /area/station/science/genetics)
 "iZU" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/machinery/airalarm/directional/west,
 /obj/machinery/status_display/evac/directional/north,
 /obj/effect/decal/cleanable/cobweb,
@@ -43218,11 +43198,11 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -43837,7 +43817,7 @@
 	},
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/machinery/camera/directional/west{
 	c_tag = "Teleporter Access";
 	name = "command camera"
@@ -47392,7 +47372,7 @@
 	dir = 4
 	},
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/screwdriver,
 /obj/machinery/airalarm/directional/south,
 /obj/machinery/light/small/directional/south,
@@ -51240,11 +51220,11 @@
 	dir = 8
 	},
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
@@ -53078,12 +53058,10 @@
 /turf/open/floor/iron/dark,
 /area/station/service/library)
 "mJV" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
 /obj/machinery/light/small/directional/north,
 /obj/structure/sign/warning/electric_shock/directional/north,
 /obj/structure/cable,
+/obj/machinery/power/smes/full,
 /turf/open/floor/circuit/red/telecomms,
 /area/station/tcommsat/server)
 "mKp" = (
@@ -53395,7 +53373,7 @@
 	dir = 8
 	},
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "mQh" = (
@@ -53969,7 +53947,7 @@
 "mXB" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -54431,7 +54409,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "nhN" = (
-/obj/structure/disposalpipe/segment,
 /obj/effect/mapping_helpers/airlock/access/any/security/maintenance,
 /obj/machinery/door/airlock/maintenance{
 	name = "Security Maintenance"
@@ -55870,6 +55847,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/machinery/greenscreen_camera,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "nMG" = (
@@ -57679,9 +57657,9 @@
 	pixel_x = -6;
 	pixel_y = 6
 	},
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/crowbar/red,
 /obj/item/toy/figure/roboticist{
 	pixel_x = 6
@@ -60474,7 +60452,7 @@
 "ppf" = (
 /obj/structure/bed,
 /obj/effect/landmark/start/assistant,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/hangover,
 /obj/item/pillow/random,
 /turf/open/floor/wood,
@@ -65806,7 +65784,7 @@
 /obj/item/grenade/chem_grenade/smart_metal_foam{
 	pixel_x = -2
 	},
-/obj/item/stock_parts/cell/emproof{
+/obj/item/stock_parts/power_store/cell/emproof{
 	pixel_x = 6;
 	pixel_y = -6
 	},
@@ -66547,11 +66525,11 @@
 	},
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high{
+/obj/item/stock_parts/power_store/cell/high{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/screwdriver{
 	pixel_y = 18
 	},
@@ -68027,10 +68005,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/power/smes{
-	charge = 5e+006;
-	name = "ai power storage unit"
-	},
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/satellite)
@@ -71668,8 +71643,8 @@
 	dir = 4
 	},
 /obj/machinery/power/smes{
-	capacity = 9e+006;
-	charge = 10000
+	capacity = 1.8e+008;
+	charge = 2e+005
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/turf_decal/bot_red,
@@ -74310,6 +74285,11 @@
 /obj/item/pen/fountain/captain,
 /obj/item/radio/intercom/directional/south,
 /obj/structure/table/wood,
+/obj/machinery/button/door/directional/south{
+	id = "captain_escape";
+	name = "Tactical Relocation Toggle";
+	pixel_y = -40
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
 "tSm" = (
@@ -74767,7 +74747,7 @@
 /obj/item/flashlight,
 /obj/item/flashlight/flare,
 /obj/item/flashlight/flare,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
@@ -79637,7 +79617,7 @@
 /obj/item/electronics/airlock{
 	pixel_y = 6
 	},
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /turf/open/floor/engine,
 /area/station/engineering/storage/tech)
 "vHO" = (
@@ -80541,6 +80521,8 @@
 	dir = 1
 	},
 /obj/machinery/light/small/directional/north,
+/obj/structure/bed/dogbed/renault,
+/mob/living/basic/pet/fox/renault,
 /turf/open/floor/wood/parquet,
 /area/station/command/heads_quarters/captain/private)
 "vYE" = (
@@ -83646,6 +83628,16 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/evidence)
+"xaw" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/rnd/experimentor,
+/turf/open/floor/iron/dark,
+/area/station/science/research)
 "xaz" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/department/security/brig)
@@ -86009,10 +86001,7 @@
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/machinery/airalarm/directional/north,
-/mob/living/simple_animal/bot/mulebot{
-	home_destination = "QM #2";
-	suffix = "#2"
-	},
+/mob/living/simple_animal/bot/mulebot,
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/cargo/storage)
@@ -87603,7 +87592,7 @@
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/machinery/airalarm/directional/east,
 /obj/effect/landmark/start/assistant,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/button/door/directional/north{
 	id = "Cabin_2";
@@ -125779,7 +125768,7 @@ rCr
 xYR
 xYR
 rvF
-bbl
+xaw
 wJd
 akg
 aYe
@@ -126035,7 +126024,7 @@ vlS
 vlS
 vlS
 vlS
-eOM
+njW
 ixb
 wJd
 akg

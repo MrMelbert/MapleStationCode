@@ -7,9 +7,9 @@
 	if(!ui)
 		ui = new(user, src, "Mecha", name)
 		ui.open()
-		ui_view.display_to(user)
+		ui_view.display_to(user, ui.window)
 
-/obj/vehicle/sealed/mecha/ui_status(mob/user)
+/obj/vehicle/sealed/mecha/ui_status(mob/user, datum/ui_state/state)
 	if(contains(user))
 		return UI_INTERACTIVE
 	return min(

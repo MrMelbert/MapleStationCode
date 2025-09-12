@@ -32,7 +32,7 @@
 
 /obj/item/mod/control/pre_equipped/glitch
 	theme = /datum/mod_theme/glitch
-	applied_cell = /obj/item/stock_parts/cell/bluespace
+	applied_cell = /obj/item/stock_parts/power_store/cell/bluespace // Non-module change : this'll conflict in unhardcoded MODsuits, this was moved, you're going to need to apply the changes made in the megacell PR!
 	applied_modules = list(
 		/obj/item/mod/module/storage,
 		/obj/item/mod/module/magnetic_harness,

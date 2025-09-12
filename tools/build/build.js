@@ -77,7 +77,12 @@ export const CiParameter = new Juke.Parameter({ type: 'boolean' });
 
 export const ForceRecutParameter = new Juke.Parameter({
   type: 'boolean',
-  name: "force_recut",
+  name: "force-recut",
+});
+
+export const SkipIconCutter = new Juke.Parameter({
+  type: 'boolean',
+  name: "skip-icon-cutter",
 });
 
 export const WarningParameter = new Juke.Parameter({
@@ -87,7 +92,7 @@ export const WarningParameter = new Juke.Parameter({
 
 export const NoWarningParameter = new Juke.Parameter({
   type: 'string[]',
-  alias: 'NW',
+  alias: 'I',
 });
 
 export const CutterTarget = new Juke.Target({
@@ -191,10 +196,10 @@ export const DmMapsIncludeTarget = new Juke.Target({
 });
 
 export const DmTarget = new Juke.Target({
-  parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter],
+  parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter, SkipIconCutter],
   dependsOn: ({ get }) => [
-    get(DefineParameter).includes('ALL_MAPS') && DmMapsIncludeTarget,
-    IconCutterTarget,
+    get(DefineParameter).includes('ALL_TEMPLATES') && DmMapsIncludeTarget,
+    !get(SkipIconCutter) && IconCutterTarget,
   ],
   inputs: [
     '_maps/map_files/generic/**',
@@ -204,6 +209,8 @@ export const DmTarget = new Juke.Target({
     'icons/**',
     'interface/**',
     'maplestation_modules/**', // NON-MODULE CHANGE : BUILD OUR FILES
+    'sound/**',
+    'tgui/public/tgui.html',
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],
@@ -265,7 +272,7 @@ export const DmTestTarget = new Juke.Target({
 export const AutowikiTarget = new Juke.Target({
   parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter],
   dependsOn: ({ get }) => [
-    get(DefineParameter).includes('ALL_MAPS') && DmMapsIncludeTarget,
+    get(DefineParameter).includes('ALL_TEMPLATES') && DmMapsIncludeTarget,
     IconCutterTarget,
   ],
   outputs: [

@@ -1396,7 +1396,7 @@
 
 	if(current_cycle > 38 && !length(traits_not_applied) && SPT_PROB(5, seconds_per_tick) && !affected_mob.undergoing_cardiac_arrest())
 		affected_mob.set_heartattack(TRUE)
-		to_chat(affected_mob, span_danger("you feel a burning pain spread throughout your chest, oh no..."))
+		to_chat(affected_mob, span_danger("You feel a burning pain spread throughout your chest, oh no..."))
 
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH

@@ -46,6 +46,11 @@
 	. = ..()
 	var/mob/caster = usr || owner
 
+	if(!do_after(caster, 3 SECONDS))
+		return . | SPELL_CANCEL_CAST
+	if(!can_see(caster, target, 10))
+		return . | SPELL_CANCEL_CAST
+
 	var/datum/effect_system/steam_spread/steam = new()
 	steam.set_up(10, FALSE, target.loc)
 	steam.start()
@@ -75,7 +80,7 @@
 
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
-	desc = "You're frozen inside an ice cube, and cannot move."
+	desc = "You're frozen inside an ice cube, and cannot move. Resist to break out faster!"
 	icon_state = "frozen"
 
 /datum/status_effect/freon/magic/on_apply()

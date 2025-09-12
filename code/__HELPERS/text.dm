@@ -1203,6 +1203,20 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	var/input_length = LAZYLEN(ending)
 	return !!findtext(input_text, ending, -input_length)
 
+/// Generate a grawlix string of length of the text argument.
+/proc/grawlix(text)
+	var/grawlix = ""
+	for(var/iteration in 1 to length_char(text))
+		grawlix += pick("@", "$", "?", "!", "#", "§", "*", "£", "%", "☠", "★", "☆", "¿", "⚡")
+	return grawlix
+
+/// Returns TRUE if the input_text starts with any of the beginnings
+/proc/starts_with_any(input_text, list/beginnings)
+	for(var/beginning in beginnings)
+		if(!!findtext(input_text, beginning, 1, LAZYLEN(beginning)+1))
+			return TRUE
+	return FALSE
+
 /// Round a number to a specific decimal place, while maintaining the decimal if rounded to x.0
 /// EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
 /// EX. round_and_format_decimal(1.0, 0.1) -> "1.0" (NOT "1")

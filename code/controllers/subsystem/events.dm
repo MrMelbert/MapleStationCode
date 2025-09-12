@@ -4,6 +4,8 @@ SUBSYSTEM_DEF(events)
 	runlevels = RUNLEVEL_GAME
 	///list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
 	var/list/control = list()
+	///assoc list of all datum/round_event_control, ordered by name. name => event
+	var/list/events_by_name = list()
 	///list of all existing /datum/round_event currently being run.
 	var/list/running = list()
 	///cache of currently running events, for lag checking.
@@ -11,9 +13,9 @@ SUBSYSTEM_DEF(events)
 	///The next world.time that a naturally occuring random event can be selected.
 	var/scheduled = 0
 	///The lower bound for how soon another random event can be scheduled.
-	var/frequency_lower = 5 MINUTES // NON-MODULE CHANGE
+	var/frequency_lower = 2.5 MINUTES
 	///The upper bound for how soon another random event can be scheduled.
-	var/frequency_upper = 15 MINUTES // NON-MODULE CHANGE
+	var/frequency_upper = 7 MINUTES
 	///Will wizard events be included in the event pool?
 	var/wizardmode = FALSE
 
@@ -23,11 +25,36 @@ SUBSYSTEM_DEF(events)
 		if(!event.typepath || !event.valid_for_map())
 			continue //don't want this one! leave it for the garbage collector
 		control += event //add it to the list of all events (controls)
+		events_by_name[event.name] = event
+
+	frequency_lower = CONFIG_GET(number/events_frequency_lower)
+	frequency_upper = CONFIG_GET(number/events_frequency_upper)
+
+	if(CONFIG_GET(flag/events_config_enabled))
+		setup_config()
+
 	reschedule()
 	// Instantiate our holidays list if it hasn't been already
 	if(isnull(GLOB.holidays))
 		fill_holidays()
 	return SS_INIT_SUCCESS
+
+///Takes the events config json and applies any var edits made there to their respective event.
+/datum/controller/subsystem/events/proc/setup_config()
+	var/json_file = file("[global.config.directory]/events.json")
+	if(!fexists(json_file))
+		return
+	var/list/configuration = json_decode(file2text(json_file))
+	for(var/variable in configuration)
+		var/datum/round_event_control/event = events_by_name[variable]
+		if(!event)
+			stack_trace("Invalid event [event] attempting to be configured.")
+			continue
+		for(var/event_variable in configuration[variable])
+			if(!(event.vars.Find(event_variable)))
+				stack_trace("Invalid event configuration variable [event_variable] in variable changes for [variable].")
+				continue
+			event.vars[event_variable] = configuration[variable][event_variable]
 
 /datum/controller/subsystem/events/fire(resumed = FALSE)
 	if(!resumed)
@@ -50,15 +77,24 @@ SUBSYSTEM_DEF(events)
 //checks if we should select a random event yet, and reschedules if necessary
 /datum/controller/subsystem/events/proc/checkEvent()
 	if(scheduled <= world.time)
+#ifdef MAP_TEST
+		message_admins("Random event skipped (Game is compiled in MAP_TEST mode)")
+#else
 		spawnEvent()
+#endif
 		reschedule()
 
 //decides which world.time we should select another random event at.
 /datum/controller/subsystem/events/proc/reschedule()
 	scheduled = world.time + rand(frequency_lower, max(frequency_lower,frequency_upper))
 
-//selects a random event based on whether it can occur and it's 'weight'(probability)
-/datum/controller/subsystem/events/proc/spawnEvent()
+/**
+ * Selects a random event based on whether it can occur and it's 'weight'(probability)
+ *
+ * Arguments:
+ * * excluded_event - The event path we will be foregoing, if present.
+ */
+/datum/controller/subsystem/events/proc/spawnEvent(datum/round_event_control/excluded_event)
 	set waitfor = FALSE //for the admin prompt
 	if(!CONFIG_GET(flag/allow_random_events))
 		return
@@ -69,6 +105,8 @@ SUBSYSTEM_DEF(events)
 	var/list/event_roster = list()
 
 	for(var/datum/round_event_control/event_to_check in control)
+		if(excluded_event && event_to_check.typepath == excluded_event.typepath) //If an event has been rerolled we won't just roll the same one again.
+			continue
 		if(!event_to_check.can_spawn_event(players_amt))
 			continue
 		if(event_to_check.weight < 0) //for round-start events etc.
@@ -81,7 +119,8 @@ SUBSYSTEM_DEF(events)
 			event_roster[event_to_check] = event_to_check.weight
 
 	var/datum/round_event_control/event_to_run = pick_weight(event_roster)
-	TriggerEvent(event_to_run)
+	if(event_to_run)
+		TriggerEvent(event_to_run)
 
 ///Does the last pre-flight checks for the passed event, and runs it if the event is ready.
 /datum/controller/subsystem/events/proc/TriggerEvent(datum/round_event_control/event_to_trigger)
@@ -99,8 +138,8 @@ SUBSYSTEM_DEF(events)
 
 ///Sets the event frequency bounds back to their initial value.
 /datum/controller/subsystem/events/proc/resetFrequency()
-	frequency_lower = initial(frequency_lower)
-	frequency_upper = initial(frequency_upper)
+	frequency_lower = CONFIG_GET(number/events_frequency_lower)
+	frequency_upper = CONFIG_GET(number/events_frequency_upper)
 
 /**
  * HOLIDAYS

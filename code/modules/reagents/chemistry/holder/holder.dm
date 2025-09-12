@@ -255,9 +255,9 @@
 
 		//if we reached here means we have found our specific reagent type so break
 		if(!include_subtypes)
-			break
+			return total_removed_amount
 
-	return total_removed_amount
+	return round(total_removed_amount, CHEMICAL_VOLUME_ROUNDING)
 
 /**
  * Removes a reagent at random and by a random quantity till the specified amount has been removed.
@@ -283,9 +283,8 @@
 
 	current_list_element = rand(1, cached_reagents.len)
 
-	while(total_removed != amount)
-		if(total_removed >= amount)
-			break
+	while(total_removed < amount)
+		// There's nothing left in the container
 		if(total_volume <= 0 || !cached_reagents.len)
 			break
 
@@ -294,14 +293,16 @@
 
 		var/datum/reagent/target_holder = cached_reagents[current_list_element]
 		var/remove_amt = min(amount - total_removed, round(amount / rand(2, initial_list_length), round(amount / 10, 0.01))) //double round to keep it at a somewhat even spread relative to amount without getting funky numbers.
-		//min ensures we don't go over amount.
-		remove_reagent(target_holder.type, remove_amt)
+		// If the logic above means removing really tiny amounts (or even zero if it's a remove amount of 10) instead choose a sensible smallish number
+		// so this proc will actually finish instead of looping forever
+		remove_amt = max(CHEMICAL_VOLUME_ROUNDING, remove_amt)
+		remove_amt = remove_reagent(target_holder.type, remove_amt)
 
 		current_list_element++
 		total_removed += remove_amt
-
 	handle_reactions()
-	return total_removed //this should be amount unless the loop is prematurely broken, in which case it'll be lower. It shouldn't ever go OVER amount.
+
+	return round(total_removed, CHEMICAL_VOLUME_ROUNDING)
 
 /**
  * Removes all reagents by an amount equal to
@@ -329,8 +330,8 @@
 
 	for(var/datum/reagent/reagent as anything in cached_reagents)
 		total_removed_amount += remove_reagent(reagent.type, reagent.volume * part)
-
 	handle_reactions()
+
 	return round(total_removed_amount, CHEMICAL_VOLUME_ROUNDING)
 
 /**
@@ -432,7 +433,8 @@
 	remove_blacklisted = FALSE,
 	methods = NONE,
 	show_message = TRUE,
-	ignore_stomach = FALSE
+	ignore_stomach = FALSE,
+	zone_override = null, // NON-MODULE CHANGE
 )
 	if(QDELETED(target) || !total_volume)
 		return FALSE
@@ -521,7 +523,10 @@
 
 	//expose target to reagent changes
 	if(methods)
-		target_holder.expose(isorgan(target_atom) ? target : target_atom, methods, part, show_message, r_to_send)
+		// NON-MODULE CHANGE
+		if(methods & INGEST)
+			zone_override = BODY_ZONE_PRECISE_MOUTH
+		target_holder.expose(isorgan(target_atom) ? target : target_atom, methods, part, show_message, r_to_send, zone_override || transferred_by?.zone_selected)
 
 	//remove chemicals that were added above
 	for(var/list/data as anything in reagents_to_remove)
@@ -783,7 +788,7 @@
  * - Show_message: Whether to display anything to mobs when they are exposed.
  * - list/datum/reagent/r_to_expose: list of reagents to expose. if null will expose the reagents present in this holder instead
  */
-/datum/reagents/proc/expose(atom/target, methods = TOUCH, volume_modifier = 1, show_message = 1, list/datum/reagent/r_to_expose = null)
+/datum/reagents/proc/expose(atom/target, methods = TOUCH, volume_modifier = 1, show_message = 1, list/datum/reagent/r_to_expose = null, exposed_zone = BODY_ZONE_CHEST)
 	if(isnull(target))
 		return null
 
@@ -795,7 +800,7 @@
 	for(var/datum/reagent/reagent as anything in target_reagents)
 		reagents[reagent] = reagent.volume * volume_modifier
 
-	return target.expose_reagents(reagents, src, methods, volume_modifier, show_message)
+	return target.expose_reagents(reagents, src, methods, volume_modifier, show_message, exposed_zone)
 
 /**
  * Applies heat to this holder

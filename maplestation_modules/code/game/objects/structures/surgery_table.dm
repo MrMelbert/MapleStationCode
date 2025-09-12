@@ -60,7 +60,7 @@
 			. = CONTEXTUAL_SCREENTIP_SET
 
 
-/obj/structure/table/optable/deconstruct(disassembled, wrench_disassembly)
+/obj/structure/table/optable/atom_deconstruct(disassembled, wrench_disassembly)
 	attached_tank?.forceMove(drop_location())
 	return ..()
 
@@ -72,21 +72,20 @@
 		if(!QDELING(src))
 			update_appearance(UPDATE_OVERLAYS)
 
-/obj/structure/table/optable/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/tank/internals))
-		if(isnull(attached_tank))
-			if(user.transferItemToLoc(I, src, silent = FALSE))
-				attached_tank = I
-				update_appearance(UPDATE_OVERLAYS)
-				balloon_alert_to_viewers("tank attached")
-				playsound(src, 'sound/machines/click.ogg', 50, TRUE)
-			else
-				balloon_alert(user, "can't attach tank!")
-		else
-			balloon_alert(user, "already has a tank!")
-		return TRUE
-
-	return ..()
+/obj/structure/table/optable/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/tank/internals))
+		return ITEM_INTERACT_BLOCKING
+	else if(!isnull(attached_tank))
+		balloon_alert(user, "already has a tank!")
+		return ITEM_INTERACT_BLOCKING
+	else if(user.transferItemToLoc(tool, src, silent = FALSE))
+		attached_tank = tool
+		update_appearance(UPDATE_OVERLAYS)
+		balloon_alert_to_viewers("tank attached")
+		playsound(src, 'sound/machines/click.ogg', 50, TRUE)
+		return ITEM_INTERACT_SUCCESS
+	balloon_alert(user, "can't attach tank!")
+	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/table/optable/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -131,8 +130,6 @@
 		return FALSE
 	if(!istype(who.wear_mask) || !(who.wear_mask.clothing_flags & MASKINTERNALS))
 		return FALSE
-	if(!who.is_mouth_covered())
-		return FALSE // Must have an internals mask + mouth covered
 	return TRUE
 
 /// Called when the safety triggers and attempts to unhook the patient from the tank.
@@ -151,7 +148,10 @@
 	PRIVATE_PROC(TRUE)
 	if(isnull(attached_tank) || !can_have_tank_opened(new_patient))
 		return
+	ASSERT(istype(new_patient.wear_mask))
 
+	if (new_patient.wear_mask.up)
+		new_patient.wear_mask.adjust_visor(src)
 	new_patient.open_internals(attached_tank, TRUE)
 	patient_set_at = world.time
 	update_appearance(UPDATE_OVERLAYS)

@@ -90,7 +90,11 @@
 	return "\a [src]"
 
 /mob/living/get_examine_name(mob/user)
-	return get_visible_name()
+	var/visible_name = get_visible_name()
+	var/list/name_override = list(visible_name)
+	if(SEND_SIGNAL(user, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME, src, visible_name, name_override) & COMPONENT_EXAMINE_NAME_OVERRIDEN)
+		return name_override[1]
+	return visible_name
 
 /// Icon displayed in examine
 /atom/proc/get_examine_icon(mob/user)
@@ -108,7 +112,7 @@
 	if(href)
 		var/list/hrefs = examine_hrefs(user, thats)
 		if(length(hrefs))
-			href_text += "<a href='?"
+			href_text += "<a href='byond://?" // Non-module change : 516 byond://
 			href_text += "src=[REF(src)];"
 			for(var/key in hrefs)
 				href_text += "[key]=[hrefs[key]];"
@@ -248,5 +252,6 @@
 	return name_chaser
 
 /// Used by mobs to determine the name for someone wearing a mask, or with a disfigured or missing face. By default just returns the atom's name. add_id_name will control whether or not we append "(as [id_name])".
-/atom/proc/get_visible_name(add_id_name)
+/// force_real_name will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
+/atom/proc/get_visible_name(add_id_name, force_real_name)
 	return name

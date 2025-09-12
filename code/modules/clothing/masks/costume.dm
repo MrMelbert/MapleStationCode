@@ -4,6 +4,7 @@
 	icon_state = "joy"
 	clothing_flags = MASKINTERNALS
 	flags_inv = HIDESNOUT
+	obj_flags = parent_type::obj_flags | INFINITE_RESKIN
 	unique_reskin = list(
 			"Joy" = "joy",
 			"Flushed" = "flushed",
@@ -12,19 +13,10 @@
 			"Pleading" = "pleading"
 	)
 
-/obj/item/clothing/mask/joy/Initialize(mapload)
-	. = ..()
-	register_context()
-
-/obj/item/clothing/mask/joy/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	. = ..()
-	context[SCREENTIP_CONTEXT_ALT_LMB] = "Change Emotion"
-	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/mask/joy/reskin_obj(mob/user)
 	. = ..()
 	user.update_worn_mask()
-	current_skin = null//so we can infinitely reskin
 
 /obj/item/clothing/mask/mummy
 	name = "mummy mask"
@@ -63,7 +55,7 @@
 		. += "Use in-hand to wear as a hat!"
 
 /obj/item/clothing/mask/kitsune/attack_self(mob/user)
-	adjustmask(user)
+	adjust_visor(user)
 	alternate_worn_layer = up ? ABOVE_BODY_FRONT_HEAD_LAYER : null
 
 /obj/item/clothing/mask/rebellion

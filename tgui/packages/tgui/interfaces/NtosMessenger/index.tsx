@@ -1,9 +1,5 @@
 import { sortBy } from 'common/collections';
-import { BooleanLike } from 'common/react';
-import { createSearch } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -14,7 +10,11 @@ import {
   Section,
   Stack,
   TextArea,
-} from '../../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend } from '../../backend';
 import { NtosWindow } from '../../layouts';
 import { ChatScreen } from './ChatScreen';
 import { NtChat, NtMessenger, NtPicture } from './types';
@@ -49,7 +49,7 @@ export const NtosMessenger = (props) => {
     sending_virus,
   } = data;
 
-  let content: JSX.Element;
+  let content: React.JSX.Element;
   if (open_chat !== null) {
     const openChat = saved_chats[open_chat];
     const temporaryRecipient = messengers[open_chat];
@@ -100,7 +100,8 @@ const ContactsScreen = (props: any) => {
 
   const [searchUser, setSearchUser] = useState('');
 
-  const sortByUnreads = sortBy<NtChat>((chat) => chat.unread_messages);
+  const sortByUnreads = (array: NtChat[]) =>
+    sortBy(array, (chat) => chat.unread_messages);
 
   const searchChatByName = createSearch(
     searchUser,
@@ -314,7 +315,6 @@ const SendToAllSection = (props) => {
               icon="arrow-right"
               disabled={on_spam_cooldown || message === ''}
               tooltip={on_spam_cooldown && 'Wait before sending more messages!'}
-              tooltipPosition="auto-start"
               onClick={() => {
                 act('PDA_sendEveryone', { message: message });
                 setmessage('');

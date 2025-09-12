@@ -1,5 +1,3 @@
-import { Placement } from '@popperjs/core';
-
 import { TabBay, TabDrop, TabPod } from './Tabs';
 import { PodDelay, PodEffect } from './types';
 
@@ -129,23 +127,6 @@ export const SOUNDS = [
   },
 ];
 
-export const STYLES = [
-  { title: 'Standard' },
-  { title: 'Advanced' },
-  { title: 'Nanotrasen' },
-  { title: 'Syndicate' },
-  { title: 'Deathsquad' },
-  { title: 'Cultist' },
-  { title: 'Missile' },
-  { title: 'Syndie Missile' },
-  { title: 'Supply Box' },
-  { title: 'Clown Pod' },
-  { title: 'Fruit' },
-  { title: 'Invisible' },
-  { title: 'Gondola' },
-  { title: 'Seethrough' },
-] as const;
-
 export const BAYS = [
   { title: '1' },
   { title: '2' },
@@ -259,6 +240,16 @@ export const EFFECTS_NORMAL: PodEffect[] = [
 
 export const EFFECTS_HARM: PodEffect[] = [
   {
+    act: 'create_sparks',
+    choiceNumber: 1,
+    icon: 'certificate',
+    selected: 'create_sparks',
+    title: 'Create sparks; May cause fires if there is plasma in the air',
+  },
+  {
+    divider: true,
+  },
+  {
     act: 'explosionCustom',
     choiceNumber: 1,
     icon: 'bomb',
@@ -323,7 +314,7 @@ type Effect = {
   list: typeof EFFECTS_LOAD | typeof EFFECTS_NORMAL | typeof EFFECTS_HARM;
   label: string;
   alt_label?: string;
-  tooltipPosition: Placement;
+  tooltipPosition: string;
 };
 
 export const EFFECTS_ALL: Effect[] = [

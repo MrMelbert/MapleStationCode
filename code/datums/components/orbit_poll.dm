@@ -51,7 +51,7 @@
 		"[message]. An orbiter will be chosen in [DisplayTimeText(timeout)].\n",
 		source = parent,
 		header = "Volunteers requested",
-		custom_link = " <a href='?src=[REF(src)];ignore=[ignore_key]'>(Ignore)</a>",
+		custom_link = " <a href='byond://?src=[REF(src)];ignore=[ignore_key]'>(Ignore)</a>",
 		ignore_key = ignore_key,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 	)

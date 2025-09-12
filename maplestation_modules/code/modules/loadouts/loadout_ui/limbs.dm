@@ -56,6 +56,8 @@
 	var/datum/limb_option_datum/selecting_datum = GLOB.limb_loadout_options[path_selecting]
 	if(isnull(selecting_datum))
 		return TRUE
+	if(selecting_datum.can_be_selected(preferences) != LIMB_AVAILABLE)
+		return FALSE
 
 	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
 	LAZYSET(selected_paths, selecting_datum.pref_list_slot, path_selecting)
@@ -94,6 +96,18 @@
 	data["preview_flat_icon"] = cached_icon
 	return data
 
+/datum/preference_middleware/limbs/get_ui_static_data(mob/user)
+	var/list/data = list()
+
+	data["unavailable_paths"] = list()
+	for(var/limb_type in GLOB.limb_loadout_options)
+		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_type]
+		var/selectable = limb_datum.can_be_selected(preferences)
+		if(selectable != LIMB_AVAILABLE)
+			data["unavailable_paths"][limb_datum.type] = selectable
+
+	return data
+
 /datum/preference_middleware/limbs/get_constant_data()
 	var/list/data = list()
 	var/list/all_limb_data = list()
@@ -117,6 +131,7 @@
 			"name" = limb_datum.name,
 			"tooltip" = limb_datum.desc,
 			"path" = limb_type,
+			"datum_type" = limb_datum.type,
 		)
 
 		UNTYPED_LIST_ADD(raw_limb_data[limb_zone], limb_data)

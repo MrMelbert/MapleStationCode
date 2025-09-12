@@ -54,7 +54,7 @@
 	icon_keyboard = "med_key"
 	density = TRUE
 	circuit = /obj/item/circuitboard/computer/scan_consolenew
-
+	interaction_flags_click = ALLOW_SILICON_REACH
 	light_color = LIGHT_COLOR_BLUE
 
 	/// Link to the techweb's stored research. Used to retrieve stored mutations
@@ -205,20 +205,32 @@
 			return
 	return ..()
 
+/// This is the only thing that uses this so let's just cut out the middleman and put it here
+/obj/machinery/computer/scan_consolenew/proc/generate_chromosome()
+	var/static/list/chromosomes
+	if(!chromosomes)
+		chromosomes = list()
+		for(var/chromeindex in subtypesof(/obj/item/chromosome))
+			var/obj/item/chromosome/chrome = chromeindex
+			if(!initial(chrome.weight))
+				break
+			chromosomes[chromeindex] = initial(chrome.weight)
+	var/obj/item/chromosome/newchrome = pick_weight(chromosomes)
+	// Pity chance
+	if(!ispath(newchrome, /obj/item/chromosome/stabilizer))
+		chromosomes[/obj/item/chromosome/stabilizer] += 5
+	else
+		chromosomes[/obj/item/chromosome/stabilizer] = 10
+	return newchrome
+
 /obj/machinery/computer/scan_consolenew/multitool_act(mob/living/user, obj/item/multitool/tool)
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
 	return TRUE
 
-/obj/machinery/computer/scan_consolenew/AltClick(mob/user)
-	// Make sure the user can interact with the machine.
-	. = ..()
-	if(!can_interact(user))
-		return
-	if(!user.can_perform_action(src, ALLOW_SILICON_REACH))
-		return
-
+/obj/machinery/computer/scan_consolenew/click_alt(mob/user)
 	eject_disk(user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/computer/scan_consolenew/Initialize(mapload)
 	. = ..()
@@ -235,7 +247,7 @@
 	// Set the default tgui state
 	set_default_state()
 
-/obj/machinery/computer/scan_consolenew/LateInitialize()
+/obj/machinery/computer/scan_consolenew/post_machine_initialize()
 	. = ..()
 	// Link machine with research techweb. Used for discovering and accessing
 	// already discovered mutations
@@ -440,9 +452,9 @@
 			to_chat(usr,span_notice("DNA scrambled."))
 			scanner_occupant.apply_status_effect(/datum/status_effect/genetic_damage, GENETIC_DAMAGE_STRENGTH_MULTIPLIER*50/(connected_scanner.damage_coeff ** 2))
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Check whether a specific mutation is eligible for discovery within the
@@ -577,9 +589,9 @@
 			// Check if we cracked a mutation
 			check_discovery(alias)
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Apply a chromosome to a specific mutation.
@@ -614,9 +626,9 @@
 					stored_chromosomes -= CM
 					CM.apply(HM)
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Attempt overwriting Base DNA : The pairs are instead the top row vs the top row of the new code.
@@ -753,9 +765,9 @@
 				scanner_occupant.domutcheck()
 
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 
 			return
 
@@ -837,9 +849,9 @@
 				else
 					injector_ready = world.time + INJECTOR_TIMEOUT * 5
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Save a mutation to the console's storage buffer.
@@ -1051,9 +1063,9 @@
 			stored_research.discovered_mutations += result_path
 			say("Successfully mutated [HM.name].")
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Combines two mutations from the disk to try and create a new mutation
@@ -1117,9 +1129,9 @@
 			stored_research.discovered_mutations += result_path
 			say("Successfully mutated [HM.name].")
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Sets the Genetic Makeup pulse strength.
@@ -1356,9 +1368,9 @@
 			if(I)
 				injector_ready = world.time + INJECTOR_TIMEOUT
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Applies a genetic makeup buffer to the scanner occupant
@@ -1396,9 +1408,9 @@
 
 			apply_genetic_makeup(type, buffer_slot)
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Applies a genetic makeup buffer to the next scanner occupant. This sets
@@ -1465,9 +1477,9 @@
 			genetic_damage_pulse_index = WRAP(text2num(params["index"]), 1, len+1)
 			begin_processing()
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Cancels the delayed action - In this context it is not the genetic damage
@@ -1627,9 +1639,9 @@
 			injector_selection[adv_inj] += A
 			to_chat(usr,span_notice("Mutation successfully added to advanced injector."))
 			if(connected_scanner)
-				connected_scanner.use_power(connected_scanner.active_power_usage)
+				connected_scanner.use_energy(connected_scanner.active_power_usage)
 			else
-				use_power(active_power_usage)
+				use_energy(active_power_usage)
 			return
 
 		// Deletes a mutation from an advanced injector

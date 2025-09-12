@@ -61,10 +61,10 @@
 	relevant_head_flag = HEAD_FACIAL_HAIR
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
-	return assoc_to_keys_features(GLOB.facial_hairstyles_list)
+	return assoc_to_keys_features(SSaccessories.facial_hairstyles_list)
 
 /datum/preference/choiced/facial_hairstyle/icon_for(value)
-	return generate_icon_with_head_accessory(GLOB.facial_hairstyles_list[value])
+	return generate_icon_with_head_accessory(SSaccessories.facial_hairstyles_list[value])
 
 /datum/preference/choiced/facial_hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_facial_hairstyle(value, update = FALSE)
@@ -80,7 +80,7 @@
 		return ..()
 
 	var/picked_beard = random_facial_hairstyle(gender)
-	var/datum/sprite_accessory/beard_style = GLOB.facial_hairstyles_list[picked_beard]
+	var/datum/sprite_accessory/beard_style = SSaccessories.facial_hairstyles_list[picked_beard]
 	if(!beard_style || !beard_style.natural_spawn || beard_style.locked) // Invalid, go with god(bald)
 		return ..()
 
@@ -115,7 +115,7 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
-	return assoc_to_keys_features(GLOB.facial_hair_gradients_list)
+	return assoc_to_keys_features(SSaccessories.facial_hair_gradients_list)
 
 /datum/preference/choiced/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_facial_hair_gradient_style(new_style = value, update = FALSE)
@@ -145,6 +145,9 @@
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
 	relevant_head_flag = HEAD_HAIR
 
+/datum/preference/color/hair_color/has_relevant_feature(datum/preferences/preferences)
+	return ..() || (/datum/quirk/item_quirk/bald::name in preferences.all_quirks)
+
 /datum/preference/color/hair_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_haircolor(value, update = FALSE)
 
@@ -160,11 +163,14 @@
 	should_generate_icons = TRUE
 	relevant_head_flag = HEAD_HAIR
 
+/datum/preference/choiced/hairstyle/has_relevant_feature(datum/preferences/preferences)
+	return ..() || (/datum/quirk/item_quirk/bald::name in preferences.all_quirks)
+
 /datum/preference/choiced/hairstyle/init_possible_values()
-	return assoc_to_keys_features(GLOB.hairstyles_list)
+	return assoc_to_keys_features(SSaccessories.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/icon_for(value)
-	var/datum/sprite_accessory/hair/hairstyle = GLOB.hairstyles_list[value]
+	var/datum/sprite_accessory/hair/hairstyle = SSaccessories.hairstyles_list[value]
 	return generate_icon_with_head_accessory(hairstyle, hairstyle?.y_offset)
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
@@ -181,7 +187,7 @@
 		return ..()
 
 	var/picked_hair = random_hairstyle(gender)
-	var/datum/sprite_accessory/hair_style = GLOB.hairstyles_list[picked_hair]
+	var/datum/sprite_accessory/hair_style = SSaccessories.hairstyles_list[picked_hair]
 	if(!hair_style || !hair_style.natural_spawn || hair_style.locked) // Invalid, go with god(bald)
 		return ..()
 
@@ -203,7 +209,7 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
-	return assoc_to_keys_features(GLOB.hair_gradients_list)
+	return assoc_to_keys_features(SSaccessories.hair_gradients_list)
 
 /datum/preference/choiced/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_hair_gradient_style(new_style = value, update = FALSE)

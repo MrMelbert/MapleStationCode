@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import { Box, Button, InfinitePlane, Input, Stack } from 'tgui-core/components';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
-import { Box, Button, InfinitePlane, Input, Stack } from '../../components';
 import { Window } from '../../layouts';
 import { Connections } from '../common/Connections';
 import { CircuitInfo } from './CircuitInfo';
@@ -401,6 +401,7 @@ export class IntegratedCircuit extends Component {
       examined_rel_y,
       screen_x,
       screen_y,
+      grid_mode,
       is_admin,
       variables,
       global_basic_types,
@@ -456,59 +457,61 @@ export class IntegratedCircuit extends Component {
         width={1200}
         height={800}
         buttons={
-          <Box width="160px" position="absolute" top="5px" height="22px">
-            <Stack>
-              <Stack.Item grow>
-                <Input
-                  fluid
-                  placeholder="Name"
-                  value={display_name}
-                  onChange={(e, value) =>
-                    act('set_display_name', { display_name: value })
-                  }
-                />
-              </Stack.Item>
-              <Stack.Item basis="24px">
+          <Stack>
+            <Stack.Item>
+              <Input
+                placeholder="Name"
+                value={display_name}
+                onChange={(e, value) =>
+                  act('set_display_name', { display_name: value })
+                }
+              />
+            </Stack.Item>
+            <Stack.Item>
+              <Button
+                color="transparent"
+                tooltip="Show Variables Menu"
+                icon="cog"
+                selected={variableMenuOpen}
+                onClick={() =>
+                  this.setState((state) => ({
+                    variableMenuOpen: !state.variableMenuOpen,
+                  }))
+                }
+              />
+            </Stack.Item>
+            <Stack.Item>
+              <Button
+                color="transparent"
+                tooltip="Show Components Menu"
+                icon="plus"
+                selected={componentMenuOpen}
+                onClick={() =>
+                  this.setState((state) => ({
+                    componentMenuOpen: !state.componentMenuOpen,
+                  }))
+                }
+              />
+            </Stack.Item>
+            <Stack.Item>
+              <Button
+                color="transparent"
+                tooltip="Enable Grid Aligning"
+                icon="th-large"
+                selected={grid_mode}
+                onClick={() => act('toggle_grid_mode')}
+              />
+            </Stack.Item>
+            {!!is_admin && (
+              <Stack.Item>
                 <Button
-                  position="absolute"
-                  top={0}
                   color="transparent"
-                  icon="cog"
-                  selected={variableMenuOpen}
-                  onClick={() =>
-                    this.setState((state) => ({
-                      variableMenuOpen: !state.variableMenuOpen,
-                    }))
-                  }
+                  onClick={() => act('save_circuit')}
+                  icon="save"
                 />
               </Stack.Item>
-              <Stack.Item basis="24px">
-                <Button
-                  position="absolute"
-                  top={0}
-                  color="transparent"
-                  icon="plus"
-                  selected={componentMenuOpen}
-                  onClick={() =>
-                    this.setState((state) => ({
-                      componentMenuOpen: !state.componentMenuOpen,
-                    }))
-                  }
-                />
-              </Stack.Item>
-              {!!is_admin && (
-                <Stack.Item>
-                  <Button
-                    position="absolute"
-                    top={0}
-                    color="transparent"
-                    onClick={() => act('save_circuit')}
-                    icon="save"
-                  />
-                </Stack.Item>
-              )}
-            </Stack>
-          </Box>
+            )}
+          </Stack>
         }
       >
         <Window.Content
@@ -521,6 +524,7 @@ export class IntegratedCircuit extends Component {
             height="100%"
             backgroundImage={resolveAsset('grid_background.png')}
             imageWidth={900}
+            scalePadding={componentMenuOpen ? '300px' : '0'}
             onZoomChange={this.handleZoomChange}
             onBackgroundMoved={this.handleBackgroundMoved}
             initialLeft={screen_x}
@@ -539,6 +543,7 @@ export class IntegratedCircuit extends Component {
                     onPortRightClick={this.handlePortRightClick}
                     onPortMouseUp={this.handlePortUp}
                     act={act}
+                    gridMode={grid_mode}
                   />
                 ),
             )}

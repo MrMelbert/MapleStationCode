@@ -305,7 +305,7 @@
 		/obj/machinery/chem_dispenser/drinks/beer = 1,
 		/obj/machinery/power/smes = 2
 	)
-	required_stock_part = /obj/item/stock_parts/cell/hyper
+	required_stock_part = /obj/item/stock_parts/power_store/cell/hyper
 
 /datum/experiment/scanning/points/machinery_pinpoint_scan/tier3_microlaser
 	name = "Ultra-high-power Micro-lasers Calibration"
@@ -326,6 +326,7 @@
 	name = "Exosuit Materials: Stress Failure Test"
 	description = "Your exosuit fabricators allow for rapid production on a small scale, but the structural integrity of created parts is inferior to more traditional means."
 	exp_tag = "Scan"
+	total_requirement = 2
 	possible_types = list(/obj/vehicle/sealed/mecha)
 	///Damage percent that each mech needs to be at for a scan to work.
 	var/damage_percent
@@ -413,7 +414,7 @@
 	)
 
 	for (var/obj/item/organ/organ as anything in check.organs)
-		if (organ.slot in vital_organ_slots && IS_ROBOTIC_ORGAN(organ))
+		if ((organ.slot in vital_organ_slots) && IS_ROBOTIC_ORGAN(organ))
 			return TRUE
 	return FALSE
 

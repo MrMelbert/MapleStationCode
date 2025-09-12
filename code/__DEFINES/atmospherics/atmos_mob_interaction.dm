@@ -11,6 +11,7 @@
 /// Amount of air to take a from a tile
 #define BREATH_PERCENTAGE (BREATH_VOLUME/CELL_VOLUME)
 
+
 #define QUANTIZE(variable) (round((variable), (MOLAR_ACCURACY)))
 
 /// Return this from a while_present proc to call its on_loss version, if one exists
@@ -148,7 +149,7 @@
 #define LOW_PRESSURE_DAMAGE 2
 
 /// Humans are slowed by the difference between bodytemp and BODYTEMP_COLD_DAMAGE_LIMIT divided by this
-#define COLD_SLOWDOWN_FACTOR 20
+#define COLD_SLOWDOWN_FACTOR 100
 
 
 //CLOTHES
@@ -195,5 +196,3 @@
 
 ///Minimum temperature for items on fire
 #define BURNING_ITEM_MINIMUM_TEMPERATURE (150+T0C)
-
-#define SKIP_INTERNALS "skip_internals"

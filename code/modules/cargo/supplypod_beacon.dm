@@ -9,9 +9,14 @@
 	w_class = WEIGHT_CLASS_SMALL
 	armor_type = /datum/armor/supplypod_beacon
 	resistance_flags = FIRE_PROOF
+	interaction_flags_click = ALLOW_SILICON_REACH
+	/// The linked console
 	var/obj/machinery/computer/cargo/express/express_console
+	/// If linked
 	var/linked = FALSE
+	/// If this is ready to launch
 	var/ready = FALSE
+	/// If it's been launched
 	var/launched = FALSE
 
 /datum/armor/supplypod_beacon
@@ -68,7 +73,9 @@
 
 /obj/item/supplypod_beacon/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
-	default_unfasten_wrench(user, tool)
+	if (default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
+		pixel_x = 0
+		pixel_y = 0
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/supplypod_beacon/proc/unlink_console()
@@ -86,17 +93,16 @@
 	express_console = C//set the linked console var to the console
 	express_console.beacon = src//out with the old in with the news
 	update_status(SP_LINKED)
-	if (express_console.usingBeacon)
+	if (express_console.using_beacon)
 		update_status(SP_READY)
 	to_chat(user, span_notice("[src] linked to [C]."))
 
-/obj/item/supplypod_beacon/AltClick(mob/user)
-	if (!user.can_perform_action(src, ALLOW_SILICON_REACH))
-		return
-	if (express_console)
-		unlink_console()
-	else
+/obj/item/supplypod_beacon/click_alt(mob/user)
+	if(!express_console)
 		to_chat(user, span_alert("There is no linked console."))
+		return CLICK_ACTION_BLOCKING
+	unlink_console()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/supplypod_beacon/attackby(obj/item/W, mob/user)
 	if(IS_WRITING_UTENSIL(W)) //give a tag that is visible from the linked express console

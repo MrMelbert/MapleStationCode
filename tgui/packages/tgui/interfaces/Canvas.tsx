@@ -1,9 +1,9 @@
-import { Color } from 'common/color';
-import { decodeHtmlEntities, multiline } from 'common/string';
 import { Component, createRef, RefObject } from 'react';
+import { Color } from 'tgui-core/color';
+import { Box, Button, Flex, Icon, Tooltip } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
-import { Box, Button, Flex, Icon, Tooltip } from '../components';
 import { Window } from '../layouts';
 
 const LEFT_CLICK = 0;
@@ -38,7 +38,7 @@ const toMassPaintFormat = (data: PointData[]) => {
 };
 
 class PaintCanvas extends Component<PaintCanvasProps> {
-  canvasRef: RefObject<HTMLCanvasElement>;
+  canvasRef: RefObject<HTMLCanvasElement | null>;
   baseImageData: Color[][];
   is_grid_shown: boolean;
   modifiedElements: PointData[];
@@ -50,7 +50,7 @@ class PaintCanvas extends Component<PaintCanvasProps> {
 
   constructor(props) {
     super(props);
-    this.canvasRef = createRef<HTMLCanvasElement>();
+    this.canvasRef = createRef();
     this.modifiedElements = [];
     this.is_grid_shown = false;
     this.drawing = false;
@@ -264,10 +264,10 @@ export const Canvas = (props) => {
   const griddy = !!data.show_grid && !!data.editable && !!data.paint_tool_color;
   return (
     <Window
-      width={Math.max(scaled_width + 72, 262)}
+      width={Math.max(scaled_width + 72, 280)}
       height={
         scaled_height +
-        80 +
+        94 +
         (data.show_plaque ? average_plaque_height : 0) +
         (data.editable && data.paint_tool_palette ? palette_height : 0)
       }
@@ -278,11 +278,11 @@ export const Canvas = (props) => {
             <Flex.Item>
               <Tooltip
                 content={
-                  multiline`
+                  `
                   Right-Click a pixel on the canvas to copy its color.
                 ` +
                   (data.editable
-                    ? multiline`
+                    ? `
                   \n Left-Click the palette at the
                   bottom of the UI to select a color,
                   or input a new one with Right-Click.

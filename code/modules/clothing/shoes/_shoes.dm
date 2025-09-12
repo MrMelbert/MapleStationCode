@@ -73,7 +73,7 @@
 /obj/item/clothing/shoes/visual_equipped(mob/user, slot)
 	. = ..()
 	if(offset && (slot_flags & slot))
-		user.pixel_y += offset
+		user.pixel_z += offset
 		worn_y_dimension -= (offset * 2)
 		user.update_worn_shoes()
 		equipped_before_drop = TRUE
@@ -86,7 +86,7 @@
 
 /obj/item/clothing/shoes/proc/restore_offsets(mob/user)
 	equipped_before_drop = FALSE
-	user.pixel_y -= offset
+	user.pixel_z -= offset
 	worn_y_dimension = world.icon_size
 
 /obj/item/clothing/shoes/dropped(mob/user)
@@ -104,6 +104,9 @@
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_worn_shoes()
+
+/obj/item/clothing/shoes/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	return icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "boots_worn")
 
 /**
  * adjust_laces adjusts whether our shoes (assuming they can_be_tied) and tied, untied, or knotted
@@ -173,8 +176,7 @@
 				adjust_laces(SHOES_UNTIED, user)
 
 	else // if they're someone else's shoes, go knot-wards
-		var/mob/living/L = user
-		if(istype(L) && L.body_position == STANDING_UP)
+		if(istype(living_user) && living_user.body_position == STANDING_UP)
 			to_chat(user, span_warning("You must be on the floor to interact with [src]!"))
 			return
 		if(tied == SHOES_KNOTTED)
@@ -189,7 +191,7 @@
 		if(HAS_TRAIT(user, TRAIT_CLUMSY)) // based clowns trained their whole lives for this
 			mod_time *= 0.75
 
-		if(do_after(user, mod_time, target = our_guy, extra_checks = CALLBACK(src, PROC_REF(still_shoed), our_guy)))
+		if(do_after(user, mod_time, target = our_guy, extra_checks = CALLBACK(src, PROC_REF(still_shoed), our_guy), hidden = TRUE))
 			to_chat(user, span_notice("You [tied ? "untie" : "knot"] the laces on [loc]'s [src.name]."))
 			if(tied == SHOES_UNTIED)
 				adjust_laces(SHOES_KNOTTED, user)
@@ -199,11 +201,11 @@
 			user.visible_message(span_danger("[our_guy] stamps on [user]'s hand, mid-shoelace [tied ? "knotting" : "untying"]!"), span_userdanger("Ow! [our_guy] stamps on your hand!"), list(our_guy))
 			to_chat(our_guy, span_userdanger("You stamp on [user]'s hand! What the- [user.p_they()] [user.p_were()] [tied ? "knotting" : "untying"] your shoelaces!"))
 			user.emote("scream")
-			if(istype(L))
-				var/damage_what = L.get_active_hand()
-				L.apply_damage(10, BRUTE, damage_what)
-				L.apply_damage(40, PAIN, damage_what)
-				L.Paralyze(10)
+			if(istype(living_user))
+				var/damage_what = living_user.get_active_hand()
+				living_user.apply_damage(10, BRUTE, damage_what)
+				living_user.apply_damage(40, PAIN, damage_what)
+				living_user.Paralyze(10)
 
 ///checking to make sure we're still on the person we're supposed to be, for lacing do_after's
 /obj/item/clothing/shoes/proc/still_shoed(mob/living/carbon/our_guy)

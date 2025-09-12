@@ -21,8 +21,7 @@
 	. = ..()
 	break_message = span_warning("[src] falls apart with a thud!")
 
-/obj/structure/destructible/eldritch_crucible/deconstruct(disassembled = TRUE)
-
+/obj/structure/destructible/eldritch_crucible/atom_deconstruct(disassembled = TRUE)
 	// Create a spillage if we were destroyed with leftover mass
 	if(current_mass)
 		break_message = span_warning("[src] falls apart with a thud, spilling shining extract everywhere!")
@@ -66,12 +65,6 @@
 		bite_the_hand(user)
 		return TRUE
 
-	if(istype(weapon, /obj/item/codex_cicatrix) || istype(weapon, /obj/item/melee/touch_attack/mansus_fist))
-		playsound(src, 'sound/items/deconstruct.ogg', 30, TRUE, ignore_walls = FALSE)
-		set_anchored(!anchored)
-		balloon_alert(user, "[anchored ? "":"un"]anchored")
-		return TRUE
-
 	if(isbodypart(weapon))
 
 		var/obj/item/bodypart/consumed = weapon
@@ -95,6 +88,13 @@
 		return TRUE
 
 	return ..()
+
+/obj/structure/destructible/eldritch_crucible/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/codex_cicatrix) || istype(tool, /obj/item/melee/touch_attack/mansus_fist))
+		playsound(src, 'sound/items/deconstruct.ogg', 30, TRUE, ignore_walls = FALSE)
+		set_anchored(!anchored)
+		balloon_alert(user, "[anchored ? "":"un"]anchored")
+		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/destructible/eldritch_crucible/attack_hand(mob/user, list/modifiers)
 	. = ..()

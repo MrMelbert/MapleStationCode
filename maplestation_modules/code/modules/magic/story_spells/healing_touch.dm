@@ -102,7 +102,7 @@
 	victim.adjustFireLoss(-1 * final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.adjustToxLoss(-1 * tox_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
 	victim.adjustOxyLoss(-1 * oxy_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
-	victim.cause_pain(BODY_ZONES_ALL, -1 * pain_heal)
+	victim.heal_pain(1 * pain_heal)
 	victim.updatehealth()
 
 	if(victim.health == starting_health && victim.pain_controller?.get_total_pain() == starting_pain)

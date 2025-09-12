@@ -15,23 +15,25 @@
 	var/list/default_choices
 	/// Does the name of this vote contain the word "vote"?
 	var/contains_vote_in_name = FALSE
-	/// What message do we want to pass to the player-side vote panel as a tooltip?
-	var/message = "Click to initiate a vote."
-
-	// Internal values used when tracking ongoing votes.
-	// Don't mess with these, change the above values / override procs for subtypes.
-	/// An assoc list of [all choices] to [number of votes in the current running vote].
-	var/list/choices = list()
-	/// A assoc list of [ckey] to [what they voted for in the current running vote].
-	var/list/choices_by_ckey = list()
-	/// The world time this vote was started.
-	var/started_time
-	/// The time remaining in this vote's run.
-	var/time_remaining
+	/// What message do we show as the tooltip of this vote if the vote can be initiated?
+	var/default_message = "Click to initiate a vote."
 	/// The counting method we use for votes.
 	var/count_method = VOTE_COUNT_METHOD_SINGLE
 	/// The method for selecting a winner.
 	var/winner_method = VOTE_WINNER_METHOD_SIMPLE
+	/// Should we show details about the number of votes submitted for each option?
+	var/display_statistics = TRUE
+
+	// Internal values used when tracking ongoing votes.
+	// Don't mess with these, change the above values / override procs for subtypes.
+	/// An assoc list of [all choices] to [number of votes in the current running vote].
+	VAR_FINAL/list/choices = list()
+	/// A assoc list of [ckey] to [what they voted for in the current running vote].
+	VAR_FINAL/list/choices_by_ckey = list()
+	/// The world time this vote was started.
+	VAR_FINAL/started_time = -1
+	/// The time remaining in this vote's run.
+	VAR_FINAL/time_remaining = -1
 
 /**
  * Used to determine if this vote is a possible
@@ -53,14 +55,13 @@
 	choices.Cut()
 	choices_by_ckey.Cut()
 	started_time = null
-	time_remaining = null
+	time_remaining = -1
 
 /**
  * If this vote has a config associated, toggles it between enabled and disabled.
- * Returns TRUE on a successful toggle, FALSE otherwise
  */
-/datum/vote/proc/toggle_votable(mob/toggler)
-	return FALSE
+/datum/vote/proc/toggle_votable()
+	return
 
 /**
  * If this vote has a config associated, returns its value (True or False, usually).
@@ -72,20 +73,18 @@
 /**
  * Checks if the passed mob can initiate this vote.
  *
- * Return TRUE if the mob can begin the vote, allowing anyone to actually vote on it.
- * Return FALSE if the mob cannot initiate the vote.
+ * * forced - if being invoked by someone who is an admin
+ *
+ * Return VOTE_AVAILABLE if the mob can initiate the vote.
+ * Return a string with the reason why the mob can't initiate the vote.
  */
-/datum/vote/proc/can_be_initiated(mob/by_who, forced = FALSE)
+/datum/vote/proc/can_be_initiated(forced = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(started_time)
-		var/next_allowed_time = (started_time + CONFIG_GET(number/vote_delay))
-		if(next_allowed_time > world.time && !forced)
-			message = "A vote was initiated recently. You must wait [DisplayTimeText(next_allowed_time - world.time)] before a new vote can be started!"
-			return FALSE
+	if(!forced && !is_config_enabled())
+		return "This vote is currently disabled by the server configuration."
 
-	message = initial(message)
-	return TRUE
+	return VOTE_AVAILABLE
 
 /**
  * Called prior to the vote being initiated.
@@ -112,6 +111,24 @@
 	time_remaining = round(duration / 10)
 
 	return "[contains_vote_in_name ? "[capitalize(name)]" : "[capitalize(name)] vote"] started by [initiator || "Central Command"]."
+
+/**
+ * Called when a mob votes in this vote.
+ *
+ * Checks if the mob can vote in this vote.
+ *
+ * By default, checks the no_dead_vote config flag.
+ * You can override this if you want you vote to ignore this config, but you should call parent otherwise.
+ *
+ * * voter - the mob who is voting
+ *
+ * Return VOTE_AVAILABLE if the mob can vote in this vote.
+ * Return a string with the reason why the mob can't vote in this vote.
+ */
+/datum/vote/proc/can_mob_vote(mob/voter)
+	if(CONFIG_GET(flag/no_dead_vote) && voter.stat == DEAD && !voter.client?.holder)
+		return "Dead players cannot vote."
+	return VOTE_AVAILABLE
 
 /**
  * Gets the result of the vote.
@@ -177,7 +194,7 @@
 	else
 		returned_text += span_bold("[capitalize(name)] Vote")
 
-	returned_text += "\nWinner Selection: "
+	returned_text += "<br>Winner Selection: "
 	switch(winner_method)
 		if(VOTE_WINNER_METHOD_NONE)
 			returned_text += "None"
@@ -193,26 +210,27 @@
 	if(total_votes <= 0)
 		return span_bold("Vote Result: Inconclusive - No Votes!")
 
-	returned_text += "\nResults:"
-	for(var/option in choices)
-		returned_text += "\n"
-		var/votes = choices[option]
-		var/percentage_text = ""
-		if(votes > 0)
-			var/actual_percentage = round((votes / total_votes) * 100, 0.1)
-			var/text = "[actual_percentage]"
-			var/spaces_needed = 5 - length(text)
-			for(var/_ in 1 to spaces_needed)
-				returned_text += " "
-			percentage_text += "[text]%"
-		else
-			percentage_text = "    0%"
-		returned_text += "[percentage_text] | [span_bold(option)]: [choices[option]]"
+	if (display_statistics)
+		returned_text += "<br>Results:"
+		for(var/option in choices)
+			returned_text += "<br>"
+			var/votes = choices[option]
+			var/percentage_text = ""
+			if(votes > 0)
+				var/actual_percentage = round((votes / total_votes) * 100, 0.1)
+				var/text = "[actual_percentage]"
+				var/spaces_needed = 5 - length(text)
+				for(var/_ in 1 to spaces_needed)
+					returned_text += " "
+				percentage_text += "[text]%"
+			else
+				percentage_text = "    0%"
+			returned_text += "[percentage_text] | [span_bold(option)]: [choices[option]]"
 
 	if(!real_winner) // vote has no winner or cannot be won, but still had votes
 		return returned_text
 
-	returned_text += "\n"
+	returned_text += "<br>"
 	returned_text += get_winner_text(all_winners, real_winner, non_voters)
 
 	return returned_text
@@ -229,11 +247,11 @@
 /datum/vote/proc/get_winner_text(list/all_winners, real_winner, list/non_voters)
 	var/returned_text = ""
 	if(length(all_winners) > 1)
-		returned_text += "\n[span_bold("Vote Tied Between:")]"
+		returned_text += "<br>[span_bold("Vote Tied Between:")]"
 		for(var/a_winner in all_winners)
-			returned_text += "\n\t[a_winner]"
+			returned_text += "<br>\t[a_winner]"
 
-	returned_text += span_bold("\nVote Result: [real_winner]")
+	returned_text += span_bold("<br>Vote Result: [real_winner]")
 	return returned_text
 
 /**

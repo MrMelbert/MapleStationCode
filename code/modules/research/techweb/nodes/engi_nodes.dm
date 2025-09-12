@@ -6,12 +6,14 @@
 	description = "Foundational components that form the backbone of station operations, encompassing a range of essential equipment necessary for day-to-day functionality."
 	design_ids = list(
 		"micro_servo",
+		"basic_battery",
 		"basic_capacitor",
+		"basic_cell",
 		"basic_matter_bin",
 		"basic_micro_laser",
 		"basic_scanning",
+		"high_battery",
 		"high_cell",
-		"basic_cell",
 		"miniature_power_cell",
 		"condenser",
 		"igniter",
@@ -36,6 +38,7 @@
 		"nano_servo",
 		"adv_matter_bin",
 		"adv_scanning",
+		"super_battery",
 		"super_cell",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
@@ -51,6 +54,7 @@
 		"pico_servo",
 		"super_matter_bin",
 		"phasic_scanning",
+		"hyper_battery",
 		"hyper_cell",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
@@ -69,6 +73,7 @@
 		"femto_servo",
 		"bluespace_matter_bin",
 		"triphasic_scanning",
+		"bluespace_battery",
 		"bluespace_cell",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_4_POINTS)
@@ -149,6 +154,7 @@
 		"tram_display",
 		"crossing_signal",
 		"guideway_sensor",
+		"mailsorter",
 	)
 
 /datum/techweb_node/energy_manipulation
@@ -160,6 +166,8 @@
 		"apc_control",
 		"powermonitor",
 		"smes",
+		"portable_smes",
+		"power_connector",
 		"emitter",
 		"grounding_rod",
 		"tesla_coil",

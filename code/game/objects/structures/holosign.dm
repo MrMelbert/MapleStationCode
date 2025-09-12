@@ -76,7 +76,7 @@
 		var/mob/living/carbon/C = mover
 		if(C.stat) // Lets not prevent dragging unconscious/dead people.
 			return TRUE
-		if(allow_walk && C.move_intent == MOVE_INTENT_WALK)
+		if(allow_walk && C.move_intent == MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
 			return TRUE
 
 /obj/structure/holosign/barrier/wetsign
@@ -214,7 +214,7 @@
 			var/mob/living/M = user
 			M.electrocute_act(15,"Energy Barrier")
 			shockcd = TRUE
-			addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
+			addtimer(CALLBACK(src, PROC_REF(cooldown)), 0.5 SECONDS)
 
 /obj/structure/holosign/barrier/cyborg/hacked/Bumped(atom/movable/AM)
 	if(shockcd)
@@ -226,4 +226,4 @@
 	var/mob/living/M = AM
 	M.electrocute_act(15,"Energy Barrier")
 	shockcd = TRUE
-	addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
+	addtimer(CALLBACK(src, PROC_REF(cooldown)), 0.5 SECONDS)

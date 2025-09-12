@@ -147,7 +147,7 @@
 		owner.updatehealth()
 
 	// Heal some pain too
-	owner.cause_pain(BODY_ZONES_ALL, -3)
+	owner.heal_pain(3)
 
 /datum/status_effect/fleshmend/proc/on_ignited(datum/source)
 	SIGNAL_HANDLER
@@ -386,9 +386,8 @@
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	owner.heal_overall_damage(25, 25)
 	owner.fully_heal(HEAL_CC_STATUS|HEAL_TEMP)
-	owner.cause_pain(BODY_ZONES_LIMBS, -30)
-	owner.cause_pain(BODY_ZONE_CHEST, -40)
-	owner.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
+	for(var/zone in BODY_ZONES_ALL)
+		owner.heal_pain(zone == BODY_ZONE_CHEST ? 40 : 15, zone)
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
@@ -601,3 +600,27 @@
 
 /datum/status_effect/jump_jet/on_remove()
 	owner.RemoveElement(/datum/element/forced_gravity, 0)
+
+/datum/status_effect/basic_health_regen
+	id = "basic_health_regen"
+	status_type = STATUS_EFFECT_MULTIPLE
+	tick_interval = 1 SECONDS
+	duration = INFINITY
+	alert_type = null
+	/// How much to heal per second
+	var/modifier = 1
+
+/datum/status_effect/basic_health_regen/on_creation(mob/living/new_owner, modifier = 1)
+	src.modifier = modifier
+	return ..()
+
+/datum/status_effect/basic_health_regen/tick(seconds_between_ticks)
+	if(owner.stat == DEAD)
+		return
+	owner.adjustBruteLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustFireLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustToxLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustOxyLoss(-1 * modifier * seconds_between_ticks)
+	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
+		owner.blood_volume += modifier * seconds_between_ticks
+	owner.heal_pain(0.5 * modifier * seconds_between_ticks)

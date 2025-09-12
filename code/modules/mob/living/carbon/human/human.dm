@@ -37,6 +37,17 @@
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
+	// NON-MODULE CHANGE: Unconscious appearance
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "Unknown"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
+
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
 
@@ -95,11 +106,6 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
-	if(href_list["item"]) //canUseTopic check for this is handled by mob/Topic()
-		var/slot = text2num(href_list["item"])
-		if(check_obscured_slots(TRUE) & slot)
-			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
-			return
 
 ///////HUDs///////
 	if(href_list["hud"])
@@ -349,10 +355,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		if(!target_zone)
-			target_zone = get_bodypart(check_zone(user.zone_selected))
-		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.plaintext_zone]."))
+		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -449,6 +452,8 @@
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if(target.body_position != LYING_DOWN || target.on_fire || target == src)
 		return
 
 	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
@@ -550,8 +555,7 @@
  * Returns false if we couldn't wash our hands due to them being obscured, otherwise true
  */
 /mob/living/carbon/human/proc/wash_hands(clean_types)
-	var/obscured = check_obscured_slots()
-	if(obscured & ITEM_SLOT_GLOVES)
+	if(check_covered_slots() & ITEM_SLOT_GLOVES)
 		return FALSE
 
 	if(gloves)
@@ -572,13 +576,10 @@
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
-	if(glasses && is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
-		update_worn_glasses()
+	if(glasses && !is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
 		. = TRUE
 
-	var/obscured = check_obscured_slots()
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK) && wear_mask.wash(clean_types))
-		update_worn_mask()
+	if(wear_mask && !(check_covered_slots() & ITEM_SLOT_MASK) && wear_mask.wash(clean_types))
 		. = TRUE
 
 /**
@@ -586,28 +587,11 @@
  */
 /mob/living/carbon/human/wash(clean_types)
 	. = ..()
-
-	// Wash equipped stuff that cannot be covered
-	if(wear_suit?.wash(clean_types))
-		update_worn_oversuit()
-		. = TRUE
-
-	if(belt?.wash(clean_types))
-		update_worn_belt()
-		. = TRUE
-
-	// Check and wash stuff that can be covered
-	var/obscured = check_obscured_slots()
-
-	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && w_uniform.wash(clean_types))
-		update_worn_undersuit()
-		. = TRUE
-
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
 	// Wash hands if exposed
-	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(obscured & ITEM_SLOT_GLOVES))
+	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(check_covered_slots() & ITEM_SLOT_GLOVES))
 		blood_in_hands = 0
 		update_worn_gloves()
 		. = TRUE
@@ -739,6 +723,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 	VV_DROPDOWN_OPTION(VV_HK_APPLY_DNA_INFUSION, "Apply DNA Infusion")
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
+	VV_DROPDOWN_OPTION(VV_HK_MAKE_ME_TANKY, "Make This Mob Tankier")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -859,7 +844,66 @@
 
 		qdel(src)
 
+	if(href_list[VV_HK_MAKE_ME_TANKY])
+		var/list/options = list(
+			"More effective HP",
+			"Less brute",
+			"Less burn",
+			"Less toxin / oxygen / brain",
+			"Less pain",
+			"Less environmental",
+			"Tougher organs",
+			"Stun resistance",
+			"Health regen",
+		)
+		var/list/picked = list()
+		while(length(options))
+			var/result = tgui_input_list(usr, "Pick something. Select \"Done\" to finish your selection.", "Tanky", options + list("Done", "Cancel"))
+			if(QDELETED(src) || !result || result == "Cancel")
+				return
+			if(result == "Done")
+				break
+			picked += result
+			options -= result
 
+		if(!length(picked))
+			return
+		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
+		if(QDELETED(src) || !major)
+			return
+		major = (major == "Lot")
+		message_admins("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+		log_admin("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+
+		for(var/i in picked)
+			switch(i)
+				if("More effective HP")
+					add_consciousness_modifier("badmin", major ? 30 : 10)
+				if("Less brute")
+					physiology.brute_mod *= (major ? 0.5 : 0.75)
+					physiology.bleed_mod *= (major ? 0.6 : 0.8)
+				if("Less burn")
+					physiology.burn_mod *= (major ? 0.5 : 0.75)
+				if("Less toxin / oxygen / brain")
+					physiology.tox_mod *= (major ? 0.5 : 0.75)
+					physiology.oxy_mod *= (major ? 0.5 : 0.75)
+					physiology.brain_mod *= (major ? 0.5 : 0.75)
+				if("Less pain")
+					set_pain_mod("badmin", major ? 0.6 : 0.8)
+				if("Tougher organs")
+					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+						organ.maxHealth *= (major ? 1.5 : 1.25)
+				if("Less environmental")
+					physiology.pressure_mod *= (major ? 0.6 : 0.8)
+					physiology.heat_mod *= (major ? 0.6 : 0.8)
+					physiology.cold_mod *= (major ? 0.6 : 0.8)
+				if("Stun resistance")
+					ADD_TRAIT(src, TRAIT_BATON_RESISTANCE, "Badmin")
+					physiology.stamina_mod *= (major ? 0.5 : 0.75)
+					physiology.stun_mod *= (major ? 0.5 : 0.75)
+					physiology.knockdown_mod *= (major ? 0.5 : 0.75)
+				if("Health regen")
+					apply_status_effect(/datum/status_effect/basic_health_regen, major ? 1.5 : 0.5)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
