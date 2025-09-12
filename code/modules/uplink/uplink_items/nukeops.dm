@@ -614,7 +614,6 @@
 	item = /obj/item/mod/module/injector
 	cost = 2
 	purchasable_from = UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS
-	uplink_item_flags = NONE
 
 /datum/uplink_item/suits/holster
 	name = "MODsuit Holster Module"
@@ -622,7 +621,6 @@
 	item = /obj/item/mod/module/holster
 	cost = 2
 	purchasable_from = UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS
-	uplink_item_flags = NONE
 
 /datum/uplink_item/device_tools/medgun_mod
 	name = "Medbeam Gun Module"
