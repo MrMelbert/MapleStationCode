@@ -275,7 +275,7 @@ Security HUDs! Basic mode shows only the job.
 	SIGNAL_HANDLER
 
 	var/sechud_icon_state = wear_id?.get_sechud_job_icon_state()
-	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		sechud_icon_state = "hudno_id"
 	holder.icon_state = sechud_icon_state
 	sec_hud_set_security_status()

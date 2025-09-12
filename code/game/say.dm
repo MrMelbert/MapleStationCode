@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /mob/living/show_runechat_color()
 	return client?.prefs?.read_preference(/datum/preference/toggle/runechat_text_names) || FALSE
 
-/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE, radio_icon)
+/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE)
 	//This proc uses [] because it is faster than continually appending strings. Thanks BYOND.
 	//Basic span
 	var/spanpart1 = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
@@ -154,22 +154,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//Radio freq/name display
 	var/freqpart = radio_freq ? "\[[get_radio_name(radio_freq)]\] " : ""
 	//Speaker name
-	var/namepart
-	var/list/stored_name = list(null)
-	var/voice = speaker.GetVoice()
-
-	if(ishuman(speaker)) //First, try to pull the modified title from a carbon's ID. This will override both visual and audible names.
-		var/mob/living/carbon/human/huspeaker = speaker
-		var/obj/item/card/id/id = huspeaker.get_idcard(hand_first = FALSE)
-		id?.get_message_name_part(huspeaker, stored_name)
-
-	if(!stored_name[NAME_PART_INDEX]) //Otherwise, we just use whatever the name signal gives us.
-		SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
-
-	namepart = stored_name[NAME_PART_INDEX] || voice
+	var/namepart = speaker.get_message_voice(visible_name)
 
 	if(namepart && namepart != "Unknown" && !radio_freq && show_runechat_color())
-		namepart = "<font color='[voice == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(speaker.chat_color, 0.85, 0.85)]'>[namepart]</font>"
+		namepart = "<font color='[speaker.name == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(speaker.chat_color, 0.85, 0.85)]'>[namepart]</font>"
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -310,8 +298,14 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		return "2"
 	return "0"
 
-/atom/proc/GetVoice()
+/// Get what this atom sounds like when speaking
+/atom/proc/get_voice()
 	return "[src]" //Returns the atom's name, prepended with 'The' if it's not a proper noun
+
+/// Get what this atom appears like in chat when speaking
+/// visible_name - If TRUE, returns the visible name rather than the voice
+/atom/proc/get_message_voice(visible_name)
+	return visible_name ? get_visible_name() : get_voice()
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.
@@ -334,7 +328,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 	radio = _radio
 	source = M
 	if(istype(M))
-		name = radio.anonymize ? "Unknown" : M.GetVoice()
+		name = radio.anonymize ? "Unknown" : M.get_voice()
 		verb_say = M.get_default_say_verb()
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim
