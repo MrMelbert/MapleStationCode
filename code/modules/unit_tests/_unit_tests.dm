@@ -98,6 +98,7 @@
 #include "antag_moodlets.dm"
 #include "area_contents.dm"
 #include "armor_verification.dm"
+#include "asset_smart_cache.dm"
 #include "atmospherics_sanity.dm"
 #include "autowiki.dm"
 #include "barsigns.dm"

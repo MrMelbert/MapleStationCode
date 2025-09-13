@@ -19,12 +19,18 @@
 /datum/loadout_item/under/formal/shirodress
 	name = "Doll's Formal Uniform"
 	item_path = /obj/item/clothing/under/shirodress
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/shirodress/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/neck/shirocloak
 	name = "Side Cape"
 	item_path = /obj/item/clothing/neck/cloak/shirocloak
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/shirocloak/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 //THERES ALREADY A SHIRO FILE AHAHAHAHA
 
@@ -67,19 +73,31 @@
 /datum/loadout_item/under/formal/puppetdress
 	name = "Puppet's Formalwear"
 	item_path = /obj/item/clothing/under/puppetdress
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/puppetdress/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/gloves/shirogloves
 	name = "Velvet Gloves"
 	item_path = /obj/item/clothing/gloves/puppet
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/gloves/shirogloves/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/shoes/shiroboots
 	name = "Absurd Boots"
 	item_path = /obj/item/clothing/shoes/puppet
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/shiroboots/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/head/shirohat
 	name = "Puppet's Tophat"
 	item_path = /obj/item/clothing/head/puppet
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/shirohat/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

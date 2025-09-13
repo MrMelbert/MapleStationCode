@@ -125,3 +125,6 @@
 
 /datum/preference/choiced/lizard_horn_layer/init_possible_values()
 	return layer_to_layer
+
+/datum/preference/choiced/lizard_horn_layer/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)

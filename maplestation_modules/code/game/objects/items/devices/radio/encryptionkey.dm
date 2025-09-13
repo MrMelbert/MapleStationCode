@@ -21,7 +21,8 @@
 
 /obj/item/encryptionkey/headset_mu
 	name = "\improper Mu radio encryption key"
-	icon_state = "cypherkey_centcom"
+	icon_state = "/obj/item/encryptionkey/headset_mu"
+	post_init_icon_state = "cypherkey_centcom"
 	independent = TRUE
 	channels = list(RADIO_CHANNEL_MU = 1)
 	greyscale_config = /datum/greyscale_config/encryptionkey_centcom

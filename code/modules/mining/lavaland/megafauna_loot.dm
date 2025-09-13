@@ -260,7 +260,9 @@
 /obj/item/clothing/suit/hooded/hostile_environment
 	name = "H.E.C.K. suit"
 	desc = "Hostile Environment Cross-Kinetic Suit: A suit designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
-	icon_state = "hostile_env"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/hooded/hostile_environment"
+	post_init_icon_state = "hostile_env"
 	hoodtype = /obj/item/clothing/head/hooded/hostile_environment
 	armor_type = /datum/armor/hooded_hostile_environment
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
@@ -300,10 +302,11 @@
 
 /obj/item/clothing/head/hooded/hostile_environment
 	name = "H.E.C.K. helmet"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	desc = "Hostile Environment Cross-Kinetic Helmet: A helmet designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
-	icon_state = "hostile_env"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	icon_state = "/obj/item/clothing/head/hooded/hostile_environment"
+	post_init_icon_state = "hostile_env"
 	w_class = WEIGHT_CLASS_NORMAL
 	armor_type = /datum/armor/hooded_hostile_environment
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
