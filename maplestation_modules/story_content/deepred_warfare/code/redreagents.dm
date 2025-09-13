@@ -258,7 +258,7 @@
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_CHEMICAL
 
 /datum/chemical_reaction/true_miracle
-	required_reagents = list(/datum/reagent/aggregation_agent = 150, /datum/reagent/miracle = 1)
+	required_reagents = list(/datum/reagent/aggregation_agent/advanced = 150, /datum/reagent/miracle = 1)
 	mob_react = FALSE
 	reaction_flags = REACTION_INSTANT
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
