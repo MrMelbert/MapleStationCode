@@ -130,7 +130,7 @@ const PatientStateView = (props: {
   const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
 
   const num_to_percent = (num: number) => {
-    return Math.round(num * 10) / 10 + '%';
+    return `${Math.round(num * 10) / 10}%`;
   };
 
   const num_to_color = (num: number | null) => {
@@ -158,7 +158,7 @@ const PatientStateView = (props: {
               {patient.blood_type || 'Unknown'}
             </LabeledList.Item>
             <LabeledList.Item label="Heart Rate">
-              {patient.heartRate ? patient.heartRate + ' BPM' : 'No pulse'}
+              {patient.heartRate ? `${patient.heartRate} BPM` : 'No pulse'}
             </LabeledList.Item>
             <LabeledList.Item label="Health">
               <ProgressBar

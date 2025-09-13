@@ -164,7 +164,7 @@ export const SpellbookTabs = (props, context) => {
                   <Section fill backgroundColor="rgba(0, 0, 0, 0.2)">
                     <Stack direction="column">
                       <Stack.Item vertical align="left" fontSize="150%" bold>
-                        {item.name + ': ' + item.entry_type}
+                        {`${item.name}: ${item.entry_type}`}
                       </Stack.Item>
                       <Stack.Item vertical preserveWhitespace align="left">
                         {item.description}

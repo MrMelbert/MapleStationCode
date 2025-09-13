@@ -127,7 +127,7 @@ type PlaneDebugData = {
 // Stolen wholesale from fontcode
 function textWidth(text: string, font: string, fontsize: number) {
   // default font height is 12 in tgui
-  font = fontsize + 'x ' + font;
+  font = `${fontsize}x ${font}`;
   const c = document.createElement('canvas');
   const ctx = c.getContext('2d') as CanvasRenderingContext2D;
   ctx.font = font;
@@ -404,7 +404,7 @@ export class PlaneMasterDebug extends Component {
     }
 
     return (
-      <Window width={1200} height={800} title={'Plane Debugging: ' + mob_name}>
+      <Window width={1200} height={800} title={`Plane Debugging: ${mob_name}`}>
         <Window.Content
           style={{
             backgroundImage: 'none',
@@ -687,7 +687,7 @@ const PlaneWindow = (props) => {
       height="100%"
       position="absolute"
       backgroundColor="#000000"
-      title={'Plane Master: ' + workingPlane.name}
+      title={`Plane Master: ${workingPlane.name}`}
       buttons={
         <>
           <ClosePlaneWindow />
@@ -938,7 +938,7 @@ const AddModal = (props) => {
 
   return (
     <Modal>
-      <Section fill title={'Add relay from ' + currentPlane.name} pr="13px">
+      <Section fill title={`Add relay from ${currentPlane.name}`} pr="13px">
         <Dropdown
           options={plane_options}
           selected={currentTarget?.name || 'planes'}
