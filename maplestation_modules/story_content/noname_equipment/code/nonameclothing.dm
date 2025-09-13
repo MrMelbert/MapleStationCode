@@ -9,7 +9,10 @@
 /datum/loadout_item/under/formal/nndress
 	name = "Blue Dress"
 	item_path = /obj/item/clothing/under/dress/nndress
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/nndress/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /// Component to make a suit item allow the wearer to safely ventcrawl, with some drawbacks
 /datum/component/ventcrawler_clothing

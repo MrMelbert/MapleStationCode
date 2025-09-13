@@ -72,8 +72,7 @@ There are several things that need to be remembered:
 
 /mob/living/carbon/human/update_obscured_slots(obscured_flags)
 	..()
-	if(obscured_flags & HIDEFACE)
-		sec_hud_set_security_status()
+	sec_hud_set_security_status()
 
 /* --------------------------------------- */
 //vvvvvv UPDATE_INV PROCS vvvvvv
@@ -105,7 +104,7 @@ There are several things that need to be remembered:
 		//icon_file MUST be set to null by default, or it causes issues.
 		//handled_by_bodytype MUST be set to FALSE under the if(!icon_exists()) statement, or everything breaks.
 		//"override_file = handled_by_bodytype ? icon_file : null" MUST be added to the arguments of build_worn_icon()
-		//Friendly reminder that icon_exists(file, state, scream = TRUE) is your friend when debugging this code.
+		//Friendly reminder that icon_exists_or_scream(file, state) is your friend when debugging this code.
 		var/handled_by_bodytype = TRUE
 		var/icon_file
 		var/woman
@@ -140,6 +139,7 @@ There are several things that need to be remembered:
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
 
 	apply_overlay(UNIFORM_LAYER)
+
 	check_body_shape(BODYTYPE_DIGITIGRADE, ITEM_SLOT_ICLOTHING)
 
 /mob/living/carbon/human/update_worn_id(update_obscured = TRUE)
@@ -215,6 +215,20 @@ There are several things that need to be remembered:
 			feature_y_offset = glove_offset["y"]
 
 	gloves_overlay.pixel_z += feature_y_offset
+
+	// We dont have any >2 hands human species (and likely wont ever), so theres no point in splitting this because:
+	// It will only run if the left hand OR the right hand is missing, and it wont run if both are missing because you cant wear gloves with no arms
+	// (unless admins mess with this then its their fault)
+	if(num_hands < default_num_hands)
+		var/static/atom/movable/alpha_filter_target
+		if(isnull(alpha_filter_target))
+			alpha_filter_target = new(null)
+		alpha_filter_target.icon = 'icons/effects/effects.dmi'
+		alpha_filter_target.icon_state = "missing[!has_left_hand(check_disabled = FALSE) ? "l" : "r"]"
+		alpha_filter_target.render_target = "*MissGlove [REF(src)] [!has_left_hand(check_disabled = FALSE) ? "L" : "R"]"
+		gloves_overlay.add_overlay(alpha_filter_target)
+		gloves_overlay.filters += filter(type="alpha", render_source=alpha_filter_target.render_target, y=feature_y_offset, flags=MASK_INVERSE)
+
 	overlays_standing[GLOVES_LAYER] = gloves_overlay
 	apply_overlay(GLOVES_LAYER)
 	// NON-MODULE CHANGE END
@@ -805,7 +819,7 @@ generate/load female uniform sprites matching all previously decided variables
 	var/mob/living/carbon/wearer = loc
 	var/is_digi = istype(wearer) && (wearer.bodytype & BODYTYPE_DIGITIGRADE) && !wearer.is_digitigrade_squished()
 
-	var/mutable_appearance/standing // this is the actual resulting MA
+	var/mutable_appearance/draw_target // MA of the item itself, not the final result
 	var/icon/building_icon // used to construct an icon across multiple procs before converting it to MA
 	if(female_uniform)
 		building_icon = wear_female_version(
@@ -822,16 +836,24 @@ generate/load female uniform sprites matching all previously decided variables
 			greyscale_colors = greyscale_colors,
 		)
 	if(building_icon)
-		standing = mutable_appearance(building_icon, layer = -layer2use)
-
-	// no special handling done, default it
-	standing ||= mutable_appearance(file2use, t_state, layer = -layer2use)
+		draw_target = mutable_appearance(building_icon, layer = -layer2use)
+	else
+		draw_target = mutable_appearance(file2use, t_state, layer = -layer2use)
 
 	//Get the overlays for this item when it's being worn
 	//eg: ammo counters, primed grenade flashes, etc.
-	var/list/worn_overlays = worn_overlays(standing, isinhands, file2use)
-	if(length(worn_overlays)) // NON-MODULE CHANGE
-		standing.overlays += worn_overlays
+	var/list/worn_overlays = worn_overlays(draw_target, isinhands, file2use)
+	if(length(worn_overlays))
+		draw_target.overlays += worn_overlays
+	draw_target = color_atom_overlay(draw_target)
+
+	// Okay so this has to be done because some overlays, like blood, want to be KEEP_APART
+	// but KEEP_APART breaks float layering, so what we need to do is make fake KEEP_APART for us to use
+	var/mutable_appearance/standing = mutable_appearance(layer = -layer2use, appearance_flags = KEEP_TOGETHER)
+	standing.overlays += draw_target
+	var/list/separate_overlays = separate_worn_overlays(standing, draw_target, isinhands, file2use)
+	if(length(separate_overlays))
+		standing.overlays += separate_overlays
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
 
@@ -844,7 +866,6 @@ generate/load female uniform sprites matching all previously decided variables
 	standing.pixel_z += offsets[2]
 
 	standing.alpha = alpha
-	standing.color = color
 
 	return standing
 

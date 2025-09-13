@@ -17,11 +17,6 @@
 		"fax_machine_deluxe",
 	)
 
-/datum/techweb_node/mod_equip
-	id_additions = list(
-		"mod_helmet_desync",
-	)
-
 /datum/techweb_node/bio_scan
 	id_additions = list(
 		"scanning_pad",

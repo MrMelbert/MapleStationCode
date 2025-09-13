@@ -45,6 +45,7 @@
 /obj/item/clothing/shoes/bronze/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/machines/clockcult/integration_cog_install.ogg' = 1, 'sound/magic/clockwork/fellowship_armory.ogg' = 1), 50, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 4)
 
 /obj/item/clothing/shoes/cookflops
 	desc = "All this talk of antags, greytiding, and griefing... I just wanna grill for god's sake!"
@@ -69,11 +70,13 @@
 /obj/item/clothing/shoes/glow
 	name = "glow shoes"
 	desc = "t3h c00L3st sh03z j00'LL 3v3r f1nd."
-	icon_state = "glow_shoes"
+	icon = 'icons/map_icons/clothing/shoes.dmi'
+	icon_state = "/obj/item/clothing/shoes/glow"
+	post_init_icon_state = "glow_shoes"
 	inhand_icon_state = null
-	greyscale_colors = "#4A3A40#8EEEEE"
 	greyscale_config = /datum/greyscale_config/glow_shoes
 	greyscale_config_worn = /datum/greyscale_config/glow_shoes/worn
+	greyscale_colors = "#4A3A40#8EEEEE"
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/shoes/glow/Initialize(mapload)
@@ -105,8 +108,14 @@
 /obj/item/clothing/shoes/jester_shoes
 	name = "jester shoes"
 	desc = "Shoes that jingle with every step!!"
-	icon_state = "green_jester_shoes"
+	icon = 'icons/map_icons/clothing/shoes.dmi'
+	icon_state = "/obj/item/clothing/shoes/jester_shoes"
+	post_init_icon_state = "jester_map"
 	inhand_icon_state = null
+	greyscale_config = /datum/greyscale_config/jester_shoes
+	greyscale_config_worn = /datum/greyscale_config/jester_shoes/worn
+	greyscale_colors = "#00ff00#ff0000"
+	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/shoes/jester_shoes/Initialize(mapload)
 	. = ..()
@@ -124,12 +133,13 @@
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
 	LoadComponent(/datum/component/squeak, list('sound/effects/quack.ogg' = 1), 50, falloff_exponent = 20)
+	AddComponent(/datum/component/adjust_fishing_difficulty, -6) //deploy tactical duckling lure
 
 /obj/item/clothing/shoes/ducky_shoes/equipped(mob/living/user, slot)
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
-		user.AddElement(/datum/element/waddling)
+		user.AddElementTrait(TRAIT_WADDLING, SHOES_TRAIT, /datum/element/waddling)
 
 /obj/item/clothing/shoes/ducky_shoes/dropped(mob/living/user)
 	. = ..()
-	user.RemoveElement(/datum/element/waddling)
+	REMOVE_TRAIT(user, TRAIT_WADDLING, SHOES_TRAIT)

@@ -11,7 +11,10 @@
 /datum/loadout_item/under/formal/isaac
 	name = "Painter's Suit"
 	item_path = /obj/item/clothing/under/jumpsuit/paintersuit
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/isaac/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/shoes/elvenboots
 	name = "elven boots"

@@ -90,26 +90,22 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/synth_head_cover/init_possible_values()
-	return assoc_to_keys(GLOB.synth_head_cover_list)
+	return assoc_to_keys(SSaccessories.synth_head_cover_list)
 
 /datum/preference/choiced/synth_head_cover/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = GLOB.synth_head_cover_list[value]
-	var/icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.synth_head_cover_list[value]
+	var/datum/universal_icon/head = uni_icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
 
-	var/icon/final_icon = icon(head)
+	var/datum/universal_icon/final_icon = head.copy()
 
 	if (!isnull(sprite_accessory))
 		for(var/side in list("ADJ", "FRONT"))
-			var/icon/accessory_icon = icon(
-				icon = 'maplestation_modules/icons/mob/synth_heads.dmi',
-				icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_ADJ",
-				dir = SOUTH,
-			)
-			final_icon.Blend(accessory_icon, ICON_OVERLAY)
+			var/datum/universal_icon/accessory_icon = uni_icon('maplestation_modules/icons/mob/synth_heads.dmi', "m_synth_head_cover_[sprite_accessory.icon_state]_ADJ", dir = SOUTH)
+			final_icon.blend_icon(accessory_icon, ICON_OVERLAY)
 
-	final_icon.Crop(11, 20, 23, 32)
-	final_icon.Scale(32, 32)
-	final_icon.Blend(COLOR_GRAY, ICON_MULTIPLY)
+	final_icon.crop(11, 20, 23, 32)
+	final_icon.scale(32, 32)
+	final_icon.blend_color(COLOR_GRAY, ICON_MULTIPLY)
 
 	return final_icon
 

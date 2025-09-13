@@ -38,7 +38,10 @@
 /datum/loadout_item/under/jumpsuit/jessie_turtleneck
 	name = "Holointegrated Turtleneck"
 	item_path = /obj/item/clothing/under/rank/rnd/research_director/jessie_turtleneck
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/jessie_turtleneck/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/gloves/black/jessie_gloves
 	name = "mixed gloves"
@@ -77,7 +80,10 @@
 /datum/loadout_item/gloves/jessie_gloves
 	name = "Mixed Gloves"
 	item_path = /obj/item/clothing/gloves/black/jessie_gloves
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/gloves/jessie_gloves/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 // Retexture of RD's jacket
 /obj/item/clothing/suit/toggle/labcoat/research_director/jessie_cape
@@ -99,4 +105,7 @@
 /datum/loadout_item/suit/jessie_cape
 	name = "Researcher's Shoulder Cape"
 	item_path = /obj/item/clothing/suit/toggle/labcoat/research_director/jessie_cape
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/jessie_cape/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

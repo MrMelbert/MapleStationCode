@@ -270,8 +270,8 @@
 	QDEL_NULL(sec_radio)
 	return ..()
 
-/obj/machinery/vending/can_speak()
-	return !shut_up
+/obj/machinery/vending/can_speak(allow_mimes)
+	return is_operational && !shut_up && ..()
 
 /obj/machinery/vending/emp_act(severity)
 	. = ..()
@@ -1108,7 +1108,7 @@
 
 /obj/machinery/vending/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/vending),
+		get_asset_datum(/datum/asset/spritesheet_batched/vending),
 	)
 
 /obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)

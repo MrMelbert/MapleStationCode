@@ -9,7 +9,10 @@
 /datum/loadout_item/under/formal/grey
 	name = "Designer Outfit"
 	item_path = /obj/item/clothing/under/jumpsuit/greyshirt
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/grey/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/shoes/greyboots
 	name = "designer boots"

@@ -3,17 +3,12 @@
 /// Underslot - Jumpsuit Items (Deletes overrided items)
 /datum/loadout_category/undersuit
 	category_name = "Jumpsuit"
-	type_to_generate = /datum/loadout_item/under/jumpsuit
+	type_to_generate = /datum/loadout_item/under
 	tab_order = 7
-
-/// Underslot - Formal Suit Items (Deletes overrided items)
-/datum/loadout_category/undersuit/formal
-	category_name = "Formal"
-	type_to_generate = /datum/loadout_item/under/formal
-	tab_order = 8
 
 /datum/loadout_item/under
 	abstract_type = /datum/loadout_item/under
+	group = "Other"
 
 /datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(isplasmaman(equipper))
@@ -26,6 +21,20 @@
 // jumpsuit undersuits
 /datum/loadout_item/under/jumpsuit
 	abstract_type = /datum/loadout_item/under/jumpsuit
+	group = "Jumpsuits"
+
+/datum/loadout_item/under/plainclothes
+	abstract_type = /datum/loadout_item/under/plainclothes
+	group = "Plainclothes"
+
+// formal undersuits
+/datum/loadout_item/under/formal
+	abstract_type = /datum/loadout_item/under/formal
+	group = "Formal"
+
+/datum/loadout_item/under/pants
+	abstract_type = /datum/loadout_item/under/pants
+	group = "Pants"
 
 /datum/loadout_item/under/jumpsuit/greyscale
 	name = "Greyscale Jumpsuit"
@@ -39,7 +48,6 @@
 	name = "Random Jumpsuit"
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/random
-	additional_displayed_text = list("Random Color")
 
 /datum/loadout_item/under/jumpsuit/random/on_equip_item(
 	obj/item/equipped_item,
@@ -62,35 +70,39 @@
 	name = "Rainbow Jumpskirt"
 	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
 
-/datum/loadout_item/under/jumpsuit/jeans
+/datum/loadout_item/under/pants/jeans
 	name = "Jeans"
 	item_path = /obj/item/clothing/under/pants/jeans
 
-/datum/loadout_item/under/jumpsuit/shorts
+/datum/loadout_item/under/pants/shorts
 	name = "Shorts"
 	item_path = /obj/item/clothing/under/shorts
 
-/datum/loadout_item/under/jumpsuit/track
+/datum/loadout_item/under/pants/jeanshorts
+	name = "Jean Shorts"
+	item_path = /obj/item/clothing/under/shorts/jeanshorts
+
+/datum/loadout_item/under/pants/track
 	name = "Track Pants"
 	item_path = /obj/item/clothing/under/pants/track
 
-/datum/loadout_item/under/jumpsuit/camo
+/datum/loadout_item/under/pants/camo
 	name = "Camo Pants"
 	item_path = /obj/item/clothing/under/pants/camo
 
-/datum/loadout_item/under/jumpsuit/kilt
+/datum/loadout_item/under/kilt
 	name = "Kilt"
 	item_path = /obj/item/clothing/under/costume/kilt
 
-/datum/loadout_item/under/jumpsuit/gladiator
+/datum/loadout_item/under/gladiator
 	name = "Gladiator Armor"
 	item_path = /obj/item/clothing/under/costume/gladiator/loadout
 
-/datum/loadout_item/under/jumpsuit/treasure_hunter
+/datum/loadout_item/under/plainclothes/treasure_hunter
 	name = "Treasure Hunter"
 	item_path = /obj/item/clothing/under/rank/civilian/curator/treasure_hunter
 
-/datum/loadout_item/under/jumpsuit/overalls
+/datum/loadout_item/under/overalls
 	name = "Overalls"
 	item_path = /obj/item/clothing/under/misc/overalls
 
@@ -102,41 +114,37 @@
 	name = "Vice Officer Jumpsuit"
 	item_path = /obj/item/clothing/under/misc/vice_officer
 
-/datum/loadout_item/under/jumpsuit/soviet
+/datum/loadout_item/under/plainclothes/soviet
 	name = "Soviet Uniform"
 	item_path = /obj/item/clothing/under/costume/soviet
 
-/datum/loadout_item/under/jumpsuit/redcoat
+/datum/loadout_item/under/redcoat
 	name = "Redcoat"
 	item_path = /obj/item/clothing/under/costume/redcoat
 
-/datum/loadout_item/under/jumpsuit/pj_red
+/datum/loadout_item/under/pj_red
 	name = "Red PJs"
 	item_path = /obj/item/clothing/under/misc/pj/red
 
-/datum/loadout_item/under/jumpsuit/pj_blue
+/datum/loadout_item/under/pj_blue
 	name = "Blue PJs"
 	item_path = /obj/item/clothing/under/misc/pj/blue
 
-/datum/loadout_item/under/jumpsuit/spacer_uniform
+/datum/loadout_item/under/plainclothes/spacer_uniform
 	name = "Spacer's Uniform"
 	item_path = /obj/item/clothing/under/spacer_turtleneck/plain
 
-/datum/loadout_item/under/jumpsuit/spacer_turtleneck
+/datum/loadout_item/under/plainclothes/spacer_turtleneck
 	name = "Spacer's Turtleneck"
 	item_path = /obj/item/clothing/under/spacer_turtleneck
 
-/datum/loadout_item/under/jumpsuit/spacer_uniform_skirt
+/datum/loadout_item/under/plainclothes/spacer_uniform_skirt
 	name = "Spacer's Skirt"
 	item_path = /obj/item/clothing/under/spacer_turtleneck/skirt/plain
 
-/datum/loadout_item/under/jumpsuit/spacer_turtleneck_skirt
+/datum/loadout_item/under/plainclothes/spacer_turtleneck_skirt
 	name = "Spacer's Skirtleneck"
 	item_path = /obj/item/clothing/under/spacer_turtleneck/skirt
-
-// formal undersuits
-/datum/loadout_item/under/formal
-	abstract_type = /datum/loadout_item/under/formal
 
 /datum/loadout_item/under/formal/assistant
 	name = "Assistant Formal"
@@ -174,11 +182,11 @@
 	name = "Black Lawyer Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/black/skirt
 
-/datum/loadout_item/under/formal/blue_suit
+/datum/loadout_item/under/plainclothes/blue_suit
 	name = "Blue Button Down with Slacks"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/bluesuit
 
-/datum/loadout_item/under/formal/blue_suitskirt
+/datum/loadout_item/under/plainclothes/blue_suitskirt
 	name = "Blue Button Down with Skirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/bluesuit/skirt
 
@@ -194,13 +202,17 @@
 	name = "Burgundy Suit"
 	item_path = /obj/item/clothing/under/suit/burgundy
 
-/datum/loadout_item/under/formal/buttondown_slacks
+/datum/loadout_item/under/plainclothes/buttondown_slacks
 	name = "Button Down with Slacks"
 	item_path = /obj/item/clothing/under/costume/buttondown/slacks
 
-/datum/loadout_item/under/formal/buttondown_shorts
+/datum/loadout_item/under/plainclothes/buttondown_shorts
 	name = "Button Down with Shorts"
 	item_path = /obj/item/clothing/under/costume/buttondown/shorts
+
+/datum/loadout_item/under/plainclothes/buttondown_skirt
+	name = "Button Down with Skirt"
+	item_path = /obj/item/clothing/under/costume/buttondown/skirt
 
 /datum/loadout_item/under/formal/charcoal_suit
 	name = "Charcoal Suit"
@@ -258,15 +270,15 @@
 	name = "Red Lawyer Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/red/skirt
 
-/datum/loadout_item/under/formal/red_gown
-	name = "Red Evening Gown"
-	item_path = /obj/item/clothing/under/dress/redeveninggown
+/datum/loadout_item/under/formal/evening_gown
+	name = "Greyscale Evening Gown"
+	item_path = /obj/item/clothing/under/dress/eveninggown
 
-/datum/loadout_item/under/formal/sailor
+/datum/loadout_item/under/plainclothes/sailor
 	name = "Sailor Suit"
 	item_path = /obj/item/clothing/under/costume/sailor
 
-/datum/loadout_item/under/formal/sailor_skirt
+/datum/loadout_item/under/plainclothes/sailor_skirt
 	name = "Sailor Dress"
 	item_path = /obj/item/clothing/under/dress/sailor
 
@@ -298,7 +310,7 @@
 	name = "Teal Suitskirt"
 	item_path = /obj/item/clothing/under/suit/teal/skirt
 
-/datum/loadout_item/under/formal/turtleneck_skirt
+/datum/loadout_item/under/plainclothes/turtleneck_skirt
 	name = "Turtleneck Skirt"
 	item_path = /obj/item/clothing/under/dress/skirt/turtleskirt
 

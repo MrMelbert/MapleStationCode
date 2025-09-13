@@ -15,8 +15,9 @@
 	overlay_state_inactive = "module_kinesis"
 	overlay_state_active = "module_kinesis_on"
 	accepted_anomalies = list(/obj/item/assembly/signaler/anomaly/grav)
+	required_slots = list(ITEM_SLOT_GLOVES)
 	/// Range of the knesis grab.
-	var/grab_range = 5
+	var/grab_range = 8
 	/// Time between us hitting objects with kinesis.
 	var/hit_cooldown_time = 1 SECONDS
 	/// Stat required for us to grab a mob.
@@ -63,9 +64,6 @@
 	grab_atom(target)
 
 /obj/item/mod/module/anomaly_locked/kinesis/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	clear_grab(playsound = !deleting)
 
 /obj/item/mod/module/anomaly_locked/kinesis/process(seconds_per_tick)
@@ -164,8 +162,7 @@
 	ADD_TRAIT(grabbed_atom, TRAIT_NO_FLOATING_ANIM, REF(src))
 	RegisterSignal(grabbed_atom, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_setanchored))
 	playsound(grabbed_atom, 'sound/effects/contractorbatonhit.ogg', 75, TRUE)
-	kinesis_icon = mutable_appearance(icon = 'icons/effects/effects.dmi', icon_state = "kinesis", layer = grabbed_atom.layer - 0.1)
-	kinesis_icon.appearance_flags = RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM
+	kinesis_icon = mutable_appearance(icon = 'icons/effects/effects.dmi', icon_state = "kinesis", layer = grabbed_atom.layer - 0.1, appearance_flags = RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM|KEEP_APART)
 	kinesis_icon.overlays += emissive_appearance(icon = 'icons/effects/effects.dmi', icon_state = "kinesis", offset_spokesman = grabbed_atom)
 	grabbed_atom.add_overlay(kinesis_icon)
 	kinesis_beam = mod.wearer.Beam(grabbed_atom, "kinesis")
@@ -182,6 +179,7 @@
 	if(playsound)
 		playsound(grabbed_atom, 'sound/effects/empulse.ogg', 75, TRUE)
 	STOP_PROCESSING(SSfastprocess, src)
+	UnregisterSignal(grabbed_atom, list(COMSIG_MOB_STATCHANGE, COMSIG_MOVABLE_SET_ANCHORED))
 	kinesis_catcher = null
 	mod.wearer.clear_fullscreen("kinesis")
 	grabbed_atom.cut_overlay(kinesis_icon)

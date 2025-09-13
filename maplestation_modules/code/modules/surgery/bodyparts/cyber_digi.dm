@@ -158,48 +158,44 @@
 // Prefs menu
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi
 	name = "Cybernetic Digitigrade Right Leg"
+	tooltip = "Unique to Lizardpeople."
 	limb_path = /obj/item/bodypart/leg/right/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
 	return islizard(apply_to)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi
 	name = "Cybernetic Digitigrade Left Leg"
+	tooltip = "Unique to Lizardpeople."
 	limb_path = /obj/item/bodypart/leg/left/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
 	return islizard(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi
 	name = "Prosthetic Digitigrade Right Leg"
+	tooltip = "Unique to Lizardpeople."
 	limb_path = /obj/item/bodypart/leg/right/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
 	return islizard(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi
 	name = "Prosthetic Digitigrade Left Leg"
+	tooltip = "Unique to Lizardpeople."
 	limb_path = /obj/item/bodypart/leg/left/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
 	return islizard(apply_to)
