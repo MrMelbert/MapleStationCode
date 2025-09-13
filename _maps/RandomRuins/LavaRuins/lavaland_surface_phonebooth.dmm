@@ -16,7 +16,6 @@
 "k" = (
 /obj/machinery/vending/snack/green{
 	all_products_free = 0;
-	
 	},
 /obj/structure/window/reinforced/spawner/directional/east,
 /turf/open/floor/plating/lavaland_atmos,
@@ -71,7 +70,6 @@
 "W" = (
 /obj/machinery/vending/cigarette{
 	all_products_free = 0;
-	
 	},
 /obj/structure/window/reinforced/spawner/directional/east,
 /turf/open/floor/plating/lavaland_atmos,
