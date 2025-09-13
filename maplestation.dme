@@ -6745,8 +6745,6 @@
 #include "maplestation_modules\story_content\deepred_warfare\code\curios.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\dreadactions.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\dreaditems.dm"
-#include "maplestation_modules\story_content\deepred_warfare\code\droneai.dm"
-#include "maplestation_modules\story_content\deepred_warfare\code\drones.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\kajari_beam.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redcinematics.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\reddread.dm"
