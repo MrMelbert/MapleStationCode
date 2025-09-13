@@ -516,9 +516,16 @@
 		log_mapping("Job [title] ([type]) couldn't find a round start spawn point.")
 
 /// Finds a valid latejoin spawn point, checking for events and special conditions.
-/datum/job/proc/get_latejoin_spawn_point()
+/datum/job/proc/get_latejoin_spawn_point(datum/preferences/prefs)
 	if(length(GLOB.jobspawn_overrides[title])) //We're doing something special today.
 		return pick(GLOB.jobspawn_overrides[title])
+	if(prefs?.read_preference(/datum/preference/choiced/preferred_latejoin_spawn) == SPAWNPOINT_CRYO)
+		var/list/common_sleepers = list()
+		for(var/obj/machinery/sleeper/cryo/sleeper as anything in GLOB.cryo_sleepers)
+			if(sleeper.can_latejoin(src))
+				common_sleepers += sleeper
+		if(length(common_sleepers))
+			return pick(common_sleepers)
 	if(length(SSjob.latejoin_trackers))
 		return pick(SSjob.latejoin_trackers)
 	return SSjob.get_last_resort_spawn_points()
