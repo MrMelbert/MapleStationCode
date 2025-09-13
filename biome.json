@@ -16,7 +16,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
-			"**",
+			"tgui/**",
 			"!**/node_modules",
 			"!tgui/public",
 			"tgui/public/tgui.html",
