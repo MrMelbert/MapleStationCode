@@ -4,6 +4,7 @@
 	icon_state = "bronze"
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 	resistance_flags = FIRE_PROOF
+	w_class = WEIGHT_CLASS_TINY
 	/// Sprite used for medalbox
 	var/medaltype = "medal"
 	/// Has this been use for a commendation?
