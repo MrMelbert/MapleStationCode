@@ -12,16 +12,10 @@
 	desc = "A large quantum computing server machine, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "server_off"
 
-/obj/structure/redtech_indestructable/server_off/alias
-	name = "crimson server"
-
 /obj/structure/redtech_indestructable/heatsink_off
 	name = "redtech heatsink"
 	desc = "Ab excessively large heatsink, which thankfully seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "heatsink_off"
-
-/obj/structure/redtech_indestructable/heatsink_off/alias
-	name = "crimson heatsink"
 
 /obj/structure/redtech_indestructable/inert_AV
 	name = "inert Anti Void"
