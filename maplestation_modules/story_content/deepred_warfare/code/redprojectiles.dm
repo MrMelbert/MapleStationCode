@@ -174,7 +174,7 @@
 	. = ..()
 
 /obj/projectile/bullet/godslayer
-	name = "annihilator round"
+	name = "godslayer slug"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
@@ -239,17 +239,17 @@
 		A.fire(null, marked_target)
 
 /obj/effect/projectile/muzzle/godslayer
-	name = "annihilator muzzle flash"
+	name = "godslayer muzzle flash"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_muzzle"
 
 /obj/effect/projectile/tracer/godslayer
-	name = "annihilator tracer"
+	name = "godslayer tracer"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 
 /obj/effect/projectile/impact/godslayer
-	name = "annihilator warp site"
+	name = "godslayer warp site"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_impact"
 
@@ -258,7 +258,7 @@
 	. = ..()
 
 /obj/projectile/bullet/supergodslayer
-	name = "supercharged annihilator round"
+	name = "supercharged godslayer slug"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
@@ -287,17 +287,17 @@
 	var/supercharge_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techexplosion.ogg'
 
 /obj/effect/projectile/muzzle/supergodslayer
-	name = "supercharged annihilator warp site"
+	name = "supercharged godslayer warp site"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "supergodslayer_muzzle"
 
 /obj/effect/projectile/tracer/supergodslayer
-	name = "supercharged annihilator tracer"
+	name = "supercharged godslayer tracer"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "supergodslayer_tracer"
 
 /obj/effect/projectile/impact/supergodslayer
-	name = "supercharged annihilator impact"
+	name = "supercharged godslayer impact"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "supergodslayer_impact"
 
