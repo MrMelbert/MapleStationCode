@@ -290,7 +290,7 @@ const Settings = (props) => {
             maxValue={maxTemperature}
             step={1}
             stepPixelSize={1}
-            onDrag={(_, value) =>
+            onChange={(_, value) =>
               act('temperature', {
                 temperature: value,
               })
