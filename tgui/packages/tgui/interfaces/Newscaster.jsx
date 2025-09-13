@@ -103,8 +103,7 @@ const NewscasterChannelCreation = (props) => {
               backgroundColor="black"
               textColor="white"
               maxLength={42}
-              expensive
-              onChange={(value) =>
+              onBlur={(value) =>
                 act('setChannelName', {
                   channeltext: value,
                 })
@@ -121,8 +120,7 @@ const NewscasterChannelCreation = (props) => {
               backgroundColor="black"
               textColor="white"
               maxLength={512}
-              expensive
-              onChange={(value) =>
+              onBlur={(value) =>
                 act('setChannelDesc', {
                   channeldesc: value,
                 })
@@ -197,8 +195,7 @@ const NewscasterCommentCreation = (props) => {
             backgroundColor="black"
             textColor="white"
             maxLength={512}
-            expensive
-            onChange={(value) =>
+            onBlur={(value) =>
               act('setCommentBody', {
                 commenttext: value,
               })

@@ -46,7 +46,6 @@ export const AutomatedAnnouncement = (props) => {
             >
               <Input
                 fluid
-                expensive
                 value={arrival}
                 onChange={(value) =>
                   act('ArrivalText', {
@@ -81,7 +80,6 @@ export const AutomatedAnnouncement = (props) => {
             >
               <Input
                 fluid
-                expensive
                 value={newhead}
                 // non-module change, ok so just like in general if you grab the announcement stuff, you're going to need to grab changes from inputs rework to this file
                 onChange={(value) =>
