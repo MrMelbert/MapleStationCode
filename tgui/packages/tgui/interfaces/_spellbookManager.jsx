@@ -142,7 +142,7 @@ export const SpellbookTabs = (props, context) => {
   return (
     <Stack fill>
       <Stack.Item grow>
-        {props.tab && props.tab.contents ? (
+        {props.tab?.contents ? (
           <Section
             title={props.tab.title}
             fill
