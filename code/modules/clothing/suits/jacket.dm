@@ -50,7 +50,9 @@
 /obj/item/clothing/suit/toggle/jacket/trenchcoat
 	name = "trenchcoat"
 	desc = "A multi-purpose trenchcoat."
-	icon_state = "trenchcoat"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/toggle/jacket/trenchcoat"
+	post_init_icon_state = "trenchcoat"
 	greyscale_config = /datum/greyscale_config/trenchcoat
 	greyscale_config_worn = /datum/greyscale_config/trenchcoat/worn
 	greyscale_colors = "#414344"

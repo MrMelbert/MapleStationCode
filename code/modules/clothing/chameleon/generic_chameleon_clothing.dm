@@ -217,9 +217,9 @@ do { \
 
 // Cham shoes, including chameleon noslips
 /datum/armor/shoes_chameleon
-	melee = 10
-	bullet = 10
-	laser = 10
+	// melee = 10
+	// bullet = 10
+	// laser = 10
 	bio = 90
 	fire = 50
 	acid = 50

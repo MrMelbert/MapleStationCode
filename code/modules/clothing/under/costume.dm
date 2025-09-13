@@ -387,9 +387,11 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/costume/gi
-	name = "Martial Artist Gi"
+	name = "martial gi"
 	desc = "Assistant, nukie, whatever. You can beat anyone; it's called hard work!"
-	icon_state = "martial_arts_gi"
+	icon = 'icons/map_icons/clothing/under/costume.dmi'
+	icon_state = "/obj/item/clothing/under/costume/gi"
+	post_init_icon_state = "martial_arts_gi"
 	greyscale_config = /datum/greyscale_config/gi
 	greyscale_config_worn = /datum/greyscale_config/gi/worn
 	greyscale_colors = "#f1eeee#000000"
@@ -404,9 +406,10 @@
 	update_icon(UPDATE_OVERLAYS)
 
 /obj/item/clothing/under/costume/gi/goku
-	name = "Sacred Gi"
+	name = "sacred gi"
 	desc = "Created by a man who touched the hearts and lives of many."
-	icon_state = "martial_arts_gi_goku"
+	icon_state = "/obj/item/clothing/under/costume/gi/goku"
+	post_init_icon_state = "martial_arts_gi_goku"
 	greyscale_colors = "#f89925#3e6dd7"
 
 /obj/item/clothing/under/costume/traditional

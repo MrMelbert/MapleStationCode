@@ -200,10 +200,12 @@
 /obj/item/clothing/head/costume/jester
 	name = "jester hat"
 	desc = "A hat with bells, to add some merriness to the suit."
-	icon_state = "jester_map"
-	greyscale_colors = "#00ff00#ff0000"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/costume/jester"
+	post_init_icon_state = "jester_map"
 	greyscale_config = /datum/greyscale_config/jester_hat
 	greyscale_config_worn = /datum/greyscale_config/jester_hat/worn
+	greyscale_colors = "#00ff00#ff0000"
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/head/costume/jesteralt

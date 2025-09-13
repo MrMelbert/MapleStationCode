@@ -14,9 +14,11 @@
 /obj/item/clothing/under/dress/striped
 	name = "striped dress"
 	desc = "Fashion in space."
-	icon_state = "stripeddress"
 	inhand_icon_state = null
 	female_sprite_flags = FEMALE_UNIFORM_FULL
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/striped"
+	post_init_icon_state = "stripeddress"
 	greyscale_config = /datum/greyscale_config/striped_dress
 	greyscale_config_worn = /datum/greyscale_config/striped_dress/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
@@ -25,8 +27,10 @@
 /obj/item/clothing/under/dress/sailor
 	name = "sailor dress"
 	desc = "Formal wear for a leading lady."
-	icon_state = "sailor_dress"
 	alternate_worn_layer = UNDER_SUIT_LAYER
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/sailor"
+	post_init_icon_state = "sailor_dress"
 	greyscale_config = /datum/greyscale_config/sailor_dress
 	greyscale_config_worn = /datum/greyscale_config/sailor_dress/worn
 	greyscale_colors = "#0000ff#cc0000#eaeaea"
@@ -49,9 +53,11 @@
 /obj/item/clothing/under/dress/eveninggown
 	name = "evening gown"
 	desc = "Fancy dress for space bar singers."
-	icon_state = "evening_gown"
 	alternate_worn_layer = UNDER_SUIT_LAYER
 	inhand_icon_state = null
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/eveninggown"
+	post_init_icon_state = "evening_gown"
 	greyscale_config = /datum/greyscale_config/evening_dress
 	greyscale_config_worn = /datum/greyscale_config/evening_dress/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
@@ -64,7 +70,9 @@
 /obj/item/clothing/under/dress/skirt
 	name = "cardigan skirt"
 	desc = "A nice skirt with a cute cardigan, very fancy!"
-	icon_state = "cardiganskirt"
+	icon = 'icons/map_icons/clothing/under/dress.dmi'
+	icon_state = "/obj/item/clothing/under/dress/skirt"
+	post_init_icon_state = "cardiganskirt"
 	greyscale_config = /datum/greyscale_config/cardiganskirt
 	greyscale_config_worn = /datum/greyscale_config/cardiganskirt/worn
 	greyscale_colors = "#bf504d#545454"
