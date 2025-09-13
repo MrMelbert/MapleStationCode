@@ -12,7 +12,6 @@
  */
 import { perf } from 'common/perf';
 import { createAction } from 'common/redux';
-import type { globalEvents } from 'tgui-core/events';
 import type { BooleanLike } from 'tgui-core/react';
 
 import { setupDrag } from './drag';
@@ -369,9 +368,8 @@ const chunkSplitter = {
 export const sendAct = (action: string, payload: object = {}) => {
   // Validate that payload is an object
   // prettier-ignore
-  const isObject = typeof payload === 'object'
-    && payload !== null
-    && !Array.isArray(payload);
+  const isObject =
+    typeof payload === 'object' && payload !== null && !Array.isArray(payload);
   if (!isObject) {
     logger.error(`Payload for act() must be an object, got this:`, payload);
     return;
