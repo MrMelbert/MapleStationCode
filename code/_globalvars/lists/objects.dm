@@ -80,3 +80,6 @@ GLOBAL_LIST_EMPTY(roundstart_station_borgcharger_areas)
 
 /// List of area names of roundstart station mech rechargers, for the low charge/no charge mech screen alert tooltips.
 GLOBAL_LIST_EMPTY(roundstart_station_mechcharger_areas)
+
+/// list of all plan traits
+GLOBAL_LIST_INIT(plant_traits, init_plant_traits())

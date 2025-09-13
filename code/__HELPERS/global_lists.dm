@@ -256,3 +256,11 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	/obj/machinery/light,
 	/obj/structure/light_construct,
 )))
+
+/// Inits GLOB.plant_traits
+/proc/init_plant_traits()
+	var/traits = list()
+	for(var/trait_path in subtypesof(/datum/plant_gene/trait))
+		traits += new trait_path
+	sort_list(traits, GLOBAL_PROC_REF(cmp_typepaths_asc))
+	return traits
