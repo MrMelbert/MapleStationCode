@@ -1,4 +1,4 @@
-import { sortBy } from 'common/collections';
+import { sortBy } from 'es-toolkit';
 import { Component, createRef, RefObject } from 'react';
 import {
   Box,
