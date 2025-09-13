@@ -1012,7 +1012,7 @@
 /turf/open/floor/iron,
 /area/station/construction)
 "dN" = (
-/obj/structure/table,
+/obj/machinery/vending/subtype_vendor,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dO" = (
@@ -1020,6 +1020,7 @@
 /obj/machinery/light/directional/south,
 /obj/item/storage/medkit/regular,
 /obj/item/healthanalyzer/advanced,
+/obj/item/debug/omnitool/item_spawner,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dP" = (
@@ -1320,6 +1321,7 @@
 /area/station/cargo/storage)
 "eU" = (
 /obj/structure/sign/warning/vacuum/external/directional/east,
+/obj/machinery/vending/subtype_vendor,
 /turf/open/floor/iron,
 /area/station/medical/medbay)
 "eV" = (
@@ -1880,6 +1882,24 @@
 /obj/item/melee/energy/axe,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
+"kh" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/structure/table,
+/obj/item/debug/omnitool{
+	pixel_x = -4;
+	pixel_y = 6
+	},
+/obj/item/debug/omnitool/item_spawner{
+	pixel_x = 4;
+	pixel_y = -6
+	},
+/turf/open/floor/iron/white/corner{
+	dir = 1
+	},
+/area/station/medical/medbay)
 "kj" = (
 /obj/machinery/door/airlock,
 /obj/structure/cable,
@@ -1970,6 +1990,7 @@
 "ny" = (
 /obj/structure/table,
 /obj/item/storage/toolbox/syndicate,
+/obj/item/debug/omnitool,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "nE" = (
@@ -8023,7 +8044,7 @@ av
 by
 bU
 cl
-cl
+kh
 cl
 cH
 cu
