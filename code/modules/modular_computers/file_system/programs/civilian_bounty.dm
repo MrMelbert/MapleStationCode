@@ -78,7 +78,7 @@
 /datum/computer_file/program/civilianbounties/proc/pick_bounty(datum/bounty/choice)
 	var/datum/bank_account/id_account = computer.computer_id_slot?.registered_account
 	if(!id_account?.bounties?[choice])
-		playsound(computer.loc, 'sound/machines/synth/synth_no.ogg', 40 , TRUE)
+		playsound(computer.loc, 'sound/machines/synth_no.ogg', 40 , TRUE)
 		return
 	id_account.civilian_bounty = id_account.bounties[choice]
 	id_account.bounties = null
