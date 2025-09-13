@@ -160,7 +160,7 @@ const sortConnectionRefs = function (
 ) {
   refs = sortBy(refs, (connection: ConnectionRef) => connection.sort_by);
   refs.map((connection, index) => {
-    let connectSource = connectSources[connection.ref];
+    const connectSource = connectSources[connection.ref];
     if (direction === ConnectionDirection.Outgoing) {
       connectSource.source_index = index;
     } else if (direction === ConnectionDirection.Incoming) {
@@ -202,20 +202,20 @@ const positionPlanes = (connectSources: AssocConnected) => {
   // We need them in one list partly for later purposes
   // But also so we can set their source/target index nicely
   for (const ref of Object.keys(relay_info)) {
-    let connection_source: Connected = relay_info[ref];
+    const connection_source: Connected = relay_info[ref];
     connection_source.connect_type = ConnectionType.Relay;
     connection_source.connect_color = 'blue';
     connectSources[ref] = connection_source;
   }
   for (const ref of Object.keys(filter_connect)) {
-    let connection_source: Connected = filter_connect[ref];
+    const connection_source: Connected = filter_connect[ref];
     connection_source.connect_type = ConnectionType.Filter;
     connection_source.connect_color = 'purple';
     connectSources[ref] = connection_source;
   }
 
   for (const plane_ref of Object.keys(plane_info)) {
-    let our_plane = plane_info[plane_ref];
+    const our_plane = plane_info[plane_ref];
     const incoming_conct: ConnectionRef[] = [] as any;
     const outgoing_conct: ConnectionRef[] = [] as any;
     addConnectionRefs(
@@ -347,8 +347,8 @@ export class PlaneMasterDebug extends Component {
         source: connection.source_ref,
         target: connection.target_ref,
       });
-      let source_plane = plane_info[connection.source_ref];
-      let target_plane = plane_info[connection.source_ref];
+      const source_plane = plane_info[connection.source_ref];
+      const target_plane = plane_info[connection.source_ref];
       source_plane.outgoing_relays = arrayRemove(
         source_plane.outgoing_relays,
         connection.our_ref,
@@ -364,8 +364,8 @@ export class PlaneMasterDebug extends Component {
         target: filter.target_ref,
         name: filter.name,
       });
-      let source_plane = plane_info[connection.source_ref];
-      let target_plane = plane_info[connection.source_ref];
+      const source_plane = plane_info[connection.source_ref];
+      const target_plane = plane_info[connection.source_ref];
       source_plane.outgoing_filters = arrayRemove(
         source_plane.outgoing_filters,
         connection.our_ref,
