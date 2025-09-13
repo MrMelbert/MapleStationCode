@@ -1,5 +1,5 @@
 import { sortBy } from 'es-toolkit';
-import { Component, createRef, RefObject } from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import {
   Box,
   Button,
@@ -18,7 +18,7 @@ import { classes, shallowDiffers } from 'tgui-core/react';
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
-import { Connection, Connections, Position } from './common/Connections';
+import { type Connection, Connections, type Position } from './common/Connections';
 import { MOUSE_BUTTON_LEFT, noop } from './IntegratedCircuit/constants';
 
 enum ConnectionType {

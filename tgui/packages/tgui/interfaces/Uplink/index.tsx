@@ -22,7 +22,7 @@ import {
   dangerLevelsTooltip,
 } from './calculateDangerLevel';
 import { GenericUplink, type Item } from './GenericUplink';
-import { Objective, ObjectiveMenu } from './ObjectiveMenu';
+import { type Objective, ObjectiveMenu } from './ObjectiveMenu';
 import { PrimaryObjectiveMenu } from './PrimaryObjectiveMenu';
 
 type UplinkItem = {

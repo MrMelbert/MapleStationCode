@@ -1,8 +1,8 @@
 import type { BooleanLike } from 'tgui-core/react';
 
 import type { sendAct } from '../../backend';
-import { Language } from './CharacterPreferences/_LanguagePicker'; // NON-MODULE CHANGE
-import { LimbCategory } from './CharacterPreferences/_LimbManager'; // NON-MODULE CHANGE
+import type { Language } from './CharacterPreferences/_LanguagePicker'; // NON-MODULE CHANGE
+import type { LimbCategory } from './CharacterPreferences/_LimbManager'; // NON-MODULE CHANGE
 import type {
   LoadoutCategory,
   LoadoutList,

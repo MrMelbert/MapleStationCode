@@ -1,4 +1,4 @@
-import { CheckboxInput, type Feature, FeatureToggle } from '../base';
+import { CheckboxInput, type Feature, type FeatureToggle } from '../base';
 import { FeatureDropdownInput } from '../dropdowns';
 
 export const tgui_fancy: FeatureToggle = {
