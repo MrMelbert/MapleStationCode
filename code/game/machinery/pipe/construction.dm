@@ -53,6 +53,9 @@ Buildable meters
 /obj/item/pipe/directional/he_exchanger
 	icon_state_preview = "heunary"
 	pipe_type = /obj/machinery/atmospherics/components/unary/heat_exchanger
+/obj/item/pipe/directional/airlock_pump
+	icon_state_preview = "airlock_pump"
+	pipe_type = /obj/machinery/atmospherics/components/unary/airlock_pump
 /obj/item/pipe/binary
 	RPD_type = PIPE_STRAIGHT
 /obj/item/pipe/binary/layer_adapter
@@ -85,6 +88,16 @@ Buildable meters
 /obj/item/pipe/quaternary/pipe
 	icon_state_preview = "manifold4w"
 	pipe_type = /obj/machinery/atmospherics/pipe/smart
+/obj/item/pipe/quaternary/pipe/crafted
+
+/obj/item/pipe/quaternary/pipe/crafted/Initialize(mapload, _pipe_type, _dir, obj/machinery/atmospherics/make_from, device_color, device_init_dir = SOUTH)
+	. = ..()
+	pipe_type = /obj/machinery/atmospherics/pipe/smart
+	pipe_color = ATMOS_COLOR_OMNI
+	p_init_dir = ALL_CARDINALS
+	setDir(SOUTH)
+	update()
+
 /obj/item/pipe/quaternary/he_pipe
 	icon_state_preview = "he_manifold4w"
 	pipe_type = /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w
@@ -110,8 +123,8 @@ Buildable meters
 		return ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/ghettojetpack, /datum/crafting_recipe/pipegun, /datum/crafting_recipe/smoothbore_disabler, /datum/crafting_recipe/improvised_pneumatic_cannon)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -238,7 +251,7 @@ Buildable meters
 				return TRUE
 	// no conflicts found
 
-	var/obj/machinery/atmospherics/built_machine = new pipe_type(loc, , , p_init_dir)
+	var/obj/machinery/atmospherics/built_machine = new pipe_type(loc, null, fixed_dir(), p_init_dir)
 	build_pipe(built_machine)
 	built_machine.on_construction(user, pipe_color, piping_layer)
 	transfer_fingerprints_to(built_machine)
@@ -250,6 +263,23 @@ Buildable meters
 		span_hear("You hear ratcheting."))
 
 	qdel(src)
+
+/obj/item/pipe/welder_act(mob/living/user, obj/item/welder)
+	. = ..()
+	if(istype(pipe_type, /obj/machinery/atmospherics/components))
+		return TRUE
+	if(!welder.tool_start_check(user, amount=2))
+		return TRUE
+	add_fingerprint(user)
+
+	if(welder.use_tool(src, user, 2 SECONDS, volume=2))
+		new /obj/item/sliced_pipe(drop_location())
+		user.visible_message( \
+			"[user] welds \the [src] in two.", \
+			span_notice("You weld \the [src] in two."), \
+			span_hear("You hear welding."))
+
+		qdel(src)
 
 /**
  * Attempt to automatically resolve a pipe conflict by reconfiguring any smart pipes involved.
@@ -329,9 +359,6 @@ Buildable meters
 	return FALSE
 
 /obj/item/pipe/proc/build_pipe(obj/machinery/atmospherics/A)
-	A.setDir(fixed_dir())
-	A.set_init_directions(p_init_dir)
-
 	if(pipename)
 		A.name = pipename
 	if(A.on)

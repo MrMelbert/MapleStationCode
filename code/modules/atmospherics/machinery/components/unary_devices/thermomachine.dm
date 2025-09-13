@@ -17,8 +17,6 @@
 	layer = OBJ_LAYER
 	circuit = /obj/item/circuitboard/machine/thermomachine
 
-	hide = TRUE
-
 	move_resist = MOVE_RESIST_DEFAULT
 	vent_movement = NONE
 	pipe_flags = PIPING_ONE_PER_TURF
@@ -224,6 +222,8 @@
 		return ITEM_INTERACT_SUCCESS
 	piping_layer = (piping_layer >= PIPING_LAYER_MAX) ? PIPING_LAYER_MIN : (piping_layer + 1)
 	to_chat(user, span_notice("You change the circuitboard to layer [piping_layer]."))
+	if(anchored)
+		reconnect_nodes()
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
@@ -235,6 +235,8 @@
 	set_pipe_color(GLOB.pipe_paint_colors[GLOB.pipe_paint_colors[color_index]])
 	visible_message(span_notice("[user] set [src]'s pipe color to [GLOB.pipe_color_name[pipe_color]]."), ignored_mobs = user)
 	to_chat(user, span_notice("You set [src]'s pipe color to [GLOB.pipe_color_name[pipe_color]]."))
+	if(anchored)
+		reconnect_nodes()
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 

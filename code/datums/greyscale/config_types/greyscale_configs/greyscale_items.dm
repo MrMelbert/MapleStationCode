@@ -256,7 +256,7 @@
 
 /datum/greyscale_config/vape
 	name = "Vape"
-	icon_file = 'icons/obj/clothing/masks.dmi'
+	icon_file = 'icons/obj/cigarettes.dmi'
 	json_config = 'code/datums/greyscale/json_configs/vape.json'
 
 /datum/greyscale_config/vape/worn
@@ -341,3 +341,8 @@
 	name = "Piggy Bank"
 	icon_file = 'icons/obj/fluff/general.dmi'
 	json_config = 'code/datums/greyscale/json_configs/piggy_bank.json'
+
+/datum/greyscale_config/mod_core_soul
+	name = "MOD Soul Core"
+	icon_file = 'icons/obj/clothing/modsuit/mod_construction.dmi'
+	json_config = 'code/datums/greyscale/json_configs/mod_core_soul.json'

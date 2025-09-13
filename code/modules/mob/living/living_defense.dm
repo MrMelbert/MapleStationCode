@@ -404,7 +404,7 @@
 
 	if(!user.get_bodypart(BODY_ZONE_HEAD))
 		return FALSE
-	if(user.is_muzzled() || user.is_mouth_covered(ITEM_SLOT_MASK))
+	if(user.is_mouth_covered(ITEM_SLOT_MASK))
 		to_chat(user, span_warning("You can't bite with your mouth covered!"))
 		return FALSE
 
@@ -740,7 +740,7 @@
 		. |= SHOVE_CAN_MOVE
 		if(!buckled)
 			. |= SHOVE_CAN_HIT_SOMETHING
-	if(HAS_TRAIT(src, TRAIT_SHOVE_KNOCKDOWN_BLOCKED))
+	if(HAS_TRAIT(src, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED))
 		. |= SHOVE_KNOCKDOWN_BLOCKED
 
 ///Send the chat feedback message for shoving

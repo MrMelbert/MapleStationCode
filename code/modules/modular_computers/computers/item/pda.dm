@@ -52,7 +52,7 @@
 		/obj/item/lipstick,
 		/obj/item/flashlight/pen,
 		/obj/item/reagent_containers/hypospray/medipen,
-		/obj/item/clothing/mask/cigarette,
+		/obj/item/cigarette,
 	)
 
 /obj/item/modular_computer/pda/Initialize(mapload)
@@ -430,7 +430,7 @@
 	return TRUE
 
 /obj/item/modular_computer/pda/silicon/ui_state(mob/user)
-	return GLOB.reverse_contained_state
+	return GLOB.deep_inventory_state
 
 /obj/item/modular_computer/pda/silicon/cyborg/syndicate
 	icon_state = "tablet-silicon-syndicate"

@@ -414,7 +414,19 @@
 	SSticker.ready_report -= src // should be redundant but just in case.
 	return ..()
 
-/mob/dead/new_player/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, message_range, datum/saymode/saymode)
+/mob/dead/new_player/say(
+	message,
+	bubble_type,
+	list/spans,
+	sanitize,
+	datum/language/language,
+	ignore_spam,
+	forced,
+	filterproof,
+	message_range,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
 	if(isnull(client) || client.interviewee)
 		return
 

@@ -11,7 +11,10 @@
 	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	visor_vars_to_toggle = NONE
 	var/modifies_speech = FALSE
+	unique_reskin_changes_base_icon_state = TRUE
+
 	var/adjusted_flags = null
 	///Did we install a filtering cloth?
 	var/has_filter = FALSE
@@ -55,7 +58,7 @@
 
 /obj/item/clothing/mask/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
-	if(isinhands)
+	if(isinhands || !(body_parts_covered & HEAD))
 		return
 
 	if(body_parts_covered & HEAD)

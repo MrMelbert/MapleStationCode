@@ -13,7 +13,7 @@
 	greyscale_colors = "#545454#ffffff"
 	worn_x_dimension = 64
 	worn_y_dimension = 64
-	clothing_flags = LARGE_WORN_ICON
+	clothing_flags = parent_type::clothing_flags | LARGE_WORN_ICON
 	actions_types = list(/datum/action/item_action/wheelys)
 	///False means wheels are not popped out
 	var/wheelToggle = FALSE

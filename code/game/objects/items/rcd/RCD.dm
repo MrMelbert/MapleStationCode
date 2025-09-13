@@ -16,6 +16,7 @@
 	item_flags = NO_MAT_REDEMPTION | NOBLUDGEON
 	has_ammobar = TRUE
 	actions_types = list(/datum/action/item_action/rcd_scan)
+	action_slots = ALL
 
 	/// main category of currently selected design[Structures, Airlocks, Airlock Access]
 	var/root_category

@@ -19,6 +19,7 @@ path/corner/color_name {\
 	icon = 'icons/obj/chairs_wide.dmi'
 	buildstackamount = 1
 	item_chair = null
+	fishing_modifier = -4
 	var/mutable_appearance/armrest
 
 /obj/structure/chair/sofa/Initialize(mapload)
@@ -40,7 +41,9 @@ path/corner/color_name {\
 
 /obj/structure/chair/sofa/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
 	if(!overlays_from_child_procs)
-		overlays_from_child_procs = list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1))
+		var/mutable_appearance/echair_overlay = mutable_appearance('icons/obj/chairs.dmi', "echair_over", OBJ_LAYER, src, appearance_flags = KEEP_APART)
+		echair_overlay.pixel_x = -1
+		overlays_from_child_procs = list(echair_overlay)
 	. = ..()
 
 /obj/structure/chair/sofa/post_buckle_mob(mob/living/M)

@@ -32,6 +32,7 @@ do { \
 	can_adjust = FALSE
 	armor_type = /datum/armor/clothing_under/chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/jumpsuit)
+	action_slots = ALL
 
 /obj/item/clothing/under/chameleon/broken
 
@@ -58,6 +59,7 @@ do { \
 	resistance_flags = NONE
 	armor_type = /datum/armor/suit_chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/suit)
+	action_slots = ALL
 
 /obj/item/clothing/suit/chameleon/Initialize(mapload)
 	. = ..()
@@ -86,6 +88,7 @@ do { \
 	resistance_flags = NONE
 	armor_type = /datum/armor/glasses_chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/glasses)
+	action_slots = ALL
 
 /obj/item/clothing/glasses/chameleon/broken
 
@@ -109,8 +112,10 @@ do { \
 	greyscale_colors = null
 
 	resistance_flags = NONE
+	body_parts_covered = HANDS|ARMS
 	armor_type = /datum/armor/gloves_chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/gloves)
+	action_slots = ALL
 	clothing_traits = list(TRAIT_FAST_CUFFING)
 
 /obj/item/clothing/gloves/chameleon/broken
@@ -136,6 +141,7 @@ do { \
 	resistance_flags = NONE
 	armor_type = /datum/armor/head_chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/hat)
+	action_slots = ALL
 
 /obj/item/clothing/head/chameleon/broken
 
@@ -145,6 +151,7 @@ do { \
 
 /obj/item/clothing/head/chameleon/drone
 	actions_types = list(/datum/action/item_action/chameleon/change/hat, /datum/action/item_action/chameleon/drone/togglehatmask, /datum/action/item_action/chameleon/drone/randomise)
+	action_slots = ALL
 	item_flags = DROPDEL
 	// The camohat, I mean, holographic hat projection, is part of the drone itself.
 	armor_type = /datum/armor/none
@@ -177,6 +184,7 @@ do { \
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/chameleon/change/mask)
+	action_slots = ALL
 	/// Is our voice changer enabled or disabled?
 	var/voice_change = TRUE
 
@@ -192,6 +200,7 @@ do { \
 
 /obj/item/clothing/mask/chameleon/drone
 	actions_types = list(/datum/action/item_action/chameleon/change/mask, /datum/action/item_action/chameleon/drone/togglehatmask, /datum/action/item_action/chameleon/drone/randomise)
+	action_slots = ALL
 	item_flags = DROPDEL
 	//Same as the drone chameleon hat, undroppable and no protection
 	armor_type = /datum/armor/none
@@ -230,6 +239,7 @@ do { \
 	resistance_flags = NONE
 	armor_type = /datum/armor/shoes_chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/shoes)
+	action_slots = ALL
 
 /obj/item/clothing/shoes/chameleon/Initialize(mapload)
 	. = ..()
@@ -257,6 +267,7 @@ do { \
 /obj/item/storage/backpack/chameleon
 	name = "backpack"
 	actions_types = list(/datum/action/item_action/chameleon/change/backpack)
+	action_slots = ALL
 
 /obj/item/storage/backpack/chameleon/broken
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
@@ -270,6 +281,7 @@ do { \
 	name = "toolbelt"
 	desc = "Holds tools."
 	actions_types = list(/datum/action/item_action/chameleon/change/belt)
+	action_slots = ALL
 
 /obj/item/storage/belt/chameleon/Initialize(mapload)
 	. = ..()
@@ -285,6 +297,7 @@ do { \
 /obj/item/radio/headset/chameleon
 	name = "radio headset"
 	actions_types = list(/datum/action/item_action/chameleon/change/headset)
+	action_slots = ALL
 
 /obj/item/radio/headset/chameleon/broken
 
@@ -296,11 +309,8 @@ do { \
 /obj/item/modular_computer/pda/chameleon
 	name = "tablet"
 	actions_types = list(/datum/action/item_action/chameleon/change/tablet)
-	// action_slots = ALL
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
-
-/obj/item/modular_computer/pda/chameleon/broken
-	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
+	action_slots = ALL
 
 /obj/item/modular_computer/pda/chameleon/broken/Initialize(mapload)
 	. = ..()
@@ -309,6 +319,7 @@ do { \
 // Cham Stamp
 /obj/item/stamp/chameleon
 	actions_types = list(/datum/action/item_action/chameleon/change/stamp)
+	action_slots = ALL
 
 /obj/item/stamp/chameleon/broken
 
@@ -329,6 +340,7 @@ do { \
 	armor_type = /datum/armor/neck_chameleon
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/chameleon/change/neck)
+	action_slots = ALL
 
 /obj/item/clothing/neck/chameleon/broken
 

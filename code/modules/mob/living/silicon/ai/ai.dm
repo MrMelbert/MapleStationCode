@@ -23,9 +23,7 @@
 	combat_mode = TRUE //so we always get pushed instead of trying to swap
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS
 	hud_type = /datum/hud/ai
-	med_hud = DATA_HUD_MEDICAL_BASIC
-	sec_hud = DATA_HUD_SECURITY_BASIC
-	d_hud = DATA_HUD_DIAGNOSTIC_ADVANCED
+	silicon_huds = list(DATA_HUD_MEDICAL_BASIC, DATA_HUD_SECURITY_BASIC, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH)
 	mob_size = MOB_SIZE_LARGE
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE
@@ -763,7 +761,10 @@
 				"floating face" = 'icons/mob/silicon/ai.dmi',
 				"xeno queen" = 'icons/mob/nonhuman-player/alien.dmi',
 				"horror" = 'icons/mob/silicon/ai.dmi',
-				"clock" = 'icons/mob/silicon/ai.dmi'
+				"clock" = 'icons/mob/silicon/ai.dmi',
+				"triangle" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"cube" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"BH" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
 				)
 
 			input = tgui_input_list(usr, "Select a hologram", "Hologram", sort_list(icon_list))

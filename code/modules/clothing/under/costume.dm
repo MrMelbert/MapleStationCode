@@ -390,9 +390,24 @@
 	name = "Martial Artist Gi"
 	desc = "Assistant, nukie, whatever. You can beat anyone; it's called hard work!"
 	icon_state = "martial_arts_gi"
+	greyscale_config = /datum/greyscale_config/gi
+	greyscale_config_worn = /datum/greyscale_config/gi/worn
+	greyscale_colors = "#f1eeee#000000"
+	flags_1 = IS_PLAYER_COLORABLE_1
 	inhand_icon_state = null
 	female_sprite_flags = NO_FEMALE_UNIFORM
 	can_adjust = FALSE
+
+/obj/item/clothing/under/costume/gi/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/gags_recolorable)
+	update_icon(UPDATE_OVERLAYS)
+
+/obj/item/clothing/under/costume/gi/goku
+	name = "Sacred Gi"
+	desc = "Created by a man who touched the hearts and lives of many."
+	icon_state = "martial_arts_gi_goku"
+	greyscale_colors = "#f89925#3e6dd7"
 
 /obj/item/clothing/under/costume/traditional
 	name = "Traditional Suit"
@@ -419,5 +434,6 @@
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
 	icon_state = "henchmen"
 	inhand_icon_state = null
+	can_adjust = FALSE
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS|HEAD
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEEARS|HIDEEYES|HIDEHAIR

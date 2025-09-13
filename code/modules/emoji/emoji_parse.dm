@@ -46,9 +46,9 @@
 			pos = search
 			search = findtext(text, ":", pos + length(text[pos]))
 			if(search)
-				var/word = lowertext(copytext(text, pos + length(text[pos]), search))
+				var/word = LOWER_TEXT(copytext(text, pos + length(text[pos]), search))
 				if(word in emojis)
-					final += lowertext(copytext(text, pos, search + length(text[search])))
+					final += LOWER_TEXT(copytext(text, pos, search + length(text[search])))
 				pos = search + length(text[search])
 				continue
 		break

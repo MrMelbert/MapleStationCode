@@ -156,7 +156,7 @@
 				)
 
 		item_target.flags_inv = picked_item::flags_inv
-		// item_target.hair_mask = picked_item::hair_mask
+		item_target.hair_mask = picked_item::hair_mask
 		item_target.transparent_protection = picked_item::transparent_protection
 		if(isclothing(item_target) && ispath(picked_item, /obj/item/clothing))
 			var/obj/item/clothing/clothing_target = item_target
@@ -173,10 +173,7 @@
 	else
 		atom_target.icon = picked_item::icon
 
-/datum/action/item_action/chameleon/change/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
-		return FALSE
-
+/datum/action/item_action/chameleon/change/do_effect(trigger_flags)
 	select_look(owner)
 	return TRUE
 

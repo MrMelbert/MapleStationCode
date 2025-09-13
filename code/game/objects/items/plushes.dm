@@ -45,6 +45,7 @@
 	. = ..()
 	AddComponent(/datum/component/squeak, squeak_override)
 	AddElement(/datum/element/bed_tuckable, mapload, 6, -5, 90)
+	AddElement(/datum/element/toy_talk)
 
 	//have we decided if Pinocchio goes in the blue or pink aisle yet?
 	if(gender == NEUTER)
@@ -690,7 +691,7 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/toy/plush/goatplushie/attackby(obj/item/clothing/mask/cigarette/rollie/fat_dart, mob/user, params)
+/obj/item/toy/plush/goatplushie/attackby(obj/item/cigarette/rollie/fat_dart, mob/user, params)
 	if(!istype(fat_dart))
 		return ..()
 	if(splat)

@@ -222,7 +222,7 @@
 	item_path = /obj/item/food/grown/rainbow_flower
 
 /datum/loadout_item/head/wig
-	name = "Hair Color Wig"
+	name = "Natural Wig"
 	item_path = /obj/item/clothing/head/wig/natural
 
 /datum/loadout_item/head/cowboy
