@@ -105,6 +105,10 @@
 	name = "Fedora (White)"
 	item_path = /obj/item/clothing/head/fedora/white
 
+/datum/loadout_item/head/fedora/greyscale
+	name = "Fedora (Colorable)"
+	item_path = /obj/item/clothing/head/fedora/greyscale
+
 /datum/loadout_item/head/cap/mail
 	name = "Cap (Mail)"
 	item_path = /obj/item/clothing/head/costume/mailman

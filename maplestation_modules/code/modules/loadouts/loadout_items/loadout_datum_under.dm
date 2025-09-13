@@ -78,6 +78,10 @@
 	name = "Shorts"
 	item_path = /obj/item/clothing/under/shorts
 
+/datum/loadout_item/under/pants/jeanshorts
+	name = "Jean Shorts"
+	item_path = /obj/item/clothing/under/shorts/jeanshorts
+
 /datum/loadout_item/under/pants/track
 	name = "Track Pants"
 	item_path = /obj/item/clothing/under/pants/track
@@ -205,6 +209,10 @@
 /datum/loadout_item/under/plainclothes/buttondown_shorts
 	name = "Button Down with Shorts"
 	item_path = /obj/item/clothing/under/costume/buttondown/shorts
+
+/datum/loadout_item/under/plainclothes/buttondown_skirt
+	name = "Button Down with Skirt"
+	item_path = /obj/item/clothing/under/costume/buttondown/skirt
 
 /datum/loadout_item/under/formal/charcoal_suit
 	name = "Charcoal Suit"

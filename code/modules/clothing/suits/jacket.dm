@@ -63,7 +63,9 @@
 /obj/item/clothing/suit/jacket/blazer
 	name = "blazer jacket"
 	desc = "A blazer jacket."
-	icon_state = "blazer"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/jacket/blazer"
+	post_init_icon_state = "blazer"
 	greyscale_config = /datum/greyscale_config/blazer
 	greyscale_config_worn = /datum/greyscale_config/blazer/worn
 	greyscale_colors = "#414344"
