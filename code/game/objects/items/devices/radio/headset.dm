@@ -54,9 +54,9 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 		if(length(channels))
 			for(var/i in 1 to length(channels))
 				if(i == 1)
-					avail_chans += "use [MODE_TOKEN_DEPARTMENT] or [GLOB.channel_tokens[channels[i]]] for [lowertext(channels[i])]"
+					avail_chans += "use [MODE_TOKEN_DEPARTMENT] or [GLOB.channel_tokens[channels[i]]] for [LOWER_TEXT(channels[i])]"
 				else
-					avail_chans += "use [GLOB.channel_tokens[channels[i]]] for [lowertext(channels[i])]"
+					avail_chans += "use [GLOB.channel_tokens[channels[i]]] for [LOWER_TEXT(channels[i])]"
 		. += span_notice("A small screen on the headset displays the following available frequencies:\n[english_list(avail_chans)].")
 
 		if(command)
@@ -271,6 +271,14 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/hos
+
+/obj/item/radio/headset/heads/hos/advisor
+	name = "\proper the veteran security advisor headset"
+	desc = "The headset of the man who was in charge of keeping order and protecting the station..."
+	icon_state = "com_headset"
+	worn_icon_state = "com_headset"
+	keyslot = /obj/item/encryptionkey/heads/hos
+	command = FALSE
 
 /obj/item/radio/headset/heads/hos/alt
 	name = "\proper the head of security's bowman headset"

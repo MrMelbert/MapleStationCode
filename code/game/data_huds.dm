@@ -53,17 +53,13 @@
 	hud_icons = list(FAN_HUD)
 
 /datum/atom_hud/data/diagnostic
-
-/datum/atom_hud/data/diagnostic/basic
 	hud_icons = list(DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD, DIAG_CAMERA_HUD, DIAG_AIRLOCK_HUD, DIAG_LAUNCHPAD_HUD)
 
-/datum/atom_hud/data/diagnostic/advanced
-	hud_icons = list(DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD, DIAG_CAMERA_HUD, DIAG_AIRLOCK_HUD, DIAG_LAUNCHPAD_HUD, DIAG_PATH_HUD)
-
 /datum/atom_hud/data/bot_path
-	// This hud exists so the bot can see itself, that's all
-	uses_global_hud_category = FALSE
 	hud_icons = list(DIAG_PATH_HUD)
+
+/datum/atom_hud/data/bot_path/private
+	uses_global_hud_category = FALSE
 
 /datum/atom_hud/abductor
 	hud_icons = list(GLAND_HUD)
@@ -320,6 +316,10 @@ Security HUDs! Basic mode shows only the job.
 		set_hud_image_active(IMPLOYAL_HUD)
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
+	if(!hud_list)
+		// We haven't finished initializing yet, huds will be updated once we are
+		return
+
 	var/image/holder = hud_list[WANTED_HUD]
 	var/icon/sec_icon = icon(icon, icon_state, dir)
 	holder.pixel_y = sec_icon.Height() - world.icon_size

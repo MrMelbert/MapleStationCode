@@ -10,7 +10,6 @@
 	key = "clap"
 	key_third_person = "claps"
 	message = "claps."
-	muzzle_ignore = TRUE
 	hands_use_check = TRUE
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 	audio_cooldown = 5 SECONDS
@@ -176,7 +175,6 @@
 	message_param = "snaps their fingers at %t."
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 	hands_use_check = TRUE
-	muzzle_ignore = TRUE
 	vary = TRUE
 	affected_by_pitch = FALSE
 

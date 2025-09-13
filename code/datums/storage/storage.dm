@@ -168,6 +168,7 @@
 	arrived.item_flags |= IN_STORAGE
 	refresh_views()
 	arrived.on_enter_storage(src)
+	RegisterSignal(arrived, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(mousedrop_receive))
 	SEND_SIGNAL(arrived, COMSIG_ITEM_STORED, src)
 	parent.update_appearance()
 
@@ -181,6 +182,7 @@
 	gone.item_flags &= ~IN_STORAGE
 	remove_and_refresh(gone)
 	gone.on_exit_storage(src)
+	UnregisterSignal(gone, COMSIG_MOUSEDROPPED_ONTO)
 	SEND_SIGNAL(gone, COMSIG_ITEM_UNSTORED, src)
 	parent.update_appearance()
 
@@ -393,7 +395,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	var/datum/storage/bigger_fish = parent.loc.atom_storage
 	if(bigger_fish && bigger_fish.max_specific_storage < max_specific_storage)
 		if(messages && user)
-			user.balloon_alert(user, "[lowertext(parent.loc.name)] is in the way!")
+			user.balloon_alert(user, "[LOWER_TEXT(parent.loc.name)] is in the way!")
 		return FALSE
 
 	if(isitem(parent))
@@ -439,7 +441,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	SEND_SIGNAL(parent, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
 	SEND_SIGNAL(src, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
-	RegisterSignal(to_insert, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(mousedrop_receive))
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
 	return TRUE
@@ -455,7 +456,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	if (target.loc != real_location) // what even
-		UnregisterSignal(target, COMSIG_MOUSEDROPPED_ONTO)
 		return
 
 	if(numerical_stacking)
@@ -560,7 +560,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	refresh_views()
 	parent.update_appearance()
 
-	UnregisterSignal(thing, COMSIG_MOUSEDROPPED_ONTO)
 	SEND_SIGNAL(parent, COMSIG_ATOM_REMOVED_ITEM, thing, remove_to_loc, silent)
 	SEND_SIGNAL(src, COMSIG_STORAGE_REMOVED_ITEM, thing, remove_to_loc, silent)
 	return TRUE

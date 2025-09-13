@@ -29,9 +29,9 @@
 	move_force = MOVE_FORCE_VERY_STRONG
 	move_resist = MOVE_FORCE_EXTREMELY_STRONG
 	COOLDOWN_DECLARE(mecha_bump_smash)
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_on = FALSE
-	light_range = 8
+	light_range = 6
 	generic_canpass = FALSE
 	hud_possible = list(DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD, DIAG_CAMERA_HUD)
 	mouse_pointer = 'icons/effects/mouse_pointers/mecha_mouse.dmi'
@@ -291,7 +291,7 @@
 	QDEL_NULL(spark_system)
 	QDEL_NULL(smoke_system)
 	QDEL_NULL(ui_view)
-	QDEL_NULL(trackers)
+	QDEL_LIST(trackers)
 	QDEL_NULL(chassis_camera)
 
 	GLOB.mechas_list -= src //global mech list
@@ -820,6 +820,12 @@
 	for(var/occupant in occupants)
 		remove_action_type_from_mob(/datum/action/vehicle/sealed/mecha/mech_toggle_lights, occupant)
 	return COMPONENT_BLOCK_LIGHT_EATER
+
+/obj/vehicle/sealed/mecha/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
+	if(mecha_flags &= HAS_LIGHTS && light_on)
+		set_light_on(FALSE)
+		return TRUE
 
 /// Apply corresponding accesses
 /obj/vehicle/sealed/mecha/proc/update_access()

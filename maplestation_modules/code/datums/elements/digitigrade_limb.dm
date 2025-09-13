@@ -61,9 +61,6 @@
 		now_free(limb)
 	if(old_id == limb.limb_id)
 		return FALSE
-	for(var/obj/item/thing as anything in limb.owner?.get_equipped_items())
-		if(thing.supports_variations_flags & DIGITIGRADE_VARIATIONS)
-			thing.update_slot_icon()
 	return TRUE
 
 /// The limb is now squashed

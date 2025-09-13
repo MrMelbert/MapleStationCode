@@ -65,7 +65,7 @@
 	var/datum/wires/wires = null
 
 	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
+	var/light_system = COMPLEX_LIGHT
 	///Range of the light in tiles. Zero means no light.
 	var/light_range = 0
 	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
@@ -186,12 +186,14 @@
 	if(smoothing_flags & SMOOTH_QUEUED)
 		SSicon_smooth.remove_from_queues(src)
 
+#ifndef DISABLE_DREAMLUAU
 	// These lists cease existing when src does, so we need to clear any lua refs to them that exist.
 	if(!(datum_flags & DF_STATIC_OBJECT))
 		DREAMLUAU_CLEAR_REF_USERDATA(contents)
 		DREAMLUAU_CLEAR_REF_USERDATA(filters)
 		DREAMLUAU_CLEAR_REF_USERDATA(overlays)
 		DREAMLUAU_CLEAR_REF_USERDATA(underlays)
+#endif
 
 	return ..()
 
@@ -673,10 +675,10 @@
 			created_atoms.Add(created_atom)
 		to_chat(user, span_notice("You manage to create [amount_to_create] [initial(atom_to_create.gender) == PLURAL ? "[initial(atom_to_create.name)]" : "[initial(atom_to_create.name)][plural_s(initial(atom_to_create.name))]"] from [src]."))
 		SEND_SIGNAL(src, COMSIG_ATOM_PROCESSED, user, process_item, created_atoms)
-		UsedforProcessing(user, process_item, chosen_option)
+		UsedforProcessing(user, process_item, chosen_option, created_atoms)
 		return
 
-/atom/proc/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option)
+/atom/proc/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option, list/created_atoms)
 	qdel(src)
 	return
 

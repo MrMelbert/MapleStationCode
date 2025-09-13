@@ -82,8 +82,8 @@
 					/obj/item/gun/energy/laser/bluetag = 3,
 					/obj/item/clothing/suit/redtag = 3,
 					/obj/item/clothing/suit/bluetag = 3,
-					/obj/item/clothing/head/helmet/redtaghelm = 3,
-					/obj/item/clothing/head/helmet/bluetaghelm = 3,
+					/obj/item/clothing/head/helmet/taghelm/blue = 3,
+					/obj/item/clothing/head/helmet/taghelm/red = 3,
 				)
 	crate_name = "laser tag crate"
 
@@ -266,5 +266,17 @@
 		/obj/item/clothing/glasses/blindfold,
 	)
 	crate_name = "corgi pinata kit"
+	crate_type = /obj/structure/closet/crate/wooden
+	discountable = SUPPLY_PACK_STD_DISCOUNTABLE
+
+/datum/supply_pack/costumes_toys/balloons
+	name = "Long Balloons Kit"
+	desc = "This crate contains a box of long balloons, plus a skillchip for non-clowns to join the fun! Extra layer of safety so clowns at CentCom won't get to them."
+	cost = CARGO_CRATE_VALUE * 4
+	contains = list(
+		/obj/item/storage/box/balloons,
+		/obj/item/skillchip/job/clown,
+	)
+	crate_name = "long balloons kit"
 	crate_type = /obj/structure/closet/crate/wooden
 	discountable = SUPPLY_PACK_STD_DISCOUNTABLE

@@ -2,6 +2,8 @@
 // When the signal is called: (signal arguments)
 // All signals send the source datum of the signal as the first argument
 
+///from base of atom/movable/Moved(): (/atom, newloc, direction)
+#define COMSIG_MOVABLE_ATTEMPTED_MOVE "movable_attempted_move"
 ///from base of atom/movable/Moved(): (/atom)
 #define COMSIG_MOVABLE_PRE_MOVE "movable_pre_move"
 	#define COMPONENT_MOVABLE_BLOCK_PRE_MOVE (1<<0)
@@ -116,6 +118,9 @@
 #define COMSIG_MOVABLE_EDIT_UNIQUE_IMMERSE_OVERLAY "movable_edit_unique_submerge_overlay"
 /// From base of area/Exited(): (area/left, direction)
 #define COMSIG_MOVABLE_EXITED_AREA "movable_exited_area"
+
+///from base of /datum/component/splat/splat: (hit_atom)
+#define COMSIG_MOVABLE_SPLAT "movable_splat"
 
 /// Called when something is pushed by a living mob bumping it: (mob/living/pusher, push force)
 #define COMSIG_MOVABLE_BUMP_PUSHED "movable_bump_pushed"

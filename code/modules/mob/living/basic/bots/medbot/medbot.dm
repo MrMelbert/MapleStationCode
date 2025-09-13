@@ -10,6 +10,8 @@
 	health = 20
 	maxHealth = 20
 	speed = 2
+	light_power = 0.8
+	light_color = "#99ccff"
 	pass_flags = PASSMOB | PASSFLAPS
 	status_flags = (CANPUSH | CANSTUN)
 	ai_controller = /datum/ai_controller/basic_controller/bot/medbot
@@ -144,7 +146,6 @@
 		remove_hat_signals = remove_hat,\
 		traits_prevent_checks = prevent_checks,\
 	)
-
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_MEDBOT_MANIA) || !mapload || !is_station_level(z))
