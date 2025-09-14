@@ -58,9 +58,9 @@
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/research_director
 	uniform = /obj/item/clothing/under/rank/rnd/research_director/turtleneck
-	suit = /obj/item/clothing/suit/jacket/research_director
+	suit = /obj/item/clothing/suit/toggle/labcoat/research_director
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/silver = 1,
 		)
 	belt = /obj/item/modular_computer/pda/heads/rd
 	head = /obj/item/clothing/head/beret/science/rd

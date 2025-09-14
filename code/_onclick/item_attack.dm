@@ -403,7 +403,7 @@
 					bloodied_things |= ITEM_SLOT_EYES
 				add_blood_DNA_to_items(get_blood_dna_list(), bloodied_things)
 
-			if(!attacking_item.get_sharpness() && armor_block < 50 && attacking_item.damtype == BRUTE)
+			if(!attacking_item.get_sharpness() && !HAS_TRAIT(src, TRAIT_HEAD_INJURY_BLOCKED) && attacking_item.damtype == BRUTE)
 				if(prob(damage_done))
 					adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
 					if(stat == CONSCIOUS)
@@ -428,7 +428,7 @@
 			if(.)
 				add_blood_DNA_to_items(get_blood_dna_list(), ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 
-			if(!attacking_item.get_sharpness() && armor_block < 50 && attacking_item.damtype == BRUTE)
+			if(!attacking_item.get_sharpness() && !HAS_TRAIT(src, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED) && attacking_item.damtype == BRUTE)
 				if(prob(damage_done))
 					if(body_position == STANDING_UP && stat <= SOFT_CRIT)
 						visible_message(

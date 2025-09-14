@@ -52,7 +52,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 		// NON-MODULE CHANGE reworking clothing blood overlays

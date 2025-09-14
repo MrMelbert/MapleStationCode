@@ -202,7 +202,7 @@
 
 /obj/item/toy/crayon/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is jamming [src] up [user.p_their()] nose and into [user.p_their()] brain. It looks like [user.p_theyre()] trying to commit suicide!"))
-	user.add_atom_colour(paint_color, ADMIN_COLOUR_PRIORITY)
+	user.add_atom_colour(color_transition_filter(paint_color, SATURATION_OVERRIDE), ADMIN_COLOUR_PRIORITY)
 	return (BRUTELOSS|OXYLOSS)
 
 /obj/item/toy/crayon/Initialize(mapload)
@@ -418,7 +418,7 @@
 /obj/item/toy/crayon/proc/crayon_text_strip(text)
 	text = copytext(text, 1, MAX_MESSAGE_LEN)
 	var/static/regex/crayon_regex = new /regex(@"[^\w!?,.=&%#+/\-]", "ig")
-	return lowertext(crayon_regex.Replace(text, ""))
+	return LOWER_TEXT(crayon_regex.Replace(text, ""))
 
 /// Is this a valid object for use_on to run on?
 /obj/item/toy/crayon/proc/can_use_on(atom/target, mob/user, list/modifiers)
@@ -435,7 +435,7 @@
 
 	if(!isValidSurface(target))
 		target.balloon_alert(user, "can't use there!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/drawing = drawtype
 	switch(drawtype)
@@ -465,7 +465,7 @@
 	if (istagger)
 		cost *= 0.5
 	if(check_empty(user, cost))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/temp = "rune"
 	var/ascii = (length(drawing) == 1)
@@ -514,11 +514,11 @@
 	if(istagger)
 		wait_time *= 0.5
 
-	if(!instant && !do_after(user, wait_time, target = target))
-		return
+	if(!instant && !do_after(user, wait_time, target = target, max_interact_count = 4))
+		return ITEM_INTERACT_BLOCKING
 
 	if(!use_charges(user, cost))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(length(text_buffer))
 		drawing = text_buffer[1]
@@ -542,7 +542,7 @@
 					affected_turfs += right
 				else
 					balloon_alert(user, "no room!")
-					return
+					return ITEM_INTERACT_BLOCKING
 		created_art.add_hiddenprint(user)
 		if(istagger)
 			created_art.AddElement(/datum/element/art, GOOD_ART)
@@ -569,15 +569,14 @@
 		for(var/turf/draw_turf as anything in affected_turfs)
 			reagents.expose(draw_turf, methods = TOUCH, volume_modifier = volume_multiplier)
 	check_empty(user)
-	return
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/crayon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if (!check_allowed_items(interacting_with))
 		return NONE
 
 	if(can_use_on(interacting_with, user, modifiers))
-		use_on(interacting_with, user, modifiers)
-		return ITEM_INTERACT_BLOCKING
+		return use_on(interacting_with, user, modifiers)
 	return NONE
 
 /obj/item/toy/crayon/get_writing_implement_details()
@@ -764,12 +763,18 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 
+	/// Types which use their color var for additional logic, so we need to avoid using transition filters on them.
+	var/static/list/direct_color_types = typecacheof(list(
+		/obj/item/paper, // Uses color for TGUI backgrounds, doesn't look very good either
+		/obj/item/fish, // Used for aquarium sprites
+	))
+
 /obj/item/toy/crayon/spraycan/Initialize(mapload)
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/improvised_coolant)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 	register_context()
@@ -793,7 +798,14 @@
 		return .
 
 	context[SCREENTIP_CONTEXT_LMB] = "Paint"
-	context[SCREENTIP_CONTEXT_RMB] = "Copy color"
+	context[SCREENTIP_CONTEXT_RMB] = "Coat with paint"
+
+	if(isbodypart(target))
+		var/obj/item/bodypart/limb = target
+		if(IS_ROBOTIC_LIMB(limb))
+			context[SCREENTIP_CONTEXT_CTRL_LMB] = "Restyle robotic limb"
+	else
+		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Copy color"
 
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -801,7 +813,6 @@
 	return (isfloorturf(surface) || iswallturf(surface))
 
 /obj/item/toy/crayon/spraycan/suicide_act(mob/living/user)
-	var/mob/living/carbon/human/H = user
 	var/used = min(charges_left, 10)
 	if(is_capped || !actually_paints || !use_charges(user, 10, FALSE))
 		user.visible_message(span_suicide("[user] shakes up [src] with a rattle and lifts it to [user.p_their()] mouth, but nothing happens!"))
@@ -816,7 +827,7 @@
 		set_painting_tool_color("#C0C0C0")
 	update_appearance()
 	if(actually_paints)
-		H.update_lips("spray_face", paint_color)
+		user.AddComponent(/datum/component/face_decal, "spray", EXTERNAL_ADJACENT, paint_color)
 	reagents.trans_to(user, used, volume_multiplier, transferred_by = user, methods = VAPOR)
 	return OXYLOSS
 
@@ -850,16 +861,22 @@
 	return ..()
 
 /obj/item/toy/crayon/spraycan/use_on(atom/target, mob/user, list/modifiers)
+	if (LAZYACCESS(modifiers, CTRL_CLICK))
+		return ctrl_interact(target, user)
+
 	if(is_capped)
 		balloon_alert(user, "take the cap off first!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(check_empty(user))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(iscarbon(target))
 		if(pre_noise || post_noise)
 			playsound(user.loc, 'sound/effects/spray.ogg', 25, TRUE, 5)
+
+		if(SEND_SIGNAL(target, COMSIG_CARBON_SPRAYPAINTED, user, src))
+			return ITEM_INTERACT_BLOCKING
 
 		var/mob/living/carbon/carbon_target = target
 		user.visible_message(span_danger("[user] sprays [src] into the face of [target]!"))
@@ -874,18 +891,22 @@
 			flash_color(carbon_target, flash_color=paint_color, flash_time=40)
 		if(ishuman(carbon_target) && actually_paints)
 			var/mob/living/carbon/human/human_target = carbon_target
-			human_target.update_lips("spray_face", paint_color)
+			human_target.AddComponent(/datum/component/face_decal, "spray", EXTERNAL_ADJACENT, paint_color)
 		use_charges(user, 10, FALSE)
 		var/fraction = min(1, . / reagents.maximum_volume)
 		reagents.expose(carbon_target, VAPOR, fraction * volume_multiplier)
 
 	else if(actually_paints && target.is_atom_colour(paint_color, min_priority_index = WASHABLE_COLOUR_PRIORITY))
 		balloon_alert(user, "[target.p_theyre()] already that color!")
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/saturation_mode = SATURATION_MULTIPLY
+	if (LAZYACCESS(modifiers, RIGHT_CLICK))
+		saturation_mode = SATURATION_OVERRIDE
 
 	if(ismob(target) && (HAS_TRAIT(target, TRAIT_SPRAY_PAINTABLE)))
 		if(actually_paints)
-			target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
+			target.add_atom_colour(color_transition_filter(paint_color, saturation_mode), WASHABLE_COLOUR_PRIORITY)
 			SEND_SIGNAL(target, COMSIG_LIVING_MOB_PAINTED)
 		use_charges(user, 2, requires_full = FALSE)
 		reagents.trans_to(target, ., volume_multiplier, transferred_by = user, methods = VAPOR)
@@ -893,45 +914,13 @@
 		if(pre_noise || post_noise)
 			playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
 		user.visible_message(span_notice("[user] coats [target] with spray paint!"), span_notice("You coat [target] with spray paint."))
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	if(isobj(target) && !(target.flags_1 & UNPAINTABLE_1))
-		var/color_is_dark = FALSE
-		if(actually_paints)
-			color_is_dark = is_color_dark(paint_color)
+	if(!isobj(target) || (target.flags_1 & UNPAINTABLE_1))
+		return ..()
 
-			if (color_is_dark && !(target.flags_1 & ALLOW_DARK_PAINTS_1))
-				to_chat(user, span_warning("A color that dark on an object like this? Surely not..."))
-				return
-
-			if(istype(target, /obj/item/pipe))
-				if(GLOB.pipe_color_name.Find(paint_color))
-					var/obj/item/pipe/target_pipe = target
-					target_pipe.pipe_color = paint_color
-					target.add_atom_colour(paint_color, FIXED_COLOUR_PRIORITY)
-					balloon_alert(user, "painted in [GLOB.pipe_color_name[paint_color]] color")
-				else
-					balloon_alert(user, "invalid pipe color!")
-					return
-			else if(istype(target, /obj/machinery/atmospherics))
-				if(GLOB.pipe_color_name.Find(paint_color))
-					var/obj/machinery/atmospherics/target_pipe = target
-					target_pipe.paint(paint_color)
-					balloon_alert(user, "painted in  [GLOB.pipe_color_name[paint_color]] color")
-				else
-					balloon_alert(user, "invalid pipe color!")
-					return
-			else
-				target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
-
-			if(isitem(target) && isliving(target.loc))
-				var/obj/item/target_item = target
-				var/mob/living/holder = target.loc
-				if(holder.is_holding(target_item))
-					holder.update_held_items()
-				else
-					holder.update_clothing(target_item.slot_flags)
-
+	var/color_is_dark = is_color_dark(paint_color)
+	if(!actually_paints)
 		if(!(SEND_SIGNAL(target, COMSIG_OBJ_PAINTED, user, src, color_is_dark) & DONT_USE_SPRAYCAN_CHARGES))
 			use_charges(user, 2, requires_full = FALSE)
 		reagents.trans_to(target, ., volume_multiplier, transferred_by = user, methods = VAPOR)
@@ -939,11 +928,50 @@
 		if(pre_noise || post_noise)
 			playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
 		user.visible_message(span_notice("[user] coats [target] with spray paint!"), span_notice("You coat [target] with spray paint."))
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	return ..()
+	if (color_is_dark && saturation_mode == SATURATION_OVERRIDE && !(target.flags_1 & ALLOW_DARK_PAINTS_1))
+		to_chat(user, span_warning("A color that dark on an object like this? Surely not..."))
+		return ITEM_INTERACT_BLOCKING
 
-/obj/item/toy/crayon/spraycan/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istype(target, /obj/item/pipe))
+		if(!GLOB.pipe_color_name.Find(paint_color))
+			balloon_alert(user, "invalid pipe color!")
+			return ITEM_INTERACT_BLOCKING
+		var/obj/item/pipe/target_pipe = target
+		target_pipe.pipe_color = paint_color
+		target.add_atom_colour(paint_color, FIXED_COLOUR_PRIORITY)
+		balloon_alert(user, "painted in [GLOB.pipe_color_name[paint_color]] color")
+	else if(istype(target, /obj/machinery/atmospherics))
+		if(!GLOB.pipe_color_name.Find(paint_color))
+			balloon_alert(user, "invalid pipe color!")
+			return ITEM_INTERACT_BLOCKING
+		var/obj/machinery/atmospherics/target_pipe = target
+		target_pipe.paint(paint_color)
+		balloon_alert(user, "painted in  [GLOB.pipe_color_name[paint_color]] color")
+	else if (is_type_in_typecache(target, direct_color_types))
+		target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
+	else
+		target.add_atom_colour(color_transition_filter(paint_color, saturation_mode), WASHABLE_COLOUR_PRIORITY)
+
+	if(isitem(target) && isliving(target.loc))
+		var/obj/item/target_item = target
+		var/mob/living/holder = target.loc
+		if(holder.is_holding(target_item))
+			holder.update_held_items()
+		else
+			holder.update_clothing(target_item.slot_flags)
+
+	if(!(SEND_SIGNAL(target, COMSIG_OBJ_PAINTED, user, src, color_is_dark) & DONT_USE_SPRAYCAN_CHARGES))
+		use_charges(user, 2, requires_full = FALSE)
+	reagents.trans_to(target, ., volume_multiplier, transferred_by = user, methods = VAPOR)
+
+	if(pre_noise || post_noise)
+		playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
+	user.visible_message(span_notice("[user] coats [target] with spray paint!"), span_notice("You coat [target] with spray paint."))
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/toy/crayon/spraycan/proc/ctrl_interact(atom/interacting_with, mob/living/user)
 	if(is_capped)
 		if(!interacting_with.color)
 			// let's be generous and assume if they're trying to match something with no color, while capped,
@@ -951,31 +979,41 @@
 			return NONE
 		balloon_alert(user, "take the cap off first!")
 		return ITEM_INTERACT_BLOCKING
+
 	if(check_empty(user))
 		return ITEM_INTERACT_BLOCKING
 
-	if(isbodypart(interacting_with) && actually_paints)
-		var/obj/item/bodypart/limb = interacting_with
-		if(!IS_ORGANIC_LIMB(limb))
-			var/list/skins = list()
-			var/static/list/style_list_icons = list("standard" = 'icons/mob/augmentation/augments.dmi', "engineer" = 'icons/mob/augmentation/augments_engineer.dmi', "security" = 'icons/mob/augmentation/augments_security.dmi', "mining" = 'icons/mob/augmentation/augments_mining.dmi')
-			for(var/skin_option in style_list_icons)
-				var/image/part_image = image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
-				if(limb.aux_zone) //Hands
-					part_image.overlays += image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.aux_zone]")
-				skins += list("[skin_option]" = part_image)
-			var/choice = show_radial_menu(user, src, skins, require_near = TRUE)
-			if(choice && (use_charges(user, 5, requires_full = FALSE)))
-				playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
-				limb.change_appearance(style_list_icons[choice], greyscale = FALSE)
-			return ITEM_INTERACT_SUCCESS
-	if(interacting_with.color)
-		paint_color = interacting_with.color
-		balloon_alert(user, "matched colour of target")
-		update_appearance()
+	if(!isbodypart(interacting_with) || !actually_paints)
+		if(interacting_with.color)
+			paint_color = interacting_with.color
+			balloon_alert(user, "matched colour of target")
+			update_appearance()
+			return ITEM_INTERACT_BLOCKING
+		balloon_alert(user, "can't match those colours!")
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "can't match those colours!")
-	return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/bodypart/limb = interacting_with
+	if(!IS_ROBOTIC_LIMB(limb))
+		return ITEM_INTERACT_BLOCKING
+
+	var/list/skins = list()
+	var/static/list/style_list_icons = list(
+		"standard" = 'icons/mob/augmentation/augments.dmi',
+		"engineer" = 'icons/mob/augmentation/augments_engineer.dmi',
+		"security" = 'icons/mob/augmentation/augments_security.dmi',
+		"mining" = 'icons/mob/augmentation/augments_mining.dmi',
+		)
+
+	for(var/skin_option in style_list_icons)
+		var/image/part_image = image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
+		if(limb.aux_zone) //Hands
+			part_image.overlays += image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.aux_zone]")
+		skins += list("[skin_option]" = part_image)
+	var/choice = show_radial_menu(user, src, skins, require_near = TRUE)
+	if(choice && (use_charges(user, 5, requires_full = FALSE)))
+		playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
+		limb.change_appearance(style_list_icons[choice], greyscale = FALSE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/crayon/spraycan/click_alt(mob/user)
 	if(!has_cap)
@@ -1067,6 +1105,13 @@
 	name = "infinite spraycan"
 	charges = INFINITE_CHARGES
 	desc = "Now with 30% more bluespace technology."
+
+/obj/item/toy/crayon/spraycan/roboticist
+	name = "roboticist spraycan"
+	desc = "Paint for restyling unattached robotic limbs. Sadly doesn't shine like chrome."
+	icon_state = "robocan"
+	icon_capped = "robocan_cap"
+	icon_uncapped = "robocan"
 
 #undef RANDOM_GRAFFITI
 #undef RANDOM_LETTER

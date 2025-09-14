@@ -7,10 +7,8 @@
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
-
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
-
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
@@ -54,7 +52,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 		// NON-MODULE CHANGE reworking clothing blood overlays

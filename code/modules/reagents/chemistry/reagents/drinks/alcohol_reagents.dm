@@ -339,6 +339,27 @@
 	ph = 6.5
 	default_container = /obj/item/reagent_containers/cup/glass/bottle/rum
 
+/datum/reagent/consumable/ethanol/rum/aged
+	name = "Aged Rum"
+	description = "Sink me! That's some fancy rum to share with buckoos."
+	color = "#c0b675" // rgb: 192,183,117
+	boozepwr = 70
+	taste_description = "extra-spiked butterscotch"
+	default_container = /obj/item/reagent_containers/cup/glass/bottle/rum/aged
+	quality = DRINK_FANTASTIC
+	var/metabolized_traits = list(TRAIT_STRONG_STOMACH) // Non-module change : double definition to error if/when we get this var
+
+/datum/reagent/consumable/ethanol/rum/aged/on_mob_metabolize(mob/living/drinker)
+	. = ..()
+	drinker.add_blocked_language(subtypesof(/datum/language) - /datum/language/piratespeak, LANGUAGE_DRINK)
+	drinker.grant_language(/datum/language/piratespeak, source = LANGUAGE_DRINK)
+
+/datum/reagent/consumable/ethanol/rum/aged/on_mob_end_metabolize(mob/living/drinker)
+	if(!QDELING(drinker))
+		drinker.remove_blocked_language(subtypesof(/datum/language), LANGUAGE_DRINK)
+		drinker.remove_language(/datum/language/piratespeak, source = LANGUAGE_DRINK)
+	return ..()
+
 /datum/reagent/consumable/ethanol/tequila
 	name = "Tequila"
 	description = "A strong and mildly flavoured, Mexican produced spirit. Feeling thirsty, hombre?"
@@ -1670,7 +1691,7 @@
 	need_mob_update += drinker.adjustStaminaLoss(-heal_amt, updating_stamina = FALSE, required_biotype = affected_biotype)
 	if(need_mob_update)
 		drinker.updatehealth()
-	drinker.visible_message(span_warning("[drinker] shivers with renewed vigor!"), span_notice("One taste of [lowertext(name)] fills you with energy!"))
+	drinker.visible_message(span_warning("[drinker] shivers with renewed vigor!"), span_notice("One taste of [LOWER_TEXT(name)] fills you with energy!"))
 	if(!drinker.stat && heal_points == 20) //brought us out of softcrit
 		drinker.visible_message(span_danger("[drinker] lurches to [drinker.p_their()] feet!"), span_boldnotice("Up and at 'em, kid."))
 

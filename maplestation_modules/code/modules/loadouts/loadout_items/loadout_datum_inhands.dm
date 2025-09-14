@@ -38,8 +38,10 @@
 /datum/loadout_item/inhand/bone_spear
 	name = "Heirloom Bone Spear"
 	item_path = /obj/item/spear/bonespear/ceremonial
-	additional_displayed_text = list("Weak Weapon")
 
+/datum/loadout_item/inhand/bone_spear/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/inhand/bouquet_mixed
 	name = "Bouquet (Mixed)"

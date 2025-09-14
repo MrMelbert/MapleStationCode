@@ -17,7 +17,6 @@
 	icon_state = "paper"
 	inhand_icon_state = "paper"
 	worn_icon_state = "paper"
-	custom_fire_overlay = "paper_onfire_overlay"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
@@ -64,6 +63,9 @@
 	///If TRUE, staff can read paper everywhere, but usually from requests panel.
 	var/request_state = FALSE
 
+	///If this paper can be selected as a candidate for a future message in a bottle when spawned outside of mapload. Doesn't affect manually doing that.
+	var/can_become_message_in_bottle = TRUE
+
 /obj/item/paper/Initialize(mapload)
 	. = ..()
 	pixel_x = base_pixel_x + rand(-9, 9)
@@ -74,13 +76,22 @@
 
 	update_appearance()
 
+	if(can_become_message_in_bottle && !mapload && prob(MESSAGE_BOTTLE_CHANCE))
+		LAZYADD(SSpersistence.queued_message_bottles, src)
+
 	AddElement(/datum/element/burn_on_item_ignition)
 	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 
 /obj/item/paper/Destroy()
-	. = ..()
 	camera_holder = null
 	clear_paper()
+	LAZYREMOVE(SSpersistence.queued_message_bottles, src)
+	return ..()
+
+/obj/item/paper/custom_fire_overlay()
+	if (!custom_fire_overlay)
+		custom_fire_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_onfire_overlay", appearance_flags = RESET_COLOR|KEEP_APART)
+	return custom_fire_overlay
 
 /obj/item/paper/proc/close_paper_ui()
 	SIGNAL_HANDLER
@@ -508,28 +519,53 @@
 
 	static_data["user_name"] = user.real_name
 
-	static_data["raw_text_input"] = list()
-	for(var/datum/paper_input/text_input as anything in raw_text_inputs)
-		static_data["raw_text_input"] += list(text_input.to_list())
-
-	static_data["raw_field_input"] = list()
-	for(var/datum/paper_field/field_input as anything in raw_field_input_data)
-		static_data["raw_field_input"] += list(field_input.to_list())
-
-	static_data["raw_stamp_input"] = list()
-	for(var/datum/paper_stamp/stamp_input as anything in raw_stamp_data)
-		static_data["raw_stamp_input"] += list(stamp_input.to_list())
+	static_data += convert_to_data()
 
 	static_data["max_length"] = MAX_PAPER_LENGTH
 	static_data["max_input_field_length"] = MAX_PAPER_INPUT_FIELD_LENGTH
-	static_data["paper_color"] = color ? color : COLOR_WHITE
-	static_data["paper_name"] = name
 
 	static_data["default_pen_font"] = PEN_FONT
 	static_data["default_pen_color"] = COLOR_BLACK
 	static_data["signature_font"] = FOUNTAIN_PEN_FONT
 
 	return static_data;
+
+/obj/item/paper/proc/convert_to_data()
+	var/list/data = list()
+
+	data[LIST_PAPER_RAW_TEXT_INPUT] = list()
+	for(var/datum/paper_input/text_input as anything in raw_text_inputs)
+		data[LIST_PAPER_RAW_TEXT_INPUT] += list(text_input.to_list())
+
+	data[LIST_PAPER_RAW_FIELD_INPUT] = list()
+	for(var/datum/paper_field/field_input as anything in raw_field_input_data)
+		data[LIST_PAPER_RAW_FIELD_INPUT] += list(field_input.to_list())
+
+	data[LIST_PAPER_RAW_STAMP_INPUT] = list()
+	for(var/datum/paper_stamp/stamp_input as anything in raw_stamp_data)
+		data[LIST_PAPER_RAW_STAMP_INPUT] += list(stamp_input.to_list())
+
+	data[LIST_PAPER_COLOR] = color ? color : COLOR_WHITE
+	data[LIST_PAPER_NAME] = name
+
+	return data
+
+/obj/item/paper/proc/write_from_data(list/data)
+	for(var/list/input as anything in data[LIST_PAPER_RAW_TEXT_INPUT])
+		add_raw_text(input[LIST_PAPER_RAW_TEXT], input[LIST_PAPER_FONT], input[LIST_PAPER_FIELD_COLOR], input[LIST_PAPER_BOLD], input[LIST_PAPER_ADVANCED_HTML])
+
+	for(var/list/field as anything in data[LIST_PAPER_RAW_FIELD_INPUT])
+		var/list/input = field[LIST_PAPER_FIELD_DATA]
+		add_field_input(field[LIST_PAPER_FIELD_INDEX], input[LIST_PAPER_RAW_TEXT], input[LIST_PAPER_FONT], input[LIST_PAPER_FIELD_COLOR], input[LIST_PAPER_BOLD], field[LIST_PAPER_IS_SIGNATURE])
+
+	for(var/list/stamp as anything in data[LIST_PAPER_RAW_STAMP_INPUT])
+		add_stamp(stamp[LIST_PAPER_CLASS], stamp[LIST_PAPER_STAMP_X], stamp[LIST_PAPER_STAMP_Y], stamp[LIST_PAPER_ROTATION])
+
+	var/new_color = data[LIST_PAPER_COLOR]
+	if(new_color != COLOR_WHITE)
+		add_atom_colour(new_color, FIXED_COLOUR_PRIORITY)
+
+	name = data[LIST_PAPER_NAME]
 
 /obj/item/paper/ui_data(mob/user)
 	var/list/data = list()
@@ -736,11 +772,11 @@
 
 /datum/paper_input/proc/to_list()
 	return list(
-		raw_text = raw_text,
-		font = font,
-		color = colour,
-		bold = bold,
-		advanced_html = advanced_html,
+		LIST_PAPER_RAW_TEXT = raw_text,
+		LIST_PAPER_FONT = font,
+		LIST_PAPER_FIELD_COLOR = colour,
+		LIST_PAPER_BOLD = bold,
+		LIST_PAPER_ADVANCED_HTML = advanced_html,
 	)
 
 /// Returns the raw contents of the input as html, with **ZERO SANITIZATION**
@@ -776,10 +812,10 @@
 
 /datum/paper_stamp/proc/to_list()
 	return list(
-		class = class,
-		x = stamp_x,
-		y = stamp_y,
-		rotation = rotation,
+		LIST_PAPER_CLASS = class,
+		LIST_PAPER_STAMP_X = stamp_x,
+		LIST_PAPER_STAMP_Y = stamp_y,
+		LIST_PAPER_ROTATION = rotation,
 	)
 
 /// A reference to some data that replaces a modifiable input field at some given index in paper raw input parsing.
@@ -801,9 +837,9 @@
 
 /datum/paper_field/proc/to_list()
 	return list(
-		field_index = field_index,
-		field_data = field_data.to_list(),
-		is_signature = is_signature,
+		LIST_PAPER_FIELD_INDEX = field_index,
+		LIST_PAPER_FIELD_DATA = field_data.to_list(),
+		LIST_PAPER_IS_SIGNATURE = is_signature,
 	)
 
 /obj/item/paper/construction

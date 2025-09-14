@@ -749,6 +749,22 @@
 		/datum/stock_part/micro_laser = 1,
 		/datum/stock_part/servo = 1,)
 
+/obj/item/circuitboard/machine/bookbinder
+	name = "Book Binder"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/bookbinder
+	req_components = list(
+		/datum/stock_part/servo = 1,
+	)
+
+/obj/item/circuitboard/machine/libraryscanner
+	name = "Book Scanner"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/libraryscanner
+	req_components = list(
+		/datum/stock_part/scanning_module = 1,
+	)
+
 //Medical
 
 /obj/item/circuitboard/machine/chem_dispenser
@@ -1364,6 +1380,10 @@
 		/datum/stock_part/matter_bin = 2,
 		/datum/stock_part/capacitor = 1)
 	needs_anchored = FALSE
+
+/obj/item/circuitboard/machine/fishing_portal_generator/emagged
+	name = "Emagged Fishing Portal Generator"
+	build_path = /obj/machinery/fishing_portal_generator
 
 //Supply
 /obj/item/circuitboard/machine/ore_redemption

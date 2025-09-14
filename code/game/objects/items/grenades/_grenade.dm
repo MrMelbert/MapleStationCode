@@ -17,6 +17,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
+	action_slots = ALL
 	max_integrity = 40
 	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'

@@ -342,7 +342,8 @@
 /obj/item/organ/internal/lungs/silverscale
 	name = "silverscale lungs"
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "lungs"
+	icon_state = "/obj/item/organ/internal/lungs/silverscale"
+	post_init_icon_state = "lungs"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = "#eeeeee#eeeeee#eeeeee"
 
