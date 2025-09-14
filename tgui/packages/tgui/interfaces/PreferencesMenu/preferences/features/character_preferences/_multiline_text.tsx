@@ -11,12 +11,12 @@ export function MultilineText(
 
   return (
     <TextArea
-      width="80%"
       disabled={!serverData}
+      width="80%"
       height={box_height || '36px'}
       value={value}
       maxLength={serverData?.maximum_length || 1024}
-      onChange={handleSetValue}
+      onBlur={handleSetValue}
     />
   );
 }
