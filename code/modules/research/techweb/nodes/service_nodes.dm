@@ -75,7 +75,7 @@
 		"libraryconsole",
 		"libraryscanner",
 		"bookbinder",
-//		"barcode_scanner",
+		"barcode_scanner",
 		"vendor",
 		"custom_vendor_refill",
 		"bounty_pad_control",
