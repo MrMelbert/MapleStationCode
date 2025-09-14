@@ -12,7 +12,6 @@ import {
   Button,
   Dropdown,
   Input,
-  NoticeBox,
   NumberInput,
   Slider,
   Stack,
@@ -270,27 +269,21 @@ export type FeatureMultilineProps = FeatureValueProps<
   FeatureShortTextData
 >;
 
-export const MultilineText = (
+export function MultilineText(
   props: FeatureMultilineProps & {
     box_height: string | null;
   },
-) => {
-  if (!props.serverData) {
-    return (
-      <NoticeBox height={props.box_height || '36px'} width="80%">
-        Loading...
-      </NoticeBox>
-    );
-  }
+) {
+  const { serverData, handleSetValue, value, box_height } = props;
+
   return (
     <TextArea
       width="80%"
-      height={props.box_height || '36px'}
-      value={props.value}
-      maxLength={props.serverData?.maximum_length || 1024}
-      onChange={(_, new_value) => {
-        props.handleSetValue(new_value);
-      }}
+      disabled={!serverData}
+      height={box_height || '36px'}
+      value={value}
+      maxLength={serverData?.maximum_length || 1024}
+      onChange={handleSetValue}
     />
   );
-};
+}

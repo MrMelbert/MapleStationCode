@@ -485,7 +485,7 @@ class LimbManagerInner extends Component<
                 <Input
                   placeholder="Search Limbs"
                   value={limbSearchQuery}
-                  onInput={(e, value) =>
+                  onChange={(value) =>
                     this.setState({ limbSearchQuery: value })
                   }
                   width={16}
