@@ -27,13 +27,13 @@
 		else if(prob(CONFIG_GET(number/disposals_damage_chance)))
 			trashed_individual.apply_damage(2 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
 			if(trashed_individual.has_bones() && trashed_individual.mob_size >= MOB_SIZE_SMALL)
-				var/bone_volume = trashed_individual.mob_size == MOB_SIZE_SMALL ? 10 : 50
+				var/bone_volume = trashed_individual.mob_size == MOB_SIZE_SMALL ? 20 : 50
 				var/bone_frequency = trashed_individual.mob_size == MOB_SIZE_SMALL ? 2 : 1
 				playsound(loc, 'sound/effects/wounds/crack2.ogg', bone_volume, TRUE, 0, frequency = bone_frequency)
 		else if(prob(CONFIG_GET(number/disposals_pain_chance)))
 			var/mob/living/carbon/carbon_trashed = trashed_individual
 			if(trashed_individual.has_bones() && trashed_individual.mob_size >= MOB_SIZE_SMALL)
-				var/bone_volume = trashed_individual.mob_size == MOB_SIZE_SMALL ? 10 : 50
+				var/bone_volume = trashed_individual.mob_size == MOB_SIZE_SMALL ? 20 : 50
 				var/bone_frequency = trashed_individual.mob_size == MOB_SIZE_SMALL ? 2 : 1
 				playsound(loc, 'sound/effects/wounds/crack1.ogg', bone_volume, TRUE, 0, frequency = bone_frequency)
 			carbon_trashed.sharp_pain(pick(BODY_ZONES_ALL), 4 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
