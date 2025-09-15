@@ -116,6 +116,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 	var/datum/dna/stored/record_dna = new()
 	person.dna.copy_dna(record_dna)
 
+	SEND_SIGNAL(src, COMSIG_MANIFEST_HUMAN_INJECTED, person)
+
 	var/datum/record/locked/lockfile = new(
 		age = person.age,
 		blood_type = "[person.get_blood_type() || "None"]", // NON-MODULE CHANGE / NEEDS TESTING

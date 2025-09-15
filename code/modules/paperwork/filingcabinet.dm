@@ -61,9 +61,9 @@
 	else
 		return ..()
 
-/obj/structure/filingcabinet/attack_hand(mob/living/carbon/user, list/modifiers)
-	. = ..()
-	ui_interact(user)
+// /obj/structure/filingcabinet/attack_hand(mob/living/carbon/user, list/modifiers)
+// 	. = ..()
+// 	ui_interact(user)
 
 /obj/structure/filingcabinet/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -173,33 +173,55 @@
  * Employment contract Cabinets
  */
 
-GLOBAL_LIST_EMPTY(employmentCabinets)
-
 /obj/structure/filingcabinet/employment
 	icon_state = "employmentcabinet"
-	///This var is so that its filled on crew interaction to be as accurate (including latejoins) as possible, true until first interact
-	var/virgin = TRUE
+	/// Set to TRUE on first load do indicate lazyloading has already happened
+	var/lazyloaded = FALSE
 
-/obj/structure/filingcabinet/employment/Initialize(mapload)
-	. = ..()
-	GLOB.employmentCabinets += src
+/obj/structure/filingcabinet/employment/proc/add_file_comsig(datum/source, mob/living/carbon/human/employee)
+	SIGNAL_HANDLER
+	add_file(employee.real_name)
 
-/obj/structure/filingcabinet/employment/Destroy()
-	GLOB.employmentCabinets -= src
-	return ..()
-
-/obj/structure/filingcabinet/employment/proc/fillCurrent()
-	//This proc fills the cabinet with the current crew.
-	for(var/datum/record/locked/target in GLOB.manifest.locked)
-		var/datum/mind/filed_mind = target.mind_ref.resolve()
-		if(filed_mind && ishuman(filed_mind.current))
-			addFile(filed_mind.current)
-
-/obj/structure/filingcabinet/employment/proc/addFile(mob/living/carbon/human/employee)
-	new /obj/item/paper/employment_contract(src, employee.mind.name)
+/obj/structure/filingcabinet/employment/proc/add_file(employee_name)
+	new /obj/item/paper/employment_contract(src, employee_name)
 
 /obj/structure/filingcabinet/employment/interact(mob/user)
-	if(virgin)
-		fillCurrent()
-		virgin = FALSE
+	if(!lazyloaded)
+		for(var/datum/record/locked/target as anything in GLOB.manifest.locked)
+			add_file(target.name)
+		lazyloaded = TRUE
+		RegisterSignal(GLOB.manifest, COMSIG_MANIFEST_HUMAN_INJECTED, PROC_REF(add_file_comsig))
+
+	return ..()
+
+/obj/structure/filingcabinet/genetic_backups
+	/// Set to TRUE on first load do indicate lazyloading has already happened
+	var/lazyloaded = FALSE
+
+/obj/structure/filingcabinet/genetic_backups/proc/make_backup_comsig(datum/source, mob/living/carbon/human/employee)
+	SIGNAL_HANDLER
+	var/datum/record/locked/target = find_record(employee.real_name, locked_only = TRUE)
+	if(target)
+		make_backup(target)
+
+/obj/structure/filingcabinet/genetic_backups/proc/make_backup(datum/record/locked/target)
+	var/obj/item/disk/data/backup = new(src)
+	backup.name = "genetic backup - '[target.name]'"
+	backup.read_only = TRUE
+	backup.genetic_makeup_buffer = list(
+		"label" = "Genetic Backup: [target.name] / [target.rank]",
+		"UI" = target.locked_dna.unique_identity,
+		"UE" = target.locked_dna.unique_enzymes,
+		"UF" = target.locked_dna.unique_features,
+		"name" = target.name,
+		"blood_type" = "[find_blood_type(target.locked_dna.human_blood_type)]",
+	)
+
+/obj/structure/filingcabinet/genetic_backups/interact(mob/user)
+	if(!lazyloaded)
+		for(var/datum/record/locked/target as anything in GLOB.manifest.locked)
+			make_backup(target)
+		lazyloaded = TRUE
+		RegisterSignal(GLOB.manifest, COMSIG_MANIFEST_HUMAN_INJECTED, PROC_REF(make_backup_comsig))
+
 	return ..()
