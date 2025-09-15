@@ -2,6 +2,9 @@
 PROCESSING_SUBSYSTEM_DEF(fishing)
 	name = "Fishing"
 	flags = SS_BACKGROUND|SS_POST_FIRE_TIMING
+	dependencies = list(
+		/datum/controller/subsystem/atoms
+	)
 	wait = 0.05 SECONDS // If you raise it to 0.1 SECONDS, you better also modify [datum/fish_movement/move_fish()]
 	///Cached fish properties so we don't have to initalize fish every time
 	var/list/fish_properties

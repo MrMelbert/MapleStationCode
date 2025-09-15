@@ -11,25 +11,21 @@
 
 /datum/preference/choiced/skrell_hair/icon_for(value)
 	var/datum/sprite_accessory/sprite_accessory = SSaccessories.head_tentacles_list[value]
-	var/icon/skrell = icon('maplestation_modules/icons/mob/skrell_parts_greyscale.dmi', "skrell_head_m", EAST)
-	var/icon/eyes = icon('maplestation_modules/icons/mob/skrell_eyes.dmi', "eyes", EAST)
+	var/datum/universal_icon/skrell = uni_icon('maplestation_modules/icons/mob/skrell_parts_greyscale.dmi', "skrell_head_m", EAST)
+	var/datum/universal_icon/eyes = uni_icon('maplestation_modules/icons/mob/skrell_eyes.dmi', "eyes", EAST)
 
-	eyes.Blend(COLOR_ALMOST_BLACK, ICON_MULTIPLY)
-	skrell.Blend(eyes, ICON_OVERLAY)
+	eyes.blend_color(COLOR_ALMOST_BLACK, ICON_MULTIPLY)
+	skrell.blend_icon(eyes, ICON_OVERLAY)
 
-	var/icon/final_icon = icon(skrell)
+	var/datum/universal_icon/final_icon = skrell.copy()
 
 	for(var/side in list("ADJ", "FRONT"))
-		var/icon/accessory_icon = icon(
-			icon = sprite_accessory.icon,
-			icon_state = "m_head_tentacles_[sprite_accessory.icon_state]_[side]",
-			dir = EAST,
-		)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
+		var/datum/universal_icon/accessory_icon = new(sprite_accessory.icon, "m_head_tentacles_[sprite_accessory.icon_state]_[side]", dir = EAST)
+		final_icon.blend_icon(accessory_icon, ICON_OVERLAY)
 
-	final_icon.Crop(11, 20, 23, 32)
-	final_icon.Scale(32, 32)
-	final_icon.Blend(COLOR_BLUE_GRAY, ICON_MULTIPLY)
+	final_icon.crop(11, 20, 23, 32)
+	final_icon.scale(32, 32)
+	final_icon.blend_color(COLOR_BLUE_GRAY, ICON_MULTIPLY)
 
 	return final_icon
 

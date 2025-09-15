@@ -126,7 +126,7 @@
 		"firelock_board",
 		"trapdoor_electronics",
 		"blast",
-		"tile_sprayer",
+		"ignition",
 		"airlock_painter",
 		"decal_painter",
 		"rwd",

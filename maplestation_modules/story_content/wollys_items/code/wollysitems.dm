@@ -148,22 +148,34 @@ since some of them are two per character or singleton, i'm gonna save space and 
 /datum/loadout_item/suit/cyrilcloak
 	name = "Claw-Sewn Cloak"
 	item_path = /obj/item/clothing/suit/toggle/cyrilcloak
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/cyrilcloak/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/suit/scoriajacket
 	name = "Embroidered Clan Jacket"
 	item_path = /obj/item/clothing/suit/matthewjacket
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/scoriajacket/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/under/jumpsuit/elijumpsuit
 	name = "Modified Pale Jumpsuit"
 	item_path = /obj/item/clothing/under/elijumpsuit
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/elijumpsuit/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /datum/loadout_item/mask/elimask
 	name = "Advanced Kitsune Mask"
 	item_path = /obj/item/clothing/mask/elikitsune
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/mask/elimask/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 // sheathes
 

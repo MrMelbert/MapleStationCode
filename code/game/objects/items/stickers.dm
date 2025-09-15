@@ -170,15 +170,15 @@
 	name = "assistant sticker"
 	icon_state = "tider"
 
-/obj/item/sticker/skub
-	name = "skub sticker"
-	icon_state = "skub"
-	examine_text = "There is a sticker displaying <b>Skubtide, Stationwide!</b>"
+// /obj/item/sticker/skub
+// 	name = "skub sticker"
+// 	icon_state = "skub"
+// 	examine_text = "There is a sticker displaying <b>Skubtide, Stationwide!</b>"
 
-/obj/item/sticker/anti_skub
-	name = "anti-skub sticker"
-	icon_state = "anti_skub"
-	examine_text = "There is an <b>anti-skub</b> sticker."
+// /obj/item/sticker/anti_skub
+// 	name = "anti-skub sticker"
+// 	icon_state = "anti_skub"
+// 	examine_text = "There is an <b>anti-skub</b> sticker."
 
 /obj/item/sticker/syndicate
 	name = "syndicate sticker"
