@@ -647,11 +647,13 @@
 
 /datum/reagent/consumable/wellcheers/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_drowsiness(3 SECONDS * REM * seconds_per_tick)
+	//affected_mob.adjust_drowsiness(3 SECONDS * REM * seconds_per_tick) // NON-MODULE CHANGE : Makes Wellcheers much less drowsy.
 	var/need_mob_update
 	switch(affected_mob.mob_mood.sanity_level)
 		if (SANITY_INSANE to SANITY_CRAZY)
 			need_mob_update = affected_mob.adjustStaminaLoss(3 * REM * seconds_per_tick, updating_stamina = FALSE)
+			if(affected_mob.staminaloss >= affected_mob.max_stamina) // NON-MODULE CHANGE : Makes Wellcheers much less drowsy.
+				affected_mob.adjust_drowsiness(3 SECONDS * REM * seconds_per_tick) // NON-MODULE CHANGE END
 		if (SANITY_UNSTABLE to SANITY_DISTURBED)
 			affected_mob.add_mood_event("wellcheers", /datum/mood_event/wellcheers)
 		if (SANITY_NEUTRAL to SANITY_GREAT)
