@@ -657,7 +657,8 @@
 		if (SANITY_UNSTABLE to SANITY_DISTURBED)
 			affected_mob.add_mood_event("wellcheers", /datum/mood_event/wellcheers)
 		if (SANITY_NEUTRAL to SANITY_GREAT)
-			need_mob_update = affected_mob.adjustBruteLoss(-1.5 * REM * seconds_per_tick, updating_health = FALSE)
+			//need_mob_update = affected_mob.adjustBruteLoss(-1.5 * REM * seconds_per_tick, updating_health = FALSE)
+			need_mob_update = affected_mob.adjustBruteLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE) // NON-MODULE CHANGE
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
 
