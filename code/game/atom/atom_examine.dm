@@ -183,7 +183,7 @@
 		var/mob/wearer = get(src, /mob/living) || loc
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN) || !can_examine_when_worn(viewer))
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN_APPEARANCE) || !can_examine_when_worn(viewer))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
 			return
 
@@ -202,7 +202,7 @@
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		return ..()
-	if(wearer.check_obscured_slots() & slot_flags)
+	if(hidden_slots_to_inventory_slots(wearer.obscured_slots) & slot_flags)
 		return FALSE
 	return ..()
 

@@ -180,10 +180,6 @@
 		update_body()
 	remove_item_coverage(item)
 
-/// This proc is called after an item has been successfully handled and equipped to a slot.
-/mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
-	return item.on_equipped(src, slot, initial)
-
 /mob/living/carbon/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !item_dropping) //We don't want to set anything to null if the parent returned 0.
@@ -191,7 +187,6 @@
 
 	if(item_dropping == head)
 		head = null
-		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_HAT, I, force, newloc, no_move, invdrop, silent)
 		if(!QDELETED(src))
 			update_worn_head()
 	else if(item_dropping == back)
@@ -216,7 +211,7 @@
 			update_worn_legcuffs()
 
 	// Not an else-if because we're probably equipped in another slot
-	if(I == internal && (QDELETED(src) || QDELETED(I) || I.loc != src))
+	if(item_dropping == internal && (QDELETED(src) || QDELETED(item_dropping) || item_dropping.loc != src))
 		cutoff_internals()
 		if(!QDELETED(src))
 			update_mob_action_buttons(UPDATE_BUTTON_STATUS)

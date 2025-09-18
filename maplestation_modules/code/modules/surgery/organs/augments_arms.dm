@@ -87,9 +87,13 @@
 	name = "finger light"
 	desc = "Fire at your fingertips!"
 	inhand_icon_state = "nothing"
-	item_flags = EXAMINE_SKIP | ABSTRACT
+	item_flags = ABSTRACT
 	light_sound_on = null
 	light_sound_off = null
+
+/obj/item/lighter/spell/finger/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
 /obj/item/lighter/spell/finger/ignition_effect(atom/A, mob/user)
 	if(get_temperature())

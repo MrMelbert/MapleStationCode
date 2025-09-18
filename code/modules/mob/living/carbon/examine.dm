@@ -20,7 +20,7 @@
 	var/t_is = p_are()
 
 	. = list()
-	var/list/clothes_info = get_clothing_examine_info(user, check_obscured_slots())
+	var/list/clothes_info = get_clothing_examine_info(user)
 	for(var/slot in clothes_info)
 		var/slot_text = clothes_info[slot]
 		if(slot_text)
@@ -378,7 +378,7 @@
 		clothes[CLOTHING_SLOT(BACK)] = "[t_He] [t_has] [back.examine_title(user, href = TRUE)] on [t_his] back."
 	//Hands
 	for(var/obj/item/held_thing in held_items)
-		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+		if(held_thing.item_flags & (ABSTRACT|HAND_ITEM) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
 			continue
 		if(clothes[CLOTHING_SLOT(HANDS)])
 			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
@@ -407,7 +407,7 @@
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
 			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are bloodshot!")
 	//ears
-	if(ears && !(obscured_slots & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
+	if(ears && !(obscured_slots & HIDEEARS) && !HAS_TRAIT(ears, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] ears."
 
 	return clothes
@@ -430,13 +430,13 @@
 
 		clothes[CLOTHING_SLOT(ICLOTHING)] = "[t_He] [t_is] wearing [w_uniform.examine_title(user, href = TRUE)][accessory_message]."
 	//suit/armor
-	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
+	if(wear_suit && !HAS_TRAIT(wear_suit, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(OCLOTHING)] = "[t_He] [t_is] wearing [wear_suit.examine_title(user, href = TRUE)]."
 		//suit/armor storage
-		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !HAS_TRAIT(s_store, TRAIT_EXAMINE_SKIP))
+		if(s_store && !(obscured_slots & HIDESUITSTORAGE) && !HAS_TRAIT(s_store, TRAIT_EXAMINE_SKIP))
 			clothes[CLOTHING_SLOT(SUITSTORE)] = "[t_He] [t_is] carrying [s_store.examine_title(user, href = TRUE)] on [t_his] [wear_suit.name]."
 	//ID
-	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
+	if(wear_id && !HAS_TRAIT(wear_id, TRAIT_EXAMINE_SKIP))
 		var/obj/item/card/id/id = wear_id.GetID()
 		if(id && get_dist(user, src) <= ID_EXAMINE_DISTANCE)
 			var/id_href = "<a href='byond://?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user, href = TRUE)]</a>"
@@ -445,7 +445,7 @@
 		else
 			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [wear_id.examine_title(user, href = TRUE)]."
 	//gloves
-	if(!clothes[CLOTHING_SLOT(GLOVES)] && !(obscured_slots & ITEM_SLOT_HANDS) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
+	if(!clothes[CLOTHING_SLOT(GLOVES)] && !(obscured_slots & HIDEGLOVES) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
 		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 		var/list/all_blood_names = list()
 		for(var/dna_sample in all_dna)
@@ -454,7 +454,7 @@
 
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
-	if(belt && !(obscured_slots & ITEM_SLOT_BELT) && !HAS_TRAIT(belt, TRAIT_EXAMINE_SKIP))
+	if(belt && !(obscured_slots & HIDEBELT) && !HAS_TRAIT(belt, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
 
 	return clothes
@@ -568,7 +568,7 @@
 		// same shape bodyparts are concealed by clothing
 		// this means you can see ex. digitigrade legs through clothes
 		// but you can't see ex. cybernetic legs through clothes
-		if(part.bodyshape == initial(expected_part?.bodyshape) && (part.body_zone in covered))
+		if(part.bodytype == initial(expected_part?.bodytype) && (part.body_zone in covered))
 			continue
 		texts += span_notice("[p_They()] [p_have()] \a [part].")
 

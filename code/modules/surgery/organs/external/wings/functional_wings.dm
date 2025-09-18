@@ -25,6 +25,8 @@
 
 	///Are our wings open or closed?
 	var/wings_open = FALSE
+	///We cant hide this wings in suit
+	var/cant_hide = FALSE
 
 	// grind_results = list(/datum/reagent/flightpotion = 5)
 	food_reagents = list(/datum/reagent/flightpotion = 5)

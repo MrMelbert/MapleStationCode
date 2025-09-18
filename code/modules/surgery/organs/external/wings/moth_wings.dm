@@ -32,15 +32,13 @@
 /obj/item/organ/external/wings/moth/proc/update_float_move()
 	SIGNAL_HANDLER
 
-	if(!isspaceturf(owner.loc) && !burnt)
-		var/datum/gas_mixture/current = owner.loc.return_air()
-		if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
-			ADD_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
-			return
+	if(!isspaceturf(owner.loc) || allow_flight())
+		ADD_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
+		return
 
 	REMOVE_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
 
-/obj/item/organ/wings/moth/proc/allow_flight()
+/obj/item/organ/external/wings/moth/proc/allow_flight()
 	if(!owner || !owner.client)
 		return FALSE
 	if(owner.has_gravity())

@@ -173,39 +173,39 @@
 
 /// Getter for the registered name, with optional honorifics
 /obj/item/card/id/get_displayed_name(honorifics = FALSE)
-	if(honorifics && honorific_position != HONORIFIC_POSITION_NONE && honorific_title)
+	if(honorifics && honorific_position != HONORIFIC_POSITION_DISABLED && honorific_title)
 		return honorific_title
 	return registered_name
 
-/obj/item/card/id/proc/on_loc_equipped(datum/source, mob/equipper, slot)
-	SIGNAL_HANDLER
+// /obj/item/card/id/proc/on_loc_equipped(datum/source, mob/equipper, slot)
+// 	SIGNAL_HANDLER
 
-	if (slot == ITEM_SLOT_ID)
-		RegisterSignal(equipper, COMSIG_MOVABLE_POINTED, PROC_REF(on_pointed))
+// 	if (slot == ITEM_SLOT_ID)
+// 		RegisterSignal(equipper, COMSIG_MOVABLE_POINTED, PROC_REF(on_pointed))
 
-/obj/item/card/id/proc/on_loc_dropped(datum/source, mob/dropper)
-	SIGNAL_HANDLER
-	UnregisterSignal(dropper, COMSIG_MOVABLE_POINTED)
+// /obj/item/card/id/proc/on_loc_dropped(datum/source, mob/dropper)
+// 	SIGNAL_HANDLER
+// 	UnregisterSignal(dropper, COMSIG_MOVABLE_POINTED)
 
-/obj/item/card/id/proc/on_pointed(mob/living/user, atom/pointed, obj/effect/temp_visual/point/point)
-	SIGNAL_HANDLER
-	if ((!big_pointer && !pointer_color) || HAS_TRAIT(user, TRAIT_UNKNOWN_APPEARANCE))
-		return
-	if (point.icon_state != /obj/effect/temp_visual/point::icon_state) //it differs from the original icon_state already.
-		return
-	if (loc != user)
-		if (!isitem(loc))
-			return
-		var/obj/item/as_item = loc
-		if (as_item.GetID() != src)
-			return
-	if (big_pointer)
-		point.icon_state = "arrow_large"
-	if (pointer_color)
-		point.icon_state = "[point.icon_state]_white"
-		point.color = pointer_color
-		var/mutable_appearance/highlight = mutable_appearance(point.icon, "[point.icon_state]_highlights", appearance_flags = RESET_COLOR)
-		point.add_overlay(highlight)
+// /obj/item/card/id/proc/on_pointed(mob/living/user, atom/pointed, obj/effect/temp_visual/point/point)
+// 	SIGNAL_HANDLER
+// 	if ((!big_pointer && !pointer_color) || HAS_TRAIT(user, TRAIT_UNKNOWN_APPEARANCE))
+// 		return
+// 	if (point.icon_state != /obj/effect/temp_visual/point::icon_state) //it differs from the original icon_state already.
+// 		return
+// 	if (loc != user)
+// 		if (!isitem(loc))
+// 			return
+// 		var/obj/item/as_item = loc
+// 		if (as_item.GetID() != src)
+// 			return
+// 	if (big_pointer)
+// 		point.icon_state = "arrow_large"
+// 	if (pointer_color)
+// 		point.icon_state = "[point.icon_state]_white"
+// 		point.color = pointer_color
+// 		var/mutable_appearance/highlight = mutable_appearance(point.icon, "[point.icon_state]_highlights", appearance_flags = RESET_COLOR)
+// 		point.add_overlay(highlight)
 
 /obj/item/card/id/get_id_examine_strings(mob/user)
 	. = ..()

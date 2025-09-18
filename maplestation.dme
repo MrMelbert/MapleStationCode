@@ -6350,7 +6350,6 @@
 #include "maplestation_modules\code\game\objects\items\locker_spawners.dm"
 #include "maplestation_modules\code\game\objects\items\plushes.dm"
 #include "maplestation_modules\code\game\objects\items\robot_upgrades.dm"
-#include "maplestation_modules\code\game\objects\items\toys.dm"
 #include "maplestation_modules\code\game\objects\items\trash.dm"
 #include "maplestation_modules\code\game\objects\items\triage_card.dm"
 #include "maplestation_modules\code\game\objects\items\umbrellas.dm"

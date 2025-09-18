@@ -212,7 +212,7 @@
 	if(QDELING(src))
 		return FALSE
 
-	var/slots_to_fingerprint = target_flags & ~check_obscured_slots()
+	var/slots_to_fingerprint = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
 	for(var/obj/item/thing as anything in get_equipped_items())
 		if(thing.slot_flags & slots_to_fingerprint)
 			. ||= thing.add_fingerprint(from_mob)

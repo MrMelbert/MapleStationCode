@@ -28,12 +28,6 @@
 	if(stat == DEAD)
 		return FALSE
 
-	// Handle active mutations
-	for(var/datum/mutation/mutation as anything in dna.mutations)
-		mutation.on_life(seconds_per_tick, times_fired)
-
-	// Heart attack stuff
-	handle_heart(seconds_per_tick, times_fired)
 	// Handles liver failure effects, if we lack a liver
 	handle_liver(seconds_per_tick, times_fired)
 	// For special species interactions
