@@ -139,10 +139,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		INVOKE_ASYNC(SStts, TYPE_PROC_REF(/datum/controller/subsystem/tts, queue_tts_message), src, html_decode(tts_message_to_use), message_language, voice, filter.Join(","), listened, message_range = range, pitch = pitch)
 
 /// Determines if names seen in chat are colored to the speaker's runechat
-/atom/movable/proc/show_runechat_color()
+/atom/movable/proc/see_chat_runechat_color()
 	return FALSE
 
-/mob/living/show_runechat_color()
+/mob/living/see_chat_runechat_color()
 	return client?.prefs?.read_preference(/datum/preference/toggle/runechat_text_names) || FALSE
 
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE)
@@ -156,8 +156,11 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//Speaker name
 	var/namepart = speaker.get_message_voice(visible_name)
 
-	if(namepart && namepart != "Unknown" && !radio_freq && show_runechat_color())
-		namepart = "<font color='[speaker.name == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(speaker.chat_color, 0.85, 0.85)]'>[namepart]</font>"
+	if(!radio_freq && see_chat_runechat_color())
+		// Pick voice color on "base voice" rather than "ID'd voice". Unknown voices get no color
+		var/voice = HAS_TRAIT(speaker, TRAIT_SIGN_LANG) ? speaker.get_visible_name(add_id_name = FALSE) : speaker.get_voice()
+		if(voice && voice != "Unknown")
+			namepart = "<font color='[voice == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(voice, 0.85, 0.85)]'>[namepart]</font>"
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -298,14 +301,21 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		return "2"
 	return "0"
 
-/// Get what this atom sounds like when speaking
-/atom/proc/get_voice()
+/**
+ * Get what this atom sounds like when speaking
+ *
+ * * add_id_name - If TRUE, ID information such as honorifics are added into the voice
+ */
+/atom/proc/get_voice(add_id_name = FALSE)
 	return "[src]" //Returns the atom's name, prepended with 'The' if it's not a proper noun
 
-/// Get what this atom appears like in chat when speaking
-/// visible_name - If TRUE, returns the visible name rather than the voice
+/**
+ * Get what this atom appears like in chat when speaking
+ *
+ * * visible_name - If TRUE, returns the visible name rather than the voice
+ */
 /atom/proc/get_message_voice(visible_name)
-	return visible_name ? get_visible_name() : get_voice()
+	return visible_name ? get_visible_name(add_id_name = TRUE) : get_voice(add_id_name = TRUE)
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.
@@ -328,7 +338,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 	radio = _radio
 	source = M
 	if(istype(M))
-		name = radio.anonymize ? "Unknown" : M.get_voice()
+		name = radio.anonymize ? "Unknown" : M.get_voice(add_id_name = TRUE)
 		verb_say = M.get_default_say_verb()
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim
