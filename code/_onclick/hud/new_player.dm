@@ -643,7 +643,6 @@
 		return PROCESS_KILL
 
 /atom/movable/screen/lobby_music/proc/cancel_tracking()
-	maptext = SStitle.music_maptext
 	STOP_PROCESSING(SSlobby_music_player, src)
 	animate(src, alpha = 0, time = 1 SECONDS)
 
