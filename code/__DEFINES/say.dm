@@ -7,6 +7,7 @@
 #define SAY_KEY "saymode key" // NON-MODULE CHANGE
 #define LANGUAGE_EXTENSION "language specific"
 #define SAY_MOD_VERB "say_mod_verb"
+#define SAY_RADIO_ICON "say_radio_icon" // NON-MODULE CHANGE
 
 //Message modes. Each one defines a radio channel, more or less.
 //if you use ! as a mode key for some ungodly reason, change the first character for ion_num() so get_message_mode() doesn't freak out with state law prompts - shiz.

@@ -68,7 +68,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 /// Called when this movable hears a message from a source.
 /// Returns TRUE if the message was received and understood.
-/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
+/atom/movable/proc/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	return TRUE
 
@@ -119,7 +119,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
-		if(hearing_movable.Hear(null, src, message_language, message, null, spans, message_mods, range))
+		if(hearing_movable.Hear(src, message_language, message, null, spans, message_mods, range))
 			listened += hearing_movable
 		if(!found_client && length(hearing_movable.client_mobs_in_contents))
 			found_client = TRUE
@@ -138,7 +138,14 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if(voice && found_client)
 		INVOKE_ASYNC(SStts, TYPE_PROC_REF(/datum/controller/subsystem/tts, queue_tts_message), src, html_decode(tts_message_to_use), message_language, voice, filter.Join(","), listened, message_range = range, pitch = pitch)
 
-/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE)
+/// Determines if names seen in chat are colored to the speaker's runechat
+/atom/movable/proc/show_runechat_color()
+	return FALSE
+
+/mob/living/show_runechat_color()
+	return client?.prefs?.read_preference(/datum/preference/toggle/runechat_text_names) || FALSE
+
+/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE, radio_icon)
 	//This proc uses [] because it is faster than continually appending strings. Thanks BYOND.
 	//Basic span
 	var/spanpart1 = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
@@ -149,6 +156,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//Speaker name
 	var/namepart
 	var/list/stored_name = list(null)
+	var/voice = speaker.GetVoice()
 
 	if(ishuman(speaker)) //First, try to pull the modified title from a carbon's ID. This will override both visual and audible names.
 		var/mob/living/carbon/human/huspeaker = speaker
@@ -158,7 +166,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if(!stored_name[NAME_PART_INDEX]) //Otherwise, we just use whatever the name signal gives us.
 		SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
 
-	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
+	namepart = stored_name[NAME_PART_INDEX] || voice
+
+	if(namepart && namepart != "Unknown" && !radio_freq && show_runechat_color())
+		namepart = "<font color='[voice == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(speaker.chat_color, 0.85, 0.85)]'>[namepart]</font>"
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -177,7 +188,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 	messagepart = " <span class='message'>[messagepart]</span></span>"
 
-	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
+	return "[spanpart1][spanpart2][freqpart][languageicon][message_mods?[SAY_RADIO_ICON]][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
 
 /atom/movable/proc/compose_track_href(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return ""

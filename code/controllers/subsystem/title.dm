@@ -119,6 +119,8 @@ SUBSYSTEM_DEF(title)
  * * major_update: Indicates this init text is a major update, which will update a "dot" animation.
  */
 /datum/controller/subsystem/title/proc/add_init_text(init_category, name, stage, seconds, override = FALSE, major_update = FALSE)
+	if(isnum(seconds))
+		seconds = round(seconds, 0.01)
 	if(override || !init_infos[init_category])
 		init_infos[init_category] = list(name, stage, seconds)
 	else
