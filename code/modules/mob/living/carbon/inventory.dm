@@ -123,7 +123,6 @@
 			if(head)
 				return
 			head = equipping
-			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_HAT, equipping)
 			update_worn_head()
 		if(ITEM_SLOT_NECK)
 			if(wear_neck)
