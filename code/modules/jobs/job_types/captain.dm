@@ -1,7 +1,7 @@
 /datum/job/captain
 	title = JOB_CAPTAIN
-	description = "Be responsible for the station, manage your Heads of Staff, \
-		keep the crew alive, be prepared to do anything and everything or die \
+	description = "Be responsible for the station, manage your heads of staff, \
+		keep the crew alive, be prepared to do anything and everything - or die \
 		horribly trying."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	department_head = list("CentCom")
@@ -53,8 +53,8 @@
 	return "Captain [captain.real_name] on deck!"
 
 /datum/job/captain/get_radio_information()
-	. = ..()
-	. += "\nYou have access to all radio channels, but they are not automatically tuned. Check your radio for more information."
+	return "Prefix your message with <b>:[MODE_KEY_DEPARTMENT]</b> to speak with your heads of staff. \
+		You have access to every radio channel, but they are not automatically tuned - examine your radio for more information."
 
 /datum/outfit/job/captain
 	name = "Captain"

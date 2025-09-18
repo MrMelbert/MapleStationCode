@@ -242,7 +242,7 @@
 		return
 	var/datum/record/crew/crew_record = find_record(character.real_name)
 	var/obj/item/card/id/crew_id = character.get_idcard(hand_first = FALSE)
-	var/job_title = crew_record?.rank || crew_id?.assignment || crew_id?.trim?.assignment || backup_job_title
+	var/job_title = crew_id?.assignment || crew_id?.trim?.assignment || crew_record?.rank || backup_job_title
 	if(try_queue && SSshuttle.arrivals)
 		// queue announcement basically just calls this proc again, but with the try_queue flag set to false, after the shuttle has finished docking
 		SSshuttle.arrivals.QueueAnnounce(character, job_title)
