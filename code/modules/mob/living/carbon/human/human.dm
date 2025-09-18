@@ -37,6 +37,17 @@
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
+	// NON-MODULE CHANGE: Unconscious appearance
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "Unknown"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
+
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
 
@@ -352,7 +363,7 @@
 	if(judgement_criteria & JUDGE_EMAGGED || HAS_TRAIT(src, TRAIT_ALWAYS_WANTED))
 		return 10 //Everyone is a criminal!
 
-	var/threatcount = 0
+	var/threatcount = judgement_criteria & JUDGE_CHILLOUT ? -THREAT_ASSESS_DANGEROUS : 0
 
 	//Lasertag bullshit
 	if(lasercolor)
@@ -929,6 +940,10 @@
 	var/skills_space
 	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
 
+	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		carrydelay *= potential_spine.athletics_boost_multiplier
+
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
 	else if(carrydelay <= 4 SECONDS)
@@ -1016,6 +1031,26 @@
 	. = ..()
 	if(use_random_name)
 		fully_replace_character_name(real_name, generate_random_mob_name())
+
+/mob/living/carbon/human/proc/is_atmos_sealed(additional_flags = null, check_hands = FALSE, alt_flags = FALSE)
+	var/chest_covered = FALSE
+	var/head_covered = FALSE
+	var/hands_covered = FALSE
+	for (var/obj/item/clothing/equipped in get_equipped_items())
+		// We don't really have space-proof gloves, so even if we're checking them we ignore the flags
+		if ((equipped.body_parts_covered & HANDS) && num_hands >= default_num_hands)
+			hands_covered = TRUE
+		if (!alt_flags && !isnull(additional_flags) && !(equipped.clothing_flags & additional_flags))
+			continue
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & CHEST))
+			chest_covered = TRUE
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & HEAD))
+			head_covered = TRUE
+	if (!chest_covered)
+		return FALSE
+	if (!hands_covered && check_hands)
+		return FALSE
+	return head_covered || HAS_TRAIT(src, TRAIT_HEAD_ATMOS_SEALED)
 
 /mob/living/carbon/human/species/abductor
 	race = /datum/species/abductor

@@ -35,6 +35,9 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	/// Displayed name of the loadout item.
 	/// Defaults to the item's name if unset.
 	var/name
+	/// Title of a group that this item will be bundled under
+	/// Defaults to parent category's title if unset
+	var/group = null
 	/// Whether this item has greyscale support.
 	/// Only works if the item is compatible with the GAGS system of coloring.
 	/// Set automatically to TRUE for all items that have the flag [IS_PLAYER_COLORABLE_1].
@@ -52,8 +55,6 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	var/abstract_type = /datum/loadout_item
 	/// The actual item path of the loadout item.
 	var/obj/item/item_path
-	/// Lazylist of additional "information" text to display about this item.
-	var/list/additional_displayed_text
 	/// Icon file (DMI) for the UI to use for preview icons.
 	/// Set automatically if null
 	var/ui_icon
@@ -290,9 +291,18 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/list/formatted_item = list()
+	var/list/information = list()
+	var/list/fetched_info = get_item_information()
+	for (var/icon_name in fetched_info)
+		information += list(list(
+			"icon" = icon_name,
+			"tooltip" = fetched_info[icon_name]
+		))
+
 	formatted_item["name"] = name
+	formatted_item["group"] = group || category.category_name
 	formatted_item["path"] = item_path
-	formatted_item["information"] = get_item_information()
+	formatted_item["information"] = information
 	formatted_item["buttons"] = get_ui_buttons()
 	formatted_item["reskins"] = get_reskin_options()
 	formatted_item["icon"] = ui_icon
@@ -301,36 +311,31 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	return formatted_item
 
 /**
- * Checks if this item is disabled and cannot be selected or granted
- */
-/datum/loadout_item/proc/is_disabled()
-	return required_holiday && !check_holidays(required_holiday)
-
-/**
  * Returns a list of information to display about this item in the loadout UI.
- *
- * These should be short strings, sub 14 characters generally.
+ * Icon -> tooltip displayed when its hovered over
  */
 /datum/loadout_item/proc/get_item_information() as /list
 	SHOULD_CALL_PARENT(TRUE)
+
+	// Mothblocks is hellbent on recolorable and reskinnable being only tooltips for items for visual clarity, so ask her before changing these
 	var/list/displayed_text = list()
-
-	if(LAZYLEN(additional_displayed_text))
-		displayed_text += additional_displayed_text
-
-	if(required_holiday)
-		displayed_text += required_holiday
-
 	if(can_be_greyscale)
-		displayed_text += "Recolorable"
-
-	if(can_be_named)
-		displayed_text += "Renamable"
+		displayed_text[FA_ICON_PALETTE] = "Recolorable"
 
 	if(can_be_reskinned)
-		displayed_text += "Reskinnable"
+		displayed_text[FA_ICON_SWATCHBOOK] = "Reskinnable"
+
+	if(required_holiday)
+		displayed_text[check_holidays(required_holiday) ? FA_ICON_CALENDAR_CHECK : FA_ICON_CALENDAR_XMARK] = "Only available during [required_holiday]"
 
 	return displayed_text
+
+/**
+ * Checks if this item is disabled and cannot be selected or granted
+ */
+/datum/loadout_item/proc/is_disabled()
+	SHOULD_CALL_PARENT(TRUE)
+	return required_holiday && !check_holidays(required_holiday)
 
 /**
  * Returns a list of buttons that are shown in the loadout UI for customizing this item.

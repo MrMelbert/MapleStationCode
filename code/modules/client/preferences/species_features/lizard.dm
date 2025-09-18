@@ -1,25 +1,25 @@
 /proc/generate_lizard_side_shot(datum/sprite_accessory/sprite_accessory, key, include_snout = TRUE)
-	var/static/icon/lizard
-	var/static/icon/lizard_with_snout
+	var/static/datum/universal_icon/lizard
+	var/static/datum/universal_icon/lizard_with_snout
 
 	if (isnull(lizard))
-		lizard = icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_head", EAST)
-		var/icon/eyes = icon('icons/mob/human/human_face.dmi', "eyes", EAST)
-		eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
-		lizard.Blend(eyes, ICON_OVERLAY)
+		lizard = uni_icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_head", EAST)
+		var/datum/universal_icon/eyes = uni_icon('icons/mob/human/human_face.dmi', "eyes_l", EAST)
+		eyes.blend_color(COLOR_GRAY, ICON_MULTIPLY)
+		lizard.blend_icon(eyes, ICON_OVERLAY)
 
-		lizard_with_snout = icon(lizard)
-		lizard_with_snout.Blend(icon('icons/mob/human/species/lizard/lizard_misc.dmi', "m_snout_round_ADJ", EAST), ICON_OVERLAY)
+		lizard_with_snout = lizard.copy()
+		lizard_with_snout.blend_icon(uni_icon('icons/mob/human/species/lizard/lizard_misc.dmi', "m_snout_round_ADJ", EAST), ICON_OVERLAY)
 
-	var/icon/final_icon = include_snout ? icon(lizard_with_snout) : icon(lizard)
+	var/datum/universal_icon/final_icon = include_snout ? lizard_with_snout.copy() : lizard.copy()
 
-	if (!isnull(sprite_accessory))
-		var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ", EAST)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
+	if (!isnull(sprite_accessory) && sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
+		var/datum/universal_icon/accessory_icon = uni_icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_ADJ", EAST)
+		final_icon.blend_icon(accessory_icon, ICON_OVERLAY)
 
-	final_icon.Crop(11, 20, 23, 32)
-	final_icon.Scale(32, 32)
-	final_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+	final_icon.crop(11, 20, 23, 32)
+	final_icon.scale(32, 32)
+	final_icon.blend_color(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
 
 	return final_icon
 
@@ -32,25 +32,21 @@
 	relevant_mutant_bodypart = "body_markings"
 
 /datum/preference/choiced/lizard_body_markings/init_possible_values()
-	return assoc_to_keys_features(GLOB.body_markings_list)
+	return assoc_to_keys_features(SSaccessories.body_markings_list)
 
 /datum/preference/choiced/lizard_body_markings/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = GLOB.body_markings_list[value]
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.body_markings_list[value]
 
-	var/icon/final_icon = icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m")
+	var/datum/universal_icon/final_icon = uni_icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m")
 
-	if (sprite_accessory.icon_state != "none")
-		var/icon/body_markings_icon = icon(
-			'icons/mob/human/species/lizard/lizard_misc.dmi',
-			"m_body_markings_[sprite_accessory.icon_state]_ADJ",
-		)
+	if (sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
+		var/datum/universal_icon/body_markings_icon = uni_icon(sprite_accessory.icon, "m_body_markings_[sprite_accessory.icon_state]_ADJ")
+		final_icon.blend_icon(body_markings_icon, ICON_OVERLAY)
 
-		final_icon.Blend(body_markings_icon, ICON_OVERLAY)
-
-	final_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
-	final_icon.Crop(10, 8, 22, 23)
-	final_icon.Scale(26, 32)
-	final_icon.Crop(-2, 1, 29, 32)
+	final_icon.blend_color(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+	final_icon.crop(10, 8, 22, 23)
+	final_icon.scale(26, 32)
+	final_icon.crop(-2, 1, 29, 32)
 
 	return final_icon
 
@@ -66,10 +62,10 @@
 	relevant_external_organ = /obj/item/organ/external/frills
 
 /datum/preference/choiced/lizard_frills/init_possible_values()
-	return assoc_to_keys_features(GLOB.frills_list)
+	return assoc_to_keys_features(SSaccessories.frills_list)
 
 /datum/preference/choiced/lizard_frills/icon_for(value)
-	return generate_lizard_side_shot(GLOB.frills_list[value], "frills")
+	return generate_lizard_side_shot(SSaccessories.frills_list[value], "frills")
 
 /datum/preference/choiced/lizard_frills/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["frills"] = value
@@ -83,10 +79,10 @@
 	relevant_external_organ = /obj/item/organ/external/horns
 
 /datum/preference/choiced/lizard_horns/init_possible_values()
-	return assoc_to_keys_features(GLOB.horns_list)
+	return assoc_to_keys_features(SSaccessories.horns_list)
 
 /datum/preference/choiced/lizard_horns/icon_for(value)
-	return generate_lizard_side_shot(GLOB.horns_list[value], "horns")
+	return generate_lizard_side_shot(SSaccessories.horns_list[value], "horns")
 
 /datum/preference/choiced/lizard_horns/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["horns"] = value
@@ -140,10 +136,10 @@
 	relevant_external_organ = /obj/item/organ/external/snout
 
 /datum/preference/choiced/lizard_snout/init_possible_values()
-	return assoc_to_keys_features(GLOB.snouts_list)
+	return assoc_to_keys_features(SSaccessories.snouts_list)
 
 /datum/preference/choiced/lizard_snout/icon_for(value)
-	return generate_lizard_side_shot(GLOB.snouts_list[value], "snout", include_snout = FALSE)
+	return generate_lizard_side_shot(SSaccessories.snouts_list[value], "snout", include_snout = FALSE)
 
 /datum/preference/choiced/lizard_snout/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["snout"] = value
@@ -155,7 +151,7 @@
 	relevant_external_organ = /obj/item/organ/external/spines
 
 /datum/preference/choiced/lizard_spines/init_possible_values()
-	return assoc_to_keys_features(GLOB.spines_list)
+	return assoc_to_keys_features(SSaccessories.spines_list)
 
 /datum/preference/choiced/lizard_spines/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["spines"] = value
@@ -167,7 +163,7 @@
 	relevant_external_organ = /obj/item/organ/external/tail/lizard
 
 /datum/preference/choiced/lizard_tail/init_possible_values()
-	return assoc_to_keys_features(GLOB.tails_list_lizard)
+	return assoc_to_keys_features(SSaccessories.tails_list_lizard)
 
 /datum/preference/choiced/lizard_tail/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_lizard"] = value

@@ -300,6 +300,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	wound_bonus = FALSE
 
 	actions_types = list(/datum/action/item_action/toggle_mode)
+	action_slots = ALL
 
 	cooldown = 0 SECONDS
 	stamina_damage = 0
@@ -594,6 +595,10 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "alienhelmet"
 	inhand_icon_state = null
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+	sound_vary = TRUE
+	equip_sound = 'sound/items/handling/helmet/helmet_equip1.ogg'
+	pickup_sound = 'sound/items/handling/helmet/helmet_pickup1.ogg'
+	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
 
 /obj/item/clothing/head/helmet/abductor/equipped(mob/living/user, slot)
 	. = ..()

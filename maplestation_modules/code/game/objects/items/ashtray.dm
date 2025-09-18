@@ -85,7 +85,7 @@
 	if(. & ITEM_INTERACT_BLOCKING)
 		return .
 
-	if(!istype(tool, /obj/item/clothing/mask/cigarette) \
+	if(!istype(tool, /obj/item/cigarette) \
 		&& !istype(tool, /obj/item/cigbutt) \
 		&& !istype(tool, /obj/item/food/candy_trash) \
 		&& !istype(tool, /obj/item/match) \
@@ -99,14 +99,14 @@
 	if(!user.transferItemToLoc(tool, src, silent = FALSE))
 		return ITEM_INTERACT_BLOCKING
 
-	if(!istype(tool, /obj/item/clothing/mask/cigarette))
+	if(!istype(tool, /obj/item/cigarette))
 		user.visible_message(
 			span_notice("[user] puts [tool] in [src]."),
 			span_notice("You put [tool] in [src]."),
 		)
 		return ITEM_INTERACT_SUCCESS
 
-	var/obj/item/clothing/mask/cigarette/cig = tool
+	var/obj/item/cigarette/cig = tool
 	if(cig.lit)
 		user.visible_message(
 			span_rose("[user] stubs out [user.p_their()] [cig.name] in [src]."),
@@ -242,10 +242,10 @@
 
 	var/reward_msg = "It's about what you'd expect."
 	user.put_in_hands(reward)
-	if(istype(reward, /obj/item/clothing/mask/cigarette))
+	if(istype(reward, /obj/item/cigarette))
 		reward_msg = "A free smoke! Score."
 
-	else if(istype(reward, /obj/item/clothing/mask/cigarette/cigar))
+	else if(istype(reward, /obj/item/cigarette/cigar))
 		reward_msg = "A free cigar! Who left this here?"
 
 	user.visible_message(
@@ -278,9 +278,9 @@
 					match.lit = TRUE
 					match.matchburnout()
 			if(95 to 99)
-				new /obj/item/clothing/mask/cigarette(src)
+				new /obj/item/cigarette(src)
 			if(99 to 100)
-				new /obj/item/clothing/mask/cigarette/cigar(src)
+				new /obj/item/cigarette/cigar(src)
 	update_appearance()
 
 /// Shards for broken ashtrays

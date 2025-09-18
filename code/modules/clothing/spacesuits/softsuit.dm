@@ -16,6 +16,7 @@
 	name = "Engineering Void Helmet"
 	desc = "A CentCom engineering dark red space suit helmet. While old and dusty, it still gets the job done."
 	icon_state = "void"
+	visor_dirt = "void_dirt"
 
 /obj/item/clothing/suit/space/nasavoid/old
 	name = "Engineering Voidsuit"
@@ -40,6 +41,7 @@
 	desc = "A lightweight space helmet with the basic ability to protect the wearer from the vacuum of space during emergencies."
 	flash_protect = FLASH_PROTECTION_NONE
 	armor_type = /datum/armor/space_eva
+	visor_dirt = "space_dirt"
 
 /datum/armor/space_eva
 	bio = 100

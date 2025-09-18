@@ -28,8 +28,6 @@
 	status_type = STATUS_EFFECT_MULTIPLE
 	alert_type = null
 	duration = 30 SECONDS
-	/// The hud we give
-	var/hud_type = null
 	/// The trait of hud we give
 	var/hud_trait = null
 
@@ -38,34 +36,25 @@
 	return ..()
 
 /datum/status_effect/temporary_hud/on_apply()
-	if(hud_type)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.show_to(owner)
 	if(hud_trait)
 		ADD_TRAIT(owner, hud_trait, type)
 	return ..()
 
 /datum/status_effect/temporary_hud/on_remove()
-	if(hud_type)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.hide_from(owner)
 	if(hud_trait)
 		REMOVE_TRAIT(owner, hud_trait, type)
 	return ..()
 
 /datum/status_effect/temporary_hud/med
 	id = "temporary_hud_med"
-	hud_type = DATA_HUD_MEDICAL_ADVANCED
 	hud_trait = TRAIT_MEDICAL_HUD
 
 /datum/status_effect/temporary_hud/sec
 	id = "temporary_hud_sec"
-	hud_type = DATA_HUD_SECURITY_ADVANCED
 	hud_trait = TRAIT_SECURITY_HUD
 
 /datum/status_effect/temporary_hud/diag
 	id = "temporary_hud_diag"
-	hud_type = DATA_HUD_DIAGNOSTIC_ADVANCED
 	hud_trait = TRAIT_DIAGNOSTIC_HUD
 
 /datum/status_effect/mesons
@@ -520,9 +509,16 @@
 	return ..()
 
 /// Prosopagnosia
-/datum/status_effect/trait_effect/prosopagnosia
+/datum/status_effect/prosopagnosia
 	id = "prosopagnosia"
-	trait_to_add = TRAIT_PROSOPAGNOSIA
+
+/datum/status_effect/prosopagnosia/on_apply()
+	. = ..()
+	owner.apply_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
+
+/datum/status_effect/prosopagnosia/on_remove()
+	. = ..()
+	owner.remove_status_effect(/datum/status_effect/grouped/see_no_names/allow_ids, REF(src))
 
 /// Thermal Weakness
 /datum/status_effect/thermal_weakness

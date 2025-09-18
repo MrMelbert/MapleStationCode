@@ -26,11 +26,18 @@
 /datum/loadout_item/suit/parade_jacket_greyscale
 	name = "Greyscale Parade Jacket"
 	item_path = /obj/item/clothing/suit/greyscale_parade
-	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/suit/big_jacket
 	name = "Greyscale Jacket Large"
 	item_path = /obj/item/clothing/suit/jacket/oversized
+
+/datum/loadout_item/suit/blazer
+	name = "Greyscale Blazer"
+	item_path = /obj/item/clothing/suit/jacket/blazer
+
+/datum/loadout_item/suit/trenchcoat
+	name = "Greyscale Trenchcoat"
+	item_path = /obj/item/clothing/suit/toggle/jacket/trenchcoat
 
 /datum/loadout_item/suit/fancy_jacket
 	name = "Greyscale Fur Coat"
@@ -62,7 +69,7 @@
 
 /datum/loadout_item/suit/suspenders_greyscale
 	name = "Suspenders"
-	item_path = /obj/item/clothing/suit/toggle/suspenders
+	item_path = /obj/item/clothing/suit/toggle/suspenders/greyscale
 
 /datum/loadout_item/suit/white_dress
 	name = "White Dress"
@@ -81,11 +88,13 @@
 	item_path = /obj/item/clothing/suit/toggle/labcoat/ce
 
 
-// MELBERT TODO: These hard delete. Interesting
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
 	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/suit/goliath_cloak/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/suit/poncho
 	name = "Poncho"
@@ -170,3 +179,11 @@
 /datum/loadout_item/suit/chesed_jacket
 	name = "Well-Kept Jacket"
 	item_path = /obj/item/clothing/suit/toggle/chesedjacket
+
+/datum/loadout_item/suit/wellworn_shirt
+	name = "Well-Worn Shirt" // No, I'm not adding the dirty alt
+	item_path = /obj/item/clothing/suit/costume/wellworn_shirt
+
+/datum/loadout_item/suit/wellworn_shirt/graphic
+	name = "Well-Worn Graphic Shirt"
+	item_path = /obj/item/clothing/suit/costume/wellworn_shirt/graphic

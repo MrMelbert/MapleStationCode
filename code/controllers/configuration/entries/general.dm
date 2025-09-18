@@ -688,6 +688,9 @@
 /datum/config_entry/flag/cache_assets
 	default = TRUE
 
+/datum/config_entry/flag/smart_cache_assets
+	default = TRUE
+
 /datum/config_entry/flag/save_spritesheets
 	default = FALSE
 
@@ -731,3 +734,6 @@
  */
 /datum/config_entry/number/tgui_max_chunk_count
 	default = 32
+
+/datum/config_entry/flag/generate_assets_in_init
+	default = FALSE

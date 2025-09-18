@@ -50,9 +50,7 @@
 /datum/action/item_action/hands_free/activate_pill
 	name = "Activate Pill"
 
-/datum/action/item_action/hands_free/activate_pill/Trigger(trigger_flags)
-	if(!..())
-		return FALSE
+/datum/action/item_action/hands_free/activate_pill/do_effect(trigger_flags)
 	var/obj/item/item_target = target
 	to_chat(owner, span_notice("You grit your teeth and burst the implanted [item_target.name]!"))
 	owner.log_message("swallowed an implanted pill, [target]", LOG_ATTACK)

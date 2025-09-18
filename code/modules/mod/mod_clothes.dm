@@ -7,7 +7,15 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HEAD
-	item_flags = IMMUTABLE_SLOW
+
+/obj/item/clothing/head/mod/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
+
+// Even without a hat stabilizer, hats can be worn - however, they'll fall off very easily
+/obj/item/clothing/head/mod/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 
 /obj/item/clothing/suit/mod
 	name = "MOD chestplate"
@@ -24,8 +32,16 @@
 	)
 	armor_type = /datum/armor/none
 	body_parts_covered = CHEST|GROIN|LEGS // NON-MODULE CHANGE
-	item_flags = IMMUTABLE_SLOW
+	drop_sound = null
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
+
+/obj/item/clothing/suit/mod/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
+
+/obj/item/clothing/suit/mod/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
@@ -36,7 +52,13 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HANDS|ARMS
-	item_flags = IMMUTABLE_SLOW
+	equip_sound = null
+	pickup_sound = null
+	drop_sound = null
+
+/obj/item/clothing/gloves/mod/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
 /obj/item/clothing/shoes/mod
 	name = "MOD boots"
@@ -47,6 +69,9 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = FEET|LEGS
-	item_flags = IMMUTABLE_SLOW
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 	can_be_tied = FALSE
+
+/obj/item/clothing/shoes/mod/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)

@@ -59,6 +59,7 @@
 	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	actions_types = list(/datum/action/item_action/vortex_recall)
+	action_slots = ALL
 	/// Linked teleport beacon for the group teleport functionality.
 	var/obj/effect/hierophant/beacon
 	/// TRUE if currently doing a teleport to the beacon, FALSE otherwise.
@@ -259,16 +260,18 @@
 /obj/item/clothing/suit/hooded/hostile_environment
 	name = "H.E.C.K. suit"
 	desc = "Hostile Environment Cross-Kinetic Suit: A suit designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
-	icon_state = "hostile_env"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/hooded/hostile_environment"
+	post_init_icon_state = "hostile_env"
 	hoodtype = /obj/item/clothing/head/hooded/hostile_environment
 	armor_type = /datum/armor/hooded_hostile_environment
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	clothing_flags = THICKMATERIAL
+	clothing_flags = THICKMATERIAL|HEADINTERNALS
 	resistance_flags = FIRE_PROOF|LAVA_PROOF|ACID_PROOF
 	transparent_protection = HIDESUITSTORAGE|HIDEJUMPSUIT
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/resonator, /obj/item/mining_scanner, /obj/item/t_scanner/adv_mining_scanner, /obj/item/gun/energy/recharge/kinetic_accelerator, /obj/item/pickaxe)
+	allowed = null
 	greyscale_colors = "#4d4d4d#808080"
 	greyscale_config = /datum/greyscale_config/heck_suit
 	greyscale_config_worn = /datum/greyscale_config/heck_suit/worn
@@ -287,6 +290,7 @@
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 	AddElement(/datum/element/gags_recolorable)
+	allowed = GLOB.mining_suit_allowed
 
 /obj/item/clothing/suit/hooded/hostile_environment/process(seconds_per_tick)
 	var/mob/living/carbon/wearer = loc
@@ -298,10 +302,11 @@
 
 /obj/item/clothing/head/hooded/hostile_environment
 	name = "H.E.C.K. helmet"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	desc = "Hostile Environment Cross-Kinetic Helmet: A helmet designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
-	icon_state = "hostile_env"
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
+	icon_state = "/obj/item/clothing/head/hooded/hostile_environment"
+	post_init_icon_state = "hostile_env"
 	w_class = WEIGHT_CLASS_NORMAL
 	armor_type = /datum/armor/hooded_hostile_environment
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT

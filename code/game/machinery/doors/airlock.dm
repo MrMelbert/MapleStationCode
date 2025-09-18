@@ -137,6 +137,9 @@
 	/// Used for papers and photos pinned to the airlock
 	var/note_overlay_file = 'icons/obj/doors/airlocks/station/overlays.dmi'
 
+	/// Airlock pump that overrides airlock controlls when set up for cycling
+	var/obj/machinery/atmospherics/components/unary/airlock_pump/cycle_pump
+
 	var/cyclelinkeddir = 0
 	var/obj/machinery/door/airlock/cyclelinkedairlock
 	var/shuttledocked = 0
@@ -590,17 +593,39 @@
 					floorlight.pixel_z = 0
 			. += floorlight
 
-/obj/machinery/door/airlock/do_animate(animation)
+/obj/machinery/door/airlock/run_animation(animation)
 	switch(animation)
-		if("opening")
+		if(DOOR_OPENING_ANIMATION)
 			update_icon(ALL, AIRLOCK_OPENING)
-		if("closing")
+		if(DOOR_OPENING_ANIMATION)
 			update_icon(ALL, AIRLOCK_CLOSING)
-		if("deny")
+		if(DOOR_DENY_ANIMATION)
 			if(!machine_stat)
 				update_icon(ALL, AIRLOCK_DENY)
 				playsound(src,doorDeni,50,FALSE,3)
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_icon), ALL, AIRLOCK_CLOSED), AIRLOCK_DENY_ANIMATION_TIME)
+
+/obj/machinery/door/airlock/animation_length(animation)
+	switch(animation)
+		if(DOOR_OPENING_ANIMATION)
+			return 0.6 SECONDS
+		if(DOOR_CLOSING_ANIMATION)
+			return 0.6 SECONDS
+
+/obj/machinery/door/airlock/animation_segment_delay(animation)
+	switch(animation)
+		if(AIRLOCK_OPENING_TRANSPARENT)
+			return 0.1 SECONDS
+		if(AIRLOCK_OPENING_PASSABLE)
+			return 0.5 SECONDS
+		if(AIRLOCK_OPENING_FINISHED)
+			return 0.6 SECONDS
+		if(AIRLOCK_CLOSING_UNPASSABLE)
+			return 0.2 SECONDS
+		if(AIRLOCK_CLOSING_OPAQUE)
+			return 0.5 SECONDS
+		if(AIRLOCK_CLOSING_FINISHED)
+			return 0.6 SECONDS
 
 /obj/machinery/door/airlock/examine(mob/user)
 	. = ..()
@@ -1191,6 +1216,10 @@
 		INVOKE_ASYNC(src, density ? PROC_REF(open) : PROC_REF(close), BYPASS_DOOR_CHECKS)
 
 /obj/machinery/door/airlock/open(forced = DEFAULT_DOOR_CHECKS)
+	if(cycle_pump && !operating && !welded && !seal && locked && density)
+		cycle_pump.airlock_act(src)
+		return FALSE // The rest will be handled by the pump
+
 	if( operating || welded || locked || seal )
 		return FALSE
 
@@ -1221,18 +1250,21 @@
 	SEND_SIGNAL(src, COMSIG_AIRLOCK_OPEN, forced)
 	operating = TRUE
 	update_icon(ALL, AIRLOCK_OPENING, TRUE)
-	sleep(0.1 SECONDS)
+	var/transparent_delay = animation_segment_delay(AIRLOCK_OPENING_TRANSPARENT)
+	sleep(transparent_delay)
 	set_opacity(0)
 	if(multi_tile)
 		filler.set_opacity(FALSE)
 	update_freelook_sight()
-	sleep(0.4 SECONDS)
+	var/passable_delay = animation_segment_delay(AIRLOCK_OPENING_PASSABLE) - transparent_delay
+	sleep(passable_delay)
 	set_density(FALSE)
 	if(multi_tile)
 		filler.set_density(FALSE)
 	flags_1 &= ~PREVENT_CLICK_UNDER_1
 	air_update_turf(TRUE, FALSE)
-	sleep(0.1 SECONDS)
+	var/open_delay = animation_segment_delay(AIRLOCK_OPENING_FINISHED) - transparent_delay - passable_delay
+	sleep(open_delay)
 	layer = OPEN_DOOR_LAYER
 	update_icon(ALL, AIRLOCK_OPEN, TRUE)
 	operating = FALSE
@@ -1301,14 +1333,16 @@
 			filler.density = TRUE
 		flags_1 |= PREVENT_CLICK_UNDER_1
 		air_update_turf(TRUE, TRUE)
-	sleep(0.1 SECONDS)
+	var/unpassable_delay = animation_segment_delay(AIRLOCK_CLOSING_UNPASSABLE)
+	sleep(unpassable_delay)
 	if(!air_tight)
 		set_density(TRUE)
 		if(multi_tile)
 			filler.density = TRUE
 		flags_1 |= PREVENT_CLICK_UNDER_1
 		air_update_turf(TRUE, TRUE)
-	sleep(0.4 SECONDS)
+	var/opaque_delay = animation_segment_delay(AIRLOCK_CLOSING_OPAQUE) - unpassable_delay
+	sleep(opaque_delay)
 	if(dangerous_close)
 		crush()
 	if(visible && !glass)
@@ -1316,7 +1350,8 @@
 		if(multi_tile)
 			filler.set_opacity(TRUE)
 	update_freelook_sight()
-	sleep(0.1 SECONDS)
+	var/close_delay = animation_segment_delay(AIRLOCK_CLOSING_FINISHED) - unpassable_delay - opaque_delay
+	sleep(close_delay)
 	update_icon(ALL, AIRLOCK_CLOSED, 1)
 	operating = FALSE
 	delayed_close_requested = FALSE
@@ -1779,6 +1814,17 @@
 /obj/structure/fluff/airlock_filler/singularity_pull(S, current_size)
 	return
 
+/obj/machinery/door/airlock/proc/set_cycle_pump(obj/machinery/atmospherics/components/unary/airlock_pump/pump)
+	RegisterSignal(pump, COMSIG_QDELETING, PROC_REF(unset_cycle_pump))
+	cycle_pump = pump
+
+/obj/machinery/door/airlock/proc/unset_cycle_pump()
+	SIGNAL_HANDLER
+	if(locked)
+		unbolt()
+		say("Link broken, unbolting.")
+	cycle_pump = null
+
 // Station Airlocks Regular
 
 /obj/machinery/door/airlock/command
@@ -1838,6 +1884,7 @@
 	name = "freezer airlock"
 	icon = 'icons/obj/doors/airlocks/station/freezer.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_fre
+	can_be_glass = FALSE
 
 /obj/machinery/door/airlock/science
 	name = "science airlock"
@@ -2193,6 +2240,7 @@
 	icon = 'icons/obj/doors/airlocks/centcom/centcom.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/centcom/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_centcom
+	can_be_glass = FALSE
 	normal_integrity = 1000
 	security_level = 6
 	explosion_block = 2
@@ -2201,6 +2249,7 @@
 	icon = 'icons/obj/doors/airlocks/centcom/centcom.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/centcom/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_grunge
+	can_be_glass = FALSE
 
 
 // Vault Airlocks
@@ -2210,6 +2259,7 @@
 	icon = 'icons/obj/doors/airlocks/vault/vault.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/vault/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_vault
+	can_be_glass = FALSE
 	explosion_block = 2
 	normal_integrity = 400 // reverse engieneerd: 400 * 1.5 (sec lvl 6) = 600 = original
 	security_level = 6
@@ -2223,6 +2273,7 @@
 	overlays_file = 'icons/obj/doors/airlocks/hatch/overlays.dmi'
 	note_overlay_file = 'icons/obj/doors/airlocks/hatch/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_hatch
+	can_be_glass = FALSE
 
 /obj/machinery/door/airlock/maintenance_hatch
 	name = "maintenance hatch"
@@ -2230,6 +2281,7 @@
 	overlays_file = 'icons/obj/doors/airlocks/hatch/overlays.dmi'
 	note_overlay_file = 'icons/obj/doors/airlocks/hatch/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_mhatch
+	can_be_glass = FALSE
 
 // High Security Airlocks
 
@@ -2238,6 +2290,7 @@
 	icon = 'icons/obj/doors/airlocks/highsec/highsec.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/highsec/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_highsecurity
+	can_be_glass = FALSE
 	explosion_block = 2
 	normal_integrity = 500
 	security_level = 1
@@ -2261,6 +2314,7 @@
 	icon = 'icons/obj/doors/airlocks/abductor/abductor_airlock.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/abductor/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_abductor
+	can_be_glass = FALSE
 	note_overlay_file = 'icons/obj/doors/airlocks/external/overlays.dmi'
 	damage_deflection = 30
 	explosion_block = 3

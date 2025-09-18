@@ -61,7 +61,7 @@
 	hitsound = 'sound/weapons/genhit.ogg'
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 2
 	light_power = 1
 	light_on = FALSE

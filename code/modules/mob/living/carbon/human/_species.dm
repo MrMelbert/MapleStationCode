@@ -402,7 +402,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			replacement.Insert(organ_holder, special=TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /datum/species/proc/worn_items_fit_body_check(mob/living/carbon/wearer)
-	for(var/obj/item/equipped_item in wearer.get_equipped_items(include_pockets = TRUE))
+	for(var/obj/item/equipped_item in wearer.get_equipped_items(INCLUDE_POCKETS))
 		var/equipped_item_slot = wearer.get_slot_by_item(equipped_item)
 		if(!equipped_item.mob_can_equip(wearer, equipped_item_slot, bypass_equip_delay_self = TRUE, ignore_equipped = TRUE))
 			wearer.dropItemToGround(equipped_item, force = TRUE)
@@ -627,10 +627,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/bodypart/arm/left/left_arm = species_human.get_bodypart(BODY_ZONE_L_ARM)
 			var/obj/item/bodypart/leg/right/right_leg = species_human.get_bodypart(BODY_ZONE_R_LEG)
 			var/obj/item/bodypart/leg/left/left_leg = species_human.get_bodypart(BODY_ZONE_L_LEG)
-			var/datum/sprite_accessory/markings = GLOB.moth_markings_list[species_human.dna.features["moth_markings"]]
+			var/datum/sprite_accessory/markings = SSaccessories.moth_markings_list[species_human.dna.features["moth_markings"]]
 			var/mutable_appearance/marking = mutable_appearance(layer = -BODY_LAYER, appearance_flags = KEEP_TOGETHER)
-			if(noggin && IS_ORGANIC_LIMB(noggin))
-				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_head")
+
+			if(noggin && (IS_ORGANIC_LIMB(noggin)))
+				var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head")
+				marking.overlays += markings_head_overlay
 
 			if(chest && IS_ORGANIC_LIMB(chest))
 				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_chest")
@@ -652,7 +654,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	//Underwear, Undershirts & Socks
 	if(!HAS_TRAIT(species_human, TRAIT_NO_UNDERWEAR))
 		if(species_human.underwear)
-			var/datum/sprite_accessory/underwear/underwear = GLOB.underwear_list[species_human.underwear]
+			var/datum/sprite_accessory/underwear/underwear = SSaccessories.underwear_list[species_human.underwear]
 			var/mutable_appearance/underwear_overlay
 			if(underwear)
 				if(species_human.dna.species.sexes && species_human.physique == FEMALE && (underwear.gender == MALE))
@@ -664,7 +666,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				standing += underwear_overlay
 
 		if(species_human.undershirt)
-			var/datum/sprite_accessory/undershirt/undershirt = GLOB.undershirt_list[species_human.undershirt]
+			var/datum/sprite_accessory/undershirt/undershirt = SSaccessories.undershirt_list[species_human.undershirt]
 			if(undershirt)
 				var/mutable_appearance/working_shirt
 				if(species_human.dna.species.sexes && species_human.physique == FEMALE)
@@ -674,7 +676,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				standing += working_shirt
 
 		if(species_human.socks && species_human.num_legs >= 2 && !(species_human.bodytype & BODYTYPE_DIGITIGRADE))
-			var/datum/sprite_accessory/socks/socks = GLOB.socks_list[species_human.socks]
+			var/datum/sprite_accessory/socks/socks = SSaccessories.socks_list[species_human.socks]
 			if(socks)
 				standing += mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
 
@@ -724,10 +726,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/datum/sprite_accessory/accessory
 			switch(bodypart)
 				if("ears")
-					accessory = GLOB.ears_list[source.dna.features["ears"]]
+					accessory = SSaccessories.ears_list[source.dna.features["ears"]]
 				if("body_markings")
-					accessory = GLOB.body_markings_list[source.dna.features["body_markings"]]
-
+					accessory = SSaccessories.body_markings_list[source.dna.features["body_markings"]]
 			if(!accessory || accessory.icon_state == "none")
 				continue
 
@@ -875,7 +876,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_OCLOTHING)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_GLOVES)
-			if(H.num_hands < 2)
+			if(H.num_hands == 0)
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_FEET)
@@ -1146,20 +1147,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(damage > 5 && target != user)
 			target.set_headset_block_if_lower(4 SECONDS)
 
-		//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
-	if(prob(limb_accuracy) && target.stat != DEAD && armor_block < 100 && staggered && (target.getStaminaLoss() + user.getBruteLoss()) >= 40)
-		var/was_standing = target.body_position == STANDING_UP
-		var/knockdown_duration = 4 SECONDS + (target.getStaminaLoss() + (target.getBruteLoss() * 0.5)) * 0.8 //50 total damage = 4 second base stun + 4 second stun modifier = 8 second knockdown duration
-		target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
-		log_combat(user, target, "got a stun punch with their previous punch")
-		// only shows the message if we changed states
-		if(was_standing && target.body_position != STANDING_UP)
-			target.visible_message(
-				span_danger("[user] knocks [target] down!"),
-				span_userdanger("You're knocked down by [user]!"),
-				span_hear("You hear aggressive shuffling followed by a loud thud!"),
-				COMBAT_MESSAGE_RANGE,
-			)
+	//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
+	//This does not work against opponents who are knockdown immune, such as from wearing riot armor.
+	if(!HAS_TRAIT(src, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED))
+		if(prob(limb_accuracy) && target.stat != DEAD && armor_block < 100 && staggered && (target.getStaminaLoss() + user.getBruteLoss()) >= 40)
+			var/was_standing = target.body_position == STANDING_UP
+			var/knockdown_duration = 4 SECONDS + (target.getStaminaLoss() + (target.getBruteLoss() * 0.5)) * 0.8 //50 total damage = 4 second base stun + 4 second stun modifier = 8 second knockdown duration
+			target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
+			log_combat(user, target, "got a stun punch with their previous punch")
+			// only shows the message if we changed states
+			if(was_standing && target.body_position != STANDING_UP)
+				target.visible_message(
+					span_danger("[user] knocks [target] down!"),
+					span_userdanger("You're knocked down by [user]!"),
+					span_hear("You hear aggressive shuffling followed by a loud thud!"),
+					COMBAT_MESSAGE_RANGE,
+				)
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(user.body_position != STANDING_UP)
@@ -1684,6 +1687,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/create_pref_liver_perks()
 	RETURN_TYPE(/list)
 
+	if(isnull(mutantliver) || (TRAIT_LIVERLESS_METABOLISM in inherent_traits))
+		return null
+
 	var/list/to_add = list()
 
 	var/alcohol_tolerance = initial(mutantliver.alcohol_tolerance)
@@ -1723,6 +1729,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/create_pref_lung_perks()
 	RETURN_TYPE(/list)
+
+	if(isnull(mutantlungs) || (TRAIT_NOBREATH in inherent_traits))
+		return null
 
 	var/list/to_add = list()
 

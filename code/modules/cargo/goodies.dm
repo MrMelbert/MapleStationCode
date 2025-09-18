@@ -295,8 +295,8 @@
 	contains = list(/obj/item/encryptionkey/language/all_crew)
 
 /datum/supply_pack/goody/fishing_toolbox
-	name = "Fishing toolbox"
-	desc = "Complete toolbox set for your fishing adventure. Advanced hooks and lines sold separetely."
+	name = "Fishing Toolbox"
+	desc = "Complete toolbox set for your fishing adventure. Contains a valuable tip. Advanced hooks and lines sold separetely."
 	cost = PAYCHECK_CREW * 2
 	contains = list(/obj/item/storage/toolbox/fishing)
 
@@ -312,6 +312,12 @@
 	cost = PAYCHECK_CREW
 	contains = list(/obj/item/storage/box/fishing_lines)
 
+/datum/supply_pack/goody/fishing_lure_set
+	name = "Fishing Lures Set"
+	desc = "A set of bite-resistant fishing lures to fish all (most) sort of fish. Beat randomness to a curb today!"
+	cost = PAYCHECK_CREW * 8
+	contains = list(/obj/item/storage/box/fishing_lures)
+
 /datum/supply_pack/goody/fishing_hook_rescue
 	name = "Rescue Fishing Hook"
 	desc = "For when your fellow miner has inevitably fallen into a chasm, and it's up to you to save them."
@@ -323,6 +329,18 @@
 	desc = "When the standard variety is not good enough for you."
 	cost = PAYCHECK_CREW
 	contains = list(/obj/item/bait_can/worm/premium)
+
+/datum/supply_pack/goody/fish_feed
+	name = "Can of fish food"
+	desc = "For keeping your little friends fed and alive."
+	cost = PAYCHECK_CREW
+	contains = list(/obj/item/fish_feed)
+
+/datum/supply_pack/goody/naturalbait
+	name = "Freshness Jars full of Natural Bait"
+	desc = "Homemade in the Spinward Sector."
+	cost = PAYCHECK_CREW * 4 //rock on
+	contains = list(/obj/item/storage/pill_bottle/naturalbait)
 
 /datum/supply_pack/goody/telescopic_fishing_rod
 	name = "Telescopic Fishing Rod"

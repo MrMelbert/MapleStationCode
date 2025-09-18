@@ -43,7 +43,7 @@
 	src.min_distance = min_distance
 
 	var/mob/P = parent
-	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and clicking on your target with an empty hand."))
+	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and ") + span_boldnotice("RIGHT-CLICKING on your target with an empty hand."))
 
 	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 
@@ -72,6 +72,9 @@
 	SIGNAL_HANDLER
 
 	if(modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
+		return
+
+	if(!modifiers[RIGHT_CLICK])
 		return
 
 	if(!user.throw_mode || user.get_active_held_item() || user.pulling || user.buckled || user.incapacitated())
@@ -400,7 +403,7 @@
 			defense_mod += 2
 		if(tackle_target.mob_negates_gravity())
 			defense_mod += 1
-		if(HAS_TRAIT(tackle_target, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // riot armor and such
+		if(HAS_TRAIT(tackle_target, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // riot armor and such
 			defense_mod += 5
 
 		var/obj/item/organ/external/tail/lizard/el_tail = tackle_target.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
@@ -408,6 +411,10 @@
 			defense_mod -= 1
 		if(el_tail && (el_tail.wag_flags & WAG_WAGGING)) // lizard tail wagging is robust and can swat away assailants!
 			defense_mod += 1
+
+		var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = tackle_target.get_organ_slot(ORGAN_SLOT_SPINE)
+		if(istype(potential_spine))
+			defense_mod += potential_spine.strength_bonus
 
 	// OF-FENSE
 	var/mob/living/carbon/sacker = parent
@@ -441,6 +448,10 @@
 	if(sacker_wing)
 		attack_mod += 2
 
+	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = sacker.get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		attack_mod += potential_spine.strength_bonus
+
 	if(ishuman(sacker))
 		var/mob/living/carbon/human/human_sacker = sacker
 
@@ -451,7 +462,7 @@
 			attack_mod += 15
 			human_sacker.adjustStaminaLoss(100) //AHAHAHAHAHAHAHAHA
 
-		if(HAS_TRAIT(human_sacker, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
+		if(HAS_TRAIT(human_sacker, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
 			attack_mod += 2
 			human_sacker.adjustStaminaLoss(20)
 
@@ -493,8 +504,12 @@
 	var/danger_zone = (speed - 1) * 13 // for every extra speed we have over 1, take away 13 of the safest chance
 	danger_zone = max(min(danger_zone, 100), 1)
 
-	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
 	oopsie_mod -= floor(user.getarmor(BODY_ZONE_CHEST, MELEE) * 0.12)
+	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
+
+	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE) // Can't snap that spine if it's made of metal.
+	if(istype(potential_spine))
+		oopsie_mod -= potential_spine.strength_bonus
 
 	if(HAS_TRAIT(user, TRAIT_CLUMSY))
 		oopsie_mod += 6 //honk!

@@ -10,7 +10,10 @@
 /datum/loadout_item/under/formal/ritzuniform
 	name = "Malheur Research Association uniform"
 	item_path = /obj/item/clothing/under/rank/rnd/mrauniform
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/ritzuniform/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/shoes/mrashoes
 	name = "Malheur Research Association boots"
@@ -23,7 +26,10 @@
 /datum/loadout_item/shoes/mrashoes
 	name = "Malheur Research Association boots"
 	item_path = /obj/item/clothing/shoes/mrashoes
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/mrashoes/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/gloves/mragloves
 	name = "Malheur Research Association gloves"
@@ -36,4 +42,7 @@
 /datum/loadout_item/gloves/mragloves
 	name = "Malheur Research Association gloves"
 	item_path = /obj/item/clothing/gloves/mragloves
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/gloves/mragloves/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

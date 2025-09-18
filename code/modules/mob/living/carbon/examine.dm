@@ -1,11 +1,9 @@
 /// Adds a newline to the examine list if the above entry is not empty and it is not the first element in the list
 #define ADD_NEWLINE_IF_NECESSARY(list) if(length(list) > 0 && list[length(list)]) { list += "" }
 
+// NON-MODULE CHANGE
 /mob/living/carbon/human/get_examine_name(mob/user)
-	if(!HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
-		return "[..()] ([p_they()]/[p_them()])"
-
-	return "Unknown"
+	return "[..()] ([p_they()]/[p_them()])"
 
 /mob/living/carbon/human/get_examine_icon(mob/user)
 	return null
@@ -452,11 +450,11 @@
 		var/list/all_blood_names = list()
 		for(var/dna_sample in all_dna)
 			var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
-			all_blood_names |= lowertext(initial(blood.reagent_type.name))
+			all_blood_names |= LOWER_TEXT(initial(blood.reagent_type.name))
 
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
-	if(belt && !(belt.item_flags & EXAMINE_SKIP))
+	if(belt && !(obscured & ITEM_SLOT_BELT) && !(belt.item_flags & EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
 
 	return clothes

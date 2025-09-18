@@ -61,6 +61,9 @@
 /// from /obj/machinery/power/supermatter_crystal/process_atmos(); when the SM sounds an audible alarm
 #define COMSIG_SUPERMATTER_DELAM_ALARM "sm_delam_alarm"
 
+/// from /datum/component/supermatter_crystal/proc/consume()
+/// called on the thing consumed, passes the thing which consumed it
+#define COMSIG_SUPERMATTER_CONSUMED "sm_consumed_this"
 
 // /obj/machinery/cryo_cell signals
 
@@ -186,11 +189,15 @@
 #define COMSIG_ITEM_ATTACK_EFFECT "item_effect_attacked"
 /// Called by /obj/item/proc/worn_overlays(list/overlays, mutable_appearance/standing, isinhands, icon_file)
 #define COMSIG_ITEM_GET_WORN_OVERLAYS "item_get_worn_overlays"
+/// Called by /obj/item/proc/separate_worn_overlays(list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file)
+#define COMSIG_ITEM_GET_SEPARATE_WORN_OVERLAYS "item_get_separate_worn_overlays"
 
 ///from base of [/obj/item/proc/tool_check_callback]: (mob/living/user)
 #define COMSIG_TOOL_IN_USE "tool_in_use"
 ///from base of [/obj/item/proc/tool_start_check]: (mob/living/user)
 #define COMSIG_TOOL_START_USE "tool_start_use"
+/// From /obj/item/multitool/remove_buffer(): (buffer)
+#define COMSIG_MULTITOOL_REMOVE_BUFFER "multitool_remove_buffer"
 ///from [/obj/item/proc/disableEmbedding]:
 #define COMSIG_ITEM_DISABLE_EMBED "item_disable_embed"
 ///from [/obj/effect/mine/proc/triggermine]:
@@ -308,9 +315,11 @@
 
 // /obj/item/radio signals
 
+///called from base of /obj/item/proc/talk_into(): (atom/movable/speaker, message, channel, list/spans, language, list/message_mods)
+#define COMSIG_ITEM_TALK_INTO "item_talk_into"
 ///called from base of /obj/item/radio/proc/set_frequency(): (list/args)
 #define COMSIG_RADIO_NEW_FREQUENCY "radio_new_frequency"
-///called from base of /obj/item/radio/proc/talk_into(): (atom/movable/M, message, channel)
+///called from base of /obj/item/radio/talk_into(): (atom/movable/M, message, channel)
 #define COMSIG_RADIO_NEW_MESSAGE "radio_new_message"
 ///called from base of /obj/item/radio/proc/on_receive_messgae(): (list/data)
 #define COMSIG_RADIO_RECEIVE_MESSAGE "radio_receive_message"
