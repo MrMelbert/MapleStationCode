@@ -157,11 +157,10 @@
 	rad_insulation = RAD_MEDIUM_INSULATION
 
 /obj/machinery/door/airlock/Initialize(mapload)
-	. = ..()
-
-	set_wires(get_wires())
 	if(glass)
 		airlock_material = "glass"
+	. = ..()
+	set_wires(get_wires())
 	if(security_level > AIRLOCK_SECURITY_IRON)
 		atom_integrity = normal_integrity * AIRLOCK_INTEGRITY_MULTIPLIER
 		max_integrity = normal_integrity * AIRLOCK_INTEGRITY_MULTIPLIER
