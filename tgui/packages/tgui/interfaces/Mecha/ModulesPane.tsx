@@ -654,6 +654,7 @@ const SnowflakeRadio = (props) => {
       <LabeledList.Item label="Frequency">
         <NumberInput
           animated
+          tickWhileDragging
           unit="kHz"
           step={0.2}
           stepPixelSize={10}
@@ -661,7 +662,7 @@ const SnowflakeRadio = (props) => {
           maxValue={maxFrequency / 10}
           value={frequency / 10}
           format={(value) => toFixed(value, 1)}
-          onDrag={(value) =>
+          onChange={(value) =>
             act('equip_act', {
               ref: ref,
               gear_action: 'set_frequency',
