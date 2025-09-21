@@ -18,7 +18,11 @@ SUBSYSTEM_DEF(ticker)
 	/// Boolean to track and check if our subsystem setup is done.
 	var/setup_done = FALSE
 
-	var/login_music //music played in pregame lobby
+	/// Music played in pregame lobby
+	var/login_music
+	/// Length of the music in deciseconds
+	var/login_length
+
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
@@ -782,6 +786,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	login_music = new_music
+	login_length = rustg_sound_length(new_music)
 	var/list/music_file_components = splittext(new_music, "/")
 	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
 	var/list/music_name_components = splittext(music_file_name, "+")

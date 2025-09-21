@@ -194,6 +194,13 @@
 
 	if(prefs && (prefs.read_preference(/datum/preference/toggle/sound_lobby)) && !CONFIG_GET(flag/disallow_title_music))
 		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
+		for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
+			text.start_tracking()
+
+/client/proc/stoptitlemusic()
+	mob.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
+		text.cancel_tracking()
 
 ///get a random frequency.
 /proc/get_rand_frequency()

@@ -444,7 +444,7 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 			Master.StartProcessing(0)
 
 	var/time = (REALTIMEOFDAY - start_timeofday) / (1 SECONDS)
-	SStitle.total_init_time = time
+	SStitle.total_init_time = round(time, 0.01)
 	log_world("Initializations complete within [time] second\s!")
 
 	if(world.system_type == MS_WINDOWS && CONFIG_GET(flag/toast_notification_on_init) && !length(GLOB.clients))
@@ -1021,4 +1021,3 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 		return FALSE
 	last_profiled = REALTIMEOFDAY
 	SSprofiler.DumpFile(allow_yield = FALSE)
-
