@@ -10,10 +10,12 @@ SUBSYSTEM_DEF(title)
 	var/icon/previous_icon
 	/// Reference to the turf in the lobby, which is where we hold the title screen
 	var/turf/closed/indestructible/splashscreen/splash_turf
-	/// A holder for maptext that displays initialization information on the title screen
-	var/obj/effect/abstract/maptext_holder/init/init_stat_holder
-	/// A holder for maptext that displays the playing music on the title screen
-	var/obj/effect/abstract/maptext_holder/music/music_holder
+	/// Holds the maptext that displays initialization information on the title screen
+	var/init_stat_maptext
+	/// Tracks when stats have been faded out for everyone
+	var/stats_faded = FALSE
+	/// Holds the maptext that displays the playing music on the title screen
+	var/music_maptext
 
 	/// A list of initialization information
 	var/list/init_infos = list()
@@ -73,8 +75,8 @@ SUBSYSTEM_DEF(title)
 	for(var/thing in GLOB.clients)
 		if(!thing)
 			continue
-		var/atom/movable/screen/splash/S = new(thing, FALSE)
-		S.Fade(FALSE,FALSE)
+		var/atom/movable/screen/splash/S = new(null, null, thing, FALSE)
+		S.fade(FALSE,FALSE)
 
 /datum/controller/subsystem/title/Recover()
 	icon = SStitle.icon
@@ -89,18 +91,13 @@ SUBSYSTEM_DEF(title)
 		return
 	if(!music_string)
 		return
-	if(!music_holder)
-		if(!splash_turf)
-			return
-		music_holder = new(splash_turf)
 
-	music_holder.pixel_x = initial(music_holder.pixel_x) - (length(music_string) * 8)
-	music_holder.maptext = ""
-	music_holder.maptext += "<span class='maptext'>"
-	music_holder.maptext += "<span class='big'>"
-	music_holder.maptext += "Now playing: [music_string]"
-	music_holder.maptext += "</span>"
-	music_holder.maptext += "</span>"
+	music_maptext = ""
+	music_maptext += "<span class='maptext'>"
+	music_maptext += "<span class='big'>"
+	music_maptext += "Now playing: [music_string]"
+	music_maptext += "</span>"
+	music_maptext += "</span>"
 
 /// Max number of init entries to display
 /// If this is exceeded, the oldest entry will be removed (but it generally should not be exceeded)
@@ -120,7 +117,7 @@ SUBSYSTEM_DEF(title)
  */
 /datum/controller/subsystem/title/proc/add_init_text(init_category, name, stage, seconds, override = FALSE, major_update = FALSE)
 	if(isnum(seconds))
-		seconds = round(seconds, 0.01)
+		seconds = round(seconds, 0.1)
 	if(override || !init_infos[init_category])
 		init_infos[init_category] = list(name, stage, seconds)
 	else
@@ -141,13 +138,8 @@ SUBSYSTEM_DEF(title)
 
 /// Updates the displayed initialization text according to all initialization information
 /datum/controller/subsystem/title/proc/update_init_text()
-	if(!init_stat_holder)
-		if(!splash_turf)
-			return
-		init_stat_holder = new(splash_turf)
-
-	init_stat_holder.maptext = "<span class='maptext'>"
-	init_stat_holder.maptext += "<span class='big'>"
+	init_stat_maptext = "<span class='maptext'>"
+	init_stat_maptext += "<span class='big'>"
 	if(SSticker?.current_state == GAME_STATE_PREGAME)
 		var/total_time_formatted = "[total_init_time]s"
 		switch(total_init_time)
@@ -158,83 +150,26 @@ SUBSYSTEM_DEF(title)
 			if(120 to INFINITY)
 				total_time_formatted = "<font color='red'>[total_init_time]s</font>"
 
-		init_stat_holder.maptext += "Game Ready! ([total_time_formatted])"
+		init_stat_maptext += "Game Ready! ([total_time_formatted])"
 	else
-		init_stat_holder.maptext += "Initializing game"
+		init_stat_maptext += "Initializing game"
 		for(var/i in 1 to num_dots)
-			init_stat_holder.maptext += "."
-	init_stat_holder.maptext += "</span><br>"
+			init_stat_maptext += "."
+	init_stat_maptext += "</span><br>"
 	for(var/sstype in init_infos)
 		var/list/init_data = init_infos[sstype]
 		var/init_name = init_data[1]
 		var/init_stage = init_data[2]
 		var/init_time = isnum(init_data[3]) ? "([init_data[3]]s)" : ""
-		init_stat_holder.maptext += "<br>[init_name] [init_stage] [init_time]"
-	init_stat_holder.maptext += "<br></span>"
+		init_stat_maptext += "<br>[init_name] [init_stage] [init_time]"
+	init_stat_maptext += "<br></span>"
+	for(var/mob/dead/new_player/lobbyguy as anything in GLOB.new_player_list)
+		for(var/atom/movable/screen/lobby_init_text/text in lobbyguy.hud_used?.static_inventory)
+			text.maptext = SStitle.init_stat_maptext
 
 /// Simply fades out the initialization text
 /datum/controller/subsystem/title/proc/fade_init_text()
-	update_init_text()
-	animate(init_stat_holder, alpha = 0, time = 8 SECONDS)
-
-/// Abstract holder for maptext on the lobby screen
-/obj/effect/abstract/maptext_holder
-	icon = null
-	icon_state = null
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	plane = SPLASHSCREEN_PLANE
-	/// Conceals the holder from clients who don't want to see it
-	var/image/hide_me
-
-/obj/effect/abstract/maptext_holder/Initialize(mapload)
-	. = ..()
-	for(var/mob/dead/new_player/lobby_goer as anything in GLOB.new_player_list)
-		check_client(lobby_goer.client)
-
-/// Check if the client should see or should not see the initialization information. Updates accordingly.
-/obj/effect/abstract/maptext_holder/proc/check_client(client/seer)
-	if(isnull(seer))
-		return
-	if(!check_preferences(seer))
-		hide_from_client(seer)
-		return
-	show_to_client(seer)
-
-/// Return TRUE if this maptext holder should be visible to the client
-/obj/effect/abstract/maptext_holder/proc/check_preferences(client/seer)
-	// default check for widescreen, because elements at the edge of the screen are cut off and i'm too lazy to fix it
-	return seer.prefs.read_preference(/datum/preference/toggle/widescreen)
-
-/// Hides the initialization information from the client
-/obj/effect/abstract/maptext_holder/proc/hide_from_client(client/seer)
-	if(isnull(hide_me))
-		hide_me = image(loc = src)
-		hide_me.override = TRUE
-	seer?.images |= hide_me
-
-/// Shows the initialization information to the client (if already hidden, otherwise nothing happens)
-/obj/effect/abstract/maptext_holder/proc/show_to_client(client/seer)
-	seer?.images -= hide_me
-
-/obj/effect/abstract/maptext_holder/init
-	maptext_height = 500
-	maptext_width = 200
-	maptext_x = 12
-	maptext_y = 12
-	pixel_x = -64
-
-/obj/effect/abstract/maptext_holder/init/check_preferences(client/seer)
-	return ..() && seer.prefs.read_preference(/datum/preference/toggle/show_init_stats)
-
-/obj/effect/abstract/maptext_holder/music
-	icon = 'maplestation_modules/icons/hud/lobby_spinner.dmi'
-	icon_state = "spinner"
-	maptext_height = 64
-	maptext_width = 200
-	maptext_x = 36
-	maptext_y = 6
-	pixel_y = 6
-	pixel_x = 420
-
-/obj/effect/abstract/maptext_holder/music/check_preferences(client/seer)
-	return ..() && seer.prefs.read_preference(/datum/preference/toggle/sound_lobby)
+	for(var/mob/dead/new_player/lobbyguy as anything in GLOB.new_player_list)
+		for(var/atom/movable/screen/lobby_init_text/text in lobbyguy.hud_used?.static_inventory)
+			animate(text, alpha = 0, time = 8 SECONDS)
+	stats_faded = TRUE

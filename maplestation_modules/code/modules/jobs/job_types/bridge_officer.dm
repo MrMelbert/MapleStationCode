@@ -7,8 +7,8 @@
 
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
-	description = "File paperwork to Central Command via your fax machine. \
-		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	description = "File paperwork to Central Command via your fax machine, \
+		pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
 	title_options = list(
 		"Bridge Assistant",
 	)

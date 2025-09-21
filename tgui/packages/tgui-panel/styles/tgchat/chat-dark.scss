@@ -1008,13 +1008,14 @@ em {
   display: flex;
   align-items: center;
   text-align: center;
+  --separator-color: hsl(213.6, 37.9%, 74.1%);
 }
 
 .separator::before,
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid hsl(213.6, 37.9%, 74.1%);
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .separator:not(:empty)::before {
@@ -1023,6 +1024,10 @@ em {
 
 .separator:not(:empty)::after {
   margin-left: 0.25em;
+}
+
+.separator.danger {
+  --separator-color: hsl(0, 73.6%, 44.5%);
 }
 
 // Used to display images besides text
