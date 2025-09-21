@@ -81,8 +81,7 @@
 		if("modify_icon_value")
 			var/icon/new_icon = input("Pick icon:", "Icon") as null|icon
 			if(new_icon)
-				target.filter_data[params["name"]]["icon"] = new_icon
-				target.update_filters()
+				target.modify_filter(params["name"], list("icon" = new_icon))
 				. = TRUE
 		if("modify_transform_value")
 			var/list/filter_info = target.get_filter_data(params["name"])
