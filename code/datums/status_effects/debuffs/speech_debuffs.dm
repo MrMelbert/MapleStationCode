@@ -88,34 +88,36 @@
 	var/three_char_chance = 20
 	/// The chance of a two character stutter
 	var/two_char_chance = 90
-	/// Regex of characters we won't apply a stutter to
-	var/static/regex/no_stutter
+	/// Regex used in construction of the primary regexes containing characters we don't want to stutter
+	var/blacklist_regex = @@^[ "'()[\]{}.!?,:;_`~-]*@
+	/// Regex used in construction of the regex for one letter stutters
+	var/one_letter_regex = @@([^\d])(.*)@
+	/// Regex used in construction of the regex for two letter stutters
+	var/two_letter_regex = @@([^aeoiuh\d\s]h|qu)(.+)@
+	/// Regex to apply generically, stuttering first valid character
+	VAR_FINAL/static/regex/one_letter_stutter
+	/// Regex to apply, checking for two letter stutters like "th", "ch", "qu"
+	VAR_FINAL/static/regex/two_letter_stutters
 
 /datum/status_effect/speech/stutter/on_creation(mob/living/new_owner, ...)
 	. = ..()
 	if(!.)
 		return
-	if(!no_stutter)
-		no_stutter = regex(@@[ ""''()[\]{}.!?,:;_`~-]@)
+
+	one_letter_stutter ||= regex(blacklist_regex + one_letter_regex, "i")
+	two_letter_stutters ||= regex(blacklist_regex + two_letter_regex, "i")
 
 /datum/status_effect/speech/stutter/apply_speech(original_word, index)
 	if(!prob(stutter_prob))
 		return original_word
 
-	var/reconstructed_word = ""
-	var/base_char = ""
-	var/stutter_applied = FALSE
-	for(var/i = 1, i <= length(original_word), i += length(base_char))
-		base_char = original_word[i]
-		// Stutter first valid char
-		if(stutter_applied || no_stutter.Find(base_char))
-			reconstructed_word += base_char
-			continue
+	if(two_letter_stutters.Find(original_word)) // "that" -> "th-th-that", "quick" -> "qu-qu-quick"
+		return "[stutter_char(two_letter_stutters.group[1])][two_letter_stutters.group[2]]"
 
-		reconstructed_word += stutter_char(base_char)
-		stutter_applied = TRUE
+	if(one_letter_stutter.Find(original_word)) // "i" -> "i-i-i", "cat" -> "c-c-cat"
+		return "[stutter_char(one_letter_stutter.group[1])][one_letter_stutter.group[2]]"
 
-	return reconstructed_word
+	return original_word // i give up
 
 /datum/status_effect/speech/stutter/proc/stutter_char(some_char)
 	if(prob(four_char_chance))
