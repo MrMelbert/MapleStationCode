@@ -19,7 +19,7 @@
 	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcell"
-	// connector_type = "redcellconnector"
+	connector_type = null // GOD it's hardcoded.
 	charge_light_type = null
 	rating = 4
 
@@ -40,11 +40,6 @@
 /obj/item/stock_parts/cell/redtech/update_overlays()
 	. = ..()
 	. += emissive_appearance(icon, "redcellemissive", src, alpha = src.alpha)
-
-/obj/item/stock_parts/cell/redtech/nonetech
-	name = "Nonetech power cell"
-	desc = "A Nonetech power cell. Its design is oddly familiar. It seems to be EMP resistant."
-	icon_state = "nonecell"
 
 /datum/stock_part/matter_bin/tier5
 	tier = 5
