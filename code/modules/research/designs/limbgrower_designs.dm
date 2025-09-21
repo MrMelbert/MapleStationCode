@@ -240,7 +240,7 @@
 
 /obj/item/disk/design_disk/limbs/felinid
 	name = "Felinid Organ Design Disk"
-	limb_designs = list(/datum/design/cat_tail, /datum/design/cat_ears)
+	limb_designs = list(/datum/design/cat_tail, /datum/design/cat_ears, /datum/design/fox_tail, /datum/design/fivefox_tail) // NON-MODULE CHANGE
 
 /datum/design/limb_disk/felinid
 	name = "Felinid Organ Design Disk"
