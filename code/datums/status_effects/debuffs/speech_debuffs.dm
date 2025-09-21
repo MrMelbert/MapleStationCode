@@ -88,34 +88,22 @@
 	var/three_char_chance = 20
 	/// The chance of a two character stutter
 	var/two_char_chance = 90
-	/// Regex used in construction of the primary regexes containing characters we don't want to stutter
-	var/blacklist_regex = @@^[ "'()[\]{}.!?,:;_`~-]*@
-	/// Regex used in construction of the regex for one letter stutters
-	var/one_letter_regex = @@([^\d])(.*)@
-	/// Regex used in construction of the regex for two letter stutters
-	var/two_letter_regex = @@([^aeoiuh\d\s]h|qu)(.+)@
-	/// Regex to apply generically, stuttering first valid character
-	VAR_FINAL/static/regex/one_letter_stutter
-	/// Regex to apply, checking for two letter stutters like "th", "ch", "qu"
-	VAR_FINAL/static/regex/two_letter_stutters
+	/// Regex to apply generically to stuttered words
+	/// * 1st capture group is any leading invalid characters (can be empty)
+	/// * 2nd capture group is either a digraph (th, qu, ch) or a consonant
+	/// * 3rd capture group is the rest of the word (can be empty)
+	VAR_FINAL/static/regex/stutter_regex
 
 /datum/status_effect/speech/stutter/on_creation(mob/living/new_owner, ...)
-	. = ..()
-	if(!.)
-		return
-
-	one_letter_stutter ||= regex(blacklist_regex + one_letter_regex, "i")
-	two_letter_stutters ||= regex(blacklist_regex + two_letter_regex, "i")
+	stutter_regex ||= regex(@@(^[ "'()[\]{}.!?,:;_`~-]*\b)([^aeoiuh\d\s]h|qu|[^\d])(.*)@, "i")
+	return ..()
 
 /datum/status_effect/speech/stutter/apply_speech(original_word, index)
 	if(!prob(stutter_prob))
 		return original_word
 
-	if(two_letter_stutters.Find(original_word)) // "that" -> "th-th-that", "quick" -> "qu-qu-quick"
-		return "[stutter_char(two_letter_stutters.group[1])][two_letter_stutters.group[2]]"
-
-	if(one_letter_stutter.Find(original_word)) // "i" -> "i-i-i", "cat" -> "c-c-cat"
-		return "[stutter_char(one_letter_stutter.group[1])][one_letter_stutter.group[2]]"
+	if(stutter_regex.Find(original_word))
+		return "[stutter_regex.group[1]][stutter_char(stutter_regex.group[2])][stutter_regex.group[3]]"
 
 	return original_word // i give up
 
