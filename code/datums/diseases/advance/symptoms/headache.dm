@@ -44,13 +44,10 @@
 		return
 
 	var/mob/living/M = A.affected_mob
-<<<<<<< HEAD
+
 	if(!CAN_FEEL_PAIN(M))
 		return
 
-||||||| parent of 72580ce0bbe (Adds Various Classic Cocktails (#92955))
-=======
->>>>>>> 72580ce0bbe (Adds Various Classic Cocktails (#92955))
 	if(HAS_TRAIT(M, TRAIT_SOOTHED_HEADACHE))
 		return
 	if(power < 2)
