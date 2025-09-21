@@ -142,7 +142,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /atom/movable/proc/see_chat_runechat_color()
 	return FALSE
 
-/mob/living/see_chat_runechat_color()
+/mob/see_chat_runechat_color()
 	return client?.prefs?.read_preference(/datum/preference/toggle/runechat_text_names) || FALSE
 
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE)
