@@ -79,6 +79,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 		return NONE
 
 	playsound(src, 'sound/machines/card_slide.ogg', 45, TRUE)
+	if(!is_operational || !linked_door || !linked_door.is_operational)
+		balloon_alert(user, "nothing happens!")
+		return ITEM_INTERACT_BLOCKING
 	if(!valid_id(user, id))
 		access_denied(user)
 		return ITEM_INTERACT_BLOCKING
@@ -123,7 +126,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 /obj/machinery/password_id_panel/update_icon_state()
 	. = ..()
-	icon_state = "[base_icon_state][is_locked()]"
+	icon_state = "[base_icon_state][!is_locked()]"
 
 /obj/machinery/password_id_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
