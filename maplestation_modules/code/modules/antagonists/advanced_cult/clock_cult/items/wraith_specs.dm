@@ -34,13 +34,10 @@
 	if(slot != ITEM_SLOT_EYES)
 		return
 	if(ishuman(user) && !up)
-		if(IS_CULTIST(user))
-			attach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 		enable_glasses(user)
 
 /obj/item/clothing/glasses/wraith_specs/dropped(mob/user)
 	. = ..()
-	detach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
@@ -93,19 +90,16 @@
 		user.pain_emote("scream", 6 SECONDS)
 		return FALSE
 
+	attach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
-
 	return TRUE
 
 /**
  * Disable the hud and any other features of the goggles.
  */
 /obj/item/clothing/glasses/wraith_specs/proc/disable_glasses(mob/living/carbon/human/user)
-	for(var/hud in SPEC_HUDS)
-		var/datum/atom_hud/removed_hud = GLOB.huds[hud]
-		removed_hud.hide_from(user)
+	detach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
-
 	return TRUE
 
 /**
