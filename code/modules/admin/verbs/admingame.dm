@@ -361,9 +361,11 @@ ADMIN_VERB(combo_hud, R_ADMIN, "Toggle Combo HUD", "Toggles the Admin Combo HUD.
 
 	combo_hud_enabled = TRUE
 
-	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH))
-		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
-		atom_hud.show_to(mob)
+	// for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH))
+	// 	var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
+	// 	atom_hud.show_to(mob)
+	for (var/hudtrait in GLOB.trait_to_hud)
+		ADD_TRAIT(src, hudtrait, ADMIN_TRAIT)
 
 	for (var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud in GLOB.active_alternate_appearances)
 		antag_hud.show_to(mob)
@@ -377,9 +379,11 @@ ADMIN_VERB(combo_hud, R_ADMIN, "Toggle Combo HUD", "Toggles the Admin Combo HUD.
 
 	combo_hud_enabled = FALSE
 
-	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH))
-		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
-		atom_hud.hide_from(mob)
+	// for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH))
+	// 	var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
+	// 	atom_hud.hide_from(mob)
+	for (var/hudtrait in GLOB.trait_to_hud)
+		REMOVE_TRAIT(src, hudtrait, ADMIN_TRAIT)
 
 	for (var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud in GLOB.active_alternate_appearances)
 		antag_hud.hide_from(mob)
