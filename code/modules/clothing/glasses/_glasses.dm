@@ -637,32 +637,11 @@
 		TRAIT_DIAGNOSTIC_HUD,
 		TRAIT_BOT_PATH_HUD,
 	)
-	// var/list/hudlist = list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_SECURITY_ADVANCED, DATA_HUD_BOT_PATH)
 	var/xray = FALSE
 
 /obj/item/clothing/glasses/debug/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -15)
-
-// /obj/item/clothing/glasses/debug/equipped(mob/user, slot)
-// 	. = ..()
-// 	if(!(slot & ITEM_SLOT_EYES))
-// 		return
-// 	if(ishuman(user))
-// 		for(var/hud in hudlist)
-// 			var/datum/atom_hud/our_hud = GLOB.huds[hud]
-// 			our_hud.show_to(user)
-// 		user.add_traits(list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD), GLASSES_TRAIT)
-// 		if(xray)
-// 			ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
-
-// /obj/item/clothing/glasses/debug/dropped(mob/user)
-// 	. = ..()
-// 	user.remove_traits(list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, TRAIT_XRAY_VISION), GLASSES_TRAIT)
-// 	if(ishuman(user))
-// 		for(var/hud in hudlist)
-// 			var/datum/atom_hud/our_hud = GLOB.huds[hud]
-// 			our_hud.hide_from(user)
 
 /obj/item/clothing/glasses/debug/click_alt(mob/user)
 	if(!ishuman(user))

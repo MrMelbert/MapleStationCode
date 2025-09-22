@@ -81,8 +81,6 @@
 		vow.Grant(H)
 
 	ADD_TRAIT(H, TRAIT_MIME_FAN, INNATE_TRAIT)
-	// var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	// fan.show_to(H)
 
 /obj/item/book/granter/action/spell/mime/mimery
 	name = "Guide to Dank Mimery"
