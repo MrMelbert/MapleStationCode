@@ -19,7 +19,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	var/obj/machinery/door/airlock/linked_door
 	/// If TRUE, password is saved to a global list so other places can reference it.
 	var/save_password = FALSE
-
+	/// If TRUE, the AI or silicons can tap the panel to open the door.
+	var/ai_accessible = TRUE
 	/// These job datums spawn with the memory of this password.
 	var/list/password_jobs
 	/// The location to use in the memory for this password.
@@ -37,7 +38,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 	linked_door = find_by_id_tag(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock), id_tag)
 	if(isnull(linked_door))
-		stack_trace("No door found with ID tag [id_tag] for password panel!")
+		log_mapping("No door found with ID tag [id_tag] for password panel!")
 		return
 
 	RegisterSignal(linked_door, COMSIG_QDELETING, PROC_REF(on_linked_door_deleted))
@@ -91,7 +92,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 /obj/machinery/password_id_panel/interact(mob/user)
 	if(isAdminGhostAI(user) || issilicon(user))
-		access_granted(user)
+		if(isAdminGhostAI(user) || ai_accessible)
+			access_granted(user)
+		else
+			access_denied(user)
 		return TRUE
 	return ..()
 
@@ -199,6 +203,32 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/armory, 32)
 
+/obj/machinery/password_id_panel/execution
+	id_tag = "EXECUTION_PASSWORD_PANEL"
+	save_password = TRUE
+	ai_accessible = FALSE
+	req_access = list(ACCESS_ARMORY)
+	password_jobs = list(
+		/datum/job/head_of_security,
+		/datum/job/warden,
+	)
+	password_location = "the Execution Chamber"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/execution, 32)
+
+/obj/machinery/password_id_panel/visitation
+	id_tag = "VISITATION_PASSWORD_PANEL"
+	save_password = TRUE
+	req_access = list(ACCESS_BRIG)
+	password_jobs = list(
+		/datum/job/head_of_security,
+		/datum/job/security_officer,
+		/datum/job/warden,
+	)
+	password_location = "the Visitation Area"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/visitation, 32)
+
 /obj/machinery/password_id_panel/teleporter
 	id_tag = "TELEPORTER_PASSWORD_PANEL"
 	save_password = TRUE
@@ -273,3 +303,27 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/virology, 32)
 	password_location = "the Crematorium"
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/crematorium, 32)
+
+/obj/machinery/password_id_panel/vault
+	id_tag = "VAULT_PASSWORD_PANEL"
+	save_password = TRUE
+	req_access = list(ACCESS_VAULT)
+	password_jobs = list(
+		/datum/job/captain,
+		/datum/job/head_of_personnel,
+		/datum/job/quartermaster,
+	)
+	password_location = "the Vault"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 32)
+
+/obj/machinery/password_id_panel/gateway
+	id_tag = "GATEWAY_PASSWORD_PANEL"
+	save_password = TRUE
+	req_access = list(ACCESS_GATEWAY)
+	password_jobs = list(
+		/datum/job/captain,
+	)
+	password_location = "the Gateway Room"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/gateway, 32)
