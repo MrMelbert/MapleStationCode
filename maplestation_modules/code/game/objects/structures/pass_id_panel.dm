@@ -126,7 +126,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 /obj/machinery/password_id_panel/update_icon_state()
 	. = ..()
-	icon_state = "[base_icon_state][!is_locked()]"
+	icon_state = "[base_icon_state][is_operational || !is_locked()]"
 
 /obj/machinery/password_id_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
