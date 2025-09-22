@@ -23,7 +23,7 @@
 	combat_mode = TRUE //so we always get pushed instead of trying to swap
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS
 	hud_type = /datum/hud/ai
-	silicon_huds = list(TRAIT_MEDICAL_HUD_LESSER, TRAIT_SECURITY_HUD_LESSER, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD)
+	silicon_huds = list(TRAIT_MEDICAL_HUD_SENSOR_ONLY, TRAIT_SECURITY_HUD_ID_ONLY, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD)
 	mob_size = MOB_SIZE_LARGE
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE

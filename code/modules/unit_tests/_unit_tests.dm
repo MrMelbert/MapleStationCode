@@ -167,6 +167,7 @@
 #include "high_five.dm"
 #include "holidays.dm"
 #include "holofan_placement.dm"
+#include "huds.dm"
 #include "hulk.dm"
 #include "human_through_recycler.dm"
 #include "hunger_curse.dm"
