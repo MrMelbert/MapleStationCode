@@ -89,6 +89,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	access_granted(user)
 	return ITEM_INTERACT_SUCCESS
 
+/obj/machinery/password_id_panel/interact(mob/user)
+	if(isAdminGhostAI(user) || issilicon(user))
+		access_granted(user)
+		return TRUE
+	return ..()
+
 /// Returns a random 5 digit password.
 /obj/machinery/password_id_panel/proc/randomize_password()
 	return "[rand(0, 9)][rand(0, 9)][rand(0, 9)][rand(0, 9)][rand(0, 9)]"
