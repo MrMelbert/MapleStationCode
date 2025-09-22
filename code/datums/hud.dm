@@ -21,6 +21,7 @@ GLOBAL_LIST_INIT(huds, list(
 	DATA_HUD_MALF_APC = new /datum/atom_hud/data/malf_apc(),
 ))
 
+/// Assoc list of traits to the huds they give.
 GLOBAL_LIST_INIT(trait_to_hud, list(
 	TRAIT_SECURITY_HUD = DATA_HUD_SECURITY_ADVANCED,
 	TRAIT_SECURITY_HUD_ID_ONLY = DATA_HUD_SECURITY_BASIC,
@@ -33,6 +34,7 @@ GLOBAL_LIST_INIT(trait_to_hud, list(
 	TRAIT_ABDUCTOR_HUD = DATA_HUD_ABDUCTOR,
 ))
 
+/// Assoc list of traits that block other traits' huds to list of hud (traits) that they block
 GLOBAL_LIST_INIT(trait_blockers_to_hud, list(
 	TRAIT_BLOCK_SECHUD = list(TRAIT_SECURITY_HUD, TRAIT_SECURITY_HUD_ID_ONLY),
 	TRAIT_BLOCK_MEDHUD = list(TRAIT_MEDICAL_HUD, TRAIT_MEDICAL_HUD_SENSOR_ONLY),
