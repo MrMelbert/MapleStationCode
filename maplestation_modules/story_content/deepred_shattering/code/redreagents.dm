@@ -220,7 +220,7 @@
 /obj/item/reagent_containers/cup/beaker/redlightning
 	name = "red lightning container"
 	desc = "A strange, heavy-duty electromagnetic stasis container, powered by unknown technology. Can hold up to 300 units."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redcanister.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redcanister.dmi'
 	icon_state = "redlightning"
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2, /datum/material/plasma = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT)
 	volume = 300
@@ -228,7 +228,7 @@
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
 	// spillable = FALSE
 	reagent_flags = OPENCONTAINER | NO_REACT
-	fill_icon = 'maplestation_modules/story_content/deepred_warfare/icons/redfillings.dmi'
+	fill_icon = 'maplestation_modules/story_content/deepred_shattering/icons/redfillings.dmi'
 	fill_icon_state = "redlightning"
 	fill_icon_thresholds = list(0, 1, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300) // For some reason the fill icon doesn't work properly.
 	w_class = WEIGHT_CLASS_BULKY

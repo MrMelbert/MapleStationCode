@@ -2,7 +2,7 @@
 	name = "alloyed aerialite"
 	desc = "An alloyed blue metal. It shimmers with the power of the skies and cosmos."
 	singular_name = "alloyed aerialite bar"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redmaterials.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redmaterials.dmi'
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-aerialite"
@@ -42,7 +42,7 @@
 	name = "resonant mythril"
 	desc = "A resonant turquoise metal. It shimmers with the power of souls and essences."
 	singular_name = "resonant mythril bar"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redmaterials.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redmaterials.dmi'
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-resonant"

@@ -1,7 +1,7 @@
 /obj/structure/redtech_indestructable
 	name = "redtech setpiece"
 	desc = "Report this to a coder."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/setpieces.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/setpieces.dmi'
 	icon_state = "server_off" // Temp sprite KEKW.
 	density = TRUE
 	anchored = TRUE

@@ -1,6 +1,6 @@
 /obj/projectile/bullet/coil
 	name ="low velocity 10mm coilslug"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "coilslug"
 	range = 60
 	damage = 30
@@ -14,11 +14,11 @@
 /obj/item/ammo_casing/coil
 	name = "internal low velocity 10mm coilslug"
 	desc = "You should not be seeing this."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/coilguns.dmi'
 	icon_state = "debug"
 	projectile_type = /obj/projectile/bullet/coil
 
-	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/coilshoot.ogg'
+	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/coilshoot.ogg'
 	delay = 0 // How long it takes to fire the ammo?
 
 	var/select_name = "low velocity"
@@ -63,7 +63,7 @@
 /obj/item/ammo_casing/coil/overcharge
 	name = "internal overcharge slag"
 	projectile_type = /obj/projectile/bullet/coil/overcharge
-	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/coilbang.ogg'
+	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/coilbang.ogg'
 
 	select_name = "overcharge"
 	ammo_energy_usage = 5000
@@ -122,7 +122,7 @@
 
 /obj/projectile/bullet/godslayer
 	name = "godslayer slug"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
 	damage = 80
@@ -153,8 +153,8 @@
 
 	var/datum/marked_target
 
-	var/warp_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techpowerup.ogg'
-	var/fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
+	var/warp_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techpowerup.ogg'
+	var/fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
 
 /obj/projectile/bullet/godslayer/fire(angle, atom/direct_target, make_sound)
 	if(make_sound != null)
@@ -187,17 +187,17 @@
 
 /obj/effect/projectile/muzzle/godslayer
 	name = "godslayer muzzle flash"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "godslayer_muzzle"
 
 /obj/effect/projectile/tracer/godslayer
 	name = "godslayer tracer"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 
 /obj/effect/projectile/impact/godslayer
 	name = "godslayer warp site"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "godslayer_impact"
 
 /obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 4 SECONDS, impacting = TRUE)
@@ -206,7 +206,7 @@
 
 /obj/projectile/bullet/supergodslayer
 	name = "supercharged godslayer slug"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
 	damage = 800
@@ -231,21 +231,21 @@
 	impact_light_range = 1
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
-	var/supercharge_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techexplosion.ogg'
+	var/supercharge_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techexplosion.ogg'
 
 /obj/effect/projectile/muzzle/supergodslayer
 	name = "supercharged godslayer warp site"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "supergodslayer_muzzle"
 
 /obj/effect/projectile/tracer/supergodslayer
 	name = "supercharged godslayer tracer"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "supergodslayer_tracer"
 
 /obj/effect/projectile/impact/supergodslayer
 	name = "supercharged godslayer impact"
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/projectiles.dmi'
 	icon_state = "supergodslayer_impact"
 
 /obj/projectile/bullet/supergodslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 5 SECONDS, impacting = TRUE)

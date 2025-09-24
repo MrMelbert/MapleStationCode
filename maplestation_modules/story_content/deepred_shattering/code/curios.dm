@@ -4,7 +4,7 @@
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "starblight_soot"
 
 	inhand_icon_state = "beaker"
@@ -19,7 +19,7 @@
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "scrap"
 
 	inhand_icon_state = "reverse_bear_trap"
@@ -36,11 +36,11 @@
 /obj/item/ammo_casing/shotgun/godslayer
 	name = "godslayer slug"
 	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy. You feel that shooting this would be a really bad idea."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "godslayer"
 	projectile_type = /obj/projectile/bullet/godslayer
 	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
-	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
+	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
 
 	var/obj/item/gun/fired_record
 
@@ -67,7 +67,7 @@
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "nanite_sample"
 
 	inhand_icon_state = "nothing"
@@ -83,7 +83,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "needle"
 
 	inhand_icon_state = "rods"
@@ -101,7 +101,7 @@
 	force = 8
 	throwforce = 16
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "yin_yang_orb"
 
 	inhand_icon_state = "nothing"
@@ -122,7 +122,7 @@
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "snowglobe"
 
 	inhand_icon_state = "beaker"
@@ -200,3 +200,47 @@
 
 /obj/item/snowglobe/extra/silence
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man in a black suit and black gloves, with a featureless mask."
+
+/obj/effect/spawner/random/shattering_snowglobes
+	name = "snowglobe spawner (originals)"
+	desc = "The Collector's old collection."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+	spawn_loot_double = FALSE
+	spawn_all_loot = TRUE
+	spawn_loot_split = TRUE
+
+	loot = list(
+		/obj/item/snowglobe/reimu,
+		/obj/item/snowglobe/yukari,
+		/obj/item/snowglobe/sdm,
+		/obj/item/snowglobe/draedon,
+		/obj/item/snowglobe/starfarers,
+		/obj/item/snowglobe/calamitas,
+		/obj/item/snowglobe/angela,
+		/obj/item/snowglobe/library,
+		/obj/item/snowglobe/city,
+		/obj/item/snowglobe/station,
+		/obj/item/snowglobe/empty,
+	)
+
+/obj/effect/spawner/random/shattering_snowglobes/extra
+	name = "snowglobe spawner (extras)"
+	desc = "The Collector's new collection."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+
+	loot = list(
+		/obj/item/snowglobe/extra,
+		/obj/item/snowglobe/extra/moon,
+		/obj/item/snowglobe/extra/mars,
+		/obj/item/snowglobe/extra/marisa,
+		/obj/item/snowglobe/extra/lunar,
+		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/astral,
+		/obj/item/snowglobe/extra/dog,
+		/obj/item/snowglobe/extra/goozma,
+		/obj/item/snowglobe/extra/arbiter,
+		/obj/item/snowglobe/extra/limbus,
+		/obj/item/snowglobe/extra/silence,
+	)

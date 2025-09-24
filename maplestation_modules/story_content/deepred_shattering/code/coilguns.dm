@@ -2,7 +2,7 @@
 	name = "abstract coilgun"
 	desc = "You should not be seeing this."
 	desc_controls = "Accepts cells to refill energy, RCD compressed matter or sheets to refill matter, and coilcores to swap ammunition selections. Matter is automatically converted to ammunition and stored. Empty hand on gun to eject cell. Alt click to eject coilcore. Use in hand to switch fire modes."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/coilguns.dmi'
 	icon_state = "debug"
 	w_class = WEIGHT_CLASS_NORMAL
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
@@ -50,7 +50,7 @@
 	var/regen_sound_volume = 40 // Volume of the sound.
 	var/overcooling_sound = 'sound/machines/clockcult/steam_whoosh.ogg' // Overcooling sound.
 	var/overcooling_sound_volume = 40 // Volume of the sound.
-	var/selecting_sound = 'maplestation_modules/story_content/deepred_warfare/sound/beep.ogg' // Selecting sound.
+	var/selecting_sound = 'maplestation_modules/story_content/deepred_shattering/sound/beep.ogg' // Selecting sound.
 	var/selecting_sound_volume = 40 // Volume of the sound.
 
 	dry_fire_sound = 'sound/machines/terminal_error.ogg' // Sound when trying to shoot with no ammo.
@@ -411,18 +411,10 @@
 		var/mutable_appearance/HEAT = mutable_appearance(icon, heat_overlay_state)
 		. += HEAT
 
-/obj/item/gun/coilgun/revolver/none
-	name = "Nonetech 10mm coilpistol"
-	desc = "A Nonetech 10mm coilpistol that looks like a revolver."
-	icon_state = "none_revolver"
-
-	defaultcore = /obj/item/coilcore/revolver/none
-	defaultcell = /obj/item/stock_parts/cell/redtech/nonetech
-
 /obj/item/coilcore
 	name = "generic coilcore"
 	desc = "You should not be seeing this."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/coilguns.dmi'
 	icon_state = "debugcore"
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -446,15 +438,9 @@
 	. = ..()
 	. += emissive_appearance(icon, emissivetype, src, alpha = src.alpha)
 
-/obj/item/coilcore/revolver/none
-	icon_state = "none_revolvercore"
-
 /obj/item/coilcore/revolver/piercing
 	name = "10mm armour piercing coilcore"
 	desc = "A coilcore designed for 10mm revolver coilguns. Produces armour piercing coilslugs. Good against armoured targets and mechs."
 	icon_state = "revolvercore_piercing"
 	ammunition_types = list(/obj/item/ammo_casing/coil/piercing, /obj/item/ammo_casing/coil/highvelo/piercing, /obj/item/ammo_casing/coil/overcharge)
 	emissivetype = "revolvercore_emissives_piercing"
-
-/obj/item/coilcore/revolver/piercing/none
-	icon_state = "none_revolvercore_piercing"

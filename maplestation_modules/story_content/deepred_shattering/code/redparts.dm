@@ -17,7 +17,7 @@
 /obj/item/stock_parts/cell/redtech
 	name = "processed red power cell"
 	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcell"
 	connector_type = null // GOD it's hardcoded.
 	charge_light_type = null
@@ -48,7 +48,7 @@
 /obj/item/stock_parts/servo/redtech
 	name = "alloyed red servo"
 	desc = "An alloyed servo module. Its design is unlike anything you've seen before."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redservo"
 
 	rating = 5
@@ -100,7 +100,7 @@
 /obj/item/stock_parts/capacitor/redtech
 	name = "processed red capacitor"
 	desc = "A processed capacitor module. Its design is unlike anything you've seen before."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcapacitor"
 
 	rating = 5
@@ -125,7 +125,7 @@
 /obj/item/stock_parts/scanning_module/redtech
 	name = "resonant red scanning module"
 	desc = "A resonant scanning module. Its design is unlike anything you've seen before."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redscanner"
 
 	rating = 5
@@ -150,7 +150,7 @@
 /obj/item/stock_parts/micro_laser/redtech
 	name = "crystalline red micro laser"
 	desc = "A crystalline laser module. Its design is unlike anything you've seen before."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redlaser"
 
 	rating = 5
@@ -174,7 +174,7 @@
 /obj/item/stock_parts/matter_bin/redtech
 	name = "condensed red matter bin"
 	desc = "A condensed matter bin. Its design is unlike anything you've seen before."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redmatterbin"
 
 	rating = 5
