@@ -16257,10 +16257,6 @@
 	id_tag = "VISITATION_PASSWORD_PANEL"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/brig,
-/obj/machinery/door/poddoor{
-	id = "visitation_cool_door";
-	name = "Prison Visitation"
-	},
 /turf/open/floor/iron/dark,
 /area/station/security/execution/transfer)
 "bVE" = (
@@ -47329,6 +47325,7 @@
 /obj/effect/turf_decal/siding/yellow{
 	dir = 1
 	},
+/obj/machinery/password_id_panel/tech_storage/directional/west,
 /turf/open/floor/engine,
 /area/station/engineering/storage/tech)
 "kPl" = (
@@ -53088,6 +53085,10 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
+/obj/machinery/password_id_panel/visitation/directional/south{
+	pixel_x = -4;
+	pixel_y = -28
+	},
 /turf/open/floor/iron/dark/corner,
 /area/station/hallway/secondary/dock)
 "mLc" = (
@@ -56682,6 +56683,9 @@
 	pixel_x = 3;
 	pixel_y = -3
 	},
+/obj/machinery/password_id_panel/armory/directional/north{
+	pixel_y = 28
+	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
 "odt" = (
@@ -59675,7 +59679,9 @@
 /obj/item/kirbyplants/organic/plant21,
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/password_id_panel/armory/directional/south,
+/obj/machinery/password_id_panel/armory/directional/south{
+	pixel_y = -28
+	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/office)
 "pcX" = (
@@ -67392,6 +67398,7 @@
 	name = "EVA Requests Console"
 	},
 /obj/effect/decal/cleanable/cobweb/cobweb2,
+/obj/machinery/password_id_panel/eva/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/eva)
 "rDl" = (
@@ -70540,6 +70547,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/bot_red/right,
+/obj/machinery/password_id_panel/teleporter/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "sCu" = (
@@ -85490,7 +85498,7 @@
 	req_access = list("brig")
 	},
 /obj/machinery/password_id_panel/visitation/directional/north{
-	pixel_y = 30;
+	pixel_y = 28;
 	pixel_x = -4
 	},
 /turf/open/floor/iron/showroomfloor,

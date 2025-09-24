@@ -182,6 +182,9 @@
 		for(var/i in roundstart_experience)
 			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
 
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
+
 /// Return the outfit to use
 /datum/job/proc/get_outfit(consistent, title)
 	return title_options[title] || base_outfit
@@ -316,10 +319,8 @@
 /// Gets the message that shows up when spawning as this job
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	var/final_product = separator_hr(span_big("You are the <b>[title]</b>."))
-	final_product += "<i>[description]</i><br><br>"
-	final_product += "&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
-	return examine_block(span_infoplain(final_product))
+	var/final_product = "<i>[description]</i><br><br>&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
+	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "examine_block")
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
@@ -333,19 +334,27 @@
 		info += "You answer directly to [supervisors]."
 	if(radio_info)
 		info += radio_info
+	if(!CONFIG_GET(flag/jobs_have_minimal_access))
+		var/datum/outfit/joboutfit = base_outfit
+		var/datum/id_trim/job/trim = SSid_access.trim_singletons_by_path[joboutfit::id_trim]
+		if(istype(trim) && length(trim.extra_access + trim.extra_wildcard_access))
+			info += span_notice("As this station was initially staffed with a skeleton crew, \
+				additional access has been added to your ID card.")
+	var/list/known_passwords = list()
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		known_passwords += span_green(password_info[PASSWORD_LOCATION])
+	if(length(known_passwords))
+		info += "You know the passwords to [english_list(known_passwords)]."
 	if(req_admin_notify)
-		info += "<b>You are playing a job that is important for Game Progression. \
-			If you have to disconnect, please notify the admins via adminhelp.</b>"
-	if(CONFIG_GET(flag/jobs_have_minimal_access))
-		info += span_notice("As this station was initially staffed with a skeleton crew, \
-			additional access may have been added to your ID card.")
+		info += "<i>You are playing a job that is important for game progression. \
+			If you have to disconnect, please notify the admins via <b>adminhelp</b>.</i>"
 
 	return info
 
 /// Returns information pertaining to this job's radio.
 /datum/job/proc/get_radio_information()
 	if(job_flags & JOB_CREW_MEMBER)
-		return "Prefix your message with <b>:[MODE_KEY_DEPARTMENT]</b> to speak on your department's radio. To see other prefixes, examine your headset."
+		return "Prefix messages with <b>:[MODE_KEY_DEPARTMENT]</b> to speak on your department's radio. To see other prefixes, examine your headset."
 
 /datum/outfit/job
 	name = "Standard Gear"

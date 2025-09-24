@@ -1,11 +1,4 @@
-/// Tracks what jobs know what passwords
-/// Assoc - job type = list(password id = list("location" = place the password is for, "password" = the actual password))
-GLOBAL_LIST_INIT(important_passwords, list())
-
-#define PASSWORD_LOCATION "location"
-#define PASSWORD_CODE "password"
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 
 /obj/machinery/password_id_panel
 	name = "access panel"
@@ -13,7 +6,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "keycardpad0"
 	base_icon_state = "keycardpad"
-	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
+	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF  // revisit when constructable
+	mouse_over_pointer = MOUSE_HAND_POINTER
+	armor_type = /datum/armor/machinery_button
+	power_channel = AREA_USAGE_ENVIRON
+
 	/// Password to open the door rather than having access from an ID card.
 	var/password = "00000"
 	/// What the user has currently inputted.
@@ -26,23 +23,52 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	var/list/password_jobs
 	/// The location to use in the memory for this password.
 	var/password_location
-
+	/// If TRUE, the panel is currently authorized to open the door.
+	var/authorized = FALSE
+	/// Cooldown between allowing ui to enter passwords.
 	COOLDOWN_DECLARE(enter_cd)
 
 /obj/machinery/password_id_panel/post_machine_initialize()
 	. = ..()
+
+	var/already_linked = FALSE
+	for(var/obj/machinery/password_id_panel/other_panel as anything in find_panels())
+		link_door(other_panel.linked_door)
+		password = other_panel.password
+		already_linked = TRUE
+
+	if(already_linked)
+		return
+
 	if(password == "00000")
 		password = randomize_password()
 	for(var/job_type in password_jobs)
 		GLOB.important_passwords[job_type] ||= list()
 		GLOB.important_passwords[job_type][id_tag] = list("[PASSWORD_CODE]" = password, "[PASSWORD_LOCATION]" = password_location)
 
-	linked_door = find_by_id_tag(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock), id_tag)
-	if(isnull(linked_door))
+	var/obj/machinery/door/found_door = find_door()
+	if(isnull(found_door))
 		log_mapping("No door found with ID tag [id_tag] for password panel!")
 		return
 
+	link_door(found_door)
+
+/// Returns all panels with the same id tag, excluding this one and panels not yet initialized.
+/obj/machinery/password_id_panel/proc/find_panels()
+	. = list()
+	for(var/obj/machinery/password_id_panel/panel as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/password_id_panel))
+		if(panel != src && panel.id_tag == id_tag && panel.linked_door && panel.password != "00000")
+			. += panel
+	return .
+
+/// Finds the first door which matches this panel's ID tag.
+/obj/machinery/password_id_panel/proc/find_door()
+	return find_by_id_tag(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock), id_tag)
+
+/obj/machinery/password_id_panel/proc/link_door(obj/machinery/door/airlock/door)
+	linked_door = door
 	RegisterSignal(linked_door, COMSIG_QDELETING, PROC_REF(on_linked_door_deleted))
+	RegisterSignal(linked_door, COMSIG_AIRLOCK_CLOSE, PROC_REF(de_auth))
 	req_access = linked_door.req_access?.Copy()
 	req_one_access = linked_door.req_one_access?.Copy()
 	linked_door.can_open_with_hands = FALSE
@@ -57,6 +83,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 		linked_door.safe = initial(linked_door.safe)
 		linked_door.autoclose = initial(linked_door.autoclose)
 		UnregisterSignal(linked_door, COMSIG_QDELETING)
+		UnregisterSignal(linked_door, COMSIG_AIRLOCK_CLOSE)
 	linked_door = null
 	return ..()
 
@@ -73,6 +100,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 	if(QDELING(src))
 		return
+	update_appearance()
+
+/obj/machinery/password_id_panel/proc/de_auth(...)
+	SIGNAL_HANDLER
+	authorized = FALSE
 	update_appearance()
 
 /obj/machinery/password_id_panel/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -119,27 +151,28 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 /// Called when access is denied, either by ID or password.
 /obj/machinery/password_id_panel/proc/access_denied(mob/user)
 	balloon_alert(user, "access denied")
-	if(linked_door?.density)
-		linked_door?.run_animation(DOOR_DENY_ANIMATION)
+	if(linked_door?.doorDeni)
+		playsound(src, linked_door?.doorDeni, 50, FALSE)
 
 /// Called when access is granted, either by ID or password.
 /obj/machinery/password_id_panel/proc/access_granted(mob/user)
 	balloon_alert(user, "access granted")
-	if(linked_door)
+	if(linked_door && !linked_door.operating)
 		if(linked_door.density)
 			linked_door.secure_open()
+			authorized = TRUE
+			update_appearance()
 		else
 			linked_door.secure_close()
-	update_appearance()
 	current_input = ""
 
-/// Checks if the door is "locked", ie, shut and not actively opening
+/// Checks if the door is "locked"
 /obj/machinery/password_id_panel/proc/is_locked()
-	return !!linked_door && linked_door.density && !linked_door.operating
+	return !!linked_door && !authorized
 
 /obj/machinery/password_id_panel/update_icon_state()
 	. = ..()
-	icon_state = "[base_icon_state][is_operational || !is_locked()]"
+	icon_state = "[base_icon_state][!is_operational || !is_locked()]"
 
 /obj/machinery/password_id_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -173,6 +206,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 			COOLDOWN_START(src, enter_cd, 1 SECONDS)
 			if(valid_code(usr))
 				access_granted(usr)
+				authorized = TRUE
+				update_appearance()
 			else
 				access_denied(usr)
 				current_input = ""
@@ -182,19 +217,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 				return
 			current_input += digit
 			return TRUE
-
-/datum/job/after_spawn(mob/living/spawned, client/player_client)
-	. = ..()
-	for(var/password_id, password_info in GLOB.important_passwords[type])
-		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
-
-/datum/job/get_spawn_message_information()
-	. = ..()
-	var/list/known_passwords = list()
-	for(var/password_id, password_info in GLOB.important_passwords[type])
-		known_passwords += span_bold(password_info[PASSWORD_LOCATION])
-	if(length(known_passwords))
-		. += "You know the passwords to [english_list(known_passwords)]."
 
 /obj/machinery/password_id_panel/armory
 	id_tag = "ARMORY_PASSWORD_PANEL"
@@ -212,7 +234,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	. = ..()
 	. += span_notice("All access attempts are denied unless the station is at [/datum/security_level/blue::name] alert or higher.")
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/armory, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/armory, 28)
 
 /obj/machinery/password_id_panel/execution
 	id_tag = "EXECUTION_PASSWORD_PANEL"
@@ -224,7 +246,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/armory, 32)
 	)
 	password_location = "the Execution Chamber"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/execution, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/execution, 28)
 
 /obj/machinery/password_id_panel/visitation
 	id_tag = "VISITATION_PASSWORD_PANEL"
@@ -236,7 +258,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/execution, 32)
 	)
 	password_location = "the Visitation Area"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/visitation, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/visitation, 28)
 
 /obj/machinery/password_id_panel/teleporter
 	id_tag = "TELEPORTER_PASSWORD_PANEL"
@@ -248,7 +270,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/visitation, 32)
 	)
 	password_location = "the Teleporter Room"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/teleporter, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/teleporter, 28)
 
 /obj/machinery/password_id_panel/eva
 	id_tag = "EVA_PASSWORD_PANEL"
@@ -259,7 +281,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/teleporter, 32)
 	)
 	password_location = "EVA"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/eva, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/eva, 28)
 
 /obj/machinery/password_id_panel/tech_storage
 	id_tag = "TECH_STORAGE_PASSWORD_PANEL"
@@ -272,7 +294,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/eva, 32)
 	)
 	password_location = "Tech Storage"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/tech_storage, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/tech_storage, 28)
 
 /obj/machinery/password_id_panel/telecomms
 	id_tag = "TELECOMMS_PASSWORD_PANEL"
@@ -283,7 +305,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/tech_storage, 32)
 	)
 	password_location = "the Telecomms Room"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/telecomms, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/telecomms, 28)
 
 /obj/machinery/password_id_panel/virology
 	id_tag = "VIROLOGY_PASSWORD_PANEL"
@@ -295,7 +317,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/telecomms, 32)
 	)
 	password_location = "the Virology Lab"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/virology, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/virology, 28)
 
 /obj/machinery/password_id_panel/crematorium
 	id_tag = "CREMATORIUM_PASSWORD_PANEL"
@@ -305,7 +327,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/virology, 32)
 	)
 	password_location = "the Crematorium"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/crematorium, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/crematorium, 28)
 
 /obj/machinery/password_id_panel/vault
 	id_tag = "VAULT_PASSWORD_PANEL"
@@ -317,7 +339,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/crematorium, 32)
 	)
 	password_location = "the Vault"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 28)
 
 /obj/machinery/password_id_panel/gateway
 	id_tag = "GATEWAY_PASSWORD_PANEL"
@@ -327,4 +349,4 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 32)
 	)
 	password_location = "the Gateway Room"
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/gateway, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/gateway, 28)
