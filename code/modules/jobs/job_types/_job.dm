@@ -330,16 +330,15 @@
 	if(related_policy)
 		info += related_policy
 	if(supervisors)
-		info += "As the [title] you answer directly to [supervisors]. Special circumstances may change this."
+		info += "You answer directly to [supervisors]."
 	if(radio_info)
 		info += radio_info
 	if(req_admin_notify)
 		info += "<b>You are playing a job that is important for Game Progression. \
 			If you have to disconnect, please notify the admins via adminhelp.</b>"
-	if(CONFIG_GET(number/minimal_access_threshold))
-		info += span_boldnotice("As this station was initially staffed with a \
-			[CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] \
-			have been added to your ID card.")
+	if(CONFIG_GET(flag/jobs_have_minimal_access))
+		info += span_notice("As this station was initially staffed with a skeleton crew, \
+			additional access may have been added to your ID card.")
 
 	return info
 

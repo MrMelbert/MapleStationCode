@@ -188,6 +188,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	for(var/password_id, password_info in GLOB.important_passwords[type])
 		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
 
+/datum/job/get_spawn_message_information()
+	. = ..()
+	var/list/known_passwords = list()
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		known_passwords += span_bold(password_info[PASSWORD_LOCATION])
+	if(length(known_passwords))
+		. += "You know the passwords to [english_list(known_passwords)]."
+
 /obj/machinery/password_id_panel/armory
 	id_tag = "ARMORY_PASSWORD_PANEL"
 	req_access = list(ACCESS_ARMORY)
