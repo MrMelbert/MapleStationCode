@@ -1,6 +1,9 @@
+/// Tracks what jobs know what passwords
+/// Assoc - job type = list(password id = list("location" = place the password is for, "password" = the actual password))
 GLOBAL_LIST_INIT(important_passwords, list())
 
-GLOBAL_LIST_INIT(passwords_to_jobs, list())
+#define PASSWORD_LOCATION "location"
+#define PASSWORD_CODE "password"
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
@@ -17,8 +20,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	var/current_input
 	/// The door this panel is linked to.
 	var/obj/machinery/door/airlock/linked_door
-	/// If TRUE, password is saved to a global list so other places can reference it.
-	var/save_password = FALSE
 	/// If TRUE, the AI or silicons can tap the panel to open the door.
 	var/ai_accessible = TRUE
 	/// These job datums spawn with the memory of this password.
@@ -26,15 +27,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 	/// The location to use in the memory for this password.
 	var/password_location
 
+	COOLDOWN_DECLARE(enter_cd)
+
 /obj/machinery/password_id_panel/post_machine_initialize()
 	. = ..()
 	if(password == "00000")
 		password = randomize_password()
-	if(save_password)
-		GLOB.important_passwords[id_tag] ||= password // first come first serve
 	for(var/job_type in password_jobs)
-		GLOB.passwords_to_jobs[job_type] ||= list()
-		GLOB.passwords_to_jobs[job_type][id_tag] = password_location
+		GLOB.important_passwords[job_type] ||= list()
+		GLOB.important_passwords[job_type][id_tag] = list("[PASSWORD_CODE]" = password, "[PASSWORD_LOCATION]" = password_location)
 
 	linked_door = find_by_id_tag(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock), id_tag)
 	if(isnull(linked_door))
@@ -118,6 +119,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 /// Called when access is denied, either by ID or password.
 /obj/machinery/password_id_panel/proc/access_denied(mob/user)
 	balloon_alert(user, "access denied")
+	if(linked_door?.density)
+		linked_door?.run_animation(DOOR_DENY_ANIMATION)
 
 /// Called when access is granted, either by ID or password.
 /obj/machinery/password_id_panel/proc/access_granted(mob/user)
@@ -165,6 +168,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 				linked_door.secure_close()
 			return TRUE
 		if("E")
+			if(!COOLDOWN_FINISHED(src, enter_cd))
+				return
+			COOLDOWN_START(src, enter_cd, 1 SECONDS)
 			if(valid_code(usr))
 				access_granted(usr)
 			else
@@ -179,14 +185,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 32)
 
 /datum/job/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
-	for(var/password_id in GLOB.passwords_to_jobs[type])
-		var/password_location = GLOB.passwords_to_jobs[type][password_id]
-		var/password_real = GLOB.important_passwords[password_id]
-		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_location, password = password_real)
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
 
 /obj/machinery/password_id_panel/armory
 	id_tag = "ARMORY_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_ARMORY)
 	password_jobs = list(
 		/datum/job/head_of_security,
@@ -205,7 +208,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/armory, 32)
 
 /obj/machinery/password_id_panel/execution
 	id_tag = "EXECUTION_PASSWORD_PANEL"
-	save_password = TRUE
 	ai_accessible = FALSE
 	req_access = list(ACCESS_ARMORY)
 	password_jobs = list(
@@ -218,7 +220,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/execution, 32)
 
 /obj/machinery/password_id_panel/visitation
 	id_tag = "VISITATION_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_BRIG)
 	password_jobs = list(
 		/datum/job/head_of_security,
@@ -231,7 +232,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/visitation, 32)
 
 /obj/machinery/password_id_panel/teleporter
 	id_tag = "TELEPORTER_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_TELEPORTER)
 	password_jobs = list(
 		/datum/job/captain,
@@ -244,7 +244,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/teleporter, 32)
 
 /obj/machinery/password_id_panel/eva
 	id_tag = "EVA_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_EVA)
 	password_jobs = list(
 		/datum/job/chief_engineer,
@@ -256,7 +255,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/eva, 32)
 
 /obj/machinery/password_id_panel/tech_storage
 	id_tag = "TECH_STORAGE_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_TECH_STORAGE)
 	password_jobs = list(
 		/datum/job/chief_engineer,
@@ -270,7 +268,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/tech_storage, 32)
 
 /obj/machinery/password_id_panel/telecomms
 	id_tag = "TELECOMMS_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_TCOMMS)
 	password_jobs = list(
 		/datum/job/chief_engineer,
@@ -282,7 +279,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/telecomms, 32)
 
 /obj/machinery/password_id_panel/virology
 	id_tag = "VIROLOGY_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_VIROLOGY)
 	password_jobs = list(
 		/datum/job/chief_medical_officer,
@@ -295,7 +291,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/virology, 32)
 
 /obj/machinery/password_id_panel/crematorium
 	id_tag = "CREMATORIUM_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_CREMATORIUM)
 	password_jobs = list(
 		/datum/job/chaplain,
@@ -306,7 +301,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/crematorium, 32)
 
 /obj/machinery/password_id_panel/vault
 	id_tag = "VAULT_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_VAULT)
 	password_jobs = list(
 		/datum/job/captain,
@@ -319,7 +313,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 32)
 
 /obj/machinery/password_id_panel/gateway
 	id_tag = "GATEWAY_PASSWORD_PANEL"
-	save_password = TRUE
 	req_access = list(ACCESS_GATEWAY)
 	password_jobs = list(
 		/datum/job/captain,
