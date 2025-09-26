@@ -133,7 +133,6 @@
 	tracer_type = /obj/effect/projectile/tracer/laser/phaser
 	muzzle_type = /obj/effect/projectile/muzzle/laser/phaser
 	impact_type = /obj/effect/projectile/impact/laser/phaser
-
 	hitscan_light_color_override = LIGHT_COLOR_GREEN
 	muzzle_flash_color_override = LIGHT_COLOR_GREEN
 	impact_light_color_override = LIGHT_COLOR_GREEN

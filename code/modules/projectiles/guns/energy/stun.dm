@@ -43,22 +43,20 @@
 /obj/item/gun/energy/disabler/phaser
 	name = "energy phaser"
 	desc = "A standard issue energy phaser, designed for field use by security personnel. \
-		It has two settings: disable, which fires an incapacitating low-energy neuron beam, \
-		and kill, which fires a low-wavelength laser beam largely incapable of causing serious burns."
+		It has two settings: disable, which fires incapacitating nociception beams, \
+		and kill, which fires lower wavelength laser beams largely incapable of causing serious burns."
+	// lore: nociception beams (colloquially called "disabler beams")
+	// - temporarily overstimulate your nociceptors which causes extreme pain -> exhaustion -> incapacitation without causing skin damage.
+	// lore: lower wavelength = higher frequency = more energy used = less energy put in the beam = less damage...
+	// - ok this one's a bit of a stretch. it'd make more sense if damage went up as frequency went up
+	// - logically, we should swap laser red with phaser green so lower wavelength = less damage... but that's a lot of effort
 	ammo_type = list(/obj/item/ammo_casing/energy/disabler/phaser, /obj/item/ammo_casing/energy/laser/phaser)
-	single_shot_type_overlay = FALSE
 	modifystate = TRUE
 	icon_state = "phaser"
-	inhand_icon_state = "disabler"
 	base_icon_state = "phaser"
 	icon = 'maplestation_modules/icons/obj/weapons/guns/phaser.dmi'
-
-/obj/item/gun/energy/disabler/phaser/update_overlays()
-	. = ..()
-	if(get_charge_ratio() == 0)
-		return
-	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-	. += "[base_icon_state]_overlay_[initial(shot.select_name)]"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/phaser_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/phaser_righthand.dmi'
 
 /obj/item/gun/energy/disabler/smg
 	name = "disabler smg"
