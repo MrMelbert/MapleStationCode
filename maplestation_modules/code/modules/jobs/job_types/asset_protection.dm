@@ -2,7 +2,7 @@
 /datum/job/asset_protection
 	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
-		from foreign threats and themselves. Exert authority over the Bridge Officer."
+		from foreign threats (and themselves). Exert authority over the bridge officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION

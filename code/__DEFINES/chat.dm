@@ -51,6 +51,7 @@
 #define fieldset_block(title, content, classes) ("<fieldset class='" + classes + "'><legend align='center' style='max-width: 95%; text-align: center;'><div style='margin: 0em 0.2em -0.4em 0.2em;' >" + title + "</div></legend>" + content + "</fieldset>")
 /// Makes a horizontal line with text in the middle
 #define separator_hr(str) ("<div class='separator'>" + str + "</div>")
+#define separator_hr_danger(str) ("<div class='separator danger'>" + str + "</div>")
 /// Emboldens runechat messages
 #define RUNECHAT_BOLD(str) "+[str]+"
 /// Helper which creates a chat message which may have a tooltip in some contexts, but not others.
