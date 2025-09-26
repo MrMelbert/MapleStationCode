@@ -374,7 +374,7 @@
 	matter_usage = 10
 	fabricator_speed = 5
 
-	defaultcell = /obj/item/stock_parts/cell/redtech
+	defaultcell = /obj/item/stock_parts/power_store/cell/redtech
 	charge_sections = 8
 	charge_state = "revolver"
 

@@ -14,30 +14,30 @@
 		else
 			CRASH("Invalid level given to energy_rating: [tier]")
 
-/obj/item/stock_parts/cell/redtech
+/obj/item/stock_parts/power_store/cell/redtech
 	name = "processed red power cell"
 	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcell"
 	connector_type = null // GOD it's hardcoded.
 	charge_light_type = null
-	rating = 4
+	rating_base = STANDARD_CELL_CHARGE * 2
 
-	maxcharge = STANDARD_CELL_CHARGE * 50
-	chargerate = STANDARD_CELL_CHARGE * 5
+	maxcharge = STANDARD_CELL_CHARGE * 60
+	chargerate = STANDARD_CELL_RATE * 5
 
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/plasma=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
 
-/obj/item/stock_parts/cell/redtech/empty
+/obj/item/stock_parts/power_store/cell/redtech/empty
 	empty = TRUE
 
-/obj/item/stock_parts/cell/redtech/Initialize(mapload)
+/obj/item/stock_parts/power_store/cell/redtech/Initialize(mapload)
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
 	return ..()
 
-/obj/item/stock_parts/cell/redtech/update_overlays()
+/obj/item/stock_parts/power_store/cell/redtech/update_overlays()
 	. = ..()
 	. += emissive_appearance(icon, "redcellemissive", src, alpha = src.alpha)
 
