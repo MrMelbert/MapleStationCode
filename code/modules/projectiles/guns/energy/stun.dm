@@ -49,6 +49,7 @@
 	single_shot_type_overlay = FALSE
 	modifystate = TRUE
 	icon_state = "phaser"
+	inhand_icon_state = "disabler"
 	base_icon_state = "phaser"
 	icon = 'maplestation_modules/icons/obj/weapons/guns/phaser.dmi'
 

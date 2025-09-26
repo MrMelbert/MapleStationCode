@@ -127,7 +127,7 @@
 
 /obj/projectile/beam/laser/phaser
 	name = "phaser beam"
-	icon_state = "phaser"
+	icon_state = "xray"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
 	light_color = LIGHT_COLOR_GREEN
 	tracer_type = /obj/effect/projectile/tracer/laser/phaser
