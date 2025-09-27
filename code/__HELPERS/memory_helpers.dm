@@ -71,14 +71,15 @@
 		if(new_memory_flags & MEMORY_CHECK_DEAFNESS && HAS_TRAIT(current, TRAIT_DEAF))
 			return
 
-	var/datum/memory/replaced_memory = memories[memory_type]
+	memory_args[1] = src
+	var/datum/memory/created_memory = new memory_type(arglist(memory_args))
+	var/memory_key = created_memory.memory_key()
+
+	var/datum/memory/replaced_memory = memories[memory_key]
 	if(replaced_memory)
 		qdel(replaced_memory)
 
-	memory_args[1] = src
-	var/datum/memory/created_memory = new memory_type(arglist(memory_args))
-
-	memories[memory_type] = created_memory
+	memories[memory_key] = created_memory
 	return created_memory
 
 /**
@@ -119,4 +120,4 @@
 /datum/mind/proc/quick_copy_all_memories(datum/mind/new_memorizer)
 	for(var/memory_path in memories)
 		var/datum/memory/prime_memory = memories[memory_path]
-		new_memorizer.memories[memory_path] = prime_memory.quick_copy_memory(new_memorizer)
+		new_memorizer.memories[prime_memory.memory_key()] = prime_memory.quick_copy_memory(new_memorizer)

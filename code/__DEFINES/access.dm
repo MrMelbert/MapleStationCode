@@ -591,3 +591,11 @@
 #define FORCE_ADD_ALL 2
 /// Used in ID card access adding procs. Will stack trace on fail.
 #define ERROR_ON_FAIL 3
+
+/// Tracks what jobs know what passwords
+/// Assoc - job type = list(password id = list("location" = place the password is for, "password" = the actual password))
+GLOBAL_LIST_INIT(important_passwords, list())
+/// Location of a password, ie "Front Engineering Door"
+#define PASSWORD_LOCATION "location"
+/// Actual password, "12345"
+#define PASSWORD_CODE "password"
