@@ -14,7 +14,7 @@
 	bot_mode_flags = BOT_MODE_ON | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_AUTOPATROL | BOT_MODE_ROUNDSTART_POSSESSION
 	hackables = "sound control systems"
 	path_image_color = "#FF69B4"
-	data_hud_type = DATA_HUD_SECURITY_BASIC //show jobs
+	data_hud_type = TRAIT_SECURITY_HUD_ID_ONLY //show jobs
 
 	baton_type = /obj/item/bikehorn
 	cuff_type = /obj/item/restraints/handcuffs/cable/zipties/fake/used
