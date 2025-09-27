@@ -43,6 +43,12 @@
 	rpg_title = "Crystallomancer"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_EXPERT,
+		/datum/skill/mechanics = SKILL_LEVEL_EXPERT,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/engineer
 	name = "Station Engineer"

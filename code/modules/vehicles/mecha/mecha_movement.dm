@@ -130,6 +130,9 @@
 		if(dir != direction && !(mecha_flags & QUIET_TURNS) && !step_silent)
 			playsound(src,turnsound,40,TRUE)
 		setDir(direction)
+		// sets move cd again, accounting for skill this time
+		var/turn_speed = movedelay + get_driver_skill(SKILL_SPEED_MODIFIER)
+		COOLDOWN_START(src, cooldown_vehicle_move, turn_speed)
 		if(keyheld || !pivot_step) //If we pivot step, we don't return here so we don't just come to a stop
 			return TRUE
 
