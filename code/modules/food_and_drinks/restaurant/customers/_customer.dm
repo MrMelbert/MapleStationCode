@@ -91,6 +91,7 @@
 			/datum/reagent/consumable/ethanol/beer = 25,
 			/datum/reagent/consumable/ethanol/b52 = 6,
 			/datum/reagent/consumable/ethanol/manhattan = 3,
+			/datum/reagent/consumable/ethanol/old_fashioned = 3,
 			/datum/reagent/consumable/ethanol/atomicbomb = 1,
 		),
 	)
@@ -137,6 +138,7 @@
 			/datum/reagent/consumable/ethanol/wine = 3,
 			/datum/reagent/consumable/ethanol/grappa = 3,
 			/datum/reagent/consumable/ethanol/amaretto = 5,
+			/datum/reagent/consumable/ethanol/amaretto_sour = 3,
 			/datum/reagent/consumable/cucumberlemonade = 2,
 		),
 	)
@@ -174,6 +176,7 @@
 			/datum/reagent/consumable/ethanol/beer = 5,
 			/datum/reagent/consumable/ethanol/wine = 5,
 			/datum/reagent/consumable/ethanol/gin_garden = 2,
+			/datum/reagent/consumable/ethanol/french_75 = 5,
 		),
 	)
 
@@ -392,6 +395,7 @@
 			/datum/reagent/consumable/ethanol/martini = 5,
 			/datum/reagent/consumable/ethanol/gintonic = 5,
 			/datum/reagent/consumable/tea = 10,
+			/datum/reagent/consumable/ethanol/hot_toddy = 5,
 		),
 	)
 
