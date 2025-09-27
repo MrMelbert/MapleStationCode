@@ -53,7 +53,7 @@
 		/datum/skill/eva = SKILL_LEVEL_NOVICE,
 		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
 		/datum/skill/first_aid = SKILL_LEVEL_MASTER,
-		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/surgery = SKILL_LEVEL_MASTER,
 	)
 

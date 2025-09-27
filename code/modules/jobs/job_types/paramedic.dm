@@ -43,7 +43,7 @@
 		/datum/skill/eva = SKILL_LEVEL_EXPERT,
 		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
 		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
-		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/outfit/job/paramedic

@@ -253,7 +253,7 @@
 	// NON-MODULE CHANGE
 	if(product_count >= 1)
 		SSblackbox.record_feedback("tally", "food_harvested", product_count, product_name)
-		user.mind?.adjust_experience(/datum/skill/botany, 2 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
+		user.mind?.adjust_experience(/datum/skill/botany, 0.5 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
 
 	else if(product_count == 0 && user.mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_MASTER)
 		Copy().forceMove(output_loc)

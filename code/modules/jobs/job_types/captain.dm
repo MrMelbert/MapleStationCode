@@ -52,7 +52,7 @@
 		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/firearms = SKILL_LEVEL_MASTER,
 		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)

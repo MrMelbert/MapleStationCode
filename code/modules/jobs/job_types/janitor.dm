@@ -37,7 +37,7 @@
 		/datum/skill/cleaning = SKILL_LEVEL_NOVICE, // i'd make this higher, but i think grinding cleaning skill IS janitor's gameplay
 		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // garbage day
 		/datum/skill/chemistry = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/outfit/job/janitor

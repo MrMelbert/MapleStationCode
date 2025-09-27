@@ -44,7 +44,7 @@
 
 	base_skills = list(
 		/datum/skill/eva = SKILL_LEVEL_EXPERT,
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/outfit/job/curator

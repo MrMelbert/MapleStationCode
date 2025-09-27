@@ -39,7 +39,7 @@
 		/datum/skill/bartending = SKILL_LEVEL_EXPERT,
 		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
 		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE, // one (wo)man bouncer
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE, // one (wo)man bouncer
 	)
 
 /datum/job/bartender/award_service(client/winner, award)

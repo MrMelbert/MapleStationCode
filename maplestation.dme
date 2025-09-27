@@ -1807,6 +1807,7 @@
 #include "code\datums\skills\mechanics.dm"
 #include "code\datums\skills\medical.dm"
 #include "code\datums\skills\mining.dm"
+#include "code\datums\skills\piloting.dm"
 #include "code\datums\skills\robotics.dm"
 #include "code\datums\skills\surgery.dm"
 #include "code\datums\station_traits\_station_trait.dm"

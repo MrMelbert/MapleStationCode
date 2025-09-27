@@ -39,7 +39,7 @@
 	if(HAS_TRAIT(source, TRAIT_FOOD_MUST_INHERIT_CHEF_MADE) && !HAS_TRAIT(source, TRAIT_FOOD_CHEF_MADE))
 		return
 	ADD_TRAIT(food, TRAIT_FOOD_CHEF_MADE, REF(chef))
-	chef.adjust_experience(/datum/skill/cooking, 20 * xp_mod)
+	chef.adjust_experience(/datum/skill/cooking, min(25, 5 * xp_mod))
 
 /// When given some item with reagents (normally food),
 /// modifies the quality of the reagents according to the passed chef's mind's cooking skill

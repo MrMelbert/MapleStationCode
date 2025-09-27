@@ -37,8 +37,9 @@
 	base_skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
 		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/piloting = SKILL_LEVEL_NOVICE, // ripley
 	)
 	title_options = list(
 		"Mail Carrier",

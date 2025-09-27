@@ -56,6 +56,7 @@
 		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 		/datum/skill/robotics = SKILL_LEVEL_EXPERT,
 		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/piloting = SKILL_LEVEL_JOURNEYMAN,
 	)
 
 /datum/job/research_director/get_captaincy_announcement(mob/living/captain)

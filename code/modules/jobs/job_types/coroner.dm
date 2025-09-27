@@ -46,7 +46,7 @@
 	base_skills = list(
 		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/outfit/job/coroner

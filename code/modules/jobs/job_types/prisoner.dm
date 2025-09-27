@@ -27,7 +27,7 @@
 
 	base_skills = list(
 		/datum/skill/botany = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/prisoner/New()

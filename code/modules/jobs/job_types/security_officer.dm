@@ -47,7 +47,8 @@
 		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
-		/datum/skill/fitness = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/piloting = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/job/security_officer/get_titles(only_selectable = FALSE)

@@ -52,7 +52,7 @@
 		/datum/skill/bartending = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/cooking = SKILL_LEVEL_EXPERT, // not all NT chefs are gordon ramsay
-		/datum/skill/fitness = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/job/cook/award_service(client/winner, award)
