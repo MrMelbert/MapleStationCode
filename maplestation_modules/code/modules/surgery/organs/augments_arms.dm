@@ -87,9 +87,13 @@
 	name = "finger light"
 	desc = "Fire at your fingertips!"
 	inhand_icon_state = "nothing"
-	item_flags = EXAMINE_SKIP | ABSTRACT
+	item_flags = ABSTRACT
 	light_sound_on = null
 	light_sound_off = null
+
+/obj/item/lighter/spell/finger/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
 /obj/item/lighter/spell/finger/ignition_effect(atom/A, mob/user)
 	if(get_temperature())
@@ -117,13 +121,17 @@
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
 	icon_state = "fire"
 	inhand_icon_state = "nothing"
-	item_flags = EXAMINE_SKIP | ABSTRACT
+	item_flags = ABSTRACT
 	light_sound_on = null
 	light_sound_off = null
 	/// World.time we were last lit.
 	VAR_FINAL/world_time_lit = -1
 	/// Tracks seconds between times we've burned someone holding the flame.
 	VAR_FINAL/seconds_burning = 0
+
+/obj/item/lighter/spell/flame/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
 /obj/item/lighter/spell/flame/ignition_effect(atom/A, mob/user)
 	if(!get_temperature())

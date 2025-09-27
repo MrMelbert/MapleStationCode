@@ -65,13 +65,13 @@
 	var/obj/item/l_store = null
 	var/obj/item/s_store = null
 
-	var/special_voice = "" // For changing our voice. Used by a symptom.
+	/// Allows for special overrides of voice
+	var/override_voice = ""
 
 	var/datum/physiology/physiology
 
 	var/list/datum/bioware/biowares
 
-	var/lastpuke = 0
 	var/account_id
 
 	var/hardcore_survival_score = 0

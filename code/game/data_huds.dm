@@ -271,15 +271,18 @@ Security HUDs! Basic mode shows only the job.
 
 //HOOKS
 
-/mob/living/carbon/human/proc/sec_hud_set_ID()
+/mob/living/carbon/human/proc/update_ID_card()
+	SIGNAL_HANDLER
+
 	var/image/holder = hud_list[ID_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 	var/sechud_icon_state = wear_id?.get_sechud_job_icon_state()
-	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		sechud_icon_state = "hudno_id"
 	holder.icon_state = sechud_icon_state
 	sec_hud_set_security_status()
+	update_visible_name()
 
 /mob/living/proc/sec_hud_set_implants()
 	var/image/holder

@@ -37,7 +37,7 @@
 	if(!ishuman(examined) || source == examined)
 		return NONE
 
-	var/id_name = see_ids && examined.get_id_name("")
+	var/id_name =  see_ids && examined.get_id_name("", honorifics = TRUE)
 	name_override[1] = id_name ? "[id_name]?" : "Unknown"
 	return COMPONENT_EXAMINE_NAME_OVERRIDEN
 
@@ -50,7 +50,7 @@
 		returned_name[1] = "Unknown"
 		return SCREENTIP_NAME_SET
 
-	var/id_name = see_ids && hovered.get_id_name("")
+	var/id_name = see_ids && hovered.get_id_name("", honorifics = TRUE)
 	returned_name[1] = id_name ? "[id_name]?" : "Unknown"
 	return SCREENTIP_NAME_SET
 

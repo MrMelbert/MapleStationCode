@@ -174,10 +174,7 @@
 	feature_key = "horns"
 
 /datum/bodypart_overlay/mutant/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return FALSE
-
-	return TRUE
+	return !(human.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/horns/get_global_feature_list()
 	return SSaccessories.horns_list
@@ -202,9 +199,7 @@
 	feature_key = "frills"
 
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
-		return TRUE
-	return FALSE
+	return !(human.obscured_slots & HIDEEARS)
 
 /datum/bodypart_overlay/mutant/frills/get_global_feature_list()
 	return SSaccessories.frills_list
@@ -231,9 +226,7 @@
 	feature_key = "snout"
 
 /datum/bodypart_overlay/mutant/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
-		return TRUE
-	return FALSE
+	return !(human.obscured_slots & HIDESNOUT)
 
 /datum/bodypart_overlay/mutant/snout/get_global_feature_list()
 	return SSaccessories.snouts_list
@@ -357,7 +350,4 @@
 		overlay.color = null
 
 /datum/bodypart_overlay/mutant/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return FALSE
-
-	return TRUE
+	return !(human.obscured_slots & HIDEHAIR)
