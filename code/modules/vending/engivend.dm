@@ -4,7 +4,6 @@
 	icon_state = "engivend"
 	icon_deny = "engivend-deny"
 	panel_type = "panel10"
-	req_access = list(ACCESS_ENGINE_EQUIP)
 	products = list(
 		/obj/item/clothing/glasses/meson/engine = 2,
 		/obj/item/clothing/glasses/welding = 3,
@@ -32,6 +31,7 @@
 	extra_price = PAYCHECK_COMMAND * 1.5
 	payment_department = ACCOUNT_ENG
 	light_mask = "engivend-light-mask"
+	allow_custom = TRUE
 
 /obj/item/vending_refill/engivend
 	machine_name = "Engi-Vend"

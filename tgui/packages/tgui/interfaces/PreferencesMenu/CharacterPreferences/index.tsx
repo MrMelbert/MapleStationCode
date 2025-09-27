@@ -4,7 +4,7 @@ import { Dropdown, Flex, Stack } from 'tgui-core/components';
 import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { PageButton } from '../components/PageButton';
-import { PreferencesMenuData } from '../types';
+import type { PreferencesMenuData } from '../types';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
 import { AntagsPage } from './AntagsPage';

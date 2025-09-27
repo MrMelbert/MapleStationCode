@@ -1,7 +1,7 @@
 import { Button, Stack } from 'tgui-core/components';
 
 import { useBackend } from '../../../../../backend';
-import { Feature, FeatureValueProps } from '../base';
+import type { Feature, FeatureValueProps } from '../base';
 
 export const spellbook: Feature<undefined, undefined> = {
   name: 'Open spellbook',
