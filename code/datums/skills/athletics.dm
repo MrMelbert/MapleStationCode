@@ -1,7 +1,7 @@
 /datum/skill/athletics
 	name = "Athletics"
 	title = "Athlete"
-	desc = "Twinkle twinkle little star, hit the gym and lift the bar."
+	blurb = "Twinkle twinkle little star, hit the gym and lift the bar."
 	earned_by = "exercising on the machines in the station's recreation area"
 	grants_you = "greater ease of grabbing, grappling, and carrying others"
 	higher_levels_grant_you = "the ability to exercise for longer periods of time"

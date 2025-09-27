@@ -44,7 +44,7 @@
 	avatar.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
 	avatar.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
 	avatar.mind.set_level(/datum/skill/fishing, SKILL_LEVEL_JOURNEYMAN, silent = TRUE)
-	avatar.mind.set_level(/datum/skill/fitness, SKILL_LEVEL_EXPERT, silent = TRUE)
+	avatar.mind.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
 
 	var/outfit_path = generated_domain.forced_outfit || netsuit
 	var/datum/outfit/to_wear = new outfit_path()

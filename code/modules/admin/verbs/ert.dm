@@ -248,7 +248,7 @@
 			ert_operative.mind.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
 			ert_operative.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
 			ert_operative.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
-			ert_operative.mind.set_level(/datum/skill/fitness, SKILL_LEVEL_EXPERT, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
 			ert_operative.mind.set_level(/datum/skill/mechanics, SKILL_LEVEL_MASTER, silent = TRUE)
 			ert_operative.mind.set_level(/datum/skill/surgery, SKILL_LEVEL_MASTER, silent = TRUE)
 
