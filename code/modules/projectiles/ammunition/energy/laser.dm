@@ -3,6 +3,11 @@
 	e_cost = LASER_SHOTS(12, STANDARD_CELL_CHARGE)
 	select_name = "kill"
 
+/obj/item/ammo_casing/energy/laser/phaser
+	projectile_type = /obj/projectile/beam/laser/phaser
+	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)
+	fire_sound = 'sound/weapons/laser2.ogg'
+
 /obj/item/ammo_casing/energy/laser/hellfire
 	projectile_type = /obj/projectile/beam/laser/hellfire
 	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)

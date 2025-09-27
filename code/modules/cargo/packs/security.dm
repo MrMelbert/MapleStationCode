@@ -41,6 +41,14 @@
 	contains = list(/obj/item/gun/energy/disabler = 3)
 	crate_name = "disabler crate"
 
+/datum/supply_pack/security/phaser
+	name = "Phaser Crate"
+	desc = "Two standard-issue energy phasers, designed for field use by security personnel."
+	cost = CARGO_CRATE_VALUE * 9
+	access_view = ACCESS_ARMORY
+	contains = list(/obj/item/gun/energy/disabler/phaser = 2)
+	crate_name = "phaser crate"
+
 /datum/supply_pack/security/forensics
 	name = "Forensics Crate"
 	desc = "Stay hot on the criminal's heels with Nanotrasen's Detective Essentials™. \
