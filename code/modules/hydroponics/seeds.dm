@@ -238,7 +238,7 @@
 		else
 			t_prod = new product(output_loc, new_seed = src)
 		if(parent.myseed.plantname != initial(parent.myseed.plantname))
-			t_prod.name = lowertext(parent.myseed.plantname)
+			t_prod.name = LOWER_TEXT(parent.myseed.plantname)
 		if(productdesc)
 			t_prod.desc = productdesc
 		t_prod.seed.name = parent.myseed.name
@@ -486,7 +486,7 @@
 					return
 				if(!user.can_perform_action(src))
 					return
-				name = "[lowertext(newplantname)]"
+				name = "[LOWER_TEXT(newplantname)]"
 				plantname = newplantname
 			if("Seed Description")
 				var/newdesc = tgui_input_text(user, "Write a new seed description", "Seed Description", desc, 180)
@@ -627,3 +627,17 @@
 
 /obj/item/grown/get_plant_seed()
 	return seed
+
+/// Returns a mutable appearance to be used as an overlay for the plant in hydro trays.
+/obj/item/seeds/proc/get_tray_overlay(age, status)
+	var/mutable_appearance/plant_overlay = mutable_appearance(growing_icon, layer = OBJ_LAYER + 0.01)
+	switch(status)
+		if(HYDROTRAY_PLANT_DEAD)
+			plant_overlay.icon_state = icon_dead
+		if(HYDROTRAY_PLANT_HARVESTABLE)
+			plant_overlay.icon_state = icon_harvest || "[icon_grow][growthstages]"
+		else
+			var/t_growthstate = clamp(round((age / maturation) * growthstages), 1, growthstages)
+			plant_overlay.icon_state = "[icon_grow][t_growthstate]"
+	plant_overlay.pixel_z = plant_icon_offset
+	return plant_overlay

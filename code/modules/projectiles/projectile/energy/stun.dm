@@ -318,7 +318,7 @@
 
 /obj/effect/ebeam/react_to_entry/electrodes
 	name = "electrodes"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = TRUE
 	light_color = COLOR_YELLOW
 	light_power = 1

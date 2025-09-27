@@ -202,7 +202,7 @@
 		return
 
 	RegisterSignal(our_plant, COMSIG_PLANT_ON_SLIP, PROC_REF(squash_plant))
-	RegisterSignal(our_plant, COMSIG_MOVABLE_IMPACT, PROC_REF(squash_plant))
+	RegisterSignal(our_plant, COMSIG_MOVABLE_IMPACT, PROC_REF(squash_plant_if_not_caught))
 	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK_SELF, PROC_REF(squash_plant))
 
 /*
@@ -238,6 +238,10 @@
 		our_plant.reagents?.expose(things)
 
 	qdel(our_plant)
+
+/datum/plant_gene/trait/squash/proc/squash_plant_if_not_caught(datum/source, atom/hit_atom, datum/thrownthing/throwing_datum, caught)
+	if(!caught)
+		squash_plant(source, hit_atom)
 
 /*
  * Makes plant slippery, unless it has a grown-type trash. Then the trash gets slippery.
@@ -368,7 +372,7 @@
 		return
 
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	our_plant.light_system = MOVABLE_LIGHT
+	our_plant.light_system = OVERLAY_LIGHT
 	our_plant.AddComponent(/datum/component/overlay_lighting, glow_range(our_seed), glow_power(our_seed), glow_color)
 
 /*
@@ -637,7 +641,7 @@
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 	if(living_target.reagents && living_target.can_inject())
 		var/injecting_amount = max(1, our_seed.potency * 0.2) // Minimum of 1, max of 20
-		our_plant.reagents.trans_to(living_target, injecting_amount, methods = INJECT)
+		our_plant.reagents.trans_to(living_target, injecting_amount, methods = INJECT, zone_override = ran_zone())
 		to_chat(target, span_danger("You are pricked by [our_plant]!"))
 		log_combat(our_plant, living_target, "pricked and attempted to inject reagents from [our_plant] to [living_target]. Last touched by: [our_plant.fingerprintslast].")
 		our_plant.investigate_log("pricked and injected [key_name(living_target)] and injected [injecting_amount] reagents at [AREACOORD(living_target)]. Last touched by: [our_plant.fingerprintslast].", INVESTIGATE_BOTANY)
@@ -838,8 +842,7 @@
 	if(!.)
 		return
 
-	googly = mutable_appearance('icons/obj/service/hydroponics/harvest.dmi', "eyes")
-	googly.appearance_flags = RESET_COLOR
+	googly = mutable_appearance('icons/obj/service/hydroponics/harvest.dmi', "eyes", appearance_flags = RESET_COLOR|KEEP_APART)
 	our_plant.add_overlay(googly)
 
 /// Makes the plant embed on thrown impact.

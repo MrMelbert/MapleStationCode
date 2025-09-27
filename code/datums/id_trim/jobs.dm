@@ -570,7 +570,7 @@
 		ACCESS_HOS,
 	)
 	job = /datum/job/detective
-	honorifics = list("Detective", "Investigator")
+	honorifics = list("Detective", "Investigator", "Sheriff")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/detective/refresh_trim_access()
@@ -582,6 +582,9 @@
 	// Config check for if sec has maint access.
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
+
+/datum/id_trim/job/detective/sheriff
+	assignment = "Sheriff"
 
 /datum/id_trim/job/geneticist
 	assignment = "Geneticist"
@@ -1284,6 +1287,36 @@
 	job = /datum/job/station_engineer
 	honorifics = list("Engineer")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
+
+/datum/id_trim/job/veteran_advisor
+	assignment = "Veteran Security Advisor"
+	trim_state = "trim_veteranadvisor"
+	department_color = COLOR_SECURITY_RED
+	subdepartment_color = COLOR_COMMAND_BLUE
+	sechud_icon_state = SECHUD_VETERAN_ADVISOR
+	minimal_access = list(
+		ACCESS_COMMAND,
+		ACCESS_BRIG,
+		ACCESS_BRIG_ENTRANCE,
+		ACCESS_COURT,
+		ACCESS_MECH_SECURITY,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_SECURITY,
+		ACCESS_WEAPONS,
+	)
+	extra_access = list()
+	template_access = list()
+	job = /datum/job/veteran_advisor
+
+/datum/id_trim/job/veteran_advisor/refresh_trim_access()
+	. = ..()
+
+	if(!.)
+		return
+
+	// Config check for if sec has maint access.
+	if(CONFIG_GET(flag/security_has_maint_access))
+		access |= list(ACCESS_MAINT_TUNNELS)
 
 /datum/id_trim/job/virologist
 	assignment = "Virologist"

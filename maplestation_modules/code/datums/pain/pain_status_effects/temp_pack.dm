@@ -77,7 +77,7 @@
 		owner.adjust_body_temperature(temperature_change, owner.bodytemp_cold_damage_limit + 5 KELVIN, owner.bodytemp_heat_damage_limit - 5 KELVIN)
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart && prob(66))
-		owner.cause_pain(targeted_zone, -pain_heal_amount)
+		owner.heal_pain(pain_heal_amount, targeted_zone)
 		if(prob(10) && held_bodypart.get_modified_pain() > 0)
 			to_chat(owner, span_italics(span_notice("[pressed_item] dulls the pain in your [held_bodypart.name] a little.")))
 

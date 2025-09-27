@@ -71,6 +71,40 @@
 	QDEL_NULL(weight_action)
 	return ..()
 
+/obj/structure/weightmachine/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_buckled == buckler)
+		being_buckled.visible_message(
+			span_notice("[buckler] lays down on [src]."),
+			span_notice("You lay down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_buckled.visible_message(
+			span_notice("[buckler] lays [being_buckled] down on [src]."),
+			span_notice("[buckler] lays you down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/weightmachine/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] gets up from [src]."),
+			span_notice("You get up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] pulls [being_unbuckled] up from [src]."),
+			span_notice("[unbuckler] pulls you up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
 /obj/structure/weightmachine/buckle_mob(mob/living/buckled, force, check_loc)
 	. = ..()
 	weight_action.Grant(buckled)
@@ -109,7 +143,7 @@
 
 	if(do_after(user, 8 SECONDS, src) && user.has_gravity())
 		// with enough dedication, even clowns can overcome their handicaps
-		var/clumsy_chance = 30 - (user.mind.get_skill_level(/datum/skill/fitness) * 5)
+		var/clumsy_chance = 30 - (user.mind.get_skill_level(/datum/skill/athletics) * 5)
 		if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(clumsy_chance))
 			playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 			to_chat(user, span_warning("Your hand slips, causing the [name] to smash you!"))
@@ -133,8 +167,9 @@
 		user.adjust_nutrition(-5) // feel the burn
 
 		if(iscarbon(user))
+			var/gravity_modifier = user.has_gravity() > STANDARD_GRAVITY ? 2 : 1
 			// remember the real xp gain is from sleeping after working out
-			user.mind.adjust_experience(/datum/skill/fitness, WORKOUT_XP)
+			user.mind.adjust_experience(/datum/skill/athletics, WORKOUT_XP * gravity_modifier)
 			user.apply_status_effect(/datum/status_effect/exercised, EXERCISE_STATUS_DURATION)
 
 	end_workout()
@@ -151,7 +186,8 @@
 	if(!has_buckled_mobs())
 		end_workout()
 		return FALSE
-	var/mutable_appearance/workout = mutable_appearance(icon, "[base_icon_state]-o", ABOVE_MOB_LAYER)
+	var/mutable_appearance/workout = mutable_appearance(icon, "[base_icon_state]-o", ABOVE_MOB_LAYER, src, appearance_flags = KEEP_APART)
+	workout = color_atom_overlay(workout)
 	flick_overlay_view(workout, 0.8 SECONDS)
 	flick("[base_icon_state]-u", src)
 	var/mob/living/user = buckled_mobs[1]
@@ -164,10 +200,23 @@
 	if(user.getStaminaLoss() > 100)
 		end_workout()
 		return TRUE
+
+	var/affected_gravity = user.has_gravity()
+	if (!affected_gravity)
+		return TRUE // No weight? I could do this all day
+	var/gravity_modifier = affected_gravity > STANDARD_GRAVITY ? 0.75 : 1
 	// the amount of workouts you can do before you hit stamcrit
-	var/workout_reps = total_workout_reps[user.mind.get_skill_level(/datum/skill/fitness)]
+	var/workout_reps = total_workout_reps[user.mind.get_skill_level(/datum/skill/athletics)] * gravity_modifier
 	// total stamina drain of 1 workout calculated based on the workout length
 	var/stamina_exhaustion = FLOOR(user.maxHealth / workout_reps / WORKOUT_LENGTH, 0.1)
+
+	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		stamina_exhaustion *= potential_spine.athletics_boost_multiplier
+
+	if(HAS_TRAIT(user, TRAIT_STRENGTH)) //The strong get reductions to stamina damage taken while exercising
+		stamina_exhaustion *= 0.5
+
 	user.adjustStaminaLoss(stamina_exhaustion * seconds_per_tick)
 
 	return TRUE

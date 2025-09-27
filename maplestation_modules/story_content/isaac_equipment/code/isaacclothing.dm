@@ -4,12 +4,17 @@
 	icon = 'maplestation_modules/story_content/isaac_equipment/icons/isaacclothing_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/isaac_equipment/icons/isaacclothing_worn.dmi'
 	icon_state = "paintersuit"
+	body_parts_covered = CHEST|GROIN|ARMS
+	alternate_worn_layer = ABOVE_SHOES_LAYER
 	inhand_icon_state = null
 
 /datum/loadout_item/under/formal/isaac
 	name = "Painter's Suit"
 	item_path = /obj/item/clothing/under/jumpsuit/paintersuit
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/isaac/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/shoes/elvenboots
 	name = "elven boots"

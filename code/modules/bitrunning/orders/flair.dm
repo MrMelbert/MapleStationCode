@@ -32,7 +32,7 @@
 	cost_per_order = 1000
 
 /datum/orderable_item/bitrunning_flair/trenchcoat
-	item_path = /obj/item/clothing/suit/jacket/trenchcoat
+	item_path = /obj/item/clothing/suit/jacket/leather_trenchcoat
 	cost_per_order = 1000
 
 /datum/orderable_item/bitrunning_flair/jackboots

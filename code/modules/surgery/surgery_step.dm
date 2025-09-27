@@ -305,9 +305,13 @@
 	target.cause_pain(target_zone, pain_amount, pain_type)
 	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
 		return
+	// Replace this check with localized anesthesia in the future
+	var/obj/item/bodypart/checked_bodypart = target.get_bodypart(target_zone)
+	if(checked_bodypart && checked_bodypart.bodypart_pain_modifier * target.pain_controller.pain_modifier < 0.5)
+		return
 	target.add_mood_event("surgery", surgery_moodlet)
 	target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
-	target.adjust_traumatic_shock(pain_amount * 0.33)
+	target.adjust_traumatic_shock(pain_amount * 0.33 * target.pain_controller.pain_modifier)
 	target.pain_emote()
 	target.pain_message(span_userdanger(pain_message))
 

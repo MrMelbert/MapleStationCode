@@ -13,9 +13,12 @@
 
 /datum/loadout_item/shoes/New()
 	. = ..()
-	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
+	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & DIGITIGRADE_VARIATIONS)
+
+/datum/loadout_item/shoes/get_item_information()
+	. = ..()
 	if(supports_digitigrade)
-		LAZYADD(additional_displayed_text, "Digitigrade")
+		.[FA_ICON_DRAGON] = "Supports digitigrade legs"
 
 // This is snowflake but digitigrade is in general
 // Need to handle shoes that don't fit digitigrade being selected
@@ -50,12 +53,16 @@
 	item_path = /obj/item/clothing/shoes/winterboots
 
 /datum/loadout_item/shoes/work_boots
-	name = "Work Boots"
+	name = "Work Boots (Tan)"
 	item_path = /obj/item/clothing/shoes/workboots
 
 /datum/loadout_item/shoes/mining_boots
 	name = "Mining Boots"
 	item_path = /obj/item/clothing/shoes/workboots/mining
+
+/datum/loadout_item/shoes/black_work_boots
+	name = "Work Boots (Black)"
+	item_path = /obj/item/clothing/shoes/workboots/black
 
 /datum/loadout_item/shoes/black_laceup
 	name = "Black Laceup Shoes"
@@ -100,3 +107,22 @@
 /datum/loadout_item/shoes/fancy_heels
 	name = "Fancy High Heels"
 	item_path = /obj/item/clothing/shoes/heels/fancy
+
+/datum/loadout_item/shoes/barefoot
+	name = "Barefoot"
+	item_path = /obj/item/clothing/shoes/barefoot
+	ui_icon = 'icons/mob/landmarks.dmi'
+	ui_icon_state = "x"
+
+/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, datum/preferences/preference_source, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+	return
+
+/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+	outfit.shoes = null
+
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL

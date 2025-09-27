@@ -230,7 +230,7 @@
 	. = ..()
 	// Would've thought they already get this... but I guess not?
 	var/obj/item/organ/internal/tongue/lizard/silver/the_silver_thing = new(human)
-	the_silver_thing.Insert(human, TRUE, FALSE)
+	the_silver_thing.Insert(human, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 // LIZARD CODE END
 
@@ -342,7 +342,8 @@
 /obj/item/organ/internal/lungs/silverscale
 	name = "silverscale lungs"
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "lungs"
+	icon_state = "/obj/item/organ/internal/lungs/silverscale"
+	post_init_icon_state = "lungs"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = "#eeeeee#eeeeee#eeeeee"
 

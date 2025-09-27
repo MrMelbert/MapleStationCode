@@ -1,6 +1,6 @@
 /datum/job/prisoner
 	title = JOB_PRISONER
-	description = "Keep yourself occupied in permabrig."
+	description = "Serve your sentence, keep yourself busy through labor, avoid dying of boredom."
 	department_head = list("The Security Team")
 	faction = FACTION_STATION
 	total_positions = 0

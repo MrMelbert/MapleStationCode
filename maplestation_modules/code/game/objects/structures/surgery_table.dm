@@ -130,8 +130,6 @@
 		return FALSE
 	if(!istype(who.wear_mask) || !(who.wear_mask.clothing_flags & MASKINTERNALS))
 		return FALSE
-	if(!who.is_mouth_covered())
-		return FALSE // Must have an internals mask + mouth covered
 	return TRUE
 
 /// Called when the safety triggers and attempts to unhook the patient from the tank.
@@ -150,7 +148,10 @@
 	PRIVATE_PROC(TRUE)
 	if(isnull(attached_tank) || !can_have_tank_opened(new_patient))
 		return
+	ASSERT(istype(new_patient.wear_mask))
 
+	if (new_patient.wear_mask.up)
+		new_patient.wear_mask.adjust_visor(src)
 	new_patient.open_internals(attached_tank, TRUE)
 	patient_set_at = world.time
 	update_appearance(UPDATE_OVERLAYS)

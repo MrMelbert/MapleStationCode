@@ -102,6 +102,15 @@
 
 
 //--other misc--
+//CE labcoat
+//A CE labcoat that is black and white, fits the modsuit and other white CE items with style. Volkan version: No gold/yellow.
+//TODO: Make a generic version which has gold in it.
+/obj/item/clothing/suit/toggle/labcoat/ce/volkan
+	name = "modified chief engineer's labcoat"
+	desc = "Has black panels unlike the standard labcoat model. All gold patchwork has been removed compared to the standard CE labcoat."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.
+	worn_icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi'
+
 //Imprint Key
 //A key used to imprint a Volkan bot to whoever has it.
 /obj/item/circuitboard/volkan/imprint_key
@@ -116,7 +125,7 @@
 
 ///Volkan's umbrella. Stops radiation.
 /obj/item/umbrella/volkan
-	name = "Volkan's umbrella"
+	name = "radiation shielded umbrella"
 	desc = "A very thick, almost metallic umbrella. It has a dark black plasticky rim on the edge."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas.dmi'
 	icon_state = "umbrella_volkan"
@@ -148,10 +157,6 @@
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
-/datum/loadout_item/pocket_items/rad_umbrella
-	name = "Umbrella (Radiation Shielded)"
-	item_path = /obj/item/umbrella/volkan
-	additional_displayed_text = list("Character Item")
 
 //---------------------cool boxes!-----------------------
 //Unfoldable Box.

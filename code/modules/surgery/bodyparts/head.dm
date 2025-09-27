@@ -43,6 +43,8 @@
 	var/hair_alpha = 255
 	/// Is the hair currently hidden by something?
 	var/hair_hidden = FALSE
+	/// Lazy initialized hashset of all hair masks that should be applied
+	var/list/hair_masks
 
 	///Facial hair style
 	var/facial_hairstyle = "Shaved"
@@ -196,13 +198,9 @@
 
 	return
 
-/obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
-	var/mob/headholder = holder
-	if(istype(headholder))
-		headholder.log_talk(message, LOG_SAY, tag = "beheaded talk")
-
-	say(message, language, sanitize = FALSE)
-	return NOPASS
+/obj/item/bodypart/head/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/toy_talk)
 
 /obj/item/bodypart/head/GetVoice()
 	return "The head of [real_name]"

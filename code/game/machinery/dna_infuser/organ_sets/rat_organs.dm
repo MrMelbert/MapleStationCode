@@ -19,9 +19,10 @@
 	eye_color_left = "#000000"
 	eye_color_right = "#000000"
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "eyes"
 	iris_overlays = FALSE
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/eyes/night_vision/rat"
+	post_init_icon_state = "eyes"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = RAT_COLORS
 	low_light_cutoff = list(16, 11, 0)
@@ -39,8 +40,9 @@
 	desc = "Rat DNA infused into what was once a normal stomach."
 	disgust_metabolism = 3
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "stomach"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/stomach/rat"
+	post_init_icon_state = "stomach"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = RAT_COLORS
 	hunger_modifier = 10
@@ -54,8 +56,9 @@
 /obj/item/organ/internal/heart/rat
 	name = "mutated rat-heart"
 	desc = "Rat DNA infused into what was once a normal heart."
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "heart"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/heart/rat"
+	post_init_icon_state = "heart"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = RAT_COLORS
 
@@ -87,15 +90,21 @@
 /obj/item/organ/internal/tongue/rat
 	name = "mutated rat-tongue"
 	desc = "Rat DNA infused into what was once a normal tongue."
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "tongue"
 	say_mod = "squeaks"
 	modifies_speech = TRUE
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/tongue/rat"
+	post_init_icon_state = "tongue"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = RAT_COLORS
 	liked_foodtypes = DAIRY //mmm, cheese. doesn't especially like anything else
 	disliked_foodtypes = NONE //but a rat can eat anything without issue
 	toxic_foodtypes = NONE
+	speech_sound_list = list(
+		'sound/creatures/mousesqueek.ogg' = 100,
+	)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null
 
 /obj/item/organ/internal/tongue/rat/Initialize(mapload)
 	. = ..()
@@ -104,8 +113,10 @@
 
 /obj/item/organ/internal/tongue/rat/modify_speech(datum/source, list/speech_args)
 	. = ..()
-	var/message = lowertext(speech_args[SPEECH_MESSAGE])
-	if(message == "hi" || message == "hi.")
+	if(!check_holidays(APRIL_FOOLS))
+		return
+	var/message = LOWER_TEXT(speech_args[SPEECH_MESSAGE])
+	if(message == "hi" || message == "hi." || message == "hi!")
 		speech_args[SPEECH_MESSAGE] = "Cheesed to meet you!"
 	if(message == "hi?")
 		speech_args[SPEECH_MESSAGE] = "Um... cheesed to meet you?"
@@ -123,6 +134,8 @@
 	INVOKE_ASYNC(src, PROC_REF(its_on_the_mouse), offerer, taker)
 
 /obj/item/organ/internal/tongue/rat/proc/its_on_the_mouse(mob/living/carbon/offerer, mob/living/taker)
+	if(!check_holidays(APRIL_FOOLS))
+		return
 	offerer.say("For you, it's on the mouse.")
 	taker.add_mood_event("it_was_on_the_mouse", /datum/mood_event/it_was_on_the_mouse)
 

@@ -41,7 +41,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 //Instead of just deleting our equipment, we save what we can and reinsert it into SSwardrobe's store
 //Hopefully this makes preference reloading not the worst thing ever
 /mob/living/carbon/human/dummy/delete_equipment()
-	var/list/items_to_check = get_all_worn_items() + held_items
+	var/list/items_to_check = get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD)
 	var/list/to_nuke = list() //List of items queued for deletion, can't qdel them before iterating their contents in case they hold something
 	///Travel to the bottom of the contents chain, expanding it out
 	for(var/i = 1; i <= length(items_to_check); i++) //Needs to be a c style loop since it can expand
@@ -74,6 +74,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/proc/wipe_state()
 	delete_equipment()
 	cut_overlays(TRUE)
+	update_lips(null)
 
 /mob/living/carbon/human/dummy/setup_human_dna()
 	randomize_human_normie(src, randomize_mutations = FALSE)
@@ -91,24 +92,24 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	target.dna.features["lizard_horn_color"] = COLOR_VIBRANT_LIME // NON-MODULE CHANGE
 	target.dna.features["ethcolor"] = COLOR_WHITE
-	target.dna.features["body_markings"] = get_consistent_feature_entry(GLOB.body_markings_list)
-	target.dna.features["ears"] = get_consistent_feature_entry(GLOB.ears_list)
-	target.dna.features["frills"] = get_consistent_feature_entry(GLOB.frills_list)
-	target.dna.features["horns"] = get_consistent_feature_entry(GLOB.horns_list)
-	target.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
-	target.dna.features["moth_markings"] = get_consistent_feature_entry(GLOB.moth_markings_list)
-	target.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.moth_wings_list)
-	target.dna.features["snout"] = get_consistent_feature_entry(GLOB.snouts_list)
-	target.dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
-	target.dna.features["tail_cat"] = get_consistent_feature_entry(GLOB.tails_list_human) // it's a lie
-	target.dna.features["tail_lizard"] = get_consistent_feature_entry(GLOB.tails_list_lizard)
-	target.dna.features["tail_monkey"] = get_consistent_feature_entry(GLOB.tails_list_monkey)
-	target.dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
-	target.dna.features["head_tentacles"] = get_consistent_feature_entry(GLOB.head_tentacles_list) // NON-MODULE CHANGE
-	target.dna.features["arm_wings"] = get_consistent_feature_entry(GLOB.arm_wings_list) // NON-MODULE CHANGE
-	target.dna.features["tail_avian"] = get_consistent_feature_entry(GLOB.tails_list_avian) // NON-MODULE CHANGE
-	target.dna.features["ears_avian"] = get_consistent_feature_entry(GLOB.avian_ears_list) // NON-MODULE CHANGE
-	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(GLOB.synth_head_cover_list) // NON-MODULE CHANGE
+	target.dna.features["body_markings"] = get_consistent_feature_entry(SSaccessories.body_markings_list)
+	target.dna.features["ears"] = get_consistent_feature_entry(SSaccessories.ears_list)
+	target.dna.features["frills"] = get_consistent_feature_entry(SSaccessories.frills_list)
+	target.dna.features["horns"] = get_consistent_feature_entry(SSaccessories.horns_list)
+	target.dna.features["moth_antennae"] = get_consistent_feature_entry(SSaccessories.moth_antennae_list)
+	target.dna.features["moth_markings"] = get_consistent_feature_entry(SSaccessories.moth_markings_list)
+	target.dna.features["moth_wings"] = get_consistent_feature_entry(SSaccessories.moth_wings_list)
+	target.dna.features["snout"] = get_consistent_feature_entry(SSaccessories.snouts_list)
+	target.dna.features["spines"] = get_consistent_feature_entry(SSaccessories.spines_list)
+	target.dna.features["tail_cat"] = get_consistent_feature_entry(SSaccessories.tails_list_human) // it's a lie
+	target.dna.features["tail_lizard"] = get_consistent_feature_entry(SSaccessories.tails_list_lizard)
+	target.dna.features["tail_monkey"] = get_consistent_feature_entry(SSaccessories.tails_list_monkey)
+	target.dna.features["pod_hair"] = get_consistent_feature_entry(SSaccessories.pod_hair_list)
+	target.dna.features["head_tentacles"] = get_consistent_feature_entry(SSaccessories.head_tentacles_list) // NON-MODULE CHANGE
+	target.dna.features["arm_wings"] = get_consistent_feature_entry(SSaccessories.arm_wings_list) // NON-MODULE CHANGE
+	target.dna.features["tail_avian"] = get_consistent_feature_entry(SSaccessories.tails_list_avian) // NON-MODULE CHANGE
+	target.dna.features["ears_avian"] = get_consistent_feature_entry(SSaccessories.avian_ears_list) // NON-MODULE CHANGE
+	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(SSaccessories.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly

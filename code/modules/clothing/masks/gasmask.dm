@@ -26,25 +26,25 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	///Type of filter that spawns on roundstart
 	var/starting_filter_type = /obj/item/gas_filter
 	///Cigarette in the mask
-	var/obj/item/clothing/mask/cigarette/cig
+	var/obj/item/cigarette/cig
 	///How much does this mask affect fishing difficulty
 	var/fishing_modifier = 2
 	///Applies clothing_dirt component to the pepperproof mask if true
 	var/pepper_tint = TRUE
+	///icon_state used by clothing_dirt
+	var/dirt_state = "gas_dirt"
 
 /datum/armor/mask_gas
 	bio = 100
-
-/obj/item/clothing/mask/gas/worn_overlays(mutable_appearance/standing, isinhands)
-	. = ..()
-	if(!isinhands && cig)
-		. += cig.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = 'icons/mob/clothing/mask.dmi')
 
 /obj/item/clothing/mask/gas/Initialize(mapload)
 	. = ..()
 
 	if((flags_cover & PEPPERPROOF) && pepper_tint)
 		AddComponent(/datum/component/clothing_dirt)
+
+	if(fishing_modifier)
+		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
 
 	if(!max_filters || !starting_filter_type)
 		return
@@ -54,6 +54,11 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		LAZYADD(gas_filters, inserted_filter)
 	has_filter = TRUE
 
+/obj/item/clothing/mask/gas/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file)
+	. = ..()
+	if(!isinhands && cig)
+		. += cig.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = 'icons/mob/clothing/mask.dmi')
+
 /obj/item/clothing/mask/gas/Destroy()
 	QDEL_LAZYLIST(gas_filters)
 	return..()
@@ -62,11 +67,11 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	cig?.equipped(equipee, slot)
 	return ..()
 
-/obj/item/clothing/mask/gas/adjustmask(mob/living/carbon/user)
-	if(isnull(cig))
-		return ..()
-	balloon_alert(user, "there's a cig in the way!")
-
+/obj/item/clothing/mask/gas/adjust_visor(mob/living/user)
+	if(!isnull(cig))
+		balloon_alert(user, "cig in the way!")
+		return FALSE
+	return ..()
 
 /obj/item/clothing/mask/gas/examine(mob/user)
 	. = ..()
@@ -89,7 +94,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 /obj/item/clothing/mask/gas/attackby(obj/item/tool, mob/user)
 	var/valid_wearer = ismob(loc)
 	var/mob/wearer = loc
-	if(istype(tool, /obj/item/clothing/mask/cigarette))
+	if(istype(tool, /obj/item/cigarette))
 		if(max_filters <= 0 || cig)
 			balloon_alert(user, "can't hold that!")
 			return ..()
@@ -209,13 +214,19 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	flash_protect = FLASH_PROTECTION_WELDER
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT*2, /datum/material/glass=SHEET_MATERIAL_AMOUNT)
 	tint = 2
+	toggle_message = "You pull the visor down"
+	alt_toggle_message = "You push the visor up"
 	armor_type = /datum/armor/gas_welding
 	actions_types = list(/datum/action/item_action/toggle)
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDESNOUT
-	flags_cover = MASKCOVERSEYES
+	flags_cover = MASKCOVERSEYES|MASKCOVERSMOUTH|PEPPERPROOF
 	visor_flags_inv = HIDEEYES
-	visor_flags_cover = MASKCOVERSEYES
+	visor_flags_cover = MASKCOVERSEYES|MASKCOVERSMOUTH|PEPPERPROOF
+	visor_vars_to_toggle = VISOR_FLASHPROTECT | VISOR_TINT
 	resistance_flags = FIRE_PROOF
+	clothing_flags = parent_type::clothing_flags | INTERNALS_ADJUST_EXEMPT
+	fishing_modifier = 8
+	dirt_state = "welding_dirt"
 
 /datum/armor/gas_welding
 	melee = 10
@@ -224,10 +235,22 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	acid = 55
 
 /obj/item/clothing/mask/gas/welding/attack_self(mob/user)
-	if(weldingvisortoggle(user))
-		playsound(src, 'sound/mecha/mechmove03.ogg', 50, TRUE)
+	adjust_visor(user)
 
-/obj/item/clothing/mask/gas/welding/up
+/obj/item/clothing/mask/gas/welding/adjust_visor(mob/living/user)
+	. = ..()
+	if(.)
+		playsound(src, up ? SFX_VISOR_UP : SFX_VISOR_DOWN, 50, TRUE)
+	if(!fishing_modifier)
+		return
+	if(up)
+		qdel(GetComponent(/datum/component/adjust_fishing_difficulty))
+	else
+		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
+
+/obj/item/clothing/mask/gas/welding/update_icon_state()
+	. = ..()
+	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 
 /obj/item/clothing/mask/gas/welding/up/Initialize(mapload)
 	. = ..()
@@ -238,11 +261,12 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
 	name = "plague doctor mask"
-	desc = "A modernised version of the classic design, this mask will not only filter out toxins but it can also be connected to an air supply."
+	desc = "A modernised version of the classic design, this mask will not only protect you from exposure to the Pestilence but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT|HIDEHAIR
 	inhand_icon_state = "gas_mask"
 	clothing_flags = BLOCK_GAS_SMOKE_EFFECT|MASKINTERNALS
+	dirt_state = "plague_dirt"
 
 /obj/item/clothing/mask/gas/syndicate
 	name = "syndicate mask"
@@ -252,6 +276,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	strip_delay = 60
 	w_class = WEIGHT_CLASS_SMALL
+	fishing_modifier = 0
 	pepper_tint = FALSE
 
 /obj/item/clothing/mask/gas/clown_hat
@@ -266,10 +291,11 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	dog_fashion = /datum/dog_fashion/head/clown
 	var/list/clownmask_designs = list()
 	voice_filter = null // performer masks expect to be talked through
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/clown_hat/plasmaman
 	starting_filter_type = /obj/item/gas_filter/plasmaman
@@ -311,6 +337,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	righthand_file = 'icons/mob/inhands/clothing/hats_righthand.dmi'
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/mime
 	name = "mime mask"
@@ -321,8 +348,9 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	species_exception = list(/datum/species/golem)
+	fishing_modifier = 0
 	var/list/mimemask_designs = list()
 
 /obj/item/clothing/mask/gas/mime/plasmaman
@@ -366,6 +394,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	inhand_icon_state = "owl_mask"
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/sexymime
 	name = "sexy mime mask"
@@ -376,6 +405,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
 	species_exception = list(/datum/species/golem)
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/cyborg
 	name = "cyborg visor"
@@ -383,6 +413,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	icon_state = "death"
 	resistance_flags = FLAMMABLE
 	flags_cover = MASKCOVERSEYES
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"
@@ -392,6 +423,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	clothing_flags = MASKINTERNALS
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -1
 
 /obj/item/clothing/mask/gas/carp
 	name = "carp mask"
@@ -399,6 +431,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	icon_state = "carp_mask"
 	inhand_icon_state = null
 	flags_cover = MASKCOVERSEYES
+	fishing_modifier = -3
 
 /obj/item/clothing/mask/gas/tiki_mask
 	name = "tiki mask"
@@ -409,8 +442,9 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	resistance_flags = FLAMMABLE
 	flags_cover = MASKCOVERSEYES
 	max_integrity = 100
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	dog_fashion = null
+	fishing_modifier = -2
 	var/list/tikimask_designs = list()
 
 /obj/item/clothing/mask/gas/tiki_mask/Initialize(mapload)
@@ -452,6 +486,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	inhand_icon_state = "gas_atmos"
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR|HIDESNOUT
+	dirt_state = null
+	fishing_modifier = -2
 
 /obj/item/clothing/mask/gas/prop
 	name = "prop gas mask"
@@ -461,6 +497,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	clothing_flags = NONE
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = FLAMMABLE
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/atmosprop
 	name = "prop atmospheric gas mask"
@@ -471,11 +508,14 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	clothing_flags = NONE
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = FLAMMABLE
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/driscoll
 	name = "driscoll mask"
 	desc = "Great for train hijackings. Works like a normal full face gas mask, but won't conceal your identity."
 	icon_state = "driscoll_mask"
 	flags_inv = HIDEFACIALHAIR
+	flags_cover = MASKCOVERSMOUTH
 	w_class = WEIGHT_CLASS_NORMAL
 	inhand_icon_state = null
+	fishing_modifier = 0

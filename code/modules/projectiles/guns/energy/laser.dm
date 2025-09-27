@@ -16,8 +16,8 @@
 		return
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/xraylaser, /datum/crafting_recipe/hellgun, /datum/crafting_recipe/ioncarbine)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -34,6 +34,7 @@
 	icon_state = "retro"
 	desc = "An older model of the basic lasergun, no longer used by Nanotrasen's private security or military forces. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	ammo_x_offset = 3
+	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/retro)
 
 /obj/item/gun/energy/laser/carbine
 	name = "laser carbine"
@@ -138,6 +139,7 @@
 	icon_state = "scatterlaser"
 	range = 255
 	damage = 6
+	hitscan = FALSE
 
 /obj/projectile/beam/laser/accelerator/Range()
 	..()

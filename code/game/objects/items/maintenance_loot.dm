@@ -45,3 +45,4 @@
 	. = ..()
 	var/initial_percent = rand(40, 60) / 100 // 250kJ to 350kJ
 	charge = initial_percent * maxcharge
+	ADD_TRAIT(src, TRAIT_FISHING_BAIT, INNATE_TRAIT)

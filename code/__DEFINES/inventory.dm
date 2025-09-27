@@ -106,6 +106,10 @@ DEFINE_BITFIELD(no_equip_flags, list(
 #define HIDESNOUT (1<<12)
 ///hides mutant/moth wings, does not apply to functional wings
 #define HIDEMUTWINGS (1<<13)
+///hides belts and riggings
+#define HIDEBELT (1<<14)
+///hides antennae
+#define HIDEANTENNAE (1<<15)
 
 //bitflags for clothing coverage - also used for limbs
 #define HEAD (1<<0)
@@ -152,10 +156,10 @@ DEFINE_BITFIELD(no_equip_flags, list(
 #define CLOTHING_DIGITIGRADE_VARIATION (1<<1)
 ///The sprite works fine for digitigrade legs as-is.
 #define CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON (1<<2)
-/// When worn by a mob with digitigrade, apply a filter
-#define CLOTHING_DIGITIGRADE_FILTER (1<<3)
 /// Auto-generates the leg portion of the sprite with GAGS
-#define CLOTHING_DIGITIGRADE_MASK (1<<4)
+#define CLOTHING_DIGITIGRADE_MASK (1<<3)
+/// When worn by a mob with digitigrade, apply a filter
+#define CLOTHING_DIGITIGRADE_FILTER (1<<4)
 
 /// All variation flags which render correctly on a digitigrade leg setup
 #define DIGITIGRADE_VARIATIONS (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_FILTER|CLOTHING_DIGITIGRADE_MASK)
@@ -246,6 +250,26 @@ GLOBAL_LIST_INIT(chaplain_suit_allowed, list(
 	/obj/item/tank/internals/plasmaman,
 	/obj/item/gun/ballistic/bow/divine,
 	/obj/item/gun/ballistic/revolver/chaplain,
+))
+
+//Allowed list for all mining suits
+
+GLOBAL_LIST_INIT(mining_suit_allowed, list(
+	/obj/item/t_scanner/adv_mining_scanner,
+	/obj/item/melee/cleaving_saw,
+	/obj/item/climbing_hook,
+	/obj/item/flashlight,
+//	/obj/item/grapple_gun, // Non-module change : don't have this yet
+	/obj/item/tank/internals,
+	/obj/item/gun/energy/recharge/kinetic_accelerator,
+	/obj/item/kinetic_crusher,
+	/obj/item/knife,
+	/obj/item/mining_scanner,
+	/obj/item/organ/internal/monster_core,
+	/obj/item/storage/bag/ore,
+	/obj/item/pickaxe,
+	/obj/item/resonator,
+	/obj/item/spear,
 ))
 
 /// List of all "tools" that can fit into belts or work from toolboxes

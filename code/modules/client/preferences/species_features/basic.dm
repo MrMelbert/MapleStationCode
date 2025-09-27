@@ -1,21 +1,21 @@
 /proc/generate_icon_with_head_accessory(datum/sprite_accessory/sprite_accessory, y_offset = 0)
-	var/static/icon/head_icon
+	var/static/datum/universal_icon/head_icon
 	if (isnull(head_icon))
-		head_icon = icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m")
-		head_icon.Blend(skintone2hex("caucasian1"), ICON_MULTIPLY)
+		head_icon = uni_icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m")
+		head_icon.blend_color(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
-	var/icon/final_icon = new(head_icon)
-	if (!isnull(sprite_accessory))
+	var/datum/universal_icon/final_icon = head_icon.copy()
+	if (!isnull(sprite_accessory) && sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
 		ASSERT(istype(sprite_accessory))
 
-		var/icon/head_accessory_icon = icon(sprite_accessory.icon, sprite_accessory.icon_state)
+		var/datum/universal_icon/head_accessory_icon = uni_icon(sprite_accessory.icon, sprite_accessory.icon_state)
 		if(y_offset)
-			head_accessory_icon.Shift(NORTH, y_offset)
-		head_accessory_icon.Blend(COLOR_DARK_BROWN, ICON_MULTIPLY)
-		final_icon.Blend(head_accessory_icon, ICON_OVERLAY)
+			head_accessory_icon.shift(NORTH, y_offset)
+		head_accessory_icon.blend_color(COLOR_DARK_BROWN, ICON_MULTIPLY)
+		final_icon.blend_icon(head_accessory_icon, ICON_OVERLAY)
 
-	final_icon.Crop(10, 19, 22, 31)
-	final_icon.Scale(32, 32)
+	final_icon.crop(10, 19, 22, 31)
+	final_icon.scale(32, 32)
 
 	return final_icon
 
@@ -61,10 +61,10 @@
 	relevant_head_flag = HEAD_FACIAL_HAIR
 
 /datum/preference/choiced/facial_hairstyle/init_possible_values()
-	return assoc_to_keys_features(GLOB.facial_hairstyles_list)
+	return assoc_to_keys_features(SSaccessories.facial_hairstyles_list)
 
 /datum/preference/choiced/facial_hairstyle/icon_for(value)
-	return generate_icon_with_head_accessory(GLOB.facial_hairstyles_list[value])
+	return generate_icon_with_head_accessory(SSaccessories.facial_hairstyles_list[value])
 
 /datum/preference/choiced/facial_hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_facial_hairstyle(value, update = FALSE)
@@ -80,7 +80,7 @@
 		return ..()
 
 	var/picked_beard = random_facial_hairstyle(gender)
-	var/datum/sprite_accessory/beard_style = GLOB.facial_hairstyles_list[picked_beard]
+	var/datum/sprite_accessory/beard_style = SSaccessories.facial_hairstyles_list[picked_beard]
 	if(!beard_style || !beard_style.natural_spawn || beard_style.locked) // Invalid, go with god(bald)
 		return ..()
 
@@ -115,7 +115,7 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
-	return assoc_to_keys_features(GLOB.facial_hair_gradients_list)
+	return assoc_to_keys_features(SSaccessories.facial_hair_gradients_list)
 
 /datum/preference/choiced/facial_hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_facial_hair_gradient_style(new_style = value, update = FALSE)
@@ -167,10 +167,10 @@
 	return ..() || (/datum/quirk/item_quirk/bald::name in preferences.all_quirks)
 
 /datum/preference/choiced/hairstyle/init_possible_values()
-	return assoc_to_keys_features(GLOB.hairstyles_list)
+	return assoc_to_keys_features(SSaccessories.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/icon_for(value)
-	var/datum/sprite_accessory/hair/hairstyle = GLOB.hairstyles_list[value]
+	var/datum/sprite_accessory/hair/hairstyle = SSaccessories.hairstyles_list[value]
 	return generate_icon_with_head_accessory(hairstyle, hairstyle?.y_offset)
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
@@ -187,7 +187,7 @@
 		return ..()
 
 	var/picked_hair = random_hairstyle(gender)
-	var/datum/sprite_accessory/hair_style = GLOB.hairstyles_list[picked_hair]
+	var/datum/sprite_accessory/hair_style = SSaccessories.hairstyles_list[picked_hair]
 	if(!hair_style || !hair_style.natural_spawn || hair_style.locked) // Invalid, go with god(bald)
 		return ..()
 
@@ -209,7 +209,7 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/hair_gradient/init_possible_values()
-	return assoc_to_keys_features(GLOB.hair_gradients_list)
+	return assoc_to_keys_features(SSaccessories.hair_gradients_list)
 
 /datum/preference/choiced/hair_gradient/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_hair_gradient_style(new_style = value, update = FALSE)

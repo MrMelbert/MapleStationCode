@@ -1,5 +1,5 @@
 /// List of huds we give to people wearing Wraith Specs.
-#define SPEC_HUDS list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED)
+#define SPEC_HUDS list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH)
 
 // The Wraith Specs.
 // Glasses that give you HUDs, night vision, x-ray, and nearsighted correction.
@@ -21,7 +21,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle))
+	visor_toggling()
 
 /obj/item/clothing/glasses/wraith_specs/examine(mob/user)
 	. = ..()
@@ -29,9 +29,8 @@
 		. += span_brass("Grants the wearer diagnostic hud, medical hud, night vision, and x-ray vision. Also corrects nearsighted-ness.")
 		. += span_brasstalics("Examining things only visible to you via x-ray vision will harm your eyes.")
 
-/obj/item/clothing/glasses/wraith_specs/attack_self(mob/user, modifiers)
-	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle), user)
+/obj/item/clothing/glasses/wraith_specs/attack_self(mob/user)
+	adjust_visor(user)
 
 /obj/item/clothing/glasses/wraith_specs/equipped(mob/user, slot)
 	. = ..()
@@ -48,7 +47,7 @@
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
-/obj/item/clothing/glasses/wraith_specs/weldingvisortoggle(mob/user)
+/obj/item/clothing/glasses/wraith_specs/adjust_visor(mob/living/user)
 	if(!can_use(user))
 		return FALSE
 
@@ -61,8 +60,6 @@
 
 			else // not up = we're putting the glasses up (off our eyes)
 				disable_glasses(user)
-
-	return ..()
 
 /obj/item/clothing/glasses/wraith_specs/visor_toggling()
 	. = ..()
@@ -106,7 +103,6 @@
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
 	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
 
-	user.update_glasses_color(src, TRUE)
 	return TRUE
 
 /**
@@ -118,7 +114,6 @@
 		removed_hud.hide_from(user)
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
-	user.update_glasses_color(src, FALSE)
 	return TRUE
 
 /**
