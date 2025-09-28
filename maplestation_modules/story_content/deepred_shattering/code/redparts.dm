@@ -41,10 +41,6 @@
 	. = ..()
 	. += emissive_appearance(icon, "redcellemissive", src, alpha = src.alpha)
 
-/datum/stock_part/matter_bin/tier5
-	tier = 5
-	physical_object_type = /obj/item/stock_parts/cell/redtech
-
 /obj/item/stock_parts/servo/redtech
 	name = "alloyed red servo"
 	desc = "An alloyed servo module. Its design is unlike anything you've seen before."
@@ -171,6 +167,7 @@
 /datum/stock_part/micro_laser/tier5
 	tier = 5
 	physical_object_type = /obj/item/stock_parts/micro_laser/redtech
+
 /obj/item/stock_parts/matter_bin/redtech
 	name = "condensed red matter bin"
 	desc = "A condensed matter bin. Its design is unlike anything you've seen before."

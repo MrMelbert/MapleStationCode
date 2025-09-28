@@ -25,8 +25,8 @@
 	var/fabricator_speed = 4 // How many seconds it takes to make a shot and put it into the stored shots.
 	var/fabricator_progress = 0 // How far along the fabricator is (in seconds).
 
-	var/obj/item/stock_parts/cell/internalcell // Current cell of the gun.
-	var/obj/item/stock_parts/cell/defaultcell = /obj/item/stock_parts/cell/redtech // Default cell of the gun.
+	var/obj/item/stock_parts/power_store/cell/internalcell // Current cell of the gun.
+	var/obj/item/stock_parts/power_store/cell/defaultcell = /obj/item/stock_parts/power_store/cell/redtech // Default cell of the gun.
 	var/charge_sections = 10 // How many sections the charge overlay has.
 	var/charge_state // What sprite to use for the charge overlay.
 
@@ -175,9 +175,9 @@
 	. = ..()
 	if(.)
 		return
-	if(istype(A, /obj/item/stock_parts/cell))
+	if(istype(A, /obj/item/stock_parts/power_store/cell))
 		if (!internalcell)
-			var/obj/item/stock_parts/cell/input = A
+			var/obj/item/stock_parts/power_store/cell/input = A
 			insert_cell(user, input)
 		else
 			balloon_alert(user, "cell already loaded!")
@@ -285,7 +285,7 @@
 	playsound(src, selecting_sound, selecting_sound_volume)
 	update_appearance()
 
-/obj/item/gun/coilgun/proc/insert_cell(mob/user, obj/item/stock_parts/cell/input)
+/obj/item/gun/coilgun/proc/insert_cell(mob/user, obj/item/stock_parts/power_store/cell/input)
 	if(user.transferItemToLoc(input, src))
 		internalcell = input
 		balloon_alert(user, "cell reloaded!")
@@ -297,7 +297,7 @@
 /obj/item/gun/coilgun/proc/eject_cell(mob/user)
 	playsound(src, eject_sound, eject_sound_volume)
 	internalcell.forceMove(drop_location())
-	var/obj/item/stock_parts/cell/old_cell = internalcell
+	var/obj/item/stock_parts/power_store/cell/old_cell = internalcell
 	internalcell = null
 	user.put_in_hands(old_cell)
 	old_cell.update_appearance()
