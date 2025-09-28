@@ -4,9 +4,13 @@
 	icon = 'maplestation_modules/icons/obj/clothing/hats.dmi'
 	icon_state = "cyber_kitty"
 	damage_multiplier = 1.5 //slightly better than regular cat ears
+	bodypart_overlay = /datum/bodypart_overlay/mutant/cyber_cat_ears
 
-/datum/bodypart_overlay/mutant/cat_ears/cybernetic // snowflaked because these are for seperate organs
-	feature_key = "catcyber"
+/datum/bodypart_overlay/mutant/cyber_cat_ears // snowflaked because these are for seperate organs
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_HAIR
+	feature_key = "ears"
+	sprite_datum = /datum/sprite_accessory/ears/cat/cyber
 
 /obj/item/organ/internal/ears/cat/cybernetic/emp_act(severity)
 	. = ..()
