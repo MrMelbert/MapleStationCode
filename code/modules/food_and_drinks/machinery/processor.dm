@@ -4,7 +4,7 @@
 	name = "food processor"
 	desc = "An industrial grinder used to process meat and other foods. Keep hands clear of intake area while operating."
 	icon = 'icons/obj/machines/kitchen.dmi'
-	icon_state = "processor1"
+	icon_state = "processor"
 	layer = BELOW_OBJ_LAYER
 	density = TRUE
 	pass_flags = PASSTABLE
@@ -27,6 +27,7 @@
 
 /obj/machinery/processor/Initialize(mapload)
 	. = ..()
+	base_icon_state = icon_state // For some reason this wasn't getting auto-set
 	if(processor_inputs)
 		return
 	processor_inputs = list()
@@ -194,6 +195,7 @@
 
 /obj/machinery/processor/slime
 	name = "slime processor"
+	icon_state = "processor_slime"
 	desc = "An industrial grinder with a sticker saying appropriated for science department. Keep hands clear of intake area while operating."
 	circuit = /obj/item/circuitboard/machine/processor/slime
 

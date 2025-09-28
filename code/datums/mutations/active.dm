@@ -38,7 +38,7 @@
 	to_chat(cast_on, span_userdanger("You feel pumped up! It's time to GO!"))
 	cast_on.reagents.add_reagent(/datum/reagent/drug/pumpup, adrenaline_amount)
 	cast_on.reagents.add_reagent(/datum/reagent/medicine/synaptizine, adrenaline_amount)
-	cast_on.reagents.add_reagent(/datum/reagent/determination, adrenaline_amount)
+	cast_on.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_SEVERE)
 	addtimer(CALLBACK(src, PROC_REF(get_tired), cast_on), 25 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 	return TRUE
 

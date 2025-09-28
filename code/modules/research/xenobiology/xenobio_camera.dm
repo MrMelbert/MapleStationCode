@@ -228,7 +228,6 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 	var/mob/living/carbon/human/species/monkey/food = new /mob/living/carbon/human/species/monkey(target_turf, TRUE, user)
 	if (QDELETED(food))
 		return
-	food.apply_status_effect(/datum/status_effect/slime_food, user)
 
 	monkeys--
 	monkeys = round(monkeys, 0.1) //Prevents rounding errors

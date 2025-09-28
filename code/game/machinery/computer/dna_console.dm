@@ -366,11 +366,14 @@
 
 		var/datum/status_effect/genetic_damage/genetic_damage = scanner_occupant.has_status_effect(/datum/status_effect/genetic_damage)
 		data["subjectDamage"] = genetic_damage ? round((genetic_damage.total_damage / genetic_damage.minimum_before_tox_damage) * 100, 0.1) : 0
+		var/genetic_stability = scanner_occupant.dna.get_stability()
+		data["subjectStability"] = genetic_stability ? round(genetic_stability, 0.1) : 0
 	else
 		data["subjectName"] = null
 		data["subjectStatus"] = null
 		data["subjectHealth"] = null
 		data["subjectDamage"] = null
+		data["subjectStability"] = null
 		data["subjectEnzymes"] = null
 		data["storage"]["occupant"] = null
 
