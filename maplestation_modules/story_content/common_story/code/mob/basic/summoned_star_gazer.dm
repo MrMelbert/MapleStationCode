@@ -9,6 +9,6 @@
 
 /mob/living/basic/heretic_summon/star_gazer/summoned/Initialize(mapload)
 	. = ..()
-	RemoveElement(/datum/element/death_explosion) // slightly hacky way of disabling the death explosion without editing the base star gazer
-	RemoveElement(/datum/element/effect_trail)
+	src.RemoveElement(/datum/element/death_explosion) // slightly hacky way of disabling the death explosion without editing the base star gazer
+	src.RemoveElement(/datum/element/effect_trail)
 	RemoveComponentSource(REF(src), /datum/component/regenerator)
