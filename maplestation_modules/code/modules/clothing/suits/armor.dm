@@ -83,9 +83,9 @@
 /obj/item/clothing/suit/greyscale_parade
 	name = "tailored parade jacket"
 	desc = "No armor, all fashion, unfortunately."
-	icon_state = "formal"
-	icon_preview = 'maplestation_modules/icons/obj/clothing/suit.dmi'
-	icon_state_preview = "formal"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/greyscale_parade"
+	post_init_icon_state = "formal"
 	inhand_icon_state = "labcoat"
 	body_parts_covered = CHEST|GROIN|ARMS
 	allowed = list(

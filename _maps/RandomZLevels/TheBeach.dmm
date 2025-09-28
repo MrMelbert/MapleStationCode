@@ -94,6 +94,10 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"aI" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast,
+/area/awaymission/beach)
 "aK" = (
 /obj/structure/punji_sticks,
 /turf/open/misc/grass/jungle,
@@ -489,7 +493,7 @@
 /area/awaymission/beach)
 "eT" = (
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_y = 16;
 	pixel_x = -2
 	},
@@ -983,6 +987,12 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"iZ" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast/corner{
+	dir = 8
+	},
+/area/awaymission/beach)
 "jc" = (
 /obj/structure/flora/bush/jungle/b/style_random,
 /turf/open/misc/grass/jungle,
@@ -1173,7 +1183,7 @@
 	pixel_x = -7;
 	pixel_y = 5
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4
 	},
 /obj/structure/table/wood,
@@ -1223,6 +1233,7 @@
 	pixel_x = 5;
 	dir = 8
 	},
+/obj/effect/spawner/message_in_a_bottle/low_prob,
 /turf/open/water/beach,
 /area/awaymission/beach)
 "ll" = (
@@ -1336,6 +1347,12 @@
 	},
 /obj/item/reagent_containers/cup/bucket/wooden,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"mw" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast{
+	dir = 4
+	},
 /area/awaymission/beach)
 "mG" = (
 /obj/effect/turf_decal/siding/wood{
@@ -1641,6 +1658,12 @@
 /obj/structure/flora/bush/jungle/c/style_random,
 /turf/open/misc/grass/jungle,
 /area/awaymission/beach)
+"pp" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast{
+	dir = 1
+	},
+/area/awaymission/beach)
 "pr" = (
 /obj/item/reagent_containers/cup/soda_cans/space_mountain_wind{
 	pixel_x = -17;
@@ -1909,6 +1932,11 @@
 	dir = 1
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"rW" = (
+/obj/structure/closet/crate/trashcart/filled,
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/floor/wood/large,
 /area/awaymission/beach)
 "rX" = (
 /obj/effect/turf_decal/sand/plating,
@@ -2411,6 +2439,11 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"wc" = (
+/obj/structure/closet/crate/bin,
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "wd" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
@@ -2900,6 +2933,10 @@
 	},
 /turf/open/misc/grass/jungle,
 /area/awaymission/beach)
+"AM" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast/corner,
+/area/awaymission/beach)
 "AO" = (
 /obj/effect/turf_decal/weather/dirt{
 	dir = 5
@@ -3220,6 +3257,11 @@
 	pixel_x = -16
 	},
 /turf/open/floor/eighties,
+/area/awaymission/beach)
+"Dz" = (
+/obj/effect/mob_spawn/corpse/human/old_pirate_captain,
+/obj/structure/bed/maint,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "DD" = (
 /obj/structure/closet{
@@ -3570,6 +3612,7 @@
 	pixel_y = 4;
 	pixel_x = -1
 	},
+/obj/effect/spawner/message_in_a_bottle/low_prob,
 /turf/open/misc/beach/coast,
 /area/awaymission/beach)
 "FK" = (
@@ -3621,6 +3664,12 @@
 	dir = 1
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Gc" = (
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/misc/beach/coast/corner{
+	dir = 4
+	},
 /area/awaymission/beach)
 "Ge" = (
 /obj/effect/decal/cleanable/dirt,
@@ -4251,6 +4300,10 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Mz" = (
+/obj/effect/spawner/random/trash/cigbutt,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "MC" = (
 /obj/structure/flora/tree/jungle/style_random,
 /obj/structure/flora/rock/pile/jungle/large/style_random,
@@ -4260,6 +4313,17 @@
 /obj/structure/table/wood,
 /obj/effect/spawner/random/entertainment/lighter,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"ME" = (
+/obj/item/paper/fluff/old_pirate_note{
+	pixel_x = -5;
+	pixel_y = -7
+	},
+/obj/item/pen/fountain{
+	pixel_y = -11;
+	pixel_x = -8
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "MF" = (
 /turf/open/misc/beach/coast/corner{
@@ -4452,6 +4516,10 @@
 	dir = 4
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"NX" = (
+/obj/item/broken_bottle,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Oe" = (
 /obj/structure/flora/rock,
@@ -5169,6 +5237,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/awaymission/beach)
+"Vr" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/spawner/message_in_a_bottle/low_prob,
+/turf/open/water/beach,
+/area/awaymission/beach)
 "Vu" = (
 /obj/structure/fluff/fokoff_sign,
 /turf/open/misc/beach/sand,
@@ -5381,6 +5456,12 @@
 /obj/vehicle/ridden/atv{
 	dir = 4
 	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Xi" = (
+/obj/item/fishing_rod,
+/obj/structure/closet/crate/trashcart,
+/obj/item/reagent_containers/cup/glass/bottle/rum/aged,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Xr" = (
@@ -9026,10 +9107,10 @@ XB
 XB
 XB
 XB
-Vf
+pp
 YV
-VY
-VY
+Xi
+NX
 hL
 ni
 XB
@@ -9283,10 +9364,10 @@ XB
 XB
 XB
 XB
-Vf
+pp
 VY
-VY
-VY
+Mz
+Dz
 Er
 BK
 XB
@@ -9542,7 +9623,7 @@ XB
 XB
 Vf
 VY
-VY
+ME
 VY
 VY
 BK
@@ -9800,7 +9881,7 @@ XB
 Vf
 IZ
 VY
-VY
+Mz
 VY
 BK
 XB
@@ -10056,7 +10137,7 @@ XB
 XB
 Pe
 Fb
-tJ
+iZ
 zr
 VY
 BK
@@ -13006,7 +13087,7 @@ FM
 dR
 Gn
 kI
-cp
+wc
 xv
 hV
 xv
@@ -13024,7 +13105,7 @@ VP
 vM
 Zt
 xv
-MF
+Gc
 Wb
 It
 VY
@@ -13773,7 +13854,7 @@ XB
 XB
 XB
 HV
-iA
+Vr
 xv
 xv
 xv
@@ -15363,7 +15444,7 @@ hL
 Le
 Le
 Le
-MF
+Gc
 VY
 Qm
 VY
@@ -16343,7 +16424,7 @@ XB
 XB
 HV
 mi
-uV
+rW
 xv
 eE
 un
@@ -16656,7 +16737,7 @@ VY
 VY
 ls
 VY
-BK
+aI
 XB
 XB
 XB
@@ -19192,7 +19273,7 @@ xv
 xv
 xv
 xv
-Fb
+mw
 mf
 VY
 KL
@@ -24366,7 +24447,7 @@ VY
 EC
 VY
 VY
-Kh
+AM
 Rj
 XB
 XB
@@ -26906,7 +26987,7 @@ XB
 XB
 XB
 MZ
-MF
+Gc
 VY
 xv
 xv
@@ -27194,7 +27275,7 @@ VY
 VY
 Ff
 VY
-BK
+aI
 XB
 XB
 XB
@@ -30248,7 +30329,7 @@ XB
 XB
 XB
 XB
-Vf
+pp
 wA
 VY
 xi
@@ -31279,7 +31360,7 @@ XB
 XB
 XB
 XB
-Vf
+pp
 VY
 VY
 IZ

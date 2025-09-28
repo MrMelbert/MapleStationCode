@@ -589,7 +589,7 @@
 /// Checks how strong we are at resisting being grabbed.
 /mob/living/proc/get_grab_resist_strength()
 	. += mob_size * 2
-	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/fitness) || 1) - 1), 0, 3)
+	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 1), 0, 3)
 	if(ismonkey(src))
 		. -= 1
 	if(stat == DEAD)

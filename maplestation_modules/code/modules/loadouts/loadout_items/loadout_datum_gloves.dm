@@ -64,7 +64,10 @@
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/gloves/yellow/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/gloves/white
 	name = "White Gloves"
@@ -73,4 +76,7 @@
 /datum/loadout_item/gloves/bone
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/gloves/bone/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"

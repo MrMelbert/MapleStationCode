@@ -22,8 +22,8 @@
 
 /mob/dead/new_player/Initialize(mapload)
 	if(client && SSticker.state == GAME_STATE_STARTUP)
-		var/atom/movable/screen/splash/S = new(null, client, TRUE, TRUE)
-		S.Fade(TRUE)
+		var/atom/movable/screen/splash/S = new(null, null, client, TRUE, TRUE)
+		S.fade(TRUE)
 
 	if(length(GLOB.newplayer_start))
 		forceMove(pick(GLOB.newplayer_start))
@@ -98,7 +98,7 @@
 		observer.client.init_verbs()
 		observer.client.player_details.time_of_death = world.time
 	observer.update_appearance()
-	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	observer.client?.stoptitlemusic()
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
 	qdel(src)
@@ -278,7 +278,7 @@
 	if(!.)
 		return
 	new_character.key = key //Manually transfer the key to log them in,
-	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character.client?.stoptitlemusic()
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)
@@ -414,7 +414,19 @@
 	SSticker.ready_report -= src // should be redundant but just in case.
 	return ..()
 
-/mob/dead/new_player/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, message_range, datum/saymode/saymode)
+/mob/dead/new_player/say(
+	message,
+	bubble_type,
+	list/spans,
+	sanitize,
+	datum/language/language,
+	ignore_spam,
+	forced,
+	filterproof,
+	message_range,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
 	if(isnull(client) || client.interviewee)
 		return
 
@@ -456,7 +468,7 @@
 		player_name = "[span_tooltip(holder.rank_names(), "STAFF")] [key]"
 
 	if(prefs.hearted)
-		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
+		var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
 		player_name = "[sheet.icon_tag("emoji-heart")] [player_name]"
 	if(prefs.unlock_content && (prefs.toggles & MEMBER_PUBLIC))
 		player_name = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color)]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")] [player_name]</font>"

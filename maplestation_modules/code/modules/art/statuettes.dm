@@ -101,7 +101,7 @@
 // Add to plastic recipes
 /obj/item/stack/sheet/plastic/get_main_recipes()
 	. = ..()
-	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2, check_density = FALSE))
+	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2, crafting_flags = NONE))
 
 
 /obj/item/modeling_block/Destroy()

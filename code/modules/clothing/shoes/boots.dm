@@ -3,6 +3,7 @@
 	desc = "High speed, low drag combat boots."
 	icon_state = "jackboots"
 	inhand_icon_state = "jackboots"
+	body_parts_covered = FEET|LEGS
 	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 	armor_type = /datum/armor/shoes_combat
 	strip_delay = 40
@@ -69,6 +70,7 @@
 	armor_type = /datum/armor/shoes_jackboots
 	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
 	can_be_tied = FALSE
+	body_parts_covered = FEET|LEGS
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
@@ -99,6 +101,16 @@
 		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
 		can_tape = TRUE, \
 	)
+
+/obj/item/clothing/shoes/jackboots/floortile
+	name = "floortile camouflage jackboots"
+	desc = "Is it just me or is there a pair of jackboots on the floor?"
+	icon_state = "ftc_boots"
+	inhand_icon_state = null
+
+/obj/item/clothing/shoes/jackboots/floortile/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -3) //tacticool
 
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"
@@ -138,7 +150,8 @@
 	armor_type = /datum/armor/ice_boots_eva
 	strip_delay = 4 SECONDS
 	equip_delay_other = 4 SECONDS
-	clothing_flags = THICKMATERIAL
+	clothing_flags = parent_type::clothing_flags | THICKMATERIAL
+	body_parts_covered = FEET|LEGS
 	resistance_flags = NONE
 
 /datum/armor/ice_boots_eva
@@ -176,6 +189,11 @@
 	desc = "Steel-toed mining boots for mining in hazardous environments. Very good at keeping toes uncrushed."
 	icon_state = "explorer"
 	resistance_flags = FIRE_PROOF
+
+/obj/item/clothing/shoes/workboots/black
+	name = "tactical work boots"
+	desc = "Lace-up work boots to protect the average grey-collar worker from stepping on hazards, from broken glass to dropped pens."
+	icon_state = "workboots_black"
 
 /obj/item/clothing/shoes/russian
 	name = "russian boots"
@@ -216,11 +234,16 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
+/obj/item/clothing/shoes/pirate/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
+
 /obj/item/clothing/shoes/pirate/armored
 	armor_type = /datum/armor/shoes_pirate
 	strip_delay = 40
 	resistance_flags = NONE
 	lace_time = 12 SECONDS
+	body_parts_covered = FEET|LEGS
 
 /datum/armor/shoes_pirate
 	melee = 25

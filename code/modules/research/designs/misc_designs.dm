@@ -177,6 +177,17 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
+/datum/design/water_balloon
+	name = "Water Balloon"
+	id = "water_balloon"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/plastic =SMALL_MATERIAL_AMOUNT*5)
+	build_path = /obj/item/toy/waterballoon
+	category = list(
+		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
 /datum/design/mesons
 	name = "Optical Meson Scanners"
 	desc = "Used by engineering and mining staff to see basic structural and terrain layouts through walls, regardless of lighting condition."
@@ -962,6 +973,18 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_SCIENCE
 
+/datum/design/fishing_gloves
+	name = "Athletic Fishing Gloves"
+	desc = "A pair of gloves to fish without a fishing rod and train your athletics with."
+	id = "fishing_gloves"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plastic = SHEET_MATERIAL_AMOUNT)
+	build_path = /obj/item/clothing/gloves/fishing
+	category = list(
+		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_SCIENCE
+
 /datum/design/stabilized_hook
 	name = "Gyro-Stabilized Hook"
 	desc = "An advanced fishing hook that gives the user a tighter control on the fish when reeling in."
@@ -976,7 +999,7 @@
 
 /datum/design/auto_reel
 	name = "Fishing Line Auto-Reel"
-	desc = "An advanced line reel which can be used speed up both fishing and casually snagging other items in your direction."
+	desc = "An advanced line reel which can be used speed up fishing or casually snag other items in your direction."
 	id = "auto_reel"
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 4, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 3, /datum/material/silver = SMALL_MATERIAL_AMOUNT * 3)
@@ -993,6 +1016,18 @@
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.5)
 	build_path = /obj/item/fish_analyzer
+	category = list(
+		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_SCIENCE
+
+/datum/design/bluespace_fish_case
+	name = "Bluespace Fish Case"
+	desc = "An improved fish case to keep large fish in stasis in a compact little space."
+	id = "bluespace_fish_case"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT, /datum/material/bluespace = SMALL_MATERIAL_AMOUNT)
+	build_path = /obj/item/storage/fish_case/bluespace
 	category = list(
 		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
 	)

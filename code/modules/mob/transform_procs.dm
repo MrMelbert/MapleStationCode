@@ -34,7 +34,7 @@
 	RemoveInvisibility(type)
 	set_species(dna.species.monkey_type)
 	to_chat(src, span_boldnotice("You are now \a [dna.species.name]."))
-	name = lowertext(dna.species.name)
+	name = LOWER_TEXT(dna.species.name)
 	regenerate_icons()
 	set_name()
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)
@@ -107,8 +107,7 @@
 		message_admins("Could not find ai landmark for [src]. Yell at a mapper! We are spawning them at their current location.")
 		landmark_loc += loc
 
-	if(client)
-		stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	client?.stoptitlemusic()
 
 	var/mob/living/silicon/ai/our_AI = new /mob/living/silicon/ai(pick(landmark_loc), null, src)
 	. = our_AI
@@ -297,7 +296,7 @@
 
 	SSblackbox.record_feedback("amount", "gorillas_created", 1)
 
-	var/Itemlist = get_equipped_items(include_pockets = TRUE)
+	var/Itemlist = get_equipped_items(INCLUDE_POCKETS)
 	Itemlist += held_items
 	for(var/obj/item/W in Itemlist)
 		dropItemToGround(W, TRUE)

@@ -8704,11 +8704,6 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
-"cUn" = (
-/obj/item/trash/waffles,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/station/maintenance/port/lower)
 "cUw" = (
 /obj/effect/spawner/random/structure/crate,
 /obj/effect/mapping_helpers/broken_floor,
@@ -31481,7 +31476,7 @@
 /obj/structure/table/wood,
 /obj/item/storage/box/matches,
 /obj/item/reagent_containers/cup/glass/flask/gold,
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /obj/item/radio/intercom/command/directional/south,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain/private)
@@ -52716,7 +52711,7 @@
 /area/station/maintenance/port/fore)
 "qTe" = (
 /obj/effect/decal/remains/human,
-/obj/item/clothing/under/dress/redeveninggown,
+/obj/item/clothing/under/dress/eveninggown,
 /obj/item/clothing/shoes/roman,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
@@ -74793,7 +74788,7 @@
 /area/station/maintenance/starboard/lower)
 "xVi" = (
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /turf/open/floor/carpet/cyan,
 /area/station/hallway/primary/starboard)
 "xVk" = (
@@ -97492,7 +97487,7 @@ aDd
 qfc
 sag
 nkM
-cUn
+owa
 hzu
 bep
 daQ

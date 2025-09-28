@@ -16,6 +16,14 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 
+
+	unique_reskin = list(
+		"Brown" = "clipboard",
+		"Black" = "clipboard_black",
+		"White" = "clipboard_white",
+	)
+	unique_reskin_changes_inhand = TRUE
+
 	/// The stored pen
 	var/obj/item/pen/pen
 	/// Is the pen integrated?

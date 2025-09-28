@@ -104,6 +104,7 @@
 	new /obj/item/radio/headset/headset_sec(src)
 	new /obj/item/radio/headset/headset_sec/alt(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
+	new /obj/item/clothing/glasses/hud/security(src) // NON-MODULE CHANGE
 	new /obj/item/flashlight/seclite(src)
 	new /obj/item/clothing/gloves/tackler(src)
 

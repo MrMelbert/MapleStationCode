@@ -18,11 +18,14 @@
 	sexes = TRUE
 	inherent_traits = list(
 		TRAIT_AGEUSIA,
+		TRAIT_GENELESS,
 		TRAIT_NOBREATH,
 		TRAIT_NOHUNGER,
 		TRAIT_NOLIMBDISABLE,
 		TRAIT_NO_DNA_COPY,
+		TRAIT_NO_PLASMA_TRANSFORM,
 		TRAIT_RADIMMUNE,
+		TRAIT_UNHUSKABLE,
 		TRAIT_VIRUSIMMUNE,
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
@@ -135,36 +138,9 @@
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_USER_SECRET,
 		SPECIES_PERK_NAME = "Incognito Mode",
-		SPECIES_PERK_DESC = "Synths are secretly synthetic androids that disguise as another species.",
-	))
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_SHIELD_ALT,
-		SPECIES_PERK_NAME = "Silicon Supremecy",
-		SPECIES_PERK_DESC = "Being synthetic, Synths gain many resistances that come \
-			with silicons. They're immune to viruses, dismemberment, having \
-			limbs disabled, and they don't need to eat or breath.",
-	))
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON =FA_ICON_THEATER_MASKS,
-		SPECIES_PERK_NAME = "Full Copy",
-		SPECIES_PERK_DESC = "Synths take on some the traits of species they disguise as. \
-			This includes both positive and negative.",
-	))
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_USER_COG,
-		SPECIES_PERK_NAME = "Error: Disguise Failure",
-		SPECIES_PERK_DESC = "Ion Storms, can temporarily disrupt your disguise, \
-			causing some of your features to change sporatically.",
-	))
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_WRENCH,
-		SPECIES_PERK_NAME = "Error: Damage Sustained",
-		SPECIES_PERK_DESC = "Physical damage to your synthetic body can cause your disguise to fail, \
-			revealing your true form.",
+		SPECIES_PERK_DESC = "Synths are synthetic androids that typically disguise as another species. \
+			All characteristics of your disguise species are mimicked, including the negative ones. \
+			Physical damage may cause your disguise to fail, revealing your true synthetic nature.",
 	))
 	return perks
 

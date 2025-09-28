@@ -56,6 +56,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	flags_cover = MASKCOVERSMOUTH | PEPPERPROOF
 	visor_flags_cover = MASKCOVERSMOUTH | PEPPERPROOF
 	tint = 0
+	fishing_modifier = 0
 	pepper_tint = FALSE
 	unique_death = 'sound/voice/sec_death.ogg'
 	COOLDOWN_DECLARE(hailer_cooldown)
@@ -88,6 +89,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	visor_flags_cover = MASKCOVERSMOUTH | MASKCOVERSEYES | PEPPERPROOF
 	drop_sound = 'maplestation_modules/sound/items/drop/helm.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/helm.ogg'
+	fishing_modifier = 2
 	pepper_tint = FALSE
 
 /obj/item/clothing/mask/gas/sechailer/swat/spacepol
@@ -106,6 +108,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	slot_flags = null
 	aggressiveness = AGGR_GOOD_COP // Borgs are nicecurity!
 	actions_types = list(/datum/action/item_action/halt)
+	fishing_modifier = 0
 
 /obj/item/clothing/mask/gas/sechailer/screwdriver_act(mob/living/user, obj/item/I)
 	. = ..()
@@ -123,13 +126,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 		aggressiveness = AGGR_BROKEN
 		return
 
-/obj/item/clothing/mask/gas/sechailer/ui_action_click(mob/user, action)
-	if(istype(action, /datum/action/item_action/halt))
-		halt()
-	else
-		adjust_visor(user)
-
-/obj/item/clothing/mask/gas/sechailer/attack_self()
+/obj/item/clothing/mask/gas/sechailer/ui_action_click(mob/user, actiontype)
 	halt()
 
 /obj/item/clothing/mask/gas/sechailer/emag_act(mob/user, obj/item/card/emag/emag_card)
@@ -203,6 +200,7 @@ GLOBAL_LIST_INIT(hailer_phrases, list(
 	custom_price = PAYCHECK_COMMAND * 1.5
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/halt)
+	action_slots = ALL
 	COOLDOWN_DECLARE(whistle_cooldown)
 
 /obj/item/clothing/mask/whistle/ui_action_click(mob/user, action)
