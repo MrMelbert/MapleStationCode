@@ -186,7 +186,7 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 ///Places every slime in storage on target turf
 /obj/machinery/computer/camera_advanced/xenobio/proc/slime_place(turf/open/target_turf)
 	spit_out(stored_slimes, target_turf)
-	for(var/mob/living/basic/slime/stored_slime in stored_slimes)
+	for(var/mob/living/simple_animal/slime/stored_slime in stored_slimes)
 		stored_slime.forceMove(target_turf)
 		stored_slime.visible_message(span_notice("[stored_slime] is spat out!"))
 		stored_slimes -= stored_slime
@@ -361,7 +361,7 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 		to_chat(owner, span_warning("No potion loaded."))
 		return
 
-	for(var/mob/living/basic/slime/potioned_slime in remote_eye.loc)
+	for(var/mob/living/simple_animal/slime/potioned_slime in remote_eye.loc)
 		xeno_console.spit_atom(xeno_console.current_potion, get_turf(remote_eye))
 		xeno_console.current_potion.attack(potioned_slime, owner_mob)
 		xeno_console.xeno_hud.update_potion(xeno_console.current_potion)
