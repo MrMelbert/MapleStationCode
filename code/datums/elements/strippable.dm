@@ -258,10 +258,10 @@
 		return STRIPPABLE_OBSCURING_NONE
 
 	var/mob/living/carbon/carbon_source = source
-	if (carbon_source.check_obscured_slots() & item_slot)
+	if (hidden_slots_to_inventory_slots(carbon_source.obscured_slots) & item_slot)
 		return STRIPPABLE_OBSCURING_COMPLETELY
 
-	if (carbon_source.check_covered_slots() & item_slot)
+	if (hidden_slots_to_inventory_slots(carbon_source.covered_slots) & item_slot)
 		return STRIPPABLE_OBSCURING_INACCESSIBLE
 
 	return STRIPPABLE_OBSCURING_NONE
@@ -306,9 +306,6 @@
 
 	user.log_message("has stripped [key_name(source)] of [item].", LOG_ATTACK, color="red")
 	source.log_message("has been stripped of [item] by [key_name(user)].", LOG_VICTIM, color="orange", log_globally=FALSE)
-
-	// Updates speed in case stripped speed affecting item
-	source.update_equipment_speed_mods()
 
 /// A representation of the stripping UI
 /datum/strip_menu
@@ -366,7 +363,7 @@
 			continue
 
 		var/obj/item/item = item_data.get_item(owner)
-		if (isnull(item) || (HAS_TRAIT(item, TRAIT_NO_STRIP) || (item.item_flags & EXAMINE_SKIP)))
+		if (isnull(item) || HAS_TRAIT(item, TRAIT_NO_STRIP) || HAS_TRAIT(item, TRAIT_EXAMINE_SKIP))
 			items[strippable_key] = result
 			continue
 

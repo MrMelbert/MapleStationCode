@@ -152,7 +152,7 @@
 		return FALSE
 	return !held_items[hand_index]
 
-/mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE)
+/mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE, visuals_only = FALSE)
 	if(hand_index == null || !held_items.len || (!forced && !can_put_in_hand(I, hand_index)))
 		return FALSE
 
@@ -165,7 +165,7 @@
 	SET_PLANE_EXPLICIT(I, ABOVE_HUD_PLANE, src)
 	if(I.pulledby)
 		I.pulledby.stop_pulling()
-	if(!I.on_equipped(src, ITEM_SLOT_HANDS))
+	if(!has_equipped(I, ITEM_SLOT_HANDS, initial = visuals_only))
 		return FALSE
 	update_held_items()
 	I.pixel_x = I.base_pixel_x
@@ -205,7 +205,7 @@
 //Puts the item our active hand if possible. Failing that it tries other hands. Returns TRUE on success.
 //If both fail it drops it on the floor (or nearby tables if germ sensitive) and returns FALSE.
 //This is probably the main one you need to know :)
-/mob/proc/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, forced = FALSE, ignore_animation = TRUE)
+/mob/proc/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, forced = FALSE, ignore_animation = TRUE, visuals_only = FALSE)
 	if(QDELETED(I))
 		return FALSE
 
@@ -280,10 +280,7 @@
 				location = turf
 				break
 
-	I.forceMove(location)
-	I.layer = initial(I.layer)
-	SET_PLANE_EXPLICIT(I, initial(I.plane), location)
-	I.dropped(src)
+	transferItemToLoc(I, location, force = TRUE, silent = TRUE/*, animated = !ignore_animation*/)
 	return FALSE
 
 /// Returns true if a mob is holding something
@@ -352,37 +349,44 @@
 //DO NOT CALL THIS PROC
 //use one of the above 3 helper procs
 //you may override it, but do not modify the args
-/mob/proc/doUnEquip(obj/item/I, force, atom/newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
+/mob/proc/doUnEquip(obj/item/item_dropping, force, atom/newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
 													//Use no_move if the item is just gonna be immediately moved afterward
 													//Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced
 	PROTECTED_PROC(TRUE)
-	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
+	if(!item_dropping) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
 
-	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
+	if(HAS_TRAIT(item_dropping, TRAIT_NODROP) && !force)
 		return FALSE
 
-	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
+	if((SEND_SIGNAL(item_dropping, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
 		return FALSE
 
-	var/hand_index = get_held_index_of_item(I)
+	var/hand_index = get_held_index_of_item(item_dropping)
 	if(hand_index)
 		held_items[hand_index] = null
 		update_held_items()
-	if(I)
-		if(client)
-			client.screen -= I
-		I.layer = initial(I.layer)
-		SET_PLANE_EXPLICIT(I, initial(I.plane), newloc)
-		I.appearance_flags &= ~NO_CLIENT_COLOR
-		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
-			if (isnull(newloc))
-				I.moveToNullspace()
-			else
-				I.forceMove(newloc)
-		I.dropped(src, silent)
-	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
-	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
+
+	if(!item_dropping)
+		return FALSE
+
+	client?.screen -= item_dropping
+
+	for(var/mob/dead/observe as anything in observers)
+		observe.client?.screen -= item_dropping
+
+	item_dropping.layer = initial(item_dropping.layer)
+	SET_PLANE_EXPLICIT(item_dropping, initial(item_dropping.plane), newloc)
+	item_dropping.appearance_flags &= ~NO_CLIENT_COLOR
+	if(!no_move && !(item_dropping.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
+		if (isnull(newloc))
+			item_dropping.moveToNullspace()
+		else
+			item_dropping.forceMove(newloc)
+
+	has_unequipped(item_dropping, silent)
+	SEND_SIGNAL(item_dropping, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
+	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, item_dropping, force, newloc, no_move, invdrop, silent)
 	return TRUE
 
 /**
@@ -456,6 +460,17 @@
  */
 /mob/proc/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
 	return
+
+/// This proc is called after an item has been successfully handled and equipped to a slot.
+/mob/proc/has_equipped(obj/item/item, slot, initial = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
+	return item.on_equipped(src, slot, initial)
+
+/// This proc is called after an item has been removed from a mob but before it has been officially deslotted.
+/mob/proc/has_unequipped(obj/item/item, silent = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
+	item.dropped(src, silent)
+	return TRUE
 
 /**
  * Equip an item to the slot or delete

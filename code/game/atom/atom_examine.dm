@@ -191,7 +191,7 @@
 		var/mob/wearer = get(src, /mob/living) || loc
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN) || !can_examine_when_worn(viewer))
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN_APPEARANCE) || !can_examine_when_worn(viewer))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
 			return
 
@@ -210,7 +210,7 @@
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		return ..()
-	if(wearer.check_obscured_slots() & slot_flags)
+	if(hidden_slots_to_inventory_slots(wearer.obscured_slots) & slot_flags)
 		return FALSE
 	return ..()
 
@@ -236,7 +236,7 @@
 		if((text2num(href_list["examine_time"]) + viable_time) < world.time)
 			to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
 			return
-		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN))
+		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN_APPEARANCE))
 			to_chat(viewer, span_notice("You can't make out that ID anymore."))
 			return
 		if(!isobserver(viewer) && get_dist(viewer, old_wearer) > ID_EXAMINE_DISTANCE + 1) // leeway, ignored if the viewer is a ghost
@@ -290,7 +290,12 @@
 /atom/proc/get_name_chaser(mob/user, list/name_chaser = list())
 	return name_chaser
 
-/// Used by mobs to determine the name for someone wearing a mask, or with a disfigured or missing face. By default just returns the atom's name. add_id_name will control whether or not we append "(as [id_name])".
-/// force_real_name will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
-/atom/proc/get_visible_name(add_id_name, force_real_name)
+/**
+ * Used by mobs to determine the name for someone wearing a mask, or with a disfigured or missing face.
+ * By default just returns the atom's name.
+ *
+ * * add_id_name - If TRUE, ID information such as honorifics or name (if mismatched) are appended
+ * * force_real_name - If TRUE, will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
+ */
+/atom/proc/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
 	return name
