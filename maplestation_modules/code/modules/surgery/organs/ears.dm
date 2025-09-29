@@ -5,7 +5,7 @@
 	icon_state = "cyber_kitty"
 	damage_multiplier = 1.5 //slightly better than regular cat ears
 	sprite_accessory_override = /datum/sprite_accessory/ears/cat/cyber
-	dna_block = NULL // we're not reploids or mechanoids these don't have DNA (giving it DNA will break the rendering)
+	dna_block = null // we're not reploids or mechanoids these don't have DNA (giving it DNA will break the rendering)
 
 
 /obj/item/organ/internal/ears/cat/cybernetic/emp_act(severity)
