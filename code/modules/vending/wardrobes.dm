@@ -93,7 +93,7 @@
 	machine_name = "MediDrobe"
 
 /obj/machinery/vending/wardrobe/engi_wardrobe
-	name = "EngiDrobe"
+	name = "\improper EngiDrobe"
 	desc = "A vending machine renowned for vending industrial grade clothing."
 	icon_state = "engidrobe"
 	product_ads = "Guaranteed to protect your feet from industrial accidents!;Afraid of radiation? Then wear yellow!"
@@ -123,7 +123,7 @@
 	machine_name = "EngiDrobe"
 
 /obj/machinery/vending/wardrobe/atmos_wardrobe
-	name = "AtmosDrobe"
+	name = "\improper AtmosDrobe"
 	desc = "This relatively unknown vending machine delivers clothing for Atmospherics Technicians, an equally unknown job."
 	icon_state = "atmosdrobe"
 	product_ads = "Get your inflammable clothing right here!!!"
@@ -148,7 +148,7 @@
 	machine_name = "AtmosDrobe"
 
 /obj/machinery/vending/wardrobe/cargo_wardrobe
-	name = "CargoDrobe"
+	name = "\improper CargoDrobe"
 	desc = "A highly advanced vending machine for buying cargo related clothing for free."
 	icon_state = "cargodrobe"
 	product_ads = "Upgraded Assistant Style! Pick yours today!;These shorts are comfy and easy to wear, get yours now!"
@@ -189,7 +189,7 @@
 	machine_name = "CargoDrobe"
 
 /obj/machinery/vending/wardrobe/robo_wardrobe
-	name = "RoboDrobe"
+	name = "\improper RoboDrobe"
 	desc = "A vending machine designed to dispense clothing known only to roboticists."
 	icon_state = "robodrobe"
 	product_ads = "You turn me TRUE, use defines!;0110001101101100011011110111010001101000011001010111001101101000011001010111001001100101"
@@ -223,7 +223,7 @@
 	machine_name = "RoboDrobe"
 
 /obj/machinery/vending/wardrobe/science_wardrobe
-	name = "SciDrobe"
+	name = "\improper SciDrobe"
 	desc = "A simple vending machine suitable to dispense well tailored science clothing. Endorsed by Space Cubans."
 	icon_state = "scidrobe"
 	product_ads = "Longing for the smell of plasma burnt flesh? Buy your science clothing now!;Made with 10% Auxetics, so you don't have to worry about losing your arm!"
@@ -251,7 +251,7 @@
 	machine_name = "SciDrobe"
 
 /obj/machinery/vending/wardrobe/hydro_wardrobe
-	name = "Hydrobe"
+	name = "\improper Hydrobe"
 	desc = "A machine with a catchy name. It dispenses botany related clothing and gear."
 	icon_state = "hydrobe"
 	product_ads = "Do you love soil? Then buy our clothes!;Get outfits to match your green thumb here!"
@@ -279,7 +279,7 @@
 	machine_name = "HyDrobe"
 
 /obj/machinery/vending/wardrobe/curator_wardrobe
-	name = "CuraDrobe"
+	name = "\improper CuraDrobe"
 	desc = "A lowstock vendor only capable of vending clothing for curators and librarians."
 	icon_state = "curadrobe"
 	product_ads = "Glasses for your eyes and literature for your soul, Curadrobe has it all!; Impress & enthrall your library guests with Curadrobe's extended line of pens!"
@@ -312,7 +312,7 @@
 	machine_name = "CuraDrobe"
 
 /obj/machinery/vending/wardrobe/coroner_wardrobe
-	name = "MortiDrobe"
+	name = "\improper MortiDrobe"
 	desc = "A favorite among nihilists."
 	icon_state = "coroner_drobe"
 	product_ads = "Any day above ground is a good one!;My day starts when yours ends!;And they call this a dying business!;See you when you're dead!"
@@ -358,7 +358,7 @@
 	machine_name = "MortiDrobe"
 
 /obj/machinery/vending/wardrobe/bar_wardrobe
-	name = "BarDrobe"
+	name = "\improper BarDrobe"
 	desc = "A stylish vendor to dispense the most stylish bar clothing!"
 	icon_state = "bardrobe"
 	product_ads = "Guaranteed to prevent stains from spilled drinks!"
@@ -394,7 +394,7 @@
 	machine_name = "BarDrobe"
 
 /obj/machinery/vending/wardrobe/chef_wardrobe
-	name = "ChefDrobe"
+	name = "\improper ChefDrobe"
 	desc = "This vending machine might not dispense meat, but it certainly dispenses chef related clothing."
 	icon_state = "chefdrobe"
 	product_ads = "Our clothes are guaranteed to protect you from food splatters!"
@@ -424,7 +424,7 @@
 	machine_name = "ChefDrobe"
 
 /obj/machinery/vending/wardrobe/jani_wardrobe
-	name = "JaniDrobe"
+	name = "\improper JaniDrobe"
 	desc = "A self cleaning vending machine capable of dispensing clothing for janitors."
 	icon_state = "janidrobe"
 	product_ads = "Come and get your janitorial clothing, now endorsed by lizard janitors everywhere!"
@@ -463,7 +463,7 @@
 	machine_name = "JaniDrobe"
 
 /obj/machinery/vending/wardrobe/law_wardrobe
-	name = "LawDrobe"
+	name = "\improper LawDrobe"
 	desc = "Objection! This wardrobe dispenses the rule of law... and lawyer clothing."
 	icon_state = "lawdrobe"
 	product_ads = "OBJECTION! Get the rule of law for yourself!"
@@ -551,7 +551,7 @@
 	machine_name = "DeusVend"
 
 /obj/machinery/vending/wardrobe/chem_wardrobe
-	name = "ChemDrobe"
+	name = "\improper ChemDrobe"
 	desc = "A vending machine for dispensing chemistry related clothing."
 	icon_state = "chemdrobe"
 	product_ads = "Our clothes are 0.5% more resistant to acid spills! Get yours now!"
@@ -582,7 +582,7 @@
 	machine_name = "ChemDrobe"
 
 /obj/machinery/vending/wardrobe/gene_wardrobe
-	name = "GeneDrobe"
+	name = "\improper GeneDrobe"
 	desc = "A machine for dispensing clothing related to genetics."
 	icon_state = "genedrobe"
 	product_ads = "Perfect for the mad scientist in you!"
@@ -607,7 +607,7 @@
 	machine_name = "GeneDrobe"
 
 /obj/machinery/vending/wardrobe/viro_wardrobe
-	name = "ViroDrobe"
+	name = "\improper ViroDrobe"
 	desc = "An unsterilized machine for dispending virology related clothing."
 	icon_state = "virodrobe"
 	product_ads = " Viruses getting you down? Then upgrade to sterilized clothing today!"

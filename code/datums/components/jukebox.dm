@@ -110,9 +110,10 @@
 			new_track.song_beat = text2num(track_data[3])
 			config_songs[new_track.song_name] = new_track
 
-		if(!length(config_songs))
-			var/datum/track/default/default_track = new()
-			config_songs[default_track.song_name] = default_track
+		var/datum/track/default/default_track = new()
+		if(config_songs[default_track.song_name])
+			config_songs["Duplicate-[default_track.song_name]"] = config_songs[default_track.song_name]
+		config_songs[default_track.song_name] = default_track
 
 	// returns a copy so it can mutate if desired.
 	return config_songs.Copy()

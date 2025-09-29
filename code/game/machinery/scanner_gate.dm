@@ -63,6 +63,7 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/simple_rotation, ROTATION_IGNORE_ANCHORED|ROTATION_REQUIRE_WRENCH|ROTATION_NEEDS_UNBLOCKED)
 	register_context()
 
 /obj/machinery/scanner_gate/Destroy(force)
@@ -78,6 +79,10 @@
 	if(n_spect)
 		n_spect.forceMove(drop_location())
 		n_spect = null
+
+/obj/machinery/scanner_gate/setDir(newdir)
+	. = ..()
+	scanline?.setDir(newdir)
 
 /obj/machinery/scanner_gate/examine(mob/user)
 	. = ..()

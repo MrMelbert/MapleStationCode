@@ -2,7 +2,8 @@
 
 // The actual Asset Protection's locker of equipment
 /obj/structure/closet/secure_closet/asset_protection
-	name = "\proper asset protection's locker"
+	name = "asset protection's locker"
+	article = "the"
 	req_access = list(ACCESS_COMMAND)
 	icon = 'maplestation_modules/icons/obj/locker.dmi'
 	icon_state = "ap"
