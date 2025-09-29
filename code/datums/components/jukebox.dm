@@ -110,10 +110,13 @@
 			new_track.song_beat = text2num(track_data[3])
 			config_songs[new_track.song_name] = new_track
 
-		var/datum/track/default/default_track = new()
-		if(config_songs[default_track.song_name])
-			config_songs["Duplicate-[default_track.song_name]"] = config_songs[default_track.song_name]
-		config_songs[default_track.song_name] = default_track
+		if(!length(config_songs))
+			var/datum/track/default/default_track = new()
+			config_songs["[default_track.song_name] (Default)"] = default_track
+
+		for(var/datum/track/track_subtype in subtypesof(/datum/track/preset))
+			var/datum/track/new_preset = new(track_subtype)
+			config_songs["[new_preset.song_name] (Lag Free)"] = new_preset
 
 	// returns a copy so it can mutate if desired.
 	return config_songs.Copy()
@@ -401,6 +404,30 @@
 
 // Default track supplied for testing and also because it's a banger
 /datum/track/default
+	song_path = 'sound/ambience/title3.ogg'
+	song_name = "Tintin on the Moon"
+	song_length = 3 MINUTES + 52 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/title_zero
+	song_path = 'sound/ambience/title0.ogg'
+	song_name = "Endless Space"
+	song_length = 3 MINUTES + 33 SECONDS
+	song_beat = 2 SECONDS
+
+/datum/track/preset/title_one
+	song_path = 'sound/ambience/title1.mod'
+	song_name = "Flip Flap"
+	song_length = 2 MINUTES + 31 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/title_two
+	song_path = 'sound/ambience/title2.ogg'
+	song_name = "Robocop"
+	song_length = 1 MINUTES + 58 SECONDS
+	song_beat = 4 SECONDS
+
+/datum/track/preset/title_three
 	song_path = 'sound/ambience/title3.ogg'
 	song_name = "Tintin on the Moon"
 	song_length = 3 MINUTES + 52 SECONDS
