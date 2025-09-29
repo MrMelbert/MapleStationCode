@@ -311,7 +311,7 @@
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix
-	name = "Anesthetic mix"
+	name = "\improper Anesthetic mix"
 	desc = "A mixture of N2O and Oxygen"
 	icon_state = "/obj/machinery/portable_atmospherics/canister/anesthetic_mix"
 	post_init_icon_state = ""

@@ -121,6 +121,7 @@
 		scanline.icon = icon
 		scanline.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		scanline.layer = layer
+		scanline.vis_flags |= VIS_INHERIT_DIR // NON-MODULE CHANGE
 	deltimer(scanline_timer)
 	if (isnull(scanline_type))
 		if(duration)
