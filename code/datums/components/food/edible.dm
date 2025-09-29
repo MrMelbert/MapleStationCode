@@ -230,7 +230,7 @@ Behavior that's still missing from this component that original food items had t
 	else
 		examine_list += span_warning("You find this meal inedible.")
 
-	if(owner.reagents.total_volume > 0)
+	if(owner.reagents.total_volume > 0 && HAS_TRAIT(owner, TRAIT_FOOD_CHEF_MADE))
 		var/purity = owner.reagents.get_average_purity(/datum/reagent/consumable)
 		switch(purity)
 			if(0 to 0.2)
