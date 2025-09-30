@@ -293,7 +293,7 @@
 
 /mob/living/carbon/examine_more(mob/user)
 	. = ..()
-	if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return
 	for(var/datum/scar/iter_scar as anything in all_scars)
 		if(iter_scar.is_visible(user))
