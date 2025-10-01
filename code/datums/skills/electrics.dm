@@ -19,10 +19,10 @@
 
 /datum/skill/electronics/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
-	if(new_level >= SKILL_LEVEL_MASTER)
+	if(new_level >= SKILL_LEVEL_EXPERT)
 		ADD_TRAIT(mind, TRAIT_KNOW_ENGI_WIRES, type)
 
 /datum/skill/electronics/level_lost(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
-	if(old_level >= SKILL_LEVEL_MASTER && new_level < SKILL_LEVEL_MASTER)
+	if(old_level >= SKILL_LEVEL_EXPERT && new_level < SKILL_LEVEL_EXPERT)
 		REMOVE_TRAIT(mind, TRAIT_KNOW_ENGI_WIRES, type)
