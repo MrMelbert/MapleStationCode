@@ -270,7 +270,7 @@
 
 	damaged = TRUE
 
-/obj/item/organ/eyes/feel_for_damage(self_aware)
+/obj/item/organ/internal/eyes/feel_for_damage(self_aware)
 	// Eye damage has visual effects, so we don't really need to "feel" it when self-examining
 	return ""
 

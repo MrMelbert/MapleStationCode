@@ -909,7 +909,7 @@
 /obj/item/organ/internal/lungs/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantlungs
 
-/obj/item/organ/lungs/feel_for_damage(self_aware)
+/obj/item/organ/internal/lungs/feel_for_damage(self_aware)
 	if(organ_flags & ORGAN_FAILING)
 		if(self_aware)
 			return span_boldwarning("Your lungs hurt madly[HAS_TRAIT(owner, TRAIT_NOBREATH) ? "" : ", and you can't breathe"]!")

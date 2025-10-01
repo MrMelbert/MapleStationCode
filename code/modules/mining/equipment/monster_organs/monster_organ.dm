@@ -191,7 +191,7 @@
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Someone forgot to make their organ do something when you implant it.")
 
-/obj/item/organ/monster_core/feel_for_damage(self_aware)
+/obj/item/organ/internal/monster_core/feel_for_damage(self_aware)
 	return ""
 
 /**
