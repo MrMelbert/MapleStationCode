@@ -63,6 +63,14 @@
 	rpg_title = "Guildperson"
 	crewmonitor_priority = 60.1 // after HOP, before rest of service
 
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/bartending = SKILL_LEVEL_NOVICE,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"
 	jobtype = /datum/job/bridge_officer

@@ -85,15 +85,22 @@
 
 /datum/mind/proc/print_levels(user)
 	var/list/shown_skills = list()
+	var/list/untrained_skills = list()
 	for(var/datum/skill/known_skill as anything in known_skills)
-		if((initial(known_skill.skill_flags) & SKILL_ALWAYS_PRINT) || known_skills[known_skill][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
+		if(known_skills[known_skill][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
 			shown_skills += known_skill
+		else if(initial(known_skill.skill_flags) & SKILL_ALWAYS_PRINT)
+			untrained_skills += known_skill
+
 	if(!length(shown_skills))
-		to_chat(user, span_notice("You don't seem to have any particularly outstanding skills."))
+		to_chat(user, examine_block(span_notice("You don't have any particularly outstanding skills.")))
 		return
+
 	var/list/skill_strings = list()
 	for(var/datum/skill/shown_skill as anything in shown_skills)
-		skill_strings += "&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]"
+		skill_strings += span_notice("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
+	for(var/datum/skill/shown_skill as anything in untrained_skills)
+		skill_strings += span_smallnoticeital("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
 
 	sortTim(skill_strings, GLOBAL_PROC_REF(cmp_text_asc))
-	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[span_notice(jointext(skill_strings, "<br>"))]"))
+	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))

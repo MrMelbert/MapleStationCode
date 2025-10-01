@@ -50,6 +50,11 @@
 	rpg_title = "Beast Tamer"
 	crewmonitor_priority = 34
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+	)
+
 /datum/outfit/job/scientist/xenobiologist
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio

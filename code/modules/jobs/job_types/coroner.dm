@@ -44,7 +44,7 @@
 	rpg_title = "Undertaker"
 
 	base_skills = list(
-		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/surgery = SKILL_LEVEL_EXPERT,
 		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
 		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 	)
@@ -77,4 +77,4 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/coroner
 	messenger = /obj/item/storage/backpack/messenger/coroner
 
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)

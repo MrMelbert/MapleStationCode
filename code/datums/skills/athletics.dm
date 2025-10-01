@@ -27,7 +27,7 @@
 		)
 	)
 	skill_item_path = /obj/item/clothing/gloves/boxing/golden
-	skill_flags = SKILL_ALWAYS_PRINT
+	skill_flags = SKILL_ALWAYS_PRINT|SKILL_PHYSICAL
 
 /datum/skill/athletics/New()
 	. = ..()
