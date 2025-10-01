@@ -693,7 +693,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
-			if((H.bodytype & BODYSHAPE_DIGITIGRADE) && !(I.supports_variations_flags & (DIGITIGRADE_VARIATIONS)))
+			if((H.bodyshape & BODYSHAPE_DIGITIGRADE) && !(I.supports_variations_flags & (DIGITIGRADE_VARIATIONS)))
 				if(!disable_warning)
 					to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 				return FALSE

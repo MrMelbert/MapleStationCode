@@ -109,7 +109,7 @@ There are several things that need to be remembered:
 		var/icon_file
 		var/woman
 		//BEGIN SPECIES HANDLING
-		if((bodytype & BODYSHAPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((bodyshape & BODYSHAPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			// NON-MODULE CHANGE kapu why
 			if(uniform.greyscale_config_worn && uniform.digitigrade_greyscale_config_worn && uniform.greyscale_colors)
 				icon_file = SSgreyscale.GetColoredIconByType(uniform.digitigrade_greyscale_config_worn, uniform.greyscale_colors)
@@ -339,7 +339,7 @@ There are several things that need to be remembered:
 
 		var/icon_file = DEFAULT_SHOES_FILE
 		// NON-MODULE CHANGE becuase kapu why
-		if((bodytype & BODYSHAPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((bodyshape & BODYSHAPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg = get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
 				icon_file = worn_item.digitigrade_file
@@ -455,7 +455,7 @@ There are several things that need to be remembered:
 
 		var/icon_file = DEFAULT_SUIT_FILE
 		// NON-MODULE CHANGE because kapu why
-		if((bodytype & BODYSHAPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((bodyshape & BODYSHAPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			icon_file = worn_item.digitigrade_file
 		// NON-MODULE CHANGE END
 
@@ -819,7 +819,7 @@ generate/load female uniform sprites matching all previously decided variables
 	var/layer2use = alternate_worn_layer || default_layer
 
 	var/mob/living/carbon/wearer = loc
-	var/is_digi = istype(wearer) && (wearer.bodytype & BODYSHAPE_DIGITIGRADE) && !wearer.is_digitigrade_squished()
+	var/is_digi = istype(wearer) && (wearer.bodyshape & BODYSHAPE_DIGITIGRADE) && !wearer.is_digitigrade_squished()
 
 	var/mutable_appearance/draw_target // MA of the item itself, not the final result
 	var/icon/building_icon // used to construct an icon across multiple procs before converting it to MA
@@ -970,7 +970,7 @@ generate/load female uniform sprites matching all previously decided variables
 /mob/living/carbon/human/setDir(newdir)
 	var/olddir = dir
 	. = ..()
-	if(dir == olddir || !(bodytype & BODYSHAPE_DIGITIGRADE))
+	if(dir == olddir || !(bodyshape & BODYSHAPE_DIGITIGRADE))
 		return
 	update_damage_overlays()
 
@@ -1137,7 +1137,7 @@ generate/load female uniform sprites matching all previously decided variables
 	return appearance
 
 /obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/wearer = loc)
-	if(!istype(wearer) || !(wearer.bodytype & BODYSHAPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
+	if(!istype(wearer) || !(wearer.bodyshape & BODYSHAPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 
 	var/static/list/icon/masks_and_shading

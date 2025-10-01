@@ -907,7 +907,7 @@
 	return overlays
 
 /obj/item/bodypart/leg/get_bodypart_damage_state()
-	if(!(bodytype & BODYSHAPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
+	if(!(bodyshape & BODYSHAPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
 		return ..()
 
 	. = ..()
