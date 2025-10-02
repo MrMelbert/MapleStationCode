@@ -111,9 +111,16 @@
 	AddElement(/datum/element/noticable_organ, "teeth are oddly shaped and yellowing.", BODY_ZONE_PRECISE_MOUTH)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/rat)
 
+/obj/item/organ/internal/tongue/rat/proc/whimsy_check(mob/living/checking)
+	if(check_holidays(APRIL_FOOLS))
+		return TRUE
+	if(HAS_PERSONALITY(checking, /datum/personality/whimsical) && prob(5))
+		return TRUE
+	return FALSE
+
 /obj/item/organ/internal/tongue/rat/modify_speech(datum/source, list/speech_args)
 	. = ..()
-	if(!check_holidays(APRIL_FOOLS))
+	if(!whimsy_check(source))
 		return
 	var/message = LOWER_TEXT(speech_args[SPEECH_MESSAGE])
 	if(message == "hi" || message == "hi." || message == "hi!")
@@ -131,6 +138,8 @@
 
 /obj/item/organ/internal/tongue/rat/proc/on_item_given(mob/living/carbon/offerer, mob/living/taker, obj/item/given)
 	SIGNAL_HANDLER
+	if(!whimsy_check(offerer))
+		return
 	INVOKE_ASYNC(src, PROC_REF(its_on_the_mouse), offerer, taker)
 
 /obj/item/organ/internal/tongue/rat/proc/its_on_the_mouse(mob/living/carbon/offerer, mob/living/taker)

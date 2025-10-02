@@ -1,11 +1,14 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
 #define SAVEFILE_VERSION_MIN 32
 
-//This is the current version, anything below this will attempt to update (if it's not obsolete)
-// You do not need to raise this if you are adding new values that have sane defaults.
-// Only raise this value when changing the meaning/format/name/layout of an existing value
-// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 47
+/// This is the current version, anything below this will attempt to update (if it's not obsolete)
+/// You do not need to raise this if you are adding new values that have sane defaults.
+/// Only raise this value when changing the meaning/format/name/layout of an existing value
+/// where you would want the updater procs below to run
+#define SAVEFILE_VERSION_MAX 48
+
+#define IS_DATA_OBSOLETE(version) (version == SAVE_DATA_OBSOLETE)
+#define SHOULD_UPDATE_DATA(version) (version >= SAVE_DATA_NO_ERROR && version < SAVEFILE_VERSION_MAX)
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -117,6 +120,38 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	if (current_version < 45.1)
 		migrate_quirks_to_language_menu(save_data)
+
+	if (current_version < 48)
+		migrate_quirk_to_loadout(
+			quirk_to_migrate = "Colorist",
+			new_typepath = /obj/item/dyespray,
+		)
+
+	if(current_version < 50)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Extrovert",
+			new_typepath = /datum/personality/extrovert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Introvert",
+			new_typepath = /datum/personality/introvert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Bad Touch",
+			new_typepath = /datum/personality/aloof,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Apathetic",
+			new_typepath = /datum/personality/apathetic,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Snob",
+			new_typepath = /datum/personality/snob,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Spiritual",
+			new_typepath = /datum/personality/spiritual,
+		)
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

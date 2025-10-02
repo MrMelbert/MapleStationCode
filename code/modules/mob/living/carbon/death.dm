@@ -4,10 +4,6 @@
 
 	losebreath = 0
 	breathing_loop.stop() //This would've happened eventually but it's nice to make it stop immediatelly in this case
-	if(!gibbed)
-		if(!death_sound && !death_message)
-			INVOKE_ASYNC(src, PROC_REF(emote), "deathgasp")
-		add_memory_in_range(src, 7, /datum/memory/witnessed_death, protagonist = src)
 	reagents.end_metabolization(src)
 
 	. = ..()
@@ -28,7 +24,6 @@
 	animate(src, time = 40, transform = M, easing = SINE_EASING)
 
 /mob/living/carbon/gib(drop_bitflags=NONE)
-	add_memory_in_range(src, 7, /datum/memory/witness_gib, protagonist = src)
 	if(drop_bitflags & DROP_ITEMS)
 		for(var/obj/item/W in src)
 			if(dropItemToGround(W))

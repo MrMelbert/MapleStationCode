@@ -228,7 +228,7 @@
 				if (body_temperature < bodytemp_cold_damage_limit)
 					. += "[t_He] [t_is] shivering.\n"
 
-			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
+			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role && user != src)
 				. += "[t_He] [t_has] a holy aura about [t_him]."
 				living_user.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
 
