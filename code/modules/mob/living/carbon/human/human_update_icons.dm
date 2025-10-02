@@ -131,9 +131,7 @@ There are several things that need to be remembered:
 		my_chest?.worn_uniform_offset?.apply_offset(uniform_overlay)
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
 
-	update_body_parts()
 	apply_overlay(UNIFORM_LAYER)
-
 	check_body_shape(BODYSHAPE_DIGITIGRADE, ITEM_SLOT_ICLOTHING)
 
 /mob/living/carbon/human/update_worn_id()
@@ -433,10 +431,8 @@ There are several things that need to be remembered:
 		my_chest?.worn_suit_offset?.apply_offset(suit_overlay)
 		overlays_standing[SUIT_LAYER] = suit_overlay
 
-	update_body_parts()
 	apply_overlay(SUIT_LAYER)
 	check_body_shape(BODYSHAPE_DIGITIGRADE, ITEM_SLOT_OCLOTHING)
-
 
 /mob/living/carbon/human/update_pockets()
 	if(client && hud_used)
@@ -484,7 +480,6 @@ There are several things that need to be remembered:
 		overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
-	update_body_parts() //e.g. upgate needed because mask now hides lizard snout
 	check_body_shape(BODYSHAPE_SNOUTED, ITEM_SLOT_MASK)
 
 /mob/living/carbon/human/update_worn_back()
