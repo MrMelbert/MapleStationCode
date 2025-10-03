@@ -481,11 +481,22 @@
 	internal_airlocks = get_adjacent_airlocks(internal_airlocks_origin, perpendicular_dirs)
 	external_airlocks = get_adjacent_airlocks(external_airlocks_origin, perpendicular_dirs)
 
-	if(!internal_airlocks.len || !internal_airlocks.len)
+	// This is support for awkwardly shaped airlocks that cycle on a group ID
+	if(!length(internal_airlocks))
+		for(var/obj/machinery/door/airlock/external_airlock as anything in external_airlocks)
+			internal_airlocks |= external_airlock.close_others
+		// For double-wide airlocks, so we don't end up with doors in both lists
+		internal_airlocks -= external_airlocks
+	if(!length(external_airlocks))
+		for(var/obj/machinery/door/airlock/internal_airlock as anything in internal_airlocks)
+			external_airlocks |= internal_airlock.close_others
+		external_airlocks -= internal_airlocks
+
+	if(!length(external_airlocks) || !length(internal_airlocks))
 		if(!can_unwrench) //maploaded pump
 			CRASH("[type] couldn't find airlocks to cycle with!")
-		internal_airlocks = list()
-		external_airlocks = list()
+		internal_airlocks.Cut()
+		external_airlocks.Cut()
 		say("Cycling setup failed. No opposite airlocks found.")
 		return
 
@@ -501,7 +512,6 @@
 	cycling_set_up = TRUE
 	if(can_unwrench)
 		say("Cycling setup complete.")
-
 
 ///Get the turf of the first found airlock or an airtight structure (walls) within the allowed range
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/find_density(turf/origin, direction, max_distance = airlock_pump_distance_limit)
@@ -594,4 +604,3 @@
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/lavaland
 	external_pressure_target = LAVALAND_EQUIPMENT_EFFECT_PRESSURE
-
