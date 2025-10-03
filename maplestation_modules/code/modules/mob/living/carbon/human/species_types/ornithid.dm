@@ -38,6 +38,7 @@
 /datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)
 	var/list/features = ..()
 	features["feathers"] = "#[random_color()]"
+	features["ears_avian"] = pick("Hermes", "Arched")
 	return features
 
 /datum/species/ornithid/prepare_human_for_preview(mob/living/carbon/human/human)
