@@ -1,7 +1,7 @@
 // ear code here
 /obj/item/organ/internal/ears/avian
 	name = "avian ears"
-	desc = "Senstive, much?"
+	desc = "A pair of feathery ears belonging to an ornithid. Formerly, though."
 	// yes, this uses the default icon. Yellow TODO: make an organ sprite for this
 	damage_multiplier = 1.5 // felinids take 2x ear damage, ornithids have other things to worry about (pain increase) so they get 1.5x
 
