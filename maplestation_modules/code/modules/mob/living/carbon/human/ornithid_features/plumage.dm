@@ -28,6 +28,8 @@
 
 /datum/sprite_accessory/plumage
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
+	name = "Hermes" // placeholder
+	icon_state = "hermes"
 
 /datum/sprite_accessory/plumage/hermes
 	name = "Hermes"
