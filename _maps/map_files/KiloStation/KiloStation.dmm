@@ -65624,7 +65624,6 @@
 /turf/open/floor/iron/dark/corner,
 /area/station/hallway/secondary/dock)
 "qRD" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer5,
 /obj/effect/spawner/structure/window/reinforced/tinted,
 /obj/machinery/atmospherics/pipe/layer_manifold/cyan/hidden{
 	dir = 8
@@ -83062,7 +83061,10 @@
 /area/station/service/hydroponics)
 "wIM" = (
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/spawner/random/structure/grille,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 8
+	},
+/obj/effect/mapping_helpers/airlock/abandoned,
 /turf/open/floor/plating/rust,
 /area/station/maintenance/port/fore)
 "wJc" = (
