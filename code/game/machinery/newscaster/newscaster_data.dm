@@ -99,8 +99,12 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/author_censor
 	/// Is this an admin channel? Allows for actions to be taken by the admin only.
 	var/is_admin_channel = FALSE
-	/// Channel ID is a unique number sequence similar to account ID number that allows for us to link messages to the proper channels through the UI backend.
+	/// Channel ID is a unique random number sequence similar to account ID number that allows for us to link messages to the proper channels through the UI backend.
 	var/channel_id
+	/// Should this channel send cross-server messages?
+	var/cross_sector = FALSE
+	/// Is this a cross-sector channel? If so, this channel can only receive messages via topics
+	var/receiving_cross_sector = FALSE
 
 /datum/feed_channel/proc/return_author(censor)
 	if(censor == -1)
@@ -161,7 +165,7 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/message_count = 0
 
 /datum/feed_network/New()
-	create_feed_channel(NEWSCASTER_STATION_ANNOUNCEMENTS , "SS13", "Company news, staff announcements, and all the latest information. Have a secure shift!", locked = TRUE)
+	create_feed_channel("Station Announcements", "SS13", "Company news, staff announcements, and all the latest information. Have a secure shift!", locked = TRUE)
 	// create_feed_channel(NEWSCASTER_SPACE_BETTING, "NtOS", "News from the SpaceBet PDA App! Download now and make your own bets!", locked = TRUE)
 	wanted_issue = new /datum/wanted_message
 
