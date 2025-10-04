@@ -39,6 +39,8 @@
 	var/list/features = ..()
 	features["feathers"] = "#[random_color()]"
 	features["ears_avian"] = "Hermes"
+	// Hey! This above bit of code needs to be at "Hermes" because for some reason on github only, it calls this for screenshot humanoids test and doesn't replace it with consistent
+	// so when those test runs, there will be random failures of each instance, making screenshots fail. If you can find a way to fix this, feel free to add the link to the ssaccesories list.
 	return features
 
 /datum/species/ornithid/prepare_human_for_preview(mob/living/carbon/human/human)

@@ -20,16 +20,6 @@
 	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
 	return TRUE
 
-/datum/bodypart_overlay/mutant/plumage/set_appearance(accessory_type)
-	. = ..()
-	if(accessory_type == /datum/sprite_accessory/plumage/arched)
-		stack_trace("Arched Plumage Detected!")
-
-/datum/bodypart_overlay/mutant/plumage/set_appearance_from_name(accessory_type)
-	. = ..()
-	if(accessory_type == "Arched")
-		stack_trace("Arched Plumage Detected!")
-
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
 	return SSaccessories.avian_ears_list
 
