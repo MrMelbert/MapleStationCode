@@ -24,7 +24,8 @@
 	icon = 'icons/obj/machines/atmospherics/unary_devices.dmi'
 	icon_state = "airlock_pump"
 	pipe_state = "airlock_pump"
-	use_power = ACTIVE_POWER_USE
+	use_power = IDLE_POWER_USE
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION
 	can_unwrench = TRUE
 	welded = FALSE
@@ -301,6 +302,7 @@
 	airlocks_animating = FALSE
 
 	on = TRUE
+	update_use_power(ACTIVE_POWER_USE)
 	cycle_start_time = world.time
 
 	var/turf/local_turf = get_turf(src)
@@ -343,6 +345,7 @@
 	if(!on)
 		return FALSE
 	on = FALSE
+	update_use_power(IDLE_POWER_USE)
 
 	// In case we can open both sides safe_dock will do it for us
 	// it also handles its own messages. If we can't - procceed
