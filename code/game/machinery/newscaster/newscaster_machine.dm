@@ -778,7 +778,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Verifies that the message is being written to a real feed_channel, then provides a text input for the feed story to be written into.
  * Finally, it submits the message to the network, is logged globally, and clears all message-specific variables from the machine.
  */
-/obj/machinery/newscaster/proc/create_story(mob/user, mob/user, channel_id)
+/obj/machinery/newscaster/proc/create_story(mob/user, channel_id)
 	var/datum/feed_channel/potential_channel = GLOB.news_network.network_channels_by_id["[channel_id]"]
 	if(isnull(potential_channel))
 		return
