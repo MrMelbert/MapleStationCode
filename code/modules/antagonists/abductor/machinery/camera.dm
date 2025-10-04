@@ -7,6 +7,7 @@
 	/// So we instead do it on the first call to GrantActions
 	var/abduct_created = FALSE
 	lock_override = TRUE
+	alerts_cameras = FALSE
 
 	icon = 'icons/obj/antags/abductor.dmi'
 	icon_state = "camera"
