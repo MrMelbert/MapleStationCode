@@ -57,8 +57,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 /obj/machinery/password_id_panel/proc/find_panels()
 	. = list()
 	for(var/obj/machinery/password_id_panel/panel as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/password_id_panel))
-		if(panel != src && panel.id_tag == id_tag && panel.linked_door && panel.password != "00000")
-			. += panel
+		if(panel == src || panel.id_tag != id_tag)
+			continue
+		if(!panel.linked_door || panel.password == "00000")
+			continue
+		if(!is_valid_z_level(get_turf(src), get_turf(panel)))
+			continue
+		. += panel
 	return .
 
 /// Finds the first door which matches this panel's ID tag.

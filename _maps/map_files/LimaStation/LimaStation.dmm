@@ -27653,9 +27653,13 @@
 /area/station/maintenance/old_rec)
 "jch" = (
 /obj/machinery/light_switch/directional/north{
-	pixel_x = 4
+	pixel_x = 4;
+	pixel_y = 31
 	},
 /obj/effect/mapping_helpers/turn_off_lights_with_lightswitch,
+/obj/machinery/firealarm/directional/north{
+	pixel_x = -4
+	},
 /turf/open/floor/iron/smooth,
 /area/station/security/mechbay)
 "jcw" = (
@@ -32250,14 +32254,6 @@
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/stripes/box,
 /obj/effect/mapping_helpers/airlock/access/all/command/gateway,
-/obj/machinery/door/airlock/command{
-	name = "Gateway Access";
-	id_tag = "GATEWAY_PASSWORD_PANEL"
-	},
-/obj/machinery/door/airlock/command{
-	name = "Gateway Access";
-	id_tag = "GATEWAY_PASSWORD_PANEL"
-	},
 /turf/open/floor/iron,
 /area/station/command/gateway)
 "kyJ" = (
@@ -32995,6 +32991,11 @@
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
+"kKK" = (
+/obj/effect/landmark/start/hangover,
+/obj/machinery/password_id_panel/vault/directional/west,
+/turf/open/floor/iron,
+/area/station/hallway/primary/port)
 "kKS" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 4
@@ -44748,6 +44749,7 @@
 /obj/effect/turf_decal/trimline/red/filled/warning{
 	dir = 4
 	},
+/obj/machinery/password_id_panel/armory/directional/east,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/ai_monitored/security/armory)
 "osZ" = (
@@ -52527,6 +52529,10 @@
 /obj/effect/spawner/random/trash/moisture_trap,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/lower)
+"qPR" = (
+/obj/machinery/password_id_panel/vault/directional/east,
+/turf/open/floor/vault,
+/area/station/ai_monitored/command/nuke_storage)
 "qPS" = (
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "barshutters";
@@ -54906,6 +54912,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lower)
+"rAd" = (
+/obj/effect/turf_decal/tile/yellow/half/contrasted{
+	dir = 4
+	},
+/obj/machinery/password_id_panel/tech_storage/directional/east,
+/turf/open/floor/iron/dark,
+/area/station/engineering/storage/tech)
 "rAj" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -56637,6 +56650,16 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/station/security/courtroom)
+"rYd" = (
+/obj/machinery/suit_storage_unit/standard_unit,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/box/red,
+/obj/structure/cable,
+/obj/machinery/password_id_panel/eva/directional/west,
+/turf/open/floor/iron/textured,
+/area/station/ai_monitored/command/storage/eva)
 "rYn" = (
 /obj/structure/closet/crate/critter,
 /obj/item/banhammer,
@@ -63636,6 +63659,7 @@
 /obj/machinery/camera/directional/east{
 	network = list("ss13", "prison")
 	},
+/obj/machinery/password_id_panel/visitation/directional/east,
 /turf/open/floor/iron,
 /area/station/security/prison/visit)
 "ujE" = (
@@ -65423,7 +65447,6 @@
 /area/station/science/ordnance/testlab)
 "uOP" = (
 /obj/structure/reagent_dispensers/fueltank,
-/obj/machinery/firealarm/directional/north,
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/smooth,
 /area/station/security/mechbay)
@@ -69116,7 +69139,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/navigate_destination/vault,
-/obj/machinery/password_id_panel/vault/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "weF" = (
@@ -69255,6 +69277,7 @@
 /area/station/hallway/secondary/entry)
 "wgN" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/password_id_panel/execution/directional/south,
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 1
 	},
@@ -162282,7 +162305,7 @@ xZx
 xZx
 aRC
 eyY
-xZC
+rAd
 xZC
 pRF
 ijM
@@ -163550,7 +163573,7 @@ fnI
 sIF
 wRC
 nFG
-cVV
+qPR
 jwU
 fnI
 xzK
@@ -164578,7 +164601,7 @@ oOR
 pSL
 jtX
 mPa
-ntT
+kKK
 pSL
 oOR
 qSb
@@ -174623,7 +174646,7 @@ wha
 uWy
 uWy
 cLO
-bNw
+rYd
 bNw
 uWy
 gxb
