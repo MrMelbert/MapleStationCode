@@ -66,6 +66,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 	return find_by_id_tag(SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/airlock), id_tag)
 
 /obj/machinery/password_id_panel/proc/link_door(obj/machinery/door/airlock/door)
+	if(linked_door == door)
+		CRASH("Attempted to link a password panel in [get_area_name(src, TRUE)] to the same door [door] twice!")
+	if(linked_door)
+		CRASH("Attempted to link a password panel in [get_area_name(src, TRUE)] to a second door [door] when it is already linked to [linked_door]!")
 	linked_door = door
 	RegisterSignal(linked_door, COMSIG_QDELETING, PROC_REF(on_linked_door_deleted))
 	RegisterSignal(linked_door, COMSIG_AIRLOCK_CLOSE, PROC_REF(de_auth))
