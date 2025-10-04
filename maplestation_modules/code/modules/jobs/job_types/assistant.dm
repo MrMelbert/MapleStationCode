@@ -2,6 +2,9 @@
 /datum/job/assistant
 	departments_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
 
+/datum/job/assistant/get_radio_information()
+	return null
+
 // This is done for loadouts, otherwise unique uniforms would be deleted.
 /datum/outfit/job/assistant
 	uniform = null
