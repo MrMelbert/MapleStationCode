@@ -168,3 +168,7 @@
 #define UPPER_LIP "Upper"
 #define MIDDLE_LIP "Middle"
 #define LOWER_LIP "Lower"
+
+// Latejoin Spawnpoints
+#define SPAWNPOINT_CRYO "Cryogenic Storage"
+#define SPAWNPOINT_ARRIVALS "Arrivals Shuttle"
