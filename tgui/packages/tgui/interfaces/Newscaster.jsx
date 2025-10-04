@@ -156,7 +156,7 @@ const NewscasterChannelCreation = (props) => {
             </Box>
           </Section>
         </Stack.Item>
-        <Stack.Item>
+        {/* <Stack.Item> // Non-module change: kills the cross-sector button
           <Button.Checkbox
             fluid
             checked={cross_sector}
@@ -169,7 +169,7 @@ const NewscasterChannelCreation = (props) => {
           >
             Make cross-sector?
           </Button.Checkbox>
-        </Stack.Item>
+        </Stack.Item> */}
         <Stack.Item>
           <Box>
             <Button
