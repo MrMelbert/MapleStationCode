@@ -69,6 +69,7 @@
 
 /obj/item/gun/energy/laser/captain
 	name = "antique laser gun"
+	article = "the"
 	icon_state = "caplaser"
 	w_class = WEIGHT_CLASS_NORMAL
 	inhand_icon_state = null

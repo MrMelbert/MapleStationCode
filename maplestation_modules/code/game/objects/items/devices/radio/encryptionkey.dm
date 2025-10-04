@@ -1,19 +1,22 @@
 /// -- Modular encryption keys --
 // Bridge Officer's Key
 /obj/item/encryptionkey/heads/bridge_officer
-	name = "\proper the bridge officer's encryption key"
+	name = "bridge officer's encryption key"
+	article = "the"
 	icon_state = "hop_cypherkey"
 	channels = list(RADIO_CHANNEL_SERVICE = 1, RADIO_CHANNEL_COMMAND = 1)
 
 // Asset Protection's Key
 /obj/item/encryptionkey/heads/asset_protection
-	name = "\proper the asset protection's encryption key"
+	name = "asset protection's encryption key"
+	article = "the"
 	icon_state = "hos_cypherkey"
 	channels = list(RADIO_CHANNEL_SECURITY = 1, RADIO_CHANNEL_COMMAND = 1)
 
 // Noble Ambassador's Key
 /obj/item/encryptionkey/heads/noble_ambassador
-	name = "\proper the noble ambassador's encryption key"
+	name = "noble ambassador's encryption key"
+	article = "the"
 	icon_state = "cypherkey_cube"
 	channels = list(RADIO_CHANNEL_COMMAND = 1)
 	greyscale_config = /datum/greyscale_config/encryptionkey_cube

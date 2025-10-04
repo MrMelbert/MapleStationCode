@@ -30,11 +30,13 @@
 /obj/item/clothing/under/rank/civilian/head_of_personnel
 	desc = "A slick uniform worn by those to earn the position of \"Head of Personnel\"."
 	name = "head of personnel's uniform"
+	article = "the"
 	icon_state = "hop"
 	inhand_icon_state = "b_suit"
 
 /obj/item/clothing/under/rank/civilian/head_of_personnel/skirt
 	name = "head of personnel's skirt"
+	article = "the"
 	desc = "A slick uniform and skirt combo worn by those to earn the position of \"Head of Personnel\"."
 	icon_state = "hop_skirt"
 	inhand_icon_state = "b_suit"
@@ -45,6 +47,7 @@
 
 /obj/item/clothing/under/rank/civilian/head_of_personnel/suit
 	name = "head of personnel's suit"
+	article = "the"
 	desc = "A teal suit and yellow necktie. An authoritative yet tacky ensemble."
 	icon_state = "teal_suit"
 	inhand_icon_state = "g_suit"

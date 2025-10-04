@@ -99,6 +99,7 @@
 //Captain
 /obj/item/clothing/head/hats/caphat
 	name = "captain's hat"
+	article = "the"
 	desc = "It's good being the king."
 	icon_state = "captain"
 	inhand_icon_state = "that"
@@ -120,12 +121,14 @@
 
 /obj/item/clothing/head/hats/caphat/parade
 	name = "captain's parade cap"
+	article = "the"
 	desc = "Worn only by Captains with an abundance of class."
 	icon_state = "capcap"
 	dog_fashion = null
 
 /obj/item/clothing/head/caphat/beret
 	name = "captain's beret"
+	article = "the"
 	desc = "For the Captains known for their sense of fashion."
 	icon = 'icons/map_icons/clothing/head/_head.dmi'
 	icon_state = "/obj/item/clothing/head/caphat/beret"
@@ -138,6 +141,7 @@
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
 	name = "head of personnel's cap"
+	article = "the"
 	icon_state = "hopcap"
 	desc = "The symbol of true bureaucratic micromanagement."
 	armor_type = /datum/armor/hats_hopcap
@@ -413,6 +417,7 @@
 
 /obj/item/clothing/head/hats/hos/beret
 	name = "head of security's beret"
+	article = "the"
 	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
 	icon = 'icons/map_icons/clothing/head/_head.dmi'
 	icon_state = "/obj/item/clothing/head/hats/hos/beret"
@@ -424,6 +429,7 @@
 
 /obj/item/clothing/head/hats/hos/beret/navyhos
 	name = "head of security's formal beret"
+	article = "the"
 	desc = "A special beret with the Head of Security's insignia emblazoned on it. A symbol of excellence, a badge of courage, a mark of distinction."
 	icon_state = "/obj/item/clothing/head/hats/hos/beret/navyhos"
 	greyscale_colors = "#638799#f0cc8f"

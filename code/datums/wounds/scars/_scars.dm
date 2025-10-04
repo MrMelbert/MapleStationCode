@@ -150,7 +150,7 @@
 
 /// What will show up in examine_more() if this scar is visible
 /datum/scar/proc/get_examine_description(mob/viewer)
-	if(!victim || !is_visible(viewer))
+	if(!is_visible(viewer))
 		return
 
 	var/msg = "[victim.p_They()] [victim.p_have()] [description] on [victim.p_their()] [precise_location]."

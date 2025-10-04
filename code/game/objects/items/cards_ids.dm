@@ -1272,6 +1272,7 @@
 
 /obj/item/card/id/advanced/gold/captains_spare
 	name = "captain's spare ID"
+	article = "the"
 	desc = "The spare ID of the High Lord himself."
 	registered_name = "Captain"
 	trim = /datum/id_trim/job/captain

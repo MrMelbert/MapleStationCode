@@ -1,5 +1,6 @@
 /obj/structure/closet/secure_closet/captains
 	name = "captain's locker"
+	article = "the"
 	icon_state = "cap"
 	req_access = list(ACCESS_CAPTAIN)
 
@@ -23,6 +24,7 @@
 
 /obj/structure/closet/secure_closet/hop
 	name = "head of personnel's locker"
+	article = "the"
 	icon_state = "hop"
 	req_access = list(ACCESS_HOP)
 
@@ -47,6 +49,7 @@
 
 /obj/structure/closet/secure_closet/hos
 	name = "head of security's locker"
+	article = "the"
 	icon_state = "hos"
 	req_access = list(ACCESS_HOS)
 
@@ -77,6 +80,7 @@
 
 /obj/structure/closet/secure_closet/warden
 	name = "warden's locker"
+	article = "the"
 	icon_state = "warden"
 	req_access = list(ACCESS_ARMORY)
 
@@ -143,7 +147,8 @@
 	new /obj/item/encryptionkey/headset_med(src)
 
 /obj/structure/closet/secure_closet/detective
-	name = "\improper detective's cabinet"
+	name = "detective's cabinet"
+	article = "the"
 	icon_state = "cabinet"
 	resistance_flags = FLAMMABLE
 	max_integrity = 70

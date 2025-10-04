@@ -154,7 +154,8 @@
 /datum/status_effect/irradiated/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
-	render_list += conditional_tooltip("<span class='alert ml-1'>Subject is irradiated.</span>", "Supply antiradiation or antitoxin, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", tochat)
+	render_list += "<span class='alert ml-1'>"
+	render_list += conditional_tooltip("Subject is irradiated.", "Supply antiradiation or antitoxin, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", tochat)
 	render_list += "<br>"
 
 /datum/status_effect/irradiated/proc/radimmune_gained(...)

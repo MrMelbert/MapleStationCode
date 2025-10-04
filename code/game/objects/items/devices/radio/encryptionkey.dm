@@ -165,7 +165,8 @@
 	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/encryptionkey/heads/captain
-	name = "\proper the captain's encryption key"
+	name = "captain's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/captain"
 	post_init_icon_state = "cypherkey_cube"
@@ -174,7 +175,8 @@
 	greyscale_colors = "#2b2793#dca01b"
 
 /obj/item/encryptionkey/heads/rd
-	name = "\proper the research director's encryption key"
+	name = "research director's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/rd"
 	post_init_icon_state = "cypherkey_research"
@@ -183,7 +185,8 @@
 	greyscale_colors = "#bc4a9b#793a80"
 
 /obj/item/encryptionkey/heads/hos
-	name = "\proper the head of security's encryption key"
+	name = "head of security's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/hos"
 	post_init_icon_state = "cypherkey_security"
@@ -192,7 +195,8 @@
 	greyscale_colors = "#280b1a#820a16"
 
 /obj/item/encryptionkey/heads/ce
-	name = "\proper the chief engineer's encryption key"
+	name = "chief engineer's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/ce"
 	post_init_icon_state = "cypherkey_engineering"
@@ -201,7 +205,8 @@
 	greyscale_colors = "#dca01b#f8d860"
 
 /obj/item/encryptionkey/heads/cmo
-	name = "\proper the chief medical officer's encryption key"
+	name = "chief medical officer's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/cmo"
 	post_init_icon_state = "cypherkey_medical"
@@ -210,7 +215,8 @@
 	greyscale_colors = "#ebebeb#2b2793"
 
 /obj/item/encryptionkey/heads/hop
-	name = "\proper the head of personnel's encryption key"
+	name = "head of personnel's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/hop"
 	post_init_icon_state = "cypherkey_cube"
@@ -219,7 +225,8 @@
 	greyscale_colors = "#2b2793#c2c1c9"
 
 /obj/item/encryptionkey/heads/qm
-	name = "\proper the quartermaster's encryption key"
+	name = "quartermaster's encryption key"
+	article = "the"
 	icon = 'icons/map_icons/items/encryptionkey.dmi'
 	icon_state = "/obj/item/encryptionkey/heads/qm"
 	post_init_icon_state = "cypherkey_cargo"

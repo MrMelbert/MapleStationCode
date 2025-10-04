@@ -344,7 +344,7 @@
 	return
 
 /obj/item/stack/medical/bruise_pack
-	name = "bruise pack"
+	name = "bruise packs"
 	singular_name = "bruise pack"
 	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma."
 	icon_state = "brutepack"
@@ -564,9 +564,8 @@
 	 */
 
 /obj/item/stack/medical/suture
-	name = "suture"
+	name = "sutures"
 	desc = "Basic sterile sutures used to seal up cuts and lacerations and stop bleeding."
-	gender = PLURAL
 	singular_name = "suture"
 	icon_state = "suture"
 	self_delay = 3 SECONDS
@@ -581,17 +580,19 @@
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
 /obj/item/stack/medical/suture/emergency
-	name = "emergency suture"
+	name = "emergency sutures"
 	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
+	singular_name = "emergency suture"
 	heal_brute = 5
 	amount = 5
 	max_amount = 5
 	merge_type = /obj/item/stack/medical/suture/emergency
 
 /obj/item/stack/medical/suture/medicated
-	name = "medicated suture"
-	icon_state = "suture_purp"
+	name = "medicated sutures"
 	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
+	singular_name = "medicated suture"
+	icon_state = "suture_purp"
 	heal_brute = 15
 	stop_bleeding = 1
 	grind_results = list(/datum/reagent/medicine/polypyr = 1)

@@ -25,6 +25,11 @@
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
 		. += span_notice("It is [LOWER_TEXT(english_list(types))].")
 
+/obj/item/reagent_containers/cup/examine_tags(mob/user)
+	. = ..()
+	for(var/foodtype in bitfield_to_list(drink_type, FOOD_FLAGS))
+		.[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] drink."
+
 /**
  * Checks if the mob actually liked drinking this cup.
  *

@@ -154,6 +154,7 @@
 	desc = "You can totally see in the dark now!"
 	icon_state = "night"
 	inhand_icon_state = "glasses"
+	article = "a set of"
 	flags_cover = GLASSESCOVERSEYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	// Dark green
@@ -168,11 +169,13 @@
 /obj/item/clothing/glasses/eyepatch
 	name = "eyepatch"
 	desc = "Yarr."
+	gender = NEUTER
 	icon_state = "eyepatch"
 	base_icon_state = "eyepatch"
 	inhand_icon_state = null
 	actions_types = list(/datum/action/item_action/flip)
 	dog_fashion = /datum/dog_fashion/head/eyepatch
+	custom_materials = null
 
 /obj/item/clothing/glasses/eyepatch/attack_self(mob/user, modifiers)
 	. = ..()

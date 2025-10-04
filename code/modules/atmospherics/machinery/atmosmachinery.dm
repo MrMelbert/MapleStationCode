@@ -537,7 +537,10 @@
 
 /obj/machinery/atmospherics/update_name()
 	if(!override_naming)
-		name = "[GLOB.pipe_color_name[pipe_color]] [initial(name)]"
+		if(pipe_color == ATMOS_COLOR_OMNI)
+			name = initial(name)
+		else
+			name = "[GLOB.pipe_color_name[pipe_color]] [initial(name)]"
 	return ..()
 
 /obj/machinery/atmospherics/vv_edit_var(vname, vval)

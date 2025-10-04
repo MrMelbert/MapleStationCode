@@ -4,6 +4,7 @@
 
 /obj/item/melee/chainofcommand
 	name = "chain of command"
+	article = "the"
 	desc = "A tool used by great men to placate the frothing masses."
 	icon = 'icons/obj/weapons/whip.dmi'
 	icon_state = "chain"

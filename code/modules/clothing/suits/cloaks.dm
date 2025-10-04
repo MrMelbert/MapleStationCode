@@ -20,36 +20,43 @@
 
 /obj/item/clothing/neck/cloak/hos
 	name = "head of security's cloak"
+	article = "the"
 	desc = "Worn by Securistan, ruling the station with an iron fist."
 	icon_state = "hoscloak"
 
 /obj/item/clothing/neck/cloak/qm
 	name = "quartermaster's cloak"
+	article = "the"
 	desc = "Worn by Cargonia, supplying the station with the necessary tools for survival."
 
 /obj/item/clothing/neck/cloak/cmo
 	name = "chief medical officer's cloak"
+	article = "the"
 	desc = "Worn by Meditopia, the valiant men and women keeping pestilence at bay."
 	icon_state = "cmocloak"
 
 /obj/item/clothing/neck/cloak/ce
 	name = "chief engineer's cloak"
+	article = "the"
 	desc = "Worn by Engitopia, wielders of an unlimited power."
 	icon_state = "cecloak"
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/neck/cloak/rd
 	name = "research director's cloak"
+	article = "the"
 	desc = "Worn by Sciencia, thaumaturges and researchers of the universe."
 	icon_state = "rdcloak"
 
 /obj/item/clothing/neck/cloak/cap
 	name = "captain's cloak"
+	article = "the"
 	desc = "Worn by the commander of Space Station 13."
 	icon_state = "capcloak"
 
 /obj/item/clothing/neck/cloak/hop
 	name = "head of personnel's cloak"
+	article = "the"
 	desc = "Worn by the Head of Personnel. It smells faintly of bureaucracy."
 	icon_state = "hopcloak"
 
@@ -85,4 +92,3 @@
 	desc = "Worn by the wisest of veteran employees, this legendary cloak is only attainable by maintaining a living employment agreement with Nanotrasen for over <b>five thousand hours</b>. This status symbol represents a being is better than you in nearly every quantifiable way, simple as that."
 	icon_state = "playercloak"
 	element_type = /datum/element/skill_reward/veteran
-

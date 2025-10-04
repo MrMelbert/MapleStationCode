@@ -62,6 +62,7 @@
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"
+	article = "the"
 	desc = "Worn by a Captain to show their class."
 	icon_state = "capjacket"
 	inhand_icon_state = "bio_suit"
@@ -245,6 +246,7 @@
 
 /obj/item/clothing/suit/jacket/quartermaster
 	name = "quartermaster's overcoat"
+	article = "the"
 	desc = "A luxury, brown double-breasted overcoat made from kangaroo skin. It's gold cuffs are linked and styled on the credits symbol. It makes you feel more important than you probably are."
 	icon_state = "qm_coat"
 	blood_overlay_type = "coat"
@@ -318,6 +320,7 @@
 
 /obj/item/clothing/suit/jacket/hos/blue
 	name = "head of security's jacket"
+	article = "the"
 	desc = "This piece of clothing was specifically designed for asserting superior authority."
 	icon_state = "hosbluejacket"
 	inhand_icon_state = null
@@ -325,6 +328,7 @@
 
 /obj/item/clothing/suit/jacket/hos/tan
 	name = "head of security's jacket"
+	article = "the"
 	desc = "This piece of clothing was specifically designed for asserting superior authority."
 	icon_state = "hostanjacket"
 	inhand_icon_state = null

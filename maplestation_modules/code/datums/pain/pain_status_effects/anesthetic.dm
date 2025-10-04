@@ -91,4 +91,6 @@
 /datum/status_effect/anesthesia_grog/proc/report_grog(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
-	render_list += conditional_tooltip("<span class='alert ml-1'>[strength > 50 ? "Moderate" : "Trace"] amount of anesthetic detected in bloodstream.</span>", "Will subside over time.", tochat)
+	render_list += "<span class='alert ml-1'>"
+	render_list += conditional_tooltip("[strength > 50 ? "Moderate" : "Trace"] amount of anesthetic detected in bloodstream.</span>", "Will subside over time.", tochat)
+	render_list += "</span><br>"

@@ -25,7 +25,7 @@
 		return FALSE
 
 /obj/machinery/computer/camera_advanced/xenobio
-	name = "Slime management console"
+	name = "slime management console"
 	desc = "A computer used for remotely handling slimes."
 	networks = list(CAMERANET_NETWORK_SS13)
 	circuit = /obj/item/circuitboard/computer/xenobiology

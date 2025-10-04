@@ -1401,6 +1401,13 @@
 		burn_wound.victim.apply_damage(0.5, TOX, burn_wound.limb, wound_bonus = CANT_WOUND)
 		burn_wound.victim.apply_damage(0.5, BURN, burn_wound.limb, wound_bonus = CANT_WOUND)
 
+/datum/reagent/space_cleaner/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	if(!HAS_TRAIT(affected_mob, TRAIT_TOXINLOVER) && !prob(5))
+		return
+	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+		organ.wash(clean_types|CLEAN_RAD)
+
 /datum/reagent/space_cleaner/ez_clean
 	name = "EZ Clean"
 	description = "A powerful, acidic cleaner sold by Waffle Co. Affects organic matter while leaving other objects unaffected."

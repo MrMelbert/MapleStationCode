@@ -75,6 +75,7 @@ Behavior that's still missing from this component that original food items had t
 
 /datum/component/edible/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(examine))
+	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(examine_tags))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))
 	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, PROC_REF(OnCraft))
 	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, PROC_REF(on_ooze_eat))
@@ -110,6 +111,7 @@ Behavior that's still missing from this component that original food items had t
 		COMSIG_ITEM_USED_AS_INGREDIENT,
 		COMSIG_OOZE_EAT_ATOM,
 		COMSIG_ATOM_EXAMINE,
+		COMSIG_ATOM_EXAMINE_TAGS,
 	))
 
 	qdel(GetComponent(/datum/component/connect_loc_behalf))
@@ -214,9 +216,6 @@ Behavior that's still missing from this component that original food items had t
 	var/atom/owner = parent
 	if(food_flags & FOOD_NO_EXAMINE)
 		return
-	if(foodtypes)
-		var/list/types = bitfield_to_list(foodtypes, FOOD_FLAGS)
-		examine_list += span_notice("It is [LOWER_TEXT(english_list(types))].")
 
 	var/quality = get_perceived_food_quality(user)
 	if(quality > 0)
@@ -231,7 +230,7 @@ Behavior that's still missing from this component that original food items had t
 	else
 		examine_list += span_warning("You find this meal inedible.")
 
-	if(owner.reagents.total_volume > 0)
+	if(owner.reagents.total_volume > 0 && HAS_TRAIT(owner, TRAIT_FOOD_CHEF_MADE))
 		var/purity = owner.reagents.get_average_purity(/datum/reagent/consumable)
 		switch(purity)
 			if(0 to 0.2)
@@ -274,6 +273,14 @@ Behavior that's still missing from this component that original food items had t
 	if (isliving(user))
 		var/mob/living/living_user = user
 		living_user.taste(owner.reagents)
+
+/datum/component/edible/proc/examine_tags(datum/source, mob/user, list/examine_tags)
+	SIGNAL_HANDLER
+
+	if(food_flags & FOOD_NO_EXAMINE)
+		return
+	for(var/foodtype in bitfield_to_list(foodtypes, FOOD_FLAGS))
+		examine_tags[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] food."
 
 /datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/M, mob/living/user)
 	SIGNAL_HANDLER

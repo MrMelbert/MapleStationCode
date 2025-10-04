@@ -173,7 +173,7 @@
 	if(airlock.cutAiWire)
 		airlock.wires.cut(WIRE_AI)
 	if(airlock.autoname)
-		airlock.name = get_area_name(src, TRUE)
+		airlock.name = "[get_area_name(src, TRUE)] airlock"
 	airlock.update_appearance()
 	qdel(src)
 
