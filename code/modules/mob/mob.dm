@@ -524,7 +524,7 @@
 			var/list/result = examinify.examine_more(src)
 			if(!length(result))
 				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
-			result_combined = jointext(result, "<br>")
+			result_combined = examine_block(jointext(result, "<br>"))
 
 		else
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
@@ -1470,7 +1470,7 @@
 	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
 	add_consciousness_modifier(HUNGER, round(hungermod, 0.01))
 
-///Apply a proper movespeed modifier based on items we have equipped
+/// Apply a proper movespeed modifier based on items we have equipped
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = 0
 	var/immutable_speedies = 0

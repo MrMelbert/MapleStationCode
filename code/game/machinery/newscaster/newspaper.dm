@@ -33,6 +33,8 @@
 	var/saved_wanted_body
 	///Stored icon of the wanted criminal, if one existed at the time of creation.
 	var/icon/saved_wanted_icon
+	///Do we have eyeholes punctured?
+	var/punctured = FALSE
 
 /obj/item/newspaper/Initialize(mapload)
 	. = ..()
@@ -42,6 +44,8 @@
 		wield_callback = CALLBACK(src, PROC_REF(on_wielded)),\
 		unwield_callback = CALLBACK(src, PROC_REF(on_unwielded)),\
 	)
+	AddElement(/datum/element/burn_on_item_ignition)
+	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 	creation_time = GLOB.news_network.last_action
 	for(var/datum/feed_channel/iterated_feed_channel in GLOB.news_network.network_channels)
 		news_content += iterated_feed_channel
@@ -52,8 +56,6 @@
 	saved_wanted_body = GLOB.news_network.wanted_issue.body
 	if(GLOB.news_network.wanted_issue.img)
 		saved_wanted_icon = GLOB.news_network.wanted_issue.img
-	AddElement(/datum/element/burn_on_item_ignition)
-	RegisterSignal(src, COMSIG_ATOM_IGNITED_BY_ITEM, PROC_REF(close_paper_ui))
 
 /obj/item/newspaper/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(held_item)
@@ -81,7 +83,30 @@
 	return TOXLOSS
 
 /obj/item/newspaper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if (!user.can_write(tool))
+	if (tool.tool_behaviour == TOOL_SCREWDRIVER || tool.tool_behaviour == TOOL_WIRECUTTER || tool.sharpness)
+		if (punctured)
+			balloon_alert(user, "already has holes!")
+			return ITEM_INTERACT_BLOCKING
+
+		var/used_verb = "cutting out"
+		if (tool.sharpness != SHARP_EDGED || tool.tool_behaviour == TOOL_SCREWDRIVER)
+			used_verb = "puncturing"
+
+		balloon_alert(user, "[used_verb] peekholes...")
+		if (!do_after(user, 3 SECONDS, src))
+			balloon_alert(user, "interrupted!")
+			return ITEM_INTERACT_BLOCKING
+
+		playsound(src, 'sound/items/duct_tape_rip.ogg', 50, TRUE)
+		punctured = TRUE
+		// User has additional arms or something, I dunno
+		if (isliving(loc))
+			var/mob/living/owner = loc
+			owner.remove_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+			owner.update_appearance(UPDATE_OVERLAYS)
+		return ITEM_INTERACT_SUCCESS
+
+	if (!user.can_write(tool, TRUE))
 		return NONE
 
 	if (scribble_page == current_page)
@@ -120,27 +145,53 @@
 	return FALSE
 
 /// Called when you start reading the paper with both hands
-/obj/item/newspaper/proc/on_wielded(obj/item/source, mob/user)
+/obj/item/newspaper/proc/on_wielded(obj/item/source, mob/living/user)
+	ADD_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	RegisterSignal(user, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(holder_updated_overlays))
 	RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(holder_checked_name))
 	user.update_appearance(UPDATE_OVERLAYS)
-	user.name = user.get_visible_name()
+	if (!punctured)
+		user.add_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+	if (ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /// Called when you stop doing that
-/obj/item/newspaper/proc/on_unwielded(obj/item/source, mob/user)
+/obj/item/newspaper/proc/on_unwielded(obj/item/source, mob/living/user)
+	REMOVE_TRAIT(user, TRAIT_FACE_COVERED, REF(src))
 	UnregisterSignal(user, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_HUMAN_GET_VISIBLE_NAME))
 	user.update_appearance(UPDATE_OVERLAYS)
-	user.name = user.get_visible_name()
+	if (!punctured)
+		user.remove_fov_trait(REF(src), FOV_REVERSE_270_DEGRESS)
+	if (ishuman(user))
+		var/mob/living/carbon/human/as_human = user
+		as_human.update_visible_name()
 
 /// Called when we're being read and overlays are updated, we should show a big newspaper over the reader
 /obj/item/newspaper/proc/holder_updated_overlays(atom/reader, list/overlays)
 	SIGNAL_HANDLER
-	overlays += mutable_appearance(icon, "newspaper_held_over", ABOVE_MOB_LAYER)
-	overlays += mutable_appearance(icon, "newspaper_held_under", BELOW_MOB_LAYER)
+	overlays += mutable_appearance(icon, "newspaper_held_over[punctured ? "_holed" : ""]", ABOVE_MOB_LAYER)
+	overlays += mutable_appearance(icon, "newspaper_held_under[punctured ? "_holed" : ""]", BELOW_MOB_LAYER)
+
+/obj/item/newspaper/examine(mob/user)
+	. = ..()
+	if (punctured)
+		. += span_notice("It has a pair of small peek holes punctured near the top.")
+	else
+		. += span_notice("You can cut out some peek holes using something [span_bolditalic("sharp")] or [span_bolditalic("pointy")]...")
 
 /// Called when someone tries to figure out what our identity is, but they can't see it because of the newspaper
 /obj/item/newspaper/proc/holder_checked_name(mob/living/carbon/human/source, list/identity)
 	SIGNAL_HANDLER
+
+	var/newspaper_obscurity_priority = 100 // how powerful obscuring your appearance with a newspaper is
+	if(identity[VISIBLE_NAME_FORCED])
+		if(identity[VISIBLE_NAME_FORCED] > newspaper_obscurity_priority) // the other set forced name is forcier than breaking news
+			return
+		else if(identity[VISIBLE_NAME_FORCED] == newspaper_obscurity_priority)
+			stack_trace("A name-setting signal operation ([identity[VISIBLE_NAME_FACE]]) has a priority collision with [src].")
+		else
+			identity[VISIBLE_NAME_FORCED] = newspaper_obscurity_priority
 	identity[VISIBLE_NAME_FACE] = ""
 	identity[VISIBLE_NAME_ID] = ""
 
@@ -217,10 +268,10 @@
 			var/has_image = FALSE
 			if(feed_messages.img)
 				has_image = TRUE
-				user << browse_rsc(feed_messages.img, "tmp_photo[feed_messages.message_ID].png")
+				user << browse_rsc(feed_messages.img, "tmp_photo[feed_messages.message_id].png")
 			channel_data["channel_messages"] += list(list(
 				"message" = "-[feed_messages.return_body(censored_check(feed_messages.body_censor_time))]",
-				"photo" = (has_image ? "tmp_photo[feed_messages.message_ID].png" : null),
+				"photo" = (has_image ? "tmp_photo[feed_messages.message_id].png" : null),
 				"author" = feed_messages.return_author(censored_check(feed_messages.author_censor_time)),
 			))
 	data["channel_data"] = list(channel_data)
