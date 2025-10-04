@@ -484,12 +484,12 @@
 	// This is support for awkwardly shaped airlocks that cycle on a group ID
 	if(!length(internal_airlocks))
 		for(var/obj/machinery/door/airlock/external_airlock as anything in external_airlocks)
-			internal_airlocks |= external_airlock.close_others
+			internal_airlocks |= external_airlock.close_others || list()
 		// For double-wide airlocks, so we don't end up with doors in both lists
 		internal_airlocks -= external_airlocks
 	if(!length(external_airlocks))
 		for(var/obj/machinery/door/airlock/internal_airlock as anything in internal_airlocks)
-			external_airlocks |= internal_airlock.close_others
+			external_airlocks |= internal_airlock.close_others || list()
 		external_airlocks -= internal_airlocks
 
 	if(!length(external_airlocks) || !length(internal_airlocks))
