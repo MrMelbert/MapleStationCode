@@ -2,10 +2,10 @@
 /obj/item/organ/internal/cyberimp
 	name = "cybernetic implant"
 	desc = "A state-of-the-art implant that improves a baseline's functionality."
-	visual = FALSE
+
 	organ_flags = ORGAN_ROBOTIC
 	failing_desc = "seems to be broken."
-	var/implant_color = "#FFFFFF"
+	var/implant_color = COLOR_WHITE
 	var/implant_overlay
 
 /obj/item/organ/internal/cyberimp/New(mob/implanted_mob = null)
@@ -17,7 +17,7 @@
 		add_overlay(overlay)
 	return ..()
 
-/obj/item/organ/cyberimp/feel_for_damage(self_aware)
+/obj/item/organ/internal/cyberimp/feel_for_damage(self_aware)
 	// No feeling in implants (yet?)
 	return ""
 

@@ -19,7 +19,7 @@
 	var/datum/bodypart_overlay/mutant/tail_spines/tail_spines_overlay
 
 /obj/item/organ/external/tail/proc/is_tailed_species(mob/living/carbon/who)
-	for(var/tail_type in who.dna.species.external_organs)
+	for(var/tail_type in who.dna.species.mutant_organs)
 		if(ispath(tail_type, /obj/item/organ/external/tail))
 			return TRUE
 	return FALSE
@@ -35,7 +35,7 @@
 	if(special)
 		return
 
-	var/moodlet_type = is_type_in_list(src, organ_owner.dna.species.external_organs) ? /datum/mood_event/tail_regained_right : /datum/mood_event/tail_regained_wrong
+	var/moodlet_type = is_type_in_list(src, organ_owner.dna.species.mutant_organs) ? /datum/mood_event/tail_regained_right : /datum/mood_event/tail_regained_wrong
 	organ_owner.add_mood_event("tail_regained", moodlet_type)
 
 /obj/item/organ/external/tail/on_bodypart_insert(obj/item/bodypart/bodypart)
@@ -84,7 +84,7 @@
 	if(wag_flags & WAG_WAGGING)
 		stop_wag(organ_owner)
 
-	if(is_type_in_list(src, organ_owner.dna.species.external_organs))
+	if(is_type_in_list(src, organ_owner.dna.species.mutant_organs))
 		organ_owner.add_mood_event("tail_lost", /datum/mood_event/tail_lost)
 		organ_owner.add_mood_event("tail_balance_lost", /datum/mood_event/tail_balance_lost)
 

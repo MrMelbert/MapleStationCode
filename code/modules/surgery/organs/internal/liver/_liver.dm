@@ -7,7 +7,7 @@
 	name = "liver"
 	desc = "Pairing suggestion: chianti and fava beans."
 	icon_state = "liver"
-	visual = FALSE
+
 	w_class = WEIGHT_CLASS_SMALL
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_LIVER
@@ -240,7 +240,7 @@
 /obj/item/organ/internal/liver/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantliver
 
-/obj/item/organ/liver/feel_for_damage(self_aware)
+/obj/item/organ/internal/liver/feel_for_damage(self_aware)
 	if(damage < low_threshold)
 		return
 	if(damage < high_threshold)

@@ -114,7 +114,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/plumage
+	relevant_external_organ = /obj/item/organ/internal/ears/avian
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/plumage/init_possible_values()

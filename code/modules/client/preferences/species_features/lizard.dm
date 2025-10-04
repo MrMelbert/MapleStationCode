@@ -29,18 +29,18 @@
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Body markings"
 	should_generate_icons = TRUE
-	relevant_mutant_bodypart = "body_markings"
+	relevant_body_markings = /datum/bodypart_overlay/simple/body_marking/lizard
 
 /datum/preference/choiced/lizard_body_markings/init_possible_values()
-	return assoc_to_keys_features(SSaccessories.body_markings_list)
+	return assoc_to_keys_features(SSaccessories.lizard_markings_list)
 
 /datum/preference/choiced/lizard_body_markings/icon_for(value)
-	var/datum/sprite_accessory/sprite_accessory = SSaccessories.body_markings_list[value]
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.lizard_markings_list[value]
 
 	var/datum/universal_icon/final_icon = uni_icon('icons/mob/human/species/lizard/bodyparts.dmi', "lizard_chest_m")
 
 	if (sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
-		var/datum/universal_icon/body_markings_icon = uni_icon(sprite_accessory.icon, "m_body_markings_[sprite_accessory.icon_state]_ADJ")
+		var/datum/universal_icon/body_markings_icon = uni_icon(sprite_accessory.icon, "male_[sprite_accessory.icon_state]_chest")
 		final_icon.blend_icon(body_markings_icon, ICON_OVERLAY)
 
 	final_icon.blend_color(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
@@ -51,7 +51,7 @@
 	return final_icon
 
 /datum/preference/choiced/lizard_body_markings/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["body_markings"] = value
+	target.dna.features["lizard_markings"] = value
 
 /datum/preference/choiced/lizard_frills
 	savefile_key = "feature_lizard_frills"
@@ -91,10 +91,9 @@
 	savefile_key = "feature_lizard_legs"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_mutant_bodypart = "legs"
 
 /datum/preference/choiced/lizard_legs/init_possible_values()
-	return list("Normal Legs", DIGITIGRADE_LEGS)
+	return list(NORMAL_LEGS, DIGITIGRADE_LEGS)
 
 /datum/preference/choiced/lizard_legs/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["legs"] = value
