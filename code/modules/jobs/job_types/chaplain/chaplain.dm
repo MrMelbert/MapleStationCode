@@ -36,6 +36,13 @@
 
 	job_tone = "holy"
 
+	// future todo : grant these skills when selecting a sect, not by default.
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // chaplain gun
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_APPRENTICE, // robot sect
+		/datum/skill/botany = SKILL_LEVEL_APPRENTICE,
+	)
 	title_options = list(
 		"Magister",
 	)
@@ -129,4 +136,4 @@
 	satchel = /obj/item/storage/backpack/cultpack
 
 	chameleon_extras = /obj/item/stamp/chap
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)

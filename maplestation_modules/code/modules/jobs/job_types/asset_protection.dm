@@ -50,6 +50,13 @@
 	rpg_title = "Royal Guard"
 	crewmonitor_priority = 9 // after cap, right before sec
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_MASTER,
+		/datum/skill/first_aid = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/piloting = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/asset_protection
 	name = "Asset Protection"
 	jobtype = /datum/job/asset_protection

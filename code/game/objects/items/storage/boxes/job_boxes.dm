@@ -289,13 +289,25 @@
 	desc = "Contains spares of every science job skillchip."
 
 /obj/item/storage/box/skillchips/science/PopulateContents()
-	new/obj/item/skillchip/job/roboticist(src)
-	new/obj/item/skillchip/job/roboticist(src)
+	// new/obj/item/skillchip/job/roboticist(src)
+	// new/obj/item/skillchip/job/roboticist(src)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
 
 /obj/item/storage/box/skillchips/engineering
 	name = "box of engineering job skillchips"
 	desc = "Contains spares of every engineering job skillchip."
 
 /obj/item/storage/box/skillchips/engineering/PopulateContents()
-	new/obj/item/skillchip/job/engineer(src)
-	new/obj/item/skillchip/job/engineer(src)
+	// new/obj/item/skillchip/job/engineer(src)
+	// new/obj/item/skillchip/job/engineer(src)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/station_engineer)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/station_engineer)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/station_engineer)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/atmospheric_technician)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/atmospheric_technician)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/atmospheric_technician)

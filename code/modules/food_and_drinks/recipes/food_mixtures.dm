@@ -4,8 +4,14 @@
 /datum/crafting_recipe/food/on_craft_completion(mob/user, atom/result)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
-	if(istype(result) && !isnull(user.mind))
-		ADD_TRAIT(result, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	// NON-MODULE CHANGE
+	if(istype(result))
+		var/complexity = 1
+		if(istype(result, /obj/item/food))
+			var/obj/item/food/food = result
+			complexity = food.crafting_complexity
+
+		handle_chef_made_food(result, result, user.mind, complexity)
 
 /datum/crafting_recipe/food/New()
 	. = ..()

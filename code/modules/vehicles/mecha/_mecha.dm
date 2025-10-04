@@ -905,3 +905,16 @@
 			act.button_icon_state = "mech_lights_off"
 		balloon_alert(occupant, "lights [mecha_flags & LIGHTS_ON ? "on":"off"]")
 		act.build_all_button_icons()
+
+/obj/vehicle/sealed/mecha/proc/get_driver_skill(category)
+	var/best_piloting_skill = null
+	for(var/mob/living/driver in return_drivers())
+		var/driver_skill = driver.get_skill_modifier(/datum/skill/piloting, category)
+		if(category == SKILL_SPEED_MODIFIER)
+			driver_skill *= -1 // lower is better for speed
+		if(isnull(best_piloting_skill) || driver_skill > best_piloting_skill)
+			best_piloting_skill = driver_skill
+
+	if(category == SKILL_SPEED_MODIFIER)
+		best_piloting_skill *= -1 // revert speed back
+	return best_piloting_skill || 0

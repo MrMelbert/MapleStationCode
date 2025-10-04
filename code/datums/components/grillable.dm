@@ -10,8 +10,9 @@
 	var/current_cook_time = 0
 	///Do we use the large steam sprite?
 	var/use_large_steam_sprite = FALSE
-	/// REF() to the mind which placed us on the griddle
-	var/who_placed_us
+	// NON-MODULE CHANGE
+	/// WEAKREF() to the mind which placed us on the griddle
+	var/datum/weakref/who_placed_us
 	/// Reagents that should be added to the result
 	var/list/added_reagents
 
@@ -59,8 +60,8 @@
 /datum/component/grillable/proc/on_grill_placed(datum/source, mob/griller)
 	SIGNAL_HANDLER
 
-	if(griller && griller.mind)
-		who_placed_us = REF(griller.mind)
+	// NON-MODULE CHANGE
+	who_placed_us = WEAKREF(griller?.mind)
 
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 
@@ -110,8 +111,8 @@
 			grilled_result.reagents.add_reagent_list(added_reagents)
 
 	SEND_SIGNAL(parent, COMSIG_ITEM_GRILLED, grilled_result)
-	if(who_placed_us)
-		ADD_TRAIT(grilled_result, TRAIT_FOOD_CHEF_MADE, who_placed_us)
+	// NON-MODULE CHANGE
+	handle_chef_made_food(grilled_result, parent, who_placed_us?.resolve())
 
 	grill_source.visible_message("<span class='[positive_result ? "notice" : "warning"]'>[parent] turns into \a [grilled_result]!</span>")
 	grilled_result.pixel_x = original_object.pixel_x
