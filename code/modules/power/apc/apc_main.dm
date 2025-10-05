@@ -220,6 +220,7 @@
 		req_access = list(ACCESS_ENGINE_EQUIP)
 	if(auto_name)
 		name = "\improper [get_area_name(area, TRUE)] APC"
+		article = "the"
 
 	//Initialize its electronics
 	set_wires(new /datum/wires/apc(src))
@@ -288,6 +289,7 @@
 	. = ..()
 	if(auto_name)
 		name = "\improper [get_area_name(area, TRUE)] APC"
+		article = "the"
 
 /obj/machinery/power/apc/proc/assign_to_area(area/target_area = get_area(src))
 	if(area == target_area)

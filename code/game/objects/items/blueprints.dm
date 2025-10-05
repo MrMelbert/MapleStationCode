@@ -18,6 +18,7 @@
  */
 /obj/item/blueprints
 	name = "station blueprints"
+	article = "the"
 	desc = "Blueprints of the station. There is a \"Classified\" stamp and several coffee stains on it."
 	icon = 'icons/obj/scrolls.dmi'
 	icon_state = "blueprints"
@@ -255,4 +256,3 @@
 #undef AREA_STATION
 #undef AREA_OUTDOORS
 #undef AREA_SPECIAL
-

@@ -11,6 +11,7 @@
 // DAT FUKKEN DISK.
 /obj/item/disk/nuclear
 	name = "nuclear authentication disk"
+	article = "the"
 	desc = "Better keep this safe."
 	icon_state = "nucleardisk"
 	max_integrity = 250

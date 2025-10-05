@@ -1,6 +1,7 @@
 /obj/item/clothing/glasses/hud
 	name = "HUD"
 	desc = "A heads-up display that provides important info in (almost) real time."
+	gender = NEUTER
 	actions_types = list(/datum/action/item_action/toggle_wearable_hud)
 	/// Whether the HUD info is on or off
 	var/display_active = TRUE
@@ -94,6 +95,7 @@
 /obj/item/clothing/glasses/hud/health/sunglasses
 	name = "medical HUDSunglasses"
 	desc = "Sunglasses with a medical HUD."
+	gender = PLURAL
 	icon_state = "sunhudmed"
 	flash_protect = FLASH_PROTECTION_FLASH
 	flags_cover = GLASSESCOVERSEYES
@@ -137,6 +139,7 @@
 	desc = "Sunglasses with a diagnostic HUD."
 	icon_state = "sunhuddiag"
 	inhand_icon_state = "glasses"
+	gender = PLURAL
 	flash_protect = FLASH_PROTECTION_FLASH
 	flags_cover = GLASSESCOVERSEYES
 	tint = 1
@@ -179,6 +182,7 @@
 	name = "security HUDSunglasses"
 	desc = "Sunglasses with a security HUD."
 	icon_state = "sunhudsec"
+	gender = PLURAL
 	flash_protect = FLASH_PROTECTION_FLASH
 	flags_cover = GLASSESCOVERSEYES
 	tint = 1
@@ -213,6 +217,7 @@
 	desc = "GAR glasses with a HUD."
 	icon_state = "gar_sec"
 	inhand_icon_state = "gar_black"
+	gender = PLURAL
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	force = 10
 	throwforce = 10
@@ -294,6 +299,7 @@
 	name = "police aviators"
 	desc = "For thinking you look cool while brutalizing protestors and minorities."
 	icon_state = "bigsunglasses"
+	gender = PLURAL
 	flash_protect = FLASH_PROTECTION_FLASH
 	flags_cover = GLASSESCOVERSEYES
 	tint = 1

@@ -79,7 +79,7 @@
 
 /obj/structure/holosign/barrier
 	name = "security holobarrier"
-	desc = "A strong short security holographic barrier used for crowd control and blocking crime scenes. Can only be passed by walking."
+	desc = "A strong short security holographic barrier used for crowd control and blocking crime scenes. Can only be passed by sneaking."
 	icon_state = "holosign_sec"
 	base_icon_state = "holosign_sec"
 	pass_flags_self = PASSTABLE | PASSGRILLE | PASSGLASS | LETPASSTHROW
@@ -172,7 +172,7 @@
 
 /obj/structure/holosign/barrier/engineering
 	name = "engineering holobarrier"
-	desc = "A short engineering holographic barrier used for designating hazardous zones, slightly blocks radiation. Can only be passed by walking."
+	desc = "A short engineering holographic barrier used for designating hazardous zones, slightly blocks radiation. Can only be passed by sneaking."
 	icon_state = "holosign_engi"
 	base_icon_state = "holosign_engi"
 	rad_insulation = RAD_LIGHT_INSULATION
