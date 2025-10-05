@@ -143,7 +143,7 @@
 ///LUMINESCENT
 /obj/item/bodypart/head/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT
-	head_flags = HEAD_ALL_FEATURES
+	head_flags = HEAD_DEFAULT_FEATURES
 
 /obj/item/bodypart/chest/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT

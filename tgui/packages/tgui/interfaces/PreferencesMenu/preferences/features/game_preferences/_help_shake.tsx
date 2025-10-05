@@ -1,4 +1,4 @@
-import { CheckboxInput, FeatureToggle } from '../base';
+import { CheckboxInput, type FeatureToggle } from '../base';
 
 export const default_shake_when_helping: FeatureToggle = {
   name: 'Default Shake When Helping',

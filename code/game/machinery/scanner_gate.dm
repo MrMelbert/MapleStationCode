@@ -203,6 +203,7 @@
 	var/color = null
 	var/detected_thing = null
 	var/bypassed = FALSE
+	playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 	switch(scangate_mode)
 		if(SCANGATE_NONE)
 			return
