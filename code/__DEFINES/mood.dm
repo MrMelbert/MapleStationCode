@@ -71,11 +71,6 @@
 /// Maximum amount of terror that can be held at once
 #define TERROR_BUILDUP_MAXIMUM 1000
 
-/// How much terror panic attacks grant
-#define PANIC_ATTACK_TERROR_AMOUNT 50
-/// How much terror being hugged reduces, or increases if its done by a nightmare or someone you're afraid of
-#define HUG_TERROR_AMOUNT 90
-
 /// Relates to fear or resisting fear
 #define MOOD_EVENT_FEAR (1<<0)
 /// Relates to art
