@@ -51,12 +51,12 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 /// Some sanity checks, but mostly to check if the person has their preference/dna set to load
 /proc/should_visual_organ_apply_to(obj/item/organ/organpath, mob/living/carbon/target)
-	if(!initial(organpath.bodypart_overlay))
-		return TRUE
-
 	if(isnull(organpath) || isnull(target))
 		stack_trace("passed a null path or mob to 'should_visual_organ_apply_to'")
 		return FALSE
+
+	if(!initial(organpath.bodypart_overlay) || initial(organpath.sprite_accessory_override))
+		return TRUE
 
 	var/datum/bodypart_overlay/mutant/bodypart_overlay = initial(organpath.bodypart_overlay)
 	var/feature_key = !isnull(bodypart_overlay) && initial(bodypart_overlay.feature_key)

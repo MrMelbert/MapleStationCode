@@ -86,10 +86,12 @@
 ///Used as callbacks by object pooling
 /obj/item/organ/internal/exit_wardrobe()
 	START_PROCESSING(SSobj, src)
+	return ..()
 
 //See above
 /obj/item/organ/internal/enter_wardrobe()
 	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 ///Organs don't die instantly, and neither should you when you get fucked up
 /obj/item/organ/internal/handle_failing_organs(seconds_per_tick)
