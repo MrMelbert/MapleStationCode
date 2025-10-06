@@ -289,7 +289,7 @@ function StatDisplay(props) {
   );
 }
 
-function QuirkPage() {
+export function QuirkPage() {
   const { act, data } = useBackend<PreferencesMenuData>();
 
   // this is mainly just here to copy from MainPage.tsx
@@ -514,46 +514,6 @@ function QuirkPage() {
             />
           </Stack.Item>
         </Stack>
-      </Stack.Item>
-    </Stack>
-  );
-}
-
-export function QuirkPersonalityPage() {
-  const [contentPage, setContentPage] = useState<'quirks' | 'personality'>(
-    'quirks',
-  );
-
-  return (
-    <Stack fill vertical>
-      <Stack.Item>
-        <Stack>
-          <Stack.Item grow>
-            <Button
-              selected={contentPage === 'quirks'}
-              onClick={() => setContentPage('quirks')}
-              fluid
-              align="center"
-              fontSize="14px"
-            >
-              Quirks
-            </Button>
-          </Stack.Item>
-          <Stack.Item grow>
-            <Button
-              selected={contentPage === 'personality'}
-              onClick={() => setContentPage('personality')}
-              fluid
-              align="center"
-              fontSize="14px"
-            >
-              Personality
-            </Button>
-          </Stack.Item>
-        </Stack>
-      </Stack.Item>
-      <Stack.Item grow>
-        {contentPage === 'personality' ? <PersonalityPage /> : <QuirkPage />}
       </Stack.Item>
     </Stack>
   );

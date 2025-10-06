@@ -11,8 +11,9 @@ import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { LoadoutPage } from './loadout';
 import { MainPage } from './MainPage';
-import { QuirkPersonalityPage } from './QuirksPage';
+import { QuirkPage } from './QuirksPage';
 import { SpeciesPage } from './SpeciesPage';
+import { PersonalityPage } from './PersonalityPage';
 
 enum Page {
   Antags,
@@ -20,6 +21,7 @@ enum Page {
   Jobs,
   Species,
   Quirks,
+  Personality,
   Loadout,
   Limbs, // NON-MODULE CHANGE
   Languages, // NON-MODULE CHANGE
@@ -84,7 +86,11 @@ export function CharacterPreferenceWindow(props) {
 
       break;
     case Page.Quirks:
-      pageContents = <QuirkPersonalityPage />;
+      pageContents = <QuirkPage />;
+      break;
+
+    case Page.Personality:
+      pageContents = <PersonalityPage />;
       break;
 
     case Page.Loadout:
@@ -202,10 +208,21 @@ export function CharacterPreferenceWindow(props) {
               page={Page.Quirks}
               setPage={setCurrentPage}
             >
-              Quirks and Personality
+              Quirks
+            </PageButton>
+          </Stack.Item>
+
+          <Stack.Item grow>
+            <PageButton
+              currentPage={currentPage}
+              page={Page.Personality}
+              setPage={setCurrentPage}
+            >
+              Personality
             </PageButton>
           </Stack.Item>
         </Stack>
+
       </Stack.Item>
       <Stack.Divider />
       <Stack.Item grow position="relative" overflowX="hidden" overflowY="auto">
