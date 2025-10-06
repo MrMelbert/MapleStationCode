@@ -92,15 +92,13 @@
 		breath = get_breath_from_internal(BREATH_VOLUME)
 		if(breath)
 			internals_breath = TRUE
-		else // Failed to get breath from internals, try to get breath normally
-			breath = get_breath_from_surroundings(environment, BREATH_VOLUME)
 
 	// Breathe from air
-	else
+	if(!skip_breath && !breath)
 		breath = get_breath_from_surroundings(environment, BREATH_VOLUME)
 
-	check_breath(breath, skip_breath)
-	try_breathing_sound(internals_breath, breath)
+	if(check_breath(breath) && internals_breath)
+		breathing_loop.start()
 
 	if(breath)
 		exhale_breath(breath)
@@ -109,14 +107,6 @@
 	if(SEND_SIGNAL(src, COMSIG_CARBON_BREATH_EXHALE, breath) & BREATHE_EXHALE_HANDLED)
 		return
 	loc.assume_air(breath)
-
-//Tries to play the carbon a breathing sound when using internals, also invokes check_breath
-/mob/living/carbon/proc/try_breathing_sound(internals, breath)
-	var/should_be_on = internals && check_breath(breath) && canon_client?.prefs?.read_preference(/datum/preference/toggle/sound_breathing)
-	if(should_be_on && !breathing_loop.timer_id)
-		breathing_loop.start()
-	else if(!should_be_on && breathing_loop.timer_id)
-		breathing_loop.stop()
 
 /mob/living/carbon/proc/has_smoke_protection()
 	return HAS_TRAIT(src, TRAIT_NOBREATH)

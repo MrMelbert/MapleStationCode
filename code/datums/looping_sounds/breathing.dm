@@ -6,4 +6,9 @@
 	//spess station-
 	volume = 13
 	pressure_affected = FALSE
-	direct = TRUE
+
+/datum/looping_sound/breathing/start(on_behalf_of)
+	var/mob/living/carbon/breather = on_behalf_of || parent
+	if(!breather.client?.prefs?.read_preference(/datum/preference/toggle/sound_breathing))
+		return
+	return ..()
