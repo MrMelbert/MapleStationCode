@@ -754,8 +754,10 @@
 
 /datum/status_effect/moodlet_in_area
 	id = "moodlet_in_area"
-	duration = STATUS_EFFECT_PERMANENT
-	tick_interval = STATUS_EFFECT_NO_TICK
+	// duration = STATUS_EFFECT_PERMANENT
+	duration = -1
+	// tick_interval = STATUS_EFFECT_NO_TICK
+	tick_interval = -1
 	status_type = STATUS_EFFECT_MULTIPLE
 	alert_type = null
 	/// Moodlet to apply while in the area

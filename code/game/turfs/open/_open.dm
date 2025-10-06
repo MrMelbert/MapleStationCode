@@ -323,7 +323,6 @@
 
 	SEND_SIGNAL(slipper, COMSIG_ON_CARBON_SLIP)
 	if(force_drop && iscarbon(slipper)) //carbon specific behavior that living doesn't have
-		var/mob/living/carbon/carbon = slipper
 		for(var/obj/item/item in slipper.held_items)
 			slipper.accident(item)
 

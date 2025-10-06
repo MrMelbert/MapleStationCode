@@ -14,7 +14,7 @@
 	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
 	// mood runtime, so 50% average uptime across the hour.
 	if(SPT_PROB(0.416, seconds_per_tick))
-		quirk_holder.add_mood_event("depression", /datum/mood_event/depression)
+		quirk_holder.add_mood_event("depression", /datum/mood_event/depression_minimal)
 
 /datum/quirk/depression/remove()
 	quirk_holder.clear_mood_event("depression")

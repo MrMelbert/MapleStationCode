@@ -83,15 +83,27 @@
 	mood_change = -10
 	timeout = 2 MINUTES
 
+/datum/mood_event/depression_minimal/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_mild)
+	return BLOCK_NEW_MOOD
+
 /datum/mood_event/depression_mild
 	description = "I feel sad for no particular reason."
 	mood_change = -12
 	timeout = 2 MINUTES
 
+/datum/mood_event/depression_mild/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_moderate)
+	return BLOCK_NEW_MOOD
+
 /datum/mood_event/depression_moderate
 	description = "I feel miserable."
 	mood_change = -14
 	timeout = 2 MINUTES
+
+/datum/mood_event/depression_moderate/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_severe)
+	return BLOCK_NEW_MOOD
 
 /datum/mood_event/depression_severe
 	description = "I've lost all hope."
@@ -585,9 +597,9 @@
 	timeout = 30 SECONDS
 
 /datum/mood_event/smoke_in_face/add_effects(param)
-	if(HAS_TRAIT(owner, TRAIT_ANOSMIA))
-		description = "Cigarette smoke is unpleasant."
-		mood_change = -1
+	// if(HAS_TRAIT(owner, TRAIT_ANOSMIA))
+	// 	description = "Cigarette smoke is unpleasant."
+	// 	mood_change = -1
 	if(HAS_TRAIT(owner, TRAIT_SMOKER))
 		description = "Blowing smoke in my face, really?"
 		mood_change = 0
@@ -768,7 +780,7 @@
 		mood_change = 2
 		description = "Blood, blood! The Geometer will be pleased."
 		return
-	if(HAS_TRAIT(owner, TRAIT_MORBID) || HAS_TRAIT(owner, TRAIT_EVIL))
+	if(HAS_TRAIT(owner, TRAIT_MORBID))
 		mood_change = 0
 		description = "I just got coated in blood. Fascinating!"
 		return

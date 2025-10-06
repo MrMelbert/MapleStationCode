@@ -111,14 +111,6 @@
 		if(MOOD_LEVEL_HAPPY4)
 			set_sanity(sanity + 0.6 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
 
-	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
-	// mood runtime, so 50% average uptime across the hour.
-	if(HAS_TRAIT(mob_parent, TRAIT_DEPRESSION) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("depression_mild", /datum/mood_event/depression_mild)
-
-	if(HAS_TRAIT(mob_parent, TRAIT_JOLLY) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("jolly", /datum/mood_event/jolly)
-
 /datum/mood/proc/handle_mob_death(datum/source)
 	SIGNAL_HANDLER
 

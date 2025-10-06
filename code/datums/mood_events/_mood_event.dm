@@ -21,9 +21,9 @@
 	/// if false, it will be an overlay instead
 	var/special_screen_replace = TRUE
 	/// Owner of this mood event
-	var/mob/owner
+	var/mob/living/owner
 	/// List of required jobs for this mood event
-	var/list/required_job = list()
+	var/list/required_job
 
 /datum/mood_event/New(category)
 	src.category = category
@@ -59,7 +59,7 @@
 	if((event_flags & MOOD_EVENT_ART) && HAS_PERSONALITY(who, /datum/personality/unimaginative))
 		return FALSE
 
-	if((event_flags & MOOD_EVENT_PAIN) && HAS_TRAIT(who, TRAIT_ANALGESIA))
+	if((event_flags & MOOD_EVENT_PAIN) && !CAN_FEEL_PAIN(who))
 		return FALSE
 
 	return TRUE

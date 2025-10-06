@@ -135,7 +135,7 @@
 	SIGNAL_HANDLER
 
 	// excusing the bartender, because shotgun
-	if(HAS_TRAIT(owner, TRAIT_DRUNKEN_BRAWLER))
+	if(HAS_TRAIT(owner, TRAIT_BOOZE_SLIDER))
 		return
 	// what makes me a good demoman?
 	if(istype(gun, /obj/item/gun/grenadelauncher) || istype(gun, /obj/item/gun/ballistic/revolver/grenadelauncher))

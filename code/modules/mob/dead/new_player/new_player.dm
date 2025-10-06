@@ -242,7 +242,7 @@
 		else // clear any personalities the prefs added since our job clearly does not want them
 			humanc.clear_personalities()
 		GLOB.manifest.inject(humanc)
-		SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
+		// SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
 
 	var/area/station/arrivals = GLOB.areas_by_type[/area/station/hallway/secondary/entry]
 	if(humanc && arrivals && !arrivals.power_environ) //arrivals depowered
