@@ -163,7 +163,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
-	return
+	if(!sprite_accessory_override)
+		bodypart_overlay?.imprint_on_next_insertion = TRUE
 
 //See above
 /obj/item/organ/proc/enter_wardrobe()
