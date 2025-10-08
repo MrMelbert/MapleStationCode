@@ -89,3 +89,8 @@ export const feature_avian_ears: FeatureChoiced = {
   name: 'Plumage',
   component: FeatureDropdownInput,
 };
+
+export const fish_tail: FeatureChoiced = {
+  name: 'Fish Tail',
+  component: FeatureDropdownInput,
+};

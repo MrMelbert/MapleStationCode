@@ -117,7 +117,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(SSaccessories.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
 	target.dna.features["animid_type"] = /datum/animalid_type/cat::id //NON-MODULE CHANGE
-	target.dna.features["animid_skin_type"] = "Skin" //NON-MODULE CHANGE
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly
 	// In practice this doesn't matter, but this is for the sake of 100%(ish) consistency

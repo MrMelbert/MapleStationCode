@@ -42,10 +42,16 @@ const AnimidSelection = (
             onClick={(e) => {
               e.stopPropagation();
             }}
+            // style={{
+            //   backgroundColor: 'darkgrey',
+            //   padding: '5px',
+            //   boxShadow: '0px 4px 8px 3px rgba(0, 0, 0, 0.7)',
+            //   overflowY: 'scroll',
+            //   borderRadius: '4px',
+            // }}
+            className="ChoicedSelection"
             style={{
-              backgroundColor: 'grey',
               padding: '5px',
-              boxShadow: '0px 4px 8px 3px rgba(0, 0, 0, 0.7)',
               overflowY: 'scroll',
             }}
           >
@@ -57,9 +63,16 @@ const AnimidSelection = (
                 .map(([id, option]) => {
                   return (
                     <Stack.Item key={id}>
-                      <Stack minWidth="400px" p={1} className="candystripe">
+                      <Stack
+                        minWidth="400px"
+                        p={1}
+                        className="candystripe"
+                        style={{
+                          borderRadius: '4px',
+                        }}
+                      >
                         <Stack.Item width="25%">
-                          <Stack vertical align="center">
+                          <Stack vertical align="center" ml={1}>
                             <Stack.Item fontSize={'16px'}>
                               <i>{option.name}</i>
                             </Stack.Item>
@@ -71,7 +84,9 @@ const AnimidSelection = (
                                 style={{
                                   cursor: 'pointer',
                                   borderColor:
-                                    selected === option.id ? 'green' : 'black',
+                                    selected === option.id
+                                      ? 'green'
+                                      : 'transparent',
                                   borderStyle: 'solid',
                                   borderWidth: '0.2em',
                                   borderRadius: '0.33em',
@@ -142,14 +157,4 @@ export const animid_type: FeatureAnimid = {
     'Select the type of animid you would like to play as. \
     Each type has its own advantages and disadvantages.',
   component: AnimidSelection,
-};
-
-export const animalid_fur_skin: FeatureChoiced = {
-  name: 'Animid Skin',
-  component: FeatureDropdownInput,
-};
-
-export const fish_tail: FeatureChoiced = {
-  name: 'Fish Tail',
-  component: FeatureDropdownInput,
 };

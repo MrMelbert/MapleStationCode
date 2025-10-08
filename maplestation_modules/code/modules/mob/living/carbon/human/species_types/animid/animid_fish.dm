@@ -5,6 +5,12 @@
 			/obj/item/organ/external/tail/fish = "Simple",
 			/obj/item/organ/external/frills = "Aquatic",
 		),
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/scaled,
+		BODY_ZONE_HEAD  = /obj/item/bodypart/head/scaled,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/scaled,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/scaled,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled,
 	)
 
 	name = "Piscinid"
@@ -50,22 +56,19 @@
 
 /obj/item/organ/external/tail/fish/Initialize(mapload)
 	. = ..()
-	// AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/fish)
-	var/time_to_fillet = fillet_amount * 0.5 SECONDS
-	AddElement(/datum/element/processable, TOOL_KNIFE, fillet_type, fillet_amount, time_to_fillet, screentip_verb = "Cut")
+	AddElement(/datum/element/processable, TOOL_KNIFE, fillet_type, fillet_amount, fillet_amount * 0.5 SECONDS, screentip_verb = "Cut")
 
 /obj/item/organ/external/tail/fish/on_mob_insert(mob/living/carbon/owner)
 	. = ..()
-	// owner.AddElementTrait(TRAIT_WADDLING, type, /datum/element/waddling)
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_location))
 	check_location(owner, null)
 	owner.dna.features["forced_fish_color"] ||= pick("#B4B8DD", "#85C7D0", "#67BBEE", "#2F4450", "#55CCBB", "#999FD0", "#345066", "#585B69", "#7381A0", "#B6DDE5", "#4E4E50")
 
 /obj/item/organ/external/tail/fish/on_mob_remove(mob/living/carbon/owner)
 	. = ..()
-	// owner.remove_traits(list(TRAIT_WADDLING, TRAIT_NO_STAGGER), type)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_on_water)
 	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/fish_on_water)
+	owner.remove_traits(list(/*TRAIT_OFF_BALANCE_TACKLER, */TRAIT_NO_STAGGER, TRAIT_NO_THROW_HITPUSH), type)
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED))
 
 /obj/item/organ/external/tail/fish/save_color()

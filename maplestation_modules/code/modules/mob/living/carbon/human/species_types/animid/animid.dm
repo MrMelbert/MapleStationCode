@@ -5,10 +5,7 @@
 		TRAIT_USES_SKINTONES,
 	)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
-	digitigrade_legs = list(
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/animal,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/animal,
-	)
+	payday_modifier = 1.0
 	/// A mapping of all animid ids to their singleton instances
 	var/static/list/datum/animalid_type/animid_singletons
 
@@ -24,48 +21,13 @@
 		animid_singletons[atype::id] = new atype()
 
 /datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	switch(human_who_gained_species.dna?.features["animid_skin_type"])
-		if(SKIN_TYPE_FUR)
-			inherent_traits |= TRAIT_MUTANT_COLORS
-			inherent_traits -= TRAIT_USES_SKINTONES
-			bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/furry
-			bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/furry
-			bodypart_overrides[BODY_ZONE_L_ARM] = /obj/item/bodypart/arm/left/furry
-			bodypart_overrides[BODY_ZONE_R_ARM] = /obj/item/bodypart/arm/right/furry
-			bodypart_overrides[BODY_ZONE_CHEST] = /obj/item/bodypart/chest/furry
-			bodypart_overrides[BODY_ZONE_HEAD] = /obj/item/bodypart/head/furry
-			digitigrade_legs[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade/animal
-			digitigrade_legs[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade/animal
-		if(SKIN_TYPE_SCALES)
-			inherent_traits |= TRAIT_MUTANT_COLORS
-			inherent_traits -= TRAIT_USES_SKINTONES
-			bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/scaled
-			bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/scaled
-			bodypart_overrides[BODY_ZONE_L_ARM] = /obj/item/bodypart/arm/left/scaled
-			bodypart_overrides[BODY_ZONE_R_ARM] = /obj/item/bodypart/arm/right/scaled
-			bodypart_overrides[BODY_ZONE_CHEST] = /obj/item/bodypart/chest/scaled
-			bodypart_overrides[BODY_ZONE_HEAD] = /obj/item/bodypart/head/scaled
-			digitigrade_legs[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade/scaled
-			digitigrade_legs[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade/scaled
-		else
-			inherent_traits |= TRAIT_USES_SKINTONES
-			inherent_traits -= TRAIT_MUTANT_COLORS
-			bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left
-			bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right
-			bodypart_overrides[BODY_ZONE_L_ARM] = /obj/item/bodypart/arm/left
-			bodypart_overrides[BODY_ZONE_R_ARM] = /obj/item/bodypart/arm/right
-			bodypart_overrides[BODY_ZONE_CHEST] = /obj/item/bodypart/chest
-			bodypart_overrides[BODY_ZONE_HEAD] = /obj/item/bodypart/head
-			digitigrade_legs.Cut()
-
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
-	for(var/organ_slot, organ_type_or_types in animid_singletons[animid_id].components)
-		set_mutant_organ(organ_slot, organ_type_or_types)
+	for(var/organ_slot, input in animid_singletons[animid_id].components)
+		set_mutant_organ(organ_slot, input)
 
-	. = ..()
-	// Call this anyways so we can update fur
-	if(old_species.type == type)
-		replace_body(human_who_gained_species, src)
+	// Ensures fish-animids get their preferred color rather than have one forced on them
+	human_who_gained_species.dna?.features["forced_fish_color"] = human_who_gained_species.dna?.features["mcolor"]
+	return ..()
 
 /datum/species/human/animid/get_physical_attributes()
 	return "Being a human hybrid, Animids are very similar to humans in almost all respects. \
@@ -100,17 +62,29 @@
 /datum/species/human/animid/create_pref_unique_perks()
 	var/list/to_add = list()
 
-	to_add += list(
-		list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = FA_ICON_DOG,
-			SPECIES_PERK_NAME = "Animal Instincts",
-			SPECIES_PERK_DESC = "Being part animal, Animids inherit many traits from their animal side. \
-				These traits vary wildly depending on the animal DNA they were spliced with, \
-				and often come with both advantages and disadvantages.",
-		),
-	)
+	to_add += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+		SPECIES_PERK_ICON = FA_ICON_DOG,
+		SPECIES_PERK_NAME = "Animal Instincts",
+		SPECIES_PERK_DESC = "Being part animal, Animids inherit many traits from their animal side. \
+			These traits vary wildly depending on the animal DNA they were spliced with, \
+			and often come with both advantages and disadvantages.",
+	))
+	if(CONFIG_GET(number/default_laws) == 0 || CONFIG_GET(flag/silicon_asimov_superiority_override))
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_PERSON_WALKING_DASHED_LINE_ARROW_RIGHT,
+			SPECIES_PERK_NAME = "Not Quite Human",
+			SPECIES_PERK_DESC = "Animids fall short of being classified as fully human in the eyes of Silicons."
+		))
 
+	to_add += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+		SPECIES_PERK_ICON = FA_ICON_HOSPITAL,
+		SPECIES_PERK_NAME = "Atypical Anatomy",
+		SPECIES_PERK_DESC = "Your unique physiology isn't necessarily harder to treat, but if you lose one of your \
+			unique organs or bodyparts, it will be harder to find a replacement.",
+	))
 	return to_add
 
 /datum/species/human/animid/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
@@ -123,9 +97,13 @@
 /datum/species/human/animid/randomize_features()
 	var/list/features = ..()
 	features["animid_type"] = pick(animid_singletons)
-	features["animid_skin_type"] = SKIN_TYPE_SKIN
 	return features
 
+/datum/species/human/animid/get_features()
+	. = ..()
+	. |= /datum/preference/color/mutant_color::savefile_key
+
+// Just shows all organs from all animid types
 /datum/species/human/animid/get_mut_organs()
 	. = ..()
 	for(var/animalid_id in animid_singletons)
@@ -134,33 +112,30 @@
 		. -= sublist
 		. += assoc_to_keys(sublist)
 
-/datum/species/human/animid/get_features()
-	. = ..()
-	. |= /datum/preference/color/mutant_color::savefile_key // mutant color for fur color, not always applied
-
-/datum/species/proc/set_mutant_organ(organ_slot, organ_type_or_types)
-	switch(organ_slot)
+/// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
+/datum/species/proc/set_mutant_organ(slot, input)
+	switch(slot)
 		if(BODY_ZONE_CHEST, BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
-			bodypart_overrides[organ_slot] = organ_type_or_types
+			bodypart_overrides[slot] = input
 		if(ORGAN_SLOT_BRAIN)
-			mutantbrain = organ_type_or_types
+			mutantbrain = input
 		if(ORGAN_SLOT_TONGUE)
-			mutanttongue = organ_type_or_types
+			mutanttongue = input
 		if(ORGAN_SLOT_EARS)
-			mutantears = organ_type_or_types
+			mutantears = input
 		if(ORGAN_SLOT_EYES)
-			mutanteyes = organ_type_or_types
+			mutanteyes = input
 		if(ORGAN_SLOT_LIVER)
-			mutantliver = organ_type_or_types
+			mutantliver = input
 		if(ORGAN_SLOT_HEART)
-			mutantheart = organ_type_or_types
+			mutantheart = input
 		if(ORGAN_SLOT_LUNGS)
-			mutantlungs = organ_type_or_types
+			mutantlungs = input
 		if(ORGAN_SLOT_STOMACH)
-			mutantstomach = organ_type_or_types
+			mutantstomach = input
 		if(ORGAN_SLOT_APPENDIX)
-			mutantappendix = organ_type_or_types
+			mutantappendix = input
 		if(MUTANT_ORGANS)
-			mutant_organs |= organ_type_or_types
+			mutant_organs |= input
 		if(BODY_MARKINGS)
-			body_markings |= organ_type_or_types
+			body_markings |= input
