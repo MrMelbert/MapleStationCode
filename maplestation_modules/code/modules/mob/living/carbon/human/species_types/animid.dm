@@ -1,4 +1,5 @@
 #define MUTANT_ORGANS "mutant"
+#define BODY_MARKINGS "body_markings"
 
 #define SKIN_TYPE_SKIN "Skin"
 #define SKIN_TYPE_FUR "Fur"
@@ -126,32 +127,21 @@
 	var/obj/item/organ/internal/ears/cat/cat_ears = new()
 	cat_ears.Insert(human_for_preview, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
-
 /datum/species/human/animid/randomize_features()
 	var/list/features = ..()
 	features["animid_type"] = pick(animid_singletons)
 	features["animid_skin_type"] = SKIN_TYPE_SKIN
 	return features
 
-// /datum/species/human/animid/get_organs()
-// 	. = ..()
-// 	for(var/animalid_id in animid_singletons)
-// 		var/datum/animalid_type/atype = animid_singletons[animalid_id]
-// 		. += flatten_list(atype.components)
+/datum/species/human/animid/get_mut_organs()
+	. = ..()
+	for(var/animalid_id in animid_singletons)
+		var/datum/animalid_type/atype = animid_singletons[animalid_id]
+		. += flatten_list(atype.components)
 
 /datum/species/human/animid/get_features()
 	. = ..()
 	. |= /datum/preference/color/mutant_color::savefile_key // mutant color for fur color, not always applied
-	for(var/animalid_id in animid_singletons)
-		var/datum/animalid_type/atype = animid_singletons[animalid_id]
-		for(var/organ_slot, organ_type_or_types in atype.components)
-			if(islist(organ_type_or_types))
-				for(var/obj/item/organ/external/mutant_organ_type as anything in organ_type_or_types)
-					. |= mutant_organ_type::preference
-
-			else if(ispath(organ_type_or_types, /obj/item/organ/external))
-				var/obj/item/organ/external/organ_type = organ_type_or_types
-				. |= organ_type::preference
 
 /datum/species/proc/set_mutant_organ(organ_slot, organ_type_or_types)
 	switch(organ_slot)
@@ -177,6 +167,8 @@
 			mutantappendix = organ_type_or_types
 		if(MUTANT_ORGANS)
 			external_organs |= organ_type_or_types
+		if(BODY_MARKINGS)
+			body_markings |= organ_type_or_types
 
 /datum/animalid_type
 	/// Bespoke ID for this animalid type. Must be unique.
@@ -354,12 +346,16 @@
 			names += readable_organ_type(organ_type)
 		return names
 
-	if(!ispath(organ_type_or_types, /obj/item/organ/external))
-		return null // bodyparts that can't be customized
-	var/obj/item/organ/external/organ_type = organ_type_or_types
-	if(!organ_type::bodypart_overlay)
-		return null // internal organs that don't alter appearance
-	return organ_type::name
+	if(ispath(organ_type_or_types, /datum/bodypart_overlay/simple/body_marking/lizard))
+		return "Body markings"
+
+	if(ispath(organ_type_or_types, /obj/item/organ))
+		var/obj/item/organ/organ_type = organ_type_or_types
+		if(!organ_type::bodypart_overlay)
+			return null // internal organs that don't alter appearance
+		return organ_type::name
+
+	return null
 
 // Prefernece for fur/scales/skin type
 /datum/preference/choiced/animid_fur
@@ -432,6 +428,7 @@
 	return assoc_to_keys_features(SSaccessories.tails_list_fish)
 
 #undef MUTANT_ORGANS
+#undef BODY_MARKINGS
 
 #undef SKIN_TYPE_SKIN
 #undef SKIN_TYPE_FUR

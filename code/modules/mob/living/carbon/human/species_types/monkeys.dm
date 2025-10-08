@@ -3,7 +3,7 @@
 /datum/species/monkey
 	name = "\improper Monkey"
 	id = SPECIES_MONKEY
-	external_organs = list(
+	mutant_organs = list(
 		/obj/item/organ/external/tail/monkey = "Monkey",
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/monkey
@@ -190,7 +190,7 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	external_organs = list(
+	mutant_organs = list(
 		/obj/item/organ/external/horns = "None",
 		/obj/item/organ/external/frills = "None",
 		/obj/item/organ/external/snout = "Round",

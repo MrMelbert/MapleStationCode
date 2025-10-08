@@ -35,7 +35,7 @@
 		return ..()
 
 	// Does not support digi and our equipper is? We shouldn't mess with it, skip
-	if(equipper.bodytype & BODYTYPE_DIGITIGRADE)
+	if(equipper.bodyshape & BODYSHAPE_DIGITIGRADE)
 		return
 
 	// Does not support digi and our equipper is not digi? Continue as normal

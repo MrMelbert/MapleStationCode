@@ -7,7 +7,7 @@
 	mutanttongue = /obj/item/organ/internal/tongue/cat
 	mutantears = /obj/item/organ/internal/ears/cat
 	mutantliver = /obj/item/organ/internal/liver/felinid
-	external_organs = list(
+	mutant_organs = list(
 		/obj/item/organ/external/tail/cat = "Cat",
 	)
 	inherent_traits = list(
