@@ -42,6 +42,12 @@ export const feature_lizard_horn_layer: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
+export const feature_lizard_frill_layer: FeatureChoiced = {
+  name: 'Frill Layer',
+  description: 'Determines what layer your frills are on.',
+  component: FeatureDropdownInput,
+};
+
 export const feature_synth_species: FeatureChoiced = {
   name: 'Synth Species',
   description: 'Determines what species you spawn disguised as.',

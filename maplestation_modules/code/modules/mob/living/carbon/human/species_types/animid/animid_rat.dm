@@ -5,5 +5,5 @@
 	// 	ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/rat,
 	// )
 
-	name = "Rodent"
+	name = "Murinid"
 	icon = FA_ICON_CHEESE

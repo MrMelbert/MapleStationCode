@@ -110,6 +110,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
+	relevant_external_organ = /obj/item/organ/external/horns
 	/// Map of player-readable-text to layer value
 	var/list/layer_to_layer = list(
 		"Default" = BODY_ADJ_LAYER,
@@ -126,5 +127,35 @@
 /datum/preference/choiced/lizard_horn_layer/init_possible_values()
 	return layer_to_layer
 
-/datum/preference/choiced/lizard_horn_layer/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+// -- Lets you change layer of lizard frills --
+// Makes the bodypart update correctly
+/datum/bodypart_overlay/mutant/frills/get_image(image_layer, obj/item/bodypart/limb)
+	var/new_layer = limb.owner?.dna?.features["lizard_frill_layer"] || BODY_ADJ_LAYER
+	if(new_layer == BODY_ADJ_LAYER)
+		return ..()
+
+	var/mutable_appearance/appearance = ..()
+	appearance.layer = -1 * new_layer
+	return appearance
+
+/datum/preference/choiced/lizard_frill_layer
+	savefile_key = "feature_lizard_frill_layer"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	can_randomize = FALSE
+	relevant_external_organ = /obj/item/organ/external/frills
+	/// Map of player-readable-text to layer value
+	var/list/layer_to_layer = list(
+		"Default" = BODY_ADJ_LAYER,
+		"Above Hair" = FACEMASK_LAYER,
+		"Above Helmets" = BODY_FRONT_LAYER,
+	)
+
+/datum/preference/choiced/lizard_frill_layer/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["lizard_frill_layer"] = layer_to_layer[value]
+
+/datum/preference/choiced/lizard_frill_layer/create_default_value()
+	return "Default"
+
+/datum/preference/choiced/lizard_frill_layer/init_possible_values()
+	return layer_to_layer

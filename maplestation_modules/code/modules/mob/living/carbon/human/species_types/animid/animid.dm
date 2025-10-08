@@ -45,8 +45,8 @@
 			bodypart_overrides[BODY_ZONE_R_ARM] = /obj/item/bodypart/arm/right/scaled
 			bodypart_overrides[BODY_ZONE_CHEST] = /obj/item/bodypart/chest/scaled
 			bodypart_overrides[BODY_ZONE_HEAD] = /obj/item/bodypart/head/scaled
-			digitigrade_legs[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
-			digitigrade_legs[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
+			digitigrade_legs[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade/scaled
+			digitigrade_legs[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade/scaled
 		else
 			inherent_traits |= TRAIT_USES_SKINTONES
 			inherent_traits -= TRAIT_MUTANT_COLORS

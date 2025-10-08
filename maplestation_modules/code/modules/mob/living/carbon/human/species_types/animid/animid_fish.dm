@@ -7,7 +7,7 @@
 		),
 	)
 
-	name = "Piscine"
+	name = "Piscinid"
 	icon = FA_ICON_FISH
 
 	pros = list(
@@ -56,14 +56,14 @@
 
 /obj/item/organ/external/tail/fish/on_mob_insert(mob/living/carbon/owner)
 	. = ..()
-	owner.AddElementTrait(TRAIT_WADDLING, type, /datum/element/waddling)
+	// owner.AddElementTrait(TRAIT_WADDLING, type, /datum/element/waddling)
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_location))
 	check_location(owner, null)
 	owner.dna.features["forced_fish_color"] ||= pick("#B4B8DD", "#85C7D0", "#67BBEE", "#2F4450", "#55CCBB", "#999FD0", "#345066", "#585B69", "#7381A0", "#B6DDE5", "#4E4E50")
 
 /obj/item/organ/external/tail/fish/on_mob_remove(mob/living/carbon/owner)
 	. = ..()
-	owner.remove_traits(list(TRAIT_WADDLING, TRAIT_NO_STAGGER), type)
+	// owner.remove_traits(list(TRAIT_WADDLING, TRAIT_NO_STAGGER), type)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_on_water)
 	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/fish_on_water)
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED))

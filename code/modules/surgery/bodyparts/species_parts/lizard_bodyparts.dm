@@ -83,10 +83,6 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 5)
 	AddElement(/datum/element/digitigrade_limb, alt_id, initial(limb_id))
 
-/obj/item/bodypart/leg/left/digitigrade/animal
-	footstep_type = FOOTSTEP_MOB_BAREFOOT
-	alt_id = SPECIES_HUMAN
-
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
@@ -101,7 +97,3 @@
 	. = ..()
 	AddElement(/datum/element/bodypart_sprint_buff, 5)
 	AddElement(/datum/element/digitigrade_limb, alt_id, initial(limb_id))
-
-/obj/item/bodypart/leg/right/digitigrade/animal
-	footstep_type = FOOTSTEP_MOB_BAREFOOT
-	alt_id = SPECIES_HUMAN

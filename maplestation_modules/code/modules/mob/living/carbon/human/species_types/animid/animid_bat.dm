@@ -5,7 +5,7 @@
 	// 	ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/bat,
 	// )
 
-	name = "Chiropteran"
+	name = "Chiropteranid"
 	pros = list(
 		"Can hear whispers from far away",
 	)

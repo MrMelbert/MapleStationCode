@@ -16,6 +16,14 @@
 /obj/item/bodypart/head/furry
 	limb_id = SPECIES_PODPERSON
 
+/obj/item/bodypart/leg/right/digitigrade/animal
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN
+
+/obj/item/bodypart/leg/left/digitigrade/animal
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN
+
 /obj/item/bodypart/leg/left/scaled
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
 
@@ -32,4 +40,14 @@
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
 
 /obj/item/bodypart/head/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+
+/obj/item/bodypart/leg/left/digitigrade/scaled
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+
+/obj/item/bodypart/leg/right/digitigrade/scaled
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale

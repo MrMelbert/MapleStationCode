@@ -150,7 +150,7 @@
 	return !(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT)
 
 /obj/item/organ/external/tail/cat
-	name = "tail"
+	name = "cat tail"
 	preference = "feature_human_tail"
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
