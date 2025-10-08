@@ -466,8 +466,8 @@
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return SSaccessories.synth_head_cover_list
 
-/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEHAIR)
+/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/synth_head_cover
 	feature_key = "synth_head_cover"

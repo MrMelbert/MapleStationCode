@@ -245,7 +245,7 @@
 	save_color()
 
 /// Saves color on organ removal so pink felinid = pink tail
-/obj/item/organ/external/proc/save_color()
+/obj/item/organ/proc/save_color()
 	color = bodypart_overlay.draw_color
 
 /// In space station videogame, nothing is sacred. If somehow an organ is removed unexpectedly, handle it properly

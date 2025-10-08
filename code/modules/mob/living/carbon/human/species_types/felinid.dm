@@ -2,7 +2,6 @@
 /datum/species/human/felinid
 	name = "Felinid"
 	id = SPECIES_FELINE
-	mutant_bodyparts = list("ears" = "Cat", "wings" = "None")
 	mutantbrain = /obj/item/organ/internal/brain/felinid
 	mutanttongue = /obj/item/organ/internal/tongue/cat
 	mutantears = /obj/item/organ/internal/ears/cat
@@ -29,7 +28,7 @@
 	return features
 
 /datum/species/human/felinid/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
-	human_for_preview.set_haircolor("#ffcccc", update = FALSE) // pink
+	human_for_preview.set_haircolor("#ffcccc", update = FALSE)
 	human_for_preview.set_hairstyle("Hime Cut", update = TRUE)
 
 	var/obj/item/organ/internal/ears/cat/cat_ears = human_for_preview.get_organ_by_type(/obj/item/organ/internal/ears/cat)

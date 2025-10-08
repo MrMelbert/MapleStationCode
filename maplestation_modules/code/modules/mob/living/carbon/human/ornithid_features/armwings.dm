@@ -78,5 +78,5 @@
 	else
 		return SSaccessories.arm_wings_list
 
-/datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEMUTWINGS)
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEMUTWINGS)

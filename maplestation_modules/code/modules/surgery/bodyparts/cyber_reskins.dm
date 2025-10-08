@@ -74,51 +74,61 @@
 	icon_state = "robotic_r_arm"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/arm/left/robot/bishop
 	icon_state = "robotic_l_arm"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/right/robot/bishop
 	icon_state = "robotic_r_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/left/robot/bishop
 	icon_state = "robotic_l_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/chest/robot/bishop
 	icon_state = "robotic_chest"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/head/robot/bishop
 	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bshipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/arm/right/robot/bishop/mk2
 	icon_state = "robotic_r_arm"
 	icon = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/arm/left/robot/bishop/mk2
 	icon_state = "robotic_l_arm"
 	icon = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/right/robot/bishop/mk2
 	icon_state = "robotic_r_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/left/robot/bishop/mk2
 	icon_state = "robotic_l_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/chest/robot/bishop/mk2
 	icon_state = "robotic_chest"
@@ -129,6 +139,7 @@
 	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/arm/right/robot/hephaestus
 	icon_state = "robotic_r_arm"
@@ -433,15 +444,19 @@
 /obj/item/bodypart/arm/right/robot/monokai
 	icon = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/arm/left/robot/monokai
 	icon = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/right/robot/monokai
 	icon = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
+	is_emissive = TRUE
 
 /obj/item/bodypart/leg/left/robot/monokai
 	icon = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
+	is_emissive = TRUE
