@@ -31,16 +31,21 @@
 	// grind_results = list(/datum/reagent/flightpotion = 5)
 	food_reagents = list(/datum/reagent/flightpotion = 5)
 
-/obj/item/organ/external/wings/functional/Insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/external/wings/functional/Destroy()
+	QDEL_NULL(fly)
+	return ..()
+
+/obj/item/organ/external/wings/functional/mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
-	if(. && isnull(fly))
+
+	if(QDELETED(fly))
 		fly = new
-		fly.Grant(receiver)
+	fly.Grant(receiver)
 
-/obj/item/organ/external/wings/functional/Remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/external/wings/functional/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
-	fly.Remove(organ_owner)
+	fly?.Remove(organ_owner)
 
 	if(wings_open)
 		toggle_flight(organ_owner)
