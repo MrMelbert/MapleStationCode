@@ -313,6 +313,12 @@
 	. = ..()
 	AddElement(/datum/element/dangerous_surgical_removal)
 
+/obj/item/organ/internal/liver/felinid
+	name = "felinid liver"
+	organ_traits = list(
+		TRAIT_CARPOTOXIN_IMMUNE,
+	)
+
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN

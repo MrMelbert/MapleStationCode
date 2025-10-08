@@ -6658,6 +6658,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\rad_rework\simple_rad.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\abductor.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\android.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\animid.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\ethereal.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\felinid.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\flypeople.dm"

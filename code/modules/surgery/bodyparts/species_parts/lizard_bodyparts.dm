@@ -10,6 +10,9 @@
 	is_dimorphic = TRUE
 	wing_types = list(/obj/item/organ/external/wings/functional/dragon)
 
+/obj/item/bodypart/chest/lizard/get_butt_sprite()
+	return BUTT_SPRITE_LIZARD
+
 /obj/item/bodypart/arm/left/lizard
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
@@ -70,11 +73,16 @@
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
+	var/alt_id = SPECIES_LIZARD
 
 /obj/item/bodypart/leg/left/digitigrade/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/bodypart_sprint_buff, 5)
-	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
+	AddElement(/datum/element/digitigrade_limb, alt_id, initial(limb_id))
+
+/obj/item/bodypart/leg/left/digitigrade/animal
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
@@ -84,8 +92,13 @@
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
+	var/alt_id = SPECIES_LIZARD
 
 /obj/item/bodypart/leg/right/digitigrade/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/bodypart_sprint_buff, 5)
-	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
+	AddElement(/datum/element/digitigrade_limb, alt_id, initial(limb_id))
+
+/obj/item/bodypart/leg/right/digitigrade/animal
+	footstep_type = FOOTSTEP_MOB_BAREFOOT
+	alt_id = SPECIES_HUMAN

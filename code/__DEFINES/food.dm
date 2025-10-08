@@ -15,7 +15,6 @@
 #define CLOTH (1<<14)
 #define NUTS (1<<15)
 #define SEAFOOD (1<<16)
-#define ORANGES (1<<17)
 #define BUGS (1<<18)
 #define GORE (1<<19)
 #define STONE (1<<20)
@@ -38,7 +37,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH" = CLOTH,
 	"NUTS" = NUTS,
 	"SEAFOOD" = SEAFOOD,
-	"ORANGES" = ORANGES,
 	"BUGS" = BUGS,
 	"GORE" = GORE,
 	"STONE" = STONE,
@@ -63,7 +61,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH", \
 	"NUTS", \
 	"SEAFOOD", \
-	"ORANGES", \
 	"BUGS", \
 	"GORE", \
 	"STONE", \

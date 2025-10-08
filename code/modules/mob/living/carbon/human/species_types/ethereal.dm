@@ -250,7 +250,6 @@
 /datum/species/ethereal/lustrous //Ethereal pirates with an inherent bluespace prophet trauma.
 	name = "Lustrous"
 	id = SPECIES_ETHEREAL_LUSTROUS
-	examine_limb_id = SPECIES_ETHEREAL
 	mutantbrain = /obj/item/organ/internal/brain/lustrous
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	inherent_traits = list(

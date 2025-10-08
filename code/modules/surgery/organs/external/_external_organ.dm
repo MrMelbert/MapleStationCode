@@ -99,8 +99,12 @@
 	if(use_mob_sprite_as_obj_sprite)
 		update_appearance(UPDATE_OVERLAYS)
 
-	color = bodypart_overlay.draw_color // so a pink felinid doesn't drop a gray tail
+	save_color()
+
 	return ..()
+
+/obj/item/organ/external/proc/save_color()
+	color = bodypart_overlay.draw_color
 
 /proc/should_external_organ_apply_to(obj/item/organ/external/organpath, mob/living/carbon/target)
 	if(isnull(organpath) || isnull(target))
