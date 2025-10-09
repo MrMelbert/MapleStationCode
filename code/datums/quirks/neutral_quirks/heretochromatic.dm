@@ -25,7 +25,7 @@
 	human_holder.eye_color_heterochromatic = TRUE
 	human_holder.eye_color_right = color
 
-	var/obj/item/organ/internal/eyes/eyes_of_the_holder = quirk_holder.get_organ_by_type(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes_of_the_holder = quirk_holder.get_organ_by_type(/obj/item/organ/eyes)
 	if(!eyes_of_the_holder)
 		return
 

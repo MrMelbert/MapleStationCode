@@ -11,7 +11,7 @@
 	create_dna(src)
 	stored_dna.initialize_dna()
 	if(isturf(loc)) //not spawned in an MMI or brain organ (most likely adminspawned)
-		var/obj/item/organ/internal/brain/OB = new(loc) //we create a new brain organ for it.
+		var/obj/item/organ/brain/OB = new(loc) //we create a new brain organ for it.
 		OB.brainmob = src
 		forceMove(OB)
 	if(!container?.mecha) //Unless inside a mecha, brains are rather helpless.
@@ -19,7 +19,7 @@
 
 
 /mob/living/brain/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
-	var/obj/item/organ/internal/brain/brain_loc = loc
+	var/obj/item/organ/brain/brain_loc = loc
 	if(brain_loc && isnull(new_turf) && brain_loc.owner) //we're actively being put inside a new body.
 		return ..(old_turf, get_turf(brain_loc.owner), same_z_layer, notify_contents)
 	return ..()
@@ -69,7 +69,7 @@
 /mob/living/brain/can_be_revived()
 	if(health <= -maxHealth)
 		return FALSE
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))
 		return FALSE
 	if(brain_real.organ_flags & ORGAN_FAILING)
@@ -84,10 +84,10 @@
 /mob/living/brain/forceMove(atom/destination)
 	if(container)
 		return container.forceMove(destination)
-	else if (istype(loc, /obj/item/organ/internal/brain))
-		var/obj/item/organ/internal/brain/B = loc
+	else if (istype(loc, /obj/item/organ/brain))
+		var/obj/item/organ/brain/B = loc
 		B.forceMove(destination)
-	else if (istype(destination, /obj/item/organ/internal/brain))
+	else if (istype(destination, /obj/item/organ/brain))
 		doMove(destination)
 	else if (istype(destination, /obj/item/mmi))
 		doMove(destination)
@@ -107,8 +107,8 @@
 
 /mob/living/brain/proc/get_traumas()
 	. = list()
-	if(istype(loc, /obj/item/organ/internal/brain))
-		var/obj/item/organ/internal/brain/B = loc
+	if(istype(loc, /obj/item/organ/brain))
+		var/obj/item/organ/brain/B = loc
 		. = B.traumas
 
 /mob/living/brain/get_policy_keywords()

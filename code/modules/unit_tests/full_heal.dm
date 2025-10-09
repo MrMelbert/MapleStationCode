@@ -22,7 +22,7 @@
 
 	var/list/we_started_with = list()
 
-	for(var/obj/item/organ/internal/organ in dummy.organs)
+	for(var/obj/item/organ/organ in dummy.organs)
 		if(organ.organ_flags & ORGAN_VITAL) // leave this for now
 			continue
 		we_started_with += organ.type

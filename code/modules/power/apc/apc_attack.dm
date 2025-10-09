@@ -15,7 +15,7 @@
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human_user = user
-	var/obj/item/organ/internal/stomach/ethereal/maybe_ethereal_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
+	var/obj/item/organ/stomach/ethereal/maybe_ethereal_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
 	if(!istype(maybe_ethereal_stomach))
 		togglelock(user)
 	else

@@ -10,7 +10,7 @@
 	RegisterSignal(target, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
 	if(!(source.organ_flags & ORGAN_EXTERNAL))
-		var/obj/item/organ/internal/organ = target
+		var/obj/item/organ/organ = target
 		organ.organ_flags |= ORGAN_IRRADIATED
 		RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
 		RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(rad_organ_removed))
@@ -23,7 +23,7 @@
 	UnregisterSignal(source, COMSIG_COMPONENT_CLEAN_ACT)
 
 	if(!(source.organ_flags & ORGAN_EXTERNAL))
-		var/obj/item/organ/internal/organ = source
+		var/obj/item/organ/organ = source
 		organ.organ_flags &= ~ORGAN_IRRADIATED
 		UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
 		if(organ.owner)

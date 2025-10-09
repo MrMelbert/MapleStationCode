@@ -15,7 +15,7 @@
 
 /mob/living/brain/fully_heal(heal_flags)
 	. = ..()
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))
 		return
 	if(heal_flags & (HEAL_BODY|HEAL_DAMAGE|HEAL_ADMIN))
@@ -26,7 +26,7 @@
 /mob/living/brain/revive(full_heal_flags, excess_healing, force_grab_ghost)
 	if(QDELETED(src))
 		return FALSE
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))
 		return FALSE
 	if(full_heal_flags)
@@ -43,7 +43,7 @@
 	if(stat == DEAD)
 		return
 
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))
 		return
 

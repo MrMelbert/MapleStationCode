@@ -260,7 +260,7 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 		//briefcase launchpads erroring
 		/obj/machinery/launchpad/briefcase,
 		// an abstract type meant to scream bloody murder if spawned in raw
-		/obj/item/organ/external/wings,
+		/obj/item/organ/wings,
 	)
 
 	// Everything that follows is a typesof() check.

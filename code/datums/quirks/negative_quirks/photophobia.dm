@@ -27,7 +27,7 @@
 		COMSIG_CARBON_LOSE_ORGAN,
 		COMSIG_MOVABLE_MOVED,))
 	quirk_holder.clear_mood_event(MOOD_CATEGORY_PHOTOPHOBIA)
-	var/obj/item/organ/internal/eyes/normal_eyes = quirk_holder.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/normal_eyes = quirk_holder.get_organ_slot(ORGAN_SLOT_EYES)
 	if(istype(normal_eyes))
 		normal_eyes.flash_protect = initial(normal_eyes.flash_protect)
 

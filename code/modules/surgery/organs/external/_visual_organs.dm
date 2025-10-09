@@ -99,11 +99,11 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 		if(bodypart_overlay.layers & external_layer)
 			. += bodypart_overlay.get_overlay(external_layer, bodypart_owner)
 
-/obj/item/organ/external/exit_wardrobe()
+/obj/item/organ/exit_wardrobe()
 	bodypart_overlay?.imprint_on_next_insertion = TRUE
 
 ///The horns of a lizard!
-/obj/item/organ/external/horns
+/obj/item/organ/horns
 	name = "horns"
 	desc = "Why do lizards even have horns? Well, this one obviously doesn't."
 	icon_state = "horns"
@@ -129,7 +129,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	return SSaccessories.horns_list
 
 ///The frills of a lizard (like weird fin ears)
-/obj/item/organ/external/frills
+/obj/item/organ/frills
 	name = "frills"
 	desc = "Ear-like external organs often seen on aquatic reptillians."
 	icon_state = "frills"
@@ -155,7 +155,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	return SSaccessories.frills_list
 
 ///Guess what part of the lizard this is?
-/obj/item/organ/external/snout
+/obj/item/organ/snout
 	name = "lizard snout"
 	desc = "Take a closer look at that snout!"
 	icon_state = "snout"
@@ -183,7 +183,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	return SSaccessories.snouts_list
 
 ///A moth's antennae
-/obj/item/organ/external/antennae
+/obj/item/organ/antennae
 	name = "moth antennae"
 	desc = "A moths antennae. What is it telling them? What are they sensing?"
 	icon_state = "antennae"
@@ -203,19 +203,19 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	///Store our old datum here for if our antennae are healed
 	var/original_sprite_datum
 
-/obj/item/organ/external/antennae/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/antennae/mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 
 	RegisterSignal(receiver, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_antennae))
 	RegisterSignal(receiver, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_antennae))
 
-/obj/item/organ/external/antennae/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/antennae/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL))
 
 ///check if our antennae can burn off ;_;
-/obj/item/organ/external/antennae/proc/try_burn_antennae(mob/living/carbon/human/human)
+/obj/item/organ/antennae/proc/try_burn_antennae(mob/living/carbon/human/human)
 	SIGNAL_HANDLER
 	if(!burnt && human.get_skin_temperature() >= CELCIUS_TO_KELVIN(175 CELCIUS) && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
 		to_chat(human, span_danger("Your precious antennae burn to a crisp!"))
@@ -224,13 +224,13 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 		human.update_body_parts()
 
 ///Burn our antennae off ;_;
-/obj/item/organ/external/antennae/proc/burn_antennae()
+/obj/item/organ/antennae/proc/burn_antennae()
 	var/datum/bodypart_overlay/mutant/antennae/antennae = bodypart_overlay
 	antennae.burnt = TRUE
 	burnt = TRUE
 
 ///heal our antennae back up!!
-/obj/item/organ/external/antennae/proc/heal_antennae(datum/source, heal_flags)
+/obj/item/organ/antennae/proc/heal_antennae(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
 	if(!burnt)
@@ -263,7 +263,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state
 
 ///The leafy hair of a podperson
-/obj/item/organ/external/pod_hair
+/obj/item/organ/pod_hair
 	name = "podperson hair"
 	desc = "Base for many-o-salads."
 

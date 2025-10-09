@@ -1,4 +1,4 @@
-/obj/item/organ/internal/ears/fox
+/obj/item/organ/ears/fox
 	name = "fox ears"
 	icon = 'icons/obj/clothing/head/costume.dmi'
 	worn_icon = 'icons/mob/clothing/head/costume.dmi'

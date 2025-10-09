@@ -129,7 +129,7 @@
 	clone.set_cloned_appearance()
 
 	if(brainless)
-		var/obj/item/organ/brainy = clone.get_organ_by_type(/obj/item/organ/internal/brain)
+		var/obj/item/organ/brainy = clone.get_organ_by_type(/obj/item/organ/brain)
 		brainy.Remove(clone)
 		qdel(brainy)
 
@@ -253,17 +253,17 @@
 		var/obj/item/organ/organ = thing
 		organ.organ_flags &= ~ORGAN_FROZEN
 		organ.Insert(clone)
-		if(istype(thing, /obj/item/organ/internal/heart))
+		if(istype(thing, /obj/item/organ/heart))
 			to_chat(clone, span_smallnoticeital("You hear a faint thumping..."))
-			var/obj/item/organ/internal/heart/heart = organ
+			var/obj/item/organ/heart/heart = organ
 			heart.Restart()
 			SEND_SOUND(clone, sound('sound/health/slowbeat.ogg', channel = CHANNEL_HEARTBEAT, volume = 33))
 			addtimer(CALLBACK(clone, TYPE_PROC_REF(/mob, stop_sound_channel), CHANNEL_HEARTBEAT), 4.75 SECONDS)
-		if(istype(thing, /obj/item/organ/internal/lungs))
+		if(istype(thing, /obj/item/organ/lungs))
 			to_chat(clone, span_smallnoticeital("You feel a sudden urge to breathe..."))
-		if(istype(thing, /obj/item/organ/internal/ears))
+		if(istype(thing, /obj/item/organ/ears))
 			to_chat(clone, span_smallnoticeital("You hear a faint buzzing..."))
-		if(istype(thing, /obj/item/organ/internal/eyes))
+		if(istype(thing, /obj/item/organ/eyes))
 			to_chat(clone, span_smallnoticeital("You see a faint light..."))
 		return
 
