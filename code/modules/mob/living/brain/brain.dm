@@ -97,8 +97,8 @@
 
 /mob/living/brain/forceMove(atom/destination)
 	if(is_container(loc))
-		var/atom/movable/container = loc
-		return container.forceMove(destination)
+		var/atom/movable/cloc = loc
+		return cloc.forceMove(destination)
 	if(is_container(destination))
 		return forceMove(destination)
 	CRASH("Brainmob without a container [src] attempted to move to [destination].")
