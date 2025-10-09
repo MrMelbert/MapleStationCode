@@ -664,7 +664,9 @@
 	if(isnull(liver) || !HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM) || !HAS_TRAIT(drinker, TRAIT_IRRADIATED))
 		return
 
-	for(var/obj/item/organ/internal/organ in shuffle(drinker.organs))
+	for(var/obj/item/organ/organ in shuffle(drinker.organs))
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		if(!(organ.organ_flags & ORGAN_IRRADIATED))
 			continue
 		organ.apply_organ_damage(-1 * REM * seconds_per_tick)

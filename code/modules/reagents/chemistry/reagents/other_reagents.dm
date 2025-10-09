@@ -1391,7 +1391,9 @@
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_TOXINLOVER) && !prob(5))
 		return
-	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+	for(var/obj/item/organ/organ in affected_mob.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		organ.wash(clean_types|CLEAN_RAD)
 
 /datum/reagent/space_cleaner/ez_clean

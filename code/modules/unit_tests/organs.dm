@@ -12,8 +12,6 @@
 	))
 	// List of organ typepaths which are not test-able, such as certain class prototypes.
 	var/static/list/test_organ_blacklist = typecacheof(list(
-		/obj/item/organ/internal,
-		/obj/item/organ/external,
 		/obj/item/organ/external/wings,
 		/obj/item/organ/internal/cyberimp,
 		/obj/item/organ/internal/cyberimp/brain,

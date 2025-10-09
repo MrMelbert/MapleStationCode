@@ -259,8 +259,7 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 		/obj/merge_conflict_marker,
 		//briefcase launchpads erroring
 		/obj/machinery/launchpad/briefcase,
-		//Both are abstract types meant to scream bloody murder if spawned in raw
-		/obj/item/organ/external,
+		// an abstract type meant to scream bloody murder if spawned in raw
 		/obj/item/organ/external/wings,
 	)
 
