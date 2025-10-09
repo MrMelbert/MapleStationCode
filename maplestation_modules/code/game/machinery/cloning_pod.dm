@@ -248,9 +248,9 @@
 /obj/machinery/clonepod/proc/readd_thing(mob/living/carbon/human/clone, obj/item/thing)
 	things_to_attach -= thing
 	if(isorgan(thing))
-		if (thing.organ_flags & ORGAN_EXTERNAL)
-			return
 		var/obj/item/organ/organ = thing
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			return
 		organ.organ_flags &= ~ORGAN_FROZEN
 		organ.Insert(clone)
 		if(istype(thing, /obj/item/organ/heart))

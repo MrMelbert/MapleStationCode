@@ -9,25 +9,35 @@
 	target.rad_glow()
 	RegisterSignal(target, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
-	if(!(source.organ_flags & ORGAN_EXTERNAL))
-		var/obj/item/organ/organ = target
-		organ.organ_flags |= ORGAN_IRRADIATED
-		RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
-		RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(rad_organ_removed))
-		if(organ.owner)
-			rad_organ_implanted(organ, organ.owner)
+	if (!isorgan(target))
+		return
+	var/obj/item/organ/organ = target
+
+	if (organ.organ_flags & ORGAN_EXTERNAL)
+		return
+
+	organ.organ_flags |= ORGAN_IRRADIATED
+	RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
+	RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(rad_organ_removed))
+	if(organ.owner)
+		rad_organ_implanted(organ, organ.owner)
 
 /datum/element/simple_rad/Detach(datum/source, ...)
 	REMOVE_TRAIT(source, TRAIT_IRRADIATED, type)
 	source.remove_filter("rad_glow")
 	UnregisterSignal(source, COMSIG_COMPONENT_CLEAN_ACT)
 
-	if(!(source.organ_flags & ORGAN_EXTERNAL))
-		var/obj/item/organ/organ = source
-		organ.organ_flags &= ~ORGAN_IRRADIATED
-		UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
-		if(organ.owner)
-			rad_organ_removed(organ, organ.owner)
+	if (!isorgan(source))
+		return ..()
+
+	var/obj/item/organ/organ = source
+	if((organ.organ_flags & ORGAN_EXTERNAL))
+		return ..()
+
+	organ.organ_flags &= ~ORGAN_IRRADIATED
+	UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
+	if(organ.owner)
+		rad_organ_removed(organ, organ.owner)
 
 	return ..()
 
