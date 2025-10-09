@@ -14,6 +14,8 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/spines
 
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
+
 /obj/item/organ/external/spines/mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	// If we have a tail, attempt to add a tail spines overlay
 	var/obj/item/organ/external/tail/our_tail = receiver.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)

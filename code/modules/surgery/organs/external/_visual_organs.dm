@@ -116,6 +116,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	restyle_flags = EXTERNAL_RESTYLE_ENAMEL
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/horns
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /datum/bodypart_overlay/mutant/horns
 	layers = EXTERNAL_ADJACENT
@@ -141,6 +142,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/frills
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /datum/bodypart_overlay/mutant/frills
 	layers = EXTERNAL_ADJACENT
@@ -168,6 +170,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /datum/bodypart_overlay/mutant/snout
 	layers = EXTERNAL_ADJACENT
@@ -193,6 +196,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/antennae
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 	///Are we burned?
 	var/burnt = FALSE
@@ -241,6 +245,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 /datum/bodypart_overlay/mutant/antennae
 	layers = EXTERNAL_FRONT | EXTERNAL_BEHIND
 	feature_key = "moth_antennae"
+	dyable = TRUE
 	///Accessory datum of the burn sprite
 	var/datum/sprite_accessory/burn_datum = /datum/sprite_accessory/moth_antennae/burnt_off
 	///Are we burned? If so we draw differently
@@ -272,11 +277,13 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	restyle_flags = EXTERNAL_RESTYLE_PLANT
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/pod_hair
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 ///Podperson bodypart overlay, with special coloring functionality to render the flowers in the inverse color
 /datum/bodypart_overlay/mutant/pod_hair
 	layers = EXTERNAL_FRONT|EXTERNAL_ADJACENT
 	feature_key = "pod_hair"
+	dyable = TRUE
 
 	///This layer will be colored differently than the rest of the organ. So we can get differently colored flowers or something
 	var/color_swapped_layer = EXTERNAL_FRONT
@@ -290,8 +297,9 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	if(draw_layer != bitflag_to_layer(color_swapped_layer))
 		return ..()
 
-	if(draw_color) // can someone explain to me why draw_color is allowed to EVER BE AN EMPTY STRING
-		var/list/rgb_list = rgb2num(draw_color)
+	var/color_to_use = dye_color || draw_color
+	if(color_to_use) // can someone explain to me why draw_color is allowed to EVER BE AN EMPTY STRING
+		var/list/rgb_list = rgb2num(color_to_use)
 		overlay.color = rgb(color_inverse_base - rgb_list[1], color_inverse_base - rgb_list[2], color_inverse_base - rgb_list[3]) //inversa da color
 	else
 		overlay.color = null

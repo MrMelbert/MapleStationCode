@@ -9,7 +9,7 @@
 	target.rad_glow()
 	RegisterSignal(target, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
-	if(isinternalorgan(target))
+	if(!(source.organ_flags & ORGAN_EXTERNAL))
 		var/obj/item/organ/internal/organ = target
 		organ.organ_flags |= ORGAN_IRRADIATED
 		RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
@@ -22,7 +22,7 @@
 	source.remove_filter("rad_glow")
 	UnregisterSignal(source, COMSIG_COMPONENT_CLEAN_ACT)
 
-	if(isinternalorgan(source))
+	if(!(source.organ_flags & ORGAN_EXTERNAL))
 		var/obj/item/organ/internal/organ = source
 		organ.organ_flags &= ~ORGAN_IRRADIATED
 		UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))

@@ -13,6 +13,8 @@
 	// defaults to cat, but the parent type shouldn't be created regardless
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/cat
 
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
+
 	///Does this tail have a wagging sprite, and is it currently wagging?
 	var/wag_flags = NONE
 	///The overlay for tail spines, if any
@@ -216,3 +218,6 @@
 
 /datum/bodypart_overlay/mutant/tail_spines/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return !(human.obscured_slots & HIDEJUMPSUIT)
+
+/datum/bodypart_overlay/mutant/tail_spines/set_dye_color(new_color, obj/item/organ/organ)
+	dye_color = new_color //no update_body_parts() call, tail/set_dye_color will do it.
