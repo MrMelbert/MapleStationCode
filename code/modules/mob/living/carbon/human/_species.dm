@@ -632,7 +632,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		new_features["[sample_overlay.feature_key]"] = pick(sample_overlay.get_global_feature_list())
 
-	// new_features["legs"] = pick(NORMAL_LEGS, DIGITIGRADE_LEGS)
 	return new_features
 
 /datum/species/proc/spec_life(mob/living/carbon/human/H, seconds_per_tick, times_fired)
@@ -1168,12 +1167,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
-	if((TRAIT_NOHUNGER in inherent_traits) || !mutanttongue)
+	return (TRAIT_NOHUNGER in inherent_traits) ? null : get_diet_from_tongue(mutanttongue)
+
+/// Helper for turning a tongue's typepaths into diet data
+/datum/species/proc/get_diet_from_tongue(obj/item/organ/internal/tongue/fake_tongue)
+	if(!fake_tongue)
 		return null
 
 	var/static/list/food_flags = FOOD_FLAGS
-	var/obj/item/organ/internal/tongue/fake_tongue = mutanttongue
-
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
 		"disliked_food" = bitfield_to_list(initial(fake_tongue.disliked_foodtypes), food_flags),

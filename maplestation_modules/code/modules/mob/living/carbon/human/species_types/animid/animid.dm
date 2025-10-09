@@ -21,13 +21,18 @@
 		animid_singletons[atype::id] = new atype()
 
 /datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
+	var/list/base_bodyparts = bodypart_overrides.Copy()
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
 	for(var/organ_slot, input in animid_singletons[animid_id].components)
 		set_mutant_organ(organ_slot, input)
+	exotic_bloodtype = animid_singletons[animid_id].blood_type
 
 	// Ensures fish-animids get their preferred color rather than have one forced on them
 	human_who_gained_species.dna?.features["forced_fish_color"] = human_who_gained_species.dna?.features["mcolor"]
-	return ..()
+	. = ..()
+	// replace body is not called when going from same species to same species, we need to manually check here for bodypart changes
+	if(old_species.type == type && base_bodyparts ~! bodypart_overrides)
+		replace_body(human_who_gained_species, src)
 
 /datum/species/human/animid/get_physical_attributes()
 	return "Being a human hybrid, Animids are very similar to humans in almost all respects. \
@@ -109,7 +114,7 @@
 	for(var/animalid_id in animid_singletons)
 		. += flatten_list(animid_singletons[animalid_id].components || list())
 	for(var/list/sublist in .)
-		. -= sublist
+		. -= list(sublist)
 		. += assoc_to_keys(sublist)
 
 /// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
@@ -139,3 +144,21 @@
 			mutant_organs |= input
 		if(BODY_MARKINGS)
 			body_markings |= input
+
+// Generic ear type
+/datum/bodypart_overlay/mutant/ears
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_HAIR
+	feature_key = "mouse_ears"
+
+	/// This layer is colored skin color rather than hair color
+	var/skin_layer = EXTERNAL_FRONT
+
+/datum/bodypart_overlay/mutant/ears/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
+
+/datum/bodypart_overlay/mutant/ears/color_image(image/overlay, draw_layer, obj/item/bodypart/limb)
+	if(draw_layer == bitflag_to_layer(skin_layer))
+		overlay.color = limb.draw_color
+		return
+	return ..()

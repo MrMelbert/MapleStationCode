@@ -9,7 +9,7 @@
 
 /datum/preference/choiced/animid_type/init_possible_values()
 	var/datum/species/human/animid/animid = GLOB.species_prototypes[__IMPLIED_TYPE__]
-	pass(animid) // linter thinks it's unused
+	pass(animid) // linter trips up on static accesses
 	return assoc_to_keys(animid.animid_singletons)
 
 /datum/preference/choiced/animid_type/is_accessible(datum/preferences/preferences)
@@ -20,8 +20,6 @@
 
 /datum/preference/choiced/animid_type/compile_constant_data()
 	var/datum/species/human/animid/animid = GLOB.species_prototypes[__IMPLIED_TYPE__]
-	pass(animid) // linter thinks it's unused
-
 	var/list/data = list()
 	data["animid_customization"] = list()
 	for(var/animalid_id in animid.animid_singletons)
@@ -35,6 +33,7 @@
 			"pros" = atype.pros || list("No notable advantages"),
 			"cons" = atype.cons || list("No notable disadvantages"),
 			"neuts" = atype.neuts || list(),
+			"diet" = animid.get_diet_from_tongue(atype.components?[ORGAN_SLOT_TONGUE]),
 		)
 	return data
 

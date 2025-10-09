@@ -83,7 +83,7 @@ type FoodListProps = {
   className: string;
 };
 
-function FoodList(props: FoodListProps) {
+export function FoodList(props: FoodListProps) {
   const { food = [], icon, name, className } = props;
 
   if (food.length === 0) {

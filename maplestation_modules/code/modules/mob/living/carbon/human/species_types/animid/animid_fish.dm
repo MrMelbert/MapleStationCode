@@ -11,15 +11,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/scaled,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/fish,
 	)
 
 	name = "Piscinid"
 	icon = FA_ICON_FISH
 
 	pros = list(
+		"Scales provide some protection",
 		"Move and work faster in water",
 	)
 	cons = list(
+		"Bad at kicking and punching",
 		"Where the hell is water on a space station?",
 	)
 
@@ -118,7 +121,7 @@
 	return appearance
 
 /datum/preference/choiced/fish_tail
-	savefile_key = "fish_tail"
+	savefile_key = "feature_fish_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/tail/fish
@@ -131,3 +134,52 @@
 
 /datum/preference/choiced/fish_tail/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.tails_list_fish)
+
+// Fish tongue
+/obj/item/organ/internal/tongue/fish
+	name = "fish tongue"
+	desc = "A tongue from some sort of marine creature."
+
+	liked_foodtypes = SEAFOOD | BUGS // likes eating fish, does not mind raw or gore
+	disliked_foodtypes = GROSS | CLOTH | JUNKFOOD | DAIRY | SUGAR // does not like junky food
+	toxic_foodtypes = TOXIC | FRIED // dies to processed stuff
+	organ_traits = list(TRAIT_FISH_EATER)
+
+// Scaled bodyparts
+/obj/item/bodypart/leg/left/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9
+	unarmed_damage_low = 4
+	unarmed_damage_high = 8
+
+/obj/item/bodypart/leg/right/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9
+	unarmed_damage_low = 4
+	unarmed_damage_high = 8
+
+/obj/item/bodypart/arm/left/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9
+	unarmed_damage_low = 3
+	unarmed_damage_high = 6
+
+/obj/item/bodypart/arm/right/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9
+	unarmed_damage_low = 3
+	unarmed_damage_high = 6
+
+/obj/item/bodypart/chest/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9
+
+/obj/item/bodypart/head/scaled
+	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
+	brute_modifier = 0.9
+	burn_modifier = 0.9

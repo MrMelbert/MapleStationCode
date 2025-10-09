@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Box, Button, Floating, Stack } from 'tgui-core/components';
 import { useBackend } from '../../../../../backend';
-import type { PreferencesMenuData } from '../../../types';
-import type { Feature, FeatureChoiced, FeatureValueProps } from '../base';
-import { FeatureDropdownInput } from '../dropdowns';
+import { FoodList } from '../../../CharacterPreferences/SpeciesPage';
+import type { Diet, PreferencesMenuData } from '../../../types';
+import type { Feature, FeatureValueProps } from '../base';
 
 type AnimidType = {
   id: string;
@@ -13,6 +13,7 @@ type AnimidType = {
   neuts: string[];
   components: string[];
   icon: string;
+  diet: Diet | null;
 };
 
 type AnimidServerData = {
@@ -42,13 +43,6 @@ const AnimidSelection = (
             onClick={(e) => {
               e.stopPropagation();
             }}
-            // style={{
-            //   backgroundColor: 'darkgrey',
-            //   padding: '5px',
-            //   boxShadow: '0px 4px 8px 3px rgba(0, 0, 0, 0.7)',
-            //   overflowY: 'scroll',
-            //   borderRadius: '4px',
-            // }}
             className="ChoicedSelection"
             style={{
               padding: '5px',
@@ -104,6 +98,13 @@ const AnimidSelection = (
                         </Stack.Item>
                         <Stack.Item>
                           <Stack fill vertical ml={1}>
+                            {option.components.length > 0 && (
+                              <Stack.Item
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                Features: {option.components.join(', ')}
+                              </Stack.Item>
+                            )}
                             {option.pros.map((pro) => (
                               <Stack.Item key={pro} textColor="green">
                                 + {pro}
@@ -119,12 +120,40 @@ const AnimidSelection = (
                                 ± {neut}
                               </Stack.Item>
                             ))}
-                            {option.components.length > 0 && (
-                              <Stack.Item
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                Unique Parts:&nbsp;
-                                {option.components.join(', ')}
+                            {option.diet && (
+                              <Stack.Item mt={1}>
+                                <Stack>
+                                  {!!option.diet.liked_food.length && (
+                                    <Stack.Item>
+                                      <FoodList
+                                        food={option.diet.liked_food}
+                                        icon="heart"
+                                        name="Likes"
+                                        className="color-pink"
+                                      />
+                                    </Stack.Item>
+                                  )}
+                                  {!!option.diet.disliked_food.length && (
+                                    <Stack.Item>
+                                      <FoodList
+                                        food={option.diet.disliked_food}
+                                        icon="thumbs-down"
+                                        name="Dislikes"
+                                        className="color-red"
+                                      />
+                                    </Stack.Item>
+                                  )}
+                                  {!!option.diet.toxic_food.length && (
+                                    <Stack.Item>
+                                      <FoodList
+                                        food={option.diet.toxic_food}
+                                        icon="biohazard"
+                                        name="Toxic"
+                                        className="color-olive"
+                                      />
+                                    </Stack.Item>
+                                  )}
+                                </Stack>
                               </Stack.Item>
                             )}
                           </Stack>

@@ -4,6 +4,8 @@
 
 	/// Organs and limbs applied with this animalid type
 	var/list/components
+	/// A blood type this animalid type uses, if any
+	var/blood_type
 
 	/// Used in the UI - name of this animalid type
 	var/name

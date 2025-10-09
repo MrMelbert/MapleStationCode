@@ -15,9 +15,9 @@
 #define CLOTH (1<<14)
 #define NUTS (1<<15)
 #define SEAFOOD (1<<16)
-#define BUGS (1<<18)
-#define GORE (1<<19)
-#define STONE (1<<20)
+#define BUGS (1<<17)
+#define GORE (1<<18)
+#define STONE (1<<19)
 
 DEFINE_BITFIELD(foodtypes, list(
 	"MEAT" = MEAT,

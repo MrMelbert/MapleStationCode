@@ -44,6 +44,12 @@ export type Name = {
   group: string;
 };
 
+export type Diet = {
+  liked_food: Food[];
+  disliked_food: Food[];
+  toxic_food: Food[];
+};
+
 export type Species = {
   name: string;
   desc: string;
@@ -61,11 +67,7 @@ export type Species = {
     neutral: Perk[];
   };
 
-  diet?: {
-    liked_food: Food[];
-    disliked_food: Food[];
-    toxic_food: Food[];
-  };
+  diet: Diet | null;
 };
 
 export type Perk = {

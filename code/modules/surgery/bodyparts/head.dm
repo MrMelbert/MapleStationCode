@@ -26,9 +26,6 @@
 	unarmed_effectiveness = 0
 	bodypart_trait_source = HEAD_TRAIT
 
-	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
-	var/show_organs_on_examine = TRUE
-
 	//Limb appearance info:
 	/// Replacement name
 	var/real_name = ""
@@ -105,7 +102,7 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(show_organs_on_examine && IS_ORGANIC_LIMB(src))
+	if(head_flags & HEAD_SHOW_ORGANS_ON_EXAMINE)
 		var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
 		if(!brain)
 			. += span_info("The brain has been removed from [src].")
@@ -201,6 +198,8 @@
 /obj/item/bodypart/head/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/toy_talk)
+	if(!IS_ORGANIC_LIMB(src))
+		head_flags &= ~HEAD_SHOW_ORGANS_ON_EXAMINE
 
 /obj/item/bodypart/head/get_voice(add_id_name)
 	return "The head of [real_name]"

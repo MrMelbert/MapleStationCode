@@ -90,7 +90,27 @@ export const feature_avian_ears: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
-export const fish_tail: FeatureChoiced = {
+export const feature_fish_tail: FeatureChoiced = {
   name: 'Fish Tail',
+  component: FeatureDropdownInput,
+};
+
+export const feature_rat_tail: FeatureChoiced = {
+  name: 'Rat Tail',
+  component: FeatureDropdownInput,
+};
+
+export const feature_rat_ears: FeatureChoiced = {
+  name: 'Rat Ears',
+  component: FeatureDropdownInput,
+};
+
+export const feature_bat_wings: FeatureChoiced = {
+  name: 'Bat Wings',
+  component: FeatureDropdownInput,
+};
+
+export const feature_bat_ears: FeatureChoiced = {
+  name: 'Bat Ears',
   component: FeatureDropdownInput,
 };

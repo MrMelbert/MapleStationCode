@@ -416,8 +416,8 @@
 /// Dullahan head preserves organs inside it
 /obj/item/bodypart/head/dullahan
 	throwforce = 25 // It's also a potent weapon
-	show_organs_on_examine = FALSE
 	speech_span = null
+	head_flags = parent_type::head_flags & ~HEAD_SHOW_ORGANS_ON_EXAMINE
 
 /obj/item/bodypart/head/dullahan/Entered(obj/item/organ/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()

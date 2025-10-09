@@ -55,12 +55,18 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/moth_markings_list
 	var/list/caps_list
 	var/list/pod_hair_list
-	var/list/head_tentacles_list // NON-MODULE CHANGE
-	var/list/arm_wings_list // NON-MODULE CHANGE
-	var/list/arm_wingsopen_list // NON-MODULE CHANGE
-	var/list/tails_list_avian // NON-MODULE CHANGE
-	var/list/avian_ears_list // NON-MODULE CHANGE
-	var/list/synth_head_cover_list // NON-MODULE CHANGE
+	// NON-MODULE CHANGE
+	var/list/head_tentacles_list
+	var/list/arm_wings_list
+	var/list/arm_wingsopen_list
+	var/list/tails_list_avian
+	var/list/avian_ears_list
+	var/list/synth_head_cover_list
+	var/list/tails_list_rat
+	var/list/rat_ears_list
+	var/list/bat_ears_list
+	var/list/bat_wings_list
+	// NON-MODULE CHANGE END
 
 /datum/controller/subsystem/accessories/PreInit() // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
 	setup_lists()
@@ -111,12 +117,18 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	moth_antennae_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae)[DEFAULT_SPRITE_LIST]
 	moth_markings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	pod_hair_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair)[DEFAULT_SPRITE_LIST]
-	head_tentacles_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
-	arm_wings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wings)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
-	arm_wingsopen_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wingsopen)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
-	tails_list_avian = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/avian/)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
-	avian_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/plumage)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
-	synth_head_cover_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/synth_head_cover)[DEFAULT_SPRITE_LIST] // NON-MODULE CHANGE
+	// NON-MODULE CHANGE
+	head_tentacles_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles)[DEFAULT_SPRITE_LIST]
+	arm_wings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wings)[DEFAULT_SPRITE_LIST]
+	arm_wingsopen_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wingsopen)[DEFAULT_SPRITE_LIST]
+	tails_list_avian = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/avian/)[DEFAULT_SPRITE_LIST]
+	avian_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/plumage)[DEFAULT_SPRITE_LIST]
+	synth_head_cover_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/synth_head_cover)[DEFAULT_SPRITE_LIST]
+	tails_list_rat = init_sprite_accessory_subtypes(/datum/sprite_accessory/tail_rat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	rat_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_rat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	bat_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_bat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	bat_wings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_bat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	// NON-MODULE CHANGE END
 
 /// This proc just intializes all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name
 /datum/controller/subsystem/accessories/proc/init_hair_gradients()
