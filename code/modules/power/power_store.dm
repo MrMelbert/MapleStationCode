@@ -312,7 +312,7 @@
 	ethereal_drain(human_user, user_stomach)
 
 /// Handles letting an ethereal drain our charge into their stomach
-/obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/internal/stomach/ethereal/used_stomach) // Non-module change
+/obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach) // Non-module change
 	if(charge() <= 0)
 		balloon_alert(user, "out of charge!")
 		return

@@ -120,7 +120,7 @@
 
 	return TRUE
 
-/datum/wound/cranial_fissure/proc/still_has_eyes(obj/item/organ/internal/eyes/eyes)
+/datum/wound/cranial_fissure/proc/still_has_eyes(obj/item/organ/eyes/eyes)
 	PRIVATE_PROC(TRUE)
 
 	return victim?.get_organ_by_type(/obj/item/organ/eyes) == eyes

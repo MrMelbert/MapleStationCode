@@ -37,12 +37,12 @@
 	if(clean_types & CLEAN_TYPE_RADIATION)
 		Detach(source)
 
-/datum/element/simple_rad/proc/rad_organ_implanted(obj/item/organ/internal/source, mob/living/carbon/new_owner)
+/datum/element/simple_rad/proc/rad_organ_implanted(obj/item/organ/source, mob/living/carbon/new_owner)
 	SIGNAL_HANDLER
 
 	new_owner.apply_status_effect(/datum/status_effect/grouped/has_irradiated_organs, REF(source))
 
-/datum/element/simple_rad/proc/rad_organ_removed(obj/item/organ/internal/source, mob/living/carbon/old_owner)
+/datum/element/simple_rad/proc/rad_organ_removed(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
 	old_owner.remove_status_effect(/datum/status_effect/grouped/has_irradiated_organs, REF(source))

@@ -177,7 +177,7 @@
 /obj/structure/ethereal_crystal/relaymove()
 	return
 
-/obj/structure/ethereal_crystal/Initialize(mapload, obj/item/organ/internal/heart/ethereal/ethereal_heart)
+/obj/structure/ethereal_crystal/Initialize(mapload, obj/item/organ/heart/ethereal/ethereal_heart)
 	. = ..()
 	if(!ethereal_heart)
 		stack_trace("Our crystal has no related heart")

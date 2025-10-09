@@ -64,7 +64,7 @@
 	var/obj/item/organ/cyberimp/bci/bci
 	var/obj/item/circuit_component/equipment_action/circuit_component
 
-/datum/action/innate/bci_action/New(obj/item/organ/internal/cyberimp/bci/_bci, obj/item/circuit_component/equipment_action/circuit_component)
+/datum/action/innate/bci_action/New(obj/item/organ/cyberimp/bci/_bci, obj/item/circuit_component/equipment_action/circuit_component)
 	..()
 	bci = _bci
 	circuit_component.granted_to[REF(_bci)] = src

@@ -38,7 +38,7 @@
  *
  * Unfortunately this is hooked on Entering rather than its own dedicated MMI signal becuase MMI code is a fuck
  */
-/datum/component/ling_decoy_brain/proc/entered_mmi(obj/item/organ/internal/brain/source, atom/entering, atom/old_loc, ...)
+/datum/component/ling_decoy_brain/proc/entered_mmi(obj/item/organ/brain/source, atom/entering, atom/old_loc, ...)
 	SIGNAL_HANDLER
 
 	var/mob/living/the_real_ling = parent_ling.owner.current

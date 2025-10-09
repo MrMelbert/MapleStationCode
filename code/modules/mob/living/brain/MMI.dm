@@ -121,7 +121,7 @@
  * Arguments:
  * * new_brain - Brain to be force-inserted into the MMI. Any calling code should handle proper removal of the brain from the mob, as this proc only forceMoves.
  */
-/obj/item/mmi/proc/force_brain_into(obj/item/organ/internal/brain/new_brain)
+/obj/item/mmi/proc/force_brain_into(obj/item/organ/brain/new_brain)
 	if(isnull(new_brain))
 		stack_trace("Proc called with null brain.")
 		return FALSE

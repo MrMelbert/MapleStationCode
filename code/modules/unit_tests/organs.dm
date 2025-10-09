@@ -86,7 +86,7 @@
 	for(var/obj/item/organ/organ_to_test in dummy.organs)
 		test_organ(dummy, organ_to_test)
 
-/datum/unit_test/organ_damage/proc/test_organ(mob/living/carbon/human/dummy, obj/item/organ/internal/test_organ)
+/datum/unit_test/organ_damage/proc/test_organ(mob/living/carbon/human/dummy, obj/item/organ/test_organ)
 	var/slot_to_use = test_organ.slot
 
 	// Tests [mob/living/proc/adjustOrganLoss]
