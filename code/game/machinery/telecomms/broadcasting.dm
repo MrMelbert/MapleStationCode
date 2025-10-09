@@ -176,7 +176,7 @@
 	var/radio_raw_icon = source.get_radio_icon()
 	if(radio_raw_icon)
 		message_mods ||= list()
-		message_mods[SAY_RADIO_ICON] = "[icon2html(radio_raw_icon, receive)] "
+		message_mods[SAY_RADIO_ICON] = "[icon2html(radio_raw_icon, typecache_filter_list(receive, GLOB.typecache_mob))] "
 
 	for(var/atom/movable/hearer as anything in receive)
 		if(isnull(hearer))

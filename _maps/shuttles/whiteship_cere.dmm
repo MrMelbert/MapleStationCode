@@ -396,7 +396,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/bridge)
 "eq" = (
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/east,
 /obj/effect/mapping_helpers/airalarm/unlocked,

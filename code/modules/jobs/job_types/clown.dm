@@ -101,6 +101,5 @@
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
 		M.mutadone_proof = TRUE
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.show_to(H)
+	ADD_TRAIT(H, TRAIT_CLOWN_ENJOYER, INNATE_TRAIT)
 	H.faction |= FACTION_CLOWN

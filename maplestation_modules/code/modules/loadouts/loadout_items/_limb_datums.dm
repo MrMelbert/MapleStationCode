@@ -521,8 +521,10 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 		pref_list_slot = initial(organ_path.slot)
 
 /datum/limb_option_datum/organ/apply_limb(mob/living/carbon/human/apply_to)
-	if(istype(apply_to, /mob/living/carbon/human/dummy)) // thog don't caare
-		return
+	if(istype(apply_to, /mob/living/carbon/human/dummy))
+		var/obj/item/organ/organ_path = limb_path
+		if(!organ_path::visual)
+			return
 
 	var/obj/item/organ/internal/new_organ = new limb_path()
 	new_organ.Insert(apply_to, special = TRUE, movement_flags = DELETE_IF_REPLACED)

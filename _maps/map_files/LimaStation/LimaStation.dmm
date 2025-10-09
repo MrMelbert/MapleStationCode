@@ -17001,7 +17001,7 @@
 /obj/machinery/button/door/directional/east{
 	name = "Security Mech Garage Door Controls";
 	id = "secmechbay";
-	req_access = list("security")
+	req_access = list("brig")
 	},
 /obj/effect/decal/cleanable/oil/slippery,
 /obj/effect/turf_decal/stripes,
@@ -17855,6 +17855,7 @@
 /obj/effect/turf_decal/siding/thinplating_new{
 	dir = 8
 	},
+/obj/structure/sign/warning/secure_area/directional/east,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "fXe" = (
@@ -19363,7 +19364,7 @@
 /area/station/hallway/primary/port)
 "gxF" = (
 /obj/structure/lattice,
-/obj/structure/sign/warning/directional/east,
+/obj/structure/sign/warning/secure_area/directional/east,
 /turf/open/space/openspace,
 /area/space/nearstation)
 "gxK" = (
@@ -22772,14 +22773,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/old_rec)
-"hBv" = (
-/obj/structure/grille,
-/obj/structure/lattice,
-/obj/effect/mapping_helpers/cycling_airlock_old/marker/inner_door{
-	dir = 8
-	},
-/turf/open/space/basic,
-/area/space/nearstation)
 "hBH" = (
 /obj/machinery/holopad,
 /obj/effect/turf_decal/bot,
@@ -35125,10 +35118,6 @@
 /obj/structure/closet/crate/cardboard,
 /turf/open/floor/plating,
 /area/station/commons/vacant_room/commissary)
-"lwz" = (
-/obj/structure/detectiveboard/directional/north,
-/turf/open/floor/iron/dark,
-/area/station/security/lockers)
 "lwC" = (
 /obj/machinery/duct,
 /obj/effect/decal/cleanable/dirt,
@@ -36795,7 +36784,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
@@ -54481,6 +54470,7 @@
 /obj/effect/turf_decal/siding/thinplating_new{
 	dir = 8
 	},
+/obj/structure/sign/warning/secure_area/directional/east,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "ruz" = (
@@ -65839,7 +65829,6 @@
 /area/station/security/detectives_office)
 "uUH" = (
 /obj/machinery/light/small/directional/east,
-/obj/structure/sign/warning/directional/east,
 /obj/structure/lattice/catwalk,
 /turf/open/floor/engine/hull,
 /area/space/nearstation)
@@ -71170,7 +71159,7 @@
 /turf/closed/wall/r_wall,
 /area/station/engineering/gravity_generator)
 "wOB" = (
-/obj/structure/sign/warning/directional/east,
+/obj/structure/sign/warning/secure_area/directional/east,
 /turf/open/space/openspace,
 /area/space)
 "wOD" = (
@@ -71189,7 +71178,8 @@
 	},
 /obj/machinery/button/door/directional/west{
 	name = "Security Mech Garage Door Controls";
-	id = "secmechbay"
+	id = "secmechbay";
+	req_access = list("brig")
 	},
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 4
@@ -73377,11 +73367,13 @@
 /area/station/security/brig)
 "xxv" = (
 /obj/machinery/light/small/directional/east,
-/obj/structure/sign/warning/directional/east,
 /obj/structure/lattice/catwalk,
 /obj/machinery/camera/directional/east{
 	dir = 6;
 	c_tag = "Security - External Airlock Access"
+	},
+/obj/structure/sign/nanotrasen{
+	pixel_x = 32
 	},
 /turf/open/floor/engine/hull,
 /area/space/nearstation)
@@ -102332,7 +102324,7 @@ gso
 gEg
 ejk
 tAZ
-lwz
+ovq
 iBI
 nTg
 cyI
@@ -126816,7 +126808,7 @@ ymg
 ymg
 ymg
 hqS
-hBv
+hqS
 ymg
 ymg
 ymg
