@@ -76,14 +76,20 @@
 	restyle_flags = EXTERNAL_RESTYLE_PLANT
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/mushroom_cap
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /// Bodypart overlay for the mushroom cap organ
 /datum/bodypart_overlay/mutant/mushroom_cap
 	layers = EXTERNAL_ADJACENT
 	feature_key = "caps"
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/mushroom_cap/get_global_feature_list()
 	return SSaccessories.caps_list
 
 /datum/bodypart_overlay/mutant/mushroom_cap/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return !(human.obscured_slots & HIDEHAIR)
+
+/datum/bodypart_overlay/mutant/mushroom_cap/override_color(obj/item/bodypart/bodypart_owner)
+	//The mushroom cap is red by default (can still be dyed)
+	return "#FF4B19"
