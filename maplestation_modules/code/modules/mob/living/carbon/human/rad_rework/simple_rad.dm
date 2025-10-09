@@ -57,7 +57,9 @@
 /datum/status_effect/grouped/has_irradiated_organs/on_remove()
 	. = ..()
 	var/mob/living/carbon/carbon_owner = owner
-	for(var/obj/item/organ/internal/organ in carbon_owner.organs)
+	for(var/obj/item/organ/organ in carbon_owner.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		organ.RemoveElement(/datum/element/simple_rad)
 
 /datum/status_effect/grouped/has_irradiated_organs/tick(seconds_between_ticks)

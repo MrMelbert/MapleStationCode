@@ -225,7 +225,9 @@
 	clone.apply_status_effect(/datum/status_effect/genetic_damage/cloning, initial_damage)
 
 	// remove organs before removing limbs and taking things with them
-	for(var/obj/item/organ/internal/organ in clone.organs)
+	for(var/obj/item/organ/organ in clone.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_UNREMOVABLE))
 			continue
 		organ.organ_flags |= ORGAN_FROZEN
@@ -246,7 +248,9 @@
 /obj/machinery/clonepod/proc/readd_thing(mob/living/carbon/human/clone, obj/item/thing)
 	things_to_attach -= thing
 	if(isorgan(thing))
-		var/obj/item/organ/internal/organ = thing
+		if (thing.organ_flags & ORGAN_EXTERNAL)
+			return
+		var/obj/item/organ/organ = thing
 		organ.organ_flags &= ~ORGAN_FROZEN
 		organ.Insert(clone)
 		if(istype(thing, /obj/item/organ/internal/heart))
