@@ -83,10 +83,12 @@
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
 	preference = "feature_head_tentacles"
 	bodypart_overlay = /datum/bodypart_overlay/mutant/head_tentacles
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /datum/bodypart_overlay/mutant/head_tentacles
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	feature_key = "head_tentacles"
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)

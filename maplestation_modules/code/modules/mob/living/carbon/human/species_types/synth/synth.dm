@@ -444,6 +444,7 @@
 	organ_flags = ORGAN_ROBOTIC
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 
 /obj/item/organ/external/synth_head_cover/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
