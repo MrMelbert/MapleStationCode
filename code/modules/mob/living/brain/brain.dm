@@ -66,15 +66,29 @@
 /mob/living/brain/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	return // no eyes, no flashing
 
-/mob/living/brain/can_be_revived()
+/// Checks if the passed item can hold a brainmob
+/mob/living/brain/proc/is_container(obj/item/thing)
+	return istype(thing, /obj/item/mmi) || istype(thing, /obj/item/organ/internal/brain)
+
+/// Returns the brain the brainmob owns
+/// Note, this can return null if we are a positronic brain (as they have no real brain organ)
+/mob/living/brain/proc/get_brain()
+	return container?.brain || loc
+
+/// Checks if we and our brain is healthy enough to be revived
+/mob/living/brain/proc/check_brain()
 	if(health <= -maxHealth)
 		return FALSE
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+
+	var/obj/item/organ/internal/brain/brain_real = get_brain()
 	if(!istype(brain_real))
-		return FALSE
+		return TRUE // Revive if they don't have a real brain, it's probably a posibrain
 	if(brain_real.organ_flags & ORGAN_FAILING)
 		return FALSE
 	return TRUE
+
+/mob/living/brain/can_be_revived()
+	return is_container(loc) && check_brain()
 
 /mob/living/brain/fully_replace_character_name(oldname,newname)
 	..()
@@ -82,17 +96,12 @@
 		stored_dna.real_name = real_name
 
 /mob/living/brain/forceMove(atom/destination)
-	if(container)
+	if(is_container(loc))
+		var/atom/movable/container = loc
 		return container.forceMove(destination)
-	else if (istype(loc, /obj/item/organ/internal/brain))
-		var/obj/item/organ/internal/brain/B = loc
-		B.forceMove(destination)
-	else if (istype(destination, /obj/item/organ/internal/brain))
-		doMove(destination)
-	else if (istype(destination, /obj/item/mmi))
-		doMove(destination)
-	else
-		CRASH("Brainmob without a container [src] attempted to move to [destination].")
+	if(is_container(destination))
+		return forceMove(destination)
+	CRASH("Brainmob without a container [src] attempted to move to [destination].")
 
 /mob/living/brain/update_mouse_pointer()
 	if (!client)
