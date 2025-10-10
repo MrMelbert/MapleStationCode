@@ -30,6 +30,7 @@
 // Rat ear sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/ears_rat
 	icon = 'maplestation_modules/icons/mob/ears/rat.dmi'
+	em_block = TRUE
 
 /datum/sprite_accessory/ears_rat/simple
 	name = "Simple"
@@ -78,6 +79,7 @@
 // Rat tail sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/tail_rat
 	icon = 'maplestation_modules/icons/mob/tails/rat.dmi'
+	em_block = TRUE
 
 /datum/sprite_accessory/tail_rat/straight
 	name = "Straight"

@@ -6,3 +6,10 @@
 	)
 
 	name = "Vulpinid"
+	icon = FA_ICON_FIRE_FLAME_CURVED
+	pros = list(
+		"Unimplemented"
+	)
+	cons = list(
+		"Unimplemented"
+	)

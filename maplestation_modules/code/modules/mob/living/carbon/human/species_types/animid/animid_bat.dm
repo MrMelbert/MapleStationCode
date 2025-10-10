@@ -14,12 +14,13 @@
 	blood_type = /datum/blood_type/universal
 
 	name = "Chiropteranid"
+	icon = FA_ICON_DROPLET
 	pros = list(
 		"Can hear whispers from far away",
 		"Universal blood type",
 	)
 	cons = list(
-		"Weaker limbs, useless wings",
+		"Weaker limbs",
 	)
 
 // Bat ear organ
@@ -41,6 +42,7 @@
 // Bat ear sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/ears_bat
 	icon = 'maplestation_modules/icons/mob/ears/bat.dmi'
+	em_block = TRUE
 
 /datum/sprite_accessory/ears_bat/simple
 	name = "Simple"
@@ -84,6 +86,7 @@
 // Bat wing sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/wings_bat
 	icon = 'maplestation_modules/icons/mob/bat_wings.dmi'
+	em_block = TRUE
 
 /datum/sprite_accessory/wings_bat/normal
 	name = "Normal"
@@ -120,6 +123,7 @@
 
 	liked_foodtypes = FRUIT | BUGS // likes eating fruit and bugs, does not mind raw or gore
 	disliked_foodtypes = GROSS | CLOTH | VEGETABLES | JUNKFOOD | FRIED
+	organ_traits = list(TRAIT_DRINKS_BLOOD)
 
 // Bat bodyparts
 /obj/item/bodypart/leg/left/bat

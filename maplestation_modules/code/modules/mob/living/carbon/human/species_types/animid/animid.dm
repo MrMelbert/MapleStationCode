@@ -21,7 +21,6 @@
 		animid_singletons[atype::id] = new atype()
 
 /datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	var/list/base_bodyparts = bodypart_overrides.Copy()
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
 	for(var/organ_slot, input in animid_singletons[animid_id].components)
 		set_mutant_organ(organ_slot, input)
@@ -30,8 +29,8 @@
 	// Ensures fish-animids get their preferred color rather than have one forced on them
 	human_who_gained_species.dna?.features["forced_fish_color"] = human_who_gained_species.dna?.features["mcolor"]
 	. = ..()
-	// replace body is not called when going from same species to same species, we need to manually check here for bodypart changes
-	if(old_species.type == type && base_bodyparts ~! bodypart_overrides)
+	// replace body is not called when going from same species to same species, but we need it for swapping animid types
+	if(old_species.type == type)
 		replace_body(human_who_gained_species, src)
 
 /datum/species/human/animid/get_physical_attributes()
@@ -149,7 +148,6 @@
 /datum/bodypart_overlay/mutant/ears
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	color_source = ORGAN_COLOR_HAIR
-	feature_key = "mouse_ears"
 
 	/// This layer is colored skin color rather than hair color
 	var/skin_layer = EXTERNAL_FRONT
