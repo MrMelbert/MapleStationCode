@@ -19,3 +19,7 @@
 	neuts = list(
 		"Always land on your feet",
 	)
+
+/datum/sprite_accessory/tails/human/cat/big
+	name = "Big"
+	icon_state = "big"
