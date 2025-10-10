@@ -136,7 +136,6 @@
 	bci = shell
 
 	if (charge_action)
-		var/mob/living/carbon/resolved_owner = user?.resolve()
 		if (bci.owner)
 			charge_action.Remove(bci.owner)
 		bci.actions -= charge_action
