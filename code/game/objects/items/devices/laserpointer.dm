@@ -265,7 +265,7 @@
 			outmsg = span_warning("You miss the lens of [target_camera] with [src]!")
 
 	//catpeople: make any felinid near the target to face the target, chance for felinids to pounce at the light, stepping to the target
-	for(var/mob/living/carbon/human/target_felinid in view(1, targloc))
+	for(var/mob/living/target_felinid in view(1, targloc))
 		if(!HAS_TRAIT(target_felinid, TRAIT_CATLIKE_GRACE) || target_felinid.stat == DEAD || target_felinid.is_blind() || target_felinid.incapacitated())
 			continue
 		if(target_felinid.body_position == STANDING_UP)

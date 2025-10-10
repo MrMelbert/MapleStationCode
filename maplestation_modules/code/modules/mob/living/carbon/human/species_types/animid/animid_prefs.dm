@@ -29,35 +29,10 @@
 			"id" = animalid_id,
 			"name" = atype.name,
 			"icon" = atype.icon,
-			"components" = all_readable_organ_types(atype),
+			"components" = atype.get_readable_features(),
 			"pros" = atype.pros || list("No notable advantages"),
 			"cons" = atype.cons || list("No notable disadvantages"),
 			"neuts" = atype.neuts || list(),
-			"diet" = animid.get_diet_from_tongue(atype.components?[ORGAN_SLOT_TONGUE]),
+			"diet" = animid.get_diet_from_tongue(atype.components[ORGAN_SLOT_TONGUE] || animid.mutanttongue),
 		)
 	return data
-
-/datum/preference/choiced/animid_type/proc/all_readable_organ_types(datum/animalid_type/atype)
-	var/list/names = list()
-	for(var/organ_slot, organ_type_or_types in atype.components)
-		names += readable_organ_type(organ_type_or_types)
-	list_clear_nulls(names)
-	return names
-
-/datum/preference/choiced/animid_type/proc/readable_organ_type(organ_type_or_types)
-	if(islist(organ_type_or_types))
-		var/list/names = list()
-		for(var/organ_type in organ_type_or_types)
-			names += readable_organ_type(organ_type)
-		return names
-
-	if(ispath(organ_type_or_types, /datum/bodypart_overlay/simple/body_marking))
-		return "Body markings"
-
-	if(ispath(organ_type_or_types, /obj/item/organ))
-		var/obj/item/organ/organ_type = organ_type_or_types
-		if(!organ_type::bodypart_overlay)
-			return null // internal organs that don't alter appearance
-		return organ_type::name
-
-	return null

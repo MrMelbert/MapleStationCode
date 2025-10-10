@@ -8,6 +8,12 @@
 
 	name = "Murinid"
 	icon = FA_ICON_CHEESE
+	pros = list(
+		"Unimplemented",
+	)
+	cons = list(
+		"Unimplemented",
+	)
 	neuts = list(
 		"Can eat anything, only likes cheese",
 	)

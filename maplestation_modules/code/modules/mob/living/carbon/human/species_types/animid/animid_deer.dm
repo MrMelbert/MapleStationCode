@@ -13,14 +13,14 @@
 	name = "Cervid"
 	icon = FA_ICON_WHEAT_AWN
 	pros = list(
-		"Good stamina, strong kicks",
+		"Sprint further, kick harder",
 		"Slowed by carrying heavy objects less",
 	)
 	cons = list(
 		"Clumsy at climbing",
 	)
 	neuts = list(
-		"Affected by mood more than most",
+		"Mood affects you more",
 	)
 
 // Deer ear organ
@@ -40,7 +40,7 @@
 /datum/bodypart_overlay/mutant/ears/deer/get_global_feature_list()
 	return SSaccessories.deer_ears_list
 
-// Deer ear sprite accessory
+// Deer ear sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/ears_deer
 	icon = 'maplestation_modules/icons/mob/ears/deer.dmi'
 	em_block = TRUE
@@ -89,17 +89,17 @@
 /datum/bodypart_overlay/mutant/tail/deer/get_global_feature_list()
 	return SSaccessories.deer_tail_list
 
-// Deer tail sprite accessory
+// Deer tail sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/tail_deer
 	icon = 'maplestation_modules/icons/mob/tails/deer.dmi'
 	em_block = TRUE
 
 /datum/sprite_accessory/tail_deer/light
-	name = "Light"
+	name = "Bush (Light)"
 	icon_state = "light"
 
 /datum/sprite_accessory/tail_deer/dark
-	name = "Dark"
+	name = "Bush (Dark)"
 	icon_state = "dark"
 
 // Deer tail preference

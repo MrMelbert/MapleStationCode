@@ -70,6 +70,10 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/deer_tail_list
 	var/list/bunny_ears_list
 	var/list/bunny_tail_list
+	var/list/dog_ears_list
+	var/list/dog_tail_list
+	var/list/fox_ears_list
+	var/list/fox_tail_list
 	// NON-MODULE CHANGE END
 
 /datum/controller/subsystem/accessories/PreInit() // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
@@ -136,6 +140,10 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	deer_tail_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/tail_deer, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	bunny_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_bunny, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	bunny_tail_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/tail_bunny, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	dog_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_dog, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	dog_tail_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/dog_tail, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	fox_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_fox, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
+	fox_tail_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/fox_tail, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	// NON-MODULE CHANGE END
 
 /// This proc just intializes all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name

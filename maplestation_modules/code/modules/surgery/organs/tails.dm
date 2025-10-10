@@ -19,6 +19,7 @@
 	icon_state = "fox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR_COLOR
+	locked = TRUE
 
 /datum/design/fox_tail
 	name = "Fox Tail"
@@ -49,6 +50,7 @@
 	icon_state = "fivefox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR_COLOR
+	locked = TRUE
 
 /datum/design/fivefox_tail
 	name = "Five Fox Tails"
@@ -57,4 +59,3 @@
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
 	build_path = /obj/item/organ/external/tail/fivefox
 	category = list(SPECIES_HUMAN)
-

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Floating, Icon, Stack } from 'tgui-core/components';
+import { capitalizeFirst } from 'tgui-core/string';
 import { useBackend } from '../../../../../backend';
 import { FoodList } from '../../../CharacterPreferences/SpeciesPage';
 import type { Diet, PreferencesMenuData } from '../../../types';
@@ -31,7 +32,6 @@ const AnimidSelection = (
   const [uiOpen, setUiOpen] = useState(false);
   const selected = secondary_features[AnimidPref] as string;
   const selected_name = serverData?.animid_customization[selected]?.name;
-
   return (
     <Floating
       stopChildPropagation
@@ -88,7 +88,7 @@ function AnimidSelectionInner(serverData: AnimidServerData, selected: string) {
                 }}
               >
                 <Stack.Item width="25%">
-                  <Stack vertical align="center" ml={1}>
+                  <Stack vertical align="center" ml={1} fill>
                     <Stack.Item fontSize={'16px'}>
                       <i>{option.name}</i>
                     </Stack.Item>
@@ -119,11 +119,12 @@ function AnimidSelectionInner(serverData: AnimidServerData, selected: string) {
                 <Stack.Item grow>
                   <Stack fill vertical ml={1}>
                     {option.components.length > 0 && (
-                      <Stack.Item
-                        textAlign="center"
-                        style={{ textTransform: 'capitalize' }}
-                      >
-                        <b>Features:</b> {option.components.join(', ')}
+                      <Stack.Item textAlign="center">
+                        <b>Features:</b>{' '}
+                        {option.components
+                          .map((c) => capitalizeFirst(c))
+                          .sort()
+                          .join(', ')}
                       </Stack.Item>
                     )}
                     {option.pros.map((pro) => (

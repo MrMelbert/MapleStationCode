@@ -42,7 +42,7 @@
 /datum/bodypart_overlay/mutant/tail/bunny/get_global_feature_list()
 	return SSaccessories.bunny_tail_list
 
-// Bunny tail sprite accessory
+// Bunny tail sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/tail_bunny
 	icon = 'maplestation_modules/icons/mob/tails/bunny.dmi'
 	em_block = TRUE
@@ -87,7 +87,7 @@
 /datum/bodypart_overlay/mutant/ears/bunny/get_global_feature_list()
 	return SSaccessories.bunny_ears_list
 
-// Bunny ears sprite accessory
+// Bunny ears sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/ears_bunny
 	icon = 'maplestation_modules/icons/mob/ears/bunny.dmi'
 	em_block = TRUE

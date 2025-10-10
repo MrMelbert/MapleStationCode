@@ -134,3 +134,23 @@ export const feature_bunny_tail: FeatureChoiced = {
   name: 'Bunny Tail',
   component: FeatureDropdownInput,
 };
+
+export const feature_dog_ears: FeatureChoiced = {
+  name: 'Dog Ears',
+  component: FeatureDropdownInput,
+};
+
+export const feature_dog_tail: FeatureChoiced = {
+  name: 'Dog Tail',
+  component: FeatureDropdownInput,
+};
+
+export const feature_fox_ears: FeatureChoiced = {
+  name: 'Fox Ears',
+  component: FeatureDropdownInput,
+};
+
+export const feature_fox_tail: FeatureChoiced = {
+  name: 'Fox Tail',
+  component: FeatureDropdownInput,
+};

@@ -33,6 +33,9 @@
 /datum/animalid_type/fish/extra_feature_keys()
 	return list(/datum/preference/color/mutant_color::savefile_key)
 
+/datum/animalid_type/fish/get_readable_features()
+	return ..() + "Scales"
+
 ///Tail for fish DNA-infused spacemen. It provides a speed buff while in water. It's also needed for the crawl speed bonus once the threshold is reached.
 /obj/item/organ/external/tail/fish
 	name = "fish tail"

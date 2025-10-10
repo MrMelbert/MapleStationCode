@@ -3,7 +3,7 @@
 	var/id
 
 	/// Organs and limbs applied with this animalid type
-	var/list/components
+	var/list/components = list()
 
 	/// Used in the UI - name of this animalid type
 	var/name
@@ -43,21 +43,55 @@
 
 /// Checks if the passed preference datum is applicable to this animid type.
 /datum/animalid_type/proc/is_applicable_to_preference(datum/preference/preference)
-	var/list/all_organs = get_organs()
-	if(preference.relevant_external_organ && (preference.relevant_external_organ in all_organs))
+	if(preference.relevant_external_organ && (preference.relevant_external_organ in get_organs()))
 		return TRUE
-	if(preference.relevant_head_flag && ispath(components?[BODY_ZONE_HEAD], /obj/item/bodypart/head))
-		var/obj/item/bodypart/head/head = components[BODY_ZONE_HEAD]
+	if(preference.relevant_head_flag)
+		// if there's no animid specific head, use whatever is set by default, so we still have something to check for head flags
+		var/obj/item/bodypart/head/head = components[BODY_ZONE_HEAD] || GLOB.species_prototypes[/datum/species/human/animid].bodypart_overrides[BODY_ZONE_HEAD]
 		if(preference.relevant_head_flag && head::head_flags)
 			return TRUE
-	if(preference.relevant_body_markings && (preference.relevant_body_markings in all_organs))
+	if(preference.relevant_body_markings && (preference.relevant_body_markings in components[BODY_MARKINGS]))
 		return TRUE
 	return FALSE
 
-/// Flattens the components list, returning a list of all organs types used by this animid type.
+/// Gets only organ typepaths in the components list
 /datum/animalid_type/proc/get_organs()
 	var/list/all_organs = list()
 	for(var/slot, input in components)
-		all_organs |= (islist(input) ? assoc_to_keys(input) : input)
+		if(ispath(input, /obj/item/organ))
+			all_organs |= input
+
+		else if(islist(input))
+			for(var/sub_input in input)
+				if(ispath(sub_input, /obj/item/organ))
+					all_organs |= sub_input
 
 	return all_organs
+
+/// Returns a list of human-readable names for the features this animid type has.
+/datum/animalid_type/proc/get_readable_features()
+	var/list/names = list()
+	for(var/organ_slot, organ_type_or_types in components)
+		names += readable_organ_type(organ_type_or_types)
+	list_clear_nulls(names)
+	return names
+
+/// Used in construction of the animid type preference UI
+/datum/animalid_type/proc/readable_organ_type(organ_type_or_types)
+	PRIVATE_PROC(TRUE)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(islist(organ_type_or_types))
+		var/list/names = list()
+		for(var/organ_type in organ_type_or_types)
+			names += readable_organ_type(organ_type)
+		return names
+
+	if(ispath(organ_type_or_types, /datum/bodypart_overlay/simple/body_marking))
+		return "Body markings"
+
+	if(ispath(organ_type_or_types, /obj/item/organ))
+		var/obj/item/organ/organ_type = organ_type_or_types
+		if(organ_type::bodypart_overlay)
+			return organ_type::name
+
+	return null

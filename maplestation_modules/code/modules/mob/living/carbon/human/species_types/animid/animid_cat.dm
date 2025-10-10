@@ -11,7 +11,7 @@
 	name = "Felinid"
 	icon = FA_ICON_CAT
 	pros = list(
-		"Can lick wounds to stop bleeding",
+		"Lick cuts to stop bleeding",
 	)
 	cons = list(
 		"Sensitive to loud noises and water",

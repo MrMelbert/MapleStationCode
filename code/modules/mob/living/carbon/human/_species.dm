@@ -1178,7 +1178,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!fake_tongue)
 		return null
 
-	var/static/list/food_flags = FOOD_FLAGS
+	var/list/food_flags = FOOD_FLAGS
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
 		"disliked_food" = bitfield_to_list(initial(fake_tongue.disliked_foodtypes), food_flags),

@@ -18,7 +18,7 @@
 	for(var/datum/animalid_type/atype as anything in typesof(/datum/animalid_type))
 		if(!atype::id)
 			continue
-		animid_singletons[atype::id] = new atype()
+		animid_singletons[atype::id] = new atype(src)
 
 /datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
@@ -29,6 +29,14 @@
 	// replace body is not called when going from same species to same species, but we need it for swapping animid types
 	if(old_species.type == type)
 		replace_body(human_who_gained_species, src)
+
+// So the primary page doesn't show a diet that is largely irrelevant
+/datum/species/human/animid/get_species_diet()
+	return list(
+		"liked_food" = list(),
+		"disliked_food" = list(),
+		"toxic_food" = bitfield_to_list(TOXIC, FOOD_FLAGS),
+	)
 
 /datum/species/human/animid/get_physical_attributes()
 	return "Being a human hybrid, Animids are very similar to humans in almost all respects. \
@@ -51,7 +59,7 @@
 			These new beings were dubbed \"Animids\", and were seen as a new step in human evolution - for a time.",
 
 		"Following the honeymoon period, the general public soon grew wary of these new beings - \
-			they were soon feared for a plethora of reasons, such as ethical grounds, over concerns of animal instincts taking over, \
+			they were soon feared for a plethora of reasons, such as on ethical grounds, over concerns of animal instincts taking over, \
 			due to misuse by criminal elements, or simply an irrational prejudice against those who were different. \
 			This growing distrust and agitation led many Animids to seek greener pastures out in the colonies, \
 			where they could use their abilities to aid humanity's expansion into the stars without the threat of persecution.",

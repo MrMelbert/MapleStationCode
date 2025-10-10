@@ -15,11 +15,14 @@
 	name = "Chiropteranid"
 	icon = FA_ICON_DROPLET
 	pros = list(
-		"Can hear whispers from far away",
+		"Can drink blood to replenish it",
 		"Universal blood type",
 	)
 	cons = list(
-		"Weaker limbs",
+		"Weak and fragile limbs",
+	)
+	neuts = list(
+		"Wings can negate a fall, but are hard to hide",
 	)
 
 /datum/animalid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
@@ -30,7 +33,7 @@
 	name = "bat ears"
 	desc = "A pair of large, pointed ears belonging to a bat."
 	visual = TRUE
-	organ_traits = list(TRAIT_GOOD_HEARING)
+	// organ_traits = list(TRAIT_GOOD_HEARING) // think about this one
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/bat
 
