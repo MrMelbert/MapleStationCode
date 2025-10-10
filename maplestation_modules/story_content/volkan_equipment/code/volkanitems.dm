@@ -258,8 +258,8 @@
 	. = ..()
 
 /obj/item/organ/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
-	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
-		qdel(owner.GetComponent(/datum/component/tractorfield))
+	if (iscyborg(organ_owner) || (organ_owner.mob_biotypes & MOB_ROBOTIC))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield))
 	else
-		qdel(owner.GetComponent(/datum/component/tractorfield/broken))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield/broken))
 	. = ..()

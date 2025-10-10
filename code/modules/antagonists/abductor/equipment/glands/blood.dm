@@ -20,7 +20,7 @@
 
 /obj/item/organ/heart/gland/blood/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	organ_owner.dna?.species?.exotic_bloodtype = initial(owner.dna.species.exotic_bloodtype)
+	organ_owner.dna?.species?.exotic_bloodtype = initial(organ_owner.dna.species.exotic_bloodtype)
 
 /obj/item/organ/heart/gland/blood/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
