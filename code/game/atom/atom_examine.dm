@@ -109,23 +109,31 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	var/list/override = list(article, null, "<em>[get_visible_name()]</em>")
+	var/list/override = list(article, null, get_visible_name())
 	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override)
 
-	if(!isnull(override[EXAMINE_POSITION_ARTICLE]))
+	if(gender == PLURAL) // Defaults to "some" for plural because \a will not handle it correctly
+		override[EXAMINE_POSITION_ARTICLE] ||= "some"
+	if(override[EXAMINE_POSITION_ARTICLE])
 		override -= null // IF there is no "before", don't try to join it
 		return jointext(override, " ")
-	if(!isnull(override[EXAMINE_POSITION_BEFORE]))
+	if(override[EXAMINE_POSITION_BEFORE])
 		override -= null // There is no article, don't try to join it
 		return "\a [jointext(override, " ")]"
-	return "\a [src]"
+	return "\a [override[EXAMINE_POSITION_NAME]]"
+
+#define is_capitalized(char) ((text2ascii(char) <= 90) && (text2ascii(char) >= 65))
 
 /mob/living/get_examine_name(mob/user)
 	var/visible_name = get_visible_name()
 	var/list/name_override = list(visible_name)
 	if(SEND_SIGNAL(user, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME, src, visible_name, name_override) & COMPONENT_EXAMINE_NAME_OVERRIDEN)
 		return name_override[1]
-	return visible_name
+	if(is_capitalized(visible_name[1]))
+		return visible_name
+	return "\a [visible_name]"
+
+#undef is_capitalized
 
 /// Icon displayed in examine
 /atom/proc/get_examine_icon(mob/user)

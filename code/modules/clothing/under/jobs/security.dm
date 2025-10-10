@@ -141,6 +141,7 @@
  */
 /obj/item/clothing/under/rank/security/head_of_security
 	name = "head of security's uniform"
+	article = "the"
 	desc = "A security jumpsuit decorated for those few with the dedication to achieve the position of Head of Security."
 	icon_state = "rhos"
 	inhand_icon_state = "r_suit"
@@ -155,6 +156,7 @@
 
 /obj/item/clothing/under/rank/security/head_of_security/skirt
 	name = "head of security's skirt"
+	article = "the"
 	desc = "A security jumpskirt decorated for those few with the dedication to achieve the position of Head of Security."
 	icon_state = "rhos_skirt"
 	inhand_icon_state = "r_suit"
@@ -165,12 +167,14 @@
 
 /obj/item/clothing/under/rank/security/head_of_security/grey
 	name = "head of security's grey jumpsuit"
+	article = "the"
 	desc = "There are old men, and there are bold men, but there are very few old, bold men."
 	icon_state = "hos"
 	inhand_icon_state = "gy_suit"
 
 /obj/item/clothing/under/rank/security/head_of_security/alt
 	name = "head of security's turtleneck"
+	article = "the"
 	desc = "A stylish alternative to the normal head of security jumpsuit, complete with tactical pants."
 	icon_state = "hosalt"
 	inhand_icon_state = "bl_suit"
@@ -178,6 +182,7 @@
 
 /obj/item/clothing/under/rank/security/head_of_security/alt/skirt
 	name = "head of security's turtleneck skirt"
+	article = "the"
 	desc = "A stylish alternative to the normal head of security jumpsuit, complete with a tactical skirt."
 	icon_state = "hosalt_skirt"
 	inhand_icon_state = "bl_suit"
@@ -189,6 +194,7 @@
 
 /obj/item/clothing/under/rank/security/head_of_security/parade
 	name = "head of security's parade uniform"
+	article = "the"
 	desc = "A male head of security's luxury-wear, for special occasions."
 	icon_state = "hos_parade_male"
 	inhand_icon_state = "r_suit"
@@ -196,6 +202,7 @@
 
 /obj/item/clothing/under/rank/security/head_of_security/parade/female
 	name = "head of security's parade uniform"
+	article = "the"
 	desc = "A female head of security's luxury-wear, for special occasions."
 	icon_state = "hos_parade_fem"
 	inhand_icon_state = "r_suit"
@@ -205,6 +212,7 @@
 /obj/item/clothing/under/rank/security/head_of_security/formal
 	desc = "The insignia on this uniform tells you that this uniform belongs to the Head of Security."
 	name = "head of security's formal uniform"
+	article = "the"
 	icon_state = "hosblueclothes"
 	inhand_icon_state = null
 	alt_covers_chest = TRUE

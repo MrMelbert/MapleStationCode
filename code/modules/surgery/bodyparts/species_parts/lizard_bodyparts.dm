@@ -49,15 +49,18 @@
 	var/obj/item/clothing/under/worn_uniform = get_item_by_slot(ITEM_SLOT_ICLOTHING)
 
 	var/uniform_compatible = isnull(worn_uniform) \
+		|| !(worn_uniform.item_flags & IN_INVENTORY) \
 		|| (worn_uniform.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
 		|| !(worn_uniform.body_parts_covered & LEGS) \
 		|| (obscured_slots & HIDEJUMPSUIT) // If suit hides our jumpsuit, it doesn't matter if it squishes
 
 	var/suit_compatible = isnull(worn_suit) \
+		|| !(worn_suit.item_flags & IN_INVENTORY) \
 		|| (worn_suit.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
 		|| !(worn_suit.body_parts_covered & LEGS)
 
 	var/shoes_compatible = isnull(worn_shoes) \
+		|| !(worn_shoes.item_flags & IN_INVENTORY) \
 		|| (worn_shoes.supports_variations_flags & DIGITIGRADE_VARIATIONS)
 
 	return !uniform_compatible || !suit_compatible || !shoes_compatible
@@ -65,7 +68,7 @@
 /obj/item/bodypart/leg/left/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodyshape = BODYSHAPE_HUMANOID | BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -79,7 +82,7 @@
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodyshape = BODYSHAPE_HUMANOID | BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15

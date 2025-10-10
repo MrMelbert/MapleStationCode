@@ -242,14 +242,16 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	command = TRUE
 
 /obj/item/radio/headset/heads/captain
-	name = "\proper the captain's headset"
+	name = "captain's headset"
+	article = "the"
 	desc = "The headset of the king."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/captain
 
 /obj/item/radio/headset/heads/captain/alt
-	name = "\proper the captain's bowman headset"
+	name = "captain's bowman headset"
+	article = "the"
 	desc = "The headset of the boss. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
 	worn_icon_state = "com_headset_alt"
@@ -259,21 +261,24 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
 /obj/item/radio/headset/heads/rd
-	name = "\proper the research director's headset"
+	name = "research director's headset"
+	article = "the"
 	desc = "Headset of the fellow who keeps society marching towards technological singularity."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/rd
 
 /obj/item/radio/headset/heads/hos
-	name = "\proper the head of security's headset"
+	name = "head of security's headset"
+	article = "the"
 	desc = "The headset of the man in charge of keeping order and protecting the station."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/hos
 
 /obj/item/radio/headset/heads/hos/advisor
-	name = "\proper the veteran security advisor headset"
+	name = "veteran security advisor's headset"
+	article = "the"
 	desc = "The headset of the man who was in charge of keeping order and protecting the station..."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
@@ -281,7 +286,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	command = FALSE
 
 /obj/item/radio/headset/heads/hos/alt
-	name = "\proper the head of security's bowman headset"
+	name = "head of security's bowman headset"
+	article = "the"
 	desc = "The headset of the man in charge of keeping order and protecting the station. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
 	worn_icon_state = "com_headset_alt"
@@ -291,28 +297,32 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
 /obj/item/radio/headset/heads/ce
-	name = "\proper the chief engineer's headset"
+	name = "chief engineer's headset"
+	article = "the"
 	desc = "The headset of the guy in charge of keeping the station powered and undamaged."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/ce
 
 /obj/item/radio/headset/heads/cmo
-	name = "\proper the chief medical officer's headset"
+	name = "chief medical officer's headset"
+	article = "the"
 	desc = "The headset of the highly trained medical chief."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/cmo
 
 /obj/item/radio/headset/heads/hop
-	name = "\proper the head of personnel's headset"
+	name = "head of personnel's headset"
+	article = "the"
 	desc = "The headset of the guy who will one day be captain."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/hop
 
 /obj/item/radio/headset/heads/qm
-	name = "\proper the quartermaster's headset"
+	name = "quartermaster's headset"
+	article = "the"
 	desc = "The headset of the guy who runs the cargo department."
 	icon_state = "com_headset"
 	worn_icon_state = "com_headset"

@@ -16,7 +16,7 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	))
 
 /obj/item/stack/rods
-	name = "iron rod"
+	name = "iron rods"
 	desc = "Some rods. Can be used for building or something."
 	singular_name = "iron rod"
 	icon_state = "rods"
@@ -39,8 +39,9 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	cost = HALF_SHEET_MATERIAL_AMOUNT
 	source = /datum/robot_energy_storage/material/iron
 	merge_type = /obj/item/stack/rods
-	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	pickup_sound = 'sound/items/iron_rod_pick_up.ogg'
+	drop_sound = 'sound/items/metal_drop.ogg'
+	sound_vary = TRUE
 
 /datum/embed_data/rods
 	embed_chance = 50

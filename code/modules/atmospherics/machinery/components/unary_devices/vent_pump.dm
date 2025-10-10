@@ -312,12 +312,6 @@
 			air_contents.merge(removed)
 			update_parents()
 
-/obj/machinery/atmospherics/components/unary/vent_pump/update_name()
-	. = ..()
-	if(override_naming)
-		return
-	name = "\proper [get_area_name(src)] [name] [id_tag]"
-
 /obj/machinery/atmospherics/components/unary/vent_pump/welder_act(mob/living/user, obj/item/welder)
 	..()
 	if(!welder.tool_start_check(user, amount=1))
@@ -345,6 +339,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(src)], and is ID [id_tag].")
 	if(welded)
 		. += "It seems welded shut."
 
@@ -366,8 +361,8 @@
 	name = "large air vent"
 	power_channel = AREA_USAGE_EQUIP
 
-/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/Initialize(mapload)
+	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000
 

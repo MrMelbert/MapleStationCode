@@ -63,7 +63,7 @@
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	id_trim = /datum/id_trim/job/asset_protection
 	box = /obj/item/storage/box/survival/security
 

@@ -114,10 +114,6 @@
 	handle_fire(area_to_register, area_to_register.fire)
 	update_appearance()
 
-/obj/machinery/firealarm/update_name(updates)
-	. = ..()
-	name = "[get_area_name(my_area)] [initial(name)] [id_tag]"
-
 /obj/machinery/firealarm/on_exit_area(datum/source, area/area_to_unregister)
 	//we cannot unregister from an area we never registered to in the first place
 	if(my_area != area_to_unregister)
@@ -254,7 +250,7 @@
 		balloon_alert(user, "triggered alarm!")
 		user.log_message("triggered a fire alarm.", LOG_GAME)
 	my_area.fault_status = AREA_FAULT_MANUAL
-	my_area.fault_location = name
+	my_area.fault_location = FIREALARM_FAULT_NAME(id_tag)
 	soundloop.start() //Manually pulled fire alarms will make the sound, rather than the doors.
 	SEND_SIGNAL(src, COMSIG_FIREALARM_ON_TRIGGER)
 	update_use_power(ACTIVE_POWER_USE)
@@ -448,6 +444,8 @@
 // Allows users to examine the state of the thermal sensor
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(my_area)], and is ID [id_tag].")
+
 	if((my_area?.fire || LAZYLEN(my_area?.active_firelocks)))
 		. += "The local area hazard light is flashing."
 		. += "The fault location display is [my_area.fault_location] ([my_area.fault_status == AREA_FAULT_AUTOMATIC ? "Automatic Detection" : "Manual Trigger"])."

@@ -174,6 +174,7 @@
 
 /obj/item/clothing/suit/armor/hos/trenchcoat/winter
 	name = "head of security's winter trenchcoat"
+	article = "the"
 	desc = "A trenchcoat enhanced with a special lightweight kevlar, padded with wool on the collar and inside. You feel strangely lonely wearing this coat."
 	icon_state = "hoswinter"
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
@@ -241,6 +242,7 @@
 
 /obj/item/clothing/suit/armor/vest/capcarapace
 	name = "captain's carapace"
+	article = "the"
 	desc = "A fireproof armored chestpiece reinforced with ceramic plates and plasteel pauldrons to provide additional protection whilst still offering maximum mobility and flexibility. Issued only to the station's finest, although it does chafe your nipples."
 	icon_state = "capcarapace"
 	inhand_icon_state = "armor"
@@ -266,6 +268,7 @@
 
 /obj/item/clothing/suit/armor/vest/capcarapace/captains_formal
 	name = "captain's parade coat"
+	article = "the"
 	desc = "For when an armoured vest isn't fashionable enough."
 	icon_state = "capformal"
 	inhand_icon_state = null
