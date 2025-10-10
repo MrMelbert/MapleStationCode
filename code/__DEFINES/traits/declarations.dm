@@ -1229,4 +1229,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mob gets far less severe negative moodlets from seeing death / blood
 #define TRAIT_DESENSITIZED "desensitized"
 
+/// Mob is artificially spawned rather than being created through more natural means - applied to monkey cubes and such
+#define TRAIT_SPAWNED_MOB "spawned_mob"
+
 // END TRAIT DEFINES
