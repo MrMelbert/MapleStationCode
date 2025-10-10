@@ -26,18 +26,25 @@
 	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-// Manually adding the hair related preferences to the lizard features list // melbert todo refactor later
+#define HAIR_PREFERENCES list( \
+	/datum/preference/choiced/facial_hair_gradient::savefile_key, \
+	/datum/preference/choiced/facial_hairstyle::savefile_key, \
+	/datum/preference/choiced/hair_gradient::savefile_key, \
+	/datum/preference/choiced/hairstyle::savefile_key, \
+	/datum/preference/color/facial_hair_color::savefile_key, \
+	/datum/preference/color/facial_hair_gradient::savefile_key, \
+	/datum/preference/color/hair_color::savefile_key, \
+	/datum/preference/color/hair_gradient::savefile_key, \
+)
+
+// Manually adding the hair related preferences to the lizard features list
 /datum/species/lizard/get_features()
-	return ..() | list(
-		"hair_color",
-		"hairstyle_name",
-		"hair_gradient",
-		"hair_gradient_color",
-		"facial_style_name",
-		"facial_hair_color",
-		"facial_hair_gradient",
-		"facial_hair_gradient_color",
-	)
+	return ..() | HAIR_PREFERENCES
+
+/datum/species/lizard/get_filtered_features_per_prefs(datum/preferences/prefs)
+	return prefs.read_preference(/datum/preference/toggle/hair_lizard) ? list() : HAIR_PREFERENCES
+
+#undef HAIR_PREFERENCES
 
 // -- Allows modification of hissssss length --
 /datum/preference/numeric/hiss_length

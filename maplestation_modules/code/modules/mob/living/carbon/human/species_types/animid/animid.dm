@@ -24,10 +24,7 @@
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
 	for(var/organ_slot, input in animid_singletons[animid_id].components)
 		set_mutant_organ(organ_slot, input)
-	exotic_bloodtype = animid_singletons[animid_id].blood_type
-
-	// Ensures fish-animids get their preferred color rather than have one forced on them
-	human_who_gained_species.dna?.features["forced_fish_color"] = human_who_gained_species.dna?.features["mcolor"]
+	animid_singletons[animid_id].pre_species_gain(src, human_who_gained_species)
 	. = ..()
 	// replace body is not called when going from same species to same species, but we need it for swapping animid types
 	if(old_species.type == type)
@@ -103,18 +100,27 @@
 	features["animid_type"] = pick(animid_singletons)
 	return features
 
+// Gets all features from all animid types
 /datum/species/human/animid/get_features()
 	. = ..()
-	. |= /datum/preference/color/mutant_color::savefile_key
+	for(var/animalid_id in animid_singletons)
+		. |= animid_singletons[animalid_id].get_feature_keys()
 
-// Just shows all organs from all animid types
+// Filters out features from other animid types, to declutter the prefs screen
+/datum/species/human/animid/get_filtered_features_per_prefs(datum/preferences/prefs)
+	var/selected_animid_id = prefs.read_preference(/datum/preference/choiced/animid_type)
+	var/list/filtered_features = list()
+	// Collect all the features from all other animid types
+	for(var/other_animid_id in animid_singletons - selected_animid_id)
+		filtered_features |= animid_singletons[other_animid_id].get_feature_keys()
+	// Don't filter anything in our prime animid type
+	return filtered_features - animid_singletons[selected_animid_id].get_feature_keys()
+
+// Shows all organs from all animid types
 /datum/species/human/animid/get_mut_organs()
 	. = ..()
 	for(var/animalid_id in animid_singletons)
-		. += flatten_list(animid_singletons[animalid_id].components || list())
-	for(var/list/sublist in .)
-		. -= list(sublist)
-		. += assoc_to_keys(sublist)
+		. |= animid_singletons[animalid_id].get_organs()
 
 /// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
 /datum/species/proc/set_mutant_organ(slot, input)

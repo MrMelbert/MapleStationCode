@@ -26,6 +26,13 @@
 		"Where the hell is water on a space station?",
 	)
 
+/datum/animalid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+	// ensures we get mutant color rather than a random forced color
+	new_animid.dna?.features["forced_fish_color"] = new_animid.dna?.features["mcolor"]
+
+/datum/animalid_type/fish/extra_feature_keys()
+	return list(/datum/preference/color/mutant_color::savefile_key)
+
 ///Tail for fish DNA-infused spacemen. It provides a speed buff while in water. It's also needed for the crawl speed bonus once the threshold is reached.
 /obj/item/organ/external/tail/fish
 	name = "fish tail"

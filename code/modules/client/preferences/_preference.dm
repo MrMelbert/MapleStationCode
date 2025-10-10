@@ -329,7 +329,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/proc/current_species_has_savekey(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = GLOB.species_prototypes[species_type]
-	return (savefile_key in species.get_features())
+	return (savefile_key in (species.get_features() - species.get_filtered_features_per_prefs(preferences)))
 
 /// Checks if this preference is relevant and thus visible to the passed preferences object.
 /datum/preference/proc/has_relevant_feature(datum/preferences/preferences)

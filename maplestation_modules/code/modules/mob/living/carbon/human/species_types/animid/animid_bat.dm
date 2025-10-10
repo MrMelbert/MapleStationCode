@@ -11,7 +11,6 @@
 		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/bat,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/bat,
 	)
-	blood_type = /datum/blood_type/universal
 
 	name = "Chiropteranid"
 	icon = FA_ICON_DROPLET
@@ -22,6 +21,9 @@
 	cons = list(
 		"Weaker limbs",
 	)
+
+/datum/animalid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+	species.exotic_bloodtype = /datum/blood_type/universal
 
 // Bat ear organ
 /obj/item/organ/internal/ears/bat

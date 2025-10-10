@@ -55,7 +55,7 @@
 
 /datum/sprite_accessory/ears_deer/horns
 	name = "Horns"
-	icon_state = "horns"
+	icon_state = "horn"
 
 // Deer ear preference
 /datum/preference/choiced/deer_ears
