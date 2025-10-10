@@ -348,9 +348,9 @@
 		var/atom/parent_atom = parent
 		var/drop_location = parent_atom.drop_location()
 		if(drop_location)
-			attached_cirucuit.forceMove(drop_location)
+			attached_circuit.forceMove(drop_location)
 		else
-			atttached_circuit.moveToNullspace()
+			attached_circuit.moveToNullspace()
 
 	for(var/obj/item/circuit_component/to_remove as anything in unremovable_circuit_components)
 		attached_circuit.remove_component(to_remove)
