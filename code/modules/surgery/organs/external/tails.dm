@@ -141,6 +141,7 @@
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 	var/wagging = FALSE
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
 	return "[wagging ? "wagging_" : ""][sprite_datum.icon_state]" //add the wagging tag if we be wagging

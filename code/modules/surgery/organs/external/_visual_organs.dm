@@ -121,6 +121,7 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 /datum/bodypart_overlay/mutant/horns
 	layers = EXTERNAL_ADJACENT
 	feature_key = "horns"
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return !(human.obscured_slots & HIDEHAIR)

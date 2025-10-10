@@ -32,9 +32,15 @@
 /datum/bodypart_overlay/mutant/spines
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
 	feature_key = "spines"
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/spines/get_global_feature_list()
 	return SSaccessories.spines_list
 
 /datum/bodypart_overlay/mutant/spines/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return !(human.obscured_slots & HIDEJUMPSUIT)
+
+/datum/bodypart_overlay/mutant/spines/set_dye_color(new_color, obj/item/organ/tail/organ)
+	var/obj/item/organ/tail/tail = organ?.owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	tail?.tail_spines_overlay?.set_dye_color(new_color, organ)
+	return ..()
