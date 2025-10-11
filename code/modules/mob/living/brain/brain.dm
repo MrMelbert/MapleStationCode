@@ -100,7 +100,7 @@
 		var/atom/movable/cloc = loc
 		return cloc.forceMove(destination)
 	if(is_container(destination))
-		return forceMove(destination)
+		return ..()
 	CRASH("Brainmob without a container [src] attempted to move to [destination].")
 
 /mob/living/brain/update_mouse_pointer()
