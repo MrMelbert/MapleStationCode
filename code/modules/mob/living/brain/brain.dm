@@ -68,7 +68,7 @@
 
 /// Checks if the passed item can hold a brainmob
 /mob/living/brain/proc/is_container(obj/item/thing)
-	return istype(thing, /obj/item/mmi) || istype(thing, /obj/item/organ/internal/brain)
+	return istype(thing, /obj/item/mmi) || istype(thing, /obj/item/organ/brain)
 
 /// Returns the brain the brainmob owns
 /// Note, this can return null if we are a positronic brain (as they have no real brain organ)
