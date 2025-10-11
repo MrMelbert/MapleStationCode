@@ -1,0 +1,18 @@
+{
+	"wraps": [
+		{
+			"type": "icon_state",
+			"icon_state": "wraps",
+			"blend_mode": "overlay",
+			"color_ids": [ 1 ]
+		}
+	],
+	"legwraps": [
+		{
+			"type": "icon_state",
+			"icon_state": "legwraps",
+			"blend_mode": "overlay",
+			"color_ids": [ 1 ]
+		}
+	]
+}

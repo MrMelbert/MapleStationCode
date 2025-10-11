@@ -68,3 +68,26 @@
 /datum/greyscale_config/sweet_bow/worn
 	name = "Sweet Bow (Worn)"
 	icon_file = 'maplestation_modules/story_content/eveleen_equipment/icons/mob/head.dmi'
+
+/datum/greyscale_config/neck_gaiter
+	name = "Neck Gaiter"
+	icon_file = 'maplestation_modules/story_content/providence_equipment/icons/obj/mask.dmi'
+	json_config = 'code/datums/greyscale/json_configs/gaiter.json'
+
+/datum/greyscale_config/neck_gaiter/worn
+	name = "Neck Gaiter (Worn)"
+	icon_file = 'maplestation_modules/story_content/providence_equipment/icons/mob/mask.dmi'
+	json_config = 'code/datums/greyscale/json_configs/gaiter_worn.json'
+
+/datum/greyscale_config/legwraps
+	name = "Legwraps"
+	icon_file = 'maplestation_modules/story_content/providence_equipment/icons/obj/wraps.dmi'
+	json_config = 'code/datums/greyscale/json_configs/wraps.json'
+
+/datum/greyscale_config/legwraps/worn
+	name = "Legwraps (Worn)"
+	icon_file = 'maplestation_modules/story_content/providence_equipment/icons/mob/wrap.dmi'
+
+/datum/greyscale_config/legwraps/worn/digi
+	name = "Legwraps (Worn, Digi)"
+	icon_file = 'maplestation_modules/story_content/providence_equipment/icons/mob/wrap_digi.dmi'
