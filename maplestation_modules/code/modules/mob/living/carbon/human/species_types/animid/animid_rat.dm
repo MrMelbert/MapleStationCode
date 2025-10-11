@@ -23,8 +23,11 @@
 	name = "mouse ears"
 	desc = "A pair of large, rounded ears belonging to a rat or mouse."
 	visual = TRUE
+	damage_multiplier = 2
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/rat
+
+	eavesdrop_bonus = 2
 
 // Rat ear bodypart overlay
 /datum/bodypart_overlay/mutant/ears/rat

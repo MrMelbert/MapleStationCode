@@ -33,9 +33,11 @@
 	name = "bat ears"
 	desc = "A pair of large, pointed ears belonging to a bat."
 	visual = TRUE
-	// organ_traits = list(TRAIT_GOOD_HEARING) // think about this one
+	damage_multiplier = 2
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/bat
+
+	eavesdrop_bonus = 2
 
 // Bat ear bodypart overlay
 /datum/bodypart_overlay/mutant/ears/bat

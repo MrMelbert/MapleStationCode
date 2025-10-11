@@ -6574,6 +6574,7 @@
 #include "maplestation_modules\code\modules\language\highdraconic.dm"
 #include "maplestation_modules\code\modules\language\isatoan.dm"
 #include "maplestation_modules\code\modules\language\japanese.dm"
+#include "maplestation_modules\code\modules\language\kuiperian.dm"
 #include "maplestation_modules\code\modules\language\language_holder.dm"
 #include "maplestation_modules\code\modules\language\skrellian.dm"
 #include "maplestation_modules\code\modules\library\skill_learning\job_skillchips\medbay.dm"

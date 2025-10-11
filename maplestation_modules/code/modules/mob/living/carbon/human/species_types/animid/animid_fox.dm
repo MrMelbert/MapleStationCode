@@ -19,8 +19,11 @@
 	name = "fox ears"
 	desc = "A pair of large, pointed ears belonging to a fox."
 	visual = TRUE
+	damage_multiplier = 2
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/fox_animid
+
+	eavesdrop_bonus = 2
 
 /datum/bodypart_overlay/mutant/ears/fox_animid
 	feature_key = "fox_ears"

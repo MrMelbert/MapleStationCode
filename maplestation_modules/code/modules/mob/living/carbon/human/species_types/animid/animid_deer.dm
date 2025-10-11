@@ -28,8 +28,11 @@
 	name = "deer ears"
 	desc = "A pair of large, pointed ears belonging to a deer."
 	visual = TRUE
+	damage_multiplier = 1.5
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/deer
+
+	eavesdrop_bonus = 2
 
 // Deer ear bodypart overlay
 /datum/bodypart_overlay/mutant/ears/deer

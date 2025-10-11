@@ -81,8 +81,11 @@
 	name = "dog ears"
 	desc = "A pair of furry ears belonging to a dog."
 	visual = TRUE
+	damage_multiplier = 1.5
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/dog
+
+	eavesdrop_bonus = 2
 
 /datum/bodypart_overlay/mutant/ears/dog
 	feature_key = "dog_ears"

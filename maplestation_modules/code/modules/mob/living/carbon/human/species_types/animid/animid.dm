@@ -6,6 +6,7 @@
 	)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	payday_modifier = 1.0
+	species_language_holder = /datum/language_holder/kuiperian
 	/// A mapping of all animid ids to their singleton instances
 	var/static/list/datum/animalid_type/animid_singletons
 
@@ -73,6 +74,14 @@
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+		SPECIES_PERK_ICON = FA_ICON_EAR_LISTEN,
+		SPECIES_PERK_NAME = "Keen Hearing",
+		SPECIES_PERK_DESC = "Most Animids have some form of animal-enhanced hearing, \
+			allowing them to hear glimpses of whispers from further away. \
+			However this tends to come with a sensitivity to loud noises.",
+	))
+	to_add += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_DOG,
 		SPECIES_PERK_NAME = "Animal Instincts",
 		SPECIES_PERK_DESC = "Being part animal, Animids inherit many traits from their animal side. \
@@ -89,10 +98,11 @@
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_HOSPITAL,
+		SPECIES_PERK_ICON = FA_ICON_HOUSE_MEDICAL_FLAG,
 		SPECIES_PERK_NAME = "Atypical Anatomy",
 		SPECIES_PERK_DESC = "Your unique physiology isn't necessarily harder to treat, but if you lose one of your \
-			unique organs or bodyparts, it will be harder to find a replacement.",
+			unique organs or bodyparts, it will be harder to find a replacement. \
+			Disguising your unique features may also be more difficult.",
 	))
 	return to_add
 

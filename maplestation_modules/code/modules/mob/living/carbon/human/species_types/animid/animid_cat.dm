@@ -14,11 +14,14 @@
 		"Lick cuts to stop bleeding",
 	)
 	cons = list(
-		"Sensitive to loud noises and water",
+		"Sensitive water",
 	)
 	neuts = list(
 		"Always land on your feet",
 	)
+
+/datum/animalid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+	species.species_language_holder = /datum/language_holder/felinid
 
 /datum/sprite_accessory/tails/human/cat/big
 	name = "Big"

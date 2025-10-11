@@ -25,6 +25,8 @@
 	var/bang_protect = 0
 	/// Multiplier for both long term and short term ear damage
 	var/damage_multiplier = 1
+	/// Bonus to eavesdropping range
+	var/eavesdrop_bonus = 0
 
 /obj/item/organ/internal/ears/on_life(seconds_per_tick, times_fired)
 	// only inform when things got worse, needs to happen before we heal
@@ -51,11 +53,13 @@
 /obj/item/organ/internal/ears/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	update_temp_deafness()
+	organ_owner.eavesdrop_range += eavesdrop_bonus
 
 /obj/item/organ/internal/ears/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(organ_owner, TRAIT_DEAF, EAR_DAMAGE)
+	organ_owner.eavesdrop_range -= eavesdrop_bonus
 
 /obj/item/organ/internal/ears/get_status_appendix(advanced, add_tooltips)
 	if(owner.stat == DEAD || !HAS_TRAIT(owner, TRAIT_DEAF))
@@ -161,6 +165,8 @@
 	dna_block = DNA_EARS_BLOCK
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/cat_ears
+
+	eavesdrop_bonus = 2
 
 /// Bodypart overlay for the horrible cat ears
 /datum/bodypart_overlay/mutant/cat_ears

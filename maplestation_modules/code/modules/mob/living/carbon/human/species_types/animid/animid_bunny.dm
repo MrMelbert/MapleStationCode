@@ -76,8 +76,11 @@
 	name = "bunny ears"
 	desc = "A pair of long ears belonging to a bunny."
 	visual = TRUE
+	damage_multiplier = 1.5
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/bunny
+
+	eavesdrop_bonus = 2
 
 // Bunny ears bodypart overlay
 /datum/bodypart_overlay/mutant/ears/bunny

@@ -31,6 +31,7 @@
 		/datum/language/ratvarian,
 		/datum/language/skrell,
 		/datum/language/yangyu,
+		/datum/language/kuiperian,
 	)
 
 // Skrell Tongue. Could use a sprite.

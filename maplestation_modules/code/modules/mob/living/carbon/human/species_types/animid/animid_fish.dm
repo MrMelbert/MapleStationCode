@@ -12,6 +12,7 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/fish,
+		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/fish,
 	)
 
 	name = "Piscinid"
@@ -193,3 +194,8 @@
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
 	brute_modifier = 0.9
 	burn_modifier = 0.9
+
+/obj/item/organ/internal/ears/fish
+	name = "fish ears"
+	desc = "A pair of small ear holes from some sort of marine creature."
+	eavesdrop_bonus = 1
