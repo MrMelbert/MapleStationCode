@@ -6303,6 +6303,7 @@
 #include "maplestation_modules\code\datums\elements\digitigrade_limb.dm"
 #include "maplestation_modules\code\datums\elements\fire_patting_item.dm"
 #include "maplestation_modules\code\datums\elements\glove_slapper.dm"
+#include "maplestation_modules\code\datums\elements\rip_off_able.dm"
 #include "maplestation_modules\code\datums\elements\shoe_footstep.dm"
 #include "maplestation_modules\code\datums\elements\temperature_pack.dm"
 #include "maplestation_modules\code\datums\elements\unique_examine.dm"
