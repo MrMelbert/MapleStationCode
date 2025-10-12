@@ -61,18 +61,8 @@
 	climbed_thing.add_fingerprint(user)
 	user.visible_message(span_warning("[user] starts climbing onto [climbed_thing]."), \
 								span_notice("You start climbing onto [climbed_thing]..."))
-	var/adjusted_climb_time = climb_time
-	var/adjusted_climb_stun = climb_stun
-	if(HAS_TRAIT(user, TRAIT_HANDS_BLOCKED)) //climbing takes twice as long without help from the hands.
-		adjusted_climb_time *= 2
-	if(isalien(user))
-		adjusted_climb_time *= 0.25 //aliens are terrifyingly fast
-	if(HAS_TRAIT(user, TRAIT_FREERUNNING)) //do you have any idea how fast I am???
-		adjusted_climb_time *= 0.8
-		adjusted_climb_stun *= 0.8
-	if(HAS_TRAIT(user, TRAIT_STUBBY_BODY)) //hold on, gimme a moment, my tiny legs can't get over the goshdamn table
-		adjusted_climb_time *= 1.5
-		adjusted_climb_stun *= 1.5
+	var/adjusted_climb_time = user.get_climb_speed(climb_time)
+	var/adjusted_climb_stun = user.get_climb_speed(climb_stun, climb_stun = TRUE)
 	LAZYADDASSOCLIST(current_climbers, climbed_thing, user)
 	if(do_after(user, adjusted_climb_time, climbed_thing))
 		if(QDELETED(climbed_thing)) //Checking if structure has been destroyed
