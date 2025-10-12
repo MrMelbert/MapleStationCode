@@ -12,16 +12,39 @@
 
 	name = "Cervid"
 	icon = FA_ICON_WHEAT_AWN
-	pros = list(
-		"Sprint further, kick harder",
-		"Slowed by carrying heavy objects less",
+
+/datum/animalid_type/deer/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_PERSON_RUNNING,
+			SPECIES_PERK_NAME = "Powerful Legs",
+			SPECIES_PERK_DESC = "[name]s have powerful legs, allowing them to sprint further and kick harder.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_DUMBBELL,
+			SPECIES_PERK_NAME = "Pack Mule",
+			SPECIES_PERK_DESC = "[name]s are well accustomed to carrying heavy loads. \
+				Equipment that would normally slow you down has reduced effect, and picking up others is easier.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_MASKS_THEATER,
+			SPECIES_PERK_NAME = "Skittish",
+			SPECIES_PERK_DESC = "[name]s are more susceptible to both positive and negative mood effects.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_PERSON_FALLING_BURST,
+			SPECIES_PERK_NAME = "Clumsy Climber",
+			SPECIES_PERK_DESC = "Not used to climbing, [name]s are far slower at vaulting obstacles and climbing ladders.",
+		),
 	)
-	cons = list(
-		"Clumsy at climbing",
-	)
-	neuts = list(
-		"Mood affects you more",
-	)
+
+	return to_add
 
 // Deer ear organ
 /obj/item/organ/internal/ears/deer
@@ -135,7 +158,7 @@
 	name = "left deer leg"
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
-	unarmed_effectiveness = 30
+	unarmed_effectiveness = 25
 
 /obj/item/bodypart/leg/left/deer/Initialize(mapload)
 	. = ..()
@@ -145,7 +168,7 @@
 	name = "right deer leg"
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
-	unarmed_effectiveness = 30
+	unarmed_effectiveness = 25
 
 /obj/item/bodypart/leg/right/deer/Initialize(mapload)
 	. = ..()

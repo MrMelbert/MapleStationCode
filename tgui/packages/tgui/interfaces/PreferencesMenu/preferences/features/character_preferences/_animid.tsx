@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { Box, Button, Floating, Icon, Stack } from 'tgui-core/components';
+import { Box, Button, Floating, Stack } from 'tgui-core/components';
 import { capitalizeFirst } from 'tgui-core/string';
 import { useBackend } from '../../../../../backend';
-import { FoodList } from '../../../CharacterPreferences/SpeciesPage';
-import type { Diet, PreferencesMenuData } from '../../../types';
+import {
+  DietStack,
+  SpeciesPerks,
+} from '../../../CharacterPreferences/SpeciesPage';
+import type { Diet, PreferencesMenuData, Species } from '../../../types';
 import type { Feature, FeatureValueProps } from '../base';
 
 type AnimidType = {
   id: string;
   name: string;
-  pros: string[];
-  cons: string[];
-  neuts: string[];
+  perks: Species['perks'];
   components: string[];
   icon: string;
   diet: Diet | null;
@@ -127,57 +128,12 @@ function AnimidSelectionInner(serverData: AnimidServerData, selected: string) {
                           .join(', ')}
                       </Stack.Item>
                     )}
-                    {option.pros.map((pro) => (
-                      <Stack.Item key={pro} textColor="green">
-                        <Icon name="plus" color="transparent" /> {pro}
-                      </Stack.Item>
-                    ))}
-                    {option.cons.map((con) => (
-                      <Stack.Item key={con} textColor="red">
-                        <Icon name="minus" color="transparent" /> {con}
-                      </Stack.Item>
-                    ))}
-                    {option.neuts.map((neut) => (
-                      <Stack.Item key={neut} textColor="yellow">
-                        <Icon name="plus-minus" color="transparent" /> {neut}
-                      </Stack.Item>
-                    ))}
-                    {option.diet && (
-                      <Stack.Item mt={1}>
-                        <Stack>
-                          {!!option.diet.liked_food.length && (
-                            <Stack.Item>
-                              <FoodList
-                                food={option.diet.liked_food}
-                                icon="heart"
-                                name="Likes"
-                                className="color-pink"
-                              />
-                            </Stack.Item>
-                          )}
-                          {!!option.diet.disliked_food.length && (
-                            <Stack.Item>
-                              <FoodList
-                                food={option.diet.disliked_food}
-                                icon="thumbs-down"
-                                name="Dislikes"
-                                className="color-red"
-                              />
-                            </Stack.Item>
-                          )}
-                          {!!option.diet.toxic_food.length && (
-                            <Stack.Item>
-                              <FoodList
-                                food={option.diet.toxic_food}
-                                icon="biohazard"
-                                name="Toxic"
-                                className="color-olive"
-                              />
-                            </Stack.Item>
-                          )}
-                        </Stack>
-                      </Stack.Item>
-                    )}
+                    <Stack.Item>
+                      <DietStack diet={option.diet} />
+                    </Stack.Item>
+                    <Stack.Item>
+                      <SpeciesPerks perks={option.perks} />
+                    </Stack.Item>
                   </Stack>
                 </Stack.Item>
               </Stack>

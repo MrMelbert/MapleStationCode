@@ -8,12 +8,6 @@
 
 	name = "Canid"
 	icon = FA_ICON_DOG
-	pros = list(
-		"Unimplemented"
-	)
-	cons = list(
-		"Unimplemented"
-	)
 
 /obj/item/organ/internal/tongue/dog
 	name = "dog tongue"

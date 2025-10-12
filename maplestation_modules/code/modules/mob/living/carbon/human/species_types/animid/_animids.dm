@@ -9,12 +9,6 @@
 	var/name
 	/// Fontawesome icon for this animalid type
 	var/icon = FA_ICON_QUESTION
-	/// Used in the UI - pros of this animalid type
-	var/list/pros
-	/// Used in the UI - cons of this animalid type
-	var/list/cons
-	/// Used in the UI - neutral traits of this animalid type
-	var/list/neuts
 
 	/// Cached list of all feature keys this animid type uses
 	VAR_FINAL/list/all_feature_keys
@@ -94,4 +88,67 @@
 		if(organ_type::bodypart_overlay)
 			return organ_type::name
 
+	return null
+
+/// Returns species-like perk cards for use in prefs
+/datum/animalid_type/proc/get_perks()
+	SHOULD_NOT_OVERRIDE(TRUE)
+	var/list/perks = list()
+
+	perks += get_component_perks()
+	perks += get_extra_perks()
+
+	list_clear_nulls(perks)
+
+	var/list/perks_to_return = list(
+		SPECIES_POSITIVE_PERK = list(),
+		SPECIES_NEUTRAL_PERK = list(),
+		SPECIES_NEGATIVE_PERK =  list(),
+	)
+
+	for(var/list/perk as anything in perks)
+		var/perk_type = perk[SPECIES_PERK_TYPE]
+		if(isnull(perks_to_return[perk_type]))
+			stack_trace("Invalid species perk ([perk[SPECIES_PERK_NAME]]) found for animid type [name]. \
+				The type should be positive, negative, or neutral. (Got: [perk_type])")
+			continue
+
+		perks_to_return[perk_type] += list(perk)
+
+	return perks_to_return
+
+/// Returns perks based on the components of this animid type
+/datum/animalid_type/proc/get_component_perks()
+	var/list/to_add = list()
+
+	var/obj/item/organ/internal/ears/ears = components[ORGAN_SLOT_EARS]
+	if(ears)
+		if(ears::eavesdrop_bonus > 0)
+			if(ears::damage_multiplier > 1)
+				to_add += list(list(
+					SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+					SPECIES_PERK_ICON = FA_ICON_EAR_LISTEN,
+					SPECIES_PERK_NAME = "Keen Hearing",
+					SPECIES_PERK_DESC = "[name]s have animal-enhanced hearing, allowing them to hear whispers from further away. \
+						However, this comes with an increased sensitivity to loud noises.",
+				))
+			else
+				to_add += list(list(
+					SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+					SPECIES_PERK_ICON = FA_ICON_EAR_LISTEN,
+					SPECIES_PERK_NAME = "Keen Hearing",
+					SPECIES_PERK_DESC = "[name]s have animal-enhanced hearing, allowing them to hear whispers from further away.",
+				))
+		else if(ears::damage_multiplier > 1)
+			to_add += list(list(
+				SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+				SPECIES_PERK_ICON = FA_ICON_EAR_DEAF,
+				SPECIES_PERK_NAME = "Sensitive Hearing",
+				SPECIES_PERK_DESC = "[name]s have sensitive hearing, making them more susceptible to loud noises.",
+			))
+
+	return to_add
+
+/// Any manual perks you might want to add
+/datum/animalid_type/proc/get_extra_perks()
 	return null

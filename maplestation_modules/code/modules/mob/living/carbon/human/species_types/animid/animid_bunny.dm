@@ -6,16 +6,38 @@
 		MUTANT_ORGANS = list(
 			/obj/item/organ/external/tail/bunny = "Tall",
 		),
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/bunny,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/bunny,
 	)
 
 	name = "Leporid"
 	icon = FA_ICON_CARROT
-	pros = list(
-		"Unimplemented"
+
+/datum/animalid_type/rabbit/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_PERSON_RUNNING,
+			SPECIES_PERK_NAME = "Powerful Legs",
+			SPECIES_PERK_DESC = "[name]s have powerful legs, allowing them to kick harder.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_FIST_RAISED,
+			SPECIES_PERK_NAME = "Weak Arms",
+			SPECIES_PERK_DESC = "[name]s have weak arms, reducing unarmed damage dealt with punches.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_BONE,
+			SPECIES_PERK_NAME = "Fragile Fur",
+			SPECIES_PERK_DESC = "[name]s have weak and fragile limbs, sustaining more brute damage and burn damage.",
+		),
 	)
-	cons = list(
-		"Unimplemented"
-	)
+
+	return to_add
 
 /obj/item/organ/internal/tongue/bunny
 	name = "bunny tongue"
@@ -80,7 +102,7 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/bunny
 
-	eavesdrop_bonus = 2
+	eavesdrop_bonus = 3
 
 // Bunny ears bodypart overlay
 /datum/bodypart_overlay/mutant/ears/bunny
@@ -130,3 +152,44 @@
 
 /datum/preference/choiced/bunny_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.bunny_ears_list)
+
+
+// Bunny bodyparts
+/obj/item/bodypart/leg/left/bunny
+	name = "left rabbit leg"
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 25
+	brute_modifier = 1.2
+
+/obj/item/bodypart/leg/right/bunny
+	name = "right rabbit leg"
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 25
+	brute_modifier = 1.2
+	burn_modifier = 1.2
+
+/obj/item/bodypart/arm/left/bunny
+	name = "left rabbit arm"
+	unarmed_damage_low = 4
+	unarmed_damage_high = 8
+	brute_modifier = 1.2
+	burn_modifier = 1.2
+
+/obj/item/bodypart/arm/right/bunny
+	name = "right rabbit arm"
+	unarmed_damage_low = 4
+	unarmed_damage_high = 8
+	brute_modifier = 1.2
+	burn_modifier = 1.2
+
+/obj/item/bodypart/chest/bunny
+	name = "rabbit chest"
+	brute_modifier = 1.2
+	burn_modifier = 1.2
+
+/obj/item/bodypart/head/bunny
+	name = "rabbit head"
+	brute_modifier = 1.2
+	burn_modifier = 1.2

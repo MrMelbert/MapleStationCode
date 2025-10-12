@@ -14,19 +14,38 @@
 
 	name = "Chiropteranid"
 	icon = FA_ICON_DROPLET
-	pros = list(
-		"Can drink blood to replenish it",
-		"Universal blood type",
-	)
-	cons = list(
-		"Weak and fragile limbs",
-	)
-	neuts = list(
-		"Wings can negate a fall, but are hard to hide",
-	)
 
 /datum/animalid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.exotic_bloodtype = /datum/blood_type/universal
+
+/datum/animalid_type/bat/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_DROPLET_SLASH,
+			SPECIES_PERK_NAME = "Dracula's Blessing",
+			SPECIES_PERK_DESC = "[name] can replenish blood by drinking it rather than via IV drip. \
+				They also have a Universal blood type, capable of accepting from (but not donating to) everyone, including non-humans.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_WIND,
+			SPECIES_PERK_NAME = "Wings",
+			SPECIES_PERK_DESC = "[name] wings are partially functional, negating fall damage from low heights. \
+				However, concealing them may be difficult.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_BONE,
+			SPECIES_PERK_NAME = "Fragile Frame",
+			SPECIES_PERK_DESC = "[name]s have weak and fragile limbs, sustaining more brute damage from attacks. \
+				and dealing less unarmed damage.",
+		),
+	)
+
+	return to_add
 
 // Bat ear organ
 /obj/item/organ/internal/ears/bat
@@ -37,7 +56,7 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/ears/bat
 
-	eavesdrop_bonus = 2
+	eavesdrop_bonus = 3
 
 // Bat ear bodypart overlay
 /datum/bodypart_overlay/mutant/ears/bat

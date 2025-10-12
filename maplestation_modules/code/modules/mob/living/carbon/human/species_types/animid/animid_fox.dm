@@ -8,12 +8,6 @@
 
 	name = "Vulpinid"
 	icon = FA_ICON_FIRE_FLAME_CURVED
-	pros = list(
-		"Unimplemented"
-	)
-	cons = list(
-		"Unimplemented"
-	)
 
 /obj/item/organ/internal/ears/fox_animid
 	name = "fox ears"

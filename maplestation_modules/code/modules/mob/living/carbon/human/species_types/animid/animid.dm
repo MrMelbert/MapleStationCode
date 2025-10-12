@@ -74,14 +74,6 @@
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = FA_ICON_EAR_LISTEN,
-		SPECIES_PERK_NAME = "Keen Hearing",
-		SPECIES_PERK_DESC = "Most Animids have some form of animal-enhanced hearing, \
-			allowing them to hear glimpses of whispers from further away. \
-			However this tends to come with a sensitivity to loud noises.",
-	))
-	to_add += list(list(
-		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_DOG,
 		SPECIES_PERK_NAME = "Animal Instincts",
 		SPECIES_PERK_DESC = "Being part animal, Animids inherit many traits from their animal side. \

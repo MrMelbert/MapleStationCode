@@ -10,15 +10,40 @@
 
 	name = "Felinid"
 	icon = FA_ICON_CAT
-	pros = list(
-		"Lick cuts to stop bleeding",
+
+/datum/animalid_type/cat/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_GRIN_TONGUE,
+			SPECIES_PERK_NAME = "Grooming",
+			SPECIES_PERK_DESC = "[name]s can lick cuts to reduce blood loss.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_COMMENT_DOTS,
+			SPECIES_PERK_NAME = "Early Adopter",
+			SPECIES_PERK_DESC = "While most Animids have a shared language, [name]s also have their own tongue, [/datum/language/nekomimetic::name].",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_PERSON_FALLING,
+			SPECIES_PERK_NAME = "Catlike Grace",
+			SPECIES_PERK_DESC = "[name]s have catlike instincts allowing them to land upright on their feet. \
+				Instead of being knocked down from falling, you only receive a short slowdown. \
+				However, they lack catlike legs, causing any falls to deal additional damage.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_SHOWER,
+			SPECIES_PERK_NAME = "Hydrophobia",
+			SPECIES_PERK_DESC = "[name]s don't like getting soaked with water.",
+		),
 	)
-	cons = list(
-		"Sensitive water",
-	)
-	neuts = list(
-		"Always land on your feet",
-	)
+
+	return to_add
 
 /datum/animalid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.species_language_holder = /datum/language_holder/felinid

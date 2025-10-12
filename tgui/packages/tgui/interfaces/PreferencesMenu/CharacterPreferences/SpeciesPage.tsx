@@ -83,7 +83,7 @@ type FoodListProps = {
   className: string;
 };
 
-export function FoodList(props: FoodListProps) {
+function FoodList(props: FoodListProps) {
   const { food = [], icon, name, className } = props;
 
   if (food.length === 0) {
@@ -132,7 +132,7 @@ type DietProps = {
   diet: Species['diet'];
 };
 
-function Diet(props: DietProps) {
+export function DietStack(props: DietProps) {
   const { diet } = props;
   if (!diet) {
     return null;
@@ -212,7 +212,7 @@ type SpeciesPerksProps = {
   perks: Species['perks'];
 };
 
-function SpeciesPerks(props: SpeciesPerksProps) {
+export function SpeciesPerks(props: SpeciesPerksProps) {
   const { positive, negative, neutral } = props.perks;
 
   return (
@@ -325,7 +325,7 @@ function SpeciesPageInner(props: SpeciesPageInnerProps) {
                         // NOHUNGER species have no diet (diet = null),
                         // so we have nothing to show
                         currentSpecies.diet && (
-                          <Diet diet={currentSpecies.diet} />
+                          <DietStack diet={currentSpecies.diet} />
                         )
                       }
                     >

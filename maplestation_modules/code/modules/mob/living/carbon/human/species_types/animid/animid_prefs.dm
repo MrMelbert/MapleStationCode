@@ -30,9 +30,7 @@
 			"name" = atype.name,
 			"icon" = atype.icon,
 			"components" = atype.get_readable_features(),
-			"pros" = atype.pros || list("No notable advantages"),
-			"cons" = atype.cons || list("No notable disadvantages"),
-			"neuts" = atype.neuts || list(),
+			"perks" = atype.get_perks(),
 			"diet" = animid.get_diet_from_tongue(atype.components[ORGAN_SLOT_TONGUE] || animid.mutanttongue),
 		)
 	return data

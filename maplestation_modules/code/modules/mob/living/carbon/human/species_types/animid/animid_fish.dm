@@ -18,15 +18,6 @@
 	name = "Piscinid"
 	icon = FA_ICON_FISH
 
-	pros = list(
-		"Scales provide some protection",
-		"Move and work faster in water",
-	)
-	cons = list(
-		"Bad at kicking and punching",
-		"Where the hell is water on a space station?",
-	)
-
 /datum/animalid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
 	new_animid.dna?.features["forced_fish_color"] = new_animid.dna?.features["mcolor"]
@@ -36,6 +27,34 @@
 
 /datum/animalid_type/fish/get_readable_features()
 	return ..() + "Scales"
+
+/datum/animalid_type/fish/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_SWIMMER,
+			SPECIES_PERK_NAME = "Swift Swimmer",
+			SPECIES_PERK_DESC = "[name]s are, well, fish. You are able to swim faster than most, \
+				and you even work faster while submerged in water. Now where the hell is water on a space station?",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_HAND_FIST,
+			SPECIES_PERK_NAME = "Scaled Defense",
+			SPECIES_PERK_DESC = "[name] scales provide a minor amount of resistance to bruises and burns. \
+				However, good luck disguising your scaled skin.",
+		),
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = FA_ICON_HANDSHAKE_SLASH,
+			SPECIES_PERK_NAME = "Flimsy Fins",
+			SPECIES_PERK_DESC = "[name] deal less damage with unarmed attacks.",
+		),
+	)
+
+	return to_add
 
 ///Tail for fish DNA-infused spacemen. It provides a speed buff while in water. It's also needed for the crawl speed bonus once the threshold is reached.
 /obj/item/organ/external/tail/fish

@@ -8,15 +8,21 @@
 
 	name = "Murinid"
 	icon = FA_ICON_CHEESE
-	pros = list(
-		"Unimplemented",
+
+/datum/animalid_type/rat/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_CHEESE,
+			SPECIES_PERK_NAME = "Gouda Food",
+			SPECIES_PERK_DESC = "As a [name], you can eat any food you could think of without getting sick. \
+				However, the only food you enjoy eating is dairy products like cheese.",
+		),
 	)
-	cons = list(
-		"Unimplemented",
-	)
-	neuts = list(
-		"Can eat anything, only likes cheese",
-	)
+
+	return to_add
 
 // Rat ear organ
 /obj/item/organ/internal/ears/rat
