@@ -341,7 +341,7 @@
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
 	else if(combat_mode)
-		helper.visible_message(span_warning("[helper] reaches for [src], but [src] keeps [helper.p_them()] at bay!"), null, DEFAULT_MESSAGE_RANGE, list(helper, src))
+		helper.visible_message(span_warning("[helper] reaches for [src], but [src] keeps [helper.p_them()] at bay!"), null, null, DEFAULT_MESSAGE_RANGE, list(helper, src))
 		to_chat(helper, span_warning("You reach for [src], but [p_they()] keep[p_s()] you at an arm's length!"))
 		to_chat(src, span_warning("[helper] reaches for you, but you keep [p_them()] at an arm's length!"))
 		return
