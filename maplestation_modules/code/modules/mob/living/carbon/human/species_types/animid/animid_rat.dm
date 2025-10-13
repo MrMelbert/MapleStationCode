@@ -63,8 +63,9 @@
 /datum/preference/choiced/rat_ears
 	savefile_key = "feature_rat_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/rat
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/rat_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["mouse_ears"] = value
@@ -74,6 +75,9 @@
 
 /datum/preference/choiced/rat_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.rat_ears_list)
+
+/datum/preference/choiced/rat_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.rat_ears_list)
 
 // Rat tail organ
 /obj/item/organ/external/tail/rat
@@ -108,8 +112,9 @@
 /datum/preference/choiced/rat_tail
 	savefile_key = "feature_rat_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/tail/rat
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/rat_tail/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["mouse_tail"] = value
@@ -119,3 +124,6 @@
 
 /datum/preference/choiced/rat_tail/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.tails_list_rat)
+
+/datum/preference/choiced/rat_tail/icon_for(value)
+	return GENERATE_COLORED_TAIL_ICON(value, SSaccessories.tails_list_rat, skintone2hex("caucasian1"))

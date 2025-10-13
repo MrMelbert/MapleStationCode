@@ -17,59 +17,6 @@
 	disliked_foodtypes = VEGETABLES | FRUIT | NUTS | GRAIN // most of them don't like their veggies tho
 	toxic_foodtypes = TOXIC | SUGAR // chocolate
 
-/obj/item/organ/external/tail/dog
-	name = "dog tail"
-	desc = "A furry tail belonging to a dog."
-	visual = TRUE
-
-	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/dog
-
-/datum/bodypart_overlay/mutant/tail/dog
-	feature_key = "dog_tail"
-	color_source = ORGAN_COLOR_HAIR
-
-/datum/bodypart_overlay/mutant/tail/dog/get_global_feature_list()
-	return SSaccessories.dog_tail_list
-
-// Dog tail sprite accessory - sprites ported from Effigy
-/datum/sprite_accessory/dog_tail
-	icon = 'maplestation_modules/icons/mob/tails/dog.dmi'
-	em_block = TRUE
-
-/datum/sprite_accessory/dog_tail/husky
-	name = "Husky"
-	icon_state = "husky"
-
-/datum/sprite_accessory/dog_tail/lab
-	name = "Labrador"
-	icon_state = "lab"
-
-/datum/sprite_accessory/dog_tail/drop
-	name = "Droplet"
-	icon_state = "drop"
-
-/datum/sprite_accessory/dog_tail/straight
-	name = "Straight"
-	icon_state = "straight"
-
-/datum/sprite_accessory/dog_tail/wolf
-	name = "Wolf"
-	icon_state = "wolf"
-
-/datum/preference/choiced/dog_tail
-	savefile_key = "feature_dog_tail"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/dog
-
-/datum/preference/choiced/dog_tail/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["dog_tail"] = value
-
-/datum/preference/choiced/dog_tail/create_default_value()
-	return /datum/sprite_accessory/dog_tail/straight::name
-
-/datum/preference/choiced/dog_tail/init_possible_values()
-	return assoc_to_keys_features(SSaccessories.dog_tail_list)
 
 /obj/item/organ/internal/ears/dog
 	name = "dog ears"
@@ -124,8 +71,9 @@
 /datum/preference/choiced/dog_ears
 	savefile_key = "feature_dog_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/dog
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/dog_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["dog_ears"] = value
@@ -135,3 +83,64 @@
 
 /datum/preference/choiced/dog_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.dog_ears_list)
+
+/datum/preference/choiced/dog_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.dog_ears_list)
+
+/obj/item/organ/external/tail/dog
+	name = "dog tail"
+	desc = "A furry tail belonging to a dog."
+	visual = TRUE
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/dog
+
+/datum/bodypart_overlay/mutant/tail/dog
+	feature_key = "dog_tail"
+	color_source = ORGAN_COLOR_HAIR
+
+/datum/bodypart_overlay/mutant/tail/dog/get_global_feature_list()
+	return SSaccessories.dog_tail_list
+
+// Dog tail sprite accessory - sprites ported from Effigy
+/datum/sprite_accessory/dog_tail
+	icon = 'maplestation_modules/icons/mob/tails/dog.dmi'
+	em_block = TRUE
+
+/datum/sprite_accessory/dog_tail/husky
+	name = "Husky"
+	icon_state = "husky"
+
+/datum/sprite_accessory/dog_tail/lab
+	name = "Labrador"
+	icon_state = "lab"
+
+/datum/sprite_accessory/dog_tail/drop
+	name = "Droplet"
+	icon_state = "drop"
+
+/datum/sprite_accessory/dog_tail/straight
+	name = "Straight"
+	icon_state = "straight"
+
+/datum/sprite_accessory/dog_tail/wolf
+	name = "Wolf"
+	icon_state = "wolf"
+
+/datum/preference/choiced/dog_tail
+	savefile_key = "feature_dog_tail"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	relevant_external_organ = /obj/item/organ/external/tail/dog
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/dog_tail/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["dog_tail"] = value
+
+/datum/preference/choiced/dog_tail/create_default_value()
+	return /datum/sprite_accessory/dog_tail/straight::name
+
+/datum/preference/choiced/dog_tail/init_possible_values()
+	return assoc_to_keys_features(SSaccessories.dog_tail_list)
+
+/datum/preference/choiced/dog_tail/icon_for(value)
+	return GENERATE_TAIL_ICON(value, SSaccessories.dog_tail_list)

@@ -37,8 +37,9 @@
 /datum/preference/choiced/fox_ears
 	savefile_key = "feature_fox_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/fox_animid
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/fox_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["fox_ears"] = value
@@ -48,6 +49,9 @@
 
 /datum/preference/choiced/fox_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.fox_ears_list)
+
+/datum/preference/choiced/fox_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.fox_ears_list)
 
 // Fox tail organ
 /obj/item/organ/external/tail/fox_animid
@@ -81,8 +85,9 @@
 /datum/preference/choiced/fox_tail
 	savefile_key = "feature_fox_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/tail/fox_animid
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/fox_tail/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["fox_tail"] = value
@@ -92,6 +97,9 @@
 
 /datum/preference/choiced/fox_tail/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.fox_tail_list)
+
+/datum/preference/choiced/fox_tail/icon_for(value)
+	return GENERATE_TAIL_ICON(value, SSaccessories.fox_tail_list)
 
 /obj/item/organ/internal/tongue/fox_animid
 	name = "fox tongue"

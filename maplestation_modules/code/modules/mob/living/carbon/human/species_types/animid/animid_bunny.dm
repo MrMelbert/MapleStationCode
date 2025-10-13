@@ -47,52 +47,6 @@
 	disliked_foodtypes = GORE | RAW | JUNKFOOD | GROSS | CLOTH | BUGS
 	toxic_foodtypes = MEAT | TOXIC | NUTS | SUGAR // chocolate
 
-// Bunny tail organ
-/obj/item/organ/external/tail/bunny
-	name = "bunny tail"
-	desc = "A small, fluffy tail belonging to a bunny."
-	visual = TRUE
-
-	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/bunny
-	wag_flags = WAG_ABLE
-
-// Bunny tail bodypart overlay
-/datum/bodypart_overlay/mutant/tail/bunny
-	feature_key = "bunny_tail"
-	color_source = ORGAN_COLOR_HAIR
-
-/datum/bodypart_overlay/mutant/tail/bunny/get_global_feature_list()
-	return SSaccessories.bunny_tail_list
-
-// Bunny tail sprite accessory - sprites ported from Effigy
-/datum/sprite_accessory/tail_bunny
-	icon = 'maplestation_modules/icons/mob/tails/bunny.dmi'
-	em_block = TRUE
-
-/datum/sprite_accessory/tail_bunny/small
-	name = "Small"
-	icon_state = "small"
-
-/datum/sprite_accessory/tail_bunny/tall
-	name = "Tall"
-	icon_state = "tall"
-
-// Bunny tail preference
-/datum/preference/choiced/bunny_tail
-	savefile_key = "feature_bunny_tail"
-	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/bunny
-
-/datum/preference/choiced/bunny_tail/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["bunny_tail"] = value
-
-/datum/preference/choiced/bunny_tail/create_default_value()
-	return /datum/sprite_accessory/tail_bunny/tall::name
-
-/datum/preference/choiced/bunny_tail/init_possible_values()
-	return assoc_to_keys_features(SSaccessories.bunny_tail_list)
-
 // Bunny ears organ
 /obj/item/organ/internal/ears/bunny
 	name = "bunny ears"
@@ -141,8 +95,9 @@
 /datum/preference/choiced/bunny_ears
 	savefile_key = "feature_bunny_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/bunny
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/bunny_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["bunny_ears"] = value
@@ -153,6 +108,58 @@
 /datum/preference/choiced/bunny_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.bunny_ears_list)
 
+/datum/preference/choiced/bunny_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.bunny_ears_list)
+
+// Bunny tail organ
+/obj/item/organ/external/tail/bunny
+	name = "bunny tail"
+	desc = "A small, fluffy tail belonging to a bunny."
+	visual = TRUE
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/bunny
+	wag_flags = WAG_ABLE
+
+// Bunny tail bodypart overlay
+/datum/bodypart_overlay/mutant/tail/bunny
+	feature_key = "bunny_tail"
+	color_source = ORGAN_COLOR_HAIR
+
+/datum/bodypart_overlay/mutant/tail/bunny/get_global_feature_list()
+	return SSaccessories.bunny_tail_list
+
+// Bunny tail sprite accessory - sprites ported from Effigy
+/datum/sprite_accessory/tail_bunny
+	icon = 'maplestation_modules/icons/mob/tails/bunny.dmi'
+	em_block = TRUE
+
+/datum/sprite_accessory/tail_bunny/small
+	name = "Small"
+	icon_state = "small"
+
+/datum/sprite_accessory/tail_bunny/tall
+	name = "Tall"
+	icon_state = "tall"
+
+// Bunny tail preference
+/datum/preference/choiced/bunny_tail
+	savefile_key = "feature_bunny_tail"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	relevant_external_organ = /obj/item/organ/external/tail/bunny
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/bunny_tail/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["bunny_tail"] = value
+
+/datum/preference/choiced/bunny_tail/create_default_value()
+	return /datum/sprite_accessory/tail_bunny/tall::name
+
+/datum/preference/choiced/bunny_tail/init_possible_values()
+	return assoc_to_keys_features(SSaccessories.bunny_tail_list)
+
+/datum/preference/choiced/bunny_tail/icon_for(value)
+	return GENERATE_TAIL_ICON(value, SSaccessories.bunny_tail_list)
 
 // Bunny bodyparts
 /obj/item/bodypart/leg/left/bunny

@@ -48,6 +48,22 @@
 /datum/animalid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.species_language_holder = /datum/language_holder/felinid
 
+// Felinid extra customization
 /datum/sprite_accessory/tails/human/cat/big
 	name = "Big"
 	icon_state = "big"
+
+// Felinid prefs tweak
+/datum/preference/choiced/ears
+	category = PREFERENCE_CATEGORY_FEATURES
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.ears_list)
+
+/datum/preference/choiced/tail_human
+	category = PREFERENCE_CATEGORY_FEATURES
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/tail_human/icon_for(value)
+	return GENERATE_TAIL_ICON(value, SSaccessories.tails_list_human)

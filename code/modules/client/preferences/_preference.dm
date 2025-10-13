@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	/// If the selected species has this in its /datum/species/var/external_organs,
 	/// will show the feature as selectable.
-	var/relevant_external_organ = null
+	var/obj/item/organ/relevant_external_organ = null
 
 	/// If the selected species has this head_flag by default,
 	/// will show the feature as selectable.
@@ -442,8 +442,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 		data["icons"] = icons
 
-	if (!isnull(main_feature_name))
-		data["name"] = main_feature_name
+	data["name"] = main_feature_name || (relevant_external_organ ? relevant_external_organ::name : "") || "(no name set)"
 
 	return data
 

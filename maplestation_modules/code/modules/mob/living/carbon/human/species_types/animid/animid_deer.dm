@@ -87,8 +87,9 @@
 /datum/preference/choiced/deer_ears
 	savefile_key = "feature_deer_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/deer
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/deer_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["deer_ears"] = value
@@ -98,6 +99,9 @@
 
 /datum/preference/choiced/deer_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.deer_ears_list)
+
+/datum/preference/choiced/deer_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.deer_ears_list)
 
 // Deer tail organ
 /obj/item/organ/external/tail/deer
@@ -132,8 +136,9 @@
 /datum/preference/choiced/deer_tail
 	savefile_key = "feature_deer_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/tail/deer
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/deer_tail/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["deer_tail"] = value
@@ -143,6 +148,9 @@
 
 /datum/preference/choiced/deer_tail/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.deer_tail_list)
+
+/datum/preference/choiced/deer_tail/icon_for(value)
+	return GENERATE_TAIL_ICON(value, SSaccessories.deer_tail_list)
 
 // Deer tongue organ
 /obj/item/organ/internal/tongue/deer

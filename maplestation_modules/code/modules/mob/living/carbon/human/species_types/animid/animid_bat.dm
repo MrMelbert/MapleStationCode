@@ -78,8 +78,9 @@
 /datum/preference/choiced/bat_ears
 	savefile_key = "feature_bat_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/internal/ears/bat
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/bat_ears/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["bat_ears"] = value
@@ -89,6 +90,9 @@
 
 /datum/preference/choiced/bat_ears/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.bat_ears_list)
+
+/datum/preference/choiced/bat_ears/icon_for(value)
+	return GENERATE_HEAD_ICON(value, SSaccessories.bat_ears_list)
 
 // Bat wing organ
 /obj/item/organ/external/wings/bat_wings
@@ -130,8 +134,9 @@
 /datum/preference/choiced/bat_wings
 	savefile_key = "feature_bat_wings"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/wings/bat_wings
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/bat_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["bat_wings"] = value
@@ -141,6 +146,18 @@
 
 /datum/preference/choiced/bat_wings/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.bat_wings_list)
+
+/datum/preference/choiced/bat_wings/icon_for(value)
+	var/datum/sprite_accessory/the_accessory = SSaccessories.bat_wings_list[value]
+	var/datum/universal_icon/body_icon = generate_body_icon(
+		bodyparts = list(/obj/item/bodypart/chest, /obj/item/bodypart/arm/left, /obj/item/bodypart/arm/right),
+	)
+	var/datum/universal_icon/wing_icon = uni_icon(the_accessory.icon, "m_bat_wings_[the_accessory.icon_state]_BEHIND", dir = SOUTH)
+	wing_icon.blend_color(COLOR_BROWNER_BROWN, ICON_MULTIPLY)
+	body_icon.blend_icon(wing_icon, ICON_OVERLAY)
+	body_icon.scale(48, 48)
+	body_icon.crop_32x32(8, 8)
+	return body_icon
 
 // Bat tongue
 /obj/item/organ/internal/tongue/bat

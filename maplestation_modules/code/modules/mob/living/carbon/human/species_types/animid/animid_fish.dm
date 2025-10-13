@@ -153,8 +153,9 @@
 /datum/preference/choiced/fish_tail
 	savefile_key = "feature_fish_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	relevant_external_organ = /obj/item/organ/external/tail/fish
+	should_generate_icons = TRUE
 
 /datum/preference/choiced/fish_tail/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["fish_tail"] = value
@@ -164,6 +165,9 @@
 
 /datum/preference/choiced/fish_tail/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.tails_list_fish)
+
+/datum/preference/choiced/fish_tail/icon_for(value)
+	return GENERATE_COLORED_TAIL_ICON(value, SSaccessories.tails_list_fish, "#B4B8DD")
 
 // Fish tongue
 /obj/item/organ/internal/tongue/fish
