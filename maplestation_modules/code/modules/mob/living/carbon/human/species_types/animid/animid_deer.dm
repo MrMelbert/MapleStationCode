@@ -3,6 +3,7 @@
 	components = list(
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/deer,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/deer,
+		ORGAN_SLOT_BRAIN = /obj/item/organ/internal/brain/deer,
 		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/deer,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/deer,
 		MUTANT_ORGANS = list(
