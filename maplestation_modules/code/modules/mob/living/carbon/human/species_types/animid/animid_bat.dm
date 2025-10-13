@@ -65,7 +65,7 @@
 /datum/bodypart_overlay/mutant/ears/bat/get_global_feature_list()
 	return SSaccessories.bat_ears_list
 
-// Bat ear sprite accessory - sprites ported from Effigy
+// Bat ear sprite accessory - sprites ported from https://github.com/Skyrat-SS13/Skyrat13/commit/25e426ddd0aa69b80df6a764f76370781c66d2bc
 /datum/sprite_accessory/ears_bat
 	icon = 'maplestation_modules/icons/mob/ears/bat.dmi'
 	em_block = TRUE
@@ -113,7 +113,7 @@
 /datum/bodypart_overlay/mutant/wings/bat/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
 	return !(bodypart_owner.owner?.obscured_slots & HIDEMUTWINGS)
 
-// Bat wing sprite accessory - sprites ported from Effigy
+// Bat wing sprite accessory - sprites ported from Effigy, https://github.com/Skyrat-SS13/Skyrat13/commit/25e426ddd0aa69b80df6a764f76370781c66d2bc
 /datum/sprite_accessory/wings_bat
 	icon = 'maplestation_modules/icons/mob/bat_wings.dmi'
 	em_block = TRUE

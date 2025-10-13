@@ -380,7 +380,7 @@
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
 	icon_state = "hornsdouble"
 
-// ??
+// https://github.com/Skyrat-SS13/Skyrat13/pull/1292
 /datum/sprite_accessory/frills/cobra
 	name = "Cobra"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'

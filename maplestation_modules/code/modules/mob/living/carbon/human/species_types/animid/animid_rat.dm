@@ -42,7 +42,7 @@
 /datum/bodypart_overlay/mutant/ears/rat/get_global_feature_list()
 	return SSaccessories.rat_ears_list
 
-// Rat ear sprite accessory - sprites ported from Effigy
+// Rat ear sprite accessory - sprites ported from Effigy, https://github.com/Skyrat-SS13/Skyrat-tg/pull/15797
 /datum/sprite_accessory/ears_rat
 	icon = 'maplestation_modules/icons/mob/ears/rat.dmi'
 	em_block = TRUE
@@ -95,7 +95,7 @@
 /datum/bodypart_overlay/mutant/tail/rat/get_global_feature_list()
 	return SSaccessories.tails_list_rat
 
-// Rat tail sprite accessory - sprites ported from Effigy
+// Rat tail sprite accessory - sprites ported Effigy, https://github.com/Skyrat-SS13/Skyrat-tg/pull/15797
 /datum/sprite_accessory/tail_rat
 	icon = 'maplestation_modules/icons/mob/tails/rat.dmi'
 	em_block = TRUE

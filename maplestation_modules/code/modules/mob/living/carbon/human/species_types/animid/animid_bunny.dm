@@ -79,6 +79,7 @@
 	name = "Tall"
 	icon_state = "tall"
 
+// https://github.com/Skyrat-SS13/Skyrat13/pull/2644
 /datum/sprite_accessory/ears_bunny/long
 	name = "Long"
 	icon_state = "long"
