@@ -117,6 +117,19 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(SSaccessories.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
 	target.dna.features["animid_type"] = /datum/animalid_type/cat::id //NON-MODULE CHANGE
+	target.dna.features["bat_ears"] = get_consistent_feature_entry(SSaccessories.bat_ears_list) //NON-MODULE CHANGE
+	target.dna.features["bat_wings"] = get_consistent_feature_entry(SSaccessories.bat_wings_list) //NON-MODULE CHANGE
+	target.dna.features["fox_ears"] = get_consistent_feature_entry(SSaccessories.fox_ears_list) //NON-MODULE CHANGE
+	target.dna.features["fox_tail"] = get_consistent_feature_entry(SSaccessories.fox_tail_list) //NON-MODULE CHANGE
+	target.dna.features["mouse_ears"] = get_consistent_feature_entry(SSaccessories.rat_ears_list) //NON-MODULE CHANGE
+	target.dna.features["mouse_tail"] = get_consistent_feature_entry(SSaccessories.tails_list_rat) //NON-MODULE CHANGE
+	target.dna.features["deer_ears"] = get_consistent_feature_entry(SSaccessories.deer_ears_list) //NON-MODULE CHANGE
+	target.dna.features["deer_tail"] = get_consistent_feature_entry(SSaccessories.deer_tail_list) //NON-MODULE CHANGE
+	target.dna.features["bunny_ears"] = get_consistent_feature_entry(SSaccessories.bunny_ears_list) //NON-MODULE CHANGE
+	target.dna.features["bunny_tail"] = get_consistent_feature_entry(SSaccessories.bunny_tail_list) //NON-MODULE CHANGE
+	target.dna.features["dog_ears"] = get_consistent_feature_entry(SSaccessories.dog_ears_list) //NON-MODULE CHANGE
+	target.dna.features["dog_tail"] = get_consistent_feature_entry(SSaccessories.dog_tail_list) //NON-MODULE CHANGE
+	target.dna.features["fish_tail"] = get_consistent_feature_entry(SSaccessories.tails_list_fish) //NON-MODULE CHANGE
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly
 	// In practice this doesn't matter, but this is for the sake of 100%(ish) consistency
