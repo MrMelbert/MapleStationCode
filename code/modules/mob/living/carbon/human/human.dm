@@ -336,11 +336,12 @@
 /mob/living/carbon/human/can_inject(mob/user, target_zone, injection_flags)
 	. = TRUE // Default to returning true.
 	// we may choose to ignore species trait pierce immunity in case we still want to check skellies for thick clothing without insta failing them (wounds)
-	if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
-		if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
+		if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
+			if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+				. = FALSE
+		else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 			. = FALSE
-	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
-		. = FALSE
 	if(user && !target_zone)
 		target_zone = get_bodypart(check_zone(user.zone_selected)) //try to find a bodypart. if there isn't one, target_zone will be null, and check_zone in the next line will default to the chest.
 	var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced

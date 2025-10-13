@@ -51,7 +51,7 @@
 /datum/quirk/photophobia/proc/on_holder_moved(mob/living/source, atom/old_loc, dir, forced)
 	SIGNAL_HANDLER
 
-	if(quirk_holder.stat != CONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
+	if(HAS_TRAIT(quirk_holder, TRAIT_KNOCKEDOUT))
 		return
 
 	if(HAS_TRAIT(quirk_holder, TRAIT_FEARLESS))

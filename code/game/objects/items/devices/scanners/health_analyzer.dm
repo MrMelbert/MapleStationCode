@@ -403,7 +403,12 @@
 			var/list/compatible_types_readable = list()
 			for(var/datum/blood_type/blood_type as anything in target_blood_type.compatible_types)
 				compatible_types_readable |= initial(blood_type.name)
-			blood_type_format = span_tooltip("Can receive from types [english_list(compatible_types_readable)].", blood_type_format)
+			var/recieve_from_text = "Can receive from blood types [english_list(compatible_types_readable)]."
+			if(target_blood_type.reagent_type)
+				recieve_from_text += " Replinishes via [target_blood_type.reagent_type::name] reagent."
+			if(target_blood_type.restoration_chem && target_blood_type.restoration_chem != target_blood_type.reagent_type)
+				recieve_from_text += " Regenerates slowly via [target_blood_type.restoration_chem::name] reagent."
+			blood_type_format = span_tooltip(recieve_from_text, blood_type_format)
 
 		render_list += "<span class='info ml-1'>Heart rate: [bpm_format]</span><br>"
 		render_list += "<span class='info ml-1'>Blood level: [level_format]</span><br>"
