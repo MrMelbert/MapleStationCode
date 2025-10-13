@@ -1,7 +1,7 @@
 /datum/preference/choiced/skrell_hair
 	savefile_key = "feature_head_tentacles"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
+	category = PREFERENCE_CATEGORY_HAIR
 	main_feature_name = "Head Tentacles"
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/external/head_tentacles

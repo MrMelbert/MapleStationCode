@@ -139,6 +139,7 @@ export type PreferencesMenuData = {
 
   character_preferences: {
     clothing: Record<string, string>;
+    hair: Record<string, string>;
     features: Record<string, string>;
     game_preferences: Record<string, unknown>;
     non_contextual: {
