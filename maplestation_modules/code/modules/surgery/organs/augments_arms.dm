@@ -108,7 +108,7 @@
 /obj/item/lighter/spell/finger/magic
 	name = "finger flame"
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
-	icon_state = "fire-on"
+	icon_state = "fire"
 	inhand_icon_state = "nothing"
 
 /obj/item/lighter/spell/finger/magic/ignition_effect(atom/A, mob/user)
@@ -122,7 +122,7 @@
 	name = "flame"
 	desc = "Your ancestors would be proud."
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
-	icon_state = "fire-on"
+	icon_state = "fire"
 	inhand_icon_state = "nothing"
 	item_flags = ABSTRACT|DROPDEL
 	light_sound_on = null

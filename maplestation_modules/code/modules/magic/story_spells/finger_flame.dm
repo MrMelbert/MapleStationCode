@@ -51,7 +51,6 @@
 		span_rose("<b>[old_cast_on]</b> dispels the flame with another snap."),
 		span_rose("You dispel the flame with another snap."),
 	)
-	StartCooldown(1 SECONDS)
 
 /datum/action/cooldown/spell/touch/finger_flame/create_hand(mob/living/carbon/cast_on)
 	do_snap(cast_on)
@@ -69,7 +68,9 @@
 	lighter.set_lit(FALSE) // not strictly necessary as we qdel, but for the sound fx
 	if(reset_cooldown_after)
 		do_unsnap(hand_owner)
-	return ..()
+	. = ..()
+	if(reset_cooldown_after)
+		StartCooldown(0.75 SECONDS) // avoid spam
 
 /datum/action/cooldown/spell/touch/finger_flame/mana
 	name = "Finger Flame"
@@ -177,7 +178,6 @@
 	)
 	old_cast_on.adjustOxyLoss(2, FALSE) // gulp
 	old_cast_on.adjustToxLoss(-5, TRUE, TRUE) // most accelerants are toxic, so let's be a little nice for refunds
-	StartCooldown(1 SECONDS)
 
 /// Check before making the hand if the mouth is covered.
 /datum/action/cooldown/spell/touch/finger_flame/lizard/proc/mouth_covered_dumb_lizard(mob/living/carbon/cast_on)
