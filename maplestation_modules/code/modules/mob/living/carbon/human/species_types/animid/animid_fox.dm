@@ -25,7 +25,7 @@
 /datum/bodypart_overlay/mutant/ears/fox_animid/get_global_feature_list()
 	return SSaccessories.fox_ears_list
 
-// Fox ears sprite accessory
+// Fox ears sprite accessory - sprites ported from Effigy
 /datum/sprite_accessory/ears_fox
 	icon = 'maplestation_modules/icons/mob/ears/fox.dmi'
 	em_block = TRUE
@@ -33,6 +33,23 @@
 /datum/sprite_accessory/ears_fox/standard
 	name = "Fox"
 	icon_state = "fox"
+
+/datum/sprite_accessory/ears_fox/dark
+	name = "Fox (Dark)"
+	icon_state = "dark"
+
+/datum/sprite_accessory/ears_fox/light
+	name = "Fox (Light)"
+	icon_state = "light"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/17913
+/datum/sprite_accessory/ears_fox/four
+	name = "Four Fox"
+	icon_state = "four"
+
+/datum/sprite_accessory/ears_fox/fennec
+	name = "Fennec"
+	icon_state = "fennec"
 
 /datum/preference/choiced/fox_ears
 	savefile_key = "feature_fox_ears"
@@ -78,9 +95,30 @@
 	name = "Fox"
 	icon_state = "fox"
 
-/datum/sprite_accessory/fox_tail/standard/fivefox
+/datum/sprite_accessory/fox_tail/fivefox
 	name = "Five Fox"
 	icon_state = "fivefox"
+
+// Sprite ported from Effigy
+/datum/sprite_accessory/fox_tail/fennec
+	name = "Fennec"
+	icon_state = "fennec"
+
+/datum/sprite_accessory/fox_tail/low
+	name = "Low"
+	icon_state = "lower"
+
+/datum/sprite_accessory/fox_tail/swoop
+	name = "Swoop"
+	icon_state = "swoop"
+
+/datum/sprite_accessory/fox_tail/long
+	name = "Long"
+	icon_state = "long"
+
+/datum/sprite_accessory/fox_tail/long/alt
+	name = "Long (Alt)"
+	icon_state = "long_alt"
 
 /datum/preference/choiced/fox_tail
 	savefile_key = "feature_fox_tail"

@@ -52,6 +52,7 @@
 /datum/sprite_accessory/tails/human/cat/big
 	name = "Big"
 	icon_state = "big"
+	icon = 'maplestation_modules/icons/mob/tails/cat.dmi'
 
 // Felinid prefs tweak
 /datum/preference/choiced/ears

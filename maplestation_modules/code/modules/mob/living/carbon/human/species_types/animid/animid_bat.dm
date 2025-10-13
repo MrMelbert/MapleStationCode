@@ -152,9 +152,10 @@
 	var/datum/universal_icon/body_icon = generate_body_icon(
 		bodyparts = list(/obj/item/bodypart/chest, /obj/item/bodypart/arm/left, /obj/item/bodypart/arm/right),
 	)
-	var/datum/universal_icon/wing_icon = uni_icon(the_accessory.icon, "m_bat_wings_[the_accessory.icon_state]_BEHIND", dir = SOUTH)
-	wing_icon.blend_color(COLOR_BROWNER_BROWN, ICON_MULTIPLY)
-	body_icon.blend_icon(wing_icon, ICON_OVERLAY)
+	if(the_accessory.icon_state != SPRITE_ACCESSORY_NONE)
+		var/datum/universal_icon/wing_icon = uni_icon(the_accessory.icon, "m_bat_wings_[the_accessory.icon_state]_BEHIND", dir = SOUTH)
+		wing_icon.blend_color(COLOR_BROWNER_BROWN, ICON_MULTIPLY)
+		body_icon.blend_icon(wing_icon, ICON_OVERLAY)
 	body_icon.scale(48, 48)
 	body_icon.crop_32x32(8, 8)
 	return body_icon

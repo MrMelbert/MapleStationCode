@@ -456,7 +456,7 @@ type MainPageProps = {
 };
 
 function sortFeatures(inputRecord: Record<string, string>) {
-  return Object.entries(inputRecord).sort(([a], [b]) => (a > b ? 1 : -1));
+  return Object.entries(inputRecord || {}).sort(([a], [b]) => (a > b ? 1 : -1));
 }
 
 export function MainPage(props: MainPageProps) {
@@ -475,9 +475,9 @@ export function MainPage(props: MainPageProps) {
     data.character_preferences.secondary_features || [];
 
   const mainFeatures = [
-    ...sortFeatures(data.character_preferences.clothing),
-    ...sortFeatures(data.character_preferences.hair),
-    ...sortFeatures(data.character_preferences.features),
+    ...sortFeatures(data.character_preferences.clothing || {}),
+    ...sortFeatures(data.character_preferences.hair || {}),
+    ...sortFeatures(data.character_preferences.features || {}),
   ];
 
   const randomBodyEnabled =

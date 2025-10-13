@@ -138,9 +138,9 @@ export type PreferencesMenuData = {
   character_profiles: (string | null)[];
 
   character_preferences: {
-    clothing: Record<string, string>;
-    hair: Record<string, string>;
-    features: Record<string, string>;
+    clothing: Record<string, string> | null;
+    hair: Record<string, string> | null;
+    features: Record<string, string> | null;
     game_preferences: Record<string, unknown>;
     non_contextual: {
       random_body: RandomSetting;

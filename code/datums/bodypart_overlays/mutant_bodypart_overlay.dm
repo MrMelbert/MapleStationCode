@@ -74,6 +74,8 @@
 
 	var/finished_icon_state = icon_state_builder.Join("_")
 
+	icon_exists_or_scream(sprite_datum.icon, finished_icon_state)
+
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = image_layer)
 
 	if(sprite_datum.center)
@@ -153,4 +155,3 @@
 		CRASH("External organ [type] couldn't find sprite accessory [accessory_name]!")
 	else
 		CRASH("External organ [type] had fetch_sprite_datum called with a null accessory name!")
-
