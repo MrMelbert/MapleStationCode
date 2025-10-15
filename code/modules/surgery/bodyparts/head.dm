@@ -103,7 +103,7 @@
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
 	if(head_flags & HEAD_SHOW_ORGANS_ON_EXAMINE)
-		var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+		var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 		if(!brain)
 			. += span_info("The brain has been removed from [src].")
 		else if(brain.suicided || (brain.brainmob && HAS_TRAIT(brain.brainmob, TRAIT_SUICIDED)))
@@ -120,13 +120,13 @@
 		else
 			. += span_info("It's completely lifeless.")
 
-		if(!(locate(/obj/item/organ/internal/eyes) in src))
+		if(!(locate(/obj/item/organ/eyes) in src))
 			. += span_info("[real_name]'s eyes have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/ears) in src))
+		if(!(locate(/obj/item/organ/ears) in src))
 			. += span_info("[real_name]'s ears have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/tongue) in src))
+		if(!(locate(/obj/item/organ/tongue) in src))
 			. += span_info("[real_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/can_dismember()
@@ -141,7 +141,7 @@
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	if(user)
 		user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-	var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+	var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 	if(brain && violent_removal && prob(90)) //ghetto surgery can damage the brain.
 		to_chat(user, span_warning("[brain] was damaged in the process!"))
 		brain.set_organ_damage(brain.maxHealth)
@@ -166,7 +166,7 @@
 	. += get_hair_and_lips_icon(dropped)
 	// We need to get the eyes if we are dropped (ugh)
 	if(dropped)
-		var/obj/item/organ/internal/eyes/eyes = locate(/obj/item/organ/internal/eyes) in src
+		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes) in src
 		// This is a bit of copy/paste code from eyes.dm:generate_body_overlay
 		if(eyes?.eye_icon_state && (head_flags & HEAD_EYESPRITES))
 			var/image/eye_left = image(eyes.eye_overlay_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME

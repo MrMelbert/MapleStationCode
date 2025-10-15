@@ -4,7 +4,7 @@
 	category = PREFERENCE_CATEGORY_HAIR
 	main_feature_name = "Head Tentacles"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/external/head_tentacles
+	relevant_external_organ = /obj/item/organ/head_tentacles
 
 /datum/preference/choiced/skrell_hair/init_possible_values()
 	return assoc_to_keys(SSaccessories.head_tentacles_list)

@@ -1,6 +1,6 @@
 // Adds some modular languages to tongue languages
 // also speech sounds
-/obj/item/organ/internal/tongue
+/obj/item/organ/tongue
 	// Sounds weird BUT we need dummies to have their tongues for speech sound preview
 	visual = TRUE
 
@@ -25,7 +25,7 @@
 		'goon/sound/voice/speak_4_exclaim.ogg' = 120,
 	)
 
-/obj/item/organ/internal/tongue/get_possible_languages()
+/obj/item/organ/tongue/get_possible_languages()
 	return ..() + list(
 		/datum/language/isatoa,
 		/datum/language/ratvarian,
@@ -35,7 +35,7 @@
 	)
 
 // Skrell Tongue. Could use a sprite.
-/obj/item/organ/internal/tongue/skrell
+/obj/item/organ/tongue/skrell
 	name = "skrellian tongue"
 	desc = "The source of the Skrellian people's warbling voice."
 	say_mod = "warbles"
@@ -48,10 +48,10 @@
 	speech_sound_list_question = list('maplestation_modules/sound/voice/huff_ask.ogg' = 120)
 	speech_sound_list_exclamation = list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120)
 
-/obj/item/organ/internal/tongue/skrell/get_possible_languages()
+/obj/item/organ/tongue/skrell/get_possible_languages()
 	return ..() + /datum/language/skrell
 
-/obj/item/organ/internal/tongue/ornithid
+/obj/item/organ/tongue/ornithid
 	name = "avian tongue"
 	desc = "A seemingly normal looking tongue which causes ones voice to caw. However that works."
 	say_mod = "caws"
@@ -60,13 +60,13 @@
 	toxic_foodtypes = SUGAR // chocolate is toxic to birds.
 
 // High Draconic for lizard tongues
-/obj/item/organ/internal/tongue/lizard
+/obj/item/organ/tongue/lizard
 	languages_native = list(/datum/language/draconic, /datum/language/impdraconic)
 
-/obj/item/organ/internal/tongue/lizard/get_possible_languages()
+/obj/item/organ/tongue/lizard/get_possible_languages()
 	return ..() + /datum/language/impdraconic
 
-/obj/item/organ/internal/tongue/shadow
+/obj/item/organ/tongue/shadow
 	name = "umbral tongue"
 	desc = "A dark fleshy muscle mostly used to tell scary stories."
 	color = "#333333" // too lazy to make a sprite? just color it!

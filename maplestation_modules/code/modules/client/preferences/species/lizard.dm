@@ -63,7 +63,7 @@
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/preference/numeric/hiss_length/apply_to_human(mob/living/carbon/human/target, value)
-	var/obj/item/organ/internal/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!istype(tongue))
 		return
 	tongue.draw_length = value
@@ -71,7 +71,7 @@
 // -- Allows lizard horns to be colorable --
 // (Because some choices are greyscaled)
 /datum/preference/choiced/lizard_horns
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 
 /datum/preference/choiced/lizard_horns/compile_constant_data()
 	var/list/data = ..()
@@ -91,7 +91,7 @@
 	savefile_key = "feature_lizard_horn_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 	can_randomize = FALSE
 
 /datum/preference/color/horn_color/apply_to_human(mob/living/carbon/human/target, value)

@@ -14,7 +14,7 @@
 	limb_id = SPECIES_MOTH
 	is_dimorphic = TRUE
 	should_draw_greyscale = FALSE
-	wing_types = list(/obj/item/organ/external/wings/functional/moth/megamoth, /obj/item/organ/external/wings/functional/moth/mothra)
+	wing_types = list(/obj/item/organ/wings/functional/moth/megamoth, /obj/item/organ/wings/functional/moth/mothra)
 
 /obj/item/bodypart/chest/moth/get_butt_sprite()
 	return BUTT_SPRITE_FUZZY

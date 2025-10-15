@@ -297,7 +297,7 @@ GLOBAL_LIST_INIT(admin_visible_traits, list(
 	/obj/item/fishing_rod = list(
 		"TRAIT_ROD_REMOVE_FISHING_DUD" = TRAIT_ROD_REMOVE_FISHING_DUD,
 	),
-	/obj/item/organ/internal/liver = list(
+	/obj/item/organ/liver = list(
 		"TRAIT_BALLMER_SCIENTIST" = TRAIT_BALLMER_SCIENTIST,
 		"TRAIT_COMEDY_METABOLISM" = TRAIT_COMEDY_METABOLISM,
 		"TRAIT_CORONER_METABOLISM" = TRAIT_CORONER_METABOLISM,

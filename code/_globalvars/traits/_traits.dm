@@ -621,7 +621,7 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 	/obj/item/organ = list(
 		"TRAIT_LIVING_HEART" = TRAIT_LIVING_HEART,
 	),
-	/obj/item/organ/internal/liver = list(
+	/obj/item/organ/liver = list(
 		"TRAIT_BALLMER_SCIENTIST" = TRAIT_BALLMER_SCIENTIST,
 		"TRAIT_COMEDY_METABOLISM" = TRAIT_COMEDY_METABOLISM,
 		"TRAIT_CORONER_METABOLISM" = TRAIT_CORONER_METABOLISM,

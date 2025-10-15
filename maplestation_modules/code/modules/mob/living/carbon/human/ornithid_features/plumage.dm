@@ -1,5 +1,5 @@
 // ear code here
-/obj/item/organ/internal/ears/avian
+/obj/item/organ/ears/avian
 	name = "avian ears"
 	desc = "A pair of feathery ears belonging to an ornithid. Formerly, though."
 	// yes, this uses the default icon. Yellow TODO: make an organ sprite for this

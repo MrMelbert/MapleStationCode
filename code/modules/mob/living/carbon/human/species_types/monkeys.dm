@@ -4,10 +4,10 @@
 	name = "\improper Monkey"
 	id = SPECIES_MONKEY
 	mutant_organs = list(
-		/obj/item/organ/external/tail/monkey = "Monkey",
+		/obj/item/organ/tail/monkey = "Monkey",
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/monkey
-	mutantbrain = /obj/item/organ/internal/brain/primate
+	mutanttongue = /obj/item/organ/tongue/monkey
+	mutantbrain = /obj/item/organ/brain/primate
 	skinned_type = /obj/item/stack/sheet/animalhide/monkey
 	meat = /obj/item/food/meat/slab/monkey
 	knife_butcher_results = list(/obj/item/food/meat/slab/monkey = 5, /obj/item/stack/sheet/animalhide/monkey = 1)
@@ -118,7 +118,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/brain/primate //Ook Ook
+/obj/item/organ/brain/primate //Ook Ook
 	name = "Primate Brain"
 	desc = "This wad of meat is small, but has enlaged occipital lobes for spotting bananas."
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE) // No literacy or advanced tool usage.
@@ -134,7 +134,7 @@
 	overlay_icon_state = "bg_default_border"
 
 /datum/action/item_action/organ_action/toggle_trip/do_effect(trigger_flags)
-	var/obj/item/organ/internal/brain/primate/monkey_brain = target
+	var/obj/item/organ/brain/primate/monkey_brain = target
 	if(monkey_brain.tripping)
 		monkey_brain.tripping = FALSE
 		background_icon_state = "bg_default"
@@ -146,15 +146,15 @@
 	build_all_button_icons()
 	return TRUE
 
-/obj/item/organ/internal/brain/primate/on_mob_insert(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_insert(mob/living/carbon/primate)
 	. = ..()
 	RegisterSignal(primate, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed), TRUE)
 
-/obj/item/organ/internal/brain/primate/on_mob_remove(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_remove(mob/living/carbon/primate)
 	. = ..()
 	UnregisterSignal(primate, COMSIG_MOVABLE_CROSS)
 
-/obj/item/organ/internal/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
+/obj/item/organ/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
 	SIGNAL_HANDLER
 	if(!tripping)
 		return
@@ -167,7 +167,7 @@
 		return
 	in_the_way_mob.knockOver(owner)
 
-/obj/item/organ/internal/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
 	return owner.get_bodypart(BODY_ZONE_HEAD)
 
 #undef MONKEY_SPEC_ATTACK_BITE_MISS_CHANCE
@@ -191,11 +191,11 @@
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	mutant_organs = list(
-		/obj/item/organ/external/horns = "None",
-		/obj/item/organ/external/frills = "None",
-		/obj/item/organ/external/snout = "Round",
-		/obj/item/organ/external/spines = "None",
-		/obj/item/organ/external/tail/lizard = "Smooth",
+		/obj/item/organ/horns = "None",
+		/obj/item/organ/frills = "None",
+		/obj/item/organ/snout = "Round",
+		/obj/item/organ/spines = "None",
+		/obj/item/organ/tail/lizard = "Smooth",
 	)
 	mutanttongue = /datum/species/lizard::mutanttongue
 	species_cookie = /datum/species/lizard::species_cookie

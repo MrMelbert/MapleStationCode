@@ -2,12 +2,12 @@
 /datum/species/human/felinid
 	name = "Felinid"
 	id = SPECIES_FELINE
-	mutantbrain = /obj/item/organ/internal/brain/felinid
-	mutanttongue = /obj/item/organ/internal/tongue/cat
-	mutantears = /obj/item/organ/internal/ears/cat
-	mutantliver = /obj/item/organ/internal/liver/felinid
+	mutantbrain = /obj/item/organ/brain/felinid
+	mutanttongue = /obj/item/organ/tongue/cat
+	mutantears = /obj/item/organ/ears/cat
+	mutantliver = /obj/item/organ/liver/felinid
 	mutant_organs = list(
-		/obj/item/organ/external/tail/cat = "Cat",
+		/obj/item/organ/tail/cat = "Cat",
 	)
 	inherent_traits = list(
 		TRAIT_USES_SKINTONES,
@@ -31,7 +31,7 @@
 	human_for_preview.set_haircolor("#ffcccc", update = FALSE)
 	human_for_preview.set_hairstyle("Hime Cut", update = TRUE)
 
-	var/obj/item/organ/internal/ears/cat/cat_ears = human_for_preview.get_organ_by_type(/obj/item/organ/internal/ears/cat)
+	var/obj/item/organ/ears/cat/cat_ears = human_for_preview.get_organ_by_type(/obj/item/organ/ears/cat)
 	if (cat_ears)
 		cat_ears.color = human_for_preview.hair_color
 		human_for_preview.update_body()
