@@ -146,12 +146,20 @@
 		owner.dropItemToGround(linked_cuffs, force = TRUE)
 
 /datum/status_effect/restrained/tick(seconds_between_ticks)
-	if(!is_resisting || break_out_progress >= linked_cuffs.breakouttime)
+	if(break_out_progress >= linked_cuffs.breakouttime)
 		return
 
-	break_out_progress += round(seconds_between_ticks * 1 SECONDS * get_speed_modifier(), 0.1)
+
+	if(HAS_TRAIT(owner, TRAIT_SOFT_CRIT) || HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
+		// slowly lose progress when hurt / unconscious
+		break_out_progress = max(0, break_out_progress - (seconds_between_ticks * 0.5 SECONDS))
+	else if(is_resisting)
+		break_out_progress += round(seconds_between_ticks * 1 SECONDS * get_speed_modifier(), 0.1)
+	else
+		return
+
+	mob_bar?.update(break_out_progress)
 	alert_bar.update(break_out_progress)
-	mob_bar.update(break_out_progress)
 
 	if(break_out_progress < linked_cuffs.breakouttime)
 		return
