@@ -137,7 +137,7 @@
 	UnregisterSignal(organ_owner, COMSIG_LIVING_DEATH)
 	return succeeded
 
-/obj/item/organ/external/tail/proc/get_butt_sprite()
+/obj/item/organ/tail/proc/get_butt_sprite()
 	return null
 
 ///Tail parent type, with wagging functionality
@@ -160,7 +160,7 @@
 
 	wag_flags = WAG_ABLE
 
-/obj/item/organ/external/tail/cat/get_butt_sprite()
+/obj/item/organ/tail/cat/get_butt_sprite()
 	return BUTT_SPRITE_CAT
 
 /datum/bodypart_overlay/mutant/tail/get_global_feature_list()

@@ -1,15 +1,15 @@
 /datum/animalid_type/dog
 	id = "Dog"
 	components = list(
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/dog,
-		MUTANT_ORGANS = list(/obj/item/organ/external/tail/dog = "Straight"),
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/dog,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/dog,
+		MUTANT_ORGANS = list(/obj/item/organ/tail/dog = "Straight"),
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/dog,
 	)
 
 	name = "Canid"
 	icon = FA_ICON_DOG
 
-/obj/item/organ/internal/tongue/dog
+/obj/item/organ/tongue/dog
 	name = "dog tongue"
 	desc = "A long, rough tongue belonging to a dog."
 
@@ -18,7 +18,7 @@
 	toxic_foodtypes = TOXIC | SUGAR // chocolate
 
 
-/obj/item/organ/internal/ears/dog
+/obj/item/organ/ears/dog
 	name = "dog ears"
 	desc = "A pair of furry ears belonging to a dog."
 	visual = TRUE
@@ -72,7 +72,7 @@
 	savefile_key = "feature_dog_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/dog
+	relevant_external_organ = /obj/item/organ/ears/dog
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/dog_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -87,7 +87,7 @@
 /datum/preference/choiced/dog_ears/icon_for(value)
 	return GENERATE_HEAD_ICON(value, SSaccessories.dog_ears_list)
 
-/obj/item/organ/external/tail/dog
+/obj/item/organ/tail/dog
 	name = "dog tail"
 	desc = "A furry tail belonging to a dog."
 	visual = TRUE
@@ -130,7 +130,7 @@
 	savefile_key = "feature_dog_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/dog
+	relevant_external_organ = /obj/item/organ/tail/dog
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/dog_tail/apply_to_human(mob/living/carbon/human/target, value)

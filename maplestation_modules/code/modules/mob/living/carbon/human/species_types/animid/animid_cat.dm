@@ -1,11 +1,11 @@
 /datum/animalid_type/cat
 	id = "Cat"
 	components = list(
-		MUTANT_ORGANS = list(/obj/item/organ/external/tail/cat = "Cat"),
-		ORGAN_SLOT_BRAIN = /obj/item/organ/internal/brain/felinid,
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/cat,
-		ORGAN_SLOT_LIVER = /obj/item/organ/internal/liver/felinid,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/cat,
+		MUTANT_ORGANS = list(/obj/item/organ/tail/cat = "Cat"),
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain/felinid,
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/cat,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/felinid,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/cat,
 	)
 
 	name = "Felinid"

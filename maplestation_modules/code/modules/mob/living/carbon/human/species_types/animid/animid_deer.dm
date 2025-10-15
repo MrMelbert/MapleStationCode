@@ -3,11 +3,11 @@
 	components = list(
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/deer,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/deer,
-		ORGAN_SLOT_BRAIN = /obj/item/organ/internal/brain/deer,
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/deer,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/deer,
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain/deer,
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/deer,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/deer,
 		MUTANT_ORGANS = list(
-			/obj/item/organ/external/tail/deer = "Light",
+			/obj/item/organ/tail/deer = "Light",
 		),
 	)
 
@@ -48,7 +48,7 @@
 	return to_add
 
 // Deer ear organ
-/obj/item/organ/internal/ears/deer
+/obj/item/organ/ears/deer
 	name = "deer ears"
 	desc = "A pair of large, pointed ears belonging to a deer."
 	visual = TRUE
@@ -89,7 +89,7 @@
 	savefile_key = "feature_deer_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/deer
+	relevant_external_organ = /obj/item/organ/ears/deer
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/deer_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -105,7 +105,7 @@
 	return GENERATE_HEAD_ICON(value, SSaccessories.deer_ears_list)
 
 // Deer tail organ
-/obj/item/organ/external/tail/deer
+/obj/item/organ/tail/deer
 	name = "deer tail"
 	desc = "A short, fluffy tail belonging to a deer."
 	visual = TRUE
@@ -138,7 +138,7 @@
 	savefile_key = "feature_deer_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/deer
+	relevant_external_organ = /obj/item/organ/tail/deer
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/deer_tail/apply_to_human(mob/living/carbon/human/target, value)
@@ -154,7 +154,7 @@
 	return GENERATE_TAIL_ICON(value, SSaccessories.deer_tail_list)
 
 // Deer tongue organ
-/obj/item/organ/internal/tongue/deer
+/obj/item/organ/tongue/deer
 	name = "deer tongue"
 	desc = "A long, rough tongue belonging to a deer."
 
@@ -184,7 +184,7 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 5)
 
 // Deer brain
-/obj/item/organ/internal/brain/deer
+/obj/item/organ/brain/deer
 	name = "deer brain"
 	organ_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
@@ -195,10 +195,10 @@
 		TRAIT_STURDY_FRAME,
 	)
 
-/obj/item/organ/internal/brain/deer/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/brain/deer/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	organ_owner.mob_mood?.mood_modifier += 0.34
 
-/obj/item/organ/internal/brain/deer/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/brain/deer/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	organ_owner.mob_mood?.mood_modifier -= 0.34

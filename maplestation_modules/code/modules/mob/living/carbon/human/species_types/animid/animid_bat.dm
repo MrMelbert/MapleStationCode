@@ -7,9 +7,9 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/bat,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/bat,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/bat,
-		MUTANT_ORGANS = list(/obj/item/organ/external/wings/bat_wings = "Normal"),
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/bat,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/bat,
+		MUTANT_ORGANS = list(/obj/item/organ/wings/bat_wings = "Normal"),
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/bat,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bat,
 	)
 
 	name = "Chiropteranid"
@@ -48,7 +48,7 @@
 	return to_add
 
 // Bat ear organ
-/obj/item/organ/internal/ears/bat
+/obj/item/organ/ears/bat
 	name = "bat ears"
 	desc = "A pair of large, pointed ears belonging to a bat."
 	visual = TRUE
@@ -79,7 +79,7 @@
 	savefile_key = "feature_bat_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/bat
+	relevant_external_organ = /obj/item/organ/ears/bat
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/bat_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -95,7 +95,7 @@
 	return GENERATE_HEAD_ICON(value, SSaccessories.bat_ears_list)
 
 // Bat wing organ
-/obj/item/organ/external/wings/bat_wings
+/obj/item/organ/wings/bat_wings
 	name = "bat wings"
 	desc = "Wings from a bat, not particularly strong enough to lift a human though."
 
@@ -135,7 +135,7 @@
 	savefile_key = "feature_bat_wings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/wings/bat_wings
+	relevant_external_organ = /obj/item/organ/wings/bat_wings
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/bat_wings/apply_to_human(mob/living/carbon/human/target, value)
@@ -161,7 +161,7 @@
 	return body_icon
 
 // Bat tongue
-/obj/item/organ/internal/tongue/bat
+/obj/item/organ/tongue/bat
 	name = "bat tongue"
 	desc = "A long, thin tongue that might belong to a bat. Not the wooden kind."
 

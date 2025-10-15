@@ -313,7 +313,7 @@
 	. = ..()
 	AddElement(/datum/element/dangerous_surgical_removal)
 
-/obj/item/organ/internal/liver/felinid
+/obj/item/organ/liver/felinid
 	name = "felinid liver"
 	organ_traits = list(
 		TRAIT_CARPOTOXIN_IMMUNE,

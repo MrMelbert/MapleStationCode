@@ -1,10 +1,10 @@
 /datum/animalid_type/rabbit
 	id = "Rabbit"
 	components = list(
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/bunny,
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/bunny,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bunny,
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/bunny,
 		MUTANT_ORGANS = list(
-			/obj/item/organ/external/tail/bunny = "Tall",
+			/obj/item/organ/tail/bunny = "Tall",
 		),
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/bunny,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/bunny,
@@ -39,7 +39,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/tongue/bunny
+/obj/item/organ/tongue/bunny
 	name = "bunny tongue"
 	desc = "A tiny tongue belonging to a bunny."
 
@@ -48,7 +48,7 @@
 	toxic_foodtypes = MEAT | TOXIC | NUTS | SUGAR // chocolate
 
 // Bunny ears organ
-/obj/item/organ/internal/ears/bunny
+/obj/item/organ/ears/bunny
 	name = "bunny ears"
 	desc = "A pair of long ears belonging to a bunny."
 	visual = TRUE
@@ -97,7 +97,7 @@
 	savefile_key = "feature_bunny_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/bunny
+	relevant_external_organ = /obj/item/organ/ears/bunny
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/bunny_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -113,7 +113,7 @@
 	return GENERATE_HEAD_ICON(value, SSaccessories.bunny_ears_list)
 
 // Bunny tail organ
-/obj/item/organ/external/tail/bunny
+/obj/item/organ/tail/bunny
 	name = "bunny tail"
 	desc = "A small, fluffy tail belonging to a bunny."
 	visual = TRUE
@@ -147,7 +147,7 @@
 	savefile_key = "feature_bunny_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/bunny
+	relevant_external_organ = /obj/item/organ/tail/bunny
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/bunny_tail/apply_to_human(mob/living/carbon/human/target, value)

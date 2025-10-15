@@ -121,7 +121,7 @@
 /datum/animalid_type/proc/get_component_perks()
 	var/list/to_add = list()
 
-	var/obj/item/organ/internal/ears/ears = components[ORGAN_SLOT_EARS]
+	var/obj/item/organ/ears/ears = components[ORGAN_SLOT_EARS]
 	if(ears)
 		if(ears::eavesdrop_bonus > 0)
 			if(ears::damage_multiplier > 1)

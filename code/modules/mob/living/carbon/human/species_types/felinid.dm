@@ -19,7 +19,7 @@
 
 /datum/species/human/felinid/on_species_gain(mob/living/carbon/carbon_being, datum/species/old_species, pref_load)
 	if(carbon_being.dna.features["ears"] == "None")
-		mutantears = /obj/item/organ/internal/ears
+		mutantears = /obj/item/organ/ears
 	return ..()
 
 /datum/species/human/felinid/randomize_features(mob/living/carbon/human/human_mob)

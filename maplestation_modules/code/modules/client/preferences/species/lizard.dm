@@ -117,7 +117,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 	/// Map of player-readable-text to layer value
 	var/list/layer_to_layer = list(
 		"Default" = BODY_ADJ_LAYER,
@@ -150,7 +150,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/frills
+	relevant_external_organ = /obj/item/organ/frills
 	/// Map of player-readable-text to layer value
 	var/list/layer_to_layer = list(
 		"Default" = BODY_ADJ_LAYER,

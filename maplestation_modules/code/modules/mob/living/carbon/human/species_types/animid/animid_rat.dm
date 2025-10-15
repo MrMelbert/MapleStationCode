@@ -1,9 +1,9 @@
 /datum/animalid_type/rat
 	id = "Rat"
 	components = list(
-		MUTANT_ORGANS = list(/obj/item/organ/external/tail/rat = "Curled"),
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/rat,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/rat,
+		MUTANT_ORGANS = list(/obj/item/organ/tail/rat = "Curled"),
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/rat,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/rat,
 	)
 
 	name = "Murinid"
@@ -25,7 +25,7 @@
 	return to_add
 
 // Rat ear organ
-/obj/item/organ/internal/ears/rat
+/obj/item/organ/ears/rat
 	name = "mouse ears"
 	desc = "A pair of large, rounded ears belonging to a rat or mouse."
 	visual = TRUE
@@ -64,7 +64,7 @@
 	savefile_key = "feature_rat_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/rat
+	relevant_external_organ = /obj/item/organ/ears/rat
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/rat_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -80,7 +80,7 @@
 	return GENERATE_HEAD_ICON(value, SSaccessories.rat_ears_list)
 
 // Rat tail organ
-/obj/item/organ/external/tail/rat
+/obj/item/organ/tail/rat
 	name = "mouse tail"
 	desc = "A long, hairless tail belonging to a rat or mouse."
 	visual = TRUE
@@ -113,7 +113,7 @@
 	savefile_key = "feature_rat_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/rat
+	relevant_external_organ = /obj/item/organ/tail/rat
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/rat_tail/apply_to_human(mob/living/carbon/human/target, value)

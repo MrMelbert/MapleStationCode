@@ -102,7 +102,7 @@
 	human_for_preview.set_haircolor("#ffcccc", update = FALSE) // pink
 	human_for_preview.set_hairstyle("Hime Cut", update = TRUE)
 
-	var/obj/item/organ/internal/ears/cat/cat_ears = new()
+	var/obj/item/organ/ears/cat/cat_ears = new()
 	cat_ears.Insert(human_for_preview, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /datum/species/human/animid/randomize_features()

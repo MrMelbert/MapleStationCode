@@ -1,15 +1,15 @@
 /datum/animalid_type/fox
 	id = "Fox"
 	components = list(
-		MUTANT_ORGANS = list(/obj/item/organ/external/tail/fox_animid = "Fox"),
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/fox_animid,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/fox_animid,
+		MUTANT_ORGANS = list(/obj/item/organ/tail/fox_animid = "Fox"),
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/fox_animid,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fox_animid,
 	)
 
 	name = "Vulpinid"
 	icon = FA_ICON_FIRE_FLAME_CURVED
 
-/obj/item/organ/internal/ears/fox_animid
+/obj/item/organ/ears/fox_animid
 	name = "fox ears"
 	desc = "A pair of large, pointed ears belonging to a fox."
 	visual = TRUE
@@ -55,7 +55,7 @@
 	savefile_key = "feature_fox_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/internal/ears/fox_animid
+	relevant_external_organ = /obj/item/organ/ears/fox_animid
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/fox_ears/apply_to_human(mob/living/carbon/human/target, value)
@@ -71,7 +71,7 @@
 	return GENERATE_HEAD_ICON(value, SSaccessories.fox_ears_list)
 
 // Fox tail organ
-/obj/item/organ/external/tail/fox_animid
+/obj/item/organ/tail/fox_animid
 	name = "fox tail"
 	desc = "A bushy tail belonging to a fox."
 	visual = TRUE
@@ -124,7 +124,7 @@
 	savefile_key = "feature_fox_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/fox_animid
+	relevant_external_organ = /obj/item/organ/tail/fox_animid
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/fox_tail/apply_to_human(mob/living/carbon/human/target, value)
@@ -139,7 +139,7 @@
 /datum/preference/choiced/fox_tail/icon_for(value)
 	return GENERATE_TAIL_ICON(value, SSaccessories.fox_tail_list)
 
-/obj/item/organ/internal/tongue/fox_animid
+/obj/item/organ/tongue/fox_animid
 	name = "fox tongue"
 	desc = "A long, rough tongue belonging to a fox."
 

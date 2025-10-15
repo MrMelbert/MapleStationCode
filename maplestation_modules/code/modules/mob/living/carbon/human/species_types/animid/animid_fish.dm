@@ -2,8 +2,8 @@
 	id = "Fish"
 	components = list(
 		MUTANT_ORGANS = list(
-			/obj/item/organ/external/tail/fish = "Simple",
-			/obj/item/organ/external/frills = "Aquatic",
+			/obj/item/organ/tail/fish = "Simple",
+			/obj/item/organ/frills = "Aquatic",
 		),
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/scaled,
 		BODY_ZONE_HEAD  = /obj/item/bodypart/head/scaled,
@@ -11,8 +11,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/scaled,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/internal/tongue/fish,
-		ORGAN_SLOT_EARS = /obj/item/organ/internal/ears/fish,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fish,
+		ORGAN_SLOT_EARS = /obj/item/organ/ears/fish,
 	)
 
 	name = "Piscinid"
@@ -57,11 +57,11 @@
 	return to_add
 
 ///Tail for fish DNA-infused spacemen. It provides a speed buff while in water. It's also needed for the crawl speed bonus once the threshold is reached.
-/obj/item/organ/external/tail/fish
+/obj/item/organ/tail/fish
 	name = "fish tail"
 	desc = "A severed tail from some sort of marine creature... or a fish-infused spaceman. It's smooth, faintly wet and definitely not flopping."
 	icon = 'icons/map_icons/items/_item.dmi'
-	icon_state = "/obj/item/organ/external/tail/fish"
+	icon_state = "/obj/item/organ/tail/fish"
 	post_init_icon_state = "fish_tail"
 	greyscale_config = /datum/greyscale_config/fish_tail
 	greyscale_colors = "#875652"
@@ -87,27 +87,27 @@
 	/// The amount of fillets this gets processed into
 	var/fillet_amount = 5
 
-/obj/item/organ/external/tail/fish/Initialize(mapload)
+/obj/item/organ/tail/fish/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/processable, TOOL_KNIFE, fillet_type, fillet_amount, fillet_amount * 0.5 SECONDS, screentip_verb = "Cut")
 
-/obj/item/organ/external/tail/fish/on_mob_insert(mob/living/carbon/owner)
+/obj/item/organ/tail/fish/on_mob_insert(mob/living/carbon/owner)
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_location))
 	check_location(owner, null)
 	owner.dna.features["forced_fish_color"] ||= pick("#B4B8DD", "#85C7D0", "#67BBEE", "#2F4450", "#55CCBB", "#999FD0", "#345066", "#585B69", "#7381A0", "#B6DDE5", "#4E4E50")
 
-/obj/item/organ/external/tail/fish/on_mob_remove(mob/living/carbon/owner)
+/obj/item/organ/tail/fish/on_mob_remove(mob/living/carbon/owner)
 	. = ..()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/fish_on_water)
 	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/fish_on_water)
 	owner.remove_traits(list(/*TRAIT_OFF_BALANCE_TACKLER, */TRAIT_NO_STAGGER, TRAIT_NO_THROW_HITPUSH), type)
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED))
 
-/obj/item/organ/external/tail/fish/save_color()
+/obj/item/organ/tail/fish/save_color()
 	set_greyscale(bodypart_overlay.draw_color)
 
-/obj/item/organ/external/tail/fish/proc/check_location(mob/living/carbon/source, atom/movable/old_loc, dir, forced)
+/obj/item/organ/tail/fish/proc/check_location(mob/living/carbon/source, atom/movable/old_loc, dir, forced)
 	SIGNAL_HANDLER
 	var/was_water = istype(old_loc, /turf/open/water)
 	var/is_water = istype(source.loc, /turf/open/water) && !HAS_TRAIT(source.loc, TRAIT_TURF_IGNORE_SLOWDOWN)
@@ -154,7 +154,7 @@
 	savefile_key = "feature_fish_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/tail/fish
+	relevant_external_organ = /obj/item/organ/tail/fish
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/fish_tail/apply_to_human(mob/living/carbon/human/target, value)
@@ -170,7 +170,7 @@
 	return GENERATE_COLORED_TAIL_ICON(value, SSaccessories.tails_list_fish, "#B4B8DD")
 
 // Fish tongue
-/obj/item/organ/internal/tongue/fish
+/obj/item/organ/tongue/fish
 	name = "fish tongue"
 	desc = "A tongue from some sort of marine creature."
 
@@ -218,7 +218,7 @@
 	brute_modifier = 0.9
 	burn_modifier = 0.9
 
-/obj/item/organ/internal/ears/fish
+/obj/item/organ/ears/fish
 	name = "fish ears"
 	desc = "A pair of small ear holes from some sort of marine creature."
 	eavesdrop_bonus = 1
