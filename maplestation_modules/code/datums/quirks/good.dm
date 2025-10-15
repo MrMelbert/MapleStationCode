@@ -67,7 +67,7 @@
 
 /datum/quirk/no_appendix/post_add()
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
-	var/obj/item/organ/internal/appendix/dumb_appendix = carbon_quirk_holder.get_organ_slot(ORGAN_SLOT_APPENDIX)
+	var/obj/item/organ/appendix/dumb_appendix = carbon_quirk_holder.get_organ_slot(ORGAN_SLOT_APPENDIX)
 	dumb_appendix?.Remove(quirk_holder, TRUE)
 
 // Less vulnerable to pain (lower pain modifier)

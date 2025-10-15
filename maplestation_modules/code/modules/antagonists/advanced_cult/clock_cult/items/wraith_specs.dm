@@ -78,7 +78,7 @@
 		if(user.is_blind())
 			return FALSE
 
-		var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 		if(!eyes)
 			return FALSE
 
@@ -115,7 +115,7 @@
 	if(human_source.is_blind())
 		return
 
-	var/obj/item/organ/internal/eyes/eyes = human_source.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = human_source.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		return
 

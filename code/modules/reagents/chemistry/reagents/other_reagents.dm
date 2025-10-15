@@ -1391,7 +1391,9 @@
 	. = ..()
 	if(!HAS_TRAIT(affected_mob, TRAIT_TOXINLOVER) && !prob(5))
 		return
-	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+	for(var/obj/item/organ/organ in affected_mob.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		organ.wash(clean_types|CLEAN_RAD)
 
 /datum/reagent/space_cleaner/ez_clean
@@ -1961,7 +1963,7 @@
 
 /datum/reagent/carpet/royal/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver)
 		// Heads of staff and the captain have a "royal metabolism"
 		if(HAS_TRAIT(liver, TRAIT_ROYAL_METABOLISM))
@@ -2455,7 +2457,7 @@
 	. = ..()
 	// Silently add the zombie infection organ to be activated upon death
 	if(!exposed_mob.get_organ_slot(ORGAN_SLOT_ZOMBIE))
-		var/obj/item/organ/internal/zombie_infection/nodamage/ZI = new()
+		var/obj/item/organ/zombie_infection/nodamage/ZI = new()
 		ZI.Insert(exposed_mob)
 
 /datum/reagent/magillitis

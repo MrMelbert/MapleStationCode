@@ -303,7 +303,7 @@
 		return
 
 	var/mob/living/carbon/human/human_user = user
-	var/obj/item/organ/internal/stomach/ethereal/user_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
+	var/obj/item/organ/stomach/ethereal/user_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
 	if(!istype(user_stomach))
 		return
 	if(user_stomach.drain_time > world.time)
@@ -312,7 +312,7 @@
 	ethereal_drain(human_user, user_stomach)
 
 /// Handles letting an ethereal drain our charge into their stomach
-/obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/internal/stomach/ethereal/used_stomach) // Non-module change
+/obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach) // Non-module change
 	if(charge() <= 0)
 		balloon_alert(user, "out of charge!")
 		return

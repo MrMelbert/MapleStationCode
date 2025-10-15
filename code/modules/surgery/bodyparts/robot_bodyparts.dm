@@ -218,7 +218,7 @@
 
 	robotic_emp_paralyze_damage_percent_threshold = 0.6
 
-	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
+	wing_types = list(/obj/item/organ/wings/functional/robotic)
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT) // NON-MODULE CHANGE but it should be like this anyways
 
 	var/wired = FALSE
