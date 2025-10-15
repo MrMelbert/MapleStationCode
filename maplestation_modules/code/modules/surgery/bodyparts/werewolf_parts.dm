@@ -98,7 +98,8 @@
 	brute_modifier = 0.8
 	speed_modifier = -0.1
 	dmg_overlay_type = null
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodytype = BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/left/werewolf/update_limb(dropping_limb, is_creating)
@@ -115,7 +116,8 @@
 	brute_modifier = 0.8
 	speed_modifier = -0.1
 	dmg_overlay_type = null
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodytype = BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/right/werewolf/update_limb(dropping_limb, is_creating)

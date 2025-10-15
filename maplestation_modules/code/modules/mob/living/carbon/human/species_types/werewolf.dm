@@ -17,7 +17,7 @@
 	mutantbrain = /obj/item/organ/brain/werewolf
 	mutantliver = /obj/item/organ/liver/werewolf
 	mutantheart = /obj/item/organ/heart/werewolf
-	external_organs = list(
+	mutant_organs = list(
 		/obj/item/organ/tail/fox = "Fox", // todo: add custom wolf tail
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
