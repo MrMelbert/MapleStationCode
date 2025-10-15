@@ -80,6 +80,7 @@
 
 	// Suffocate
 	var/skip_breath = FALSE
+	var/internals_breath = FALSE
 	if(losebreath >= 1)
 		losebreath -= 1
 		if(prob(10) && consciousness > 10)
@@ -88,13 +89,16 @@
 
 	// Breathe from internals or externals (name is misleading)
 	else if(internal || external)
-		breath = get_breath_from_internal(BREATH_VOLUME) || get_breath_from_surroundings(environment, BREATH_VOLUME)
+		breath = get_breath_from_internal(BREATH_VOLUME)
+		if(breath)
+			internals_breath = TRUE
 
 	// Breathe from air
-	else
+	if(!skip_breath && !breath)
 		breath = get_breath_from_surroundings(environment, BREATH_VOLUME)
 
-	check_breath(breath, skip_breath)
+	if(check_breath(breath) && internals_breath)
+		breathing_loop.start()
 
 	if(breath)
 		exhale_breath(breath)

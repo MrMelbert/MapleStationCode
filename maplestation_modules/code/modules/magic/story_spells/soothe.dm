@@ -156,8 +156,8 @@
 		TRAIT_ANTICONVULSANT,
 		// No fear
 		TRAIT_FEARLESS,
-		// No rage
-		TRAIT_JOLLY,
+		// No worry
+		TRAIT_DESENSITIZED,
 		// No madness
 		TRAIT_MADNESS_IMMUNE,
 		// No fear... again
