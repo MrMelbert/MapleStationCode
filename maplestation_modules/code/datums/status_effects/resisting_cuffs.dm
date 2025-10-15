@@ -105,6 +105,7 @@
 	if(is_resisting)
 		owner.changeNext_move(CLICK_CD_LOOK_UP)
 		owner.last_special = world.time + CLICK_CD_LOOK_UP
+		owner.visible_message(span_notice("[owner] stops struggling against [linked_cuffs]."), null, null, 5, ignored_mobs = list(owner))
 		to_chat(owner, span_notice("You stop struggling against [linked_cuffs]."))
 		is_resisting = FALSE
 		mob_bar.end_progress()
