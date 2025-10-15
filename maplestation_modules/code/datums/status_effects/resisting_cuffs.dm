@@ -6,12 +6,19 @@
 	// remove_on_fullheal = TRUE
 	// heal_flag_necessary = HEAL_RESTRAINTS
 
+	/// Slot flag the restraint is placed
 	VAR_PRIVATE/cuff_slot
+	/// The actual restraining item, cannot exist without this
 	VAR_PRIVATE/obj/item/linked_cuffs
+	/// If we are actively resisting
 	VAR_PRIVATE/is_resisting = FALSE
+	/// Progress towards breaking out of restraints
 	VAR_PRIVATE/break_out_progress = 0
+	/// Progress bar shown on the alert at all times
 	VAR_PRIVATE/datum/progressbar/alert_bar
+	/// Progress bar shown on the mob only when resisting
 	VAR_PRIVATE/datum/progressbar/mob_bar
+	/// Text to use in various messages to describe how we're restrained
 	VAR_PRIVATE/restrained_verb_text
 
 /datum/status_effect/restrained/on_creation(mob/living/new_owner, obj/item/linked_cuffs, slot)
