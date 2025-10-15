@@ -105,7 +105,15 @@
 	if(is_resisting)
 		owner.changeNext_move(CLICK_CD_LOOK_UP)
 		owner.last_special = world.time + CLICK_CD_LOOK_UP
-		to_chat(owner, span_notice("You are already struggling against [linked_cuffs]!"))
+		to_chat(owner, span_notice("You stop struggling against [linked_cuffs]."))
+		is_resisting = FALSE
+		mob_bar.end_progress()
+		mob_bar = null
+		return
+	for(var/datum/status_effect/restrained/other in owner.status_effects - src)
+		if(!other.is_resisting)
+			continue
+		to_chat(owner, span_notice("You are struggling against [other.linked_cuffs]!"))
 		return
 
 	owner.changeNext_move(linked_cuffs.resist_cooldown)
