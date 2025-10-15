@@ -24,7 +24,7 @@
 /datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
 	for(var/organ_slot, input in animid_singletons[animid_id].components)
-		set_mutant_organ(organ_slot, input)
+		set_mutant_organ(organ_slot, input, human_who_gained_species)
 	animid_singletons[animid_id].pre_species_gain(src, human_who_gained_species)
 	. = ..()
 	// replace body is not called when going from same species to same species, but we need it for swapping animid types
@@ -133,7 +133,11 @@
 		. |= animid_singletons[animalid_id].get_organs()
 
 /// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
-/datum/species/proc/set_mutant_organ(slot, input)
+/datum/species/proc/set_mutant_organ(slot, input, mob/living/carbon/human/humanoid)
+	// this prevents us from having invisible ears or w/e - leaves us with the default organ instead
+	if(ispath(input, /obj/item/organ) && !should_visual_organ_apply_to(input, humanoid))
+		return
+
 	switch(slot)
 		if(BODY_ZONE_CHEST, BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			bodypart_overrides[slot] = input

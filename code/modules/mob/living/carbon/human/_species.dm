@@ -621,7 +621,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/list/new_features = list()
 	var/static/list/organs_to_randomize = list()
-	for(var/obj/item/organ/organ_path as anything in mutant_organs)
+	for(var/obj/item/organ/organ_path as anything in get_mut_organs())
 		if(!organ_path.bodypart_overlay)
 			continue
 		var/overlay_path = initial(organ_path.bodypart_overlay)
