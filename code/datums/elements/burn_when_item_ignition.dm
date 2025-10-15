@@ -22,6 +22,9 @@
 /datum/element/burn_on_item_ignition/proc/try_burn(atom/source, mob/living/user, obj/item/tool, list/modifiers)
 	SIGNAL_HANDLER
 
+	//not relevant
+	if(!isitem(tool))
+		return NONE
 	//can't be put on fire!
 	if((source.resistance_flags & FIRE_PROOF) || !(source.resistance_flags & FLAMMABLE))
 		return NONE

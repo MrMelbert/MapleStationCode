@@ -32,6 +32,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	shell_capacity = SHELL_CAPACITY_SMALL
+	action_slots = ALL
 
 	///The item currently inserted into the PDA, starts with a pen.
 	var/obj/item/inserted_item = /obj/item/pen

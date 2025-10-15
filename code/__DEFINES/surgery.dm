@@ -32,7 +32,7 @@
 #define ORGAN_HAZARDOUS (1<<12)
 /// This is an external organ, not an inner one. Used in several checks.
 #define ORGAN_EXTERNAL (1<<13)
-
+/// Organ is currently irradiated, causing damage over time to the owner unless removed or fixed
 #define ORGAN_IRRADIATED (1<<14)
 
 /// Helper to figure out if a limb is organic
