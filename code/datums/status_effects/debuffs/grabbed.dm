@@ -652,7 +652,7 @@
 	if(HAS_TRAIT(src, TRAIT_STUBBY_BODY))
 		. *= 1.5
 
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		. *= potential_spine.athletics_boost_multiplier
 
