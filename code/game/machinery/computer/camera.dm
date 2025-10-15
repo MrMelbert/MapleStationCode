@@ -13,6 +13,7 @@
 	/// The turf where the camera was last updated.
 	var/turf/last_camera_turf
 	var/list/concurrent_users = list()
+	/// If TRUE viewed cameras will light up to show they're in use.
 	var/telegraph_cameras = TRUE
 	// Stuff needed to render the map
 	var/atom/movable/screen/map_view/camera/cam_screen

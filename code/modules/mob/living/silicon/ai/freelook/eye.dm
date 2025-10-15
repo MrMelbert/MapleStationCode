@@ -10,6 +10,7 @@
 	invisibility = INVISIBILITY_MAXIMUM
 	hud_possible = list(ANTAG_HUD, AI_DETECT_HUD = HUD_LIST_LIST)
 	var/list/visibleCameraChunks = list()
+	/// List of cameras within range of the AI eye. Used to toggle lights on and off as the eye moves.
 	var/list/obj/machinery/camera/cameras_near_eye = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE
@@ -17,7 +18,9 @@
 	var/static_visibility_range = 16
 	var/ai_detector_visible = TRUE
 	var/ai_detector_color = COLOR_RED
+	/// If TRUE cameras near the eye will light up to show they're in use.
 	var/telegraph_cameras = TRUE
+	/// Range that which cameras can be telegraphed.
 	var/telegraph_range = 5
 	interaction_range = INFINITY
 

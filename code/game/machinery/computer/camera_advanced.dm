@@ -23,7 +23,7 @@
 	var/list/actions = list()
 	///Should we supress any view changes?
 	var/should_supress_view_changes = TRUE
-
+	/// If TRUE viewed cameras will light up to show they're in use.
 	var/alerts_cameras = TRUE
 
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_REQUIRES_SIGHT
