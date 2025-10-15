@@ -1,4 +1,3 @@
-
 /obj/item/organ
 	name = "organ"
 	icon = 'icons/obj/medical/organs/organs.dmi'
@@ -79,6 +78,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			volume = reagent_vol,\
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
 
+	if(bodypart_overlay)
+		setup_bodypart_overlay()
+
 /obj/item/organ/Destroy()
 	if(isnull(owner) && !isnull(bodypart_owner))
 		bodypart_remove(bodypart_owner)
@@ -142,7 +144,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return
 
 /obj/item/organ/proc/on_life(seconds_per_tick, times_fired)
-	CRASH("Oh god oh fuck something is calling parent organ life")
+	return
 
 /obj/item/organ/examine(mob/user)
 	. = ..()
@@ -161,7 +163,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
-	return
+	if(!sprite_accessory_override)
+		bodypart_overlay?.imprint_on_next_insertion = TRUE
 
 //See above
 /obj/item/organ/proc/enter_wardrobe()
@@ -244,20 +247,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		set_heartattack(FALSE)
 
 		// Ears have aditional vаr "deaf", need to update it too
-		var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 		ears?.adjustEarDamage(0, -INFINITY) // full heal ears deafness
 
 		return
 
 	// Default organ fixing handling
 	// May result in kinda cursed stuff for mobs which don't need these organs
-	var/obj/item/organ/internal/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(!lungs)
 		lungs = new()
 		lungs.Insert(src)
 	lungs.set_organ_damage(0)
 
-	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(heart)
 		set_heartattack(FALSE)
 	else
@@ -265,19 +268,19 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		heart.Insert(src)
 	heart.set_organ_damage(0)
 
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		tongue = new()
 		tongue.Insert(src)
 	tongue.set_organ_damage(0)
 
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		eyes = new()
 		eyes.Insert(src)
 	eyes.set_organ_damage(0)
 
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!ears)
 		ears = new()
 		ears.Insert(src)
@@ -387,9 +390,22 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return span_warning("[self_aware ? "[capitalize(slot)]" : "It"] feels a bit off.")
 	return span_boldwarning("[self_aware ? "[capitalize(slot)]" : "It"] feels terrible!")
 
-/obj/item/organ/external/feel_for_damage(self_aware)
+/obj/item/organ/feel_for_damage(self_aware)
 	return ""
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)
 	return Insert(new_owner, special = TRUE, movement_flags = DELETE_IF_REPLACED)
+
+
+/// Get all possible organ slots by checking every organ, and then store it and give it whenever needed
+/proc/get_all_slots()
+	var/static/list/all_organ_slots = list()
+
+	if(!all_organ_slots.len)
+		for(var/obj/item/organ/an_organ as anything in subtypesof(/obj/item/organ))
+			if(!initial(an_organ.slot))
+				continue
+			all_organ_slots |= initial(an_organ.slot)
+
+	return all_organ_slots

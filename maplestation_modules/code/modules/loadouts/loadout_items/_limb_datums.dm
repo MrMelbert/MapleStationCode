@@ -521,54 +521,56 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 		pref_list_slot = initial(organ_path.slot)
 
 /datum/limb_option_datum/organ/apply_limb(mob/living/carbon/human/apply_to)
-	if(istype(apply_to, /mob/living/carbon/human/dummy)) // thog don't caare
-		return
+	if(istype(apply_to, /mob/living/carbon/human/dummy))
+		var/obj/item/organ/organ_path = limb_path
+		if(!organ_path::visual)
+			return
 
-	var/obj/item/organ/internal/new_organ = new limb_path()
+	var/obj/item/organ/new_organ = new limb_path()
 	new_organ.Insert(apply_to, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 /datum/limb_option_datum/organ/cyberheart
 	name = "Cybernetic Heart"
-	limb_path = /obj/item/organ/internal/heart/cybernetic
+	limb_path = /obj/item/organ/heart/cybernetic
 
 /datum/limb_option_datum/organ/cyberliver
 	name = "Cybernetic Liver"
-	limb_path = /obj/item/organ/internal/liver/cybernetic
+	limb_path = /obj/item/organ/liver/cybernetic
 
 /datum/limb_option_datum/organ/cyberlungs
 	name = "Cybernetic Lungs"
-	limb_path = /obj/item/organ/internal/lungs/cybernetic
+	limb_path = /obj/item/organ/lungs/cybernetic
 
 /datum/limb_option_datum/organ/cyberstomach
 	name = "Cybernetic Stomach"
-	limb_path = /obj/item/organ/internal/stomach/cybernetic
+	limb_path = /obj/item/organ/stomach/cybernetic
 
 /datum/limb_option_datum/organ/cybereyes
 	name = "Cybernetic Eyes"
-	limb_path = /obj/item/organ/internal/eyes/robotic/basic
+	limb_path = /obj/item/organ/eyes/robotic/basic
 
 /datum/limb_option_datum/organ/cyberears
 	name = "Cybernetic Ears"
-	limb_path = /obj/item/organ/internal/ears/cybernetic
+	limb_path = /obj/item/organ/ears/cybernetic
 
 /datum/limb_option_datum/organ/cyberears/cat
 	name = "Cybernetic Cat Ears"
-	limb_path = /obj/item/organ/internal/ears/cat/cybernetic
+	limb_path = /obj/item/organ/ears/cat/cybernetic
 
 /datum/limb_option_datum/organ/robotongue
 	name = "Voicebox"
 	tooltip = "A voice synthesizer that replaces the tongue. Makes you sound like a robot."
-	limb_path = /obj/item/organ/internal/tongue/robot
+	limb_path = /obj/item/organ/tongue/robot
 
 /datum/limb_option_datum/organ/lighter_implant
 	name = "Lighter Implant"
 	tooltip = "A lighter implanted into the tip of your finger. Light it with a snap... like a badass."
-	limb_path = /obj/item/organ/internal/cyberimp/arm/lighter
+	limb_path = /obj/item/organ/cyberimp/arm/lighter
 	ui_zone = BODY_ZONE_R_ARM
 	pref_list_slot = ORGAN_SLOT_RIGHT_ARM_AUG
 
 /datum/limb_option_datum/organ/lighter_implant/left
-	limb_path = /obj/item/organ/internal/cyberimp/arm/lighter/left
+	limb_path = /obj/item/organ/cyberimp/arm/lighter/left
 	ui_zone = BODY_ZONE_L_ARM
 	pref_list_slot = ORGAN_SLOT_LEFT_ARM_AUG
 	// Yeah you can have one in both arms if you want, don't really care

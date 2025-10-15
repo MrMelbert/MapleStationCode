@@ -197,7 +197,7 @@
 		playsound(cast_on, 'maplestation_modules/sound/magic_fire.ogg', 50, TRUE)
 		return mouth_covered_dumb_lizard(cast_on) || ..()
 
-	var/obj/item/organ/internal/stomach/stomach = cast_on.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/stomach = cast_on.get_organ_slot(ORGAN_SLOT_STOMACH)
 	var/list/present_accelerants = required_accelerant.Copy()
 	for(var/datum/reagent/inner_reagent as anything in stomach.reagents.reagent_list + cast_on.reagents.reagent_list)
 		for(var/existing_accelerant in present_accelerants)

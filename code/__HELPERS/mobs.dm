@@ -25,7 +25,7 @@
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
 		if("brown")
-			return "#663300"
+			return COLOR_BROWNER_BROWN
 		if("hazel")
 			return "#554422"
 		if("grey")
@@ -39,7 +39,7 @@
 		if("albino")
 			return "#" + pick("cc","dd","ee","ff") + pick("00","11","22","33","44","55","66","77","88","99") + pick("00","11","22","33","44","55","66","77","88","99")
 		else
-			return "#000000"
+			return COLOR_BLACK
 
 /proc/random_hair_color()
 	var/static/list/natural_hair_colors = list(
@@ -184,21 +184,21 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
  *
  * Checks that `user` does not move, change hands, get stunned, etc. for the
  * given `delay`. Returns `TRUE` on success or `FALSE` on failure.
- * 
+ *
  * @param {mob} user - The mob performing the action.
- * 
+ *
  * @param {number} delay - The time in deciseconds. Use the SECONDS define for readability. `1 SECONDS` is 10 deciseconds.
- * 
+ *
  * @param {atom} target - The target of the action. This is where the progressbar will display.
- * 
+ *
  * @param {flag} timed_action_flags - Flags to control the behavior of the timed action.
- * 
+ *
  * @param {boolean} progress - Whether to display a progress bar / cogbar.
- * 
+ *
  * @param {datum/callback} extra_checks - Additional checks to perform before the action is executed.
- * 
+ *
  * @param {string} interaction_key - The assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
- * 
+ *
  * @param {number} max_interact_count - The maximum amount of interactions allowed.
  */
 /proc/do_after(mob/user, delay, atom/target, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, hidden = FALSE)
@@ -689,7 +689,7 @@ GLOBAL_LIST_INIT(skin_tone_names, list(
 		mob_occupant = occupant
 
 	else if(isorgan(occupant))
-		var/obj/item/organ/internal/brain/brain = occupant
+		var/obj/item/organ/brain/brain = occupant
 		mob_occupant = brain.brainmob
 
 	return mob_occupant

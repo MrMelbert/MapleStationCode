@@ -18,6 +18,7 @@
 /// Conceals the names of other mobs
 /datum/status_effect/grouped/see_no_names
 	id = "see_no_names"
+	alert_type = null
 	/// If TRUE, the owner can still see ID names
 	var/see_ids = FALSE
 

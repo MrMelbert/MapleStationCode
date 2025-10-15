@@ -1,26 +1,14 @@
-/obj/item/organ/internal/ears/cat/cybernetic
+/obj/item/organ/ears/cat/cybernetic
 	name = "cybernetic cat ears"
 	desc = "Replacement cat ears that are better than the original model. You're getting closer to becoming the ultimate creature."
 	icon = 'maplestation_modules/icons/obj/clothing/hats.dmi'
 	icon_state = "cyber_kitty"
 	damage_multiplier = 1.5 //slightly better than regular cat ears
+	sprite_accessory_override = /datum/sprite_accessory/ears/cat/cyber
+	dna_block = null // we're not reploids or mechanoids these don't have DNA (giving it DNA will break the rendering)
 
-/obj/item/organ/internal/ears/cat/cybernetic/on_mob_insert(mob/living/carbon/human/ear_owner)
-	. = ..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = ear_owner.dna.species.mutant_bodyparts["ears"] = "Cybernetic Cat"
-		ear_owner.update_body()
 
-/obj/item/organ/internal/ears/cat/cybernetic/on_mob_remove(mob/living/carbon/human/ear_owner)
-	. = ..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = "None"
-		ear_owner.dna.species.mutant_bodyparts -= "ears"
-		ear_owner.update_body()
-
-/obj/item/organ/internal/ears/cat/cybernetic/emp_act(severity)
+/obj/item/organ/ears/cat/cybernetic/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

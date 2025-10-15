@@ -104,7 +104,7 @@
 	SIGNAL_HANDLER
 
 	// NON-MODULE CHANGE
-	var/obj/item/organ/internal/stomach/tummy = eater.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/tummy = eater.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(is_type_in_typecache(parent, tummy?.disease_free_foods))
 		return
 	// NON-MODULE CHANGE END
