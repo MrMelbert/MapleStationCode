@@ -557,14 +557,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!HAS_TRAIT(species_human, TRAIT_NO_UNDERWEAR))
 		if(species_human.underwear)
 			var/datum/sprite_accessory/underwear/underwear = SSaccessories.underwear_list[species_human.underwear]
-			var/mutable_appearance/underwear_overlay
-			if(underwear)
-				if(species_human.dna.species.sexes && species_human.physique == FEMALE && (underwear.gender == MALE))
-					underwear_overlay = mutable_appearance(wear_female_version(underwear.icon_state, underwear.icon, FEMALE_UNIFORM_FULL), layer = -BODY_LAYER)
-				else
-					underwear_overlay = mutable_appearance(underwear.icon, underwear.icon_state, -BODY_LAYER)
-				if(!underwear.use_static)
-					underwear_overlay.color = species_human.underwear_color
+			var/mutable_appearance/underwear_overlay = underwear?.make_appearance(species_human)
+			if(underwear_overlay)
 				standing += underwear_overlay
 
 		if(species_human.undershirt)
