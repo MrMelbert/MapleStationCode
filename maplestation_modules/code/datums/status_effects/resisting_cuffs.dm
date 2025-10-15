@@ -202,10 +202,11 @@
 		mob_bar.end_progress()
 		mob_bar = null
 		to_chat(owner, span_warning("Your struggle is interrupted, losing some progress towards escaping [linked_cuffs]."))
+		break_out_progress = max(0, break_out_progress - stun_amount)
 	else
 		to_chat(owner, span_warning("You lose some progress towards escaping [linked_cuffs]."))
+		break_out_progress = max(0, break_out_progress - stun_amount * 0.5)
 
-	break_out_progress = max(0, break_out_progress - stun_amount)
 	alert_bar.update(break_out_progress)
 
 /atom/movable/screen/alert/status_effect/restrained
