@@ -115,6 +115,7 @@
 /datum/status_effect/being_soothed/proc/generic_block(datum/source)
 	SIGNAL_HANDLER
 	sooth_blocked()
+	return RESIST_HANDLED
 
 /datum/status_effect/being_soothed/proc/attack_block(datum/source)
 	SIGNAL_HANDLER

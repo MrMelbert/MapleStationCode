@@ -203,7 +203,6 @@
 	. = ..()
 	if(arm_owner.handcuffed)
 		var/obj/item/lost_cuffs = arm_owner.handcuffed
-		arm_owner.set_handcuffed(null)
 		arm_owner.dropItemToGround(lost_cuffs, force = TRUE)
 	if(arm_owner.hud_used)
 		var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]

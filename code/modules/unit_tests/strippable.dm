@@ -24,9 +24,8 @@
 
 	var/handcuffs = allocate(/obj/item/restraints/handcuffs, user)
 	user.forceMove(target.loc)
-	user.set_handcuffed(handcuffs)
+	user.equip_to_slot(handcuffs, ITEM_SLOT_HANDCUFFED)
 	TEST_ASSERT_EQUAL(strip_menu.ui_status(user, ui_state), UI_UPDATE, "Being within range but cuffed was not update-only.")
-	user.set_handcuffed(null)
 	qdel(handcuffs)
 
 	user.set_body_position(LYING_DOWN)

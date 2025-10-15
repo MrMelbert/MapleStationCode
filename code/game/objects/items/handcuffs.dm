@@ -389,7 +389,7 @@
 /obj/item/restraints/legcuffs
 	name = "leg cuffs"
 	desc = "Use this to keep prisoners in line."
-	gender = PLURAL
+	gender = NEUTER
 	icon_state = "handcuff"
 	inhand_icon_state = "handcuff"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
@@ -400,6 +400,13 @@
 	slowdown = 7
 	breakouttime = 30 SECONDS
 	slot_flags = ITEM_SLOT_LEGCUFFED
+	resist_cooldown = CLICK_CD_RANGE
+
+/obj/item/restraints/legcuffs/equipped(mob/user, slot, initial)
+	. = ..()
+	// many leg cuffs are floor based traps, resetting pixelx/pixely for the purpose of the screen alert
+	pixel_x = 0
+	pixel_y = 0
 
 /**
  * # Bear trap
@@ -445,7 +452,7 @@
 		return
 	armed = !armed
 	update_appearance()
-	to_chat(user, span_notice("[src] is now [armed ? "armed" : "disarmed"]"))
+	to_chat(user, span_notice("[src] is now [armed ? "armed" : "disarmed"]."))
 
 /**
  * Closes a bear trap

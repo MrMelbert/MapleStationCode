@@ -37,14 +37,16 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	AddElement(/datum/element/strippable, GLOB.strippable_alien_humanoid_items)
 	ADD_TRAIT(src, TRAIT_STRONG_GRABBER, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_NO_GRAB_SPEED_PENALTY, INNATE_TRAIT)
+	RegisterSignal(src, COMSIG_MOB_REMOVED_CUFFS, PROC_REF(on_cuff_break))
 
 /mob/living/carbon/alien/adult/create_internal_organs()
 	organs += new /obj/item/organ/internal/stomach/alien()
 	return ..()
 
-/mob/living/carbon/alien/adult/cuff_resist(obj/item/I)
+/mob/living/carbon/alien/adult/proc/on_cuff_break()
+	SIGNAL_HANDLER
 	playsound(src, 'sound/voice/hiss5.ogg', 40, TRUE, TRUE)  //Alien roars when starting to break free
-	..(I, cuff_break = INSTANT_CUFFBREAK)
+	return BREAK_CUFFS
 
 /mob/living/carbon/alien/adult/resist_grab(moving_resist)
 	if(pulledby.grab_state)

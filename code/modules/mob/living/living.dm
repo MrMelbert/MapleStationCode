@@ -1238,7 +1238,9 @@
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
-	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_RESIST) & RESIST_HANDLED)
+		return
+
 	//resisting grabs (as if it helps anyone...)
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
 		log_combat(src, pulledby, "resisted grab")
@@ -1247,17 +1249,14 @@
 
 	//unbuckling yourself
 	if(buckled && last_special <= world.time)
-		resist_buckle()
+		buckled.user_unbuckle_mob(src, src)
 
 	//Breaking out of a container (Locker, sleeper, cryo...)
 	else if(loc != get_turf(src))
 		loc.container_resist_act(src)
 
-	else if(mobility_flags & MOBILITY_MOVE)
-		if(on_fire)
-			resist_fire() //stop, drop, and roll
-		else if(last_special <= world.time)
-			resist_restraints() //trying to remove cuffs.
+	else if((mobility_flags & MOBILITY_MOVE) && on_fire)
+		resist_fire() //stop, drop, and roll
 
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
@@ -1313,9 +1312,6 @@
 	if(moving_resist) //we resisted by trying to move
 		client?.move_delay = world.time + 4 SECONDS
 	return TRUE
-
-/mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return FALSE

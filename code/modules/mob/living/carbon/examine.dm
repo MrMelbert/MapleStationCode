@@ -50,7 +50,7 @@
 			. += generate_death_examine_text()
 
 	//Status effects
-	var/list/status_examines = get_status_effect_examinations()
+	var/list/status_examines = get_status_effect_examinations(user)
 	if (length(status_examines))
 		. += status_examines
 
@@ -302,11 +302,11 @@
 /**
  * Shows any and all examine text related to any status effects the user has.
  */
-/mob/living/proc/get_status_effect_examinations()
+/mob/living/proc/get_status_effect_examinations(mob/user)
 	var/list/examine_list = list()
 
 	for(var/datum/status_effect/effect as anything in status_effects)
-		var/effect_text = effect.get_examine_text()
+		var/effect_text = effect.get_examine_text(user)
 		if(!effect_text)
 			continue
 
@@ -394,10 +394,6 @@
 	//gloves
 	if(gloves && !(obscured_slots & HIDEGLOVES) && !HAS_TRAIT(gloves, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
-	//handcuffed?
-	if(handcuffed)
-		var/cables_or_cuffs = istype(handcuffed, /obj/item/restraints/handcuffs/cable) ? "restrained with cable" : "handcuffed"
-		clothes[CLOTHING_SLOT(HANDCUFFED)] = span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] [cables_or_cuffs]!")
 	//shoes
 	if(shoes && !(obscured_slots & HIDESHOES)  && !HAS_TRAIT(shoes, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] feet."

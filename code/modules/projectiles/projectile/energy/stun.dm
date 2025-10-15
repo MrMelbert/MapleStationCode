@@ -245,6 +245,7 @@
 /datum/status_effect/tased/proc/try_remove_taser(datum/source)
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_remove_taser_async), source)
+	return RESIST_HANDLED
 
 /datum/status_effect/tased/proc/try_remove_taser_async()
 	owner.visible_message(
