@@ -225,10 +225,8 @@
 	clone.apply_status_effect(/datum/status_effect/genetic_damage/cloning, initial_damage)
 
 	// remove organs before removing limbs and taking things with them
-	for(var/obj/item/organ/organ in clone.organs)
-		if (organ.organ_flags & ORGAN_EXTERNAL)
-			continue
-		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_UNREMOVABLE))
+	for(var/obj/item/organ/organ as anything in clone.organs)
+		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_EXTERNAL|ORGAN_UNREMOVABLE))
 			continue
 		organ.organ_flags |= ORGAN_FROZEN
 		organ.Remove(clone, special = FALSE) // not special so we apply stuff like heart attacks and blindness

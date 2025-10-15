@@ -68,7 +68,9 @@
 	lighter.set_lit(FALSE) // not strictly necessary as we qdel, but for the sound fx
 	if(reset_cooldown_after)
 		do_unsnap(hand_owner)
-	return ..()
+	. = ..()
+	if(reset_cooldown_after)
+		StartCooldown(0.75 SECONDS) // avoid spam
 
 /datum/action/cooldown/spell/touch/finger_flame/mana
 	name = "Finger Flame"

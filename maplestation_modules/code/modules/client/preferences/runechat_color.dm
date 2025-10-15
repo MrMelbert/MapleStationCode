@@ -15,6 +15,7 @@
 	target.chat_color = value
 	target.chat_color_darkened = value
 	target.chat_color_name = target.name
+	GLOB.forced_runechat_names[target.name] = value
 
 /datum/preference/color/runechat_color/is_valid(value)
 	if (!..(value))

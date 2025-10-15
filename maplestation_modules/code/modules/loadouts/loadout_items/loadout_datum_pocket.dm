@@ -133,6 +133,9 @@
 	visuals_only,
 )
 	. = ..()
+	if(isnull(equipped_item))
+		return
+
 	var/picked_style = style_to_style(preference_list[item_path]?[INFO_LAYER])
 	var/picked_color = preference_list[item_path]?[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
 	if(istype(equipped_item)) // can be null for visuals_only

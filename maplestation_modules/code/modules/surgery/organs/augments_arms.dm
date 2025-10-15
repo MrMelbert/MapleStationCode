@@ -64,6 +64,7 @@
 	zone = BODY_ZONE_L_ARM
 
 /obj/item/lighter/spell
+	item_flags = ABSTRACT|DROPDEL
 	/// Weakref to the action that created us
 	VAR_FINAL/datum/weakref/origin_ref
 
@@ -71,8 +72,7 @@
 	. = ..()
 	if(origin)
 		origin_ref = WEAKREF(origin)
-	else
-		item_flags |= DROPDEL
+		item_flags &= ~DROPDEL
 
 /obj/item/lighter/spell/proc/clear_up(mob/user, do_message = FALSE)
 	var/datum/action/cooldown/spell/touch/finger_flame/origin = origin_ref?.resolve()
@@ -107,6 +107,9 @@
 
 /obj/item/lighter/spell/finger/magic
 	name = "finger flame"
+	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
+	icon_state = "fire"
+	inhand_icon_state = "nothing"
 
 /obj/item/lighter/spell/finger/magic/ignition_effect(atom/A, mob/user)
 	. = ..()
@@ -121,7 +124,7 @@
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
 	icon_state = "fire"
 	inhand_icon_state = "nothing"
-	item_flags = ABSTRACT
+	item_flags = ABSTRACT|DROPDEL
 	light_sound_on = null
 	light_sound_off = null
 	/// World.time we were last lit.

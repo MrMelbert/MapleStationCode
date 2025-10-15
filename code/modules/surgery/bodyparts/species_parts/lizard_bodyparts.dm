@@ -9,6 +9,7 @@
 	limb_id = SPECIES_LIZARD
 	is_dimorphic = TRUE
 	wing_types = list(/obj/item/organ/wings/functional/dragon)
+	acceptable_bodyshape = parent_type::acceptable_bodyshape | BODYSHAPE_DIGITIGRADE
 
 /obj/item/bodypart/chest/lizard/get_butt_sprite()
 	return BUTT_SPRITE_LIZARD

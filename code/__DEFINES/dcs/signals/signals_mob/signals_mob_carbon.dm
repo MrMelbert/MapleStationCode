@@ -23,6 +23,8 @@
 ///from base of /obj/item/bodypart/proc/can_attach_limb(): (new_limb, special) allows you to fail limb attachment
 #define COMSIG_ATTEMPT_CARBON_ATTACH_LIMB "attempt_carbon_attach_limb"
 	#define COMPONENT_NO_ATTACH (1<<0)
+///from base of /obj/item/bodypart/proc/can_attach_limb(): (new_owner, special) allows you to fail limb attachment
+#define COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB "bodypart_attempt_attach"
 ///from base of /obj/item/bodypart/proc/try_attach_limb(): (new_limb, special)
 #define COMSIG_CARBON_ATTACH_LIMB "carbon_attach_limb"
 /// Called from bodypart being attached /obj/item/bodypart/proc/try_attach_limb(mob/living/carbon/new_owner, special)
