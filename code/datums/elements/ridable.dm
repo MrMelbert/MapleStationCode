@@ -125,7 +125,14 @@
 	var/theoretical_speed = initial(theoretical_riding_component.vehicle_move_delay)
 	if(theoretical_speed <= speed_limit) // i say speed but this is actually move delay, so you have to be ABOVE the speed limit to pass
 		to_chat(user, span_warning("[ridable_atom] can't be made any faster!"))
-		return SPEED_POTION_STOP
+		return
+	Detach(ridable_atom)
+	ridable_atom.AddElement(/datum/element/ridable, component_type = riding_component_type, potion_boost = TRUE)
+	to_chat(user, span_notice("You slather the red gunk over [ridable_atom], making it faster."))
+	ridable_atom.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+	ridable_atom.add_atom_colour(COLOR_RED, FIXED_COLOUR_PRIORITY)
+	qdel(speed_potion)
+	return SPEED_POTION_STOP
 
 /// Remove all of the relevant [riding offhand items][/obj/item/riding_offhand] from the target
 /datum/element/ridable/proc/unequip_buckle_inhands(mob/living/carbon/user, atom/movable/target_movable)

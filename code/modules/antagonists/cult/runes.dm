@@ -615,10 +615,10 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	GLOB.narsie_effect_last_modified = started
 
 	var/starting_color = GLOB.starlight_color
-	var/list/target_color = ReadHSV(RGBtoHSV(starting_color))
+	var/list/target_color = rgb2hsv(starting_color)
 	target_color[2] = target_color[2] * 0.4
 	target_color[3] = target_color[3] * 0.5
-	var/mid_color = HSVtoRGB(hsv(target_color[1], target_color[2], target_color[3]))
+	var/mid_color = hsv2rgb(target_color)
 	var/end_color = "#c21d57"
 	for(var/i in 1 to 9)
 		if(GLOB.narsie_effect_last_modified > started)
@@ -642,7 +642,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	for(var/i in 1 to 4)
 		if(GLOB.narsie_effect_last_modified > started)
 			return
-		var/starlight_color = hsv_gradient(i, 1, starting_color, 4, end_color)
+		var/starlight_color = BlendHSV(i / 4, starting_color, end_color)
 		set_starlight(starlight_color)
 		sleep(8 SECONDS)
 
@@ -1070,7 +1070,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 
 /mob/living/carbon/human/cult_ghost/get_organs_for_zone(zone, include_children)
 	. = ..()
-	for(var/obj/item/organ/internal/brain/B in .) //they're not that smart, really
+	for(var/obj/item/organ/brain/B in .) //they're not that smart, really
 		. -= B
 
 
@@ -1123,14 +1123,13 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	empulse(T, 0.42*(intensity), 1)
 
 	var/list/images = list()
-	var/datum/atom_hud/sec_hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	for(var/mob/living/M in GLOB.alive_mob_list)
 		if(!is_valid_z_level(T, get_turf(M)))
 			continue
 		if(ishuman(M))
 			if(!IS_CULTIST(M))
-				sec_hud.hide_from(M)
-				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(hudFix), M), duration)
+				ADD_TRAIT(M, TRAIT_BLOCK_SECHUD, CULT_TRAIT)
+				addtimer(TRAIT_CALLBACK_REMOVE(M, TRAIT_BLOCK_SECHUD, CULT_TRAIT), duration)
 			var/image/A = image('icons/mob/nonhuman-player/cult.dmi',M,"cultist", ABOVE_MOB_LAYER)
 			A.override = 1
 			add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/noncult, "human_apoc", A, NONE)
@@ -1207,13 +1206,3 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 			if(I.icon_state != "bloodsparkles")
 				I.override = TRUE
 		sleep(19 SECONDS)
-
-
-
-/proc/hudFix(mob/living/carbon/human/target)
-	if(!target || !target.client)
-		return
-	var/obj/O = target.get_item_by_slot(ITEM_SLOT_EYES)
-	if(istype(O, /obj/item/clothing/glasses/hud/security))
-		var/datum/atom_hud/sec_hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
-		sec_hud.show_to(target)

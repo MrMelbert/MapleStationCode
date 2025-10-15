@@ -32,23 +32,25 @@
 
 /datum/component/stackable_item/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(item_attackby))
-	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(atom_exited))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(item_dropped))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(item_equipped))
-	RegisterSignal(parent, COMSIG_ITEM_GET_WORN_OVERLAYS, PROC_REF(update_worn_icon))
+	RegisterSignal(parent, COMSIG_ITEM_GET_SEPARATE_WORN_OVERLAYS, PROC_REF(update_worn_icon))
 	RegisterSignals(parent, list(COMSIG_ATOM_DESTRUCTION, COMSIG_OBJ_DECONSTRUCT), PROC_REF(on_deconstruct))
+	RegisterSignal(parent, COMSIG_ATOM_GET_EXAMINE_NAME, PROC_REF(get_examine_name))
 
 /datum/component/stackable_item/UnregisterFromParent()
 	UnregisterSignal(parent, list(
 		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_DESTRUCTION,
-		COMSIG_ATOM_EXAMINE,
+		COMSIG_ATOM_EXAMINE_TAGS,
 		COMSIG_ATOM_EXITED,
 		COMSIG_ITEM_DROPPED,
 		COMSIG_ITEM_EQUIPPED,
-		COMSIG_ITEM_GET_WORN_OVERLAYS,
+		COMSIG_ITEM_GET_SEPARATE_WORN_OVERLAYS,
 		COMSIG_OBJ_DECONSTRUCT,
+		COMSIG_ATOM_GET_EXAMINE_NAME,
 	))
 
 /datum/component/stackable_item/Destroy()
@@ -61,21 +63,17 @@
 /datum/component/stackable_item/proc/on_examine(obj/item/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	if(isnull(stacked_on))
-		if(wearable_descriptor)
-			examine_list += span_notice("Looks like you could attach [wearable_descriptor] to it.")
+	if(wearable_descriptor)
+		examine_list["stackable"] = "You could attach [wearable_descriptor] to it."
 
-	else
-		examine_list += span_notice("It has \a [stacked_on] attached.")
-
-/datum/component/stackable_item/proc/update_worn_icon(obj/item/source, list/overlays, mutable_appearance/standing, isinhands, ...)
+/datum/component/stackable_item/proc/update_worn_icon(obj/item/source, list/overlays, mutable_appearance/standing, mutable_appearance/draw_target, isinhands, ...)
 	SIGNAL_HANDLER
 
 	if(isinhands || isnull(stacked_on))
 		return
 
 	// Add in our new worn icon as an overlay of our item's icon.
-	var/mutable_appearance/created = stacked_on.build_worn_icon(standing.layer)
+	var/mutable_appearance/created = stacked_on.build_worn_icon(default_layer = standing.layer, default_icon_file = get_default_icon_by_slot(stacked_on.slot_flags))
 	if(isnull(created))
 		return
 
@@ -173,3 +171,8 @@
 	var/equipped_flags = parent_item.slot_flags
 	if(carbon_loc.get_item_by_slot(equipped_flags) == parent_item)
 		carbon_loc.update_clothing(equipped_flags)
+
+/datum/component/stackable_item/proc/get_examine_name(obj/item/source, mob/user, list/examine_override)
+	SIGNAL_HANDLER
+
+	examine_override[EXAMINE_POSITION_NAME] += " and [stacked_on.get_examine_name()]"

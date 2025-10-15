@@ -591,7 +591,7 @@
 	if(SEND_SIGNAL(H, COMSIG_DEFIBRILLATOR_PRE_HELP_ZAP, user, src) & COMPONENT_DEFIB_STOP)
 		do_cancel()
 		return
-	var/obj/item/organ/internal/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
 	if(H.stat == DEAD)
 		H.visible_message(span_warning("[H]'s body convulses a bit."))
 		playsound(src, SFX_BODYFALL, 50, TRUE)

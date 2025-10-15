@@ -34,8 +34,10 @@
 	 * Set to BIO_STANDARD_UNJOINTED because most species have both flesh bone and blood in their limbs.
 	 */
 	var/biological_state = BIO_STANDARD_UNJOINTED
-	///A bitfield of bodytypes for clothing, surgery, and misc information
-	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
+	///A bitfield of bodytypes for surgery, and misc information
+	var/bodytype = BODYTYPE_ORGANIC
+	///A bitfield of bodyshapes for clothing and other sprite information
+	var/bodyshape = BODYSHAPE_HUMANOID
 	///Defines when a bodypart should not be changed. Example: BP_BLOCK_CHANGE_SPECIES prevents the limb from being overwritten on species gain
 	var/change_exempt_flags = NONE
 	///Random flags that describe this bodypart
@@ -905,7 +907,7 @@
 	return overlays
 
 /obj/item/bodypart/leg/get_bodypart_damage_state()
-	if(!(bodytype & BODYTYPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
+	if(!(bodyshape & BODYSHAPE_DIGITIGRADE) || isnull(owner) || (owner.is_digitigrade_squished()))
 		return ..()
 
 	. = ..()
@@ -966,7 +968,7 @@
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
-	recolor_external_organs()
+	recolor_bodypart_overlays()
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
@@ -1270,7 +1272,7 @@
 	return ((biological_state & BIO_BLOODED) && (!owner || !HAS_TRAIT(owner, TRAIT_NOBLOOD)))
 
 ///Loops through all of the bodypart's external organs and update's their color.
-/obj/item/bodypart/proc/recolor_external_organs()
+/obj/item/bodypart/proc/recolor_bodypart_overlays()
 	for(var/datum/bodypart_overlay/mutant/overlay in bodypart_overlays)
 		overlay.inherit_color(src, force = TRUE)
 

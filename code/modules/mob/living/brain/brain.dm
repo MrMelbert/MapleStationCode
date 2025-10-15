@@ -11,7 +11,7 @@
 	create_dna(src)
 	stored_dna.initialize_dna()
 	if(isturf(loc)) //not spawned in an MMI or brain organ (most likely adminspawned)
-		var/obj/item/organ/internal/brain/OB = new(loc) //we create a new brain organ for it.
+		var/obj/item/organ/brain/OB = new(loc) //we create a new brain organ for it.
 		OB.brainmob = src
 		forceMove(OB)
 	if(!container?.mecha) //Unless inside a mecha, brains are rather helpless.
@@ -19,7 +19,7 @@
 
 
 /mob/living/brain/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
-	var/obj/item/organ/internal/brain/brain_loc = loc
+	var/obj/item/organ/brain/brain_loc = loc
 	if(brain_loc && isnull(new_turf) && brain_loc.owner) //we're actively being put inside a new body.
 		return ..(old_turf, get_turf(brain_loc.owner), same_z_layer, notify_contents)
 	return ..()
@@ -66,15 +66,28 @@
 /mob/living/brain/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	return // no eyes, no flashing
 
-/mob/living/brain/can_be_revived()
+/// Checks if the passed item can hold a brainmob
+/mob/living/brain/proc/is_container(obj/item/thing)
+	return istype(thing, /obj/item/mmi) || istype(thing, /obj/item/organ/brain)
+
+/// Returns the brain the brainmob owns
+/// Note, this can return null if we are a positronic brain (as they have no real brain organ)
+/mob/living/brain/proc/get_brain()
+	return container?.brain || loc
+
+/// Checks if we and our brain is healthy enough to be revived
+/mob/living/brain/proc/check_brain()
 	if(health <= -maxHealth)
 		return FALSE
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = get_brain()
 	if(!istype(brain_real))
-		return FALSE
+		return TRUE // Revive if they don't have a real brain, it's probably a posibrain
 	if(brain_real.organ_flags & ORGAN_FAILING)
 		return FALSE
 	return TRUE
+
+/mob/living/brain/can_be_revived()
+	return is_container(loc) && check_brain()
 
 /mob/living/brain/fully_replace_character_name(oldname,newname)
 	..()
@@ -82,17 +95,12 @@
 		stored_dna.real_name = real_name
 
 /mob/living/brain/forceMove(atom/destination)
-	if(container)
-		return container.forceMove(destination)
-	else if (istype(loc, /obj/item/organ/internal/brain))
-		var/obj/item/organ/internal/brain/B = loc
-		B.forceMove(destination)
-	else if (istype(destination, /obj/item/organ/internal/brain))
-		doMove(destination)
-	else if (istype(destination, /obj/item/mmi))
-		doMove(destination)
-	else
-		CRASH("Brainmob without a container [src] attempted to move to [destination].")
+	if(is_container(loc))
+		var/atom/movable/cloc = loc
+		return cloc.forceMove(destination)
+	if(is_container(destination))
+		return ..()
+	CRASH("Brainmob without a container [src] attempted to move to [destination].")
 
 /mob/living/brain/update_mouse_pointer()
 	if (!client)
@@ -107,8 +115,8 @@
 
 /mob/living/brain/proc/get_traumas()
 	. = list()
-	if(istype(loc, /obj/item/organ/internal/brain))
-		var/obj/item/organ/internal/brain/B = loc
+	if(istype(loc, /obj/item/organ/brain))
+		var/obj/item/organ/brain/B = loc
 		. = B.traumas
 
 /mob/living/brain/get_policy_keywords()

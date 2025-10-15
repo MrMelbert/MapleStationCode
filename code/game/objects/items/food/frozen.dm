@@ -401,7 +401,7 @@
 	if(!do_after(user, 3 SECONDS, interacting_with))
 		return ITEM_INTERACT_BLOCKING
 
-	var/obj/item/organ/internal/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
 	var/report = ""
 	if(isnull(their_tongue))
 		report = "[inspected.p_They()] don't have a tongue to depress"

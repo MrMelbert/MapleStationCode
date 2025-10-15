@@ -15983,7 +15983,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
 "eGX" = (
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /turf/closed/wall,
 /area/station/maintenance/port/aft)
 "eHe" = (
@@ -24745,7 +24745,7 @@
 "hul" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "huB" = (
@@ -34516,8 +34516,8 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "krV" = (
-/obj/machinery/vending/autodrobe/all_access,
 /obj/structure/window/reinforced/spawner/directional/west,
+/obj/machinery/vending/autodrobe,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/prison)
 "krW" = (
@@ -50855,7 +50855,7 @@
 /turf/open/floor/iron/dark/textured,
 /area/station/ai_monitored/security/armory)
 "pgN" = (
-/obj/item/organ/external/tail/monkey,
+/obj/item/organ/tail/monkey,
 /obj/effect/decal/cleanable/blood/splatter,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
@@ -55004,7 +55004,7 @@
 	pixel_y = 4
 	},
 /obj/item/bodypart/chest,
-/obj/item/organ/internal/heart,
+/obj/item/organ/heart,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "qrj" = (
@@ -71875,7 +71875,7 @@
 /area/station/security/prison/rec)
 "vwG" = (
 /obj/machinery/vending/security{
-	onstation_override = 1
+	all_products_free = 0
 	},
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8

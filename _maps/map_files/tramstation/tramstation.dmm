@@ -56388,7 +56388,7 @@
 /turf/open/floor/greenscreen,
 /area/station/command/heads_quarters/captain/private)
 "tdR" = (
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},

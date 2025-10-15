@@ -55,7 +55,7 @@
 /obj/item/clothing/glasses/proc/thermal_overload()
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
-		var/obj/item/organ/internal/eyes/eyes = H.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = H.get_organ_slot(ORGAN_SLOT_EYES)
 		if(!H.is_blind())
 			if(H.glasses == src)
 				to_chat(H, span_danger("[src] overloads and blinds you!"))
@@ -154,6 +154,7 @@
 	desc = "You can totally see in the dark now!"
 	icon_state = "night"
 	inhand_icon_state = "glasses"
+	article = "a set of"
 	flags_cover = GLASSESCOVERSEYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	// Dark green
@@ -168,11 +169,13 @@
 /obj/item/clothing/glasses/eyepatch
 	name = "eyepatch"
 	desc = "Yarr."
+	gender = NEUTER
 	icon_state = "eyepatch"
 	base_icon_state = "eyepatch"
 	inhand_icon_state = null
 	actions_types = list(/datum/action/item_action/flip)
 	dog_fashion = /datum/dog_fashion/head/eyepatch
+	custom_materials = null
 
 /obj/item/clothing/glasses/eyepatch/attack_self(mob/user, modifiers)
 	. = ..()
@@ -420,7 +423,7 @@
 	if(!user.get_organ_slot(ORGAN_SLOT_EYES))
 		to_chat(user, span_warning("You have no eyes to apply the contacts to!"))
 		return
-	var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 
 	to_chat(user, span_notice("You begin applying the contact lenses to your eyes..."))
 	if(!do_after(user, 3 SECONDS, src))
@@ -629,43 +632,31 @@
 	lighting_cutoff = LIGHTING_CUTOFF_HIGH
 	glass_colour_type = FALSE
 	vision_flags = SEE_TURFS
-	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_MADNESS_IMMUNE)
-	var/list/hudlist = list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_SECURITY_ADVANCED, DATA_HUD_BOT_PATH)
+	clothing_traits = list(
+		TRAIT_REAGENT_SCANNER,
+		TRAIT_MADNESS_IMMUNE,
+		TRAIT_MEDICAL_HUD,
+		TRAIT_SECURITY_HUD,
+		TRAIT_DIAGNOSTIC_HUD,
+		TRAIT_BOT_PATH_HUD,
+	)
 	var/xray = FALSE
 
 /obj/item/clothing/glasses/debug/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -15)
 
-/obj/item/clothing/glasses/debug/equipped(mob/user, slot)
-	. = ..()
-	if(!(slot & ITEM_SLOT_EYES))
-		return
-	if(ishuman(user))
-		for(var/hud in hudlist)
-			var/datum/atom_hud/our_hud = GLOB.huds[hud]
-			our_hud.show_to(user)
-		user.add_traits(list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD), GLASSES_TRAIT)
-		if(xray)
-			ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
-
-/obj/item/clothing/glasses/debug/dropped(mob/user)
-	. = ..()
-	user.remove_traits(list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, TRAIT_XRAY_VISION), GLASSES_TRAIT)
-	if(ishuman(user))
-		for(var/hud in hudlist)
-			var/datum/atom_hud/our_hud = GLOB.huds[hud]
-			our_hud.hide_from(user)
-
 /obj/item/clothing/glasses/debug/click_alt(mob/user)
 	if(!ishuman(user))
 		return CLICK_ACTION_BLOCKING
 	if(xray)
 		vision_flags &= ~SEE_MOBS|SEE_OBJS
-		REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+		// REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+		detach_clothing_traits(TRAIT_XRAY_VISION)
 	else
 		vision_flags |= SEE_MOBS|SEE_OBJS
-		ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+		// ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
+		attach_clothing_traits(TRAIT_XRAY_VISION)
 	xray = !xray
 	var/mob/living/carbon/human/human_user = user
 	human_user.update_sight()

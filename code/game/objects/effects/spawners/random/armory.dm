@@ -28,7 +28,7 @@
 /obj/effect/spawner/random/armory/disablers
 	name = "disabler spawner"
 	icon_state = "disabler"
-	loot = list(/obj/item/gun/energy/disabler)
+	loot = list(/obj/item/gun/energy/disabler, /obj/item/gun/energy/disabler/phaser)
 
 /obj/effect/spawner/random/armory/laser_gun
 	name = "laser gun spawner"

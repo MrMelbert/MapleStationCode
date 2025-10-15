@@ -4,12 +4,14 @@
 
 /obj/item/clothing/under/rank/cargo/qm
 	name = "quartermaster's uniform"
+	article = "the"
 	desc = "A brown dress shirt, coupled with a pair of black slacks. It's specially designed to prevent back injuries caused by pushing paper."
 	icon_state = "qm"
 	inhand_icon_state = "lb_suit"
 
 /obj/item/clothing/under/rank/cargo/qm/skirt
 	name = "quartermaster's skirt"
+	article = "the"
 	desc = "A brown dress shirt, coupled with a long pleated black skirt. It's specially designed to prevent back injuries caused by pushing paper."
 	icon_state = "qm_skirt"
 	inhand_icon_state = "lb_suit"

@@ -300,6 +300,7 @@
 	decomp_req_handle = TRUE
 	ant_attracting = FALSE
 	decomp_type = /obj/item/food/deadmouse/moldy
+	food_flags = FOOD_FINGER_FOOD
 	var/body_color = "gray"
 	var/critter_type = /mob/living/basic/mouse
 

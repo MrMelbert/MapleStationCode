@@ -173,7 +173,7 @@
 	if(airlock.cutAiWire)
 		airlock.wires.cut(WIRE_AI)
 	if(airlock.autoname)
-		airlock.name = get_area_name(src, TRUE)
+		airlock.name = "[get_area_name(src, TRUE)] airlock"
 	airlock.update_appearance()
 	qdel(src)
 
@@ -930,7 +930,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		body_bag.forceMove(morgue_tray)
 
 		new_human.death() //here lies the mans, rip in pepperoni.
-		for (var/obj/item/organ/internal/part in new_human.organs) //randomly remove organs from each body, set those we keep to be in stasis
+		for (var/obj/item/organ/part in new_human.organs) //randomly remove organs from each body, set those we keep to be in stasis
+			if (part.organ_flags & ORGAN_EXTERNAL) // NON-MODULE CHANGE
+				continue // NON-MODULE CHANGE
 			if (prob(40))
 				qdel(part)
 			else
