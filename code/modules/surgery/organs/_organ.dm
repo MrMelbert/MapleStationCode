@@ -247,20 +247,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		set_heartattack(FALSE)
 
 		// Ears have aditional vаr "deaf", need to update it too
-		var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 		ears?.adjustEarDamage(0, -INFINITY) // full heal ears deafness
 
 		return
 
 	// Default organ fixing handling
 	// May result in kinda cursed stuff for mobs which don't need these organs
-	var/obj/item/organ/internal/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(!lungs)
 		lungs = new()
 		lungs.Insert(src)
 	lungs.set_organ_damage(0)
 
-	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(heart)
 		set_heartattack(FALSE)
 	else
@@ -268,19 +268,19 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		heart.Insert(src)
 	heart.set_organ_damage(0)
 
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		tongue = new()
 		tongue.Insert(src)
 	tongue.set_organ_damage(0)
 
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		eyes = new()
 		eyes.Insert(src)
 	eyes.set_organ_damage(0)
 
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!ears)
 		ears = new()
 		ears.Insert(src)
@@ -390,7 +390,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return span_warning("[self_aware ? "[capitalize(slot)]" : "It"] feels a bit off.")
 	return span_boldwarning("[self_aware ? "[capitalize(slot)]" : "It"] feels terrible!")
 
-/obj/item/organ/external/feel_for_damage(self_aware)
+/obj/item/organ/feel_for_damage(self_aware)
 	return ""
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target

@@ -15,7 +15,7 @@
 
 /mob/living/brain/fully_heal(heal_flags)
 	. = ..()
-	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
+	var/obj/item/organ/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))
 		return
 	if(heal_flags & (HEAL_BODY|HEAL_DAMAGE|HEAL_ADMIN))

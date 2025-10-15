@@ -260,7 +260,7 @@
 			break
 
 	// Skillchip checks
-	var/obj/item/organ/internal/brain/examiner_brain = examiner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/examiner_brain = examiner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	for(var/obj/item/skillchip/checked_skillchip as anything in examiner_brain?.skillchips)
 		if(checked_skillchip.active && is_type_in_list(checked_skillchip, special_desc_req))
 			fulfilled_requirements[EXAMINE_CHECK_SKILLCHIP] = checked_skillchip
