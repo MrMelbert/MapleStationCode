@@ -1,7 +1,7 @@
 // Liver stuff
 
 // werewolf liver, used for various funny traits, like handling their silver weakness chemically
-/obj/item/organ/internal/liver/werewolf
+/obj/item/organ/liver/werewolf
 
 	name = "Beastly liver"
 	desc = "A large monstrous liver."
@@ -10,7 +10,7 @@
 	// this is a major stop gap: i do want down the line for this to be removable, but this is the easiest way to keep liver in even when untransformed, and prevent werewolves from removing it for 0 downsides
 	organ_traits = list(TRAIT_SILVER_VULNERABLE)
 
-/obj/item/organ/internal/liver/werewolf/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
+/obj/item/organ/liver/werewolf/handle_chemical(mob/living/carbon/organ_owner, datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()
 	// parent returned COMSIG_MOB_STOP_REAGENT_CHECK or we are failing
 	if((. & COMSIG_MOB_STOP_REAGENT_CHECK) || (organ_flags & ORGAN_FAILING))

@@ -20,7 +20,7 @@
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	locked = TRUE
 
-/obj/item/organ/internal/ears/cat/werewolf
+/obj/item/organ/ears/cat/werewolf
 	name = "wolf ears"
 	icon = 'icons/obj/clothing/head/costume.dmi'
 	icon_state = "kitty"
@@ -28,7 +28,7 @@
 	// Same sensitivity as felinid ears
 	damage_multiplier = 2
 
-/obj/item/organ/internal/ears/cat/werewolf/on_mob_insert(mob/living/carbon/human/ear_owner)
+/obj/item/organ/ears/cat/werewolf/on_mob_insert(mob/living/carbon/human/ear_owner)
 	. = ..()
 	if(istype(ear_owner))
 		color = ear_owner.hair_color
@@ -36,7 +36,7 @@
 		ear_owner.update_body()
 		ADD_TRAIT(ear_owner, TRAIT_GOOD_HEARING, ORGAN_TRAIT)
 
-/obj/item/organ/internal/ears/cat/werewolf/on_mob_remove(mob/living/carbon/human/ear_owner)
+/obj/item/organ/ears/cat/werewolf/on_mob_remove(mob/living/carbon/human/ear_owner)
 	. = ..()
 	if(istype(ear_owner))
 		ear_owner.dna.features["ears"] = "None"

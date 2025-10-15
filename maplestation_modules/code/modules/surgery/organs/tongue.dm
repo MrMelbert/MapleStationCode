@@ -74,7 +74,7 @@
 	speech_sound_list_question = null // same as regular speech sounds
 	speech_sound_list_exclamation = list('maplestation_modules/sound/voice/shad_exclaim.ogg' = 55)
 
-/obj/item/organ/internal/tongue/werewolf
+/obj/item/organ/tongue/werewolf
 	name = "wolf tongue"
 	desc = "A large tongue that looks like a mix of a human's and a wolf's."
 	icon_state = "werewolf_tongue"
@@ -85,7 +85,7 @@
 	liked_foodtypes = GROSS | MEAT | RAW | GORE
 	disliked_foodtypes = SUGAR
 
-/obj/item/organ/internal/tongue/werewolf/modify_speech(datum/source, list/speech_args)
+/obj/item/organ/tongue/werewolf/modify_speech(datum/source, list/speech_args)
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message[1] != "*")
 

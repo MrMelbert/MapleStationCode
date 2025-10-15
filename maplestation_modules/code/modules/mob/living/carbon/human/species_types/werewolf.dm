@@ -11,14 +11,14 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_CHUNKYFINGERS
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/werewolf
-	mutantears = /obj/item/organ/internal/ears/cat/werewolf
-	mutanteyes = /obj/item/organ/internal/eyes/werewolf
-	mutantbrain = /obj/item/organ/internal/brain/werewolf
-	mutantliver = /obj/item/organ/internal/liver/werewolf
-	mutantheart = /obj/item/organ/internal/heart/werewolf
+	mutanttongue = /obj/item/organ/tongue/werewolf
+	mutantears = /obj/item/organ/ears/cat/werewolf
+	mutanteyes = /obj/item/organ/eyes/werewolf
+	mutantbrain = /obj/item/organ/brain/werewolf
+	mutantliver = /obj/item/organ/liver/werewolf
+	mutantheart = /obj/item/organ/heart/werewolf
 	external_organs = list(
-		/obj/item/organ/external/tail/fox = "Fox", // todo: add custom wolf tail
+		/obj/item/organ/tail/fox = "Fox", // todo: add custom wolf tail
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
@@ -33,13 +33,13 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/werewolf,
 	)
 
-/obj/item/organ/internal/brain/werewolf
+/obj/item/organ/brain/werewolf
 	name = "werewolf brain"
 	desc = "a strange mixture of a human and wolf brain"
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_PRIMITIVE, TRAIT_CAN_STRIP) // you may be a raging monster, but you still retain traits of your normal self
 	// i'll look into making this more interesting when rage is fully implemented
 
-/obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
 	if(target.body_position == LYING_DOWN)
 		return owner.get_bodypart(BODY_ZONE_HEAD) // performs a "maul" attack which does increased melee damage
 	return ..()

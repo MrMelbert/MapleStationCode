@@ -1,4 +1,4 @@
-/obj/item/organ/internal/eyes/werewolf
+/obj/item/organ/eyes/werewolf
 	name = "wolf eyes"
 	desc = "Large and powerful eyes."
 	sight_flags = SEE_MOBS
