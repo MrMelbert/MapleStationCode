@@ -1105,7 +1105,7 @@
 /datum/sprite_accessory/underwear/proc/make_appearance(mob/living/carbon/human/for_who)
 	var/static/list/cached_icons = list()
 	var/use_female = for_who.dna.species.sexes && for_who.physique == FEMALE
-	var/use_digi = digi_icon_state && (for_who.bodyshape & BODYTYPE_DIGITIGRADE) && !for_who.is_digitigrade_squished()
+	var/use_digi = digi_icon_state && (for_who.bodyshape & BODYSHAPE_DIGITIGRADE) && !for_who.is_digitigrade_squished()
 
 	var/key = "[icon_state]-[greyscale_config || "ng"]-[use_female]-[use_digi]-[greyscale_colors]"
 	var/mutable_appearance/result
