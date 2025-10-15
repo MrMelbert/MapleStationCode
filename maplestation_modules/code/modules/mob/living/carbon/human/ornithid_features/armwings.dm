@@ -69,9 +69,8 @@
 	///Feature render key for opened arm wings
 	open_feature_key = "arm_wingsopen"
 
-/datum/bodypart_overlay/mutant/wings/functional/arm_wings/inherit_color(obj/item/bodypart/ownerlimb, force) // overriding inherit_color directly because "override_color" for some unspeakable reason gets passed fuck all
-	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
-	return TRUE
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/override_color(obj/item/bodypart/bodypart_owner)
+	return bodypart_owner?.owner?.dna?.features["feathers"] || "#FFFFFF"
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings/get_global_feature_list()
 	if(wings_open)
@@ -79,5 +78,5 @@
 	else
 		return SSaccessories.arm_wings_list
 
-/datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEMUTWINGS)
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEMUTWINGS)

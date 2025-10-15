@@ -65,7 +65,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 7,
 	)
 	tastes = list("sourness" = 1, "leaves" = 1)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/uncooked_rice

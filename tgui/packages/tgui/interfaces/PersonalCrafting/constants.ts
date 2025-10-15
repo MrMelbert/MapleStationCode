@@ -15,7 +15,6 @@ export const TYPE_ICONS = {
   [Food.Junkfood]: 'pizza-slice',
   [Food.Meat]: 'bacon',
   [Food.Nuts]: 'seedling',
-  [Food.Oranges]: 'apple-alt',
   [Food.Pineapple]: 'apple-alt',
   [Food.Raw]: 'drumstick-bite',
   [Food.Seafood]: 'fish',
