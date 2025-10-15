@@ -273,7 +273,7 @@
 		return TRUE
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
 	if(isnull(mob_chest))
-		return FALSE
+		return TRUE // i guess this is legal
 	if(!(mob_chest.acceptable_bodytype & bodytype))
 		return FALSE
 	if(!(mob_chest.acceptable_bodyshape & bodyshape))
