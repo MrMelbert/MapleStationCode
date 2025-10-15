@@ -45,17 +45,17 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	mutant_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
+	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
 
-	mutantbrain = /obj/item/organ/internal/brain/cybernetic
-	mutanttongue = /obj/item/organ/internal/tongue/robot
-	mutantstomach = /obj/item/organ/internal/stomach/cybernetic/tier2
+	mutantbrain = /obj/item/organ/brain/cybernetic
+	mutanttongue = /obj/item/organ/tongue/robot
+	mutantstomach = /obj/item/organ/stomach/cybernetic/tier2
 	mutantappendix = null
-	mutantheart = /obj/item/organ/internal/heart/cybernetic/tier2
-	mutantliver = /obj/item/organ/internal/liver/cybernetic/tier2
+	mutantheart = /obj/item/organ/heart/cybernetic/tier2
+	mutantliver = /obj/item/organ/liver/cybernetic/tier2
 	mutantlungs = null
-	mutanteyes = /obj/item/organ/internal/eyes/robotic/synth
-	mutantears = /obj/item/organ/internal/ears/cybernetic
+	mutanteyes = /obj/item/organ/eyes/robotic/synth
+	mutantears = /obj/item/organ/ears/cybernetic
 	species_pain_mod = 0.2
 	exotic_bloodtype = /datum/blood_type/oil
 	/// Reference to the species we're disguised as.
@@ -254,7 +254,7 @@
 				limb_gained(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
 					if(tongue?.temp_say_mod == "whirrs")
 						tongue.temp_say_mod = null
 		else
@@ -262,7 +262,7 @@
 				limb_lost(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
 					tongue?.temp_say_mod = "whirrs"
 
 	var/num_changes = length(changed_limbs)
@@ -365,7 +365,7 @@
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
-	wing_types = list(/obj/item/organ/external/wings/functional/angel, /obj/item/organ/external/wings/functional/robotic)
+	wing_types = list(/obj/item/organ/wings/functional/angel, /obj/item/organ/wings/functional/robotic)
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/arm/right/synth
@@ -426,12 +426,12 @@
 
 #undef SYNTH_PART_BODYTYPES
 
-/obj/item/organ/internal/eyes/robotic/synth
+/obj/item/organ/eyes/robotic/synth
 	name = "synth eyes"
 
 // Organ for synth head covers.
 
-/obj/item/organ/external/synth_head_cover
+/obj/item/organ/synth_head_cover
 	name = "Head Cover"
 	desc = "It is a cover that goes on a synth head."
 
@@ -444,9 +444,10 @@
 	organ_flags = ORGAN_ROBOTIC
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 
-/obj/item/organ/external/synth_head_cover/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/synth_head_cover/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	var/mob/living/carbon/human/robot_target = organ_owner
 	var/obj/item/bodypart/head/noggin = robot_target.get_bodypart(BODY_ZONE_HEAD)
@@ -454,7 +455,7 @@
 	noggin.head_flags &= ~HEAD_EYESPRITES
 
 
-/obj/item/organ/external/synth_head_cover/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/synth_head_cover/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	var/mob/living/carbon/human/robot_target = organ_owner
 	var/obj/item/bodypart/head/noggin = robot_target.get_bodypart(BODY_ZONE_HEAD)

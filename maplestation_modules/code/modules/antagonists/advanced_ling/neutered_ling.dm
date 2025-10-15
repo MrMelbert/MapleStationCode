@@ -124,7 +124,7 @@
 
 		target.cause_pain(BODY_ZONE_CHEST, 60)
 		target.cause_pain(BODY_ZONES_LIMBS, 25)
-		for(var/obj/item/organ/internal/stabbed_organ in target.organs)
+		for(var/obj/item/organ/stabbed_organ in target.organs)
 			if(stabbed_organ.zone == BODY_ZONE_CHEST || stabbed_organ.zone == BODY_ZONE_PRECISE_GROIN)
 				stabbed_organ.apply_organ_damage(105) // Breaks all normal organs, severely damages cyber organs
 
@@ -148,6 +148,6 @@
 		our_changeling.chem_charges = our_changeling.total_chem_storage
 
 	// Causes organ damage nonetheless
-	for(var/obj/item/organ/internal/stabbed_organ in target.organs)
+	for(var/obj/item/organ/stabbed_organ in target.organs)
 		if(stabbed_organ.zone == BODY_ZONE_CHEST || stabbed_organ.zone == BODY_ZONE_PRECISE_GROIN)
 			stabbed_organ.apply_organ_damage(25)

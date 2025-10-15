@@ -906,7 +906,7 @@ generate/load female uniform sprites matching all previously decided variables
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		var/checked_bodyshape = limb.bodytype
 		// accounts for stuff like snouts
-		for(var/obj/item/organ/external/organ in limb)
+		for(var/obj/item/organ/organ in limb)
 			checked_bodyshape |= organ.external_bodytypes
 
 		// any limb needs to be updated, so stop here and do it

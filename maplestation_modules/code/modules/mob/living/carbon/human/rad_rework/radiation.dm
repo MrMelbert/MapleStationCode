@@ -81,7 +81,9 @@
 		return
 
 	var/mob/living/carbon/human/human_owner = owner
-	for(var/obj/item/organ/internal/organ in shuffle(human_owner.organs))
+	for(var/obj/item/organ/organ in shuffle(human_owner.organs))
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_ROBOTIC))
 			continue
 		if(HAS_TRAIT(organ, TRAIT_IRRADIATED))

@@ -827,7 +827,7 @@
 		if(result != "Yes")
 			return
 
-		var/obj/item/organ/internal/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
+		var/obj/item/organ/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
 		if(isnull(target_brain))
 			to_chat(usr, "This mob has no brain to insert into an MMI.")
@@ -890,7 +890,7 @@
 				if("Less pain")
 					set_pain_mod("badmin", major ? 0.6 : 0.8)
 				if("Tougher organs")
-					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+					for(var/obj/item/organ/organ as anything in bodyparts)
 						organ.maxHealth *= (major ? 1.5 : 1.25)
 				if("Less environmental")
 					physiology.pressure_mod *= (major ? 0.6 : 0.8)
