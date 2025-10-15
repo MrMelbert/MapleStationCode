@@ -1,22 +1,15 @@
 // ear code here
 /obj/item/organ/internal/ears/avian
 	name = "avian ears"
-	desc = "Senstive, much?"
+	desc = "A pair of feathery ears belonging to an ornithid. Formerly, though."
 	// yes, this uses the default icon. Yellow TODO: make an organ sprite for this
 	damage_multiplier = 1.5 // felinids take 2x ear damage, ornithids have other things to worry about (pain increase) so they get 1.5x
 
-// end ear code. begin plumage code, because external organs are significantly fucking better to work in than internals when it comes to visuals
-
-/obj/item/organ/external/plumage
-	name = "Plumage"
-	desc = "Some feathers to ruffle. Seems the person who lost this definitely had theirs."
 	preference = "feature_avian_ears"
-
-	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
-
-	dna_block = DNA_AVIAN_EARS_BLOCK // putting this as a reminder to future c*ders, this used to be part of ears.
+	dna_block = DNA_AVIAN_EARS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/plumage
-	use_mob_sprite_as_obj_sprite = TRUE
+
+// end ear code. begin plumage code, because i made the choice to make these a seperate organ back when felinid ears were turbo janky, now everything is shifting. TODO: merge these
 
 /datum/bodypart_overlay/mutant/plumage
 	feature_key = "ears_avian"
@@ -29,6 +22,9 @@
 
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
 	return SSaccessories.avian_ears_list
+
+/datum/bodypart_overlay/mutant/plumage/can_draw_on_bodypart(mob/living/carbon/human/human)
+	return !(human.obscured_slots & HIDEHAIR)
 
 /datum/sprite_accessory/plumage
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'

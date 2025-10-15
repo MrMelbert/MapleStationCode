@@ -149,6 +149,7 @@
 
 /obj/item/storage/backpack/captain
 	name = "captain's backpack"
+	article = "the"
 	desc = "It's a special backpack made exclusively for Nanotrasen officers."
 	icon_state = "backpack-captain"
 	inhand_icon_state = "captainpack"
@@ -372,6 +373,7 @@
 
 /obj/item/storage/backpack/satchel/cap
 	name = "captain's satchel"
+	article = "the"
 	desc = "An exclusive satchel for Nanotrasen officers."
 	icon_state = "satchel-captain"
 	inhand_icon_state = "satchel-cap"
@@ -530,6 +532,7 @@
 
 /obj/item/storage/backpack/duffelbag/captain
 	name = "captain's duffel bag"
+	article = "the"
 	desc = "A large duffel bag for holding extra captainly goods."
 	icon_state = "duffel-captain"
 	inhand_icon_state = "duffel-captain"
@@ -887,6 +890,7 @@
 
 /obj/item/storage/backpack/messenger/cap
 	name = "captain's messenger bag"
+	article = "the"
 	desc = "An exclusive messenger bag for Nanotrasen officers, made of real whale leather."
 	icon_state = "messenger_captain"
 	inhand_icon_state = "messenger_captain"

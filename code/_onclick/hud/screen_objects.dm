@@ -212,7 +212,7 @@
 	item_overlay.alpha = 92
 
 	if(!holding.mob_can_equip(user, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-		item_overlay.color = "#FF0000"
+		item_overlay.color = COLOR_RED
 	else
 		item_overlay.color = "#00ff00"
 
@@ -821,10 +821,11 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 
 	holder.screen += src
 
-/atom/movable/screen/splash/proc/Fade(out, qdel_after = TRUE)
+/atom/movable/screen/splash/proc/fade(out, qdel_after = TRUE)
 	if(QDELETED(src))
 		return
 	if(out)
+		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		animate(src, alpha = 0, time = 30)
 	else
 		alpha = 0

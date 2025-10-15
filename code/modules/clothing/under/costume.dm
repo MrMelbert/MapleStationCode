@@ -259,7 +259,6 @@
 	acid = 30
 
 /obj/item/clothing/under/costume/buttondown
-	gender = PLURAL
 	female_sprite_flags = NO_FEMALE_UNIFORM
 	custom_price = PAYCHECK_CREW
 	icon = 'icons/obj/clothing/under/shorts_pants_shirts.dmi'

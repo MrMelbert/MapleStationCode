@@ -18,7 +18,11 @@ SUBSYSTEM_DEF(ticker)
 	/// Boolean to track and check if our subsystem setup is done.
 	var/setup_done = FALSE
 
-	var/login_music //music played in pregame lobby
+	/// Music played in pregame lobby
+	var/login_music
+	/// Length of the music in deciseconds
+	var/login_length
+
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
@@ -235,7 +239,7 @@ SUBSYSTEM_DEF(ticker)
 	return FALSE
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, span_boldannounce("Starting game..."))
+	to_chat(world, span_boldannounce(separator_hr_danger("Starting game...")))
 	var/init_start = world.timeofday
 
 	CHECK_TICK
@@ -492,8 +496,8 @@ SUBSYSTEM_DEF(ticker)
 			qdel(player)
 			ADD_TRAIT(living, TRAIT_NO_TRANSFORM, SS_TICKER_TRAIT)
 			if(living.client)
-				var/atom/movable/screen/splash/S = new(null, living.client, TRUE)
-				S.Fade(TRUE)
+				var/atom/movable/screen/splash/S = new(null, null, living.client, TRUE)
+				S.fade(TRUE)
 				living.client.init_verbs()
 			livings += living
 	if(livings.len)
@@ -782,6 +786,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	login_music = new_music
+	login_length = rustg_sound_length(new_music) || 1500 // default to 2.5 minutes if we can't get the length
 	var/list/music_file_components = splittext(new_music, "/")
 	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
 	var/list/music_name_components = splittext(music_file_name, "+")

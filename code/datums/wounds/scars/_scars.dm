@@ -150,7 +150,7 @@
 
 /// What will show up in examine_more() if this scar is visible
 /datum/scar/proc/get_examine_description(mob/viewer)
-	if(!victim || !is_visible(viewer))
+	if(!is_visible(viewer))
 		return
 
 	var/msg = "[victim.p_They()] [victim.p_have()] [description] on [victim.p_their()] [precise_location]."
@@ -178,7 +178,7 @@
 
 	var/mob/living/carbon/human/human_victim = victim
 	if(istype(limb, /obj/item/bodypart/head))
-		if((human_victim.wear_mask && (human_victim.wear_mask.flags_inv & HIDEFACE)) || (human_victim.head && (human_victim.head.flags_inv & HIDEFACE)))
+		if(human_victim.obscured_slots & HIDEFACE)
 			return FALSE
 	else if(limb.scars_covered_by_clothes)
 		var/num_covers = LAZYLEN(human_victim.get_clothing_on_part(limb))

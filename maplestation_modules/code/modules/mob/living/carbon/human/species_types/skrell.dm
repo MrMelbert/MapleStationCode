@@ -6,7 +6,7 @@
 	plural_form = "Skrellian"
 	id = SPECIES_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER)
-	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
+	mutant_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
@@ -89,14 +89,8 @@
 	feature_key = "head_tentacles"
 
 /datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
-		return FALSE
-	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
-		return FALSE
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
-	if(!IS_ORGANIC_LIMB(our_head))
-		return FALSE
-	return TRUE
+	return !isnull(our_head) && IS_ORGANIC_LIMB(our_head) && !(human.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return SSaccessories.head_tentacles_list

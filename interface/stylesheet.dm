@@ -59,7 +59,10 @@ em						{font-style: normal;	font-weight: bold;}
 .yellowteamradio		{color: #d1ba22;}
 .captaincast			{color: #00ff99;}
 
-.yell					{					font-weight: bold;}
+.yell					{font-weight: bold; font-size: 115%;}
+.distant_t1				{font-size: 85%;}
+.distant_t2				{font-size: 70%;}
+.distant_t3				{font-size: 60%;}
 
 .alert					{color: #ff0000;}
 h1.alert, h2.alert		{color: #000000;}

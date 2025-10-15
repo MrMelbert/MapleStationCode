@@ -19,7 +19,6 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutant_bodyparts = list("wings" = "None")
 	mutantbrain = /obj/item/organ/internal/brain/dullahan
 	mutanteyes = /obj/item/organ/internal/eyes/dullahan
 	mutanttongue = /obj/item/organ/internal/tongue/dullahan
@@ -255,10 +254,9 @@
 	if(user.client.eye == src)
 		return COMPONENT_ALLOW_EXAMINATE
 
-/obj/item/dullahan_relay/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
+/obj/item/dullahan_relay/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
-	if(owner)
-		owner.Hear(message, speaker, message_language, raw_message, radio_freq, spans, message_mods, message_range)
+	owner?.Hear(speaker, message_language, raw_message, radio_freq, spans, message_mods, message_range)
 
 ///Adds the owner to the list of hearers in hearers_in_view(), for visible/hearable on top of say messages
 /obj/item/dullahan_relay/proc/include_owner(datum/source, list/hearers)

@@ -194,6 +194,13 @@
 
 	if(prefs && (prefs.read_preference(/datum/preference/toggle/sound_lobby)) && !CONFIG_GET(flag/disallow_title_music))
 		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
+		for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
+			text.start_tracking()
+
+/client/proc/stoptitlemusic()
+	mob.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
+		text.cancel_tracking()
 
 ///get a random frequency.
 /proc/get_rand_frequency()
@@ -476,6 +483,8 @@
 				'sound/creatures/monkey/monkey_screech_6.ogg',
 				'sound/creatures/monkey/monkey_screech_7.ogg',
 			)
+		if(SFX_TOOL_SWITCH)
+			soundin = 'sound/items/handling/tool_switch.ogg'
 		if(SFX_MUFFLED_SPEECH)
 			soundin = pick(
 				'sound/effects/muffspeech/muffspeech1.ogg',
@@ -560,6 +569,14 @@
 				'sound/machines/buckle/unbuckle2.ogg',
 				'sound/machines/buckle/unbuckle3.ogg',
 			)
+		if(SFX_PLATE_ARMOR_RUSTLE)
+			soundin = pick_weight(list(
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle1.ogg' = 8, //longest sound is rarer.
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle2.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle3.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle4.ogg' = 23,
+				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle5.ogg' = 23,
+			))
 		if(SFX_VISOR_DOWN)
 			soundin = pick(
 				'sound/items/handling/helmet/visor_down1.ogg',
@@ -571,12 +588,10 @@
 				'sound/items/handling/helmet/visor_up1.ogg',
 				'sound/items/handling/helmet/visor_up2.ogg',
 			)
-		if(SFX_PLATE_ARMOR_RUSTLE)
-			soundin = pick_weight(list(
-				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle1.ogg' = 8, //longest sound is rarer.
-				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle2.ogg' = 23,
-				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle3.ogg' = 23,
-				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle4.ogg' = 23,
-				'sound/items/handling/armor_rustle/plate_armor/plate_armor_rustle5.ogg' = 23,
-			))
+		if(SFX_INDUSTRIAL_SCAN)
+			soundin = pick(
+				'sound/effects/industrial_scan/industrial_scan1.ogg',
+				'sound/effects/industrial_scan/industrial_scan2.ogg',
+				'sound/effects/industrial_scan/industrial_scan3.ogg',
+			)
 	return soundin

@@ -1,6 +1,6 @@
 /datum/job/clown
 	title = JOB_CLOWN
-	description = "Entertain the crew, make bad jokes, go on a holy quest to find bananium, HONK!"
+	description = "Entertain the crew, make bad jokes, slip the mime, HONK!"
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -101,6 +101,5 @@
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
 		M.mutadone_proof = TRUE
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.show_to(H)
+	ADD_TRAIT(H, TRAIT_CLOWN_ENJOYER, INNATE_TRAIT)
 	H.faction |= FACTION_CLOWN

@@ -55,6 +55,10 @@
 	var/self_sustaining = FALSE
 	///The icon state for the overlay used to represent that this tray is self-sustaining.
 	var/self_sustaining_overlay_icon_state = "gaia_blessing"
+	///Whether the plant is currently being pollinated or polinating the nearby plants
+	var/being_pollinated = FALSE
+	///The light level on the tray tile
+	var/light_level = 0
 
 /obj/machinery/hydroponics/Initialize(mapload)
 	//ALRIGHT YOU DEGENERATES. YOU HAD REAGENT HOLDERS FOR AT LEAST 4 YEARS AND NONE OF YOU MADE HYDROPONICS TRAYS HOLD NUTRIENT CHEMS INSTEAD OF USING "Points".
@@ -68,7 +72,6 @@
 	var/static/list/hovering_item_typechecks = list(
 		/obj/item/plant_analyzer = list(
 			SCREENTIP_CONTEXT_LMB = "Scan tray stats",
-			SCREENTIP_CONTEXT_RMB = "Scan tray chemicals"
 		),
 		/obj/item/cultivator = list(
 			SCREENTIP_CONTEXT_LMB = "Remove weeds",
@@ -106,16 +109,16 @@
 		if(issilicon(user))
 			return NONE
 
+		context[SCREENTIP_CONTEXT_RMB] = "Empty nutrients"
+
 		switch(plant_status)
 			if(HYDROTRAY_PLANT_DEAD)
 				context[SCREENTIP_CONTEXT_LMB] = "Remove dead plant"
-				return CONTEXTUAL_SCREENTIP_SET
 
 			if(HYDROTRAY_PLANT_HARVESTABLE)
 				context[SCREENTIP_CONTEXT_LMB] = "Harvest plant"
-				return CONTEXTUAL_SCREENTIP_SET
 
-		return NONE
+		return CONTEXTUAL_SCREENTIP_SET
 
 	// If the plant is harvestable, we can graft it with secateurs or harvest it with a plant bag.
 	if(plant_status == HYDROTRAY_PLANT_HARVESTABLE)
@@ -312,6 +315,10 @@
 			set_self_sustaining(FALSE)
 			visible_message(span_warning("[name]'s auto-grow functionality shuts off!"))
 
+	if(isturf(loc))
+		var/turf/currentTurf = loc
+		light_level = currentTurf.get_lumcount()
+
 	if(world.time > (lastcycle + cycledelay))
 		lastcycle = world.time
 		if(myseed && plant_status != HYDROTRAY_PLANT_DEAD)
@@ -337,12 +344,9 @@
 
 //Photosynthesis/////////////////////////////////////////////////////////
 			// Lack of light hurts non-mushrooms
-			if(isturf(loc))
-				var/turf/currentTurf = loc
-				var/lightAmt = currentTurf.get_lumcount()
-				var/is_fungus = myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism)
-				if(lightAmt < (is_fungus ? 0.2 : 0.4))
-					adjust_plant_health((is_fungus ? -1 : -2) / rating)
+			var/is_fungus = myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism)
+			if(light_level < (is_fungus ? 0.2 : 0.4))
+				adjust_plant_health((is_fungus ? -1 : -2) / rating)
 
 //Water//////////////////////////////////////////////////////////////////
 			// Drink random amount of water
@@ -769,7 +773,7 @@
  * * Range - The Oview range of trays to which to look for plants to donate reagents.
  */
 /obj/machinery/hydroponics/proc/pollinate(range = 1)
-	var/any_adjacent = FALSE
+	being_pollinated = FALSE
 	for(var/obj/machinery/hydroponics/T in oview(src, range))
 		//Here is where we check for window blocking.
 		if(!Adjacent(T) && range <= 1)
@@ -778,20 +782,12 @@
 			T.myseed.set_potency(round((T.myseed.potency+(1/10)*(myseed.potency-T.myseed.potency))))
 			T.myseed.set_instability(round((T.myseed.instability+(1/10)*(myseed.instability-T.myseed.instability))))
 			T.myseed.set_yield(round((T.myseed.yield+(1/2)*(myseed.yield-T.myseed.yield))))
-			any_adjacent = TRUE
+			being_pollinated = TRUE
 			if(isnull(particles))
 				particles = new /particles/pollen()
 			if(myseed.instability >= 20 && prob(70) && length(T.myseed.reagents_add))
-				var/list/datum/plant_gene/reagent/possible_reagents = list()
-				for(var/datum/plant_gene/reagent/reag in T.myseed.genes)
-					possible_reagents += reag
-				var/datum/plant_gene/reagent/reagent_gene = pick(possible_reagents) //Let this serve as a lession to delete your WIP comments before merge.
-				if(reagent_gene.can_add(myseed))
-					if(!reagent_gene.try_upgrade_gene(myseed))
-						myseed.genes += reagent_gene.Copy()
-					myseed.reagents_from_genes()
-					continue
-	if(!any_adjacent)
+				myseed.perform_reagent_pollination(T.myseed)
+	if(!being_pollinated)
 		particles = null
 
 /**
@@ -1077,10 +1073,14 @@
 /obj/machinery/hydroponics/click_ctrl(mob/user)
 	if(!anchored)
 		return NONE
+
+	update_use_power(ACTIVE_POWER_USE)
+
 	if(!powered())
 		to_chat(user, span_warning("[name] has no power."))
 		update_use_power(NO_POWER_USE)
 		return CLICK_ACTION_BLOCKING
+
 	set_self_sustaining(!self_sustaining)
 	to_chat(user, span_notice("You [self_sustaining ? "activate" : "deactivated"] [src]'s autogrow function[self_sustaining ? ", maintaining the tray's health while using high amounts of power" : ""]."))
 	return CLICK_ACTION_SUCCESS

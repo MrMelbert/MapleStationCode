@@ -2363,12 +2363,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(GRAB_KILL)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
 
-
-/// Only defined for carbons who can wear masks and helmets, we just assume other mobs have visible faces
-/mob/living/proc/is_face_visible()
-	return TRUE
-
-
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)
 	if(num_legs == new_value)
@@ -2759,3 +2753,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		end_look_down()
 	else
 		look_down()
+
+/**
+ * Totals the physical cash on the mob and returns the total.
+ */
+/mob/living/verb/tally_physical_credits()
+	//Here is all the possible non-ID payment methods.
+	var/list/counted_money = list()
+	var/physical_cash_total = 0
+	for(var/obj/item/credit as anything in typecache_filter_list(get_all_contents(), GLOB.allowed_money)) //Coins, cash, and credits.
+		physical_cash_total += credit.get_item_credit_value()
+		counted_money += credit
+
+	if(is_type_in_typecache(pulling, GLOB.allowed_money)) //Coins(Pulled).
+		var/obj/item/counted_credit = pulling
+		physical_cash_total += counted_credit.get_item_credit_value()
+		counted_money += counted_credit
+	return round(physical_cash_total)

@@ -33,12 +33,12 @@
 	/// Replacement name
 	var/real_name = ""
 	/// Flags related to appearance, such as hair, lips, etc
-	var/head_flags = HEAD_ALL_FEATURES
+	var/head_flags = HEAD_DEFAULT_FEATURES
 
 	/// Hair style
 	var/hairstyle = "Bald"
 	/// Hair colour and style
-	var/hair_color = "#000000"
+	var/hair_color = COLOR_BLACK
 	/// Hair alpha
 	var/hair_alpha = 255
 	/// Is the hair currently hidden by something?
@@ -49,7 +49,7 @@
 	///Facial hair style
 	var/facial_hairstyle = "Shaved"
 	///Facial hair color
-	var/facial_hair_color = "#000000"
+	var/facial_hair_color = COLOR_BLACK
 	///Facial hair alpha
 	var/facial_hair_alpha = 255
 	///Is the facial hair currently hidden by something?
@@ -202,8 +202,20 @@
 	. = ..()
 	AddElement(/datum/element/toy_talk)
 
-/obj/item/bodypart/head/GetVoice()
+/obj/item/bodypart/head/get_voice(add_id_name)
 	return "The head of [real_name]"
+
+/obj/item/bodypart/head/update_bodypart_damage_state()
+	if (head_flags & HEAD_NO_DISFIGURE)
+		return ..()
+
+	var/old_states = brutestate + burnstate
+	. = ..()
+	var/new_states = brutestate + burnstate
+	if(new_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		add_bodypart_trait(TRAIT_DISFIGURED)
+	else if(old_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		remove_bodypart_trait(TRAIT_DISFIGURED)
 
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
@@ -212,7 +224,7 @@
 	husk_type = "monkey"
 	icon_state = "default_monkey_head"
 	limb_id = SPECIES_MONKEY
-	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_MONKEY
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = SPECIES_MONKEY
 	is_dimorphic = FALSE
@@ -229,7 +241,8 @@
 	px_y = 0
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_CORE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodytype = BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_HUMANOID
 
 /obj/item/bodypart/head/larva
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'

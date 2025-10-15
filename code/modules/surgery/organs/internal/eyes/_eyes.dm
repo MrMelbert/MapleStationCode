@@ -183,10 +183,10 @@
 	var/mutable_appearance/eye_right = mutable_appearance(eye_overlay_file, "[eye_icon_state]_r", -BODY_LAYER, parent) // NON-MODULE CHANGE / UPSTREAM ME
 	var/list/overlays = list(eye_left, eye_right)
 
-	var/obscured = parent.check_obscured_slots()
-	if(overlay_ignore_lighting && !(obscured & ITEM_SLOT_EYES))
+	if(overlay_ignore_lighting && !(parent.obscured_slots & HIDEEYES))
 		overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, parent, -BODY_LAYER, alpha = eye_left.alpha)
 		overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, parent, -BODY_LAYER, alpha = eye_right.alpha)
+
 	var/obj/item/bodypart/head/my_head = parent.get_bodypart(BODY_ZONE_HEAD)
 
 	if(!my_head)
@@ -270,7 +270,7 @@
 
 	damaged = TRUE
 
-/obj/item/organ/eyes/feel_for_damage(self_aware)
+/obj/item/organ/internal/eyes/feel_for_damage(self_aware)
 	// Eye damage has visual effects, so we don't really need to "feel" it when self-examining
 	return ""
 
@@ -591,7 +591,7 @@
 	deactivate(close_ui = TRUE)
 
 /// Set the initial color of the eyes on insert to be the mob's previous eye color.
-/obj/item/organ/internal/eyes/robotic/glow/Insert(mob/living/carbon/eye_recipient, special = FALSE, movement_flags = DELETE_IF_REPLACED)
+/obj/item/organ/internal/eyes/robotic/glow/mob_insert(mob/living/carbon/eye_recipient, special = FALSE, movement_flags = DELETE_IF_REPLACED)
 	. = ..()
 	left_eye_color_string = old_eye_color_left
 	right_eye_color_string = old_eye_color_right

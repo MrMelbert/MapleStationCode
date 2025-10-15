@@ -111,7 +111,14 @@
 	var/last_top_offset
 
 	/// A bitfield of "bodytypes", updated by /obj/item/bodypart/proc/synchronize_bodytypes()
-	var/bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC
+	var/bodytype = BODYTYPE_ORGANIC
+
+	/// A bitfield of "bodyshapes", updated by /obj/item/bodypart/proc/synchronize_bodyshapes()
+	var/bodyshape = BODYSHAPE_HUMANOID
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
 
+	/// Obscured hide flags (hideflags that can't be seen AND can't be interacted with)
+	var/obscured_slots = NONE
+	/// Covered hide flags (hideflags that can be seen, BUT can't be interacted with)
+	var/covered_slots = NONE

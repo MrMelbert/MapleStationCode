@@ -45,7 +45,7 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	external_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
+	mutant_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
 
 	mutantbrain = /obj/item/organ/internal/brain/cybernetic
 	mutanttongue = /obj/item/organ/internal/tongue/robot
@@ -147,11 +147,6 @@
 /datum/species/synth/handle_body(mob/living/carbon/human/species_human)
 	if(disguise_species)
 		return disguise_species.handle_body(species_human)
-	return ..()
-
-/datum/species/synth/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-	if(disguise_species)
-		return disguise_species.handle_mutant_bodyparts(source, forced_colour)
 	return ..()
 
 /datum/species/synth/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
@@ -341,7 +336,7 @@
 	head_flags = initial(other_part.head_flags)
 	return ..()
 
-#define SYNTH_PART_BODYTYPES (BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC)
+#define SYNTH_PART_BODYTYPES (BODYSHAPE_HUMANOID|BODYTYPE_ROBOTIC)
 
 /obj/item/bodypart/head/synth
 	limb_id = BODYPART_ID_SYNTH
@@ -472,9 +467,7 @@
 	return SSaccessories.synth_head_cover_list
 
 /datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
-		return FALSE
-	return TRUE
+	return !(human.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/synth_head_cover
 	feature_key = "synth_head_cover"

@@ -68,8 +68,13 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		qdel(delete)
 
 /mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+	SHOULD_CALL_PARENT(FALSE) // assuming direct control
 	item.item_flags |= IN_INVENTORY
-	return item.visual_equipped(src, slot, initial)
+	if(!item.visual_equipped(src, slot, initial))
+		return FALSE
+
+	add_item_coverage(item)
+	return TRUE
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
 	delete_equipment()
@@ -92,7 +97,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	target.dna.features["lizard_horn_color"] = COLOR_VIBRANT_LIME // NON-MODULE CHANGE
 	target.dna.features["ethcolor"] = COLOR_WHITE
-	target.dna.features["body_markings"] = get_consistent_feature_entry(SSaccessories.body_markings_list)
+	target.dna.features["lizard_markings"] = get_consistent_feature_entry(SSaccessories.lizard_markings_list)
 	target.dna.features["ears"] = get_consistent_feature_entry(SSaccessories.ears_list)
 	target.dna.features["frills"] = get_consistent_feature_entry(SSaccessories.frills_list)
 	target.dna.features["horns"] = get_consistent_feature_entry(SSaccessories.horns_list)
