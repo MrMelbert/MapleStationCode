@@ -10,11 +10,11 @@
 		TRAIT_TACKLING_WINGED_ATTACKER,
 		TRAIT_USES_SKINTONES,
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/ornithid
-	mutantears = /obj/item/organ/internal/ears/avian
+	mutanttongue = /obj/item/organ/tongue/ornithid
+	mutantears = /obj/item/organ/ears/avian
 	mutant_organs = list(
-		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
-		/obj/item/organ/external/tail/avian = "Eagle",
+		/obj/item/organ/wings/functional/arm_wings = "Monochrome",
+		/obj/item/organ/tail/avian = "Eagle",
 	)
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid,

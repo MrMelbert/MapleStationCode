@@ -175,4 +175,7 @@
 /datum/component/stackable_item/proc/get_examine_name(obj/item/source, mob/user, list/examine_override)
 	SIGNAL_HANDLER
 
+	if(isnull(stacked_on))
+		return
+
 	examine_override[EXAMINE_POSITION_NAME] += " and [stacked_on.get_examine_name()]"

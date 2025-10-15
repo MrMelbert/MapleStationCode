@@ -267,9 +267,16 @@
 /obj/item/bodypart/proc/can_attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
-
+	if(SEND_SIGNAL(src, COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB, new_limb_owner, special) & COMPONENT_NO_ATTACH)
+		return FALSE
+	if(special)
+		return TRUE
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !(mob_chest.acceptable_bodyshape & bodyshape) && !special)
+	if(isnull(mob_chest))
+		return TRUE // i guess this is legal
+	if(!(mob_chest.acceptable_bodytype & bodytype))
+		return FALSE
+	if(!(mob_chest.acceptable_bodyshape & bodyshape))
 		return FALSE
 	return TRUE
 

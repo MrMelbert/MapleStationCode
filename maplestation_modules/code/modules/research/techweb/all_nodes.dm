@@ -2,7 +2,7 @@
 /// Adds illegal tech requirement to phazons.
 /datum/techweb_node/mech_infiltrator
 	prereq_id_add = list(
-		"syndicate_basic",
+		TECHWEB_NODE_SYNDICATE_BASIC,
 	)
 
 /// Adds cybernetic cat ears to cybernetic organs.

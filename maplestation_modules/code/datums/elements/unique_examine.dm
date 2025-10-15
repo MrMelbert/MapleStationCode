@@ -19,6 +19,8 @@
 /datum/element/unique_examine
 	element_flags = ELEMENT_BESPOKE
 	argument_hash_start_idx = 2
+	/// The types of requirements that need a list passed to them.
+	var/static/list/special_req_types = list(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_SPECIES, EXAMINE_CHECK_DEPARTMENT)
 	/// The requirement setting for special descriptions. See examine_defines.dm for more info.
 	var/desc_requirement = EXAMINE_CHECK_NONE
 	/// The special description that is triggered when desc_requirements are met. Make sure you set the correct EXAMINE_CHECK!
@@ -26,8 +28,8 @@
 	/// The special affiliation type, basically overrides the "Syndicate Affiliation" for SYNDICATE check types. It will show whatever organisation you put here instead of "Syndicate Affiliation"
 	var/special_desc_affiliation = ""
 	/// Everything we may want to check based on an examine check.
-	/// This can be a list of JOBS, FACTIONS, SKILL CHIPS, or TRAITS, or a bitflag
-	var/special_desc_req
+	/// This can JOBS, FACTIONS, SKILL CHIPS, or TRAITS, or a bitflag
+	var/list/special_desc_req
 	/// If this is a toy / the real name of the object. Toys display a message if you fail the check.
 	var/toy_name
 
@@ -45,16 +47,12 @@
 		stack_trace("Unique examine element attempted to attach to something without an examine text set.")
 		return ELEMENT_INCOMPATIBLE
 
-	/// If we were passed a examine check that has a requirement, check to make sure we have that requirement / it's formatted correctly
-	switch(desc_requirement)
-		if(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_SPECIES)
-			if(isnull(special_desc_req))
-				return ELEMENT_INCOMPATIBLE
-			else if(!islist(special_desc_req))
-				special_desc_req = list(special_desc_req)
-		if(EXAMINE_CHECK_DEPARTMENT)
-			if(isnull(special_desc_req))
-				return ELEMENT_INCOMPATIBLE
+	// If we were passed a examine check that has a requirement, check to make sure we have that requirement / it's formatted correctly
+	if((desc_requirement in special_req_types))
+		if(isnull(special_desc_req))
+			return ELEMENT_INCOMPATIBLE
+		if(!islist(special_desc_req))
+			special_desc_req = list(special_desc_req)
 
 	if(hint)
 		RegisterSignal(thing, COMSIG_ATOM_EXAMINE, PROC_REF(hint_at))
@@ -250,7 +248,7 @@
 			break
 
 	//Department checks
-	if(examiner_mind.assigned_role.departments_bitflags & special_desc_req)
+	if(examiner_mind.assigned_role.departments_bitflags & special_desc_req[1])
 		fulfilled_requirements[EXAMINE_CHECK_DEPARTMENT] = TRUE
 
 	//Standard faction checks
@@ -260,7 +258,7 @@
 			break
 
 	// Skillchip checks
-	var/obj/item/organ/internal/brain/examiner_brain = examiner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/examiner_brain = examiner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	for(var/obj/item/skillchip/checked_skillchip as anything in examiner_brain?.skillchips)
 		if(checked_skillchip.active && is_type_in_list(checked_skillchip, special_desc_req))
 			fulfilled_requirements[EXAMINE_CHECK_SKILLCHIP] = checked_skillchip

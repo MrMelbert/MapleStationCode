@@ -30,8 +30,10 @@
 #define ORGAN_PROMINENT (1<<11)
 /// An organ that is ostensibly dangerous when inside a body
 #define ORGAN_HAZARDOUS (1<<12)
-
-#define ORGAN_IRRADIATED (1<<13)
+/// This is an external organ, not an inner one. Used in several checks.
+#define ORGAN_EXTERNAL (1<<13)
+/// Organ is currently irradiated, causing damage over time to the owner unless removed or fixed
+#define ORGAN_IRRADIATED (1<<14)
 
 /// Helper to figure out if a limb is organic
 #define IS_ORGANIC_LIMB(limb) (limb.bodytype & BODYTYPE_ORGANIC)

@@ -15,7 +15,7 @@
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human_user = user
-	var/obj/item/organ/internal/stomach/ethereal/maybe_ethereal_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
+	var/obj/item/organ/stomach/ethereal/maybe_ethereal_stomach = human_user.get_organ_slot(ORGAN_SLOT_STOMACH) // Non-module change : internal/external organ death
 	if(!istype(maybe_ethereal_stomach))
 		togglelock(user)
 	else
@@ -25,7 +25,7 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /// Special behavior for when an ethereal interacts with an APC.
-/obj/machinery/power/apc/proc/ethereal_interact(mob/living/carbon/human/user, obj/item/organ/internal/stomach/ethereal/used_stomach, list/modifiers) // Non-module change
+/obj/machinery/power/apc/proc/ethereal_interact(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach, list/modifiers) // Non-module change
 	if(!LAZYACCESS(modifiers, RIGHT_CLICK))
 		return
 	if(isnull(cell))
@@ -38,7 +38,7 @@
 		charge_from_ethereal(user, used_stomach)
 
 /// Handles discharging our internal cell to an ethereal and their stomach
-/obj/machinery/power/apc/proc/discharge_to_ethereal(mob/living/carbon/human/user, obj/item/organ/internal/stomach/ethereal/used_stomach) // Non-module change
+/obj/machinery/power/apc/proc/discharge_to_ethereal(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach) // Non-module change
 	var/half_max_charge = cell.max_charge() / 2
 	// Ethereals can't drain APCs under half charge, so that they are forced to look to alternative power sources if the station is running low
 	if(cell.charge() < half_max_charge)
@@ -74,7 +74,7 @@
 			return
 
 /// Handles charging our internal cell from an ethereal and their stomach
-/obj/machinery/power/apc/proc/charge_from_ethereal(mob/living/carbon/human/user, obj/item/organ/internal/stomach/ethereal/used_stomach) // Non-module change
+/obj/machinery/power/apc/proc/charge_from_ethereal(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach) // Non-module change
 	if(cell.charge() >= cell.max_charge())
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, balloon_alert), user, "apc full!"), ETHEREAL_APC_ALERT_DELAY)
 		return
