@@ -45,6 +45,11 @@
 	rpg_title = "Dwarven Miner"
 	crewmonitor_priority = 35
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/scientist/ordnance_tech
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic

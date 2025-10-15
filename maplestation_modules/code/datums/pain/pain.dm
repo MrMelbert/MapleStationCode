@@ -582,11 +582,11 @@
 					if(-INFINITY to 0)
 						pass()
 					if(1)
-						to_chat(parent, span_userdanger("You feel your heart beat irregularly."))
+						to_chat(parent, span_userdanger("Your pulse starts to feel irregular."))
 					if(2)
-						to_chat(parent, span_userdanger("You feel your heart skip a beat."))
+						to_chat(parent, span_userdanger("Your heart skips a beat."))
 					else
-						to_chat(parent, span_userdanger("You feel your body shutting down!"))
+						to_chat(parent, span_userdanger("Your body starts shutting down!"))
 	else
 		heart_attack_counter = 0
 
@@ -623,6 +623,11 @@
 	penalty += chest.get_modified_pain() * 0.5
 	penalty += head?.get_modified_pain() * 0.5 // HARS guard
 	penalty /= 3
+	// Factor in firearms skill
+	if(penalty > 0)
+		penalty += user.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
+	if(penalty <= 0)
+		return
 	// Applying min and max
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += floor(penalty / 3)
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += floor(penalty)
