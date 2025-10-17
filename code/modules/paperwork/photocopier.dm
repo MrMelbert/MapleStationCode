@@ -528,8 +528,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		object.forceMove(drop_location())
 		return
 
-	object.forceMove(user.loc)
-	user.put_in_hands(object)
+	try_put_in_hand(object, user)
 
 	to_chat(user, span_notice("You take [object] out of [src]. [busy ? "The [src] comes to a halt." : ""]"))
 

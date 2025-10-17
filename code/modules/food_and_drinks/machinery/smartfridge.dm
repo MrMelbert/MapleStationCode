@@ -418,8 +418,7 @@
 				if(dispensed_item in component_parts)
 					CRASH("Attempted removal of [dispensed_item] component_part from smartfridge via smartfridge interface.")
 				//dispense the item
-				if(!living_mob.put_in_hands(dispensed_item))
-					dispensed_item.forceMove(drop_location())
+				if(!try_put_in_hand(dispensed_item, living_mob))
 					adjust_item_drop_location(dispensed_item)
 				use_energy(active_power_usage) // Non-module change
 				dispensed_amount++

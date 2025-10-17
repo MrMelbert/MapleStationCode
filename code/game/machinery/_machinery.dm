@@ -414,18 +414,28 @@
 /**
  * Puts passed object in to user's hand
  *
- * Puts the passed object in to the users hand if they are adjacent.
- * If the user is not adjacent then place the object on top of the machine.
+ * The passed object is usually something that was in the object and is being ejected
+ *
+ * Handles checking if the user can hold the item and if they are in range,
+ * otherwise dumps the item on the ground of src
  *
  * Vars:
  * * object (obj) The object to be moved in to the users hand.
  * * user (mob/living) The user to recive the object
+ *
+ * Returns TRUE if the object was put in to the users hand, FALSE if it was dropped on the ground.
  */
-/obj/machinery/proc/try_put_in_hand(obj/object, mob/living/user)
-	if(!issilicon(user) && in_range(src, user))
-		user.put_in_hands(object)
-	else
-		object.forceMove(drop_location())
+/obj/proc/try_put_in_hand(obj/item/object, mob/living/user)
+	if(user?.can_hold_items(object) && in_range(src, user))
+		object.add_fingerprint(user)
+		add_fingerprint(user)
+		if(user.put_in_hands(object, ignore_animation = TRUE))
+			if(get(src, /mob) != user) // Only play pickup if we aren't also being held
+				object.do_pickup_animation(user, src)
+			return TRUE
+	object.forceMove(drop_location())
+	object.do_drop_animation(src)
+	return FALSE
 
 /obj/machinery/proc/can_be_occupant(atom/movable/occupant_atom)
 	return occupant_typecache ? is_type_in_typecache(occupant_atom, occupant_typecache) : isliving(occupant_atom)
