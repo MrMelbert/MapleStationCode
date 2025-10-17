@@ -92,8 +92,7 @@
 	if(!charging)
 		return
 
-	user.put_in_hands(charging)
-	charging.add_fingerprint(user)
+	try_put_in_hand(charging, user)
 
 	user.visible_message(span_notice("[user] removes [charging] from [src]."), span_notice("You remove [charging] from [src]."))
 

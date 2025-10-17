@@ -210,20 +210,14 @@
 	if(tank_air.return_pressure() >= (PUMP_MAX_PRESSURE + ONE_ATMOSPHERE))
 		return FALSE
 	flush_buffer()
-	if(user)
-		user.put_in_hands(inserted_tank)
-	else
-		inserted_tank.forceMove(drop_location())
+	try_put_in_hand(inserted_tank, user)
 	active = FALSE
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/eject_disk(mob/user)
 	if(!inserted_disk)
 		return FALSE
-	if(user)
-		user.put_in_hands(inserted_disk)
-	else
-		inserted_disk.forceMove(drop_location())
+	try_put_in_hand(inserted_disk, user)
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 	return TRUE
 
