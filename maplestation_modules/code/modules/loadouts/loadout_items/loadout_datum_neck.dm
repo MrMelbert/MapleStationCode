@@ -7,7 +7,7 @@
 /datum/loadout_item/neck
 	abstract_type = /datum/loadout_item/neck
 
-/datum/loadout_item/neck/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/neck/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.neck = item_path
 
 /datum/loadout_item/neck/scarf_greyscale

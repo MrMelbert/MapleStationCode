@@ -29,40 +29,9 @@
 /datum/loadout_item/pocket_items
 	abstract_type = /datum/loadout_item/pocket_items
 	group = "Other"
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
-/datum/loadout_item/pocket_items/get_ui_buttons()
-	. = ..()
-	UNTYPED_LIST_ADD(., list(
-		"label" = "Make Heirloom",
-		"act_key" = "make_heirloom",
-		"button_icon" = FA_ICON_CROSS,
-		"active_key" = INFO_HEIRLOOM,
-		"tooltip" = "Toggle whether this item is your family heirloom.",
-		"required_quirk" = sanitize_css_class_name(/datum/quirk/item_quirk/family_heirloom::name),
-	))
-
-/datum/loadout_item/pocket_items/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
-	switch(action)
-		if("make_heirloom")
-			var/list/loadout = get_active_loadout(manager.preferences)
-			if(!loadout?[item_path]) // Validate they still have it equipped
-				return TRUE
-
-			loadout[item_path][INFO_HEIRLOOM] = !loadout[item_path][INFO_HEIRLOOM]
-			for(var/other_item_path in loadout - item_path)
-				loadout[other_item_path] -= INFO_HEIRLOOM
-			update_loadout(manager.preferences, loadout)
-			return TRUE // Update UI
-
-	return ..()
-
-/datum/loadout_item/pocket_items/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
-	if(preference_list[INFO_HEIRLOOM])
-		return
-
-	return ..()
-
-/datum/loadout_item/pocket_items/on_equip_item(obj/item/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/pocket_items/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
 		return NONE
@@ -74,7 +43,7 @@
 	name = "Wallet"
 	item_path = /obj/item/storage/wallet
 
-/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(visuals_only || isdummy(equipper))
 		return
 	if(!job_equipping_step)
@@ -83,7 +52,7 @@
 	// We wait for the end of prefs setup so we can check the equipper's bag for any other loadout items / quirk items to put in the wallet.
 	RegisterSignal(equipper, COMSIG_HUMAN_CHARACTER_SETUP, PROC_REF(apply_after_setup), override = TRUE)
 
-/datum/loadout_item/pocket_items/wallet/on_equip_item(obj/item/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/pocket_items/wallet/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
 	return NONE
 
 /datum/loadout_item/pocket_items/wallet/proc/apply_after_setup(mob/living/carbon/human/source, ...)
@@ -145,18 +114,16 @@
 	. = ..()
 	.[FA_ICON_PALETTE] = "Recolorable"
 
-/datum/loadout_item/pocket_items/lipstick/on_equip_item(obj/item/lipstick/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/pocket_items/lipstick/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
 	. = ..()
 	if(isnull(equipped_item))
 		return
-
-	var/picked_style = style_to_style(preference_list[INFO_LAYER])
-	var/picked_color = preference_list[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
-	if(istype(equipped_item)) // can be null for visuals_only
-		equipped_item.style = picked_style
-		equipped_item.lipstick_color = picked_color
+	var/picked_style = style_to_style(item_details[INFO_LAYER])
+	var/picked_color = item_details[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
+	var/obj/item/lipstick/lipstick_item = equipped_item
+	lipstick_item.style = picked_style
+	lipstick_item.lipstick_color = picked_color
 	equipper.update_lips(picked_style, picked_color)
-	equipped_item.name = "custom lipstick"
 
 /// Converts style (readable) to style (internal)
 /datum/loadout_item/pocket_items/lipstick/proc/style_to_style(style)
@@ -218,7 +185,7 @@
 
 /datum/loadout_item/pocket_items/plush
 	abstract_type = /datum/loadout_item/pocket_items/plush
-	can_be_named = TRUE
+	loadout_flags = parent_type::loadout_flags | LOADOUT_FLAG_ALLOW_NAMING
 	group = "Plushes"
 
 /datum/loadout_item/pocket_items/plush/bee
@@ -235,7 +202,7 @@
 
 /datum/loadout_item/pocket_items/plush/lizard_random
 	name = "Plush (Lizard, Random)"
-	can_be_greyscale = DONT_GREYSCALE
+	loadout_flags = parent_type::loadout_flags | LOADOUT_FLAG_BLOCK_GREYSCALING
 	item_path = /obj/item/toy/plush/lizard_plushie
 	ui_icon = /obj/item/toy/plush/lizard_plushie/greyscale::icon
 	ui_icon_state = /obj/item/toy/plush/lizard_plushie/greyscale::icon_state

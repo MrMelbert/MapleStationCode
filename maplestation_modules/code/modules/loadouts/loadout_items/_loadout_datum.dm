@@ -38,17 +38,8 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	/// Title of a group that this item will be bundled under
 	/// Defaults to parent category's title if unset
 	var/group = null
-	/// Whether this item has greyscale support.
-	/// Only works if the item is compatible with the GAGS system of coloring.
-	/// Set automatically to TRUE for all items that have the flag [IS_PLAYER_COLORABLE_1].
-	/// If you really want it to not be colorable set this to [DONT_GREYSCALE]
-	var/can_be_greyscale = FALSE
-	/// Whether this item can be renamed.
-	/// I recommend you apply this sparingly becuase it certainly can go wrong (or get reset / overridden easily)
-	var/can_be_named = FALSE
-	/// Whether this item can be reskinned.
-	/// Only works if the item has a "unique reskin" list set.
-	var/can_be_reskinned = FALSE
+	/// Loadout flags, see LOADOUT_FLAG_* defines
+	var/loadout_flags = NONE
 	/// If set, this item can only be selected during the holiday specified.
 	var/required_holiday
 	/// The abstract parent of this loadout item, to determine which items to not instantiate
@@ -63,14 +54,27 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	var/ui_icon_state
 	/// Reskin options of this item if it can be reskinned.
 	VAR_FINAL/list/cached_reskin_options
+	/// A list of greyscale colors that are used for items that have greyscale support, but don't allow full customization.
+	/// This is an assoc list of /datum/job_department -> colors, or /datum/job -> colors, allowing for preset colors based on player chosen job.
+	/// Jobs are prioritized over departments.
+	/// Note: You don't need to set a color for every job or department!
+	var/list/job_greyscale_palettes
 
 /datum/loadout_item/New(category)
 	src.category = category
 
-	if(can_be_greyscale == DONT_GREYSCALE)
-		can_be_greyscale = FALSE
-	else if((item_path::flags_1 & IS_PLAYER_COLORABLE_1) && item_path::greyscale_config && item_path::greyscale_colors)
-		can_be_greyscale = TRUE
+	if(!(loadout_flags & LOADOUT_FLAG_BLOCK_GREYSCALING) && is_greyscale_item())
+		loadout_flags |= LOADOUT_FLAG_GREYSCALING_ALLOWED
+
+	if(loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING)
+		var/default_colors = SSgreyscale.ParseColorString(item_path::greyscale_colors)
+		var/list/final_palette = LAZYLISTDUPLICATE(job_greyscale_palettes)
+		switch(length(default_colors))
+			if(1)
+				LAZYOR(final_palette, default_one_color_job_palette())
+			if(2 to INFINITY)
+				stack_trace("[length(default_colors)] color job palettes are not implemented yet, please do so.")
+		job_greyscale_palettes = final_palette
 
 	if(isnull(name))
 		name = item_path::name
@@ -79,22 +83,34 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 		ui_icon = item_path::icon_preview || item_path::icon
 		ui_icon_state = item_path::icon_state_preview || item_path::icon_state
 
-	if(can_be_reskinned)
+	if(loadout_flags & LOADOUT_FLAG_ALLOW_RESKIN)
 		var/obj/item/dummy_item = new item_path()
 		if(!length(dummy_item.unique_reskin))
-			can_be_reskinned = FALSE
+			loadout_flags &= ~LOADOUT_FLAG_ALLOW_RESKIN
 			stack_trace("Loadout item [item_path] has can_be_reskinned set to TRUE but has no unique reskins.")
 		else
 			cached_reskin_options = dummy_item.unique_reskin.Copy()
 		qdel(dummy_item)
 
 /datum/loadout_item/Destroy(force, ...)
-	if(force)
+	if(!force)
 		stack_trace("QDEL called on loadout item [type]. This shouldn't ever happen. (Use FORCE if necessary.)")
 		return QDEL_HINT_LETMELIVE
 
 	GLOB.all_loadout_datums -= item_path
 	return ..()
+
+/// Checks if the item is capable of being recolored / is a GAGS item.
+
+
+
+/datum/loadout_item/proc/is_greyscale_item()
+	if(!(item_path::flags_1 & IS_PLAYER_COLORABLE_1))
+		return FALSE
+	if(!item_path::greyscale_config || !item_path::greyscale_colors)
+		return FALSE
+	return TRUE
+
 /**
  * Takes in an action from a loadout manager and applies it
  *
@@ -107,15 +123,28 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 
 	switch(action)
 		if("select_color")
-			if(can_be_greyscale)
+			if((loadout_flags & LOADOUT_FLAG_GREYSCALING_ALLOWED) && !(loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING))
 				return set_item_color(manager, user)
 
 		if("set_name")
-			if(can_be_named)
+			if(loadout_flags & LOADOUT_FLAG_ALLOW_NAMING)
 				return set_name(manager, user)
 
 		if("set_skin")
-			return set_skin(manager, user, params)
+			if(loadout_flags & LOADOUT_FLAG_ALLOW_RESKIN)
+				return set_skin(manager, user, params)
+
+		if("make_heirloom")
+			if(loadout_flags & LOADOUT_FLAG_ALLOW_HEIRLOOM)
+				var/list/loadout = get_active_loadout(manager.preferences)
+				if(!loadout?[item_path]) // Validate they still have it equipped
+					return TRUE
+
+				loadout[item_path][INFO_HEIRLOOM] = !loadout[item_path][INFO_HEIRLOOM]
+				for(var/other_item_path in loadout - item_path)
+					loadout[other_item_path] -= INFO_HEIRLOOM
+				update_loadout(manager.preferences, loadout)
+				return TRUE // Update UI
 
 	return TRUE
 
@@ -193,9 +222,6 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 
 /// Used for reskinning an item to an alt skin.
 /datum/loadout_item/proc/set_skin(datum/preference_middleware/loadout/manager, mob/user, params)
-	if(!can_be_reskinned)
-		return FALSE
-
 	var/reskin_to = params["skin"]
 	if(!cached_reskin_options[reskin_to])
 		return FALSE
@@ -208,6 +234,29 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	update_loadout(manager.preferences, loadout)
 	return TRUE // always update UI
 
+/// When passed an outfit, attempts to select a job-appropriate color from job_greyscale_palettes
+
+
+
+/datum/loadout_item/proc/get_job_color(datum/outfit/base_outfit)
+	if(!istype(base_outfit, /datum/outfit/job))
+		return job_greyscale_palettes[/datum/job] // default color
+
+	var/datum/outfit/job/job_outfit = base_outfit
+	var/jobtype = job_outfit.jobtype
+	if(job_greyscale_palettes[jobtype])
+		return job_greyscale_palettes[jobtype]
+
+	var/datum/job/job = SSjob.GetJobType(jobtype)
+	if(job.department_for_prefs && job_greyscale_palettes[job.department_for_prefs])
+		return job_greyscale_palettes[job.department_for_prefs]
+
+	for(var/job_dept in job.departments_list)
+		if(job_greyscale_palettes[job_dept])
+			return job_greyscale_palettes[job_dept]
+
+	return job_greyscale_palettes[/datum/job] // default color
+
 /**
  * Place our [item_path] into the passed [outfit].
  *
@@ -215,12 +264,12 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  *
  * Arguments:
  * * outfit - The outfit we're equipping our items into.
- * * preference_list - Any extra information stored about this item in the loadout
+ * * item_details - Any extra information stored about this item in the loadout
  * * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
  * * visuals_only - If TRUE, then our outfit is only for visual use (for example, a preview).
  * * job_equipping_step - whether we're in the job equipping step, which is a special case for some items
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
@@ -231,13 +280,13 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  *
  * Arguments:
  * * equipped_item - the item that was equipped - may be null for certain items (pocket items)
- * * preference_list - any extra information stored about this item in the loadout
+ * * item_details - any extra information stored about this item in the loadout
  * * equipper - the mob we're equipping this item onto - cannot be null
  * * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  *
  * Return a bitflag of slot flags to update
  */
-/datum/loadout_item/proc/on_equip_item(obj/item/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/proc/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
 	if(isnull(equipped_item))
 		return NONE
 
@@ -246,16 +295,17 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 
 	var/update_flag = NONE
 
-	if(can_be_greyscale && preference_list[INFO_GREYSCALE])
-		equipped_item.set_greyscale(preference_list[INFO_GREYSCALE])
+	if((loadout_flags & LOADOUT_FLAG_GREYSCALING_ALLOWED) && ((loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING) || item_details?[INFO_GREYSCALE]))
+		var/item_color = (loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING) ? get_job_color(outfit) : item_details?[INFO_GREYSCALE]
+		equipped_item.set_greyscale(item_color)
 		update_flag |= equipped_item.slot_flags
 
-	if(can_be_named && preference_list[INFO_NAMED] && !visuals_only)
-		equipped_item.name = trim(preference_list[INFO_NAMED], PREVENT_CHARACTER_TRIM_LOSS(MAX_NAME_LEN))
+	if((loadout_flags & LOADOUT_FLAG_ALLOW_NAMING) && item_details[INFO_NAMED] && !visuals_only)
+		equipped_item.name = trim(item_details[INFO_NAMED], PREVENT_CHARACTER_TRIM_LOSS(MAX_NAME_LEN))
 		ADD_TRAIT(equipped_item, TRAIT_WAS_RENAMED, "Loadout")
 
-	if(can_be_reskinned && preference_list[INFO_RESKIN])
-		var/skin_chosen = preference_list[INFO_RESKIN]
+	if((loadout_flags & LOADOUT_FLAG_ALLOW_RESKIN) && item_details[INFO_RESKIN])
+		var/skin_chosen = item_details[INFO_RESKIN]
 		if(skin_chosen in equipped_item.unique_reskin)
 			equipped_item.current_skin = skin_chosen
 			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
@@ -308,10 +358,10 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 
 	// Mothblocks is hellbent on recolorable and reskinnable being only tooltips for items for visual clarity, so ask her before changing these
 	var/list/displayed_text = list()
-	if(can_be_greyscale)
+	if((loadout_flags & LOADOUT_FLAG_GREYSCALING_ALLOWED) && !(loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING))
 		displayed_text[FA_ICON_PALETTE] = "Recolorable"
 
-	if(can_be_reskinned)
+	if(loadout_flags & LOADOUT_FLAG_ALLOW_RESKIN)
 		displayed_text[FA_ICON_SWATCHBOOK] = "Reskinnable"
 
 	if(required_holiday)
@@ -320,11 +370,21 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	return displayed_text
 
 /**
- * Checks if this item is disabled and cannot be selected or granted
+ * Checks if this item is disabled and cannot be selected
  */
 /datum/loadout_item/proc/is_disabled()
 	SHOULD_CALL_PARENT(TRUE)
 	return required_holiday && !check_holidays(required_holiday)
+
+/**
+ * Checks if this item is disabled or unequippable for the given item details.
+ */
+/datum/loadout_item/proc/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	if(is_disabled())
+		return FALSE
+	if((loadout_flags & LOADOUT_FLAG_ALLOW_HEIRLOOM) && item_details?[INFO_HEIRLOOM])
+		return FALSE
+	return TRUE
 
 /**
  * Returns a list of buttons that are shown in the loadout UI for customizing this item.
@@ -344,7 +404,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 
 	var/list/button_list = list()
 
-	if(can_be_greyscale)
+	if(loadout_flags & LOADOUT_FLAG_GREYSCALING_ALLOWED && !(loadout_flags & LOADOUT_FLAG_JOB_GREYSCALING))
 		UNTYPED_LIST_ADD(button_list, list(
 			"label" = "Recolor",
 			"act_key" = "select_color",
@@ -352,12 +412,22 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 			"active_key" = INFO_GREYSCALE,
 		))
 
-	if(can_be_named)
+	if(loadout_flags & LOADOUT_FLAG_ALLOW_NAMING)
 		UNTYPED_LIST_ADD(button_list, list(
 			"label" = "Rename",
 			"act_key" = "set_name",
 			"button_icon" = FA_ICON_PEN,
 			"active_key" = INFO_NAMED,
+		))
+
+	if(loadout_flags & LOADOUT_FLAG_ALLOW_HEIRLOOM)
+		UNTYPED_LIST_ADD(., list(
+			"label" = "Make Heirloom",
+			"act_key" = "make_heirloom",
+			"button_icon" = FA_ICON_CROSS,
+			"active_key" = INFO_HEIRLOOM,
+			"tooltip" = "Toggle whether this item is your family heirloom.",
+			"required_quirk" = sanitize_css_class_name(/datum/quirk/item_quirk/family_heirloom::name),
 		))
 
 	return button_list
@@ -366,7 +436,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  * Returns a list of options this item can be reskinned into.
  */
 /datum/loadout_item/proc/get_reskin_options() as /list
-	if(!can_be_reskinned)
+	if(!(loadout_flags & LOADOUT_FLAG_ALLOW_RESKIN))
 		return null
 
 	var/list/reskins = list()
@@ -379,3 +449,36 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 		))
 
 	return reskins
+
+/// Default job gags colors for one color gags items
+
+
+
+/datum/loadout_item/proc/default_one_color_job_palette()
+	return list(
+		/datum/job/assistant = COLOR_JOB_ASSISTANT,
+		/datum/job/bitrunner = COLOR_JOB_DEFAULT,
+		/datum/job/botanist = COLOR_JOB_BOTANIST,
+		/datum/job/chemist = COLOR_JOB_CHEMIST,
+		/datum/job/chief_engineer = COLOR_JOB_CE,
+		/datum/job/chief_medical_officer = COLOR_JOB_CMO,
+		/datum/job/clown = COLOR_JOB_CLOWN,
+		/datum/job/cook = COLOR_JOB_CHEF,
+		/datum/job/coroner = COLOR_JOB_DEFAULT,
+		/datum/job/curator = COLOR_DRIED_TAN,
+		/datum/job/detective = COLOR_DRIED_TAN,
+		/datum/job/geneticist = COLOR_BLUE_GRAY,
+		/datum/job/janitor = COLOR_JOB_JANITOR,
+		/datum/job/lawyer = COLOR_JOB_LAWYER,
+		/datum/job/prisoner = COLOR_PRISONER_ORANGE,
+		/datum/job/psychologist = COLOR_DRIED_TAN,
+		/datum/job/roboticist = COLOR_JOB_DEFAULT,
+		/datum/job/shaft_miner = COLOR_DARK_BROWN,
+		/datum/job_department/command = COLOR_JOB_COMMAND_GENERIC,
+		/datum/job_department/engineering = COLOR_JOB_ENGI_GENERIC,
+		/datum/job_department/medical = COLOR_JOB_MED_GENERIC,
+		/datum/job_department/security = COLOR_JOB_SEC_GENERIC,
+		/datum/job_department/science = COLOR_JOB_SCI_GENERIC,
+		/datum/job_department/cargo = COLOR_JOB_CARGO_GENERIC,
+		/datum/job = COLOR_JOB_DEFAULT, // default for any job not listed above
+	)

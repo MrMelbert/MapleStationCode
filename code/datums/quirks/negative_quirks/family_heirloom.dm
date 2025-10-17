@@ -1,6 +1,8 @@
 /datum/quirk/item_quirk/family_heirloom
 	name = "Family Heirloom"
-	desc = "You are the current owner of an heirloom, passed down for generations. You have to keep it safe!"
+	desc = "You are the current owner of an heirloom, passed down for generations.\
+		The heirloom is based on your species, job, or one you selected in the loadout. \
+		You have to keep it safe!"
 	icon = FA_ICON_TOOLBOX
 	value = -2
 	medical_record_text = "Patient demonstrates an unnatural attachment to a family heirloom."

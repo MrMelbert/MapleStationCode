@@ -52,16 +52,19 @@
 	update_loadout(manager.preferences, loadout)
 	return TRUE // Update UI
 
-/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
-/datum/loadout_item/accessory/on_equip_item(obj/item/clothing/accessory/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/accessory/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
 	. = ..()
-	if(istype(equipped_item))
-		equipped_item.above_suit = !!preference_list[INFO_LAYER]
-		. |= (ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
+	if(isnull(equipped_item))
+		return .
+	var/obj/item/clothing/accessory/accessory_item = equipped_item
+	accessory_item.above_suit = !!item_details[INFO_LAYER]
+	return . | ITEM_SLOT_OCLOTHING | ITEM_SLOT_ICLOTHING
+
 
 /datum/loadout_item/accessory/maid_apron
 	name = "Maid Apron"
@@ -142,4 +145,4 @@
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"
 	item_path = /obj/item/clothing/accessory/pride
-	can_be_reskinned = TRUE
+	loadout_flags = LOADOUT_FLAG_ALLOW_RESKIN

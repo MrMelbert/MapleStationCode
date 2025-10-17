@@ -9,7 +9,7 @@
 /datum/loadout_item/gloves
 	abstract_type = /datum/loadout_item/gloves
 
-/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")

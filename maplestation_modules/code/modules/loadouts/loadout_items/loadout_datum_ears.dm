@@ -9,7 +9,7 @@
 /datum/loadout_item/ears
 	abstract_type = /datum/loadout_item/ears
 
-/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.ears)
 		LAZYADD(outfit.backpack_contents, outfit.ears)
 	outfit.ears = item_path

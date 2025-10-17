@@ -9,7 +9,7 @@
 /datum/loadout_item/belts
 	abstract_type = /datum/loadout_item/belts
 
-/datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(!outfit.belt)
 		outfit.belt = item_path
 		return

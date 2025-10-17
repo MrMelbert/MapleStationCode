@@ -7,8 +7,9 @@
 /datum/loadout_item/head
 	abstract_type = /datum/loadout_item/head
 	group = "Other"
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
-/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(equipper.dna?.species?.outfit_important_for_life)
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout helmet was not equipped directly due to your species outfit.")
