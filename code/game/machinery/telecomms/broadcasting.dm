@@ -173,13 +173,16 @@
 	var/list/radio_sound_pool = virt.source.get_radio_sounds()
 	var/sound/picked_sound = length(radio_sound_pool) && sound(pick(radio_sound_pool))
 	var/radio_sound_vol = picked_sound && radio_sound_pool[picked_sound.file]
-	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
+	var/radio_raw_icon = source.get_radio_icon()
+	if(radio_raw_icon)
+		message_mods ||= list()
+		message_mods[SAY_RADIO_ICON] = "[icon2html(radio_raw_icon, typecache_filter_list(receive, GLOB.typecache_mob))] "
 
 	for(var/atom/movable/hearer as anything in receive)
 		if(isnull(hearer))
 			stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
 			continue
-		if(!hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, message_range = INFINITY))
+		if(!hearer.Hear(virt, language, message, frequency, spans, message_mods, message_range = INFINITY))
 			continue
 		if(!picked_sound || !isliving(hearer))
 			continue
