@@ -145,7 +145,24 @@
 		for(var/i in 0 to length_char(sequence) / DNA_MUTATION_BLOCKS-1)
 			if(i)
 				display += "-"
-			display += copytext_char(sequence, 1 + i*DNA_MUTATION_BLOCKS, DNA_MUTATION_BLOCKS*(1+i) + 1)
+			// Rip out the characters from the block
+			var/this_block = copytext_char(sequence, 1 + i*DNA_MUTATION_BLOCKS, DNA_MUTATION_BLOCKS*(1+i) + 1)
+			var/new_block
+			// Try to copy what they did before, separating the single block into pairs
+			for(var/pairs_in_block in 0 to length_char(this_block)/2 - 1)
+				var/this_pair = copytext_char(this_block, 1+pairs_in_block*2, pairs_in_block*2+3)
+				var/new_pair
+				/// Grab each base from the pair and check its color. Blue for CG, Green for AT, Red for X
+				for(var/rna_base_index in list(1,2))
+					if(this_pair[rna_base_index] in list("C","G"))
+						new_pair += span_boldnotice(this_pair[rna_base_index])
+					else if(this_pair[rna_base_index] in list("A","T"))
+						new_pair += span_boldnicegreen(this_pair[rna_base_index])
+					else
+						new_pair += span_bolddanger(this_pair[rna_base_index])
+				new_block += new_pair
+
+			display += new_block
 
 		to_chat(user, "[span_boldnotice("[display]")]<br>")
 
