@@ -786,7 +786,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	login_music = new_music
-	login_length = rustg_sound_length(new_music)
+	login_length = rustg_sound_length(new_music) || 1500 // default to 2.5 minutes if we can't get the length
 	var/list/music_file_components = splittext(new_music, "/")
 	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
 	var/list/music_name_components = splittext(music_file_name, "+")

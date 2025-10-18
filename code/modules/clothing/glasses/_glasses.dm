@@ -55,7 +55,7 @@
 /obj/item/clothing/glasses/proc/thermal_overload()
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
-		var/obj/item/organ/internal/eyes/eyes = H.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = H.get_organ_slot(ORGAN_SLOT_EYES)
 		if(!H.is_blind())
 			if(H.glasses == src)
 				to_chat(H, span_danger("[src] overloads and blinds you!"))
@@ -154,6 +154,7 @@
 	desc = "You can totally see in the dark now!"
 	icon_state = "night"
 	inhand_icon_state = "glasses"
+	article = "a set of"
 	flags_cover = GLASSESCOVERSEYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	// Dark green
@@ -168,11 +169,13 @@
 /obj/item/clothing/glasses/eyepatch
 	name = "eyepatch"
 	desc = "Yarr."
+	gender = NEUTER
 	icon_state = "eyepatch"
 	base_icon_state = "eyepatch"
 	inhand_icon_state = null
 	actions_types = list(/datum/action/item_action/flip)
 	dog_fashion = /datum/dog_fashion/head/eyepatch
+	custom_materials = null
 
 /obj/item/clothing/glasses/eyepatch/attack_self(mob/user, modifiers)
 	. = ..()
@@ -420,7 +423,7 @@
 	if(!user.get_organ_slot(ORGAN_SLOT_EYES))
 		to_chat(user, span_warning("You have no eyes to apply the contacts to!"))
 		return
-	var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 
 	to_chat(user, span_notice("You begin applying the contact lenses to your eyes..."))
 	if(!do_after(user, 3 SECONDS, src))

@@ -30,7 +30,7 @@
 	savefile_key = "feature_arm_wings"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	relevant_external_organ = /obj/item/organ/external/wings/functional/arm_wings
+	relevant_external_organ = /obj/item/organ/wings/functional/arm_wings
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
@@ -79,7 +79,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/tail/avian
+	relevant_external_organ = /obj/item/organ/tail/avian
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/tail_avian/init_possible_values()
@@ -114,7 +114,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	can_randomize = FALSE
-	relevant_external_organ = /obj/item/organ/external/plumage
+	relevant_external_organ = /obj/item/organ/ears/avian
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/plumage/init_possible_values()

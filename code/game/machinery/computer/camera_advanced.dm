@@ -23,6 +23,8 @@
 	var/list/actions = list()
 	///Should we supress any view changes?
 	var/should_supress_view_changes = TRUE
+	/// If TRUE viewed cameras will light up to show they're in use.
+	var/alerts_cameras = TRUE
 
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_REQUIRES_SIGHT
 
@@ -58,6 +60,7 @@
 /obj/machinery/computer/camera_advanced/syndie
 	icon_keyboard = "syndie_key"
 	circuit = /obj/item/circuitboard/computer/advanced_camera
+	alerts_cameras = FALSE
 
 /obj/machinery/computer/camera_advanced/syndie/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	return //For syndie nuke shuttle, to spy for station.
@@ -65,6 +68,7 @@
 /obj/machinery/computer/camera_advanced/proc/CreateEye()
 	eyeobj = new()
 	eyeobj.origin = src
+	eyeobj.set_telegraph(alerts_cameras)
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/user)
 	for(var/datum/action/to_grant as anything in actions)
@@ -87,6 +91,7 @@
 		user.client.images -= eyeobj.user_image
 	user.client.view_size.unsupress()
 
+	eyeobj.set_telegraph(FALSE)
 	eyeobj.eye_user = null
 	user.remote_control = null
 	current_user = null
@@ -173,6 +178,7 @@
 	GrantActions(user)
 	current_user = user
 	eyeobj.eye_user = user
+	eyeobj.set_telegraph(alerts_cameras)
 	eyeobj.name = "Camera Eye ([user.name])"
 	user.remote_control = eyeobj
 	user.reset_perspective(eyeobj)
@@ -210,24 +216,27 @@
 	return null
 
 /mob/camera/ai_eye/remote/setLoc(turf/destination, force_update = FALSE)
-	if(eye_user)
-		destination = get_turf(destination)
-		if (destination)
-			abstract_move(destination)
-		else
-			moveToNullspace()
+	if(isnull(eye_user))
+		return
+	destination = get_turf(destination)
+	if (destination)
+		abstract_move(destination)
+	else
+		moveToNullspace()
 
-		update_ai_detect_hud()
+	update_ai_detect_hud()
 
-		if(use_static)
-			GLOB.cameranet.visibility(src, GetViewerClient(), null, use_static)
+	if(use_static)
+		GLOB.cameranet.visibility(src, GetViewerClient(), null, use_static)
 
-		if(visible_icon)
-			if(eye_user.client)
-				eye_user.client.images -= user_image
-				user_image = image(icon,loc,icon_state, FLY_LAYER)
-				SET_PLANE(user_image, ABOVE_GAME_PLANE, destination)
-				eye_user.client.images += user_image
+	if(visible_icon)
+		if(eye_user.client)
+			eye_user.client.images -= user_image
+			user_image = image(icon,loc,icon_state, FLY_LAYER)
+			SET_PLANE(user_image, ABOVE_GAME_PLANE, destination)
+			eye_user.client.images += user_image
+
+	update_cameras()
 
 /mob/camera/ai_eye/remote/relaymove(mob/living/user, direction)
 	var/initial = initial(sprint)

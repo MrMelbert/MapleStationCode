@@ -99,6 +99,7 @@
 //Captain
 /obj/item/clothing/head/hats/caphat
 	name = "captain's hat"
+	article = "the"
 	desc = "It's good being the king."
 	icon_state = "captain"
 	inhand_icon_state = "that"
@@ -120,12 +121,14 @@
 
 /obj/item/clothing/head/hats/caphat/parade
 	name = "captain's parade cap"
+	article = "the"
 	desc = "Worn only by Captains with an abundance of class."
 	icon_state = "capcap"
 	dog_fashion = null
 
 /obj/item/clothing/head/caphat/beret
 	name = "captain's beret"
+	article = "the"
 	desc = "For the Captains known for their sense of fashion."
 	icon = 'icons/map_icons/clothing/head/_head.dmi'
 	icon_state = "/obj/item/clothing/head/caphat/beret"
@@ -138,6 +141,7 @@
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
 	name = "head of personnel's cap"
+	article = "the"
 	icon_state = "hopcap"
 	desc = "The symbol of true bureaucratic micromanagement."
 	armor_type = /datum/armor/hats_hopcap
@@ -413,6 +417,7 @@
 
 /obj/item/clothing/head/hats/hos/beret
 	name = "head of security's beret"
+	article = "the"
 	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
 	icon = 'icons/map_icons/clothing/head/_head.dmi'
 	icon_state = "/obj/item/clothing/head/hats/hos/beret"
@@ -424,6 +429,7 @@
 
 /obj/item/clothing/head/hats/hos/beret/navyhos
 	name = "head of security's formal beret"
+	article = "the"
 	desc = "A special beret with the Head of Security's insignia emblazoned on it. A symbol of excellence, a badge of courage, a mark of distinction."
 	icon_state = "/obj/item/clothing/head/hats/hos/beret/navyhos"
 	greyscale_colors = "#638799#f0cc8f"
@@ -694,7 +700,7 @@
 	if(human_examined.is_mouth_covered())
 		final_message += "\tYou can't see [examining.p_their()] mouth."
 	else
-		var/obj/item/organ/internal/tongue/has_tongue = human_examined.get_organ_slot(ORGAN_SLOT_TONGUE)
+		var/obj/item/organ/tongue/has_tongue = human_examined.get_organ_slot(ORGAN_SLOT_TONGUE)
 		var/pill_count = 0
 		for(var/datum/action/item_action/hands_free/activate_pill/pill in human_examined.actions)
 			pill_count++
@@ -711,7 +717,7 @@
 	if(human_examined.is_ears_covered())
 		final_message += "\tYou can't see [examining.p_their()] ears."
 	else
-		var/obj/item/organ/internal/ears/has_ears = human_examined.get_organ_slot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/has_ears = human_examined.get_organ_slot(ORGAN_SLOT_EARS)
 		if(has_ears)
 			if(has_ears.deaf)
 				final_message += "\tDamaged eardrums in [examining.p_their()] ear canals."
@@ -723,7 +729,7 @@
 	if(human_examined.is_eyes_covered())
 		final_message += "\tYou can't see [examining.p_their()] eyes."
 	else
-		var/obj/item/organ/internal/eyes/has_eyes = human_examined.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/has_eyes = human_examined.get_organ_slot(ORGAN_SLOT_EYES)
 		if(has_eyes)
 			final_message += "\tA pair of [has_eyes.damage ? "" : "healthy "][has_eyes.name]."
 		else

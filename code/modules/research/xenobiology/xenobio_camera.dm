@@ -28,10 +28,11 @@
 #define SUCTION_TIME 2 DECISECONDS
 
 /obj/machinery/computer/camera_advanced/xenobio
-	name = "Slime management console"
+	name = "slime management console"
 	desc = "A computer used for remotely handling slimes."
 	networks = list(CAMERANET_NETWORK_SS13)
 	circuit = /obj/item/circuitboard/computer/xenobiology
+	alerts_cameras = FALSE
 
 	///The recycler connected to the camera console
 	var/obj/machinery/monkey_recycler/connected_recycler
@@ -97,6 +98,7 @@
 	eyeobj.visible_icon = TRUE
 	eyeobj.icon = 'icons/mob/silicon/cameramob.dmi'
 	eyeobj.icon_state = "generic_camera"
+	eyeobj.set_telegraph(alerts_cameras)
 
 /obj/machinery/computer/camera_advanced/xenobio/GrantActions(mob/living/user)
 	. = ..()

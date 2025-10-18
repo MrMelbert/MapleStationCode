@@ -1,11 +1,11 @@
-/obj/item/organ/internal/cyberimp/arm/lighter
+/obj/item/organ/cyberimp/arm/lighter
 	name = "finger-implanted lighter"
 	desc = "Allows you to light cigarettes with the snap of a finger."
 	extend_sound = 'sound/items/welderactivate.ogg'
 	retract_sound = 'sound/items/welderdeactivate.ogg'
 	items_to_create = list(/obj/item/lighter/spell/finger)
 
-/obj/item/organ/internal/cyberimp/arm/lighter/emp_act(severity)
+/obj/item/organ/cyberimp/arm/lighter/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -17,15 +17,15 @@
 	owner.apply_damage(10 / severity, BURN, real_hand, attacking_item = src)
 	to_chat(owner, span_warning("You feel your [parse_zone(zone)] begin to burn up!"))
 
-/obj/item/organ/internal/cyberimp/arm/lighter/on_mob_insert(mob/living/carbon/arm_owner)
+/obj/item/organ/cyberimp/arm/lighter/on_mob_insert(mob/living/carbon/arm_owner)
 	. = ..()
 	RegisterSignal(arm_owner, COMSIG_MOB_EMOTED("snap"), PROC_REF(on_snap))
 
-/obj/item/organ/internal/cyberimp/arm/lighter/on_mob_remove(mob/living/carbon/arm_owner)
+/obj/item/organ/cyberimp/arm/lighter/on_mob_remove(mob/living/carbon/arm_owner)
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_MOB_EMOTED("snap"))
 
-/obj/item/organ/internal/cyberimp/arm/lighter/Extend(obj/item/augment)
+/obj/item/organ/cyberimp/arm/lighter/Extend(obj/item/augment)
 	. = ..()
 	var/obj/item/lighter/spell/finger/lighter = augment
 	if(!istype(augment) || augment.loc == src)
@@ -33,14 +33,14 @@
 	lighter.name = "[owner]'s [name]"
 	lighter.set_lit(TRUE)
 
-/obj/item/organ/internal/cyberimp/arm/lighter/Retract()
+/obj/item/organ/cyberimp/arm/lighter/Retract()
 	var/obj/item/lighter/spell/finger/lighter = active_item
 	if(istype(lighter))
 		lighter.set_lit(FALSE)
 		lighter.name = initial(lighter.name)
 	return ..()
 
-/obj/item/organ/internal/cyberimp/arm/lighter/proc/on_snap(mob/living/source)
+/obj/item/organ/cyberimp/arm/lighter/proc/on_snap(mob/living/source)
 	SIGNAL_HANDLER
 	if(source.get_active_hand() != hand)
 		return
@@ -60,10 +60,11 @@
 			span_infoplain(span_rose("With a snap, your finger is extinguished.")),
 		)
 
-/obj/item/organ/internal/cyberimp/arm/lighter/left
+/obj/item/organ/cyberimp/arm/lighter/left
 	zone = BODY_ZONE_L_ARM
 
 /obj/item/lighter/spell
+	item_flags = ABSTRACT|DROPDEL
 	/// Weakref to the action that created us
 	VAR_FINAL/datum/weakref/origin_ref
 
@@ -71,8 +72,7 @@
 	. = ..()
 	if(origin)
 		origin_ref = WEAKREF(origin)
-	else
-		item_flags |= DROPDEL
+		item_flags &= ~DROPDEL
 
 /obj/item/lighter/spell/proc/clear_up(mob/user, do_message = FALSE)
 	var/datum/action/cooldown/spell/touch/finger_flame/origin = origin_ref?.resolve()
@@ -107,6 +107,9 @@
 
 /obj/item/lighter/spell/finger/magic
 	name = "finger flame"
+	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
+	icon_state = "fire"
+	inhand_icon_state = "nothing"
 
 /obj/item/lighter/spell/finger/magic/ignition_effect(atom/A, mob/user)
 	. = ..()
@@ -121,7 +124,7 @@
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
 	icon_state = "fire"
 	inhand_icon_state = "nothing"
-	item_flags = ABSTRACT
+	item_flags = ABSTRACT|DROPDEL
 	light_sound_on = null
 	light_sound_off = null
 	/// World.time we were last lit.
@@ -175,21 +178,21 @@
 	clear_up(holder, do_message = FALSE)
 
 // + Resprites + //
-/obj/item/organ/internal/cyberimp/arm
+/obj/item/organ/cyberimp/arm
 	icon = 'maplestation_modules/icons/obj/organs.dmi'
 	icon_state = "toolkit_generic"
 
-/obj/item/organ/internal/cyberimp/arm/toolset
+/obj/item/organ/cyberimp/arm/toolset
 	icon_state = "toolkit_engineering"
 
-/obj/item/organ/internal/cyberimp/arm/surgery
+/obj/item/organ/cyberimp/arm/surgery
 	icon_state = "toolkit_surgical"
 
-/obj/item/organ/internal/cyberimp/arm/muscle
+/obj/item/organ/cyberimp/arm/muscle
 	icon_state = "muscle_implant"
 
-/obj/item/organ/internal/cyberimp/arm/gun/taser
+/obj/item/organ/cyberimp/arm/gun/taser
 	icon = 'icons/obj/medical/organs/organs.dmi'
 
-/obj/item/organ/internal/cyberimp/arm/gun/laser
+/obj/item/organ/cyberimp/arm/gun/laser
 	icon = 'icons/obj/medical/organs/organs.dmi'

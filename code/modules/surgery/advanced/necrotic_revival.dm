@@ -13,7 +13,7 @@
 
 /datum/surgery/advanced/necrotic_revival/can_start(mob/user, mob/living/carbon/target)
 	. = ..()
-	var/obj/item/organ/internal/zombie_infection/z_infection = target.get_organ_slot(ORGAN_SLOT_ZOMBIE)
+	var/obj/item/organ/zombie_infection/z_infection = target.get_organ_slot(ORGAN_SLOT_ZOMBIE)
 	if(z_infection)
 		return FALSE
 
@@ -58,6 +58,6 @@
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	if(!target.get_organ_slot(ORGAN_SLOT_ZOMBIE))
-		var/obj/item/organ/internal/zombie_infection/z_infection = new()
+		var/obj/item/organ/zombie_infection/z_infection = new()
 		z_infection.Insert(target)
 	return ..()

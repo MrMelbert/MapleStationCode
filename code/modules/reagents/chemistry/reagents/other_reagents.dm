@@ -659,31 +659,17 @@
 						exposed_human.skin_tone = "mixed3"
 			//take current alien color and darken it slightly
 			else if(HAS_TRAIT(exposed_human, TRAIT_MUTANT_COLORS) && !HAS_TRAIT(exposed_human, TRAIT_FIXED_MUTANT_COLORS))
-				var/newcolor = ""
-				var/string = exposed_human.dna.features["mcolor"]
-				var/len = length(string)
-				var/char = ""
-				var/ascii = 0
-				for(var/i=1, i <= len, i += length(char))
-					char = string[i]
-					ascii = text2ascii(char)
-					switch(ascii)
-						if(48)
-							newcolor += "0"
-						if(49 to 57)
-							newcolor += ascii2text(ascii-1) //numbers 1 to 9
-						if(97)
-							newcolor += "9"
-						if(98 to 102)
-							newcolor += ascii2text(ascii-1) //letters b to f lowercase
-						if(65)
-							newcolor += "9"
-						if(66 to 70)
-							newcolor += ascii2text(ascii+31) //letters B to F - translates to lowercase
-						else
-							break
-				if(ReadHSV(newcolor)[3] >= ReadHSV("#7F7F7F")[3])
-					exposed_human.dna.features["mcolor"] = newcolor
+				var/list/existing_color = rgb2num(exposed_human.dna.features["mcolor"])
+				var/list/darkened_color = list()
+				// Reduces each part of the color by 16
+				for(var/channel in existing_color)
+					darkened_color += max(channel - 17, 0)
+
+				var/new_color = rgb(darkened_color[1], darkened_color[2], darkened_color[3])
+				var/list/new_hsv = rgb2hsv(new_color)
+				// Can't get too dark now
+				if(new_hsv[3] >= 50)
+					exposed_human.dna.features["mcolor"] = new_color
 			exposed_human.update_body(is_creating = TRUE)
 
 		if((methods & INGEST) && show_message)
@@ -700,10 +686,10 @@
 			head.head_flags |= HEAD_HAIR //No hair? No problem!
 		if(!HAS_TRAIT(affected_human, TRAIT_SHAVED))
 			affected_human.set_facial_hairstyle("Shaved", update = FALSE)
-		affected_human.set_facial_haircolor("#000000", update = FALSE)
+		affected_human.set_facial_haircolor(COLOR_BLACK, update = FALSE)
 		if(!HAS_TRAIT(affected_human, TRAIT_BALD))
 			affected_human.set_hairstyle("Spiky", update = FALSE)
-		affected_human.set_haircolor("#000000", update = FALSE)
+		affected_human.set_haircolor(COLOR_BLACK, update = FALSE)
 		if(HAS_TRAIT(affected_human, TRAIT_USES_SKINTONES))
 			affected_human.skin_tone = "orange"
 		else if(HAS_TRAIT(affected_human, TRAIT_MUTANT_COLORS) && !HAS_TRAIT(affected_human, TRAIT_FIXED_MUTANT_COLORS)) //Aliens with custom colors simply get turned orange
@@ -972,7 +958,7 @@
 	name = "Oxygen"
 	description = "A colorless, odorless gas. Grows on trees but is still pretty valuable."
 	reagent_state = GAS
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_mult = 0 // oderless and tasteless
 	ph = 9.2//It's acutally a huge range and very dependant on the chemistry but ph is basically a made up var in it's implementation anyways
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1007,7 +993,7 @@
 	name = "Nitrogen"
 	description = "A colorless, odorless, tasteless gas. A simple asphyxiant that can silently displace vital oxygen."
 	reagent_state = GAS
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_mult = 0
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -1020,7 +1006,7 @@
 	name = "Hydrogen"
 	description = "A colorless, odorless, nonmetallic, tasteless, highly combustible diatomic gas."
 	reagent_state = GAS
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_mult = 0
 	ph = 0.1//Now I'm stuck in a trap of my own design. Maybe I should make -ve phes? (not 0 so I don't get div/0 errors)
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1049,7 +1035,7 @@
 /datum/reagent/mercury
 	name = "Mercury"
 	description = "A curious metal that's a liquid at room temperature. Neurodegenerative and very bad for the mind."
-	color = "#484848" // rgb: 72, 72, 72A
+	color = COLOR_WEBSAFE_DARK_GRAY // rgb: 72, 72, 72A
 	taste_mult = 0 // apparently tasteless.
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -1115,7 +1101,7 @@
 	name = "Fluorine"
 	description = "A comically-reactive chemical element. The universe does not want this stuff to exist in this form in the slightest."
 	reagent_state = GAS
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_description = "acid"
 	ph = 2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1136,7 +1122,7 @@
 	name = "Sodium"
 	description = "A soft silver metal that can easily be cut with a knife. It's not salt just yet, so refrain from putting it on your chips."
 	reagent_state = SOLID
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_description = "salty metal"
 	ph = 11.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1160,7 +1146,7 @@
 	name = "Lithium"
 	description = "A silver metal, its claim to fame is its remarkably low density. Using it is a bit too effective in calming oneself down."
 	reagent_state = SOLID
-	color = "#808080" // rgb: 128, 128, 128
+	color = COLOR_GRAY
 	taste_description = "metal"
 	ph = 11.3
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1401,6 +1387,15 @@
 		burn_wound.victim.apply_damage(0.5, TOX, burn_wound.limb, wound_bonus = CANT_WOUND)
 		burn_wound.victim.apply_damage(0.5, BURN, burn_wound.limb, wound_bonus = CANT_WOUND)
 
+/datum/reagent/space_cleaner/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	if(!HAS_TRAIT(affected_mob, TRAIT_TOXINLOVER) && !prob(5))
+		return
+	for(var/obj/item/organ/organ in affected_mob.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
+		organ.wash(clean_types|CLEAN_RAD)
+
 /datum/reagent/space_cleaner/ez_clean
 	name = "EZ Clean"
 	description = "A powerful, acidic cleaner sold by Waffle Co. Affects organic matter while leaving other objects unaffected."
@@ -1507,7 +1502,7 @@
 /datum/reagent/snail
 	name = "Agent-S"
 	description = "Virological agent that infects the subject with Gastrolosis."
-	color = "#003300" // rgb(0, 51, 0)
+	color = COLOR_VERY_DARK_LIME_GREEN // rgb(0, 51, 0)
 	taste_description = "goo"
 	penetrates_skin = NONE
 	ph = 11
@@ -1598,7 +1593,7 @@
 		used alongside sanguirite to allow blood clotting to continue."
 	reagent_state = LIQUID
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-	color = "#808080"
+	color = COLOR_GRAY
 	taste_description = "sweetness"
 	ph = 5.8
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1773,7 +1768,7 @@
 /datum/reagent/plantnutriment
 	name = "Generic Nutriment"
 	description = "Some kind of nutriment. You can't really tell what it is. You should probably report it, along with how you obtained it."
-	color = "#000000" // RBG: 0, 0, 0
+	color = COLOR_BLACK // RBG: 0, 0, 0
 	var/tox_prob = 0
 	taste_description = "plant food"
 	ph = 3
@@ -1968,7 +1963,7 @@
 
 /datum/reagent/carpet/royal/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver)
 		// Heads of staff and the captain have a "royal metabolism"
 		if(HAS_TRAIT(liver, TRAIT_ROYAL_METABOLISM))
@@ -1985,7 +1980,7 @@
 /datum/reagent/carpet/royal/black
 	name = "Royal Black Carpet"
 	description = "For those that feel the need to show off their timewasting skills."
-	color = "#000000"
+	color = COLOR_BLACK
 	taste_description = "royalty"
 	carpet_type = /turf/open/floor/carpet/royalblack
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -2462,7 +2457,7 @@
 	. = ..()
 	// Silently add the zombie infection organ to be activated upon death
 	if(!exposed_mob.get_organ_slot(ORGAN_SLOT_ZOMBIE))
-		var/obj/item/organ/internal/zombie_infection/nodamage/ZI = new()
+		var/obj/item/organ/zombie_infection/nodamage/ZI = new()
 		ZI.Insert(exposed_mob)
 
 /datum/reagent/magillitis
@@ -2524,7 +2519,7 @@
 /datum/reagent/glitter
 	name = "Generic Glitter"
 	description = "if you can see this description, contact a coder."
-	color = "#FFFFFF" //pure white
+	color = COLOR_WHITE //pure white
 	taste_description = "plastic"
 	reagent_state = SOLID
 	var/glitter_type = /obj/effect/decal/cleanable/glitter
@@ -2745,7 +2740,7 @@
 /datum/reagent/wittel
 	name = "Wittel"
 	description = "An extremely rare metallic-white substance only found on demon-class planets."
-	color = "#FFFFFF" // rgb: 255, 255, 255
+	color = COLOR_WHITE // rgb: 255, 255, 255
 	taste_mult = 0 // oderless and tasteless
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 

@@ -97,7 +97,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	target.dna.features["lizard_horn_color"] = COLOR_VIBRANT_LIME // NON-MODULE CHANGE
 	target.dna.features["ethcolor"] = COLOR_WHITE
-	target.dna.features["body_markings"] = get_consistent_feature_entry(SSaccessories.body_markings_list)
+	target.dna.features["lizard_markings"] = get_consistent_feature_entry(SSaccessories.lizard_markings_list)
 	target.dna.features["ears"] = get_consistent_feature_entry(SSaccessories.ears_list)
 	target.dna.features["frills"] = get_consistent_feature_entry(SSaccessories.frills_list)
 	target.dna.features["horns"] = get_consistent_feature_entry(SSaccessories.horns_list)
@@ -110,6 +110,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["tail_lizard"] = get_consistent_feature_entry(SSaccessories.tails_list_lizard)
 	target.dna.features["tail_monkey"] = get_consistent_feature_entry(SSaccessories.tails_list_monkey)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(SSaccessories.pod_hair_list)
+	target.dna.features["caps"] = get_consistent_feature_entry(SSaccessories.caps_list)
 	target.dna.features["head_tentacles"] = get_consistent_feature_entry(SSaccessories.head_tentacles_list) // NON-MODULE CHANGE
 	target.dna.features["arm_wings"] = get_consistent_feature_entry(SSaccessories.arm_wings_list) // NON-MODULE CHANGE
 	target.dna.features["tail_avian"] = get_consistent_feature_entry(SSaccessories.tails_list_avian) // NON-MODULE CHANGE

@@ -6,12 +6,12 @@
 	plural_form = "Skrellian"
 	id = SPECIES_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER)
-	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
+	mutant_organs = list(/obj/item/organ/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
 	exotic_bloodtype = /datum/blood_type/crew/skrell
-	mutanttongue = /obj/item/organ/internal/tongue/skrell
+	mutanttongue = /obj/item/organ/tongue/skrell
 	species_pain_mod = 0.80
 
 	bodypart_overrides = list(
@@ -23,8 +23,8 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/skrell,
 	)
 
-	mutanteyes = /obj/item/organ/internal/eyes/skrell
-	mutanttongue = /obj/item/organ/internal/tongue/skrell
+	mutanteyes = /obj/item/organ/eyes/skrell
+	mutanttongue = /obj/item/organ/tongue/skrell
 
 /datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -77,16 +77,18 @@
 	race = /datum/species/skrell
 
 // Organ for Skrell head tentacles.
-/obj/item/organ/external/head_tentacles
+/obj/item/organ/head_tentacles
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
 	preference = "feature_head_tentacles"
 	bodypart_overlay = /datum/bodypart_overlay/mutant/head_tentacles
+	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 /datum/bodypart_overlay/mutant/head_tentacles
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	feature_key = "head_tentacles"
+	dyable = TRUE
 
 /datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
@@ -121,6 +123,6 @@
 	limb_id = SPECIES_SKRELL
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
-/obj/item/organ/internal/eyes/skrell
+/obj/item/organ/eyes/skrell
 	desc = "Gooey."
 	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'

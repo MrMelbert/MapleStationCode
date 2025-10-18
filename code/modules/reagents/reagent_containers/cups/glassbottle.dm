@@ -72,7 +72,7 @@
 	if(message_in_a_bottle)
 		. += span_info("there's \a [message_in_a_bottle] inside it. Break it to take it out, or find a beach or ocean and toss it with [EXAMINE_HINT("right-click")].")
 	else if(isGlass)
-		. += span_tinynoticeital("you could place a paper, photo or space cash inside it...")
+		. += span_tinynoticeital("You could place a piece of paper, photo or space cash inside it...")
 
 /obj/item/reagent_containers/cup/glass/bottle/update_overlays()
 	. = ..()
@@ -698,7 +698,7 @@
 		return
 
 	//The bonus to success chance that the user gets for being a command role
-	var/obj/item/organ/internal/liver/liver = user.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = user.get_organ_slot(ORGAN_SLOT_LIVER)
 	var/command_bonus = (!isnull(liver) && HAS_TRAIT(liver, TRAIT_ROYAL_METABOLISM)) ? 20 : 0
 
 	//The bonus to success chance that the user gets for having a sabrage skillchip installed/otherwise having the trait through other means

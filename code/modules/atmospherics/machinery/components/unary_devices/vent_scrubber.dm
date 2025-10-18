@@ -172,12 +172,6 @@
 	update_power_usage()
 	update_appearance(UPDATE_ICON)
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/update_name()
-	. = ..()
-	if(override_naming)
-		return
-	name = "\proper [get_area_name(src)] [name] [id_tag]"
-
 /obj/machinery/atmospherics/components/unary/vent_scrubber/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	if(welded || !is_operational)
 		return FALSE
@@ -310,6 +304,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(src)], and is ID [id_tag].")
 	if(welded)
 		. += "It seems welded shut."
 

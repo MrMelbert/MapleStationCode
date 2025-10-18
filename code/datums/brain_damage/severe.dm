@@ -346,7 +346,7 @@
 	COOLDOWN_DECLARE(weeping_hallucinations)
 
 /datum/brain_trauma/severe/weeping/on_life(seconds_per_tick, times_fired)
-	if(owner.stat != CONSCIOUS || owner.IsSleeping() || owner.IsUnconscious())
+	if(HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
 		return
 	// If they have examined a painting recently
 	if(HAS_TRAIT(owner, TRAIT_ELDRITCH_PAINTING_EXAMINE))

@@ -267,9 +267,16 @@
 /obj/item/bodypart/proc/can_attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
-
+	if(SEND_SIGNAL(src, COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB, new_limb_owner, special) & COMPONENT_NO_ATTACH)
+		return FALSE
+	if(special)
+		return TRUE
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !special)
+	if(isnull(mob_chest))
+		return TRUE // i guess this is legal
+	if(!(mob_chest.acceptable_bodytype & bodytype))
+		return FALSE
+	if(!(mob_chest.acceptable_bodyshape & bodyshape))
 		return FALSE
 	return TRUE
 
@@ -407,14 +414,14 @@
 			qdel(scaries)
 			qdel(phantom_loss)
 
-	//Copied from /datum/species/proc/on_species_gain()
-	for(var/obj/item/organ/external/organ_path as anything in dna.species.external_organs)
-		//Load a persons preferences from DNA
-		var/zone = initial(organ_path.zone)
-		if(zone != limb_zone)
-			continue
-		var/obj/item/organ/external/new_organ = SSwardrobe.provide_type(organ_path)
-		new_organ.Insert(src)
+		//Copied from /datum/species/proc/on_species_gain()
+		for(var/obj/item/organ/organ_path as anything in dna.species.mutant_organs)
+			//Load a persons preferences from DNA
+			var/zone = initial(organ_path.zone)
+			if(zone != limb_zone)
+				continue
+			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+			new_organ.Insert(src)
 
 	update_body_parts()
 	return TRUE

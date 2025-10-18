@@ -58,9 +58,9 @@
 		display_results(
 			user,
 			target,
-			span_green("You've finishes repairing all the arterial damage in [in_where]."),
-			span_green("[user] finishes repaiing all the arterial damage in [in_where] with [tool]!"),
-			span_green("[user] finishes repaiing all the arterial damage in [in_where]!"),
+			span_green("You've finished repairing all the arterial damage in [in_where]."),
+			span_green("[user] finished repairing all the arterial damage in [in_where] with [tool]!"),
+			span_green("[user] finished repairing all the arterial damage in [in_where]!"),
 		)
 		repeatable = FALSE
 		return ..()
