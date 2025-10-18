@@ -271,7 +271,7 @@
 	for(var/mob/living/freezer in src)
 		if(freezer.get_skin_temperature() <= freezer.bodytemp_cold_damage_limit)
 			freezer.apply_status_effect(/datum/status_effect/freon)
-	MakeSlippery(TURF_WET_PERMAFROST, 50)
+	MakeSlippery(TURF_WET_PERMAFROST, 10 SECONDS)
 	return TRUE
 
 /turf/open/proc/water_vapor_gas_act()
