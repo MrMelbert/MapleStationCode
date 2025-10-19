@@ -288,6 +288,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Ag"
 	color = "#c9c9c99c"
 	reagent_type = /datum/reagent/silver
+	restoration_chem = /datum/reagent/silver
 
 /datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.can_dry = FALSE

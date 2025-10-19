@@ -292,18 +292,12 @@
 		tablelimbsmash(user, carried_mob)
 		return ITEM_INTERACT_SUCCESS
 
-	var/tableplace_delay = 3.5 SECONDS
+	var/tableplace_delay = user.get_grab_speed(carried_mob, 3.5 SECONDS)
 	var/skills_space = ""
 	if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
-		tableplace_delay = 2 SECONDS
 		skills_space = " expertly"
 	else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
-		tableplace_delay = 2.75 SECONDS
 		skills_space = " quickly"
-
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		tableplace_delay *= potential_spine.athletics_boost_multiplier
 
 	carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 		span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))

@@ -160,7 +160,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		// Pick voice color on "base voice" rather than "ID'd voice". Unknown voices get no color
 		var/voice = HAS_TRAIT(speaker, TRAIT_SIGN_LANG) ? speaker.get_visible_name(add_id_name = FALSE) : speaker.get_voice()
 		if(voice && voice != "Unknown")
-			namepart = "<font color='[voice == speaker.chat_color_name ? speaker.chat_color_darkened : colorize_string(voice, 0.85, 0.85)]'>[namepart]</font>"
+			namepart = "<font color='[darken_hsl(get_chat_color(voice))]'>[namepart]</font>"
 
 	//End name span.
 	var/endspanpart = "</span>"

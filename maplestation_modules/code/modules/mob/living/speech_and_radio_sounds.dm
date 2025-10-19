@@ -56,7 +56,7 @@
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return null
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(isnull(tongue) || !tongue.speech_sounds_enabled)
 		return null
 	switch(sound_type)

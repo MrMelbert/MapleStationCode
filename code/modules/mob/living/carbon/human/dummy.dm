@@ -110,6 +110,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["tail_lizard"] = get_consistent_feature_entry(SSaccessories.tails_list_lizard)
 	target.dna.features["tail_monkey"] = get_consistent_feature_entry(SSaccessories.tails_list_monkey)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(SSaccessories.pod_hair_list)
+	target.dna.features["caps"] = get_consistent_feature_entry(SSaccessories.caps_list)
 	target.dna.features["head_tentacles"] = get_consistent_feature_entry(SSaccessories.head_tentacles_list) // NON-MODULE CHANGE
 	target.dna.features["arm_wings"] = get_consistent_feature_entry(SSaccessories.arm_wings_list) // NON-MODULE CHANGE
 	target.dna.features["tail_avian"] = get_consistent_feature_entry(SSaccessories.tails_list_avian) // NON-MODULE CHANGE

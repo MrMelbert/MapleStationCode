@@ -548,7 +548,7 @@
 			parent.losebreath += 1
 
 	if((traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
-		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
+		if(!HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
 				span_warning(pick("You black out!", "You feel like you're about to die!", "You lose consciousness!")),

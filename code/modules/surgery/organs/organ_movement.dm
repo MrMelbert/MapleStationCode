@@ -28,6 +28,8 @@
 	if(!special)
 		receiver.update_body_parts()
 
+	return TRUE
+
 /*
  * Remove the organ from the select mob.
  *
