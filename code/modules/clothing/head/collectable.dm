@@ -125,6 +125,10 @@
 	inhand_icon_state = null
 	dog_fashion = /datum/dog_fashion/head/kitty
 
+/obj/item/clothing/head/collectable/kitty/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/wearertargeting/rip_off_able, ITEM_SLOT_HEAD, BODY_ZONE_PRECISE_GROIN, "tail")
+
 /obj/item/clothing/head/collectable/rabbitears
 	name = "collectable rabbit ears"
 	desc = "Not as lucky as the feet!"
