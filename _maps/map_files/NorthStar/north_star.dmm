@@ -33807,7 +33807,10 @@
 /area/station/engineering/supermatter)
 "iOe" = (
 /obj/structure/table,
-/obj/item/stack/sheet/iron/fifty,
+/obj/item/stack/sheet/iron/fifty{
+	pixel_y = 6;
+	pixel_x = 7
+	},
 /obj/item/stack/sheet/glass/fifty{
 	pixel_x = -9;
 	pixel_y = 2
@@ -33823,6 +33826,9 @@
 	pixel_x = 17
 	},
 /obj/effect/turf_decal/tile/purple/fourcorners,
+/obj/item/flatpack/flatpacker{
+	pixel_y = -3
+	},
 /turf/open/floor/iron/white,
 /area/station/science/lab)
 "iOh" = (
@@ -53018,6 +53024,9 @@
 /obj/structure/window/spawner/directional/south,
 /obj/effect/turf_decal/trimline/yellow/corner{
 	dir = 4
+	},
+/obj/item/flatpack/flatpacker{
+	pixel_y = 5
 	},
 /obj/item/storage/toolbox/mechanical,
 /turf/open/floor/iron/corner{

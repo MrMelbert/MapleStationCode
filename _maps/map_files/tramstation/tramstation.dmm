@@ -9629,6 +9629,9 @@
 /obj/item/experi_scanner{
 	pixel_x = 4
 	},
+/obj/item/flatpack/flatpacker{
+	pixel_y = -13
+	},
 /turf/open/floor/iron/white,
 /area/station/science/lab)
 "clT" = (
@@ -61828,6 +61831,7 @@
 	},
 /obj/structure/cable,
 /obj/structure/table,
+/obj/item/flatpack/flatpacker,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "uPV" = (

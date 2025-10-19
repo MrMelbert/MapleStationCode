@@ -1996,8 +1996,7 @@
 	dir = 1
 	},
 /obj/machinery/door/airlock/external{
-	name = "MiniSat External Access";
-	space_dir = null
+	name = "MiniSat External Access"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/command/minisat,
 /turf/open/floor/plating,
@@ -3188,8 +3187,7 @@
 /area/station/maintenance/department/security/brig)
 "akx" = (
 /obj/structure/bodycontainer/crematorium{
-	id = "seccrematorium";
-	id_tag = null
+	id = "seccrematorium"
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/processing/cremation)
@@ -5146,8 +5144,7 @@
 /area/station/maintenance/department/security/brig)
 "ari" = (
 /obj/machinery/door/airlock/external{
-	name = "Labor Camp Shuttle Airlock";
-	space_dir = null
+	name = "Labor Camp Shuttle Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -5521,8 +5518,7 @@
 /area/station/commons/dorms)
 "asi" = (
 /obj/machinery/door/airlock/external{
-	name = "Escape Pod";
-	space_dir = null
+	name = "Escape Pod"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -6538,8 +6534,7 @@
 /area/space)
 "avq" = (
 /obj/machinery/door/airlock/external{
-	name = "Labor Camp Shuttle Airlock";
-	space_dir = null
+	name = "Labor Camp Shuttle Airlock"
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
@@ -10916,8 +10911,7 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/external{
-	name = "Solar Maintenance";
-	space_dir = null
+	name = "Solar Maintenance"
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/engineering/general,
@@ -17124,9 +17118,7 @@
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 4
 	},
-/obj/machinery/computer/records/medical{
-	dir = 2
-	},
+/obj/machinery/computer/records/medical,
 /obj/machinery/digital_clock/directional/north,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 8
@@ -24073,9 +24065,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
-/obj/machinery/door/airlock/external{
-	space_dir = null
-	},
+/obj/machinery/door/airlock/external,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /obj/effect/mapping_helpers/airlock/access/all/science/ordnance,
 /turf/open/floor/plating,
@@ -28913,8 +28903,7 @@
 	dir = 1
 	},
 /obj/machinery/door/airlock/external{
-	name = "Engineering External Access";
-	space_dir = null
+	name = "Engineering External Access"
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/engineering/external,
@@ -29499,8 +29488,7 @@
 "clA" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/machinery/door/airlock/external{
-	name = "Telecommunications External Access";
-	space_dir = null
+	name = "Telecommunications External Access"
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/engineering/tcoms,
@@ -31751,8 +31739,7 @@
 /area/station/service/library/lounge)
 "cxJ" = (
 /obj/machinery/door/airlock/external{
-	name = "Supply Dock Airlock";
-	space_dir = null
+	name = "Supply Dock Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /obj/effect/turf_decal/tile/brown/full,
@@ -33371,6 +33358,9 @@
 /obj/item/experi_scanner,
 /obj/item/experi_scanner{
 	pixel_x = -6
+	},
+/obj/item/flatpack/flatpacker{
+	pixel_y = -13
 	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/lab)
@@ -36275,9 +36265,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)
 "fCe" = (
-/mob/living/basic/goat/pete{
-	name = "Pete"
-	},
+/mob/living/basic/goat/pete,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/kitchen/coldroom)
@@ -42611,8 +42599,7 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/external{
-	name = "Atmospherics External Access";
-	space_dir = null
+	name = "Atmospherics External Access"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/engineering/atmos,
 /turf/open/floor/plating,
@@ -42994,8 +42981,7 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/external{
-	name = "Engineering External Access";
-	space_dir = null
+	name = "Engineering External Access"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
 /obj/effect/mapping_helpers/airlock/access/all/engineering/general,
@@ -43710,9 +43696,7 @@
 	},
 /area/station/science/xenobiology)
 "lxq" = (
-/obj/machinery/atmospherics/pipe/smart/simple/supply/hidden{
-	dir = 2
-	},
+/obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/closed/wall/r_wall,
 /area/station/science/ordnance/burnchamber)
 "lyd" = (
@@ -46257,6 +46241,9 @@
 /obj/structure/table,
 /obj/item/reagent_containers/cup/soda_cans/lemon_lime,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
+/obj/item/flatpack/flatpacker{
+	pixel_y = -13
+	},
 /turf/open/floor/iron,
 /area/station/engineering/lobby)
 "nox" = (
@@ -48369,8 +48356,7 @@
 /area/station/science/research)
 "oPy" = (
 /obj/machinery/door/airlock/external{
-	name = "Mining Dock Airlock";
-	space_dir = null
+	name = "Mining Dock Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -52343,9 +52329,7 @@
 /obj/effect/turf_decal/tile/green/anticorner{
 	dir = 1
 	},
-/obj/machinery/keycard_auth/wall_mounted/directional/west{
-	pixel_y = 0
-	},
+/obj/machinery/keycard_auth/wall_mounted/directional/west,
 /turf/open/floor/iron/dark/smooth_corner,
 /area/station/command/bridge)
 "rDw" = (
@@ -52521,8 +52505,7 @@
 	dir = 4
 	},
 /obj/machinery/door/airlock/external{
-	name = "Solar Maintenance";
-	space_dir = null
+	name = "Solar Maintenance"
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/engineering/general,
@@ -62084,9 +62067,7 @@
 	},
 /area/station/engineering/storage/tech)
 "xRq" = (
-/obj/machinery/atmospherics/pipe/smart/simple/supply/hidden{
-	dir = 2
-	},
+/obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/closed/wall/r_wall,
 /area/station/science/ordnance)
 "xSs" = (
