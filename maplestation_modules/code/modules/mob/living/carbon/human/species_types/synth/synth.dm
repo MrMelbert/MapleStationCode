@@ -286,6 +286,7 @@
 	should_draw_greyscale = initial(other_part.should_draw_greyscale)
 	is_dimorphic = initial(other_part.is_dimorphic)
 	bodytype = initial(other_part.bodytype)
+	bodyshape = initial(other_part.bodyshape)
 
 	if(!update)
 		return
