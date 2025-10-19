@@ -88,13 +88,13 @@
 	return ITEM_INTERACT_SUCCESS
 
 // Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
-/datum/status_effect/grabbing/proc/ranged_hand_use(datum/source, atom/interacting_with, mob/living/user, modifiers)
+/datum/status_effect/grabbing/proc/ranged_hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
 	user.RangedAttack(interacting_with, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
 // Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
-/datum/status_effect/grabbing/proc/ranged_hand_use_alt(datum/source, atom/interacting_with, mob/living/user, modifiers)
+/datum/status_effect/grabbing/proc/ranged_hand_use_alt(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
 	user.ranged_secondary_attack(interacting_with, modifiers)
 	return ITEM_INTERACT_SUCCESS
