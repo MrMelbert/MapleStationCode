@@ -27,7 +27,7 @@
 /obj/projectile/temp/cryo
 	name = "cryo beam"
 	range = 9
-	temperature = -240 // Single slow shot reduces temp greatly
+	temperature = -25 CELCIUS // Single slow shot reduces temp greatly
 
 /obj/projectile/temp/cryo/on_range()
 	var/turf/T = get_turf(src)
