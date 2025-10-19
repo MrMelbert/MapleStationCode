@@ -69,7 +69,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/headcheese/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/headcheese_slice, 5, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/headcheese_slice, 5, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/headcheese_slice
 	name = "headcheese slice"
@@ -404,7 +404,7 @@
 	AddComponent(/datum/component/bakeable, /obj/item/food/bread/root, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
 
 /obj/item/food/rootdough/make_processable()
-	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/food/flatrootdough, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Flatten")
+	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/food/flatrootdough, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/flatrootdough
 	name = "flat rootdough"
@@ -417,7 +417,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/flatrootdough/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/rootdoughslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/rootdoughslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/flatrootdough/make_grillable()
 	AddComponent(/datum/component/grillable, /obj/item/food/root_flatbread, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
@@ -434,7 +434,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/rootdoughslice/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/spaghetti/nizaya, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/spaghetti/nizaya, 1, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/rootdoughslice/make_bakeable()
 	AddComponent(/datum/component/bakeable, /obj/item/food/rootroll, rand(15 SECONDS, 25 SECONDS), TRUE, TRUE)
