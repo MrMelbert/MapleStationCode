@@ -40,7 +40,7 @@
 	name = "hot beam"
 	icon_state = "firebeam" // sets on fire, diff sprite!
 	range = 9
-	temperature = 240
+	temperature = 25 CELCIUS
 
 /obj/projectile/temp/pyro/on_hit(atom/target, blocked, pierce_hit)
 	. = ..()
