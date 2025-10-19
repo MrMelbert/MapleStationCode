@@ -300,3 +300,4 @@ GLOBAL_LIST_EMPTY(sfx_datum_by_key)
 #define SFX_ROLLING_PIN_PICKUP "rolling_pin_pickup"
 #define SFX_ROLLING_PIN_DROP "rolling_pin_drop"
 #define SFX_ROLLING_PIN_ROLLING "rolling_pin_rolling"
+#define SFX_FIRE_MODE_SWITCH "fire_mode_switch"

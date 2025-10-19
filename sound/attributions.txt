@@ -203,3 +203,5 @@ sound/machines/sink-faucet.ogg -- https://freesound.org/people/FOSSarts/sounds/7
 sound/items/dice_roll.ogg -- https://freesound.org/people/Crovic/sounds/661935/ -- by Crovic (CC0)
 
 sound/effect/droplet.ogg -- "Drop - Water" By mattfinarelli -- https://freesound.org/people/mattfinarelli/sounds/533146/ -- License: Creative Commons 0
+
+gun_mode_switch1.ogg made by grungussuss, license: CC-BY-SA
