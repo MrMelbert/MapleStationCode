@@ -1159,6 +1159,7 @@
 	pixel_x = -6;
 	pixel_y = 10
 	},
+/obj/structure/fireaxecabinet/empty/directional/south,
 /turf/open/floor/iron/dark,
 /area/virtual_domain)
 "jR" = (
@@ -2037,10 +2038,6 @@
 /obj/effect/turf_decal/plaque{
 	icon_state = "L13"
 	},
-/obj/effect/decal/cleanable/crayon/x{
-	pixel_x = -6;
-	pixel_y = -15
-	},
 /turf/open/floor/iron,
 /area/virtual_domain)
 "rb" = (
@@ -2338,23 +2335,6 @@
 /obj/effect/decal/cleanable/xenoblood/xgibs/core,
 /obj/structure/alien/weeds,
 /turf/open/floor/plating,
-/area/virtual_domain)
-"to" = (
-/obj/item/boulder{
-	pixel_x = 7;
-	pixel_y = 9
-	},
-/obj/item/boulder{
-	icon_state = "rock_medium";
-	pixel_x = -12;
-	pixel_y = 8
-	},
-/obj/item/boulder{
-	icon_state = "boulder_medium";
-	pixel_x = -4;
-	pixel_y = 1
-	},
-/turf/open/floor/iron/dark,
 /area/virtual_domain)
 "tq" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -4413,14 +4393,13 @@
 /area/virtual_domain)
 "Lq" = (
 /obj/structure/table/reinforced,
-/obj/item/clothing/glasses/night/colorless{
-	pixel_x = 5;
-	pixel_y = 7
+/obj/item/clothing/glasses/night,
+/obj/item/clothing/glasses/night{
+	pixel_y = 10
 	},
-/obj/item/clothing/glasses/night/colorless,
-/obj/item/clothing/glasses/night/colorless{
-	pixel_x = -5;
-	pixel_y = -3
+/obj/item/clothing/glasses/night{
+	pixel_y = 6;
+	pixel_x = 4
 	},
 /turf/template_noop,
 /area/virtual_domain/safehouse)
@@ -4537,7 +4516,6 @@
 /turf/open/floor/wood,
 /area/virtual_domain)
 "Ml" = (
-/obj/effect/decal/cleanable/crayon/x,
 /turf/closed/wall/rust,
 /area/virtual_domain)
 "Mm" = (
@@ -4942,12 +4920,6 @@
 /obj/effect/decal/cleanable/glass,
 /turf/open/floor/plating,
 /area/virtual_domain)
-"OX" = (
-/obj/machinery/fax{
-	pixel_y = 9
-	},
-/turf/open/floor/plating,
-/area/virtual_domain)
 "Pa" = (
 /obj/effect/turf_decal/plaque{
 	icon_state = "L4"
@@ -4989,8 +4961,8 @@
 /obj/item/radio/intercom/directional/west,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/item/clothing/mask/facehugger/dead,
-/obj/structure/displaycase,
 /obj/effect/decal/cleanable/cobweb,
+/obj/structure/displaycase/noalert,
 /turf/open/floor/wood,
 /area/virtual_domain)
 "PC" = (
@@ -5023,7 +4995,6 @@
 /turf/open/floor/iron,
 /area/virtual_domain)
 "PR" = (
-/obj/machinery/vending/boozeomat/syndicate_access,
 /obj/effect/turf_decal/tile/bar,
 /turf/open/floor/iron,
 /area/virtual_domain)
@@ -5274,6 +5245,11 @@
 /obj/machinery/suit_storage_unit{
 	state_open = 1
 	},
+/turf/open/floor/iron/dark,
+/area/virtual_domain)
+"Se" = (
+/obj/effect/landmark/bitrunning/mob_segment,
+/obj/item/fireaxe,
 /turf/open/floor/iron/dark,
 /area/virtual_domain)
 "Sj" = (
@@ -5836,19 +5812,6 @@
 /obj/effect/mapping_helpers/broken_floor,
 /obj/effect/mine/explosive,
 /turf/open/floor/plating,
-/area/virtual_domain)
-"Xw" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/item/boulder{
-	icon_state = "boulder_large";
-	pixel_y = 7
-	},
-/obj/item/boulder{
-	icon_state = "boulder_small";
-	pixel_x = 9;
-	pixel_y = -1
-	},
-/turf/open/floor/iron/dark,
 /area/virtual_domain)
 "Xx" = (
 /obj/effect/decal/cleanable/dirt,
@@ -7009,7 +6972,7 @@ Un
 pJ
 oQ
 Hv
-Xw
+SK
 sf
 ny
 JP
@@ -7057,7 +7020,7 @@ xu
 JP
 oy
 Hv
-to
+JP
 ze
 Bv
 LK
@@ -7292,7 +7255,7 @@ SN
 kp
 zP
 xu
-Mb
+Se
 RJ
 JP
 YG
@@ -8065,7 +8028,7 @@ ps
 ps
 uS
 uS
-OX
+fh
 Xs
 fh
 uS
