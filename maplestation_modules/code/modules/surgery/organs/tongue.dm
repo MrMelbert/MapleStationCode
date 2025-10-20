@@ -16,7 +16,7 @@
 	say_mod = "warbles"
 	languages_native = /datum/language/skrell
 	liked_foodtypes = VEGETABLES | FRUIT | SUGAR
-	disliked_foodtypes = FRIED | GRAIN | BUGS
+	disliked_foodtypes = FRIED | BUGS
 	toxic_foodtypes = MEAT | RAW | DAIRY | GROSS | GORE | TOXIC
 
 /obj/item/organ/internal/tongue/high_skrell/get_possible_languages()
