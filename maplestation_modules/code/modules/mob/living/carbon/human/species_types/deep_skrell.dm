@@ -238,14 +238,17 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 /obj/item/storage/back_tentacles
 	name = "Back tentacles"
 	desc = "Your back tentacles! You're able to hold items with them!"
-	icon_state = "back_tentacles"
-	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
-	///worn_icon = 'maplestation_modules/icons/mob/deep_skrell.dmi'
+	icon_state = "back_tent_obj"
+	icon = 'maplestation_modules/icons/mob/skrell_back_tentacles.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/skrell_back_tentacles.dmi'
 	resistance_flags = INDESTRUCTIBLE | ACID_PROOF | FIRE_PROOF | LAVA_PROOF | UNACIDABLE
 	item_flags = ABSTRACT | DROPDEL
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	color =
+	color = null
+	visual_equipped(mob/user, slot, initial)
+		. = ..()
+		color = user.dna.features["mcolor"]
 	storage_type = /datum/storage/backpack
 
 /obj/item/storage/back_tentacles/visual_equipped(mob/living/carbon/human/user, slot)
