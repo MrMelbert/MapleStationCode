@@ -7,4 +7,4 @@
 /// Allows items to replace the backpack slot.
 #define TRAIT_BACKPACK_REPLACEMENT
 /// Gives negative mood for wearing gloves
-#define TRAIT_WEBBED_HANDS
+#define TRAIT_WEBBED_HANDS "webbed_hands"

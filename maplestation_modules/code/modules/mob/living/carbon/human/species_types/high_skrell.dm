@@ -34,15 +34,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
 	mutantears = /obj/item/organ/internal/ears/skrell
 
-/datum/species/skrell/get_species_speech_sounds(sound_type)
-	switch(sound_type)
-		if(SOUND_QUESTION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_ask.ogg' = 120))
-		if(SOUND_EXCLAMATION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120))
-		else
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff.ogg' = 120))
-
 /datum/species/high_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
 	C.missing_eye_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'

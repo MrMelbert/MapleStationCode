@@ -43,6 +43,10 @@
 	disliked_foodtypes = FRIED | BUGS
 	toxic_foodtypes = MEAT | RAW | DAIRY | GROSS | GORE | TOXIC
 
+	speech_sound_list = list('maplestation_modules/sound/voice/huff.ogg' = 120)
+	speech_sound_list_question = list('maplestation_modules/sound/voice/huff_ask.ogg' = 120)
+	speech_sound_list_exclamation = list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120)
+
 /obj/item/organ/internal/tongue/high_skrell/get_possible_languages()
 	return ..() + /datum/language/skrell
 
