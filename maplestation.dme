@@ -15,6 +15,7 @@
 // BEGIN_INCLUDE
 #include "__odlint.dm"
 #include "_maps\_basemap.dm"
+#include "_maps\virtual_domains\starfront_saloon.dmm"
 #include "code\__byond_version_compat.dm"
 #include "code\_compile_options.dm"
 #include "code\_experiments.dm"
@@ -3543,6 +3544,7 @@
 #include "code\modules\bitrunning\virtual_domain\domains\psyker_shuffle.dm"
 #include "code\modules\bitrunning\virtual_domain\domains\psyker_zombies.dm"
 #include "code\modules\bitrunning\virtual_domain\domains\stairs_and_cliffs.dm"
+#include "code\modules\bitrunning\virtual_domain\domains\starfront_saloon.dm"
 #include "code\modules\bitrunning\virtual_domain\domains\syndicate_assault.dm"
 #include "code\modules\bitrunning\virtual_domain\domains\test_only.dm"
 #include "code\modules\bitrunning\virtual_domain\domains\vaporwave.dm"
