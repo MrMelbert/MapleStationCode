@@ -27,7 +27,9 @@
 	/// Any ghosts that have spawned in
 	var/list/datum/weakref/spawned_threat_refs = list()
 	/// Scales loot with extra players
-	var/multiplayer_bonus = 1.1
+	var/multiplayer_bonus = 1.2
+	/// Extra bonus for every player that nohits the run
+	var/nohit_bonus = 0.8
 	///The radio the console can speak into
 	var/obj/item/radio/radio
 	/// The amount of points in the system, used to purchase maps
