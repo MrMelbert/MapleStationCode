@@ -6,8 +6,9 @@
 /obj/machinery/portable_atmospherics/canister
 	name = "canister"
 	desc = "A canister for the storage of gas."
-	icon = 'icons/obj/pipes_n_cables/canisters.dmi'
-	icon_state = "#mapme"
+	icon = 'icons/map_icons/objects.dmi'
+	icon_state = "/obj/machinery/portable_atmospherics/canister"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#6b6b80"
 	density = TRUE
@@ -35,7 +36,7 @@
 	///Is shielding turned on/off
 	var/shielding_powered = FALSE
 	///The powercell used to enable shielding
-	var/obj/item/stock_parts/cell/internal_cell
+	var/obj/item/stock_parts/power_store/internal_cell
 	///used while processing to update appearance only when its pressure state changes
 	var/current_pressure_state
 
@@ -52,7 +53,7 @@
 	. = ..()
 
 	if(mapload)
-		internal_cell = new /obj/item/stock_parts/cell/high(src)
+		internal_cell = new /obj/item/stock_parts/power_store/cell/high(src)
 
 	if(existing_mixture)
 		air_contents.copy_from(existing_mixture)
@@ -86,7 +87,7 @@
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove tank"
 	if(!held_item)
 		return CONTEXTUAL_SCREENTIP_SET
-	if(istype(held_item, /obj/item/stock_parts/cell))
+	if(istype(held_item, /obj/item/stock_parts/power_store/cell))
 		context[SCREENTIP_CONTEXT_LMB] = "Insert cell"
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
@@ -103,156 +104,201 @@
 /obj/machinery/portable_atmospherics/canister/examine(user)
 	. = ..()
 	. += span_notice("A sticker on its side says <b>MAX SAFE PRESSURE: [siunit_pressure(initial(pressure_limit), 0)]; MAX SAFE TEMPERATURE: [siunit(temp_limit, "K", 0)]</b>.")
+	. += span_notice("The hull is <b>welded</b> together and can be cut apart.")
 	if(internal_cell)
 		. += span_notice("The internal cell has [internal_cell.percent()]% of its total charge.")
 	else
 		. += span_notice("Warning, no cell installed, use a screwdriver to open the hatch and insert one.")
 	if(panel_open)
 		. += span_notice("Hatch open, close it with a screwdriver.")
+	if(integrity_failure)
+		. += span_notice("Integrity compromised, repair hull with a welding tool.")
 
 // Please keep the canister types sorted
 // Basic canister per gas below here
 
 /obj/machinery/portable_atmospherics/canister/air
-	name = "Air canister"
+	name = "\improper Air canister"
 	desc = "Pre-mixed air."
+	icon_state = "/obj/machinery/portable_atmospherics/canister/air"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#c6c0b5"
 
 /obj/machinery/portable_atmospherics/canister/antinoblium
-	name = "Antinoblium canister"
+	name = "\improper Antinoblium canister"
 	gas_type = /datum/gas/antinoblium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/antinoblium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#333333#fefb30"
 
 /obj/machinery/portable_atmospherics/canister/bz
 	name = "\improper BZ canister"
 	gas_type = /datum/gas/bz
+	icon_state = "/obj/machinery/portable_atmospherics/canister/bz"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#d0d2a0"
 
 /obj/machinery/portable_atmospherics/canister/carbon_dioxide
-	name = "Carbon dioxide canister"
+	name = "\improper Carbon dioxide canister"
 	gas_type = /datum/gas/carbon_dioxide
+	icon_state = "/obj/machinery/portable_atmospherics/canister/carbon_dioxide"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#4e4c48#eaeaea"
 
 /obj/machinery/portable_atmospherics/canister/freon
-	name = "Freon canister"
+	name = "\improper Freon canister"
 	gas_type = /datum/gas/freon
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/freon"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#6696ee#fefb30"
 
 /obj/machinery/portable_atmospherics/canister/halon
-	name = "Halon canister"
+	name = "\improper Halon canister"
 	gas_type = /datum/gas/halon
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/halon"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#368bff"
 
 /obj/machinery/portable_atmospherics/canister/healium
-	name = "Healium canister"
+	name = "\improper Healium canister"
 	gas_type = /datum/gas/healium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/healium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009823#ff0e00"
 
 /obj/machinery/portable_atmospherics/canister/helium
-	name = "Helium canister"
+	name = "\improper Helium canister"
 	gas_type = /datum/gas/helium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/helium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#368bff"
 
 /obj/machinery/portable_atmospherics/canister/hydrogen
-	name = "Hydrogen canister"
+	name = "\improper Hydrogen canister"
 	gas_type = /datum/gas/hydrogen
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/hydrogen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#eaeaea#be3455"
 
 /obj/machinery/portable_atmospherics/canister/miasma
-	name = "Miasma canister"
+	name = "\improper Miasma canister"
 	gas_type = /datum/gas/miasma
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/miasma"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009823#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/nitrogen
-	name = "Nitrogen canister"
+	name = "\improper Nitrogen canister"
 	gas_type = /datum/gas/nitrogen
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrogen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#e9ff5c#f4fce8"
 
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide
-	name = "Nitrous oxide canister"
+	name = "\improper Nitrous oxide canister"
 	gas_type = /datum/gas/nitrous_oxide
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrous_oxide"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#c63e3b#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/nitrium
-	name = "Nitrium canister"
+	name = "\improper Nitrium canister"
 	gas_type = /datum/gas/nitrium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#7b4732"
 
 /obj/machinery/portable_atmospherics/canister/nob
-	name = "Hyper-noblium canister"
+	name = "\improper Hyper-noblium canister"
 	gas_type = /datum/gas/hypernoblium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nob"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#6399fc#b2b2b2"
 
 /obj/machinery/portable_atmospherics/canister/oxygen
-	name = "Oxygen canister"
+	name = "\improper Oxygen canister"
 	gas_type = /datum/gas/oxygen
+	icon_state = "/obj/machinery/portable_atmospherics/canister/oxygen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
 
 /obj/machinery/portable_atmospherics/canister/pluoxium
-	name = "Pluoxium canister"
+	name = "\improper Pluoxium canister"
 	gas_type = /datum/gas/pluoxium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/pluoxium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#2786e5"
 
 /obj/machinery/portable_atmospherics/canister/proto_nitrate
-	name = "Proto Nitrate canister"
+	name = "\improper Proto Nitrate canister"
 	gas_type = /datum/gas/proto_nitrate
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/proto_nitrate"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#008200#33cc33"
 
 /obj/machinery/portable_atmospherics/canister/plasma
-	name = "Plasma canister"
+	name = "\improper Plasma canister"
 	gas_type = /datum/gas/plasma
+	icon_state = "/obj/machinery/portable_atmospherics/canister/plasma"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/hazard
 	greyscale_colors = "#f62800#000000"
 
 /obj/machinery/portable_atmospherics/canister/tritium
-	name = "Tritium canister"
+	name = "\improper Tritium canister"
 	gas_type = /datum/gas/tritium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/tritium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/hazard
 	greyscale_colors = "#3fcd40#000000"
 
 /obj/machinery/portable_atmospherics/canister/water_vapor
-	name = "Water vapor canister"
+	name = "\improper Water vapor canister"
 	gas_type = /datum/gas/water_vapor
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/water_vapor"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#4c4e4d#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/zauker
-	name = "Zauker canister"
+	name = "\improper Zauker canister"
 	gas_type = /datum/gas/zauker
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/zauker"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009a00#006600"
 
 // Special canisters below here
 
 /obj/machinery/portable_atmospherics/canister/fusion_test
-	name = "fusion test canister"
+	name = "\improper fusion test canister"
 	desc = "Don't be a badmin."
 	temp_limit = 1e12
 	pressure_limit = 1e14
@@ -265,8 +311,10 @@
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix
-	name = "Anesthetic mix"
+	name = "\improper Anesthetic mix"
 	desc = "A mixture of N2O and Oxygen"
+	icon_state = "/obj/machinery/portable_atmospherics/canister/anesthetic_mix"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9fba6c#3d4680"
 
@@ -353,10 +401,7 @@
 /obj/machinery/portable_atmospherics/canister/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	take_damage(5, BURN, 0)
 
-/obj/machinery/portable_atmospherics/canister/deconstruct(disassembled = TRUE)
-	if((obj_flags & NO_DECONSTRUCTION))
-		qdel(src)
-		return
+/obj/machinery/portable_atmospherics/canister/on_deconstruction(disassembled = TRUE)
 	if(!(machine_stat & BROKEN))
 		canister_break()
 	if(!disassembled)
@@ -366,11 +411,10 @@
 	new /obj/item/stack/sheet/iron (drop_location(), 10)
 	if(internal_cell)
 		internal_cell.forceMove(drop_location())
-	qdel(src)
 
 /obj/machinery/portable_atmospherics/canister/attackby(obj/item/item, mob/user, params)
-	if(istype(item, /obj/item/stock_parts/cell))
-		var/obj/item/stock_parts/cell/active_cell = item
+	if(istype(item, /obj/item/stock_parts/power_store/cell))
+		var/obj/item/stock_parts/power_store/cell/active_cell = item
 		if(!panel_open)
 			balloon_alert(user, "open hatch first!")
 			return TRUE
@@ -483,11 +527,11 @@
 	var/our_temperature = air_contents.return_temperature()
 
 	if(shielding_powered)
-		var/power_factor = round(log(10, max(our_pressure - pressure_limit, 1)) + log(10, max(our_temperature - temp_limit, 1)))
-		var/power_consumed = power_factor * 250 * seconds_per_tick
+		var/energy_factor = round(log(10, max(our_pressure - pressure_limit, 1)) + log(10, max(our_temperature - temp_limit, 1)))
+		var/energy_consumed = energy_factor * 250 * seconds_per_tick
 		if(powered(AREA_USAGE_EQUIP, ignore_use_power = TRUE))
-			use_power(power_consumed, AREA_USAGE_EQUIP)
-		else if(!internal_cell?.use(power_consumed * 0.025))
+			use_energy(energy_consumed, channel = AREA_USAGE_EQUIP)
+		else if(!internal_cell?.use(energy_consumed * 0.025))
 			shielding_powered = FALSE
 			SSair.start_processing_machine(src)
 			investigate_log("shielding turned off due to power loss")
@@ -644,7 +688,7 @@
 
 			var/datum/greyscale_modify_menu/menu = new(
 				src, usr, list("[initial_config]"), CALLBACK(src, PROC_REF(recolor)),
-				starting_icon_state = initial(icon_state),
+				starting_icon_state = initial(post_init_icon_state) || initial(icon_state),
 				starting_config = initial_config,
 				starting_colors = initial(greyscale_colors)
 			)

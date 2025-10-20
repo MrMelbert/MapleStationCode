@@ -2317,11 +2317,6 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/snowdin/post/messhall)
-"ht" = (
-/obj/structure/table,
-/obj/item/trash/waffles,
-/turf/open/floor/iron/cafeteria,
-/area/awaymission/snowdin/post/messhall)
 "hu" = (
 /obj/structure/chair{
 	dir = 8
@@ -5347,7 +5342,7 @@
 	},
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/storage/toolbox/electrical{
 	pixel_x = 4;
 	pixel_y = 8
@@ -26178,7 +26173,7 @@ Kd
 ex
 fJ
 gA
-ht
+hq
 hW
 iH
 jz

@@ -49,6 +49,11 @@
 	mood_change = -2
 	timeout = 3 MINUTES
 
+/datum/mood_event/inked
+	description = "I've been splashed with squid ink. Tastes like salt."
+	mood_change = -3
+	timeout = 3 MINUTES
+
 /datum/mood_event/slipped
 	description = "I slipped. I should be more careful next time..."
 	mood_change = -2
@@ -466,6 +471,11 @@
 	mood_change = -6
 	timeout = 5 MINUTES
 
+/datum/mood_event/mallet_humiliation
+	description = "Getting hit by such a stupid weapon feels rather humiliating..."
+	mood_change = -3
+	timeout = 10 SECONDS
+
 ///Wizard cheesy grand finale - what everyone but the wizard gets
 /datum/mood_event/madness_despair
 	description = "UNWORTHY, UNWORTHY, UNWORTHY!!!"
@@ -475,3 +485,15 @@
 /datum/mood_event/all_nighter
 	description = "I didn't sleep at all last night. I'm exhausted."
 	mood_change = -5
+
+//Used by the Veteran Advisor trait job
+/datum/mood_event/desentized
+	description = "Nothing will ever rival with what I seen in the past..."
+	mood_change = -3
+	special_screen_obj = "mood_desentized"
+
+//Used for the psychotic brawling martial art, if the person is a pacifist.
+/datum/mood_event/pacifism_bypassed
+	description = "I DIDN'T MEAN TO HURT THEM!"
+	mood_change = -20
+	timeout = 10 MINUTES

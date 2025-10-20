@@ -64,6 +64,11 @@
 	. = ..()
 	chameleon_blacklist |= typecacheof(/obj/item/clothing/mask/changeling, only_root_path = TRUE)
 
+/datum/action/item_action/chameleon/change/mask/initialize_disguises()
+	. = ..()
+	add_chameleon_items(/obj/item/cigarette)
+	add_chameleon_items(/obj/item/vape)
+
 /datum/action/item_action/chameleon/change/hat
 	chameleon_type = /obj/item/clothing/head
 	chameleon_name = "Hat"
@@ -164,7 +169,7 @@
 	agent_card.forged = TRUE
 
 	// job_outfit is going to be a path.
-	var/datum/outfit/job/job_outfit = job_datum.outfit
+	var/datum/outfit/job/job_outfit = job_datum.base_outfit
 	if(isnull(job_outfit))
 		return
 

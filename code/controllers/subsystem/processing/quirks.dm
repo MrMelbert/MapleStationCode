@@ -19,7 +19,7 @@ GLOBAL_LIST_INIT_TYPED(quirk_blacklist, /list/datum/quirk, list(
 	list(/datum/quirk/social_anxiety, /datum/quirk/mute),
 	list(/datum/quirk/mute, /datum/quirk/softspoken),
 	list(/datum/quirk/poor_aim, /datum/quirk/bighands),
-	list(/datum/quirk/bilingual, /datum/quirk/foreigner),
+	// list(/datum/quirk/bilingual, /datum/quirk/foreigner),
 	list(/datum/quirk/spacer_born, /datum/quirk/item_quirk/settler),
 	list(/datum/quirk/photophobia, /datum/quirk/nyctophobia),
 	list(/datum/quirk/item_quirk/settler, /datum/quirk/freerunning),
@@ -45,12 +45,12 @@ GLOBAL_LIST_INIT(quirk_string_blacklist, generate_quirk_string_blacklist())
 // - Quirk datums are stored and hold different effects, as well as being a vector for applying trait string
 PROCESSING_SUBSYSTEM_DEF(quirks)
 	name = "Quirks"
-	init_order = INIT_ORDER_QUIRKS
 	flags = SS_BACKGROUND
 	runlevels = RUNLEVEL_GAME
 	wait = 1 SECONDS
 
 	var/list/quirks = list() //Assoc. list of all roundstart quirk datum types; "name" = /path/
+	var/list/datum/quirk/quirk_prototypes = list()
 	var/list/quirk_points = list() //Assoc. list of quirk names and their "point cost"; positive numbers are good traits, and negative ones are bad
 	///An assoc list of quirks that can be obtained as a hardcore character, and their hardcore value.
 	var/list/hardcore_quirks = list()
@@ -77,6 +77,7 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 		if(initial(quirk_type.abstract_parent_type) == type)
 			continue
 
+		quirk_prototypes[type] = new type
 		quirks[initial(quirk_type.name)] = quirk_type
 		quirk_points[initial(quirk_type.name)] = initial(quirk_type.value)
 
@@ -91,7 +92,7 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	for(var/quirk_name in applied_client.prefs.all_quirks)
 		var/datum/quirk/quirk_type = quirks[quirk_name]
 		if(ispath(quirk_type))
-			if(user.add_quirk(quirk_type, override_client = applied_client))
+			if(user.add_quirk(quirk_type, override_client = applied_client, announce = FALSE))
 				SSblackbox.record_feedback("tally", "quirks_taken", 1, "[quirk_name]")
 		else
 			stack_trace("Invalid quirk \"[quirk_name]\" in client [applied_client.ckey] preferences")
@@ -104,13 +105,18 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
  *Randomises the quirks for a specified mob
  */
 /datum/controller/subsystem/processing/quirks/proc/randomise_quirks(mob/living/user)
-	var/bonus_quirks = max((length(user.quirks) + rand(-RANDOM_QUIRK_BONUS, RANDOM_QUIRK_BONUS)), MINIMUM_RANDOM_QUIRKS)
+	var/bonus_quirks = max((LAZYLEN(user.quirks) + rand(-RANDOM_QUIRK_BONUS, RANDOM_QUIRK_BONUS)), MINIMUM_RANDOM_QUIRKS)
 	var/added_quirk_count = 0 //How many we've added
 	var/list/quirks_to_add = list() //Quirks we're adding
-	var/good_count = 0 //Maximum of 6 good perks
+	var/good_count = 0
 	var/score //What point score we're at
 	///Cached list of possible quirks
 	var/list/possible_quirks = quirks.Copy()
+
+	var/max_positive_quirks = CONFIG_GET(number/max_positive_quirks)
+	if(max_positive_quirks < 0)
+		max_positive_quirks = 6
+
 	//Create a random list of stuff to start with
 	while(bonus_quirks > added_quirk_count)
 		var/quirk = pick(possible_quirks) //quirk is a string
@@ -140,19 +146,20 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 		quirks_to_add += quirk
 
 	//And have benefits too
-	while(score < 0 && good_count <= MAX_QUIRKS)
-		if(!length(possible_quirks))//Lets not get stuck
-			break
-		var/quirk = pick(quirks)
-		if(quirk in GLOB.quirk_blacklist) //prevent blacklisted
-			possible_quirks -= quirk
-			continue
-		if(!quirk_points[quirk] > 0) //positive only
-			possible_quirks -= quirk
-			continue
-		good_count++
-		score += quirk_points[quirk]
-		quirks_to_add += quirk
+	if(max_positive_quirks > 0)
+		while(score < 0 && good_count <= max_positive_quirks)
+			if(!length(possible_quirks))//Lets not get stuck
+				break
+			var/quirk = pick(quirks)
+			if(quirk in GLOB.quirk_blacklist) //prevent blacklisted
+				possible_quirks -= quirk
+				continue
+			if(!(quirk_points[quirk] > 0)) //positive only
+				possible_quirks -= quirk
+				continue
+			good_count++
+			score += quirk_points[quirk]
+			quirks_to_add += quirk
 
 	for(var/datum/quirk/quirk as anything in user.quirks)
 		if(quirk.name in quirks_to_add) //Don't delete ones we keep
@@ -170,6 +177,8 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 /datum/controller/subsystem/processing/quirks/proc/filter_invalid_quirks(list/quirks)
 	var/list/new_quirks = list()
 	var/list/positive_quirks = list()
+	var/points_enabled = !CONFIG_GET(flag/disable_quirk_points)
+	var/max_positive_quirks = CONFIG_GET(number/max_positive_quirks)
 	var/balance = 0
 
 	var/list/all_quirks = get_quirks()
@@ -201,7 +210,7 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 
 		var/value = initial(quirk.value)
 		if (value > 0)
-			if (positive_quirks.len == MAX_QUIRKS)
+			if (max_positive_quirks >= 0 && positive_quirks.len == max_positive_quirks)
 				continue
 
 			positive_quirks[quirk_name] = value
@@ -209,7 +218,7 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 		balance += value
 		new_quirks += quirk_name
 
-	if (balance > 0)
+	if (points_enabled && balance > 0)
 		var/balance_left_to_remove = balance
 
 		for (var/positive_quirk in positive_quirks)

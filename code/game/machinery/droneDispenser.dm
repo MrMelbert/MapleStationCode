@@ -23,7 +23,7 @@
 	var/starting_amount = 0
 	var/iron_cost = HALF_SHEET_MATERIAL_AMOUNT
 	var/glass_cost = HALF_SHEET_MATERIAL_AMOUNT
-	var/power_used = 1000
+	var/energy_used = 1 KILO JOULES
 
 	var/mode = DRONE_READY
 	var/timer
@@ -95,7 +95,7 @@
 	// Those holoprojectors aren't cheap
 	iron_cost = SHEET_MATERIAL_AMOUNT
 	glass_cost = SHEET_MATERIAL_AMOUNT
-	power_used = 2000
+	energy_used = 2 KILO JOULES
 	starting_amount = SHEET_MATERIAL_AMOUNT * 5
 
 // If the derelict gets lonely, make more friends.
@@ -128,7 +128,7 @@
 	icon_creating = "hivebot_fab_on"
 	iron_cost = 0
 	glass_cost = 0
-	power_used = 0
+	energy_used = 0
 	cooldownTime = 10 //Only 1 second - hivebots are extremely weak
 	dispense_type = /mob/living/basic/hivebot
 	begin_create_message = "closes and begins fabricating something within."
@@ -177,8 +177,8 @@
 
 		if(DRONE_PRODUCTION)
 			materials.use_materials(using_materials)
-			if(power_used)
-				use_power(power_used)
+			if(energy_used)
+				use_energy(energy_used)
 
 			var/atom/A = new dispense_type(loc)
 			A.flags_1 |= (flags_1 & ADMIN_SPAWNED_1)
@@ -220,36 +220,35 @@
 	icon_state = icon_on
 	return ..()
 
-/obj/machinery/drone_dispenser/attackby(obj/item/I, mob/living/user)
-	if(I.tool_behaviour == TOOL_CROWBAR)
-		materials.retrieve_all()
-		I.play_tool_sound(src)
-		to_chat(user, span_notice("You retrieve the materials from [src]."))
+/obj/machinery/drone_dispenser/crowbar_act(mob/living/user, obj/item/tool)
+	materials.retrieve_all()
+	tool.play_tool_sound(src)
+	to_chat(user, span_notice("You retrieve the materials from [src]."))
+	return ITEM_INTERACT_SUCCESS
 
-	else if(I.tool_behaviour == TOOL_WELDER)
-		if(!(machine_stat & BROKEN))
-			to_chat(user, span_warning("[src] doesn't need repairs."))
-			return
+/obj/machinery/drone_dispenser/welder_act(mob/living/user, obj/item/tool)
+	if(!(machine_stat & BROKEN))
+		to_chat(user, span_warning("[src] doesn't need repairs."))
+		return ITEM_INTERACT_BLOCKING
 
-		if(!I.tool_start_check(user, amount=1))
-			return
+	if(!tool.tool_start_check(user, amount=1))
+		return ITEM_INTERACT_BLOCKING
 
-		user.visible_message(
-			span_notice("[user] begins patching up [src] with [I]."),
-			span_notice("You begin restoring the damage to [src]..."))
+	user.visible_message(
+		span_notice("[user] begins patching up [src] with [tool]."),
+		span_notice("You begin restoring the damage to [src]..."))
 
-		if(!I.use_tool(src, user, 40, volume=50))
-			return
+	if(!tool.use_tool(src, user, 40, volume=50))
+		return ITEM_INTERACT_BLOCKING
 
-		user.visible_message(
-			span_notice("[user] fixes [src]!"),
-			span_notice("You restore [src] to operation."))
+	user.visible_message(
+		span_notice("[user] fixes [src]!"),
+		span_notice("You restore [src] to operation."))
 
-		set_machine_stat(machine_stat & ~BROKEN)
-		atom_integrity = max_integrity
-		update_appearance()
-	else
-		return ..()
+	set_machine_stat(machine_stat & ~BROKEN)
+	atom_integrity = max_integrity
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/drone_dispenser/atom_break(damage_flag)
 	. = ..()
@@ -259,11 +258,6 @@
 		audible_message(span_warning("[src] [break_message]"))
 	if(break_sound)
 		playsound(src, break_sound, 50, TRUE)
-
-/obj/machinery/drone_dispenser/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, 5)
-	qdel(src)
 
 #undef DRONE_PRODUCTION
 #undef DRONE_RECHARGING

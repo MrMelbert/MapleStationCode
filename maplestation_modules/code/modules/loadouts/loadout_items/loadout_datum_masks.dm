@@ -47,11 +47,11 @@
 
 /datum/loadout_item/mask/pipe
 	name = "Pipe"
-	item_path = /obj/item/clothing/mask/cigarette/pipe
+	item_path = /obj/item/cigarette/pipe
 
 /datum/loadout_item/mask/corn_pipe
 	name = "Corn Cob Pipe"
-	item_path = /obj/item/clothing/mask/cigarette/pipe/cobpipe
+	item_path = /obj/item/cigarette/pipe/cobpipe
 
 /datum/loadout_item/mask/plague_doctor
 	name = "Plague Doctor Mask"
@@ -84,3 +84,15 @@
 /datum/loadout_item/mask/avianmask_bluejay
 	name = "Blue Jay Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/bluejay
+
+/datum/loadout_item/mask/facescarf
+	name = "Face Scarf"
+	item_path = /obj/item/clothing/mask/facescarf
+
+/datum/loadout_item/mask/kitsune
+	name = "Kitsune Mask"
+	item_path = /obj/item/clothing/mask/kitsune
+
+/datum/loadout_item/mask/rebellion
+	name = "Rebellion Mask"
+	item_path = /obj/item/clothing/mask/rebellion

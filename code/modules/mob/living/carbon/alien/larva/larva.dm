@@ -10,7 +10,6 @@
 	melee_damage_upper = 3
 	maxHealth = 25
 	health = 25
-	hardcrit_threshold = HEALTH_THRESHOLD_CRIT
 
 	rotate_on_lying = FALSE
 
@@ -40,7 +39,7 @@
 	return ..()
 
 /mob/living/carbon/alien/larva/create_internal_organs()
-	organs += new /obj/item/organ/internal/alien/plasmavessel/small/tiny
+	organs += new /obj/item/organ/alien/plasmavessel/small/tiny
 	..()
 
 //This needs to be fixed

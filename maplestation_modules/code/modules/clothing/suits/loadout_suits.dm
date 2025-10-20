@@ -16,6 +16,7 @@
 
 /obj/item/clothing/suit/toggle/suspenders/greyscale
 	name = "tailored suspenders"
+	icon_state = "/obj/item/clothing/suit/toggle/suspenders/greyscale"
 	desc = "A set of custom made suspender straps."
 	greyscale_colors = "#ffffff"
 

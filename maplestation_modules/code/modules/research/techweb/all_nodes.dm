@@ -1,70 +1,69 @@
 /// -- Modified pre-existing or new tech nodes. --
 /// Adds illegal tech requirement to phazons.
-/datum/techweb_node/phazon
+/datum/techweb_node/mech_infiltrator
 	prereq_id_add = list(
-		"syndicate_basic",
+		TECHWEB_NODE_SYNDICATE_BASIC,
 	)
 
 /// Adds cybernetic cat ears to cybernetic organs.
-/datum/techweb_node/cyber_organs
+/datum/techweb_node/cyber/cyber_organs
 	id_additions = list(
 		"cybernetic_cat_ears",
 	)
 
-/datum/techweb_node/base
+/datum/techweb_node/office_equip
 	id_additions = list(
 		"ashtray",
 		"fax_machine_deluxe",
 	)
 
-/datum/techweb_node/mod_advanced
-	id_additions = list(
-		"mod_helmet_desync",
-	)
-
-/datum/techweb_node/biotech
+/datum/techweb_node/bio_scan
 	id_additions = list(
 		"scanning_pad",
 		"triage_zone_projector",
 		"vitals_monitor",
 	)
 
-/datum/techweb_node/adv_biotech
+/datum/techweb_node/medbay_equip_adv
 	id_additions = list(
 		"auto_cpr_device",
 		"vitals_monitor_advanced",
 	)
 
-/datum/techweb_node/cryotech
+/datum/techweb_node/cryostasis
 	id_additions = list(
 		"stasis_bodybag",
 	)
 
-/datum/techweb_node/exp_surgery
+/datum/techweb_node/surgery_exp
 	id_additions = list(
 		"surgery_neuter_ling",
 	)
 
-/datum/techweb_node/mech_laser
-	display_name = "Exosuit Weapons (Light Energy Weapons)"
-	description = "Mech weapons that use small amounts of energy to do large amounts of damage."
+/datum/techweb_node/mech_energy_guns
+	display_name = "Light Mech Energy Weapons"
+	description = "Scaled-up versions of energy weapons optimized for mech deployment."
 	id_additions = list(
 		"mech_pulsedlaser",
 	)
+	id_removals = list(
+		"mech_laser_heavy",
+	)
 
-/// Overrides the heavy laser tech to add in the PPC and ERLL with a new name and description to accomodate the new weapons
-/datum/techweb_node/mech_laser_heavy
-	display_name = "Exosuit Weapons (Heavy Energy Weapons)"
-	description = "Advanced mech energy weapons, in case regular lasers just weren't enough."
-	id_additions = list(
+/// Splits energy guns into light and heavy, since it seems a bit unwieldy as is
+/datum/techweb_node/mech_energy_guns_heavy
+	id = "mech_energy_guns_heavy"
+	display_name = "Heavy Mech Energy Weapons"
+	description = "Energy weapons scaled-up even further, in case regular lasers just weren't enough."
+	prereq_ids = list(TECHWEB_NODE_MECH_ENERGY_GUNS)
+	design_ids = list(
+		"mech_laser_heavy",
 		"mech_ppc",
 		"mech_erlargelaser",
 	)
+	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 
-/// Overrides the Ultra AC/2 tech to contain all of the autocannons
-/datum/techweb_node/mech_lmg
-	display_name = "Exosuit Weapons (Autocannons)"
-	description = "All sorts of autocannons, straight from Discount Dan!"
+/datum/techweb_node/mech_firearms
 	id_additions = list(
 		"mech_ac5",
 		"mech_ac10",
@@ -73,21 +72,19 @@
 		"mech_ac10_ammo",
 		"mech_ac20_ammo",
 	)
-	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 5000)
 
 /datum/techweb_node/mech_gauss
 	id = "mech_gauss"
-	display_name = "Exosuit Weapon (Gauss Rifle)"
+	display_name = "Gauss Mech Weapons"
 	description = "These weren't actually designed by us and instead stolen from mercenary companies. They're going to be very angry if they notice, buyer beware."
-	prereq_ids = list("adv_mecha")
+	prereq_ids = list(TECHWEB_NODE_MECH_ENERGY_GUNS)
 	design_ids = list(
 		"mech_gauss",
 		"mech_gauss_ammo",
 	)
-	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
+	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 
-/datum/techweb_node/adv_shells
+/datum/techweb_node/circuit_shells
 	id_additions = list(
 		"headset_shell",
 	)
-	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1500)

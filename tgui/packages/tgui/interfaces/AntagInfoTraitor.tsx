@@ -1,10 +1,15 @@
-import { BooleanLike } from 'common/react';
-import { multiline } from 'common/string';
+import {
+  BlockQuote,
+  Button,
+  Dimmer,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
-import { BlockQuote, Button, Dimmer, Section, Stack } from '../components';
 import { Window } from '../layouts';
-import { Objective, ObjectivePrintout } from './common/Objectives';
+import { type Objective, ObjectivePrintout } from './common/Objectives';
 
 const allystyle = {
   fontWeight: 'bold',
@@ -65,7 +70,7 @@ const EmployerSection = (props) => {
       buttons={
         <Button
           icon="hammer"
-          tooltip={multiline`
+          tooltip={`
             This is a gameplay suggestion for bored traitors.
             You don't have to follow it, unless you want some
             ideas for how to spend the round.`}
@@ -86,7 +91,7 @@ const EmployerSection = (props) => {
               <BlockQuote>{allies}</BlockQuote>
             </Stack.Item>
             <Stack.Divider />
-            <Stack.Item>
+            <Stack.Item mb={1}>
               <span style={goalstyle}>
                 Employer thoughts:
                 <br />
@@ -144,7 +149,7 @@ const UplinkSection = (props) => {
               )}
             </Stack.Item>
             <Stack.Divider />
-            <Stack.Item mt="1%">
+            <Stack.Item align="center">
               <BlockQuote>{uplink_unlock_info}</BlockQuote>
             </Stack.Item>
           </>

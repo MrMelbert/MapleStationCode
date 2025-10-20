@@ -1,8 +1,12 @@
 // -- Xenobiologist job & outfit datum --
 /datum/job/xenobiologist
 	title = JOB_XENOBIOLOGIST
-	description = "Feed slimes all shift, never exit xenobiology for any reason. \
-		Leave after two hours as an unkillable god with an army of monsters."
+	description = "Study and feed slimes, never exit xenobiology for any reason, \
+		become an unkillable god with an army of monsters."
+	title_options = list(
+		"Microbiologist",
+		"Cytologist",
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -12,7 +16,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "XENOBIO"
 
-	outfit = /datum/outfit/job/scientist/xenobiologist
+	base_outfit = /datum/outfit/job/scientist/xenobiologist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW

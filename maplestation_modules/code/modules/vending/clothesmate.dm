@@ -8,6 +8,13 @@
 		),
 
 		list(
+			"name" = "Accessories",
+			"products" = list(
+				/obj/item/umbrella = 5,
+			),
+		),
+
+		list(
 			"name" = "Under",
 			"products" = list(
 				/obj/item/clothing/under/color/greyscale = 5,
@@ -16,6 +23,7 @@
 				/obj/item/clothing/under/spacer_turtleneck/plain = 3,
 				/obj/item/clothing/under/spacer_turtleneck/skirt = 3,
 				/obj/item/clothing/under/spacer_turtleneck/skirt/plain = 3,
+				/obj/item/clothing/under/mvfjumpsuit = 3,
 				/obj/item/clothing/under/arbitersuit = 2,
 				/obj/item/clothing/under/chesedsuit = 2,
 			),
@@ -31,15 +39,19 @@
 		list(
 			"name" = "Shoes",
 			"products" = list(
+				/obj/item/clothing/shoes/laceup/burgundy = 2,
+				/obj/item/clothing/shoes/laceup/brown = 2,
 				/obj/item/clothing/shoes/heels = 3,
 			),
 		),
+#ifdef MAPLESTATION_STORY_CONTENT
 		list(
 			"name" = "Special",
 			"products" = list(
 				/obj/item/clothing/suit/hooded/acolyte = 20,
 			),
 		),
+#endif
 	)
 	added_premium = list(
 		/obj/item/clothing/shoes/heels/fancy = 2,

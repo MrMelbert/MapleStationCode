@@ -43,6 +43,7 @@
 	icon_state = "11x11"
 	flags_1 = UNPAINTABLE_1
 	resistance_flags = FLAMMABLE
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_ALLOW_USER_LOCATION
 	var/width = 11
 	var/height = 11
 	var/list/grid
@@ -91,6 +92,14 @@
 	painting_metadata.height = height
 	ADD_KEEP_TOGETHER(src, INNATE_TRAIT)
 
+/obj/item/canvas/Destroy()
+	last_patron = null
+	if(istype(loc,/obj/structure/sign/painting))
+		var/obj/structure/sign/painting/frame = loc
+		frame.remove_art_element(painting_metadata.credit_value)
+	painting_metadata = null
+	return ..()
+
 /obj/item/canvas/proc/reset_grid()
 	grid = new/list(width,height)
 	for(var/x in 1 to width)
@@ -101,11 +110,24 @@
 	. = ..()
 	ui_interact(user)
 
+/obj/item/canvas/ui_host(mob/user)
+	if(istype(loc,/obj/structure/sign/painting))
+		return loc
+	return ..()
+
 /obj/item/canvas/ui_state(mob/user)
+	if(isobserver(user))
+		return GLOB.observer_state
 	if(finalized)
-		return GLOB.physical_obscured_state
-	else
-		return GLOB.default_state
+		return GLOB.hold_or_view_state
+	return GLOB.default_state
+
+/obj/item/canvas/ui_status(mob/user, datum/ui_state/state)
+	if(state == GLOB.default_state || !state)
+		return ..()
+	//Skip the can_interact() check from atom/ui_status() and let them zoom in/out!
+	var/src_object = ui_host(user)
+	return state.can_use_topic(src_object, user)
 
 /obj/item/canvas/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -154,20 +176,28 @@
 	if(.)
 		return
 	var/mob/user = usr
+	///this is here to allow observers and viewers to zoom in and out regardless of adjacency.
+	if(action != "zoom_in" && action != "zoom_out" && !can_interact(user))
+		return
 	switch(action)
-		if("paint")
+		if("paint", "fill")
 			if(finalized)
 				return TRUE
 			var/obj/item/I = user.get_active_held_item()
 			var/tool_color = get_paint_tool_color(I)
 			if(!tool_color)
 				return FALSE
-			var/list/data = params["data"]
-			//could maybe validate continuity but eh
-			for(var/point in data)
-				var/x = text2num(point["x"])
-				var/y = text2num(point["y"])
-				grid[x][y] = tool_color
+			if(action == "fill")
+				var/x = params["x"]
+				var/y = params["y"]
+				if(!canvas_fill(x, y, tool_color))
+					return FALSE
+			else
+				var/list/data = params["data"]
+				for(var/point in data)
+					var/x = text2num(point["x"])
+					var/y = text2num(point["y"])
+					grid[x][y] = tool_color
 			var/medium = get_paint_tool_medium(I)
 			if(medium && painting_metadata.medium && painting_metadata.medium != medium)
 				painting_metadata.medium = "Mixed medium"
@@ -184,8 +214,8 @@
 			var/obj/item/painting_implement = user.get_active_held_item()
 			if(!painting_implement)
 				return FALSE
-			var/x = text2num(params["px"])
-			var/y = text2num(params["py"])
+			var/x = text2num(params["x"])
+			var/y = text2num(params["y"])
 			painting_implement.set_painting_tool_color(grid[x][y])
 			. = TRUE
 		if("change_palette")
@@ -286,10 +316,16 @@
 					curator.adjust_money(curator_cut, "Painting: Patronage cut")
 					curator.bank_card_talk("Cut on patronage received, account now holds [curator.account_balance] cr.")
 
+	if(istype(loc, /obj/structure/sign/painting))
+		var/obj/structure/sign/painting/frame = loc
+		frame.remove_art_element(painting_metadata.credit_value)
+		frame.add_art_element(offer_amount)
+
 	painting_metadata.patron_ckey = user.ckey
 	painting_metadata.patron_name = user.real_name
 	painting_metadata.credit_value = offer_amount
 	last_patron = WEAKREF(user.mind)
+
 	to_chat(user, span_notice("Nanotrasen Trust Foundation thanks you for your contribution. You're now an official patron of this painting."))
 	var/list/possible_frames = SSpersistent_paintings.get_available_frames(offer_amount)
 	if(possible_frames.len <= 1) // Not much room for choices here.
@@ -330,16 +366,16 @@
 	. = ..()
 	if(icon_generated)
 		var/mutable_appearance/detail = mutable_appearance(generated_icon)
-		detail.pixel_x = 1
-		detail.pixel_y = 1
+		detail.pixel_w = 1
+		detail.pixel_z = 1
 		. += detail
 		return
 	if(!used)
 		return
 
 	var/mutable_appearance/detail = mutable_appearance(icon, "[icon_state]wip")
-	detail.pixel_x = 1
-	detail.pixel_y = 1
+	detail.pixel_w = 1
+	detail.pixel_z = 1
 	. += detail
 
 /obj/item/canvas/proc/generate_proper_overlay()
@@ -350,7 +386,7 @@
 	var/result = rustg_dmi_create_png(png_filename, "[width]", "[height]", image_data)
 	if(result)
 		CRASH("Error generating painting png : [result]")
-	painting_metadata.md5 = md5(lowertext(image_data))
+	painting_metadata.md5 = md5(LOWER_TEXT(image_data))
 	generated_icon = new(png_filename)
 	icon_generated = TRUE
 	update_appearance()
@@ -412,6 +448,147 @@
 			return TRUE
 
 	return FALSE
+
+///The pixel to the right matches the previous color we're flooding over
+#define CANVAS_FILL_R_MATCH (1<<0)
+///The pixel to the left matches the previous color we're flooding over
+#define CANVAS_FILL_L_MATCH (1<<1)
+
+//a macro for the stringized key for coordinates to check later
+#define CANVAS_COORD(x, y) "[x]-[y]"
+///queues a coordinate on the canvas for future cycles.
+#define QUEUE_CANVAS_COORD(x, y, queue) \
+	if(y && !queue[CANVAS_COORD(x, y)]) {\
+		queue[CANVAS_COORD(x, y)] = list(x, y);\
+	}
+
+/**
+ * A proc that adopts a span-based, 4-dir (correct me if I'm wrong) flood fill algorithm used
+ * by the bucked tool in the UI, to facilitate coloring larger portions of the canvas.
+ * If you have never used the bucket/flood tool on an image editor, I suggest you do it
+ * now so you know what I'm basically talking about.
+ *
+ * @ param x The point on the x axys where we start flooding our canvas. The arg is later used to store the current x
+ * @ param y The point on the y axys where we start flooding the canvas. The arg is later used to store the current y
+ * @ param new_color The new color that floods over the old one
+ */
+/obj/item/canvas/proc/canvas_fill(x, y, new_color)
+	var/prev_color = grid[x][y]
+	//If the colors are the same, don't do anything.
+	if(prev_color == new_color)
+		return FALSE
+
+	//The queue for coordinates to the right of the current line
+	var/list/queue_right = list()
+	//Inversely for those to our left
+	var/list/queue_left = list()
+	//Whether we're currently checking the right or left queue.
+	var/go_right = TRUE
+
+	//The current coordinates. The only reason this is outside the loop
+	//is because we first go up, then reset our vertical position to just below
+	//the starting position and go down from there.
+	var/list/coords = list(x, y)
+
+	//Basically, the way it works is that each cycle we first go up, then down until we
+	//either reach the vertical borders of the raster or find a pixel that is not of the color we want
+	//to flood. As we do this, we try to queue a minimum of coordinates to our
+	//left and right to use for future cycles, moving horizontally in one direction until there are no
+	//more queued coordinates for that dir. Then we turn around and repeat
+	//until both left and right queues are completely empty.
+	while(coords)
+		//The current vertical line, the right and the left ones.
+		var/list/curr_line = grid[x]
+		var/list/right_line = x < width ? grid[x+1] : null
+		var/list/left_line = x > 1 ? grid[x-1] : null
+		//the queue we're on, depending on direction
+		var/list/curr_queue = go_right ? queue_right : queue_left
+		//Instead of queueing every point to our left and right that shares our prevous color,
+		//Causing a lot of empty cycles, we only queue an extremity of a vertical segment
+		//delimited by pixels of other colors or the y boundaries of the raster. To do this,
+		//we need to track where the segment (called line for simplicity) starts (or ends).
+		var/r_line_start
+		var/l_line_start
+
+		//go up first (y = 1 is the upper border is)
+		while(y >= 1 && curr_line[y] == prev_color)
+			var/return_flags = canvas_scan_step(x, y, queue_left, queue_right, left_line, right_line, l_line_start, r_line_start, prev_color)
+			if(return_flags & CANVAS_FILL_R_MATCH)
+				r_line_start = y
+			else
+				r_line_start = null
+			if(return_flags & CANVAS_FILL_L_MATCH)
+				l_line_start = y
+			else
+				l_line_start = null
+			curr_line[y] = new_color
+			curr_queue -= CANVAS_COORD(x, y) //remove it from the queue if possible.
+			y--
+
+		//Any unqueued coordinate is queued and cleared before the next half of the cycle
+		QUEUE_CANVAS_COORD(x + 1, r_line_start, queue_right)
+		QUEUE_CANVAS_COORD(x - 1, l_line_start, queue_left)
+		r_line_start = l_line_start = null
+
+		//set y to the pixel immediately below the starting y
+		y = coords[2] + 1
+
+		//then go down (y = height is the bottom border)
+		while(y <= height && curr_line[y] == prev_color)
+			var/return_flags = canvas_scan_step(x, y, queue_left, queue_right, left_line, right_line, l_line_start, r_line_start, prev_color)
+			if(!(return_flags & CANVAS_FILL_R_MATCH))
+				r_line_start = null
+			else if(!r_line_start)
+				r_line_start = y
+			if(!(return_flags & CANVAS_FILL_L_MATCH))
+				l_line_start = null
+			else if(!l_line_start)
+				l_line_start = y
+			curr_line[y] = new_color
+			curr_queue -= CANVAS_COORD(x, y)
+			y++
+
+		QUEUE_CANVAS_COORD(x + 1, r_line_start, queue_right)
+		QUEUE_CANVAS_COORD(x - 1, l_line_start, queue_left)
+
+		//Pick the next set of coords from the queue (and change direction if necessary)
+		if(!length(curr_queue))
+			var/list/other_queue = go_right ? queue_left : queue_right
+			coords = other_queue[other_queue[1]]
+			other_queue.Cut(1, 2)
+			go_right = !go_right
+		else
+			coords = curr_queue[curr_queue[1]]
+			curr_queue.Cut(1, 2)
+
+		x = coords?[1]
+		y = coords?[2]
+
+	return TRUE
+
+/**
+ * The step of canvas_fill() that scans the pixels to the immediate right and left of our coord and see if they need to be queue'd or not.
+ * Kept as a separate proc to reduce copypasted code.
+ */
+/proc/canvas_scan_step(x, y, list/queue_left, list/queue_right, list/left_line, list/right_line, left_pos, right_pos, prev_color)
+	if(left_line)
+		if(left_line[y] == prev_color)
+			. += CANVAS_FILL_L_MATCH
+		else
+			QUEUE_CANVAS_COORD(x - 1, left_pos, queue_left)
+
+	if(!right_line)
+		return
+
+	if(right_line[y] == prev_color)
+		. += CANVAS_FILL_R_MATCH
+	else
+		QUEUE_CANVAS_COORD(x + 1, right_pos, queue_right)
+
+#undef CANVAS_FILL_R_MATCH
+#undef CANVAS_FILL_L_MATCH
+#undef CANVAS_COORD
+#undef QUEUE_CANVAS_COORD
 
 /obj/item/canvas/nineteen_nineteen
 	name = "canvas (19x19)"
@@ -527,6 +704,9 @@
 		/obj/item/canvas/twentyfour_twentyfour,
 	)
 
+/obj/structure/sign/painting/get_save_vars()
+	return ..() - NAMEOF(src, icon)
+
 /obj/structure/sign/painting/Initialize(mapload, dir, building)
 	. = ..()
 	SSpersistent_paintings.painting_frames += src
@@ -566,13 +746,17 @@
 /obj/structure/sign/painting/Exited(atom/movable/movable, atom/newloc)
 	. = ..()
 	if(movable == current_canvas)
+		if(!QDELETED(current_canvas))
+			remove_art_element(current_canvas.painting_metadata.credit_value)
 		current_canvas = null
 		update_appearance()
 
-/obj/structure/sign/painting/AltClick(mob/user)
-	. = ..()
-	if(current_canvas?.can_select_frame(user))
-		INVOKE_ASYNC(current_canvas, TYPE_PROC_REF(/obj/item/canvas, select_new_frame), user)
+/obj/structure/sign/painting/click_alt(mob/user)
+	if(!current_canvas?.can_select_frame(user))
+		return CLICK_ACTION_BLOCKING
+
+	INVOKE_ASYNC(current_canvas, TYPE_PROC_REF(/obj/item/canvas, select_new_frame), user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/structure/sign/painting/proc/frame_canvas(mob/user, obj/item/canvas/new_canvas)
 	if(!(new_canvas.type in accepted_canvas_types))
@@ -583,6 +767,7 @@
 		if(!current_canvas.finalized)
 			current_canvas.finalize(user)
 		to_chat(user,span_notice("You frame [current_canvas]."))
+		add_art_element()
 		update_appearance()
 		return TRUE
 	return FALSE
@@ -613,8 +798,8 @@
 		return
 
 	var/mutable_appearance/painting = mutable_appearance(current_canvas.generated_icon)
-	painting.pixel_x = current_canvas.framed_offset_x
-	painting.pixel_y = current_canvas.framed_offset_y
+	painting.pixel_w = current_canvas.framed_offset_x
+	painting.pixel_z = current_canvas.framed_offset_y
 	. += painting
 	var/frame_type = current_canvas.painting_metadata.frame_type
 	. += mutable_appearance(current_canvas.icon,"[current_canvas.icon_state]frame_[frame_type]") //add the frame
@@ -652,9 +837,30 @@
 	new_canvas.finalized = TRUE
 	new_canvas.name = "painting - [painting.title]"
 	current_canvas = new_canvas
+	add_art_element()
 	current_canvas.update_appearance()
 	update_appearance()
 	return TRUE
+
+/obj/structure/sign/painting/proc/add_art_element()
+	var/artistic_value = get_art_value(current_canvas.painting_metadata.credit_value)
+	if(artistic_value)
+		AddElement(/datum/element/art, artistic_value)
+
+/obj/structure/sign/painting/proc/remove_art_element(patronage)
+	var/artistic_value = get_art_value(patronage)
+	if(artistic_value)
+		RemoveElement(/datum/element/art, artistic_value)
+
+/obj/structure/sign/painting/proc/get_art_value(patronage)
+	switch(patronage)
+		if(PATRONAGE_SUPERB_FRAME to INFINITY)
+			return GREAT_ART
+		if(PATRONAGE_EXCELLENT_FRAME to PATRONAGE_SUPERB_FRAME)
+			return GOOD_ART
+		if(PATRONAGE_NICE_FRAME to PATRONAGE_EXCELLENT_FRAME)
+			return OK_ART
+	return 0
 
 /obj/structure/sign/painting/proc/save_persistent()
 	if(!persistence_id || !current_canvas || current_canvas.no_save || current_canvas.painting_metadata.loaded_from_json)
@@ -663,7 +869,7 @@
 		stack_trace("Invalid persistence_id - [persistence_id]")
 		return
 	var/data = current_canvas.get_data_string()
-	var/md5 = md5(lowertext(data))
+	var/md5 = md5(LOWER_TEXT(data))
 	var/list/current = SSpersistent_paintings.paintings[persistence_id]
 	if(!current)
 		current = list()
@@ -830,7 +1036,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/palette_righthand.dmi'
 	w_class = WEIGHT_CLASS_TINY
 	///Chosen paint color
-	var/current_color = "#000000"
+	var/current_color = COLOR_BLACK
 
 /obj/item/paint_palette/Initialize(mapload)
 	. = ..()

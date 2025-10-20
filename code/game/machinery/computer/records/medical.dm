@@ -31,7 +31,6 @@
 		return
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
-		create_character_preview_view(user)
 		ui = new(user, src, "MedicalRecords")
 		ui.set_autoupdate(FALSE)
 		ui.open()
@@ -65,6 +64,7 @@
 			quirk_notes = target.quirk_notes,
 			rank = target.rank,
 			species = target.species,
+			trim = target.trim,
 		))
 
 	data["records"] = records
@@ -140,7 +140,7 @@
 		return FALSE
 
 	target.age = 18
-	target.blood_type = "[GLOB.blood_types[random_human_blood_type()]]" // NON-MODULE CHANGE
+	target.blood_type = "[find_blood_type(random_human_blood_type())]" // NON-MODULE CHANGE
 	target.dna_string = "Unknown"
 	target.gender = "Unknown"
 	target.major_disabilities = ""

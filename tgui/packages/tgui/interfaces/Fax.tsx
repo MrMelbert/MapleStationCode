@@ -1,6 +1,7 @@
-import { sortBy } from '../../common/collections';
+import { sortBy } from 'es-toolkit';
+import { Box, Button, LabeledList, Section, Table } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, Section, Table } from '../components';
 import { Window } from '../layouts';
 
 type FaxData = {
@@ -39,13 +40,14 @@ export const Fax = (props) => {
   const { act } = useBackend();
   const { data } = useBackend<FaxData>();
   const faxes = data.faxes
-    ? sortBy((sortFax: FaxInfo) => sortFax.fax_name)(
+    ? sortBy(
         data.syndicate_network
           ? data.faxes.filter((filterFax: FaxInfo) => filterFax.visible)
           : data.faxes.filter(
               (filterFax: FaxInfo) =>
                 filterFax.visible && !filterFax.syndicate_network,
             ),
+        [(sortFax: FaxInfo) => sortFax.fax_name],
       )
     : [];
   return (
@@ -57,16 +59,13 @@ export const Fax = (props) => {
           </LabeledList.Item>
           <LabeledList.Item label="Network ID">{data.fax_id}</LabeledList.Item>
           <LabeledList.Item label="Visible to Network">
-            {data.visible ? true : false}
+            {data.visible ? 'true' : 'false'}
           </LabeledList.Item>
         </Section>
         <Section
           title="Paper"
           buttons={
-            <Button
-              onClick={() => act('remove')}
-              disabled={data.has_paper ? false : true}
-            >
+            <Button onClick={() => act('remove')} disabled={!data.has_paper}>
               Remove
             </Button>
           }
@@ -129,7 +128,7 @@ export const Fax = (props) => {
           buttons={
             <Button
               onClick={() => act('history_clear')}
-              disabled={data.fax_history ? false : true}
+              disabled={!data.fax_history}
             >
               Clear
             </Button>

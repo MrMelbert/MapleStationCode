@@ -12,7 +12,7 @@
 	worn_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_on = FALSE
 	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
@@ -73,9 +73,9 @@
  */
 /obj/item/circuit_component/controller/proc/send_alternate_signal(atom/source, mob/user)
 	SIGNAL_HANDLER
-	if(!user.Adjacent(source))
-		return
+
 	handle_trigger(source, user, "alternate", alt)
+	return CLICK_ACTION_SUCCESS
 
 
 /**
@@ -83,6 +83,9 @@
  */
 /obj/item/circuit_component/controller/proc/send_right_signal(atom/source, mob/user)
 	SIGNAL_HANDLER
-	if(!user.Adjacent(source))
+
+	if(!user.can_perform_action(source))
 		return
+
 	handle_trigger(source, user, "extra", right)
+	return CLICK_ACTION_SUCCESS

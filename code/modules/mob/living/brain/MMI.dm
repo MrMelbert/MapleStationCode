@@ -12,7 +12,7 @@
 	var/mob/living/brain/brainmob = null //The current occupant.
 	var/mob/living/silicon/robot = null //Appears unused.
 	var/obj/vehicle/sealed/mecha = null //This does not appear to be used outside of reference in mecha.dm.
-	var/obj/item/organ/internal/brain/brain = null //The actual brain
+	var/obj/item/organ/brain/brain = null //The actual brain
 	var/datum/ai_laws/laws = new()
 	var/force_replace_ai_name = FALSE
 	var/overrides_aicore_laws = FALSE // Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
@@ -35,7 +35,7 @@
 	if(!brain)
 		icon_state = "[base_icon_state]_off"
 		return ..()
-	icon_state = "[base_icon_state]_brain[istype(brain, /obj/item/organ/internal/brain/alien) ? "_alien" : null]"
+	icon_state = "[base_icon_state]_brain[istype(brain, /obj/item/organ/brain/alien) ? "_alien" : null]"
 	return ..()
 
 /obj/item/mmi/update_overlays()
@@ -51,8 +51,8 @@
 
 /obj/item/mmi/attackby(obj/item/O, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
-	if(istype(O, /obj/item/organ/internal/brain)) //Time to stick a brain in it --NEO
-		var/obj/item/organ/internal/brain/newbrain = O
+	if(istype(O, /obj/item/organ/brain)) //Time to stick a brain in it --NEO
+		var/obj/item/organ/brain/newbrain = O
 		if(brain)
 			to_chat(user, span_warning("There's already a brain in the MMI!"))
 			return
@@ -84,14 +84,14 @@
 		brainmob.forceMove(src)
 		brainmob.container = src
 		var/fubar_brain = newbrain.suicided || HAS_TRAIT(brainmob, TRAIT_SUICIDED) //brain is from a suicider
-		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_FAILING)) // the brain organ hasn't been beaten to death, nor was from a suicider.
-			brainmob.set_stat(CONSCIOUS) //we manually revive the brain mob
-		else if(!fubar_brain && newbrain.organ_flags & ORGAN_FAILING) // the brain is damaged, but not from a suicider
-			to_chat(user, span_warning("[src]'s indicator light turns yellow and its brain integrity alarm beeps softly. Perhaps you should check [newbrain] for damage."))
-			playsound(src, 'sound/machines/synth_no.ogg', 5, TRUE)
-		else
+		if(fubar_brain)
 			to_chat(user, span_warning("[src]'s indicator light turns red and its brainwave activity alarm beeps softly. Perhaps you should check [newbrain] again."))
 			playsound(src, 'sound/machines/triple_beep.ogg', 5, TRUE)
+		else if(brainmob.revive())
+			playsound(src, 'sound/machines/synth_yes.ogg', 5, TRUE)
+		else // the brain is damaged, but not from a suicider
+			to_chat(user, span_warning("[src]'s indicator light turns yellow and its brain integrity alarm beeps softly. Perhaps you should check [newbrain] for damage."))
+			playsound(src, 'sound/machines/synth_no.ogg', 5, TRUE)
 
 		brainmob.reset_perspective()
 		brain = newbrain
@@ -99,7 +99,7 @@
 
 		name = "[initial(name)]: [brainmob.real_name]"
 		update_appearance()
-		if(istype(brain, /obj/item/organ/internal/brain/alien))
+		if(istype(brain, /obj/item/organ/brain/alien))
 			braintype = "Xenoborg" //HISS....Beep.
 		else
 			braintype = "Cyborg"
@@ -121,7 +121,7 @@
  * Arguments:
  * * new_brain - Brain to be force-inserted into the MMI. Any calling code should handle proper removal of the brain from the mob, as this proc only forceMoves.
  */
-/obj/item/mmi/proc/force_brain_into(obj/item/organ/internal/brain/new_brain)
+/obj/item/mmi/proc/force_brain_into(obj/item/organ/brain/new_brain)
 	if(isnull(new_brain))
 		stack_trace("Proc called with null brain.")
 		return FALSE
@@ -142,17 +142,13 @@
 
 	var/mob/living/brain/new_brain_brainmob = new_brain.brainmob
 	if(!new_brain_brainmob.key && !new_brain.decoy_override)
-		new_brain_brainmob.notify_revival("Someone has put your brain in a MMI!", source = src)
+		new_brain_brainmob.notify_revival("Someone has put your brain in a MMI[brainmob.can_be_revived() ? "!" : ", though too damaged to speak."]", source = src)
 
 	set_brainmob(new_brain_brainmob)
 	new_brain.brainmob = null
 	brainmob.forceMove(src)
 	brainmob.container = src
-
-	var/fubar_brain = new_brain.suicided || HAS_TRAIT(brainmob, TRAIT_SUICIDED)
-	if(!fubar_brain && !(new_brain.organ_flags & ORGAN_FAILING))
-		brainmob.set_stat(CONSCIOUS)
-
+	brainmob.revive()
 	brainmob.reset_perspective()
 	brain = new_brain
 	brain.organ_flags |= ORGAN_FROZEN
@@ -160,7 +156,7 @@
 	name = "[initial(name)]: [brainmob.real_name]"
 
 	update_appearance()
-	if(istype(brain, /obj/item/organ/internal/brain/alien))
+	if(istype(brain, /obj/item/organ/brain/alien))
 		braintype = "Xenoborg"
 	else
 		braintype = "Cyborg"
@@ -183,7 +179,7 @@
 	if(brainmob)
 		brainmob.container = null //Reset brainmob mmi var.
 		brainmob.forceMove(brain) //Throw mob into brain.
-		brainmob.set_stat(DEAD)
+		brainmob.death()
 		brainmob.emp_damage = 0
 		brainmob.reset_perspective() //so the brainmob follows the brain organ instead of the mmi. And to update our vision
 		brain.brainmob = brainmob //Set the brain to use the brainmob
@@ -209,7 +205,7 @@
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		var/obj/item/organ/internal/brain/newbrain = H.get_organ_by_type(/obj/item/organ/internal/brain)
+		var/obj/item/organ/brain/newbrain = H.get_organ_by_type(/obj/item/organ/brain)
 		newbrain.Remove(H, special = TRUE, movement_flags = NO_ID_TRANSFER)
 		newbrain.forceMove(src)
 		brain = newbrain
@@ -220,7 +216,7 @@
 
 	name = "[initial(name)]: [brainmob.real_name]"
 	update_appearance()
-	if(istype(brain, /obj/item/organ/internal/brain/alien))
+	if(istype(brain, /obj/item/organ/brain/alien))
 		braintype = "Xenoborg" //HISS....Beep.
 	else
 		braintype = "Cyborg"
@@ -291,10 +287,9 @@
 				brainmob.emp_damage = min(brainmob.emp_damage + rand(0,10), 30)
 		brainmob.emote("alarm")
 
-/obj/item/mmi/deconstruct(disassembled = TRUE)
+/obj/item/mmi/atom_deconstruct(disassembled = TRUE)
 	if(brain)
 		eject_brain()
-	qdel(src)
 
 /obj/item/mmi/examine(mob/user)
 	. = ..()

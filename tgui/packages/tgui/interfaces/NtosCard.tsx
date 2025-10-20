@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -9,9 +6,12 @@ import {
   NumberInput,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
-import { NTOSData } from '../layouts/NtosWindow';
+import type { NTOSData } from '../layouts/NtosWindow';
 import { AccessList } from './common/AccessList';
 
 type Data = {
@@ -69,6 +69,7 @@ export const NtosCardContent = (props) => {
     trimAccess,
     wildcardFlags,
     wildcardSlots,
+    hasTrim,
   } = data;
 
   return (
@@ -93,7 +94,11 @@ export const NtosCardContent = (props) => {
             />
           }
         >
-          <TemplateDropdown templates={templates} />
+          {hasTrim ? (
+            <TemplateDropdown templates={templates} />
+          ) : (
+            'Templates require a trim already applied to the card. Please use an ID Painter to apply a trim.'
+          )}
         </Section>
       )}
       <Stack mt={1}>
@@ -182,7 +187,7 @@ const IdCardPage = (props) => {
               <Input
                 width="100%"
                 value={id_owner}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('PRG_edit', {
                     name: value,
                   })
@@ -191,11 +196,12 @@ const IdCardPage = (props) => {
             </Stack.Item>
             <Stack.Item>
               <NumberInput
+                step={1}
                 value={id_age || 0}
                 unit="Years"
                 minValue={17}
                 maxValue={85}
-                onChange={(e, value) => {
+                onChange={(value) => {
                   act('PRG_age', {
                     id_age: value,
                   });
@@ -210,7 +216,7 @@ const IdCardPage = (props) => {
                 fluid
                 mt={1}
                 value={id_rank}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('PRG_assign', {
                     assignment: value,
                   })
@@ -230,16 +236,14 @@ const TemplateDropdown = (props) => {
 
   const templateKeys = Object.keys(templates);
 
-  if (!templateKeys.length) {
-    return <> </>;
-  }
+  if (!templateKeys.length) return;
 
   return (
     <Stack>
       <Stack.Item grow>
         <Dropdown
           width="100%"
-          displayText={'Select a template...'}
+          placeholder="Select a template..."
           options={templateKeys.map((path) => {
             return templates[path];
           })}
@@ -248,6 +252,7 @@ const TemplateDropdown = (props) => {
               name: sel,
             })
           }
+          selected="None"
         />
       </Stack.Item>
     </Stack>

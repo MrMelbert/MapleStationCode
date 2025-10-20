@@ -26,11 +26,13 @@
 	lighting_cutoff_red = 5
 	lighting_cutoff_green = 20
 	lighting_cutoff_blue = 25
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_HUGE
 
 	speak_emote = list("chitters")
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = 0
 	ai_controller = /datum/ai_controller/basic_controller/mega_arachnid
 	alpha = 40
 

@@ -347,7 +347,7 @@
 			//Death
 			selected_turf.visible_message(span_userdanger("[user] suddenly dies!"))
 			user.investigate_log("has been killed by a die of fate.", INVESTIGATE_DEATHS)
-			user.death()
+			user.death(null, "magic")
 		if(3)
 			//Swarm of creatures
 			selected_turf.visible_message(span_userdanger("A swarm of creatures surrounds [user]!"))
@@ -482,7 +482,7 @@
 	school = SCHOOL_CONJURATION
 	cooldown_time = 10 SECONDS
 
-	invocation = "JE VES"
+	invocation = "JE VES?"
 	invocation_type = INVOCATION_WHISPER
 	spell_requirements = NONE
 	spell_max_level = 0 //cannot be improved

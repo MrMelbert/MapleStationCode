@@ -261,7 +261,7 @@
 	return add_item_to_steal(src, /obj/item/gun/energy/e_gun/hos)
 
 /datum/objective_item/steal/compactshotty
-	name = "the head of security's personal compact shotgun"
+	name = "the warden's personal compact shotgun"
 	targetitem = /obj/item/gun/ballistic/shotgun/automatic/combat/compact
 	excludefromjob = list(JOB_HEAD_OF_SECURITY)
 	item_owner = list(JOB_HEAD_OF_SECURITY)
@@ -430,17 +430,17 @@
 
 /datum/objective_item/steal/blueprints
 	name = "the station blueprints"
-	targetitem = /obj/item/areaeditor/blueprints
+	targetitem = /obj/item/blueprints
 	excludefromjob = list(JOB_CHIEF_ENGINEER)
 	item_owner = list(JOB_CHIEF_ENGINEER)
 	altitems = list(/obj/item/photo)
 	exists_on_map = TRUE
 
-/obj/item/areaeditor/blueprints/add_stealing_item_objective()
-	return add_item_to_steal(src, /obj/item/areaeditor/blueprints)
+/obj/item/blueprints/add_stealing_item_objective()
+	return add_item_to_steal(src, /obj/item/blueprints)
 
 /datum/objective_item/steal/blueprints/check_special_completion(obj/item/I)
-	if(istype(I, /obj/item/areaeditor/blueprints))
+	if(istype(I, /obj/item/blueprints))
 		return TRUE
 	if(istype(I, /obj/item/photo))
 		var/obj/item/photo/P = I
@@ -449,7 +449,7 @@
 	return FALSE
 
 /datum/objective_item/steal/blackbox
-	name = "the Blackbox"
+	name = "the blackbox"
 	targetitem = /obj/item/blackbox
 	excludefromjob = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN)
 	exists_on_map = TRUE

@@ -242,8 +242,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		misc_contents[buyer] = list()
 
 		for(var/datum/supply_order/our_order as anything in buying_account_orders)
-			for (var/item in our_order.pack.contains)
-				misc_contents[buyer] += item
+			misc_contents[buyer] += our_order.pack
 			misc_costs[buyer] += our_order.pack.cost
 			misc_order_num[buyer] = "[misc_order_num[buyer]]#[our_order.id] "
 
@@ -303,7 +302,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 */
 /obj/docking_port/mobile/supply/proc/create_mail()
 	//Early return if there's no mail waiting to prevent taking up a slot. We also don't send mails on sundays or holidays.
-	if(!SSeconomy.mail_waiting || SSeconomy.mail_blocked)
+	if(!SSeconomy.mail_waiting || SSeconomy.mail_blocked || SSsecurity_level.current_security_level.disables_mail)
 		return
 
 	//spawn crate

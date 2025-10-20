@@ -1,26 +1,5 @@
-/datum/component/uses_mana/story_spell/touch/acid_touch
-	/// Attunement modifier for Earth attunement
-	var/acid_touch_attunement_amount = 0.5
-	/// Base mana cost
-	var/acid_touch_cost = 50
-	/// Multiplier applied to cost when casting on turfs
-	var/turf_cost_multiplier = 0.25
-	/// Multiplier applied to cost when casting on objects
-	var/obj_cost_multiplier = 0.5
-
-/datum/component/uses_mana/story_spell/touch/acid_touch/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/earth] += acid_touch_attunement_amount
-
-/datum/component/uses_mana/story_spell/touch/acid_touch/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/touch/acid_touch/spell = parent
-	var/final_cost = acid_touch_cost
-	final_cost *= ..() // default multiplier
-	if(isturf(cast_on))
-		final_cost *= max(1, spell.turf_modifier * turf_cost_multiplier) // so it's not a skeleton key
-	if(isobj(cast_on))
-		final_cost *= max(1, spell.obj_modifier * obj_cost_multiplier) // to make it harder to destroy items
-	return final_cost
+#define ACID_TOUCH_ATTUNEMENT_EARTH 0.5
+#define ACID_TOUCH_MANA_BASECOST 50
 
 /datum/action/cooldown/spell/touch/acid_touch
 	name = "Acid Touch"
@@ -34,6 +13,7 @@
 	invocation = "Ac rid!"
 	invocation_type = INVOCATION_SHOUT
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/acid_touch_cost = ACID_TOUCH_MANA_BASECOST
 
 	hand_path = /obj/item/melee/touch_attack/acid_touch
 	can_cast_on_self = TRUE
@@ -47,10 +27,32 @@
 	var/obj_modifier = 2.5
 	/// Modifier to power and volume applied to aciding turfs
 	var/turf_modifier = 10
+	/// Multiplier applied to cost when casting on turfs
+	var/turf_cost_multiplier = 0.25
+	/// Multiplier applied to cost when casting on objects
+	var/obj_cost_multiplier = 0.5
 
 /datum/action/cooldown/spell/touch/acid_touch/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/touch/acid_touch)
+
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_EARTH] += ACID_TOUCH_ATTUNEMENT_EARTH
+
+	AddComponent(/datum/component/uses_mana/touch_spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_required)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
+
+/datum/action/cooldown/spell/touch/acid_touch/proc/get_mana_required(atom/caster, atom/cast_on, ...)
+	var/final_cost = acid_touch_cost
+	if(isturf(cast_on))
+		final_cost *= max(1, turf_modifier * turf_cost_multiplier) // so it's not a skeleton key
+	if(isobj(cast_on))
+		final_cost *= max(1, obj_modifier * obj_cost_multiplier) // to make it harder to destroy items
+	return final_cost
 
 /datum/action/cooldown/spell/touch/acid_touch/is_valid_target(atom/cast_on)
 	return TRUE
@@ -80,3 +82,6 @@
 	icon_state = "duffelcurse"
 	inhand_icon_state = "duffelcurse"
 	color = COLOR_PALE_GREEN_GRAY
+
+#undef ACID_TOUCH_ATTUNEMENT_EARTH
+#undef ACID_TOUCH_MANA_BASECOST

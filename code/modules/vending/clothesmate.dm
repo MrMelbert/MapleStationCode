@@ -18,6 +18,7 @@
 				/obj/item/clothing/mask/bandana = 3,
 				/obj/item/clothing/mask/bandana/striped = 3,
 				/obj/item/clothing/mask/bandana/skull = 3,
+				/obj/item/clothing/mask/facescarf = 3,
 				/obj/item/clothing/neck/scarf = 6,
 				/obj/item/clothing/neck/large_scarf = 6,
 				/obj/item/clothing/neck/large_scarf/red = 6,
@@ -31,6 +32,9 @@
 				/obj/item/clothing/head/chaplain/taqiyah/red = 3,
 				/obj/item/clothing/head/hats/tophat = 3,
 				/obj/item/clothing/head/fedora = 3,
+				/obj/item/clothing/head/fedora/white = 3,
+				/obj/item/clothing/head/fedora/beige = 3,
+				/obj/item/clothing/head/fedora/greyscale = 3,
 				/obj/item/clothing/head/hats/bowler = 3,
 				/obj/item/clothing/head/cowboy/white = 1,
 				/obj/item/clothing/head/cowboy/grey = 1,
@@ -81,7 +85,7 @@
 				/obj/item/clothing/under/costume/kilt = 1,
 				/obj/item/clothing/under/dress/striped = 1,
 				/obj/item/clothing/under/dress/sailor = 1,
-				/obj/item/clothing/under/dress/redeveninggown = 1,
+				/obj/item/clothing/under/dress/eveninggown = 1,
 				/obj/item/clothing/under/misc/pj/blue = 2,
 				/obj/item/clothing/under/misc/pj/red = 2,
 			),
@@ -92,6 +96,8 @@
 			"icon" = "vest",
 			"products" = list(
 				/obj/item/clothing/suit/toggle/jacket/sweater = 4,
+				/obj/item/clothing/suit/jacket/blazer = 4,
+				/obj/item/clothing/suit/toggle/jacket/trenchcoat = 4,
 				/obj/item/clothing/suit/jacket/oversized = 4,
 				/obj/item/clothing/suit/jacket/fancy = 4,
 				/obj/item/clothing/suit/toggle/lawyer/greyscale = 4,
@@ -161,6 +167,8 @@
 				/obj/item/clothing/suit/hooded/ethereal_raincoat = 3,
 				/obj/item/clothing/under/ethereal_tunic = 3,
 
+				/obj/item/clothing/mask/kitsune = 3,
+				/obj/item/clothing/mask/rebellion = 6,
 				/obj/item/clothing/suit/costume/wellworn_shirt/graphic/ian = 1,
 				/obj/item/clothing/suit/costume/irs = 20,
 				/obj/item/clothing/head/costume/irs = 20,
@@ -216,6 +224,7 @@
 	payment_department = NO_FREEBIES
 	light_mask = "wardrobe-light-mask"
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
+	allow_custom = TRUE
 
 /obj/item/vending_refill/clothing
 	machine_name = "ClothesMate"

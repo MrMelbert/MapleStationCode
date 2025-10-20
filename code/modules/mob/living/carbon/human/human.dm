@@ -21,8 +21,7 @@
 
 	. = ..()
 
-	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
-	AddComponent(/datum/component/personal_crafting)
+	AddComponent(/datum/component/personal_crafting/*, ui_human_crafting*/)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
@@ -34,6 +33,19 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	GLOB.human_list += src
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
+
+	// NON-MODULE CHANGE: Unconscious appearance
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "Unknown"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
@@ -54,6 +66,10 @@
 	become_blind(NO_EYES)
 	// Mobs cannot taste anything without a tongue; the tongue organ removes this on Insert
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
+	// No lungs until you get lungs
+	apply_status_effect(/datum/status_effect/lungless)
+	// No heart until you get a heart // Except this is probably unnecessary so we'll skip it
+	// apply_status_effect(/datum/status_effect/heart_attack)
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	randomize_human_normie(src, randomize_mutations = TRUE)
@@ -73,7 +89,7 @@
 	//Update med hud images...
 	..()
 	//...sec hud images...
-	sec_hud_set_ID()
+	update_ID_card()
 	sec_hud_set_implants()
 	sec_hud_set_security_status()
 	//...fan gear
@@ -89,11 +105,6 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
-	if(href_list["item"]) //canUseTopic check for this is handled by mob/Topic()
-		var/slot = text2num(href_list["item"])
-		if(check_obscured_slots(TRUE) & slot)
-			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
-			return
 
 ///////HUDs///////
 	if(href_list["hud"])
@@ -104,7 +115,7 @@
 		if(!HAS_TRAIT(human_or_ghost_user, TRAIT_SECURITY_HUD) && !HAS_TRAIT(human_or_ghost_user, TRAIT_MEDICAL_HUD))
 			return
 		if((text2num(href_list["examine_time"]) + 1 MINUTES) < world.time)
-			to_chat(human_or_ghost_user, "[span_notice("It's too late to use this now!")]")
+			to_chat(human_or_ghost_user, span_notice("It's too late to use this now!"))
 			return
 		var/datum/record/crew/target_record = find_record(perpname)
 		if(href_list["photo_front"] || href_list["photo_side"])
@@ -325,11 +336,12 @@
 /mob/living/carbon/human/can_inject(mob/user, target_zone, injection_flags)
 	. = TRUE // Default to returning true.
 	// we may choose to ignore species trait pierce immunity in case we still want to check skellies for thick clothing without insta failing them (wounds)
-	if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
-		if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
+		if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
+			if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+				. = FALSE
+		else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 			. = FALSE
-	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
-		. = FALSE
 	if(user && !target_zone)
 		target_zone = get_bodypart(check_zone(user.zone_selected)) //try to find a bodypart. if there isn't one, target_zone will be null, and check_zone in the next line will default to the chest.
 	var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
@@ -343,10 +355,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		if(!target_zone)
-			target_zone = get_bodypart(check_zone(user.zone_selected))
-		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
+		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -354,7 +363,7 @@
 	if(judgement_criteria & JUDGE_EMAGGED || HAS_TRAIT(src, TRAIT_ALWAYS_WANTED))
 		return 10 //Everyone is a criminal!
 
-	var/threatcount = 0
+	var/threatcount = judgement_criteria & JUDGE_CHILLOUT ? -THREAT_ASSESS_DANGEROUS : 0
 
 	//Lasertag bullshit
 	if(lasercolor)
@@ -440,75 +449,96 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
-
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
-	if(target == src)
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if(target.body_position != LYING_DOWN || target.on_fire || target == src)
 		return
 
-	var/panicking = FALSE
+	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
 
-	do
-		CHECK_DNA_AND_SPECIES(target)
+/mob/living/carbon/human/proc/do_pat_fire(mob/living/carbon/target, obj/item/patting_with)
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if((on_fire || (patting_with?.resistance_flags & ON_FIRE)) && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+		to_chat(src, span_warning("You have your own fire to worry about!"))
+		return
 
-		if (DOING_INTERACTION_WITH_TARGET(src,target))
-			return FALSE
+	visible_message(
+		span_notice("[src] pats at the fire engulfing [target]!"),
+		span_notice("You try to pat out the fire on [target]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 
-		if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-			to_chat(src, span_warning("[target.name] is dead!"))
-			return FALSE
-
-		if (is_mouth_covered())
-			to_chat(src, span_warning("Remove your mask first!"))
-			return FALSE
-
-		if (target.is_mouth_covered())
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-			return FALSE
-
-		if (!get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-			return FALSE
-
-		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-			return FALSE
-
-		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
-						span_notice("You try to perform CPR on [target.name]... Hold still!"))
-
-		if (!do_after(src, delay = panicking ? CPR_PANIC_SPEED : (3 SECONDS), target = target))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			return FALSE
-
-		if (target.health > target.crit_threshold)
-			return FALSE
-
-		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
-		if(HAS_MIND_TRAIT(src, TRAIT_MORBID))
-			add_mood_event("morbid_saved_life", /datum/mood_event/morbid_saved_life)
+	while(do_after(src, 1 SECONDS, target, extra_checks = CALLBACK(src, PROC_REF(pat_fire_check), target),))
+		// check if we're using heatproof stuff (gloves or firesuit)
+		var/using_protection = FALSE
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE)) // slapping them with something and it's not burning
+			using_protection = patting_with.max_heat_protection_temperature >= target.get_skin_temperature() || (patting_with.resistance_flags & FIRE_PROOF)
 		else
-			add_mood_event("saved_life", /datum/mood_event/saved_life)
-		log_combat(src, target, "CPRed")
+			var/their_temp = target.get_skin_temperature()
+			for(var/obj/item/clothing/thing as anything in get_clothing_on_part(get_active_hand()))
+				if(thing.max_heat_protection_temperature >= their_temp || (thing.resistance_flags & FIRE_PROOF))
+					using_protection = TRUE
+					break
+		// actually do the patting and extinguishing
+		do_attack_animation(target, "grab")
+		playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		var/fire_heal = -1
+		if(using_protection)
+			fire_heal *= 1.5
+		if(on_fire || (patting_with?.resistance_flags & ON_FIRE))
+			fire_heal *= 0.25
+		target.adjust_fire_stacks(fire_heal)
+		if(!target.on_fire)
+			break
+		// either using heatproof stuff or we straight up can't catch fire from them
+		if(using_protection || HAS_TRAIT(target, TRAIT_NOFIRE_SPREAD))
+			continue
+		if(!prob(5 * target.fire_stacks))
+			continue
+		// check if our item catches fire before our mob does
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE))
+			var/set_alight = patting_with.fire_act(pick(40, 50, 60) * target.fire_stacks)
+			visible_message(
+				span_danger("[src]'s [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				span_danger("Your [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			// fire claimed us entirely
+			if(QDELETED(patting_with))
+				break
+			// A. was flammable and is now on fire - next loop, we will take direct fire damage from it (if unprotected)
+			// B. is not flammable - we will continue to burn it, and deal no direct damage
+			if(set_alight || !(patting_with.resistance_flags & FLAMMABLE))
+				continue
 
-		if (HAS_TRAIT(target, TRAIT_NOBREATH))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
-		else if (!target.get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
-		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
+		// now WE'RE catching fire (and taking some minor damage if possible)
+		// it doesn't stop you from continuing, but you're on fire man, what are you doing?
+		if(!HAS_TRAIT(src, TRAIT_RESISTHEAT) && !HAS_TRAIT(src, TRAIT_RESISTHEATHANDS))
+			apply_damage(round(target.fire_stacks * 0.5, 0.5), BURN, get_active_hand())
+			playsound(src, SFX_SEAR, 50, TRUE)
+		if(!HAS_TRAIT(src, TRAIT_NOFIRE) && !HAS_TRAIT(src, TRAIT_NOFIRE_SPREAD))
+			adjust_fire_stacks(round(target.fire_stacks * 0.2, 0.1))
+			ignite_mob(silent = TRUE)
+		visible_message(
+			span_danger("[src] [on_fire ? "catches fire from patting at" : "burns [p_their()] hand on"] [target]!"),
+			span_danger("You [on_fire ? "catch fire from patting at" : " burn your hand on"] [target]!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
 
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-	while (panicking)
+	if(QDELETED(src) || QDELETED(target) || incapacitated() || target.on_fire)
+		return
+	visible_message(
+		span_notice("[src] pats out the fire on [target]."),
+		span_notice("You pat out the fire on [target]."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 
-#undef CPR_PANIC_SPEED
+/mob/living/carbon/human/proc/pat_fire_check(mob/living/carbon/target)
+	PRIVATE_PROC(TRUE)
+	return target.on_fire
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
@@ -525,8 +555,7 @@
  * Returns false if we couldn't wash our hands due to them being obscured, otherwise true
  */
 /mob/living/carbon/human/proc/wash_hands(clean_types)
-	var/obscured = check_obscured_slots()
-	if(obscured & ITEM_SLOT_GLOVES)
+	if(covered_slots & HIDEGLOVES)
 		return FALSE
 
 	if(gloves)
@@ -547,13 +576,10 @@
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
-	if(glasses && is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
-		update_worn_glasses()
+	if(glasses && !is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
 		. = TRUE
 
-	var/obscured = check_obscured_slots()
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK) && wear_mask.wash(clean_types))
-		update_worn_mask()
+	if(wear_mask && !(covered_slots & HIDEMASK) && wear_mask.wash(clean_types))
 		. = TRUE
 
 /**
@@ -561,28 +587,11 @@
  */
 /mob/living/carbon/human/wash(clean_types)
 	. = ..()
-
-	// Wash equipped stuff that cannot be covered
-	if(wear_suit?.wash(clean_types))
-		update_worn_oversuit()
-		. = TRUE
-
-	if(belt?.wash(clean_types))
-		update_worn_belt()
-		. = TRUE
-
-	// Check and wash stuff that can be covered
-	var/obscured = check_obscured_slots()
-
-	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && w_uniform.wash(clean_types))
-		update_worn_undersuit()
-		. = TRUE
-
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
 	// Wash hands if exposed
-	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(obscured & ITEM_SLOT_GLOVES))
+	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(covered_slots & HIDEGLOVES))
 		blood_in_hands = 0
 		update_worn_gloves()
 		. = TRUE
@@ -594,7 +603,7 @@
 
 	// If we have a species, we need to handle mutant parts and stuff
 	if(dna?.species)
-		add_atom_colour("#000000", TEMPORARY_COLOUR_PRIORITY)
+		add_atom_colour(COLOR_BLACK, TEMPORARY_COLOUR_PRIORITY)
 		var/static/mutable_appearance/shock_animation_dna
 		if(!shock_animation_dna)
 			shock_animation_dna = mutable_appearance(icon, "electrocuted_base")
@@ -613,7 +622,7 @@
 	addtimer(CALLBACK(src, PROC_REF(end_electrocution_animation), zap_appearance), anim_duration)
 
 /mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
-	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
+	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLACK)
 	cut_overlay(MA)
 
 /mob/living/carbon/human/resist_restraints()
@@ -647,46 +656,10 @@
 /mob/living/carbon/human/update_health_hud()
 	if(!client || !hud_used)
 		return
-
 	// Updates the health bar, also sends signal
 	. = ..()
-
-	// Updates the health doll
-	if(!hud_used.healthdoll)
-		return
-
-	hud_used.healthdoll.cut_overlays()
-	if(stat == DEAD)
-		hud_used.healthdoll.icon_state = "healthdoll_DEAD"
-		return
-
-	hud_used.healthdoll.icon_state = "healthdoll_OVERLAY"
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		var/icon_num = 0
-
-		if(SEND_SIGNAL(body_part, COMSIG_BODYPART_UPDATING_HEALTH_HUD, src) & COMPONENT_OVERRIDE_BODYPART_HEALTH_HUD)
-			continue
-
-		var/damage = body_part.burn_dam + body_part.brute_dam
-		var/comparison = (body_part.max_damage/5)
-		if(damage)
-			icon_num = 1
-		if(damage > (comparison))
-			icon_num = 2
-		if(damage > (comparison*2))
-			icon_num = 3
-		if(damage > (comparison*3))
-			icon_num = 4
-		if(damage > (comparison*4))
-			icon_num = 5
-		if(has_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy))
-			icon_num = 0
-		if(icon_num)
-			hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]"))
-	for(var/t in get_missing_limbs()) //Missing limbs
-		hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]6"))
-	for(var/t in get_disabled_limbs()) //Disabled limbs
-		hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]7"))
+	// Handles changing limb colors and stuff
+	hud_used.healthdoll?.update_appearance()
 
 /mob/living/carbon/human/fully_heal(heal_flags = HEAL_ALL)
 	if(heal_flags & HEAL_NEGATIVE_MUTATIONS)
@@ -750,6 +723,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 	VV_DROPDOWN_OPTION(VV_HK_APPLY_DNA_INFUSION, "Apply DNA Infusion")
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
+	VV_DROPDOWN_OPTION(VV_HK_MAKE_ME_TANKY, "Make This Mob Tankier")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -854,7 +828,7 @@
 		if(result != "Yes")
 			return
 
-		var/obj/item/organ/internal/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
+		var/obj/item/organ/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
 		if(isnull(target_brain))
 			to_chat(usr, "This mob has no brain to insert into an MMI.")
@@ -870,7 +844,66 @@
 
 		qdel(src)
 
+	if(href_list[VV_HK_MAKE_ME_TANKY])
+		var/list/options = list(
+			"More effective HP",
+			"Less brute",
+			"Less burn",
+			"Less toxin / oxygen / brain",
+			"Less pain",
+			"Less environmental",
+			"Tougher organs",
+			"Stun resistance",
+			"Health regen",
+		)
+		var/list/picked = list()
+		while(length(options))
+			var/result = tgui_input_list(usr, "Pick something. Select \"Done\" to finish your selection.", "Tanky", options + list("Done", "Cancel"))
+			if(QDELETED(src) || !result || result == "Cancel")
+				return
+			if(result == "Done")
+				break
+			picked += result
+			options -= result
 
+		if(!length(picked))
+			return
+		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
+		if(QDELETED(src) || !major)
+			return
+		major = (major == "Lot")
+		message_admins("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+		log_admin("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+
+		for(var/i in picked)
+			switch(i)
+				if("More effective HP")
+					add_consciousness_modifier("badmin", major ? 30 : 10)
+				if("Less brute")
+					physiology.brute_mod *= (major ? 0.5 : 0.75)
+					physiology.bleed_mod *= (major ? 0.6 : 0.8)
+				if("Less burn")
+					physiology.burn_mod *= (major ? 0.5 : 0.75)
+				if("Less toxin / oxygen / brain")
+					physiology.tox_mod *= (major ? 0.5 : 0.75)
+					physiology.oxy_mod *= (major ? 0.5 : 0.75)
+					physiology.brain_mod *= (major ? 0.5 : 0.75)
+				if("Less pain")
+					set_pain_mod("badmin", major ? 0.6 : 0.8)
+				if("Tougher organs")
+					for(var/obj/item/organ/organ as anything in bodyparts)
+						organ.maxHealth *= (major ? 1.5 : 1.25)
+				if("Less environmental")
+					physiology.pressure_mod *= (major ? 0.6 : 0.8)
+					physiology.heat_mod *= (major ? 0.6 : 0.8)
+					physiology.cold_mod *= (major ? 0.6 : 0.8)
+				if("Stun resistance")
+					ADD_TRAIT(src, TRAIT_BATON_RESISTANCE, "Badmin")
+					physiology.stamina_mod *= (major ? 0.5 : 0.75)
+					physiology.stun_mod *= (major ? 0.5 : 0.75)
+					physiology.knockdown_mod *= (major ? 0.5 : 0.75)
+				if("Health regen")
+					apply_status_effect(/datum/status_effect/basic_health_regen, major ? 1.5 : 0.5)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
@@ -905,7 +938,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
+	var/carrydelay = get_grab_speed(target, 8 SECONDS)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
@@ -941,12 +974,13 @@
 
 	return buckle_mob(target, TRUE, TRUE, RIDER_NEEDS_ARMS)
 
-/mob/living/carbon/human/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
-
-	if(!is_type_in_typecache(target, can_ride_typecache) && !force) //humans are only meant to be ridden through piggybacking and special cases + NON MODULE BUG FIX
+/mob/living/carbon/human/is_buckle_possible(mob/living/target, force, check_loc)
+	if(!HAS_TRAIT(target, TRAIT_CAN_MOUNT_HUMANS))
 		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
-		return
-
+		return FALSE
+	// if you don't invoke it with forced, IE via piggyback / fireman, always fail
+	if(!force)
+		return FALSE
 	return ..()
 
 /mob/living/carbon/human/reagent_check(datum/reagent/chem, seconds_per_tick, times_fired)
@@ -957,15 +991,17 @@
 
 /mob/living/carbon/human/updatehealth()
 	. = ..()
-	if(HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
-		return
-	var/health_deficiency = max((maxHealth - health), staminaloss)
-	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
-	else
+	update_damage_movespeed()
+
+/mob/living/carbon/human/update_stamina()
+	update_damage_movespeed()
+
+/mob/living/carbon/human/proc/update_damage_movespeed()
+	var/health_deficiency = max((maxHealth - health), staminaloss * 2)
+	if(health_deficiency > 0)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 150)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 50)
+	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/damage_slowdown]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 
@@ -991,6 +1027,26 @@
 	. = ..()
 	if(use_random_name)
 		fully_replace_character_name(real_name, generate_random_mob_name())
+
+/mob/living/carbon/human/proc/is_atmos_sealed(additional_flags = null, check_hands = FALSE, alt_flags = FALSE)
+	var/chest_covered = FALSE
+	var/head_covered = FALSE
+	var/hands_covered = FALSE
+	for (var/obj/item/clothing/equipped in get_equipped_items())
+		// We don't really have space-proof gloves, so even if we're checking them we ignore the flags
+		if ((equipped.body_parts_covered & HANDS) && num_hands >= default_num_hands)
+			hands_covered = TRUE
+		if (!alt_flags && !isnull(additional_flags) && !(equipped.clothing_flags & additional_flags))
+			continue
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & CHEST))
+			chest_covered = TRUE
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & HEAD))
+			head_covered = TRUE
+	if (!chest_covered)
+		return FALSE
+	if (!hands_covered && check_hands)
+		return FALSE
+	return head_covered || HAS_TRAIT(src, TRAIT_HEAD_ATMOS_SEALED)
 
 /mob/living/carbon/human/species/abductor
 	race = /datum/species/abductor

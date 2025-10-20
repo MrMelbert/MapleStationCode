@@ -8,6 +8,7 @@
 	melee_damage_lower = 20 //Refers to unarmed damage, aliens do unarmed attacks.
 	melee_damage_upper = 20
 	max_grab = GRAB_AGGRESSIVE
+
 	var/caste = ""
 	var/alt_icon = 'icons/mob/nonhuman-player/alienleap.dmi' //used to switch between the two alien icon files.
 	var/leap_on_click = 0
@@ -38,7 +39,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	ADD_TRAIT(src, TRAIT_NO_GRAB_SPEED_PENALTY, INNATE_TRAIT)
 
 /mob/living/carbon/alien/adult/create_internal_organs()
-	organs += new /obj/item/organ/internal/stomach/alien()
+	organs += new /obj/item/organ/stomach/alien()
 	return ..()
 
 /mob/living/carbon/alien/adult/cuff_resist(obj/item/I)
@@ -66,7 +67,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 		return A
 	return FALSE
 
-/mob/living/carbon/alien/adult/check_breath(datum/gas_mixture/breath)
+/mob/living/carbon/alien/adult/check_breath(datum/gas_mixture/breath, skip_breath = FALSE)
 	if(breath?.total_moles() > 0 && !HAS_TRAIT(src, TRAIT_SNEAK))
 		playsound(get_turf(src), pick('sound/voice/lowHiss2.ogg', 'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'), 50, FALSE, -5)
 	return ..()
@@ -76,13 +77,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 		name = "[name] ([numba])"
 		real_name = name
 
-/mob/living/carbon/alien/adult/proc/grab(mob/living/carbon/human/target)
-	if(target.check_block(src, 0, "[target]'s grab"))
-		return FALSE
-	target.grabbedby(src)
-	return TRUE
-
-/mob/living/carbon/alien/adult/MouseDrop_T(atom/dropping, atom/user)
+/mob/living/carbon/alien/adult/mouse_drop_receive(atom/dropping, mob/user, params)
 	if(devour_lad(dropping))
 		return
 	return ..()
@@ -116,7 +111,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	if(!can_consume(lucky_winner))
 		return TRUE
 
-	var/obj/item/organ/internal/stomach/alien/melting_pot = get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/alien/melting_pot = get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(!istype(melting_pot))
 		visible_message(span_clown("[src] can't seem to consume [lucky_winner]!"), \
 			span_alien("You feel a pain in your... chest? You can't get [lucky_winner] down."))

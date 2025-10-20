@@ -1,10 +1,10 @@
 /obj/item/clothing/head/fedora
 	name = "fedora"
+	desc = "A really cool hat if you're a mobster. A really lame hat if you're not."
+	icon_state = "fedora"
 	icon = 'icons/obj/clothing/head/hats.dmi'
 	worn_icon = 'icons/mob/clothing/head/hats.dmi'
-	icon_state = "fedora"
-	inhand_icon_state = "fedora"
-	desc = "A really cool hat if you're a mobster. A really lame hat if you're not."
+	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_LOW
 
 /obj/item/clothing/head/fedora/Initialize(mapload)
 	. = ..()
@@ -37,3 +37,23 @@
 	inhand_icon_state = null
 	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
+
+/obj/item/clothing/head/fedora/carpskin/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4)
+
+/obj/item/clothing/head/fedora/beige/press
+	name = "press fedora"
+	desc = "An beige fedora with a piece of paper saying \"PRESS\" stuck in its rim."
+	icon_state = "fedora_press"
+	inhand_icon_state = null
+
+/obj/item/clothing/head/fedora/greyscale
+	inhand_icon_state = null
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/fedora/greyscale"
+	post_init_icon_state = "fedora_greyscale"
+	greyscale_config = /datum/greyscale_config/fedora
+	greyscale_config_worn = /datum/greyscale_config/fedora/worn
+	greyscale_colors = "#F0DAB4#794D2E"
+	flags_1 = IS_PLAYER_COLORABLE_1

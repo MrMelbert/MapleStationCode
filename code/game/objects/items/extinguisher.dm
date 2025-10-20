@@ -21,6 +21,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
 
+	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 	/// The max amount of water this extinguisher can hold.
 	var/max_water = 50
 	/// Does the welder extinguisher start with water.
@@ -50,10 +51,19 @@
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/ghettojetpack)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
+
+	register_context()
+
+/obj/item/extinguisher/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(held_item != src)
+		return
+	context[SCREENTIP_CONTEXT_LMB] = "Engage nozzle"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = "Empty"
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/extinguisher/empty
 	starting_water = FALSE
@@ -128,6 +138,7 @@
 	tanktype = /obj/structure/reagent_dispensers/foamtank
 	sprite_name = "foam_extinguisher"
 	precision = TRUE
+	max_water = 100
 
 /obj/item/extinguisher/advanced/empty
 	starting_water = FALSE
@@ -135,7 +146,7 @@
 /obj/item/extinguisher/suicide_act(mob/living/carbon/user)
 	if (!safety && (reagents.total_volume >= 1))
 		user.visible_message(span_suicide("[user] puts the nozzle to [user.p_their()] mouth. It looks like [user.p_theyre()] trying to extinguish the spark of life!"))
-		afterattack(user,user)
+		interact_with_atom(user, user)
 		return OXYLOSS
 	else if (safety && (reagents.total_volume >= 1))
 		user.visible_message(span_warning("[user] puts the nozzle to [user.p_their()] mouth... The safety's still on!"))
@@ -189,67 +200,67 @@
 	else
 		return FALSE
 
-/obj/item/extinguisher/afterattack(atom/target, mob/user , flag)
-	. = ..()
-	// Make it so the extinguisher doesn't spray yourself when you click your inventory items
-	if (target.loc == user)
-		return
+/obj/item/extinguisher/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(interacting_with.loc == user)
+		return NONE
+	// Always skip interaction if it's a bag or table (that's not on fire)
+	if(!(interacting_with.resistance_flags & ON_FIRE) && HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
+		return NONE
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/extinguisher/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(refilling)
 		refilling = FALSE
+		return NONE
+	if(safety)
+		return NONE
+
+	if (src.reagents.total_volume < 1)
+		balloon_alert(user, "it's empty!")
 		return .
-	if (!safety)
 
+	if (world.time < src.last_use + 12)
+		return .
 
-		if (src.reagents.total_volume < 1)
-			balloon_alert(user, "it's empty!")
-			return .
+	src.last_use = world.time
 
-		if (world.time < src.last_use + 12)
-			return .
+	playsound(src.loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
 
-		src.last_use = world.time
+	var/direction = get_dir(src,interacting_with)
 
-		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
+	if(user.buckled && isobj(user.buckled) && !user.buckled.anchored)
+		var/obj/B = user.buckled
+		var/movementdirection = REVERSE_DIR(direction)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/extinguisher, move_chair), B, movementdirection), 0.1 SECONDS)
+	else
+		user.newtonian_move(REVERSE_DIR(direction))
 
-		var/direction = get_dir(src,target)
+	//Get all the turfs that can be shot at
+	var/turf/T = get_turf(interacting_with)
+	var/turf/T1 = get_step(T,turn(direction, 90))
+	var/turf/T2 = get_step(T,turn(direction, -90))
+	var/list/the_targets = list(T,T1,T2)
+	if(precision)
+		var/turf/T3 = get_step(T1, turn(direction, 90))
+		var/turf/T4 = get_step(T2,turn(direction, -90))
+		the_targets.Add(T3,T4)
 
-		if(user.buckled && isobj(user.buckled) && !user.buckled.anchored)
-			var/obj/B = user.buckled
-			var/movementdirection = REVERSE_DIR(direction)
-			addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/extinguisher, move_chair), B, movementdirection), 1)
-		else
-			user.newtonian_move(REVERSE_DIR(direction))
-
-		//Get all the turfs that can be shot at
-		var/turf/T = get_turf(target)
-		var/turf/T1 = get_step(T,turn(direction, 90))
-		var/turf/T2 = get_step(T,turn(direction, -90))
-		var/list/the_targets = list(T,T1,T2)
+	var/list/water_particles = list()
+	for(var/a in 1 to 5)
+		var/obj/effect/particle_effect/water/extinguisher/water = new /obj/effect/particle_effect/water/extinguisher(get_turf(src))
+		var/my_target = pick(the_targets)
+		water_particles[water] = my_target
+		// If precise, remove turf from targets so it won't be picked more than once
 		if(precision)
-			var/turf/T3 = get_step(T1, turn(direction, 90))
-			var/turf/T4 = get_step(T2,turn(direction, -90))
-			the_targets.Add(T3,T4)
+			the_targets -= my_target
+		var/datum/reagents/water_reagents = new /datum/reagents(5)
+		water.reagents = water_reagents
+		water_reagents.my_atom = water
+		reagents.trans_to(water, 1, transferred_by = user)
 
-		var/list/water_particles = list()
-		for(var/a in 1 to 5)
-			var/obj/effect/particle_effect/water/extinguisher/water = new /obj/effect/particle_effect/water/extinguisher(get_turf(src))
-			var/my_target = pick(the_targets)
-			water_particles[water] = my_target
-			// If precise, remove turf from targets so it won't be picked more than once
-			if(precision)
-				the_targets -= my_target
-			var/datum/reagents/water_reagents = new /datum/reagents(5)
-			water.reagents = water_reagents
-			water_reagents.my_atom = water
-			reagents.trans_to(water, 1, transferred_by = user)
-
-		//Make em move dat ass, hun
-		move_particles(water_particles)
-
-	return .
+	//Make em move dat ass, hun
+	move_particles(water_particles)
+	return ITEM_INTERACT_SKIP_TO_ATTACK // You can smack while spraying
 
 //Particle movement loop
 /obj/item/extinguisher/proc/move_particles(list/particles)
@@ -273,23 +284,17 @@
 		if(1 to 3)
 			source.delay = 3
 
-/obj/item/extinguisher/AltClick(mob/user)
-	if(!user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS))
-		return
+/obj/item/extinguisher/click_alt(mob/user)
 	if(!user.is_holding(src))
 		to_chat(user, span_notice("You must be holding the [src] in your hands do this!"))
-		return
+		return CLICK_ACTION_BLOCKING
 	EmptyExtinguisher(user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/extinguisher/proc/EmptyExtinguisher(mob/user)
 	if(loc == user && reagents.total_volume)
+		reagents.expose(user.loc, TOUCH)
 		reagents.clear_reagents()
-
-		var/turf/T = get_turf(loc)
-		if(isopenturf(T))
-			var/turf/open/theturf = T
-			theturf.MakeSlippery(TURF_WET_WATER, min_wet_time = 10 SECONDS, wet_time_to_add = 5 SECONDS)
-
 		user.visible_message(span_notice("[user] empties out \the [src] onto the floor using the release valve."), span_info("You quietly empty out \the [src] using its release valve."))
 
 //firebot assembly
@@ -301,3 +306,10 @@
 		user.put_in_hands(new /obj/item/bot_assembly/firebot)
 	else
 		..()
+
+/obj/item/extinguisher/anti
+	name = "fire extender"
+	desc = "A traditional red fire extinguisher. Made in Britain... wait, what?"
+	chem = /datum/reagent/fuel
+	tanktype = /obj/structure/reagent_dispensers/fueltank
+	cooling_power = 0

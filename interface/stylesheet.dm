@@ -52,13 +52,17 @@ em						{font-style: normal;	font-weight: bold;}
 .centcomradio			{color: #686868;}
 .muradio				{color: #9d77a3;}
 .aiprivradio			{color: #ff00ff;}
+.enteradio				{color: #00ff99;}
 .redteamradio			{color: #ff0000;}
 .blueteamradio			{color: #0000ff;}
 .greenteamradio			{color: #00ff00;}
 .yellowteamradio		{color: #d1ba22;}
-.gangradio				{color: #ac2ea1;}
+.captaincast			{color: #00ff99;}
 
-.yell					{					font-weight: bold;}
+.yell					{font-weight: bold; font-size: 115%;}
+.distant_t1				{font-size: 85%;}
+.distant_t2				{font-size: 70%;}
+.distant_t3				{font-size: 60%;}
 
 .alert					{color: #ff0000;}
 h1.alert, h2.alert		{color: #000000;}

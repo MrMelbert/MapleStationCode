@@ -11,7 +11,7 @@ Assistant
 	spawn_positions = 5
 	supervisors = "absolutely everyone"
 	exp_granted_type = EXP_TYPE_CREW
-	outfit = /datum/outfit/job/assistant
+	base_outfit = /datum/outfit/job/assistant
 	plasmaman_outfit = /datum/outfit/plasmaman
 	paycheck = PAYCHECK_LOWER // Get a job. Job reassignment changes your paycheck now. Get over it.
 
@@ -37,7 +37,7 @@ Assistant
 	rpg_title = "Lout"
 	config_tag = "ASSISTANT"
 
-/datum/job/assistant/get_outfit(consistent)
+/datum/job/assistant/get_outfit(consistent, title)
 	if(consistent)
 		return /datum/outfit/job/assistant/always_grey
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_ASSISTANT_GIMMICKS))
@@ -58,13 +58,15 @@ Assistant
 
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/target)
 	..()
+	give_holiday_hat(target)
+	give_jumpsuit(target)
+
+/datum/outfit/job/assistant/proc/give_holiday_hat(mob/living/carbon/human/target)
 	for(var/holidayname in GLOB.holidays)
 		var/datum/holiday/holiday_today = GLOB.holidays[holidayname]
 		var/obj/item/special_hat = holiday_today.holiday_hat
 		if(prob(HOLIDAY_HAT_CHANCE) && !isnull(special_hat) && isnull(head))
 			head = special_hat
-
-	give_jumpsuit(target)
 
 /datum/outfit/job/assistant/proc/give_jumpsuit(mob/living/carbon/human/target)
 	var/static/jumpsuit_number = 0
@@ -94,6 +96,9 @@ Assistant
 
 /datum/outfit/job/assistant/consistent
 	name = "Assistant - Consistent"
+
+/datum/outfit/job/assistant/consistent/give_holiday_hat(mob/living/carbon/human/target)
+	return
 
 /datum/outfit/job/assistant/consistent/give_jumpsuit(mob/living/carbon/human/target)
 	uniform = /obj/item/clothing/under/color/grey

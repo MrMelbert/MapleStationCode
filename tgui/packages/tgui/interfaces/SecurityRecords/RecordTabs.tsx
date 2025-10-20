@@ -1,5 +1,5 @@
-import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
+import { sortBy } from 'es-toolkit';
+import { filter } from 'es-toolkit/compat';
 import { useState } from 'react';
 import { useBackend, useLocalState } from 'tgui/backend';
 import {
@@ -11,12 +11,12 @@ import {
   Section,
   Stack,
   Tabs,
-} from 'tgui/components';
+} from 'tgui-core/components';
 
 import { JOB2ICON } from '../common/JobToIcon';
 import { CRIMESTATUS2COLOR } from './constants';
 import { isRecordMatch } from './helpers';
-import { SecurityRecord, SecurityRecordsData } from './types';
+import type { SecurityRecord, SecurityRecordsData } from './types';
 
 /** Tabs on left, with search bar */
 export const SecurityRecordTabs = (props) => {
@@ -29,10 +29,10 @@ export const SecurityRecordTabs = (props) => {
 
   const [search, setSearch] = useState('');
 
-  const sorted: SecurityRecord[] = flow([
-    filter((record: SecurityRecord) => isRecordMatch(record, search)),
-    sortBy((record: SecurityRecord) => record.name),
-  ])(records);
+  const sorted = sortBy(
+    filter(records, (record) => isRecordMatch(record, search)),
+    [(record) => record.name],
+  );
 
   return (
     <Stack fill vertical>
@@ -40,7 +40,8 @@ export const SecurityRecordTabs = (props) => {
         <Input
           fluid
           placeholder="Name/Job/Fingerprints"
-          onInput={(event, value) => setSearch(value)}
+          onChange={setSearch}
+          expensive
         />
       </Stack.Item>
       <Stack.Item grow>
@@ -91,13 +92,22 @@ const CrewTab = (props: { record: SecurityRecord }) => {
   const { act, data } = useBackend<SecurityRecordsData>();
   const { assigned_view } = data;
   const { record } = props;
-  const { crew_ref, name, rank, wanted_status } = record;
+  const { crew_ref, name, trim, wanted_status } = record;
 
   /** Chooses a record */
   const selectRecord = (record: SecurityRecord) => {
     if (selectedRecord?.crew_ref === crew_ref) {
       setSelectedRecord(undefined);
     } else {
+      // See MedicalRecords/RecordTabs.tsx for explanation
+      if (selectedRecord === undefined) {
+        setTimeout(() => {
+          act('view_record', {
+            assigned_view: assigned_view,
+            crew_ref: crew_ref,
+          });
+        });
+      }
       setSelectedRecord(record);
       act('view_record', { assigned_view: assigned_view, crew_ref: crew_ref });
     }
@@ -112,7 +122,7 @@ const CrewTab = (props: { record: SecurityRecord }) => {
       selected={isSelected}
     >
       <Box bold={isSelected} color={CRIMESTATUS2COLOR[wanted_status]}>
-        <Icon name={JOB2ICON[rank] || 'question'} /> {name}
+        <Icon name={JOB2ICON[trim] || 'question'} /> {name}
       </Box>
     </Tabs.Tab>
   );

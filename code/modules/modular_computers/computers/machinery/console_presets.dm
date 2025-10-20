@@ -33,6 +33,17 @@
 		/datum/computer_file/program/scipaper_program,
 	)
 
+/obj/machinery/modular_computer/preset/research/away
+	name = "old research console"
+	desc = "An old computer used for writing research papers."
+	starting_programs = list(
+		/datum/computer_file/program/scipaper_program,
+	)
+
+/obj/machinery/modular_computer/preset/research/away/Initialize(mapload)
+	. = ..()
+	cpu.device_theme = PDA_THEME_RETRO
+
 // ===== COMMAND CONSOLE =====
 /obj/machinery/modular_computer/preset/command
 	name = "command console"
@@ -94,7 +105,7 @@
 	setup_starting_software()
 	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 	if(department_type)
-		name = "[lowertext(initial(department_type.department_name))] [name]"
+		name = "[LOWER_TEXT(initial(department_type.department_name))] [name]"
 		cpu.name = name
 
 /obj/machinery/modular_computer/preset/cargochat/proc/add_starting_software()
@@ -105,7 +116,7 @@
 		return
 
 	var/datum/computer_file/program/chatclient/chatprogram = cpu.find_file_by_name("ntnrc_client")
-	chatprogram.username = "[lowertext(initial(department_type.department_name))]_department"
+	chatprogram.username = "[LOWER_TEXT(initial(department_type.department_name))]_department"
 	cpu.idle_threads += chatprogram
 
 	var/datum/computer_file/program/department_order/orderprogram = cpu.find_file_by_name("dept_order")
@@ -137,6 +148,7 @@
 	starting_programs += /datum/computer_file/program/bounty_board
 	starting_programs += /datum/computer_file/program/budgetorders
 	starting_programs += /datum/computer_file/program/shipping
+	starting_programs += /datum/computer_file/program/restock_tracker
 
 /obj/machinery/modular_computer/preset/cargochat/cargo/setup_starting_software()
 	var/datum/computer_file/program/chatclient/chatprogram = cpu.find_file_by_name("ntnrc_client")
@@ -144,7 +156,7 @@
 	update_appearance(UPDATE_ICON)
 	// Rest of the chat program setup is done in LateInit
 
-/obj/machinery/modular_computer/preset/cargochat/cargo/LateInitialize()
+/obj/machinery/modular_computer/preset/cargochat/cargo/post_machine_initialize()
 	. = ..()
 	var/datum/computer_file/program/chatclient/chatprogram = cpu.find_file_by_name("ntnrc_client")
 	chatprogram.username = "cargo_requests_operator"

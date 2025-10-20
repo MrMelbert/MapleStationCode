@@ -6,12 +6,15 @@
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	slot_flags = ITEM_SLOT_ICLOTHING
+	interaction_flags_click = NEED_DEXTERITY
 	armor_type = /datum/armor/clothing_under
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 	equip_sound = 'sound/items/equip/jumpsuit_equip.ogg'
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
 	blood_overlay_type = "uniform" // NON-MODULE CHANGE reworking clothing blood overlays
+	interaction_flags_click = ALLOW_RESTING
 
 	/// Has this undersuit been freshly laundered and, as such, imparts a mood bonus for wearing
 	var/freshly_laundered = FALSE
@@ -55,30 +58,41 @@
 	register_context()
 	AddElement(/datum/element/update_icon_updates_onmob, flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK, body = TRUE)
 
-/obj/item/clothing/under/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
-	. = NONE
+/obj/item/clothing/under/setup_reskinning()
+	if(!check_setup_reskinning())
+		return
 
-	if(isnull(held_item) && has_sensor == HAS_SENSORS)
+	// We already register context in Initialize.
+	RegisterSignal(src, COMSIG_CLICK_ALT, PROC_REF(on_click_alt_reskin))
+
+/obj/item/clothing/under/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	. = ..()
+
+	var/changed = FALSE
+
+	if((isnull(held_item) || held_item == src) && has_sensor == HAS_SENSORS)
 		context[SCREENTIP_CONTEXT_RMB] = "Toggle suit sensors"
-		. = CONTEXTUAL_SCREENTIP_SET
+		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Set suit sensors to tracking"
+		changed = TRUE
 
 	if(istype(held_item, /obj/item/clothing/accessory) && length(attached_accessories) < max_number_of_accessories)
 		context[SCREENTIP_CONTEXT_LMB] = "Attach accessory"
-		. = CONTEXTUAL_SCREENTIP_SET
+		changed = TRUE
 
 	if(LAZYLEN(attached_accessories))
 		context[SCREENTIP_CONTEXT_ALT_RMB] = "Remove accessory"
-		. = CONTEXTUAL_SCREENTIP_SET
+		changed = TRUE
 
 	if(istype(held_item, /obj/item/stack/cable_coil) && has_sensor == BROKEN_SENSORS)
 		context[SCREENTIP_CONTEXT_LMB] = "Repair suit sensors"
-		. = CONTEXTUAL_SCREENTIP_SET
+		changed = TRUE
 
 	if(can_adjust && adjusted != DIGITIGRADE_STYLE)
 		context[SCREENTIP_CONTEXT_ALT_LMB] =  "Wear [adjusted == ALT_STYLE ? "normally" : "casually"]"
-		. = CONTEXTUAL_SCREENTIP_SET
+		changed = TRUE
 
-	return .
+	return changed ? CONTEXTUAL_SCREENTIP_SET : .
+
 
 /obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
@@ -87,7 +101,6 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-		// NON-MODULE CHANGE reworking clothing blood overlays
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -105,6 +118,14 @@
 	return ..()
 
 /obj/item/clothing/under/attack_hand_secondary(mob/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	toggle()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/clothing/under/attack_self_secondary(mob/user, modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -151,9 +172,13 @@
 
 	if((supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION) && ishuman(user))
 		var/mob/living/carbon/human/wearer = user
-		if(wearer.bodytype & BODYTYPE_DIGITIGRADE)
+		if(wearer.bodyshape & BODYSHAPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
 			update_appearance()
+
+/obj/item/clothing/under/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "jumpsuit_worn")
+	return replace_icon_legs(base_icon, legs)
 
 /obj/item/clothing/under/equipped(mob/living/user, slot)
 	..()
@@ -190,14 +215,15 @@
 
 	LAZYADD(attached_accessories, accessory)
 	accessory.forceMove(src)
+
+	if(isnull(accessory_overlay))
+		create_accessory_overlay()
+
 	// Allow for accessories to react to the acccessory list now
 	accessory.successful_attach(src)
 
 	if(user && attach_message)
 		balloon_alert(user, "accessory attached")
-
-	if(isnull(accessory_overlay))
-		create_accessory_overlay()
 
 	update_appearance()
 	return TRUE
@@ -221,10 +247,11 @@
 
 	// Remove it from the list before detaching
 	LAZYREMOVE(attached_accessories, removed)
-	removed.detach(src)
 
 	if(isnull(accessory_overlay) && LAZYLEN(attached_accessories))
 		create_accessory_overlay()
+
+	removed.detach(src)
 
 	update_appearance()
 
@@ -291,7 +318,7 @@
 /obj/item/clothing/under/proc/list_accessories_with_icon(mob/user)
 	var/list/all_accessories = list()
 	for(var/obj/item/clothing/accessory/attached as anything in attached_accessories)
-		all_accessories += attached.get_examine_string(user)
+		all_accessories += attached.examine_title(user, href = TRUE)
 
 	return all_accessories
 
@@ -327,6 +354,14 @@
 		if(H.w_uniform == src)
 			H.update_suit_sensors()
 
+/obj/item/clothing/under/item_ctrl_click(mob/user)
+	if(!can_toggle_sensors(user))
+		return CLICK_ACTION_BLOCKING
+
+	sensor_mode = SENSOR_COORDS
+	balloon_alert(user, "set to tracking")
+	return CLICK_ACTION_SUCCESS
+
 /// Checks if the toggler is allowed to toggle suit sensors currently
 /obj/item/clothing/under/proc/can_toggle_sensors(mob/toggler)
 	if(!can_use(toggler) || toggler.stat == DEAD) //make sure they didn't hold the window open.
@@ -348,29 +383,19 @@
 
 	return TRUE
 
-/obj/item/clothing/under/AltClick(mob/user)
-	. = ..()
-	if(.)
-		return
-
+/obj/item/clothing/under/click_alt(mob/user)
 	if(!can_adjust)
 		balloon_alert(user, "can't be adjusted!")
-		return
+		return CLICK_ACTION_BLOCKING
 	if(!can_use(user))
-		return
+		return NONE
 	rolldown()
+	return CLICK_ACTION_SUCCESS
 
-/obj/item/clothing/under/alt_click_secondary(mob/user)
-	. = ..()
-	if(.)
-		return
-
+/obj/item/clothing/under/click_alt_secondary(mob/user)
 	if(!LAZYLEN(attached_accessories))
 		balloon_alert(user, "no accessories to remove!")
 		return
-	if(!user.can_perform_action(src, NEED_DEXTERITY))
-		return
-
 	pop_accessory(user)
 
 /obj/item/clothing/under/verb/jumpsuit_adjust()

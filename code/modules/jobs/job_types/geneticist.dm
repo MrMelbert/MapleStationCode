@@ -1,6 +1,6 @@
 /datum/job/geneticist
 	title = JOB_GENETICIST
-	description = "Alter genomes, turn monkeys into humans (and vice-versa), and make DNA backups."
+	description = "Alter genomes, turn monkeys into humans (and vice-versa), make DNA backups."
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -11,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "GENETICIST"
 
-	outfit = /datum/outfit/job/geneticist
+	base_outfit = /datum/outfit/job/geneticist
 	plasmaman_outfit = /datum/outfit/plasmaman/genetics
 	departments_list = list(
 		/datum/job_department/science,
@@ -41,7 +41,7 @@
 	suit = /obj/item/clothing/suit/toggle/labcoat/genetics
 	suit_store = /obj/item/flashlight/pen
 	belt = /obj/item/modular_computer/pda/geneticist
-	ears = /obj/item/radio/headset/headset_sci
+	ears = /obj/item/radio/headset/headset_medsci
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_pocket = /obj/item/sequence_scanner
 

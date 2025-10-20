@@ -20,6 +20,7 @@
 /datum/atom_hud/data/human/medical
 	hud_icons = list(STATUS_HUD, HEALTH_HUD)
 
+/// Sees health (0-100) status (alive, dead), but relies on suit sensors being on
 /datum/atom_hud/data/human/medical/basic
 
 /datum/atom_hud/data/human/medical/basic/proc/check_sensors(mob/living/carbon/human/H)
@@ -39,13 +40,16 @@
 /datum/atom_hud/data/human/medical/basic/proc/update_suit_sensors(mob/living/carbon/H)
 	check_sensors(H) ? add_atom_to_hud(H) : remove_atom_from_hud(H)
 
+/// Sees health (0-100) status (alive, dead), always
 /datum/atom_hud/data/human/medical/advanced
 
 /datum/atom_hud/data/human/security
 
+/// Only sees ID card job
 /datum/atom_hud/data/human/security/basic
 	hud_icons = list(ID_HUD)
 
+/// Sees ID card job, implants, and wanted status
 /datum/atom_hud/data/human/security/advanced
 	hud_icons = list(ID_HUD, IMPSEC_FIRST_HUD, IMPLOYAL_HUD, IMPSEC_SECOND_HUD, WANTED_HUD)
 
@@ -53,17 +57,13 @@
 	hud_icons = list(FAN_HUD)
 
 /datum/atom_hud/data/diagnostic
-
-/datum/atom_hud/data/diagnostic/basic
 	hud_icons = list(DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD, DIAG_CAMERA_HUD, DIAG_AIRLOCK_HUD, DIAG_LAUNCHPAD_HUD)
 
-/datum/atom_hud/data/diagnostic/advanced
-	hud_icons = list(DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD, DIAG_CAMERA_HUD, DIAG_AIRLOCK_HUD, DIAG_LAUNCHPAD_HUD, DIAG_PATH_HUD)
-
 /datum/atom_hud/data/bot_path
-	// This hud exists so the bot can see itself, that's all
-	uses_global_hud_category = FALSE
 	hud_icons = list(DIAG_PATH_HUD)
+
+/datum/atom_hud/data/bot_path/private
+	uses_global_hud_category = FALSE
 
 /datum/atom_hud/abductor
 	hud_icons = list(GLAND_HUD)
@@ -114,12 +114,21 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //helper for getting the appropriate health status
 /proc/RoundHealth(mob/living/M)
-	if(M.stat == DEAD || (HAS_TRAIT(M, TRAIT_FAKEDEATH)))
-		return "health-100" //what's our health? it doesn't matter, we're dead, or faking
 	var/maxi_health = M.maxHealth
-	if(iscarbon(M) && M.health < 0)
-		maxi_health = 100 //so crit shows up right for aliens and other high-health carbon mobs; noncarbons don't have crit.
-	var/resulthealth = (M.health / maxi_health) * 100
+	var/resulthealth = 0
+	if(!M.appears_alive())
+		resulthealth = -100
+	else if(iscarbon(M))
+		var/mob/living/carbon/carbon_M = M
+		var/carbon_con = carbon_M.consciousness
+		// This is done so health goes "negatives" when we reach 30 (crit)
+		if(carbon_con <= 30)
+			resulthealth = ((carbon_con - 30) / 30) * 100
+		else
+			resulthealth = (carbon_con - 30) / 70 * 100
+	else
+		resulthealth = (M.health / maxi_health) * 100
+
 	switch(resulthealth)
 		if(100 to INFINITY)
 			return "health100"
@@ -179,10 +188,6 @@ Medical HUD! Basic mode needs suit sensors on.
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 
-//for carbon suit sensors
-/mob/living/carbon/med_hud_set_health()
-	..()
-
 //called when a carbon changes stat, virus or XENO_HOST
 /mob/living/proc/med_hud_set_status()
 	var/image/holder = hud_list?[STATUS_HUD]
@@ -191,10 +196,10 @@ Medical HUD! Basic mode needs suit sensors on.
 
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
-	if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		holder.icon_state = "huddead"
-	else
+	if(appears_alive())
 		holder.icon_state = "hudhealthy"
+	else
+		holder.icon_state = "huddead"
 
 /mob/living/carbon/med_hud_set_status()
 	var/image/holder = hud_list?[STATUS_HUD]
@@ -202,17 +207,17 @@ Medical HUD! Basic mode needs suit sensors on.
 		return
 
 	var/icon/I = icon(icon, icon_state, dir)
-	var/virus_threat = check_virus()
 	holder.pixel_y = I.Height() - world.icon_size
 	if(HAS_TRAIT(src, TRAIT_XENO_HOST))
 		holder.icon_state = "hudxeno"
-	else if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		if(can_defib_client())
-			holder.icon_state = "huddefib"
-		else
-			holder.icon_state = "huddead"
+	else if(!appears_alive())
+		holder.icon_state = can_defib_client() ? "huddefib" : "huddead"
+	else if(undergoing_cardiac_arrest())
+		holder.icon_state = "huddefib"
+	else if(stat == HARD_CRIT)
+		holder.icon_state = "hudalive"
 	else
-		switch(virus_threat)
+		switch(check_virus())
 			if(DISEASE_SEVERITY_UNCURABLE)
 				holder.icon_state = "hudill6"
 			if(DISEASE_SEVERITY_BIOHAZARD)
@@ -270,15 +275,18 @@ Security HUDs! Basic mode shows only the job.
 
 //HOOKS
 
-/mob/living/carbon/human/proc/sec_hud_set_ID()
+/mob/living/carbon/human/proc/update_ID_card()
+	SIGNAL_HANDLER
+
 	var/image/holder = hud_list[ID_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 	var/sechud_icon_state = wear_id?.get_sechud_job_icon_state()
-	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(!sechud_icon_state || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		sechud_icon_state = "hudno_id"
 	holder.icon_state = sechud_icon_state
 	sec_hud_set_security_status()
+	update_visible_name()
 
 /mob/living/proc/sec_hud_set_implants()
 	var/image/holder
@@ -315,6 +323,10 @@ Security HUDs! Basic mode shows only the job.
 		set_hud_image_active(IMPLOYAL_HUD)
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
+	if(!hud_list)
+		// We haven't finished initializing yet, huds will be updated once we are
+		return
+
 	var/image/holder = hud_list[WANTED_HUD]
 	var/icon/sec_icon = icon(icon, icon_state, dir)
 	holder.pixel_y = sec_icon.Height() - world.icon_size

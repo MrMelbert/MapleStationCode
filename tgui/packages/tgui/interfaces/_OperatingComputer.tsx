@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
   Button,
@@ -11,7 +8,10 @@ import {
   ProgressBar,
   Section,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 const damageTypes = [
@@ -119,21 +119,18 @@ export const _OperatingComputer = (props, context) => {
   );
 };
 
-const PatientStateView = (
-  props: {
-    patient: Patient | null;
-    procedures: Procedure[] | null;
-    anesthesia: AnesthesiaStatus | null;
-  },
-  context,
-) => {
+const PatientStateView = (props: {
+  patient: Patient | null;
+  procedures: Procedure[] | null;
+  anesthesia: AnesthesiaStatus | null;
+}) => {
   const { act, data } = useBackend<Patient>();
   const { patient, procedures, anesthesia } = props;
 
   const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
 
   const num_to_percent = (num: number) => {
-    return Math.round(num * 10) / 10 + '%';
+    return `${Math.round(num * 10) / 10}%`;
   };
 
   const num_to_color = (num: number | null) => {
@@ -161,7 +158,7 @@ const PatientStateView = (
               {patient.blood_type || 'Unknown'}
             </LabeledList.Item>
             <LabeledList.Item label="Heart Rate">
-              {patient.heartRate ? patient.heartRate + ' BPM' : 'No pulse'}
+              {patient.heartRate ? `${patient.heartRate} BPM` : 'No pulse'}
             </LabeledList.Item>
             <LabeledList.Item label="Health">
               <ProgressBar
@@ -246,7 +243,7 @@ const PatientStateView = (
                   step={1}
                   value={anesthesia.failsafe}
                   disabled={!failsafe_enabled} // Just in case
-                  onChange={(e, value) =>
+                  onChange={(value) =>
                     act('set_failsafe', { new_failsafe_time: value })
                   }
                 />
@@ -295,7 +292,7 @@ const PatientStateView = (
   );
 };
 
-const SurgeryProceduresView = (props: { surgeries: Surgery[] }, context) => {
+const SurgeryProceduresView = (props: { surgeries: Surgery[] }) => {
   const { act, data } = useBackend();
   const { surgeries } = props;
   return (

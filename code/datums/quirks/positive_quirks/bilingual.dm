@@ -1,3 +1,4 @@
+/*
 /datum/quirk/bilingual
 	name = "Bilingual"
 	desc = "Over the years you've picked up an extra language!"
@@ -6,7 +7,7 @@
 	gain_text = span_notice("Some of the words of the people around you certainly aren't common. Good thing you studied for this.")
 	lose_text = span_notice("You seem to have forgotten your second language.")
 	medical_record_text = "Patient speaks multiple languages."
-	mail_goodies = list(/obj/item/taperecorder, /obj/item/clothing/head/frenchberet, /obj/item/clothing/mask/fakemoustache/italian)
+	mail_goodies = list(/obj/item/taperecorder, /obj/item/clothing/head/beret/frenchberet, /obj/item/clothing/mask/fakemoustache/italian)
 
 /datum/quirk_constant_data/bilingual
 	associated_typepath = /datum/quirk/bilingual
@@ -26,3 +27,4 @@
 			return
 		to_chat(quirk_holder, span_boldnotice("You are already familiar with the quirk in your preferences, so you learned Galactic Uncommon instead."))
 	quirk_holder.grant_language(language_type, source = LANGUAGE_QUIRK)
+*/

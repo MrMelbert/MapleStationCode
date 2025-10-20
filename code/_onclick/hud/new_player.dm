@@ -7,6 +7,7 @@
 	///Whether the menu is currently on the client's screen or not
 	var/menu_hud_status = TRUE
 
+
 /datum/hud/new_player/New(mob/owner)
 	. = ..()
 
@@ -29,6 +30,9 @@
 		if (istype(lobbyscreen, /atom/movable/screen/lobby/button))
 			var/atom/movable/screen/lobby/button/lobby_button = lobbyscreen
 			lobby_button.owner = REF(owner)
+
+	static_inventory += new /atom/movable/screen/lobby_init_text(our_hud = src)
+	static_inventory += new /atom/movable/screen/lobby_music(our_hud = src)
 	add_station_trait_buttons()
 
 /// Display buttons for relevant station traits
@@ -91,12 +95,15 @@
 	screen_loc = "TOP,CENTER:-61"
 
 /atom/movable/screen/lobby/button
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	///Is the button currently enabled?
-	var/enabled = TRUE
+	VAR_PROTECTED/enabled = TRUE
 	///Is the button currently being hovered over with the mouse?
 	var/highlighted = FALSE
 	/// The ref of the mob that owns this button. Only the owner can click on it.
 	var/owner
+	///Should this button play the select sound?
+	var/select_sound_play = TRUE
 
 /atom/movable/screen/lobby/button/Click(location, control, params)
 	if(owner != REF(usr))
@@ -110,6 +117,10 @@
 	if(!enabled)
 		return
 	flick("[base_icon_state]_pressed", src)
+	if(select_sound_play)
+		var/sound/ui_select_sound = sound('sound/misc/menu/ui_select1.ogg')
+		ui_select_sound.frequency = get_rand_frequency_low_range()
+		SEND_SOUND(hud.mymob, ui_select_sound)
 	update_appearance(UPDATE_ICON)
 	return TRUE
 
@@ -151,6 +162,7 @@
 		return FALSE
 	enabled = status
 	update_appearance(UPDATE_ICON)
+	mouse_over_pointer = enabled ? MOUSE_HAND_POINTER : MOUSE_INACTIVE_POINTER
 	return TRUE
 
 ///Prefs menu
@@ -226,12 +238,14 @@
 	icon = 'icons/hud/lobby/join.dmi'
 	icon_state = "" //Default to not visible
 	base_icon_state = "join_game"
-	enabled = FALSE
+	enabled = null // set in init
 
 /atom/movable/screen/lobby/button/join/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
+	set_button_status(FALSE)
 	switch(SSticker.current_state)
 		if(GAME_STATE_PREGAME, GAME_STATE_STARTUP)
+			set_button_status(FALSE)
 			RegisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP, PROC_REF(show_join_button))
 		if(GAME_STATE_SETTING_UP)
 			set_button_status(TRUE)
@@ -297,13 +311,14 @@
 	icon = 'icons/hud/lobby/observe.dmi'
 	icon_state = "observe_disabled"
 	base_icon_state = "observe"
-	enabled = FALSE
+	enabled = null // set in init
 
 /atom/movable/screen/lobby/button/observe/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	if(SSticker.current_state > GAME_STATE_STARTUP)
 		set_button_status(TRUE)
 	else
+		set_button_status(FALSE)
 		RegisterSignal(SSticker, COMSIG_TICKER_ENTER_PREGAME, PROC_REF(enable_observing))
 
 /atom/movable/screen/lobby/button/observe/Click(location, control, params)
@@ -543,12 +558,14 @@
 	animate(src, transform = transform, time = SHUTTER_MOVEMENT_DURATION + SHUTTER_WAIT_DURATION)
 	//then pull the button up with the shutter and leave it on the edge of the screen
 	animate(transform = transform.Translate(x = 0, y = 134), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_IN)
+	SEND_SOUND(hud.mymob, sound('sound/misc/menu/menu_rollup1.ogg'))
 
 ///Extends the button back to its usual spot
 ///Sends a signal on the hud for the menu hud elements to listen to
 /atom/movable/screen/lobby/button/collapse/proc/expand_menu()
 	SEND_SIGNAL(hud, COMSIG_HUD_LOBBY_EXPANDED)
 	animate(src, transform = matrix(), time = SHUTTER_MOVEMENT_DURATION, easing = CUBIC_EASING|EASE_OUT)
+	SEND_SOUND(hud.mymob, sound('sound/misc/menu/menu_rolldown1.ogg'))
 
 /atom/movable/screen/lobby/shutter
 	icon = 'icons/hud/lobby/shutter.dmi'
@@ -572,3 +589,69 @@
 #undef SHUTTER_MOVEMENT_DURATION
 #undef SHUTTER_WAIT_DURATION
 #undef MAX_STATION_TRAIT_BUTTONS_VERTICAL
+
+/atom/movable/screen/lobby_init_text
+	maptext_height = 500
+	maptext_width = 225
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = SPLASHSCREEN_PLANE
+	screen_loc = "LEFT+0.25,BOTTOM+0.25"
+
+/atom/movable/screen/lobby_init_text/New(loc, datum/hud/our_hud, ...)
+	src.hud = our_hud
+	return ..()
+
+/atom/movable/screen/lobby_init_text/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(SStitle.stats_faded || !hud?.mymob?.client?.prefs?.read_preference(/datum/preference/toggle/show_init_stats))
+		alpha = 0 // we still need to init it incase they turn it back on
+
+INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
+
+/atom/movable/screen/lobby_music
+	icon = 'maplestation_modules/icons/hud/lobby_spinner.dmi'
+	icon_state = "spinner"
+	maptext_height = 100
+	maptext_width = 225
+	maptext_y = -10
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = SPLASHSCREEN_PLANE
+	screen_loc = "LEFT+0.25,TOP-0.25"
+	/// World time when the current song started playing for this player
+	var/start_time
+	/// World time when the current song will stop playing for this player
+	var/end_time
+
+/atom/movable/screen/lobby_music/New(loc, datum/hud/our_hud, ...)
+	src.hud = our_hud
+	return ..()
+
+/atom/movable/screen/lobby_music/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(!hud?.mymob?.client?.prefs?.read_preference(/datum/preference/toggle/sound_lobby))
+		alpha = 0 // we still need to init it incase they turn it back on
+
+/atom/movable/screen/lobby_music/proc/start_tracking()
+	animate(src)
+	alpha = 255
+	start_time = world.time
+	end_time = start_time + SSticker.login_length
+	START_PROCESSING(SSlobby_music_player, src)
+	update_maptext()
+
+/atom/movable/screen/lobby_music/process(seconds_per_tick)
+	update_maptext()
+	if(world.time >= end_time)
+		animate(src, alpha = 0, time = 5 SECONDS)
+		return PROCESS_KILL
+
+/atom/movable/screen/lobby_music/proc/cancel_tracking()
+	STOP_PROCESSING(SSlobby_music_player, src)
+	animate(src, alpha = 0, time = 1 SECONDS)
+
+/atom/movable/screen/lobby_music/proc/update_maptext()
+	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, min(world.time - start_time, SSticker.login_length)), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]s")]"
+
+/atom/movable/screen/lobby_music/Destroy()
+	STOP_PROCESSING(SSlobby_music_player, src)
+	return ..()

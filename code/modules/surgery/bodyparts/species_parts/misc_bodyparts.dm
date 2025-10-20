@@ -15,7 +15,7 @@
 
 /obj/item/bodypart/arm/left/snail
 	limb_id = SPECIES_SNAIL
-	unarmed_attack_verb = "slap"
+	unarmed_attack_verbs = list("slap")
 	unarmed_attack_effect = ATTACK_EFFECT_DISARM
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
@@ -24,7 +24,7 @@
 
 /obj/item/bodypart/arm/right/snail
 	limb_id = SPECIES_SNAIL
-	unarmed_attack_verb = "slap"
+	unarmed_attack_verbs = list("slap")
 	unarmed_attack_effect = ATTACK_EFFECT_DISARM
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
@@ -36,7 +36,6 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
 	burn_modifier = 2
-	speed_modifier = 3 //disgustingly slow
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/leg/right/snail
@@ -44,7 +43,6 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
 	burn_modifier = 2
-	speed_modifier = 3 //disgustingly slow
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 ///ABDUCTOR
@@ -93,7 +91,7 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 	burn_modifier = 0.5 // = 1/2x generic burn damage
-	wing_types = list(/obj/item/organ/external/wings/functional/slime)
+	wing_types = list(/obj/item/organ/wings/functional/slime)
 
 /obj/item/bodypart/arm/left/jelly
 	biological_state = (BIO_FLESH|BIO_BLOODED)
@@ -145,7 +143,7 @@
 ///LUMINESCENT
 /obj/item/bodypart/head/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT
-	head_flags = HEAD_ALL_FEATURES
+	head_flags = HEAD_DEFAULT_FEATURES
 
 /obj/item/bodypart/chest/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT
@@ -221,7 +219,7 @@
 
 /obj/item/bodypart/arm/left/pod
 	limb_id = SPECIES_PODPERSON
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash", "lash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -230,7 +228,7 @@
 
 /obj/item/bodypart/arm/right/pod
 	limb_id = SPECIES_PODPERSON
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash", "lash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -256,7 +254,7 @@
 	limb_id = SPECIES_FLYPERSON
 	is_dimorphic = TRUE
 	should_draw_greyscale = FALSE
-	wing_types = list(/obj/item/organ/external/wings/functional/fly)
+	wing_types = list(/obj/item/organ/wings/functional/fly)
 
 /obj/item/bodypart/arm/left/fly
 	limb_id = SPECIES_FLYPERSON
@@ -332,7 +330,7 @@
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 	bodypart_flags = BODYPART_UNHUSKABLE
-	wing_types = list(/obj/item/organ/external/wings/functional/skeleton)
+	wing_types = list(/obj/item/organ/wings/functional/skeleton)
 
 /obj/item/bodypart/arm/left/skeleton
 	biological_state = (BIO_BONE|BIO_JOINTED)

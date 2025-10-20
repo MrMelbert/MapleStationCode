@@ -51,7 +51,7 @@
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.2)
-	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(cause_body_pain))
+	RegisterSignals(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(cause_body_pain))
 
 /datum/quirk/allodynia/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
@@ -213,15 +213,15 @@
 /datum/preference/choiced/limp_cane/icon_for(value)
 	switch(value)
 		if(CANE_BASIC)
-			return icon(/obj/item/cane::icon, /obj/item/cane::icon_state)
+			return uni_icon(/obj/item/cane::icon, /obj/item/cane::icon_state)
 		if(CANE_MEDICAL)
-			return icon(/obj/item/cane/crutch::icon, /obj/item/cane/crutch::icon_state)
+			return uni_icon(/obj/item/cane/crutch::icon, /obj/item/cane/crutch::icon_state)
 		if(CANE_WOODEN)
-			return icon(/obj/item/cane/crutch/wood::icon, /obj/item/cane/crutch/wood::icon_state)
+			return uni_icon(/obj/item/cane/crutch/wood::icon, /obj/item/cane/crutch/wood::icon_state)
 		if(NO_CANE)
-			return icon('icons/hud/screen_gen.dmi', "x")
+			return uni_icon('icons/hud/screen_gen.dmi', "x")
 
-	return icon('icons/effects/random_spawners.dmi', "questionmark")
+	return uni_icon('icons/effects/random_spawners.dmi', "questionmark")
 
 /datum/preference/choiced/limp_cane/is_accessible(datum/preferences/preferences)
 	if(!..(preferences))

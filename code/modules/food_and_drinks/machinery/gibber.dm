@@ -154,7 +154,7 @@
 		set_occupant(null)
 		return
 
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	audible_message(span_hear("You hear a loud squelchy grinding sound."))
 	playsound(loc, 'sound/machines/juicer.ogg', 50, TRUE)
 	operating = TRUE
@@ -212,7 +212,7 @@
 
 	log_combat(user, occupant, "gibbed")
 	mob_occupant.investigate_log("has been gibbed by [src].", INVESTIGATE_DEATHS)
-	mob_occupant.death(TRUE)
+	mob_occupant.death(TRUE, "the gibber")
 	mob_occupant.ghostize()
 	set_occupant(null)
 	qdel(mob_occupant)

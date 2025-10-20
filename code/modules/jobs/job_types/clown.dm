@@ -1,6 +1,6 @@
 /datum/job/clown
 	title = JOB_CLOWN
-	description = "Entertain the crew, make bad jokes, go on a holy quest to find bananium, HONK!"
+	description = "Entertain the crew, make bad jokes, slip the mime, HONK!"
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -9,7 +9,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CLOWN"
 
-	outfit = /datum/outfit/job/clown
+	base_outfit = /datum/outfit/job/clown
 	plasmaman_outfit = /datum/outfit/plasmaman/clown
 
 	paycheck = PAYCHECK_CREW
@@ -57,6 +57,7 @@
 		/obj/item/reagent_containers/spray/waterflower = 1,
 		/obj/item/food/grown/banana = 1,
 		/obj/item/instrument/bikehorn = 1,
+		/obj/item/storage/box/balloons = 1,
 		)
 	belt = /obj/item/modular_computer/pda/clown
 	ears = /obj/item/radio/headset/headset_srv
@@ -72,6 +73,7 @@
 	box = /obj/item/storage/box/survival/hug
 	chameleon_extras = /obj/item/stamp/clown
 	implants = list(/obj/item/implant/sad_trombone)
+	skillchips = list(/obj/item/skillchip/job/clown)
 
 /datum/outfit/job/clown/mod
 	name = "Clown (MODsuit)"
@@ -99,6 +101,5 @@
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
 		M.mutadone_proof = TRUE
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.show_to(H)
+	ADD_TRAIT(H, TRAIT_CLOWN_ENJOYER, INNATE_TRAIT)
 	H.faction |= FACTION_CLOWN

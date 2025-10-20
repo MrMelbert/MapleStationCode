@@ -22,8 +22,8 @@
 
 /mob/dead/new_player/Initialize(mapload)
 	if(client && SSticker.state == GAME_STATE_STARTUP)
-		var/atom/movable/screen/splash/S = new(null, client, TRUE, TRUE)
-		S.Fade(TRUE)
+		var/atom/movable/screen/splash/S = new(null, null, client, TRUE, TRUE)
+		S.fade(TRUE)
 
 	if(length(GLOB.newplayer_start))
 		forceMove(pick(GLOB.newplayer_start))
@@ -98,7 +98,7 @@
 		observer.client.init_verbs()
 		observer.client.player_details.time_of_death = world.time
 	observer.update_appearance()
-	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	observer.client?.stoptitlemusic()
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
 	qdel(src)
@@ -216,10 +216,7 @@
 
 	if(humanc) //These procs all expect humans
 		GLOB.manifest.inject(humanc)
-		if(SSshuttle.arrivals)
-			SSshuttle.arrivals.QueueAnnounce(humanc, rank)
-		else
-			announce_arrival(humanc, rank)
+		announce_arrival(humanc, rank, try_queue = TRUE)
 		AddEmploymentContract(humanc)
 
 		humanc.increment_scar_slot()
@@ -281,7 +278,7 @@
 	if(!.)
 		return
 	new_character.key = key //Manually transfer the key to log them in,
-	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character.client?.stoptitlemusic()
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)
@@ -416,5 +413,98 @@
 /mob/dead/new_player/Destroy()
 	SSticker.ready_report -= src // should be redundant but just in case.
 	return ..()
+
+/mob/dead/new_player/say(
+	message,
+	bubble_type,
+	list/spans,
+	sanitize,
+	datum/language/language,
+	ignore_spam,
+	forced,
+	filterproof,
+	message_range,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
+	if(isnull(client) || client.interviewee)
+		return
+
+	client.lobby_chat(message)
+
+/// Lobby chat: An intermedium between OOC and IC chat, where players can talk to each other before joining the game / while the game sets up
+/client/proc/lobby_chat(message)
+	VALIDATE_CLIENT(src)
+
+	if(GLOB.say_disabled) //This is here to try to identify lag problems
+		to_chat(src, span_danger("Speech is currently admin-disabled."))
+		return
+	if(is_banned_from(ckey, "OOC"))
+		to_chat(src, span_danger("You have been banned from lobby chat."))
+		return
+
+	message = trim(sanitize(message), MAX_MESSAGE_LEN)
+	var/list/filter_result = is_ooc_filtered(message)
+	if (!CAN_BYPASS_FILTER(mob) && filter_result)
+		REPORT_CHAT_FILTER_TO_USER(src, filter_result)
+		log_filter("OOC", message, filter_result)
+		return
+	var/list/soft_filter_result = filter_result || is_soft_ooc_filtered(message)
+	if (soft_filter_result)
+		if(tgui_alert(src, "Your message contains \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\". \"[soft_filter_result[CHAT_FILTER_INDEX_REASON]]\", Are you sure you want to say it?", "Soft Blocked Word", list("Yes", "No")) != "Yes")
+			return
+		message_admins("[ADMIN_LOOKUPFLW(src)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[message]\"")
+		log_admin_private("[key_name(src)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[message]\"")
+	if(!message || QDELETED(src))
+		return
+	mob.log_talk(message, LOG_OOC)
+	message = "<span class='message linkify'>[emoji_parse(message)]</span>"
+
+	var/player_name = key
+	var/fake_key = holder?.fakekey
+	if(fake_key)
+		player_name = fake_key
+	else if(length(holder?.ranks))
+		player_name = "[span_tooltip(holder.rank_names(), "STAFF")] [key]"
+
+	if(prefs.hearted)
+		var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
+		player_name = "[sheet.icon_tag("emoji-heart")] [player_name]"
+	if(prefs.unlock_content && (prefs.toggles & MEMBER_PUBLIC))
+		player_name = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color)]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")] [player_name]</font>"
+
+	// relay lobby chat to all people in the lobby
+	// goes to info, so people who separate ooc can still see it in the main tab
+	for(var/mob/dead/new_player/recipient as anything in GLOB.new_player_list)
+		if(isnull(recipient.client)) // allegedly all new players are cliented, but who knows?
+			continue
+
+		var/visible_name = player_name
+		if(fake_key)
+			if(recipient == src || check_rights_for(recipient.client, R_STEALTH))
+				visible_name += " / ([key])"
+			else if(fake_key in recipient.client.prefs.ignoring)
+				continue
+
+		else if(key in recipient.client.prefs.ignoring)
+			continue
+
+		to_chat(recipient, span_nicegreen("[span_prefix("LOBBY:")] <em>[visible_name]:</em> [message]"), avoid_highlighting = (recipient == src), type = MESSAGE_TYPE_INFO)
+
+	// relay lobby chat to admins who aren't in the lobby, so they can monitor it
+	// spits to OOC instead of info, so as to not annoy admins who separate their chats out
+	for(var/client/admin as anything in GLOB.admins)
+		if(isnewplayer(admin.mob)) // already sees it
+			continue
+
+		var/visible_name = player_name
+		if(fake_key && (admin == src || check_rights_for(admin, R_STEALTH)))
+			visible_name += " / ([key])"
+
+		to_chat(admin, span_nicegreen("[span_prefix("LOBBY (RELAYED):")] <em>[visible_name]:</em> [message]"), type = MESSAGE_TYPE_OOC)
+
+/// Allows admins in game to speak to people in lobby chat
+ADMIN_VERB(admin_lobby_chat, R_ADMIN, "Lobby Chat Relay", "Relay a message to the lobby chat from in game.", "OOC", msg as text)
+	user.lobby_chat(msg)
 
 #undef RESET_HUD_INTERVAL

@@ -1,4 +1,4 @@
-/obj/item/organ/internal/heart/gland/blood
+/obj/item/organ/heart/gland/blood
 	abductor_hint = "pseudonuclear hemo-destabilizer. Periodically randomizes the abductee's bloodtype into a random reagent."
 	cooldown_low = 1200
 	cooldown_high = 1800
@@ -8,11 +8,21 @@
 	righthand_file = 'icons/mob/inhands/items/food_righthand.dmi'
 	mind_control_uses = 3
 	mind_control_duration = 1500
+	var/new_bloodtype = null
 
-/obj/item/organ/internal/heart/gland/blood/activate()
-	if(!ishuman(owner) || !owner.dna.species)
-		return
-	var/mob/living/carbon/human/H = owner
-	var/datum/species/species = H.dna.species
-	to_chat(H, span_warning("You feel your blood heat up for a moment."))
-	species.exotic_bloodtype = pick(subtypesof(/datum/blood_type)) // NON-MODULE CHANGE: ANYthing, including xeno blood
+/obj/item/organ/heart/gland/blood/ownerCheck()
+	return ..() && !HAS_TRAIT(owner, TRAIT_NOBLOOD) && !!owner.dna?.species
+
+/obj/item/organ/heart/gland/blood/activate()
+	to_chat(owner, span_warning("You feel your blood heat up for a moment."))
+	new_bloodtype = get_random_reagent_id()
+	owner.dna.species.exotic_bloodtype = new_bloodtype
+
+/obj/item/organ/heart/gland/blood/on_mob_remove(mob/living/carbon/organ_owner, special)
+	. = ..()
+	organ_owner.dna?.species?.exotic_bloodtype = initial(organ_owner.dna.species.exotic_bloodtype)
+
+/obj/item/organ/heart/gland/blood/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+	if(new_bloodtype)
+		organ_owner.dna?.species?.exotic_bloodtype = new_bloodtype

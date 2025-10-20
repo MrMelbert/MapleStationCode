@@ -4,6 +4,7 @@
 /atom/movable/screen/human/toggle
 	name = "toggle"
 	icon_state = "toggle"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/human/toggle/Click()
 
@@ -26,6 +27,7 @@
 /atom/movable/screen/human/equip
 	name = "equip"
 	icon_state = "act_equip"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/human/equip/Click()
 	if(ismecha(usr.loc)) // stops inventory actions in a mech
@@ -45,6 +47,7 @@
 	name = "current sting"
 	screen_loc = ui_lingstingdisplay
 	invisibility = INVISIBILITY_ABSTRACT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ling/sting/Click()
 	if(isobserver(usr))
@@ -271,12 +274,12 @@
 	hunger = new /atom/movable/screen/hunger(null, src)
 	infodisplay += hunger
 
-	healthdoll = new /atom/movable/screen/healthdoll(null, src)
+	healthdoll = new /atom/movable/screen/healthdoll/human(null, src)
 	infodisplay += healthdoll
-
+/*
 	stamina = new /atom/movable/screen/stamina(null, src)
 	infodisplay += stamina
-
+*/
 	pull_icon = new /atom/movable/screen/pull(null, src)
 	pull_icon.icon = ui_style
 	pull_icon.screen_loc = ui_above_intent
@@ -307,9 +310,17 @@
 	var/mob/living/carbon/human/human_mob = mymob
 	if(istype(human_mob))
 		blocked_slots |= human_mob.dna?.species?.no_equip_flags
-		if(!human_mob.w_uniform && !HAS_TRAIT(human_mob, TRAIT_NO_JUMPSUIT))
-			blocked_slots |= ITEM_SLOT_POCKETS|ITEM_SLOT_ID|ITEM_SLOT_BELT
-		if(!human_mob.wear_suit)
+		if((isnull(human_mob.w_uniform) || !(human_mob.w_uniform.item_flags & IN_INVENTORY)) && !HAS_TRAIT(human_mob, TRAIT_NO_JUMPSUIT))
+			var/obj/item/bodypart/chest = human_mob.get_bodypart(BODY_ZONE_CHEST)
+			if(isnull(chest) || IS_ORGANIC_LIMB(chest))
+				blocked_slots |= ITEM_SLOT_ID|ITEM_SLOT_BELT
+			var/obj/item/bodypart/left_leg = human_mob.get_bodypart(BODY_ZONE_L_LEG)
+			if(isnull(left_leg) || IS_ORGANIC_LIMB(left_leg))
+				blocked_slots |= ITEM_SLOT_LPOCKET
+			var/obj/item/bodypart/right_leg = human_mob.get_bodypart(BODY_ZONE_R_LEG)
+			if(isnull(right_leg) || IS_ORGANIC_LIMB(right_leg))
+				blocked_slots |= ITEM_SLOT_RPOCKET
+		if(isnull(human_mob.wear_suit) || !(human_mob.wear_suit.item_flags & IN_INVENTORY))
 			blocked_slots |= ITEM_SLOT_SUITSTORE
 		if(human_mob.num_hands < 2)
 			blocked_slots |= ITEM_SLOT_GLOVES

@@ -26,18 +26,30 @@
 	if(aug.body_zone != target_zone)
 		to_chat(user, span_warning("[tool] isn't the right type for [parse_zone(target_zone)]."))
 		return SURGERY_STEP_FAIL
+	if(!aug.can_attach_limb(target))
+		to_chat(user, span_warning("[aug] doesn't match the patient's morphology."))
+		return SURGERY_STEP_FAIL
+
 	target_limb = surgery.operated_bodypart
 	if(target_limb)
 		display_results(
 			user,
 			target,
-			span_notice("You begin to augment [target]'s [parse_zone(user.zone_selected)]..."),
-			span_notice("[user] begins to augment [target]'s [parse_zone(user.zone_selected)] with [aug]."),
-			span_notice("[user] begins to augment [target]'s [parse_zone(user.zone_selected)]."),
+			span_notice("You begin to augment [target]'s [parse_zone(target_zone)]..."),
+			span_notice("[user] begins to augment [target]'s [parse_zone(target_zone)] with [aug]."),
+			span_notice("[user] begins to augment [target]'s [parse_zone(target_zone)]."),
 		)
-		display_pain(target, "You feel a horrible pain in your [parse_zone(user.zone_selected)]!", target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "You feel a horrible pain in your [parse_zone(target_zone)]!",
+			pain_amount = SURGERY_PAIN_LOW, // augmentation comes with pain so we can undersell
+		)
 	else
-		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
+		user.visible_message(
+			span_notice("[user] looks for [target]'s [parse_zone(target_zone)]."),
+			span_notice("You look for [target]'s [parse_zone(target_zone)]..."),
+		)
 
 
 //ACTUAL SURGERIES
@@ -89,7 +101,13 @@
 			span_notice("[user] successfully augments [target]'s [parse_zone(target_zone)] with [tool]!"),
 			span_notice("[user] successfully augments [target]'s [parse_zone(target_zone)]!"),
 		)
-		display_pain(target, "Your [parse_zone(target_zone)] comes awash with synthetic sensation!", mechanical_surgery = TRUE, target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "Your [parse_zone(target_zone)] comes awash with synthetic sensation!",
+			mechanical_surgery = TRUE,
+			pain_amount = SURGERY_PAIN_TRIVIAL,
+		)
 		log_combat(user, target, "augmented", addition="by giving him new [parse_zone(target_zone)] COMBAT MODE: [uppertext(user.combat_mode)]")
 	else
 		to_chat(user, span_warning("[target] has no organic [parse_zone(target_zone)] there!"))

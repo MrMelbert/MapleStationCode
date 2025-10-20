@@ -1,7 +1,3 @@
-import { BooleanLike, classes } from 'common/react';
-import { capitalize } from 'common/string';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -12,19 +8,27 @@ import {
   Section,
   Stack,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+import { type BooleanLike, classes } from 'tgui-core/react';
+import { capitalize } from 'tgui-core/string';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 import { DesignBrowser } from './Fabrication/DesignBrowser';
 import { MaterialCostSequence } from './Fabrication/MaterialCostSequence';
-import { Design, MaterialMap } from './Fabrication/Types';
-import { Material } from './Fabrication/Types';
+import type { Design, MaterialMap } from './Fabrication/Types';
+import type { Material } from './Fabrication/Types';
+
+type AutolatheDesign = Design & {
+  customMaterials: BooleanLike;
+};
 
 type AutolatheData = {
   materials: Material[];
   materialtotal: number;
   materialsmax: number;
   SHEET_MATERIAL_AMOUNT: number;
-  designs: Design[];
+  designs: AutolatheDesign[];
   active: BooleanLike;
 };
 
@@ -49,7 +53,7 @@ export const Autolathe = (props) => {
 
   return (
     <Window title="Autolathe" width={670} height={600}>
-      <Window.Content scrollable>
+      <Window.Content>
         <Stack vertical fill>
           <Stack.Item>
             <Section title="Total Materials">
@@ -174,7 +178,7 @@ const PrintButton = (props: PrintButtonProps) => {
 };
 
 type AutolatheRecipeProps = {
-  design: Design;
+  design: AutolatheDesign;
   availableMaterials: MaterialMap;
   SHEET_MATERIAL_AMOUNT: number;
 };
@@ -183,7 +187,38 @@ const AutolatheRecipe = (props: AutolatheRecipeProps) => {
   const { act } = useBackend<AutolatheData>();
   const { design, availableMaterials, SHEET_MATERIAL_AMOUNT } = props;
 
-  const maxmult = design.maxmult;
+  let maxmult = 0;
+  if (design.customMaterials) {
+    const smallest_mat =
+      Object.entries(availableMaterials).reduce(
+        (accumulator: number, [material, amount]) => {
+          return Math.min(accumulator, amount);
+        },
+        Infinity,
+      ) || 0;
+
+    if (smallest_mat > 0) {
+      maxmult = Object.entries(design.cost).reduce(
+        (accumulator: number, [material, required]) => {
+          return Math.min(accumulator, smallest_mat / required);
+        },
+        Infinity,
+      );
+    } else {
+      maxmult = 0;
+    }
+  } else {
+    maxmult = Object.entries(design.cost).reduce(
+      (accumulator: number, [material, required]) => {
+        return Math.min(
+          accumulator,
+          (availableMaterials[material] || 0) / required,
+        );
+      },
+      Infinity,
+    );
+  }
+  maxmult = Math.min(Math.floor(maxmult), 50);
   const canPrint = maxmult > 0;
 
   return (
@@ -253,15 +288,14 @@ const AutolatheRecipe = (props: AutolatheRecipeProps) => {
       >
         <Button.Input
           color="transparent"
-          onCommit={(_e, value: string) =>
+          buttonText={`[Max: ${maxmult}]`}
+          onCommit={(value) =>
             act('make', {
               id: design.id,
               multiplier: value,
             })
           }
-        >
-          [Max: {maxmult}]
-        </Button.Input>
+        />
       </div>
     </div>
   );

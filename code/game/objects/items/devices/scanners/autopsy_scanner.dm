@@ -15,7 +15,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
-/obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user)
+/obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isliving(interacting_with))
 		return NONE
 	if(!user.can_read(src) || user.is_blind())
@@ -92,7 +92,6 @@
 		else
 			autopsy_information += "Unknown causes.</br>"
 	else
-		// NON-MODULE CHANGE
 		if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
 			autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
 			autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
@@ -106,10 +105,11 @@
 		for(var/datum/symptom/symptom as anything in advanced_disease.symptoms)
 			autopsy_information += "[symptom.name] - [symptom.desc]<br>"
 
-	var/obj/item/paper/autopsy_report = new(user.loc)
-	autopsy_report.name = "Autopsy Report ([scanned.name])"
+	var/obj/item/paper/autopsy_report = new(user.drop_location())
+	autopsy_report.name = "autopsy report of [scanned] - [station_time_timestamp()])"
 	autopsy_report.add_raw_text(autopsy_information.Join("\n"))
-	autopsy_report.update_appearance(UPDATE_ICON)
+	autopsy_report.color = "#99ccff"
+	autopsy_report.update_appearance()
 	user.put_in_hands(autopsy_report)
 	user.balloon_alert(user, "report printed")
 	return TRUE

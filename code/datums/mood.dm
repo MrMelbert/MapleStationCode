@@ -48,9 +48,14 @@
 
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
 	RegisterSignal(mob_to_make_moody, COMSIG_ENTER_AREA, PROC_REF(check_area_mood))
+	RegisterSignal(mob_to_make_moody, COMSIG_EXIT_AREA, PROC_REF(exit_area))
 	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
 	RegisterSignal(mob_to_make_moody, COMSIG_QDELETING, PROC_REF(clear_parent_ref))
+
+	var/area/our_area = get_area(mob_to_make_moody)
+	if(our_area)
+		check_area_mood(mob_to_make_moody, our_area)
 
 	mob_to_make_moody.become_area_sensitive(MOOD_DATUM_TRAIT)
 	if(mob_to_make_moody.hud_used)
@@ -63,7 +68,10 @@
 
 	unmodify_hud()
 	mob_parent.lose_area_sensitivity(MOOD_DATUM_TRAIT)
-	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
+	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
+	var/area/our_area = get_area(mob_parent)
+	if(our_area)
+		UnregisterSignal(our_area, COMSIG_AREA_BEAUTY_UPDATED)
 
 	mob_parent = null
 
@@ -77,9 +85,9 @@
 		if(MOOD_LEVEL_SAD4)
 			set_sanity(sanity - 0.3 * seconds_per_tick, SANITY_INSANE)
 		if(MOOD_LEVEL_SAD3)
-			set_sanity(sanity - 0.15 * seconds_per_tick, SANITY_INSANE)
+			set_sanity(sanity - 0.15 * seconds_per_tick, SANITY_CRAZY)
 		if(MOOD_LEVEL_SAD2)
-			set_sanity(sanity - 0.1 * seconds_per_tick, SANITY_CRAZY)
+			set_sanity(sanity - 0.1 * seconds_per_tick, SANITY_UNSTABLE)
 		if(MOOD_LEVEL_SAD1)
 			set_sanity(sanity - 0.05 * seconds_per_tick, SANITY_UNSTABLE)
 		if(MOOD_LEVEL_NEUTRAL)
@@ -129,8 +137,10 @@
 			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fed)
 		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
 			clear_mood_event(MOOD_CATEGORY_NUTRITION)
-		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+		if(NUTRITION_LEVEL_VERY_HUNGRY to NUTRITION_LEVEL_HUNGRY)
 			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry)
+		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_VERY_HUNGRY)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry_very)
 		if(0 to NUTRITION_LEVEL_STARVING)
 			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/starving)
 
@@ -298,7 +308,7 @@
 	mood_screen_object.color = "#4b96c4"
 	hud.infodisplay += mood_screen_object
 	RegisterSignal(hud, COMSIG_QDELETING, PROC_REF(unmodify_hud))
-	RegisterSignal(mood_screen_object, COMSIG_CLICK, PROC_REF(hud_click))
+	RegisterSignal(mood_screen_object, COMSIG_SCREEN_ELEMENT_CLICK, PROC_REF(hud_click))
 
 /// Removes the mood HUD object
 /datum/mood/proc/unmodify_hud(datum/source)
@@ -317,71 +327,117 @@
 
 	if(user != mob_parent)
 		return
+	if(user.stat >= UNCONSCIOUS)
+		return
 	print_mood(user)
 
 /// Prints the users mood, sanity, and moodies to chat
 /datum/mood/proc/print_mood(mob/user)
-	var/msg = "[span_info("<EM>My current mental status:</EM>")]\n"
+	var/msg = "[span_info("<EM>My current mental status:</EM>")]<br>"
+
+	if(!HAS_TRAIT(src, TRAIT_NOHUNGER))
+		msg += span_notice("My hunger: ")
+		var/nutrition = mob_parent.nutrition
+		switch(nutrition)
+			if(NUTRITION_LEVEL_FULL to INFINITY)
+				msg += "[span_info("I'm completely stuffed!")]<br>"
+			if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
+				msg += "[span_info("I'm well fed!")]<br>"
+			if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
+				msg += "[span_info("I'm not hungry.")]<br>"
+			if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+				msg += "[span_info("I could use a bite to eat.")]<br>"
+			if(NUTRITION_LEVEL_VERY_HUNGRY to NUTRITION_LEVEL_HUNGRY)
+				msg += "[span_warning("I'm feeling hungry.")]<br>"
+			if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_VERY_HUNGRY)
+				msg += "[span_warning("I feel quite hungry.")]<br>"
+			if(0 to NUTRITION_LEVEL_STARVING)
+				msg += "[span_boldwarning("I'm starving!")]<br>"
+
+	var/drunkness = mob_parent.get_drunk_amount()
+	if(drunkness >= 1)
+		msg += span_notice("My current drunkenness: ")
+		switch(drunkness)
+			if(1 to 10)
+				msg += "[span_info("I'm feeling a little tipsy.")]<br>"
+			if(11 to 21)
+				msg += "[span_info("I'm feeling a bit drunk.")]<br>"
+			if(21 to 41)
+				msg += "[span_info("I'm feeling quite drunk.")]<br>"
+			if(41 to 61)
+				msg += "[span_info("I'm feeling very drunk.")]<br>"
+			if(61 to 81)
+				msg += "[span_warning("I'm feeling like a mess.")]<br>"
+			if(81 to INFINITY)
+				msg += "[span_boldwarning("I'm completely wasted.")]<br>"
+
 	msg += span_notice("My current sanity: ") //Long term
 	switch(sanity)
 		if(SANITY_GREAT to INFINITY)
-			msg += "[span_boldnicegreen("My mind feels like a temple!")]\n"
+			msg += "[span_boldnicegreen("My mind feels like a temple!")]<br>"
 		if(SANITY_NEUTRAL to SANITY_GREAT)
-			msg += "[span_nicegreen("I have been feeling great lately!")]\n"
+			msg += "[span_nicegreen("I have been feeling great lately!")]<br>"
 		if(SANITY_DISTURBED to SANITY_NEUTRAL)
-			msg += "[span_nicegreen("I have felt quite decent lately.")]\n"
+			msg += "[span_nicegreen("I have felt quite decent lately.")]<br>"
 		if(SANITY_UNSTABLE to SANITY_DISTURBED)
-			msg += "[span_warning("I'm feeling a little bit unhinged...")]\n"
+			msg += "[span_warning("I'm feeling a little bit unhinged...")]<br>"
 		if(SANITY_CRAZY to SANITY_UNSTABLE)
-			msg += "[span_warning("I'm freaking out!!")]\n"
+			msg += "[span_warning("I'm freaking out!!")]<br>"
 		if(SANITY_INSANE to SANITY_CRAZY)
-			msg += "[span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")]\n"
+			msg += "[span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")]<br>"
 
 	msg += span_notice("My current mood: ") //Short term
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			msg += "[span_boldwarning("I wish I was dead!")]\n"
+			msg += "[span_boldwarning("I wish I was dead!")]<br>"
 		if(MOOD_LEVEL_SAD3)
-			msg += "[span_boldwarning("I feel terrible...")]\n"
+			msg += "[span_boldwarning("I feel terrible...")]<br>"
 		if(MOOD_LEVEL_SAD2)
-			msg += "[span_boldwarning("I feel very upset.")]\n"
+			msg += "[span_boldwarning("I feel very upset.")]<br>"
 		if(MOOD_LEVEL_SAD1)
-			msg += "[span_warning("I'm a bit sad.")]\n"
+			msg += "[span_warning("I'm a bit sad.")]<br>"
 		if(MOOD_LEVEL_NEUTRAL)
-			msg += "[span_grey("I'm alright.")]\n"
+			msg += "[span_grey("I'm alright.")]<br>"
 		if(MOOD_LEVEL_HAPPY1)
-			msg += "[span_nicegreen("I feel pretty okay.")]\n"
+			msg += "[span_nicegreen("I feel pretty okay.")]<br>"
 		if(MOOD_LEVEL_HAPPY2)
-			msg += "[span_boldnicegreen("I feel pretty good.")]\n"
+			msg += "[span_boldnicegreen("I feel pretty good.")]<br>"
 		if(MOOD_LEVEL_HAPPY3)
-			msg += "[span_boldnicegreen("I feel amazing!")]\n"
+			msg += "[span_boldnicegreen("I feel amazing!")]<br>"
 		if(MOOD_LEVEL_HAPPY4)
-			msg += "[span_boldnicegreen("I love life!")]\n"
+			msg += "[span_boldnicegreen("I love life!")]<br>"
 
-	msg += "[span_notice("Moodlets:")]\n"//All moodlets
+	msg += "[span_notice("Moodlets:")]<br>"//All moodlets
 	if(mood_events.len)
 		for(var/category in mood_events)
 			var/datum/mood_event/event = mood_events[category]
+			msg += "&bull; "
 			switch(event.mood_change)
 				if(-INFINITY to MOOD_SAD2)
-					msg += span_boldwarning(event.description + "\n")
+					msg += "[span_boldwarning(event.description)]<br>"
 				if(MOOD_SAD2 to MOOD_SAD1)
-					msg += span_warning(event.description + "\n")
+					msg += "[span_warning(event.description)]<br>"
 				if(MOOD_SAD1 to MOOD_NEUTRAL)
-					msg += span_grey(event.description + "\n")
+					msg += "[span_grey(event.description)]<br>"
 				if(MOOD_NEUTRAL to MOOD_HAPPY1)
-					msg += span_info(event.description + "\n")
+					msg += "[span_info(event.description)]<br>"
 				if(MOOD_HAPPY1 to MOOD_HAPPY2)
-					msg += span_nicegreen(event.description + "\n")
+					msg += "[span_nicegreen(event.description)]<br>"
 				if(MOOD_HAPPY2 to INFINITY)
-					msg += span_boldnicegreen(event.description + "\n")
+					msg += "[span_boldnicegreen(event.description)]<br>"
 	else
-		msg += "[span_grey("I don't have much of a reaction to anything right now.")]\n"
+		msg += "&bull; [span_grey("I don't have much of a reaction to anything right now.")]<br>"
+
+	if(LAZYLEN(mob_parent.quirks))
+		msg += span_notice("You have these quirks: [mob_parent.get_quirk_string(FALSE, CAT_QUIRK_ALL)].")
+
 	to_chat(user, examine_block(msg))
 
 /// Updates the mob's moodies, if the area provides a mood bonus
 /datum/mood/proc/check_area_mood(datum/source, area/new_area)
 	SIGNAL_HANDLER
+
+	RegisterSignal(new_area, COMSIG_AREA_BEAUTY_UPDATED, PROC_REF(update_beauty))
 
 	update_beauty(new_area)
 	if (new_area.mood_bonus && (!new_area.mood_trait || HAS_TRAIT(source, new_area.mood_trait)))
@@ -391,8 +447,30 @@
 
 /// Updates the mob's given beauty moodie, based on the area
 /datum/mood/proc/update_beauty(area/area_to_beautify)
+	SIGNAL_HANDLER
 	if (area_to_beautify.outdoors) // if we're outside, we don't care
 		clear_mood_event(MOOD_CATEGORY_AREA_BEAUTY)
+		return
+
+	if(HAS_MIND_TRAIT(mob_parent, TRAIT_MORBID))
+		if(HAS_TRAIT(mob_parent, TRAIT_SNOB))
+			switch(area_to_beautify.beauty)
+				if(BEAUTY_LEVEL_DECENT to BEAUTY_LEVEL_GOOD)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/ehroom)
+					return
+				if(BEAUTY_LEVEL_GOOD to BEAUTY_LEVEL_GREAT)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/badroom)
+					return
+				if(BEAUTY_LEVEL_GREAT to INFINITY)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/horridroom)
+					return
+		switch(area_to_beautify.beauty)
+			if(-INFINITY to BEAUTY_LEVEL_HORRID)
+				add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/greatroom)
+			if(BEAUTY_LEVEL_HORRID to BEAUTY_LEVEL_BAD)
+				add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/goodroom)
+			if(BEAUTY_LEVEL_BAD to BEAUTY_LEVEL_DECENT)
+				clear_mood_event(MOOD_CATEGORY_AREA_BEAUTY)
 		return
 
 	if(HAS_TRAIT(mob_parent, TRAIT_SNOB))
@@ -412,6 +490,10 @@
 			add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/goodroom)
 		if(BEAUTY_LEVEL_GREAT to INFINITY)
 			add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/greatroom)
+
+/datum/mood/proc/exit_area(datum/source, area/old_area)
+	SIGNAL_HANDLER
+	UnregisterSignal(old_area, COMSIG_AREA_BEAUTY_UPDATED)
 
 /// Called when parent is ahealed.
 /datum/mood/proc/on_revive(datum/source, full_heal)
@@ -467,18 +549,22 @@
 			sanity_level = SANITY_LEVEL_GREAT
 
 	// Crazy or insane = add some uncommon hallucinations
-	if(sanity_level >= SANITY_CRAZY)
+	if(sanity_level >= SANITY_LEVEL_CRAZY)
 		mob_parent.apply_status_effect(/datum/status_effect/hallucination/sanity)
 	else
 		mob_parent.remove_status_effect(/datum/status_effect/hallucination/sanity)
 
 	update_mood_icon()
 
+/// Adjusts sanity by a value
+/datum/mood/proc/adjust_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
+	set_sanity(sanity + amount, minimum, maximum, override)
+
 /// Sets the insanity effect on the mob
 /datum/mood/proc/set_insanity_effect(newval)
 	if (newval == insanity_effect)
 		return
-	mob_parent.crit_threshold = (mob_parent.crit_threshold - insanity_effect) + newval
+	mob_parent.add_max_consciousness_value("sanity", UPPER_CONSCIOUSNESS_MAX - newval)
 	insanity_effect = newval
 
 /// Removes all temporary moods

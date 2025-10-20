@@ -190,6 +190,19 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
+/datum/design/soup_pot
+	name = "Soup Pot"
+	id = "souppot"
+	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/iron =SHEET_MATERIAL_AMOUNT*5, /datum/material/bluespace =SMALL_MATERIAL_AMOUNT*4)
+	category = list(RND_CATEGORY_INITIAL, RND_CATEGORY_EQUIPMENT)
+	build_path = /obj/item/reagent_containers/cup/soup_pot
+	category = list(
+		RND_CATEGORY_INITIAL,
+		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_KITCHEN,
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
 /datum/design/bowl
 	name = "Bowl"
 	id = "bowl"
@@ -409,7 +422,7 @@
 /datum/design/plastic_tree
 	name = "Plastic Potted Plant"
 	id = "plastic_trees"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE
 	materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT*4)
 	build_path = /obj/item/kirbyplants/random/fullysynthetic
 	category = list(
@@ -421,7 +434,7 @@
 /datum/design/beads
 	name = "Plastic Bead Necklace"
 	id = "plastic_necklace"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE
 	materials = list(/datum/material/plastic =SMALL_MATERIAL_AMOUNT*5)
 	build_path = /obj/item/clothing/neck/beads
 	category = list(
@@ -433,7 +446,7 @@
 /datum/design/plastic_ring
 	name = "Plastic Can Rings"
 	id = "ring_holder"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE
 	materials = list(/datum/material/plastic = HALF_SHEET_MATERIAL_AMOUNT*1.2)
 	build_path = /obj/item/storage/cans
 	category = list(
@@ -445,7 +458,7 @@
 /datum/design/plastic_box
 	name = "Plastic Box"
 	id = "plastic_box"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE
 	materials = list(/datum/material/plastic =HALF_SHEET_MATERIAL_AMOUNT)
 	build_path = /obj/item/storage/box/plastic
 	category = list(
@@ -461,7 +474,6 @@
 	materials = list(/datum/material/plastic =SMALL_MATERIAL_AMOUNT*5)
 	build_path = /obj/item/stack/sticky_tape
 	category = list(RND_CATEGORY_INITIAL, RND_CATEGORY_EQUIPMENT)
-	maxstack = 5
 	category = list(
 		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE,
 	)
@@ -569,7 +581,7 @@
 /datum/design/telescreen_entertainment
 	name = "Entertainment Telescreen"
 	id = "telescreen_entertainment"
-	build_type = PROTOLATHE
+	build_type =  AUTOLATHE | PROTOLATHE
 	materials = list(
 		/datum/material/iron = SHEET_MATERIAL_AMOUNT*5,
 		/datum/material/glass =SHEET_MATERIAL_AMOUNT * 2.5,
@@ -578,5 +590,43 @@
 	category = list(
 		RND_CATEGORY_INITIAL,
 		RND_CATEGORY_CONSTRUCTION + RND_SUBCATEGORY_CONSTRUCTION_MOUNTS,
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/entertainment_radio
+	name = "Entertainment Radio"
+	id = "radio_entertainment"
+	build_type =  AUTOLATHE | PROTOLATHE
+	materials = list(
+		/datum/material/iron = SMALL_MATERIAL_AMOUNT*0.75,
+		/datum/material/glass =SMALL_MATERIAL_AMOUNT*0.25
+	)
+	build_path = /obj/item/radio/entertainment/speakers/physical
+	category = list(
+		RND_CATEGORY_INITIAL,
+		RND_CATEGORY_CONSTRUCTION + RND_SUBCATEGORY_CONSTRUCTION_MOUNTS,
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/barcode_scanner
+	name = "Barcode Scanner"
+	id = "barcode_scanner"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
+	build_path = /obj/item/barcodescanner
+	category = list(
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_TOOLS_SERVICE,
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/barber_scissors
+	name = "Barber's Scissors"
+	id = "barber_scissors"
+	build_type = AUTOLATHE | PROTOLATHE
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
+	build_path = /obj/item/razor/scissors/barber
+	category = list(
+		RND_CATEGORY_INITIAL,
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_TOOLS_SERVICE,
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE

@@ -53,7 +53,6 @@
 	belt_icon_state = "crowbar_alien"
 	toolspeed = 0.1
 
-
 /obj/item/crowbar/large
 	name = "large crowbar"
 	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
@@ -109,6 +108,7 @@
 
 /obj/item/crowbar/power
 	name = "jaws of life"
+	article = "a set of"
 	desc = "A set of jaws of life, compressed through the magic of science."
 	icon_state = "jaws"
 	inhand_icon_state = "jawsoflife"
@@ -191,7 +191,7 @@
 	name = "hydraulic crowbar"
 	desc = "A hydraulic prying tool, simple but powerful."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "crowbar_cyborg"
+	icon_state = "toolkit_engiborg_crowbar"
 	worn_icon_state = "crowbar"
 	usesound = 'sound/items/jaws_pry.ogg'
 	force = 10

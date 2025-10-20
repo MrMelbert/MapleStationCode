@@ -4,7 +4,10 @@
 /// Controls making objects irradiated when Radioactive Nebula is in effect.
 SUBSYSTEM_DEF(radioactive_nebula)
 	name = "Radioactive Nebula"
-	flags = SS_BACKGROUND
+	dependencies = list(
+		/datum/controller/subsystem/processing/station
+	)
+	flags = SS_BACKGROUND|SS_NO_INIT_MESSAGE
 	wait = 30 SECONDS
 
 	VAR_PRIVATE
@@ -21,7 +24,7 @@ SUBSYSTEM_DEF(radioactive_nebula)
 		irradiate_everything()
 
 	// Don't leak that the station trait has been picked
-	return SS_INIT_NO_MESSAGE
+	return SS_INIT_SUCCESS
 
 /// Makes something appear irradiated for the purposes of the Radioactive Nebula
 /datum/controller/subsystem/radioactive_nebula/proc/fake_irradiate(atom/movable/target)

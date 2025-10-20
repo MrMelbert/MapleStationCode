@@ -49,7 +49,7 @@
 	ai_controller.set_blackboard_key(BB_BASIC_MOB_SPEAK_LINES, emotes)
 	//im not putting dynamic humans or whatever its called here because this is the base path of nonhuman clownstrosities
 	if(waddles)
-		AddElement(/datum/element/waddling)
+		AddElementTrait(TRAIT_WADDLING, INNATE_TRAIT, /datum/element/waddling)
 	if(length(loot))
 		loot = string_list(loot)
 		AddElement(/datum/element/death_drops, loot)
@@ -88,7 +88,7 @@
 
 /mob/living/basic/clown/lube/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/snailcrawl)
+	AddElement(/datum/element/lube_walking)
 
 /mob/living/basic/clown/honkling
 	name = "Honkling"
@@ -585,9 +585,9 @@
 	for(var/i in 1 to peels_to_spawn)
 		new banana_type(pick_n_take(reachable_turfs))
 	playsound(owner, 'sound/creatures/clown/clownana_rustle.ogg', 60)
-	animate(owner, time = 1, pixel_x = 6, easing = CUBIC_EASING | EASE_OUT)
-	animate(time = 2, pixel_x = -8, easing = CUBIC_EASING)
-	animate(time = 1, pixel_x = 0, easing = CUBIC_EASING | EASE_IN)
+	animate(owner, time = 0.1 SECONDS, pixel_w = 6, easing = CUBIC_EASING | EASE_OUT, flags = ANIMATION_PARALLEL|ANIMATION_RELATIVE)
+	animate(time = 0.2 SECONDS, pixel_w = -8, easing = CUBIC_EASING, flags = ANIMATION_RELATIVE)
+	animate(time = 0.1 SECONDS, pixel_w = 2, easing = CUBIC_EASING | EASE_IN, flags = ANIMATION_RELATIVE)
 	StartCooldown()
 
 ///spawns a plumb bunch of bananas imbued with mystical power.

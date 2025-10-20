@@ -1,7 +1,7 @@
 /datum/job/chemist
 	title = JOB_CHEMIST
-	description = "Supply the doctors with chemicals, make medicine, as well as \
-		less likable substances in the comfort of a fully reinforced room."
+	description = "Supply the doctors with chemicals, make medicine (as well as \
+		less likable substances) in the comfort of a fully reinforced room."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -12,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CHEMIST"
 
-	outfit = /datum/outfit/job/chemist
+	base_outfit = /datum/outfit/job/chemist
 	plasmaman_outfit = /datum/outfit/plasmaman/chemist
 
 	paycheck = PAYCHECK_CREW
@@ -37,6 +37,9 @@
 	rpg_title = "Alchemist"
 	job_flags = STATION_JOB_FLAGS
 
+	title_options = list(
+		"Pharmacist",
+	)
 
 /datum/outfit/job/chemist
 	name = "Chemist"

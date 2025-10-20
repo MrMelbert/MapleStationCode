@@ -1,6 +1,7 @@
 /datum/job/janitor
 	title = JOB_JANITOR
-	description = "Clean up trash and blood. Replace broken lights. Slip people over."
+	description = "Clean up trash and blood, replace broken lights, \
+		kill pests and vermin, slip people endlessly."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -9,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "JANITOR"
 
-	outfit = /datum/outfit/job/janitor
+	base_outfit = /datum/outfit/job/janitor
 	plasmaman_outfit = /datum/outfit/plasmaman/janitor
 
 	paycheck = PAYCHECK_CREW

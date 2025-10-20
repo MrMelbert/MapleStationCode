@@ -17,6 +17,8 @@
 	melee_damage_upper = 8
 	attack_sound = 'sound/weapons/rapierhit.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = 0
 	death_sound = 'sound/voice/mook_death.ogg'
 	ai_controller = /datum/ai_controller/basic_controller/mook/support
 	speed = 5
@@ -58,7 +60,6 @@
 
 	AddComponent(/datum/component/ai_listen_to_weather)
 	AddElement(/datum/element/wall_tearer, allow_reinforced = FALSE)
-	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	RegisterSignal(src, COMSIG_KB_MOB_DROPITEM_DOWN, PROC_REF(drop_ore))
 
 	if(is_healer)
@@ -96,27 +97,28 @@
 	held_ore = null
 	update_appearance(UPDATE_OVERLAYS)
 
-/mob/living/basic/mining/mook/proc/pre_attack(mob/living/attacker, atom/target)
-	SIGNAL_HANDLER
-
+/mob/living/basic/mining/mook/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	. = ..()
+	if(!.)
+		return FALSE
 	return attack_sequence(target)
 
 /mob/living/basic/mining/mook/proc/attack_sequence(atom/target)
 	if(istype(target, /obj/item/stack/ore) && isnull(held_ore))
 		var/obj/item/ore_target = target
 		ore_target.forceMove(src)
-		return COMPONENT_HOSTILE_NO_ATTACK
+		return FALSE
 
 	if(istype(target, /obj/structure/ore_container/material_stand))
 		if(held_ore)
 			held_ore.forceMove(target)
-		return COMPONENT_HOSTILE_NO_ATTACK
+		return FALSE
 
 	if(istype(target, /obj/structure/bonfire))
 		var/obj/structure/bonfire/fire_target = target
 		if(!fire_target.burning)
 			fire_target.start_burning()
-		return COMPONENT_HOSTILE_NO_ATTACK
+		return FALSE
 
 /mob/living/basic/mining/mook/proc/change_combatant_state(state)
 	attack_state = state

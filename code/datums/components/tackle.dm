@@ -43,7 +43,7 @@
 	src.min_distance = min_distance
 
 	var/mob/P = parent
-	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and clicking on your target with an empty hand."))
+	to_chat(P, span_notice("You are now able to launch tackles! You can do so by activating throw mode, and ") + span_boldnotice("RIGHT-CLICKING on your target with an empty hand."))
 
 	addtimer(CALLBACK(src, PROC_REF(resetTackle)), base_knockdown, TIMER_STOPPABLE)
 
@@ -74,6 +74,9 @@
 	if(modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
 		return
 
+	if(!modifiers[RIGHT_CLICK])
+		return
+
 	if(!user.throw_mode || user.get_active_held_item() || user.pulling || user.buckled || user.incapacitated())
 		return
 
@@ -90,6 +93,10 @@
 
 	if(user.body_position == LYING_DOWN)
 		to_chat(user, span_warning("You must be standing to tackle!"))
+		return
+
+	if(user.getStaminaLoss() > 100)
+		to_chat(user, span_warning("You're too tired to tackle!"))
 		return
 
 	if(tackling)
@@ -145,7 +152,7 @@
 		tackle = null
 		return
 
-	user.toggle_throw_mode()
+	user.throw_mode_off(THROW_MODE_TOGGLE)
 	if(!iscarbon(hit))
 		if(hit.density)
 			INVOKE_ASYNC(src, PROC_REF(splat), user, hit)
@@ -164,8 +171,6 @@
 		neutral_outcome(user, target, tackle_word) //Forces a neutral outcome so you're not screwed too much from being blocked while tackling
 		return COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH
 
-
-
 	switch(roll)
 		if(-INFINITY to -1)
 			negative_outcome(user, target, roll, tackle_word) //OOF
@@ -177,6 +182,15 @@
 			positive_outcome(user, target, roll, tackle_word)
 
 	return COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH
+
+/// Helper to do a grab and then adjust the grab state if necessary
+/datum/component/tackler/proc/do_grab(mob/living/carbon/tackler, mob/living/carbon/tackled, skip_to_state = GRAB_PASSIVE)
+	set waitfor = FALSE
+
+	if(!tackler.grab(tackled) || tackler.pulling != tackled)
+		return
+	if(tackler.grab_state != skip_to_state)
+		tackler.setGrabState(skip_to_state)
 
 /**
  * Our positive tackling outcomes.
@@ -198,14 +212,9 @@
 	var/potential_outcome = (roll * 10)
 
 	if(ishuman(target))
-		var/mob/living/carbon/human/human_target = target
-		var/target_armor = human_target.run_armor_check(BODY_ZONE_CHEST, MELEE)
-		potential_outcome *= ((100 - target_armor) /100)
+		potential_outcome *= ((100 - target.run_armor_check(BODY_ZONE_CHEST, MELEE)) /100)
 	else
 		potential_outcome *= 0.9
-
-	var/mob/living/carbon/human/human_target = target
-	var/mob/living/carbon/human/human_sacker = user
 
 	switch(potential_outcome)
 		if(-INFINITY to 0) //I don't want to know how this has happened, okay?
@@ -233,9 +242,7 @@
 			target.Paralyze(0.5 SECONDS)
 			target.Knockdown(3 SECONDS)
 			target.adjust_staggered_up_to(STAGGERED_SLOWDOWN_LENGTH * 2, 10 SECONDS)
-			if(ishuman(target) && ishuman(user))
-				INVOKE_ASYNC(human_sacker.dna.species, TYPE_PROC_REF(/datum/species, grab), human_sacker, human_target)
-				human_sacker.setGrabState(GRAB_PASSIVE)
+			do_grab(user, target)
 
 		if(50 to INFINITY) // absolutely BODIED
 			var/stamcritted_user = HAS_TRAIT_FROM(user, TRAIT_INCAPACITATED, STAMINA)
@@ -259,9 +266,7 @@
 				target.Paralyze(0.5 SECONDS)
 				target.Knockdown(3 SECONDS)
 				target.adjust_staggered_up_to(STAGGERED_SLOWDOWN_LENGTH * 3, 10 SECONDS)
-				if(ishuman(target) && ishuman(user))
-					INVOKE_ASYNC(human_sacker.dna.species, TYPE_PROC_REF(/datum/species, grab), human_sacker, human_target)
-					human_sacker.setGrabState(GRAB_AGGRESSIVE)
+				do_grab(user, target, GRAB_AGGRESSIVE)
 
 /**
  * Our neutral tackling outcome.
@@ -300,9 +305,7 @@
 	var/potential_roll_outcome = (roll * -10)
 
 	if(ishuman(user))
-		var/mob/living/carbon/human/human_sacker = target
-		var/attacker_armor = human_sacker.run_armor_check(BODY_ZONE_CHEST, MELEE)
-		potential_roll_outcome *= ((100 - attacker_armor) /100)
+		potential_roll_outcome *= ((100 - target.run_armor_check(BODY_ZONE_CHEST, MELEE)) /100)
 	else
 		potential_roll_outcome *= 0.9
 
@@ -400,14 +403,18 @@
 			defense_mod += 2
 		if(tackle_target.mob_negates_gravity())
 			defense_mod += 1
-		if(HAS_TRAIT(tackle_target, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // riot armor and such
+		if(HAS_TRAIT(tackle_target, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // riot armor and such
 			defense_mod += 5
 
-		var/obj/item/organ/external/tail/lizard/el_tail = tackle_target.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+		var/obj/item/organ/tail/lizard/el_tail = tackle_target.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
 		if(HAS_TRAIT(tackle_target, TRAIT_TACKLING_TAILED_DEFENDER) && !el_tail)
 			defense_mod -= 1
 		if(el_tail && (el_tail.wag_flags & WAG_WAGGING)) // lizard tail wagging is robust and can swat away assailants!
 			defense_mod += 1
+
+		var/obj/item/organ/cyberimp/chest/spine/potential_spine = tackle_target.get_organ_slot(ORGAN_SLOT_SPINE)
+		if(istype(potential_spine))
+			defense_mod += potential_spine.strength_bonus
 
 	// OF-FENSE
 	var/mob/living/carbon/sacker = parent
@@ -434,12 +441,16 @@
 		attack_mod += 2
 
 	if(HAS_TRAIT(sacker, TRAIT_TACKLING_WINGED_ATTACKER))
-		var/obj/item/organ/external/wings/moth/sacker_moth_wing = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
+		var/obj/item/organ/wings/moth/sacker_moth_wing = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(!sacker_moth_wing || sacker_moth_wing.burnt)
 			attack_mod -= 2
-	var/obj/item/organ/external/wings/sacker_wing = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
+	var/obj/item/organ/wings/sacker_wing = sacker.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 	if(sacker_wing)
 		attack_mod += 2
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = sacker.get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		attack_mod += potential_spine.strength_bonus
 
 	if(ishuman(sacker))
 		var/mob/living/carbon/human/human_sacker = sacker
@@ -451,7 +462,7 @@
 			attack_mod += 15
 			human_sacker.adjustStaminaLoss(100) //AHAHAHAHAHAHAHAHA
 
-		if(HAS_TRAIT(human_sacker, TRAIT_SHOVE_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
+		if(HAS_TRAIT(human_sacker, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)) // tackling with riot specialized armor, like riot armor, is effective but tiring
 			attack_mod += 2
 			human_sacker.adjustStaminaLoss(20)
 
@@ -493,8 +504,12 @@
 	var/danger_zone = (speed - 1) * 13 // for every extra speed we have over 1, take away 13 of the safest chance
 	danger_zone = max(min(danger_zone, 100), 1)
 
-	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
 	oopsie_mod -= floor(user.getarmor(BODY_ZONE_CHEST, MELEE) * 0.12)
+	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE) // Can't snap that spine if it's made of metal.
+	if(istype(potential_spine))
+		oopsie_mod -= potential_spine.strength_bonus
 
 	if(HAS_TRAIT(user, TRAIT_CLUMSY))
 		oopsie_mod += 6 //honk!
@@ -511,39 +526,31 @@
 		if(99 to INFINITY)
 			// can you imagine standing around minding your own business when all of the sudden some guy fucking launches himself into a wall at full speed and irreparably paralyzes himself?
 			user.visible_message(span_danger("[user] slams face-first into [hit] at an awkward angle, severing [user.p_their()] spinal column with a sickening crack! Fucking shit!"), span_userdanger("You slam face-first into [hit] at an awkward angle, severing your spinal column with a sickening crack! Fucking shit!"))
-			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
-			if(hed)
-				hed.receive_damage(brute=40, updating_health=FALSE, wound_bonus = 40)
-			else
-				user.adjustBruteLoss(40, updating_health=FALSE)
-			user.adjustStaminaLoss(30)
+			user.apply_damage(40, BRUTE, BODY_ZONE_HEAD, wound_bonus = 40)
+			user.apply_damage(30, STAMINA)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
 			playsound(user, 'sound/effects/splat.ogg', 70, TRUE)
 			playsound(user, 'sound/effects/wounds/crack2.ogg', 70, TRUE)
-			user.emote("scream")
+			user.pain_emote("scream")
 			user.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic) // oopsie indeed!
 			shake_camera(user, 7, 7)
 			user.flash_act(1, TRUE, TRUE, length = 4.5)
 
 		if(97 to 98)
 			user.visible_message(span_danger("[user] slams skull-first into [hit] with a sound like crumpled paper, revealing a horrifying breakage in [user.p_their()] cranium! Holy shit!"), span_userdanger("You slam skull-first into [hit] and your senses are filled with warm goo flooding across your face! Your skull is open!"))
-			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
-			if(hed)
-				hed.receive_damage(brute = 30, updating_health = FALSE, wound_bonus = 25)
-			else
-				user.adjustBruteLoss(40, updating_health = FALSE)
-			user.adjustStaminaLoss(30)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD, wound_bonus = 25)
+			user.apply_damage(30, STAMINA)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
 			playsound(user, 'sound/effects/splat.ogg', 70, TRUE)
-			user.emote("gurgle")
+			user.pain_emote("gurgle")
 			shake_camera(user, 7, 7)
 			user.flash_act(1, TRUE, TRUE, length = 4.5)
 
 		if(93 to 96)
 			user.visible_message(span_danger("[user] slams face-first into [hit] with a concerning squish, immediately going limp!"), span_userdanger("You slam face-first into [hit], and immediately lose consciousness!"))
-			user.adjustStaminaLoss(30)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 			user.Unconscious(10 SECONDS)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			user.playsound_local(get_turf(user), 'sound/weapons/flashbang.ogg', 100, TRUE, 8)
@@ -552,8 +559,8 @@
 
 		if(86 to 92)
 			user.visible_message(span_danger("[user] slams head-first into [hit], suffering major cranial trauma!"), span_userdanger("You slam head-first into [hit], and the world explodes around you!"))
-			user.adjustStaminaLoss(30, updating_stamina = FALSE)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 			user.adjust_confusion(15 SECONDS)
 			if(prob(80))
 				user.gain_trauma(/datum/brain_trauma/mild/concussion)
@@ -564,16 +571,16 @@
 
 		if(68 to 85)
 			user.visible_message(span_danger("[user] slams hard into [hit], knocking [user.p_them()] senseless!"), span_userdanger("You slam hard into [hit], knocking yourself senseless!"))
-			user.adjustStaminaLoss(30, updating_stamina = FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 			user.adjust_confusion(10 SECONDS)
 			user.Knockdown(3 SECONDS)
 			shake_camera(user, 3, 4)
 
 		if(1 to 67)
 			user.visible_message(span_danger("[user] slams into [hit]!"), span_userdanger("You slam into [hit]!"))
-			user.adjustStaminaLoss(20, updating_stamina = FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(20, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 			user.Knockdown(2 SECONDS)
 			shake_camera(user, 2, 2)
 
@@ -627,8 +634,8 @@
 			HOW_big_of_a_miss_did_we_just_make = ", making a ginormous mess!" // an extra exclamation point!! for emphasis!!!
 
 	owner.visible_message(span_danger("[owner] trips over [kevved] and slams into it face-first[HOW_big_of_a_miss_did_we_just_make]!"), span_userdanger("You trip over [kevved] and slam into it face-first[HOW_big_of_a_miss_did_we_just_make]!"))
-	owner.adjustStaminaLoss(15 + messes.len * 2, updating_stamina = FALSE)
-	owner.adjustBruteLoss(8 + messes.len, updating_health = FALSE)
+	owner.apply_damage(15 + messes.len * 2, STAMINA, BODY_ZONE_HEAD)
+	owner.apply_damage(8 + messes.len, BRUTE, BODY_ZONE_HEAD)
 	owner.Paralyze(0.4 SECONDS * messes.len) // .4 seconds of paralyze for each thing you knock around
 	owner.Knockdown(2 SECONDS + 0.4 SECONDS * messes.len) // 2 seconds of knockdown after the paralyze
 	owner.updatehealth()

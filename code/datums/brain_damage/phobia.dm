@@ -83,7 +83,7 @@
 	if (!isitem(checked))
 		return TRUE
 	var/obj/item/checked_item = checked
-	return !(checked_item.item_flags & EXAMINE_SKIP)
+	return !HAS_TRAIT(checked_item, TRAIT_EXAMINE_SKIP)
 
 /datum/brain_trauma/mild/phobia/handle_hearing(datum/source, list/hearing_args)
 	if(!owner.can_hear() || owner == hearing_args[HEARING_SPEAKER] || !owner.has_language(hearing_args[HEARING_LANGUAGE])) 	//words can't trigger you if you can't hear them *taps head*
@@ -93,7 +93,7 @@
 		return
 
 	if(trigger_regex.Find(hearing_args[HEARING_RAW_MESSAGE]) != 0)
-		addtimer(CALLBACK(src, PROC_REF(freak_out), null, trigger_regex.group[2]), 10) //to react AFTER the chat message
+		addtimer(CALLBACK(src, PROC_REF(freak_out), null, trigger_regex.group[2]), 1 SECONDS) //to react AFTER the chat message
 		hearing_args[HEARING_RAW_MESSAGE] = trigger_regex.Replace(hearing_args[HEARING_RAW_MESSAGE], "[span_phobia("$2")]$3")
 
 /datum/brain_trauma/mild/phobia/handle_speech(datum/source, list/speech_args)

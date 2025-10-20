@@ -49,7 +49,7 @@
 /mob/living/basic/cat_butcherer/get_blood_type()
 	if(!fake_blood_type)
 		fake_blood_type = random_human_blood_type()
-	return GLOB.blood_types[fake_blood_type]
+	return find_blood_type(fake_blood_type)
 
 /mob/living/basic/cat_butcherer/proc/after_attack(mob/living/basic/attacker, atom/target)
 	SIGNAL_HANDLER
@@ -58,7 +58,7 @@
 		return
 
 	var/mob/living/carbon/human/attacked = target
-	var/obj/item/organ/external/tail/cat/tail = attacked.get_organ_by_type(/obj/item/organ/external/tail/cat)
+	var/obj/item/organ/tail/cat/tail = attacked.get_organ_by_type(/obj/item/organ/tail/cat)
 	if(QDELETED(tail))
 		return
 

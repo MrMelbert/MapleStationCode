@@ -3,6 +3,11 @@
 	e_cost = LASER_SHOTS(12, STANDARD_CELL_CHARGE)
 	select_name = "kill"
 
+/obj/item/ammo_casing/energy/laser/phaser
+	projectile_type = /obj/projectile/beam/laser/phaser
+	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)
+	fire_sound = 'sound/weapons/laser2.ogg'
+
 /obj/item/ammo_casing/energy/laser/hellfire
 	projectile_type = /obj/projectile/beam/laser/hellfire
 	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)
@@ -12,6 +17,9 @@
 	projectile_type = /obj/projectile/beam/laser
 	e_cost = LASER_SHOTS(16, STANDARD_CELL_CHARGE)
 	select_name = "kill"
+
+/obj/item/ammo_casing/energy/lasergun/retro
+	projectile_type = /obj/projectile/beam/laser/no_hitscan
 
 /obj/item/ammo_casing/energy/lasergun/carbine
 	projectile_type = /obj/projectile/beam/laser/carbine
@@ -38,6 +46,8 @@
 
 /obj/item/ammo_casing/energy/laser/musket/prime
 	projectile_type = /obj/projectile/beam/laser/musket/prime
+	pellets = 3
+	variance = 10
 
 /obj/item/ammo_casing/energy/laser/practice
 	projectile_type = /obj/projectile/beam/practice

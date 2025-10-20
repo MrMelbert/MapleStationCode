@@ -1,6 +1,11 @@
 /datum/job/roboticist
 	title = JOB_ROBOTICIST
-	description = "Build and repair the AI and cyborgs, create mechs."
+	description = "Build and repair cyborgs, create mechs and space suits, \
+		augment the crew, illegally tamper with the AI's laws."
+	title_options = list(
+		"Mechanist",
+		"Prosthetist" = /datum/outfit/job/roboticist/prosthetist,
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -12,7 +17,7 @@
 	bounty_types = CIV_JOB_ROBO
 	config_tag = "ROBOTICIST"
 
-	outfit = /datum/outfit/job/roboticist
+	base_outfit = /datum/outfit/job/roboticist
 	plasmaman_outfit = /datum/outfit/plasmaman/robotics
 	departments_list = list(
 		/datum/job_department/science,
@@ -63,3 +68,10 @@
 	suit = null
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+
+/datum/outfit/job/roboticist/prosthetist
+	name = "Prosthetist"
+	uniform = /obj/item/clothing/under/rank/medical/scrubs/purple
+	id_trim = /datum/id_trim/job/roboticist/prosthetist
+	mask = /obj/item/clothing/mask/surgical
+	ears = /obj/item/radio/headset/headset_medsci

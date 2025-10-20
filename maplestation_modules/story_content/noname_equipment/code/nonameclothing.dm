@@ -6,6 +6,14 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nndress"
 
+/datum/loadout_item/under/formal/nndress
+	name = "Blue Dress"
+	item_path = /obj/item/clothing/under/dress/nndress
+
+/datum/loadout_item/under/formal/nndress/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
+
 /// Component to make a suit item allow the wearer to safely ventcrawl, with some drawbacks
 /datum/component/ventcrawler_clothing
 	/// Tracks if it is currently equipped and applied

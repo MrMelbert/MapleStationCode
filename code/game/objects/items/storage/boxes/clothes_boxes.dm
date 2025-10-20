@@ -126,6 +126,24 @@
 	new /obj/item/clothing/under/ethereal_tunic/trailwarden(src)
 	new /obj/item/storage/backpack/saddlepack(src)
 
+/obj/item/storage/box/hero/journalist
+	name = "Assassinated by CIA - 1984." // Literally
+	desc = "Many courageous individuals risked their lives to report on events the government sought to keep hidden from the public, ensuring that the truth remained buried and unheard. These garments are replicas of the clothing worn by one such 'journalist,' a silent sentinel in the fight for truth."
+
+/obj/item/storage/box/hero/journalist/PopulateContents()
+	new /obj/item/clothing/under/costume/buttondown/slacks(src)
+	new /obj/item/clothing/suit/toggle/suspenders(src)
+	new /obj/item/clothing/neck/tie/red(src)
+	new /obj/item/clothing/head/fedora/beige/press(src)
+	new /obj/item/clothing/accessory/press_badge(src)
+	new /obj/item/clothing/suit/hazardvest/press(src)
+	new /obj/item/radio/entertainment/microphone/physical(src)
+	new /obj/item/radio/entertainment/speakers/physical(src)
+	new /obj/item/clipboard(src)
+	new /obj/item/taperecorder(src)
+	new /obj/item/camera(src)
+	new /obj/item/wallframe/telescreen/entertainment(src)
+
 /obj/item/storage/box/holy
 	name = "Templar Kit"
 	/// This item is used to generate a preview image for this set.
@@ -196,3 +214,26 @@
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie/divine_archer(src)
 	new /obj/item/clothing/gloves/divine_archer(src)
 	new /obj/item/clothing/shoes/divine_archer(src)
+
+/obj/item/storage/box/floor_camo
+	name = "floor tile camo box"
+	desc = "Thank you for shopping from Camo-J's, our uniquely designed \
+		floor-tile 'NT scum' styled camouflage fatigues is the ultimate \
+		espionage uniform used by the very best. Providing the best \
+		flexibility, with our latest Camo-tech threads. Perfect for \
+		risky-espionage hallway operations. Enjoy our product!"
+
+/obj/item/storage/box/floor_camo/PopulateContents()
+	new /obj/item/clothing/under/syndicate/floortilecamo(src)
+	new /obj/item/clothing/mask/floortilebalaclava(src)
+	new /obj/item/clothing/gloves/combat/floortile(src)
+	new /obj/item/clothing/shoes/jackboots/floortile(src)
+	new /obj/item/storage/backpack/floortile(src)
+
+/obj/item/storage/box/collar_bomb
+	name = "collar bomb box"
+	desc = "A small print on the back reads 'For research purposes only. Handle with care. In case of emergency, call the following number:'... the rest is scratched out with a marker..."
+
+/obj/item/storage/box/collar_bomb/PopulateContents()
+	var/obj/item/collar_bomb_button/button = new(src)
+	new /obj/item/clothing/neck/collar_bomb(src, button)

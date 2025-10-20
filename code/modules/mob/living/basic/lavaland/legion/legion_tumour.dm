@@ -1,5 +1,5 @@
 /// Left behind when a legion infects you, for medical enrichment
-/obj/item/organ/internal/legion_tumour
+/obj/item/organ/legion_tumour
 	name = "legion tumour"
 	desc = "A mass of pulsing flesh and dark tendrils, containing the power to regenerate flesh at a terrible cost."
 	failing_desc = "pulses and writhes with horrible life, reaching towards you with its tendrils!"
@@ -7,6 +7,7 @@
 	icon_state = "legion_remains"
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_PARASITE_EGG
+	organ_flags = parent_type::organ_flags | ORGAN_HAZARDOUS
 	decay_factor = STANDARD_ORGAN_DECAY * 3 // About 5 minutes outside of a host
 	/// What stage of growth the corruption has reached.
 	var/stage = 0
@@ -26,22 +27,22 @@
 		'sound/voice/lowHiss4.ogg',
 	)
 
-/obj/item/organ/internal/legion_tumour/Initialize(mapload)
+/obj/item/organ/legion_tumour/Initialize(mapload)
 	. = ..()
 	animate_pulse()
 
-/obj/item/organ/internal/legion_tumour/apply_organ_damage(damage_amount, maximum, required_organ_flag)
+/obj/item/organ/legion_tumour/apply_organ_damage(damage_amount, maximum, required_organ_flag)
 	var/was_failing = organ_flags & ORGAN_FAILING
 	. = ..()
 	if (was_failing != (organ_flags & ORGAN_FAILING))
 		animate_pulse()
 
-/obj/item/organ/internal/legion_tumour/set_organ_damage(damage_amount, required_organ_flag)
+/obj/item/organ/legion_tumour/set_organ_damage(damage_amount, required_organ_flag)
 	. = ..()
 	animate_pulse()
 
 /// Do a heartbeat animation depending on if we're failing or not
-/obj/item/organ/internal/legion_tumour/proc/animate_pulse()
+/obj/item/organ/legion_tumour/proc/animate_pulse()
 	animate(src, transform = matrix()) // Stop any current animation
 
 	var/speed_divider = organ_flags & ORGAN_FAILING ? 2 : 1
@@ -50,19 +51,19 @@
 	animate(transform = matrix(), time = 0.5 SECONDS / speed_divider, easing = SINE_EASING | EASE_IN)
 	animate(transform = matrix(), time = 2 SECONDS / speed_divider)
 
-/obj/item/organ/internal/legion_tumour/Remove(mob/living/carbon/egg_owner, special, movement_flags)
+/obj/item/organ/legion_tumour/Remove(mob/living/carbon/egg_owner, special, movement_flags)
 	. = ..()
 	stage = 0
 	elapsed_time = 0
 
-/obj/item/organ/internal/legion_tumour/attack(mob/living/target, mob/living/user, params)
+/obj/item/organ/legion_tumour/attack(mob/living/target, mob/living/user, params)
 	if (try_apply(target, user))
 		qdel(src)
 		return
 	return ..()
 
 /// Smear it on someone like a regen core, why not. Make sure they're alive though.
-/obj/item/organ/internal/legion_tumour/proc/try_apply(mob/living/target, mob/user)
+/obj/item/organ/legion_tumour/proc/try_apply(mob/living/target, mob/user)
 	if(!user.Adjacent(target) || !isliving(target))
 		return FALSE
 
@@ -84,7 +85,7 @@
 	skull.melee_attack(target)
 	return TRUE
 
-/obj/item/organ/internal/legion_tumour/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/legion_tumour/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	if (QDELETED(src) || QDELETED(owner))
 		return
@@ -124,7 +125,7 @@
 
 			if(SPT_PROB(3, seconds_per_tick))
 				to_chat(owner, span_danger("Your muscles ache."))
-				owner.take_bodypart_damage(3)
+				owner.damage_random_bodypart(3)
 
 	if (stage == 5)
 		if (SPT_PROB(10, seconds_per_tick))
@@ -140,7 +141,7 @@
 		to_chat(owner, span_bolddanger("Something is moving under your skin!"))
 
 /// Consume our host
-/obj/item/organ/internal/legion_tumour/proc/infest()
+/obj/item/organ/legion_tumour/proc/infest()
 	if (QDELETED(src) || QDELETED(owner))
 		return
 	owner.visible_message(span_boldwarning("Black tendrils burst from [owner]'s flesh, covering them in amorphous flesh!"))
@@ -148,7 +149,7 @@
 	new_legion.consume(owner)
 	qdel(src)
 
-/obj/item/organ/internal/legion_tumour/on_find(mob/living/finder)
+/obj/item/organ/legion_tumour/on_find(mob/living/finder)
 	. = ..()
 	to_chat(finder, span_warning("There's an enormous tumour in [owner]'s [zone]!"))
 	if(stage < 4)
@@ -157,3 +158,7 @@
 	to_chat(finder, span_notice("Its pulsing tendrils reach all throughout the body."))
 	if(prob(stage * 2))
 		infest()
+
+/obj/item/organ/legion_tumour/feel_for_damage(self_aware)
+	// keep stealthy for now, revisit later
+	return ""

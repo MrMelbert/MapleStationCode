@@ -1,13 +1,13 @@
 import {
   CheckboxInput,
-  Feature,
-  FeatureChoiced,
+  type Feature,
+  type FeatureChoiced,
   FeatureColorInput,
-  FeatureDropdownInput,
   FeatureNumberInput,
-  FeatureNumeric,
-  FeatureToggle,
+  type FeatureNumeric,
+  type FeatureToggle,
 } from './base';
+import { FeatureDropdownInput } from './dropdowns';
 
 export const feature_head_tentacles: FeatureChoiced = {
   name: 'Head Tentacles',

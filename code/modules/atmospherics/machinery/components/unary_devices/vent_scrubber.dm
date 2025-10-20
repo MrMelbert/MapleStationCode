@@ -12,8 +12,10 @@
 	hide = TRUE
 	shift_underlay_only = FALSE
 	pipe_state = "scrubber"
+	has_cap_visuals = TRUE
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
+	interaction_flags_click = NEED_VENTCRAWL
 
 	///The mode of the scrubber (ATMOS_DIRECTION_SCRUBBING or ATMOS_DIRECTION_SIPHONING)
 	var/scrubbing = ATMOS_DIRECTION_SCRUBBING
@@ -170,12 +172,6 @@
 	update_power_usage()
 	update_appearance(UPDATE_ICON)
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/update_name()
-	. = ..()
-	if(override_naming)
-		return
-	name = "\proper [get_area_name(src)] [name] [id_tag]"
-
 /obj/machinery/atmospherics/components/unary/vent_scrubber/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	if(welded || !is_operational)
 		return FALSE
@@ -308,11 +304,12 @@
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(src)], and is ID [id_tag].")
 	if(welded)
 		. += "It seems welded shut."
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user, list/modifiers)
-	if(!welded || !(do_after(user, 20, target = src)))
+	if(!welded || !(do_after(user, 2 SECONDS, target = src)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the scrubber."), span_hear("You hear loud scraping noises."))
 	welded = FALSE

@@ -25,6 +25,9 @@
 	desc = "Micro-mechanical manipulator for retracting stuff."
 	toolspeed = 0.5
 
+/obj/item/retractor/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_retractor"
 
 /obj/item/hemostat
 	name = "hemostat"
@@ -34,7 +37,7 @@
 	inhand_icon_state = "hemostat"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	custom_materials = list(/datum/material/iron =SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT*1.25)
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.25)
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
@@ -55,6 +58,9 @@
 	desc = "Tiny servos power a pair of pincers to stop bleeding."
 	toolspeed = 0.5
 
+/obj/item/hemostat/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_hemostat"
 
 /obj/item/cautery
 	name = "cautery"
@@ -73,6 +79,7 @@
 	tool_behaviour = TOOL_CAUTERY
 	toolspeed = 1
 	heat = 500
+	usesound = 'sound/surgery/cautery1.ogg'
 	drop_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
 
@@ -83,11 +90,15 @@
 	return surgical_tray_overlay
 
 /obj/item/cautery/ignition_effect(atom/ignitable_atom, mob/user)
-	. = span_notice("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
+	return span_rose("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
 
 /obj/item/cautery/augment
 	desc = "A heated element that cauterizes wounds."
 	toolspeed = 0.5
+
+/obj/item/cautery/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_cautery"
 
 /obj/item/cautery/advanced
 	name = "searing tool"
@@ -102,8 +113,9 @@
 	hitsound = 'sound/items/welder.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_system = OVERLAY_LIGHT
+	light_range = 1.5
+	light_power = 1.2
 	light_color = COLOR_SOFT_RED
 
 /obj/item/cautery/advanced/get_all_tool_behaviours()
@@ -174,10 +186,14 @@
 
 /obj/item/surgicaldrill/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] rams [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
-	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), null, null, TRUE, TRUE), 25)
+	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), null, null, TRUE, TRUE), 2.5 SECONDS)
 	user.SpinAnimation(3, 10)
 	playsound(user, 'sound/machines/juicer.ogg', 20, TRUE)
 	return MANUAL_SUICIDE
+
+/obj/item/surgicaldrill/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_drill"
 
 /obj/item/surgicaldrill/augment
 	desc = "Effectively a small power drill contained within your arm. May or may not pierce the heavens."
@@ -232,6 +248,10 @@
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] [pick("wrists", "throat", "stomach")] with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
+/obj/item/scalpel/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_scalpel"
+
 /obj/item/scalpel/augment
 	desc = "Ultra-sharp blade attached directly to your bone for extra-accuracy."
 	toolspeed = 0.5
@@ -278,13 +298,17 @@
 	//saws are very accurate and fast at butchering
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/chainsaw)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
 /obj/item/circular_saw/get_surgery_tool_overlay(tray_extended)
 	return surgical_tray_overlay
+
+/obj/item/circular_saw/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_saw"
 
 /obj/item/circular_saw/augment
 	desc = "A small but very fast spinning saw. It rips and tears until it is done."
@@ -305,10 +329,15 @@
 	attack_verb_simple = list("slap")
 	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_IGNORE_MOBILITY
 
 /obj/item/surgical_drapes/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/surgery_initiator)
+
+/obj/item/surgical_drapes/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_surgicaldrapes"
 
 /obj/item/surgical_processor //allows medical cyborgs to scan and initiate advanced surgeries
 	name = "surgical processor"
@@ -352,11 +381,9 @@
 	. = ..()
 	UnregisterSignal(user, COMSIG_SURGERY_STARTING)
 
-/obj/item/surgical_processor/afterattack(atom/design_holder, mob/user, proximity)
-	if(!proximity)
-		return ..()
+/obj/item/surgical_processor/interact_with_atom(atom/design_holder, mob/living/user, list/modifiers)
 	if(!istype(design_holder, /obj/item/disk/surgery) && !istype(design_holder, /obj/machinery/computer/operating))
-		return ..()
+		return NONE
 	balloon_alert(user, "copying designs...")
 	playsound(src, 'sound/machines/terminal_processing.ogg', 25, TRUE)
 	if(do_after(user, 1 SECONDS, target = design_holder))
@@ -369,7 +396,8 @@
 		playsound(src, 'sound/machines/terminal_success.ogg', 25, TRUE)
 		downloaded = TRUE
 		update_appearance(UPDATE_OVERLAYS)
-	return TRUE
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/surgical_processor/update_overlays()
 	. = ..()
@@ -397,8 +425,9 @@
 	force = 16
 	w_class = WEIGHT_CLASS_NORMAL
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
-	light_range = 1
+	light_system = OVERLAY_LIGHT
+	light_range = 1.5
+	light_power = 1.2
 	light_color = LIGHT_COLOR_BLUE
 	sharpness = SHARP_EDGED
 
@@ -432,7 +461,7 @@
 		set_light_range(2)
 	else
 		tool_behaviour = TOOL_SCALPEL
-		set_light_range(1)
+		set_light_range(1.5)
 
 	balloon_alert(user, "[active ? "enabled" : "disabled"] bone-cutting mode")
 	playsound(user ? user : src, 'sound/machines/click.ogg', 50, TRUE)
@@ -522,7 +551,7 @@
 		return
 
 	var/candidate_name
-	var/obj/item/organ/external/tail_snip_candidate
+	var/obj/item/organ/tail_snip_candidate
 	var/obj/item/bodypart/limb_snip_candidate
 
 	if(user.zone_selected == BODY_ZONE_PRECISE_GROIN)
@@ -594,6 +623,10 @@
 
 /obj/item/bonesetter/get_surgery_tool_overlay(tray_extended)
 	return "bonesetter" + (tray_extended ? "" : "_out")
+
+/obj/item/bonesetter/cyborg
+	icon = 'icons/mob/silicon/robot_items.dmi'
+	icon_state = "toolkit_medborg_bonesetter"
 
 /obj/item/blood_filter
 	name = "blood filter"
@@ -698,3 +731,158 @@
 /obj/item/scalpel/cruel/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/bane, mob_biotypes = MOB_UNDEAD, damage_multiplier = 1) //Just in case one of the tennants get uppity
+
+// subtypes razors so we can cut hair. melbert todo : componentize haircutting behavior
+/obj/item/razor/scissors
+	name = "scissors"
+	desc = "A pair of scissors. Used to cut paper, hair, or people."
+	icon_state = "scissors"
+	icon = 'maplestation_modules/icons/obj/surgery_tools.dmi'
+	inhand_icon_state = "hemostat"
+	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+	throw_range = 4
+	throwforce = 6
+	throw_speed = 1
+	tool_behaviour = TOOL_WIRECUTTER // TOOL_SCISSORS // melbert todo : add this later when it's actually relevant
+	item_flags = SURGICAL_TOOL
+	obj_flags = CONDUCTS_ELECTRICITY
+	w_class = WEIGHT_CLASS_SMALL
+	toolspeed = 1.5
+	force = 12
+	sharpness = SHARP_EDGED
+	drop_sound = 'maplestation_modules/sound/items/drop/knife3.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
+	hitsound = 'sound/weapons/bladeslice.ogg' // 'maplestation_modules/sound/items/snip.ogg' // melbert todo : maybe too funny. add a custom one?
+	shave_sound = 'maplestation_modules/sound/items/snip.ogg'
+	mob_throw_hit_sound = 'sound/weapons/pierce.ogg'
+	article = "a pair of"
+
+/obj/item/razor/scissors/Initialize(mapload)
+	. = ..()
+	register_item_context()
+	AddComponent(/datum/component/butchering, \
+		speed = 10 SECONDS * toolspeed, \
+		effectiveness = 100 * (1 / toolspeed), \
+		bonus_modifier = 0, \
+	)
+
+/obj/item/razor/scissors/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(iscarbon(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Remove Bandages"
+		return CONTEXTUAL_SCREENTIP_SET
+	return NONE
+
+/obj/item/razor/scissors/suicide_act(mob/living/carbon/user)
+	if(!user.get_bodypart(BODY_ZONE_HEAD))
+		return NONE
+	user.visible_message(
+		span_suicide("[user] starts to cut too close to [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"),
+	)
+	if(!do_after(user, 3 SECONDS))
+		return SHAME
+	var/obj/item/bodypart/head/head = user.get_bodypart(BODY_ZONE_HEAD)
+	shave(user, BODY_ZONE_PRECISE_MOUTH)
+	shave(user, BODY_ZONE_HEAD)
+	if(head.dismember(BRUTE))
+		return BRUTELOSS
+	user.visible_message(
+		span_suicide("[user] avoids cutting [user.p_their()] neck, somehow?"),
+	)
+	return SHAME
+
+/obj/item/razor/scissors/get_surgery_tool_overlay(tray_extended)
+	return "hemostat"
+
+/obj/item/razor/scissors/proc/cut_gauze_on_mob(mob/living/carbon/cutting, mob/living/user)
+	var/obj/item/bodypart/target_limb = cutting.get_bodypart(user.zone_selected)
+	if(isnull(target_limb?.current_gauze))
+		return NONE
+
+	cutting.balloon_alert(user, "cutting bandages...")
+	user.visible_message(
+		span_notice("[user] begins cutting through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
+		span_notice("You begin cutting through [target_limb.current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
+	)
+	playsound(src, shave_sound, 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	if(!do_after(user, 3 SECONDS, cutting))
+		return ITEM_INTERACT_BLOCKING
+
+	target_limb = cutting.get_bodypart(user.zone_selected)
+	if(isnull(target_limb?.current_gauze))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(src, shave_sound, 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	cutting.balloon_alert(user, "bandages cut")
+	user.visible_message(
+		span_notice("[user] cut through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]."),
+		span_notice("You cut through [target_limb.current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]."),
+	)
+	new /obj/effect/decal/cleanable/shreds(cutting.drop_location(), target_limb.current_gauze.name)
+	qdel(target_limb.remove_gauze())
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/razor/scissors/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return ITEM_INTERACT_SKIP_TO_ATTACK
+	if(iscarbon(interacting_with))
+		return cut_gauze_on_mob(interacting_with, user)
+
+	return NONE
+
+/obj/item/razor/scissors/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot & ITEM_SLOT_HANDS)
+		RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(running_with_scissors), override = TRUE)
+
+/obj/item/razor/scissors/dropped(mob/user, silent)
+	. = ..()
+	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
+
+// melbert todo : component this (just for fun)
+/obj/item/razor/scissors/proc/running_with_scissors(mob/living/source)
+	SIGNAL_HANDLER
+
+	if(!istype(source) || !source.get_bodypart(BODY_ZONE_HEAD))
+		return
+	if(source.move_intent != MOVE_INTENT_RUN)
+		return
+	if(source.body_position != STANDING_UP || source.pulledby || source.buckled)
+		return
+	// clowns are more likely to trip and fall
+	var/fall_prob = (HAS_TRAIT(source, TRAIT_CLUMSY) || HAS_TRAIT(source, TRAIT_DUMB)) ? 33 : 1
+	if(prob(100 - fall_prob))
+		return
+	SpinAnimation(0.4 SECONDS, 1)
+	playsound(src, hitsound, get_clamped_volume(), TRUE, falloff_distance = 0)
+	source.visible_message(
+		span_danger("[source] trips and falls, cutting [source.p_them()]self with [src]!"),
+		span_userdanger("You trip and fall, cutting yourself with [src]!"),
+	)
+	source.apply_damage(force, damtype, BODY_ZONE_HEAD, bare_wound_bonus = 20, sharpness = get_sharpness(), attacking_item = src)
+	source.Knockdown(5 SECONDS)
+	source.pain_emote("scream")
+	add_fingerprint(source)
+	var/bloodness = source.get_blood_dna_list()
+	if(ishuman(source))
+		var/mob/living/carbon/human/husource = source
+		husource.add_blood_DNA_to_items(bloodness, ITEM_SLOT_OCLOTHING|ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
+	add_blood_DNA(bloodness)
+
+/obj/item/razor/scissors/medical
+	name = "medical scissors"
+	desc = "A pair of scissors intended for use in medical procedures, such as cutting bandages or sutures."
+
+/obj/item/razor/scissors/medical/trauma
+	name = "trauma shears"
+	desc = "A pair of scissors designed for cutting through tough materials, such as clothing or casts."
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
+	force = 15
+	toolspeed = 1
+
+/obj/item/razor/scissors/barber
+	name = "barber scissors"
+	desc = "A pair of scissors intended for use in hair cutting and styling."

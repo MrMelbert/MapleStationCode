@@ -210,9 +210,11 @@ Turf and target are separate in case you want to teleport some distance from a t
  * if the bounds are odd, the true middle turf of the atom is returned
 **/
 /proc/get_turf_pixel(atom/checked_atom)
-	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as it's coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
+	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as its coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
 	if(!atom_turf)
 		return null
+	if(checked_atom.flags_1 & IGNORE_TURF_PIXEL_OFFSET_1)
+		return atom_turf
 
 	var/list/offsets = get_visual_offset(checked_atom)
 	return pixel_offset_turf(atom_turf, offsets)
@@ -232,9 +234,9 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/pixel_y_offset = checked_atom.pixel_y + atom_matrix.get_y_shift()
 
 	//Irregular objects
-	var/list/icon_dimensions = get_icon_dimensions(checked_atom.icon)
-	var/checked_atom_icon_height = icon_dimensions["width"]
-	var/checked_atom_icon_width = icon_dimensions["height"]
+	var/list/icon_dimensions = get_icon_dimensions_pure(checked_atom.icon)
+	var/checked_atom_icon_height = icon_dimensions["height"]
+	var/checked_atom_icon_width = icon_dimensions["width"]
 	if(checked_atom_icon_height != world.icon_size || checked_atom_icon_width != world.icon_size)
 		pixel_x_offset += ((checked_atom_icon_width / world.icon_size) - 1) * (world.icon_size * 0.5)
 		pixel_y_offset += ((checked_atom_icon_height / world.icon_size) - 1) * (world.icon_size * 0.5)
@@ -413,3 +415,20 @@ Turf and target are separate in case you want to teleport some distance from a t
 	if(locate(type_to_find) in location)
 		return TRUE
 	return FALSE
+
+/**
+ * get_blueprint_data
+ * Gets a list of turfs around a central turf and gets the blueprint data in a list
+ * Args:
+ * - central_turf: The center turf we're getting data from.
+ * - viewsize: The viewsize we're getting the turfs around central_turf of.
+ */
+/proc/get_blueprint_data(turf/central_turf, viewsize)
+	var/list/blueprint_data_returned = list()
+	var/list/dimensions = getviewsize(viewsize)
+	var/horizontal_radius = dimensions[1] / 2
+	var/vertical_radius = dimensions[2] / 2
+	for(var/turf/nearby_turf as anything in RECT_TURFS(horizontal_radius, vertical_radius, central_turf))
+		if(nearby_turf.blueprint_data)
+			blueprint_data_returned += nearby_turf.blueprint_data
+	return blueprint_data_returned

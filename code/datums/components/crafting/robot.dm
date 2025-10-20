@@ -75,21 +75,7 @@
 	var/obj/item/storage/medkit/medkit = bot.contents[3]
 	bot.medkit_type = medkit
 	bot.health_analyzer = bot.contents[4]
-
-	///if you add a new one don't forget to update /obj/item/storage/medkit/attackby()
-	if (istype(medkit, /obj/item/storage/medkit/fire))
-		bot.skin = "ointment"
-	else if (istype(medkit, /obj/item/storage/medkit/toxin))
-		bot.skin = "tox"
-	else if (istype(medkit, /obj/item/storage/medkit/o2))
-		bot.skin = "o2"
-	else if (istype(medkit, /obj/item/storage/medkit/brute))
-		bot.skin = "brute"
-	else if (istype(medkit, /obj/item/storage/medkit/advanced))
-		bot.skin = "advanced"
-	else if (istype(src, /obj/item/storage/medkit/tactical))
-		bot.skin = "bezerk"
-
+	bot.skin = medkit.get_medbot_skin()
 	bot.damage_type_healer = initial(medkit.damagetype_healed) ? initial(medkit.damagetype_healed) : BRUTE
 	bot.update_appearance()
 
@@ -198,7 +184,7 @@
 		/obj/item/stack/cable_coil = 5,
 		/obj/item/stack/rods = 2,
 		/obj/item/stack/sheet/glass = 1,
-		/obj/item/organ/internal/heart/ethereal = 1,
+		/obj/item/organ/heart/ethereal = 1,
 	)
 	category = CAT_ROBOT
 
@@ -215,3 +201,18 @@
 		/obj/item/reagent_containers/syringe = 1,
 	)
 	category = CAT_ROBOT
+
+/datum/crafting_recipe/mod_core_soul
+	name = "MOD core (Soul)"
+	result = /obj/item/mod/core/soul
+	tool_behaviors = list(TOOL_SCREWDRIVER)
+	time = 10 SECONDS
+	reqs = list(
+		/obj/item/stack/cable_coil = 5,
+		/obj/item/stack/rods = 2,
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/soulstone = 1,
+	)
+	parts = list(/obj/item/soulstone = 1)
+	category = CAT_ROBOT
+	crafting_flags = parent_type::crafting_flags | CRAFT_MUST_BE_LEARNED

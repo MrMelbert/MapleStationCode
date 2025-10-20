@@ -25,6 +25,14 @@
 	UnregisterSignal(quirk_holder, COMSIG_HUMAN_ON_HANDLE_BLOOD)
 	UnregisterSignal(quirk_holder, COMSIG_SPECIES_GAIN)
 
+/datum/quirk/blooddeficiency/is_species_appropriate(datum/species/mob_species)
+	var/datum/species_traits = GLOB.species_prototypes[mob_species].inherent_traits
+	if(TRAIT_NOBLOOD in species_traits)
+		return FALSE
+	if(TRAIT_NOBREATH in species_traits)
+		return FALSE
+	return ..()
+
 /datum/quirk/blooddeficiency/proc/lose_blood(mob/living/carbon/human/draining, seconds_per_tick, times_fired)
 	SIGNAL_HANDLER
 	if(quirk_holder.stat == DEAD || quirk_holder.blood_volume <= min_blood)
@@ -47,7 +55,7 @@
 		return
 
 	for(var/obj/item/reagent_containers/blood/blood_bag as anything in typesof(/obj/item/reagent_containers/blood))
-		if(initial(blood_bag.blood_type) == new_type.type)
+		if(initial(blood_bag.blood_type) == new_type.type_key())
 			mail_goodies += blood_bag
 			break
 

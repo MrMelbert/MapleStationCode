@@ -1,8 +1,8 @@
 //The noble ambassador!
 /datum/job/noble_ambassador
 	title = JOB_NOBLE_AMBASSADOR
-	description = "Represent the interests of the Aristocracy of Mu on the station. \
-		Ensure the wellbeing of the crew, and make sure they're being treated well by their superiors. \
+	description = "Represent the interests of the Aristocracy of Mu on the station, \
+		ensure the wellbeing of the crew, keep their supervisors in check. \
 		Try to not get all your royal tea dumped into space."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
@@ -19,7 +19,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "NOBLE_AMBASSADOR"
 
-	outfit = /datum/outfit/job/noble_ambassador
+	base_outfit = /datum/outfit/job/noble_ambassador
 	plasmaman_outfit = /datum/outfit/plasmaman // no outfit yet
 
 	paycheck = PAYCHECK_COMMAND

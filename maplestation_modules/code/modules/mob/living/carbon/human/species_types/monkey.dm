@@ -1,5 +1,6 @@
 // -- Monke species additions --
-/datum/species/monkey
 
-/datum/species/monkey/get_species_speech_sounds(sound_type)
-	return string_assoc_list(list('maplestation_modules/sound/voice/monkey_1.ogg' = 90))
+/obj/item/organ/tongue/monkey
+	speech_sound_list = list('maplestation_modules/sound/voice/monkey_1.ogg' = 90)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null

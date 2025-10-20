@@ -10,6 +10,7 @@
 	anchored = FALSE
 	health = 25
 	maxHealth = 25
+	light_color = "#99ccff"
 
 	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_JANITOR)
 	radio_key = /obj/item/encryptionkey/headset_service
@@ -109,6 +110,7 @@
 		/obj/item/trash,
 		/obj/item/food/deadmouse,
 		/obj/effect/decal/remains,
+		/obj/item/cigbutt,
 	))
 	///drawings we hunt
 	var/static/list/cleanable_drawings = typecacheof(list(/obj/effect/decal/cleanable/crayon))

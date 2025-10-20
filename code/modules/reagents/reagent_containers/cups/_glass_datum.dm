@@ -72,7 +72,7 @@ GLOBAL_LIST_INIT(glass_style_singletons, create_glass_styles())
 
 /// Sets the passed item to our name.
 /datum/glass_style/proc/set_name(obj/item/thing)
-	thing.name = name
+	thing.name = "\improper [name]"
 
 /// Sets the passed item to our description.
 /datum/glass_style/proc/set_desc(obj/item/thing)

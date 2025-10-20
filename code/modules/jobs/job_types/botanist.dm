@@ -1,6 +1,8 @@
 /datum/job/botanist
 	title = JOB_BOTANIST
-	description = "Grow plants for the cook, for medicine, and for recreation."
+	description = "Grow produce for the kitchen, \
+		grow herbs for medbay, \
+		grow weed for recreation."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -9,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BOTANIST"
 
-	outfit = /datum/outfit/job/botanist
+	base_outfit = /datum/outfit/job/botanist
 	plasmaman_outfit = /datum/outfit/plasmaman/botany
 
 	paycheck = PAYCHECK_CREW

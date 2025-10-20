@@ -82,11 +82,10 @@
 	name = "energybar wrapper"
 	icon_state = "energybar"
 
-/obj/item/trash/waffles
-	name = "waffles tray"
-	icon_state = "waffles"
-	drop_sound = /obj/item/storage/bag/tray::drop_sound
-	pickup_sound = /obj/item/storage/bag/tray::pickup_sound
+/obj/item/trash/fleet_ration
+	name = "surplus fleet wrapper"
+	desc = "In the Mothic Fleet every individual wrapper is carefully recycled and repurposed into fresh material. Over here they are more commonly dropped directly onto the floor."
+	icon_state = "moth_ration"
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"

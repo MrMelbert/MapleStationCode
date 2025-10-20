@@ -15,8 +15,18 @@
 /obj/item/organ/proc/Insert(mob/living/carbon/receiver, special = FALSE, movement_flags)
 	SHOULD_CALL_PARENT(TRUE)
 
+	// melbert todo : the proper fix later
+	if(!iscarbon(receiver))
+		//We try to insert the organ in a corgi when running the test, expecting it to return FALSE.
+		if(!PERFORM_ALL_TESTS(organ_sanity))
+			stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
+		return FALSE
+
 	mob_insert(receiver, special, movement_flags)
 	bodypart_insert(limb_owner = receiver, movement_flags = movement_flags)
+
+	if(!special)
+		receiver.update_body_parts()
 
 	return TRUE
 
@@ -31,6 +41,9 @@
 
 	mob_remove(organ_owner, special, movement_flags)
 	bodypart_remove(limb_owner = organ_owner, movement_flags = movement_flags)
+
+	if(!special)
+		organ_owner.update_body_parts()
 
 /*
  * Insert the organ into the select mob.
@@ -64,6 +77,11 @@
 		// wash also adds the blood dna again
 		wash(CLEAN_TYPE_BLOOD)
 		organ_flags &= ~ORGAN_VIRGIN
+
+	if(external_bodytypes)
+		receiver.synchronize_bodytypes()
+	if(external_bodyshapes)
+		receiver.synchronize_bodyshapes()
 
 	receiver.organs |= src
 	receiver.organs_slot[slot] = src
@@ -120,6 +138,9 @@
 	ADD_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
 	interaction_flags_item &= ~INTERACT_ITEM_ATTACK_HAND_PICKUP
 
+	if(bodypart_overlay)
+		limb.add_bodypart_overlay(bodypart_overlay)
+
 /*
  * Remove the organ from the select mob.
  *
@@ -161,6 +182,9 @@
 	UnregisterSignal(organ_owner, COMSIG_ATOM_EXAMINE)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
+
+	organ_owner.synchronize_bodytypes()
+	organ_owner.synchronize_bodyshapes()
 
 	var/list/diseases = organ_owner.get_static_viruses()
 	if(!LAZYLEN(diseases))
@@ -211,6 +235,16 @@
 	item_flags &= ~ABSTRACT
 	REMOVE_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
 	interaction_flags_item |= INTERACT_ITEM_ATTACK_HAND_PICKUP
+
+	if(!bodypart_overlay)
+		return
+
+	limb.remove_bodypart_overlay(bodypart_overlay)
+
+	if(use_mob_sprite_as_obj_sprite)
+		update_appearance(UPDATE_OVERLAYS)
+
+	color = bodypart_overlay.draw_color // so a pink felinid doesn't drop a gray tail
 
 /// In space station videogame, nothing is sacred. If somehow an organ is removed unexpectedly, handle it properly
 /obj/item/organ/proc/forced_removal()

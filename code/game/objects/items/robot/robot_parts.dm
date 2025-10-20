@@ -76,7 +76,7 @@
 	head.flash2 = new(head)
 	chest = new(src)
 	chest.wired = TRUE
-	chest.cell = new /obj/item/stock_parts/cell/high(chest)
+	chest.cell = new /obj/item/stock_parts/power_store/cell/high(chest)
 	update_appearance()
 
 /obj/item/robot_suit/update_overlays()
@@ -121,14 +121,11 @@
 
 	if(chest)
 		chest.forceMove(drop_to)
-		new /obj/item/stack/cable_coil(drop_to, 1)
-		chest.wired = FALSE
-		chest.cell?.forceMove(drop_to)
+		chest.drop_organs()
 
 	if(head)
-		head.flash1?.forceMove(drop_to)
-		head.flash2?.forceMove(drop_to)
 		head.forceMove(drop_to)
+		head.drop_organs()
 
 /obj/item/robot_suit/proc/put_in_hand_or_drop(mob/living/user, obj/item/I) //normal put_in_hands() drops the item ontop of the player, this drops it at the suit's loc
 	if(!user.put_in_hands(I))
@@ -145,7 +142,7 @@
 		to_chat(user, span_warning("[src] has no attached torso!"))
 		return
 
-	var/obj/item/stock_parts/cell/temp_cell = user.is_holding_item_of_type(/obj/item/stock_parts/cell)
+	var/obj/item/stock_parts/power_store/cell/temp_cell = user.is_holding_item_of_type(/obj/item/stock_parts/power_store/cell)
 	var/swap_failed = FALSE
 	if(!temp_cell) //if we're not holding a cell
 		swap_failed = TRUE
@@ -242,7 +239,7 @@
 
 	else if(istype(W, /obj/item/bodypart/head/robot))
 		var/obj/item/bodypart/head/robot/HD = W
-		if(locate(/obj/item/organ/internal) in HD)
+		if(locate(/obj/item/organ) in HD)
 			to_chat(user, span_warning("There are organs inside [HD]!"))
 			return
 		if(head)
@@ -381,7 +378,7 @@
 	else
 		return ..()
 
-/obj/item/robot_suit/ui_status(mob/user)
+/obj/item/robot_suit/ui_status(mob/user, datum/ui_state/state)
 	if(isobserver(user))
 		return ..()
 	var/obj/item/held_item = user.get_active_held_item()

@@ -81,10 +81,8 @@
 		return
 
 	var/mob/living/carbon/human/human_owner = owner
-	for(var/obj/item/organ/internal/organ in shuffle(human_owner.organs))
-		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_ROBOTIC))
-			continue
-		if(HAS_TRAIT(organ, TRAIT_IRRADIATED))
+	for(var/obj/item/organ/organ as anything in shuffle(human_owner.organs))
+		if(organ.organ_flags & (ORGAN_EXTERNAL|ORGAN_VITAL|ORGAN_ROBOTIC|ORGAN_IRRADIATED|ORGAN_UNREMOVABLE))
 			continue
 		organ.make_irradiated()
 		break
@@ -151,10 +149,12 @@
 
 	return COMSIG_GEIGER_COUNTER_SCAN_SUCCESSFUL
 
-/datum/status_effect/irradiated/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode)
+/datum/status_effect/irradiated/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
-	render_list += "<span class='alert ml-1'>Subject is irradiated. Supply toxin healing.</span>\n"
+	render_list += "<span class='alert ml-1'>"
+	render_list += conditional_tooltip("Subject is irradiated.", "Supply antiradiation or antitoxin, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", tochat)
+	render_list += "<br>"
 
 /datum/status_effect/irradiated/proc/radimmune_gained(...)
 	SIGNAL_HANDLER

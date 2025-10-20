@@ -19,11 +19,11 @@
 	update_appearance()
 
 /// Forces the airlock to close and bolt
-/obj/machinery/door/airlock/proc/secure_close()
+/obj/machinery/door/airlock/proc/secure_close(force_crush = FALSE)
 	set waitfor = FALSE
 
 	locked = FALSE
-	close(forced = TRUE)
+	close(forced = TRUE, force_crush = force_crush)
 
 	locked = TRUE
 	stoplag(0.2 SECONDS)
@@ -127,4 +127,4 @@
 		var/datum/gas_mixture/turf_gasmix = turf.return_air()
 		turf_gasmix.temperature += delta_temperature
 		air_update_turf(FALSE, FALSE)
-	use_power(required_energy * 0.01) // melbert todo - keep an eye on this with the nergy rework
+	use_energy(required_energy * 0.01)

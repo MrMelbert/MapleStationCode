@@ -4,33 +4,11 @@
 		return FALSE
 	return TRUE
 
-///returns a list of "damtype" => damage description based off of which bodypart description is most common
-///used in human examines
-/mob/living/carbon/human/proc/get_majority_bodypart_damage_desc()
-	var/list/seen_damage = list() // This looks like: ({Damage type} = list({Damage description for that damage type} = {number of times it has appeared}, ...), ...)
-	var/list/most_seen_damage = list() // This looks like: ({Damage type} = {Frequency of the most common description}, ...)
-	var/list/final_descriptions = list() // This looks like: ({Damage type} = {Most common damage description for that type}, ...)
-	for(var/obj/item/bodypart/part as anything in bodyparts)
-		for(var/damage_type in part.damage_examines)
-			var/damage_desc = part.damage_examines[damage_type]
-			if(!seen_damage[damage_type])
-				seen_damage[damage_type] = list()
-
-			if(!seen_damage[damage_type][damage_desc])
-				seen_damage[damage_type][damage_desc] = 1
-			else
-				seen_damage[damage_type][damage_desc] += 1
-
-			if(seen_damage[damage_type][damage_desc] > most_seen_damage[damage_type])
-				most_seen_damage[damage_type] = seen_damage[damage_type][damage_desc]
-				final_descriptions[damage_type] = damage_desc
-	return final_descriptions
-
 //gets assignment from ID or ID inside PDA or PDA itself
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_assignment(if_no_id = "No id", if_no_job = "No job", hand_first = TRUE)
 	var/obj/item/card/id/id = get_idcard(hand_first)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return if_no_id
 	if(id)
 		. = id.assignment
@@ -47,7 +25,7 @@
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_authentification_name(if_no_id = "Unknown")
 	var/obj/item/card/id/id = get_idcard(FALSE)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return if_no_id
 	if(id)
 		return id.registered_name
@@ -56,54 +34,80 @@
 		return pda.saved_identification
 	return if_no_id
 
-//repurposed proc. Now it combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a separate proc as it'll be useful elsewhere
-/mob/living/carbon/human/get_visible_name(add_id_name = TRUE)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
-		return "Unknown"
-	var/list/identity = list(null, null)
+/// Used to update our name based on whether our face is obscured/disfigured
+/mob/living/carbon/human/proc/update_visible_name()
+	SIGNAL_HANDLER
+	name = get_visible_name()
+
+/// Combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a separate proc as it'll be useful elsewhere
+/mob/living/carbon/human/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
+	var/list/identity = list(null, null, null)
 	SEND_SIGNAL(src, COMSIG_HUMAN_GET_VISIBLE_NAME, identity)
 	var/signal_face = LAZYACCESS(identity, VISIBLE_NAME_FACE)
 	var/signal_id = LAZYACCESS(identity, VISIBLE_NAME_ID)
-	var/face_name = !isnull(signal_face) ? signal_face : get_face_name("")
-	var/id_name = !isnull(signal_id) ? signal_id : get_id_name("")
-	if(face_name)
-		if(add_id_name && id_name && (id_name != face_name))
-			return "[face_name] (as [id_name])"
-		return face_name
-	if(id_name)
-		return id_name
-	return "Unknown"
+	var/force_set = LAZYACCESS(identity, VISIBLE_NAME_FORCED)
+	if(force_set) // our name is overriden by something
+		return signal_face // no need to null-check, because force_set will always set a signal_face
 
-//Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when Fluacided or when updating a human's name variable
-/mob/living/carbon/human/proc/get_face_name(if_no_face="Unknown")
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	var/face_name = isnull(signal_face) ? get_face_name("") : signal_face
+	var/id_name = isnull(signal_id) ? get_id_name("",  honorifics = add_id_name) : signal_id
+
+	// We need to account for real name
+	if(force_real_name)
+		var/disguse_name = get_visible_name(add_id_name = add_id_name, force_real_name = FALSE)
+		return "[real_name][disguse_name == real_name ? "" : " (as [disguse_name])"]"
+
+	// We're just some unknown guy
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
+		return "Unknown"
+
+	// We have a face and an ID
+	if(face_name && id_name)
+		var/normal_id_name = get_id_name("") // need to check base ID name to avoid "John (as Captain John)"
+		if(normal_id_name == face_name)
+			return id_name // (this turns "John" into "Captain John")
+		if(add_id_name)
+			return "[face_name] (as [id_name])"
+
+	// Just go down the list of stuff we recorded
+	return face_name || id_name || "Unknown"
+
+/**
+ * Gets what the face of this mob looks like
+ *
+ * * if_no_face - What to return if we have no face or our face is obscured/disfigured
+ */
+/mob/living/carbon/proc/get_face_name(if_no_face = "Unknown")
+	return real_name
+
+/mob/living/carbon/human/get_face_name(if_no_face = "Unknown")
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return if_no_face //We're Unknown, no face information for you
-	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
+	if(obscured_slots & HIDEFACE)
 		return if_no_face
-	if( head && (head.flags_inv&HIDEFACE) )
-		return if_no_face //Likewise for hats
-	var/obj/item/bodypart/O = get_bodypart(BODY_ZONE_HEAD)
-	if( !O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || (O.brutestate+O.burnstate)>2 || !real_name || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(isnull(head) || !real_name || HAS_TRAIT(src, TRAIT_DISFIGURED) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
 		return if_no_face
 	return real_name
 
-//gets name from ID or PDA itself, ID inside PDA doesn't matter
-//Useful when player is being seen by other mobs
-/mob/living/carbon/human/proc/get_id_name(if_no_id = "Unknown")
-	var/obj/item/storage/wallet/wallet = wear_id
-	var/obj/item/modular_computer/pda = wear_id
-	var/obj/item/card/id/id = wear_id
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
-		. = if_no_id //You get NOTHING, no id name, good day sir
-	if(istype(wallet))
-		id = wallet.front_id
-	if(istype(id))
-		. = id.registered_name
-	else if(istype(pda) && pda.computer_id_slot)
-		. = pda.computer_id_slot.registered_name
-	if(!.)
-		. = if_no_id //to prevent null-names making the mob unclickable
+/**
+ * Gets whatever name is in our ID or PDA
+ *
+ * * if_no_id - What to return if we have no ID or PDA
+ * * honorifics - Whether to include honorifics in the returned name (if the found ID has any set)
+ */
+/mob/living/carbon/proc/get_id_name(if_no_id = "Unknown", honorifics = FALSE)
 	return
+
+/mob/living/carbon/human/get_id_name(if_no_id = "Unknown", honorifics = FALSE)
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
+		var/list/identity = list(null, null, null)
+		SEND_SIGNAL(src, COMSIG_HUMAN_GET_FORCED_NAME, identity)
+		return identity[VISIBLE_NAME_FORCED] ? identity[VISIBLE_NAME_FACE] : if_no_id
+
+	// either results in an ID card, a generic card, or null
+	var/obj/item/card/id = wear_id?.GetID() || astype(wear_id, /obj/item/card)
+	return id?.get_displayed_name(honorifics) || if_no_id
 
 /mob/living/carbon/human/get_idcard(hand_first = TRUE)
 	. = ..()
@@ -227,18 +231,6 @@
 	WRITE_FILE(F["scar[char_index]-[scar_index]"], sanitize_text(valid_scars))
 	WRITE_FILE(F["current_scar_index"], sanitize_integer(scar_index))
 
-///Returns death message for mob examine text
-/mob/living/carbon/human/proc/generate_death_examine_text()
-	var/mob/dead/observer/ghost = get_ghost(TRUE, TRUE)
-	var/t_He = p_They()
-	var/t_his = p_their()
-	var/t_is = p_are()
-	//This checks to see if the body is revivable
-	if(get_organ_by_type(/obj/item/organ/internal/brain) && (client || HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE) || (ghost?.can_reenter_corpse && ghost?.client)))
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
-	else
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
-
 ///copies over clothing preferences like underwear to another human
 /mob/living/carbon/human/proc/copy_clothing_prefs(mob/living/carbon/human/destination)
 	destination.underwear = underwear
@@ -317,7 +309,7 @@
 	clone.dress_up_as_job(SSjob.GetJob(job))
 
 	for(var/datum/quirk/original_quircks as anything in quirks)
-		clone.add_quirk(original_quircks.type, override_client = client)
+		clone.add_quirk(original_quircks.type, override_client = client, announce = FALSE)
 	for(var/datum/mutation/human/mutations in dna.mutations)
 		clone.dna.add_mutation(mutations)
 

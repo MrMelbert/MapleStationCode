@@ -10,6 +10,7 @@
 	worn_icon_state = "radio"
 	desc = "A basic handheld radio that communicates with local telecommunication networks."
 	dog_fashion = /datum/dog_fashion/back
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_ALLOW_USER_LOCATION | INTERACT_ATOM_IGNORE_MOBILITY
 
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
@@ -58,6 +59,8 @@
 	var/use_command = FALSE
 	/// If true, use_command can be toggled at will.
 	var/command = FALSE
+	/// Does it play radio noise?
+	var/radio_noise = TRUE
 
 	///makes anyone who is talking through this anonymous.
 	var/anonymize = FALSE
@@ -117,16 +120,19 @@
 	// No subtypes
 	if(type != /obj/item/radio)
 		return
-	AddComponent(/datum/component/slapcrafting,\
-		slapcraft_recipes = list(/datum/crafting_recipe/improv_explosive)\
-	)
+	AddElement(/datum/element/slapcrafting, string_list(list(/datum/crafting_recipe/improv_explosive)))
 
 /obj/item/radio/Destroy()
 	remove_radio_all(src) //Just to be sure
-	QDEL_NULL(wires)
 	if(istype(keyslot))
 		QDEL_NULL(keyslot)
 	return ..()
+
+/obj/item/radio/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
+	if(broadcasting) //no broadcasting but it can still be used to send radio messages.
+		set_broadcasting(FALSE)
+		return TRUE
 
 /obj/item/radio/proc/set_frequency(new_frequency)
 	SEND_SIGNAL(src, COMSIG_RADIO_NEW_FREQUENCY, args)
@@ -263,17 +269,29 @@
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(SEND_SIGNAL(talking_movable, COMSIG_MOVABLE_USING_RADIO, src) & COMPONENT_CANNOT_USE_RADIO)
-		return
+		return NONE
 	if(SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel) & COMPONENT_CANNOT_USE_RADIO)
-		return
+		return NONE
 
 	if(!spans)
 		spans = list(talking_movable.speech_span)
 	if(!language)
 		language = talking_movable.get_selected_language()
-	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
+	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, LAZYLISTDUPLICATE(spans), language, LAZYLISTDUPLICATE(message_mods))
 	return ITALICS | REDUCE_RANGE
 
+/**
+ * Handles talking into the radio
+ *
+ * Unlike most speech related procs, spans and message_mods are not guaranteed to be lists
+ *
+ * * talking_movable - the atom that is talking
+ * * message - the message to be spoken
+ * * channel - the channel to be spoken on
+ * * spans - the spans to be used, lazylist
+ * * language - the language to be spoken in. (Should) never be null
+ * * message_mods - the message mods to be used, lazylist
+ */
 /obj/item/radio/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(!on)
 		return FALSE // the device has to be on
@@ -328,8 +346,7 @@
 	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, radio_message, spans, message_mods)
 
 	// Independent radios, on the CentCom frequency, reach all independent radios
-	//NON-MODULE CHANGE : Adds Mu to the list of frequencies
-	if (independent && (freq == FREQ_CENTCOM || freq == FREQ_MU || freq == FREQ_CTF_RED || freq == FREQ_CTF_BLUE || freq == FREQ_CTF_GREEN || freq == FREQ_CTF_YELLOW))
+	if (independent && (freq == FREQ_CENTCOM ||freq == FREQ_MU ||  freq == FREQ_STATUS_DISPLAYS))
 		signal.data["compression"] = 0
 		signal.transmission_method = TRANSMISSION_SUPERSPACE
 		signal.levels = list(0)
@@ -345,7 +362,7 @@
 
 	// Non-subspace radios will check in a couple of seconds, and if the signal
 	// was never received, send a mundane broadcast (no headsets).
-	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 20)
+	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 2 SECONDS)
 	return TRUE
 
 /obj/item/radio/proc/backup_transmission(datum/signal/subspace/vocal/signal)
@@ -359,11 +376,11 @@
 	signal.levels = SSmapping.get_connected_levels(T)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
+/obj/item/radio/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
-	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
+	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range || message_mods[MODE_RELAY])
 		return
-	var/filtered_mods = list()
+	var/list/filtered_mods = list()
 
 	if (message_mods[MODE_SING])
 		filtered_mods[MODE_SING] = message_mods[MODE_SING]
@@ -526,7 +543,7 @@
 	for (var/ch_name in channels)
 		channels[ch_name] = 0
 	set_on(FALSE)
-	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 200)
+	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 20 SECONDS)
 
 /obj/item/radio/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] starts bouncing [src] off [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -608,4 +625,143 @@
 	. = ..()
 	set_listening(FALSE)
 
+// RADIOS USED BY BROADCASTING
+/obj/item/radio/entertainment
+	desc = "You should not hold this."
+	canhear_range = 7
+	freerange = TRUE
+	freqlock = RADIO_FREQENCY_LOCKED
+	radio_noise = FALSE
+
+/obj/item/radio/entertainment/Initialize(mapload)
+	. = ..()
+	set_frequency(FREQ_ENTERTAINMENT)
+
+/obj/item/radio/entertainment/speakers // Used inside of the entertainment monitors, not to be used as a actual item
+	should_be_listening = TRUE
+	should_be_broadcasting = FALSE
+
+/obj/item/radio/entertainment/speakers/proc/toggle_mute()
+	should_be_listening = !should_be_listening
+
+/obj/item/radio/entertainment/speakers/Initialize(mapload)
+	. = ..()
+	set_broadcasting(FALSE)
+	set_listening(TRUE)
+	wires?.cut(WIRE_TX)
+
+/obj/item/radio/entertainment/speakers/on_receive_message(list/data)
+	playsound(source = src, soundin = SFX_MUFFLED_SPEECH, vol = 60, extrarange = -4, vary = TRUE, ignore_walls = FALSE)
+
+	return ..()
+
+/obj/item/radio/entertainment/speakers/physical // Can be used as a physical item
+	name = "entertainment radio"
+	desc = "A portable one-way radio permamently tuned into entertainment frequency."
+	icon_state = "radio"
+	inhand_icon_state = "radio"
+	worn_icon_state = "radio"
+	overlay_speaker_idle = "radio_s_idle"
+	overlay_speaker_active = "radio_s_active"
+	overlay_mic_idle = "radio_m_idle"
+	overlay_mic_active = "radio_m_active"
+
+/obj/item/radio/entertainment/microphone // Used inside of a broadcast camera, not to be used as a actual item
+	should_be_listening = FALSE
+	should_be_broadcasting = TRUE
+
+/obj/item/radio/entertainment/microphone/Initialize(mapload)
+	. = ..()
+	set_broadcasting(TRUE)
+	set_listening(FALSE)
+	wires?.cut(WIRE_RX)
+
+/obj/item/radio/entertainment/microphone/physical // Can be used as a physical item
+	name = "microphone"
+	desc = "No comments."
+	icon = 'icons/obj/service/broadcast.dmi'
+	icon_state = "microphone"
+	inhand_icon_state = "microphone"
+	canhear_range = 3
+
 #undef FREQ_LISTENING
+
+#define RADIO_X_OFFSET 8
+#define RADIO_Y_OFFSET 8
+
+/// I am scared about generating 100 icons every radio message so they will be aggressively cached
+#define CACHED_ICON(varname, filepath, filestate) \
+	var/static/icon/##varname; \
+	if(!##varname && icon_exists_or_scream(filepath, filestate)) { \
+		##varname = icon(filepath, filestate); \
+		##varname.Scale(48, 48); \
+		##varname.Crop(RADIO_X_OFFSET, RADIO_Y_OFFSET, RADIO_X_OFFSET + 31, RADIO_Y_OFFSET + 31); \
+	}
+
+/// Default / fallback icon that looks like a big old radio
+/obj/item/radio/proc/default_radio_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_radio, 'icons/obj/devices/voice.dmi', "radio")
+	return cached_radio
+
+/// Default / fallback icon that looks like a walkie-talkie
+/obj/item/radio/proc/default_walkie_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_walkie, 'icons/obj/devices/voice.dmi', "walkietalkie")
+	return cached_walkie
+
+/// Default / fallback icon that looks like an intercom
+/obj/item/radio/proc/default_intercom_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom")
+	return cached_intercom
+
+/// Returns an icon to diplay in chat when this object is used as a radio
+/obj/proc/get_radio_icon()
+	return
+
+/obj/item/radio/get_radio_icon()
+	switch(icon_state)
+		if("walkietalkie")
+			return default_walkie_icon()
+
+		if("radio")
+			return default_radio_icon()
+
+	return default_walkie_icon() // fallback
+
+/obj/item/radio/entertainment/get_radio_icon()
+	return default_walkie_icon()
+
+/obj/item/radio/headset/get_radio_icon()
+	CACHED_ICON(cached_headset, 'icons/obj/clothing/headsets.dmi', "headset")
+	return cached_headset
+
+/obj/item/radio/intercom/get_radio_icon()
+	return default_intercom_icon()
+
+/obj/item/radio/intercom/prison/get_radio_icon()
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom_prison")
+	return cached_intercom
+
+/obj/item/radio/intercom/command/get_radio_icon()
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom_command")
+	return cached_intercom
+
+/obj/item/radio/weather_monitor/get_radio_icon()
+	CACHED_ICON(cached_monitor, 'icons/obj/miningradio.dmi', "miningradio")
+	return cached_monitor
+
+/obj/item/radio/borg/get_radio_icon()
+	return default_radio_icon()
+
+/obj/item/radio/headset/silicon/get_radio_icon()
+	return default_radio_icon()
+
+/obj/item/radio/headset/silicon/ai/get_radio_icon()
+	return default_intercom_icon()
+
+#undef CACHED_ICON
+
+#undef RADIO_X_OFFSET
+#undef RADIO_Y_OFFSET

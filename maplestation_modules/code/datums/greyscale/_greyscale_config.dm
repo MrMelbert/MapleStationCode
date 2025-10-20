@@ -25,11 +25,6 @@
 /datum/greyscale_config/tablet/stripe_two_color
 	json_config = 'code/datums/greyscale/json_configs/_pda_stripe_two_color.json'
 
-/datum/greyscale_config/jumpsuit_worn_digi
-	name = "Digitigrate Jumpsuit Worn"
-	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_gags.dmi'
-	json_config = 'code/datums/greyscale/json_configs/_jumpsuit_worn_digi.json'
-
 /datum/greyscale_config/heels
 	name = "Heels"
 	icon_file = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
@@ -49,3 +44,27 @@
 	name = "Spacer's Turtleneck Worn"
 	icon_file = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
 	json_config = 'code/datums/greyscale/json_configs/spacer_turtleneck_worn.json'
+
+/datum/greyscale_config/umbrella
+	name = "Umbrella"
+	icon_file = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella.json'
+
+/datum/greyscale_config/umbrella_inhand_left
+	name = "Held Umbrella, Left, Closed"
+	icon_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella_inhand.json'
+
+/datum/greyscale_config/umbrella_inhand_right
+	name = "Held Umbrella, Right, Closed"
+	icon_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella_inhand.json'
+
+/datum/greyscale_config/sweet_bow
+	name = "Sweet Bow"
+	icon_file = 'maplestation_modules/story_content/eveleen_equipment/icons/obj/head.dmi'
+	json_config = 'code/datums/greyscale/json_configs/sweet_bow.json'
+
+/datum/greyscale_config/sweet_bow/worn
+	name = "Sweet Bow (Worn)"
+	icon_file = 'maplestation_modules/story_content/eveleen_equipment/icons/mob/head.dmi'

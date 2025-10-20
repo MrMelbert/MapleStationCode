@@ -85,6 +85,8 @@
 	if(isnull(step))
 		return FALSE
 	var/obj/item/tool = user.get_active_held_item()
+	if(tool)
+		tool = tool.get_proxy_attacker_for(target, user)
 	if(step.try_op(user, target, user.zone_selected, tool, src, try_to_fail))
 		return TRUE
 	if(tool && tool.tool_behaviour) //Mechanic organ manipulation isn't done with just surgery tools
@@ -186,8 +188,13 @@
 			span_notice("[user] begins to insert [tool] into [target]'s [parse_zone(target_zone)]."),
 			span_notice("[user] begins to insert something into [target]'s [parse_zone(target_zone)]."),
 		)
-		display_pain(target, "You can feel something being placed in your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
-
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "You can feel something being placed in your [parse_zone(target_zone)]!",
+			pain_amount = SURGERY_PAIN_TRIVIAL,
+			surgery_moodlet = /datum/mood_event/surgery/major,
+		)
 
 	else if(implement_type in implements_extract)
 		current_type = "extract"
@@ -211,13 +218,24 @@
 			if(isnull(chosen_organ))
 				return SURGERY_STEP_FAIL
 			target_organ = chosen_organ
-			if(user && target && user.Adjacent(target) && user.get_active_held_item() == tool)
+
+			if(user && target && user.Adjacent(target))
+				//tool check
+				var/obj/item/held_tool = user.get_active_held_item()
+				if(held_tool)
+					held_tool = held_tool.get_proxy_attacker_for(target, user)
+				if(held_tool != tool)
+					return SURGERY_STEP_FAIL
+
+				//organ check
 				target_organ = organs[target_organ]
 				if(!target_organ)
 					return SURGERY_STEP_FAIL
 				if(target_organ.organ_flags & ORGAN_UNREMOVABLE)
 					to_chat(user, span_warning("[target_organ] is too well connected to take out!"))
 					return SURGERY_STEP_FAIL
+
+				//start operation
 				display_results(
 					user,
 					target,
@@ -225,7 +243,13 @@
 					span_notice("[user] begins to extract [target_organ] from [target]'s [parse_zone(target_zone)]."),
 					span_notice("[user] begins to extract something from [target]'s [parse_zone(target_zone)]."),
 				)
-				display_pain(target, "You can feel your [target_organ.name] being removed from your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
+				display_pain(
+					target = target,
+					target_zone = target_zone,
+					pain_message = "You can feel your [target_organ.name] being removed from your [parse_zone(target_zone)]!",
+					pain_amount = SURGERY_PAIN_MEDIUM,
+					surgery_moodlet = /datum/mood_event/surgery/major,
+				)
 			else
 				return SURGERY_STEP_FAIL
 
@@ -251,7 +275,13 @@
 				span_notice("[user] inserts [tool] into [target]'s [parse_zone(target_zone)]!"),
 				span_notice("[user] inserts something into [target]'s [parse_zone(target_zone)]!"),
 			)
-			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain as your new [tool.name] comes to life!", target_zone = target_zone) // NON-MODULE CHANGE
+			display_pain(
+				target = target,
+				target_zone = target_zone,
+				pain_message = "Your [parse_zone(target_zone)] throbs with pain as your new [tool.name] comes to life!",
+				pain_amount = SURGERY_PAIN_TRIVIAL,
+				surgery_moodlet = /datum/mood_event/surgery/major,
+			)
 		else
 			target_organ.forceMove(target.loc)
 
@@ -264,7 +294,13 @@
 				span_notice("[user] successfully extracts [target_organ] from [target]'s [parse_zone(target_zone)]!"),
 				span_notice("[user] successfully extracts something from [target]'s [parse_zone(target_zone)]!"),
 			)
-			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain, you can't feel your [target_organ.name] anymore!", target_zone = target_zone) // NON-MODULE CHANGE
+			display_pain(
+				target = target,
+				target_zone = target_zone,
+				pain_message = "Your [parse_zone(target_zone)] throbs with pain, you can't feel your [target_organ.name] anymore!",
+				pain_amount = SURGERY_PAIN_LOW,
+				surgery_moodlet = /datum/mood_event/surgery/major,
+			)
 			log_combat(user, target, "surgically removed [target_organ.name] from", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
 			target_organ.Remove(target)
 			target_organ.forceMove(get_turf(target))
@@ -293,7 +329,7 @@
 
 ///only operate on internal organs
 /datum/surgery_step/manipulate_organs/internal/can_use_organ(mob/user, obj/item/organ/organ)
-	return isinternalorgan(organ)
+	return !(organ.organ_flags & ORGAN_EXTERNAL)
 
 ///prosthetic surgery gives full effectiveness to crowbars (and hemostats)
 /datum/surgery_step/manipulate_organs/internal/mechanic
@@ -307,7 +343,7 @@
 
 ///Only operate on external organs
 /datum/surgery_step/manipulate_organs/external/can_use_organ(mob/user, obj/item/organ/organ)
-	return isexternalorgan(organ)
+	return (organ.organ_flags & ORGAN_EXTERNAL)
 
 ///prosthetic surgery gives full effectiveness to crowbars (and hemostats)
 /datum/surgery_step/manipulate_organs/external/mechanic

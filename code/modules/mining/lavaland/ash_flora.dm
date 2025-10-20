@@ -271,7 +271,7 @@
 	graft_gene = /datum/plant_gene/trait/fire_resistance
 
 /obj/item/seeds/lavaland/cactus
-	name = "pack of fruiting cactus seeds"
+	name = "fruiting cactus seed pack"
 	desc = "These seeds grow into fruiting cacti."
 	icon_state = "seed-cactus"
 	species = "cactus"
@@ -285,7 +285,7 @@
 
 ///Star Cactus seeds, mutation of lavaland cactus.
 /obj/item/seeds/star_cactus
-	name = "pack of star cacti seeds"
+	name = "star cacti seed pack"
 	desc = "These seeds grow into star cacti."
 	icon_state = "seed-starcactus"
 	species = "starcactus"
@@ -297,7 +297,7 @@
 	production = 6
 	yield = 3
 	growthstages = 4
-	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging)
+	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging, /datum/plant_gene/reagent/quintessence) // NON-MODULE CHANGE
 	graft_gene = /datum/plant_gene/trait/sticky
 	growing_icon = 'icons/obj/service/hydroponics/growing_vegetables.dmi'
 	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/c2/helbital = 0.05)
@@ -313,7 +313,7 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/tequila
 
 /obj/item/seeds/lavaland/polypore
-	name = "pack of polypore mycelium"
+	name = "polypore mycelium pack"
 	desc = "This mycelium grows into bracket mushrooms, also known as polypores. Woody and firm, shaft miners often use them for makeshift crafts."
 	icon_state = "mycelium-polypore"
 	species = "polypore"
@@ -324,7 +324,7 @@
 	reagents_add = list(/datum/reagent/consumable/sugar = 0.06, /datum/reagent/consumable/ethanol = 0.04, /datum/reagent/stabilizing_agent = 0.06, /datum/reagent/consumable/mintextract = 0.02)
 
 /obj/item/seeds/lavaland/porcini
-	name = "pack of porcini mycelium"
+	name = "porcini mycelium pack"
 	desc = "This mycelium grows into Boletus edulus, also known as porcini. Native to the late Earth, but discovered on Lavaland. Has culinary, medicinal and relaxant effects."
 	icon_state = "mycelium-porcini"
 	species = "porcini"
@@ -335,7 +335,7 @@
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.06, /datum/reagent/consumable/vitfro = 0.04, /datum/reagent/drug/nicotine = 0.04)
 
 /obj/item/seeds/lavaland/inocybe
-	name = "pack of inocybe mycelium"
+	name = "inocybe mycelium pack"
 	desc = "This mycelium grows into an inocybe mushroom, a species of Lavaland origin with hallucinatory and toxic effects."
 	icon_state = "mycelium-inocybe"
 	species = "inocybe"
@@ -346,7 +346,7 @@
 	reagents_add = list(/datum/reagent/toxin/mindbreaker = 0.04, /datum/reagent/consumable/entpoly = 0.08, /datum/reagent/drug/mushroomhallucinogen = 0.04)
 
 /obj/item/seeds/lavaland/ember
-	name = "pack of embershroom mycelium"
+	name = "embershroom mycelium pack"
 	desc = "This mycelium grows into embershrooms, a species of bioluminescent mushrooms native to Lavaland."
 	icon_state = "mycelium-ember"
 	species = "ember"
@@ -357,7 +357,7 @@
 	reagents_add = list(/datum/reagent/consumable/tinlux = 0.04, /datum/reagent/consumable/nutriment/vitamin = 0.02, /datum/reagent/drug/space_drugs = 0.02)
 
 /obj/item/seeds/lavaland/seraka
-	name = "pack of seraka mycelium"
+	name = "seraka mycelium pack"
 	desc = "This mycelium grows into seraka mushrooms, a species of savoury mushrooms originally native to Tizira used in food and traditional medicine."
 	icon_state = "mycelium-seraka"
 	species = "seraka"
@@ -368,14 +368,14 @@
 	reagents_add = list(/datum/reagent/toxin/mushroom_powder = 0.1, /datum/reagent/medicine/coagulant/seraka_extract = 0.02)
 
 /obj/item/seeds/lavaland/fireblossom
-	name = "pack of fire blossom seeds"
+	name = "fire blossom seed pack"
 	desc = "These seeds grow into fire blossoms."
 	plantname = "Fire Blossom"
 	icon_state = "seed-fireblossom"
 	species = "fireblossom"
 	growthstages = 3
 	product = /obj/item/food/grown/ash_flora/fireblossom
-	genes = list(/datum/plant_gene/trait/fire_resistance, /datum/plant_gene/trait/glow/yellow)
+	genes = list(/datum/plant_gene/trait/fire_resistance, /datum/plant_gene/trait/glow/yellow, /datum/plant_gene/reagent/misty_quintessence) // NON-MODULE CHANGE
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	reagents_add = list(/datum/reagent/consumable/tinlux = 0.04, /datum/reagent/consumable/nutriment = 0.03, /datum/reagent/carbon = 0.05)
 

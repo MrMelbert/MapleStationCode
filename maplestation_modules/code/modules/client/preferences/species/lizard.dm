@@ -26,7 +26,7 @@
 	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-// Manually adding the hair related preferences to the lizard features list
+// Manually adding the hair related preferences to the lizard features list // melbert todo refactor later
 /datum/species/lizard/get_features()
 	return ..() | list(
 		"hair_color",
@@ -56,7 +56,7 @@
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/preference/numeric/hiss_length/apply_to_human(mob/living/carbon/human/target, value)
-	var/obj/item/organ/internal/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!istype(tongue))
 		return
 	tongue.draw_length = value
@@ -64,7 +64,7 @@
 // -- Allows lizard horns to be colorable --
 // (Because some choices are greyscaled)
 /datum/preference/choiced/lizard_horns
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 
 /datum/preference/choiced/lizard_horns/compile_constant_data()
 	var/list/data = ..()
@@ -76,7 +76,7 @@
 	color_source = ORGAN_COLOR_OVERRIDE
 
 /datum/bodypart_overlay/mutant/horns/inherit_color(obj/item/bodypart/bodypart_owner, force)
-	draw_color = bodypart_owner?.owner?.dna?.features["lizard_horn_color"] || "#FFFFFF"
+	draw_color = bodypart_owner?.owner?.dna?.features["lizard_horn_color"] || "#dddddd"
 	return TRUE
 
 // The actual preference
@@ -84,14 +84,14 @@
 	savefile_key = "feature_lizard_horn_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 	can_randomize = FALSE
 
 /datum/preference/color/horn_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["lizard_horn_color"] = value
 
 /datum/preference/color/horn_color/create_default_value()
-	return "#FFFFFF"
+	return "#dddddd"
 
 // -- Lizard Horn Layer selection --
 // Makes it actually work
@@ -125,3 +125,6 @@
 
 /datum/preference/choiced/lizard_horn_layer/init_possible_values()
 	return layer_to_layer
+
+/datum/preference/choiced/lizard_horn_layer/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)

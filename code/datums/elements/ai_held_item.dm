@@ -52,9 +52,9 @@
 	SIGNAL_HANDLER
 
 	var/obj/item/carried_item = get_held_item(source)
-	if (!carried_item)
+	if (!carried_item || (carried_item.item_flags & (ABSTRACT|HAND_ITEM)) || HAS_TRAIT(carried_item, TRAIT_EXAMINE_SKIP))
 		return
-	examine_text += span_notice("[source.p_They()] [source.p_are()] carrying [carried_item.get_examine_string(user)].")
+	examine_text += span_notice("[source.p_They()] [source.p_are()] carrying [carried_item.examine_title(user)].")
 
 /// If we died, drop anything we were carrying
 /datum/element/ai_held_item/proc/on_death(mob/living/ol_yeller)

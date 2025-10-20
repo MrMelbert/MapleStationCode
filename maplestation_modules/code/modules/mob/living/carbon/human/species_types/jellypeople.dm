@@ -2,7 +2,7 @@
 /datum/species/jelly
 	species_pain_mod = 0.5
 	// Makes Jellypeople look like Slimepeople and not Stargazers
-	mutanteyes = /obj/item/organ/internal/eyes
+	mutanteyes = /obj/item/organ/eyes
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly/slime,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly/slime,
@@ -49,7 +49,7 @@
 
 /datum/species/jelly/stargazer
 	// Makes Stargazers look like Stargazers
-	mutanteyes = /obj/item/organ/internal/eyes/jelly
+	mutanteyes = /obj/item/organ/eyes/jelly
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly,
@@ -57,4 +57,19 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
+	)
+
+
+/obj/item/organ/tongue/jelly
+	// Sounds made by https://freesound.org/people/SilverIllusionist/
+	speech_sound_list = list(
+		'maplestation_modules/sound/voice/slime_1.ogg' = 80,
+		'maplestation_modules/sound/voice/slime_2.ogg' = 80,
+		'maplestation_modules/sound/voice/slime_3.ogg' = 80,
+	)
+	speech_sound_list_question = list(
+		'maplestation_modules/sound/voice/slime_ask.ogg' = 80,
+	)
+	speech_sound_list_exclamation = list(
+		'maplestation_modules/sound/voice/slime_exclaim.ogg' = 80,
 	)

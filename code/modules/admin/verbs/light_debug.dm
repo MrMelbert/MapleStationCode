@@ -129,8 +129,7 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	last_hovored_ref = WEAKREF(over_object)
 	over_object.MouseEntered(over_location, over_control, params)
 
-/atom/movable/screen/light_button/MouseDrop(over_object)
-	. = ..()
+/atom/movable/screen/light_button/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
 	last_hovored_ref = null
 
 /atom/movable/screen/light_button/MouseEntered(location, control, params)
@@ -199,7 +198,7 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 		ui.open()
 
 /atom/movable/screen/light_button/edit/ui_assets(mob/user)
-	return list(get_asset_datum(/datum/asset/spritesheet/lights))
+	return list(get_asset_datum(/datum/asset/spritesheet_batched/lights))
 
 /atom/movable/screen/light_button/edit/ui_data()
 	var/list/data = list()
@@ -330,8 +329,7 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 	icon_state = "light_move"
 	mouse_drag_pointer = 'icons/effects/mouse_pointers/light_drag.dmi'
 
-/atom/movable/screen/light_button/move/MouseDrop(over_object)
-	. = ..()
+/atom/movable/screen/light_button/move/mouse_drop_dragged(atom/over_object)
 	if(!ismovable(loc))
 		return
 	var/atom/movable/movable_owner = loc
@@ -373,7 +371,7 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 		ui.open()
 
 /datum/action/spawn_light/ui_assets(mob/user)
-	return list(get_asset_datum(/datum/asset/spritesheet/lights))
+	return list(get_asset_datum(/datum/asset/spritesheet_batched/lights))
 
 /datum/action/spawn_light/ui_data()
 	var/list/data = list()

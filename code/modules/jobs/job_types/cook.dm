@@ -1,6 +1,6 @@
 /datum/job/cook
 	title = JOB_COOK
-	description = "Serve food, cook meat, keep the crew fed."
+	description = "Serve food, cook \"meat\", keep the crew fed and happy."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -10,7 +10,7 @@
 	config_tag = "COOK"
 	var/cooks = 0 //Counts cooks amount
 
-	outfit = /datum/outfit/job/cook
+	base_outfit = /datum/outfit/job/cook
 	plasmaman_outfit = /datum/outfit/plasmaman/chef
 
 	paycheck = PAYCHECK_CREW
@@ -58,6 +58,10 @@
 		award_score -= award_status
 	winner.give_award(/datum/award/score/chef_tourist_score, winner.mob, award_score)
 
+/datum/job/cook/get_titles(only_selectable = FALSE)
+	. = ..()
+	if(!only_selectable)
+		. += list(JOB_CHEF)
 
 /datum/outfit/job/cook
 	name = "Cook"

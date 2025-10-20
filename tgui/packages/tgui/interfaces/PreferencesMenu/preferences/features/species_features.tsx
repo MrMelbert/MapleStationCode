@@ -1,11 +1,11 @@
 import {
-  Feature,
-  FeatureChoiced,
-  FeatureChoicedServerData,
+  type Feature,
+  type FeatureChoiced,
+  type FeatureChoicedServerData,
   FeatureColorInput,
-  FeatureDropdownInput,
-  FeatureValueProps,
+  type FeatureValueProps,
 } from './base';
+import { FeatureDropdownInput } from './dropdowns';
 
 export const eye_color: Feature<string> = {
   name: 'Eye color',

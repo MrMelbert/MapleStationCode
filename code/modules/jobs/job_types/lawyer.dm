@@ -1,7 +1,10 @@
 /datum/job/lawyer
 	title = JOB_LAWYER
 	description = "Advocate for prisoners, create law-binding contracts, \
-		ensure Security is following protocol and Space Law."
+		ensure security is following Standard Operating Procedure and Space Law."
+	title_options = list(
+		"Attorney",
+	)
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -10,7 +13,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "LAWYER"
 
-	outfit = /datum/outfit/job/lawyer
+	base_outfit = /datum/outfit/job/lawyer
 	plasmaman_outfit = /datum/outfit/plasmaman/bar
 
 	paycheck = PAYCHECK_CREW

@@ -1,6 +1,3 @@
-/datum/species/abductor/get_species_speech_sounds(sound_type)
-	return
-
 /datum/species/abductor/get_species_description()
 	return "Abductors, colloquially known as \"Greys\" (or \"Grays\"), \
 		are pale skinned inquisitive aliens who can't communicate well to the average crew-member."
@@ -55,3 +52,6 @@
 			They intead naturally communicate telepathically to other Abductors, a process which all other species cannot hear.",
 	))
 	return perks
+
+/obj/item/organ/tongue/abductor
+	speech_sounds_enabled = FALSE

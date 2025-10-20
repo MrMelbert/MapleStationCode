@@ -1,5 +1,6 @@
+import { Box, Button, Icon, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Button, Icon, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
 enum AirlockState {
@@ -168,7 +169,7 @@ const PressureIndicator = () => {
   };
 
   const { color, icon } = StatusFromState();
-  let spin =
+  const spin =
     icon === 'fan' &&
     (pumpStatus === PumpStatus.Pressurizing ||
       pumpStatus === PumpStatus.Depressurizing);

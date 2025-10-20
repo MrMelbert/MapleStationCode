@@ -52,11 +52,26 @@
 	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /mob/living/carbon/get_speech_sounds(sound_type)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE))
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return null
-	return dna?.species?.get_species_speech_sounds(sound_type)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(isnull(tongue) || !tongue.speech_sounds_enabled)
+		return null
+	switch(sound_type)
+		if(SOUND_QUESTION)
+			if(length(tongue.speech_sound_list_question))
+				return string_assoc_list(tongue.speech_sound_list_question)
+
+		if(SOUND_EXCLAMATION)
+			if(length(tongue.speech_sound_list_exclamation))
+				return string_assoc_list(tongue.speech_sound_list_exclamation)
+
+	// sound type is normal, OR an unrecognized value, OR we don't have a question/exclamation sound
+	if(length(tongue.speech_sound_list))
+		return string_assoc_list(tongue.speech_sound_list)
+	return null
 
 /mob/living/basic/robot_customer/get_speech_sounds(sound_type)
 	var/datum/customer_data/customer_info = ai_controller?.blackboard[BB_CUSTOMER_CUSTOMERINFO]
@@ -131,7 +146,6 @@
 	the_sound.pitch = speech_sound_pitch_modifier
 	the_sound.frequency = sound_frequency * speech_sound_frequency_modifier
 	if(is_mouth_covered())
-		the_sound.echo[1] = -900
 		speech_sound_vol *= 1.5
 
 	playsound(

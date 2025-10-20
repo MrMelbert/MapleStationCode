@@ -2,7 +2,7 @@
 
 // Yes, i'm talking about cabbage, baby! No, just kidding, but cabbages are the precursor to replica pods, so they are here as well.
 /obj/item/seeds/cabbage
-	name = "pack of cabbage seeds"
+	name = "cabbage seed pack"
 	desc = "These seeds grow into cabbages."
 	icon_state = "seed-cabbage"
 	species = "cabbage"
@@ -33,7 +33,7 @@
 
 ///The actual replica pods themselves!
 /obj/item/seeds/replicapod
-	name = "pack of replica pod seeds"
+	name = "replica pod seed pack"
 	desc = "These seeds grow into replica pods. They say these are used to harvest humans."
 	icon_state = "seed-replicapod"
 	plant_icon_offset = 2
@@ -118,11 +118,10 @@
 	contains_sample = FALSE
 	return NONE
 
-/obj/item/seeds/replicapod/get_unique_analyzer_text()
+/obj/item/seeds/replicapod/get_unique_analyzer_data()
 	if(contains_sample)
-		return "It contains a blood sample with blood DNA (UE) \"[sampleDNA]\"." //blood DNA (UE) shows in medical records and is readable by forensics scanners
-	else
-		return null
+		return list("Blood DNA" = sampleDNA)
+	return null
 
 /obj/item/seeds/replicapod/harvest(mob/user) //now that one is fun -- Urist
 	var/obj/machinery/hydroponics/parent = loc
@@ -199,21 +198,22 @@
 	if(!features["mcolor"])
 		features["mcolor"] = "#59CE00"
 	if(!features["pod_hair"])
-		features["pod_hair"] = pick(GLOB.pod_hair_list)
+		features["pod_hair"] = pick(SSaccessories.pod_hair_list)
 
 	for(var/V in quirks)
 		new V(podman)
 	podman.hardset_dna(null, null, null, podman.real_name, blood_type, new /datum/species/pod, features) // Discard SE's and UI's, podman cloning is inaccurate, and always make them a podman
 	podman.set_cloned_appearance()
 
-	//Get the most plentiful reagent, if there's none: get water
-	var/list/most_plentiful_reagent = list(/datum/reagent/water = 0)
+	//Get the most plentiful reagent,
+	var/datum/reagent/most_plentiful_reagent
 	for(var/reagent in reagents_add)
-		if(reagents_add[reagent] > most_plentiful_reagent[most_plentiful_reagent[1]])
-			most_plentiful_reagent.Cut()
-			most_plentiful_reagent[reagent] = reagents_add[reagent]
+		if(!most_plentiful_reagent || reagents_add[reagent] > reagents_add[most_plentiful_reagent])
+			most_plentiful_reagent = reagent
 
-	// podman.dna.species.exotic_blood = most_plentiful_reagent[1] // NON-MODULE CHANGE : MELBERT TODO
+	//if there's none: get water
+	most_plentiful_reagent ||= /datum/reagent/water
+	podman.dna.species.exotic_bloodtype = most_plentiful_reagent
 	investigate_log("[key_name(mind)] cloned as a podman via [src] in [parent]", INVESTIGATE_BOTANY)
 	parent.update_tray(user, 1)
 	return result

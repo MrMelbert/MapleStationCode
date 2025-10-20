@@ -11,6 +11,7 @@
 /// Amount of air to take a from a tile
 #define BREATH_PERCENTAGE (BREATH_VOLUME/CELL_VOLUME)
 
+
 #define QUANTIZE(variable) (round((variable), (MOLAR_ACCURACY)))
 
 /// Return this from a while_present proc to call its on_loss version, if one exists
@@ -19,11 +20,6 @@
 
 //The proportion of oxygen needed for metabolism compared to pluoxium. (Pluoxium is this many times efficient as oxygen)
 #define PLUOXIUM_PROPORTION 8
-
-//Defines for N2O and Healium euphoria moodlets
-#define EUPHORIA_INACTIVE 0
-#define EUPHORIA_ACTIVE 1
-#define EUPHORIA_LAST_FLAG 2
 
 #define MIASMA_CORPSE_MOLES 0.02
 #define MIASMA_GIBS_MOLES 0.005
@@ -153,7 +149,7 @@
 #define LOW_PRESSURE_DAMAGE 2
 
 /// Humans are slowed by the difference between bodytemp and BODYTEMP_COLD_DAMAGE_LIMIT divided by this
-#define COLD_SLOWDOWN_FACTOR 20
+#define COLD_SLOWDOWN_FACTOR 100
 
 
 //CLOTHES

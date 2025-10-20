@@ -36,10 +36,6 @@
 	. = ..()
 	. += late_examine(user)
 
-/mob/living/carbon/human/examine(mob/user)
-	. = ..()
-	. += late_examine(user)
-
 /// Mob level examining that happens after the main beef of examine is done
 /mob/living/proc/late_examine(mob/user)
 	. = list()
@@ -57,9 +53,9 @@
 		var/admin_line = ""
 
 		if(linked_flavor.flavor_text)
-			admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
+			admin_line += "<a href='byond://?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
 		if(linked_flavor.expl_info)
-			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
+			admin_line += "<a href='byond://?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 		if(known_identity != linked_flavor)
 			admin_line += "\nThey are currently [isnull(known_identity) ? "disguised and have no visible flavor":"visible as the flavor text of [known_identity.name]"]."
 
@@ -82,7 +78,3 @@
 
 	if(known_identity)
 		. += span_info(known_identity.format_flavor_for_examine(user, FALSE))
-	else if(ishuman(src))
-		// I hate this istype src but it's easier to handle this here
-		// Not all mobs should say "YOU CAN'T MAKE OUT DETAILS OF THIS PERSON"
-		. += span_smallnoticeital("You can't make out any details of this individual.\n")

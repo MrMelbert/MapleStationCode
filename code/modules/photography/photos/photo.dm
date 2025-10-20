@@ -9,14 +9,27 @@
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	grind_results = list(/datum/reagent/iodine = 4)
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	var/datum/picture/picture
 	var/scribble //Scribble on the back.
 
+/obj/item/photo/get_save_vars()
+	return ..() - NAMEOF(src, icon)
+
 /obj/item/photo/Initialize(mapload, datum/picture/P, datum_name = TRUE, datum_desc = TRUE)
 	set_picture(P, datum_name, datum_desc, TRUE)
+	//Photos are quite rarer than papers, so they're more likely to be added to the queue to make things even.
+	if(!mapload && prob(MESSAGE_BOTTLE_CHANCE * 5) && picture?.id)
+		LAZYADD(SSpersistence.queued_message_bottles, src)
+	. = ..()
+	AddElement(/datum/element/burn_on_item_ignition)
+
+/obj/item/photo/Destroy()
+	LAZYREMOVE(SSpersistence.queued_message_bottles, src)
 	return ..()
 
 /obj/item/photo/proc/set_picture(datum/picture/P, setname, setdesc, name_override = FALSE)
@@ -68,13 +81,12 @@
 	user.examinate(src)
 
 /obj/item/photo/attackby(obj/item/P, mob/user, params)
-	if(burn_paper_product_attackby_check(P, user))
-		return
 	if(IS_WRITING_UTENSIL(P))
 		if(!user.can_write(P))
 			return
 		var/txt = tgui_input_text(user, "What would you like to write on the back?", "Photo Writing", max_length = 128)
 		if(txt && user.can_perform_action(src))
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 			scribble = txt
 	else
 		return ..()

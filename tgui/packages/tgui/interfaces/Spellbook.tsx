@@ -1,8 +1,4 @@
-import { BooleanLike } from 'common/react';
-import { multiline } from 'common/string';
-import { ReactNode } from 'react';
-
-import { useBackend, useLocalState } from '../backend';
+import type { ReactNode } from 'react';
 import {
   Box,
   Button,
@@ -14,7 +10,10 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 enum SpellCategory {
@@ -340,7 +339,7 @@ const Loadouts = (props) => {
             name="The Classic Wizard"
             icon="fire"
             author="Archchancellor Gray"
-            blurb={multiline`
+            blurb={`
                 This is the classic wizard, crazy popular in
                 the 2550's. Comes with Fireball, Magic Missile,
                 Ei Nath, and Ethereal Jaunt. The key here is that
@@ -353,7 +352,7 @@ const Loadouts = (props) => {
             loadoutId="loadout_hammer"
             loadoutColor="green"
             author="Jegudiel Worldshaker"
-            blurb={multiline`
+            blurb={`
                 The power of the mighty Mjolnir! Best not to lose it.
                 This loadout has Summon Item, Mutate, Blink, Force Wall,
                 Tesla Blast, and Mjolnir. Mutate is your utility in this case:
@@ -370,7 +369,7 @@ const Loadouts = (props) => {
             loadoutId="loadout_army"
             loadoutColor="yellow"
             author="Prospero Spellstone"
-            blurb={multiline`
+            blurb={`
                 Why kill when others will gladly do it for you?
                 Embrace chaos with your kit: Soulshards, Staff of Change,
                 Necro Stone, Teleport, and Jaunt! Remember, no offense spells!
@@ -382,7 +381,7 @@ const Loadouts = (props) => {
             loadoutId="loadout_tap"
             loadoutColor="white"
             author="Tom the Empty"
-            blurb={multiline`
+            blurb={`
                 Embrace the dark, and tap into your soul.
                 You can recharge very long recharge spells
                 like Ei Nath by jumping into new bodies with
@@ -608,7 +607,7 @@ const CategoryDisplay = (props: { ActiveCat: TabType }) => {
           </Stack.Item>
         )}
         <Stack.Item>
-          {(ActiveCat.component && ActiveCat.component()) || (
+          {ActiveCat.component?.() || (
             <SpellTabDisplay TabSpells={TabSpells} PointOffset={38} />
           )}
         </Stack.Item>
@@ -630,7 +629,7 @@ export const Spellbook = (props) => {
 
   // Has a chance of selecting a random funny verb instead of "Searching"
   const SelectSearchVerb = () => {
-    let found = Math.random();
+    const found = Math.random();
     if (found <= 0.03) {
       return 'Seeking';
     }
@@ -754,14 +753,14 @@ export const Spellbook = (props) => {
               <Stack>
                 <Stack.Item grow>
                   <ProgressBar value={points / 10}>
-                    {points + ' points left to spend.'}
+                    {`${points} points left to spend.`}
                   </ProgressBar>
                 </Stack.Item>
                 <Stack.Item>
                   <Input
                     width={15}
                     placeholder="Search for a spell..."
-                    onInput={(e, val) => setSpellSearch(val)}
+                    onChange={setSpellSearch}
                   />
                 </Stack.Item>
               </Stack>

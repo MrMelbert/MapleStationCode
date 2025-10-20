@@ -1,11 +1,13 @@
 #define TANK_PLATING_SHEETS 12
 
 /obj/machinery/atmospherics/components/tank
-	icon = 'icons/obj/pipes_n_cables/stationary_canisters.dmi'
-	icon_state = "smooth"
-
 	name = "pressure tank"
 	desc = "A large vessel containing pressurized gas."
+
+	icon = 'icons/map_icons/objects.dmi'
+	icon_state = "/obj/machinery/atmospherics/components/tank"
+	post_init_icon_state = "smooth"
+	base_icon_state = "canister"
 
 	max_integrity = 800
 	integrity_failure = 0.2
@@ -31,6 +33,8 @@
 	///The image showing the gases inside of the tank
 	var/image/window
 
+	/// The open node directions of the tank, assuming that the tank is facing NORTH.
+	var/open_ports = NONE
 	/// The volume of the gas mixture
 	var/volume = 2500 //in liters
 	/// The max pressure of the gas mixture before damaging the tank
@@ -98,13 +102,14 @@
 
 	// Mapped in tanks should automatically connect to adjacent pipenets in the direction set in dir
 	if(mapload)
-		initialize_directions = dir
+		set_portdir_relative(dir, TRUE)
+		set_init_directions()
 
 	return INITIALIZE_HINT_LATELOAD
 
 // We late initialize here so all stationary tanks have time to set up their
 // initial gas mixes and signal registrations.
-/obj/machinery/atmospherics/components/tank/LateInitialize()
+/obj/machinery/atmospherics/components/tank/post_machine_initialize()
 	. = ..()
 	GetMergeGroup(merger_id, merger_typecache)
 
@@ -152,28 +157,60 @@
 	refresh_window()
 
 ///////////////////////////////////////////////////////////////////
-// Pipenet stuff
+// Port stuff
 
-/obj/machinery/atmospherics/components/tank/return_analyzable_air()
-	return air_contents
+/**
+ * Enables/Disables a port direction in var/open_ports. \
+ * Use this, then call set_init_directions() instead of setting initialize_directions directly \
+ * This system exists because tanks not having all initialize_directions set correctly breaks shuttle rotations
+ */
+/obj/machinery/atmospherics/components/tank/proc/set_portdir_relative(relative_port_dir, enable)
+	ASSERT(!isnull(enable), "Did not receive argument enable")
 
-/obj/machinery/atmospherics/components/tank/return_airs_for_reconcilation(datum/pipeline/requester)
-	. = ..()
-	if(!air_contents)
-		return
-	. += air_contents
-
-/obj/machinery/atmospherics/components/tank/return_pipenets_for_reconcilation(datum/pipeline/requester)
-	. = ..()
-	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
-	for(var/obj/machinery/atmospherics/components/tank/tank as anything in merge_group.members)
-		. += tank.parents
-
-/obj/machinery/atmospherics/components/tank/proc/toggle_side_port(new_dir)
-	if(initialize_directions & new_dir)
-		initialize_directions &= ~new_dir
+	// Rotate the given dir so that it's relative to north
+	var/port_dir
+	if(dir == NORTH) // We're already facing north, no rotation needed
+		port_dir = relative_port_dir
 	else
-		initialize_directions |= new_dir
+		var/offnorth_angle = dir2angle(dir)
+		port_dir = turn(relative_port_dir, offnorth_angle)
+
+	if(enable)
+		open_ports |= port_dir
+	else
+		open_ports &= ~port_dir
+
+/**
+ * Toggles a port direction in var/open_ports \
+ * Use this, then call set_init_directions() instead of setting initialize_directions directly \
+ * This system exists because tanks not having all initialize_directions set correctly breaks shuttle rotations
+ */
+/obj/machinery/atmospherics/components/tank/proc/toggle_portdir_relative(relative_port_dir)
+	var/toggle = ((initialize_directions & relative_port_dir) ? FALSE : TRUE)
+	set_portdir_relative(relative_port_dir, toggle)
+
+/obj/machinery/atmospherics/components/tank/set_init_directions()
+	if(!open_ports)
+		initialize_directions = NONE
+		return
+
+	//We're rotating open_ports relative to dir, and
+	//setting initialize_directions to that rotated dir
+	var/relative_port_dirs = NONE
+	var/dir_angle = dir2angle(dir)
+	for(var/cardinal in GLOB.cardinals)
+		var/current_dir = cardinal & open_ports
+		if(!current_dir)
+			continue
+
+		var/rotated_dir = turn(current_dir, -dir_angle)
+		relative_port_dirs |= rotated_dir
+
+	initialize_directions = relative_port_dirs
+
+/obj/machinery/atmospherics/components/tank/proc/toggle_side_port(port_dir)
+	toggle_portdir_relative(port_dir)
+	set_init_directions()
 
 	for(var/i in 1 to length(nodes))
 		var/obj/machinery/atmospherics/components/node = nodes[i]
@@ -195,6 +232,24 @@
 	SSair.add_to_rebuild_queue(src)
 
 	update_parents()
+
+///////////////////////////////////////////////////////////////////
+// Pipenet stuff
+
+/obj/machinery/atmospherics/components/tank/return_analyzable_air()
+	return air_contents
+
+/obj/machinery/atmospherics/components/tank/return_airs_for_reconcilation(datum/pipeline/requester)
+	. = ..()
+	if(!air_contents)
+		return
+	. += air_contents
+
+/obj/machinery/atmospherics/components/tank/return_pipenets_for_reconcilation(datum/pipeline/requester)
+	. = ..()
+	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
+	for(var/obj/machinery/atmospherics/components/tank/tank as anything in merge_group.members)
+		. += tank.parents
 
 ///////////////////////////////////////////////////////////////////
 // Merger handling
@@ -338,7 +393,7 @@
 	deconstruct(disassembled=TRUE)
 	to_chat(user, span_notice("You finish cutting open the sealed gas tank, revealing the innards."))
 
-/obj/machinery/atmospherics/components/tank/deconstruct(disassembled)
+/obj/machinery/atmospherics/components/tank/on_deconstruction(disassembled)
 	var/turf/location = drop_location()
 	. = ..()
 	location.assume_air(air_contents)
@@ -362,6 +417,7 @@
 
 /obj/machinery/atmospherics/components/tank/air
 	name = "pressure tank (Air)"
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/air/Initialize(mapload)
 	. = ..()
@@ -370,63 +426,83 @@
 
 /obj/machinery/atmospherics/components/tank/carbon_dioxide
 	gas_type = /datum/gas/carbon_dioxide
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/plasma
 	gas_type = /datum/gas/plasma
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/nitrogen
 	gas_type = /datum/gas/nitrogen
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/oxygen
 	gas_type = /datum/gas/oxygen
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/nitrous
 	gas_type = /datum/gas/nitrous_oxide
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/bz
 	gas_type = /datum/gas/bz
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/freon
 	gas_type = /datum/gas/freon
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/halon
 	gas_type = /datum/gas/halon
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/healium
 	gas_type = /datum/gas/healium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/hydrogen
 	gas_type = /datum/gas/hydrogen
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/hypernoblium
 	gas_type = /datum/gas/hypernoblium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/miasma
 	gas_type = /datum/gas/miasma
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/nitrium
 	gas_type = /datum/gas/nitrium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/pluoxium
 	gas_type = /datum/gas/pluoxium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/proto_nitrate
 	gas_type = /datum/gas/proto_nitrate
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/tritium
 	gas_type = /datum/gas/tritium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/water_vapor
 	gas_type = /datum/gas/water_vapor
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/zauker
 	gas_type = /datum/gas/zauker
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/helium
 	gas_type = /datum/gas/helium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 /obj/machinery/atmospherics/components/tank/antinoblium
 	gas_type = /datum/gas/antinoblium
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
 
 ///////////////////////////////////////////////////////////////////
 // Tank Frame Structure
@@ -459,11 +535,10 @@
 			var/welder_hint = EXAMINE_HINT("welder")
 			. += span_notice("The plating has been firmly attached and would need a [crowbar_hint] to detach, but still needs to be sealed by a [welder_hint].")
 
-/obj/structure/tank_frame/deconstruct(disassembled)
+/obj/structure/tank_frame/atom_deconstruct(disassembled)
 	if(disassembled)
 		for(var/datum/material/mat as anything in custom_materials)
 			new mat.sheet_type(drop_location(), custom_materials[mat] / SHEET_MATERIAL_AMOUNT)
-	return ..()
 
 /obj/structure/tank_frame/update_icon(updates)
 	. = ..()

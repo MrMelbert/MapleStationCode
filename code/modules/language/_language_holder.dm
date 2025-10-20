@@ -37,10 +37,10 @@ Key procs
 
 /datum/language_holder
 	/// Lazyassoclist of all understood languages
-	var/list/understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM))
+	var/list/understood_languages
 	/// Lazyassoclist of languages that can be spoken.
 	/// Tongue organ may also set limits beyond this list.
-	var/list/spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM))
+	var/list/spoken_languages
 	/// Lazyassoclist of blocked languages.
 	/// Used to prevent understanding and speaking certain languages, ie for certain mobs, mutations etc.
 	var/list/blocked_languages
@@ -52,6 +52,10 @@ Key procs
 	var/selected_language
 	/// Tracks the entity that owns the holder.
 	var/atom/movable/owner
+	/// Lazyassoclist of all other mutual understanding this holder has in addition to what they understand from their understood languages.
+	/// This is primarily for adding mutual understanding from other sources at runtime.
+	/// Format: list(language_type = list(source = % of understanding))
+	var/list/other_mutual_understanding
 
 /// Initializes, and copies in the languages from the current atom if available.
 /datum/language_holder/New(atom/new_owner)
@@ -91,6 +95,11 @@ Key procs
 		omnitongue = TRUE
 	return TRUE
 
+/datum/language_holder/proc/grant_partial_language(language, amount = 50, source = LANGUAGE_MIND)
+	LAZYINITLIST(other_mutual_understanding)
+	LAZYSET(other_mutual_understanding[language], source, amount)
+	return TRUE
+
 /// Removes a single language or source, removing all sources returns the pre-removal state of the language.
 /datum/language_holder/proc/remove_language(language, language_flags = ALL, source = LANGUAGE_ALL)
 	if(language_flags & UNDERSTOOD_LANGUAGE)
@@ -115,6 +124,17 @@ Key procs
 		remove_language(language, ALL, source)
 	if(remove_omnitongue)
 		omnitongue = FALSE
+	return TRUE
+
+/datum/language_holder/proc/remove_partial_language(language, source = LANGUAGE_MIND)
+	LAZYREMOVE(other_mutual_understanding[language], source)
+	ASSOC_UNSETEMPTY(other_mutual_understanding, language)
+	UNSETEMPTY(other_mutual_understanding)
+	return TRUE
+
+/datum/language_holder/proc/remove_all_partial_languages(source = LANGUAGE_MIND)
+	for(var/language in other_mutual_understanding)
+		remove_partial_language(language, source)
 	return TRUE
 
 /// Adds a single language or list of languages to the blocked language list.
@@ -176,6 +196,24 @@ Key procs
 /datum/language_holder/proc/get_random_understood_language()
 	return pick(understood_languages)
 
+/// Gets a list of all mutually understood languages.
+/datum/language_holder/proc/get_mutually_understood_languages()
+	var/list/mutual_languages = list()
+	for(var/language_type in understood_languages)
+		var/datum/language/language_instance = GLOB.language_datum_instances[language_type]
+		for(var/mutual_language_type in language_instance.mutual_understanding)
+			// add it to the list OR override it if it's a stronger mutual understanding
+			if(mutual_languages[mutual_language_type] < language_instance.mutual_understanding[mutual_language_type])
+				mutual_languages[mutual_language_type] = language_instance.mutual_understanding[mutual_language_type]
+
+	for(var/language_type in other_mutual_understanding)
+		for(var/language_source in other_mutual_understanding[language_type])
+			var/understanding_for_type_by_source = other_mutual_understanding[language_type][language_source]
+			if(mutual_languages[language_type] < understanding_for_type_by_source)
+				mutual_languages[language_type] = understanding_for_type_by_source
+
+	return mutual_languages
+
 /// Gets a random spoken language, useful for forced speech and such.
 /datum/language_holder/proc/get_random_spoken_language()
 	return pick(spoken_languages)
@@ -229,6 +267,11 @@ Key procs
 		if(LANGUAGE_MIND in blocked_languages[language])
 			remove_blocked_language(language, LANGUAGE_MIND)
 			to_holder.add_blocked_language(language, LANGUAGE_MIND)
+	for(var/language in other_mutual_understanding)
+		var/mind_understanding = other_mutual_understanding[language][LANGUAGE_MIND]
+		if(mind_understanding > 0)
+			remove_partial_language(language, LANGUAGE_MIND)
+			to_holder.grant_partial_language(language, mind_understanding, LANGUAGE_MIND)
 
 	if(owner)
 		get_selected_language()
@@ -503,14 +546,17 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 		/datum/language/nekomimetic = list(LANGUAGE_ATOM),
 	)
 
-/datum/language_holder/empty
-	understood_languages = null
-	spoken_languages = null
+// Given to atoms by default
+/datum/language_holder/atom_basic
+	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM))
+	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM))
 
+// Explicitly empty one for readability
+/datum/language_holder/empty
+
+// Has all the languages known (via "mind")
 /datum/language_holder/universal
-	understood_languages = null
-	spoken_languages = null
 
 /datum/language_holder/universal/New()
 	. = ..()
-	grant_all_languages()
+	grant_all_languages(source = LANGUAGE_MIND)

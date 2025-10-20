@@ -20,7 +20,7 @@
 	anchored = TRUE
 	density = TRUE // dense for receiving bumbs
 	layer = HIGH_OBJ_LAYER
-	light_system = STATIC_LIGHT
+	light_system = COMPLEX_LIGHT
 	light_range = 3
 	light_power = 1
 	light_on = TRUE
@@ -154,6 +154,7 @@
 		new /obj/effect/temp_visual/portal_animation(start_turf, src, M)
 		playsound(start_turf, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		playsound(real_target, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		Beam(real_target, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS) //NON-MODULAR CHANGE
 		return TRUE
 	return FALSE
 

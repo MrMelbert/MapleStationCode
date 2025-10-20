@@ -337,15 +337,15 @@
 
 /datum/config_entry/flag/forbid_station_traits
 
-/datum/config_entry/number/events_min_time_mul // Multipliers for random events minimal starting time and minimal players amounts
-	default = 1
+/datum/config_entry/number/events_frequency_lower
+	default = 2.5 MINUTES
 	min_val = 0
-	integer = FALSE
+	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/number/events_min_players_mul
-	default = 1
+/datum/config_entry/number/events_frequency_upper
+	default = 7 MINUTES
 	min_val = 0
-	integer = FALSE
+	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/number/mice_roundstart
 	default = 10
@@ -396,6 +396,8 @@
 
 /datum/config_entry/flag/dynamic_config_enabled
 
+/datum/config_entry/flag/events_config_enabled
+
 /datum/config_entry/string/drone_required_role
 	default = "Silicon"
 
@@ -445,3 +447,12 @@
 	)
 	key_mode = KEY_MODE_TEXT
 	value_mode = VALUE_MODE_NUM
+
+// Configs for the Quirk system
+/// Disables Quirk point balancing for the server and clients.
+/datum/config_entry/flag/disable_quirk_points
+
+/// The maximum amount of positive quirks one character can have at roundstart.
+/datum/config_entry/number/max_positive_quirks
+	default = 6
+	min_val = -1

@@ -77,6 +77,7 @@
 	/// Cached mixed color of all blood DNA on us
 	VAR_PROTECTED/cached_blood_dna_color
 
+/// Gets what color all the blood coating this atom mixed together would be
 /atom/proc/get_blood_dna_color()
 	if(cached_blood_dna_color)
 		return cached_blood_dna_color
@@ -84,8 +85,7 @@
 	var/list/colors = list()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	for(var/dna_sample in all_dna)
-		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
-		colors += blood.color
+		colors += find_blood_type(all_dna[dna_sample]).color
 
 	var/final_color = pop(colors)
 	for(var/color in colors)
@@ -93,9 +93,13 @@
 	cached_blood_dna_color = final_color
 	return final_color
 
+/obj/effect/decal/cleanable/blood/get_blood_dna_color()
+	return ..() || COLOR_BLOOD
+
 /obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
-	return GLOB.blood_types[all_dna[all_dna[1]]]?.color // what the fuck was i doing?
+	var/blood_type_to_use = all_dna[all_dna[1]]
+	return find_blood_type(blood_type_to_use).color
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
@@ -117,13 +121,14 @@
 	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
 	if(!..())
 		return FALSE
-
-	color = get_blood_dna_color()
+	if(dried)
+		return TRUE
 	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
 	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
+		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
 		blood.set_up_blood(src, first_dna == 0)
 	update_appearance()
+	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
@@ -178,7 +183,7 @@
 
 	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
 	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
-	var/slots_to_bloody = target_flags & ~check_obscured_slots()
+	var/slots_to_bloody = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
 	var/list/all_worn = get_equipped_items()
 	for(var/obj/item/thing as anything in all_worn)
 		if(thing.slot_flags & slots_to_bloody)
@@ -207,7 +212,7 @@
 	if(QDELING(src))
 		return FALSE
 
-	var/slots_to_fingerprint = target_flags & ~check_obscured_slots()
+	var/slots_to_fingerprint = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
 	for(var/obj/item/thing as anything in get_equipped_items())
 		if(thing.slot_flags & slots_to_fingerprint)
 			. ||= thing.add_fingerprint(from_mob)

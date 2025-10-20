@@ -970,3 +970,16 @@
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
 		new /obj/item/stack/sheet/hauntium(location)
+
+/datum/chemical_reaction/fish_hallucinogen_degradation
+	results = list(/datum/reagent/consumable/nutriment/protein = 0.1)
+	required_reagents = list(/datum/reagent/toxin/mindbreaker/fish = 1)
+	required_temp = 363.15 // 90°
+	optimal_temp = 450
+	rate_up_lim = 8
+	temp_exponent_factor = 1.5
+	optimal_ph_min = 2
+	optimal_ph_max = 10
+	thermic_constant = 80
+	H_ion_release = 2
+	reaction_tags = REACTION_TAG_EASY

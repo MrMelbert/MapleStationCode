@@ -24,15 +24,14 @@ at the cost of risking a vicious bite.**/
 		/obj/item/restraints/handcuffs/cable/green = 1,
 		/obj/item/restraints/handcuffs/cable/pink = 1,
 		/obj/item/restraints/handcuffs/alien = 2,
-		/obj/item/coin/bananium = 9,
+		/obj/item/coin/bananium = 10,
 		/obj/item/knife/butcher = 5,
-		/obj/item/coin/mythril = 1,
 	)
 
 
 /obj/structure/moisture_trap/Initialize(mapload)
 	. = ..()
-	ADD_TRAIT(src, TRAIT_FISH_SAFE_STORAGE, TRAIT_GENERIC)
+	AddElement(/datum/element/fish_safe_storage)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOIST, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 20)
 	if(prob(40))
 		critter_infested = FALSE
@@ -81,10 +80,8 @@ at the cost of risking a vicious bite.**/
 		return
 	if(critter_infested && prob(50) && iscarbon(user))
 		var/mob/living/carbon/bite_victim = user
-		var/obj/item/bodypart/affecting = bite_victim.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
 		to_chat(user, span_danger("You feel a sharp pain as an unseen creature sinks it's [pick("fangs", "beak", "proboscis")] into your arm!"))
-		if(affecting?.receive_damage(30))
-			bite_victim.update_damage_overlays()
+		if(bite_victim.apply_damage(30, BRUTE, user.get_active_hand()))
 			playsound(src,'sound/weapons/bite.ogg', 70, TRUE)
 			return
 	to_chat(user, span_warning("You find nothing of value..."))
@@ -179,8 +176,7 @@ at the cost of risking a vicious bite.**/
 			overlayicon = "altar_pants2"
 		if(ALTAR_STAGETHREE)
 			overlayicon = "altar_pants3"
-	var/mutable_appearance/pants_overlay = mutable_appearance(icon, overlayicon)
-	pants_overlay.appearance_flags = RESET_COLOR
+	var/mutable_appearance/pants_overlay = mutable_appearance(icon, overlayicon, appearance_flags = RESET_COLOR|KEEP_APART)
 	pants_overlay.color = pants_color
 	. += pants_overlay
 
@@ -234,6 +230,7 @@ at the cost of risking a vicious bite.**/
 /obj/item/clothing/under/pants/slacks/altar
 	name = "strange pants"
 	desc = "A pair of pants. They do not look or feel natural, and smell like fresh blood."
+	icon_state = "/obj/item/clothing/under/pants/slacks/altar"
 	greyscale_colors = "#ffffff#ffffff#ffffff"
 	flags_1 = NONE //If IS_PLAYER_COLORABLE gets added color-changing support (i.e. spraycans), these won't end up getting it too. Plus, it already has its own recolor.
 
@@ -304,11 +301,9 @@ at the cost of risking a vicious bite.**/
 		deconstruct()
 		return TRUE
 
-/obj/structure/steam_vent/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, 1)
-		new /obj/item/stock_parts/water_recycler(loc, 1)
-	qdel(src)
+/obj/structure/steam_vent/atom_deconstruct(disassembled = TRUE)
+	new /obj/item/stack/sheet/iron(loc, 1)
+	new /obj/item/stock_parts/water_recycler(loc, 1)
 
 /**
  * Creates "steam" smoke, and determines when the vent needs to block line of sight via reset_opacity.

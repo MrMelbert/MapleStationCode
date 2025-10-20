@@ -1,6 +1,4 @@
-import { BooleanLike, classes } from 'common/react';
-import { Component, MouseEvent } from 'react';
-
+import { Component, type MouseEvent } from 'react';
 import {
   Box,
   Button,
@@ -11,11 +9,13 @@ import {
   Section,
   Stack,
   Tooltip,
-} from '../../components';
+} from 'tgui-core/components';
+import { type BooleanLike, classes } from 'tgui-core/react';
+
 import {
   calculateProgression,
   getDangerLevel,
-  Rank,
+  type Rank,
 } from './calculateDangerLevel';
 import { ObjectiveState } from './constants';
 
@@ -349,7 +349,7 @@ type ObjectiveElementProps = {
   description: string;
   telecrystalReward: number;
   progressionReward: number;
-  uiButtons?: JSX.Element;
+  uiButtons?: React.JSX.Element;
   objectiveState?: ObjectiveState;
   originalProgression: number;
   telecrystalPenalty: number;

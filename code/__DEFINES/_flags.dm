@@ -11,6 +11,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define DF_USE_TAG (1<<0)
 #define DF_VAR_EDITED (1<<1)
 #define DF_ISPROCESSING (1<<2)
+/// Placed on datums that have a static, constant reference. Primarily only used for turfs.
+#define DF_STATIC_OBJECT (1<<3)
 
 //FLAGS BITMASK
 // scroll down before changing the numbers on these
@@ -54,6 +56,10 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 /// Flag as an optimization, don't make this a trait without profiling
 /// Yes I know this is a stupid flag, no you can't take him from me
 #define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<17)
+/// This atom always returns its turf in get_turf_pixel instead of the turf from its offsets
+#define IGNORE_TURF_PIXEL_OFFSET_1 (1<<18)
+/// This atom does not need to generate its own preview icon for GAGS
+#define NO_NEW_GAGS_PREVIEW_1 (1<<19)
 
 // Update flags for [/atom/proc/update_appearance]
 /// Update the atom's name
@@ -115,18 +121,20 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define UNIQUE_AREA (1<<8)
 /// If people are allowed to suicide in it. Mostly for OOC stuff like minigames
 #define BLOCK_SUICIDE (1<<9)
-/// Can the Xenobio management console transverse this area by default?
+/// If set, this area will be innately traversable by Xenobiology camera consoles.
 #define XENOBIOLOGY_COMPATIBLE (1<<10)
-/// If Abductors are unable to teleport in with their observation console
-#define ABDUCTOR_PROOF (1<<11)
 /// If blood cultists can draw runes or build structures on this AREA.
-#define CULT_PERMITTED (1<<12)
+#define CULT_PERMITTED (1<<11)
 /// If engravings are persistent in this area
-#define PERSISTENT_ENGRAVINGS (1<<13)
+#define PERSISTENT_ENGRAVINGS (1<<12)
 /// Mobs that die in this area don't produce a dead chat message
-#define NO_DEATH_MESSAGE (1<<14)
+#define NO_DEATH_MESSAGE (1<<13)
 /// This area should have extra shielding from certain event effects
-#define EVENT_PROTECTED (1<<15)
+#define EVENT_PROTECTED (1<<14)
+/// This area does not allow virtual entities to enter.
+#define VIRTUAL_SAFE_AREA (1<<16)
+/// This area prevents fishing from removing unique/limited loot from sources that're also used outside of it.
+#define UNLIMITED_FISHING (1<<19)
 
 /*
 	These defines are used specifically with the atom/pass_flags bitmask
@@ -194,10 +202,17 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ZAP_FUSION_FLAGS ZAP_OBJ_DAMAGE | ZAP_MOB_DAMAGE | ZAP_MOB_STUN
 #define ZAP_SUPERMATTER_FLAGS ZAP_GENERATES_POWER
 
-//EMP protection
+///Object will protect itself.
 #define EMP_PROTECT_SELF (1<<0)
+///Object will protect its contents from being EMPed.
 #define EMP_PROTECT_CONTENTS (1<<1)
+///Object will protect its wiring from being EMPed.
 #define EMP_PROTECT_WIRES (1<<2)
+///Don't indicate EMP protection in object examine text.
+#define EMP_NO_EXAMINE (1<<3)
+
+///Protects against all EMP types.
+#define EMP_PROTECT_ALL (EMP_PROTECT_SELF | EMP_PROTECT_CONTENTS | EMP_PROTECT_WIRES)
 
 //Mob mobility var flags
 /// can move

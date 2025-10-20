@@ -1,8 +1,7 @@
 /datum/job/cargo_technician
 	title = JOB_CARGO_TECHNICIAN
 	description = "Distribute supplies to the departments that ordered them, \
-		collect empty crates, load and unload the supply shuttle, \
-		ship bounty cubes."
+		collect empty crates, load and unload the supply shuttle, ship bounty cubes."
 	department_head = list(JOB_QUARTERMASTER)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -11,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CARGO_TECHNICIAN"
 
-	outfit = /datum/outfit/job/cargo_tech
+	base_outfit = /datum/outfit/job/cargo_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
 	paycheck = PAYCHECK_CREW
@@ -35,6 +34,9 @@
 	rpg_title = "Merchantman"
 	job_flags = STATION_JOB_FLAGS
 
+	title_options = list(
+		"Mail Carrier",
+	)
 
 /datum/outfit/job/cargo_tech
 	name = "Cargo Technician"
@@ -54,3 +56,4 @@
 	name = "Cargo Technician (MODsuit)"
 
 	back = /obj/item/mod/control/pre_equipped/loader
+	suit = null

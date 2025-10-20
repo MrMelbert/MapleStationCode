@@ -1,19 +1,5 @@
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet
-	var/wet_attunement_amount = 0.5
-	var/wet_cost_per_unit = 0.4
-
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/water] += wet_attunement_amount
-
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
-	var/turf/open/cast_turf = get_turf(cast_on)
-	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || spell.wetness_pool.total_volume >= spell.wetness_pool.maximum_volume)
-		return ..() * spell.wetness_pool.maximum_volume * wet_cost_per_unit
-
-	// Supplying water makes it cheaper, technically.
-	return ..() * spell.wetness_pool.total_volume * wet_cost_per_unit
+#define WET_ATTUNEMENT_WATER 0.5
+#define WET_MANA_COST_PER_UNIT 0.4
 
 /datum/action/cooldown/spell/pointed/soft_and_wet
 	name = "Water Control"
@@ -26,6 +12,7 @@
 
 	cooldown_time = 10 SECONDS
 	spell_requirements = NONE
+	var/wet_cost_per_unit = WET_MANA_COST_PER_UNIT
 
 	school = SCHOOL_TRANSMUTATION
 
@@ -45,9 +32,26 @@
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/New(Target)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/soft_and_wet)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[/datum/attunement/water] += WET_ATTUNEMENT_WATER
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		attunements = attunements, \
+	)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
 	wetness_pool.add_reagent(water_type, INFINITY)
+
+/datum/action/cooldown/spell/pointed/soft_and_wet/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on)
+	var/turf/open/cast_turf = get_turf(cast_on)
+	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || wetness_pool.total_volume >= wetness_pool.maximum_volume)
+		return wetness_pool.maximum_volume * wet_cost_per_unit
+
+	// Supplying water makes it cheaper, technically.
+	return wetness_pool.total_volume * wet_cost_per_unit
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/Destroy()
 	QDEL_NULL(wetness_pool)
@@ -111,7 +115,7 @@
 			did_alert = TRUE
 
 	if(wetness_pool.total_volume <= 0)
-		owner?.balloon_alert(owner, "not enough [lowertext(initial(water_type.name))]!")
+		owner?.balloon_alert(owner, "not enough [LOWER_TEXT(initial(water_type.name))]!")
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/cast(atom/cast_on)
@@ -155,7 +159,7 @@
 	if(QDELETED(src) || QDELETED(wetness_pool))
 		return
 	wetness_pool.add_reagent(water_type, INFINITY)
-	owner?.balloon_alert(owner, "[lowertext(initial(water_type.name))] regenerated")
+	owner?.balloon_alert(owner, "[LOWER_TEXT(initial(water_type.name))] regenerated")
 
 /obj/effect/temp_visual/splashie
 	name = "splash"
@@ -167,3 +171,6 @@
 	. = ..()
 	if(istype(used))
 		color = mix_color_from_reagents(used.reagent_list)
+
+#undef WET_ATTUNEMENT_WATER
+#undef WET_MANA_COST_PER_UNIT

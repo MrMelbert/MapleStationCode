@@ -99,6 +99,7 @@ DEFINE_BITFIELD(foodtypes, list(
 #define DRINK_GOOD 3
 #define DRINK_VERYGOOD 4
 #define DRINK_FANTASTIC 5
+
 #define FOOD_AMAZING 6
 
 #define FOOD_QUALITY_NORMAL 1
@@ -171,27 +172,32 @@ GLOBAL_LIST_INIT(food_buffs, list(
 #define FOOD_IN_CONTAINER (1<<0)
 /// Finger food can be eaten while walking / running around
 #define FOOD_FINGER_FOOD (1<<1)
+/// Examining this edible won't show infos on food types, bites and remote tasting etc.
+#define FOOD_NO_EXAMINE (1<<2)
+/// This food item doesn't track bitecounts, use responsibly.
+#define FOOD_NO_BITECOUNT (1<<3)
 
 DEFINE_BITFIELD(food_flags, list(
 	"FOOD_FINGER_FOOD" = FOOD_FINGER_FOOD,
 	"FOOD_IN_CONTAINER" = FOOD_IN_CONTAINER,
+	"FOOD_NO_EXAMINE" = FOOD_NO_EXAMINE,
+	"FOOD_NO_BITECOUNT" = FOOD_NO_BITECOUNT,
 ))
+
+///Define for return value of the after_eat callback that will call OnConsume if it hasn't already.
+#define FOOD_AFTER_EAT_CONSUME_ANYWAY 2
 
 #define STOP_SERVING_BREAKFAST (15 MINUTES)
 
-#define FOOD_MEAT_NORMAL 5
 #define FOOD_MEAT_HUMAN 50
 #define FOOD_MEAT_MUTANT 100
 #define FOOD_MEAT_MUTANT_RARE 200
 
 #define IS_EDIBLE(O) (O.GetComponent(/datum/component/edible))
 
-
 ///Food trash flags
 #define FOOD_TRASH_POPABLE (1<<0)
 #define FOOD_TRASH_OPENABLE (1<<1)
-
-
 
 ///Food preference enums
 #define FOOD_LIKED 1
@@ -201,8 +207,6 @@ DEFINE_BITFIELD(food_flags, list(
 
 ///Venue reagent requirement
 #define VENUE_BAR_MINIMUM_REAGENTS 10
-
-
 
 ///***Food price classes***
 ///Foods that are meant to have no value, such as lollypops from medborgs.

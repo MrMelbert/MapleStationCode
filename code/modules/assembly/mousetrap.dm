@@ -4,7 +4,7 @@
 	icon_state = "mousetrap"
 	inhand_icon_state = "mousetrap"
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT)
-	attachable = TRUE
+	assembly_behavior = ASSEMBLY_TOGGLEABLE_INPUT
 	var/armed = FALSE
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
@@ -89,7 +89,7 @@
 					to_chat(user, span_warning("Your hand slips, setting off the trigger!"))
 					pulse()
 		update_appearance()
-		playsound(src, 'sound/weapons/handcuffs.ogg', 30, TRUE, -3)
+		playsound(loc, 'sound/weapons/handcuffs.ogg', 30, TRUE, -3)
 
 /obj/item/assembly/mousetrap/update_icon_state()
 	icon_state = "mousetrap[armed ? "armed" : ""]"
@@ -133,8 +133,7 @@
 				else
 					to_chat(victim, span_notice("Your [victim.gloves] protects you from [src]."))
 		if(affecting)
-			if(affecting.receive_damage(1, 0))
-				victim.update_damage_overlays()
+			victim.apply_damage(1, BRUTE, affecting)
 	else if(ismouse(target))
 		var/mob/living/basic/mouse/splatted = target
 		visible_message(span_boldannounce("SPLAT!"))
@@ -153,7 +152,7 @@
  * * user: The mob handling the trap
  */
 /obj/item/assembly/mousetrap/proc/clumsy_check(mob/living/carbon/human/user)
-	if(!armed)
+	if(!armed || !user)
 		return FALSE
 	if((HAS_TRAIT(user, TRAIT_DUMB) || HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
 		var/which_hand = BODY_ZONE_PRECISE_L_HAND

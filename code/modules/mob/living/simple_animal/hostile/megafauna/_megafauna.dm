@@ -57,7 +57,7 @@
 	if(gps_name && true_spawn)
 		AddComponent(/datum/component/gps, gps_name)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	add_traits(list(TRAIT_NO_TELEPORT, TRAIT_MARTIAL_ARTS_IMMUNE), MEGAFAUNA_TRAIT)
+	add_traits(list(TRAIT_NO_TELEPORT), MEGAFAUNA_TRAIT)
 	grant_actions_by_list(attack_action_types)
 
 /mob/living/simple_animal/hostile/megafauna/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
@@ -121,7 +121,7 @@
 			if(!client && ranged && ranged_cooldown <= world.time)
 				OpenFire()
 
-			if(L.health <= HEALTH_THRESHOLD_DEAD && HAS_TRAIT(L, TRAIT_NODEATH)) //Nope, it still kills yall
+			if(L.health <= HEALTH_THRESHOLD_LIKELY_CRIT && HAS_TRAIT(L, TRAIT_NODEATH)) //Nope, it still kills yall
 				devour(L)
 		else
 			devour(L)
@@ -140,7 +140,7 @@
 		qdel(L.get_organ_slot(ORGAN_SLOT_HEART))
 		qdel(L.get_organ_slot(ORGAN_SLOT_LIVER))
 	L.adjustBruteLoss(500)
-	L.death() //make sure they die
+	L.death(null, "being gutted by [src]") //make sure they die
 	L.apply_status_effect(/datum/status_effect/gutted)
 	LoseTarget()
 	return TRUE
@@ -177,7 +177,7 @@
 
 /// Sets/adds the next time the megafauna can use a melee or ranged attack, in deciseconds. It is a list to allow using named args. Use the ignore_staggered var if youre setting the cooldown to ranged_cooldown_time.
 /mob/living/simple_animal/hostile/megafauna/proc/update_cooldowns(list/cooldown_updates, ignore_staggered = FALSE)
-	if(!ignore_staggered && has_status_effect(/datum/status_effect/stagger))
+	if(!ignore_staggered && has_status_effect(/datum/status_effect/rebuked))
 		for(var/update in cooldown_updates)
 			cooldown_updates[update] *= 2
 	if(cooldown_updates[COOLDOWN_UPDATE_SET_MELEE])

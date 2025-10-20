@@ -6,11 +6,26 @@
 	worn_icon = 'maplestation_modules/story_content/lini_equipment/icons/liniuniform_worn.dmi'
 	icon_state = "liniuniform"
 
+/datum/loadout_item/under/jumpsuit/pilot
+	name = "Berbier Uniform"
+	item_path = /obj/item/clothing/under/jumpsuit/lini
+
+/datum/loadout_item/under/jumpsuit/pilot/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
+
 /obj/item/clothing/shoes/liniboots
 	name = "Berbier Boots"
 	desc = "Steel toed boots, durable and lightweight."
-	icon = 'maplestation_modules/story_content/casual_clothing/icons/casual_icon.dmi'
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	icon = 'maplestation_modules/story_content/lini_equipment/icons/liniuniform_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/lini_equipment/icons/liniuniform_worn.dmi'
 	icon_state = "liniboots"
+
+/datum/loadout_item/shoes/lini
+	name = "Berbier Boots"
+	item_path = /obj/item/clothing/shoes/liniboots
+
+/datum/loadout_item/shoes/lini/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

@@ -45,7 +45,7 @@ Nothing else in the console has ID requirements.
 		return reagent.name
 	return ID
 
-/obj/machinery/computer/rdconsole/LateInitialize()
+/obj/machinery/computer/rdconsole/post_machine_initialize()
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)
@@ -94,6 +94,20 @@ Nothing else in the console has ID requirements.
 	. = ..()
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
+	return TRUE
+
+/obj/machinery/computer/rdconsole/proc/enqueue_node(id, mob/user)
+	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
+		say("Node enqueue failed: Either no techweb is found, node is already researched or is not available!")
+		return FALSE
+	stored_research.enqueue_node(id, user)
+	return TRUE
+
+/obj/machinery/computer/rdconsole/proc/dequeue_node(id, mob/user)
+	if(!stored_research || !stored_research.available_nodes[id] || stored_research.researched_nodes[id])
+		say("Node dequeue failed: Either no techweb is found, node is already researched or is not available!")
+		return FALSE
+	stored_research.dequeue_node(id, user)
 	return TRUE
 
 /obj/machinery/computer/rdconsole/proc/research_node(id, mob/user)
@@ -159,7 +173,7 @@ Nothing else in the console has ID requirements.
 
 /obj/machinery/computer/rdconsole/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/research_designs),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 // heavy data from this proc should be moved to static data when possible
@@ -171,6 +185,7 @@ Nothing else in the console has ID requirements.
 		return data
 	data += list(
 		"nodes" = list(),
+		"queue_nodes" = stored_research.research_queue_nodes,
 		"experiments" = list(),
 		"researched_designs" = stored_research.researched_designs,
 		"points" = stored_research.research_points,
@@ -194,6 +209,10 @@ Nothing else in the console has ID requirements.
 	// Serialize all nodes to display
 	for(var/v in stored_research.tiers)
 		var/datum/techweb_node/n = SSresearch.techweb_node_by_id(v)
+		var/enqueued_by_user = FALSE
+
+		if((v in stored_research.research_queue_nodes) && stored_research.research_queue_nodes[v] == user)
+			enqueued_by_user = TRUE
 
 		// Ensure node is supposed to be visible
 		if (stored_research.hidden_nodes[v])
@@ -201,8 +220,11 @@ Nothing else in the console has ID requirements.
 
 		data["nodes"] += list(list(
 			"id" = n.id,
+			"is_free" = n.is_free(stored_research),
 			"can_unlock" = stored_research.can_unlock_node(n),
+			"have_experiments_done" = stored_research.have_experiments_for_node(n),
 			"tier" = stored_research.tiers[n.id],
+			"enqueued_by_user" = enqueued_by_user
 		))
 
 	// Get experiments and serialize them
@@ -236,7 +258,8 @@ Nothing else in the console has ID requirements.
 
 /obj/machinery/computer/rdconsole/ui_static_data(mob/user)
 	. = list(
-		"static_data" = list()
+		"static_data" = list(),
+		"point_types_abbreviations" = SSresearch.point_types,
 	)
 
 	// Build node cache...
@@ -274,7 +297,7 @@ Nothing else in the console has ID requirements.
 
 	// Build design cache
 	var/design_cache = list()
-	var/datum/asset/spritesheet/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet/research_designs)
+	var/datum/asset/spritesheet_batched/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	var/size32x32 = "[spritesheet.name]32x32"
 	for (var/design_id in SSresearch.techweb_designs)
 		var/datum/design/design = SSresearch.techweb_designs[design_id] || SSresearch.error_design
@@ -320,6 +343,12 @@ Nothing else in the console has ID requirements.
 			return TRUE
 		if ("researchNode")
 			research_node(params["node_id"], usr)
+			return TRUE
+		if ("enqueueNode")
+			enqueue_node(params["node_id"], usr)
+			return TRUE
+		if ("dequeueNode")
+			dequeue_node(params["node_id"], usr)
 			return TRUE
 		if ("ejectDisk")
 			eject_disk(params["type"])

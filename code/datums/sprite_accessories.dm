@@ -16,35 +16,6 @@
  *	conversion in savefile.dm
  */
 
-/proc/init_sprite_accessory_subtypes(prototype, list/L, list/male, list/female, add_blank)//Roundstart argument builds a specific list for roundstart parts where some parts may be locked
-	if(!istype(L))
-		L = list()
-	if(!istype(male))
-		male = list()
-	if(!istype(female))
-		female = list()
-
-	for(var/path in subtypesof(prototype))
-		var/datum/sprite_accessory/D = new path()
-
-		if(D.icon_state)
-			L[D.name] = D
-		else
-			L += D.name
-
-		switch(D.gender)
-			if(MALE)
-				male += D.name
-			if(FEMALE)
-				female += D.name
-			else
-				male += D.name
-				female += D.name
-	if(add_blank)
-		L[SPRITE_ACCESSORY_NONE] = new /datum/sprite_accessory/blank
-
-	return L
-
 /datum/sprite_accessory
 	/// The icon file the accessory is located in.
 	var/icon
@@ -63,8 +34,6 @@
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
 	var/color_src = MUTANT_COLOR
-	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
-	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.
 	var/locked = FALSE
 	/// Should we center the sprite?
@@ -690,6 +659,10 @@
 	name = "Short Bangs"
 	icon_state = "hair_shortbangs"
 
+/datum/sprite_accessory/hair/shortbangs2
+	name = "Short Bangs 2"
+	icon_state = "hair_shortbangs2"
+
 /datum/sprite_accessory/hair/short
 	name = "Short Hair"
 	icon_state = "hair_a"
@@ -1120,12 +1093,52 @@
 	use_static = FALSE
 	em_block = TRUE
 
+	/// Allows you to specify a greyscale config
+	var/greyscale_config
+	/// Icon state in the digitigrade template file to use if the wearer is digitigrade.
+	/// If null, no special digitigrade handling is done.
+	var/digi_icon_state
+	/// Color pallete for static colored underwear, like hearts.
+	/// Used so greyscale copies can have the same palette.
+	var/greyscale_colors = "#FFFFFF#FFFFFF#FFFFFF"
+
+/datum/sprite_accessory/underwear/proc/make_appearance(mob/living/carbon/human/for_who)
+	var/static/list/cached_icons = list()
+	var/use_female = for_who.dna.species.sexes && for_who.physique == FEMALE
+	var/use_digi = digi_icon_state && (for_who.bodyshape & BODYSHAPE_DIGITIGRADE) && !for_who.is_digitigrade_squished()
+
+	var/key = "[icon_state]-[greyscale_config || "ng"]-[use_female]-[use_digi]-[greyscale_colors]"
+	var/mutable_appearance/result
+	if(cached_icons[key]) // it's already cached
+		result = mutable_appearance(icon(cached_icons[key]))
+
+	else if(greyscale_config || use_female || use_digi) // icon ops ahead
+		var/icon/created = icon(greyscale_config ? SSgreyscale.GetColoredIconByType(greyscale_config, greyscale_colors) : icon, icon_state)
+		if(use_female)
+			created = wear_female_version(icon_state, icon, FEMALE_UNIFORM_FULL)
+		if(use_digi)
+			var/icon/replacement = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade_underwear, greyscale_colors), digi_icon_state)
+			created = replace_icon_legs(created, replacement)
+
+		cached_icons[key] = fcopy_rsc(created)
+		result = mutable_appearance(created)
+
+	else // no caching necessary
+		result = mutable_appearance(icon, icon_state)
+
+	result.layer = -BODY_LAYER
+	result.color = use_static ? null : for_who.underwear_color
+
+	return result
 
 //MALE UNDERWEAR
 /datum/sprite_accessory/underwear/nude
 	name = "Nude"
 	icon_state = null
 	gender = NEUTER
+
+/datum/sprite_accessory/underwear/nude/make_appearance(mob/living/carbon/human/for_who)
+	return
 
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Briefs"
@@ -1136,21 +1149,25 @@
 	name = "Boxers"
 	icon_state = "male_boxers"
 	gender = MALE
+	digi_icon_state = "boxers"
 
 /datum/sprite_accessory/underwear/male_stripe
 	name = "Striped Boxers"
 	icon_state = "male_stripe"
 	gender = MALE
+	digi_icon_state = "boxers_stripe"
 
 /datum/sprite_accessory/underwear/male_midway
 	name = "Midway Boxers"
 	icon_state = "male_midway"
 	gender = MALE
+	digi_icon_state = "midway"
 
 /datum/sprite_accessory/underwear/male_longjohns
 	name = "Long Johns"
 	icon_state = "male_longjohns"
 	gender = MALE
+	digi_icon_state = "longjohns"
 
 /datum/sprite_accessory/underwear/male_kinky
 	name = "Jockstrap"
@@ -1167,25 +1184,32 @@
 	icon_state = "male_hearts"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#D62626#"
 
 /datum/sprite_accessory/underwear/male_commie
 	name = "Commie Boxers"
 	icon_state = "male_commie"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_twocolor"
+	greyscale_colors = "#D62626#D1B62C#D62626"
 
 /datum/sprite_accessory/underwear/male_usastripe
 	name = "Freedom Boxers"
 	icon_state = "male_assblastusa"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#2E26D6"
 
 /datum/sprite_accessory/underwear/male_uk
 	name = "UK Boxers"
 	icon_state = "male_uk"
 	gender = MALE
 	use_static = TRUE
-
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#2E26D6"
 
 //FEMALE UNDERWEAR
 /datum/sprite_accessory/underwear/female_bikini
@@ -1202,11 +1226,13 @@
 	name = "Bralette w/ Boyshorts"
 	icon_state = "female_bralette"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/female_sport
 	name = "Sports Bra w/ Boyshorts"
 	icon_state = "female_sport"
 	gender = FEMALE
+	digi_icon_state = "short"
 
 /datum/sprite_accessory/underwear/female_thong
 	name = "Thong"
@@ -1237,11 +1263,13 @@
 	name = "Two-Piece Swimsuit"
 	icon_state = "swim_twopiece"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/swimsuit_strapless_twopiece
 	name = "Strapless Two-Piece Swimsuit"
 	icon_state = "swim_strapless_twopiece"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/swimsuit_stripe
 	name = "Strapless Striped Swimsuit"
@@ -1748,24 +1776,24 @@
 // MutantParts Definitions //
 /////////////////////////////
 
-/datum/sprite_accessory/body_markings
-	icon = 'icons/mob/human/species/lizard/lizard_misc.dmi'
+/datum/sprite_accessory/lizard_markings
+	icon = 'icons/mob/human/species/lizard/lizard_markings.dmi'
 
-/datum/sprite_accessory/body_markings/none
+/datum/sprite_accessory/lizard_markings/none
 	name = "None"
 	icon_state = "none"
 
-/datum/sprite_accessory/body_markings/dtiger
+/datum/sprite_accessory/lizard_markings/dtiger
 	name = "Dark Tiger Body"
 	icon_state = "dtiger"
 	gender_specific = TRUE
 
-/datum/sprite_accessory/body_markings/ltiger
+/datum/sprite_accessory/lizard_markings/ltiger
 	name = "Light Tiger Body"
 	icon_state = "ltiger"
 	gender_specific = TRUE
 
-/datum/sprite_accessory/body_markings/lbelly
+/datum/sprite_accessory/lizard_markings/lbelly
 	name = "Light Belly"
 	icon_state = "lbelly"
 	gender_specific = TRUE
@@ -1915,14 +1943,32 @@
 /datum/sprite_accessory/ears/cat
 	name = "Cat"
 	icon_state = "cat"
-	hasinner = TRUE
 	color_src = HAIR_COLOR
+
+/datum/sprite_accessory/ears/cat/big
+	name = "Big"
+	icon_state = "big"
+
+/datum/sprite_accessory/ears/cat/miqo
+	name = "Coeurl"
+	icon_state = "miqo"
+
+/datum/sprite_accessory/ears/cat/fold
+	name = "Fold"
+	icon_state = "fold"
+
+/datum/sprite_accessory/ears/cat/lynx
+	name = "Lynx"
+	icon_state = "lynx"
+
+/datum/sprite_accessory/ears/cat/round
+	name = "Round"
+	icon_state = "round"
 
 /datum/sprite_accessory/ears/fox
 	icon = 'icons/mob/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
-	hasinner = TRUE
 	color_src = HAIR_COLOR
 	locked = TRUE
 
@@ -2172,16 +2218,6 @@
 /datum/sprite_accessory/tail_spines/aquatic
 	name = "Aquatic"
 	icon_state = "aqua"
-
-/datum/sprite_accessory/legs //legs are a special case, they aren't actually sprite_accessories but are updated with them.
-	icon = null //These datums exist for selecting legs on preference, and little else
-	em_block = TRUE
-
-/datum/sprite_accessory/legs/none
-	name = "Normal Legs"
-
-/datum/sprite_accessory/legs/digitigrade_lizard
-	name = DIGITIGRADE_LEGS
 
 /datum/sprite_accessory/caps
 	icon = 'icons/mob/human/species/mush_cap.dmi'

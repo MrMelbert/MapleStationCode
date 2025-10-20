@@ -11,7 +11,7 @@
 
 // Reishi
 /obj/item/seeds/reishi
-	name = "pack of reishi mycelium"
+	name = "reishi mycelium pack"
 	desc = "This mycelium grows into something medicinal and relaxing."
 	icon_state = "mycelium-reishi"
 	species = "reishi"
@@ -38,7 +38,7 @@
 
 // Fly Amanita
 /obj/item/seeds/amanita
-	name = "pack of fly amanita mycelium"
+	name = "fly amanita mycelium pack"
 	desc = "This mycelium grows into something horrible."
 	icon_state = "mycelium-amanita"
 	species = "amanita"
@@ -65,7 +65,7 @@
 
 // Destroying Angel
 /obj/item/seeds/angel
-	name = "pack of destroying angel mycelium"
+	name = "destroying angel mycelium pack"
 	desc = "This mycelium grows into something devastating."
 	icon_state = "mycelium-angel"
 	species = "angel"
@@ -93,7 +93,7 @@
 
 // Liberty Cap
 /obj/item/seeds/liberty
-	name = "pack of liberty-cap mycelium"
+	name = "liberty-cap mycelium pack"
 	desc = "This mycelium grows into liberty-cap mushrooms."
 	icon_state = "mycelium-liberty"
 	species = "liberty"
@@ -119,7 +119,7 @@
 
 // Plump Helmet
 /obj/item/seeds/plump
-	name = "pack of plump-helmet mycelium"
+	name = "plump-helmet mycelium pack"
 	desc = "This mycelium grows into helmets... maybe."
 	icon_state = "mycelium-plump"
 	species = "plump"
@@ -145,7 +145,7 @@
 
 // Walking Mushroom
 /obj/item/seeds/plump/walkingmushroom
-	name = "pack of walking mushroom mycelium"
+	name = "walking mushroom mycelium pack"
 	desc = "This mycelium will grow into huge stuff!"
 	icon_state = "mycelium-walkingmushroom"
 	species = "walkingmushroom"
@@ -171,7 +171,7 @@
 
 // Chanterelle
 /obj/item/seeds/chanter
-	name = "pack of chanterelle mycelium"
+	name = "chanterelle mycelium pack"
 	desc = "This mycelium grows into chanterelle mushrooms."
 	icon_state = "mycelium-chanter"
 	species = "chanter"
@@ -199,7 +199,7 @@
 
 //Jupiter Cup
 /obj/item/seeds/chanter/jupitercup
-	name = "pack of jupiter cup mycelium"
+	name = "jupiter cup mycelium pack"
 	desc = "This mycelium grows into jupiter cups. Zeus would be envious at the power at your fingertips."
 	icon_state = "mycelium-jupitercup"
 	species = "jupitercup"
@@ -224,7 +224,7 @@
 
 // Glowshroom
 /obj/item/seeds/glowshroom
-	name = "pack of glowshroom mycelium"
+	name = "glowshroom mycelium pack"
 	desc = "This mycelium -glows- into mushrooms!"
 	icon_state = "mycelium-glowshroom"
 	species = "glowshroom"
@@ -279,7 +279,7 @@
 
 // Glowcap
 /obj/item/seeds/glowshroom/glowcap
-	name = "pack of glowcap mycelium"
+	name = "glowcap mycelium pack"
 	desc = "This mycelium -powers- into mushrooms!"
 	icon_state = "mycelium-glowcap"
 	species = "glowcap"
@@ -303,7 +303,7 @@
 
 //Shadowshroom
 /obj/item/seeds/glowshroom/shadowshroom
-	name = "pack of shadowshroom mycelium"
+	name = "shadowshroom mycelium pack"
 	desc = "This mycelium will grow into something shadowy."
 	icon_state = "mycelium-shadowshroom"
 	species = "shadowshroom"
@@ -311,7 +311,7 @@
 	icon_dead = "shadowshroom-dead"
 	plantname = "Shadowshrooms"
 	product = /obj/item/food/grown/mushroom/glowshroom/shadowshroom
-	genes = list(/datum/plant_gene/trait/glow/shadow, /datum/plant_gene/trait/plant_type/fungal_metabolism)
+	genes = list(/datum/plant_gene/trait/glow/shadow, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/reagent/fading_agnosticine) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/uranium/radium = 0.2, /datum/reagent/consumable/nutriment = 0.04)
 	rarity = 30
@@ -332,7 +332,7 @@
 		investigate_log("was planted by [key_name(user)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 
 /obj/item/seeds/odious_puffball
-	name = "pack of odious pullball spores"
+	name = "odious pullball spore pack"
 	desc = "These spores reek! Disgusting."
 	icon_state = "seed-odiouspuffball"
 	species = "odiouspuffball"
@@ -347,7 +347,7 @@
 	instability = 65
 	growthstages = 3
 	product = /obj/item/food/grown/mushroom/odious_puffball
-	genes = list(/datum/plant_gene/trait/smoke, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/squash)
+	genes = list(/datum/plant_gene/trait/smoke, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/squash, /datum/plant_gene/reagent/agnosticine) // NON-MODULE CHANGE
 	reagents_add = list(/datum/reagent/toxin/spore = 0.2, /datum/reagent/consumable/nutriment = 0.04)
 	rarity = 35
 	graft_gene = /datum/plant_gene/trait/smoke

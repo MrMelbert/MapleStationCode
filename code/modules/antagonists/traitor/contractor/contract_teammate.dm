@@ -5,7 +5,7 @@
 
 	partner_outfit.equip(partner)
 
-	var/obj/structure/closet/supplypod/arrival_pod = new(null, STYLE_SYNDICATE)
+	var/obj/structure/closet/supplypod/arrival_pod = new(null, /datum/pod_style/syndicate) // Non-module change : removed upstream
 	arrival_pod.explosionSize = list(0,0,0,1)
 	arrival_pod.bluespace = TRUE
 
@@ -51,7 +51,7 @@
 	suit = /obj/item/clothing/suit/chameleon
 	back = /obj/item/storage/backpack
 	belt = /obj/item/modular_computer/pda/chameleon
-	mask = /obj/item/clothing/mask/cigarette/syndicate
+	mask = /obj/item/cigarette/syndicate
 	shoes = /obj/item/clothing/shoes/chameleon/noslip
 	ears = /obj/item/radio/headset/chameleon
 	id = /obj/item/card/id/advanced/chameleon
@@ -68,5 +68,5 @@
 
 /datum/outfit/contractor_partner/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
-	var/obj/item/clothing/mask/cigarette/syndicate/cig = H.get_item_by_slot(ITEM_SLOT_MASK)
+	var/obj/item/cigarette/syndicate/cig = H.get_item_by_slot(ITEM_SLOT_MASK)
 	cig.light()

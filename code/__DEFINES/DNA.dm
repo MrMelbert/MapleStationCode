@@ -87,9 +87,11 @@
 #define ORGAN_SLOT_MONSTER_CORE "monstercore"
 #define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
 #define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together
+#define ORGAN_SLOT_SPINE "spine"
 #define ORGAN_SLOT_STOMACH "stomach"
 #define ORGAN_SLOT_STOMACH_AID "stomach_aid"
 #define ORGAN_SLOT_THRUSTERS "thrusters"
+#define ORGAN_SLOT_TRACTOR_FIELD "tractor_field" // NON-MODULE CHANGE
 #define ORGAN_SLOT_TONGUE "tongue"
 #define ORGAN_SLOT_VOICE "vocal_cords"
 #define ORGAN_SLOT_ZOMBIE "zombie_infection"
@@ -102,7 +104,6 @@
 #define ORGAN_SLOT_EXTERNAL_HORNS "horns"
 #define ORGAN_SLOT_EXTERNAL_WINGS "wings"
 #define ORGAN_SLOT_EXTERNAL_ANTENNAE "antennae"
-#define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES "head_tentacles" // NON-MODULE CHANGE
 #define ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER "synth_head_cover" //NON-MODULE CHANGE
@@ -149,6 +150,7 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_HEART,
 	ORGAN_SLOT_ZOMBIE,
 	ORGAN_SLOT_THRUSTERS,
+	ORGAN_SLOT_TRACTOR_FIELD, // NON-MODULE CHANGE
 	ORGAN_SLOT_HUD,
 	ORGAN_SLOT_LIVER,
 	ORGAN_SLOT_TONGUE,

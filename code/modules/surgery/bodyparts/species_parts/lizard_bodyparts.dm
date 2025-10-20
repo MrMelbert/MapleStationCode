@@ -8,12 +8,13 @@
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
 	is_dimorphic = TRUE
-	wing_types = list(/obj/item/organ/external/wings/functional/dragon)
+	wing_types = list(/obj/item/organ/wings/functional/dragon)
+	acceptable_bodyshape = parent_type::acceptable_bodyshape | BODYSHAPE_DIGITIGRADE
 
 /obj/item/bodypart/arm/left/lizard
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash", "scratch", "claw")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slash.ogg'
@@ -22,7 +23,7 @@
 /obj/item/bodypart/arm/right/lizard
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash", "scratch", "claw")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slash.ogg'
@@ -49,15 +50,18 @@
 	var/obj/item/clothing/under/worn_uniform = get_item_by_slot(ITEM_SLOT_ICLOTHING)
 
 	var/uniform_compatible = isnull(worn_uniform) \
+		|| !(worn_uniform.item_flags & IN_INVENTORY) \
 		|| (worn_uniform.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
 		|| !(worn_uniform.body_parts_covered & LEGS) \
-		|| (worn_suit?.flags_inv & HIDEJUMPSUIT) // If suit hides our jumpsuit, it doesn't matter if it squishes
+		|| (obscured_slots & HIDEJUMPSUIT) // If suit hides our jumpsuit, it doesn't matter if it squishes
 
 	var/suit_compatible = isnull(worn_suit) \
+		|| !(worn_suit.item_flags & IN_INVENTORY) \
 		|| (worn_suit.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
 		|| !(worn_suit.body_parts_covered & LEGS)
 
 	var/shoes_compatible = isnull(worn_shoes) \
+		|| !(worn_shoes.item_flags & IN_INVENTORY) \
 		|| (worn_shoes.supports_variations_flags & DIGITIGRADE_VARIATIONS)
 
 	return !uniform_compatible || !suit_compatible || !shoes_compatible
@@ -65,31 +69,27 @@
 /obj/item/bodypart/leg/left/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodyshape = BODYSHAPE_HUMANOID | BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 20
 
-/obj/item/bodypart/leg/left/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
+/obj/item/bodypart/leg/left/digitigrade/Initialize(mapload)
 	. = ..()
-	var/old_id = limb_id
-	limb_id = owner?.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
-	if(old_id != limb_id)
-		// Something unsquished / squished us so we need to go through and update everything that is affected
-		for(var/obj/item/thing as anything in owner?.get_equipped_items())
-			if(thing.supports_variations_flags & DIGITIGRADE_VARIATIONS)
-				thing.update_slot_icon()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	bodyshape = BODYSHAPE_HUMANOID | BODYSHAPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
+	unarmed_damage_low = 10
+	unarmed_damage_high = 15
+	unarmed_effectiveness = 20
 
-/obj/item/bodypart/leg/right/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
+/obj/item/bodypart/leg/right/digitigrade/Initialize(mapload)
 	. = ..()
-	var/old_id = limb_id
-	limb_id = owner?.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
-	if(old_id != limb_id)
-		// Something unsquished / squished us so we need to go through and update everything that is affected
-		for(var/obj/item/thing as anything in owner?.get_equipped_items())
-			if(thing.supports_variations_flags & DIGITIGRADE_VARIATIONS)
-				thing.update_slot_icon()
+	AddElement(/datum/element/bodypart_sprint_buff, 5)
+	AddElement(/datum/element/digitigrade_limb, SPECIES_LIZARD, initial(limb_id))

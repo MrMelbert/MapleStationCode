@@ -265,22 +265,22 @@ GLOBAL_DATUM(syndicate_code_response_regex, /regex)
 			if(2)
 				switch(rand(1,3))//Food, drinks, or places. Only selectable once.
 					if(1)
-						. += lowertext(pick(drinks))
+						. += LOWER_TEXT(pick(drinks))
 					if(2)
-						. += lowertext(pick(foods))
+						. += LOWER_TEXT(pick(foods))
 					if(3)
-						. += lowertext(pick(locations))
+						. += LOWER_TEXT(pick(locations))
 				safety -= 2
 			if(3)
 				switch(rand(1,4))//Abstract nouns, objects, adjectives, threats. Can be selected more than once.
 					if(1)
-						. += lowertext(pick(nouns))
+						. += LOWER_TEXT(pick(nouns))
 					if(2)
-						. += lowertext(pick(objects))
+						. += LOWER_TEXT(pick(objects))
 					if(3)
-						. += lowertext(pick(adjectives))
+						. += LOWER_TEXT(pick(adjectives))
 					if(4)
-						. += lowertext(pick(threats))
+						. += LOWER_TEXT(pick(threats))
 		if(!return_list)
 			if(words == 1)
 				. += "."
@@ -374,3 +374,22 @@ GLOBAL_DATUM(syndicate_code_response_regex, /regex)
 			return "a rolling pin"
 		else
 			return "something... but the gods didn't set this up right (Please report this bug)"
+
+///Find the first name of a mob from a passed string with regex
+/proc/first_name(given_name)
+	var/static/regex/firstname = new("^\[^\\s-\]+") //First word before whitespace or "-"
+	firstname.Find(given_name)
+	return firstname.match
+
+/// Find the last name of a mob from a passed string with regex
+/proc/last_name(given_name)
+	var/static/regex/lasttname = new("\[^\\s-\]+$") //First word before whitespace or "-"
+	lasttname.Find(given_name)
+	return lasttname.match
+
+/// Find whitespace or dashes in the passed string with regex and returns TRUE if found
+/proc/is_mononym(given_name)
+	var/static/regex/breaks = regex(@"\s")
+	if(breaks.Find(given_name))
+		return FALSE
+	return TRUE

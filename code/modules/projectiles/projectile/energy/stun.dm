@@ -92,7 +92,7 @@
 		return FALSE
 	if(istype(with_what, /obj/item/gun/energy))
 		var/obj/item/gun/energy/taser_gun = with_what
-		if(!taser_gun.cell?.use(60 * seconds_between_ticks))
+		if(!taser_gun.cell?.use(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks))
 			return FALSE
 		taser_gun.update_appearance()
 		return TRUE
@@ -102,7 +102,7 @@
 		if(!taser_machine.is_operational)
 			return FALSE
 		// We can't measure the output of this but if we use too much power the area will depower -> depower the machine -> stop taze next tick
-		taser_machine.use_power(60 * seconds_between_ticks)
+		taser_machine.use_energy(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks)
 		return TRUE
 
 	if(istype(taser, /obj/item/mecha_parts/mecha_equipment))
@@ -112,7 +112,7 @@
 			|| taser_equipment.get_integrity() <= 1 \
 			|| taser_equipment.chassis.is_currently_ejecting \
 			|| taser_equipment.chassis.equipment_disabled \
-			|| !taser_equipment.chassis.use_power(60 * seconds_between_ticks))
+			|| !taser_equipment.chassis.use_energy(STANDARD_CELL_CHARGE * 0.05 * seconds_between_ticks))
 			return FALSE
 		return TRUE
 
@@ -129,11 +129,11 @@
 	SEND_SIGNAL(owner, COMSIG_LIVING_MINOR_SHOCK)
 	owner.add_mood_event("tased", /datum/mood_event/tased)
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/being_tased)
-	if(owner.pain_controller?.pain_modifier > 0.5)
-		owner.pain_emote("scream")
+	owner.pain_emote("scream")
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.force_say()
+	owner.set_headset_block_if_lower(6 SECONDS)
 	return TRUE
 
 /datum/status_effect/tased/on_remove()
@@ -156,7 +156,8 @@
 
 	taser = null
 	firer = null
-	QDEL_NULL(tase_line)
+	if(!QDELING(tase_line))
+		QDEL_NULL(tase_line)
 
 /datum/status_effect/tased/tick(seconds_between_ticks)
 	if(!do_tase_with(taser, seconds_between_ticks))
@@ -166,15 +167,15 @@
 		return
 	// You are damp, that's bad when you're being tased
 	if(owner.fire_stacks < 0)
-		owner.apply_damage(max(1, owner.fire_stacks * -0.5 * seconds_between_ticks), FIRE, spread_damage = TRUE)
+		owner.apply_damage(max(1, owner.fire_stacks * -0.5) * seconds_between_ticks, FIRE, spread_damage = TRUE)
 		if(SPT_PROB(25, seconds_between_ticks))
 			do_sparks(1, FALSE, owner)
 
-	owner.set_stutter_if_lower(10 SECONDS)
-	owner.set_jitter_if_lower(20 SECONDS)
-	owner.cause_pain(BODY_ZONES_ALL, 2 * seconds_between_ticks, BURN)
+	owner.sharp_pain(BODY_ZONES_ALL, 6 * seconds_between_ticks, BURN, 12.5 SECONDS, 0.66)
 	owner.apply_damage(120 * seconds_between_ticks * (owner.pain_controller?.pain_modifier || 1), STAMINA)
 	if(owner.stat <= SOFT_CRIT)
+		owner.set_stutter_if_lower(10 SECONDS)
+		owner.set_jitter_if_lower(20 SECONDS)
 		owner.do_jitter_animation(INFINITY) // maximum POWER
 
 /// Sets the passed atom as the "taser"
@@ -286,6 +287,7 @@
 	name = "Tased!"
 	desc = "Taser electrodes are shocking you! You can click this or resist to try to remove them."
 	icon_state = "stun"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/tazed/Click(location, control, params)
 	. = ..()
@@ -316,7 +318,7 @@
 
 /obj/effect/ebeam/react_to_entry/electrodes
 	name = "electrodes"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = TRUE
 	light_color = COLOR_YELLOW
 	light_power = 1

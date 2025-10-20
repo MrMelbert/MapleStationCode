@@ -142,6 +142,12 @@
 	_clear_signal_refs()
 	//END: ECS SHIT
 
+#ifndef DISABLE_DREAMLUAU
+	if(!(datum_flags & DF_STATIC_OBJECT))
+		DREAMLUAU_CLEAR_REF_USERDATA(vars) // vars ceases existing when src does, so we need to clear any lua refs to it that exist.
+		DREAMLUAU_CLEAR_REF_USERDATA(src)
+#endif
+
 	return QDEL_HINT_QUEUE
 
 ///Only override this if you know what you're doing. You do not know what you're doing
@@ -404,10 +410,15 @@
 
 	var/list/names = islist(name_or_names) ? name_or_names : list(name_or_names)
 
+	. = FALSE
 	for(var/name in names)
 		if(filter_data[name])
 			filter_data -= name
-	update_filters()
+			. = TRUE
+
+	if(.)
+		update_filters()
+	return .
 
 /datum/proc/clear_filters()
 	ASSERT(isatom(src) || isimage(src))

@@ -75,15 +75,12 @@
 		<br>We apply a displacement effect from the gravity pulse plane too, so we can warp the game world.\
 		<br>If we have fov enabled we'll relay this onto two different rendering plates to apply fov effects to only a portion. If not, we just draw straight to master"
 	plane = RENDER_PLANE_GAME
-	render_relay_planes = list(RENDER_PLANE_MASTER)
+	render_relay_planes = list(LIT_GAME_RENDER_PLATE)
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	add_filter("displacer", 1, displacement_map_filter(render_source = OFFSET_RENDER_TARGET(GRAVITY_PULSE_RENDER_TARGET, offset), size = 10))
-	if(check_holidays(HALLOWEEN))
-		// Makes things a tad greyscale (leaning purple) and drops low colors for vibes
-		// We're basically using alpha as better constant here btw
-		add_filter("spook_color", 2, color_matrix_filter(list(0.75,0.13,0.13,0, 0.13,0.7,0.13,0, 0.13,0.13,0.75,0, -0.06,-0.09,-0.08,1, 0,0,0,0)))
+	add_relay_to(GET_NEW_PLANE(EMISSIVE_BLOOM_PLATE, offset), blend_override = BLEND_MULTIPLY)
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/show_to(mob/mymob)
 	. = ..()
@@ -100,13 +97,13 @@
 	SIGNAL_HANDLER
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_GAME_UNMASKED, offset))
 	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_GAME_MASKED, offset))
-	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_MASTER, offset))
+	remove_relay_from(GET_NEW_PLANE(LIT_GAME_RENDER_PLATE, offset))
 
 /atom/movable/screen/plane_master/rendering_plate/game_plate/proc/fov_disabled(mob/source)
 	SIGNAL_HANDLER
 	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME_UNMASKED, offset))
 	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME_MASKED, offset))
-	add_relay_to(GET_NEW_PLANE(RENDER_PLANE_MASTER, offset))
+	add_relay_to(GET_NEW_PLANE(LIT_GAME_RENDER_PLATE, offset))
 
 ///renders the parts of the plate unmasked by fov
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate
@@ -114,7 +111,7 @@
 	documentation = "Holds the bits of the game plate that aren't impacted by fov.\
 		<br>We use an alpha mask to cut out the bits we plan on dealing with elsewhere"
 	plane = RENDER_PLANE_GAME_UNMASKED
-	render_relay_planes = list(RENDER_PLANE_MASTER)
+	render_relay_planes = list(LIT_GAME_RENDER_PLATE)
 
 /atom/movable/screen/plane_master/rendering_plate/unmasked_game_plate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
 	. = ..()
@@ -147,7 +144,7 @@
 	documentation = "Contains the bits of the game plate that are hidden by some form of fov\
 		<br>Applies a color matrix to dim and create contrast, alongside a blur. Goal is only half being able to see stuff"
 	plane = RENDER_PLANE_GAME_MASKED
-	render_relay_planes = list(RENDER_PLANE_MASTER)
+	render_relay_planes = list(LIT_GAME_RENDER_PLATE)
 
 /atom/movable/screen/plane_master/rendering_plate/masked_game_plate/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
 	. = ..()
@@ -214,15 +211,16 @@
 	name = "Lighting plate"
 	documentation = "Anything on this plane will be <b>multiplied</b> with the plane it's rendered onto (typically the game plane).\
 		<br>That's how lighting functions at base. Because it uses BLEND_MULTIPLY and occasionally color matrixes, it needs a backdrop of blackness.\
-		<br>See <a href=\"https://secure.byond.com/forum/?post=2141928\">This byond post</a>\
+		<br>See <a href=\"https://secure.byond.com/forum/?post=2141928\">this byond post</a>\
 		<br>Lemme see uh, we're masked by the emissive plane so it can actually function (IE: make things glow in the dark).\
-		<br>We're also masked by the overlay lighting plane, which contains all the movable lights in the game. It draws to us and also the game plane.\
+		<br>We're also masked by the overlay lighting plane, which contains all the well overlay lights in the game. It draws to us and also the game plane.\
 		<br>Masks us out so it has the breathing room to apply its effect.\
 		<br>Oh and we quite often have our alpha changed to achive night vision effects, or things of that sort."
 	plane = RENDER_PLANE_LIGHTING
 	blend_mode_override = BLEND_MULTIPLY
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	critical = PLANE_CRITICAL_DISPLAY
+	render_relay_planes = list(LIT_GAME_RENDER_PLATE)
 	/// A list of light cutoffs we're actively using, (mass, r, g, b) to avoid filter churn
 	var/list/light_cutoffs
 
@@ -239,7 +237,6 @@
 /atom/movable/screen/plane_master/rendering_plate/lighting/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	add_filter("emissives", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(EMISSIVE_RENDER_TARGET, offset), flags = MASK_INVERSE))
-	add_filter("object_lighting", 2, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(O_LIGHTING_VISUAL_RENDER_TARGET, offset), flags = MASK_INVERSE))
 	set_light_cutoff(10)
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/show_to(mob/mymob)
@@ -266,7 +263,6 @@
 		RegisterSignal(hud, COMSIG_HUD_OFFSET_CHANGED, PROC_REF(on_offset_change), override = TRUE)
 	offset_change(hud?.current_plane_offset || 0)
 	set_light_cutoff(mymob.lighting_cutoff, mymob.lighting_color_cutoffs)
-
 
 /atom/movable/screen/plane_master/rendering_plate/lighting/hide_from(mob/oldmob)
 	. = ..()
@@ -342,41 +338,36 @@
 	render_target = LIGHT_MASK_RENDER_TARGET
 	// We blend against the game plane, so she's gotta multiply!
 	blend_mode = BLEND_MULTIPLY
-	render_relay_planes = list(RENDER_PLANE_GAME)
+	render_relay_planes = list(LIT_GAME_RENDER_PLATE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/show_to(mob/mymob)
 	. = ..()
 	if(!.)
 		return
 
-	RegisterSignal(mymob, COMSIG_MOB_SIGHT_CHANGE, PROC_REF(handle_sight))
+	RegisterSignal(mymob, COMSIG_MOB_SIGHT_CHANGE, PROC_REF(handle_sight), override = TRUE)
 	handle_sight(mymob, mymob.sight, NONE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/hide_from(mob/oldmob)
 	. = ..()
-	var/atom/movable/screen/plane_master/overlay_lights = home.get_plane(GET_NEW_PLANE(O_LIGHTING_VISUAL_PLANE, offset))
-	overlay_lights.remove_filter("lighting_mask")
 	var/atom/movable/screen/plane_master/emissive = home.get_plane(GET_NEW_PLANE(EMISSIVE_RENDER_PLATE, offset))
 	emissive.remove_filter("lighting_mask")
-	remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME, offset))
+	remove_relay_from(GET_NEW_PLANE(LIT_GAME_RENDER_PLATE, offset))
 	UnregisterSignal(oldmob, COMSIG_MOB_SIGHT_CHANGE)
 
 /atom/movable/screen/plane_master/rendering_plate/light_mask/proc/handle_sight(datum/source, new_sight, old_sight)
 	// If we can see something that shows "through" blackness, and we can't see turfs, disable our draw to the game plane
 	// And instead mask JUST the overlay lighting plane, since that will look fuckin wrong
-	var/atom/movable/screen/plane_master/overlay_lights = home.get_plane(GET_NEW_PLANE(O_LIGHTING_VISUAL_PLANE, offset))
 	var/atom/movable/screen/plane_master/emissive = home.get_plane(GET_NEW_PLANE(EMISSIVE_RENDER_PLATE, offset))
 	if(new_sight & SEE_AVOID_TURF_BLACKNESS && !(new_sight & SEE_TURFS))
-		remove_relay_from(GET_NEW_PLANE(RENDER_PLANE_GAME, offset))
-		overlay_lights.add_filter("lighting_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(LIGHT_MASK_RENDER_TARGET, offset)))
+		remove_relay_from(GET_NEW_PLANE(LIT_GAME_RENDER_PLATE, offset))
 		emissive.add_filter("lighting_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(LIGHT_MASK_RENDER_TARGET, offset)))
 	// If we CAN'T see through the black, then draw er down brother!
 	else
-		overlay_lights.remove_filter("lighting_mask")
 		emissive.remove_filter("lighting_mask")
 		// We max alpha here, so our darkness is actually.. dark
 		// Can't do it before cause it fucks with the filter
-		add_relay_to(GET_NEW_PLANE(RENDER_PLANE_GAME, offset), relay_color = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0,0,0,1))
+		add_relay_to(GET_NEW_PLANE(LIT_GAME_RENDER_PLATE, offset), relay_color = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0,0,0,1))
 
 ///render plate for OOC stuff like ghosts, hud-screen effects, etc
 /atom/movable/screen/plane_master/rendering_plate/non_game
@@ -385,8 +376,49 @@
 	plane = RENDER_PLANE_NON_GAME
 	render_relay_planes = list(RENDER_PLANE_MASTER)
 
+/atom/movable/screen/plane_master/rendering_plate/emissive_bloom_mask
+	name = "Emissive bloom mask plate"
+	documentation = "A holder plate used purely as a way to full-white bloom emissives before applying them as a mask onto the emissive bloom plate."
+	plane = EMISSIVE_BLOOM_MASK_PLATE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	render_relay_planes = list()
+	render_target = EMISSIVE_BLOOM_MASK_TARGET
+	critical = PLANE_CRITICAL_DISPLAY
+
+/atom/movable/screen/plane_master/rendering_plate/emissive_bloom
+	name = "Emissive bloom plate"
+	documentation = "Plate used to bloom emissives before adding them onto the overlay lighting plane. We do this by multiplying the game plate\
+		onto a fullbright emissive, then alpha masking it by emissive's color to solve the problem of blockers, both alone and covered by emissives."
+	plane = EMISSIVE_BLOOM_PLATE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	blend_mode = BLEND_ADD
+	render_relay_planes = list(O_LIGHTING_VISUAL_PLANE)
+	critical = PLANE_CRITICAL_DISPLAY
+
+/atom/movable/screen/plane_master/rendering_plate/emissive_bloom/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
+	. = ..()
+	add_filter("emissive_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(EMISSIVE_BLOOM_MASK_TARGET, offset)))
+	add_filter("emissive_bloom", 2, bloom_filter(threshold = COLOR_BLACK, size = 2, offset = 1))
+
+/atom/movable/screen/plane_master/rendering_plate/turf_lighting
+	name = "Turf lighting post-processing plate"
+	documentation = "Used by overlay lighting, and possibly over plates, to mask out turf lighting."
+	plane = TURF_LIGHTING_PLATE
+	render_relay_planes = list(RENDER_PLANE_LIGHTING)
+	blend_mode = BLEND_ADD
+	critical = PLANE_CRITICAL_DISPLAY
+
+/atom/movable/screen/plane_master/rendering_plate/lit_game
+	name = "Lit game rendering plate"
+	documentation = "Plate which is used to multiply the game rendering plate by lighting visuals and rendering fullbright stuff. Exists so we can fetch fullbright game plate for emissive VFX."
+	plane = LIT_GAME_RENDER_PLATE
+	render_relay_planes = list(RENDER_PLANE_MASTER)
+	critical = PLANE_CRITICAL_DISPLAY
+
 /**
- * Plane master proc called in Initialize() that creates relay objects, and sets them uo as needed
+ * Plane master proc called in Initialize() that creates relay objects, and sets them up as needed
  * Sets:
  * * layer from plane to avoid z-fighting
  * * planes to relay the render to
@@ -396,7 +428,7 @@
  * Other vars such as alpha will automatically be applied with the render source
  */
 /atom/movable/screen/plane_master/proc/generate_render_relays()
-	var/relay_loc = home?.relay_loc || "CENTER"
+	var/relay_loc = home?.relay_loc || "1,1"
 	// If we're using a submap (say for a popup window) make sure we draw onto it
 	if(home?.map)
 		relay_loc = "[home.map]:[relay_loc]"
@@ -430,7 +462,7 @@
 	if(!length(relays) && !initial(render_target))
 		render_target = OFFSET_RENDER_TARGET(get_plane_master_render_base(name), offset)
 	if(!relay_loc)
-		relay_loc = "CENTER"
+		relay_loc = "1,1"
 		// If we're using a submap (say for a popup window) make sure we draw onto it
 		if(home?.map)
 			relay_loc = "[home.map]:[relay_loc]"

@@ -48,10 +48,10 @@
 	charging += charger
 	actively_moving = FALSE
 	SEND_SIGNAL(owner, COMSIG_STARTED_CHARGE)
-	RegisterSignal(charger, COMSIG_MOVABLE_BUMP, PROC_REF(on_bump), TRUE)
-	RegisterSignal(charger, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(on_move), TRUE)
-	RegisterSignal(charger, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved), TRUE)
-	RegisterSignal(charger, COMSIG_LIVING_DEATH, PROC_REF(charge_end))
+	RegisterSignal(charger, COMSIG_MOVABLE_BUMP, PROC_REF(on_bump), override = TRUE)
+	RegisterSignal(charger, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(on_move), override = TRUE)
+	RegisterSignal(charger, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved), override = TRUE)
+	RegisterSignal(charger, COMSIG_LIVING_DEATH, PROC_REF(charge_end), override = TRUE)
 	charger.setDir(dir)
 	do_charge_indicator(charger, target)
 
@@ -62,9 +62,9 @@
 	var/datum/move_loop/new_loop = SSmove_manager.home_onto(charger, target, delay = charge_speed, timeout = time_to_hit, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
 	if(!new_loop)
 		return
-	RegisterSignal(new_loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
-	RegisterSignal(new_loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))
-	RegisterSignal(new_loop, COMSIG_QDELETING, PROC_REF(charge_end))
+	RegisterSignal(new_loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move), override = TRUE)
+	RegisterSignal(new_loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move), override = TRUE)
+	RegisterSignal(new_loop, COMSIG_QDELETING, PROC_REF(charge_end), override = TRUE)
 
 	// Yes this is disgusting. But we need to queue this stuff, and this code just isn't setup to support that right now. So gotta do it with sleeps
 	sleep(time_to_hit + charge_speed)
@@ -103,7 +103,7 @@
 		return
 	new /obj/effect/temp_visual/dragon_swoop/bubblegum(target_turf)
 	var/obj/effect/temp_visual/decoy/D = new /obj/effect/temp_visual/decoy(charger.loc, charger)
-	animate(D, alpha = 0, color = "#FF0000", transform = matrix()*2, time = 3)
+	animate(D, alpha = 0, color = COLOR_RED, transform = matrix()*2, time = 3)
 
 /datum/action/cooldown/mob_cooldown/charge/proc/on_move(atom/source, atom/new_loc)
 	SIGNAL_HANDLER
@@ -224,14 +224,19 @@
 	id = "tired_post_charge"
 	duration = 1 SECONDS
 	alert_type = null
+	var/tired_movespeed = /datum/movespeed_modifier/status_effect/tired_post_charge
 
 /datum/status_effect/tired_post_charge/on_apply()
 	. = ..()
-	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/tired_post_charge)
+	owner.add_movespeed_modifier(tired_movespeed)
 
 /datum/status_effect/tired_post_charge/on_remove()
 	. = ..()
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/tired_post_charge)
+	owner.remove_movespeed_modifier(tired_movespeed)
+
+/datum/status_effect/tired_post_charge/lesser
+	id = "tired_post_charge_easy"
+	tired_movespeed = /datum/movespeed_modifier/status_effect/tired_post_charge/lesser
 
 /datum/action/cooldown/mob_cooldown/charge/triple_charge
 	name = "Triple Charge"
@@ -303,8 +308,8 @@
 
 /datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hallucination_surround
 	name = "Surround Target"
-	button_icon = 'icons/turf/walls/wall.dmi'
-	button_icon_state = "wall-0"
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon_state = "expand"
 	desc = "Allows you to create hallucinations that charge around your target."
 	charge_delay = 0.6 SECONDS
 	charge_past = 2

@@ -1,6 +1,6 @@
 // Watermelon
 /obj/item/seeds/watermelon
-	name = "pack of watermelon seeds"
+	name = "watermelon seed pack"
 	desc = "These seeds grow into watermelon plants."
 	icon_state = "seed-watermelon"
 	species = "watermelon"
@@ -41,13 +41,13 @@
 
 // Holymelon
 /obj/item/seeds/watermelon/holy
-	name = "pack of holymelon seeds"
+	name = "holymelon seed pack"
 	desc = "These seeds grow into holymelon plants."
 	icon_state = "seed-holymelon"
 	species = "holymelon"
 	plantname = "Holy Melon Vines"
 	product = /obj/item/food/grown/holymelon
-	genes = list(/datum/plant_gene/trait/glow/yellow, /datum/plant_gene/trait/anti_magic)
+	genes = list(/datum/plant_gene/trait/glow/yellow, /datum/plant_gene/trait/anti_magic, /datum/plant_gene/reagent/foggy_agnosticine) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/water/holywater = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 	rarity = PLANT_MODERATELY_RARE
@@ -90,7 +90,7 @@
 
 /// Barrel melon Seeds
 /obj/item/seeds/watermelon/barrel
-	name = "pack of barrelmelon seeds"
+	name = "barrelmelon seed pack"
 	desc = "These seeds grow into barrelmelon plants."
 	icon_state = "seed-barrelmelon"
 	species = "barrelmelon"

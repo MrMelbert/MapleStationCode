@@ -45,7 +45,7 @@
 	var/static/list/droppable_loot = list(
 		/obj/effect/decal/cleanable/blood,
 		/obj/effect/decal/cleanable/blood/innards,
-		/obj/item/organ/internal/heart/demon,
+		/obj/item/organ/heart/demon,
 	)
 
 	return droppable_loot
@@ -80,7 +80,7 @@
 	face_atom(attack_target)
 
 	var/mob/living/victim = attack_target
-	victim.take_bodypart_damage(brute = 20, wound_bonus = wound_bonus) // don't worry, there's more punishment when they hit something
+	victim.damage_random_bodypart(20, wound_bonus = wound_bonus) // don't worry, there's more punishment when they hit something
 
 	visible_message(
 		span_danger("[src] slams into [victim] with monstrous strength!"),

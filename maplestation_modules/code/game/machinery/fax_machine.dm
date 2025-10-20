@@ -86,6 +86,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	GLOB.fax_machines += src
 	set_room_tag(TRUE, !mapload)
 	wires = new /datum/wires/fax(src)
+	if(name != initial(name))
+		article = "the"
 
 /obj/machinery/fax/Destroy()
 	QDEL_NULL(stored_paper)
@@ -250,7 +252,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if("delete_select_paperwork")
 			var/obj/item/paper/processed/paper = locate(params["ref"]) in received_paperwork
 			qdel(paper)
-			use_power(active_power_usage)
+			use_energy(active_power_usage)
 
 		if("check_paper")
 			var/obj/item/paper/processed/paper = locate(params["ref"]) in received_paperwork
@@ -371,10 +373,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(to_curr_room)
 		room_tag = get_area_name(src, TRUE) // no proper or improper tags on this
 		if(name == initial(name))
-			name = "[fax_name || get_area_name(src, FALSE)] [name]"
+			name = "[fax_name || get_area_name(src, TRUE)] [name]"
+			article = "the"
 	else
 		room_tag = null
 		name = initial(name)
+		article = initial(article)
 
 	if(update_all_faxes)
 		for(var/obj/machinery/fax/other_fax as anything in GLOB.fax_machines)
@@ -436,7 +440,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	history_add("Send", destination)
 	playsound(src, 'sound/machines/terminal_processing.ogg', 35, FALSE)
 	COOLDOWN_START(src, fax_cooldown, FAX_COOLDOWN_TIME)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /obj/machinery/fax/proc/send_paper_print_copy(mob/user, obj/item/paper/copy)
 	if(QDELETED(copy))
@@ -577,7 +581,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		. = FALSE
 
 	qdel(checked_paper)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	return .
 
 /**
@@ -657,7 +661,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	flick("[base_icon_state]_receive", src)
 	flick_overlay_view(find_overlay_state(paper, "receive"), 2 SECONDS)
 	playsound(src, 'sound/machines/ding.ogg', 50, FALSE)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /// Sends messages to the syndicate when emagged.
 /obj/machinery/fax/emag_act(mob/user)
@@ -721,7 +725,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/was_faxed_from
 
 /obj/item/paper/processed
-	name = "\proper classified paperwork"
+	name = "classified paperwork"
 	desc = "Some classified paperwork sent by the big men themselves."
 	/// Assoc list of data related to our paper.
 	var/list/paper_data

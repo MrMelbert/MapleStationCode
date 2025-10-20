@@ -9,6 +9,8 @@
 	desc = "A little fire extinguishing bot. He looks rather anxious."
 	icon = 'icons/mob/silicon/aibots.dmi'
 	icon_state = "firebot1"
+	light_color = "#8cffc9"
+	light_power = 0.8
 	density = FALSE
 	anchored = FALSE
 	health = 25
@@ -80,7 +82,7 @@
 	if(!can_unarmed_attack())
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.interact_with_atom(A, src, modifiers)
 	else
 		return ..()
 
@@ -88,7 +90,7 @@
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.interact_with_atom(A, src, modifiers)
 	else
 		return ..()
 
@@ -287,7 +289,7 @@
 		flick("firebots_use", user)
 	else
 		flick("firebot1_use", user)
-	internal_ext.afterattack(target, user, null)
+	internal_ext.interact_with_atom(target, src)
 
 /mob/living/simple_animal/bot/firebot/update_icon_state()
 	. = ..()

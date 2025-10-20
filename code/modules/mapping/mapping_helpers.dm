@@ -138,7 +138,6 @@
 		payload(airlock)
 
 /obj/effect/mapping_helpers/airlock/LateInitialize()
-	. = ..()
 	var/obj/machinery/door/airlock/airlock = locate(/obj/machinery/door/airlock) in loc
 	if(!airlock)
 		qdel(src)
@@ -174,7 +173,7 @@
 	if(airlock.cutAiWire)
 		airlock.wires.cut(WIRE_AI)
 	if(airlock.autoname)
-		airlock.name = get_area_name(src, TRUE)
+		airlock.name = "[get_area_name(src, TRUE)] airlock"
 	airlock.update_appearance()
 	qdel(src)
 
@@ -283,7 +282,6 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/airalarm/LateInitialize()
-	. = ..()
 	var/obj/machinery/airalarm/target = locate(/obj/machinery/airalarm) in loc
 
 	if(isnull(target))
@@ -442,7 +440,6 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/apc/LateInitialize()
-	. = ..()
 	var/obj/machinery/power/apc/target = locate(/obj/machinery/power/apc) in loc
 
 	if(isnull(target))
@@ -933,7 +930,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		body_bag.forceMove(morgue_tray)
 
 		new_human.death() //here lies the mans, rip in pepperoni.
-		for (var/obj/item/organ/internal/part in new_human.organs) //randomly remove organs from each body, set those we keep to be in stasis
+		for (var/obj/item/organ/part in new_human.organs) //randomly remove organs from each body, set those we keep to be in stasis
+			if (part.organ_flags & ORGAN_EXTERNAL) // NON-MODULE CHANGE
+				continue // NON-MODULE CHANGE
 			if (prob(40))
 				qdel(part)
 			else
@@ -1109,8 +1108,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
  */
 /obj/effect/mapping_helpers/trapdoor_placer
 	name = "trapdoor placer"
-	late = TRUE
 	icon_state = "trapdoor"
+	late = TRUE
 
 /obj/effect/mapping_helpers/trapdoor_placer/LateInitialize()
 	var/turf/component_target = get_turf(src)
@@ -1181,7 +1180,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if(response.errored || response.status_code != 200)
 		query_in_progress = FALSE
 		CRASH("Failed to fetch mapped custom json from url [json_url], code: [response.status_code], error: [response.error]")
-	var/json_data = response["body"]
+	var/json_data = response.body
 	json_cache[json_url] = json_data
 	query_in_progress = FALSE
 	return json_data
@@ -1190,12 +1189,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	name = "broken floor"
 	icon = 'icons/turf/damaged.dmi'
 	icon_state = "damaged1"
-	late = TRUE
 	layer = ABOVE_NORMAL_TURF_LAYER
-
-/obj/effect/mapping_helpers/broken_floor/Initialize(mapload)
-	.=..()
-	return INITIALIZE_HINT_LATELOAD
+	late = TRUE
 
 /obj/effect/mapping_helpers/broken_floor/LateInitialize()
 	var/turf/open/floor/floor = get_turf(src)
@@ -1206,12 +1201,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	name = "burnt floor"
 	icon = 'icons/turf/damaged.dmi'
 	icon_state = "floorscorched1"
-	late = TRUE
 	layer = ABOVE_NORMAL_TURF_LAYER
-
-/obj/effect/mapping_helpers/burnt_floor/Initialize(mapload)
-	.=..()
-	return INITIALIZE_HINT_LATELOAD
+	late = TRUE
 
 /obj/effect/mapping_helpers/burnt_floor/LateInitialize()
 	var/turf/open/floor/floor = get_turf(src)
@@ -1240,7 +1231,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/broken_machine/LateInitialize()
-	. = ..()
 	var/obj/machinery/target = locate(/obj/machinery) in loc
 
 	if(isnull(target))
@@ -1274,7 +1264,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/damaged_window/LateInitialize()
-	. = ..()
 	var/obj/structure/window/target = locate(/obj/structure/window) in loc
 
 	if(isnull(target))
@@ -1307,7 +1296,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
 	return INITIALIZE_HINT_LATELOAD
 
-/obj/effect/mapping_helpers/requests_console/LateInitialize(mapload)
+/obj/effect/mapping_helpers/requests_console/LateInitialize()
 	var/obj/machinery/airalarm/target = locate(/obj/machinery/requests_console) in loc
 	if(isnull(target))
 		var/area/target_area = get_area(target)
@@ -1397,4 +1386,33 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
 	var/turf/our_turf = get_turf(src) // In case a locker ate us or something
 	our_turf.AddElement(/datum/element/bombable_turf)
+	return INITIALIZE_HINT_QDEL
+
+/// this helper buckles all mobs on the tile to the first buckleable object
+/obj/effect/mapping_helpers/mob_buckler
+	name = "Buckle Mob"
+	icon_state = "buckle"
+	late = TRUE
+	///whether we force a buckle
+	var/force_buckle = FALSE
+
+/obj/effect/mapping_helpers/mob_buckler/Initialize(mapload)
+	. = ..()
+	var/atom/movable/buckle_to
+	var/list/mobs = list()
+	for(var/atom/movable/possible_buckle as anything in loc)
+		if(isnull(buckle_to) && possible_buckle.can_buckle)
+			buckle_to = possible_buckle
+			continue
+
+		if(isliving(possible_buckle))
+			mobs += possible_buckle
+
+	if(isnull(buckle_to))
+		log_mapping("[type] at [x] [y] [z] did not find anything to buckle to")
+		return INITIALIZE_HINT_QDEL
+
+	for(var/mob/living/mob as anything in mobs)
+		buckle_to.buckle_mob(mob, force = force_buckle)
+
 	return INITIALIZE_HINT_QDEL

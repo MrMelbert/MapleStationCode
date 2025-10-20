@@ -4,9 +4,15 @@
 	taste_description = "bitterness"
 	var/trippy = TRUE //Does this drug make you trip?
 
+/datum/reagent/drug/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	ADD_TRAIT(user, TRAIT_HEART_RATE_BOOST, type)
+
 /datum/reagent/drug/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
 	if(trippy)
 		affected_mob.clear_mood_event("[type]_high")
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, type)
 
 /datum/reagent/drug/space_drugs
 	name = "Space Drugs"
@@ -16,6 +22,7 @@
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/hallucinogens = 10) //4 per 2 seconds
+	pain_modifier = 0.8
 
 /datum/reagent/drug/space_drugs/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -44,6 +51,7 @@
 	ph = 6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
+	pain_modifier = 0.8
 
 /datum/reagent/drug/cannabis/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -86,12 +94,20 @@
 		to_chat(affected_mob, span_notice("[smoke_message]"))
 	affected_mob.add_mood_event("smoked", /datum/mood_event/smoked)
 	affected_mob.remove_status_effect(/datum/status_effect/jitter)
-	affected_mob.AdjustStun(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustKnockdown(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustUnconscious(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustParalyzed(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustImmobilized(-50 * REM * seconds_per_tick)
+	affected_mob.AdjustStun(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustKnockdown(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustUnconscious(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustParalyzed(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustImmobilized(-5 SECONDS * REM * seconds_per_tick)
 	return UPDATE_MOB_HEALTH
+
+/datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.add_consciousness_modifier(type, 3)
+
+/datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	affected_mob.remove_consciousness_modifier(type)
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -146,6 +162,7 @@
 	ph = 5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
+	pain_modifier = 0.8
 
 /datum/reagent/drug/methamphetamine/on_new(data)
 	. = ..()
@@ -217,6 +234,7 @@
 	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 	ph = 8.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	pain_modifier = 0.5
 
 /datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
@@ -266,6 +284,7 @@
 	color = "#78FFF0"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/stimulants = 8)
+	pain_modifier = 0.66
 
 /datum/reagent/drug/aranesp/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -339,7 +358,7 @@
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/affected_mob)
 	. = ..()
 	ADD_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
-	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		affected_mob.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
@@ -390,7 +409,7 @@
 		return
 
 	var/mob/living/carbon/carbon_mob = affected_mob
-	var/obj/item/organ/internal/liver/liver = carbon_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = carbon_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		carbon_mob.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
@@ -464,7 +483,7 @@
 	name = "Maintenance Tar"
 	description = "An unknown tar that you most likely gotten from an assistant, a bored chemist... or cooked yourself. Raw tar, straight from the floor. It can help you with escaping bad situations at the cost of liver damage."
 	reagent_state = LIQUID
-	color = "#000000"
+	color = COLOR_BLACK
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
@@ -705,7 +724,7 @@
 	. = ..()
 	playsound(invisible_man, 'sound/chemistry/saturnx_fade.ogg', 40)
 	to_chat(invisible_man, span_nicegreen("You feel pins and needles all over your skin as your body suddenly becomes transparent!"))
-	addtimer(CALLBACK(src, PROC_REF(turn_man_invisible), invisible_man), 10) //just a quick delay to synch up the sound.
+	addtimer(CALLBACK(src, PROC_REF(turn_man_invisible), invisible_man), 1 SECONDS) //just a quick delay to synch up the sound.
 	if(!invisible_man.hud_used)
 		return
 
@@ -797,6 +816,24 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/stimulants = 20)
 
+/datum/reagent/drug/kronkaine/on_new(data)
+	. = ..()
+	// Kronkaine also makes for a great fishing bait (found in "natural" baits)
+	if(!istype(holder?.my_atom, /obj/item/food))
+		return
+	ADD_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
+	RegisterSignal(holder, COMSIG_REAGENTS_CLEAR_REAGENTS, PROC_REF(on_reagents_clear))
+	RegisterSignal(holder, COMSIG_REAGENTS_DEL_REAGENT, PROC_REF(on_reagent_delete))
+
+/datum/reagent/drug/kronkaine/proc/on_reagents_clear(datum/reagents/reagents)
+	SIGNAL_HANDLER
+	REMOVE_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
+
+/datum/reagent/drug/kronkaine/proc/on_reagent_delete(datum/reagents/reagents, datum/reagent/deleted_reagent)
+	SIGNAL_HANDLER
+	if(deleted_reagent == src)
+		REMOVE_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
+
 /datum/reagent/drug/kronkaine/on_mob_metabolize(mob/living/kronkaine_fiend)
 	. = ..()
 	kronkaine_fiend.add_actionspeed_modifier(/datum/actionspeed_modifier/kronkaine)
@@ -855,3 +892,54 @@
 	)
 	new /obj/structure/bouncy_castle(gored.loc, gored)
 	gored.gib()
+
+/datum/reagent/drug/syndol
+	name = "Syndol"
+	description = "A potent and addictive hallucinogen used by syndicate agents disorient certain targets. \
+		It is said that the hallucinations it causes are tailored to the user's fears, but tests have been inconclusive, \
+		with subjects in security and assistants reporting wildly different experiences."
+	color = "#c90000"
+	taste_description = "metallic"
+	ph = 7
+	overdose_threshold = 10
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	addiction_types = list(/datum/addiction/hallucinogens = 20)
+	/// Track the active hallucination we're giving out so we don't replace it by accident
+	VAR_PRIVATE/datum/weakref/active_hallucination_weakref
+
+/datum/reagent/drug/syndol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	var/obj/item/organ/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	if(isnull(liver) || !(liver.organ_flags & affected_organ_flags))
+		return
+	// non-trivial but not immediately dangerous liver damage
+	liver.apply_organ_damage(0.5 * REM * seconds_per_tick)
+	// anti-hallucinogens can counteract the effects
+	if(affected_mob.reagents.has_reagent(/datum/reagent/medicine/haloperidol, amount = 3, needs_metabolizing = TRUE))
+		QDEL_NULL(active_hallucination_weakref)
+		return
+
+	// and the main event, funny hallucinations
+	if(active_hallucination_weakref?.resolve())
+		return
+	var/greatest_fear
+	if(HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
+		greatest_fear = /datum/hallucination/delusion/preset/syndies
+	else if(HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM) || HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM))
+		greatest_fear = /datum/hallucination/delusion/preset/seccies
+
+	if(greatest_fear)
+		// 5 minutes = 15 units, roughly. we cancel the hallucination early when we exit the mob, anyway
+		active_hallucination_weakref = WEAKREF(affected_mob.cause_hallucination(greatest_fear, name, duration = 5 MINUTES, skip_nearby = !overdosed))
+	else
+		// if they're just some random schmuck, give them random hallucinations
+		affected_mob.adjust_hallucinations_up_to(4 SECONDS * REM * seconds_per_tick, 30 SECONDS)
+
+/datum/reagent/drug/syndol/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	affected_mob.adjust_hallucinations(-16 SECONDS)
+	QDEL_NULL(active_hallucination_weakref)
+
+/datum/reagent/drug/syndol/overdose_start(mob/living/affected_mob)
+	// no message, just refresh the hallucination
+	QDEL_NULL(active_hallucination_weakref)

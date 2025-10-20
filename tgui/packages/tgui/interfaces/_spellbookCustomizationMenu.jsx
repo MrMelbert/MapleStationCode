@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Input,
@@ -6,7 +5,9 @@ import {
   Section,
   Slider,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const _spellbookCustomizationMenu = (props, context) => {
@@ -21,7 +22,7 @@ export const _spellbookCustomizationMenu = (props, context) => {
           <Section scrollable>
             {entries.map((element) => (
               <Stack.Item key={element.key}>
-                {element.name + ': '}
+                {`${element.name}: `}
                 {element.interfacetype === 'slider' && (
                   <Slider
                     value={element.current_value}

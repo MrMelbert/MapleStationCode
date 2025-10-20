@@ -6,51 +6,49 @@
 	. = ..()
 
 	techweb_point_items += list(
-		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 65000)
+		/obj/item/organ/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 	)
 
 /datum/export/organ/tongue/lizard/silver
 	cost = CARGO_CRATE_VALUE * 70 // this shit is SO culturally, functionally, and scientifically important.
 
 	unit_name = "silverscale tongue"
-	export_types = list(/obj/item/organ/internal/tongue/lizard/silver)
+	export_types = list(/obj/item/organ/tongue/lizard/silver)
 
 /datum/export/organ/tongue/lizard/silver/total_printout(datum/export_report/ex, notes = TRUE)
 	. = ..()
 	if(. && notes)
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
-/obj/item/organ/internal/tongue/lizard/silver
+/obj/item/organ/tongue/lizard/silver
+	visual = TRUE
 	/// Stored skin color for turning back off of a silverscale.
-	var/old_skincolor
+	VAR_PRIVATE/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
-	var/old_mutcolor
+	VAR_PRIVATE/old_mutcolor
 	///stored horn color for when we turn back off of a silverscale.
-	var/old_horncolor
+	VAR_PRIVATE/old_horncolor
 	///stored eye color for when we turn back off of a silverscale.
-	var/old_eye_color_left
+	VAR_PRIVATE/old_eye_color_left
 	///See above
-	var/old_eye_color_right
+	VAR_PRIVATE/old_eye_color_right
+	/// Tracks what color our glint is, to prevent unnecessary updates
+	VAR_PRIVATE/glint_color
 
-/obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
-	. = ..()
-
-	desc += " Whoever this tongue is attached to will inherit the abilities of the silverscale."
-	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
-	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
-
-	//Migrating silverscale traits to the tongue
-	LAZYOR(organ_traits, list(
+	organ_traits = list(
 		TRAIT_HOLY,
-		TRAIT_NOBREATH,
-		TRAIT_PIERCEIMMUNE,
-		TRAIT_RESISTHIGHPRESSURE,
-		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_VIRUSIMMUNE,
-		TRAIT_WINE_TASTER,
-	))
+	)
 
-/obj/item/organ/internal/tongue/lizard/silver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/tongue/lizard/silver/Initialize(mapload)
+	. = ..()
+	desc += " Whoever this tongue is attached to will inherit the abilities of the silverscale."
+
+/obj/item/organ/tongue/lizard/silver/examine(mob/user)
+	. = ..()
+	. += span_blue("These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
+		price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
+
+/obj/item/organ/tongue/lizard/silver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
@@ -64,13 +62,8 @@
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
-		var/datum/species/lizard/silverscale/silver_species = organ_owner.dna.species
-		old_mutcolor = silver_species.old_mutcolor
-		old_eye_color_left = silver_species.old_eye_color_left
-		old_eye_color_right = silver_species.old_eye_color_right
-
 		organ_owner.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... \
 				you are once again Silverscale."))
 
@@ -79,13 +72,13 @@
 	he_who_was_blessed_with_silver.dna.features["lizard_horn_color"] = "#eeeeee"
 	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
 	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
-	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+	update_glint()
 
 	he_who_was_blessed_with_silver.physiology?.damage_resistance += 10
-	he_who_was_blessed_with_silver.dna.species.exotic_bloodtype = /datum/blood_type/crew/lizard/silver
+	he_who_was_blessed_with_silver.dna.species.exotic_bloodtype = /datum/blood_type/silver/lizard
 	organ_owner.update_body(TRUE)
 
-/obj/item/organ/internal/tongue/lizard/silver/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/tongue/lizard/silver/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 
 	if (!ishuman(organ_owner) || isnull(organ_owner.dna) || QDELING(organ_owner))
@@ -100,7 +93,7 @@
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
 		organ_owner.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_userdanger("You can feel the arcane powers of the silver tongue slip away - \
 				you've lost your silver heritage! Without it, you are less than Silverscale... you MUST get it back!"))
 
@@ -120,7 +113,29 @@
 	for(var/datum/action/cooldown/turn_to_statue/statue in actions)
 		if(organ_owner.loc == statue.statue)
 			organ_owner.forceMove(statue.statue.loc)
-			organ_owner.Paralyze(12 SECONDS)
+			if(!special)
+				organ_owner.Paralyze(12 SECONDS)
+
+/obj/item/organ/tongue/lizard/silver/on_life(seconds_per_tick, times_fired)
+	update_glint()
+
+/// Updates the alpha of the "glow" effect
+/obj/item/organ/tongue/lizard/silver/proc/update_glint()
+	var/turf/owner_turf = get_turf(owner)
+	var/lums = owner_turf?.get_lumcount() - LIGHTING_TILE_IS_DARK
+	if(lums <= 0)
+		if(owner.get_filter("silver_glint"))
+			owner.transition_filter("silver_glint", outline_filter(1.5, "#FFFFFF00"), 1 SECONDS)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/datum, remove_filter), "silver_glint"), 1 SECONDS)
+		glint_color = null
+		return
+	var/new_glint_color = "#ffffff[num2text(0.5 * lums * 255, 2, 16)]"
+	if(glint_color == new_glint_color)
+		return
+	glint_color = new_glint_color
+	if(!owner.get_filter("silver_glint"))
+		owner.add_filter("silver_glint", 2, outline_filter(1.5, "#FFFFFF00"))
+	owner.transition_filter("silver_glint", outline_filter(1.5, glint_color), 1 SECONDS)
 
 /datum/action/cooldown/turn_to_statue
 	/// Traits granted to the mob when in statue form
@@ -205,7 +220,7 @@
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
 	damage_modifier = 0 //It belongs on the tongue now
-	mutantlungs = /obj/item/organ/internal/lungs
+	mutantlungs = /obj/item/organ/lungs/silverscale
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()
@@ -214,8 +229,8 @@
 /datum/species/lizard/silverscale/prepare_human_for_preview(mob/living/carbon/human/human)
 	. = ..()
 	// Would've thought they already get this... but I guess not?
-	var/obj/item/organ/internal/tongue/lizard/silver/the_silver_thing = new(human)
-	the_silver_thing.Insert(human, TRUE, FALSE)
+	var/obj/item/organ/tongue/lizard/silver/the_silver_thing = new(human)
+	the_silver_thing.Insert(human, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
 // LIZARD CODE END
 
@@ -323,3 +338,33 @@
 	return to_add
 
 #undef SILVERSCALE_LOST_TONGUE_MOOD_ID
+
+/obj/item/organ/lungs/silverscale
+	name = "silverscale lungs"
+	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
+	icon_state = "/obj/item/organ/lungs/silverscale"
+	post_init_icon_state = "lungs"
+	greyscale_config = /datum/greyscale_config/mutant_organ
+	greyscale_colors = "#eeeeee#eeeeee#eeeeee"
+
+	// evolved to smoke better
+	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	// breathing in a vacuum is "fine"
+	safe_oxygen_min = 0
+	safe_oxygen_max = 0
+	// more resistant to gas hazards
+	safe_plasma_max = 10
+	safe_co2_max = 20
+	n2o_para_min = 5
+	n2o_sleep_min = 10
+	BZ_trip_balls_min = 10
+	BZ_brain_damage_min = 20
+	tritium_irradiation_moles_min = 10
+	tritium_irradiation_moles_max = 30
+	// wider range of safe pressure / immune to low pressure
+	low_pressure_threshold = 0
+	high_pressure_threshold = ONE_ATMOSPHERE * 3
+
+/obj/item/organ/lungs/silverscale/pre_breath_gas_handling(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	// Any successful breath gives us healing
+	heal_oxyloss_on_breath(breather, breath)

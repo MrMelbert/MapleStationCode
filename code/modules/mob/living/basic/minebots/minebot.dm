@@ -23,8 +23,11 @@
 	speak_emote = list("states")
 	mob_biotypes = MOB_ROBOTIC
 	death_message = "blows apart!"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 6
+	// I want this to be a bit more dim, for vibes
+	light_power = 0.6
+	light_color = "#ff9933"
 	light_on = FALSE
 	combat_mode = FALSE
 	ai_controller = /datum/ai_controller/basic_controller/minebot
@@ -72,7 +75,6 @@
 	access_card = new /obj/item/card/id/advanced/gold(src)
 	SSid_access.apply_trim_to_card(access_card, /datum/id_trim/job/shaft_miner)
 
-	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
 
 /mob/living/basic/mining_drone/set_combat_mode(new_mode, silent = TRUE)
 	. = ..()
@@ -122,11 +124,12 @@
 		return ..()
 	set_combat_mode(!combat_mode)
 	balloon_alert(user, "now [combat_mode ? "attacking wildlife" : "collecting loose ore"]")
+	return CLICK_ACTION_SUCCESS
 
-/mob/living/basic/mining_drone/RangedAttack(atom/target)
+/mob/living/basic/mining_drone/RangedAttack(atom/target, list/modifiers)
 	if(!combat_mode)
 		return
-	stored_gun.afterattack(target, src)
+	stored_gun.try_fire_gun(target, src, list2params(modifiers))
 
 
 /mob/living/basic/mining_drone/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)

@@ -12,7 +12,7 @@
 	desc = "Requires a BCI shell. A component that shows an overlay on top of an object."
 	category = "BCI"
 
-	required_shells = list(/obj/item/organ/internal/cyberimp/bci)
+	required_shells = list(/obj/item/organ/cyberimp/bci)
 
 	var/datum/port/input/option/object_overlay_options
 
@@ -27,7 +27,7 @@
 	var/datum/port/input/signal_on
 	var/datum/port/input/signal_off
 
-	var/obj/item/organ/internal/cyberimp/bci/bci
+	var/obj/item/organ/cyberimp/bci/bci
 	var/list/active_overlays = list()
 	var/list/options_map
 
@@ -63,7 +63,7 @@
 	options_map = component_options
 
 /obj/item/circuit_component/object_overlay/register_shell(atom/movable/shell)
-	if(istype(shell, /obj/item/organ/internal/cyberimp/bci))
+	if(istype(shell, /obj/item/organ/cyberimp/bci))
 		bci = shell
 		RegisterSignal(shell, COMSIG_ORGAN_REMOVED, PROC_REF(on_organ_removed))
 
@@ -103,10 +103,10 @@
 	SET_PLANE_EXPLICIT(cool_overlay, ABOVE_LIGHTING_PLANE, target_atom)
 
 	if(image_pixel_x.value != null)
-		cool_overlay.pixel_x = image_pixel_x.value
+		cool_overlay.pixel_w = image_pixel_x.value
 
 	if(image_pixel_y.value != null)
-		cool_overlay.pixel_y = image_pixel_y.value
+		cool_overlay.pixel_z = image_pixel_y.value
 
 	if(image_rotation.value != null)
 		var/matrix/turn_matrix = cool_overlay.transform

@@ -332,11 +332,42 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_longbraid"
 
+/datum/sprite_accessory/hair/obsessive_doctor
+	name = "Obsessive Doctor"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_obsess"
+
+/datum/sprite_accessory/hair/elven_ponytail
+	name = "Elven Ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elf"
+
+/datum/sprite_accessory/hair/elven_mess
+	name = "Elven Mess"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfmess"
+
+/datum/sprite_accessory/hair/elven_braid
+	name = "Elven Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfbraid"
+
+/datum/sprite_accessory/hair/toxic_wisp
+	name = "Toxic Wisp"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxic"
+
+/datum/sprite_accessory/hair/toxic_long
+	name = "Toxic Wisp Long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxiclong"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
+	spine_key = NONE
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns
@@ -502,3 +533,14 @@
 	name = "Mismatched Checkered Socks"
 	icon_state = "mismatchpoker"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+
+/datum/sprite_accessory/socks/pokersocks
+	name = "High Black Stockings"
+	icon_state = "highblackstocking"
+	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+
+/// --- Facial Hair ---
+/datum/sprite_accessory/facial_hair/foxmarkings // not exactly hair but i'm not coding a unique system for this *yet*
+	name = "Facial Markings"
+	icon_state = "facial_foxmarkings"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'

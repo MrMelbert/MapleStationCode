@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -13,11 +12,13 @@ import {
   Tabs,
   TextArea,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const AdvancedTraitorWindow = (props, context) => {
-  const { children, theme = 'maple-syndicate' } = props;
+  const { children, theme = 'syndicate' } = props;
   return (
     <Window
       title="Antagonist Goal Panel"
@@ -280,12 +281,13 @@ export const AdvancedTraitorGoals = (props, context) => {
                     </Stack.Item>
                     <Stack.Item>
                       <NumberInput
+                        tickWhileDragging
                         value={selectedGoal.intensity}
                         step={1}
                         minValue={1}
                         maxValue={5}
                         stepPixelSize={15}
-                        onDrag={(e, value) =>
+                        onChange={(e, value) =>
                           act('set_goal_intensity', {
                             goal_ref: selectedGoal.ref,
                             newlevel: value,

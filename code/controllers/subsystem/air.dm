@@ -1,6 +1,9 @@
 SUBSYSTEM_DEF(air)
 	name = "Atmospherics"
-	init_order = INIT_ORDER_AIR
+	dependencies = list(
+		/datum/controller/subsystem/mapping,
+		/datum/controller/subsystem/atoms
+	)
 	priority = FIRE_PRIORITY_AIR
 	wait = 0.5 SECONDS
 	flags = SS_BACKGROUND
@@ -221,6 +224,7 @@ SUBSYSTEM_DEF(air)
 			return
 		cost_atoms = MC_AVERAGE(cost_atoms, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
+
 
 	currentpart = SSAIR_PIPENETS
 	SStgui.update_uis(SSair) //Lightning fast debugging motherfucker

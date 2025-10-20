@@ -13,6 +13,7 @@
 	spell_to_add = /datum/action/cooldown/spell/pointed/mind_gate
 	cost = 1
 	route = PATH_SIDE
+	depth = 4
 
 /datum/heretic_knowledge/unfathomable_curio
 	name = "Unfathomable Curio"
@@ -26,13 +27,16 @@
 		/datum/heretic_knowledge/spell/moon_parade,
 	)
 	required_atoms = list(
-		/obj/item/organ/internal/lungs = 1,
+		/obj/item/organ/lungs = 1,
 		/obj/item/stack/rods = 3,
 		/obj/item/storage/belt = 1,
 	)
 	result_atoms = list(/obj/item/storage/belt/unfathomable_curio)
 	cost = 1
 	route = PATH_SIDE
+	research_tree_icon_path = 'icons/obj/clothing/belts.dmi'
+	research_tree_icon_state = "unfathomable_curio"
+	depth = 8
 
 /datum/heretic_knowledge/painting
 	name = "Unsealed Arts"
@@ -54,13 +58,16 @@
 	result_atoms = list(/obj/item/canvas)
 	cost = 1
 	route = PATH_SIDE
+	research_tree_icon_path = 'icons/obj/signs.dmi'
+	research_tree_icon_state = "eldritch_painting_weeping"
+	depth = 8
 
 /datum/heretic_knowledge/painting/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
-	if(locate(/obj/item/organ/internal/eyes) in atoms)
+	if(locate(/obj/item/organ/eyes) in atoms)
 		src.result_atoms = list(/obj/item/wallframe/painting/eldritch/weeping)
 		src.required_atoms = list(
 			/obj/item/canvas = 1,
-			/obj/item/organ/internal/eyes = 1,
+			/obj/item/organ/eyes = 1,
 		)
 		return TRUE
 

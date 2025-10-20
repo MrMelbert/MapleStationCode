@@ -78,6 +78,12 @@
 	var/fail_prob = 0//100 - fail_prob = success_prob
 	var/advance = FALSE
 
+	if(!chem_check(target))
+		user.balloon_alert(user, "missing [LOWER_TEXT(get_chem_list())]!")
+		to_chat(user, span_warning("[target] is missing the [LOWER_TEXT(get_chem_list())] required to perform this surgery step!"))
+		surgery.step_in_progress = FALSE
+		return FALSE
+
 	if(preop(user, target, target_zone, tool, surgery) == SURGERY_STEP_FAIL)
 		surgery.step_in_progress = FALSE
 		return FALSE
@@ -93,27 +99,29 @@
 	if(check_morbid_curiosity(user, tool, surgery))
 		speed_mod *= SURGERY_SPEED_MORBID_CURIOSITY
 
-	var/implement_speed_mod = 1
-	if(implement_type) //this means it isn't a require hand or any item step.
-		implement_speed_mod = implements[implement_type] / 100.0
+	if(implement_type && (implements[implement_type] > 0)) //this means it isn't a require hand or any item step.
+		speed_mod *= (1 / (implements[implement_type] / 100.0))
 
-	speed_mod /= (get_location_modifier(target) * (1 + surgery.speed_modifier) * implement_speed_mod) * target.mob_surgery_speed_mod
+	speed_mod *= surgery.speed_modifier
+
+	speed_mod *= (1 / get_location_modifier(target))
+
+	for(var/id in target.mob_surgery_speed_mods)
+		speed_mod *= target.mob_surgery_speed_mods[id]
+
 	var/modded_time = time * speed_mod
-
 
 	fail_prob = min(max(0, modded_time - (time * SURGERY_SLOWDOWN_CAP_MULTIPLIER)),99)//if modded_time > time * modifier, then fail_prob = modded_time - time*modifier. starts at 0, caps at 99
 	modded_time = min(modded_time, time * SURGERY_SLOWDOWN_CAP_MULTIPLIER)//also if that, then cap modded_time at time*modifier
 
 	if(iscyborg(user))//any immunities to surgery slowdown should go in this check.
-		modded_time = time
+		modded_time = time * tool.toolspeed
 
 	var/was_sleeping = (target.stat != DEAD && target.IsSleeping())
 
 	if(do_after(user, modded_time, target = target, interaction_key = user.has_status_effect(/datum/status_effect/hippocratic_oath) ? target : DOAFTER_SOURCE_SURGERY)) //If we have the hippocratic oath, we can perform one surgery on each target, otherwise we can only do one surgery in total.
 
-		var/chem_check_result = chem_check(target)
-		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && chem_check_result && !try_to_fail)
-
+		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && !try_to_fail)
 			if(success(user, target, target_zone, tool, surgery))
 				play_success_sound(user, target, target_zone, tool, surgery)
 				advance = TRUE
@@ -121,8 +129,6 @@
 			if(failure(user, target, target_zone, tool, surgery, fail_prob))
 				play_failure_sound(user, target, target_zone, tool, surgery)
 				advance = TRUE
-			if(chem_check_result)
-				return .(user, target, target_zone, tool, surgery, try_to_fail) //automatically re-attempt if failed for reason other than lack of required chemical
 		if(advance && !repeatable)
 			surgery.status++
 			if(surgery.status > surgery.steps.len)
@@ -154,7 +160,7 @@
 				break
 	else
 		sound_file_use = preop_sound
-	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+	playsound(target, sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
 
 /datum/surgery_step/proc/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = TRUE)
 	SEND_SIGNAL(user, COMSIG_MOB_SURGERY_STEP_SUCCESS, src, target, target_zone, tool, surgery, default_display_results)
@@ -176,7 +182,7 @@
 /datum/surgery_step/proc/play_success_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	if(!success_sound)
 		return
-	playsound(get_turf(target), success_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+	playsound(target, success_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
 
 /datum/surgery_step/proc/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	var/screwedmessage = ""
@@ -261,11 +267,48 @@
  * * pain_message - The message to be displayed
  * * mechanical_surgery - Boolean flag that represents if a surgery step is done on a mechanical limb (therefore does not force scream)
  */
-/datum/surgery_step/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
-	if(target.stat < UNCONSCIOUS)
-		to_chat(target, span_userdanger(pain_message))
-		if(prob(30) && !mechanical_surgery)
-			target.emote("scream")
+/datum/surgery_step/proc/display_pain(
+	mob/living/carbon/target,
+	pain_message,
+	mechanical_surgery = FALSE,
+	target_zone = BODY_ZONE_CHEST, // can be a list of zones
+	pain_amount = 0,
+	pain_type = BRUTE,
+	surgery_moodlet = /datum/mood_event/surgery,
+	pain_overlay_severity = pain_amount >= 20 ? 2 : 1,
+)
+	ASSERT(!isnull(target))
+	ASSERT(istext(pain_message))
+	// Not actually causing pain, just feedback
+	if(pain_amount <= 0)
+		target.cause_pain(target_zone, pain_amount)
+		target.pain_message(span_danger(pain_message))
+		return
+	// Only feels pain if we feels pain
+	if(!CAN_FEEL_PAIN(target))
+		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
+		target.pain_message(span_danger(pain_message))
+		return
+	// No pain from mechanics but still show the message (usually)
+	if(mechanical_surgery)
+		target.pain_message(span_danger(pain_message))
+		return
+
+	if(implement_type && (implements[implement_type] > 0))
+		pain_amount = round(pain_amount * 1 / (sqrt(implements[implement_type]) * 0.1), 0.1)
+
+	target.cause_pain(target_zone, pain_amount, pain_type)
+	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
+		return
+	// Replace this check with localized anesthesia in the future
+	var/obj/item/bodypart/checked_bodypart = target.get_bodypart(target_zone)
+	if(checked_bodypart && checked_bodypart.bodypart_pain_modifier * target.pain_controller.pain_modifier < 0.5)
+		return
+	target.add_mood_event("surgery", surgery_moodlet)
+	target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
+	target.adjust_traumatic_shock(pain_amount * 0.33 * target.pain_controller.pain_modifier)
+	target.pain_emote()
+	target.pain_message(span_userdanger(pain_message))
 
 #undef SURGERY_SPEED_DISSECTION_MODIFIER
 #undef SURGERY_SPEED_MORBID_CURIOSITY

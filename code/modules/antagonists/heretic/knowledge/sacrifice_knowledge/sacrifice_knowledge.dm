@@ -16,6 +16,9 @@
 	cost = 0
 	priority = MAX_KNOWLEDGE_PRIORITY // Should be at the top
 	route = PATH_START
+	research_tree_icon_path = 'icons/effects/eldritch.dmi'
+	research_tree_icon_state = "eye_close"
+	research_tree_icon_frame = 1
 	/// How many targets do we generate?
 	var/num_targets_to_generate = 5
 	/// Whether we've generated a heretic sacrifice z-level yet, from any heretic.
@@ -226,13 +229,7 @@
 
 	sac_target.visible_message(span_danger("[sac_target] begins to shudder violenty as dark tendrils begin to drag them into thin air!"))
 	sac_target.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult(sac_target))
-	sac_target.update_handcuffed()
-
-	if(sac_target.legcuffed)
-		sac_target.legcuffed.forceMove(sac_target.drop_location())
-		sac_target.legcuffed.dropped(sac_target)
-		sac_target.legcuffed = null
-		sac_target.update_worn_legcuffs()
+	sac_target.dropItemToGround(sac_target.legcuffed, TRUE)
 
 	sac_target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 85, 150)
 	sac_target.do_jitter_animation()
@@ -496,7 +493,7 @@
 	sac_target.apply_damage(250, BRUTE)
 	if(sac_target.stat != DEAD)
 		sac_target.investigate_log("has been killed by heretic sacrifice.", INVESTIGATE_DEATHS)
-		sac_target.death()
+		sac_target.death(null, "magic")
 	sac_target.visible_message(
 		span_danger("[sac_target]'s organs are pulled out of [sac_target.p_their()] chest by shadowy hands!"),
 		span_userdanger("Your organs are violently pulled out of your chest by shadowy hands!")

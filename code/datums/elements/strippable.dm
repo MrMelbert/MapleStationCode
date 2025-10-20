@@ -38,26 +38,39 @@
 
 	if (user == source)
 		return
-
 	if (over != user)
 		return
+	if(!user.can_perform_action(source, FORBID_TELEKINESIS_REACH | ALLOW_RESTING))
+		return
 
-	// Cyborgs buckle people by dragging them onto them, unless in combat mode.
+	// Snowflake for cyborgs buckling people by dragging them onto them, unless in combat mode.
 	if (iscyborg(user))
 		var/mob/living/silicon/robot/cyborg_user = user
 		if (!cyborg_user.combat_mode)
+			return
+	// Snowflake for xeno consumption code
+	if (isalienadult(user))
+		var/mob/living/carbon/alien/adult/alien = user
+		if (alien.grab_state == GRAB_AGGRESSIVE && alien.pulling == source)
 			return
 
 	if (!isnull(should_strip_proc_path) && !call(source, should_strip_proc_path)(user))
 		return
 
-	var/datum/strip_menu/strip_menu
+	// Snowflake for mob scooping
+	if (isliving(source))
+		var/mob/living/mob = source
+		if (mob.can_be_held && (user.grab_state == GRAB_AGGRESSIVE) && (user.pulling == source))
+			return
+
+	var/datum/strip_menu/strip_menu = LAZYACCESS(strip_menus, source)
 
 	if (isnull(strip_menu))
 		strip_menu = new(source, src)
 		LAZYSET(strip_menus, source, strip_menu)
 
 	INVOKE_ASYNC(strip_menu, TYPE_PROC_REF(/datum/, ui_interact), user)
+	return COMPONENT_CANCEL_MOUSEDROP_ONTO
 
 /// A representation of an item that can be stripped down
 /datum/strippable_item
@@ -241,13 +254,17 @@
 	return finish_equip_mob(equipping, source, user)
 
 /datum/strippable_item/mob_item_slot/get_obscuring(atom/source)
-	if (iscarbon(source))
-		var/mob/living/carbon/carbon_source = source
-		return (carbon_source.check_obscured_slots() & item_slot) \
-			? STRIPPABLE_OBSCURING_COMPLETELY \
-			: STRIPPABLE_OBSCURING_NONE
+	if (!iscarbon(source))
+		return STRIPPABLE_OBSCURING_NONE
 
-	return FALSE
+	var/mob/living/carbon/carbon_source = source
+	if (hidden_slots_to_inventory_slots(carbon_source.obscured_slots) & item_slot)
+		return STRIPPABLE_OBSCURING_COMPLETELY
+
+	if (hidden_slots_to_inventory_slots(carbon_source.covered_slots) & item_slot)
+		return STRIPPABLE_OBSCURING_INACCESSIBLE
+
+	return STRIPPABLE_OBSCURING_NONE
 
 /datum/strippable_item/mob_item_slot/start_unequip(atom/source, mob/user)
 	. = ..()
@@ -276,8 +293,8 @@
 	source.log_message("had [item] put on them by [key_name(user)].", LOG_VICTIM, color="orange", log_globally=FALSE)
 
 /// A utility function for `/datum/strippable_item`s to start unequipping an item from a mob.
-/proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
-	if (!do_after(user, strip_delay || item.strip_delay, source, interaction_key = REF(item)))
+/proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay, hidden = FALSE)
+	if (!do_after(user, strip_delay || item.strip_delay, source, interaction_key = REF(item), hidden = hidden))
 		return FALSE
 
 	return TRUE
@@ -289,9 +306,6 @@
 
 	user.log_message("has stripped [key_name(source)] of [item].", LOG_ATTACK, color="red")
 	source.log_message("has been stripped of [item] by [key_name(user)].", LOG_VICTIM, color="orange", log_globally=FALSE)
-
-	// Updates speed in case stripped speed affecting item
-	source.update_equipment_speed_mods()
 
 /// A representation of the stripping UI
 /datum/strip_menu
@@ -343,13 +357,13 @@
 			LAZYSET(result, "interacting", TRUE)
 
 		var/obscuring = item_data.get_obscuring(owner)
-		if (obscuring != STRIPPABLE_OBSCURING_NONE)
-			LAZYSET(result, "obscured", obscuring)
+		LAZYSET(result, "obscured", obscuring)
+		if (obscuring != STRIPPABLE_OBSCURING_NONE && obscuring != STRIPPABLE_OBSCURING_INACCESSIBLE)
 			items[strippable_key] = result
 			continue
 
 		var/obj/item/item = item_data.get_item(owner)
-		if (isnull(item) || (HAS_TRAIT(item, TRAIT_NO_STRIP) || (item.item_flags & EXAMINE_SKIP)))
+		if (isnull(item) || HAS_TRAIT(item, TRAIT_NO_STRIP) || HAS_TRAIT(item, TRAIT_EXAMINE_SKIP))
 			items[strippable_key] = result
 			continue
 
@@ -396,7 +410,8 @@
 			if (!strippable_item.should_show(owner, user))
 				return
 
-			if (strippable_item.get_obscuring(owner) == STRIPPABLE_OBSCURING_COMPLETELY)
+			var/obscured = strippable_item.get_obscuring(owner)
+			if (obscured == STRIPPABLE_OBSCURING_COMPLETELY || obscured == STRIPPABLE_OBSCURING_INACCESSIBLE)
 				return
 
 			var/item = strippable_item.get_item(owner)
@@ -462,7 +477,8 @@
 			if (!strippable_item.should_show(owner, user))
 				return
 
-			if (strippable_item.get_obscuring(owner) == STRIPPABLE_OBSCURING_COMPLETELY)
+			var/obscured = strippable_item.get_obscuring(owner)
+			if (obscured == STRIPPABLE_OBSCURING_COMPLETELY || obscured == STRIPPABLE_OBSCURING_INACCESSIBLE)
 				return
 
 			var/item = strippable_item.get_item(owner)

@@ -1,7 +1,11 @@
 /datum/job/psychologist
 	title = JOB_PSYCHOLOGIST
-	description = "Advocate sanity, self-esteem, and teamwork in a station \
-		staffed with headcases."
+	title_options = list(
+		"Psychiatrist",
+		"Therapist",
+	)
+	description = "Advocate sanity, self-esteem, and teamwork \
+		in a station staffed with headcases."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -10,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "PSYCHOLOGIST"
 
-	outfit = /datum/outfit/job/psychologist
+	base_outfit = /datum/outfit/job/psychologist
 	plasmaman_outfit = /datum/outfit/plasmaman/psychologist
 
 	paycheck = PAYCHECK_CREW

@@ -83,15 +83,12 @@
 				return TRUE
 	return FALSE
 
-
 /datum/job/ai/announce_job(mob/living/joining_mob)
-	. = ..()
 	if(SSticker.HasRoundStarted())
 		minor_announce("[joining_mob] has been downloaded to an empty bluespace-networked AI core at [AREACOORD(joining_mob)].")
-
 
 /datum/job/ai/config_check()
 	return CONFIG_GET(flag/allow_ai)
 
 /datum/job/ai/get_radio_information()
-	return "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
+	return "Prefix your message with <b>:[MODE_KEY_BINARY]</b> to speak with cyborgs and other AIs."

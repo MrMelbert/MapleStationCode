@@ -49,7 +49,7 @@
 	name = "built-in crowbar"
 	desc = "A crowbar built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "crowbar_cyborg"
+	icon_state = "toolkit_engiborg_crowbar"
 	inhand_icon_state = "crowbar"
 	item_flags = NO_MAT_REDEMPTION
 
@@ -57,26 +57,23 @@
 	name = "built-in screwdriver"
 	desc = "A screwdriver built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "screwdriver_cyborg"
+	icon_state = "toolkit_engiborg_screwdriver"
 	inhand_icon_state = "screwdriver"
 	item_flags = NO_MAT_REDEMPTION
 	random_color = FALSE
 
 
-/obj/item/screwdriver/drone/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file)
+/obj/item/screwdriver/drone/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file)
 	. = ..()
 	if(!isinhands)
 		return
-
-	var/mutable_appearance/head = mutable_appearance(icon_file, "screwdriver_head")
-	head.appearance_flags = RESET_COLOR
-	. += head
+	. += mutable_appearance(icon_file, "screwdriver_head", appearance_flags = RESET_COLOR)
 
 /obj/item/wrench/drone
 	name = "built-in wrench"
 	desc = "A wrench built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "wrench_cyborg"
+	icon_state = "toolkit_engiborg_wrench"
 	inhand_icon_state = "wrench"
 	item_flags = NO_MAT_REDEMPTION
 
@@ -91,7 +88,7 @@
 	name = "built-in wirecutters"
 	desc = "Wirecutters built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "wirecutters_cyborg"
+	icon_state = "toolkit_engiborg_cutters"
 	inhand_icon_state = "cutters"
 	item_flags = NO_MAT_REDEMPTION
 	random_color = FALSE
@@ -100,6 +97,6 @@
 	name = "built-in multitool"
 	desc = "A multitool built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "multitool_cyborg"
+	icon_state = "toolkit_engiborg_multitool"
 	item_flags = NO_MAT_REDEMPTION
 	toolspeed = 0.5

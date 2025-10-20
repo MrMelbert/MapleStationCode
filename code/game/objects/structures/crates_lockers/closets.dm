@@ -102,6 +102,14 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	fire = 70
 	acid = 60
 
+/obj/structure/closet/get_save_vars()
+	. = ..()
+	. += NAMEOF(src, welded)
+	. += NAMEOF(src, opened)
+	. += NAMEOF(src, locked)
+	. += NAMEOF(src, anchorable)
+	return .
+
 /obj/structure/closet/Initialize(mapload)
 	. = ..()
 
@@ -158,23 +166,30 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	update_appearance()
 
 /obj/structure/closet/LateInitialize()
-	. = ..()
 	if(!opened && is_maploaded)
 		take_contents()
 
 	if(sealed)
-		var/datum/gas_mixture/external_air = loc.return_air()
-		if(external_air && is_maploaded)
-			internal_air = external_air.copy()
-		else
-			internal_air = new()
+		var/datum/gas_mixture/external_air = loc?.return_air()
+		internal_air = new(air_volume)
+		if(external_air)
+			if(is_maploaded)
+				internal_air.copy_from_ratio(external_air, internal_air.volume / external_air.volume)
+			else
+				external_air.equalize(internal_air)
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/return_air()
-	if(sealed)
-		return internal_air
-	else
-		return ..()
+	return (sealed && !opened) ? internal_air : ..()
+
+/obj/structure/closet/return_analyzable_air()
+	return (sealed && !opened) ? internal_air : ..()
+
+/obj/structure/closet/assume_air(datum/gas_mixture/giver)
+	return (sealed && !opened) ? internal_air.merge(giver) : ..()
+
+/obj/structure/closet/remove_air(amount)
+	return (sealed && !opened) ? internal_air.remove(amount) : ..()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -232,7 +247,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			. += door_overlay
 			door_overlay.overlays += emissive_blocker(door_overlay.icon, door_overlay.icon_state, src, alpha = door_overlay.alpha) // If we don't do this the door doesn't block emissives and it looks weird.
 		else if(has_closed_overlay)
-			. += "[icon_door || overlay_state]_door"
+			var/mutable_appearance/door_overlay = mutable_appearance(icon, "[icon_door || overlay_state]_door", alpha = src.alpha)
+			. += door_overlay
 
 	if(opened)
 		return
@@ -378,7 +394,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		context[SCREENTIP_CONTEXT_RMB] = anchored ? "Unanchor" : "Anchor"
 		screentip_change = TRUE
 
-	if(!locked && (welded || !can_weld_shut))
+	if(!locked && !opened && (welded || !can_weld_shut))
 		if(!secure)
 			if(!broken && can_install_electronics && istype(held_item, /obj/item/electronics/airlock))
 				context[SCREENTIP_CONTEXT_LMB] = "Install Electronics"
@@ -576,25 +592,23 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	else
 		return open(user)
 
-/obj/structure/closet/deconstruct(disassembled = TRUE)
-	if (!(obj_flags & NO_DECONSTRUCTION))
-		if(ispath(material_drop) && material_drop_amount)
-			new material_drop(loc, material_drop_amount)
-		if (secure)
-			var/obj/item/electronics/airlock/electronics = new(drop_location())
-			if(length(req_one_access))
-				electronics.one_access = TRUE
-				electronics.accesses = req_one_access
-			else
-				electronics.accesses = req_access
-		if(card_reader_installed)
-			new /obj/item/stock_parts/card_reader(drop_location())
+/obj/structure/closet/atom_deconstruct(disassembled = TRUE)
+	if(ispath(material_drop) && material_drop_amount)
+		new material_drop(loc, material_drop_amount)
+	if (secure)
+		var/obj/item/electronics/airlock/electronics = new(drop_location())
+		if(length(req_one_access))
+			electronics.one_access = TRUE
+			electronics.accesses = req_one_access
+		else
+			electronics.accesses = req_access
+	if(card_reader_installed)
+		new /obj/item/stock_parts/card_reader(drop_location())
 	dump_contents()
-	qdel(src)
 
 /obj/structure/closet/atom_break(damage_flag)
 	. = ..()
-	if(!broken && !(obj_flags & NO_DECONSTRUCTION))
+	if(!broken)
 		bust_open()
 
 /obj/structure/closet/CheckParts(list/parts_list)
@@ -639,7 +653,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can install airlock electronics in this closet
 /obj/structure/closet/proc/can_install_airlock_electronics(mob/user)
-	if(secure || !can_install_electronics || !(welded || !can_weld_shut))
+	if(secure || !can_install_electronics || opened)
 		return FALSE
 
 	if(broken)
@@ -654,9 +668,11 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can unscrew airlock electronics from this closet
 /obj/structure/closet/proc/can_unscrew_airlock_electronics(mob/user)
-	if(!secure || !(welded || !can_weld_shut))
+	if(!secure || opened)
 		return FALSE
-
+	if(card_reader_installed)
+		balloon_alert(user, "attached to reader!")
+		return FALSE
 	if(locked)
 		balloon_alert(user, "unlock first!")
 		return FALSE
@@ -665,7 +681,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can install card reader in this closet
 /obj/structure/closet/proc/can_install_card_reader(mob/user)
-	if(card_reader_installed || !can_install_electronics || !length(access_choices) || !(welded || !can_weld_shut))
+	if(card_reader_installed || !can_install_electronics || !length(access_choices) || opened)
 		return FALSE
 
 	if(broken)
@@ -684,7 +700,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 
 /// check if we can pry out the card reader from this closet
 /obj/structure/closet/proc/can_pryout_card_reader(mob/user)
-	if(!card_reader_installed || !(welded || !can_weld_shut))
+	if(!card_reader_installed || opened)
 		return FALSE
 
 	if(locked)
@@ -880,7 +896,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			user.log_message("[welded ? "welded":"unwelded"] closet [src] with [weapon]", LOG_GAME)
 			update_appearance()
 
-	else if(!user.combat_mode)
+	else if(!user.combat_mode || (weapon.item_flags & NOBLUDGEON))
 		var/item_is_id = weapon.GetID()
 		if(!item_is_id)
 			return FALSE
@@ -904,12 +920,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/after_weld(weld_state)
 	return
 
-/obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
+/obj/structure/closet/mouse_drop_receive(atom/movable/O, mob/living/user, params)
 	if(!istype(O) || O.anchored || istype(O, /atom/movable/screen))
-		return
-	if(!istype(user) || user.incapacitated() || user.body_position == LYING_DOWN)
-		return
-	if(!Adjacent(user) || !user.Adjacent(O))
 		return
 	if(user == O) //try to climb onto it
 		return ..()
@@ -944,7 +956,6 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			log_combat(user, O, "stuffed", addition = "inside of [src]")
 	else
 		O.forceMove(T)
-	return 1
 
 /obj/structure/closet/relaymove(mob/living/user, direction)
 	if(user.stat || !isturf(loc))
@@ -986,7 +997,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user)
 	if(attack_hand(user))
-		return COMPONENT_CANCEL_ATTACK_CHAIN
+		return ITEM_INTERACT_BLOCKING
 
 /obj/structure/closet/verb/verb_toggleopen()
 	set src in view(1)

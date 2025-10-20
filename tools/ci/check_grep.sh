@@ -123,6 +123,14 @@ if $grep 'allocate\(/mob/living/carbon/human[,\)]' $unit_test_files ||
 	st=1
 fi;
 
+section "516 Href Styles"
+part "byond href styles"
+if $grep "href[\s='\"\\\\]*\?" $code_files ; then
+    echo
+    echo -e "${RED}ERROR: BYOND requires internal href links to begin with \"byond://\".${NC}"
+    st=1
+fi;
+
 section "common mistakes"
 part "global vars"
 if $grep '^/*var/' $code_files; then
@@ -154,6 +162,16 @@ fi;
 if $grep -i '(add_traits|remove_traits)\(.+,\s*src\)' $code_files; then
 	echo
 	echo -e "${RED}ERROR: Using 'src' as trait sources. Source must be a string key - dont't use references to datums as sources, perhaps use 'REF(src)'.${NC}"
+	st=1
+fi;
+
+part "ensure proper lowertext usage"
+# lowertext() is a BYOND-level proc, so it can be used in any sort of code... including the TGS DMAPI which we don't manage in this repository.
+# basically, we filter out any results with "tgs" in it to account for this edgecase without having to enforce this rule in that separate codebase.
+# grepping the grep results is a bit of a sad solution to this but it's pretty much the only option in our existing linter framework
+if $grep -i 'lowertext\(.+\)' $code_files | $grep -v 'UNLINT\(.+\)' | $grep -v '\/modules\/tgs\/'; then
+	echo
+	echo -e "${RED}ERROR: Found a lowertext() proc call. Please use the LOWER_TEXT() macro instead. If you know what you are doing, wrap your text (ensure it is a string) in UNLINT().${NC}"
 	st=1
 fi;
 
@@ -272,7 +290,7 @@ if [ "$pcre2_support" -eq 1 ]; then
 		st=1
 	fi
 	part "datum stockpart sanity"
-	if $grep -P 'for\b.*/obj/item/stock_parts/(?!cell)(?![\w_]+ in )' $code_files; then
+	if $grep -P 'for\b.*/obj/item/stock_parts/(?!power_store)(?![\w_]+ in )' $code_files; then
 		echo
 		echo -e "${RED}ERROR: Should be using datum/stock_part instead"
 		st=1

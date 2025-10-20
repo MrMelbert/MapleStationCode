@@ -38,8 +38,6 @@
 	var/emote_type = EMOTE_VISIBLE
 	/// Checks if the mob can use its hands before performing the emote.
 	var/hands_use_check = FALSE
-	/// Will only work if the emote is EMOTE_AUDIBLE.
-	var/muzzle_ignore = FALSE
 	/// Types that are allowed to use that emote.
 	var/list/mob_type_allowed_typecache = /mob
 	/// Types that are NOT allowed to use that emote.
@@ -52,6 +50,8 @@
 	var/sound
 	/// Used for the honk borg emote.
 	var/vary = FALSE
+	/// If this emote's sound is affected by TTS pitch
+	var/affected_by_pitch = TRUE
 	/// Can only code call this event instead of the player.
 	var/only_forced_audio = FALSE
 	/// The cooldown between the uses of the emote.
@@ -90,7 +90,7 @@
 /datum/emote/proc/run_emote(mob/user, params, type_override, intentional = FALSE)
 	if(!can_run_emote(user, TRUE, intentional))
 		return FALSE
-	if(SEND_SIGNAL(user, COMSIG_MOB_PRE_EMOTED, key, params, type_override, intentional) & COMPONENT_CANT_EMOTE)
+	if(SEND_SIGNAL(user, COMSIG_MOB_PRE_EMOTED, key, params, type_override, intentional, src) & COMPONENT_CANT_EMOTE)
 		return TRUE // We don't return FALSE because the error output would be incorrect, provide your own if necessary.
 	var/msg = select_message_type(user, message, intentional)
 	if(params && message_param)
@@ -103,10 +103,30 @@
 
 	user.log_message(msg, LOG_EMOTE)
 
-	var/tmp_sound = get_sound(user)
+	var/sound/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && TIMER_COOLDOWN_FINISHED(user, type))
+		var/do_vary = vary
+		if(do_vary && affected_by_pitch && isliving(user))
+			if(!istype(tmp_sound))
+				tmp_sound = sound(get_sfx(tmp_sound))
+			var/mob/living/emoter = user
+			var/user_mod = 1
+			if(emoter.speech_sound_pitch_modifier != 1)
+				user_mod = round(sqrt(emoter.speech_sound_pitch_modifier), 0.1)
+			if(emoter.speech_sound_frequency_modifier != 1)
+				user_mod = round(sqrt(emoter.speech_sound_frequency_modifier), 0.1)
+			// here is where variation is factored in
+			user_mod = clamp(user_mod + pick(-0.1, 0, 0.1), 0.5, 2)
+			// so subtypes can set custom frequencies
+			tmp_sound.frequency ||= 1
+			// regardless of pitch or frequency, we will always use frequency,
+			// because it sounds better for these quick sounds
+			tmp_sound.frequency *= user_mod
+			// otherwise it will override what we just set
+			do_vary = FALSE
+
 		TIMER_COOLDOWN_START(user, type, audio_cooldown)
-		playsound(user, tmp_sound, 50, vary)
+		playsound(user, tmp_sound, 50, do_vary)
 
 	var/is_important = emote_type & EMOTE_IMPORTANT
 	var/is_visual = emote_type & EMOTE_VISIBLE
@@ -258,8 +278,6 @@
 		return .
 	var/mob/living/living_user = user
 
-	if(!muzzle_ignore && user.is_muzzled() && emote_type & EMOTE_AUDIBLE)
-		return "makes a [pick("strong ", "weak ", "")]noise."
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING) && message_mime)
 		. = message_mime
 	if(isalienadult(user) && message_alien)
@@ -337,9 +355,7 @@
  * Returns a bool about whether or not the user should play a sound when performing the emote.
  */
 /datum/emote/proc/should_play_sound(mob/user, intentional = FALSE)
-	if(emote_type & EMOTE_AUDIBLE && !muzzle_ignore)
-		if(user.is_muzzled())
-			return FALSE
+	if(emote_type & EMOTE_AUDIBLE && !hands_use_check)
 		if(HAS_TRAIT(user, TRAIT_MUTE))
 			return FALSE
 		if(ishuman(user))

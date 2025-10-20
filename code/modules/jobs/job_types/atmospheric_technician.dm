@@ -1,6 +1,7 @@
 /datum/job/atmospheric_technician
 	title = JOB_ATMOSPHERIC_TECHNICIAN
-	description = "Ensure the air is breathable on the station, fill oxygen tanks, fight fires, purify the air."
+	description = "Ensure the air is breathable on the station, \
+		fill oxygen tanks, fight fires, create fires."
 	department_head = list(JOB_CHIEF_ENGINEER)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -11,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "ATMOSPHERIC_TECHNICIAN"
 
-	outfit = /datum/outfit/job/atmos
+	base_outfit = /datum/outfit/job/atmos
 	plasmaman_outfit = /datum/outfit/plasmaman/atmospherics
 
 	paycheck = PAYCHECK_CREW
