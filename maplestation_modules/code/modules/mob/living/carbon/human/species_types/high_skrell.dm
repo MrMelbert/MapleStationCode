@@ -34,14 +34,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutantears = /obj/item/organ/ears/skrell
 	mutant_organs = list(/obj/item/organ/head_tentacles = "Long")
 
-/datum/species/high_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	. = ..()
-	C.missing_eye_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
-
-/datum/species/high_skrell/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
-	C.missing_eye_file = initial(C.missing_eye_file)
-	return ..()
-
 /datum/species/high_skrell/get_species_description()
 	return "high_skrell are a semi-aquatic species hailing from tropical worlds."
 
@@ -134,7 +126,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	burn_modifier = 0.8
 	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
-	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN|HEAD_EYECOLOR
 
 /obj/item/bodypart/leg/left/skrell
 	limb_id = SPECIES_HIGH_SKRELL

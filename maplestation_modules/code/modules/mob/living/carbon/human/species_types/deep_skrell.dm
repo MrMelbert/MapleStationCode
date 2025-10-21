@@ -34,14 +34,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	mutantears = /obj/item/organ/ears/skrell
 	mutant_organs = list( /obj/item/organ/head_tentacles = "Long")
 
-/datum/species/deep_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	. = ..()
-	C.missing_eye_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
-
-/datum/species/deep_skrell/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
-	C.missing_eye_file = initial(C.missing_eye_file)
-	return ..()
-
 /datum/species/deep_skrell/get_species_description()
 	return "deep_skrell are a semi-aquatic species hailing from tropical worlds."
 
