@@ -22,8 +22,7 @@
 		)
 
 	family_heirlooms = list(
-		// /obj/item/toy/windup_toolbox,
-		// /obj/item/reagent_containers/cup/glass/bottle/holywater,
+		/obj/item/book/bible, // Chaplain's heirloom is the nullrod typically, so this is a fallback
 	)
 
 	mail_goodies = list(

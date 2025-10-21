@@ -120,6 +120,7 @@
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
 	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/suit/goliath_cloak/get_item_information()
 	. = ..()

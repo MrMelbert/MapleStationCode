@@ -39,10 +39,12 @@
 /datum/loadout_item/glasses/black_blindfold
 	name = "Black Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/glasses/colored_blindfold
 	name = "Eye Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"

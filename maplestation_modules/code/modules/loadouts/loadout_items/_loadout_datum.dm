@@ -421,7 +421,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 		))
 
 	if(loadout_flags & LOADOUT_FLAG_ALLOW_HEIRLOOM)
-		UNTYPED_LIST_ADD(., list(
+		UNTYPED_LIST_ADD(button_list, list(
 			"label" = "Make Heirloom",
 			"act_key" = "make_heirloom",
 			"button_icon" = FA_ICON_CROSS,

@@ -76,6 +76,7 @@
 /datum/loadout_item/gloves/bone
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/gloves/bone/get_item_information()
 	. = ..()

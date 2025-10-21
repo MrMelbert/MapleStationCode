@@ -125,10 +125,12 @@
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/dogtag/name
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_charm/get_item_information()
 	. = ..()
@@ -137,6 +139,7 @@
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_codpiece/get_item_information()
 	. = ..()

@@ -24,6 +24,7 @@
 /datum/loadout_item/mask/gas_mask
 	name = "Gas Mask"
 	item_path = /obj/item/clothing/mask/gas
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/bandana_greyscale
 	name = "Bandana"
@@ -72,27 +73,34 @@
 /datum/loadout_item/mask/avianmask_cardinal
 	name = "Cardinal Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/cardinal
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_secretary
 	name = "Secretary Bird Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/secretary
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_toucan
 	name = "Toucan Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/toucan
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_bluejay
 	name = "Blue Jay Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/bluejay
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/facescarf
 	name = "Face Scarf"
 	item_path = /obj/item/clothing/mask/facescarf
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/kitsune
 	name = "Kitsune Mask"
 	item_path = /obj/item/clothing/mask/kitsune
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/rebellion
 	name = "Rebellion Mask"
 	item_path = /obj/item/clothing/mask/rebellion
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
