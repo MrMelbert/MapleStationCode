@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	plural_form = "High Skrells"
 	id = SPECIES_HIGH_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_SNOB)
-	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
+	external_organs = list(/obj/item/organ/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
@@ -25,14 +25,14 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/high_skrell,
 	)
 
-	mutanteyes = /obj/item/organ/internal/eyes/high_skrell
-	mutanttongue = /obj/item/organ/internal/tongue/high_skrell
-	mutantbrain = /obj/item/organ/internal/brain/skrell
-	mutantlungs = /obj/item/organ/internal/lungs/skrell
-	mutantheart = /obj/item/organ/internal/heart/skrell
-	mutantliver = /obj/item/organ/internal/liver/skrell
-	mutantstomach = /obj/item/organ/internal/stomach/skrell
-	mutantears = /obj/item/organ/internal/ears/skrell
+	mutanteyes = /obj/item/organ/eyes/high_skrell
+	mutanttongue = /obj/item/organ/tongue/high_skrell
+	mutantbrain = /obj/item/organ/brain/skrell
+	mutantlungs = /obj/item/organ/lungs/skrell
+	mutantheart = /obj/item/organ/heart/skrell
+	mutantliver = /obj/item/organ/liver/skrell
+	mutantstomach = /obj/item/organ/stomach/skrell
+	mutantears = /obj/item/organ/ears/skrell
 
 /datum/species/high_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
@@ -82,7 +82,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	race = /datum/species/high_skrell
 
 // Organ for high_skrell head tentacles.
-/obj/item/organ/external/head_tentacles
+/obj/item/organ/head_tentacles
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
@@ -155,7 +155,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
-/obj/item/organ/internal/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+/obj/item/organ/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
 	if(ishuman(organ_owner))
 		return
@@ -165,7 +165,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	if (organ_owner.mob_mood)
 		organ_owner.mob_mood.mood_modifier += 0.75
 
-/obj/item/organ/internal/brain/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/brain/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
 	.=..()
 	if(ishuman(organ_owner) || QDELETED (organ_owner))
 		return
@@ -174,7 +174,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	if (organ_owner.mob_mood)
 		organ_owner.mob_mood.mood_modifier -= 0.75
 
-/obj/item/organ/internal/liver/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+/obj/item/organ/liver/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
 	if(ishuman(organ_owner))
 		return
@@ -183,7 +183,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.tox_mod *= 1.75
 
-/obj/item/organ/internal/liver/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/liver/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
 	.=..()
 	if(ishuman(organ_owner) || QDELETED (organ_owner))
 		return
@@ -192,7 +192,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.tox_mod *= 0.75
 
-/obj/item/organ/internal/heart/skrell
+/obj/item/organ/heart/skrell
 	name = "Skrellian heart"
 	desc = "A blue heart able to filter the copper based blood of the Skrell."
 	icon_state = "heart-on"
@@ -202,7 +202,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_HEART
 
-/obj/item/organ/internal/lungs/skrell
+/obj/item/organ/lungs/skrell
 
 	name = "Skrellian lungs"
 	desc = "The lungs of a Skrell, they still have the gills attached."
@@ -212,7 +212,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_LUNGS
 
-/obj/item/organ/internal/liver/skrell
+/obj/item/organ/liver/skrell
 	name = "Skrellian liver"
 	desc = "The source for the Skrell's weakness to alcohol."
 	icon_state = "liver"
@@ -221,7 +221,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_LIVER
 
-/obj/item/organ/internal/stomach/skrell
+/obj/item/organ/stomach/skrell
 	name = "Skrellian stomach"
 	desc = "A blue stomach, gross!"
 	icon_state = "stomach"
@@ -230,7 +230,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_STOMACH
 
-/obj/item/organ/internal/brain/skrell
+/obj/item/organ/brain/skrell
 	name = "Skrellian brain"
 	desc = "The psionic brain of a Skrell."
 	icon_state = "brain2"
@@ -239,7 +239,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 
-/obj/item/organ/internal/ears/skrell
+/obj/item/organ/ears/skrell
 	name = "Skrellian ears"
 	desc = "Fish ears!"
 	icon_state = "ears"
@@ -248,7 +248,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EARS
 
-/obj/item/organ/internal/eyes/high_skrell
+/obj/item/organ/eyes/high_skrell
 	name = "High Skrellian eyes"
 	desc = "The large eyes of a High Skrell."
 	icon_state = "eyes_high"
