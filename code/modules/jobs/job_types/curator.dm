@@ -30,7 +30,10 @@
 		/obj/item/book/granter/action/spell/blind/wgw = 1,
 	)
 
-	family_heirlooms = list(/obj/item/pen/fountain, /obj/item/storage/dice)
+	family_heirlooms = list(
+		/obj/item/pen/fountain,
+		/obj/item/storage/dice,
+	)
 
 	job_flags = STATION_JOB_FLAGS
 

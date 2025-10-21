@@ -14,6 +14,14 @@
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/heirloom_type
 
+	var/list/loadout = get_active_loadout(client_source?.prefs)
+	var/loadout_heirloom = FALSE
+	for(var/item_path in loadout)
+		if(loadout[item_path][INFO_HEIRLOOM])
+			heirloom_type = item_path
+			loadout_heirloom = TRUE
+			break
+
 	// The quirk holder's species - we have a 50% chance, if we have a species with a set heirloom, to choose a species heirloom.
 	var/datum/species/holder_species = human_holder.dna?.species
 	if(holder_species && LAZYLEN(holder_species.family_heirlooms) && prob(50))
@@ -30,6 +38,10 @@
 
 	var/obj/new_heirloom = new heirloom_type(get_turf(human_holder))
 	heirloom = WEAKREF(new_heirloom)
+
+	if(loadout_heirloom)
+		var/datum/loadout_item/relevant_item = GLOB.all_loadout_datums[heirloom_type]
+		relevant_item?.on_equip_item(new_heirloom, client_source?.prefs, loadout, human_holder)
 
 	give_item_to_holder(
 		new_heirloom,

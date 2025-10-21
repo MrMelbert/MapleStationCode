@@ -41,7 +41,10 @@
 		/obj/item/borg/upgrade/ai = 2
 	)
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/cytology,
+		/obj/item/reagent_containers/cup/beaker,
+	)
 	rpg_title = "Archmagister"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 

@@ -25,7 +25,9 @@
 	display_order = JOB_DISPLAY_ORDER_ORDNANCE_TECH
 	bounty_types = CIV_JOB_SCI
 
-	family_heirlooms = list(/obj/item/toy/nuke)
+	family_heirlooms = list(
+		/obj/item/toy/nuke,
+	)
 
 	mail_goodies = list(
 		/obj/item/analyzer = 50,

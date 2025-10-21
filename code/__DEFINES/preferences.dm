@@ -163,6 +163,8 @@
 #define INFO_RESKIN "reskin"
 /// Handles which layer the item will be on, for accessories
 #define INFO_LAYER "layer"
+/// Is this item an heirloom item
+#define INFO_HEIRLOOM "heirloom"
 
 // Lipstick styles
 #define UPPER_LIP "Upper"

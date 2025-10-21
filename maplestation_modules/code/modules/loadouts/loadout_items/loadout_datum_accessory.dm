@@ -52,21 +52,15 @@
 	update_loadout(manager.preferences, loadout)
 	return TRUE // Update UI
 
-/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
-/datum/loadout_item/accessory/on_equip_item(
-	obj/item/clothing/accessory/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/accessory/on_equip_item(obj/item/clothing/accessory/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
 	. = ..()
 	if(istype(equipped_item))
-		equipped_item.above_suit = !!preference_list[item_path]?[INFO_LAYER]
+		equipped_item.above_suit = !!preference_list[INFO_LAYER]
 		. |= (ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 
 /datum/loadout_item/accessory/maid_apron

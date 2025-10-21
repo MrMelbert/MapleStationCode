@@ -215,10 +215,12 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  *
  * Arguments:
  * * outfit - The outfit we're equipping our items into.
+ * * preference_list - Any extra information stored about this item in the loadout
  * * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
- * * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
+ * * visuals_only - If TRUE, then our outfit is only for visual use (for example, a preview).
+ * * job_equipping_step - whether we're in the job equipping step, which is a special case for some items
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
@@ -229,39 +231,31 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  *
  * Arguments:
  * * equipped_item - the item that was equipped - may be null for certain items (pocket items)
- * * preference_source - the datum/preferences our loadout item originated from - cannot be null
- * * preference_list - what the raw loadout list looks like in the preferences
+ * * preference_list - any extra information stored about this item in the loadout
  * * equipper - the mob we're equipping this item onto - cannot be null
  * * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  *
  * Return a bitflag of slot flags to update
  */
-/datum/loadout_item/proc/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/proc/on_equip_item(obj/item/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
 	if(isnull(equipped_item))
 		return NONE
 
 	//if(!visuals_only)
 	//	ADD_TRAIT(equipped_item, TRAIT_ITEM_OBJECTIVE_BLOCKED, "Loadout")
 
-	var/list/item_details = preference_list[item_path]
 	var/update_flag = NONE
 
-	if(can_be_greyscale && item_details?[INFO_GREYSCALE])
-		equipped_item.set_greyscale(item_details[INFO_GREYSCALE])
+	if(can_be_greyscale && preference_list[INFO_GREYSCALE])
+		equipped_item.set_greyscale(preference_list[INFO_GREYSCALE])
 		update_flag |= equipped_item.slot_flags
 
-	if(can_be_named && item_details?[INFO_NAMED] && !visuals_only)
-		equipped_item.name = trim(item_details[INFO_NAMED], PREVENT_CHARACTER_TRIM_LOSS(MAX_NAME_LEN))
+	if(can_be_named && preference_list[INFO_NAMED] && !visuals_only)
+		equipped_item.name = trim(preference_list[INFO_NAMED], PREVENT_CHARACTER_TRIM_LOSS(MAX_NAME_LEN))
 		ADD_TRAIT(equipped_item, TRAIT_WAS_RENAMED, "Loadout")
 
-	if(can_be_reskinned && item_details?[INFO_RESKIN])
-		var/skin_chosen = item_details[INFO_RESKIN]
+	if(can_be_reskinned && preference_list[INFO_RESKIN])
+		var/skin_chosen = preference_list[INFO_RESKIN]
 		if(skin_chosen in equipped_item.unique_reskin)
 			equipped_item.current_skin = skin_chosen
 			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
@@ -273,11 +267,6 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 					update_flag |= (ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 			else
 				update_flag |= equipped_item.slot_flags
-
-		else
-			// Not valid, update the preference
-			item_details -= INFO_RESKIN
-			save_loadout(preference_source, preference_list)
 
 	return update_flag
 

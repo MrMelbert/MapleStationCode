@@ -15,8 +15,8 @@
 /mob/living/carbon/human/proc/equip_outfit_and_loadout(
 	datum/outfit/outfit = /datum/outfit,
 	datum/preferences/preference_source,
-	visuals_only = FALSE,
-	job_equipping_step = FALSE,
+	visuals_only,
+	job_equipping_step,
 )
 	if(isnull(preference_source))
 		return equipOutfit(outfit, visuals_only)
@@ -35,6 +35,7 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(
 			outfit = equipped_outfit,
+			preference_list = preference_list[item.item_path] || list(),
 			equipper = src,
 			visuals_only = visuals_only,
 			job_equipping_step = job_equipping_step,
@@ -48,8 +49,7 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		update |= item.on_equip_item(
 			equipped_item = locate(item.item_path) in new_contents,
-			preference_source = preference_source,
-			preference_list = preference_list,
+			preference_list = preference_list[item.item_path] || list(),
 			equipper = src,
 			visuals_only = visuals_only,
 		)

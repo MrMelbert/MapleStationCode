@@ -10,7 +10,7 @@
 	abstract_type = /datum/loadout_item/under
 	group = "Other"
 
-/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout uniform was not equipped directly due to your envirosuit.")
@@ -49,13 +49,7 @@
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/random
 
-/datum/loadout_item/under/jumpsuit/random/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/under/jumpsuit/random/on_equip_item(obj/item/equipped_item, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
 	return NONE // acts funky
 
 /datum/loadout_item/under/jumpsuit/random/skirt

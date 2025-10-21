@@ -9,7 +9,7 @@
 /datum/loadout_item/suit
 	abstract_type = /datum/loadout_item/suit
 
-/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, list/preference_list, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.suit = item_path
 	if(outfit.suit_store)
 		LAZYADD(outfit.backpack_contents, outfit.suit_store)
