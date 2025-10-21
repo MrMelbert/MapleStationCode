@@ -30,7 +30,6 @@
 	inert_mutation = /datum/mutation/human/firebreath
 	death_sound = 'sound/voice/lizard/deathsound.ogg'
 	species_language_holder = /datum/language_holder/lizard
-	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Standard body temp doesn't really matter as much since we're cold blooded
 	bodytemp_normal = (BODYTEMP_NORMAL - 5 KELVIN)
@@ -41,8 +40,6 @@
 	temperature_homeostasis_speed = 0
 	temperature_normalization_speed = parent_type::temperature_normalization_speed * 3
 
-	ass_image = 'icons/ass/asslizard.png'
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
@@ -51,7 +48,10 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
-
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+	)
 	monkey_type = /datum/species/monkey/lizard
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
@@ -173,7 +173,6 @@ Lizard subspecies: ASHWALKERS
 /datum/species/lizard/ashwalker
 	name = "Ash Walker"
 	id = SPECIES_LIZARD_ASH
-	examine_limb_id = SPECIES_LIZARD
 	mutantlungs = /obj/item/organ/lungs/lavaland
 	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
@@ -183,15 +182,13 @@ Lizard subspecies: ASHWALKERS
 	)
 	inherent_factions = list(FACTION_ASHWALKER)
 	species_language_holder = /datum/language_holder/lizard/ash
-	digitigrade_customization = DIGITIGRADE_FORCED
-	examine_limb_id = SPECIES_LIZARD
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/ashwalker,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/ashwalker,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
 
 /datum/species/lizard/ashwalker/get_physical_attributes()
@@ -218,7 +215,6 @@ Lizard subspecies: SILVER SCALED
 	species_language_holder = /datum/language_holder/lizard/silver
 	mutanttongue = /obj/item/organ/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
-	examine_limb_id = SPECIES_LIZARD
 
 /datum/species/lizard/silverscale/get_physical_attributes()
 	return "Silver Scales are to lizardpeople what angels are to humans. \

@@ -23,7 +23,6 @@ export enum Food {
   Junkfood = 'JUNKFOOD',
   Meat = 'MEAT',
   Nuts = 'NUTS',
-  Oranges = 'ORANGES',
   Pineapple = 'PINEAPPLE',
   Raw = 'RAW',
   Seafood = 'SEAFOOD',
@@ -45,6 +44,12 @@ export type Name = {
   group: string;
 };
 
+export type Diet = {
+  liked_food: Food[];
+  disliked_food: Food[];
+  toxic_food: Food[];
+};
+
 export type Species = {
   name: string;
   desc: string;
@@ -62,11 +67,7 @@ export type Species = {
     neutral: Perk[];
   };
 
-  diet?: {
-    liked_food: Food[];
-    disliked_food: Food[];
-    toxic_food: Food[];
-  };
+  diet: Diet | null;
 };
 
 export type Perk = {
@@ -137,8 +138,9 @@ export type PreferencesMenuData = {
   character_profiles: (string | null)[];
 
   character_preferences: {
-    clothing: Record<string, string>;
-    features: Record<string, string>;
+    clothing: Record<string, string> | null;
+    hair: Record<string, string> | null;
+    features: Record<string, string> | null;
     game_preferences: Record<string, unknown>;
     non_contextual: {
       random_body: RandomSetting;

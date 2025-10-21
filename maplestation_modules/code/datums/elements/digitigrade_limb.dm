@@ -48,7 +48,7 @@
 /datum/element/digitigrade_limb/proc/can_attach(obj/item/bodypart/aug, mob/living/carbon/new_limb_owner, special)
 	SIGNAL_HANDLER
 
-	return new_limb_owner.dna?.species?.digitigrade_customization ? NONE : COMPONENT_NO_ATTACH
+	return length(new_limb_owner.dna?.species?.digitigrade_legs) ? NONE : COMPONENT_NO_ATTACH
 
 /**
  * Updates the limb depending on the current state of the mob.

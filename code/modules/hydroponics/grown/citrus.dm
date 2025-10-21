@@ -55,7 +55,7 @@
 	name = "orange"
 	desc = "It's a tangy fruit."
 	icon_state = "orange"
-	foodtypes = ORANGES
+	foodtypes = FRUIT
 	juice_typepath = /datum/reagent/consumable/orangejuice
 	distill_reagent = /datum/reagent/consumable/ethanol/triple_sec
 
@@ -134,7 +134,7 @@
 	name = "extradimensional orange"
 	desc = "You can hardly wrap your head around this thing."
 	icon_state = "orang"
-	foodtypes = ORANGES
+	foodtypes = FRUIT
 	alt_icon = "orange"
 	bite_consumption_mod = 2
 	juice_typepath = /datum/reagent/consumable/orangejuice

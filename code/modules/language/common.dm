@@ -59,4 +59,5 @@
 	mutual_understanding = list(
 		/datum/language/beachbum = 33,
 		/datum/language/uncommon = 20,
+		/datum/language/kuiperian = 10,
 	)

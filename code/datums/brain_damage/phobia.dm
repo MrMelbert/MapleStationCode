@@ -142,10 +142,6 @@
 	phobia_type = "aliens"
 	random_gain = FALSE
 
-/datum/brain_trauma/mild/phobia/anime
-	phobia_type = "anime"
-	random_gain = FALSE
-
 /datum/brain_trauma/mild/phobia/authority
 	phobia_type = "authority"
 	random_gain = FALSE

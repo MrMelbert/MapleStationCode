@@ -175,7 +175,6 @@
 /datum/species/monkey/lizard
 	name = "\improper Kobold"
 	id = SPECIES_MONKEY_LIZARD
-	examine_limb_id = SPECIES_LIZARD
 	inherent_traits = list(
 		// monke
 		TRAIT_GUN_NATURAL,
@@ -191,7 +190,6 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	digitigrade_customization = DIGITIGRADE_FORCED
 	mutant_organs = list(
 		/obj/item/organ/horns = "None",
 		/obj/item/organ/frills = "None",
@@ -211,8 +209,6 @@
 	// Cold blooded
 	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
 	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
-
-	ass_image = /datum/species/lizard::ass_image
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,

@@ -269,3 +269,5 @@
 	/// Modify this via add_offsets and remove_offsets,
 	/// NOT directly (and definitely avoid modifying offsets directly)
 	VAR_PRIVATE/list/offsets
+
+	var/eavesdrop_range = EAVESDROP_EXTRA_RANGE
