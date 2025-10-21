@@ -62,12 +62,12 @@
 	item_path = /obj/item/clothing/suit/toggle/jacket/sweater
 
 /datum/loadout_item/suit/denim_overalls
-	name = "Denim Overalls"
+	name = "Overalls (Denim)"
 	item_path = /obj/item/clothing/suit/apron/overalls
 
 /datum/loadout_item/suit/job_overall
-	name = "Job Overalls"
-	item_path = /obj/item/clothing/suit/apron/overalls
+	name = "Overalls (Job)"
+	item_path = /obj/item/clothing/suit/apron/overalls/grey
 	loadout_flags = LOADOUT_FLAG_JOB_GREYSCALING
 	job_greyscale_palettes = list(
 		/datum/job/assistant = COLOR_JOB_DEFAULT,
