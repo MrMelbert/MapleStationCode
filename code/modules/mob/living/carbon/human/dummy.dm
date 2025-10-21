@@ -117,7 +117,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["ears_avian"] = get_consistent_feature_entry(SSaccessories.avian_ears_list) // NON-MODULE CHANGE
 	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(SSaccessories.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
-	target.dna.features["animid_type"] = /datum/animalid_type/cat::id //NON-MODULE CHANGE
+	target.dna.features["animid_type"] = /datum/animid_type/cat::id //NON-MODULE CHANGE
 	target.dna.features["bat_ears"] = get_consistent_feature_entry(SSaccessories.bat_ears_list) //NON-MODULE CHANGE
 	target.dna.features["bat_wings"] = get_consistent_feature_entry(SSaccessories.bat_wings_list) //NON-MODULE CHANGE
 	target.dna.features["fox_ears"] = get_consistent_feature_entry(SSaccessories.fox_ears_list) //NON-MODULE CHANGE

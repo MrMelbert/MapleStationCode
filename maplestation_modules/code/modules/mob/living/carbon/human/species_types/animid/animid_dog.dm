@@ -1,4 +1,4 @@
-/datum/animalid_type/dog
+/datum/animid_type/dog
 	id = "Dog"
 	components = list(
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/dog,

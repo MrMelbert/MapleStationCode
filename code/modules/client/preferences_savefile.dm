@@ -118,7 +118,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		// convert felinid to animid
 		if(save_data?["species"] == "felinid")
 			save_data["species"] = /datum/species/human/animid::id
-			save_data["animid_type"] = /datum/animalid_type/cat::id
+			save_data["animid_type"] = /datum/animid_type/cat::id
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

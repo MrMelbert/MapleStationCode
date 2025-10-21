@@ -23,7 +23,7 @@
 	var/list/data = list()
 	data["animid_customization"] = list()
 	for(var/animalid_id in animid.animid_singletons)
-		var/datum/animalid_type/atype = animid.animid_singletons[animalid_id]
+		var/datum/animid_type/atype = animid.animid_singletons[animalid_id]
 
 		data["animid_customization"][animalid_id] = list(
 			"id" = animalid_id,

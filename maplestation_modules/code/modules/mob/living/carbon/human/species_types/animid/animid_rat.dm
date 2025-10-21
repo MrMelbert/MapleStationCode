@@ -1,4 +1,4 @@
-/datum/animalid_type/rat
+/datum/animid_type/rat
 	id = "Rat"
 	components = list(
 		MUTANT_ORGANS = list(/obj/item/organ/tail/rat = "Curled"),
@@ -9,7 +9,7 @@
 	name = "Murinid"
 	icon = FA_ICON_CHEESE
 
-/datum/animalid_type/rat/get_extra_perks()
+/datum/animid_type/rat/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(

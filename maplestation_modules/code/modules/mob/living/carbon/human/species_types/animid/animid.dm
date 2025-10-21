@@ -8,7 +8,7 @@
 	payday_modifier = 1.0
 	species_language_holder = /datum/language_holder/kuiperian
 	/// A mapping of all animid ids to their singleton instances
-	var/static/list/datum/animalid_type/animid_singletons
+	var/static/list/datum/animid_type/animid_singletons
 
 /datum/species/human/animid/New()
 	. = ..()
@@ -16,7 +16,7 @@
 		return
 
 	animid_singletons = list()
-	for(var/datum/animalid_type/atype as anything in typesof(/datum/animalid_type))
+	for(var/datum/animid_type/atype as anything in typesof(/datum/animid_type))
 		if(!atype::id)
 			continue
 		animid_singletons[atype::id] = new atype(src)

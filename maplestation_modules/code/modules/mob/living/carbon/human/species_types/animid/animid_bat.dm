@@ -1,4 +1,4 @@
-/datum/animalid_type/bat
+/datum/animid_type/bat
 	id = "Bat"
 	components = list(
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/bat,
@@ -15,10 +15,10 @@
 	name = "Chiropteranid"
 	icon = FA_ICON_DROPLET
 
-/datum/animalid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+/datum/animid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.exotic_bloodtype = /datum/blood_type/universal
 
-/datum/animalid_type/bat/get_extra_perks()
+/datum/animid_type/bat/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(

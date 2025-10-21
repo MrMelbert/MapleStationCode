@@ -215,8 +215,8 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/lizmonkey,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/lizmonkey,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/lizmonkey,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -260,5 +260,25 @@
 	wound_resistance = -10
 
 /obj/item/bodypart/head/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey/Initialize(mapload)
 	. = ..()
 	name = "kobold [plaintext_zone]"

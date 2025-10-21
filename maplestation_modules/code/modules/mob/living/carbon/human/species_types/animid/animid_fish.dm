@@ -1,4 +1,4 @@
-/datum/animalid_type/fish
+/datum/animid_type/fish
 	id = "Fish"
 	components = list(
 		MUTANT_ORGANS = list(
@@ -18,17 +18,17 @@
 	name = "Piscinid"
 	icon = FA_ICON_FISH
 
-/datum/animalid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+/datum/animid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
 	new_animid.dna?.features["forced_fish_color"] = new_animid.dna?.features["mcolor"]
 
-/datum/animalid_type/fish/extra_feature_keys()
+/datum/animid_type/fish/extra_feature_keys()
 	return list(/datum/preference/color/mutant_color::savefile_key)
 
-/datum/animalid_type/fish/get_readable_features()
+/datum/animid_type/fish/get_readable_features()
 	return ..() + "Scales"
 
-/datum/animalid_type/fish/get_extra_perks()
+/datum/animid_type/fish/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(

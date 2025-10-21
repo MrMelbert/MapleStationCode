@@ -1,4 +1,4 @@
-/datum/animalid_type/deer
+/datum/animid_type/deer
 	id = "Deer"
 	components = list(
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/deer,
@@ -14,7 +14,7 @@
 	name = "Cervid"
 	icon = FA_ICON_WHEAT_AWN
 
-/datum/animalid_type/deer/get_extra_perks()
+/datum/animid_type/deer/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(

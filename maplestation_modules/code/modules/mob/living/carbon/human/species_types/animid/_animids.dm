@@ -1,4 +1,4 @@
-/datum/animalid_type
+/datum/animid_type
 	/// Bespoke ID for this animalid type. Must be unique.
 	var/id
 
@@ -14,11 +14,11 @@
 	VAR_FINAL/list/all_feature_keys
 
 /// Called when a species of this animid type is applied to a human.
-/datum/animalid_type/proc/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+/datum/animid_type/proc/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	return
 
 /// Returns a list of strings representing features this animalid type has.
-/datum/animalid_type/proc/get_feature_keys()
+/datum/animid_type/proc/get_feature_keys()
 	if(all_feature_keys)
 		return all_feature_keys
 
@@ -32,11 +32,11 @@
 	return all_feature_keys
 
 /// Any feature keys that you might want included regardless
-/datum/animalid_type/proc/extra_feature_keys()
+/datum/animid_type/proc/extra_feature_keys()
 	return list()
 
 /// Checks if the passed preference datum is applicable to this animid type.
-/datum/animalid_type/proc/is_applicable_to_preference(datum/preference/preference)
+/datum/animid_type/proc/is_applicable_to_preference(datum/preference/preference)
 	if(preference.relevant_external_organ && (preference.relevant_external_organ in get_organs()))
 		return TRUE
 	if(preference.relevant_head_flag)
@@ -49,7 +49,7 @@
 	return FALSE
 
 /// Gets only organ typepaths in the components list
-/datum/animalid_type/proc/get_organs()
+/datum/animid_type/proc/get_organs()
 	var/list/all_organs = list()
 	for(var/slot, input in components)
 		if(ispath(input, /obj/item/organ))
@@ -63,7 +63,7 @@
 	return all_organs
 
 /// Returns a list of human-readable names for the features this animid type has.
-/datum/animalid_type/proc/get_readable_features()
+/datum/animid_type/proc/get_readable_features()
 	var/list/names = list()
 	for(var/organ_slot, organ_type_or_types in components)
 		names += readable_organ_type(organ_type_or_types)
@@ -71,7 +71,7 @@
 	return names
 
 /// Used in construction of the animid type preference UI
-/datum/animalid_type/proc/readable_organ_type(organ_type_or_types)
+/datum/animid_type/proc/readable_organ_type(organ_type_or_types)
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(islist(organ_type_or_types))
@@ -91,7 +91,7 @@
 	return null
 
 /// Returns species-like perk cards for use in prefs
-/datum/animalid_type/proc/get_perks()
+/datum/animid_type/proc/get_perks()
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/list/perks = list()
 
@@ -118,7 +118,7 @@
 	return perks_to_return
 
 /// Returns perks based on the components of this animid type
-/datum/animalid_type/proc/get_component_perks()
+/datum/animid_type/proc/get_component_perks()
 	var/list/to_add = list()
 
 	var/obj/item/organ/ears/ears = components[ORGAN_SLOT_EARS]
@@ -150,5 +150,5 @@
 	return to_add
 
 /// Any manual perks you might want to add
-/datum/animalid_type/proc/get_extra_perks()
+/datum/animid_type/proc/get_extra_perks()
 	return null

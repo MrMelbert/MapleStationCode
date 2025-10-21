@@ -1,4 +1,4 @@
-/datum/animalid_type/fox
+/datum/animid_type/fox
 	id = "Fox"
 	components = list(
 		MUTANT_ORGANS = list(/obj/item/organ/tail/fox_animid = "Fox"),

@@ -1,4 +1,4 @@
-/datum/animalid_type/rabbit
+/datum/animid_type/rabbit
 	id = "Rabbit"
 	components = list(
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bunny,
@@ -13,7 +13,7 @@
 	name = "Leporid"
 	icon = FA_ICON_CARROT
 
-/datum/animalid_type/rabbit/get_extra_perks()
+/datum/animid_type/rabbit/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(

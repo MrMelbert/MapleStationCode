@@ -1,4 +1,4 @@
-/datum/animalid_type/cat
+/datum/animid_type/cat
 	id = "Cat"
 	components = list(
 		MUTANT_ORGANS = list(/obj/item/organ/tail/cat = "Cat"),
@@ -11,7 +11,7 @@
 	name = "Felinid"
 	icon = FA_ICON_CAT
 
-/datum/animalid_type/cat/get_extra_perks()
+/datum/animid_type/cat/get_extra_perks()
 	var/list/to_add = list()
 
 	to_add += list(
@@ -45,7 +45,7 @@
 
 	return to_add
 
-/datum/animalid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
+/datum/animid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.species_language_holder = /datum/language_holder/felinid
 	LAZYOR(species.family_heirlooms, /obj/item/toy/cattoy)
 
