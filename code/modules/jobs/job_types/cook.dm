@@ -27,7 +27,7 @@
 	family_heirlooms = list(
 		// /obj/item/reagent_containers/condiment/saltshaker,
 		/obj/item/kitchen/rollingpin,
-		// /obj/item/clothing/head/utility/chefhat,
+		/obj/item/clothing/head/utility/chefhat,
 	)
 
 	// Adds up to 100, don't mess it up
