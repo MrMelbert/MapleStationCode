@@ -8,7 +8,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	plural_form = "High Skrells"
 	id = SPECIES_HIGH_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_SNOB)
-	external_organs = list(/obj/item/organ/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
