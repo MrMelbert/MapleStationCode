@@ -47,6 +47,7 @@
 
 /datum/animalid_type/cat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	species.species_language_holder = /datum/language_holder/felinid
+	LAZYOR(species.family_heirlooms, /obj/item/toy/cattoy)
 
 // Felinid extra customization
 /datum/sprite_accessory/tails/human/cat/big
