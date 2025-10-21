@@ -451,9 +451,6 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	return reskins
 
 /// Default job gags colors for one color gags items
-
-
-
 /datum/loadout_item/proc/default_one_color_job_palette()
 	return list(
 		/datum/job/assistant = COLOR_JOB_ASSISTANT,
