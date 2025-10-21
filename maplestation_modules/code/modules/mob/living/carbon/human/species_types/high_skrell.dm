@@ -33,6 +33,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutantliver = /obj/item/organ/liver/skrell
 	mutantstomach = /obj/item/organ/stomach/skrell
 	mutantears = /obj/item/organ/ears/skrell
+	mutant_organs = list(/obj/item/organ/head_tentacles = "Long")
 
 /datum/species/high_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
@@ -110,7 +111,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -121,7 +122,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'

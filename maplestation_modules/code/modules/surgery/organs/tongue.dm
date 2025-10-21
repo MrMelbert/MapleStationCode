@@ -47,10 +47,10 @@
 	speech_sound_list_question = list('maplestation_modules/sound/voice/huff_ask.ogg' = 120)
 	speech_sound_list_exclamation = list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120)
 
-/obj/item/organ/internal/tongue/high_skrell/get_possible_languages()
+/obj/item/organ/tongue/high_skrell/get_possible_languages()
 	return ..() + /datum/language/skrell
 
-/obj/item/organ/internal/tongue/deep_skrell
+/obj/item/organ/tongue/deep_skrell
 	name = "Deep Skrellian tongue"
 	desc = "The source of the Deep Skrellian people's warbling voice."
 	say_mod = "warbles"

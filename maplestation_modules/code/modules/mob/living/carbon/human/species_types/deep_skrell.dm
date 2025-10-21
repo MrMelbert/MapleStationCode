@@ -8,7 +8,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	plural_form = "Deep Skrells"
 	id = SPECIES_DEEP_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_WEBBED_HANDS)
-	external_organs = list(/obj/item/organ/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
@@ -33,6 +32,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	mutantliver = /obj/item/organ/liver/skrell
 	mutantstomach = /obj/item/organ/stomach/skrell
 	mutantears = /obj/item/organ/ears/skrell
+	mutant_organs = list( /obj/item/organ/head_tentacles = "Long")
 
 /datum/species/deep_skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
@@ -115,7 +115,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	limb_id = SPECIES_DEEP_SKRELL
 	brute_modifier = 0.8
 	burn_modifier = 1.5
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -126,7 +126,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	limb_id = SPECIES_DEEP_SKRELL
 	brute_modifier = 0.8
 	burn_modifier = 1.5
-	unarmed_attack_verb = "slash"
+	unarmed_attack_verbs = list("slash")
 	grappled_attack_verb = "lacerate"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
