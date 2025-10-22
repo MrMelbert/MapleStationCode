@@ -79,7 +79,8 @@
 /datum/status_effect/slimerecall/proc/resistField()
 	SIGNAL_HANDLER
 	interrupted = TRUE
-	owner.remove_status_effect(src)
+	qdel(src)
+	return RESIST_HANDLED
 
 /datum/status_effect/slimerecall/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_RESIST)
@@ -116,7 +117,8 @@
 /datum/status_effect/frozenstasis/proc/breakCube()
 	SIGNAL_HANDLER
 
-	owner.remove_status_effect(src)
+	qdel(src)
+	return RESIST_HANDLED
 
 /datum/status_effect/frozenstasis/on_remove()
 	if(cube)
