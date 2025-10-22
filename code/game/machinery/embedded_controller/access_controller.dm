@@ -94,7 +94,6 @@
 
 	if(source == door)
 		door = null
-		return
 	if(source == controller)
 		controller = null
 
@@ -128,8 +127,6 @@
 
 	if(source == interior_airlock)
 		interior_airlock = null
-		return
-
 	if(source == exterior_airlock)
 		exterior_airlock = null
 
