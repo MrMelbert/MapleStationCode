@@ -199,12 +199,20 @@ type LoadoutSelectedItemProps = {
 
 function LoadoutSelectedItem(props: LoadoutSelectedItemProps) {
   const { all_tabs, path, modifyItemDimmer, setModifyItemDimmer } = props;
-  const { act } = useBackend();
+  const { act, data } = useBackend<LoadoutManagerData>();
+  const { selected_quirks } = data;
 
   const item = typepathToLoadoutItem(path, all_tabs);
   if (!item) {
     return null;
   }
+
+  const buttons_filtered = item.buttons.filter((button) => {
+    if (button.required_quirk) {
+      return selected_quirks.includes(button.required_quirk);
+    }
+    return true;
+  });
 
   return (
     <Stack align={'center'}>
@@ -212,7 +220,7 @@ function LoadoutSelectedItem(props: LoadoutSelectedItemProps) {
         <ItemIcon item={item} scale={1} />
       </Stack.Item>
       <Stack.Item width="55%">{item.name}</Stack.Item>
-      {item.buttons.length ? (
+      {buttons_filtered.length ? (
         <Stack.Item>
           <Button
             color="none"
