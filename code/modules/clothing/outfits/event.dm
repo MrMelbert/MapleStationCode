@@ -12,7 +12,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/red
 	r_pocket = /obj/item/flashlight
 
-	box = /obj/item/storage/box/survival/engineer
+	box = /obj/item/storage/pouch/survival/engineer
 
 /datum/outfit/santa/post_equip(mob/living/carbon/human/user, visualsOnly = FALSE)
 	if(visualsOnly)
