@@ -100,6 +100,8 @@
 #define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
 /// Doesn't let a mob shift this atom around with move_pulled
 #define TRAIT_NO_MOVE_PULL "no_move_pull"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
 /// Boosts the heart rate of the mob
 #define TRAIT_HEART_RATE_BOOST "heart_rate_boost"

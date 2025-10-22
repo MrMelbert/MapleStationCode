@@ -48,6 +48,13 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_MASTER,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_MASTER,
+	)
 
 /datum/job/chief_engineer/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
@@ -82,7 +89,7 @@
 
 	box = /obj/item/storage/box/survival/engineer
 	chameleon_extras = /obj/item/stamp/head/ce
-	skillchips = list(/obj/item/skillchip/job/engineer)
+	// skillchips = list(/obj/item/skillchip/job/engineer)
 	pda_slot = ITEM_SLOT_LPOCKET
 
 /datum/outfit/job/ce/mod
