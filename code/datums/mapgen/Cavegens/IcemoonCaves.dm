@@ -22,11 +22,12 @@
 	)
 	///Note that this spawn list is also in the lavaland generator
 	weighted_feature_spawn_list = list(
-		/obj/structure/geyser/hollowwater = 10,
-		/obj/structure/geyser/plasma_oxide = 10,
-		/obj/structure/geyser/protozine = 10,
+		/obj/structure/geyser/hollowwater = 8,
+		/obj/structure/geyser/plasma_oxide = 8,
+		/obj/structure/geyser/protozine = 8,
 		/obj/structure/geyser/random = 2,
-		/obj/structure/geyser/wittel = 10,
+		/obj/structure/geyser/wittel = 8,
+		/obj/structure/geyser/chiral_buffer = 8,
 	)
 
 /datum/map_generator/cave_generator/icemoon/surface
@@ -36,6 +37,22 @@
 	birth_limit = 5
 	death_limit = 4
 	smoothing_iterations = 10
+
+	feature_spawn_chance = 0.15
+	weighted_feature_spawn_list = list(
+		/obj/structure/geyser/hollowwater = 8,
+		/obj/structure/geyser/plasma_oxide = 8,
+		/obj/structure/geyser/protozine = 8,
+		/obj/structure/geyser/random = 2,
+		/obj/structure/geyser/wittel = 8,
+		/obj/structure/geyser/chiral_buffer = 8,
+	)
+
+	weighted_flora_spawn_list = list(
+		/obj/structure/flora/ash/chilly = 2,
+		/obj/structure/flora/grass/both/style_random = 20,
+		/obj/structure/flora/tree/pine/style_random = 2,
+	)
 
 /// Surface snow generator variant for forested station trait, WITH FORESTSSSS
 /datum/map_generator/cave_generator/icemoon/surface/forested
