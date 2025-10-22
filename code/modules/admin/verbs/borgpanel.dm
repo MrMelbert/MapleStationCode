@@ -36,11 +36,24 @@ ADMIN_VERB(borg_panel, R_ADMIN, "Show Borg Panel", ADMIN_VERB_NO_DESCRIPTION, AD
 		"scrambledcodes" = borg.scrambledcodes
 	)
 	.["upgrades"] = list()
-	var/static/list/not_shown_upgrades = list(/obj/item/borg/upgrade/hypospray)
-	for (var/upgradetype in subtypesof(/obj/item/borg/upgrade)-not_shown_upgrades) //hypospray is a dummy parent for hypospray upgrades
-		var/obj/item/borg/upgrade/upgrade = upgradetype
-		if (initial(upgrade.model_type) && !is_type_in_list(borg.model, initial(upgrade.model_type))) // Upgrade requires a different model //HEY ASSHOLE, INITIAL DOESNT WORK WITH LISTS
-			continue
+	var/list/excluded_upgrades = list(
+		/obj/item/borg/upgrade/hypospray, //hypospray is a dummy parent for hypospray upgrades
+		/obj/item/borg/upgrade/transform,
+		/obj/item/borg/upgrade/rename,
+		/obj/item/borg_restart_board,
+		/obj/item/borg/upgrade/modkit,
+	)
+	for (var/upgradetype in subtypesof(/obj/item/borg/upgrade)-excluded_upgrades)
+		var/obj/item/borg/upgrade/upgrade = new upgradetype()
+		if(upgrade.model_type) // Only show upgrades that can be given. Cannot initial() lists either.
+			// is_type_in_list() doesn't work, so this:
+			var/has_req_module = FALSE
+			for(var/req_model_type in upgrade.model_type)
+				if(borg.model.type == req_model_type)
+					has_req_module = TRUE
+					break
+			if(!has_req_module)
+				continue
 		var/installed = FALSE
 		if (locate(upgradetype) in borg)
 			installed = TRUE
@@ -64,7 +77,7 @@ ADMIN_VERB(borg_panel, R_ADMIN, "Show Borg Panel", ADMIN_VERB_NO_DESCRIPTION, AD
 		.["ais"] += list(list("name" = ai.name, "ref" = REF(ai), "connected" = (borg.connected_ai == ai)))
 
 
-/datum/borgpanel/ui_act(action, params)
+/datum/borgpanel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
