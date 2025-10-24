@@ -5,11 +5,12 @@
  */
 
 import { createRoot } from 'react-dom/client';
-import { createLogger } from 'tgui/logging';
 import { Tooltip } from 'tgui-core/components';
 import { EventEmitter } from 'tgui-core/events';
 import { classes } from 'tgui-core/react';
+import { createLogger } from 'tgui/logging';
 
+import { SequenceScannerChatBox } from 'tgui/interfaces/DnaConsole/SequenceScanner';
 import {
   COMBINE_MAX_MESSAGES,
   COMBINE_MAX_TIME_WINDOW,
@@ -35,6 +36,7 @@ const SCROLL_TRACKING_TOLERANCE = 24;
 // List of injectable component names to the actual type
 export const TGUI_CHAT_COMPONENTS = {
   Tooltip,
+  SequenceScannerChatBox,
 };
 
 // List of injectable attibute names mapped to their proper prop
@@ -42,6 +44,8 @@ export const TGUI_CHAT_COMPONENTS = {
 export const TGUI_CHAT_ATTRIBUTES_TO_PROPS = {
   position: 'position',
   content: 'content',
+  passed_sequence: 'passed_sequence',
+  mutation_name: 'mutation_name',
 };
 
 const findNearestScrollableParent = (startingNode) => {

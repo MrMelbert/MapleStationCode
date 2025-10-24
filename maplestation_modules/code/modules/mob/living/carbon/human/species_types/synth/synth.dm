@@ -286,6 +286,7 @@
 	should_draw_greyscale = initial(other_part.should_draw_greyscale)
 	is_dimorphic = initial(other_part.is_dimorphic)
 	bodytype = initial(other_part.bodytype)
+	bodyshape = initial(other_part.bodyshape)
 
 	if(!update)
 		return
@@ -336,8 +337,6 @@
 	head_flags = initial(other_part.head_flags)
 	return ..()
 
-#define SYNTH_PART_BODYTYPES (BODYSHAPE_HUMANOID|BODYTYPE_ROBOTIC)
-
 /obj/item/bodypart/head/synth
 	limb_id = BODYPART_ID_SYNTH
 	icon_static = 'maplestation_modules/icons/mob/synth_heads.dmi'
@@ -346,7 +345,7 @@
 	should_draw_greyscale = FALSE
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -361,7 +360,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -376,7 +375,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -390,7 +389,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -404,7 +403,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -418,13 +417,11 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = SYNTH_PART_BODYTYPES
+	bodytype = BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-
-#undef SYNTH_PART_BODYTYPES
 
 /obj/item/organ/eyes/robotic/synth
 	name = "synth eyes"
@@ -447,28 +444,28 @@
 	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
 
 
-/obj/item/organ/synth_head_cover/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/synth_head_cover/on_bodypart_insert(obj/item/bodypart/head/limb, movement_flags)
 	. = ..()
-	var/mob/living/carbon/human/robot_target = organ_owner
-	var/obj/item/bodypart/head/noggin = robot_target.get_bodypart(BODY_ZONE_HEAD)
+	limb.head_flags &= ~HEAD_EYESPRITES
 
-	noggin.head_flags &= ~HEAD_EYESPRITES
-
-
-/obj/item/organ/synth_head_cover/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/synth_head_cover/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
 	. = ..()
-	var/mob/living/carbon/human/robot_target = organ_owner
-	var/obj/item/bodypart/head/noggin = robot_target.get_bodypart(BODY_ZONE_HEAD)
-
-	noggin.head_flags &= HEAD_EYESPRITES
-
+	if(initial(limb.head_flags) & HEAD_EYESPRITES)
+		limb.head_flags |= HEAD_EYESPRITES
 
 //-- overlay --
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return SSaccessories.synth_head_cover_list
 
 /datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEHAIR)
+	if(human.obscured_slots & HIDEHAIR)
+		return FALSE
+	var/obj/item/bodypart/head/head = human.get_bodypart(BODY_ZONE_HEAD)
+	if(head.limb_id == BODYPART_ID_SYNTH) // disguised = no head cover
+		return TRUE
+	if(IS_ROBOTIC_LIMB(head)) // works on android limbs too
+		return TRUE
+	return FALSE
 
 /datum/bodypart_overlay/mutant/synth_head_cover
 	feature_key = "synth_head_cover"
