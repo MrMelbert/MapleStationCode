@@ -1,5 +1,7 @@
 /datum/mana_pool/mana_battery
 	amount = 0
+	intrinsic_recharge_sources = NONE
+	discharge_destinations = NONE
 
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -160,10 +162,13 @@
 
 /datum/mana_pool/mana_star
 	// a special type of mana battery that regenerates passively- but cannot be given mana
-	maximum_mana_capacity = 400 // 400 by default
-	softcap = 400
+	maximum_mana_capacity = 100
+	softcap = 100 // should be equal to maximum cap in this case
 	amount = 0
-	ethereal_recharge_rate = 2 // forgot this was a thing LMFAO
+	ethereal_recharge_rate = 0.5
+
+	intrinsic_recharge_sources = NONE // it already regens mana natively, and should generally be reliable
+	discharge_destinations = NONE
 
 /obj/item/clothing/neck/mana_star
 	name = "Volite Amulet"
