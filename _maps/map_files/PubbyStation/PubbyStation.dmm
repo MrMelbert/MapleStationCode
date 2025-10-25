@@ -14092,12 +14092,9 @@
 /area/station/hallway/primary/central)
 "aXs" = (
 /obj/structure/chair/office{
-	dir = 1
-	},
-/obj/effect/landmark/start/cargo_technician,
-/obj/structure/chair/office{
 	dir = 4
 	},
+/obj/effect/landmark/start/cargo_technician,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
