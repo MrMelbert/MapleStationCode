@@ -50,8 +50,9 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
-/obj/item/storage/part_replacer/proc/play_rped_sound()
-	//Plays the sound for RPED exhanging or installing parts.
+///Plays the sound & flick animation for RPED exhanging or installing parts.
+/obj/item/storage/part_replacer/proc/play_rped_effect()
+	flick("[icon_state]_active", src)
 	if(alt_sound && prob(1))
 		playsound(src, alt_sound, 40, TRUE)
 	else

@@ -27,7 +27,7 @@
 	/// Serial number of the tram
 	var/tram_serial
 	name = "\improper tram information plate"
-	icon_state = "commission_tram"
+	icon_state = "tram_plate"
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT)
 	layer = SIGN_LAYER
 

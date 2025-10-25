@@ -258,7 +258,7 @@
 				play_sound = TRUE
 
 	if(play_sound && !no_sound)
-		replacer.play_rped_sound()
+		replacer.play_rped_effect()
 		if(replacer.works_from_distance)
 			user.Beam(src, icon_state = "rped_upgrade", time = 0.5 SECONDS)
 	return TRUE
