@@ -5911,9 +5911,8 @@
 /obj/machinery/door/firedoor,
 /obj/structure/table/reinforced,
 /obj/structure/cable,
-/obj/structure/desk_bell{
-	pixel_x = -3;
-	pixel_y = 2
+/obj/structure/desk_bell/ringer/security{
+	pixel_x = -7
 	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint)
@@ -7488,11 +7487,18 @@
 /area/station/maintenance/floor1/port)
 "bQY" = (
 /obj/structure/table/reinforced,
-/obj/item/paper_bin,
-/obj/item/pen,
+/obj/item/paper_bin{
+	pixel_x = -8
+	},
+/obj/item/pen{
+	pixel_x = -8
+	},
 /obj/machinery/door/window/left/directional/north{
 	name = "Genetics Desk";
 	req_access = list("genetics")
+	},
+/obj/structure/desk_bell/ringer/genetics{
+	pixel_x = 7
 	},
 /turf/open/floor/iron,
 /area/station/science/genetics)
@@ -20874,11 +20880,12 @@
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = 7
-	},
 /obj/structure/window/reinforced/spawner/directional/east,
 /obj/machinery/airalarm/directional/south,
+/obj/structure/desk_bell/ringer/medical{
+	pixel_x = 3;
+	pixel_y = 8
+	},
 /turf/open/floor/iron/dark/textured,
 /area/station/medical/medbay/lobby)
 "ftJ" = (
@@ -23031,6 +23038,10 @@
 	req_access = list("atmospherics")
 	},
 /obj/machinery/door/firedoor,
+/obj/structure/desk_bell/ringer/atmospherics{
+	pixel_x = 8;
+	pixel_y = 1
+	},
 /turf/open/floor/plating,
 /area/station/engineering/atmos/office)
 "fXR" = (
@@ -23274,8 +23285,8 @@
 /obj/item/paper_bin{
 	pixel_x = -6
 	},
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/structure/desk_bell/ringer/warden{
+	pixel_x = 8
 	},
 /turf/open/floor/plating,
 /area/station/security/warden)
@@ -25772,9 +25783,9 @@
 	name = "Robotics Lab";
 	req_access = list("robotics")
 	},
-/obj/structure/desk_bell{
-	pixel_x = -3;
-	pixel_y = 2
+/obj/structure/desk_bell/ringer/robotics{
+	pixel_x = -8;
+	pixel_y = -1
 	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/robotics/lab)
@@ -27769,6 +27780,10 @@
 /turf/closed/wall/r_wall,
 /area/station/engineering/atmos)
 "hkw" = (
+/obj/structure/desk_bell/ringer/psych{
+	pixel_x = 8;
+	pixel_y = -23
+	},
 /turf/open/floor/iron/white/side{
 	dir = 6
 	},
@@ -31916,15 +31931,21 @@
 /area/station/medical/psychology)
 "iot" = (
 /obj/structure/table/reinforced,
-/obj/item/paper_bin,
-/obj/item/pen,
+/obj/item/paper_bin{
+	pixel_x = -4;
+	pixel_y = -2
+	},
+/obj/item/pen{
+	pixel_x = -4;
+	pixel_y = -2
+	},
 /obj/machinery/door/window/left/directional/west{
 	name = "Xenocytology Desk";
 	req_access = list("xenobiology")
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = 10
+/obj/structure/desk_bell/ringer/xenobio{
+	pixel_x = 8;
+	pixel_y = 11
 	},
 /turf/open/floor/iron,
 /area/station/science/cytology)
@@ -38625,6 +38646,10 @@
 /area/station/medical/chemistry)
 "kbI" = (
 /obj/machinery/light/directional/south,
+/obj/structure/desk_bell/ringer/detective{
+	pixel_x = -6;
+	pixel_y = -23
+	},
 /turf/open/floor/wood,
 /area/station/hallway/floor4/fore)
 "kbL" = (
@@ -40075,6 +40100,10 @@
 /obj/machinery/duct,
 /obj/machinery/camera/autoname/directional/north,
 /obj/machinery/light/small/directional/north,
+/obj/structure/desk_bell/ringer/coroner{
+	pixel_x = -5;
+	pixel_y = 27
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
 "ksH" = (
@@ -43749,14 +43778,18 @@
 /area/station/service/hydroponics/garden/abandoned)
 "lmU" = (
 /obj/structure/table/reinforced,
-/obj/effect/spawner/random/entertainment/lighter,
+/obj/effect/spawner/random/entertainment/lighter{
+	pixel_x = 5;
+	pixel_y = 1
+	},
 /obj/machinery/camera/directional/north,
 /obj/effect/turf_decal/tile/green/full,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/desk_bell{
-	pixel_x = -8
+/obj/structure/desk_bell/ringer/bartender{
+	pixel_x = -9;
+	pixel_y = -1
 	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/bar)
@@ -44356,6 +44389,9 @@
 /obj/machinery/door/window/left/directional/east{
 	name = "Cargo Front Desk";
 	req_access = list("cargo")
+	},
+/obj/structure/desk_bell/ringer/cargo{
+	pixel_x = 4
 	},
 /turf/open/floor/plating,
 /area/station/cargo/lobby)
@@ -48529,6 +48565,10 @@
 	dir = 8
 	},
 /obj/machinery/light/directional/east,
+/obj/structure/desk_bell/ringer/mining{
+	pixel_x = 24;
+	pixel_y = 10
+	},
 /turf/open/floor/iron/textured_large,
 /area/station/cargo/storage)
 "mxx" = (
@@ -50699,7 +50739,13 @@
 	name = "Engineering Desk";
 	req_access = list("engineering")
 	},
-/obj/item/paper_bin,
+/obj/item/paper_bin{
+	pixel_x = -7;
+	pixel_y = 5
+	},
+/obj/structure/desk_bell/ringer/engineering{
+	pixel_x = 5
+	},
 /turf/open/floor/plating,
 /area/station/engineering/lobby)
 "nah" = (
@@ -56259,8 +56305,8 @@
 	name = "Hydroponics Desk";
 	req_access = list("hydroponics")
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6
+/obj/structure/desk_bell/ringer/botany{
+	pixel_x = 8
 	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
@@ -76621,9 +76667,9 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = 10
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = -6;
+	pixel_y = 9
 	},
 /turf/open/floor/iron/kitchen/herringbone,
 /area/station/service/kitchen)
@@ -77325,10 +77371,13 @@
 "tVz" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/reinforced/spawner/directional/north,
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/item/pai_card{
+	pixel_x = -7
 	},
-/obj/item/pai_card,
+/obj/structure/desk_bell/ringer/science{
+	pixel_x = 10;
+	pixel_y = -2
+	},
 /turf/open/floor/iron/white,
 /area/station/science/lab)
 "tVB" = (
@@ -79852,6 +79901,10 @@
 /obj/machinery/door/window/brigdoor/left/directional/north{
 	name = "Access Desk";
 	req_access = list("hop")
+	},
+/obj/structure/desk_bell/ringer/hop{
+	pixel_x = 8;
+	pixel_y = 7
 	},
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
@@ -90643,11 +90696,17 @@
 /obj/machinery/door/window/left/directional/east{
 	name = "Pharmacy Desk"
 	},
-/obj/item/paper_bin,
+/obj/item/paper_bin{
+	pixel_x = -6;
+	pixel_y = 4
+	},
 /obj/machinery/door/poddoor/shutters/preopen{
 	dir = 4;
 	id = "chem-lock-a";
 	name = "Chemistry Shutters"
+	},
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_x = 7
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)

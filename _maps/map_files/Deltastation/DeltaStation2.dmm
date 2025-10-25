@@ -9296,9 +9296,19 @@
 /obj/machinery/door/window/left/directional/west{
 	name = "Warden's Desk"
 	},
-/obj/item/folder/red,
-/obj/item/pen,
+/obj/item/folder/red{
+	pixel_x = 4;
+	pixel_y = -1
+	},
+/obj/item/pen{
+	pixel_x = 5;
+	pixel_y = -1
+	},
 /obj/structure/cable,
+/obj/structure/desk_bell/ringer/warden{
+	pixel_x = -5;
+	pixel_y = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/warden)
 "bPt" = (
@@ -11317,8 +11327,12 @@
 	id = "brigwindows";
 	name = "Brig Front Blast Door"
 	},
-/obj/item/folder/red,
-/obj/item/pen,
+/obj/item/folder/red{
+	pixel_x = -6
+	},
+/obj/item/pen{
+	pixel_x = -6
+	},
 /obj/machinery/door/window/brigdoor/right/directional/south{
 	name = "Security Desk";
 	req_access = list("security")
@@ -11328,6 +11342,9 @@
 	},
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/desk_bell/ringer/security{
+	pixel_x = 9
+	},
 /turf/open/floor/iron,
 /area/station/security/holding_cell)
 "cdq" = (
@@ -13276,10 +13293,6 @@
 "cvj" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = 7;
-	pixel_y = 6
-	},
 /obj/item/folder/yellow{
 	pixel_x = -3;
 	pixel_y = -6
@@ -13303,6 +13316,10 @@
 	dir = 4;
 	name = "Pharmacy Desk";
 	req_access = list("pharmacy")
+	},
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_x = 4;
+	pixel_y = 9
 	},
 /turf/open/floor/iron/dark,
 /area/station/medical/pharmacy)
@@ -16096,9 +16113,6 @@
 	pixel_x = 4;
 	pixel_y = 5
 	},
-/obj/structure/desk_bell{
-	pixel_x = -6
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
@@ -16106,6 +16120,10 @@
 /obj/machinery/door/window/left/directional/south{
 	name = "Research Lab Desk";
 	req_access = list("science")
+	},
+/obj/structure/desk_bell/ringer/science{
+	pixel_x = -8;
+	pixel_y = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
@@ -22940,6 +22958,10 @@
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment,
 /obj/effect/turf_decal/trimline/blue/filled/corner,
+/obj/structure/desk_bell/ringer/coroner{
+	pixel_x = 25;
+	pixel_y = -6
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay)
 "dOF" = (
@@ -25026,10 +25048,6 @@
 /obj/item/pen{
 	pixel_x = -4
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = 1
-	},
 /obj/machinery/door/poddoor/shutters/window/preopen{
 	dir = 1;
 	id = "paramed_dispatch_desk";
@@ -25039,6 +25057,10 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line,
+/obj/structure/desk_bell/ringer/medical{
+	pixel_x = 12;
+	pixel_y = 2
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "egs" = (
@@ -25745,8 +25767,8 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/structure/desk_bell/ringer/hop{
+	pixel_x = 5
 	},
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
@@ -31952,8 +31974,8 @@
 	name = "Office Desk"
 	},
 /obj/effect/turf_decal/delivery,
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/structure/desk_bell/ringer/cargo{
+	pixel_x = 8
 	},
 /turf/open/floor/iron,
 /area/station/cargo/office)
@@ -39906,9 +39928,9 @@
 	name = "Hydroponics Desk";
 	req_access = list("hydroponics")
 	},
-/obj/structure/desk_bell{
+/obj/structure/desk_bell/ringer/botany{
 	pixel_x = 8;
-	pixel_y = 9
+	pixel_y = 10
 	},
 /turf/open/floor/plating,
 /area/station/service/hydroponics)
@@ -43674,6 +43696,18 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"jpO" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/trimline/purple/filled/corner{
+	dir = 1
+	},
+/obj/structure/desk_bell/ringer/xenobio{
+	pixel_x = -6;
+	pixel_y = 25
+	},
+/turf/open/floor/iron/white,
+/area/station/science/research)
 "jpQ" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
@@ -44800,6 +44834,13 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted,
 /turf/open/floor/iron,
 /area/station/cargo/drone_bay)
+"jHk" = (
+/obj/structure/desk_bell/ringer/chapel{
+	pixel_x = 27;
+	pixel_y = -22
+	},
+/turf/open/floor/iron/grimy,
+/area/station/service/chapel)
 "jHu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -47156,9 +47197,9 @@
 	pixel_x = -4
 	},
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = 8;
-	pixel_y = 9
+/obj/structure/desk_bell/ringer/engineering{
+	pixel_x = 7;
+	pixel_y = 8
 	},
 /turf/open/floor/iron/half{
 	dir = 8
@@ -48024,15 +48065,14 @@
 	pixel_x = -3;
 	pixel_y = 2
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = -1
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
+	},
+/obj/structure/desk_bell/ringer/robotics{
+	pixel_x = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
@@ -57825,7 +57865,9 @@
 /turf/open/floor/iron,
 /area/station/engineering/hallway)
 "npr" = (
-/obj/item/radio/intercom/directional/east,
+/obj/item/radio/intercom/directional/east{
+	pixel_y = -6
+	},
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron/chapel{
 	dir = 5
@@ -59130,6 +59172,10 @@
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
+	},
+/obj/structure/desk_bell/ringer/psych{
+	pixel_x = -26;
+	pixel_y = -8
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit)
@@ -62422,8 +62468,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/table/reinforced,
-/obj/item/folder/yellow,
-/obj/item/pen,
+/obj/item/folder/yellow{
+	pixel_x = -5
+	},
+/obj/item/pen{
+	pixel_x = -4
+	},
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
 	name = "Atmospherics Lockdown Blast Door"
@@ -62437,6 +62487,10 @@
 /obj/effect/turf_decal/delivery,
 /obj/effect/turf_decal/siding/yellow/corner{
 	dir = 8
+	},
+/obj/structure/desk_bell/ringer/atmospherics{
+	pixel_x = 6;
+	pixel_y = 8
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
@@ -68984,11 +69038,11 @@
 	id = "cafe_counter";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/structure/desk_bell{
-	pixel_x = -7;
-	pixel_y = 6
-	},
 /obj/effect/landmark/start/hangover,
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = -7;
+	pixel_y = 8
+	},
 /turf/open/floor/iron/white/smooth_half{
 	dir = 1
 	},
@@ -71197,9 +71251,9 @@
 /obj/item/storage/box/matches{
 	pixel_y = 5
 	},
-/obj/structure/desk_bell{
-	pixel_x = 7;
-	pixel_y = 10
+/obj/structure/desk_bell/ringer/bartender{
+	pixel_x = 8;
+	pixel_y = -1
 	},
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
@@ -81092,10 +81146,6 @@
 	name = "Genetics Shutters"
 	},
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = -6;
-	pixel_y = 7
-	},
 /obj/item/pen{
 	pixel_x = 3
 	},
@@ -81109,6 +81159,10 @@
 /obj/machinery/door/window/left/directional/south{
 	name = "Genetics Desk";
 	req_access = list("genetics")
+	},
+/obj/structure/desk_bell/ringer/genetics{
+	pixel_x = -7;
+	pixel_y = 9
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -86893,6 +86947,19 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"vCu" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/structure/desk_bell/ringer/detective{
+	pixel_x = 8;
+	pixel_y = 25
+	},
+/turf/open/floor/iron,
+/area/station/hallway/primary/starboard)
 "vCy" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
@@ -92528,9 +92595,18 @@
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 4
 	},
-/obj/item/clipboard,
-/obj/item/toy/figure/miner,
+/obj/item/clipboard{
+	pixel_x = -5
+	},
+/obj/item/toy/figure/miner{
+	pixel_x = -6;
+	pixel_y = -1
+	},
 /obj/machinery/light/directional/south,
+/obj/structure/desk_bell/ringer/mining{
+	pixel_x = 8;
+	pixel_y = 10
+	},
 /turf/open/floor/iron/half{
 	dir = 1
 	},
@@ -129293,7 +129369,7 @@ daE
 dct
 ddU
 dFu
-kfQ
+jpO
 dhX
 hca
 dlz
@@ -143645,7 +143721,7 @@ bMY
 gsC
 bRg
 bHr
-bVc
+vCu
 bXx
 kHE
 cuu
@@ -144226,7 +144302,7 @@ kwv
 kzV
 kwv
 dQh
-dYP
+jHk
 npr
 hHV
 kRt

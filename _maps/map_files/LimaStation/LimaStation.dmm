@@ -30786,6 +30786,20 @@
 	name = "Holodeck Projector Floor"
 	},
 /area/station/holodeck/rec_center)
+"kbO" = (
+/obj/structure/table,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id = "kitchen";
+	name = "Serving Hatch";
+	dir = 4
+	},
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = -6;
+	pixel_y = -2
+	},
+/turf/open/floor/iron,
+/area/station/service/kitchen)
 "kbU" = (
 /obj/machinery/light/cold/directional/east,
 /obj/effect/turf_decal/trimline/yellow/filled/line{
@@ -47178,8 +47192,8 @@
 /area/station/service/kitchen/coldroom)
 "pjr" = (
 /obj/structure/table,
-/obj/structure/desk_bell{
-	pixel_x = 6
+/obj/structure/desk_bell/ringer/bartender{
+	pixel_x = 7
 	},
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
@@ -68051,9 +68065,6 @@
 	id = "kitchen";
 	name = "Serving Hatch";
 	dir = 4
-	},
-/obj/structure/desk_bell{
-	pixel_x = 6
 	},
 /obj/item/ashtray{
 	pixel_y = 6
@@ -172977,7 +172988,7 @@ gHk
 qeX
 vMc
 qeX
-qeX
+kbO
 qvO
 jep
 tWo

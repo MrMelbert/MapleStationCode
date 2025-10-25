@@ -34317,12 +34317,16 @@
 /area/station/commons/dorms)
 "lde" = (
 /obj/structure/table/reinforced,
-/obj/structure/desk_bell{
-	pixel_x = -11
-	},
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 1
+	},
+/obj/structure/desk_bell/ringer/bartender{
+	pixel_y = 10;
+	pixel_x = -11
+	},
+/obj/structure/desk_bell{
+	pixel_x = -11
 	},
 /turf/open/floor/iron,
 /area/station/service/bar)
@@ -61402,6 +61406,9 @@
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 4
+	},
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = -7
 	},
 /turf/open/floor/iron,
 /area/station/service/kitchen)
