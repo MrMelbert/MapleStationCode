@@ -250,3 +250,16 @@
 /obj/structure/desk_bell/ringer/cargo
 	dept_name = "cargo department"
 	target_department = /datum/job_department/cargo
+
+/obj/structure/desk_bell/ringer/bartender
+	dept_name = "bartender"
+	target_job_names = list(JOB_BARTENDER)
+
+/obj/structure/desk_bell/ringer/chef
+	dept_name = "chef"
+	target_job_names = list(JOB_CHEF)
+
+// In the off-chance that there's an actual, accessible service counter where the protolathe is
+/obj/structure/desk_bell/ringer/service
+	dept_name = "service department"
+	target_department = /datum/job_department/service
