@@ -6773,6 +6773,7 @@
 #include "maplestation_modules\story_content\phoneguy_equipment\code\headphone.dm"
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
 #include "maplestation_modules\story_content\prince_equipment\code\clothing.dm"
+#include "maplestation_modules\story_content\providence_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\randall_equipment\code\randallclothing.dm"
 #include "maplestation_modules\story_content\reshia_equipment\code\reshiaclothing.dm"
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
