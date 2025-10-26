@@ -23,7 +23,12 @@
 	. = ..()
 	if(drink_type)
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
-		. += span_notice("It is [lowertext(english_list(types))].")
+		. += span_notice("It is [LOWER_TEXT(english_list(types))].")
+
+/obj/item/reagent_containers/cup/examine_tags(mob/user)
+	. = ..()
+	for(var/foodtype in bitfield_to_list(drink_type, FOOD_FLAGS))
+		.[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] drink."
 
 /**
  * Checks if the mob actually liked drinking this cup.
@@ -80,6 +85,19 @@
 		target_mob.visible_message(span_danger("[user] feeds [target_mob] something from [src]."), \
 					span_userdanger("[user] feeds you something from [src]."))
 		log_combat(user, target_mob, "fed", reagents.get_reagent_log_string())
+	// NON-MODULE CHANGE
+	else if(isGlass || (reagent_flags & OPENCONTAINER))
+		var/pre_volume_percent = reagents.total_volume / reagents.maximum_volume
+		var/post_volume_percent = (reagents.total_volume - gulp_size) / reagents.maximum_volume
+		if(post_volume_percent <= 0)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's empty."))
+		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
+		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
+		else
+			to_chat(user, span_notice("You swallow a gulp of [src]."))
+	// NON-MODULE CHANGE END
 	else
 		to_chat(user, span_notice("You swallow a gulp of [src]."))
 
@@ -431,7 +449,7 @@
 	if (slot & ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
 			to_chat(user, span_userdanger("[src]'s contents spill all over you!"))
-			reagents.expose(user, TOUCH)
+			reagents.expose(user, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 			reagents.clear_reagents()
 		reagents.flags = NONE
 

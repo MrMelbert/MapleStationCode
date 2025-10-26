@@ -9,8 +9,12 @@
 	icon = 'maplestation_modules/icons/obj/hand.dmi'
 	icon_state = "grab"
 	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP // not currently a hand item, but we could implement it for stuff like handing grabs off to people
+	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON // not currently a hand item, but we could implement it for stuff like handing grabs off to people
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+
+/obj/item/grabbing_hand/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
@@ -34,7 +38,7 @@
 	return ..()
 
 /datum/status_effect/grabbing/on_apply()
-	if(!owner.has_limbs)
+	if(!owner.has_limbs || !HAS_TRAIT(owner, TRAIT_CAN_HOLD_ITEMS))
 		return TRUE
 	hand = new()
 	if(!owner.put_in_hands(hand))
@@ -45,9 +49,9 @@
 		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
 	), PROC_REF(hand_use))
-	RegisterSignals(hand, list(
-		COMSIG_ITEM_AFTERATTACK,
-	), PROC_REF(hand_use_deprecated))
+	RegisterSignal(hand, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM, PROC_REF(ranged_hand_use))
+	RegisterSignal(hand, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(ranged_hand_use_alt))
+
 	return TRUE
 
 /datum/status_effect/grabbing/Destroy()
@@ -56,9 +60,10 @@
 		COMSIG_QDELETING,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
-		COMSIG_ITEM_AFTERATTACK,
+		COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM,
+		COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 	))
-	if(!QDELING(hand))
+	if(!QDELETED(hand))
 		qdel(hand)
 	hand = null
 	return ..()
@@ -74,6 +79,8 @@
 // Allows the grab hand to function like a normal hand for tabling and punching and the like
 /datum/status_effect/grabbing/proc/hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
+	if(isitem(interacting_with))
+		return NONE
 	// Mirrored from Click, not ideal (why doesn't punching apply the cd itself??). refactor later I guess
 	if(ismob(interacting_with))
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -81,11 +88,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 // Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
-/datum/status_effect/grabbing/proc/hand_use_deprecated(datum/source, atom/interacting_with, mob/living/user, prox, modifiers)
+/datum/status_effect/grabbing/proc/ranged_hand_use(datum/source, atom/interacting_with, mob/living/user, modifiers)
 	SIGNAL_HANDLER
-	if(prox)
-		return NONE
 	user.RangedAttack(interacting_with, modifiers)
+	return ITEM_INTERACT_SUCCESS
+
+// Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
+/datum/status_effect/grabbing/proc/ranged_hand_use_alt(datum/source, atom/interacting_with, mob/living/user, modifiers)
+	SIGNAL_HANDLER
+	user.ranged_secondary_attack(interacting_with, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
 /datum/status_effect/grabbing/get_examine_text()
@@ -589,7 +600,7 @@
 /// Checks how strong we are at resisting being grabbed.
 /mob/living/proc/get_grab_resist_strength()
 	. += mob_size * 2
-	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/fitness) || 1) - 1), 0, 3)
+	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 1), 0, 3)
 	if(ismonkey(src))
 		. -= 1
 	if(stat == DEAD)

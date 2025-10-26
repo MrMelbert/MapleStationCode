@@ -36,9 +36,9 @@ GLOBAL_LIST_INIT(command_strings, list(
 	bubble_icon = "machine"
 	speech_span = SPAN_ROBOT
 	faction = list(FACTION_NEUTRAL, FACTION_SILICON, FACTION_TURRET)
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 3
-	light_power = 0.9
+	light_power = 0.6
 	speed = 3
 	///Access required to access this Bot's maintenance protocols
 	var/maints_access_required = list(ACCESS_ROBOTICS)
@@ -76,12 +76,12 @@ GLOBAL_LIST_INIT(command_strings, list(
 	///state of the path icon
 	var/path_image_icon_state = "path_indicator"
 	///what color this path icon will use
-	var/path_image_color = "#FFFFFF"
+	var/path_image_color = COLOR_WHITE
 	///list of all layed path icons
 	var/list/current_pathed_turfs = list()
 
 	///The type of data HUD the bot uses. Diagnostic by default.
-	var/data_hud_type = DATA_HUD_DIAGNOSTIC_BASIC
+	var/data_hud_type = TRAIT_DIAGNOSTIC_HUD
 	/// If true we will allow ghosts to control this mob
 	var/can_be_possessed = FALSE
 	/// Message to display upon possession
@@ -105,7 +105,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	AddElement(/datum/element/relay_attackers)
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(handle_loop_movement))
 	RegisterSignal(src, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(after_attacked))
-	RegisterSignal(src, COMSIG_OBJ_ALLOWED, PROC_REF(attempt_access))
+	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
 	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
 	LoadComponent(/datum/component/bloodysoles/bot)
 	GLOB.bots_list += src
@@ -133,8 +133,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 	//If a bot has its own HUD (for player bots), provide it.
 	if(!isnull(data_hud_type))
-		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
-		datahud.show_to(src)
+		ADD_TRAIT(src, data_hud_type, INNATE_TRAIT)
 
 	if(mapload && is_station_level(z) && (bot_mode_flags & BOT_MODE_CAN_BE_SAPIENT) && (bot_mode_flags & BOT_MODE_ROUNDSTART_POSSESSION))
 		enable_possession(mapload = mapload)

@@ -102,6 +102,14 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	fire = 70
 	acid = 60
 
+/obj/structure/closet/get_save_vars()
+	. = ..()
+	. += NAMEOF(src, welded)
+	. += NAMEOF(src, opened)
+	. += NAMEOF(src, locked)
+	. += NAMEOF(src, anchorable)
+	return .
+
 /obj/structure/closet/Initialize(mapload)
 	. = ..()
 
@@ -239,7 +247,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			. += door_overlay
 			door_overlay.overlays += emissive_blocker(door_overlay.icon, door_overlay.icon_state, src, alpha = door_overlay.alpha) // If we don't do this the door doesn't block emissives and it looks weird.
 		else if(has_closed_overlay)
-			. += "[icon_door || overlay_state]_door"
+			var/mutable_appearance/door_overlay = mutable_appearance(icon, "[icon_door || overlay_state]_door", alpha = src.alpha)
+			. += door_overlay
 
 	if(opened)
 		return

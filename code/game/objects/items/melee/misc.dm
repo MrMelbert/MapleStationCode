@@ -4,6 +4,7 @@
 
 /obj/item/melee/chainofcommand
 	name = "chain of command"
+	article = "the"
 	desc = "A tool used by great men to placate the frothing masses."
 	icon = 'icons/obj/weapons/whip.dmi'
 	icon_state = "chain"
@@ -13,6 +14,7 @@
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
+	action_slots = ALL
 	force = 10
 	throwforce = 7
 	demolition_mod = 0.25
@@ -99,7 +101,7 @@
  */
 /obj/item/melee/sabre/proc/attempt_bane(element_owner, mob/living/carbon/criminal)
 	SIGNAL_HANDLER
-	var/obj/item/organ/internal/liver/liver = criminal.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = criminal.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(isnull(liver) || !HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		return COMPONENT_CANCEL_BANING
 
@@ -472,8 +474,9 @@
 /obj/item/melee/cleric_mace
 	name = "cleric mace"
 	desc = "The grandson of the club, yet the grandfather of the baseball bat. Most notably used by holy orders in days past."
-	icon = 'icons/obj/weapons/cleric_mace.dmi'
-	icon_state = "default"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/melee/cleric_mace"
+	post_init_icon_state = "default"
 	inhand_icon_state = "default"
 	worn_icon_state = "default_worn"
 
@@ -481,7 +484,7 @@
 	greyscale_config_inhand_left = /datum/greyscale_config/cleric_mace_lefthand
 	greyscale_config_inhand_right = /datum/greyscale_config/cleric_mace_righthand
 	greyscale_config_worn = /datum/greyscale_config/cleric_mace
-	greyscale_colors = "#FFFFFF"
+	greyscale_colors = COLOR_WHITE
 
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE | MATERIAL_AFFECT_STATISTICS //Material type changes the prefix as well as the color.
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*6)  //Defaults to an Iron Mace.

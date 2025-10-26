@@ -116,7 +116,6 @@
 	// Light projects out backwards from the dir of the light
 	set_light(l_dir = REVERSE_DIR(dir))
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
-	RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	AddElement(/datum/element/contextual_screentip_bare_hands, rmb_text = "Remove bulb")
 	if(break_if_moved)
@@ -223,6 +222,8 @@
 		var/color_set = bulb_colour
 		if(color)
 			color_set = color
+		if (cached_color_filter)
+			color_set = apply_matrix_to_color(color_set, cached_color_filter["color"], cached_color_filter["space"] || COLORSPACE_RGB)
 		if(reagents)
 			START_PROCESSING(SSmachines, src)
 		var/area/local_area = get_room_area()
@@ -230,14 +231,14 @@
 			color_set = fire_colour
 			power_set = fire_power
 			brightness_set = fire_brightness
+		else if (major_emergency)
+			color_set = bulb_emergency_colour
+			brightness_set = brightness * bulb_major_emergency_brightness_mul
 		else if (nightshift_enabled)
 			brightness_set = nightshift_brightness
 			power_set = nightshift_light_power
 			if(!color)
 				color_set = nightshift_light_color
-		else if (major_emergency)
-			color_set = bulb_low_power_colour
-			brightness_set = brightness * bulb_major_emergency_brightness_mul
 		var/matching = light && brightness_set == light.light_range && power_set == light.light_power && color_set == light.light_color
 		if(!matching)
 			switchcount++
@@ -539,9 +540,9 @@
 	var/protected = FALSE
 
 	if(istype(user))
-		var/obj/item/organ/internal/stomach/maybe_stomach = user.get_organ_slot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = user.get_organ_slot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(user, span_notice("You start channeling some power through the [fitting] into your body."))
@@ -676,10 +677,10 @@
 	tube?.burn()
 	return
 
-/obj/machinery/light/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
+/obj/machinery/light/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	break_light_tube()
-	return COMSIG_SABOTEUR_SUCCESS
+	return TRUE
 
 /obj/machinery/light/proc/grey_tide(datum/source, list/grey_tide_areas)
 	SIGNAL_HANDLER

@@ -866,3 +866,41 @@ ADMIN_VERB(check_missing_sprites, R_DEBUG, "Debug Worn Item Sprites", "We're can
 				actual_file_name = 'icons/mob/clothing/belt_mirror.dmi'
 				if(!(sprite.icon_state in icon_states(actual_file_name)))
 					to_chat(user, span_warning("ERROR sprites for [sprite.type]. Suit Storage slot."), confidential = TRUE)
+
+/datum/mc_dependency_ui
+
+/datum/mc_dependency_ui/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "MCDependencyDebug")
+		ui.set_autoupdate(FALSE)
+		ui.open()
+
+/datum/mc_dependency_ui/ui_state(mob/user)
+	return GLOB.admin_state // ADMIN_STATE(R_DEBUG)
+
+/datum/mc_dependency_ui/ui_data(mob/user)
+	var/list/data = list()
+
+	var/list/subsystems = Master.subsystems.Copy()
+	sortTim(subsystems, GLOBAL_PROC_REF(cmp_subsystem_init))
+
+	for(var/datum/controller/subsystem/subsystem as anything in subsystems)
+		var/list/sub_data = list()
+		sub_data["name"] = subsystem.name
+		var/list/dependents = list()
+		for(var/datum/controller/subsystem/dependent as anything in subsystem.dependents)
+			dependents += dependent.name
+		sub_data["dependents"] = dependents
+		data += list(sub_data)
+
+	return list(
+		"subsystems" = data
+	)
+
+/datum/mc_dependency_ui/ui_assets(mob/user)
+	return list(get_asset_datum(/datum/asset/simple/plane_background))
+
+ADMIN_VERB(debug_mc_dependencies, R_DEBUG, "Debug MC Dependencies", "Debug MC dependencies.", ADMIN_CATEGORY_DEBUG)
+	var/datum/mc_dependency_ui/data = new /datum/mc_dependency_ui()
+	data.ui_interact(usr)

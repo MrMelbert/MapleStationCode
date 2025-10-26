@@ -111,9 +111,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// DOES have random body on, will this already be randomized?
 	var/randomize_by_default = TRUE
 
-	/// If the selected species has this in its /datum/species/mutant_bodyparts,
+	/// If the selected species has this in its /datum/species/body_markings,
 	/// will show the feature as selectable.
-	var/relevant_mutant_bodypart = null
+	var/relevant_body_markings = null
 
 	/// If the selected species has this in its /datum/species/inherent_traits,
 	/// will show the feature as selectable.
@@ -333,7 +333,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /// Checks if this preference is relevant and thus visible to the passed preferences object.
 /datum/preference/proc/has_relevant_feature(datum/preferences/preferences)
-	if(isnull(relevant_inherent_trait) && isnull(relevant_external_organ) && isnull(relevant_head_flag) && isnull(relevant_mutant_bodypart))
+	if(isnull(relevant_inherent_trait) && isnull(relevant_external_organ) && isnull(relevant_head_flag) && isnull(relevant_body_markings))
 		return TRUE
 
 	return current_species_has_savekey(preferences)
@@ -409,7 +409,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	CRASH("`init_possible_values()` was not implemented for [type]!")
 
 /// When `should_generate_icons` is TRUE, this proc is called for every value.
-/// It can return either an icon or a typepath to an atom to create.
+/// It can return either an /datum/universal_icon (see uni_icon() DEFINE) or a typepath to an atom to create.
 /datum/preference/choiced/proc/icon_for(value)
 	SHOULD_CALL_PARENT(FALSE)
 	SHOULD_NOT_SLEEP(TRUE)

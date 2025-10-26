@@ -227,7 +227,7 @@
 	instability = 5
 	power_coeff = 1
 	conflicts = list(/datum/mutation/human/glow/anti)
-	var/glow_power = 2.5
+	var/glow_power = 2
 	var/glow_range = 2.5
 	var/glow_color
 	var/obj/effect/dummy/lighting_obj/moblight/glow
@@ -273,14 +273,41 @@
 	desc = "The user's muscles slightly expand."
 	quality = POSITIVE
 	text_gain_indication = "<span class='notice'>You feel strong.</span>"
+	instability = 5
 	difficulty = 16
+
+/datum/mutation/human/strong/on_acquiring(mob/living/carbon/human/owner)
+	. = ..()
+	if(.)
+		return
+	ADD_TRAIT(owner, TRAIT_STRENGTH, GENETIC_MUTATION)
+
+/datum/mutation/human/strong/on_losing(mob/living/carbon/human/owner)
+	. = ..()
+	if(.)
+		return
+	REMOVE_TRAIT(owner, TRAIT_STRENGTH, GENETIC_MUTATION)
+
 
 /datum/mutation/human/stimmed
 	name = "Stimmed"
 	desc = "The user's chemical balance is more robust."
 	quality = POSITIVE
 	text_gain_indication = "<span class='notice'>You feel stimmed.</span>"
+	instability = 5
 	difficulty = 16
+
+/datum/mutation/human/stimmed/on_acquiring(mob/living/carbon/human/owner)
+	. = ..()
+	if(.)
+		return
+	ADD_TRAIT(owner, TRAIT_STIMMED, GENETIC_MUTATION)
+
+/datum/mutation/human/stimmed/on_losing(mob/living/carbon/human/owner)
+	. = ..()
+	if(.)
+		return
+	REMOVE_TRAIT(owner, TRAIT_STIMMED, GENETIC_MUTATION)
 
 /datum/mutation/human/insulated
 	name = "Insulated"
@@ -478,7 +505,7 @@
 
 	explosion(owner, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
 	for(var/mob/living/carbon/human/splashed in view(2, owner))
-		var/obj/item/organ/internal/eyes/eyes = splashed.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = splashed.get_organ_slot(ORGAN_SLOT_EYES)
 		if(eyes)
 			to_chat(splashed, span_userdanger("You are blinded by a shower of blood!"))
 			eyes.apply_organ_damage(5)
@@ -505,7 +532,7 @@
 	if(.)//cant add
 		return TRUE
 
-	var/obj/item/organ/internal/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(brain)
 		brain.Remove(owner, special = TRUE)
 		brain.zone = BODY_ZONE_CHEST
@@ -530,7 +557,7 @@
 	if(!successful)
 		stack_trace("HARS mutation head regeneration failed! (usually caused by headless syndrome having a head)")
 		return TRUE
-	var/obj/item/organ/internal/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = owner.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(brain)
 		brain.Remove(owner, special = TRUE)
 		brain.zone = initial(brain.zone)

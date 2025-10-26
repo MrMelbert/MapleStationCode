@@ -15,7 +15,10 @@
 	custom_materials = list(/datum/material/iron= HALF_SHEET_MATERIAL_AMOUNT * 0.5)
 	resistance_flags = FIRE_PROOF
 	trigger_guard = TRIGGER_GUARD_NORMAL
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
+	light_color = LIGHT_COLOR_FLARE
+	light_range = 2
+	light_power = 2
 	light_on = FALSE
 	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 	var/status = FALSE
@@ -37,8 +40,8 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/flamethrower)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 

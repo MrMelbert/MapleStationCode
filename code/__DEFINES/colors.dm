@@ -11,6 +11,19 @@
 #define FIXED_COLOUR_PRIORITY 4
 ///how many colour priority levels there are.
 #define COLOUR_PRIORITY_AMOUNT 4
+/// If this is a plain atom color
+#define ATOM_COLOR_TYPE_NORMAL "normal"
+/// If this is a color filter
+#define ATOM_COLOR_TYPE_FILTER "filter"
+// Indexes for color arrays
+#define ATOM_COLOR_VALUE_INDEX 1
+#define ATOM_COLOR_TYPE_INDEX 2
+#define ATOM_PRIORITY_COLOR_FILTER "atom_priority_color"
+#define ATOM_PRIORITY_COLOR_FILTER_PRIORITY -1
+/// Multiply pixel's saturation by color's saturation. Paints accents while keeping dim areas dim.
+#define SATURATION_MULTIPLY "multiply"
+/// Always affects the original pixel's saturation and lightness.
+#define SATURATION_OVERRIDE "always"
 
 #define COLOR_DARKMODE_BACKGROUND "#202020"
 #define COLOR_DARKMODE_DARKBACKGROUND "#171717"
@@ -39,14 +52,14 @@
 #define COLOR_ETHIOPIA_RED "#DA121A"
 #define COLOR_UNION_JACK_RED "#C8102E"
 #define COLOR_MEDIUM_DARK_RED "#CC0000"
-#define COLOR_PINK_RED "EF3340"
+#define COLOR_PINK_RED "#EF3340"
 #define COLOR_SYNDIE_RED "#F10303"
 #define COLOR_SYNDIE_RED_HEAD "#760500"
 #define COLOR_MOSTLY_PURE_RED "#FF3300"
 #define COLOR_DARK_RED "#A50824"
 #define COLOR_RED_LIGHT "#FF3333"
-#define COLOR_FIRE_LIGHT_RED "#B61C1C"
 #define COLOR_MAROON "#800000"
+#define COLOR_FIRE_LIGHT_RED "#B61C1C"
 #define COLOR_SECURITY_RED "#CB0000"
 #define COLOR_VIVID_RED "#FF3232"
 #define COLOR_LIGHT_GRAYISH_RED "#E4C7C5"

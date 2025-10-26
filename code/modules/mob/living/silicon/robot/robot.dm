@@ -19,7 +19,7 @@
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/cyborg)
 	RegisterSignal(src, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(charge))
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
-	RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_GOT_DAMPENED), PROC_REF(on_dampen))
 
 	robot_modules_background = new()
 	robot_modules_background.icon_state = "block"
@@ -68,7 +68,7 @@
 		//MMI stuff. Held togheter by magic. ~Miauw
 		if(!mmi?.brainmob)
 			mmi = new (src)
-			mmi.brain = new /obj/item/organ/internal/brain(mmi)
+			mmi.brain = new /obj/item/organ/brain(mmi)
 			mmi.brain.organ_flags |= ORGAN_FROZEN
 			mmi.brain.name = "[real_name]'s brain"
 			mmi.name = "[initial(mmi.name)]: [real_name]"
@@ -360,14 +360,14 @@
 	add_overlay(eye_lights)
 	return ..()
 
-/mob/living/silicon/robot/proc/self_destruct(mob/usr)
+/mob/living/silicon/robot/proc/self_destruct(mob/user)
 	var/turf/groundzero = get_turf(src)
-	message_admins(span_notice("[ADMIN_LOOKUPFLW(usr)] detonated [key_name_admin(src, client)] at [ADMIN_VERBOSEJMP(groundzero)]!"))
-	usr.log_message("detonated [key_name(src)]!", LOG_ATTACK)
-	log_message("was detonated by [key_name(usr)]!", LOG_ATTACK, log_globally = FALSE)
+	message_admins(span_notice("[ADMIN_LOOKUPFLW(user)] detonated [key_name_admin(src, client)] at [ADMIN_VERBOSEJMP(groundzero)]!"))
+	user.log_message("detonated [key_name(src)]!", LOG_ATTACK)
+	log_message("was detonated by [key_name(user)]!", LOG_ATTACK, log_globally = FALSE)
 
-	log_combat(usr, src, "detonated cyborg")
-	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(usr)].")
+	log_combat(user, src, "detonated cyborg")
+	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(user)].")
 	if(connected_ai)
 		to_chat(connected_ai, "<br><br>[span_alert("ALERT - Cyborg detonation detected: [name]")]<br>")
 
@@ -464,12 +464,13 @@
 	return COMPONENT_BLOCK_LIGHT_EATER
 
 /// special handling for getting shot with a light disruptor/saboteur e.g. the fisher
-/mob/living/silicon/robot/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
+/mob/living/silicon/robot/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	if(lamp_enabled)
 		toggle_headlamp(TRUE)
-		to_chat(src, span_warning("Your headlamp was forcibly turned off. Restarting it should fix it, though."))
-	return COMSIG_SABOTEUR_SUCCESS
+		balloon_alert(src, "headlamp off!")
+	COOLDOWN_START(src, disabled_time, disrupt_duration)
+	return TRUE
 
 /**
  * Handles headlamp smashing
@@ -501,6 +502,9 @@
  */
 /mob/living/silicon/robot/proc/toggle_headlamp(turn_off = FALSE, update_color = FALSE)
 	//if both lamp is enabled AND the update_color flag is on, keep the lamp on. Otherwise, if anything listed is true, disable the lamp.
+	if(!COOLDOWN_FINISHED(src, disabled_time))
+		balloon_alert(src, "disrupted!")
+		return FALSE
 	if(!(update_color && lamp_enabled) && (turn_off || lamp_enabled || update_color || !lamp_functional || stat || low_power_mode))
 		set_light_on(lamp_functional && stat != DEAD && lamp_doom) //If the lamp isn't broken and borg isn't dead, doomsday borgs cannot disable their light fully.
 		set_light_color(COLOR_RED) //This should only matter for doomsday borgs, as any other time the lamp will be off and the color not seen
@@ -967,6 +971,10 @@
 	buckle_mob_flags = RIDER_NEEDS_ARM // just in case
 	return ..()
 
+/mob/living/silicon/robot/post_buckle_mob(mob/living/victim_to_boot)
+	if(HAS_TRAIT(src, TRAIT_GOT_DAMPENED))
+		eject_riders()
+
 /mob/living/silicon/robot/execute_resist()
 	. = ..()
 	if(!has_buckled_mobs())
@@ -1039,7 +1047,7 @@
 			'icons/mob/effects/onfire.dmi',
 			fire_icon,
 			-HIGHEST_LAYER,
-			appearance_flags = RESET_COLOR,
+			appearance_flags = RESET_COLOR|KEEP_APART,
 		)
 		GLOB.fire_appearances[fire_icon] = new_fire_overlay
 
@@ -1048,3 +1056,16 @@
 /// Draw power from the robot
 /mob/living/silicon/robot/proc/draw_power(power_to_draw)
 	cell?.use(power_to_draw)
+
+/mob/living/silicon/robot/proc/on_dampen()
+	SIGNAL_HANDLER
+	eject_riders()
+
+/mob/living/silicon/robot/proc/eject_riders()
+	if(!length(buckled_mobs))
+		return
+	for(var/mob/living/buckled_mob as anything in buckled_mobs)
+		buckled_mob.visible_message(span_warning("[buckled_mob] is knocked off of [src] by the charge in [src]'s chassis induced by the hyperkinetic dampener field!"))
+		buckled_mob.Paralyze(1 SECONDS)
+		unbuckle_mob(buckled_mob)
+	do_sparks(5, 0, src)

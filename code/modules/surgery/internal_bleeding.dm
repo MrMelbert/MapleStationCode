@@ -1,7 +1,7 @@
 /// Repair internal bleeding
 /datum/surgery/internal_bleeding
 	name = "Repair Internal Bleeding"
-	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_REQUIRES_REAL_LIMB
+	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_REQUIRES_REAL_LIMB | SURGERY_IGNORE_CLOTHES
 	targetable_wound = /datum/wound/bleed_internal
 	target_mobtypes = list(/mob/living/carbon)
 	possible_locs = list(
@@ -58,9 +58,9 @@
 		display_results(
 			user,
 			target,
-			span_green("You've finishes repairing all the arterial damage in [in_where]."),
-			span_green("[user] finishes repaiing all the arterial damage in [in_where] with [tool]!"),
-			span_green("[user] finishes repaiing all the arterial damage in [in_where]!"),
+			span_green("You've finished repairing all the arterial damage in [in_where]."),
+			span_green("[user] finished repairing all the arterial damage in [in_where] with [tool]!"),
+			span_green("[user] finished repairing all the arterial damage in [in_where]!"),
 		)
 		repeatable = FALSE
 		return ..()

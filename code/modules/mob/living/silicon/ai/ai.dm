@@ -23,9 +23,7 @@
 	combat_mode = TRUE //so we always get pushed instead of trying to swap
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS
 	hud_type = /datum/hud/ai
-	med_hud = DATA_HUD_MEDICAL_BASIC
-	sec_hud = DATA_HUD_SECURITY_BASIC
-	d_hud = DATA_HUD_DIAGNOSTIC_ADVANCED
+	silicon_huds = list(TRAIT_MEDICAL_HUD_SENSOR_ONLY, TRAIT_SECURITY_HUD_ID_ONLY, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD)
 	mob_size = MOB_SIZE_LARGE
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE
@@ -456,7 +454,7 @@
 	if(hack_software)
 		new/obj/item/malf_upgrade(get_turf(src))
 	the_mmi = mmi_type
-	the_mmi.brain = new /obj/item/organ/internal/brain(the_mmi)
+	the_mmi.brain = new /obj/item/organ/brain(the_mmi)
 	the_mmi.brain.organ_flags |= ORGAN_FROZEN
 	the_mmi.brain.name = "[real_name]'s brain"
 	the_mmi.name = "[initial(the_mmi.name)]: [real_name]"
@@ -763,7 +761,10 @@
 				"floating face" = 'icons/mob/silicon/ai.dmi',
 				"xeno queen" = 'icons/mob/nonhuman-player/alien.dmi',
 				"horror" = 'icons/mob/silicon/ai.dmi',
-				"clock" = 'icons/mob/silicon/ai.dmi'
+				"clock" = 'icons/mob/silicon/ai.dmi',
+				"triangle" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"cube" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
+				"BH" = 'maplestation_modules/story_content/volkan_equipment/icons/ai_holograms.dmi',
 				)
 
 			input = tgui_input_list(usr, "Select a hologram", "Hologram", sort_list(icon_list))
@@ -897,20 +898,20 @@
 	var/list/viewscale = getviewsize(client.view)
 	return get_dist(src, A) <= max(viewscale[1]*0.5,viewscale[2]*0.5)
 
-/mob/living/silicon/ai/proc/relay_speech(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/mob/living/silicon/ai/proc/relay_speech(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
 	var/raw_translation = translate_language(speaker, message_language, raw_message, spans, message_mods)
 	var/atom/movable/source = speaker.GetSource() || speaker // is the speaker virtual/radio
 	var/treated_message = source.say_quote(raw_translation, spans, message_mods)
 
 	var/start = "Relayed Speech: "
-	var/namepart
-	var/list/stored_name = list(null)
-	SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, FALSE)
-	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
+	var/namepart = speaker.get_message_voice()
 	var/hrefpart = "<a href='byond://?src=[REF(src)];track=[html_encode(namepart)]'>"
 	var/jobpart = "Unknown"
 
-	if(!HAS_TRAIT(speaker, TRAIT_UNKNOWN)) //don't fetch the speaker's job in case they have something that conseals their identity completely
+	// if voice is concealed, job is concealed
+	// on the other hand we don't care about TRAIT_UNKNOWN_APPEARANCE
+	// (AI can associate voice -> name -> crew record -> job)
+	if(!HAS_TRAIT(speaker, TRAIT_UNKNOWN_VOICE))
 		if (isliving(speaker))
 			var/mob/living/living_speaker = speaker
 			if(living_speaker.job)
@@ -1179,10 +1180,9 @@
 	.[ai_job_ref.title] = minutes
 
 
-/mob/living/silicon/ai/GetVoice()
-	. = ..()
-	if(ai_voicechanger && ai_voicechanger.changing_voice)
+/mob/living/silicon/ai/get_voice(add_id_name)
+	if(ai_voicechanger?.changing_voice)
 		return ai_voicechanger.say_name
-	return
+	return ..()
 
 #undef CALL_BOT_COOLDOWN

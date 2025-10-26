@@ -2,7 +2,7 @@
 /datum/job/asset_protection
 	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
-		from foreign threats and themselves. Exert authority over the Bridge Officer."
+		from foreign threats (and themselves). Exert authority over the bridge officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -63,7 +63,7 @@
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	id_trim = /datum/id_trim/job/asset_protection
 	box = /obj/item/storage/box/survival/security
 

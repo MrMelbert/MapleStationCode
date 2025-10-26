@@ -78,6 +78,12 @@
 	var/fail_prob = 0//100 - fail_prob = success_prob
 	var/advance = FALSE
 
+	if(!chem_check(target))
+		user.balloon_alert(user, "missing [LOWER_TEXT(get_chem_list())]!")
+		to_chat(user, span_warning("[target] is missing the [LOWER_TEXT(get_chem_list())] required to perform this surgery step!"))
+		surgery.step_in_progress = FALSE
+		return FALSE
+
 	if(preop(user, target, target_zone, tool, surgery) == SURGERY_STEP_FAIL)
 		surgery.step_in_progress = FALSE
 		return FALSE
@@ -115,9 +121,7 @@
 
 	if(do_after(user, modded_time, target = target, interaction_key = user.has_status_effect(/datum/status_effect/hippocratic_oath) ? target : DOAFTER_SOURCE_SURGERY)) //If we have the hippocratic oath, we can perform one surgery on each target, otherwise we can only do one surgery in total.
 
-		var/chem_check_result = chem_check(target)
-		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && chem_check_result && !try_to_fail)
-
+		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && !try_to_fail)
 			if(success(user, target, target_zone, tool, surgery))
 				play_success_sound(user, target, target_zone, tool, surgery)
 				advance = TRUE
@@ -125,8 +129,6 @@
 			if(failure(user, target, target_zone, tool, surgery, fail_prob))
 				play_failure_sound(user, target, target_zone, tool, surgery)
 				advance = TRUE
-			if(chem_check_result)
-				return .(user, target, target_zone, tool, surgery, try_to_fail) //automatically re-attempt if failed for reason other than lack of required chemical
 		if(advance && !repeatable)
 			surgery.status++
 			if(surgery.status > surgery.steps.len)
@@ -298,9 +300,13 @@
 	target.cause_pain(target_zone, pain_amount, pain_type)
 	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
 		return
+	// Replace this check with localized anesthesia in the future
+	var/obj/item/bodypart/checked_bodypart = target.get_bodypart(target_zone)
+	if(checked_bodypart && checked_bodypart.bodypart_pain_modifier * target.pain_controller.pain_modifier < 0.5)
+		return
 	target.add_mood_event("surgery", surgery_moodlet)
 	target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
-	target.adjust_traumatic_shock(pain_amount * 0.33)
+	target.adjust_traumatic_shock(pain_amount * 0.33 * target.pain_controller.pain_modifier)
 	target.pain_emote()
 	target.pain_message(span_userdanger(pain_message))
 

@@ -141,6 +141,10 @@
 	inhand_icon_state = "armor"
 	dog_fashion = null
 
+/obj/item/clothing/suit/armor/vest/cuirass/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
+
 /obj/item/clothing/suit/armor/hos
 	name = "armored greatcoat"
 	desc = "A greatcoat enhanced with a special alloy for some extra protection and style for those with a commanding presence."
@@ -170,6 +174,7 @@
 
 /obj/item/clothing/suit/armor/hos/trenchcoat/winter
 	name = "head of security's winter trenchcoat"
+	article = "the"
 	desc = "A trenchcoat enhanced with a special lightweight kevlar, padded with wool on the collar and inside. You feel strangely lonely wearing this coat."
 	icon_state = "hoswinter"
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
@@ -237,6 +242,7 @@
 
 /obj/item/clothing/suit/armor/vest/capcarapace
 	name = "captain's carapace"
+	article = "the"
 	desc = "A fireproof armored chestpiece reinforced with ceramic plates and plasteel pauldrons to provide additional protection whilst still offering maximum mobility and flexibility. Issued only to the station's finest, although it does chafe your nipples."
 	icon_state = "capcarapace"
 	inhand_icon_state = "armor"
@@ -262,6 +268,7 @@
 
 /obj/item/clothing/suit/armor/vest/capcarapace/captains_formal
 	name = "captain's parade coat"
+	article = "the"
 	desc = "For when an armoured vest isn't fashionable enough."
 	icon_state = "capformal"
 	inhand_icon_state = null
@@ -280,7 +287,15 @@
 	armor_type = /datum/armor/armor_riot
 	strip_delay = 80
 	equip_delay_other = 60
-	clothing_traits = list(TRAIT_SHOVE_KNOCKDOWN_BLOCKED)
+	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
+
+/obj/item/clothing/suit/armor/riot/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 5)
+	init_rustle_component()
+
+/obj/item/clothing/suit/armor/riot/proc/init_rustle_component()
+	AddComponent(/datum/component/item_equipped_movement_rustle)
 
 /datum/armor/armor_riot
 	melee = 50
@@ -291,24 +306,39 @@
 	acid = 80
 	wound = 20
 
-/obj/item/clothing/suit/armor/bone
-	name = "bone armor"
-	desc = "A tribal armor plate, crafted from animal bone."
-	icon_state = "bonearmor"
-	inhand_icon_state = null
+/obj/item/clothing/suit/armor/balloon_vest
+	name = "balloon vest"
+	desc = "A vest made entirely from balloons, resistant to any evil forces a mime could throw at you, including electricity and fire. Just a strike with something sharp, though..."
+	icon_state = "balloon-vest"
+	inhand_icon_state = "balloon_armor"
 	blood_overlay_type = "armor"
-	armor_type = /datum/armor/armor_bone
-	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS
+	armor_type = /datum/armor/balloon_vest
+	siemens_coefficient = 0
+	strip_delay = 70
+	equip_delay_other = 50
 
-/datum/armor/armor_bone
-	melee = 35
-	bullet = 25
-	laser = 25
-	energy = 35
-	bomb = 25
-	fire = 50
+/datum/armor/balloon_vest
+	melee = 10
+	laser = 10
+	energy = 10
+	fire = 60
 	acid = 50
-	wound = 10
+
+/obj/item/clothing/suit/armor/balloon_vest/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
+	if(isitem(hitby))
+		var/obj/item/item_hit = hitby
+		if(item_hit.sharpness)
+			pop()
+
+	if(istype(hitby, /obj/projectile/bullet))
+		pop()
+
+	return ..()
+
+/obj/item/clothing/suit/armor/balloon_vest/proc/pop()
+	playsound(src, 'sound/effects/cartoon_pop.ogg', 50, vary = TRUE)
+	qdel(src)
+
 
 /obj/item/clothing/suit/armor/bulletproof
 	name = "bulletproof armor"
@@ -380,7 +410,15 @@
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	slowdown = 0.7
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	clothing_traits = list(TRAIT_SHOVE_KNOCKDOWN_BLOCKED)
+	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
+
+/obj/item/clothing/suit/armor/swat/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 5)
+	init_rustle_component()
+
+/obj/item/clothing/suit/armor/swat/proc/init_rustle_component()
+	AddComponent(/datum/component/item_equipped_movement_rustle)
 
 
 //All of the armor below is mostly unused
@@ -478,6 +516,8 @@
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
 		)
+/obj/item/clothing/suit/armor/riot/knight/init_rustle_component()
+	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 
 /obj/item/clothing/suit/armor/riot/knight/yellow
 	icon_state = "knight_yellow"
@@ -510,6 +550,10 @@
 	resistance_flags = FLAMMABLE
 	armor_type = /datum/armor/vest_durathread
 	dog_fashion = null
+
+/obj/item/clothing/suit/armor/vest/durathread/Initialize(mapload)
+	. = ..()
+	allowed |= /obj/item/clothing/suit/apron::allowed
 
 /datum/armor/vest_durathread
 	melee = 20

@@ -4,7 +4,7 @@ import { Dropdown, Flex, Stack } from 'tgui-core/components';
 import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { PageButton } from '../components/PageButton';
-import { PreferencesMenuData } from '../types';
+import type { PreferencesMenuData } from '../types';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
 import { AntagsPage } from './AntagsPage';
@@ -140,6 +140,16 @@ export function CharacterPreferenceWindow(props) {
               Character
             </PageButton>
           </Stack.Item>
+          {/* // NON-MODULE CHANGE START */}
+          <Stack.Item grow>
+            <PageButton
+              currentPage={currentPage}
+              page={Page.Limbs}
+              setPage={setCurrentPage}
+            >
+              Body
+            </PageButton>
+          </Stack.Item>
 
           <Stack.Item grow>
             <PageButton
@@ -148,16 +158,6 @@ export function CharacterPreferenceWindow(props) {
               setPage={setCurrentPage}
             >
               Loadout
-            </PageButton>
-          </Stack.Item>
-          {/* // NON-MODULE CHANGE START */}
-          <Stack.Item grow>
-            <PageButton
-              currentPage={currentPage}
-              page={Page.Limbs}
-              setPage={setCurrentPage}
-            >
-              Limbs
             </PageButton>
           </Stack.Item>
 

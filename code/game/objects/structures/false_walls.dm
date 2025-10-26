@@ -27,6 +27,10 @@
 	var/girder_type = /obj/structure/girder/displaced
 	var/opening = FALSE
 
+/obj/structure/falsewall/get_save_vars()
+	. = ..()
+	. -= NAMEOF(src, icon)
+	return .
 
 /obj/structure/falsewall/Initialize(mapload)
 	. = ..()
@@ -34,6 +38,7 @@
 	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
 	qdel(initialized_mineral)
 	air_update_turf(TRUE, TRUE)
+	update_appearance()
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
 	if(opening)
@@ -42,12 +47,11 @@
 	if(.)
 		return
 
-	opening = TRUE
 	if(!density)
-		var/srcturf = get_turf(src)
-		for(var/mob/living/obstacle in srcturf) //Stop people from using this as a shield
-			opening = FALSE
+		for(var/mob/living/obstacle in get_turf(src)) //Stop people from using this as a shield
 			return
+
+	opening = TRUE
 	update_appearance()
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/falsewall, toggle_open)), 0.5 SECONDS)
 
@@ -430,6 +434,5 @@
 		girder_icon_state += "_[density ? "opening" : "closing"]"
 	else if(!density)
 		girder_icon_state += "_open"
-	var/mutable_appearance/girder_underlay = mutable_appearance('icons/obj/structures.dmi', girder_icon_state, layer = LOW_OBJ_LAYER-0.01)
-	girder_underlay.appearance_flags = RESET_ALPHA | RESET_COLOR
+	var/mutable_appearance/girder_underlay = mutable_appearance('icons/obj/structures.dmi', girder_icon_state, layer = LOW_OBJ_LAYER-0.01, appearance_flags = RESET_ALPHA | RESET_COLOR | KEEP_APART)
 	underlays += girder_underlay

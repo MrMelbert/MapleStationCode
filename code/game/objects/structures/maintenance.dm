@@ -24,15 +24,14 @@ at the cost of risking a vicious bite.**/
 		/obj/item/restraints/handcuffs/cable/green = 1,
 		/obj/item/restraints/handcuffs/cable/pink = 1,
 		/obj/item/restraints/handcuffs/alien = 2,
-		/obj/item/coin/bananium = 9,
+		/obj/item/coin/bananium = 10,
 		/obj/item/knife/butcher = 5,
-		/obj/item/coin/mythril = 1,
 	)
 
 
 /obj/structure/moisture_trap/Initialize(mapload)
 	. = ..()
-	ADD_TRAIT(src, TRAIT_FISH_SAFE_STORAGE, TRAIT_GENERIC)
+	AddElement(/datum/element/fish_safe_storage)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOIST, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 20)
 	if(prob(40))
 		critter_infested = FALSE
@@ -177,8 +176,7 @@ at the cost of risking a vicious bite.**/
 			overlayicon = "altar_pants2"
 		if(ALTAR_STAGETHREE)
 			overlayicon = "altar_pants3"
-	var/mutable_appearance/pants_overlay = mutable_appearance(icon, overlayicon)
-	pants_overlay.appearance_flags = RESET_COLOR
+	var/mutable_appearance/pants_overlay = mutable_appearance(icon, overlayicon, appearance_flags = RESET_COLOR|KEEP_APART)
 	pants_overlay.color = pants_color
 	. += pants_overlay
 
@@ -232,6 +230,7 @@ at the cost of risking a vicious bite.**/
 /obj/item/clothing/under/pants/slacks/altar
 	name = "strange pants"
 	desc = "A pair of pants. They do not look or feel natural, and smell like fresh blood."
+	icon_state = "/obj/item/clothing/under/pants/slacks/altar"
 	greyscale_colors = "#ffffff#ffffff#ffffff"
 	flags_1 = NONE //If IS_PLAYER_COLORABLE gets added color-changing support (i.e. spraycans), these won't end up getting it too. Plus, it already has its own recolor.
 

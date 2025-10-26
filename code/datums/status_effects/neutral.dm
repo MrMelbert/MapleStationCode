@@ -106,6 +106,34 @@
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_SOOTHED_THROAT, "[STATUS_EFFECT_TRAIT]_[id]")
 
+/datum/status_effect/headache_soothed
+	id = "headache_soothed"
+	duration = 60 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+
+/datum/status_effect/headache_soothed/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed
+	id = "headache_soothed"
+	duration = 60 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+
+/datum/status_effect/headache_soothed/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
 /datum/status_effect/bounty
 	id = "bounty"
 	status_type = STATUS_EFFECT_UNIQUE
@@ -548,7 +576,7 @@
 			if(QDELETED(human_mob))
 				return
 			if(prob(1))//low chance of the alternative reality returning to monkey
-				var/obj/item/organ/external/tail/monkey/monkey_tail = new ()
+				var/obj/item/organ/tail/monkey/monkey_tail = new ()
 				monkey_tail.Insert(human_mob, movement_flags = DELETE_IF_REPLACED)
 			var/datum/species/human_species = human_mob.dna?.species
 			if(human_species)
@@ -588,7 +616,7 @@
 	return ..()
 
 /datum/status_effect/tinlux_light/on_apply()
-	mob_light_obj = owner.mob_light(2)
+	mob_light_obj = owner.mob_light(2, 1.5, "#ccff33")
 	return TRUE
 
 /datum/status_effect/tinlux_light/on_remove()

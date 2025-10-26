@@ -49,6 +49,8 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isspaceturf(A) (istype(A, /turf/open/space))
 
+#define is_space_or_openspace(A) (isopenspaceturf(A) || isspaceturf(A))
+
 #define isfloorturf(A) (istype(A, /turf/open/floor))
 
 #define ismiscturf(A) (istype(A, /turf/open/misc))
@@ -250,10 +252,6 @@ GLOBAL_LIST_INIT(turfs_pass_meteor, typecacheof(list(
 #define ismopable(A) (A && (A.layer <= FLOOR_CLEAN_LAYER)) //If something can be cleaned by floor-cleaning devices such as mops or clean bots
 
 #define isorgan(A) (istype(A, /obj/item/organ))
-
-#define isinternalorgan(A) (istype(A, /obj/item/organ/internal))
-
-#define isexternalorgan(A) (istype(A, /obj/item/organ/external))
 
 #define isclothing(A) (istype(A, /obj/item/clothing))
 

@@ -118,11 +118,10 @@
 	contains_sample = FALSE
 	return NONE
 
-/obj/item/seeds/replicapod/get_unique_analyzer_text()
+/obj/item/seeds/replicapod/get_unique_analyzer_data()
 	if(contains_sample)
-		return "It contains a blood sample with blood DNA (UE) \"[sampleDNA]\"." //blood DNA (UE) shows in medical records and is readable by forensics scanners
-	else
-		return null
+		return list("Blood DNA" = sampleDNA)
+	return null
 
 /obj/item/seeds/replicapod/harvest(mob/user) //now that one is fun -- Urist
 	var/obj/machinery/hydroponics/parent = loc
@@ -199,7 +198,7 @@
 	if(!features["mcolor"])
 		features["mcolor"] = "#59CE00"
 	if(!features["pod_hair"])
-		features["pod_hair"] = pick(GLOB.pod_hair_list)
+		features["pod_hair"] = pick(SSaccessories.pod_hair_list)
 
 	for(var/V in quirks)
 		new V(podman)

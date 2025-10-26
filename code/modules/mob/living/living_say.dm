@@ -84,13 +84,24 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	return new_msg
 
-/mob/living/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, message_range = 7, datum/saymode/saymode = null)
+/mob/living/say(
+	message,
+	bubble_type,
+	list/spans = list(),
+	sanitize = TRUE,
+	datum/language/language,
+	ignore_spam = FALSE,
+	forced,
+	filterproof = FALSE,
+	message_range = 7,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
 	if(sanitize)
 		message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	if(!message || message == "")
 		return
 
-	var/list/message_mods = list()
 	var/original_message = message
 	message = get_message_mods(message, message_mods)
 	saymode = SSradio.saymodes[message_mods[SAY_KEY]] // NON-MODULE CHANGE
@@ -191,7 +202,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		message = "[randomnote] [message] [randomnote]"
 		spans |= SPAN_SINGING
 
-	if(LAZYACCESS(message_mods,WHISPER_MODE)) // whisper away
+	if(message_mods[WHISPER_MODE]) // whisper away
 		spans |= SPAN_ITALICS
 
 	if(!message)
@@ -207,6 +218,9 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		return
 
 	var/radio_return = radio(message, message_mods, spans, language)//roughly 27% of living/say()'s total cost
+	if(radio_return & NOPASS)
+		return TRUE
+
 	if(radio_return & ITALICS)
 		spans |= SPAN_ITALICS
 	if(radio_return & REDUCE_RANGE)
@@ -214,8 +228,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		if(!message_mods[WHISPER_MODE])
 			message_mods[WHISPER_MODE] = MODE_WHISPER
 			message_mods[SAY_MOD_VERB] = say_mod(message, message_mods)
-	if(radio_return & NOPASS)
-		return TRUE
 
 	//No screams in space, unless you're next to someone.
 	var/turf/T = get_turf(src)
@@ -235,7 +247,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return TRUE
 
 
-/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
+/mob/living/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
 	if((SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_HEAR, args) & COMSIG_MOVABLE_CANCEL_HEARING) || !GET_CLIENT(src))
 		return FALSE
 
@@ -258,14 +270,63 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		if(raw_message != untranslated_raw_message)
 			understood = FALSE
 
-	// if someone is whispering we make an extra type of message that is obfuscated for people out of range
-	// Less than or equal to 0 means normal hearing. More than 0 and less than or equal to EAVESDROP_EXTRA_RANGE means
-	// partial hearing. More than EAVESDROP_EXTRA_RANGE means no hearing. Exception for GOOD_HEARING trait
-	var/dist = get_dist(speaker, src) - message_range
-	if(dist > 0 && dist <= EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(src, TRAIT_GOOD_HEARING) && !isobserver(src)) // ghosts can hear all messages clearly
-		raw_message = stars(raw_message)
-	if (message_range != INFINITY && dist > EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(src, TRAIT_GOOD_HEARING) && !isobserver(src))
-		return FALSE // Too far away and don't have good hearing, you can't hear anything
+	var/speaker_is_signing = HAS_TRAIT(speaker, TRAIT_SIGN_LANG)
+	var/use_runechat = client?.prefs.read_preference(/datum/preference/toggle/enable_runechat)
+	if (stat == UNCONSCIOUS || stat == HARD_CRIT)
+		use_runechat = FALSE
+	else if (!ismob(speaker) && !client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs))
+		use_runechat = FALSE
+
+	var/message = ""
+	var/raw_dist = get_dist(speaker, src)
+	// Infinite range implies something like telecomms, ie something that should never be distance modified
+	if(!HAS_TRAIT(src, TRAIT_GOOD_HEARING) && message_range != INFINITY)
+		// How far we are we outside the message range?
+		var/outside_dist = max(raw_dist - message_range, 0)
+		// Out of message range AND out of eavesdrop range
+		if(outside_dist > EAVESDROP_EXTRA_RANGE)
+			// Can't see them speak either. No message
+			if(is_blind() || HAS_TRAIT(speaker, TRAIT_INVISIBLE_MAN))
+				return FALSE
+			// If they're inside of something, probably can't see them speak. No message
+			if(!isturf(speaker.loc))
+				return FALSE
+
+			// We can still see them speak
+			if(speaker_is_signing)
+				deaf_message = "[span_name("[speaker]")] [speaker.get_default_say_verb()] something, but the motions are too subtle to make out from afar."
+			// If we can't hear we want to continue to the default deaf message
+			else if(can_hear())
+				if(isliving(speaker))
+					var/mob/living/living_speaker = speaker
+					var/mouth_hidden = living_speaker.is_mouth_covered() || HAS_TRAIT(living_speaker, TRAIT_FACE_COVERED)
+					if(/*!HAS_TRAIT(src, TRAIT_EMPATH) && */mouth_hidden) // Can't see them speak if their mouth is covered or hidden, unless we're an empath
+						return FALSE
+				// Out of range but we can see them talking - display a message
+				deaf_message = "[span_name("[speaker]")] [speaker.verb_whisper] something, but you are too far away to hear [speaker.p_them()]."
+
+			if(deaf_message)
+				deaf_type = MSG_VISUAL
+				message = deaf_message
+				return show_message(message, MSG_VISUAL, deaf_message, deaf_type, avoid_highlight)
+			return FALSE
+
+		if(outside_dist > 0)
+			raw_message = stars(raw_message)
+
+		if(client?.prefs?.read_preference(/datum/preference/toggle/distance_text_shrinking))
+			// Based on raw distance, change the font size to indicate further speech
+			var/span_to_add = null
+			switch(raw_dist)
+				if(5)
+					span_to_add = "distant_t1"
+				if(6)
+					span_to_add = "distant_t2"
+				if(7 to INFINITY)
+					span_to_add = "distant_t3"
+			if(span_to_add)
+				spans = spans?.Copy() || list() // avoid mutating the list for other hearers
+				spans |= span_to_add
 
 	// we need to send this signal before compose_message() is used since other signals need to modify
 	// the raw_message first. After the raw_message is passed through the various signals, it's ready to be formatted
@@ -282,7 +343,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			deaf_type = MSG_AUDIBLE
 
 		// Create map text prior to modifying message for goonchat, sign lang edition
-		if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || stat == HARD_CRIT || is_blind()) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
+		if (use_runechat && !is_blind())
 			if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 				create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
 			else
@@ -305,7 +366,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		deaf_type = MSG_AUDIBLE // Since you should be able to hear yourself without looking
 
 	// Create map text prior to modifying message for goonchat
-	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || stat == HARD_CRIT) && (ismob(speaker) || client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)) && can_hear())
+	if (use_runechat && can_hear())
 		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 			create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE)
 		else
@@ -355,7 +416,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
 
-		if(listening_movable.Hear(null, src, message_language, message_raw, null, spans, message_mods, message_range))
+		if(listening_movable.Hear(src, message_language, message_raw, null, spans, message_mods, message_range))
 			listened += listening_movable
 
 	//speech bubble
@@ -367,7 +428,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			if(!M.client.prefs.read_preference(/datum/preference/toggle/enable_runechat) || (SSlag_switch.measures[DISABLE_RUNECHAT] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES)))
 				speech_bubble_recipients.Add(M.client)
 			found_client = TRUE
-	if(SStts.tts_enabled && voice && found_client && !message_mods[MODE_CUSTOM_SAY_ERASE_INPUT] && !HAS_TRAIT(src, TRAIT_SIGN_LANG) && !HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(SStts.tts_enabled && voice && found_client && !message_mods[MODE_CUSTOM_SAY_ERASE_INPUT] && !HAS_TRAIT(src, TRAIT_SIGN_LANG) && !HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE))
 		var/tts_message_to_use = tts_message
 		if(!tts_message_to_use)
 			tts_message_to_use = message_raw
@@ -385,11 +446,12 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			var/mob/living/carbon/human/human_speaker = src
 			if(istype(human_speaker.wear_mask, /obj/item/clothing/mask))
 				var/obj/item/clothing/mask/worn_mask = human_speaker.wear_mask
-				if(worn_mask.voice_override)
-					voice_to_use = worn_mask.voice_override
-				if(worn_mask.voice_filter)
-					filter += worn_mask.voice_filter
-				use_radio = worn_mask.use_radio_beeps_tts
+				if(!worn_mask.up)
+					if(worn_mask.voice_override)
+						voice_to_use = worn_mask.voice_override
+					if(worn_mask.voice_filter)
+						filter += worn_mask.voice_filter
+					use_radio = worn_mask.use_radio_beeps_tts
 		if(use_radio)
 			special_filter += TTS_FILTER_RADIO
 		if(issilicon(src))
@@ -409,38 +471,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 /mob/proc/binarycheck()
 	return FALSE
-
-/mob/living/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
-	if(!..())
-		return FALSE
-	var/sigreturn = SEND_SIGNAL(src, COMSIG_LIVING_TRY_SPEECH, message, ignore_spam, forced)
-	if(sigreturn & COMPONENT_CAN_ALWAYS_SPEAK)
-		return TRUE
-
-	if(sigreturn & COMPONENT_CANNOT_SPEAK)
-		return FALSE
-
-	if(!can_speak())
-		if(HAS_MIND_TRAIT(src, TRAIT_MIMING))
-			to_chat(src, span_green("Your vow of silence prevents you from speaking!"))
-		else
-			to_chat(src, span_warning("You find yourself unable to speak!"))
-		return FALSE
-
-	return TRUE
-
-/mob/living/can_speak(allow_mimes = FALSE)
-	if(!allow_mimes && HAS_MIND_TRAIT(src, TRAIT_MIMING))
-		return FALSE
-
-	if(HAS_TRAIT(src, TRAIT_MUTE))
-		return FALSE
-
-	if(is_muzzled())
-		return FALSE
-
-	return TRUE
-
 
 /**
  * Treats the passed message with things that may modify speech (stuttering, slurring etc).

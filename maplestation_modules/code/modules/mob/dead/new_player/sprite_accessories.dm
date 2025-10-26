@@ -342,10 +342,25 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_elf"
 
+/datum/sprite_accessory/hair/elven_mess
+	name = "Elven Mess"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfmess"
+
+/datum/sprite_accessory/hair/elven_braid
+	name = "Elven Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfbraid"
+
 /datum/sprite_accessory/hair/toxic_wisp
 	name = "Toxic Wisp"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_toxic"
+
+/datum/sprite_accessory/hair/toxic_long
+	name = "Toxic Wisp Long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxiclong"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big

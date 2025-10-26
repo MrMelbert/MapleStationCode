@@ -78,7 +78,3 @@
 
 	if(known_identity)
 		. += span_info(known_identity.format_flavor_for_examine(user, FALSE))
-	else if(ishuman(src))
-		// I hate this istype src but it's easier to handle this here
-		// Not all mobs should say "YOU CAN'T MAKE OUT DETAILS OF THIS PERSON"
-		. += span_smallnoticeital("You can't make out any details of this individual.\n")

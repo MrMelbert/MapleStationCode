@@ -105,6 +105,7 @@
 
 /obj/item/clothing/accessory/medal/gold/captain
 	name = "medal of captaincy"
+	article = "the"
 	desc = "A golden medal awarded exclusively to those promoted to the rank of captain. It signifies the codified responsibilities of a captain to Nanotrasen, and their undisputable authority over their crew."
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 

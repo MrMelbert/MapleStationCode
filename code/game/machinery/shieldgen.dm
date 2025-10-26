@@ -58,7 +58,7 @@
 
 /obj/structure/emergency_shield/regenerating/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
+	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_NO_EXAMINE)
 
 /obj/structure/emergency_shield/regenerating/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -84,7 +84,7 @@
 
 /obj/structure/emergency_shield/cult/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
+	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_NO_EXAMINE)
 
 /obj/structure/emergency_shield/cult/narsie
 	name = "sanguine barrier"
@@ -94,7 +94,7 @@
 /obj/structure/emergency_shield/cult/weak
 	name = "Invoker's Shield"
 	desc = "A weak shield summoned by cultists to protect them while they carry out delicate rituals."
-	color = "#FF0000"
+	color = COLOR_RED
 	max_integrity = 20
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = ABOVE_MOB_LAYER

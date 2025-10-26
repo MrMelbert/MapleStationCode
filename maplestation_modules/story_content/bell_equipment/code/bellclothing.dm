@@ -12,7 +12,10 @@
 /datum/loadout_item/under/jumpsuit/belli
 	name = "Modified Nun Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/belli
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/belli/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/head/costume/hat/belli
 	name = "pink nun veil"
@@ -24,4 +27,7 @@
 /datum/loadout_item/head/belli
 	name = "Modified Nun Veil"
 	item_path = /obj/item/clothing/head/costume/hat/belli
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/belli/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

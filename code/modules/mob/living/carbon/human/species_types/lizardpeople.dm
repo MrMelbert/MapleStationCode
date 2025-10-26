@@ -8,17 +8,17 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	mutant_bodyparts = list("body_markings" = "None", "legs" = "Normal Legs")
-	external_organs = list(
-		/obj/item/organ/external/horns = "None",
-		/obj/item/organ/external/frills = "None",
-		/obj/item/organ/external/snout = "Round",
-		/obj/item/organ/external/spines = "None",
-		/obj/item/organ/external/tail/lizard = "Smooth",
+	body_markings = list(/datum/bodypart_overlay/simple/body_marking/lizard = "None")
+	mutant_organs = list(
+		/obj/item/organ/horns = "None",
+		/obj/item/organ/frills = "None",
+		/obj/item/organ/snout = "Round",
+		/obj/item/organ/spines = "None",
+		/obj/item/organ/tail/lizard = "Smooth",
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/lizard
-	mutantstomach = /obj/item/organ/internal/stomach/lizard
-	mutanteyes = /obj/item/organ/internal/eyes/lizard
+	mutanttongue = /obj/item/organ/tongue/lizard
+	mutantstomach = /obj/item/organ/stomach/lizard
+	mutanteyes = /obj/item/organ/eyes/lizard
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 1.0
@@ -62,7 +62,7 @@
 
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()
-	features["body_markings"] = pick(GLOB.body_markings_list)
+	features["lizard_markings"] = pick(SSaccessories.lizard_markings_list)
 	return features
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -174,14 +174,14 @@ Lizard subspecies: ASHWALKERS
 	name = "Ash Walker"
 	id = SPECIES_LIZARD_ASH
 	examine_limb_id = SPECIES_LIZARD
-	mutantlungs = /obj/item/organ/internal/lungs/lavaland
-	mutantbrain = /obj/item/organ/internal/brain/primitive
+	mutantlungs = /obj/item/organ/lungs/lavaland
+	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
-		TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION,
 		TRAIT_MUTANT_COLORS,
 		TRAIT_TACKLING_TAILED_DEFENDER,
 		TRAIT_VIRUSIMMUNE,
 	)
+	inherent_factions = list(FACTION_ASHWALKER)
 	species_language_holder = /datum/language_holder/lizard/ash
 	digitigrade_customization = DIGITIGRADE_FORCED
 	examine_limb_id = SPECIES_LIZARD
@@ -216,7 +216,7 @@ Lizard subspecies: SILVER SCALED
 	mutantlungs = null
 	damage_modifier = 10 //very light silvery scales soften blows
 	species_language_holder = /datum/language_holder/lizard/silver
-	mutanttongue = /obj/item/organ/internal/tongue/lizard/silver
+	mutanttongue = /obj/item/organ/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	examine_limb_id = SPECIES_LIZARD
 

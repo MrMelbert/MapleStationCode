@@ -1975,7 +1975,7 @@
 /area/station/commons/vacant_room)
 "agG" = (
 /obj/structure/dresser,
-/obj/item/clothing/mask/cigarette/cigar/havana,
+/obj/item/cigarette/cigar/havana,
 /turf/open/floor/iron/grimy,
 /area/station/commons/vacant_room)
 "agH" = (
@@ -5985,6 +5985,7 @@
 /obj/item/clothing/glasses/welding,
 /obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/item/toy/crayon/spraycan/roboticist,
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
 "aUh" = (
@@ -6100,6 +6101,10 @@
 	dir = 4
 	},
 /area/station/maintenance/central/greater)
+"aXh" = (
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "aXo" = (
 /obj/structure/punching_bag,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -8058,6 +8063,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/checker,
 /area/station/commons/lounge)
+"bLm" = (
+/obj/structure/water_source/puddle,
+/turf/open/misc/asteroid,
+/area/station/security/prison/workout)
 "bLp" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
@@ -10615,15 +10624,15 @@
 	pixel_x = -2;
 	pixel_y = 3
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = -4;
 	pixel_y = 1
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4;
 	pixel_y = 1
 	},
-/obj/item/clothing/mask/cigarette/cigar/cohiba,
+/obj/item/cigarette/cigar/cohiba,
 /turf/open/floor/wood,
 /area/station/command/meeting_room)
 "cFP" = (
@@ -10684,14 +10693,13 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "cGm" = (
-/obj/effect/turf_decal/bot,
-/obj/structure/reagent_dispensers/watertank,
 /obj/machinery/airalarm/directional/east,
 /obj/effect/turf_decal/trimline/neutral/line,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 4
 	},
-/turf/open/floor/iron,
+/obj/structure/water_source/puddle,
+/turf/open/floor/grass,
 /area/station/service/hydroponics/garden)
 "cGy" = (
 /obj/structure/chair/stool/directional/north,
@@ -18642,9 +18650,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "fEZ" = (
-/obj/machinery/power/apc/auto_name/directional/west,
 /obj/machinery/disposal/bin,
-/obj/structure/cable,
 /obj/structure/disposalpipe/trunk,
 /obj/structure/noticeboard/directional/north,
 /turf/open/floor/wood,
@@ -22717,6 +22723,13 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
+"hgC" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron/grimy,
+/area/station/service/lawoffice)
 "hgG" = (
 /obj/structure/sign/warning/secure_area/directional/north,
 /obj/structure/disposalpipe/segment{
@@ -24518,7 +24531,6 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
-/obj/machinery/newscaster/directional/west,
 /obj/effect/landmark/start/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
@@ -31853,6 +31865,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"kse" = (
+/obj/machinery/newscaster/directional/west,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "ksk" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -36396,11 +36412,12 @@
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/ai)
 "lSI" = (
-/obj/structure/chair/office{
-	dir = 1
-	},
 /obj/machinery/newscaster/directional/east,
-/obj/effect/landmark/start/lawyer,
+/obj/machinery/conveyor_switch/oneway{
+	name = "Shipment Delivery Chute Activator";
+	pixel_x = 10;
+	id = "lawyerdropoff"
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "lSM" = (
@@ -46222,7 +46239,6 @@
 	},
 /area/station/service/chapel)
 "pxs" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "pxC" = (
@@ -46377,7 +46393,6 @@
 /area/station/hallway/secondary/exit)
 "pzw" = (
 /obj/effect/turf_decal/bot,
-/obj/structure/reagent_dispensers/watertank,
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 4
@@ -47089,10 +47104,10 @@
 /turf/open/floor/iron/white,
 /area/station/science/lower)
 "pMz" = (
-/obj/structure/table/glass,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 5
 	},
+/obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden)
 "pMA" = (
@@ -56373,7 +56388,7 @@
 /turf/open/floor/greenscreen,
 /area/station/command/heads_quarters/captain/private)
 "tdR" = (
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
@@ -62482,6 +62497,12 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"vcR" = (
+/obj/structure/aquarium/lawyer,
+/obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "vcS" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -64191,10 +64212,9 @@
 /area/station/medical/surgery/fore)
 "vGd" = (
 /obj/machinery/firealarm/directional/south,
-/obj/machinery/conveyor_switch/oneway{
-	id = "lawyerdropoff";
-	name = "Shipment Delivery Chute Activator";
-	pixel_x = 10
+/obj/effect/landmark/start/lawyer,
+/obj/structure/chair/office{
+	dir = 1
 	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
@@ -68419,6 +68439,9 @@
 /area/station/service/hydroponics)
 "xmH" = (
 /obj/structure/sign/poster/official/report_crimes/directional/south,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "xmJ" = (
@@ -87641,7 +87664,7 @@ abM
 aal
 lPV
 kPC
-lFk
+bLm
 lFk
 lFk
 mAB
@@ -98973,11 +98996,11 @@ hLr
 nCe
 udP
 hFr
-abM
-abM
-abM
-abM
-abM
+hFr
+hFr
+hFr
+hFr
+hFr
 abM
 abM
 abM
@@ -99229,11 +99252,11 @@ nzL
 jkM
 adC
 jmp
-hFr
-hFr
-hFr
-hFr
-hFr
+iTz
+vcR
+aXh
+mrb
+kse
 hFr
 abM
 abM
@@ -99489,7 +99512,7 @@ vrG
 iTz
 fEZ
 qel
-mrb
+aGk
 hPA
 hFr
 abM
@@ -99746,7 +99769,7 @@ dVC
 kKB
 pxs
 jXY
-aGk
+hgC
 xmH
 hFr
 abM

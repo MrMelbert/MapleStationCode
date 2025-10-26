@@ -33,6 +33,9 @@
 		"normtrash",
 		"wirebrush",
 		"flashlight",
+		"water_balloon",
+		"ticket_machine",
+		"radio_entertainment",
 		"barber_scissors",
 	)
 
@@ -70,11 +73,20 @@
 		"idcard",
 		"c-reader",
 		"libraryconsole",
-//		"barcode_scanner",
+		"libraryscanner",
+		"bookbinder",
+		"barcode_scanner",
 		"vendor",
 		"custom_vendor_refill",
 		"bounty_pad_control",
 		"bounty_pad",
+		"digital_clock_frame",
+		"telescreen_research",
+		"telescreen_ordnance",
+		"telescreen_interrogation",
+		"telescreen_prison",
+		"telescreen_bar",
+		"telescreen_entertainment",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 
@@ -118,6 +130,8 @@
 		"coffeemaker",
 		"coffeepot",
 		"syrup_bottle",
+		"foodtray",
+		"restaurant_portal",
 	)
 
 /datum/techweb_node/food_proc
@@ -164,13 +178,16 @@
 	prereq_ids = list(TECHWEB_NODE_FISHING_EQUIP)
 	design_ids = list(
 		"fishing_rod_tech",
+		"fishing_gloves",
+		"mod_fishing",
 		"stabilized_hook",
 		"auto_reel",
 		"fish_analyzer",
+		"bluespace_fish_case",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
 	required_experiments = list(/datum/experiment/scanning/fish)
-/*
+
 /datum/techweb_node/marine_util
 	id = TECHWEB_NODE_MARINE_UTIL
 	display_name = "Marine Utility"
@@ -182,4 +199,3 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 	// only available if you've done the first fishing experiment (thus unlocking fishing tech), but not a strict requirement to get the tech
 	discount_experiments = list(/datum/experiment/scanning/fish/second = TECHWEB_TIER_3_POINTS)
-*/

@@ -26,19 +26,22 @@
 	QDEL_NULL(song)
 	return ..()
 
-/obj/item/instrument/proc/should_stop_playing(atom/music_player)
+/obj/item/instrument/proc/can_play(atom/music_player)
 	if(!ismob(music_player))
-		return STOP_PLAYING
+		return FALSE
 	var/mob/user = music_player
-	if(user.incapacitated() || !((loc == user) || (isturf(loc) && Adjacent(user)))) // sorry, no more TK playing.
-		return STOP_PLAYING
+	if(user.incapacitated())
+		return FALSE
+	if(!Adjacent(user))
+		return FALSE
+	return TRUE
 
 /obj/item/instrument/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins to play 'Gloomy Sunday'! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
 
 /obj/item/instrument/ui_interact(mob/user, datum/tgui/ui)
-	song.ui_interact(user)
+	return song.ui_interact(user)
 
 /obj/item/instrument/violin
 	name = "space violin"
@@ -190,6 +193,7 @@
 	force = 5
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/instrument)
+	action_slots = ALL
 
 /obj/item/instrument/harmonica/equipped(mob/user, slot, initial = FALSE)
 	. = ..()
@@ -214,12 +218,12 @@
 	name = "Use Instrument"
 	desc = "Use the instrument specified"
 
-/datum/action/item_action/instrument/Trigger(trigger_flags)
-	if(istype(target, /obj/item/instrument))
-		var/obj/item/instrument/I = target
-		I.interact(usr)
-		return
-	return ..()
+/datum/action/item_action/instrument/do_effect(trigger_flags)
+	if(!istype(target, /obj/item/instrument))
+		return FALSE
+	var/obj/item/instrument/instrument = target
+	instrument.interact(usr)
+	return TRUE
 
 /obj/item/instrument/bikehorn
 	name = "gilded bike horn"

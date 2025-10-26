@@ -30,6 +30,7 @@
 	demolition_mod = 1.25
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*5)
 	actions_types = list(/datum/action/item_action/set_internals)
+	action_slots = ALL
 	armor_type = /datum/armor/item_tank
 	integrity_failure = 0.5
 	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
@@ -459,7 +460,7 @@
 		balloon_alert(user, "can't reach!")
 		return
 
-	if((src in user.get_equipped_items(include_pockets = TRUE, include_accessories = TRUE)) && !user.canUnEquip(src))
+	if((src in user.get_equipped_items(INCLUDE_POCKETS | INCLUDE_ACCESSORIES)) && !user.canUnEquip(src))
 		balloon_alert(user, "it's stuck!")
 		return
 

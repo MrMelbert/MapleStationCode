@@ -8,34 +8,42 @@
 
 /obj/item/storage/bag/garment/captain
 	name = "captain's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the captain."
 
 /obj/item/storage/bag/garment/hos
 	name = "head of security's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the head of security."
 
 /obj/item/storage/bag/garment/warden
 	name = "warden's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the warden."
 
 /obj/item/storage/bag/garment/hop
 	name = "head of personnel's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the head of personnel."
 
 /obj/item/storage/bag/garment/research_director
 	name = "research director's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the research director."
 
 /obj/item/storage/bag/garment/chief_medical
 	name = "chief medical officer's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the chief medical officer."
 
 /obj/item/storage/bag/garment/engineering_chief
 	name = "chief engineer's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the chief engineer."
 
 /obj/item/storage/bag/garment/quartermaster
-	name = "quartermasters's garment bag"
+	name = "quartermaster's garment bag"
+	article = "the"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the quartermaster."
 
 /obj/item/storage/bag/garment/Initialize(mapload)
@@ -122,6 +130,8 @@
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer(src)
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer/skirt(src)
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer/scrubs(src)
+	new /obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck(src)
+	new /obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck/skirt(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/medical/cmo(src)
 	new /obj/item/clothing/suit/toggle/labcoat/cmo(src)
 	new /obj/item/clothing/gloves/latex/nitrile(src)
@@ -133,6 +143,8 @@
 /obj/item/storage/bag/garment/engineering_chief/PopulateContents()
 	new /obj/item/clothing/under/rank/engineering/chief_engineer(src)
 	new /obj/item/clothing/under/rank/engineering/chief_engineer/skirt(src)
+	new /obj/item/clothing/under/rank/engineering/chief_engineer/turtleneck(src)
+	new /obj/item/clothing/under/rank/engineering/chief_engineer/turtleneck/skirt(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/engineering/ce(src)
 	new /obj/item/clothing/glasses/meson/engine(src)
 	new /obj/item/clothing/gloves/chief_engineer(src)

@@ -35,7 +35,7 @@
 	/// Example: If req_one_access = list(ACCESS_ENGINE, ACCESS_CE)- then the user must have either ACCESS_ENGINE or ACCESS_CE in order to use the object.
 	var/list/req_one_access
 
-	/// Custom fire overlay icon, will just use the default overlay if this is null
+	/// Cached custom fire overlay
 	var/custom_fire_overlay
 	/// Particles this obj uses when burning, if any
 	var/burning_particles
@@ -274,8 +274,11 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	. = ..()
 	if(desc_controls)
 		. += span_notice(desc_controls)
+
+/obj/examine_tags(mob/user)
+	. = ..()
 	if(obj_flags & UNIQUE_RENAME)
-		. += span_notice("Use a pen on it to rename it or change its description.")
+		.["renameable"] = "Use a pen on it to rename it or change its description."
 
 
 /obj/analyzer_act(mob/living/user, obj/item/analyzer/tool)
@@ -296,7 +299,7 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		take_damage(P.damage * receive_ricochet_damage_coeff, P.damage_type, P.armor_flag, 0, REVERSE_DIR(P.dir), P.armour_penetration) // pass along receive_ricochet_damage_coeff damage to the structure for the ricochet
 
 /// Handles exposing an object to reagents.
-/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_zone = BODY_ZONE_CHEST)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -328,7 +331,7 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	return SUCCESSFUL_UNFASTEN
 
 /// Try to unwrench an object in a WONDERFUL DYNAMIC WAY
-/obj/proc/default_unfasten_wrench(mob/user, obj/item/wrench, time = 20)
+/obj/proc/default_unfasten_wrench(mob/user, obj/item/wrench, time = 2 SECONDS)
 	if(wrench.tool_behaviour != TOOL_WRENCH)
 		return CANT_UNFASTEN
 

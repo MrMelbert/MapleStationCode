@@ -92,7 +92,7 @@
 		update_appearance()
 		return
 
-	reagents.trans_to(embedded_target, reagents.maximum_volume * (1 / 3), methods = INJECT)
+	reagents.trans_to(embedded_target, reagents.maximum_volume * (1 / 3), methods = INJECT, zone_override = part.body_zone)
 	if(reagents.total_volume <= 1)
 		// More cringe. When we're done injecting add a chance to fall out moving forward
 		var/datum/component/embedded/embed_comp = embedded_target.GetComponent(/datum/component/embedded)

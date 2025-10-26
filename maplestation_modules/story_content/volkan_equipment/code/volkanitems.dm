@@ -102,6 +102,15 @@
 
 
 //--other misc--
+//CE labcoat
+//A CE labcoat that is black and white, fits the modsuit and other white CE items with style. Volkan version: No gold/yellow.
+//TODO: Make a generic version which has gold in it.
+/obj/item/clothing/suit/toggle/labcoat/ce/volkan
+	name = "modified chief engineer's labcoat"
+	desc = "Has black panels unlike the standard labcoat model. All gold patchwork has been removed compared to the standard CE labcoat."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.
+	worn_icon = 'maplestation_modules/story_content/volkan_equipment/icons/outfits.dmi'
+
 //Imprint Key
 //A key used to imprint a Volkan bot to whoever has it.
 /obj/item/circuitboard/volkan/imprint_key
@@ -148,10 +157,6 @@
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
-/datum/loadout_item/pocket_items/rad_umbrella
-	name = "Umbrella (Radiation Shielded)"
-	item_path = /obj/item/umbrella/volkan
-	additional_displayed_text = list("Character Item")
 
 //---------------------cool boxes!-----------------------
 //Unfoldable Box.
@@ -236,7 +241,7 @@
  * Gives the tractor field component
  */
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield
+/obj/item/organ/cyberimp/chest/tractorfield
 	name = "intricate metal toroid"
 	desc = "A strange toroid shaped mechanism with intricate machined metal shapes interlocked together. Two cables are sticking out from the inside."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/misc_items.dmi'
@@ -244,7 +249,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	slot = ORGAN_SLOT_TRACTOR_FIELD
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
+/obj/item/organ/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
 
 	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
 		owner.AddComponent(/datum/component/tractorfield)
@@ -252,9 +257,9 @@
 		owner.AddComponent(/datum/component/tractorfield/broken) //fleshy beings cannot control it...
 	. = ..()
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
-	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
-		qdel(owner.GetComponent(/datum/component/tractorfield))
+/obj/item/organ/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
+	if (iscyborg(organ_owner) || (organ_owner.mob_biotypes & MOB_ROBOTIC))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield))
 	else
-		qdel(owner.GetComponent(/datum/component/tractorfield/broken))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield/broken))
 	. = ..()

@@ -21,8 +21,7 @@
 
 	. = ..()
 
-	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
-	AddComponent(/datum/component/personal_crafting)
+	AddComponent(/datum/component/personal_crafting/*, ui_human_crafting*/)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
@@ -36,6 +35,17 @@
 	GLOB.human_list += src
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
+
+	// NON-MODULE CHANGE: Unconscious appearance
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "Unknown"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
@@ -79,7 +89,7 @@
 	//Update med hud images...
 	..()
 	//...sec hud images...
-	sec_hud_set_ID()
+	update_ID_card()
 	sec_hud_set_implants()
 	sec_hud_set_security_status()
 	//...fan gear
@@ -95,11 +105,6 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
-	if(href_list["item"]) //canUseTopic check for this is handled by mob/Topic()
-		var/slot = text2num(href_list["item"])
-		if(check_obscured_slots(TRUE) & slot)
-			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
-			return
 
 ///////HUDs///////
 	if(href_list["hud"])
@@ -331,11 +336,12 @@
 /mob/living/carbon/human/can_inject(mob/user, target_zone, injection_flags)
 	. = TRUE // Default to returning true.
 	// we may choose to ignore species trait pierce immunity in case we still want to check skellies for thick clothing without insta failing them (wounds)
-	if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
-		if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
+		if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
+			if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+				. = FALSE
+		else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 			. = FALSE
-	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
-		. = FALSE
 	if(user && !target_zone)
 		target_zone = get_bodypart(check_zone(user.zone_selected)) //try to find a bodypart. if there isn't one, target_zone will be null, and check_zone in the next line will default to the chest.
 	var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
@@ -357,7 +363,7 @@
 	if(judgement_criteria & JUDGE_EMAGGED || HAS_TRAIT(src, TRAIT_ALWAYS_WANTED))
 		return 10 //Everyone is a criminal!
 
-	var/threatcount = 0
+	var/threatcount = judgement_criteria & JUDGE_CHILLOUT ? -THREAT_ASSESS_DANGEROUS : 0
 
 	//Lasertag bullshit
 	if(lasercolor)
@@ -549,8 +555,7 @@
  * Returns false if we couldn't wash our hands due to them being obscured, otherwise true
  */
 /mob/living/carbon/human/proc/wash_hands(clean_types)
-	var/obscured = check_obscured_slots()
-	if(obscured & ITEM_SLOT_GLOVES)
+	if(covered_slots & HIDEGLOVES)
 		return FALSE
 
 	if(gloves)
@@ -571,13 +576,10 @@
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
-	if(glasses && is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
-		update_worn_glasses()
+	if(glasses && !is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
 		. = TRUE
 
-	var/obscured = check_obscured_slots()
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK) && wear_mask.wash(clean_types))
-		update_worn_mask()
+	if(wear_mask && !(covered_slots & HIDEMASK) && wear_mask.wash(clean_types))
 		. = TRUE
 
 /**
@@ -585,28 +587,11 @@
  */
 /mob/living/carbon/human/wash(clean_types)
 	. = ..()
-
-	// Wash equipped stuff that cannot be covered
-	if(wear_suit?.wash(clean_types))
-		update_worn_oversuit()
-		. = TRUE
-
-	if(belt?.wash(clean_types))
-		update_worn_belt()
-		. = TRUE
-
-	// Check and wash stuff that can be covered
-	var/obscured = check_obscured_slots()
-
-	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && w_uniform.wash(clean_types))
-		update_worn_undersuit()
-		. = TRUE
-
 	if(!is_mouth_covered() && clean_lips())
 		. = TRUE
 
 	// Wash hands if exposed
-	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(obscured & ITEM_SLOT_GLOVES))
+	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(covered_slots & HIDEGLOVES))
 		blood_in_hands = 0
 		update_worn_gloves()
 		. = TRUE
@@ -618,7 +603,7 @@
 
 	// If we have a species, we need to handle mutant parts and stuff
 	if(dna?.species)
-		add_atom_colour("#000000", TEMPORARY_COLOUR_PRIORITY)
+		add_atom_colour(COLOR_BLACK, TEMPORARY_COLOUR_PRIORITY)
 		var/static/mutable_appearance/shock_animation_dna
 		if(!shock_animation_dna)
 			shock_animation_dna = mutable_appearance(icon, "electrocuted_base")
@@ -637,7 +622,7 @@
 	addtimer(CALLBACK(src, PROC_REF(end_electrocution_animation), zap_appearance), anim_duration)
 
 /mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
-	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
+	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLACK)
 	cut_overlay(MA)
 
 /mob/living/carbon/human/resist_restraints()
@@ -843,7 +828,7 @@
 		if(result != "Yes")
 			return
 
-		var/obj/item/organ/internal/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
+		var/obj/item/organ/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
 		if(isnull(target_brain))
 			to_chat(usr, "This mob has no brain to insert into an MMI.")
@@ -906,7 +891,7 @@
 				if("Less pain")
 					set_pain_mod("badmin", major ? 0.6 : 0.8)
 				if("Tougher organs")
-					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+					for(var/obj/item/organ/organ as anything in bodyparts)
 						organ.maxHealth *= (major ? 1.5 : 1.25)
 				if("Less environmental")
 					physiology.pressure_mod *= (major ? 0.6 : 0.8)
@@ -954,6 +939,10 @@
 
 	var/skills_space
 	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		carrydelay *= potential_spine.athletics_boost_multiplier
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
@@ -1042,6 +1031,26 @@
 	. = ..()
 	if(use_random_name)
 		fully_replace_character_name(real_name, generate_random_mob_name())
+
+/mob/living/carbon/human/proc/is_atmos_sealed(additional_flags = null, check_hands = FALSE, alt_flags = FALSE)
+	var/chest_covered = FALSE
+	var/head_covered = FALSE
+	var/hands_covered = FALSE
+	for (var/obj/item/clothing/equipped in get_equipped_items())
+		// We don't really have space-proof gloves, so even if we're checking them we ignore the flags
+		if ((equipped.body_parts_covered & HANDS) && num_hands >= default_num_hands)
+			hands_covered = TRUE
+		if (!alt_flags && !isnull(additional_flags) && !(equipped.clothing_flags & additional_flags))
+			continue
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & CHEST))
+			chest_covered = TRUE
+		if ((equipped.clothing_flags & (STOPSPRESSUREDAMAGE | (alt_flags ? additional_flags : NONE))) && (equipped.body_parts_covered & HEAD))
+			head_covered = TRUE
+	if (!chest_covered)
+		return FALSE
+	if (!hands_covered && check_hands)
+		return FALSE
+	return head_covered || HAS_TRAIT(src, TRAIT_HEAD_ATMOS_SEALED)
 
 /mob/living/carbon/human/species/abductor
 	race = /datum/species/abductor

@@ -218,10 +218,6 @@
 		remove_paddles(user)
 		update_power()
 
-/obj/item/defibrillator/item_action_slot_check(slot, mob/user)
-	if(slot_flags & slot)
-		return TRUE
-
 /obj/item/defibrillator/proc/remove_paddles(mob/user) //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
 	if(ismob(paddles.loc))
 		var/mob/M = paddles.loc
@@ -281,13 +277,6 @@
 	charge_state = "defibcompact-charge"
 	nocell_state = "defibcompact-nocell"
 	emagged_state = "defibcompact-emagged"
-
-/*
-// NON-MODULE CHANGE
-/obj/item/defibrillator/compact/item_action_slot_check(slot, mob/user)
-	if(slot & user.getBeltSlot())
-		return TRUE
-*/
 
 /obj/item/defibrillator/compact/loaded/Initialize(mapload)
 	. = ..()
@@ -602,7 +591,7 @@
 	if(SEND_SIGNAL(H, COMSIG_DEFIBRILLATOR_PRE_HELP_ZAP, user, src) & COMPONENT_DEFIB_STOP)
 		do_cancel()
 		return
-	var/obj/item/organ/internal/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
 	if(H.stat == DEAD)
 		H.visible_message(span_warning("[H]'s body convulses a bit."))
 		playsound(src, SFX_BODYFALL, 50, TRUE)

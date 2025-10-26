@@ -25,6 +25,14 @@
 	contains = list(/obj/item/clothing/suit/armor/vest = 3)
 	crate_name = "armor crate"
 
+/datum/supply_pack/security/modsuit_plating
+	name = "Security MOD plating"
+	desc = "A single security MOD suit plating"
+	cost = CARGO_CRATE_VALUE
+	access_view = ACCESS_SECURITY
+	contains = list(/obj/item/mod/construction/plating/security)
+	crate_name = "MOD plating crate"
+
 /datum/supply_pack/security/disabler
 	name = "Disabler Crate"
 	desc = "Three stamina-draining disabler weapons."
@@ -32,6 +40,14 @@
 	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/gun/energy/disabler = 3)
 	crate_name = "disabler crate"
+
+/datum/supply_pack/security/phaser
+	name = "Phaser Crate"
+	desc = "Two standard-issue energy phasers, designed for field use by security personnel."
+	cost = CARGO_CRATE_VALUE * 9
+	access_view = ACCESS_ARMORY
+	contains = list(/obj/item/gun/energy/disabler/phaser = 2)
+	crate_name = "phaser crate"
 
 /datum/supply_pack/security/forensics
 	name = "Forensics Crate"

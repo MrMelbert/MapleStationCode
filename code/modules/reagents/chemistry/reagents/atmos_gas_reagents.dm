@@ -53,7 +53,7 @@
 	breather.SetSleeping(30 SECONDS)
 	if(HAS_TRAIT(breather, TRAIT_KNOCKEDOUT))
 		breather.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
-		breather.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
+		breather.heal_pain(1 * REM * seconds_per_tick)
 	var/need_mob_update
 	need_mob_update = breather.adjustFireLoss(-2 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += breather.adjustToxLoss(-5 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
@@ -125,7 +125,7 @@
 	description = "A gas that is eight times more efficient than O2 at lung diffusion with organ healing properties on sleeping patients."
 	reagent_state = GAS
 	metabolization_rate = REAGENTS_METABOLISM * 0.5
-	color = "#808080"
+	color = COLOR_GRAY
 	taste_description = "irradiated air"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
 

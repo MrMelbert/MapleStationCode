@@ -55,6 +55,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	create_reagents(50, OPENCONTAINER)
 	reagents.add_reagent(/datum/reagent/consumable/nutriment/fat/oil, 25)
 	fry_loop = new(src, FALSE)
+	AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/deepfryer])
+	AddElement(/datum/element/fish_safe_storage) //Prevents fryish and fritterish from dying inside the deepfryer.
 
 /obj/machinery/deepfryer/Destroy()
 	QDEL_NULL(fry_loop)
@@ -139,7 +141,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		return
 
 	reagents.trans_to(frying, oil_use * seconds_per_tick, multiplier = fry_speed * 3) //Fried foods gain more of the reagent thanks to space magic
-	cook_time += fry_speed * seconds_per_tick
+	cook_time += fry_speed * seconds_per_tick SECONDS
 	if(cook_time >= DEEPFRYER_COOKTIME && !frying_fried)
 		frying_fried = TRUE //frying... frying... fried
 		playsound(src.loc, 'sound/machines/ding.ogg', 50, TRUE)
@@ -211,7 +213,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		var/mob/living/carbon/dunking_target = user.pulling
 		log_combat(user, dunking_target, "dunked", null, "into [src]")
 		user.visible_message(span_danger("[user] dunks [dunking_target]'s face in [src]!"))
-		reagents.expose(dunking_target, TOUCH)
+		reagents.expose(dunking_target, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 		var/bio_multiplier = dunking_target.getarmor(BODY_ZONE_HEAD, BIO) * 0.01
 		var/target_temp = dunking_target.body_temperature
 		var/cold_multiplier = 1

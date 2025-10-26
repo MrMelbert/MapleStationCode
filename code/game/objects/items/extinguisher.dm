@@ -51,8 +51,8 @@
 	. = ..()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/ghettojetpack)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -138,6 +138,7 @@
 	tanktype = /obj/structure/reagent_dispensers/foamtank
 	sprite_name = "foam_extinguisher"
 	precision = TRUE
+	max_water = 100
 
 /obj/item/extinguisher/advanced/empty
 	starting_water = FALSE

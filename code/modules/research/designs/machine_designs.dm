@@ -398,28 +398,6 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
-/datum/design/board/protolathe
-	name = "Protolathe Board"
-	desc = "The circuit board for a protolathe."
-	id = "protolathe"
-	build_type = IMPRINTER
-	build_path = /obj/item/circuitboard/machine/protolathe
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_FAB
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
-
-/datum/design/board/protolathe/offstation
-	name = "Ancient Protolathe Board"
-	desc = "The circuit board for an ancient protolathe."
-	id = "protolathe_offstation"
-	build_type = AWAY_IMPRINTER
-	build_path = /obj/item/circuitboard/machine/protolathe/offstation
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_FAB
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
-
 /datum/design/board/circuit_imprinter
 	name = "Circuit Imprinter Board"
 	desc = "The circuit board for a circuit imprinter."
@@ -1184,3 +1162,43 @@
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_SCIENCE
+
+/datum/design/board/flatpacker
+	name = "Flatpacker Machine Board"
+	desc = "The circuit board for a Flatpacker."
+	id = "flatpacker"
+	build_path = /obj/item/circuitboard/machine/flatpacker
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ENGINEERING
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
+
+/datum/design/board/bookbinder
+	name = "Book Binder"
+	desc = "The circuit board for a book binder"
+	id = "bookbinder"
+	build_path = /obj/item/circuitboard/machine/bookbinder
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/board/libraryscanner
+	name = "Book Scanner"
+	desc = "The circuit board for a book scanner"
+	id = "libraryscanner"
+	build_path = /obj/item/circuitboard/machine/libraryscanner
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
+
+/datum/design/board/mailsorter
+	name = "Mail Sorter"
+	desc = "The circuit board for a mail sorting unit."
+	id = "mailsorter"
+	build_path = /obj/item/circuitboard/machine/mailsorter
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_CARGO
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_ENGINEERING

@@ -6,6 +6,7 @@
 		return
 
 	. = ..()
+
 	if(QDELETED(src))
 		return FALSE
 
@@ -22,24 +23,33 @@
 	else
 		for(var/datum/wound/iter_wound as anything in all_wounds)
 			iter_wound.on_stasis(seconds_per_tick, times_fired)
+		return stat != DEAD
 
-	//Update our name based on whether our face is obscured/disfigured
-	name = get_visible_name()
+	if(stat == DEAD)
+		return FALSE
 
-	if(stat != DEAD)
-		return TRUE
-
+	// Handles liver failure effects, if we lack a liver
+	handle_liver(seconds_per_tick, times_fired)
+	// For special species interactions
+	dna.species.spec_life(src, seconds_per_tick, times_fired)
+	return stat != DEAD
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
-	var/chest_covered = FALSE
-	var/head_covered = FALSE
+	var/chest_covered = !get_bodypart(BODY_ZONE_CHEST)
+	var/head_covered = !get_bodypart(BODY_ZONE_HEAD)
+	var/hands_covered = !get_bodypart(BODY_ZONE_L_ARM) && !get_bodypart(BODY_ZONE_R_ARM)
+	var/feet_covered = !get_bodypart(BODY_ZONE_L_LEG) && !get_bodypart(BODY_ZONE_R_LEG)
 	for(var/obj/item/clothing/equipped in get_equipped_items())
-		if((equipped.body_parts_covered & CHEST) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
+		if(!chest_covered && (equipped.body_parts_covered & CHEST) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
 			chest_covered = TRUE
-		if((equipped.body_parts_covered & HEAD) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
+		if(!head_covered && (equipped.body_parts_covered & HEAD) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
 			head_covered = TRUE
+		if(!hands_covered && (equipped.body_parts_covered & HANDS|ARMS) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
+			hands_covered = TRUE
+		if(!feet_covered && (equipped.body_parts_covered & FEET|LEGS) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
+			feet_covered = TRUE
 
-	if(chest_covered && head_covered)
+	if(chest_covered && head_covered && hands_covered && feet_covered)
 		return ONE_ATMOSPHERE
 	if(ismovable(loc))
 		/// If we're in a space with 0.5 content pressure protection, it averages the values, for example.
@@ -48,7 +58,7 @@
 	return pressure
 
 /mob/living/carbon/human/check_breath(datum/gas_mixture/breath, skip_breath = FALSE)
-	var/obj/item/organ/internal/lungs/human_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/human_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(human_lungs)
 		return human_lungs.check_breath(breath, src, skip_breath)
 
@@ -66,19 +76,6 @@
 		if(GAS_N2)
 			throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
 	return FALSE
-
-/mob/living/carbon/human/handle_random_events(seconds_per_tick, times_fired)
-	//Puke if toxloss is too high
-	if(stat)
-		return
-	if(getToxLoss() < 45 || nutrition <= 20)
-		return
-
-	lastpuke += SPT_PROB(30, seconds_per_tick)
-	if(lastpuke >= 50) // about 25 second delay I guess // This is actually closer to 150 seconds
-		vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = 20)
-		lastpuke = 0
-
 
 /mob/living/carbon/human/has_smoke_protection()
 	if(isclothing(wear_mask))

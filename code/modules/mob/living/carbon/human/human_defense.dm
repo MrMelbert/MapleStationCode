@@ -93,7 +93,7 @@
 		return TRUE
 
 	var/block_chance_modifier = round(damage / -3)
-	for(var/obj/item/worn_thing in get_equipped_items(include_pockets = FALSE) + held_items)
+	for(var/obj/item/worn_thing in get_equipped_items(INCLUDE_HELD))
 		// Things that are supposed to be worn, being held = cannot block
 		if(isclothing(worn_thing))
 			if(worn_thing in held_items)
@@ -144,7 +144,7 @@
 		return
 	if(!(shove_flags & SHOVE_KNOCKDOWN_BLOCKED))
 		target.Knockdown(SHOVE_KNOCKDOWN_HUMAN)
-	if(!HAS_TRAIT(src, TRAIT_SHOVE_KNOCKDOWN_BLOCKED))
+	if(!HAS_TRAIT(src, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED))
 		Knockdown(SHOVE_KNOCKDOWN_COLLATERAL)
 	target.visible_message(span_danger("[shover] shoves [target.name] into [name]!"),
 		span_userdanger("You're shoved into [name] by [shover]!"), span_hear("You hear aggressive shuffling followed by a loud thud!"), COMBAT_MESSAGE_RANGE, src)
@@ -284,7 +284,7 @@
 //200 max knockdown for EXPLODE_HEAVY
 //160 max knockdown for EXPLODE_LIGHT
 
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			if(bomb_armor < EXPLODE_GIB_THRESHOLD) //gibs the mob if their bomb armor is lower than EXPLODE_GIB_THRESHOLD
@@ -393,13 +393,13 @@
 		//Note we both check that the user is in cardiac arrest and can actually heartattack
 		//If they can't, they're missing their heart and this would runtime
 		if(undergoing_cardiac_arrest() && can_heartattack() && (shock_damage * siemens_coeff >= 1) && prob(25))
-			var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
+			var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 			if(heart.Restart() && stat == CONSCIOUS)
 				to_chat(src, span_notice("You feel your heart beating again!"))
 	if (!(flags & SHOCK_NO_HUMAN_ANIM))
 		electrocution_animation(4 SECONDS)
 
-/mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit) //todo: update this to utilize check_obscured_slots() //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
+/mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit) //todo: update this to utilize obscured_slots //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
 	var/list/damaged = list()
 	var/list/inventory_items_to_kill = list()
 	var/acidity = acidpwr * min(acid_volume*0.005, 0.1)
@@ -681,29 +681,28 @@
 
 /mob/living/carbon/human/proc/burn_clothing(seconds_per_tick, stacks)
 	var/list/burning_items = list()
-	var/obscured = check_obscured_slots(TRUE)
 	//HEAD//
 
-	if(glasses && !(obscured & ITEM_SLOT_EYES))
+	if(glasses && !(covered_slots & HIDEEYES))
 		burning_items += glasses
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK))
+	if(wear_mask && !(covered_slots & HIDEMASK))
 		burning_items += wear_mask
-	if(wear_neck && !(obscured & ITEM_SLOT_NECK))
+	if(wear_neck && !(covered_slots & HIDENECK))
 		burning_items += wear_neck
-	if(ears && !(obscured & ITEM_SLOT_EARS))
+	if(ears && !(covered_slots & HIDEEARS))
 		burning_items += ears
 	if(head)
 		burning_items += head
 
 	//CHEST//
-	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING))
+	if(w_uniform && !(covered_slots & HIDEJUMPSUIT))
 		burning_items += w_uniform
 	if(wear_suit)
 		burning_items += wear_suit
 
 	//ARMS & HANDS//
 	var/obj/item/clothing/arm_clothes = null
-	if(gloves && !(obscured & ITEM_SLOT_GLOVES))
+	if(gloves && !(covered_slots & HIDEGLOVES))
 		arm_clothes = gloves
 	else if(wear_suit && ((wear_suit.body_parts_covered & HANDS) || (wear_suit.body_parts_covered & ARMS)))
 		arm_clothes = wear_suit
@@ -714,7 +713,7 @@
 
 	//LEGS & FEET//
 	var/obj/item/clothing/leg_clothes = null
-	if(shoes && !(obscured & ITEM_SLOT_FEET))
+	if(shoes && !(covered_slots & HIDESHOES))
 		leg_clothes = shoes
 	else if(wear_suit && ((wear_suit.body_parts_covered & FEET) || (wear_suit.body_parts_covered & LEGS)))
 		leg_clothes = wear_suit
@@ -722,6 +721,10 @@
 		leg_clothes = w_uniform
 	if(leg_clothes)
 		burning_items |= leg_clothes
+
+	if (!gloves || (!(gloves.resistance_flags & FIRE_PROOF) && (gloves.resistance_flags & FLAMMABLE)))
+		for(var/obj/item/burnable_item in held_items)
+			burning_items |= burnable_item
 
 	for(var/obj/item/burning in burning_items)
 		burning.fire_act((stacks * 25 * seconds_per_tick)) //damage taken is reduced to 2% of this value by fire_act()
