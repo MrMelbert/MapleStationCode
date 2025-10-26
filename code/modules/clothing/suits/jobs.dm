@@ -59,6 +59,9 @@
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
 
+/obj/item/clothing/suit/apron/overalls/grey
+	greyscale_colors = COLOR_JOB_DEFAULT
+	icon_state = "/obj/item/clothing/suit/apron/overalls/grey"
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"

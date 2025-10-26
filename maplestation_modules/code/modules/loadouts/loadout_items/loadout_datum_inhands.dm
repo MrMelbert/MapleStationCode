@@ -7,7 +7,7 @@
 /datum/loadout_item/inhand
 	abstract_type = /datum/loadout_item/inhand
 
-/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.l_hand && !outfit.r_hand)
 		outfit.r_hand = item_path
 	else
@@ -18,6 +18,7 @@
 /datum/loadout_item/inhand/cane
 	name = "Cane"
 	item_path = /obj/item/cane
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/inhand/cane_white
 	name = "White Cane"
@@ -26,10 +27,12 @@
 /datum/loadout_item/inhand/briefcase
 	name = "Briefcase"
 	item_path = /obj/item/storage/briefcase
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/inhand/briefcase_secure
 	name = "Briefcase (Secure)"
 	item_path = /obj/item/storage/briefcase/secure
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/inhand/skateboard
 	name = "Skateboard"
@@ -38,6 +41,7 @@
 /datum/loadout_item/inhand/bone_spear
 	name = "Heirloom Bone Spear"
 	item_path = /obj/item/spear/bonespear/ceremonial
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/inhand/bone_spear/get_item_information()
 	. = ..()
