@@ -3907,6 +3907,10 @@
 /area/station/science/xenobiology)
 "biM" = (
 /obj/structure/flora/grass/brown/style_random,
+/obj/machinery/camera/directional/south{
+	c_tag = "Ordnance Lower Mix Lab";
+	network = list("ss13","rd")
+	},
 /turf/open/misc/asteroid/snow/standard_air,
 /area/station/science/cytology)
 "biR" = (
@@ -6080,6 +6084,7 @@
 	pixel_y = -6
 	},
 /obj/machinery/light/directional/east,
+/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/smooth_large,
 /area/station/science/cytology)
 "bMz" = (
@@ -10454,6 +10459,7 @@
 /obj/item/pickaxe,
 /obj/item/flashlight,
 /obj/item/flashlight,
+/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "cZd" = (
@@ -14148,6 +14154,9 @@
 /obj/structure/railing/corner{
 	dir = 1
 	},
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "ecn" = (
@@ -16658,6 +16667,11 @@
 /obj/effect/mapping_helpers/airlock/unres,
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
+"eRA" = (
+/turf/open/floor/iron/smooth_half{
+	dir = 1
+	},
+/area/station/science/cytology)
 "eRH" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -17317,7 +17331,7 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/airlock/access/all/science/general,
-/turf/open/floor/iron/smooth_large,
+/turf/open/floor/iron/smooth_edge,
 /area/station/science/cytology)
 "fbY" = (
 /obj/effect/spawner/random/trash/hobo_squat,
@@ -22029,7 +22043,7 @@
 /area/station/commons/locker)
 "gAC" = (
 /obj/machinery/plumbing/growing_vat,
-/turf/open/misc/asteroid/snow/icemoon,
+/turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "gAD" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
@@ -22279,7 +22293,8 @@
 	dir = 1
 	},
 /obj/structure/railing,
-/turf/open/floor/catwalk_floor,
+/obj/structure/lattice/catwalk,
+/turf/open/openspace/icemoon/keep_below,
 /area/icemoon/underground/explored)
 "gEP" = (
 /obj/machinery/newscaster/directional/north,
@@ -22300,6 +22315,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
+"gEU" = (
+/obj/structure/fence{
+	dir = 4
+	},
+/obj/structure/sign/warning/fire/directional/east,
+/turf/open/misc/asteroid/snow/icemoon,
+/area/icemoon/underground/explored)
 "gEV" = (
 /obj/structure/chair{
 	dir = 1
@@ -22911,6 +22933,12 @@
 	dir = 1
 	},
 /obj/structure/railing/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes{
+	dir = 1
+	},
+/obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_large,
@@ -24129,6 +24157,9 @@
 /area/station/service/chapel/office)
 "hhM" = (
 /obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/corner{
 	dir = 4
 	},
 /turf/open/floor/iron/smooth_large,
@@ -25512,6 +25543,9 @@
 	dir = 8
 	},
 /obj/structure/ladder,
+/obj/effect/turf_decal/stripes{
+	dir = 8
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "hEm" = (
@@ -29176,6 +29210,10 @@
 	dir = 4
 	},
 /area/station/command/gateway)
+"iLl" = (
+/obj/machinery/light/small/dim/directional/south,
+/turf/open/floor/iron/smooth_half,
+/area/icemoon/underground/explored)
 "iLt" = (
 /obj/structure/table/wood,
 /obj/item/flashlight/lantern,
@@ -30453,7 +30491,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "jeg" = (
-/obj/structure/sign/warning/fire/directional/east,
 /obj/item/storage/box/lights/tubes{
 	pixel_x = 8;
 	pixel_y = 10
@@ -30461,6 +30498,10 @@
 /obj/structure/table,
 /obj/item/storage/box/swab{
 	pixel_x = -5
+	},
+/obj/machinery/camera/directional/south{
+	c_tag = "Ordnance Lower Mix Lab";
+	network = list("ss13","rd")
 	},
 /turf/open/floor/iron/smooth_large,
 /area/station/science/cytology)
@@ -32886,6 +32927,7 @@
 /obj/machinery/door/airlock/maintenance_hatch{
 	name = "Cytology Maintenance Hatch"
 	},
+/obj/machinery/door/firedoor/heavy,
 /turf/open/floor/plating,
 /area/station/science/cytology)
 "jRu" = (
@@ -37375,7 +37417,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/floor/iron/smooth_large,
+/turf/open/floor/iron/smooth_corner,
 /area/icemoon/underground/explored)
 "lfp" = (
 /obj/structure/cable,
@@ -43014,6 +43056,9 @@
 	dir = 1
 	},
 /obj/structure/railing/corner,
+/obj/effect/turf_decal/stripes{
+	dir = 1
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "mTh" = (
@@ -49174,6 +49219,9 @@
 /obj/structure/railing{
 	dir = 1
 	},
+/obj/effect/turf_decal/stripes{
+	dir = 1
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "oDB" = (
@@ -52222,7 +52270,9 @@
 	opacity = 0
 	},
 /obj/effect/mapping_helpers/airlock/access/all/science/general,
-/turf/open/floor/iron/smooth_large,
+/turf/open/floor/iron/smooth_edge{
+	dir = 1
+	},
 /area/station/science/cytology)
 "pwC" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -60991,6 +61041,9 @@
 /obj/structure/railing{
 	dir = 5
 	},
+/obj/effect/turf_decal/stripes{
+	dir = 5
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "sbc" = (
@@ -64949,6 +65002,9 @@
 /obj/structure/railing{
 	dir = 9
 	},
+/obj/effect/turf_decal/stripes{
+	dir = 9
+	},
 /turf/open/floor/iron/smooth_large,
 /area/icemoon/underground/explored)
 "tjN" = (
@@ -67754,6 +67810,7 @@
 "ucr" = (
 /obj/structure/railing,
 /obj/structure/closet/secure_closet/cytology,
+/obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/smooth_large,
 /area/station/science/cytology)
 "ucs" = (
@@ -68815,7 +68872,10 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "usP" = (
-/turf/open/openspace,
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/open/floor/iron/smooth_half,
 /area/icemoon/underground/explored)
 "utr" = (
 /obj/structure/table,
@@ -78725,6 +78785,7 @@
 	name = "Ordnance Lab"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/science/ordnance,
+/obj/machinery/door/firedoor/heavy,
 /turf/open/floor/iron/smooth_large,
 /area/station/science/ordnance)
 "xss" = (
@@ -128060,7 +128121,7 @@ oSU
 xMq
 xMq
 xMq
-xMq
+psb
 xMq
 xMq
 oSU
@@ -128317,9 +128378,9 @@ oSU
 xMq
 iDt
 iDt
+scw
 iDt
-iDt
-xMq
+psb
 xMq
 oSU
 oSU
@@ -128830,7 +128891,7 @@ iDt
 xMq
 gAC
 iDt
-iDt
+scw
 iDt
 iDt
 leZ
@@ -129090,7 +129151,7 @@ iDt
 iDt
 iDt
 iDt
-oDy
+usP
 fIt
 oSU
 oSU
@@ -129346,8 +129407,8 @@ iDt
 iDt
 iDt
 iDt
-iDt
-sFy
+scw
+iLl
 fIt
 oSU
 oSU
@@ -129600,7 +129661,7 @@ iDt
 iDt
 chg
 iDt
-iDt
+scw
 iDt
 iDt
 iDt
@@ -130633,7 +130694,7 @@ xMq
 xMq
 xMq
 xMq
-xMq
+psb
 xMq
 xMq
 oSU
@@ -193851,9 +193912,9 @@ thA
 thA
 xMq
 xMq
-usP
-usP
-usP
+gjq
+gjq
+gjq
 gEG
 iDt
 nfG
@@ -194108,11 +194169,11 @@ thA
 thA
 xMq
 xMq
-usP
-usP
-usP
+gjq
+gjq
+gjq
 gEG
-usP
+gjq
 jnU
 jnU
 uXw
@@ -194364,10 +194425,10 @@ thA
 thA
 thA
 xMq
-usP
-usP
-usP
-usP
+gjq
+gjq
+gjq
+gjq
 gOl
 hEg
 jnU
@@ -194621,9 +194682,9 @@ thA
 thA
 thA
 rcY
-usP
-usP
-usP
+gjq
+gjq
+gjq
 tjK
 eck
 cZc
@@ -194878,9 +194939,9 @@ thA
 tjo
 tjo
 rcY
-usP
-usP
-usP
+gjq
+gjq
+gjq
 oDy
 sFy
 xjs
@@ -195135,13 +195196,13 @@ thA
 tjo
 tjo
 rcY
-usP
-usP
-usP
+gjq
+gjq
+gjq
 saz
 hhM
 pwz
-jAF
+eRA
 fbK
 jAF
 xco
@@ -195392,10 +195453,10 @@ thA
 tjo
 tjo
 rcY
-usP
-usP
-usP
-usP
+gjq
+gjq
+gjq
+gjq
 mTe
 xjs
 xjs
@@ -195650,12 +195711,12 @@ tjo
 tjo
 syw
 ebX
-usP
-usP
-usP
+gjq
+gjq
+gjq
 gEG
-usP
-usP
+gjq
+gjq
 jnU
 jnU
 ulC
@@ -195909,11 +195970,11 @@ tjo
 syw
 kNC
 ebX
-usP
+gjq
 gEG
-usP
-usP
-usP
+gjq
+gjq
+gjq
 jnU
 xjs
 xjs
@@ -197201,7 +197262,7 @@ thA
 thA
 thA
 thA
-rcY
+gEU
 iDt
 bgx
 bgx
