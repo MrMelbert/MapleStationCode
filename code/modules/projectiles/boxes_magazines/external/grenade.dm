@@ -5,4 +5,4 @@
 	caliber = CALIBER_75
 	multiple_sprites = AMMO_BOX_FULL_EMPTY
 	max_ammo = 8
-
+	w_class = WEIGHT_CLASS_SMALL
