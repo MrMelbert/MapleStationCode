@@ -922,11 +922,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
-
-	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		carrydelay *= potential_spine.athletics_boost_multiplier
+	var/carrydelay = get_grab_speed(target, 8 SECONDS)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
