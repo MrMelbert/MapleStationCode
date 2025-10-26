@@ -5,7 +5,7 @@
 // You do not need to raise this if you are adding new values that have sane defaults.
 // Only raise this value when changing the meaning/format/name/layout of an existing value
 // where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 45.1
+#define SAVEFILE_VERSION_MAX 45.2
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -113,6 +113,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	if (current_version < 45.1)
 		migrate_quirks_to_language_menu(save_data)
+
+	if (current_version < 45.2)
+		// convert felinid to animid
+		if(save_data?["species"] == "felinid")
+			save_data["species"] = /datum/species/human/animid::id
+			save_data["animid_type"] = /datum/animid_type/cat::id
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

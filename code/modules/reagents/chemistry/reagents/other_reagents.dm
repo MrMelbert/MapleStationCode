@@ -294,7 +294,7 @@
 	if(methods & VAPOR)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_VAPOR) // Spraying someone with water with the hope to put them out is just simply too funny to me not to add it.
 
-		if(!isfelinid(exposed_mob))
+		if(!HAS_TRAIT(exposed_mob, TRAIT_CATLIKE_GRACE))
 			return
 
 		exposed_mob.incapacitate(1) // startles the felinid, canceling any do_after

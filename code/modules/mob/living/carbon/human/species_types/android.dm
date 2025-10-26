@@ -1,7 +1,6 @@
 /datum/species/android
 	name = "Android"
 	id = SPECIES_ANDROID
-	examine_limb_id = SPECIES_HUMAN
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_LIMBATTACHMENT,

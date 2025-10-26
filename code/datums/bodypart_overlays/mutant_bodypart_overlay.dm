@@ -29,9 +29,10 @@
 		stack_trace("adding a [parent.type] to a [receiver.type] when it shouldn't be!")
 
 	if(imprint_on_next_insertion) //We only want this set *once*
-		var/feature_name = receiver.dna.features[feature_key]
+		var/feature_name = receiver.dna.features[feature_key] || receiver.dna.species.mutant_organs[parent.type]
 		if (isnull(feature_name))
-			feature_name = receiver.dna.species.mutant_organs[parent.type]
+			stack_trace("[type] has no default feature name for organ [parent.type]!")
+			feature_name = get_consistent_feature_entry(get_global_feature_list()) //fallback to something
 		set_appearance_from_name(feature_name)
 		imprint_on_next_insertion = FALSE
 
@@ -77,6 +78,8 @@
 	icon_state_builder += mutant_bodyparts_layertext(image_layer)
 
 	var/finished_icon_state = icon_state_builder.Join("_")
+
+	icon_exists_or_scream(sprite_datum.icon, finished_icon_state)
 
 	var/mutable_appearance/appearance = mutable_appearance(sprite_datum.icon, finished_icon_state, layer = image_layer)
 
@@ -124,7 +127,7 @@
 
 	switch(color_source)
 		if(ORGAN_COLOR_OVERRIDE)
-			draw_color = override_color(bodypart_owner.draw_color)
+			draw_color = override_color(bodypart_owner)
 		if(ORGAN_COLOR_INHERIT)
 			draw_color = bodypart_owner.draw_color
 		if(ORGAN_COLOR_HAIR)

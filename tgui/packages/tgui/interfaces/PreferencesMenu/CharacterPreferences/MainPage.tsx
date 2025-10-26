@@ -21,7 +21,7 @@ import {
   type FeatureChoicedServerData,
   FeatureValueInput,
 } from '../preferences/features/base';
-import { Gender, GENDERS } from '../preferences/gender';
+import { GENDERS, Gender } from '../preferences/gender';
 import {
   createSetPreference,
   type PreferencesMenuData,
@@ -455,6 +455,10 @@ type MainPageProps = {
   openSpecies: () => void;
 };
 
+function sortFeatures(inputRecord: Record<string, string>) {
+  return Object.entries(inputRecord || {}).sort(([a], [b]) => (a > b ? 1 : -1));
+}
+
 export function MainPage(props: MainPageProps) {
   const { act, data } = useBackend<PreferencesMenuData>();
   const [deleteCharacterPopupOpen, setDeleteCharacterPopupOpen] =
@@ -471,8 +475,9 @@ export function MainPage(props: MainPageProps) {
     data.character_preferences.secondary_features || [];
 
   const mainFeatures = [
-    ...Object.entries(data.character_preferences.clothing ?? {}),
-    ...Object.entries(data.character_preferences.features ?? {}),
+    ...sortFeatures(data.character_preferences.clothing || {}),
+    ...sortFeatures(data.character_preferences.hair || {}),
+    ...sortFeatures(data.character_preferences.features || {}),
   ];
 
   const randomBodyEnabled =

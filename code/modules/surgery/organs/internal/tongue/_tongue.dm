@@ -607,7 +607,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	name = "felinid tongue"
 	desc = "A fleshy muscle mostly used for meowing."
 	say_mod = "meows"
-	liked_foodtypes = SEAFOOD | ORANGES | BUGS | GORE
+	liked_foodtypes = SEAFOOD | BUGS | GORE
 	disliked_foodtypes = GROSS | CLOTH | RAW
 	organ_traits = list(TRAIT_FISH_EATER)
 

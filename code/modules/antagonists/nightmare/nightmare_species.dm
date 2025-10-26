@@ -4,7 +4,6 @@
 /datum/species/shadow/nightmare
 	name = "Nightmare"
 	id = SPECIES_NIGHTMARE
-	examine_limb_id = SPECIES_SHADOW
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE
 	no_equip_flags = ITEM_SLOT_MASK | ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_ICLOTHING | ITEM_SLOT_SUITSTORE
 	inherent_traits = list(

@@ -256,9 +256,11 @@
 
 	alert_drones(DRONE_NET_DISCONNECT)
 
-
 /mob/living/basic/drone/gib()
 	dust()
+
+/mob/living/basic/drone/get_butt_sprite()
+	return BUTT_SPRITE_DRONE
 
 /mob/living/basic/drone/examine(mob/user)
 	. = list()

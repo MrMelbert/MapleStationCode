@@ -80,9 +80,13 @@
 	mask = /obj/item/clothing/mask/fakemoustache/italian
 
 	skillchips = list(/obj/item/skillchip/job/chef)
+	/// If we differentiate chefs and cooks
+	var/change_hat = TRUE
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
+	if(!change_hat)
+		return
 	var/datum/job/cook/other_chefs = SSjob.GetJobType(jobtype)
 	if(other_chefs) // If there's other Chefs, you're a Cook
 		if(other_chefs.cooks > 0)//Cooks
@@ -96,3 +100,8 @@
 	. = ..()
 	. += /obj/item/clothing/suit/apron/chef
 	. += /obj/item/clothing/head/soft/mime
+
+/datum/outfit/job/cook/consistent
+	name = "Cook (Consistent)"
+	mask = null
+	change_hat = FALSE
