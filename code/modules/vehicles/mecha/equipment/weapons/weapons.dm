@@ -597,7 +597,7 @@
 		to_chat(mobtarget, "[span_warning("You have been moved into [secmech.cargo_hold]. You can attempt to resist out if you wish.")]")
 		if(autocuff && iscarbon(target))
 			var/mob/living/carbon/carbontarget = target
-			carbontarget.set_handcuffed(new cuff_type(carbontarget))
+			carbontarget.equip_to_slot(new cuff_type(carbontarget), ITEM_SLOT_HANDCUFFED)
 		return
 
 	if(istype(target, /obj/machinery/door))
