@@ -144,5 +144,5 @@
 	desc = "A long, rough tongue belonging to a fox."
 
 	liked_foodtypes = MEAT | BUGS
-	disliked_foodtypes = VEGETABLES | FRUIT | NUTS | CLOTH
-	toxic_foodtypes = TOXIC | SUGAR | GRAIN
+	disliked_foodtypes = NUTS | CLOTH | GROSS
+	toxic_foodtypes = TOXIC | SUGAR
