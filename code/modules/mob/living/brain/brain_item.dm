@@ -459,8 +459,16 @@
 	. = ..()
 	organ_owner.gain_trauma(/datum/brain_trauma/special/bluespace_prophet, TRAUMA_RESILIENCE_ABSOLUTE)
 
-/obj/item/organ/brain/felinid //A bit smaller than average
-	brain_size = 0.8
+/obj/item/organ/brain/felinid
+	name = "felinid brain"
+	// brain_size = 0.8
+	organ_traits = list(
+		TRAIT_ADVANCEDTOOLUSER,
+		TRAIT_CAN_STRIP,
+		TRAIT_CATLIKE_GRACE,
+		TRAIT_HATED_BY_DOGS,
+		TRAIT_LITERATE,
+	)
 
 /obj/item/organ/brain/abductor
 	name = "grey brain"

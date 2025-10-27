@@ -457,13 +457,12 @@
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return SSaccessories.synth_head_cover_list
 
-/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.obscured_slots & HIDEHAIR)
+/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	if(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 		return FALSE
-	var/obj/item/bodypart/head/head = human.get_bodypart(BODY_ZONE_HEAD)
-	if(head.limb_id == BODYPART_ID_SYNTH) // disguised = no head cover
+	if(bodypart_owner.limb_id == BODYPART_ID_SYNTH) // disguised = no head cover
 		return TRUE
-	if(IS_ROBOTIC_LIMB(head)) // works on android limbs too
+	if(IS_ROBOTIC_LIMB(bodypart_owner)) // works on android limbs too
 		return TRUE
 	return FALSE
 

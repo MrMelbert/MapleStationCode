@@ -357,6 +357,10 @@
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
 		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
+/mob/living/carbon/human/get_butt_sprite()
+	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
+	return chest?.get_butt_sprite()
+
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
@@ -785,26 +789,6 @@
 			var/newtype = GLOB.species_list[result]
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
-
-	if(href_list[VV_HK_PURRBATION])
-		if(!check_rights(R_SPAWN))
-			return
-		if(!ishuman(src))
-			to_chat(usr, "This can only be done to human species at the moment.")
-			return
-		var/success = purrbation_toggle(src)
-		if(success)
-			to_chat(usr, "Put [src] on purrbation.")
-			log_admin("[key_name(usr)] has put [key_name(src)] on purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has put [key_name(src)] on purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-		else
-			to_chat(usr, "Removed [src] from purrbation.")
-			log_admin("[key_name(usr)] has removed [key_name(src)] from purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has removed [key_name(src)] from purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
 
 	if(href_list[VV_HK_APPLY_DNA_INFUSION])
 		if(!check_rights(R_SPAWN))

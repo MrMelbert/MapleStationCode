@@ -244,7 +244,11 @@
 	if(use_mob_sprite_as_obj_sprite)
 		update_appearance(UPDATE_OVERLAYS)
 
-	color = bodypart_overlay.draw_color // so a pink felinid doesn't drop a gray tail
+	save_color()
+
+/// Saves color on organ removal so pink felinid = pink tail
+/obj/item/organ/proc/save_color()
+	color = bodypart_overlay.draw_color
 
 /// In space station videogame, nothing is sacred. If somehow an organ is removed unexpectedly, handle it properly
 /obj/item/organ/proc/forced_removal()
