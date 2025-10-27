@@ -36,7 +36,7 @@
 	return linked_cuffs
 
 /datum/status_effect/restrained/get_examine_text(mob/user)
-	return span_warning("[owner.p_They()] [owner.p_are()] [restrained_verb_text] by [linked_cuffs.examine_title(user, href = TRUE)]\
+	return span_warning("[owner.p_They()] [owner.p_are()] [restrained_verb_text] [(owner.buckled && (cuff_slot & ITEM_SLOT_HANDCUFFED)) ? "to [owner.buckled] " : ""]by [linked_cuffs.examine_title(user, href = TRUE)]\
 		[is_resisting ? ", <b>and [owner.p_are()] currently struggling to break free</b>!" : "."]")
 
 /datum/status_effect/restrained/on_apply()
