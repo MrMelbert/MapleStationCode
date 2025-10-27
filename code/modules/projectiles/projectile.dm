@@ -210,6 +210,8 @@
 	var/damage_falloff_tile
 	///How much we want to drop stamina damage (defined by the stamina variable) per tile as it travels through the air
 	var/stamina_falloff_tile
+	///How much we want to drop pain (defined by the pain variable) per tile as it travels through the air
+	var/pain_falloff_tile
 	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
 	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
@@ -241,12 +243,14 @@
 		damage += damage_falloff_tile
 	if(stamina_falloff_tile && stamina >= 0)
 		stamina += stamina_falloff_tile
+	if(pain_falloff_tile && pain >= 0)
+		pain += pain_falloff_tile
 
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_RANGE)
 	if(range <= 0 && loc)
 		on_range()
 
-	if(damage_falloff_tile && damage <= 0 || stamina_falloff_tile && stamina <= 0)
+	if((damage_falloff_tile && damage <= 0) || (stamina_falloff_tile && stamina <= 0) || (pain_falloff_tile && pain <= 0))
 		on_range()
 
 /obj/projectile/proc/on_range() //if we want there to be effects when they reach the end of their range
