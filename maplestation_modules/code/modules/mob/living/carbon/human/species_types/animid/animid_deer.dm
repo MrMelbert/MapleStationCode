@@ -159,8 +159,8 @@
 	desc = "A long, rough tongue belonging to a deer."
 
 	liked_foodtypes = VEGETABLES | FRUIT | NUTS | GRAIN
-	disliked_foodtypes = GORE | RAW | JUNKFOOD | GROSS | CLOTH
-	toxic_foodtypes = MEAT | SEAFOOD | TOXIC
+	disliked_foodtypes = GORE | RAW | MEAT | JUNKFOOD | GROSS | CLOTH
+	toxic_foodtypes = SEAFOOD | TOXIC
 
 // Deer bodyparts
 /obj/item/bodypart/leg/left/deer

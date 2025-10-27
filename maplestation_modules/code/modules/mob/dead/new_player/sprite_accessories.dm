@@ -503,6 +503,12 @@
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 
+/datum/sprite_accessory/undershirt/enmagradient
+	name = "Red and Blue Gradients"
+	icon_state = "redblue"
+	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
+	gender = NEUTER
+
 /// -- Frills --
 /datum/sprite_accessory/frills/big
 	name = "Big"

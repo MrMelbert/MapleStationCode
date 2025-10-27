@@ -14,7 +14,7 @@
 	desc = "A long, rough tongue belonging to a dog."
 
 	liked_foodtypes = MEAT | JUNKFOOD | DAIRY  // they don't mind gore / raw / gross but they also don't like it
-	disliked_foodtypes = VEGETABLES | FRUIT | NUTS | GRAIN // most of them don't like their veggies tho
+	disliked_foodtypes = VEGETABLES | FRUIT | NUTS // most of them don't like their veggies tho
 	toxic_foodtypes = TOXIC | SUGAR // chocolate
 
 
