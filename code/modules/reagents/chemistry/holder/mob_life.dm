@@ -59,7 +59,8 @@
 	if(!owner || !reagent || (dead && !(reagent.chemical_flags & REAGENT_DEAD_PROCESS)))
 		return FALSE
 
-	if(owner.reagent_check(reagent, seconds_per_tick, times_fired))
+	var/tick_return = owner.reagent_check(reagent, seconds_per_tick, times_fired)
+	if(tick_return & COMSIG_MOB_STOP_REAGENT_CHECK)
 		return FALSE
 	if(liverless && !reagent.self_consuming) //need to be metabolized
 		return FALSE
@@ -92,7 +93,7 @@
 	need_mob_update += reagent.on_mob_life(owner, seconds_per_tick, times_fired)
 	if(dead && !QDELETED(owner) && !QDELETED(reagent))
 		need_mob_update += reagent.on_mob_dead(owner, seconds_per_tick)
-	if(!QDELETED(owner) && !QDELETED(reagent))
+	if(!QDELETED(owner) && !QDELETED(reagent) && !(tick_return & COMSIG_MOB_STOP_REAGENT_METABOLISM))
 		reagent.metabolize_reagent(owner, metabolizing_out)
 
 	return need_mob_update
