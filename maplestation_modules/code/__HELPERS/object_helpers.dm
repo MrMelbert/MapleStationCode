@@ -56,7 +56,7 @@
 		return current_starlight_level
 	if(current_starlight_level && satisfied_with_penalty) // do not care if there is a +penalty or no
 		return current_starlight_level
-	var/starlight_level_from_above = checktilestarlightDirectional(original_turf, UP, starlight_max_range)
+	var/starlight_level_from_above = checktilestarlightdirectional(original_turf, UP, starlight_max_range)
 	if(starlight_level_from_above > current_starlight_level)
 		return starlight_level_from_above
 	else

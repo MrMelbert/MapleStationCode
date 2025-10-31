@@ -34,9 +34,9 @@
 
 /obj/machinery/power/magic_contraption // used for magitech stuff that needs to process.
 	name = "magic contraption basetype"
-	desc = "an honestly quite dull magic altar; actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
+	desc = "an honestly quite dull magic contraption; actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
 	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
-	icon_state = "goner"
+	icon_state = "goner_machine"
 
 	use_power = NO_POWER_USE
 	anchored = FALSE

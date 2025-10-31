@@ -10,8 +10,8 @@
 /obj/machinery/power/magic_contraption/stellar
 	name = "stellar occulory"
 	desc = "an advanced machine which focuses starlight into mana for use."
-	// icon_state = stellar
-	// base_icon_state = stellar
+	icon_state = "stellar"
+	base_icon_state = "stellar"
 	var/active = FALSE
 
 	var/pulse_delay = 20 SECONDS
@@ -19,7 +19,7 @@
 
 	var/high_pulse_value = 25 // full starlight
 	var/medium_pulse_value = 15 // partial starlight
-	var/low_pulse_value = 5 // basically a pity value.
+	var/low_pulse_value = 5 // basically a pity value
 
 	var/starlight_check_range = 3
 
@@ -33,19 +33,20 @@
 /obj/machinery/power/magic_contraption/stellar/interact(mob/user)
 	if(active)
 		active = FALSE
+		to_chat(user, span_warning("deactivated")) // debug
 	if(!active)
+		to_chat(user, span_warning("activated")) //debug
 		active = TRUE
 
 /obj/machinery/power/magic_contraption/stellar/process(seconds_per_tick)
-	. = ..()
 	if(!active)
 		return
 	if(!check_delay())
 		return
-	if(mana_pool.maximum_mana_capacity = mana_pool.amount)
+	if(mana_pool.maximum_mana_capacity == mana_pool.amount)
 		return
 	// send signal activate check comsig here
-	var/starlight_level = CheckStarlight(starlight_check_range)
+	var/starlight_level = src.checkstarlight(starlight_check_range)
 	pulse_mana(starlight_level)
 
 /obj/machinery/power/magic_contraption/stellar/proc/check_delay()
@@ -62,6 +63,8 @@
 			pulse_value = medium_pulse_value
 		if(NO_STARLIGHT)
 			pulse_value = low_pulse_value
+		else
+			pulse_value = 1 // debug
 	// anims here
 	// also update sprite
 	mana_pool.amount += pulse_value
