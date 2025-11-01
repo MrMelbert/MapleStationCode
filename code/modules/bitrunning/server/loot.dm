@@ -19,7 +19,7 @@
 /obj/machinery/quantum_server/proc/get_multiplayer_bonus()
 	var/total = 0
 	var/multiplayer = FALSE
-	for(var/datum/weakref/connection_ref in avatar_connection_refs)
+	for(var/datum/weakref/connection_ref as anything in avatar_connection_refs)
 		var/datum/component/avatar_connection/connection = connection_ref.resolve()
 		if(isnull(connection))
 			continue
@@ -34,11 +34,9 @@
 		return 0
 
 	var/total = 0
-	for(var/datum/weakref/connection_ref in avatar_connection_refs)
+	for(var/datum/weakref/connection_ref as anything in avatar_connection_refs)
 		var/datum/component/avatar_connection/connection = connection_ref.resolve()
-		if(isnull(connection))
-			continue
-		if(connection.nohit)
+		if(connection?.nohit)
 			total += nohit_bonus
 	return total
 
