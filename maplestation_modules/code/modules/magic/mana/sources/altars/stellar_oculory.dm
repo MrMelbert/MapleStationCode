@@ -26,10 +26,6 @@
 /obj/machinery/power/magic_contraption/stellar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/stellar
 
-/obj/machinery/power/magic_contraption/stellar/Initialize(mapload)
-	. = ..()
-	SSmachines.processing += src
-
 /obj/machinery/power/magic_contraption/stellar/interact(mob/user)
 	if(active)
 		active = FALSE
@@ -63,8 +59,6 @@
 			pulse_value = medium_pulse_value
 		if(NO_STARLIGHT)
 			pulse_value = low_pulse_value
-		else
-			pulse_value = 1 // debug
 	// anims here
 	// also update sprite
 	mana_pool.amount += pulse_value
