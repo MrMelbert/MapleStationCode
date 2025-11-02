@@ -122,6 +122,7 @@ const DnaScannerContent = (props) => {
     isViableSubject,
     subjectHealth,
     subjectDamage,
+    subjectStability,
     subjectStatus,
   } = data;
   if (!isScannerConnected) {
@@ -165,6 +166,21 @@ const DnaScannerContent = (props) => {
           }}
         >
           {subjectDamage}%
+        </ProgressBar>
+      </LabeledList.Item>
+      <LabeledList.Item label="Stability">
+        <ProgressBar
+          value={subjectStability}
+          minValue={0}
+          maxValue={100}
+          ranges={{
+            olive: [101, Infinity],
+            good: [70, 101],
+            average: [30, 70],
+            bad: [-Infinity, 30],
+          }}
+        >
+          {subjectStability}%
         </ProgressBar>
       </LabeledList.Item>
     </LabeledList>

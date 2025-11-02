@@ -141,13 +141,7 @@
 			break
 
 	if(sequence)
-		var/display
-		for(var/i in 0 to length_char(sequence) / DNA_MUTATION_BLOCKS-1)
-			if(i)
-				display += "-"
-			display += copytext_char(sequence, 1 + i*DNA_MUTATION_BLOCKS, DNA_MUTATION_BLOCKS*(1+i) + 1)
-
-		to_chat(user, "[span_boldnotice("[display]")]<br>")
+		to_chat(user, "<span data-component=\"SequenceScannerChatBox\" data-passed_sequence=\"[sequence]\" data-mutation_name=\"[answer]\">[answer]</span><br>")
 
 	ready = FALSE
 	icon_state = "[icon_state]_recharging"
