@@ -6514,6 +6514,7 @@
 #include "maplestation_modules\code\modules\clothing\equipment_sets\noble_equipment\code\beacon.dm"
 #include "maplestation_modules\code\modules\clothing\equipment_sets\noble_equipment\code\nobleclothing.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\beer_eyepatch.dm"
+#include "maplestation_modules\code\modules\clothing\glasses\blind_goggles.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\hud_eyepatches.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\loadout_glasses.dm"
 #include "maplestation_modules\code\modules\clothing\gloves\loadout_gloves.dm"
