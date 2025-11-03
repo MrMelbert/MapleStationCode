@@ -6470,6 +6470,7 @@
 #include "maplestation_modules\code\modules\cargo\goodies.dm"
 #include "maplestation_modules\code\modules\cargo\packs.dm"
 #include "maplestation_modules\code\modules\client\preferences\_preferences.dm"
+#include "maplestation_modules\code\modules\client\preferences\eyecover.dm"
 #include "maplestation_modules\code\modules\client\preferences\height.dm"
 #include "maplestation_modules\code\modules\client\preferences\languages.dm"
 #include "maplestation_modules\code\modules\client\preferences\limbs_preference.dm"

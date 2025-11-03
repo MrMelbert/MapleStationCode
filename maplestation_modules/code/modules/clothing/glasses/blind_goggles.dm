@@ -7,12 +7,23 @@
 	worn_icon_state = "laforge"
 	gender = NEUTER
 	tint = 1
-
+	custom_materials = list(
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.2,
+		/datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.8,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = SHEET_MATERIAL_AMOUNT * 1.2,
+	)
+	resistance_flags = ACID_PROOF | FIRE_PROOF
+	glass_colour_type = /datum/client_colour/glass_colour/barelyyellow
+	clothing_traits = list(TRAIT_NIGHT_VISION, TRAIT_MADNESS_IMMUNE)
+	flash_protect = FLASH_PROTECTION_SENSITIVE // yay i can see! oh no i can see!
+	flags_cover = GLASSESCOVERSEYES
+	forced_glass_color = TRUE
 	var/was_worn = FALSE
 
 /obj/item/clothing/glasses/blindness_visor/equipped(mob/living/user, slot, initial)
 	. = ..()
-	if(!(slot & ITEM_SLOT_EYES) || !iscarbon(user))
+	if(!(slot & ITEM_SLOT_EYES) || !iscarbon(user) || isdummy(user))
 		return
 
 	if(user.is_blind())
@@ -22,11 +33,12 @@
 		if(!initial)
 			to_chat(user, span_warning("These things kind of hurt your eyes."))
 		user.become_nearsighted(REF(src))
-		flash_protect = FLASH_PROTECTION_SENSITIVE
+		flash_protect = FLASH_PROTECTION_HYPER_SENSITIVE
 
 	user.cure_blind(QUIRK_TRAIT)
 	user.cure_blind(TRAUMA_TRAIT)
 	user.cure_blind(GENETIC_MUTATION)
+	user.update_sight()
 	RegisterSignal(user, COMSIG_CARBON_GAIN_MUTATION, PROC_REF(now_blind_from_mutation))
 	RegisterSignal(user, COMSIG_CARBON_GAIN_TRAUMA, PROC_REF(now_blind_from_trauma))
 	RegisterSignal(user, COMSIG_CARBON_LOSE_MUTATION, PROC_REF(lost_blind_from_mutation))
@@ -36,7 +48,7 @@
 
 /obj/item/clothing/glasses/blindness_visor/dropped(mob/living/carbon/user)
 	. = ..()
-	if(!iscarbon(user) || QDELING(user) || !was_worn)
+	if(!iscarbon(user) || isdummy(user) || QDELING(user) || !was_worn)
 		return
 
 	if(user.has_quirk(/datum/quirk/item_quirk/blindness))
@@ -47,6 +59,7 @@
 		user.become_blind(GENETIC_MUTATION)
 
 	user.cure_nearsighted(REF(src))
+	user.update_sight()
 	flash_protect = initial(flash_protect)
 	UnregisterSignal(user, COMSIG_CARBON_GAIN_MUTATION)
 	UnregisterSignal(user, COMSIG_CARBON_GAIN_TRAUMA)
@@ -68,7 +81,7 @@
 	if(!istype(trauma_type, /datum/brain_trauma/severe/blindness))
 		return
 
-	addtimer(CALLBACK(src, PROC_REF(delayed_trauma_unblind), user, TRAUMA_TRAIT), 1 SECONDS, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(delayed_unblind), user, TRAUMA_TRAIT), 1 SECONDS, TIMER_UNIQUE)
 
 /obj/item/clothing/glasses/blindness_visor/proc/delayed_unblind(mob/living/carbon/user, trait_type)
 	if(!was_worn)
@@ -105,20 +118,6 @@
 	user.become_nearsighted(REF(src))
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 
-
-// techweb design
-/datum/design/sight_visor
-	name = "Spectrum Amplification Visor"
-	id = "antiblindnessvisor"
-	build_type = PROTOLATHE | AWAY_LATHE
-	materials = list(
-		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.2,
-		/datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.8,
-		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
-		/datum/material/silver = SHEET_MATERIAL_AMOUNT * 1.2,
-	)
-	build_path = /obj/item/clothing/glasses/blindness_visor
-	category = list(
-		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_TOOLS_MEDICAL
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+// very very light yellow tint
+/datum/client_colour/glass_colour/barelyyellow
+	colour = "#ffffee"
