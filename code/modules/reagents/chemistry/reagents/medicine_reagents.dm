@@ -1364,7 +1364,7 @@
 		need_mob_update += affected_mob.adjustStaminaLoss(-3 * REM * seconds_per_tick, updating_stamina = FALSE, required_biotype = affected_biotype)
 		need_mob_update += affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * REM * seconds_per_tick, 150, affected_organ_flags)
 		affected_mob.adjust_jitter_up_to(6 SECONDS * REM * seconds_per_tick, 1 MINUTES)
-		if(SPT_PROB(5, seconds_per_tick))
+		if(SPT_PROB(5, seconds_per_tick) && HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
 			affected_mob.say(return_hippie_line(), forced = /datum/reagent/medicine/earthsblood)
 	affected_mob.adjust_drugginess_up_to(20 SECONDS * REM * seconds_per_tick, 30 SECONDS * REM * seconds_per_tick)
 	if(need_mob_update)
