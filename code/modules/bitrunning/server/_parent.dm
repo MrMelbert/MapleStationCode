@@ -128,7 +128,7 @@
 	return ..()
 
 
-/obj/machinery/quantum_server/item_interaction(mob/living/user, obj/item/tool, list/modifiers, list/attack_modifiers)
+/obj/machinery/quantum_server/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/bitrunning_debug))
 		return NONE
 

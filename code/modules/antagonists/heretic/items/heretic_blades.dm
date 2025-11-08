@@ -39,6 +39,33 @@
 		SEND_SIGNAL(user, COMSIG_HERETIC_BLADE_ATTACK, target, src)
 
 /obj/item/melee/sickly_blade/attack_self(mob/user)
+	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
+	if(heretic_datum?.unlimited_blades)
+		return
+	if(HAS_TRAIT(user, TRAIT_ELDRITCH_ARENA_PARTICIPANT))
+		user.balloon_alert(user, "can't escape!")
+		if(escape_attempts > 2)
+			to_chat(user, span_hypnophrase(span_big("Cowardly sheep will be slaughtered!")))
+			playsound(src, SFX_SHATTER, 70, TRUE)
+			var/obj/item/bodypart/to_remove = user.get_active_hand()
+			to_remove.dismember()
+			deltimer(escape_timer)
+			qdel(src)
+			return
+		escape_attempts++
+		escape_timer = addtimer(CALLBACK(src, PROC_REF(reset_attempts)), 2 SECONDS, TIMER_STOPPABLE)
+		return
+	if(HAS_TRAIT(user, TRAIT_NO_TELEPORT))
+		user.balloon_alert(user, "can't break!")
+		return
+	seek_safety(user)
+
+/obj/item/melee/sickly_blade/proc/reset_attempts()
+	escape_attempts = 0
+	deltimer(escape_timer)
+
+/// Attempts to teleport the passed mob to somewhere safe on the station, if they can use the blade.
+/obj/item/melee/sickly_blade/proc/seek_safety(mob/user)
 	var/turf/safe_turf = find_safe_turf(zlevels = z, extended_safety_checks = TRUE)
 	if(IS_HERETIC_OR_MONSTER(user))
 		if(do_teleport(user, safe_turf, channel = TELEPORT_CHANNEL_MAGIC))
@@ -123,6 +150,49 @@
 	icon_state = "dark_blade"
 	inhand_icon_state = "dark_blade"
 	after_use_message = "The Torn Champion hears your call..."
+	///If our blade is currently infused with the mansus grasp
+	var/infused = FALSE
+
+/obj/item/melee/sickly_blade/dark/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
+	. = ..()
+	if(!infused || target == user || !isliving(target))
+		return
+	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
+	var/mob/living/living_target = target
+	if(!heretic_datum)
+		return
+
+	// Apply our heretic mark
+	var/datum/heretic_knowledge/limited_amount/starting/base_blade/mark_to_apply = heretic_datum.get_knowledge(/datum/heretic_knowledge/limited_amount/starting/base_blade)
+	if(!mark_to_apply)
+		return
+	mark_to_apply.create_mark(user, living_target)
+	infused = FALSE
+	update_appearance(UPDATE_ICON)
+	user.update_held_items()
+
+	if(!check_behind(user, living_target))
+		return
+	// We're officially behind them, apply effects
+	living_target.AdjustParalyzed(1.5 SECONDS)
+	living_target.apply_damage(10, BRUTE, wound_bonus = CANT_WOUND)
+	living_target.balloon_alert(user, "backstab!")
+	playsound(living_target, 'sound/items/weapons/guillotine.ogg', 100, TRUE)
+
+/obj/item/melee/sickly_blade/dark/dropped(mob/user, silent)
+	. = ..()
+	if(infused)
+		infused = FALSE
+		update_appearance(UPDATE_ICON)
+
+/obj/item/melee/sickly_blade/dark/update_icon_state()
+	. = ..()
+	if(infused)
+		icon_state = base_icon_state + "_infused"
+		inhand_icon_state = base_icon_state + "_infused"
+	else
+		icon_state = base_icon_state
+		inhand_icon_state = base_icon_state
 
 // Path of Cosmos's blade
 /obj/item/melee/sickly_blade/cosmic

@@ -238,6 +238,11 @@
 	return ..()
 
 /datum/heretic_knowledge/limited_amount/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
+	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
+	if(our_heretic && our_heretic.unlimited_blades)
+		if(length(result_atoms & typesof(/obj/item/melee/sickly_blade)))
+			return TRUE
+
 	for(var/datum/weakref/ref as anything in created_items)
 		var/atom/real_thing = ref.resolve()
 		if(QDELETED(real_thing))
