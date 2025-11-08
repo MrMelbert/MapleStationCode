@@ -62,6 +62,18 @@
 		var/datum/action/avatar_domain_info/action = new(help_datum)
 		action.Grant(avatar)
 
+	var/client/our_client = avatar.client
+	var/alias = our_client?.prefs?.read_preference(/datum/preference/name/hacker_alias) || pick(GLOB.hacker_aliases)
+
+	if(alias && avatar.real_name != alias)
+		avatar.fully_replace_character_name(newname = alias)
+
+	update_avatar_id()
+	avatar.mind.set_assigned_role(SSjob.get_job_type(/datum/job/bit_avatar))
+
+	for(var/skill_type in old_mind.known_skills)
+		avatar.mind.set_experience(skill_type, old_mind.get_skill_exp(skill_type), silent = TRUE)
+
 	avatar.playsound_local(avatar, 'sound/magic/blink.ogg', 25, TRUE)
 	avatar.set_static_vision(2 SECONDS)
 	avatar.set_temp_blindness(1 SECONDS)
