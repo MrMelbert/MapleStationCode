@@ -512,15 +512,10 @@
 
 /datum/glass_style/drinking_glass/fakebeer
 	required_drink_type = /datum/reagent/toxin/fakebeer
-
-/datum/glass_style/drinking_glass/fakebeer/New()
-	. = ..()
-	// Copy styles from the beer drinking glass datum
-	var/datum/glass_style/copy_from = /datum/glass_style/drinking_glass/beer
-	name = initial(copy_from.name)
-	desc = initial(copy_from.desc)
-	icon = initial(copy_from.icon)
-	icon_state = initial(copy_from.icon_state)
+	name = /datum/glass_style/drinking_glass/beer::name
+	desc = /datum/glass_style/drinking_glass/beer::desc
+	icon = /datum/glass_style/drinking_glass/beer::icon
+	icon_state = /datum/glass_style/drinking_glass/beer::icon_state
 
 /datum/reagent/toxin/fakebeer/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()

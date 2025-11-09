@@ -155,6 +155,15 @@
 	if(istype(moodlet))
 		moodlet.update_change(drunk_value)
 
+	if(drunk_value > 50)
+		owner.add_consciousness_modifier(id, -0.5 * (drunk_value - 50))
+	else
+		owner.remove_consciousness_modifier(id)
+	if(drunk_value > 90)
+		owner.add_max_consciousness_value(id, HARD_CRIT_THRESHOLD)
+	else if(drunk_value < 80) // small buffer before you're back up
+		owner.remove_max_consciousness_value(id)
+
 /datum/status_effect/inebriated/drunk/on_tick_effects()
 	// Handle the Ballmer Peak.
 	// If our owner is a scientist (has the trait "TRAIT_BALLMER_SCIENTIST"), there's a 5% chance

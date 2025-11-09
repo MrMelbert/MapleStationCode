@@ -337,7 +337,7 @@
 	if(length(thing.reagents.reagent_list) <= 2)
 		return ..()
 
-	thing.name = "Watery bowl of something"
+	thing.name = "\improper Watery bowl of something"
 
 /datum/glass_style/has_foodtype/soup/watery_soup/set_desc(obj/item/thing)
 	if(length(thing.reagents.reagent_list) <= 2)
@@ -928,8 +928,8 @@
 	drink_type = VEGETABLES | DAIRY
 
 /datum/glass_style/has_foodtype/soup/white_beet/set_name(obj/item/thing)
-	var/how_do_you_spell_it = pick("borsch", "bortsch", "borstch", "borsh", "borshch", "borscht")
-	thing.name = how_do_you_spell_it
+	var/how_do_you_spell_it = pick("Borsch", "Bortsch", "Borstch", "Borsh", "Borshch", "Borscht")
+	thing.name = "\improper [how_do_you_spell_it]"
 
 	var/datum/reagent/soup = locate(required_drink_type) in thing.reagents
 	if(!soup)

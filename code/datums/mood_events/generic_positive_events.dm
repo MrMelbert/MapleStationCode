@@ -92,19 +92,6 @@
 		description = "I hate hugs. I can warm myself up."
 		return
 
-/datum/mood_event/tailpulled
-	description = "I love getting my tail pulled!"
-	mood_change = 1
-	timeout = 2 MINUTES
-
-/datum/mood_event/tailpulled/add_effects()
-	if(HAS_PERSONALITY(owner, /datum/personality/aloof) \
-		|| HAS_PERSONALITY(owner, /datum/personality/aromantic) \
-		|| HAS_PERSONALITY(owner, /datum/personality/callous) \
-	)
-		mood_change = -2
-		description = "Who the hell is touching my tail?"
-
 /datum/mood_event/arcade
 	description = "I beat the arcade game!"
 	mood_change = 3

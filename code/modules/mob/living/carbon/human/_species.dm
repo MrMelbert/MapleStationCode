@@ -557,14 +557,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!HAS_TRAIT(species_human, TRAIT_NO_UNDERWEAR))
 		if(species_human.underwear)
 			var/datum/sprite_accessory/underwear/underwear = SSaccessories.underwear_list[species_human.underwear]
-			var/mutable_appearance/underwear_overlay
-			if(underwear)
-				if(species_human.dna.species.sexes && species_human.physique == FEMALE && (underwear.gender == MALE))
-					underwear_overlay = mutable_appearance(wear_female_version(underwear.icon_state, underwear.icon, FEMALE_UNIFORM_FULL), layer = -BODY_LAYER)
-				else
-					underwear_overlay = mutable_appearance(underwear.icon, underwear.icon_state, -BODY_LAYER)
-				if(!underwear.use_static)
-					underwear_overlay.color = species_human.underwear_color
+			var/mutable_appearance/underwear_overlay = underwear?.make_appearance(species_human)
+			if(underwear_overlay)
 				standing += underwear_overlay
 
 		if(species_human.undershirt)
@@ -914,8 +908,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
-
 	if(grappled && attacking_bodypart.grappled_attack_verb)
 		atk_verb = attacking_bodypart.grappled_attack_verb
 	target.visible_message(span_danger("[user] [atk_verb]ed [target]!"), \
@@ -937,6 +929,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		attack_sharp = SHARP_EDGED
 	else if(atk_effect == ATTACK_EFFECT_BITE)
 		attack_type = SHARP_POINTY
+
+	var/smack_sound = attacking_bodypart.unarmed_attack_sound
+	if(!attack_sharp && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
+		smack_sound = 'sound/effects/bang.ogg'
+
+	playsound(target.loc, smack_sound, 25, TRUE, -1)
 
 	if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
 		if(damage >= 9)
@@ -1114,6 +1112,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	mut_organs += mutantliver
 	mut_organs += mutantstomach
 	mut_organs += mutantappendix
+	list_clear_nulls(mut_organs)
 	return mut_organs
 
 /datum/species/proc/get_types_to_preload()

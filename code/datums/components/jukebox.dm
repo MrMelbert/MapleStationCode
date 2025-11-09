@@ -111,7 +111,7 @@
 			var/datum/track/default/default_track = new()
 			config_songs["[default_track.song_name] (Default)"] = default_track
 
-		for(var/datum/track/track_subtype in subtypesof(/datum/track/preset))
+		for(var/datum/track/track_subtype as anything in subtypesof(/datum/track/preset))
 			var/datum/track/new_preset = new(track_subtype)
 			config_songs["[new_preset.song_name] (Lag Free)"] = new_preset
 
