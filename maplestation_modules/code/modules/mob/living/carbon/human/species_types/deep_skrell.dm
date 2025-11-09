@@ -222,9 +222,10 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	color = null
-	visual_equipped(mob/user, slot, initial)
-		. = ..()
-		color = user.dna.features["mcolor"]
+/obj/item/storage/back_tentacles/equipped(/mob/living/carbon/human/user, slot)
+  if(ishuman(user)
+    color = user.dna.features["mcolor"]
+  return ..()
 	storage_type = /datum/storage/backpack
 
 /obj/item/storage/back_tentacles/visual_equipped(mob/living/carbon/human/user, slot)
