@@ -81,15 +81,8 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	feature_key = "head_tentacles"
 
-/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(istype(human.head) && (human.head.flags_inv))
-		return FALSE
-	if(istype(human.wear_mask) && (human.wear_mask.flags_inv))
-		return FALSE
-	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
-	if(!IS_ORGANIC_LIMB(our_head))
-		return FALSE
-	return TRUE
+/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return IS_ORGANIC_LIMB(bodypart_owner) && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return GLOB.head_tentacles_list
