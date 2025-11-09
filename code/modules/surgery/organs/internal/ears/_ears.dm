@@ -25,6 +25,8 @@
 	var/bang_protect = 0
 	/// Multiplier for both long term and short term ear damage
 	var/damage_multiplier = 1
+	/// Bonus to eavesdropping range
+	var/eavesdrop_bonus = 0
 
 /obj/item/organ/ears/on_life(seconds_per_tick, times_fired)
 	// only inform when things got worse, needs to happen before we heal
@@ -51,11 +53,13 @@
 /obj/item/organ/ears/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	update_temp_deafness()
+	organ_owner.eavesdrop_range += eavesdrop_bonus
 
 /obj/item/organ/ears/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(organ_owner, TRAIT_DEAF, EAR_DAMAGE)
+	organ_owner.eavesdrop_range -= eavesdrop_bonus
 
 /obj/item/organ/ears/get_status_appendix(advanced, add_tooltips)
 	if(owner.stat == DEAD || !HAS_TRAIT(owner, TRAIT_DEAF))
@@ -162,6 +166,8 @@
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/cat_ears
 
+	eavesdrop_bonus = 2
+
 /// Bodypart overlay for the horrible cat ears
 /datum/bodypart_overlay/mutant/cat_ears
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
@@ -174,8 +180,8 @@
 /datum/bodypart_overlay/mutant/cat_ears/get_global_feature_list()
 	return SSaccessories.ears_list
 
-/datum/bodypart_overlay/mutant/cat_ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEHAIR)
+/datum/bodypart_overlay/mutant/cat_ears/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/cat_ears/color_image(image/overlay, draw_layer, obj/item/bodypart/limb)
 	if(draw_layer != bitflag_to_layer(colorless_layer))
@@ -216,16 +222,7 @@
 	desc = "Allows the user to more easily hear whispers. The user becomes extra vulnerable to loud noises, however"
 	// Same sensitivity as felinid ears
 	damage_multiplier = 2
-
-// The original idea was to use signals to do this not traits. Unfortunately, the star effect used for whispers applies before any relevant signals
-// This seems like the least invasive solution
-/obj/item/organ/ears/cybernetic/whisper/on_mob_insert(mob/living/carbon/ear_owner)
-	. = ..()
-	ADD_TRAIT(ear_owner, TRAIT_GOOD_HEARING, ORGAN_TRAIT)
-
-/obj/item/organ/ears/cybernetic/whisper/on_mob_remove(mob/living/carbon/ear_owner)
-	. = ..()
-	REMOVE_TRAIT(ear_owner, TRAIT_GOOD_HEARING, ORGAN_TRAIT)
+	organ_traits = list(TRAIT_GOOD_HEARING)
 
 // "X-ray ears" that let you hear through walls
 /obj/item/organ/ears/cybernetic/xray
@@ -234,14 +231,7 @@
 	desc = "Throguh the power of modern engineering, allows the user to hear speech through walls. The user becomes extra vulnerable to loud noises, however"
 	// Same sensitivity as felinid ears
 	damage_multiplier = 2
-
-/obj/item/organ/ears/cybernetic/xray/on_mob_insert(mob/living/carbon/ear_owner)
-	. = ..()
-	ADD_TRAIT(ear_owner, TRAIT_XRAY_HEARING, ORGAN_TRAIT)
-
-/obj/item/organ/ears/cybernetic/xray/on_mob_remove(mob/living/carbon/ear_owner)
-	. = ..()
-	REMOVE_TRAIT(ear_owner, TRAIT_XRAY_HEARING, ORGAN_TRAIT)
+	organ_traits = list(TRAIT_XRAY_HEARING)
 
 /obj/item/organ/ears/cybernetic/emp_act(severity)
 	. = ..()

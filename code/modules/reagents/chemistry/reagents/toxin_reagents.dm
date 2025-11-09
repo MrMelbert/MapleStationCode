@@ -236,6 +236,11 @@
 	ph = 12
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+/datum/reagent/toxin/carpotoxin/on_mob_add(mob/living/affected_mob, amount)
+	. = ..()
+	if (HAS_TRAIT(affected_mob, TRAIT_CARPOTOXIN_IMMUNE))
+		toxpwr = 0
+
 /datum/reagent/toxin/zombiepowder
 	name = "Zombie Powder"
 	description = "A strong neurotoxin that puts the subject into a death-like state."
@@ -1236,13 +1241,17 @@
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_add(mob/living/carbon/affected_mob)
 	. = ..()
-	affected_mob.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
+	if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+		affected_mob.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(affected_mob.adjustStaminaLoss(7.5 * REM * seconds_per_tick, updating_stamina = FALSE))
 		. = UPDATE_MOB_HEALTH
 	if(!SPT_PROB(10, seconds_per_tick))
+		return
+	if(!HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+		to_chat(affected_mob, span_warning("Your bones hurt!"))
 		return
 	switch(rand(1, 3))
 		if(1)
@@ -1260,12 +1269,14 @@
 		if(BP)
 			playsound(affected_mob, SFX_DESECRATION, 50, TRUE, -1)
 			affected_mob.visible_message(span_warning("[affected_mob]'s bones hurt too much!!"), span_danger("Your bones hurt too much!!"))
-			affected_mob.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
+			if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+				affected_mob.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
 			if(BP.receive_damage(brute = 20 * REM * seconds_per_tick, burn = 0, blocked = 200, updating_health = FALSE, wound_bonus = rand(30, 130)))
 				. = UPDATE_MOB_HEALTH
 		else //SUCH A LUST FOR REVENGE!!!
 			to_chat(affected_mob, span_warning("A phantom limb hurts!"))
-			affected_mob.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
+			if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+				affected_mob.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
 
 /datum/reagent/toxin/bungotoxin
 	name = "Bungotoxin"

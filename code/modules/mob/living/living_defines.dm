@@ -102,7 +102,11 @@
 	  */
 	var/incorporeal_move = FALSE
 
+	/// Lazylist of all quirks the mob has. These are not singletons
 	var/list/quirks
+	/// Lazylist of all typepaths of personalities the mob has.
+	var/list/personalities
+
 	///a list of surgery datums. generally empty, they're added when the player wants them.
 	var/list/surgeries = list()
 	/// Lazylist of surgery speed modifiers
@@ -269,3 +273,5 @@
 	/// Modify this via add_offsets and remove_offsets,
 	/// NOT directly (and definitely avoid modifying offsets directly)
 	VAR_PRIVATE/list/offsets
+
+	var/eavesdrop_range = EAVESDROP_EXTRA_RANGE

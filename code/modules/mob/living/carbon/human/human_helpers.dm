@@ -282,6 +282,8 @@
 /mob/living/carbon/human/proc/get_mob_height()
 	if(HAS_TRAIT(src, TRAIT_DWARF))
 		return ismonkey(src) ? MONKEY_HEIGHT_DWARF : HUMAN_HEIGHT_DWARF
+	if(HAS_TRAIT(src, TRAIT_TOO_TALL))
+		return ismonkey(src) ? MONKEY_HEIGHT_TALL : HUMAN_HEIGHT_TALLEST
 
 	if(ismonkey(src))
 		return MONKEY_HEIGHT_MEDIUM
@@ -312,6 +314,9 @@
 		clone.add_quirk(original_quircks.type, override_client = client, announce = FALSE)
 	for(var/datum/mutation/human/mutations in dna.mutations)
 		clone.dna.add_mutation(mutations)
+
+	for(var/personality_type in personalities)
+		clone.add_personality(personality_type)
 
 	clone.updateappearance(mutcolor_update = TRUE, mutations_overlay_update = TRUE)
 	clone.domutcheck()

@@ -35,6 +35,7 @@
 
 	var/mob/living/carbon/human/operative = owner.current
 	ADD_TRAIT(operative, TRAIT_NOFEAR_HOLDUPS, INNATE_TRAIT)
+	ADD_TRAIT(operative, TRAIT_DESENSITIZED, INNATE_TRAIT)
 
 	if(!nukeop_outfit) // this variable is null in instances where an antagonist datum is granted via enslaving the mind (/datum/mind/proc/enslave_mind_to_creator), like in golems.
 		return
@@ -55,6 +56,7 @@
 /datum/antagonist/nukeop/on_gain()
 	give_alias()
 	forge_objectives()
+	owner.current.add_personality(/datum/personality/callous)
 	. = ..()
 	equip_op()
 	if(send_to_spawnpoint)

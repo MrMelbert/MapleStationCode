@@ -44,6 +44,10 @@
 	name = "Eye Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
 
+/datum/loadout_item/glasses/trick_blindfold
+	name = "Trick Blindfold"
+	item_path = /obj/item/clothing/glasses/trickblindfold
+
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"
 	item_path = /obj/item/clothing/glasses/cold

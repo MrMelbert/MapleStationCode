@@ -468,7 +468,8 @@
 	hitsound = 'sound/items/welder.ogg'
 	force = on_damage
 	damtype = BURN
-
+	slot_flags = NONE
+	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/flashlight/flare/proc/turn_off()
 	set_light_on(FALSE)
@@ -478,6 +479,8 @@
 	hitsound = initial(hitsound)
 	force = initial(force)
 	damtype = initial(damtype)
+	slot_flags = initial(slot_flags)
+	w_class = initial(w_class)
 	update_brightness()
 
 /obj/item/flashlight/flare/extinguish()

@@ -284,7 +284,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		// How far we are we outside the message range?
 		var/outside_dist = max(raw_dist - message_range, 0)
 		// Out of message range AND out of eavesdrop range
-		if(outside_dist > EAVESDROP_EXTRA_RANGE)
+		if(outside_dist > eavesdrop_range)
 			// Can't see them speak either. No message
 			if(is_blind() || HAS_TRAIT(speaker, TRAIT_INVISIBLE_MAN))
 				return FALSE
@@ -488,11 +488,12 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		message = unintelligize(message)
 
 	tts_filter = list()
-	var/list/data = list(message, tts_message, tts_filter)
+	var/list/data = list(message, tts_message, tts_filter, capitalize_message)
 	SEND_SIGNAL(src, COMSIG_LIVING_TREAT_MESSAGE, data)
 	message = data[TREAT_MESSAGE_ARG]
 	tts_message = data[TREAT_TTS_MESSAGE_ARG]
 	tts_filter = data[TREAT_TTS_FILTER_ARG]
+	capitalize_message = data[TREAT_CAPITALIZE_MESSAGE]
 
 	if(!tts_message)
 		tts_message = message

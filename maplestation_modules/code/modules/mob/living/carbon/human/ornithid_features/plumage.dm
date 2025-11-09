@@ -23,8 +23,8 @@
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
 	return SSaccessories.avian_ears_list
 
-/datum/bodypart_overlay/mutant/plumage/can_draw_on_bodypart(mob/living/carbon/human/human)
-	return !(human.obscured_slots & HIDEHAIR)
+/datum/bodypart_overlay/mutant/plumage/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/sprite_accessory/plumage
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'

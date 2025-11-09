@@ -294,7 +294,7 @@
 	if(methods & VAPOR)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_VAPOR) // Spraying someone with water with the hope to put them out is just simply too funny to me not to add it.
 
-		if(!isfelinid(exposed_mob))
+		if(!HAS_TRAIT(exposed_mob, TRAIT_CATLIKE_GRACE))
 			return
 
 		exposed_mob.incapacitate(1) // startles the felinid, canceling any do_after
@@ -700,7 +700,7 @@
 				affected_mob.visible_message(pick("<b>[affected_mob]</b>'s collar pops up without warning.</span>", "<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms."))
 			else
 				affected_mob.visible_message("<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms.")
-	if(SPT_PROB(5, seconds_per_tick))
+	if(SPT_PROB(5, seconds_per_tick) && HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
 		affected_mob.say(pick("Shit was SO cash.", "You are everything bad in the world.", "What sports do you play, other than 'jack off to naked drawn Japanese people?'", "Don???t be a stranger. Just hit me with your best shot.", "My name is John and I hate every single one of you."), forced = /datum/reagent/spraytan)
 
 #define MUT_MSG_IMMEDIATE 1
@@ -1195,8 +1195,8 @@
 
 /datum/reagent/iron/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.blood_volume < BLOOD_VOLUME_NORMAL&& !is_species(affected_mob, /datum/species/high_skrell, /datum/species/deep_skrell)) // NON-MODULE CHANGE
-		affected_mob.blood_volume += 0.25 * seconds_per_tick
+	if(affected_mob.blood_volume < BLOOD_VOLUME_NORMAL && !is_species(affected_mob, /datum/species/skrell)) // NON-MODULE CHANGE
+		affected_mob.blood_volume += BLOOD_REGEN_FACTOR * seconds_per_tick
 
 /datum/reagent/gold
 	name = "Gold"
@@ -2902,7 +2902,7 @@
 	ant_damage++
 	if(ant_damage < 5) // Makes ant food a little more appetizing, since you won't be screaming as much.
 		return
-	if(SPT_PROB(5, seconds_per_tick))
+	if(SPT_PROB(5, seconds_per_tick) && HAS_PERSONALITY(victim, /datum/personality/whimsical))
 		if(SPT_PROB(5, seconds_per_tick)) //Super rare statement
 			victim.say("AUGH NO NOT THE ANTS! NOT THE ANTS! AAAAUUGH THEY'RE IN MY EYES! MY EYES! AUUGH!!", forced = /datum/reagent/ants)
 		else

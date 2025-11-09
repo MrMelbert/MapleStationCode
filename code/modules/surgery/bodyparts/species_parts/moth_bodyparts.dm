@@ -16,6 +16,9 @@
 	should_draw_greyscale = FALSE
 	wing_types = list(/obj/item/organ/wings/functional/moth/megamoth, /obj/item/organ/wings/functional/moth/mothra)
 
+/obj/item/bodypart/chest/moth/get_butt_sprite()
+	return BUTT_SPRITE_FUZZY
+
 /obj/item/bodypart/arm/left/moth
 	icon = 'icons/mob/human/species/moth/bodyparts.dmi'
 	icon_state = "moth_l_arm"

@@ -175,7 +175,6 @@
 /datum/species/monkey/lizard
 	name = "\improper Kobold"
 	id = SPECIES_MONKEY_LIZARD
-	examine_limb_id = SPECIES_LIZARD
 	inherent_traits = list(
 		// monke
 		TRAIT_GUN_NATURAL,
@@ -191,7 +190,6 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	digitigrade_customization = DIGITIGRADE_FORCED
 	mutant_organs = list(
 		/obj/item/organ/horns = "None",
 		/obj/item/organ/frills = "None",
@@ -212,15 +210,17 @@
 	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
 	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
 
-	ass_image = /datum/species/lizard::ass_image
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/lizmonkey,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/lizmonkey,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/lizmonkey,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -264,5 +264,25 @@
 	wound_resistance = -10
 
 /obj/item/bodypart/head/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey/Initialize(mapload)
 	. = ..()
 	name = "kobold [plaintext_zone]"
