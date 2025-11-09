@@ -88,3 +88,8 @@
 	id_additions = list(
 		"headset_shell",
 	)
+
+/datum/techweb_node/hud
+	id_additions = list(
+		"antiblindnessvisor",
+	)
