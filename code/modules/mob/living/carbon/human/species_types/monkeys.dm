@@ -218,6 +218,10 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(
