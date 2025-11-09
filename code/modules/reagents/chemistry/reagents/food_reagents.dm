@@ -1023,7 +1023,7 @@
 
 /datum/reagent/consumable/char/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(SPT_PROB(13, seconds_per_tick))
+	if(SPT_PROB(13, seconds_per_tick) && HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
 		affected_mob.say(pick_list_replacements(BOOMER_FILE, "boomer"), forced = /datum/reagent/consumable/char)
 
 /datum/reagent/consumable/bbqsauce

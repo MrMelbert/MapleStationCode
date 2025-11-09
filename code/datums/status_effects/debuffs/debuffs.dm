@@ -824,10 +824,10 @@
 	var/mob/living/carbon/human/victim = owner
 	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < HARD_CRIT)
 		if(victim.stat < UNCONSCIOUS) // Unconscious people won't get messages
-			if(!prob(1)) // 99%
-				to_chat(victim, span_userdanger("You're covered in MORE ants!"))
-			else // 1%
+			if(HAS_PERSONALITY(owner, /datum/personality/whimsical) && prob(1))
 				victim.say("AAHH! THIS SITUATION HAS ONLY BEEN MADE WORSE WITH THE ADDITION OF YET MORE ANTS!!", forced = /datum/status_effect/ants)
+			else
+				to_chat(victim, span_userdanger("You're covered in MORE ants!"))
 		ants_remaining += amount_left
 	. = ..()
 

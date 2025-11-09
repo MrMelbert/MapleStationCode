@@ -30,7 +30,7 @@
 	var/random_crit_gib = FALSE
 	if(isliving(target) && prob(1) && random_crits_enabled)
 		var/mob/living/gibbed_dude = target
-		if(gibbed_dude.stat < HARD_CRIT)
+		if(gibbed_dude.stat < HARD_CRIT && HAS_PERSONALITY(gibbed_dude, /datum/personality/whimsical))
 			gibbed_dude.say("Is that a fucking ro-", forced = "hit by rocket")
 			random_crit_gib = TRUE
 	..()
