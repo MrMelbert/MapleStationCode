@@ -243,6 +243,15 @@
 
 			ert_operative.mind.add_antag_datum(ert_antag,ert_team)
 			ert_operative.mind.set_assigned_role(SSjob.GetJobType(ert_antag.ert_job_path))
+			// future melbert todo - tie to ert jobs, make ert jobs not one datum
+			ert_operative.mind.set_level(/datum/skill/electronics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/mechanics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/surgery, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/piloting, SKILL_LEVEL_EXPERT, silent = TRUE)
 
 			//Logging and cleanup
 			ert_operative.log_message("has been selected as \a [ert_antag.name].", LOG_GAME)

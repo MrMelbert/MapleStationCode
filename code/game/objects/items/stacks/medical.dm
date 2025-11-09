@@ -130,9 +130,10 @@
 				span_notice("You begin applying [src] on yourself..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			self_delay * (auto_change_zone ? 1 : 0.9),
+			self_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -149,9 +150,10 @@
 				span_notice("You begin applying [src] on [patient]..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			other_delay * (auto_change_zone ? 1 : 0.9),
+			other_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -178,6 +180,8 @@
 	else
 		CRASH("Stack medical item healing a non-carbon, non-animal mob [patient] ([patient.type])")
 
+	// NON-MODULE CHANGE
+	user.mind?.adjust_experience(/datum/skill/first_aid, user == patient ? 5 : 8)
 	log_combat(user, patient, "healed", src)
 	if(!use(1) || !repeating || amount <= 0)
 		var/atom/alert_loc = QDELETED(src) ? user : src
@@ -460,7 +464,8 @@
 // gauze is only relevant for wounds, which are handled in the wounds themselves
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, healed_zone, silent, auto_change_zone)
 	var/obj/item/bodypart/limb = patient.get_bodypart(healed_zone)
-	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	// NON-MODULE CHANGE
+	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER))
 	var/any_scanned = FALSE
 	for(var/datum/wound/woundies as anything in limb.wounds)
 		if(HAS_TRAIT(woundies, TRAIT_WOUND_SCANNED))

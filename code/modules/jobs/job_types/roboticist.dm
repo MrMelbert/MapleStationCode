@@ -38,6 +38,16 @@
 	rpg_title = "Necromancer"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/cybernetics = SKILL_LEVEL_EXPERT,
+		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/piloting = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/robotics = SKILL_LEVEL_EXPERT,
+		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/job/roboticist/New()
 	. = ..()
@@ -59,7 +69,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/science
 
 	pda_slot = ITEM_SLOT_LPOCKET
-	skillchips = list(/obj/item/skillchip/job/roboticist)
+	// skillchips = list(/obj/item/skillchip/job/roboticist)
 
 /datum/outfit/job/roboticist/mod
 	name = "Roboticist (MODsuit)"

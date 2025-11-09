@@ -31,6 +31,11 @@
 	rpg_title = "Recluse"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/gaming = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/bitrunner
 	name = "Bitrunner"
 	jobtype = /datum/job/bitrunner

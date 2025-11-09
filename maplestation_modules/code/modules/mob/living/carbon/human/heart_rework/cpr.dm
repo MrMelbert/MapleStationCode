@@ -133,7 +133,7 @@
 	target.share_blood_on_touch(src)
 
 	// check panic state
-	var/cpr_certified = HAS_TRAIT(src, TRAIT_CPR_CERTIFIED)
+	var/cpr_certified = HAS_MIND_TRAIT(src, TRAIT_CPR_CERTIFIED)
 	var/should_panic = beat >= BEATS_PER_CPR_CYCLE + 1 && target.get_bpm() <= 0
 	if(panicking)
 		if(!should_panic)

@@ -108,6 +108,10 @@
 			pain_message = "You feel synthetic sensation wash from your [parse_zone(target_zone)], which you can feel again!",
 			mechanical_surgery = TRUE,
 		)
+		// NON-MODULE CHANGE
+		target.cause_pain(bodypart_to_attach.body_zone, -1 * user.get_skill_modifier(/datum/skill/cybernetics, SKILL_VALUE_MODIFIER))
+		if(IS_ROBOTIC_LIMB(bodypart_to_attach))
+			user.mind?.adjust_experience(/datum/skill/cybernetics, 100)
 		return
 	else
 		var/obj/item/bodypart/bodypart_to_attach = target.newBodyPart(target_zone)
@@ -127,6 +131,7 @@
 			pain_message = "You feel a strange sensation from your new [parse_zone(target_zone)].",
 			mechanical_surgery = TRUE,
 		)
+		user.mind?.adjust_experience(/datum/skill/cybernetics, 200)
 		if(istype(tool, /obj/item/chainsaw))
 			qdel(tool)
 			var/obj/item/chainsaw/mounted_chainsaw/new_arm = new(target)

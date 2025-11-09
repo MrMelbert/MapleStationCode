@@ -28,6 +28,14 @@
 	rpg_title = "Adventurer"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mining = SKILL_LEVEL_NOVICE, // i'd make this higher, but i think grinding mining skill IS mining's gameplay
+		/datum/skill/piloting = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/miner
 	name = "Shaft Miner"

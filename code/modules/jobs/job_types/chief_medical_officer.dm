@@ -46,6 +46,16 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_EXPERT,
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_EXPERT,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_MASTER,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/surgery = SKILL_LEVEL_MASTER,
+	)
 
 /datum/job/chief_medical_officer/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
@@ -81,7 +91,7 @@
 		/obj/item/gun/syringe,
 		/obj/item/stamp/head/cmo,
 		)
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/cmo/mod
 	name = "Chief Medical Officer (MODsuit)"

@@ -35,6 +35,11 @@
 	job_flags = STATION_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
 	ignore_human_authority = TRUE
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/job/bridge_assistant/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
 	ADD_TRAIT(spawned, TRAIT_NO_TWOHANDING, JOB_TRAIT)

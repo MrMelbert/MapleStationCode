@@ -26,7 +26,7 @@
 /obj/vehicle/sealed/mecha/proc/try_deal_internal_damage(damage)
 	if(damage < internal_damage_threshold)
 		return
-	if(!prob(internal_damage_probability))
+	if(!prob(internal_damage_probability - get_driver_skill(SKILL_PROBS_MODIFIER)))
 		return
 	var/internal_damage_to_deal = possible_int_damage
 	internal_damage_to_deal &= ~internal_damage

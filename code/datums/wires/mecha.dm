@@ -73,6 +73,7 @@
 		return FALSE
 
 /datum/wires/mecha/can_reveal_wires(mob/user)
-	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
+	// NON-MODULE CHANGE
+	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

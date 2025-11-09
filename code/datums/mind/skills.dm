@@ -1,6 +1,6 @@
 /datum/mind/proc/init_known_skills()
 	for (var/type in GLOB.skill_types)
-		known_skills[type] = list(SKILL_LEVEL_NONE, 0)
+		known_skills[type] = list(SKILL_LVL = SKILL_LEVEL_NONE, SKILL_EXP = 0)
 
 ///Return the amount of EXP needed to go to the next level. Returns 0 if max level
 /datum/mind/proc/exp_needed_to_level_up(skill)
@@ -9,10 +9,18 @@
 		return 0
 	return SKILL_EXP_LIST[lvl+1] - known_skills[skill][SKILL_EXP]
 
-///Adjust experience of a specific skill
-/datum/mind/proc/adjust_experience(skill, amt, silent = FALSE, force_old_level = 0)
+///
+/**
+ * Adjust experience of a specific skill
+ *
+ * * skill: The skill to adjust, typepath
+ * * amt: The amount to adjust the skill by
+ * * silent: If TRUE, don't send messages to the player
+ * * force_old_level: If set to any skill level, we will act as if the skill was at that level before the adjustment, rather than their current level
+ */
+/datum/mind/proc/adjust_experience(skill, amt, silent = FALSE, force_old_level)
 	var/datum/skill/S = GetSkillRef(skill)
-	var/old_level = force_old_level ? force_old_level : known_skills[skill][SKILL_LVL] //Get current level of the S skill
+	var/old_level = force_old_level || known_skills[skill][SKILL_LVL] //Get current level of the S skill
 	experience_multiplier = initial(experience_multiplier)
 	for(var/key in experience_multiplier_reasons)
 		experience_multiplier += experience_multiplier_reasons[key]
@@ -47,8 +55,21 @@
 
 ///Gets the skill's singleton and returns the result of its get_skill_modifier
 /datum/mind/proc/get_skill_modifier(skill, modifier)
-	var/datum/skill/S = GetSkillRef(skill)
-	return S.get_skill_modifier(modifier, known_skills[skill][SKILL_LVL])
+	if(!SSskills.initialized)
+		return 1
+	return SSskills.all_skills[skill].get_skill_modifier(modifier, known_skills[skill][SKILL_LVL])
+
+/// Gets the skill's singleton and returns the result of its get_skill_modifier
+/// If the mind is null, assume as little experience as possible ([SKILL_LEVEL_NONE])
+/mob/proc/get_skill_modifier(skill, modifier)
+	if(!SSskills.initialized)
+		return 1
+	if(isnull(mind))
+		return SSskills.all_skills[skill].get_skill_modifier(modifier, SKILL_LEVEL_NONE)
+	return mind.get_skill_modifier(skill, modifier)
+
+/mob/living/carbon/human/dummy/get_skill_modifier(skill, modifier)
+	return 1
 
 ///Gets the player's current level number from the relevant skill
 /datum/mind/proc/get_skill_level(skill)
@@ -58,21 +79,28 @@
 /datum/mind/proc/get_skill_exp(skill)
 	return known_skills[skill][SKILL_EXP]
 
+/// Gets the what name the player's current level of the skill corresponds to
 /datum/mind/proc/get_skill_level_name(skill)
-	var/level = get_skill_level(skill)
-	return SSskills.level_names[level]
+	return SSskills.level_names[get_skill_level(skill)]
 
 /datum/mind/proc/print_levels(user)
 	var/list/shown_skills = list()
-	for(var/i in known_skills)
-		if(known_skills[i][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
-			shown_skills += i
+	var/list/untrained_skills = list()
+	for(var/datum/skill/known_skill as anything in known_skills)
+		if(known_skills[known_skill][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
+			shown_skills += known_skill
+		else if(initial(known_skill.skill_flags) & SKILL_ALWAYS_PRINT)
+			untrained_skills += known_skill
+
 	if(!length(shown_skills))
-		to_chat(user, span_notice("You don't seem to have any particularly outstanding skills."))
+		to_chat(user, examine_block(span_notice("You don't have any particularly outstanding skills.")))
 		return
-	var/msg = "[span_info("<EM>Your skills</EM>")]\n<span class='notice'>"
-	for(var/i in shown_skills)
-		var/datum/skill/the_skill = i
-		msg += "[initial(the_skill.name)] - [get_skill_level_name(the_skill)]\n"
-	msg += "</span>"
-	to_chat(user, examine_block(msg))
+
+	var/list/skill_strings = list()
+	for(var/datum/skill/shown_skill as anything in shown_skills)
+		skill_strings += span_notice("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
+	for(var/datum/skill/shown_skill as anything in untrained_skills)
+		skill_strings += span_smallnoticeital("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
+
+	sortTim(skill_strings, GLOBAL_PROC_REF(cmp_text_asc))
+	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))

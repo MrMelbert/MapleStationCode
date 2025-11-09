@@ -42,6 +42,11 @@
 		"Librarian",
 	)
 
+	base_skills = list(
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/curator
 	name = "Curator"
 	jobtype = /datum/job/curator
