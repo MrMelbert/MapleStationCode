@@ -231,6 +231,7 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 	if (QDELETED(food))
 		return
 
+	ADD_TRAIT(food, TRAIT_SPAWNED_MOB, INNATE_TRAIT)
 	monkeys--
 	monkeys = round(monkeys, 0.1) //Prevents rounding errors
 	spit_out(food, target_turf)

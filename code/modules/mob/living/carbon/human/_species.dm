@@ -900,8 +900,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
-
 	if(grappled && attacking_bodypart.grappled_attack_verb)
 		atk_verb = attacking_bodypart.grappled_attack_verb
 	target.visible_message(span_danger("[user] [atk_verb]ed [target]!"), \
@@ -923,6 +921,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		attack_sharp = SHARP_EDGED
 	else if(atk_effect == ATTACK_EFFECT_BITE)
 		attack_type = SHARP_POINTY
+
+	var/smack_sound = attacking_bodypart.unarmed_attack_sound
+	if(!attack_sharp && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
+		smack_sound = 'sound/effects/bang.ogg'
+
+	playsound(target.loc, smack_sound, 25, TRUE, -1)
 
 	if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
 		if(damage >= 9)

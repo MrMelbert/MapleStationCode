@@ -1,11 +1,11 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
 #define SAVEFILE_VERSION_MIN 32
 
-//This is the current version, anything below this will attempt to update (if it's not obsolete)
-// You do not need to raise this if you are adding new values that have sane defaults.
-// Only raise this value when changing the meaning/format/name/layout of an existing value
-// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 45.2
+/// This is the current version, anything below this will attempt to update (if it's not obsolete)
+/// You do not need to raise this if you are adding new values that have sane defaults.
+/// Only raise this value when changing the meaning/format/name/layout of an existing value
+/// where you would want the updater procs below to run
+#define SAVEFILE_VERSION_MAX 50
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -110,6 +110,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			new_typepath = /obj/item/clothing/accessory/pride,
 			data_to_migrate = list(INFO_RESKIN = save_data?["pride_pin"]),
 		)
+	if (current_version < 46)
+		migrate_boolean_sound_prefs_to_default_volume()
+	if (current_version < 47)
+		migrate_boolean_sound_prefs_to_default_volume_v2()
 
 	if (current_version < 45.1)
 		migrate_quirks_to_language_menu(save_data)
@@ -119,6 +123,38 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(save_data?["species"] == "felinid")
 			save_data["species"] = /datum/species/human/animid::id
 			save_data["animid_type"] = /datum/animid_type/cat::id
+
+	if (current_version < 48)
+		migrate_quirk_to_loadout(
+			quirk_to_migrate = "Colorist",
+			new_typepath = /obj/item/dyespray,
+		)
+
+	if(current_version < 50)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Extrovert",
+			new_typepath = /datum/personality/extrovert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Introvert",
+			new_typepath = /datum/personality/introvert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Bad Touch",
+			new_typepath = /datum/personality/aloof,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Apathetic",
+			new_typepath = /datum/personality/apathetic,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Snob",
+			new_typepath = /datum/personality/snob,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Spiritual",
+			new_typepath = /datum/personality/spiritual,
+		)
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
