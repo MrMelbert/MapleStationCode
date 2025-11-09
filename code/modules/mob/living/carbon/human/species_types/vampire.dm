@@ -7,7 +7,6 @@
 /datum/species/vampire
 	name = "Vampire"
 	id = SPECIES_VAMPIRE
-	examine_limb_id = SPECIES_HUMAN
 	inherent_traits = list(
 		TRAIT_BLOOD_CLANS,
 		TRAIT_DRINKS_BLOOD,

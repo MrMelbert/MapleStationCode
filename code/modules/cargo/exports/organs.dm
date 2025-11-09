@@ -51,4 +51,3 @@
 	cost = CARGO_CRATE_VALUE
 	unit_name = "cat ears"
 	export_types = list(/obj/item/organ/ears/cat)
-

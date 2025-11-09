@@ -118,6 +118,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if (current_version < 45.1)
 		migrate_quirks_to_language_menu(save_data)
 
+	if (current_version < 45.2)
+		// convert felinid to animid
+		if(save_data?["species"] == "felinid")
+			save_data["species"] = /datum/species/human/animid::id
+			save_data["animid_type"] = /datum/animid_type/cat::id
+
 	if (current_version < 48)
 		migrate_quirk_to_loadout(
 			quirk_to_migrate = "Colorist",

@@ -1226,6 +1226,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Prevents items from being speed potion-ed, but allows their speed to be altered in other ways
 #define TRAIT_NO_SPEED_POTION "no_speed_potion"
 
+/// Makes the mob immune to carpotoxin
+#define TRAIT_CARPOTOXIN_IMMUNE "carpotoxin_immune"
+
 /// Mob gets far less severe negative moodlets from seeing death / blood
 #define TRAIT_DESENSITIZED "desensitized"
 

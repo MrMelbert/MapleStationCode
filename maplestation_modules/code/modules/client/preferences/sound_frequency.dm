@@ -1,7 +1,7 @@
 /datum/preference/numeric/frequency_modifier
 	savefile_key = "speech_sound_frequency_modifier"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 	minimum = 0.5
 	maximum = 2
@@ -16,7 +16,7 @@
 /datum/preference/numeric/pitch_modifier
 	savefile_key = "speech_sound_pitch_modifier"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 	minimum = 0.5
 	maximum = 2
