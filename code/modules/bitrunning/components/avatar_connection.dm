@@ -112,6 +112,19 @@
 		COMSIG_MOB_APPLY_DAMAGE,
 	))
 
+/// Updates our avatar's ID to match our avatar's name.
+/datum/component/avatar_connection/proc/update_avatar_id()
+	var/mob/living/avatar = parent
+	var/obj/item/card/id/our_id = locate() in avatar.get_all_contents()
+	if(isnull(our_id))
+		return
+
+	our_id.registered_name = avatar.real_name
+	our_id.update_label()
+	our_id.update_icon()
+	if(our_id.registered_account)
+		our_id.registered_account.account_holder = avatar.real_name
+
 /// Disconnects the avatar and returns the mind to the old_body.
 /datum/component/avatar_connection/proc/full_avatar_disconnect(cause_damage = FALSE, datum/source)
 #ifndef UNIT_TESTS
