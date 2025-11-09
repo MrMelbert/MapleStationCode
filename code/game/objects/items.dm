@@ -1121,7 +1121,7 @@
 			if("trasen-knox")
 				outline_color = COLOR_THEME_TRASENKNOX
 			if("detective")
-				outline_color = COLOR_THEME_DETECTIV
+				outline_color = COLOR_THEME_DETECTIVE
 			else //this should never happen, hopefully
 				outline_color = COLOR_WHITE
 	if(color)
