@@ -265,7 +265,15 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/stackable_item, \
+		wearables = list(/obj/item/clothing/glasses/hud), \
+		wearable_descriptor = "a HUD", \
+		can_stack = CALLBACK(src, PROC_REF(can_attach_hud)), \
+	)
 
+/obj/item/clothing/glasses/regular/proc/can_attach_hud(obj/item/source, obj/item/clothing/glasses/hud/incoming_hud, mob/user)
+	// Basically, stops you from attaching HUDglasses. We only want the ones with one eye covered.
+	return !(incoming_hud.flags_cover & GLASSESCOVERSEYES)
 
 /obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER

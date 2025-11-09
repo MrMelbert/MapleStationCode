@@ -108,12 +108,13 @@
 	if(tail_spines_overlay) //if there are spines, they should wag with the tail
 		tail_spines_overlay.wagging = TRUE
 	organ_owner.update_body_parts()
-	RegisterSignal(organ_owner, COMSIG_LIVING_DEATH, PROC_REF(owner_died))
+	RegisterSignal(organ_owner, COMSIG_MOB_STATCHANGE, PROC_REF(owner_stat_change))
 	return TRUE
 
-/obj/item/organ/tail/proc/owner_died(mob/living/carbon/organ_owner) // Resisting the urge to replace owner with daddy
+/obj/item/organ/tail/proc/owner_stat_change(mob/living/carbon/organ_owner) // Resisting the urge to replace owner with daddy
 	SIGNAL_HANDLER
-	stop_wag(organ_owner)
+	if(organ_owner.stat >= SOFT_CRIT)
+		stop_wag(organ_owner)
 
 ///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
 ///Returns false if the wag stopping worked, true otherwise
@@ -134,7 +135,7 @@
 		return succeeded
 
 	organ_owner.update_body_parts()
-	UnregisterSignal(organ_owner, COMSIG_LIVING_DEATH)
+	UnregisterSignal(organ_owner, COMSIG_MOB_STATCHANGE)
 	return succeeded
 
 ///Tail parent type, with wagging functionality
