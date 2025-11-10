@@ -22,7 +22,7 @@
 
 /obj/item/statue/custom/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/paint_palette))
-		user.balloon_alert(user, "Coloring in...")
+		user.balloon_alert(user, "coloring in...")
 		content_ma.filters = null
 		update_appearance()
 		playsound(src, 'sound/misc/soggy.ogg', 25, TRUE)
