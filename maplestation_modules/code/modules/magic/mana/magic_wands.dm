@@ -1,7 +1,7 @@
 // wands, basically magic wrenches, their main use is to initiate and manage player magic transfer
 /obj/item/magic_wand
 	name = "Makeshift Wand"
-	desc = "A 'wand' made out of scraps and reused office materials. Unless this is a part of your religion or something, you should probably ditch this for something better."
+	desc = "A 'wand' made out of scraps and reused office materials. Unless this is a part of your religion or something, you should probably ditch this for something better when you can."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "makeshift"
 	w_class = WEIGHT_CLASS_NORMAL // meant to be big and hard to store, additional reason to not use this
@@ -32,7 +32,7 @@
 	var/transfer_confirmation = (tgui_alert(user, "Do you want to transfer mana from [interacting_with]?", "Transfer Mana?", options) == "Yes")
 	if(!transfer_confirmation || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
 		return
-	balloon_alert(user, "transferring mana....")
+	balloon_alert(user, "transferring mana...")
 	target_mana_pool.start_transfer(user_pool)
 
 /* /obj/item/magic_wand/attack_self(mob/user, modifiers)
@@ -42,3 +42,17 @@
 		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
 		return */
+
+/obj/item/magic_wand/techie
+	name = "Arcane Field Modulator"
+	desc = "An overengineered device produced and researched on board to manipulate and move residual mana within objects."
+	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
+	icon_state = "makeshift"
+	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
+
+/obj/item/magic_wand/wooden
+	name = "Wooden Wand"
+	desc = "A traditional wood body and gold capped wand. Can still manipulate mana surprisingly well for its simplicity."
+	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
+	icon_state = "makeshift"
+	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
