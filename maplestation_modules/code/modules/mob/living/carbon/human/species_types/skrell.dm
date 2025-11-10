@@ -90,9 +90,8 @@
 	feature_key = "head_tentacles"
 	dyable = TRUE
 
-/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
-	return !isnull(our_head) && IS_ORGANIC_LIMB(our_head) && !(human.obscured_slots & HIDEHAIR)
+/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return IS_ORGANIC_LIMB(bodypart_owner) && !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return SSaccessories.head_tentacles_list

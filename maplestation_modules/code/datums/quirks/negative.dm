@@ -4,9 +4,6 @@
 /datum/quirk/item_quirk/nearsighted
 	value = -2
 
-/datum/quirk/bad_touch
-	value = -2
-
 /datum/quirk/numb
 	value = -2 // This is a small buff but a large nerf so it's balanced at a relatively low cost
 	desc = "You don't feel pain as much as others. \

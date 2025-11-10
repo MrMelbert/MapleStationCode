@@ -17,6 +17,7 @@
 
 	if(stat != DEAD)
 		death(TRUE, "being torn apart")
+	send_death_moodlets(/datum/mood_event/see_death)
 
 	ghostize()
 	spill_organs(drop_bitflags)
@@ -80,6 +81,8 @@
 		ADD_TRAIT(src, TRAIT_FORCED_STANDING, TRAIT_GENERIC)
 	death(TRUE, "being vaporized")
 
+	send_death_moodlets(/datum/mood_event/see_death/dusted)
+
 	if(drop_items)
 		unequip_everything()
 
@@ -137,6 +140,47 @@
 	ash.pixel_z = -5
 	ash.pixel_w = rand(-1, 1)
 
+/**
+ * Sends a moodlet to all nearby living mobs that are not blind or unconscious
+ * to indicate that they saw this mob die (and thus feel bad about it)
+ *
+ * Note: If the mob already has a death moodlet, and the same moodlet is applied, the existing moodlet will simply worsen.
+ * Note: If the mob has a death moodlet, and a worse moodlet is applied, the worse moodlet will take priority.
+ *
+ * Arguments:
+ * * moodlet - The type of moodlet to send. Defaults to [/datum/mood_event/see_death]
+ */
+/mob/living/proc/send_death_moodlets(datum/mood_event/moodlet = /datum/mood_event/see_death)
+	if(flags_1 & HOLOGRAM_1)
+		return
+
+	for(var/mob/living/nearby in viewers(src))
+		if(nearby.stat >= UNCONSCIOUS || nearby.is_blind())
+			continue
+		nearby.add_mood_event("saw_death", moodlet, src)
+
+/mob/living/silicon/send_death_moodlets(datum/mood_event/moodlet)
+	return // You are a machine
+
+/mob/living/basic/send_death_moodlets(datum/mood_event/moodlet)
+	if(!(basic_mob_flags & SENDS_DEATH_MOODLETS))
+		return
+	. = ..()
+	add_memory_in_range(src, 7, /datum/memory/pet_died, deuteragonist = src) //Protagonist is the person memorizing it
+
+/mob/living/simple_animal/send_death_moodlets(datum/mood_event/moodlet)
+	return // I don't care about you anymore
+
+/mob/living/carbon/human/send_death_moodlets(datum/mood_event/moodlet)
+	for(var/datum/surgery/organ_manipulation/manipulation in surgeries)
+		// This check exists so debraining someone doesn't make the surgeon super sad
+		if(manipulation.location == BODY_ZONE_HEAD && body_position == LYING_DOWN)
+			return
+
+	. = ..()
+	var/memory_type = ispath(moodlet, /datum/mood_event/see_death/gibbed) ? /datum/memory/witness_gib : /datum/memory/witnessed_death
+	add_memory_in_range(src, 7, memory_type, protagonist = src)
+
 /*
  * Called when the mob dies. Can also be called manually to kill a mob.
  *
@@ -147,8 +191,10 @@
 	if(stat == DEAD)
 		return FALSE
 
-	if(!gibbed && (death_sound || death_message))
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
+	if(!gibbed)
+		if(death_sound || death_message || (living_flags & ALWAYS_DEATHGASP))
+			INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
+		send_death_moodlets(/datum/mood_event/see_death)
 
 	set_stat(DEAD)
 	SShealth_updates.queue_update(src, UPDATE_MEDHUD) // This is just for weird case where death is called out of nowhere
@@ -161,8 +207,9 @@
 	var/player_mob_check = mind && mind.name && mind.active
 	// and, display a death message if the area allows it (or if they're in nullspace)
 	var/valid_area_check = !death_area || !(death_area.area_flags & NO_DEATH_MESSAGE)
-	if(player_mob_check && valid_area_check)
-		deadchat_broadcast(" has died at <b>[get_area_name(death_turf)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = death_turf, message_type=DEADCHAT_DEATHRATTLE)
+	if(player_mob_check)
+		if(valid_area_check)
+			deadchat_broadcast(" has died at <b>[get_area_name(death_turf)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = death_turf, message_type=DEADCHAT_DEATHRATTLE)
 		if(SSlag_switch.measures[DISABLE_DEAD_KEYLOOP] && !client?.holder)
 			to_chat(src, span_deadsay(span_big("Observer freelook is disabled.\nPlease use Orbit, Teleport, and Jump to look around.")))
 			ghostize(TRUE)

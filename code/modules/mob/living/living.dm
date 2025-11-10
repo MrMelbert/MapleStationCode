@@ -36,8 +36,9 @@
 		else
 			effect.be_replaced()
 
-	if(buckled)
-		buckled.unbuckle_mob(src,force=1)
+	clear_personalities() // must be done for the personalities which process
+
+	buckled?.unbuckle_mob(src,force=1)
 
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
@@ -46,6 +47,7 @@
 		QDEL_LIST(imaginary_group)
 	QDEL_LAZYLIST(diseases)
 	QDEL_LIST(surgeries)
+	QDEL_LAZYLIST(quirks)
 	return ..()
 
 /mob/living/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
@@ -2362,6 +2364,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/neck)
 		if(GRAB_KILL)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
+
+/// Sprite to show for photocopying mob butts
+/mob/living/proc/get_butt_sprite()
+	return null
 
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)

@@ -133,7 +133,7 @@
 	mood_change = -3
 
 /datum/mood_event/revival_sickess/add_effects(mob/living/adder)
-	if(adder.has_quirk(/datum/quirk/apathetic))
+	if(HAS_PERSONALITY(owner, /datum/personality/apathetic))
 		mood_change = 0
 
 /**

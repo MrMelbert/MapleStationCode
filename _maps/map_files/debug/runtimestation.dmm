@@ -1840,6 +1840,7 @@
 /turf/open/floor/iron,
 /area/station/science)
 "gZ" = (
+/obj/machinery/hydroponics/constructable,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "he" = (
@@ -2556,6 +2557,7 @@
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
 /obj/machinery/airalarm/directional/east,
+/obj/machinery/hydroponics/constructable,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "Rb" = (

@@ -15,10 +15,9 @@
 #define CLOTH (1<<14)
 #define NUTS (1<<15)
 #define SEAFOOD (1<<16)
-#define ORANGES (1<<17)
-#define BUGS (1<<18)
-#define GORE (1<<19)
-#define STONE (1<<20)
+#define BUGS (1<<17)
+#define GORE (1<<18)
+#define STONE (1<<19)
 
 DEFINE_BITFIELD(foodtypes, list(
 	"MEAT" = MEAT,
@@ -38,7 +37,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH" = CLOTH,
 	"NUTS" = NUTS,
 	"SEAFOOD" = SEAFOOD,
-	"ORANGES" = ORANGES,
 	"BUGS" = BUGS,
 	"GORE" = GORE,
 	"STONE" = STONE,
@@ -63,7 +61,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH", \
 	"NUTS", \
 	"SEAFOOD", \
-	"ORANGES", \
 	"BUGS", \
 	"GORE", \
 	"STONE", \
@@ -128,18 +125,7 @@ GLOBAL_LIST_INIT(food_quality_description, list(
 	FOOD_QUALITY_TOP = "godlike",
 ))
 
-/// Mood events for food quality
-GLOBAL_LIST_INIT(food_quality_events, list(
-	FOOD_QUALITY_NORMAL = /datum/mood_event/food,
-	FOOD_QUALITY_NICE = /datum/mood_event/food/nice,
-	FOOD_QUALITY_GOOD = /datum/mood_event/food/good,
-	FOOD_QUALITY_VERYGOOD = /datum/mood_event/food/verygood,
-	FOOD_QUALITY_FANTASTIC = /datum/mood_event/food/fantastic,
-	FOOD_QUALITY_AMAZING = /datum/mood_event/food/amazing,
-	FOOD_QUALITY_TOP = /datum/mood_event/food/top,
-))
-
-/// Crafted food buffs grouped by crafting_complexity
+/// Weighted lists of crafted food buffs randomly given according to crafting_complexity unless the food has a specific buff
 GLOBAL_LIST_INIT(food_buffs, list(
 	FOOD_COMPLEXITY_1 = list(
 		/datum/status_effect/food/haste = 1,

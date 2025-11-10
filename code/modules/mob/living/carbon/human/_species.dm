@@ -17,8 +17,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species
 	///If the game needs to manually check your race to do something not included in a proc here, it will use this.
 	var/id
-	///This is used for children, it will determine their default limb ID for use of examine. See [/mob/living/carbon/human/proc/examine].
-	var/examine_limb_id
 	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Leave them generic for other servers to customize.
 	var/name
 	/**
@@ -42,8 +40,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///The alpha used by the facial hair. 255 is completely solid, 0 is invisible.
 	var/facial_hair_alpha = 255
 
-	///Never, Optional, or Forced digi legs?
-	var/digitigrade_customization = DIGITIGRADE_NEVER
 	/// If your race uses a non standard bloodtype (/datum/blood_type typepath OR /datum/reagent typepath)
 	var/exotic_bloodtype
 	///The rate at which blood is passively drained by having the blood deficiency quirk. Some races such as slimepeople can regen their blood at different rates so this is to account for that
@@ -67,6 +63,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
+	///Digitigrade replacements for this species
+	var/list/digitigrade_legs
 	///Internal organs that are unique to this race, like a tail or other cosmetic organs. list(typepath of organ 1, typepath of organ 2 = "Round").
 	var/list/mutant_organs = list()
 	///Replaces default brain with a different organ
@@ -153,9 +151,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie
 
-	///For custom overrides for species ass images
-	var/icon/ass_image
-
 	/// List of family heirlooms this species can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
@@ -194,9 +189,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/New()
 	if(!plural_form)
 		plural_form = "[name]\s"
-	if(!examine_limb_id)
-		examine_limb_id = id
-
 	return ..()
 
 /// Gets a list of all species available to choose in roundstart.
@@ -623,7 +615,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/list/new_features = list()
 	var/static/list/organs_to_randomize = list()
-	for(var/obj/item/organ/organ_path as anything in mutant_organs)
+	for(var/obj/item/organ/organ_path as anything in get_mut_organs())
 		if(!organ_path.bodypart_overlay)
 			continue
 		var/overlay_path = initial(organ_path.bodypart_overlay)
@@ -908,8 +900,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
-
 	if(grappled && attacking_bodypart.grappled_attack_verb)
 		atk_verb = attacking_bodypart.grappled_attack_verb
 	target.visible_message(span_danger("[user] [atk_verb]ed [target]!"), \
@@ -931,6 +921,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		attack_sharp = SHARP_EDGED
 	else if(atk_effect == ATTACK_EFFECT_BITE)
 		attack_type = SHARP_POINTY
+
+	var/smack_sound = attacking_bodypart.unarmed_attack_sound
+	if(!attack_sharp && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
+		smack_sound = 'sound/effects/bang.ogg'
+
+	playsound(target.loc, smack_sound, 25, TRUE, -1)
 
 	if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
 		if(damage >= 9)
@@ -1062,6 +1058,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return features
 
+/// Returns a list of features not applicable to the species given a preference set.
+/datum/species/proc/get_filtered_features_per_prefs(datum/preferences/prefs)
+	return list()
+
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)
@@ -1170,12 +1170,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
-	if((TRAIT_NOHUNGER in inherent_traits) || !mutanttongue)
+	return (TRAIT_NOHUNGER in inherent_traits) ? null : get_diet_from_tongue(mutanttongue)
+
+/// Helper for turning a tongue's typepaths into diet data
+/datum/species/proc/get_diet_from_tongue(obj/item/organ/tongue/fake_tongue)
+	if(!fake_tongue)
 		return null
 
-	var/static/list/food_flags = FOOD_FLAGS
-	var/obj/item/organ/tongue/fake_tongue = mutanttongue
-
+	var/list/food_flags = FOOD_FLAGS
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
 		"disliked_food" = bitfield_to_list(initial(fake_tongue.disliked_foodtypes), food_flags),
@@ -1595,9 +1597,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	//Note for future: Potentionally add a new C.dna.species() to build a template species for more accurate limb replacement
 
 	var/list/final_bodypart_overrides = new_species.bodypart_overrides.Copy()
-	if((new_species.digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == DIGITIGRADE_LEGS) || new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-		final_bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		final_bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+	if(target.dna.features["legs"] == DIGITIGRADE_LEGS && length(digitigrade_legs))
+		final_bodypart_overrides[BODY_ZONE_R_LEG] = digitigrade_legs[BODY_ZONE_R_LEG]
+		final_bodypart_overrides[BODY_ZONE_L_LEG] = digitigrade_legs[BODY_ZONE_L_LEG]
 
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
