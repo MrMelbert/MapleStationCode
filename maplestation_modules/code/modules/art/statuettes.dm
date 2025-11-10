@@ -20,6 +20,15 @@
 	content_ma = null
 	return ..()
 
+/obj/item/statue/custom/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/paint_palette))
+		user.balloon_alert(user, "Coloring in...")
+		content_ma.filters = null
+		update_appearance()
+		playsound(src, 'sound/misc/soggy.ogg', 25, TRUE)
+		return ITEM_INTERACT_SUCCESS
+	return ..()
+
 /obj/item/statue/custom/proc/set_visuals(model_appearance)
 	if(content_ma)
 		QDEL_NULL(content_ma)
@@ -70,7 +79,7 @@
 //Inhand version of a carving block that doesnt need a chisel
 /obj/item/modeling_block
 	name = "Modeling block"
-	desc = "Ready for sculpting. Look for a subject and use in hand to sculpt."
+	desc = "Ready for sculpting. Look for a subject and use in hand to sculpt. Using a paint palette on the finished statuette will color it in just like the original subject."
 	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "block"
 	w_class = WEIGHT_CLASS_SMALL
