@@ -1450,7 +1450,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	item_record.amount--
-	if(usr.CanReach(src) && usr.put_in_hands(vended_item))
+	if(usr.CanReach(src) && try_put_in_hand(vended_item, usr))
 		to_chat(usr, span_notice("You take [item_record.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(format_text(item_record.name))] falls onto the floor!"))

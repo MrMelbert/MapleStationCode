@@ -311,13 +311,17 @@
 /obj/structure/table/proc/table_place_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(tool.item_flags & ABSTRACT)
 		return NONE
-	if(!user.transferItemToLoc(tool, drop_location(), silent = FALSE))
-		return ITEM_INTERACT_BLOCKING
+
+	var/x_offset = 0
+	var/y_offset = 0
 	// Items are centered by default, but we move them if click ICON_X and ICON_Y are available
 	if(LAZYACCESS(modifiers, ICON_X) && LAZYACCESS(modifiers, ICON_Y))
 		// Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-		tool.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size*0.5), world.icon_size*0.5)
-		tool.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size*0.5), world.icon_size*0.5)
+		x_offset = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(ICON_SIZE_X*0.5), ICON_SIZE_X*0.5)
+		y_offset = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(ICON_SIZE_Y*0.5), ICON_SIZE_Y*0.5)
+
+	if(!user.transfer_item_to_turf(tool, get_turf(src), x_offset, y_offset, silent = FALSE))
+		return ITEM_INTERACT_BLOCKING
 	AfterPutItemOnTable(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
@@ -955,7 +959,7 @@
 		return .
 	if((tool.item_flags & ABSTRACT) || (user.combat_mode && !(tool.item_flags & NOBLUDGEON)))
 		return NONE
-	if(user.transferItemToLoc(tool, drop_location(), silent = FALSE))
+	if(user.transfer_item_to_turf(tool, loc))
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 

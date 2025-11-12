@@ -312,7 +312,7 @@
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix
 	name = "\improper Anesthetic mix"
-	desc = "A mixture of N2O and Oxygen"
+	desc = "A mixture of N2O and Oxygen."
 	icon_state = "/obj/machinery/portable_atmospherics/canister/anesthetic_mix"
 	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe

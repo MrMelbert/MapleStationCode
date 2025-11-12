@@ -312,10 +312,7 @@
 	if(crew_manifest_update)
 		GLOB.manifest.modify(computer_id_slot.registered_name, computer_id_slot.assignment, computer_id_slot.get_trim_assignment())
 
-	if(user && !issilicon(user) && in_range(src, user))
-		user.put_in_hands(computer_id_slot)
-	else
-		computer_id_slot.forceMove(drop_location())
+	try_put_in_hand(computer_id_slot, user)
 
 	computer_id_slot = null
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, FALSE)
