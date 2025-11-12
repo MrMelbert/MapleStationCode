@@ -62,7 +62,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/med
 	messenger = /obj/item/storage/backpack/messenger/med
 
-	box = /obj/item/storage/box/survival/medical
+	box = /obj/item/storage/pouch/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	skillchips = list(/obj/item/skillchip/entrails_reader)
 
