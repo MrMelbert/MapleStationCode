@@ -15,6 +15,11 @@
 /// from /obj/obj_reskin: (mob/user, skin)
 #define COMSIG_OBJ_RESKIN "obj_reskin"
 
+/// from /datum/component/subtype_picker/pick_subtype(): (obj/item/old_item, mob/picker)
+#define COMSIG_ITEM_SUBTYPE_PICKER_SELECTED "item_subtype_picker_selected"
+/// from /datum/component/subtype_picker/pick_subtype(): (obj/item/new_item, mob/picker)
+#define COMSIG_ITEM_SUBTYPE_PICKER_REPLACED "item_subtype_picker_replaced"
+
 // /obj/machinery signals
 
 ///from /obj/machinery/atom_break(damage_flag): (damage_flag)

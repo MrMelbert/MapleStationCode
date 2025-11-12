@@ -26,7 +26,10 @@
 		/datum/job_department/engineering,
 		)
 
-	family_heirlooms = list(/obj/item/lighter, /obj/item/lighter/greyscale, /obj/item/storage/box/matches)
+	family_heirlooms = list(
+		/obj/item/lighter,
+		/obj/item/lighter/greyscale,
+	)
 
 	mail_goodies = list(
 		/obj/item/rpd_upgrade/unwrench = 30,

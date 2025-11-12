@@ -28,7 +28,9 @@
 		/datum/job_department/science,
 		)
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/toy/plush/slimeplushie,
+	)
 
 	mail_goodies = list(
 		/obj/item/raw_anomaly_core/random = 10,

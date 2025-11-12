@@ -31,7 +31,9 @@
 		/obj/item/reagent_containers/spray/waterflower/superlube = 1 // Superlube, good lord.
 	)
 
-	family_heirlooms = list(/obj/item/bikehorn/golden)
+	family_heirlooms = list(
+		/obj/item/bikehorn/golden,
+	)
 	rpg_title = "Jester"
 	job_flags = STATION_JOB_FLAGS
 

@@ -26,7 +26,7 @@
 		/obj/item/cultivator,
 		/obj/item/reagent_containers/cup/watering_can/wood,
 		/obj/item/toy/plush/beeplushie,
-		)
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/bottle/mutagen = 20,

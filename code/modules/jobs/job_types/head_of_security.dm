@@ -33,7 +33,9 @@
 	display_order = JOB_DISPLAY_ORDER_HEAD_OF_SECURITY
 	bounty_types = CIV_JOB_SEC
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 	rpg_title = "Guard Leader"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 

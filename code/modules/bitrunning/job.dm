@@ -18,7 +18,9 @@
 		/datum/job_department/cargo,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind)
+	// family_heirlooms = list(
+	// 	/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+	// )
 
 	mail_goodies = list(
 		/obj/item/food/cornchips = 1,
