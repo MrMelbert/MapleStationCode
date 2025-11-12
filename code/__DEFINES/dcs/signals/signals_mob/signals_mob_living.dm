@@ -23,6 +23,7 @@
 #define COMSIG_LIVING_DOORCRUSHED "living_doorcrush"
 ///from base of mob/living/resist() (/mob/living)
 #define COMSIG_LIVING_RESIST "living_resist"
+	#define RESIST_HANDLED (1<<0)
 ///from base of mob/living/ignite_mob() (/mob/living)
 #define COMSIG_LIVING_IGNITED "living_ignite"
 ///from base of mob/living/extinguish_mob() (/mob/living)
@@ -256,7 +257,9 @@
 /// Sent from a mob to their loc when starting to remove cuffs on itself
 #define COMSIG_MOB_REMOVING_CUFFS "living_removing_cuffs"
 	/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
-	#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+	#define BLOCK_CUFF_REMOVAL (1<<0)
+#define COMSIG_MOB_REMOVED_CUFFS "living_removed_cuffs"
+	#define BREAK_CUFFS (1<<1)
 
 /// Sent to a mob grabbing another mob: (mob/living/grabbing)
 #define COMSIG_LIVING_GRAB "living_grab"
