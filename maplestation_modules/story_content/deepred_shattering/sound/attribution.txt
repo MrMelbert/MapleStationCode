@@ -1,1 +1,1 @@
-techblaster.ogg and techpowerup.ogg are sound effects taken from the Terraria Calamity mod under CC BY-NC-SA 3.0.
+techblaster.ogg, techpowerup.ogg, and techexplosion.ogg are sound effects taken from the Terraria Calamity mod under CC BY-NC-SA 3.0.
