@@ -94,7 +94,6 @@
 
 	readout += "\nThe effects of each strike can be mitigated by utilizing [span_warning("[armour_type_against_stun]")] armor."
 
-	readout += "\nIt has a stun armor-piercing capability of [span_warning("[get_stun_penetration_value()]%")]."
 	return readout.Join("\n")
 
 /**
@@ -241,8 +240,7 @@
 		// NON-MODULE CHANGES
 		if(target != user)
 			target.set_headset_block_if_lower(4 SECONDS)
-		var/effective_armour_penetration = get_stun_penetration_value()
-		var/armour_block = target.run_armor_check(null, armour_type_against_stun, null, null, effective_armour_penetration)
+		var/armour_block = target.run_armor_check(null, armour_type_against_stun, null, null)
 		target.apply_damage(stamina_damage, PAIN, spread_damage = TRUE, blocked = armour_block)
 		if(!trait_check)
 			target.Knockdown((isnull(stun_override) ? knockdown_time : stun_override))
@@ -328,10 +326,6 @@
 		user.do_attack_animation(user)
 	return
 
-/// Handles the penetration value of our baton, called during baton_effect()
-/obj/item/melee/baton/proc/get_stun_penetration_value()
-	return stun_armour_penetration
-
 /obj/item/conversion_kit
 	name = "conversion kit"
 	desc = "A strange box containing wood working tools and an instruction paper to turn stun batons into something else."
@@ -385,7 +379,7 @@
 
 /obj/item/melee/baton/telescopic/suicide_act(mob/living/user)
 	var/mob/living/carbon/human/human_user = user
-	var/obj/item/organ/internal/brain/our_brain = human_user.get_organ_by_type(/obj/item/organ/internal/brain)
+	var/obj/item/organ/brain/our_brain = human_user.get_organ_by_type(/obj/item/organ/brain)
 
 	user.visible_message(span_suicide("[user] stuffs [src] up [user.p_their()] nose and presses the 'extend' button! It looks like [user.p_theyre()] trying to clear [user.p_their()] mind."))
 	if(active)
@@ -485,8 +479,6 @@
 	force_say_chance = 50
 	stamina_damage = 60
 	armour_type_against_stun = ENERGY
-	// This value is added to our stun armour penetration when called by get_stun_penetration_value(). For giving some batons extra OOMPH.
-	var/additional_stun_armour_penetration = 0
 	knockdown_time = 0 SECONDS
 	clumsy_knockdown_time = 15 SECONDS
 	cooldown = 1.5 SECONDS
@@ -512,8 +504,6 @@
 	var/convertible = TRUE //if it can be converted with a conversion kit
 	///Whether or not our inhand changes when active.
 	var/active_changes_inhand = TRUE
-	///Whether or not our baton visibly changes the inhand sprite based on inserted cell
-	var/tip_changes_color = TRUE
 	///When set, inhand_icon_state defaults to this instead of base_icon_state
 	var/base_inhand_state = null
 
@@ -585,10 +575,7 @@
 	if(active)
 		icon_state = "[base_icon_state]_active"
 		if(active_changes_inhand)
-			if(tip_changes_color)
-				inhand_icon_state = "[base_inhand]_active_[get_baton_tip_color()]"
-			else
-				inhand_icon_state = "[base_inhand]_active"
+			inhand_icon_state = "[base_inhand]_active"
 		return ..()
 	if(!cell)
 		icon_state = "[base_icon_state]_nocell"
@@ -724,13 +711,6 @@
 	stun_override = 0 //Avoids knocking people down prematurely.
 	return ..()
 
-/obj/item/melee/baton/security/get_stun_penetration_value()
-	if(cell)
-		var/chargepower = cell.maxcharge
-		var/zap_pen = clamp(chargepower/STANDARD_CELL_CHARGE, 0, 100)
-		return zap_pen + additional_stun_armour_penetration
-	return stun_armour_penetration + additional_stun_armour_penetration
-
 /*
  * After a target is hit, we apply some status effects.
  * After a period of time, we then check to see what stun duration we give.
@@ -824,7 +804,6 @@
 	slot_flags = ITEM_SLOT_BACK
 	convertible = FALSE
 	active_changes_inhand = FALSE
-	tip_changes_color = FALSE
 	var/obj/item/assembly/igniter/sparkler
 	///Determines whether or not we can improve the cattleprod into a new type. Prevents turning the cattleprod subtypes into different subtypes, or wasting materials on making it....another version of itself.
 	var/can_upgrade = TRUE
@@ -890,7 +869,6 @@
 	throw_stun_chance = 99  //Have you prayed today?
 	convertible = FALSE
 	active_changes_inhand = FALSE
-	tip_changes_color = FALSE
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT*2, /datum/material/silver = SHEET_MATERIAL_AMOUNT*5, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
 
 /obj/item/melee/baton/security/boomerang/Initialize(mapload)

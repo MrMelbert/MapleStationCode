@@ -1,18 +1,30 @@
-/proc/generate_icon_with_head_accessory(datum/sprite_accessory/sprite_accessory, y_offset = 0)
+/proc/generate_icon_with_head_accessory(datum/sprite_accessory/main_accessory, datum/sprite_accessory/ear_accessory, ear_accessory_state)
 	var/static/datum/universal_icon/head_icon
 	if (isnull(head_icon))
 		head_icon = uni_icon('icons/mob/human/bodyparts_greyscale.dmi', "human_head_m")
 		head_icon.blend_color(skintone2hex("caucasian1"), ICON_MULTIPLY)
 
 	var/datum/universal_icon/final_icon = head_icon.copy()
-	if (!isnull(sprite_accessory) && sprite_accessory.icon_state != SPRITE_ACCESSORY_NONE)
-		ASSERT(istype(sprite_accessory))
+	if (!isnull(main_accessory) && main_accessory.icon_state != SPRITE_ACCESSORY_NONE)
+		ASSERT(istype(main_accessory))
 
-		var/datum/universal_icon/head_accessory_icon = uni_icon(sprite_accessory.icon, sprite_accessory.icon_state)
-		if(y_offset)
-			head_accessory_icon.shift(NORTH, y_offset)
-		head_accessory_icon.blend_color(COLOR_DARK_BROWN, ICON_MULTIPLY)
+		var/datum/universal_icon/head_accessory_icon = uni_icon(main_accessory.icon, main_accessory.icon_state)
+		if(istype(main_accessory, /datum/sprite_accessory/hair))
+			var/datum/sprite_accessory/hair/hair_accessory = main_accessory
+			head_accessory_icon.shift(NORTH, hair_accessory.y_offset)
+		head_accessory_icon.blend_color(COLOR_BROWNER_BROWN, ICON_MULTIPLY)
 		final_icon.blend_icon(head_accessory_icon, ICON_OVERLAY)
+
+	if(!isnull(ear_accessory) && ear_accessory.icon_state != SPRITE_ACCESSORY_NONE)
+		ASSERT(istype(ear_accessory) && ear_accessory_state)
+
+		var/datum/universal_icon/base_ears = uni_icon(ear_accessory.icon, "m_[ear_accessory_state]_[ear_accessory.icon_state]_ADJ")
+		base_ears.blend_color(COLOR_BROWNER_BROWN, ICON_MULTIPLY)
+		final_icon.blend_icon(base_ears, ICON_OVERLAY)
+
+		var/datum/universal_icon/inner_ears = uni_icon(ear_accessory.icon, "m_[ear_accessory_state]_[ear_accessory.icon_state]_FRONT")
+		inner_ears.blend_color(skintone2hex("caucasian1"), ICON_MULTIPLY)
+		final_icon.blend_icon(inner_ears, ICON_OVERLAY)
 
 	final_icon.crop(10, 19, 22, 31)
 	final_icon.scale(32, 32)
@@ -32,7 +44,7 @@
 	if(!hetero)
 		target.eye_color_right = value
 
-	var/obj/item/organ/internal/eyes/eyes_organ = target.get_organ_by_type(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes_organ = target.get_organ_by_type(/obj/item/organ/eyes)
 	if (!eyes_organ || !istype(eyes_organ))
 		return
 
@@ -55,7 +67,7 @@
 	priority = PREFERENCE_PRORITY_LATE_BODY_TYPE
 	savefile_key = "facial_style_name"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
+	category = PREFERENCE_CATEGORY_HAIR
 	main_feature_name = "Facial hair"
 	should_generate_icons = TRUE
 	relevant_head_flag = HEAD_FACIAL_HAIR
@@ -158,7 +170,7 @@
 	priority = PREFERENCE_PRIORITY_BODY_TYPE // Happens after gender so we can picka hairstyle based on that
 	savefile_key = "hairstyle_name"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
+	category = PREFERENCE_CATEGORY_HAIR
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
 	relevant_head_flag = HEAD_HAIR
@@ -170,8 +182,7 @@
 	return assoc_to_keys_features(SSaccessories.hairstyles_list)
 
 /datum/preference/choiced/hairstyle/icon_for(value)
-	var/datum/sprite_accessory/hair/hairstyle = SSaccessories.hairstyles_list[value]
-	return generate_icon_with_head_accessory(hairstyle, hairstyle?.y_offset)
+	return generate_icon_with_head_accessory(SSaccessories.hairstyles_list[value])
 
 /datum/preference/choiced/hairstyle/apply_to_human(mob/living/carbon/human/target, value)
 	target.set_hairstyle(value, update = FALSE)

@@ -1,10 +1,10 @@
 /datum/preference/choiced/pod_hair
 	savefile_key = "feature_pod_hair"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
+	category = PREFERENCE_CATEGORY_HAIR
 	main_feature_name = "Hairstyle"
 	should_generate_icons = TRUE
-	relevant_external_organ = /obj/item/organ/external/pod_hair
+	relevant_external_organ = /obj/item/organ/pod_hair
 
 /datum/preference/choiced/pod_hair/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.pod_hair_list)

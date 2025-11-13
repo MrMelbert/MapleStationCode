@@ -26,18 +26,25 @@
 	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-// Manually adding the hair related preferences to the lizard features list // melbert todo refactor later
+#define HAIR_PREFERENCES list( \
+	/datum/preference/choiced/facial_hair_gradient::savefile_key, \
+	/datum/preference/choiced/facial_hairstyle::savefile_key, \
+	/datum/preference/choiced/hair_gradient::savefile_key, \
+	/datum/preference/choiced/hairstyle::savefile_key, \
+	/datum/preference/color/facial_hair_color::savefile_key, \
+	/datum/preference/color/facial_hair_gradient::savefile_key, \
+	/datum/preference/color/hair_color::savefile_key, \
+	/datum/preference/color/hair_gradient::savefile_key, \
+)
+
+// Manually adding the hair related preferences to the lizard features list
 /datum/species/lizard/get_features()
-	return ..() | list(
-		"hair_color",
-		"hairstyle_name",
-		"hair_gradient",
-		"hair_gradient_color",
-		"facial_style_name",
-		"facial_hair_color",
-		"facial_hair_gradient",
-		"facial_hair_gradient_color",
-	)
+	return ..() | HAIR_PREFERENCES
+
+/datum/species/lizard/get_filtered_features_per_prefs(datum/preferences/prefs)
+	return prefs.read_preference(/datum/preference/toggle/hair_lizard) ? list() : HAIR_PREFERENCES
+
+#undef HAIR_PREFERENCES
 
 // -- Allows modification of hissssss length --
 /datum/preference/numeric/hiss_length
@@ -56,7 +63,7 @@
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
 
 /datum/preference/numeric/hiss_length/apply_to_human(mob/living/carbon/human/target, value)
-	var/obj/item/organ/internal/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!istype(tongue))
 		return
 	tongue.draw_length = value
@@ -64,7 +71,7 @@
 // -- Allows lizard horns to be colorable --
 // (Because some choices are greyscaled)
 /datum/preference/choiced/lizard_horns
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 
 /datum/preference/choiced/lizard_horns/compile_constant_data()
 	var/list/data = ..()
@@ -84,7 +91,7 @@
 	savefile_key = "feature_lizard_horn_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
-	relevant_external_organ = /obj/item/organ/external/horns
+	relevant_external_organ = /obj/item/organ/horns
 	can_randomize = FALSE
 
 /datum/preference/color/horn_color/apply_to_human(mob/living/carbon/human/target, value)
@@ -110,6 +117,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
+	relevant_external_organ = /obj/item/organ/horns
 	/// Map of player-readable-text to layer value
 	var/list/layer_to_layer = list(
 		"Default" = BODY_ADJ_LAYER,
@@ -126,5 +134,35 @@
 /datum/preference/choiced/lizard_horn_layer/init_possible_values()
 	return layer_to_layer
 
-/datum/preference/choiced/lizard_horn_layer/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+// -- Lets you change layer of lizard frills --
+// Makes the bodypart update correctly
+/datum/bodypart_overlay/mutant/frills/get_image(image_layer, obj/item/bodypart/limb)
+	var/new_layer = limb.owner?.dna?.features["lizard_frill_layer"] || BODY_ADJ_LAYER
+	if(new_layer == BODY_ADJ_LAYER)
+		return ..()
+
+	var/mutable_appearance/appearance = ..()
+	appearance.layer = -1 * new_layer
+	return appearance
+
+/datum/preference/choiced/lizard_frill_layer
+	savefile_key = "feature_lizard_frill_layer"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	can_randomize = FALSE
+	relevant_external_organ = /obj/item/organ/frills
+	/// Map of player-readable-text to layer value
+	var/list/layer_to_layer = list(
+		"Default" = BODY_ADJ_LAYER,
+		"Above Hair" = FACEMASK_LAYER,
+		"Above Helmets" = BODY_FRONT_LAYER,
+	)
+
+/datum/preference/choiced/lizard_frill_layer/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["lizard_frill_layer"] = layer_to_layer[value]
+
+/datum/preference/choiced/lizard_frill_layer/create_default_value()
+	return "Default"
+
+/datum/preference/choiced/lizard_frill_layer/init_possible_values()
+	return layer_to_layer

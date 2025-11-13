@@ -3,9 +3,9 @@ import { Button, Stack } from 'tgui-core/components';
 
 import {
   FeatureNumberInput,
-  FeatureNumeric,
-  FeatureNumericData,
-  FeatureValueProps,
+  type FeatureNumeric,
+  type FeatureNumericData,
+  type FeatureValueProps,
 } from '../base';
 
 const FeatureSpeechSound = (

@@ -16,10 +16,10 @@ import { LoadingScreen } from '../../common/LoadingScreen';
 import {
   createSetPreference,
   Food,
-  Perk,
-  PreferencesMenuData,
-  ServerData,
-  Species,
+  type Perk,
+  type PreferencesMenuData,
+  type ServerData,
+  type Species,
 } from '../types';
 import { useServerPrefs } from '../useServerPrefs';
 
@@ -132,7 +132,7 @@ type DietProps = {
   diet: Species['diet'];
 };
 
-function Diet(props: DietProps) {
+export function DietStack(props: DietProps) {
   const { diet } = props;
   if (!diet) {
     return null;
@@ -212,7 +212,7 @@ type SpeciesPerksProps = {
   perks: Species['perks'];
 };
 
-function SpeciesPerks(props: SpeciesPerksProps) {
+export function SpeciesPerks(props: SpeciesPerksProps) {
   const { positive, negative, neutral } = props.perks;
 
   return (
@@ -261,7 +261,7 @@ function SpeciesPageInner(props: SpeciesPageInnerProps) {
   const { act, data } = useBackend<PreferencesMenuData>();
   const setSpecies = createSetPreference(act, 'species');
 
-  let species: [string, Species][] = Object.entries(props.species).map(
+  const species: [string, Species][] = Object.entries(props.species).map(
     ([species, data]) => {
       return [species, data];
     },
@@ -325,7 +325,7 @@ function SpeciesPageInner(props: SpeciesPageInnerProps) {
                         // NOHUNGER species have no diet (diet = null),
                         // so we have nothing to show
                         currentSpecies.diet && (
-                          <Diet diet={currentSpecies.diet} />
+                          <DietStack diet={currentSpecies.diet} />
                         )
                       }
                     >

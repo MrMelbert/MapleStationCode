@@ -11,7 +11,7 @@ import { useBackend } from '../../backend';
 import { ANTAG2COLOR } from './constants';
 import { getAntagCategories } from './helpers';
 import { OrbitCollapsible } from './OrbitCollapsible';
-import { AntagGroup, Observable, OrbitData } from './types';
+import type { AntagGroup, Observable, OrbitData } from './types';
 
 type ContentSection = {
   content: Observable[];
@@ -21,7 +21,7 @@ type ContentSection = {
 
 /**
  * The primary content display for points of interest.
- * Renders a scrollable section replete collapsibles for each
+ * Renders a scrollable section replete with collapsibles for each
  * observable group.
  */
 export function OrbitContent(props) {

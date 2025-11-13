@@ -27,5 +27,5 @@
 	say(message, language, sanitize = FALSE)
 	return NOPASS
 
-/obj/item/localnode/GetVoice()
+/obj/item/localnode/get_voice(add_id_name)
 	return voice_name

@@ -246,6 +246,7 @@ LINEN BINS
 
 /obj/item/bedsheet/captain
 	name = "captain's bedsheet"
+	article = "the"
 	desc = "It has a Nanotrasen symbol on it, and was woven with a revolutionary new kind of thread guaranteed to have 0.01% permeability for most non-chemical substances, popular among most modern captains."
 	icon_state = "sheetcaptain"
 	inhand_icon_state = "sheetcaptain"
@@ -253,6 +254,7 @@ LINEN BINS
 
 /obj/item/bedsheet/rd
 	name = "research director's bedsheet"
+	article = "the"
 	desc = "It appears to have a beaker emblem, and is made out of fire-resistant material, although it probably won't protect you in the event of fires you're familiar with every day."
 	icon_state = "sheetrd"
 	inhand_icon_state = "sheetrd"
@@ -261,6 +263,7 @@ LINEN BINS
 // for Free Golems.
 /obj/item/bedsheet/rd/royal_cape
 	name = "Royal Cape of the Liberator"
+	article = "the"
 	desc = "Majestic."
 	dream_messages = list("mining", "stone", "a golem", "freedom", "doing whatever")
 
@@ -273,6 +276,7 @@ LINEN BINS
 
 /obj/item/bedsheet/cmo
 	name = "chief medical officer's bedsheet"
+	article = "the"
 	desc = "It's a sterilized blanket that has a cross emblem. There's some cat fur on it, likely from Runtime."
 	icon_state = "sheetcmo"
 	inhand_icon_state = "sheetcmo"
@@ -280,6 +284,7 @@ LINEN BINS
 
 /obj/item/bedsheet/hos
 	name = "head of security's bedsheet"
+	article = "the"
 	desc = "It is decorated with a shield emblem. While crime doesn't sleep, you do, but you are still THE LAW!"
 	icon_state = "sheethos"
 	inhand_icon_state = "sheethos"
@@ -287,6 +292,7 @@ LINEN BINS
 
 /obj/item/bedsheet/hop
 	name = "head of personnel's bedsheet"
+	article = "the"
 	desc = "It is decorated with a key emblem. For those rare moments when you can rest and cuddle with Ian without someone screaming for you over the radio."
 	icon_state = "sheethop"
 	inhand_icon_state = "sheethop"
@@ -294,6 +300,7 @@ LINEN BINS
 
 /obj/item/bedsheet/ce
 	name = "chief engineer's bedsheet"
+	article = "the"
 	desc = "It is decorated with a wrench emblem. It's highly reflective and stain resistant, so you don't need to worry about ruining it with oil."
 	icon_state = "sheetce"
 	inhand_icon_state = "sheetce"
@@ -301,6 +308,7 @@ LINEN BINS
 
 /obj/item/bedsheet/qm
 	name = "quartermaster's bedsheet"
+	article = "the"
 	desc = "It is decorated with a crate emblem in silver lining.  It's rather tough, and just the thing to lie on after a hard day of pushing paper."
 	icon_state = "sheetqm"
 	inhand_icon_state = "sheetqm"
@@ -308,6 +316,7 @@ LINEN BINS
 
 /obj/item/bedsheet/chaplain
 	name = "chaplain's blanket"
+	article = "the"
 	desc = "A blanket woven with the hearts of gods themselves... Wait, that's just linen."
 	icon_state = "sheetchap"
 	inhand_icon_state = "sheetchap"
@@ -346,6 +355,7 @@ LINEN BINS
 
 /obj/item/bedsheet/wiz
 	name = "wizard's bedsheet"
+	article = "the"
 	desc = "A special fabric enchanted with magic so you can have an enchanted night. It even glows!"
 	icon_state = "sheetwiz"
 	inhand_icon_state = "sheetwiz"

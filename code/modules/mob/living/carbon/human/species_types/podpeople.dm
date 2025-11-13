@@ -7,8 +7,8 @@
 		TRAIT_MUTANT_COLORS,
 		TRAIT_PLANT_SAFE,
 	)
-	external_organs = list(
-		/obj/item/organ/external/pod_hair = "None",
+	mutant_organs = list(
+		/obj/item/organ/pod_hair = "None",
 	)
 	inherent_biotypes = MOB_ORGANIC | MOB_HUMANOID | MOB_PLANT
 	inherent_factions = list(FACTION_PLANTS, FACTION_VINES)
@@ -19,7 +19,7 @@
 	exotic_bloodtype = /datum/blood_type/water // NON-MODULE CHANGE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/plant
-	mutanttongue = /obj/item/organ/internal/tongue/pod
+	mutanttongue = /obj/item/organ/tongue/pod
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/pod,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/pod,
@@ -28,22 +28,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/pod,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/pod,
 	)
-
-	ass_image = 'icons/ass/asspodperson.png'
-
-// NON-MODULE CHANGE
-// /datum/species/pod/on_species_gain(mob/living/carbon/new_podperson, datum/species/old_species, pref_load)
-// 	. = ..()
-// 	if(ishuman(new_podperson))
-// 		update_mail_goodies(new_podperson)
-
-// /datum/species/pod/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
-// 	if(istype(quirk, /datum/quirk/blooddeficiency))
-// 		mail_goodies += list(
-// 			/obj/item/reagent_containers/blood/podperson
-// 		)
-// 	return ..()
-// NON-MODULE CHANGE END
 
 /datum/species/pod/spec_life(mob/living/carbon/human/podperson, seconds_per_tick, times_fired)
 	. = ..()

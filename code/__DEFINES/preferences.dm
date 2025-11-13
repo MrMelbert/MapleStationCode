@@ -122,6 +122,9 @@
 /// These will be shown in the character sidebar, but at the bottom.
 #define PREFERENCE_CATEGORY_FEATURES "features"
 
+/// These will be shown in the character sidebar, in the middle.
+#define PREFERENCE_CATEGORY_HAIR "hair"
+
 /// Any preferences that will show to the sides of the character in the setup menu.
 #define PREFERENCE_CATEGORY_CLOTHING "clothing"
 

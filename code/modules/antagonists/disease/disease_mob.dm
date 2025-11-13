@@ -153,7 +153,7 @@ the new instance inside the host to be updated to the template's stats.
 		return ..()
 	return FALSE
 
-/mob/camera/disease/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
+/mob/camera/disease/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
 	var/atom/movable/to_follow = speaker
 	if(radio_freq)
@@ -168,7 +168,7 @@ the new instance inside the host to be updated to the template's stats.
 	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
 		create_chat_message(speaker, message_language, raw_message, spans)
 	// Recompose the message, because it's scrambled by default
-	message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)
+	var/message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mods)
 	to_chat(src, "[link] [message]")
 
 
@@ -176,8 +176,7 @@ the new instance inside the host to be updated to the template's stats.
 	. = ..()
 	if(!mind.has_antag_datum(/datum/antagonist/disease))
 		mind.add_antag_datum(/datum/antagonist/disease)
-	var/datum/atom_hud/medsensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medsensor.show_to(src)
+	ADD_TRAIT(src, TRAIT_MEDICAL_HUD, INNATE_TRAIT)
 
 /mob/camera/disease/proc/pick_name()
 	var/static/list/taken_names

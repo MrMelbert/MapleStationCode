@@ -34,6 +34,9 @@
 	. = ..()
 	AddComponent(/datum/component/self_ignition)
 
+/obj/item/bodypart/chest/plasmaman/get_butt_sprite()
+	return BUTT_SPRITE_PLASMA
+
 /obj/item/bodypart/arm/left/plasmaman
 	icon = 'icons/mob/human/species/plasmaman/bodyparts.dmi'
 	icon_state = "plasmaman_l_arm"

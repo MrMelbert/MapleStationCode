@@ -194,6 +194,7 @@
 		set_wearer(user)
 	else if(wearer)
 		unset_wearer()
+	return ..()
 
 /obj/item/mod/control/dropped(mob/user)
 	. = ..()
@@ -336,7 +337,6 @@
 
 			paint_kit.proxy_view.appearance = paint_kit.editing_mod.appearance
 			paint_kit.proxy_view.color = null
-			paint_kit.proxy_view.display_to(user)
 			paint_kit.ui_interact(user)
 			return ITEM_INTERACT_SUCCESS
 		else // Left click

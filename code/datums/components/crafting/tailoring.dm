@@ -142,7 +142,7 @@
 	name = "Lizard Cloche Hat"
 	result = /obj/item/clothing/head/costume/lizard
 	time = 1 SECONDS
-	reqs = list(/obj/item/organ/external/tail/lizard = 1)
+	reqs = list(/obj/item/organ/tail/lizard = 1)
 	category = CAT_CLOTHING
 
 /datum/crafting_recipe/lizardhat_alternate
@@ -157,8 +157,8 @@
 	result = /obj/item/clothing/head/costume/kitty/genuine
 	time = 1 SECONDS
 	reqs = list(
-		/obj/item/organ/external/tail/cat = 1,
-		/obj/item/organ/internal/ears/cat = 1,
+		/obj/item/organ/tail/cat = 1,
+		/obj/item/organ/ears/cat = 1,
 	)
 	category = CAT_CLOTHING
 
@@ -232,10 +232,19 @@
 /datum/crafting_recipe/drakecloak
 	name = "Ash Drake Armour"
 	result = /obj/item/clothing/suit/hooded/cloak/drake
-	time = 6 SECONDS
+	time = 4 SECONDS
+	reqs = list(
+		/obj/item/stack/sheet/sinew = 2,
+		/obj/item/drake_remains = 1,
+	)
+	category = CAT_CLOTHING
+
+/datum/crafting_recipe/drakeremains
+	name = "Drake Remains"
+	result = /obj/item/drake_remains
+	time = 1 SECONDS
 	reqs = list(
 		/obj/item/stack/sheet/bone = 10,
-		/obj/item/stack/sheet/sinew = 2,
 		/obj/item/stack/sheet/animalhide/ashdrake = 5,
 	)
 	category = CAT_CLOTHING
