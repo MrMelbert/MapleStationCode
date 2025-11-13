@@ -6,13 +6,12 @@
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-aerialite"
-	inhand_icon_state = "sheet-adamantine" // ADD SPRITES.
+	inhand_icon_state = "sheet-adamantine"
 	mats_per_unit = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/gravitum/aerialite = 20)
 	merge_type = /obj/item/stack/sheet/mineral/aerialite
 	material_type = /datum/material/aerialite
 	armor_type = /datum/armor/sheet_aerialite
-	// FUN FACT: This this actually an aerialite --> cosmilite alloy.
 
 /datum/armor/sheet_aerialite
 	fire = 100
@@ -23,11 +22,11 @@
 	desc = "Alloyed Aerialite"
 	color = "#00d0ff"
 	greyscale_colors = "#00d0ff"
-	strength_modifier = 3 // You must be a maniac to forge something out of this in the first place.
+	strength_modifier = 3
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/aerialite
-	value_per_unit = 6000 / SHEET_MATERIAL_AMOUNT // Giga valuable.
-	beauty_modifier = 1.5 // I think aerialite / cosmilite looks nice.
+	value_per_unit = 6000 / SHEET_MATERIAL_AMOUNT
+	beauty_modifier = 1.5
 	armor_modifiers = list(MELEE = 2.5, BULLET = 2.5, LASER = 1.5, ENERGY = 1.5, BOMB = 2.5, BIO = 1, FIRE = 1.5, ACID = 1.5)
 
 /datum/material/aerialite/on_applied_obj(obj/o, amount, material_flags)
@@ -46,13 +45,12 @@
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-resonant"
-	inhand_icon_state = "sheet-adamantine"// ADD SPRITES.
+	inhand_icon_state = "sheet-adamantine"
 	mats_per_unit = list(/datum/material/resmythril=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/resmythril = 20)
 	merge_type = /obj/item/stack/sheet/mineral/resmythril
 	material_type = /datum/material/resmythril
 	armor_type = /datum/armor/sheet_resmythril
-	// FUN FACT: I chose mythril for the scanner module because it's used in the codebreaker's scanner.
 
 /datum/armor/sheet_resmythril
 	fire = 100
@@ -69,7 +67,6 @@
 	value_per_unit = 6000 / SHEET_MATERIAL_AMOUNT
 	beauty_modifier = 2
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 2.5, ENERGY = 2.5, BOMB = 1.5, BIO = 1, FIRE = 2.5, ACID = 1.5)
-	// We already have mythril in the code, so this is resonant.
 
 /obj/item/stack/sheet/mineral/miracle_matter
 	name = "Miracle Matter"
@@ -89,10 +86,9 @@
 	desc = "Miracle Matter"
 	color = "#e6a6e0"
 	greyscale_colors = "#e6a6e0"
-	strength_modifier = 20 // UNTOLD DESTRUCTIVE POTENTIAL.
+	strength_modifier = 20
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/miracle_matter
 	value_per_unit = 60000 / SHEET_MATERIAL_AMOUNT
 	beauty_modifier = 10
 	armor_modifiers = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 10, FIRE = 10, ACID = 10)
-	// The Miracle Matter. This material code will probably never show up, but if you make a toolbox out of Miracle Matter, you are going to oneshot everything.

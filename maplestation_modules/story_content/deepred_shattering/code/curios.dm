@@ -35,9 +35,12 @@
 
 /obj/item/ammo_casing/shotgun/godslayer
 	name = "godslayer slug"
-	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy. You feel that shooting this would be a really bad idea."
+	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy, despite the lack of an obvious power source. You feel that shooting this would be a really bad idea."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "godslayer"
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
 	projectile_type = /obj/projectile/bullet/godslayer
 	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
 	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
@@ -79,7 +82,7 @@
 
 /obj/item/throwing_star/needle
 	name = "persuasion needle"
-	desc = "A large, sharp needle designed for persuasion. It has a small, intricate yin-yang design etched into the side."
+	desc = "A large, sharp needle designed for \"persuasion.\" It has a small, intricate yin-yang design etched into the side."
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
