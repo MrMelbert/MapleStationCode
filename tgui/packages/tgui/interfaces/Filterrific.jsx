@@ -12,6 +12,7 @@ import {
   NumberInput,
   Section,
   Stack,
+  Stack,
 } from 'tgui-core/components';
 import { numberOfDecimalDigits, toFixed } from 'tgui-core/math';
 
@@ -362,6 +363,8 @@ const FilterDataEntry = (props) => {
     options: <FilterOptionsEntry {...props} />,
     transform: <FilterTransformEntry {...props} />,
     matrix: <FilterMatrixEntry {...props} />,
+    transform: <FilterTransformEntry {...props} />,
+    matrix: <FilterMatrixEntry {...props} />,
     plug: 'Not Implemented',
   };
 
@@ -373,6 +376,7 @@ const FilterDataEntry = (props) => {
     flags: 'flags',
     size: 'float',
     color: { default: 'color', color: 'matrix' },
+    color: { default: 'color', color: 'matrix' },
     offset: 'float',
     radius: 'float',
     falloff: 'float',
@@ -382,6 +386,7 @@ const FilterDataEntry = (props) => {
     repeat: 'int',
     space: 'options',
     blend_mode: 'options',
+    transform: 'transform',
     transform: 'transform',
   };
 
@@ -470,6 +475,7 @@ const FilterEntry = (props) => {
 };
 
 export const Filterrific = (props) => {
+export const Filterrific = (props) => {
   const { act, data } = useBackend();
   const name = data.target_name || 'Unknown Object';
   const filters = data.target_filter_data || {};
@@ -479,6 +485,7 @@ export const Filterrific = (props) => {
   const [hiddenSecret, setHiddenSecret] = useState(false);
 
   return (
+    <Window title="Filterrific" width={500} height={500}>
     <Window title="Filterrific" width={500} height={500}>
       <Window.Content scrollable>
         <NoticeBox danger>
