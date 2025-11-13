@@ -1,1 +1,1 @@
-techblaster.ogg, techexplosion.ogg, techpowerup.ogg, beep.ogg, coilshoot.ogg, and coilbang.ogg are sound effects taken from the Terraria Calamity mod under CC BY-NC-SA 3.0.
+techblaster.ogg and techpowerup.ogg are sound effects taken from the Terraria Calamity mod under CC BY-NC-SA 3.0.
