@@ -62,7 +62,7 @@
 	)
 
 /datum/crafting_recipe/woodenwand
-	name = "Makeshift Wand"
+	name = "Gold-Capped Wooden Wand"
 	result = /obj/item/magic_wand/wooden
 	reqs = list(
 		/obj/item/stack/sheet/mineral/wood = 2,

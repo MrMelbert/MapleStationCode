@@ -51,8 +51,8 @@
 	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
 
 /obj/item/magic_wand/wooden
-	name = "Wooden Wand"
+	name = "Gold-Capped Wooden Wand"
 	desc = "A traditional wood body and gold capped wand. Can still manipulate mana surprisingly well for its simplicity."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
-	icon_state = "makeshift"
+	icon_state = "wooden"
 	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
