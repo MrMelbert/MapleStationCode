@@ -130,6 +130,8 @@
 
 	UnregisterSignal(owner, COMSIG_MOB_FIRED_GUN)
 	REMOVE_TRAIT(owner, TRAIT_FEARLESS, TRAIT_STATUS_EFFECT(id))
+	owner.remove_consciousness_modifier(id)
+	owner.remove_max_consciousness_value(id)
 
 /datum/status_effect/inebriated/drunk/proc/drunk_gun_fired(datum/source, obj/item/gun/gun, atom/firing_at, params, zone, bonus_spread_values)
 	SIGNAL_HANDLER

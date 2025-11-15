@@ -207,6 +207,24 @@
 		return pick(user.get_speech_sounds())
 	return null
 
+/datum/emote/living/carbon/human/hiss_low
+	key = "hiss_low"
+	key_third_person = "lets out a low hiss"
+	message = "lets out a low hiss."
+	message_mime = "lets out a low hiss silently."
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/carbon/human/hiss_low/get_sound(mob/user)
+	if(islizard(user) || ismonkey(user))
+		var/speech_sound = pick(user.get_speech_sounds())
+		if(!speech_sound)
+			return null
+
+		var/sound/hiss_sound = sound(speech_sound)
+		hiss_sound.frequency = 0.25
+		return hiss_sound
+	return null
+
 /datum/emote/living/carbon/human/blink
 	key = "blink"
 	key_third_person = "blinks"

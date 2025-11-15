@@ -343,6 +343,9 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/end_door_animation()
 	is_animating_door = FALSE
 	vis_contents -= door_obj
+	for(var/obj/effect/appearance_clone/closet_item/clone in vis_contents)
+		vis_contents -= clone
+		qdel(clone)
 	update_icon()
 
 /// Calculates the matrix to be applied to the animated door overlay

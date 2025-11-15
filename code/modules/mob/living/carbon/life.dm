@@ -97,7 +97,7 @@
 	if(!skip_breath && !breath)
 		breath = get_breath_from_surroundings(environment, BREATH_VOLUME)
 
-	if(check_breath(breath) && internals_breath)
+	if(check_breath(breath, skip_breath) && internals_breath)
 		breathing_loop.start()
 
 	if(breath)
