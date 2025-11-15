@@ -1,16 +1,5 @@
 GLOBAL_LIST_INIT(spellbook_manipulation_items, generate_spellbook_items(SPELLBOOK_CATEGORY_MANIPULATION))
 
-/* /datum/spellbook_item/spell/leyline_charge
-	name = "Leyline Charge"
-	description = "Draw mana straight from the leylines themselves."
-	lore = "The most basic method of regenerating mana on your own. \
-	Casting this invocation- while focusing- will allow you to regain mana from the leylines themselves. \
-	Do not that this is a finnicky way of regaining mana, and you risk overloading if done improperly."
-
-	category = SPELLBOOK_CATEGORY_MISC
-
-	our_action_typepath = /datum/action/cooldown/spell/leyline_charge */ // disabled because leylines are weirda
-
 /datum/spellbook_item/spell/meditate
 	name = "Magic Meditation"
 	description = "Use mental focus to draw mana within yourself"
@@ -32,3 +21,14 @@ GLOBAL_LIST_INIT(spellbook_manipulation_items, generate_spellbook_items(SPELLBOO
 	category = SPELLBOOK_CATEGORY_MANIPULATION
 
 	our_action_typepath = /datum/action/cooldown/spell/pointed/mana_sense
+
+/datum/spellbook_item/spell/lesser_splattercasting
+	name = "Lesser Splattercasting"
+	description = "Sacrifice some of your vital essence to regain mana"
+	lore = "A more consistent, but risky, form of regenerating magic. \
+	This method mana charging is often seen used among many blood or sacrificial focused cults. \
+	Often this spell is a sort of 'gateway drug' for many to begin practicing the dark arts of blood magic."
+
+	category = SPELLBOOK_CATEGORY_MANIPULATION
+
+	our_action_typepath = /datum/action/cooldown/spell/meditate/lesser_splattercasting
