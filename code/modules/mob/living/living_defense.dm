@@ -76,7 +76,7 @@
 /// Checks if the mob is wearing something which would obscure their eyes.
 /// Differs from [is_eyes_covered] in that it only checks for items that would prevent someone from seeing our eyes.
 /// In other words, transparent goggles cover your eyes, but keep them visible.
-/mob/living/proc/is_eyes_visible()
+/mob/proc/is_eyes_visible()
 	return TRUE
 
 /**
