@@ -33,5 +33,3 @@
 
 /// How much "caffeine points" does 1 metabolization tick (0.2u) of energy drinks provide
 #define CAFFEINE_POINTS_ENERGY 0.8 //yes i know energy drinks actually have less caffeine than coffee IRL but this is the FUTURE
-
-#define LIMB_AVAILABLE "Available"

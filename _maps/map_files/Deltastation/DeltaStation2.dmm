@@ -600,14 +600,12 @@
 /area/station/maintenance/port/fore)
 "adw" = (
 /obj/machinery/hydroponics/soil,
-/obj/effect/decal/cleanable/dirt,
 /obj/item/plant_analyzer,
 /obj/machinery/camera/directional/east{
 	c_tag = "Permabrig - Garden";
 	network = list("ss13","prison")
 	},
-/obj/effect/mapping_helpers/burnt_floor,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "adx" = (
 /obj/structure/table/reinforced,
@@ -8904,14 +8902,14 @@
 /obj/item/restraints/handcuffs{
 	pixel_y = 6
 	},
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 7;
 	pixel_y = -7
 	},
-/obj/item/clothing/mask/cigarette/cigar/havana{
+/obj/item/cigarette/cigar/havana{
 	pixel_x = -3
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = -1;
 	pixel_y = -7
 	},
@@ -9298,9 +9296,19 @@
 /obj/machinery/door/window/left/directional/west{
 	name = "Warden's Desk"
 	},
-/obj/item/folder/red,
-/obj/item/pen,
+/obj/item/folder/red{
+	pixel_x = 4;
+	pixel_y = -1
+	},
+/obj/item/pen{
+	pixel_x = 5;
+	pixel_y = -1
+	},
 /obj/structure/cable,
+/obj/structure/desk_bell/ringer/warden{
+	pixel_x = -5;
+	pixel_y = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/warden)
 "bPt" = (
@@ -11319,8 +11327,12 @@
 	id = "brigwindows";
 	name = "Brig Front Blast Door"
 	},
-/obj/item/folder/red,
-/obj/item/pen,
+/obj/item/folder/red{
+	pixel_x = -6
+	},
+/obj/item/pen{
+	pixel_x = -6
+	},
 /obj/machinery/door/window/brigdoor/right/directional/south{
 	name = "Security Desk";
 	req_access = list("security")
@@ -11330,6 +11342,9 @@
 	},
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/red/fourcorners,
+/obj/structure/desk_bell/ringer/security{
+	pixel_x = 9
+	},
 /turf/open/floor/iron,
 /area/station/security/holding_cell)
 "cdq" = (
@@ -13278,10 +13293,6 @@
 "cvj" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = 7;
-	pixel_y = 6
-	},
 /obj/item/folder/yellow{
 	pixel_x = -3;
 	pixel_y = -6
@@ -13305,6 +13316,10 @@
 	dir = 4;
 	name = "Pharmacy Desk";
 	req_access = list("pharmacy")
+	},
+/obj/structure/desk_bell/ringer/chemistry{
+	pixel_x = 4;
+	pixel_y = 9
 	},
 /turf/open/floor/iron/dark,
 /area/station/medical/pharmacy)
@@ -16098,9 +16113,6 @@
 	pixel_x = 4;
 	pixel_y = 5
 	},
-/obj/structure/desk_bell{
-	pixel_x = -6
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
@@ -16108,6 +16120,10 @@
 /obj/machinery/door/window/left/directional/south{
 	name = "Research Lab Desk";
 	req_access = list("science")
+	},
+/obj/structure/desk_bell/ringer/science{
+	pixel_x = -8;
+	pixel_y = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
@@ -16757,12 +16773,17 @@
 "daK" = (
 /obj/structure/table/reinforced,
 /obj/item/experi_scanner{
-	pixel_x = 4
+	pixel_x = 4;
+	pixel_y = 8
 	},
 /obj/item/experi_scanner{
-	pixel_x = -4
+	pixel_x = -4;
+	pixel_y = 8
 	},
 /obj/effect/turf_decal/siding/purple/end,
+/obj/item/flatpack/flatpacker{
+	pixel_y = -3
+	},
 /turf/open/floor/iron,
 /area/station/science/lab)
 "daM" = (
@@ -20301,13 +20322,13 @@
 	pixel_x = -3;
 	pixel_y = 3
 	},
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 6
 	},
-/obj/item/clothing/mask/cigarette/cigar/havana{
+/obj/item/cigarette/cigar/havana{
 	pixel_x = 2
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4.5
 	},
 /obj/structure/table/reinforced,
@@ -22937,6 +22958,10 @@
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment,
 /obj/effect/turf_decal/trimline/blue/filled/corner,
+/obj/structure/desk_bell/ringer/coroner{
+	pixel_x = 25;
+	pixel_y = -6
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay)
 "dOF" = (
@@ -25023,10 +25048,6 @@
 /obj/item/pen{
 	pixel_x = -4
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = 1
-	},
 /obj/machinery/door/poddoor/shutters/window/preopen{
 	dir = 1;
 	id = "paramed_dispatch_desk";
@@ -25036,6 +25057,10 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line,
+/obj/structure/desk_bell/ringer/medical{
+	pixel_x = 12;
+	pixel_y = 2
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "egs" = (
@@ -25297,7 +25322,7 @@
 /obj/item/clothing/head/costume/kitty,
 /obj/item/clothing/under/costume/maid,
 /obj/item/clothing/head/costume/rabbitears,
-/obj/item/clothing/under/dress/redeveninggown,
+/obj/item/clothing/under/dress/eveninggown,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
 "ekH" = (
@@ -25742,8 +25767,8 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/structure/desk_bell/ringer/hop{
+	pixel_x = 5
 	},
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
@@ -25968,6 +25993,7 @@
 /obj/machinery/hydroponics/constructable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/green,
+/obj/item/reagent_containers/cup/watering_can,
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "euP" = (
@@ -29534,15 +29560,15 @@
 "ftP" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/item/clothing/mask/cigarette/cigar/havana{
+/obj/item/cigarette/cigar/havana{
 	pixel_x = 2;
 	pixel_y = 2
 	},
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 6;
 	pixel_y = 2
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = -2;
 	pixel_y = 2
 	},
@@ -31948,8 +31974,8 @@
 	name = "Office Desk"
 	},
 /obj/effect/turf_decal/delivery,
-/obj/structure/desk_bell{
-	pixel_x = 7
+/obj/structure/desk_bell/ringer/cargo{
+	pixel_x = 8
 	},
 /turf/open/floor/iron,
 /area/station/cargo/office)
@@ -32267,6 +32293,9 @@
 /obj/item/storage/box/lights/mixed,
 /obj/structure/extinguisher_cabinet/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/item/flatpack/flatpacker{
+	pixel_y = -3
+	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage_shared)
 "glt" = (
@@ -37231,13 +37260,23 @@
 /area/station/science/ordnance/testlab)
 "hAI" = (
 /obj/structure/window/spawner/directional/south,
-/obj/structure/sink/directional/south,
-/obj/structure/reagent_dispensers/watertank,
-/obj/item/reagent_containers/cup/watering_can,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/cobweb,
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/closet/crate/hydroponics,
+/obj/item/seeds/tower,
+/obj/effect/spawner/random/contraband/prison,
+/obj/item/seeds/pumpkin,
+/obj/item/seeds/wheat,
+/obj/item/seeds/ambrosia,
+/obj/item/seeds/grass,
+/obj/item/seeds/carrot,
+/obj/item/seeds/tomato,
+/obj/item/seeds/potato,
+/obj/item/seeds/garlic,
+/obj/item/seeds/onion,
+/obj/item/paper/guides/jobs/hydroponics,
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "hAJ" = (
@@ -39889,9 +39928,9 @@
 	name = "Hydroponics Desk";
 	req_access = list("hydroponics")
 	},
-/obj/structure/desk_bell{
+/obj/structure/desk_bell/ringer/botany{
 	pixel_x = 8;
-	pixel_y = 9
+	pixel_y = 10
 	},
 /turf/open/floor/plating,
 /area/station/service/hydroponics)
@@ -43657,6 +43696,18 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"jpO" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/trimline/purple/filled/corner{
+	dir = 1
+	},
+/obj/structure/desk_bell/ringer/xenobio{
+	pixel_x = -6;
+	pixel_y = 25
+	},
+/turf/open/floor/iron/white,
+/area/station/science/research)
 "jpQ" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
@@ -44783,6 +44834,13 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted,
 /turf/open/floor/iron,
 /area/station/cargo/drone_bay)
+"jHk" = (
+/obj/structure/desk_bell/ringer/chapel{
+	pixel_x = 27;
+	pixel_y = -22
+	},
+/turf/open/floor/iron/grimy,
+/area/station/service/chapel)
 "jHu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -45448,23 +45506,10 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
 "jRE" = (
-/obj/structure/closet/crate/hydroponics,
-/obj/item/paper/guides/jobs/hydroponics,
-/obj/item/seeds/onion,
-/obj/item/seeds/garlic,
-/obj/item/seeds/potato,
-/obj/item/seeds/tomato,
-/obj/item/seeds/carrot,
-/obj/item/seeds/grass,
-/obj/item/seeds/ambrosia,
-/obj/item/seeds/wheat,
-/obj/item/seeds/pumpkin,
-/obj/effect/spawner/random/contraband/prison,
 /obj/structure/window/spawner/directional/south,
-/obj/effect/decal/cleanable/dirt,
-/obj/item/seeds/tower,
 /obj/structure/sign/poster/official/random/directional/north,
-/turf/open/floor/iron,
+/obj/structure/water_source/puddle,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "jRF" = (
 /obj/structure/closet/toolcloset,
@@ -47152,9 +47197,9 @@
 	pixel_x = -4
 	},
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = 8;
-	pixel_y = 9
+/obj/structure/desk_bell/ringer/engineering{
+	pixel_x = 7;
+	pixel_y = 8
 	},
 /turf/open/floor/iron/half{
 	dir = 8
@@ -48020,15 +48065,14 @@
 	pixel_x = -3;
 	pixel_y = 2
 	},
-/obj/structure/desk_bell{
-	pixel_x = 6;
-	pixel_y = -1
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
+	},
+/obj/structure/desk_bell/ringer/robotics{
+	pixel_x = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
@@ -51254,10 +51298,8 @@
 /area/station/service/chapel/storage)
 "lxf" = (
 /obj/machinery/hydroponics/soil,
-/obj/effect/decal/cleanable/dirt,
 /obj/item/shovel/spade,
-/obj/effect/mapping_helpers/burnt_floor,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "lxj" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -51942,10 +51984,8 @@
 "lGy" = (
 /obj/machinery/hydroponics/soil,
 /obj/item/cultivator,
-/obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/warning/electric_shock/directional/west,
-/obj/effect/mapping_helpers/burnt_floor,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "lGC" = (
 /obj/structure/disposalpipe/segment{
@@ -57825,7 +57865,9 @@
 /turf/open/floor/iron,
 /area/station/engineering/hallway)
 "npr" = (
-/obj/item/radio/intercom/directional/east,
+/obj/item/radio/intercom/directional/east{
+	pixel_y = -6
+	},
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron/chapel{
 	dir = 5
@@ -58883,11 +58925,9 @@
 /area/station/maintenance/starboard/aft)
 "nFI" = (
 /obj/machinery/hydroponics/soil,
-/obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/west,
-/obj/effect/mapping_helpers/burnt_floor,
 /obj/structure/sign/poster/contraband/ambrosia_vulgaris/directional/west,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "nFK" = (
 /obj/structure/table/wood/poker,
@@ -59132,6 +59172,10 @@
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
+	},
+/obj/structure/desk_bell/ringer/psych{
+	pixel_x = -26;
+	pixel_y = -8
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit)
@@ -60284,10 +60328,8 @@
 "nYb" = (
 /obj/machinery/hydroponics/soil,
 /obj/item/cultivator,
-/obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/east,
-/obj/effect/mapping_helpers/burnt_floor,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "nYj" = (
 /turf/open/floor/wood,
@@ -62426,8 +62468,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/table/reinforced,
-/obj/item/folder/yellow,
-/obj/item/pen,
+/obj/item/folder/yellow{
+	pixel_x = -5
+	},
+/obj/item/pen{
+	pixel_x = -4
+	},
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
 	name = "Atmospherics Lockdown Blast Door"
@@ -62441,6 +62487,10 @@
 /obj/effect/turf_decal/delivery,
 /obj/effect/turf_decal/siding/yellow/corner{
 	dir = 8
+	},
+/obj/structure/desk_bell/ringer/atmospherics{
+	pixel_x = 6;
+	pixel_y = 8
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
@@ -64303,13 +64353,13 @@
 "pbd" = (
 /obj/structure/cable,
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 3
 	},
-/obj/item/clothing/mask/cigarette/cigar/havana{
+/obj/item/cigarette/cigar/havana{
 	pixel_x = -3
 	},
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /turf/open/floor/iron/grimy,
 /area/station/command/heads_quarters/captain)
 "pbf" = (
@@ -68988,11 +69038,11 @@
 	id = "cafe_counter";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/structure/desk_bell{
-	pixel_x = -7;
-	pixel_y = 6
-	},
 /obj/effect/landmark/start/hangover,
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = -7;
+	pixel_y = 8
+	},
 /turf/open/floor/iron/white/smooth_half{
 	dir = 1
 	},
@@ -71201,9 +71251,9 @@
 /obj/item/storage/box/matches{
 	pixel_y = 5
 	},
-/obj/structure/desk_bell{
-	pixel_x = 7;
-	pixel_y = 10
+/obj/structure/desk_bell/ringer/bartender{
+	pixel_x = 8;
+	pixel_y = -1
 	},
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
@@ -73573,11 +73623,9 @@
 /area/station/hallway/secondary/entry)
 "rJj" = (
 /obj/machinery/hydroponics/soil,
-/obj/effect/decal/cleanable/dirt,
 /obj/item/radio/intercom/directional/east,
-/obj/effect/mapping_helpers/burnt_floor,
 /obj/machinery/light/small/directional/east,
-/turf/open/floor/plating,
+/turf/open/misc/sandy_dirt,
 /area/station/security/prison/garden)
 "rJq" = (
 /obj/effect/turf_decal/stripes/line{
@@ -75513,7 +75561,7 @@
 "snn" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /obj/structure/sign/poster/contraband/random/directional/south,
 /turf/open/floor/plating,
 /area/station/service/abandoned_gambling_den)
@@ -76040,7 +76088,7 @@
 /area/station/science/ordnance/office)
 "svF" = (
 /obj/structure/table/wood/poker,
-/obj/item/clothing/mask/cigarette/pipe,
+/obj/item/cigarette/pipe,
 /turf/open/floor/carpet/green,
 /area/station/commons/lounge)
 "svG" = (
@@ -76770,7 +76818,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
 "sEw" = (
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /obj/effect/turf_decal/siding/dark_blue{
 	dir = 8
 	},
@@ -77531,6 +77579,7 @@
 	dir = 8
 	},
 /obj/machinery/light/small/directional/south,
+/obj/item/toy/crayon/spraycan/roboticist,
 /turf/open/floor/iron,
 /area/station/science/robotics/lab)
 "sSs" = (
@@ -78927,10 +78976,8 @@
 	dir = 1
 	},
 /obj/machinery/firealarm/directional/west,
-/obj/effect/turf_decal/tile/green{
-	dir = 8
-	},
-/turf/open/floor/iron,
+/obj/structure/water_source/puddle,
+/turf/open/misc/sandy_dirt,
 /area/station/service/hydroponics/garden)
 "tof" = (
 /obj/machinery/status_display/evac/directional/east,
@@ -81047,15 +81094,15 @@
 	pixel_x = -2;
 	pixel_y = 3
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 2;
 	pixel_y = 2
 	},
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 3;
 	pixel_y = 1
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4
 	},
 /obj/effect/turf_decal/tile/blue/half/contrasted{
@@ -81099,10 +81146,6 @@
 	name = "Genetics Shutters"
 	},
 /obj/machinery/door/firedoor,
-/obj/structure/desk_bell{
-	pixel_x = -6;
-	pixel_y = 7
-	},
 /obj/item/pen{
 	pixel_x = 3
 	},
@@ -81116,6 +81159,10 @@
 /obj/machinery/door/window/left/directional/south{
 	name = "Genetics Desk";
 	req_access = list("genetics")
+	},
+/obj/structure/desk_bell/ringer/genetics{
+	pixel_x = -7;
+	pixel_y = 9
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -81478,13 +81525,13 @@
 /area/station/science/genetics)
 "tZP" = (
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar/cohiba{
+/obj/item/cigarette/cigar/cohiba{
 	pixel_x = 3
 	},
-/obj/item/clothing/mask/cigarette/cigar/havana{
+/obj/item/cigarette/cigar/havana{
 	pixel_x = -3
 	},
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /turf/open/floor/wood,
 /area/station/command/meeting_room/council)
 "tZQ" = (
@@ -86900,6 +86947,19 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"vCu" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/structure/desk_bell/ringer/detective{
+	pixel_x = 8;
+	pixel_y = 25
+	},
+/turf/open/floor/iron,
+/area/station/hallway/primary/starboard)
 "vCy" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
@@ -87474,7 +87534,7 @@
 /area/station/maintenance/port)
 "vJJ" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "vJL" = (
@@ -92535,9 +92595,18 @@
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 4
 	},
-/obj/item/clipboard,
-/obj/item/toy/figure/miner,
+/obj/item/clipboard{
+	pixel_x = -5
+	},
+/obj/item/toy/figure/miner{
+	pixel_x = -6;
+	pixel_y = -1
+	},
 /obj/machinery/light/directional/south,
+/obj/structure/desk_bell/ringer/mining{
+	pixel_x = 8;
+	pixel_y = 10
+	},
 /turf/open/floor/iron/half{
 	dir = 1
 	},
@@ -93169,8 +93238,8 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "xiY" = (
-/obj/item/kirbyplants/random,
 /obj/structure/sign/poster/official/report_crimes/directional/south,
+/obj/structure/aquarium/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "xjd" = (
@@ -129300,7 +129369,7 @@ daE
 dct
 ddU
 dFu
-kfQ
+jpO
 dhX
 hca
 dlz
@@ -143652,7 +143721,7 @@ bMY
 gsC
 bRg
 bHr
-bVc
+vCu
 bXx
 kHE
 cuu
@@ -144233,7 +144302,7 @@ kwv
 kzV
 kwv
 dQh
-dYP
+jHk
 npr
 hHV
 kRt

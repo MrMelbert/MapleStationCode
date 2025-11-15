@@ -2,7 +2,7 @@ import { useBackend } from 'tgui/backend';
 import { Box, Button, LabeledList, Section, Stack } from 'tgui-core/components';
 
 import { ICON_MAP } from './constants';
-import { PaiData } from './types';
+import type { PaiData } from './types';
 
 export function SystemDisplay(props) {
   return (

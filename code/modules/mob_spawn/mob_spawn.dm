@@ -38,6 +38,12 @@
 	if(faction)
 		faction = string_list(faction)
 
+/obj/effect/mob_spawn/Destroy()
+	spawned_mob_ref = null
+	if(istype(outfit))
+		QDEL_NULL(outfit)
+	return ..()
+
 /// Creates whatever mob the spawner makes. Return FALSE if we want to exit from here without doing that, returning NULL will be logged to admins.
 /obj/effect/mob_spawn/proc/create(mob/mob_possessor, newname)
 	var/mob/living/spawned_mob = new mob_type(get_turf(src)) //living mobs only
@@ -128,12 +134,16 @@
 	/// Typepath indicating the kind of job datum this ghost role will have. PLEASE inherit this with a new job datum, it's not hard. jobs come with policy configs.
 	var/spawner_job_path = /datum/job/ghost_role
 
+	/// Whether this offers a temporary body or not. Essentially, you'll be able to reenter your body after using this spawner.
+	var/temp_body = FALSE
+
+
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	LAZYADD(GLOB.mob_spawners[name], src)
 
-/obj/effect/mob_spawn/Destroy()
+/obj/effect/mob_spawn/ghost_role/Destroy()
 	var/list/spawners = GLOB.mob_spawners[name]
 	LAZYREMOVE(spawners, src)
 	if(!LAZYLEN(spawners))
@@ -154,7 +164,7 @@
 
 	if(prompt_ghost)
 		var/prompt = "Become [prompt_name]?"
-		if(user.can_reenter_corpse && user.mind)
+		if(!temp_body && user.can_reenter_corpse && user.mind)
 			prompt += " (Warning, You can no longer be revived!)"
 		var/ghost_role = tgui_alert(usr, prompt, buttons = list("Yes", "No"), timeout = 10 SECONDS)
 		if(ghost_role != "Yes" || !loc || QDELETED(user))
@@ -202,7 +212,8 @@
 
 	user.log_message("became a [prompt_name].", LOG_GAME)
 	uses -= 1 // Remove a use before trying to spawn to prevent strangeness like the spawner trying to spawn more mobs than it should be able to
-	user.mind = null // dissassociate mind, don't let it follow us to the next life
+	if(!temp_body)
+		user.mind = null // dissassociate mind, don't let it follow us to the next life
 
 	var/created = create(user)
 	LAZYREMOVE(ckeys_trying_to_spawn, user_ckey) // We do this AFTER the create() so that we're basically sure that the user won't be in their ghost body anymore, so they can't click on the spawner again.
@@ -256,6 +267,7 @@
 
 ///these mob spawn subtypes trigger immediately (New or Initialize) and are not player controlled... since they're dead, you know?
 /obj/effect/mob_spawn/corpse
+	density = FALSE //these are pretty much abstract objects that leave a corpse in their place.
 	///when this mob spawn should auto trigger.
 	var/spawn_when = CORPSE_INSTANT
 
@@ -319,6 +331,7 @@
 		spawned_human.Drain()
 	else //Because for some reason I can't track down, things are getting turned into husks even if husk = false. It's in some damage proc somewhere.
 		spawned_human.cure_husk()
+	spawned_human.job = name
 
 /obj/effect/mob_spawn/corpse/human/equip(mob/living/carbon/human/spawned_human)
 	. = ..()

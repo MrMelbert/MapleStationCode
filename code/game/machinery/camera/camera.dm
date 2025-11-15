@@ -111,7 +111,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 
 	for(var/network_name in network)
 		network -= network_name
-		network += lowertext(network_name)
+		network += LOWER_TEXT(network_name)
 
 	GLOB.cameranet.cameras += src
 
@@ -128,8 +128,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	alarm_manager = new(src)
 	find_and_hang_on_wall(directional = TRUE, \
 		custom_drop_callback = CALLBACK(src, PROC_REF(deconstruct), FALSE))
-
-	RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
 
 /obj/machinery/camera/Destroy(force)
 	if(can_use())
@@ -231,10 +229,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 				M.reset_perspective(null)
 				to_chat(M, span_warning("The screen bursts into static!"))
 
-/obj/machinery/camera/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
-	emp_act(EMP_LIGHT, reset_time = disrupt_duration)
-	return COMSIG_SABOTEUR_SUCCESS
+/obj/machinery/camera/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
+	//lasts twice as much so we don't have to constantly shoot cameras just to be S T E A L T H Y
+	emp_act(EMP_LIGHT, reset_time = disrupt_duration * 2)
+	return TRUE
 
 /obj/machinery/camera/proc/post_emp_reset(thisemp, previous_network)
 	if(QDELETED(src))
@@ -421,12 +420,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 					above = GET_TURF_ABOVE(above)
 	return see
 
-/obj/machinery/camera/proc/Togglelight(on=0)
-	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
-		for(var/obj/machinery/camera/cam in A.lit_cameras)
-			if(cam == src)
-				return
-	if(on)
+/obj/machinery/camera/proc/toggle_ai_light(mob/ai_source, on = FALSE)
+	// don't turf off if another ai is also using the camera
+	for(var/mob/living/silicon/ai/other_ai as anything in GLOB.ai_list - ai_source)
+		if(other_ai.camera_light_on && (src in other_ai.eyeobj?.cameras_near_eye))
+			return
+	if(on && internal_light)
 		set_light(AI_CAMERA_LUMINOSITY)
 	else
 		set_light(0)

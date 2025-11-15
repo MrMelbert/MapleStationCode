@@ -36,7 +36,6 @@
 #define SURGICAL_TOOL (1<<12) //Tool commonly used for surgery: won't attack targets in an active surgical operation on help intent (in case of mistakes)
 #define CRUEL_IMPLEMENT (1<<13) //This object, when used for surgery, is a lot worse at the job if the target is alive rather than dead
 #define HAND_ITEM (1<<14) // If an item is just your hand (circled hand, slapper) and shouldn't block things like riding
-#define EXAMINE_SKIP (1<<15) // Makes the Examine proc not read out this item.
 #define XENOMORPH_HOLDABLE (1<<16) // A Xenomorph can hold this item.
 #define NO_PIXEL_RANDOM_DROP (1<<17) //if dropped, it wont have a randomized pixel_x/pixel_y
 /// Has contextual screentips when HOVERING OVER OTHER objects
@@ -74,18 +73,18 @@
 #define DANGEROUS_OBJECT (1<<10)
 /// Clothes that use large icons, for applying the proper overlays like blood
 #define LARGE_WORN_ICON (1<<11)
-/// Clothes that block speech (i.e the muzzle). Can be applied to any clothing piece.
-#define BLOCKS_SPEECH (1<<12)
 /// prevents from placing on plasmaman helmet or modsuit hat holder
-#define STACKABLE_HELMET_EXEMPT (1<<13)
+#define STACKABLE_HELMET_EXEMPT (1<<12)
 /// Prevents plasmamen from igniting when wearing this
-#define PLASMAMAN_PREVENT_IGNITION (1<<14)
+#define PLASMAMAN_PREVENT_IGNITION (1<<13)
 /// Usable as casting clothes by wizards (matters for suits, glasses and headwear)
-#define CASTING_CLOTHES (1<<15)
+#define CASTING_CLOTHES (1<<14)
 ///Moths can't eat the clothing that has this flag.
-#define INEDIBLE_CLOTHING (1<<16)
+#define INEDIBLE_CLOTHING (1<<15)
 /// Headgear/helmet allows internals
-#define HEADINTERNALS (1<<17)
+#define HEADINTERNALS (1<<16)
+/// Prevents masks from getting adjusted from enabling internals
+#define INTERNALS_ADJUST_EXEMPT (1<<17)
 
 /// Integrity defines for clothing (not flags but close enough)
 #define CLOTHING_PRISTINE 0 // We have no damage on the clothing
@@ -105,3 +104,8 @@
 /// Flags for sharpness in obj/item
 #define SHARP_EDGED (1<<0)
 #define SHARP_POINTY (1<<1)
+
+/// Flags for specifically what kind of items to get in get_equipped_items
+#define INCLUDE_POCKETS (1<<0)
+#define INCLUDE_ACCESSORIES (1<<1)
+#define INCLUDE_HELD (1<<2)

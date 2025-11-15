@@ -66,7 +66,7 @@
 	// (at any given moment, there may be like... 200 blood decals on your screen at once
 	// byond is, apparently, pretty bad at handling that many color matrix operations,
 	// especially in a filter or while animating)
-	var/list/starting_color_rgb = ReadRGB(color) || list(255, 255, 255, alpha)
+	var/list/starting_color_rgb = rgb2num(color) || list(255, 255, 255, alpha)
 	// we want a fixed offset for a fixed drop in color intensity, plus a scaling offset based on our strongest color
 	// the scaling offset helps keep dark colors from turning black, while also ensurse bright colors don't stay super bright
 	var/max_color = max(starting_color_rgb[1], starting_color_rgb[2], starting_color_rgb[3])
@@ -108,7 +108,7 @@
 	var/list/all_blood_names = list()
 	for(var/dna_sample in all_dna)
 		var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
-		all_blood_names |= lowertext(initial(blood.reagent_type.name))
+		all_blood_names |= LOWER_TEXT(initial(blood.reagent_type.name))
 	return english_list(all_blood_names, nothing_text = "blood")
 
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
@@ -465,6 +465,9 @@
 	/// List of species that have made footprints here.
 	var/list/species_types
 
+/obj/effect/decal/cleanable/blood/footprints/get_save_vars()
+	return ..() - NAMEOF(src, icon_state)
+
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
@@ -487,9 +490,9 @@
 
 	for(var/Ddir in GLOB.cardinals)
 		if(old_entered_dirs & Ddir)
-			entered_dirs |= angle2dir_cardinal(dir2angle(Ddir) + ang_change)
+			entered_dirs |= turn_cardinal(Ddir, ang_change)
 		if(old_exited_dirs & Ddir)
-			exited_dirs |= angle2dir_cardinal(dir2angle(Ddir) + ang_change)
+			exited_dirs |= turn_cardinal(Ddir, ang_change)
 
 	update_appearance()
 	return ..()
@@ -619,6 +622,9 @@
 		if(splatter_strength <= 0)
 			break
 		iter_atom.add_blood_DNA(blood_dna_info)
+		if(isliving(iter_atom))
+			var/mob/living/splatted = iter_atom
+			splatted.add_mood_event("splattered_with_blood", /datum/mood_event/splattered_with_blood)
 
 	splatter_strength--
 	// we used all our blood so go away

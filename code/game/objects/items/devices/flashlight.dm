@@ -19,7 +19,9 @@
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5, /datum/material/glass= SMALL_MATERIAL_AMOUNT * 0.2)
 	actions_types = list(/datum/action/item_action/toggle_light)
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	action_slots = ALL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
+	light_color = COLOR_LIGHT_ORANGE
 	light_range = 4
 	light_power = 1
 	light_on = FALSE
@@ -35,6 +37,8 @@
 	var/sound_off = 'sound/weapons/magout.ogg'
 	/// Should the flashlight start turned on?
 	var/start_on = FALSE
+	/// When true, painting the flashlight won't change its light color
+	var/ignore_base_color = FALSE
 
 /obj/item/flashlight/Initialize(mapload)
 	. = ..()
@@ -42,13 +46,13 @@
 		set_light_on(TRUE)
 	update_brightness()
 	register_context()
-	if(toggle_context)
-		RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
+	init_slapcrafting()
 
+/obj/item/flashlight/proc/init_slapcrafting()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/flashlight_eyes)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -77,7 +81,7 @@
 
 /obj/item/flashlight/proc/update_brightness()
 	update_appearance(UPDATE_ICON)
-	if(light_system == STATIC_LIGHT)
+	if(light_system == COMPLEX_LIGHT)
 		update_light()
 
 /obj/item/flashlight/proc/toggle_light(mob/user)
@@ -115,8 +119,8 @@
 		to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
 		return
 
-	var/obj/item/organ/internal/eyes/E = M.get_organ_slot(ORGAN_SLOT_EYES)
-	var/obj/item/organ/internal/brain = M.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/eyes/E = M.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/brain = M.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!E)
 		to_chat(user, span_warning("[M] doesn't have any eyes!"))
 		return
@@ -287,12 +291,12 @@
 		setDir(user.dir)
 
 /// when hit by a light disruptor - turns the light off, forces the light to be disabled for a few seconds
-/obj/item/flashlight/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
+/obj/item/flashlight/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	if(light_on)
 		toggle_light()
 	COOLDOWN_START(src, disabled_time, disrupt_duration)
-	return COMSIG_SABOTEUR_SUCCESS
+	return TRUE
 
 /obj/item/flashlight/pen
 	name = "penlight"
@@ -304,6 +308,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	obj_flags = CONDUCTS_ELECTRICITY
 	light_range = 2
+	light_power = 0.8
+	light_color = "#CCFFFF"
 	drop_sound = /obj/item/pen::drop_sound
 	pickup_sound = /obj/item/pen::pickup_sound
 	COOLDOWN_DECLARE(holosign_cooldown)
@@ -360,6 +366,8 @@
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	force = 9 // Not as good as a stun baton.
 	light_range = 5 // A little better than the standard flashlight.
+	light_power = 0.8
+	light_color = "#99ccff"
 	hitsound = 'sound/weapons/genhit1.ogg'
 
 // the desk lamps are a bit special
@@ -372,7 +380,7 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
 	light_range = 3.5
-	light_system = STATIC_LIGHT
+	light_system = COMPLEX_LIGHT
 	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	obj_flags = CONDUCTS_ELECTRICITY
@@ -405,7 +413,8 @@
 	actions_types = list()
 	heat = 1000
 	light_color = LIGHT_COLOR_FLARE
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
+	light_power = 2
 	grind_results = list(/datum/reagent/sulfur = 15)
 	sound_on = 'sound/items/match_strike.ogg'
 	toggle_context = FALSE
@@ -435,19 +444,20 @@
 		damtype = BURN
 		update_brightness()
 
+/obj/item/flashlight/flare/init_slapcrafting()
+	return
+
 /obj/item/flashlight/flare/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/flashlight/flare/attack(mob/living/carbon/victim, mob/living/carbon/user)
-	if(!isliving(victim))
-		return ..()
-
-	if(light_on && victim.ignite_mob())
+/obj/item/flashlight/flare/afterattack(atom/target, mob/user, click_parameters)
+	if(!isliving(target))
+		return
+	var/mob/living/victim = target
+	if(get_temperature() && victim.ignite_mob())
 		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(victim)] on fire with [src] at [AREACOORD(user)]")
 		user.log_message("set [key_name(victim)] on fire with [src]", LOG_ATTACK)
-
-	return ..()
 
 /obj/item/flashlight/flare/toggle_light()
 	if(light_on || !fuel)
@@ -460,7 +470,8 @@
 	hitsound = 'sound/items/welder.ogg'
 	force = on_damage
 	damtype = BURN
-
+	slot_flags = NONE
+	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/flashlight/flare/proc/turn_off()
 	set_light_on(FALSE)
@@ -470,6 +481,8 @@
 	hitsound = initial(hitsound)
 	force = initial(force)
 	damtype = initial(damtype)
+	slot_flags = initial(slot_flags)
+	w_class = initial(w_class)
 	update_brightness()
 
 /obj/item/flashlight/flare/extinguish()
@@ -533,8 +546,9 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	w_class = WEIGHT_CLASS_TINY
 	heat = 1000
-	light_color = LIGHT_COLOR_FIRE
 	light_range = 2
+	light_power = 1.5
+	light_color = LIGHT_COLOR_FIRE
 	fuel = 35 MINUTES
 	randomize_fuel = FALSE
 	trash_type = /obj/item/trash/candle
@@ -580,10 +594,8 @@
  * Arguments:
  * * obj/item/fire_starter - the item being used to ignite the candle.
  * * mob/user - the user to display a message to.
- * * quiet - suppresses the to_chat message.
- * * silent - suppresses the balloon alerts as well as the to_chat message.
  */
-/obj/item/flashlight/flare/candle/proc/try_light_candle(obj/item/fire_starter, mob/user, quiet, silent)
+/obj/item/flashlight/flare/candle/proc/try_light_candle(obj/item/fire_starter, mob/user)
 	if(!istype(fire_starter))
 		return
 	if(!istype(user))
@@ -598,34 +610,53 @@
 	switch(ignition_result)
 		if(SUCCESS)
 			update_appearance(UPDATE_ICON | UPDATE_NAME)
-			if(!quiet && !silent)
-				user.visible_message(success_msg)
+			user.visible_message(success_msg)
 			return SUCCESS
 		if(ALREADY_LIT)
-			if(!silent)
-				balloon_alert(user, "already lit!")
+			balloon_alert(user, "already lit!")
 			return ALREADY_LIT
 		if(NO_FUEL)
-			if(!silent)
-				balloon_alert(user, "out of fuel!")
+			balloon_alert(user, "out of fuel!")
 			return NO_FUEL
 
-/// allows lighting an unlit candle from some fire source by left clicking the candle with the source
-/obj/item/flashlight/flare/candle/attackby(obj/item/attacking_item, mob/user, params)
-	if(try_light_candle(attacking_item, user, silent = istype(attacking_item, src.type))) // so we don't double balloon alerts when a candle is used to light another candle
-		return COMPONENT_CANCEL_ATTACK_CHAIN
-	else
-		return ..()
+/obj/item/flashlight/flare/candle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(get_temperature())
+		if(istype(tool, /obj/item/cigarette))
+			var/obj/item/cigarette/cig = tool
+			if(cig.lit)
+				return NONE
+			cig.light()
+			if(cig.loc == user)
+				user.visible_message(
+					span_rose("[user] holds [user.p_their()] [cig.name] to [src] and lights it, like a true romantic."),
+					span_rose("You hold your [cig.name] to [src] and light it, like a true romantic."),
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
+			else
+				user.visible_message(
+					span_rose("[user] lights [cig] with [src], like a true romantic."),
+					span_rose("You light [cig] with [src], like a true romantic."),
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
+			return ITEM_INTERACT_SUCCESS
+		return NONE
+	if(try_light_candle(tool, user))
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
-// allows lighting an unlit candle from some fire source by left clicking the source with the candle
-/obj/item/flashlight/flare/candle/pre_attack(atom/target, mob/living/user, params)
-	if(ismob(target))
-		return ..()
+/obj/item/flashlight/flare/candle/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(get_temperature())
+		return NONE
+	if(try_light_candle(interacting_with, user))
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
-	if(try_light_candle(target, user, quiet = TRUE))
-		return COMPONENT_CANCEL_ATTACK_CHAIN
-
-	return ..()
+/obj/item/flashlight/flare/candle/ignition_effect(atom/A, mob/user)
+	if(!get_temperature())
+		return ""
+	if(isitem(A) && A.loc == user)
+		return span_rose("[user] holds [A] in the flame of [src], letting it catch fire.")
+	return span_rose("[user] lights [A] ablaze with [src], like a true romantic.")
 
 /obj/item/flashlight/flare/candle/attack_self(mob/user)
 	if(light_on && (fuel != INFINITY || !can_be_extinguished)) // can't extinguish eternal candles
@@ -647,6 +678,7 @@
 	name = "torch"
 	desc = "A torch fashioned from some leaves and a log."
 	light_range = 4
+	light_power = 1.3
 	icon_state = "torch"
 	inhand_icon_state = "torch"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
@@ -664,8 +696,10 @@
 	lefthand_file = 'icons/mob/inhands/equipment/mining_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/mining_righthand.dmi'
 	desc = "A mining lantern."
-	light_range = 6 // luminosity when on
-	light_system = MOVABLE_LIGHT
+	light_range = 5 // luminosity when on
+	light_power = 1.5
+	light_color = "#ffcc66"
+	light_system = OVERLAY_LIGHT
 
 /obj/item/flashlight/lantern/on
 	start_on = TRUE
@@ -673,20 +707,21 @@
 /obj/item/flashlight/lantern/heirloom_moth
 	name = "old lantern"
 	desc = "An old lantern that has seen plenty of use."
-	light_range = 4
+	light_range = 3.5
 
 /obj/item/flashlight/lantern/syndicate
 	name = "suspicious lantern"
 	desc = "A suspicious looking lantern."
 	icon_state = "syndilantern"
 	inhand_icon_state = "syndilantern"
-	light_range = 10
+	light_range = 6
+	light_power = 2
+	light_color = "#ffffe6"
 
 /obj/item/flashlight/lantern/jade
 	name = "jade lantern"
 	desc = "An ornate, green lantern."
 	color = LIGHT_COLOR_GREEN
-	light_color = LIGHT_COLOR_GREEN
 
 /obj/item/flashlight/slime
 	gender = PLURAL
@@ -698,8 +733,9 @@
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = null
-	light_range = 7 //luminosity when on
-	light_system = MOVABLE_LIGHT
+	light_range = 6 //luminosity when on
+	light_color = "#ffff66"
+	light_system = OVERLAY_LIGHT
 
 /obj/item/flashlight/emp
 	var/emp_max_charges = 4
@@ -762,8 +798,9 @@
 	desc = "A military-grade glowstick."
 	custom_price = PAYCHECK_LOWER
 	w_class = WEIGHT_CLASS_SMALL
-	light_range = 4
-	light_system = MOVABLE_LIGHT
+	light_range = 3.5
+	light_power = 2
+	light_system = OVERLAY_LIGHT
 	color = LIGHT_COLOR_GREEN
 	icon_state = "glowstick"
 	base_icon_state = "glowstick"
@@ -774,6 +811,7 @@
 	toggle_context = FALSE
 	/// How many seconds of fuel we have left
 	var/fuel = 0
+	ignore_base_color = TRUE
 
 /obj/item/flashlight/glowstick/Initialize(mapload)
 	fuel = rand(50 MINUTES, 60 MINUTES)
@@ -834,7 +872,7 @@
 	if(!fuel)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
-	var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but [user.p_they()] don't have any!"))
 		return SHAME
@@ -870,9 +908,9 @@
 	name = "disco light"
 	desc = "Groovy..."
 	icon_state = null
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 4
-	light_power = 10
+	light_power = 2
 	alpha = 0
 	plane = FLOOR_PLANE
 	anchored = TRUE
@@ -895,31 +933,29 @@
 
 /obj/item/flashlight/flashdark
 	name = "flashdark"
-	desc = "A strange device manufactured with mysterious elements that somehow emits darkness. Or maybe it just sucks in light? Nobody knows for sure."
+	desc = "A powerful antiphoton projector, capable of projecting a bubble of darkness around the user."
 	icon_state = "flashdark"
 	inhand_icon_state = "flashdark"
-	light_system = STATIC_LIGHT //The overlay light component is not yet ready to produce darkness.
+	light_system = COMPLEX_LIGHT //The overlay light component is not yet ready to produce darkness.
 	light_range = 0
+	light_color = COLOR_WHITE
 	///Variable to preserve old lighting behavior in flashlights, to handle darkness.
-	var/dark_light_range = 2.5
+	var/dark_light_range = 3.5
 	///Variable to preserve old lighting behavior in flashlights, to handle darkness.
 	var/dark_light_power = -3
-	var/on = FALSE
+
+/obj/item/flashlight/flashdark/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/overlay_lighting, dark_light_range, dark_light_power, force = TRUE)
 
 /obj/item/flashlight/flashdark/update_brightness()
 	. = ..()
-	if(on)
-		set_light(dark_light_range, dark_light_power)
-	else
-		set_light(0)
+	set_light(dark_light_range, dark_light_power)
 
 //type and subtypes spawned and used to give some eyes lights,
 /obj/item/flashlight/eyelight
 	name = "eyelight"
 	desc = "This shouldn't exist outside of someone's head, how are you seeing this?"
-	light_system = MOVABLE_LIGHT
-	light_range = 15
-	light_power = 1
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = DROPDEL
 	actions_types = list()
@@ -933,7 +969,7 @@
 	light_power = 0.07
 
 /obj/item/flashlight/eyelight/glow
-	light_system = MOVABLE_LIGHT_BEAM
+	light_system = OVERLAY_LIGHT_BEAM
 	light_range = 4
 	light_power = 2
 

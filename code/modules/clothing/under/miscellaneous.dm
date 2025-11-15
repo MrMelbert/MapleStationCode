@@ -27,6 +27,7 @@
 	icon_state = "mailman"
 	inhand_icon_state = "b_suit"
 	clothing_traits = list(TRAIT_HATED_BY_DOGS)
+	custom_premium_price = PAYCHECK_CREW
 
 /obj/item/clothing/under/misc/psyche
 	name = "psychedelic jumpsuit"
@@ -57,6 +58,10 @@
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	can_adjust = FALSE
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/clothing/under/misc/adminsuit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -15)
 
 /datum/armor/clothing_under/adminsuit
 	melee = 100

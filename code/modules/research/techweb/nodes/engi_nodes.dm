@@ -126,15 +126,15 @@
 		"firelock_board",
 		"trapdoor_electronics",
 		"blast",
-		"tile_sprayer",
+		"ignition",
 		"airlock_painter",
 		"decal_painter",
 		"rwd",
 		"cable_coil",
 		"welding_helmet",
 		"welding_tool",
+		"mini_welding_tool",
 		"tscanner",
-		"analyzer",
 		"multitool",
 		"wrench",
 		"crowbar",
@@ -142,18 +142,9 @@
 		"wirecutters",
 		"light_bulb",
 		"light_tube",
-		"intercom_frame",
-		"newscaster_frame",
-		"status_display_frame",
-		"circuit",
-		"circuitgreen",
-		"circuitred",
-//		"tram_floor_dark",
-//		"tram_floor_light",
-		"tram_controller",
-		"tram_display",
 		"crossing_signal",
 		"guideway_sensor",
+		"mailsorter",
 	)
 
 /datum/techweb_node/energy_manipulation
@@ -176,6 +167,7 @@
 		"inducerengi",
 		"welding_goggles",
 		"tray_goggles",
+		"geigercounter",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 

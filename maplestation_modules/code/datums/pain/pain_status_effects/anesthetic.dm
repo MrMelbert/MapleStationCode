@@ -80,8 +80,17 @@
 	owner.set_pain_mod(type, 0.9)
 	owner.adjust_drugginess(initial(duration) / 8)
 	to_chat(owner, span_warning("You feel[strength <= 90 ? " ":" a bit "]groggy..."))
+	RegisterSignal(owner, COMSIG_LIVING_HEALTHSCAN, PROC_REF(report_grog))
 	return TRUE
 
 /datum/status_effect/anesthesia_grog/on_remove()
 	owner.remove_max_consciousness_value(type)
 	owner.unset_pain_mod(type)
+	UnregisterSignal(owner, COMSIG_LIVING_HEALTHSCAN)
+
+/datum/status_effect/anesthesia_grog/proc/report_grog(datum/source, list/render_list, advanced, mob/user, mode, tochat)
+	SIGNAL_HANDLER
+
+	render_list += "<span class='alert ml-1'>"
+	render_list += conditional_tooltip("[strength > 50 ? "Moderate" : "Trace"] amount of anesthetic detected in bloodstream.</span>", "Will subside over time.", tochat)
+	render_list += "</span><br>"

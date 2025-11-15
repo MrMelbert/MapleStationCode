@@ -1,6 +1,6 @@
 /datum/job/cook
 	title = JOB_COOK
-	description = "Serve food, cook meat, keep the crew fed."
+	description = "Serve food, cook \"meat\", keep the crew fed and happy."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -16,6 +16,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SRV
 
+	mind_traits = list(TRAIT_DESENSITIZED) // butcher
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_COOK
@@ -80,9 +81,13 @@
 	mask = /obj/item/clothing/mask/fakemoustache/italian
 
 	skillchips = list(/obj/item/skillchip/job/chef)
+	/// If we differentiate chefs and cooks
+	var/change_hat = TRUE
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
+	if(!change_hat)
+		return
 	var/datum/job/cook/other_chefs = SSjob.GetJobType(jobtype)
 	if(other_chefs) // If there's other Chefs, you're a Cook
 		if(other_chefs.cooks > 0)//Cooks
@@ -96,3 +101,8 @@
 	. = ..()
 	. += /obj/item/clothing/suit/apron/chef
 	. += /obj/item/clothing/head/soft/mime
+
+/datum/outfit/job/cook/consistent
+	name = "Cook (Consistent)"
+	mask = null
+	change_hat = FALSE

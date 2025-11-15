@@ -212,7 +212,7 @@
 	combat_mode = new_mode
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
-	if(silent || !(client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode)))
+	if(silent || !client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
 		return
 	if(combat_mode)
 		SEND_SOUND(src, sound('sound/misc/ui_togglecombat.ogg', volume = 25)) //Sound from interbay!
@@ -404,7 +404,7 @@
 
 	if(!user.get_bodypart(BODY_ZONE_HEAD))
 		return FALSE
-	if(user.is_muzzled() || user.is_mouth_covered(ITEM_SLOT_MASK))
+	if(user.is_mouth_covered(ITEM_SLOT_MASK))
 		to_chat(user, span_warning("You can't bite with your mouth covered!"))
 		return FALSE
 
@@ -740,7 +740,7 @@
 		. |= SHOVE_CAN_MOVE
 		if(!buckled)
 			. |= SHOVE_CAN_HIT_SOMETHING
-	if(HAS_TRAIT(src, TRAIT_SHOVE_KNOCKDOWN_BLOCKED))
+	if(HAS_TRAIT(src, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED))
 		. |= SHOVE_KNOCKDOWN_BLOCKED
 
 ///Send the chat feedback message for shoving

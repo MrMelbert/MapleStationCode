@@ -29,7 +29,7 @@
 	///The molar mass of the reagent - if you're adding a reagent that doesn't have a recipe, just add a random number between 10 - 800. Higher numbers are "harder" but it's mostly arbitary.
 	var/mass
 	/// color it looks in containers etc
-	var/color = "#000000" // rgb: 0, 0, 0
+	var/color = COLOR_BLACK // rgb: 0, 0, 0
 	///how fast the reagent is metabolized by the mob
 	var/metabolization_rate = REAGENTS_METABOLISM
 	/// above this overdoses happen
@@ -279,6 +279,10 @@ Primarily used in reagents/reaction_agents
 	if(!purity)
 		purity = src.purity
 	return min(1-inverse_chem_val + purity + 0.01, 1) //Gives inverse reactions a 1% purity threshold for being 100% pure to appease players with OCD.
+
+///Called when feeding a fish. If TRUE is returned, a portion of reagent will be consumed.
+/datum/reagent/proc/used_on_fish(obj/item/fish/fish)
+	return FALSE
 
 /**
  * Input a reagent_list, outputs pretty readable text!

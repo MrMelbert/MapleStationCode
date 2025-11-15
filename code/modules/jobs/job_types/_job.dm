@@ -160,7 +160,7 @@
 	if(length(mind_traits))
 		spawned.mind.add_traits(mind_traits, JOB_TRAIT)
 
-	var/obj/item/organ/internal/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
 
@@ -217,7 +217,7 @@
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
 	if(equipping.paycheck_department && (equipping.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE: Only crew members get a bank account / memory
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-		bank_account.payday(STARTING_PAYCHECKS, TRUE)
+		bank_account.payday(STARTING_PAYCHECKS, free = TRUE)
 		account_id = bank_account.account_id
 		bank_account.replaceable = FALSE
 		add_mob_memory(/datum/memory/key/account, remembered_id = account_id)
@@ -316,13 +316,15 @@
 /// Gets the message that shows up when spawning as this job
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	return examine_block(span_infoplain(jointext(get_spawn_message_information(), "\n&bull; ")))
+	var/final_product = separator_hr(span_big("You are the <b>[title]</b>."))
+	final_product += "<i>[description]</i><br><br>"
+	final_product += "&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
+	return examine_block(span_infoplain(final_product))
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
 	SHOULD_CALL_PARENT(TRUE)
 	var/list/info = list()
-	info += "<b>You are the [title].</b>\n"
 	var/related_policy = get_policy(title)
 	var/radio_info = get_radio_information()
 	if(related_policy)
@@ -344,7 +346,7 @@
 /// Returns information pertaining to this job's radio.
 /datum/job/proc/get_radio_information()
 	if(job_flags & JOB_CREW_MEMBER)
-		return "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+		return "Prefix your message with <b>:[MODE_KEY_DEPARTMENT]</b> to speak on your department's radio. To see other prefixes, examine your headset."
 
 /datum/outfit/job
 	name = "Standard Gear"
@@ -432,7 +434,7 @@
 			card.registered_account = account
 			account.bank_cards += card
 
-		equipped.sec_hud_set_ID()
+		equipped.update_ID_card()
 
 	var/obj/item/modular_computer/pda/pda = equipped.get_item_by_slot(pda_slot)
 

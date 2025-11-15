@@ -10,9 +10,9 @@
 	armor_flag = LASER
 	eyeblur = 4 SECONDS
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 1
-	light_power = 1
+	light_power = 1.4
 	light_color = COLOR_SOFT_RED
 	ricochets_max = 50 //Honk!
 	ricochet_chance = 80
@@ -124,6 +124,22 @@
 	damage = 25
 	stamina = 20
 	weak_against_armour = FALSE
+
+/obj/projectile/beam/laser/phaser
+	name = "phaser beam"
+	icon_state = "xray"
+	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
+	light_color = LIGHT_COLOR_GREEN
+	tracer_type = /obj/effect/projectile/tracer/laser/phaser
+	muzzle_type = /obj/effect/projectile/muzzle/laser/phaser
+	impact_type = /obj/effect/projectile/impact/laser/phaser
+	hitscan_light_color_override = LIGHT_COLOR_GREEN
+	muzzle_flash_color_override = LIGHT_COLOR_GREEN
+	impact_light_color_override = LIGHT_COLOR_GREEN
+
+	wound_bonus = -50
+	bare_wound_bonus = 0
+	hitscan_damage_range_mult = 0.75
 
 /obj/projectile/beam/weak
 	damage = 12

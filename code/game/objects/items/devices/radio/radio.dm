@@ -120,15 +120,19 @@
 	// No subtypes
 	if(type != /obj/item/radio)
 		return
-	AddComponent(/datum/component/slapcrafting,\
-		slapcraft_recipes = list(/datum/crafting_recipe/improv_explosive)\
-	)
+	AddElement(/datum/element/slapcrafting, string_list(list(/datum/crafting_recipe/improv_explosive)))
 
 /obj/item/radio/Destroy()
 	remove_radio_all(src) //Just to be sure
 	if(istype(keyslot))
 		QDEL_NULL(keyslot)
 	return ..()
+
+/obj/item/radio/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
+	if(broadcasting) //no broadcasting but it can still be used to send radio messages.
+		set_broadcasting(FALSE)
+		return TRUE
 
 /obj/item/radio/proc/set_frequency(new_frequency)
 	SEND_SIGNAL(src, COMSIG_RADIO_NEW_FREQUENCY, args)
@@ -265,17 +269,29 @@
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(SEND_SIGNAL(talking_movable, COMSIG_MOVABLE_USING_RADIO, src) & COMPONENT_CANNOT_USE_RADIO)
-		return
+		return NONE
 	if(SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel) & COMPONENT_CANNOT_USE_RADIO)
-		return
+		return NONE
 
 	if(!spans)
 		spans = list(talking_movable.speech_span)
 	if(!language)
 		language = talking_movable.get_selected_language()
-	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
+	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, LAZYLISTDUPLICATE(spans), language, LAZYLISTDUPLICATE(message_mods))
 	return ITALICS | REDUCE_RANGE
 
+/**
+ * Handles talking into the radio
+ *
+ * Unlike most speech related procs, spans and message_mods are not guaranteed to be lists
+ *
+ * * talking_movable - the atom that is talking
+ * * message - the message to be spoken
+ * * channel - the channel to be spoken on
+ * * spans - the spans to be used, lazylist
+ * * language - the language to be spoken in. (Should) never be null
+ * * message_mods - the message mods to be used, lazylist
+ */
 /obj/item/radio/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(!on)
 		return FALSE // the device has to be on
@@ -360,11 +376,11 @@
 	signal.levels = SSmapping.get_connected_levels(T)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
+/obj/item/radio/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
-	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
+	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range || message_mods[MODE_RELAY])
 		return
-	var/filtered_mods = list()
+	var/list/filtered_mods = list()
 
 	if (message_mods[MODE_SING])
 		filtered_mods[MODE_SING] = message_mods[MODE_SING]
@@ -669,3 +685,83 @@
 	canhear_range = 3
 
 #undef FREQ_LISTENING
+
+#define RADIO_X_OFFSET 8
+#define RADIO_Y_OFFSET 8
+
+/// I am scared about generating 100 icons every radio message so they will be aggressively cached
+#define CACHED_ICON(varname, filepath, filestate) \
+	var/static/icon/##varname; \
+	if(!##varname && icon_exists_or_scream(filepath, filestate)) { \
+		##varname = icon(filepath, filestate); \
+		##varname.Scale(48, 48); \
+		##varname.Crop(RADIO_X_OFFSET, RADIO_Y_OFFSET, RADIO_X_OFFSET + 31, RADIO_Y_OFFSET + 31); \
+	}
+
+/// Default / fallback icon that looks like a big old radio
+/obj/item/radio/proc/default_radio_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_radio, 'icons/obj/devices/voice.dmi', "radio")
+	return cached_radio
+
+/// Default / fallback icon that looks like a walkie-talkie
+/obj/item/radio/proc/default_walkie_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_walkie, 'icons/obj/devices/voice.dmi', "walkietalkie")
+	return cached_walkie
+
+/// Default / fallback icon that looks like an intercom
+/obj/item/radio/proc/default_intercom_icon()
+	PROTECTED_PROC(TRUE)
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom")
+	return cached_intercom
+
+/// Returns an icon to diplay in chat when this object is used as a radio
+/obj/proc/get_radio_icon()
+	return
+
+/obj/item/radio/get_radio_icon()
+	switch(icon_state)
+		if("walkietalkie")
+			return default_walkie_icon()
+
+		if("radio")
+			return default_radio_icon()
+
+	return default_walkie_icon() // fallback
+
+/obj/item/radio/entertainment/get_radio_icon()
+	return default_walkie_icon()
+
+/obj/item/radio/headset/get_radio_icon()
+	CACHED_ICON(cached_headset, 'icons/obj/clothing/headsets.dmi', "headset")
+	return cached_headset
+
+/obj/item/radio/intercom/get_radio_icon()
+	return default_intercom_icon()
+
+/obj/item/radio/intercom/prison/get_radio_icon()
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom_prison")
+	return cached_intercom
+
+/obj/item/radio/intercom/command/get_radio_icon()
+	CACHED_ICON(cached_intercom, 'icons/obj/machines/wallmounts.dmi', "intercom_command")
+	return cached_intercom
+
+/obj/item/radio/weather_monitor/get_radio_icon()
+	CACHED_ICON(cached_monitor, 'icons/obj/miningradio.dmi', "miningradio")
+	return cached_monitor
+
+/obj/item/radio/borg/get_radio_icon()
+	return default_radio_icon()
+
+/obj/item/radio/headset/silicon/get_radio_icon()
+	return default_radio_icon()
+
+/obj/item/radio/headset/silicon/ai/get_radio_icon()
+	return default_intercom_icon()
+
+#undef CACHED_ICON
+
+#undef RADIO_X_OFFSET
+#undef RADIO_Y_OFFSET

@@ -6,6 +6,7 @@
 
 /datum/loadout_item/accessory
 	abstract_type = /datum/loadout_item/accessory
+	group = "Other"
 	/// Can we adjust this accessory to be above or below suits?
 	VAR_FINAL/can_be_layer_adjusted = FALSE
 
@@ -83,41 +84,44 @@
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_displayed_text = list("Contains pens")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
 	item_path = /obj/item/clothing/accessory/medal/ribbon
 
-/datum/loadout_item/accessory/blue_green_armband
+/datum/loadout_item/accessory/armband
+	abstract_type = /datum/loadout_item/accessory/armband
+	group = "Armbands"
+
+/datum/loadout_item/accessory/armband/blue_green
 	name = "Armband (Blue and Green)"
 	item_path = /obj/item/clothing/accessory/armband/hydro_cosmetic
 
-/datum/loadout_item/accessory/brown_armband
+/datum/loadout_item/accessory/armband/brown
 	name = "Armband (Brown)"
 	item_path = /obj/item/clothing/accessory/armband/cargo_cosmetic
 
-/datum/loadout_item/accessory/green_armband
+/datum/loadout_item/accessory/armband/green
 	name = "Armband (Green)"
 	item_path = /obj/item/clothing/accessory/armband/service_cosmetic
 
-/datum/loadout_item/accessory/purple_armband
+/datum/loadout_item/accessory/armband/purple
 	name = "Armband (Purple)"
 	item_path = /obj/item/clothing/accessory/armband/science_cosmetic
 
-/datum/loadout_item/accessory/red_armband
+/datum/loadout_item/accessory/armband/red
 	name = "Armband (Red)"
 	item_path = /obj/item/clothing/accessory/armband/deputy_cosmetic
 
-/datum/loadout_item/accessory/yellow_armband
+/datum/loadout_item/accessory/armband/yellow
 	name = "Armband (Yellow, Reflective)"
 	item_path = /obj/item/clothing/accessory/armband/engine_cosmetic
 
-/datum/loadout_item/accessory/white_armband
+/datum/loadout_item/accessory/armband/white
 	name = "Armband (White)"
 	item_path = /obj/item/clothing/accessory/armband/med_cosmetic
 
-/datum/loadout_item/accessory/white_blue_armband
+/datum/loadout_item/accessory/armband/white_blue
 	name = "Armband (White and Blue)"
 	item_path = /obj/item/clothing/accessory/armband/medblue_cosmetic
 
@@ -128,12 +132,18 @@
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/accessory/bone_charm/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
-	additional_displayed_text = list("Cosmetic")
+
+/datum/loadout_item/accessory/bone_codpiece/get_item_information()
+	. = ..()
+	.[FA_ICON_VR_CARDBOARD] = "Cosmetic"
 
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"

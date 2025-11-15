@@ -1,17 +1,15 @@
 /// Adds a newline to the examine list if the above entry is not empty and it is not the first element in the list
 #define ADD_NEWLINE_IF_NECESSARY(list) if(length(list) > 0 && list[length(list)]) { list += "" }
 
+// NON-MODULE CHANGE
 /mob/living/carbon/human/get_examine_name(mob/user)
-	if(!HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
-		return "[..()] ([p_they()]/[p_them()])"
-
-	return "Unknown"
+	return "[..()] ([p_they()]/[p_them()])"
 
 /mob/living/carbon/human/get_examine_icon(mob/user)
 	return null
 
 /mob/living/carbon/examine(mob/user)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
 		return list(span_warning("You're struggling to make out any details..."))
 
 	var/t_He = p_They()
@@ -22,7 +20,7 @@
 	var/t_is = p_are()
 
 	. = list()
-	var/list/clothes_info = get_clothing_examine_info(user, check_obscured_slots())
+	var/list/clothes_info = get_clothing_examine_info(user)
 	for(var/slot in clothes_info)
 		var/slot_text = clothes_info[slot]
 		if(slot_text)
@@ -56,7 +54,7 @@
 	if (length(status_examines))
 		. += status_examines
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/internal/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -182,7 +180,7 @@
 			var/bleed_text = "<b>"
 			if(appears_dead)
 				bleed_text += "<span class='deadsay'>"
-				bleed_text += "Blood is visible in [t_his] open"
+				bleed_text += "Blood is visible in [t_his] open "
 			else
 				bleed_text += "<span class='warning'>"
 				bleed_text += "[t_He] [t_is] bleeding from [t_his] "
@@ -230,7 +228,7 @@
 				if (body_temperature < bodytemp_cold_damage_limit)
 					. += "[t_He] [t_is] shivering.\n"
 
-			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
+			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role && user != src)
 				. += "[t_He] [t_has] a holy aura about [t_him]."
 				living_user.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
 
@@ -242,7 +240,7 @@
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					. += "[t_He] [t_has] a stupid expression on [t_his] face."
-		if(get_organ_by_type(/obj/item/organ/internal/brain) && isnull(ai_controller))
+		if(get_organ_by_type(/obj/item/organ/brain) && isnull(ai_controller))
 			var/npc_message = ""
 			if(!key)
 				npc_message = "[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely."
@@ -293,6 +291,14 @@
 		.[length(.)] += "</span>"
 	return .
 
+/mob/living/carbon/examine_more(mob/user)
+	. = ..()
+	if(HAS_TRAIT(src, TRAIT_INVISIBLE_MAN) || HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE))
+		return
+	for(var/datum/scar/iter_scar as anything in all_scars)
+		if(iter_scar.is_visible(user))
+			. += iter_scar.get_examine_description(user)
+
 /**
  * Shows any and all examine text related to any status effects the user has.
  */
@@ -318,7 +324,7 @@
 	var/t_his = p_their()
 	var/t_is = p_are()
 	//This checks to see if the body is revivable
-	if(get_organ_by_type(/obj/item/organ/internal/brain) && (client || HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE) || (ghost?.can_reenter_corpse && ghost?.client)))
+	if(get_organ_by_type(/obj/item/organ/brain) && (client || HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE) || (ghost?.can_reenter_corpse && ghost?.client)))
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
 	else
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
@@ -348,7 +354,7 @@
 #define CLOTHING_SLOT(slot) "[ITEM_SLOT_##slot]"
 
 /// Coolects examine information about the mob's clothing and equipment
-/mob/living/carbon/proc/get_clothing_examine_info(mob/living/user, obscured)
+/mob/living/carbon/proc/get_clothing_examine_info(mob/living/user)
 	// Clothes are reported in the same order every time
 	var/list/clothes = list(
 		CLOTHING_SLOT(ICLOTHING) = "",
@@ -373,55 +379,55 @@
 	var/t_has = p_have()
 	var/t_is = p_are()
 	//head
-	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
+	if(head && !(obscured_slots & HIDEHEADGEAR) && !HAS_TRAIT(head, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(HEAD)] = "[t_He] [t_is] wearing [head.examine_title(user, href = TRUE)] on [t_his] head."
 	//back
-	if(back && !(back.item_flags & EXAMINE_SKIP))
+	if(back && !HAS_TRAIT(back, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(BACK)] = "[t_He] [t_has] [back.examine_title(user, href = TRUE)] on [t_his] back."
 	//Hands
 	for(var/obj/item/held_thing in held_items)
-		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+		if(held_thing.item_flags & (ABSTRACT|HAND_ITEM) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
 			continue
 		if(clothes[CLOTHING_SLOT(HANDS)])
 			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
 		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_is] holding [held_thing.examine_title(user, href = TRUE)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
 	//gloves
-	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
+	if(gloves && !(obscured_slots & HIDEGLOVES) && !HAS_TRAIT(gloves, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
 	//handcuffed?
 	if(handcuffed)
 		var/cables_or_cuffs = istype(handcuffed, /obj/item/restraints/handcuffs/cable) ? "restrained with cable" : "handcuffed"
 		clothes[CLOTHING_SLOT(HANDCUFFED)] = span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] [cables_or_cuffs]!")
 	//shoes
-	if(shoes && !(obscured & ITEM_SLOT_FEET)  && !(shoes.item_flags & EXAMINE_SKIP))
+	if(shoes && !(obscured_slots & HIDESHOES)  && !HAS_TRAIT(shoes, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] feet."
 	//mask
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
+	if(wear_mask && !(obscured_slots & HIDEMASK)  && !HAS_TRAIT(wear_mask, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(MASK)] = "[t_He] [t_has] [wear_mask.examine_title(user, href = TRUE)] on [t_his] face."
-	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
+	if(wear_neck && !(obscured_slots & HIDENECK)  && !HAS_TRAIT(wear_neck, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(NECK)] = "[t_He] [t_is] wearing [wear_neck.examine_title(user, href = TRUE)] around [t_his] neck."
 	//eyes
-	if(!(obscured & ITEM_SLOT_EYES))
-		if(glasses && !(glasses.item_flags & EXAMINE_SKIP))
+	if(!(obscured_slots & HIDEEYES))
+		if(glasses  && !HAS_TRAIT(glasses, TRAIT_EXAMINE_SKIP))
 			clothes[CLOTHING_SLOT(EYES)] = "[t_He] [t_has] [glasses.examine_title(user, href = TRUE)] covering [t_his] eyes."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
 			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are glowing with an unnatural red aura!")
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
 			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are bloodshot!")
 	//ears
-	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
+	if(ears && !(obscured_slots & HIDEEARS) && !HAS_TRAIT(ears, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] ears."
 
 	return clothes
 
-/mob/living/carbon/human/get_clothing_examine_info(mob/living/user, obscured)
+/mob/living/carbon/human/get_clothing_examine_info(mob/living/user)
 	var/list/clothes = ..()
 	var/t_He = p_They()
 	var/t_his = p_their()
 	var/t_has = p_have()
 	var/t_is = p_are()
 	//uniform
-	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
+	if(w_uniform && !(obscured_slots & HIDEJUMPSUIT) && !HAS_TRAIT(w_uniform, TRAIT_EXAMINE_SKIP))
 		//accessory
 		var/accessory_message = ""
 		if(istype(w_uniform, /obj/item/clothing/under))
@@ -432,13 +438,13 @@
 
 		clothes[CLOTHING_SLOT(ICLOTHING)] = "[t_He] [t_is] wearing [w_uniform.examine_title(user, href = TRUE)][accessory_message]."
 	//suit/armor
-	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
+	if(wear_suit && !HAS_TRAIT(wear_suit, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(OCLOTHING)] = "[t_He] [t_is] wearing [wear_suit.examine_title(user, href = TRUE)]."
 		//suit/armor storage
-		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !(s_store.item_flags & EXAMINE_SKIP))
+		if(s_store && !(obscured_slots & HIDESUITSTORAGE) && !HAS_TRAIT(s_store, TRAIT_EXAMINE_SKIP))
 			clothes[CLOTHING_SLOT(SUITSTORE)] = "[t_He] [t_is] carrying [s_store.examine_title(user, href = TRUE)] on [t_his] [wear_suit.name]."
 	//ID
-	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
+	if(wear_id && !HAS_TRAIT(wear_id, TRAIT_EXAMINE_SKIP))
 		var/obj/item/card/id/id = wear_id.GetID()
 		if(id && get_dist(user, src) <= ID_EXAMINE_DISTANCE)
 			var/id_href = "<a href='byond://?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user, href = TRUE)]</a>"
@@ -447,16 +453,16 @@
 		else
 			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [wear_id.examine_title(user, href = TRUE)]."
 	//gloves
-	if(!clothes[CLOTHING_SLOT(GLOVES)] && !(obscured & ITEM_SLOT_HANDS) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
+	if(!clothes[CLOTHING_SLOT(GLOVES)] && !(obscured_slots & HIDEGLOVES) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
 		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 		var/list/all_blood_names = list()
 		for(var/dna_sample in all_dna)
 			var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
-			all_blood_names |= lowertext(initial(blood.reagent_type.name))
+			all_blood_names |= LOWER_TEXT(initial(blood.reagent_type.name))
 
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
-	if(belt && !(belt.item_flags & EXAMINE_SKIP))
+	if(belt && !(obscured_slots & HIDEBELT) && !HAS_TRAIT(belt, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
 
 	return clothes
@@ -500,7 +506,7 @@
 	. = list()
 
 	var/list/cybers = list()
-	for(var/obj/item/organ/internal/cyberimp/cyberimp in organs)
+	for(var/obj/item/organ/cyberimp/cyberimp in organs)
 		if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
 			cybers += cyberimp.examine_title(user, href = FALSE)
 	if(length(cybers))
@@ -539,9 +545,46 @@
 
 /mob/living/carbon/human/examine_more(mob/user)
 	. = ..()
-	if((wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE)))
+
+	// if(istype(w_uniform, /obj/item/clothing/under) && !(obscured_slots & HIDEJUMPSUIT) && !HAS_TRAIT(w_uniform, TRAIT_EXAMINE_SKIP))
+	// 	var/obj/item/clothing/under/undershirt = w_uniform
+	// 	if(undershirt.has_sensor == BROKEN_SENSORS)
+	// 		. += list(span_notice("\The [undershirt]'s medical sensors are sparking."))
+
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_APPEARANCE) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
 		return
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN) || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN))
+
+	var/limbs_text = get_mismatched_limb_text()
+	if(LAZYLEN(limbs_text))
+		. += limbs_text
+
+	var/agetext = get_age_text()
+	if(agetext)
+		. += agetext
+
+/// Reports all body parts which are mismatched with the user's species
+/mob/living/carbon/human/proc/get_mismatched_limb_text()
+	var/list/covered = get_covered_body_zones()
+	var/list/texts = list()
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		var/part_id = part.limb_id
+		var/obj/item/bodypart/expected_part = dna?.species?.bodypart_overrides[part.body_zone]
+		var/expected_id = initial(expected_part?.limb_id)
+		// only report abnormal bodyparts
+		if(part_id == expected_id)
+			continue
+		// same shape bodyparts are concealed by clothing
+		// this means you can see ex. digitigrade legs through clothes
+		// but you can't see ex. cybernetic legs through clothes
+		if(part.bodytype == initial(expected_part?.bodytype) && (part.body_zone in covered))
+			continue
+		texts += span_notice("[p_They()] [p_have()] \a [part].")
+
+	return texts
+
+/// Reports how old the mob appears to be
+/mob/living/carbon/human/proc/get_age_text()
+	if(obscured_slots & HIDEFACE)
 		return
 	var/age_text
 	switch(age)

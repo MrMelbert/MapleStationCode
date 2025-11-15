@@ -1,6 +1,9 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Always does *deathgasp when they die
+/// If unset mobs will only deathgasp if supplied a death sound or custom death message
+#define ALWAYS_DEATHGASP (1<<1)
 /// Nutrition changed last life tick, so we should bulk update this tick
 #define QUEUE_NUTRITION_UPDATE (1<<3)
 
@@ -23,6 +26,21 @@
 	#define HANDLE_BLOOD_HANDLED (1<<0)
 	#define HANDLE_BLOOD_NO_NUTRITION_DRAIN (1<<1)
 	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
+#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+
+#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
+	/// Return to do no homeostasis at all
+	#define HOMEOSTASIS_HANDLED (1<<0)
+	/// Return to not reduce hunger at all
+	#define HOMEOSTASIS_NO_HUNGER (1<<1)
+
+//from base of living/set_pull_offset(): (mob/living/pull_target, grab_state)
+#define COMSIG_LIVING_SET_PULL_OFFSET "living_set_pull_offset"
+//from base of living/reset_pull_offsets(): (mob/living/pull_target, override)
+#define COMSIG_LIVING_RESET_PULL_OFFSETS "living_reset_pull_offsets"
+//from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
+#define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
+	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
 /// Various lists of body zones affected by pain.
 

@@ -24,7 +24,36 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	"[FREQ_STATUS_DISPLAYS]" = "captaincast",
 ))
 
-/atom/movable/proc/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = FALSE, message_range = 7, datum/saymode/saymode = null)
+/**
+ * What makes things... talk.
+ *
+ * * message - The message to say.
+ * * bubble_type - The type of speech bubble to use when talking
+ * * spans - A list of spans to attach to the message. Includes the atom's speech span by default
+ * * sanitize - Should we sanitize the message? Only set to FALSE if you have ALREADY sanitized it
+ * * language - The language to speak in. Defaults to the atom's selected language
+ * * ignore_spam - Should we ignore spam checks?
+ * * forced - What was it forced by? null if voluntary. (NOT a boolean!)
+ * * filterproof - Do we bypass the filter when checking the message?
+ * * message_range - The range of the message. Defaults to 7
+ * * saymode - Saymode passed to the speech
+ * This is usually set automatically and is only relevant for living mobs.
+ * * message_mods - A list of message modifiers, i.e. whispering/singing.
+ * Most of these are set automatically but you can pass in your own pre-say.
+ */
+/atom/movable/proc/say(
+	message,
+	bubble_type,
+	list/spans = list(),
+	sanitize = TRUE,
+	datum/language/language,
+	ignore_spam = FALSE,
+	forced,
+	filterproof = FALSE,
+	message_range = 7,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
 	if(!try_speak(message, ignore_spam, forced, filterproof))
 		return
 	if(sanitize)
@@ -34,13 +63,12 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	spans |= speech_span
 	if(!language)
 		language = get_selected_language()
-	var/list/message_mods = list()
 	message_mods[SAY_MOD_VERB] = say_mod(message, message_mods)
 	send_speech(message, message_range, src, bubble_type, spans, language, message_mods, forced = forced)
 
 /// Called when this movable hears a message from a source.
 /// Returns TRUE if the message was received and understood.
-/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
+/atom/movable/proc/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
 	return TRUE
 
@@ -63,7 +91,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * 	TRUE of FASE depending on if our movable can speak
  */
 /atom/movable/proc/try_speak(message, ignore_spam = FALSE, forced = null, filterproof = FALSE)
-	return TRUE
+	return can_speak()
 
 /**
  * Checks if our movable can currently speak, vocally, in general.
@@ -80,7 +108,8 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * if TRUE, we will check if the movable can speak REGARDLESS of if they have an active mime vow.
  */
 /atom/movable/proc/can_speak(allow_mimes = FALSE)
-	return TRUE
+	SHOULD_BE_PURE(TRUE)
+	return !HAS_TRAIT(src, TRAIT_MUTE)
 
 /atom/movable/proc/send_speech(message, range = 7, obj/source = src, bubble_type, list/spans, datum/language/message_language, list/message_mods = list(), forced = FALSE, tts_message, list/tts_filter)
 	var/found_client = FALSE
@@ -90,7 +119,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
-		if(hearing_movable.Hear(null, src, message_language, message, null, spans, message_mods, range))
+		if(hearing_movable.Hear(src, message_language, message, null, spans, message_mods, range))
 			listened += hearing_movable
 		if(!found_client && length(hearing_movable.client_mobs_in_contents))
 			found_client = TRUE
@@ -109,6 +138,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if(voice && found_client)
 		INVOKE_ASYNC(SStts, TYPE_PROC_REF(/datum/controller/subsystem/tts, queue_tts_message), src, html_decode(tts_message_to_use), message_language, voice, filter.Join(","), listened, message_range = range, pitch = pitch)
 
+/// Determines if names seen in chat are colored to the speaker's runechat
+/atom/movable/proc/see_chat_runechat_color()
+	return FALSE
+
+/mob/see_chat_runechat_color()
+	return client?.prefs?.read_preference(/datum/preference/toggle/runechat_text_names) || FALSE
+
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), visible_name = FALSE)
 	//This proc uses [] because it is faster than continually appending strings. Thanks BYOND.
 	//Basic span
@@ -118,18 +154,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//Radio freq/name display
 	var/freqpart = radio_freq ? "\[[get_radio_name(radio_freq)]\] " : ""
 	//Speaker name
-	var/namepart
-	var/list/stored_name = list(null)
+	var/namepart = speaker.get_message_voice(visible_name)
 
-	if(ishuman(speaker)) //First, try to pull the modified title from a carbon's ID. This will override both visual and audible names.
-		var/mob/living/carbon/human/huspeaker = speaker
-		var/obj/item/card/id/id = huspeaker.get_idcard(hand_first = FALSE)
-		id?.get_message_name_part(huspeaker, stored_name)
-
-	if(!stored_name[NAME_PART_INDEX]) //Otherwise, we just use whatever the name signal gives us.
-		SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
-
-	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
+	if(!radio_freq && see_chat_runechat_color())
+		// Pick voice color on "base voice" rather than "ID'd voice". Unknown voices get no color
+		var/voice = HAS_TRAIT(speaker, TRAIT_SIGN_LANG) ? speaker.get_visible_name(add_id_name = FALSE) : speaker.get_voice()
+		if(voice && voice != "Unknown")
+			namepart = "<font color='[darken_hsl(get_chat_color(voice))]'>[namepart]</font>"
 
 	//End name span.
 	var/endspanpart = "</span>"
@@ -148,7 +179,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 	messagepart = " <span class='message'>[messagepart]</span></span>"
 
-	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
+	return "[spanpart1][spanpart2][freqpart][message_mods?[SAY_RADIO_ICON]][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
 
 /atom/movable/proc/compose_track_href(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return ""
@@ -185,7 +216,15 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /atom/movable/proc/get_default_say_verb()
 	return verb_say
 
-/atom/movable/proc/say_quote(input, list/spans=list(speech_span), list/message_mods = list())
+/**
+ * This prock is used to generate a message for chat
+ * Generates the `says, "<span class='red'>meme</span>"` part of the `Grey Tider says, "meme"`.
+ *
+ * input - The message to be said
+ * spans - A list of spans to attach to the message. Includes the atom's speech span by default
+ * message_mods - A list of message modifiers, i.e. whispering/singing
+ */
+/atom/movable/proc/say_quote(input, list/spans = list(speech_span), list/message_mods = list())
 	if(!input)
 		input = "..."
 
@@ -262,8 +301,21 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		return "2"
 	return "0"
 
-/atom/proc/GetVoice()
+/**
+ * Get what this atom sounds like when speaking
+ *
+ * * add_id_name - If TRUE, ID information such as honorifics are added into the voice
+ */
+/atom/proc/get_voice(add_id_name = FALSE)
 	return "[src]" //Returns the atom's name, prepended with 'The' if it's not a proper noun
+
+/**
+ * Get what this atom appears like in chat when speaking
+ *
+ * * visible_name - If TRUE, returns the visible name rather than the voice
+ */
+/atom/proc/get_message_voice(visible_name)
+	return visible_name ? get_visible_name(add_id_name = TRUE) : get_voice(add_id_name = TRUE)
 
 //HACKY VIRTUALSPEAKER STUFF BEYOND THIS POINT
 //these exist mostly to deal with the AIs hrefs and job stuff.
@@ -286,7 +338,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 	radio = _radio
 	source = M
 	if(istype(M))
-		name = radio.anonymize ? "Unknown" : M.GetVoice()
+		name = radio.anonymize ? "Unknown" : M.get_voice(add_id_name = TRUE)
 		verb_say = M.get_default_say_verb()
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim

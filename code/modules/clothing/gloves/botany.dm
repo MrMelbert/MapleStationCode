@@ -12,6 +12,10 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
+/obj/item/clothing/gloves/botanic_leather/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
+
 /datum/armor/gloves_botanic_leather
 	bio = 50
 	fire = 70

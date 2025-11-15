@@ -151,6 +151,26 @@
 	fire = 90
 	acid = 50
 
+/obj/machinery/power/apc/get_save_vars()
+	. = ..()
+	if(!auto_name)
+		. -= NAMEOF(src, name)
+	. += NAMEOF(src, opened)
+	. += NAMEOF(src, coverlocked)
+	. += NAMEOF(src, lighting)
+	. += NAMEOF(src, equipment)
+	. += NAMEOF(src, environ)
+
+	. += NAMEOF(src, cell_type)
+	if(cell_type)
+		start_charge = cell.charge / cell.maxcharge // only used in Initialize() so direct edit is fine
+		. += NAMEOF(src, start_charge)
+
+	// TODO save the wire data but need to include states for cute wires, signalers attached to wires, etc.
+	//. += NAMEOF(src, shorted)
+	//. += NAMEOF(src, locked)
+	return .
+
 /obj/machinery/power/apc/Initialize(mapload, ndir)
 	. = ..()
 	//APCs get added to their own processing tasks for the machines subsystem.
@@ -200,6 +220,7 @@
 		req_access = list(ACCESS_ENGINE_EQUIP)
 	if(auto_name)
 		name = "\improper [get_area_name(area, TRUE)] APC"
+		article = "the"
 
 	//Initialize its electronics
 	set_wires(new /datum/wires/apc(src))
@@ -212,7 +233,8 @@
 		if(cell_type)
 			cell = new cell_type(src)
 			cell.charge = start_charge * cell.maxcharge / 100 // (convert percentage to actual value)
-		make_terminal()
+		if(!locate(/obj/machinery/power/terminal) in loc)
+			make_terminal()
 		///This is how we test to ensure that mappers use the directional subtypes of APCs, rather than use the parent and pixel-shift it themselves.
 		if(abs(offset_old) != APC_PIXEL_OFFSET)
 			log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old] - should be [dir & (SOUTH|EAST) ? "-" : ""][APC_PIXEL_OFFSET]. Use the directional/ helpers!")
@@ -254,8 +276,8 @@
 		disconnect_terminal()
 	return ..()
 
-/obj/machinery/power/apc/proc/on_saboteur(datum/source, disrupt_duration)
-	SIGNAL_HANDLER
+/obj/machinery/power/apc/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	disrupt_duration *= 0.1 // so, turns out, failure timer is in seconds, not deciseconds; without this, disruptions last 10 times as long as they probably should
 	energy_fail(disrupt_duration)
 	return TRUE
@@ -267,6 +289,7 @@
 	. = ..()
 	if(auto_name)
 		name = "\improper [get_area_name(area, TRUE)] APC"
+		article = "the"
 
 /obj/machinery/power/apc/proc/assign_to_area(area/target_area = get_area(src))
 	if(area == target_area)

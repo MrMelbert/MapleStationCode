@@ -28,6 +28,8 @@
 	var/list/tile_rotate_dirs
 	/// Allows us to replace the plating we are attacking if our baseturfs are the same.
 	var/replace_plating = FALSE
+	/// tile_rotate_dirs but before it gets converted to text
+	var/list/tile_rotate_dirs_number
 
 /obj/item/stack/tile/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -37,6 +39,7 @@
 	if(tile_reskin_types)
 		tile_reskin_types = tile_reskin_list(tile_reskin_types)
 	if(tile_rotate_dirs)
+		tile_rotate_dirs_number = tile_rotate_dirs.Copy()
 		var/list/values = list()
 		for(var/set_dir in tile_rotate_dirs)
 			values += dir2text(set_dir)
@@ -1085,6 +1088,11 @@
 	inhand_icon_state = "tile-bcircuit"
 	turf_type = /turf/open/floor/circuit
 	merge_type = /obj/item/stack/tile/circuit
+	tile_reskin_types = list(
+		/obj/item/stack/tile/circuit,
+		/obj/item/stack/tile/circuit/green,
+		/obj/item/stack/tile/circuit/red,
+	)
 
 /obj/item/stack/tile/circuit/green
 	name = "green circuit tile"

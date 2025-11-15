@@ -21,6 +21,9 @@
 /obj/structure/plaque/Initialize(mapload)
 	. = ..()
 	register_context()
+	if(isopenturf(loc) && !isProbablyWallMounted(src))
+		SET_PLANE_IMPLICIT(src, FLOOR_PLANE)
+		layer = HIGH_TURF_LAYER
 
 /obj/structure/plaque/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()

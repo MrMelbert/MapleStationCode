@@ -129,7 +129,7 @@
 	clone.set_cloned_appearance()
 
 	if(brainless)
-		var/obj/item/organ/brainy = clone.get_organ_by_type(/obj/item/organ/internal/brain)
+		var/obj/item/organ/brainy = clone.get_organ_by_type(/obj/item/organ/brain)
 		brainy.Remove(clone)
 		qdel(brainy)
 
@@ -225,8 +225,8 @@
 	clone.apply_status_effect(/datum/status_effect/genetic_damage/cloning, initial_damage)
 
 	// remove organs before removing limbs and taking things with them
-	for(var/obj/item/organ/internal/organ in clone.organs)
-		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_UNREMOVABLE))
+	for(var/obj/item/organ/organ as anything in clone.organs)
+		if(organ.organ_flags & (ORGAN_VITAL|ORGAN_EXTERNAL|ORGAN_UNREMOVABLE))
 			continue
 		organ.organ_flags |= ORGAN_FROZEN
 		organ.Remove(clone, special = FALSE) // not special so we apply stuff like heart attacks and blindness
@@ -246,20 +246,22 @@
 /obj/machinery/clonepod/proc/readd_thing(mob/living/carbon/human/clone, obj/item/thing)
 	things_to_attach -= thing
 	if(isorgan(thing))
-		var/obj/item/organ/internal/organ = thing
+		var/obj/item/organ/organ = thing
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			return
 		organ.organ_flags &= ~ORGAN_FROZEN
 		organ.Insert(clone)
-		if(istype(thing, /obj/item/organ/internal/heart))
+		if(istype(thing, /obj/item/organ/heart))
 			to_chat(clone, span_smallnoticeital("You hear a faint thumping..."))
-			var/obj/item/organ/internal/heart/heart = organ
+			var/obj/item/organ/heart/heart = organ
 			heart.Restart()
 			SEND_SOUND(clone, sound('sound/health/slowbeat.ogg', channel = CHANNEL_HEARTBEAT, volume = 33))
 			addtimer(CALLBACK(clone, TYPE_PROC_REF(/mob, stop_sound_channel), CHANNEL_HEARTBEAT), 4.75 SECONDS)
-		if(istype(thing, /obj/item/organ/internal/lungs))
+		if(istype(thing, /obj/item/organ/lungs))
 			to_chat(clone, span_smallnoticeital("You feel a sudden urge to breathe..."))
-		if(istype(thing, /obj/item/organ/internal/ears))
+		if(istype(thing, /obj/item/organ/ears))
 			to_chat(clone, span_smallnoticeital("You hear a faint buzzing..."))
-		if(istype(thing, /obj/item/organ/internal/eyes))
+		if(istype(thing, /obj/item/organ/eyes))
 			to_chat(clone, span_smallnoticeital("You see a faint light..."))
 		return
 

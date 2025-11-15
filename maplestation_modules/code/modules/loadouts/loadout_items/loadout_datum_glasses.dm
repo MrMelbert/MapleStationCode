@@ -15,7 +15,10 @@
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"
 	item_path = /obj/item/clothing/glasses/regular
-	additional_displayed_text = list("Prescription")
+
+/datum/loadout_item/glasses/prescription_glasses/get_item_information()
+	. = ..()
+	.[FA_ICON_GLASSES] = "Prescription"
 
 /datum/loadout_item/glasses/prescription_glasses/circle_glasses
 	name = "Circle Glasses"
@@ -38,9 +41,12 @@
 	item_path = /obj/item/clothing/glasses/blindfold
 
 /datum/loadout_item/glasses/colored_blindfold
-	name = "Colored Blindfold"
+	name = "Eye Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
-	additional_displayed_text = list("Eye Color")
+
+/datum/loadout_item/glasses/trick_blindfold
+	name = "Trick Blindfold"
+	item_path = /obj/item/clothing/glasses/trickblindfold
 
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"

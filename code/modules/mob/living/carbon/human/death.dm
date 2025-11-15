@@ -25,7 +25,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 /mob/living/carbon/human/death(gibbed, cause_of_death = get_cause_of_death())
 	if(stat == DEAD)
 		return
-	var/obj/item/organ/internal/heart/human_heart = get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/human_heart = get_organ_slot(ORGAN_SLOT_HEART)
 	human_heart?.Stop()
 
 	. = ..()
@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			return "unknown causes"
 
 		if(OXY_DAMAGE)
-			var/obj/item/organ/internal/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+			var/obj/item/organ/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 			if(isnull(lungs) || (lungs.organ_flags & ORGAN_FAILING))
 				return "lung failure"
 
@@ -82,7 +82,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 				return BLOOD_LOSS
 
 		if(TOX_DAMAGE)
-			var/obj/item/organ/internal/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
+			var/obj/item/organ/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
 			if(isnull(liver) || (liver.organ_flags & ORGAN_FAILING))
 				return "liver failure"
 
@@ -92,7 +92,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 					most_toxic = poison
 
 			if(most_toxic)
-				return "[lowertext(most_toxic.name)] poisoning"
+				return "[LOWER_TEXT(most_toxic.name)] poisoning"
 
 		if("heart_attack")
 			return "cardiac arrest"
@@ -104,7 +104,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 					most_alcohol = alcohol
 
 			if(most_alcohol)
-				return "alcohol poisoning ([lowertext(most_alcohol.name)])"
+				return "alcohol poisoning ([LOWER_TEXT(most_alcohol.name)])"
 
 			return "alcohol poisoning"
 
@@ -129,7 +129,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 		readout += "<br>[round(reagent.volume, 0.001)] units of [reagent.name]"
 
 	readout += "<br>Stomach:"
-	var/obj/item/organ/internal/stomach/belly = get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = get_organ_slot(ORGAN_SLOT_STOMACH)
 	for(var/datum/reagent/bile in belly?.reagents?.reagent_list)
 		if(!belly.food_reagents[bile.type])
 			readout += "<br>[round(bile.volume, 0.001)] units of [bile.name]"

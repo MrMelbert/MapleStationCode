@@ -1,7 +1,6 @@
 SUBSYSTEM_DEF(economy)
 	name = "Economy"
 	wait = 5 MINUTES
-	init_order = INIT_ORDER_ECONOMY
 	runlevels = RUNLEVEL_GAME
 	///How many paychecks should players start out the round with?
 	var/roundstart_paychecks = 5
@@ -66,6 +65,8 @@ SUBSYSTEM_DEF(economy)
 	/// Tracks a temporary sum of all money in the system
 	/// We need this on the subsystem because of yielding and such
 	var/temporary_total = 0
+	/// Determines how many ticks it takes to restock mail
+	var/ticks_per_mail = 2
 
 /datum/controller/subsystem/economy/Initialize()
 	//removes cargo from the split
@@ -91,7 +92,6 @@ SUBSYSTEM_DEF(economy)
 
 /datum/controller/subsystem/economy/fire(resumed = 0)
 	var/seconds_per_tick = wait / (5 MINUTES)
-
 	if(!resumed)
 		temporary_total = 0
 		processing_part = ECON_DEPARTMENT_STEP
@@ -117,8 +117,9 @@ SUBSYSTEM_DEF(economy)
 		if(!HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING) && !price_update())
 			return
 
-	var/effective_mailcount = round(living_player_count()/(inflation_value - 0.5)) //More mail at low inflation, and vis versa.
-	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * seconds_per_tick)
+	if(times_fired % ticks_per_mail == 0)
+		var/effective_mailcount = round(living_player_count() / (inflation_value - 0.5)) //More mail at low inflation, and vis versa.
+		mail_waiting += clamp(effective_mailcount, 1, ticks_per_mail * MAX_MAIL_PER_MINUTE * seconds_per_tick)
 
 	SSstock_market.news_string = ""
 
@@ -156,7 +157,7 @@ SUBSYSTEM_DEF(economy)
 		var/datum/bank_account/bank_account = cached_processing[cached_processing[i]]
 		if(bank_account?.account_job && !ispath(bank_account.account_job))
 			temporary_total += (bank_account.account_job.paycheck * STARTING_PAYCHECKS)
-		bank_account.payday(1)
+		bank_account.payday(1, skippable = TRUE)
 		station_total += bank_account.account_balance
 		if(MC_TICK_CHECK)
 			cached_processing.Cut(1, i + 1)
@@ -173,7 +174,7 @@ SUBSYSTEM_DEF(economy)
 	else
 		fluff_string = ", and company countermeasures are failing to protect <b>YOU</b> from being affected. We're all doomed!"
 	earning_report = "<b>Sector Economic Report</b><br><br> Sector vendor prices is currently at <b>[SSeconomy.inflation_value()*100]%</b>[fluff_string]<br><br> The station spending power is currently <b>[station_total] Credits</b>, and the crew's targeted allowance is at <b>[station_target] Credits</b>.<br><br>[SSstock_market.news_string] That's all from the <i>Nanotrasen Economist Division</i>."
-	GLOB.news_network.submit_article(earning_report, "Station Earnings Report", "Station Announcements", null, update_alert = FALSE)
+	GLOB.news_network.submit_article(earning_report, "Station Earnings Report", NEWSCASTER_STATION_ANNOUNCEMENTS , null, update_alert = FALSE)
 	return TRUE
 
 /**
@@ -198,14 +199,15 @@ SUBSYSTEM_DEF(economy)
  * * price_to_use: The cost of the purchase made for this transaction.
  * * vendor: The object or structure medium that is charging the user. For Vending machines that's the machine, for payment component that's the parent, cargo that's the crate, etc.
  */
-/datum/controller/subsystem/economy/proc/track_purchase(datum/bank_account/account, price_to_use, vendor)
-	if(!account || isnull(price_to_use) || !vendor)
+/datum/controller/subsystem/economy/proc/add_audit_entry(datum/bank_account/account, price_to_use, vendor)
+	if(isnull(account) || isnull(price_to_use) || !vendor)
 		CRASH("Track purchases was missing an argument! (Account, Price, or Vendor.)")
 
 	audit_log += list(list(
 		"account" = "[account.account_holder]",
 		"cost" = price_to_use,
 		"vendor" = "[vendor]",
+		"stationtime" = station_time_timestamp("hh:mm"),
 	))
 
 /**

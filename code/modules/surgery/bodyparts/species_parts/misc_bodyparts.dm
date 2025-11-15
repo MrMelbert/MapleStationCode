@@ -36,7 +36,6 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
 	burn_modifier = 2
-	speed_modifier = 3 //disgustingly slow
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/leg/right/snail
@@ -44,7 +43,6 @@
 	unarmed_damage_low = 1
 	unarmed_damage_high = 2 //snails are soft and squishy
 	burn_modifier = 2
-	speed_modifier = 3 //disgustingly slow
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 ///ABDUCTOR
@@ -59,6 +57,9 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	wing_types = NONE
+
+/obj/item/bodypart/chest/abductor/get_butt_sprite()
+	return BUTT_SPRITE_GREY
 
 /obj/item/bodypart/arm/left/abductor
 	limb_id = SPECIES_ABDUCTOR
@@ -93,7 +94,10 @@
 	is_dimorphic = TRUE
 	dmg_overlay_type = null
 	burn_modifier = 0.5 // = 1/2x generic burn damage
-	wing_types = list(/obj/item/organ/external/wings/functional/slime)
+	wing_types = list(/obj/item/organ/wings/functional/slime)
+
+/obj/item/bodypart/chest/jelly/get_butt_sprite()
+	return BUTT_SPRITE_SLIME
 
 /obj/item/bodypart/arm/left/jelly
 	biological_state = (BIO_FLESH|BIO_BLOODED)
@@ -145,7 +149,7 @@
 ///LUMINESCENT
 /obj/item/bodypart/head/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT
-	head_flags = HEAD_ALL_FEATURES
+	head_flags = HEAD_DEFAULT_FEATURES
 
 /obj/item/bodypart/chest/jelly/luminescent
 	limb_id = SPECIES_LUMINESCENT
@@ -219,6 +223,9 @@
 	burn_modifier = 1.25
 	wing_types = NONE
 
+/obj/item/bodypart/chest/pod/get_butt_sprite()
+	return BUTT_SPRITE_FLOWERPOT
+
 /obj/item/bodypart/arm/left/pod
 	limb_id = SPECIES_PODPERSON
 	unarmed_attack_verbs = list("slash", "lash")
@@ -256,7 +263,7 @@
 	limb_id = SPECIES_FLYPERSON
 	is_dimorphic = TRUE
 	should_draw_greyscale = FALSE
-	wing_types = list(/obj/item/organ/external/wings/functional/fly)
+	wing_types = list(/obj/item/organ/wings/functional/fly)
 
 /obj/item/bodypart/arm/left/fly
 	limb_id = SPECIES_FLYPERSON
@@ -332,7 +339,7 @@
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 	bodypart_flags = BODYPART_UNHUSKABLE
-	wing_types = list(/obj/item/organ/external/wings/functional/skeleton)
+	wing_types = list(/obj/item/organ/wings/functional/skeleton)
 
 /obj/item/bodypart/arm/left/skeleton
 	biological_state = (BIO_BONE|BIO_JOINTED)
@@ -409,8 +416,8 @@
 /// Dullahan head preserves organs inside it
 /obj/item/bodypart/head/dullahan
 	throwforce = 25 // It's also a potent weapon
-	show_organs_on_examine = FALSE
 	speech_span = null
+	head_flags = parent_type::head_flags & ~HEAD_SHOW_ORGANS_ON_EXAMINE
 
 /obj/item/bodypart/head/dullahan/Entered(obj/item/organ/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()

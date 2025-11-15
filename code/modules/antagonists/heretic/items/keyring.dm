@@ -3,7 +3,7 @@
 	desc = "A crack in space, impossibly deep and painful to the eyes. Definitely not safe."
 	icon = 'icons/effects/eldritch.dmi'
 	icon_state = "realitycrack"
-	light_system = STATIC_LIGHT
+	light_system = COMPLEX_LIGHT
 	light_power = 1
 	light_on = TRUE
 	light_color = COLOR_GREEN
@@ -128,6 +128,9 @@
 ///Changes our appearance to the passed ID card
 /obj/item/card/id/advanced/heretic/proc/shapeshift(obj/item/card/id/advanced/card)
 	trim = card.trim
+	if(ishuman(loc))
+		var/mob/living/carbon/human/wearing = loc
+		wearing.update_ID_card()
 	assignment = card.assignment
 	registered_age = card.registered_age
 	registered_name = card.registered_name

@@ -3,11 +3,11 @@
 /datum/species/monkey
 	name = "\improper Monkey"
 	id = SPECIES_MONKEY
-	external_organs = list(
-		/obj/item/organ/external/tail/monkey = "Monkey",
+	mutant_organs = list(
+		/obj/item/organ/tail/monkey = "Monkey",
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/monkey
-	mutantbrain = /obj/item/organ/internal/brain/primate
+	mutanttongue = /obj/item/organ/tongue/monkey
+	mutantbrain = /obj/item/organ/brain/primate
 	skinned_type = /obj/item/stack/sheet/animalhide/monkey
 	meat = /obj/item/food/meat/slab/monkey
 	knife_butcher_results = list(/obj/item/food/meat/slab/monkey = 5, /obj/item/stack/sheet/animalhide/monkey = 1)
@@ -118,7 +118,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/brain/primate //Ook Ook
+/obj/item/organ/brain/primate //Ook Ook
 	name = "Primate Brain"
 	desc = "This wad of meat is small, but has enlaged occipital lobes for spotting bananas."
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE) // No literacy or advanced tool usage.
@@ -133,12 +133,8 @@
 	background_icon_state = "bg_default_on"
 	overlay_icon_state = "bg_default_border"
 
-/datum/action/item_action/organ_action/toggle_trip/Trigger(trigger_flags)
-	. = ..()
-	if(!.)
-		return
-
-	var/obj/item/organ/internal/brain/primate/monkey_brain = target
+/datum/action/item_action/organ_action/toggle_trip/do_effect(trigger_flags)
+	var/obj/item/organ/brain/primate/monkey_brain = target
 	if(monkey_brain.tripping)
 		monkey_brain.tripping = FALSE
 		background_icon_state = "bg_default"
@@ -148,16 +144,17 @@
 		background_icon_state = "bg_default_on"
 		to_chat(monkey_brain.owner, span_notice("You will now stumble while while colliding with people who are in combat mode."))
 	build_all_button_icons()
+	return TRUE
 
-/obj/item/organ/internal/brain/primate/on_mob_insert(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_insert(mob/living/carbon/primate)
 	. = ..()
 	RegisterSignal(primate, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed), TRUE)
 
-/obj/item/organ/internal/brain/primate/on_mob_remove(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_remove(mob/living/carbon/primate)
 	. = ..()
 	UnregisterSignal(primate, COMSIG_MOVABLE_CROSS)
 
-/obj/item/organ/internal/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
+/obj/item/organ/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
 	SIGNAL_HANDLER
 	if(!tripping)
 		return
@@ -170,7 +167,7 @@
 		return
 	in_the_way_mob.knockOver(owner)
 
-/obj/item/organ/internal/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
 	return owner.get_bodypart(BODY_ZONE_HEAD)
 
 #undef MONKEY_SPEC_ATTACK_BITE_MISS_CHANCE
@@ -178,7 +175,6 @@
 /datum/species/monkey/lizard
 	name = "\improper Kobold"
 	id = SPECIES_MONKEY_LIZARD
-	examine_limb_id = SPECIES_LIZARD
 	inherent_traits = list(
 		// monke
 		TRAIT_GUN_NATURAL,
@@ -194,14 +190,12 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	digitigrade_customization = DIGITIGRADE_FORCED
-	mutant_bodyparts = list("legs" = DIGITIGRADE_LEGS)
-	external_organs = list(
-		/obj/item/organ/external/horns = "None",
-		/obj/item/organ/external/frills = "None",
-		/obj/item/organ/external/snout = "Round",
-		/obj/item/organ/external/spines = "None",
-		/obj/item/organ/external/tail/lizard = "Smooth",
+	mutant_organs = list(
+		/obj/item/organ/horns = "None",
+		/obj/item/organ/frills = "None",
+		/obj/item/organ/snout = "Round",
+		/obj/item/organ/spines = "None",
+		/obj/item/organ/tail/lizard = "Smooth",
 	)
 	mutanttongue = /datum/species/lizard::mutanttongue
 	species_cookie = /datum/species/lizard::species_cookie
@@ -216,15 +210,17 @@
 	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
 	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
 
-	ass_image = /datum/species/lizard::ass_image
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/lizmonkey,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/lizmonkey,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/lizmonkey,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -268,5 +264,25 @@
 	wound_resistance = -10
 
 /obj/item/bodypart/head/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey/Initialize(mapload)
 	. = ..()
 	name = "kobold [plaintext_zone]"

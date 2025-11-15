@@ -66,7 +66,7 @@
 	var/mob/living/carbon/human/hit = target
 	if(!IS_HERETIC(user))
 		user.balloon_alert(user, "you feel a presence watching you")
-		user.add_mood_event("Moon Amulette Insanity", /datum/mood_event/amulette_insanity)
+		user.add_mood_event("Moon Amulette Insanity", /datum/mood_event/amulet_insanity)
 		user.mob_mood.set_sanity(user.mob_mood.sanity - 50)
 		return
 	if(hit.can_block_magic())
@@ -75,7 +75,7 @@
 		return
 	if(hit.mob_mood.sanity_level < SANITY_LEVEL_CRAZY)
 		user.balloon_alert(user, "their mind is too strong!")
-		hit.add_mood_event("Moon Amulette Insanity", /datum/mood_event/amulette_insanity)
+		hit.add_mood_event("Moon Amulette Insanity", /datum/mood_event/amulet_insanity)
 		hit.mob_mood.set_sanity(hit.mob_mood.sanity - sanity_damage)
 	else
 		user.balloon_alert(user, "their mind bends to see the truth!")

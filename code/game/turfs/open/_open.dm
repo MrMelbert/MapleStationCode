@@ -51,6 +51,9 @@
 		else
 			. += mutable_appearance(damaged_dmi, pick(broken_states()))
 
+/turf/open/examine_descriptor(mob/user)
+	return "floor"
+
 //direction is direction of travel of A
 /turf/open/zPassIn(direction)
 	if(direction != DOWN)
@@ -268,7 +271,7 @@
 	for(var/mob/living/freezer in src)
 		if(freezer.get_skin_temperature() <= freezer.bodytemp_cold_damage_limit)
 			freezer.apply_status_effect(/datum/status_effect/freon)
-	MakeSlippery(TURF_WET_PERMAFROST, 50)
+	MakeSlippery(TURF_WET_PERMAFROST, 10 SECONDS)
 	return TRUE
 
 /turf/open/proc/water_vapor_gas_act()
@@ -319,8 +322,7 @@
 		playsound(slipper.loc, 'sound/misc/slip.ogg', 50, TRUE, -3)
 
 	SEND_SIGNAL(slipper, COMSIG_ON_CARBON_SLIP)
-	slipper.add_mood_event("slipped", /datum/mood_event/slipped)
-	if(force_drop)
+	if(force_drop && iscarbon(slipper)) //carbon specific behavior that living doesn't have
 		for(var/obj/item/item in slipper.held_items)
 			slipper.accident(item)
 

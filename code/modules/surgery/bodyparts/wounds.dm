@@ -325,7 +325,9 @@
 		remove_gauze(drop_location())
 
 	current_gauze = new new_gauze.type(src, 1)
+	current_gauze.absorption_capacity = new_gauze.absorption_capacity
 	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
+	current_gauze.update_appearance()
 	if(can_bleed() && get_modified_bleed_rate())
 		current_gauze.add_mob_blood(owner)
 		if(!QDELETED(new_gauze))
@@ -360,15 +362,14 @@
 	if(!current_gauze)
 		return
 	current_gauze.absorption_capacity -= seep_amt
-	current_gauze.update_appearance(UPDATE_NAME)
-	if(current_gauze.absorption_capacity > 0)
-		return
-	owner.visible_message(
-		span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
-		span_warning("[current_gauze] on your [name] falls away in rags."),
-		vision_distance = COMBAT_MESSAGE_RANGE,
-	)
-	remove_gauze(drop_location())
+	current_gauze.update_appearance()
+	if(current_gauze.absorption_capacity <= 0)
+		owner.visible_message(
+			span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
+			span_warning("[current_gauze] on your [name] falls away in rags."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
+		remove_gauze(drop_location())
 	owner.update_damage_overlays()
 
 /**
@@ -382,10 +383,9 @@
 	if(!helper.can_perform_action(owner, NEED_HANDS|FORBID_TELEKINESIS_REACH)) // telekinetic removal can be added later
 		return
 
-	var/whose = helper == owner ? "your" : "[owner]'s"
 	helper.visible_message(
-		span_notice("[helper] starts carefully removing [current_gauze] from [whose] [plaintext_zone]."),
-		span_notice("You start carefully removing [current_gauze] from [whose] [plaintext_zone]..."),
+		span_notice("[helper] starts carefully removing [current_gauze] from [helper == owner ? helper.p_their() : "[owner]'s"] [plaintext_zone]."),
+		span_notice("You start carefully removing [current_gauze] from [helper == owner ? "your" : "[owner]'s"] [plaintext_zone]..."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 	helper.balloon_alert(helper, "removing gauze...")
@@ -398,10 +398,9 @@
 	if(!current_gauze)
 		return
 
-	var/theirs = helper == owner ? helper.p_their() : "[owner]'s"
 	helper.visible_message(
-		span_notice("[helper] finishes removing [current_gauze] from [theirs] [plaintext_zone]."),
-		span_notice("You finish removing [current_gauze] from [theirs] [plaintext_zone]."),
+		span_notice("[helper] finishes removing [current_gauze] from [helper == owner ? helper.p_their() : "[owner]'s"] [plaintext_zone]."),
+		span_notice("You finish removing [current_gauze] from [helper == owner ? "your" : "[owner]'s"] [plaintext_zone]."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 

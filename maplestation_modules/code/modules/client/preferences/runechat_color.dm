@@ -3,7 +3,7 @@
 	savefile_key = "runechat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
 	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS // go after names please
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 
 /datum/preference/color/runechat_color/create_default_value()
 	return "#aaaaaa"
@@ -15,6 +15,7 @@
 	target.chat_color = value
 	target.chat_color_darkened = value
 	target.chat_color_name = target.name
+	GLOB.forced_runechat_names[target.name] = value
 
 /datum/preference/color/runechat_color/is_valid(value)
 	if (!..(value))

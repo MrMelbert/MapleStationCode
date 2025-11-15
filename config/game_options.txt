@@ -343,7 +343,8 @@ SILICON_MAX_LAW_AMOUNT 12
 ROUNDSTART_RACES human
 
 ## Races that are strictly worse than humans that could probably be turned on without balance concerns
-ROUNDSTART_RACES felinid
+#ROUNDSTART_RACES felinid
+ROUNDSTART_RACES animid
 ROUNDSTART_RACES lizard
 #ROUNDSTART_RACES fly
 ROUNDSTART_RACES moth
@@ -354,6 +355,7 @@ ROUNDSTART_RACES plasmaman
 ROUNDSTART_RACES ethereal
 ROUNDSTART_RACES jelly
 ROUNDSTART_RACES abductor
+#ROUNDSTART_RACES snail
 #ROUNDSTART_RACES reploid - Removed temporarily until features done
 ROUNDSTART_RACES pod
 ROUNDSTART_RACES ornithid

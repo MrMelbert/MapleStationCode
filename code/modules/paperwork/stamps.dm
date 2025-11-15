@@ -22,7 +22,7 @@
 	return OXYLOSS
 
 /obj/item/stamp/get_writing_implement_details()
-	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/simple/paper)
+	var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet/simple/paper)
 	return list(
 		interaction_mode = MODE_STAMPING,
 		stamp_icon_state = icon_state,
@@ -35,6 +35,7 @@
 	dye_color = DYE_LAW
 
 /obj/item/stamp/head
+	article = "the"
 
 /obj/item/stamp/head/Initialize(mapload)
 	. = ..()
@@ -82,7 +83,7 @@
 	dye_color = DYE_REDCOAT
 
 /obj/item/stamp/void
-	name = "VOID rubber stamp"
+	name = "\improper VOID rubber stamp"
 	icon_state = "stamp-void"
 
 /obj/item/stamp/clown
@@ -98,15 +99,16 @@
 /obj/item/stamp/chap
 	name = "chaplain's rubber stamp"
 	icon_state = "stamp-chap"
+	article = "the"
 	dye_color = DYE_CHAP
 
 /obj/item/stamp/centcom
-	name = "CentCom rubber stamp"
+	name = "\improper CentCom rubber stamp"
 	icon_state = "stamp-centcom"
 	dye_color = DYE_CENTCOM
 
 /obj/item/stamp/syndicate
-	name = "Syndicate rubber stamp"
+	name = "\improper Syndicate rubber stamp"
 	icon_state = "stamp-syndicate"
 	dye_color = DYE_SYNDICATE
 

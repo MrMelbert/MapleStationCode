@@ -292,19 +292,13 @@
 		tablelimbsmash(user, carried_mob)
 		return ITEM_INTERACT_SUCCESS
 
-	var/tableplace_delay = 3.5 SECONDS
+	var/tableplace_delay = user.get_grab_speed(carried_mob, 3.5 SECONDS)
 	var/skills_space = ""
 	if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
-		tableplace_delay = 2 SECONDS
 		skills_space = " expertly"
 	else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
-		tableplace_delay = 2.75 SECONDS
 		skills_space = " quickly"
-/* Non-module change : we don't have this, leaving it like this because this merge conflict was annoying to figure out and if someone tries pulling it in later, it might be equally as annoying
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		tableplace_delay *= potential_spine.athletics_boost_multiplier
-*/
+
 	carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 		span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
 	if(!do_after(user, tableplace_delay, target = carried_mob))
@@ -815,6 +809,40 @@
 	UnregisterSignal(loc, COMSIG_ATOM_ENTERED)
 	UnregisterSignal(loc, COMSIG_ATOM_EXITED)
 	return ..()
+
+/obj/structure/table/optable/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	if(HAS_TRAIT(being_buckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_buckled == buckler)
+		being_buckled.visible_message(
+			span_notice("[buckler] lays down on [src]."),
+			span_notice("You lay down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_buckled.visible_message(
+			span_notice("[buckler] lays [being_buckled] down on [src]."),
+			span_notice("[buckler] lays you down on [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/table/optable/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(HAS_TRAIT(being_unbuckled, TRAIT_RESTRAINED))
+		return ..()
+
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] gets up from [src]."),
+			span_notice("You get up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] pulls [being_unbuckled] up from [src]."),
+			span_notice("[unbuckler] pulls you up from [src]."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
 
 /obj/structure/table/optable/make_climbable()
 	AddElement(/datum/element/elevation, pixel_shift = 12)

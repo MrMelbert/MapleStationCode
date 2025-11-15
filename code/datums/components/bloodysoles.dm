@@ -50,7 +50,7 @@
  * Returns true if the parent item is obscured by something else that the wielder is wearing
  */
 /datum/component/bloodysoles/proc/is_obscured()
-	return (wielder.check_obscured_slots(TRUE) & equipped_slot) || is_under_feet_covered()
+	return (hidden_slots_to_inventory_slots(wielder.covered_slots) & equipped_slot) || is_under_feet_covered()
 
 /**
  * Returns true if the parent item is worn in the ITEM_SLOT_ICLOTHING slot and the
@@ -265,7 +265,7 @@
 
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
-	RegisterSignals(parent, list(COMSIG_CARBON_UNEQUIP_SHOECOVER, COMSIG_CARBON_EQUIP_SHOECOVER), PROC_REF(shoecover))
+	RegisterSignals(parent, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM), PROC_REF(shoecover))
 
 /datum/component/bloodysoles/feet/update_icon()
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
@@ -299,10 +299,10 @@
 	if(wielder.num_legs >= 2)
 		return ..()
 
-/datum/component/bloodysoles/feet/proc/shoecover(datum/source)
+/datum/component/bloodysoles/feet/proc/shoecover(datum/source, obj/item/item)
 	SIGNAL_HANDLER
-
-	update_icon()
+	if ((item.body_parts_covered & FEET) || (item.flags_inv & HIDESHOES))
+		update_icon()
 
 /**
  * Simplified version of the kind applied to carbons for simple/basic mobs, primarily robots

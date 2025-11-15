@@ -70,7 +70,7 @@
 
 	var/changed = FALSE
 
-	if(isnull(held_item) && has_sensor == HAS_SENSORS)
+	if((isnull(held_item) || held_item == src) && has_sensor == HAS_SENSORS)
 		context[SCREENTIP_CONTEXT_RMB] = "Toggle suit sensors"
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Set suit sensors to tracking"
 		changed = TRUE
@@ -101,7 +101,6 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-		// NON-MODULE CHANGE reworking clothing blood overlays
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -119,6 +118,14 @@
 	return ..()
 
 /obj/item/clothing/under/attack_hand_secondary(mob/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	toggle()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/clothing/under/attack_self_secondary(mob/user, modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -165,7 +172,7 @@
 
 	if((supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION) && ishuman(user))
 		var/mob/living/carbon/human/wearer = user
-		if(wearer.bodytype & BODYTYPE_DIGITIGRADE)
+		if(wearer.bodyshape & BODYSHAPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
 			update_appearance()
 
@@ -208,14 +215,15 @@
 
 	LAZYADD(attached_accessories, accessory)
 	accessory.forceMove(src)
+
+	if(isnull(accessory_overlay))
+		create_accessory_overlay()
+
 	// Allow for accessories to react to the acccessory list now
 	accessory.successful_attach(src)
 
 	if(user && attach_message)
 		balloon_alert(user, "accessory attached")
-
-	if(isnull(accessory_overlay))
-		create_accessory_overlay()
 
 	update_appearance()
 	return TRUE
@@ -239,10 +247,11 @@
 
 	// Remove it from the list before detaching
 	LAZYREMOVE(attached_accessories, removed)
-	removed.detach(src)
 
 	if(isnull(accessory_overlay) && LAZYLEN(attached_accessories))
 		create_accessory_overlay()
+
+	removed.detach(src)
 
 	update_appearance()
 
