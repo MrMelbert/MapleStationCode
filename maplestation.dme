@@ -6548,6 +6548,7 @@
 #include "maplestation_modules\code\modules\clothing\masks\ornithid_masks.dm"
 #include "maplestation_modules\code\modules\clothing\neck\coconut_bra.dm"
 #include "maplestation_modules\code\modules\clothing\shoes\digi_shoes.dm"
+#include "maplestation_modules\code\modules\clothing\shoes\heavy_shoes.dm"
 #include "maplestation_modules\code\modules\clothing\shoes\laceup.dm"
 #include "maplestation_modules\code\modules\clothing\shoes\loadout_shoes.dm"
 #include "maplestation_modules\code\modules\clothing\suits\armor.dm"

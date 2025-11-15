@@ -3,10 +3,11 @@
 - sprintdeactivate.ogg
 - jackboot1.ogg
 - jackboot2.ogg
+- inhale.ogg
+- rigstep.ogg
 - cig_light.ogg
 - cig_snuff.ogg
 - rip1.ogg through rip4.ogg
-- inhale.ogg
 - the contents of `item/ambience`
 - the contents of `item/bullets`
 - the contents of `item/drop`
@@ -18,6 +19,12 @@
 
 Have been ported from other stations, and given a lack of existing attribution,
 are assumed to be CC-BY-SA 3.0 unless stated otherwise below
+
+- rigstep_chonk.ogg
+- rigstep_heavy.ogg
+- rigstep_medium.ogg
+
+by majormoth(Discord), ported from Aurora, licensed under CC-BY-SA-3.0
 
 - device2.ogg
 
