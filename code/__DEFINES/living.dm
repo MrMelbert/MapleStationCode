@@ -183,3 +183,8 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"

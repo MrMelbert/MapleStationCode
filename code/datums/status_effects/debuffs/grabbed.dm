@@ -628,9 +628,11 @@
 	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		. -= 2
 	// these two are not
-	if(HAS_TRAIT(src, TRAIT_DWARF))
+	if(HAS_TRAIT(src, TRAIT_SMALL))
 		. -= 2
 	if(HAS_TRAIT(src, TRAIT_HULK))
+		. += 3
+	else if(HAS_TRAIT(src, TRAIT_GIANT) || HAS_TRAIT(src, TRAIT_HUGE))
 		. += 2
 
 #undef IS_VULNERABLE
