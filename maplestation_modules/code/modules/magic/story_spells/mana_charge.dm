@@ -40,7 +40,7 @@
 	desc = "Drain some of your own blood to recover mana. This does not prevent you from bleeding out."
 	button_icon = 'icons/effects/bleed.dmi'
 	button_icon_state = "bleed10"
-	sound = 'sound/weapon/slice.ogg'
+	sound = 'sound/weapons/slice.ogg'
 
 	cooldown_time = 2 MINUTES // shorter as its not from no where
 	base_mana_recharge = 50
@@ -58,7 +58,8 @@
 
 /datum/action/cooldown/spell/meditate/lesser_splattercasting/cast(mob/living/cast_on)
 	. = ..()
-	var/blood_drain = base_bloodloss + randy_value
+	var/random_bloodloss_value = rand(random_value_floor, random_value_ceiling)
+	var/blood_drain = base_bloodloss + random_bloodloss_value
 	cast_on.blood_volume -= blood_drain
 	var/turf/location = get_turf(cast_on)
 	cast_on.add_splatter_floor(location)
