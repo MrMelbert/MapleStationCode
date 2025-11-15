@@ -13,6 +13,7 @@
 	build_type = PROTOLATHE
 	materials = list(/datum/material/bluespace = SMALL_MATERIAL_AMOUNT * 2, /datum/material/uranium = SMALL_MATERIAL_AMOUNT * 2, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 2)
 	build_path = /obj/item/mana_battery/mana_crystal/standard
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING // because this is meant to be inefficient (and uses bluespace crystals) this should be locked to the two departments that generally manage these
 
 /datum/design/artificial_volite_small
 	name = "Small Artificial Volite Gem"
@@ -21,6 +22,7 @@
 	build_type = PROTOLATHE
 	materials = list(/datum/material/bluespace = SMALL_MATERIAL_AMOUNT, /datum/material/uranium = SMALL_MATERIAL_AMOUNT, /datum/material/gold = SMALL_MATERIAL_AMOUNT)
 	build_path = /obj/item/mana_battery/mana_crystal/small
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
 
 /datum/design/techie_magic_wand
 	name = "Arcane Field Modulator"
