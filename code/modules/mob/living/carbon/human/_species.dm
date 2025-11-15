@@ -181,6 +181,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// What species is our monkey form
 	var/datum/species/monkey_type = /datum/species/monkey
 
+	/// How tall is the average member of this species
+	var/canon_height = HUMAN_HEIGHT_MEDIUM
+
 ///////////
 // PROCS //
 ///////////

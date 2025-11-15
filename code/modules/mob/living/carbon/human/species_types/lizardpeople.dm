@@ -55,6 +55,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
 	monkey_type = /datum/species/monkey/lizard
+	canon_height = HUMAN_HEIGHT_TALL
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()

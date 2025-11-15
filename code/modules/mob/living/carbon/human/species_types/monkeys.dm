@@ -41,6 +41,7 @@
 	payday_modifier = 1.5
 	ai_controlled_species = TRUE
 	monkey_type = null
+	canon_height = MONKEY_HEIGHT_MEDIUM
 
 /datum/species/monkey/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	. = ..()
@@ -233,6 +234,10 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
+	canon_height = parent_type::canon_height + 2
+
+/datum/species/monkey/lizard/update_species_heights(mob/living/carbon/human/holder)
+	return ..() + 2
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(

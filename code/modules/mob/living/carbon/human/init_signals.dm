@@ -24,28 +24,15 @@
 	// Toggle passtable
 	if(HAS_TRAIT(src, TRAIT_DWARF))
 		passtable_on(src, TRAIT_DWARF)
+		ADD_TRAIT(src, TRAIT_SMALL, TRAIT_DWARF)
 	else
 		passtable_off(src, TRAIT_DWARF)
+		REMOVE_TRAIT(src, TRAIT_SMALL, TRAIT_DWARF)
 
 /// Gaining or losing [TRAIT_TOO_TALL] updates our height
 /mob/living/carbon/human/proc/on_tootall_trait(datum/source)
 	SIGNAL_HANDLER
 	update_mob_height()
-
-///From compose_message(). Snowflake code converted into its own signal proc
-/mob/living/carbon/human/proc/get_name_part(datum/source, list/stored_name, visible_name)
-	SIGNAL_HANDLER
-	/**
-	 * For if the message can be seen but not heard, shows our visible identity (like when using sign language)
-	 * Also used by hallucinations, so it doesn't give source's identity away.
-	 */
-	if(visible_name)
-		stored_name[NAME_PART_INDEX] = get_visible_name()
-		return
-	var/voice_name = GetVoice()
-	if(name != voice_name)
-		voice_name += " (as [get_id_name("Unknown")])"
-	stored_name[NAME_PART_INDEX] = voice_name
 
 /mob/living/carbon/human/proc/on_fat(datum/source)
 	SIGNAL_HANDLER

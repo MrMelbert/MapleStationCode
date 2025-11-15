@@ -501,21 +501,29 @@
 
 /mob/proc/run_examinate(atom/examinify)
 
-	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
+	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client?.view || world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
 
 	var/turf/examine_turf = get_turf(examinify)
-	if(is_blind()) //blind people see things differently (through touch)
+	var/blind = is_blind()
+	if(blind)
+		//blind people see things differently (through touch)
 		if(!blind_examine_check(examinify))
 			return
-	else if(examine_turf && !(examine_turf.luminosity || examine_turf.dynamic_lumcount) && \
-		get_dist(src, examine_turf) > 1 && \
-		!has_nightvision()) // If you aren't blind, it's in darkness (that you can't see) and farther then next to you
-		return
+	else
+		// If you aren't blind, it's in darkness (that you can't see) and farther then next to you
+		if(examine_turf \
+			&& !(examine_turf.luminosity || examine_turf.dynamic_lumcount) \
+			&& get_dist(src, examine_turf) > 1 \
+			&& !has_nightvision() \
+		)
+			return
 
 	face_atom(examinify)
 	var/result_combined
+	var/closer_look = FALSE
+	var/eye_contact = FALSE
 	if(client)
 		LAZYINITLIST(client.recent_examines)
 		var/ref_to_atom = REF(examinify)
@@ -525,11 +533,11 @@
 			if(!length(result))
 				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
 			result_combined = examine_block(jointext(result, "<br>"))
+			closer_look = TRUE
 
 		else
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
-			handle_eye_contact(examinify)
 
 	if(!result_combined)
 		var/list/result = examinify.examine(src)
@@ -537,12 +545,23 @@
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
 		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
 
+	if(!blind)
+		show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [examinify]."), MSG_VISUAL)
+		// you only see someone else examining stuff something if
+		// - you can see the examiner and are within 3 tiles
+		// - you can see the thing being examined
+		// additionally if you are >3 tiles from the thing being examined the name is obfuscated
+		for(var/mob/viewer in oviewers(3, src) & viewers(examinify))
+			viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > 3 ? "something" : examinify]."), MSG_VISUAL)
+
+	if(eye_contact)
+		handle_eye_contact(examinify)
+
 	to_chat(src, span_infoplain(result_combined))
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
-
 
 /mob/living/blind_examine_check(atom/examined_thing)
 	//need to be next to something and awake
@@ -563,7 +582,7 @@
 
 	//you can only initiate exaimines if you have a hand, it's not disabled, and only as many examines as you have hands
 	/// our active hand, to check if it's disabled/detatched
-	var/obj/item/bodypart/active_hand = has_active_hand()? get_active_hand() : null
+	var/obj/item/bodypart/active_hand = get_active_hand()
 	if(!active_hand || active_hand.bodypart_disabled || do_after_count() >= usable_hands)
 		to_chat(src, span_warning("You don't have a free hand to examine this!"))
 		return FALSE

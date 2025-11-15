@@ -381,7 +381,7 @@
 	if(HAS_TRAIT(target, TRAIT_GRABWEAKNESS))
 		defense_mod -= 2
 
-	if(HAS_TRAIT(target, TRAIT_GIANT))
+	if(HAS_TRAIT(target, TRAIT_GIANT) || HAS_TRAIT(target, TRAIT_HUGE))
 		defense_mod += 2
 	if(target.get_organic_health() < 50)
 		defense_mod -= 1
@@ -435,7 +435,7 @@
 
 	if(HAS_TRAIT(sacker, TRAIT_CLUMSY))
 		attack_mod -= 2
-	if(HAS_TRAIT(sacker, TRAIT_GIANT))
+	if(HAS_TRAIT(sacker, TRAIT_GIANT) || HAS_TRAIT(sacker, TRAIT_HUGE))
 		attack_mod += 2
 	if(HAS_TRAIT(sacker, TRAIT_NOGUNS)) //Those dedicated to martial combat are particularly skilled tacklers
 		attack_mod += 2
