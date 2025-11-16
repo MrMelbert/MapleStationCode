@@ -1,3 +1,13 @@
+- device2.ogg
+from Weights being dropped onto yoga mat.wav by Nagwense -- https://freesound.org/s/535375/ -- License: Attribution 4.0
+
+- snip.ogg
+from Scissor Snip 2 by Aesterial-Arts -- https://freesound.org/s/633925/ -- License: Attribution 4.0
+
+- switchoff.ogg
+- switchon.ogg
+from Light switch by Lightnessko -- https://freesound.org/s/390327/ -- License: Creative Commons 0
+
 - magic_fire.ogg
 - sprintactivate.ogg
 - sprintdeactivate.ogg
@@ -15,22 +25,13 @@
 - the contents of `item/storage`
 - the contents of `item/pickup`
 - all healthscanner_x.oggs
--tile1.ogg through tile4.ogg
-
-Have been ported from other stations, and given a lack of existing attribution,
-are assumed to be CC-BY-SA 3.0 unless stated otherwise below
+- lightson.ogg
+- switch.ogg
+- tile1.ogg through tile4.ogg
+ported from Bay Station and Aurora Station and assumed to be CC-BY-SA 3.0 (no specific attribution found)
 
 - rigstep_chonk.ogg
 - rigstep_heavy.ogg
 - rigstep_medium.ogg
 
 by majormoth(Discord), ported from Aurora, licensed under CC-BY-SA-3.0
-
-- device2.ogg
-
-was sampled from https://freesound.org/people/Nagwense/sounds/535375/
-and is licensed under CC-BY-SA 4.0
-
-- snip.ogg
-
-from Scissor Snip 2 by Aesterial-Arts -- https://freesound.org/s/633925/ -- License: Attribution 4.0
