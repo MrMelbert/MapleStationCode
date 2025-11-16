@@ -29,9 +29,17 @@ ADMIN_VERB(load_story_lazy_template, R_ADMIN, "Load/Jump Story Lazy Template", "
 		to_chat(user, span_boldwarning("Failed to load template!"))
 		return
 
-	if(!isobserver(user.mob))
-		SSadmin_verbs.dynamic_invoke_verb(user, /datum/admin_verb/admin_ghost)
-	user.mob.forceMove(reservation.bottom_left_turfs[1])
-
 	message_admins("[key_name_admin(user)] has loaded lazy template '[choice]'")
-	to_chat(user, span_boldnicegreen("Template loaded, you have been moved to the bottom left of the reservation."))
+	if(!already_loaded || force_load)
+		if(tgui_alert(user, "Do you want to observe the newly loaded lazy template? (Will admin ghost if not already an observer.)", "Check Loaded Template?", list("Yes", "No")) == "Yes")
+			if(!isobserver(user.mob))
+				SSadmin_verbs.dynamic_invoke_verb(user, /datum/admin_verb/admin_ghost)
+			user.mob.forceMove(reservation.bottom_left_turfs[1])
+			to_chat(user, span_boldnicegreen("Template loaded, you have been moved to the bottom left of the reservation."))
+		else
+			to_chat(user, span_boldnicegreen("Template loaded."))
+	else // repeat of the admin_ghost/forcemove code, not many cleaner ways of doing this
+		if(!isobserver(user.mob))
+			SSadmin_verbs.dynamic_invoke_verb(user, /datum/admin_verb/admin_ghost)
+		user.mob.forceMove(reservation.bottom_left_turfs[1])
+		to_chat(user, span_boldnicegreen("Template loaded, you have been moved to the bottom left of the reservation."))
