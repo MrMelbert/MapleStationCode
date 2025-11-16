@@ -1,19 +1,15 @@
-#define STORY_LAZY_TEMPLATE_KEY_CONFIDENTIAL_WORKS "LT_CONFIDENTIALWORKS"
-
-#define STORY_LAZY_TEMPLATE_KEY_LIST_ALL(...) list( \
-	"Department of Confidential Works" = STORY_LAZY_TEMPLATE_KEY_CONFIDENTIAL_WORKS, \
-)
-
 /datum/lazy_template/story
 	map_dir = "maplestation_modules/story_content/_maps/templates/lazy_templates"
-
-/datum/lazy_template/story/confidential_works
-	key = STORY_LAZY_TEMPLATE_KEY_CONFIDENTIAL_WORKS
-	map_name = "library_confidential_works"
+	// The name of the map that's shown to the user
+	var/shown_map_name
 
 // version of the lazy template loader with story maps instead
 ADMIN_VERB(load_story_lazy_template, R_ADMIN, "Load/Jump Story Lazy Template", "Loads a lazy template and/or jumps to it.", ADMIN_CATEGORY_EVENTS)
-	var/list/choices = STORY_LAZY_TEMPLATE_KEY_LIST_ALL()
+	var/list/choices = new()
+	for(var/datum/lazy_template/story/template as anything in subtypesof(/datum/lazy_template/story))
+		choices += template.shown_map_name
+		choices[template.shown_map_name] += template.key
+
 	var/choice = tgui_input_list(user, "Key?", "Lazy Loader", choices)
 	if(!choice)
 		return
