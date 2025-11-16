@@ -9,7 +9,7 @@
 /datum/loadout_item/gloves
 	abstract_type = /datum/loadout_item/gloves
 
-/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")
@@ -76,6 +76,7 @@
 /datum/loadout_item/gloves/bone
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/gloves/bone/get_item_information()
 	. = ..()

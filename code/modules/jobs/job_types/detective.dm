@@ -44,7 +44,9 @@
 		/obj/item/storage/belt/holster/detective/full = 1
 	)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/bottle/whiskey)
+	family_heirlooms = list(
+		/obj/item/reagent_containers/cup/glass/flask/det,
+	)
 	rpg_title = "Thiefcatcher" //I guess they caught them all rip thief...
 	job_flags = STATION_JOB_FLAGS
 
