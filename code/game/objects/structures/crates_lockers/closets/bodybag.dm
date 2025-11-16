@@ -19,6 +19,7 @@
 	can_install_electronics = FALSE
 	paint_jobs = null
 	can_weld_shut = FALSE
+	door_anim_time = 0
 	// For subtypes that seal
 	air_volume = TANK_STANDARD_VOLUME
 
