@@ -280,7 +280,7 @@
 				location = turf
 				break
 
-	transferItemToLoc(I, location, force = TRUE, silent = TRUE/*, animated = !ignore_animation*/)
+	transferItemToLoc(I, location, force = TRUE, silent = TRUE, animated = !ignore_animation)
 	return FALSE
 
 /// Returns true if a mob is holding something
