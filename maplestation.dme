@@ -6808,6 +6808,12 @@
 #include "maplestation_modules\code\modules\wiremod\component_printer.dm"
 #include "maplestation_modules\code\modules\wiremod\shells.dm"
 #ifdef MAPLESTATION_STORY_CONTENT
+<<<<<<< HEAD
+=======
+#include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
+#include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
+#include "maplestation_modules\story_content\alraune_miscitems\code\alrmiscitem.dm"
+>>>>>>> 0c17c97271b (Fixed up dme, story lazy templates are now more modular)
 #include "maplestation_modules\story_content\armored_corps\code\clothing\aylie_cloak.dm"
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\gauss_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\laser_override.dm"
@@ -6816,9 +6822,19 @@
 #include "maplestation_modules\story_content\misc\underwear.dm"
 #include "maplestation_modules\story_content\common_story\code\story_rapid_status.dm"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #include "maplestation_modules\story_content\common_story\code\mob\basic\summoned_star_gazer.dm"
 #include "maplestation_modules\story_content\common_story\code\smites\death_from_beyond.dm"
+=======
+#include "maplestation_modules\story_content\common_story\code\story_lazy_template.dm"
+#include "maplestation_modules\story_content\common_story\code\mob\basic\summoned_star_gazer.dm"
+#include "maplestation_modules\story_content\common_story\code\smites\death_from_beyond.dm"
+#include "maplestation_modules\story_content\crit_equipment\code\areas.dm"
+#include "maplestation_modules\story_content\crit_equipment\code\pendant.dm"
+#include "maplestation_modules\story_content\crit_equipment\code\library\invitation.dm"
+#include "maplestation_modules\story_content\crit_equipment\code\library\lazy_templates.dm"
+>>>>>>> 0c17c97271b (Fixed up dme, story lazy templates are now more modular)
 #include "maplestation_modules\story_content\crit_equipment\code\tevetia_spells\dark_smoke.dm"
 #include "maplestation_modules\story_content\crit_equipment\code\pendant.dm"
 #include "maplestation_modules\story_content\eveleen_equipment\code\clothing.dm"
