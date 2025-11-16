@@ -13,10 +13,11 @@ from Light switch by Lightnessko -- https://freesound.org/s/390327/ -- License: 
 - sprintdeactivate.ogg
 - jackboot1.ogg
 - jackboot2.ogg
+- inhale.ogg
+- rigstep.ogg
 - cig_light.ogg
 - cig_snuff.ogg
 - rip1.ogg through rip4.ogg
-- inhale.ogg
 - the contents of `item/ambience`
 - the contents of `item/bullets`
 - the contents of `item/drop`
@@ -28,3 +29,9 @@ from Light switch by Lightnessko -- https://freesound.org/s/390327/ -- License: 
 - switch.ogg
 - tile1.ogg through tile4.ogg
 ported from Bay Station and Aurora Station and assumed to be CC-BY-SA 3.0 (no specific attribution found)
+
+- rigstep_chonk.ogg
+- rigstep_heavy.ogg
+- rigstep_medium.ogg
+
+by majormoth(Discord), ported from Aurora, licensed under CC-BY-SA-3.0
