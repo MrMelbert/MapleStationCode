@@ -495,10 +495,27 @@
 		return
 
 	var/cold_diff = victim.bodytemp_cold_damage_limit - victim.standard_body_temperature
-	var/cold_threshold_medium = victim.bodytemp_cold_damage_limit + cold_diff * 1.25
+	var/cold_threshold_low = victim.bodytemp_cold_damage_limit + cold_diff * 1.2
+	var/cold_threshold_medium = victim.bodytemp_cold_damage_limit + cold_diff * 1.75
+	var/cold_threshold_high = victim.bodytemp_cold_damage_limit + cold_diff * 2
+	// flesh damage is capped based on how area temperature
+	// so if your body temp is freezing, but you get back into a warm area,
+	// your frost bite won't necessarily improve but it also won't get worse
+	var/area_temp = victim.get_temperature(victim.loc?.return_air())
+	var/flesh_damage_cap = 80
+	if(area_temp > cold_threshold_low)
+		flesh_damage_cap = 10
+	else if(area_temp > cold_threshold_medium)
+		flesh_damage_cap = 25
+	else if(area_temp > cold_threshold_high)
+		flesh_damage_cap = 40
+
+	if(flesh_damage >= flesh_damage_cap)
+		return
 
 	// flesh damage goes UP if we're cold (scaling based on coldness)
 	flesh_damage += (0.2 * damage_decay_mod * seconds_per_tick) * (cold_threshold_medium / skin_temp)
+
 	if(flesh_damage > 30)
 		if(severity < WOUND_SEVERITY_CRITICAL)
 			upgrade_severity(WOUND_SEVERITY_CRITICAL)
