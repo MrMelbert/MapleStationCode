@@ -546,10 +546,10 @@
 		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
 
 	if(!blind)
-		show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [examinify.loc == src ? "your [examinify.name]" : examinify]."), MSG_VISUAL)
+		show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
 		if(is_eyes_visible()) // your eyes ain't even visible (but future todo : telepaths can skip this check?)
 			for(var/mob/viewer in oviewers(3, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
-				viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > 3 ? "something" : (examinify.loc == src ? "[p_their()] [examinify.name]" : examinify)]."), MSG_VISUAL)
+				viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > 3 ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
 
 	if(eye_contact)
 		handle_eye_contact(examinify)

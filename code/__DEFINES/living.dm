@@ -188,3 +188,16 @@
 #define TRAIT_SMALL "small_size_trait"
 /// Giant but without some side effects
 #define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
