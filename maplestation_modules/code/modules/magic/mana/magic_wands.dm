@@ -47,7 +47,7 @@
 	name = "Arcane Field Modulator"
 	desc = "An overengineered device produced and researched on board to manipulate and move residual mana within objects."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
-	icon_state = "makeshift"
+	icon_state = "techie"
 	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
 
 /obj/item/magic_wand/wooden
