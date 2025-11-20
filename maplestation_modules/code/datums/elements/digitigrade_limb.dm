@@ -17,6 +17,7 @@
 	src.free_id = free_id
 
 	RegisterSignal(target, COMSIG_BODYPART_UPDATED, PROC_REF(update_id))
+	RegisterSignal(target, COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB, PROC_REF(can_attach))
 
 	var/obj/item/bodypart/limb = target
 	if(update_id(limb)) // just in case the default is the "squished" state
@@ -28,6 +29,7 @@
 /datum/element/digitigrade_limb/Detach(datum/source, ...)
 	. = ..()
 	UnregisterSignal(source, COMSIG_BODYPART_UPDATED)
+	UnregisterSignal(source, COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB)
 	if(QDELING(source))
 		return
 
@@ -42,6 +44,11 @@
 	SIGNAL_HANDLER
 
 	update_id(limb)
+
+/datum/element/digitigrade_limb/proc/can_attach(obj/item/bodypart/aug, mob/living/carbon/new_limb_owner, special)
+	SIGNAL_HANDLER
+
+	return length(new_limb_owner.dna?.species?.digitigrade_legs) ? NONE : COMPONENT_NO_ATTACH
 
 /**
  * Updates the limb depending on the current state of the mob.

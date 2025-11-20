@@ -26,7 +26,9 @@
 	display_order = JOB_DISPLAY_ORDER_VETERAN_ADVISOR
 	departments_list = list(/datum/job_department/security)
 
-	family_heirlooms = list(/obj/item/plaque)
+	family_heirlooms = list(
+		// /obj/item/plaque,
+	)
 
 	mail_goodies = list(
 		/obj/item/clothing/accessory/medal/conduct = 1,

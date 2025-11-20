@@ -14,7 +14,7 @@
 	bot_mode_flags = BOT_MODE_ON | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_AUTOPATROL | BOT_MODE_ROUNDSTART_POSSESSION
 	hackables = "sound control systems"
 	path_image_color = "#FF69B4"
-	data_hud_type = DATA_HUD_SECURITY_BASIC //show jobs
+	data_hud_type = TRAIT_SECURITY_HUD_ID_ONLY //show jobs
 
 	baton_type = /obj/item/bikehorn
 	cuff_type = /obj/item/restraints/handcuffs/cable/zipties/fake/used
@@ -77,7 +77,7 @@
 		return
 
 	current_target.set_stutter(40 SECONDS)
-	var/obj/item/organ/internal/ears/target_ears = current_target.get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/target_ears = current_target.get_organ_slot(ORGAN_SLOT_EARS)
 	if(target_ears && !HAS_TRAIT(current_target, TRAIT_DEAF))
 		target_ears.adjustEarDamage(0, 5) //far less damage than the H.O.N.K.
 	current_target.set_jitter_if_lower(100 SECONDS)

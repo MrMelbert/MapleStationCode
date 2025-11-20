@@ -18,10 +18,10 @@
 
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
 	inherent_respiration_type = RESPIRATION_PLASMA
-	mutantlungs = /obj/item/organ/internal/lungs/plasmaman
-	mutanttongue = /obj/item/organ/internal/tongue/bone/plasmaman
-	mutantliver = /obj/item/organ/internal/liver/bone/plasmaman
-	mutantstomach = /obj/item/organ/internal/stomach/bone/plasmaman
+	mutantlungs = /obj/item/organ/lungs/plasmaman
+	mutanttongue = /obj/item/organ/tongue/bone/plasmaman
+	mutantliver = /obj/item/organ/liver/bone/plasmaman
+	mutantstomach = /obj/item/organ/stomach/bone/plasmaman
 	mutantappendix = null
 	mutantheart = null
 	heatmod = 1.5
@@ -49,8 +49,6 @@
 	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
 	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
-
-	ass_image = 'icons/ass/assplasma.png'
 
 	outfit_override_registry = list(
 		/datum/outfit/syndicate = /datum/outfit/syndicate/plasmaman,

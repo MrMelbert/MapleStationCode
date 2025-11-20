@@ -347,7 +347,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 	var/obj/item/C = new item_chair(loc)
 	C.set_custom_materials(custom_materials)
 	TransferComponents(C)
-	user.put_in_hands(C)
+	try_put_in_hand(C, user)
 	qdel(src)
 
 /obj/structure/chair/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)

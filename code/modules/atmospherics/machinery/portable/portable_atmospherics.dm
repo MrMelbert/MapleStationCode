@@ -185,10 +185,7 @@
 	if(!user)
 		return FALSE
 	if(holding)
-		if(Adjacent(user))
-			user.put_in_hands(holding)
-		else
-			holding.forceMove(get_turf(src))
+		try_put_in_hand(holding, user)
 		UnregisterSignal(holding, COMSIG_QDELETING)
 		holding = null
 	if(new_tank)

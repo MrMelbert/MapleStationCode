@@ -18,7 +18,9 @@
 		/datum/job_department/cargo,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind)
+	// family_heirlooms = list(
+	// 	/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+	// )
 
 	mail_goodies = list(
 		/obj/item/food/cornchips = 1,
@@ -39,3 +41,6 @@
 	uniform = /obj/item/clothing/under/rank/cargo/bitrunner
 	belt = /obj/item/modular_computer/pda/bitrunner
 	ears = /obj/item/radio/headset/headset_cargo
+
+/datum/job/bit_avatar
+	title = "Bit Avatar"

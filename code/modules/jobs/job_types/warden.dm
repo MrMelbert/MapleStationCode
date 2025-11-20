@@ -20,6 +20,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
 
+	mind_traits = list(SECURITY_MIND_TRAITS)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_PRETENDER_ROYAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_WARDEN
@@ -28,7 +29,9 @@
 		/datum/job_department/security,
 		)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 15,
@@ -48,7 +51,7 @@
 	id_trim = /datum/id_trim/job/warden
 	uniform = /obj/item/clothing/under/rank/security/warden
 	suit = /obj/item/clothing/suit/armor/vest/warden/alt
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	backpack_contents = list(
 		/obj/item/evidencebag = 1,
 		)

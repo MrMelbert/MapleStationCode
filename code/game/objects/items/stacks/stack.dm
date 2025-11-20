@@ -751,3 +751,16 @@
 	add_hiddenprint_list(GET_ATOM_HIDDENPRINTS(from))
 	fingerprintslast = from.fingerprintslast
 	//TODO bloody overlay
+
+/obj/item/stack/update_name(updates)
+	. = ..()
+	if(!singular_name)
+		return
+	if(amount > 1)
+		// only reset if necessary
+		if(singular_name != initial(name))
+			name = initial(name)
+		gender = PLURAL
+	else
+		name = singular_name
+		gender = NEUTER

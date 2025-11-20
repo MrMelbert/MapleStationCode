@@ -415,6 +415,7 @@
 	icon_state = "showroomfloor"
 	base_icon_state = "showroomfloor"
 	floor_tile = /obj/item/stack/tile/iron/showroomfloor
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/showroomfloor/airless
 	initial_gas_mix = AIRLESS_ATMOS
@@ -443,6 +444,7 @@
 /turf/open/floor/iron/kitchen_coldroom
 	name = "cold room floor"
 	initial_gas_mix = KITCHEN_COLDROOM_ATMOS
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor
 	icon_state = "freezerfloor"

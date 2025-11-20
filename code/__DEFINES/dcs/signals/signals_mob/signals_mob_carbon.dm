@@ -23,6 +23,8 @@
 ///from base of /obj/item/bodypart/proc/can_attach_limb(): (new_limb, special) allows you to fail limb attachment
 #define COMSIG_ATTEMPT_CARBON_ATTACH_LIMB "attempt_carbon_attach_limb"
 	#define COMPONENT_NO_ATTACH (1<<0)
+///from base of /obj/item/bodypart/proc/can_attach_limb(): (new_owner, special) allows you to fail limb attachment
+#define COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB "bodypart_attempt_attach"
 ///from base of /obj/item/bodypart/proc/try_attach_limb(): (new_limb, special)
 #define COMSIG_CARBON_ATTACH_LIMB "carbon_attach_limb"
 /// Called from bodypart being attached /obj/item/bodypart/proc/try_attach_limb(mob/living/carbon/new_owner, special)
@@ -66,13 +68,6 @@
 #define COMSIG_CARBON_GAIN_ORGAN "carbon_gain_organ"
 ///from /item/organ/proc/Remove() (/obj/item/organ/)
 #define COMSIG_CARBON_LOSE_ORGAN "carbon_lose_organ"
-///from /mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop, silent)
-#define COMSIG_CARBON_EQUIP_HAT "carbon_equip_hat"
-///from /mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop, silent)
-#define COMSIG_CARBON_UNEQUIP_HAT "carbon_unequip_hat"
-///from /mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop, silent)
-#define COMSIG_CARBON_UNEQUIP_SHOECOVER "carbon_unequip_shoecover"
-#define COMSIG_CARBON_EQUIP_SHOECOVER "carbon_equip_shoecover"
 ///defined twice, in carbon and human's topics, fired when interacting with a valid embedded_object to pull it out (mob/living/carbon/target, /obj/item, /obj/item/bodypart/L)
 #define COMSIG_CARBON_EMBED_RIP "item_embed_start_rip"
 ///called when removing a given item from a mob, from mob/living/carbon/remove_embedded_object(mob/living/carbon/target, /obj/item)
@@ -142,6 +137,10 @@
 	#define VISIBLE_NAME_FACE 1
 	//Index for the name of the id
 	#define VISIBLE_NAME_ID 2
+	//Index for whether their name is being overriden instead of obsfuscated
+	#define VISIBLE_NAME_FORCED 3
+///from /mob/living/carbon/human/get_id_name; only returns if the mob has TRAIT_UNKNOWN and it's being overriden: (identity)
+#define COMSIG_HUMAN_GET_FORCED_NAME "human_get_forced_name"
 
 // Mob transformation signals
 ///Called when a human turns into a monkey, from /mob/living/carbon/proc/finish_monkeyize()

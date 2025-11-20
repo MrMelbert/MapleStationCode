@@ -1,5 +1,5 @@
 // fox tails. Renault Geckers.
-/obj/item/organ/external/tail/fox // redundant, this is either a failsafe, or if someone specifically wants a fox tail for whatever purpose (EG. Limbgrower), that is detached from cat tails
+/obj/item/organ/tail/fox // redundant, this is either a failsafe, or if someone specifically wants a fox tail for whatever purpose (EG. Limbgrower), that is detached from cat tails
 	name = "fox tail"
 	icon = 'maplestation_modules/icons/obj/surgery.dmi'
 	icon_state = "severedfoxtail"
@@ -19,18 +19,19 @@
 	icon_state = "fox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR_COLOR
+	locked = TRUE
 
 /datum/design/fox_tail
 	name = "Fox Tail"
 	id = "foxtail"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/fox
+	build_path = /obj/item/organ/tail/fox
 	category = list(SPECIES_HUMAN)
 
 // five fox tails, because having 9 would be impossible to sprite and have it look good
 
-/obj/item/organ/external/tail/fivefox // ditto.
+/obj/item/organ/tail/fivefox // ditto.
 	name = "five fox tails"
 	icon = 'maplestation_modules/icons/obj/surgery.dmi'
 	icon_state = "severedfivefoxtail"
@@ -49,12 +50,12 @@
 	icon_state = "fivefox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR_COLOR
+	locked = TRUE
 
 /datum/design/fivefox_tail
 	name = "Five Fox Tails"
 	id = "fivefoxtails"
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/c2/synthflesh = 20)
-	build_path = /obj/item/organ/external/tail/fivefox
+	build_path = /obj/item/organ/tail/fivefox
 	category = list(SPECIES_HUMAN)
-

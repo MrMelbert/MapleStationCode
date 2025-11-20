@@ -12,6 +12,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 /obj/machinery/requests_console
 	name = "requests console"
+	article = "the"
 	desc = "A console intended to send requests to different departments on the station."
 	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "req_comp_off"
@@ -204,7 +205,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 				message += "\n - [message_verified_by]"
 			// NON-MODULE CHANGE END
 			minor_announce(message, "[department] Announcement:", html_encode = FALSE, sound_override = 'sound/misc/announce_dig.ogg')
-			GLOB.news_network.submit_article(message, department, "Station Announcements", null)
+			GLOB.news_network.submit_article(message, department, NEWSCASTER_STATION_ANNOUNCEMENTS , null)
 			usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")
 			message_admins("[ADMIN_LOOKUPFLW(usr)] has made a station announcement from [src] at [AREACOORD(usr)].")
 			deadchat_broadcast(" made a station announcement from [span_name("[get_area_name(usr, TRUE)]")].", span_name("[usr.real_name]"), usr, message_type=DEADCHAT_ANNOUNCEMENT)

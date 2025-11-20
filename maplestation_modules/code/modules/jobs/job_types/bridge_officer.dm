@@ -40,7 +40,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,

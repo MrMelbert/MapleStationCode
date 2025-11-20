@@ -32,6 +32,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	shell_capacity = SHELL_CAPACITY_SMALL
+	action_slots = ALL
 
 	///The item currently inserted into the PDA, starts with a pen.
 	var/obj/item/inserted_item = /obj/item/pen
@@ -191,7 +192,7 @@
 
 	if(inserted_item)
 		balloon_alert(user, "removed [inserted_item]")
-		user.put_in_hands(inserted_item)
+		try_put_in_hand(inserted_item, user)
 		inserted_item = null
 		update_appearance()
 		playsound(src, 'sound/machines/pda_button2.ogg', 50, TRUE)
@@ -199,7 +200,7 @@
 /obj/item/modular_computer/pda/proc/swap_pen(mob/user, obj/item/tool)
 	if(inserted_item)
 		balloon_alert(user, "swapped pens")
-		user.put_in_hands(inserted_item)
+		try_put_in_hand(inserted_item, user)
 		inserted_item = tool
 		update_appearance()
 		playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)

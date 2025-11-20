@@ -250,7 +250,7 @@
 			)
 
 		else
-			if(slapped.IsSleeping() || slapped.IsUnconscious())
+			if(HAS_TRAIT(slapped, TRAIT_KNOCKEDOUT))
 				user.visible_message(
 					span_notice("[user] slaps [slapped] in the face, trying to wake [slapped.p_them()] up!"),
 					span_notice("You slap [slapped] in the face, trying to wake [slapped.p_them()] up!"),
@@ -623,7 +623,7 @@
 	if(!iscarbon(target))
 		return
 	var/mob/living/carbon/heartbreakee = target
-	var/obj/item/organ/internal/heart/dont_go_breakin_my_heart = heartbreakee.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/dont_go_breakin_my_heart = heartbreakee.get_organ_slot(ORGAN_SLOT_HEART)
 	dont_go_breakin_my_heart.apply_organ_damage(999)
 
 

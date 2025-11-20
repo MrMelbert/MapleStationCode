@@ -39,7 +39,7 @@
 			if(satiety > 80)
 				nutrition_ratio *= 1.25
 			adjust_nutrition(-nutrition_ratio * HUNGER_FACTOR * seconds_per_tick)
-			blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * seconds_per_tick), BLOOD_VOLUME_NORMAL)
+			blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * physiology.blood_regen_mod * nutrition_ratio * seconds_per_tick), BLOOD_VOLUME_NORMAL)
 
 	//Effects of bloodloss
 	if(!(sigreturn & HANDLE_BLOOD_NO_EFFECTS))
@@ -234,50 +234,6 @@
 	blood_volume -= amount
 	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), body_temperature)
 	return TRUE
-
-// /mob/living/proc/get_blood_data()
-// 	return null
-
-// /mob/living/carbon/get_blood_data()
-// 	if(get_blood_type()?.reagent_type != /datum/reagent/blood) //actual blood reagent
-// 		return null
-
-// 	var/list/blood_data = list()
-// 	//set the blood data
-// 	blood_data["viruses"] = list()
-
-// 	for(var/thing in diseases)
-// 		var/datum/disease/D = thing
-// 		blood_data["viruses"] += D.Copy()
-
-// 	blood_data["blood_DNA"] = dna.unique_enzymes
-// 	if(LAZYLEN(disease_resistances))
-// 		blood_data["resistances"] = disease_resistances.Copy()
-// 	var/list/temp_chem = list()
-// 	for(var/datum/reagent/R in reagents.reagent_list)
-// 		temp_chem[R.type] = R.volume
-// 	blood_data["trace_chem"] = list2params(temp_chem)
-// 	if(mind)
-// 		blood_data["mind"] = mind
-// 	else if(last_mind)
-// 		blood_data["mind"] = last_mind
-// 	if(ckey)
-// 		blood_data["ckey"] = ckey
-// 	else if(last_mind)
-// 		blood_data["ckey"] = ckey(last_mind.key)
-
-// 	if(!HAS_TRAIT_FROM(src, TRAIT_SUICIDED, REF(src)))
-// 		blood_data["cloneable"] = 1
-// 	blood_data["blood_type"] = dna.human_blood_type
-// 	blood_data["gender"] = gender
-// 	blood_data["real_name"] = real_name
-// 	blood_data["features"] = dna.features
-// 	blood_data["factions"] = faction
-// 	blood_data["quirks"] = list()
-// 	for(var/V in quirks)
-// 		var/datum/quirk/T = V
-// 		blood_data["quirks"] += T.type
-// 	return blood_data
 
 /mob/living/proc/get_blood_type()
 	RETURN_TYPE(/datum/blood_type)

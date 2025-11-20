@@ -5,14 +5,14 @@
 	quality = POSITIVE
 	locked = TRUE
 	difficulty = 16
-	text_gain_indication = "<span class='notice'>Your muscles hurt!</span>"
+	text_gain_indication = span_notice("Your muscles hurt!")
 	species_allowed = list(SPECIES_HUMAN) //no skeleton/lizard hulk
 	health_req = 25
-	instability = 40
+	instability = POSITIVE_INSTABILITY_MAJOR
 	var/scream_delay = 50
 	var/last_scream = 0
 	/// List of traits to add/remove when someone gets this mutation.
-	var/list/mutation_traits = list(
+	mutation_traits = list(
 		TRAIT_CHUNKYFINGERS,
 		TRAIT_HULK,
 		TRAIT_PUSHIMMUNE,
@@ -23,9 +23,8 @@
 /datum/mutation/human/hulk/on_acquiring(mob/living/carbon/human/owner)
 	if(..())
 		return
-	owner.add_traits(mutation_traits, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = "#00aa00"
+		part.variable_color = COLOR_DARK_LIME
 	owner.update_body_parts()
 	owner.add_mood_event("hulk", /datum/mood_event/hulk)
 	owner.physiology?.cold_mod *= HULK_COLD_DAMAGE_MOD
@@ -91,7 +90,6 @@
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
-	owner.remove_traits(mutation_traits, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = null
 	owner.update_body_parts()
@@ -137,7 +135,7 @@
 
 	if(ishuman(possible_throwable))
 		var/mob/living/carbon/human/human_throwable = possible_throwable
-		if(human_throwable.wear_suit && (human_throwable.wear_suit.flags_inv & HIDEJUMPSUIT))
+		if(human_throwable.obscured_slots & HIDEJUMPSUIT)
 			to_chat(user, span_warning("You can't reach [human_throwable]'s tail through [human_throwable.p_their()] [human_throwable.wear_suit.name]!"))
 			return
 

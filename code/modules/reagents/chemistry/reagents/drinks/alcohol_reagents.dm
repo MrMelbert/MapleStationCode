@@ -79,7 +79,7 @@
 		// Volume, power, and server alcohol rate effect how quickly one gets drunk
 		drinker.adjust_drunk_effect(sqrt(volume) * booze_power * ALCOHOL_RATE * REM * seconds_per_tick)
 		if(boozepwr > 0)
-			var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+			var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 			var/heavy_drinker_multiplier = (HAS_TRAIT(drinker, TRAIT_HEAVY_DRINKER) ? 0.5 : 1)
 			if (istype(liver))
 				if(liver.apply_organ_damage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * liver.alcohol_tolerance * heavy_drinker_multiplier * seconds_per_tick, 0))/150)))
@@ -254,7 +254,7 @@
 		to_chat(drinker, span_notice("[pick("You have a really bad headache.", "Your eyes hurt.", "You find it hard to stay still.", "You feel your heart practically beating out of your chest.")]"))
 
 	if(SPT_PROB(2.5, seconds_per_tick) && iscarbon(drinker))
-		var/obj/item/organ/internal/eyes/eyes = drinker.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = drinker.get_organ_slot(ORGAN_SLOT_EYES)
 		if(eyes && IS_ORGANIC_ORGAN(eyes)) // doesn't affect robotic eyes
 			if(drinker.is_blind())
 				eyes.Remove(drinker)
@@ -660,11 +660,13 @@
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(isnull(liver) || !HAS_TRAIT(liver, TRAIT_ENGINEER_METABOLISM) || !HAS_TRAIT(drinker, TRAIT_IRRADIATED))
 		return
 
-	for(var/obj/item/organ/internal/organ in shuffle(drinker.organs))
+	for(var/obj/item/organ/organ in shuffle(drinker.organs))
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		if(!(organ.organ_flags & ORGAN_IRRADIATED))
 			continue
 		organ.apply_organ_damage(-1 * REM * seconds_per_tick)
@@ -677,7 +679,7 @@
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = user.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = user.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(isnull(liver))
 		return
 	ADD_TRAIT(user, TRAIT_HALT_RADIATION_EFFECTS, "[type]")
@@ -749,7 +751,7 @@
 	. = ..()
 	to_chat(drinker, span_notice("You feel gentle warmth spread through your body!"))
 	light_holder = new(drinker)
-	light_holder.set_light(3, 0.7, "#FFCC00") //Tequila Sunrise makes you radiate dim light, like a sunrise!
+	light_holder.set_light(3, 0.7, COLOR_TANGERINE_YELLOW) //Tequila Sunrise makes you radiate dim light, like a sunrise!
 
 /datum/reagent/consumable/ethanol/tequila_sunrise/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	if(QDELETED(light_holder))
@@ -779,7 +781,7 @@
 /datum/reagent/consumable/ethanol/beepsky_smash
 	name = "Beepsky Smash"
 	description = "Drink this and prepare for the LAW."
-	color = "#808000" // rgb: 128,128,0
+	color = COLOR_OLIVE // rgb: 128,128,0
 	boozepwr = 60 //THE FIST OF THE LAW IS STRONG AND HARD
 	quality = DRINK_GOOD
 	metabolization_rate = 1.25 * REAGENTS_METABOLISM
@@ -794,7 +796,7 @@
 	if(HAS_TRAIT(drinker, TRAIT_ALCOHOL_TOLERANCE))
 		metabolization_rate = 0.8
 	// if you don't have a liver, or your liver isn't an officer's liver
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		beepsky_hallucination = new()
 		drinker.gain_trauma(beepsky_hallucination, TRAUMA_RESILIENCE_ABSOLUTE)
@@ -802,7 +804,7 @@
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
 	drinker.set_jitter_if_lower(4 SECONDS)
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	// if you have a liver and that liver is an officer's liver
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		if(drinker.adjustStaminaLoss(-10 * REM * seconds_per_tick, updating_stamina = FALSE, required_biotype = affected_biotype))
@@ -819,7 +821,7 @@
 
 /datum/reagent/consumable/ethanol/beepsky_smash/overdose_start(mob/living/carbon/drinker)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	// if you don't have a liver, or your liver isn't an officer's liver
 	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		drinker.gain_trauma(/datum/brain_trauma/mild/phobia/security, TRAUMA_RESILIENCE_BASIC)
@@ -985,7 +987,7 @@
 /datum/reagent/consumable/ethanol/snowwhite
 	name = "Snow White"
 	description = "A cold refreshment."
-	color = "#FFFFFF" // rgb: 255, 255, 255
+	color = COLOR_WHITE // rgb: 255, 255, 255
 	boozepwr = 35
 	quality = DRINK_NICE
 	taste_description = "refreshing cold"
@@ -1312,7 +1314,7 @@
 
 /datum/reagent/consumable/ethanol/bananahonk/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || is_simian(drinker))
 		if(drinker.heal_bodypart_damage(brute = 1 * REM * seconds_per_tick, burn = 1 * REM * seconds_per_tick, updating_health = FALSE))
 			return UPDATE_MOB_HEALTH
@@ -1581,7 +1583,7 @@
 /datum/reagent/consumable/ethanol/triple_sec
 	name = "Triple Sec"
 	description = "A sweet and vibrant orange liqueur."
-	color = "#ffcc66"
+	color = COLOR_ICECREAM_PEACH
 	boozepwr = 30
 	taste_description = "a warm flowery orange taste which recalls the ocean air and summer wind of the caribbean"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1622,7 +1624,7 @@
 /datum/reagent/consumable/ethanol/quadruple_sec/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		if(drinker.heal_bodypart_damage(brute = 1 * REM * seconds_per_tick, burn = 1 * REM * seconds_per_tick, updating_health = FALSE))
 			return UPDATE_MOB_HEALTH
@@ -1639,7 +1641,7 @@
 /datum/reagent/consumable/ethanol/quintuple_sec/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
 	//Securidrink in line with the Screwdriver for engineers or Nothing for mimes but STRONG..
-	var/obj/item/organ/internal/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = drinker.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
 		var/need_mob_update
 		need_mob_update = drinker.heal_bodypart_damage(2 * REM * seconds_per_tick, 2 * REM *  seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -1668,7 +1670,7 @@
 /datum/reagent/consumable/ethanol/bastion_bourbon
 	name = "Bastion Bourbon"
 	description = "Soothing hot herbal brew with restorative properties. Hints of citrus and berry flavors."
-	color = "#00FFFF"
+	color = COLOR_CYAN
 	boozepwr = 30
 	quality = DRINK_FANTASTIC
 	taste_description = "hot herbal brew with a hint of fruit"
@@ -1710,7 +1712,7 @@
 /datum/reagent/consumable/ethanol/squirt_cider
 	name = "Squirt Cider"
 	description = "Fermented squirt extract with a nose of stale bread and ocean water. Whatever a squirt is."
-	color = "#FF0000"
+	color = COLOR_RED
 	boozepwr = 40
 	taste_description = "stale bread with a staler aftertaste"
 	nutriment_factor = 2
@@ -1984,7 +1986,7 @@
 /datum/reagent/consumable/ethanol/fruit_wine
 	name = "Fruit Wine"
 	description = "A wine made from grown plants."
-	color = "#FFFFFF"
+	color = COLOR_WHITE
 	boozepwr = 35
 	quality = DRINK_GOOD
 	taste_description = "bad coding"
@@ -2454,7 +2456,7 @@
 	name = "Triumphal Arch"
 	description = "A drink celebrating the Lizard Empire and its military victories. It's popular at bars on Unification Day."
 	boozepwr = 60
-	color = "#FFD700"
+	color = COLOR_GOLD
 	quality = DRINK_FANTASTIC
 	taste_description = "victory"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -2670,7 +2672,7 @@
 		return
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
-	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
 		stomach.adjust_charge(reac_volume * 5 * ETHEREAL_DISCHARGE_RATE)
 
@@ -2697,7 +2699,7 @@
 		return
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
-	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
 		stomach.adjust_charge(reac_volume * 10 * ETHEREAL_DISCHARGE_RATE)
 
@@ -2724,7 +2726,7 @@
 		return
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
-	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
 		stomach.adjust_charge(reac_volume * 30 * ETHEREAL_DISCHARGE_RATE)
 
@@ -2936,6 +2938,156 @@
 	quality = DRINK_VERYGOOD
 	taste_description = "the aloha state"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/boston_sour
+	name = "Boston Sour"
+	description = "Whiskey sour texturally elevated by an egg white."
+	boozepwr = 35
+	color = "#ddc28b"
+	quality = DRINK_VERYGOOD
+	taste_description = "foamy lemony sourness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/star
+	name = "Star"
+	description = "A blend of applejack and vermouth accented with bitters."
+	boozepwr = 40
+	color = "#e5a654"
+	quality = DRINK_GOOD
+	taste_description = "vinous apples"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/old_fashioned
+	name = "Old Fashioned"
+	description = "By some measures the first cocktail, made by flavoring a hard spirit with sugar and bitters, with the spirit in question most often being whiskey in modern times."
+	boozepwr = 60
+	color = "#b4a287"
+	quality = DRINK_GOOD
+	taste_description = "rounded out whiskey"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	glass_price = DRINK_PRICE_EASY
+
+/datum/reagent/consumable/ethanol/sazerac
+	name = "Sazerac"
+	description = "Whiskey made aromatic by absinthe and creole bitters."
+	boozepwr = 65
+	color = "#f43f69"
+	quality = DRINK_GOOD
+	taste_description = "flowery anise-scented whiskey"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/amaretto_sour
+	name = "Amaretto Sour"
+	description = "A sour made with sweet amaretto."
+	boozepwr = 15
+	color = "#ddc28b"
+	quality = DRINK_VERYGOOD
+	taste_description = "foamy lemony sweetness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	glass_price = DRINK_PRICE_MEDIUM
+
+/datum/reagent/consumable/ethanol/ramos_gin_fizz
+	name = "Ramos Gin Fizz"
+	description = "A complex twist on the concept of a gin fizz, adding cream and egg white along side lemon juice for an incomparable textural experience. In this version, the drink's signature usage of orange blossom water is replaced with a drop of orange liqueur."
+	boozepwr = 35
+	color = "#f9e7c2"
+	quality = DRINK_FANTASTIC
+	taste_description = "creamy fluffy citrusy gin"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/french_75
+	name = "French 75"
+	description = "A sophisticated cocktail made by strengthening champagne with gin, then flavoring with lemon juice and sugar."
+	boozepwr = 30
+	color = "#ffffc1"
+	quality = DRINK_GOOD
+	taste_description = "glory and gunnery"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	glass_price = DRINK_PRICE_MEDIUM
+
+/datum/reagent/consumable/ethanol/sangria
+	name = "Sangria"
+	description = "A blood-red wine punch strengthened with liquor and sweetened with as much chopped fruit as one can get their hands on."
+	boozepwr = 20
+	color = "#c4383b"
+	quality = DRINK_GOOD
+	taste_description = "refreshing fruity wine"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/suffering_bastard
+	name = "Suffering Bastard"
+	description = "A tiki style hangover cure made from ginger beer, spirits, and bitters."
+	boozepwr = 20
+	color = "#e8ca78"
+	quality = DRINK_VERYGOOD
+	taste_description = "ginger-flavored recuperation"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/suffering_bastard/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	affected_mob.apply_status_effect(/datum/status_effect/headache_soothed) //prevents headaches
+	affected_mob.adjust_disgust(-5 * REM * seconds_per_tick) //removes disgust, same with sol dry
+	if(affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, -0.5 * REM * seconds_per_tick * normalise_creation_purity(), required_organ_flag = affected_organ_flags)) //heals brain damage very slowly, about 12 damage per 5u
+		return UPDATE_MOB_HEALTH
+
+/datum/reagent/consumable/ethanol/blue_blazer
+	name = "Blue Blazer"
+	description = "The signature drink of a legendary bartender from the 19th century. While remembered for how he innovated the art of bartending, at the end of the day this drink is really just warmed and sweetened whiskey."
+	boozepwr = 25
+	color = "#b5949b"
+	quality = DRINK_NICE
+	taste_description = "scorched sweet whiskey"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/blue_blazer/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
+	. = ..()
+	drinker.adjust_body_temperature(2 * WARM_DRINK * REM * seconds_per_tick, max_temp = drinker.standard_body_temperature + 4 KELVIN)
+
+/datum/reagent/consumable/ethanol/hot_toddy
+	name = "Hot Toddy"
+	description = "A warmed blend of spirits, sugar, and spices. While the concept is ancient, this preparation with cognac and refined sugar is a bit more modern."
+	boozepwr = 25
+	color = "#f2d2b4"
+	quality = DRINK_GOOD
+	taste_description = "the warmth of a comfy fireplace"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	glass_price = DRINK_PRICE_MEDIUM
+
+/datum/reagent/consumable/ethanol/hot_toddy/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
+	. = ..()
+	drinker.adjust_body_temperature(2 * WARM_DRINK * REM * seconds_per_tick, max_temp = drinker.standard_body_temperature + 4 KELVIN)
+
+/datum/reagent/consumable/ethanol/tizirian_sour
+	name = "Tizirian Sour"
+	description = "A twist on a trinidad sour, using korta nectar in place of orgeat. Despite the name, it was invented by a martian barkeep."
+	boozepwr = 35
+	color = "#9b4b3a"
+	quality = DRINK_VERYGOOD
+	taste_description = "sweetened and spiced bitterness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/daiquiri
+	name = "Daiquiri"
+	description = "In some ways the ultimate tropical cocktail, very few rum drinks are not in some way a descendant of this classic."
+	boozepwr = 35
+	color = "#b6d3a6ff"
+	quality = DRINK_NICE
+	taste_description = "crisp lime"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/flip_cocktail
+	name = "Flip Cocktail"
+	description = "A simplified and modernized adaptation of a much older drink that predates the Cocktail. While the older version used ale and was heated before it was drunk, this version is chilled. Really, the main similarity is the use of a whole egg."
+	boozepwr = 30
+	color = "#dddfcaff"
+	quality = DRINK_GOOD
+	taste_description = "creamy brandy and nutmeg"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/flip_cocktail/on_mob_metabolize(mob/living/drinker)
+	. = ..()
+	if(prob(10))
+		drinker.emote("flip")
 
 #undef ALCOHOL_EXPONENT
 #undef ALCOHOL_THRESHOLD_MODIFIER

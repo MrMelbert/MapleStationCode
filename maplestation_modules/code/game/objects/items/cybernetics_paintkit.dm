@@ -1,10 +1,3 @@
-/// List of icons that have emissives. Bodyparts with this icon will try to look for an [icon_state]_e icon_state
-GLOBAL_LIST_INIT(emissive_augmentations, list(
-	'maplestation_modules/icons/mob/augmentation/monokai.dmi',
-	'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi',
-	'maplestation_modules/icons/mob/augmentation/bshipc.dmi',
-))
-
 /obj/item/cybernetics_paintkit
 	name = "cybernetics paint kit"
 	desc = "A kit for quickly stylizing your cybernetic prosthetics. Comes with a set of paint, brushes and LEDs."
@@ -29,6 +22,12 @@ GLOBAL_LIST_INIT(emissive_augmentations, list(
 		"ZHP" = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi',
 	)
 
+	var/static/list/emissive_augments = list(
+		'maplestation_modules/icons/mob/augmentation/monokai.dmi',
+		'maplestation_modules/icons/mob/augmentation/bs2ipc.dmi',
+		'maplestation_modules/icons/mob/augmentation/bshipc.dmi',
+	)
+
 	var/static/list/limb_recolor_options = list(
 		"monokai" = 'maplestation_modules/icons/mob/augmentation/monokai.dmi',
 	)
@@ -47,22 +46,24 @@ GLOBAL_LIST_INIT(emissive_augmentations, list(
 		var/image/part_image = image(icon = limb_recolor_options[skin_option], icon_state = "robotic_l_arm")
 		part_image.overlays += image(icon = limb_recolor_options[skin_option], icon_state = "robotic_l_hand")
 		skins[skin_option] = part_image
-	
+
 	var/choice = show_radial_menu(user, src, skins, require_near = TRUE)
 	if (!choice)
 		return
-	
+
 	var/list/parts_to_paint = list(BODY_ZONE_L_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_ARM, BODY_ZONE_R_LEG)
 	if (choice in full_recolor_options)
 		parts_to_paint |= list(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
-	
+
 	for (var/part_zone in parts_to_paint)
 		var/obj/item/bodypart/limb = user.get_bodypart(part_zone)
 		if (!IS_ORGANIC_LIMB(limb))
+			var/icon_selected = full_recolor_options[choice] || limb_recolor_options[choice]
+			limb.is_emissive = (icon_selected in emissive_augments)
 			limb.icon_state = replacetext("[limb.icon_state]", "borg_", "robotic_") // This is awful but /tg/code insists on duplicating all limb textures(???) and I'll go insane making emissives for those
 			limb.base_icon_state = replacetext("[limb.base_icon_state]", "borg_", "robotic_")
 			limb.update_appearance()
-			limb.change_appearance((choice in full_recolor_options) ? full_recolor_options[choice] : limb_recolor_options[choice], greyscale = FALSE)
+			limb.change_appearance(icon_selected, greyscale = FALSE)
 
 	playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
 	balloon_alert(user, "style applied")
@@ -79,7 +80,7 @@ GLOBAL_LIST_INIT(emissive_augmentations, list(
 	for(var/skin_option in full_recolor_options)
 		var/image/part_image = image(icon = full_recolor_options[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
 		skins[skin_option] = part_image
-	
+
 	if (limb.body_zone in list(BODY_ZONE_L_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_ARM, BODY_ZONE_R_LEG))
 		for(var/skin_option in limb_recolor_options)
 			var/image/part_image = image(icon = limb_recolor_options[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
