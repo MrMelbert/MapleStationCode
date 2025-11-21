@@ -45,6 +45,8 @@
 // Flags for the mob_flags var on /mob
 /// May override the names used in screentips of OTHER OBJECTS hovered over.
 #define MOB_HAS_SCREENTIPS_NAME_OVERRIDE (1 << 0)
+/// Mob has a hearing relay, potentially allowing it to hear sounds it typically cannot.
+#define MOB_HAS_HEARING_RELAY (1 << 1)
 
 //Mob bio-types flags
 ///The mob is organic, can heal from medical sutures.
