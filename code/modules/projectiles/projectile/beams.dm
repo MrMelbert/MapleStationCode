@@ -65,17 +65,42 @@
 /obj/projectile/beam/laser/no_hitscan
 	hitscan = FALSE
 
-/obj/projectile/beam/laser/carbine
+/obj/projectile/beam/laser/rapid
+	name = "rapid fire laser"
 	icon_state = "carbine_laser"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
 	damage = 10
 	hitscan = FALSE
 	range = 20
 
-/obj/projectile/beam/laser/carbine/practice
-	name = "practice laser"
+/obj/projectile/beam/laser/rapid/practice
+	name = "practice rapid fire laser"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
 	damage = 0
+
+/obj/projectile/beam/laser/cybersun
+	name = "red plasma beam"
+	icon_state = "lava"
+	light_color = COLOR_DARK_RED
+	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
+	damage = 9
+	wound_bonus = -40
+	speed = 0.9
+
+/obj/projectile/beam/laser/accelerator
+	name = "accelerator laser"
+	icon_state = "scatterlaser"
+	range = 255
+	damage = 6
+	hitscan = FALSE
+	var/size_per_tile = 0.1
+	var/max_scale = 4
+
+/obj/projectile/beam/laser/accelerator/reduce_range()
+	..()
+	damage += 7
+	transform = matrix()
+	transform *= min(1 + (maximum_range - range) * size_per_tile, max_scale)
 
 //overclocked laser, does a bit more damage but has much higher wound power (-0 vs -20)
 /obj/projectile/beam/laser/hellfire

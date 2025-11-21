@@ -29,13 +29,23 @@
 	var/single_shot_type_overlay = TRUE
 	///Should we give an overlay to empty guns?
 	var/display_empty = TRUE
-	var/selfcharge = 0
-	var/charge_timer = 0
-	var/charge_delay = 8
 	///whether the gun's cell drains the cyborg user's cell to recharge
 	var/use_cyborg_cell = FALSE
 	///set to true so the gun is given an empty cell
 	var/dead_cell = FALSE
+
+	// Self charging vars
+
+	/// Whether or not our gun charges its own cell on a timer.
+	var/selfcharge = 0
+	/// The amount of time between instances of cell self recharge
+	var/charge_timer = 0
+	/// The amount of seconds_per_tick during process() before the gun charges itself
+	var/charge_delay = 8
+	/// The amount restored by the gun to the cell per self charge tick
+	// var/self_charge_amount = STANDARD_ENERGY_GUN_SELF_CHARGE_RATE
+	/// sound played when fire mode select is done
+	// var/fire_mode_switch_sound = SFX_FIRE_MODE_SWITCH
 
 /obj/item/gun/energy/fire_sounds()
 	// What frequency the energy gun's sound will make
@@ -63,7 +73,7 @@
 /obj/item/gun/energy/emp_act(severity)
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
-		cell.use(round(cell.charge / severity))
+		cell.use(round(cell.charge / emp_resistance / severity))
 		chambered = null //we empty the chamber
 		recharge_newshot() //and try to charge a new shot
 		update_appearance()
