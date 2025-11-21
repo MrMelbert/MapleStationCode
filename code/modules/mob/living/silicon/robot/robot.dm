@@ -905,6 +905,7 @@
 		for(var/chan in radio.channels)
 			radio.secure_radio_connections[chan] = add_radio(radio, GLOB.radiochannels[chan])
 
+	mainframe.set_eyeobj_visible(FALSE)
 	diag_hud_set_aishell()
 	undeployment_action.Grant(src)
 
@@ -943,6 +944,7 @@
 		mainframe.laws.show_laws(mainframe) //Always remind the AI when switching
 	if(mainframe.eyeobj)
 		mainframe.eyeobj.setLoc(loc)
+		mainframe.set_eyeobj_visible(TRUE)
 	mainframe = null
 
 /mob/living/silicon/robot/attack_ai(mob/user)
