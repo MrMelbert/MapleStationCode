@@ -68,7 +68,7 @@
 		QDEL_LIST(bag.contents)
 
 		bag.contents += list(
-			new /obj/item/storage/box/survival,
+			new /obj/item/storage/pouch/survival,
 			new /obj/item/storage/medkit/regular,
 			new /obj/item/flashlight,
 		)

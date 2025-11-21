@@ -87,7 +87,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
 	messenger = /obj/item/storage/backpack/messenger/eng
 
-	box = /obj/item/storage/box/survival/engineer
+	box = /obj/item/storage/pouch/survival/engineer
 	chameleon_extras = /obj/item/stamp/head/ce
 	skillchips = list(/obj/item/skillchip/job/engineer)
 	pda_slot = ITEM_SLOT_LPOCKET

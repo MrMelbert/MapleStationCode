@@ -59,7 +59,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
 	messenger = /obj/item/storage/backpack/messenger/eng
 
-	box = /obj/item/storage/box/survival/engineer
+	box = /obj/item/storage/pouch/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 
 /datum/outfit/job/atmos/mod

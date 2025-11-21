@@ -65,5 +65,5 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/chemistry
 	messenger = /obj/item/storage/backpack/messenger/chem
 
-	box = /obj/item/storage/box/survival/medical
+	box = /obj/item/storage/pouch/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
