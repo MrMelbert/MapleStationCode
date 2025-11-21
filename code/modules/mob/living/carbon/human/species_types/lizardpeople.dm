@@ -8,12 +8,14 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	body_markings = list(/datum/bodypart_overlay/simple/body_marking/lizard = "None")
+	body_markings = list(
+		/datum/bodypart_overlay/simple/body_marking/lizard = SPRITE_ACCESSORY_NONE,
+	)
 	mutant_organs = list(
-		/obj/item/organ/horns = "None",
-		/obj/item/organ/frills = "None",
+		/obj/item/organ/horns = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/frills = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/snout = "Round",
-		/obj/item/organ/spines = "None",
+		/obj/item/organ/spines = SPRITE_ACCESSORY_NONE,
 		/obj/item/organ/tail/lizard = "Smooth",
 	)
 	mutanttongue = /obj/item/organ/tongue/lizard
@@ -53,6 +55,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
 	monkey_type = /datum/species/monkey/lizard
+	canon_height = HUMAN_HEIGHT_TALL
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()

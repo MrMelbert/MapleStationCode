@@ -185,9 +185,9 @@
 	var/power_throw = 0
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		power_throw++
-	if(HAS_TRAIT(src, TRAIT_DWARF))
+	if(HAS_TRAIT(src, TRAIT_SMALL))
 		power_throw--
-	if(HAS_TRAIT(thrown_thing, TRAIT_DWARF))
+	if(HAS_TRAIT(thrown_thing, TRAIT_SMALL))
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++

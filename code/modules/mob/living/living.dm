@@ -555,16 +555,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	if(ismob(pointing_at.loc))
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
-			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
-		)
-	else
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
-			span_notice("You point at [pointing_at]."),
-		)
+	to_chat(src, span_notice("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	for(var/mob/viewer in oviewers(src))
+		viewer.show_message(span_notice("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
