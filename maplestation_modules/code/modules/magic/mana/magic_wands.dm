@@ -9,7 +9,6 @@
 /obj/item/magic_wand/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
 	var/datum/mana_pool/target_mana_pool = interacting_with.mana_pool
 	var/datum/mana_pool/user_pool = user.mana_pool
-	var/already_transferring = (user in target_mana_pool.transferring_to)
 
 	if(!target_mana_pool)
 		return  // no response for this failing, as else it would proc on ~70% of things in the codebase
@@ -20,6 +19,7 @@
 		balloon_alert(user, "can't take from this!")
 		return
 
+	var/already_transferring = (user in target_mana_pool.transferring_to)
 	if (already_transferring)
 		balloon_alert(user, "canceled draw")
 		target_mana_pool.stop_transfer(user_pool)
@@ -55,4 +55,37 @@
 	desc = "A traditional wood body and gold capped wand. Can still manipulate mana surprisingly well for its simplicity."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "wooden"
-	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
+	w_class = WEIGHT_CLASS_SMALL
+
+// currently singleton, but decoupled for sanity's sake incase someone wants to do something similar
+/obj/item/magic_wand/temporary
+	name = "Temporary Wand Basetype"
+	desc = "An ephemeral wand created by the power of Coderbus. Its life span is only brief, and its existence is fleeting. "
+
+	item_flags = ABSTRACT|DROPDEL
+	/// Weakref to the action that created us
+	VAR_FINAL/datum/weakref/origin_ref
+
+/obj/item/magic_wand/temporary/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
+	. = ..()
+	if(origin)
+		origin_ref = WEAKREF(origin)
+		item_flags &= ~DROPDEL
+
+/obj/item/magic_wand/temporary/proc/clear_up(mob/user, do_message = FALSE)
+	var/datum/action/cooldown/spell/touch/finger_flame/origin = origin_ref?.resolve()
+	if(!QDELETED(origin))
+		origin.remove_hand(user, do_message)
+		return
+
+	qdel(src)
+
+// given by the pseudo-spell gained from the psionic quirk
+/obj/item/magic_wand/temporary/psionic
+	name = "Psychic Mana Tap"
+	desc = "An 'extension' of your mind, which allows you to freely draw mana from a capable source"
+	icon = 'icons/obj/weapons/hand.dmi'
+	lefthand_file = 'icons/mob/inhands/items/touchspell_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/touchspell_righthand.dmi'
+	icon_state = "star"
+	inhand_icon_state = "hivehand"

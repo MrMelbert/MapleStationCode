@@ -135,7 +135,7 @@ GLOBAL_LIST_INIT(spellbook_cantrip_items, generate_spellbook_items(SPELLBOOK_CAT
 
 /datum/spellbook_item/spell/mage_hand
 	name = "Mage Hand"
-	description = "Magically manipulate an item from a distance."
+	description = "Magically manipulate an item from a distance. Gains a small refund for psychics."
 	lore = "The favorite of lazy magicians and tricksters alike, \
 		Mage Hand is a simple spell that allows the caster to manipulate an item from a distance. \
 		The spell is often used to retrieve items that are out of reach, play pranks on unsuspecting victims, \
@@ -190,7 +190,7 @@ GLOBAL_LIST_INIT(spellbook_cantrip_items, generate_spellbook_items(SPELLBOOK_CAT
 
 /datum/spellbook_item/spell/sending
 	name = "Sending"
-	description = "Its Telepathy, but with magic."
+	description = "Its Telepathy, but with magic. Gets a full refund when used by a psychic."
 	lore = "Using your magical attunement (or other aptitudes) \
 	you can send a message to another creature within a short radius. "
 
