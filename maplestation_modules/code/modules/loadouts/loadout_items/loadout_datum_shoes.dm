@@ -21,7 +21,11 @@
 		.[FA_ICON_DRAGON] = "Supports digitigrade legs"
 
 /datum/loadout_item/shoes/is_equippable(mob/living/carbon/human/equipper, list/item_details)
-	return ..() && (!supports_digitigrade || (equipper.bodyshape & BODYSHAPE_DIGITIGRADE))
+	if(!..())
+		return FALSE
+	if(equipper.bodyshape & BODYSHAPE_DIGITIGRADE)
+		return supports_digitigrade
+	return TRUE
 
 /datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.shoes = item_path
