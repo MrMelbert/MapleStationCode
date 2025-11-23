@@ -120,7 +120,7 @@
 /datum/quirk/power_granting/psionic
 	name = "Psionic"
 	desc = "You are able to manipulate and control the flow of mana with your mind."
-	icon = FA_ICON_BRAIN
+	icon = FA_ICON_HAND_SPOCK // because theres not really many better options, and this one is highly unlikely to be used elsewise
 	value = 2
 	mob_trait = TRAIT_FULL_PSIONIC
 	gain_text = span_notice("You feel as if you can see a form of light you've never seen before.")
