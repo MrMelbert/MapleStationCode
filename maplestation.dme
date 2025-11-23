@@ -6647,6 +6647,7 @@
 #include "maplestation_modules\code\modules\magic\story_spells\ice_blast.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\ice_knife.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\illusion.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\light_breaker.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\mage_hand.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\mana_charge.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\mana_sense.dm"

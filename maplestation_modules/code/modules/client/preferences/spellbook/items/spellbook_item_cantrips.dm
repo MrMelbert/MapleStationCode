@@ -221,3 +221,12 @@ GLOBAL_LIST_INIT(spellbook_cantrip_items, generate_spellbook_items(SPELLBOOK_CAT
 	category = SPELLBOOK_CATEGORY_CANTRIPS
 
 	our_action_typepath = /datum/action/cooldown/spell/eyes_of_night
+
+/datum/spellbook_item/spell/light_breaker
+	name = "Light Breaker"
+	description = "Fire a rapid projectile which shatters most lights.."
+	lore = "Favorite of dark mages, nightmares, and wizards suffering from a migrane, this spell propels a near imperceptible lance which shatters a targeted light source."
+
+	category = SPELLBOOK_CATEGORY_CANTRIPS
+
+	our_action_typepath = /datum/action/cooldown/spell/pointed/projectile/light_breaker
