@@ -183,3 +183,8 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Calculates hunger drain per step taken
+#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) (amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1))
+/// Checks if a mob is moving intentionally (ie, nothing is forcing them to move like another mob or a conveyor)
+#define IS_MOVING_INTENTIONALLY(mob) (mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
