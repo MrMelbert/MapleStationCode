@@ -99,13 +99,13 @@
 /mob/living/carbon/human/drain_sprint(sprint_amt = 1)
 	sprint_amt = abs(sprint_amt)
 	adjust_sprint_left(-1 * sprint_amt)
-	// Sprinting when out of sprint will cost stamina
-	if(sprint_length > 0)
-		return
-
 	if((movement_type & FLOATING) || !(mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)))
 		set_move_intent(MOVE_INTENT_WALK)
 		to_chat(src, span_warning("You can't run right now!"))
+		return
+
+	// Sprinting when out of sprint will cost stamina
+	if(sprint_length > 0)
 		return
 
 	// Okay we're tired now
