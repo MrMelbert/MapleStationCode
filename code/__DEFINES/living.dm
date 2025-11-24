@@ -185,6 +185,24 @@
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
 
 /// Calculates hunger drain per step taken
-#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) (amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1))
+#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) ( amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1) )
 /// Checks if a mob is moving intentionally (ie, nothing is forcing them to move like another mob or a conveyor)
-#define IS_MOVING_INTENTIONALLY(mob) (mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
+#define IS_MOVING_INTENTIONALLY(mob) ( mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
