@@ -56,12 +56,16 @@
 	var/sprint_regen_per_second = 0.75
 
 /mob/living/carbon/human/toggle_move_intent()
+	var/old_intent = move_intent
 	. = ..()
-	play_movespeed_sound()
+	if(old_intent != move_intent)
+		play_movespeed_sound()
 
 /mob/living/carbon/human/set_move_intent(new_intent)
+	var/old_intent = move_intent
 	. = ..()
-	play_movespeed_sound()
+	if(old_intent != move_intent)
+		play_movespeed_sound()
 
 /mob/living/carbon/human/proc/play_movespeed_sound()
 	if(!client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))

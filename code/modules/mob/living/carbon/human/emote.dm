@@ -221,7 +221,7 @@
 			return null
 
 		var/sound/hiss_sound = sound(speech_sound)
-		hiss_sound.frequency = 0.33
+		hiss_sound.frequency = 0.5
 		return hiss_sound
 	return null
 
