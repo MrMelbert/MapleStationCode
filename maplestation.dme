@@ -6412,6 +6412,7 @@
 #include "maplestation_modules\code\game\objects\spawners\random\contraband.dm"
 #include "maplestation_modules\code\game\objects\structures\item_dispensers.dm"
 #include "maplestation_modules\code\game\objects\structures\operating_computer.dm"
+#include "maplestation_modules\code\game\objects\structures\pass_id_panel.dm"
 #include "maplestation_modules\code\game\objects\structures\stasis.dm"
 #include "maplestation_modules\code\game\objects\structures\static_plaques.dm"
 #include "maplestation_modules\code\game\objects\structures\surgery_table.dm"
