@@ -621,22 +621,22 @@
 	return
 
 /mob/living/examine_feedback(atom/examinify, closer_look = FALSE)
-	show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	show_message(examining_span_small("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
 	if(!is_eyes_visible())
 		return // your eyes ain't even visible (but future todo : telepaths can skip this check?)
 	if(HAS_TRAIT(examinify, TRAIT_EXAMINE_SKIP) && get(examinify, /mob/living) == src)
 		return // don't leak examine skip stuff
 	for(var/mob/viewer in oviewers(EXAMINE_FEEDBACK_RANGE, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
-		viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+		viewer.show_message(examining_span_small("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
 
 /mob/living/silicon/ai/examine_feedback(atom/examinify, closer_look = FALSE)
-	show_message(span_smallnoticeital("Your cameras [closer_look ? "zoom in while focusing on" : "focus on"] [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	show_message(examining_span_small("Your cameras [closer_look ? "zoom in while focusing on" : "focus on"] [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
 	if(!eyeobj || !eyeobj.telegraph_cameras) // stealth cameras
 		return
 	var/list/already_seen_it = list()
 	for(var/obj/machinery/camera/cam as anything in eyeobj.cameras_near_eye)
 		for(var/mob/viewer in (oviewers(EXAMINE_FEEDBACK_RANGE, cam) & viewers(examinify)) - already_seen_it)  // compicated way to say "everyone within 3 tiles who can see our camera(s) and the thing being examined"
-			viewer.show_message(span_smallnoticeital("[cam] [closer_look ? "zooms in while focusing" : "focuses"] on [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+			viewer.show_message(examining_span_small("[cam] [closer_look ? "zooms in while focusing" : "focuses"] on [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
 			already_seen_it += viewer
 
 #undef EXAMINE_FEEDBACK_RANGE
