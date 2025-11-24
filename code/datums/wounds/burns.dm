@@ -503,7 +503,7 @@
 	// your frost bite won't necessarily improve but it also won't get worse
 	var/area_temp = victim.get_temperature(victim.loc?.return_air())
 	var/flesh_damage_cap = 80
-	if(area_temp > cold_threshold_low)
+	if(area_temp > cold_threshold_low || owner.reagents?.has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE))
 		flesh_damage_cap = 10
 	else if(area_temp > cold_threshold_medium)
 		flesh_damage_cap = 25
