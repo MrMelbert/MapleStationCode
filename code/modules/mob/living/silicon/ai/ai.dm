@@ -30,7 +30,7 @@
 	mob_flags = MOB_HAS_HEARING_RELAY
 	var/battery = 200 //emergency power if the AI's APC is off
 	var/list/network = list(CAMERANET_NETWORK_SS13)
-	var/obj/machinery/camera/current
+	var/obj/machinery/holopad/current
 	var/list/connected_robots = list()
 	var/aiRestorePowerRoutine = POWER_RESTORATION_OFF
 	var/requires_power = POWER_REQ_ALL
