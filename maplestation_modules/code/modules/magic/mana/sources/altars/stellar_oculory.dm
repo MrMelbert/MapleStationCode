@@ -29,10 +29,12 @@
 /obj/machinery/power/magic_contraption/stellar/interact(mob/user)
 	if(active)
 		active = FALSE
+		icon_state = "stellar_inactive"
 		to_chat(user, span_warning("deactivated")) // debug
 	if(!active)
 		to_chat(user, span_warning("activated")) //debug
 		active = TRUE
+		icon_state = "stellar"
 
 /obj/machinery/power/magic_contraption/stellar/process(seconds_per_tick)
 	if(!active)

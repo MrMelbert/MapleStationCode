@@ -94,7 +94,7 @@
 	name = "Stabilized Volite Crystal"
 	desc = "A stabilized Volite Crystal, one of the few objects capable of stably storing mana without binding."
 	icon_state = "standard"
-	grind_results = list(/datum/reagent/volite_powder = 10)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/standard
@@ -105,7 +105,7 @@
 	name = "Small Volite Crystal"
 	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
 	icon_state = "small"
-	grind_results = list(/datum/reagent/volite_powder = 5)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 5)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/mana_battery/mana_crystal/small/get_initial_mana_pool_type()
@@ -115,7 +115,7 @@
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
-	grind_results = list(/datum/reagent/volite_powder = 10)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
@@ -124,7 +124,7 @@
 	name = "Volitious Lignite"
 	desc = "A natural source of Volite. It is formed not unlike coal, where magical plants has been compressed over millions of years by rock."
 	icon_state = "lignite"
-	grind_results = list(/datum/reagent/volite_powder = 5, /datum/reagent/carbon = 5)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 5, /datum/reagent/carbon = 5)
 
 ///Just like coal, if the temperature of the object is over 300, then ignite
 /obj/item/mana_battery/mana_crystal/lignite/attackby(obj/item/W, mob/user, params)
