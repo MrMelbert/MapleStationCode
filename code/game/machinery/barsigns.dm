@@ -32,12 +32,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	set_sign(new /datum/barsign/hiddensigns/signoff)
 	find_and_hang_on_wall()
 
-/obj/machinery/barsign/proc/set_sign(datum/barsign/sign)
+/obj/machinery/barsign/proc/set_sign(datum/barsign/sign, dont_rename_area = FALSE)
 	if(!istype(sign))
 		return
 
 	var/area/bar_area = get_area(src)
-	if(change_area_name && sign.rename_area)
+	if(change_area_name && sign.rename_area && !dont_rename_area)
 		rename_area(bar_area, sign.name)
 
 	chosen_sign = sign
@@ -81,11 +81,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	if(chosen_sign && chosen_sign.neon_color)
 		set_light(MINIMUM_USEFUL_LIGHT_RANGE, 0.7, chosen_sign.neon_color)
 
-/obj/machinery/barsign/proc/set_sign_by_name(sign_name)
+/obj/machinery/barsign/proc/set_sign_by_name(sign_name, dont_rename_area = FALSE)
 	for(var/datum/barsign/sign as anything in subtypesof(/datum/barsign))
 		if(initial(sign.name) == sign_name)
 			var/new_sign = new sign
-			set_sign(new_sign)
+			set_sign(new_sign, dont_rename_area)
 
 /obj/machinery/barsign/atom_break(damage_flag)
 	. = ..()
@@ -215,8 +215,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/barsign, 32)
 	var/picked_name = tgui_input_list(user, "Available Signage", "Bar Sign", sort_list(get_bar_names()))
 	if(isnull(picked_name))
 		return
+	var/multiple_signs = tgui_alert(user, "Update All Area Signs?", "Bar Sign", list("Area", "Single"))
 	set_sign_by_name(picked_name)
 	SSblackbox.record_feedback("tally", "barsign_picked", 1, chosen_sign.type)
+	// Update all the bar signs in our area
+	if(multiple_signs != "Area")
+		return
+	var/signs_swapped = 0
+	for(var/obj/machinery/barsign/other_sign as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/barsign))
+		if(get_area(other_sign) == get_area(src))
+			other_sign.set_sign_by_name(picked_name, TRUE)
+			signs_swapped += 1
+	SSblackbox.record_feedback("tally", "barsign_picked", signs_swapped, chosen_sign.type)
+
 
 /proc/get_bar_names()
 	var/list/names = list()
