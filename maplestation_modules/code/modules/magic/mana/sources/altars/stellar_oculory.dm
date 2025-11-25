@@ -12,6 +12,7 @@
 	desc = "an advanced machine which focuses starlight into mana for use."
 	icon_state = "stellar"
 	base_icon_state = "stellar"
+	circuit = /obj/item/circuitboard/machine/stellar_oculory
 	var/active = FALSE
 
 	var/pulse_delay = 20 SECONDS
@@ -66,3 +67,23 @@
 	mana_pool.amount += pulse_value
 	last_pulse = world.time
 
+/obj/item/circuitboard/machine/stellar_oculory
+	name = "\improper Stellar Occulory (Machine Board)"
+	greyscale_colors = CIRUIT_COLOR_MAGIC
+	build_path = /obj/machinery/power/magic_contraption/stellar
+	req_components = list(
+		/datum/stock_part/capacitor/tier3 = 3,
+		/datum/stock_part/servo/tier3 = 1,
+		/obj/item/stack/sheet/mineral/gold = 2,
+		/obj/item/mana_battery/mana_crystal/standard = 1,
+	)
+
+/datum/design/board/stellar_oculory
+	name = "Stellar Occulory"
+	desc = "The circuit board for a stellar occulory."
+	id = "stellar_oculory"
+	build_path = /obj/item/circuitboard/machine/stellar_oculory
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_RESEARCH
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_ENGINEERING | DEPARTMENT_BITFLAG_SCIENCE

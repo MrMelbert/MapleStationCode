@@ -68,3 +68,13 @@
 		/obj/item/stack/sheet/mineral/wood = 2,
 		/obj/item/stack/sheet/mineral/gold = 1,
 	)
+
+/datum/crafting_recipe/nature_shrine
+	name = "The Stump Which Watches"
+	time = 30 SECONDS
+	reqs = list(
+		/obj/item/stack/sheet/mineral/wood = 10,
+		/obj/item/mana_battery/mana_crystal/standard = 1,
+	)
+	result = /obj/structure/magic_altar/nature
+	category = CAT_MISC

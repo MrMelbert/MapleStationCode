@@ -6308,6 +6308,7 @@
 #include "maplestation_modules\code\__DEFINES\magic\spellbook\spellbook_categories.dm"
 #include "maplestation_modules\code\__DEFINES\magic\spellbook\spellbook_customization_interfaces.dm"
 #include "maplestation_modules\code\__DEFINES\magic\spellbook\spellbook_entry_types.dm"
+#include "maplestation_modules\code\__DEFINES\research\techweb_nodes.dm"
 #include "maplestation_modules\code\__DEFINES\subsystems\_module_subsystem_defines.dm"
 #include "maplestation_modules\code\__DEFINES\subsystems\_module_subsystem_priorities.dm"
 #include "maplestation_modules\code\__HELPERS\magic_helpers.dm"
