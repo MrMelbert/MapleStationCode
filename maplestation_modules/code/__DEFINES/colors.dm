@@ -12,4 +12,4 @@
 
 // colors used for volite and magic related stuff
 #define COLOR_VOLITE_TEAL "#7affd1"
-#define COLOR_CIRUIT_MAGIC "#028681"
+#define CIRCUIT_COLOR_MAGIC "#028681"
