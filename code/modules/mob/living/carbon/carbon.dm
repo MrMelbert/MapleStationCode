@@ -1510,22 +1510,33 @@
 	return FALSE
 
 /**
- * This proc is a helper for spraying blood for things like slashing/piercing wounds and dismemberment.
+ * Sprays out blood in a direction to a certain distance
  *
- * The strength of the splatter in the second argument determines how much it can dirty and how far it can go
+ * This is on atom so that arbitrary objects can also spray blood (like meat),
+ * you just need to pass a blood_dna.
  *
  * Arguments:
  * * splatter_direction: Which direction the blood is flying
  * * splatter_strength: How many tiles it can go, and how many items it can pass over and dirty
+ * * blood_dna: A list of DNA info to add to the blood decal. Autoset for mobs.
+ * * static_viruses: A list of viruses to add to the blood decal
  */
-/mob/living/carbon/proc/spray_blood(splatter_direction, splatter_strength = 3)
+/atom/proc/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)
 	if(!isturf(loc))
 		return
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, get_static_viruses(), splatter_strength)
-	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	our_splatter.blood_dna_info = get_blood_dna_list()
-	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
-	our_splatter.fly_towards(targ, splatter_strength)
+	if(!islist(blood_dna))
+		CRASH("spray_blood called without a valid blood_dna list!")
+
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, splatter_strength)
+	our_splatter.add_blood_DNA(blood_dna)
+	our_splatter.fly_towards(get_ranged_target_turf(src, splatter_direction, splatter_strength), splatter_strength)
+
+/mob/living/carbon/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)
+	if(isnull(blood_dna))
+		blood_dna = get_blood_dna_list()
+	if(isnull(static_viruses))
+		static_viruses = get_static_viruses()
+	return ..()
 
 /mob/living/carbon/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE, turf/newloc = null)
 	if((to_drop in organs) || (to_drop in bodyparts)) //let's not do this, aight?

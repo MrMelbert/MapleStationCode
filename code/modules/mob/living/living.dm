@@ -1089,29 +1089,26 @@
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
-	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
+/**
+ * Leaves a trail of blood.
+ *
+ * This is on the atom level so you can have arbitrary objects leave "blood trails" if desired,
+ * you just need to pass a blood_dna.
+ *
+ * Arguments:
+ * * target_turf - The turf where the blood trail will be made
+ * * start - The turf where the mob started moving from
+ * * was_facing - The direction the mob was facing before moving
+ * * movement_direction - The direction the mob is moving towards
+ * * blood_to_add - The amount of blood to add to the trail
+ * * blood_dna - The DNA to add to the trail. Autoset for mobs.
+ * * static_viruses - The viruses to add to the trail
+ */
+/atom/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1, blood_dna, list/static_viruses)
+	if(!has_gravity() || !isturf(start))
 		return
-
-	var/base_bleed_rate = get_bleed_rate()
-	var/base_brute = getBruteLoss()
-
-	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
-	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
-	// we only leave a trail if we're below a certain blood threshold
-	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
-		return
-
-	var/blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
-	if(body_position == LYING_DOWN)
-		blood_to_add += bleedDragAmount()
-		bleed(blood_to_add, drip = FALSE)
-	else
-		blood_to_add += base_bleed_rate
-	// if we're very damaged or bleeding a lot, add even more blood to the trail
-	if(base_brute >= 300 || base_bleed_rate >= 7)
-		blood_to_add *= 2
+	if(!islist(blood_dna))
+		CRASH("make_blood_trail called without a valid blood_dna list!")
 
 	var/trail_dir = REVERSE_DIR(movement_direction)
 	// the mob is performing a diagonal movement so we need to make a diagonal trail
@@ -1150,24 +1147,54 @@
 			break
 
 	if(isnull(trail))
-		trail = new(start, get_static_viruses())
+		trail = new(start, static_viruses)
 		if(QDELETED(trail))
 			return
 		trail.bloodiness = blood_to_add
 	else
-		trail.add_viruses(get_static_viruses())
+		trail.add_viruses(static_viruses)
 
 	// update the holder with our new dna and bloodiness
-	trail.add_mob_blood(src)
+	trail.add_blood_DNA(blood_dna)
 	trail.adjust_bloodiness(blood_to_add)
 	// also update the trail component, this is what matters for its appearance
 	var/obj/effect/decal/cleanable/blood/trail/trail_component = trail.add_dir_to_trail(trail_dir, blood_to_add)
 	if(isnull(trail_component))
 		return
-	trail_component.add_mob_blood(src)
+	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
 
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
+/mob/living/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add, blood_dna, list/static_viruses)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
+
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
+		return
+
+	if(isnull(static_viruses))
+		static_viruses = get_static_viruses()
+	if(isnull(blood_dna))
+		blood_dna = get_blood_dna_list()
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
+	if(body_position == LYING_DOWN)
+		bleed(blood_to_add, drip = FALSE)
+
+	return ..()
+
+/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction, blood_to_add, blood_dna, list/static_viruses)
 	if(!is_bleeding())
 		return
 	return ..()

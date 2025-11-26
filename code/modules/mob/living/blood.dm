@@ -278,7 +278,7 @@
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
-	return get_blood_type()?.make_blood_splatter(src, blood_turf, small_drip)
+	return get_blood_type()?.make_blood_splatter(blood_turf, small_drip, get_blood_dna_list(), get_static_viruses())
 
 /mob/living/proc/do_splatter_effect(splat_dir = pick(GLOB.cardinals))
 	var/obj/effect/temp_visual/dir_setting/bloodsplatter/splatter = new(get_turf(src), splat_dir)
