@@ -336,7 +336,7 @@
 /datum/wound/flesh/burn/tea_life_process()
 	// Sanitizes and heals, but with a limit
 	flesh_healing = (flesh_healing > 0.1) ? flesh_healing : flesh_healing + 0.02
-	infestation_rate = max(infestation_rate - 0.005, 0)
+	infection_rate = max(infection_rate - 0.005, 0)
 	return TRUE
 
 /datum/reagent/consumable/lemonade

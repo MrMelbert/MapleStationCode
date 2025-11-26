@@ -133,6 +133,7 @@ GLOBAL_LIST_EMPTY(raptor_population)
 		on_eat_change = 400,\
 		callback_percentages = percentage_callbacks,\
 		happiness_callback = CALLBACK(src, PROC_REF(happiness_change)),\
+		decay_modifier_callback = CALLBACK(src, PROC_REF(happiness_decay_modifier)),\
 	)
 
 /mob/living/basic/raptor/proc/on_dir_change(datum/source, old_dir, new_dir)
@@ -187,6 +188,27 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	melee_damage_lower = initial(melee_damage_lower) + attack_boost
 	melee_damage_upper = melee_damage_lower + 5
 
+	set_varspeed(initial(speed) * percent_value)
+
+/mob/living/basic/raptor/proc/happiness_decay_modifier()
+	. = 1
+	. *= ai_controller?.blackboard[BB_BASIC_DEPRESSED] ? 2 : 1
+	if(SSmapping.is_planetary())
+		. *= 1 / clamp(z - 1, 1, 5) // the deeper we are, the happier we are
+	else
+		. *= is_mining_level(z) ? 0.5 : 5 // super depressed on station but very chill on lavaland
+
+/mob/living/basic/raptor/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	. = ..()
+	if(SSmapping.is_planetary())
+		return
+	if(is_mining_level(old_turf.z) && !is_mining_level(new_turf.z))
+		visible_message(span_warning("[src] looks uncomfortable as it leaves the warmth of Lavaland."))
+
+/mob/living/basic/raptor/examine(mob/user)
+	. = ..()
+	if(!SSmapping.is_planetary() && !is_mining_level(z))
+		. += span_warning("[src]] looks uncomfortable being away from the warmth of Lavaland.")
 
 ///pass down our inheritance to the egg
 /mob/living/basic/raptor/proc/egg_inherit(obj/item/food/egg/raptor_egg/baby_egg, mob/living/basic/raptor/partner)
