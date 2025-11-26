@@ -69,7 +69,7 @@
 
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar Occulory (Machine Board)"
-	greyscale_colors = CIRUIT_COLOR_MAGIC
+	greyscale_colors = CIRCUIT_COLOR_MAGIC
 	build_path = /obj/machinery/power/magic_contraption/stellar
 	req_components = list(
 		/datum/stock_part/capacitor/tier3 = 3,
