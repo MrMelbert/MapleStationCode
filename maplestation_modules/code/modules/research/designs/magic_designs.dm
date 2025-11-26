@@ -31,3 +31,13 @@
 	build_type = PROTOLATHE
 	materials = list(/datum/material/silver = SMALL_MATERIAL_AMOUNT, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5)
 	build_path = /obj/item/magic_wand/techie
+
+/datum/design/board/stellar_oculory
+	name = "Stellar oculory"
+	desc = "The circuit board for a stellar oculory."
+	id = "stellar_oculory"
+	build_path = /obj/item/circuitboard/machine/stellar_oculory
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_RESEARCH
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_ENGINEERING | DEPARTMENT_BITFLAG_SCIENCE

@@ -1,5 +1,5 @@
 // Stellar oculory. A more technomagic themed altar, which generates mana from exposure to starlight, based heavily off of starlight regeneration.
-#define COMSIG_STELLAR_OCCULORY_PULSE_MANA "occulory_pulse_mana"
+#define COMSIG_STELLAR_OCULORY_PULSE_MANA "oculory_pulse_mana"
 
 /datum/mana_pool/magic_altar/stellar
 	maximum_mana_capacity = 225
@@ -8,12 +8,12 @@
 	max_donation_rate_per_second = 4
 
 /obj/machinery/power/magic_contraption/stellar
-	name = "stellar occulory"
+	name = "stellar oculory"
 	desc = "an advanced machine which focuses starlight into mana for use."
 	icon_state = "stellar"
 	base_icon_state = "stellar"
 	circuit = /obj/item/circuitboard/machine/stellar_oculory
-	var/active = FALSE
+	var/active = TRUE
 
 	var/pulse_delay = 20 SECONDS
 	var/last_pulse = 0
@@ -31,11 +31,11 @@
 	if(active)
 		active = FALSE
 		icon_state = "stellar_inactive"
-		to_chat(user, span_warning("deactivated")) // debug
+		return balloon_alert(user, "deactivated")
 	if(!active)
-		to_chat(user, span_warning("activated")) //debug
 		active = TRUE
 		icon_state = "stellar"
+		return balloon_alert(user, "activated")
 
 /obj/machinery/power/magic_contraption/stellar/process(seconds_per_tick)
 	if(!active)
@@ -44,7 +44,6 @@
 		return
 	if(mana_pool.maximum_mana_capacity == mana_pool.amount)
 		return
-	// send signal activate check comsig here
 	var/starlight_level = src.checkstarlight(starlight_check_range)
 	pulse_mana(starlight_level)
 
@@ -68,7 +67,7 @@
 	last_pulse = world.time
 
 /obj/item/circuitboard/machine/stellar_oculory
-	name = "\improper Stellar Occulory (Machine Board)"
+	name = "\improper Stellar oculory (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MAGIC
 	build_path = /obj/machinery/power/magic_contraption/stellar
 	req_components = list(
@@ -77,13 +76,3 @@
 		/obj/item/stack/sheet/mineral/gold = 2,
 		/obj/item/mana_battery/mana_crystal/standard = 1,
 	)
-
-/datum/design/board/stellar_oculory
-	name = "Stellar Occulory"
-	desc = "The circuit board for a stellar occulory."
-	id = "stellar_oculory"
-	build_path = /obj/item/circuitboard/machine/stellar_oculory
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_RESEARCH
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_ENGINEERING | DEPARTMENT_BITFLAG_SCIENCE

@@ -22,7 +22,7 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 
 /datum/techweb_node/stellar_oculory
-	id = TECHWEB_NODE_STELLAR_OCCULORY
+	id = TECHWEB_NODE_STELLAR_OCULORY
 	starting_node = FALSE
 	display_name = "Starlight-Mana Conversion"
 	description = "Convert trace arcane essence from nearby starlight into usable mana"

@@ -11,5 +11,4 @@
 #define RUNE_COLOR_EMP "#4D94FF"
 
 // colors used for volite and magic related stuff
-#define COLOR_VOLITE_TEAL "#7affd1"
-#define CIRCUIT_COLOR_MAGIC "#028681"
+#define CIRCUIT_COLOR_MAGIC "#a8ffe2"
