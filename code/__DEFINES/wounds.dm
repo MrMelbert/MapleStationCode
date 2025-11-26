@@ -276,7 +276,7 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 ))
 
 // ~burn wound infection defines
-// Thresholds for infection for burn wounds, once infestation hits each threshold, things get steadily worse
+// Thresholds for infection for burn wounds, once infection hits each threshold, things get steadily worse
 /// below this has no ill effects from infection
 #define WOUND_INFECTION_MODERATE 4
 /// then below here, you ooze some pus and suffer minor tox damage, but nothing serious
@@ -289,7 +289,7 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 
 
 // ~random wound balance defines
-/// how quickly sanitization removes infestation and decays per second
+/// how quickly sanitization removes infection and decays per second
 #define WOUND_BURN_SANITIZATION_RATE 0.075
 /// how much blood you can lose per tick per wound max.
 #define WOUND_MAX_BLOODFLOW 4.5
