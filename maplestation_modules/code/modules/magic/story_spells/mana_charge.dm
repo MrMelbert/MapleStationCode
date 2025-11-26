@@ -30,7 +30,11 @@
 	. = ..()
 	if(!do_after(cast_on, channel_time)) // don't want this casted mid combat
 		return . | SPELL_CANCEL_CAST
-	var/randy_value = rand(random_value_floor, random_value_ceiling)
+	var/randy_value = 0
+	if(HAS_TRAIT(cast_on, TRAIT_EMPOWERED_MEDITATION))
+		randy_value = 40
+	else
+		randy_value = rand(random_value_floor, random_value_ceiling)
 	var/mana_to_gain = randy_value + base_mana_recharge
 	cast_on.mana_pool.adjust_mana(mana_to_gain)
 
