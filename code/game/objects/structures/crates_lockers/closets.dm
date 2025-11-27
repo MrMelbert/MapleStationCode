@@ -343,6 +343,9 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/end_door_animation()
 	is_animating_door = FALSE
 	vis_contents -= door_obj
+	for(var/obj/effect/appearance_clone/closet_item/clone in vis_contents)
+		vis_contents -= clone
+		qdel(clone)
 	update_icon()
 
 /// Calculates the matrix to be applied to the animated door overlay
@@ -893,7 +896,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 				return
 		if (user.combat_mode)
 			return
-		if(user.transferItemToLoc(weapon, drop_location(), silent = FALSE)) // so we put in unlit welder too
+		if(user.transfer_item_to_turf(weapon, drop_location())) // so we put in unlit welder too
 			return
 
 	else if(weapon.tool_behaviour == TOOL_WELDER && can_weld_shut)

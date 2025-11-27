@@ -566,9 +566,9 @@
 		return
 	var/list/combined_msg = list()
 
-	visible_message(span_notice("[src] examines [p_them()]self."))
+	visible_message(span_smallnoticeital("[src] examines [p_them()]self."))
 
-	combined_msg += span_notice("<b>You check yourself for injuries.</b>")
+	combined_msg += span_boldnotice("You check yourself for injuries.")
 
 	var/list/missing = BODY_ZONES_ALL
 

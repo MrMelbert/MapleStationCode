@@ -181,6 +181,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// What species is our monkey form
 	var/datum/species/monkey_type = /datum/species/monkey
 
+	/// How tall is the average member of this species
+	var/canon_height = HUMAN_HEIGHT_MEDIUM
+
 ///////////
 // PROCS //
 ///////////
@@ -482,47 +485,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
 
-// NON-MODULE CHANGE
-// /**
-//  * Proc called when mail goodies need to be updated for this species.
-//  *
-//  * Updates the mail goodies if that is required. e.g. for the blood deficiency quirk, which sends bloodbags to quirk holders, update the sent bloodpack to match the species' exotic blood.
-//  * This is currently only used for the blood deficiency quirk but more can be added as needed.
-//  * Arguments:
-//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
-//  */
-// /datum/species/proc/update_mail_goodies(mob/living/carbon/human/recipient)
-// 	update_quirk_mail_goodies(recipient, recipient.get_quirk(/datum/quirk/blooddeficiency))
-
-// NON-MODULE CHANGE
-// /**
-//  * Updates the mail goodies of a specific quirk.
-//  *
-//  * Updates the mail goodies belonging to a specific quirk.
-//  * Add implementation as needed for each individual species. The base species proc should give the species the 'default' version of whatever mail goodies are required.
-//  * Arguments:
-//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
-//  * * datum/quirk/quirk - the quirk to update the mail goodies of. Use get_quirk(datum/quirk/some_quirk) to get the actual mob's quirk to pass.
-//  * * list/mail_goodies - a list of mail goodies. Generally speaking you should not be using this argument on the initial function call. You should instead add to the species' implementation of this proc.
-//  */
-// /datum/species/proc/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies)
-// 	if(isnull(quirk))
-// 		return
-// 	if(length(mail_goodies))
-// 		quirk.mail_goodies = mail_goodies
-// 		return
-// 	// NON-MODULE CHANGE
-// 	if(istype(quirk, /datum/quirk/blooddeficiency) && HAS_TRAIT(recipient, TRAIT_NOBLOOD))  // TRAIT_NOBLOOD and no exotic blood (yes we have to check for both, jellypeople exist)
-// 		quirk.mail_goodies = list() // means no blood pack gets sent to them.
-// 		return
-
-
-// 	// The default case if no species implementation exists. Set quirk's mail_goodies to initial.
-// 	var/datum/quirk/readable_quirk = new quirk.type
-// 	quirk.mail_goodies = readable_quirk.mail_goodies
-// 	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
-// 	return
-
 /**
  * Handles the body of a human
  *
@@ -572,7 +534,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
-	update_body_markings(species_human)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -1656,27 +1617,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/add_body_markings(mob/living/carbon/human/hooman)
 	for(var/markings_type in body_markings) //loop through possible species markings
 		var/datum/bodypart_overlay/simple/body_marking/markings = new markings_type() // made to die... mostly because we cant use initial on lists but its convenient and organized
-		var/accessory_name = hooman.dna.features[markings.dna_feature_key] //get the accessory name from dna
-		var/datum/sprite_accessory/moth_markings/accessory = markings.get_accessory(accessory_name) //get the actual datum
-
-		if(isnull(accessory))
-			CRASH("Value: [accessory_name] did not have a corresponding sprite accessory!")
-
+		var/accessory_name = hooman.dna.features[markings.dna_feature_key] || body_markings[markings_type] //get the accessory name from dna
 		for(var/obj/item/bodypart/part as anything in markings.applies_to) //check through our limbs
 			var/obj/item/bodypart/people_part = hooman.get_bodypart(initial(part.body_zone)) // and see if we have a compatible marking for that limb
-
-			if(!people_part)
+			if(isnull(people_part))
 				continue
 
-			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type ()
-
-			// Tell the overlay what it should look like
-			overlay.icon = accessory.icon
-			overlay.icon_state = accessory.icon_state
-			overlay.use_gender = accessory.gender_specific
-			overlay.draw_color = accessory.color_src ? hooman.dna.features["mcolor"] : null
-
+			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type()
+			overlay.set_appearance(accessory_name, hooman.dna.features["mcolor"])
 			people_part.add_bodypart_overlay(overlay)
+
+		qdel(markings)
 
 /// Remove body markings
 /datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
@@ -1684,19 +1635,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
 			part.remove_bodypart_overlay(marking)
 
-/// Update the overlays if necessary
-/datum/species/proc/update_body_markings(mob/living/carbon/human/hooman)
-	if(HAS_TRAIT(hooman, TRAIT_INVISIBLE_MAN))
-		remove_body_markings(hooman)
-		return
+/**
+ * Calculates the expected height values for this species
+ *
+ * Return a height value corresponding to a specific height filter
+ * Return null to just use the mob's base height
+ */
+/datum/species/proc/update_species_heights(mob/living/carbon/human/holder)
+	if(HAS_TRAIT(holder, TRAIT_DWARF))
+		return HUMAN_HEIGHT_DWARF
 
-	var/needs_update = FALSE
-	for(var/datum/bodypart_overlay/simple/body_marking/marking as anything in body_markings)
-		if(initial(marking.dna_feature_key) == body_markings[marking]) // dna is same as our species (sort of mini-cache), so no update needed
-			continue
-		needs_update = TRUE
-		break
+	if(HAS_TRAIT(holder, TRAIT_TOO_TALL))
+		return HUMAN_HEIGHT_TALLEST
 
-	if(needs_update)
-		remove_body_markings(hooman)
-		add_body_markings(hooman)
+	return null
