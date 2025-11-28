@@ -1,4 +1,4 @@
-/obj/structure/meditation_mat
+/obj/machinery/meditation_mat
 	name = "Meditation Mat"
 	desc = "A purple mat meant to empower those who meditate" // todo: this sucks rewrite it
 
@@ -8,15 +8,16 @@
 	can_buckle = TRUE
 	buckle_lying = 0
 	resistance_flags = NONE
+	use_power = NO_POWER_USE
 
 	var/foldable_type = /obj/item/meditation_mat
 
-/obj/structure/meditation_mat/examine(mob/user)
+/obj/machinery/meditation_mat/examine(mob/user)
 	. = ..()
 	if(!isnull(foldable_type))
 		. += span_notice("You can fold it up with a Right-click.")
 
-/obj/structure/meditation_mat/attack_hand_secondary(mob/user, list/modifiers)
+/obj/machinery/meditation_mat/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -26,7 +27,7 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	user.visible_message(span_notice("[user] collapses [src]."), span_notice("You collapse [src]."))
-	var/obj/structure/meditation_mat/folded_mat = new foldable_type(get_turf(src))
+	var/obj/machinery/meditation_mat/folded_mat = new foldable_type(get_turf(src))
 	user.put_in_hands(folded_mat)
 	qdel(src)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -96,6 +97,6 @@
 	return NONE
 
 /obj/item/meditation_mat/proc/deploy_bed(mob/user, atom/location)
-	var/obj/structure/meditation_mat/deployed = new /obj/structure/meditation_mat(location)
+	var/obj/machinery/meditation_mat/deployed = new /obj/machinery/meditation_mat(location)
 	deployed.add_fingerprint(user)
 	qdel(src)
