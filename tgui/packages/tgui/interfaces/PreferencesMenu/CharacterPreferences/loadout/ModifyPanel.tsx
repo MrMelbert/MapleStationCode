@@ -23,13 +23,24 @@ import { ItemIcon } from './ItemDisplay';
 export type LoadoutButton = {
   label: string;
 } & Partial<{
+  // The action key to send to the backend when this button is pressed
   act_key: string;
+  // FontAwesome icon for the button
   button_icon: FAIcon;
+  // Text to display on the button
   button_text: string;
+  // This key is checked in the active loadout to see if this button is "active"
   active_key: string;
+  // Text to display when the button is active.
+  // Requires an "inactive_text" to be set as well
   active_text: string;
+  // Text to display when the button is inactive
+  // Requires an "active_text" to be set as well
   inactive_text: string;
+  // Tooltip text for the button
   tooltip_text: string;
+  // If set, this button will only be shown if the character has the specified quirk
+  required_quirk?: string;
 }>;
 
 type ButtonProps = {
@@ -93,7 +104,8 @@ type ButtonsProps = {
 
 function LoadoutModifyButtons(props: ButtonsProps) {
   const { act, data } = useBackend<LoadoutManagerData>();
-  const { loadout_list, active_loadout } = data.character_preferences.misc;
+  const { selected_quirks } = data;
+  const { loadout_list } = data.character_preferences.misc;
   const { modifyItemDimmer } = props;
 
   function isActive(item: LoadoutItem, reskin: ReskinOption) {
@@ -103,6 +115,13 @@ function LoadoutModifyButtons(props: ButtonsProps) {
     }
     return 'reskin' in loadoutItem && loadoutItem.reskin === reskin.name;
   }
+
+  const buttons_filtered = modifyItemDimmer.buttons.filter((button) => {
+    if (button.required_quirk) {
+      return selected_quirks.includes(button.required_quirk);
+    }
+    return true;
+  });
 
   return (
     <Stack>
@@ -145,7 +164,7 @@ function LoadoutModifyButtons(props: ButtonsProps) {
               </Flex>
             </LabeledList.Item>
           )}
-          {modifyItemDimmer.buttons.map((button) => (
+          {buttons_filtered.map((button) => (
             <LabeledList.Item key={button.label} label={button.label}>
               <LoadoutModifyButton
                 button={button}

@@ -52,9 +52,13 @@
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(dropped))
 
-	var/atom/parent_atom = parent
+	var/obj/item/parent_atom = parent
 	parent_atom.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
 	RegisterSignal(parent_atom, COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM, PROC_REF(on_requesting_context_from_item))
+
+	var/mob/living/wearer = parent_atom.loc
+	if(istype(wearer) && (wearer.get_slot_by_item(parent_atom) & parent_atom.slot_flags))
+		ADD_TRAIT(wearer, TRAIT_SILENT_FOOTSTEPS, REF(src))
 
 /datum/component/shoe_footstep/UnregisterFromParent()
 	UnregisterSignal(parent, list(

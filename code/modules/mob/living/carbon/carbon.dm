@@ -185,9 +185,9 @@
 	var/power_throw = 0
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		power_throw++
-	if(HAS_TRAIT(src, TRAIT_DWARF))
+	if(HAS_TRAIT(src, TRAIT_SMALL))
 		power_throw--
-	if(HAS_TRAIT(thrown_thing, TRAIT_DWARF))
+	if(HAS_TRAIT(thrown_thing, TRAIT_SMALL))
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
@@ -1527,8 +1527,8 @@
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
 	our_splatter.fly_towards(targ, splatter_strength)
 
-/mob/living/carbon/dropItemToGround(obj/item/item, force = FALSE, silent = FALSE, invdrop = TRUE)
-	if(item && ((item in organs) || (item in bodyparts))) //let's not do this, aight?
+/mob/living/carbon/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE, turf/newloc = null)
+	if((to_drop in organs) || (to_drop in bodyparts)) //let's not do this, aight?
 		return FALSE
 	return ..()
 

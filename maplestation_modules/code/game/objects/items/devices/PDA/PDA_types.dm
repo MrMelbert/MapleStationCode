@@ -5,8 +5,8 @@
 		/obj/item/modular_computer/pda/heads/asset_protection = list(REGION_COMMAND),
 		/obj/item/modular_computer/pda/heads/bridge_officer = list(REGION_COMMAND),
 		/obj/item/modular_computer/pda/heads/noble_ambassador = list(REGION_COMMAND),
-		/obj/item/modular_computer/pda/ordnance = list(REGION_RESEARCH),
-		/obj/item/modular_computer/pda/xenobiologist = list(REGION_RESEARCH),
+		/obj/item/modular_computer/pda/science/ordnance = list(REGION_RESEARCH),
+		/obj/item/modular_computer/pda/science/xenobiologist = list(REGION_RESEARCH),
 	)
 
 // Bridge Officer PDA.
@@ -56,19 +56,30 @@
 		/datum/computer_file/program/budgetorders,
 	)
 
+/obj/item/modular_computer/pda/science
+	name = "scientist PDA"
+	icon_state = "/obj/item/modular_computer/pda/science"
+	greyscale_config = /datum/greyscale_config/tablet/stripe_thick
+	greyscale_colors = "#FAFAFA#000099#B347BC"
+	starting_programs = list(
+		/datum/computer_file/program/atmosscan,
+		/datum/computer_file/program/science,
+		/datum/computer_file/program/signal_commander,
+	)
+
 /// ordnance technician PDA
-/obj/item/modular_computer/pda/ordnance
+/obj/item/modular_computer/pda/science/ordnance
 	name = "ordnance technician PDA"
 	greyscale_config = /datum/greyscale_config/tablet/stripe_two_color
 	greyscale_colors = "#e2e2e2#000099#40e0d0#9e00ea"
 	starting_programs = list(
-		// This is just what scientists have because they're a scientist
 		/datum/computer_file/program/atmosscan,
+		/datum/computer_file/program/scipaper_program,
 		/datum/computer_file/program/signal_commander,
 	)
 
 /// Xenobiologist PDA
-/obj/item/modular_computer/pda/xenobiologist
+/obj/item/modular_computer/pda/science/xenobiologist
 	name = "xenobiologist PDA"
 	greyscale_config = /datum/greyscale_config/tablet/stripe_two_color
 	greyscale_colors = "#e2e2e2#000099#6eaec8#9e00ea"
