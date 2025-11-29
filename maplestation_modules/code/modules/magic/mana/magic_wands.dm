@@ -63,8 +63,6 @@
 	desc = "An ephemeral wand created by the power of Coderbus. Its life span is only brief, and its existence is fleeting. "
 
 	item_flags = ABSTRACT|DROPDEL
-	/// Weakref to the action that created us
-	VAR_FINAL/datum/weakref/origin_ref
 
 // given by the pseudo-spell gained from the psionic quirk
 /obj/item/magic_wand/temporary/psionic
