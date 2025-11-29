@@ -66,20 +66,6 @@
 	/// Weakref to the action that created us
 	VAR_FINAL/datum/weakref/origin_ref
 
-/obj/item/magic_wand/temporary/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/origin)
-	. = ..()
-	if(origin)
-		origin_ref = WEAKREF(origin)
-		item_flags &= ~DROPDEL
-
-/obj/item/magic_wand/temporary/proc/clear_up(mob/user, do_message = FALSE)
-	var/datum/action/cooldown/spell/touch/finger_flame/origin = origin_ref?.resolve()
-	if(!QDELETED(origin))
-		origin.remove_hand(user, do_message)
-		return
-
-	qdel(src)
-
 // given by the pseudo-spell gained from the psionic quirk
 /obj/item/magic_wand/temporary/psionic
 	name = "Psychic Mana Tap"
