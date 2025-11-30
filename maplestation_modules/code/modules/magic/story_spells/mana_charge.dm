@@ -24,7 +24,7 @@
 	. = ..()
 	if (!cast_on.mana_pool)
 		cast_on.balloon_alert(cast_on, "no mana pool!")
-		return
+		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/meditate/cast(mob/living/cast_on)
 	. = ..()
@@ -58,7 +58,7 @@
 	. = ..()
 	if (HAS_TRAIT(cast_on, TRAIT_NOBLOOD))
 		cast_on.balloon_alert(cast_on, "no blood to use!")
-		return
+		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/meditate/lesser_splattercasting/cast(mob/living/cast_on)
 	. = ..()

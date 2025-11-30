@@ -100,3 +100,7 @@
 	var/obj/machinery/meditation_mat/deployed = new /obj/machinery/meditation_mat(location)
 	deployed.add_fingerprint(user)
 	qdel(src)
+
+/obj/item/stack/sheet/cloth/get_main_recipes()
+	. = ..()
+	. += list(new /datum/stack_recipe("meditation mat", /obj/item/meditation_mat, 8))

@@ -13,7 +13,7 @@
 		"You know, despite the eight spoked wheel representing the Noble Eightfold Path of Buddhism printed on the front, there has been no actual reference to Buddhism or its principles.",
 		"At this rate I should probably find what works for me on my own.",
 		"Focus on my breathing, and clear my mind of thoughts. Oh wait, I need to keep reading.",
-		"It says that I should ideally find a comfortable or non-intrusive place to meditate in, and then recommends a list of various mats and seats to try.",
+		"It says that I should ideally find a comfortable or non-intrusive place to meditate in, and then recommends a list of various mats and seats to try. Or I could just make one with some cloth.",
 	)
 
 /obj/item/book/granter/action/spell/meditate/recoil(mob/living/user)
