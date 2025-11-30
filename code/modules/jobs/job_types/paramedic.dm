@@ -1,7 +1,7 @@
 /datum/job/paramedic
 	title = JOB_PARAMEDIC
-	description = "Run around the station looking for patients, respond to \
-		emergencies, give patients a roller bed ride to medbay."
+	description = "Run around the station looking for patients, \
+		respond to emergencies, give people roller bed rides to medbay."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -16,6 +16,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_PARAMEDIC
@@ -24,7 +25,10 @@
 		/datum/job_department/medical,
 		)
 
-	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom, /obj/item/fishing_hook/rescue)
+	family_heirlooms = list(
+		// /obj/item/storage/medkit/ancient/heirloom,
+		// /obj/item/fishing_hook/rescue,
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/hypospray/medipen = 20,

@@ -596,18 +596,16 @@
 
 	//If the item is in a storage item, take it out
 	var/outside_storage = !loc.atom_storage
-	var/turf/storage_turf
-	if(loc.atom_storage)
-		//We want the pickup animation to play even if we're moving the item between movables. Unless the mob is not located on a turf.
-		if(isturf(user.loc))
-			storage_turf = get_turf(loc)
-		if(!loc.atom_storage.remove_single(user, src, user, silent = TRUE))
-			return
+	var/atom/anim_loc = loc
+	if(loc.atom_storage && !loc.atom_storage?.remove_single(user, src, user, silent = TRUE))
+		return
 	if(QDELETED(src)) //moving it out of the storage destroyed it.
 		return
 
-	if(storage_turf)
-		do_pickup_animation(user, storage_turf)
+	if(isturf(user.loc))
+		// Animation only plays if the user is on a turf
+		// However if the anim_loc is not on a turf (ie held by a mob) we need to use user loc
+		do_pickup_animation(user, (isturf(anim_loc) || isturf(anim_loc.loc)) ? anim_loc : user.loc)
 
 	if(throwing)
 		throwing.finalize(FALSE)
@@ -618,7 +616,7 @@
 	. = FALSE
 	pickup(user)
 	add_fingerprint(user)
-	if(!user.put_in_active_hand(src, ignore_animation = !outside_storage))
+	if(!user.put_in_active_hand(src, ignore_animation = TRUE))
 		user.dropItemToGround(src)
 		return TRUE
 
@@ -693,10 +691,10 @@
 	if(item_flags & DROPDEL && !QDELETED(src))
 		qdel(src)
 	item_flags &= ~IN_INVENTORY
+	UnregisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)))
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, vary = sound_vary, ignore_walls = FALSE)
-	user?.update_equipment_speed_mods()
 
 	if(supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER)
 		UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
@@ -740,6 +738,7 @@
 
 	if(ishuman(user) && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
 		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
+	return TRUE
 
 /**
  * Called by on_equipped. Don't call this directly, we want the ITEM_POST_EQUIPPED signal to be sent after everything else.
@@ -763,12 +762,13 @@
 		give_item_action(action, user, slot)
 
 	item_flags |= IN_INVENTORY
+	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)), PROC_REF(update_slot_icon), override = TRUE)
+
 	if(!initial)
 		if(equip_sound && ((slot_flags|ITEM_SLOT_POCKETS|ITEM_SLOT_SUITSTORE) & slot))
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, ignore_walls = FALSE)
 		else if(slot & ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
-	user.update_equipment_speed_mods()
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)
@@ -1113,9 +1113,13 @@
 			if("operative")
 				outline_color = COLOR_THEME_OPERATIVE
 			if("clockwork")
-				outline_color = COLOR_THEME_CLOCKWORK //if you want free gbp go fix the fact that clockwork's tooltip css is glass'
+				outline_color = COLOR_THEME_CLOCKWORK
 			if("glass")
 				outline_color = COLOR_THEME_GLASS
+			if("trasen-knox")
+				outline_color = COLOR_THEME_TRASENKNOX
+			if("detective")
+				outline_color = COLOR_THEME_DETECTIVE
 			else //this should never happen, hopefully
 				outline_color = COLOR_WHITE
 	if(color)
@@ -1266,9 +1270,11 @@
 
 ///Called by the carbon throw_item() proc. Returns null if the item negates the throw, or a reference to the thing to suffer the throw else.
 /obj/item/proc/on_thrown(mob/living/carbon/user, atom/target)
-	if((item_flags & ABSTRACT) || HAS_TRAIT(src, TRAIT_NODROP))
+	if(item_flags & ABSTRACT)
 		return
-	user.dropItemToGround(src, silent = TRUE)
+	// Skip animation is important here because it interferes with the throwing animation.
+	if(!user.transferItemToLoc(src, drop_location(), silent = TRUE, animated = FALSE))
+		return
 	if(throwforce && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_notice("You set [src] down gently on the ground."))
 		return
@@ -1457,8 +1463,8 @@
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
 	var/direction = get_dir(source, target)
-	var/to_x = target.base_pixel_x
-	var/to_y = target.base_pixel_y
+	var/to_x = (target.pixel_x + target.pixel_w) - (source.pixel_x + source.pixel_w)
+	var/to_y = (target.pixel_y + target.pixel_z) - (source.pixel_y + source.pixel_z)
 
 	if(direction & NORTH)
 		to_y += 32
@@ -1489,8 +1495,8 @@
 
 	var/turf/current_turf = get_turf(src)
 	var/direction = get_dir(moving_from, current_turf)
-	var/from_x = moving_from.base_pixel_x
-	var/from_y = moving_from.base_pixel_y
+	var/from_x = moving_from.pixel_x + moving_from.pixel_w
+	var/from_y = moving_from.pixel_y + moving_from.pixel_z
 
 	if(direction & NORTH)
 		from_y -= 32
@@ -1739,7 +1745,7 @@
 	SIGNAL_HANDLER
 	// if(dir == newdir)
 	// 	return
-	if(!istype(source) || !(source.bodytype & BODYTYPE_DIGITIGRADE))
+	if(!istype(source) || !(source.bodyshape & BODYSHAPE_DIGITIGRADE))
 		return
 
 	source.update_clothing(slot_flags)

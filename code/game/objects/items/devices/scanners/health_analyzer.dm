@@ -329,7 +329,7 @@
 
 		// Cybernetics
 		var/list/cyberimps
-		for(var/obj/item/organ/internal/cyberimp/cyberimp in humantarget.organs)
+		for(var/obj/item/organ/cyberimp/cyberimp in humantarget.organs)
 			if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
 				LAZYADD(cyberimps, cyberimp.examine_title(user))
 		if(LAZYLEN(cyberimps))
@@ -343,7 +343,9 @@
 		//Genetic stability
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
 			if(humantarget.dna.stability <= 0)
-				render_list += conditional_tooltip("<span class='alert ml-1'>Genetic Stability: CRITICAL [humantarget.dna.stability] %</span><br>", "Supply [/datum/reagent/medicine/mutadone::name].", tochat)
+				render_list += "<span class='alert ml-1'>"
+				render_list += conditional_tooltip("Genetic Stability: CRITICAL [humantarget.dna.stability] %", "Supply [/datum/reagent/medicine/mutadone::name].", tochat)
+				render_list += "</span><br>"
 			else
 				render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability] %</span><br>"
 
@@ -401,7 +403,12 @@
 			var/list/compatible_types_readable = list()
 			for(var/datum/blood_type/blood_type as anything in target_blood_type.compatible_types)
 				compatible_types_readable |= initial(blood_type.name)
-			blood_type_format = span_tooltip("Can receive from types [english_list(compatible_types_readable)].", blood_type_format)
+			var/recieve_from_text = "Can receive from blood types [english_list(compatible_types_readable)]."
+			if(target_blood_type.reagent_type)
+				recieve_from_text += " Replinishes via [target_blood_type.reagent_type::name] reagent."
+			if(target_blood_type.restoration_chem && target_blood_type.restoration_chem != target_blood_type.reagent_type)
+				recieve_from_text += " Regenerates slowly via [target_blood_type.restoration_chem::name] reagent."
+			blood_type_format = span_tooltip(recieve_from_text, blood_type_format)
 
 		render_list += "<span class='info ml-1'>Heart rate: [bpm_format]</span><br>"
 		render_list += "<span class='info ml-1'>Blood level: [level_format]</span><br>"
@@ -412,7 +419,9 @@
 	var/blood_alcohol_content = target.get_blood_alcohol_content()
 	if(blood_alcohol_content > 0)
 		if(blood_alcohol_content >= 0.24)
-			render_list += conditional_tooltip("<span class='alert ml-1'>Blood alcohol content: <b>CRITICAL [blood_alcohol_content] %</b></span><br>", "Supply [/datum/reagent/medicine/antihol::name], stomach pump, or blood filter.", tochat)
+			render_list += "<span class='alert ml-1'>"
+			render_list += conditional_tooltip("Blood alcohol content: <b>CRITICAL [blood_alcohol_content] %</b>", "Supply [/datum/reagent/medicine/antihol::name], stomach pump, or blood filter.", tochat)
+			render_list += "</span><br>"
 		else
 			render_list += "<span class='info ml-1'>Blood alcohol content: [blood_alcohol_content] %</span><br>"
 
@@ -498,7 +507,7 @@
 			render_block.Cut()
 
 		// Stomach reagents
-		var/obj/item/organ/internal/stomach/belly = target.get_organ_slot(ORGAN_SLOT_STOMACH)
+		var/obj/item/organ/stomach/belly = target.get_organ_slot(ORGAN_SLOT_STOMACH)
 		if(belly)
 			if(belly.reagents.reagent_list.len)
 				for(var/bile in belly.reagents.reagent_list)

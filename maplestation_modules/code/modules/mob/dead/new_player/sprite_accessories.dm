@@ -347,10 +347,20 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_elfmess"
 
+/datum/sprite_accessory/hair/elven_braid
+	name = "Elven Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfbraid"
+
 /datum/sprite_accessory/hair/toxic_wisp
 	name = "Toxic Wisp"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_toxic"
+
+/datum/sprite_accessory/hair/toxic_long
+	name = "Toxic Wisp Long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxiclong"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
@@ -370,7 +380,7 @@
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
 	icon_state = "hornsdouble"
 
-// ??
+// https://github.com/Skyrat-SS13/Skyrat13/pull/1292
 /datum/sprite_accessory/frills/cobra
 	name = "Cobra"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
@@ -490,6 +500,12 @@
 /datum/sprite_accessory/undershirt/whiteblouse
 	name = "White Blouse and Bloomers"
 	icon_state = "blouse"
+	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
+	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/enmagradient
+	name = "Red and Blue Gradients"
+	icon_state = "redblue"
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 

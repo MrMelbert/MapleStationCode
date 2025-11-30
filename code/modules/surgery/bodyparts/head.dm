@@ -26,19 +26,16 @@
 	unarmed_effectiveness = 0
 	bodypart_trait_source = HEAD_TRAIT
 
-	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
-	var/show_organs_on_examine = TRUE
-
 	//Limb appearance info:
 	/// Replacement name
 	var/real_name = ""
 	/// Flags related to appearance, such as hair, lips, etc
-	var/head_flags = HEAD_ALL_FEATURES
+	var/head_flags = HEAD_DEFAULT_FEATURES
 
 	/// Hair style
 	var/hairstyle = "Bald"
 	/// Hair colour and style
-	var/hair_color = "#000000"
+	var/hair_color = COLOR_BLACK
 	/// Hair alpha
 	var/hair_alpha = 255
 	/// Is the hair currently hidden by something?
@@ -49,7 +46,7 @@
 	///Facial hair style
 	var/facial_hairstyle = "Shaved"
 	///Facial hair color
-	var/facial_hair_color = "#000000"
+	var/facial_hair_color = COLOR_BLACK
 	///Facial hair alpha
 	var/facial_hair_alpha = 255
 	///Is the facial hair currently hidden by something?
@@ -105,8 +102,8 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(show_organs_on_examine && IS_ORGANIC_LIMB(src))
-		var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+	if(head_flags & HEAD_SHOW_ORGANS_ON_EXAMINE)
+		var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 		if(!brain)
 			. += span_info("The brain has been removed from [src].")
 		else if(brain.suicided || (brain.brainmob && HAS_TRAIT(brain.brainmob, TRAIT_SUICIDED)))
@@ -123,13 +120,13 @@
 		else
 			. += span_info("It's completely lifeless.")
 
-		if(!(locate(/obj/item/organ/internal/eyes) in src))
+		if(!(locate(/obj/item/organ/eyes) in src))
 			. += span_info("[real_name]'s eyes have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/ears) in src))
+		if(!(locate(/obj/item/organ/ears) in src))
 			. += span_info("[real_name]'s ears have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/tongue) in src))
+		if(!(locate(/obj/item/organ/tongue) in src))
 			. += span_info("[real_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/can_dismember()
@@ -144,7 +141,7 @@
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	if(user)
 		user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-	var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+	var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 	if(brain && violent_removal && prob(90)) //ghetto surgery can damage the brain.
 		to_chat(user, span_warning("[brain] was damaged in the process!"))
 		brain.set_organ_damage(brain.maxHealth)
@@ -169,7 +166,7 @@
 	. += get_hair_and_lips_icon(dropped)
 	// We need to get the eyes if we are dropped (ugh)
 	if(dropped)
-		var/obj/item/organ/internal/eyes/eyes = locate(/obj/item/organ/internal/eyes) in src
+		var/obj/item/organ/eyes/eyes = locate(/obj/item/organ/eyes) in src
 		// This is a bit of copy/paste code from eyes.dm:generate_body_overlay
 		if(eyes?.eye_icon_state && (head_flags & HEAD_EYESPRITES))
 			var/image/eye_left = image(eyes.eye_overlay_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
@@ -201,9 +198,23 @@
 /obj/item/bodypart/head/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/toy_talk)
+	if(!IS_ORGANIC_LIMB(src))
+		head_flags &= ~HEAD_SHOW_ORGANS_ON_EXAMINE
 
-/obj/item/bodypart/head/GetVoice()
+/obj/item/bodypart/head/get_voice(add_id_name)
 	return "The head of [real_name]"
+
+/obj/item/bodypart/head/update_bodypart_damage_state()
+	if (head_flags & HEAD_NO_DISFIGURE)
+		return ..()
+
+	var/old_states = brutestate + burnstate
+	. = ..()
+	var/new_states = brutestate + burnstate
+	if(new_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		add_bodypart_trait(TRAIT_DISFIGURED)
+	else if(old_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		remove_bodypart_trait(TRAIT_DISFIGURED)
 
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
@@ -212,7 +223,7 @@
 	husk_type = "monkey"
 	icon_state = "default_monkey_head"
 	limb_id = SPECIES_MONKEY
-	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_MONKEY
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = SPECIES_MONKEY
 	is_dimorphic = FALSE
@@ -229,7 +240,8 @@
 	px_y = 0
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_CORE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodytype = BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_HUMANOID
 
 /obj/item/bodypart/head/larva
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'

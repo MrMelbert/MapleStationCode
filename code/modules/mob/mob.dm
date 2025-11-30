@@ -501,21 +501,29 @@
 
 /mob/proc/run_examinate(atom/examinify)
 
-	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
+	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client?.view || world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
 
 	var/turf/examine_turf = get_turf(examinify)
-	if(is_blind()) //blind people see things differently (through touch)
+	var/blind = is_blind()
+	if(blind)
+		//blind people see things differently (through touch)
 		if(!blind_examine_check(examinify))
 			return
-	else if(examine_turf && !(examine_turf.luminosity || examine_turf.dynamic_lumcount) && \
-		get_dist(src, examine_turf) > 1 && \
-		!has_nightvision()) // If you aren't blind, it's in darkness (that you can't see) and farther then next to you
-		return
+	else
+		// If you aren't blind, it's in darkness (that you can't see) and farther then next to you
+		if(examine_turf \
+			&& !(examine_turf.luminosity || examine_turf.dynamic_lumcount) \
+			&& get_dist(src, examine_turf) > 1 \
+			&& !has_nightvision() \
+		)
+			return
 
 	face_atom(examinify)
 	var/result_combined
+	var/closer_look = FALSE
+	var/eye_contact = FALSE
 	if(client)
 		LAZYINITLIST(client.recent_examines)
 		var/ref_to_atom = REF(examinify)
@@ -524,12 +532,12 @@
 			var/list/result = examinify.examine_more(src)
 			if(!length(result))
 				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
-			result_combined = jointext(result, "<br>")
+			result_combined = examine_block(jointext(result, "<br>"))
+			closer_look = TRUE
 
 		else
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
-			handle_eye_contact(examinify)
 
 	if(!result_combined)
 		var/list/result = examinify.examine(src)
@@ -537,12 +545,20 @@
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
 		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
 
+	if(!blind)
+		show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+		if(is_eyes_visible()) // your eyes ain't even visible (but future todo : telepaths can skip this check?)
+			for(var/mob/viewer in oviewers(3, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
+				viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > 3 ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+
+	if(eye_contact)
+		handle_eye_contact(examinify)
+
 	to_chat(src, span_infoplain(result_combined))
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
-
 
 /mob/living/blind_examine_check(atom/examined_thing)
 	//need to be next to something and awake
@@ -563,7 +579,7 @@
 
 	//you can only initiate exaimines if you have a hand, it's not disabled, and only as many examines as you have hands
 	/// our active hand, to check if it's disabled/detatched
-	var/obj/item/bodypart/active_hand = has_active_hand()? get_active_hand() : null
+	var/obj/item/bodypart/active_hand = get_active_hand()
 	if(!active_hand || active_hand.bodypart_disabled || do_after_count() >= usable_hands)
 		to_chat(src, span_warning("You don't have a free hand to examine this!"))
 		return FALSE
@@ -1470,7 +1486,7 @@
 	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
 	add_consciousness_modifier(HUNGER, round(hungermod, 0.01))
 
-///Apply a proper movespeed modifier based on items we have equipped
+/// Apply a proper movespeed modifier based on items we have equipped
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = 0
 	var/immutable_speedies = 0
@@ -1636,13 +1652,44 @@
 	for(var/hud_trait in GLOB.trait_to_hud)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(hud_trait), PROC_REF(hud_trait_enabled))
 		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_disabled))
+	for(var/hud_trait in GLOB.trait_blockers_to_hud)
+		RegisterSignal(src, SIGNAL_ADDTRAIT(hud_trait), PROC_REF(hud_trait_blocker_gained))
+		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_blocker_lost))
 
 /mob/proc/hud_trait_enabled(datum/source, new_trait)
 	SIGNAL_HANDLER
+
+	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
+		if(HAS_TRAIT(src, blocker) && (new_trait in blocked_traits))
+			return
+
 	var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[new_trait]]
 	datahud.show_to(src)
 
-/mob/proc/hud_trait_disabled(datum/source, new_trait)
+/mob/proc/hud_trait_disabled(datum/source, lost_trait)
 	SIGNAL_HANDLER
-	var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[new_trait]]
+
+	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
+		if(HAS_TRAIT(src, blocker) && (lost_trait in blocked_traits))
+			return // it may seem counterintuitive to check for blockers on trait removal, the blocker now has total reign over whether the hud should come back
+
+	var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[lost_trait]]
 	datahud.hide_from(src)
+
+/mob/proc/hud_trait_blocker_gained(datum/source, new_trait)
+	SIGNAL_HANDLER
+
+	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
+		if(!HAS_TRAIT(src, trait))
+			continue
+		var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[trait]]
+		datahud.hide_from(src)
+
+/mob/proc/hud_trait_blocker_lost(datum/source, new_trait)
+	SIGNAL_HANDLER
+
+	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
+		if(!HAS_TRAIT(src, trait))
+			continue
+		var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[trait]]
+		datahud.show_to(src)

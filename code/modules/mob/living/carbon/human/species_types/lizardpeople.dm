@@ -8,17 +8,19 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	mutant_bodyparts = list("body_markings" = "None", "legs" = "Normal Legs")
-	external_organs = list(
-		/obj/item/organ/external/horns = "None",
-		/obj/item/organ/external/frills = "None",
-		/obj/item/organ/external/snout = "Round",
-		/obj/item/organ/external/spines = "None",
-		/obj/item/organ/external/tail/lizard = "Smooth",
+	body_markings = list(
+		/datum/bodypart_overlay/simple/body_marking/lizard = SPRITE_ACCESSORY_NONE,
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/lizard
-	mutantstomach = /obj/item/organ/internal/stomach/lizard
-	mutanteyes = /obj/item/organ/internal/eyes/lizard
+	mutant_organs = list(
+		/obj/item/organ/horns = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/frills = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/snout = "Round",
+		/obj/item/organ/spines = SPRITE_ACCESSORY_NONE,
+		/obj/item/organ/tail/lizard = "Smooth",
+	)
+	mutanttongue = /obj/item/organ/tongue/lizard
+	mutantstomach = /obj/item/organ/stomach/lizard
+	mutanteyes = /obj/item/organ/eyes/lizard
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 1.0
@@ -30,7 +32,6 @@
 	inert_mutation = /datum/mutation/human/firebreath
 	death_sound = 'sound/voice/lizard/deathsound.ogg'
 	species_language_holder = /datum/language_holder/lizard
-	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Standard body temp doesn't really matter as much since we're cold blooded
 	bodytemp_normal = (BODYTEMP_NORMAL - 5 KELVIN)
@@ -41,8 +42,6 @@
 	temperature_homeostasis_speed = 0
 	temperature_normalization_speed = parent_type::temperature_normalization_speed * 3
 
-	ass_image = 'icons/ass/asslizard.png'
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
@@ -51,8 +50,12 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
-
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+	)
 	monkey_type = /datum/species/monkey/lizard
+	canon_height = HUMAN_HEIGHT_TALL
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
@@ -62,7 +65,7 @@
 
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()
-	features["body_markings"] = pick(SSaccessories.body_markings_list)
+	features["lizard_markings"] = pick(SSaccessories.lizard_markings_list)
 	return features
 
 /datum/species/lizard/get_scream_sound(mob/living/carbon/human/lizard)
@@ -173,9 +176,8 @@ Lizard subspecies: ASHWALKERS
 /datum/species/lizard/ashwalker
 	name = "Ash Walker"
 	id = SPECIES_LIZARD_ASH
-	examine_limb_id = SPECIES_LIZARD
-	mutantlungs = /obj/item/organ/internal/lungs/lavaland
-	mutantbrain = /obj/item/organ/internal/brain/primitive
+	mutantlungs = /obj/item/organ/lungs/lavaland
+	mutantbrain = /obj/item/organ/brain/primitive
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_TACKLING_TAILED_DEFENDER,
@@ -183,15 +185,13 @@ Lizard subspecies: ASHWALKERS
 	)
 	inherent_factions = list(FACTION_ASHWALKER)
 	species_language_holder = /datum/language_holder/lizard/ash
-	digitigrade_customization = DIGITIGRADE_FORCED
-	examine_limb_id = SPECIES_LIZARD
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/ashwalker,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/ashwalker,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
 
 /datum/species/lizard/ashwalker/get_physical_attributes()
@@ -216,9 +216,8 @@ Lizard subspecies: SILVER SCALED
 	mutantlungs = null
 	damage_modifier = 10 //very light silvery scales soften blows
 	species_language_holder = /datum/language_holder/lizard/silver
-	mutanttongue = /obj/item/organ/internal/tongue/lizard/silver
+	mutanttongue = /obj/item/organ/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
-	examine_limb_id = SPECIES_LIZARD
 
 /datum/species/lizard/silverscale/get_physical_attributes()
 	return "Silver Scales are to lizardpeople what angels are to humans. \

@@ -1,5 +1,5 @@
 ///Moth wings! They can flutter in low-grav and burn off in heat
-/obj/item/organ/external/wings/moth
+/obj/item/organ/wings/moth
 	name = "moth wings"
 	desc = "Spread your wings and FLOOOOAAAAAT!"
 
@@ -14,34 +14,44 @@
 	///Store our old datum here for if our burned wings are healed
 	var/original_sprite_datum
 
-/obj/item/organ/external/wings/moth/on_mob_insert(mob/living/carbon/receiver)
+/obj/item/organ/wings/moth/on_mob_insert(mob/living/carbon/receiver)
 	. = ..()
 	RegisterSignal(receiver, COMSIG_HUMAN_BURNING, PROC_REF(try_burn_wings))
 	RegisterSignal(receiver, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(heal_wings))
 	RegisterSignal(receiver, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(update_float_move))
 
-/obj/item/organ/external/wings/moth/on_mob_remove(mob/living/carbon/organ_owner)
+/obj/item/organ/wings/moth/on_mob_remove(mob/living/carbon/organ_owner)
 	. = ..()
 	UnregisterSignal(organ_owner, list(COMSIG_HUMAN_BURNING, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_MOVABLE_PRE_MOVE))
 	REMOVE_TRAIT(organ_owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
 
-/obj/item/organ/external/wings/moth/can_soften_fall()
+/obj/item/organ/wings/moth/can_soften_fall()
 	return !burnt
 
 ///Check if we can flutter around
-/obj/item/organ/external/wings/moth/proc/update_float_move()
+/obj/item/organ/wings/moth/proc/update_float_move()
 	SIGNAL_HANDLER
 
-	if(!isspaceturf(owner.loc) && !burnt)
-		var/datum/gas_mixture/current = owner.loc.return_air()
-		if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85)) //as long as there's reasonable pressure and no gravity, flight is possible
-			ADD_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
-			return
+	if(!isspaceturf(owner.loc) || allow_flight())
+		ADD_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
+		return
 
 	REMOVE_TRAIT(owner, TRAIT_FREE_FLOAT_MOVEMENT, REF(src))
 
+/obj/item/organ/wings/moth/proc/allow_flight()
+	if(!owner || !owner.client)
+		return FALSE
+	if(owner.has_gravity())
+		return FALSE
+	if((owner.obscured_slots & HIDEMUTWINGS) || burnt)
+		return FALSE
+	var/datum/gas_mixture/current = owner.loc.return_air()
+	if(current && (current.return_pressure() >= ONE_ATMOSPHERE*0.85))
+		return TRUE
+	return FALSE
+
 ///check if our wings can burn off ;_;
-/obj/item/organ/external/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
+/obj/item/organ/wings/moth/proc/try_burn_wings(mob/living/carbon/human/human)
 	SIGNAL_HANDLER
 	if(!burnt && human.get_skin_temperature() >= CELCIUS_TO_KELVIN(175 CELCIUS) && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
 		to_chat(human, span_danger("Your precious wings burn to a crisp!"))
@@ -51,13 +61,13 @@
 		human.update_body_parts()
 
 ///burn the wings off
-/obj/item/organ/external/wings/moth/proc/burn_wings()
+/obj/item/organ/wings/moth/proc/burn_wings()
 	var/datum/bodypart_overlay/mutant/wings/moth/wings = bodypart_overlay
 	wings.burnt = TRUE
 	burnt = TRUE
 
 ///heal our wings back up!!
-/obj/item/organ/external/wings/moth/proc/heal_wings(datum/source, heal_flags)
+/obj/item/organ/wings/moth/proc/heal_wings(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
 	if(!burnt)
@@ -68,7 +78,7 @@
 		wings.burnt = FALSE
 		burnt = FALSE
 
-/obj/item/organ/external/wings/moth/feel_for_damage(self_aware)
+/obj/item/organ/wings/moth/feel_for_damage(self_aware)
 	if(burnt)
 		return "Your wings are all burnt up!"
 	return ..()
@@ -90,10 +100,8 @@
 /datum/bodypart_overlay/mutant/wings/moth/get_global_feature_list()
 	return SSaccessories.moth_wings_list
 
-/datum/bodypart_overlay/mutant/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
-		return TRUE
-	return FALSE
+/datum/bodypart_overlay/mutant/wings/moth/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEMUTWINGS)
 
 /datum/bodypart_overlay/mutant/wings/moth/get_base_icon_state()
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state

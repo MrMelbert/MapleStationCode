@@ -83,6 +83,9 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	fire = 90
 	acid = 30
 
+/obj/machinery/airalarm/get_save_vars()
+	return ..() - NAMEOF(src, name)
+
 /obj/machinery/airalarm/Initialize(mapload, ndir, nbuild)
 	. = ..()
 	set_wires(new /datum/wires/airalarm(src))
@@ -92,9 +95,6 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	if(nbuild)
 		buildstage = AIR_ALARM_BUILD_NO_CIRCUIT
 		set_panel_open(TRUE)
-
-	if(name == initial(name))
-		name = "[get_area_name(src)] Air Alarm"
 
 	tlv_collection = list()
 	tlv_collection["pressure"] = new /datum/tlv/pressure
@@ -166,7 +166,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 
 /obj/machinery/airalarm/update_name(updates)
 	. = ..()
-	name = "[get_area_name(my_area)] Air Alarm"
+	name = "\improper [get_area_name(my_area, TRUE)] air alarm"
+	article = "the"
 
 /obj/machinery/airalarm/on_exit_area(datum/source, area/area_to_unregister)
 	//we cannot unregister from an area we never registered to in the first place

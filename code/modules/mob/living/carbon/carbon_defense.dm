@@ -4,7 +4,7 @@
 	. = ..()
 	if(is_blind() && !is_blind_from(list(UNCONSCIOUS_TRAIT, HYPNOCHAIR_TRAIT)))
 		return INFINITY //For all my homies that can not see in the world
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(eyes)
 		. += eyes.flash_protect
 	else
@@ -20,7 +20,7 @@
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_DEAF))
 		return INFINITY //For all my homies that can not hear in the world
-	var/obj/item/organ/internal/ears/E = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/E = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!E)
 		return INFINITY
 	else
@@ -47,12 +47,12 @@
 /mob/living/carbon/is_eyes_visible()
 	if(istype(glasses) && (glasses.flags_cover & GLASSESCOVERSEYES) && glasses.tint)
 		return FALSE
-	if(check_obscured_slots() & ITEM_SLOT_EYES)
+	if(obscured_slots & (HIDEFACE|HIDEEYES))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/is_pepper_proof(check_flags = ALL)
-	var/obj/item/organ/internal/eyes/eyes = get_organ_by_type(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes = get_organ_by_type(/obj/item/organ/eyes)
 	if(eyes && eyes.pepperspray_protect)
 		return eyes
 	if((check_flags & ITEM_SLOT_HEAD) && head && (head.flags_cover & PEPPERPROOF))
@@ -340,6 +340,12 @@
 		to_chat(src, span_notice("[helper] shakes you to get you up!"))
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
+	else if(combat_mode)
+		helper.visible_message(span_warning("[helper] reaches for [src], but [src] keeps [helper.p_them()] at bay!"), null, null, DEFAULT_MESSAGE_RANGE, list(helper, src))
+		to_chat(helper, span_warning("You reach for [src], but [p_they()] keep[p_s()] you at an arm's length!"))
+		to_chat(src, span_warning("[helper] reaches for you, but you keep [p_them()] at an arm's length!"))
+		return
+
 	else if(check_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
 		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
 					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
@@ -348,27 +354,6 @@
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you pat [p_them()] on the head."))
-
-	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && !isnull(src.get_organ_by_type(/obj/item/organ/external/tail)))
-		helper.visible_message(span_notice("[helper] pulls on [src]'s tail!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You pull on [src]'s tail!"))
-		to_chat(src, span_notice("[helper] pulls on your tail!"))
-		if(HAS_TRAIT(src, TRAIT_BADTOUCH)) //How dare they!
-			to_chat(helper, span_warning("[src] makes a grumbling noise as you pull on [p_their()] tail."))
-		else
-			add_mood_event("tailpulled", /datum/mood_event/tailpulled)
-
-	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && (istype(head, /obj/item/clothing/head/costume/kitty) || istype(head, /obj/item/clothing/head/collectable/kitty)))
-		var/obj/item/clothing/head/faketail = head
-		helper.visible_message(span_danger("[helper] pulls on [src]'s tail... and it rips off!"), \
-					null, span_hear("You hear a ripping sound."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_danger("You pull on [src]'s tail... and it rips off!"))
-		to_chat(src, span_userdanger("[helper] pulls on your tail... and it rips off!"))
-		playsound(loc, 'sound/effects/cloth_rip.ogg', 75, TRUE)
-		dropItemToGround(faketail)
-		helper.put_in_hands(faketail)
-		helper.add_mood_event("rippedtail", /datum/mood_event/rippedtail)
 
 	else
 		if (helper.grab_state >= GRAB_AGGRESSIVE)
@@ -451,7 +436,7 @@
 			if(!embeds)
 				embeds = TRUE
 				// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
-				visible_message(span_notice("[src] examines [p_them()]self."), \
+				visible_message(span_smallnoticeital("[src] examines [p_them()]self."), \
 					span_notice("You check yourself for shrapnel."))
 			if(I.is_embed_harmless())
 				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>")
@@ -462,7 +447,7 @@
 
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes) //can't flash what can't see!
 		return
 
@@ -513,7 +498,7 @@
 	SEND_SIGNAL(src, COMSIG_CARBON_SOUNDBANG, reflist)
 	intensity = reflist[1]
 	var/ear_safety = get_ear_protection()
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	var/effect_amount = intensity - ear_safety
 	if(effect_amount > 0)
 		if(stun_pwr)
@@ -555,7 +540,7 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!isnull(ears) && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE
 	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
@@ -706,7 +691,7 @@
 		body_parts -= part
 	GLOB.bioscrambler_valid_parts = body_parts
 
-	var/list/organs = subtypesof(/obj/item/organ/internal) + subtypesof(/obj/item/organ/external)
+	var/list/organs = subtypesof(/obj/item/organ)
 	for(var/obj/item/organ/organ_type as anything in organs)
 		if(!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
 			continue

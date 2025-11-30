@@ -1,6 +1,7 @@
 /datum/job/roboticist
 	title = JOB_ROBOTICIST
-	description = "Build and repair the AI and cyborgs, create mechs."
+	description = "Build and repair cyborgs, create mechs and space suits, \
+		augment the crew, illegally tamper with the AI's laws."
 	title_options = list(
 		"Mechanist",
 		"Prosthetist" = /datum/outfit/job/roboticist/prosthetist,
@@ -33,7 +34,9 @@
 		/obj/item/modular_computer/laptop = 5
 	)
 
-	family_heirlooms = list(/obj/item/toy/plush/pkplush)
+	family_heirlooms = list(
+		/obj/item/toy/plush/pkplush,
+	)
 	rpg_title = "Necromancer"
 	job_flags = STATION_JOB_FLAGS
 

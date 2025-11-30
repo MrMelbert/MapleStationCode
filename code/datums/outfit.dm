@@ -24,20 +24,20 @@
 	var/id_trim = null
 
 	/// Type path of item to go in uniform slot
-	var/uniform = null
+	var/obj/item/uniform = null
 
 	/// Type path of item to go in suit slot
-	var/suit = null
+	var/obj/item/suit = null
 
 	/**
 	  * Type path of item to go in suit storage slot
 	  *
 	  * (make sure it's valid for that suit)
 	  */
-	var/suit_store = null
+	var/obj/item/suit_store = null
 
 	/// Type path of item to go in back slot
-	var/back = null
+	var/obj/item/back = null
 
 	/**
 	  * list of items that should go in the backpack of the user
@@ -47,7 +47,7 @@
 	var/list/backpack_contents = null
 
 	/// Type path of item to go in belt slot
-	var/belt = null
+	var/obj/item/belt = null
 
 	/// Type path of item to go in ears slot
 	var/ears = null
@@ -206,7 +206,7 @@
 			if(id_trim)
 				if(!SSid_access.apply_trim_to_card(id_card, id_trim))
 					WARNING("Unable to apply trim [id_trim] to [id_card] in outfit [name].")
-				user.sec_hud_set_ID()
+				user.update_ID_card()
 
 	if(suit_store)
 		EQUIP_OUTFIT_ITEM(suit_store, ITEM_SLOT_SUITSTORE)

@@ -21,8 +21,7 @@
 
 	. = ..()
 
-	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
-	AddComponent(/datum/component/personal_crafting)
+	AddComponent(/datum/component/personal_crafting/*, ui_human_crafting*/)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
@@ -90,7 +89,7 @@
 	//Update med hud images...
 	..()
 	//...sec hud images...
-	sec_hud_set_ID()
+	update_ID_card()
 	sec_hud_set_implants()
 	sec_hud_set_security_status()
 	//...fan gear
@@ -337,11 +336,12 @@
 /mob/living/carbon/human/can_inject(mob/user, target_zone, injection_flags)
 	. = TRUE // Default to returning true.
 	// we may choose to ignore species trait pierce immunity in case we still want to check skellies for thick clothing without insta failing them (wounds)
-	if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
-		if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
+		if(injection_flags & INJECT_CHECK_IGNORE_SPECIES)
+			if(HAS_TRAIT_NOT_FROM(src, TRAIT_PIERCEIMMUNE, SPECIES_TRAIT))
+				. = FALSE
+		else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 			. = FALSE
-	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
-		. = FALSE
 	if(user && !target_zone)
 		target_zone = get_bodypart(check_zone(user.zone_selected)) //try to find a bodypart. if there isn't one, target_zone will be null, and check_zone in the next line will default to the chest.
 	var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
@@ -356,6 +356,10 @@
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
 		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
+
+/mob/living/carbon/human/get_butt_sprite()
+	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
+	return chest?.get_butt_sprite()
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -555,7 +559,7 @@
  * Returns false if we couldn't wash our hands due to them being obscured, otherwise true
  */
 /mob/living/carbon/human/proc/wash_hands(clean_types)
-	if(check_covered_slots() & ITEM_SLOT_GLOVES)
+	if(covered_slots & HIDEGLOVES)
 		return FALSE
 
 	if(gloves)
@@ -579,7 +583,7 @@
 	if(glasses && !is_eyes_covered(ITEM_SLOT_MASK|ITEM_SLOT_HEAD) && glasses.wash(clean_types))
 		. = TRUE
 
-	if(wear_mask && !(check_covered_slots() & ITEM_SLOT_MASK) && wear_mask.wash(clean_types))
+	if(wear_mask && !(covered_slots & HIDEMASK) && wear_mask.wash(clean_types))
 		. = TRUE
 
 /**
@@ -591,7 +595,7 @@
 		. = TRUE
 
 	// Wash hands if exposed
-	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(check_covered_slots() & ITEM_SLOT_GLOVES))
+	if(!gloves && (clean_types & CLEAN_TYPE_BLOOD) && blood_in_hands > 0 && !(covered_slots & HIDEGLOVES))
 		blood_in_hands = 0
 		update_worn_gloves()
 		. = TRUE
@@ -603,7 +607,7 @@
 
 	// If we have a species, we need to handle mutant parts and stuff
 	if(dna?.species)
-		add_atom_colour("#000000", TEMPORARY_COLOUR_PRIORITY)
+		add_atom_colour(COLOR_BLACK, TEMPORARY_COLOUR_PRIORITY)
 		var/static/mutable_appearance/shock_animation_dna
 		if(!shock_animation_dna)
 			shock_animation_dna = mutable_appearance(icon, "electrocuted_base")
@@ -622,7 +626,7 @@
 	addtimer(CALLBACK(src, PROC_REF(end_electrocution_animation), zap_appearance), anim_duration)
 
 /mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
-	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
+	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLACK)
 	cut_overlay(MA)
 
 /mob/living/carbon/human/resist_restraints()
@@ -687,31 +691,13 @@
 
 /mob/living/carbon/human/vv_edit_var(var_name, var_value)
 	if(var_name == NAMEOF(src, mob_height))
-		var/static/list/monkey_heights = list(
-			MONKEY_HEIGHT_DWARF,
-			MONKEY_HEIGHT_MEDIUM,
-		)
-		var/static/list/heights = list(
-			HUMAN_HEIGHT_SHORTEST,
-			HUMAN_HEIGHT_SHORT,
-			HUMAN_HEIGHT_MEDIUM,
-			HUMAN_HEIGHT_TALL,
-			HUMAN_HEIGHT_TALLER,
-			HUMAN_HEIGHT_TALLEST
-		)
-		if(ismonkey(src))
-			if(!(var_value in monkey_heights))
-				return
-		else if(!(var_value in heights))
-			return
-
-		. = set_mob_height(var_value)
-
-	if(!isnull(.))
-		datum_flags |= DF_VAR_EDITED
-		return
-
-	return ..()
+		// you wanna edit this one not that one
+		var_name = NAMEOF(src, base_mob_height)
+	. = ..()
+	if(!.)
+		return .
+	if(var_name == NAMEOF(src, base_mob_height))
+		update_mob_height()
 
 /mob/living/carbon/human/vv_get_dropdown()
 	. = ..()
@@ -786,26 +772,6 @@
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
 
-	if(href_list[VV_HK_PURRBATION])
-		if(!check_rights(R_SPAWN))
-			return
-		if(!ishuman(src))
-			to_chat(usr, "This can only be done to human species at the moment.")
-			return
-		var/success = purrbation_toggle(src)
-		if(success)
-			to_chat(usr, "Put [src] on purrbation.")
-			log_admin("[key_name(usr)] has put [key_name(src)] on purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has put [key_name(src)] on purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-		else
-			to_chat(usr, "Removed [src] from purrbation.")
-			log_admin("[key_name(usr)] has removed [key_name(src)] from purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has removed [key_name(src)] from purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-
 	if(href_list[VV_HK_APPLY_DNA_INFUSION])
 		if(!check_rights(R_SPAWN))
 			return
@@ -828,7 +794,7 @@
 		if(result != "Yes")
 			return
 
-		var/obj/item/organ/internal/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
+		var/obj/item/organ/brain/target_brain = get_organ_slot(ORGAN_SLOT_BRAIN)
 
 		if(isnull(target_brain))
 			to_chat(usr, "This mob has no brain to insert into an MMI.")
@@ -891,7 +857,7 @@
 				if("Less pain")
 					set_pain_mod("badmin", major ? 0.6 : 0.8)
 				if("Tougher organs")
-					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+					for(var/obj/item/organ/organ as anything in bodyparts)
 						organ.maxHealth *= (major ? 1.5 : 1.25)
 				if("Less environmental")
 					physiology.pressure_mod *= (major ? 0.6 : 0.8)
@@ -938,11 +904,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
-
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		carrydelay *= potential_spine.athletics_boost_multiplier
+	var/carrydelay = get_grab_speed(target, 8 SECONDS)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"

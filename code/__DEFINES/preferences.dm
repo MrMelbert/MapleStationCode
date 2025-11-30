@@ -122,6 +122,9 @@
 /// These will be shown in the character sidebar, but at the bottom.
 #define PREFERENCE_CATEGORY_FEATURES "features"
 
+/// These will be shown in the character sidebar, in the middle.
+#define PREFERENCE_CATEGORY_HAIR "hair"
+
 /// Any preferences that will show to the sides of the character in the setup menu.
 #define PREFERENCE_CATEGORY_CLOTHING "clothing"
 
@@ -151,8 +154,19 @@
 #define SPRITE_ACCESSORY_NONE "None"
 
 // Loadout
-/// Used to make something not recolorable even if it's capable
-#define DONT_GREYSCALE -1
+/// When equipped, applies a job specific palette to the item. Only applicable to GAGS items.
+#define LOADOUT_FLAG_JOB_GREYSCALING (1<<0)
+/// Prevents GAGS items from being player customizable.
+#define LOADOUT_FLAG_BLOCK_GREYSCALING (1<<1)
+/// Allows the item to be greyscaled by the player, if it's a GAGS item. Automatically set if the item is innately recolorable.
+#define LOADOUT_FLAG_GREYSCALING_ALLOWED (1<<2)
+/// Allows the item to be renamed by the player.
+#define LOADOUT_FLAG_ALLOW_NAMING (1<<3)
+/// Allows the item to be reskinned by the player. Only applicable to items with unique_reskin defined.
+#define LOADOUT_FLAG_ALLOW_RESKIN (1<<4)
+/// The item can be selected as a family heirloom for the family heirloom quirk.
+#define LOADOUT_FLAG_ALLOW_HEIRLOOM (1<<5)
+
 // Loadout item info keys
 // Changing these will break existing loadouts
 /// Tracks GAGS color information
@@ -163,8 +177,28 @@
 #define INFO_RESKIN "reskin"
 /// Handles which layer the item will be on, for accessories
 #define INFO_LAYER "layer"
+/// Is this item an heirloom item
+#define INFO_HEIRLOOM "heirloom"
 
 // Lipstick styles
 #define UPPER_LIP "Upper"
 #define MIDDLE_LIP "Middle"
 #define LOWER_LIP "Lower"
+
+// Job greyscale colors for loadout items
+#define COLOR_JOB_ASSISTANT /obj/item/clothing/under/color/grey::greyscale_colors
+#define COLOR_JOB_BOTANIST "#33cc33"
+#define COLOR_JOB_CARGO_GENERIC "#824b32"
+#define COLOR_JOB_CE "#d0d0d0"
+#define COLOR_JOB_CHEF "#d0d0d0"
+#define COLOR_JOB_CHEMIST "#ff6600"
+#define COLOR_JOB_CLOWN "#ffbeff"
+#define COLOR_JOB_CMO "#009999"
+#define COLOR_JOB_DEFAULT "#303030"
+#define COLOR_JOB_ENGI_GENERIC "#ff6600"
+#define COLOR_JOB_JANITOR /obj/item/clothing/gloves/color/purple::greyscale_colors
+#define COLOR_JOB_LAWYER "#003399"
+#define COLOR_JOB_SCI_GENERIC "#800080"
+#define COLOR_JOB_SEC_GENERIC "#A53228"
+#define COLOR_JOB_MED_GENERIC "#5B97BC"
+#define COLOR_JOB_COMMAND_GENERIC "#3C5A96"

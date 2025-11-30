@@ -13,6 +13,8 @@
 	base_outfit = /datum/outfit/job/chaplain
 	plasmaman_outfit = /datum/outfit/plasmaman/chaplain
 
+	mind_traits = list(TRAIT_SPIRITUAL, TRAIT_DESENSITIZED)
+
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SRV
 
@@ -21,7 +23,9 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/toy/windup_toolbox, /obj/item/reagent_containers/cup/glass/bottle/holywater)
+	family_heirlooms = list(
+		/obj/item/book/bible, // Chaplain's heirloom is the nullrod typically, so this is a fallback
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/glass/bottle/holywater = 30,

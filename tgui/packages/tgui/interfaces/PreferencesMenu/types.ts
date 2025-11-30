@@ -1,13 +1,14 @@
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 
-import { sendAct } from '../../backend';
-import { Language } from './CharacterPreferences/_LanguagePicker'; // NON-MODULE CHANGE
-import { LimbCategory } from './CharacterPreferences/_LimbManager'; // NON-MODULE CHANGE
-import {
+import type { sendAct } from '../../backend';
+import type { Language } from './CharacterPreferences/_LanguagePicker'; // NON-MODULE CHANGE
+import type { LimbCategory } from './CharacterPreferences/_LimbManager'; // NON-MODULE CHANGE
+import type {
   LoadoutCategory,
   LoadoutList,
+  typePath,
 } from './CharacterPreferences/loadout/base';
-import { Gender } from './preferences/gender';
+import type { Gender } from './preferences/gender';
 
 export enum Food {
   Alcohol = 'ALCOHOL',
@@ -23,7 +24,6 @@ export enum Food {
   Junkfood = 'JUNKFOOD',
   Meat = 'MEAT',
   Nuts = 'NUTS',
-  Oranges = 'ORANGES',
   Pineapple = 'PINEAPPLE',
   Raw = 'RAW',
   Seafood = 'SEAFOOD',
@@ -45,6 +45,12 @@ export type Name = {
   group: string;
 };
 
+export type Diet = {
+  liked_food: Food[];
+  disliked_food: Food[];
+  toxic_food: Food[];
+};
+
 export type Species = {
   name: string;
   desc: string;
@@ -62,11 +68,7 @@ export type Species = {
     neutral: Perk[];
   };
 
-  diet?: {
-    liked_food: Food[];
-    disliked_food: Food[];
-    toxic_food: Food[];
-  };
+  diet: Diet | null;
 };
 
 export type Perk = {
@@ -99,6 +101,16 @@ export type QuirkInfo = {
   quirk_info: Record<string, Quirk>;
   quirk_blacklist: string[][];
   points_enabled: boolean;
+};
+
+export type Personality = {
+  name: string;
+  description: string;
+  pos_gameplay_description: string | null;
+  neg_gameplay_description: string | null;
+  neut_gameplay_description: string | null;
+  path: typePath;
+  groups: string[] | null;
 };
 
 export enum RandomSetting {
@@ -137,8 +149,9 @@ export type PreferencesMenuData = {
   character_profiles: (string | null)[];
 
   character_preferences: {
-    clothing: Record<string, string>;
-    features: Record<string, string>;
+    clothing: Record<string, string> | null;
+    hair: Record<string, string> | null;
+    features: Record<string, string> | null;
     game_preferences: Record<string, unknown>;
     non_contextual: {
       random_body: RandomSetting;
@@ -178,7 +191,11 @@ export type PreferencesMenuData = {
 
   keybindings: Record<string, string[]>;
   overflow_role: string;
+  default_quirk_balance: number;
   selected_quirks: string[];
+  selected_personalities: typePath[] | null;
+  max_personalities: number;
+  mood_enabled: BooleanLike;
   species_disallowed_quirks: string[];
 
   antag_bans?: string[];
@@ -200,6 +217,10 @@ export type ServerData = {
     types: Record<string, Name>;
   };
   quirks: QuirkInfo;
+  personality: {
+    personalities: Personality[];
+    personality_incompatibilities: Record<string, string[]>;
+  };
   random: {
     randomizable: string[];
   };

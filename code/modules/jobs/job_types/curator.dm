@@ -1,7 +1,8 @@
 /datum/job/curator
 	title = JOB_CURATOR
-	description = "Read and write books and hand them to people, stock \
-		bookshelves, report on station news."
+	description = "Write books, stock bookshelves, \
+		create art, manage the art gallery, \
+		report on station news... or go treasure hunting."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -29,7 +30,10 @@
 		/obj/item/book/granter/action/spell/blind/wgw = 1,
 	)
 
-	family_heirlooms = list(/obj/item/pen/fountain, /obj/item/storage/dice)
+	family_heirlooms = list(
+		/obj/item/pen/fountain,
+		/obj/item/storage/dice,
+	)
 
 	job_flags = STATION_JOB_FLAGS
 

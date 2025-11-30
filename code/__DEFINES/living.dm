@@ -1,6 +1,9 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Always does *deathgasp when they die
+/// If unset mobs will only deathgasp if supplied a death sound or custom death message
+#define ALWAYS_DEATHGASP (1<<1)
 /// Nutrition changed last life tick, so we should bulk update this tick
 #define QUEUE_NUTRITION_UPDATE (1<<3)
 
@@ -180,3 +183,21 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))

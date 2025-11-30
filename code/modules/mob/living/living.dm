@@ -36,8 +36,9 @@
 		else
 			effect.be_replaced()
 
-	if(buckled)
-		buckled.unbuckle_mob(src,force=1)
+	clear_personalities() // must be done for the personalities which process
+
+	buckled?.unbuckle_mob(src,force=1)
 
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
@@ -46,6 +47,7 @@
 		QDEL_LIST(imaginary_group)
 	QDEL_LAZYLIST(diseases)
 	QDEL_LIST(surgeries)
+	QDEL_LAZYLIST(quirks)
 	return ..()
 
 /mob/living/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
@@ -67,14 +69,14 @@
 	// multiplier for the damage taken from falling
 	var/damage_softening_multiplier = 1
 
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		damage_softening_multiplier *= potential_spine.athletics_boost_multiplier
 
 	// If you are incapped, you probably can't brace yourself
 	var/can_help_themselves = !incapacitated(IGNORE_RESTRAINTS)
 	if(levels <= 1 && can_help_themselves)
-		var/obj/item/organ/external/wings/gliders = get_organ_by_type(/obj/item/organ/external/wings)
+		var/obj/item/organ/wings/gliders = get_organ_by_type(/obj/item/organ/wings)
 		if(HAS_TRAIT(src, TRAIT_FREERUNNING) || gliders?.can_soften_fall()) // the power of parkour or wings allows falling short distances unscathed
 			visible_message(
 				span_notice("[src] makes a hard landing on [impacted_turf] but remains unharmed from the fall."),
@@ -553,16 +555,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	if(ismob(pointing_at.loc))
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
-			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
-		)
-	else
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
-			span_notice("You point at [pointing_at]."),
-		)
+	to_chat(src, span_notice("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	for(var/mob/viewer in oviewers(src))
+		viewer.show_message(span_notice("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
@@ -743,7 +738,7 @@
 
 	var/get_up_time = 1 SECONDS
 
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		get_up_time *= potential_spine.athletics_boost_multiplier
 
@@ -2363,11 +2358,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(GRAB_KILL)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
 
-
-/// Only defined for carbons who can wear masks and helmets, we just assume other mobs have visible faces
-/mob/living/proc/is_face_visible()
-	return TRUE
-
+/// Sprite to show for photocopying mob butts
+/mob/living/proc/get_butt_sprite()
+	return null
 
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)
@@ -2759,3 +2752,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		end_look_down()
 	else
 		look_down()
+
+/**
+ * Totals the physical cash on the mob and returns the total.
+ */
+/mob/living/verb/tally_physical_credits()
+	//Here is all the possible non-ID payment methods.
+	var/list/counted_money = list()
+	var/physical_cash_total = 0
+	for(var/obj/item/credit as anything in typecache_filter_list(get_all_contents(), GLOB.allowed_money)) //Coins, cash, and credits.
+		physical_cash_total += credit.get_item_credit_value()
+		counted_money += credit
+
+	if(is_type_in_typecache(pulling, GLOB.allowed_money)) //Coins(Pulled).
+		var/obj/item/counted_credit = pulling
+		physical_cash_total += counted_credit.get_item_credit_value()
+		counted_money += counted_credit
+	return round(physical_cash_total)

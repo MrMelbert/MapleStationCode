@@ -76,19 +76,6 @@
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/abandoned/crew)
-"fe" = (
-/obj/machinery/computer/camera_advanced/shuttle_docker/whiteship{
-	dir = 4;
-	view_range = 14;
-	x_offset = -2;
-	y_offset = -7
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/tile/dark_blue/anticorner{
-	dir = 8
-	},
-/turf/open/floor/mineral/titanium,
-/area/shuttle/abandoned/bridge)
 "fF" = (
 /obj/machinery/door/airlock/shuttle{
 	name = "Refreshment Room"
@@ -205,12 +192,6 @@
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/abandoned/medbay)
-"mA" = (
-/obj/machinery/power/shuttle_engine/propulsion/left{
-	dir = 4
-	},
-/turf/open/floor/plating/airless,
-/area/shuttle/abandoned/engine)
 "mQ" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/crayon{
@@ -274,13 +255,6 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/abandoned/bridge)
-"nQ" = (
-/obj/machinery/power/shuttle_engine/heater{
-	dir = 4
-	},
-/obj/structure/window/reinforced/spawner/directional/west,
-/turf/open/floor/plating/airless,
-/area/shuttle/abandoned/engine)
 "oU" = (
 /obj/structure/table/wood,
 /obj/machinery/chem_dispenser/drinks{
@@ -353,6 +327,13 @@
 	},
 /turf/open/floor/iron/large,
 /area/shuttle/abandoned)
+"tX" = (
+/obj/machinery/power/shuttle_engine/heater{
+	dir = 4
+	},
+/obj/structure/window/reinforced/spawner/directional/west,
+/turf/open/floor/plating/airless,
+/area/shuttle/abandoned/engine)
 "us" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/blood/splatter,
@@ -402,12 +383,6 @@
 	dir = 4
 	},
 /turf/open/floor/catwalk_floor/iron_smooth,
-/area/shuttle/abandoned/engine)
-"yB" = (
-/obj/effect/turf_decal/stripes{
-	dir = 4
-	},
-/turf/open/floor/plating/airless,
 /area/shuttle/abandoned/engine)
 "yY" = (
 /obj/effect/decal/cleanable/dirt,
@@ -505,6 +480,10 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/abandoned)
+"ES" = (
+/obj/machinery/vending/medical,
+/turf/open/floor/mineral/titanium/white,
+/area/shuttle/abandoned/medbay)
 "Fr" = (
 /obj/structure/cable,
 /obj/effect/mob_spawn/corpse/human/assistant,
@@ -598,6 +577,12 @@
 	},
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/abandoned)
+"JQ" = (
+/obj/machinery/power/shuttle_engine/propulsion/left{
+	dir = 4
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/abandoned/engine)
 "Kb" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/external/ruin{
@@ -705,12 +690,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/large,
 /area/shuttle/abandoned/crew)
-"Pl" = (
-/obj/machinery/power/shuttle_engine/propulsion/right{
-	dir = 4
-	},
-/turf/open/floor/plating/airless,
-/area/shuttle/abandoned/engine)
 "PR" = (
 /obj/structure/table/wood,
 /obj/effect/spawner/random/food_or_drink/dinner,
@@ -739,12 +718,6 @@
 	pixel_y = 6
 	},
 /obj/effect/spawner/random/medical/minor_healing,
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/abandoned/medbay)
-"Qp" = (
-/obj/machinery/vending/medical{
-	req_access = null
-	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/abandoned/medbay)
 "RG" = (
@@ -791,6 +764,12 @@
 	},
 /turf/open/floor/mineral/titanium/purple,
 /area/shuttle/abandoned/bar)
+"SV" = (
+/obj/effect/turf_decal/stripes{
+	dir = 4
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/abandoned/engine)
 "SW" = (
 /obj/machinery/airalarm/directional/west,
 /obj/effect/mapping_helpers/airalarm/all_access,
@@ -814,6 +793,19 @@
 	},
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/shuttle/abandoned/engine)
+"Um" = (
+/obj/machinery/computer/camera_advanced/shuttle_docker/whiteship{
+	dir = 4;
+	view_range = 14;
+	x_offset = -2;
+	y_offset = -7
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/dark_blue/anticorner{
+	dir = 8
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/abandoned/bridge)
 "VI" = (
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/bar)
@@ -883,6 +875,12 @@
 /obj/effect/spawner/random/vending/snackvend,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/abandoned)
+"Yg" = (
+/obj/machinery/power/shuttle_engine/propulsion/right{
+	dir = 4
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/abandoned/engine)
 "YA" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/blood/footprints{
@@ -974,7 +972,7 @@ Bf
 (5,1,1) = {"
 Bf
 ck
-Qp
+ES
 lP
 NM
 us
@@ -1014,7 +1012,7 @@ NG
 cV
 RU
 rV
-fe
+Um
 cV
 jC
 qh
@@ -1128,15 +1126,15 @@ Bf
 Bf
 qA
 qA
-nQ
-nQ
-nQ
-nQ
+tX
+tX
+tX
+tX
 qA
-nQ
-nQ
-nQ
-nQ
+tX
+tX
+tX
+tX
 qA
 qA
 Bf
@@ -1145,15 +1143,15 @@ Bf
 Bf
 qA
 qA
-Pl
-Pl
-Pl
-Pl
+Yg
+Yg
+Yg
+Yg
 qA
-mA
-mA
-mA
-mA
+JQ
+JQ
+JQ
+JQ
 qA
 qA
 Bf
@@ -1162,15 +1160,15 @@ Bf
 Bf
 Bf
 qA
-yB
-yB
-yB
-yB
+SV
+SV
+SV
+SV
 qA
-yB
-yB
-yB
-yB
+SV
+SV
+SV
+SV
 qA
 Bf
 Bf

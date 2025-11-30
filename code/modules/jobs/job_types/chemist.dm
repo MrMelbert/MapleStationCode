@@ -1,7 +1,7 @@
 /datum/job/chemist
 	title = JOB_CHEMIST
-	description = "Supply the doctors with chemicals, make medicine, as well as \
-		less likable substances in the comfort of a fully reinforced room."
+	description = "Supply the doctors with chemicals, make medicine (as well as \
+		less likable substances) in the comfort of a fully reinforced room."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -26,7 +26,12 @@
 		/datum/job_department/medical,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/chemistry, /obj/item/ph_booklet)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/chemistry,
+		/obj/item/ph_booklet,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/thermometer,
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/bottle/flash_powder = 15,

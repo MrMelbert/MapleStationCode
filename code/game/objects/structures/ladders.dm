@@ -15,6 +15,8 @@
 	var/crafted = FALSE
 	/// travel time for ladder in deciseconds
 	var/travel_time = 1 SECONDS
+	/// Looping sound played when someone is climbing the ladder
+	var/datum/looping_sound/ladder_climb/climbing_sound
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
@@ -41,6 +43,7 @@
 /obj/structure/ladder/Destroy(force)
 	GLOB.ladders -= src
 	disconnect()
+	QDEL_NULL(climbing_sound)
 	return ..()
 
 /// Trait source applied by ladder holes
@@ -242,21 +245,17 @@
 	add_fingerprint(user)
 
 /obj/structure/ladder/proc/start_travelling(mob/user, going_up)
+	if(isliving(user))
+		// Move user to ladder loc and then start climbing sound
+		if(user.loc != loc && !user.Move(loc))
+			balloon_alert(user, "can't reach!")
+			return
+		climbing_sound ||= new(src)
+		climbing_sound.start()
+
 	show_initial_fluff_message(user, going_up)
 
-	// Our climbers athletics ability
-	var/fitness_level = user.mind?.get_skill_level(/datum/skill/athletics)
-
-	// Misc bonuses to the climb speed.
-	var/misc_multiplier = 1
-
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		misc_multiplier *= potential_spine.athletics_boost_multiplier
-
-	var/final_travel_time = (travel_time - fitness_level) * misc_multiplier
-
-	if(do_after(user, final_travel_time, target = src, interaction_key = DOAFTER_SOURCE_CLIMBING_LADDER))
+	if(do_after(user, user.get_climb_speed(travel_time), target = src, interaction_key = DOAFTER_SOURCE_CLIMBING_LADDER))
 		travel(user, going_up)
 
 /// The message shown when the player starts climbing the ladder
@@ -460,3 +459,26 @@
 
 /obj/structure/ladder/crafted
 	crafted = TRUE
+
+/datum/looping_sound/ladder_climb
+	mid_sounds = list(
+		'sound/effects/footstep/catwalk1.ogg' = 1,
+		'sound/effects/footstep/catwalk2.ogg' = 1,
+		'sound/effects/footstep/catwalk3.ogg' = 1,
+		'sound/effects/footstep/catwalk4.ogg' = 1,
+		'sound/effects/footstep/catwalk5.ogg' = 1,
+	)
+	mid_length = 0.5 SECONDS
+	volume = 90
+	vary = TRUE
+	extra_range = SHORT_RANGE_SOUND_EXTRARANGE
+	ignore_walls = FALSE
+	falloff_distance = 1
+
+/datum/looping_sound/ladder_climb/sound_loop(start_time)
+	. = ..()
+	// Stops loop if there are no mobs interacting with our parent
+	for(var/mob/living/other_climber in parent.loc)
+		if(DOING_INTERACTION(other_climber, DOAFTER_SOURCE_CLIMBING_LADDER))
+			return
+	stop()

@@ -107,8 +107,7 @@
 		message_admins("Could not find ai landmark for [src]. Yell at a mapper! We are spawning them at their current location.")
 		landmark_loc += loc
 
-	if(client)
-		stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	client?.stoptitlemusic()
 
 	var/mob/living/silicon/ai/our_AI = new /mob/living/silicon/ai(pick(landmark_loc), null, src)
 	. = our_AI

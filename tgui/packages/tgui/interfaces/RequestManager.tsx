@@ -82,8 +82,8 @@ export const RequestManager = (props) => {
               <Stack.Item>
                 <Input
                   value={searchText}
-                  onInput={(_, value) => setSearchText(value)}
-                  placeholder={'Search...'}
+                  onChange={setSearchText}
+                  placeholder="Search..."
                   mr={1}
                 />
               </Stack.Item>

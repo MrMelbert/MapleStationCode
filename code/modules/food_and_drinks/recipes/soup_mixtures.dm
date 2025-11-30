@@ -337,7 +337,7 @@
 	if(length(thing.reagents.reagent_list) <= 2)
 		return ..()
 
-	thing.name = "Watery bowl of something"
+	thing.name = "\improper Watery bowl of something"
 
 /datum/glass_style/has_foodtype/soup/watery_soup/set_desc(obj/item/thing)
 	if(length(thing.reagents.reagent_list) <= 2)
@@ -564,7 +564,7 @@
 		"someone's parents" = 2,
 	)
 	glass_price = FOOD_PRICE_EXOTIC
-	color = "#FF0000"
+	color = COLOR_RED
 
 /datum/glass_style/has_foodtype/soup/clownchili
 	required_drink_type = /datum/reagent/consumable/nutriment/soup/clownchili
@@ -618,7 +618,7 @@
 	name = "Tomato Soup"
 	description = "Drinking this feels like being a vampire! A tomato vampire..."
 	data = list("tomato" = 1)
-	color = "#FF0000"
+	color = COLOR_RED
 
 /datum/glass_style/has_foodtype/soup/tomato
 	required_drink_type = /datum/reagent/consumable/nutriment/soup/tomato
@@ -661,7 +661,7 @@
 	required_reagents = list(/datum/reagent/water = 50)
 	required_ingredients = list(
 		/obj/item/food/grown/tomato = 2,
-		/obj/item/organ/internal/eyes = 1,
+		/obj/item/organ/eyes = 1,
 	)
 	results = list(
 		/datum/reagent/consumable/nutriment/soup/eyeball = 20,
@@ -928,8 +928,8 @@
 	drink_type = VEGETABLES | DAIRY
 
 /datum/glass_style/has_foodtype/soup/white_beet/set_name(obj/item/thing)
-	var/how_do_you_spell_it = pick("borsch", "bortsch", "borstch", "borsh", "borshch", "borscht")
-	thing.name = how_do_you_spell_it
+	var/how_do_you_spell_it = pick("Borsch", "Bortsch", "Borstch", "Borsh", "Borshch", "Borscht")
+	thing.name = "\improper [how_do_you_spell_it]"
 
 	var/datum/reagent/soup = locate(required_drink_type) in thing.reagents
 	if(!soup)
@@ -1326,7 +1326,7 @@
 	name = "Corn Chowder"
 	description = "A creamy bowl of corn chowder, with bacon bits and mixed vegetables. One bowl is never enough."
 	data = list("creamy broth" = 1, "bacon" = 1, "mixed vegetables" = 1)
-	color = "#FFF200"
+	color = COLOR_CRAYON_YELLOW
 
 /datum/glass_style/has_foodtype/soup/corn_chowder
 	required_drink_type = /datum/reagent/consumable/nutriment/soup/corn_chowder

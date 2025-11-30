@@ -72,7 +72,7 @@
 	/// How far the computer's light can reach, is not editable by players.
 	var/comp_light_luminosity = 3
 	/// The built-in light's color, editable by players.
-	var/comp_light_color = "#FFFFFF"
+	var/comp_light_color = COLOR_WHITE
 
 	///Power usage when the computer is open (screen is active) and can be interacted with.
 	var/base_active_power_usage = 2 WATTS
@@ -293,7 +293,8 @@
 	if(ishuman(loc))
 		var/mob/living/carbon/human/human_wearer = loc
 		if(human_wearer.wear_id == src)
-			human_wearer.sec_hud_set_ID()
+			human_wearer.update_ID_card()
+
 	update_appearance()
 	update_slot_icon()
 	SEND_SIGNAL(src, COMSIG_MODULAR_COMPUTER_INSERTED_ID, inserting_id, user)
@@ -311,10 +312,7 @@
 	if(crew_manifest_update)
 		GLOB.manifest.modify(computer_id_slot.registered_name, computer_id_slot.assignment, computer_id_slot.get_trim_assignment())
 
-	if(user && !issilicon(user) && in_range(src, user))
-		user.put_in_hands(computer_id_slot)
-	else
-		computer_id_slot.forceMove(drop_location())
+	try_put_in_hand(computer_id_slot, user)
 
 	computer_id_slot = null
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, FALSE)
@@ -324,7 +322,8 @@
 	if(ishuman(loc))
 		var/mob/living/carbon/human/human_wearer = loc
 		if(human_wearer.wear_id == src)
-			human_wearer.sec_hud_set_ID()
+			human_wearer.update_ID_card()
+
 	update_slot_icon()
 	update_appearance()
 	return TRUE
@@ -450,7 +449,7 @@
 		update_slot_icon()
 		if(ishuman(loc))
 			var/mob/living/carbon/human/human_wearer = loc
-			human_wearer.sec_hud_set_ID()
+			human_wearer.update_ID_card()
 	if(inserted_pai == gone)
 		update_appearance(UPDATE_ICON)
 	if(inserted_disk == gone)

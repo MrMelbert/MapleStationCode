@@ -7,8 +7,8 @@
 
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
-	description = "File paperwork to Central Command via your fax machine. \
-		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	description = "File paperwork to Central Command via your fax machine, \
+		pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
 	title_options = list(
 		"Bridge Assistant",
 	)
@@ -40,7 +40,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,

@@ -22,8 +22,8 @@
 
 /mob/dead/new_player/Initialize(mapload)
 	if(client && SSticker.state == GAME_STATE_STARTUP)
-		var/atom/movable/screen/splash/S = new(null, client, TRUE, TRUE)
-		S.Fade(TRUE)
+		var/atom/movable/screen/splash/S = new(null, null, client, TRUE, TRUE)
+		S.fade(TRUE)
 
 	if(length(GLOB.newplayer_start))
 		forceMove(pick(GLOB.newplayer_start))
@@ -98,7 +98,7 @@
 		observer.client.init_verbs()
 		observer.client.player_details.time_of_death = world.time
 	observer.update_appearance()
-	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	observer.client?.stoptitlemusic()
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
 	qdel(src)
@@ -215,7 +215,6 @@
 		humanc = character //Let's retypecast the var to be human,
 
 	if(humanc) //These procs all expect humans
-		GLOB.manifest.inject(humanc)
 		announce_arrival(humanc, rank, try_queue = TRUE)
 		AddEmploymentContract(humanc)
 
@@ -236,10 +235,15 @@
 					if(SSshuttle.emergency.timeLeft(1) > initial(SSshuttle.emergency_call_time)*0.5)
 						SSdynamic.make_antag_chance(humanc)
 
-	if((job.job_flags & JOB_ASSIGN_QUIRKS) && humanc && CONFIG_GET(flag/roundstart_traits))
-		SSquirks.AssignQuirks(humanc, humanc.client)
 	if(humanc)
-		SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP, humanc.client)
+		if(job.job_flags & JOB_ASSIGN_QUIRKS)
+			if(CONFIG_GET(flag/roundstart_traits))
+				SSquirks.AssignQuirks(humanc, humanc.client)
+		else // clear any personalities the prefs added since our job clearly does not want them
+			humanc.clear_personalities()
+		GLOB.manifest.inject(humanc)
+		// SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
+
 	var/area/station/arrivals = GLOB.areas_by_type[/area/station/hallway/secondary/entry]
 	if(humanc && arrivals && !arrivals.power_environ) //arrivals depowered
 		humanc.put_in_hands(new /obj/item/crowbar/large/emergency(get_turf(humanc))) //if hands full then just drops on the floor
@@ -278,7 +282,7 @@
 	if(!.)
 		return
 	new_character.key = key //Manually transfer the key to log them in,
-	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character.client?.stoptitlemusic()
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)

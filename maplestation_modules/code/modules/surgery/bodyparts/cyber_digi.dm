@@ -34,7 +34,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -56,7 +56,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -78,7 +78,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/surplus/digi/Initialize(mapload)
@@ -97,7 +97,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/robot/surplus/digi/Initialize(mapload)
@@ -116,7 +116,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
@@ -138,7 +138,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20

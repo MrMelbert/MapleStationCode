@@ -263,22 +263,16 @@
 /obj/machinery/research/anomaly_refinery/proc/eject_bomb(mob/user, force = FALSE)
 	if(!inserted_bomb || (active && !force))
 		return
-	if(user)
-		user.put_in_hands(inserted_bomb)
-		to_chat(user, span_notice("You remove [inserted_bomb] from [src]."))
-	else
-		inserted_bomb.forceMove(drop_location())
+	to_chat(user, span_notice("You remove [inserted_bomb] from [src]."))
+	try_put_in_hand(inserted_bomb, user)
 	combined_gasmix = null
 	reaction_increment = 0
 
 /obj/machinery/research/anomaly_refinery/proc/eject_core(mob/user)
 	if(!inserted_core || active)
 		return
-	if(user)
-		user.put_in_hands(inserted_core)
-		to_chat(user, span_notice("You remove [inserted_core] from [src]."))
-	else
-		inserted_core.forceMove(drop_location())
+	to_chat(user, span_notice("You remove [inserted_core] from [src]."))
+	try_put_in_hand(inserted_core, user)
 
 /// We rely on exited to clear references.
 /obj/machinery/research/anomaly_refinery/Exited(atom/movable/gone, direction)

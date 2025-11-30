@@ -39,7 +39,7 @@
 /datum/reagent/toxin/mutagen
 	name = "Unstable Mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	color = "#00FF00"
+	color = COLOR_VIBRANT_LIME
 	creation_purity = REAGENT_STANDARD_PURITY
 	purity = REAGENT_STANDARD_PURITY
 	toxpwr = 0
@@ -235,6 +235,11 @@
 	taste_description = "fish"
 	ph = 12
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/toxin/carpotoxin/on_mob_add(mob/living/affected_mob, amount)
+	. = ..()
+	if (HAS_TRAIT(affected_mob, TRAIT_CARPOTOXIN_IMMUNE))
+		toxpwr = 0
 
 /datum/reagent/toxin/zombiepowder
 	name = "Zombie Powder"
@@ -512,15 +517,10 @@
 
 /datum/glass_style/drinking_glass/fakebeer
 	required_drink_type = /datum/reagent/toxin/fakebeer
-
-/datum/glass_style/drinking_glass/fakebeer/New()
-	. = ..()
-	// Copy styles from the beer drinking glass datum
-	var/datum/glass_style/copy_from = /datum/glass_style/drinking_glass/beer
-	name = initial(copy_from.name)
-	desc = initial(copy_from.desc)
-	icon = initial(copy_from.icon)
-	icon_state = initial(copy_from.icon_state)
+	name = /datum/glass_style/drinking_glass/beer::name
+	desc = /datum/glass_style/drinking_glass/beer::desc
+	icon = /datum/glass_style/drinking_glass/beer::icon
+	icon_state = /datum/glass_style/drinking_glass/beer::icon_state
 
 /datum/reagent/toxin/fakebeer/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -671,7 +671,7 @@
 	REMOVE_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 
 /datum/reagent/toxin/formaldehyde/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_CORONER_METABOLISM)) //mmmm, the forbidden pickle juice
 		if(affected_mob.adjustToxLoss(-1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)) //it counteracts its own toxin damage.
 			return UPDATE_MOB_HEALTH
@@ -869,7 +869,7 @@
 	description = "Sodium Thiopental induces heavy weakness in its target as well as unconsciousness."
 	silent_toxin = TRUE
 	reagent_state = LIQUID
-	color = "#6496FA"
+	color = LIGHT_COLOR_BLUE
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	toxpwr = 0
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
@@ -920,7 +920,7 @@
 	description = "A very powerful delayed toxin. Upon full metabolization, a massive amount of toxin damage will be dealt depending on how long it has been in the victim's bloodstream."
 	silent_toxin = TRUE
 	reagent_state = LIQUID
-	color = "#FFFFFF"
+	color = COLOR_WHITE
 	toxpwr = 0
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -1241,13 +1241,17 @@
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_add(mob/living/carbon/affected_mob)
 	. = ..()
-	affected_mob.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
+	if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+		affected_mob.say("oof ouch my bones", forced = /datum/reagent/toxin/bonehurtingjuice)
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(affected_mob.adjustStaminaLoss(7.5 * REM * seconds_per_tick, updating_stamina = FALSE))
 		. = UPDATE_MOB_HEALTH
 	if(!SPT_PROB(10, seconds_per_tick))
+		return
+	if(!HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+		to_chat(affected_mob, span_warning("Your bones hurt!"))
 		return
 	switch(rand(1, 3))
 		if(1)
@@ -1265,12 +1269,14 @@
 		if(BP)
 			playsound(affected_mob, SFX_DESECRATION, 50, TRUE, -1)
 			affected_mob.visible_message(span_warning("[affected_mob]'s bones hurt too much!!"), span_danger("Your bones hurt too much!!"))
-			affected_mob.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
+			if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+				affected_mob.say("OOF!!", forced = /datum/reagent/toxin/bonehurtingjuice)
 			if(BP.receive_damage(brute = 20 * REM * seconds_per_tick, burn = 0, blocked = 200, updating_health = FALSE, wound_bonus = rand(30, 130)))
 				. = UPDATE_MOB_HEALTH
 		else //SUCH A LUST FOR REVENGE!!!
 			to_chat(affected_mob, span_warning("A phantom limb hurts!"))
-			affected_mob.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
+			if(HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
+				affected_mob.say("Why are we still here, just to suffer?", forced = /datum/reagent/toxin/bonehurtingjuice)
 
 /datum/reagent/toxin/bungotoxin
 	name = "Bungotoxin"
@@ -1340,7 +1346,7 @@
 	description = "A colorless, odorless, tasteless neurotoxin usually carried by livers of animals of the Tetraodontiformes order."
 	silent_toxin = TRUE
 	reagent_state = SOLID
-	color = "#EEEEEE"
+	color = COLOR_VERY_LIGHT_GRAY
 	metabolization_rate = 0.1 * REAGENTS_METABOLISM
 	toxpwr = 0
 	taste_mult = 0
@@ -1362,7 +1368,7 @@
 			if(SPT_PROB(20, seconds_per_tick))
 				affected_mob.set_jitter_if_lower(rand(2 SECONDS, 3 SECONDS) * REM * seconds_per_tick)
 			if(SPT_PROB(5, seconds_per_tick))
-				var/obj/item/organ/internal/tongue/tongue = affected_mob.get_organ_slot(ORGAN_SLOT_TONGUE)
+				var/obj/item/organ/tongue/tongue = affected_mob.get_organ_slot(ORGAN_SLOT_TONGUE)
 				if(tongue)
 					to_chat(affected_mob, span_warning("Your tongue feels numb..."))
 				affected_mob.set_slurring_if_lower(5 SECONDS * REM * seconds_per_tick)

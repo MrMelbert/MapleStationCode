@@ -1,7 +1,7 @@
 /datum/job/station_engineer
 	title = JOB_STATION_ENGINEER
 	description = "Start the Supermatter, wire the solars, repair station hull \
-		and wiring damage."
+		and wiring damage... or build a deathtrap in the bar."
 	title_options = list(
 		"Junior Engineer",
 		"Station Electrician",
@@ -31,7 +31,14 @@
 		/datum/job_department/engineering,
 		)
 
-	family_heirlooms = list(/obj/item/clothing/head/utility/hardhat, /obj/item/screwdriver, /obj/item/wrench, /obj/item/weldingtool, /obj/item/crowbar, /obj/item/wirecutters)
+	family_heirlooms = list(
+		/obj/item/clothing/head/utility/hardhat,
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/weldingtool,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/box/lights/mixed = 20,

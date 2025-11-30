@@ -8,6 +8,8 @@
 	move_up_action = null
 	move_down_action = null
 
+	alerts_cameras = FALSE
+
 	var/shuttleId = ""
 	var/shuttlePortId = ""
 	var/shuttlePortName = "custom location"
@@ -94,6 +96,7 @@
 		return
 
 	eyeobj = new /mob/camera/ai_eye/remote/shuttle_docker(null, src)
+	eyeobj.set_telegraph(alerts_cameras)
 	var/mob/camera/ai_eye/remote/shuttle_docker/the_eye = eyeobj
 	the_eye.setDir(shuttle_port.dir)
 	var/turf/origin = locate(shuttle_port.x + x_offset, shuttle_port.y + y_offset, shuttle_port.z)

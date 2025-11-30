@@ -3,7 +3,7 @@
 /datum/preference/spellbook
 	savefile_key = "spellbook"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	priority = PREFERENCE_PRIORITY_NAMES
 	can_randomize = FALSE
 
