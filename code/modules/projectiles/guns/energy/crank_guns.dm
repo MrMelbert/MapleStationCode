@@ -7,9 +7,13 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/musket)
 	slot_flags = ITEM_SLOT_BACK
 	obj_flags = UNIQUE_RENAME
-	can_bayonet = TRUE
-	knife_x_offset = 22
-	knife_y_offset = 11
+	// can_bayonet = TRUE
+	// knife_x_offset = 22
+	// knife_y_offset = 11
+	light_color = COLOR_PURPLE
+
+// /obj/item/gun/energy/laser/musket/add_bayonet_point()
+// 	AddComponent(/datum/component/bayonet_attachable, offset_x = 22, offset_y = 11)
 
 /obj/item/gun/energy/laser/musket/Initialize(mapload)
 	. = ..()
@@ -117,6 +121,7 @@
 		While it doesn't manipulate temperature in and of itself, it does cause an violent eruption in anyone who is severely cold. Able to generate \
 		ammunition by manually spinning the weapon's nanite canister."
 	icon_state = "infernopistol"
+	light_color = LIGHT_COLOR_ORANGE
 	ammo_type = list(/obj/item/ammo_casing/energy/nanite/inferno)
 
 /obj/item/gun/energy/laser/thermal/cryo //the ice gun
@@ -125,4 +130,5 @@
 		While it doesn't manipulate temperature in and of itself, it does cause an internal explosion in anyone who is severely hot. Able to generate \
 		ammunition by manually spinning the weapon's nanite canister."
 	icon_state = "cryopistol"
+	light_color = LIGHT_COLOR_BLUE
 	ammo_type = list(/obj/item/ammo_casing/energy/nanite/cryo)

@@ -8,6 +8,8 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	item_flags = parent_type::item_flags & ~NEEDS_PERMIT
+	can_muzzle_flash = FALSE
 
 	var/mob/living/current_target
 	var/last_check = 0

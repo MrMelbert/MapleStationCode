@@ -234,7 +234,7 @@ export const bitflagInfo = [
     tooltip: 'Produces a reagent that induces or relieves pain.',
     category: 'Affects',
     toggle: 'toggle_tag_pain',
-  }
+  },
   {
     flag: 'COMPONENT',
     icon: 'question',

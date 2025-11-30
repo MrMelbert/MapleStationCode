@@ -1105,7 +1105,7 @@
 		matrix.Turn(original_angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
+		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override || color)
 		// NON-MODULE CHANGE
 		animate(thing, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
