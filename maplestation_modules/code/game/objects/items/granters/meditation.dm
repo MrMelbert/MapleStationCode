@@ -16,7 +16,7 @@
 		"It says that I should ideally find a comfortable or non-intrusive place to meditate in, and then recommends a list of various mats and seats to try. Or I could just make one with some cloth.",
 	)
 
-/obj/item/book/granter/action/spell/meditate/recoil(mob/living/user)
+/obj/item/book/granter/action/spell/meditation/recoil(mob/living/user)
 	. = ..()
 	to_chat(user, "That copy was dreadfully uninformative, unoriginal, and honestly boring.")
 	user.emote("yawn")

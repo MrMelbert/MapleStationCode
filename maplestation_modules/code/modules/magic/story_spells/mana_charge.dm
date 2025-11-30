@@ -10,10 +10,11 @@
 	cooldown_time = 4 MINUTES
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
-	var/base_mana_recharge = 40 // the mana this recharges before a random varience
+	var/base_mana_recharge = 30 // the mana this recharges before a random varience
 
 	var/random_value_floor = 0
 	var/random_value_ceiling = 25
+	var/empowered_meditation_increase = 35 // when the player has empowered meditation through some means, this value is used instead of the above values in determining bonus
 
 	invocation_self_message = "You begin focusing your mind on manipulating ambient mana."
 	invocation = "Focus...."
@@ -32,7 +33,7 @@
 		return . | SPELL_CANCEL_CAST
 	var/randy_value = 0
 	if(HAS_TRAIT(cast_on, TRAIT_EMPOWERED_MEDITATION))
-		randy_value = 40
+		randy_value = empowered_meditation_increase
 	else
 		randy_value = rand(random_value_floor, random_value_ceiling)
 	var/mana_to_gain = randy_value + base_mana_recharge
@@ -47,12 +48,12 @@
 	sound = 'sound/weapons/slice.ogg'
 
 	cooldown_time = 2 MINUTES // shorter as its not from no where
-	base_mana_recharge = 50
-	var/base_bloodloss = 35 // the blood drained before a random variable is added.
+	base_mana_recharge = 40
+	var/base_bloodloss = 50 // the blood drained before a random variable is added.
 
 	invocation_self_message = "You prepare an incantation to trade some of your blood for mana."
 	invocation = "Vy'Thr"
-	channel_time = 10 SECONDS
+	channel_time = 8 SECONDS
 
 /datum/action/cooldown/spell/meditate/lesser_splattercasting/before_cast(mob/living/cast_on)
 	. = ..()
