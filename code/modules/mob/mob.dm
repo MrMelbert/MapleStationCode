@@ -546,10 +546,7 @@
 		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
 
 	if(!blind)
-		show_message(span_smallnoticeital("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
-		if(is_eyes_visible()) // your eyes ain't even visible (but future todo : telepaths can skip this check?)
-			for(var/mob/viewer in oviewers(3, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
-				viewer.show_message(span_smallnoticeital("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > 3 ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+		examine_feedback(examinify, closer_look)
 
 	if(eye_contact)
 		handle_eye_contact(examinify)
@@ -561,6 +558,9 @@
 	return TRUE //The non-living will always succeed at this check.
 
 /mob/living/blind_examine_check(atom/examined_thing)
+	if(!can_hold_items())
+		return FALSE // SOL
+
 	//need to be next to something and awake
 	if(!Adjacent(examined_thing) || incapacitated())
 		to_chat(src, span_warning("Something is there, but you can't see it!"))
@@ -614,6 +614,32 @@
 	set_combat_mode(previous_combat_mode)
 	return TRUE
 
+#define EXAMINE_FEEDBACK_RANGE 3
+
+/// Send a feedback message to src, and any nearby viewers, that src is examining examinify
+/mob/proc/examine_feedback(atom/examinify, closer_look = FALSE)
+	return
+
+/mob/living/examine_feedback(atom/examinify, closer_look = FALSE)
+	show_message(examining_span_small("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	if(!is_eyes_visible())
+		return // your eyes ain't even visible (but future todo : telepaths can skip this check?)
+	if(HAS_TRAIT(examinify, TRAIT_EXAMINE_SKIP) && get(examinify, /mob/living) == src)
+		return // don't leak examine skip stuff
+	for(var/mob/viewer in oviewers(EXAMINE_FEEDBACK_RANGE, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
+		viewer.show_message(examining_span_small("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+
+/mob/living/silicon/ai/examine_feedback(atom/examinify, closer_look = FALSE)
+	show_message(examining_span_small("Your cameras [closer_look ? "zoom in while focusing on" : "focus on"] [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	if(!eyeobj || !eyeobj.telegraph_cameras) // stealth cameras
+		return
+	var/list/already_seen_it = list()
+	for(var/obj/machinery/camera/cam as anything in eyeobj.cameras_near_eye)
+		for(var/mob/viewer in (oviewers(EXAMINE_FEEDBACK_RANGE, cam) & viewers(examinify)) - already_seen_it)  // compicated way to say "everyone within 3 tiles who can see our camera(s) and the thing being examined"
+			viewer.show_message(examining_span_small("[cam] [closer_look ? "zooms in while focusing" : "focuses"] on [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+			already_seen_it += viewer
+
+#undef EXAMINE_FEEDBACK_RANGE
 
 /mob/proc/clear_from_recent_examines(ref_to_clear)
 	SIGNAL_HANDLER
