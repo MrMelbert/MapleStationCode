@@ -324,9 +324,6 @@
 		. += span_warning("<b>[p_Theyre()] completely shredded and require[p_s()] mending before [p_they()] can be worn again!</b>")
 		return
 
-	if(TRAIT_FAST_CUFFING in clothing_traits)
-		. += "[src] increase the speed that you handcuff others."
-
 	for(var/zone in damage_by_parts)
 		var/pct_damage_part = damage_by_parts[zone] / limb_integrity * 100
 		var/zone_name = parse_zone(zone)
@@ -367,7 +364,7 @@
 	if((clothing_flags & STOPSPRESSUREDAMAGE) || (visor_flags & STOPSPRESSUREDAMAGE))
 		.["pressureproof"] = "Protects the wearer from extremely low or high pressure, such as vacuum of space."
 	if(flags_cover & PEPPERPROOF)
-		.["pepperproof"] = "Protects the wearer from the effects of pepperspray."
+		.["pepper-proof"] = "Protects the wearer from the effects of pepperspray."
 	if (max_heat_protection_temperature || min_cold_protection_temperature)
 		var/heat_desc
 		var/cold_desc
@@ -386,6 +383,12 @@
 			if (0 to 71)
 				cold_desc = "extremely low"
 		.["thermally insulated"] = "Protects the wearer from [jointext(list(heat_desc, cold_desc) - null, " and ")] temperatures."
+	if((TRAIT_QUICK_CARRY in clothing_traits) || (TRAIT_QUICKER_CARRY in clothing_traits))
+		.["tactile"] = "Decreases the time it takes to pick up creatures[(TRAIT_QUICKER_CARRY in clothing_traits) ? " considerably" : ""]."
+	if(TRAIT_FASTMED in clothing_traits)
+		.["sterile"] = "Increases the speed at which reagents are administered to others by [round((1/NITRILE_GLOVES_MULTIPLIER-1)*100, 1)]%."
+	if(TRAIT_FAST_CUFFING in clothing_traits)
+		.["secure"] = "Increases the speed at which you apply restraints."
 
 /obj/item/clothing/examine_descriptor(mob/user)
 	return "clothing"
