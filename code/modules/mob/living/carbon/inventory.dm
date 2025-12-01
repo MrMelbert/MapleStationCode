@@ -130,7 +130,8 @@
 			wear_neck = equipping
 			update_worn_neck()
 		if(ITEM_SLOT_HANDCUFFED)
-			set_handcuffed(equipping)
+			handcuffed = equipping
+			update_handcuffed()
 		if(ITEM_SLOT_LEGCUFFED)
 			legcuffed = equipping
 			update_worn_legcuffs()
@@ -162,6 +163,8 @@
 
 	update_equipment_speed_mods()
 	hud_used?.update_locked_slots()
+	if(item.is_restraining(slot))
+		apply_status_effect(/datum/status_effect/restrained, item, slot)
 	if(!(slot & item.slot_flags)) // Things below only update if slotted in (ie: not held)
 		return
 	if(item.hair_mask)
@@ -201,7 +204,8 @@
 		if(!QDELETED(src))
 			update_worn_neck()
 	else if(item_dropping == handcuffed)
-		set_handcuffed(null)
+		handcuffed = null
+		update_handcuffed()
 		if(buckled?.buckle_requires_restraints)
 			buckled.unbuckle_mob(src)
 	else if(item_dropping == legcuffed)

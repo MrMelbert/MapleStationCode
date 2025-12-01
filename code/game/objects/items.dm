@@ -1807,3 +1807,13 @@
 			BARE WOUND: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=bare wound' id='bare wound'>[bare_wound_bonus]</a>
 		</font>
 	"}
+
+/// Checks if we are restraining the given slot
+/// By default all equipped items with a breakouttime are considered restraining,
+/// though items with ITEM_SLOT_HANDCUFFED or ITEM_SLOT_LEGCUFFED flags only restrain those slots.
+/obj/item/proc/is_restraining(in_slot)
+	if(!breakouttime)
+		return FALSE
+	if(slot_flags & (ITEM_SLOT_HANDCUFFED|ITEM_SLOT_LEGCUFFED))
+		return in_slot & (ITEM_SLOT_HANDCUFFED|ITEM_SLOT_LEGCUFFED)
+	return in_slot & slot_flags

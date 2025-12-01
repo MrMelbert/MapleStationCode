@@ -381,8 +381,10 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/proc/stop_cuff_removal(datum/source, obj/item/cuffs)
 	SIGNAL_HANDLER
+	if(isalienadult(source))
+		return NONE // i guess
 	to_chat(source, span_warning("You don't have the room to remove [cuffs]!"))
-	return COMSIG_MOB_BLOCK_CUFF_REMOVAL
+	return BLOCK_CUFF_REMOVAL
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/ui_act(action, list/params)
 	if(action == "eject")

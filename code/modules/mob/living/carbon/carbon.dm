@@ -262,90 +262,8 @@
 	. = ..()
 	loc?.handle_fall(src) //it's loc so it doesn't call the mob's handle_fall which does nothing
 
-/mob/living/carbon/resist_buckle()
-	if(!HAS_TRAIT(src, TRAIT_RESTRAINED))
-		buckled.user_unbuckle_mob(src, src)
-		return
-
-	changeNext_move(CLICK_CD_BREAKOUT)
-	last_special = world.time + CLICK_CD_BREAKOUT
-	var/buckle_cd = 1 MINUTES
-
-	if(handcuffed)
-		var/obj/item/restraints/cuffs = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
-		buckle_cd = cuffs.breakouttime
-
-	visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"),
-				span_notice("You attempt to unbuckle yourself... \
-				(This will take around [DisplayTimeText(buckle_cd)] and you must stay still.)"))
-
-	if(!do_after(src, buckle_cd, target = src, timed_action_flags = IGNORE_HELD_ITEM, hidden = TRUE))
-		if(buckled)
-			to_chat(src, span_warning("You fail to unbuckle yourself!"))
-		return
-
-	if(QDELETED(src) || isnull(buckled))
-		return
-
-	buckled.user_unbuckle_mob(src, src)
-
-
 /mob/living/carbon/resist_fire()
 	return !!apply_status_effect(/datum/status_effect/stop_drop_roll)
-
-/mob/living/carbon/resist_restraints()
-	var/obj/item/I = null
-	var/type = 0
-	if(handcuffed)
-		I = handcuffed
-		type = 1
-	else if(legcuffed)
-		I = legcuffed
-		type = 2
-	if(I)
-		if(type == 1)
-			changeNext_move(I.resist_cooldown)
-			last_special = world.time + I.resist_cooldown
-		if(type == 2)
-			changeNext_move(CLICK_CD_RANGE)
-			last_special = world.time + CLICK_CD_RANGE
-		cuff_resist(I)
-
-
-/**
- * Helper to break the cuffs from hands
- * @param {obj/item} cuffs - The cuffs to break
- * @param {number} breakouttime - The time it takes to break the cuffs. Use SECONDS/MINUTES defines
- * @param {number} cuff_break - Speed multiplier, 0 is default, see _DEFINES\combat.dm
- */
-/mob/living/carbon/proc/cuff_resist(obj/item/cuffs, breakouttime = 1 MINUTES, cuff_break = 0)
-	if((cuff_break != INSTANT_CUFFBREAK) && (SEND_SIGNAL(src, COMSIG_MOB_REMOVING_CUFFS, cuffs) & COMSIG_MOB_BLOCK_CUFF_REMOVAL))
-		return //The blocking object should sent a fluff-appropriate to_chat about cuff removal being blocked
-	if(cuffs.item_flags & BEING_REMOVED)
-		to_chat(src, span_warning("You're already attempting to remove [cuffs]!"))
-		return
-	cuffs.item_flags |= BEING_REMOVED
-	breakouttime = cuffs.breakouttime
-	if(!cuff_break)
-		visible_message(span_warning("[src] attempts to remove [cuffs]!"))
-		to_chat(src, span_notice("You attempt to remove [cuffs]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
-		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM, hidden = TRUE))
-			. = clear_cuffs(cuffs, cuff_break)
-		else
-			to_chat(src, span_warning("You fail to remove [cuffs]!"))
-
-	else if(cuff_break == FAST_CUFFBREAK)
-		breakouttime = 5 SECONDS
-		visible_message(span_warning("[src] is trying to break [cuffs]!"))
-		to_chat(src, span_notice("You attempt to break [cuffs]... (This will take around 5 seconds and you need to stand still.)"))
-		if(do_after(src, breakouttime, target = src, timed_action_flags = IGNORE_HELD_ITEM))
-			. = clear_cuffs(cuffs, cuff_break)
-		else
-			to_chat(src, span_warning("You fail to break [cuffs]!"))
-
-	else if(cuff_break == INSTANT_CUFFBREAK)
-		. = clear_cuffs(cuffs, cuff_break)
-	cuffs.item_flags &= ~BEING_REMOVED
 
 /mob/living/carbon/proc/uncuff()
 	if (handcuffed)
@@ -354,27 +272,6 @@
 	if (legcuffed)
 		dropItemToGround(legcuffed, TRUE)
 		changeNext_move(0)
-
-/mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
-	if(!I.loc || buckled)
-		return FALSE
-	if(I != handcuffed && I != legcuffed)
-		return FALSE
-	visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [I]!"))
-	to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
-
-	if(cuff_break)
-		. = !((I == handcuffed) || (I == legcuffed))
-		qdel(I)
-		return TRUE
-
-	else
-		if(I == handcuffed)
-			dropItemToGround(I, TRUE)
-			return TRUE
-		if(I == legcuffed)
-			dropItemToGround(I, TRUE)
-			return TRUE
 
 /mob/living/carbon/proc/accident(obj/item/I)
 	if(!I || (I.item_flags & ABSTRACT) || HAS_TRAIT(I, TRAIT_NODROP))
@@ -969,10 +866,8 @@
 	if(handcuffed)
 		drop_all_held_items()
 		stop_pulling()
-		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
 		add_mood_event("handcuffed", /datum/mood_event/handcuffed)
 	else
-		clear_alert(ALERT_HANDCUFFED)
 		clear_mood_event("handcuffed")
 	update_mob_action_buttons() //some of our action buttons might be unusable when we're handcuffed.
 	update_worn_handcuffs()
@@ -1424,20 +1319,6 @@
 
 	brain.update_skillchips()
 
-
-/// Modifies the handcuffed value if a different value is passed, returning FALSE otherwise. The variable should only be changed through this proc.
-/mob/living/carbon/proc/set_handcuffed(new_value)
-	if(handcuffed == new_value)
-		return FALSE
-	. = handcuffed
-	handcuffed = new_value
-	if(.)
-		if(!handcuffed)
-			REMOVE_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
-	else if(handcuffed)
-		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
-	update_handcuffed()
-
 /mob/living/carbon/on_standing_up()
 	. = ..()
 	update_bodypart_bleed_overlays()
@@ -1459,9 +1340,6 @@
 	switch(var_name)
 		if(NAMEOF(src, disgust))
 			set_disgust(var_value)
-			. = TRUE
-		if(NAMEOF(src, handcuffed))
-			set_handcuffed(var_value)
 			. = TRUE
 
 	if(!isnull(.))

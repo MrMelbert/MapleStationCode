@@ -6362,6 +6362,7 @@
 #include "maplestation_modules\code\datums\quirks\neutral.dm"
 #include "maplestation_modules\code\datums\ruins\space.dm"
 #include "maplestation_modules\code\datums\status_effects\misc.dm"
+#include "maplestation_modules\code\datums\status_effects\resisting_cuffs.dm"
 #include "maplestation_modules\code\datums\status_effects\trait_effect.dm"
 #include "maplestation_modules\code\datums\votes\chaos.dm"
 #include "maplestation_modules\code\datums\votes\transfer_vote.dm"
