@@ -698,6 +698,8 @@
 		return .
 	if(var_name == NAMEOF(src, base_mob_height))
 		update_mob_height()
+	if(var_name == NAMEOF(src, chat_color) || var_name == NAMEOF(src, chat_color_darkened))
+		GLOB.forced_runechat_names[real_name] = var_value
 
 /mob/living/carbon/human/vv_get_dropdown()
 	. = ..()
