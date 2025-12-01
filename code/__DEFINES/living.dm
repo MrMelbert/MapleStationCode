@@ -201,3 +201,8 @@
 /// - Viewer is holding it: "your [thing.name]"
 /// - The object is on the ground: "the [thing.name]"
 #define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
+
+/// For consistent examine span formatting (normal size)
+#define examining_span_normal(msg) span_infoplain(span_italics(msg))
+/// For consistent examine span formatting (small size)
+#define examining_span_small(msg) span_small(span_infoplain(span_italics(msg)))

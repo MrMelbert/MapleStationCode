@@ -555,9 +555,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	to_chat(src, span_notice("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	to_chat(src, examining_span_normal("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
 	for(var/mob/viewer in oviewers(src))
-		viewer.show_message(span_notice("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
+		viewer.show_message(examining_span_normal("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
