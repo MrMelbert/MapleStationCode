@@ -22,6 +22,7 @@
 	var/medium_pulse_value = 15 // partial starlight
 	var/low_pulse_value = 5 // basically a pity value
 
+	var/last_pulse_value = NO_STARLIGHT // how strong was our last starlight pulse? this is used for checks for stuff like examines
 	var/starlight_check_range = 3
 
 /obj/machinery/power/magic_contraption/stellar/get_initial_mana_pool_type()
@@ -65,6 +66,18 @@
 	// also update sprite
 	mana_pool.amount += pulse_value
 	last_pulse = world.time
+
+/obj/machinery/power/magic_contraption/stellar/examine(mob/user)
+	. = ..()
+	if(!active)
+		return . += "The oculory is currently powered off."
+	switch(last_pulse_value)
+		if(FULL_STARLIGHT)
+			. += span_warning("The oculory is beaming with starlight!")
+		if(PARTIAL_STARLIGHT)
+			. += "The oculory is functioning under normal conditions."
+		if(NO_STARLIGHT)
+			. += span_warning("The oculory needs to gather more starlight.")
 
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"

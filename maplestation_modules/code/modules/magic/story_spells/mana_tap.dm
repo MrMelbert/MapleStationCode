@@ -1,6 +1,6 @@
 /datum/action/cooldown/spell/touch/mana_tap
 	name = "Mana Tap"
-	desc = "Extend a psychic tap to allow you to manipulate mana without a simple object."
+	desc = "Extend a psychic tap to allow you to manipulate mana without a simple object. Ideal for drawing from the mana sources of mana in space."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "spark_psi"
 	sound = null
