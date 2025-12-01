@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_NORMAL // meant to be big and hard to store, additional reason to not use this
 
 /obj/item/magic_wand/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
+	if(isturf(interacting_with))
+		return
 	var/datum/mana_pool/target_mana_pool = interacting_with.mana_pool
 	var/datum/mana_pool/user_pool = user.mana_pool
 
