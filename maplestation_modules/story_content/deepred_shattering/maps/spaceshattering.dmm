@@ -1,0 +1,70 @@
+"a" = (/turf/open/indestructible/redtech,/area/template_noop)
+"f" = (/obj/structure/closet/crate/wooden,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/turf/open/indestructible/redtech,/area/template_noop)
+"g" = (/obj/item/gps/spaceruin{desc = "Something is wrong."; gpstag = "Redtech Signal"},/turf/open/indestructible/redtech/alt,/area/template_noop)
+"h" = (/turf/open/indestructible/redtech/altalt,/area/template_noop)
+"k" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech,/area/template_noop)
+"l" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech,/area/template_noop)
+"m" = (/obj/structure/closet/crate/engineering,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"n" = (/obj/structure/closet/crate/centcom,/obj/item/mana_lens,/obj/item/clothing/neck/mana_star,/turf/open/indestructible/redtech/altalt,/area/template_noop)
+"o" = (/turf/closed/indestructible/redtech,/area/template_noop)
+"q" = (/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech,/area/template_noop)
+"r" = (/obj/structure/closet/crate/cargo/mining,/obj/item/mana_battery/mana_crystal/standard,/obj/item/mana_battery/mana_crystal/standard,/obj/item/mana_battery/mana_crystal/standard,/turf/open/indestructible/redtech,/area/template_noop)
+"t" = (/obj/structure/redtech_indestructable/server_off,/obj/structure/redtech_indestructable/inert_AV,/turf/open/indestructible/redtech,/area/template_noop)
+"u" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech,/area/template_noop)
+"w" = (/obj/structure/closet/crate/cargo/mining,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/turf/open/indestructible/redtech,/area/template_noop)
+"x" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"y" = (/obj/structure/closet/crate/wooden,/obj/item/yin_yang_orb,/turf/open/indestructible/redtech,/area/template_noop)
+"z" = (/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"A" = (/turf/open/indestructible/redtech/alt,/area/template_noop)
+"B" = (/obj/structure/redtech_indestructable/inert_AV,/turf/closed/indestructible/redtech,/area/template_noop)
+"E" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"I" = (/obj/structure/redtech_indestructable/server_off,/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech,/area/template_noop)
+"J" = (/turf/template_noop,/area/template_noop)
+"K" = (/obj/structure/closet/crate/engineering,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"M" = (/obj/structure/closet/crate/engineering,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+"N" = (/obj/structure/closet/crate/large,/obj/item/stack/sheet/mineral/resmythril{amount = 12},/turf/open/indestructible/redtech,/area/template_noop)
+"O" = (/obj/item/aiupgrade/surveillance_upgrade,/turf/open/indestructible/redtech,/area/template_noop)
+"Q" = (/obj/structure/closet/crate/wooden,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/turf/open/indestructible/redtech,/area/template_noop)
+"R" = (/obj/structure/closet/crate/large,/obj/item/stack/sheet/mineral/aerialite{amount = 12},/turf/open/indestructible/redtech,/area/template_noop)
+"S" = (/obj/structure/closet/crate/freezer,/obj/item/mana_battery/mana_crystal/cut,/turf/open/indestructible/redtech,/area/template_noop)
+"X" = (/obj/structure/closet/crate/engineering,/obj/item/stock_parts/power_store/cell/redtech/empty,/obj/item/stock_parts/power_store/cell/redtech/empty,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech,/area/template_noop)
+
+(1,1,1) = {"
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJoJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJEoJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJkJJJJJJJJJJJJJJJJJJJJJJ
+JJooooooooookJJJJJJaooooJJJJJJJJJJJJJ
+JJooooooooooolJJJJkoooooJJJJJJJJJJJJJ
+JJJoaaaaAaaaoaJzlJaaaaooJJJJJJJJJJJJJ
+JJooaKnMaarhaAaJJJaAaaoooooooooooooJJ
+JJaoamXSawwaaaaaaJaaaaooooooooBBBooJJ
+JJooaaaaaaaaoaaooaoaAaoaaaaouttItBoJJ
+JJoooooooaaaaaAaaaaaaaoaaaaohaOgqBoJJ
+JJooaaahaaAaaaaahaaaAaaJaAhaxuuttBoJJ
+JJooaRyfaaaaJakaaaAaaaJJaaaoooBBoooJJ
+JJaoaaNhaQaJJJJaAaaaaaoaJaaooooooooJJ
+oJJoaaaaaaaJlJJaaaaaaJJJJaaooJJJJJJJJ
+ooJoooooaoaaJJJJkaooaaoooooooJkJJJJJJ
+zJJoaaahaaaJJozJJahaaAoooooooJooJJkJJ
+JJooaAaaaaaJJJJJJaaaaaooJJJJJJJJJJlJE
+JJoooooooooaJJJkJJooooooJJJJJzJJJJJJJ
+JJoooooooooaalJJaaaoooooJJzlJJJkoooJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJoaaaJaaazJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJooahaaaAaJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJoaaAaaaakJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJooooooooooJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+"}
