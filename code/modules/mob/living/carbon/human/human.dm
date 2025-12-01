@@ -36,19 +36,14 @@
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
-	// NON-MODULE CHANGE: Unconscious appearance
-	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
-	static_image.override = TRUE
-	static_image.name = "Unknown"
-	add_alt_appearance(
-		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
-		"[REF(src)]_unconscious",
-		static_image,
-		NONE,
-	)
-
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
+
+/mob/living/carbon/human/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
+/mob/living/carbon/human/dummy/init_unconscious_appearance()
+	return
 
 /mob/living/carbon/human/proc/setup_mood()
 	if (CONFIG_GET(flag/disable_human_mood))
