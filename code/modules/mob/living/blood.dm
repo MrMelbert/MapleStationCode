@@ -119,18 +119,18 @@
 		iter_part.update_part_wound_overlay()
 
 /// Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/proc/bleed(amt, drip = TRUE)
+/mob/living/proc/bleed(amt, leave_pool = TRUE)
 	return
 
-/mob/living/carbon/bleed(amt, drip = TRUE)
+/mob/living/carbon/bleed(amt, leave_pool = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 
-	if(drip && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
+	if(leave_pool && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
-/mob/living/carbon/human/bleed(amt, drip = TRUE)
+/mob/living/carbon/human/bleed(amt, leave_pool = TRUE)
 	amt *= physiology.bleed_mod
 	return ..()
 

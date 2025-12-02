@@ -1190,7 +1190,7 @@
 
 	// this is where people losing extra blood from being dragged is handled
 	if(body_position == LYING_DOWN)
-		bleed(blood_to_add, drip = FALSE)
+		bleed(blood_to_add, leave_pool = FALSE)
 
 	return ..()
 
