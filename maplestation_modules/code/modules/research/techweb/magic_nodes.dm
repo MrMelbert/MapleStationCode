@@ -14,7 +14,7 @@
 	starting_node = FALSE
 	display_name = "Artificial Volite Synthesis"
 	description = "Produce volite gemstones through an admittedly inefficient process."
-	prereq_ids = list(TECHWEB_NODE_BLUESPACE_THEORY, TECHWEB_NODE_MANA_BASE)
+	prereq_ids = list(TECHWEB_NODE_MANA_BASE, TECHWEB_NODE_BLUESPACE_THEORY)
 	design_ids = list(
 		"artificial_volite_large",
 		"artificial_volite_small",
@@ -25,7 +25,7 @@
 	id = TECHWEB_NODE_STELLAR_OCULORY
 	starting_node = FALSE
 	display_name = "Starlight-Mana Conversion"
-	description = "Convert trace arcane essence from nearby starlight into usable mana"
+	description = "Convert trace arcane essence from nearby starlight into usable mana."
 	prereq_ids = list(TECHWEB_NODE_MANA_BASE, TECHWEB_NODE_PARTS_ADV)
 	design_ids = list(
 		"stellar_oculory",

@@ -1,5 +1,9 @@
 #define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (1<<2)
 
+/// the lowest decimal place we round to during dispersion
+/// keep this to one decimal place unless you know what you're doing because anything more causes tomfoolery and really ugly decimals
+#define MANA_DECIMAL_FLOOR 0.1
+
 /* DESIGN NOTES
 * This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
 * on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
@@ -59,6 +63,13 @@
 	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
 	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
 
+	/// what ruleset do we need before we can transfer? flags in magic_bitflags.dm
+	var/mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
+
+	/// used by MANA_TRANSFER_MANUAL_RULES so these do nothing unless you're using that transfer ruleset.
+	/// and if so, what is that cap?
+	var/cap_transfer_limit = 999
+
 /datum/mana_pool/New(atom/parent = null)
 	. = ..()
 	donation_budget_this_tick = max_donation_rate_per_second
@@ -103,7 +114,7 @@
 
 	//determines what the status displays, it'll be a generic/non-obvious value as a design choice
 	if(amount)
-		if (amount < sc_very_low)
+		if (amount <= sc_very_low)
 			general_amount_estimate = "VERY LOW"
 		else if (amount > sc_very_low && amount < sc_low)
 			general_amount_estimate = "LOW"
@@ -130,8 +141,8 @@
 // 2. we transfer mana
 // 3. we discharge excess mana
 /datum/mana_pool/process(seconds_per_tick)
-
-	donation_budget_this_tick = (max_donation_rate_per_second * seconds_per_tick) //TODO: stop float imprecision
+	var/donation_this_tick = (max_donation_rate_per_second * seconds_per_tick)
+	donation_budget_this_tick = FLOOR(donation_this_tick, MANA_DECIMAL_FLOOR)//TODO: stop float imprecision but harder because i added a round? or not?
 
 	if (ethereal_recharge_rate != 0)
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
@@ -141,6 +152,8 @@
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
+					if(!check_rulesets(iterated_pool, (get_transfer_rate_for(iterated_pool) * seconds_per_tick)))
+						continue
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
@@ -148,9 +161,14 @@
 					transfer_mana_to(iterated_pool, seconds_per_tick)
 
 			if (MANA_DISPERSE_EVENLY)
-				var/mana_to_disperse = (SAFE_DIVIDE(donation_budget_this_tick, length(transferring_to)))
+				var/budgeted_mana_to_disperse = SAFE_DIVIDE(donation_budget_this_tick, length(transferring_to))
+				var/mana_to_disperse = (FLOOR(budgeted_mana_to_disperse, MANA_DECIMAL_FLOOR))
 
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					if (amount <= 0 || donation_budget_this_tick <= 0)
+						break
+					if(!check_rulesets(iterated_pool, mana_to_disperse))
+						continue
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
@@ -193,6 +211,22 @@
 							break
 
 		adjust_mana(exponential_decay) //just to be safe, in case we have any left over or didnt have a discharge destination
+
+/datum/mana_pool/proc/check_rulesets(datum/mana_pool/target_pool, transferred_mana)
+	var/softcap_check = (target_pool.amount >= target_pool.softcap)
+	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
+
+	switch (mana_transfer_ruleset)
+		if (MANA_TRANSFER_SOFTCAP)
+			if (softcap_check)
+				return FALSE
+		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
+			if ((softcap_check) || softcap_pass_check)
+				return FALSE
+		if (MANA_TRANSFER_MANUAL_RULES)
+			if (target_pool.amount >= cap_transfer_limit)
+				return FALSE
+	return TRUE
 
 /// Perform a "natural" transfer where we use the default transfer rate, capped by the usual math
 /datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
