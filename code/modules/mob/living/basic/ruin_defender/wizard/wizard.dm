@@ -90,6 +90,9 @@
 		fake_blood_type = random_human_blood_type()
 	return find_blood_type(fake_blood_type)
 
+/mob/living/basic/wizard/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
 /// Uses the colors and loadout of the original wizard simplemob
 /mob/living/basic/wizard/classic
 	selected_outfit = /obj/effect/mob_spawn/corpse/human/wizard

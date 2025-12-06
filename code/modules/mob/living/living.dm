@@ -18,6 +18,7 @@
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
+	init_unconscious_appearance()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +27,24 @@
 /mob/living/proc/prepare_data_huds()
 	med_hud_set_health()
 	med_hud_set_status()
+
+/// Inits the human_unconscious appearance for when the mob is unconscious
+/mob/living/proc/init_unconscious_appearance()
+	return
+
+/// Generic helper to add a static-y humanoid appearance shown to other mobs when unconscious
+/mob/living/proc/add_generic_humanoid_static_appearance()
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "unknown humanoid"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/Destroy()
 	for(var/datum/status_effect/effect as anything in status_effects)

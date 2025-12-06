@@ -147,11 +147,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 
 /// Verifies the passed ID card can open this door.
 /obj/machinery/password_id_panel/proc/valid_id(mob/living/user, obj/item/card/id/id)
-	return valid_state() && check_access(id)
+	return (valid_state() || (obj_flags & EMAGGED)) && check_access(id)
 
 /// Verifies the current input is the correct password and the panel is in a valid state.
 /obj/machinery/password_id_panel/proc/valid_code(mob/living/user)
-	return valid_state() && current_input == password
+	return (valid_state() || (obj_flags & EMAGGED)) && current_input == password
 
 /// Additional checks that need to be true for the panel to work.
 /obj/machinery/password_id_panel/proc/valid_state()
@@ -224,8 +224,30 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 		if("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
 			if(length(current_input) == 5)
 				return
-			current_input += digit
+			// if emagged, input is ignored and we just fill in the right character
+			current_input += (obj_flags & EMAGGED) ? password[length(current_input) + 1] : digit
 			return TRUE
+
+/obj/machinery/password_id_panel/emag_act(mob/user, obj/item/card/emag/emag_card)
+	if(obj_flags & EMAGGED)
+		return FALSE
+
+	obj_flags |= EMAGGED
+	playsound(src, SFX_SPARKS, 75, TRUE, SILENCED_SOUND_EXTRARANGE)
+	access_granted(user)
+	if(emag_card)
+		to_chat(user, span_notice("You swipe [emag_card] through [src], the magnetic strip causing sparks to fly!"))
+		add_hiddenprint(user)
+	else
+		to_chat(user, span_notice("You tamper with [src], causing sparks to fly!"))
+		add_fingerprint(user)
+	current_input = password // now you know!
+	authorized = TRUE
+	update_appearance()
+	return TRUE
+
+/obj/machinery/password_id_panel/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
+	return emag_act(ninja, null) ? COMPONENT_CANCEL_ATTACK_CHAIN : NONE
 
 /obj/machinery/password_id_panel/armory
 	id_tag = "ARMORY_PASSWORD_PANEL"

@@ -426,6 +426,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!examinable)
 		return ..()
 
+	user.examine_feedback(offer.offered_item)
 	return list(
 		span_boldnotice(name),
 		span_info("[offer.owner] is offering you the following item (click the alert to take it!):"),
