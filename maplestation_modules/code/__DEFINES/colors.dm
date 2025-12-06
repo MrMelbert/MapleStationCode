@@ -9,3 +9,6 @@
 
 // unused on the downstream so it was killed over a year ago, now back with a vengeance!
 #define RUNE_COLOR_EMP "#4D94FF"
+
+// colors used for volite and magic related stuff
+#define CIRCUIT_COLOR_MAGIC "#a8ffe2"

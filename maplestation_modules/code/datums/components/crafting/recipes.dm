@@ -34,7 +34,8 @@
 	result = /obj/item/clothing/neck/mana_star
 	reqs = list(
 		/obj/item/mana_battery/mana_crystal/cut = 1,
-		/obj/item/stack/sheet/mineral/gold = 1, // cheap for now
+		/obj/item/stack/sheet/cloth = 2,
+		/obj/item/stack/sheet/mineral/gold = 4, // not so cheap now
 	)
 	tool_behaviors = list(TOOL_SCREWDRIVER)
 	time = 5 SECONDS
@@ -50,3 +51,30 @@
 	tool_behaviors = list(TOOL_CROWBAR)
 	time = 5 SECONDS
 	category = CAT_EQUIPMENT
+
+/datum/crafting_recipe/scrapwand
+	name = "Makeshift Wand"
+	result = /obj/item/magic_wand
+	reqs = list(
+		/obj/item/pen = 1,
+		/obj/item/stack/rods = 1,
+		/obj/item/stack/cable_coil = 3,
+	)
+
+/datum/crafting_recipe/woodenwand
+	name = "Gold-Capped Wooden Wand"
+	result = /obj/item/magic_wand/wooden
+	reqs = list(
+		/obj/item/stack/sheet/mineral/wood = 2,
+		/obj/item/stack/sheet/mineral/gold = 1,
+	)
+
+/datum/crafting_recipe/nature_shrine
+	name = "The Stump Which Watches"
+	time = 30 SECONDS
+	reqs = list(
+		/obj/item/stack/sheet/mineral/wood = 10,
+		/obj/item/mana_battery/mana_crystal/standard = 1,
+	)
+	result = /obj/structure/magic_altar/nature
+	category = CAT_MISC
