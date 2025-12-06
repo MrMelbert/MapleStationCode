@@ -116,17 +116,17 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * Helper proc to make a blood splatter from the passed mob of this type
  *
  * Arguments
- * * bleeding - the mob bleeding the blood, note we assume this blood type is that mob's blood
+ * * dna - associative list of blood DNA to add to the blood splatter
  * * blood_turf - the turf to spawn the blood on
  * * drip - whether to spawn a drip or a splatter
+ * * viruses - list of viruses to add to the blood splatter
  */
-/datum/blood_type/proc/make_blood_splatter(mob/living/bleeding, turf/blood_turf, drip)
+/datum/blood_type/proc/make_blood_splatter(turf/blood_turf, drip, list/dna = list("UNKNOWN" = type), list/viruses)
 	if(isgroundlessturf(blood_turf))
 		blood_turf = GET_TURF_BELOW(blood_turf)
 	if(isnull(blood_turf) || isclosedturf(blood_turf))
 		return
 
-	var/list/temp_blood_DNA
 	if(drip)
 		var/new_blood = /obj/effect/decal/cleanable/blood/drip::bloodiness
 		// Only a certain number of drips (or one large splatter) can be on a given turf.
@@ -134,14 +134,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		if(isnull(drop))
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 			if(!QDELETED(splatter) && !splatter.dried)
-				splatter.add_mob_blood(bleeding)
+				splatter.add_blood_DNA(dna)
 				splatter.adjust_bloodiness(new_blood)
 				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				return splatter
 
-			drop = new(blood_turf, bleeding.get_static_viruses())
+			drop = new(blood_turf, viruses)
 			if(!QDELETED(drop))
-				drop.add_mob_blood(bleeding)
+				drop.add_blood_DNA(dna)
 				drop.random_icon_states -= drop.icon_state
 			return drop
 
@@ -154,32 +154,30 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			new_drop.color = color
 			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
 			new_drop.appearance_flags |= (RESET_COLOR)
-			new_drop.add_mob_blood(bleeding)
+			new_drop.add_blood_DNA(dna)
 			drop.gender = PLURAL
 			drop.base_name = "drips of"
 			drop.vis_contents += new_drop
 			// Handle adding blood to the base atom
 			drop.adjust_bloodiness(new_blood)
-			drop.add_mob_blood(bleeding)
-			drop.add_viruses(bleeding.get_static_viruses())
+			drop.add_blood_DNA(dna)
+			drop.add_viruses(viruses)
 			return drop
 
-		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
+		dna |= GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
 		qdel(drop)//the drip is replaced by a bigger splatter
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 	if(isnull(splatter) || splatter.dried)
-		splatter = new(blood_turf, bleeding.get_static_viruses())
+		splatter = new(blood_turf, viruses)
 		if(QDELETED(splatter)) //Give it up
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
-		splatter.add_viruses(bleeding.get_static_viruses())
+		splatter.add_viruses(viruses)
 		splatter.slow_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
-	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
-	if(LAZYLEN(temp_blood_DNA))
-		splatter.add_blood_DNA(temp_blood_DNA)
+	splatter.add_blood_DNA(dna) //give blood info to the blood decal.
 	return splatter
 
 /// A base type for all blood related to the crew, for organization's sake
@@ -346,6 +344,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	// Oil blood will never dry and can be ignited with fire
 	blood.can_dry = FALSE
 	blood.AddElement(/datum/element/easy_ignite)
+
+/datum/blood_type/oil/heavy
+	name = "Heavy Oil"
 
 /// A universal blood type which accepts everything
 /datum/blood_type/universal

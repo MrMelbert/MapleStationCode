@@ -4,12 +4,26 @@
 	for(var/mob/living/occupant as anything in occupants)
 		occupant.setDir(newdir)
 
+//NON-MODULE CHANGE
 ///Called when the mech moves
-/obj/vehicle/sealed/mecha/proc/on_move()
-	SIGNAL_HANDLER
+/obj/vehicle/sealed/mecha/Move(atom/newloc, direct)
+	var/atom/old_loc = loc
+	var/old_dir = dir
+	. = ..()
+	if(!isturf(loc))
+		return
 
 	collect_ore()
-	play_stepsound()
+
+	if(!(mecha_flags & QUIET_STEPS))
+		footstep_count += 1
+		if(footstep_count >= steps_per_footstep)
+			playsound(src, stepsound, 40, TRUE)
+			footstep_count = 0
+
+	if((internal_damage & MECHA_INT_FUEL_LINE) && loc != old_loc && oil_pool >= 10 && prob(30 + 0.75 * oil_pool))
+		make_blood_trail(loc, old_loc, old_dir, dir, BLOOD_AMOUNT_PER_DECAL * (oil_pool > 66 ? 0.3 : 0.1), list("[oil_name]" = oil_type))
+		oil_pool -= (oil_pool > 66 ? 3 : 1)
 
 ///Collects ore when we move, if there is an orebox and it is functional
 /obj/vehicle/sealed/mecha/proc/collect_ore()
@@ -19,12 +33,6 @@
 		//we can reach it and it's in front of us? grab it!
 		if(ore.Adjacent(src) && ((get_dir(src, ore) & dir) || ore.loc == loc))
 			ore.forceMove(ore_box)
-
-///Plays the mech step sound effect. Split from movement procs so that other mechs (HONK) can override this one specific part.
-/obj/vehicle/sealed/mecha/proc/play_stepsound()
-	if(mecha_flags & QUIET_STEPS)
-		return
-	playsound(src, stepsound, 40, TRUE)
 
 // Do whatever you do to mobs to these fuckers too
 /obj/vehicle/sealed/mecha/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
@@ -98,7 +106,7 @@
 			to_chat(occupants, "[icon2html(src, occupants)][span_warning("Missing [english_list(missing_parts)].")]")
 			TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MESSAGE, 2 SECONDS)
 		return FALSE
-	if(!use_energy(step_energy_drain))
+	if(!use_energy(step_energy_drain, SERVO_MODIFIED_DRAIN|CAPACITOR_MODIFIED_DRAIN|OIL_MODIFIED_DRAIN))
 		if(TIMER_COOLDOWN_FINISHED(src, COOLDOWN_MECHA_MESSAGE))
 			to_chat(occupants, "[icon2html(src, occupants)][span_warning("Insufficient power to move!")]")
 			TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MESSAGE, 2 SECONDS)
