@@ -255,6 +255,10 @@
 	var/temp_change =  temp_sign * (1 - (thermal_protection * protection_modifier)) * ((0.1 * max(1, abs(temp_delta))) ** 1.8) * temperature_normalization_speed
 	// Cap increase and decrease
 	temp_change = temp_change < 0 ? max(temp_change, BODYTEMP_ENVIRONMENT_COOLING_MAX) : min(temp_change, BODYTEMP_ENVIRONMENT_HEATING_MAX)
+	// Boost when returning to equilibrium
+	if(equilibrium_temp < standard_body_temperature - 2 KELVIN || equilibrium_temp > standard_body_temperature + 2 KELVIN)
+		temp_change *= 3
+
 	adjust_body_temperature(temp_change * seconds_per_tick) // no use_insulation beacuse we account for it manually
 
 /mob/living/silicon/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
