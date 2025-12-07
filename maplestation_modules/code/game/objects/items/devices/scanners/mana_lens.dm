@@ -13,8 +13,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/mana_lens/interact_with_atom(atom/movable/interacting_with, mob/living/user)
-	if (isturf(interacting_with))
-		balloon_alert(user, "object has no mana pool!") // turfs should not ever have mana pools, doing this just so it doesn't error
+	if (isturf(interacting_with)) // turfs should not ever have mana pools, doing this so it doesn't runtime
 		return
 	if (!interacting_with.mana_pool)
 		balloon_alert(user, "object has no mana pool!")

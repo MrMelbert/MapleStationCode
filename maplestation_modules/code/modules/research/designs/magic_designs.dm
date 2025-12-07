@@ -5,6 +5,7 @@
 	build_type = PROTOLATHE
 	materials = list(/datum/material/iron =SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2.5, /datum/material/gold = SMALL_MATERIAL_AMOUNT)
 	build_path = /obj/item/mana_lens
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
 
 /datum/design/artificial_volite_large
 	name = "Artificial Volite Gem"
@@ -31,6 +32,7 @@
 	build_type = PROTOLATHE
 	materials = list(/datum/material/silver = SMALL_MATERIAL_AMOUNT, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5)
 	build_path = /obj/item/magic_wand/techie
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
 
 /datum/design/board/stellar_oculory
 	name = "Stellar oculory"
