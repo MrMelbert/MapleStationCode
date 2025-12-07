@@ -1,4 +1,9 @@
-import { CheckboxInput, type FeatureToggle } from '../base';
+import {
+  CheckboxInput,
+  type Feature,
+  FeatureSliderInput,
+  type FeatureToggle,
+} from '../base';
 
 export const darkened_flash: FeatureToggle = {
   name: 'Enable darkened flashes',
@@ -35,4 +40,14 @@ export const runechat_text_names: FeatureToggle = {
       When toggled, names in chat will be colored according to the speaker's runechat color.
     `,
   component: CheckboxInput,
+};
+
+export const min_recoil_multiplier: Feature<number> = {
+  name: 'Cosmetic Recoil Strength',
+  category: 'ACCESSIBILITY',
+  description: `
+      Modifies the strength of cosmetic recoil's effect on your camera.
+      0 will disable cosmetic recoil entirely, though mechanical recoil will be unaffected.
+    `,
+  component: FeatureSliderInput,
 };
