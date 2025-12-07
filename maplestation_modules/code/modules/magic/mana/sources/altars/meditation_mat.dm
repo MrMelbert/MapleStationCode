@@ -1,6 +1,6 @@
 /obj/machinery/meditation_mat
 	name = "Meditation Mat"
-	desc = "A purple mat meant to empower those who meditate" // todo: this sucks rewrite it
+	desc = "A simple purple cloth mat made to allow one to rest and meditate on the floor comfortably."
 
 	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
 	icon_state = "meditation_mat"
@@ -16,6 +16,8 @@
 	. = ..()
 	if(!isnull(foldable_type))
 		. += span_notice("You can fold it up with a Right-click.")
+	if(!has_buckled_mobs() && can_buckle)
+		. += span_notice("While standing on [src], drag and drop your sprite onto [src] to buckle to it.")
 
 /obj/machinery/meditation_mat/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -26,7 +28,7 @@
 	if(has_buckled_mobs())
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-	user.visible_message(span_notice("[user] collapses [src]."), span_notice("You collapse [src]."))
+	user.visible_message(span_notice("[user] rolls up [src]."), span_notice("You roll up [src]."))
 	var/obj/machinery/meditation_mat/folded_mat = new foldable_type(get_turf(src))
 	user.put_in_hands(folded_mat)
 	qdel(src)
@@ -40,15 +42,15 @@
 /obj/machinery/meditation_mat/proc/remove_effects(mob/living/target)
 	target.remove_status_effect(/datum/status_effect/meditation_mat, MEDITATION_MAT_EFFECT)
 
-/obj/machinery/meditation_mat/post_buckle_mob(mob/living/L)
-	if(!can_be_occupant(L))
+/obj/machinery/meditation_mat/post_buckle_mob(mob/living/meditator)
+	if(!can_be_occupant(meditator))
 		return
-	set_occupant(L)
-	apply_effects(L)
+	set_occupant(meditator)
+	apply_effects(meditator)
 
-/obj/machinery/meditation_mat/post_unbuckle_mob(mob/living/L)
-	remove_effects(L)
-	if(L == occupant)
+/obj/machinery/meditation_mat/post_unbuckle_mob(mob/living/meditator)
+	remove_effects(meditator)
+	if(meditator == occupant)
 		set_occupant(null)
 
 // status effect
@@ -80,23 +82,23 @@
 /obj/item/meditation_mat
 	name = "Folded Meditation Mat"
 	desc = "A mat for meditation, rolled and folded up for easy transport."
-	icon = 'icons/obj/medical/medical_bed.dmi'
-	icon_state = "emerg_folded"
-	inhand_icon_state = "emergencybed"
-	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
+	icon = 'maplestation_modules/icons/obj/magic/objects.dmi'
+	icon_state = "mat_folded"
+	inhand_icon_state = "mat_folded"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/equipment_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/equipment_righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/meditation_mat/attack_self(mob/user)
-	deploy_bed(user, user.loc)
+	deploy_mat(user, user.loc)
 
 /obj/item/meditation_mat/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(isopenturf(interacting_with))
-		deploy_bed(user, interacting_with)
+		deploy_mat(user, interacting_with)
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
-/obj/item/meditation_mat/proc/deploy_bed(mob/user, atom/location)
+/obj/item/meditation_mat/proc/deploy_mat(mob/user, atom/location)
 	var/obj/machinery/meditation_mat/deployed = new /obj/machinery/meditation_mat(location)
 	deployed.add_fingerprint(user)
 	qdel(src)
