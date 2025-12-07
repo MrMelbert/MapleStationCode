@@ -233,7 +233,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	duffelbag = /obj/item/storage/backpack/duffelbag/sec
 	messenger = /obj/item/storage/backpack/messenger/sec
 
-	box = /obj/item/storage/box/survival/security
+	box = /obj/item/storage/pouch/survival/security
 	chameleon_extras = list(
 		/obj/item/clothing/glasses/hud/security/sunglasses,
 		/obj/item/clothing/head/helmet,

@@ -68,7 +68,7 @@
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
 	suit_store = /obj/item/gun/energy/disabler/phaser
 	id_trim = /datum/id_trim/job/asset_protection
-	box = /obj/item/storage/box/survival/security
+	box = /obj/item/storage/pouch/survival/security
 
 	implants = list(/obj/item/implant/mindshield)
 
