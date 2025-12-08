@@ -38,7 +38,7 @@
 
 	mecha_attacker.do_attack_animation(src)
 	mecha_attacker.visible_message(span_danger("[mecha_attacker] hits [src]!"), span_danger("You hit [src]!"), null, COMBAT_MESSAGE_RANGE)
-	return take_damage(mecha_attacker.force * 3, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker)) // multiplied by 3 so we can hit objs hard but not be overpowered against mobs.
+	return take_damage(mecha_attacker.force * 3, mecha_attacker.damtype, MELEE, FALSE, get_dir(src, mecha_attacker)) // multiplied by 3 so we can hit objs hard but not be overpowered against mobs.
 
 /obj/structure/window/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
 	if(!user.combat_mode)
@@ -57,8 +57,8 @@
 	mecha_attacker.visible_message(span_danger("[mecha_attacker] smashes [src]!"), span_danger("You smash [src]!"), null, COMBAT_MESSAGE_RANGE)
 	// Additionally destroy any grilles
 	for(var/obj/structure/grille/grille in loc)
-		grille.take_damage(mecha_attacker.force * 10, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker))
-	return take_damage(mecha_attacker.force * 100, mecha_attacker.damtype, "melee", FALSE, get_dir(src, mecha_attacker))
+		grille.take_damage(mecha_attacker.force * 10, mecha_attacker.damtype, MELEE, FALSE, get_dir(src, mecha_attacker))
+	return take_damage(mecha_attacker.force * 100, mecha_attacker.damtype, MELEE, FALSE, get_dir(src, mecha_attacker))
 
 /mob/living/mech_melee_attack(obj/vehicle/sealed/mecha/mecha_attacker, mob/living/user)
 	if(!user.combat_mode)
