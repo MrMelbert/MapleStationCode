@@ -48,7 +48,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		return ..()
 
 	. = list()
-	for(var/z, atom_list in hud_atoms)
+	for(var/list/atom_list as anything in hud_atoms)
 		. += atom_list
 
 /datum/atom_hud/alternate_appearance/proc/onNewMob(mob/M)

@@ -250,7 +250,7 @@
 	turf_source = get_ranged_target_turf(ai, get_dir(src, turf_source), max_distance * 0.5)
 	// pitches down the sound a bit so the ai can differentiate it from sounds actually near their core
 	sound_to_use ||= sound(get_sfx(soundin))
-	sound_to_use.pitch *= 0.66
+	sound_to_use.pitch = 0.8
 	// and disable these since we're beaming it straight to the ai
 	use_reverb = FALSE
 	pressure_affected = FALSE
