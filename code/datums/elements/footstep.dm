@@ -38,6 +38,8 @@
 			footstep_sounds = GLOB.heavyfootstep
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep
+		if(FOOTSTEP_MOB_SYNTHETIC)
+			footstep_sounds = GLOB.syntheticfootstep
 		if(FOOTSTEP_MOB_RUST)
 			footstep_sounds = 'sound/effects/footstep/rustystep1.ogg'
 		if(FOOTSTEP_MOB_SLIME)
@@ -93,6 +95,7 @@
 		FOOTSTEP_MOB_BAREFOOT = turf.barefootstep,
 		FOOTSTEP_MOB_HEAVY = turf.heavyfootstep,
 		FOOTSTEP_MOB_CLAW = turf.clawfootstep,
+		FOOTSTEP_MOB_SYNTHETIC = turf.syntheticfootstep,
 		STEP_SOUND_PRIORITY = STEP_SOUND_NO_PRIORITY,
 	)
 	var/sigreturn = SEND_SIGNAL(turf, COMSIG_TURF_PREPARE_STEP_SOUND, footstep_data)
@@ -159,6 +162,8 @@
 			footstep_sounds = GLOB.heavyfootstep[prepared_steps[footstep_type]]
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep[prepared_steps[footstep_type]]
+		if(FOOTSTEP_MOB_SYNTHETIC)
+			footstep_sounds = GLOB.syntheticfootstep[prepared_steps[footstep_type]]
 
 	if(!length(footstep_sounds))
 		return
