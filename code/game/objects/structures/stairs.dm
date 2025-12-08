@@ -208,7 +208,7 @@
 
 /obj/structure/stairs/proc/get_pointing_image()
 	PROTECTED_PROC(TRUE)
-	var/image/point_image = image('icons/hud/screen_gen.dmi', src, "arrow_large_white_still")
+	var/image/point_image = image('icons/hud/screen_gen.dmi', src, "arrow"/*"arrow_large_white_still"*/)
 	point_image.color = COLOR_DARK_MODERATE_LIME_GREEN
 	point_image.appearance_flags |= KEEP_APART
 	point_image.transform = matrix().Turn(dir2angle(REVERSE_DIR(dir)))

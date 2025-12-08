@@ -51,13 +51,13 @@
 		return
 
 	mecha_attacker.do_attack_animation(src)
-	switch(mecha_attacker.damtype)
-		if(BRUTE)
-			playsound(src, mecha_attacker.brute_attack_sound, 50, TRUE)
-		if(BURN)
-			playsound(src, mecha_attacker.burn_attack_sound, 50, TRUE)
-		else
-			return
+	// switch(mecha_attacker.damtype)
+	// 	if(BRUTE)
+	// 		playsound(src, mecha_attacker.brute_attack_sound, 50, TRUE)
+	// 	if(BURN)
+	// 		playsound(src, mecha_attacker.burn_attack_sound, 50, TRUE)
+	// 	else
+	// 		return
 	mecha_attacker.visible_message(span_danger("[mecha_attacker] smashes [src]!"), span_danger("You smash [src]!"), null, COMBAT_MESSAGE_RANGE)
 	// Additionally destroy any grilles
 	for(var/obj/structure/grille/grille in loc)

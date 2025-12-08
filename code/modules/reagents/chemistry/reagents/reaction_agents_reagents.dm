@@ -148,7 +148,7 @@
 		var/datum/reagent/reaction_agent/reagent = _reagent
 		if(reagent.purity <= reagent.inverse_chem_val)
 			target.my_atom.audible_message(span_warning("The beaker goes into a rolling boil as the contents begin inversing!"))
-			playsound(target.my_atom, 'sound/effects/chemistry/catalyst.ogg', 50, TRUE)
+			playsound(target.my_atom, 'sound/chemistry/catalyst.ogg', 50, TRUE)
 			var/converted = min(reagent.volume, amount * 10)//Converts up to 10 units of reagent per 1 unit of inversing buffer.
 			if(converted > 0)
 				target.remove_reagent(reagent.type, converted, safety = FALSE)
