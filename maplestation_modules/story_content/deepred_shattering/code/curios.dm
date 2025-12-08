@@ -247,3 +247,45 @@
 		/obj/item/snowglobe/extra/limbus,
 		/obj/item/snowglobe/extra/silence,
 	)
+
+/obj/item/rtechdrive
+	name = "redtech data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	w_class = WEIGHT_CLASS_BULKY
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/blackbox.dmi'
+	icon_state = "blank"
+
+	inhand_icon_state = "blackcube"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	var/signaltype = "redtech signal"
+	var/unique_description = "If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord."
+
+/obj/item/rtechdrive/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/gps, signaltype)
+	AddElement(/datum/element/unique_examine, desc = unique_description)
+
+/obj/item/rtechdrive/hearts
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data."
+	icon_state = "heart"
+	signaltype = "redtech hearts signal"
+
+/obj/item/rtechdrive/diamonds
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs."
+	icon_state = "diamond"
+	signaltype = "redtech diamonds signal"
+
+/obj/item/rtechdrive/clubs
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations."
+	icon_state = "club"
+	signaltype = "redtech clubs signal"
+
+/obj/item/rtechdrive/spades
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records."
+	icon_state = "spade"
+	signaltype = "redtech spades signal"
