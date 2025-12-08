@@ -364,14 +364,4 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 	),
 ))
 
-/// Not a full list, we just use this for specific turf / footstep type combinations
-GLOBAL_LIST_INIT(synthetic_generic_footstep, list(
-	FOOTSTEP_SOUNDS = list(
-		'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		'maplestation_modules/sound/items/rigstep.ogg' = 1,
-	),
-	FOOTSTEP_VOLUME = 50,
-	FOOTSTEP_RANGE =  2,
-))
-
 #define SHOULD_DISABLE_FOOTSTEPS(source) ((SSlag_switch.measures[DISABLE_FOOTSTEPS] && !(HAS_TRAIT(source, TRAIT_BYPASS_MEASURES))) || HAS_TRAIT(source, TRAIT_SILENT_FOOTSTEPS))
