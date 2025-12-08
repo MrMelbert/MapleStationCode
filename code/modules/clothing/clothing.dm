@@ -386,7 +386,7 @@
 	if((TRAIT_QUICK_CARRY in clothing_traits) || (TRAIT_QUICKER_CARRY in clothing_traits))
 		.["tactile"] = "Decreases the time it takes to pick up creatures[(TRAIT_QUICKER_CARRY in clothing_traits) ? " considerably" : ""]."
 	if(TRAIT_FASTMED in clothing_traits)
-		.["sterile"] = "Increases the speed at which reagents are administered to others by [round((1/NITRILE_GLOVES_MULTIPLIER-1)*100, 1)]%."
+		.["sterile"] = "Increases the speed at which you apply pills, patches, gels, and syringes."
 	if(TRAIT_FAST_CUFFING in clothing_traits)
 		.["secure"] = "Increases the speed at which you apply restraints."
 
