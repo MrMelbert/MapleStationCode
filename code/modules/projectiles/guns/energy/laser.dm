@@ -68,7 +68,6 @@
 	icon_state = "hellgun"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/hellfire)
 	ammo_x_offset = 1
-	light_color = COLOR_AMMO_HELLFIRE
 
 /obj/item/gun/energy/laser/captain
 	name = "antique laser gun"
@@ -83,7 +82,6 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/hellfire)
-	light_color = COLOR_AMMO_HELLFIRE
 
 /obj/item/gun/energy/laser/captain/scattershot
 	name = "scatter shot laser rifle"

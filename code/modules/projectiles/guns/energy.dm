@@ -133,7 +133,7 @@
 	shot = ammo_type[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
-	set_light_color(shot.projectile_type::muzzle_flash_color_override || shot.muzzle_flash_color)
+	set_light_color(shot.projectile_type::muzzle_flash_color_override || shot.projectile_type::light_color)
 
 /obj/item/gun/energy/Destroy()
 	if (cell)

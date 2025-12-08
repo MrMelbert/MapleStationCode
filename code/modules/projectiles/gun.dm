@@ -272,8 +272,6 @@
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 
-	if(chambered?.integrity_damage)
-		take_damage(chambered.integrity_damage, sound_effect = FALSE)
 	return TRUE
 
 /obj/item/gun/emp_act(severity)

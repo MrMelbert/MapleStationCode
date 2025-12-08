@@ -323,7 +323,7 @@
 	tracer_type = /obj/effect/projectile/tracer/laser
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
-	muzzle_flash_color = COLOR_SOFT_RED
+	muzzle_flash_color_override = COLOR_SOFT_RED
 
 /obj/projectile/beam/lasertag/redtag/hitscan
 	hitscan = TRUE
@@ -336,7 +336,7 @@
 	tracer_type = /obj/effect/projectile/tracer/laser/blue
 	muzzle_type = /obj/effect/projectile/muzzle/laser/blue
 	impact_type = /obj/effect/projectile/impact/laser/blue
-	muzzle_flash_color = LIGHT_COLOR_BLUE
+	muzzle_flash_color_override = LIGHT_COLOR_BLUE
 
 /obj/projectile/beam/lasertag/bluetag/hitscan
 	hitscan = TRUE
