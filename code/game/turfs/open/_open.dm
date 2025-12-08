@@ -7,7 +7,6 @@
 	var/barefootstep = null
 	var/clawfootstep = null
 	var/heavyfootstep = null
-	var/syntheticfootstep = null
 
 	/// Determines the type of damage overlay that will be used for the tile
 	var/damaged_dmi = null

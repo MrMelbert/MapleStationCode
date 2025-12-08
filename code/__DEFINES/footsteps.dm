@@ -364,104 +364,14 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 	),
 ))
 
-GLOBAL_LIST_INIT(syntheticfootstep, list(
-	FOOTSTEP_WOOD = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE =  2,
+/// Not a full list, we just use this for specific turf / footstep type combinations
+GLOBAL_LIST_INIT(synthetic_generic_footstep, list(
+	FOOTSTEP_SOUNDS = list(
+		'maplestation_modules/sound/items/rigstep.ogg' = 1,
+		'maplestation_modules/sound/items/rigstep.ogg' = 1,
 	),
-	FOOTSTEP_FLOOR = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE =  2,
-	),
-	FOOTSTEP_PLATING = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE =  2,
-		),
-	FOOTSTEP_CARPET = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE =  2,
-	),
-	FOOTSTEP_SAND = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-			'maplestation_modules/sound/items/rigstep.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE =  2,
-	),
-	FOOTSTEP_GRASS = list(
-		FOOTSTEP_SOUNDS = list(
-			'sound/effects/footstep/grass1.ogg' = 1,
-			'sound/effects/footstep/grass2.ogg' = 1,
-			'sound/effects/footstep/grass3.ogg' = 1,
-			'sound/effects/footstep/grass4.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 75,
-		FOOTSTEP_RANGE = 0,
-	),
-	FOOTSTEP_WATER = list(
-		FOOTSTEP_SOUNDS = list(
-			'sound/effects/footstep/water1.ogg' = 1,
-			'sound/effects/footstep/water2.ogg' = 1,
-			'sound/effects/footstep/water3.ogg' = 1,
-			'sound/effects/footstep/water4.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 100,
-		FOOTSTEP_RANGE = 1,
-	),
-	FOOTSTEP_LAVA = list(
-		FOOTSTEP_SOUNDS = list(
-			'sound/effects/footstep/lava1.ogg' = 1,
-			'sound/effects/footstep/lava2.ogg' = 1,
-			'sound/effects/footstep/lava3.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 100,
-		FOOTSTEP_RANGE = 0,
-	),
-	FOOTSTEP_MEAT = list(
-		FOOTSTEP_SOUNDS = list(
-			'sound/effects/meatslap.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 100,
-		FOOTSTEP_RANGE = 0,
-	),
-	FOOTSTEP_CATWALK = list(
-		FOOTSTEP_SOUNDS = list(
-			'sound/effects/footstep/catwalk1.ogg' = 1,
-			'sound/effects/footstep/catwalk2.ogg' = 1,
-			'sound/effects/footstep/catwalk3.ogg' = 1,
-			'sound/effects/footstep/catwalk4.ogg' = 1,
-			'sound/effects/footstep/catwalk5.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 100,
-		FOOTSTEP_RANGE = 1,
-	),
-	FOOTSTEP_TILES = list(
-		FOOTSTEP_SOUNDS = list(
-			'maplestation_modules/sound/footstep/tile1.ogg' = 6,
-			'maplestation_modules/sound/footstep/tile2.ogg' = 6,
-			'maplestation_modules/sound/footstep/tile3.ogg' = 6,
-			'maplestation_modules/sound/footstep/tile4.ogg' = 1,
-		),
-		FOOTSTEP_VOLUME = 25,
-		FOOTSTEP_RANGE = 1,
-	),
+	FOOTSTEP_VOLUME = 50,
+	FOOTSTEP_RANGE =  2,
 ))
 
 #define SHOULD_DISABLE_FOOTSTEPS(source) ((SSlag_switch.measures[DISABLE_FOOTSTEPS] && !(HAS_TRAIT(source, TRAIT_BYPASS_MEASURES))) || HAS_TRAIT(source, TRAIT_SILENT_FOOTSTEPS))

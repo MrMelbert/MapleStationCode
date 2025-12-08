@@ -75,6 +75,7 @@
 		// NON-MODULE CHANGE
 		if(pref_to_use && listening_mob.client && !listening_mob.client.prefs.read_preference(pref_to_use))
 			continue
+
 		if(get_dist(listening_mob, turf_source) > maxdistance)
 			if(!(listening_mob.mob_flags & MOB_HAS_HEARING_RELAY))
 				continue
@@ -222,14 +223,13 @@
 	return src
 
 /mob/living/silicon/ai/get_hearing_relay(atom/source)
-	if(QDELETED(eyeobj))
-		return null
+	return eyeobj
 
-	for(var/obj/item/radio/intercom/radio in view(5, source))
+/mob/camera/ai_eye/proc/has_nearby_radio(turf/turf_source)
+	for(var/obj/item/radio/intercom/radio in dview(5, turf_source))
 		if(radio.is_on_and_listening())
-			return eyeobj
-
-	return null
+			return TRUE
+	return FALSE
 
 /mob/camera/ai_eye/playsound_local(turf/turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, sound/sound_to_use, max_distance, falloff_distance, distance_multiplier, use_reverb)
 	if(client)
@@ -237,6 +237,9 @@
 		return ..()
 	if(isnull(ai?.client))
 		// don't waste time
+		return
+	if(!has_nearby_radio(turf_source))
+		// no intercom to "transmit" the sound
 		return
 
 	// we gotta be on the same z-level right

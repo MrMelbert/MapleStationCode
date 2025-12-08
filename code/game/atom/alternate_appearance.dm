@@ -69,6 +69,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/image/image
 	var/add_ghost_version = FALSE
 	var/datum/atom_hud/alternate_appearance/basic/observers/ghost_appearance
+	var/skip_z_level_check = FALSE
 	uses_global_hud_category = FALSE
 
 /datum/atom_hud/alternate_appearance/basic/New(key, image/I, options = AA_TARGET_SEE_APPEARANCE)
@@ -98,6 +99,14 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	target = null
 	if(ghost_appearance)
 		QDEL_NULL(ghost_appearance)
+
+/datum/atom_hud/alternate_appearance/basic/get_hud_atoms_for_z_level(z_level)
+	if(!skip_z_level_check)
+		return ..()
+
+	. = list()
+	for(var/z, atom_list in hud_atoms)
+		. += atom_list
 
 /datum/atom_hud/alternate_appearance/basic/add_atom_to_hud(atom/A)
 	LAZYINITLIST(A.hud_list)

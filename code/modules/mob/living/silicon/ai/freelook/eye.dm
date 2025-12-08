@@ -23,6 +23,8 @@
 	var/telegraph_cameras = TRUE
 	/// Range that which cameras can be telegraphed.
 	var/telegraph_range = 5
+	/// Z level we are on, only set on changing multi-z
+	var/current_z
 	interaction_range = INFINITY
 
 /mob/camera/ai_eye/Initialize(mapload)
@@ -35,8 +37,24 @@
 	. = ..()
 	if(same_z_layer)
 		return
+
+	// if our ai has a client, we add the ai's *eye* to the clients_by_zlevel list in addition to the ai mob itself
+	// this is, currently, solely so sounds can be heard by the ai eye when on a different z-level to the ai itself
+	// also we don't need to worry about adding the eye to the list as soon as the ai takes control of it
+	// because the ai eye is always initialized on the same z-level as the ai (ie: it don't matter till it goes up or down)
+	if(current_z)
+		SSmobs.clients_by_zlevel[current_z] -= src
+	current_z = new_turf?.z
+	if(ai?.client && current_z)
+		SSmobs.clients_by_zlevel[current_z] += src
+
 	update_ai_detect_hud()
 	ai?.refresh_eyeobj_appearance()
+
+/mob/camera/ai_eye/Destroy()
+	if(current_z) // maybe redundant, but let's play it safe
+		SSmobs.clients_by_zlevel[current_z] -= src
+	return ..()
 
 ///Called when the AI shiftclicks on something to examinate it.
 /mob/camera/ai_eye/proc/examinate_check(mob/user, atom/source)
@@ -308,7 +326,6 @@
 
 	var/datum/atom_hud/alternate_appearance/eye_app = eyeobj.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/one_person, "show_to_ai", ai_icon, src)
 	eye_app.show_to(src)
-
 
 /mob/living/silicon/ai/verb/toggle_acceleration()
 	set category = "AI Commands"

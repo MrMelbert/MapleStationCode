@@ -38,8 +38,6 @@
 			footstep_sounds = GLOB.heavyfootstep
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep
-		if(FOOTSTEP_MOB_SYNTHETIC)
-			footstep_sounds = GLOB.syntheticfootstep
 		if(FOOTSTEP_MOB_RUST)
 			footstep_sounds = 'sound/effects/footstep/rustystep1.ogg'
 		if(FOOTSTEP_MOB_SLIME)
@@ -95,7 +93,6 @@
 		FOOTSTEP_MOB_BAREFOOT = turf.barefootstep,
 		FOOTSTEP_MOB_HEAVY = turf.heavyfootstep,
 		FOOTSTEP_MOB_CLAW = turf.clawfootstep,
-		FOOTSTEP_MOB_SYNTHETIC = turf.syntheticfootstep,
 		STEP_SOUND_PRIORITY = STEP_SOUND_NO_PRIORITY,
 	)
 	var/sigreturn = SEND_SIGNAL(turf, COMSIG_TURF_PREPARE_STEP_SOUND, footstep_data)
@@ -163,7 +160,28 @@
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep[prepared_steps[footstep_type]]
 		if(FOOTSTEP_MOB_SYNTHETIC)
-			footstep_sounds = GLOB.syntheticfootstep[prepared_steps[footstep_type]]
+			var/barefoot_type = prepared_steps[FOOTSTEP_MOB_BAREFOOT]
+			// these categories will use the synthetic step over the normal barefoot steps
+			var/static/list/synthetic_footstep_types = list(
+				FOOTSTEP_FLOOR = 1,
+				FOOTSTEP_PLATING = 1,
+				FOOTSTEP_WOOD = 1,
+				FOOTSTEP_CARPET = 1,
+			)
+			// the actual synthetic footstep sound
+			var/static/list/synthetic_footsteps = list(
+				FOOTSTEP_SOUNDS = list(
+					'maplestation_modules/sound/items/rigstep.ogg' = 1,
+					'maplestation_modules/sound/items/rigstep.ogg' = 1,
+				),
+				FOOTSTEP_VOLUME = 50,
+				FOOTSTEP_RANGE =  2,
+			)
+
+			if(synthetic_footstep_types[barefoot_type])
+				footstep_sounds = synthetic_footsteps
+			else
+				footstep_sounds = GLOB.barefootstep[barefoot_type]
 
 	if(!length(footstep_sounds))
 		return
@@ -177,9 +195,9 @@
 
 	// list returned by playsound() filled by client mobs who heard the footstep. given to play_fov_effect()
 	var/list/heard_clients
-	var/picked_sound = pick_weight(footstep_sounds[1])
-	var/picked_volume = footstep_sounds[2] * volume * volume_multiplier
-	var/picked_range = footstep_sounds[3] + e_range + range_adjustment
+	var/picked_sound = pick_weight(footstep_sounds[FOOTSTEP_SOUNDS])
+	var/picked_volume = footstep_sounds[FOOTSTEP_VOLUME] * volume * volume_multiplier
+	var/picked_range = footstep_sounds[FOOTSTEP_RANGE] + e_range + range_adjustment
 
 	heard_clients = playsound(
 		source = source,
