@@ -153,6 +153,8 @@
 		if(COOLDOWN_FINISHED(src, mecha_bump_smash))
 			var/list/mob/mobster = return_drivers()
 			obstacle.mech_melee_attack(src, mobster[1])
+			SEND_SIGNAL(obstacle, COMSIG_ATOM_ATTACK_MECH, src, user)
+			log_combat(user, obstacle, "bump attacked", src, "(COMBAT MODE: [uppertext(user.combat_mode)] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
 			COOLDOWN_START(src, mecha_bump_smash, smashcooldown)
 			if(!obstacle || obstacle.CanPass(src, get_dir(obstacle, src) || dir)) // The else is in case the obstacle is in the same turf.
 				step(src,dir)

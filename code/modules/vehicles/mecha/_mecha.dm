@@ -735,8 +735,9 @@
 
 	SEND_SIGNAL(user, COMSIG_MOB_USED_MECH_MELEE, src)
 	target.mech_melee_attack(src, user)
+	SEND_SIGNAL(target, COMSIG_ATOM_ATTACK_MECH, src, user)
+	log_combat(user, target, "attacked", src, "(COMBAT MODE: [uppertext(user.combat_mode)] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
 	TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MELEE_ATTACK, melee_cooldown)
-
 
 /// Driver alt clicks anything while in mech
 /obj/vehicle/sealed/mecha/proc/on_click_alt(mob/user, atom/target, params)
