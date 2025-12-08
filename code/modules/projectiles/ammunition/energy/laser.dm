@@ -12,7 +12,6 @@
 	projectile_type = /obj/projectile/beam/laser/hellfire
 	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)
 	select_name = "maim"
-	muzzle_flash_color_override = "#f60021"
 
 /obj/item/ammo_casing/energy/lasergun
 	projectile_type = /obj/projectile/beam/laser
