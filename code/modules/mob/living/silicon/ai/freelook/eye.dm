@@ -325,6 +325,7 @@
 	SET_PLANE(ai_icon, HIGH_GAME_PLANE, eyeobj)
 
 	var/datum/atom_hud/alternate_appearance/eye_app = eyeobj.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/one_person, "show_to_ai", ai_icon, src)
+	eye_app.skip_z_level_check = TRUE
 	eye_app.show_to(src)
 
 /mob/living/silicon/ai/verb/toggle_acceleration()

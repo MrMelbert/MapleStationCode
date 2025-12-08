@@ -163,10 +163,9 @@
 			var/barefoot_type = prepared_steps[FOOTSTEP_MOB_BAREFOOT]
 			// these categories will use the synthetic step over the normal barefoot steps
 			var/static/list/synthetic_footstep_types = list(
-				FOOTSTEP_FLOOR = 1,
-				FOOTSTEP_PLATING = 1,
-				FOOTSTEP_WOOD = 1,
-				FOOTSTEP_CARPET = 1,
+				FOOTSTEP_CARPET_BAREFOOT = 1,
+				FOOTSTEP_HARD_BAREFOOT = 1,
+				FOOTSTEP_WOOD_BAREFOOT = 1,
 			)
 			// the actual synthetic footstep sound
 			var/static/list/synthetic_footsteps = list(
