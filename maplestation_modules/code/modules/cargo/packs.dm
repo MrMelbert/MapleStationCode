@@ -348,15 +348,26 @@
 	icon_state = "opscrate"
 	base_icon_state = "opscrate"
 
-/datum/supply_pack/science/volitious_lignite_single_pack
+/datum/supply_pack/science/volitious_lignite
 	name = "Volitious Lignite Pack"
 	desc = "A bundle containing 5 pieces of a natural source of volite, volitious lignite."
 	cost = PAYCHECK_COMMAND * 2
 	contains = list(
-		/obj/item/mana_battery/mana_crystal/lignite,
-		/obj/item/mana_battery/mana_crystal/lignite,
-		/obj/item/mana_battery/mana_crystal/lignite,
-		/obj/item/mana_battery/mana_crystal/lignite,
-		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite = 5,
+	)
+/datum/supply_pack/service/meditation_guide
+	name = "Meditation Guide Multi-Pack"
+	desc = "Provides a multi-pack of the Nanotrasen Approved Meditation Guidebook"
+	cost = PAYCHECK_CREW * 4 // you get the fifth one for free!
+	contains = list(
+		/obj/item/book/granter/action/spell/meditation = 5,
 	)
 
+/datum/supply_pack/service/lesser_splattercasting_guide
+	name = "Lesser Splattercasting Guide Multi-Pack"
+	desc = "Provides a multi-pack of the Nanotrasen Unapproved Meditation Guidebook"
+	cost = PAYCHECK_CREW * 4 // you also get the fifth one for free!
+	contraband = TRUE
+	contains = list(
+		/obj/item/book/granter/action/spell/lesser_splattercasting = 5,
+	)
