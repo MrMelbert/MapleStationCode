@@ -19,8 +19,8 @@
 /obj/item/knife/combat/ice/shadow/Initialize(mapload)
 	. = ..()
 	expire_time = world.time + 40 SECONDS
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 
 // Expires on drop unlike the regular knife.
-/obj/item/knife/combat/ice/shadow/on_drop(atom/source)
+/obj/item/knife/combat/ice/shadow/proc/on_drop(atom/source)
 	expire()
