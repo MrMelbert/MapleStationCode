@@ -6795,6 +6795,7 @@
 #include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\curios.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\dreaditems.dm"
+#include "maplestation_modules\story_content\deepred_shattering\code\redareas.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redmaterials.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redparts.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redprojectiles.dm"

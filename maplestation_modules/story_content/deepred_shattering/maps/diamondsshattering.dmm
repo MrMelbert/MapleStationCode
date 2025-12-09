@@ -1,0 +1,93 @@
+"cg" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"cH" = (/turf/closed/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"ed" = (/obj/structure/rack,/obj/effect/spawner/random/shattering_snowglobes/extra,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"ee" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"fd" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/resmythril{amount = 5},/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"iN" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/aerialite{amount = 5},/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"iP" = (/obj/structure/closet/crate,/obj/item/reagent_containers/cup/bottle/strange_reagent,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"jZ" = (/obj/structure/closet/crate,/obj/item/knife/combat/nullknife,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"ll" = (/obj/structure/rack,/obj/effect/spawner/random/shattering_snowglobes,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"lT" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/resmythril{amount = 5},/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"mk" = (/obj/structure/closet/crate,/obj/item/instrument/piano_synth,/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"mF" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"ny" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"pA" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"qU" = (/obj/structure/closet/crate,/obj/item/modeling_block,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"rE" = (/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"rF" = (/obj/structure/closet/crate,/obj/item/ammo_box/c38/maginull,/obj/item/ammo_box/c38/dual_stage,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"rX" = (/obj/structure/closet/crate,/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/gauss,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"sI" = (/obj/structure/closet/crate,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/obj/item/throwing_star/needle,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"sT" = (/turf/open/lava/smooth/lava_land_surface,/area/ruin/unpowered/diamonds)
+"tr" = (/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"yV" = (/obj/structure/closet/crate,/obj/item/mecha_parts/mecha_equipment/weapon/energy/ppc,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"zi" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"zw" = (/obj/structure/closet/crate,/obj/item/computer_disk/volkan/communication_chip,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"zy" = (/obj/structure/closet/crate,/obj/item/redtech_nan_sample,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Ay" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap/alt,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"Bg" = (/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"BG" = (/obj/structure/closet/crate,/obj/item/toy/spadepokerchip,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"BX" = (/obj/structure/closet/crate,/obj/item/mana_lens,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Cm" = (/obj/structure/closet/crate,/obj/item/bodybag/stasis,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"DK" = (/obj/structure/closet/crate,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/obj/item/mana_battery/mana_crystal/lignite,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Ex" = (/obj/structure/closet/crate,/obj/item/yin_yang_orb,/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"EW" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"Fb" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"FD" = (/turf/closed/indestructible/binary{desc = "Something terrible has happened here."},/area/ruin/unpowered/diamonds)
+"HC" = (/obj/structure/closet/crate,/obj/item/clothing/neck/mana_star,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"HN" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/resmythril{amount = 5},/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Ix" = (/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"Jr" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"JY" = (/obj/structure/closet/crate,/obj/item/gun/energy/disabler/phaser,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Ks" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/aerialite{amount = 5},/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Lb" = (/obj/structure/closet/crate,/obj/item/starblight_soot,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"Mf" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/diamonds,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"MV" = (/obj/structure/closet/crate,/obj/item/reagent_containers/cup/beaker/redlightning/filled,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"NM" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt,/area/ruin/unpowered/diamonds)
+"Of" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap/alt,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Ph" = (/obj/structure/closet/crate,/obj/item/food/grown/starfruit,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"RC" = (/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Sm" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"St" = (/turf/template_noop,/area/template_noop)
+"TM" = (/obj/structure/closet/crate,/obj/item/ammo_casing/shotgun/godslayer,/turf/open/indestructible/redtech/altalt,/area/ruin/unpowered/diamonds)
+"WU" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+"Zd" = (/obj/structure/rack,/obj/item/clothing/neck/cloak/redtech_dread,/obj/item/clothing/mask/collector,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
+
+(1,1,1) = {"
+StStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStStSt
+StStIxEWEWrEIxIxEWNMIxIxIxEWEWEWIxIxStStStStIxEWEWIxIxIxEWEWIxIxrEEWEWEWSt
+StIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxFDIxIxIxIxIxIxIxIxIxIxIxIxIxIxEWSt
+StEWIxcHcHcHcHcHcHcHcHcHcHcHIxNMIxIxcHIxIxIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWSt
+StEWIxcHBgBgBgBgBgBgBgBgBgcHIxtrIxIxcgIxIxIxIxcHBgBgBgBgBgBgBgBgBgcHIxEWSt
+StIxIxcHBgnyJrnyBgnyJrFbBgcHIxNMIxIxIxIxIxNMIxcHBgnyWURCBgFbRCnyBgcHIxNMSt
+StIxIxcHBgRCRCRCBgRCRCRCBgcHIxIxIxIxEWIxIxtrIxcHBgRCRCRCBgRCRCRCBgcHIxEWSt
+StIxIxcHBgMVMVMVBgBGzwqUBgcHIxIxIxcHEWIxIxIxIxcHBgOfRCIxBgsIRCIxpAcHIxEWSt
+StEWIxcHBgBgBgBgBgBgBgBgBgcHIxNMIxIxIxIxIxIxIxcHBgBgBgIxIxBgBgIxBgEWFDIxSt
+StIxIxcHBgRCRCRCBgRCRCRCBgcHIxNMIxIxFDFDIxIxIxcHBgIxRCIxExRCRCRCBgEWIxIxSt
+StIxIxcHBgHNHCRCBgBXRCIxBgcgIxIxIxIxEWFDIxNMIxcgBgIxRCRCBgRCRCRCIxIxIxIxSt
+StIxIxcHBgRCRCIxIxRCIxIxBgEWIxIxIxIxEWIxIxIxIxEWBgRCRCIxIxIxRCIxIxFDIxIxSt
+StIxIxcHBgBgBgBgIxBgfdIxIxIxIxIxIxIxSmcHIxIxIxIxIxIxLbIxFDFDBgIxFDFDIxEWSt
+StNMIxcHBgBgBgiNIxBgIxIxcgIxIxIxIxIxSmcHIxFDFDFDFDIxIxIxIxFDBgIxFDIxIxEWSt
+StEWIxcHBgrFjZRCBgRCRCIxIxIxIxIxIxIxcHcHIxIxIxIxFDFDFDIxIxFDRCFDFDIxIxIxSt
+StIxIxcHBgRCRCRCBgiPRCmkBgcgIxIxIxIxIxIxIxIxIxIxIxIxFDFDFDFDFDFDIxIxIxIxSt
+StIxIxcHBgCmrXRCBgRCRCIxBgcHIxIxIxEWEWIxIxEWIxIxFDFDFDFDFDFDRCRCBgcHIxIxSt
+StIxIxcHBgBgBgBgIxIxBgBglTcHIxEWIxcHSmIxIxEWIxIxFDIxFDFDFDFDIxIxAycHIxEWSt
+StIxIxcHBgKsyVRCIxRCRCRCIxIxIxEWIxcHcHIxIxNMIxIxIxIxIxFDIxFDFDIxIxIxIxEWSt
+StEWIxcHBgRCRCRCBgJYIxIxIxEWIxtrIxIxIxIxIxIxIxcgIxRCIxFDIxIxFDFDFDIxIxEWSt
+StrEIxcHBgZdlledBgIxIxRCBgEWIxIxIxcHIxIxIxIxIxcHIxRCFDFDIxIxRCIxFDFDFDEWSt
+StIxIxcHBgBgBgBgBgBgBgPhBgcHIxIxIxSmcgIxIxIxIxcHIxBgIxFDFDFDBgIxIxIxIxIxSt
+StIxIxcHBgDKDKDKBgJYzyRCBgcHIxIxIxIxIxIxIxEWIxcHBgsIRCRCBgRCRCziBgEWIxIxSt
+StIxIxcHBgRCRCRCBgRCRCRCBgcHIxIxIxIxEWIxIxEWIxcHBgRCIxIxIxIxRCIxBgEWIxIxSt
+StEWIxcHBgnymFRCBgnyMfnyBgcHIxEWIxIxcHcHIxEWIxcHBgnyIxFbIxIxmFIxBgcHIxIxSt
+StEWIxcHBgBgBgBgBgBgBgBgBgcHIxEWIxIxEWFDIxIxIxcHBgBgBgBgBgFDBgBgBgcHIxIxSt
+StIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWIxIxIxFDFDIxIxcHcHcHcHcHcHcHcHcHcHcHIxrESt
+StIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWIxIxIxIxIxtrIxcHcHcHcHcHcHcHcHcHcHcHIxIxSt
+StEWIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxSt
+StEWEWEWEWNMEWIxIxIxIxEWEWEWIxIxIxIxIxIxIxEWEWIxIxEWEWFDFDNMEWIxEWIxFDEWSt
+StIxIxIxIxIxIxIxcgIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxIxSt
+StIxIxIxcHcHcHIxIxIxEWIxIxIxIxEWEWEWIxIxIxcHcHIxIxIxIxIxIxIxIxIxIxEWIxEWSt
+StEWrEEWEWcgcHEWIxIxSmEWIxIxIxEWIxIxIxSmEWEWEWIxIxeeeecHcHcHcHcHIxcHIxIxSt
+StIxIxIxIxIxIxIxIxcHcHIxIxIxIxIxIxcHcHcHEWEWcHIxIxsTsTsTsTTMsTcHIxEWIxIxSt
+StStIxIxIxcHIxcHIxIxcHcHcHIxIxcHEWcgcHcHcHIxIxIxsTsTeeeecHcHcHcHIxIxIxEWSt
+StIxIxIxEWEWcgEWIxIxIxIxIxIxIxrEEWEWEWIxIxIxIxsTsTIxIxIxIxIxIxIxIxIxIxIxSt
+StIxIxIxIxIxcHcHcHcHIxIxStStIxcHcHIxIxIxIxIxIxIxStStStStStIxIxIxIxStStStSt
+"}
