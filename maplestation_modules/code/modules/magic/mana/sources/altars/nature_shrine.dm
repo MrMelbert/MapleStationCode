@@ -11,6 +11,7 @@
 	name = "The Stump Which Watches"
 	desc = "A peculiar stump. It feels like the hole in the center is looking at you. It appears you can cover its gaze with some flowers, though."
 	icon_state = "magicstump_base"
+	var/drop_amount = 3
 
 	var/static/list/nature_shrine_mana_low = typecacheof(list(
 		/obj/item/food/grown/poppy,
@@ -33,6 +34,13 @@
 /obj/structure/magic_altar/nature/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/nature
 
+/obj/structure/magic_altar/nature/Initialize(mapload)
+	. = ..()
+
+	var/static/list/tool_behaviors = list(TOOL_CROWBAR = list(SCREENTIP_CONTEXT_LMB = "Deconstruct"))
+	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
+	register_context()
+
 /obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
 	..()
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_high)) // todo: add feedback to the player for this
@@ -48,3 +56,14 @@
 /obj/structure/magic_altar/nature/proc/accept_sacrifice(obj/item/sacrifice, mana_value)
 	QDEL_NULL(sacrifice)
 	mana_pool.amount += mana_value
+
+/obj/structure/magic_altar/nature/crowbar_act(mob/living/user, obj/item/tool)
+	balloon_alert(user, "deconstructing stump...")
+	if(!tool.use_tool(src, user, 5 SECONDS, volume=50))
+		return
+	balloon_alert(user, "stump deconstructed")
+	tool.play_tool_sound(src)
+	new /obj/item/stack/sheet/mineral/wood(get_turf(src), drop_amount)
+	new /obj/item/mana_battery/mana_crystal/standard(get_turf(src), 1)
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS

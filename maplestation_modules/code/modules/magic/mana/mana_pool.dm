@@ -83,10 +83,12 @@
 	attunements = null
 	attunements_to_generate = null
 
-	QDEL_LIST(transfer_rates)
-	QDEL_LIST(transfer_caps)
-	QDEL_LIST(transferring_to)
-	QDEL_LIST(transferring_from) // we already have a signal registered, so if we qdel we stop transfers
+	transfer_rates.Cut()
+	transfer_caps.Cut()
+	for (var/datum/mana_pool/pool_to_detach as anything in transferring_to)
+		stop_transfer(pool_to_detach, TRUE)
+	for (var/datum/mana_pool/pool_to_detach as anything in transferring_from)
+		pool_to_detach.stop_transfer(src, TRUE)
 
 	STOP_PROCESSING(SSmagic, src)
 
@@ -212,7 +214,8 @@
 
 		adjust_mana(exponential_decay) //just to be safe, in case we have any left over or didnt have a discharge destination
 
-/datum/mana_pool/proc/check_rulesets(datum/mana_pool/target_pool, transferred_mana)
+// apply the rulesets we have
+/datum/mana_pool/proc/check_rulesets(datum/mana_pool/target_pool, transferred_mana) // pretty mean overhead on this one
 	var/softcap_check = (target_pool.amount >= target_pool.softcap)
 	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
 
@@ -267,8 +270,6 @@
 	transferring_to += target_pool
 	target_pool.incoming_transfer_start(src)
 
-	RegisterSignal(target_pool, COMSIG_QDELETING, PROC_REF(stop_transfer))
-
 	if (force_process)
 		transferring_to[target_pool] |= MANA_POOL_SKIP_NEXT_TRANSFER
 		transfer_mana_to(target_pool) // you can potentially get all you need instantly
@@ -276,15 +277,12 @@
 	return MANA_POOL_TRANSFER_START
 
 /datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool, forced = FALSE)
-	SIGNAL_HANDLER
 
 	if (!forced && !QDELETED(target_pool) && (transferring_to[target_pool] & MANA_POOL_SKIP_NEXT_TRANSFER))
 		return MANA_POOL_TRANSFER_SKIP_ACTIVE // nope!
 
 	transferring_to -= target_pool
 	target_pool.incoming_transfer_end(src)
-
-	UnregisterSignal(target_pool, COMSIG_QDELETING)
 
 	return MANA_POOL_TRANSFER_STOP
 

@@ -26,11 +26,17 @@
 	desc = "an honestly quite dull magic altar; actually better question, why is this visible in game? if you or an admin/coder aren't testing stuff this shouldn't be here"
 	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
 	icon_state = "goner"
+	density = TRUE
 	has_initial_mana_pool = TRUE
 	var/max_allowed_transfer_distance = MAGIC_ALTAR_MAX_TRANSFER_DISTANCE
 
 /obj/structure/magic_altar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar
+
+/obj/structure/magic_altar/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	default_unfasten_wrench(user, tool, 5 SECONDS)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/magic_contraption // used for magitech stuff that needs to process.
 	name = "magic contraption basetype"
@@ -38,6 +44,7 @@
 	icon = 'maplestation_modules/icons/obj/magic/altars.dmi'
 	icon_state = "goner_machine"
 
+	density = TRUE
 	use_power = NO_POWER_USE
 	anchored = FALSE
 
@@ -46,4 +53,14 @@
 
 /obj/machinery/power/magic_contraption/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar
+
+/obj/machinery/power/magic_contraption/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_unfasten_wrench(user, tool, 4 SECONDS))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/power/magic_contraption/crowbar_act(mob/living/user, obj/item/tool)
+	. = NONE
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 

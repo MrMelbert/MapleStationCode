@@ -1,9 +1,10 @@
 // Stellar oculory. A more technomagic themed altar, which generates mana from exposure to starlight, based heavily off of starlight regeneration.
 #define COMSIG_STELLAR_OCULORY_PULSE_MANA "oculory_pulse_mana"
+#define STELLAR_OCULORY_BASE_MANA 225
 
 /datum/mana_pool/magic_altar/stellar
-	maximum_mana_capacity = 225
-	softcap = 225 // identical to max cap, as it its a passive generator, and not an active one.
+	maximum_mana_capacity = STELLAR_OCULORY_BASE_MANA
+	softcap = STELLAR_OCULORY_BASE_MANA // identical to max cap, as it its a passive generator, and not an active one.
 	amount = 0
 	max_donation_rate_per_second = 4
 
@@ -29,14 +30,16 @@
 	return /datum/mana_pool/magic_altar/stellar
 
 /obj/machinery/power/magic_contraption/stellar/interact(mob/user)
+	if(panel_open)
+		return balloon_alert(user, "Close the panel!")
 	if(active)
 		active = FALSE
 		icon_state = "stellar_inactive"
-		return balloon_alert(user, "deactivated")
+		return balloon_alert(user, "deactivated the oculory")
 	if(!active)
 		active = TRUE
 		icon_state = "stellar"
-		return balloon_alert(user, "activated")
+		return balloon_alert(user, "activated the oculory")
 
 /obj/machinery/power/magic_contraption/stellar/process(seconds_per_tick)
 	if(!active)
@@ -57,10 +60,13 @@
 	var/pulse_value = 0
 	switch(starlight_level)
 		if(FULL_STARLIGHT)
+			last_pulse_value = FULL_STARLIGHT
 			pulse_value = high_pulse_value
 		if(PARTIAL_STARLIGHT)
+			last_pulse_value = PARTIAL_STARLIGHT
 			pulse_value = medium_pulse_value
 		if(NO_STARLIGHT)
+			last_pulse_value = NO_STARLIGHT
 			pulse_value = low_pulse_value
 	// anims here
 	// also update sprite
@@ -89,3 +95,10 @@
 		/obj/item/stack/sheet/mineral/gold = 2,
 		/obj/item/mana_battery/mana_crystal/standard = 1,
 	)
+/obj/machinery/power/magic_contraption/stellar/screwdriver_act(mob/living/user, obj/item/tool)
+	. = ITEM_INTERACT_BLOCKING
+	if (active)
+		user.balloon_alert(user, "Must be inactive!")
+		return .
+	if(default_deconstruction_screwdriver(user, "stellar_t", "stellar", tool))
+		return ITEM_INTERACT_SUCCESS
