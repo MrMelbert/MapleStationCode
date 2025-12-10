@@ -1,10 +1,10 @@
 /datum/limb_option_datum/organ/cyber
 
 /datum/limb_option_datum/organ/cyber/can_be_selected(datum/preferences/prefs)
-	return !ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+	return !ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
 
 /datum/limb_option_datum/organ/cyber/can_be_applied(mob/living/carbon/human/apply_to)
-	return !is_species(apply_to, /datum/species/prefs_android)
+	return !is_species(apply_to, /datum/species/android)
 
 /datum/limb_option_datum/organ/cyber/heart
 	name = "Cybernetic Heart"

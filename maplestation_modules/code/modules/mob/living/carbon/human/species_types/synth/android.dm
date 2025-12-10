@@ -1,4 +1,4 @@
-/datum/species/prefs_android
+/datum/species/android
 	name = "Android"
 	plural_form = "Androids"
 	id = SPECIES_ANDROID
@@ -58,7 +58,7 @@
 		SPECIES_ORNITHID,
 	)
 
-/datum/species/prefs_android/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
+/datum/species/android/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	var/datum/species/android_species = GLOB.species_prototypes[GLOB.species_list[human_who_gained_species.dna?.features["android_species"] || SPECIES_HUMAN]]
 	for(var/organtype in android_species.mutant_organs)
 		set_mutant_organ(MUTANT_ORGANS, organtype, human_who_gained_species)
@@ -70,7 +70,7 @@
 #define ID_TO_TYPEPATH(id) GLOB.species_list[id]
 
 // Add features from all android species for prefs
-/datum/species/prefs_android/get_features(only_innate = FALSE)
+/datum/species/android/get_features(only_innate = FALSE)
 	var/list/features = ..()
 	if(only_innate)
 		return features
@@ -81,7 +81,7 @@
 	return features
 
 // Filter out features from unselected android species, keep active + innate features
-/datum/species/prefs_android/get_filtered_features_per_prefs(datum/preferences/prefs)
+/datum/species/android/get_filtered_features_per_prefs(datum/preferences/prefs)
 	var/static/list/cached_features
 	if(!cached_features)
 		cached_features = list()
@@ -94,15 +94,15 @@
 
 	return filtered
 
-/datum/species/prefs_android/get_species_description()
+/datum/species/android/get_species_description()
 	return "Androids are an entirely synthetic species."
 
-/datum/species/prefs_android/get_species_lore()
+/datum/species/android/get_species_lore()
 	return list(
 		"Androids are a synthetic species created by Nanotrasen as an intermediary between humans and cyborgs."
 	)
 
-/datum/species/prefs_android/create_pref_temperature_perks()
+/datum/species/android/create_pref_temperature_perks()
 	var/list/to_add = list()
 
 	// - you don't regulate temperature naturally
@@ -125,7 +125,7 @@
 
 	return to_add
 
-/datum/species/prefs_android/create_pref_liver_perks()
+/datum/species/android/create_pref_liver_perks()
 	var/list/to_add = list()
 
 	// - immune to most chems in general
@@ -142,7 +142,7 @@
 
 	return to_add
 
-/datum/species/prefs_android/create_pref_lung_perks()
+/datum/species/android/create_pref_lung_perks()
 	var/list/to_add = list()
 
 	// - lungs are how you do homeostasis
@@ -162,7 +162,7 @@
 	))
 	return to_add
 
-/datum/species/prefs_android/create_pref_blood_perks()
+/datum/species/android/create_pref_blood_perks()
 	var/list/to_add = list()
 
 	// - oil instead of blood
@@ -178,7 +178,7 @@
 
 	return to_add
 
-/datum/species/prefs_android/create_pref_unique_perks()
+/datum/species/android/create_pref_unique_perks()
 	var/list/to_add = list()
 
 	// - you don't need to eat
@@ -224,7 +224,7 @@
 
 	return to_add
 
-/datum/species/prefs_android/create_pref_damage_perks()
+/datum/species/android/create_pref_damage_perks()
 	var/list/to_add = list()
 
 	to_add += list(list(

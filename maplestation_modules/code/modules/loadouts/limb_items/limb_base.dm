@@ -22,10 +22,10 @@
 	limb_path = /obj/item/bodypart/chest/robot
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/can_be_applied(mob/living/carbon/human/apply_to)
-	return is_species(apply_to, /datum/species/prefs_android)
+	return is_species(apply_to, /datum/species/android)
 
 /datum/limb_option_datum/bodypart/cybernetic_head
 	name = "Cybernetic Head"
@@ -33,10 +33,10 @@
 	limb_path = /obj/item/bodypart/head/robot
 
 /datum/limb_option_datum/bodypart/cybernetic_head/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
 
 /datum/limb_option_datum/bodypart/cybernetic_head/can_be_applied(mob/living/carbon/human/apply_to)
-	return is_species(apply_to, /datum/species/prefs_android)
+	return is_species(apply_to, /datum/species/android)
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg
 	name = "Cybernetic Right Leg"

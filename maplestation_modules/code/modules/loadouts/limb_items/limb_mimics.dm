@@ -3,22 +3,22 @@
 	tooltip = "Unique to Lizardlike Androids."
 
 /datum/limb_option_datum/bodypart/lizardlike_android/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android) \
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android) \
 		&& prefs.read_preference(/datum/preference/choiced/android_species) == SPECIES_LIZARD
 
 /datum/limb_option_datum/bodypart/lizardlike_android/can_be_applied(mob/living/carbon/human/apply_to)
-	return istype(apply_to.dna?.species, /datum/species/prefs_android) \
+	return istype(apply_to.dna?.species, /datum/species/android) \
 		&& apply_to.dna?.features["android_species"] == SPECIES_LIZARD
 
 /datum/limb_option_datum/bodypart/humanoid_android
 	tooltip = "Unique to Humanoid Androids."
 
 /datum/limb_option_datum/bodypart/humanoid_android/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android) \
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android) \
 		&& prefs.read_preference(/datum/preference/choiced/android_species) == SPECIES_HUMAN
 
 /datum/limb_option_datum/bodypart/humanoid_android/can_be_applied(mob/living/carbon/human/apply_to)
-	return is_species(apply_to, /datum/species/prefs_android) \
+	return is_species(apply_to, /datum/species/android) \
 		&& apply_to.dna?.features["android_species"] == SPECIES_HUMAN
 
 /datum/limb_option_datum/bodypart/humanoid_android/head

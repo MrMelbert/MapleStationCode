@@ -7,7 +7,7 @@
 	priority = PREFERENCE_PRIORITY_GENDER
 
 /datum/preference/choiced/synth_species/init_possible_values()
-	var/datum/species/prefs_android/synth/synth = GLOB.species_prototypes[/datum/species/prefs_android/synth]
+	var/datum/species/android/synth/synth = GLOB.species_prototypes[/datum/species/android/synth]
 
 	. = list()
 	. += synth.valid_species
@@ -17,7 +17,7 @@
 	return SPECIES_HUMAN
 
 /datum/preference/choiced/synth_species/apply_to_human(mob/living/carbon/human/target, value)
-	var/datum/species/prefs_android/synth/synth = target.dna?.species
+	var/datum/species/android/synth/synth = target.dna?.species
 	if(!istype(synth))
 		return
 	if(value == NO_DISGUISE)
@@ -28,7 +28,7 @@
 		return
 
 /datum/preference/choiced/synth_species/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android/synth)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android/synth)
 
 #undef NO_DISGUISE
 
@@ -44,13 +44,13 @@
 	return 25
 
 /datum/preference/numeric/synth_damage_threshold/apply_to_human(mob/living/carbon/human/target, value)
-	var/datum/species/prefs_android/synth/synth = target.dna?.species
+	var/datum/species/android/synth/synth = target.dna?.species
 	if(!istype(synth))
 		return
 	synth.disuise_damage_threshold = value
 
 /datum/preference/numeric/synth_damage_threshold/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android/synth)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android/synth)
 
 /datum/preference/choiced/synth_blood
 	savefile_key = "feature_synth_blood"
@@ -65,7 +65,7 @@
 	return "As Disguise"
 
 /datum/preference/choiced/synth_blood/apply_to_human(mob/living/carbon/human/target, value)
-	var/datum/species/prefs_android/synth/synth = target.dna?.species
+	var/datum/species/android/synth/synth = target.dna?.species
 	if(!istype(synth))
 		return
 	if(value == "As Disguise" && synth.disguise_species)
@@ -74,7 +74,7 @@
 		synth.exotic_bloodtype = /datum/blood_type/oil
 
 /datum/preference/choiced/synth_blood/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android/synth)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android/synth)
 
 //synth head covers (aka head design options)
 /datum/preference/choiced/synth_head_cover
@@ -120,7 +120,7 @@
 	can_randomize = FALSE
 
 /datum/preference/choiced/android_species/init_possible_values()
-	var/datum/species/prefs_android/droid = GLOB.species_prototypes[/datum/species/prefs_android]
+	var/datum/species/android/droid = GLOB.species_prototypes[/datum/species/android]
 
 	. = list()
 	. += droid.android_species
@@ -136,9 +136,9 @@
 		return FALSE
 
 	var/pref_species = preferences.read_preference(/datum/preference/choiced/species)
-	if(!ispath(pref_species, /datum/species/prefs_android))
+	if(!ispath(pref_species, /datum/species/android))
 		return FALSE
-	if(ispath(pref_species, /datum/species/prefs_android/synth))
+	if(ispath(pref_species, /datum/species/android/synth))
 		return FALSE
 
 	return TRUE
@@ -154,7 +154,7 @@
 	target.dna?.features["android_emotionless"] = !value // the pref is "i want emotions", the feature is "we don't have emotions"
 
 /datum/preference/toggle/android_emotions/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android)
 
 /datum/preference/choiced/android_laws
 	savefile_key = "feature_android_laws"
@@ -196,7 +196,7 @@
 	target.dna?.features["android_laws"] = lawname_to_lawid[value]
 
 /datum/preference/choiced/android_laws/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android)
 
 /datum/preference_middleware/android_laws
 	key = "laws"

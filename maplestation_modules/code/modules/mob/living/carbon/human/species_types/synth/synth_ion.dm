@@ -23,7 +23,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/target = parent
-	var/datum/species/prefs_android/synth/synth = target.dna.species
+	var/datum/species/android/synth/synth = target.dna.species
 	if(isnull(synth.disguise_species))
 		to_chat(target, span_danger("[ion_num()]. I0n1c D1strbance d3tcted!"))
 		return
@@ -40,7 +40,7 @@
 /// For use in a callback in [on_ion_storm].
 /datum/component/ion_storm_randomization/proc/mutate_after_time()
 	var/mob/living/carbon/human/target = parent
-	var/datum/species/prefs_android/synth/synth = target.dna.species
+	var/datum/species/android/synth/synth = target.dna.species
 	if(isnull(synth.disguise_species))
 		return
 
@@ -51,7 +51,7 @@
 /// For use in a callback in [on_ion_storm].
 /datum/component/ion_storm_randomization/proc/return_to_normal()
 	var/mob/living/carbon/human/target = parent
-	var/datum/species/prefs_android/synth/synth = target.dna.species
+	var/datum/species/android/synth/synth = target.dna.species
 	if(!isnull(synth.disguise_species))
 		to_chat(target, span_notice("Your disguise returns to normal."))
 	target.dna.features = original_dna.features.Copy()
