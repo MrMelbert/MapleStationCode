@@ -182,7 +182,7 @@
 /datum/wound_pregen_data/flesh_pierce
 	abstract = TRUE
 
-	required_limb_biostate = (BIO_FLESH)
+	required_limb_biostate = BIO_FLESH
 	required_wounding_types = list(WOUND_PIERCE)
 
 	wound_series = WOUND_SERIES_FLESH_PUNCTURE_BLEED

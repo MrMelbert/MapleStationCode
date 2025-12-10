@@ -1,6 +1,6 @@
 /datum/species/android
 	name = "Android"
-	id = SPECIES_ANDROID
+	id = SPECIES_OP_ANDROID
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_LIMBATTACHMENT,

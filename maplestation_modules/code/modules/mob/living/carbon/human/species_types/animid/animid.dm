@@ -127,10 +127,10 @@
 	return filtered_features - animid_singletons[selected_animid_id].get_feature_keys()
 
 // Shows all organs from all animid types
-/datum/species/human/animid/get_mut_organs()
+/datum/species/human/animid/get_mut_organs(include_brain = TRUE)
 	. = ..()
 	for(var/animalid_id in animid_singletons)
-		. |= animid_singletons[animalid_id].get_organs()
+		. |= animid_singletons[animalid_id].get_organs(include_brain)
 
 /// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
 /datum/species/proc/set_mutant_organ(slot, input, mob/living/carbon/human/humanoid)

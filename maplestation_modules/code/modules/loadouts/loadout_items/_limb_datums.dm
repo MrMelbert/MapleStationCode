@@ -78,7 +78,15 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 		pref_list_slot = initial(part_path.body_zone)
 
 /datum/limb_option_datum/bodypart/apply_limb(mob/living/carbon/human/apply_to)
-	apply_to.del_and_replace_bodypart(new limb_path(), special = TRUE)
+	var/obj/item/bodypart/new_limb = new limb_path()
+	new_limb.change_exempt_flags &= ~BP_BLOCK_CHANGE_SPECIES
+	apply_to.del_and_replace_bodypart(new_limb, special = TRUE)
+
+/datum/limb_option_datum/bodypart/proc/digi_prefs_check(datum/preferences/prefs)
+	return length(GLOB.species_prototypes[prefs.read_preference(/datum/preference/choiced/species)].digitigrade_legs)
+
+/datum/limb_option_datum/bodypart/proc/digi_mob_check(mob/living/carbon/human/check_mob)
+	return length(check_mob.dna?.species?.digitigrade_legs)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg
 	name = "Prosthetic Right Leg"
@@ -160,6 +168,17 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	name = "ZHP Cybernetic Right Leg"
 	limb_path = /obj/item/bodypart/leg/right/robot/zhp
 
+/datum/limb_option_datum/bodypart/cybernetic_r_leg/zhp/digi
+	name = "ZHP Cybernetic Digitigrade Right Leg"
+	tooltip = "Unique to Digitigrade species."
+	limb_path = /obj/item/bodypart/leg/right/robot/digi/zhp
+
+/datum/limb_option_datum/bodypart/cybernetic_r_leg/zhp/digi/can_be_selected(datum/preferences/prefs)
+	return digi_prefs_check(prefs)
+
+/datum/limb_option_datum/bodypart/cybernetic_r_leg/zhp/digi/can_be_applied(mob/living/carbon/human/apply_to)
+	return digi_mob_check(apply_to)
+
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/monokai
 	name = "Monokai Cybernetic Right Leg"
 	limb_path = /obj/item/bodypart/leg/right/robot/monokai
@@ -227,6 +246,17 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/zhp
 	name = "ZHP Cybernetic Left Leg"
 	limb_path = /obj/item/bodypart/leg/left/robot/zhp
+
+/datum/limb_option_datum/bodypart/cybernetic_l_leg/zhp/digi
+	name = "ZHP Cybernetic Digitigrade Left Leg"
+	tooltip = "Unique to Digitigrade species."
+	limb_path = /obj/item/bodypart/leg/left/robot/digi/zhp
+
+/datum/limb_option_datum/bodypart/cybernetic_l_leg/zhp/digi/can_be_selected(datum/preferences/prefs)
+	return digi_prefs_check(prefs)
+
+/datum/limb_option_datum/bodypart/cybernetic_l_leg/zhp/digi/can_be_applied(mob/living/carbon/human/apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/monokai
 	name = "Monokai Cybernetic Left Leg"
@@ -370,14 +400,14 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 
 /datum/limb_option_datum/bodypart/cybernetic_head
 	name = "Cybernetic Head"
-	tooltip = "Unique to Synthetics."
+	tooltip = "Unique to Androids and Synthetics."
 	limb_path = /obj/item/bodypart/head/robot
 
 /datum/limb_option_datum/bodypart/cybernetic_head/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
 
 /datum/limb_option_datum/bodypart/cybernetic_head/can_be_applied(mob/living/carbon/human/apply_to)
-	return is_species(apply_to, /datum/species/synth)
+	return is_species(apply_to, /datum/species/prefs_android)
 
 /datum/limb_option_datum/bodypart/cybernetic_head/engineer
 	name = "Nanotrasen Engineering Cybernetic Head"
@@ -441,14 +471,14 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 
 /datum/limb_option_datum/bodypart/cybernetic_chest
 	name = "Cybernetic Chest"
-	tooltip = "Unique to Synthetics."
+	tooltip = "Unique to Androids and Synthetics."
 	limb_path = /obj/item/bodypart/chest/robot
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/can_be_applied(mob/living/carbon/human/apply_to)
-	return is_species(apply_to, /datum/species/synth)
+	return is_species(apply_to, /datum/species/prefs_android)
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/engineer
 	name = "Nanotrasen Engineering Cybernetic Chest"

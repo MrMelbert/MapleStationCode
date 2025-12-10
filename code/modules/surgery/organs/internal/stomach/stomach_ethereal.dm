@@ -7,6 +7,8 @@
 	var/obj/item/stock_parts/power_store/cell
 	///used to keep ethereals from spam draining power sources
 	var/drain_time = 0
+	/// multiplier to passive drain over time
+	var/passive_drain_multiplier = PASSIVE_HUNGER_MULTIPLIER
 
 /obj/item/organ/stomach/ethereal/Initialize(mapload)
 	. = ..()
@@ -18,7 +20,7 @@
 
 /obj/item/organ/stomach/ethereal/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	adjust_charge(-1 * PASSIVE_HUNGER_MULTIPLIER * ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
+	adjust_charge(-1 * passive_drain_multiplier * ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
 	handle_charge(owner, seconds_per_tick, times_fired)
 
 /obj/item/organ/stomach/ethereal/on_mob_insert(mob/living/carbon/stomach_owner)
