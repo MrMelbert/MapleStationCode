@@ -62,21 +62,37 @@
 	var/datum/species/android_species = GLOB.species_prototypes[GLOB.species_list[human_who_gained_species.dna?.features["android_species"] || SPECIES_HUMAN]]
 	for(var/organtype in android_species.mutant_organs)
 		set_mutant_organ(MUTANT_ORGANS, organtype, human_who_gained_species)
+	for(var/markingtype in android_species.body_markings)
+		set_mutant_organ(BODY_MARKINGS, markingtype, human_who_gained_species)
 
 	return ..()
 
-/datum/species/prefs_android/get_mut_organs(include_brain = TRUE)
-	. = ..()
-	for(var/species_id in android_species)
-		. |= GLOB.species_prototypes[GLOB.species_list[species_id]].get_mut_organs(include_brain)
+#define ID_TO_TYPEPATH(id) GLOB.species_list[id]
 
+// Add features from all android species for prefs
+/datum/species/prefs_android/get_features(only_innate = FALSE)
+	var/list/features = ..()
+	if(only_innate)
+		return features
+
+	features = features.Copy() // it's cached we gotta make a copy
+	for(var/species_id in android_species)
+		features |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
+	return features
+
+// Filter out features from unselected android species, keep active + innate features
 /datum/species/prefs_android/get_filtered_features_per_prefs(datum/preferences/prefs)
-	var/list/filtered = list()
-	var/chosen_species_id = prefs.read_preference(/datum/preference/choiced/android_species)
-	for(var/species_id in android_species)
-		filtered |= GLOB.species_prototypes[GLOB.species_list[species_id]].get_features()
+	var/static/list/cached_features
+	if(!cached_features)
+		cached_features = list()
+		for(var/species_id in android_species)
+			cached_features |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
 
-	return filtered - GLOB.species_prototypes[GLOB.species_list[chosen_species_id]].get_features()
+	var/list/filtered = cached_features.Copy()
+	filtered -= GLOB.species_prototypes[ID_TO_TYPEPATH(prefs.read_preference(/datum/preference/choiced/android_species))].get_features()
+	filtered -= get_features(TRUE)
+
+	return filtered
 
 /datum/species/prefs_android/get_species_description()
 	return "Androids are an entirely synthetic species."

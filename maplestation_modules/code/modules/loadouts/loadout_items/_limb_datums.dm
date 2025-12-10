@@ -104,6 +104,60 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	name = "Prosthetic Left Arm"
 	limb_path = /obj/item/bodypart/arm/left/robot/surplus
 
+/datum/limb_option_datum/bodypart/humanoid_android
+	tooltip = "Unique to Humanoid Androids."
+
+/datum/limb_option_datum/bodypart/humanoid_android/can_be_selected(datum/preferences/prefs)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android) \
+		&& prefs.read_preference(/datum/preference/choiced/android_species) == SPECIES_HUMAN
+
+/datum/limb_option_datum/bodypart/humanoid_android/can_be_applied(mob/living/carbon/human/apply_to)
+	return is_species(apply_to, /datum/species/prefs_android) \
+		&& apply_to.dna?.features["android_species"] == SPECIES_HUMAN
+
+/datum/limb_option_datum/bodypart/humanoid_android/r_leg
+	name = "Humanoid Right Leg"
+	limb_path = /obj/item/bodypart/leg/right/robot/humanoid
+
+/datum/limb_option_datum/bodypart/humanoid_android/l_leg
+	name = "Humanoid Left Leg"
+	limb_path = /obj/item/bodypart/leg/left/robot/humanoid
+
+/datum/limb_option_datum/bodypart/humanoid_android/r_arm
+	name = "Humanoid Right Arm"
+	limb_path = /obj/item/bodypart/arm/right/robot/humanoid
+
+/datum/limb_option_datum/bodypart/humanoid_android/l_arm
+	name = "Humanoid Left Arm"
+	limb_path = /obj/item/bodypart/arm/left/robot/humanoid
+
+/datum/limb_option_datum/bodypart/lizardlike_android
+	tooltip = "Unique to Lizardlike Androids."
+
+/datum/limb_option_datum/bodypart/lizardlike_android/can_be_selected(datum/preferences/prefs)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android) \
+		&& prefs.read_preference(/datum/preference/choiced/android_species) == SPECIES_LIZARD
+
+/datum/limb_option_datum/bodypart/lizardlike_android/can_be_applied(mob/living/carbon/human/apply_to)
+	return istype(apply_to.dna?.species, /datum/species/prefs_android) \
+		&& apply_to.dna?.features["android_species"] == SPECIES_LIZARD
+
+/datum/limb_option_datum/bodypart/lizardlike_android/r_leg
+	name = "Lizardlike Right Leg"
+	limb_path = /obj/item/bodypart/leg/right/robot/lizardlike
+
+/datum/limb_option_datum/bodypart/lizardlike_android/l_leg
+	name = "Lizardlike Left Leg"
+	limb_path = /obj/item/bodypart/leg/left/robot/lizardlike
+
+/datum/limb_option_datum/bodypart/lizardlike_android/r_arm
+	name = "Lizardlike Right Arm"
+	limb_path = /obj/item/bodypart/arm/right/robot/lizardlike
+
+/datum/limb_option_datum/bodypart/lizardlike_android/l_arm
+	name = "Lizardlike Left Arm"
+	limb_path = /obj/item/bodypart/arm/left/robot/lizardlike
+
 /datum/limb_option_datum/bodypart/cybernetic_r_leg
 	name = "Cybernetic Right Leg"
 	limb_path = /obj/item/bodypart/leg/right/robot
@@ -409,6 +463,14 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 /datum/limb_option_datum/bodypart/cybernetic_head/can_be_applied(mob/living/carbon/human/apply_to)
 	return is_species(apply_to, /datum/species/prefs_android)
 
+/datum/limb_option_datum/bodypart/humanoid_android/head
+	name = "Humanoid Cybernetic Head"
+	limb_path = /obj/item/bodypart/head/robot/humanoid
+
+/datum/limb_option_datum/bodypart/lizardlike_android/head
+	name = "Lizardlike Cybernetic Head"
+	limb_path = /obj/item/bodypart/head/robot/lizardlike
+
 /datum/limb_option_datum/bodypart/cybernetic_head/engineer
 	name = "Nanotrasen Engineering Cybernetic Head"
 	limb_path = /obj/item/bodypart/head/robot/engineer
@@ -479,6 +541,14 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/can_be_applied(mob/living/carbon/human/apply_to)
 	return is_species(apply_to, /datum/species/prefs_android)
+
+/datum/limb_option_datum/bodypart/humanoid_android/chest
+	name = "Humanoid Cybernetic Chest"
+	limb_path = /obj/item/bodypart/chest/robot/humanoid
+
+/datum/limb_option_datum/bodypart/lizardlike_android/chest
+	name = "Lizardlike Cybernetic Chest"
+	limb_path = /obj/item/bodypart/chest/robot/lizardlike
 
 /datum/limb_option_datum/bodypart/cybernetic_chest/engineer
 	name = "Nanotrasen Engineering Cybernetic Chest"
@@ -559,37 +629,46 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	var/obj/item/organ/new_organ = new limb_path()
 	new_organ.Insert(apply_to, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
-/datum/limb_option_datum/organ/cyberheart
+/datum/limb_option_datum/organ/cyber
+
+/datum/limb_option_datum/organ/cyber/can_be_selected(datum/preferences/prefs)
+	return !ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/prefs_android)
+
+/datum/limb_option_datum/organ/cyber/can_be_applied(mob/living/carbon/human/apply_to)
+	return !is_species(apply_to, /datum/species/prefs_android)
+
+/datum/limb_option_datum/organ/cyber/heart
 	name = "Cybernetic Heart"
+	tooltip = "Cannot be selected by Androids or Synthetics."
 	limb_path = /obj/item/organ/heart/cybernetic
 
-/datum/limb_option_datum/organ/cyberliver
+/datum/limb_option_datum/organ/cyber/liver
 	name = "Cybernetic Liver"
 	limb_path = /obj/item/organ/liver/cybernetic
 
-/datum/limb_option_datum/organ/cyberlungs
+/datum/limb_option_datum/organ/cyber/lungs
 	name = "Cybernetic Lungs"
 	limb_path = /obj/item/organ/lungs/cybernetic
 
-/datum/limb_option_datum/organ/cyberstomach
+/datum/limb_option_datum/organ/cyber/stomach
 	name = "Cybernetic Stomach"
 	limb_path = /obj/item/organ/stomach/cybernetic
 
-/datum/limb_option_datum/organ/cybereyes
+/datum/limb_option_datum/organ/cyber/eyes
 	name = "Cybernetic Eyes"
 	limb_path = /obj/item/organ/eyes/robotic/basic
 
-/datum/limb_option_datum/organ/cyberears
+/datum/limb_option_datum/organ/cyber/ears
 	name = "Cybernetic Ears"
 	limb_path = /obj/item/organ/ears/cybernetic
 
-/datum/limb_option_datum/organ/cyberears/cat
+/datum/limb_option_datum/organ/cyber/ears/cat
 	name = "Cybernetic Cat Ears"
 	limb_path = /obj/item/organ/ears/cat/cybernetic
 
-/datum/limb_option_datum/organ/robotongue
+/datum/limb_option_datum/organ/cyber/robotongue
 	name = "Voicebox"
-	tooltip = "A voice synthesizer that replaces the tongue. Makes you sound like a robot."
+	tooltip = "Replaces the tongue. Makes you sound like a robot. Cannot be selected by Androids or Synthetics."
 	limb_path = /obj/item/organ/tongue/robot
 
 /datum/limb_option_datum/organ/lighter_implant
