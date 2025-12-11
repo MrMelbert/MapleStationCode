@@ -12,6 +12,7 @@
 "mF" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
 "ny" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
 "pA" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
+"pF" = (/obj/structure/frame/machine/secured,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
 "qU" = (/obj/structure/closet/crate,/obj/item/modeling_block,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
 "rE" = (/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech,/area/ruin/unpowered/diamonds)
 "rF" = (/obj/structure/closet/crate,/obj/item/ammo_box/c38/maginull,/obj/item/ammo_box/c38/dual_stage,/turf/open/indestructible/redtech/alt,/area/ruin/unpowered/diamonds)
@@ -79,7 +80,7 @@ StrEIxcHBgZdlledBgIxIxRCBgEWIxIxIxcHIxIxIxIxIxcHIxRCFDFDIxIxRCIxFDFDFDEWSt
 StIxIxcHBgBgBgBgBgBgBgPhBgcHIxIxIxSmcgIxIxIxIxcHIxBgIxFDFDFDBgIxIxIxIxIxSt
 StIxIxcHBgDKDKDKBgJYzyRCBgcHIxIxIxIxIxIxIxEWIxcHBgsIRCRCBgRCRCziBgEWIxIxSt
 StIxIxcHBgRCRCRCBgRCRCRCBgcHIxIxIxIxEWIxIxEWIxcHBgRCIxIxIxIxRCIxBgEWIxIxSt
-StEWIxcHBgnymFRCBgnyMfnyBgcHIxEWIxIxcHcHIxEWIxcHBgnyIxFbIxIxmFIxBgcHIxIxSt
+StEWIxcHBgnymFpFBgnyMfnyBgcHIxEWIxIxcHcHIxEWIxcHBgnyIxFbIxIxmFIxBgcHIxIxSt
 StEWIxcHBgBgymBgBgBgymBgBgcHIxEWIxIxEWFDIxIxIxcHBgBgymBgBgFDymBgBgcHIxIxSt
 StIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWIxIxIxFDFDIxIxcHcHcHcHcHcHcHcHcHcHcHIxrESt
 StIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWIxIxIxIxIxtrIxcHcHcHcHcHcHcHcHcHcHcHIxIxSt

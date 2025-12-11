@@ -7,12 +7,14 @@
 "l" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "m" = (/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "o" = (/turf/closed/indestructible/redtech,/area/ruin/space/unpowered/spades)
+"p" = (/obj/structure/frame/machine/secured,/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/2ed155531b486392294c3eedc1d57197.png"},/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
 "q" = (/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "r" = (/obj/structure/redtech_indestructable/inert_AV,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "t" = (/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "u" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "w" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
-"y" = (/obj/item/rtechdrive/spades,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
+"x" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/99b843e5d48d0669150f889b0cc78477.png"},/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
+"y" = (/obj/item/rtechdrive/spades{anchored = 1},/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "z" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
 "A" = (/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech/altalt,/area/ruin/space/unpowered/spades)
 "B" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
@@ -25,6 +27,7 @@
 "O" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "Q" = (/obj/structure/frame/machine/secured,/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
 "S" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt,/area/ruin/space/unpowered/spades)
+"U" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/c766c4486759ed2ceeb027ff20a32d3f.png"},/turf/open/indestructible/redtech,/area/ruin/space/unpowered/spades)
 "X" = (/obj/structure/redtech_indestructable/inert_AV,/turf/open/indestructible/redtech/altalt,/area/ruin/space/unpowered/spades)
 
 (1,1,1) = {"
@@ -51,14 +54,14 @@ JJJJJJJJJJJJJJJJiJJJJJJJJlkkJJJJJJoJJ
 JJJJJJJJJJJiiJJJJJiJJJJJJJJJJJJJJJJJJ
 JoJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJoooooooJJJoJJJooooooooooooooooJJ
-JJJJJoaaaalJJkllJlJaoaaaaaaaaaayrroJJ
+JJJJJoaaaalJJkllJlJaoaaaxaaaaaayrroJJ
 JJJJJohzzwJJSzQiJwJhohBzzzzzzzzfXooJJ
 JJJJoohQNJJNwzQizSJIohzzgBzfgffEAoJJJ
-JJJJoaaalJkklkkikkkaoaaaaaaaaarrqoJJJ
+JJJJoaaalJkklkkikkkaoaaaUaaaaarrqoJJJ
 JJJJohzzQJJJiiiiiQMhoAEfffBzzzfXooJJJ
 JJJoohzzzSzNwQiNiiwIoXfzfBgzzzzXoJJJJ
 JJJoaaaaaaaaliilkklkokkaaaaaaarroJJJJ
-JJJohzzzzzzzQiNwzSJJJKzzzzfzzfAooJJJJ
+JJJohzpzzzzzQiNwzSJJJKzzzzfzzfAooJJJJ
 JJoohzzzzzzzQJwzQwJwJJzgBzzzffAoJJJkJ
 JJoaaaaaaaaaaaalkJJkkJklaaaaarroJJJuJ
 JJoooooooooooooooJkloJooooooooooJJJJJ
