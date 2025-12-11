@@ -6617,7 +6617,6 @@
 #include "maplestation_modules\code\modules\loadouts\limb_items\limb_reskin_heads.dm"
 #include "maplestation_modules\code\modules\loadouts\limb_items\limb_reskins_arms.dm"
 #include "maplestation_modules\code\modules\loadouts\limb_items\limb_reskins_legs.dm"
-#include "maplestation_modules\code\modules\loadouts\limb_items\limb_organs.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_loadout_categories.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_loadout_datum.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_accessory.dm"
