@@ -19,6 +19,7 @@
 "A" = (/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "B" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "E" = (/obj/structure/redtech_indestructable/server_off,/obj/structure/redtech_indestructable/inert_AV/worse,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"G" = (/turf/template_noop,/area/ruin/space/unpowered/spades)
 "I" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "J" = (/turf/template_noop,/area/template_noop)
 "K" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
@@ -31,41 +32,41 @@
 "X" = (/obj/structure/redtech_indestructable/inert_AV,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 
 (1,1,1) = {"
-JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJJJJoJJJJJJJJJJJJJJJJJJJJJJJoJJJJJ
-JJJJJJJJJJJJJkJJJJJJJoJJJJJJJJJJJkJJJ
-JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJkuJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJJJokJkJJJJJJJJkJJJJJJ
-JJJJJJJJJJJJJJJJJJtJJJJJkoJJJJloJJJJJ
-JJJJJJJJJJJJJJJkJJJJJJJJJoJJJJJuJJJJJ
-JJJJJJJJJJotJJJJJJJJJJJJluJJJJJJJJJJJ
-JJJJJJJJJoooJJJJJJJJJJJJJJJJJJJlJJJJJ
-JJJJJJJJJOoJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJkJJJJJJJJJJJJJJJJJJJJJJJJJJJJoJJJJ
-JJJlJJJJJJJJJJJJJJJJJJJJJJJJJJJJoJJJJ
-JJotJJJJJJJJJJJJJJJlkkJJJJJJJJJJtJJJJ
-JJoJJJJJJJJJJJJJkJJoolooJJJJJJJJJJJJJ
-JJoJJJJJJJJJJJJklJJJJkkukkJJJJJJJJJJJ
-JJJJJJJJJlJJJJJJJJJJJJJooOooJJJJJJJJJ
-JJJJJJJJJJJJJJJJiJJJJJJJJlkkJJJJJJoJJ
-JJJJJJJJJJJiiJJJJJiJJJJJJJJJJJJJJJJJJ
-JoJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-JJJJJoooooooJJJoJJJooooooooooooooooJJ
-JJJJJoaaaalJJkllJlJaoaaaxaaaaaayrroJJ
-JJJJJohzzwJJSzQiJwJhohBzzzzzzzzfXooJJ
-JJJJoohQNJJNwzQizSJIohzzgBzfgffEAoJJJ
-JJJJoaaalJkklkkikkkaoaaaUaaaaarrqoJJJ
-JJJJohzzQJJJiiiiiQMhoAEfffBzzzfXooJJJ
-JJJoohzzzSzNwQiNiiwIoXfzfBgzzzzXoJJJJ
-JJJoaaaaaaaaliilkklkokkaaaaaaarroJJJJ
-JJJohzpzzzzzQiNwzSJJJKzzzzfzzfAooJJJJ
-JJoohzzzzzzzQJwzQwJwJJzgBzzzffAoJJJkJ
-JJoaaaaaaaaaaaalkJJkkJklaaaaarroJJJuJ
-JJoooooooooooooooJkloJooooooooooJJJJJ
-JJJJJJJJJJJJJJJJJJJJoJJJJJJJJJJJJJJtJ
-JJJJlJJJiJJJJiJJJktJJJiJJJJJJJJJJoJJJ
-JJJJkmoJJJJJJiJJJJJJJJJJJJJJJJJJJJJJJ
+JJJJJJGGGGGGGGGGGGGGGGGGGGGGGGGGJJJJJ
+JJJJJGGoGGGGGGGGGGGGGGGGGGGGGGGoGGJJJ
+JJJJGGGGGGGGGkGGGGGGGoGGGGGGGGGGGkGJJ
+JJJGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JJGGkuGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGokGkGGGGGGGGkGGGGGJ
+JGGGGGGGGGGGGGGGGGtGGGGGkoGGGGloGGGGJ
+JGGGGGGGGGGGGGGkGGGGGGGGGoGGGGGuGGGGJ
+JGGGGGGGGGotGGGGGGGGGGGGluGGGGGGGGGGJ
+JGGGGGGGGoooGGGGGGGGGGGGGGGGGGGlGGGGJ
+JGGGGGGGGOoGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGkGGGGGGGGGGGGGGGGGGGGGGGGGGGGoGGGJ
+JGGlGGGGGGGGGGGGGGGGGGGGGGGGGGGGoGGGJ
+JGotGGGGGGGGGGGGGGGlkkGGGGGGGGGGtGGGJ
+JGoGGGGGGGGGGGGGkGGoolooGGGGGGGGGGGGJ
+JGoGGGGGGGGGGGGklGGGGkkukkGGGGGGGGGGJ
+JGGGGGGGGlGGGGGGGGGGGGGooOooGGGGGGGGJ
+GGGGGGGGGGGGGGGGiGGGGGGGGlkkGGGGGGoGJ
+GGGGGGGGGGGiiGGGGGiGGGGGGGGGGGGGGGGGJ
+GoGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+GGGGGoooooooGGGoGGGooooooooooooooooGJ
+GGGGGoaaaalGGkllGlGaoaaaxaaaaaayrroGJ
+GGGGGohzzwGGSzQiGwGhohBzzzzzzzzfXooGJ
+GGGGoohQNGGNwzQizSGIohzzgBzfgffEAoGGG
+GGGGoaaalGkklkkikkkaoaaaUaaaaarrqoGGG
+GGGGohzzQGGGiiiiiQMhoAEfffBzzzfXooGGG
+GGGoohzzzSzNwQiNiiwIoXfzfBgzzzzXoGGGG
+GGGoaaaaaaaaliilkklkokkaaaaaaarroGGGG
+GGGohzpzzzzzQiNwzSGGGKzzzzfzzfAooGGGG
+JGoohzzzzzzzQGwzQwGwGGzgBzzzffAoGGGkG
+JGoaaaaaaaaaaaalkGGkkGklaaaaarroGGGuG
+JGoooooooooooooooGkloGooooooooooGGGGG
+JGGGGGGGGGGGGGGGGGGGoGGGGGGGGGGGGGGtG
+JGGGlGGGiGGGGiGGGktGGGiGGGGGGGGGGoGGG
+JJGGkmoGGGGGGiGGGGGGGGGJJJJJJJJGGGGGJ
 "}
