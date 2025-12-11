@@ -253,6 +253,7 @@
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 	w_class = WEIGHT_CLASS_BULKY
 
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/blackbox.dmi'
@@ -262,11 +263,17 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
-	var/signaltype = "redtech signal"
+	var/signaltype = "Redtech Signal"
+
+/datum/armor/rtechdrive
+	bomb = 100
+	fire = 100
+	acid = 100
 
 /obj/item/rtechdrive/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/gps, signaltype)
+	SSpoints_of_interest.make_point_of_interest(src)
 
 /obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
@@ -275,19 +282,19 @@
 /obj/item/rtechdrive/hearts
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
 	icon_state = "heart"
-	signaltype = "redtech hearts signal"
+	signaltype = "Redtech Hearts Signal"
 
 /obj/item/rtechdrive/diamonds
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
 	icon_state = "diamond"
-	signaltype = "redtech diamonds signal"
+	signaltype = "Redtech Diamonds Signal"
 
 /obj/item/rtechdrive/clubs
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
 	icon_state = "club"
-	signaltype = "redtech clubs signal"
+	signaltype = "Redtech Clubs Signal"
 
 /obj/item/rtechdrive/spades
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
 	icon_state = "spade"
-	signaltype = "redtech spades signal"
+	signaltype = "Redtech Spades Signal"

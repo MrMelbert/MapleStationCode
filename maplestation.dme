@@ -6800,6 +6800,7 @@
 #include "maplestation_modules\story_content\deepred_shattering\code\redparts.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redprojectiles.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redreagents.dm"
+#include "maplestation_modules\story_content\deepred_shattering\code\redruins.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redsetpieces.dm"
 #include "maplestation_modules\story_content\deepred_shattering\code\redturf.dm"
 #include "maplestation_modules\story_content\enma_equipment\code\enmaclothes.dm"

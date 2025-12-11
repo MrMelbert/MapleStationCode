@@ -52,8 +52,12 @@
 	var/windowlink // You're supposed to edit this to a link in your map.
 	var/windowID
 
-/obj/effect/step_trigger/windowlinker/Trigger(mob/M)
-	if(M.client && windowlink)
+/obj/effect/step_trigger/windowlinker/Trigger(atom/movable/A)
+	if(!A || !ismob(A))
+		return
+
+	var/mob/M = A
+	if(M.client && windowlink && windowID)
 		var/windowout = {"
 		<html>
 			<head>

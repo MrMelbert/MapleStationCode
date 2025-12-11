@@ -8,6 +8,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS
 
 // Diamonds = Lavaland = Technology Data
 /area/ruin/unpowered/diamonds
@@ -19,6 +21,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS
 
 // Hearts = Lavaland = Dimensional Data
 /area/ruin/unpowered/hearts
@@ -30,6 +34,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS
 
 // Clubs = Icemoon = Magical Data
 /area/ruin/unpowered/clubs
@@ -41,3 +47,5 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS
