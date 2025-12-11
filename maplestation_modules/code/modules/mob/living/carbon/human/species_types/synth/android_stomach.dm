@@ -14,6 +14,7 @@
 		return
 
 	cell.use(STANDARD_ETHEREAL_CHARGE / severity, force = TRUE)
+	apply_organ_damage(10 / severity)
 
 /obj/item/organ/stomach/ethereal/android/on_mob_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -41,34 +42,116 @@
 	// allows for default handling
 	return NONE
 
+/obj/item/organ/stomach/ethereal/android/on_life(seconds_per_tick, times_fired)
+	. = ..()
+	switch(cell.charge())
+		// less charge, less heat generated
+		if(-INFINITY to ETHEREAL_CHARGE_NONE)
+			owner.adjust_body_temperature(-2 KELVIN * seconds_per_tick, min_temp = owner.bodytemp_cold_damage_limit)
+			owner.adjustOxyLoss(5 * seconds_per_tick)
+
+		if(ETHEREAL_CHARGE_NONE to ETHEREAL_CHARGE_LOWPOWER)
+			owner.adjust_body_temperature(-0.25 KELVIN * seconds_per_tick, min_temp = owner.bodytemp_cold_damage_limit)
+			if(owner.getOxyLoss() < 50)
+				owner.adjustOxyLoss(1 * seconds_per_tick)
+
+		if(ETHEREAL_CHARGE_LOWPOWER to ETHEREAL_CHARGE_FULL)
+			owner.adjustOxyLoss(-1 * seconds_per_tick)
+
+#define NO_CHARGE "Low Power"
+#define HAS_ALERT (1 << 0)
+#define HAS_CON_MOD (1 << 1)
+#define HAS_MOOD_EVENT (1 << 2)
+
 /obj/item/organ/stomach/ethereal/android/handle_charge(mob/living/carbon/carbon, seconds_per_tick, times_fired)
+	var/has_flags = NONE
 	switch(cell.charge())
 		if(-INFINITY to ETHEREAL_CHARGE_NONE)
-			// carbon.add_mood_event("charge", /datum/mood_event/decharged)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/emptycell/ethereal)
-			// if(carbon.health > 10.5)
-			// 	carbon.apply_damage(0.65, TOX, null, null, carbon)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_no_charge)
+			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/emptycell/ethereal/android)
+			carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.2)
+			carbon.add_consciousness_modifier(NO_CHARGE, -50)
+			has_flags |= HAS_ALERT | HAS_CON_MOD | HAS_MOOD_EVENT
 		if(ETHEREAL_CHARGE_NONE to ETHEREAL_CHARGE_LOWPOWER)
-			// carbon.add_mood_event("charge", /datum/mood_event/decharged)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 3)
-			// if(carbon.health > 10.5)
-			// 	carbon.apply_damage(0.325 * seconds_per_tick, TOX, null, null, carbon)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_decharged)
+			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal/android, 3)
+			carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.6)
+			carbon.add_consciousness_modifier(NO_CHARGE, -20)
+			has_flags |= HAS_ALERT | HAS_CON_MOD | HAS_MOOD_EVENT
 		if(ETHEREAL_CHARGE_LOWPOWER to ETHEREAL_CHARGE_NORMAL)
-			// carbon.add_mood_event("charge", /datum/mood_event/lowpower)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 2)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_low_power)
+			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal/android, 2)
+			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
+		if(ETHEREAL_CHARGE_NORMAL to ETHEREAL_CHARGE_ALMOSTFULL)
+			EMPTY_BLOCK_GUARD
 		if(ETHEREAL_CHARGE_ALMOSTFULL to ETHEREAL_CHARGE_FULL)
-			// carbon.add_mood_event("charge", /datum/mood_event/charged)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_charged)
+			has_flags |= HAS_MOOD_EVENT
 		if(ETHEREAL_CHARGE_FULL to ETHEREAL_CHARGE_OVERLOAD)
-			// carbon.add_mood_event("charge", /datum/mood_event/overcharged)
-			carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 1)
-			// carbon.apply_damage(0.2, TOX, null, null, carbon)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_overcharged)
+			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/ethereal_overcharge/android, 1)
+			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
 		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
-			// carbon.add_mood_event("charge", /datum/mood_event/supercharged)
-			carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 2)
-			// carbon.apply_damage(0.325 * seconds_per_tick, TOX, null, null, carbon)
+			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_supercharged)
+			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/ethereal_overcharge/android, 2)
+			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
 			if(SPT_PROB(5, seconds_per_tick)) // 5% each seacond for ethereals to explosively release excess energy if it reaches dangerous levels
 				discharge_process(carbon)
-		else
-			// owner.clear_mood_event("charge")
-			carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
-			carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
+
+	if(!(has_flags & HAS_MOOD_EVENT))
+		carbon.clear_mood_event(ALERT_ETHEREAL_CHARGE)
+	if(!(has_flags & HAS_ALERT))
+		carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
+	if(!(has_flags & HAS_CON_MOD))
+		carbon.remove_max_consciousness_value(NO_CHARGE)
+		carbon.remove_consciousness_modifier(NO_CHARGE)
+
+/obj/item/organ/stomach/ethereal/android/on_mob_remove(mob/living/carbon/organ_owner, special)
+	. = ..()
+	organ_owner.clear_mood_event(ALERT_ETHEREAL_CHARGE)
+	organ_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
+	organ_owner.remove_max_consciousness_value(NO_CHARGE)
+	organ_owner.remove_consciousness_modifier(NO_CHARGE)
+
+#undef NO_CHARGE
+#undef HAS_ALERT
+#undef HAS_CON_MOD
+#undef HAS_MOOD_EVENT
+
+/atom/movable/screen/alert/emptycell/ethereal/android
+	name = "No Power"
+	desc = "You have been completely drained of power. Shutdown is imminent."
+
+/atom/movable/screen/alert/lowcell/ethereal/android
+	name = "Low Power"
+	desc = "Your power levels are low. Recharge soon to avoid shutdown. \
+		Enter a recharging station, consume food or drink, use a power cell, or right click on lights or APCs to siphon power."
+
+/atom/movable/screen/alert/ethereal_overcharge/android
+	name = "Overcharge Warning"
+	desc = "Your power levels are dangerously high. Discharge immediately to avoid system failure. \
+		Right click on APCs while in combat mode to discharge excess power."
+
+/datum/mood_event/android_no_charge
+	description = "Power levels critically low. It's getting darkk and cold."
+	mood_change = -20
+
+/datum/mood_event/android_decharged
+	description = "Power levels are extremely low. If I don't recharge soon, I may shut down."
+	mood_change = -10
+
+/datum/mood_event/android_low_power
+	description = "Power levels are low. I need to recharge soon."
+	mood_change = -5
+
+/datum/mood_event/android_charged
+	description = "Power levels nominal. Systems functioning within optimal parameters."
+	mood_change = 0
+
+/datum/mood_event/android_overcharged
+	description = "Power levels are high. Batteries strained. I should discharge excess energy."
+	mood_change = -5
+
+/datum/mood_event/android_supercharged
+	description = "Power levels critically high. System integrity at risk."
+	mood_change = -15

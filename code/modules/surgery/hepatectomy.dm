@@ -52,7 +52,7 @@
 	var/mob/living/carbon/human/human_target = target
 	var/obj/item/organ/liver/target_liver = target.get_organ_slot(ORGAN_SLOT_LIVER)
 	human_target.setOrganLoss(ORGAN_SLOT_LIVER, 10) //not bad, not great
-	if(target_liver)
+	if(target_liver && !(target_liver.organ_flags & ORGAN_UNREMOVABLE))
 		target_liver.operated = TRUE
 	display_results(
 		user,

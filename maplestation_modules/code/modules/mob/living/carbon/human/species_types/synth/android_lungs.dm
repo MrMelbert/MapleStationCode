@@ -35,6 +35,13 @@
 	var/is_overheating = 0
 	var/is_overcooled = 0
 
+/obj/item/organ/lungs/android/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+
+	apply_organ_damage(10 / severity)
+
 /obj/item/organ/lungs/android/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE, PROC_REF(temperature_update))
@@ -90,6 +97,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t3)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t3)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_critical_overheat)
 			is_overheating = 3
 
 	else if(owner.body_temperature > owner.bodytemp_heat_damage_limit * 1.75)
@@ -97,6 +105,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t2)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t2)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_major_overheat)
 			is_overheating = 2
 
 	else if(owner.body_temperature > owner.bodytemp_heat_damage_limit * 1.2)
@@ -104,6 +113,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t1)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t1)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overheat)
 			is_overheating = 1
 
 /obj/item/organ/lungs/android/proc/update_cold_modifiers()
@@ -116,6 +126,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t3)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t3)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_critical_overcool)
 			is_overcooled = 3
 
 	else if(owner.body_temperature < owner.bodytemp_cold_damage_limit * 1.75)
@@ -123,6 +134,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t2)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t2)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_major_overcool)
 			is_overcooled = 2
 
 	else if(owner.body_temperature < owner.bodytemp_cold_damage_limit * 1.2)
@@ -130,6 +142,7 @@
 			owner.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t1)
 			owner.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t1)
 			owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
+			owner.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overcool)
 			is_overcooled = 1
 
 /obj/item/organ/lungs/android/proc/remove_heat_modifiers()
@@ -214,3 +227,27 @@
 
 	breather.adjust_body_temperature(temp_delta, min, max)
 	breath.temperature = breather.body_temperature
+
+/datum/mood_event/android_minor_overheat
+	description = "System operating above optimal temperature. I should cool down soon."
+	mood_change = -4
+
+/datum/mood_event/android_major_overheat
+	description = "System significantly overheated! Performance degrading, integrity at risk - I must cool down!"
+	mood_change = -8
+
+/datum/mood_event/android_critical_overheat
+	description = "Critical system overheat! I must cool down immediately to prevent damage!"
+	mood_change = -12
+
+/datum/mood_event/android_minor_overcool
+	description = "System operating below optimal temperature. There is little risk, though I should warm up."
+	mood_change = 0
+
+/datum/mood_event/android_major_overcool
+	description = "System far below optimal temperature. If I do not warm up soon, performance may degrade."
+	mood_change = -3
+
+/datum/mood_event/android_critical_overcool
+	description = "System significantly below optimal temperature! To prevent chassis damage, I should warm up immediately!"
+	mood_change = -6

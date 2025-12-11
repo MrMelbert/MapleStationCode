@@ -1,5 +1,5 @@
 #define LIMB_ID_HUMAN_LIKE "human_like"
-//
+// Cybernetic, but looks like a human. Sprites ported from Effigy
 /obj/item/bodypart/chest/robot/humanoid
 	name = "humanoid cybernetic chest"
 	icon = 'maplestation_modules/icons/mob/augmentation/humanoid.dmi'
@@ -84,7 +84,7 @@
 
 #define LIMB_ID_LIZARD_LIKE "synth_lizard"
 
-//
+// Cybernetic, lizardlike appearance. Sprites ported from Effigy
 /obj/item/bodypart/chest/robot/lizardlike
 	name = "lizardlike cybernetic chest"
 	icon = 'maplestation_modules/icons/mob/augmentation/lizardly.dmi'

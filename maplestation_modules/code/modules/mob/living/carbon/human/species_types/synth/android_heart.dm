@@ -4,6 +4,13 @@
 	icon_state = /obj/item/organ/heart/cybernetic/tier2::icon_state
 	organ_flags = ORGAN_ROBOTIC|ORGAN_UNREMOVABLE // future todo : if this is ever removable, we need to handle blood another way
 
+/obj/item/organ/heart/android/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+
+	apply_organ_damage(10 / severity)
+
 /obj/item/organ/heart/android/on_mob_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(handle_blood))
@@ -19,6 +26,7 @@
 
 /obj/item/organ/heart/android/on_life(seconds_per_tick, times_fired)
 	. = ..()
+	// melbert todo : scale temp use based on oil in body?
 	owner.adjust_body_temperature(0.25 KELVIN, max_temp = owner.bodytemp_heat_damage_limit * 1.5)
 
 /obj/item/organ/heart/android/proc/handle_blood(mob/living/carbon/source, seconds_per_tick, times_fired)
@@ -26,11 +34,11 @@
 
 	switch(source.blood_volume)
 		if(BLOOD_VOLUME_MAX_LETHAL to INFINITY)
-			EMPTY_BLOCK_GUARD
+			EMPTY_BLOCK_GUARD // melbert todo : make you leak blood constantly
 		if(BLOOD_VOLUME_EXCESS to BLOOD_VOLUME_MAX_LETHAL)
-			EMPTY_BLOCK_GUARD
+			EMPTY_BLOCK_GUARD // melbert todo : make you leak blood constantly
 		if(BLOOD_VOLUME_MAXIMUM to BLOOD_VOLUME_EXCESS)
-			EMPTY_BLOCK_GUARD
+			EMPTY_BLOCK_GUARD // melbert todo : make you bleed more if wounded
 		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 			EMPTY_BLOCK_GUARD
 		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)

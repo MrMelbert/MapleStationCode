@@ -9,10 +9,9 @@
 	species_language_holder = /datum/language_holder/synthetic
 	inherent_traits = list(
 		TRAIT_GENELESS,
-		// TRAIT_MUTANT_COLORS, // ??
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_PLASMA_TRANSFORM,
-		// TRAIT_RADIMMUNE, // rework this
+		TRAIT_RADIMMUNE, // rework this later - warping wires or something
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_UNHUSKABLE,
 		// TRAIT_VIRUSIMMUNE, // shouldn't be necessary
@@ -46,7 +45,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/digi/android,
 	)
 
-
 	temperature_homeostasis_speed = 0
 
 	var/list/android_species = list(
@@ -60,16 +58,22 @@
 #define ID_TO_TYPEPATH(id) GLOB.species_list[id]
 
 /datum/species/android/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	var/species_id = human_who_gained_species.dna?.features["android_species"] || SPECIES_HUMAN
-	var/datum/species/android_species = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
-	for(var/organtype in android_species.mutant_organs)
+	var/species_id = human_who_gained_species.dna?.features["android_species"] || old_species?.id
+	if(!species_id || !(species_id in android_species))
+		species_id = SPECIES_HUMAN
+
+	var/datum/species/spedies_datum = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
+	for(var/organtype in spedies_datum.mutant_organs)
 		set_mutant_organ(MUTANT_ORGANS, organtype, human_who_gained_species)
-	for(var/markingtype in android_species.body_markings)
+	for(var/markingtype in spedies_datum.body_markings)
 		set_mutant_organ(BODY_MARKINGS, markingtype, human_who_gained_species)
 
+	// snowflake cyber replacements
 	switch(species_id)
 		if(SPECIES_MOTH)
 			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, human_who_gained_species)
+		if(SPECIES_FELINE)
+			set_mutant_organ(ORGAN_SLOT_EARS, /obj/item/organ/ears/cat/cybernetic, human_who_gained_species)
 
 	return ..()
 
@@ -97,6 +101,8 @@
 	filtered -= get_features(TRUE)
 
 	return filtered
+
+#undef ID_TO_TYPEPATH
 
 /datum/species/android/get_species_description()
 	return "Androids are an entirely synthetic species."
@@ -225,6 +231,13 @@
 		SPECIES_PERK_DESC = "Being entirely synthetic, [plural_form] are vulnerable to electromagnetic and ion pulses. \
 			These will drain their internal power, cause temporary malfunctions, and may even damage their systems if potent enough.",
 	))
+	to_add += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+		SPECIES_PERK_ICON = FA_ICON_COGS,
+		SPECIES_PERK_NAME = "Irreplacable Parts",
+		SPECIES_PERK_DESC = "The core components of \an [name] are highly specialized. \
+			Most of their organs cannot be removed or replaced - they must be surgically repaired if damaged.",
+	))
 
 	return to_add
 
@@ -242,10 +255,8 @@
 	return to_add
 
 // future todos:
-// - toxicity effects
 // - radiation effects
 // - more emp effects
-// - internal pda?
-// - sprites
 // - make sure bleeding causes oil to leak
 // - look at pain
+// - block defibbing, require special revival method

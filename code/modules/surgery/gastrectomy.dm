@@ -53,7 +53,7 @@
 	var/mob/living/carbon/human/target_human = target
 	var/obj/item/organ/stomach/target_stomach = target.get_organ_slot(ORGAN_SLOT_STOMACH)
 	target_human.setOrganLoss(ORGAN_SLOT_STOMACH, 20) // Stomachs have a threshold for being able to even digest food, so I might tweak this number
-	if(target_stomach)
+	if(target_stomach && !(target_stomach.organ_flags & ORGAN_UNREMOVABLE))
 		target_stomach.operated = TRUE
 	display_results(
 		user,
