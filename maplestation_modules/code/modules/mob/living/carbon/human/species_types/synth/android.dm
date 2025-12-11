@@ -50,7 +50,6 @@
 	temperature_homeostasis_speed = 0
 
 	var/list/android_species = list(
-		SPECIES_ABDUCTOR,
 		SPECIES_FELINE,
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
@@ -58,16 +57,21 @@
 		SPECIES_ORNITHID,
 	)
 
+#define ID_TO_TYPEPATH(id) GLOB.species_list[id]
+
 /datum/species/android/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	var/datum/species/android_species = GLOB.species_prototypes[GLOB.species_list[human_who_gained_species.dna?.features["android_species"] || SPECIES_HUMAN]]
+	var/species_id = human_who_gained_species.dna?.features["android_species"] || SPECIES_HUMAN
+	var/datum/species/android_species = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
 	for(var/organtype in android_species.mutant_organs)
 		set_mutant_organ(MUTANT_ORGANS, organtype, human_who_gained_species)
 	for(var/markingtype in android_species.body_markings)
 		set_mutant_organ(BODY_MARKINGS, markingtype, human_who_gained_species)
 
-	return ..()
+	switch(species_id)
+		if(SPECIES_MOTH)
+			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, human_who_gained_species)
 
-#define ID_TO_TYPEPATH(id) GLOB.species_list[id]
+	return ..()
 
 // Add features from all android species for prefs
 /datum/species/android/get_features(only_innate = FALSE)

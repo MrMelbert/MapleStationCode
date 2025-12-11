@@ -1,4 +1,5 @@
 /datum/limb_option_datum/organ/cyber
+	tooltip = "Cannot be selected by Androids or Synthetics."
 
 /datum/limb_option_datum/organ/cyber/can_be_selected(datum/preferences/prefs)
 	return !ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
@@ -8,7 +9,6 @@
 
 /datum/limb_option_datum/organ/cyber/heart
 	name = "Cybernetic Heart"
-	tooltip = "Cannot be selected by Androids or Synthetics."
 	limb_path = /obj/item/organ/heart/cybernetic
 
 /datum/limb_option_datum/organ/cyber/liver

@@ -450,18 +450,20 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Will give the value as 6 hex digits, without a hash.
 /datum/preference/color
 	abstract_type = /datum/preference/color
+	/// If TRUE, the color may be set to null, representing no color selected.
+	var/nullable = FALSE
 
 /datum/preference/color/deserialize(input, datum/preferences/preferences)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/create_default_value()
 	return random_color()
 
 /datum/preference/color/serialize(input)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/is_valid(value)
-	return findtext(value, GLOB.is_color)
+	return (nullable && isnull(value)) || findtext(value, GLOB.is_color)
 
 /// A numeric preference with a minimum and maximum value
 /datum/preference/numeric

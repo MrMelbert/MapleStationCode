@@ -13,7 +13,8 @@
 	synth.disguise_as(src, /datum/species/human)
 
 /datum/species/android/synth
-	name = "Humanoid Synthetic"
+	name = "Synthetic"
+	plural_form = "Synthetics"
 	id = SPECIES_SYNTH
 	sexes = TRUE
 

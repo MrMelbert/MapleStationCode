@@ -8,6 +8,7 @@ import {
   type FeatureChoiced,
   type FeatureChoicedServerData,
   FeatureColorInput,
+  FeatureColorInputNullable,
   FeatureNumberInput,
   type FeatureNumeric,
   type FeatureToggle,
@@ -39,13 +40,18 @@ export const hiss_length: FeatureNumeric = {
 
 export const feature_lizard_horn_color: Feature<string> = {
   name: 'Horn Color',
-  component: FeatureColorInput,
+  component: FeatureColorInputNullable,
 };
 
 export const feature_lizard_horn_layer: FeatureChoiced = {
   name: 'Horn Layer',
   description: 'Determines what layer your horns are on.',
   component: FeatureDropdownInput,
+};
+
+export const feature_lizard_frill_color: Feature<string> = {
+  name: 'Frill Color',
+  component: FeatureColorInputNullable,
 };
 
 export const feature_lizard_frill_layer: FeatureChoiced = {
