@@ -50,6 +50,7 @@
 
 /obj/effect/step_trigger/windowlinker
 	var/windowlink // You're supposed to edit this to a link in your map.
+	var/windowID
 
 /obj/effect/step_trigger/windowlinker/Trigger(mob/M)
 	if(M.client && windowlink)
@@ -68,5 +69,5 @@
 		</html>
 		"}
 
-		M.client << browse(windowout, "window=I_see_you;size=1000x1000")
+		M.client << browse(windowout, "window=[windowID];size=1000x1000")
 		qdel(src)
