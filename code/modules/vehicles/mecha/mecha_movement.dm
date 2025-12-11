@@ -151,10 +151,10 @@
 		return
 	if(bumpsmash) //Need a pilot to push the PUNCH button.
 		if(COOLDOWN_FINISHED(src, mecha_bump_smash))
-			var/list/mob/mobster = return_drivers()
+			var/list/mob/living/mobster = return_drivers()
 			obstacle.mech_melee_attack(src, mobster[1])
-			SEND_SIGNAL(obstacle, COMSIG_ATOM_ATTACK_MECH, src, user)
-			log_combat(user, obstacle, "bump attacked", src, "(COMBAT MODE: [uppertext(user.combat_mode)] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
+			SEND_SIGNAL(obstacle, COMSIG_ATOM_ATTACK_MECH, src, mobster)
+			log_combat(mobster, obstacle, "bump attacked", src, "(COMBAT MODE: [uppertext(mobster.combat_mode)] (DAMTYPE: [uppertext(damtype)])")
 			COOLDOWN_START(src, mecha_bump_smash, smashcooldown)
 			if(!obstacle || obstacle.CanPass(src, get_dir(obstacle, src) || dir)) // The else is in case the obstacle is in the same turf.
 				step(src,dir)

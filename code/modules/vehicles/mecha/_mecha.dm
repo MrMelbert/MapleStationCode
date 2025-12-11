@@ -514,7 +514,7 @@
 			readout += "It fully encloses its occupants, protecting them from the atmosphere or lack thereof."
 
 		var/formatted_readout = span_notice("<b>PROTECTION CLASSES</b><hr>[jointext(readout, "\n")]")
-		to_chat(usr, boxed_message(formatted_readout))
+		to_chat(usr, examine_block(formatted_readout))
 
 /obj/vehicle/sealed/mecha/generate_integrity_message()
 	var/examine_text = ""
@@ -736,7 +736,7 @@
 	SEND_SIGNAL(user, COMSIG_MOB_USED_MECH_MELEE, src)
 	target.mech_melee_attack(src, user)
 	SEND_SIGNAL(target, COMSIG_ATOM_ATTACK_MECH, src, user)
-	log_combat(user, target, "attacked", src, "(COMBAT MODE: [uppertext(user.combat_mode)] (DAMTYPE: [uppertext(mecha_attacker.damtype)])")
+	log_combat(user, target, "attacked", src, "(COMBAT MODE: [uppertext(livinguser.combat_mode)] (DAMTYPE: [uppertext(damtype)])")
 	TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MELEE_ATTACK, melee_cooldown)
 
 /// Driver alt clicks anything while in mech
