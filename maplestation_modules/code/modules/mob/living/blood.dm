@@ -16,7 +16,8 @@
 		for(var/datum/blood_type/blood_type_type as anything in subtypesof(/datum/blood_type))
 			if(!blood_type_type::name) // future todo : make this use valid_subtypesof
 				continue
-			blood_type_singletons[blood_type_type.type_key()] = new blood_type_type()
+			var/datum/blood_type/blood_type_instance = new blood_type_type()
+			blood_type_singletons[blood_type_instance.type_key()] = blood_type_instance
 
 	// either a blood type, or a reagent that has been instantiated as a blood type
 	if(blood_type_singletons[name_reagent_or_typepath])
