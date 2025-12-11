@@ -14,8 +14,9 @@
 	if(!blood_type_singletons)
 		blood_type_singletons = list()
 		for(var/datum/blood_type/blood_type_type as anything in subtypesof(/datum/blood_type))
-			if(initial(blood_type_type.name))
-				blood_type_singletons[blood_type_type] = new blood_type_type()
+			if(!blood_type_type::name) // future todo : make this use valid_subtypesof
+				continue
+			blood_type_singletons[blood_type_type.type_key()] = new blood_type_type()
 
 	// either a blood type, or a reagent that has been instantiated as a blood type
 	if(blood_type_singletons[name_reagent_or_typepath])
@@ -311,7 +312,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	if(!new_splat)
 		return
 	blood.can_dry = FALSE
-	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
+	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned), override = TRUE)
 
 /datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
 	SIGNAL_HANDLER
@@ -343,6 +344,8 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		return
 	// Oil blood will never dry and can be ignited with fire
 	blood.can_dry = FALSE
+	// This is evil code, all it does is prevent easy ignte from being attached twice
+	blood.RemoveElement(/datum/element/easy_ignite)
 	blood.AddElement(/datum/element/easy_ignite)
 
 /datum/blood_type/oil/heavy
