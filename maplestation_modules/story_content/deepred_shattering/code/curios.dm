@@ -250,7 +250,7 @@
 
 /obj/item/rtechdrive
 	name = "redtech data drive"
-	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled."
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	w_class = WEIGHT_CLASS_BULKY
@@ -263,29 +263,31 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
 	var/signaltype = "redtech signal"
-	var/unique_description = "If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord."
 
 /obj/item/rtechdrive/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/gps, signaltype)
-	AddElement(/datum/element/unique_examine, desc = unique_description)
+
+/obj/item/rtechdrive/examine_more(mob/user)
+	. = ..()
+	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
 
 /obj/item/rtechdrive/hearts
-	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data."
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
 	icon_state = "heart"
 	signaltype = "redtech hearts signal"
 
 /obj/item/rtechdrive/diamonds
-	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs."
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
 	icon_state = "diamond"
 	signaltype = "redtech diamonds signal"
 
 /obj/item/rtechdrive/clubs
-	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations."
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
 	icon_state = "club"
 	signaltype = "redtech clubs signal"
 
 /obj/item/rtechdrive/spades
-	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records."
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
 	icon_state = "spade"
 	signaltype = "redtech spades signal"
