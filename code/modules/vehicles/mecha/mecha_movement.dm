@@ -151,8 +151,8 @@
 		return
 	if(bumpsmash) //Need a pilot to push the PUNCH button.
 		if(COOLDOWN_FINISHED(src, mecha_bump_smash))
-			var/list/mob/living/mobster = return_drivers()
-			obstacle.mech_melee_attack(src, mobster[1])
+			var/mob/living/mobster = return_drivers()[1]
+			obstacle.mech_melee_attack(src, mobster)
 			SEND_SIGNAL(obstacle, COMSIG_ATOM_ATTACK_MECH, src, mobster)
 			log_combat(mobster, obstacle, "bump attacked", src, "(COMBAT MODE: [uppertext(mobster.combat_mode)] (DAMTYPE: [uppertext(damtype)])")
 			COOLDOWN_START(src, mecha_bump_smash, smashcooldown)
