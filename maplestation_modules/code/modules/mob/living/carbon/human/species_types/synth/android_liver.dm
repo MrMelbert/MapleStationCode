@@ -106,9 +106,9 @@
 
 /obj/item/organ/liver/android/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/android_toxicity)
-	owner.clear_mood_event("toxicity")
-	owner.remove_max_consciousness_value("toxicity")
+	organ_owner.remove_movespeed_modifier(/datum/movespeed_modifier/android_toxicity)
+	organ_owner.clear_mood_event("toxicity")
+	organ_owner.remove_max_consciousness_value("toxicity")
 	UnregisterSignal(organ_owner, COMSIG_LIVING_HEALTHSCAN)
 
 /obj/item/organ/liver/android/proc/on_scan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
