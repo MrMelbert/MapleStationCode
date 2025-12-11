@@ -16,6 +16,7 @@ export const InternalDamageToDamagedDesc = {
   MECHA_CABIN_AIR_BREACH: 'Cabin breach detected',
   MECHA_INT_CONTROL_LOST: 'Motors damaged',
   MECHA_INT_SHORT_CIRCUIT: 'Circuits shorted',
+  MECHA_INT_FUEL_LINE: 'Fuel line cut',
 };
 
 export const InternalDamageToNormalDesc = {
@@ -24,6 +25,7 @@ export const InternalDamageToNormalDesc = {
   MECHA_CABIN_AIR_BREACH: 'Cabin sealing intact',
   MECHA_INT_CONTROL_LOST: 'Motors active',
   MECHA_INT_SHORT_CIRCUIT: 'Circuits operational',
+  MECHA_INT_FUEL_LINE: 'Fuel line intact',
 };
 
 export const AlertPane = (props) => {

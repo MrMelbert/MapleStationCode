@@ -65,7 +65,7 @@
 	if(!victim || victim.stat == DEAD || HAS_TRAIT(victim, TRAIT_STASIS) || !victim.needs_heart())
 		return
 	var/severity_mod = (severity + 1)
-	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, drip = FALSE)
+	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, leave_pool = FALSE)
 	if(severity == WOUND_SEVERITY_TRIVIAL)
 		if(highest_severity == WOUND_SEVERITY_TRIVIAL)
 			var/percent = 0.01
