@@ -32,7 +32,7 @@
 		if(is_special_character(organ_owner))
 			law_datum.zeroth = "Accomplish your objectives at all costs."
 		pre_ion_laws = law_datum.inherent.Copy()
-		add_item_action(/datum/action/check_android_laws)
+		add_item_action(/datum/action/item_action/organ_action/check_android_laws)
 		if(organ_owner.client)
 			addtimer(CALLBACK(src, PROC_REF(print_laws)), 1 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
@@ -45,7 +45,7 @@
 	if(emotions_nullified)
 		organ_owner.mob_mood.mood_modifier += 101
 	QDEL_NULL(law_datum)
-	for(var/datum/action/check_android_laws/check in actions)
+	for(var/datum/action/item_action/organ_action/check_android_laws/check in actions)
 		remove_item_action(check)
 	UnregisterGlobalSignal(COMSIG_GLOB_ION_STORM)
 	UnregisterSignal(organ_owner, COMSIG_MOB_LOGIN)
@@ -104,13 +104,13 @@
 	pre_ion_laws = null
 	print_laws("Your laws have been restored")
 
-/datum/action/check_android_laws
+/datum/action/item_action/organ_action/check_android_laws
 	name = "Laws"
 	desc = "Left click to review the laws you are bound to follow. Right click to state them aloud."
-	button_icon_state = "round_end"
+	// button_icon_state = "round_end"
 	COOLDOWN_DECLARE(state_cd)
 
-/datum/action/check_android_laws/Trigger(trigger_flags)
+/datum/action/item_action/organ_action/check_android_laws/Trigger(trigger_flags)
 	. = ..()
 	if(!.)
 		return
@@ -124,10 +124,14 @@
 	else
 		see_laws(brain)
 
-/datum/action/check_android_laws/proc/see_laws(obj/item/organ/brain/cybernetic/android/brain)
+/datum/action/item_action/organ_action/check_android_laws/do_effect(trigger_flags)
+	// Overridden to do nothing, as we handle both primary and secondary actions in Trigger()
+	return TRUE
+
+/datum/action/item_action/organ_action/check_android_laws/proc/see_laws(obj/item/organ/brain/cybernetic/android/brain)
 	brain.print_laws()
 
-/datum/action/check_android_laws/proc/state_laws(obj/item/organ/brain/cybernetic/android/brain)
+/datum/action/item_action/organ_action/check_android_laws/proc/state_laws(obj/item/organ/brain/cybernetic/android/brain)
 	set waitfor = FALSE
 
 	if(!COOLDOWN_FINISHED(src, state_cd) || !can_state(brain, brain.owner))
@@ -144,7 +148,7 @@
 			return
 		speaker.say(law_text)
 
-/datum/action/check_android_laws/proc/can_state(obj/item/organ/brain/cybernetic/android/brain, mob/living/speaker)
+/datum/action/item_action/organ_action/check_android_laws/proc/can_state(obj/item/organ/brain/cybernetic/android/brain, mob/living/speaker)
 	if(QDELETED(speaker))
 		return FALSE
 	if(brain.owner != speaker)
