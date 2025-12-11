@@ -210,4 +210,4 @@
 /// For consistent examine span formatting (normal size)
 #define examining_span_normal(msg) span_infoplain(span_italics(msg))
 /// For consistent examine span formatting (small size)
-#define examining_span_small(msg) span_small(span_infoplain(span_italics(msg)))
+#define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))

@@ -12,6 +12,7 @@
 	tracer_type = /obj/effect/projectile/tracer/stun
 	muzzle_type = /obj/effect/projectile/muzzle/stun
 	impact_type = /obj/effect/projectile/impact/stun
+	light_color = LIGHT_COLOR_DIM_YELLOW
 
 /obj/projectile/energy/electrode/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
