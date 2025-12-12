@@ -7,7 +7,7 @@
 /datum/loadout_item/glasses
 	abstract_type = /datum/loadout_item/glasses
 
-/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.glasses)
 		LAZYADD(outfit.backpack_contents, outfit.glasses)
 	outfit.glasses = item_path
@@ -39,10 +39,12 @@
 /datum/loadout_item/glasses/black_blindfold
 	name = "Black Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/glasses/colored_blindfold
 	name = "Eye Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/glasses/trick_blindfold
 	name = "Trick Blindfold"

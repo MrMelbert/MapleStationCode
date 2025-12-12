@@ -52,22 +52,19 @@
 	update_loadout(manager.preferences, loadout)
 	return TRUE // Update UI
 
-/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
-/datum/loadout_item/accessory/on_equip_item(
-	obj/item/clothing/accessory/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/accessory/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
 	. = ..()
-	if(istype(equipped_item))
-		equipped_item.above_suit = !!preference_list[item_path]?[INFO_LAYER]
-		. |= (ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
+	if(isnull(equipped_item))
+		return .
+	var/obj/item/clothing/accessory/accessory_item = equipped_item
+	accessory_item.above_suit = !!item_details[INFO_LAYER]
+	return . | ITEM_SLOT_OCLOTHING | ITEM_SLOT_ICLOTHING
+
 
 /datum/loadout_item/accessory/maid_apron
 	name = "Maid Apron"
@@ -128,10 +125,12 @@
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/dogtag/name
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_charm/get_item_information()
 	. = ..()
@@ -140,6 +139,7 @@
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/accessory/bone_codpiece/get_item_information()
 	. = ..()
@@ -148,4 +148,4 @@
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"
 	item_path = /obj/item/clothing/accessory/pride
-	can_be_reskinned = TRUE
+	loadout_flags = LOADOUT_FLAG_ALLOW_RESKIN

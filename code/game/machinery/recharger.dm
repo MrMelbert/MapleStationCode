@@ -125,10 +125,9 @@
 	if(.)
 		return
 
-	add_fingerprint(user)
-	if(isnull(charging) || user.put_in_hands(charging))
+	if(isnull(charging))
 		return
-	charging.forceMove(drop_location())
+	try_put_in_hand(charging, user)
 
 /obj/machinery/recharger/attack_tk(mob/user)
 	if(isnull(charging))

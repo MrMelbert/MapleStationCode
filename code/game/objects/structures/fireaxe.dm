@@ -130,8 +130,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	if(.)
 		return
 	if((open || broken) && held_item)
-		user.put_in_hands(held_item)
-		add_fingerprint(user)
+		try_put_in_hand(held_item, user)
 		update_appearance()
 		return
 	toggle_open(user)

@@ -36,7 +36,26 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gascan.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
-
+	slot_equipment_priority = list(
+		// prioritize common tank slots first
+		ITEM_SLOT_SUITSTORE,
+		ITEM_SLOT_LPOCKET,
+		ITEM_SLOT_RPOCKET,
+		ITEM_SLOT_BELT,
+		ITEM_SLOT_BACK,
+		// then the rest of them (they will never fit)
+		ITEM_SLOT_DEX_STORAGE,
+		ITEM_SLOT_ICLOTHING,
+		ITEM_SLOT_OCLOTHING,
+		ITEM_SLOT_EARS,
+		ITEM_SLOT_EYES,
+		ITEM_SLOT_FEET,
+		ITEM_SLOT_GLOVES,
+		ITEM_SLOT_HEAD,
+		ITEM_SLOT_MASK,
+		ITEM_SLOT_NECK,
+		ITEM_SLOT_ID,
+	)
 	/// If we are in the process of exploding, stops multi explosions
 	var/igniting = FALSE
 	/// The gases this tank contains. Don't modify this directly, use return_air() to get it instead

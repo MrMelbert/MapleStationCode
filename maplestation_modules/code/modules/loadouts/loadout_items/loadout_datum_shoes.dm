@@ -20,28 +20,14 @@
 	if(supports_digitigrade)
 		.[FA_ICON_DRAGON] = "Supports digitigrade legs"
 
-// This is snowflake but digitigrade is in general
-// Need to handle shoes that don't fit digitigrade being selected
-// Ideally would be generalized with species can equip or something but OH WELL
-/datum/loadout_item/shoes/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
-	// Supports digi = needs no special handling so we can continue as normal
-	if(supports_digitigrade)
-		return ..()
-
-	// Does not support digi and our equipper is? We shouldn't mess with it, skip
+/datum/loadout_item/shoes/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	if(!..())
+		return FALSE
 	if(equipper.bodyshape & BODYSHAPE_DIGITIGRADE)
-		return
+		return supports_digitigrade
+	return TRUE
 
-	// Does not support digi and our equipper is not digi? Continue as normal
-	return ..()
-
-/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.shoes = item_path
 
 /datum/loadout_item/shoes/jackboots
@@ -114,10 +100,10 @@
 	ui_icon = 'icons/mob/landmarks.dmi'
 	ui_icon_state = "x"
 
-/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, datum/preferences/preference_source, list/preference_list, mob/living/carbon/human/equipper, visuals_only)
-	return
+/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
+	return NONE
 
-/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.shoes = null
 
 // loadout items are indexed by typepath, so this is here to be a placeholder.

@@ -50,7 +50,7 @@
 			. += generate_death_examine_text()
 
 	//Status effects
-	var/list/status_examines = get_status_effect_examinations()
+	var/list/status_examines = get_status_effect_examinations(user)
 	if (length(status_examines))
 		. += status_examines
 
@@ -203,6 +203,9 @@
 	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
 		. += span_smallnoticeital("[t_He] [t_is] emitting a gentle blue glow!") // this should be signalized
 
+	if(on_fire)
+		. += span_bolddanger("[t_He] [t_is] on fire!")
+
 	if(just_sleeping)
 		. += span_notice("[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.")
 
@@ -302,11 +305,11 @@
 /**
  * Shows any and all examine text related to any status effects the user has.
  */
-/mob/living/proc/get_status_effect_examinations()
+/mob/living/proc/get_status_effect_examinations(mob/user)
 	var/list/examine_list = list()
 
 	for(var/datum/status_effect/effect as anything in status_effects)
-		var/effect_text = effect.get_examine_text()
+		var/effect_text = effect.get_examine_text(user)
 		if(!effect_text)
 			continue
 
@@ -394,10 +397,6 @@
 	//gloves
 	if(gloves && !(obscured_slots & HIDEGLOVES) && !HAS_TRAIT(gloves, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
-	//handcuffed?
-	if(handcuffed)
-		var/cables_or_cuffs = istype(handcuffed, /obj/item/restraints/handcuffs/cable) ? "restrained with cable" : "handcuffed"
-		clothes[CLOTHING_SLOT(HANDCUFFED)] = span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] [cables_or_cuffs]!")
 	//shoes
 	if(shoes && !(obscured_slots & HIDESHOES)  && !HAS_TRAIT(shoes, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] feet."
@@ -558,6 +557,17 @@
 	if(LAZYLEN(limbs_text))
 		. += limbs_text
 
+	if(user == src)
+		return
+
+	var/height_difference = get_height_difference(user)
+	if(height_difference)
+		. += height_difference
+
+	var/build_difference = get_build_difference(user)
+	if(build_difference)
+		. += build_difference
+
 	var/agetext = get_age_text()
 	if(agetext)
 		. += agetext
@@ -601,5 +611,132 @@
 		if(101 to INFINITY)
 			age_text = "withering away"
 	. += list(span_notice("[p_They()] appear[p_s()] to be [age_text]."))
+
+/// Reports the height difference between src and user
+/mob/living/carbon/proc/get_height_difference(mob/user)
+	return
+
+/mob/living/carbon/human/get_height_difference(mob/user)
+	if(!ishuman(user))
+		return
+
+	var/mob/living/carbon/human/examiner = user
+	var/height_diff = examiner.get_visual_height() - get_visual_height()
+	switch(height_diff)
+		if(-INFINITY to -16)
+			. = "[p_They()] <b>dwarf</b> you completely."
+		if(-14)
+			. = "[p_They()] <b>tower</b> over you significantly."
+		if(-12)
+			. = "[p_They()] <b>tower</b> over you."
+		if(-10)
+			. = "[p_They()] [p_are()] far taller than you."
+		if(-8)
+			. = "[p_They()] [p_are()] considerably taller than you."
+		if(-6)
+			. = "[p_They()] [p_are()] a fair amount taller than you."
+		if(-4)
+			. = "[p_They()] [p_are()] a bit taller than you."
+		if(-2)
+			. = "[p_They()] [p_are()] slightly taller than you."
+		if(0)
+			. = "[p_They()] [p_are()] about your height."
+		if(2)
+			. = "[p_They()] [p_are()] slightly shorter than you."
+		if(4)
+			. = "[p_They()] [p_are()] a bit shorter than you."
+		if(6)
+			. = "[p_They()] [p_are()] a fair amount shorter than you."
+		if(8)
+			. = "[p_They()] [p_are()] considerably shorter than you."
+		if(10)
+			. = "[p_They()] [p_are()] far shorter than you."
+		if(12)
+			. = "You <b>tower</b> over [p_them()]."
+		if(14)
+			. = "You <b>tower</b> over [p_them()] significantly."
+		if(16 to INFINITY)
+			. = "You <b>dwarf</b> [p_them()] completely."
+
+	if(!.)
+		stack_trace("No height difference message for difference of [height_diff]?")
+		. = "They are... of height."
+
+	var/species_height = (dna?.species?.canon_height || HUMAN_HEIGHT_MEDIUM)
+	if(species_height != HUMAN_HEIGHT_MEDIUM)
+		var/species_diff = get_visual_height() - species_height - (2 * MOB_SIZE_HUMAN)
+		switch(species_diff)
+			if(-INFINITY to -6)
+				. += " [p_Theyre()] also significantly shorter than a typical [dna.species]."
+			if(-4)
+				. += " [p_Theyre()] also a bit shorter than a typical [dna.species]."
+			if(-2)
+				. += " [p_Theyre()] also slightly shorter than a typical [dna.species]."
+			if(2)
+				. += " [p_Theyre()] also slightly taller than a typical [dna.species]."
+			if(4)
+				. += " [p_Theyre()] also a bit taller than a typical [dna.species]."
+			if(6 to INFINITY)
+				. += " [p_Theyre()] also significantly taller than a typical [dna.species]."
+
+	return span_notice(.)
+
+/// Returns the mob height modified by traits purely
+/mob/living/carbon/human/proc/get_visual_height()
+	. = mob_height + (2 * mob_size)
+	// these traits don't modify the height so we have to account for them here
+	if(HAS_TRAIT(src, TRAIT_SMALL))
+		. = min(., HUMAN_HEIGHT_DWARF)
+	if(HAS_TRAIT(src, TRAIT_HUGE) || HAS_TRAIT(src, TRAIT_GIANT))
+		. = max(., HUMAN_HEIGHT_TALLEST)
+
+/mob/living/carbon/proc/get_build_difference(mob/user)
+	return
+
+/mob/living/carbon/human/get_build_difference(mob/user)
+	if(!ishuman(user))
+		return
+
+	var/mob/living/carbon/human/examiner = user
+	switch(examiner.get_visual_strength() - get_visual_strength())
+		if(8 to INFINITY)
+			. = "[p_They()] [p_are()] <b>extremely</b> frail compared to you."
+		if(6, 7)
+			. = "[p_They()] look[p_s()] very weak compared to you."
+		if(3, 4, 5)
+			. = "[p_They()] look[p_s()] noticeably weaker than you."
+		if(1, 2)
+			. = "[p_They()] look[p_s()] a bit weaker than you."
+		if(0)
+			. = "[p_They()] [p_have()] a similar build to you."
+		if(-1, -2)
+			. = "[p_They()] look[p_s()] a bit more muscular than you."
+		if(-3, -4, -5)
+			. = "[p_They()] look[p_s()] noticeably more muscular than you."
+		if(-6, -7)
+			. = "[p_They()] look[p_s()] very strong compared to you."
+		if(-INFINITY to -8)
+			. = "[p_They()] [p_are()] <b>extremely</b> muscular compared to you."
+
+	if(!.)
+		return
+
+	return span_notice(.)
+
+
+/mob/living/carbon/human/proc/get_visual_strength()
+	. = ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 1) + (mob_size * 2)
+	if(HAS_TRAIT(src, TRAIT_HULK))
+		. += 4
+	if(HAS_TRAIT(src, TRAIT_GIANT) || HAS_TRAIT(src, TRAIT_HUGE))
+		. += 2
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
+	if(HAS_TRAIT(src, TRAIT_SMALL))
+		. -= 2
+	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
+		. -= 2
+	if(ismonkey(src))
+		. -= 1
 
 #undef ADD_NEWLINE_IF_NECESSARY

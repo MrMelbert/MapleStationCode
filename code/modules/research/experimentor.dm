@@ -679,7 +679,9 @@
 	)
 	for(var/counter in 1 to rand(1, 25))
 		var/animal_spawn = pick(valid_animals)
-		new animal_spawn(get_turf(src))
+		var/mob/animal = new animal_spawn(get_turf(src))
+		ADD_TRAIT(animal, TRAIT_SPAWNED_MOB, INNATE_TRAIT)
+
 	warn_admins(user, "Mass Mob Spawn")
 	if(prob(60))
 		to_chat(user, span_warning("[src] falls apart!"))

@@ -208,6 +208,14 @@
 /obj/item/radio/proc/get_listening()
 	return listening
 
+/// Checks if the radio is both on and listening
+/obj/item/radio/proc/is_on_and_listening()
+	return on && listening
+
+/// Checks if the radio is both on and broadcasting
+/obj/item/radio/proc/is_on_and_broadcasting()
+	return on && broadcasting
+
 //now for setters for the above protected vars
 
 /**

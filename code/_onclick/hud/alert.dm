@@ -426,6 +426,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!examinable)
 		return ..()
 
+	user.examine_feedback(offer.offered_item)
 	return list(
 		span_boldnotice(name),
 		span_info("[offer.owner] is offering you the following item (click the alert to take it!):"),
@@ -1031,43 +1032,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = ALERT_BUCKLED
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
-/atom/movable/screen/alert/restrained/handcuffed
-	name = "Handcuffed"
-	desc = "You're handcuffed and can't act. If anyone drags you, you won't be able to move. Click the alert to free yourself."
-	click_master = FALSE
-
-/atom/movable/screen/alert/restrained/legcuffed
-	name = "Legcuffed"
-	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
-	click_master = FALSE
-	mouse_over_pointer = MOUSE_HAND_POINTER
-
-/atom/movable/screen/alert/restrained/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if((living_owner.mobility_flags & MOBILITY_MOVE) && (living_owner.last_special <= world.time))
-		return living_owner.resist_restraints()
-
 /atom/movable/screen/alert/buckled/Click()
 	. = ..()
 	if(!.)
 		return
 
 	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+	return living_owner.execute_resist()
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"

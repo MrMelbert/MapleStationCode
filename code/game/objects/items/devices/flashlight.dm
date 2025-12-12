@@ -418,6 +418,8 @@
 	grind_results = list(/datum/reagent/sulfur = 15)
 	sound_on = 'sound/items/match_strike.ogg'
 	toggle_context = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	/// Do we randomize the fuel when initialized

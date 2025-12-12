@@ -9,25 +9,18 @@
 /// Forces the airlock to unbolt and open
 /obj/machinery/door/airlock/proc/secure_open()
 	set waitfor = FALSE
-	locked = FALSE
-	update_appearance()
-
+	unbolt()
 	stoplag(0.2 SECONDS)
 	open(FORCING_DOOR_CHECKS)
-
-	locked = TRUE
-	update_appearance()
+	bolt()
 
 /// Forces the airlock to close and bolt
 /obj/machinery/door/airlock/proc/secure_close(force_crush = FALSE)
 	set waitfor = FALSE
-
-	locked = FALSE
+	unbolt()
 	close(forced = TRUE, force_crush = force_crush)
-
-	locked = TRUE
+	bolt()
 	stoplag(0.2 SECONDS)
-	update_appearance()
 
 /obj/machinery/door/airlock/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, mob/living/caster)
 	// Airlocks should unlock themselves when knock is casted, THEN open up.

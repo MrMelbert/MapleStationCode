@@ -44,3 +44,6 @@
 	if(!fake_blood_type)
 		fake_blood_type = random_human_blood_type()
 	return find_blood_type(fake_blood_type)
+
+/mob/living/basic/trooper/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
