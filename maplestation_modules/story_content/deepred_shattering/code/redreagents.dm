@@ -26,6 +26,13 @@
 	mix_message = "the reaction zaps suddenly!"
 	mix_sound = 'sound/effects/supermatter.ogg'
 
+/datum/chemical_reaction/auricgodblood
+	results = list(/datum/reagent/medicine/omnizine/godblood = 5)
+	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 1, /datum/reagent/medicine/salglu_solution = 5)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction pulses with divine energy!"
+	mix_sound = 'sound/magic/teleport_app.ogg'
+
 /datum/reagent/gravitum/aerialite
 	name = "Alloyed Aerialite"
 	description = "A powdered alloy of a strange blue metal that seems to defy the laws of gravity. It is unlike anything you've seen before."
@@ -34,6 +41,12 @@
 	chemical_flags = null
 	taste_mult = 1
 	reagent_state = SOLID
+
+/datum/chemical_reaction/aerialitestim
+	results = list(/datum/reagent/medicine/stimulants = 5)
+	required_reagents = list(/datum/reagent/gravitum/aerialite = 1, /datum/reagent/medicine/painkiller/morphine = 5, /datum/reagent/consumable/sugar = 5)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction lightens!"
 
 /datum/reagent/resmythril
 	name = "Resonant Mythril"
@@ -53,6 +66,12 @@
 	empulse(location, round(created_volume / 12), round(created_volume / 7), 1)
 	holder.clear_reagents()
 
+/datum/chemical_reaction/resmythrilomni
+	results = list(/datum/reagent/medicine/omnizine = 5)
+	required_reagents = list(/datum/reagent/resmythril = 1, /datum/reagent/stabilizing_agent = 5)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction buzzes quietly!"
+
 /datum/reagent/exodust
 	name = "Crystalline ExoPrism"
 	description = "A pulverized crystalline dust that seems to be unusually energized. It is unlike anything you've seen before."
@@ -62,8 +81,14 @@
 
 /datum/chemical_reaction/exo_stabilizer
 	results = list(/datum/reagent/exotic_stabilizer = 1)
-	required_reagents = list(/datum/reagent/exodust = 1,/datum/reagent/stabilizing_agent = 1)
+	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/stabilizing_agent = 1)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+
+/datum/chemical_reaction/exonanites
+	results = list(/datum/reagent/medicine/syndicate_nanites = 5)
+	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/iron = 5, /datum/reagent/silicon = 5, /datum/reagent/toxin/acid = 1)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction restructures!"
 
 /datum/reagent/darkplasma
 	name = "Condensed Dark Plasma"
@@ -92,6 +117,12 @@
 	var/turf/T = get_turf(holder.my_atom)
 	var/range = clamp(sqrt(created_volume), 1, 6)
 	goonchem_vortex(T, 0, range)
+
+/datum/chemical_reaction/plasmastrange
+	results = list(/datum/reagent/medicine/strange_reagent = 5)
+	required_reagents = list(/datum/reagent/darkplasma = 1, /datum/reagent/lithium = 5)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction turns strange!"
 
 /datum/reagent/miracle
 	name = "Prototype Miracle Matter"
