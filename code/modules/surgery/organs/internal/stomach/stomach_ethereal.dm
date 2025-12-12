@@ -57,7 +57,7 @@
 
 /obj/item/organ/stomach/ethereal/proc/update_hunger_icon(datum/source)
 	SIGNAL_HANDLER
-	owner.hud_used.hunger?.set_food_image('icons/obj/machines/cell_charger.dmi', "9v_cell")
+	owner.hud_used?.hunger?.set_food_image('icons/obj/machines/cell_charger.dmi', "9v_cell")
 
 /obj/item/organ/stomach/ethereal/handle_hunger_slowdown(mob/living/carbon/human/human)
 	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (1.5 * (1 - cell.charge() / 100)))
