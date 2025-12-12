@@ -19,7 +19,7 @@
 
 /obj/item/organ/brain/cybernetic/android/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
-	if(organ_owner.dna?.features["android_emotionless"])
+	if(organ_owner.dna?.features["android_emotionless"] && organ_owner.mob_mood)
 		// mood modifier is clamped 0-INF, so we just subtract an arbitrarily large number
 		organ_owner.mob_mood.mood_modifier -= 101
 		emotions_nullified = TRUE
