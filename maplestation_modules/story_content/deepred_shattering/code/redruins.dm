@@ -40,4 +40,4 @@
 	name = "Ice-Ruin The Shattering Of Clubs"
 	description = "The wreckage of a redtech sensor array, now smeared across space and time."
 	allow_duplicates = FALSE
-	placement_weight = 2
+	placement_weight = 4

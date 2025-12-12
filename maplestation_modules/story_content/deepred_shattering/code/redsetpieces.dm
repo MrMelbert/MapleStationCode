@@ -37,7 +37,7 @@
 
 /obj/structure/redtech_indestructable/singularity_off
 	name = "redtech singularity link"
-	desc = "A contained singularity link, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
+	desc = "A contained multipurpose compression device, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "singularity_off"
 
 /obj/effect/step_trigger/linker

@@ -1,6 +1,6 @@
 /datum/reagent/consumable/liquidelectricity/auric
 	name = "Processed Auric Tesla"
-	description = "A processed metallic gel that seems to spark and crackle with electricity. It is unlike anything you've seen before."
+	description = "A processed metallic gel that seems to spark and crackle with electricity. It seems to have some mana generating properties."
 	color = "#fff870"
 	taste_description = "absolute power"
 	var/shock_timer = 0
@@ -35,7 +35,7 @@
 
 /datum/reagent/gravitum/aerialite
 	name = "Alloyed Aerialite"
-	description = "A powdered alloy of a strange blue metal that seems to defy the laws of gravity. It is unlike anything you've seen before."
+	description = "A powdered alloy of a strange blue metal that seems to defy the laws of gravity. It glitters with an otherworldly light."
 	color = "#00aaff"
 	taste_description = "the boundless sky"
 	chemical_flags = null
@@ -50,7 +50,7 @@
 
 /datum/reagent/resmythril
 	name = "Resonant Mythril"
-	description = "A powdered turquoise metal that seems to resonate with electromagnetic waves. It is unlike anything you've seen before."
+	description = "A powdered turquoise metal that seems to resonate with electromagnetic waves. It hums softly with latent energy."
 	color = "#14747c"
 	taste_description = "resonance"
 	reagent_state = SOLID
@@ -74,7 +74,7 @@
 
 /datum/reagent/exodust
 	name = "Crystalline ExoPrism"
-	description = "A pulverized crystalline dust that seems to be unusually energized. It is unlike anything you've seen before."
+	description = "A pulverized crystalline dust that seems to be unusually energized. It seems to shift a little when not being observed."
 	color = "#d3d1ed"
 	taste_description = "a forge of a bygone era"
 	reagent_state = SOLID
@@ -92,7 +92,7 @@
 
 /datum/reagent/darkplasma
 	name = "Condensed Dark Plasma"
-	description = "A swirling dark liquid that seems to dissipate any light around it. It is unlike anything you've seen before."
+	description = "A swirling dark liquid that seems to dissipate any light around it. You have a bad feeling about this substance."
 	color = "#0e0033"
 	taste_description = "an endless void"
 	metabolization_rate = 4 * REAGENTS_METABOLISM
@@ -243,7 +243,7 @@
 
 /datum/reagent/consumable/liquidelectricity/auric/redlightning
 	name = "Liquid Red Lightning"
-	description = "A liquid lightning that seems to sputter with explosive power. It is unlike anything you've seen before."
+	description = "A liquid lightning that seems to sputter with explosive power. It seems highly unstable."
 	color = "#ff4545"
 	taste_description = "godlike power"
 	shock_speed = 40 // YOU WILL HAVE A VERY BAD TIME DRINKING THIS.
@@ -257,7 +257,7 @@
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
-	// spillable = FALSE
+	spillable = FALSE
 	reagent_flags = OPENCONTAINER | NO_REACT
 	fill_icon = 'maplestation_modules/story_content/deepred_shattering/icons/redfillings.dmi'
 	fill_icon_state = "redlightning"

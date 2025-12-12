@@ -9,20 +9,19 @@
 		if (4)
 			return 10
 		if (5)
-			return 50
+			return 100
 		else
 			CRASH("Invalid level given to energy_rating: [tier]")
 
 /obj/item/stock_parts/power_store/cell/redtech
-	name = "processed red power cell"
-	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
+	name = "processed redtech power cell"
+	desc = "An advanced redtech power cell. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcell"
 	connector_type = null // GOD it's hardcoded.
 	charge_light_type = null
-	rating_base = STANDARD_CELL_CHARGE * 2
 
-	maxcharge = STANDARD_CELL_CHARGE * 60
+	maxcharge = STANDARD_CELL_CHARGE * 100
 	chargerate = STANDARD_CELL_RATE * 5
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/plasma=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
@@ -33,6 +32,7 @@
 
 /obj/item/stock_parts/power_store/cell/redtech/Initialize(mapload)
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
+	update_appearance()
 	return ..()
 
 /obj/item/stock_parts/power_store/cell/redtech/update_overlays()
@@ -40,13 +40,13 @@
 	. += emissive_appearance(icon, "redcellemissive", src, alpha = src.alpha)
 
 /obj/item/stock_parts/servo/redtech
-	name = "alloyed red servo"
-	desc = "An alloyed servo module. Its design is unlike anything you've seen before."
+	name = "alloyed redtech servo"
+	desc = "An alloyed redtech servo module. It sports an extremely lightweight yet durable design."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redservo"
 
 	rating = 5
-	energy_rating = 20
+	energy_rating = 100
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/diamond=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/carbon = 15, /datum/reagent/gravitum/aerialite = 15)
@@ -64,13 +64,13 @@
 	physical_object_type = /obj/item/stock_parts/servo/redtech
 
 /obj/item/stock_parts/capacitor/redtech
-	name = "processed red capacitor"
-	desc = "A processed capacitor module. Its design is unlike anything you've seen before."
+	name = "processed redtech capacitor"
+	desc = "A processed redtech capacitor module. It seems to be able to withstand very high temperatures."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcapacitor"
 
 	rating = 5
-	energy_rating = 20
+	energy_rating = 100
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
@@ -88,13 +88,13 @@
 	physical_object_type = /obj/item/stock_parts/capacitor/redtech
 
 /obj/item/stock_parts/scanning_module/redtech
-	name = "resonant red scanning module"
-	desc = "A resonant scanning module. Its design is unlike anything you've seen before."
+	name = "resonant redtech scanning module"
+	desc = "A resonant redtech scanning module. It seems to be able to analyze space and time on a dimensional level."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redscanner"
 
 	rating = 5
-	energy_rating = 20
+	energy_rating = 100
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/gold=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/gold = 15, /datum/reagent/bluespace = 15, /datum/reagent/resmythril = 15)
@@ -112,13 +112,13 @@
 	physical_object_type = /obj/item/stock_parts/scanning_module/redtech
 
 /obj/item/stock_parts/micro_laser/redtech
-	name = "crystalline red micro laser"
-	desc = "A crystalline laser module. Its design is unlike anything you've seen before."
+	name = "crystalline redtech micro laser"
+	desc = "A crystalline redtech laser module. Despite its small size, it is able to project a disportionate amount of energy."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redlaser"
 
 	rating = 5
-	energy_rating = 20
+	energy_rating = 100
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/uranium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/uranium = 15, /datum/reagent/bluespace = 15, /datum/reagent/exodust = 15)
@@ -136,13 +136,13 @@
 	physical_object_type = /obj/item/stock_parts/micro_laser/redtech
 
 /obj/item/stock_parts/matter_bin/redtech
-	name = "condensed red matter bin"
-	desc = "A condensed matter bin. Its design is unlike anything you've seen before."
+	name = "condensed redtech matter bin"
+	desc = "A condensed redtech matter bin. It seems to compress matter on a disturbingly efficient level."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redmatterbin"
 
 	rating = 5
-	energy_rating = 20
+	energy_rating = 100
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/darkplasma = 15)
