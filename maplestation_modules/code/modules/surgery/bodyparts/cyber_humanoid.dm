@@ -13,6 +13,7 @@
 /obj/item/bodypart/chest/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic chest"
 
 /obj/item/bodypart/head/robot/humanoid
 	name = "humanoid cybernetic head"
@@ -29,6 +30,7 @@
 /obj/item/bodypart/head/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic head"
 
 /obj/item/bodypart/arm/right/robot/humanoid
 	name = "humanoid cybernetic right arm"
@@ -42,6 +44,7 @@
 /obj/item/bodypart/arm/right/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic right arm"
 
 /obj/item/bodypart/arm/left/robot/humanoid
 	name = "humanoid cybernetic left arm"
@@ -55,6 +58,7 @@
 /obj/item/bodypart/arm/left/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic left arm"
 
 /obj/item/bodypart/leg/right/robot/humanoid
 	name = "humanoid cybernetic right leg"
@@ -68,6 +72,7 @@
 /obj/item/bodypart/leg/right/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic right leg"
 
 /obj/item/bodypart/leg/left/robot/humanoid
 	name = "humanoid cybernetic left leg"
@@ -81,6 +86,7 @@
 /obj/item/bodypart/leg/left/robot/humanoid/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_USES_SKINTONES, INNATE_TRAIT)
+	name = "humanoid cybernetic left leg"
 
 #define LIMB_ID_LIZARD_LIKE "synth_lizard"
 
@@ -98,6 +104,7 @@
 /obj/item/bodypart/chest/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic chest"
 
 /obj/item/bodypart/head/robot/lizardlike
 	name = "lizardlike cybernetic head"
@@ -113,6 +120,7 @@
 /obj/item/bodypart/head/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic head"
 
 /obj/item/bodypart/arm/right/robot/lizardlike
 	name = "lizardlike cybernetic right arm"
@@ -126,6 +134,7 @@
 /obj/item/bodypart/arm/right/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic right arm"
 
 /obj/item/bodypart/arm/left/robot/lizardlike
 	name = "lizardlike cybernetic left arm"
@@ -139,6 +148,7 @@
 /obj/item/bodypart/arm/left/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic left arm"
 
 /obj/item/bodypart/leg/right/robot/lizardlike
 	name = "lizardlike cybernetic right leg"
@@ -152,6 +162,7 @@
 /obj/item/bodypart/leg/right/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic right leg"
 
 /obj/item/bodypart/leg/left/robot/lizardlike
 	name = "lizardlike cybernetic left leg"
@@ -165,3 +176,4 @@
 /obj/item/bodypart/leg/left/robot/lizardlike/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_MUTANT_COLORS, INNATE_TRAIT)
+	name = "lizardlike cybernetic left leg"
