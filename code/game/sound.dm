@@ -75,27 +75,41 @@
 		// NON-MODULE CHANGE
 		if(pref_to_use && listening_mob.client && !listening_mob.client.prefs.read_preference(pref_to_use))
 			continue
-		// NON-MODULE CHANGE END
+		if(get_dist(listening_mob, turf_source) > maxdistance)
+			if(!(listening_mob.mob_flags & MOB_HAS_HEARING_RELAY))
+				continue
 
-		if(get_dist(listening_mob, turf_source) <= maxdistance)
-			// NON-MODULE CHANGE
-			listening_mob.playsound_local(
-				turf_source = turf_source,
-				soundin = soundin,
-				sound_to_use = used_sound,
-				vol = vol,
-				vary = vary,
-				frequency = frequency,
-				falloff_exponent = falloff_exponent,
-				channel = channel,
-				pressure_affected = pressure_affected,
-				max_distance = maxdistance,
-				falloff_distance = falloff_distance,
-				distance_multiplier = 1,
-				use_reverb = use_reverb,
-			)
-			// NON-MODULE CHANGE END
-			. += listening_mob
+			var/mob/true_hearer = listening_mob.get_hearing_relay(source)
+			if(QDELETED(true_hearer))
+				continue
+
+			if(true_hearer == listening_mob)
+				stack_trace("Mob [listening_mob] ([listening_mob.type]) has MOB_HAS_HEARING_RELAY but returned self as true hearer")
+				listening_mob.mob_flags &= ~MOB_HAS_HEARING_RELAY // disable the flag as it's clearly wrong
+				continue
+
+			if(get_dist(true_hearer, turf_source) > maxdistance)
+				continue
+
+			listening_mob = true_hearer
+
+		listening_mob.playsound_local(
+			turf_source = turf_source,
+			soundin = soundin,
+			sound_to_use = used_sound,
+			vol = vol,
+			vary = vary,
+			frequency = frequency,
+			falloff_exponent = falloff_exponent,
+			channel = channel,
+			pressure_affected = pressure_affected,
+			max_distance = maxdistance,
+			falloff_distance = falloff_distance,
+			distance_multiplier = 1,
+			use_reverb = use_reverb,
+		)
+		. += listening_mob
+		// NON-MODULE CHANGE END
 
 /mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff_exponent = SOUND_FALLOFF_EXPONENT, channel = 0, pressure_affected = TRUE, sound/sound_to_use, max_distance, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, distance_multiplier = 1, use_reverb = TRUE)
 	if(!client || !can_hear())
@@ -202,6 +216,40 @@
 	mob.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 	for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
 		text.cancel_tracking()
+
+/// If this mob is out of range of a sound, it might have a relay that can hear it instead.
+/mob/proc/get_hearing_relay(atom/source)
+	return src
+
+/mob/living/silicon/ai/get_hearing_relay(atom/source)
+	if(QDELETED(eyeobj))
+		return null
+
+	for(var/obj/item/radio/intercom/radio in view(5, source))
+		if(radio.is_on_and_listening())
+			return eyeobj
+
+	return null
+
+/mob/camera/ai_eye/playsound_local(turf/turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, sound/sound_to_use, max_distance, falloff_distance, distance_multiplier, use_reverb)
+	if(client)
+		// cameras shouldn't *have* clients, but just in case..?
+		return ..()
+	if(isnull(ai?.client))
+		// don't waste time
+		return
+
+	// moves the source to somewhere around the ai, otherwise they wouldn't hear it
+	turf_source = get_ranged_target_turf(ai, get_dir(src, turf_source), max_distance * 0.5)
+	// pitches down the sound a bit so the ai can differentiate it from sounds actually near their core
+	sound_to_use ||= sound(get_sfx(soundin))
+	sound_to_use.pitch *= 0.8
+	// and disable these since we're beaming it straight to the ai
+	use_reverb = FALSE
+	pressure_affected = FALSE
+
+	// relay it to the ai
+	ai.playsound_local(arglist(args))
 
 ///get a random frequency.
 /proc/get_rand_frequency()

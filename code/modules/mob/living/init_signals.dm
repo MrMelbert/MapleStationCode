@@ -71,7 +71,7 @@
 		set_pain_mod(PAIN_MOD_KOD, 0.8)
 		add_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_BLOCK_SECHUD, TRAIT_BLOCK_MEDHUD, TRAIT_IMMOBILIZED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_HEART_RATE_SLOW), TRAIT_KNOCKEDOUT)
 		update_body() // Update eyelids
-		for(var/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/uncon_aa in GLOB.active_alternate_appearances)
+		for(var/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity/uncon_aa in GLOB.active_alternate_appearances)
 			if(uncon_aa.target == src)
 				continue
 			uncon_aa.show_to(src)
@@ -82,7 +82,7 @@
 		unset_pain_mod(PAIN_MOD_KOD)
 		remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_BLOCK_SECHUD, TRAIT_BLOCK_MEDHUD, TRAIT_IMMOBILIZED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_HEART_RATE_SLOW), TRAIT_KNOCKEDOUT)
 		update_body() // Update eyelids
-		for(var/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud/uncon_aa in GLOB.active_alternate_appearances)
+		for(var/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity/uncon_aa in GLOB.active_alternate_appearances)
 			uncon_aa.hide_from(src, absolute = TRUE)
 		remove_status_effect(/datum/status_effect/grouped/see_no_names, "[REF(src)]_is_unconscious")
 

@@ -32,7 +32,9 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/flask/gold, /obj/item/toy/captainsaid/collector)
+	family_heirlooms = list(
+		/obj/item/reagent_containers/cup/glass/flask/gold,
+	)
 
 	mail_goodies = list(
 		/obj/item/cigarette/cigar/havana = 20,

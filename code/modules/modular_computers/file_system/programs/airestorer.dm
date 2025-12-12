@@ -85,11 +85,8 @@
 			to_chat(user, span_warning("Safeties prevent you from removing the card until reconstruction is complete..."))
 		return FALSE
 
-	if(user && computer.Adjacent(user))
-		to_chat(user, span_notice("You remove [stored_card] from [computer.name]."))
-		user.put_in_hands(stored_card)
-	else
-		stored_card.forceMove(computer.drop_location())
+	to_chat(user, span_notice("You remove [stored_card] from [computer.name]."))
+	computer.try_put_in_hand(stored_card, user)
 
 	stored_card = null
 	restoring = FALSE

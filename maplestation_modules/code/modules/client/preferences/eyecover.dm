@@ -52,6 +52,9 @@
 	associated_typepath = /datum/quirk/item_quirk/blindness
 	customization_options = list(/datum/preference/choiced/blind_eyecover)
 
+/datum/quirk/item_quirk/blindness
+	desc = "You are completely blind, and very few things can counteract this."
+
 // Overrides blindness normal add unique to do our own thing
 /datum/quirk/item_quirk/blindness/add_unique(client/client_source)
 	var/blindfold_type = client_source.prefs?.read_preference(/datum/preference/choiced/blind_eyecover) || NONE_PREFERENCE

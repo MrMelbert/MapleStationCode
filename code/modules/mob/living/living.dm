@@ -18,6 +18,7 @@
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
+	init_unconscious_appearance()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +27,24 @@
 /mob/living/proc/prepare_data_huds()
 	med_hud_set_health()
 	med_hud_set_status()
+
+/// Inits the human_unconscious appearance for when the mob is unconscious
+/mob/living/proc/init_unconscious_appearance()
+	return
+
+/// Generic helper to add a static-y humanoid appearance shown to other mobs when unconscious
+/mob/living/proc/add_generic_humanoid_static_appearance()
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "unknown humanoid"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/Destroy()
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -555,16 +574,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	if(ismob(pointing_at.loc))
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
-			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
-		)
-	else
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
-			span_notice("You point at [pointing_at]."),
-		)
+	to_chat(src, examining_span_normal("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	for(var/mob/viewer in oviewers(src))
+		viewer.show_message(examining_span_normal("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
@@ -1240,7 +1252,9 @@
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
-	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_RESIST) & RESIST_HANDLED)
+		return
+
 	//resisting grabs (as if it helps anyone...)
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
 		log_combat(src, pulledby, "resisted grab")
@@ -1249,17 +1263,14 @@
 
 	//unbuckling yourself
 	if(buckled && last_special <= world.time)
-		resist_buckle()
+		buckled.user_unbuckle_mob(src, src)
 
 	//Breaking out of a container (Locker, sleeper, cryo...)
 	else if(loc != get_turf(src))
 		loc.container_resist_act(src)
 
-	else if(mobility_flags & MOBILITY_MOVE)
-		if(on_fire)
-			resist_fire() //stop, drop, and roll
-		else if(last_special <= world.time)
-			resist_restraints() //trying to remove cuffs.
+	else if((mobility_flags & MOBILITY_MOVE) && on_fire)
+		resist_fire() //stop, drop, and roll
 
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
@@ -1315,9 +1326,6 @@
 	if(moving_resist) //we resisted by trying to move
 		client?.move_delay = world.time + 4 SECONDS
 	return TRUE
-
-/mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return FALSE

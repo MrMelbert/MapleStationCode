@@ -1,6 +1,8 @@
-#define INSPECT_TIMER 10 SECONDS
-#define PET_COOLDOWN 10 SECONDS
-#define GROOM_COOLDOWN 30 SECONDS
+#define INSPECT_TIMER (10 SECONDS)
+#define PET_COOLDOWN (10 SECONDS)
+#define GROOM_COOLDOWN (30 SECONDS)
+
+#define HAPPINESS_DECAY_BASE 1
 
 /*
  * A component that allows mobs to have happiness levels
@@ -23,6 +25,8 @@
 	var/list/callback_percentages
 	///callback when our happiness changes
 	var/datum/callback/happiness_callback
+	///Gets the modifier for happiness decay
+	var/datum/callback/decay_modifier_callback
 
 	///how long till we can inspect happiness again?
 	COOLDOWN_DECLARE(happiness_inspect)
@@ -31,7 +35,7 @@
 	///how long till we can groom it again
 	COOLDOWN_DECLARE(groom_cooldown)
 
-/datum/component/happiness/Initialize(maximum_happiness = 400, blackboard_key = BB_BASIC_HAPPINESS, on_groom_change = 200, on_eat_change = 300, on_petted_change = 30, callback_percentages = list(0, 25, 50, 75, 100), happiness_callback)
+/datum/component/happiness/Initialize(maximum_happiness = 400, blackboard_key = BB_BASIC_HAPPINESS, on_groom_change = 200, on_eat_change = 300, on_petted_change = 30, callback_percentages = list(0, 25, 50, 75, 100), happiness_callback, decay_modifier_callback)
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -41,6 +45,7 @@
 	src.on_petted_change = on_petted_change
 	src.on_eat_change = on_eat_change
 	src.happiness_callback = happiness_callback
+	src.decay_modifier_callback = decay_modifier_callback
 	src.callback_percentages = callback_percentages
 
 	ADD_TRAIT(parent, TRAIT_SUBTREE_REQUIRED_OPERATIONAL_DATUM, type)
@@ -113,7 +118,6 @@
 	source.vis_contents += hearts
 	COOLDOWN_START(src, happiness_inspect, INSPECT_TIMER)
 
-
 /datum/component/happiness/process()
 	var/mob/living/living_parent = parent
 	var/happiness_percentage = happiness_level/maximum_happiness
@@ -125,8 +129,8 @@
 
 	if(happiness_level <= 0)
 		return PROCESS_KILL
-	var/modifier = living_parent.ai_controller?.blackboard[BB_BASIC_DEPRESSED] ? 2 : 1
-	happiness_level = max(0, happiness_level - modifier)
+	var/modifier = decay_modifier_callback ? decay_modifier_callback.Invoke() : 1
+	happiness_level = max(0, happiness_level - (HAPPINESS_DECAY_BASE * modifier))
 
 /obj/effect/overlay/happiness_overlay
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -159,3 +163,5 @@
 #undef INSPECT_TIMER
 #undef PET_COOLDOWN
 #undef GROOM_COOLDOWN
+
+#undef HAPPINESS_DECAY_BASE

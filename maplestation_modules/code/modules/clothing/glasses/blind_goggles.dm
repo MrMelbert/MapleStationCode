@@ -20,6 +20,7 @@
 	flags_cover = GLASSESCOVERSEYES
 	forced_glass_color = TRUE
 	var/was_worn = FALSE
+	var/emped = NONE
 
 /obj/item/clothing/glasses/blindness_visor/equipped(mob/living/user, slot, initial)
 	. = ..()
@@ -117,6 +118,33 @@
 		return
 	user.become_nearsighted(REF(src))
 	flash_protect = FLASH_PROTECTION_SENSITIVE
+
+/obj/item/clothing/glasses/blindness_visor/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+
+	// There is a 30 second cooldown  between emps causing damage
+	// However if a light emp hits us followed by a heavy emp we still want to do heavy emp damage
+	// So we proceed if emped is different from severity and not already at heavy
+	if(!isliving(loc) || emped == severity || emped == EMP_HEAVY)
+		return
+
+	// Translate light emp -> 0.5x and heavy emp -> 1x
+	var/multiplier = 1 / severity
+	// If we were already emped it implies we were hit by a light emp (0.5x)
+	// It also implies this is a heavy emp (1x) so reduce it to 0.5x for a full 1x
+	if(emped)
+		multiplier = 0.5
+
+	emped = severity
+	addtimer(VARSET_CALLBACK(src, emped, NONE), 30 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
+
+	var/mob/living/wearer = loc
+	wearer.adjustOrganLoss(ORGAN_SLOT_EYES, 25 * multiplier, REF(src))
+	wearer.adjust_eye_blur(40 SECONDS * multiplier)
+	wearer.sharp_pain(BODY_ZONE_HEAD, 20 * multiplier, BURN, 1 MINUTES * multiplier)
+	to_chat(wearer, span_warning("Your head aches as [src] malfunctions!"))
 
 // very very light yellow tint
 /datum/client_colour/glass_colour/barelyyellow
