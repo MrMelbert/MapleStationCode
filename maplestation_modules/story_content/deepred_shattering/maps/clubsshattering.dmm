@@ -1,0 +1,56 @@
+"a" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"c" = (/obj/structure/flora/rock/icy/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"d" = (/obj/structure/flora/rock/pile/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"e" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"f" = (/turf/closed/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"h" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"k" = (/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"l" = (/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"m" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"o" = (/obj/structure/flora/rock/pile/icy/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"p" = (/obj/structure/flora/grass/both/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"q" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"s" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"t" = (/turf/template_noop,/area/template_noop)
+"u" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"w" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"x" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"y" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"A" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"C" = (/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"D" = (/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"E" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"I" = (/obj/structure/flora/grass/brown/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"N" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"O" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"Q" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"R" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"S" = (/obj/structure/flora/grass/green/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
+"T" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/clubs,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+
+(1,1,1) = {"
+tttttttDDpDDttttttttttt
+ttttttDDODODttttttDpDtt
+ttttDDDDfDODttttttDDDtt
+ttDDDSDdfDwDttttttDODtt
+pDDDSDDdfDfDIDttttDODtt
+pDDDDDDDuDfDDDDDttDwDtt
+DDacDDDDuDfDODDDttDfDID
+DakfdeDdfDfowDODDDDuDDD
+DDDdDDDDfDfcfDODdDofDOD
+DfffffeDfDuDfDwDoSDfDOD
+DfEEQaaDfdfDfofDcoDfDOD
+DffffaDDDDDDDDDDpDDfDwD
+DDDDDDDfffffffffDfdfDfD
+IcdDaDofCCCCCaaaDfDDDfD
+ofsDaeofTRRqRfoDDffoDuD
+DaaDDDcfCCCCffcDaafcDfd
+poaDDoffhRhTmDDDfCffDfD
+DDDDIcfCCCCaapaDfCyfDDD
+DDDDIffRRqRADDepfCyffDD
+DaDDofCCCCCeDalDfCAyfDt
+DDSAAATNNNNfDxfDaaVyfdt
+DlcfffffffffDofDoffffdt
+DDDDDDdDIddcDDDDSDcdDSt
+"}

@@ -32,3 +32,12 @@
 	placement_weight = 2
 	cost = 8
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering)
+
+/datum/map_template/ruin/icemoon/clubs_shattering
+	id = "clubs_shattering"
+	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
+	suffix = "clubsshattering.dmm"
+	name = "Ice-Ruin The Shattering Of Clubs"
+	description = "The wreckage of a redtech sensor array, now smeared across space and time."
+	allow_duplicates = FALSE
+	placement_weight = 2
