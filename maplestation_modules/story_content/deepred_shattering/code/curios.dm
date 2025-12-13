@@ -279,7 +279,7 @@
 	. = ..()
 	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
 
-/obj/item/rtechdrive/send_echo()
+/obj/item/rtechdrive/proc/send_echo()
 	AddComponent(/datum/component/gps, signaltype)
 	priority_announce(
 		text = "Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking via onboard GPS systems.",
@@ -287,8 +287,8 @@
 		sound = ANNOUNCER_SPANOMALIES,
 		color_override = "red",
 	)
-	for(/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
-		if(prob(50))
+	for(var/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
+		if(target_light.on)
 			target_light.flicker()
 
 /obj/item/rtechdrive/hearts
