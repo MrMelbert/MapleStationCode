@@ -27,6 +27,7 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
+	mutanttongue = /obj/item/organ/tongue/robot/synth
 	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
 
 	/// Reference to the species we're disguised as.
@@ -152,6 +153,10 @@
 
 	regenerate_organs(synth, replace_current = FALSE)
 
+	var/obj/item/organ/tongue/robot/synth/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(istype(tongue))
+		tongue.disguise_tongue(disguise_species.mutanttongue)
+
 	if(limb_updates_on_change)
 		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
 			limb_gained(synth, part, update = FALSE)
@@ -163,6 +168,10 @@
 /datum/species/android/synth/proc/drop_disguise(mob/living/carbon/human/synth, skip_bodyparts = FALSE)
 	if(isnull(disguise_species))
 		return
+
+	var/obj/item/organ/tongue/robot/synth/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(istype(tongue))
+		tongue.restore_tongue()
 
 	update_no_equip_flags(synth, initial(no_equip_flags))
 	sexes = initial(sexes)

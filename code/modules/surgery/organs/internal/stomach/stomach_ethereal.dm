@@ -32,6 +32,7 @@
 	RegisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS, PROC_REF(handle_temp))
 	RegisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 	RegisterSignal(stomach_owner, COMSIG_MOB_HUD_CREATED, PROC_REF(update_hunger_icon))
+	RegisterSignal(stomach_owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_aheal))
 	update_hunger_icon()
 
 /obj/item/organ/stomach/ethereal/on_mob_remove(mob/living/carbon/stomach_owner)
@@ -40,6 +41,7 @@
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS)
 	UnregisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(stomach_owner, COMSIG_LIVING_POST_FULLY_HEAL)
 	stomach_owner.clear_mood_event("charge")
 	// stomach_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
 	// stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
@@ -61,6 +63,11 @@
 
 /obj/item/organ/stomach/ethereal/handle_hunger_slowdown(mob/living/carbon/human/human)
 	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (1.5 * (1 - cell.charge() / 100)))
+
+/obj/item/organ/stomach/ethereal/proc/on_aheal(datum/source, heal_flags)
+	SIGNAL_HANDLER
+	if(heal_flags & HEAL_STATUS)
+		cell.charge = ETHEREAL_CHARGE_FULL
 
 /obj/item/organ/stomach/ethereal/proc/charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
 	SIGNAL_HANDLER
@@ -140,13 +147,8 @@
 	overcharge = overcharge || mutable_appearance('icons/effects/effects.dmi', "electricity", EFFECTS_LAYER)
 	carbon.add_overlay(overcharge)
 
-	if(do_after(carbon, 5 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_INCAPACITATED)))
-		if(ishuman(carbon))
-			var/mob/living/carbon/human/human = carbon
-			if(human.dna?.species)
-				//fixed_mut_color is also ethereal color (for some reason)
-				carbon.flash_lighting_fx(5, 7, human.dna.species.fixed_mut_color ? human.dna.species.fixed_mut_color : human.dna.features["mcolor"])
-
+	if(do_after(carbon, 5 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS)))
+		carbon.flash_lighting_fx(5, 7, carbon.dna?.species?.fixed_mut_color || carbon.dna?.features["mcolor"])
 		playsound(carbon, 'sound/magic/lightningshock.ogg', 100, TRUE, extrarange = 5)
 		carbon.cut_overlay(overcharge)
 		// Only a small amount of the energy gets discharged as the zap. The rest dissipates as heat. Keeps the damage and energy from the zap the same regardless of what STANDARD_CELL_CHARGE is.

@@ -29,7 +29,7 @@
 	mutantlungs = /obj/item/organ/lungs/android
 	mutanteyes = /obj/item/organ/eyes/robotic/synth
 	mutantears = /obj/item/organ/ears/cybernetic
-	// species_pain_mod = 0.2
+	species_pain_mod = 0.5 // the bodyparts themselves also reduce pain
 	exotic_bloodtype = /datum/blood_type/oil
 
 	bodypart_overrides = list(
@@ -253,6 +253,13 @@
 	))
 
 	return to_add
+
+/mob/living/carbon/human/get_cell(atom/movable/interface, mob/user)
+	var/obj/item/organ/stomach/ethereal/charge_stomach = get_organ_slot(ORGAN_SLOT_STOMACH)
+	if(istype(charge_stomach))
+		return charge_stomach.cell
+
+	return null
 
 // future todos:
 // - radiation effects
