@@ -51,6 +51,15 @@
 		free_icon = initial(icon_static), \
 	)
 
+/obj/item/bodypart/leg/right/robot/digi/android
+	change_exempt_flags = NONE
+
+/obj/item/bodypart/leg/right/robot/digi/zhp
+	icon_state = "robotic_r_leg"
+	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	limb_id = BODYPART_ID_ROBOTIC
+
 /obj/item/bodypart/leg/left/robot/digi
 	name = "cyborg digitigrade left leg"
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
@@ -72,6 +81,15 @@
 		squashed_icon = /obj/item/bodypart/leg/left/robot::icon_static, \
 		free_icon = initial(icon_static), \
 	)
+
+/obj/item/bodypart/leg/left/robot/digi/android
+	change_exempt_flags = NONE
+
+/obj/item/bodypart/leg/left/robot/digi/zhp
+	icon_state = "robotic_l_leg"
+	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	limb_id = BODYPART_ID_ROBOTIC
 
 /obj/item/bodypart/leg/right/robot/surplus/digi
 	name = "prosthetic digitigrade right leg"
@@ -158,44 +176,44 @@
 // Prefs menu
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi
 	name = "Cybernetic Digitigrade Right Leg"
-	tooltip = "Unique to Lizardpeople."
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/right/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi
 	name = "Cybernetic Digitigrade Left Leg"
-	tooltip = "Unique to Lizardpeople."
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/left/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi
 	name = "Prosthetic Digitigrade Right Leg"
-	tooltip = "Unique to Lizardpeople."
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/right/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi
 	name = "Prosthetic Digitigrade Left Leg"
-	tooltip = "Unique to Lizardpeople."
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/left/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
