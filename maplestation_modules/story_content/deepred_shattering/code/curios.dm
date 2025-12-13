@@ -272,12 +272,24 @@
 
 /obj/item/rtechdrive/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/gps, signaltype)
 	SSpoints_of_interest.make_point_of_interest(src)
+	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(30 MINUTES, 60 MINUTES))
 
 /obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
 	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
+
+/obj/item/rtechdrive/send_echo()
+	AddComponent(/datum/component/gps, signaltype)
+	priority_announce(
+		text = "Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking via onboard GPS systems.",
+		title = "Spacetime Echos Detected",
+		sound = ANNOUNCER_SPANOMALIES,
+		color_override = "red",
+	)
+	for(/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
+		if(prob(50))
+			target_light.flicker()
 
 /obj/item/rtechdrive/hearts
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
