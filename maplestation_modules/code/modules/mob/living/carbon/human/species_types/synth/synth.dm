@@ -39,11 +39,12 @@
 	/// Species which generally work well with synth, and can be disguised as.
 	var/list/valid_species = list(
 		SPECIES_ABDUCTOR,
-		SPECIES_FELINE,
+		SPECIES_FELINE, // needs to be replaced with animids
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
 		SPECIES_MOTH,
 		SPECIES_ORNITHID,
+		SPECIES_SKRELL,
 	)
 	/// Reference to the action we give Synths to change species
 	var/datum/action/cooldown/change_disguise/disguise_action

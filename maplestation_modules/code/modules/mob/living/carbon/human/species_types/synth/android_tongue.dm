@@ -23,17 +23,20 @@
 
 	fake_tongue.handle_speech(source, speech_args)
 
-/obj/item/organ/tongue/robot/synth/proc/disguise_tongue(obj/item/organ/tongue/source_tongue)
-	fake_tongue = new source_tongue()
+/obj/item/organ/tongue/robot/synth/proc/disguise_tongue(obj/item/organ/tongue/tongue_type)
+	if(isnull(tongue_type))
+		return
+
+	fake_tongue = new tongue_type()
 
 	old_speech_sounds = speech_sound_list
 	old_speech_sounds_question = speech_sound_list_question
 	old_speech_sounds_exclamation = speech_sound_list_exclamation
 
-	speech_sounds_enabled = source_tongue.speech_sounds_enabled
-	speech_sound_list = source_tongue.speech_sound_list.Copy()
-	speech_sound_list_question = source_tongue.speech_sound_list_question.Copy()
-	speech_sound_list_exclamation = source_tongue.speech_sound_list_exclamation.Copy()
+	speech_sounds_enabled = fake_tongue.speech_sounds_enabled
+	speech_sound_list = fake_tongue.speech_sound_list?.Copy()
+	speech_sound_list_question = fake_tongue.speech_sound_list_question?.Copy()
+	speech_sound_list_exclamation = fake_tongue.speech_sound_list_exclamation?.Copy()
 
 /obj/item/organ/tongue/robot/synth/proc/restore_tongue()
 	if(isnull(fake_tongue))

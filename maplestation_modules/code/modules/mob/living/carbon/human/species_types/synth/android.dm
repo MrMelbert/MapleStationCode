@@ -48,11 +48,12 @@
 	temperature_homeostasis_speed = 0
 
 	var/list/android_species = list(
-		SPECIES_FELINE,
+		SPECIES_FELINE, // needs to be replaced with animids
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
 		SPECIES_MOTH,
 		SPECIES_ORNITHID,
+		SPECIES_SKRELL,
 	)
 
 #define ID_TO_TYPEPATH(id) GLOB.species_list[id]
