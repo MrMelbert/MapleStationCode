@@ -570,8 +570,6 @@
 
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
-	/// The cached info about the blood
-	var/list/blood_dna_info
 	/// Skip making the final blood splatter when we're done, like if we're not in a turf
 	var/skip = FALSE
 	/// How many tiles/items/people we can paint red
@@ -592,7 +590,7 @@
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
-		loc.add_blood_DNA(blood_dna_info)
+		loc.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	qdel(src)
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
@@ -619,7 +617,7 @@
 			continue
 		if(splatter_strength <= 0)
 			break
-		iter_atom.add_blood_DNA(blood_dna_info)
+		iter_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 		if(isliving(iter_atom))
 			var/mob/living/splatted = iter_atom
 			splatted.add_mood_event("splattered_with_blood", /datum/mood_event/splattered_with_blood)
@@ -636,7 +634,7 @@
 		fly_trail.transform = fly_trail.transform.Turn((flight_dir == NORTHEAST || flight_dir == SOUTHWEST) ? 135 : 45)
 	fly_trail.icon_state = pick("trails_1", "trails2")
 	fly_trail.adjust_bloodiness(fly_trail.bloodiness * -0.66)
-	fly_trail.add_blood_DNA(blood_dna_info)
+	fly_trail.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
@@ -667,7 +665,6 @@
 			final_splatter.pixel_x = (dir == EAST ? 32 : (dir == WEST ? -32 : 0))
 			final_splatter.pixel_y = (dir == NORTH ? 32 : (dir == SOUTH ? -32 : 0))
 			final_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-			final_splatter.add_blood_DNA(blood_dna_info)
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
 		expire()
@@ -678,7 +675,6 @@
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
 	final_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	final_splatter.add_blood_DNA(blood_dna_info)
 	final_splatter.forceMove(the_window)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE

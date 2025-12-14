@@ -93,7 +93,7 @@
 	/// % chance for internal damage to occur
 	var/internal_damage_probability = 20
 	/// list of possibly dealt internal damage for this mech type
-	var/possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_CABIN_AIR_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
+	var/possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_CABIN_AIR_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT|MECHA_INT_FUEL_LINE
 	/// damage threshold above which we take component damage
 	var/component_damage_threshold = 10
 
@@ -208,7 +208,19 @@
 	/// Module selected by default when mech UI is opened
 	var/ui_selected_module_index
 
-	var/mecha_zoom_view_size = 4.5 //NON-MODULE CHANGE : customizable zoom size
+	//NON-MODULE CHANGE
+	/// Used for counting when to play footstep sounds
+	VAR_PRIVATE/footstep_count = 0
+	/// How many steps can be taken before playing a footstep sound
+	var/steps_per_footstep = 1
+	/// Abstract representation of our "blood", ie "oil"
+	var/oil_pool = 100
+	/// Type of oil we leak
+	var/oil_type = /datum/blood_type/oil/heavy
+	/// Name of leaked oil when scanned by detectives, in other words Oil DNA
+	var/oil_name = "EXOSUIT-GRADE CRUDE OIL"
+	/// customized zoom view size
+	var/mecha_zoom_view_size = 4.5
 
 /datum/armor/sealed_mecha
 	melee = 20
@@ -221,7 +233,6 @@
 	. = ..()
 	ui_view = new()
 	ui_view.generate_view("mech_view_[REF(src)]")
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 
 	spark_system = new
@@ -438,8 +449,6 @@
 	set_mouse_pointer()
 
 /obj/vehicle/sealed/mecha/proc/update_part_values() ///Updates the values given by scanning module and capacitor tier, called when a part is removed or inserted.
-	update_energy_drain()
-
 	if(capacitor)
 		var/datum/armor/stock_armor = get_armor_by_type(armor_type)
 		var/initial_energy = stock_armor.get_rating(ENERGY)
@@ -592,6 +601,10 @@
 		use_energy(damage_energy_consumption)
 		cell.maxcharge -= min(damage_energy_consumption, cell.maxcharge)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && oil_pool >= 0.5 && isturf(loc) && SPT_PROB(round(oil_pool / 2, 0.1), seconds_per_tick))
+		find_blood_type(oil_type)?.make_blood_splatter(loc, TRUE, list("[oil_name]" = oil_type))
+		oil_pool -= 0.5
+
 /obj/vehicle/sealed/mecha/proc/process_cabin_air(seconds_per_tick)
 	if(!(internal_damage & MECHA_INT_TEMP_CONTROL) && cabin_air && cabin_air.return_volume() > 0)
 		var/heat_capacity = cabin_air.heat_capacity()
@@ -655,7 +668,7 @@
 	diag_hud_set_mechstat()
 
 /obj/vehicle/sealed/mecha/proc/process_constant_power_usage(seconds_per_tick)
-	if(mecha_flags & LIGHTS_ON && !use_energy(light_power_drain * seconds_per_tick))
+	if(mecha_flags & LIGHTS_ON && !use_energy(light_power_drain * seconds_per_tick, CAPACITOR_MODIFIED_DRAIN))
 		mecha_flags &= ~LIGHTS_ON
 		set_light_on(mecha_flags & LIGHTS_ON)
 		playsound(src,'sound/machines/clockcult/brass_skewer.ogg', 40, TRUE)
@@ -729,9 +742,8 @@
 	if(internal_damage & MECHA_INT_CONTROL_LOST)
 		target = pick(oview(1,src))
 
-	if(!has_charge(melee_energy_drain))
+	if(!use_energy(melee_energy_drain, CAPACITOR_MODIFIED_DRAIN|OIL_MODIFIED_DRAIN))
 		return
-	use_energy(melee_energy_drain)
 
 	SEND_SIGNAL(user, COMSIG_MOB_USED_MECH_MELEE, src)
 	target.mech_melee_attack(src, user)
@@ -898,25 +910,6 @@
 	else
 		movedelay = initial(movedelay)
 		visible_message(span_notice("[src] cools down and the humming stops."))
-	update_energy_drain()
-
-/// Update the energy drain according to parts and status
-/obj/vehicle/sealed/mecha/proc/update_energy_drain()
-	if(servo)
-		step_energy_drain = initial(step_energy_drain) / servo.rating
-	else
-		step_energy_drain = 2 * initial(step_energy_drain)
-	if(overclock_mode)
-		step_energy_drain *= overclock_coeff
-
-	if(capacitor)
-		phasing_energy_drain = initial(phasing_energy_drain) / capacitor.rating
-		melee_energy_drain = initial(melee_energy_drain) / capacitor.rating
-		light_power_drain = initial(light_power_drain) / capacitor.rating
-	else
-		phasing_energy_drain = initial(phasing_energy_drain)
-		melee_energy_drain = initial(melee_energy_drain)
-		light_power_drain = initial(light_power_drain)
 
 /// Toggle lights on/off
 /obj/vehicle/sealed/mecha/proc/toggle_lights(forced_state = null, mob/user)
