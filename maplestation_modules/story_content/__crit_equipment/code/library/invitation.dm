@@ -1,7 +1,7 @@
 /obj/item/grand_library_invitation
 	name = "\improper Grand Library Invitation"
 	desc = "If you see this, somebody messed up and didn't use the proper subtype."
-	icon = 'maplestation_modules/story_content/crit_equipment/icons/library_card.dmi'
+	icon = 'maplestation_modules/story_content/__crit_equipment/icons/library_card.dmi'
 	icon_state = "invitation_conf"
 	w_class = WEIGHT_CLASS_SMALL
 	var/area_to_send_to = /area/station/commons/toilet/restrooms
