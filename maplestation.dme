@@ -6809,6 +6809,7 @@
 #include "maplestation_modules\code\modules\wiremod\shells.dm"
 #ifdef MAPLESTATION_STORY_CONTENT
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
@@ -6861,6 +6862,8 @@
 #include "maplestation_modules\story_content\crit_equipment\code\tevetia_spells\dark_smoke.dm"
 #include "maplestation_modules\story_content\crit_equipment\code\pendant.dm"
 =======
+=======
+>>>>>>> 184dff482a9 (i did a stupid)
 #include "maplestation_modules\story_content\__common_story\code\story_lazy_template.dm"
 #include "maplestation_modules\story_content\__common_story\code\story_rapid_status.dm"
 #include "maplestation_modules\story_content\__common_story\code\story_rapid_status_datum.dm"
@@ -6881,6 +6884,12 @@
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\princess_of_cosmos.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\silvered_huntress.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\tevetia_spells\dark_smoke.dm"
+#include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
+#include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
+#include "maplestation_modules\story_content\alraune_miscitems\code\alrmiscitem.dm"
+#include "maplestation_modules\story_content\armored_corps\code\clothing\aylie_cloak.dm"
+#include "maplestation_modules\story_content\armored_corps\code\melee\void_blade.dm"
+#include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
 #include "maplestation_modules\story_content\enma_equipment\code\enmaclothes.dm"
 >>>>>>> 12d2e16820b (Punts everything into new directories)
 #include "maplestation_modules\story_content\eveleen_equipment\code\clothing.dm"
