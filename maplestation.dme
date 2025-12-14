@@ -6799,7 +6799,6 @@
 #include "maplestation_modules\story_content\common_story\code\story_lazy_template.dm"
 #include "maplestation_modules\story_content\common_story\code\story_rapid_status.dm"
 #include "maplestation_modules\story_content\common_story\code\story_rapid_status_datum.dm"
-#include "maplestation_modules\story_content\common_story\code\mob\basic\summoned_star_gazer.dm"
 #include "maplestation_modules\story_content\common_story\code\rapid_statuses\lunar_judge.dm"
 #include "maplestation_modules\story_content\common_story\code\rapid_statuses\rabid_shadowfiend.dm"
 #include "maplestation_modules\story_content\common_story\code\smites\death_from_beyond.dm"
