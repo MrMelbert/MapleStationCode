@@ -273,7 +273,7 @@
 /obj/item/rtechdrive/Initialize(mapload)
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
-	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(20 MINUTES, 40 MINUTES))
+	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(40 MINUTES, 60 MINUTES))
 
 /obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
