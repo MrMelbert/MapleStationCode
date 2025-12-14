@@ -20,6 +20,7 @@
 	placement_weight = 2
 	cost = 2
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering)
+	unpickable = TRUE // TM CHANGE ONLY
 
 /datum/map_template/ruin/lavaland/hearts_shattering
 	id = "hearts_shattering"
@@ -32,6 +33,7 @@
 	placement_weight = 2
 	cost = 8
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering)
+	always_place = TRUE // TM CHANGE ONLY
 
 /datum/map_template/ruin/icemoon/clubs_shattering
 	id = "clubs_shattering"
