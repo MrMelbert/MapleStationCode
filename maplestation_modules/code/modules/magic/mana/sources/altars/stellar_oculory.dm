@@ -31,7 +31,7 @@
 
 /obj/machinery/power/magic_contraption/stellar/interact(mob/user)
 	if(panel_open)
-		return balloon_alert(user, "Close the panel!")
+		return balloon_alert(user, "close the panel first!")
 	if(active)
 		active = FALSE
 		icon_state = "stellar_inactive"
@@ -98,7 +98,7 @@
 /obj/machinery/power/magic_contraption/stellar/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if (active)
-		user.balloon_alert(user, "Must be inactive!")
+		user.balloon_alert(user, "deactivate first!")
 		return .
 	if(default_deconstruction_screwdriver(user, "stellar_t", "stellar", tool))
 		return ITEM_INTERACT_SUCCESS
