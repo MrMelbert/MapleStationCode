@@ -6830,6 +6830,7 @@
 =======
 =======
 #include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
+<<<<<<< HEAD
 >>>>>>> 863ff942946 (Adds in a kanabo.)
 #include "maplestation_modules\story_content\common_story\code\story_lazy_template.dm"
 #include "maplestation_modules\story_content\common_story\code\story_rapid_status.dm"
@@ -6859,6 +6860,29 @@
 >>>>>>> 1b4512d6e3d (Adds in a lot more rapid statuses and spells for them.)
 #include "maplestation_modules\story_content\crit_equipment\code\tevetia_spells\dark_smoke.dm"
 #include "maplestation_modules\story_content\crit_equipment\code\pendant.dm"
+=======
+#include "maplestation_modules\story_content\__common_story\code\story_lazy_template.dm"
+#include "maplestation_modules\story_content\__common_story\code\story_rapid_status.dm"
+#include "maplestation_modules\story_content\__common_story\code\story_rapid_status_datum.dm"
+#include "maplestation_modules\story_content\__common_story\code\rapid_statuses\lunar_judge.dm"
+#include "maplestation_modules\story_content\__common_story\code\rapid_statuses\rabid_shadowfiend.dm"
+#include "maplestation_modules\story_content\__common_story\code\smites\death_from_beyond.dm"
+#include "maplestation_modules\story_content\__common_story\code\spells\shadow_knife.dm"
+#include "maplestation_modules\story_content\__common_story\code\spells\shadow_steel.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\areas.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\heat_blade.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\pendant.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\library\invitation.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\library\lazy_templates.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\library\weapons.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\_cosmos.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\herald_of_cosmos.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\prince_of_cosmos.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\princess_of_cosmos.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\silvered_huntress.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\tevetia_spells\dark_smoke.dm"
+#include "maplestation_modules\story_content\enma_equipment\code\enmaclothes.dm"
+>>>>>>> 12d2e16820b (Punts everything into new directories)
 #include "maplestation_modules\story_content\eveleen_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\grey_equipment\code\greyclothing.dm"
 #include "maplestation_modules\story_content\isaac_equipment\code\isaacclothing.dm"
