@@ -3,6 +3,7 @@
 "ed" = (/obj/structure/rack,/obj/effect/spawner/random/shattering_snowglobes/extra,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "ee" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "fd" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/resmythril{amount = 5},/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"fA" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/3288289eb7fb30d7a9920dee5e41fa41.png"; windowID = "thisisnotanefficientmeansofcommunication"},/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
 "iN" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/aerialite{amount = 5},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "iP" = (/obj/structure/closet/crate,/obj/item/reagent_containers/cup/bottle/strange_reagent,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "jZ" = (/obj/structure/closet/crate,/obj/item/knife/combat/nullknife,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
@@ -39,6 +40,7 @@
 "HC" = (/obj/structure/closet/crate,/obj/item/clothing/neck/mana_star,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "HN" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/resmythril{amount = 5},/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Ix" = (/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/diamonds)
+"IO" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/a1003b08a1a8db76937382d7f6bd8e7f.png"; windowID = "mytimeisrunningout"},/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Jr" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "JY" = (/obj/structure/closet/crate,/obj/item/gun/energy/disabler/phaser,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Ks" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/aerialite{amount = 5},/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
@@ -76,10 +78,10 @@ StIxIxcHBgCmrXRCBgRCRCIxBgcHIxIxIxEWEWIxIxEWIxIxFDFDFDFDFDFDRCRCBgcHIxIxSt
 StIxIxcHBgBgBgBgIxIxBgBglTcHIxEWIxcHSmIxIxEWIxIxFDIxFDFDFDFDIxIxAycHIxEWSt
 StIxIxcHBgKsyVRCIxRCRCRCIxIxIxEWIxcHcHIxIxNMIxIxIxIxIxFDIxFDFDIxIxIxIxEWSt
 StEWIxcHBgRCRCRCBgJYIxIxIxEWIxtrIxIxIxIxIxIxIxcgIxRCIxFDIxIxFDFDFDIxIxEWSt
-StrEIxcHBgZdlledBgIxIxRCBgEWIxIxIxcHIxIxIxIxIxcHIxRCFDFDIxIxRCIxFDFDFDEWSt
+StrEIxcHBgZdlledBgIxIxRCBgEWIxIxIxcHIxIxIxIxIxcHfARCFDFDIxIxRCIxFDFDFDEWSt
 StIxIxcHBgBgBgBgBgBgBgPhBgcHIxIxIxSmcgIxIxIxIxcHIxBgIxFDFDFDBgIxIxIxIxIxSt
 StIxIxcHBgDKDKDKBgJYzyRCBgcHIxIxIxIxIxIxIxEWIxcHBgsIRCRCBgRCRCziBgEWIxIxSt
-StIxIxcHBgRCRCRCBgRCRCRCBgcHIxIxIxIxEWIxIxEWIxcHBgRCIxIxIxIxRCIxBgEWIxIxSt
+StIxIxcHBgRCRCRCBgRCIORCBgcHIxIxIxIxEWIxIxEWIxcHBgRCIxIxIxIxRCIxBgEWIxIxSt
 StEWIxcHBgnymFpFBgnyMfnyBgcHIxEWIxIxcHcHIxEWIxcHBgnyIxFbIxIxmFIxBgcHIxIxSt
 StEWIxcHBgBgymBgBgBgymBgBgcHIxEWIxIxEWFDIxIxIxcHBgBgymBgBgFDymBgBgcHIxIxSt
 StIxIxcHcHcHcHcHcHcHcHcHcHcHIxEWIxIxIxFDFDIxIxcHcHcHcHcHcHcHcHcHcHcHIxrESt
