@@ -1,5 +1,4 @@
 "a" = (/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
-"c" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/77192ed5145c0b41b861fbba2cc770c4.png"; windowID = "whileyourehereletshaveachat"},/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "f" = (/obj/structure/redtech_indestructable/server_off,/obj/structure/redtech_indestructable/inert_AV,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "g" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "h" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
@@ -27,7 +26,6 @@
 "M" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "N" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "O" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
-"P" = (/obj/item/stack/sheet/mineral/aerialite,/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/f04fdeac48b1f40faa9f1589fa285c69.png"; windowID = "wedontlikecodedivers"},/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "Q" = (/obj/structure/frame/machine/secured,/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "S" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
 "U" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/c766c4486759ed2ceeb027ff20a32d3f.png"; windowID = "heystoplookingatthecode"},/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
@@ -61,8 +59,8 @@ GGGGGoaaaalGGkllGlGaoaaaxaaaaaayrroGJ
 GGGGGohzzwGGSzQiGwGhohBzzzzzzzzfXooGJ
 GGGGoohQNGGNwzQizSGIohzzgBzfgffEAoGGG
 GGGGoaaalGkklkkikkkaoaaaUaaaaarrqoGGG
-GGGGoczzQGGGiiiiiQMhoAEfffBzzzfXooGGG
-GGGoohzzzSzNwQiNiiwPoXfzfBgzzzzXoGGGG
+GGGGohzzQGGGiiiiiQMhoAEfffBzzzfXooGGG
+GGGoohzzzSzNwQiNiiwIoXfzfBgzzzzXoGGGG
 GGGoaaaaaaaaliilkklkokkaaaaaaarroGGGG
 GGGohzpzzzzzQiNwzSGGGKzzzzfzzfAooGGGG
 JGoohzzzzzzzQGwzQwGwGGzgBzzzffAoGGGkG
