@@ -27,7 +27,7 @@
 /obj/item/toy/the_moon_itself
 	name = "The Moon"
 	desc = "Where did you even get this? I swear there's lunar colonies, are those people shrunk or dead?"
-	icon = 'maplestation_modules/story_content/common_story/icons/literally_just_the_moon.dmi'
+	icon = 'maplestation_modules/story_content/__common_story/icons/literally_just_the_moon.dmi'
 	icon_state = "moon"
 	inhand_icon_state = "minimeteor"
 	w_class = WEIGHT_CLASS_SMALL

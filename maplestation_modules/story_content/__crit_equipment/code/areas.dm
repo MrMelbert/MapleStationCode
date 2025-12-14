@@ -1,6 +1,6 @@
 /area/grand_library
 	name = "Grand Library"
-	icon = 'maplestation_modules/story_content/crit_equipment/icons/areas_library.dmi'
+	icon = 'maplestation_modules/story_content/__crit_equipment/icons/areas_library.dmi'
 	icon_state = "grand_library"
 	static_lighting = TRUE
 	requires_power = FALSE
