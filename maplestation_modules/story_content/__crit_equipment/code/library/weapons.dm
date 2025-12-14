@@ -1,11 +1,11 @@
 /obj/item/melee/kanabo
 	name = "kanabō"
 	desc = "A spiked club associated with Oni. It's incredibly heavy."
-	icon = 'maplestation_modules/story_content/crit_equipment/icons/kanabo.dmi'
+	icon = 'maplestation_modules/story_content/__crit_equipment/icons/kanabo.dmi'
 	icon_state = "kanabo"
 	inhand_icon_state = "kanabo"
-	lefthand_file = 'maplestation_modules/story_content/crit_equipment/icons/kanabo_lefthand.dmi'
-	righthand_file = 'maplestation_modules/story_content/crit_equipment/icons/kanabo_righthand.dmi'
+	lefthand_file = 'maplestation_modules/story_content/__crit_equipment/icons/kanabo_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/__crit_equipment/icons/kanabo_righthand.dmi'
 	force = 35
 	wound_bonus = 15
 	throwforce = 25
