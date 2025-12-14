@@ -2,7 +2,7 @@
 	name = "redtech setpiece"
 	desc = "Report this to a coder."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/setpieces.dmi'
-	icon_state = "server_off" // Temp sprite KEKW.
+	icon_state = "server_off"
 	density = TRUE
 	anchored = TRUE
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
@@ -41,7 +41,7 @@
 	icon_state = "singularity_off"
 
 /obj/effect/step_trigger/linker
-	var/targetlink // You're supposed to edit this to a link in your map.
+	var/targetlink
 
 /obj/effect/step_trigger/linker/Trigger(mob/M)
 	if(M.client && targetlink)
@@ -49,7 +49,7 @@
 		qdel(src)
 
 /obj/effect/step_trigger/windowlinker
-	var/windowlink // You're supposed to edit this to a link in your map.
+	var/windowlink
 	var/windowID
 
 /obj/effect/step_trigger/windowlinker/Trigger(atom/movable/A)

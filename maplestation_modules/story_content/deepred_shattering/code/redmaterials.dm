@@ -72,7 +72,7 @@
 	name = "Miracle Matter"
 	desc = "Its amorphous form contains untold destructive potential. Wish upon a star."
 	singular_name = "Miracle Matter"
-	icon = "" // ADD SPRITES.
+	icon = ""
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-runite"

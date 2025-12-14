@@ -18,7 +18,7 @@
 	desc = "An advanced redtech power cell. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redparts.dmi'
 	icon_state = "redcell"
-	connector_type = null // GOD it's hardcoded.
+	connector_type = null
 	charge_light_type = null
 
 	maxcharge = STANDARD_CELL_CHARGE * 100
@@ -26,6 +26,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/plasma=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/power_store/cell/redtech/empty
 	empty = TRUE
@@ -50,6 +52,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/diamond=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/carbon = 15, /datum/reagent/gravitum/aerialite = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/servo/redtech/update_overlays()
 	. = ..()
@@ -74,6 +78,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/capacitor/redtech/update_overlays()
 	. = ..()
@@ -98,6 +104,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/gold=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/gold = 15, /datum/reagent/bluespace = 15, /datum/reagent/resmythril = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/scanning_module/redtech/update_overlays()
 	. = ..()
@@ -122,6 +130,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/uranium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/uranium = 15, /datum/reagent/bluespace = 15, /datum/reagent/exodust = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/micro_laser/redtech/update_overlays()
 	. = ..()
@@ -146,6 +156,8 @@
 
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT, /datum/material/titanium=SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/darkplasma = 15)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
 
 /obj/item/stock_parts/matter_bin/redtech/update_overlays()
 	. = ..()
@@ -158,3 +170,11 @@
 /datum/stock_part/matter_bin/tier5
 	tier = 5
 	physical_object_type = /obj/item/stock_parts/matter_bin/redtech
+
+/obj/machinery/chem_dispenser/RefreshParts()
+	. = ..()
+	for(var/datum/stock_part/servo/servo in component_parts)
+		if (servo.tier > 4)
+			dispensable_reagents |= emagged_reagents
+		else
+			dispensable_reagents -= emagged_reagents

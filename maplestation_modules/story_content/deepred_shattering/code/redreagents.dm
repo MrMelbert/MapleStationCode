@@ -99,8 +99,7 @@
 
 /datum/reagent/darkplasma/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.damage_random_bodypart(10*REM*seconds_per_tick)) // Health rework compatibility.
-	// if(affected_mob.take_bodypart_damage(10*REM*seconds_per_tick, 0)) // Original code.
+	if(affected_mob.damage_random_bodypart(10*REM*seconds_per_tick))
 		return UPDATE_MOB_HEALTH
 
 	if(affected_mob?.mana_pool)
@@ -246,7 +245,7 @@
 	description = "A liquid lightning that seems to sputter with explosive power. It seems highly unstable."
 	color = "#ff4545"
 	taste_description = "godlike power"
-	shock_speed = 40 // YOU WILL HAVE A VERY BAD TIME DRINKING THIS.
+	shock_speed = 40
 
 /obj/item/reagent_containers/cup/beaker/redlightning
 	name = "red lightning container"
@@ -261,7 +260,7 @@
 	reagent_flags = OPENCONTAINER | NO_REACT
 	fill_icon = 'maplestation_modules/story_content/deepred_shattering/icons/redfillings.dmi'
 	fill_icon_state = "redlightning"
-	fill_icon_thresholds = list(0, 1, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300) // For some reason the fill icon doesn't work properly.
+	fill_icon_thresholds = list(0, 1, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300)
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/reagent_containers/cup/beaker/redlightning/update_overlays()
@@ -297,4 +296,4 @@
 /datum/chemical_reaction/true_miracle/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
-		new /obj/item/stack/sheet/mineral/miracle_matter(location) // Replace with miracle matter.
+		new /obj/item/stack/sheet/mineral/miracle_matter(location)

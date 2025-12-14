@@ -27,7 +27,7 @@
 	impact_light_range = 1
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
-	var/extra_damage = 500 // Extra damage dealt to non-mob, non-vehicle objects (secondary shot will not trigger).
+	var/extra_damage = 500
 
 	var/datum/marked_target
 
