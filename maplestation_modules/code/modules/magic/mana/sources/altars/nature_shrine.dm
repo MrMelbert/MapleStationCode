@@ -37,9 +37,12 @@
 /obj/structure/magic_altar/nature/Initialize(mapload)
 	. = ..()
 
-	var/static/list/tool_behaviors = list(TOOL_CROWBAR = list(SCREENTIP_CONTEXT_LMB = "Deconstruct"))
+	var/static/list/tool_behaviors = list(
+		TOOL_CROWBAR = list(
+			SCREENTIP_CONTEXT_LMB = "Deconstruct"
+			),
+		)
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
-	register_context()
 
 /obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
 	..()
