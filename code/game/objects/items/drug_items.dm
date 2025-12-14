@@ -69,4 +69,3 @@
 	spillable = TRUE
 	SplashReagents(hit_atom, TRUE)
 	qdel(src)
-	hit_atom.Bumped(ampoule_shard)

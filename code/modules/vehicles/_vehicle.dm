@@ -103,6 +103,7 @@
 			. += i
 
 /obj/vehicle/proc/return_drivers()
+	RETURN_TYPE(/list/mob)
 	return return_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/driver_amount()

@@ -159,6 +159,28 @@
 			footstep_sounds = GLOB.heavyfootstep[prepared_steps[footstep_type]]
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep[prepared_steps[footstep_type]]
+		if(FOOTSTEP_MOB_SYNTHETIC)
+			var/barefoot_type = prepared_steps[FOOTSTEP_MOB_BAREFOOT]
+			// these categories will use the synthetic step over the normal barefoot steps
+			var/static/list/synthetic_footstep_types = list(
+				FOOTSTEP_CARPET_BAREFOOT = 1,
+				FOOTSTEP_HARD_BAREFOOT = 1,
+				FOOTSTEP_WOOD_BAREFOOT = 1,
+			)
+			// the actual synthetic footstep sound
+			var/static/list/synthetic_footsteps = list(
+				FOOTSTEP_SOUNDS = list(
+					'maplestation_modules/sound/items/rigstep.ogg' = 1,
+					'maplestation_modules/sound/items/rigstep.ogg' = 1,
+				),
+				FOOTSTEP_VOLUME = 50,
+				FOOTSTEP_RANGE =  2,
+			)
+
+			if(synthetic_footstep_types[barefoot_type])
+				footstep_sounds = synthetic_footsteps
+			else
+				footstep_sounds = GLOB.barefootstep[barefoot_type]
 
 	if(!length(footstep_sounds))
 		return
@@ -172,9 +194,9 @@
 
 	// list returned by playsound() filled by client mobs who heard the footstep. given to play_fov_effect()
 	var/list/heard_clients
-	var/picked_sound = pick_weight(footstep_sounds[1])
-	var/picked_volume = footstep_sounds[2] * volume * volume_multiplier
-	var/picked_range = footstep_sounds[3] + e_range + range_adjustment
+	var/picked_sound = pick_weight(footstep_sounds[FOOTSTEP_SOUNDS])
+	var/picked_volume = footstep_sounds[FOOTSTEP_VOLUME] * volume * volume_multiplier
+	var/picked_range = footstep_sounds[FOOTSTEP_RANGE] + e_range + range_adjustment
 
 	heard_clients = playsound(
 		source = source,

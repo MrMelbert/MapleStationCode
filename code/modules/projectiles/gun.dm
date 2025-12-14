@@ -23,6 +23,16 @@
 	attack_verb_simple = list("strike", "hit", "bash")
 	action_slots = ALL
 
+	// Muzzle Flash
+	light_on = FALSE
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
+	light_range = 3
+	light_color = LIGHT_COLOR_ORANGE
+	light_power = 0.5
+	var/can_muzzle_flash = TRUE
+	/// Muzzle Flash Duration
+	var/light_time = 0.1 SECONDS
+
 	var/gun_flags = NONE
 	var/fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	var/vary_fire_sound = TRUE
@@ -33,8 +43,9 @@
 	var/can_suppress = FALSE
 	var/suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	var/suppressed_volume = 60
-	var/can_unsuppress = TRUE /// whether a gun can be unsuppressed. for ballistics, also determines if it generates a suppressor overlay
-	var/recoil = 0 //boom boom shake the room
+	/// Whether a gun can be unsuppressed. for ballistics, also determines if it generates a suppressor overlay
+	var/can_unsuppress = TRUE
+
 	var/clumsy_check = TRUE
 	var/obj/item/ammo_casing/chambered = null
 	trigger_guard = TRIGGER_GUARD_NORMAL //trigger guard on the weapon, hulks can't fire them with their big meaty fingers
@@ -45,7 +56,6 @@
 	var/firing_burst = 0 //Prevent the weapon from firing again while already firing
 	var/semicd = 0 //cooldown handler
 	var/weapon_weight = WEAPON_LIGHT
-	var/dual_wield_spread = 24 //additional spread when dual wielding
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
@@ -57,6 +67,18 @@
 
 	var/spread = 0 //Spread induced by the gun itself.
 	var/randomspread = 1 //Set to 0 for shotguns. This is used for weapons that don't fire all their bullets at once.
+	var/dual_wield_spread = 24 //additional spread when dual wielding
+
+	///Screen shake when the weapon is fired
+	var/recoil = 0
+	///a multiplier of the duration the recoil takes to go back to normal view, this is (recoil*recoil_backtime_multiplier)+1
+	var/recoil_backtime_multiplier = 1.5
+	///this is how much deviation the gun recoil can have, recoil pushes the screen towards the reverse angle you shot + some deviation which this is the max.
+	var/recoil_deviation = 20
+	/// Used as the min value when calculating recoil
+	/// Affected by a player's min_recoil_multiplier preference, so keep in mind it can ultimately be 0 regardless
+	/// Often utilized as a "purely visual" form of recoil (as it can be disabled)
+	var/min_recoil = 0
 
 	lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
@@ -193,36 +215,64 @@
 	else
 		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
 
-/obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
-	if(recoil && !tk_firing(user))
-		shake_camera(user, recoil + 1, recoil)
+/obj/item/gun/proc/muzzle_flash_on()
+	if (can_muzzle_flash)
+		set_light_on(TRUE)
+		addtimer(CALLBACK(src, PROC_REF(muzzle_flash_off)), light_time, TIMER_UNIQUE | TIMER_OVERRIDE)
+	else
+		muzzle_flash_off()
+
+/obj/item/gun/proc/muzzle_flash_off()
+	set_light_on(FALSE)
+
+/obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = FALSE, atom/pbtarget = null, message = TRUE)
+	if(!tk_firing(user))
+		var/actual_angle = get_angle((user || get_turf(src)), pbtarget)
+		simulate_recoil(user, recoil, actual_angle)
 	fire_sounds()
-	if(!suppressed)
-		if(message)
-			if(tk_firing(user))
-				visible_message(
-						span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
-						blind_message = span_hear("You hear a gunshot!"),
-						vision_distance = COMBAT_MESSAGE_RANGE
-				)
-			else if(pointblank)
-				user.visible_message(
-						span_danger("[user] fires [src] point blank at [pbtarget]!"),
-						span_danger("You fire [src] point blank at [pbtarget]!"),
-						span_hear("You hear a gunshot!"), COMBAT_MESSAGE_RANGE, pbtarget
-				)
-				to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
-				if(pb_knockback > 0 && ismob(pbtarget))
-					var/mob/PBT = pbtarget
-					var/atom/throw_target = get_edge_target_turf(PBT, user.dir)
-					PBT.throw_at(throw_target, pb_knockback, 2)
-			else if(!tk_firing(user))
-				user.visible_message(
-						span_danger("[user] fires [src]!"),
-						blind_message = span_hear("You hear a gunshot!"),
-						vision_distance = COMBAT_MESSAGE_RANGE,
-						ignored_mobs = user
-				)
+	muzzle_flash_on()
+	if(suppressed || !message)
+		return FALSE
+	if(tk_firing(user))
+		visible_message(
+			span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
+			blind_message = span_hear("You hear a gunshot!"),
+			vision_distance = COMBAT_MESSAGE_RANGE
+		)
+	else if(pointblank)
+		if(user == pbtarget)
+			user.visible_message(
+				span_danger("[user] fires [src] point blank at [user.p_them()]self!"),
+				span_userdanger("You fire [src] point blank at yourself!"),
+				span_hear("You hear a gunshot!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+		else
+			user.visible_message(
+				span_danger("[user] fires [src] point blank at [pbtarget]!"),
+				span_danger("You fire [src] point blank at [pbtarget]!"),
+				span_hear("You hear a gunshot!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				ignored_mobs = pbtarget,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
+		if(pb_knockback > 0 && ismob(pbtarget))
+			var/mob/PBT = pbtarget
+			var/atom/throw_target = get_edge_target_turf(PBT, user.dir)
+			PBT.throw_at(throw_target, pb_knockback, 2)
+	else if(!tk_firing(user))
+		user.visible_message(
+			span_danger("[user] fires [src]!"),
+			span_danger("You fire [src]!"),
+			span_hear("You hear a gunshot!"),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+			ignored_mobs = user,
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+	return TRUE
 
 /obj/item/gun/emp_act(severity)
 	. = ..()
@@ -455,6 +505,39 @@
 	process_chamber()
 	update_appearance()
 	return TRUE
+
+/**
+ * Calculates the final recoil value applied when firing a gun.
+ *
+ * Arguments:
+ * * user - The living mob attempting to fire the gun. Used for preference lookups.
+ * * recoil_amount - The raw recoil value to be processed before clamping.
+ *
+ * Returns:
+ * The clamped recoil value after applying all modifiers.
+ */
+/obj/item/gun/proc/calculate_recoil(mob/living/user, recoil_amount = 0)
+	var/used_min_recoil = min_recoil
+	if(user.client)
+		used_min_recoil *= (user.client.prefs.read_preference(/datum/preference/numeric/min_recoil_multiplier) / 100)
+	return clamp(recoil_amount, used_min_recoil, INFINITY)
+
+/**
+ * Simulates firearm recoil and applies camera feedback when firing.
+ *
+ * Arguments:
+ * * user - The mob firing the gun. Used for recoil calculation and camera shake.
+ * * recoil_amount - The base recoil value before modifiers.
+ * * firing_angle - The firing direction used to determine camera kick direction.
+ */
+/obj/item/gun/proc/simulate_recoil(mob/living/user, recoil_amount = 0, firing_angle)
+	var/total_recoil = calculate_recoil(user, recoil_amount)
+
+	var/actual_angle = firing_angle + rand(-recoil_deviation, recoil_deviation) + 180
+	if(actual_angle > 360)
+		actual_angle -= 360
+	if(total_recoil > 0)
+		recoil_camera(user, total_recoil + 1, (total_recoil * recoil_backtime_multiplier)+1, total_recoil, actual_angle)
 
 ///returns true if the gun successfully fires
 /obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)

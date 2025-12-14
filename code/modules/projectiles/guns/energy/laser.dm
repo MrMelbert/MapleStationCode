@@ -7,7 +7,8 @@
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun)
 	ammo_x_offset = 1
-	shaded_charge = 1
+	shaded_charge = TRUE
+	light_color = COLOR_SOFT_RED
 
 /obj/item/gun/energy/laser/Initialize(mapload)
 	. = ..()
@@ -66,6 +67,7 @@
 	desc = "A relic of a weapon, built before NT began installing regulators on its laser weaponry. This pattern of laser gun became infamous for the gruesome burn wounds it caused, and was quietly discontinued once it began to affect NT's reputation."
 	icon_state = "hellgun"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/hellfire)
+	ammo_x_offset = 1
 
 /obj/item/gun/energy/laser/captain
 	name = "antique laser gun"
@@ -157,6 +159,8 @@
 	inhand_icon_state = null
 	ammo_type = list(/obj/item/ammo_casing/energy/xray)
 	ammo_x_offset = 3
+	// shaded_charge = FALSE
+	light_color = LIGHT_COLOR_GREEN
 
 ////////Laser Tag////////////////////
 

@@ -501,3 +501,7 @@
 	flick("rubble_bounce", src)
 	icon_state = "rubble"
 	update_appearance(UPDATE_ICON_STATE)
+
+/obj/effect/decal/cleanable/can_bits
+	name = "shredded can"
+	desc = "This story doesn't hold water anymore."

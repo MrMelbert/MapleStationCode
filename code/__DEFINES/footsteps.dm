@@ -29,6 +29,7 @@
 #define FOOTSTEP_MOB_RUST "footstep_rust"
 #define FOOTSTEP_OBJ_MACHINE "footstep_machine"
 #define FOOTSTEP_OBJ_ROBOT "footstep_robot"
+#define FOOTSTEP_MOB_SYNTHETIC "footstep_synthetic"
 
 //priority defines for the footstep_override element
 #define STEP_SOUND_NO_PRIORITY 0
@@ -55,7 +56,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 0,
 	),
-		FOOTSTEP_FLOOR = list(
+	FOOTSTEP_FLOOR = list(
 			FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/floor1.ogg' = 1,
 			'sound/effects/footstep/floor2.ogg' = 1,

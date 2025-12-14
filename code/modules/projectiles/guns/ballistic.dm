@@ -10,6 +10,8 @@
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	unique_reskin_changes_base_icon_state = TRUE
 
+	min_recoil = 0.1
+
 	///sound when inserting magazine
 	var/load_sound = 'sound/weapons/gun/general/magazine_insert_full.ogg'
 	///sound when inserting an empty magazine
@@ -447,6 +449,7 @@
 /obj/item/gun/ballistic/proc/install_suppressor(obj/item/suppressor/S)
 	suppressed = S
 	update_weight_class(w_class + S.w_class) //so pistols do not fit in pockets when suppressed
+	can_muzzle_flash = FALSE
 	update_appearance()
 
 /obj/item/gun/ballistic/clear_suppressor()
@@ -455,6 +458,7 @@
 	if(isitem(suppressed))
 		var/obj/item/I = suppressed
 		update_weight_class(w_class - I.w_class)
+	can_muzzle_flash = initial(can_muzzle_flash)
 	return ..()
 
 /obj/item/gun/ballistic/click_alt(mob/user)
