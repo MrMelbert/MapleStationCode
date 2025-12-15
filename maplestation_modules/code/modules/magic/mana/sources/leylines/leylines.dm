@@ -39,6 +39,11 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 	transfer_method = MANA_DISPERSE_EVENLY
 
 	discharge_destinations = NONE
+	// leylines have a **ton** of implications and are global, so we're doing the safest one possible for now
+	// also this is insurance against "overload teetering" which was a problem during their first modern implementation
+	mana_transfer_ruleset = MANA_TRANSFER_SOFTCAP_NO_PASS
+
+	cap_transfer_limit = BASE_MANA_SOFTCAP
 
 /datum/mana_pool/leyline/New()
 	GLOB.all_leylines += src
