@@ -21,8 +21,8 @@
 	UnregisterSignal(organ_owner, COMSIG_HUMAN_ON_HANDLE_BLOOD)
 	UnregisterSignal(organ_owner, COMSIG_MOVABLE_MOVED)
 
-/obj/item/organ/heart/android/get_heart_rate()
-	return 2 // static heart rate
+// /obj/item/organ/heart/android/get_heart_rate()
+// 	return 2 // static heart rate
 
 /obj/item/organ/heart/android/on_life(seconds_per_tick, times_fired)
 	. = ..()
