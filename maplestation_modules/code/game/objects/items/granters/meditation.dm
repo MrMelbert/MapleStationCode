@@ -1,6 +1,6 @@
 /obj/item/book/granter/action/spell/meditation
 	name = "Nanotrasen Approved Meditation Guidebook"
-	granted_action = /datum/action/cooldown/spell/meditate
+	granted_action = /datum/action/cooldown/spell/charged/meditate
 	action_name = "meditation"
 	icon = 'maplestation_modules/icons/obj/service/library.dmi'
 	pages_to_mastery = 5
@@ -23,7 +23,7 @@
 
 /obj/item/book/granter/action/spell/lesser_splattercasting
 	name = "Nanotrasen Unapproved Meditation Guidebook"
-	granted_action = /datum/action/cooldown/spell/meditate/lesser_splattercasting
+	granted_action = /datum/action/cooldown/spell/charged/meditate/lesser_splattercasting
 	action_name = "lesser splattercasting"
 	icon = 'maplestation_modules/icons/obj/service/library.dmi'
 	pages_to_mastery = 5

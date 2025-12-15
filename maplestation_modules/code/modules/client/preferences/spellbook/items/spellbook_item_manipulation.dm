@@ -5,11 +5,12 @@ GLOBAL_LIST_INIT(spellbook_manipulation_items, generate_spellbook_items(SPELLBOO
 	description = "Use mental focus to draw mana within yourself"
 	lore = "The most basic method of regenerating mana on your own. \
 	Casting this invocation- while focusing- will allow you to draw mana from the ambient environment. \
-	Do note that this will take a while between casts, and you should still find other methods of regeneration."
+	Do note that this will take a while between casts, and you should still find other methods of regeneration. \
+	This can be empowered through various means, such as via a cloth mat."
 
 	category = SPELLBOOK_CATEGORY_MANIPULATION
 
-	our_action_typepath = /datum/action/cooldown/spell/meditate
+	our_action_typepath = /datum/action/cooldown/spell/charged/meditate
 
 /datum/spellbook_item/spell/mana_sense
 	name = "Mana Sense"
@@ -31,4 +32,4 @@ GLOBAL_LIST_INIT(spellbook_manipulation_items, generate_spellbook_items(SPELLBOO
 
 	category = SPELLBOOK_CATEGORY_MANIPULATION
 
-	our_action_typepath = /datum/action/cooldown/spell/meditate/lesser_splattercasting
+	our_action_typepath = /datum/action/cooldown/spell/charged/meditate/lesser_splattercasting
