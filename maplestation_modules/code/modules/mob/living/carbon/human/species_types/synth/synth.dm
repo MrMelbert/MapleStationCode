@@ -27,6 +27,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
+	digitigrade_legs = null
+
 	mutanttongue = /obj/item/organ/tongue/robot/synth
 	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
 
