@@ -73,8 +73,11 @@
 #define HEAD_NO_DISFIGURE (1<<7)
 /// Show organs (like brain) when examined with examine verb
 #define HEAD_SHOW_ORGANS_ON_EXAMINE (1<<8)
+
 /// Default for most heads
 #define HEAD_DEFAULT_FEATURES (HEAD_HAIR|HEAD_FACIAL_HAIR|HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN|HEAD_SHOW_ORGANS_ON_EXAMINE)
+/// All hair related flags
+#define HEAD_ALL_HAIR_FLAGS (HEAD_HAIR | HEAD_FACIAL_HAIR)
 
 /// Return value when the surgery step fails :(
 #define SURGERY_STEP_FAIL -1
