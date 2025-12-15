@@ -28,7 +28,7 @@
 "R" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "S" = (/obj/structure/flora/grass/green/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
 "T" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
-"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/clubs,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
+"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/clubs,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "X" = (/obj/item/stack/sheet/mineral/plastitanium,/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/2e2725b290764a30315baf46e5d5ed4f.png"; windowID = "crapgonnahavetowaitforthenextupdate"},/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 
 (1,1,1) = {"

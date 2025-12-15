@@ -35,7 +35,7 @@
 "Q" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = -24},/turf/open/mirage{dir = 1; target_turf_y = -23; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "R" = (/turf/closed/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "U" = (/obj/effect/step_trigger/thrower{direction = 4},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
-"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/hearts,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/hearts,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "X" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/863056f1a4cf1fbaa42216996f8ead68.png"; windowID = "justmeandyou"},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "Y" = (/obj/effect/spawner/random/environmentally_safe_anomaly/immobile,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 

@@ -281,6 +281,11 @@
 
 /obj/item/rtechdrive/proc/send_echo()
 	AddComponent(/datum/component/gps, signaltype)
+
+/obj/item/rtechdrive/special
+
+/obj/item/rtechdrive/special/send_echo()
+	. = ..()
 	priority_announce(
 		text = "Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking via onboard GPS systems.",
 		title = "Spacetime Echos Detected",
@@ -288,25 +293,29 @@
 		color_override = "red",
 	)
 	for(var/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
-		if(target_light.on)
+		if(prob(10) && target_light.on)
 			target_light.flicker()
 
-/obj/item/rtechdrive/hearts
+/obj/item/rtechdrive/special/hearts
+	name = "redtech hearts data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
 	icon_state = "heart"
 	signaltype = "Redtech Hearts Signal"
 
-/obj/item/rtechdrive/diamonds
+/obj/item/rtechdrive/special/diamonds
+	name = "redtech diamonds data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
 	icon_state = "diamond"
 	signaltype = "Redtech Diamonds Signal"
 
-/obj/item/rtechdrive/clubs
+/obj/item/rtechdrive/special/clubs
+	name = "redtech clubs data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
 	icon_state = "club"
 	signaltype = "Redtech Clubs Signal"
 
-/obj/item/rtechdrive/spades
+/obj/item/rtechdrive/special/spades
+	name = "redtech spades data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
 	icon_state = "spade"
 	signaltype = "Redtech Spades Signal"

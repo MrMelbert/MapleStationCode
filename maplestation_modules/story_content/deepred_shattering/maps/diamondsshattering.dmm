@@ -45,7 +45,7 @@
 "JY" = (/obj/structure/closet/crate,/obj/item/gun/energy/disabler/phaser,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Ks" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/aerialite{amount = 5},/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Lb" = (/obj/structure/closet/crate,/obj/item/starblight_soot,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
-"Mf" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/diamonds,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
+"Mf" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/diamonds,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "MV" = (/obj/structure/closet/crate,/obj/item/reagent_containers/cup/beaker/redlightning{desc = "A strange, heavy-duty electromagnetic stasis container, powered by unknown technology. Can hold up to 300 units. This one appears to be emptied."},/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "NM" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Of" = (/obj/structure/closet/crate,/obj/item/suspicious_scrap/alt,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)

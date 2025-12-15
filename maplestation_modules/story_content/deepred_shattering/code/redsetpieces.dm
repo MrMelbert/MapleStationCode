@@ -17,14 +17,6 @@
 	desc = "An excessively large heatsink, which thankfully seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "heatsink_off"
 
-/obj/structure/redtech_indestructable/inert_AV
-	name = "inert Anti Void"
-	desc = "Something has gone terribly wrong."
-	icon_state = "inert_AV"
-
-/obj/structure/redtech_indestructable/inert_AV/worse
-	icon_state = "inert_AV_worse"
-
 /obj/structure/redtech_indestructable/esoteric_off
 	name = "esoteric redtech machinery"
 	desc = "An odd piece of machinery which doesn't have a clear purpose, but is deactivated at the moment. Its construction looks nigh-indestructable."
@@ -39,6 +31,33 @@
 	name = "redtech singularity link"
 	desc = "A contained multipurpose compression device, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "singularity_off"
+
+/obj/structure/inert_AV
+	name = "inert Anti Void"
+	desc = "Something has gone terribly wrong."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/setpieces.dmi'
+	icon_state = "inert_AV"
+
+	density = TRUE
+	anchored = TRUE
+	resistance_flags = FLAMMABLE
+	max_integrity = 600
+
+/obj/structure/inert_AV/worse
+	icon_state = "inert_AV_worse"
+	max_integrity = 1200
+
+/datum/armor/inert_AV
+	acid = 0
+	bio = 100
+	bomb = 0
+	bullet = 100
+	consume = 100
+	energy = 0
+	laser = 0
+	fire = 0
+	melee = 100
+	wound = 100
 
 /obj/effect/step_trigger/linker
 	var/targetlink
