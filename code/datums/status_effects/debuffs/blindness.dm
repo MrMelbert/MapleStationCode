@@ -78,7 +78,7 @@
 
 /datum/status_effect/grouped/blindness/on_remove()
 	owner.clear_fullscreen(id)
-	owner.remove_client_colour(TRAIT_STATUS_EFFECT(id))
+	owner.remove_client_colour(/datum/client_colour/blindness)
 	REMOVE_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_SHIFTY_EYES, TRAIT_STATUS_EFFECT(id))
 	return ..()
@@ -92,7 +92,7 @@
 		overlay_to_use = /atom/movable/screen/fullscreen/blind
 	owner.overlay_fullscreen(id, overlay_to_use)
 	// You are blind - at most, able to make out shapes near you
-	owner.add_client_colour(/datum/client_colour/blindness, TRAIT_STATUS_EFFECT(id))
+	owner.add_client_colour(/datum/client_colour/blindness)
 	// But to represent the fact that you can feel your way around, you are unaffected by darkness
 	ADD_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, TRAIT_STATUS_EFFECT(id))
 	// but your eyes will start to wander, you may end up staring unintentionally
