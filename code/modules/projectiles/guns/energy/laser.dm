@@ -321,7 +321,7 @@
 
 // Soulful Laser Gun
 
-/obj/item/gun/energy/laser/soulful/add_deep_lore()
+/obj/item/gun/energy/laser/soul/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
 		lore = "The NT Type 3 Heat Delivery System (sometimes referred to as the HDS3 in the memories of security officers) is quite possibly \
 		the most common type of HDS still available on the market. Fondly regarded, with quite a few diehard fans still clinging to their \
