@@ -79,8 +79,8 @@
 /datum/status_effect/grouped/blindness/on_remove()
 	owner.clear_fullscreen(id)
 	owner.remove_client_colour(TRAIT_STATUS_EFFECT(id))
-	REMOVE_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, id)
-	REMOVE_TRAIT(owner, TRAIT_SHIFTY_EYES, id)
+	REMOVE_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, TRAIT_STATUS_EFFECT(id))
+	REMOVE_TRAIT(owner, TRAIT_SHIFTY_EYES, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/grouped/blindness/proc/make_blind()
