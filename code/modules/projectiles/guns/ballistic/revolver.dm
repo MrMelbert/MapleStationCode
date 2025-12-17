@@ -201,7 +201,7 @@
 		to_chat(user, span_warning("You need to be holding the gun to determine how long you are going to pause!"))
 		return CLICK_ACTION_BLOCKING
 	var/new_aim_time = tgui_input_number(user, "How long will you pause before pulling the trigger (seconds)?", "Do you feel lucky?", (aim_time / (1 SECONDS)), 10, 0)
-	if(loc != user || user.incapacitated)
+	if(loc != user || user.incapacitated())
 		return CLICK_ACTION_BLOCKING
 	aim_time = new_aim_time * (1 SECONDS)
 	to_chat(user, span_warning("You're going to pause [aim_time] second\s before pulling the trigger[aim_time == 0 ? "... Good luck" : ""]."))
@@ -219,11 +219,11 @@
 /obj/item/gun/ballistic/revolver/russian/can_shoot()
 	return TRUE // we ALWAYS want to shoot. even if we don't have a chambered round, even if our chambered round has no bullet
 
-/obj/item/gun/ballistic/revolver/russian/load_gun(obj/item/ammo, mob/living/user)
-	. = ..()
-	if(!.)
-		return
-	do_spin()
+// /obj/item/gun/ballistic/revolver/russian/load_gun(obj/item/ammo, mob/living/user)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	do_spin()
 
 /obj/item/gun/ballistic/revolver/russian/can_trigger_gun(mob/living/user, akimbo_usage)
 	if(akimbo_usage)
@@ -278,7 +278,7 @@
 	if(prob(10) && !HAS_TRAIT(user, TRAIT_FEARLESS))
 		user.adjust_jitter(aim_time)
 	if(!do_after(user, aim_time, target))
-		if(!user.incapacitated)
+		if(!user.incapacitated())
 			user.visible_message(
 				span_danger("[user] loses [user.p_their()] nerve and puts \the [src] down."),
 				span_userdanger("You lose your nerve and put \the [src] down."),

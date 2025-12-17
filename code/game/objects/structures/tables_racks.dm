@@ -290,7 +290,7 @@
 		tablelimbsmash(user, carried_mob)
 		return ITEM_INTERACT_SUCCESS
 
-	var/tableplace_delay = user.get_grab_speed(carried_mob, 3.5 SECONDS)
+	var/tableplace_delay = user.get_grab_speed(carried_mob, 3.5 SECONDS, lifting = TRUE)
 	var/skills_space = ""
 	if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
 		skills_space = " expertly"

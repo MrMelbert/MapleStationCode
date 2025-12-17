@@ -79,7 +79,6 @@
 		it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	icon_state = "retro"
 	ammo_x_offset = 3
-	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/retro)
 
 /obj/item/gun/energy/laser/soul
 	name ="\improper Type 3 laser gun"
@@ -286,7 +285,6 @@
 
 /obj/item/gun/energy/laser/proc/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 5 Heat Delivery System (sometimes referred to as the HDS5 in promotional material) is what truly put Nanotrasen \
 		head and shoulders above most weapon manufacturers in the modern era. All modern energy weaponry offered by the company have \
 		the success of the Type 5 to thank for setting the standard for energy-based weapon platforms.<br>\
@@ -306,7 +304,6 @@
 
 /obj/item/gun/energy/laser/retro/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 1 Heat Delivery System (sometimes referred to as the HDS1 in older weapon catalogs) was a weapon that \
 		marked the beginning of a new era of firearm development. <br>\
 		<br>\
@@ -326,7 +323,6 @@
 
 /obj/item/gun/energy/laser/soulful/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 3 Heat Delivery System (sometimes referred to as the HDS3 in the memories of security officers) is quite possibly \
 		the most common type of HDS still available on the market. Fondly regarded, with quite a few diehard fans still clinging to their \
 		Type 3's like their lives depended on it, the weapon has its own place in history as the 'gun that could do it all'.<br>\
@@ -348,7 +344,6 @@
 
 /obj/item/gun/energy/laser/hellgun/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 2 Heat Delivery System (sometimes referred to as the HDS2 in legal documentation) is considered a notable \
 		example of Nanotrasen flying too close to the sun for its own good. <br>\
 		<br>\
@@ -375,7 +370,6 @@
 
 /obj/item/gun/energy/laser/captain/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "For a brief period, Nanotrasen produced a series of custom-made Type 2 laser guns for a select group of \
 		clients. Largely, various wealthy starship captains, politicians and military leaders looking to demonstrate prestige before \
 		the common folk. <br>\
@@ -402,7 +396,6 @@
 
 /obj/item/gun/energy/laser/xray/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 6 Heat Delivery System (sometimes referred to as the HDS6 in research notes) is a breakthrough in the \
 		development of directed energy weaponry. <br>\
 		<br>\
@@ -425,7 +418,6 @@
 
 /obj/item/gun/energy/laser/carbine/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "The NT Type 5R Rapid Heat Delivery System (sometimes referred to as the RHDS5R in briefing manuals, and 'that piece of shit flashlight' amongst \
 		TGMC troopers) was a shaky first step into automatic directed energy weaponry. <br>\
 		<br>\

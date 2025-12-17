@@ -590,19 +590,33 @@
  * somewhere in the range of 0-10 for a normal human.
  */
 /atom/movable/proc/get_grab_strength()
-	return get_grab_resist_strength()
+	. = get_grab_resist_strength()
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
 
 /mob/living/get_grab_strength()
-	. += get_grab_resist_strength()
+	. += ..()
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		. += potential_spine.athletics_boost_multiplier
+
+	var/datum/martial_art/grabber_art = GET_ACTIVE_MARTIAL_ART(src)
+	if(grabber_art?.can_use(src))
+		. += grabber_art.grab_state_modifier * 2
+
+/**
+ * Checks how strong our lifts are.
+ *
+ * Returns a flat number that represents how strong our lifts are
+ * somewhere in the range of 0-10 for a normal human.
+ */
+/atom/movable/proc/get_lift_strength()
+	. += get_grab_resist_strength() + get_grab_strength()
 	if(HAS_TRAIT(src, TRAIT_QUICKER_CARRY))
 		. += 1
 	else if(HAS_TRAIT(src, TRAIT_QUICK_CARRY))
 		. += 0.5
-	if(HAS_TRAIT(src, TRAIT_STRENGTH))
-		. += 1
-	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		. += potential_spine.athletics_boost_multiplier
 
 /**
  * Checks how strong we are at resisting being grabbed.
@@ -680,6 +694,6 @@
  *
  * Returns the modified grab time.
  */
-/atom/movable/proc/get_grab_speed(atom/movable/grabbing, base_speed = 5 SECONDS)
-	var/vulnerability_delta = grabbing.get_grab_resist_strength() - get_grab_strength()
+/atom/movable/proc/get_grab_speed(atom/movable/grabbing, base_speed = 5 SECONDS, lifting = FALSE)
+	var/vulnerability_delta = grabbing.get_grab_resist_strength() - (lifting ? get_lift_strength() : get_grab_strength())
 	return clamp(base_speed + (vulnerability_delta * 1 SECONDS), base_speed * 0.2, base_speed * 4)

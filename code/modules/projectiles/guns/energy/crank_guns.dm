@@ -133,7 +133,6 @@
 
 /obj/item/gun/energy/laser/musket/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("think carefully")] to learn a little more about [src]."), \
 		lore = "The first examples of laser muskets emerged somewhat recently, even though improvised firearms have had \
 		a rich history throughout human, Mothic and Tiziran history.<br>\
 		<br>\
@@ -151,7 +150,6 @@
 
 /obj/item/gun/energy/laser/thermal/add_deep_lore()
 	AddElement(/datum/element/examine_lore, \
-		lore_hint = span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src]."), \
 		lore = "A weapon with no name, more a pattern of design. Examples of thermal pistols vary heavily based on the \
 		manufacturer or craftsperson. However, the original inventor of the thermal pistol is largely clouded in mystery. \
 		Replica versions of the pistol were circulating long before weaponized nanites were banned by the \

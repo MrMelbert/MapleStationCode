@@ -261,7 +261,7 @@
 //Kaza Ruk Gloves
 
 /obj/item/clothing/gloves/kaza_ruk
-	abstract_type = /obj/item/clothing/gloves/kaza_ruk
+	// abstract_type = /obj/item/clothing/gloves/kaza_ruk
 	clothing_traits = list(TRAIT_FAST_CUFFING)
 
 /obj/item/clothing/gloves/kaza_ruk/Initialize(mapload)

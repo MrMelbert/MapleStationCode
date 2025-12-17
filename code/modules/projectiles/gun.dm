@@ -58,6 +58,10 @@
 	/// Even snowflakier way to modify projectile wounding bonus/potential for projectiles fired from this gun.
 	var/projectile_wound_bonus = 0
 
+	/// The most reasonable way to modify projectile speed values for projectile fired from this gun. Honest.
+	/// Lower values are worse, higher values are better.
+	var/projectile_speed_multiplier = 1
+
 	var/spread = 0 //Spread induced by the gun itself.
 	var/randomspread = 1 //Set to 0 for shotguns. This is used for weapons that don't fire all their bullets at once.
 

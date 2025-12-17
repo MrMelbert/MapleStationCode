@@ -841,7 +841,7 @@
 		/obj/item/slimepotion/slime/sentience/nuclear,
 		/obj/item/storage/box/syndie_kit/imp_radio,
 		/obj/item/storage/box/syndie_kit/imp_uplink,
-		/obj/item/clothing/gloves/krav_maga/combatglovesplus,
+		/obj/item/clothing/gloves/kaza_ruk/combatglovesplus,
 		/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot,
 		/obj/item/reagent_containers/hypospray/medipen/stimulants,
 		/obj/item/storage/box/syndie_kit/imp_freedom,

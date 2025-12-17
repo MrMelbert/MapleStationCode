@@ -118,7 +118,7 @@
 	if(!held_item) //if held_item is null, we pretend that action was succesful
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
-	if(QDELETED(target) || !target.IsReachableBy(pawn))
+	if(QDELETED(target) || !pawn.CanReach(target))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 	var/mob/living/living_target = target

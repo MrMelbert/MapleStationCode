@@ -33,6 +33,15 @@
 	/// If TRUE, the user is locked to using this martial art, and can't swap to other ones they know.
 	/// If the mob has two locked martial arts, it's first come first serve.
 	var/locked_to_use = FALSE
+	/// A modifier to the effective grab state for resist grabs of users of this martial art.
+	/// IE: grab_state_modifier = 1 means passive grabs are aggro grab difficulty, and aggro grabs are neckgrab difficulty.
+	var/grab_state_modifier = 0
+	/// A modifier to the damage dealt on a failed grab resist.
+	/// IE: grab_damage_modifier = 10 means 10 more stamina damage dealt
+	var/grab_damage_modifier = 0
+	/// A modifier to the chance of escaping a grab.
+	/// IE: grab_escape_chance_modifier = -10 means 10% less chance to escape a grab
+	var/grab_escape_chance_modifier = 0
 
 /datum/martial_art/serialize_list(list/options, list/semvers)
 	. = ..()

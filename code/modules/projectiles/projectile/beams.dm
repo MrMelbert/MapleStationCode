@@ -96,11 +96,11 @@
 	var/size_per_tile = 0.1
 	var/max_scale = 4
 
-/obj/projectile/beam/laser/accelerator/reduce_range()
-	..()
+/obj/projectile/beam/laser/accelerator/Range()
+	. = ..()
 	damage += 7
 	transform = matrix()
-	transform *= min(1 + (maximum_range - range) * size_per_tile, max_scale)
+	transform *= min(1 + (decayedRange - range) * size_per_tile, max_scale)
 
 //overclocked laser, does a bit more damage but has much higher wound power (-0 vs -20)
 /obj/projectile/beam/laser/hellfire

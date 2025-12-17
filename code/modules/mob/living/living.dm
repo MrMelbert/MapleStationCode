@@ -1276,26 +1276,41 @@
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
-		pulledby.stop_pulling()
-		return FALSE
+	//Our effective grab state. GRAB_PASSIVE is equal to 0, so if we have no other altering factors to our grab state, we can break free immediately on resist.
+	var/effective_grab_state = pulledby.grab_state
+	//The amount of damage inflicted on a failed resist attempt.
+	var/damage_on_resist_fail = rand(7, 13)
+	// Base chance to escape a grab. Divided by effective grab state
+	var/escape_chance = BASE_GRAB_RESIST_CHANCE
 
 	var/vulnerability_delta = 0
 	if(isliving(pulledby))
 		var/mob/living/grabber = pulledby
-		// Just compare resist strength vs resist strength
-		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+		// Just compare resist strength vs grab strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_strength()
 	else
 		// Just assume 4 (roughly the same as a human with no buffs)
 		vulnerability_delta = get_grab_resist_strength() - 4
 
-	var/altered_grab_state = pulledby.grab_state
 	if(vulnerability_delta <= 2)
-		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+		effective_grab_state = min(effective_grab_state + 1, GRAB_NECK)
+	escape_chance += (vulnerability_delta * 5) // More vulnerable = higher escape chance, less vulnerable = lower escape chance
 
-	var/resist_chance = BASE_GRAB_RESIST_CHANCE
-	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
-	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(isliving(pulledby))
+		var/mob/living/martial_artist = pulledby
+		var/datum/martial_art/puller_art = GET_ACTIVE_MARTIAL_ART(martial_artist)
+		if(puller_art?.can_use(martial_artist))
+			damage_on_resist_fail += puller_art.grab_damage_modifier
+			escape_chance += puller_art.grab_escape_chance_modifier
+
+	// see defines/combat.dm, this should be baseline 60%
+	// Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
+	var/resist_chance = clamp(escape_chance / effective_grab_state, 0, 100)
+
+	if(effective_grab_state <= GRAB_PASSIVE)
+		pulledby.stop_pulling()
+		return FALSE
+
 	if(prob(resist_chance))
 		visible_message(
 			span_danger("[src] breaks free of [pulledby]'s grip!"),
@@ -1311,7 +1326,7 @@
 		pulledby.stop_pulling()
 		return FALSE
 
-	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	adjustStaminaLoss(damage_on_resist_fail) //failure to escape still imparts a pretty serious penalty
 	visible_message(
 		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
 		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),

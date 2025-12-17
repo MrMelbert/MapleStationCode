@@ -67,7 +67,7 @@
 	make_blind()
 	return TRUE
 
-/datum/status_effect/grouped/blindness/merge_with_existing(datum/status_effect/grouped/existing, source)
+/datum/status_effect/grouped/blindness/merge_with_existing(datum/status_effect/grouped/blindness/existing, source)
 	existing.make_blind() // updates existing overlay as sources are changing
 
 /datum/status_effect/grouped/blindness/before_remove(source)
@@ -88,7 +88,7 @@
 	// by default we use the noflicker overlay
 	// but if our one and only source is from "temp blindness", use flicker overlay
 	var/overlay_to_use = /atom/movable/screen/fullscreen/blind/noflicker
-	if(changed_source == /datum/status_effect/temporary_blindness::id && length(sources) == 1)
+	if(length(sources) == 1 && sources[1] == /datum/status_effect/temporary_blindness::id)
 		overlay_to_use = /atom/movable/screen/fullscreen/blind
 	owner.overlay_fullscreen(id, overlay_to_use)
 	// You are blind - at most, able to make out shapes near you
