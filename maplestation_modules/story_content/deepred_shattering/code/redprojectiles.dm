@@ -33,6 +33,7 @@
 
 	var/warp_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techpowerup.ogg'
 	var/fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
+	var/terrybullet = 0
 
 /obj/projectile/bullet/godslayer/fire(angle, atom/direct_target, make_sound)
 	if(make_sound != null)
@@ -57,8 +58,9 @@
 	sleep(25)
 
 	if(marked_target != null && !QDELETED(marked_target) && !QDELETED(firer))
-		var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
+		var/obj/projectile/bullet/supergodslayer/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
 		A.preparePixelProjectile(marked_target, get_turf(firer))
+		A.send_to_terry = terrybullet
 		A.firer = firer
 		A.fired_from = firer
 		A.fire(null, marked_target)
@@ -110,6 +112,7 @@
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
 	var/supercharge_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techexplosion.ogg'
+	var/send_to_terry = 0
 
 /obj/effect/projectile/muzzle/supergodslayer
 	name = "supercharged godslayer warp site"
@@ -138,7 +141,7 @@
 	. = ..()
 	if (!QDELETED(target) && isliving(target))
 		var/mob/living/duster = target
-		if(duster.client)
+		if(duster.client && send_to_terry)
 			var/client/hopper = duster.client
 			hopper << link("byond://terry.tgstation13.org:3336")
 		duster.dust(just_ash = TRUE, drop_items = FALSE, force = TRUE)

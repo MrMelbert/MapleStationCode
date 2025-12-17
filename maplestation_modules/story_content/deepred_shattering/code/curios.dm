@@ -286,12 +286,10 @@
 
 /obj/item/rtechdrive/special/send_echo()
 	. = ..()
-	priority_announce(
-		text = "Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking via onboard GPS systems.",
-		title = "Spacetime Echos Detected",
-		sound = ANNOUNCER_SPANOMALIES,
-		color_override = "red",
-	)
+
+	for(var/obj/item/gps/target_gps in world)
+		target_gps.say("Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking.")
+
 	for(var/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
 		if(prob(10) && target_light.on)
 			target_light.flicker()
