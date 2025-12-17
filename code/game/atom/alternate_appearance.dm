@@ -25,6 +25,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance
 	var/appearance_key
 	var/transfer_overlays = FALSE
+	var/skip_z_level_check = FALSE
 
 /datum/atom_hud/alternate_appearance/New(key)
 	// We use hud_icons to register our hud, so we need to do this before the parent call
@@ -41,6 +42,14 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/Destroy()
 	GLOB.active_alternate_appearances -= src
 	return ..()
+
+/datum/atom_hud/alternate_appearance/get_hud_atoms_for_z_level(z_level)
+	if(!skip_z_level_check)
+		return ..()
+
+	. = list()
+	for(var/list/atom_list as anything in hud_atoms)
+		. += atom_list
 
 /datum/atom_hud/alternate_appearance/proc/onNewMob(mob/M)
 	if(mobShouldSee(M))

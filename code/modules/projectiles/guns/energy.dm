@@ -148,6 +148,7 @@
 	shot = ammo_type[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
+	set_light_color(shot.projectile_type::muzzle_flash_color_override || shot.projectile_type::light_color)
 
 /obj/item/gun/energy/Destroy()
 	if (cell)
@@ -229,6 +230,7 @@
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
+	set_light_color(shot.projectile_type::muzzle_flash_color_override || shot.projectile_type::light_color)
 	if (shot.select_name && user)
 		balloon_alert(user, "set to [shot.select_name]")
 	chambered = null

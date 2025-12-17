@@ -408,6 +408,11 @@
 	animate(pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 #undef SHIVER_LOOP_DURATION
 
+/datum/emote/living/shiver/shudder
+	key = "shudder"
+	key_third_person = "shudders"
+	message = "shudders."
+
 /datum/emote/living/sigh
 	key = "sigh"
 	key_third_person = "sighs"

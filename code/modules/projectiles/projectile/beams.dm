@@ -353,6 +353,7 @@
 	tracer_type = /obj/effect/projectile/tracer/laser
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
+	muzzle_flash_color_override = COLOR_SOFT_RED
 
 /obj/projectile/beam/lasertag/redtag/hitscan
 	hitscan = TRUE
@@ -360,9 +361,12 @@
 /obj/projectile/beam/lasertag/bluetag
 	icon_state = "bluelaser"
 	suit_types = list(/obj/item/clothing/suit/redtag)
+	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
+	light_color = LIGHT_COLOR_BLUE
 	tracer_type = /obj/effect/projectile/tracer/laser/blue
 	muzzle_type = /obj/effect/projectile/muzzle/laser/blue
 	impact_type = /obj/effect/projectile/impact/laser/blue
+	muzzle_flash_color_override = LIGHT_COLOR_BLUE
 
 /obj/projectile/beam/lasertag/bluetag/hitscan
 	hitscan = TRUE

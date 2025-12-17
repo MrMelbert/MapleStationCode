@@ -780,6 +780,9 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	if(!isnull(speaker) && HAS_TRAIT(speaker, TRAIT_SIGN_LANG))
 		return
 
+	var/list/existing_spans = hearing_args[HEARING_SPANS]
+
+	hearing_args[HEARING_SPANS] = LAZYCOPY(existing_spans)
 	hearing_args[HEARING_SPANS] |= random_span
 
 /datum/reagent/inverse/sal_acid

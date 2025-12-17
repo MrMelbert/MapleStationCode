@@ -54,7 +54,10 @@
 
 		if(controller.blackboard[BB_MONKEY_RECRUIT_COOLDOWN] < world.time)
 			controller.queue_behavior(/datum/ai_behavior/recruit_monkeys, BB_MONKEY_CURRENT_ATTACK_TARGET)
-		controller.queue_behavior(/datum/ai_behavior/battle_screech/monkey)
+			return
+
+		if(SPT_PROB(ismonkey(living_pawn) ? 25 : 10, seconds_per_tick))
+			controller.queue_behavior(/datum/ai_behavior/battle_screech/monkey)
 		controller.queue_behavior(/datum/ai_behavior/monkey_attack_mob, BB_MONKEY_CURRENT_ATTACK_TARGET)
 		return SUBTREE_RETURN_FINISH_PLANNING
 

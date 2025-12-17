@@ -46,10 +46,10 @@
 	UnregisterSignal(who, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT))
 
 /// Causes a negative moodlet to our quirk holder on signal
-/datum/personality/aloof/proc/uncomfortable_touch(mob/living/source)
+/datum/personality/aloof/proc/uncomfortable_touch(mob/living/source, mob/living/puller, willing_pull)
 	SIGNAL_HANDLER
 
-	if(source.stat == DEAD)
+	if(source.stat == DEAD || willing_pull)
 		return
 
 	new /obj/effect/temp_visual/annoyed(source.loc)

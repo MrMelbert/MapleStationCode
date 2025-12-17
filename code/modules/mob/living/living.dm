@@ -366,7 +366,7 @@
 		AM.setDir(current_dir)
 	now_pushing = FALSE
 
-/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
+/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE, willing_pull = FALSE)
 	if(!AM || !src)
 		return FALSE
 	if(!(AM.can_be_pulled(src, state, force)))
@@ -470,7 +470,7 @@
 		if(isliving(M))
 			var/mob/living/L = M
 
-			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src)
+			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src, willing_pull)
 			//Share diseases that are spread by touch
 			for(var/datum/disease/thing as anything in diseases)
 				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
