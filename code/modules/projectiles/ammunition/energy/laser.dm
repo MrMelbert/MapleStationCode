@@ -27,7 +27,7 @@
 	e_cost = LASER_SHOTS(10, STANDARD_CELL_CHARGE)
 
 /obj/item/ammo_casing/energy/lasergun/assault
-	projectile_type = /obj/projectile/beam/laser/rapid
+	projectile_type = /obj/projectile/beam/laser/assault
 	e_cost = LASER_SHOTS(40, STANDARD_CELL_CHARGE)
 
 /obj/item/ammo_casing/energy/lasergun/carbine

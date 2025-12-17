@@ -41,9 +41,14 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL //trigger guard on the weapon, hulks can't fire them with their big meaty fingers
 	var/sawn_desc = null //description change if weapon is sawn-off
 	var/sawn_off = FALSE
-	var/burst_size = 1 //how large a burst is
-	var/fire_delay = 0 //rate of fire for burst firing and semi auto
-	var/firing_burst = 0 //Prevent the weapon from firing again while already firing
+	///how large a burst is
+	var/burst_size = 1
+	/// Delay between shots in a burst.
+	var/burst_delay = 2
+	/// Delay between bursts (if burst-firing) or individual shots (if weapon is single-fire).
+	var/fire_delay = 0
+	///Prevent the weapon from firing again while already firing
+	VAR_PRIVATE/firing_burst = 0
 	/// firing cooldown, true if this gun shouldn't be allowed to manually fire
 	var/fire_cd = 0
 	var/weapon_weight = WEAPON_LIGHT
@@ -108,10 +113,12 @@
 /obj/item/gun/apply_fantasy_bonuses(bonus)
 	. = ..()
 	fire_delay = modify_fantasy_variable("fire_delay", fire_delay, -bonus, 0)
+	burst_delay = modify_fantasy_variable("burst_delay", burst_delay, -bonus, 0)
 	projectile_damage_multiplier = modify_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier, bonus/10, 0.1)
 
 /obj/item/gun/remove_fantasy_bonuses(bonus)
 	fire_delay = reset_fantasy_variable("fire_delay", fire_delay)
+	burst_delay = reset_fantasy_variable("burst_delay", burst_delay)
 	projectile_damage_multiplier = reset_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier)
 	return ..()
 
@@ -502,9 +509,11 @@
 	var/total_random_spread = max(0, randomized_bonus_spread + randomized_gun_spread)
 	var/burst_spread_mult = rand()
 
-	var/modified_delay = fire_delay
+	var/modified_burst_delay = burst_delay
+	var/modified_fire_delay = fire_delay
 	if(user && HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		modified_delay = ROUND_UP(fire_delay * 0.5)
+		modified_burst_delay = ROUND_UP(burst_delay * 0.5)
+		modified_fire_delay = ROUND_UP(fire_delay * 0.5)
 
 	if(burst_size > 1)
 		firing_burst = TRUE

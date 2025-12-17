@@ -48,12 +48,17 @@
 	worn_icon_state = "assault_laser"
 	slot_flags = ITEM_SLOT_BACK
 	burst_size = 2
-	fire_delay = 1
+	burst_delay = 1
+	spread = 12
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/assault)
 	emp_resistance = 2
-	weapon_weight = WEAPON_HEAVY
+	weapon_weight = WEAPON_MEDIUM
 	projectile_speed_multiplier = 1.5
 	SET_BASE_PIXEL(-8, 0)
+
+/obj/item/gun/energy/laser/assault/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
 
 /obj/item/gun/energy/laser/assault/add_seclight_point()
 	AddComponent(/datum/component/seclite_attachable, \
@@ -91,12 +96,14 @@
 	name = "\improper Type 5R laser carbine"
 	desc = "The burst fire Type 5R Rapid Heat Delivery System, developed by Nanotrasen. Capable of firing a sustained volley of directed energy projectiles, though each individual projectile lacks the punch of the Type 5."
 	icon_state = "laser_carbine"
-	burst_size = 2
-	fire_delay = 2
 	projectile_damage_multiplier = 0.75
 	projectile_speed_multiplier = 1.5
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun/carbine)
 	weapon_weight = WEAPON_MEDIUM
+
+/obj/item/gun/energy/laser/carbine/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/automatic_fire, 0.15 SECONDS, allow_akimbo = FALSE)
 
 // /obj/item/gun/energy/laser/cybersun
 // 	name = "\improper Cybersun S-120"

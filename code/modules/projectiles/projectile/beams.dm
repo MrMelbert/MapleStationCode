@@ -78,14 +78,19 @@
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
 	damage = 0
 
-/obj/projectile/beam/laser/cybersun
-	name = "red plasma beam"
-	icon_state = "lava"
-	light_color = COLOR_DARK_RED
-	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
-	damage = 9
-	wound_bonus = -40
-	speed = 0.9
+/obj/projectile/beam/laser/assault
+	name = "assault laser"
+	icon_state = "carbine_laser"
+	damage = 16
+
+// /obj/projectile/beam/laser/cybersun
+// 	name = "red plasma beam"
+// 	icon_state = "lava"
+// 	light_color = COLOR_DARK_RED
+// 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
+// 	damage = 9
+// 	wound_bonus = -40
+// 	speed = 0.9
 
 /obj/projectile/beam/laser/accelerator
 	name = "accelerator laser"
