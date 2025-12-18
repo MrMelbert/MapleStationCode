@@ -33,7 +33,7 @@
 
 	var/warp_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techpowerup.ogg'
 	var/fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
-	var/terrybullet = 0
+	var/terrybullet = FALSE
 
 /obj/projectile/bullet/godslayer/fire(angle, atom/direct_target, make_sound)
 	if(make_sound != null)
@@ -112,7 +112,7 @@
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
 	var/supercharge_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techexplosion.ogg'
-	var/send_to_terry = 0
+	var/send_to_terry = FALSE
 
 /obj/effect/projectile/muzzle/supergodslayer
 	name = "supercharged godslayer warp site"

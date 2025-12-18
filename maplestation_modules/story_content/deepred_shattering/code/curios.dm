@@ -264,6 +264,7 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 
 	var/signaltype = "Redtech Signal"
+	var/gps_enabled = FALSE
 
 /datum/armor/rtechdrive
 	bomb = 100
@@ -275,12 +276,37 @@
 	SSpoints_of_interest.make_point_of_interest(src)
 	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(40 MINUTES, 60 MINUTES))
 
+/obj/item/rtechdrive/examine(mob/user)
+	. = ..()
+	if(gps_enabled)
+		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online.")
+	else
+		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline.")
+
 /obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
 	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
 
 /obj/item/rtechdrive/proc/send_echo()
 	AddComponent(/datum/component/gps, signaltype)
+	gps_enabled = TRUE
+
+/obj/item/rtechdrive/emp_act(severity)
+	if(gps_enabled)
+		qdel(src.GetComponent(/datum/component/gps))
+		if(severity == EMP_HEAVY)
+			addtimer(CALLBACK(src, PROC_REF(restart_gps), severity), rand(20 MINUTES, 30 MINUTES))
+			src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are disrupted!"))
+		else
+			addtimer(CALLBACK(src, PROC_REF(restart_gps), severity), rand(5 MINUTES, 10 MINUTES))
+			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
+		gps_enabled = FALSE
+
+/obj/item/rtechdrive/proc/restart_gps(severity)
+	if(!gps_enabled)
+		AddComponent(/datum/component/gps, signaltype)
+		gps_enabled = TRUE
+		src.visible_message(span_boldwarning("The blackbox emits a faint hum as its internal GPS systems come back online."))
 
 /obj/item/rtechdrive/special
 
