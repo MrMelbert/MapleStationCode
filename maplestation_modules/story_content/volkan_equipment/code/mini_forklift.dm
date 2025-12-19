@@ -1,7 +1,7 @@
 /obj/vehicle/ridden/mini_forklift
 	name = "mini forklift"
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/forklift.dmi'
-	desc = "A mini electric forklift built by CaLE. It is a tight fit! It has protective bars all around it. It is too small to hold crates, but it is just the right size to hold flatpacks!"
+	desc = "A mini novelty but still usable electric forklift built by CaLE. It is a tight fit! It is too small to hold crates, but it is the perfect size to hold flatpacks."
 	icon_state = "mini_forklift"
 	max_integrity = 150
 	armor_type = /datum/armor/mini_forklift
@@ -82,7 +82,7 @@
 	for(var/item in contents)
 		var/mutable_appearance/flatpack_overlay = mutable_appearance(icon, "flatcart_flat", layer = ABOVE_MOB_LAYER + (offset * 0.01))
 		flatpack_overlay.pixel_y = offset
-		offset += 3
+		offset += 5
 		. += flatpack_overlay
 
 /datum/component/riding/vehicle/forklift
