@@ -279,9 +279,9 @@
 /obj/item/rtechdrive/examine(mob/user)
 	. = ..()
 	if(gps_enabled)
-		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online.")
+		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online. You might be able to disable them with a multitool or EMP device.")
 	else
-		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline.")
+		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline. You'll need to wait for them to come back online.")
 
 /obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
@@ -291,18 +291,34 @@
 	AddComponent(/datum/component/gps, signaltype)
 	gps_enabled = TRUE
 
+/obj/item/rtechdrive/multitool_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(!gps_enabled)
+		balloon_alert(user, "the blackbox's GPS is already offline")
+		return .
+
+	balloon_alert(user, "disabling the blackbox's GPS systems...")
+	if(!do_after(user, 20 SECONDS, src))
+		balloon_alert(user, "cancelled")
+		return .
+
+	addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(20 MINUTES, 30 MINUTES)))
+	qdel(src.GetComponent(/datum/component/gps))
+	src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are manually disabled!"))
+	gps_enabled = FALSE
+
 /obj/item/rtechdrive/emp_act(severity)
 	if(gps_enabled)
 		qdel(src.GetComponent(/datum/component/gps))
 		if(severity == EMP_HEAVY)
-			addtimer(CALLBACK(src, PROC_REF(restart_gps), severity), rand(20 MINUTES, 30 MINUTES))
+			addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(40 MINUTES, 60 MINUTES)))
 			src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are disrupted!"))
 		else
-			addtimer(CALLBACK(src, PROC_REF(restart_gps), severity), rand(5 MINUTES, 10 MINUTES))
+			addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(20 MINUTES, 30 MINUTES)))
 			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
 		gps_enabled = FALSE
 
-/obj/item/rtechdrive/proc/restart_gps(severity)
+/obj/item/rtechdrive/proc/restart_gps()
 	if(!gps_enabled)
 		AddComponent(/datum/component/gps, signaltype)
 		gps_enabled = TRUE
