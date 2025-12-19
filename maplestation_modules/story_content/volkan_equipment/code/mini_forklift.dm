@@ -105,7 +105,7 @@
 /datum/component/riding/vehicle/forklift/get_rider_offsets_and_layers(pass_index, mob/offsetter)
 	return list(
 		TEXT_NORTH = list( 1, 0),
-		TEXT_SOUTH = list( 3,  0),
+		TEXT_SOUTH = list( 0, 2),
 		TEXT_EAST =  list(-5, 0),
 		TEXT_WEST =  list( 5, 0),
 	)
