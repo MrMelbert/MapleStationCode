@@ -25,16 +25,6 @@
 	QDEL_NULL(breathing_loop)
 	GLOB.carbon_list -= src
 
-/mob/living/carbon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
-	// Needs to happen after parent call otherwise wounds are prioritized over surgery
-	for(var/datum/wound/wound as anything in shuffle(all_wounds))
-		if(wound.try_treating(tool, user))
-			return ITEM_INTERACT_SUCCESS
-	return .
-
 /mob/living/carbon/click_ctrl_shift(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
@@ -923,6 +913,8 @@
 
 	if(heal_flags & HEAL_LIMBS)
 		regenerate_limbs()
+		for(var/obj/item/bodypart/limb as anything in bodyparts)
+			limb.remove_surgical_state(ALL)
 
 	if(heal_flags & (HEAL_REFRESH_ORGANS|HEAL_ORGANS))
 		regenerate_organs(regenerate_existing = (heal_flags & HEAL_REFRESH_ORGANS))
@@ -1147,9 +1139,9 @@
 				if("replace")
 					var/limb2add = input(usr, "Select a bodypart type to add", "Add/Replace Bodypart") as null|anything in sort_list(limbtypes)
 					var/obj/item/bodypart/new_bp = new limb2add()
-					if(new_bp.replace_limb(src, special = TRUE))
-						admin_ticket_log("key_name_admin(usr)] has replaced [src]'s [BP.type] with [new_bp.type]")
-						qdel(BP)
+					if(new_bp.replace_limb(src))
+						admin_ticket_log("[key_name_admin(usr)] has replaced [src]'s [part.type] with [new_bp.type]")
+						qdel(part)
 					else
 						to_chat(usr, "Failed to replace bodypart! They might be incompatible.")
 						admin_ticket_log("[key_name_admin(usr)] has attempted to modify the bodyparts of [src]")

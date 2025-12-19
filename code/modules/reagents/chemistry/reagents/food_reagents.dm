@@ -826,7 +826,7 @@
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
 
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.4, min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod(type, 0.6, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"

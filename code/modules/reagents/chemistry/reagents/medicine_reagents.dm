@@ -388,7 +388,7 @@
 			to_chat(exposed_mob, span_warning("Your stomach feels empty and cramps!"))
 
 	if(methods & (PATCH|TOUCH))
-		exposed_mob.add_timed_surgery_speed_mod(type, 0.9, min(reac_volume * 1 MINUTES, 5 MINUTES))
+		exposed_mob.add_surgery_speed_mod(type, 0.9, min(reac_volume * 1 MINUTES, 5 MINUTES))
 		if(show_message)
 			to_chat(exposed_mob, span_danger("You feel your injuries fade away to nothing!") )
 
@@ -1204,7 +1204,8 @@
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 1.1, min(reac_volume * 1 MINUTES, 5 MINUTES))
+
+	exposed_mob.add_surgery_speed_mod(type, 1.1, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/medicine/stimulants
 	name = "Stimulants"

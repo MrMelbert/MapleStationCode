@@ -1178,9 +1178,9 @@
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
-/datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/flesh/burn_wound)
+/datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
 	burn_wound.sanitization += 0.9
 
 /datum/reagent/iron
