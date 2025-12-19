@@ -8,6 +8,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	basic_mob_flags = DEL_ON_DEATH
+	mob_biotypes = MOB_ORGANIC|MOB_MINERAL|MOB_MINING
 	speed = 2
 	maxHealth = 150
 	health = 150

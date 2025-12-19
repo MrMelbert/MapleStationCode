@@ -313,7 +313,7 @@
 		), ARMOR_MAX_BLOCK)
 
 	var/damage = attacking_item.force * user.outgoing_damage_mod
-	if(mob_biotypes & MOB_ROBOTIC)
+	if(mob_biotypes & (MOB_ROBOTIC|MOB_MINERAL|MOB_SKELETAL)) // this should probably check hit bodypart for humanoids
 		damage *= attacking_item.get_demolition_modifier(src)
 
 	var/wounding = attacking_item.wound_bonus

@@ -7,8 +7,6 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	head_flags = HEAD_EYESPRITES
 	bodypart_flags = BODYPART_UNHUSKABLE
 
@@ -25,8 +23,6 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	bodypart_flags = BODYPART_UNHUSKABLE
 	wing_types = NONE
 
@@ -45,8 +41,6 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 /obj/item/bodypart/arm/left/plasmaman/Initialize(mapload)
@@ -61,8 +55,6 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 /obj/item/bodypart/arm/right/plasmaman/Initialize(mapload)
@@ -77,8 +69,6 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 /obj/item/bodypart/leg/left/plasmaman/Initialize(mapload)
@@ -93,8 +83,6 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
-	brute_modifier = 1.5 //Plasmemes are weak
-	burn_modifier = 1.5 //Plasmemes are weak
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 /obj/item/bodypart/leg/right/plasmaman/Initialize(mapload)
