@@ -73,6 +73,10 @@
 	. = ..()
 	update_appearance()
 
+/obj/vehicle/ridden/mini_forklift/generate_actions()
+	. = ..()
+	initialize_controller_action_type(/datum/action/vehicle/ridden/horn, VEHICLE_CONTROL_DRIVE)
+
 /obj/vehicle/ridden/mini_forklift/update_overlays()
 	. = ..()
 	if(has_buckled_mobs())
@@ -107,3 +111,17 @@
 	)
 
 #undef MAX_FLAT_PACKS
+
+//Honk honk!!
+/datum/action/vehicle/ridden/horn
+	check_flags = AB_CHECK_HANDS_BLOCKED | AB_CHECK_CONSCIOUS
+	name = "Honk Horn"
+	desc = "Honk your vehicle's horn."
+	button_icon_state = "car_horn"
+	var/hornsound = 'sound/items/carhorn.ogg'
+
+/datum/action/vehicle/ridden/horn/Trigger(trigger_flags)
+	//Yes, I did put no cooldown. Yes, it was on purpose. Horns must be spammable.
+	vehicle_target.visible_message(span_danger("The forklift loudly honks!"))
+	to_chat(owner, span_notice("You press the horn."))
+	playsound(vehicle_target, hornsound, 75)
