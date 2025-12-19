@@ -16,7 +16,7 @@
 	verb_yell = "clacks"
 	max_combat_health = 4
 	special_attack_type = SPECIAL_ATTACK_DAMAGE
-	special_attack_cry = "*flip"
+	special_attack_cry = "Bzz!!!"
 
 /obj/item/toy/mecha/clockwork/Initialize(mapload)
 	. = ..()
@@ -163,9 +163,9 @@
 		attacker_controller.visible_message(span_notice("[attacker] demolishes [src] and walks away victorious!"), \
 							"[span_notice("You raise up [attacker] proudly over [src]")]!")
 	else //both win?
-		say("NEXT TIME.")
+		say("CLkclkclk!")
 		//don't want to make this a one sided conversation
-		quiet? attacker.say("CLkclkclk!.") : attacker.say("Buzzes!*")
+		quiet? attacker.say("CLkclkclk!") : attacker.say("Buzzes!*")
 
 	in_combat = FALSE
 	attacker.in_combat = FALSE
