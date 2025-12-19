@@ -173,7 +173,7 @@
 // #define HEALTH_DEBUG
 
 /// Uncomment to compile content related to the story or characters of Maplestation.
-//#define MAPLESTATION_STORY_CONTENT
+// #define MAPLESTATION_STORY_CONTENT
 
 // Always compile story content for unit tests. Todo : Just have a single unit test dedicated to story content.
 #ifdef UNIT_TESTS
