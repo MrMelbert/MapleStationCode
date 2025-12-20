@@ -6567,6 +6567,7 @@
 #include "maplestation_modules\code\modules\clothing\under\jobs\security.dm"
 #include "maplestation_modules\code\modules\events\resource_drift.dm"
 #include "maplestation_modules\code\modules\events\resource_pods.dm"
+#include "maplestation_modules\code\modules\events\secretsanta.dm"
 #include "maplestation_modules\code\modules\events\solar_flare.dm"
 #include "maplestation_modules\code\modules\flavor_text\flavor_examine.dm"
 #include "maplestation_modules\code\modules\flavor_text\flavor_helpers.dm"

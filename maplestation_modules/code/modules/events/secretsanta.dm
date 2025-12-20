@@ -6,8 +6,14 @@
 	max_occurrences = 1
 	earliest_start = 5 MINUTES
 	category = EVENT_CATEGORY_HOLIDAY
-	description = "Gives everyone a secret santa to gift something to!"
-	players_amt = 3
+	description = "Gives everyone a secret santa to gift something to! \
+		You can execute this multiple times per round to include latejoiners."
+	min_players = 3
+
+/datum/round_event/secretsanta
+	fakeable = FALSE
+	/// Only announce once
+	var/static/announced = FALSE
 
 /datum/round_event/secretsanta/start()
 	var/list/mob/living/candidates = list()
@@ -28,15 +34,16 @@
 
 	assign_secret_santa(first_gifter, last_gifter)
 
-	// melbert todo : latejoiner handling
-
 /datum/round_event/secretsanta/proc/is_candidate(mob/living/some_mob)
 	if(isnull(some_mob.mind))
+		return FALSE
+	if(some_mob.mind.has_antag_datum(/datum/antagonist/secret_santa))
 		return FALSE
 	var/turf/some_turf = get_turf(some_mob)
 	// admin characters need not apply, you can spawn whatever you want for christmas
 	if(is_centcom_level(some_turf.z))
 		return FALSE
+	// crew secret santa
 	if(some_mob.mind.assigned_role.job_flags & JOB_CREW_MEMBER)
 		return TRUE
 	// sure, we can include silicons in on this. just don't grab ones in deep space i guess
@@ -45,16 +52,17 @@
 	return FALSE
 
 /datum/round_event/secretsanta/proc/assign_secret_santa(mob/living/gifter, mob/living/recipient)
-	var/datum/antagonist/secret_santa/secret = gifter.mind.add_antagonist(__IMPLIED_TYPE__)
+	var/datum/antagonist/secret_santa/secret = gifter.mind.add_antag_datum(__IMPLIED_TYPE__)
 	secret.recipient = recipient.mind
 	to_chat(gifter, examine_block(span_green("[span_big("You are <b>[secret.recipient.name]</b>'s Secret Santa!")]<br><br>\
 		Come up with an appropriate gift and wait for the festivities to begin!<br>\
 		(If you need help coming up with an idea, try asking their co-workers and friends, or even <i>pray</i> for inspiration!)")))
 
 /datum/round_event/secretsanta/announce(fake)
-	if(fake)
+	if(fake || announced)
 		return
 
+	announced = TRUE
 	priority_announce("Ho ho ho! The annual Nanotrasen™ Secret Santa is starting! Everyone has been assigned a Secret Santa of another crew member.<br><br>\
 		When and where you decide to exchange gifts is up to you all to decide - just remember to keep your assignment a secret!<br>Happy holidays!")
 
