@@ -64,7 +64,7 @@
 
 	announced = TRUE
 	priority_announce("Ho ho ho! The annual Nanotrasen™ Secret Santa is starting! Everyone has been assigned a Secret Santa of another crew member.<br><br>\
-		When and where you decide to exchange gifts is up to you all to decide - just remember to keep your assignment a secret!<br>Happy holidays!")
+		When and where you decide to exchange gifts is up to you all to decide - just remember to keep your assignment a secret!<br>Happy holidays!", encode_text = FALSE)
 
 /datum/antagonist/secret_santa
 	name = "\improper Secret Santa"
@@ -78,3 +78,32 @@
 
 /datum/antagonist/secret_santa/roundend_report()
 	return "&bull; [owner.name] had [recipient.name] as [owner.p_their()] Secret Santa recipient."
+
+/datum/antagonist/secret_santa/apply_innate_effects(mob/living/mob_override)
+	var/mob/living/target = mob_override || owner.current
+	var/datum/action/secret_santa_reminder/reminder = new(src)
+	reminder.Grant(target)
+
+/datum/antagonist/secret_santa/remove_innate_effects(mob/living/mob_override)
+	var/mob/living/target = mob_override || owner.current
+	for(var/datum/action/secret_santa_reminder/reminder in target.actions)
+		qdel(reminder)
+
+/datum/action/secret_santa_reminder
+	name = "Secret Santa Reminder"
+	desc = "Reminds you of who your Secret Santa recipient is."
+	button_icon_state = "round_end"
+	show_to_observers = FALSE
+
+/datum/action/secret_santa_reminder/Trigger(trigger_flags)
+	. = ..()
+	if(!.)
+		return
+
+	var/datum/antagonist/secret_santa/secret = target
+	if(!istype(secret))
+		return
+
+	to_chat(usr, examine_block(span_green("[span_big("You are <b>[secret.recipient.name]</b>'s Secret Santa!")]<br><br>\
+		Come up with an appropriate gift and wait for the festivities to begin!<br>\
+		(If you need help coming up with an idea, try asking their co-workers and friends, or even <i>pray</i> for inspiration!)")))
