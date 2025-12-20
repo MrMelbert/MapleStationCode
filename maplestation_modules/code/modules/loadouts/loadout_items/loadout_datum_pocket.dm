@@ -346,3 +346,19 @@
 /datum/loadout_item/pocket_items/black_parasol
 	name = "Umbrella (Black Parasol)"
 	item_path = /obj/item/umbrella/parasol
+
+/datum/loadout_item/pocket_items/brick_scryerphone
+	name = "Brick Scryerphone"
+	item_path = /obj/item/brick_phone_scryer/loaded/crew
+	has_modlink_label = TRUE
+
+/datum/loadout_item/pocket_items/brick_scryerphone/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
+	. = ..()
+	if(visuals_only)
+		return
+	if(isnull(equipped_item))
+		return
+
+	var/obj/item/brick_phone_scryer/our_phone = equipped_item
+	var/prefs_label = item_details?[INFO_MODLINK_LABEL]
+	our_phone.set_label(prefs_label ? prefs_label : equipper.real_name)
