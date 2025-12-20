@@ -415,6 +415,10 @@
 	if(HAS_TRAIT(link_user, TRAIT_IN_CALL))
 		holder.balloon_alert(user, "already calling!")
 		return
+	// NON-MODULE CHANGE START : Custom Modlink Call Logic Overries
+	if(called.override_called_logic_callback && called.override_called_logic_callback.Invoke(src, user))
+		return // Early return if our recipient's modlink wants us to.
+	// NON-MODULE CHANGE END
 	var/mob/living/link_target = called.get_user_callback.Invoke()
 	if(!link_target)
 		holder.balloon_alert(user, "invalid target!")
@@ -499,6 +503,11 @@
 			continue
 		if(!link.can_call_callback.Invoke())
 			continue
+		// NON-MODULE CHANGE START : Allow MODlinks to override their displayname.
+		if(link.visual_name)
+			callers["[link.visual_name] ([id])"] = id
+			continue
+		// NON-MODULE CHANGE END
 		callers["[link.holder] ([id])"] = id
 	if(!length(callers))
 		calling_link.holder.balloon_alert(user, "no targets on freq [calling_link.frequency]!")

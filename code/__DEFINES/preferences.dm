@@ -179,6 +179,10 @@
 #define INFO_LAYER "layer"
 /// Is this item an heirloom item
 #define INFO_HEIRLOOM "heirloom"
+// NON-MODULE CHANGE START
+/// Used to set custom labels on MODlink devices.
+#define INFO_MODLINK_LABEL "modlink_label"
+// NON-MODULE CHANGE END
 
 // Lipstick styles
 #define UPPER_LIP "Upper"
