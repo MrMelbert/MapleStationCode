@@ -13,7 +13,6 @@
 "s" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "t" = (/turf/template_noop,/area/template_noop)
 "u" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
-"v" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/5bb0774242cbea259b88f3d0e9b44a66.png"; windowID = "theresabetterwaywecantalk"},/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "w" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "x" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "y" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
@@ -29,7 +28,6 @@
 "S" = (/obj/structure/flora/grass/green/style_random,/turf/open/misc/asteroid/snow/icemoon,/area/ruin/unpowered/clubs)
 "T" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 "V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/clubs,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
-"X" = (/obj/item/stack/sheet/mineral/plastitanium,/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/2e2725b290764a30315baf46e5d5ed4f.png"; windowID = "crapgonnahavetowaitforthenextupdate"},/turf/open/indestructible/redtech{initial_gas_mix = "ICEMOON_ATMOS"},/area/ruin/unpowered/clubs)
 
 (1,1,1) = {"
 tttttttDDpDDttttttttttt
@@ -48,11 +46,11 @@ DDDDDDDfffffffffDfdfDfD
 IcdDaDofCCCCCaaaDfDDDfD
 ofsDaeofTRRqRfoDDffoDuD
 DaaDDDcfCCCCffcDaafcDfd
-poaDDoffhRhvmDDDfCffDfD
+poaDDoffhRhTmDDDfCffDfD
 DDDDIcfCCCCaapaDfCyfDDD
 DDDDIffRRqRADDepfCyffDD
 DaDDofCCCCCeDalDfCAyfDt
-DDSAAATNNNNfDxfDaXVyfdt
+DDSAAATNNNNfDxfDaaVyfdt
 DlcfffffffffDofDoffffdt
 DDDDDDdDIddcDDDDSDcdDSt
 "}

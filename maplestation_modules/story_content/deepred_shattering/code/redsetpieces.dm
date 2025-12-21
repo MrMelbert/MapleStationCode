@@ -58,39 +58,3 @@
 	fire = 0
 	melee = 100
 	wound = 100
-
-/obj/effect/step_trigger/linker
-	var/targetlink
-
-/obj/effect/step_trigger/linker/Trigger(mob/M)
-	if(M.client && targetlink)
-		M.client << link(targetlink)
-		qdel(src)
-
-/obj/effect/step_trigger/windowlinker
-	var/windowlink
-	var/windowID
-
-/obj/effect/step_trigger/windowlinker/Trigger(atom/movable/A)
-	if(!A || !ismob(A))
-		return
-
-	var/mob/M = A
-	if(M.client && windowlink && windowID)
-		var/windowout = {"
-		<html>
-			<head>
-				<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-				<style>
-					body { margin: 0; padding: 0; background: #000; }
-					img { display: block; max-width: 100%; max-height: 100vh; margin: auto; }
-				</style>
-			</head>
-			<body>
-				<img src='[windowlink]' alt='image'>
-			</body>
-		</html>
-		"}
-
-		M.client << browse(windowout, "window=[windowID];size=1000x1000")
-		qdel(src)

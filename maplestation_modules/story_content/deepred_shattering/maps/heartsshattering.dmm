@@ -5,12 +5,9 @@
 "e" = (/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "f" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = -1; teleport_x_offset = 13},/turf/open/mirage{layer = 3; target_turf_x = 13; dir = 1; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "h" = (/turf/closed/indestructible/binary{desc = "Something terrible has happened here."},/area/ruin/unpowered/hearts)
-"i" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/f04fdeac48b1f40faa9f1589fa285c69.png"; windowID = "wedontlikecodedivers"},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "j" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "k" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "l" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
-"m" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/66eee36798475c61144758fb43462805.png"; windowID = "whileyourehereletshaveachat"},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
-"n" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/77192ed5145c0b41b861fbba2cc770c4.png"; windowID = "whileyourehereletshaveachat"},/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/hearts)
 "o" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "q" = (/obj/effect/step_trigger/teleporter/offset{teleport_x_offset = -38},/turf/open/mirage{dir = 4; layer = 3; target_turf_x = -37; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "r" = (/turf/open/lava/smooth/lava_land_surface,/area/ruin/unpowered/hearts)
@@ -21,7 +18,6 @@
 "x" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "z" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "C" = (/obj/structure/redtech_indestructable/singularity_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
-"D" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/1e49c24ee5fca14ee31809ea9c2018e6.png"; windowID = "sorryaboutthemess"},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "E" = (/obj/structure/redtech_indestructable/dimensional_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "F" = (/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/hearts)
 "G" = (/obj/effect/step_trigger/thrower{direction = 1},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
@@ -36,7 +32,6 @@
 "R" = (/turf/closed/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "U" = (/obj/effect/step_trigger/thrower{direction = 4},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/hearts,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
-"X" = (/obj/effect/step_trigger/windowlinker{windowlink = "https://i.gyazo.com/863056f1a4cf1fbaa42216996f8ead68.png"; windowID = "justmeandyou"},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 "Y" = (/obj/effect/spawner/random/environmentally_safe_anomaly/immobile,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
 
 (1,1,1) = {"
@@ -60,14 +55,14 @@ aaFFFFFFRoJjjjFFFFYFjjFFFFFFFFFFFFFFFFFjjjvRFjFjaaa
 aajjFjFFFFFFFFFFjFFFFFFMMRRRFFFFFxvFFFFFFFFFFjFjjaa
 aaFjFjFRRRFjRRRFJFFRRFFFFFFFFFRRFFFFRdRRRRFYFjFJFFa
 aaFFFFFjJjFFdEKFFFRRFFeMMMMReFFRRFjKRjzzzRFFFjFjjFa
-aFFjjFvlkjjFjvFFjFRFFeRMQQQRReFFRFjJRXlllRFjdxFFFFa
-ajFFxFRRRRjFjRFxwFFFeRRMemeRRReFFFFjRezzzRFFRRFYFFa
+aFFjjFvlkjjFjvFFjFRFFeRMQQQRReFFRFjJRelllRFjdxFFFFa
+ajFFxFRRRRjFjRFxwFFFeRRMeeeRRReFFFFjRezzzRFFRRFYFFa
 ajjFFFFFFFFFFFFFFFFeRRCozezoCRReFFFvReoRRRFFFFFFFja
 ajjFFeRRFFFjbRFFFRFRRRoeeeeeoRRRFRFFReRRFFFRReFFjja
 aFjFFMIeeFFFjjFjFRFMHUeekEkeeOtMFRFFjeRFFFeeqMFFjja
-ajjFFMIeeeFFFjFjFRFMHUezEVEzeOtMFRFFFFFFFeeDqMFFjja
+ajjFFMIeeeFFFjFjFRFMHUezEVEzeOtMFRFFFFFFFeeeqMFFjja
 ajjFFMIeeFFYFFFJFRFMHUeekekeeOtMFRFFFjhFFFeeqMFFjja
-ajJFFeRRFFFFFFFFFRFRRRoeeieeoRRRFRFFhjhhFFFRReFFbja
+ajJFFeRRFFFFFFFFFRFRRRoeeeeeoRRRFRFFhjhhFFFRReFFbja
 ajjFFFFFFYFFhFFFFFFeRRCoeeeoCRReFFFFhjjhjFFFFFFFjja
 ajjFjjwjFFFhhFFjFFFFeRRRGGGRRReFFFFFjbhhjjFFjjFFjja
 aFjFFRRxFFhhjFjjFFRFFeRRcccRReFFRFFhhjhhhjhFFdFjjaa
@@ -82,7 +77,7 @@ aaaaaFFFFFFRbFFFFjhhjFFrrrrrrrrrRRFFFFFFFFFFFFaaaaa
 aaaaaFjlFFFRjjjFjhhhhFFRRRereRRRRFFFFjjjFYFwjaaaaaa
 aaaaaajjjFFFFFFFFjhjhFFFFFrrrFFFFFjFFFFFFFFjjaaaaaa
 aaaaaaajFFFFFjFjFhhjFFYFFeFFrrrFYFbRxFYFFFjjaaaaaaa
-aaaaaaaaFjjFFjwjFFhjFFFFeeeFnFFFFFjjjFFFJjjaaaaaaaa
+aaaaaaaaFjjFFjwjFFhjFFFFeeeFFFFFFFjjjFFFJjjaaaaaaaa
 aaaaaaaaajjjFFRjFFFFFFFReeeRFFFjjFFFFFFjjjaaaaaaaaa
 aaaaaaaaaaajjFFjFjjxFjFRsssRFjjbFFYFFFjjjaaaaaaaaaa
 aaaaaaaaaaaajjFFFFFjFdFeMMMeFFjRFFFFjFFFaaaaaaaaaaa
