@@ -286,6 +286,21 @@
 /// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
 #define COMSIG_MOB_BATONED "mob_batoned"
 
+/// From /obj/machinery/gibber/startgibbing(): (mob/living/user, /obj/machinery/gibber, list/results)
+#define COMSIG_LIVING_GIBBER_ACT "living_gibber_act"
+
+/// Sent to the mob when their mind is slaved
+#define COMSIG_MOB_ENSLAVED_TO "mob_enslaved_to"
+/// From /obj/item/proc/attack_atom: (mob/living/attacker, atom/attacked)
+#define COMSIG_LIVING_ATTACK_ATOM "living_attack_atom"
+/// From /mob/living/proc/stop_leaning()
+#define COMSIG_LIVING_STOPPED_LEANING "living_stopped_leaning"
+
+/// When a living mob is table slamming another mob: (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_SLAMMING "living_table_slamming"
+/// When a living mob is table slamming another mob, neck grab (so a limb slam): (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_LIMB_SLAMMING "living_table_limb_slamming"
+
 /// From /mob/living/get_examine_name(mob/user) : (mob/examined, visible_name, list/name_override)
 /// Allows mobs to override how they perceive others when examining
 #define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"

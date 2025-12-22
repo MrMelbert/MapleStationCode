@@ -873,7 +873,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = get_grab_speed(target, 8 SECONDS)
+	var/carrydelay = get_grab_speed(target, 8 SECONDS, lifting = TRUE)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"

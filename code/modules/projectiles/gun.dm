@@ -51,19 +51,32 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL //trigger guard on the weapon, hulks can't fire them with their big meaty fingers
 	var/sawn_desc = null //description change if weapon is sawn-off
 	var/sawn_off = FALSE
-	var/burst_size = 1 //how large a burst is
-	var/fire_delay = 0 //rate of fire for burst firing and semi auto
-	var/firing_burst = 0 //Prevent the weapon from firing again while already firing
-	var/semicd = 0 //cooldown handler
+	///how large a burst is
+	var/burst_size = 1
+	/// Delay between shots in a burst.
+	var/burst_delay = 2
+	/// Delay between bursts (if burst-firing) or individual shots (if weapon is single-fire).
+	var/fire_delay = 0
+	///Prevent the weapon from firing again while already firing
+	VAR_PRIVATE/firing_burst = 0
+	/// firing cooldown, true if this gun shouldn't be allowed to manually fire
+	var/fire_cd = 0
 	var/weapon_weight = WEAPON_LIGHT
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
+	/// If TRUE, and we aim at ourselves, it will initiate a do after to fire at ourselves.
+	/// If FALSE it will just try to fire at ourselves straight up.
+	var/doafter_self_shoot = TRUE
 
 	/// Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.
 	var/projectile_damage_multiplier = 1
 
 	/// Even snowflakier way to modify projectile wounding bonus/potential for projectiles fired from this gun.
 	var/projectile_wound_bonus = 0
+
+	/// The most reasonable way to modify projectile speed values for projectile fired from this gun. Honest.
+	/// Lower values are worse, higher values are better.
+	var/projectile_speed_multiplier = 1
 
 	var/spread = 0 //Spread induced by the gun itself.
 	var/randomspread = 1 //Set to 0 for shotguns. This is used for weapons that don't fire all their bullets at once.
@@ -121,10 +134,12 @@
 /obj/item/gun/apply_fantasy_bonuses(bonus)
 	. = ..()
 	fire_delay = modify_fantasy_variable("fire_delay", fire_delay, -bonus, 0)
+	burst_delay = modify_fantasy_variable("burst_delay", burst_delay, -bonus, 0)
 	projectile_damage_multiplier = modify_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier, bonus/10, 0.1)
 
 /obj/item/gun/remove_fantasy_bonuses(bonus)
 	fire_delay = reset_fantasy_variable("fire_delay", fire_delay)
+	burst_delay = reset_fantasy_variable("burst_delay", burst_delay)
 	projectile_damage_multiplier = reset_fantasy_variable("projectile_damage_multiplier", projectile_damage_multiplier)
 	return ..()
 
@@ -388,7 +403,7 @@
 			return
 		if(!ismob(target)) //melee attack
 			return
-		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
+		if(target == user && (user.zone_selected != BODY_ZONE_PRECISE_MOUTH && doafter_self_shoot)) //so we can't shoot ourselves (unless mouth selected)
 			return
 		if(iscarbon(target))
 			var/mob/living/carbon/C = target
@@ -402,10 +417,9 @@
 		if(!can_trigger_gun(L))
 			return
 
-	if(flag)
-		if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
-			handle_suicide(user, target, params)
-			return
+	if(flag && doafter_self_shoot && user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
+		handle_suicide(user, target, params)
+		return
 
 	if(!can_shoot()) //Just because you can pull the trigger doesn't mean it can shoot.
 		shoot_with_empty_chamber(user)
@@ -552,7 +566,7 @@
 
 	add_fingerprint(user)
 
-	if(semicd)
+	if(fire_cd)
 		return
 
 	//Vary by at least this much
@@ -561,14 +575,18 @@
 	var/total_random_spread = max(0, randomized_bonus_spread + randomized_gun_spread)
 	var/burst_spread_mult = rand()
 
-	var/modified_delay = fire_delay
+	var/modified_burst_delay = burst_delay
+	var/modified_fire_delay = fire_delay
 	if(user && HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		modified_delay = ROUND_UP(fire_delay * 0.5)
+		modified_burst_delay = ROUND_UP(burst_delay * 0.5)
+		modified_fire_delay = ROUND_UP(fire_delay * 0.5)
 
 	if(burst_size > 1)
 		firing_burst = TRUE
-		for(var/i = 1 to burst_size)
-			addtimer(CALLBACK(src, PROC_REF(process_burst), user, target, message, params, zone_override, total_random_spread, burst_spread_mult, i), modified_delay * (i - 1))
+		fire_cd = TRUE
+		for(var/i in 1 to burst_size)
+			addtimer(CALLBACK(src, PROC_REF(process_burst), user, target, message, params, zone_override, total_random_spread, burst_spread_mult, i), modified_burst_delay * (i - 1))
+			addtimer(CALLBACK(src, PROC_REF(reset_fire_cd)), modified_fire_delay) // for the case of fire delay longer than burst
 	else
 		if(chambered)
 			if(HAS_TRAIT(user, TRAIT_PACIFISM)) // If the user has the pacifist trait, then they won't be able to fire [src] if the round chambered inside of [src] is lethal.
@@ -588,10 +606,12 @@
 		else
 			shoot_with_empty_chamber(user)
 			return
-		process_chamber()
-		update_appearance()
-		semicd = TRUE
-		addtimer(CALLBACK(src, PROC_REF(reset_semicd)), modified_delay)
+		// If gun gets destroyed as a result of firing
+		if (!QDELETED(src))
+			process_chamber()
+			update_appearance()
+			fire_cd = TRUE
+			addtimer(CALLBACK(src, PROC_REF(reset_fire_cd)), modified_fire_delay)
 
 	if(user)
 		user.update_held_items()
@@ -599,8 +619,8 @@
 
 	return TRUE
 
-/obj/item/gun/proc/reset_semicd()
-	semicd = FALSE
+/obj/item/gun/proc/reset_fire_cd()
+	fire_cd = FALSE
 
 /obj/item/gun/screwdriver_act(mob/living/user, obj/item/I)
 	. = ..()
@@ -683,7 +703,7 @@
 	if(!ishuman(user) || !ishuman(target))
 		return
 
-	if(semicd)
+	if(fire_cd)
 		return
 
 	if(user == target)
@@ -693,7 +713,7 @@
 		target.visible_message(span_warning("[user] points [src] at [target]'s head, ready to pull the trigger..."), \
 			span_userdanger("[user] points [src] at your head, ready to pull the trigger..."))
 
-	semicd = TRUE
+	fire_cd = TRUE
 
 	if(!bypass_timer && (!do_after(user, 12 SECONDS, target) || user.zone_selected != BODY_ZONE_PRECISE_MOUTH))
 		if(user)
@@ -701,10 +721,10 @@
 				user.visible_message(span_notice("[user] decided not to shoot."))
 			else if(target?.Adjacent(user))
 				target.visible_message(span_notice("[user] has decided to spare [target]"), span_notice("[user] has decided to spare your life!"))
-		semicd = FALSE
+		fire_cd = FALSE
 		return
 
-	semicd = FALSE
+	fire_cd = FALSE
 
 	target.visible_message(span_warning("[user] pulls the trigger!"), span_userdanger("[(user == target) ? "You pull" : "[user] pulls"] the trigger!"))
 

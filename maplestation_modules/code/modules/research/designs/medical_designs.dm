@@ -23,6 +23,6 @@
 	)
 	build_path = /obj/item/clothing/glasses/blindness_visor
 	category = list(
-		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_TOOLS_MEDICAL
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_EQUIPMENT_MEDICAL
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL

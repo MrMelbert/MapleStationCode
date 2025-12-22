@@ -877,27 +877,30 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// NON-MODULE CHANGES
 	var/attack_direction = get_dir(user, target)
 	var/attack_type = attacking_bodypart.attack_type
-	var/attack_sharp = NONE
+	var/limb_sharpness = NONE
+	var/kicking = (atk_effect == ATTACK_EFFECT_KICK)
+	var/final_armor_block = armor_block
 	if(atk_effect == ATTACK_EFFECT_CLAW || atk_effect == ATTACK_EFFECT_BITE)
-		attack_sharp = SHARP_EDGED
+		limb_sharpness = SHARP_EDGED
 	else if(atk_effect == ATTACK_EFFECT_BITE)
-		attack_type = SHARP_POINTY
+		limb_sharpness = SHARP_POINTY
 
 	var/smack_sound = attacking_bodypart.unarmed_attack_sound
-	if(!attack_sharp && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
+	if(!limb_sharpness && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
 		smack_sound = 'sound/effects/bang.ogg'
 
 	playsound(target.loc, smack_sound, 25, TRUE, -1)
 
-	if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
+	if(kicking || grappled) //kicks and punches when grappling bypass armor slightly.
 		if(damage >= 9)
 			target.force_say()
 		log_combat(user, target, grappled ? "grapple punched" : "kicked")
-		target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, sharpness = attack_sharp, attack_direction = attack_direction)
-		target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block - limb_accuracy)
+		final_armor_block = armor_block - limb_accuracy
+		target.apply_damage(damage, attack_type, affecting, final_armor_block, sharpness = limb_sharpness, attack_direction = attack_direction)
+		target.apply_damage(damage * 1.5, STAMINA, affecting, final_armor_block)
 
 	else // Normal attacks do not gain the benefit of armor penetration.
-		target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = attack_sharp, attack_direction = attack_direction)
+		target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = limb_sharpness, attack_direction = attack_direction)
 		target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block)
 		if(damage >= 9)
 			target.force_say()
@@ -906,6 +909,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// NON-MODULE CHANGES
 		if(damage > 5 && target != user)
 			target.set_headset_block_if_lower(4 SECONDS)
+
+	SEND_SIGNAL(target, COMSIG_HUMAN_GOT_PUNCHED, user, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness)
+	SEND_SIGNAL(user, COMSIG_HUMAN_PUNCHED, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness)
 
 	//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
 	//This does not work against opponents who are knockdown immune, such as from wearing riot armor.
@@ -942,7 +948,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!istype(owner)) //sanity check for drones.
 		return
 	if(owner.mind)
-		attacker_style = owner.mind.martial_art
+		attacker_style = GET_ACTIVE_MARTIAL_ART(owner)
 	if((owner != target) && target.check_block(owner, 0, owner.name, attack_type = UNARMED_ATTACK))
 		log_combat(owner, target, "attempted to touch")
 		target.visible_message(span_warning("[owner] attempts to touch [target]!"), \

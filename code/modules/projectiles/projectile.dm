@@ -998,10 +998,14 @@
 	forceMove(source_loc)
 	trajectory_ignore_forcemove = FALSE
 
-	starting = source_loc
 	pixel_x = source.pixel_x
 	pixel_y = source.pixel_y
 	original = target
+
+	if (starting != source_loc)
+		starting = source_loc
+		forceMove(source_loc)
+
 	if(length(modifiers))
 		var/list/calculated = calculate_projectile_angle_and_pixel_offsets(source, target_loc && target, modifiers)
 

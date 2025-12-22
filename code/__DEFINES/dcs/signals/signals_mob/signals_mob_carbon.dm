@@ -173,3 +173,8 @@
 /// from /obj/item/toy/crayon/spraycan/use_on(target, user, modifiers): (atom/target, mob/user)
 #define COMSIG_CARBON_SPRAYPAINTED "comsig_carbon_spraypainted"
 	#define COMPONENT_CANCEL_SPRAYPAINT (1<<0)
+
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacker, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_GOT_PUNCHED "human_got_punched"
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacked, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_PUNCHED "human_punched"

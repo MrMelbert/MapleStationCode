@@ -276,3 +276,30 @@
 /obj/item/storage/box/stickers/googly/PopulateContents()
 	for(var/i in 1 to 6)
 		new /obj/item/sticker/googly(src)
+
+/obj/item/storage/box/pinpointer_pairs
+	name = "pinpointer pair box"
+
+/obj/item/storage/box/pinpointer_pairs/PopulateContents()
+	var/obj/item/pinpointer/pair/A = new(src)
+	var/obj/item/pinpointer/pair/B = new(src)
+
+	A.other_pair = B
+	B.other_pair = A
+
+/obj/item/storage/box/heretic_box
+	name = "box of pierced realities"
+	desc = "A box containing toys resembling pierced realities."
+
+/obj/item/storage/box/heretic_box/PopulateContents()
+	for(var/i in 1 to rand(1,4))
+		new /obj/item/toy/reality_pierce(src)
+
+/obj/item/storage/box/purity_seal_box
+	name = "box of purity seals"
+	desc = "A box containing several blessed purity seals."
+
+/obj/item/storage/box/purity_seal_box/PopulateContents()
+	for(var/i in 1 to 4)
+		new /obj/item/sticker/purity_seal(src)
+		new /obj/item/sticker/purity_seal/purity_seal_2(src)
