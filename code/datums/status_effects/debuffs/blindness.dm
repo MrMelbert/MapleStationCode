@@ -64,17 +64,24 @@
 	if(!CAN_BE_BLIND(owner))
 		return FALSE
 
-	make_blind()
+	// You are blind - at most, able to make out shapes near you
+	owner.add_client_colour(/datum/client_colour/blindness)
+	// But to represent the fact that you can feel your way around, you are unaffected by darkness
+	ADD_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, TRAIT_STATUS_EFFECT(id))
+	// but your eyes will start to wander, you may end up staring unintentionally
+	ADD_TRAIT(owner, TRAIT_SHIFTY_EYES, TRAIT_STATUS_EFFECT(id))
+	// Updates what overlay to use
+	update_screen_overlay_type()
 	return TRUE
 
 /datum/status_effect/grouped/blindness/merge_with_existing(datum/status_effect/grouped/blindness/existing, source)
-	existing.make_blind() // updates existing overlay as sources are changing
+	existing.update_screen_overlay_type() // updates existing overlay as sources are changing
 
 /datum/status_effect/grouped/blindness/before_remove(source)
 	. = ..()
 	if(!length(sources))
 		return
-	make_blind() // updates our overlay as sources are changing
+	update_screen_overlay_type() // updates our overlay as sources are changing
 
 /datum/status_effect/grouped/blindness/on_remove()
 	owner.clear_fullscreen(id)
@@ -83,7 +90,7 @@
 	REMOVE_TRAIT(owner, TRAIT_SHIFTY_EYES, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
-/datum/status_effect/grouped/blindness/proc/make_blind()
+/datum/status_effect/grouped/blindness/proc/update_screen_overlay_type()
 	// have some extra logic to determine what overlay to use
 	// by default we use the noflicker overlay
 	// but if our one and only source is from "temp blindness", use flicker overlay
@@ -91,12 +98,6 @@
 	if(length(sources) == 1 && sources[1] == /datum/status_effect/temporary_blindness::id)
 		overlay_to_use = /atom/movable/screen/fullscreen/blind
 	owner.overlay_fullscreen(id, overlay_to_use)
-	// You are blind - at most, able to make out shapes near you
-	owner.add_client_colour(/datum/client_colour/blindness)
-	// But to represent the fact that you can feel your way around, you are unaffected by darkness
-	ADD_TRAIT(owner, TRAIT_TRUE_NIGHT_VISION, TRAIT_STATUS_EFFECT(id))
-	// but your eyes will start to wander, you may end up staring unintentionally
-	ADD_TRAIT(owner, TRAIT_SHIFTY_EYES, TRAIT_STATUS_EFFECT(id))
 
 /atom/movable/screen/alert/status_effect/blind
 	name = "Blind"

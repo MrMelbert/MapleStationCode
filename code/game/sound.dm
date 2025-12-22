@@ -248,9 +248,11 @@
 
 	// moves the source to somewhere around the ai, otherwise they wouldn't hear it
 	turf_source = get_ranged_target_turf(ai, get_dir(src, turf_source), max_distance * 0.5)
+	// if a sound datum was passed, we need to make a copy or else we mutate everyone else's sound
+	sound_to_use = isdatum(sound_to_use) ? copy_sound(sound_to_use) : sound(get_sfx(soundin))
 	// pitches down the sound a bit so the ai can differentiate it from sounds actually near their core
-	sound_to_use ||= sound(get_sfx(soundin))
-	sound_to_use.pitch = 0.8
+	sound_to_use.pitch ||= 1
+	sound_to_use.pitch *= 0.8
 	// and disable these since we're beaming it straight to the ai
 	use_reverb = FALSE
 	pressure_affected = FALSE
@@ -265,6 +267,24 @@
 ///get_rand_frequency but lower range.
 /proc/get_rand_frequency_low_range()
 	return rand(38000, 45000)
+
+/// Make a copy of a sound datum
+/proc/copy_sound(sound/input)
+	var/sound/new_sound = sound(input.file)
+	new_sound.channel = input.channel
+	new_sound.echo = input.echo.Copy()
+	new_sound.environment = input.environment
+	new_sound.falloff = input.falloff
+	new_sound.frequency = input.frequency
+	new_sound.offset = input.offset
+	new_sound.pan = input.pan
+	new_sound.pitch = input.pitch
+	new_sound.repeat = input.repeat
+	new_sound.volume = input.volume
+	new_sound.x = input.x
+	new_sound.y = input.y
+	new_sound.z = input.z
+	return new_sound
 
 /proc/get_sfx(soundin)
 	if(!istext(soundin))
