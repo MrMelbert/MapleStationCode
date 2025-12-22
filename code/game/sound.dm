@@ -272,7 +272,6 @@
 /proc/copy_sound(sound/input)
 	var/sound/new_sound = sound(input.file)
 	new_sound.channel = input.channel
-	new_sound.echo = input.echo.Copy()
 	new_sound.environment = input.environment
 	new_sound.falloff = input.falloff
 	new_sound.frequency = input.frequency
@@ -284,6 +283,9 @@
 	new_sound.x = input.x
 	new_sound.y = input.y
 	new_sound.z = input.z
+	if(islist(new_sound.echo))
+		var/list/old_echo = input.echo
+		new_sound.echo = old_echo.Copy()
 	return new_sound
 
 /proc/get_sfx(soundin)
