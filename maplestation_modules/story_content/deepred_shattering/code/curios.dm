@@ -302,7 +302,7 @@
 		balloon_alert(user, "cancelled")
 		return .
 
-	addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(20 MINUTES, 30 MINUTES)))
+	addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
 	qdel(src.GetComponent(/datum/component/gps))
 	src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are manually disabled!"))
 	gps_enabled = FALSE
@@ -311,10 +311,10 @@
 	if(gps_enabled)
 		qdel(src.GetComponent(/datum/component/gps))
 		if(severity == EMP_HEAVY)
-			addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(40 MINUTES, 60 MINUTES)))
+			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(40 MINUTES, 60 MINUTES))
 			src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are disrupted!"))
 		else
-			addtimer(CALLBACK(src, PROC_REF(restart_gps), rand(20 MINUTES, 30 MINUTES)))
+			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
 			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
 		gps_enabled = FALSE
 
