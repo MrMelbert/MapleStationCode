@@ -55,7 +55,7 @@
 	name = "Pirate Gunner"
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/pirate/ranged
 	corpse = /obj/effect/mob_spawn/corpse/human/pirate/ranged
-	r_hand = /obj/item/gun/energy/laser
+	r_hand = /obj/item/gun/energy/laser/soul
 	ai_controller = /datum/ai_controller/basic_controller/trooper/ranged
 	/// Type of bullet we use
 	var/casingtype = /obj/item/ammo_casing/energy/laser

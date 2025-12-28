@@ -49,3 +49,7 @@
 /datum/loadout_item/neck/maid
 	name = "Maid Collar"
 	item_path = /obj/item/clothing/neck/maid
+
+/datum/loadout_item/neck/robe_cape
+	name = "Robe Cape"
+	item_path = /obj/item/clothing/neck/robe_cape
