@@ -61,7 +61,7 @@
 	var/discharge_method = MANA_SEQUENTIAL
 
 	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
-	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
+	var/intrinsic_recharge_sources = NONE
 
 	/// what ruleset do we need before we can transfer? flags in magic_bitflags.dm
 	var/mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
