@@ -102,6 +102,7 @@
 	density = FALSE
 	layer = HIGH_OBJ_LAYER
 	verb_say = "beeps"
+	examine_feedback_on_ui = TRUE
 
 	/// Duration of any printed guest passes
 	var/set_time = 10 // minutes
