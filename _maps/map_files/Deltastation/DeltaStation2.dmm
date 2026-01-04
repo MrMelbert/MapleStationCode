@@ -12177,6 +12177,7 @@
 /obj/item/storage/box/rxglasses,
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "cla" = (
@@ -17744,12 +17745,12 @@
 /turf/open/floor/iron,
 /area/station/science/lab)
 "dfw" = (
-/obj/machinery/firealarm/directional/north,
 /obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/mesh,
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/light/cold/directional/north,
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dfx" = (
@@ -17763,9 +17764,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "dfz" = (
-/obj/structure/extinguisher_cabinet/directional/north,
 /obj/item/stack/medical/wrap/gauze,
-/obj/item/stack/medical/suture,
 /obj/machinery/camera/directional/north{
 	c_tag = "Medbay - Treatment Center";
 	name = "medbay camera";
@@ -17773,6 +17772,8 @@
 	},
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/stack/medical/suture,
+/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dfD" = (
@@ -18234,6 +18235,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dix" = (
@@ -18380,6 +18382,7 @@
 /obj/machinery/computer/operating,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/effect/turf_decal/bot_white,
+/obj/machinery/vitals_reader/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/medical/surgery/theatre)
 "djo" = (
@@ -19442,7 +19445,6 @@
 /area/station/science/research)
 "dqC" = (
 /obj/machinery/defibrillator_mount/directional/south,
-/obj/item/radio/intercom/directional/west,
 /obj/item/emergency_bed{
 	pixel_y = 6
 	},
@@ -19451,6 +19453,7 @@
 	},
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/vitals_reader/directional/west,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dqL" = (
@@ -22812,10 +22815,10 @@
 /obj/effect/turf_decal/trimline/neutral/mid_joiner{
 	dir = 8
 	},
-/obj/machinery/status_display/evac/directional/north,
 /obj/structure/bodycontainer/morgue{
 	dir = 2
 	},
+/obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/iron/dark/textured_half{
 	dir = 1
 	},
@@ -30507,6 +30510,7 @@
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/effect/turf_decal/bot_white,
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/medical/surgery/theatre)
 "fHF" = (
@@ -42941,7 +42945,6 @@
 /area/station/ai_monitored/turret_protected/aisat_interior)
 "jey" = (
 /obj/structure/mannequin/skeleton,
-/obj/machinery/status_display/ai/directional/north,
 /obj/effect/turf_decal/tile/dark_blue/half/contrasted{
 	dir = 1
 	},
@@ -44584,6 +44587,7 @@
 /obj/structure/bodycontainer/morgue{
 	dir = 2
 	},
+/obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark/textured_half{
 	dir = 1
 	},
@@ -48888,11 +48892,11 @@
 /area/station/service/theater)
 "kPo" = (
 /obj/machinery/firealarm/directional/east,
-/obj/structure/extinguisher_cabinet/directional/north,
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
+/obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/iron,
 /area/station/medical/storage)
 "kPq" = (
@@ -57543,7 +57547,6 @@
 /area/station/command/teleporter)
 "nls" = (
 /obj/machinery/defibrillator_mount/directional/north,
-/obj/item/radio/intercom/directional/east,
 /obj/item/storage/box/bodybags{
 	pixel_x = 3;
 	pixel_y = 3
@@ -57551,6 +57554,7 @@
 /obj/item/storage/box/masks,
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/vitals_reader/directional/east,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "nly" = (
@@ -65678,6 +65682,7 @@
 /obj/item/reagent_containers/syringe,
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/vitals_reader/directional/west,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "pxU" = (
@@ -65902,13 +65907,6 @@
 /obj/item/tank/internals/anesthetic{
 	pixel_x = -3
 	},
-/obj/item/clothing/mask/breath/medical{
-	pixel_y = 3
-	},
-/obj/item/clothing/mask/breath/medical,
-/obj/item/clothing/mask/breath/medical{
-	pixel_y = -3
-	},
 /obj/structure/window/reinforced/spawner/directional/west,
 /obj/machinery/status_display/evac/directional/south,
 /obj/machinery/door/window/left/directional/north{
@@ -65916,6 +65914,9 @@
 	req_access = list("surgery")
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/item/clothing/mask/muzzle/breath,
+/obj/item/clothing/mask/muzzle/breath,
+/obj/item/clothing/mask/muzzle/breath,
 /turf/open/floor/iron/dark,
 /area/station/medical/surgery/theatre)
 "pCH" = (
@@ -67111,7 +67112,6 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 10
 	},
-/obj/machinery/vending/wallmed/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/textured,
@@ -70910,16 +70910,12 @@
 "qVD" = (
 /obj/structure/sign/poster/official/report_crimes/directional/north,
 /obj/structure/closet/secure_closet/personal/cabinet,
-/obj/item/clothing/suit/jacket{
-	desc = "All the class of a trenchcoat without the security fibers.";
-	icon_state = "detective";
-	name = "trenchcoat"
-	},
 /obj/item/clothing/head/fedora{
 	icon_state = "detective"
 	},
 /obj/item/clothing/gloves/color/black,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/item/clothing/suit/jacket/leather_trenchcoat,
 /turf/open/floor/wood,
 /area/station/security/detectives_office/private_investigators_office)
 "qVG" = (
@@ -76249,13 +76245,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/security/prison/safe)
-"syb" = (
-/obj/structure/table/optable,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/status_display/ai/directional/south,
-/obj/effect/turf_decal/bot_red,
-/turf/open/floor/iron/dark,
-/area/station/medical/surgery/theatre)
 "sye" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
@@ -89112,7 +89101,6 @@
 /turf/open/floor/iron,
 /area/station/engineering/storage/tech)
 "wfS" = (
-/obj/machinery/status_display/ai/directional/south,
 /obj/effect/turf_decal/siding/thinplating/dark/corner,
 /obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 8
@@ -137876,7 +137864,7 @@ uMR
 aEi
 dVm
 dVm
-syb
+aEi
 lmf
 jey
 heX

@@ -574,13 +574,11 @@
 				render_list += "<span class='alert ml-1'>Subject is extremely allergic to the following chemicals:</span><br>"
 				render_list += "<span class='alert ml-2'>[allergies]</span><br>"
 
-		// NON-MODULE CHANGE
+		// we handled the last <br> so we don't need handholding
 		if(tochat)
-			// we handled the last <br> so we don't need handholding
 			to_chat(user, custom_boxed_message("blue_box", jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 		else
 			return jointext(render_list, "")
-		// NON-MODULE CHANGE END
 
 /obj/item/healthanalyzer/click_alt(mob/user)
 	if(mode == SCANNER_NO_MODE)

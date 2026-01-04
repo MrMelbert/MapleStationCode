@@ -101,7 +101,7 @@
 	if(!is_operational || QDELETED(occupant))
 		return
 
-	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
+	for(var/obj/machinery/vitals_reader/reader in range(LINK_RANGE, src))
 		if(!reader.is_operational)
 			continue
 
@@ -133,7 +133,7 @@
 		return
 
 /obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)
-	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
+	for(var/obj/machinery/vitals_reader/reader in range(LINK_RANGE, src))
 		if(reader.active && reader.patient == leaving)
 			reader.toggle_active()
 			return

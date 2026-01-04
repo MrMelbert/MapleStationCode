@@ -940,6 +940,7 @@
 			COMSIG_LIVING_UPDATING_SURGERY_STATE,
 		))
 
+	SEND_SIGNAL(src, COMSIG_OPERATING_TABLE_SET_PATIENT, new_patient)
 	patient = new_patient
 	update_appearance()
 	computer?.update_static_data_for_all_viewers()

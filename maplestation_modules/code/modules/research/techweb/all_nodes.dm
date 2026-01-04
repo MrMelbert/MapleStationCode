@@ -29,6 +29,7 @@
 		"auto_cpr_device",
 		"vitals_monitor_advanced",
 		"neural_suppressor",
+		"medical_scissors_trauma",
 	)
 
 /datum/techweb_node/cryostasis
@@ -107,4 +108,5 @@
 /datum/techweb_node/medbay_equip
 	id_additions = list(
 		"plasticmedkit",
+		"medical_scissors",
 	)

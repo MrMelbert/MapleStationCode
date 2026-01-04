@@ -5537,22 +5537,11 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/control)
 "zH" = (
-/obj/item/scalpel{
-	pixel_y = 12
-	},
-/obj/item/circular_saw,
-/obj/item/retractor{
-	pixel_x = 4
-	},
-/obj/item/hemostat{
-	pixel_x = -4
-	},
-/obj/item/clothing/gloves/latex,
-/obj/item/clothing/mask/surgical,
 /obj/structure/table/reinforced,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
+/obj/item/surgery_tray/full/advanced,
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "zI" = (
@@ -5662,7 +5651,6 @@
 /area/centcom/central_command_areas/control)
 "Aq" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
@@ -5708,10 +5696,10 @@
 /obj/machinery/computer/operating{
 	dir = 4
 	},
-/obj/machinery/status_display/ai/directional/west,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
+/obj/machinery/vitals_reader/directional/west,
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "AV" = (
@@ -5870,7 +5858,6 @@
 "BF" = (
 /obj/item/defibrillator/loaded,
 /obj/structure/table/reinforced,
-/obj/machinery/status_display/evac/directional/west,
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
@@ -5911,6 +5898,7 @@
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "BH" = (
@@ -5924,7 +5912,6 @@
 /area/centcom/central_command_areas/control)
 "BI" = (
 /obj/machinery/light/directional/south,
-/obj/structure/noticeboard/directional/south,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
@@ -5949,6 +5936,7 @@
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "BL" = (
@@ -6852,7 +6840,6 @@
 /area/centcom/central_command_areas/evacuation/ship)
 "Fg" = (
 /obj/structure/closet/crate/bin,
-/obj/machinery/status_display/evac/directional/south,
 /obj/machinery/status_display/evac/directional/west,
 /obj/effect/turf_decal/tile/green/anticorner/contrasted{
 	dir = 8
@@ -57207,9 +57194,9 @@ zI
 nq
 Ar
 BG
-iu
+io
 Sg
-iu
+io
 iC
 io
 iu
@@ -58235,9 +58222,9 @@ zJ
 nq
 Ar
 BK
-iu
+io
 Ns
-iu
+io
 iC
 io
 io

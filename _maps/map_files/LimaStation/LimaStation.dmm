@@ -7259,7 +7259,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
-/obj/machinery/computer/vitals_reader/directional/west,
+/obj/machinery/vitals_reader/directional/west,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/treatment_center)
 "cwT" = (
@@ -14671,7 +14671,7 @@
 	},
 /obj/machinery/light/cold/directional/east,
 /obj/effect/turf_decal/tile/blue/full,
-/obj/machinery/computer/vitals_reader/directional/east,
+/obj/machinery/vitals_reader/directional/east,
 /turf/open/floor/iron/textured_large,
 /area/station/medical/cryo)
 "eTW" = (
@@ -23795,7 +23795,7 @@
 /obj/item/cautery{
 	pixel_x = 4
 	},
-/obj/machinery/computer/vitals_reader/directional/south,
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/dark/textured,
 /area/station/science/robotics/lab)
 "hQb" = (
@@ -46739,7 +46739,7 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/west,
-/obj/machinery/computer/vitals_reader/no_hand/directional/south,
+/obj/machinery/vitals_reader/no_beep/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "oTG" = (
@@ -53034,7 +53034,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 5
 	},
-/obj/machinery/computer/vitals_reader/directional/east,
+/obj/machinery/vitals_reader/directional/east,
 /turf/open/floor/iron,
 /area/station/medical/surgery)
 "qNN" = (
@@ -54773,7 +54773,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/computer/vitals_reader/no_hand/directional/south,
+/obj/machinery/vitals_reader/no_beep/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "rpk" = (
@@ -60682,7 +60682,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
-/obj/machinery/computer/vitals_reader/directional/west,
+/obj/machinery/vitals_reader/directional/west,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/treatment_center)
 "tab" = (

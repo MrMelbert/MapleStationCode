@@ -3936,10 +3936,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "any" = (
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_x = -32
-	},
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -6168,10 +6164,6 @@
 "avi" = (
 /obj/structure/disposalpipe/segment{
 	dir = 10
-	},
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_y = 32
 	},
 /turf/open/floor/iron/edge{
 	dir = 1
@@ -9771,10 +9763,6 @@
 /turf/open/floor/iron/large,
 /area/station/hallway/primary/central)
 "aHK" = (
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_y = 32
-	},
 /obj/structure/cable,
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/edge,
@@ -9879,10 +9867,6 @@
 /turf/open/floor/iron/edge,
 /area/station/hallway/primary/central)
 "aIc" = (
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
@@ -15556,10 +15540,6 @@
 /area/station/hallway/primary/central)
 "bgi" = (
 /obj/machinery/vending/cola,
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
@@ -21341,7 +21321,7 @@
 /obj/structure/table/optable,
 /obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/blue/full,
-/obj/machinery/computer/vitals_reader/directional/north,
+/obj/machinery/vitals_reader/directional/north,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/surgery)
 "bEx" = (
@@ -22837,7 +22817,7 @@
 /obj/structure/table/optable,
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/blue/full,
-/obj/machinery/computer/vitals_reader/directional/south,
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/medical/surgery)
 "bLG" = (
@@ -26342,10 +26322,6 @@
 /obj/machinery/camera{
 	c_tag = "Engineering Port Fore";
 	dir = 1
-	},
-/obj/structure/sign/map{
-	icon_state = "map-pubby";
-	pixel_y = 32
 	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -29937,7 +29913,7 @@
 /obj/effect/turf_decal/tile/blue/full,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
-/obj/machinery/computer/vitals_reader/directional/north,
+/obj/machinery/vitals_reader/directional/north,
 /turf/open/floor/iron/smooth_large,
 /area/station/medical/cryo)
 "ctr" = (
@@ -41027,7 +41003,7 @@
 /obj/effect/turf_decal/tile/blue/full,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
-/obj/machinery/computer/vitals_reader/directional/north,
+/obj/machinery/vitals_reader/directional/north,
 /obj/structure/extinguisher_cabinet/directional/north{
 	pixel_x = -28
 	},
@@ -47665,7 +47641,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/computer/vitals_reader/directional/west,
+/obj/machinery/vitals_reader/directional/west,
 /obj/structure/frame/computer{
 	dir = 4
 	},
@@ -48042,7 +48018,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/computer/vitals_reader/no_hand/directional/south,
+/obj/machinery/vitals_reader/no_beep/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "oWw" = (
@@ -52675,7 +52651,7 @@
 	dir = 8;
 	name = "Robotics Operating Computer"
 	},
-/obj/machinery/computer/vitals_reader/directional/south,
+/obj/machinery/vitals_reader/directional/south,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/science/robotics)
 "sdb" = (
@@ -61760,7 +61736,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/computer/vitals_reader/directional/east,
+/obj/machinery/vitals_reader/directional/east,
 /obj/structure/frame/computer{
 	dir = 8
 	},
