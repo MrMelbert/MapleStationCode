@@ -10,7 +10,7 @@
 
 #define MANA_POOL_TRANSFER_SKIP_ACTIVE (1<<6)
 
-/// used to dictate what rules a mana transfer abide by
+/// used to dictate which of the default rules a mana transfer will abide by
 // No rules, default. Doesn't do anything, actually.
 #define MANA_TRANSFER_ANARCHY (1<<0)
 // Stops or skips transfer when the transfer hits or passes the target pool's softcap

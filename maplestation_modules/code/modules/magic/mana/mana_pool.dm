@@ -63,12 +63,13 @@
 	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
 	var/intrinsic_recharge_sources = NONE
 
-	/// what ruleset do we need before we can transfer? flags in magic_bitflags.dm
+	/// what ruleset do we abide by in regards to mana transferrence? flags in magic_bitflags.dm, and the default callback procs are later down this file
 	var/mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
+	var/datum/callback/check_ruleset_callback // where we store what rule proc we use, don't touch this unless you're doing stuff that can't be done with other rulesets
 
-	/// used by MANA_TRANSFER_MANUAL_RULES so these do nothing unless you're using that transfer ruleset.
+	/// used by MANA_TRANSFER_MANUAL_RULES so this does nothing unless you're using that transfer ruleset.
 	/// and if so, what is that cap?
-	var/cap_transfer_limit = 999
+	var/cap_transfer_limit
 
 /datum/mana_pool/New(atom/parent = null)
 	. = ..()
@@ -78,6 +79,9 @@
 	update_intrinsic_recharge()
 
 	START_PROCESSING(SSmagic, src)
+
+	if(!check_ruleset_callback)
+		update_transfer_ruleset()
 
 /datum/mana_pool/Destroy(force, ...)
 	attunements = null
@@ -138,6 +142,24 @@
 
 	return GLOB.default_attunements.Copy()
 
+/datum/mana_pool/proc/update_transfer_ruleset()
+	switch (mana_transfer_ruleset)
+		if (MANA_TRANSFER_SOFTCAP)
+			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_softcap))
+		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
+			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_softcap_no_pass))
+		if (MANA_TRANSFER_MANUAL_RULES)
+			if (!cap_transfer_limit)
+				stack_trace("Manual Transfer rules were set on [src] without a transfer limit defined!") // forgetting something?
+				src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy))// failsafe, default to ruleless
+			else
+				src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_manual_rules))
+		if(MANA_TRANSFER_ANARCHY)
+			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy))
+		else
+			stack_trace("Update Transfer Ruleset was called on [src] without a valid prefab ruleset defined!")
+			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy)) // again, failsafe
+
 // order of operations is as follows:
 // 1. we recharge
 // 2. we transfer mana
@@ -154,7 +176,7 @@
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
-					if(!check_rulesets(iterated_pool, (get_transfer_rate_for(iterated_pool) * seconds_per_tick)))
+					if(!check_ruleset_callback?.Invoke(iterated_pool, (get_transfer_rate_for(iterated_pool) * seconds_per_tick)))
 						continue
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
@@ -169,7 +191,7 @@
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
-					if(!check_rulesets(iterated_pool, mana_to_disperse))
+					if(!check_ruleset_callback?.Invoke(iterated_pool, mana_to_disperse))
 						continue
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
@@ -213,23 +235,6 @@
 							break
 
 		adjust_mana(exponential_decay) //just to be safe, in case we have any left over or didnt have a discharge destination
-
-// apply the rulesets we have
-/datum/mana_pool/proc/check_rulesets(datum/mana_pool/target_pool, transferred_mana) // pretty mean overhead on this one
-	var/softcap_check = (target_pool.amount >= target_pool.softcap)
-	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
-
-	switch (mana_transfer_ruleset)
-		if (MANA_TRANSFER_SOFTCAP)
-			if (softcap_check)
-				return FALSE
-		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
-			if ((softcap_check) || softcap_pass_check)
-				return FALSE
-		if (MANA_TRANSFER_MANUAL_RULES)
-			if (target_pool.amount >= cap_transfer_limit)
-				return FALSE
-	return TRUE
 
 /// Perform a "natural" transfer where we use the default transfer rate, capped by the usual math
 /datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
@@ -385,5 +390,36 @@
 	SHOULD_BE_PURE(TRUE)
 
 	return (softcap / maximum_mana_capacity) * 100
+
+// default transfer rules, all call backs decided by what you put in mana_transfer_ruleset, set in check_ruleset_callback, called by most transfer things.
+// these aren't used by default, and you can set you own for whatever pool you use: though feel to add those you use on multiple different subtypes here, because this is just a place where the most common ones are stored
+
+// FOR THE LOVE OF GOD READ THIS: MAKE SURE ALL OF THESE, AND ANY NEW CALLBACKS YOU MAKE, HAVE THE SAME ARGS, EVEN IF THEY'RE NOT USED. AND MAKE SURE ANY TIME YOU ADD A NEW INVOKE, IT SENDS THE SAME SET OF ARGS, IT WILL SAVE EVERYONE HEADACHES
+
+/datum/mana_pool/proc/transfer_rule_softcap(datum/mana_pool/pool, transferred_mana)
+	var/datum/mana_pool/target_pool = pool
+	var/softcap_check = (target_pool.amount >= target_pool.softcap)
+	if (softcap_check)
+		return FALSE
+	return TRUE
+
+/datum/mana_pool/proc/transfer_rule_softcap_no_pass(datum/mana_pool/pool, transferred_mana)
+	var/datum/mana_pool/target_pool = pool
+	var/softcap_check = (target_pool.amount >= target_pool.softcap)
+	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
+	if ((softcap_check) || softcap_pass_check)
+		return FALSE
+	return TRUE
+
+/datum/mana_pool/proc/transfer_rule_manual_rules(datum/mana_pool/pool, transferred_mana)
+	var/datum/mana_pool/target_pool = pool
+	if (!cap_transfer_limit) // this should've been caught during init but i'm adding a second failsafe anyways
+		return FALSE // no runtime either, because this is processed each tick, it would be runtime hell
+	if (target_pool.amount >= cap_transfer_limit)
+		return FALSE
+	return TRUE
+
+/datum/mana_pool/proc/transfer_rule_anarchy(datum/mana_pool/pool, transferred_mana)
+	return TRUE // because no rules, no checks
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS
