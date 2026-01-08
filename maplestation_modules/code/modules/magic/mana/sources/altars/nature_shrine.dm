@@ -37,11 +37,17 @@
 /obj/structure/magic_altar/nature/Initialize(mapload)
 	. = ..()
 
-	var/static/list/tool_behaviors = list(
-		TOOL_CROWBAR = list(
-			SCREENTIP_CONTEXT_LMB = "Deconstruct"
+	var/static/list/tool_behaviors
+	if(!tool_behaviors)
+		tool_behaviors = string_assoc_nested_list(list(
+			TOOL_CROWBAR = list(
+				SCREENTIP_CONTEXT_RMB = "Deconstruct",
 			),
-		)
+
+			TOOL_WRENCH = list(
+				SCREENTIP_CONTEXT_RMB = "Anchor/Unanchor",
+			),
+		))
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 
 /obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
@@ -70,3 +76,12 @@
 	new /obj/item/mana_battery/mana_crystal/standard(get_turf(src), 1)
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/magic_altar/nature/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	switch(default_unfasten_wrench(user, tool, 4 SECONDS))
+		if(SUCCESSFUL_UNFASTEN)
+			return ITEM_INTERACT_SUCCESS
+		if(FAILED_UNFASTEN)
+			return ITEM_INTERACT_BLOCKING
+	return .
