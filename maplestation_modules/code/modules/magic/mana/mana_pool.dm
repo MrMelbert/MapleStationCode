@@ -101,6 +101,7 @@
 	else
 		parent.mana_pool = null
 	parent = null
+	check_ruleset_callback = null
 
 	return ..()
 
