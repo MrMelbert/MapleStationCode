@@ -6545,6 +6545,7 @@
 #include "maplestation_modules\code\modules\clothing\glasses\blind_goggles.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\hud_eyepatches.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\loadout_glasses.dm"
+#include "maplestation_modules\code\modules\clothing\glasses\red_glasses.dm"
 #include "maplestation_modules\code\modules\clothing\gloves\loadout_gloves.dm"
 #include "maplestation_modules\code\modules\clothing\head\jobs.dm"
 #include "maplestation_modules\code\modules\clothing\head\loadout_helmet.dm"
