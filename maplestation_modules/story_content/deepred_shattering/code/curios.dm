@@ -248,6 +248,38 @@
 		/obj/item/snowglobe/extra/silence,
 	)
 
+/obj/effect/spawner/random/random_snowglobe
+	name = "snowglobe spawner (random)"
+	desc = "A spawner that can create any random snowglobe."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+
+	loot = list(
+		/obj/item/snowglobe/reimu,
+		/obj/item/snowglobe/yukari,
+		/obj/item/snowglobe/sdm,
+		/obj/item/snowglobe/draedon,
+		/obj/item/snowglobe/starfarers,
+		/obj/item/snowglobe/calamitas,
+		/obj/item/snowglobe/angela,
+		/obj/item/snowglobe/library,
+		/obj/item/snowglobe/city,
+		/obj/item/snowglobe/station,
+		/obj/item/snowglobe/empty,
+		/obj/item/snowglobe/extra,
+		/obj/item/snowglobe/extra/moon,
+		/obj/item/snowglobe/extra/mars,
+		/obj/item/snowglobe/extra/marisa,
+		/obj/item/snowglobe/extra/lunar,
+		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/astral,
+		/obj/item/snowglobe/extra/dog,
+		/obj/item/snowglobe/extra/goozma,
+		/obj/item/snowglobe/extra/arbiter,
+		/obj/item/snowglobe/extra/limbus,
+		/obj/item/snowglobe/extra/silence,
+	)
+
 /obj/item/rtechdrive
 	name = "redtech data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
