@@ -238,6 +238,9 @@ export type ServerData = {
     max_spoken_languages: number;
     max_understood_languages: number;
   };
+  laws: {
+    lawname_to_laws: Record<string, string[]>;
+  };
   // NON-MODULE CHANGE END
   [otheyKey: string]: unknown;
 };

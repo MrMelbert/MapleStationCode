@@ -270,6 +270,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 		owner.current.add_to_current_living_antags()
 
 	SEND_SIGNAL(owner, COMSIG_ANTAGONIST_GAINED, src)
+	SEND_SIGNAL(owner.current, COMSIG_MOB_ANTAGONIST_GAINED, src)
 
 /**
  * Proc that checks the sent mob aganst the banlistfor this antagonist.

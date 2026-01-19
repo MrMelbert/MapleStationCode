@@ -51,7 +51,8 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		var/obj/item/organ/lungs/target_lungs = human_target.get_organ_slot(ORGAN_SLOT_LUNGS)
-		target_lungs.operated = TRUE
+		if(target_lungs && !(target_lungs.organ_flags & ORGAN_UNREMOVABLE))
+			target_lungs.operated = TRUE
 		human_target.setOrganLoss(ORGAN_SLOT_LUNGS, 60)
 		display_results(
 			user,

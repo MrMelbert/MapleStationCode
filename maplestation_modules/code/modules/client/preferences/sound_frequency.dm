@@ -42,8 +42,8 @@
 
 	var/picked_sound = pick(speech_sounds_to_try)
 	var/sound/the_sound = sound(picked_sound)
-	the_sound.pitch = dummy.speech_sound_pitch_modifier
-	the_sound.frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) * dummy.speech_sound_frequency_modifier
+	the_sound.pitch = user.client.prefs.read_preference(/datum/preference/numeric/pitch_modifier)
+	the_sound.frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) * user.client.prefs.read_preference(/datum/preference/numeric/frequency_modifier)
 
 	user.playsound_local(
 		turf_source = get_turf(user),

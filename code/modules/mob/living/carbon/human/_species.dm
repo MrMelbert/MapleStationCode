@@ -411,7 +411,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	//Resets blood if it is excessively high so they don't gib
 	normalize_blood(human_who_gained_species)
 
-	add_body_markings(human_who_gained_species)
+	add_body_markings(human_who_gained_species, update = FALSE)
 
 	if(length(inherent_traits))
 		human_who_gained_species.add_traits(inherent_traits, SPECIES_TRAIT)
@@ -472,7 +472,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	C.physiology?.cold_mod /= coldmod
 	C.physiology?.heat_mod /= heatmod
 
-	remove_body_markings(C)
+	remove_body_markings(C, update = FALSE)
 
 	// Removes all languages previously associated with [LANGUAGE_SPECIES], gaining our new species will add new ones back
 	var/datum/language_holder/losing_holder = GLOB.prototype_language_holders[species_language_holder]
@@ -1620,26 +1620,36 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return null
 
 /// Add species appropriate body markings
-/datum/species/proc/add_body_markings(mob/living/carbon/human/hooman)
+/datum/species/proc/add_body_markings(mob/living/carbon/human/hooman, update = FALSE)
+	var/need_update = FALSE
 	for(var/markings_type in body_markings) //loop through possible species markings
 		var/datum/bodypart_overlay/simple/body_marking/markings = new markings_type() // made to die... mostly because we cant use initial on lists but its convenient and organized
 		var/accessory_name = hooman.dna.features[markings.dna_feature_key] || body_markings[markings_type] //get the accessory name from dna
 		for(var/obj/item/bodypart/part as anything in markings.applies_to) //check through our limbs
 			var/obj/item/bodypart/people_part = hooman.get_bodypart(initial(part.body_zone)) // and see if we have a compatible marking for that limb
-			if(isnull(people_part))
+			if(isnull(people_part) || (locate(markings_type) in people_part.bodypart_overlays))
 				continue
 
 			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type()
 			overlay.set_appearance(accessory_name, hooman.dna.features["mcolor"])
-			people_part.add_bodypart_overlay(overlay)
+			people_part.add_bodypart_overlay(overlay, update = FALSE)
+			need_update = TRUE
 
 		qdel(markings)
 
+	if(need_update && update)
+		hooman.update_body_parts()
+
 /// Remove body markings
-/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
+/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman, update = TRUE)
+	var/need_update = FALSE
 	for(var/obj/item/bodypart/part as anything in hooman.bodyparts)
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
-			part.remove_bodypart_overlay(marking)
+			part.remove_bodypart_overlay(marking, update = FALSE)
+			need_update = TRUE
+
+	if(need_update && update)
+		hooman.update_body_parts()
 
 /**
  * Calculates the expected height values for this species

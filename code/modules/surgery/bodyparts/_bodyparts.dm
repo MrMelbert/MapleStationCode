@@ -959,9 +959,9 @@
 	var/mob/living/carbon/human/human_owner = owner
 
 	limb_gender = (human_owner.physique == MALE) ? "m" : "f"
-	if(HAS_TRAIT(human_owner, TRAIT_USES_SKINTONES))
+	if(HAS_TRAIT(human_owner, TRAIT_USES_SKINTONES) || HAS_TRAIT(src, TRAIT_USES_SKINTONES))
 		skin_tone = human_owner.skin_tone
-	else if(HAS_TRAIT(human_owner, TRAIT_MUTANT_COLORS))
+	else if(HAS_TRAIT(human_owner, TRAIT_MUTANT_COLORS) || HAS_TRAIT(src, TRAIT_MUTANT_COLORS))
 		skin_tone = ""
 		var/datum/species/owner_species = human_owner.dna.species
 		if(owner_species.fixed_mut_color)

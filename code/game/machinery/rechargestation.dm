@@ -37,7 +37,7 @@
 		return
 
 	var/area/my_area = get_area(src)
-	if(!(my_area.type in GLOB.the_station_areas))
+	if(istype(my_area, /area/station/maintenance) || !(my_area.type in GLOB.the_station_areas))
 		return
 
 	var/area_name = get_area_name(src, format_text = TRUE)
