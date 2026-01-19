@@ -10,6 +10,7 @@
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
 	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
+	examine_feedback_on_ui = TRUE
 
 	///Is the autolathe hacked via wiring
 	var/hacked = FALSE

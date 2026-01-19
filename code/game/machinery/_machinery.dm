@@ -152,6 +152,9 @@
 	/// What was our power state the last time we updated its appearance?
 	/// TRUE for on, FALSE for off, -1 for never checked
 	var/appearance_power_state = -1
+	/// If true, show "x looks at the machine" when opening the UI
+	var/examine_feedback_on_ui = FALSE
+
 	armor_type = /datum/armor/obj_machinery
 
 /datum/armor/obj_machinery
@@ -711,7 +714,11 @@
 	if(interaction_flags_machine & INTERACT_MACHINE_SET_MACHINE)
 		user.set_machine(src)
 	update_last_used(user)
+	var/had_ui = examine_feedback_on_ui && !issilicon(user) && SStgui.get_open_ui(user, src)
 	. = ..()
+	var/has_ui = examine_feedback_on_ui && !issilicon(user) && SStgui.get_open_ui(user, src)
+	if(!had_ui && has_ui)
+		user.examine_feedback(src)
 
 /obj/machinery/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	add_fingerprint(usr)

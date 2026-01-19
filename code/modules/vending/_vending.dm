@@ -70,6 +70,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	light_power = 0.7
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
+	examine_feedback_on_ui = TRUE
 
 	/// Is the machine active (No sales pitches if off)!
 	var/active = 1
