@@ -20,11 +20,19 @@ Disabled as synths don't exist
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 */
 
-/datum/reagent/mutationtoxin/skrell
-	name = "Skrell Mutation Toxin"
+/datum/reagent/mutationtoxin/high_skrell
+	name = "High Skrell Mutation Toxin"
 	description = "A non-euclidian-looking toxin. It has protrusions."
 	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/skrell
+	race = /datum/species/high_skrell
+	taste_description = "frog legs"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/mutationtoxin/deep_skrell
+	name = "Deep Skrell Mutation Toxin"
+	description = "A non-euclidian-looking toxin. It has protrusions."
+	color = "#5EFF3B" //RGB: 94, 255, 59
+	race = /datum/species/deep_skrell
 	taste_description = "calamari"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
