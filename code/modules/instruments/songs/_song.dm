@@ -216,20 +216,19 @@
 	music_player = user
 	START_PROCESSING(SSinstruments, src)
 	if(id)
-		sync_play()
+		sync_play(user)
 
 /**
  * Attempts to find other instruments with the same ID and syncs them to our song.
  */
-/datum/song/proc/sync_play()
-	var/mob/our_player = find_sync_player()
+/datum/song/proc/sync_play(atom/user)
 	for(var/datum/song/other_instrument as anything in SSinstruments.songs)
 		if(other_instrument == src || other_instrument.id != id)
 			continue
 		if(other_instrument.playing)
 			continue
 		var/atom/other_player = other_instrument.find_sync_player()
-		if(isnull(other_player) || !(other_player in view(our_player || parent)))
+		if(isnull(other_player) || !(other_player in view(user || parent)))
 			continue
 		// copies the main song info to target songs
 		other_instrument.lines = lines.Copy()
