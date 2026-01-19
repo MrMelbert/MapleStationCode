@@ -123,10 +123,13 @@
 		return FALSE
 	if(dried)
 		return TRUE
-	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
-	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
+	var/list/unique_blood = list()
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		if(unique_blood[blood_type])
+			continue
+		var/datum/blood_type/blood = find_blood_type(blood_type)
 		blood.set_up_blood(src, first_dna == 0)
+		unique_blood[blood_type] = TRUE
 	update_appearance()
 	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE

@@ -3,6 +3,7 @@
 #define MECHA_INT_SHORT_CIRCUIT (1<<2)
 #define MECHA_CABIN_AIR_BREACH (1<<3)
 #define MECHA_INT_CONTROL_LOST (1<<4)
+#define MECHA_INT_FUEL_LINE (1<<5)
 
 #define PANEL_OPEN (1<<0)
 #define ID_LOCK_ON (1<<1)
@@ -59,3 +60,8 @@
 #define MECHA_AMMO_PUNCHING_GLOVE "Punching glove"
 #define MECHA_AMMO_BANANA_PEEL "Banana peel"
 #define MECHA_AMMO_MOUSETRAP "Mousetrap"
+
+// Flags for use_energy
+#define OIL_MODIFIED_DRAIN (1<<0)
+#define SERVO_MODIFIED_DRAIN (1<<1)
+#define CAPACITOR_MODIFIED_DRAIN (1<<2)
