@@ -124,8 +124,9 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		return
 
 	switch(stat)
-		if(SOFT_CRIT)
-			message_mods[WHISPER_MODE] = MODE_WHISPER
+		// NON-MODULE CHANGE
+		// if(SOFT_CRIT)
+		// 	message_mods[WHISPER_MODE] = MODE_WHISPER
 		if(UNCONSCIOUS)
 			return
 		if(HARD_CRIT)
