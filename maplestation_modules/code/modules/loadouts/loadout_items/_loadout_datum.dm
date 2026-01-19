@@ -59,6 +59,9 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	/// Jobs are prioritized over departments.
 	/// Note: You don't need to set a color for every job or department!
 	var/list/job_greyscale_palettes
+	/// Whether the item has a MODlink label we should be able to set in the loadout.
+	/// Requires setting such to be implemented on on_equip_item for each such item.
+	var/has_modlink_label = FALSE
 
 /datum/loadout_item/New(category)
 	src.category = category
@@ -145,6 +148,10 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 					loadout[other_item_path] -= INFO_HEIRLOOM
 				update_loadout(manager.preferences, loadout)
 				return TRUE // Update UI
+
+		if("set_modlink_label")
+			if(has_modlink_label)
+				return set_modlink_label(manager, user)
 
 	return TRUE
 
@@ -367,6 +374,9 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	if(required_holiday)
 		displayed_text[check_holidays(required_holiday) ? FA_ICON_CALENDAR_CHECK : FA_ICON_CALENDAR_XMARK] = "Only available during [required_holiday]"
 
+	if(has_modlink_label)
+		displayed_text[FA_ICON_PENCIL] = "Relabelable"
+
 	return displayed_text
 
 /**
@@ -429,6 +439,13 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 			"tooltip" = "Toggle whether this item is your family heirloom.",
 			"required_quirk" = sanitize_css_class_name(/datum/quirk/item_quirk/family_heirloom::name),
 		))
+	if(has_modlink_label)
+		UNTYPED_LIST_ADD(button_list, list(
+		"label" = "Change MODlink Label",
+		"act_key" = "set_modlink_label",
+		"button_icon" = FA_ICON_PEN,
+		"active_key" = INFO_MODLINK_LABEL,
+		))
 
 	return button_list
 
@@ -479,3 +496,28 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 		/datum/job_department/cargo = COLOR_JOB_CARGO_GENERIC,
 		/datum/job = COLOR_JOB_DEFAULT, // default for any job not listed above
 	)
+
+/// Sets the MODlink label of the item.
+/datum/loadout_item/proc/set_modlink_label(datum/preference_middleware/loadout/manager, mob/user)
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/input_label = tgui_input_text(
+		user = user,
+		message = "What MODlink label do you want to give the [name]? Leave blank to clear.",
+		title = "[name] MODlink label",
+		default = loadout?[item_path]?[INFO_MODLINK_LABEL], // plop in existing label (if any)
+		max_length = MAX_DESC_LEN,
+	)
+	if(QDELETED(src) || QDELETED(user) || QDELETED(manager) || QDELETED(manager.preferences))
+		return FALSE
+
+	loadout = manager.preferences.read_preference(/datum/preference/loadout) // Make sure no shenanigans happened
+	if(!loadout?[item_path])
+		return FALSE
+
+	if(input_label)
+		loadout[item_path][INFO_MODLINK_LABEL] = input_label
+	else if(input_label == "")
+		loadout[item_path] -= INFO_MODLINK_LABEL
+
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	return TRUE
