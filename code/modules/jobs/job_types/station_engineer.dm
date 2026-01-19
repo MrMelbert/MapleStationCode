@@ -73,7 +73,7 @@
 		/obj/item/construction/rcd/loaded,
 	)
 
-	box = /obj/item/storage/box/survival/engineer
+	box = /obj/item/storage/pouch/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
 

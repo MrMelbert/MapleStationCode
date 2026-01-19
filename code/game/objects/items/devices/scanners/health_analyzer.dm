@@ -20,7 +20,7 @@
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT *2)
@@ -613,6 +613,7 @@
 	desc = "A helpful, child-proofed, and most importantly, extremely cheap MeLo-Tech medical scanner used to diagnose injuries and recommend treatment for serious wounds. While it might not sound very informative for it to be able to tell you if you have a gaping hole in your body or not, it applies a temporary holoimage near the wound with information that is guaranteed to double the efficacy and speed of treatment."
 	mode = SCANNER_NO_MODE
 	give_wound_treatment_bonus = TRUE
+	w_class = WEIGHT_CLASS_TINY
 
 	/// Cooldown for when the analyzer will allow you to ask it for encouragement. Don't get greedy!
 	var/next_encouragement

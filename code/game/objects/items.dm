@@ -24,6 +24,8 @@
 
 	///Icon file for mob worn overlays.
 	var/icon/worn_icon
+	///Icon file used in occasional cases where the item must be mirrored
+	var/mirror_icon
 	///Icon state for mob worn overlays, if null the normal icon_state will be used.
 	var/worn_icon_state
 	///Icon state for the belt overlay, if null the normal icon_state will be used.

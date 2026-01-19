@@ -6412,6 +6412,7 @@
 #include "maplestation_modules\code\game\objects\items\storage\boxes.dm"
 #include "maplestation_modules\code\game\objects\items\storage\garment.dm"
 #include "maplestation_modules\code\game\objects\items\storage\medkit.dm"
+#include "maplestation_modules\code\game\objects\items\storage\pouch.dm"
 #include "maplestation_modules\code\game\objects\items\storage\storage.dm"
 #include "maplestation_modules\code\game\objects\items\tcg\tdatet.dm"
 #include "maplestation_modules\code\game\objects\spawners\cycle_helper.dm"
