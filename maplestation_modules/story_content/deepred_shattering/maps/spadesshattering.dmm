@@ -1,0 +1,69 @@
+"a" = (/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"f" = (/obj/structure/redtech_indestructable/server_off,/obj/structure/inert_AV,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"g" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"h" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"i" = (/turf/closed/indestructible/binary{desc = "Something terrible has happened here."; initial_gas_mix = "AIRLESS_ATMOS"},/area/ruin/space/unpowered/spades)
+"k" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"l" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"m" = (/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"o" = (/turf/closed/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"p" = (/obj/structure/frame/machine/secured,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"r" = (/obj/structure/inert_AV,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"t" = (/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"u" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"w" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"y" = (/obj/item/rtechdrive/special/spades,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"z" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"A" = (/obj/structure/inert_AV/worse,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"B" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"E" = (/obj/structure/inert_AV/worse,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"G" = (/turf/template_noop,/area/ruin/space/unpowered/spades)
+"I" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"J" = (/turf/template_noop,/area/template_noop)
+"K" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"M" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"N" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"O" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"Q" = (/obj/structure/frame/machine/secured,/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"S" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+"X" = (/obj/structure/inert_AV,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/spades)
+
+(1,1,1) = {"
+JJJJJJGGGGGGGGGGGGGGGGGGGGGGGGGGJJJJJ
+JJJJJGGoGGGGGGGGGGGGGGGGGGGGGGGoGGJJJ
+JJJJGGGGGGGGGkGGGGGGGoGGGGGGGGGGGkGJJ
+JJJGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JJGGkuGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGokGkGGGGGGGGkGGGGGJ
+JGGGGGGGGGGGGGGGGGtGGGGGkoGGGGloGGGGJ
+JGGGGGGGGGGGGGGkGGGGGGGGGoGGGGGuGGGGJ
+JGGGGGGGGGotGGGGGGGGGGGGluGGGGGGGGGGJ
+JGGGGGGGGoooGGGGGGGGGGGGGGGGGGGlGGGGJ
+JGGGGGGGGOoGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+JGGkGGGGGGGGGGGGGGGGGGGGGGGGGGGGoGGGJ
+JGGlGGGGGGGGGGGGGGGGGGGGGGGGGGGGoGGGJ
+JGotGGGGGGGGGGGGGGGlkkGGGGGGGGGGtGGGJ
+JGoGGGGGGGGGGGGGkGGoolooGGGGGGGGGGGGJ
+JGoGGGGGGGGGGGGklGGGGkkukkGGGGGGGGGGJ
+JGGGGGGGGlGGGGGGGGGGGGGooOooGGGGGGGGJ
+GGGGGGGGGGGGGGGGiGGGGGGGGlkkGGGGGGoGJ
+GGGGGGGGGGGiiGGGGGiGGGGGGGGGGGGGGGGGJ
+GoGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGJ
+GGGGGoooooooGGGoGGGooooooooooooooooGJ
+GGGGGoaaaalGGkllGlGaoaaaaaaaaaayrEoGJ
+GGGGGohzzwGGSzQiGwGhohBzzzzzzzffAooGJ
+GGGGoohQNGGNwzQizSGIohzzgBzzgzzfAoGGG
+GGGGoaaalGkklkkikkkaoaaaaaaaarrrroGGG
+GGGGohzzQGGGiiiiiQMhoAfffzBzfffAooGGG
+GGGoohzzzSzNwQiNiiwIoXfzzBgzzzfAoGGGG
+GGGoaaaaaaaaliilkklkokkaaaaaaarroGGGG
+GGGohzpzzzzzQiNwzSGGGKzzzzzzzzXooGGGG
+JGoohzzzzzzzQGwzQwGwGGzgBzzzffAoGGGkG
+JGoaaaaaaaaaaaalkGGkkGklaaaaarroGGGuG
+JGoooooooooooooooGkloGooooooooooGGGGG
+JGGGGGGGGGGGGGGGGGGGoGGGGGGGGGGGGGGtG
+JGGGlGGGiGGGGiGGGktGGGiGGGGGGGGGGoGGG
+JJGGkmoGGGGGGiGGGGGGGGGJJJJJJJJGGGGGJ
+"}

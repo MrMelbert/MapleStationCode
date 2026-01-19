@@ -1,0 +1,393 @@
+/obj/item/starblight_soot
+	name = "starblight soot jar"
+	desc = "A small jar filled with a fine, sparkling purple powder. It's sealed tight, and the label reads Starblight. The jar's glass just the faintest tinted blue and feels heavy in your hand."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "starblight_soot"
+
+	inhand_icon_state = "beaker"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/suspicious_scrap
+	name = "suspicious scrap"
+	desc = "A small chunk of componentry that looks like part of a larger device. Despite this, it's not immediately clear what it's from or what it does."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "scrap"
+
+	inhand_icon_state = "reverse_bear_trap"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+
+/obj/item/suspicious_scrap/alt
+	icon_state = "scrap_alt"
+	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
+
+/obj/item/ammo_casing/shotgun/godslayer
+	name = "godslayer slug"
+	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy, despite the lack of an obvious power source. You feel that shooting this would be a really bad idea."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "godslayer"
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	projectile_type = /obj/projectile/bullet/godslayer
+	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
+	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
+
+	var/obj/item/gun/fired_record
+
+/obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	if(isgun(fired_from))
+		fired_record = fired_from
+		fired_record.fire_sound_volume = 0
+		fired_record.recoil = initial(fired_record.recoil) + 3
+
+	. = ..()
+	playsound(src, fire_sound, 100, extrarange = 10)
+
+	if(fired_record)
+		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)
+
+/obj/item/ammo_casing/shotgun/godslayer/proc/reset_gunstats()
+	if(fired_record)
+		fired_record.fire_sound_volume = initial(fired_record.fire_sound_volume)
+		fired_record.recoil = initial(fired_record.recoil)
+
+/obj/item/redtech_nan_sample
+	name = "redtech nanite sample"
+	desc = "A small, hard cube that glows a deep red at its seams. It seems to move and shift geometrically in place."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "nanite_sample"
+
+	inhand_icon_state = "nothing"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
+
+/obj/item/throwing_star/needle
+	name = "persuasion needle"
+	desc = "A large, sharp needle designed for \"persuasion.\" It has a small, intricate yin-yang design etched into the side."
+	w_class = WEIGHT_CLASS_NORMAL
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "needle"
+
+	inhand_icon_state = "rods"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
+
+/obj/item/yin_yang_orb
+	name = "yin-yang orb"
+	desc = "A small, smooth orb that seems all but inert now. It seems to almost be crystaline in nature and has the design of a yin-yang. Throwing this at someone would hurt quite a bit."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	force = 8
+	throwforce = 16
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "yin_yang_orb"
+
+	inhand_icon_state = "nothing"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/yin_yang_orb/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/knockback, 1, FALSE, FALSE)
+
+/obj/item/snowglobe
+	name = "snowglobe"
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of The Collector?"
+	w_class = WEIGHT_CLASS_SMALL
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+
+	inhand_icon_state = "beaker"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/snowglobe/reimu
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a red and white shrine maiden at an oriental shrine."
+
+/obj/item/snowglobe/yukari
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a tall, ribboned lady with a parasol standing on an old, abandoned train platform."
+
+/obj/item/snowglobe/sdm
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a misty, lakeside mansion."
+
+/obj/item/snowglobe/draedon
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a strange robotic figure sitting on a flying chair, flanked by a landscape of metal and machinery."
+
+/obj/item/snowglobe/starfarers
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of two twins, both wearing purple, starry attire. They stand on a floating island with a towering spire, surrounded by a sea of clouds."
+
+/obj/item/snowglobe/calamitas
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a dark skinned sorceress wearing red robes, standing in a incinerated city."
+
+/obj/item/snowglobe/angela
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a pale librarian holding a book, surrounded by an odd library."
+
+/obj/item/snowglobe/library
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a giant, tree-like library out in a barren wasteland."
+
+/obj/item/snowglobe/city
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a cityscape, with a large, imposing tower in the center."
+
+/obj/item/snowglobe/station
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of the space station you're currently on?"
+
+/obj/item/snowglobe/empty
+	desc = "A small glass globe filled with a miniature winter scene. This one is completely empty, save for the snow."
+
+/obj/item/snowglobe/extra
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a human, clad deep red naval captain's attire, with a large gun case slung across their back."
+
+/obj/item/snowglobe/extra/moon
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of Earth's moon. You didn't know it snowed on the Moon."
+
+/obj/item/snowglobe/extra/mars
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of Mars from the Sol system. You didn't know it snowed on Mars."
+
+/obj/item/snowglobe/extra/marisa
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a monochromatic, ordinary witch soaring through snowy clouds on their broom."
+
+/obj/item/snowglobe/extra/lunar
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a vast cityscape, built on the far side of the Moon."
+
+/obj/item/snowglobe/extra/needlecastle
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a large palace, suspended in the sky upside down."
+
+/obj/item/snowglobe/extra/astral
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a starstruck wasteland, infected by an otherworldly blight."
+
+/obj/item/snowglobe/extra/dog
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a titanic armoured serpent, coiled around a rift in time and space."
+
+/obj/item/snowglobe/extra/goozma
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a massive, gooey, tentacled creature, floating in a monsoon of slime."
+
+/obj/item/snowglobe/extra/arbiter
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a person wrapped in a pitch black cloak with golden, hexagonal highlights. They stand in the centre of a ruined cityscape."
+
+/obj/item/snowglobe/extra/limbus
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a strange, train-like bus. It has bright text written on its side, but you can't quite make it out."
+
+/obj/item/snowglobe/extra/silence
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man in a black suit and black gloves, with a featureless mask."
+
+/obj/effect/spawner/random/shattering_snowglobes
+	name = "snowglobe spawner (originals)"
+	desc = "The Collector's old collection."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+	spawn_loot_double = FALSE
+	spawn_all_loot = TRUE
+	spawn_loot_split = TRUE
+
+	loot = list(
+		/obj/item/snowglobe/reimu,
+		/obj/item/snowglobe/yukari,
+		/obj/item/snowglobe/sdm,
+		/obj/item/snowglobe/draedon,
+		/obj/item/snowglobe/starfarers,
+		/obj/item/snowglobe/calamitas,
+		/obj/item/snowglobe/angela,
+		/obj/item/snowglobe/library,
+		/obj/item/snowglobe/city,
+		/obj/item/snowglobe/station,
+		/obj/item/snowglobe/empty,
+	)
+
+/obj/effect/spawner/random/shattering_snowglobes/extra
+	name = "snowglobe spawner (extras)"
+	desc = "The Collector's new collection."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+
+	loot = list(
+		/obj/item/snowglobe/extra,
+		/obj/item/snowglobe/extra/moon,
+		/obj/item/snowglobe/extra/mars,
+		/obj/item/snowglobe/extra/marisa,
+		/obj/item/snowglobe/extra/lunar,
+		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/astral,
+		/obj/item/snowglobe/extra/dog,
+		/obj/item/snowglobe/extra/goozma,
+		/obj/item/snowglobe/extra/arbiter,
+		/obj/item/snowglobe/extra/limbus,
+		/obj/item/snowglobe/extra/silence,
+	)
+
+/obj/effect/spawner/random/random_snowglobe
+	name = "snowglobe spawner (random)"
+	desc = "A spawner that can create any random snowglobe."
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
+	icon_state = "snowglobe"
+
+	loot = list(
+		/obj/item/snowglobe/reimu,
+		/obj/item/snowglobe/yukari,
+		/obj/item/snowglobe/sdm,
+		/obj/item/snowglobe/draedon,
+		/obj/item/snowglobe/starfarers,
+		/obj/item/snowglobe/calamitas,
+		/obj/item/snowglobe/angela,
+		/obj/item/snowglobe/library,
+		/obj/item/snowglobe/city,
+		/obj/item/snowglobe/station,
+		/obj/item/snowglobe/empty,
+		/obj/item/snowglobe/extra,
+		/obj/item/snowglobe/extra/moon,
+		/obj/item/snowglobe/extra/mars,
+		/obj/item/snowglobe/extra/marisa,
+		/obj/item/snowglobe/extra/lunar,
+		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/astral,
+		/obj/item/snowglobe/extra/dog,
+		/obj/item/snowglobe/extra/goozma,
+		/obj/item/snowglobe/extra/arbiter,
+		/obj/item/snowglobe/extra/limbus,
+		/obj/item/snowglobe/extra/silence,
+	)
+
+/obj/item/rtechdrive
+	name = "redtech data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	armor_type = /datum/armor/rtechdrive
+	w_class = WEIGHT_CLASS_BULKY
+
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/blackbox.dmi'
+	icon_state = "blank"
+
+	inhand_icon_state = "blackcube"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	var/signaltype = "Redtech Signal"
+	var/gps_enabled = FALSE
+
+/datum/armor/rtechdrive
+	bomb = 100
+	fire = 100
+	acid = 100
+
+/obj/item/rtechdrive/Initialize(mapload)
+	. = ..()
+	SSpoints_of_interest.make_point_of_interest(src)
+	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(40 MINUTES, 60 MINUTES))
+
+/obj/item/rtechdrive/examine(mob/user)
+	. = ..()
+	if(gps_enabled)
+		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online. You might be able to disable them with a multitool or EMP device.")
+	else
+		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline. You'll need to wait for them to come back online.")
+
+/obj/item/rtechdrive/examine_more(mob/user)
+	. = ..()
+	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
+
+/obj/item/rtechdrive/proc/send_echo()
+	AddComponent(/datum/component/gps, signaltype)
+	gps_enabled = TRUE
+
+/obj/item/rtechdrive/multitool_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(!gps_enabled)
+		balloon_alert(user, "the blackbox's GPS is already offline")
+		return .
+
+	balloon_alert(user, "disabling the blackbox's GPS systems...")
+	if(!do_after(user, 20 SECONDS, src))
+		balloon_alert(user, "cancelled")
+		return .
+
+	addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
+	qdel(src.GetComponent(/datum/component/gps))
+	src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are manually disabled!"))
+	gps_enabled = FALSE
+
+/obj/item/rtechdrive/emp_act(severity)
+	if(gps_enabled)
+		qdel(src.GetComponent(/datum/component/gps))
+		if(severity == EMP_HEAVY)
+			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(40 MINUTES, 60 MINUTES))
+			src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are disrupted!"))
+		else
+			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
+			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
+		gps_enabled = FALSE
+
+/obj/item/rtechdrive/proc/restart_gps()
+	if(!gps_enabled)
+		AddComponent(/datum/component/gps, signaltype)
+		gps_enabled = TRUE
+		src.visible_message(span_boldwarning("The blackbox emits a faint hum as its internal GPS systems come back online."))
+
+/obj/item/rtechdrive/special
+
+/obj/item/rtechdrive/special/send_echo()
+	. = ..()
+
+	for(var/obj/item/gps/target_gps in world)
+		target_gps.say("Bluespace triangulation complete. Signal type \"[signaltype]\" is now available for tracking.")
+
+	for(var/obj/machinery/light/target_light as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/light))
+		if(prob(10) && target_light.on)
+			target_light.flicker()
+
+/obj/item/rtechdrive/special/hearts
+	name = "redtech hearts data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
+	icon_state = "heart"
+	signaltype = "Redtech Hearts Signal"
+
+/obj/item/rtechdrive/special/diamonds
+	name = "redtech diamonds data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
+	icon_state = "diamond"
+	signaltype = "Redtech Diamonds Signal"
+
+/obj/item/rtechdrive/special/clubs
+	name = "redtech clubs data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
+	icon_state = "club"
+	signaltype = "Redtech Clubs Signal"
+
+/obj/item/rtechdrive/special/spades
+	name = "redtech spades data drive"
+	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
+	icon_state = "spade"
+	signaltype = "Redtech Spades Signal"
