@@ -23,6 +23,8 @@
 #define MAGIC_ELEMENT_LIFE /datum/attunement/life
 #define MAGIC_ELEMENT_EARTH /datum/attunement/earth
 #define MAGIC_ELEMENT_ELECTRIC /datum/attunement/electric
+#define MAGIC_ELEMENT_DARK /datum/attunement/dark
+#define MAGIC_ELEMENT_WATER /datum/attunement/water
 // When other elements are used, add them here
 
 // Alignments
