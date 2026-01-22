@@ -60,7 +60,10 @@
 		handle_gravity(seconds_per_tick, times_fired)
 
 	if(stat != DEAD)
+		if(COOLDOWN_FINISHED(src, smell_cd) && !isnull(mind) && can_smell())
+			smell_something()
 		body_temperature_alerts()
+
 	handle_wounds(seconds_per_tick, times_fired)
 	if(staminaloss)
 		adjustStaminaLoss(-1 * (stat == DEAD ? 100 : 2.5) * seconds_per_tick)

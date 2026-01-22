@@ -411,6 +411,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	anchored = TRUE
 	reagent_id = /datum/reagent/consumable/nutraslop
 
+/obj/structure/reagent_dispensers/servingdish/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/element/smell, "slop", SMELL_INTENSITY_MODERATE, 1, "stench")
+
 /obj/structure/reagent_dispensers/plumbed
 	name = "stationary water tank"
 	anchored = TRUE

@@ -1,5 +1,8 @@
 // NON-MODULE CHANGE : This whole file
 
+#define BLOOD_SMELL_INTENSITY(blood) floor((initial(blood.bloodiness) || blood.bloodiness) * 0.2)
+#define BLOOD_SMELL_RADIUS(blood) ceil((initial(blood.bloodiness) || blood.bloodiness) * 0.04)
+
 /obj/effect/decal/cleanable/blood
 	name = "pool of blood"
 	desc = "It's weird and gooey. Perhaps it's the chef's cooking?"
@@ -43,6 +46,7 @@
 	else if(can_dry)
 		START_PROCESSING(SSblood_drying, src)
 		// update_atom_colour() // this is already called by parent via add_atom_colour
+		AddElement(/datum/element/smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
@@ -151,6 +155,7 @@
 	update_appearance()
 	update_atom_colour()
 	STOP_PROCESSING(SSblood_drying, src)
+	RemoveElement(/datum/element/smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/lazy_init_reagents()
@@ -174,6 +179,9 @@
 	merger.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	merger.adjust_bloodiness(bloodiness)
 	merger.slow_dry(1 SECONDS * bloodiness * BLOOD_PER_UNIT_MODIFIER)
+
+#undef BLOOD_SMELL_INTENSITY
+#undef BLOOD_SMELL_RADIUS
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0
@@ -434,6 +442,7 @@
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
+	AddElement(/datum/element/smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 1)
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drop of blood"

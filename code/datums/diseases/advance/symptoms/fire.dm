@@ -81,8 +81,8 @@
 		living_mob.show_message(span_hear("You hear a crackling noise."), type = MSG_AUDIBLE)
 	else if(prob(50) && !HAS_TRAIT(living_mob, TRAIT_RESISTHEAT))
 		to_chat(living_mob, span_warning("You feel hot."))
-	else if(!HAS_TRAIT(living_mob, TRAIT_ANOSMIA)) //Anosmia quirk holder can't smell anything.
-		to_chat(living_mob, span_warning("You smell smoket."))
+	else if(living_mob.can_smell()) //Anosmia quirk holder can't smell anything.
+		to_chat(living_mob, span_warning("You smell smoke."))
 
 /*
 Alkali perspiration

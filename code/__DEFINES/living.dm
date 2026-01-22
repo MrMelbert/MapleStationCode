@@ -211,3 +211,9 @@
 #define examining_span_normal(msg) span_infoplain(span_italics(msg))
 /// For consistent examine span formatting (small size)
 #define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
+
+#define SMELL_INTENSITY_FAINT 1
+#define SMELL_INTENSITY_WEAK 6
+#define SMELL_INTENSITY_MODERATE 12
+#define SMELL_INTENSITY_STRONG 24
+#define SMELL_INTENSITY_OVERPOWERING 48

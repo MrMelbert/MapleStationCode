@@ -150,7 +150,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		frying_burnt = TRUE
 		var/list/asomnia_hadders = list()
 		for(var/mob/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, src))
-			if(HAS_TRAIT(smeller, TRAIT_ANOSMIA))
+			if(!smeller.can_smell())
 				asomnia_hadders += smeller
 		visible_message(span_warning("[src] emits an acrid smell!"), ignored_mobs = asomnia_hadders)
 

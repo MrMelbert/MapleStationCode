@@ -44,6 +44,9 @@
 	/// Whether this tongue modifies speech via signal
 	var/modifies_speech = FALSE
 
+	/// Additive modifier to how sensitive to smell the tongue is (we don't have a nose organ)
+	var/smell_sensitivity = 0
+
 /obj/item/organ/tongue/Initialize(mapload)
 	. = ..()
 	// Setup the possible languages list

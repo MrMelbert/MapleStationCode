@@ -466,6 +466,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /// Handles processing the reagents in the cigarette.
 /obj/item/cigarette/proc/handle_reagents(mob/living/carbon/smoker, seconds_per_tick)
 	reagents.expose_temperature(heat, 0.05)
+	if(reagents.has_reagent(/datum/reagent/drug/nicotine, 1, check_subtypes = TRUE))
+		new /obj/effect/abstract/smell/cigarette_smoke(get_turf(smoker))
 	if(reagents.total_volume <= 0) //may have reacted and gone to 0 after expose_temperature
 		return
 

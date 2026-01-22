@@ -280,3 +280,8 @@
 	/// First element is the current martial art - any other elements are "saved" for if they unlearn the first one
 	/// Reference handling is done by the martial arts themselves
 	var/list/datum/martial_art/martial_arts
+
+	/// List of smell datums we smelled recently, we get accustomed to it over time
+	VAR_FINAL/list/recently_smelled
+	/// Cooldown between smell attempts
+	COOLDOWN_DECLARE(smell_cd)

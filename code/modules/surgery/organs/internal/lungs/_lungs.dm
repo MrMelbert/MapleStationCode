@@ -483,33 +483,9 @@
 			miasma_disease.name = "Unknown"
 			breather.AirborneContractDisease(miasma_disease, TRUE)
 	// Miasma side effects
-	if (HAS_TRAIT(breather, TRAIT_ANOSMIA)) //Anosmia quirk holder cannot smell miasma, but can get diseases from it.
+	if (!breather.can_smell()) //Anosmia quirk holder cannot smell miasma, but can get diseases from it.
 		return
-	switch(miasma_pp)
-		if(0.25 to 5)
-			// At lower pp, give out a little warning
-			breather.clear_mood_event("smell")
-			if(prob(5))
-				to_chat(breather, span_notice("There is an unpleasant smell in the air."))
-		if(5 to 15)
-			//At somewhat higher pp, warning becomes more obvious
-			if(prob(15))
-				to_chat(breather, span_warning("You smell something horribly decayed inside this room."))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/bad_smell)
-		if(15 to 30)
-			//Small chance to vomit. By now, people have internals on anyway
-			if(prob(5))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		if(30 to INFINITY)
-			//Higher chance to vomit. Let the horror start
-			if(prob(15))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		else
-			breather.clear_mood_event("smell")
+
 	// In a full miasma atmosphere with 101.34 pKa, about 10 disgust per breath, is pretty low compared to threshholds
 	// Then again, this is a purely hypothetical scenario and hardly reachable
 	breather.adjust_disgust(0.1 * miasma_pp)

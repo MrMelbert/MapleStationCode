@@ -86,25 +86,9 @@
 
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
-	AddElement(/datum/element/easy_ignite) // NON-MODULE CHANGE
-	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
-
-// /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
-// 	var/attacked_by_hot_thing = I.get_temperature()
-// 	if(attacked_by_hot_thing)
-// 		user.visible_message(span_warning("[user] tries to ignite [src] with [I]!"), span_warning("You try to ignite [src] with [I]."))
-// 		log_combat(user, src, (attacked_by_hot_thing < 480) ? "tried to ignite" : "ignited", I)
-// 		fire_act(attacked_by_hot_thing)
-// 		return
-// 	return ..()
-
-// /obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume)
-// 	if(exposed_temperature < 480)
-// 		return
-// 	visible_message(span_danger("[src] catches fire!"))
-// 	var/turf/T = get_turf(src)
-// 	qdel(src)
-// 	new /obj/effect/hotspot(T)
+	AddElement(/datum/element/easy_ignite)
+	AddElement(/datum/element/smell, /datum/smell/oil, SMELL_INTENSITY_STRONG, 2)
+	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil))
 
 /obj/effect/decal/cleanable/oil/streak
 	icon_state = "streak1"
