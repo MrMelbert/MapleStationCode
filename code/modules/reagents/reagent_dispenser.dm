@@ -413,7 +413,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 
 /obj/structure/reagent_dispensers/servingdish/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/element/smell, "slop", SMELL_INTENSITY_MODERATE, 1, "stench")
+	AddElement(/datum/element/smell, "slop", SMELL_INTENSITY_MODERATE, 1, "stench")
 
 /obj/structure/reagent_dispensers/plumbed
 	name = "stationary water tank"
