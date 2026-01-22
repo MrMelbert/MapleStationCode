@@ -85,7 +85,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"Clothing", \
 	"Nuts", \
 	"Seafood", \
-	"Oranges", \
 	"Bugs", \
 	"Gore", \
 	"Rocks", \
