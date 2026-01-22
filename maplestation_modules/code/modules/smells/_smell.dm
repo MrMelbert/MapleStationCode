@@ -76,6 +76,7 @@
 	category = "stench"
 
 /datum/smell/miasma/on_smell(mob/living/whom, intensity)
+	whom.adjust_disgust(10)
 	switch(intensity)
 		if(SMELL_INTENSITY_MODERATE to SMELL_INTENSITY_STRONG)
 			whom.add_mood_event("decay-smell", /datum/mood_event/disgust/bad_smell)
@@ -98,6 +99,7 @@
 	category = "stench"
 
 /datum/smell/decay/on_smell(mob/living/whom, intensity)
+	whom.adjust_disgust(10)
 	switch(intensity)
 		if(0 to SMELL_INTENSITY_MODERATE)
 			whom.add_mood_event("decay-smell", /datum/mood_event/disgust/minor_bad_smell)

@@ -85,7 +85,7 @@
 		var/datum/smell/smell_effect = all_smells[i]
 		var/smell_intensity = all_smells[smell_effect]
 		// subsequent smells have a chance to be ignored based on how strong the highest intensity smell is
-		if(i > 1 && prob(50 + highest_intensity - smell_intensity - tongue?.smell_sensitivity - (brain?.damage * -0.1)))
+		if(i > 1 && prob(50 + highest_intensity - smell_intensity))
 			break
 
 		smell_effect.on_smell(src, smell_intensity)
