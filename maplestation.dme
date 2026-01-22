@@ -6770,7 +6770,7 @@
 #include "maplestation_modules\code\modules\smells\smell_element.dm"
 #include "maplestation_modules\code\modules\smells\smell_holder.dm"
 #include "maplestation_modules\code\modules\smells\smell_mood.dm"
-#include "maplestation_modules\code\modules\smells\temporay_smell.dm"
+#include "maplestation_modules\code\modules\smells\temporary_smell.dm"
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_arms.dm"
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_digi.dm"
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_reskins.dm"

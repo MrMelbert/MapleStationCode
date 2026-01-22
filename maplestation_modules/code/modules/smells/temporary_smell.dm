@@ -23,7 +23,7 @@
 	src.category = category
 	src.wash_types = wash_types
 
-	AddElement(/datum/element/smell, smell, intensity, radius, category)
+	parent.AddElement(/datum/element/smell, smell, intensity, radius, category)
 	addtimer(CALLBACK(src, PROC_REF(clean_up)), duration, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME|TIMER_NO_HASH_WAIT)
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_wash))
 
@@ -46,8 +46,8 @@
 		return FALSE
 
 	if(intensity > src.intensity || radius > src.radius)
-		RemoveElement(/datum/element/smell, smell, src.intensity, src.radius, category)
-		AddElement(/datum/element/smell, smell, intensity, radius, category)
+		parent.RemoveElement(/datum/element/smell, smell, src.intensity, src.radius, category)
+		parent.AddElement(/datum/element/smell, smell, intensity, radius, category)
 		src.intensity = intensity
 		src.radius = radius
 
