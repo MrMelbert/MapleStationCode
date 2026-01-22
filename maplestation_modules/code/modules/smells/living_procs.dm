@@ -69,7 +69,7 @@
 		var/original_index = all_smells.Find(smell_effect)
 		var/correct_index = original_index
 		while(correct_index > 1)
-			if(all_smells[correct_index - 1] > all_smells[correct_index])
+			if(all_smells[all_smells[correct_index - 1]] > all_smells[all_smells[correct_index]])
 				break
 			correct_index -= 1
 		if(correct_index != original_index)

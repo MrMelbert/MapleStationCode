@@ -2,15 +2,17 @@
 /proc/get_smell(smell, category = /datum/smell::category)
 	var/static/list/smell_register = list()
 
-	. = smell_register[smell]
+	var/key = "[smell]-[category]"
+
+	. = smell_register[key]
 	if(isnull(.))
 		if(ispath(smell, /datum/smell))
 			. = new smell()
-			smell_register[smell] = .
+			smell_register[key] = .
 
 		else if(istext(smell))
 			. = new /datum/smell(smell, category)
-			smell_register["[smell]-[category]"] = .
+			smell_register[key] = .
 
 		else
 			stack_trace("Invalid smell input passed to get_smell: [smell || "null"]")
