@@ -41,8 +41,8 @@
 	if(wash_types && (clean_types & wash_types))
 		qdel(src)
 
-/datum/component/temporary_smell/CheckDupeComponent(datum/component/clone, duration, smell, intensity, radius, category)
-	if(smell != src.smell || category != src.category)
+/datum/component/temporary_smell/CheckDupeComponent(datum/component/clone, duration, smell, intensity, radius, category, wash_types)
+	if(smell != src.smell || category != src.category || wash_types != src.wash_types)
 		return FALSE
 
 	if(intensity > src.intensity || radius > src.radius)
