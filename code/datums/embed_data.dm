@@ -93,6 +93,14 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	VAR_FINAL/atom/movable/screen/embed_interface/embed_interface
 
 /obj/item/bodypart/proc/open_embed_interface(mob/living/user = usr)
+	if(isnull(user?.client))
+		return
+
+	for(var/atom/movable/screen/embed_interface/embed_interface in user.client.screen)
+		if(embed_interface.target_limb == src)
+			return // already open
+		embed_interface.close(user)
+
 	embed_interface ||= new(null, null, src)
 	embed_interface.open(user)
 
@@ -210,7 +218,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 /atom/movable/screen/embed_interface/proc/open(mob/user)
 	if(viewers[user])
 		return // already open
-	if(!isliving(user) || !check_state(user))
+	if(!isliving(user) || !user.client || !check_state(user))
 		return
 
 	RegisterSignals(user, list(COMSIG_QDELETING, COMSIG_MOB_LOGOUT), PROC_REF(on_viewer_deleted))
