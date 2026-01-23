@@ -142,10 +142,6 @@
 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
 		return FALSE
 
-	if(HAS_TRAIT(mob_parent, TRAIT_GLUTTON))
-		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry) //you'll never get enough
-		return TRUE
-
 	if(HAS_TRAIT(mob_parent, TRAIT_FAT) && !HAS_TRAIT(mob_parent, TRAIT_VORACIOUS))
 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fat)
 		return TRUE
@@ -243,7 +239,7 @@
 
 	var/list/params = args.Copy(3)
 	var/list/datum/mood_event/conditional/all_valid_conditional_events = list()
-	for(var/event_subtype in valid_typesof(base_type))
+	for(var/event_subtype in subtypesof(base_type))
 		var/datum/mood_event/potential_event = new event_subtype(category)
 		if(!potential_event.can_effect_mob(arglist(list(src, mob_parent) + params)))
 			qdel(potential_event)
@@ -292,17 +288,16 @@
 	mood = 0
 	shown_mood = 0
 
-	if (!HAS_TRAIT(mob_parent, TRAIT_APATHETIC))
-		for(var/category in mood_events)
-			var/datum/mood_event/the_event = mood_events[category]
-			var/event_mood = the_event.mood_change
-			event_mood *= max((event_mood > 0) ? positive_mood_modifier : negative_mood_modifier, 0)
-			mood += event_mood
-			if (!the_event.hidden)
-				shown_mood += event_mood
+	for(var/category in mood_events)
+		var/datum/mood_event/the_event = mood_events[category]
+		var/event_mood = the_event.mood_change
+		event_mood *= max((event_mood > 0) ? positive_mood_modifier : negative_mood_modifier, 0)
+		mood += event_mood
+		if (!the_event.hidden)
+			shown_mood += event_mood
 
-		mood *= max(mood_modifier, 0)
-		shown_mood *= max(mood_modifier, 0)
+	mood *= max(mood_modifier, 0)
+	shown_mood *= max(mood_modifier, 0)
 
 	switch(mood)
 		if (-INFINITY to MOOD_SAD4)
@@ -445,44 +440,41 @@
 			if(81 to INFINITY)
 				msg += "[span_boldwarning("I'm completely wasted.")]<br>"
 
-	if (HAS_TRAIT(mob_parent, TRAIT_APATHETIC))
-		msg += span_notice("My mood: [span_grey("I don't feel anything.")]<br>")
-	else
-		msg += span_notice("My current sanity: ") //Long term
-		switch(sanity)
-			if(SANITY_GREAT to INFINITY)
-				msg += "[span_boldnicegreen("My mind feels like a temple!")]<br>"
-			if(SANITY_NEUTRAL to SANITY_GREAT)
-				msg += "[span_nicegreen("I have been feeling great lately!")]<br>"
-			if(SANITY_DISTURBED to SANITY_NEUTRAL)
-				msg += "[span_nicegreen("I have felt quite decent lately.")]<br>"
-			if(SANITY_UNSTABLE to SANITY_DISTURBED)
-				msg += "[span_warning("I'm feeling a little bit unhinged...")]<br>"
-			if(SANITY_CRAZY to SANITY_UNSTABLE)
-				msg += "[span_warning("I'm freaking out!!")]<br>"
-			if(SANITY_INSANE to SANITY_CRAZY)
-				msg += "[span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")]<br>"
+	msg += span_notice("My current sanity: ") //Long term
+	switch(sanity)
+		if(SANITY_GREAT to INFINITY)
+			msg += "[span_boldnicegreen("My mind feels like a temple!")]<br>"
+		if(SANITY_NEUTRAL to SANITY_GREAT)
+			msg += "[span_nicegreen("I have been feeling great lately!")]<br>"
+		if(SANITY_DISTURBED to SANITY_NEUTRAL)
+			msg += "[span_nicegreen("I have felt quite decent lately.")]<br>"
+		if(SANITY_UNSTABLE to SANITY_DISTURBED)
+			msg += "[span_warning("I'm feeling a little bit unhinged...")]<br>"
+		if(SANITY_CRAZY to SANITY_UNSTABLE)
+			msg += "[span_warning("I'm freaking out!!")]<br>"
+		if(SANITY_INSANE to SANITY_CRAZY)
+			msg += "[span_boldwarning("AHAHAHAHAHAHAHAHAHAH!!")]<br>"
 
-		msg += span_notice("My current mood: ") //Short term
-		switch(mood_level)
-			if(MOOD_LEVEL_SAD4)
-				msg += "[span_boldwarning("I wish I was dead!")]<br>"
-			if(MOOD_LEVEL_SAD3)
-				msg += "[span_boldwarning("I feel terrible...")]<br>"
-			if(MOOD_LEVEL_SAD2)
-				msg += "[span_boldwarning("I feel very upset.")]<br>"
-			if(MOOD_LEVEL_SAD1)
-				msg += "[span_warning("I'm a bit sad.")]<br>"
-			if(MOOD_LEVEL_NEUTRAL)
-				msg += "[span_grey("I'm alright.")]<br>"
-			if(MOOD_LEVEL_HAPPY1)
-				msg += "[span_nicegreen("I feel pretty okay.")]<br>"
-			if(MOOD_LEVEL_HAPPY2)
-				msg += "[span_boldnicegreen("I feel pretty good.")]<br>"
-			if(MOOD_LEVEL_HAPPY3)
-				msg += "[span_boldnicegreen("I feel amazing!")]<br>"
-			if(MOOD_LEVEL_HAPPY4)
-				msg += "[span_boldnicegreen("I love life!")]<br>"
+	msg += span_notice("My current mood: ") //Short term
+	switch(mood_level)
+		if(MOOD_LEVEL_SAD4)
+			msg += "[span_boldwarning("I wish I was dead!")]<br>"
+		if(MOOD_LEVEL_SAD3)
+			msg += "[span_boldwarning("I feel terrible...")]<br>"
+		if(MOOD_LEVEL_SAD2)
+			msg += "[span_boldwarning("I feel very upset.")]<br>"
+		if(MOOD_LEVEL_SAD1)
+			msg += "[span_warning("I'm a bit sad.")]<br>"
+		if(MOOD_LEVEL_NEUTRAL)
+			msg += "[span_grey("I'm alright.")]<br>"
+		if(MOOD_LEVEL_HAPPY1)
+			msg += "[span_nicegreen("I feel pretty okay.")]<br>"
+		if(MOOD_LEVEL_HAPPY2)
+			msg += "[span_boldnicegreen("I feel pretty good.")]<br>"
+		if(MOOD_LEVEL_HAPPY3)
+			msg += "[span_boldnicegreen("I feel amazing!")]<br>"
+		if(MOOD_LEVEL_HAPPY4)
+			msg += "[span_boldnicegreen("I love life!")]<br>"
 
 	var/list/additional_lines = list()
 	SEND_SIGNAL(user, COMSIG_CARBON_MOOD_CHECK, additional_lines)
@@ -513,7 +505,7 @@
 	if(LAZYLEN(mob_parent.quirks))
 		msg += span_notice("You have these quirks: [mob_parent.get_quirk_string(FALSE, CAT_QUIRK_ALL)].")
 
-	to_chat(user, boxed_message(msg))
+	to_chat(user, examine_block(msg))
 
 /// Updates the mob's moodies, if the area provides a mood bonus
 /datum/mood/proc/check_area_mood(datum/source, area/new_area)
@@ -592,10 +584,6 @@
 		if(HAS_TRAIT(mob_parent, TRAIT_UNSTABLE))
 			maximum = sanity
 			minimum = min(minimum, maximum)
-		if(HAS_TRAIT(mob_parent, TRAIT_APATHETIC))
-			amount = SANITY_NEUTRAL
-			maximum = SANITY_NEUTRAL
-			minimum = SANITY_NEUTRAL
 
 	amount = clamp(round(amount, 0.01), minimum, maximum)
 
@@ -660,7 +648,7 @@
 
 /datum/client_colour/sanity/New(mob/owner)
 	. = ..()
-	src.color = color_matrix_saturation(desaturation)
+	src.colour = color_matrix_saturation(desaturation)
 
 /datum/client_colour/sanity/tier4
 	desaturation = 0.6
@@ -717,7 +705,7 @@
 /datum/mood/proc/set_insanity_effect(newval)
 	if (newval == insanity_effect)
 		return
-	mob_parent.crit_threshold = (mob_parent.crit_threshold - insanity_effect) + newval
+	mob_parent.add_max_consciousness_value("sanity", UPPER_CONSCIOUSNESS_MAX - newval)
 	insanity_effect = newval
 
 /// Removes all temporary moods
