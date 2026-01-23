@@ -123,14 +123,14 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 
 /atom/movable/screen/embed_interface/Initialize(mapload, datum/hud/hud_owner, obj/item/bodypart/limb)
 	. = ..()
-	maptext += "<font color='green' style='text-align: center'>"
+	maptext += "<span style='text-align: center'>"
 	maptext += MAPTEXT_TINY_UNICODE(\
 		"Click on an object, then move your mouse to move it. \
 		Once it enters the green area, it will be removed from the body.<br><br>\
 		Be careful, moving too fast will cause damage and drop the object \
 		if you are not using precision tools!"\
 	)
-	maptext += "</font>"
+	maptext += "</span>"
 
 	target_limb = limb
 	tracked_embeds = list()
