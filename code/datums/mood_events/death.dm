@@ -24,6 +24,17 @@
 /datum/mood_event/conditional/see_death/condition_fulfilled(mob/living/who, mob/dead_mob, dusted, gibbed)
 	return TRUE
 
+/datum/mood_event/conditional/see_death/insanity_message(sanity)
+	if(mood_change <= -25 && sanity <= SANITY_CRAZY)
+		to_chat(owner, span_boldwarning("So many deaths... When will it end...?"))
+		owner.cause_hallucination(/datum/hallucination/everywhere_blood, "overwhelmed by death")
+		return TRUE
+
+	if(mood_change <= -8)
+		to_chat(owner, span_warning("Could I have done anything to save them...?"))
+		return TRUE
+	return FALSE
+
 /datum/mood_event/conditional/see_death/add_effects(mob/dead_mob, dusted, gibbed)
 	update_effect(dead_mob, dusted, gibbed)
 

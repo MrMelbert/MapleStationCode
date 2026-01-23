@@ -104,6 +104,11 @@
 	if(timeout)
 		addtimer(CALLBACK(home, TYPE_PROC_REF(/datum/mood, clear_mood_event), category), timeout, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT))
 
+/// Called when someone is suffering from this mood event and is crazy or insane
+/// Return TRUE to handle the message, ie no other mood events are checked
+/datum/mood_event/proc/insanity_message(sanity)
+	return FALSE
+
 /**
  * Called when added to a mob
  *

@@ -17,7 +17,7 @@
 
 	if(stat != DEAD)
 		death(TRUE, "being torn apart")
-	send_death_moodlets(/datum/mood_event/see_death)
+	send_death_moodlets(gibbed = TRUE)
 
 	ghostize()
 	spill_organs(drop_bitflags)
@@ -81,7 +81,7 @@
 		ADD_TRAIT(src, TRAIT_FORCED_STANDING, TRAIT_GENERIC)
 	death(TRUE, "being vaporized")
 
-	send_death_moodlets(/datum/mood_event/see_death/dusted)
+	send_death_moodlets(dusted = TRUE)
 
 	if(drop_items)
 		unequip_everything()
@@ -195,7 +195,7 @@
 	if(!gibbed)
 		if(death_sound || death_message || (living_flags & ALWAYS_DEATHGASP))
 			INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
-		send_death_moodlets(/datum/mood_event/see_death)
+		send_death_moodlets()
 
 	set_stat(DEAD)
 	SShealth_updates.queue_update(src, UPDATE_MEDHUD) // This is just for weird case where death is called out of nowhere
