@@ -15,7 +15,7 @@
 	embed_chance = 20
 	pain_mult = 2
 	jostle_pain_mult = 4
-	rip_time = 4 SECONDS
+	max_pull_speed = 2.5
 
 /obj/projectile/bullet/c38/dual_stage/fire(angle, atom/direct_target)
 	. = ..()
@@ -60,7 +60,7 @@
 	pain_stam_pct = 0.2
 	pain_mult = 1
 	jostle_pain_mult = 2
-	rip_time = 1 SECONDS
+	max_pull_speed = 5
 
 /obj/item/shrapnel/bullet/maginull
 	var/mob/living/carbon/spiked_mob

@@ -118,14 +118,15 @@
 	return disabled
 
 ///Remove a specific embedded item from the carbon mob
-/mob/living/carbon/proc/remove_embedded_object(obj/item/embedded)
-	SEND_SIGNAL(src, COMSIG_CARBON_EMBED_REMOVAL, embedded)
+/mob/living/carbon/proc/remove_embedded_object(obj/item/embedded, mob/remover)
+	for(var/datum/component/embedded/embedcomp as anything in GetComponents(/datum/component/embedded))
+		if(embedcomp.weapon == embedded)
+			embedcomp.safeRemove(remover) // evil embed component fuck youuu fuck youuuu
 
 ///Remove all embedded objects from all limbs on the carbon mob
-/mob/living/carbon/proc/remove_all_embedded_objects()
-	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
-		for(var/obj/item/embedded in bodypart.embedded_objects)
-			remove_embedded_object(embedded)
+/mob/living/carbon/proc/remove_all_embedded_objects(mob/remover)
+	for(var/datum/component/embedded/embedcomp as anything in GetComponents(/datum/component/embedded))
+		embedcomp.safeRemove(remover) // evil embed component fuck youuu fuck youuuu
 
 /mob/living/carbon/proc/has_embedded_objects(include_harmless=FALSE)
 	for(var/obj/item/bodypart/bodypart as anything in bodyparts)

@@ -1244,6 +1244,7 @@
 /obj/item/proc/embedded(atom/embedded_target, obj/item/bodypart/part)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_EMBEDDED, embedded_target, part)
+	SEND_SIGNAL(part, COMSIG_BODYPART_ON_EMBEDDED, src)
 
 /obj/item/proc/unembedded()
 	if(item_flags & DROPDEL && !QDELETED(src))

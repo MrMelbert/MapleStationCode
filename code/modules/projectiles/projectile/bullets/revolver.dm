@@ -34,7 +34,7 @@
 	pain_stam_pct = 0.4
 	pain_mult = 3
 	jostle_pain_mult = 5
-	rip_time = 8 SECONDS
+	max_pull_speed = 2
 
 /obj/projectile/bullet/c38/match
 	name = ".38 Match bullet"
@@ -78,7 +78,7 @@
 	jostle_chance = 4
 	pain_mult = 5
 	jostle_pain_mult = 6
-	rip_time = 5 SECONDS
+	max_pull_speed = 2.5
 
 /obj/projectile/bullet/c38/trac
 	name = ".38 TRAC bullet"
