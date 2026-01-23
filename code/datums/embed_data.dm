@@ -96,10 +96,10 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	if(isnull(user?.client))
 		return
 
-	for(var/atom/movable/screen/embed_interface/embed_interface in user.client.screen)
-		if(embed_interface.target_limb == src)
+	for(var/atom/movable/screen/embed_interface/other_embed_interface in user.client.screen)
+		if(other_embed_interface == embed_interface)
 			return // already open
-		embed_interface.close(user)
+		other_embed_interface.close(user)
 
 	embed_interface ||= new(null, null, src)
 	embed_interface.open(user)
@@ -129,14 +129,17 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	/// Assoc list of mob vieweing the interface to their data
 	VAR_PRIVATE/list/viewers
 
+	/// Track the last time we attempted to pick something up while dragging
+	VAR_PRIVATE/last_drag_attempt = 0
+
 /atom/movable/screen/embed_interface/Initialize(mapload, datum/hud/hud_owner, obj/item/bodypart/limb)
 	. = ..()
 	maptext += "<span style='text-align: center'>"
 	maptext += MAPTEXT_TINY_UNICODE(\
-		"Click on an object, then move your mouse to move it. \
+		"Drag an object to move it. \
 		Once it enters the green area, it will be removed from the body.<br><br>\
-		Be careful, moving too fast will cause damage and drop the object \
-		if you are not using precision tools!"\
+		Be careful, moving too fast will cause damage \
+		if you are not using tools!"\
 	)
 	maptext += "</span>"
 
@@ -291,12 +294,27 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 			embed_holder.add_filter("selected", 1, outline_filter(1, COLOR_YELLOW))
 
 /atom/movable/screen/embed_interface/MouseMove(location, control, params)
-	if(isnull(viewers?[usr]?["selected"]))
+	if(isnull(viewers[usr]?["selected"]))
 		return
 
 	var/list/modifiers = params2list(params)
 	var/cursor_x = text2num(LAZYACCESS(modifiers, ICON_X))
 	var/cursor_y = text2num(LAZYACCESS(modifiers, ICON_Y))
+	update_effect(cursor_x, cursor_y)
+
+/atom/movable/screen/embed_interface/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
+	var/list/modifiers = params2list(params)
+	var/cursor_x = text2num(LAZYACCESS(modifiers, ICON_X))
+	var/cursor_y = text2num(LAZYACCESS(modifiers, ICON_Y))
+	if(isnull(viewers[usr]?["selected"]))
+		if(last_drag_attempt == world.time)
+			return // drag can be sent like 100 times a tick so limit re-attempts
+		last_drag_attempt = world.time
+		var/obj/item/clicked = find_clicked_embed(cursor_x, cursor_y)
+		if(isnull(clicked))
+			return
+		set_currently_selected(clicked, usr)
+
 	update_effect(cursor_x, cursor_y)
 
 /atom/movable/screen/embed_interface/Click(location, control, params)
@@ -311,13 +329,10 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	if(isnull(clicked))
 		return
 	if(clicked == viewers[usr]["selected"])
-		// to_chat(usr, span_notice("You release [clicked]."))
 		set_currently_selected(null, usr)
 		return
 
 	set_currently_selected(clicked, usr)
-	// var/tool = can_bypass_speed_check(usr)
-	// to_chat(usr, span_notice("You grab [clicked][tool ? " with [tool]" : ""]."))
 	update_effect(cursor_x, cursor_y)
 
 /atom/movable/screen/embed_interface/proc/damage_limb(obj/item/from_what, multiplier = 1)
