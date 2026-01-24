@@ -134,6 +134,9 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 
 /atom/movable/screen/embed_interface/Initialize(mapload, datum/hud/hud_owner, obj/item/bodypart/limb)
 	. = ..()
+	if(isnull(limb))
+		return INITIALIZE_HINT_QDEL
+
 	maptext += "<span style='text-align: center'>"
 	maptext += MAPTEXT_TINY_UNICODE(\
 		"Drag an object to move it. \
@@ -141,8 +144,8 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 		Be careful, moving too fast will cause damage \
 		if you are not using tools!"\
 	)
-	maptext += "</span>"
 
+	maptext += "</span>"
 	target_limb = limb
 	tracked_embeds = list()
 	viewers = list()
@@ -162,9 +165,10 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	// underlays += limb_underlay
 
 /atom/movable/screen/embed_interface/Destroy()
-	UnregisterSignal(target_limb, list(COMSIG_QDELETING, COMSIG_BODYPART_REMOVED, COMSIG_BODYPART_ON_EMBEDDED))
-	target_limb.embed_interface = null
-	target_limb = null
+	if(target_limb)
+		UnregisterSignal(target_limb, list(COMSIG_QDELETING, COMSIG_BODYPART_REMOVED, COMSIG_BODYPART_ON_EMBEDDED))
+		target_limb.embed_interface = null
+		target_limb = null
 	for(var/mob/viewer as anything in viewers)
 		close(viewer)
 	for(var/obj/item/embed as anything in tracked_embeds)
