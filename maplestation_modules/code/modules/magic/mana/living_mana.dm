@@ -12,7 +12,7 @@
 
 	exponential_decay_divisor = BASE_CARBON_MANA_EXPONENTIAL_DIVISOR
 
-	intrinsic_recharge_sources = MANA_ALL_LEYLINES
+	intrinsic_recharge_sources = NONE
 
 // carbons have softcap mults, this adds it to the pool.
 /mob/living/carbon/initialize_mana_pool()

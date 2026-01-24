@@ -45,7 +45,7 @@
 			),
 
 			TOOL_WRENCH = list(
-				SCREENTIP_CONTEXT_RMB = "Anchor/Unanchor",
+				SCREENTIP_CONTEXT_LMB = "Anchor/Unanchor",
 			),
 		))
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)

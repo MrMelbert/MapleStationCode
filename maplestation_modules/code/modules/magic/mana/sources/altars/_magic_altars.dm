@@ -9,15 +9,51 @@
 	intrinsic_recharge_sources = NONE // it generate magic stoopid
 	discharge_destinations = NONE // yeah no i don't want the default to be dumping it into the leylines w/o being balanced around it
 
+	frail_transfer = TRUE
+	var/max_allowed_transfer_distance = MAGIC_ALTAR_MAX_TRANSFER_DISTANCE
+
+/datum/mana_pool/magic_altar/New(atom/parent)
+	. = ..()
+	if(!parent)
+		return stack_trace("[src] has no parent set on a mana pool type that should have one!")
+	if(!max_allowed_transfer_distance)
+		return
+	src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_distance_from_self))
+
+/datum/mana_pool/magic_altar/proc/transfer_rule_distance_from_self(datum/mana_pool/pool, transferred_mana)
+	var/atom/movable/altar = src.parent
+	var/datum/mana_pool/target_pool = pool
+
+	if(!target_pool.parent)
+		return FALSE
+	var/atom/movable/pool_owner = target_pool.parent
+
+	if (!(pool_owner.loc))
+		return FALSE
+	if (!is_valid_z_level(altar, pool_owner))
+		return FALSE
+
+	if (altar.loc == pool_owner.loc)
+		return TRUE
+
+	var/xy_dist = get_dist_euclidian(altar, pool_owner)
+	var/z_dist = abs(altar.z - pool_owner.z)
+	var/total_dist = xy_dist + z_dist
+	if (total_dist > max_allowed_transfer_distance)
+		return FALSE
+	return TRUE
+
 /datum/mana_pool/magic_altar/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
 		return FALSE
-	var/obj/structure/magic_altar/altar = parent
+	if (!max_allowed_transfer_distance)
+		return ..()
+	var/atom/movable/altar = parent
 
 	if (altar.loc == target_pool.parent.loc) // yeah sure i copypasta from battery code, but if you manage to occupy the same tile as an altar you deserve a guranteed transfer
 		return TRUE
 
-	if (get_dist(altar, target_pool.parent) > altar.max_allowed_transfer_distance)
+	if (get_dist(altar, target_pool.parent) > max_allowed_transfer_distance)
 		return FALSE
 	return ..()
 
@@ -28,7 +64,6 @@
 	icon_state = "goner"
 	density = TRUE
 	has_initial_mana_pool = TRUE
-	var/max_allowed_transfer_distance = MAGIC_ALTAR_MAX_TRANSFER_DISTANCE
 
 /obj/structure/magic_altar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar
@@ -49,7 +84,6 @@
 	anchored = FALSE
 
 	has_initial_mana_pool = TRUE
-	var/max_allowed_transfer_distance = MAGIC_ALTAR_MAX_TRANSFER_DISTANCE
 
 /obj/machinery/power/magic_contraption/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar

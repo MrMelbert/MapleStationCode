@@ -60,15 +60,18 @@
 	/// Uses defines from magic_charge_bitflags.dm.
 	var/discharge_method = MANA_SEQUENTIAL
 
-	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
+	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm. set this to null if you don't want to use any of the default transfer rules whatso ever
 	var/intrinsic_recharge_sources = NONE
 
 	/// what ruleset do we abide by in regards to mana transferrence? flags in magic_bitflags.dm, and the default callback procs are later down this file
-	var/mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
-	var/datum/callback/check_ruleset_callback // where we store what rule proc we use, don't touch this unless you're doing stuff that can't be done with other rulesets
+	var/default_mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
+	var/list/check_ruleset_callbacks = list() // where we store what rule procs we use, don't touch this unless you're doing stuff that can't be done with other rulesets
+
+	// if any of the transfer rules fail, do we stop the transfer?
+	var/frail_transfer = FALSE
 
 	/// used by MANA_TRANSFER_MANUAL_RULES so this does nothing unless you're using that transfer ruleset.
-	/// and if so, what is that cap?
+	/// and if you are, what is that cap?
 	var/cap_transfer_limit
 
 /datum/mana_pool/New(atom/parent = null)
@@ -80,7 +83,7 @@
 
 	START_PROCESSING(SSmagic, src)
 
-	if(!check_ruleset_callback)
+	if(default_mana_transfer_ruleset)
 		update_transfer_ruleset()
 
 /datum/mana_pool/Destroy(force, ...)
@@ -89,6 +92,8 @@
 
 	transfer_rates.Cut()
 	transfer_caps.Cut()
+	check_ruleset_callbacks.Cut()
+
 	for (var/datum/mana_pool/pool_to_detach as anything in transferring_to)
 		stop_transfer(pool_to_detach, TRUE)
 	for (var/datum/mana_pool/pool_to_detach as anything in transferring_from)
@@ -101,7 +106,6 @@
 	else
 		parent.mana_pool = null
 	parent = null
-	check_ruleset_callback = null
 
 	return ..()
 
@@ -144,22 +148,17 @@
 	return GLOB.default_attunements.Copy()
 
 /datum/mana_pool/proc/update_transfer_ruleset()
-	switch (mana_transfer_ruleset)
+	switch (default_mana_transfer_ruleset)
 		if (MANA_TRANSFER_SOFTCAP)
-			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_softcap))
+			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap))
 		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
-			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_softcap_no_pass))
+			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap_no_pass))
 		if (MANA_TRANSFER_MANUAL_RULES)
 			if (!cap_transfer_limit)
 				stack_trace("Manual Transfer rules were set on [src] without a transfer limit defined!") // forgetting something?
-				src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy))// failsafe, default to ruleless
+				// by default, after this, it will be a ruleless transfer
 			else
-				src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_manual_rules))
-		if(MANA_TRANSFER_ANARCHY)
-			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy))
-		else
-			stack_trace("Update Transfer Ruleset was called on [src] without a valid prefab ruleset defined!")
-			src.check_ruleset_callback = CALLBACK(src, PROC_REF(transfer_rule_anarchy)) // again, failsafe
+				src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_manual_rules))
 
 // order of operations is as follows:
 // 1. we recharge
@@ -171,14 +170,19 @@
 
 	if (ethereal_recharge_rate != 0)
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
+
 	if (length(transferring_to) > 0)
 		switch (transfer_method)
 			if (MANA_SEQUENTIAL)
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					var/amount_to_transfer = get_transfer_rate_for(iterated_pool) * seconds_per_tick
+
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
-					if(!check_ruleset_callback?.Invoke(iterated_pool, (get_transfer_rate_for(iterated_pool) * seconds_per_tick)))
+
+					if(!check_rulesets(iterated_pool, amount_to_transfer))
 						continue
+
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
@@ -192,14 +196,15 @@
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
-					if(!check_ruleset_callback?.Invoke(iterated_pool, mana_to_disperse))
+
+					if(!check_rulesets(iterated_pool, mana_to_disperse))
 						continue
+
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
 
 					transfer_specific_mana(iterated_pool, mana_to_disperse)
-			// ...
 
 	if (parent)
 		if (amount > parent.mana_overload_threshold)
@@ -364,15 +369,15 @@
 	return GLOB.default_attunements.Copy()
 
 /datum/mana_pool/proc/set_max_mana(new_max, change_amount = FALSE, change_softcap = TRUE)
-	var/percent = get_percent_to_max() //originally this was a duplicate redefinition- see change_amount
+	var/percent = get_percent_to_max()
 	var/softcap_percent = get_percent_of_softcap_to_max()
 
 	if (change_softcap)
-		softcap_percent = get_percent_of_softcap_to_max() // originally softcap_percent was defined here
+		softcap_percent = get_percent_of_softcap_to_max()
 		softcap = new_max * (softcap_percent / 100)
 
 	if (change_amount)
-		percent = get_percent_to_max() // this used to be var/percent. why?
+		percent = get_percent_to_max()
 		amount = new_max * (percent / 100)
 
 	maximum_mana_capacity = new_max
@@ -392,7 +397,24 @@
 
 	return (softcap / maximum_mana_capacity) * 100
 
-// default transfer rules, all call backs decided by what you put in mana_transfer_ruleset, set in check_ruleset_callback, called by most transfer things.
+// wrapper proc for determining rulesets
+/datum/mana_pool/proc/check_rulesets(datum/mana_pool/pool, transferred_mana)
+	if(!length(check_ruleset_callbacks)) // if there are no rules set, just return true.
+		return TRUE
+
+	var/datum/mana_pool/target_pool = pool
+	var/datum/callback/callback
+
+	for(callback in check_ruleset_callbacks)
+		if(!callback.Invoke(target_pool, transferred_mana))
+
+			if(frail_transfer)
+				stop_transfer(target_pool)
+
+			return FALSE
+	return TRUE
+
+// default transfer rules, all call backs decided by what you put in default_mana_transfer_ruleset, set in check_ruleset_callbacks, called by most transfer things.
 // these aren't used by default, and you can set you own for whatever pool you use: though feel to add those you use on multiple different subtypes here, because this is just a place where the most common ones are stored
 
 // FOR THE LOVE OF GOD READ THIS: MAKE SURE ALL OF THESE, AND ANY NEW CALLBACKS YOU MAKE, HAVE THE SAME ARGS, EVEN IF THEY'RE NOT USED. AND MAKE SURE ANY TIME YOU ADD A NEW INVOKE, IT SENDS THE SAME SET OF ARGS, IT WILL SAVE EVERYONE HEADACHES
@@ -419,8 +441,5 @@
 	if (target_pool.amount >= cap_transfer_limit)
 		return FALSE
 	return TRUE
-
-/datum/mana_pool/proc/transfer_rule_anarchy(datum/mana_pool/pool, transferred_mana)
-	return TRUE // because no rules, no checks
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS

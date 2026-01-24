@@ -3,6 +3,34 @@
 	intrinsic_recharge_sources = NONE
 	discharge_destinations = NONE
 
+	frail_transfer = TRUE
+	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
+
+/datum/mana_pool/mana_battery/New(...)
+	. = ..()
+	src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_distance_from_self))
+
+/datum/mana_pool/mana_battery/proc/transfer_rule_distance_from_self(datum/mana_pool/pool, transferred_mana)
+	var/obj/item/mana_battery/battery = parent
+	var/datum/mana_pool/target_pool = pool
+
+	if(!target_pool.parent)
+		return FALSE
+	var/atom/movable/pool_owner = target_pool.parent
+
+	if (!is_valid_z_level(battery, pool_owner))
+		return FALSE
+
+	if (battery.loc == pool_owner.loc)
+		return TRUE
+
+	var/xy_dist = get_dist_euclidian(battery, pool_owner)
+	var/z_dist = abs(battery.z - pool_owner.z)
+	var/total_dist = xy_dist + z_dist
+	if (total_dist > max_allowed_transfer_distance)
+		return FALSE
+	return TRUE
+
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
 		return FALSE
@@ -11,14 +39,14 @@
 	if (battery.loc == target_pool.parent.loc)
 		return TRUE
 
-	if (get_dist(battery, target_pool.parent) > battery.max_allowed_transfer_distance)
+	if (get_dist(battery, target_pool.parent) > max_allowed_transfer_distance)
 		return FALSE
 	return ..()
+
 
 /obj/item/mana_battery
 	name = "generic mana battery"
 	has_initial_mana_pool = TRUE
-	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_battery/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal
@@ -165,9 +193,8 @@
 	maximum_mana_capacity = 100
 	softcap = 100 // should be equal to maximum cap in this case
 	amount = 0
-	ethereal_recharge_rate = 0.5
 
-	intrinsic_recharge_sources = NONE // it already regens mana natively, and should generally be reliable
+	intrinsic_recharge_sources = MANA_ALL_LEYLINES // originally i was gonna have this be reliable, and have everyone else regen from leylines, but theres a ton of headaches and optimization worries so y'know what, fuck it
 	discharge_destinations = NONE
 
 /obj/item/clothing/neck/mana_star

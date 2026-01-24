@@ -26,6 +26,22 @@
 	var/last_pulse_value = NO_STARLIGHT // how strong was our last starlight pulse? this is used for checks for stuff like examines
 	var/starlight_check_range = 3
 
+/obj/machinery/power/magic_contraption/stellar/Initialize(mapload)
+	. = ..()
+
+	var/static/list/tool_behaviors
+	if(!tool_behaviors)
+		tool_behaviors = string_assoc_nested_list(list(
+			TOOL_SCREWDRIVER = list(
+				SCREENTIP_CONTEXT_LMB = "Open/Close Panel",
+			),
+
+			TOOL_WRENCH = list(
+				SCREENTIP_CONTEXT_RMB = "Anchor/Unanchor",
+			),
+		))
+	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
+
 /obj/machinery/power/magic_contraption/stellar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/stellar
 
