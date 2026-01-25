@@ -1018,6 +1018,7 @@
 			. += image('icons/mob/effects/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER)
+	limb.appearance_flags |= PIXEL_SCALE
 	var/image/aux
 
 	// Handles invisibility (not alpha or actual invisibility but invisibility)
@@ -1044,6 +1045,7 @@
 
 	if(aux_zone) //Hand shit
 		aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer)
+		aux.appearance_flags |= PIXEL_SCALE
 		. += aux
 	draw_color = variable_color
 	if(should_draw_greyscale) //Should the limb be colored outside of a forced color?

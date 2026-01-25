@@ -25,7 +25,7 @@
 	ignore_throwspeed_threshold = TRUE
 	pain_stam_pct = 0.5
 	pain_mult = 3
-	rip_time = 10 SECONDS
+	max_pull_speed = 1.5
 	stealthy_embed = TRUE
 	blood_loss = 0.05
 

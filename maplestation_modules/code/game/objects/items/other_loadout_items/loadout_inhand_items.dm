@@ -22,4 +22,4 @@
 	jostle_chance = 2
 	pain_mult = 1
 	jostle_pain_mult = 1.2
-	rip_time = 0.5 SECONDS
+	max_pull_speed = 20

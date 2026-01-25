@@ -59,7 +59,12 @@
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	var/adjacent = user.Adjacent(src)
+	var/can_reach = isliving(user) && user.CanReach(src)
+	if(!can_reach && iscarbon(user))
+		var/mob/living/carbon/carbon_user = user
+		if(carbon_user.dna?.check_mutation(/datum/mutation/human/telekinesis) && tkMaxRangeCheck(user, src))
+			can_reach = TRUE
+
 	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
@@ -70,11 +75,14 @@
 			var/harmless = embedded.is_embed_harmless()
 			var/stuck_wordage = harmless ? "stuck to" : "embedded in"
 			var/span_to_use = harmless ? "notice" : "boldwarning"
-			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"
+			var/embedded_href = "\a [embedded]"
+			if(can_reach) // only shows the href if we're adjacent
+				embedded_href = "<a href='byond://?src=[REF(src)];embedded_limb=[REF(body_part)];embedded_object=[REF(embedded)]'>[embedded]</a>"
+			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded_href] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"
 
 		if(body_part.current_gauze)
 			var/gauze_href = body_part.current_gauze.name
-			if(adjacent && isliving(user)) // only shows the href if we're adjacent
+			if(can_reach) // only shows the href if we're adjacent
 				gauze_href = "<a href='byond://?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
 			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
 

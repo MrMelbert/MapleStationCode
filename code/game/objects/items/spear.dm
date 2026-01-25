@@ -40,6 +40,7 @@
 	impact_pain_mult = 2
 	remove_pain_mult = 4
 	jostle_chance = 2.5
+	max_pull_speed = 3
 
 /datum/armor/item_spear
 	fire = 50
