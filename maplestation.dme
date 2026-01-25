@@ -6734,6 +6734,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\animid\animid_rat.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_brain.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_effects.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_heart.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_liver.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_lungs.dm"

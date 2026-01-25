@@ -1090,13 +1090,7 @@
 		if(!storage_is_important_recurisve && !can_reach_active_storage)
 			active_storage.hide_contents(src)
 
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && !buckled && !moving_diagonally && get_turf(src) != was_loc)
-		// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
-		var/blood_flow = get_bleed_rate()
-		var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
-		var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
-		if(health_check || bleeding_check)
-			make_blood_trail(newloc, was_loc, was_facing, direct)
+	passive_blood_trail(newloc, was_loc, was_facing, dir)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
@@ -1107,6 +1101,45 @@
 
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
+
+/mob/living/proc/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || buckled || moving_diagonally || get_turf(src) == was_loc)
+		return
+	// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
+	var/blood_flow = get_bleed_rate()
+	var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
+	var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
+	if(!health_check && !bleeding_check)
+		return
+
+	var/blood_to_add = 0
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
+
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
+		return
+
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
+	if(body_position == LYING_DOWN)
+		bleed(blood_to_add, leave_pool = FALSE)
+
+	make_blood_trail(new_loc, was_loc, was_facing, now_facing, blood_to_add, get_blood_dna_list(), get_static_viruses())
+
+/mob/living/carbon/human/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(!is_bleeding())
+		return
+	return ..()
 
 /**
  * Leaves a trail of blood.
@@ -1182,41 +1215,6 @@
 		return
 	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
-
-/mob/living/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add, blood_dna, list/static_viruses)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
-	var/base_bleed_rate = get_bleed_rate()
-	var/base_brute = getBruteLoss()
-
-	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
-	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
-	// we only leave a trail if we're below a certain blood threshold
-	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
-		return
-
-	if(isnull(static_viruses))
-		static_viruses = get_static_viruses()
-	if(isnull(blood_dna))
-		blood_dna = get_blood_dna_list()
-	if(isnull(blood_to_add))
-		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
-		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
-		// if we're very damaged or bleeding a lot, add even more blood to the trail
-		if(base_brute >= 300 || base_bleed_rate >= 7)
-			blood_to_add *= 2
-
-	// this is where people losing extra blood from being dragged is handled
-	if(body_position == LYING_DOWN)
-		bleed(blood_to_add, leave_pool = FALSE)
-
-	return ..()
-
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction, blood_to_add, blood_dna, list/static_viruses)
-	if(!is_bleeding())
-		return
-	return ..()
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/make_blood_trail]
 /mob/living/proc/bleedDragAmount()

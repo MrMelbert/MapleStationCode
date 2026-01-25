@@ -31,6 +31,7 @@
 
 	mutanttongue = /obj/item/organ/tongue/robot/synth
 	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
+	allow_fleshy_bits = TRUE
 
 	/// Reference to the species we're disguised as.
 	VAR_FINAL/datum/species/disguise_species

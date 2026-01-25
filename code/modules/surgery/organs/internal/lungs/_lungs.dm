@@ -782,6 +782,9 @@
 
 
 /obj/item/organ/lungs/proc/handle_breath_temperature(datum/gas_mixture/breath, mob/living/carbon/human/breather) // called by human/life, handles temperatures
+	if(SEND_SIGNAL(breather, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE, breath, src) & HANDLE_BREATH_TEMPERATURE_HANDLED)
+		return
+
 	var/breath_temperature = breath.temperature
 
 	if(breath_temperature < cold_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTCOLD) && !breather.has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE)) // COLD DAMAGE

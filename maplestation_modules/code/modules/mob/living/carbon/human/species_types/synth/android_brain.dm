@@ -81,7 +81,7 @@
 	if(prob(30))
 		law_datum.replace_random_law(generate_ion_law(), list(LAW_INHERENT), LAW_ION)
 		any_memes = TRUE
-	if(prob(30))
+	if(prob(50))
 		law_datum.add_ion_law(generate_ion_law())
 		any_memes = TRUE
 	if(prob(10))

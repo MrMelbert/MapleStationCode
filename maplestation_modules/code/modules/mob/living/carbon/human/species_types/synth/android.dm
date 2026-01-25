@@ -47,6 +47,17 @@
 
 	temperature_homeostasis_speed = 0
 
+	/// Whether or not to block organic bodyparts from being attached
+	var/allow_fleshy_bits = FALSE
+
+	/// Tracks if we have begun leaking due to excess blood volume
+	VAR_FINAL/is_leaking = FALSE
+	/// Tracks overheating state (0-3)
+	VAR_FINAL/is_overheating = 0
+	/// Tracks overcooling state (0-3)
+	VAR_FINAL/is_overcooled = 0
+
+	/// List of species an android can be designed as
 	var/list/android_species = list(
 		SPECIES_FELINE, // needs to be replaced with animids
 		SPECIES_HUMAN,
@@ -56,27 +67,266 @@
 		SPECIES_SKRELL,
 	)
 
+/// Species ID to typepath helper
 #define ID_TO_TYPEPATH(id) GLOB.species_list[id]
 
-/datum/species/android/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	var/species_id = human_who_gained_species.dna?.features["android_species"] || old_species?.id
+/datum/species/android/on_species_gain(mob/living/carbon/human/gained_species, datum/species/old_species, pref_load)
+	var/species_id = gained_species.dna?.features["android_species"] || old_species?.id
 	if(!species_id || !(species_id in android_species))
 		species_id = SPECIES_HUMAN
 
 	var/datum/species/spedies_datum = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
 	for(var/organtype in spedies_datum.mutant_organs)
-		set_mutant_organ(MUTANT_ORGANS, organtype, human_who_gained_species)
+		set_mutant_organ(MUTANT_ORGANS, organtype, gained_species)
 	for(var/markingtype in spedies_datum.body_markings)
-		set_mutant_organ(BODY_MARKINGS, markingtype, human_who_gained_species)
+		set_mutant_organ(BODY_MARKINGS, markingtype, gained_species)
 
 	// snowflake cyber replacements
 	switch(species_id)
 		if(SPECIES_MOTH)
-			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, human_who_gained_species)
+			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, gained_species)
 		if(SPECIES_FELINE)
-			set_mutant_organ(ORGAN_SLOT_EARS, /obj/item/organ/ears/cat/cybernetic, human_who_gained_species)
+			set_mutant_organ(ORGAN_SLOT_EARS, /obj/item/organ/ears/cat/cybernetic, gained_species)
 
+	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(handle_blood))
+	RegisterSignal(gained_species, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
+	RegisterSignal(gained_species, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE, PROC_REF(temperature_update))
+	RegisterSignal(gained_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(brittle_modifier))
+	RegisterSignal(gained_species, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, PROC_REF(block_fleshy_bits))
+	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE, PROC_REF(handle_breath_temperature))
 	return ..()
+
+/datum/species/android/on_species_loss(mob/living/carbon/human/lost_species, datum/species/new_species, pref_load)
+	. = ..()
+	UnregisterSignal(lost_species, COMSIG_HUMAN_ON_HANDLE_BLOOD)
+	UnregisterSignal(lost_species, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(lost_species, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE)
+	UnregisterSignal(lost_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
+	UnregisterSignal(lost_species, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB)
+	UnregisterSignal(lost_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE)
+	if(is_leaking)
+		remove_leaking(lost_species)
+	if(is_overheating)
+		remove_heat_modifiers(lost_species)
+	if(is_overcooled)
+		remove_cold_modifiers(lost_species)
+
+/datum/species/android/proc/remove_leaking(mob/living/carbon/human/removing)
+	if(!is_leaking)
+		return
+
+	is_leaking = FALSE
+	removing.physiology.bleed_mod /= 3
+	removing.clear_alert("leak_warning")
+
+/datum/species/android/proc/remove_heat_modifiers(mob/living/carbon/human/removing)
+	if(!is_overheating)
+		return
+
+	is_overheating = 0
+	removing.remove_actionspeed_modifier(/datum/actionspeed_modifier/hot_android)
+	removing.remove_movespeed_modifier(/datum/movespeed_modifier/hot_android)
+	removing.clear_alert(ALERT_TEMPERATURE)
+
+/datum/species/android/proc/remove_cold_modifiers(mob/living/carbon/human/removing)
+	if(!is_overcooled)
+		return
+
+	is_overcooled = 0
+	removing.remove_actionspeed_modifier(/datum/actionspeed_modifier/cold_android)
+	removing.remove_movespeed_modifier(/datum/movespeed_modifier/cold_android)
+	removing.clear_alert(ALERT_TEMPERATURE)
+
+/**
+ * let's go over the mechanics
+ *
+ * 1. androids blood is oil / lubricant, and it serves as "hydraulic fluid".
+ * their heart pumps the oil through the body, allowing limbs to move properly.
+ *
+ * 2. android lungs function as (currently) air cooling, taking in air to cool down
+ *
+ * 3. android livers function as a mechanical filter for toxic elements, which can clog up
+ *
+ * 4. android stomachs are "bioreactors" transforming food into power
+ */
+/datum/species/android/spec_life(mob/living/carbon/human/android, seconds_per_tick, times_fired)
+	. = ..()
+	// model pump behavior
+	var/obj/item/organ/heart = android.get_organ_slot(ORGAN_SLOT_HEART)
+	if(isnull(heart) || IS_ORGANIC_ORGAN(heart))
+		// lacking a mechanical heart will eventually consume all of your oil/hydraulic fluid
+		android.bleed(0.5 * seconds_per_tick, leave_pool = FALSE)
+	else
+		// otherwise the pump generates heat passively
+		android.adjust_body_temperature(0.12 KELVIN * seconds_per_tick, max_temp = android.bodytemp_heat_damage_limit * 1.5)
+
+	if(is_overheating)
+		android.temperature_burns(1.25 * is_overheating * seconds_per_tick)
+	if(is_overcooled)
+		android.temperature_cold_damage(0.5 * is_overcooled * seconds_per_tick)
+
+/datum/species/android/proc/block_fleshy_bits(mob/living/carbon/human/source, obj/item/bodypart/attaching, special)
+	SIGNAL_HANDLER
+
+	return (!allow_fleshy_bits && IS_ORGANIC_LIMB(attaching)) ? COMPONENT_NO_ATTACH : NONE
+
+/datum/species/android/proc/brittle_modifier(mob/living/carbon/human/source, list/damage_mods, damage_type, damage, damage_amount, ...)
+	SIGNAL_HANDLER
+
+	if(damage_type != BRUTE)
+		return
+
+	switch(is_overcooled)
+		if(2)
+			damage_mods += 1.1
+		if(3)
+			damage_mods += 1.25
+
+/datum/species/android/proc/temperature_update(mob/living/carbon/human/source, old_temp, new_temp)
+	SIGNAL_HANDLER
+
+	if(source.body_temperature > source.bodytemp_heat_damage_limit)
+		update_heat_modifiers(source)
+	else if(source.body_temperature < source.bodytemp_cold_damage_limit)
+		update_cold_modifiers(source)
+	else if(is_overheating)
+		remove_heat_modifiers(source)
+	else if(is_overcooled)
+		remove_cold_modifiers(source)
+
+/datum/species/android/proc/handle_blood(mob/living/carbon/source, seconds_per_tick, times_fired)
+	SIGNAL_HANDLER
+
+	switch(source.blood_volume)
+		if(BLOOD_VOLUME_MAXIMUM to INFINITY)
+			EMPTY_BLOCK_GUARD // handled in on_moved
+		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_MAXIMUM)
+			EMPTY_BLOCK_GUARD // all good
+		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
+			source.add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.9)
+			source.add_consciousness_modifier(BLOOD_LOSS, -10)
+			if(SPT_PROB(2.5, seconds_per_tick))
+				source.set_eye_blur_if_lower(12 SECONDS)
+		if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
+			source.add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.6)
+			source.add_consciousness_modifier(BLOOD_LOSS, -20)
+			source.set_eye_blur_if_lower(6 SECONDS)
+		if(-INFINITY to BLOOD_VOLUME_SURVIVE)
+			source.add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.2)
+			source.add_consciousness_modifier(BLOOD_LOSS, -50)
+
+	if(source.blood_volume > BLOOD_VOLUME_OKAY)
+		source.remove_max_consciousness_value(BLOOD_LOSS)
+		source.remove_consciousness_modifier(BLOOD_LOSS)
+
+	return HANDLE_BLOOD_HANDLED
+
+/datum/species/android/proc/on_moved(mob/living/carbon/human/source, atom/from_loc, movement_dir, ...)
+	SIGNAL_HANDLER
+
+	if(!ishuman(source))
+		return // whatever man
+
+	if(source.blood_volume <= BLOOD_VOLUME_EXCESS)
+		if(is_leaking)
+			remove_leaking()
+		return
+
+	if(!is_leaking)
+		is_leaking = TRUE
+		source.physiology.bleed_mod *= 3
+		source.throw_alert("leak_warning", /atom/movable/screen/alert/blood_leak)
+
+	var/shedded_blood = BLOOD_AMOUNT_PER_DECAL * (source.blood_volume >= BLOOD_VOLUME_MAXIMUM ? 0.33 : 0.1)
+	source.make_blood_trail(
+		target_turf = get_turf(source),
+		start = from_loc,
+		was_facing = source.dir,
+		movement_direction = movement_dir,
+		blood_to_add = shedded_blood,
+		blood_dna = source.get_blood_dna_list(),
+		static_viruses = source.get_static_viruses(),
+	)
+	source.blood_volume -= shedded_blood
+
+// androids don't do homeostasis, instead they use their lungs to cool themselves
+/datum/species/android/proc/handle_breath_temperature(mob/living/carbon/human/breather, datum/gas_mixture/breath, obj/item/organ/lungs)
+	SIGNAL_HANDLER
+
+	if(IS_ORGANIC_ORGAN(lungs))
+		return HANDLE_BREATH_TEMPERATURE_HANDLED // nothing happened!
+
+	// future todo: make better heat capacity gases work better here
+	var/temp_delta = round((breath.temperature - breather.body_temperature), 0.01)
+	if(temp_delta == 0)
+		return HANDLE_BREATH_TEMPERATURE_HANDLED
+
+	temp_delta = temp_delta < 0 ? max(temp_delta, BODYTEMP_HOMEOSTASIS_COOLING_MAX) : min(temp_delta, BODYTEMP_HOMEOSTASIS_HEATING_MAX)
+
+	var/min = temp_delta < 0 ? breather.standard_body_temperature : 0
+	var/max = temp_delta > 0 ? breather.standard_body_temperature : INFINITY
+
+	breather.adjust_body_temperature(temp_delta, min, max)
+	breath.temperature = breather.body_temperature
+	return HANDLE_BREATH_TEMPERATURE_HANDLED
+
+/datum/species/android/proc/update_heat_modifiers(mob/living/carbon/human/source)
+	if(!HAS_TRAIT_FROM_ONLY(source, TRAIT_RESISTHEAT, REF(src)))
+		remove_heat_modifiers()
+		return
+
+	if(source.body_temperature > source.bodytemp_heat_damage_limit * 2)
+		if(is_overheating != 3)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t3)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t3)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_critical_overheat)
+			is_overheating = 3
+
+	else if(source.body_temperature > source.bodytemp_heat_damage_limit * 1.75)
+		if(is_overheating != 2)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t2)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t2)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_major_overheat)
+			is_overheating = 2
+
+	else if(source.body_temperature > source.bodytemp_heat_damage_limit * 1.2)
+		if(is_overheating != 1)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/hot_android/t1)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/hot_android/t1)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overheat)
+			is_overheating = 1
+
+/datum/species/android/proc/update_cold_modifiers(mob/living/carbon/human/source)
+	if(HAS_TRAIT_NOT_FROM(source, TRAIT_RESISTCOLD, REF(src)))
+		remove_cold_modifiers()
+		return
+
+	if(source.body_temperature < source.bodytemp_cold_damage_limit * 2)
+		if(is_overcooled != 3)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t3)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t3)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_critical_overcool)
+			is_overcooled = 3
+
+	else if(source.body_temperature < source.bodytemp_cold_damage_limit * 1.75)
+		if(is_overcooled != 2)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t2)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t2)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_major_overcool)
+			is_overcooled = 2
+
+	else if(source.body_temperature < source.bodytemp_cold_damage_limit * 1.2)
+		if(is_overcooled != 1)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/cold_android/t1)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/cold_android/t1)
+			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
+			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overcool)
+			is_overcooled = 1
 
 // Add features from all android species for prefs
 /datum/species/android/get_features(only_innate = FALSE)
