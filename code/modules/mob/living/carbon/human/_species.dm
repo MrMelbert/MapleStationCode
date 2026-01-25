@@ -17,8 +17,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species
 	///If the game needs to manually check your race to do something not included in a proc here, it will use this.
 	var/id
-	///This is used for children, it will determine their default limb ID for use of examine. See [/mob/living/carbon/human/proc/examine].
-	var/examine_limb_id
 	///This is the fluff name. They are displayed on health analyzers and in the character setup menu. Leave them generic for other servers to customize.
 	var/name
 	/**
@@ -42,8 +40,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///The alpha used by the facial hair. 255 is completely solid, 0 is invisible.
 	var/facial_hair_alpha = 255
 
-	///Never, Optional, or Forced digi legs?
-	var/digitigrade_customization = DIGITIGRADE_NEVER
 	/// If your race uses a non standard bloodtype (/datum/blood_type typepath OR /datum/reagent typepath)
 	var/exotic_bloodtype
 	///The rate at which blood is passively drained by having the blood deficiency quirk. Some races such as slimepeople can regen their blood at different rates so this is to account for that
@@ -67,6 +63,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
+	///Digitigrade replacements for this species
+	var/list/digitigrade_legs
 	///Internal organs that are unique to this race, like a tail or other cosmetic organs. list(typepath of organ 1, typepath of organ 2 = "Round").
 	var/list/mutant_organs = list()
 	///Replaces default brain with a different organ
@@ -153,9 +151,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie
 
-	///For custom overrides for species ass images
-	var/icon/ass_image
-
 	/// List of family heirlooms this species can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
@@ -186,6 +181,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// What species is our monkey form
 	var/datum/species/monkey_type = /datum/species/monkey
 
+	/// How tall is the average member of this species
+	var/canon_height = HUMAN_HEIGHT_MEDIUM
+
 ///////////
 // PROCS //
 ///////////
@@ -194,9 +192,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/New()
 	if(!plural_form)
 		plural_form = "[name]\s"
-	if(!examine_limb_id)
-		examine_limb_id = id
-
 	return ..()
 
 /// Gets a list of all species available to choose in roundstart.
@@ -490,47 +485,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
 
-// NON-MODULE CHANGE
-// /**
-//  * Proc called when mail goodies need to be updated for this species.
-//  *
-//  * Updates the mail goodies if that is required. e.g. for the blood deficiency quirk, which sends bloodbags to quirk holders, update the sent bloodpack to match the species' exotic blood.
-//  * This is currently only used for the blood deficiency quirk but more can be added as needed.
-//  * Arguments:
-//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
-//  */
-// /datum/species/proc/update_mail_goodies(mob/living/carbon/human/recipient)
-// 	update_quirk_mail_goodies(recipient, recipient.get_quirk(/datum/quirk/blooddeficiency))
-
-// NON-MODULE CHANGE
-// /**
-//  * Updates the mail goodies of a specific quirk.
-//  *
-//  * Updates the mail goodies belonging to a specific quirk.
-//  * Add implementation as needed for each individual species. The base species proc should give the species the 'default' version of whatever mail goodies are required.
-//  * Arguments:
-//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
-//  * * datum/quirk/quirk - the quirk to update the mail goodies of. Use get_quirk(datum/quirk/some_quirk) to get the actual mob's quirk to pass.
-//  * * list/mail_goodies - a list of mail goodies. Generally speaking you should not be using this argument on the initial function call. You should instead add to the species' implementation of this proc.
-//  */
-// /datum/species/proc/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies)
-// 	if(isnull(quirk))
-// 		return
-// 	if(length(mail_goodies))
-// 		quirk.mail_goodies = mail_goodies
-// 		return
-// 	// NON-MODULE CHANGE
-// 	if(istype(quirk, /datum/quirk/blooddeficiency) && HAS_TRAIT(recipient, TRAIT_NOBLOOD))  // TRAIT_NOBLOOD and no exotic blood (yes we have to check for both, jellypeople exist)
-// 		quirk.mail_goodies = list() // means no blood pack gets sent to them.
-// 		return
-
-
-// 	// The default case if no species implementation exists. Set quirk's mail_goodies to initial.
-// 	var/datum/quirk/readable_quirk = new quirk.type
-// 	quirk.mail_goodies = readable_quirk.mail_goodies
-// 	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
-// 	return
-
 /**
  * Handles the body of a human
  *
@@ -580,7 +534,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
-	update_body_markings(species_human)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -623,7 +576,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/list/new_features = list()
 	var/static/list/organs_to_randomize = list()
-	for(var/obj/item/organ/organ_path as anything in mutant_organs)
+	for(var/obj/item/organ/organ_path as anything in get_mut_organs())
 		if(!organ_path.bodypart_overlay)
 			continue
 		var/overlay_path = initial(organ_path.bodypart_overlay)
@@ -908,8 +861,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
-
 	if(grappled && attacking_bodypart.grappled_attack_verb)
 		atk_verb = attacking_bodypart.grappled_attack_verb
 	target.visible_message(span_danger("[user] [atk_verb]ed [target]!"), \
@@ -926,21 +877,30 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// NON-MODULE CHANGES
 	var/attack_direction = get_dir(user, target)
 	var/attack_type = attacking_bodypart.attack_type
-	var/attack_sharp = NONE
+	var/limb_sharpness = NONE
+	var/kicking = (atk_effect == ATTACK_EFFECT_KICK)
+	var/final_armor_block = armor_block
 	if(atk_effect == ATTACK_EFFECT_CLAW || atk_effect == ATTACK_EFFECT_BITE)
-		attack_sharp = SHARP_EDGED
+		limb_sharpness = SHARP_EDGED
 	else if(atk_effect == ATTACK_EFFECT_BITE)
-		attack_type = SHARP_POINTY
+		limb_sharpness = SHARP_POINTY
 
-	if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
+	var/smack_sound = attacking_bodypart.unarmed_attack_sound
+	if(!limb_sharpness && attack_type == BRUTE && (affecting.bodytype & BODYTYPE_ROBOTIC))
+		smack_sound = 'sound/effects/bang.ogg'
+
+	playsound(target.loc, smack_sound, 25, TRUE, -1)
+
+	if(kicking || grappled) //kicks and punches when grappling bypass armor slightly.
 		if(damage >= 9)
 			target.force_say()
 		log_combat(user, target, grappled ? "grapple punched" : "kicked")
-		target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, sharpness = attack_sharp, attack_direction = attack_direction)
-		target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block - limb_accuracy)
+		final_armor_block = armor_block - limb_accuracy
+		target.apply_damage(damage, attack_type, affecting, final_armor_block, sharpness = limb_sharpness, attack_direction = attack_direction)
+		target.apply_damage(damage * 1.5, STAMINA, affecting, final_armor_block)
 
 	else // Normal attacks do not gain the benefit of armor penetration.
-		target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = attack_sharp, attack_direction = attack_direction)
+		target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = limb_sharpness, attack_direction = attack_direction)
 		target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block)
 		if(damage >= 9)
 			target.force_say()
@@ -949,6 +909,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// NON-MODULE CHANGES
 		if(damage > 5 && target != user)
 			target.set_headset_block_if_lower(4 SECONDS)
+
+	SEND_SIGNAL(target, COMSIG_HUMAN_GOT_PUNCHED, user, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness)
+	SEND_SIGNAL(user, COMSIG_HUMAN_PUNCHED, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness)
 
 	//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
 	//This does not work against opponents who are knockdown immune, such as from wearing riot armor.
@@ -985,7 +948,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(!istype(owner)) //sanity check for drones.
 		return
 	if(owner.mind)
-		attacker_style = owner.mind.martial_art
+		attacker_style = GET_ACTIVE_MARTIAL_ART(owner)
 	if((owner != target) && target.check_block(owner, 0, owner.name, attack_type = UNARMED_ATTACK))
 		log_combat(owner, target, "attempted to touch")
 		target.visible_message(span_warning("[owner] attempts to touch [target]!"), \
@@ -1061,6 +1024,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	GLOB.features_by_species[type] = features
 
 	return features
+
+/// Returns a list of features not applicable to the species given a preference set.
+/datum/species/proc/get_filtered_features_per_prefs(datum/preferences/prefs)
+	return list()
 
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
@@ -1170,12 +1137,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * Returns a list, or null if they have no diet.
  */
 /datum/species/proc/get_species_diet()
-	if((TRAIT_NOHUNGER in inherent_traits) || !mutanttongue)
+	return (TRAIT_NOHUNGER in inherent_traits) ? null : get_diet_from_tongue(mutanttongue)
+
+/// Helper for turning a tongue's typepaths into diet data
+/datum/species/proc/get_diet_from_tongue(obj/item/organ/tongue/fake_tongue)
+	if(!fake_tongue)
 		return null
 
-	var/static/list/food_flags = FOOD_FLAGS
-	var/obj/item/organ/tongue/fake_tongue = mutanttongue
-
+	var/list/food_flags = FOOD_FLAGS
 	return list(
 		"liked_food" = bitfield_to_list(initial(fake_tongue.liked_foodtypes), food_flags),
 		"disliked_food" = bitfield_to_list(initial(fake_tongue.disliked_foodtypes), food_flags),
@@ -1595,9 +1564,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	//Note for future: Potentionally add a new C.dna.species() to build a template species for more accurate limb replacement
 
 	var/list/final_bodypart_overrides = new_species.bodypart_overrides.Copy()
-	if((new_species.digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == DIGITIGRADE_LEGS) || new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-		final_bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		final_bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+	if(target.dna.features["legs"] == DIGITIGRADE_LEGS && length(digitigrade_legs))
+		final_bodypart_overrides[BODY_ZONE_R_LEG] = digitigrade_legs[BODY_ZONE_R_LEG]
+		final_bodypart_overrides[BODY_ZONE_L_LEG] = digitigrade_legs[BODY_ZONE_L_LEG]
 
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
@@ -1654,27 +1623,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/add_body_markings(mob/living/carbon/human/hooman)
 	for(var/markings_type in body_markings) //loop through possible species markings
 		var/datum/bodypart_overlay/simple/body_marking/markings = new markings_type() // made to die... mostly because we cant use initial on lists but its convenient and organized
-		var/accessory_name = hooman.dna.features[markings.dna_feature_key] //get the accessory name from dna
-		var/datum/sprite_accessory/moth_markings/accessory = markings.get_accessory(accessory_name) //get the actual datum
-
-		if(isnull(accessory))
-			CRASH("Value: [accessory_name] did not have a corresponding sprite accessory!")
-
+		var/accessory_name = hooman.dna.features[markings.dna_feature_key] || body_markings[markings_type] //get the accessory name from dna
 		for(var/obj/item/bodypart/part as anything in markings.applies_to) //check through our limbs
 			var/obj/item/bodypart/people_part = hooman.get_bodypart(initial(part.body_zone)) // and see if we have a compatible marking for that limb
-
-			if(!people_part)
+			if(isnull(people_part))
 				continue
 
-			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type ()
-
-			// Tell the overlay what it should look like
-			overlay.icon = accessory.icon
-			overlay.icon_state = accessory.icon_state
-			overlay.use_gender = accessory.gender_specific
-			overlay.draw_color = accessory.color_src ? hooman.dna.features["mcolor"] : null
-
+			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type()
+			overlay.set_appearance(accessory_name, hooman.dna.features["mcolor"])
 			people_part.add_bodypart_overlay(overlay)
+
+		qdel(markings)
 
 /// Remove body markings
 /datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
@@ -1682,19 +1641,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
 			part.remove_bodypart_overlay(marking)
 
-/// Update the overlays if necessary
-/datum/species/proc/update_body_markings(mob/living/carbon/human/hooman)
-	if(HAS_TRAIT(hooman, TRAIT_INVISIBLE_MAN))
-		remove_body_markings(hooman)
-		return
+/**
+ * Calculates the expected height values for this species
+ *
+ * Return a height value corresponding to a specific height filter
+ * Return null to just use the mob's base height
+ */
+/datum/species/proc/update_species_heights(mob/living/carbon/human/holder)
+	if(HAS_TRAIT(holder, TRAIT_DWARF))
+		return HUMAN_HEIGHT_DWARF
 
-	var/needs_update = FALSE
-	for(var/datum/bodypart_overlay/simple/body_marking/marking as anything in body_markings)
-		if(initial(marking.dna_feature_key) == body_markings[marking]) // dna is same as our species (sort of mini-cache), so no update needed
-			continue
-		needs_update = TRUE
-		break
+	if(HAS_TRAIT(holder, TRAIT_TOO_TALL))
+		return HUMAN_HEIGHT_TALLEST
 
-	if(needs_update)
-		remove_body_markings(hooman)
-		add_body_markings(hooman)
+	return null

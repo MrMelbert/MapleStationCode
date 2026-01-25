@@ -36,19 +36,14 @@
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_CAN_MOUNT_CYBORGS, INNATE_TRAIT)
 
-	// NON-MODULE CHANGE: Unconscious appearance
-	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
-	static_image.override = TRUE
-	static_image.name = "Unknown"
-	add_alt_appearance(
-		/datum/atom_hud/alternate_appearance/basic/human_unconscious_hud,
-		"[REF(src)]_unconscious",
-		static_image,
-		NONE,
-	)
-
 /mob/living/carbon/human/proc/setup_physiology()
 	physiology = new()
+
+/mob/living/carbon/human/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
+/mob/living/carbon/human/dummy/init_unconscious_appearance()
+	return
 
 /mob/living/carbon/human/proc/setup_mood()
 	if (CONFIG_GET(flag/disable_human_mood))
@@ -357,6 +352,10 @@
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
 		balloon_alert(user, "no exposed skin on [target_zone || check_zone(user.zone_selected)]!")
 
+/mob/living/carbon/human/get_butt_sprite()
+	var/obj/item/bodypart/chest/chest = get_bodypart(BODY_ZONE_CHEST)
+	return chest?.get_butt_sprite()
+
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
@@ -540,15 +539,6 @@
 	PRIVATE_PROC(TRUE)
 	return target.on_fire
 
-/mob/living/carbon/human/cuff_resist(obj/item/I)
-	if(dna?.check_mutation(/datum/mutation/human/hulk))
-		say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced = "hulk")
-		if(..(I, cuff_break = FAST_CUFFBREAK))
-			dropItemToGround(I)
-	else
-		if(..())
-			dropItemToGround(I)
-
 /**
  * Wash the hands, cleaning either the gloves if equipped and not obscured, otherwise the hands themselves if they're not obscured.
  *
@@ -625,25 +615,6 @@
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BLACK)
 	cut_overlay(MA)
 
-/mob/living/carbon/human/resist_restraints()
-	if(wear_suit?.breakouttime)
-		changeNext_move(CLICK_CD_BREAKOUT)
-		last_special = world.time + CLICK_CD_BREAKOUT
-		cuff_resist(wear_suit)
-	else
-		..()
-
-/mob/living/carbon/human/clear_cuffs(obj/item/I, cuff_break)
-	. = ..()
-	if(.)
-		return
-	if(!I.loc || buckled)
-		return FALSE
-	if(I == wear_suit)
-		visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [I]!"))
-		to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
-		return TRUE
-
 /mob/living/carbon/human/replace_records_name(oldname, newname) // Only humans have records right now, move this up if changed.
 	var/datum/record/crew/crew_record = find_record(oldname)
 	var/datum/record/locked/locked_record = find_record(oldname, locked_only = TRUE)
@@ -687,31 +658,15 @@
 
 /mob/living/carbon/human/vv_edit_var(var_name, var_value)
 	if(var_name == NAMEOF(src, mob_height))
-		var/static/list/monkey_heights = list(
-			MONKEY_HEIGHT_DWARF,
-			MONKEY_HEIGHT_MEDIUM,
-		)
-		var/static/list/heights = list(
-			HUMAN_HEIGHT_SHORTEST,
-			HUMAN_HEIGHT_SHORT,
-			HUMAN_HEIGHT_MEDIUM,
-			HUMAN_HEIGHT_TALL,
-			HUMAN_HEIGHT_TALLER,
-			HUMAN_HEIGHT_TALLEST
-		)
-		if(ismonkey(src))
-			if(!(var_value in monkey_heights))
-				return
-		else if(!(var_value in heights))
-			return
-
-		. = set_mob_height(var_value)
-
-	if(!isnull(.))
-		datum_flags |= DF_VAR_EDITED
-		return
-
-	return ..()
+		// you wanna edit this one not that one
+		var_name = NAMEOF(src, base_mob_height)
+	. = ..()
+	if(!.)
+		return .
+	if(var_name == NAMEOF(src, base_mob_height))
+		update_mob_height()
+	if(var_name == NAMEOF(src, chat_color) || var_name == NAMEOF(src, chat_color_darkened))
+		GLOB.forced_runechat_names[real_name] = var_value
 
 /mob/living/carbon/human/vv_get_dropdown()
 	. = ..()
@@ -785,26 +740,6 @@
 			var/newtype = GLOB.species_list[result]
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
-
-	if(href_list[VV_HK_PURRBATION])
-		if(!check_rights(R_SPAWN))
-			return
-		if(!ishuman(src))
-			to_chat(usr, "This can only be done to human species at the moment.")
-			return
-		var/success = purrbation_toggle(src)
-		if(success)
-			to_chat(usr, "Put [src] on purrbation.")
-			log_admin("[key_name(usr)] has put [key_name(src)] on purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has put [key_name(src)] on purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-		else
-			to_chat(usr, "Removed [src] from purrbation.")
-			log_admin("[key_name(usr)] has removed [key_name(src)] from purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has removed [key_name(src)] from purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
 
 	if(href_list[VV_HK_APPLY_DNA_INFUSION])
 		if(!check_rights(R_SPAWN))
@@ -938,7 +873,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = get_grab_speed(target, 8 SECONDS)
+	var/carrydelay = get_grab_speed(target, 8 SECONDS, lifting = TRUE)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"

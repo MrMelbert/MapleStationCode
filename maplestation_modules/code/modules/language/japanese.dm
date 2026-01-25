@@ -1,7 +1,7 @@
 /datum/language/yangyu
 	name = "Yangyu"
 	desc = "An old language from Earth, originally from the country of Japan. While not as prevalent as Common, and having taken on a wealth of loanwords, its managed to hold on both in its country of origin and across space."
-	key = "J"
+	key = "j"
 	flags = TONGUELESS_SPEECH
 	syllables = list(
 		"no", "te", "de", "ka", "ga", "ta", "da", "to", "do", "ni", "i", "ha", "pa",

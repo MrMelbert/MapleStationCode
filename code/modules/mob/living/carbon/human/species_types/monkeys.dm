@@ -41,6 +41,7 @@
 	payday_modifier = 1.5
 	ai_controlled_species = TRUE
 	monkey_type = null
+	canon_height = MONKEY_HEIGHT_MEDIUM
 
 /datum/species/monkey/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	. = ..()
@@ -48,12 +49,23 @@
 	human_who_gained_species.dna.add_mutation(/datum/mutation/human/race, MUT_NORMAL)
 	human_who_gained_species.dna.activate_mutation(/datum/mutation/human/race)
 	human_who_gained_species.AddElement(/datum/element/human_biter)
+	human_who_gained_species.update_mob_height()
 
 /datum/species/monkey/on_species_loss(mob/living/carbon/human/C)
 	. = ..()
 	passtable_off(C, SPECIES_TRAIT)
 	C.dna.remove_mutation(/datum/mutation/human/race)
 	C.RemoveElement(/datum/element/human_biter)
+	C.update_mob_height()
+
+/datum/species/monkey/update_species_heights(mob/living/carbon/human/holder)
+	if(HAS_TRAIT(holder, TRAIT_DWARF))
+		return MONKEY_HEIGHT_DWARF
+
+	if(HAS_TRAIT(holder, TRAIT_TOO_TALL))
+		return MONKEY_HEIGHT_TALL
+
+	return MONKEY_HEIGHT_MEDIUM
 
 /datum/species/monkey/get_scream_sound(mob/living/carbon/human/monkey)
 	return get_sfx(SFX_SCREECH)
@@ -175,7 +187,6 @@
 /datum/species/monkey/lizard
 	name = "\improper Kobold"
 	id = SPECIES_MONKEY_LIZARD
-	examine_limb_id = SPECIES_LIZARD
 	inherent_traits = list(
 		// monke
 		TRAIT_GUN_NATURAL,
@@ -191,7 +202,6 @@
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
-	digitigrade_customization = DIGITIGRADE_FORCED
 	mutant_organs = list(
 		/obj/item/organ/horns = "None",
 		/obj/item/organ/frills = "None",
@@ -212,16 +222,22 @@
 	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
 	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
 
-	ass_image = /datum/species/lizard::ass_image
-
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/lizmonkey,
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/lizmonkey,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/lizmonkey,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
 	)
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
+	canon_height = parent_type::canon_height + 2
+
+/datum/species/monkey/lizard/update_species_heights(mob/living/carbon/human/holder)
+	return ..() + 2
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(
@@ -264,5 +280,25 @@
 	wound_resistance = -10
 
 /obj/item/bodypart/head/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey/Initialize(mapload)
 	. = ..()
 	name = "kobold [plaintext_zone]"

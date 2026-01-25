@@ -49,6 +49,7 @@
 	post_init_icon_state = "overalls"
 	inhand_icon_state = ""
 	body_parts_covered = CHEST|GROIN|LEGS
+	gender = PLURAL
 	species_exception = list(/datum/species/golem)
 	greyscale_config = /datum/greyscale_config/overalls
 	greyscale_config_worn = /datum/greyscale_config/overalls/worn
@@ -59,6 +60,9 @@
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
 
+/obj/item/clothing/suit/apron/overalls/grey
+	greyscale_colors = COLOR_JOB_DEFAULT
+	icon_state = "/obj/item/clothing/suit/apron/overalls/grey"
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"

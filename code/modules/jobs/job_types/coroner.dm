@@ -13,7 +13,7 @@
 	base_outfit = /datum/outfit/job/coroner
 	plasmaman_outfit = /datum/outfit/plasmaman/coroner
 
-	mind_traits = list(TRAIT_MORBID)
+	mind_traits = list(TRAIT_MORBID, MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_CORONER_METABOLISM)
 
 	paycheck = PAYCHECK_CREW
@@ -37,7 +37,9 @@
 		/obj/item/scythe = 1,
 	)
 
-	family_heirlooms = list(/obj/item/clothing/head/helmet/skull, /obj/item/table_clock, /obj/item/shovel, /obj/item/storage/fancy/pickles_jar)
+	family_heirlooms = list(
+		/obj/item/clothing/head/helmet/skull,
+	)
 
 	job_flags = STATION_JOB_FLAGS
 

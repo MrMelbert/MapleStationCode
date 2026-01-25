@@ -18,7 +18,7 @@
 
 /obj/item/organ/stomach/ethereal/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	adjust_charge(-ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
+	adjust_charge(-1 * PASSIVE_HUNGER_MULTIPLIER * ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
 	handle_charge(owner, seconds_per_tick, times_fired)
 
 /obj/item/organ/stomach/ethereal/on_mob_insert(mob/living/carbon/stomach_owner)
@@ -26,12 +26,14 @@
 	RegisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(charge))
 	RegisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 	RegisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS, PROC_REF(handle_temp))
+	RegisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
 
 /obj/item/organ/stomach/ethereal/on_mob_remove(mob/living/carbon/stomach_owner)
 	. = ..()
 	UnregisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS)
+	UnregisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED)
 	stomach_owner.clear_mood_event("charge")
 	stomach_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
 	stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
@@ -57,8 +59,16 @@
 	if(cell.charge < (ETHEREAL_CHARGE_LOWPOWER / 2))
 		return HOMEOSTASIS_HANDLED
 
-	adjust_charge(-1 * ETHEREAL_DISCHARGE_RATE * abs(natural_change) * seconds_per_tick)
+	adjust_charge(-1 * HOMEOSTASIS_HUNGER_MULTIPLIER * ETHEREAL_DISCHARGE_RATE * abs(natural_change) * seconds_per_tick)
 	return HOMEOSTASIS_NO_HUNGER
+
+/obj/item/organ/stomach/ethereal/proc/handle_move(mob/living/carbon/human/human, atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	SIGNAL_HANDLER
+
+	if(!IS_MOVING_INTENTIONALLY(human) || (human.movement_type & FLOATING))
+		return
+
+	adjust_charge(-1 * BASE_MOVEMENT_HUNGER_DRAIN(ETHEREAL_DISCHARGE_RATE, human))
 
 /**Changes the energy of the crystal stomach.
 * Args:

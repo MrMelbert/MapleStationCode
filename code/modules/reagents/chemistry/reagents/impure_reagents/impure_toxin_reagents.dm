@@ -64,6 +64,7 @@
 		return
 	if(SPT_PROB(4.0, seconds_per_tick))
 		owner.manual_emote("clicks with [owner.p_their()] tongue.")
-		owner.say("Noice.", forced = /datum/reagent/impurity/rosenol)
-	if(SPT_PROB(2.0, seconds_per_tick))
+		if(HAS_PERSONALITY(owner, /datum/personality/whimsical))
+			owner.say("Noice.", forced = /datum/reagent/impurity/rosenol)
+	if(SPT_PROB(2.0, seconds_per_tick) && HAS_PERSONALITY(owner, /datum/personality/whimsical))
 		owner.say(pick("Ah! That was a mistake!", "Horrible.", "Watch out everybody, the potato is really hot.", "When I was six I ate a bag of plums.", "And if there is one thing I can't stand it's tomatoes.", "And if there is one thing I love it's tomatoes.", "We had a captain who was so strict, you weren't allowed to breathe in their station.", "The unrobust ones just used to keel over and die, you'd hear them going down behind you."), forced = /datum/reagent/impurity/rosenol)

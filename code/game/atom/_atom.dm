@@ -436,7 +436,7 @@
 		. |= current_reagent.expose_atom(src, reagents[current_reagent])
 	SEND_SIGNAL(src, COMSIG_ATOM_AFTER_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 
-/// Are you allowed to drop this atom
+/// Are you allowed to drop stuff inside this atom
 /atom/proc/AllowDrop()
 	return FALSE
 

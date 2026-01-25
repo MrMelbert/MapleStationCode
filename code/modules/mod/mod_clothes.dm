@@ -39,10 +39,6 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
 
-/obj/item/clothing/suit/mod/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
-
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
 	desc = "A pair of gauntlets for a MODsuit."

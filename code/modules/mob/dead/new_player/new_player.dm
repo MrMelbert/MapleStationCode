@@ -215,7 +215,6 @@
 		humanc = character //Let's retypecast the var to be human,
 
 	if(humanc) //These procs all expect humans
-		GLOB.manifest.inject(humanc)
 		announce_arrival(humanc, rank, try_queue = TRUE)
 		AddEmploymentContract(humanc)
 
@@ -236,10 +235,15 @@
 					if(SSshuttle.emergency.timeLeft(1) > initial(SSshuttle.emergency_call_time)*0.5)
 						SSdynamic.make_antag_chance(humanc)
 
-	if((job.job_flags & JOB_ASSIGN_QUIRKS) && humanc && CONFIG_GET(flag/roundstart_traits))
-		SSquirks.AssignQuirks(humanc, humanc.client)
 	if(humanc)
-		SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP, humanc.client)
+		if(job.job_flags & JOB_ASSIGN_QUIRKS)
+			if(CONFIG_GET(flag/roundstart_traits))
+				SSquirks.AssignQuirks(humanc, humanc.client)
+		else // clear any personalities the prefs added since our job clearly does not want them
+			humanc.clear_personalities()
+		GLOB.manifest.inject(humanc)
+		// SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
+
 	var/area/station/arrivals = GLOB.areas_by_type[/area/station/hallway/secondary/entry]
 	if(humanc && arrivals && !arrivals.power_environ) //arrivals depowered
 		humanc.put_in_hands(new /obj/item/crowbar/large/emergency(get_turf(humanc))) //if hands full then just drops on the floor

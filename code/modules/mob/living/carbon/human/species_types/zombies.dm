@@ -89,7 +89,6 @@
 /datum/species/zombie/infectious
 	name = "Infectious Zombie"
 	id = SPECIES_ZOMBIE_INFECTIOUS
-	examine_limb_id = SPECIES_ZOMBIE
 	damage_modifier = 20 // 120 damage to KO a zombie, which kills it
 	mutanteyes = /obj/item/organ/eyes/zombie
 	mutantbrain = /obj/item/organ/brain/zombie
@@ -178,7 +177,6 @@
 /datum/species/human/krokodil_addict
 	name = "\improper Krokodil Human"
 	id = SPECIES_ZOMBIE_KROKODIL
-	examine_limb_id = SPECIES_HUMAN
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 
 	bodypart_overrides = list(

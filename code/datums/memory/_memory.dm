@@ -408,11 +408,17 @@
 	var/datum/memory/copy/new_copy = new(new_memorizer, protagonist_name, deuteragonist_name, antagonist_name, where, memory_flags)
 	new_copy.name = name
 	new_copy.story_value = story_value
+	new_copy.original_key = memory_key()
 	return new_copy
+
+/// Returns the key to use in memories, for determining duplicates
+/datum/memory/proc/memory_key()
+	return type
 
 // To only be used by quick copies of memories
 /datum/memory/copy
 	memory_flags = MEMORY_NO_STORY
+	var/original_key
 
 /datum/memory/copy/New(datum/mind/memorizer_mind, atom/protagonist, atom/deuteragonist, atom/antagonist, where, new_memory_flags)
 	src.where = where
@@ -422,3 +428,6 @@
 /datum/memory/copy/generate_memory_name()
 	// We just copy the original memory's name anyways
 	return
+
+/datum/memory/copy/memory_key()
+	return original_key

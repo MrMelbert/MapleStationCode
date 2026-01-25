@@ -21,6 +21,7 @@ import {
 import { useRandomToggleState } from '../useRandomToggleState';
 import { useServerPrefs } from '../useServerPrefs';
 import { getRandomization, PreferenceList } from './MainPage';
+import { PersonalityPage } from './PersonalityPage';
 
 function getColorValueClass(quirk: Quirk) {
   if (quirk.value > 0) {
@@ -288,7 +289,7 @@ function StatDisplay(props) {
   );
 }
 
-export function QuirksPage(props) {
+export function QuirkPage() {
   const { act, data } = useBackend<PreferencesMenuData>();
 
   // this is mainly just here to copy from MainPage.tsx
@@ -322,7 +323,7 @@ export function QuirksPage(props) {
     }
   });
 
-  let balance = 0;
+  let balance = -data.default_quirk_balance;
   let positiveQuirks = 0;
 
   for (const selectedQuirkName of selectedQuirks) {

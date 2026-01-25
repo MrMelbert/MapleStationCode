@@ -1157,7 +1157,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 			restocked += restock(replacer_item)
 	post_restock(user, restocked)
 	if(restocked > 0)
-		replacer.play_rped_sound()
+		replacer.play_rped_effect()
 	return TRUE
 
 /obj/machinery/vending/on_deconstruction(disassembled)
@@ -1450,7 +1450,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	item_record.amount--
-	if(usr.CanReach(src) && usr.put_in_hands(vended_item))
+	if(usr.CanReach(src) && try_put_in_hand(vended_item, usr))
 		to_chat(usr, span_notice("You take [item_record.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(format_text(item_record.name))] falls onto the floor!"))
@@ -1499,7 +1499,6 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	var/datum/bank_account/paying_id_account = SSeconomy.get_dep_account(payment_department)
 	if(paying_id_account)
 		SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
-		SSeconomy.track_purchase(account, price_to_use, name)
 		log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [product_to_vend].")
 	credits_contained += round(price_to_use * 0.2)
 	return TRUE

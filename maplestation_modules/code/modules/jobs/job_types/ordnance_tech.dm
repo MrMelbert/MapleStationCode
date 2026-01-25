@@ -25,7 +25,9 @@
 	display_order = JOB_DISPLAY_ORDER_ORDNANCE_TECH
 	bounty_types = CIV_JOB_SCI
 
-	family_heirlooms = list(/obj/item/toy/nuke)
+	family_heirlooms = list(
+		/obj/item/toy/nuke,
+	)
 
 	mail_goodies = list(
 		/obj/item/analyzer = 50,
@@ -49,6 +51,6 @@
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
 	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
-	belt = /obj/item/modular_computer/pda/ordnance
+	belt = /obj/item/modular_computer/pda/science/ordnance
 	jobtype = /datum/job/ordnance_tech
 	id_trim = /datum/id_trim/job/ordnance_tech

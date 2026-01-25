@@ -113,7 +113,7 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(checkObstacle))
 	playsound(user, 'sound/weapons/thudswoosh.ogg', 40, TRUE, -1)
 
-	var/leap_word = isfelinid(user) ? "pounce" : "leap" //If cat, "pounce" instead of "leap".
+	var/leap_word = isanimid(user) ? "pounce" : "leap" //If cat, "pounce" instead of "leap".
 	if(can_see(user, clicked_atom, 7))
 		user.visible_message(span_warning("[user] [leap_word]s at [clicked_atom]!"), span_danger("You [leap_word] at [clicked_atom]!"))
 	else
@@ -159,7 +159,7 @@
 		return
 
 	var/mob/living/carbon/target = hit
-	var/tackle_word = isfelinid(user) ? "pounce" : "tackle" //If cat, "pounce" instead of "tackle".
+	var/tackle_word = isanimid(user) ? "pounce" : "tackle" //If cat, "pounce" instead of "tackle".
 
 	var/roll = rollTackle(target)
 	tackling = FALSE
@@ -381,7 +381,7 @@
 	if(HAS_TRAIT(target, TRAIT_GRABWEAKNESS))
 		defense_mod -= 2
 
-	if(HAS_TRAIT(target, TRAIT_GIANT))
+	if(HAS_TRAIT(target, TRAIT_GIANT) || HAS_TRAIT(target, TRAIT_HUGE))
 		defense_mod += 2
 	if(target.get_organic_health() < 50)
 		defense_mod -= 1
@@ -396,7 +396,7 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/tackle_target = target
 
-		if(tackle_target.get_mob_height() <= HUMAN_HEIGHT_SHORTEST) //WHO ARE YOU CALLING SHORT?
+		if(tackle_target.mob_height <= HUMAN_HEIGHT_SHORTEST) //WHO ARE YOU CALLING SHORT?
 			defense_mod -= 2
 
 		if(isnull(tackle_target.wear_suit) && isnull(tackle_target.w_uniform)) // who honestly puts all of their effort into tackling a naked guy?
@@ -435,7 +435,7 @@
 
 	if(HAS_TRAIT(sacker, TRAIT_CLUMSY))
 		attack_mod -= 2
-	if(HAS_TRAIT(sacker, TRAIT_GIANT))
+	if(HAS_TRAIT(sacker, TRAIT_GIANT) || HAS_TRAIT(sacker, TRAIT_HUGE))
 		attack_mod += 2
 	if(HAS_TRAIT(sacker, TRAIT_NOGUNS)) //Those dedicated to martial combat are particularly skilled tacklers
 		attack_mod += 2
@@ -455,7 +455,7 @@
 	if(ishuman(sacker))
 		var/mob/living/carbon/human/human_sacker = sacker
 
-		if(human_sacker.get_mob_height() <= HUMAN_HEIGHT_SHORTEST) //JUST YOU WAIT TILL I FIND A CHAIR, BUDDY, THEN YOU'LL BE SORRY
+		if(human_sacker.mob_height <= HUMAN_HEIGHT_SHORTEST) //JUST YOU WAIT TILL I FIND A CHAIR, BUDDY, THEN YOU'LL BE SORRY
 			attack_mod -= 2
 
 		if(human_sacker.mob_mood.sanity_level == SANITY_INSANE) //I've gone COMPLETELY INSANE

@@ -76,7 +76,7 @@
 /// Checks if the mob is wearing something which would obscure their eyes.
 /// Differs from [is_eyes_covered] in that it only checks for items that would prevent someone from seeing our eyes.
 /// In other words, transparent goggles cover your eyes, but keep them visible.
-/mob/living/proc/is_eyes_visible()
+/mob/proc/is_eyes_visible()
 	return TRUE
 
 /**
@@ -212,7 +212,7 @@
 	combat_mode = new_mode
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
-	if(silent || !(client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode)))
+	if(silent || !client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
 		return
 	if(combat_mode)
 		SEND_SOUND(src, sound('sound/misc/ui_togglecombat.ogg', volume = 25)) //Sound from interbay!

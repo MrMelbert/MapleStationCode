@@ -66,7 +66,7 @@ LINEN BINS
 	var/mob/living/to_cover = interacting_with
 	if(to_cover.body_position != LYING_DOWN)
 		return ITEM_INTERACT_BLOCKING
-	if(!user.dropItemToGround(src))
+	if(!user.transfer_item_to_turf(src, to_cover.drop_location()))
 		return ITEM_INTERACT_BLOCKING
 
 	forceMove(get_turf(to_cover))
@@ -124,12 +124,13 @@ LINEN BINS
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 // NON-MODULE CHANGE END
+
 /obj/item/bedsheet/attack_self(mob/living/user)
 	if(!user.CanReach(src)) //No telekinetic grabbing.
 		return
 	if(user.body_position != LYING_DOWN)
 		return
-	if(!user.dropItemToGround(src))
+	if(!user.transfer_item_to_turf(src, drop_location()))
 		return
 
 	coverup(user)

@@ -4,7 +4,6 @@
 /// Also determines what phobias you can choose as your preference with the quirk.
 GLOBAL_LIST_INIT(phobia_types, sort_list(list(
 	"aliens",
-	"anime",
 	"authority",
 	"birds",
 	"blood",
@@ -29,7 +28,6 @@ GLOBAL_LIST_INIT(phobia_types, sort_list(list(
 
 GLOBAL_LIST_INIT(phobia_regexes, list(
 	"aliens" = construct_phobia_regex("aliens"),
-	"anime" = construct_phobia_regex("anime"),
 	"authority" = construct_phobia_regex("authority"),
 	"birds" = construct_phobia_regex("birds"),
 	"blood" = construct_phobia_regex("blood"),
@@ -59,7 +57,6 @@ GLOBAL_LIST_INIT(phobia_mobs, list(
 		/mob/living/carbon/alien,
 		/mob/living/simple_animal/slime,
 	)),
-	"anime" = typecacheof(list(/mob/living/basic/guardian)),
 	"birds" = typecacheof(list(
 		/mob/living/basic/chick,
 		/mob/living/basic/chicken,
@@ -147,24 +144,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/structure/table_frame/abductor,
 		/obj/structure/table/abductor,
 		/obj/structure/table/optable/abductor,
-	)),
-	"anime" = typecacheof(list(
-		/obj/item/clothing/head/costume/kitty/genuine,
-		/obj/item/clothing/mask/gas/ninja,
-		/obj/item/clothing/under/syndicate/ninja,
-		/obj/item/clothing/under/costume/schoolgirl,
-		/obj/item/energy_katana,
-		/obj/item/food/chawanmushi,
-		/obj/item/food/sashimi,
-		/obj/item/highfrequencyblade,
-		/obj/item/katana,
-		/obj/item/nullrod/claymore/katana,
-		/obj/item/nullrod/vibro,
-		/obj/item/reagent_containers/cup/glass/bottle/sake,
-		/obj/item/throwing_star,
-		/obj/item/toy/katana,
-		/obj/structure/mineral_door/paperframe,
-		/obj/structure/window/paperframe,
 	)),
 	"authority" = typecacheof(list(
 		/obj/item/card/id/advanced/centcom,
@@ -553,7 +532,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/pod,
 		/datum/species/shadow,
 	)),
-	"anime" = typecacheof(list(/datum/species/human/felinid)),
 	"conspiracies" = typecacheof(list(
 		/datum/species/abductor,
 		/datum/species/lizard,

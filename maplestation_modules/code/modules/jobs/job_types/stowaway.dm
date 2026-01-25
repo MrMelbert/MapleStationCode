@@ -39,6 +39,9 @@
 		[span_notice("(If you would like to be provided an optional, random backstory, with more or less equipment: [backstory_ref].)")]\
 	"))
 
+/datum/job/stowaway/get_radio_information()
+	return null
+
 // Applied to fresh stowaways to give them an option of getting a random backstory
 /datum/status_effect/backstory
 	id = "stowaway_backstory"

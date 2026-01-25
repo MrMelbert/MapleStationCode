@@ -20,6 +20,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
 
+	mind_traits = list(SECURITY_MIND_TRAITS)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_PRETENDER_ROYAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_WARDEN
@@ -28,7 +29,9 @@
 		/datum/job_department/security,
 		)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 15,

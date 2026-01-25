@@ -9,7 +9,7 @@
 	light_mask = "cytopro-light-mask"
 	products = list(
 		/obj/item/storage/bag/xeno = 5,
-		// /obj/item/reagent_containers/condiment/protein = 10,
+		/obj/item/reagent_containers/condiment/protein = 10,
 		/obj/item/storage/box/swab = 3,
 		/obj/item/storage/box/petridish = 3,
 		/obj/item/storage/box/monkeycubes = 3,

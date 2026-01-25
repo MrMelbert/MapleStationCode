@@ -25,7 +25,9 @@
 	display_order = JOB_DISPLAY_ORDER_XENOBIOLOGIST
 	bounty_types = CIV_JOB_SCI
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/toy/plush/slimeplushie,
+	)
 
 	mail_goodies = list(
 		/obj/item/toy/plush/slimeplushie = 25,
@@ -54,6 +56,6 @@
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio
 	uniform = /obj/item/clothing/under/rank/rnd/xenobiologist
-	belt = /obj/item/modular_computer/pda/xenobiologist
+	belt = /obj/item/modular_computer/pda/science/xenobiologist
 	jobtype = /datum/job/xenobiologist
 	id_trim = /datum/id_trim/job/xenobiologist

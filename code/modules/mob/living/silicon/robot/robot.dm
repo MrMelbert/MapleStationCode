@@ -905,6 +905,7 @@
 		for(var/chan in radio.channels)
 			radio.secure_radio_connections[chan] = add_radio(radio, GLOB.radiochannels[chan])
 
+	mainframe.set_eyeobj_visible(FALSE)
 	diag_hud_set_aishell()
 	undeployment_action.Grant(src)
 
@@ -943,6 +944,7 @@
 		mainframe.laws.show_laws(mainframe) //Always remind the AI when switching
 	if(mainframe.eyeobj)
 		mainframe.eyeobj.setLoc(loc)
+		mainframe.set_eyeobj_visible(TRUE)
 	mainframe = null
 
 /mob/living/silicon/robot/attack_ai(mob/user)
@@ -1069,3 +1071,19 @@
 		buckled_mob.Paralyze(1 SECONDS)
 		unbuckle_mob(buckled_mob)
 	do_sparks(5, 0, src)
+
+/mob/living/silicon/robot/init_unconscious_appearance()
+	var/image/static_overlay = image('icons/effects/effects.dmi', null, "static_base")
+	static_overlay.blend_mode = BLEND_INSET_OVERLAY
+
+	var/image/static_image = image('icons/mob/silicon/robots.dmi', src, "robot")
+	static_image.appearance_flags |= KEEP_TOGETHER
+	static_image.overlays += static_overlay
+	static_image.override = TRUE
+	static_image.name = "unknown cyborg"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)

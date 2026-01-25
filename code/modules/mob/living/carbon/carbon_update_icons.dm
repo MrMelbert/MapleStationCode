@@ -366,11 +366,9 @@
 
 /mob/living/carbon/update_worn_legcuffs()
 	remove_overlay(LEGCUFF_LAYER)
-	clear_alert("legcuffed")
 	if(legcuffed)
 		overlays_standing[LEGCUFF_LAYER] = mutable_appearance('icons/mob/simple/mob.dmi', "legcuff1", -LEGCUFF_LAYER)
 		apply_overlay(LEGCUFF_LAYER)
-		throw_alert("legcuffed", /atom/movable/screen/alert/restrained/legcuffed, new_master = src.legcuffed)
 
 /mob/living/carbon/update_worn_head()
 	remove_overlay(HEAD_LAYER)
@@ -516,12 +514,12 @@
 	if(is_invisible)
 		. += "-invisible"
 	for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
-		if(!overlay.can_draw_on_bodypart(owner))
+		if(!overlay.can_draw_on_bodypart(src))
 			continue
 		. += "-[jointext(overlay.generate_icon_cache(), "-")]"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		. += "-[human_owner.get_mob_height()]"
+		. += "-[human_owner.mob_height]"
 	return .
 
 ///Generates a cache key specifically for husks
@@ -534,7 +532,7 @@
 	. += "-[body_zone]"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		. += "-[human_owner.get_mob_height()]"
+		. += "-[human_owner.mob_height]"
 	return .
 
 /obj/item/bodypart/head/generate_icon_key()
@@ -582,11 +580,10 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
  *
  * Arguments:
  * * limb_overlay - The limb image being masked, not necessarily the original limb image as it could be an overlay on top of it
- * * image_dir - Direction of the masked images.
  *
  * Returns the list of masked images, or `null` if the limb_overlay didn't exist
  */
-/obj/item/bodypart/leg/proc/generate_masked_leg(mutable_appearance/limb_overlay, image_dir = NONE)
+/obj/item/bodypart/leg/proc/generate_masked_leg(mutable_appearance/limb_overlay)
 	RETURN_TYPE(/list)
 	if(!limb_overlay)
 		return
@@ -615,12 +612,10 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 	var/mutable_appearance/new_leg_appearance = new(limb_overlay)
 	new_leg_appearance.icon = new_leg_icon
 	new_leg_appearance.layer = -BODYPARTS_LAYER
-	new_leg_appearance.dir = image_dir //for some reason, things do not work properly otherwise
 	. += new_leg_appearance
 	var/mutable_appearance/new_leg_appearance_lower = new(limb_overlay)
 	new_leg_appearance_lower.icon = new_leg_icon_lower
 	new_leg_appearance_lower.layer = -BODYPARTS_LOW_LAYER
-	new_leg_appearance_lower.dir = image_dir
 	. += new_leg_appearance_lower
 	return .
 

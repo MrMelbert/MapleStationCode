@@ -294,7 +294,7 @@
 	if(methods & VAPOR)
 		exposed_mob.adjust_wet_stacks(reac_volume * WATER_TO_WET_STACKS_FACTOR_VAPOR) // Spraying someone with water with the hope to put them out is just simply too funny to me not to add it.
 
-		if(!isfelinid(exposed_mob))
+		if(!HAS_TRAIT(exposed_mob, TRAIT_CATLIKE_GRACE))
 			return
 
 		exposed_mob.incapacitate(1) // startles the felinid, canceling any do_after
@@ -361,8 +361,8 @@
 /datum/wound/flesh/burn/on_saltwater(reac_volume)
 	// Similar but better stats from normal salt.
 	sanitization += VALUE_PER(0.6, 30) * reac_volume
-	infestation -= max(VALUE_PER(0.5, 30) * reac_volume, 0)
-	infestation_rate += VALUE_PER(0.07, 30) * reac_volume
+	infection -= max(VALUE_PER(0.5, 30) * reac_volume, 0)
+	infection_rate += VALUE_PER(0.07, 30) * reac_volume
 	to_chat(victim, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the... miscellaneous fluids. It feels somewhat better afterwards."))
 	return
 
@@ -700,7 +700,7 @@
 				affected_mob.visible_message(pick("<b>[affected_mob]</b>'s collar pops up without warning.</span>", "<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms."))
 			else
 				affected_mob.visible_message("<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms.")
-	if(SPT_PROB(5, seconds_per_tick))
+	if(SPT_PROB(5, seconds_per_tick) && HAS_PERSONALITY(affected_mob, /datum/personality/whimsical))
 		affected_mob.say(pick("Shit was SO cash.", "You are everything bad in the world.", "What sports do you play, other than 'jack off to naked drawn Japanese people?'", "Don???t be a stranger. Just hit me with your best shot.", "My name is John and I hate every single one of you."), forced = /datum/reagent/spraytan)
 
 #define MUT_MSG_IMMEDIATE 1
@@ -1160,7 +1160,7 @@
 
 /datum/reagent/glycerol
 	name = "Glycerol"
-	description = "Glycerol is a simple polyol compound. Glycerol is sweet-tasting and of low toxicity."
+	description = "A simple polyol compound. Sweet-tasting and of low toxicity."
 	color = "#D3B913"
 	taste_description = "sweetness"
 	ph = 9
@@ -1444,7 +1444,7 @@
 
 /datum/reagent/impedrezene
 	name = "Impedrezene"
-	description = "Impedrezene is a narcotic that impedes one's ability by slowing down the higher brain cell functions."
+	description = "A narcotic that impedes one's ability by slowing down the higher brain cell functions."
 	color = "#E07DDD" // pink = happy = dumb
 	taste_description = "numbness"
 	ph = 9.1
@@ -2117,25 +2117,25 @@
 
 /datum/reagent/pentaerythritol
 	name = "Pentaerythritol"
-	description = "Slow down, it ain't no spelling bee!"
+	description = "A crystalline compound used in the synthesis of explosives and other chemicals."
+	color = "#EEEEEF"
 	reagent_state = SOLID
-	color = "#E66FFF"
 	taste_description = "acid"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/acetaldehyde
 	name = "Acetaldehyde"
-	description = "Similar to plastic. Tastes like dead people."
-	reagent_state = SOLID
+	description = "A colorless liquid with a strong smell. Used in the synthesis of other chemicals."
+	reagent_state = LIQUID
 	color = "#EEEEEF"
 	taste_description = "dead people" //made from formaldehyde, ya get da joke ?
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/acetone_oxide
 	name = "Acetone Oxide"
-	description = "Enslaved oxygen"
-	reagent_state = LIQUID
-	color = "#C8A5DC"
+	description = "A highly reactive compoud derived from acetone. Known to cause burns on contact. Used in the synthesis of various explosives."
+	color = "#966199cb"
+	reagent_state = SOLID
 	taste_description = "acid"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -2156,8 +2156,8 @@
 
 /datum/reagent/ash
 	name = "Ash"
-	description = "Supposedly phoenixes rise from these, but you've never seen it."
-	reagent_state = LIQUID
+	description = "A fine ash. Supposedly phoenixes rise from these, but you've never seen it."
+	reagent_state = SOLID
 	color = "#515151"
 	taste_description = "ash"
 	ph = 6.5
@@ -2510,7 +2510,7 @@
 
 /datum/reagent/plastic_polymers
 	name = "Plastic Polymers"
-	description = "the petroleum based components of plastic."
+	description = "Petroleum based components of plastic."
 	color = "#f7eded"
 	taste_description = "plastic"
 	ph = 6
@@ -2902,7 +2902,7 @@
 	ant_damage++
 	if(ant_damage < 5) // Makes ant food a little more appetizing, since you won't be screaming as much.
 		return
-	if(SPT_PROB(5, seconds_per_tick))
+	if(SPT_PROB(5, seconds_per_tick) && HAS_PERSONALITY(victim, /datum/personality/whimsical))
 		if(SPT_PROB(5, seconds_per_tick)) //Super rare statement
 			victim.say("AUGH NO NOT THE ANTS! NOT THE ANTS! AAAAUUGH THEY'RE IN MY EYES! MY EYES! AUUGH!!", forced = /datum/reagent/ants)
 		else
@@ -2937,7 +2937,7 @@
 
 /datum/reagent/ants/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
-	if(!istype(exposed_turf) || isspaceturf(exposed_turf)) // Is the turf valid
+	if(!istype(exposed_turf)) // Is the turf valid
 		return
 	if((reac_volume <= 10)) // Makes sure people don't duplicate ants.
 		return

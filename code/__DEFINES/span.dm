@@ -122,6 +122,7 @@
 #define span_slightly_larger(str) ("<span class='slightly_larger'>" + str + "</span>")
 #define span_slime(str) ("<span class='slime'>" + str + "</span>")
 #define span_small(str) ("<span class='small'>" + str + "</span>")
+#define span_slightly_smaller(str) ("<span class='slightly_smaller'>" + str + "</span>")
 #define span_smalldanger(str) ("<span class='smalldanger'>" + str + "</span>")
 #define span_smallnotice(str) ("<span class='smallnotice'>" + str + "</span>")
 #define span_smallnoticeital(str) ("<span class='smallnoticeital'>" + str + "</span>")

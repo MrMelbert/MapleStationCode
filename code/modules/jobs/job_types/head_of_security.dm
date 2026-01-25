@@ -24,7 +24,7 @@
 		/datum/job_department/command,
 		)
 
-	mind_traits = list(HEAD_OF_STAFF_MIND_TRAITS)
+	mind_traits = list(HEAD_OF_STAFF_MIND_TRAITS, SECURITY_MIND_TRAITS)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
 	paycheck = PAYCHECK_COMMAND
@@ -33,7 +33,9 @@
 	display_order = JOB_DISPLAY_ORDER_HEAD_OF_SECURITY
 	bounty_types = CIV_JOB_SEC
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 	rpg_title = "Guard Leader"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 

@@ -335,7 +335,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	SET_PLANE_IMPLICIT(thing, initial(thing.plane))
 	thing.mouse_opacity = initial(thing.mouse_opacity)
 	thing.screen_loc = null
-	if(thing.maptext)
+	if(numerical_stacking)
 		thing.maptext = ""
 
 /**
@@ -443,6 +443,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	SEND_SIGNAL(src, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
+	if(get(real_location, /mob) != user)
+		to_insert.do_pickup_animation(real_location, user)
 	return TRUE
 
 /// Since items inside storages ignore transparency for QOL reasons, we're tracking when things are dropped onto them instead of our UI elements
@@ -1077,7 +1079,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	for(var/obj/item as anything in storage_contents)
 		item.mouse_opacity = MOUSE_OPACITY_OPAQUE
 		item.screen_loc = "[current_x]:[screen_pixel_x],[current_y]:[screen_pixel_y]"
-		item.maptext = storage_contents[item]
+		if(numerical_stacking)
+			item.maptext = storage_contents[item]
 		SET_PLANE(item, ABOVE_HUD_PLANE, our_turf)
 		current_x++
 		if(current_x - screen_start_x < columns)

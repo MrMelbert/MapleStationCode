@@ -280,7 +280,7 @@
 				location = turf
 				break
 
-	transferItemToLoc(I, location, force = TRUE, silent = TRUE/*, animated = !ignore_animation*/)
+	transferItemToLoc(I, location, force = TRUE, silent = TRUE, animated = !ignore_animation)
 	return FALSE
 
 /// Returns true if a mob is holding something
@@ -320,26 +320,53 @@
  * * If it was, returns the item.
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
-/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
-	if (isnull(I))
+/mob/proc/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE)
+	if(isnull(to_drop))
 		return
 
+	var/x_offset = 0
+	var/y_offset = 0
+	if(!(to_drop.item_flags & NO_PIXEL_RANDOM_DROP))
+		x_offset += rand(-6, 6)
+		y_offset += rand(-6, 6)
 	SEND_SIGNAL(src, COMSIG_MOB_DROPPING_ITEM)
-	var/try_uneqip = doUnEquip(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
-
-	if(!try_uneqip || !I) //ensure the item exists and that it was dropped properly.
+	if(!transfer_item_to_turf(to_drop, drop_location(), x_offset, y_offset, force, silent, invdrop))
 		return
 
-	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
-		I.pixel_x = I.base_pixel_x + rand(-6, 6)
-		I.pixel_y = I.base_pixel_y + rand(-6, 6)
-	I.do_drop_animation(src)
-	return I
+	return to_drop
+
+/// Unequips and transfers an item to a given turf, if possible.
+/mob/proc/transfer_item_to_turf(
+	obj/item/to_transfer,
+	turf/new_loc,
+	x_offset = 0,
+	y_offset = 0,
+	force = FALSE,
+	silent = FALSE,
+	drop_item_inventory = TRUE,
+)
+	if(!doUnEquip(to_transfer, force, new_loc, no_move = FALSE, invdrop = drop_item_inventory, silent = silent))
+		return FALSE
+	if(QDELETED(to_transfer)) // Some items may get deleted upon getting unequipped.
+		return FALSE
+	to_transfer.pixel_x = to_transfer.base_pixel_x + x_offset
+	to_transfer.pixel_y = to_transfer.base_pixel_y + y_offset
+	to_transfer.do_drop_animation(src)
+	return TRUE
 
 //for when the item will be immediately placed in a loc other than the ground
-/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE)
+/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, animated = null)
 	. = doUnEquip(I, force, newloc, FALSE, silent = silent)
-	I.do_drop_animation(src)
+	if(!.)
+		return
+	//This proc wears a lot of hats for moving items around in different ways,
+	//so we assume unhandled cases for checking to animate can safely be handled
+	//with the same logic we handle animating putting items in container (container on your person isn't animated)
+	if(isnull(animated))
+		//if the item's ultimate location is us, we don't animate putting it wherever
+		animated = (get(newloc, /mob) != src)
+	if(animated)
+		I.do_pickup_animation(newloc, src)
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
@@ -347,7 +374,7 @@
 	return doUnEquip(I, force, null, TRUE, idrop, silent = TRUE)
 
 //DO NOT CALL THIS PROC
-//use one of the above 3 helper procs
+//use one of the above 4 helper procs
 //you may override it, but do not modify the args
 /mob/proc/doUnEquip(obj/item/item_dropping, force, atom/newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
 													//Use no_move if the item is just gonna be immediately moved afterward
