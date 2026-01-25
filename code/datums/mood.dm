@@ -671,6 +671,18 @@
 /datum/client_colour/sanity/tier1
 	desaturation = 0.9
 
+/atom/movable/screen/fullscreen/sanity
+	show_when_dead = FALSE
+	icon_state = "passage"
+	layer = UI_DAMAGE_LAYER - 0.1
+	plane = FULLSCREEN_PLANE
+	color = "#270227"
+
+/atom/movable/screen/fullscreen/static_vision/sanity
+	show_when_dead = FALSE
+	color = "#e0e0e0"
+	alpha = 25
+
 /datum/mood/proc/update_sanity_screen()
 	var/obj/old_screen = mob_parent.screens["sanity"]
 	var/old_state = old_screen?.icon_state
@@ -686,23 +698,38 @@
 
 	switch(esanity)
 		if (0 to 10)
-			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/crit, 4)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 4)
 			mob_parent.add_client_colour(/datum/client_colour/sanity/tier4, "sanity")
 		if (10 to 20)
-			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/crit, 3)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 3)
 			mob_parent.add_client_colour(/datum/client_colour/sanity/tier3, "sanity")
 		if (20 to 30)
-			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/crit, 2)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 2)
 			mob_parent.add_client_colour(/datum/client_colour/sanity/tier2, "sanity")
 		if (30 to 40)
-			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/crit, 1)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 1)
 			mob_parent.add_client_colour(/datum/client_colour/sanity/tier1, "sanity")
 		else
 			mob_parent.clear_fullscreen("sanity")
+			mob_parent.clear_fullscreen("sanity_static")
 			mob_parent.remove_client_colour("sanity")
 
 	if(new_screen && old_state != new_screen.icon_state)
-		new_screen.color = "#270227"
+		// updating static effect for new sanity level
+		var/had_effect = !!mob_parent.screens["sanity_static"]
+		mob_parent.clear_fullscreen("sanity_static", animated = FALSE)
+		var/obj/staticystuff = mob_parent.overlay_fullscreen("sanity_static", /atom/movable/screen/fullscreen/static_vision/sanity)
+		var/new_alpha = staticystuff.alpha - (esanity * 0.5)
+		if(had_effect)
+			animate(staticystuff, time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+		else
+			staticystuff.alpha = 0
+			animate(staticystuff, time = 0.5 MINUTES, alpha = new_alpha)
+			animate(time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+
+		// resetting filter stuff
 		new_screen.add_filter("sanity_filter", 1, outline_filter(1, "#270227"))
 		new_screen.add_filter("sanity_blur", 2, drop_shadow_filter(1, 1, 10, 0, "#270227"))
 		var/blur = new_screen.get_filter("sanity_blur")
