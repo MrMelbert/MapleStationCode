@@ -15,7 +15,7 @@
 /obj/effect/decal/cleanable/robot_debris/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
-	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
+	add_blood_DNA(list("CRUDE OIL" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
 
 /obj/effect/decal/cleanable/robot_debris/proc/streak(list/directions, mapload=FALSE)
 	var/direction = pick(directions)
@@ -87,7 +87,7 @@
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	AddElement(/datum/element/easy_ignite) // NON-MODULE CHANGE
-	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
+	add_blood_DNA(list("CRUDE OIL" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
 
 // /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
 // 	var/attacked_by_hot_thing = I.get_temperature()
