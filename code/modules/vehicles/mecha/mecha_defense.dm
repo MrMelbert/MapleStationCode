@@ -123,6 +123,8 @@
 		var/mob/living/hitmob = pick(occupants)
 		return hitmob.bullet_act(hitting_projectile, def_zone, piercing_hit) //If the sides are open, the occupant can be hit
 
+	var/old_internals = internal_damage
+
 	. = ..()
 
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
@@ -135,6 +137,9 @@
 		armour_penetration = hitting_projectile.armour_penetration,
 	), def_zone)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(REVERSE_DIR(hitting_projectile.dir), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
@@ -317,6 +322,8 @@
 	if(!attacking_item.force)
 		return
 
+	var/old_internals = internal_damage
+
 	var/damage_taken = take_damage(attacking_item.force * attacking_item.demolition_mod, attacking_item.damtype, MELEE, 1, get_dir(src, user))
 	try_damage_component(damage_taken, user.zone_selected)
 
@@ -331,11 +338,23 @@
 	log_combat(user, src, "attacked", attacking_item)
 	log_message("Attacked by [user]. Item - [attacking_item], Damage - [damage_taken]", LOG_MECHA)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
+
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
+	var/old_internals = internal_damage
+
 	. = ..()
-	if(.)
-		try_damage_component(., user.zone_selected)
-		diag_hud_set_mechhealth()
+	if(!.)
+		return
+
+	try_damage_component(., user.zone_selected)
+	diag_hud_set_mechhealth()
+
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/examine(mob/user)
 	. = ..()
@@ -452,6 +471,8 @@
 		clear_internal_damage(MECHA_CABIN_AIR_BREACH)
 	if(internal_damage & MECHA_INT_CONTROL_LOST)
 		clear_internal_damage(MECHA_INT_CONTROL_LOST)
+	if(internal_damage & MECHA_INT_FUEL_LINE)
+		clear_internal_damage(MECHA_INT_FUEL_LINE)
 	diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/narsie_act()

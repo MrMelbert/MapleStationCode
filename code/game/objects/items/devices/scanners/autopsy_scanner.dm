@@ -84,17 +84,16 @@
 
 	autopsy_information += "<center>Blood Data</center>"
 	if(HAS_TRAIT(scanned, TRAIT_HUSK))
-		autopsy_information += "Blood can't be found, victim is husked by: "
-		if(HAS_TRAIT_FROM(scanned, TRAIT_HUSK, BURN))
-			autopsy_information += "Severe burns.</br>"
-		else if (HAS_TRAIT_FROM(scanned, TRAIT_HUSK, CHANGELING_DRAIN))
+		autopsy_information += "Subject is husked by: "
+		if(HAS_TRAIT_FROM(scanned, TRAIT_HUSK, CHANGELING_DRAIN))
 			autopsy_information += "Desiccation, commonly caused by Changelings.</br>"
-		else
+		else if(!HAS_TRAIT_FROM(scanned, TRAIT_HUSK, BURN)) // prioritize showing unknown causes over burns
 			autopsy_information += "Unknown causes.</br>"
-	else
-		if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
-			autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
-			autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
+		else
+			autopsy_information += "Severe burns.</br>"
+	else if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
+		autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
+		autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
 
 	for(var/datum/disease/diseases as anything in scanned.diseases)
 		autopsy_information += "Name: [diseases.name] | Type: [diseases.spread_text]<br>"

@@ -207,6 +207,13 @@
 /datum/client_colour/glass_colour/gray
 	colour = "#cccccc"
 
+///we want it to be less harsh for players to take blindness quirk, this adds enough color to not cause too much eye strain
+/datum/client_colour/blindness
+	// split_filters = TRUE
+	colour = list(/*R*/ 0.51,0.3,0.3,0, /*G*/ 0.29,0.51,0.29,0, /*B*/ 0.3,0.3,0.61,0, /*A*/ 0,0,0,1, /*C*/ 0,0,0,0) // dim and less saturated
+	fade_in = 2 SECONDS
+	fade_out = 2 SECONDS
+
 ///A client colour that makes the screen look a bit more grungy, halloweenesque even.
 /datum/client_colour/halloween_helmet
 	colour = list(0.75,0.13,0.13,0, 0.13,0.7,0.13,0, 0.13,0.13,0.75,0, -0.06,-0.09,-0.08,1, 0,0,0,0)

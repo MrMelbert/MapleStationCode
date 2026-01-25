@@ -16,7 +16,7 @@
 	///Which kind of guns it can be loaded into
 	var/caliber = null
 	///The bullet type to create when New() is called
-	var/projectile_type = null
+	var/obj/projectile/projectile_type = null
 	///the loaded projectile in this ammo casing
 	var/obj/projectile/loaded_projectile = null
 	///Pellets for spreadshot
