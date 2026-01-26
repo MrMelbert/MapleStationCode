@@ -101,7 +101,7 @@
 			if(!death_timer)
 				carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.4)
 				carbon.add_consciousness_modifier(NO_CHARGE, -30)
-				death_timer = addtimer(CALLBACK(src, PROC_REF(turn off), carbon), 30 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE|TIMER_DELETE_ME)
+				death_timer = addtimer(CALLBACK(src, PROC_REF(turn_off), carbon), 30 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE|TIMER_DELETE_ME)
 				to_chat(carbon, span_userdanger("Power levels critical: Shutdown in 30 seconds without recharge!"))
 			has_flags |= HAS_CON_MOD | HAS_MOOD_EVENT | HAS_DEATH_TIMER
 

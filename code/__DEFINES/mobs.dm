@@ -119,6 +119,7 @@
 #define SPECIES_SLIMEPERSON "slime"
 #define SPECIES_LUMINESCENT "luminescent"
 #define SPECIES_STARGAZER "stargazer"
+#define SPECIES_SYNTH "synth"
 #define SPECIES_LIZARD "lizard"
 #define SPECIES_LIZARD_ASH "ashwalker"
 #define SPECIES_LIZARD_SILVER "silverscale"
