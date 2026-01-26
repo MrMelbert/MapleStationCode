@@ -28,7 +28,7 @@
 	mutantliver = /obj/item/organ/liver/android
 	mutantlungs = /obj/item/organ/lungs/android
 	mutanteyes = /obj/item/organ/eyes/robotic/synth
-	mutantears = /obj/item/organ/ears/cybernetic
+	mutantears = /obj/item/organ/ears/android
 	species_pain_mod = 0.5 // the bodyparts themselves also reduce pain
 	exotic_bloodtype = /datum/blood_type/oil
 

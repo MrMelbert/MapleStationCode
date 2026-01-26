@@ -8,6 +8,8 @@
 	stomach_blood_transfer_rate = 1 // "blood" and stomach are one
 	passive_drain_multiplier = 0.6 // power hungry
 
+	VAR_PRIVATE/death_timer
+
 /obj/item/organ/stomach/ethereal/android/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
@@ -87,60 +89,74 @@
 			owner.adjustOxyLoss(-1 * seconds_per_tick)
 
 #define NO_CHARGE "Low Power"
-#define HAS_ALERT (1 << 0)
-#define HAS_CON_MOD (1 << 1)
-#define HAS_MOOD_EVENT (1 << 2)
+#define HAS_CON_MOD (1 << 0)
+#define HAS_MOOD_EVENT (1 << 1)
+#define HAS_DEATH_TIMER (1 << 2)
 
 /obj/item/organ/stomach/ethereal/android/handle_charge(mob/living/carbon/carbon, seconds_per_tick, times_fired)
 	var/has_flags = NONE
 	switch(cell.charge())
 		if(-INFINITY to ETHEREAL_CHARGE_NONE)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_no_charge)
-			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/emptycell/ethereal/android)
-			carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.2)
-			carbon.add_consciousness_modifier(NO_CHARGE, -50)
-			has_flags |= HAS_ALERT | HAS_CON_MOD | HAS_MOOD_EVENT
+			if(!death_timer)
+				carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.4)
+				carbon.add_consciousness_modifier(NO_CHARGE, -30)
+				death_timer = addtimer(CALLBACK(src, PROC_REF(turn off), carbon), 30 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE|TIMER_DELETE_ME)
+				to_chat(carbon, span_userdanger("Power levels critical: Shutdown in 30 seconds without recharge!"))
+			has_flags |= HAS_CON_MOD | HAS_MOOD_EVENT | HAS_DEATH_TIMER
+
 		if(ETHEREAL_CHARGE_NONE to ETHEREAL_CHARGE_LOWPOWER)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_decharged)
-			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal/android, 3)
 			carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.6)
 			carbon.add_consciousness_modifier(NO_CHARGE, -20)
-			has_flags |= HAS_ALERT | HAS_CON_MOD | HAS_MOOD_EVENT
+			has_flags |= HAS_CON_MOD | HAS_MOOD_EVENT
+
 		if(ETHEREAL_CHARGE_LOWPOWER to ETHEREAL_CHARGE_NORMAL)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_low_power)
-			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal/android, 2)
-			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
+			has_flags |= HAS_MOOD_EVENT
+
 		if(ETHEREAL_CHARGE_NORMAL to ETHEREAL_CHARGE_ALMOSTFULL)
 			EMPTY_BLOCK_GUARD
+
 		if(ETHEREAL_CHARGE_ALMOSTFULL to ETHEREAL_CHARGE_FULL)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_charged)
 			has_flags |= HAS_MOOD_EVENT
+
 		if(ETHEREAL_CHARGE_FULL to ETHEREAL_CHARGE_OVERLOAD)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_overcharged)
-			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/ethereal_overcharge/android, 1)
-			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
+			has_flags |= HAS_MOOD_EVENT
+
 		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_supercharged)
-			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/ethereal_overcharge/android, 2)
-			has_flags |= HAS_ALERT | HAS_MOOD_EVENT
+			has_flags |= HAS_MOOD_EVENT
 			if(SPT_PROB(5, seconds_per_tick)) // 5% each seacond for ethereals to explosively release excess energy if it reaches dangerous levels
 				discharge_process(carbon)
 
 	carbon.hud_used?.hunger?.update_hunger_bar()
 	if(!(has_flags & HAS_MOOD_EVENT))
 		carbon.clear_mood_event(ALERT_ETHEREAL_CHARGE)
-	// if(!(has_flags & HAS_ALERT))
-	// 	carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
 	if(!(has_flags & HAS_CON_MOD))
 		carbon.remove_max_consciousness_value(NO_CHARGE)
 		carbon.remove_consciousness_modifier(NO_CHARGE)
+	if(!(has_flags & HAS_DEATH_TIMER) && death_timer)
+		deltimer(death_timer)
+		death_timer = null
 
 /obj/item/organ/stomach/ethereal/android/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	organ_owner.clear_mood_event(ALERT_ETHEREAL_CHARGE)
-	// organ_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
 	organ_owner.remove_max_consciousness_value(NO_CHARGE)
 	organ_owner.remove_consciousness_modifier(NO_CHARGE)
+	deltimer(death_timer)
+	death_timer = null
+
+/obj/item/organ/stomach/ethereal/android/proc/turn_off(mob/living/carbon/carbon)
+	if(carbon != owner)
+		return
+
+	to_chat(carbon, span_userdanger("Power levels depleted: Shutting down..."))
+	carbon.add_max_consciousness_value(NO_CHARGE, CONSCIOUSNESS_MAX * 0.2)
+	carbon.add_consciousness_modifier(NO_CHARGE, -50)
 
 #undef NO_CHARGE
 #undef HAS_ALERT

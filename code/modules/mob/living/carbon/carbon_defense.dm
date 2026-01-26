@@ -460,16 +460,31 @@
 
 		switch(damage)
 			if(1)
-				to_chat(src, span_warning("Your eyes sting a little."))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes sting a little.",
+					"Your visual sensors flash briefly.",
+				)
 				if(prob(40))
 					eyes.apply_organ_damage(1)
 
 			if(2)
-				to_chat(src, span_warning("Your eyes burn."))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes burn.",
+					"Your visual sensors malfunction.",
+				)
 				eyes.apply_organ_damage(rand(2, 4))
 
 			if(3 to INFINITY)
-				to_chat(src, span_warning("Your eyes itch and burn severely!"))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes itch and burn severely!",
+					"Your visual sensors malfunction severely!",
+				)
 				eyes.apply_organ_damage(rand(12, 16))
 
 		if(eyes.damage > 10)
@@ -478,15 +493,30 @@
 
 			if(eyes.damage > eyes.low_threshold)
 				if(!is_nearsighted_from(EYE_DAMAGE) && prob(eyes.damage - eyes.low_threshold))
-					to_chat(src, span_warning("Your eyes start to burn badly!"))
+					organ_feedback_message(
+						eyes,
+						"warning",
+						"Your eyes start to burn badly!",
+						"Your visual sensors report severe damage!",
+					)
 					eyes.apply_organ_damage(eyes.low_threshold)
 
 				else if(!is_blind() && prob(eyes.damage - eyes.high_threshold))
-					to_chat(src, span_warning("You can't see anything!"))
+					organ_feedback_message(
+						eyes,
+						"boldwarning",
+						"You can't see anything!",
+						"Your visual sensors fail completely!",
+					)
 					eyes.apply_organ_damage(eyes.maxHealth)
 
 			else
-				to_chat(src, span_warning("Your eyes are really starting to hurt. This can't be good for you!"))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes are really starting to hurt. This can't be good for you!",
+					"Your visual sensors flash. This can't be good.",
+				)
 		return TRUE
 
 	else if(damage == 0 && prob(20)) // just enough protection
