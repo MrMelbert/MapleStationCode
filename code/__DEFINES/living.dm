@@ -211,3 +211,6 @@
 #define examining_span_normal(msg) span_infoplain(span_italics(msg))
 /// For consistent examine span formatting (small size)
 #define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
+
+#define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
+#define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)
