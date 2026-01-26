@@ -42,6 +42,11 @@
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
+/// Send when sharing body temperature to breath
+#define COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE "human_on_handle_breath_temperature"
+	/// Stops further processing
+	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -211,6 +216,3 @@
 #define examining_span_normal(msg) span_infoplain(span_italics(msg))
 /// For consistent examine span formatting (small size)
 #define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
-
-#define COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE "human_on_handle_breath_temperature"
-	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
