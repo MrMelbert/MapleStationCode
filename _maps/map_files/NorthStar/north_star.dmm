@@ -482,8 +482,8 @@
 /obj/effect/turf_decal/tile/neutral/opposingcorners{
 	dir = 8
 	},
-/obj/machinery/computer/rdconsole,
 /obj/machinery/keycard_auth/wall_mounted/directional/east,
+/obj/machinery/computer/mecha,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "afD" = (
@@ -55017,14 +55017,20 @@
 /turf/open/floor/pod/dark,
 /area/station/maintenance/floor2/starboard/aft)
 "odz" = (
-/obj/structure/filingcabinet/chestdrawer,
 /obj/effect/turf_decal/tile/purple/opposingcorners,
 /obj/machinery/button/door/directional/north{
 	id = "rdoffice";
 	name = "Privacy Control";
-	pixel_y = 34;
+	pixel_y = 40;
 	req_access = list("rd")
 	},
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "odH" = (

@@ -28934,10 +28934,6 @@
 /turf/open/floor/plating/rust,
 /area/station/maintenance/port/fore)
 "eSG" = (
-/obj/machinery/computer/mecha{
-	dir = 1
-	},
-/obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
@@ -28945,6 +28941,12 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -8
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "eSM" = (
@@ -34268,9 +34270,6 @@
 /turf/open/floor/plating/plasma/rust,
 /area/station/maintenance/space_hut/plasmaman)
 "gCQ" = (
-/obj/machinery/computer/robotics{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -34279,6 +34278,9 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/machinery/computer/mecha{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "gDp" = (
@@ -41926,10 +41928,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/computer/rdconsole{
-	dir = 8
-	},
-/obj/effect/turf_decal/bot,
+/obj/machinery/pdapainter/research,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "jaD" = (
@@ -49148,14 +49147,17 @@
 /turf/open/floor/iron/freezer,
 /area/station/service/kitchen/coldroom)
 "ltR" = (
-/obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
-/obj/machinery/pdapainter/research,
+/obj/structure/table,
+/obj/item/aicard,
+/obj/item/pai_card{
+	pixel_x = 6
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "lui" = (
@@ -51342,14 +51344,6 @@
 /obj/item/hand_labeler,
 /obj/machinery/airalarm/directional/west,
 /obj/machinery/light/directional/west,
-/obj/item/pai_card{
-	pixel_x = 6
-	},
-/obj/item/aicard,
-/obj/item/taperecorder{
-	pixel_x = -6;
-	pixel_y = 6
-	},
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
@@ -82115,6 +82109,10 @@
 	pixel_x = 4
 	},
 /obj/machinery/keycard_auth,
+/obj/item/taperecorder{
+	pixel_x = -6;
+	pixel_y = 6
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "wmA" = (
@@ -85327,9 +85325,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security)
 "xoq" = (
-/obj/machinery/computer/aifixer{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -85338,6 +85333,9 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/machinery/computer/robotics{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "xoD" = (

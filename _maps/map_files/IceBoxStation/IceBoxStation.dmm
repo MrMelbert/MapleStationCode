@@ -20497,7 +20497,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/machinery/modular_computer/preset/id{
+/obj/machinery/computer/robotics{
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_corner{
@@ -43408,7 +43408,12 @@
 /obj/effect/mapping_helpers/requests_console/ore_update,
 /obj/effect/mapping_helpers/requests_console/information,
 /obj/effect/mapping_helpers/requests_console/assistance,
-/obj/machinery/pdapainter/research,
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "mYs" = (
@@ -44044,9 +44049,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
 "nfW" = (
-/obj/machinery/computer/mecha{
-	dir = 1
-	},
 /obj/structure/window/reinforced/spawner/directional/west,
 /obj/machinery/keycard_auth/wall_mounted/directional/south,
 /obj/machinery/camera/autoname/directional/south{
@@ -44054,6 +44056,7 @@
 	network = list("ss13","rd")
 	},
 /obj/machinery/light/directional/south,
+/obj/machinery/pdapainter/research,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/rd)
 "ngj" = (
@@ -55737,9 +55740,6 @@
 /turf/closed/wall/r_wall,
 /area/station/engineering/atmos)
 "qwJ" = (
-/obj/machinery/computer/rdconsole{
-	dir = 1
-	},
 /obj/machinery/button/door/directional/south{
 	id = "Biohazard";
 	name = "Biohazard Shutter Control";
@@ -55765,6 +55765,9 @@
 	pixel_x = 6;
 	pixel_y = -34;
 	req_access = list("xenobiology")
+	},
+/obj/machinery/modular_computer/preset/research{
+	dir = 1
 	},
 /turf/open/floor/iron/white/corner{
 	dir = 8
@@ -59665,14 +59668,14 @@
 /turf/open/floor/engine,
 /area/station/science/explab)
 "rEd" = (
-/obj/machinery/modular_computer/preset/research{
-	dir = 4
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
 /obj/structure/sign/plaques/kiddie/gameoflife{
 	pixel_x = -32
+	},
+/obj/machinery/computer/mecha{
+	dir = 4
 	},
 /turf/open/floor/iron/smooth_corner,
 /area/station/command/heads_quarters/rd)
@@ -74965,7 +74968,7 @@
 /area/station/security/prison/workout)
 "wlW" = (
 /obj/item/radio/intercom/directional/south,
-/obj/machinery/computer/robotics{
+/obj/machinery/modular_computer/preset/id{
 	dir = 1
 	},
 /turf/open/floor/iron/white/side{

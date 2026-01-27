@@ -145,6 +145,10 @@
 	///This var is so that its filled on crew interaction to be as accurate (including latejoins) as possible, true until first interact
 	var/virgin = TRUE
 
+/obj/structure/filingcabinet/medical/Initialize(mapload)
+	. = ..()
+	REGISTER_REQUIRED_MAP_ITEM(1, INFINITY)
+
 /obj/structure/filingcabinet/medical/proc/populate()
 	if(!virgin)
 		return
@@ -178,6 +182,10 @@
 	/// Set to TRUE on first load do indicate lazyloading has already happened
 	var/lazyloaded = FALSE
 
+/obj/structure/filingcabinet/employment/Initialize(mapload)
+	. = ..()
+	REGISTER_REQUIRED_MAP_ITEM(1, INFINITY)
+
 /obj/structure/filingcabinet/employment/proc/add_file_comsig(datum/source, mob/living/carbon/human/employee)
 	SIGNAL_HANDLER
 	add_file(employee.real_name)
@@ -197,6 +205,10 @@
 /obj/structure/filingcabinet/genetic_backups
 	/// Set to TRUE on first load do indicate lazyloading has already happened
 	var/lazyloaded = FALSE
+
+/obj/structure/filingcabinet/genetic_backups/Initialize(mapload)
+	. = ..()
+	REGISTER_REQUIRED_MAP_ITEM(1, 1)
 
 /obj/structure/filingcabinet/genetic_backups/proc/make_backup_comsig(datum/source, mob/living/carbon/human/employee)
 	SIGNAL_HANDLER
