@@ -119,8 +119,8 @@
 		to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
 		return
 
-	var/obj/item/organ/internal/eyes/E = M.get_organ_slot(ORGAN_SLOT_EYES)
-	var/obj/item/organ/internal/brain = M.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/eyes/E = M.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/brain = M.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!E)
 		to_chat(user, span_warning("[M] doesn't have any eyes!"))
 		return
@@ -418,6 +418,8 @@
 	grind_results = list(/datum/reagent/sulfur = 15)
 	sound_on = 'sound/items/match_strike.ogg'
 	toggle_context = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	/// Do we randomize the fuel when initialized
@@ -468,7 +470,8 @@
 	hitsound = 'sound/items/welder.ogg'
 	force = on_damage
 	damtype = BURN
-
+	slot_flags = NONE
+	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/flashlight/flare/proc/turn_off()
 	set_light_on(FALSE)
@@ -478,6 +481,8 @@
 	hitsound = initial(hitsound)
 	force = initial(force)
 	damtype = initial(damtype)
+	slot_flags = initial(slot_flags)
+	w_class = initial(w_class)
 	update_brightness()
 
 /obj/item/flashlight/flare/extinguish()
@@ -867,7 +872,7 @@
 	if(!fuel)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
-	var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but [user.p_they()] don't have any!"))
 		return SHAME

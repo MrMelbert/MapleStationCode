@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Icon, Input, Section, Table } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
@@ -149,7 +149,7 @@ const CrewTable = () => {
 
   const [sortAsc, setSortAsc] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
+  const [sortBy, setSortBy] = useState(SORT_OPTIONS[1]); // NON-MODULE CHANGE
 
   const cycleSortBy = () => {
     let idx = SORT_OPTIONS.indexOf(sortBy) + 1;
@@ -157,7 +157,10 @@ const CrewTable = () => {
     setSortBy(SORT_OPTIONS[idx]);
   };
 
-  const nameSearch = createSearch(searchQuery, (crew: CrewSensor) => crew.name);
+  const nameSearch = createSearch(
+    searchQuery,
+    (crew: CrewSensor) => `${crew.name} ${crew.assignment}`, // NON-MODULE CHANGE
+  );
 
   const sorted = sensors.filter(nameSearch).sort((a, b) => {
     switch (sortBy) {
@@ -187,9 +190,9 @@ const CrewTable = () => {
           </Button>
           <Input
             placeholder="Search for name..."
-            onInput={(e) =>
-              setSearchQuery((e.target as HTMLTextAreaElement).value)
-            }
+            width="150px" // NON-MODULE CHANGE
+            onChange={setSearchQuery}
+            value={searchQuery}
           />
         </>
       }

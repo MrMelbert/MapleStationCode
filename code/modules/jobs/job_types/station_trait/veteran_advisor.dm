@@ -26,7 +26,9 @@
 	display_order = JOB_DISPLAY_ORDER_VETERAN_ADVISOR
 	departments_list = list(/datum/job_department/security)
 
-	family_heirlooms = list(/obj/item/plaque)
+	family_heirlooms = list(
+		// /obj/item/plaque,
+	)
 
 	mail_goodies = list(
 		/obj/item/clothing/accessory/medal/conduct = 1,
@@ -36,6 +38,8 @@
 	rpg_title = "Royal Advisor"
 	allow_bureaucratic_error = FALSE
 	job_flags = STATION_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
+
+	crewmonitor_priority = 18
 
 /datum/job/veteran_advisor/get_default_roundstart_spawn_point()
 	for(var/obj/effect/landmark/start/spawn_point as anything in GLOB.start_landmarks_list)

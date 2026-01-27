@@ -160,7 +160,7 @@
 	if(length(mind_traits))
 		spawned.mind.add_traits(mind_traits, JOB_TRAIT)
 
-	var/obj/item/organ/internal/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
 
@@ -181,6 +181,9 @@
 	if(roundstart_experience)
 		for(var/i in roundstart_experience)
 			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
+
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
 
 /// Return the outfit to use
 /datum/job/proc/get_outfit(consistent, title)
@@ -217,7 +220,7 @@
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
 	if(equipping.paycheck_department && (equipping.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE: Only crew members get a bank account / memory
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-		bank_account.payday(STARTING_PAYCHECKS, TRUE)
+		bank_account.payday(STARTING_PAYCHECKS, free = TRUE)
 		account_id = bank_account.account_id
 		bank_account.replaceable = FALSE
 		add_mob_memory(/datum/memory/key/account, remembered_id = account_id)
@@ -316,35 +319,42 @@
 /// Gets the message that shows up when spawning as this job
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	return examine_block(span_infoplain(jointext(get_spawn_message_information(), "\n&bull; ")))
+	var/final_product = "<i>[description]</i><br><br>&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
+	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "examine_block")
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
 	SHOULD_CALL_PARENT(TRUE)
 	var/list/info = list()
-	info += "<b>You are the [title].</b>\n"
 	var/related_policy = get_policy(title)
 	var/radio_info = get_radio_information()
 	if(related_policy)
 		info += related_policy
 	if(supervisors)
-		info += "As the [title] you answer directly to [supervisors]. Special circumstances may change this."
+		info += "You answer directly to [supervisors]."
 	if(radio_info)
 		info += radio_info
+	if(!CONFIG_GET(flag/jobs_have_minimal_access))
+		var/datum/outfit/joboutfit = base_outfit
+		var/datum/id_trim/job/trim = SSid_access.trim_singletons_by_path[joboutfit::id_trim]
+		if(istype(trim) && length(trim.extra_access + trim.extra_wildcard_access))
+			info += span_notice("As this station was initially staffed with a skeleton crew, \
+				additional access has been added to your ID card.")
+	var/list/known_passwords = list()
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		known_passwords += span_green(password_info[PASSWORD_LOCATION])
+	if(length(known_passwords))
+		info += "You know the passwords to [english_list(known_passwords)]."
 	if(req_admin_notify)
-		info += "<b>You are playing a job that is important for Game Progression. \
-			If you have to disconnect, please notify the admins via adminhelp.</b>"
-	if(CONFIG_GET(number/minimal_access_threshold))
-		info += span_boldnotice("As this station was initially staffed with a \
-			[CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] \
-			have been added to your ID card.")
+		info += "<i>You are playing a job that is important for game progression. \
+			If you have to disconnect, please notify the admins via <b>adminhelp</b>.</i>"
 
 	return info
 
 /// Returns information pertaining to this job's radio.
 /datum/job/proc/get_radio_information()
 	if(job_flags & JOB_CREW_MEMBER)
-		return "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+		return "Prefix messages with <b>:[MODE_KEY_DEPARTMENT]</b> to speak on your department's radio. To see other prefixes, examine your headset."
 
 /datum/outfit/job
 	name = "Standard Gear"
@@ -432,7 +442,7 @@
 			card.registered_account = account
 			account.bank_cards += card
 
-		equipped.sec_hud_set_ID()
+		equipped.update_ID_card()
 
 	var/obj/item/modular_computer/pda/pda = equipped.get_item_by_slot(pda_slot)
 

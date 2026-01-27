@@ -22,8 +22,6 @@
 	VAR_FINAL/pain_modifier = 1
 	/// Lazy Assoc list [id] to [modifier], all our pain modifiers affecting our final mod
 	VAR_PRIVATE/list/pain_mods
-	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
-	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
 	VAR_FINAL/natural_pain_decay = -0.33
 	/// The base amount of pain decay received.
@@ -46,22 +44,15 @@
 
 	parent = new_parent
 
-	body_zones = list()
 	for(var/obj/item/bodypart/parent_bodypart as anything in parent.bodyparts)
 		add_bodypart(parent, parent_bodypart, TRUE)
-
-	if(!length(body_zones))
-		stack_trace("Pain datum failed to find any body_zones to track!")
-		qdel(src) // If we have no bodyparts, delete us
-		return
 
 	register_pain_signals()
 	base_pain_decay = natural_pain_decay
 
-	addtimer(CALLBACK(src, PROC_REF(start_pain_processing), 1))
+	addtimer(CALLBACK(src, PROC_REF(start_pain_processing), 0.1 SECONDS))
 
 /datum/pain/Destroy()
-	body_zones = null
 	if(parent)
 		STOP_PROCESSING(SSpain, src)
 		unregister_pain_signals()
@@ -108,34 +99,19 @@
 /datum/pain/proc/add_bodypart(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
 	SIGNAL_HANDLER
 
-	if(!istype(new_limb)) // pseudo-bodyparts are not tracked for simplicity (chainsaw arms)
+	if(!istype(new_limb) || (new_limb.bodypart_flags & BODYPART_PSEUDOPART)) // pseudo-bodyparts are not tracked for simplicity (chainsaw arms)
 		return
-
-	var/obj/item/bodypart/existing = body_zones[new_limb.body_zone]
-	if(!isnull(existing)) // if we already have a val assigned to this key, remove it
-		remove_bodypart(source, existing, FALSE, special)
-
-	body_zones[new_limb.body_zone] = new_limb
 
 	if(special || (HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (new_limb.bodytype & BODYTYPE_ROBOTIC)))
 		new_limb.pain = 0
 	else
-		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
+		adjust_bodypart_pain(new_limb, new_limb.pain)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
-
-	RegisterSignal(new_limb, COMSIG_QDELETING, PROC_REF(limb_delete))
 
 /// Removes a limb from being tracked.
 /// Also causes pain if the limb was removed non-'special'.
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
-
-	var/bad_zone = lost_limb.body_zone
-	if(lost_limb != body_zones[bad_zone])
-		CRASH("Pain datum tried to remove a bodypart that wasn't being tracked!")
-
-	body_zones -= bad_zone
-	UnregisterSignal(lost_limb, COMSIG_QDELETING)
 
 	if(!QDELETED(parent))
 		if(!special && !(HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (lost_limb.bodytype & BODYTYPE_ROBOTIC)))
@@ -150,12 +126,6 @@
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
 		REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-
-/// Clear reference when a limb is deleted.
-/datum/pain/proc/limb_delete(obj/item/bodypart/source)
-	SIGNAL_HANDLER
-
-	remove_bodypart(source.owner, source, special = TRUE) // Special I guess? Straight up deleted
 
 /**
  * Add a pain modifier and update our overall modifier.
@@ -230,7 +200,7 @@
 
 	amount = round(amount, DAMAGE_PRECISION)
 
-	var/obj/item/bodypart/adjusted_bodypart = body_zones[check_zone(def_zone)]
+	var/obj/item/bodypart/adjusted_bodypart = isbodypart(def_zone) ? def_zone : parent.get_bodypart(check_zone(def_zone))
 	if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
 		return 0
 
@@ -321,7 +291,7 @@
 		def_zones = list(def_zones)
 
 	for(var/zone in def_zones)
-		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
+		var/obj/item/bodypart/adjusted_bodypart = isbodypart(zone) ? zone : parent.get_bodypart(check_zone(zone))
 		if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
 			continue
 
@@ -469,8 +439,7 @@
 	var/has_pain = FALSE
 	var/just_cant_feel_anything = !CAN_FEEL_PAIN(parent)
 	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
-	for(var/part in shuffle(body_zones))
-		var/obj/item/bodypart/checked_bodypart = body_zones[part]
+	for(var/obj/item/bodypart/checked_bodypart as anything in shuffle(parent.bodyparts))
 		if(checked_bodypart.pain <= 0)
 			continue
 		has_pain = TRUE
@@ -548,7 +517,7 @@
 			parent.losebreath += 1
 
 	if((traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
-		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
+		if(!HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
 				span_warning(pick("You black out!", "You feel like you're about to die!", "You lose consciousness!")),
@@ -605,8 +574,8 @@
 	else
 		natural_pain_decay = base_pain_decay
 
-	for(var/zone in BODY_ZONES_ALL)
-		adjust_bodypart_pain(zone, natural_pain_decay)
+	for(var/part in parent.bodyparts)
+		adjust_bodypart_pain(part, natural_pain_decay)
 
 /// Affect accuracy of fired guns while in pain.
 /datum/pain/proc/on_mob_fired_gun(mob/living/carbon/human/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
@@ -726,9 +695,8 @@
 /// Get the total pain of all bodyparts.
 /datum/pain/proc/get_total_pain()
 	var/total_pain = 0
-	for(var/zone in body_zones)
-		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		total_pain += adjusted_bodypart.pain
+	for(var/obj/item/bodypart/part as anything in parent.bodyparts)
+		total_pain += part.pain
 
 	return total_pain
 
@@ -772,10 +740,9 @@
 	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
 		return
 
-	for(var/zone in body_zones)
-		var/obj/item/bodypart/healed_bodypart = body_zones[zone]
-		adjust_bodypart_min_pain(zone, -INFINITY)
-		adjust_bodypart_pain(zone, -INFINITY)
+	for(var/obj/item/bodypart/healed_bodypart as anything in parent.bodyparts)
+		adjust_bodypart_min_pain(healed_bodypart, -INFINITY)
+		adjust_bodypart_pain(healed_bodypart, -INFINITY)
 		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
@@ -799,9 +766,8 @@
 	SIGNAL_HANDLER
 
 	parent.adjust_traumatic_shock(traumatic_shock * -0.66)
-	for(var/zone in body_zones)
-		var/obj/item/bodypart/revived_bodypart = body_zones[zone]
-		adjust_bodypart_pain(zone, revived_bodypart.pain * -0.9)
+	for(var/obj/item/bodypart/revived_bodypart as anything in parent.bodyparts)
+		adjust_bodypart_pain(revived_bodypart, revived_bodypart.pain * -0.9)
 
 /**
  * Signal proc for [COMSIG_LIVING_HEALTHSCAN]
@@ -902,8 +868,7 @@
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
 	final_print += "[parent] bodypart printout: (min / current)"
-	for(var/part in body_zones)
-		var/obj/item/bodypart/checked_bodypart = body_zones[part]
+	for(var/obj/item/bodypart/checked_bodypart as anything in parent.bodyparts)
 		final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain]"
 
 	final_print += " - - - - "

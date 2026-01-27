@@ -1,7 +1,7 @@
 /datum/job/stowaway
 	title = "Stowaway"
-	description = "You've snuck on board, and now you're stuck here. \
-		You spawn randomly in the maintenance tunnels, with no radio, no PDA, \
+	description = "Sneak aboard the station, end up worse off than you had it before. \
+		Spawn randomly in the maintenance tunnels with no radio, no PDA, \
 		no bank account, and no records in the crew database."
 	rpg_title = "Stowaway" // TES4: Oblivion
 	paycheck = PAYCHECK_ZERO
@@ -38,6 +38,9 @@
 		[span_notice("The crew has no record of your existence.")]\n\
 		[span_notice("(If you would like to be provided an optional, random backstory, with more or less equipment: [backstory_ref].)")]\
 	"))
+
+/datum/job/stowaway/get_radio_information()
+	return null
 
 // Applied to fresh stowaways to give them an option of getting a random backstory
 /datum/status_effect/backstory

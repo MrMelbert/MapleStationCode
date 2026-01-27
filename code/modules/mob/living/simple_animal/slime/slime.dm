@@ -258,7 +258,7 @@
 /mob/living/simple_animal/slime/doUnEquip(obj/item/unequipped_item, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	return
 
-/mob/living/simple_animal/slime/start_pulling(atom/movable/moveable_atom, state, force = move_force, supress_message = FALSE)
+/mob/living/simple_animal/slime/start_pulling(atom/movable/moveable_atom, state, force = move_force, supress_message = FALSE, willing_pull = FALSE)
 	return
 
 /mob/living/simple_animal/slime/attack_ui(slot, params)

@@ -44,7 +44,7 @@
 			rods[nullrod_type] = initial(nullrod_type.menu_description)
 		//special non-nullrod subtyped shit
 		rods[/obj/item/gun/ballistic/bow/divine/with_quiver] = "A divine bow and 10 quivered holy arrows."
-		rods[/obj/item/organ/internal/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
+		rods[/obj/item/organ/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
 			allowing you to conjure forth a vorpal scythe. Allows you to behead targets for empowered strikes. \
 			Harms you if you dismiss the scythe without first causing harm to a creature. \
 			The shard also causes you to become Morbid, shifting your interests towards the macabre."
@@ -53,10 +53,11 @@
 
 		AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
 
-/obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/holy_weapon_type)
-	GLOB.holy_weapon_type = holy_weapon_type
+/// Callback for subtype picker, invoked when the chaplain picks a new nullrod
+/obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/new_holy_weapon, mob/living/picker)
+	GLOB.holy_weapon_type = new_holy_weapon.type
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NULLROD_PICKED)
-	SSblackbox.record_feedback("tally", "chaplain_weapon", 1, "[initial(holy_weapon_type.name)]")
+	SSblackbox.record_feedback("tally", "chaplain_weapon", 1, "[new_holy_weapon.name]")
 
 /obj/item/nullrod/proc/on_cult_rune_removed(obj/effect/target, mob/living/user)
 	if(!istype(target, /obj/effect/rune))

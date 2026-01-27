@@ -142,8 +142,8 @@
 	gain_text = "At the head of the parade he stood, the moon condensed into one mass, a reflection of the soul."
 	next_knowledge = list(/datum/heretic_knowledge/blade_upgrade/moon)
 	required_atoms = list(
-		/obj/item/organ/internal/eyes = 1,
-		/obj/item/organ/internal/heart = 1,
+		/obj/item/organ/eyes = 1,
+		/obj/item/organ/heart = 1,
 		/obj/item/stack/sheet/glass = 2,
 		/obj/item/clothing/neck/tie = 1,
 	)

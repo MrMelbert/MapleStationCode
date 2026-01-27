@@ -8,6 +8,7 @@
 	greyscale_config_worn = /datum/greyscale_config/shorts/worn
 	greyscale_colors = "#575757#3E3E3E#75634F"
 	gender = PLURAL
+	article = "a pair of"
 	body_parts_covered = GROIN
 	female_sprite_flags = NO_FEMALE_UNIFORM
 	supports_variations_flags = CLOTHING_NO_VARIATION

@@ -1,6 +1,8 @@
 /datum/job/botanist
 	title = JOB_BOTANIST
-	description = "Grow plants for the cook, for medicine, and for recreation."
+	description = "Grow produce for the kitchen, \
+		grow herbs for medbay, \
+		grow weed for recreation."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -24,7 +26,7 @@
 		/obj/item/cultivator,
 		/obj/item/reagent_containers/cup/watering_can/wood,
 		/obj/item/toy/plush/beeplushie,
-		)
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/bottle/mutagen = 20,

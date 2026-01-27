@@ -25,6 +25,11 @@
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
 		. += span_notice("It is [LOWER_TEXT(english_list(types))].")
 
+/obj/item/reagent_containers/cup/examine_tags(mob/user)
+	. = ..()
+	for(var/foodtype in bitfield_to_list(drink_type, FOOD_FLAGS))
+		.[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] drink."
+
 /**
  * Checks if the mob actually liked drinking this cup.
  *
@@ -89,7 +94,7 @@
 		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
 		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
-			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(user.get_quirk(/datum/quirk/jolly) || (prob(50) && !user.get_quirk(/datum/quirk/depression))) ? "half full" : "half empty"]."))
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
 	// NON-MODULE CHANGE END

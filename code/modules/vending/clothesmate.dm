@@ -52,12 +52,13 @@
 				/obj/item/clothing/accessory/waistcoat = 4,
 				/obj/item/clothing/suit/toggle/suspenders = 4,
 				/obj/item/clothing/neck/tie/horrible = 3,
-				/obj/item/clothing/glasses/regular = 2,
-				/obj/item/clothing/glasses/regular/jamjar = 1,
-				/obj/item/clothing/glasses/orange = 1,
-				/obj/item/clothing/glasses/red = 1,
-				/obj/item/clothing/glasses/monocle = 1,
-				/obj/item/clothing/gloves/fingerless = 2,
+				/obj/item/clothing/neck/robe_cape = 3,
+				/obj/item/clothing/glasses/regular = 3,
+				/obj/item/clothing/glasses/regular/jamjar = 3,
+				/obj/item/clothing/glasses/orange = 3,
+				/obj/item/clothing/glasses/red = 3,
+				/obj/item/clothing/glasses/monocle = 3,
+				/obj/item/clothing/gloves/fingerless = 3,
 				/obj/item/storage/belt/fannypack = 3,
 				/obj/item/storage/belt/fannypack/blue = 3,
 				/obj/item/storage/belt/fannypack/red = 3,
@@ -224,6 +225,7 @@
 	payment_department = NO_FREEBIES
 	light_mask = "wardrobe-light-mask"
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
+	allow_custom = TRUE
 
 /obj/item/vending_refill/clothing
 	machine_name = "ClothesMate"

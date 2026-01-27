@@ -284,3 +284,55 @@
 /datum/brain_trauma/mild/color_blindness/on_lose(silent)
 	owner.remove_client_colour(/datum/client_colour/monochrome/colorblind)
 	return ..()
+
+/datum/brain_trauma/mild/possessive
+	name = "Possessive"
+	desc = "Patient is extremely possessive of their belongings."
+	scan_desc = "possessiveness"
+	gain_text = span_warning("You start to worry about your belongings.")
+	lose_text = span_notice("You worry less about your belongings.")
+	COOLDOWN_DECLARE(grip_cd)
+
+/datum/brain_trauma/mild/possessive/on_lose(silent)
+	. = ..()
+	for(var/obj/item/thing in owner.held_items)
+		clear_trait(thing)
+	UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
+
+/datum/brain_trauma/mild/possessive/on_gain()
+	. = ..()
+	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+
+/datum/brain_trauma/mild/possessive/on_life(seconds_per_tick, times_fired)
+	if(!SPT_PROB(5, seconds_per_tick) || !COOLDOWN_FINISHED(src, grip_cd))
+		return
+
+	var/obj/item/my_thing = pick(owner.held_items) // can pick null, that's fine
+	if(isnull(my_thing) || HAS_TRAIT(my_thing, TRAIT_NODROP) || (my_thing.item_flags & (HAND_ITEM|ABSTRACT)))
+		return
+
+	ADD_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)
+	RegisterSignals(my_thing, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_MOVED), PROC_REF(clear_trait))
+	to_chat(owner, span_warning("You feel a need to keep [my_thing] close..."))
+	addtimer(CALLBACK(src, PROC_REF(relax), my_thing), rand(30 SECONDS, 3 MINUTES), TIMER_DELETE_ME)
+
+/datum/brain_trauma/mild/possessive/proc/relax(obj/item/my_thing)
+	if(QDELETED(my_thing))
+		return
+	if(HAS_TRAIT_FROM_ONLY(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)) // in case something else adds nodrop, somehow?
+		to_chat(owner, span_notice("You feel more comfortable letting go of [my_thing]."))
+	clear_trait(my_thing)
+	COOLDOWN_START(src, grip_cd, 20 SECONDS)
+
+/datum/brain_trauma/mild/possessive/proc/clear_trait(obj/item/my_thing, ...)
+	SIGNAL_HANDLER
+
+	REMOVE_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)
+	UnregisterSignal(my_thing, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_MOVED))
+
+/datum/brain_trauma/mild/possessive/proc/on_examine(datum/source, list/examine_list)
+	SIGNAL_HANDLER
+
+	for(var/obj/item/thing in owner.held_items)
+		if(HAS_TRAIT_FROM_ONLY(thing, TRAIT_NODROP, TRAUMA_TRAIT))
+			examine_list += span_warning("[owner.p_They()] [owner.p_are()] gripping [thing] tightly.")

@@ -109,23 +109,31 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	var/list/override = list(article, null, "<em>[get_visible_name()]</em>")
+	var/list/override = list(article, null, get_visible_name())
 	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override)
 
-	if(!isnull(override[EXAMINE_POSITION_ARTICLE]))
+	if(gender == PLURAL) // Defaults to "some" for plural because \a will not handle it correctly
+		override[EXAMINE_POSITION_ARTICLE] ||= "some"
+	if(override[EXAMINE_POSITION_ARTICLE])
 		override -= null // IF there is no "before", don't try to join it
 		return jointext(override, " ")
-	if(!isnull(override[EXAMINE_POSITION_BEFORE]))
+	if(override[EXAMINE_POSITION_BEFORE])
 		override -= null // There is no article, don't try to join it
 		return "\a [jointext(override, " ")]"
-	return "\a [src]"
+	return "\a [override[EXAMINE_POSITION_NAME]]"
+
+#define is_capitalized(char) ((text2ascii(char) <= 90) && (text2ascii(char) >= 65))
 
 /mob/living/get_examine_name(mob/user)
 	var/visible_name = get_visible_name()
 	var/list/name_override = list(visible_name)
 	if(SEND_SIGNAL(user, COMSIG_LIVING_PERCEIVE_EXAMINE_NAME, src, visible_name, name_override) & COMPONENT_EXAMINE_NAME_OVERRIDEN)
 		return name_override[1]
-	return visible_name
+	if(is_capitalized(visible_name[1]))
+		return visible_name
+	return "\a [visible_name]"
+
+#undef is_capitalized
 
 /// Icon displayed in examine
 /atom/proc/get_examine_icon(mob/user)
@@ -183,8 +191,11 @@
 		var/mob/wearer = get(src, /mob/living) || loc
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN) || !can_examine_when_worn(viewer))
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN_APPEARANCE))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
+			return
+		if(!can_examine_when_worn(viewer))
+			to_chat(viewer, span_notice("You can't make out that item from here."))
 			return
 
 		if(href_list["point_at"])
@@ -193,24 +204,36 @@
 			viewer.examinate(src)
 
 /// Checks if this item, when examined / pointed at while being worn, can actually be examined by the given mob
-/atom/movable/proc/can_examine_when_worn(mob/examiner)
-	return (examiner in viewers(loc))
+/atom/movable/proc/can_examine_when_worn(mob/examiner, min_range = 7)
+	return examiner.can_examine_worn_item(src, min_range)
 
-/obj/item/can_examine_when_worn(mob/examiner)
+/obj/item/can_examine_when_worn(mob/examiner, min_range = 7)
+	if(HAS_TRAIT(src, TRAIT_EXAMINE_SKIP))
+		return FALSE
 	if(!slot_flags)
 		return ..()
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		return ..()
-	if(wearer.check_obscured_slots() & slot_flags)
+	if(hidden_slots_to_inventory_slots(wearer.obscured_slots) & slot_flags)
 		return FALSE
 	return ..()
 
-/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner)
+/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner, min_range = 7)
 	if(isclothing(loc))
 		var/obj/item/clothing/shirt = loc
-		return shirt.can_examine_when_worn(examiner)
+		return shirt.can_examine_when_worn(examiner, min_range)
 	return ..()
+
+/// Checks if this mob can examine the given worn item
+/mob/proc/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return TRUE
+
+/mob/living/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return (src in viewers(min_range, worn_item.loc))
+
+/mob/living/silicon/ai/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return GLOB.cameranet.checkCameraVis(worn_item.loc)
 
 /obj/item/card/id/Topic(href, list/href_list)
 	. = ..()
@@ -223,15 +246,21 @@
 			to_chat(viewer, span_notice("[old_wearer?.p_They() || "They"] [old_wearer?.p_are() || "are"] no longer wearing that ID card."))
 			return
 
-		var/can_see_still = (viewer in viewers(old_wearer))
-		var/viable_time = can_see_still ? 3 MINUTES : 1 MINUTES // assuming 3min is the length of a hop line visit - give some leeway if they're still in sight
+		// assuming 3min is the length of a hop line visit - give some leeway if they're still in sight
+		var/viable_time = can_examine_when_worn(viewer) ? 3 MINUTES : 1 MINUTES
 		if((text2num(href_list["examine_time"]) + viable_time) < world.time)
-			to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
+			if(isobserver(viewer))
+				to_chat(viewer, span_notice("Examine [p_them()] again to refresh ID information."))
+			else if(isAI(viewer))
+				to_chat(viewer, span_notice("You can't access that ID's information anymore. Examine [p_them()] again."))
+			else
+				to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
 			return
-		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN))
+		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN_APPEARANCE))
 			to_chat(viewer, span_notice("You can't make out that ID anymore."))
 			return
-		if(!isobserver(viewer) && get_dist(viewer, old_wearer) > ID_EXAMINE_DISTANCE + 1) // leeway, ignored if the viewer is a ghost
+		// +1 range - gives a bit of leeway if they're wandering off
+		if(!can_examine_when_worn(viewer, min_range = ID_EXAMINE_DISTANCE + 1))
 			to_chat(viewer, span_notice("You can't make out that ID from here."))
 			return
 
@@ -282,7 +311,12 @@
 /atom/proc/get_name_chaser(mob/user, list/name_chaser = list())
 	return name_chaser
 
-/// Used by mobs to determine the name for someone wearing a mask, or with a disfigured or missing face. By default just returns the atom's name. add_id_name will control whether or not we append "(as [id_name])".
-/// force_real_name will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
-/atom/proc/get_visible_name(add_id_name, force_real_name)
+/**
+ * Used by mobs to determine the name for someone wearing a mask, or with a disfigured or missing face.
+ * By default just returns the atom's name.
+ *
+ * * add_id_name - If TRUE, ID information such as honorifics or name (if mismatched) are appended
+ * * force_real_name - If TRUE, will always return real_name and add (as face_name/id_name) if it doesn't match their appearance
+ */
+/atom/proc/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
 	return name

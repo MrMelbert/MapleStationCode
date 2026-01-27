@@ -41,7 +41,7 @@
 	)
 
 /datum/surgery_step/fix_ears/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	var/obj/item/organ/internal/ears/target_ears = target.get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/target_ears = target.get_organ_slot(ORGAN_SLOT_EARS)
 	display_results(
 		user,
 		target,
@@ -59,7 +59,7 @@
 	return ..()
 
 /datum/surgery_step/fix_ears/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	if(target.get_organ_by_type(/obj/item/organ/internal/brain))
+	if(target.get_organ_by_type(/obj/item/organ/brain))
 		display_results(
 			user,
 			target,

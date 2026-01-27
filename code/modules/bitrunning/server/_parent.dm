@@ -27,7 +27,9 @@
 	/// Any ghosts that have spawned in
 	var/list/datum/weakref/spawned_threat_refs = list()
 	/// Scales loot with extra players
-	var/multiplayer_bonus = 1.1
+	var/multiplayer_bonus = 1.2
+	/// Extra bonus for every player that nohits the run
+	var/nohit_bonus = 0.8
 	///The radio the console can speak into
 	var/obj/item/radio/radio
 	/// The amount of points in the system, used to purchase maps
@@ -119,16 +121,17 @@
 	icon_state = "[base_icon_state]_[is_ready ? "on" : "off"]"
 	return ..()
 
-/obj/machinery/quantum_server/attackby(obj/item/weapon, mob/user, params)
-	. = ..()
 
-	if(!istype(weapon, /obj/item/bitrunning_debug))
-		return
+/obj/machinery/quantum_server/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/bitrunning_debug))
+		return NONE
 
+	balloon_alert(user, "*hacker voice* i'm in")
 	obj_flags |= EMAGGED
 	glitch_chance = 0.5
 	capacitor_coefficient = 0.1
 	points = 100
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/quantum_server/crowbar_act(mob/living/user, obj/item/crowbar)
 	. = ..()

@@ -2,10 +2,10 @@
 	name = "\improper Ethereal"
 	id = SPECIES_ETHEREAL
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
-	mutantlungs = /obj/item/organ/internal/lungs/ethereal
-	mutantstomach = /obj/item/organ/internal/stomach/ethereal
-	mutanttongue = /obj/item/organ/internal/tongue/ethereal
-	mutantheart = /obj/item/organ/internal/heart/ethereal
+	mutantlungs = /obj/item/organ/lungs/ethereal
+	mutantstomach = /obj/item/organ/stomach/ethereal
+	mutanttongue = /obj/item/organ/tongue/ethereal
+	mutantheart = /obj/item/organ/heart/ethereal
 	exotic_bloodtype = /datum/blood_type/crew/ethereal // NON-MODULE CHANGE
 	siemens_coeff = 0.5 //They thrive on energy
 	payday_modifier = 1.0
@@ -40,12 +40,6 @@
 
 	var/current_color
 	var/default_color
-	var/r1
-	var/g1
-	var/b1
-	var/static/r2 = 237
-	var/static/g2 = 164
-	var/static/b2 = 149
 	var/EMPeffect = FALSE
 	var/emageffect = FALSE
 	var/obj/effect/dummy/lighting_obj/ethereal_light
@@ -59,9 +53,6 @@
 	if(!ishuman(new_ethereal))
 		return
 	default_color = new_ethereal.dna.features["ethcolor"]
-	r1 = GETREDPART(default_color)
-	g1 = GETGREENPART(default_color)
-	b1 = GETBLUEPART(default_color)
 	RegisterSignal(new_ethereal, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag_act))
 	RegisterSignal(new_ethereal, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
 	RegisterSignal(new_ethereal, COMSIG_ATOM_SABOTEUR_ACT, PROC_REF(hit_by_saboteur))
@@ -71,7 +62,7 @@
 	refresh_light_color(new_ethereal)
 	// update_mail_goodies(new_ethereal) // NON-MODULE CHANGE
 
-	var/obj/item/organ/internal/heart/ethereal/ethereal_heart = new_ethereal.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/ethereal/ethereal_heart = new_ethereal.get_organ_slot(ORGAN_SLOT_HEART)
 	ethereal_heart.ethereal_color = default_color
 
 	for(var/obj/item/bodypart/limb as anything in new_ethereal.bodyparts)
@@ -98,15 +89,16 @@
 	SIGNAL_HANDLER
 	if(isnull(ethereal_light))
 		return
-	if(default_color != ethereal.dna.features["ethcolor"])
-		var/new_color = ethereal.dna.features["ethcolor"]
-		r1 = GETREDPART(new_color)
-		g1 = GETGREENPART(new_color)
-		b1 = GETBLUEPART(new_color)
 	if(ethereal.stat != DEAD && !EMPeffect)
 		var/healthpercent = max(ethereal.health, 0) / 100
 		if(!emageffect)
-			current_color = rgb(r2 + ((r1-r2)*healthpercent), g2 + ((g1-g2)*healthpercent), b2 + ((b1-b2)*healthpercent))
+			var/static/list/skin_color = rgb2num("#eda495")
+			var/list/colors = rgb2num(ethereal.dna.features["ethcolor"])
+			var/list/built_color = list()
+			for(var/i in 1 to 3)
+				built_color += skin_color[i] + ((colors[i] - skin_color[i]) * healthpercent)
+			current_color = rgb(built_color[1], built_color[2], built_color[3])
+
 		ethereal_light.set_light_range_power_color(1 + (2 * healthpercent), 1 + (1 * healthpercent), current_color)
 		ethereal_light.set_light_on(TRUE)
 		fixed_mut_color = current_color
@@ -250,8 +242,7 @@
 /datum/species/ethereal/lustrous //Ethereal pirates with an inherent bluespace prophet trauma.
 	name = "Lustrous"
 	id = SPECIES_ETHEREAL_LUSTROUS
-	examine_limb_id = SPECIES_ETHEREAL
-	mutantbrain = /obj/item/organ/internal/brain/lustrous
+	mutantbrain = /obj/item/organ/brain/lustrous
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	inherent_traits = list(
 		TRAIT_NO_UNDERWEAR,

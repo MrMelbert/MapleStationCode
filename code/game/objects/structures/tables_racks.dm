@@ -196,13 +196,12 @@
 	pushed_mob.Knockdown(30)
 	pushed_mob.apply_damage(10, BRUTE)
 	pushed_mob.apply_damage(40, PAIN)
-	if(user.mind?.martial_art?.smashes_tables && user.mind?.martial_art.can_use(user))
-		deconstruct(FALSE)
 	playsound(pushed_mob, 'sound/effects/tableslam.ogg', 90, TRUE)
 	pushed_mob.visible_message(span_danger("[user] slams [pushed_mob] onto \the [src]!"), \
 								span_userdanger("[user] slams you onto \the [src]!"))
 	log_combat(user, pushed_mob, "tabled", null, "onto [src]")
 	pushed_mob.add_mood_event("table", /datum/mood_event/table)
+	SEND_SIGNAL(user, COMSIG_LIVING_TABLE_SLAMMING, pushed_mob, src)
 
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.Knockdown(30)
@@ -213,13 +212,12 @@
 	pushed_mob.apply_damage(30, BRUTE, banged_limb, wound_bonus = extra_wound)
 	pushed_mob.apply_damage(60, PAIN)
 	take_damage(50)
-	if(user.mind?.martial_art?.smashes_tables && user.mind?.martial_art.can_use(user))
-		deconstruct(FALSE)
 	playsound(pushed_mob, 'sound/effects/bang.ogg', 90, TRUE)
 	pushed_mob.visible_message(span_danger("[user] smashes [pushed_mob]'s [banged_limb.plaintext_zone] against \the [src]!"),
 								span_userdanger("[user] smashes your [banged_limb.plaintext_zone] against \the [src]"))
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 	pushed_mob.add_mood_event("table", /datum/mood_event/table_limbsmash, banged_limb)
+	SEND_SIGNAL(user, COMSIG_LIVING_TABLE_LIMB_SLAMMING, pushed_mob, src)
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
 	if(!deconstruction_ready)
@@ -292,18 +290,12 @@
 		tablelimbsmash(user, carried_mob)
 		return ITEM_INTERACT_SUCCESS
 
-	var/tableplace_delay = 3.5 SECONDS
+	var/tableplace_delay = user.get_grab_speed(carried_mob, 3.5 SECONDS, lifting = TRUE)
 	var/skills_space = ""
 	if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
-		tableplace_delay = 2 SECONDS
 		skills_space = " expertly"
 	else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
-		tableplace_delay = 2.75 SECONDS
 		skills_space = " quickly"
-
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
-	if(istype(potential_spine))
-		tableplace_delay *= potential_spine.athletics_boost_multiplier
 
 	carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 		span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
@@ -317,13 +309,17 @@
 /obj/structure/table/proc/table_place_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(tool.item_flags & ABSTRACT)
 		return NONE
-	if(!user.transferItemToLoc(tool, drop_location(), silent = FALSE))
-		return ITEM_INTERACT_BLOCKING
+
+	var/x_offset = 0
+	var/y_offset = 0
 	// Items are centered by default, but we move them if click ICON_X and ICON_Y are available
 	if(LAZYACCESS(modifiers, ICON_X) && LAZYACCESS(modifiers, ICON_Y))
 		// Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-		tool.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size*0.5), world.icon_size*0.5)
-		tool.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size*0.5), world.icon_size*0.5)
+		x_offset = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(ICON_SIZE_X*0.5), ICON_SIZE_X*0.5)
+		y_offset = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(ICON_SIZE_Y*0.5), ICON_SIZE_Y*0.5)
+
+	if(!user.transfer_item_to_turf(tool, get_turf(src), x_offset, y_offset, silent = FALSE))
+		return ITEM_INTERACT_BLOCKING
 	AfterPutItemOnTable(tool, user)
 	return ITEM_INTERACT_SUCCESS
 
@@ -487,6 +483,7 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_AI_AVOID_TURF)))
 
 /obj/structure/table/glass/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
@@ -961,7 +958,7 @@
 		return .
 	if((tool.item_flags & ABSTRACT) || (user.combat_mode && !(tool.item_flags & NOBLUDGEON)))
 		return NONE
-	if(user.transferItemToLoc(tool, drop_location(), silent = FALSE))
+	if(user.transfer_item_to_turf(tool, loc))
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 

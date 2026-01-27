@@ -325,7 +325,7 @@
 	return ..()
 
 /datum/status_effect/ananas_affinity/on_apply()
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
 	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
@@ -334,7 +334,7 @@
 	return ..()
 
 /datum/status_effect/ananas_affinity/on_remove()
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return ..()
 	tongue.liked_foodtypes = likes_before_spell
@@ -343,9 +343,9 @@
 /datum/status_effect/ananas_affinity/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
-	if(!istype(source, /obj/item/organ/internal/tongue))
+	if(!istype(source, /obj/item/organ/tongue))
 		return
-	var/obj/item/organ/internal/tongue/tongue = source
+	var/obj/item/organ/tongue/tongue = source
 	if(likes_before_spell)
 		tongue.liked_foodtypes = likes_before_spell
 
@@ -367,7 +367,7 @@
 	return ..()
 
 /datum/status_effect/ananas_aversion/on_apply()
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
 	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
@@ -376,7 +376,7 @@
 	return ..()
 
 /datum/status_effect/ananas_aversion/on_remove()
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return ..()
 	tongue.disliked_foodtypes = disliked_before_spell
@@ -385,9 +385,9 @@
 /datum/status_effect/ananas_aversion/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
-	if(!istype(source, /obj/item/organ/internal/tongue))
+	if(!istype(source, /obj/item/organ/tongue))
 		return
-	var/obj/item/organ/internal/tongue/tongue = source
+	var/obj/item/organ/tongue/tongue = source
 	if(disliked_before_spell)
 		tongue.disliked_foodtypes = disliked_before_spell
 
@@ -411,7 +411,7 @@
 	return ..()
 
 /datum/status_effect/reversed_palette/on_apply()
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return FALSE
 	RegisterSignal(owner, COMSIG_ORGAN_REMOVED, PROC_REF(check_if_tongue))
@@ -423,7 +423,7 @@
 
 /datum/status_effect/reversed_palette/on_remove()
 	UnregisterSignal(owner, COMSIG_ORGAN_REMOVED)
-	var/obj/item/organ/internal/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = owner.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
 		return ..()
 	tongue.disliked_foodtypes = disliked_before_spell
@@ -433,9 +433,9 @@
 /datum/status_effect/reversed_palette/proc/check_if_tongue(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
-	if(!istype(source, /obj/item/organ/internal/tongue))
+	if(!istype(source, /obj/item/organ/tongue))
 		return
-	var/obj/item/organ/internal/tongue/tongue = source
+	var/obj/item/organ/tongue/tongue = source
 	if(likes_before_spell)
 		tongue.liked_foodtypes = likes_before_spell
 	if(disliked_before_spell)

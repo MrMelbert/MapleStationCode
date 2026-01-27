@@ -91,4 +91,4 @@
 	return CONFIG_GET(flag/allow_ai)
 
 /datum/job/ai/get_radio_information()
-	return "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
+	return "Prefix your message with <b>:[MODE_KEY_BINARY]</b> to speak with cyborgs and other AIs."

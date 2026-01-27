@@ -1,6 +1,8 @@
 /datum/spacevine_mutation
 	/// Displayed name of mutation
 	var/name = ""
+	/// Description of mutation, shown in the plant analyzer
+	var/description = ""
 	/// Severity of mutation in terms of gameplay, affects appearance chance and how many mutations can be on the same vine
 	var/severity = 1
 	/// The mutation's contribution to a given vine's color
@@ -53,6 +55,7 @@
 
 /datum/spacevine_mutation/light
 	name = "Light"
+	description = "Emits light."
 	hue = "#B2EA70"
 	quality = POSITIVE
 	severity = SEVERITY_TRIVIAL
@@ -63,6 +66,7 @@
 
 /datum/spacevine_mutation/toxicity
 	name = "Toxic"
+	description = "Releases toxins when touched or eaten."
 	hue = "#9B3675"
 	severity = SEVERITY_AVERAGE
 	quality = NEGATIVE
@@ -80,6 +84,7 @@
 
 /datum/spacevine_mutation/explosive  // JC IT'S A BOMB
 	name = "Explosive"
+	description = "Causes an explosion when destroyed."
 	hue = "#D83A56"
 	quality = NEGATIVE
 	severity = SEVERITY_MAJOR
@@ -97,6 +102,7 @@
 
 /datum/spacevine_mutation/fire_proof
 	name = "Fire proof"
+	description = "Provides immunity to heat and burn damage."
 	hue = "#FF616D"
 	quality = MINOR_NEGATIVE
 	severity = SEVERITY_ABOVE_AVERAGE
@@ -112,6 +118,7 @@
 
 /datum/spacevine_mutation/cold_proof
 	name = "Cold proof"
+	description = "Provides immunity to cold damage."
 	hue = "#0BD5D9"
 	quality = MINOR_NEGATIVE
 	severity = SEVERITY_AVERAGE
@@ -122,6 +129,7 @@
 
 /datum/spacevine_mutation/temp_stabilisation
 	name = "Temperature stabilisation"
+	description = "Stabilizes the temperature of the surrounding area."
 	hue = "#B09856"
 	quality = POSITIVE
 	severity = SEVERITY_MINOR
@@ -145,6 +153,7 @@
 
 /datum/spacevine_mutation/vine_eating
 	name = "Vine eating"
+	description = "Destroys other Kudzu vines on spread."
 	hue = "#F4A442"
 	quality = MINOR_NEGATIVE
 	severity = SEVERITY_MINOR
@@ -156,6 +165,7 @@
 
 /datum/spacevine_mutation/aggressive_spread  //very OP, but im out of other ideas currently
 	name = "Aggressive spreading"
+	description = "Heavily wounds mobs when spreading or tangling them."
 	hue = "#316b2f"
 	severity = SEVERITY_MAJOR
 	quality = NEGATIVE
@@ -210,6 +220,7 @@
 
 /datum/spacevine_mutation/transparency
 	name = "transparent"
+	description = "Allows light to pass through."
 	hue = ""
 	quality = POSITIVE
 	severity = SEVERITY_TRIVIAL
@@ -220,6 +231,7 @@
 
 /datum/spacevine_mutation/oxy_eater
 	name = "Oxygen consuming"
+	description = "Consumes Oxygen from the surrounding area."
 	hue = "#28B5B5"
 	severity = SEVERITY_AVERAGE
 	quality = NEGATIVE
@@ -235,6 +247,7 @@
 
 /datum/spacevine_mutation/nitro_eater
 	name = "Nitrogen consuming"
+	description = "Consumes Nitrogen from the surrounding area."
 	hue = "#FF7B54"
 	severity = SEVERITY_AVERAGE
 	quality = NEGATIVE
@@ -250,6 +263,7 @@
 
 /datum/spacevine_mutation/carbondioxide_eater
 	name = "CO2 consuming"
+	description = "Consumes Carbon Dioxide from the surrounding area."
 	hue = "#798777"
 	severity = SEVERITY_MINOR
 	quality = POSITIVE
@@ -265,6 +279,7 @@
 
 /datum/spacevine_mutation/plasma_eater
 	name = "Plasma consuming"
+	description = "Consumes Plasma from the surrounding area."
 	hue = "#9074b6"
 	severity = SEVERITY_AVERAGE
 	quality = POSITIVE
@@ -280,6 +295,7 @@
 
 /datum/spacevine_mutation/thorns
 	name = "Thorny"
+	description = "Causes damage when hitting or passing through the vines."
 	hue = "#9ECCA4"
 	severity = SEVERITY_AVERAGE
 	quality = NEGATIVE
@@ -312,6 +328,7 @@
 
 /datum/spacevine_mutation/hardened
 	name = "Hardened"
+	description = "Provides resistance to cutting attacks, makes vines hardier, and prevents light from passing through."
 	hue = "#997700"
 	quality = NEGATIVE
 	severity = SEVERITY_ABOVE_AVERAGE
@@ -328,6 +345,7 @@
 
 /datum/spacevine_mutation/timid
 	name = "Timid"
+	description = "Hides the vines under structures and prevents them from tangling mobs."
 	hue = "#a4a9ac"
 	quality = POSITIVE
 	severity = SEVERITY_MINOR
@@ -341,6 +359,7 @@
 
 /datum/spacevine_mutation/flowering
 	name = "Flowering"
+	description = "Causes the vine to grow flower buds which spawns man eating plants when fully grown."
 	hue = "#66DE93"
 	quality = NEGATIVE
 	severity = SEVERITY_MAJOR

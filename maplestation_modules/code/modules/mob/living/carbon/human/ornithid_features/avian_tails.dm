@@ -1,6 +1,6 @@
 
 
-/obj/item/organ/external/tail/avian
+/obj/item/organ/tail/avian
 	name = "avian tail"
 	desc = "This tail belongs to an ornithid. Used to."
 	preference = "feature_avian_tail"

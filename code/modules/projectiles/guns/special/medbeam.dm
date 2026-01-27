@@ -8,6 +8,8 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	item_flags = parent_type::item_flags & ~NEEDS_PERMIT
+	can_muzzle_flash = FALSE
 
 	var/mob/living/current_target
 	var/last_check = 0
@@ -74,6 +76,7 @@
 	RegisterSignal(current_beam, COMSIG_QDELETING, PROC_REF(beam_died))//this is a WAY better rangecheck than what was done before (process check)
 
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
+	return TRUE
 
 /obj/item/gun/medbeam/process()
 	if(!mounted && !isliving(loc))

@@ -1,8 +1,9 @@
 /datum/job/research_director
 	title = JOB_RESEARCH_DIRECTOR
-	description = "Supervise research efforts, ensure Robotics is in working \
-		order, make sure the AI and its Cyborgs aren't rogue, replacing them if \
-		they are."
+	description = "Supervise research efforts, \
+		ensure your staff don't destroy the station, \
+		ensure the AI and cyborg's don't destroy the station, \
+		Try not to destroy the station yourself."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list("Science")
@@ -40,7 +41,10 @@
 		/obj/item/borg/upgrade/ai = 2
 	)
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/cytology,
+		/obj/item/reagent_containers/cup/beaker,
+	)
 	rpg_title = "Archmagister"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 

@@ -203,6 +203,23 @@
 	greyscale_config_worn = null
 	greyscale_colors = null
 
+/obj/item/clothing/neck/robe_cape
+	name = "robe cape"
+	desc = "A comfortable cape, draped down your back and held around your neck with a brooch."
+	icon = 'icons/obj/clothing/neck.dmi'
+	icon_state = "/obj/item/clothing/neck/robe_cape"
+	post_init_icon_state = "robe_cape"
+	worn_icon = 'icons/mob/clothing/neck.dmi'
+	worn_icon_state = "robe_cape"
+	greyscale_config = /datum/greyscale_config/robe_cape
+	greyscale_config_worn = /datum/greyscale_config/robe_cape/worn
+	greyscale_colors = "#2a2844"
+	flags_1 = IS_PLAYER_COLORABLE_1
+
+/obj/item/clothing/neck/robe_cape/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/surgery_initiator)
+
 /obj/item/clothing/neck/tie/disco
 	name = "horrific necktie"
 	icon = 'icons/obj/clothing/neck.dmi'
@@ -256,10 +273,10 @@
 	var/heart_strength
 	var/pulse_pressure
 
-	var/obj/item/organ/internal/heart/heart = carbon_patient.get_organ_slot(ORGAN_SLOT_HEART)
-	var/obj/item/organ/internal/lungs/lungs = carbon_patient.get_organ_slot(ORGAN_SLOT_LUNGS)
-	var/obj/item/organ/internal/liver/liver = carbon_patient.get_organ_slot(ORGAN_SLOT_LIVER)
-	var/obj/item/organ/internal/appendix/appendix = carbon_patient.get_organ_slot(ORGAN_SLOT_APPENDIX)
+	var/obj/item/organ/heart/heart = carbon_patient.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/lungs/lungs = carbon_patient.get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/liver/liver = carbon_patient.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/appendix/appendix = carbon_patient.get_organ_slot(ORGAN_SLOT_APPENDIX)
 
 	var/render_list = list()//information will be packaged in a list for clean display to the user
 
@@ -477,7 +494,7 @@
 	post_init_icon_state = "infinity_scarf"
 	w_class = WEIGHT_CLASS_TINY
 	custom_price = PAYCHECK_CREW
-	greyscale_colors = "#EEEEEE"
+	greyscale_colors = COLOR_VERY_LIGHT_GRAY
 	greyscale_config = /datum/greyscale_config/infinity_scarf
 	greyscale_config_worn = /datum/greyscale_config/infinity_scarf/worn
 	flags_1 = IS_PLAYER_COLORABLE_1

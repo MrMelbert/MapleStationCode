@@ -66,7 +66,7 @@
 	// (at any given moment, there may be like... 200 blood decals on your screen at once
 	// byond is, apparently, pretty bad at handling that many color matrix operations,
 	// especially in a filter or while animating)
-	var/list/starting_color_rgb = ReadRGB(color) || list(255, 255, 255, alpha)
+	var/list/starting_color_rgb = rgb2num(color) || list(255, 255, 255, alpha)
 	// we want a fixed offset for a fixed drop in color intensity, plus a scaling offset based on our strongest color
 	// the scaling offset helps keep dark colors from turning black, while also ensurse bright colors don't stay super bright
 	var/max_color = max(starting_color_rgb[1], starting_color_rgb[2], starting_color_rgb[3])
@@ -465,6 +465,9 @@
 	/// List of species that have made footprints here.
 	var/list/species_types
 
+/obj/effect/decal/cleanable/blood/footprints/get_save_vars()
+	return ..() - NAMEOF(src, icon_state)
+
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
@@ -487,9 +490,9 @@
 
 	for(var/Ddir in GLOB.cardinals)
 		if(old_entered_dirs & Ddir)
-			entered_dirs |= angle2dir_cardinal(dir2angle(Ddir) + ang_change)
+			entered_dirs |= turn_cardinal(Ddir, ang_change)
 		if(old_exited_dirs & Ddir)
-			exited_dirs |= angle2dir_cardinal(dir2angle(Ddir) + ang_change)
+			exited_dirs |= turn_cardinal(Ddir, ang_change)
 
 	update_appearance()
 	return ..()
@@ -515,11 +518,10 @@
 			. += bloodstep_overlay
 
 			if(emissive_alpha && emissive_alpha < alpha && !dried)
-				var/enter_emissive_state = "[enter_state]_emissive-[emissive_alpha]"
-				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[enter_emissive_state]
+				var/enter_emissive_state = "[enter_state]_emissive-[Ddir]-[emissive_alpha]"
+				var/image/emissive_overlay = bloody_footprints_cache[enter_emissive_state]
 				if(!emissive_overlay)
-					emissive_overlay = blood_emissive(icon, "[icon_state_to_use]1")
-					emissive_overlay.dir = Ddir
+					emissive_overlay = image(blood_emissive(icon, "[icon_state_to_use]1"), dir = Ddir)
 					bloody_footprints_cache[enter_emissive_state] = emissive_overlay
 				. += emissive_overlay
 
@@ -532,11 +534,10 @@
 			. += bloodstep_overlay
 
 			if(emissive_alpha && emissive_alpha < alpha && !dried)
-				var/exit_emissive_state = "[exit_state]_emissive-[emissive_alpha]"
-				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[exit_emissive_state]
+				var/exit_emissive_state = "[exit_state]_emissive-[Ddir]-[emissive_alpha]"
+				var/image/emissive_overlay = bloody_footprints_cache[exit_emissive_state]
 				if(!emissive_overlay)
-					emissive_overlay = blood_emissive(icon, "[icon_state_to_use]2")
-					emissive_overlay.dir = Ddir
+					emissive_overlay = image(blood_emissive(icon, "[icon_state_to_use]2"), dir = Ddir)
 					bloody_footprints_cache[exit_emissive_state] = emissive_overlay
 				. += emissive_overlay
 
@@ -569,8 +570,6 @@
 
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
-	/// The cached info about the blood
-	var/list/blood_dna_info
 	/// Skip making the final blood splatter when we're done, like if we're not in a turf
 	var/skip = FALSE
 	/// How many tiles/items/people we can paint red
@@ -591,7 +590,7 @@
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
-		loc.add_blood_DNA(blood_dna_info)
+		loc.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	qdel(src)
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
@@ -618,7 +617,10 @@
 			continue
 		if(splatter_strength <= 0)
 			break
-		iter_atom.add_blood_DNA(blood_dna_info)
+		iter_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
+		if(isliving(iter_atom))
+			var/mob/living/splatted = iter_atom
+			splatted.add_mood_event("splattered_with_blood", /datum/mood_event/splattered_with_blood)
 
 	splatter_strength--
 	// we used all our blood so go away
@@ -632,7 +634,7 @@
 		fly_trail.transform = fly_trail.transform.Turn((flight_dir == NORTHEAST || flight_dir == SOUTHWEST) ? 135 : 45)
 	fly_trail.icon_state = pick("trails_1", "trails2")
 	fly_trail.adjust_bloodiness(fly_trail.bloodiness * -0.66)
-	fly_trail.add_blood_DNA(blood_dna_info)
+	fly_trail.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
@@ -663,7 +665,6 @@
 			final_splatter.pixel_x = (dir == EAST ? 32 : (dir == WEST ? -32 : 0))
 			final_splatter.pixel_y = (dir == NORTH ? 32 : (dir == SOUTH ? -32 : 0))
 			final_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-			final_splatter.add_blood_DNA(blood_dna_info)
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
 		expire()
@@ -674,7 +675,6 @@
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
 	final_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	final_splatter.add_blood_DNA(blood_dna_info)
 	final_splatter.forceMove(the_window)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE

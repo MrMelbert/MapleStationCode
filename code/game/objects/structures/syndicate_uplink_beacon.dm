@@ -77,10 +77,10 @@
 	listening_radio.set_frequency(traitor_datum.replacement_uplink_frequency)
 	become_hearing_sensitive()
 
-/obj/structure/syndicate_uplink_beacon/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range)
+/obj/structure/syndicate_uplink_beacon/Hear(atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range)
 	if(ismob(speaker) || radio_freq != listening_radio.get_frequency())
 		return
-	if(!findtext(message, uplink_code))
+	if(!findtext(raw_message, uplink_code))
 		return
 	teleport_uplink()
 

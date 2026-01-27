@@ -20,7 +20,7 @@
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
 
 	//Hair colour and style
-	var/hair_color = "#000000"
+	var/hair_color = COLOR_BLACK
 	var/hairstyle = "Bald"
 
 	///Colours used for hair and facial hair gradients.
@@ -29,12 +29,12 @@
 	var/list/grad_style
 
 	//Facial hair colour and style
-	var/facial_hair_color = "#000000"
+	var/facial_hair_color = COLOR_BLACK
 	var/facial_hairstyle = "Shaved"
 
 	//Eye colour
-	var/eye_color_left = "#000000"
-	var/eye_color_right = "#000000"
+	var/eye_color_left = COLOR_BLACK
+	var/eye_color_right = COLOR_BLACK
 	/// Var used to keep track of a human mob having a heterochromatic right eye. To ensure prefs don't overwrite shit
 	var/eye_color_heterochromatic = FALSE
 
@@ -50,7 +50,7 @@
 
 	//consider updating /mob/living/carbon/human/copy_clothing_prefs() if adding more of these
 	var/underwear = "Nude" //Which underwear the player wants
-	var/underwear_color = "#000000"
+	var/underwear_color = COLOR_BLACK
 	var/undershirt = "Nude" //Which undershirt the player wants
 	var/socks = "Nude" //Which socks the player wants
 	var/backpack = DBACKPACK //Which backpack type the player has chosen.
@@ -65,13 +65,13 @@
 	var/obj/item/l_store = null
 	var/obj/item/s_store = null
 
-	var/special_voice = "" // For changing our voice. Used by a symptom.
+	/// Allows for special overrides of voice
+	var/override_voice = ""
 
 	var/datum/physiology/physiology
 
 	var/list/datum/bioware/biowares
 
-	var/lastpuke = 0
 	var/account_id
 
 	var/hardcore_survival_score = 0
@@ -82,5 +82,7 @@
 	/// When an braindead player has their equipment fiddled with, we log that info here for when they come back so they know who took their ID while they were DC'd for 30 seconds
 	var/list/afk_thefts
 
-	/// Height of the mob
-	VAR_PROTECTED/mob_height = HUMAN_HEIGHT_MEDIUM
+	/// Base height of the mob, modified by stuff like dwarfism or species
+	VAR_PRIVATE/base_mob_height = HUMAN_HEIGHT_MEDIUM
+	/// Actual height of the mob. Don't touch this one, it is set via update_mob_height()
+	VAR_FINAL/mob_height = HUMAN_HEIGHT_MEDIUM

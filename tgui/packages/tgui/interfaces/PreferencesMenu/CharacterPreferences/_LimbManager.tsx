@@ -11,12 +11,12 @@ import {
   Stack,
   Tooltip,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 import { capitalizeFirst } from 'tgui-core/string';
 
 import { resolveAsset } from '../../../assets';
 import { useBackend } from '../../../backend';
-import { Connection, Connections } from '../../common/Connections';
+import { type Connection, Connections } from '../../common/Connections';
 import { useServerPrefs } from '../useServerPrefs';
 
 const makeCategoryReadable = (cat: string): string => {
@@ -485,7 +485,7 @@ class LimbManagerInner extends Component<
                 <Input
                   placeholder="Search Limbs"
                   value={limbSearchQuery}
-                  onInput={(e, value) =>
+                  onChange={(value) =>
                     this.setState({ limbSearchQuery: value })
                   }
                   width={16}

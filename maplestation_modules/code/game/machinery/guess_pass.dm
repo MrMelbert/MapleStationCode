@@ -132,6 +132,7 @@
 /obj/machinery/guest_pass/Initialize(mapload)
 	. = ..()
 	name = "[dept_name] [name]"
+	article = "the"
 	update_appearance()
 
 /obj/machinery/guest_pass/update_icon_state()

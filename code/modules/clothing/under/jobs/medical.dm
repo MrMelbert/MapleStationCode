@@ -25,11 +25,13 @@
 /obj/item/clothing/under/rank/medical/chief_medical_officer
 	desc = "It's a jumpsuit worn by those with the experience to be \"Chief Medical Officer\". It provides minor biological protection."
 	name = "chief medical officer's jumpsuit"
+	article = "the"
 	icon_state = "cmo"
 	inhand_icon_state = "w_suit"
 
 /obj/item/clothing/under/rank/medical/chief_medical_officer/skirt
 	name = "chief medical officer's jumpskirt"
+	article = "the"
 	desc = "It's a jumpskirt worn by those with the experience to be \"Chief Medical Officer\". It provides minor biological protection."
 	icon_state = "cmo_skirt"
 	inhand_icon_state = "w_suit"
@@ -40,6 +42,7 @@
 
 /obj/item/clothing/under/rank/medical/chief_medical_officer/scrubs
 	name = "chief medical officer's scrubs"
+	article = "the"
 	desc = "A distinctive set of white and turquoise scrubs given to chief medical officers who desire a clinical look."
 	icon_state = "scrubscmo"
 	inhand_icon_state = "w_suit"
@@ -50,6 +53,7 @@
 
 /obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck
 	name = "chief medical officer's turtleneck"
+	article = "the"
 	desc = "A light blue turtleneck and tan khakis, for a chief medical officer with a superior sense of style."
 	icon_state = "cmoturtle"
 	inhand_icon_state = "b_suit"
@@ -59,6 +63,7 @@
 
 /obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck/skirt
 	name = "chief medical officer's turtleneck skirt"
+	article = "the"
 	desc = "A light blue turtleneck and tan khaki skirt, for a chief medical officer with a superior sense of style."
 	icon_state = "cmoturtle_skirt"
 	inhand_icon_state = "b_suit"

@@ -33,6 +33,7 @@
 	extra_price = PAYCHECK_COMMAND
 	payment_department = ACCOUNT_SRV
 	light_mask = "cigs-light-mask"
+	allow_custom = TRUE
 
 /obj/machinery/vending/cigarette/syndicate
 	products = list(
@@ -47,6 +48,7 @@
 		/obj/item/storage/fancy/rollingpapers = 5,
 	)
 	initial_language_holder = /datum/language_holder/syndicate
+	allow_custom = FALSE
 
 /obj/machinery/vending/cigarette/beach //Used in the lavaland_biodome_beach.dmm ruin
 	name = "\improper ShadyCigs Ultra"
@@ -70,12 +72,13 @@
 		/obj/item/lighter = 3,
 	)
 	initial_language_holder = /datum/language_holder/beachbum
+	allow_custom = FALSE
 
 /obj/item/vending_refill/cigarette
 	machine_name = "ShadyCigs Deluxe"
 	icon_state = "refill_smoke"
 
-/obj/machinery/vending/cigarette/pre_throw(obj/item/I)
-	if(istype(I, /obj/item/lighter))
-		var/obj/item/lighter/L = I
-		L.set_lit(TRUE)
+/obj/machinery/vending/cigarette/pre_throw(obj/item/thrown_item)
+	if(istype(thrown_item, /obj/item/lighter))
+		var/obj/item/lighter/thrown_lighter = thrown_item
+		thrown_lighter.set_lit(TRUE)

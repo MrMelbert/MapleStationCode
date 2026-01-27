@@ -14,8 +14,8 @@
 	novariants = FALSE
 	material_flags = MATERIAL_EFFECTS
 	table_type = /obj/structure/table/greyscale
-	pickup_sound = 'sound/items/metal_pick_up.ogg'
-	drop_sound = 'sound/items/metal_drop.ogg'
+//	pickup_sound = 'sound/items/metal_pick_up.ogg' // Non-module change
+//	drop_sound = 'sound/items/metal_drop.ogg' // Non-module change
 	var/sheettype = null //this is used for girders in the creation of walls/false walls
 	var/point_value = 0 //turn-in value for the gulag stacker - loosely relative to its rarity.
 	///What type of wall does this sheet spawn

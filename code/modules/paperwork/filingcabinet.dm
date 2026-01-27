@@ -92,8 +92,8 @@
 		// Take the object out
 		if("remove_object")
 			var/obj/item/content = locate(params["ref"]) in src
-			if(istype(content) && in_range(src, usr))
-				usr.put_in_hands(content)
+			if(istype(content))
+				try_put_in_hand(content, usr)
 				icon_state = "[initial(icon_state)]-open"
 				addtimer(VARSET_CALLBACK(src, icon_state, initial(icon_state)), 0.5 SECONDS)
 				return TRUE

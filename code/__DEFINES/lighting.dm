@@ -18,16 +18,8 @@
 /// Does this light ignore inherent offsets? (Pixels, transforms, etc)
 #define LIGHT_IGNORE_OFFSET (1<<2)
 
-// Bay lighting engine shit, not in /code/modules/lighting because BYOND is being shit about it
-/// frequency, in 1/10ths of a second, of the lighting process
-#define LIGHTING_INTERVAL 5
-
 #define MINIMUM_USEFUL_LIGHT_RANGE 1.4
 
-/// type of falloff to use for lighting; 1 for circular, 2 for square
-#define LIGHTING_FALLOFF 1
-/// use lambertian shading for light sources
-#define LIGHTING_LAMBERTIAN 0
 /// light UNDER the floor. primarily used for starlight, shouldn't fuck with this
 #define LIGHTING_HEIGHT_SPACE -0.5
 /// light ON the floor
@@ -108,23 +100,14 @@ GLOBAL_LIST_INIT(em_block_color, EM_BLOCK_COLOR)
 /// A globaly cached version of [EM_MASK_MATRIX] for quick access.
 GLOBAL_LIST_INIT(em_mask_matrix, EM_MASK_MATRIX)
 
-/// Returns the red part of a #RRGGBB hex sequence as number
-#define GETREDPART(hexa) hex2num(copytext(hexa, 2, 4))
-
-/// Returns the green part of a #RRGGBB hex sequence as number
-#define GETGREENPART(hexa) hex2num(copytext(hexa, 4, 6))
-
-/// Returns the blue part of a #RRGGBB hex sequence as number
-#define GETBLUEPART(hexa) hex2num(copytext(hexa, 6, 8))
-
 /// Parse the hexadecimal color into lumcounts of each perspective.
 #define PARSE_LIGHT_COLOR(source) \
 do { \
 	if (source.light_color != COLOR_WHITE) { \
-		var/__light_color = source.light_color; \
-		source.lum_r = GETREDPART(__light_color) / 255; \
-		source.lum_g = GETGREENPART(__light_color) / 255; \
-		source.lum_b = GETBLUEPART(__light_color) / 255; \
+		var/list/color_parts = rgb2num(source.light_color); \
+		source.lum_r = color_parts[1] / 255; \
+		source.lum_g = color_parts[2] / 255; \
+		source.lum_b = color_parts[3] / 255; \
 	} else { \
 		source.lum_r = 1; \
 		source.lum_g = 1; \

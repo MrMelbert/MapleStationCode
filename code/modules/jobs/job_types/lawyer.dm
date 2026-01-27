@@ -1,7 +1,7 @@
 /datum/job/lawyer
 	title = JOB_LAWYER
 	description = "Advocate for prisoners, create law-binding contracts, \
-		ensure Security is following protocol and Space Law."
+		ensure security is following Standard Operating Procedure and Space Law."
 	title_options = list(
 		"Attorney",
 	)
@@ -26,12 +26,14 @@
 		/datum/job_department/service,
 		)
 	rpg_title = "Magistrate"
-	family_heirlooms = list(/obj/item/gavelhammer, /obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/gavelhammer,
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 
 	job_flags = STATION_JOB_FLAGS
 
 	job_tone = "objection"
-
 
 /datum/outfit/job/lawyer
 	name = "Lawyer"

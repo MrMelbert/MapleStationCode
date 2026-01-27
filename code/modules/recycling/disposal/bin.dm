@@ -69,6 +69,9 @@
 	ADD_TRAIT(src, TRAIT_COMBAT_MODE_SKIP_INTERACTION, INNATE_TRAIT)
 	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
 
+/obj/machinery/disposal/AllowDrop()
+	return TRUE
+
 /// Checks if there a connecting trunk diposal pipe under the disposal
 /obj/machinery/disposal/proc/trunk_check()
 	var/obj/structure/disposalpipe/trunk/found_trunk = locate() in loc
@@ -130,9 +133,8 @@
 			return
 
 	if(!user.combat_mode || (I.item_flags & NOBLUDGEON))
-		if((I.item_flags & ABSTRACT) || !user.temporarilyRemoveItemFromInventory(I))
+		if(!place_item_in_disposal(I, user))
 			return
-		place_item_in_disposal(I, user)
 		update_appearance()
 		return 1 //no afterattack
 	else
@@ -161,8 +163,12 @@
 
 /// Moves an item into the diposal bin
 /obj/machinery/disposal/proc/place_item_in_disposal(obj/item/I, mob/user)
-	I.forceMove(src)
+	if(I.item_flags & ABSTRACT)
+		return FALSE
+	if(!user.transferItemToLoc(I, src, silent = FALSE))
+		return FALSE
 	user.visible_message(span_notice("[user.name] places \the [I] into \the [src]."), span_notice("You place \the [I] into \the [src]."))
+	return TRUE
 
 /// Mouse drop another mob or self
 /obj/machinery/disposal/mouse_drop_receive(mob/living/target, mob/living/user, params)
@@ -530,7 +536,9 @@
 
 /obj/machinery/disposal/delivery_chute/place_item_in_disposal(obj/item/I, mob/user)
 	if(I.CanEnterDisposals())
-		..()
+		return FALSE
+	. = ..()
+	if(.)
 		flush()
 
 /obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
@@ -566,13 +574,13 @@
 	return TRUE
 
 /obj/projectile/CanEnterDisposals()
-	return
+	return FALSE
 
 /obj/effect/CanEnterDisposals()
-	return
+	return FALSE
 
 /obj/vehicle/sealed/mecha/CanEnterDisposals()
-	return
+	return FALSE
 
 /// Handles the signal for the rat king looking inside the disposal
 /obj/machinery/disposal/proc/on_rat_rummage(datum/source, mob/living/basic/regal_rat/king)

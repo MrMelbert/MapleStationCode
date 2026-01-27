@@ -751,3 +751,22 @@
 	add_hiddenprint_list(GET_ATOM_HIDDENPRINTS(from))
 	fingerprintslast = from.fingerprintslast
 	//TODO bloody overlay
+
+/obj/item/stack/update_name(updates)
+	. = ..()
+	maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
+	if(!singular_name)
+		return
+	if(amount > 1)
+		// only reset if necessary
+		if(singular_name != initial(name))
+			name = initial(name)
+		gender = PLURAL
+	else
+		name = singular_name
+		gender = NEUTER
+
+/obj/item/stack/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	if(ismob(loc) || ismob(old_loc) || loc?.atom_storage || old_loc?.atom_storage)
+		update_appearance(UPDATE_NAME)

@@ -1,7 +1,7 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
 	description = "Investigate crimes, gather evidence, perform interrogations, \
-		look badass, smoke cigarettes."
+		smoke cigarettes, look badass."
 	title_options = list(
 		"Investigator",
 		"Inspector",
@@ -28,6 +28,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
 
+	mind_traits = list(SECURITY_MIND_TRAITS)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_DETECTIVE
@@ -43,7 +44,9 @@
 		/obj/item/storage/belt/holster/detective/full = 1
 	)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/bottle/whiskey)
+	family_heirlooms = list(
+		/obj/item/reagent_containers/cup/glass/flask/det,
+	)
 	rpg_title = "Thiefcatcher" //I guess they caught them all rip thief...
 	job_flags = STATION_JOB_FLAGS
 
@@ -77,7 +80,7 @@
 		/obj/item/gun/ballistic/revolver/c38/detective,
 		)
 	implants = list(/obj/item/implant/mindshield)
-	
+
 	skillchips = list(/obj/item/skillchip/job/detectives_taste)
 
 /datum/outfit/job/detective/pre_equip(mob/living/carbon/human/human, visualsOnly = FALSE)

@@ -26,6 +26,10 @@
 	if(aug.body_zone != target_zone)
 		to_chat(user, span_warning("[tool] isn't the right type for [parse_zone(target_zone)]."))
 		return SURGERY_STEP_FAIL
+	if(!aug.can_attach_limb(target))
+		to_chat(user, span_warning("[aug] doesn't match the patient's morphology."))
+		return SURGERY_STEP_FAIL
+
 	target_limb = surgery.operated_bodypart
 	if(target_limb)
 		display_results(

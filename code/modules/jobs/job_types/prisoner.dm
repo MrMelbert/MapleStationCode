@@ -1,6 +1,6 @@
 /datum/job/prisoner
 	title = JOB_PRISONER
-	description = "Keep yourself occupied in permabrig."
+	description = "Serve your sentence, keep yourself busy through labor, avoid dying of boredom."
 	department_head = list("The Security Team")
 	faction = FACTION_STATION
 	total_positions = 0
@@ -21,7 +21,9 @@
 		/obj/effect/spawner/random/contraband/prison = 1
 	)
 
-	family_heirlooms = list(/obj/item/pen/blue)
+	family_heirlooms = list(
+		/obj/item/pen/blue,
+	)
 	rpg_title = "Defeated Miniboss"
 	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS & ~JOB_REOPEN_ON_ROUNDSTART_LOSS
 
