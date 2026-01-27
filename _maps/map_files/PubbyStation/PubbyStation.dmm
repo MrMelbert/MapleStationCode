@@ -20989,7 +20989,6 @@
 	dir = 8
 	},
 /obj/machinery/disposal/bin,
-/obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
