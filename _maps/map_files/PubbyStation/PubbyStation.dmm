@@ -7153,7 +7153,12 @@
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "axW" = (
-/obj/structure/filingcabinet,
+/obj/structure/filingcabinet/security{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "axX" = (
@@ -8291,7 +8296,12 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "aCe" = (
-/obj/structure/filingcabinet/employment,
+/obj/structure/filingcabinet/employment{
+	pixel_x = -8
+	},
+/obj/structure/filingcabinet{
+	pixel_x = 8
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "aCf" = (
@@ -10868,13 +10878,13 @@
 	},
 /area/station/security/checkpoint/supply)
 "aMk" = (
-/obj/structure/filingcabinet/security,
 /obj/machinery/airalarm/directional/north,
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/red/anticorner{
 	dir = 4
 	},
+/obj/structure/filingcabinet/chestdrawer,
 /turf/open/floor/iron/dark/smooth_corner{
 	dir = 8
 	},
@@ -19289,13 +19299,13 @@
 /turf/open/floor/grass,
 /area/station/medical/medbay/central)
 "bvk" = (
-/obj/machinery/computer/crew,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/machinery/modular_computer/preset/id,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "bvw" = (
@@ -20147,7 +20157,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/computer/security/telescreen/cmo/directional/west,
 /turf/open/floor/iron/white,
@@ -21200,21 +21209,29 @@
 "bCi" = (
 /obj/structure/closet/secure_closet/chief_medical,
 /obj/item/paper/valentine,
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
 /obj/item/computer_disk/medical,
 /obj/item/computer_disk/medical,
 /obj/item/computer_disk/medical,
 /obj/machinery/firealarm/directional/west,
-/turf/open/floor/iron/white,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/blue{
+	dir = 4
+	},
+/turf/open/floor/iron,
 /area/station/command/heads_quarters/cmo)
 "bCj" = (
 /obj/machinery/suit_storage_unit/cmo,
-/turf/open/floor/iron/white,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/blue{
+	dir = 4
+	},
+/turf/open/floor/iron,
 /area/station/command/heads_quarters/cmo)
 "bCk" = (
 /obj/effect/turf_decal/stripes/line{
@@ -21232,8 +21249,11 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/disposalpipe/segment,
 /obj/structure/cable,
+/obj/structure/disposalpipe/sorting/mail/flip{
+	dir = 1;
+	sortType = 10
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "bCm" = (
@@ -21843,6 +21863,10 @@
 	dir = 8
 	},
 /obj/machinery/status_display/ai/directional/south,
+/obj/machinery/disposal/bin,
+/obj/structure/disposalpipe/trunk{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "bEF" = (
@@ -21927,11 +21951,11 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/command/heads_quarters/rd)
 "bEW" = (
-/obj/structure/filingcabinet/security,
 /obj/structure/reagent_dispensers/wall/peppertank/directional/west,
 /obj/effect/turf_decal/tile/red/anticorner{
 	dir = 8
 	},
+/obj/structure/filingcabinet/chestdrawer,
 /turf/open/floor/iron/dark/smooth_corner{
 	dir = 4
 	},
@@ -34304,7 +34328,6 @@
 	network = list("ss13","medbay");
 	pixel_y = -22
 	},
-/obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -34319,11 +34342,8 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/disposalpipe/sorting/mail/flip{
-	dir = 1;
-	sortType = 10
-	},
 /obj/structure/cable,
+/obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "eFl" = (
@@ -35689,12 +35709,17 @@
 /turf/open/floor/iron/white/smooth_half,
 /area/station/ai_monitored/turret_protected/ai)
 "fxP" = (
-/obj/machinery/modular_computer/preset/id,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
+	},
+/obj/structure/filingcabinet/medical{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
 	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
@@ -37681,9 +37706,6 @@
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 5
 	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -40761,11 +40783,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "jsj" = (
-/obj/machinery/disposal/bin,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
-/obj/structure/disposalpipe/trunk,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
@@ -40776,6 +40796,7 @@
 /obj/effect/mapping_helpers/requests_console/announcement,
 /obj/effect/mapping_helpers/requests_console/information,
 /obj/effect/mapping_helpers/requests_console/assistance,
+/obj/machinery/pdapainter/medbay,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "jtf" = (
@@ -42497,13 +42518,13 @@
 /turf/open/floor/iron/dark,
 /area/station/service/bar)
 "kQy" = (
-/obj/machinery/computer/records/medical,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/machinery/computer/crew,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "kQZ" = (
@@ -43276,6 +43297,9 @@
 	},
 /obj/machinery/keycard_auth/wall_mounted/directional/east{
 	pixel_y = 5
+	},
+/obj/machinery/computer/records/medical/laptop{
+	dir = 1
 	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
@@ -56981,9 +57005,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "uFc" = (
@@ -60739,7 +60760,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/disposalpipe/segment,
 /obj/machinery/newscaster/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{

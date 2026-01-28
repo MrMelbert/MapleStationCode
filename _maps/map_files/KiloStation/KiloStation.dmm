@@ -12367,7 +12367,6 @@
 /obj/machinery/light_switch/directional/south{
 	pixel_x = -8
 	},
-/obj/structure/filingcabinet,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -12375,8 +12374,11 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/bot,
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 8
+/obj/structure/filingcabinet/security{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain/private)
@@ -29845,11 +29847,11 @@
 /obj/item/stack/package_wrap,
 /obj/item/storage/briefcase/secure,
 /obj/item/hand_labeler,
-/obj/item/reagent_containers/spray/cleaner,
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/item/radio/intercom/directional/west,
 /obj/item/wrench/medical,
+/obj/machinery/recharger,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
 "fhl" = (
@@ -31331,6 +31333,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/airlock/access/all/command/captain,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain/private)
 "fEA" = (
@@ -46143,20 +46146,16 @@
 /area/station/commons/toilet/restrooms)
 "kvy" = (
 /obj/effect/turf_decal/bot,
-/obj/structure/table,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/recharger,
 /obj/machinery/status_display/evac/directional/west,
-/obj/item/toy/figure/cmo{
-	pixel_x = 9;
-	pixel_y = 12
+/obj/structure/filingcabinet/medical{
+	pixel_x = 7
 	},
-/obj/item/reagent_containers/spray/cleaner{
-	pixel_x = -9;
-	pixel_y = 10
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
@@ -46763,6 +46762,7 @@
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "kFf" = (
@@ -47811,6 +47811,10 @@
 	pixel_y = 5
 	},
 /obj/structure/table/reinforced/rglass,
+/obj/item/toy/figure/cmo{
+	pixel_x = 9;
+	pixel_y = 12
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "kWs" = (
@@ -50926,6 +50930,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "mae" = (
@@ -60294,6 +60299,7 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/wood/parquet,
 /area/station/command/heads_quarters/captain/private)
 "phH" = (
@@ -63533,7 +63539,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
 	},
-/obj/structure/filingcabinet/employment,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
@@ -63547,6 +63552,12 @@
 	req_access = list("lawyer")
 	},
 /obj/effect/turf_decal/bot,
+/obj/structure/filingcabinet/employment{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/lawoffice)
 "qks" = (
@@ -81376,6 +81387,7 @@
 /obj/machinery/light/small/directional/north,
 /obj/structure/bed/dogbed/renault,
 /mob/living/basic/pet/fox/renault,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood/parquet,
 /area/station/command/heads_quarters/captain/private)
 "vYE" = (
@@ -82852,6 +82864,7 @@
 	dir = 6
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "wCg" = (
@@ -83057,6 +83070,7 @@
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "wEY" = (
@@ -86702,6 +86716,7 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "xIH" = (

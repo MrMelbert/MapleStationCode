@@ -3186,10 +3186,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/carpet,
 /area/station/service/theater)
-"arZ" = (
-/obj/machinery/light/dim/directional/south,
-/turf/open/floor/wood,
-/area/station/service/lawoffice)
 "asc" = (
 /obj/effect/turf_decal/trimline/purple/filled/corner{
 	dir = 4
@@ -4540,16 +4536,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/hop)
-"aGk" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 10
-	},
-/obj/structure/table/wood,
-/obj/structure/window/reinforced/spawner/directional/north,
-/obj/structure/window/reinforced/spawner/directional/east,
-/obj/effect/spawner/random/decoration/ornament,
-/turf/open/floor/iron/grimy,
-/area/station/service/lawoffice)
 "aGs" = (
 /obj/structure/chair,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
@@ -6105,10 +6091,6 @@
 	dir = 4
 	},
 /area/station/maintenance/central/greater)
-"aXh" = (
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/station/service/lawoffice)
 "aXo" = (
 /obj/structure/punching_bag,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -9422,8 +9404,13 @@
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "cgX" = (
-/obj/structure/filingcabinet/chestdrawer,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/structure/filingcabinet/medical{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "chc" = (
@@ -22743,7 +22730,13 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/table/wood,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/east,
+/obj/effect/spawner/random/decoration/ornament,
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/lawoffice)
 "hgG" = (
@@ -30612,14 +30605,13 @@
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "jXY" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 9
-	},
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/lawoffice)
 "jYb" = (
@@ -31745,6 +31737,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/courtroom)
+"kpX" = (
+/obj/machinery/newscaster/directional/west,
+/obj/structure/aquarium/lawyer,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "kqf" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
@@ -31879,10 +31876,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"kse" = (
-/obj/machinery/newscaster/directional/west,
-/turf/open/floor/wood,
-/area/station/service/lawoffice)
 "ksk" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -34255,8 +34248,11 @@
 /area/station/security/office)
 "ljC" = (
 /obj/effect/turf_decal/siding/wood,
-/obj/effect/landmark/navigate_destination/lawyer,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/filingcabinet{
+	pixel_x = 11;
+	density = 0
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/lawoffice)
 "ljI" = (
@@ -48084,6 +48080,7 @@
 /turf/open/floor/engine,
 /area/station/science/ordnance/burnchamber)
 "qel" = (
+/obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -52779,6 +52776,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/landmark/navigate_destination/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "rOy" = (
@@ -60883,7 +60881,12 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/tram/center)
 "uCv" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/siding/wood,
+/obj/structure/filingcabinet/employment{
+	pixel_x = -11;
+	density = 0
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/lawoffice)
 "uCy" = (
@@ -62544,12 +62547,6 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
-"vcR" = (
-/obj/structure/aquarium/lawyer,
-/obj/machinery/power/apc/auto_name/directional/west,
-/obj/structure/cable,
-/turf/open/floor/wood,
-/area/station/service/lawoffice)
 "vcS" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -67252,14 +67249,14 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat/foyer)
 "wLP" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/lawoffice)
 "wLR" = (
@@ -99053,11 +99050,11 @@ hLr
 nCe
 udP
 hFr
-hFr
-hFr
-hFr
-hFr
-hFr
+abM
+abM
+abM
+abM
+abM
 abM
 abM
 abM
@@ -99309,11 +99306,11 @@ nzL
 jkM
 adC
 jmp
-iTz
-vcR
-aXh
-mrb
-kse
+hFr
+hFr
+hFr
+hFr
+hFr
 hFr
 abM
 abM
@@ -99569,8 +99566,8 @@ vrG
 iTz
 fEZ
 qel
-aGk
-hPA
+mrb
+kpX
 hFr
 abM
 abM
@@ -99827,7 +99824,7 @@ kKB
 pxs
 jXY
 hgC
-xmH
+hPA
 hFr
 abM
 abM
@@ -100084,7 +100081,7 @@ iTz
 bFc
 wLP
 uCv
-arZ
+xmH
 hFr
 abM
 abM

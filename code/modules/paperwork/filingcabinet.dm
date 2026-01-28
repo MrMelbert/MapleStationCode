@@ -121,6 +121,10 @@
 /obj/structure/filingcabinet/security
 	var/virgin = TRUE
 
+/obj/structure/filingcabinet/security/Initialize(mapload)
+	. = ..()
+	REGISTER_REQUIRED_MAP_ITEM(1, INFINITY)
+
 /obj/structure/filingcabinet/security/proc/populate()
 	if(!virgin)
 		return
