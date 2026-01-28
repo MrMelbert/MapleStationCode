@@ -59,7 +59,7 @@
 
 	/// List of species an android can be designed as
 	var/list/android_species = list(
-		SPECIES_FELINE, // needs to be replaced with animids
+		SPECIES_ANIMALID,
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
 		SPECIES_MOTH,
@@ -67,22 +67,20 @@
 		SPECIES_SKRELL,
 	)
 
-/// Species ID to typepath helper
-#define ID_TO_TYPEPATH(id) GLOB.species_list[id]
-
 /datum/species/android/on_species_gain(mob/living/carbon/human/gained_species, datum/species/old_species, pref_load)
 	var/species_id = gained_species.dna?.features["android_species"] || old_species?.id
 	if(!species_id || !(species_id in android_species))
 		species_id = SPECIES_HUMAN
 
-	var/datum/species/spedies_datum = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
-	for(var/organtype in spedies_datum.mutant_organs)
+	var/datum/species/copy_datum = GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)]
+	for(var/organtype in copy_datum.mutant_organs)
 		set_mutant_organ(MUTANT_ORGANS, organtype, gained_species)
-	for(var/markingtype in spedies_datum.body_markings)
+	for(var/markingtype in copy_datum.body_markings)
 		set_mutant_organ(BODY_MARKINGS, markingtype, gained_species)
-
-	// snowflake cyber replacements
+	// snowflakes
 	switch(species_id)
+		if(SPECIES_ANIMALID)
+			apply_animid_features(gained_species, gained_species.dna?.features["animid_type"] || pick(GLOB.animid_singletons), list(ORGAN_SLOT_EARS, MUTANT_ORGANS, BODY_MARKINGS))
 		if(SPECIES_MOTH)
 			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, gained_species)
 		if(SPECIES_FELINE)
@@ -336,31 +334,24 @@
 #undef HAS_TRAIT_NOT_FROM_LUNGS
 
 // Add features from all android species for prefs
-/datum/species/android/get_features(only_innate = FALSE)
-	var/list/features = ..()
-	if(only_innate)
-		return features
-
-	features = features.Copy() // it's cached we gotta make a copy
+/datum/species/android/get_features()
+	. = ..()
 	for(var/species_id in android_species)
-		features |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
-	return features
+		. |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
 
 // Filter out features from unselected android species, keep active + innate features
-/datum/species/android/get_filtered_features_per_prefs(datum/preferences/prefs)
-	var/static/list/cached_features
-	if(!cached_features)
-		cached_features = list()
-		for(var/species_id in android_species)
-			cached_features |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
+/datum/species/android/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	. = ..()
+	var/selected_species_id = prefs.read_preference(/datum/preference/choiced/android_species)
+	// filter out all unselected species features
+	for(var/species_id in android_species - selected_species_id)
+		to_filter -= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
 
-	var/list/filtered = cached_features.Copy()
-	filtered -= GLOB.species_prototypes[ID_TO_TYPEPATH(prefs.read_preference(/datum/preference/choiced/android_species))].get_features()
-	filtered -= get_features(TRUE)
-
-	return filtered
-
-#undef ID_TO_TYPEPATH
+	// re-add features that we may have filtered from our selected species
+	var/datum/species/selected_species = GLOB.species_prototypes[ID_TO_TYPEPATH(selected_species_id)]
+	to_filter |= selected_species.get_features()
+	// allow our select species to filter its own features per its prefs
+	selected_species.filter_features_per_prefs(to_filter, prefs)
 
 /datum/species/android/get_species_description()
 	return "Androids are an entirely synthetic species."

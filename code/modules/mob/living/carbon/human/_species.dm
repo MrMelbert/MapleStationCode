@@ -999,7 +999,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
-/datum/species/proc/get_features()
+/datum/species/proc/get_features() as /list
 	var/cached_features = GLOB.features_by_species[type]
 	if (!isnull(cached_features))
 		return cached_features
@@ -1025,9 +1025,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return features
 
-/// Returns a list of features not applicable to the species given a preference set.
+/// Returns a list of strings representing features this species has, filtered by the given preferences.
 /datum/species/proc/get_filtered_features_per_prefs(datum/preferences/prefs)
-	return list()
+	var/list/features = get_features().Copy() // don't mutate the cached version
+	filter_features_per_prefs(features, prefs) // filter, pass by ref
+	return features
+
+/// Passed a list of features, will filter them according to the given preferences.
+/datum/species/proc/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	return
 
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.

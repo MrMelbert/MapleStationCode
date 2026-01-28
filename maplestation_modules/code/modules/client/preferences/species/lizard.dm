@@ -41,8 +41,9 @@
 /datum/species/lizard/get_features()
 	return ..() | HAIR_PREFERENCES
 
-/datum/species/lizard/get_filtered_features_per_prefs(datum/preferences/prefs)
-	return prefs.read_preference(/datum/preference/toggle/hair_lizard) ? list() : HAIR_PREFERENCES
+/datum/species/lizard/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	if(!prefs.read_preference(/datum/preference/toggle/hair_lizard))
+		to_filter -= HAIR_PREFERENCES
 
 #undef HAIR_PREFERENCES
 

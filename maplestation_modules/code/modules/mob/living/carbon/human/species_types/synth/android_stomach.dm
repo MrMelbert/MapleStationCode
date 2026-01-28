@@ -159,9 +159,9 @@
 	carbon.add_consciousness_modifier(NO_CHARGE, -50)
 
 #undef NO_CHARGE
-#undef HAS_ALERT
 #undef HAS_CON_MOD
 #undef HAS_MOOD_EVENT
+#undef HAS_DEATH_TIMER
 
 /atom/movable/screen/alert/emptycell/ethereal/android
 	name = "No Power"

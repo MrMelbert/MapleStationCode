@@ -42,7 +42,7 @@
 	/// Species which generally work well with synth, and can be disguised as.
 	var/list/valid_species = list(
 		SPECIES_ABDUCTOR,
-		SPECIES_FELINE, // needs to be replaced with animids
+		SPECIES_ANIMALID,
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
 		SPECIES_MOTH,
@@ -84,15 +84,23 @@
 /datum/species/android/synth/get_features()
 	. = ..()
 	for(var/species_id in valid_species)
-		. |= GLOB.species_prototypes[GLOB.species_list[species_id]].get_features()
+		. |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
 
-/datum/species/android/synth/get_filtered_features_per_prefs(datum/preferences/prefs)
-	var/list/filtered = list()
-	var/chosen_species_id = prefs.read_preference(/datum/preference/choiced/synth_species)
-	for(var/species_id in valid_species)
-		filtered |= GLOB.species_prototypes[GLOB.species_list[species_id]].get_features()
+/datum/species/android/synth/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	. = ..()
+	var/selected_species_id = prefs.read_preference(/datum/preference/choiced/synth_species)
+	// filter out all unselected species features
+	for(var/species_id in android_species - selected_species_id)
+		to_filter -= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
 
-	return filtered - GLOB.species_prototypes[GLOB.species_list[chosen_species_id]].get_features()
+	// re-add features that we may have filtered from our selected species
+	var/datum/species/selected_species = GLOB.species_prototypes[ID_TO_TYPEPATH(selected_species_id)]
+	if(isnull(selected_species)) // no disguise
+		return
+
+	to_filter |= selected_species.get_features()
+	// allow our select species to filter its own features per its prefs
+	selected_species.filter_features_per_prefs(to_filter, prefs)
 
 /datum/species/android/synth/get_species_description()
 	return "While they appear organic, Synths are secretly Androids disguised as the various species of the Galaxy."

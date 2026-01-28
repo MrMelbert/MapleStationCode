@@ -1,3 +1,12 @@
+GLOBAL_LIST_INIT_TYPED(animid_singletons, /datum/animid_type, init_animid_singletons())
+
+/proc/init_animid_singletons()
+	. = list()
+	for(var/datum/animid_type/atype as anything in typesof(/datum/animid_type))
+		if(!atype::id)
+			continue
+		.[atype::id] = new atype(src)
+
 /datum/species/human/animid
 	name = "Animid"
 	id = SPECIES_ANIMALID
@@ -7,29 +16,13 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	payday_modifier = 1.0
 	species_language_holder = /datum/language_holder/kuiperian
-	/// A mapping of all animid ids to their singleton instances
-	var/static/list/datum/animid_type/animid_singletons
 
-/datum/species/human/animid/New()
-	. = ..()
-	if(animid_singletons)
-		return
-
-	animid_singletons = list()
-	for(var/datum/animid_type/atype as anything in typesof(/datum/animid_type))
-		if(!atype::id)
-			continue
-		animid_singletons[atype::id] = new atype(src)
-
-/datum/species/human/animid/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
-	var/animid_id = human_who_gained_species.dna?.features["animid_type"] || pick(animid_singletons)
-	for(var/organ_slot, input in animid_singletons[animid_id].components)
-		set_mutant_organ(organ_slot, input, human_who_gained_species)
-	animid_singletons[animid_id].pre_species_gain(src, human_who_gained_species)
+/datum/species/human/animid/on_species_gain(mob/living/carbon/human/gained_species, datum/species/old_species, pref_load)
+	apply_animid_features(gained_species, gained_species.dna?.features["animid_type"] || pick(GLOB.animid_singletons))
 	. = ..()
 	// replace body is not called when going from same species to same species, but we need it for swapping animid types
 	if(old_species.type == type)
-		replace_body(human_who_gained_species, src)
+		replace_body(gained_species, src)
 
 // So the primary page doesn't show a diet that is largely irrelevant
 /datum/species/human/animid/get_species_diet()
@@ -107,30 +100,40 @@
 
 /datum/species/human/animid/randomize_features()
 	var/list/features = ..()
-	features["animid_type"] = pick(animid_singletons)
+	features["animid_type"] = pick(GLOB.animid_singletons)
 	return features
 
 // Gets all features from all animid types
 /datum/species/human/animid/get_features()
 	. = ..()
-	for(var/animalid_id in animid_singletons)
-		. |= animid_singletons[animalid_id].get_feature_keys()
+	for(var/animalid_id in GLOB.animid_singletons)
+		. |= GLOB.animid_singletons[animalid_id].get_feature_keys()
 
 // Filters out features from other animid types, to declutter the prefs screen
-/datum/species/human/animid/get_filtered_features_per_prefs(datum/preferences/prefs)
+/datum/species/human/animid/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
 	var/selected_animid_id = prefs.read_preference(/datum/preference/choiced/animid_type)
-	var/list/filtered_features = list()
-	// Collect all the features from all other animid types
-	for(var/other_animid_id in animid_singletons - selected_animid_id)
-		filtered_features |= animid_singletons[other_animid_id].get_feature_keys()
-	// Don't filter anything in our prime animid type
-	return filtered_features - animid_singletons[selected_animid_id].get_feature_keys()
+	// filter out other animid types
+	for(var/other_animid_id in GLOB.animid_singletons - selected_animid_id)
+		to_filter -= GLOB.animid_singletons[other_animid_id].get_feature_keys()
+	// re-add features that we may have filtered from our selected animid type
+	to_filter |= GLOB.animid_singletons[selected_animid_id].get_feature_keys()
 
 // Shows all organs from all animid types
 /datum/species/human/animid/get_mut_organs(include_brain = TRUE)
 	. = ..()
-	for(var/animalid_id in animid_singletons)
-		. |= animid_singletons[animalid_id].get_organs(include_brain)
+	for(var/animalid_id in GLOB.animid_singletons)
+		. |= GLOB.animid_singletons[animalid_id].get_organs(include_brain)
+
+/// Applies animid features to a human based on the given animid type ID
+/datum/species/proc/apply_animid_features(mob/living/carbon/human/humanoid, animid_id, list/whitelist)
+	for(var/organ_slot, input in GLOB.animid_singletons[animid_id].components)
+		if(whitelist && !(organ_slot in whitelist))
+			continue
+		set_mutant_organ(organ_slot, input, humanoid)
+
+/datum/species/human/animid/apply_animid_features(mob/living/carbon/human/humanoid, animid_id, list/whitelist)
+	. = ..()
+	GLOB.animid_singletons[animid_id].pre_species_gain(src, humanoid)
 
 /// Helper to change a mutant organ, bodypart, or body marking without knowing what specific organ it is
 /datum/species/proc/set_mutant_organ(slot, input, mob/living/carbon/human/humanoid)

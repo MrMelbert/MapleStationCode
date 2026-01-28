@@ -70,7 +70,6 @@
 	icon_state = "robotic_r_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
-	limb_id = BODYPART_ID_ROBOTIC
 
 /obj/item/bodypart/leg/left/robot/digi
 	name = "cyborg digitigrade left leg"
@@ -101,7 +100,6 @@
 	icon_state = "robotic_l_leg"
 	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
-	limb_id = BODYPART_ID_ROBOTIC
 
 /obj/item/bodypart/leg/right/robot/surplus/digi
 	name = "prosthetic digitigrade right leg"
