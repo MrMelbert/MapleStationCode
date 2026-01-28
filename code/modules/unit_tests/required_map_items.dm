@@ -21,6 +21,9 @@
 	expected_types += /mob/living/carbon/human/species/monkey/punpun
 	expected_types += /obj/machinery/computer/communications
 	expected_types += /obj/machinery/drone_dispenser
+	expected_types += /obj/structure/filingcabinet/employment
+	expected_types += /obj/structure/filingcabinet/medical
+	expected_types += /obj/structure/filingcabinet/genetic_backups
 
 /datum/unit_test/required_map_items/Run()
 	setup_expected_types()
