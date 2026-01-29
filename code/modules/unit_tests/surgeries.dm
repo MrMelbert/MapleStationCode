@@ -166,7 +166,7 @@
 	var/mob/living/carbon/human/picker = allocate(/mob/living/carbon/human/consistent)
 	var/obj/item/nullrod/chainsaw/nullrod = allocate(/obj/item/nullrod/chainsaw)
 
-	nullrod.on_selected(null, null, picker)
+	nullrod.on_selected(null, picker)
 
 	TEST_ASSERT(HAS_TRAIT_FROM(nullrod, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT), "Chainsaw nullrod item attachment failed! Item does not have the nodrop trait")
 
