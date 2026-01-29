@@ -1041,7 +1041,7 @@
 	name = "Medibot Upgrade"
 	desc = "Automatically upgrades the effectiveness of all medibots linked to the research network."
 	id = "medibot_upgrade"
-	research_icon = 'icons/mob/silicon/aibots.dmi'
+	research_icon = /mob/living/basic/bot/medbot::icon
 	research_icon_state = "medbot_generic_idle"
 	/// Medibot healing starts at a 1x multiplier. For every tech researched, it goes up by this amount additively.
 	var/additive_multiplier = 1
