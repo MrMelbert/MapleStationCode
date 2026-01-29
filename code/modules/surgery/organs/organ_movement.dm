@@ -21,6 +21,8 @@
 		if(!PERFORM_ALL_TESTS(organ_sanity))
 			stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
 		return FALSE
+	if(!mob_insert(receiver, special, movement_flags))
+		return FALSE
 	if(bodypart_owner && loc == bodypart_owner && receiver == bodypart_owner.owner)
 		// ok this is a bit confusing but essentially, thanks to some EXTREME shenanigans
 		// (tl;dr mob_insert -> set_species -> replace_limb -> bodypart_insert)
@@ -28,7 +30,6 @@
 		// to avoid double insertion, and potential bugs, we'll stop here
 		return TRUE
 
-	mob_insert(receiver, special, movement_flags)
 	bodypart_insert(limb_owner = receiver, movement_flags = movement_flags)
 
 	if(!special)
@@ -63,11 +64,11 @@
 
 	if(!iscarbon(receiver))
 		stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
-		return
+		return FALSE
 
 	if(owner == receiver)
 		stack_trace("Organ receiver is already organ owner")
-		return
+		return FALSE
 
 	var/obj/item/organ/replaced = receiver.get_organ_slot(slot)
 	if(replaced)
