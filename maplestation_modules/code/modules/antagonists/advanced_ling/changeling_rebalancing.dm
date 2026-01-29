@@ -1,17 +1,5 @@
 // -- Rebalancing of other ling actions --
-// Buffs adrenal sacs so they work like old adrenals. Increased chemical cost to compensate.
-/datum/action/changeling/adrenaline
-	desc = "We evolve additional sacs of adrenaline throughout our body. Costs 40 chemicals."
-	chemical_cost = 40
-
-/datum/action/changeling/adrenaline/sting_action(mob/living/user)
-	user.adjustStaminaLoss(-75)
-	user.set_resting(FALSE, instant = TRUE)
-	user.SetStun(0)
-	user.SetImmobilized(0)
-	user.SetParalyzed(0)
-	user.SetKnockdown(0)
-	. = ..()
+#ifndef UNIT_TESTS
 
 // Disables spread infestation.
 /datum/action/changeling/spiders
@@ -20,6 +8,8 @@
 // Disables transform sting.
 /datum/action/changeling/sting/transformation
 	dna_cost = CHANGELING_POWER_UNOBTAINABLE
+
+#endif // UNIT_TESTS
 
 /// Extension of attempt_absorb, for changeling cannot absorb their own spawn
 /datum/action/changeling/absorb_dna/can_sting(mob/living/carbon/user)
