@@ -87,9 +87,6 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	var/total_force = (attacking_item.force * demo_mod)
 	var/damage = take_damage(total_force, attacking_item.damtype, MELEE, TRUE, get_dir(src, user), attacking_item.armour_penetration)
 
-	// Sanity in case one is null for some reason
-	var/picked_index = rand(max(length(attacking_item.attack_verb_simple), length(attacking_item.attack_verb_continuous)))
-
 	var/damage_verb = "hit"
 
 	if(demo_mod > 1 && prob(damage * 5))

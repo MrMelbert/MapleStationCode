@@ -23,6 +23,8 @@
 	var/menu_description = "A standard chaplain's weapon. Fits in pockets. Can be worn on the belt."
 	/// Lazylist, tracks refs()s to all cultists which have been crit or killed by this nullrod.
 	var/list/cultists_slain
+	/// Affects GLOB.holy_weapon_type. Disable to allow null rods to change at will and without affecting the station's type.
+	var/station_holy_item = TRUE
 
 /obj/item/nullrod/Initialize(mapload)
 	. = ..()
@@ -36,22 +38,24 @@
 	)
 	AddElement(/datum/element/bane, target_type = /mob/living/basic/revenant, damage_multiplier = 0, added_damage = 25, requires_combat_mode = FALSE)
 
-	if(!GLOB.holy_weapon_type && type == /obj/item/nullrod)
-		var/list/rods = list()
-		for(var/obj/item/nullrod/nullrod_type as anything in typesof(/obj/item/nullrod))
-			if(!initial(nullrod_type.chaplain_spawnable))
-				continue
-			rods[nullrod_type] = initial(nullrod_type.menu_description)
-		//special non-nullrod subtyped shit
-		rods[/obj/item/gun/ballistic/bow/divine/with_quiver] = "A divine bow and 10 quivered holy arrows."
-		rods[/obj/item/organ/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
-			allowing you to conjure forth a vorpal scythe. Allows you to behead targets for empowered strikes. \
-			Harms you if you dismiss the scythe without first causing harm to a creature. \
-			The shard also causes you to become Morbid, shifting your interests towards the macabre."
-		rods[/obj/item/gun/ballistic/revolver/chaplain] = "A .38 revolver which can hold 5 bullets. \
-			You can pray while holding the weapon to refill spent rounds - it does not accept standard .38."
+	if((GLOB.holy_weapon_type && station_holy_item) || type != /obj/item/nullrod)
+		return
 
-		AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
+	var/list/rods = list()
+	for(var/obj/item/nullrod/nullrod_type as anything in typesof(/obj/item/nullrod))
+		if(!initial(nullrod_type.chaplain_spawnable))
+			continue
+		rods[nullrod_type] = initial(nullrod_type.menu_description)
+	//special non-nullrod subtyped shit
+	rods[/obj/item/gun/ballistic/bow/divine/with_quiver] = "A divine bow and 10 quivered holy arrows."
+	rods[/obj/item/organ/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
+		allowing you to conjure forth a vorpal scythe. Allows you to behead targets for empowered strikes. \
+		Harms you if you dismiss the scythe without first causing harm to a creature. \
+		The shard also causes you to become Morbid, shifting your interests towards the macabre."
+	rods[/obj/item/gun/ballistic/revolver/chaplain] = "A .38 revolver which can hold 5 bullets. \
+		You can pray while holding the weapon to refill spent rounds - it does not accept standard .38."
+
+	AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
 
 /// Callback for subtype picker, invoked when the chaplain picks a new nullrod
 /obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/new_holy_weapon, mob/living/picker)

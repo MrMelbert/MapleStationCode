@@ -11,10 +11,10 @@
 	operation_flags = OPERATION_MORBID | OPERATION_NOTABLE
 	time = 5 SECONDS
 	preop_sound = list(
-		/obj/item/shockpaddles = 'sound/machines/defib/defib_charge.ogg',
+		/obj/item/shockpaddles = 'sound/defib/defib_charge.ogg',
 		/obj/item = null,
 	)
-	success_sound = 'sound/machines/defib/defib_zap.ogg'
+	success_sound = 'sound/defib/defib_zap.ogg'
 	required_biotype = NONE
 	target_zone = BODY_ZONE_HEAD
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED

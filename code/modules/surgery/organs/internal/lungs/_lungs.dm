@@ -937,21 +937,21 @@
 	var/tooltip
 	var/dilation_text
 	var/beginning_text = "Lung Dilation: "
-	if (lungs.received_pressure_mult > initial_pressure_mult) // higher than usual
+	if (received_pressure_mult > initial_pressure_mult) // higher than usual
 		beginning_text = span_blue("<b>[beginning_text]</b>")
-		dilation_text = span_blue("[(lungs.received_pressure_mult * 100) - 100]%")
+		dilation_text = span_blue("[(received_pressure_mult * 100) - 100]%")
 		tooltip = "Subject's lungs are dilated and breathing more air than usual. \
 			Increases the effectiveness of healium and other gases."
 
 	else
 		beginning_text = span_danger("<b>[beginning_text]</b>")
-		if (lungs.received_pressure_mult <= 0) // lethal
-			dilation_text = span_bolddanger("[lungs.received_pressure_mult * 100]%")
+		if (received_pressure_mult <= 0) // lethal
+			dilation_text = span_bolddanger("[received_pressure_mult * 100]%")
 			tooltip = "Subject's lungs are completely shut. Subject is unable to breathe and requires emergency surgery. \
 				If asthmatic, perform asthmatic bypass surgery and adminster albuterol inhalant. \
 				Otherwise, replace lungs."
 		else
-			dilation_text = span_danger("[lungs.received_pressure_mult * 100]%")
+			dilation_text = span_danger("[received_pressure_mult * 100]%")
 			tooltip = "Subject's lungs are partially shut. \
 				If unable to breathe, administer a high-pressure internals tank or replace lungs. \
 				If asthmatic, inhaled albuterol or bypass surgery will likely help."
