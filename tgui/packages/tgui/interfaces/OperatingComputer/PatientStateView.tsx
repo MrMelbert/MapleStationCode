@@ -64,9 +64,11 @@ export const PatientStateView = (props: PatientStateViewProps) => {
             target_zone={data.target_zone}
           />
         </Stack.Item>
+        {/* NON-MODULE CHANGE START */}
         <Stack.Item>
           <PatientStateAnesthesiaView />
         </Stack.Item>
+        {/* NON-MODULE CHANGE END */}
         <Stack.Item grow>
           <PatientStateNextOperationsView
             pinnedOperations={pinnedOperations}
@@ -84,13 +86,19 @@ type PatientStateMainStateViewProps = {
   patient: PatientData;
 };
 
+// NON-MODULE CHANGE
+// damage will often have floating point errors from dm so we truncate to 2 sigfics
+function truncateDamage(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
 const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
   const { patient } = props;
 
   return (
     <LabeledList>
+      {/* NON-MODULE CHANGE START */}
       <LabeledList.Item label="State">
-        {/* NON-MODULE CHANGE START */}
         <Stack>
           <Stack.Item color={patient.statstate}>{patient.stat}</Stack.Item>
           <Stack.Divider />
@@ -98,10 +106,6 @@ const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
             {patient.heartrate} bpm
           </Stack.Item>
         </Stack>
-        {/* NON-MODULE CHANGE END */}
-      </LabeledList.Item>
-      <LabeledList.Item label="Blood Type">
-        {patient.blood_type || 'Unable to determine blood type'}
       </LabeledList.Item>
       <LabeledList.Item label="Health">
         <ProgressBar
@@ -112,12 +116,13 @@ const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
         >
           <AnimatedNumber
             value={patient.health}
-            format={(value) => `${Math.round(value)}%`}
+            format={(value) => `${truncateDamage(value)}%`}
           />
         </ProgressBar>
       </LabeledList.Item>
       <LabeledList.Item label="Blood Level">
         <ProgressBar
+          align="right"
           value={patient.blood_level}
           minValue={0}
           maxValue={patient.standard_blood_level}
@@ -129,10 +134,17 @@ const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
                 : 'bad'
           }
         >
-          <AnimatedNumber
-            value={patient.blood_level / patient.standard_blood_level}
-            format={(value) => `${Math.round(value * 100)}%`}
-          />
+          <Stack>
+            <Stack.Item>
+              Type: <b>{patient.blood_type || 'Unknown'}</b>
+            </Stack.Item>
+            <Stack.Item grow>
+              <AnimatedNumber
+                value={patient.blood_level / patient.standard_blood_level}
+                format={(value) => `${truncateDamage(value * 100)}%`}
+              />
+            </Stack.Item>
+          </Stack>
         </ProgressBar>
       </LabeledList.Item>
       {damageTypes.map((type) => (
@@ -141,10 +153,11 @@ const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
             value={patient[type.type] / patient.maxHealth}
             color="bad"
           >
-            <AnimatedNumber value={patient[type.type]} />
+            <AnimatedNumber value={truncateDamage(patient[type.type])} />
           </ProgressBar>
         </LabeledList.Item>
       ))}
+      {/* NON-MODULE CHANGE END */}
     </LabeledList>
   );
 };
@@ -366,6 +379,7 @@ const PatientStateNextOperationsView = (
   );
 };
 
+// NON-MODULE CHANGE
 const PatientStateAnesthesiaView = () => {
   const { act, data } = useBackend<OperatingComputerData>();
   const { anesthesia } = data;
