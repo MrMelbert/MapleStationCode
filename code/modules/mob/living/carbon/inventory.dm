@@ -513,7 +513,7 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/covered_flags = NONE
-	for(var/obj/item/worn_item in get_equipped_items(INCLUDE_ABSTRACT))
+	for(var/obj/item/worn_item in get_equipped_items(/*INCLUDE_ABSTRACT*/))
 		covered_flags |= worn_item.body_parts_covered
 
 	return covered_flags
@@ -529,7 +529,7 @@
 				return FALSE
 
 	var/covered_flags = NONE
-	for(var/obj/item/worn_item in get_equipped_items(INCLUDE_ABSTRACT))
+	for(var/obj/item/worn_item in get_equipped_items(/*INCLUDE_ABSTRACT*/))
 		if(worn_item.slot_flags & exluded_equipment_slots)
 			continue
 		covered_flags |= worn_item.body_parts_covered

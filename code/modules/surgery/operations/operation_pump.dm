@@ -12,7 +12,7 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 
 /datum/surgery_operation/organ/stomach_pump/get_default_radial_image()
-	return image(/atom/movable/screen/alert/disgusted::overlay_icon, /atom/movable/screen/alert/disgusted::overlay_state)
+	return image(/atom/movable/screen/alert/disgusted) // NON-MODULE CHANGE
 
 /datum/surgery_operation/organ/stomach_pump/all_required_strings()
 	return ..() + list("the patient must not be husked")
@@ -31,7 +31,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = BDOY_ZONES_CHEST,
+		target_zone = BODY_ZONE_CHEST,
 		pain_message = "You feel a horrible sloshing feeling in your gut! You're going to be sick!",
 		pain_amount = SURGERY_PAIN_LOW,
 	)

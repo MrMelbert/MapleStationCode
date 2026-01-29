@@ -193,7 +193,7 @@
 	display_pain(
 		target = organ.owner,
 		target_zone = organ.zone,
-		pain_message = The pain in your abdomen intensifies!",
+		pain_message = "The pain in your abdomen intensifies!",
 		pain_amount = SURGERY_PAIN_HIGH,
 	)
 
@@ -266,7 +266,7 @@
 /datum/surgery_operation/organ/repair/coronary_bypass/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
 	. = ..()
 	organ.bodypart_owner.adjustBleedStacks(30)
-	var/blood_name = LOWER_TEXT(organ.owner.get_bloodtype()?.get_blood_name()) || "blood"
+	var/blood_name = LOWER_TEXT(organ.owner.get_blood_type()?.name) || "blood"
 	display_results(
 		surgeon,
 		organ.owner,
@@ -434,8 +434,8 @@
 
 /datum/surgery_operation/organ/repair/ears/on_success(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
 	. = ..()
-	var/deaf_change = 40 SECONDS - organ.temporary_deafness
-	organ.adjust_temporary_deafness(deaf_change)
+	var/deaf_change = 40 SECONDS - organ.deaf
+	organ.adjustEarDamage(0, deaf_change)
 	display_results(
 		surgeon,
 		organ.owner,
@@ -468,7 +468,7 @@
 			pain_message = "You feel a visceral stabbing pain right through your [parse_zone(organ.zone)], into your brain!",
 			pain_amount = SURGERY_PAIN_MEDIUM,
 		)
-		organ.owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 70)
+		organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70)
 	else
 		display_results(
 			surgeon,
@@ -558,7 +558,7 @@
 			pain_message = "You feel a visceral stabbing pain right through your [parse_zone(organ.zone)], into your brain!",
 			pain_amount = SURGERY_PAIN_MEDIUM,
 		)
-		organ.owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 70)
+		organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70)
 
 	else
 		display_results(

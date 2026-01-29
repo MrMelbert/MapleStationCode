@@ -12,7 +12,7 @@
 	required_biotype = NONE
 
 /datum/surgery_operation/basic/core_removal/get_default_radial_image()
-	return image(/mob/living/basic/slime)
+	return image(/mob/living/simple_animal/slime) // NON-MODULE CHANGE
 
 /datum/surgery_operation/basic/core_removal/all_required_strings()
 	return list("operate on a deceased slime") + ..()
@@ -45,15 +45,15 @@
 	if(patient.cores > 0)
 		patient.cores--
 		display_results(
-			user,
-			target,
-			span_notice("You successfully extract a core from [target]. [patient.cores] core\s remaining."),
-			span_notice("[user] successfully extracts a core from [target]!"),
-			span_notice("[user] successfully extracts a core from [target]!"),
+			surgeon,
+			patient,
+			span_notice("You successfully extract a core from [patient]. [patient.cores] core\s remaining."),
+			span_notice("[surgeon] successfully extracts a core from [patient]!"),
+			span_notice("[surgeon] successfully extracts a core from [patient]!"),
 		)
 
 		new patient.slime_type.core_type(patient.loc)
 		patient.regenerate_icons()
 
 	else
-		to_chat(user, span_warning("There aren't any cores left in [target]!"))
+		to_chat(surgeon, span_warning("There aren't any cores left in [patient]!"))

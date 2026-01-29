@@ -15,7 +15,7 @@
 
 /obj/effect/abstract/info/Click()
 	. = ..()
-	to_chat(usr, boxed_message("[span_boldnotice(name)]<br>[span_info(info_text)]"))
+	to_chat(usr, examine_block("[span_boldnotice(name)]<br>[span_info(info_text)]"))
 
 /obj/effect/abstract/info/MouseEntered(location, control, params)
 	. = ..()

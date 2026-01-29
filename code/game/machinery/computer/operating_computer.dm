@@ -204,11 +204,11 @@
 	// check here to see if the patient has standard blood reagent, or special blood (like how ethereals bleed liquid electricity) to show the proper name in the computer
 	data["patient"]["blood_type"] = "[patient.get_blood_type() || "None"]" // NON-MODULE CHANGE
 	data["patient"]["maxHealth"] = patient.maxHealth
-	data["patient"]["minHealth"] = HEALTH_THRESHOLD_DEAD
-	data["patient"]["bruteLoss"] = patient.get_brute_loss()
-	data["patient"]["fireLoss"] = patient.get_fire_loss()
-	data["patient"]["toxLoss"] = patient.get_tox_loss()
-	data["patient"]["oxyLoss"] = patient.get_oxy_loss()
+	data["patient"]["minHealth"] = -1 * patient.maxHealth
+	data["patient"]["bruteLoss"] = patient.getBruteLoss()
+	data["patient"]["fireLoss"] = patient.getFireLoss()
+	data["patient"]["toxLoss"] = patient.getToxLoss()
+	data["patient"]["oxyLoss"] = patient.getOxyLoss()
 	data["patient"]["blood_level"] = patient.blood_volume
 	data["patient"]["standard_blood_level"] = BLOOD_VOLUME_NORMAL
 	data["patient"]["surgery_state"] = patient.get_surgery_state_as_list(deprecise_zone(target_zone))
@@ -302,9 +302,7 @@
 
 	return data
 
-
-
-/obj/machinery/computer/operating/ui_act(action, params)
+/obj/machinery/computer/operating/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

@@ -18,26 +18,26 @@
 	failure_sound = 'sound/items/handling/surgery/organ1.ogg'
 
 	/// How much infestation is removed per step (positive number)
-	var/infestation_removed = 4
+	var/infection_removed = 4
 	/// How much sanitization is added per step
 	var/sanitization_added = 0.5 // just enough to stop infestation from worsening
 
 /datum/surgery_operation/limb/debride/get_default_radial_image()
-	return image(/obj/item/reagent_containers/applicator/patch/aiuri)
+	return image(/obj/item/reagent_containers/pill/patch/aiuri)
 
 /datum/surgery_operation/limb/debride/all_required_strings()
 	return list("the limb must have a second degree or worse burn") + ..()
 
 /datum/surgery_operation/limb/debride/state_check(obj/item/bodypart/limb)
-	var/datum/wound/burn/flesh/wound = locate() in limb.wounds
+	var/datum/wound/flesh/wound = locate() in limb.wounds
 	return wound?.infection > 0
 
 /// To give the surgeon a heads up how much work they have ahead of them
-/datum/surgery_operation/limb/debride/proc/get_progress(datum/wound/burn/flesh/wound)
+/datum/surgery_operation/limb/debride/proc/get_progress(datum/wound/flesh/wound)
 	if(wound?.infection <= 0)
 		return null
 
-	var/estimated_remaining_steps = wound.infection / infestation_removed
+	var/estimated_remaining_steps = wound.infection / infection_removed
 	var/progress_text
 
 	switch(estimated_remaining_steps)
@@ -70,8 +70,8 @@
 
 /datum/surgery_operation/limb/debride/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args, default_display_results = FALSE)
 	limb.receive_damage(3, wound_bonus = CANT_WOUND, sharpness = tool.get_sharpness(), damage_source = tool)
-	var/datum/wound/burn/flesh/wound = locate() in limb.wounds
-	wound?.infection -= infestation_removed
+	var/datum/wound/flesh/wound = locate() in limb.wounds
+	wound?.infection -= infection_removed
 	wound?.sanitization += sanitization_added
 	display_results(
 		surgeon,

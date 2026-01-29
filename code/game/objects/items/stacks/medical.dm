@@ -266,7 +266,7 @@
 
 		var/datum/wound/flesh/any_burn_wound = locate() in affecting.wounds
 		var/can_heal_burn_wounds = (flesh_regeneration || sanitization) && any_burn_wound?.can_be_ointmented_or_meshed()
-		var/can_suture_bleeding = stop_bleeding && affecting.get_modified_bleed_rate() > 0
+		var/can_suture_bleeding = stop_bleeding && affecting.cached_bleed_rate > 0
 		var/brute_to_heal = heal_brute && affecting.brute_dam > 0
 		var/burn_to_heal = heal_burn && affecting.burn_dam > 0
 
@@ -510,7 +510,7 @@
 
 	// Dressing burns provides a "one-time" bonus to sanitization and healing
 	// However, any notable infection will reduce the effectiveness of this bonus
-	for(var/datum/wound/burn/flesh/wound in limb.wounds)
+	for(var/datum/wound/flesh/wound in limb.wounds)
 		wound.sanitization += sanitization * (wound.infection > 0.1 ? 0.2 : 1)
 		wound.flesh_healing += flesh_regeneration * (wound.infection > 0.1 ? 0 : 1)
 

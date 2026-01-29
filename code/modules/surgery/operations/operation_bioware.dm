@@ -224,7 +224,7 @@
 	)
 	// NON-MODULE CHANGE
 	display_pain(
-		target = target,
+		target = limb.owner,
 		target_zone = BODY_ZONES_ALL,
 		pain_message = "You regain feeling in your body! You feel energzed!",
 		pain_amount = -0.5 * SURGERY_PAIN_HIGH,
@@ -393,7 +393,7 @@
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
-	limb.owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 60)
+	limb.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 	limb.owner.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 
 /datum/surgery_operation/limb/bioware/cortex_folding/mechanic
@@ -461,7 +461,7 @@
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
-	limb.owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 60)
+	limb.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 	limb.owner.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/mechanic

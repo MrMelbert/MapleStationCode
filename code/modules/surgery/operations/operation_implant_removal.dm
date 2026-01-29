@@ -29,7 +29,7 @@
 	if(LAZYLEN(patient.implants))
 		display_pain(
 			target = patient,
-			target_zone = BODY_ZONE_TORSO,
+			target_zone = BODY_ZONE_CHEST,
 			pain_message = "You feel a serious pain as [surgeon] digs around inside you!",
 			pain_amount = SURGERY_PAIN_MEDIUM,
 		)

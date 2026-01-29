@@ -339,7 +339,7 @@
 		current_gauze.forceMove(remove_to)
 	else
 		current_gauze.moveToNullspace()
-	if(can_bleed() && get_modified_bleed_rate())
+	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
 	current_gauze.worn_icon_state = initial(current_gauze.worn_icon_state)
 	current_gauze.update_appearance()

@@ -22,7 +22,7 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_BONE_SAWED
 
 /datum/surgery_operation/organ/brainwash/get_default_radial_image()
-	return image(/atom/movable/screen/alert/hypnosis::overlay_icon, /atom/movable/screen/alert/hypnosis::overlay_state)
+	return image(/atom/movable/screen/alert/hypnosis) // NON-MODULE CHANGE
 
 /datum/surgery_operation/organ/brainwash/pre_preop(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
 	operation_args[OPERATION_OBJECTIVE] = tgui_input_text(surgeon, "Choose the objective to imprint on your patient's brain", "Brainwashing", max_length = MAX_MESSAGE_LEN)
@@ -48,7 +48,7 @@
 	if(!organ.owner.mind)
 		to_chat(surgeon, span_warning("[organ.owner] doesn't respond to the brainwashing, as if [organ.owner.p_they()] lacked a mind..."))
 		return ..()
-	if(HAS_MIND_TRAIT(organ.owner, TRAIT_UNCONVERTABLE))
+	if(HAS_MIND_TRAIT(organ.owner, TRAIT_MINDSHIELD)) // NON-MODULE CHANGE
 		to_chat(surgeon, span_warning("[organ.owner] seems resistant to the brainwashing..."))
 		return ..()
 
@@ -85,7 +85,7 @@
 		pain_message = "Your head throbs with horrible pain!",
 		pain_amount = SURGERY_PAIN_SEVERE,
 	)
-	organ.owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, 40)
+	organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 40)
 
 /datum/surgery_operation/organ/brainwash/mechanic
 	name = "reprogram"

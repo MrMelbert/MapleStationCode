@@ -1141,7 +1141,7 @@
 					var/obj/item/bodypart/new_bp = new limb2add()
 					if(new_bp.replace_limb(src))
 						admin_ticket_log("[key_name_admin(usr)] has replaced [src]'s [part.type] with [new_bp.type]")
-						qdel(part)
+						qdel(BP)
 					else
 						to_chat(usr, "Failed to replace bodypart! They might be incompatible.")
 						admin_ticket_log("[key_name_admin(usr)] has attempted to modify the bodyparts of [src]")
@@ -1232,7 +1232,7 @@
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return FALSE
 	for(var/obj/item/bodypart/part as anything in bodyparts)
-		if(part.get_modified_bleed_rate())
+		if(part.cached_bleed_rate)
 			return TRUE
 	return FALSE
 
@@ -1243,7 +1243,7 @@
 
 	var/total_bleed_rate = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
-		total_bleed_rate += part.get_modified_bleed_rate()
+		total_bleed_rate += part.cached_bleed_rate
 
 	return total_bleed_rate
 

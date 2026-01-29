@@ -43,7 +43,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.zone,
+		target_zone = limb.body_zone,
 		pain_message = "Something's being jammed into your mouth!",
 		pain_amount = SURGERY_PAIN_TRIVIAL,
 	)
@@ -98,7 +98,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.zone,
+		target_zone = limb.body_zone,
 		pain_message = "You feel fingers poke around at your teeth.",
 	)
 

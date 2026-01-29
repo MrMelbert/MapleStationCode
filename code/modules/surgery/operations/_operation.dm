@@ -204,7 +204,7 @@
 
 	var/list/operations = surgeon.get_available_operations(src, surgeon.get_active_held_item())
 	if(!length(operations))
-		to_chat(surgeon, boxed_message(span_info("No available surgeries.")))
+		to_chat(surgeon, examine_block(span_info("No available surgeries.")))
 		return
 
 	var/list/operations_info = list()
@@ -213,7 +213,7 @@
 		var/atom/movable/operating_on = operations[radial_slice][2]
 		operations_info += "[radial_slice]: [operation.name] on [operating_on]"
 
-	to_chat(surgeon, boxed_message(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
+	to_chat(surgeon, examine_block(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
 
 /// Takes a target zone and returns a list of readable surgery states for that zone.
 /// Example output may be list("Skin is cut", "Blood vessels are unclamped", "Bone is sawed")
@@ -751,7 +751,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		basemod *= mod_amt
 	if(HAS_TRAIT(patient, TRAIT_SURGICALLY_ANALYZED))
 		basemod *= 0.8
-	if(HAS_TRAIT(patient, TRAIT_ANALGESIA))
+	if(!CAN_FEEL_PAIN(patient)) // NON-MODULE CHANGE
 		basemod *= 0.8
 	return basemod
 
@@ -939,8 +939,18 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		alt_msg = span_notice("You feel [you_feel] as you are operated on."),
 	)
 
+// NON-MODULE CHANGE
 /// Display pain message to the target based on their traits and condition
-/datum/surgery_operation/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
+/datum/surgery_operation/proc/display_pain(
+	mob/living/target,
+	target_zone,
+	pain_message,
+	pain_amount = 0,
+	pain_type = BRUTE,
+	pain_overlay_severity = 1,
+	mechanical_surgery = FALSE,
+	surgery_moodlet,
+)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 

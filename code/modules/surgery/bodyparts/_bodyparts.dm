@@ -153,7 +153,7 @@
 	/// So we know if we need to scream if this limb hits max damage
 	var/last_maxed
 	/// Our current bleed rate. Cached, update with refresh_bleed_rate()
-	VAR_PRIVATE/cached_bleed_rate = 0
+	var/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
 	var/generic_bleedstacks = 0
 	/// If we have a gauze wrapping currently applied (not including splints)
@@ -879,6 +879,7 @@
 	))
 
 	UnregisterSignal(old_owner, COMSIG_ATOM_RESTYLE)
+	UnregisterSignal(old_owner, COMSIG_LIVING_SET_BODY_POSITION)
 
 	if(LIMB_HAS_SURGERY_STATE(src, ALL_SURGERY_FISH_STATES(body_zone)))
 		qdel(old_owner.GetComponent(/datum/component/fishing_spot))
@@ -898,24 +899,24 @@
 		if(HAS_TRAIT(owner, TRAIT_NOLIMBDISABLE))
 			set_can_be_disabled(FALSE)
 
+
 		// Listen to disable traits being added
 		RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOLIMBDISABLE), PROC_REF(on_owner_nolimbdisable_trait_loss))
 		RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOLIMBDISABLE), PROC_REF(on_owner_nolimbdisable_trait_gain))
 
-		// Listen to no blood traits being added
-		RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBLOOD), PROC_REF(on_owner_nobleed_loss))
-		RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBLOOD), PROC_REF(on_owner_nobleed_gain))
+		RegisterSignals(owner, list(SIGNAL_REMOVETRAIT(TRAIT_NOBLOOD), SIGNAL_ADDTRAIT(TRAIT_NOBLOOD)), PROC_REF(refresh_bleed_rate))
 
 	if(can_be_disabled)
 		update_disabled()
 
 	RegisterSignal(owner, COMSIG_ATOM_RESTYLE, PROC_REF(on_attempt_feature_restyle_mob))
+	RegisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(refresh_bleed_rate))
 
 	forceMove(owner)
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(on_forced_removal)) //this must be set after we moved, or we insta gib
 
-	if(LIMB_HAS_SURGERY_STATE(src, ALL_SURGERY_FISH_STATES(body_zone)))
-		owner.AddComponent(/datum/component/fishing_spot, /datum/fish_source/surgery)
+	// if(LIMB_HAS_SURGERY_STATE(src, ALL_SURGERY_FISH_STATES(body_zone)))
+	// 	owner.AddComponent(/datum/component/fishing_spot, /datum/fish_source/surgery)
 
 /// Called on addition of a bodypart
 /obj/item/bodypart/proc/on_adding(mob/living/carbon/new_owner)
@@ -1277,7 +1278,7 @@
 		return
 	// We don't need to do anything with projectile embedding, because it will never reach this point
 	embedded_objects += embed
-	RegisterSignal(embed, COMSIG_ITEM_EMBEDDING_UPDATE, PROC_REF(embedded_object_changed))
+	RegisterSignal(embed, COMSIG_ITEM_EMBEDDING_UPDATE, PROC_REF(refresh_bleed_rate))
 	refresh_bleed_rate()
 
 /// INTERNAL PROC, DO NOT USE
@@ -1285,11 +1286,6 @@
 /obj/item/bodypart/proc/_unembed_object(obj/item/unembed)
 	embedded_objects -= unembed
 	UnregisterSignal(unembed, COMSIG_ITEM_EMBEDDING_UPDATE)
-	refresh_bleed_rate()
-
-/obj/item/bodypart/proc/embedded_object_changed(obj/item/embedded_source)
-	SIGNAL_HANDLER
-	/// Embedded objects effect bleed rate, gotta refresh lads
 	refresh_bleed_rate()
 
 /// Sets our generic bleedstacks
@@ -1310,17 +1306,10 @@
 		|| old_bleedstacks > 0 && generic_bleedstacks <= 0)
 		refresh_bleed_rate()
 
-/obj/item/bodypart/proc/on_owner_nobleed_loss(datum/source)
-	SIGNAL_HANDLER
-	refresh_bleed_rate()
-
-/obj/item/bodypart/proc/on_owner_nobleed_gain(datum/source)
-	SIGNAL_HANDLER
-	refresh_bleed_rate()
-
 /// Refresh the cache of our rate of bleeding sans any modifiers
 /// ANYTHING ADDED TO THIS PROC NEEDS TO CALL IT WHEN IT'S EFFECT CHANGES
 /obj/item/bodypart/proc/refresh_bleed_rate()
+	SIGNAL_HANDLER
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/old_bleed_rate = cached_bleed_rate
@@ -1366,28 +1355,20 @@
 	for(var/datum/wound/iter_wound as anything in wounds)
 		cached_bleed_rate += iter_wound.blood_flow
 
+	if(owner.body_position == LYING_DOWN)
+		cached_bleed_rate *= 0.75
+
+	if(grasped_by)
+		cached_bleed_rate *= 0.7
+
+	// Flat multiplier applied to all bleeding for pacing purposes
+	cached_bleed_rate *= 0.5
+
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?
 	if(cached_bleed_rate != old_bleed_rate)
 		update_part_wound_overlay()
 
 	return cached_bleed_rate
-
-/// Flat multiplier applied to bleed rate
-/// I did this rather than tweak existing bleed rates because
-/// 1. laziness
-/// 2. so blood wounds could take longer to decay without killing you faster
-#define TOTAL_BLEED_RATE_MOD 0.5
-
-/// Returns our bleed rate, taking into account laying down and grabbing the limb
-/obj/item/bodypart/proc/get_modified_bleed_rate()
-	var/bleed_rate = cached_bleed_rate * TOTAL_BLEED_RATE_MOD
-	if(owner.body_position == LYING_DOWN)
-		bleed_rate *= 0.75
-	if(grasped_by)
-		bleed_rate *= 0.7
-	return bleed_rate
-
-#undef TOTAL_BLEED_RATE_MOD
 
 // how much blood the limb needs to be losing per tick (not counting laying down/self grasping modifiers) to get the different bleed icons
 #define BLEED_OVERLAY_LOW 0.5
@@ -1403,7 +1384,7 @@
 			owner.update_wound_overlays()
 		return FALSE
 
-	var/bleed_rate = get_modified_bleed_rate()
+	var/bleed_rate = cached_bleed_rate
 	var/new_bleed_icon = null
 
 	switch(bleed_rate)
@@ -1596,10 +1577,10 @@
 	if(isnull(owner))
 		return
 	SEND_SIGNAL(owner, COMSIG_LIVING_UPDATING_SURGERY_STATE, old_state, surgery_state, changed_states)
-	if(HAS_SURGERY_STATE(surgery_state, ALL_SURGERY_FISH_STATES(body_zone)))
-		owner.AddComponent(/datum/component/fishing_spot, /datum/fish_source/surgery) // no-op if they already have one
-	else if(HAS_SURGERY_STATE(old_state, ALL_SURGERY_FISH_STATES(body_zone)))
-		qdel(owner.GetComponent(/datum/component/fishing_spot))
+	// if(HAS_SURGERY_STATE(surgery_state, ALL_SURGERY_FISH_STATES(body_zone)))
+	// 	owner.AddComponent(/datum/component/fishing_spot, /datum/fish_source/surgery) // no-op if they already have one
+	// else if(HAS_SURGERY_STATE(old_state, ALL_SURGERY_FISH_STATES(body_zone)))
+	// 	qdel(owner.GetComponent(/datum/component/fishing_spot))
 
 /obj/item/bodypart/vv_edit_var(vname, vval)
 	if(vname != NAMEOF(src, surgery_state))

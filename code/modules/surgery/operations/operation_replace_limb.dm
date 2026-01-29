@@ -61,7 +61,7 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_CHEST,
+		target_zone = list(limb.body_zone, BODY_ZONE_CHEST),
 		pain_message = "You feel a horrible pain in your chest and [limb.plaintext_zone]!",
 		pain_amount = SURGERY_PAIN_MEDIUM,
 	)
@@ -94,8 +94,8 @@
 	)
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		target_zone = list(limb.body_zone, BODY_ZONE_CHEST),
 		pain_message = "Your [limb.plaintext_zone] comes awash with synthetic sensation!",
-		mechanical = TRUE,
+		mechanical_surgery = TRUE,
 	)
 	log_combat(surgeon, patient, "augmented", addition = "by giving him new [tool]")

@@ -78,7 +78,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_EDIBLE)
 		AddComponent(/datum/component/edible,\
 			initial_reagents = food_reagents, \
-			foodtypes = foodtypes, \
+			foodtypes = foodtype_flags, \
 			volume = reagent_vol, \
 			tastes = food_tastes, \
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)), \

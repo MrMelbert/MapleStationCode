@@ -1,90 +1,72 @@
 /// Repair internal bleeding
-
-/datum/surgery/internal_bleeding
-	name = "Repair Internal Bleeding"
-	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_REQUIRES_REAL_LIMB | SURGERY_IGNORE_CLOTHES
-	targetable_wound = /datum/wound/bleed_internal
-	target_mobtypes = list(/mob/living/carbon)
-	possible_locs = list(
-		BODY_ZONE_R_ARM,
-		BODY_ZONE_L_ARM,
-		BODY_ZONE_R_LEG,
-		BODY_ZONE_L_LEG,
-		BODY_ZONE_CHEST,
-		BODY_ZONE_HEAD,
-	)
-	steps = list(
-		/datum/surgery_step/incise,
-		/datum/surgery_step/retract_skin,
-		/datum/surgery_step/clamp_bleeders,
-		/datum/surgery_step/repair_veins,
-		/datum/surgery_step/close,
-	)
-
-/datum/surgery_step/repair_veins
-	name = "repair arterial bleeding (hemostat/blood filter)"
+/datum/surgery_operation/limb/internal_bleeding
+	name = "repair internal bleeding"
+	desc = "Repair arterial damage which is causing internal bleeding in a limb."
+	rnd_desc = "A surgery that repairs internal bleeding in a limb caused by severe trauma / arterial damage."
+	time = 5 SECONDS
+	operation_flags = OPERATION_AFFECTS_MOOD | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_LOOPING
 	implements = list(
-		TOOL_HEMOSTAT = 100,
-		TOOL_BLOODFILTER = 100,
-		TOOL_WIRECUTTER = 40,
-		/obj/item/stack/sticky_tape/surgical = 30,
+		TOOL_HEMOSTAT = 1,
+		TOOL_BLOODFILTER = 1,
+		TOOL_WIRECUTTER = 2,
+		/obj/item/stack/sticky_tape/surgical = 5,
 		/obj/item/stack/cable_coil = 10,
 		/obj/item/stack/sticky_tape = 10,
 	)
-	preop_sound = 'sound/surgery/hemostat1.ogg'
-	success_sound = 'sound/surgery/organ2.ogg'
-	time = 6 SECONDS
-	repeatable = TRUE
+	all_surgery_states_required = SURGERY_SKIN_OPEN
 
-/datum/surgery_step/repair_veins/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	var/in_where = "[target]'s [parse_zone(target_zone)]"
+/datum/surgery_operation/limb/internal_bleeding/state_check(obj/item/bodypart/limb)
+	for(var/datum/wound/bleed_internal/wound in operating_on.wounds)
+		if(wound.severity >= WOUND_SEVERITY_TRIVIAL)
+			return TRUE
+	return FALSE
+
+/datum/surgery_operation/limb/internal_bleeding/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
 	display_results(
-		user,
-		target,
-		span_notice("You begin repair the arteries in [in_where]..."),
-		span_notice("[user] begins to repair the arteries in [in_where] with [tool]."),
-		span_notice("[user] begins to repair the arteries in [in_where]."),
+		surgeon,
+		limb.owner,
+		span_notice("You begin to repair the arterial damage within [limb.owner]'s [limb.plaintext_zone]..."),
+		span_notice("[surgeon] begins to repair the arterial damage within [limb.owner]'s [limb.plaintext_zone] with [tool]."),
+		span_notice("[surgeon] begins to repair the arterial damage within [limb.owner]'s [limb.plaintext_zone]."),
 	)
 	display_pain(
-		target = target,
-		target_zone = target_zone,
-		pain_message = "You feel a horrible stabbing pain in your [parse_zone(target_zone)]!",
+		target = limb.owner,
+		target_zone = limb.body_zone,
+		pain_message = "You feel a horrible stabbing pain in your [limb.plaintext_zone]!",
 		pain_amount = SURGERY_PAIN_LOW,
 	)
 
-/datum/surgery_step/repair_veins/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	var/in_where = "[target]'s [parse_zone(target_zone)]"
-	if((surgery.operated_wound?.severity - 1) <= WOUND_SEVERITY_TRIVIAL)
-		qdel(surgery.operated_wound)
+/datum/surgery_operation/limb/internal_bleeding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	var/datum/wound/bleed_internal/target_wound = locate() in limb.wounds
+	target_wound.severity--
+	if(target_wound.severity <= WOUND_SEVERITY_TRIVIAL)
+		qdel(target_wound)
 		display_results(
-			user,
-			target,
-			span_green("You've finished repairing all the arterial damage in [in_where]."),
-			span_green("[user] finished repairing all the arterial damage in [in_where] with [tool]!"),
-			span_green("[user] finished repairing all the arterial damage in [in_where]!"),
+			surgeon,
+			limb.owner,
+			span_green("You've finished repairing all the arterial damage within [limb.owner]'s [limb.plaintext_zone]."),
+			span_green("[surgeon] finished repairing all the arterial damage within [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
+			span_green("[surgeon] finished repairing all the arterial damage within [limb.owner]'s [limb.plaintext_zone]!"),
 		)
-		repeatable = FALSE
-		return ..()
+		return
 
-	surgery.operated_wound.severity--
 	display_results(
-		user,
-		target,
-		span_notice("You successfully repair some of the arteries in [in_where] with [tool]."),
-		span_notice("[user] successfully repairs some of the arteries in [in_where] with [tool]!"),
-		span_notice("[user] successfully repairs some of the arteries in [in_where]!"),
+		surgeon,
+		limb.owner,
+		span_notice("You successfully repair some of the arteries within [limb.owner]'s [limb.plaintext_zone] with [tool]."),
+		span_notice("[surgeon] successfully repairs some of the arteries within [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
+		span_notice("[surgeon] successfully repairs some of the arteries within [limb.owner]'s [limb.plaintext_zone]!"),
 	)
-	target.apply_damage(3, BRUTE, surgery.operated_bodypart, wound_bonus = CANT_WOUND, attacking_item = tool)
-	return ..()
+	limb.receive_damage(3, BRUTE, wound_bonus = CANT_WOUND, attacking_item = tool)
 
-/datum/surgery_step/repair_veins/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
-	var/in_where = "[target]'s [parse_zone(target_zone)]"
+/datum/surgery_operation/limb/internal_bleeding/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args, fail_prob = 0)
+	var/datum/wound/bleed_internal/target_wound = locate() in limb.wounds
+	target_wound?.severity++
 	display_results(
-		user,
-		target,
-		span_warning("You tear some of the arteries in [in_where]!"),
-		span_warning("[user] tears some of the arteries in [in_where] with [tool]!"),
-		span_warning("[user] tears some of the arteries in [in_where]!"),
+		surgeon,
+		limb.owner,
+		span_warning("You tear some of the arteries within [limb.owner]'s [limb.plaintext_zone]!"),
+		span_warning("[surgeon] tears some of the arteries within [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
+		span_warning("[surgeon] tears some of the arteries within [limb.owner]'s [limb.plaintext_zone]!"),
 	)
-	target.apply_damage(rand(4, 8), BRUTE, surgery.operated_bodypart, wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = tool)
-	return FALSE
+	limb.receive_damage(rand(4, 8), BRUTE, wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = tool)

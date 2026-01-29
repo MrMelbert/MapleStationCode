@@ -15,11 +15,11 @@
 
 // Disables spread infestation.
 /datum/action/changeling/spiders
-	dna_cost = -1
+	dna_cost = CHANGELING_POWER_UNOBTAINABLE
 
 // Disables transform sting.
 /datum/action/changeling/sting/transformation
-	dna_cost = -1
+	dna_cost = CHANGELING_POWER_UNOBTAINABLE
 
 /// Extension of attempt_absorb, for changeling cannot absorb their own spawn
 /datum/action/changeling/absorb_dna/can_sting(mob/living/carbon/user)
