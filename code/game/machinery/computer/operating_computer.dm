@@ -216,8 +216,9 @@
 	// NON-MODULE CHANGE
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
 	data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
-	data["patient"]["bloodVolumePercent"] = round((table.patient.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-	data["patient"]["heartRate"] = table.patient.get_bpm()
+	var/patient_bpm = table.patient.get_bpm()
+	data["patient"]["heartrate"] = patient_bpm
+	data["patient"]["heartratestate"] = patient_bpm >= 140 ? "bad" : (patient_bpm >= 120 ? "average" : (patient_bpm >= 60 ? "good" : (patient_bpm >= 40 ? "average" : "bad")))
 	// We can also show pain and stuff here if we want.
 
 	var/tank_exists = !isnull(table.attached_tank)

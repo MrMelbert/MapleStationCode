@@ -34,7 +34,6 @@
 		affected_locations = limb,
 		pain_message = "You can feel pressure as your [limb.plaintext_zone] is being opened wide!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
-		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
 /datum/surgery_operation/limb/prepare_cavity/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, tool, list/operation_args)
@@ -108,7 +107,6 @@
 		affected_locations = limb,
 		pain_message = "You can feel something being inserted into your [limb.plaintext_zone], it hurts like hell!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
-		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
 /datum/surgery_operation/limb/cavity_implant/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -187,7 +185,6 @@
 		affected_locations = limb,
 		pain_message = "You feel a serious pain in your [limb.plaintext_zone]!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
-		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
 /datum/surgery_operation/limb/undo_cavity_implant/on_success(obj/item/bodypart/chest/limb, mob/living/surgeon, obj/item/tool, list/operation_args)

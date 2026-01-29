@@ -60,7 +60,6 @@
 		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] pounds with unimaginable pain!", // Same message as other brain surgeries
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bionecrosis/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -77,7 +76,6 @@
 		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] goes totally numb for a moment, the pain is overwhelming!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	if(locate(/obj/item/organ/zombie_infection) in limb) // they got another one mid surgery? whatever
 		return

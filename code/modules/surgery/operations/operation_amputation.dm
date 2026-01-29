@@ -52,7 +52,6 @@
 		pain_message = "You feel a gruesome pain in your [limb.plaintext_zone]'s joint!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM, // loss of the limb also applies pain to the chest, so we can afford to make this a bit lower
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/amputate/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -70,7 +69,6 @@
 		pain_message = "You can no longer feel your [limb.plaintext_zone]!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID))
 		surgeon.add_mood_event("morbid_dissection_success", /datum/mood_event/morbid_dissection_success)

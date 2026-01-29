@@ -75,7 +75,6 @@
 		affected_locations = organ,
 		pain_message = "You feel a stabbing pain in your [parse_zone(organ.zone)]!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/lobectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -92,7 +91,6 @@
 		target = organ.owner,
 		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] hurts like hell, but breathing becomes slightly easier.",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/lobectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -111,7 +109,6 @@
 		affected_locations = organ,
 		pain_message = "You feel a sharp stab in your [parse_zone(organ.zone)]; the wind is knocked out of you and it hurts to catch your breath!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/lobectomy/mechanic
@@ -242,7 +239,6 @@
 		affected_locations = organ,
 		pain_message = "The pain in your [parse_zone(organ.zone)] is unbearable! You can barely take it anymore!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * 1.5 * SURGERY_PAIN_SEVERE,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -260,7 +256,6 @@
 		affected_locations = organ,
 		pain_message = "The pain in your [parse_zone(organ.zone)] throbs, but your heart feels better than ever!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.5 * SURGERY_PAIN_SEVERE,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -280,7 +275,6 @@
 		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] burns; you feel like you're going insane!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_SEVERE,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 		pain_type = BURN,
 	)
 
@@ -606,7 +600,6 @@
 		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] pounds with unimaginable pain!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/repair/brain/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -645,7 +638,6 @@
 		affected_locations = organ,
 		pain_message = "Your head throbs with horrible pain; thinking hurts!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 

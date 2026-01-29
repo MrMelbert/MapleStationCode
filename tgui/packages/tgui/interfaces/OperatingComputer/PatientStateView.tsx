@@ -2,9 +2,11 @@ import {
   AnimatedNumber,
   Blink,
   Button,
+  Dimmer,
   Icon,
   LabeledList,
   NoticeBox,
+  NumberInput,
   ProgressBar,
   Section,
   Stack,
@@ -56,6 +58,9 @@ export const PatientStateView = (props: PatientStateViewProps) => {
         <Stack.Item>
           <PatientStateMainStateView patient={patient} />
         </Stack.Item>
+        <Stack.Item>
+          <PatientStateAnesthesiaView />
+        </Stack.Item>
         <Stack.Item p={1}>
           <PatientStateSurgeryStateView
             patient={patient}
@@ -84,8 +89,16 @@ const PatientStateMainStateView = (props: PatientStateMainStateViewProps) => {
 
   return (
     <LabeledList>
-      <LabeledList.Item label="State" color={patient.statstate}>
-        {patient.stat}
+      <LabeledList.Item label="State">
+        {/* NON-MODULE CHANGE START */}
+        <Stack>
+          <Stack.Item color={patient.statstate}>{patient.stat}</Stack.Item>
+          <Stack.Divider />
+          <Stack.Item color={patient.heartratestate}>
+            {patient.heartrate} bpm
+          </Stack.Item>
+        </Stack>
+        {/* NON-MODULE CHANGE END */}
       </LabeledList.Item>
       <LabeledList.Item label="Blood Type">
         {patient.blood_type || 'Unable to determine blood type'}
@@ -349,6 +362,70 @@ const PatientStateNextOperationsView = (
             })
         )}
       </Stack>
+    </Section>
+  );
+};
+
+const PatientStateAnesthesiaView = () => {
+  const { act, data } = useBackend<OperatingComputerData>();
+  const { anesthesia } = data;
+  if (!anesthesia) return null;
+
+  const failsafe_enabled = anesthesia.failsafe !== -1;
+
+  return (
+    <Section title="Anesthesia">
+      {!anesthesia.has_tank && <Dimmer>No anesthesia tank attached.</Dimmer>}
+      <LabeledList>
+        <LabeledList.Item label={'Control'}>
+          <Button.Checkbox
+            // Open is FALSE if we have no tank, likewise for can_open_tank
+            disabled={!anesthesia.open && !anesthesia.can_open_tank}
+            content={anesthesia.open ? 'Close Tank' : 'Open Tank'}
+            color={anesthesia.open ? 'bad' : 'good'}
+            icon="fan"
+            onClick={() => act('toggle_anesthesia')}
+          />
+        </LabeledList.Item>
+        <LabeledList.Item label={'Safety'}>
+          <Stack fill align="center">
+            <Stack.Item>
+              <Button.Checkbox
+                checked={failsafe_enabled}
+                tooltip={
+                  failsafe_enabled
+                    ? 'Automatically closes the attached tank if a set amount of time has elapsed.'
+                    : ''
+                }
+                onClick={() =>
+                  failsafe_enabled
+                    ? act('disable_failsafe')
+                    : act('set_failsafe', { new_failsafe_time: 360 })
+                }
+              />
+            </Stack.Item>
+
+            {failsafe_enabled && (
+              <Stack.Item>
+                <NumberInput
+                  fluid
+                  animated
+                  unit="seconds"
+                  width="100px"
+                  minValue={5}
+                  maxValue={600}
+                  step={1}
+                  value={anesthesia.failsafe}
+                  disabled={!failsafe_enabled} // Just in case
+                  onChange={(value) =>
+                    act('set_failsafe', { new_failsafe_time: value })
+                  }
+                />
+              </Stack.Item>
+            )}
+          </Stack>
+        </LabeledList.Item>
+      </LabeledList>
     </Section>
   );
 };

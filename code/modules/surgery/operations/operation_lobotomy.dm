@@ -39,7 +39,6 @@
 		affected_locations = organ,
 		pain_message = "Your head pounds with unimaginable pain!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/lobotomy/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -56,7 +55,6 @@
 		affected_locations = organ,
 		pain_message = "Your head goes totally numb for a moment, the pain is overwhelming!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 	organ.cure_all_traumas(TRAUMA_RESILIENCE_LOBOTOMY)
@@ -88,7 +86,6 @@
 		affected_locations = organ,
 		pain_message = "The pain in your head only seems to get worse!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.apply_organ_damage(80)
 	switch(rand(1, 3))

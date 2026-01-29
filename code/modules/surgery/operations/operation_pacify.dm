@@ -34,7 +34,6 @@
 		affected_locations = organ,
 		pain_message = "Your head pounds with unimaginable pain!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/organ/pacify/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -51,7 +50,6 @@
 		affected_locations = organ,
 		pain_message = "Your head pounds... the concept of violence flashes in your head, and nearly makes you hurl!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma(/datum/brain_trauma/severe/pacifism, TRAUMA_RESILIENCE_LOBOTOMY)
 
@@ -69,7 +67,6 @@
 		affected_locations = organ,
 		pain_message = "Your head pounds, and it feels like it's getting worse!",
 		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 

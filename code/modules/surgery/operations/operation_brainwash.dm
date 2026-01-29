@@ -138,7 +138,12 @@
 		span_notice("[surgeon] begins to fix [organ.owner]'s brain."),
 		span_notice("[surgeon] begins to perform surgery on [organ.owner]'s brain."),
 	)
-	display_pain(organ.owner, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
+	display_pain(
+		target = organ.owner,
+		affected_locations = organ,
+		pain_message = "Your head pounds with unimaginable pain!", // Same message as other brain surgeries
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_SEVERE,
+	)
 
 /datum/surgery_operation/organ/brainwash/sleeper/on_brainwash(mob/living/carbon/brainwashed, mob/living/surgeon, obj/item/tool, list/operation_args)
 	. = ..()

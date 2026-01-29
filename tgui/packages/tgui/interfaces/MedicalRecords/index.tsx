@@ -11,7 +11,12 @@ export const MedicalRecords = (props) => {
   const { authenticated } = data;
 
   return (
-    <Window title="Medical Records" width={750} height={550}>
+    <Window
+      title="Medical Records"
+      width={750}
+      height={550}
+      theme="operating_computer" // NON-MODULE CHANGE
+    >
       <Window.Content>
         <Stack fill>
           {!authenticated ? <UnauthorizedView /> : <AuthView />}
@@ -32,7 +37,8 @@ const UnauthorizedView = (props) => {
           <Icon color="teal" name="staff-snake" size={15} />
         </Stack.Item>
         <Stack.Item align="center" grow>
-          <Box color="good" fontSize="18px" bold mt={5}>
+          {/* NON-MODULE CHANGE */}
+          <Box fontSize="18px" bold mt={8}>
             Nanotrasen HealthPRO
           </Box>
         </Stack.Item>

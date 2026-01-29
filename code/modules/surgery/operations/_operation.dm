@@ -967,7 +967,6 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	pain_amount = 0,
 	pain_type = BRUTE,
 	pain_overlay_severity = 1,
-	surgery_moodlet = /datum/mood_event/surgery,
 )
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
@@ -990,7 +989,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		target.pain_message(span_danger(pain_message))
 		return
 
-	// Only feels pain if we feels pain
+	// Only feels pain if we feels pain (this is where anesthetic typically exits)
 	if(!CAN_FEEL_PAIN(target))
 		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		target.pain_message(span_danger(pain_message))
@@ -1002,13 +1001,22 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	// Check for anesthetic for the rest
 	if(HAS_TRAIT(target, TRAIT_KNOCKEDOUT))
 		return
+
+	var/surgery_moodlet = /datum/mood_event/surgery
+	if(operation_flags & OPERATION_NOTABLE)
+		surgery_moodlet = /datum/mood_event/surgery/major
+	else if(!(operation_flags & OPERATION_AFFECTS_MOOD))
+		surgery_moodlet = /datum/mood_event/surgery/minor
 	if(surgery_moodlet)
 		target.add_mood_event("surgery", surgery_moodlet)
+
 	if(pain_overlay_severity > 0)
 		target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
+
 	if(pain_amount > 0)
 		// surgeries may jack up the pain amount if it's affecting multiple locations, so scale down shock accordingly
 		target.adjust_traumatic_shock(0.25 * pain_amount * (islist(affected_locations) ? (1 / length(affected_locations)) : 1))
+
 	target.pain_emote()
 	target.pain_message(span_userdanger(pain_message))
 
@@ -1017,7 +1025,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	PROTECTED_PROC(TRUE)
 	if(isbodypart(operating_input))
 		var/obj/item/bodypart/bodypart = operating_input
-		return bodypart.body_zones
+		return bodypart.body_zone
 	if(isorgan(operating_input))
 		var/obj/item/organ/organ = operating_input
 		return organ.zone

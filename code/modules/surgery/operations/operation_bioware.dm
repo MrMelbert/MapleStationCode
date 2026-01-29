@@ -64,7 +64,6 @@
 		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/vein_threading/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -81,7 +80,6 @@
 		target = limb.owner,
 		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You can feel your blood pumping through reinforced veins!",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/vein_threading/mechanic
@@ -112,7 +110,6 @@
 		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/muscled_veins/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -129,7 +126,6 @@
 		target = limb.owner,
 		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You can feel your heartbeat's powerful pulses ripple through your body!",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/muscled_veins/mechanic
@@ -160,7 +156,6 @@
 		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/nerve_splicing/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -178,7 +173,6 @@
 		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You regain feeling in your body; It feels like everything's happening around you in slow motion!",
 		pain_amount = -2 * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/nerve_splicing/mechanic
@@ -210,7 +204,6 @@
 		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/nerve_grounding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -228,7 +221,6 @@
 		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You regain feeling in your body! You feel energzed!",
 		pain_amount = -2 * SURGERY_PAIN_HIGH,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/nerve_grounding/mechanic
@@ -259,7 +251,6 @@
 		pain_amount = 4 * SURGERY_PAIN_MEDIUM,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/ligament_hook/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -276,7 +267,6 @@
 		target = limb.owner,
 		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs feel... strangely loose.",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/ligament_hook/mechanic
@@ -308,7 +298,6 @@
 		pain_amount = 4 * SURGERY_PAIN_MEDIUM,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/ligament_reinforcement/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -325,7 +314,6 @@
 		target = limb.owner,
 		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs feel more secure, but also more frail.",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/ligament_reinforcement/mechanic
@@ -355,7 +343,6 @@
 		affected_locations = limb,
 		pain_message = "Your head throbs with gruesome pain, it's nearly too much to handle!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -372,7 +359,6 @@
 		target = limb.owner,
 		affected_locations = limb,
 		pain_message = "Your brain feels stronger... more flexible!",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/cortex_folding/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool)
@@ -391,7 +377,6 @@
 		affected_locations = limb,
 		pain_message = "Your head throbs with excruciating pain!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	limb.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 	limb.owner.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
@@ -423,7 +408,6 @@
 		affected_locations = limb,
 		pain_message = "Your head throbs with gruesome pain, it's nearly too much to handle!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -440,7 +424,6 @@
 		target = limb.owner,
 		affected_locations = limb,
 		pain_message = "Your brain feels stronger... more resillient!",
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
 /datum/surgery_operation/limb/bioware/cortex_imprint/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool)
@@ -459,7 +442,6 @@
 		affected_locations = limb,
 		pain_message = "Your brain throbs with intense pain; thinking hurts!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
-		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	limb.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 	limb.owner.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)

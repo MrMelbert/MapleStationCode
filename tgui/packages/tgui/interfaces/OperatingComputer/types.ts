@@ -10,6 +10,8 @@ export type OperatingComputerData = {
   surgeries: OperationData[];
   techwebs: Techweb[];
   experiments: ExperimentData[];
+  // NON-MODULE CHANGE
+  anesthesia: AnesthesiaStatus | null;
 };
 
 export type PatientData = {
@@ -27,6 +29,10 @@ export type PatientData = {
   standard_blood_level: number;
   target_zone: BodyZone;
   surgery_state: string[];
+  // NON-MODULE CHANGE
+  brain: number;
+  heartrate: number;
+  heartratestate: 'good' | 'average' | 'bad';
 };
 
 export type OperationData = {
@@ -40,6 +46,14 @@ export type OperationData = {
   show_as_next: BooleanLike;
   // show operation in the full list
   show_in_list: BooleanLike;
+};
+
+// NON-MODULE CHANGE
+type AnesthesiaStatus = {
+  has_tank: BooleanLike;
+  open: BooleanLike;
+  failsafe: number;
+  can_open_tank: BooleanLike;
 };
 
 export type damageType = {

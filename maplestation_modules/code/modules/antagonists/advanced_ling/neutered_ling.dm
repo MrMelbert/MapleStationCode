@@ -28,7 +28,6 @@
 	time = 15 SECONDS
 	operation_flags = OPERATION_ALWAYS_FAILABLE | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_MORBID | OPERATION_LOCKED
 	implements = list(
-		TOOL_SCALPEL = 1.33,
 		TOOL_RETRACTOR = 1.33,
 		TOOL_HEMOSTAT = 1.5,
 		TOOL_SCREWDRIVER = 5.0,
@@ -40,7 +39,7 @@
 	var/obj/item/offhand = surgeon.get_inactive_held_item()
 	return !!offhand?.get_sharpness()
 
-/datum/surgery_operation/limb/state_check(obj/item/bodypart/limb)
+/datum/surgery_operation/limb/neuter_ling/state_check(obj/item/bodypart/limb)
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
 	if(limb.owner.stat < UNCONSCIOUS)

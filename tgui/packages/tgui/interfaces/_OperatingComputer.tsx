@@ -124,7 +124,7 @@ const PatientStateView = (props: {
   procedures: Procedure[] | null;
   anesthesia: AnesthesiaStatus | null;
 }) => {
-  const { act, data } = useBackend<Patient>();
+  const { act } = useBackend<Patient>();
   const { patient, procedures, anesthesia } = props;
 
   const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
