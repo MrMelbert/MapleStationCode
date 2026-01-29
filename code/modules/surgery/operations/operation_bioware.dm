@@ -48,7 +48,7 @@
 	desc = "Weave a patient's veins into a reinforced mesh, reducing blood loss from injuries."
 	status_effect_gained = /datum/status_effect/bioware/heart/threaded_veins
 
-/datum/surgery_operation/limb/bioware/vein_threading/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool)
+/datum/surgery_operation/limb/bioware/vein_threading/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
 	display_results(
 		surgeon,
 		limb.owner,
@@ -59,9 +59,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "Your entire body burns in agony!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -79,7 +79,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You can feel your blood pumping through reinforced veins!",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -107,9 +107,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "Your entire body burns in agony!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -127,7 +127,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You can feel your heartbeat's powerful pulses ripple through your body!",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -155,9 +155,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "Your entire body goes numb!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -175,9 +175,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You regain feeling in your body; It feels like everything's happening around you in slow motion!",
-		pain_amount = -0.5 * SURGERY_PAIN_HIGH,
+		pain_amount = -2 * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -205,9 +205,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "Your entire body goes numb!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = 4 * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -225,9 +225,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_ALL,
+		affected_locations = BODY_ZONES_ALL,
 		pain_message = "You regain feeling in your body! You feel energzed!",
-		pain_amount = -0.5 * SURGERY_PAIN_HIGH,
+		pain_amount = -2 * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -254,9 +254,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_LIMBS,
+		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs burn with severe pain!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = 4 * SURGERY_PAIN_MEDIUM,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -274,7 +274,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_LIMBS,
+		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs feel... strangely loose.",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -303,9 +303,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_LIMBS,
+		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs burn with severe pain!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = 4 * SURGERY_PAIN_MEDIUM,
 		pain_type = BURN,
 		pain_overlay_severity = 2,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -323,7 +323,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONES_LIMBS,
+		affected_locations = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs feel more secure, but also more frail.",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -352,7 +352,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your head throbs with gruesome pain, it's nearly too much to handle!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -370,7 +370,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your brain feels stronger... more flexible!",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -388,7 +388,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your head throbs with excruciating pain!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -420,7 +420,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your head throbs with gruesome pain, it's nearly too much to handle!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -438,7 +438,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your brain feels stronger... more resillient!",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -456,7 +456,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_HEAD,
+		affected_locations = limb,
 		pain_message = "Your brain throbs with intense pain; thinking hurts!",
 		pain_amount = SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,

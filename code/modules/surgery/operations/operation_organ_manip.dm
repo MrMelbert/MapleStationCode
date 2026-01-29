@@ -161,9 +161,9 @@
 			)
 			display_pain(
 				target = limb.owner,
-				target_zone = limb.body_zone,
+				affected_locations = limb,
 				pain_message = "You feel a tugging sensation in your [limb.plaintext_zone]!",
-				pain_amount = SURGERY_PAIN_MEDIUM,
+				pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 			)
 		if("insert")
 			play_operation_sound(limb, surgeon, tool, insert_preop_sound)
@@ -176,7 +176,7 @@
 			)
 			display_pain(
 				target = limb.owner,
-				target_zone = limb.body_zone,
+				affected_locations = limb,
 				pain_message = "You can feel something being placed in your [limb.plaintext_zone]!",
 				pain_amount = SURGERY_PAIN_TRIVIAL,
 			)
@@ -185,10 +185,10 @@
 	switch(operation_args[OPERATION_ACTION])
 		if("remove")
 			play_operation_sound(limb, surgeon, tool, remove_success_sound)
-			on_success_remove_organ(limb, surgeon, operation_args[OPERATION_REMOVED_ORGAN], tool)
+			on_success_remove_organ(limb, surgeon, operation_args[OPERATION_REMOVED_ORGAN], tool, operation_args)
 		if("insert")
 			play_operation_sound(limb, surgeon, tool, insert_success_sound)
-			on_success_insert_organ(limb, surgeon, tool)
+			on_success_insert_organ(limb, surgeon, tool, operation_args)
 	if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID))
 		surgeon.add_mood_event("morbid_abominable_surgery_success", /datum/mood_event/morbid_abominable_surgery_success)
 
@@ -202,9 +202,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] throbs with pain, you can't feel your [organ.name] anymore!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = get_tool_quality(tool) * SURGERY_PAIN_MEDIUM,
 	)
 	log_combat(surgeon, limb.owner, "surgically removed [organ.name] from")
 	organ.Remove(limb.owner)
@@ -225,7 +225,7 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] throbs with pain as your new [organ.name] comes to life!",
 		pain_amount = SURGERY_PAIN_MEDIUM,
 	)

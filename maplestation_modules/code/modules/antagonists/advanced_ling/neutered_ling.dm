@@ -21,12 +21,12 @@
 /datum/surgery_operation/limb/neuter_ling
 	name = "neuter changeling"
 	desc = "Attempt to neuter a changeling's headslug."
-	rnd_name = "Gymnotripsy (Neuter Changeling)"
+	rnd_name = "Mutatiotripsy (Neuter Changeling)"
 	rnd_desc = "An experimental surgery that attempts to neuter the headslug of a changeling by operating within their chest cavity. \
 		Successful surgery will remove the changeling's abilities, but failed surgery will only enrage it further. \
 		If the target is not a changeling, this surgery will cause massive internal organ damage."
 	time = 15 SECONDS
-	operation_flags = OPERATION_ALWAYS_FAILABLE | OPERATION_AFFECTS_MOOD | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_MORBID | OPERATION_LOCKED
+	operation_flags = OPERATION_ALWAYS_FAILABLE | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_MORBID | OPERATION_LOCKED
 	implements = list(
 		TOOL_SCALPEL = 1.33,
 		TOOL_RETRACTOR = 1.33,

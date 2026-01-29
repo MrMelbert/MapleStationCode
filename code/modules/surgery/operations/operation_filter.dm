@@ -29,7 +29,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel a throbbing pain in your chest!",
 		pain_amount = SURGERY_PAIN_LOW,
 	)

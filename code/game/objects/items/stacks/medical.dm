@@ -502,8 +502,6 @@
 			span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
-		if(heal_end_sound)
-			playsound(patient, heal_end_sound, 75, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 	if(limb.cached_bleed_rate)
 		add_mob_blood(patient)

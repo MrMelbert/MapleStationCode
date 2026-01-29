@@ -34,9 +34,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a horrible stabbing pain in your [limb.plaintext_zone]!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/limb/repair_puncture/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -121,9 +121,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a burning sensation in your [limb.plaintext_zone]!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 		pain_type = BURN,
 	)
 

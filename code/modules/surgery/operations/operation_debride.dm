@@ -62,9 +62,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "The infection in your [limb.plaintext_zone] stings like hell! It feels like you're being stabbed!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 		pain_type = BURN,
 	)
 

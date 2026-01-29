@@ -33,9 +33,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] aches with pain!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_operation/limb/repair_hairline/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -85,9 +85,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "The aching pain in your [limb.plaintext_zone] is overwhelming!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 	)
 
 /datum/surgery_operation/limb/reset_compound/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -137,9 +137,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "The aching pain in your [limb.plaintext_zone] is overwhelming!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 	)
 
 /datum/surgery_operation/limb/repair_compound/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -187,9 +187,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your brain feels like it's getting stabbed by little shards of glass!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/limb/prepare_cranium_repair/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
@@ -232,9 +232,9 @@
 
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You can feel pieces of your skull rubbing against your brain!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_operation/limb/repair_cranium/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)

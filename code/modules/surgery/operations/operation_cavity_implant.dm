@@ -31,9 +31,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You can feel pressure as your [limb.plaintext_zone] is being opened wide!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
@@ -105,9 +105,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You can feel something being inserted into your [limb.plaintext_zone], it hurts like hell!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
@@ -184,9 +184,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a serious pain in your [limb.plaintext_zone]!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		surgery_moodlet = /datum/mood_event/surgery,
 	)
 
@@ -214,8 +214,8 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You can feel [implant.name] being pulled out of you!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 	surgeon.put_in_hands(implant)

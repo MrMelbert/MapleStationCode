@@ -57,9 +57,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] pounds with unimaginable pain!", // Same message as other brain surgeries
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -74,9 +74,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] goes totally numb for a moment, the pain is overwhelming!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	if(locate(/obj/item/organ/zombie_infection) in limb) // they got another one mid surgery? whatever

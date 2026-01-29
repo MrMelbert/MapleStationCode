@@ -31,9 +31,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head pounds with unimaginable pain!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -48,9 +48,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head pounds... the concept of violence flashes in your head, and nearly makes you hurl!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma(/datum/brain_trauma/severe/pacifism, TRAUMA_RESILIENCE_LOBOTOMY)
@@ -66,9 +66,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head pounds, and it feels like it's getting worse!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)

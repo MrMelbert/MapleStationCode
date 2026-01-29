@@ -39,9 +39,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head pounds with unimaginable pain!", // Same message as other brain surgeries
-		pain_amount = SURGERY_PAIN_SEVERE,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_SEVERE,
 	)
 
 /datum/surgery_operation/organ/brainwash/on_success(obj/item/organ/brain/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -81,9 +81,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head throbs with horrible pain!",
-		pain_amount = SURGERY_PAIN_SEVERE,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_SEVERE,
 	)
 	organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 40)
 

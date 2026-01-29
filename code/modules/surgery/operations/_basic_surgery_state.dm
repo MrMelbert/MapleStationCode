@@ -3,7 +3,7 @@
 	id = "surgery_state"
 
 	alert_type = null
-	tick_interval = STATUS_EFFECT_NO_TICK
+	tick_interval = -1
 	status_type = STATUS_EFFECT_REFRESH
 
 	var/surgery_state = NONE

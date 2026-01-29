@@ -36,9 +36,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head pounds with unimaginable pain!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -53,9 +53,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head goes totally numb for a moment, the pain is overwhelming!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -85,9 +85,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your head only seems to get worse!",
-		pain_amount = SURGERY_PAIN_CRITICAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_CRITICAL,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.apply_organ_damage(80)

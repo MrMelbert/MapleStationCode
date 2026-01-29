@@ -4,7 +4,7 @@
 	desc = "Repair arterial damage which is causing internal bleeding in a limb."
 	rnd_desc = "A surgery that repairs internal bleeding in a limb caused by severe trauma / arterial damage."
 	time = 5 SECONDS
-	operation_flags = OPERATION_AFFECTS_MOOD | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_LOOPING
+	operation_flags = OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_LOOPING
 	implements = list(
 		TOOL_HEMOSTAT = 1,
 		TOOL_BLOODFILTER = 1,
@@ -31,9 +31,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a horrible stabbing pain in your [limb.plaintext_zone]!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_operation/limb/internal_bleeding/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)

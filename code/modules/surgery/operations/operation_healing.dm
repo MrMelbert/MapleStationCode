@@ -127,9 +127,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "Your [woundtype] sting like hell!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 		pain_type = burn_heal ? BURN : BRUTE,
 	)
 

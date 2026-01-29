@@ -72,9 +72,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You feel a stabbing pain in your [parse_zone(organ.zone)]!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -90,7 +90,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] hurts like hell, but breathing becomes slightly easier.",
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
@@ -108,9 +108,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You feel a sharp stab in your [parse_zone(organ.zone)]; the wind is knocked out of you and it hurts to catch your breath!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -158,9 +158,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your abdomen burns in horrific stabbing pain!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/organ/repair/hepatectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -175,9 +175,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your abdomen receeds slightly.",
-		pain_amount = -1 * SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -1 * SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_operation/organ/repair/hepatectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -192,9 +192,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your abdomen intensifies!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 	)
 
 /datum/surgery_operation/organ/repair/hepatectomy/mechanic
@@ -239,9 +239,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your [parse_zone(organ.zone)] is unbearable! You can barely take it anymore!",
-		pain_amount = 1.5 * SURGERY_PAIN_SEVERE,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * 1.5 * SURGERY_PAIN_SEVERE,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -257,9 +257,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your [parse_zone(organ.zone)] throbs, but your heart feels better than ever!",
-		pain_amount = -0.5 * SURGERY_PAIN_SEVERE,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.5 * SURGERY_PAIN_SEVERE,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -277,9 +277,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] burns; you feel like you're going insane!",
-		pain_amount = SURGERY_PAIN_SEVERE,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_SEVERE,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 		pain_type = BURN,
 	)
@@ -336,9 +336,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You feel a horrible stab in your gut!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/organ/repair/gastrectomy/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -353,9 +353,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your gut recedes slightly!",
-		pain_amount = -0.5 * SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.5 * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/organ/repair/gastrectomy/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -370,9 +370,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your gut intensifies!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 	)
 
 /datum/surgery_operation/organ/repair/gastrectomy/mechanic
@@ -427,9 +427,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You feel a dizzying pain in your [parse_zone(organ.zone)]!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 
 /datum/surgery_operation/organ/repair/ears/on_success(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -446,9 +446,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] swims, but it seems like you can feel your hearing coming back!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 
 /datum/surgery_operation/organ/repair/ears/on_failure(obj/item/organ/ears/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -464,9 +464,9 @@
 		// NON-MODULE CHANGE
 		display_pain(
 			target = organ.owner,
-			target_zone = organ.zone,
+			affected_locations = organ,
 			pain_message = "You feel a visceral stabbing pain right through your [parse_zone(organ.zone)], into your brain!",
-			pain_amount = SURGERY_PAIN_MEDIUM,
+			pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		)
 		organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70)
 	else
@@ -517,9 +517,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You feel a stabbing pain in your eyes!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 
 /datum/surgery_operation/organ/repair/eyes/on_success(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -536,9 +536,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your vision blurs, but it seems like you can see a little better now!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 
 /datum/surgery_operation/organ/repair/eyes/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -554,9 +554,9 @@
 		// NON-MODULE CHANGE
 		display_pain(
 			target = organ.owner,
-			target_zone = organ.zone,
+			affected_locations = organ,
 			pain_message = "You feel a visceral stabbing pain right through your [parse_zone(organ.zone)], into your brain!",
-			pain_amount = SURGERY_PAIN_MEDIUM,
+			pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		)
 		organ.owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70)
 
@@ -603,9 +603,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your [parse_zone(organ.zone)] pounds with unimaginable pain!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 
@@ -621,9 +621,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "The pain in your head recedes, thinking becomes a bit easier!",
-		pain_amount = -0.33 * SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.33 * SURGERY_PAIN_HIGH,
 	)
 	organ.owner.mind?.remove_antag_datum(/datum/antagonist/brainwashed)
 	organ.cure_all_traumas(TRAUMA_RESILIENCE_SURGERY)
@@ -642,9 +642,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your head throbs with horrible pain; thinking hurts!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 		surgery_moodlet = /datum/mood_event/surgery/major,
 	)
 	organ.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)

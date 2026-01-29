@@ -16,7 +16,7 @@
 	if(isitem(hitting_us))
 		var/obj/item/hit_item = hitting_us
 		base_dam += (5 * max(0, hit_item.w_class - 2))
-		base_dam *= as_item.get_demolition_modifier(src)
+		base_dam *= hit_item.get_demolition_modifier(src)
 
 	// no armor penetration
 	take_damage(base_dam, BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)

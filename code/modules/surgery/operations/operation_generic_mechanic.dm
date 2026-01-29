@@ -37,9 +37,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel your [limb.plaintext_zone] grow numb as the shell is unscrewed.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/mechanical_incision/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -75,9 +74,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "The last faint pricks of tactile sensation fade from your [limb.plaintext_zone] as the hatch is opened.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/mechanical_open/on_success(obj/item/bodypart/limb)
@@ -127,9 +125,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel the faint pricks of sensation return as your [limb.plaintext_zone]'s shell is screwed in.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/mechanical_close/on_success(obj/item/bodypart/limb)
@@ -166,9 +163,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You can feel a faint buzz in your [limb.plaintext_zone] as the electronics reboot.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/prepare_electronics/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -204,9 +200,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a jostle in your [limb.plaintext_zone] as the bolts begin to loosen.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/mechanic_unwrench/on_success(obj/item/bodypart/limb)
@@ -247,9 +242,8 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a jostle in your [limb.plaintext_zone] as the bolts begin to tighten.",
-		mechanical_surgery = TRUE,
 	)
 
 /datum/surgery_operation/limb/mechanic_wrench/on_success(obj/item/bodypart/limb)

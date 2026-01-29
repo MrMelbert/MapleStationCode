@@ -43,9 +43,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "Your wings sting like hell!",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 		pain_type = BURN,
 	)
 
@@ -60,7 +60,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = organ.zone,
+		affected_locations = organ,
 		pain_message = "You can feel your wings again!",
 	)
 	// heal the wings in question

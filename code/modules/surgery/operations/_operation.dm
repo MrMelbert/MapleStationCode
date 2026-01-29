@@ -445,16 +445,16 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	/// Some subtypes won't have this set as they provide their own options
 	VAR_PRIVATE/datum/radial_menu_choice/main_option
 
-	/// Which mood event to give the patient when surgery is starting while they're conscious.
-	/// This should be permanent/not have a timer until the surgery either succeeds or fails, as those states will immediately replace it.
-	/// Mostly just flavor text.
-	var/datum/mood_event/surgery/surgery_started_mood_event = /datum/mood_event/surgery
-	/// Which mood event to give the conscious patient when surgery succeeds.
-	/// Lasts far shorter than if it failed.
-	var/datum/mood_event/surgery/surgery_success_mood_event = /datum/mood_event/surgery/success
-	/// Which mood event to give the consious patient when surgery fails.
-	/// Lasts muuuuuch longer.
-	var/datum/mood_event/surgery/surgery_failure_mood_event = /datum/mood_event/surgery/failure
+	// /// Which mood event to give the patient when surgery is starting while they're conscious.
+	// /// This should be permanent/not have a timer until the surgery either succeeds or fails, as those states will immediately replace it.
+	// /// Mostly just flavor text.
+	// var/datum/mood_event/surgery/surgery_started_mood_event = /datum/mood_event/surgery
+	// /// Which mood event to give the conscious patient when surgery succeeds.
+	// /// Lasts far shorter than if it failed.
+	// var/datum/mood_event/surgery/surgery_success_mood_event = /datum/mood_event/surgery/success
+	// /// Which mood event to give the consious patient when surgery fails.
+	// /// Lasts muuuuuch longer.
+	// var/datum/mood_event/surgery/surgery_failure_mood_event = /datum/mood_event/surgery/failure
 
 /**
  * Checks to see if this operation can be performed
@@ -720,18 +720,21 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  */
 /datum/surgery_operation/proc/get_time_modifiers(atom/movable/operating_on, mob/living/surgeon, tool)
 	PROTECTED_PROC(TRUE)
-	var/total_mod = 1.0
-	total_mod *= get_tool_quality(tool) || 1.0
+	// NON-MODULE CHANGE
 	// Ignore alllll the penalties (but also all the bonuses)
-	if(!HAS_TRAIT(surgeon, TRAIT_IGNORE_SURGERY_MODIFIERS))
-		var/mob/living/patient = get_patient(operating_on)
-		total_mod *= get_location_modifier(get_turf(patient))
-		total_mod *= get_morbid_modifier(surgeon, tool)
-		total_mod *= get_mob_surgery_speed_mod(patient)
-		// Using TRAIT_SELF_SURGERY on a surgery which doesn't normally allow self surgery imparts a penalty
-		if(patient == surgeon && HAS_TRAIT(surgeon, TRAIT_SELF_SURGERY) && !(operation_flags & OPERATION_SELF_OPERABLE))
-			total_mod *= 1.5
-	return round(total_mod, 0.01)
+	if(HAS_TRAIT(surgeon, TRAIT_IGNORE_SURGERY_MODIFIERS))
+		return 1.0
+
+	var/total_mod = 1.0
+	var/mob/living/patient = get_patient(operating_on)
+	total_mod *= get_location_modifier(get_turf(patient))
+	total_mod *= get_morbid_modifier(surgeon, tool)
+	total_mod *= get_mob_surgery_speed_mod(patient)
+	// Using TRAIT_SELF_SURGERY on a surgery which doesn't normally allow self surgery imparts a penalty
+	if(patient == surgeon && HAS_TRAIT(surgeon, TRAIT_SELF_SURGERY) && !(operation_flags & OPERATION_SELF_OPERABLE))
+		total_mod *= 1.5
+	return total_mod
+	// NON-MODULE CHANGE END
 
 /// Returns a time modifier for morbid operations
 /datum/surgery_operation/proc/get_morbid_modifier(mob/living/surgeon, obj/item/tool)
@@ -817,11 +820,14 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	var/was_sleeping = (patient.stat != DEAD && HAS_TRAIT(patient, TRAIT_KNOCKEDOUT))
 	var/result = NONE
 
-	update_surgery_mood(patient, SURGERY_STATE_STARTED)
+	// update_surgery_mood(patient, SURGERY_STATE_STARTED)
 	SEND_SIGNAL(patient, COMSIG_LIVING_SURGERY_STARTED, src, operating_on, tool)
 
 	do
-		operation_args[OPERATION_SPEED] = get_time_modifiers(operating_on, surgeon, tool)
+		// NON-MODULE CHANGE
+		var/tool_quality = get_tool_quality(tool)
+		operation_args[OPERATION_SPEED] = round(get_time_modifiers(operating_on, surgeon, tool) * tool_quality, 0.01)
+		operation_args[OPERATION_TOOL_QUALITY] = tool_quality
 
 		if(!do_after(
 			user = surgeon,
@@ -833,7 +839,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 			interaction_key = HAS_TRAIT(surgeon, TRAIT_HIPPOCRATIC_OATH) ? patient : DOAFTER_SOURCE_SURGERY,
 		))
 			result |= ITEM_INTERACT_BLOCKING
-			update_surgery_mood(patient, SURGERY_STATE_FAILURE)
+			// update_surgery_mood(patient, SURGERY_STATE_FAILURE)
 			break
 
 		if(ishuman(surgeon))
@@ -862,11 +868,11 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		if(operation_args[OPERATION_FORCE_FAIL] || prob(clamp(GET_FAILURE_CHANCE(time, operation_args[OPERATION_SPEED]), 0, 99)))
 			failure(operating_on, surgeon, tool, operation_args)
 			result |= ITEM_INTERACT_FAILURE
-			update_surgery_mood(patient, SURGERY_STATE_FAILURE)
+			// update_surgery_mood(patient, SURGERY_STATE_FAILURE)
 		else
 			success(operating_on, surgeon, tool, operation_args)
 			result |= ITEM_INTERACT_SUCCESS
-			update_surgery_mood(patient, SURGERY_STATE_SUCCESS)
+			// update_surgery_mood(patient, SURGERY_STATE_SUCCESS)
 
 		if(isstack(tool))
 			var/obj/item/stack/tool_stack = tool
@@ -942,79 +948,87 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	)
 
 // NON-MODULE CHANGE
-/// Display pain message to the target based on their traits and condition
+///
+/**
+ * Display pain message to the target based on their traits and condition
+ *
+ * * target - The mob feeling the pain
+ * * affected_locations - Either a body zone, bodypart, or organ - or a list of any of those - indicating what locations are affected
+ * * pain_message - The message to display to the target
+ * * pain_amount - The amount of pain to cause
+ * * pain_type - The type of pain to cause (BRUTE, BURN, etc)
+ * * pain_overlay_severity - The severity of the pain overlay to display
+ * * surgery_moodlet - The moodlet to apply to the target
+ */
 /datum/surgery_operation/proc/display_pain(
 	mob/living/target,
-	target_zone,
+	affected_locations,
 	pain_message,
 	pain_amount = 0,
 	pain_type = BRUTE,
 	pain_overlay_severity = 1,
-	mechanical_surgery = FALSE,
-	surgery_moodlet,
+	surgery_moodlet = /datum/mood_event/surgery,
 )
 	SHOULD_NOT_OVERRIDE(TRUE)
 	PROTECTED_PROC(TRUE)
 
-	if(!pain_message)
+	if(!pain_message || !affected_locations)
 		return
 
-	// Determine how drunk our patient is
-	var/drunken_patient = target.get_drunk_amount()
-	// Create a probability to ignore the pain based on drunkenness level
-	var/drunken_ignorance_probability = clamp(drunken_patient, 0, 90)
-
-	if(target.stat >= UNCONSCIOUS || HAS_TRAIT(target, TRAIT_KNOCKEDOUT))
+	// Not actually dealing pain - either just a feedback message or restoring pain
+	if(pain_amount <= 0)
+		if(pain_amount < 0)
+			target.heal_pain(pain_amount, operating_input_to_zones(affected_locations))
+		if(!HAS_TRAIT(target, TRAIT_KNOCKEDOUT))
+			if(pain_amount == 0 && pain_overlay_severity > 0)
+				target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
+			target.pain_message(span_danger(pain_message))
 		return
-	if(HAS_TRAIT(target, TRAIT_ANALGESIA) || drunken_patient && prob(drunken_ignorance_probability))
-		to_chat(target, span_notice("You feel a dull, numb sensation as your body is surgically operated on."))
+
+	// Mechanical = only give a feedback message
+	if(operation_flags & OPERATION_MECHANIC)
+		target.pain_message(span_danger(pain_message))
 		return
-	to_chat(target, span_userdanger(pain_message))
-	if(prob(30) && !mechanical_surgery)
-		target.emote("scream")
 
-// /datum/surgery_step/proc/display_pain(
-// 	mob/living/carbon/target,
-// 	pain_message,
-// 	mechanical_surgery = FALSE,
-// 	target_zone = BODY_ZONE_CHEST, // can be a list of zones
-// 	pain_amount = 0,
-// 	pain_type = BRUTE,
-// 	surgery_moodlet = /datum/mood_event/surgery,
-// 	pain_overlay_severity = pain_amount >= 20 ? 2 : 1,
-// )
-// 	ASSERT(!isnull(target))
-// 	ASSERT(istext(pain_message))
-// 	// Not actually causing pain, just feedback
-// 	if(pain_amount <= 0)
-// 		target.cause_pain(target_zone, pain_amount)
-// 		target.pain_message(span_danger(pain_message))
-// 		return
-// 	// Only feels pain if we feels pain
-// 	if(!CAN_FEEL_PAIN(target))
-// 		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
-// 		target.pain_message(span_danger(pain_message))
-// 		return
-// 	// No pain from mechanics but still show the message (usually)
-// 	if(mechanical_surgery)
-// 		target.pain_message(span_danger(pain_message))
-// 		return
+	// Only feels pain if we feels pain
+	if(!CAN_FEEL_PAIN(target))
+		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
+		target.pain_message(span_danger(pain_message))
+		return
 
-// 	if(implement_type && (implements[implement_type] > 0))
-// 		pain_amount = round(pain_amount * 1 / (sqrt(implements[implement_type]) * 0.1), 0.1)
+	// Actual pain inflicted
+	if(pain_amount > 0)
+		target.cause_pain(operating_input_to_zones(affected_locations), pain_amount, pain_type)
+	// Check for anesthetic for the rest
+	if(HAS_TRAIT(target, TRAIT_KNOCKEDOUT))
+		return
+	if(surgery_moodlet)
+		target.add_mood_event("surgery", surgery_moodlet)
+	if(pain_overlay_severity > 0)
+		target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
+	if(pain_amount > 0)
+		// surgeries may jack up the pain amount if it's affecting multiple locations, so scale down shock accordingly
+		target.adjust_traumatic_shock(0.25 * pain_amount * (islist(affected_locations) ? (1 / length(affected_locations)) : 1))
+	target.pain_emote()
+	target.pain_message(span_userdanger(pain_message))
 
-// 	target.cause_pain(target_zone, pain_amount, pain_type)
-// 	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
-// 		return
-// 	// Replace this check with localized anesthesia in the future
-// 	var/obj/item/bodypart/checked_bodypart = target.get_bodypart(target_zone)
-// 	if(checked_bodypart && checked_bodypart.bodypart_pain_modifier * target.pain_controller.pain_modifier < 0.5)
-// 		return
-// 	target.add_mood_event("surgery", surgery_moodlet)
-// 	target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
-// 	target.adjust_traumatic_shock(pain_amount * 0.33 * target.pain_controller.pain_modifier)
-// 	target.pain_emote()
-// 	target.pain_message(span_userdanger(pain_message))
+/// Checks if the input is a body zone, bodypart, organ, text, or list and converts it to a list of body zones
+/datum/surgery_operation/proc/operating_input_to_zones(operating_input)
+	PROTECTED_PROC(TRUE)
+	if(isbodypart(operating_input))
+		var/obj/item/bodypart/bodypart = operating_input
+		return bodypart.body_zones
+	if(isorgan(operating_input))
+		var/obj/item/organ/organ = operating_input
+		return organ.zone
+	if(istext(operating_input))
+		return operating_input
+	if(islist(operating_input))
+		var/list/zones = list()
+		for(var/part in operating_input)
+			zones += operating_input_to_zones(part)
+		return zones
+	return null
 
 /// Plays a sound for the operation based on the tool used
 /datum/surgery_operation/proc/play_operation_sound(atom/movable/operating_on, mob/living/surgeon, tool, sound_or_sound_list)
@@ -1059,31 +1073,32 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 	return operating_computer
 
-/// Updates a patient's mood based on the surgery state and their traits
-/datum/surgery_operation/proc/update_surgery_mood(mob/living/patient, surgery_state)
-	PROTECTED_PROC(TRUE)
-	if(!(operation_flags & OPERATION_AFFECTS_MOOD))
-		return
+// NON-MODULE CHANGE
+// /// Updates a patient's mood based on the surgery state and their traits
+// /datum/surgery_operation/proc/update_surgery_mood(mob/living/patient, surgery_state)
+// 	PROTECTED_PROC(TRUE)
+// 	if(!(operation_flags & OPERATION_AFFECTS_MOOD))
+// 		return
 
-	// Create a probability to ignore the pain based on drunkenness level
-	var/drunk_ignore_prob = clamp(patient.get_drunk_amount(), 0, 90)
+// 	// Create a probability to ignore the pain based on drunkenness level
+// 	var/drunk_ignore_prob = clamp(patient.get_drunk_amount(), 0, 90)
 
-	if(HAS_TRAIT(patient, TRAIT_ANALGESIA) || prob(drunk_ignore_prob))
-		patient.clear_mood_event(SURGERY_MOOD_CATEGORY) //incase they gained the trait mid-surgery (or became drunk). has the added side effect that if someone has a bad surgical memory/mood and gets drunk & goes back to surgery, they'll forget they hated it, which is kinda funny imo.
-		return
-	if(patient.stat >= UNCONSCIOUS)
-		var/datum/mood_event/surgery/target_mood_event = patient.mob_mood?.mood_events[SURGERY_MOOD_CATEGORY]
-		if(!target_mood_event || target_mood_event.surgery_completed) //don't give sleeping mobs trauma. that said, if they fell asleep mid-surgery after already getting the bad mood, lets make sure they wake up to a (hopefully) happy memory.
-			return
-	switch(surgery_state)
-		if(SURGERY_STATE_STARTED)
-			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_started_mood_event)
-		if(SURGERY_STATE_SUCCESS)
-			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_success_mood_event)
-		if(SURGERY_STATE_FAILURE)
-			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_failure_mood_event)
-		else
-			CRASH("passed invalid surgery_state, \"[surgery_state]\".")
+// 	if(!CAN_FEEL_PAIN(patient) || prob(drunk_ignore_prob))
+// 		patient.clear_mood_event(SURGERY_MOOD_CATEGORY) //incase they gained the trait mid-surgery (or became drunk). has the added side effect that if someone has a bad surgical memory/mood and gets drunk & goes back to surgery, they'll forget they hated it, which is kinda funny imo.
+// 		return
+// 	if(patient.stat >= UNCONSCIOUS)
+// 		var/datum/mood_event/surgery/target_mood_event = patient.mob_mood?.mood_events[SURGERY_MOOD_CATEGORY]
+// 		if(!target_mood_event || target_mood_event.surgery_completed) //don't give sleeping mobs trauma. that said, if they fell asleep mid-surgery after already getting the bad mood, lets make sure they wake up to a (hopefully) happy memory.
+// 			return
+// 	switch(surgery_state)
+// 		if(SURGERY_STATE_STARTED)
+// 			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_started_mood_event)
+// 		if(SURGERY_STATE_SUCCESS)
+// 			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_success_mood_event)
+// 		if(SURGERY_STATE_FAILURE)
+// 			patient.add_mood_event(SURGERY_MOOD_CATEGORY, surgery_failure_mood_event)
+// 		else
+// 			CRASH("passed invalid surgery_state, \"[surgery_state]\".")
 
 /**
  * Called when the operation initiates

@@ -8,7 +8,7 @@
 	bonus_activate_text = null
 	bonus_deactivate_text = null
 
-/datum/status_effect/organ_set_bonus/fly/enable_bonus()
+/datum/status_effect/organ_set_bonus/fly/enable_bonus(obj/item/organ/inserted_organ)
 	. = ..()
 	if(!. || !ishuman(owner))
 		return

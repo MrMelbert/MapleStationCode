@@ -538,7 +538,7 @@
 			span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
 		return
 	// NON-MODULE CHANGE END
-return ..()
+	return ..()
 
 /obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
 	SHOULD_CALL_PARENT(TRUE)

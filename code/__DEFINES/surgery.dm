@@ -154,6 +154,8 @@ DEFINE_BITFIELD(operation_flags, list(
 // Operation argument indexes
 /// Total speed/failure modifier applied to the operation
 #define OPERATION_SPEED "speed_modifier"
+/// Quality of the tool being used for the operation
+#define OPERATION_TOOL_QUALITY "tool_quality"
 /// The action being performed, simply "default" for 95% of surgeries
 #define OPERATION_ACTION "action"
 /// Whether the operation should automatically fail

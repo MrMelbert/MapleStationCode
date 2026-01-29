@@ -29,9 +29,9 @@
 	if(LAZYLEN(patient.implants))
 		display_pain(
 			target = patient,
-			target_zone = BODY_ZONE_CHEST,
+			affected_locations = BODY_ZONE_CHEST,
 			pain_message = "You feel a serious pain as [surgeon] digs around inside you!",
-			pain_amount = SURGERY_PAIN_MEDIUM,
+			pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 		)
 
 /datum/surgery_operation/basic/implant_removal/on_success(mob/living/patient, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -55,9 +55,9 @@
 	)
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You can feel your [implant.name] pulled out of you!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 	)
 	implant.removed(patient)
 

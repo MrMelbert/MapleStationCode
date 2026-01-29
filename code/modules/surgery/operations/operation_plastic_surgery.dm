@@ -61,9 +61,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel slicing pain across your face!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/limb/plastic_surgery/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -79,9 +79,9 @@
 		// NON-MODULE CHANGE
 		display_pain(
 			target = limb.owner,
-			target_zone = limb.body_zone,
+			affected_locations = limb,
 			pain_message = "The pain fades, your face feels normal again!",
-			pain_amount = -0.5 * SURGERY_PAIN_MEDIUM,
+			pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.5 * SURGERY_PAIN_MEDIUM,
 		)
 		return
 
@@ -98,9 +98,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "The pain fades, your face feels new and unfamiliar!",
-		pain_amount = -0.5 * SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * -0.5 * SURGERY_PAIN_MEDIUM,
 	)
 	if(ishuman(limb.owner))
 		var/mob/living/carbon/human/human_target = limb.owner
@@ -120,9 +120,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "Your face feels horribly scarred and deformed!",
-		pain_amount = SURGERY_PAIN_LOW,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_LOW,
 	)
 	ADD_TRAIT(limb.owner, TRAIT_DISFIGURED, TRAIT_GENERIC)
 
@@ -159,7 +159,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = limb.owner,
-		target_zone = limb.body_zone,
+		affected_locations = limb,
 		pain_message = "You feel a strange sensation as something is applied to your face!",
 	)
 

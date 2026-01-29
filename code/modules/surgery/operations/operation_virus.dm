@@ -55,9 +55,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel a searing heat spread through your chest!",
-		pain_amount = SURGERY_PAIN_HIGH,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_HIGH,
 		pain_type = BURN,
 		pain_overlay_severity = 1,
 	)
@@ -73,9 +73,9 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel a faint throbbing in your chest.",
-		pain_amount = SURGERY_PAIN_TRIVIAL,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_TRIVIAL,
 	)
 	for(var/datum/disease/infected_disease as anything in patient.diseases)
 		if(infected_disease.severity != DISEASE_SEVERITY_UNCURABLE) //no curing quirks, sweaty

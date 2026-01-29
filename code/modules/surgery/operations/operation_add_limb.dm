@@ -116,7 +116,7 @@
 	)
 	display_pain(
 		target = chest.owner,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message ="You feel an uncomfortable sensation where your [target_zone_readable] should be!",
 	)
 
@@ -150,7 +150,7 @@
 	)
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel synthetic sensation wash from your [bodypart_to_attach.plaintext_zone], which you can feel again!",
 	)
 
@@ -166,7 +166,7 @@
 	)
 	display_pain(
 		target = patient,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel a strange sensation as [thing_to_attach] takes the place of your arm!",
 	)
 
@@ -198,9 +198,8 @@
 	var/obj/item/bodypart/chest = limb.owner.get_bodypart(BODY_ZONE_CHEST)
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = list(limb, chest),
 		pain_message = "[surgeon] begins to [tool.singular_name] [limb] to your body!",
-		pain_amount = IS_ROBOTIC_LIMB(chest) ? 0 : SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/tool, list/operation_args)
@@ -214,9 +213,8 @@
 	var/obj/item/bodypart/chest = limb.owner.get_bodypart(BODY_ZONE_CHEST)
 	display_pain(
 		target = limb.owner,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = list(limb, chest),
 		pain_message = "You feel more secure as your prosthetic is firmly attached to your body!",
-		pain_amount = IS_ROBOTIC_LIMB(chest) ? 0 : SURGERY_PAIN_LOW,
 	)
 	limb.remove_surgical_state(SURGERY_PROSTHETIC_UNSECURED)
 	limb.AddComponent(/datum/component/item_as_prosthetic_limb, null, 0) // updates drop probability to zero

@@ -372,12 +372,12 @@
 	mood_change *= people_laughing_at_you
 	return ..()
 
-//These are unused so far but I want to remember them to use them later
-/datum/mood_event/surgery
-	description = "THEY'RE CUTTING ME OPEN!!"
-	mood_change = -8
-	event_flags = MOOD_EVENT_FEAR
-	// var/surgery_completed = FALSE
+// //These are unused so far but I want to remember them to use them later
+// /datum/mood_event/surgery
+// 	description = "THEY'RE CUTTING ME OPEN!!"
+// 	mood_change = -8
+// 	event_flags = MOOD_EVENT_FEAR
+// 	var/surgery_completed = FALSE
 
 // /datum/mood_event/surgery/success
 // 	description = "That surgery really hurt... Glad it worked, I guess..."

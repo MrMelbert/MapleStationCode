@@ -31,7 +31,7 @@
 	// NON-MODULE CHANGE
 	display_pain(
 		target = organ.owner,
-		target_zone = BODY_ZONE_CHEST,
+		affected_locations = organ,
 		pain_message = "You feel a horrible sloshing feeling in your gut! You're going to be sick!",
 		pain_amount = SURGERY_PAIN_LOW,
 	)

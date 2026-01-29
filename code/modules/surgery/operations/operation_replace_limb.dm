@@ -61,9 +61,9 @@
 	)
 	display_pain(
 		target = limb.owner,
-		target_zone = list(limb.body_zone, BODY_ZONE_CHEST),
+		affected_locations = list(limb.body_zone, BODY_ZONE_CHEST),
 		pain_message = "You feel a horrible pain in your chest and [limb.plaintext_zone]!",
-		pain_amount = SURGERY_PAIN_MEDIUM,
+		pain_amount = (operation_args?[OPERATION_TOOL_QUALITY] || 1) * SURGERY_PAIN_MEDIUM,
 	)
 
 /datum/surgery_operation/limb/replace_limb/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/bodypart/tool, list/operation_args)
@@ -94,8 +94,7 @@
 	)
 	display_pain(
 		target = patient,
-		target_zone = list(limb.body_zone, BODY_ZONE_CHEST),
+		affected_locations = list(limb.body_zone, BODY_ZONE_CHEST),
 		pain_message = "Your [limb.plaintext_zone] comes awash with synthetic sensation!",
-		mechanical_surgery = TRUE,
 	)
 	log_combat(surgeon, patient, "augmented", addition = "by giving him new [tool]")
