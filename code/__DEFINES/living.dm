@@ -121,7 +121,7 @@
 
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEXvalue) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEX(value) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey

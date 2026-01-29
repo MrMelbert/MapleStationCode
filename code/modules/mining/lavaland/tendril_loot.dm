@@ -947,7 +947,7 @@
 	to_chat(user, span_userdanger("The mass goes up your arm and goes inside it!"))
 	playsound(user, 'sound/magic/demon_consume.ogg', 50, TRUE)
 	var/index = user.get_held_index_of_item(src)
-	swap_zone(IS_LEFT_INDEX(index) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM)
+	swap_zone(SELECT_LEFT_OR_RIGHT(index, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	Insert(user)
 

@@ -245,7 +245,7 @@
 	//set the reference & update icons
 	set_internal_tool(tool_map[internal_tool_name])
 	update_appearance(UPDATE_ICON_STATE)
-	playsound(src, 'sound/items/tools/change_jaws.ogg', 50, TRUE)
+	playsound(src, 'sound/items/change_jaws.ogg', 50, TRUE)
 
 /obj/item/borg/cyborg_omnitool/update_icon_state()
 	if (reference)

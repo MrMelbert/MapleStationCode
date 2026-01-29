@@ -6,7 +6,7 @@
 	icon = 'icons/obj/weapons/chainsaw.dmi'
 	icon_state = "chainsaw"
 	base_icon_state = "chainsaw"
-	icon_angle = 180
+	// icon_angle = 180
 	lefthand_file = 'icons/mob/inhands/weapons/chainsaw_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/chainsaw_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY
@@ -100,11 +100,11 @@
 /obj/item/chainsaw/suicide_act(mob/living/carbon/user)
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		user.visible_message(span_suicide("[user] smashes [src] into [user.p_their()] neck, destroying [user.p_their()] esophagus! It looks like [user.p_theyre()] trying to commit suicide!"))
-		playsound(src, 'sound/items/weapons/genhit1.ogg', 100, TRUE)
+		playsound(src, 'sound/weapons/genhit1.ogg', 100, TRUE)
 		return BRUTELOSS
 
 	user.visible_message(span_suicide("[user] begins to tear [user.p_their()] head off with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(src, 'sound/items/weapons/chainsawhit.ogg', 100, TRUE)
+	playsound(src, 'sound/weapons/chainsawhit.ogg', 100, TRUE)
 	var/obj/item/bodypart/head/myhead = user.get_bodypart(BODY_ZONE_HEAD)
 	if(myhead)
 		myhead.dismember()
