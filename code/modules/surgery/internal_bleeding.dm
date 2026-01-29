@@ -16,7 +16,7 @@
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
 /datum/surgery_operation/limb/internal_bleeding/state_check(obj/item/bodypart/limb)
-	for(var/datum/wound/bleed_internal/wound in operating_on.wounds)
+	for(var/datum/wound/bleed_internal/wound in limb.wounds)
 		if(wound.severity >= WOUND_SEVERITY_TRIVIAL)
 			return TRUE
 	return FALSE
@@ -57,7 +57,7 @@
 		span_notice("[surgeon] successfully repairs some of the arteries within [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
 		span_notice("[surgeon] successfully repairs some of the arteries within [limb.owner]'s [limb.plaintext_zone]!"),
 	)
-	limb.receive_damage(3, BRUTE, wound_bonus = CANT_WOUND, attacking_item = tool)
+	limb.receive_damage(3, BRUTE, wound_bonus = CANT_WOUND, damage_source = tool)
 
 /datum/surgery_operation/limb/internal_bleeding/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args, fail_prob = 0)
 	var/datum/wound/bleed_internal/target_wound = locate() in limb.wounds
@@ -69,4 +69,4 @@
 		span_warning("[surgeon] tears some of the arteries within [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
 		span_warning("[surgeon] tears some of the arteries within [limb.owner]'s [limb.plaintext_zone]!"),
 	)
-	limb.receive_damage(rand(4, 8), BRUTE, wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = tool)
+	limb.receive_damage(rand(4, 8), BRUTE, wound_bonus = 10, sharpness = SHARP_EDGED, damage_source = tool)

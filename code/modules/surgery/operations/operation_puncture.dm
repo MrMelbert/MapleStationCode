@@ -7,7 +7,7 @@
 		TOOL_WIRECUTTER = 2.5,
 	)
 	time = 3 SECONDS
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
 	operation_flags = OPERATION_AFFECTS_MOOD | OPERATION_PRIORITY_NEXT_STEP
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 
@@ -84,7 +84,7 @@
 		/obj/item = 3.33,
 	)
 	time = 3.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
 	operation_flags = OPERATION_AFFECTS_MOOD | OPERATION_PRIORITY_NEXT_STEP
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 

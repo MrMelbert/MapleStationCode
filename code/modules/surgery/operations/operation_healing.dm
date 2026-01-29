@@ -17,8 +17,8 @@
 	)
 	time = 2.5 SECONDS
 	operation_flags = OPERATION_LOOPING | OPERATION_IGNORE_CLOTHES
-	success_sound = 'sound/items/handling/surgery/retractor2.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	required_biotype = MOB_ORGANIC|MOB_HUMANOID
 	required_bodytype = NONE
 	any_surgery_states_required = ALL_SURGERY_SKIN_STATES
@@ -174,7 +174,7 @@
 /datum/surgery_operation/basic/tend_wounds/proc/show_stats(mob/living/surgeon, mob/living/patient)
 	if(surgeon.is_holding_item_of_type(/obj/item/healthanalyzer))
 		return TRUE
-	for(var/obj/machinery/vitals_reader/vitals in view(4, patient))
+	for(var/obj/machinery/computer/vitals_reader/vitals in view(4, patient))
 		if(vitals.patient == patient)
 			return TRUE
 	for(var/obj/machinery/computer/operating/op_pc in range(1, patient))
@@ -239,7 +239,9 @@
 	brute_dealt += round(patient.getBruteLoss() * brute_multiplier, 0.1)
 	burn_dealt += round(patient.getFireLoss() * burn_multiplier, 0.1)
 
-	patient.take_bodypart_damage(brute_dealt, burn_dealt, wound_bonus = CANT_WOUND)
+	// NON-MODULE CHANGE
+	patient.damage_random_bodypart(brute_dealt, BRUTE, wound_bonus = CANT_WOUND)
+	patient.damage_random_bodypart(burn_dealt, BURN, wound_bonus = CANT_WOUND)
 
 /datum/surgery_operation/basic/tend_wounds/upgraded
 	rnd_name = parent_type::rnd_name + "+"

@@ -13,9 +13,9 @@
 		/obj/item/stack/cable_coil = 6.67,
 	)
 	time = 20 SECONDS
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	success_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	operation_flags = OPERATION_MORBID | OPERATION_NOTABLE | OPERATION_LOCKED
 	target_type = /obj/item/organ/brain
 	required_organ_flag = ORGAN_TYPE_FLAGS & ~ORGAN_ROBOTIC
@@ -107,9 +107,9 @@
 /datum/surgery_operation/organ/brainwash/sleeper
 	name = "install sleeper agent directive"
 	rnd_name = "Sleeper Agent Implantation (Brainwash)"
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	success_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 
 	var/list/possible_objectives = list(
 		"You love the Syndicate.",

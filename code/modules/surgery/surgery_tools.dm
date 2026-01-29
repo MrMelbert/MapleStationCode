@@ -377,7 +377,7 @@
 
 /obj/item/surgical_processor/cyborg_unequip(mob/user)
 	. = ..()
-	UnregisterSignal(user, COMSIG_SURGERY_STARTING)
+	UnregisterSignal(user, COMSIG_LIVING_OPERATING_ON)
 
 /obj/item/surgical_processor/interact_with_atom(atom/design_holder, mob/living/user, list/modifiers)
 	if(!istype(design_holder, /obj/item/disk/surgery) && !istype(design_holder, /obj/machinery/computer/operating))

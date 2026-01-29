@@ -11,11 +11,11 @@
 	time = 3 SECONDS
 	operation_flags = OPERATION_AFFECTS_MOOD | OPERATION_LOOPING | OPERATION_PRIORITY_NEXT_STEP
 	preop_sound = list(
-		TOOL_SCALPEL = 'sound/items/handling/surgery/scalpel1.ogg',
-		TOOL_HEMOSTAT = 'sound/items/handling/surgery/hemostat1.ogg',
+		TOOL_SCALPEL = 'sound/surgery/scalpel1.ogg',
+		TOOL_HEMOSTAT = 'sound/surgery/hemostat1.ogg',
 	)
-	success_sound = 'sound/items/handling/surgery/retractor2.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
+	failure_sound = 'sound/surgery/organ1.ogg'
 
 	/// How much infestation is removed per step (positive number)
 	var/infection_removed = 4

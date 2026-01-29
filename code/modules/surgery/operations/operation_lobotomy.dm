@@ -13,9 +13,9 @@
 	)
 	target_type = /obj/item/organ/brain
 	required_organ_flag = ORGAN_TYPE_FLAGS & ~ORGAN_ROBOTIC
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/scalpel2.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED|SURGERY_BONE_SAWED
 
 /datum/surgery_operation/organ/lobotomy/get_any_tool()

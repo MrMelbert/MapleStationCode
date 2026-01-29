@@ -15,8 +15,8 @@
 		/obj/item = 3.33,
 	)
 	time = 1.6 SECONDS
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/scalpel2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
 	operation_flags = OPERATION_AFFECTS_MOOD
 	any_surgery_states_blocked = ALL_SURGERY_SKIN_STATES
 	target_zone = null
@@ -71,14 +71,14 @@
 	)
 	time = 5.4 SECONDS
 	preop_sound = list(
-		/obj/item/circular_saw = 'sound/items/handling/surgery/saw.ogg',
-		/obj/item/melee/arm_blade = 'sound/items/handling/surgery/scalpel1.ogg',
-		/obj/item/fireaxe = 'sound/items/handling/surgery/scalpel1.ogg',
-		/obj/item/hatchet = 'sound/items/handling/surgery/scalpel1.ogg',
-		/obj/item/knife/butcher = 'sound/items/handling/surgery/scalpel1.ogg',
-		/obj/item = 'sound/items/handling/surgery/scalpel1.ogg',
+		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
+		/obj/item/melee/arm_blade = 'sound/surgery/scalpel1.ogg',
+		/obj/item/fireaxe = 'sound/surgery/scalpel1.ogg',
+		/obj/item/hatchet = 'sound/surgery/scalpel1.ogg',
+		/obj/item/knife/butcher = 'sound/surgery/scalpel1.ogg',
+		/obj/item = 'sound/surgery/scalpel1.ogg',
 	)
-	success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 	operation_flags = OPERATION_AFFECTS_MOOD
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 	any_surgery_states_blocked = SURGERY_BONE_SAWED|SURGERY_BONE_DRILLED
@@ -137,12 +137,12 @@
 	)
 	time = 2.4 SECONDS
 	preop_sound = list(
-		/obj/item/stack/medical/suture = SFX_SUTURE_BEGIN,
-		/obj/item = 'sound/items/handling/surgery/cautery1.ogg',
+		/obj/item/stack/medical/suture = 'maplestation_modules/sound/items/snip.ogg',
+		/obj/item = 'sound/surgery/cautery1.ogg',
 	)
 	success_sound = list(
-		/obj/item/stack/medical/suture = SFX_SUTURE_END,
-		/obj/item = 'sound/items/handling/surgery/cautery2.ogg',
+		/obj/item/stack/medical/suture = 'maplestation_modules/sound/items/snip.ogg',
+		/obj/item = 'sound/surgery/cautery2.ogg',
 	)
 	any_surgery_states_required = ALL_SURGERY_STATES_UNSET_ON_CLOSE // we're not picky
 	target_zone = null

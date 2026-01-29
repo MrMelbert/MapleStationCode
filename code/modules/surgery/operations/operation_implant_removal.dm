@@ -9,7 +9,7 @@
 		/obj/item/kitchen/fork = 2.85,
 	)
 	time = 6.4 SECONDS
-	success_sound = 'sound/items/handling/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED
 
 /datum/surgery_operation/basic/implant_removal/get_default_radial_image()

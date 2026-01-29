@@ -221,7 +221,6 @@
 	. = ..()
 	if(. || !isliving(ui.user) || !(bot_access_flags & BOT_CONTROL_PANEL_OPEN) && !(ui.user.has_unlimited_silicon_privilege))
 		return
-	var/mob/living/our_user = ui.user
 	switch(action)
 		if("heal_threshold")
 			var/adjust_num = round(text2num(params["threshold"]))

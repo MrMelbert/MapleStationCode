@@ -11,8 +11,8 @@
 	)
 	time = 6.4 SECONDS
 	operation_flags = OPERATION_MORBID | OPERATION_AFFECTS_MOOD | OPERATION_NOTABLE
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/scalpel2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
 /datum/surgery_operation/limb/plastic_surgery/all_required_strings()
@@ -136,9 +136,9 @@
 	)
 	time = 4.8 SECONDS
 	operation_flags = OPERATION_MORBID | OPERATION_LOCKED
-	preop_sound = 'sound/effects/blob/blobattack.ogg'
-	success_sound = 'sound/effects/blob/attackblob.ogg'
-	failure_sound = 'sound/effects/blob/blobattack.ogg'
+	preop_sound = 'sound/effects/blobattack.ogg'
+	success_sound = 'sound/effects/attackblob.ogg'
+	failure_sound = 'sound/effects/blobattack.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 	any_surgery_states_blocked = SURGERY_PLASTIC_APPLIED
 

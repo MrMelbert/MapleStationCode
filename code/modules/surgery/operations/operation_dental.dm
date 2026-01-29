@@ -2,7 +2,7 @@
 	name = "add dental implant"
 	desc = "Implant a pill into a patient's teeth."
 	implements = list(
-		/obj/item/reagent_containers/applicator/pill = 1,
+		/obj/item/reagent_containers/pill = 1,
 	)
 	time = 1.6 SECONDS
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED|SURGERY_BONE_DRILLED
@@ -26,7 +26,7 @@
 	if(teeth_receptangle.teeth_count <= 0)
 		return FALSE
 	var/count = 0
-	for(var/obj/item/reagent_containers/applicator/pill/dental in limb)
+	for(var/obj/item/reagent_containers/pill/dental in limb)
 		count++
 	if(count >= teeth_receptangle.teeth_count)
 		return FALSE
@@ -76,7 +76,7 @@
 	all_surgery_states_required = SURGERY_BONE_DRILLED|SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED
 
 /datum/surgery_operation/limb/remove_dental_implant/get_default_radial_image()
-	return image(/obj/item/reagent_containers/applicator/pill)
+	return image(/obj/item/reagent_containers/pill)
 
 /datum/surgery_operation/limb/remove_dental_implant/snowflake_check_availability(atom/movable/operating_on, mob/living/surgeon, tool, operated_zone)
 	return ..() && operated_zone == BODY_ZONE_PRECISE_MOUTH
@@ -104,7 +104,7 @@
 
 /datum/surgery_operation/limb/remove_dental_implant/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	var/list/pills = list()
-	for(var/obj/item/reagent_containers/applicator/pill/dental in limb)
+	for(var/obj/item/reagent_containers/pill/dental in limb)
 		pills += dental
 	if(!length(pills))
 		display_results(
@@ -116,7 +116,7 @@
 		)
 		return
 
-	var/obj/item/reagent_containers/applicator/pill/yoinked = pick(pills)
+	var/obj/item/reagent_containers/pill/yoinked = pick(pills)
 	for(var/datum/action/item_action/activate_pill/associated_action in limb.owner.actions)
 		if(associated_action.target == yoinked)
 			qdel(associated_action)

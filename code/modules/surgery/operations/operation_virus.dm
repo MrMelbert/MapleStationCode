@@ -10,8 +10,8 @@
 		/obj/item = 3.33,
 	)
 	time = 10 SECONDS
-	preop_sound = 'sound/items/handling/surgery/cautery1.ogg'
-	success_sound = 'sound/items/handling/surgery/cautery2.ogg'
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
 	operation_flags = OPERATION_MORBID | OPERATION_LOCKED | OPERATION_NOTABLE
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 	var/list/required_chems = list(

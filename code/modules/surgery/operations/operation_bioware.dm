@@ -126,7 +126,7 @@
 	)
 	// NON-MODULE CHANGE
 	display_pain(
-		target = target,
+		target = limb.owner,
 		target_zone = BODY_ZONES_ALL,
 		pain_message = "You can feel your heartbeat's powerful pulses ripple through your body!",
 		surgery_moodlet = /datum/mood_event/surgery/major,
@@ -253,7 +253,7 @@
 	)
 	// NON-MODULE CHANGE
 	display_pain(
-		target = target,
+		target = limb.owner,
 		target_zone = BODY_ZONES_LIMBS,
 		pain_message = "Your limbs burn with severe pain!",
 		pain_amount = SURGERY_PAIN_MEDIUM,

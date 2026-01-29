@@ -55,9 +55,9 @@
 		/obj/item/shard = 2.85,
 	)
 	time = 4.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/organ1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/organ1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	target_type = /obj/item/organ/lungs
 	failure_damage_percent = 0.1
 
@@ -124,8 +124,8 @@
 		/obj/item/knife = 2.25,
 		/obj/item/shard = 2.85,
 	)
-	preop_sound = 'sound/items/tools/ratchet.ogg'
-	success_sound = 'sound/machines/airlock/doorclick.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
+	success_sound = 'sound/machines/doorclick.ogg'
 	required_organ_flag = ORGAN_ROBOTIC
 	operation_flags = parent_type::operation_flags | OPERATION_MECHANIC
 
@@ -140,9 +140,9 @@
 		/obj/item/shard = 2.85,
 	)
 	time = 5.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/organ1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/organ1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	target_type = /obj/item/organ/liver
 	heal_to_percent = 0.1
 	failure_damage_percent = 0.15
@@ -207,8 +207,8 @@
 		/obj/item/knife = 2.25,
 		/obj/item/shard = 2.85,
 	)
-	preop_sound = 'sound/items/tools/ratchet.ogg'
-	success_sound = 'sound/machines/airlock/doorclick.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
+	success_sound = 'sound/machines/doorclick.ogg'
 	required_organ_flag = ORGAN_ROBOTIC
 	operation_flags = parent_type::operation_flags | OPERATION_MECHANIC
 
@@ -223,9 +223,9 @@
 		/obj/item/stack/cable_coil = 2,
 	)
 	time = 9 SECONDS
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	success_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	target_type = /obj/item/organ/heart
 
 /datum/surgery_operation/organ/repair/coronary_bypass/on_preop(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
@@ -294,8 +294,8 @@
 		/obj/item/knife = 2.25,
 		/obj/item/shard = 2.85,
 	)
-	preop_sound = 'sound/items/tools/ratchet.ogg'
-	success_sound = 'sound/machines/airlock/doorclick.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
+	success_sound = 'sound/machines/doorclick.ogg'
 	required_organ_flag = ORGAN_ROBOTIC
 	operation_flags = parent_type::operation_flags | OPERATION_MECHANIC
 
@@ -311,9 +311,9 @@
 		/obj/item = 4,
 	)
 	time = 5.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/scalpel1.ogg'
-	success_sound = 'sound/items/handling/surgery/organ1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/organ1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	target_type = /obj/item/organ/stomach
 	heal_to_percent = 0.2
 	failure_damage_percent = 0.15
@@ -386,8 +386,8 @@
 		/obj/item/shard = 2.85,
 		/obj/item = 4,
 	)
-	preop_sound = 'sound/items/tools/ratchet.ogg'
-	success_sound = 'sound/machines/airlock/doorclick.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
+	success_sound = 'sound/machines/doorclick.ogg'
 	required_organ_flag = ORGAN_ROBOTIC
 	operation_flags = parent_type::operation_flags | OPERATION_MECHANIC
 
@@ -579,9 +579,9 @@
 		/obj/item/pen = 6.67,
 	)
 	time = 10 SECONDS
-	preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	success_sound = 'sound/items/handling/surgery/hemostat1.ogg'
-	failure_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	operation_flags = parent_type::operation_flags | OPERATION_LOOPING
 	target_type = /obj/item/organ/brain
 	heal_to_percent = 0.25

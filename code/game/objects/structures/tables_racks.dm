@@ -921,8 +921,6 @@
 			COMSIG_LIVING_SURGERY_FINISHED,
 			COMSIG_LIVING_UPDATING_SURGERY_STATE,
 		))
-		if (patient.external && patient.external == air_tank)
-			patient.close_externals()
 
 	patient = new_patient
 	update_appearance()

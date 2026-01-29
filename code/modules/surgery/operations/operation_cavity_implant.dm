@@ -6,8 +6,8 @@
 		TOOL_CROWBAR = 1.5,
 	)
 	time = 4.8 SECONDS
-	preop_sound = 'sound/items/handling/surgery/retractor1.ogg'
-	success_sound = 'sound/items/handling/surgery/retractor2.ogg'
+	preop_sound = 'sound/surgery/retractor1.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 	any_surgery_states_blocked = SURGERY_CAVITY_WIDENED
 
@@ -49,8 +49,8 @@
 		/obj/item = 1,
 	)
 	time = 3.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/organ1.ogg'
-	success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_CAVITY_WIDENED
 	/// Items that bypass normal size restrictions for cavity implantation
 	var/list/heavy_cavity_implants
@@ -144,8 +144,8 @@
 	)
 
 	time = 3.2 SECONDS
-	preop_sound = 'sound/items/handling/surgery/organ1.ogg'
-	success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT|SURGERY_CAVITY_WIDENED
 
 /datum/surgery_operation/limb/undo_cavity_implant/all_required_strings()

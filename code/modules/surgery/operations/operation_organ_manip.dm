@@ -10,13 +10,13 @@
 	VAR_PRIVATE/list/cached_organ_manipulation_options
 
 	/// Sound played when starting to insert an organ
-	var/insert_preop_sound = 'sound/items/handling/surgery/organ2.ogg'
+	var/insert_preop_sound = 'sound/surgery/organ2.ogg'
 	/// Sound played when starting to remove an organ
-	var/remove_preop_sound = 'sound/items/handling/surgery/hemostat1.ogg'
+	var/remove_preop_sound = 'sound/surgery/hemostat1.ogg'
 	/// Sound played when successfully inserting an organ
-	var/insert_success_sound = 'sound/items/handling/surgery/organ1.ogg'
+	var/insert_success_sound = 'sound/surgery/organ1.ogg'
 	/// Sound played when successfully removing an organ
-	var/remove_success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	var/remove_success_sound = 'sound/surgery/organ2.ogg'
 
 	/// Implements used to insert organs
 	var/list/insert_implements = list(

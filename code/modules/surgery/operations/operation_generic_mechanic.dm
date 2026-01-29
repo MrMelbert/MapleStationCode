@@ -13,8 +13,8 @@
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	required_bodytype = BODYTYPE_ROBOTIC
 	time = 2.4 SECONDS
-	preop_sound = 'sound/items/tools/screwdriver.ogg'
-	success_sound = 'sound/items/tools/screwdriver2.ogg'
+	preop_sound = 'sound/items/screwdriver.ogg'
+	success_sound = 'sound/items/screwdriver2.ogg'
 	any_surgery_states_blocked = ALL_SURGERY_SKIN_STATES
 
 /datum/surgery_operation/limb/mechanical_incision/get_any_tool()
@@ -58,7 +58,7 @@
 	)
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 1 SECONDS
-	preop_sound = 'sound/items/tools/ratchet.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
 	success_sound = 'sound/machines/airlock/doorclick.ogg'
 	all_surgery_states_required = SURGERY_SKIN_CUT
 
@@ -100,8 +100,8 @@
 	)
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 2.4 SECONDS
-	preop_sound = 'sound/items/tools/screwdriver.ogg'
-	success_sound = 'sound/items/tools/screwdriver2.ogg'
+	preop_sound = 'sound/items/screwdriver.ogg'
+	success_sound = 'sound/items/screwdriver2.ogg'
 	any_surgery_states_required = ALL_SURGERY_SKIN_STATES
 
 /datum/surgery_operation/limb/mechanical_close/get_any_tool()
@@ -187,7 +187,7 @@
 	)
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 2.4 SECONDS
-	preop_sound = 'sound/items/tools/ratchet.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 	any_surgery_states_blocked = SURGERY_BONE_SAWED|SURGERY_BONE_DRILLED
 
@@ -225,7 +225,7 @@
 	)
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 2.4 SECONDS
-	preop_sound = 'sound/items/tools/ratchet.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED
 
 /datum/surgery_operation/limb/mechanic_wrench/state_check(obj/item/bodypart/limb)

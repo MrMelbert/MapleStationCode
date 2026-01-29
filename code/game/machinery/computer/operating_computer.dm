@@ -78,7 +78,7 @@
 			return ITEM_INTERACT_BLOCKING
 		advanced_surgeries |= disky.surgeries
 		update_static_data_for_all_viewers()
-		playsound(src, 'sound/machines/compiler/compiler-stage2.ogg', 50, FALSE, SILENCED_SOUND_EXTRARANGE)
+		playsound(src, 'sound/misc/compiler-stage2.ogg', 50, FALSE, SILENCED_SOUND_EXTRARANGE)
 		balloon_alert(user, "surgeries loaded")
 		return ITEM_INTERACT_SUCCESS
 
@@ -137,7 +137,7 @@
 		return (user.loc == table?.loc) ? UI_CLOSE : UI_DISABLED
 	// we have a tight range check so people can't spy on surgeries from across the room
 	// likewise it'd be pretty lame if you could see what was going on while incapacitated
-	if(get_dist(user, src) > 2 || user.incapacitated)
+	if(get_dist(user, src) > 2 || user.incapacitated())
 		return UI_DISABLED
 
 	return UI_INTERACTIVE

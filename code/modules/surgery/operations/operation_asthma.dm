@@ -10,8 +10,8 @@
 		TOOL_WIRECUTTER = 2.25,
 	)
 	time = 8 SECONDS
-	preop_sound = 'sound/items/handling/surgery/retractor1.ogg'
-	success_sound = 'sound/items/handling/surgery/retractor2.ogg'
+	preop_sound = 'sound/surgery/retractor1.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
 	target_type = /obj/item/organ/lungs
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_ORGANS_CUT
 	/// The amount of inflammation a failure or success of this surgery will reduce.

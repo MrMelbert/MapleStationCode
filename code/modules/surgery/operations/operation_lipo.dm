@@ -15,10 +15,10 @@
 	time = 6.4 SECONDS
 	required_bodytype = ~BODYTYPE_ROBOTIC
 	preop_sound = list(
-		/obj/item/circular_saw = 'sound/items/handling/surgery/saw.ogg',
-		/obj/item = 'sound/items/handling/surgery/scalpel1.ogg',
+		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
+		/obj/item = 'sound/surgery/scalpel1.ogg',
 	)
-	success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_VESSELS_CLAMPED
 
 /datum/surgery_operation/limb/lipoplasty/get_any_tool()
@@ -104,7 +104,7 @@
 		TOOL_SCALPEL = 4,
 		/obj/item = 5,
 	)
-	preop_sound = 'sound/items/tools/ratchet.ogg'
-	success_sound = 'sound/items/handling/surgery/organ2.ogg'
+	preop_sound = 'sound/items/ratchet.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 	required_bodytype = BODYTYPE_ROBOTIC
 	operation_flags = parent_type::operation_flags | OPERATION_MECHANIC

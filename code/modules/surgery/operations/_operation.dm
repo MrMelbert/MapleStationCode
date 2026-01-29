@@ -137,7 +137,7 @@
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
-	playsound(src, istype(tool, /obj/item/stack/medical/suture) ? SFX_SUTURE_BEGIN : 'sound/items/handling/surgery/cautery1.ogg', 50, TRUE)
+	playsound(src, istype(tool, /obj/item/stack/medical/suture) ? 'maplestation_modules/sound/items/snip.ogg' : 'sound/surgery/cautery1.ogg', 50, TRUE)
 	if(!do_after(
 		user = src,
 		delay = /datum/surgery_operation/limb/close_skin::time * 2 * tool.toolspeed,
@@ -153,7 +153,7 @@
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
-	playsound(src, istype(tool, /obj/item/stack/medical/suture) ? SFX_SUTURE_END : 'sound/items/handling/surgery/cautery2.ogg', 50, TRUE)
+	playsound(src, istype(tool, /obj/item/stack/medical/suture) ? 'maplestation_modules/sound/items/snip.ogg' : 'sound/surgery/cautery2.ogg', 50, TRUE)
 	limb.remove_surgical_state(ALL_SURGERY_STATES_UNSET_ON_CLOSE)
 	if(istype(tool, /obj/item/stack/medical/suture))
 		var/obj/item/stack/medical/suture/suture_tool = tool
@@ -312,7 +312,9 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	unlocked = list()
 	locked = list()
 
-	for(var/operation_type in valid_subtypesof(/datum/surgery_operation))
+	for(var/datum/surgery_operation/operation_type as anything in subtypesof(/datum/surgery_operation)) // future todo : make this use valid_subtypesof
+		if(operation_type::abstract_type == operation_type)
+			continue
 		var/datum/surgery_operation/operation = new operation_type()
 		if(isnull(operation.name))
 			stack_trace("Surgery operation '[operation_type]' is missing a name!")
@@ -377,7 +379,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * but allows for operations to target any mob type, rather than only those with limbs or organs.
  */
 /datum/surgery_operation
-	abstract_type = /datum/surgery_operation
+	var/abstract_type = /datum/surgery_operation
 	/// Required - Name of the operation, keep it short and format it like an action - "amputate limb", "remove organ"
 	/// Don't capitalize it, it will be capitalized automatically where necessary.
 	var/name
