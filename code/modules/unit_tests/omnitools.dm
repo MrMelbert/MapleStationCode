@@ -11,7 +11,7 @@
 			omnitool = tool
 			break
 	TEST_ASSERT_NOTNULL(omnitool, "Could not find /obj/item/borg/cyborg_omnitool/engineering in borg inbuilt modules!")
-	borg.put_in_hand(omnitool, 1)
+	borg.equip_module_to_slot(omnitool, 1)
 	borg.select_module(1)
 
 	//these must match
