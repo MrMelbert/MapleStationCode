@@ -106,7 +106,7 @@ export const SurgeryProceduresView = (props: SurgeryProceduresViewProps) => {
       buttons={
         <>
           <Input
-            width="215px"
+            width="260px"
             placeholder="Search..."
             value={searchText}
             onChange={setSearchText}

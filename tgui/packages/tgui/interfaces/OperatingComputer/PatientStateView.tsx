@@ -58,14 +58,14 @@ export const PatientStateView = (props: PatientStateViewProps) => {
         <Stack.Item>
           <PatientStateMainStateView patient={patient} />
         </Stack.Item>
-        <Stack.Item>
-          <PatientStateAnesthesiaView />
-        </Stack.Item>
         <Stack.Item p={1}>
           <PatientStateSurgeryStateView
             patient={patient}
             target_zone={data.target_zone}
           />
+        </Stack.Item>
+        <Stack.Item>
+          <PatientStateAnesthesiaView />
         </Stack.Item>
         <Stack.Item grow>
           <PatientStateNextOperationsView
@@ -374,24 +374,29 @@ const PatientStateAnesthesiaView = () => {
   const failsafe_enabled = anesthesia.failsafe !== -1;
 
   return (
-    <Section title="Anesthesia">
+    <Section title="Anesthesia Control">
       {!anesthesia.has_tank && <Dimmer>No anesthesia tank attached.</Dimmer>}
-      <LabeledList>
-        <LabeledList.Item label={'Control'}>
+      <Stack fill>
+        <Stack.Item width="50%" textAlign="right">
           <Button.Checkbox
+            width="60%"
+            align="center"
             // Open is FALSE if we have no tank, likewise for can_open_tank
             disabled={!anesthesia.open && !anesthesia.can_open_tank}
-            content={anesthesia.open ? 'Close Tank' : 'Open Tank'}
             color={anesthesia.open ? 'bad' : 'good'}
             icon="fan"
             onClick={() => act('toggle_anesthesia')}
-          />
-        </LabeledList.Item>
-        <LabeledList.Item label={'Safety'}>
+          >
+            {anesthesia.open ? 'Close Tank' : 'Open Tank'}
+          </Button.Checkbox>
+        </Stack.Item>
+        <Stack.Divider />
+        <Stack.Item width="50%">
           <Stack fill align="center">
             <Stack.Item>
-              <Button.Checkbox
-                checked={failsafe_enabled}
+              <Button
+                color={failsafe_enabled ? 'good' : 'caution'}
+                icon={failsafe_enabled ? 'square-check-o' : 'square-o'}
                 tooltip={
                   failsafe_enabled
                     ? 'Automatically closes the attached tank if a set amount of time has elapsed.'
@@ -402,30 +407,29 @@ const PatientStateAnesthesiaView = () => {
                     ? act('disable_failsafe')
                     : act('set_failsafe', { new_failsafe_time: 360 })
                 }
+              >
+                Safety
+              </Button>
+            </Stack.Item>
+            <Stack.Item>
+              <NumberInput
+                fluid
+                animated
+                unit="seconds"
+                width="100px"
+                minValue={5}
+                maxValue={600}
+                step={1}
+                value={failsafe_enabled ? anesthesia.failsafe : 0}
+                disabled={!failsafe_enabled} // Just in case
+                onChange={(value) =>
+                  act('set_failsafe', { new_failsafe_time: value })
+                }
               />
             </Stack.Item>
-
-            {failsafe_enabled && (
-              <Stack.Item>
-                <NumberInput
-                  fluid
-                  animated
-                  unit="seconds"
-                  width="100px"
-                  minValue={5}
-                  maxValue={600}
-                  step={1}
-                  value={anesthesia.failsafe}
-                  disabled={!failsafe_enabled} // Just in case
-                  onChange={(value) =>
-                    act('set_failsafe', { new_failsafe_time: value })
-                  }
-                />
-              </Stack.Item>
-            )}
           </Stack>
-        </LabeledList.Item>
-      </LabeledList>
+        </Stack.Item>
+      </Stack>
     </Section>
   );
 };

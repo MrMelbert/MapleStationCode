@@ -31,7 +31,7 @@ export const OperatingComputer = () => {
 
   return (
     <Window
-      width={tab === ComputerTabs.PatientState ? 350 : 430}
+      width={tab === ComputerTabs.PatientState ? 375 : 475}
       height={690}
       theme="operating_computer"
     >

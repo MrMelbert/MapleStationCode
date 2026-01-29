@@ -39,7 +39,7 @@ const UnauthorizedView = (props) => {
         <Stack.Item align="center" grow>
           {/* NON-MODULE CHANGE */}
           <Box fontSize="18px" bold mt={8}>
-            Nanotrasen HealthPRO
+            DefOS 1.0 &copy; Nanotrasen-Deforest HealthPRO
           </Box>
         </Stack.Item>
         <Stack.Item>

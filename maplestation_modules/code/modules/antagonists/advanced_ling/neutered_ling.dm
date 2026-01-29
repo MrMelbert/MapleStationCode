@@ -35,6 +35,9 @@
 	)
 	all_surgery_states_required = SURGERY_SKIN_OPEN | SURGERY_VESSELS_CLAMPED | SURGERY_ORGANS_CUT | SURGERY_BONE_DRILLED
 
+/datum/surgery_operation/limb/neuter_ling/get_recommended_tool()
+	return "[..()] + scalpel"
+
 /datum/surgery_operation/limb/neuter_ling/snowflake_check_availability(obj/item/bodypart/limb, mob/living/surgeon, tool, operated_zone)
 	var/obj/item/offhand = surgeon.get_inactive_held_item()
 	return !!offhand?.get_sharpness()
