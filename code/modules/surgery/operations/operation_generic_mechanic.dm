@@ -59,7 +59,7 @@
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 1 SECONDS
 	preop_sound = 'sound/items/ratchet.ogg'
-	success_sound = 'sound/machines/airlock/doorclick.ogg'
+	success_sound = 'sound/machines/doorclick.ogg'
 	all_surgery_states_required = SURGERY_SKIN_CUT
 
 /datum/surgery_operation/limb/mechanical_open/get_default_radial_image()

@@ -398,9 +398,9 @@
 	)
 	preop_sound = list(
 		/obj/item/stack/medical/bone_gel = 'sound/misc/soggy.ogg',
-		/obj/item/stack/sticky_tape/surgical = 'sound/items/duct_tape/duct_tape_rip.ogg',
-		/obj/item/stack/sticky_tape/super = 'sound/items/duct_tape/duct_tape_rip.ogg',
-		/obj/item/stack/sticky_tape = 'sound/items/duct_tape/duct_tape_rip.ogg',
+		/obj/item/stack/sticky_tape/surgical = 'sound/items/duct_tape_rip.ogg',
+		/obj/item/stack/sticky_tape/super = 'sound/items/duct_tape_rip.ogg',
+		/obj/item/stack/sticky_tape = 'sound/items/duct_tape_rip.ogg',
 	)
 	time = 4 SECONDS
 	all_surgery_states_required = SURGERY_SKIN_OPEN
