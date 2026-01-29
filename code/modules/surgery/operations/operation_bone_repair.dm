@@ -3,7 +3,7 @@
 	name = "reset dislocation"
 	desc = "Reset a dislocated bone in a patient's limb. \
 		Similar to the field procedure, but quicker and safer due to being performed in a controlled environment."
-	operation_flags = OPERATION_PRIORITY_NEXT_STEP | OPERATION_NO_PATIENT_REQUIRED | OPERATION_AFFECTS_MOOD | OPERATION_STANDING_ALLOWED
+	operation_flags = OPERATION_PRIORITY_NEXT_STEP | OPERATION_AFFECTS_MOOD | OPERATION_STANDING_ALLOWED
 	implements = list(
 		TOOL_BONESET = 1,
 		TOOL_CROWBAR = 2,
@@ -34,9 +34,9 @@
 	display_results(
 		surgeon,
 		limb.owner,
-		span_notice("You begin to reset the dislocation in [FORMAT_LIMB_OWNER(limb)]..."),
-		span_notice("[surgeon] begins to reset the dislocation in [FORMAT_LIMB_OWNER(limb)] with [tool]."),
-		span_notice("[surgeon] begins to reset the dislocation in [FORMAT_LIMB_OWNER(limb)]."),
+		span_notice("You begin to reset the dislocation in [limb.owner]'s [limb.plaintext_zone]..."),
+		span_notice("[surgeon] begins to reset the dislocation in [limb.owner]'s [limb.plaintext_zone] with [tool]."),
+		span_notice("[surgeon] begins to reset the dislocation in [limb.owner]'s [limb.plaintext_zone]."),
 	)
 	display_pain(limb.owner, "Your [limb.plaintext_zone] aches with pain!")
 
@@ -48,9 +48,9 @@
 	display_results(
 		surgeon,
 		limb.owner,
-		span_notice("You successfully reset the dislocation in [FORMAT_LIMB_OWNER(limb)]."),
-		span_notice("[surgeon] successfully resets the dislocation in [FORMAT_LIMB_OWNER(limb)]!"),
-		span_notice("[surgeon] successfully resets the dislocation in [FORMAT_LIMB_OWNER(limb)]!"),
+		span_notice("You successfully reset the dislocation in [limb.owner]'s [limb.plaintext_zone]."),
+		span_notice("[surgeon] successfully resets the dislocation in [limb.owner]'s [limb.plaintext_zone] with [tool]!"),
+		span_notice("[surgeon] successfully resets the dislocation in [limb.owner]'s [limb.plaintext_zone]!"),
 	)
 	display_pain(limb.owner, "Your [limb.plaintext_zone] feels much better now!")
 
@@ -58,9 +58,9 @@
 	display_results(
 		surgeon,
 		limb.owner,
-		span_notice("You fail to reset the dislocation in [FORMAT_LIMB_OWNER(limb)], causing further damage!"),
-		span_notice("[surgeon] fails to reset the dislocation in [FORMAT_LIMB_OWNER(limb)], causing further damage!"),
-		span_notice("[surgeon] fails to reset the dislocation in [FORMAT_LIMB_OWNER(limb)]!"),
+		span_notice("You fail to reset the dislocation in [limb.owner]'s [limb.plaintext_zone], causing further damage!"),
+		span_notice("[surgeon] fails to reset the dislocation in [limb.owner]'s [limb.plaintext_zone] with [tool], causing further damage!"),
+		span_notice("[surgeon] fails to reset the dislocation in [limb.owner]'s [limb.plaintext_zone], causing further damage!"),
 	)
 	display_pain(limb.owner, "The pain in your [limb.plaintext_zone] intensifies!")
 	limb.receive_damage(25, damage_source = tool)

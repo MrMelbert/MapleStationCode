@@ -24,7 +24,7 @@
 
 /datum/surgery_operation/limb/debride/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
 	. = ..()
-	for(var/datum/wound/burn/flesh/wound in limb.wounds)
+	for(var/datum/wound/flesh/wound in limb.wounds)
 		if(HAS_TRAIT(wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
