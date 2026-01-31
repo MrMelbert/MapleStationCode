@@ -99,7 +99,7 @@
 			active_trauma = victim.gain_trauma_type(brain_trauma_group, TRAUMA_RESILIENCE_WOUND)
 		next_trauma_cycle = world.time + (rand(100-WOUND_BONE_HEAD_TIME_VARIANCE, 100+WOUND_BONE_HEAD_TIME_VARIANCE) * 0.01 * trauma_cycle_cooldown)
 
-	var/is_bone_limb = ((limb.biological_state & BIO_BONE) && !(limb.biological_state & BIO_FLESH))
+	var/is_bone_limb = ((limb.biological_state & BIO_BONE) && !(limb.biological_state & (BIO_FLESH|BIO_CHITIN)))
 	if(!gelled || (!taped && !is_bone_limb))
 		return
 
@@ -433,16 +433,16 @@
 		malpractice(user)
 
 
-/datum/wound/blunt/bone/moderate/treat(obj/item/I, mob/user)
+/datum/wound/blunt/bone/moderate/treat(obj/item/tool, mob/user)
 	var/scanned = HAS_TRAIT(src, TRAIT_WOUND_SCANNED)
 	var/self_penalty_mult = user == victim ? 1.5 : 1
 	var/scanned_mult = scanned ? 0.5 : 1
 	var/treatment_delay = base_treat_time * self_penalty_mult * scanned_mult
 
 	if(victim == user)
-		victim.visible_message(span_danger("[user] begins [scanned ? "expertly " : ""]resetting [victim.p_their()] [limb.plaintext_zone] with [I]."), span_warning("You begin resetting your [limb.plaintext_zone] with [I][scanned ? ", keeping the holo-image's indications in mind" : ""]..."))
+		victim.visible_message(span_danger("[user] begins [scanned ? "expertly " : ""]resetting [victim.p_their()] [limb.plaintext_zone] with [tool]."), span_warning("You begin resetting your [limb.plaintext_zone] with [tool][scanned ? ", keeping the holo-image's indications in mind" : ""]..."))
 	else
-		user.visible_message(span_danger("[user] begins [scanned ? "expertly " : ""]resetting [victim]'s [limb.plaintext_zone] with [I]."), span_notice("You begin resetting [victim]'s [limb.plaintext_zone] with [I][scanned ? ", keeping the holo-image's indications in mind" : ""]..."))
+		user.visible_message(span_danger("[user] begins [scanned ? "expertly " : ""]resetting [victim]'s [limb.plaintext_zone] with [tool]."), span_notice("You begin resetting [victim]'s [limb.plaintext_zone] with [tool][scanned ? ", keeping the holo-image's indications in mind" : ""]..."))
 
 	if(!do_after(user, treatment_delay, target = victim, extra_checks=CALLBACK(src, PROC_REF(still_exists))))
 		return
@@ -535,6 +535,9 @@
 		though this is nigh-impossible for most people to do so individually \
 		unless they've dosed themselves with one or more <b>painkillers</b>."
 
+	/// Tracks if a surgeon has reset the bone (part one of the surgical treatment process)
+	VAR_FINAL/reset = FALSE
+
 /datum/wound_pregen_data/bone/compound
 	abstract = FALSE
 
@@ -552,7 +555,7 @@
 /// if someone is using bone gel on our wound
 /datum/wound/blunt/bone/proc/gel(obj/item/stack/medical/bone_gel/I, mob/user)
 	// skellies get treated nicer with bone gel since their "reattach dismembered limbs by hand" ability sucks when it's still critically wounded
-	if((limb.biological_state & BIO_BONE) && !(limb.biological_state & BIO_FLESH))
+	if((limb.biological_state & BIO_BONE) && !(limb.biological_state & (BIO_FLESH|BIO_CHITIN)))
 		return skelly_gel(I, user)
 
 	if(gelled)
@@ -632,11 +635,15 @@
 	processes = TRUE
 	return TRUE
 
-/datum/wound/blunt/bone/treat(obj/item/I, mob/user)
-	if(istype(I, /obj/item/stack/medical/bone_gel))
-		return gel(I, user)
-	else if(istype(I, /obj/item/stack/sticky_tape/surgical))
-		return tape(I, user)
+/datum/wound/blunt/bone/item_can_treat(obj/item/potential_treater, mob/user)
+	// assume that - if working on a ready-to-operate limb - the surgery wants to do the real surgery instead of bone regeneration
+	return ..() && !HAS_TRAIT(limb, TRAIT_READY_TO_OPERATE)
+
+/datum/wound/blunt/bone/treat(obj/item/tool, mob/user)
+	if(istype(tool, /obj/item/stack/medical/bone_gel))
+		gel(tool, user)
+	if(istype(tool, /obj/item/stack/sticky_tape/surgical))
+		tape(tool, user)
 
 /datum/wound/blunt/bone/get_scanner_description(mob/user)
 	. = ..()
@@ -644,7 +651,7 @@
 	. += "<div class='ml-3'>"
 
 	if(severity > WOUND_SEVERITY_MODERATE)
-		if((limb.biological_state & BIO_BONE) && !(limb.biological_state & BIO_FLESH))
+		if((limb.biological_state & BIO_BONE) && !(limb.biological_state & (BIO_FLESH|BIO_CHITIN)))
 			if(!gelled)
 				. += "Recommended Treatment: \
 					Operate where possible. In the event of emergency, apply bone gel directly to injured limb. \

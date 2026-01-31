@@ -105,7 +105,7 @@
 		return
 
 	exposed_mob.adjust_fire_stacks(reac_volume / 15)
-	exposed_mob.add_timed_surgery_speed_mod(type, clamp(round(20 / (15 + sqrt(max(1, boozepwr))), 0.01), 0.25, 1.25), min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod("alcohol", round(1 - (boozepwr / 650), 0.05), min(reac_volume * 1 MINUTES, 5 MINUTES)) // Weak alcohol has less sterilizing power
 
 /datum/reagent/consumable/ethanol/beer
 	name = "Beer"
