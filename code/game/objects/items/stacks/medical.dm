@@ -595,6 +595,9 @@
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
+/obj/item/stack/medical/suture/ekit
+	amount = 4
+
 /obj/item/stack/medical/suture/medicated
 	name = "medicated sutures"
 	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."

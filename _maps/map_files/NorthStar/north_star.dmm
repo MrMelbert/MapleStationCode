@@ -54524,7 +54524,7 @@
 /area/station/science/breakroom)
 "nWM" = (
 /obj/structure/table,
-/obj/item/stack/medical/suture/emergency,
+/obj/item/stack/medical/suture/ekit,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
@@ -71110,7 +71110,7 @@
 /turf/open/floor/iron/white/textured,
 /area/station/medical/office)
 "ssx" = (
-/obj/item/stack/medical/suture/emergency,
+/obj/item/stack/medical/suture/ekit,
 /obj/item/stack/medical/gauze/improvised{
 	pixel_y = 12
 	},
