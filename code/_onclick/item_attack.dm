@@ -216,7 +216,7 @@
 	if(item_flags & NOBLUDGEON)
 		return FALSE
 
-	if(damtype != STAMINA && force && HAS_TRAIT(user, TRAIT_PACIFISM))
+	if(IS_DISABLING_DAMAGE(damtype) && force && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return FALSE
 
@@ -380,13 +380,13 @@
 	return FALSE
 
 /mob/living/silicon/robot/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
-	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
+	if(damage_done > 0 && IS_PHYSICAL_DAMAGE(attacking_item.damtype) && stat != DEAD)
 		spark_system.start()
 		. = TRUE
 	return ..() || .
 
 /mob/living/silicon/ai/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
-	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
+	if(damage_done > 0 && IS_PHYSICAL_DAMAGE(attacking_item.damtype) && stat != DEAD)
 		spark_system.start()
 		. = TRUE
 	return ..() || .
