@@ -349,7 +349,7 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 20
+	heal_brute = 25
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
