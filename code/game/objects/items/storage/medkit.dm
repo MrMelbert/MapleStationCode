@@ -120,13 +120,16 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer/simple = 1,
+		/obj/item/hemostat/tweezers = 1,
+		/obj/item/razor/scissors/medical = 1,
 		/obj/item/stack/medical/gauze = 1,
 		/obj/item/stack/medical/bandage = 2,
-		/obj/item/stack/medical/ointment = 1,
-		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
-		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/stack/medical/ointment/ekit = 1,
 		/obj/item/shock_blanket/emergency = 1,
+		/obj/item/temperature_pack/cold = 1,
+		/obj/item/reagent_containers/hypospray/medipen/ekit = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
 	)
 	generate_items_inside(items_inside,src)
 

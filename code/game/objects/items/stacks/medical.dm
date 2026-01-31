@@ -352,7 +352,7 @@
 	heal_brute = 25
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
-	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
+	grind_results = list(/datum/reagent/medicine/c2/libital = 3)
 	merge_type = /obj/item/stack/medical/bruise_pack
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
@@ -618,13 +618,16 @@
 	heal_burn = 5
 	flesh_regeneration = 5
 	sanitization = 1
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/c2/lenturi = 3)
 	merge_type = /obj/item/stack/medical/ointment
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [user.p_do(TRUE)]n't [user.p_they()] know that stuff is toxic?"))
 	return TOXLOSS
+
+/obj/item/stack/medical/ointment/ekit
+	amount = 4
 
 /obj/item/stack/medical/mesh
 	name = "regenerative mesh"
