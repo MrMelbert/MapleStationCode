@@ -8,7 +8,7 @@
 			/datum/element/temperature_pack, \
 			pain_heal_rate = 0.3, \
 			pain_modifier_on_limb = 0.9, \
-			temperature_change = -2, \
+			temperature_change = COLD_DRINK, \
 		)
 
 /// Temperature packs (heat packs, cold packs). Apply to hurt limb to un-hurty.
