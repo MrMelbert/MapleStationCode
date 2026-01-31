@@ -9,6 +9,7 @@
 	state_open = TRUE
 	interaction_flags_mouse_drop = NEED_DEXTERITY
 	circuit = /obj/item/circuitboard/machine/sleeper
+	examine_feedback_on_ui = TRUE
 
 	payment_department = ACCOUNT_MED
 	fair_market_price = 5

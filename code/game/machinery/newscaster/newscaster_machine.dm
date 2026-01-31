@@ -13,6 +13,7 @@
 	max_integrity = 200
 	integrity_failure = 0.25
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_REQUIRES_LITERACY
+	examine_feedback_on_ui = TRUE
 	///Reference to the currently logged in user.
 	var/datum/bank_account/current_user
 	///Name of the logged in user.
