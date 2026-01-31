@@ -304,6 +304,80 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
+/obj/item/reagent_containers/chem_pack/saline
+	name = "saline-glucose pack"
+	desc = "A plastic pressure bag filled with a sterile saline-glucose solution for IV administration. \
+		Used to treat hypovolemia and dehydration."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/saline/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume)
+
+/obj/item/reagent_containers/chem_pack/potassium_iodide
+	name = "potassium iodide pack"
+	desc = "A plastic pressure bag filled with a potassium iodide solution for IV administration. \
+		Used to treat radiation exposure."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/potassium_iodide/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/potass_iodide, volume * 0.5)
+
+/obj/item/reagent_containers/chem_pack/epinephrine
+	name = "epinephrine pack"
+	desc = "A plastic pressure bag filled with a epinephrine solution, diluted with saline-glucose, for IV administration. \
+		Used to treat severe allergic reactions, shock, or cardiac arrest."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/epinephrine/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/epinephrine, volume * 0.25)
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume * 0.25)
+
+/obj/item/reagent_containers/chem_pack/morphine
+	name = "morphine pack"
+	desc = "A plastic pressure bag filled with a morphine solution, diluted with paracetamol, for IV administration. \
+		Used to treat major to severe pain or shock."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/morphine/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/painkiller/morphine, volume * 0.2)
+	reagents.add_reagent(/datum/reagent/medicine/painkiller/paracetamol, volume * 0.3)
+
+/obj/item/reagent_containers/chem_pack/ondasteron
+	name = "ondansetron pack"
+	desc = "A plastic pressure bag filled with an ondansetron solution, diluted with saline-glucose, for IV administration. \
+		Used to combat nausea caused by other strong painkillers or surgical anesthesia."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/ondasteron/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/ondansetron, volume * 0.25)
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume * 0.25)
+
+/obj/item/reagent_containers/chem_pack/vitamins
+	name = "vitamin pack"
+	desc = "A plastic pressure bag filled with a mixture of vitamins and minerals for IV administration. \
+		Used to treat malnutrition and vitamin deficiencies, particularly for patients incapable of (or unwilling to) eat."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/vitamins/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/consumable/nutriment/vitamin, volume * 0.1)
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, volume * 0.4)
+
+/obj/item/reagent_containers/chem_pack/syriniver
+	name = "syriniver pack"
+	desc = "A plastic pressure bag filled with a syriniver solution for IV administration. \
+		Used to treat toxin exposure."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/syriniver/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/c2/syriniver, volume * 0.5)
+
 /datum/armor/shock_blanket
 	laser = 20
 	energy = 20
@@ -482,6 +556,15 @@
 				/obj/item/storage/pill_bottle/painkillers = 2,
 			)
 		),
+	)
+	added_premium = list(
+		/obj/item/reagent_containers/chem_pack/epinephrine = 2,
+		/obj/item/reagent_containers/chem_pack/morphine = 2,
+		/obj/item/reagent_containers/chem_pack/ondasteron = 2,
+		/obj/item/reagent_containers/chem_pack/potassium_iodide = 2,
+		/obj/item/reagent_containers/chem_pack/syriniver = 2,
+		/obj/item/reagent_containers/chem_pack/vitamins = 1,
+		/obj/item/reagent_containers/chem_pack/saline = 3,
 	)
 
 /obj/machinery/vending/medical

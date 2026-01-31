@@ -221,12 +221,12 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/storage/pill_bottle/multiver/less = 1,
 		/obj/item/reagent_containers/syringe/syriniver = 3,
+		/obj/item/storage/pill_bottle/multiver/less = 1,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
 		/obj/item/reagent_containers/hypospray/medipen/penacid = 1,
 		/obj/item/healthanalyzer/simple/disease = 1,
-		)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/o2
@@ -248,9 +248,11 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/syringe/convermol = 3,
+		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
-		/obj/item/storage/pill_bottle/iron = 1)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/brute
@@ -272,8 +274,8 @@
 		return
 	var/static/list/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/suture = 1,
 		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
 		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,
 	)
