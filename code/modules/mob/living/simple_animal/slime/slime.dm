@@ -169,7 +169,9 @@
 	cut_overlays()
 	var/icon_text = "[slime_type.colour]-[life_stage]"
 	icon_dead = "[icon_text]-dead"
-	if(stat != DEAD)
+	if(cores <= 0)
+		icon_state = "[slime_type.colour]-cut"
+	else if(stat != DEAD)
 		icon_state = icon_text
 		if(current_mood && !stat)
 			add_overlay("aslime-[current_mood]")

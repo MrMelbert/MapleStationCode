@@ -103,7 +103,7 @@
 	var/temp_bleed = 0
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
+		var/iter_bleed_rate = iter_part.cached_bleed_rate
 		temp_bleed += iter_bleed_rate * seconds_per_tick
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
@@ -119,18 +119,18 @@
 		iter_part.update_part_wound_overlay()
 
 /// Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/proc/bleed(amt, drip = TRUE)
+/mob/living/proc/bleed(amt, leave_pool = TRUE)
 	return
 
-/mob/living/carbon/bleed(amt, drip = TRUE)
+/mob/living/carbon/bleed(amt, leave_pool = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 
-	if(drip && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
+	if(leave_pool && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
-/mob/living/carbon/human/bleed(amt, drip = TRUE)
+/mob/living/carbon/human/bleed(amt, leave_pool = TRUE)
 	amt *= physiology.bleed_mod
 	return ..()
 
@@ -142,7 +142,7 @@
 	var/bleed_amt = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/iter_bodypart = X
-		bleed_amt += iter_bodypart.get_modified_bleed_rate()
+		bleed_amt += iter_bodypart.cached_bleed_rate
 	return bleed_amt
 
 /mob/living/carbon/human/get_bleed_rate()
@@ -278,7 +278,7 @@
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
-	return get_blood_type()?.make_blood_splatter(src, blood_turf, small_drip)
+	return get_blood_type()?.make_blood_splatter(blood_turf, small_drip, get_blood_dna_list(), get_static_viruses())
 
 /mob/living/proc/do_splatter_effect(splat_dir = pick(GLOB.cardinals))
 	var/obj/effect/temp_visual/dir_setting/bloodsplatter/splatter = new(get_turf(src), splat_dir)

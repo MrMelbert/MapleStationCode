@@ -474,12 +474,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/to_smoke = smoke_all ? (reagents.total_volume * (dragtime / smoketime)) : REAGENTS_METABOLISM
 	// Check that we are worn by a carbon with lungs, and either in their mask slot or in the contents of their mask slot
 	// If all of those are true give them the reagents. If any fail just delete the reagents straight up.
-	if(!can_be_smoked_by(smoker) || !reagents.trans_to(smoker, to_smoke, methods = INGEST, ignore_stomach = TRUE))
+	if(!can_be_smoked_by(smoker) || !reagents.trans_to(smoker, to_smoke, methods = INHALE, ignore_stomach = TRUE))
 		reagents.remove_any(to_smoke)
 		return
 
 	how_long_have_we_been_smokin += seconds_per_tick * (1 SECONDS)
-	reagents.expose(smoker, INGEST, min(to_smoke / reagents.total_volume, 1))
+	reagents.expose(smoker, INHALE, min(to_smoke / reagents.total_volume, 1))
 	smoker.adjustOrganLoss(ORGAN_SLOT_LUNGS, lung_harm * (HAS_TRAIT(smoker, TRAIT_SMOKER) ? 0.5 : 1), required_organ_flag = ORGAN_ORGANIC)
 
 /obj/item/cigarette/process(seconds_per_tick)
@@ -1354,7 +1354,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		e.start(src)
 		qdel(src)
 
-	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INGEST, ignore_stomach = TRUE))
+	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INHALE, ignore_stomach = TRUE))
 		reagents.remove_any(REAGENTS_METABOLISM)
 
 /obj/item/vape/process(seconds_per_tick)

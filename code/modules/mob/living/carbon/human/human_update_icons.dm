@@ -1115,7 +1115,7 @@ generate/load female uniform sprites matching all previously decided variables
 	if(!istype(wearer) || !(wearer.bodyshape & BODYSHAPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 
-	var/static/list/icon/masks_and_shading
+	var/static/list/list/icon/masks_and_shading
 	if(isnull(masks_and_shading))
 		masks_and_shading = list(
 			"[NORTH]" = list(

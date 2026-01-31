@@ -59,7 +59,7 @@
 
 			exposed_mob.ForceContractDisease(strain)
 
-		else if((methods & VAPOR) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
+		else if((methods & (VAPOR|INHALE)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
 			if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_LUNGS))
 				continue
 
@@ -68,7 +68,7 @@
 		else if((methods & TOUCH) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
 			exposed_mob.ContactContractDisease(strain)
 
-	if(length(data?["resistances"]) && (methods & (INGEST|INJECT)))
+	if(length(data?["resistances"]) && (methods & (INGEST|INJECT|INHALE)))
 		for(var/datum/disease/infection as anything in exposed_mob.diseases)
 			if(infection.GetDiseaseID() in data["resistances"])
 				if(!infection.bypasses_immunity)
@@ -1179,7 +1179,7 @@
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.9
@@ -1493,7 +1493,7 @@
 
 /datum/reagent/cyborg_mutation_nanomachines/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/robot(), FALSE, TRUE)
 
 /datum/reagent/xenomicrobes
@@ -1505,7 +1505,7 @@
 
 /datum/reagent/xenomicrobes/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/xeno(), FALSE, TRUE)
 
 /datum/reagent/fungalspores
@@ -1518,7 +1518,7 @@
 
 /datum/reagent/fungalspores/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/snail
@@ -1531,7 +1531,7 @@
 
 /datum/reagent/snail/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/gastrolosis(), FALSE, TRUE)
 
 /datum/reagent/fluorosurfactant//foam precursor
@@ -1628,10 +1628,13 @@
 
 /datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
-	if(methods & VAPOR)
+	if(methods & (VAPOR|INHALE))
 		// apply 2 seconds of drowsiness per unit applied, with a min duration of 4 seconds
 		var/drowsiness_to_apply = max(round(reac_volume, 1) * 2 SECONDS, 4 SECONDS)
 		exposed_mob.adjust_drowsiness(drowsiness_to_apply)
+	if(methods & INHALE)
+		exposed_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25 * reac_volume, required_organ_flag = affected_organ_flags)
+		exposed_mob.adjust_hallucinations(10 SECONDS * reac_volume)
 
 /datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
@@ -2667,7 +2670,7 @@
 
 /datum/reagent/gondola_mutation_toxin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new gondola_disease, FALSE, TRUE)
 
 
