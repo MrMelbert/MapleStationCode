@@ -86,13 +86,14 @@
 
 /datum/chemical_reaction/medicine/glutamic_acid
 	results = list(/datum/reagent/glutamic_acid = 3)
-	required_reagents = list(/datum/reagent/consumable/flour = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/ammonia = 1)
+	required_reagents = list(/datum/reagent/consumable/flour = 1, /datum/reagent/consumable/caramel = 1, /datum/reagent/ammonia = 1)
 	required_catalysts = list(/datum/reagent/toxin/acid = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_COMPONENT
-	optimal_temp = 400
 	optimal_ph_min = 2
 	optimal_ph_max = 4
-	required_temp = 450
+	required_temp = 425
+	optimal_temp = 450
+	overheat_temp = 475
 
 /datum/chemical_reaction/medicine/coagulant
 	results = list(/datum/reagent/medicine/coagulant = 3)
