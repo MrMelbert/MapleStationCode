@@ -30,7 +30,7 @@
 	required_temp = 250
 	optimal_temp = 200
 	overheat_temp = 50
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPONENT
 
 /datum/chemical_reaction/medicine/aspirin_para_coffee
 	results = list(/datum/reagent/medicine/painkiller/aspirin_para_coffee = 3)
@@ -83,3 +83,20 @@
 	results = list(/datum/reagent/medicine/painkiller/local_anesthetic/lidocaine = 3)
 	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/hydrogen = 1, /datum/reagent/consumable/salt  = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG | REACTION_TAG_PAIN
+
+/datum/chemical_reaction/medicine/glutamic_acid
+	results = list(/datum/reagent/glutamic_acid = 3)
+	required_reagents = list(/datum/reagent/consumable/flour = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/ammonia = 1)
+	required_catalysts = list(/datum/reagent/toxin/acid = 1)
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_COMPONENT
+	optimal_temp = 400
+	optimal_ph_min = 2
+	optimal_ph_max = 4
+	required_temp = 450
+
+/datum/chemical_reaction/medicine/coagulant
+	results = list(/datum/reagent/medicine/coagulant = 3)
+	// i based this off of the irl recipe for "thrombin" which is made from glutamic acid, potassium, and calcium
+	// but we don't have calcium, and using milk would be a bit goofy, so sugar will do
+	required_reagents = list(/datum/reagent/glutamic_acid = 1, /datum/reagent/potassium = 1, /datum/reagent/consumable/sugar = 1)
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OXY | REACTION_TAG_OTHER

@@ -77,7 +77,7 @@
 	if(!targeted_bodypart)
 		target.balloon_alert(user, "no [parse_zone(targeted_zone)]!")
 		return
-	if(!IS_ORGANIC_BODYPART(targeted_bodypart))
+	if(!IS_ORGANIC_LIMB(targeted_bodypart))
 		target.balloon_alert(user, "not organic!")
 		return
 	if(!do_after(user, 0.5 SECONDS, target))

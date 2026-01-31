@@ -136,6 +136,11 @@
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
 
+// Frozen item temperature pack defaults
+#define FROZEN_ITEM_PAIN_RATE 2
+#define FROZEN_ITEM_PAIN_MODIFIER 0.5
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -1 KELVIN
+
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)
 #define PAINSHOCK "traumatic shock"

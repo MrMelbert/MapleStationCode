@@ -1,10 +1,5 @@
 // -- Implements and equipment to help reduce pain. --
 // Temperature pack stuff - things you can press to people to help reduce pain.
-/// Heal rate and modifier for generic items that are frozen.
-#define FROZEN_ITEM_PAIN_RATE 2
-#define FROZEN_ITEM_PAIN_MODIFIER 0.5
-#define FROZEN_ITEM_TEMPERATURE_CHANGE -1 KELVIN
-
 // Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/cup/glass/bottle/beer/Initialize(mapload)
 	. = ..()

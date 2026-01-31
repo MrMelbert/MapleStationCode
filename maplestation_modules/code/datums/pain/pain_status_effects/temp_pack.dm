@@ -52,7 +52,7 @@
 			return FALSE
 
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
-	if(!held_bodypart || !IS_ORGANIC_BODYPART(held_bodypart))
+	if(!held_bodypart || !IS_ORGANIC_LIMB(held_bodypart))
 		return FALSE
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
