@@ -86,6 +86,7 @@
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = TRUE
 	update_appearance()
+	playsound(src, 'sound/effects/wounds/crack2.ogg', 25, TRUE)
 
 /**
  * Deactivate [src], making it unusable, and sending signal [COMSIG_TEMPERATURE_PACK_EXPIRED].
