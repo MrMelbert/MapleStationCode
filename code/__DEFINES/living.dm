@@ -137,9 +137,9 @@
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
 
 // Frozen item temperature pack defaults
-#define FROZEN_ITEM_PAIN_RATE 2
-#define FROZEN_ITEM_PAIN_MODIFIER 0.5
-#define FROZEN_ITEM_TEMPERATURE_CHANGE -1 KELVIN
+#define FROZEN_ITEM_PAIN_RATE 0.1 // so cold that it barely heals
+#define FROZEN_ITEM_PAIN_MODIFIER 0.25
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -2 KELVIN
 
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)
