@@ -23,13 +23,13 @@
 	src.pain_modifier_on_limb = pain_modifier_on_limb
 	src.temperature_change = temperature_change
 
-	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY, PROC_REF(try_apply_to_limb))
+	RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(try_apply_to_limb))
 	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(get_examine_text))
 
 /datum/element/temperature_pack/Detach(obj/target)
 	. = ..()
 	UnregisterSignal(target, list(
-		COMSIG_ITEM_ATTACK_SECONDARY,
+		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 		COMSIG_ATOM_EXAMINE,
 	))
 
@@ -45,52 +45,50 @@
 /**
  * Try to apply [source] item onto [target] mob from [user].
  */
-/datum/element/temperature_pack/proc/try_apply_to_limb(obj/item/source, atom/target, mob/user, params)
+/datum/element/temperature_pack/proc/try_apply_to_limb(obj/item/source, mob/user, atom/target, params)
 	SIGNAL_HANDLER
 
-	. = SECONDARY_ATTACK_CALL_NORMAL // Normal operations
+	if(!isliving(target))
+		return NONE
 
-	if(!ishuman(target))
-		return
-
-	var/mob/living/carbon/human/target_mob = target
+	var/mob/living/target_mob = target
 	var/targeted_zone = target_mob.zone_selected
-
 	if(!target_mob.pain_controller)
-		return
+		return NONE
 	if(target_mob.stat == DEAD)
 		target_mob.balloon_alert(user, "[target_mob.p_theyre()] dead!")
-		return
-
-	. = SECONDARY_ATTACK_CONTINUE_CHAIN // Past this point, no afterattacks
+		return ITEM_INTERACT_BLOCKING
 
 	for(var/datum/status_effect/temperature_pack/pre_existing_effect in target_mob.status_effects)
 		if(pre_existing_effect.pressed_item == source)
-			return
+			return ITEM_INTERACT_BLOCKING // Already applying this item
 		if(pre_existing_effect.targeted_zone == targeted_zone)
 			target_mob.balloon_alert(user, "something's pressed there!")
-			return
-
-	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN // And past THIS point, no attack
+			return ITEM_INTERACT_BLOCKING // Already an effect on this limb
 
 	INVOKE_ASYNC(src, PROC_REF(apply_to_limb), source, target, user, targeted_zone)
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Actually apply [parent] temperature pack to [targeted_zone] limb on [target] mob from [user].
  */
-/datum/element/temperature_pack/proc/apply_to_limb(obj/item/parent, mob/living/carbon/target, mob/user, targeted_zone)
+/datum/element/temperature_pack/proc/apply_to_limb(obj/item/parent, mob/living/target, mob/user, targeted_zone)
+	var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(targeted_zone)
+	if(!targeted_bodypart)
+		target.balloon_alert(user, "no [parse_zone(targeted_zone)]!")
+		return
+	if(!IS_ORGANIC_BODYPART(targeted_bodypart))
+		target.balloon_alert(user, "not organic!")
+		return
 	if(!do_after(user, 0.5 SECONDS, target))
 		return
 
-	var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(targeted_zone)
 	user.visible_message(
 		span_notice("[user] press [parent] against [target == user ? "[target.p_their()]" : "[target]'s" ] [targeted_bodypart.plaintext_zone]."),
 		span_notice("You press [parent] against [target == user ? "your" : "[target]'s" ] [targeted_bodypart.plaintext_zone].")
 	)
 
-	var/selected_effect = temperature_change > 0 \
-		? /datum/status_effect/temperature_pack/heat \
-		: /datum/status_effect/temperature_pack/cold
+	var/selected_effect = temperature_change > 0 ? /datum/status_effect/temperature_pack/heat : /datum/status_effect/temperature_pack/cold
 
 	target.apply_status_effect(
 		selected_effect,

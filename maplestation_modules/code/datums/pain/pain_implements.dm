@@ -3,33 +3,18 @@
 /// Heal rate and modifier for generic items that are frozen.
 #define FROZEN_ITEM_PAIN_RATE 2
 #define FROZEN_ITEM_PAIN_MODIFIER 0.5
-#define FROZEN_ITEM_TEMPERATURE_CHANGE -5
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -1 KELVIN
 
 // Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/cup/glass/bottle/beer/Initialize(mapload)
 	. = ..()
 	if(reagents.get_reagent_amount(/datum/reagent/consumable/ethanol/beer) > 1)
-		AddElement(/datum/element/temperature_pack, \
+		AddElement( \
+			/datum/element/temperature_pack, \
 			pain_heal_rate = 0.3, \
 			pain_modifier_on_limb = 0.9, \
-			temperature_change = -2)
-
-// Frozen items become usable temperature packs.
-/datum/element/frozen/Attach(datum/target)
-	. = ..()
-	if(. == ELEMENT_INCOMPATIBLE)
-		return
-	if(!isitem(target))
-		return
-
-	target.AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
-
-/datum/element/frozen/Detach(datum/source, ...)
-	. = ..()
-	if(!isitem(source))
-		return
-
-	source.RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+			temperature_change = -2, \
+		)
 
 /// Temperature packs (heat packs, cold packs). Apply to hurt limb to un-hurty.
 /obj/item/temperature_pack
@@ -100,6 +85,7 @@
  * Activate [src] from [user], making it into a temperature pack that can be used, that expires in 5 minutes.
  */
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
+	SEND_SIGNAL(src, COMISG_TEMPERATURE_PACK_ENABLED)
 	addtimer(CALLBACK(src, PROC_REF(deactivate_pack)), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
@@ -118,21 +104,21 @@
 	desc = "A used up [name]. It's no use to anyone anymore."
 	update_appearance()
 
-// Head packs have a stronger modifier, but heals less.
+// Heat packs heal pain directly
 /obj/item/temperature_pack/heat
 	name = "heat pack"
 	desc = "A heat pack. Crack it to turn it on and apply it to an aching limb to reduce joint stress and moderate pain."
-	temperature_change = 5
-	pain_heal_amount = 2
-	pain_limb_modifier = 0.5
+	temperature_change = 1 KELVIN
+	pain_heal_amount = 3
+	pain_limb_modifier = 0.8
 
-// Cold packs heal more, but have a weaker modifier.
+// Cold packs cause the limb to go numb - combined with a mild painkiller like paracetamol and the limb loses feeling entirely
 /obj/item/temperature_pack/cold
 	name = "cold pack"
 	desc = "A cold pack. Crack it on and apply it to a hurt limb to abate sharp pain."
-	temperature_change = -5
-	pain_heal_amount = 3
-	pain_limb_modifier = 0.75
+	temperature_change = -1 KELVIN
+	pain_heal_amount = 1
+	pain_limb_modifier = 0.5
 
 /obj/item/reagent_containers/pill/aspirin
 	name = "aspirin pill"

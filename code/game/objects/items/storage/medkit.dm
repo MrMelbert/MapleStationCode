@@ -97,8 +97,7 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/bruise_pack = 1,
-		/obj/item/stack/medical/suture = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/reagent_containers/hypospray/medipen/morphine = 1,
@@ -122,7 +121,7 @@
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer/simple = 1,
 		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture/emergency = 1,
+		/obj/item/stack/medical/bandage = 2,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
@@ -273,7 +272,7 @@
 		return
 	var/static/list/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/storage/pill_bottle/probital = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
 		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,

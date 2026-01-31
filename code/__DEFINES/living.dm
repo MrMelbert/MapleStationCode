@@ -19,6 +19,8 @@
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack is applied to a mob. (source = obj/item/temperature_pack)
+#define COMISG_TEMPERATURE_PACK_ENABLED "temperature_pack_enabled"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 

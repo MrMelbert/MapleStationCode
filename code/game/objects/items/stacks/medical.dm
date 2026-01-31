@@ -349,7 +349,7 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 20
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
@@ -591,15 +591,6 @@
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
-
-/obj/item/stack/medical/suture/emergency
-	name = "emergency sutures"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	singular_name = "emergency suture"
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
 
 /obj/item/stack/medical/suture/medicated
 	name = "medicated sutures"
