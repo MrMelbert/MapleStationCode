@@ -802,8 +802,15 @@
 			computer.table = src
 			break
 
-	RegisterSignal(loc, COMSIG_ATOM_ENTERED, PROC_REF(mark_patient))
-	RegisterSignal(loc, COMSIG_ATOM_EXITED, PROC_REF(unmark_patient))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(mark_patient),
+		COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON = PROC_REF(mark_patient),
+		COMSIG_ATOM_EXITED = PROC_REF(unmark_patient),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+	for (var/mob/living/carbon/potential_patient in loc)
+		mark_patient(potential_patient)
 
 /obj/structure/table/optable/Destroy()
 	if(computer && computer.table == src)
@@ -850,6 +857,14 @@
 /obj/structure/table/optable/make_climbable()
 	AddElement(/datum/element/elevation, pixel_shift = 12)
 
+// surgical tools cannot be placed on the op table while a patient is also on it
+/obj/structure/table/optable/table_place_act(mob/living/user, obj/item/tool, list/modifiers)
+	if(!isnull(patient) && (tool.item_flags & SURGICAL_TOOL))
+		tool.melee_attack_chain(user, patient, modifiers)
+		return ITEM_INTERACT_SUCCESS
+
+	return ..()
+
 /obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)
 	pushed_mob.set_resting(TRUE, TRUE)
@@ -858,21 +873,23 @@
 ///Align the mob with the table when buckled.
 /obj/structure/table/optable/post_buckle_mob(mob/living/buckled)
 	buckled.add_offsets(type, z_add = 6)
+	buckled.AddComponentFrom(type, /datum/component/free_operation)
 
 ///Disalign the mob with the table when unbuckled.
 /obj/structure/table/optable/post_unbuckle_mob(mob/living/buckled)
 	buckled.remove_offsets(type)
+	buckled.RemoveComponentSource(type, /datum/component/free_operation)
 
 /// Any mob that enters our tile will be marked as a potential patient. They will be turned into a patient if they lie down.
-/obj/structure/table/optable/proc/mark_patient(datum/source, mob/living/carbon/potential_patient)
+/obj/structure/table/optable/proc/mark_patient(datum/source, mob/living/potential_patient)
 	SIGNAL_HANDLER
 	if(!istype(potential_patient))
 		return
-	RegisterSignal(potential_patient, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(recheck_patient))
+	RegisterSignal(potential_patient, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(recheck_patient), TRUE)
 	recheck_patient(potential_patient) // In case the mob is already lying down before they entered.
 
 /// Unmark the potential patient.
-/obj/structure/table/optable/proc/unmark_patient(datum/source, mob/living/carbon/potential_patient)
+/obj/structure/table/optable/proc/unmark_patient(datum/source, mob/living/potential_patient)
 	SIGNAL_HANDLER
 	if(!istype(potential_patient))
 		return
@@ -888,16 +905,58 @@
 	if(patient && patient != potential_patient)
 		return
 
-	if(potential_patient.body_position == LYING_DOWN && potential_patient.loc == loc)
-		patient = potential_patient
+	if(IS_LYING_OR_CANNOT_LIE(potential_patient) && potential_patient.loc == loc)
+		set_patient(potential_patient)
 		return
 
 	// Find another lying mob as a replacement.
-	for (var/mob/living/carbon/replacement_patient in loc.contents)
-		if(replacement_patient.body_position == LYING_DOWN)
-			patient = replacement_patient
-			return
-	patient = null
+	var/found_replacement
+	for (var/mob/living/replacement_patient in loc)
+		if(!IS_LYING_OR_CANNOT_LIE(replacement_patient))
+			continue
+		if(iscarbon(found_replacement))
+			break
+		else if(isliving(found_replacement) && !iscarbon(replacement_patient))
+			continue // Prefer carbons over non-carbons.
+		found_replacement = replacement_patient
+
+	set_patient(found_replacement)
+
+/obj/structure/table/optable/proc/set_patient(mob/living/carbon/new_patient)
+	if (patient)
+		UnregisterSignal(patient, list(
+			SIGNAL_ADDTRAIT(TRAIT_READY_TO_OPERATE),
+			SIGNAL_REMOVETRAIT(TRAIT_READY_TO_OPERATE),
+			COMSIG_LIVING_BEING_OPERATED_ON,
+			COMSIG_LIVING_SURGERY_FINISHED,
+			COMSIG_LIVING_UPDATING_SURGERY_STATE,
+		))
+
+	patient = new_patient
+	update_appearance()
+	computer?.update_static_data_for_all_viewers()
+	if (!patient)
+		return
+	RegisterSignals(patient, list(
+		SIGNAL_ADDTRAIT(TRAIT_READY_TO_OPERATE),
+		SIGNAL_REMOVETRAIT(TRAIT_READY_TO_OPERATE),
+		COMSIG_LIVING_SURGERY_FINISHED,
+		COMSIG_LIVING_UPDATING_SURGERY_STATE,
+	), PROC_REF(on_surgery_change))
+	RegisterSignal(patient, COMSIG_LIVING_BEING_OPERATED_ON, PROC_REF(get_surgeries))
+
+/obj/structure/table/optable/proc/on_surgery_change(datum/source)
+	SIGNAL_HANDLER
+	update_appearance()
+	computer?.update_static_data_batched()
+
+/obj/structure/table/optable/proc/get_surgeries(datum/source, mob/living/surgeon, list/operations)
+	SIGNAL_HANDLER
+
+	if(isnull(computer))
+		return
+
+	operations |= computer.advanced_surgeries
 
 /*
  * Racks

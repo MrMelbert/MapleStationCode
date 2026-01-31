@@ -1140,7 +1140,7 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
-	if(damage > 0 || stamina > 0)
+	if(damage > 0 || stamina > 0 || pain > 0)
 		return TRUE
 
 	if(paralyze + stun + immobilize + knockdown > 0 SECONDS)

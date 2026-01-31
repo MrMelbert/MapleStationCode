@@ -105,3 +105,6 @@
 	mask = /obj/item/clothing/mask/facescarf
 	suit = /obj/item/clothing/suit/costume/poncho/sheriff
 	id_trim = /datum/id_trim/job/detective/sheriff
+
+/datum/outfit/job/detective/sheriff/get_types_to_preload()
+	return ..() - shoes // cowboy boots cause random ass runtimes due to spawning a snake in nullspace

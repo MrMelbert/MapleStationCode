@@ -492,7 +492,7 @@
 	return ..()
 
 /mob/living/simple_animal/bot/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
-	if(damage_done > 0 && attacking_item.damtype != STAMINA && stat != DEAD)
+	if(damage_done > 0 && IS_PHYSICAL_DAMAGE(attacking_item.damtype) && stat != DEAD)
 		do_sparks(5, TRUE, src)
 		. = TRUE
 	return ..() || .

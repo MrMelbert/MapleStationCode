@@ -248,7 +248,8 @@
 
 /datum/reagent/cryostylane/on_mob_add(mob/living/affected_mob, amount)
 	. = ..()
-	affected_mob.add_surgery_speed_mod(type, 1 + ((CRYO_SPEED_PREFACTOR * (1 - creation_purity)) + CRYO_SPEED_CONSTANT)) //10% - 30% slower
+	// Between a 1.1x and a 1.5x to surgery time depending on purity
+	affected_mob.add_surgery_speed_mod(type, 1 + ((CRYO_SPEED_PREFACTOR * (1 - creation_purity)) + CRYO_SPEED_CONSTANT), min(amount * 1 MINUTES, 5 MINUTES))
 	affected_mob.add_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
 	ADD_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 

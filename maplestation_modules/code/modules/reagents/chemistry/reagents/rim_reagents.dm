@@ -97,9 +97,8 @@
 
 	// Can cure wounds, too
 	if(SPT_PROB(6, seconds_per_tick))
-		var/list/shuffled_wounds = shuffle(user.all_wounds)
-		for(var/datum/wound/wound as anything in shuffled_wounds)
-			wound.remove_wound()
+		for(var/datum/wound/wound as anything in shuffle(user.all_wounds))
+			qdel(wound)
 			break
 
 	. = ..()
