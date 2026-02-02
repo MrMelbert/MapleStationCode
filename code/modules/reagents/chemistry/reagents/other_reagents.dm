@@ -1363,6 +1363,8 @@
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
 	exposed_obj.wash(clean_types)
+	if(QDELETED(exposed_obj))
+		return
 	exposed_obj.AddComponent( \
 		/datum/component/temporary_smell, \
 		duration = smell_type::duration, \
@@ -1390,9 +1392,11 @@
 
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
-	if(methods & (TOUCH|VAPOR))
-		exposed_mob.wash(clean_types)
-
+	if(!(methods & (TOUCH|VAPOR)))
+		return
+	exposed_mob.wash(clean_types)
+	if(QDELETED(exposed_mob))
+		return
 	exposed_mob.AddComponent( \
 		/datum/component/temporary_smell, \
 		duration = smell_type::duration, \

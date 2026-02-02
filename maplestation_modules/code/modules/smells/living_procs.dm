@@ -59,7 +59,7 @@
 
 	for(var/smell_effect_untyped, smell_intensity in collective_smells_with_gasses)
 		var/datum/smell/smell_effect = smell_effect_untyped
-		var/effective_intensity = smell_intensity - LAZYACCESS(recently_smelled, smell_effect) + tongue?.smell_sensitivity + (brain?.damage * -0.1)
+		var/effective_intensity = ceil(smell_intensity - LAZYACCESS(recently_smelled, smell_effect) + tongue?.smell_sensitivity + (brain?.damage * -0.1))
 		if(effective_intensity <= 0 || !smell_effect.can_mob_smell(src))
 			continue
 
@@ -84,6 +84,8 @@
 	for(var/i in 1 to length(all_smells))
 		var/datum/smell/smell_effect = all_smells[i]
 		var/smell_intensity = all_smells[smell_effect]
+		if(smell_intensity < 1)
+			continue
 		// subsequent smells have a chance to be ignored based on how strong the highest intensity smell is
 		if(i > 1 && prob(50 + highest_intensity - smell_intensity))
 			break
