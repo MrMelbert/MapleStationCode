@@ -12,6 +12,8 @@
 	if(!..())
 		return FALSE
 
+	// Limiting it to a selection of biotypes for now
+	// so I don't have to think about "can rocks smell" or whatever
 	if(!(mob_biotypes & (MOB_ORGANIC|MOB_HUMANOID|MOB_ROBOTIC)))
 		return FALSE
 
@@ -31,15 +33,20 @@
 
 /// Attempt to smell things around us
 /mob/living/proc/smell_something()
+	if(!can_smell())
+		return
+
 	var/turf/open/smellable = get_turf(src)
 	if(!istype(smellable))
 		return
 
 	var/datum/gas_mixture/air = smellable.return_air()
 	var/total_moles = air?.total_moles()
+	// can't smell if there's no air
 	if(total_moles <= 0)
 		return
 
+	// the turf has its own smells affecting it, but we also need to factor in smells from gases present
 	var/list/collective_smells_with_gasses = LAZYLISTDUPLICATE(smellable.collective_smells)
 	var/pressuremod = 0
 	for(var/datum/gas/gas_type as anything in air.gases)
@@ -61,7 +68,7 @@
 	if(!LAZYLEN(collective_smells_with_gasses))
 		return
 
-	// all smells currently being experienced sorted by effective intensity
+	// collect all smells currently being experienced sorted by effective intensity
 	var/list/all_smells = list()
 	var/obj/item/organ/tongue/tongue = get_organ_by_type(__IMPLIED_TYPE__)
 	var/obj/item/organ/brain/brain = get_organ_by_type(__IMPLIED_TYPE__)
@@ -115,13 +122,21 @@
 
 /mob/living/carbon/human/death(gibbed, cause_of_death)
 	. = ..()
-	if(gibbed)
+	if(gibbed || HAS_TRAIT(src, TRAIT_NO_ORGAN_DECAY))
 		return
-	if(HAS_TRAIT(src, TRAIT_NO_ORGAN_DECAY))
+	// ancient bodies found in ruins or space shouldn't be giving off fresh decay smells
+	// of course this doesn't catch *all* of those cases but it should be good enough...
+	if(!SSticker.HasRoundStarted())
 		return
-	// melbert todo make this more complicated later
-	AddElement(/datum/element/smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 2)
 
-/mob/living/carbon/human/revive(full_heal_flags, excess_healing, force_grab_ghost)
-	. = ..()
-	RemoveElement(/datum/element/smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 2)
+	AddComponent( \
+		/datum/component/complex_smell, \
+		duration = 30 MINUTES, \
+		smell = /datum/smell/decay, \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 3, \
+		clear_signals = list( \
+			COMSIG_MOB_STATCHANGE, \
+			SIGNAL_ADDTRAIT(TRAIT_NO_ORGAN_DECAY), \
+		), \
+	)

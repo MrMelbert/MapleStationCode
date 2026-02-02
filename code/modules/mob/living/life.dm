@@ -60,7 +60,7 @@
 		handle_gravity(seconds_per_tick, times_fired)
 
 	if(stat != DEAD)
-		if(COOLDOWN_FINISHED(src, smell_cd) && !isnull(mind) && can_smell())
+		if(COOLDOWN_FINISHED(src, smell_cd) && !isnull(mind))
 			smell_something()
 		body_temperature_alerts()
 

@@ -87,7 +87,7 @@
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	AddElement(/datum/element/easy_ignite) // NON-MODULE CHANGE
-	AddElement(/datum/element/smell, /datum/smell/oil, SMELL_INTENSITY_STRONG, 2) // NON-MODULE CHANGE
+	AddElement(/datum/element/simple_smell, /datum/smell/oil, SMELL_INTENSITY_STRONG, 2) // NON-MODULE CHANGE
 	add_blood_DNA(list("CRUDE OIL" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
 
 /obj/effect/decal/cleanable/oil/streak

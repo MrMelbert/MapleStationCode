@@ -90,11 +90,8 @@
 		baked_item.fire_act(1000) //Hot hot hot!
 
 		if(SPT_PROB(10, seconds_per_tick))
-			var/list/asomnia_hadders = list()
-			for(var/mob/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, src))
-				if(!smeller.can_smell())
-					asomnia_hadders += smeller
-			visible_message(span_danger("You smell a burnt smell coming from [src]!"), ignored_mobs = asomnia_hadders)
+			new /obj/effect/abstract/smell/oven/bad(loc)
+
 	set_smoke_state(worst_cooked_food_state)
 	update_appearance()
 	use_energy(active_power_usage)

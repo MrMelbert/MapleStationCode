@@ -477,8 +477,7 @@
 
 /datum/emote/living/sniff/run_emote(mob/living/user, params, type_override, intentional)
 	. = ..()
-	if(user.can_smell())
-		user.smell_something()
+	user.smell_something()
 
 /datum/emote/living/snore
 	key = "snore"

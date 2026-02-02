@@ -122,3 +122,6 @@
 
 /datum/smell/burnt_food/on_smell(mob/living/whom, intensity)
 	whom.add_mood_event("burnt-food-aroma", /datum/mood_event/burnt_food_aroma)
+
+/datum/smell/burnt_food/fryer
+	text = "something acrid"

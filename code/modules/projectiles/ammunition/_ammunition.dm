@@ -149,7 +149,7 @@
 
 /obj/item/ammo_casing/proc/is_spent(mapload = FALSE)
 	if(!mapload)
-		AddComponent(/datum/component/temporary_smell, \
+		AddComponent(/datum/component/complex_smell, \
 			duration = 4 MINUTES, \
 			smell = "gunpowder", \
 			intensity = SMELL_INTENSITY_FAINT, \

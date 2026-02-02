@@ -137,7 +137,14 @@
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
 	if(item_flags & NO_BLOOD_ON_ITEM)
 		return FALSE
-	return ..()
+	. = ..()
+	AddComponent( \
+		/datum/component/complex_smell, \
+		duration = 30 SECONDS, \
+		smell = /datum/smell/blood, \
+		intensity = SMELL_INTENSITY_WEAK, \
+		radius = 3, \
+	)
 
 // NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
@@ -206,6 +213,13 @@
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		if(dirty_hands)
 			blood_in_hands = rand(2, 4)
+		AddComponent( \
+			/datum/component/complex_smell, \
+			duration = 30 SECONDS, \
+			smell = /datum/smell/blood, \
+			intensity = SMELL_INTENSITY_WEAK, \
+			radius = 2, \
+		)
 
 	cached_blood_dna_color = null
 	update_clothing(slots_to_bloody)

@@ -17,9 +17,12 @@
 		else
 			stack_trace("Invalid smell input passed to get_smell: [smell || "null"]")
 
-/// The actual datum that handles emitting a smell from an atom
-/// NB: Currently nested contents don't propagate smell out to turf. Maybe later
-/datum/element/smell
+/**
+ * Smellement
+ *
+ * The actual element that applies a smell to an atom
+ */
+/datum/element/simple_smell
 	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH_ON_HOST_DESTROY
 	argument_hash_start_idx = 2
 
@@ -30,7 +33,7 @@
 	/// How big the smell radius is
 	var/radius
 
-/datum/element/smell/Attach(datum/target, smell = "stink", intensity = 1, radius = 2, category)
+/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = 1, radius = 2, category)
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
@@ -45,14 +48,14 @@
 		mark_turfs(target, atom_target.loc)
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(update_turfs))
 
-/datum/element/smell/Detach(datum/target)
+/datum/element/simple_smell/Detach(datum/target)
 	. = ..()
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 	var/atom/atom_target = target
 	if(isturf(atom_target.loc))
 		unmark_turfs(target, atom_target.loc)
 
-/datum/element/smell/proc/update_turfs(atom/movable/source, atom/old_loc)
+/datum/element/simple_smell/proc/update_turfs(atom/movable/source, atom/old_loc)
 	SIGNAL_HANDLER
 
 	if(isturf(old_loc))
@@ -64,13 +67,13 @@
 #define CALCULATE_SMELL_INTENSITY(base_intensity, center_turf, target_turf, radius) \
 	clamp(base_intensity * (get_dist(center_turf, target_turf) / max(1, radius)), SMELL_INTENSITY_FAINT, base_intensity)
 
-/datum/element/smell/proc/mark_turfs(atom/source, atom/center)
-	for(var/turf/open/nearby in RANGE_TURFS(radius, center))
+/datum/element/simple_smell/proc/mark_turfs(atom/source, atom/center)
+	for(var/turf/open/nearby in view(radius, center))
 		LAZYINITLIST(nearby.collective_smells)
 		nearby.collective_smells[smell] += CALCULATE_SMELL_INTENSITY(intensity, center, nearby, radius)
 
-/datum/element/smell/proc/unmark_turfs(atom/source, atom/center)
-	for(var/turf/open/nearby in RANGE_TURFS(radius, center))
+/datum/element/simple_smell/proc/unmark_turfs(atom/source, atom/center)
+	for(var/turf/open/nearby in view(radius, center))
 		if(!LAZYLEN(nearby.collective_smells)) // ??
 			continue
 

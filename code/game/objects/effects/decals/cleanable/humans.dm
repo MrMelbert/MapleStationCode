@@ -46,7 +46,7 @@
 	else if(can_dry)
 		START_PROCESSING(SSblood_drying, src)
 		// update_atom_colour() // this is already called by parent via add_atom_colour
-		AddElement(/datum/element/smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
+		AddElement(/datum/element/simple_smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
@@ -155,7 +155,7 @@
 	update_appearance()
 	update_atom_colour()
 	STOP_PROCESSING(SSblood_drying, src)
-	RemoveElement(/datum/element/smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
+	RemoveElement(/datum/element/simple_smell, /datum/smell/blood, BLOOD_SMELL_INTENSITY(src), BLOOD_SMELL_RADIUS(src))
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/lazy_init_reagents()
@@ -442,7 +442,7 @@
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
-	AddElement(/datum/element/smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 1)
+	AddElement(/datum/element/simple_smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 1)
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drop of blood"

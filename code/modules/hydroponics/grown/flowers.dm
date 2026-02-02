@@ -34,7 +34,7 @@
 
 /obj/item/food/grown/poppy/Initialize(mapload, obj/item/seeds/new_seed)
 	. = ..()
-	AddElement(/datum/element/smell, "flowers", SMELL_INTENSITY_WEAK, 1, "fragrance")
+	AddElement(/datum/element/simple_smell, "flowers", SMELL_INTENSITY_WEAK, 1, "fragrance")
 
 // Lily
 /obj/item/seeds/poppy/lily
@@ -315,7 +315,7 @@
 
 /obj/item/food/grown/rose/Initialize(mapload, obj/item/seeds/new_seed)
 	. = ..()
-	AddElement(/datum/element/smell, "roses", SMELL_INTENSITY_WEAK, 1, "fragrance")
+	AddElement(/datum/element/simple_smell, "roses", SMELL_INTENSITY_WEAK, 1, "fragrance")
 
 /obj/item/food/grown/rose/equipped(mob/user, slot, initial)
 	. = ..()

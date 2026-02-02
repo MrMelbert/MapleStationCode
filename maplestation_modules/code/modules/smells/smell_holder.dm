@@ -16,7 +16,7 @@
 	. = ..()
 	if(duration)
 		QDEL_IN(src, duration)
-	AddElement(/datum/element/smell, smell, intensity, radius, category)
+	AddElement(/datum/element/simple_smell, smell, intensity, radius, category)
 
 // /obj/effect/abstract/smell/gunpowder
 // 	smell = "gunpowder"
@@ -52,13 +52,22 @@
 /obj/effect/abstract/smell/oven
 	intensity = SMELL_INTENSITY_MODERATE
 	duration = 5 MINUTES
-	radius = 3
+	radius = 6
+
+/obj/effect/abstract/smell/oven/Initialize(mapload)
+	. = ..()
+	// immediately forces nearby mobs to take a sniff
+	for(var/mob/living/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, src))
+		smeller.smell_something()
 
 /obj/effect/abstract/smell/oven/good
 	smell = /datum/smell/good_food
 
 /obj/effect/abstract/smell/oven/bad
 	smell = /datum/smell/burnt_food
+
+/obj/effect/abstract/smell/oven/bad/fryer
+	smell = /datum/smell/burnt_food/fryer
 
 /obj/effect/abstract/smell/cigarette_smoke
 	smell = /datum/smell/cigarette_smoke

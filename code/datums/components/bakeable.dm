@@ -90,25 +90,10 @@
 	baked_result.pixel_y = original_object.pixel_y
 	used_tray.AddToPlate(baked_result)
 
-	var/list/asomnia_hadders = list()
-	for(var/mob/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, used_oven))
-		if(!smeller.can_smell())
-			asomnia_hadders += smeller
-
 	if(positive_result)
-		used_oven.visible_message(
-			span_notice("You smell something great coming from [used_oven]."),
-			blind_message = span_notice("You smell something great..."),
-			ignored_mobs = asomnia_hadders,
-		)
 		new /obj/effect/abstract/smell/oven/good(used_oven.loc)
 		BLACKBOX_LOG_FOOD_MADE(baked_result.type)
 	else
-		used_oven.visible_message(
-			span_warning("You smell a burnt smell coming from [used_oven]."),
-			blind_message = span_warning("You smell a burnt smell..."),
-			ignored_mobs = asomnia_hadders,
-		)
 		new /obj/effect/abstract/smell/oven/bad(used_oven.loc)
 
 	SEND_SIGNAL(parent, COMSIG_ITEM_BAKED, baked_result)

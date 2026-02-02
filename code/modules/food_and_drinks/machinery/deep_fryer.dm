@@ -148,11 +148,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		audible_message(span_notice("[src] dings!"))
 	else if (cook_time >= DEEPFRYER_BURNTIME && !frying_burnt)
 		frying_burnt = TRUE
-		var/list/asomnia_hadders = list()
-		for(var/mob/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, src))
-			if(!smeller.can_smell())
-				asomnia_hadders += smeller
-		visible_message(span_warning("[src] emits an acrid smell!"), ignored_mobs = asomnia_hadders)
+		new /obj/effect/abstract/smell/oven/bad/fryer(loc)
 
 	use_energy(active_power_usage)
 

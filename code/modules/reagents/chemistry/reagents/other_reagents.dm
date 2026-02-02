@@ -1366,7 +1366,7 @@
 	if(QDELETED(exposed_obj))
 		return
 	exposed_obj.AddComponent( \
-		/datum/component/temporary_smell, \
+		/datum/component/complex_smell, \
 		duration = smell_type::duration, \
 		smell = smell_type::smell, \
 		intensity = smell_type::intensity * (reac_volume / 5), \
@@ -1399,7 +1399,7 @@
 	if(QDELETED(exposed_mob))
 		return
 	exposed_mob.AddComponent( \
-		/datum/component/temporary_smell, \
+		/datum/component/complex_smell, \
 		duration = smell_type::duration, \
 		smell = smell_type::smell, \
 		intensity = smell_type::intensity * (reac_volume / 5), \

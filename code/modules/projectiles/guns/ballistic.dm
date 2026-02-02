@@ -256,7 +256,7 @@
 /obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
-	AddComponent(/datum/component/temporary_smell, \
+	AddComponent(/datum/component/complex_smell, \
 		duration = 30 SECONDS, \
 		smell = "gunpowder", \
 		intensity = SMELL_INTENSITY_WEAK, \

@@ -184,7 +184,7 @@
 	register_context()
 	register_item_context()
 
-	AddElement(/datum/element/smell, "fish", SMELL_INTENSITY_WEAK, 2)
+	AddElement(/datum/element/simple_smell, "fish", SMELL_INTENSITY_WEAK, 2)
 
 /obj/item/fish/add_item_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(HAS_TRAIT(source, TRAIT_CATCH_AND_RELEASE))
