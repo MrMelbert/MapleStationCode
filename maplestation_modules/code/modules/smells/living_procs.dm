@@ -6,9 +6,6 @@
 	if(stat == DEAD)
 		return FALSE
 
-	if(!(mob_biotypes & (MOB_ORGANIC|MOB_HUMANOID|MOB_ROBOTIC)))
-		return FALSE
-
 	return TRUE
 
 /mob/living/can_smell()
