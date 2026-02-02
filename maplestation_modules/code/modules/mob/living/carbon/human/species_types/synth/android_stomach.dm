@@ -1,5 +1,5 @@
 /obj/item/organ/stomach/ethereal/android
-	name = "android stomach"
+	name = "bio-reactor"
 	desc = "An electronic device designed to mimic the functions of a human stomach. Has a bio-reactor in build to convert food into energy."
 	icon_state = /obj/item/organ/stomach/cybernetic/tier2::icon_state
 	organ_flags = ORGAN_ROBOTIC|ORGAN_UNREMOVABLE // future todo : if this is ever removable, we need to handle energy another way

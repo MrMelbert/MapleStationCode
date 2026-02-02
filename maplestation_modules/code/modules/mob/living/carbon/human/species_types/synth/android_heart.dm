@@ -1,6 +1,6 @@
 /obj/item/organ/heart/android
-	name = "android heart"
-	desc = "An electronic device designed to mimic the functions of a human heart. Pumps fuel throughout the body."
+	name = "hydraulic fluid pump"
+	desc = "An electronic device designed to mimic the functions of a human heart. Pumps hydraulic fluid through the android's body."
 	icon_state = /obj/item/organ/heart/cybernetic/tier2::icon_state
 	organ_flags = ORGAN_ROBOTIC
 

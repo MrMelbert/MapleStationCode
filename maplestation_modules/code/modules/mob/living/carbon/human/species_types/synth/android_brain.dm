@@ -1,5 +1,5 @@
 /obj/item/organ/brain/cybernetic/android
-	name = "android brain"
+	name = "advanced positronic brain"
 	desc = "A highly advanced synthetic brain designed to mimic the functions of a human brain. \
 		Sometimes installed with emotion simulation units or programmed with specific law sets, like Asimov's Laws of Robotics."
 

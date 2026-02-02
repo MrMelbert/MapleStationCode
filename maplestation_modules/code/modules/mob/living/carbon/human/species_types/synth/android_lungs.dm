@@ -1,5 +1,5 @@
 /obj/item/organ/lungs/android
-	name = "android lungs"
+	name = "air circulation unit"
 	desc = "Electronic devices designed to mimic the functions of human lungs. Provides necessary cooling."
 	icon_state = /obj/item/organ/lungs/cybernetic/tier2::icon_state
 	organ_flags = ORGAN_ROBOTIC
