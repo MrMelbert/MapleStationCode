@@ -6,6 +6,9 @@
 	if(stat == DEAD)
 		return FALSE
 
+	if(!(mob_biotypes & (MOB_ORGANIC|MOB_HUMANOID|MOB_ROBOTIC)))
+		return FALSE
+
 	return TRUE
 
 /mob/living/carbon/human/can_smell()
@@ -98,7 +101,7 @@
 		// however the reset timer is restarted each time we smell it
 		addtimer(CALLBACK(src, PROC_REF(remove_recent_smell), smell_effect), 5 MINUTES, TIMER_UNIQUE|TIMER_DELETE_ME|TIMER_OVERRIDE)
 
-	to_chat(src, span_smallnoticeital("[capitalize(english_list(readable_smells))] fills the air."))
+	to_chat(src, span_smallnoticeital("[capitalize(english_list(readable_smells))] [(mob_biotypes & MOB_ORGANIC) ? "fills the air" : "detected"] around you."))
 	COOLDOWN_START(src, smell_cd, clamp((15 MINUTES) / (values_sum(all_smells) / LAZYLEN(all_smells)), 30 SECONDS, 5 MINUTES))
 
 /mob/living/proc/remove_recent_smell(datum/smell/smell_effect)
