@@ -11,6 +11,15 @@
 
 	return TRUE
 
+/mob/living/can_smell()
+	if(!..())
+		return FALSE
+
+	if(!(mob_biotypes & (MOB_ORGANIC|MOB_HUMANOID|MOB_ROBOTIC)))
+		return FALSE
+
+	return TRUE
+
 /mob/living/carbon/human/can_smell()
 	if(!..())
 		return FALSE
