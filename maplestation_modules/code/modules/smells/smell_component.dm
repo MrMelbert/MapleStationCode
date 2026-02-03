@@ -70,7 +70,7 @@
 	return ..()
 
 /datum/component/complex_smell/proc/add_element()
-	parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category)
+	parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
 	// propagate to wearer if applicable
 	if(isitem(parent))
 		var/obj/item/item_parent = parent
@@ -78,7 +78,7 @@
 			on_worn(item_parent, item_parent.loc)
 
 /datum/component/complex_smell/proc/remove_element()
-	parent.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category)
+	parent.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
 	// clear from wearer if applicable
 	if(isitem(parent))
 		var/obj/item/item_parent = parent
@@ -100,11 +100,12 @@
 
 /datum/component/complex_smell/proc/on_worn(datum/source, mob/wearer)
 	SIGNAL_HANDLER
-	wearer.AddElement(/datum/element/simple_smell, smell, intensity, radius, category)
+	wearer.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
+	wearer.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
 
 /datum/component/complex_smell/proc/on_unworn(datum/source, mob/wearer)
 	SIGNAL_HANDLER
-	wearer.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category)
+	wearer.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
 
 /datum/component/complex_smell/proc/clean_up(...)
 	SIGNAL_HANDLER
@@ -121,8 +122,8 @@
 		return FALSE
 
 	if(intensity > src.intensity || radius > src.radius)
-		parent.RemoveElement(/datum/element/simple_smell, smell, src.intensity, src.radius, category)
-		parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category)
+		parent.RemoveElement(/datum/element/simple_smell, smell, src.intensity, src.radius, category, REF(src))
+		parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src))
 		src.intensity = intensity
 		src.radius = radius
 

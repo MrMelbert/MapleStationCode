@@ -140,10 +140,11 @@
 	. = ..()
 	AddComponent( \
 		/datum/component/complex_smell, \
-		duration = 30 SECONDS, \
+		duration = 2 MINUTES, \
 		smell = /datum/smell/blood, \
 		intensity = SMELL_INTENSITY_WEAK, \
 		radius = 3, \
+		wash_types = CLEAN_TYPE_BLOOD, \
 	)
 
 // NON-MODULE CHANGE for blood
@@ -215,7 +216,7 @@
 			blood_in_hands = rand(2, 4)
 		AddComponent( \
 			/datum/component/complex_smell, \
-			duration = 30 SECONDS, \
+			duration = 2 MINUTES, \
 			smell = /datum/smell/blood, \
 			intensity = SMELL_INTENSITY_WEAK, \
 			radius = 2, \

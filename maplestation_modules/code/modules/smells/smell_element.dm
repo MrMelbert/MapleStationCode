@@ -32,12 +32,16 @@
 	var/intensity
 	/// How big the smell radius is
 	var/radius
+	/// For smells which may be identical to another smell in all respects but need to be tracked separately
+	/// Primarily used for complex smells which may stack multiple times on the same atom, like bloody clothing
+	var/id
 
-/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = 1, radius = 2, category)
+/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = 1, radius = 2, category, id = "innate")
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 
+	src.id = id
 	if(isnull(src.smell))
 		src.smell = get_smell(smell, category)
 		src.intensity = intensity
@@ -65,15 +69,15 @@
 
 /// Used to calculate smell intensity at a target turf based on distance from center
 #define CALCULATE_SMELL_INTENSITY(base_intensity, center_turf, target_turf, radius) \
-	clamp(base_intensity * (get_dist(center_turf, target_turf) / max(1, radius)), SMELL_INTENSITY_FAINT, base_intensity)
+	max(base_intensity - base_intensity * (get_dist(center_turf, target_turf) / max(1, radius)), SMELL_INTENSITY_WEAK)
 
 /datum/element/simple_smell/proc/mark_turfs(atom/source, atom/center)
-	for(var/turf/open/nearby in view(radius, center))
+	for(var/turf/open/nearby in RANGE_TURFS(radius, center))
 		LAZYINITLIST(nearby.collective_smells)
 		nearby.collective_smells[smell] += CALCULATE_SMELL_INTENSITY(intensity, center, nearby, radius)
 
 /datum/element/simple_smell/proc/unmark_turfs(atom/source, atom/center)
-	for(var/turf/open/nearby in view(radius, center))
+	for(var/turf/open/nearby in RANGE_TURFS(radius, center))
 		if(!LAZYLEN(nearby.collective_smells)) // ??
 			continue
 
@@ -82,3 +86,14 @@
 			LAZYREMOVE(nearby.collective_smells, smell)
 
 #undef CALCULATE_SMELL_INTENSITY
+
+/// Debug
+/proc/visualize_smells()
+	for(var/turf/open/smelled in RANGE_TURFS(12, usr))
+		if(!LAZYLEN(smelled.collective_smells))
+			continue
+
+		var/total_intensity = 0
+		for(var/smell_type, smell_intensity in smelled.collective_smells)
+			total_intensity += smell_intensity
+		smelled.maptext = MAPTEXT("[total_intensity]")
