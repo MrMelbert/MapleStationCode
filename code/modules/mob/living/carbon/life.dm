@@ -27,10 +27,10 @@
 	if(stat != DEAD)
 		handle_bodyparts(seconds_per_tick, times_fired)
 
-	if(. && mind) //. == not dead
-		for(var/key in mind.addiction_points)
-			var/datum/addiction/addiction = SSaddiction.all_addictions[key]
-			addiction.process_addiction(src, seconds_per_tick, times_fired)
+	if(. && !HAS_TRAIT(src, TRAIT_STASIS)) //. == not dead
+		for(var/key in mind?.addiction_points)
+			GLOB.addictions[key].process_addiction(src, seconds_per_tick)
+
 	if(stat != DEAD)
 		return TRUE
 
