@@ -85,7 +85,6 @@
 
 // ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
-#define NUMB_LIMB_PARALYSIS "numb_paralysis"
 #define MOVESPEED_ID_PAIN "pain_movespeed"
 #define ACTIONSPEED_ID_PAIN "pain_actionspeed"
 
