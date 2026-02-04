@@ -80,6 +80,8 @@
 	/// The affected respiration type, if the reagent damages/heals oxygen damage of an affected mob.
 	/// See "Mob bio-types flags" in /code/_DEFINES/mobs.dm
 	var/affected_respiration_type = ALL
+	/// A list of traits to apply while the reagent is being metabolized.
+	var/list/metabolized_traits
 
 	///The default reagent container for the reagent, used for icon generation
 	var/obj/item/reagent_containers/default_container = /obj/item/reagent_containers/cup/bottle
@@ -211,12 +213,15 @@ Primarily used in reagents/reaction_agents
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnum(pain_modifier))
 		affected_mob.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
+	if(metabolized_traits)
+		affected_mob.add_traits(metabolized_traits, "metabolize:[type]")
 
 /// Called when this reagent stops being metabolized by a liver
 /datum/reagent/proc/on_mob_end_metabolize(mob/living/affected_mob)
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnum(pain_modifier))
 		affected_mob.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
+	REMOVE_TRAITS_IN(affected_mob, "metabolize:[type]")
 
 /**
  * Called when a reagent is inside of a mob when they are dead if the reagent has the REAGENT_DEAD_PROCESS flag

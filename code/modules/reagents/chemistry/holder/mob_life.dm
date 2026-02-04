@@ -76,7 +76,7 @@
 		for(var/addiction, threshold in reagent.addiction_types)
 			var/datum/addiction/addiction_type = addiction
 			// point gain is scaled based on how much we metabolized per second
-			owner.mind?.add_addiction_points(addiction, addiction_type::addiction_gain_threshold / (threshold / metabolized_volume))
+			owner.mind?.add_addiction_points(addiction, addiction_type::addiction_gain_threshold / (threshold / reagent.metabolization_rate))
 
 		if(reagent.overdosed)
 			need_mob_update += reagent.overdose_process(owner, seconds_per_tick, times_fired)
@@ -127,10 +127,8 @@
 
 	//Turns all of a added reagent into the inverse chem
 	if(reagent.inverse_chem_val > added_purity && reagent.inverse_chem)
-		if(isnull(reagent_datum))
-			reagent_datum = list()
-		var/added_amount = add_reagent(reagent.inverse_chem, added_volume, FALSE, added_purity = reagent.get_inverse_purity(reagent.creation_purity), reagent_added = reagent_datum)
-		var/datum/reagent/inverse_reagent = reagent_datum[reagent_datum.len]
+		var/added_amount = add_reagent(reagent.inverse_chem, added_volume, FALSE, added_purity = reagent.get_inverse_purity(reagent.creation_purity))
+		var/datum/reagent/inverse_reagent = has_reagent(reagent.inverse_chem)
 		if(inverse_reagent.chemical_flags & REAGENT_SNEAKYNAME)
 			inverse_reagent.name = reagent.name //Negative effects are hidden
 		return added_amount * -1
