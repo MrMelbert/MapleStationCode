@@ -178,7 +178,7 @@
 
 /obj/item/organ/cyberimp/brain/surgical_processor/proc/load_surgeries(mob/living/user, obj/design_holder)
 	balloon_alert(user, "copying designs...")
-	playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 25, TRUE)
+	playsound(src, 'sound/machines/terminal_processing.ogg', 25, TRUE)
 	if(do_after(user, 1 SECONDS, target = design_holder))
 		if(istype(design_holder, /obj/item/disk/surgery))
 			var/obj/item/disk/surgery/surgery_disk = design_holder
@@ -186,7 +186,7 @@
 		else
 			var/obj/machinery/computer/operating/surgery_computer = design_holder
 			LAZYOR(loaded_surgeries, surgery_computer.advanced_surgeries)
-		playsound(src, 'sound/machines/terminal/terminal_success.ogg', 25, TRUE)
+		playsound(src, 'sound/machines/terminal_success.ogg', 25, TRUE)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
