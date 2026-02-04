@@ -193,6 +193,10 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	ui_sources[WEAKREF(user)] = WEAKREF(source)
 	ui_interact(user)
 
+// NON-MODULE CHANGE
+/datum/crewmonitor/ui_close(mob/user)
+	ui_sources -= WEAKREF(user)
+
 /datum/crewmonitor/ui_host(mob/user)
 	var/datum/weakref/host_ref = ui_sources[WEAKREF(user)]
 	return host_ref?.resolve()
