@@ -38,7 +38,7 @@
 	overdose_threshold = 30
 	ph = 8.96
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 30) //5u = 100 progress, 25-30u = addiction
+	addiction_types = list(/datum/addiction/opioids = 30)
 	// Morphine is THE painkiller
 	pain_modifier = 0.5
 
