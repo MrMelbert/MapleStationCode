@@ -185,9 +185,13 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		ui = new(user, src, "CrewConsole")
 		ui.open()
 
-/datum/crewmonitor/proc/show(mob/M, source)
-	ui_sources[WEAKREF(M)] = WEAKREF(source)
-	ui_interact(M)
+// NON-MODULE CHANGE
+/datum/crewmonitor/proc/show(mob/user, atom/source)
+	if(isobj(source) && !ui_sources[WEAKREF(user)])
+		user.examine_feedback(source)
+
+	ui_sources[WEAKREF(user)] = WEAKREF(source)
+	ui_interact(user)
 
 /datum/crewmonitor/ui_host(mob/user)
 	var/datum/weakref/host_ref = ui_sources[WEAKREF(user)]
