@@ -167,21 +167,13 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 ///Metabolizes a portion of the reagent after on_mob_life() is called
-/datum/reagent/proc/metabolize_reagent(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+/datum/reagent/proc/metabolize_reagent(mob/living/carbon/affected_mob, metabolizing_out = 0)
 	if(length(reagent_removal_skip_list))
 		return
 	if(isnull(holder))
 		return
 
-	var/metabolizing_out = metabolization_rate * seconds_per_tick
-	if(!(chemical_flags & REAGENT_UNAFFECTED_BY_METABOLISM))
-		if(chemical_flags & REAGENT_REVERSE_METABOLISM)
-			metabolizing_out /= affected_mob.metabolism_efficiency
-		else
-			metabolizing_out *= affected_mob.metabolism_efficiency
-
 	holder.remove_reagent(type, metabolizing_out)
-
 
 /// Called in burns.dm *if* the reagent has the REAGENT_AFFECTS_WOUNDS process flag
 /datum/reagent/proc/on_burn_wound_processing(datum/wound/flesh/burn_wound)

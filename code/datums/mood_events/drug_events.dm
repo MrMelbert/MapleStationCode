@@ -45,25 +45,27 @@
 	mood_change = -2
 
 /datum/mood_event/withdrawal_light/add_effects(drug_name)
-	description = "I could use some [drug_name]..."
+	description = "I could use some [drug_name][plural_s(drug_name)]..."
 
 /datum/mood_event/withdrawal_medium
 	mood_change = -5
 
 /datum/mood_event/withdrawal_medium/add_effects(drug_name)
-	description = "I really need [drug_name]."
+	description = "I really need [drug_name][plural_s(drug_name)]."
 
 /datum/mood_event/withdrawal_severe
 	mood_change = -8
 
 /datum/mood_event/withdrawal_severe/add_effects(drug_name)
-	description = "Oh god, I need some of that [drug_name]!"
+	description = "I need some of that [drug_name][plural_s(drug_name)] right now!"
 
 /datum/mood_event/withdrawal_critical
 	mood_change = -10
 
 /datum/mood_event/withdrawal_critical/add_effects(drug_name)
-	description = "[drug_name]! [drug_name]! [drug_name]!"
+	var/base = "[drug_name][plural_s(drug_name)]!"
+	for(var/i in 1 to 3)
+		description = "[base] "
 
 /datum/mood_event/happiness_drug
 	description = "Can't feel a thing..."

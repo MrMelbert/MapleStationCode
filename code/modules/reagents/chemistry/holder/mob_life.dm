@@ -50,7 +50,6 @@
  * * liverless - Stops reagents that aren't set as [/datum/reagent/var/self_consuming] from metabolizing
  */
 /datum/reagents/proc/metabolize_reagent(mob/living/carbon/owner, datum/reagent/reagent, seconds_per_tick, times_fired, can_overdose = FALSE, liverless = FALSE, dead = FALSE)
-	var/need_mob_update = FALSE
 	if(QDELETED(reagent.holder))
 		return FALSE
 
@@ -67,6 +66,15 @@
 	if(!reagent.metabolizing)
 		reagent.metabolizing = TRUE
 		reagent.on_mob_metabolize(owner)
+
+	var/need_mob_update = FALSE
+	var/metabolizing_out = reagent.metabolization_rate * seconds_per_tick
+	if(!(reagent.chemical_flags & REAGENT_UNAFFECTED_BY_METABOLISM))
+		if(reagent.chemical_flags & REAGENT_REVERSE_METABOLISM)
+			metabolizing_out /= owner.metabolism_efficiency
+		else
+			metabolizing_out *= owner.metabolism_efficiency
+
 	if(can_overdose && !HAS_TRAIT(owner, TRAIT_OVERDOSEIMMUNE))
 		if(reagent.overdose_threshold)
 			if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)
@@ -76,7 +84,7 @@
 		for(var/addiction, threshold in reagent.addiction_types)
 			var/datum/addiction/addiction_type = addiction
 			// point gain is scaled based on how much we metabolized per second
-			owner.mind?.add_addiction_points(addiction, addiction_type::addiction_gain_threshold / (threshold / reagent.metabolization_rate))
+			owner.mind?.add_addiction_points(addiction, addiction_type::addiction_gain_threshold / (threshold / metabolizing_out))
 
 		if(reagent.overdosed)
 			need_mob_update += reagent.overdose_process(owner, seconds_per_tick, times_fired)
@@ -85,7 +93,7 @@
 	if(dead && !QDELETED(owner) && !QDELETED(reagent))
 		need_mob_update += reagent.on_mob_dead(owner, seconds_per_tick)
 	if(!QDELETED(owner) && !QDELETED(reagent))
-		reagent.metabolize_reagent(owner, seconds_per_tick, times_fired)
+		reagent.metabolize_reagent(owner, metabolizing_out)
 
 	return need_mob_update
 

@@ -24,14 +24,13 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 	var/severe_withdrawal_moodlet = /datum/mood_event/withdrawal_severe
 
 ///Called when you gain addiction points somehow. Takes a mind as argument and sees if you gained the addiction
-/datum/addiction/proc/on_gain_addiction_points(datum/mind/victim_mind)
-	var/current_addiction_point_amount = victim_mind.addiction_points[type]
-	if(current_addiction_point_amount < addiction_gain_threshold) //Not enough to become addicted
+/datum/addiction/proc/on_gain_addiction_points(datum/mind/victim_mind, new_amount = 0, last_amount = 0)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(new_amount < addiction_gain_threshold) // Not enough to become addicted
 		return
-	if(LAZYACCESS(victim_mind.active_addictions, type)) //Already addicted
+	if(last_amount >= addiction_gain_threshold) // Already addicted
 		return
 	become_addicted(victim_mind)
-
 
 ///Called when you become addicted
 /datum/addiction/proc/become_addicted(datum/mind/victim_mind)
@@ -39,13 +38,12 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 	SEND_SIGNAL(victim_mind.current, COMSIG_CARBON_GAIN_ADDICTION, victim_mind)
 	victim_mind.current.log_message("has become addicted to [name].", LOG_GAME)
 
-
 ///Called when you lose addiction poitns somehow. Takes a mind as argument and sees if you lost the addiction
-/datum/addiction/proc/on_lose_addiction_points(datum/mind/victim_mind)
-	var/current_addiction_point_amount = victim_mind.addiction_points[type]
-	if(!LAZYACCESS(victim_mind.active_addictions, type)) //Not addicted
+/datum/addiction/proc/on_lose_addiction_points(datum/mind/victim_mind, new_amount = 0, last_amount = 0)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(last_amount < addiction_loss_threshold) // Was not addicted last check
 		return FALSE
-	if(current_addiction_point_amount > addiction_loss_threshold) //Not enough to stop being addicted
+	if(new_amount >= addiction_loss_threshold) // Is still addicted
 		return FALSE
 	lose_addiction(victim_mind)
 	return TRUE
@@ -68,17 +66,7 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 				on_drug_of_this_addiction = TRUE
 				break
 
-	var/withdrawal_stage
-
-	switch(current_addiction_cycle)
-		if(WITHDRAWAL_STAGE1_START_CYCLE to WITHDRAWAL_STAGE1_END_CYCLE)
-			withdrawal_stage = 1
-		if(WITHDRAWAL_STAGE2_START_CYCLE to WITHDRAWAL_STAGE2_END_CYCLE)
-			withdrawal_stage = 2
-		if(WITHDRAWAL_STAGE3_START_CYCLE to INFINITY)
-			withdrawal_stage = 3
-		else
-			withdrawal_stage = 0
+	var/withdrawal_stage = get_withdrawal_stage(affected_carbon)
 
 	if(!on_drug_of_this_addiction && !HAS_TRAIT(affected_carbon, TRAIT_HOPELESSLY_ADDICTED))
 		if(affected_carbon.mind.remove_addiction_points(type, addiction_loss_per_stage[withdrawal_stage + 1] * seconds_per_tick)) //If true was returned, we lost the addiction!
@@ -105,6 +93,22 @@ GLOBAL_LIST_INIT_TYPED(addictions, /datum/addiction, init_subtypes_w_path_keys(/
 			withdrawal_stage_3_process(affected_carbon, seconds_per_tick)
 
 	LAZYADDASSOC(affected_carbon.mind.active_addictions, type, 1 * seconds_per_tick) //Next cycle!
+
+/// Returns the current withdrawal stage for this addiction on the affected carbon
+/datum/addiction/proc/get_withdrawal_stage(mob/living/carbon/affected_carbon)
+	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind?.active_addictions, type) //If this is null, we're not addicted
+	if(!current_addiction_cycle)
+		return 0
+
+	switch(current_addiction_cycle)
+		if(WITHDRAWAL_STAGE1_START_CYCLE to WITHDRAWAL_STAGE1_END_CYCLE)
+			return 1
+		if(WITHDRAWAL_STAGE2_START_CYCLE to WITHDRAWAL_STAGE2_END_CYCLE)
+			return 2
+		if(WITHDRAWAL_STAGE3_START_CYCLE to INFINITY)
+			return 3
+
+	return 0
 
 /// Called when addiction enters stage 1
 /datum/addiction/proc/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
