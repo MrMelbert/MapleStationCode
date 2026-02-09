@@ -235,8 +235,7 @@
 	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), body_temperature)
 	return TRUE
 
-/mob/living/proc/get_blood_type()
-	RETURN_TYPE(/datum/blood_type)
+/mob/living/proc/get_blood_type() as /datum/blood_type
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
 	return find_blood_type(/datum/blood_type/animal)
@@ -270,8 +269,7 @@
 	return get_expected_blood_type()
 
 /// What blood type should we have? Differs from get_blood_type in that it always returns something
-/mob/living/carbon/proc/get_expected_blood_type()
-	RETURN_TYPE(/datum/blood_type)
+/mob/living/carbon/proc/get_expected_blood_type() as /datum/blood_type
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
 		return find_blood_type(/datum/blood_type/clown)
 	if(isnull(dna))
