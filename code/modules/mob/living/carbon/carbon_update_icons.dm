@@ -529,6 +529,7 @@
 	. += "[limb_id]-"
 	. += "[husk_type]"
 	. += "-husk"
+	. += "-[damage_color]"
 	. += "-[body_zone]"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner

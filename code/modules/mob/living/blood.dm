@@ -264,17 +264,22 @@
 /mob/living/basic/hivebot/get_blood_type()
 	return find_blood_type(/datum/blood_type/oil)
 
-/mob/living/carbon/alien/get_blood_type()
+/mob/living/carbon/get_blood_type()
 	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
-	return find_blood_type(/datum/blood_type/xenomorph)
+	return get_expected_blood_type()
 
-/mob/living/carbon/human/get_blood_type()
-	if(HAS_TRAIT(src, TRAIT_HUSK) || isnull(dna) || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
+/// What blood type should we have? Differs from get_blood_type in that it always returns something
+/mob/living/carbon/proc/get_expected_blood_type()
+	RETURN_TYPE(/datum/blood_type)
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
 		return find_blood_type(/datum/blood_type/clown)
+	if(isnull(dna))
+		return find_blood_type(/datum/blood_type/crew/human/o_minus)
 	return find_blood_type(dna.species.exotic_bloodtype || dna.human_blood_type)
+
+/mob/living/carbon/alien/get_expected_blood_type()
+	return find_blood_type(/datum/blood_type/xenomorph)
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
