@@ -133,7 +133,7 @@
 /datum/reagent/miracle/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	radiation_pulse(affected_mob, max_range = 1, threshold = 0.1, chance = 80)
-	if(affected_mob.adjustToxLoss(10 * seconds_per_tick * REM, updating_health = FALSE))
+	if(affected_mob.adjustToxLoss(10 * seconds_per_tick * REM, updating_health = FALSE) || affected_mob.adjustFireLoss(10 * seconds_per_tick * REM, updating_health = FALSE))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/miracle/expose_turf(turf/exposed_turf)
@@ -141,11 +141,11 @@
 	if(isspaceturf(exposed_turf))
 		return
 
-	radiation_pulse(holder, max_range = 4, threshold = 0.1, chance = 80)
+	radiation_pulse(holder.my_atom, max_range = 4, threshold = 0.1, chance = 80)
 
 /datum/reagent/miracle/expose_obj(obj/exposed_obj)
 	. = ..()
-	radiation_pulse(holder, max_range = 4, threshold = 0.1, chance = 80)
+	radiation_pulse(holder.my_atom, max_range = 4, threshold = 0.1, chance = 80)
 
 /datum/reagent/miracle/expose_mob(mob/living/exposed_mob, methods=TOUCH)
 	. = ..()
@@ -159,7 +159,7 @@
 	mix_sound = 'sound/magic/cosmic_expansion.ogg'
 
 /datum/chemical_reaction/miracle_creation/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
+	radiation_pulse(holder.my_atom, max_range = 6, threshold = 0.1, chance = 80)
 
 /datum/reagent/aggregation_agent
 	name = "Aggregation Agent"
