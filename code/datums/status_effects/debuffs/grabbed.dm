@@ -18,6 +18,9 @@
 
 /obj/item/grabbing_hand/equipped(mob/user, slot, initial)
 	. = ..()
+	var/hand = user.get_held_index_of_item(src)
+	if(IS_RIGHT_INDEX(hand))
+		transform = transform.Scale(-1, 1)
 	RegisterSignal(user, COMSIG_MOVABLE_SET_GRAB_STATE, PROC_REF(update_state_color), TRUE)
 	RegisterSignal(user, COMSIG_MOVABLE_PINNING_MOB, PROC_REF(rotate_grab), TRUE)
 	RegisterSignal(user, COMSIG_MOVABLE_UNPINNING_MOB, PROC_REF(unrotate_grab), TRUE)
@@ -30,7 +33,7 @@
 		COMSIG_MOVABLE_UNPINNING_MOB,
 	))
 
-/obj/item/grabbing_hand/proc/update_state_color(datum/source, new_state)
+/obj/item/grabbing_hand/proc/update_state_color(mob/source, new_state)
 	SIGNAL_HANDLER
 	switch(new_state)
 		if(GRAB_PASSIVE)
@@ -42,13 +45,15 @@
 		if(GRAB_KILL)
 			color = COLOR_DARK_RED
 
-/obj/item/grabbing_hand/proc/rotate_grab(datum/source, mob/living/being_pinned)
+/obj/item/grabbing_hand/proc/rotate_grab(mob/source, mob/living/being_pinned)
 	SIGNAL_HANDLER
-	transform = transform.Turn(90)
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? -90 : 90)
 
-/obj/item/grabbing_hand/proc/unrotate_grab(datum/source, mob/living/being_unpinned)
+/obj/item/grabbing_hand/proc/unrotate_grab(mob/source, mob/living/being_unpinned)
 	SIGNAL_HANDLER
-	transform = transform.Turn(-90)
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? 90 : -90)
 
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
@@ -432,6 +437,7 @@
 	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, LINK_SOURCE(id)))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
 		return
+	owner.Knockdown(3 SECONDS)
 	if(grabbing_us.loc != owner.loc)
 		grabbing_us.Move(owner.loc)
 		if(grabbing_us.loc != owner.loc)
