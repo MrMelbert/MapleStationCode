@@ -314,7 +314,7 @@
 	if(blocked != 100) // not completely blocked
 		var/obj/item/bodypart/hit_bodypart = living_target.get_bodypart(def_zone)
 		if (damage && damage_type == BRUTE)
-			if (living_target.get_blood_type() && (isnull(hit_bodypart) || hit_bodypart.can_bleed()))
+			if (hit_bodypart?.can_bleed())
 				living_target.do_splatter_effect(dir) // NON-MODULE CHANGE
 				if(prob(33))
 					living_target.add_splatter_floor(target_turf)

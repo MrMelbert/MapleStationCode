@@ -503,19 +503,20 @@
 
 ///returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
-	var/datum/blood_type/blood = get_blood_type()
-	if(!isnull(blood))
-		return list("UNKNOWN DNA" = blood.type_key())
-	return null
+	if(!has_blood())
+		return null
+	return list("UNKNOWN DNA" = blood_type.type_key())
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
-	if(isnull(dna)) // Xenos
+	if(isnull(dna)) // ???
 		return ..()
-	var/datum/blood_type/blood = get_blood_type()
-	if(isnull(blood)) // Skeletons?
+	if(!has_blood())
 		return null
-	return list("[dna.unique_enzymes]" = blood.type_key())
+	return list("[dna.unique_enzymes]" = blood_type.type_key())
+
+/mob/living/carbon/alien/get_blood_dna_list()
+	return list("UNKNOWN ALIEN DNA" = blood_type.type_key())
 
 // NON-MODULE CHANGE END
 

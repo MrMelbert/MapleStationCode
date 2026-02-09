@@ -171,7 +171,7 @@
 	hair_color_mode = disguise_species.hair_color_mode
 
 	if(isnull(synth.client?.prefs) || synth.client.prefs.read_preference(/datum/preference/choiced/synth_blood) == "As Disguise")
-		exotic_bloodtype = disguise_species.exotic_bloodtype
+		synth.set_blood_type(disguise_species.exotic_bloodtype || synth.dna.human_blood_type)
 
 	synth.add_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
@@ -195,7 +195,7 @@
 	fixed_mut_color = initial(fixed_mut_color)
 	hair_color_mode = initial(hair_color_mode)
 
-	exotic_bloodtype = /datum/blood_type/oil
+	synth.reset_blood_type(update = FALSE)
 
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 

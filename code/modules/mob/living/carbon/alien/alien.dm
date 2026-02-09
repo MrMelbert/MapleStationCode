@@ -15,6 +15,7 @@
 
 	temperature_insulation = 0.5 // minor heat insulation
 	bodytemp_heat_damage_limit = CELCIUS_TO_KELVIN(85 CELCIUS)
+	initial_blood_type = /datum/blood_type/xenomorph
 
 	///Whether or not the alien is leaping. Only used by hunters.
 	var/leaping = FALSE
@@ -29,8 +30,8 @@
 	add_verb(src, /mob/living/proc/mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_resting)
 
+	set_blood_type(initial_blood_type) // needs to be done before bodyparts and organs
 	create_bodyparts() //initialize bodyparts
-
 	create_internal_organs()
 
 	add_traits(list(TRAIT_NEVER_WOUNDED, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)

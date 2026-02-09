@@ -109,7 +109,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		return
 	destination.dna.unique_enzymes = unique_enzymes
 	destination.dna.unique_identity = unique_identity
-	destination.dna.human_blood_type = human_blood_type
+	destination.dna.set_blood_type(human_blood_type)
 	destination.dna.unique_features = unique_features
 	destination.dna.features = features.Copy()
 	destination.dna.real_name = real_name
@@ -126,7 +126,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	new_dna.default_mutation_genes = default_mutation_genes
 	new_dna.unique_identity = unique_identity
 	new_dna.unique_features = unique_features
-	new_dna.human_blood_type = human_blood_type
+	new_dna.set_blood_type(human_blood_type)
 	new_dna.features = features.Copy()
 	//if the new DNA has a holder, transform them immediately, otherwise save it
 	if(new_dna.holder)
@@ -481,7 +481,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
  */
 /datum/dna/proc/initialize_dna(newblood_type = random_human_blood_type(), create_mutation_blocks = TRUE, randomize_features = TRUE) // NON-MODULE CHANGE
 	if(newblood_type)
-		human_blood_type = newblood_type
+		set_blood_type(newblood_type)
 	if(create_mutation_blocks) //I hate this
 		generate_dna_blocks(mutation_blacklist = list(/datum/mutation/human/headless))
 	if(randomize_features)
@@ -493,6 +493,17 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		features["mcolor"] = "#[random_color()]"
 
 	update_dna_identity()
+
+/datum/dna/proc/set_blood_type(new_type, update = TRUE)
+	var/datum/blood_type/found = find_blood_type(new_type)
+	if(!found)
+		CRASH("Tried to set blood type to an invalid blood type [new_type]")
+	var/found_key = found.type_key()
+	if(human_blood_type == found_key)
+		return
+	human_blood_type = found_key
+	if(istype(holder.blood_type, /datum/blood_type/crew/human))
+		holder.set_blood_type(new_type, update)
 
 /datum/dna/stored //subtype used by brain mob's stored_dna
 
@@ -594,7 +605,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.generate_unique_enzymes()
 
 	if(newblood_type)
-		dna.human_blood_type = newblood_type
+		dna.set_blood_type(newblood_type)
 
 	if(unique_identity)
 		dna.unique_identity = unique_identity
@@ -621,6 +632,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(!dna.species)
 		var/rando_race = pick(get_selectable_species())
 		dna.species = new rando_race()
+	initial_blood_type = dna.human_blood_type
 
 //proc used to update the mob's appearance after its dna UI has been changed
 /mob/living/carbon/proc/updateappearance(icon_update=1, mutcolor_update=0, mutations_overlay_update=0)

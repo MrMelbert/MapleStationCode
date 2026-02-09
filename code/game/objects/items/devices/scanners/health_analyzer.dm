@@ -370,8 +370,8 @@
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span><br>"
 
 	// Blood Level
-	var/datum/blood_type/target_blood_type = target.get_blood_type()
-	if(target_blood_type)
+	var/datum/blood_type/target_blood_type = target.blood_type
+	if(target_blood_type && target.has_blood())
 		var/bpm = target.get_bpm()
 		var/needs_heart = TRUE
 		if(ishuman(target))

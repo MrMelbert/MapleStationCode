@@ -68,6 +68,8 @@ Difficulty: Hard
 	death_message = "sinks into a pool of blood, fleeing the battle. You've won, for now... "
 	death_sound = 'sound/magic/enter_blood.ogg'
 	faction = list(FACTION_MINING, FACTION_BOSS, FACTION_HELL)
+	initial_blood_type = /datum/blood_type/animal/bubblegum
+
 	/// Check to see if we should spawn blood
 	var/spawn_blood = TRUE
 	/// Actual time where enrage ends
@@ -328,6 +330,7 @@ Difficulty: Hard
 	death_message = "Explodes into a pool of blood!"
 	death_sound = 'sound/effects/splat.ogg'
 	true_spawn = FALSE
+	initial_blood_type = null
 	var/move_through_mob
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/Initialize(mapload)
@@ -361,7 +364,7 @@ Difficulty: Hard
 
 /obj/effect/decal/cleanable/blood/bubblegum/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
-	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
+	add_blood_DNA(list("UNKNOWN DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/bubblegum/can_bloodcrawl_in()
 	return TRUE
@@ -376,7 +379,7 @@ Difficulty: Hard
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
-	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
+	add_blood_DNA(list("UNKNOWN DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/can_bloodcrawl_in()
 	return TRUE

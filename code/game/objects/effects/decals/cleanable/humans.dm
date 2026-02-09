@@ -37,7 +37,7 @@
 /obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	if(mapload)
-		add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+		add_blood_DNA(list("UNKNOWN HUMAN DNA" = random_human_blood_type()))
 	if(dried)
 		dry()
 	else if(can_dry)
@@ -683,17 +683,17 @@
 /// Subtype which has random DNA baked in OUTSIDE of mapload.
 /// For testing, mapping, or badmins
 /obj/effect/decal/cleanable/blood/pre_dna
-	var/list/dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus)
+	var/list/dna_types = list("UNKNOWN HUMAN DNA" = /datum/blood_type/crew/human/a_minus)
 
 /obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload)
 	. = ..()
 	add_blood_DNA(dna_types)
 
 /obj/effect/decal/cleanable/blood/pre_dna/lizard
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/lizard)
+	dna_types = list("UNKNOWN TIZIRAN DNA" = /datum/blood_type/crew/lizard)
 
 /obj/effect/decal/cleanable/blood/pre_dna/lizhuman
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus, "UNKNOWN DNA B" = /datum/blood_type/crew/lizard)
+	dna_types = list("UNKNOWN HUMAN DNA" = /datum/blood_type/crew/human/a_minus, "UNKNOWN TIZIRAN DNA" = /datum/blood_type/crew/lizard)
 
 /obj/effect/decal/cleanable/blood/pre_dna/ethereal
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/ethereal)
+	dna_types = list("UNKNOWN ETHEREAL DNA" = /datum/blood_type/crew/ethereal)

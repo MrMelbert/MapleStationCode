@@ -46,6 +46,7 @@
 	unique_name = TRUE
 	hud_possible = list(ANTAG_HUD)
 	hud_type = /datum/hud/revenant
+	initial_blood_type = null
 
 	/// The icon we use while just floating around.
 	var/icon_idle = "revenant_idle"

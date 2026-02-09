@@ -8,7 +8,7 @@
 	/// Reference to the limb we're inside of
 	var/obj/item/bodypart/bodypart_owner
 	/// The cached info about the blood this organ belongs to
-	var/list/blood_dna_info = list("Synthetic DNA" = /datum/blood_type/crew/human/o_minus) // not every organ spawns inside a person
+	var/list/blood_dna_info
 	/// The body zone this organ is supposed to inhabit.
 	var/zone = BODY_ZONE_CHEST
 	/**
@@ -77,6 +77,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /obj/item/organ/Initialize(mapload)
 	. = ..()
+	if(!IS_ROBOTIC_ORGAN(src))
+		blood_dna_info = list("UNKNOWN DNA" = /datum/blood_type/crew/human/o_minus)
+		add_blood_DNA(blood_dna_info)
 	if(organ_flags & ORGAN_EDIBLE)
 		AddComponent(/datum/component/edible,\
 			initial_reagents = food_reagents, \
@@ -135,11 +138,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/on_find(mob/living/finder)
 	return
 
+/// Setup blood info
+/obj/item/organ/proc/set_organ_blood(mob/living/carbon/receiver)
+	if(IS_ROBOTIC_ORGAN(src))
+		return
+	LAZYREMOVE(forensics?.blood_DNA, blood_dna_info)
+	blood_dna_info = receiver.get_blood_dna_list()
+	if(!LAZYLEN(blood_dna_info))
+		return
+	add_blood_DNA(blood_dna_info)
+
 /obj/item/organ/wash(clean_types)
 	. = ..()
-
-	// always add the original dna to the organ after it's washed
-	if(!IS_ROBOTIC_ORGAN(src) && (clean_types & CLEAN_TYPE_BLOOD))
+	// ensure we keep the blood info even if someone scrubs the organ
+	if(LAZYLEN(blood_dna_info) && (clean_types & CLEAN_TYPE_BLOOD))
 		add_blood_DNA(blood_dna_info)
 
 /obj/item/organ/process(seconds_per_tick, times_fired)

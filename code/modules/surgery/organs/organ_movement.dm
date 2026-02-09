@@ -79,10 +79,7 @@
 			replaced.forceMove(get_turf(receiver))
 
 	if(!IS_ROBOTIC_ORGAN(src) && (organ_flags & ORGAN_VIRGIN))
-		blood_dna_info = receiver.get_blood_dna_list()
-		// need to remove the synethic blood DNA that is initialized
-		// wash also adds the blood dna again
-		wash(CLEAN_TYPE_BLOOD)
+		set_organ_blood(receiver)
 		organ_flags &= ~ORGAN_VIRGIN
 
 	if(external_bodytypes)
@@ -243,7 +240,6 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!IS_ROBOTIC_ORGAN(src) && !(item_flags & NO_BLOOD_ON_ITEM) && !QDELING(src))
-		add_blood_DNA(blood_dna_info)
 		AddElement(/datum/element/decal/blood)
 
 	item_flags &= ~ABSTRACT
