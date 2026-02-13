@@ -1,10 +1,4 @@
 // -- Bridge Officer job & outfit datum --
-/datum/station_trait/job/bridge_assistant
-	weight = 0
-
-/datum/job/bridge_assistant
-	rpg_title = "Lesser Guildperson"
-
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
 	description = "File paperwork to Central Command via your fax machine, \

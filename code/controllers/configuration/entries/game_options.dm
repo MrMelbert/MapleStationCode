@@ -52,30 +52,10 @@
 
 /datum/config_entry/flag/disable_warops
 
-/datum/config_entry/number/traitor_scaling_coeff //how much does the amount of players get divided by to determine traitors
-	default = 6
-	integer = FALSE
-	min_val = 0
-
-/datum/config_entry/number/brother_scaling_coeff //how many players per brother team
-	default = 25
-	integer = FALSE
-	min_val = 0
-
 /// Determines how fast traitors scale in general.
 /datum/config_entry/number/traitor_scaling_multiplier
 	default = 1
 	min_val = 0.01
-
-/datum/config_entry/number/changeling_scaling_coeff //how much does the amount of players get divided by to determine changelings
-	default = 6
-	integer = FALSE
-	min_val = 0
-
-/datum/config_entry/number/ecult_scaling_coeff //how much does the amount of players get divided by to determine e_cult
-	default = 6
-	integer = FALSE
-	min_val = 0
 
 /datum/config_entry/number/security_scaling_coeff //how much does the amount of players get divided by to determine open security officer positions
 	default = 8
@@ -136,6 +116,10 @@
 /datum/config_entry/flag/no_summon_events //Allowed
 
 /datum/config_entry/flag/no_intercept_report //Whether or not to send a communications intercept report roundstart. This may be overridden by gamemodes.
+	default = FALSE
+
+/datum/config_entry/flag/no_dynamic_report //dynamic's status is not reported in the roundstart report
+	default = TRUE
 
 /datum/config_entry/number/arrivals_shuttle_dock_window //Time from when a player late joins on the arrivals shuttle to when the shuttle docks on the station
 	default = 55
@@ -165,7 +149,7 @@
 	default = "Destruction of the station is imminent. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill."
 
 /datum/config_entry/flag/roundstart_blue_alert
-	default = TRUE
+	default = FALSE
 
 /datum/config_entry/flag/revival_pod_plants
 
