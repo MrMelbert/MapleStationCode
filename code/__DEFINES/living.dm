@@ -126,6 +126,11 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
+
 #define COLOR_BLOOD "#c90000"
 
 /// Helper for picking between left or right when given a value
