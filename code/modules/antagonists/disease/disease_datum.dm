@@ -7,7 +7,6 @@
 
 /datum/antagonist/disease/on_gain()
 	owner.set_assigned_role(SSjob.get_job_type(/datum/job/sentient_disease))
-	owner.special_role = ROLE_SENTIENT_DISEASE
 	var/datum/objective/O = new /datum/objective/disease_infect()
 	O.owner = owner
 	objectives += O

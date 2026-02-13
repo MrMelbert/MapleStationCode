@@ -1482,12 +1482,6 @@
 			else
 				return
 
-	else if(href_list["force_war"])
-		if(!check_rights(R_ADMIN))
-			return
-		var/obj/item/nuclear_challenge/button = locate(href_list["force_war"])
-		button.force_war()
-
 	else if(href_list["give_reinforcement"])
 		var/datum/team/nuclear/nuketeam = locate(href_list["give_reinforcement"]) in GLOB.antagonist_teams
 		nuketeam.admin_spawn_reinforcement(usr)

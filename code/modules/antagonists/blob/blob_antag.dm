@@ -6,6 +6,7 @@
 	show_in_antagpanel = FALSE
 	pref_flag = ROLE_BLOB
 	ui_name = "AntagInfoBlob"
+	stinger_sound = 'sound/ambience/antag/blobalert.ogg'
 	/// Action to release a blob infection
 	var/datum/action/innate/blobpop/pop_action
 	/// Initial points for a human blob
@@ -184,5 +185,3 @@
 
 /obj/effect/dummy/phased_mob/can_blob_attack()
 	return FALSE
-
-

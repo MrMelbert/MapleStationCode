@@ -114,7 +114,7 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/set_overflow_role(new_overflow_role)
 	var/datum/job/new_overflow = ispath(new_overflow_role) ? get_job_type(new_overflow_role) : get_job(new_overflow_role)
 	if(!new_overflow)
-		JobDebug("Failed to set new overflow role: [new_overflow_role]")
+		job_debug("Failed to set new overflow role: [new_overflow_role]")
 		CRASH("set_overflow_role failed | new_overflow_role: [isnull(new_overflow_role) ? "null" : new_overflow_role]")
 	var/cap = CONFIG_GET(number/overflow_cap)
 
@@ -132,7 +132,7 @@ SUBSYSTEM_DEF(job)
 	if(!(initial(old_overflow.job_flags) & JOB_CANNOT_OPEN_SLOTS))
 		old_overflow.job_flags &= ~JOB_CANNOT_OPEN_SLOTS
 	overflow_role = new_overflow.type
-	JobDebug("Overflow role set to : [new_overflow.type]")
+	job_debug("Overflow role set to : [new_overflow.type]")
 
 
 /datum/controller/subsystem/job/proc/setup_occupations()
@@ -231,80 +231,83 @@ SUBSYSTEM_DEF(job)
  * * do_eligibility_checks - Set to TRUE to conduct all job eligibility tests and reject on failure. Set to FALSE if job eligibility has been tested elsewhere and they can be safely skipped.
  */
 /datum/controller/subsystem/job/proc/assign_role(mob/dead/new_player/player, datum/job/job, latejoin = FALSE, do_eligibility_checks = TRUE)
-	JobDebug("Running AR, Player: [player], Job: [isnull(job) ? "null" : job], LateJoin: [latejoin]")
+	job_debug("Running AR, Player: [player], Job: [isnull(job) ? "null" : job], LateJoin: [latejoin]")
 	if(!player?.mind || !job)
-		JobDebug("AR has failed, player has no mind or job is null, Player: [player], Rank: [isnull(job) ? "null" : job.type]")
+		job_debug("AR has failed, player has no mind or job is null, Player: [player], Rank: [isnull(job) ? "null" : job.type]")
 		return FALSE
 
 	if(do_eligibility_checks && (check_job_eligibility(player, job, "AR", add_job_to_log = TRUE) != JOB_AVAILABLE))
 		return FALSE
 
-	JobDebug("Player: [player] is now Rank: [job.title], JCP:[job.current_positions], JPL:[latejoin ? job.total_positions : job.spawn_positions]")
+	job_debug("Player: [player] is now Rank: [job.title], JCP:[job.current_positions], JPL:[latejoin ? job.total_positions : job.spawn_positions]")
 	player.mind.set_assigned_role(job)
 	unassigned -= player
 	job.current_positions++
 	return TRUE
 
-/datum/controller/subsystem/job/proc/find_occupation_candidates(datum/job/job, level)
-	JobDebug("Running FOC, Job: [job], Level: [job_priority_level_to_string(level)]")
+/datum/controller/subsystem/job/proc/find_occupation_candidates(datum/job/job, level = 0)
+	job_debug("FOC: Now running, Job: [job], Level: [job_priority_level_to_string(level)]")
 	var/list/candidates = list()
 	for(var/mob/dead/new_player/player in unassigned)
 		if(!player)
-			JobDebug("FOC player no longer exists.")
+			job_debug("FOC: Player no longer exists.")
 			continue
+
 		if(!player.client)
-			JobDebug("FOC player client no longer exists, Player: [player]")
+			job_debug("FOC: Player client no longer exists, Player: [player]")
 			continue
+
 		// Initial screening check. Does the player even have the job enabled, if they do - Is it at the correct priority level?
 		var/player_job_level = player.client?.prefs.job_preferences[job.title]
 		if(isnull(player_job_level))
-			JobDebug("FOC player job not enabled, Player: [player]")
-			continue
-		else if(player_job_level != level)
-			JobDebug("FOC player job enabled at wrong level, Player: [player], TheirLevel: [job_priority_level_to_string(player_job_level)], ReqLevel: [job_priority_level_to_string(level)]")
+			job_debug("FOC: Player job not enabled, Player: [player]")
 			continue
 
-		// This check handles its own output to JobDebug.
+		if(level && (player_job_level != level))
+			job_debug("FOC: Player job enabled at wrong level, Player: [player], TheirLevel: [job_priority_level_to_string(player_job_level)], ReqLevel: [job_priority_level_to_string(level)]")
+			continue
+
+		// This check handles its own output to job_debug.
 		if(check_job_eligibility(player, job, "FOC", add_job_to_log = FALSE) != JOB_AVAILABLE)
 			continue
 
 		// They have the job enabled, at this priority level, with no restrictions applying to them.
-		JobDebug("FOC pass, Player: [player], Level: [job_priority_level_to_string(level)]")
+		job_debug("FOC: Player eligible, Player: [player], Level: [job_priority_level_to_string(level)]")
 		candidates += player
 	return candidates
 
-	JobDebug("GRJ Giving random job, Player: [player]")
+/datum/controller/subsystem/job/proc/give_random_job(mob/dead/new_player/player)
+	job_debug("GRJ: Giving random job, Player: [player]")
 	. = FALSE
 	for(var/datum/job/job as anything in shuffle(joinable_occupations))
 		if(QDELETED(player))
-			JobDebug("GRJ player is deleted, aborting")
+			job_debug("GRJ: Player is deleted, aborting")
 			break
 
 		if((job.current_positions >= job.spawn_positions) && job.spawn_positions != -1)
-			JobDebug("GRJ job lacks spawn positions to be eligible, Player: [player], Job: [job]")
+			job_debug("GRJ: Job lacks spawn positions to be eligible, Player: [player], Job: [job]")
 			continue
 
 		if(istype(job, get_job_type(overflow_role))) // We don't want to give him assistant, that's boring!
-			JobDebug("GRJ skipping overflow role, Player: [player], Job: [job]")
+			job_debug("GRJ: Skipping overflow role, Player: [player], Job: [job]")
 			continue
 
 		if(job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND) //If you want a command position, select it!
-			JobDebug("GRJ skipping command role, Player: [player], Job: [job]")
+			job_debug("GRJ: Skipping command role, Player: [player], Job: [job]")
 			continue
 
-		// This check handles its own output to JobDebug.
+		// This check handles its own output to job_debug.
 		if(check_job_eligibility(player, job, "GRJ", add_job_to_log = TRUE) != JOB_AVAILABLE)
 			continue
 
-		if(AssignRole(player, job, do_eligibility_checks = FALSE))
-			JobDebug("GRJ Random job given, Player: [player], Job: [job]")
+		if(assign_role(player, job, do_eligibility_checks = FALSE))
+			job_debug("GRJ: Random job given, Player: [player], Job: [job]")
 			return TRUE
 
-		JobDebug("GRJ Player eligible but AssignRole failed, Player: [player], Job: [job]")
-
+		job_debug("GRJ: Player eligible but assign_role failed, Player: [player], Job: [job]")
 
 /datum/controller/subsystem/job/proc/reset_occupations()
-	JobDebug("Occupations reset.")
+	job_debug("Occupations reset.")
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player?.mind)
 			continue
@@ -316,6 +319,61 @@ SUBSYSTEM_DEF(job)
 		load_jobs_from_config(silent = TRUE)
 	set_overflow_role(overflow_role)
 	return
+
+/*
+ * Forces a random Head of Staff role to be assigned to a random eligible player.
+ * Returns TRUE if a player was selected and assigned the role. FALSE otherwise.
+ */
+/datum/controller/subsystem/job/proc/force_one_head_assignment()
+	var/datum/job_department/command_department = get_department_type(/datum/job_department/command)
+	if(!command_department)
+		return FALSE
+	for(var/level in level_order)
+		for(var/datum/job/job as anything in command_department.department_jobs)
+			if((job.current_positions >= job.total_positions) && job.total_positions != -1)
+				continue
+			var/list/candidates = find_occupation_candidates(job, level)
+			if(!candidates.len)
+				continue
+			var/mob/dead/new_player/candidate = pick(candidates)
+			// Eligibility checks done as part of find_occupation_candidates.
+			if(assign_role(candidate, job, do_eligibility_checks = FALSE))
+				return TRUE
+	return FALSE
+
+
+/**
+ * Attempts to fill out all possible head positions for players with that job at a a given job priority level.
+ * Returns the number of Head positions assigned.
+ *
+ * Arguments:
+ * * level - One of the JP_LOW, JP_MEDIUM, JP_HIGH or JP_ANY defines. Attempts to find candidates with head jobs at that priority only.
+ */
+/datum/controller/subsystem/job/proc/fill_all_head_positions_at_priority(level)
+	. = 0
+	var/datum/job_department/command_department = get_department_type(/datum/job_department/command)
+
+	if(!command_department)
+		return .
+
+	for(var/datum/job/job as anything in command_department.department_jobs)
+		if((job.current_positions >= job.total_positions) && job.total_positions != -1)
+			continue
+
+		var/list/candidates = find_occupation_candidates(job, level)
+		if(!candidates.len)
+			continue
+
+		var/mob/dead/new_player/candidate = pick(candidates)
+
+		// Eligibility checks done as part of find_occupation_candidates() above.
+		if(!assign_role(candidate, job, do_eligibility_checks = FALSE))
+			continue
+
+		.++
+
+		if((job.current_positions >= job.spawn_positions) && job.spawn_positions != -1)
+			job_debug("JOBS: Command Job is now full, Job: [job], Positions: [job.current_positions], Limit: [job.spawn_positions]")
 
 /// Attempts to fill out all available AI positions.
 /datum/controller/subsystem/job/proc/fill_ai_positions()
@@ -330,7 +388,7 @@ SUBSYSTEM_DEF(job)
 			if(candidates.len)
 				var/mob/dead/new_player/candidate = pick(candidates)
 				// Eligibility checks done as part of find_occupation_candidates
-				if(AssignRole(candidate, get_job_type(/datum/job/ai), do_eligibility_checks = FALSE))
+				if(assign_role(candidate, get_job_type(/datum/job/ai), do_eligibility_checks = FALSE))
 					break
 
 
@@ -532,7 +590,7 @@ SUBSYSTEM_DEF(job)
 	job.announce_job(equipping)
 
 	if(player_client?.holder)
-		if(CONFIG_GET(flag/auto_deadmin_always) || (player_client.prefs?.toggles & DEADMIN_ALWAYS))
+		if(/*CONFIG_GET(flag/auto_deadmin_always) || */(player_client.prefs?.toggles & DEADMIN_ALWAYS))
 			player_client.holder.auto_deadmin()
 		else
 			handle_auto_deadmin_roles(player_client, job.title)

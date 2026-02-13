@@ -76,7 +76,7 @@
 	text += "<br>"
 	text += "(Syndicates used [TC_uses] TC) [purchases]"
 	if(TC_uses == 0 && GLOB.station_was_nuked && !are_all_operatives_dead())
-		text += "<BIG>[icon2html('icons/ui/antags/badass.dmi', world, "badass")]</BIG>"
+		text += "<BIG>[icon2html('icons/ui_icons/antags/badass.dmi', world, "badass")]</BIG>"
 
 	parts += text
 
@@ -106,26 +106,6 @@
 	disk_report += "</table>"
 
 	var/post_report
-
-	var/war_declared = FALSE
-	for(var/obj/item/circuitboard/computer/syndicate_shuttle/board as anything in GLOB.syndicate_shuttle_boards)
-		if(board.challenge_start_time)
-			war_declared = TRUE
-
-	var/force_war_button = ""
-
-	if(war_declared)
-		post_report += "<b>War declared.</b>"
-		force_war_button = "\[Force war\]"
-	else
-		post_report += "<b>War not declared.</b>"
-		var/obj/item/nuclear_challenge/war_button = war_button_ref?.resolve()
-		if(war_button)
-			force_war_button = "<a href='byond://?_src_=holder;[HrefToken()];force_war=[REF(war_button)]'>\[Force war\]</a>"
-		else
-			force_war_button = "\[Cannot declare war, challenge button missing!\]"
-
-	post_report += "\n[force_war_button]"
 	post_report += "\n<a href='byond://?_src_=holder;[HrefToken()];give_reinforcement=[REF(src)]'>\[Send Reinforcement\]</a>"
 
 	var/final_report = ..()
@@ -196,7 +176,7 @@
 
 	var/mob/living/carbon/human/nukie = new(spawn_loc)
 	chosen_one.client.prefs.safe_transfer_prefs_to(nukie, is_antag = TRUE)
-	nukie.PossessByPlayer(chosen_one.key)
+	nukie.key = chosen_one.key
 
 	var/datum/antagonist/nukeop/antag_datum = new()
 	antag_datum.send_to_spawnpoint = FALSE
@@ -309,9 +289,9 @@
 			return TRUE
 	return FALSE
 
-/datum/team/nuclear/add_member(datum/mind/new_member)
-	..()
-	SEND_SIGNAL(src, COMSIG_NUKE_TEAM_ADDITION, new_member.current)
+// /datum/team/nuclear/add_member(datum/mind/new_member)
+// 	..()
+// 	SEND_SIGNAL(src, COMSIG_NUKE_TEAM_ADDITION, new_member.current)
 
 /datum/team/nuclear/proc/assign_nuke_delayed()
 	assign_nuke()

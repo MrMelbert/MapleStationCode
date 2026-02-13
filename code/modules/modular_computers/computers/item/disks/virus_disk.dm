@@ -151,7 +151,7 @@
 		hidden_uplink.uplink_handler.progression_points = min(SStraitor.current_global_progression, current_progression)
 		SStraitor.register_uplink_handler(hidden_uplink.uplink_handler)
 	else
-		hidden_uplink.add_telecrystals(telecrystals)
+		hidden_uplink.uplink_handler.add_telecrystals(telecrystals)
 	telecrystals = 0
 	hidden_uplink.locked = FALSE
 	hidden_uplink.active = TRUE

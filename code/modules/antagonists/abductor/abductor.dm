@@ -7,6 +7,8 @@
 	show_in_antagpanel = FALSE //should only show subtypes
 	show_to_ghosts = TRUE
 	suicide_cry = "FOR THE MOTHERSHIP!!" // They can't even talk but y'know
+	stinger_sound = 'sound/ambience/antag/ayylien.ogg'
+
 	var/datum/team/abductor_team/team
 	var/sub_role
 	var/outfit
@@ -72,12 +74,11 @@
 	owner.set_assigned_role(SSjob.get_job_type(role_job))
 	objectives += team.objectives
 	finalize_abductor()
-	// We don't want abductors to be converted by other antagonists
-	owner.add_traits(list(TRAIT_ABDUCTOR_TRAINING, TRAIT_UNCONVERTABLE), ABDUCTOR_ANTAGONIST)
+	ADD_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/on_removal()
-	owner.remove_traits(list(TRAIT_ABDUCTOR_TRAINING, TRAIT_UNCONVERTABLE), ABDUCTOR_ANTAGONIST)
+	REMOVE_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/greet()

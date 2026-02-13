@@ -71,9 +71,6 @@
 /datum/dynamic_ruleset/roundstart/malf_ai/assign_role(datum/mind/candidate)
 	candidate.add_antag_datum(/datum/antagonist/malf_ai)
 
-/datum/dynamic_ruleset/roundstart/malf_ai/can_be_selected()
-	return ..() && !HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI)
-
 /datum/dynamic_ruleset/roundstart/blood_brother
 	name = "Blood Brothers"
 	config_tag = "Roundstart Blood Brothers"
@@ -362,6 +359,7 @@
 	log_dynamic("[config_tag]: All headrevs were ineligible after the timer expired, and no replacements could be found. Ruleset canceled.")
 	message_admins("[config_tag]: All headrevs were ineligible after the timer expired, and no replacements could be found. Ruleset canceled.")
 
+/*
 /datum/dynamic_ruleset/roundstart/spies
 	name = "Spies"
 	config_tag = "Roundstart Spies"
@@ -378,6 +376,7 @@
 
 /datum/dynamic_ruleset/roundstart/spies/assign_role(datum/mind/candidate)
 	candidate.add_antag_datum(/datum/antagonist/spy)
+*/
 
 /datum/dynamic_ruleset/roundstart/extended
 	name = "Extended"

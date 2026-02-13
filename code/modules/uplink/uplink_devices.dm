@@ -68,6 +68,10 @@
 	var/datum/component/uplink/hidden_uplink = GetComponent(/datum/component/uplink)
 	hidden_uplink.allow_restricted = FALSE
 
+///A subtype used for lone ops, with some of the stuff they shouldn't/can't access removed from purchase.
+/obj/item/uplink/loneop
+	uplink_flag = UPLINK_LONE_OP
+
 /obj/item/uplink/clownop
 	uplink_flag = UPLINK_CLOWN_OPS
 

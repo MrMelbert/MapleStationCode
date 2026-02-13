@@ -9,6 +9,7 @@
 	suicide_cry = "FOR MY BROTHER!!"
 	antag_moodlet = /datum/mood_event/focused
 	hardcore_random_bonus = TRUE
+	stinger_sound = 'sound/ambience/antag/tatoralert.ogg'
 	VAR_PRIVATE
 		datum/team/brother_team/team
 
@@ -53,7 +54,7 @@
 	if (!istype(carbon_owner))
 		return
 	carbon_owner.AddComponentFrom(REF(src), /datum/component/can_flash_from_behind)
-	RegisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_MOB, PROC_REF(on_mob_successful_flashed_mob))
+	RegisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON, PROC_REF(on_mob_successful_flashed_carbon))
 
 /// Take away the ability to add more brothers
 /datum/antagonist/brother/proc/remove_conversion_skills()
@@ -61,7 +62,7 @@
 		return
 	var/mob/living/carbon/carbon_owner = owner.current
 	carbon_owner.RemoveComponentSource(REF(src), /datum/component/can_flash_from_behind)
-	UnregisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_MOB)
+	UnregisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON)
 
 /datum/antagonist/brother/proc/on_mob_successful_flashed_carbon(mob/living/source, mob/living/carbon/flashed, obj/item/assembly/flash/flash)
 	SIGNAL_HANDLER
@@ -81,7 +82,7 @@
 		flashed.balloon_alert(source, "[flashed.p_theyre()] loyal to someone else!")
 		return
 
-	if (HAS_TRAIT(flashed, TRAIT_MINDSHIELD) || flashed.mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_SECURITY)
+	if (HAS_TRAIT(flashed, TRAIT_MINDSHIELD))
 		flashed.balloon_alert(source, "[flashed.p_they()] resist!")
 		return
 

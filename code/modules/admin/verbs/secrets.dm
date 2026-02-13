@@ -406,7 +406,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 				var/list/candidates = list()
 
 				if (prefs["offerghosts"]["value"] == "Yes")
-					candidates = SSpolling.poll_ghost_candidates(replacetext(prefs["ghostpoll"]["value"], "%TYPE%", initial(pathToSpawn.name)), check_jobban = ROLE_TRAITOR, pic_source = pathToSpawn, role_name_text = "portal storm")
+					candidates = SSpolling.poll_ghost_candidates(replacetext(prefs["ghostpoll"]["value"], "%TYPE%", initial(pathToSpawn.name)), check_jobban = ROLE_TRAITOR, alert_pic = pathToSpawn, role_name_text = "portal storm")
 
 				if (prefs["playersonly"]["value"] == "Yes" && length(candidates) < prefs["minplayers"]["value"])
 					message_admins("Not enough players signed up to create a portal storm, the minimum was [prefs["minplayers"]["value"]] and the number of signups [length(candidates)]")
@@ -523,7 +523,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 			if(teamsize <= 0)
 				return FALSE
 
-			candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a Nanotrasen emergency response drone?", check_jobban = ROLE_DRONE, pic_source = /mob/living/basic/drone/classic, role_name_text = "nanotrasen emergency response drone")
+			candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a Nanotrasen emergency response drone?", check_jobban = ROLE_DRONE, alert_pic = /mob/living/basic/drone/classic, role_name_text = "nanotrasen emergency response drone")
 
 			if(length(candidates) == 0)
 				return FALSE

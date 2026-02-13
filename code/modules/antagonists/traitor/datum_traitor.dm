@@ -17,7 +17,7 @@
 	can_assign_self_objectives = TRUE
 	default_custom_objective = "Perform an overcomplicated heist on valuable Nanotrasen assets."
 	hardcore_random_bonus = TRUE
-	stinger_sound = 'sound/music/antag/traitor/tatoralert.ogg'
+	stinger_sound = 'sound/ambience/antag/tatoralert.ogg'
 
 	///The flag of uplink that this traitor is supposed to have.
 	var/uplink_flag_given = UPLINK_TRAITORS
@@ -222,7 +222,7 @@
 	. = ..()
 	if (!.)
 		return
-	owner.current.playsound_local(get_turf(owner.current), 'sound/music/antag/traitor/final_objective.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
+	owner.current.playsound_local(get_turf(owner.current), 'sound/traitor/final_objective.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/traitor/ui_static_data(mob/user)
 	var/datum/component/uplink/uplink = uplink_ref?.resolve()
@@ -278,7 +278,7 @@
 	if(uplink_owned)
 		var/uplink_text = "(used [used_telecrystals] TC) [purchases]"
 		if((used_telecrystals == 0) && traitor_won)
-			var/static/icon/badass = icon('icons/ui/antags/badass.dmi', "badass")
+			var/static/icon/badass = icon('icons/ui_icons/antags/badass.dmi', "badass")
 			uplink_text += "<BIG>[icon2html(badass, world)]</BIG>"
 		result += uplink_text
 
@@ -293,7 +293,7 @@
 		result += span_greentext("The [special_role_text] was successful!")
 	else
 		result += span_redtext("The [special_role_text] has failed!")
-		SEND_SOUND(owner.current, 'sound/ambience/misc/ambifailure.ogg')
+		SEND_SOUND(owner.current, 'sound/ambience/ambifailure.ogg')
 
 	return result.Join("<br>")
 

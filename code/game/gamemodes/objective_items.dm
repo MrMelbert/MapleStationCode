@@ -19,8 +19,8 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 
 /datum/objective_item_handler/proc/new_item_created(datum/source, obj/item/item)
 	SIGNAL_HANDLER
-	if(HAS_TRAIT(item, TRAIT_ITEM_OBJECTIVE_BLOCKED))
-		return
+	// if(HAS_TRAIT(item, TRAIT_ITEM_OBJECTIVE_BLOCKED))
+	// 	return
 	if(!generated_items)
 		item.add_stealing_item_objective()
 		return

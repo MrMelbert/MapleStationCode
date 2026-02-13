@@ -545,7 +545,7 @@ ADMIN_VERB(spawn_debug_full_crew, R_DEBUG, "Spawn Debug Full Crew", "Creates a f
 		qdel(new_guy)
 
 		// Then equip up the human with job gear.
-		SSjob.EquipRank(character, job)
+		SSjob.equip_rank(character, job)
 		job.after_latejoin_spawn(character)
 
 		// Finally, ensure the minds are tracked and in the manifest.

@@ -82,9 +82,9 @@ GLOBAL_VAR(antag_prototypes)
 	if(!current)
 		result += "<span class='bad'>No body!</span>"
 	if(current && HAS_TRAIT(current, TRAIT_MINDSHIELD))
-		result += span_good("Mindshielded")
-	if(current && HAS_MIND_TRAIT(current, TRAIT_UNCONVERTABLE))
-		result += span_good("Unconvertable")
+		result += span_green("Mindshielded")
+	// if(current && HAS_MIND_TRAIT(current, TRAIT_UNCONVERTABLE))
+	// 	result += span_green("Unconvertable")
 	return result
 
 /**

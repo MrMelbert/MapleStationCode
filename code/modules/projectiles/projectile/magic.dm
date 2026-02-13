@@ -371,16 +371,11 @@
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [whomst]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, checked_target = target, alert_pic = target, role_name_text = "bolt of possession")
 	if(target.stat == DEAD)//boo.
 		return
-	if(LAZYLEN(candidates))
-		var/mob/dead/observer/ghost = pick(candidates)
+	if(chosen_one)
 		to_chat(target, span_boldnotice("You have been noticed by a ghost and it has possessed you!"))
-		var/oldkey = target.key
-		target.ghostize(FALSE)
-		target.key = ghost.key
-		trauma.friend.key = oldkey
-		trauma.friend.reset_perspective(null)
-		trauma.friend.Show()
-		trauma.friend_initialized = TRUE
+		var/mob/dead/observer/ghosted_target = target.ghostize(FALSE)
+		target.key = chosen_one.key
+		trauma.add_friend(ghosted_target)
 	else
 		to_chat(target, span_notice("Your mind has managed to go unnoticed in the spirit world."))
 		qdel(trauma)

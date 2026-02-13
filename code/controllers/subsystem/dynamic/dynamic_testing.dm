@@ -41,7 +41,7 @@ ADMIN_VERB(dynamic_tester, R_DEBUG, "Dynamic Tester", "See dynamic probabilities
 	update_reports()
 
 /datum/dynamic_tester/ui_state(mob/user)
-	return ADMIN_STATE(R_DEBUG)
+	return /*ADMIN_STATE(R_DEBUG)*/ GLOB.admin_state
 
 /datum/dynamic_tester/ui_close()
 	qdel(src)

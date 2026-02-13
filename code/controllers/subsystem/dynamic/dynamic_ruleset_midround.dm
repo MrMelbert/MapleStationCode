@@ -392,7 +392,7 @@
 	var/starting_points = OVERMIND_STARTING_POINTS
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/create_ruleset_body()
-	return new /mob/eye/blob(get_blobspawn(), starting_points)
+	return new /mob/camera/blob(get_blobspawn(), starting_points)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/assign_role(datum/mind/candidate)
 	return // everything is handled by blob new()
@@ -425,7 +425,7 @@
 	max_antag_cap = 1
 	min_antag_cap = 1
 	repeatable_weight_decrease = 3
-	signup_atom_appearance = /mob/living/basic/alien
+	signup_atom_appearance = /mob/living/simple_animal/hostile/alien
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/New(list/dynamic_config)
 	. = ..()
@@ -492,7 +492,7 @@
 	candidate.add_antag_datum(/datum/antagonist/nightmare)
 	candidate.current.set_species(/datum/species/shadow/nightmare)
 	candidate.current.forceMove(find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = TRUE))
-	playsound(candidate.current, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
+	playsound(candidate.current, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon
 	name = "Space Dragon"
@@ -522,7 +522,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/assign_role(datum/mind/candidate)
 	candidate.add_antag_datum(/datum/antagonist/space_dragon)
 	candidate.current.forceMove(find_space_spawn())
-	playsound(candidate.current, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
+	playsound(candidate.current, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/execute()
 	. = ..()
@@ -694,7 +694,7 @@
 	antag.original_ref = WEAKREF(good_version.mind)
 	antag.setup_clone()
 
-	playsound(bad_version, 'sound/items/weapons/zapbang.ogg', 30, TRUE)
+	playsound(bad_version, 'sound/weapons/zapbang.ogg', 30, TRUE)
 	bad_version.put_in_hands(new /obj/item/storage/toolbox/mechanical()) //so they dont get stuck in maints
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/proc/find_clone()
@@ -711,6 +711,7 @@
 		return pick(possible_targets)
 	return null
 
+/*
 /datum/dynamic_ruleset/midround/from_ghosts/voidwalker
 	name = "Voidwalker"
 	config_tag = "Voidwalker"
@@ -732,6 +733,7 @@
 	candidate.current.set_species(/datum/species/voidwalker)
 	candidate.current.forceMove(find_space_spawn())
 	playsound(candidate.current, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
+*/
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives
 	name = "Fugitive"
@@ -782,7 +784,7 @@
 	var/list/hunter_backstories = list(
 		HUNTER_PACK_BOUNTY,
 		HUNTER_PACK_COPS,
-		HUNTER_PACK_MI13,
+		// HUNTER_PACK_MI13,
 		HUNTER_PACK_PSYKER,
 		HUNTER_PACK_RUSSIAN,
 		RANDOM_BACKSTORY,
@@ -823,7 +825,7 @@
 		HUNTER_PACK_RUSSIAN,
 		HUNTER_PACK_BOUNTY,
 		HUNTER_PACK_PSYKER,
-		HUNTER_PACK_MI13,
+		// HUNTER_PACK_MI13,
 	)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(check_spawn_hunters), hunter_backstory, 10 MINUTES), 1 MINUTES)
@@ -833,7 +835,7 @@
 	equip_fugitive(candidate.current, team)
 	if(length(selected_minds) > 1 && candidate == selected_minds[1])
 		equip_fugitive_leader(candidate.current)
-	playsound(candidate.current, 'sound/items/weapons/emitter.ogg', 50, TRUE)
+	playsound(candidate.current, 'sound/weapons/emitter.ogg', 50, TRUE)
 
 /datum/dynamic_ruleset/midround/from_ghosts/fugitives/proc/equip_fugitive(mob/living/carbon/human/fugitive, datum/team/fugitive/team)
 	fugitive.set_species(/datum/species/human)
@@ -886,8 +888,8 @@
 			ship = new /datum/map_template/shuttle/hunter/bounty
 		if(HUNTER_PACK_PSYKER)
 			ship = new /datum/map_template/shuttle/hunter/psyker
-		if(HUNTER_PACK_MI13)
-			ship = new/datum/map_template/shuttle/hunter/mi13_foodtruck
+		// if(HUNTER_PACK_MI13)
+		// 	ship = new/datum/map_template/shuttle/hunter/mi13_foodtruck
 
 	var/x = rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE - ship.width)
 	var/y = rand(TRANSITIONEDGE, world.maxy - TRANSITIONEDGE - ship.height)
@@ -936,10 +938,10 @@
 			announcement_text_list += "HEY, CAN YOU HEAR US? We're coming to your station. There's a bad guy down there, really bad guy. We need to arrest them."
 			announcement_text_list += "We're also offering fortune telling services out of the front door if you have paying customers."
 			announcement_title += "Fortune-Telling Entertainment Shuttle"
-		if(HUNTER_PACK_MI13)
-			announcement_text_list += "Illegal intrusion detected in the crew monitoring network. Central Command has been informed."
-			announcement_text_list += "Please report any suspicious individuals or behaviour to your local security team."
-			announcement_title += "Nanotrasen Intrusion Countermeasures Electronics"
+		// if(HUNTER_PACK_MI13)
+		// 	announcement_text_list += "Illegal intrusion detected in the crew monitoring network. Central Command has been informed."
+		// 	announcement_text_list += "Please report any suspicious individuals or behaviour to your local security team."
+		// 	announcement_title += "Nanotrasen Intrusion Countermeasures Electronics"
 
 	if(!length(announcement_text_list))
 		announcement_text_list += "Unidentified ship detected near the station."
@@ -992,7 +994,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/slaughter_demon/create_ruleset_body()
 	var/turf/spawnloc = find_space_spawn()
 	. = new /mob/living/basic/demon/slaughter(spawnloc)
-	new /obj/effect/dummy/phased_mob/blood(spawnloc, .)
+	new /obj/effect/dummy/phased_mob(spawnloc, .)
 
 /datum/dynamic_ruleset/midround/from_ghosts/slaughter_demon/assign_role(datum/mind/candidate)
 	return // handled by new() entirely
@@ -1090,9 +1092,6 @@
 
 /datum/dynamic_ruleset/midround/from_living/malf_ai/assign_role(datum/mind/candidate)
 	candidate.add_antag_datum(/datum/antagonist/malf_ai)
-
-/datum/dynamic_ruleset/midround/from_living/malf_ai/can_be_selected()
-	return ..() && !HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI)
 
 /datum/dynamic_ruleset/midround/from_living/blob
 	name = "Blob Infection"

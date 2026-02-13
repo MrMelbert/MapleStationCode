@@ -186,7 +186,7 @@
 		CRASH("Failed to create a character for latejoin.")
 	transfer_character()
 
-	SSjob.EquipRank(character, job, character.client)
+	SSjob.equip_rank(character, job, character.client)
 	job.after_latejoin_spawn(character)
 
 	#define IS_NOT_CAPTAIN 0

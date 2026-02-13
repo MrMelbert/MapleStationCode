@@ -12,6 +12,7 @@
 	suicide_cry = "FOR MY LOVE!!"
 	preview_outfit = /datum/outfit/obsessed
 	hardcore_random_bonus = TRUE
+	stinger_sound = 'sound/ambience/antag/creepalert.ogg'
 	var/datum/brain_trauma/special/obsessed/trauma
 
 /// Dummy antag datum that will show the cured obsessed to admins
