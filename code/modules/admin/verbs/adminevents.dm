@@ -261,11 +261,12 @@ ADMIN_VERB(run_weather, R_FUN, "Run Weather", "Triggers specific weather on the 
 	log_admin("[key_name(user)] started weather of type [weather_type] on the z-level [z_level].")
 	BLACKBOX_LOG_ADMIN_VERB("Run Weather")
 
-ADMIN_VERB(command_report_footnote, R_ADMIN, "Command Report Footnote", "Adds a footnote to the roundstart command report.", ADMIN_CATEGORY_EVENTS)
+ADMIN_VERB(command_report_footnote, R_FUN, "Command Report Footnote", "Adds a footnote to the roundstart command report.", ADMIN_CATEGORY_EVENTS)
 	var/datum/command_footnote/command_report_footnote = new /datum/command_footnote()
 	GLOB.communications_controller.block_command_report += 1 //Add a blocking condition to the counter until the inputs are done.
 
-	command_report_footnote.message = tgui_input_text(user, "This message will be attached to the bottom of the roundstart threat report. Be sure to delay the roundstart report if you need extra time.", "P.S.")
+	command_report_footnote.message = tgui_input_text(user, "This message will be attached to the bottom of the roundstart threat report. \
+		Be sure to delay the roundstart report if you need extra time.", "P.S.")
 	if(!command_report_footnote.message)
 		GLOB.communications_controller.block_command_report -= 1
 		qdel(command_report_footnote)
@@ -284,6 +285,12 @@ ADMIN_VERB(command_report_footnote, R_ADMIN, "Command Report Footnote", "Adds a 
 /datum/command_footnote
 	var/message
 	var/signature
+
+ADMIN_VERB(command_report_content, R_FUN, "Command Report Content", "Sets the main content of the roundstart command report", ADMIN_CATEGORY_EVENTS)
+	var/content = tgui_input_text(user, "This message will be the main content of the roundstart command report, above the threat report (if enabled). \
+		 Be sure to delay the roundstart report if you need extra time to compose this message.", "To Whom It May Concern")
+	GLOB.communications_controller.command_report_main_content = content
+	message_admins("[key_name_admin(user)] has [content ? "set" : "cleared"] the main content of the roundstart command report.")
 
 ADMIN_VERB(delay_command_report, R_FUN, "Delay Command Report", "Prevents the roundstart command report from being sent; or forces it to send it delayed.", ADMIN_CATEGORY_EVENTS)
 	GLOB.communications_controller.block_command_report = !GLOB.communications_controller.block_command_report
