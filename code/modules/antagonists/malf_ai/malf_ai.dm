@@ -33,9 +33,13 @@
 
 	if(give_objectives)
 		forge_ai_objectives()
+	if(!employer)
+		employer = pick(GLOB.ai_employers)
 
-	if(finalize_antag) // NON-MODULE CHANGE
-		finalize_antag()
+	malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
+
+	add_law_zero()
+	owner.current.grant_language(/datum/language/codespeak, source = LANGUAGE_MALF)
 
 	return ..()
 
@@ -260,6 +264,7 @@
 /datum/antagonist/malf_ai/infected
 	name = "Infected AI"
 	employer = "Infected AI"
+	stinger_sound = null
 	///The player, to who is this AI slaved
 	var/datum/mind/boss
 
