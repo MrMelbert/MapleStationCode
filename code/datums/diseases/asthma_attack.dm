@@ -176,7 +176,7 @@
 
 /datum/disease/asthma_attack/severe/stage_act(seconds_per_tick, times_fired)
 	. = ..()
-	if (!.)
+	if (!. || QDELETED(src))
 		return FALSE
 
 	if (stage > 1)

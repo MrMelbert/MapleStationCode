@@ -38,7 +38,7 @@
 	. = ..()
 	// Purges anything remotely opioid-related
 	for(var/datum/reagent/other_opioid as anything in affected_mob.reagents.reagent_list)
-		if(other_opioid.addiction_types?[/datum/addiction/opioids])
+		if(LAZYACCESS(other_opioid.addiction_types, /datum/addiction/opioids))
 			affected_mob.reagents.remove_reagent(other_opioid.type, 3 * REM * seconds_per_tick)
 
 	affected_mob.mind?.remove_addiction_points(/datum/addiction/opioids, 5 * normalise_creation_purity() * REM * seconds_per_tick)

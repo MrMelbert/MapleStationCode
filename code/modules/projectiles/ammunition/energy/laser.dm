@@ -48,7 +48,7 @@
 	harmful = FALSE
 
 /obj/item/ammo_casing/energy/lasergun/old
-	projectile_type = /obj/projectile/beam/laser
+	projectile_type = /obj/projectile/beam/laser/no_hitscan
 	e_cost = LASER_SHOTS(5, STANDARD_CELL_CHARGE)
 	select_name = "kill"
 
