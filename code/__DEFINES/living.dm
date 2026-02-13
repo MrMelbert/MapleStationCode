@@ -42,6 +42,15 @@
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
