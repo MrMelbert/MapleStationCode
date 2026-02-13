@@ -265,20 +265,27 @@ ADMIN_VERB(command_report_footnote, R_FUN, "Command Report Footnote", "Adds a fo
 	var/datum/command_footnote/command_report_footnote = new /datum/command_footnote()
 	GLOB.communications_controller.block_command_report += 1 //Add a blocking condition to the counter until the inputs are done.
 
-	command_report_footnote.message = tgui_input_text(user, "This message will be attached to the bottom of the roundstart threat report. \
-		Be sure to delay the roundstart report if you need extra time.", "P.S.")
+	command_report_footnote.message = tgui_input_text(
+		user,
+		"This message will be attached to the bottom of the roundstart threat report.",
+		"P.S.",
+	)
 	if(!command_report_footnote.message)
 		GLOB.communications_controller.block_command_report -= 1
 		qdel(command_report_footnote)
 		return
 
-	command_report_footnote.signature = tgui_input_text(user, "Whose signature will appear on this footnote?", "Also sign here, here, aaand here.")
+	command_report_footnote.signature = tgui_input_text(
+		user,
+		"Whose signature will appear on this footnote?",
+		"Also sign here, here, aaand here.",
+	)
 
 	if(!command_report_footnote.signature)
 		command_report_footnote.signature = "Classified"
 
 	GLOB.communications_controller.command_report_footnotes += command_report_footnote
-	GLOB.communications_controller.block_command_report--
+	GLOB.communications_controller.block_command_report -= 1
 
 	message_admins("[user] has added a footnote to the command report: [command_report_footnote.message], signed [command_report_footnote.signature]")
 
@@ -286,11 +293,15 @@ ADMIN_VERB(command_report_footnote, R_FUN, "Command Report Footnote", "Adds a fo
 	var/message
 	var/signature
 
-ADMIN_VERB(command_report_content, R_FUN, "Command Report Content", "Sets the main content of the roundstart command report", ADMIN_CATEGORY_EVENTS)
-	var/content = tgui_input_text(user, "This message will be the main content of the roundstart command report, above the threat report (if enabled). \
-		 Be sure to delay the roundstart report if you need extra time to compose this message.", "To Whom It May Concern")
-	GLOB.communications_controller.command_report_main_content = content
-	message_admins("[key_name_admin(user)] has [content ? "set" : "cleared"] the main content of the roundstart command report.")
+ADMIN_VERB(command_report_content, R_FUN, "Command Report Content", "Sets the main content of the roundstart command report.", ADMIN_CATEGORY_EVENTS)
+	GLOB.communications_controller.block_command_report += 1
+	GLOB.communications_controller.command_report_main_content = tgui_input_text(
+		user,
+		"This message will be the main content of the roundstart command report, above the threat report (if enabled).",
+		"To Whom It May Concern",
+	)
+	GLOB.communications_controller.block_command_report -= 1
+	message_admins("[key_name_admin(user)] has [GLOB.communications_controller.command_report_main_content ? "set" : "cleared"] the main content of the roundstart command report.")
 
 ADMIN_VERB(delay_command_report, R_FUN, "Delay Command Report", "Prevents the roundstart command report from being sent; or forces it to send it delayed.", ADMIN_CATEGORY_EVENTS)
 	GLOB.communications_controller.block_command_report = !GLOB.communications_controller.block_command_report
