@@ -112,7 +112,7 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 			continue
 		trait_list_strings += "[station_trait.get_report()]<BR>"
 	if(trait_list_strings.len > 0)
-		. += "<hr><b>Identified shift divergencies:</b><BR>" + trait_list_strings.Join()
+		. += "<hr><h4>Identified shift divergencies:</h4>" + trait_list_strings.Join()
 
 	if(length(command_report_footnotes))
 		var/footnote_pile = ""
@@ -122,7 +122,7 @@ GLOBAL_DATUM_INIT(communications_controller, /datum/communciations_controller, n
 			footnote_pile += "<i>[footnote.signature]</i><BR>"
 			footnote_pile += "<BR>"
 
-		. += "<hr><b>Additional Notes: </b><BR><BR>" + footnote_pile
+		. += "<hr><h4>Additional Notes: </h4>" + footnote_pile
 
 #ifndef MAP_TEST
 	print_command_report(., "[command_name()] Status Summary", announce = FALSE, contains_advanced_html = TRUE)
