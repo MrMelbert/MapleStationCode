@@ -145,3 +145,7 @@
 		if(isanimal_or_basicmob(target) || is_type_in_typecache(target, non_simple_animals) || ismonkey(target))
 			return TRUE
 	return FALSE
+
+#undef DNA_PROBE_SCAN_PLANTS
+#undef DNA_PROBE_SCAN_ANIMALS
+#undef DNA_PROBE_SCAN_HUMANS
