@@ -123,10 +123,13 @@
 		return FALSE
 	if(dried)
 		return TRUE
-	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
-	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
+	var/list/unique_blood = list()
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		if(unique_blood[blood_type])
+			continue
+		var/datum/blood_type/blood = find_blood_type(blood_type)
 		blood.set_up_blood(src, first_dna == 0)
+		unique_blood[blood_type] = TRUE
 	update_appearance()
 	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE
@@ -183,7 +186,7 @@
 
 	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
 	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
-	var/slots_to_bloody = target_flags & ~check_covered_slots()
+	var/slots_to_bloody = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
 	var/list/all_worn = get_equipped_items()
 	for(var/obj/item/thing as anything in all_worn)
 		if(thing.slot_flags & slots_to_bloody)
@@ -212,7 +215,7 @@
 	if(QDELING(src))
 		return FALSE
 
-	var/slots_to_fingerprint = target_flags & ~check_obscured_slots()
+	var/slots_to_fingerprint = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
 	for(var/obj/item/thing as anything in get_equipped_items())
 		if(thing.slot_flags & slots_to_fingerprint)
 			. ||= thing.add_fingerprint(from_mob)

@@ -187,6 +187,14 @@
 	name = "Strong-Arm Implant Set"
 	desc = "A crate containing two implants, which can be surgically implanted to empower the strength of human arms. Warranty void if exposed to electromagnetic pulses."
 	cost = CARGO_CRATE_VALUE * 6
-	contains = list(/obj/item/organ/internal/cyberimp/arm/muscle = 2)
+	contains = list(/obj/item/organ/cyberimp/arm/strongarm = 2)
 	crate_name = "Strong-Arm implant crate"
 	discountable = SUPPLY_PACK_RARE_DISCOUNTABLE
+
+/datum/supply_pack/medical/chiral_inversing_buffer
+	name = "Chiral Inversing Buffer Crate"
+	desc = "A crate containing a rare sample of an inversing buffer. \
+		It can transform impure reagents into their inverse counterparts when the right conditions are met."
+	cost = CARGO_CRATE_VALUE * 3
+	contains = list(/obj/item/reagent_containers/cup/bottle/inversing_buffer)
+	crate_name = "chiral inversing buffer crate"

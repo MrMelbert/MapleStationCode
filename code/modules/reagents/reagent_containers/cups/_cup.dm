@@ -18,12 +18,21 @@
 	var/gulp_size = 5
 	///Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it.
 	var/isGlass = FALSE
+	///What kind of chem transfer method does this cup use. Defaults to INGEST
+	var/reagent_consumption_method = INGEST
+	///What sound does our consumption play on consuming from the container?
+	var/consumption_sound = 'sound/items/drink.ogg'
 
 /obj/item/reagent_containers/cup/examine(mob/user)
 	. = ..()
 	if(drink_type)
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
 		. += span_notice("It is [LOWER_TEXT(english_list(types))].")
+
+/obj/item/reagent_containers/cup/examine_tags(mob/user)
+	. = ..()
+	for(var/foodtype in bitfield_to_list(drink_type, FOOD_FLAGS))
+		.[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] drink."
 
 /**
  * Checks if the mob actually liked drinking this cup.
@@ -89,7 +98,7 @@
 		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
 			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
 		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
-			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(HAS_TRAIT(user, TRAIT_JOLLY) || (prob(50) && !HAS_TRAIT(user, TRAIT_DEPRESSION))) ? "half full" : "half empty"]."))
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(user.get_quirk(/datum/quirk/jolly) || (prob(50) && !user.get_quirk(/datum/quirk/depression))) ? "half full" : "half empty"]."))
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
 	// NON-MODULE CHANGE END
@@ -98,9 +107,9 @@
 
 	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, target_mob, user)
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	reagents.trans_to(target_mob, gulp_size, transferred_by = user, methods = INGEST)
+	reagents.trans_to(target_mob, gulp_size, transferred_by = user, methods = reagent_consumption_method)
 	checkLiked(fraction, target_mob)
-	playsound(target_mob.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
+	playsound(target_mob.loc, consumption_sound, rand(10,50), TRUE)
 	if(!iscarbon(target_mob))
 		return
 	var/mob/living/carbon/carbon_drinker = target_mob

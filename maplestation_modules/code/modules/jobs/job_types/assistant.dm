@@ -19,6 +19,9 @@
 	for(var/i in 1 to rand(3, floor(length(skill_pool) * 0.5))) // give a few random skills to work with
 		spawned.mind.adjust_experience(pick_n_take(skill_pool), round(rand(100, 750), 50), TRUE)
 
+/datum/job/assistant/get_radio_information()
+	return null
+
 // This is done for loadouts, otherwise unique uniforms would be deleted.
 /datum/outfit/job/assistant
 	uniform = null

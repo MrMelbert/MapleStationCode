@@ -24,7 +24,8 @@
 	icon = 'icons/obj/machines/atmospherics/unary_devices.dmi'
 	icon_state = "airlock_pump"
 	pipe_state = "airlock_pump"
-	use_power = ACTIVE_POWER_USE
+	use_power = IDLE_POWER_USE
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION
 	can_unwrench = TRUE
 	welded = FALSE
@@ -92,14 +93,10 @@
 	if(!showpipe)
 		return
 
-	var/mutable_appearance/distro_pipe_appearance = get_pipe_image(icon, "pipe_exposed", dir, COLOR_BLUE, piping_layer = 4)
-	if(nodes[1])
-		distro_pipe_appearance = get_pipe_image(icon, "pipe_intact", dir, COLOR_BLUE, piping_layer = 4)
+	var/mutable_appearance/distro_pipe_appearance = get_pipe_image(icon, "pipe_[nodes[1] ? "intact" : "exposed"]", dir, nodes[1]?.color || COLOR_BLUE, piping_layer = 4)
 	. += distro_pipe_appearance
 
-	var/mutable_appearance/waste_pipe_appearance = get_pipe_image(icon, "pipe_exposed", dir, COLOR_RED, piping_layer = 2)
-	if(nodes[2])
-		waste_pipe_appearance = get_pipe_image(icon, "pipe_intact", dir, COLOR_RED, piping_layer = 2)
+	var/mutable_appearance/waste_pipe_appearance = get_pipe_image(icon, "pipe_[nodes[2] ? "intact" : "exposed"]", dir, nodes[2]?.color || COLOR_RED, piping_layer = 2)
 	. += waste_pipe_appearance
 
 	var/mutable_appearance/distro_cap_appearance = get_pipe_image(icon, "vent_cap", dir, piping_layer = 4)
@@ -153,7 +150,7 @@
 			tile_air_pressure = max(0, local_turf.return_air().return_pressure())
 		on_dock_request(tile_air_pressure)
 
-/obj/machinery/atmospherics/components/unary/airlock_pump/New()
+/obj/machinery/atmospherics/components/unary/airlock_pump/Initialize(mapload)
 	. = ..()
 	var/datum/gas_mixture/distro_air = airs[1]
 	var/datum/gas_mixture/waste_air = airs[2]
@@ -301,6 +298,7 @@
 	airlocks_animating = FALSE
 
 	on = TRUE
+	update_use_power(ACTIVE_POWER_USE)
 	cycle_start_time = world.time
 
 	var/turf/local_turf = get_turf(src)
@@ -343,6 +341,7 @@
 	if(!on)
 		return FALSE
 	on = FALSE
+	update_use_power(IDLE_POWER_USE)
 
 	// In case we can open both sides safe_dock will do it for us
 	// it also handles its own messages. If we can't - procceed
@@ -481,11 +480,22 @@
 	internal_airlocks = get_adjacent_airlocks(internal_airlocks_origin, perpendicular_dirs)
 	external_airlocks = get_adjacent_airlocks(external_airlocks_origin, perpendicular_dirs)
 
-	if(!internal_airlocks.len || !internal_airlocks.len)
+	// This is support for awkwardly shaped airlocks that cycle on a group ID
+	if(!length(internal_airlocks))
+		for(var/obj/machinery/door/airlock/external_airlock as anything in external_airlocks)
+			internal_airlocks |= external_airlock.close_others || list()
+		// For double-wide airlocks, so we don't end up with doors in both lists
+		internal_airlocks -= external_airlocks
+	if(!length(external_airlocks))
+		for(var/obj/machinery/door/airlock/internal_airlock as anything in internal_airlocks)
+			external_airlocks |= internal_airlock.close_others || list()
+		external_airlocks -= internal_airlocks
+
+	if(!length(external_airlocks) || !length(internal_airlocks))
 		if(!can_unwrench) //maploaded pump
 			CRASH("[type] couldn't find airlocks to cycle with!")
-		internal_airlocks = list()
-		external_airlocks = list()
+		internal_airlocks.Cut()
+		external_airlocks.Cut()
 		say("Cycling setup failed. No opposite airlocks found.")
 		return
 
@@ -501,7 +511,6 @@
 	cycling_set_up = TRUE
 	if(can_unwrench)
 		say("Cycling setup complete.")
-
 
 ///Get the turf of the first found airlock or an airtight structure (walls) within the allowed range
 /obj/machinery/atmospherics/components/unary/airlock_pump/proc/find_density(turf/origin, direction, max_distance = airlock_pump_distance_limit)
@@ -594,4 +603,3 @@
 
 /obj/machinery/atmospherics/components/unary/airlock_pump/lavaland
 	external_pressure_target = LAVALAND_EQUIPMENT_EFFECT_PRESSURE
-

@@ -420,12 +420,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 					above = GET_TURF_ABOVE(above)
 	return see
 
-/obj/machinery/camera/proc/Togglelight(on=0)
-	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
-		for(var/obj/machinery/camera/cam in A.lit_cameras)
-			if(cam == src)
-				return
-	if(on)
+/obj/machinery/camera/proc/toggle_ai_light(mob/ai_source, on = FALSE)
+	// don't turf off if another ai is also using the camera
+	for(var/mob/living/silicon/ai/other_ai as anything in GLOB.ai_list - ai_source)
+		if(other_ai.camera_light_on && (src in other_ai.eyeobj?.cameras_near_eye))
+			return
+	if(on && internal_light)
 		set_light(AI_CAMERA_LUMINOSITY)
 	else
 		set_light(0)

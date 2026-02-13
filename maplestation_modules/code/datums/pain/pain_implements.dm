@@ -492,6 +492,7 @@
 
 // Pain implements added to various vendors.
 /obj/machinery/vending/drugs
+	theme = "operating_computer"
 	added_categories = list(
 		list(
 			"name" = "Pain",
@@ -501,7 +502,9 @@
 			)
 		),
 	)
+
 /obj/machinery/vending/medical
+	theme = "operating_computer"
 	added_categories = list(
 		list(
 			"name" = "Pain",
@@ -515,6 +518,7 @@
 	)
 
 /obj/machinery/vending/wallmed
+	theme = "operating_computer"
 	added_categories = list(
 		list(
 			"name" = "Pain",

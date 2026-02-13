@@ -102,7 +102,8 @@
 	var/existing_tank = locate(tank_type) in src
 	if (isnull(existing_tank))
 		existing_tank = new tank_type
-	receiver.put_in_hands(existing_tank)
+
+	try_put_in_hand(existing_tank, receiver)
 	balloon_alert(receiver, "tank received")
 
 #undef TANK_DISPENSER_CAPACITY

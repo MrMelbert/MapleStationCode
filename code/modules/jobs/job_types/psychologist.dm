@@ -27,7 +27,9 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/storage/pill_bottle)
+	family_heirlooms = list(
+		/obj/item/storage/pill_bottle,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/pill_bottle/mannitol = 30,

@@ -21,7 +21,11 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/cup/bucket, /obj/item/paper/fluff/stations/soap)
+	family_heirlooms = list(
+		/obj/item/mop,
+		// /obj/item/clothing/suit/caution,
+		/obj/item/reagent_containers/cup/bucket,
+	)
 
 	mail_goodies = list(
 		/obj/item/grenade/chem_grenade/cleaner = 30,

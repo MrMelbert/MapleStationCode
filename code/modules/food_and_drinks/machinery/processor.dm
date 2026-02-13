@@ -4,7 +4,7 @@
 	name = "food processor"
 	desc = "An industrial grinder used to process meat and other foods. Keep hands clear of intake area while operating."
 	icon = 'icons/obj/machines/kitchen.dmi'
-	icon_state = "processor1"
+	icon_state = "processor"
 	layer = BELOW_OBJ_LAYER
 	density = TRUE
 	pass_flags = PASSTABLE
@@ -27,6 +27,7 @@
 
 /obj/machinery/processor/Initialize(mapload)
 	. = ..()
+	base_icon_state = icon_state // For some reason this wasn't getting auto-set
 	if(processor_inputs)
 		return
 	processor_inputs = list()
@@ -194,6 +195,7 @@
 
 /obj/machinery/processor/slime
 	name = "slime processor"
+	icon_state = "processor_slime"
 	desc = "An industrial grinder with a sticker saying appropriated for science department. Keep hands clear of intake area while operating."
 	circuit = /obj/item/circuitboard/machine/processor/slime
 
@@ -220,22 +222,26 @@
 /obj/machinery/processor/slime/process()
 	if(processing)
 		return
-	var/mob/living/simple_animal/slime/picked_slime
+	var/list/mob/living/simple_animal/slime/picked_slimes
+	/// We pick up a number of slimes equal to the rating of the matter bin
+	var/slimes_picked = 0
 	for(var/mob/living/simple_animal/slime/slime in range(1,src))
 		if(!CanReach(slime)) //don't take slimes behind glass panes or somesuch; also makes it ignore slimes inside the processor
 			continue
 		if(slime.stat)
-			picked_slime = slime
+			var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(slime)
+			if(!recipe)
+				continue
+			LAZYADD(picked_slimes, slime)
+			slimes_picked += 1
+		if(slimes_picked >= rating_amount)
 			break
-	if(!picked_slime)
+	if(!LAZYLEN(picked_slimes))
 		return
-	var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(picked_slime)
-	if (!recipe)
-		return
-
-	visible_message(span_notice("[picked_slime] is sucked into [src]."))
-	LAZYADD(processor_contents, picked_slime)
-	picked_slime.forceMove(src)
+	visible_message(span_notice("[jointext(picked_slimes, ", ")] [LAZYLEN(picked_slimes) > 1 ? "are" : "is"] sucked into [src]."))
+	for(var/mob/living/simple_animal/slime/slime_to_add in picked_slimes)
+		LAZYADD(processor_contents, slime_to_add)
+		slime_to_add.forceMove(src)
 
 /obj/machinery/processor/slime/process_food(datum/food_processor_process/recipe, atom/movable/what)
 	var/mob/living/simple_animal/slime/processed_slime = what

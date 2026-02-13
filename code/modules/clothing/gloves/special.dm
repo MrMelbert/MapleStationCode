@@ -83,6 +83,7 @@
 /obj/item/clothing/gloves/captain
 	desc = "Regal blue gloves, with a nice gold trim, a diamond anti-shock coating, and an integrated thermal barrier. Swanky."
 	name = "captain's gloves"
+	article = "the"
 	icon_state = "captain"
 	inhand_icon_state = null
 	greyscale_colors = null
@@ -209,7 +210,7 @@
 	var/mob/living/wearer = loc
 	var/stamina_exhaustion = 2 + challenge.difficulty * 0.02
 	var/is_heavy_gravity = wearer.has_gravity() > STANDARD_GRAVITY
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = wearer.get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = wearer.get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		stamina_exhaustion *= potential_spine.athletics_boost_multiplier
 	if(HAS_TRAIT(wearer, TRAIT_STRENGTH))

@@ -86,7 +86,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	can_randomize = TRUE
-	relevant_external_organ = /obj/item/organ/external/synth_head_cover
+	relevant_external_organ = /obj/item/organ/synth_head_cover
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/synth_head_cover/init_possible_values()

@@ -23,6 +23,8 @@
 	var/menu_description = "A standard chaplain's weapon. Fits in pockets. Can be worn on the belt."
 	/// Lazylist, tracks refs()s to all cultists which have been crit or killed by this nullrod.
 	var/list/cultists_slain
+	/// Affects GLOB.holy_weapon_type. Disable to allow null rods to change at will and without affecting the station's type.
+	var/station_holy_item = TRUE
 
 /obj/item/nullrod/Initialize(mapload)
 	. = ..()
@@ -36,28 +38,40 @@
 	)
 	AddElement(/datum/element/bane, target_type = /mob/living/basic/revenant, damage_multiplier = 0, added_damage = 25, requires_combat_mode = FALSE)
 
-	if(!GLOB.holy_weapon_type && type == /obj/item/nullrod)
-		var/list/rods = list()
-		for(var/obj/item/nullrod/nullrod_type as anything in typesof(/obj/item/nullrod))
-			if(!initial(nullrod_type.chaplain_spawnable))
-				continue
-			rods[nullrod_type] = initial(nullrod_type.menu_description)
-		//special non-nullrod subtyped shit
-		rods[/obj/item/gun/ballistic/bow/divine/with_quiver] = "A divine bow and 10 quivered holy arrows."
-		rods[/obj/item/organ/internal/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
-			allowing you to conjure forth a vorpal scythe. Allows you to behead targets for empowered strikes. \
-			Harms you if you dismiss the scythe without first causing harm to a creature. \
-			The shard also causes you to become Morbid, shifting your interests towards the macabre."
-		rods[/obj/item/gun/ballistic/revolver/chaplain] = "A .38 revolver which can hold 5 bullets. \
-			You can pray while holding the weapon to refill spent rounds - it does not accept standard .38."
+	if((GLOB.holy_weapon_type && station_holy_item) || type != /obj/item/nullrod)
+		return
 
-		AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
+	var/list/rods = list()
+	for(var/obj/item/nullrod/nullrod_type as anything in typesof(/obj/item/nullrod))
+		if(!initial(nullrod_type.chaplain_spawnable))
+			continue
+		rods[nullrod_type] = initial(nullrod_type.menu_description)
+	//special non-nullrod subtyped shit
+	rods[/obj/item/gun/ballistic/bow/divine/with_quiver] = "A divine bow and 10 quivered holy arrows."
+	rods[/obj/item/organ/cyberimp/arm/shard/scythe] = "A shard that implants itself into your arm, \
+		allowing you to conjure forth a vorpal scythe. Allows you to behead targets for empowered strikes. \
+		Harms you if you dismiss the scythe without first causing harm to a creature. \
+		The shard also causes you to become Morbid, shifting your interests towards the macabre."
+	rods[/obj/item/gun/ballistic/revolver/chaplain] = "A .38 revolver which can hold 5 bullets. \
+		You can pray while holding the weapon to refill spent rounds - it does not accept standard .38."
 
-/obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/holy_weapon_type)
-	GLOB.holy_weapon_type = holy_weapon_type
+	AddComponent(/datum/component/subtype_picker, rods, CALLBACK(src, PROC_REF(on_holy_weapon_picked)))
+
+/// Callback for subtype picker, invoked when the chaplain picks a new nullrod
+/obj/item/nullrod/proc/on_holy_weapon_picked(obj/item/nullrod/new_holy_weapon, mob/living/picker)
+	new_holy_weapon.on_selected(src, picker)
+	if(!station_holy_item)
+		return
+	GLOB.holy_weapon_type = new_holy_weapon.type
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NULLROD_PICKED)
-	SSblackbox.record_feedback("tally", "chaplain_weapon", 1, "[initial(holy_weapon_type.name)]")
+	SSblackbox.record_feedback("tally", "chaplain_weapon", 1, "[new_holy_weapon.name]")
 
+/// Called on a new instance of a nullrod when selected
+/// Override this to add behavior when a nullrod is picked
+/obj/item/nullrod/proc/on_selected(obj/item/nullrod/old_weapon, mob/living/picker)
+	return
+
+/// Callback for effect remover, invoked when a cult rune is cleared
 /obj/item/nullrod/proc/on_cult_rune_removed(obj/effect/target, mob/living/user)
 	if(!istype(target, /obj/effect/rune))
 		return
@@ -387,7 +401,7 @@
 	desc = "Good? Bad? You're the guy with the chainsaw hand."
 	icon = 'icons/obj/weapons/chainsaw.dmi'
 	icon_state = "chainsaw_on"
-	inhand_icon_state = "mounted_chainsaw"
+	base_icon_state = "chainsaw_on"
 	lefthand_file = 'icons/mob/inhands/weapons/chainsaw_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/chainsaw_righthand.dmi'
 	w_class = WEIGHT_CLASS_HUGE
@@ -405,13 +419,33 @@
 
 /obj/item/nullrod/chainsaw/Initialize(mapload)
 	. = ..()
-	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
+	AddElement(/datum/element/prosthetic_icon, "mounted", 180)
 	AddComponent(/datum/component/butchering, \
-	speed = 3 SECONDS, \
-	effectiveness = 100, \
-	bonus_modifier = 0, \
-	butcher_sound = hitsound, \
+		speed = 3 SECONDS, \
+		effectiveness = 100, \
+		bonus_modifier = 0, \
+		butcher_sound = hitsound, \
 	)
+
+/obj/item/nullrod/chainsaw/on_selected(obj/item/nullrod/old_weapon, mob/living/picker)
+	if(!iscarbon(picker))
+		return
+	to_chat(picker, span_warning("[src] takes the place of your arm!"))
+	var/obj/item/bodypart/active = picker.get_active_hand()
+	var/mob/living/carbon/new_hero = picker
+	new_hero.make_item_prosthetic(src, active.body_zone)
+
+/obj/item/nullrod/chainsaw/equipped(mob/living/carbon/user, slot, initial)
+	. = ..()
+	if(!iscarbon(user) || HAS_TRAIT_FROM(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT))
+		return
+	if(!(slot & ITEM_SLOT_HANDS))
+		return
+	to_chat(user, span_warning("As you lay your hands on [src], it latches onto your arm!"))
+	var/obj/item/bodypart/active = user.get_active_hand()
+	user.make_item_prosthetic(src, active.body_zone)
+
+// Clown Dagger - Nothing special, just honks.
 
 /obj/item/nullrod/clown
 	name = "clown dagger"

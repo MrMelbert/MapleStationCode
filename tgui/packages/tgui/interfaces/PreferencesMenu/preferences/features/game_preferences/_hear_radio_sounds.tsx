@@ -1,4 +1,4 @@
-import { CheckboxInput, FeatureToggle } from '../base';
+import { CheckboxInput, type FeatureToggle } from '../base';
 
 export const hear_radio_sounds: FeatureToggle = {
   name: 'Toggle Radio Sounds',

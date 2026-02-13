@@ -23,6 +23,7 @@
 	bolt_wording = "slide"
 	suppressor_x_offset = 10
 	suppressor_y_offset = -1
+	recoil_backtime_multiplier = 1
 
 /obj/item/gun/ballistic/automatic/pistol/no_mag
 	spawnwithmagazine = FALSE
@@ -66,6 +67,19 @@
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/Initialize(mapload)
 	. = ..()
 	underbarrel = new /obj/item/gun/energy/recharge/fisher(src)
+	AddElement(/datum/element/examine_lore, \
+		lore = "The Ansem/SC is a Scarborough Arms overhaul suite for their own Ansem handgun, designed for special operators who operate operationally, \
+		especially against people who like using lightbulbs.<br>\
+		<br>\
+		The slide is chopped down, with the front half of the handgun featuring a monolithic integral suppressor built around the barrel, \
+		and a compact kinetic light disruptor mounted underneath the barrel assembly. The integral suppressor is engineered to not affect \
+		ballistic performance nor affect the concealability of the handgun, leading to a surprisingly robust firearm.<br>\
+		<br>\
+		Scarborough Arms has never actually addressed allegations of their involvement with the modification and/or manufacture \
+		of the SC/FISHER or similar disruptor weapons. Prospective operators are reminded that kinetic light disruptors do not actually physically harm targets.<br>\
+		<br>\
+		Caveat emptor." \
+	)
 
 /obj/item/gun/ballistic/automatic/pistol/clandestine/fisher/Destroy()
 	QDEL_NULL(underbarrel)
@@ -147,7 +161,7 @@
 	icon_state = "reagle"
 	inhand_icon_state = "deagleg"
 	burst_size = 2
-	fire_delay = 1
+	burst_delay = 1
 	projectile_damage_multiplier = 1.25
 	accepted_magazine_type = /obj/item/ammo_box/magazine/r10mm
 	actions_types = list(/datum/action/item_action/toggle_firemode)
@@ -161,7 +175,7 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/m9mm_aps
 	can_suppress = TRUE
 	burst_size = 3
-	fire_delay = 1
+	burst_delay = 1
 	spread = 10
 	actions_types = list(/datum/action/item_action/toggle_firemode)
 	suppressor_x_offset = 6

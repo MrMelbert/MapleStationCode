@@ -10,16 +10,15 @@
 	name = "\improper Jellyperson"
 	plural_form = "Jellypeople"
 	id = SPECIES_JELLYPERSON
-	examine_limb_id = SPECIES_JELLYPERSON
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_SLIME
 	inherent_traits = list(
 		TRAIT_MUTANT_COLORS,
 		TRAIT_TOXINLOVER,
 		// TRAIT_NOBLOOD, // NON-MODULE CHANGE
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/jelly
-	mutantlungs = /obj/item/organ/internal/lungs/slime
-	mutanteyes = /obj/item/organ/internal/eyes/jelly
+	mutanttongue = /obj/item/organ/tongue/jelly
+	mutantlungs = /obj/item/organ/lungs/slime
+	mutanteyes = /obj/item/organ/eyes/jelly
 	mutantheart = null
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_bloodtype = /datum/blood_type/slime // NON-MODULE CHANGE
@@ -30,7 +29,6 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	inherent_factions = list(FACTION_SLIME)
 	species_language_holder = /datum/language_holder/jelly
-	ass_image = 'icons/ass/assslime.png'
 	hair_color_mode = USE_MUTANT_COLOR
 	hair_alpha = 150
 	facial_hair_alpha = 150
@@ -77,13 +75,13 @@
 	. = HANDLE_BLOOD_NO_NUTRITION_DRAIN|HANDLE_BLOOD_NO_EFFECTS
 
 	if(slime.blood_volume <= 0)
-		slime.blood_volume += JELLY_REGEN_RATE_EMPTY * seconds_per_tick
+		slime.blood_volume += JELLY_REGEN_RATE_EMPTY * slime.physiology.blood_regen_mod * seconds_per_tick
 		slime.adjustBruteLoss(2.5 * seconds_per_tick)
 		to_chat(slime, span_danger("You feel empty!"))
 
 	if(slime.blood_volume < BLOOD_VOLUME_NORMAL)
 		if(slime.nutrition >= NUTRITION_LEVEL_STARVING)
-			slime.blood_volume += JELLY_REGEN_RATE * seconds_per_tick
+			slime.blood_volume += JELLY_REGEN_RATE * slime.physiology.blood_regen_mod * seconds_per_tick
 			if(slime.blood_volume <= BLOOD_VOLUME_LOSE_NUTRITION) // don't lose nutrition if we are above a certain threshold, otherwise slimes on IV drips will still lose nutrition
 				slime.adjust_nutrition(-1.25 * seconds_per_tick)
 
@@ -102,40 +100,6 @@
 	regenerate_limbs?.build_all_button_icons(UPDATE_BUTTON_STATUS)
 	return .
 
-// /datum/species/jelly/spec_life(mob/living/carbon/human/H, seconds_per_tick, times_fired)
-// 	. = ..()
-// 	if(H.stat == DEAD) //can't farm slime jelly from a dead slime/jelly person indefinitely
-// 		return
-
-// 	if(H.blood_volume <= 0)
-// 		H.blood_volume += JELLY_REGEN_RATE_EMPTY * seconds_per_tick
-// 		H.adjustBruteLoss(2.5 * seconds_per_tick)
-// 		to_chat(H, span_danger("You feel empty!"))
-
-// 	if(H.blood_volume < BLOOD_VOLUME_NORMAL)
-// 		if(H.nutrition >= NUTRITION_LEVEL_STARVING)
-// 			H.blood_volume += JELLY_REGEN_RATE * seconds_per_tick
-// 			if(H.blood_volume <= BLOOD_VOLUME_LOSE_NUTRITION) // don't lose nutrition if we are above a certain threshold, otherwise slimes on IV drips will still lose nutrition
-// 				H.adjust_nutrition(-1.25 * seconds_per_tick)
-
-// 	// we call lose_blood() here rather than quirk/process() to make sure that the blood loss happens in sync with life()
-// 	if(HAS_TRAIT(H, TRAIT_BLOOD_DEFICIENCY))
-// 		var/datum/quirk/blooddeficiency/blooddeficiency = H.get_quirk(/datum/quirk/blooddeficiency)
-// 		if(!isnull(blooddeficiency))
-// 			blooddeficiency.lose_blood(seconds_per_tick)
-
-// 	if(H.blood_volume < BLOOD_VOLUME_OKAY)
-// 		if(SPT_PROB(2.5, seconds_per_tick))
-// 			to_chat(H, span_danger("You feel drained!"))
-
-// 	if(H.blood_volume < BLOOD_VOLUME_BAD)
-// 		Cannibalize_Body(H)
-
-// 	if(regenerate_limbs)
-// 		regenerate_limbs.build_all_button_icons()
-
-// NON-MODULE CHANGE end
-
 /datum/species/jelly/proc/Cannibalize_Body(mob/living/carbon/human/H)
 	var/list/limbs_to_consume = list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG) - H.get_missing_limbs()
 	var/obj/item/bodypart/consumed_limb
@@ -148,7 +112,7 @@
 	consumed_limb.drop_limb()
 	to_chat(H, span_userdanger("Your [consumed_limb] is drawn back into your body, unable to maintain its shape!"))
 	qdel(consumed_limb)
-	H.blood_volume += 20
+	H.blood_volume += 20 * H.physiology.blood_regen_mod
 
 /datum/species/jelly/get_species_description()
 	return "Jellypeople are a strange and alien species with three eyes, made entirely out of gel."
@@ -231,7 +195,7 @@
 	id = SPECIES_SLIMEPERSON
 	hair_color_mode = USE_MUTANT_COLOR
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
-	mutanteyes = /obj/item/organ/internal/eyes
+	mutanteyes = /obj/item/organ/eyes
 	var/datum/action/innate/split_body/slime_split
 	var/list/mob/living/carbon/bodies
 	var/datum/action/innate/swap_body/swap_body
@@ -535,7 +499,6 @@
 	name = "Luminescent"
 	plural_form = null
 	id = SPECIES_LUMINESCENT
-	examine_limb_id = SPECIES_LUMINESCENT
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly/luminescent,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly/luminescent,
@@ -544,7 +507,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly/luminescent,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly/luminescent,
 	)
-	mutanteyes = /obj/item/organ/internal/eyes
+	mutanteyes = /obj/item/organ/eyes
 	/// How strong is our glow
 	var/glow_intensity = LUMINESCENT_DEFAULT_GLOW
 	/// Internal dummy used to glow (very cool)
@@ -725,7 +688,6 @@
 	name = "\improper Stargazer"
 	plural_form = null
 	id = SPECIES_STARGAZER
-	examine_limb_id = SPECIES_JELLYPERSON
 	/// Special "project thought" telepathy action for stargazers.
 	var/datum/action/innate/project_thought/project_action
 

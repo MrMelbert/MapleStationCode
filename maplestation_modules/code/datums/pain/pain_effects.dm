@@ -74,8 +74,16 @@
 
 // Applied by most surgeries if you get operated on without anesthetics
 /datum/mood_event/surgery
-	description = "They're operating on me while I'm awake!"
+	description = "Wait, they're operating on me while I'm awake!"
 	mood_change = -6
+	timeout = 3 MINUTES
+
+/datum/mood_event/surgery/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	return (new_event.mood_change > src.mood_change) ? ALLOW_NEW_MOOD : BLOCK_NEW_MOOD
+
+/datum/mood_event/surgery/minor
+	description = "Aren't they supposed to use anesthetic for this?"
+	mood_change = -4
 	timeout = 3 MINUTES
 
 // Applied by some surgeries that are especially bad without anesthetics
@@ -133,7 +141,7 @@
 	mood_change = -3
 
 /datum/mood_event/revival_sickess/add_effects(mob/living/adder)
-	if(adder.has_quirk(/datum/quirk/apathetic))
+	if(HAS_PERSONALITY(owner, /datum/personality/apathetic))
 		mood_change = 0
 
 /**

@@ -27,6 +27,10 @@
 	var/girder_type = /obj/structure/girder/displaced
 	var/opening = FALSE
 
+/obj/structure/falsewall/get_save_vars()
+	. = ..()
+	. -= NAMEOF(src, icon)
+	return .
 
 /obj/structure/falsewall/Initialize(mapload)
 	. = ..()
@@ -34,6 +38,7 @@
 	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
 	qdel(initialized_mineral)
 	air_update_turf(TRUE, TRUE)
+	update_appearance()
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
 	if(opening)

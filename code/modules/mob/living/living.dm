@@ -18,6 +18,7 @@
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
+	init_unconscious_appearance()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +27,24 @@
 /mob/living/proc/prepare_data_huds()
 	med_hud_set_health()
 	med_hud_set_status()
+
+/// Inits the human_unconscious appearance for when the mob is unconscious
+/mob/living/proc/init_unconscious_appearance()
+	return
+
+/// Generic helper to add a static-y humanoid appearance shown to other mobs when unconscious
+/mob/living/proc/add_generic_humanoid_static_appearance()
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "unknown humanoid"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/Destroy()
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -36,8 +55,9 @@
 		else
 			effect.be_replaced()
 
-	if(buckled)
-		buckled.unbuckle_mob(src,force=1)
+	clear_personalities() // must be done for the personalities which process
+
+	buckled?.unbuckle_mob(src,force=1)
 
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
@@ -45,7 +65,7 @@
 		imaginary_group -= src
 		QDEL_LIST(imaginary_group)
 	QDEL_LAZYLIST(diseases)
-	QDEL_LIST(surgeries)
+	QDEL_LAZYLIST(quirks)
 	return ..()
 
 /mob/living/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
@@ -67,14 +87,14 @@
 	// multiplier for the damage taken from falling
 	var/damage_softening_multiplier = 1
 
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		damage_softening_multiplier *= potential_spine.athletics_boost_multiplier
 
 	// If you are incapped, you probably can't brace yourself
 	var/can_help_themselves = !incapacitated(IGNORE_RESTRAINTS)
 	if(levels <= 1 && can_help_themselves)
-		var/obj/item/organ/external/wings/gliders = get_organ_by_type(/obj/item/organ/external/wings)
+		var/obj/item/organ/wings/gliders = get_organ_by_type(/obj/item/organ/wings)
 		if(HAS_TRAIT(src, TRAIT_FREERUNNING) || gliders?.can_soften_fall()) // the power of parkour or wings allows falling short distances unscathed
 			visible_message(
 				span_notice("[src] makes a hard landing on [impacted_turf] but remains unharmed from the fall."),
@@ -345,7 +365,7 @@
 		AM.setDir(current_dir)
 	now_pushing = FALSE
 
-/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
+/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE, willing_pull = FALSE)
 	if(!AM || !src)
 		return FALSE
 	if(!(AM.can_be_pulled(src, state, force)))
@@ -449,7 +469,7 @@
 		if(isliving(M))
 			var/mob/living/L = M
 
-			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src)
+			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src, willing_pull)
 			//Share diseases that are spread by touch
 			for(var/datum/disease/thing as anything in diseases)
 				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
@@ -553,16 +573,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	if(ismob(pointing_at.loc))
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
-			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
-		)
-	else
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
-			span_notice("You point at [pointing_at]."),
-		)
+	to_chat(src, examining_span_normal("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	for(var/mob/viewer in oviewers(src))
+		viewer.show_message(examining_span_normal("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
@@ -743,7 +756,7 @@
 
 	var/get_up_time = 1 SECONDS
 
-	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		get_up_time *= potential_spine.athletics_boost_multiplier
 
@@ -1094,29 +1107,26 @@
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
-	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
+/**
+ * Leaves a trail of blood.
+ *
+ * This is on the atom level so you can have arbitrary objects leave "blood trails" if desired,
+ * you just need to pass a blood_dna.
+ *
+ * Arguments:
+ * * target_turf - The turf where the blood trail will be made
+ * * start - The turf where the mob started moving from
+ * * was_facing - The direction the mob was facing before moving
+ * * movement_direction - The direction the mob is moving towards
+ * * blood_to_add - The amount of blood to add to the trail
+ * * blood_dna - The DNA to add to the trail. Autoset for mobs.
+ * * static_viruses - The viruses to add to the trail
+ */
+/atom/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1, blood_dna, list/static_viruses)
+	if(!has_gravity() || !isturf(start))
 		return
-
-	var/base_bleed_rate = get_bleed_rate()
-	var/base_brute = getBruteLoss()
-
-	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
-	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
-	// we only leave a trail if we're below a certain blood threshold
-	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
-		return
-
-	var/blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
-	if(body_position == LYING_DOWN)
-		blood_to_add += bleedDragAmount()
-		bleed(blood_to_add, drip = FALSE)
-	else
-		blood_to_add += base_bleed_rate
-	// if we're very damaged or bleeding a lot, add even more blood to the trail
-	if(base_brute >= 300 || base_bleed_rate >= 7)
-		blood_to_add *= 2
+	if(!islist(blood_dna))
+		CRASH("make_blood_trail called without a valid blood_dna list!")
 
 	var/trail_dir = REVERSE_DIR(movement_direction)
 	// the mob is performing a diagonal movement so we need to make a diagonal trail
@@ -1155,24 +1165,54 @@
 			break
 
 	if(isnull(trail))
-		trail = new(start, get_static_viruses())
+		trail = new(start, static_viruses)
 		if(QDELETED(trail))
 			return
 		trail.bloodiness = blood_to_add
 	else
-		trail.add_viruses(get_static_viruses())
+		trail.add_viruses(static_viruses)
 
 	// update the holder with our new dna and bloodiness
-	trail.add_mob_blood(src)
+	trail.add_blood_DNA(blood_dna)
 	trail.adjust_bloodiness(blood_to_add)
 	// also update the trail component, this is what matters for its appearance
 	var/obj/effect/decal/cleanable/blood/trail/trail_component = trail.add_dir_to_trail(trail_dir, blood_to_add)
 	if(isnull(trail_component))
 		return
-	trail_component.add_mob_blood(src)
+	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
 
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
+/mob/living/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add, blood_dna, list/static_viruses)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
+
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
+		return
+
+	if(isnull(static_viruses))
+		static_viruses = get_static_viruses()
+	if(isnull(blood_dna))
+		blood_dna = get_blood_dna_list()
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
+	if(body_position == LYING_DOWN)
+		bleed(blood_to_add, leave_pool = FALSE)
+
+	return ..()
+
+/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction, blood_to_add, blood_dna, list/static_viruses)
 	if(!is_bleeding())
 		return
 	return ..()
@@ -1238,7 +1278,9 @@
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
-	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_RESIST) & RESIST_HANDLED)
+		return
+
 	//resisting grabs (as if it helps anyone...)
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
 		log_combat(src, pulledby, "resisted grab")
@@ -1247,42 +1289,54 @@
 
 	//unbuckling yourself
 	if(buckled && last_special <= world.time)
-		resist_buckle()
+		buckled.user_unbuckle_mob(src, src)
 
 	//Breaking out of a container (Locker, sleeper, cryo...)
 	else if(loc != get_turf(src))
 		loc.container_resist_act(src)
 
-	else if(mobility_flags & MOBILITY_MOVE)
-		if(on_fire)
-			resist_fire() //stop, drop, and roll
-		else if(last_special <= world.time)
-			resist_restraints() //trying to remove cuffs.
+	else if((mobility_flags & MOBILITY_MOVE) && on_fire)
+		resist_fire() //stop, drop, and roll
 
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
-		pulledby.stop_pulling()
-		return FALSE
+	//Our effective grab state. GRAB_PASSIVE is equal to 0, so if we have no other altering factors to our grab state, we can break free immediately on resist.
+	var/effective_grab_state = pulledby.grab_state
+	//The amount of damage inflicted on a failed resist attempt.
+	var/damage_on_resist_fail = rand(7, 13)
+	// Base chance to escape a grab. Divided by effective grab state
+	var/escape_chance = BASE_GRAB_RESIST_CHANCE
 
 	var/vulnerability_delta = 0
 	if(isliving(pulledby))
 		var/mob/living/grabber = pulledby
-		// Just compare resist strength vs resist strength
-		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+		// Just compare resist strength vs grab strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_strength()
 	else
 		// Just assume 4 (roughly the same as a human with no buffs)
 		vulnerability_delta = get_grab_resist_strength() - 4
 
-	var/altered_grab_state = pulledby.grab_state
 	if(vulnerability_delta <= 2)
-		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+		effective_grab_state = min(effective_grab_state + 1, GRAB_NECK)
+	escape_chance += (vulnerability_delta * 5) // More vulnerable = higher escape chance, less vulnerable = lower escape chance
 
-	var/resist_chance = BASE_GRAB_RESIST_CHANCE
-	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
-	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(isliving(pulledby))
+		var/mob/living/martial_artist = pulledby
+		var/datum/martial_art/puller_art = GET_ACTIVE_MARTIAL_ART(martial_artist)
+		if(puller_art?.can_use(martial_artist))
+			damage_on_resist_fail += puller_art.grab_damage_modifier
+			escape_chance += puller_art.grab_escape_chance_modifier
+
+	// see defines/combat.dm, this should be baseline 60%
+	// Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
+	var/resist_chance = clamp(escape_chance / effective_grab_state, 0, 100)
+
+	if(effective_grab_state <= GRAB_PASSIVE)
+		pulledby.stop_pulling()
+		return FALSE
+
 	if(prob(resist_chance))
 		visible_message(
 			span_danger("[src] breaks free of [pulledby]'s grip!"),
@@ -1298,7 +1352,7 @@
 		pulledby.stop_pulling()
 		return FALSE
 
-	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	adjustStaminaLoss(damage_on_resist_fail) //failure to escape still imparts a pretty serious penalty
 	visible_message(
 		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
 		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
@@ -1313,9 +1367,6 @@
 	if(moving_resist) //we resisted by trying to move
 		client?.move_delay = world.time + 4 SECONDS
 	return TRUE
-
-/mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return FALSE
@@ -2363,11 +2414,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(GRAB_KILL)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
 
-
-/// Only defined for carbons who can wear masks and helmets, we just assume other mobs have visible faces
-/mob/living/proc/is_face_visible()
-	return TRUE
-
+/// Sprite to show for photocopying mob butts
+/mob/living/proc/get_butt_sprite()
+	return null
 
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)
@@ -2759,3 +2808,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		end_look_down()
 	else
 		look_down()
+
+/**
+ * Totals the physical cash on the mob and returns the total.
+ */
+/mob/living/verb/tally_physical_credits()
+	//Here is all the possible non-ID payment methods.
+	var/list/counted_money = list()
+	var/physical_cash_total = 0
+	for(var/obj/item/credit as anything in typecache_filter_list(get_all_contents(), GLOB.allowed_money)) //Coins, cash, and credits.
+		physical_cash_total += credit.get_item_credit_value()
+		counted_money += credit
+
+	if(is_type_in_typecache(pulling, GLOB.allowed_money)) //Coins(Pulled).
+		var/obj/item/counted_credit = pulling
+		physical_cash_total += counted_credit.get_item_credit_value()
+		counted_money += counted_credit
+	return round(physical_cash_total)

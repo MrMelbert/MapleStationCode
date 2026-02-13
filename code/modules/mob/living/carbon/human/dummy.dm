@@ -68,11 +68,17 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		qdel(delete)
 
 /mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+	SHOULD_CALL_PARENT(FALSE) // assuming direct control
 	item.item_flags |= IN_INVENTORY
-	return item.visual_equipped(src, slot, initial)
+	if(!item.visual_equipped(src, slot, initial))
+		return FALSE
+
+	add_item_coverage(item)
+	return TRUE
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
 	delete_equipment()
+	update_lips(null, null, null, update = FALSE)
 	cut_overlays(TRUE)
 	update_lips(null)
 
@@ -92,7 +98,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
 	target.dna.features["lizard_horn_color"] = COLOR_VIBRANT_LIME // NON-MODULE CHANGE
 	target.dna.features["ethcolor"] = COLOR_WHITE
-	target.dna.features["body_markings"] = get_consistent_feature_entry(SSaccessories.body_markings_list)
+	target.dna.features["lizard_markings"] = get_consistent_feature_entry(SSaccessories.lizard_markings_list)
 	target.dna.features["ears"] = get_consistent_feature_entry(SSaccessories.ears_list)
 	target.dna.features["frills"] = get_consistent_feature_entry(SSaccessories.frills_list)
 	target.dna.features["horns"] = get_consistent_feature_entry(SSaccessories.horns_list)
@@ -105,12 +111,27 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["tail_lizard"] = get_consistent_feature_entry(SSaccessories.tails_list_lizard)
 	target.dna.features["tail_monkey"] = get_consistent_feature_entry(SSaccessories.tails_list_monkey)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(SSaccessories.pod_hair_list)
+	target.dna.features["caps"] = get_consistent_feature_entry(SSaccessories.caps_list)
 	target.dna.features["head_tentacles"] = get_consistent_feature_entry(SSaccessories.head_tentacles_list) // NON-MODULE CHANGE
 	target.dna.features["arm_wings"] = get_consistent_feature_entry(SSaccessories.arm_wings_list) // NON-MODULE CHANGE
 	target.dna.features["tail_avian"] = get_consistent_feature_entry(SSaccessories.tails_list_avian) // NON-MODULE CHANGE
 	target.dna.features["ears_avian"] = get_consistent_feature_entry(SSaccessories.avian_ears_list) // NON-MODULE CHANGE
 	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(SSaccessories.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
+	target.dna.features["animid_type"] = /datum/animid_type/cat::id //NON-MODULE CHANGE
+	target.dna.features["bat_ears"] = get_consistent_feature_entry(SSaccessories.bat_ears_list) //NON-MODULE CHANGE
+	target.dna.features["bat_wings"] = get_consistent_feature_entry(SSaccessories.bat_wings_list) //NON-MODULE CHANGE
+	target.dna.features["fox_ears"] = get_consistent_feature_entry(SSaccessories.fox_ears_list) //NON-MODULE CHANGE
+	target.dna.features["fox_tail"] = get_consistent_feature_entry(SSaccessories.fox_tail_list) //NON-MODULE CHANGE
+	target.dna.features["mouse_ears"] = get_consistent_feature_entry(SSaccessories.rat_ears_list) //NON-MODULE CHANGE
+	target.dna.features["mouse_tail"] = get_consistent_feature_entry(SSaccessories.tails_list_rat) //NON-MODULE CHANGE
+	target.dna.features["deer_ears"] = get_consistent_feature_entry(SSaccessories.deer_ears_list) //NON-MODULE CHANGE
+	target.dna.features["deer_tail"] = get_consistent_feature_entry(SSaccessories.deer_tail_list) //NON-MODULE CHANGE
+	target.dna.features["bunny_ears"] = get_consistent_feature_entry(SSaccessories.bunny_ears_list) //NON-MODULE CHANGE
+	target.dna.features["bunny_tail"] = get_consistent_feature_entry(SSaccessories.bunny_tail_list) //NON-MODULE CHANGE
+	target.dna.features["dog_ears"] = get_consistent_feature_entry(SSaccessories.dog_ears_list) //NON-MODULE CHANGE
+	target.dna.features["dog_tail"] = get_consistent_feature_entry(SSaccessories.dog_tail_list) //NON-MODULE CHANGE
+	target.dna.features["fish_tail"] = get_consistent_feature_entry(SSaccessories.tails_list_fish) //NON-MODULE CHANGE
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly
 	// In practice this doesn't matter, but this is for the sake of 100%(ish) consistency

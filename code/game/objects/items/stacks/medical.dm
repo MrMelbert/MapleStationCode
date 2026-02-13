@@ -17,6 +17,7 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	apply_verb = "treating"
 	/// Sound played when heal doafter begins
 	var/heal_sound
 	/// How long it takes to apply it to yourself
@@ -35,8 +36,6 @@
 	var/sanitization
 	/// How much we add to flesh_healing for burn wounds on application
 	var/flesh_regeneration
-	/// Verb used when applying this object to someone
-	var/apply_verb = "treating"
 	/// Whether this item can be used on dead bodies
 	var/works_on_dead = FALSE
 	/// Optional flags to supply to can_inject
@@ -271,7 +270,7 @@
 
 		var/datum/wound/flesh/any_burn_wound = locate() in affecting.wounds
 		var/can_heal_burn_wounds = (flesh_regeneration || sanitization) && any_burn_wound?.can_be_ointmented_or_meshed()
-		var/can_suture_bleeding = stop_bleeding && affecting.get_modified_bleed_rate() > 0
+		var/can_suture_bleeding = stop_bleeding && affecting.cached_bleed_rate > 0
 		var/brute_to_heal = heal_brute && affecting.brute_dam > 0
 		var/burn_to_heal = heal_burn && affecting.burn_dam > 0
 
@@ -325,7 +324,7 @@
 				break // one at a time
 		affecting.adjustBleedStacks(-1 * stop_bleeding)
 	if(flesh_regeneration || sanitization)
-		for(var/datum/wound/flesh/burn/wound as anything in affecting.wounds)
+		for(var/datum/wound/flesh/wound in affecting.wounds)
 			if(wound.can_be_ointmented_or_meshed())
 				wound.flesh_healing += flesh_regeneration
 				wound.sanitization += sanitization
@@ -348,7 +347,7 @@
 	return
 
 /obj/item/stack/medical/bruise_pack
-	name = "bruise pack"
+	name = "bruise packs"
 	singular_name = "bruise pack"
 	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma."
 	icon_state = "brutepack"
@@ -379,6 +378,8 @@
 	custom_price = PAYCHECK_CREW * 2
 	absorption_rate = 0.125
 	absorption_capacity = 5
+	sanitization = 3
+	flesh_regeneration = 5
 	splint_factor = 0.7
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/gauze
@@ -506,6 +507,16 @@
 			span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
+
+	if(limb.cached_bleed_rate)
+		add_mob_blood(patient)
+
+	// Dressing burns provides a "one-time" bonus to sanitization and healing
+	// However, any notable infection will reduce the effectiveness of this bonus
+	for(var/datum/wound/flesh/wound in limb.wounds)
+		wound.sanitization += sanitization * (wound.infection > 0.1 ? 0.2 : 1)
+		wound.flesh_healing += flesh_regeneration * (wound.infection > 0.1 ? 0 : 1)
+
 	limb.apply_gauze(src)
 
 /obj/item/stack/medical/gauze/twelve
@@ -558,6 +569,8 @@
 	burn_cleanliness_bonus = 0.7
 	absorption_rate = 0.075
 	absorption_capacity = 4
+	sanitization = 1
+	flesh_regeneration = 3
 	merge_type = /obj/item/stack/medical/gauze/improvised
 
 	/*
@@ -569,9 +582,8 @@
 	 */
 
 /obj/item/stack/medical/suture
-	name = "suture"
+	name = "sutures"
 	desc = "Basic sterile sutures used to seal up cuts and lacerations and stop bleeding."
-	gender = PLURAL
 	singular_name = "suture"
 	icon_state = "suture"
 	self_delay = 3 SECONDS
@@ -586,17 +598,19 @@
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
 /obj/item/stack/medical/suture/emergency
-	name = "emergency suture"
+	name = "emergency sutures"
 	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
+	singular_name = "emergency suture"
 	heal_brute = 5
 	amount = 5
 	max_amount = 5
 	merge_type = /obj/item/stack/medical/suture/emergency
 
 /obj/item/stack/medical/suture/medicated
-	name = "medicated suture"
-	icon_state = "suture_purp"
+	name = "medicated sutures"
 	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
+	singular_name = "medicated suture"
+	icon_state = "suture_purp"
 	heal_brute = 15
 	stop_bleeding = 1
 	grind_results = list(/datum/reagent/medicine/polypyr = 1)

@@ -1,6 +1,3 @@
-/// List of huds we give to people wearing Wraith Specs.
-#define SPEC_HUDS list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH)
-
 // The Wraith Specs.
 // Glasses that give you HUDs, night vision, x-ray, and nearsighted correction.
 // ...But if you examine anything you'd be unable to see normally, you'll recieve eye damage.
@@ -37,13 +34,10 @@
 	if(slot != ITEM_SLOT_EYES)
 		return
 	if(ishuman(user) && !up)
-		if(IS_CULTIST(user))
-			attach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD))
 		enable_glasses(user)
 
 /obj/item/clothing/glasses/wraith_specs/dropped(mob/user)
 	. = ..()
-	detach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD))
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
@@ -84,7 +78,7 @@
 		if(user.is_blind())
 			return FALSE
 
-		var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 		if(!eyes)
 			return FALSE
 
@@ -96,24 +90,16 @@
 		user.pain_emote("scream", 6 SECONDS)
 		return FALSE
 
-	for(var/hud in SPEC_HUDS)
-		var/datum/atom_hud/new_hud = GLOB.huds[hud]
-		new_hud.show_to(user)
-	ADD_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
-	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
+	attach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
-
 	return TRUE
 
 /**
  * Disable the hud and any other features of the goggles.
  */
 /obj/item/clothing/glasses/wraith_specs/proc/disable_glasses(mob/living/carbon/human/user)
-	for(var/hud in SPEC_HUDS)
-		var/datum/atom_hud/removed_hud = GLOB.huds[hud]
-		removed_hud.hide_from(user)
+	detach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD))
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
-
 	return TRUE
 
 /**
@@ -129,7 +115,7 @@
 	if(human_source.is_blind())
 		return
 
-	var/obj/item/organ/internal/eyes/eyes = human_source.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = human_source.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		return
 
@@ -140,5 +126,3 @@
 	human_source.flash_act(visual = TRUE)
 	human_source.adjust_eye_blur(1.5 SECONDS)
 	eyes.apply_organ_damage(10)
-
-#undef SPEC_HUDS

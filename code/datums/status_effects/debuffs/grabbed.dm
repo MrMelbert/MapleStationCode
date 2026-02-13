@@ -9,14 +9,66 @@
 	icon = 'maplestation_modules/icons/obj/hand.dmi'
 	icon_state = "grab"
 	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP // not currently a hand item, but we could implement it for stuff like handing grabs off to people
+	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON // not currently a hand item, but we could implement it for stuff like handing grabs off to people
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+
+/obj/item/grabbing_hand/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
+
+/obj/item/grabbing_hand/equipped(mob/user, slot, initial)
+	. = ..()
+	var/hand = user.get_held_index_of_item(src)
+	if(IS_RIGHT_INDEX(hand))
+		transform = transform.Scale(-1, 1)
+	RegisterSignal(user, COMSIG_MOVABLE_SET_GRAB_STATE, PROC_REF(update_state_color), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_PINNING_MOB, PROC_REF(rotate_grab), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_UNPINNING_MOB, PROC_REF(unrotate_grab), TRUE)
+
+/obj/item/grabbing_hand/dropped(mob/user, silent)
+	. = ..()
+	UnregisterSignal(user, list(
+		COMSIG_MOVABLE_SET_GRAB_STATE,
+		COMSIG_MOVABLE_PINNING_MOB,
+		COMSIG_MOVABLE_UNPINNING_MOB,
+	))
+
+/obj/item/grabbing_hand/proc/update_state_color(mob/source, new_state)
+	SIGNAL_HANDLER
+	switch(new_state)
+		if(GRAB_PASSIVE)
+			color = COLOR_WHITE
+		if(GRAB_AGGRESSIVE)
+			color = COLOR_SOFT_RED
+		if(GRAB_NECK)
+			color = COLOR_RED
+		if(GRAB_KILL)
+			color = COLOR_DARK_RED
+
+/obj/item/grabbing_hand/proc/rotate_grab(mob/source, mob/living/being_pinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? -90 : 90)
+
+/obj/item/grabbing_hand/proc/unrotate_grab(mob/source, mob/living/being_unpinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? 90 : -90)
 
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
 
 /obj/item/grabbing_hand/attack_self(mob/user, modifiers)
 	return user.start_pulling(user.pulling)
+
+/// Returns what direction we look when we're lying down.
+/// If we're not lying down, returns own dir
+/mob/living/proc/get_lying_dir()
+	if(lying_angle == LYING_ANGLE_WEST)
+		return WEST
+	if(lying_angle == LYING_ANGLE_EAST)
+		return EAST
+	return dir
 
 /// Status effect applied to someone grabbing something
 /datum/status_effect/grabbing
@@ -34,7 +86,7 @@
 	return ..()
 
 /datum/status_effect/grabbing/on_apply()
-	if(!owner.has_limbs)
+	if(!owner.has_limbs || !HAS_TRAIT(owner, TRAIT_CAN_HOLD_ITEMS))
 		return TRUE
 	hand = new()
 	if(!owner.put_in_hands(hand))
@@ -45,9 +97,9 @@
 		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
 	), PROC_REF(hand_use))
-	RegisterSignals(hand, list(
-		COMSIG_ITEM_AFTERATTACK,
-	), PROC_REF(hand_use_deprecated))
+	RegisterSignal(hand, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM, PROC_REF(ranged_hand_use))
+	RegisterSignal(hand, COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(ranged_hand_use_alt))
+
 	return TRUE
 
 /datum/status_effect/grabbing/Destroy()
@@ -56,9 +108,10 @@
 		COMSIG_QDELETING,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 		COMSIG_ITEM_INTERACTING_WITH_ATOM,
-		COMSIG_ITEM_AFTERATTACK,
+		COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM,
+		COMSIG_RANGED_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
 	))
-	if(!QDELING(hand))
+	if(!QDELETED(hand))
 		qdel(hand)
 	hand = null
 	return ..()
@@ -74,6 +127,8 @@
 // Allows the grab hand to function like a normal hand for tabling and punching and the like
 /datum/status_effect/grabbing/proc/hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
+	if(isitem(interacting_with))
+		return NONE
 	// Mirrored from Click, not ideal (why doesn't punching apply the cd itself??). refactor later I guess
 	if(ismob(interacting_with))
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -81,11 +136,15 @@
 	return ITEM_INTERACT_SUCCESS
 
 // Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
-/datum/status_effect/grabbing/proc/hand_use_deprecated(datum/source, atom/interacting_with, mob/living/user, prox, modifiers)
+/datum/status_effect/grabbing/proc/ranged_hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
-	if(prox)
-		return NONE
 	user.RangedAttack(interacting_with, modifiers)
+	return ITEM_INTERACT_SUCCESS
+
+// Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
+/datum/status_effect/grabbing/proc/ranged_hand_use_alt(datum/source, mob/living/user, atom/interacting_with, modifiers)
+	SIGNAL_HANDLER
+	user.ranged_secondary_attack(interacting_with, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
 /datum/status_effect/grabbing/get_examine_text()
@@ -260,7 +319,7 @@
 				log_combat(grabbing_us, owner, "attempted to neck grab", addition = "neck grab")
 			if(GRAB_NECK)
 				log_combat(grabbing_us, owner, "attempted to strangle", addition = "kill grab")
-		if(!do_after(grabbing_us, get_grab_time(8 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(upgrade_check), grabbing_us.grab_state),))
+		if(!do_after(grabbing_us, grabbing_us.get_grab_speed(owner, 8 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(upgrade_check), grabbing_us.grab_state),))
 			return
 
 	grabbing_us.setGrabState(grabbing_us.grab_state + 1)
@@ -373,11 +432,17 @@
 	if(owner.is_blind())
 		to_chat(owner, span_userdanger("Someone is trying to pin you to the ground!"))
 
-	if(!do_after(grabbing_us, get_grab_time(6 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(pin_check)),))
+	if(!do_after(grabbing_us, grabbing_us.get_grab_speed(owner, 6 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(pin_check)),))
 		return
 	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, LINK_SOURCE(id)))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
 		return
+	owner.Knockdown(3 SECONDS)
+	if(grabbing_us.loc != owner.loc)
+		grabbing_us.Move(owner.loc)
+		if(grabbing_us.loc != owner.loc)
+			to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
+			return
 
 	owner.visible_message(
 		span_danger("[grabbing_us] pins [owner] to the ground!"),
@@ -397,9 +462,10 @@
 	ADD_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	owner.Paralyze(2 SECONDS)
 	owner.setDir(SOUTH)
-	grabbing_us.Move(owner.loc)
-	grabbing_us.setDir(UNLINT(owner.lying_angle) == 270 ? WEST : EAST) // melbert todo
+	grabbing_us.setDir(owner.get_lying_dir()) // face the same way the person is lying
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(start_dragging))
+	SEND_SIGNAL(owner, COMSIG_LIVING_PINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_PINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/pin_check()
 	return !QDELETED(src) && !QDELETED(grabbing_us) && !pin && grabbing_us.grab_state >= GRAB_AGGRESSIVE
@@ -445,6 +511,8 @@
 	REMOVE_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, PIN_SOURCE(id))
 	UnregisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE)
+	SEND_SIGNAL(owner, COMSIG_LIVING_UNPINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_UNPINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/update_state(datum/source, new_state)
 	SIGNAL_HANDLER
@@ -561,48 +629,128 @@
 	owner.bullet_act(hitting_projectile, def_zone, piercing_hit)
 	return COMPONENT_BULLET_BLOCKED
 
-/datum/status_effect/grabbed/proc/get_grab_time(base_time = 5 SECONDS)
-	var/vulnerability_delta = 0
-	if(isliving(grabbing_us))
-		var/mob/living/grabber = grabbing_us
-		// Compare grab strength vs resist strength
-		vulnerability_delta = owner.get_grab_resist_strength() - grabber.get_grab_strength()
-	else
-		// Just assume 5 (roughly the same as a human with gloves)
-		vulnerability_delta = owner.get_grab_resist_strength() - 5
-
-	return clamp(base_time + (vulnerability_delta * 1 SECONDS), 2 SECONDS, 20 SECONDS)
-
 #undef LINK_SOURCE
 #undef GRAB_SOURCE
 #undef CRIT_SOURCE
 #undef PIN_SOURCE
 
-/// Checks how strong our grabs are.
-/mob/living/proc/get_grab_strength()
-	. += get_grab_resist_strength()
+#define IS_VULNERABLE(mob) (\
+	mob.incapacitated(IGNORE_GRAB|IGNORE_STASIS) \
+	|| mob.body_position == LYING_DOWN \
+	|| (mob.has_status_effect(/datum/status_effect/staggered) && mob.getStaminaLoss() >= 30) \
+)
+
+/**
+ * Checks how strong our grabs are.
+ *
+ * Returns a flat number that represents how strong our grabs are
+ * somewhere in the range of 0-10 for a normal human.
+ */
+/atom/movable/proc/get_grab_strength()
+	. = get_grab_resist_strength()
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
+
+/mob/living/get_grab_strength()
+	. += ..()
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		. += potential_spine.athletics_boost_multiplier
+
+	var/datum/martial_art/grabber_art = GET_ACTIVE_MARTIAL_ART(src)
+	if(grabber_art?.can_use(src))
+		. += grabber_art.grab_state_modifier * 2
+
+/**
+ * Checks how strong our lifts are.
+ *
+ * Returns a flat number that represents how strong our lifts are
+ * somewhere in the range of 0-10 for a normal human.
+ */
+/atom/movable/proc/get_lift_strength()
+	. += get_grab_resist_strength() + get_grab_strength()
 	if(HAS_TRAIT(src, TRAIT_QUICKER_CARRY))
 		. += 1
 	else if(HAS_TRAIT(src, TRAIT_QUICK_CARRY))
 		. += 0.5
 
-/// Checks how strong we are at resisting being grabbed.
-/mob/living/proc/get_grab_resist_strength()
+/**
+ * Checks how strong we are at resisting being grabbed.
+ * Note: affected by our current state, ie, have we been stunned or not?
+ *
+ * Returns a flat number that represents how strong our grab resistance is
+ * somewhere in the range of 0-10 for a normal human.
+ */
+/atom/movable/proc/get_grab_resist_strength()
+	return 5
+
+/mob/living/get_grab_resist_strength()
 	. += mob_size * 2
-	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 1), 0, 3)
+	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 2), -1, 3)
 	if(ismonkey(src))
 		. -= 1
 	if(stat == DEAD)
 		. -= 4
-	else if(incapacitated(IGNORE_GRAB|IGNORE_STASIS) \
-		|| body_position == LYING_DOWN \
-		|| (has_status_effect(/datum/status_effect/staggered) && getStaminaLoss() >= 30) \
-	)
+	else if(IS_VULNERABLE(src))
 		. -= 2
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
 	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		. -= 2
 	// these two are not
-	if(HAS_TRAIT(src, TRAIT_DWARF))
+	if(HAS_TRAIT(src, TRAIT_SMALL))
 		. -= 2
 	if(HAS_TRAIT(src, TRAIT_HULK))
+		. += 3
+	else if(HAS_TRAIT(src, TRAIT_GIANT) || HAS_TRAIT(src, TRAIT_HUGE))
 		. += 2
+
+#undef IS_VULNERABLE
+
+/**
+ * When given a base climb speed, modifies it based on how good a climber we are.
+ *
+ * * base_speed - The base speed to modify.
+ * * climb_stun - Sometimes after climbing, you are stunned for a short time based on how long it took to climb.
+ * This parameter, when TRUE, indicates we are calculating stun duration based on a climb speed, rather than the actual climb speed itself.
+ *
+ * Returns the modified climb speed.
+ */
+/atom/movable/proc/get_climb_speed(base_speed = 1 SECONDS, climb_stun = FALSE)
+	return base_speed
+
+/mob/living/get_climb_speed(base_speed = 1 SECONDS, climb_stun = FALSE)
+	// flat reduction in speed based on fitness level and strength trait
+	var/fitness_level = (mind?.get_skill_level(/datum/skill/athletics) || 1) + (HAS_TRAIT(src, TRAIT_STRENGTH) ? 2 : -2)
+	. = max(0.1 SECONDS, base_speed - (fitness_level * 0.1 SECONDS))
+
+	if((usable_hands <= 0 || HAS_TRAIT(src, TRAIT_HANDS_BLOCKED)) && !climb_stun)
+		. *= 2
+	if(HAS_TRAIT(src, TRAIT_FREERUNNING))
+		. *= 0.8
+	if(HAS_TRAIT(src, TRAIT_STUBBY_BODY))
+		. *= 1.5
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		. *= potential_spine.athletics_boost_multiplier
+
+	return .
+
+/mob/living/carbon/alien/get_climb_speed(base_speed = 1 SECONDS, climb_stun = FALSE)
+	. = ..()
+	if(!climb_stun)
+		. *= 0.25
+
+/**
+ * When given a base grab speed, modifies it based on how good a grabber we are.
+ *
+ * * grabbing_us - The atom that is grabbing us. Used to compare grab strength vs resist strength.
+ * * base_time - The base time it should take to perform the grab-related action.
+ *
+ * Returns the modified grab time.
+ */
+/atom/movable/proc/get_grab_speed(atom/movable/grabbing, base_speed = 5 SECONDS, lifting = FALSE)
+	var/vulnerability_delta = grabbing.get_grab_resist_strength() - (lifting ? get_lift_strength() : get_grab_strength())
+	return clamp(base_speed + (vulnerability_delta * 1 SECONDS), base_speed * 0.2, base_speed * 4)

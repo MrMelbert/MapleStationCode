@@ -100,7 +100,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	if(iscyborg(user) || isalien(user))
 		return
 	if(stored_extinguisher)
-		user.put_in_hands(stored_extinguisher)
+		try_put_in_hand(stored_extinguisher, user)
 		user.balloon_alert(user, "extinguisher removed")
 		if(!opened)
 			opened = 1

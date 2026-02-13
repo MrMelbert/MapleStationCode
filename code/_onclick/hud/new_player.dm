@@ -606,6 +606,8 @@
 	if(SStitle.stats_faded || !hud?.mymob?.client?.prefs?.read_preference(/datum/preference/toggle/show_init_stats))
 		alpha = 0 // we still need to init it incase they turn it back on
 
+INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
+
 /atom/movable/screen/lobby_music
 	icon = 'maplestation_modules/icons/hud/lobby_spinner.dmi'
 	icon_state = "spinner"
@@ -626,7 +628,7 @@
 
 /atom/movable/screen/lobby_music/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	if(!hud?.mymob?.client?.prefs?.read_preference(/datum/preference/toggle/sound_lobby))
+	if(hud?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/volume/sound_lobby_volume) <= 0)
 		alpha = 0 // we still need to init it incase they turn it back on
 
 /atom/movable/screen/lobby_music/proc/start_tracking()
@@ -635,9 +637,10 @@
 	start_time = world.time
 	end_time = start_time + SSticker.login_length
 	START_PROCESSING(SSlobby_music_player, src)
+	update_maptext()
 
 /atom/movable/screen/lobby_music/process(seconds_per_tick)
-	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(min(world.time - start_time, SSticker.login_length), "mm:ss", 0)] / [time2text(SSticker.login_length, "mm:ss", 0)]s")]"
+	update_maptext()
 	if(world.time >= end_time)
 		animate(src, alpha = 0, time = 5 SECONDS)
 		return PROCESS_KILL
@@ -645,6 +648,9 @@
 /atom/movable/screen/lobby_music/proc/cancel_tracking()
 	STOP_PROCESSING(SSlobby_music_player, src)
 	animate(src, alpha = 0, time = 1 SECONDS)
+
+/atom/movable/screen/lobby_music/proc/update_maptext()
+	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, min(world.time - start_time, SSticker.login_length)), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]s")]"
 
 /atom/movable/screen/lobby_music/Destroy()
 	STOP_PROCESSING(SSlobby_music_player, src)

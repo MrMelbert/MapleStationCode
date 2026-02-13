@@ -154,14 +154,13 @@
 	return ..()
 
 
-/obj/item/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
+/obj/item/taperecorder/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
 	. = ..()
-	if(message_mods[MODE_RELAY])
+	if(message_mods[MODE_RELAY] || !mytape || istype(speaker, /obj/item/taperecorder))
 		return
 
-	if(mytape && recording)
-		mytape.timestamp += mytape.used_capacity
-		mytape.storedinfo += "\[[time2text(mytape.used_capacity,"mm:ss")]\] [raw_message]"
+	mytape.timestamp += mytape.used_capacity
+	mytape.storedinfo += "\[[time2text(mytape.used_capacity,"mm:ss", 0/*NO_TIMEZONE*/)]\] [speaker.get_voice()]: [raw_message]"
 
 
 /obj/item/taperecorder/verb/record()

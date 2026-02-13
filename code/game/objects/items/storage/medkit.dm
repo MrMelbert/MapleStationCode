@@ -76,6 +76,7 @@
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
 		/obj/item/stack/sticky_tape,
+		/obj/item/razor,
 	)
 
 /obj/item/storage/medkit/Initialize(mapload)
@@ -814,3 +815,8 @@
 /obj/item/storage/test_tube_rack/update_icon_state()
 	icon_state = "[base_icon_state][contents.len > 0 ? contents.len : null]"
 	return ..()
+
+/obj/item/storage/test_tube_rack/full/PopulateContents()
+	for(var/i in 1 to atom_storage.max_slots)
+		new /obj/item/reagent_containers/cup/tube(src)
+	update_appearance(UPDATE_ICON_STATE)

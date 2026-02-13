@@ -129,6 +129,7 @@
 	desc = "Somebody should remove that."
 	gender = NEUTER
 	layer = WALL_OBJ_LAYER
+	icon = 'icons/effects/web.dmi'
 	icon_state = "cobweb1"
 	resistance_flags = FLAMMABLE
 	beauty = -100
@@ -501,3 +502,7 @@
 	flick("rubble_bounce", src)
 	icon_state = "rubble"
 	update_appearance(UPDATE_ICON_STATE)
+
+/obj/effect/decal/cleanable/can_bits
+	name = "shredded can"
+	desc = "This story doesn't hold water anymore."

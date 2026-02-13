@@ -34,8 +34,6 @@
 	 * This is the source that this accessory will get its color from. Default is MUTCOLOR, but can also be HAIR, FACEHAIR, EYECOLOR and 0 if none.
 	 */
 	var/color_src = MUTANT_COLOR
-	/// Decides if this sprite has an "inner" part, such as the fleshy parts on ears.
-	var/hasinner = FALSE
 	/// Is this part locked from roundstart selection? Used for parts that apply effects.
 	var/locked = FALSE
 	/// Should we center the sprite?
@@ -1095,12 +1093,52 @@
 	use_static = FALSE
 	em_block = TRUE
 
+	/// Allows you to specify a greyscale config
+	var/greyscale_config
+	/// Icon state in the digitigrade template file to use if the wearer is digitigrade.
+	/// If null, no special digitigrade handling is done.
+	var/digi_icon_state
+	/// Color pallete for static colored underwear, like hearts.
+	/// Used so greyscale copies can have the same palette.
+	var/greyscale_colors = "#FFFFFF#FFFFFF#FFFFFF"
+
+/datum/sprite_accessory/underwear/proc/make_appearance(mob/living/carbon/human/for_who)
+	var/static/list/cached_icons = list()
+	var/use_female = for_who.dna.species.sexes && for_who.physique == FEMALE
+	var/use_digi = digi_icon_state && (for_who.bodyshape & BODYSHAPE_DIGITIGRADE) && !for_who.is_digitigrade_squished()
+
+	var/key = "[icon_state]-[greyscale_config || "ng"]-[use_female]-[use_digi]-[greyscale_colors]"
+	var/mutable_appearance/result
+	if(cached_icons[key]) // it's already cached
+		result = mutable_appearance(icon(cached_icons[key]))
+
+	else if(greyscale_config || use_female || use_digi) // icon ops ahead
+		var/icon/created = icon(greyscale_config ? SSgreyscale.GetColoredIconByType(greyscale_config, greyscale_colors) : icon, icon_state)
+		if(use_female)
+			created = wear_female_version(icon_state, icon, FEMALE_UNIFORM_FULL)
+		if(use_digi)
+			var/icon/replacement = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade_underwear, greyscale_colors), digi_icon_state)
+			created = replace_icon_legs(created, replacement)
+
+		cached_icons[key] = fcopy_rsc(created)
+		result = mutable_appearance(created)
+
+	else // no caching necessary
+		result = mutable_appearance(icon, icon_state)
+
+	result.layer = -BODY_LAYER
+	result.color = use_static ? null : for_who.underwear_color
+
+	return result
 
 //MALE UNDERWEAR
 /datum/sprite_accessory/underwear/nude
 	name = "Nude"
 	icon_state = null
 	gender = NEUTER
+
+/datum/sprite_accessory/underwear/nude/make_appearance(mob/living/carbon/human/for_who)
+	return
 
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Briefs"
@@ -1111,21 +1149,25 @@
 	name = "Boxers"
 	icon_state = "male_boxers"
 	gender = MALE
+	digi_icon_state = "boxers"
 
 /datum/sprite_accessory/underwear/male_stripe
 	name = "Striped Boxers"
 	icon_state = "male_stripe"
 	gender = MALE
+	digi_icon_state = "boxers_stripe"
 
 /datum/sprite_accessory/underwear/male_midway
 	name = "Midway Boxers"
 	icon_state = "male_midway"
 	gender = MALE
+	digi_icon_state = "midway"
 
 /datum/sprite_accessory/underwear/male_longjohns
 	name = "Long Johns"
 	icon_state = "male_longjohns"
 	gender = MALE
+	digi_icon_state = "longjohns"
 
 /datum/sprite_accessory/underwear/male_kinky
 	name = "Jockstrap"
@@ -1142,25 +1184,32 @@
 	icon_state = "male_hearts"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#D62626#"
 
 /datum/sprite_accessory/underwear/male_commie
 	name = "Commie Boxers"
 	icon_state = "male_commie"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_twocolor"
+	greyscale_colors = "#D62626#D1B62C#D62626"
 
 /datum/sprite_accessory/underwear/male_usastripe
 	name = "Freedom Boxers"
 	icon_state = "male_assblastusa"
 	gender = MALE
 	use_static = TRUE
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#2E26D6"
 
 /datum/sprite_accessory/underwear/male_uk
 	name = "UK Boxers"
 	icon_state = "male_uk"
 	gender = MALE
 	use_static = TRUE
-
+	digi_icon_state = "boxers_stripe_threecolor"
+	greyscale_colors = "#D62626#EEEEEE#2E26D6"
 
 //FEMALE UNDERWEAR
 /datum/sprite_accessory/underwear/female_bikini
@@ -1177,11 +1226,13 @@
 	name = "Bralette w/ Boyshorts"
 	icon_state = "female_bralette"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/female_sport
 	name = "Sports Bra w/ Boyshorts"
 	icon_state = "female_sport"
 	gender = FEMALE
+	digi_icon_state = "short"
 
 /datum/sprite_accessory/underwear/female_thong
 	name = "Thong"
@@ -1212,11 +1263,13 @@
 	name = "Two-Piece Swimsuit"
 	icon_state = "swim_twopiece"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/swimsuit_strapless_twopiece
 	name = "Strapless Two-Piece Swimsuit"
 	icon_state = "swim_strapless_twopiece"
 	gender = FEMALE
+	digi_icon_state = "short_short"
 
 /datum/sprite_accessory/underwear/swimsuit_stripe
 	name = "Strapless Striped Swimsuit"
@@ -1723,24 +1776,20 @@
 // MutantParts Definitions //
 /////////////////////////////
 
-/datum/sprite_accessory/body_markings
-	icon = 'icons/mob/human/species/lizard/lizard_misc.dmi'
+/datum/sprite_accessory/lizard_markings
+	icon = 'icons/mob/human/species/lizard/lizard_markings.dmi'
 
-/datum/sprite_accessory/body_markings/none
-	name = "None"
-	icon_state = "none"
-
-/datum/sprite_accessory/body_markings/dtiger
+/datum/sprite_accessory/lizard_markings/dtiger
 	name = "Dark Tiger Body"
 	icon_state = "dtiger"
 	gender_specific = TRUE
 
-/datum/sprite_accessory/body_markings/ltiger
+/datum/sprite_accessory/lizard_markings/ltiger
 	name = "Light Tiger Body"
 	icon_state = "ltiger"
 	gender_specific = TRUE
 
-/datum/sprite_accessory/body_markings/lbelly
+/datum/sprite_accessory/lizard_markings/lbelly
 	name = "Light Belly"
 	icon_state = "lbelly"
 	gender_specific = TRUE
@@ -1749,6 +1798,35 @@
 	em_block = TRUE
 	/// Describes which tail spine sprites to use, if any.
 	var/spine_key = NONE
+
+///Used for fish-infused tails, which come in different flavors.
+/datum/sprite_accessory/tails/fish
+	icon = 'maplestation_modules/icons/mob/fish_features.dmi'
+	color_src = TRUE
+
+/datum/sprite_accessory/tails/fish/simple
+	name = "Simple"
+	icon_state = "simple"
+
+/datum/sprite_accessory/tails/fish/crescent
+	name = "Crescent"
+	icon_state = "crescent"
+
+/datum/sprite_accessory/tails/fish/long
+	name = "Long"
+	icon_state = "long"
+	center = TRUE
+	dimension_x = 38
+
+/datum/sprite_accessory/tails/fish/shark
+	name = "Shark"
+	icon_state = "shark"
+
+/datum/sprite_accessory/tails/fish/chonky
+	name = "Chonky"
+	icon_state = "chonky"
+	center = TRUE
+	dimension_x = 36
 
 /datum/sprite_accessory/tails/lizard
 	icon = 'icons/mob/human/species/lizard/lizard_tails.dmi'
@@ -1855,10 +1933,6 @@
 	icon = 'icons/mob/human/species/lizard/lizard_misc.dmi'
 	em_block = TRUE
 
-/datum/sprite_accessory/horns/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/horns/simple
 	name = "Simple"
 	icon_state = "simple"
@@ -1883,14 +1957,9 @@
 	icon = 'icons/mob/human/cat_features.dmi'
 	em_block = TRUE
 
-/datum/sprite_accessory/ears/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/ears/cat
 	name = "Cat"
 	icon_state = "cat"
-	hasinner = TRUE
 	color_src = HAIR_COLOR
 
 /datum/sprite_accessory/ears/cat/big
@@ -1917,13 +1986,8 @@
 	icon = 'icons/mob/human/fox_features.dmi'
 	name = "Fox"
 	icon_state = "fox"
-	hasinner = TRUE
 	color_src = HAIR_COLOR
 	locked = TRUE
-
-/datum/sprite_accessory/wings/none
-	name = "None"
-	icon_state = "none"
 
 /datum/sprite_accessory/wings
 	icon = 'icons/mob/human/species/wings.dmi'
@@ -2068,10 +2132,6 @@
 /datum/sprite_accessory/frills
 	icon = 'icons/mob/human/species/lizard/lizard_misc.dmi'
 
-/datum/sprite_accessory/frills/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/frills/simple
 	name = "Simple"
 	icon_state = "simple"
@@ -2084,6 +2144,11 @@
 	name = "Aquatic"
 	icon_state = "aqua"
 
+/datum/sprite_accessory/frills/sharky // Sprite ported from Effigy
+	icon = 'maplestation_modules/icons/mob/ears/fish.dmi'
+	name = "Sharky"
+	icon_state = "shark"
+
 /datum/sprite_accessory/spines
 	icon = 'icons/mob/human/species/lizard/lizard_spines.dmi'
 	em_block = TRUE
@@ -2095,18 +2160,6 @@
 /datum/sprite_accessory/tail_spines
 	icon = 'icons/mob/human/species/lizard/lizard_spines.dmi'
 	em_block = TRUE
-
-/datum/sprite_accessory/spines/none
-	name = "None"
-	icon_state = "none"
-
-/datum/sprite_accessory/spines_animated/none
-	name = "None"
-	icon_state = "none"
-
-/datum/sprite_accessory/tail_spines/none
-	name = "None"
-	icon_state = "none"
 
 /datum/sprite_accessory/spines/short
 	name = "Short"
@@ -2369,10 +2422,6 @@
 /datum/sprite_accessory/moth_markings // the markings that moths can have. finally something other than the boring tan
 	icon = 'icons/mob/human/species/moth/moth_markings.dmi'
 	color_src = null
-
-/datum/sprite_accessory/moth_markings/none
-	name = "None"
-	icon_state = "none"
 
 /datum/sprite_accessory/moth_markings/reddish
 	name = "Reddish"

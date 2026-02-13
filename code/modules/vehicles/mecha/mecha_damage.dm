@@ -58,6 +58,8 @@
 			return "recalibrating coordination system..."
 		if(MECHA_INT_SHORT_CIRCUIT)
 			return "flushing internal capacitor..."
+		if(MECHA_INT_FUEL_LINE)
+			return "rejoining fuel line..."
 
 ///gets the successful finish balloon alert flufftext
 /obj/vehicle/sealed/mecha/proc/get_int_repair_fluff_end(flag)
@@ -72,6 +74,8 @@
 			return "coordination re-established"
 		if(MECHA_INT_SHORT_CIRCUIT)
 			return "internal capacitor reset"
+		if(MECHA_INT_FUEL_LINE)
+			return "fuel line rejoined"
 
 ///gets the on-fail balloon alert flufftext
 /obj/vehicle/sealed/mecha/proc/get_int_repair_fluff_fail(flag)
@@ -86,6 +90,8 @@
 			return "recalibration failed"
 		if(MECHA_INT_SHORT_CIRCUIT)
 			return "capacitor flush failure"
+		if(MECHA_INT_FUEL_LINE)
+			return "fuel line rejoin interrupted"
 
 /obj/vehicle/sealed/mecha/proc/set_internal_damage(int_dam_flag)
 	internal_damage |= int_dam_flag
@@ -106,5 +112,9 @@
 				to_chat(occupants, "[icon2html(src, occupants)][span_boldnotice("Control module reactivated.")]")
 			if(MECHA_INT_SHORT_CIRCUIT)
 				to_chat(occupants, "[icon2html(src, occupants)][span_boldnotice("Internal capacitor has been reset successfully.")]")
+			if(MECHA_INT_FUEL_LINE)
+				to_chat(occupants, "[icon2html(src, occupants)][span_boldnotice("Fuel line has been repaired.")]")
+				oil_pool = initial(oil_pool)
+
 	internal_damage &= ~int_dam_flag
 	diag_hud_set_mechstat()

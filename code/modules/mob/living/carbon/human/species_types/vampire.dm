@@ -7,22 +7,17 @@
 /datum/species/vampire
 	name = "Vampire"
 	id = SPECIES_VAMPIRE
-	examine_limb_id = SPECIES_HUMAN
 	inherent_traits = list(
 		TRAIT_BLOOD_CLANS,
-		TRAIT_DRINKS_BLOOD,
-		TRAIT_NOBREATH,
-		TRAIT_NOHUNGER,
 		TRAIT_USES_SKINTONES,
 		TRAIT_NO_MIRROR_REFLECTION,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutant_bodyparts = list("wings" = "None")
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	exotic_bloodtype = /datum/blood_type/universal // NON-MODULE CHANGE
 	blood_deficiency_drain_rate = BLOOD_DEFICIENCY_MODIFIER // vampires already passively lose blood, so this just makes them lose it slightly more quickly when they have blood deficiency.
-	mutantheart = /obj/item/organ/internal/heart/vampire
-	mutanttongue = /obj/item/organ/internal/tongue/vampire
+	mutantheart = /obj/item/organ/heart/vampire
+	mutanttongue = /obj/item/organ/tongue/vampire
 	mutantstomach = null
 	mutantlungs = null
 	skinned_type = /obj/item/stack/sheet/animalhide/human
@@ -148,11 +143,56 @@
 
 	return to_add
 
-/obj/item/organ/internal/tongue/vampire
+/obj/item/organ/tongue/vampire
 	name = "vampire tongue"
 	actions_types = list(/datum/action/item_action/organ_action/vampire)
-	color = "#1C1C1C"
+	color = COLOR_CRAYON_BLACK
+	organ_traits = list(
+		TRAIT_SPEAKS_CLEARLY,
+		TRAIT_DRINKS_BLOOD,
+		// future todo : tie nobreath and nohunger to a vampire organ set bonus
+		TRAIT_NOBREATH,
+		TRAIT_NOHUNGER,
+	)
 	COOLDOWN_DECLARE(drain_cooldown)
+
+/obj/item/organ/tongue/vampire/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	. = ..()
+	RegisterSignal(receiver, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(stab_bloodbag))
+
+/obj/item/organ/tongue/vampire/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+	UnregisterSignal(organ_owner, COMSIG_ATOM_ITEM_INTERACTION)
+
+/obj/item/organ/tongue/vampire/proc/stab_bloodbag(mob/living/source, mob/living/user,  obj/item/used_item, list/modifiers)
+	SIGNAL_HANDLER
+
+	if(user != source)
+		return NONE
+	if(!istype(used_item, /obj/item/reagent_containers/blood))
+		return NONE
+	if(used_item.reagents?.total_volume <= 0)
+		to_chat(user, span_warning("[src] is empty!"))
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(
+		span_notice("[user] stabs [used_item] with [user.p_their()] sharp teeth and drains its contents!"),
+		span_notice("You stab [used_item] with your sharp teeth and drain its contents!"),
+		span_hear("You hear a stabbing sound! ... Followed by slurping?"),
+		COMBAT_MESSAGE_RANGE,
+	)
+	INVOKE_ASYNC(src, PROC_REF(async_stab_bloodbag), user, used_item)
+	return ITEM_INTERACT_BLOCKING
+
+/obj/item/organ/tongue/vampire/proc/async_stab_bloodbag(mob/living/carbon/user, obj/item/reagent_containers/blood/bloodbag, time = 0.5 SECONDS)
+	if(!do_after(user, time, bloodbag))
+		return
+
+	to_chat(user, span_notice("You swallow a gulp of [src]."))
+	playsound(bloodbag, 'sound/items/drink.ogg', 50, TRUE) //slurp
+	bloodbag.reagents.trans_to(user, bloodbag.reagents.maximum_volume * 0.05, transferred_by = user, methods = INGEST)
+	if(bloodbag.reagents.total_volume > 0)
+		async_stab_bloodbag(user, bloodbag, 1 SECONDS)
 
 /datum/action/item_action/organ_action/vampire
 	name = "Drain Victim"
@@ -163,7 +203,7 @@
 		return FALSE
 
 	var/mob/living/carbon/user = owner
-	var/obj/item/organ/internal/tongue/vampire/licker_drinker = target
+	var/obj/item/organ/tongue/vampire/licker_drinker = target
 	if(!COOLDOWN_FINISHED(licker_drinker, drain_cooldown))
 		to_chat(user, span_warning("You just drained blood, wait a few seconds!"))
 		return FALSE
@@ -203,19 +243,19 @@
 		to_chat(user, span_notice("You finish off [victim]'s blood supply."))
 	return TRUE
 
-/obj/item/organ/internal/heart/vampire
+/obj/item/organ/heart/vampire
 	name = "vampire heart"
-	color = "#1C1C1C"
+	color = COLOR_CRAYON_BLACK
 
-/obj/item/organ/internal/heart/vampire/on_mob_insert(mob/living/carbon/receiver)
+/obj/item/organ/heart/vampire/on_mob_insert(mob/living/carbon/receiver)
 	. = ..()
 	RegisterSignal(receiver, COMSIG_MOB_GET_STATUS_TAB_ITEMS, PROC_REF(get_status_tab_item))
 
-/obj/item/organ/internal/heart/vampire/on_mob_remove(mob/living/carbon/heartless)
+/obj/item/organ/heart/vampire/on_mob_remove(mob/living/carbon/heartless)
 	. = ..()
 	UnregisterSignal(heartless, COMSIG_MOB_GET_STATUS_TAB_ITEMS)
 
-/obj/item/organ/internal/heart/vampire/proc/get_status_tab_item(mob/living/carbon/source, list/items)
+/obj/item/organ/heart/vampire/proc/get_status_tab_item(mob/living/carbon/source, list/items)
 	SIGNAL_HANDLER
 	items += "Blood Level: [source.blood_volume]/[BLOOD_VOLUME_MAXIMUM]"
 

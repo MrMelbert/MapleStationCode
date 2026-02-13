@@ -165,7 +165,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "orange" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/blue
 	name = "bluecherry snowcone"
@@ -215,7 +215,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "oranges" = 5, "limes" = 5, "lemons" = 5, "citrus" = 5, "salad" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/pineapple
 	name = "pineapple snowcone"
@@ -401,7 +401,7 @@
 	if(!do_after(user, 3 SECONDS, interacting_with))
 		return ITEM_INTERACT_BLOCKING
 
-	var/obj/item/organ/internal/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
 	var/report = ""
 	if(isnull(their_tongue))
 		report = "[inspected.p_They()] don't have a tongue to depress"
@@ -456,7 +456,7 @@
 		/datum/reagent/consumable/vanilla = 2,
 		/datum/reagent/consumable/sugar = 4,
 	)
-	foodtypes = FRUIT | DAIRY | SUGAR | ORANGES
+	foodtypes = FRUIT | DAIRY | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/popsicle/creamsicle_berry

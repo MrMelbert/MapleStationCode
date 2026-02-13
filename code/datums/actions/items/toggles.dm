@@ -85,7 +85,7 @@
 	desc = "Disables your HUD implant's visuals. You can still access examine information."
 
 /datum/action/item_action/organ_action/toggle_hud/do_effect(trigger_flags)
-	var/obj/item/organ/internal/cyberimp/eyes/hud/hud_implant = target
+	var/obj/item/organ/cyberimp/eyes/hud/hud_implant = target
 	hud_implant.toggle_hud(owner)
 	return TRUE
 

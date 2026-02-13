@@ -13,6 +13,7 @@
 /obj/item/clothing/under/rank/engineering/chief_engineer
 	desc = "It's a high visibility jumpsuit given to those engineers insane enough to achieve the rank of \"Chief Engineer\". Made from fire resistant materials."
 	name = "chief engineer's jumpsuit"
+	article = "the"
 	icon_state = "chiefengineer"
 	inhand_icon_state = "gy_suit"
 	armor_type = /datum/armor/clothing_under/engineering_chief_engineer
@@ -23,6 +24,7 @@
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/skirt
 	name = "chief engineer's jumpskirt"
+	article = "the"
 	desc = "It's a high visibility jumpskirt given to those engineers insane enough to achieve the rank of \"Chief Engineer\". Made from fire resistant materials."
 	icon_state = "chief_skirt"
 	inhand_icon_state = "gy_suit"
@@ -33,6 +35,7 @@
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/turtleneck
 	name = "chief engineer's turtleneck"
+	article = "the"
 	desc = "A yellow turtleneck and white khakis, for a chief engineer with a superior sense of style."
 	icon_state = "ceturtle"
 	inhand_icon_state = "y_suit"
@@ -42,6 +45,7 @@
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/turtleneck/skirt
 	name = "chief engineer's turtleneck skirt"
+	article = "the"
 	desc = "A yellow turtleneck and white khaki skirt, for a chief engineer with a superior sense of style."
 	icon_state = "ceturtle_skirt"
 	inhand_icon_state = "y_suit"

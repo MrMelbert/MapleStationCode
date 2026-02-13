@@ -3,7 +3,7 @@
 	desc = "A real bonefied skeleton, doesn't seem like it wants to socialize."
 	gender = NEUTER
 	icon = 'icons/mob/simple/simple_human.dmi'
-	mob_biotypes = MOB_UNDEAD|MOB_HUMANOID
+	mob_biotypes = MOB_UNDEAD|MOB_HUMANOID|MOB_SKELETAL
 	speak_emote = list("rattles")
 	maxHealth = 40
 	health = 40
@@ -55,6 +55,9 @@
 	ADD_TRAIT(src, TRAIT_SNOWSTORM_IMMUNE, INNATE_TRAIT)
 	var/list/foods_list = good_drinks + bad_drinks
 	ai_controller?.set_blackboard_key(BB_BASIC_FOODS, typecacheof(foods_list))
+
+/mob/living/basic/skeleton/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
 
 /mob/living/basic/skeleton/settler
 	name = "undead settler"

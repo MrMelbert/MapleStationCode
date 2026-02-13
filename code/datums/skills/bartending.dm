@@ -16,7 +16,8 @@
 	if(!lastkey)
 		return
 	var/mob/living/mixer = get_mob_by_ckey(lastkey)
-	if(!istype(mixer) || mixer.incapacitated(ALL) || isnull(mixer.mind) || !is_in_sight(mixer, my_atom))
+	var/turf/mix_turf = get_turf(my_atom)
+	if(!istype(mixer) || mixer.incapacitated(ALL) || isnull(mixer.mind) || !can_see(mixer, mix_turf, 5))
 		return
 
 	if(reaction.reaction_tags & REACTION_TAG_DRINK)

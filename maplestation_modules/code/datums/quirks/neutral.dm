@@ -127,8 +127,7 @@
 
 /datum/quirk/innate_neutral_mutation
 	name = "Minorly Mutated"
-	desc = "You have some kind of minor mutation which is unaffected by Mutadone. \
-		Species without DNA are unaffected by this quirk."
+	desc = "You have some kind of minor mutation which is unaffected by Mutadone."
 	icon = FA_ICON_DNA
 	value = 0
 	quirk_flags = QUIRK_HUMAN_ONLY
@@ -163,6 +162,11 @@
 		human_holder.dna.force_lose(mut)
 
 	pass(mut_pref) // same
+
+/datum/quirk/innate_neutral_mutation/is_species_appropriate(datum/species/mob_species)
+	if(TRAIT_GENELESS in GLOB.species_prototypes[mob_species].inherent_traits)
+		return FALSE
+	return TRUE
 
 /datum/quirk_constant_data/mutations
 	associated_typepath = /datum/quirk/innate_neutral_mutation

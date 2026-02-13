@@ -40,9 +40,9 @@
 			return
 		bodypart_overlay = new()
 		bodypart_overlay.layers = layers
-		if(carbon_parent.bodytype & BODYTYPE_SNOUTED) //stupid, but external organ bodytypes are not stored on the limb
+		if(carbon_parent.bodyshape & BODYSHAPE_SNOUTED) //stupid, but external organ bodytypes are not stored on the limb
 			bodypart_overlay.icon_state = "[icon_state]_lizard"
-		else if(my_head.bodytype & BODYTYPE_MONKEY)
+		else if(my_head.bodyshape & BODYSHAPE_MONKEY)
 			bodypart_overlay.icon_state = "[icon_state]_monkey"
 		else
 			bodypart_overlay.icon_state = "[icon_state]_human"

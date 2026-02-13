@@ -6,12 +6,18 @@
 	id = "digitigrade_cyber_r_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/right/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/borg_l_leg/digi
 	name = "Digitigrade Cybernetic Left Leg"
 	desc = /datum/design/borg_r_leg/digi::desc
 	id = "digitigrade_cyber_l_leg"
 	build_path = /obj/item/bodypart/leg/left/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_r_leg/digi
 	name = "Digitigrade Advanced Right Leg"
@@ -20,6 +26,9 @@
 		though makes it difficult to wear normal shoes."
 	id = "digitigrade_advanced_r_leg"
 	build_path = /obj/item/bodypart/leg/right/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_l_leg/digi
 	name = "Digitigrade Advanced Left Leg"
@@ -27,6 +36,9 @@
 	id = "digitigrade_advanced_l_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/left/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 // Limbs
 /obj/item/bodypart/leg/right/robot/digi
@@ -34,7 +46,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -56,7 +68,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -78,7 +90,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/surplus/digi/Initialize(mapload)
@@ -97,7 +109,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/robot/surplus/digi/Initialize(mapload)
@@ -116,7 +128,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
@@ -138,7 +150,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20

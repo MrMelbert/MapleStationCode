@@ -218,6 +218,15 @@
 	name = "Infinity Scarf (Worn)"
 	icon_file = 'icons/mob/clothing/neck.dmi'
 
+/datum/greyscale_config/robe_cape
+	name = "Robe Cape"
+	icon_file = 'icons/obj/clothing/neck.dmi'
+	json_config = 'code/datums/greyscale/json_configs/robe_cape.json'
+
+/datum/greyscale_config/robe_cape/worn
+	name = "Robe Cape"
+	icon_file = 'icons/mob/clothing/neck.dmi'
+	json_config = 'code/datums/greyscale/json_configs/robe_cape_worn.json'
 //
 // GLOVES
 //
@@ -647,6 +656,10 @@
 	icon_file = 'icons/mob/clothing/digi_template.dmi'
 	json_config = 'code/datums/greyscale/json_configs/digitigrade.json'
 
+/datum/greyscale_config/digitigrade_underwear
+	name = "Digitigrade Underwear"
+	icon_file = 'maplestation_modules/icons/mob/clothing/digi_underwear.dmi'
+	json_config = 'code/datums/greyscale/json_configs/digitigrade_underwear.json'
 
 //
 // SUIT + HEAD

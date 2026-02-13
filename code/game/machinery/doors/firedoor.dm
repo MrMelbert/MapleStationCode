@@ -117,6 +117,8 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(my_area)], and is ID [id_tag].")
+
 	if(!density)
 		. += span_notice("It is open, but could be <b>pried</b> closed.")
 	else if(!welded)
@@ -182,10 +184,6 @@
 				return CONTEXTUAL_SCREENTIP_SET
 
 	return .
-
-/obj/machinery/door/firedoor/update_name(updates)
-	. = ..()
-	name = "[get_area_name(my_area)] [initial(name)] [id_tag]"
 
 /**
  * Calculates what areas we should worry about.
@@ -331,7 +329,7 @@
 	soundloop.start()
 	is_playing_alarm = TRUE
 	my_area.fault_status = AREA_FAULT_AUTOMATIC
-	my_area.fault_location = name
+	my_area.fault_location = FIRELOCK_FAULT_NAME(id_tag)
 	var/datum/merger/merge_group = GetMergeGroup(merger_id, merger_typecache)
 	for(var/obj/machinery/door/firedoor/buddylock as anything in merge_group.members)
 		buddylock.activate(code)
@@ -382,7 +380,7 @@
 		if(LAZYLEN(place.active_firelocks) != 1)
 			continue
 		//if we're the first to activate in this particular area
-		place.set_fire_effect(TRUE, AREA_FAULT_AUTOMATIC, name) //bathe in red
+		place.set_fire_effect(TRUE, AREA_FAULT_AUTOMATIC, FIRELOCK_FAULT_NAME(id_tag)) //bathe in red
 		if(place == my_area)
 			// We'll limit our reporting to just the area we're on. If the issue affects bordering areas, they can report it themselves
 			place.alarm_manager.send_alarm(ALARM_FIRE, place)
@@ -442,7 +440,7 @@
 		LAZYREMOVE(place.active_firelocks, src)
 		if(LAZYLEN(place.active_firelocks)) // If we were the last firelock still active, clear the area effects
 			continue
-		place.set_fire_effect(FALSE, AREA_FAULT_NONE, name)
+		place.set_fire_effect(FALSE, AREA_FAULT_NONE, FIRELOCK_FAULT_NAME(id_tag))
 		if(place == my_area)
 			place.alarm_manager.clear_alarm(ALARM_FIRE, place)
 

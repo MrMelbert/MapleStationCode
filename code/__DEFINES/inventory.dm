@@ -88,7 +88,7 @@ DEFINE_BITFIELD(no_equip_flags, list(
 	ITEM_SLOT_MASK | ITEM_SLOT_HEAD | ITEM_SLOT_FEET | ITEM_SLOT_ID | ITEM_SLOT_BELT | ITEM_SLOT_BACK | ITEM_SLOT_NECK )
 
 //Bit flags for the flags_inv variable, which determine when a piece of clothing hides another. IE a helmet hiding glasses.
-//Make sure to update check_obscured_slots() if you add more.
+//Make sure to update obscured_slots if you add more.
 #define HIDEGLOVES (1<<0)
 #define HIDESUITSTORAGE (1<<1)
 #define HIDEJUMPSUIT (1<<2) //these first four are only used in exterior suits
@@ -133,6 +133,10 @@ DEFINE_BITFIELD(no_equip_flags, list(
 //defines for the index of hands
 #define LEFT_HANDS 1
 #define RIGHT_HANDS 2
+/// Checks if the value is "right" - same as ISEVEN, but used primarily for hand or foot index contexts
+#define IS_RIGHT_INDEX(value) (value % 2 == 0)
+/// Checks if the value is "left" - same as ISODD, but used primarily for hand or foot index contexts
+#define IS_LEFT_INDEX(value) (value % 2 != 0)
 
 //flags for female outfits: How much the game can safely "take off" the uniform without it looking weird
 /// For when there's simply no need for a female version of this uniform.
@@ -265,7 +269,7 @@ GLOBAL_LIST_INIT(mining_suit_allowed, list(
 	/obj/item/kinetic_crusher,
 	/obj/item/knife,
 	/obj/item/mining_scanner,
-	/obj/item/organ/internal/monster_core,
+	/obj/item/organ/monster_core,
 	/obj/item/storage/bag/ore,
 	/obj/item/pickaxe,
 	/obj/item/resonator,

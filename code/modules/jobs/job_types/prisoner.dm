@@ -21,7 +21,9 @@
 		/obj/effect/spawner/random/contraband/prison = 1
 	)
 
-	family_heirlooms = list(/obj/item/pen/blue)
+	family_heirlooms = list(
+		/obj/item/pen/blue,
+	)
 	rpg_title = "Defeated Miniboss"
 	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS & ~JOB_REOPEN_ON_ROUNDSTART_LOSS
 

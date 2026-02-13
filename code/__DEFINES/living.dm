@@ -1,6 +1,9 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Always does *deathgasp when they die
+/// If unset mobs will only deathgasp if supplied a death sound or custom death message
+#define ALWAYS_DEATHGASP (1<<1)
 /// Nutrition changed last life tick, so we should bulk update this tick
 #define QUEUE_NUTRITION_UPDATE (1<<3)
 
@@ -38,6 +41,15 @@
 //from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
+
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
 
 /// Various lists of body zones affected by pain.
 
@@ -116,17 +128,16 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
+
 #define COLOR_BLOOD "#c90000"
 
-/// Checks if the value is "left"
-/// Used primarily for hand or foot indexes
-#define IS_RIGHT(value) (value % 2 == 0)
-/// Checks if the value is "right"
-/// Used primarily for hand or foot indexes
-#define IS_LEFT(value) (value % 2 != 0)
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEX(value) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey
@@ -182,3 +193,36 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Calculates hunger drain per step taken
+#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) ( amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1) )
+/// Checks if a mob is moving intentionally (ie, nothing is forcing them to move like another mob or a conveyor)
+#define IS_MOVING_INTENTIONALLY(mob) ( mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
+
+/// For consistent examine span formatting (normal size)
+#define examining_span_normal(msg) span_infoplain(span_italics(msg))
+/// For consistent examine span formatting (small size)
+#define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
+
+/// Damtype is "physical" like a slap to the face
+#define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
+/// Damtype is intended to disable rather than kill
+#define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)

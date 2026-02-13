@@ -62,6 +62,10 @@
 	transform.crop(x1, y1, x2, y2)
 	return src
 
+/// Crop but it keeps the ratio 32x32
+/datum/universal_icon/proc/crop_32x32(x, y)
+	return crop(x, y, x + 31, y + 31)
+
 /datum/universal_icon/proc/flip(dir)
 	if(!transform)
 		transform = new

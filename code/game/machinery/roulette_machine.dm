@@ -27,6 +27,7 @@
 	anchored = FALSE
 	max_integrity = 500
 	armor_type = /datum/armor/machinery_roulette
+	examine_feedback_on_ui = TRUE
 	var/static/list/numbers = list("0" = "green", "1" = "red", "3" = "red", "5" = "red", "7" = "red", "9" = "red", "12" = "red", "14" = "red", "16" = "red",\
 	"18" = "red", "19" = "red", "21" = "red", "23" = "red", "25" = "red", "27" = "red", "30" = "red", "32" = "red", "34" = "red", "36" = "red",\
 	"2" = "black", "4" = "black", "6" = "black", "8" = "black", "10" = "black", "11" = "black", "13" = "black", "15" = "black", "17" = "black", "20" = "black",\
@@ -219,11 +220,14 @@
 	playing = TRUE
 	update_appearance()
 	set_light(0)
+	if(isliving(user))
+		var/mob/living/living_user = user
+		living_user.add_mood_event("roulette", /datum/mood_event/slots)
 
 	var/rolled_number = rand(0, 36)
 
 	playsound(src, 'sound/machines/roulettewheel.ogg', 50)
-	addtimer(CALLBACK(src, PROC_REF(finish_play), player_id, bet_type, bet_amount, payout, rolled_number), 34) //4 deciseconds more so the animation can play
+	addtimer(CALLBACK(src, PROC_REF(finish_play), player_id, bet_type, bet_amount, payout, rolled_number, user), 34) //4 deciseconds more so the animation can play
 	addtimer(CALLBACK(src, PROC_REF(finish_play_animation)), 3 SECONDS)
 
 	use_energy(active_power_usage)
@@ -234,7 +238,7 @@
 	playsound(src, 'sound/machines/piston_lower.ogg', 70)
 
 ///Ran after a while to check if the player won or not.
-/obj/machinery/roulette/proc/finish_play(obj/item/card/id/player_id, bet_type, bet_amount, potential_payout, rolled_number)
+/obj/machinery/roulette/proc/finish_play(obj/item/card/id/player_id, bet_type, bet_amount, potential_payout, rolled_number, mob/user)
 	last_spin = rolled_number
 
 	var/is_winner = check_win(bet_type, bet_amount, rolled_number) //Predetermine if we won
@@ -248,8 +252,11 @@
 	handle_color_light(color)
 
 	if(!is_winner)
-		say("You lost! Better luck next time")
+		say("You lost! Better luck next time.")
 		playsound(src, 'sound/machines/synth_no.ogg', 50)
+		if(isliving(user) && (user in viewers(src)))
+			var/mob/living/living_user = user
+			living_user.add_mood_event("roulette", /datum/mood_event/slots/loss)
 		return FALSE
 
 	// Prevents money generation exploits. Doesn't prevent the owner being a scrooge and running away with the money.
@@ -258,7 +265,9 @@
 
 	say("You have won [potential_payout] credits! Congratulations!")
 	playsound(src, 'sound/machines/synth_yes.ogg', 50)
-
+	if(isliving(user) && (user in viewers(src)))
+		var/mob/living/living_user = user
+		living_user.add_mood_event("roulette", potential_payout >= ROULETTE_JACKPOT_AMOUNT ? /datum/mood_event/slots/win/jackpot : /datum/mood_event/slots/win/big)
 	dispense_prize(potential_payout)
 
 ///Fills a list of coins that should be dropped.

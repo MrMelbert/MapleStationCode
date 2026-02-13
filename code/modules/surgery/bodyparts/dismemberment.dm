@@ -101,14 +101,9 @@
 	for(var/datum/wound/wound as anything in wounds)
 		wound.remove_wound(TRUE)
 
-	for(var/datum/surgery/surgery as anything in phantom_owner.surgeries) //if we had an ongoing surgery on that limb, we stop it.
-		if(surgery.operated_bodypart == src)
-			phantom_owner.surgeries -= surgery
-			qdel(surgery)
-			break
-
 	for(var/obj/item/embedded in embedded_objects)
-		embedded.forceMove(src) // It'll self remove via signal reaction, just need to move it
+		embedded.forceMove(drop_loc) // It'll self remove via signal reaction, just need to move it
+
 	if(!phantom_owner.has_embedded_objects())
 		phantom_owner.clear_alert(ALERT_EMBEDDED_OBJECT)
 		phantom_owner.clear_mood_event("embedded")
@@ -127,7 +122,8 @@
 
 	if(bodypart_flags & BODYPART_PSEUDOPART)
 		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
-		qdel(src)
+		if(!QDELING(src)) // we might be removed as a part of something qdeling us
+			qdel(src)
 		return
 
 	if(move_to_floor)
@@ -202,10 +198,8 @@
 		arm_owner.dropItemToGround(arm_owner.get_item_for_held_index(held_index), 1)
 	. = ..()
 	if(arm_owner.handcuffed)
-		arm_owner.handcuffed.forceMove(drop_location())
-		arm_owner.handcuffed.dropped(arm_owner)
-		arm_owner.set_handcuffed(null)
-		arm_owner.update_handcuffed()
+		var/obj/item/lost_cuffs = arm_owner.handcuffed
+		arm_owner.dropItemToGround(lost_cuffs, force = TRUE)
 	if(arm_owner.hud_used)
 		var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 		associated_hand?.update_appearance()
@@ -218,13 +212,8 @@
 	. = ..()
 	if(special || !leg_owner)
 		return
-	if(leg_owner.legcuffed)
-		leg_owner.legcuffed.forceMove(drop_location())
-		leg_owner.legcuffed.dropped(leg_owner)
-		leg_owner.legcuffed = null
-		leg_owner.update_worn_legcuffs()
-	if(leg_owner.shoes)
-		leg_owner.dropItemToGround(leg_owner.shoes, force = TRUE)
+	leg_owner.dropItemToGround(leg_owner.legcuffed, force = TRUE)
+	leg_owner.dropItemToGround(leg_owner.shoes, force = TRUE)
 
 /obj/item/bodypart/head/drop_limb(special, dismembered, move_to_floor = TRUE)
 	if(!special)
@@ -233,26 +222,32 @@
 			owner.dropItemToGround(head_item, force = TRUE)
 
 	//Handle dental implants
-	for(var/datum/action/item_action/hands_free/activate_pill/pill_action in owner.actions)
+	for(var/datum/action/item_action/activate_pill/pill_action in owner.actions)
 		pill_action.Remove(owner)
 		var/obj/pill = pill_action.target
 		if(pill)
 			pill.forceMove(src)
 
 	name = "[owner.real_name]'s head"
+
+	/// If our owner loses their head, update their name as their face ~cannot be seen~ does not exist anymore
+	if (ishuman(owner))
+		var/mob/living/carbon/human/as_human = owner
+		as_human.update_visible_name()
+
 	return ..()
 
-///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails.
-/obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner, special)
+///Try to attach this bodypart to a mob, while replacing one if it exists, does nothing if it fails. Returns TRUE on success, FALSE on failure.
+/obj/item/bodypart/proc/replace_limb(mob/living/carbon/limb_owner)
 	if(!istype(limb_owner))
-		return
+		return FALSE
 	var/obj/item/bodypart/old_limb = limb_owner.get_bodypart(body_zone)
-	if(old_limb)
-		old_limb.drop_limb(TRUE)
+	old_limb?.drop_limb(TRUE)
 
-	. = try_attach_limb(limb_owner, special)
-	if(!.) //If it failed to replace, re-attach their old limb as if nothing happened.
-		old_limb.try_attach_limb(limb_owner, TRUE)
+	if(!try_attach_limb(limb_owner, TRUE)) //If it failed to replace, re-attach their old limb as if nothing happened.
+		old_limb?.try_attach_limb(limb_owner, TRUE)
+		return FALSE
+	return TRUE
 
 ///Checks if a limb qualifies as a BODYPART_IMPLANTED
 /obj/item/bodypart/proc/check_for_frankenstein(mob/living/carbon/human/monster)
@@ -267,9 +262,16 @@
 /obj/item/bodypart/proc/can_attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)
 		return FALSE
-
+	if(SEND_SIGNAL(src, COMSIG_ATTEMPT_BODYPART_ATTACH_LIMB, new_limb_owner, special) & COMPONENT_NO_ATTACH)
+		return FALSE
+	if(special)
+		return TRUE
 	var/obj/item/bodypart/chest/mob_chest = new_limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(mob_chest && !(mob_chest.acceptable_bodytype & bodytype) && !special)
+	if(isnull(mob_chest))
+		return TRUE // i guess this is legal
+	if(!(mob_chest.acceptable_bodytype & bodytype))
+		return FALSE
+	if(!(mob_chest.acceptable_bodyshape & bodyshape))
 		return FALSE
 	return TRUE
 
@@ -285,15 +287,10 @@
 	LAZYREMOVE(new_limb_owner.body_zone_dismembered_by, body_zone)
 
 	if(special) //non conventional limb attachment
-		for(var/datum/surgery/attach_surgery as anything in new_limb_owner.surgeries) //if we had an ongoing surgery to attach a new limb, we stop it.
-			var/surgery_zone = check_zone(attach_surgery.location)
-			if(surgery_zone == body_zone)
-				new_limb_owner.surgeries -= attach_surgery
-				qdel(attach_surgery)
-				break
-
 		for(var/obj/item/organ/organ as anything in new_limb_owner.organs)
 			if(deprecise_zone(organ.zone) != body_zone)
+				continue
+			if(organ.bodypart_owner == src) // someone manually updated the organs already
 				continue
 			organ.bodypart_insert(src)
 
@@ -339,9 +336,14 @@
 		new_head_owner.real_name = old_real_name
 	real_name = new_head_owner.real_name
 
+	/// Update our owner's name with ours
+	if (ishuman(owner))
+		var/mob/living/carbon/human/as_human = owner
+		as_human.update_visible_name()
+
 	//Handle dental implants
 	for(var/obj/item/reagent_containers/pill/pill in src)
-		for(var/datum/action/item_action/hands_free/activate_pill/pill_action in pill.actions)
+		for(var/datum/action/item_action/activate_pill/pill_action in pill.actions)
 			pill.forceMove(new_head_owner)
 			pill_action.Grant(new_head_owner)
 			break
@@ -402,14 +404,14 @@
 			qdel(scaries)
 			qdel(phantom_loss)
 
-	//Copied from /datum/species/proc/on_species_gain()
-	for(var/obj/item/organ/external/organ_path as anything in dna.species.external_organs)
-		//Load a persons preferences from DNA
-		var/zone = initial(organ_path.zone)
-		if(zone != limb_zone)
-			continue
-		var/obj/item/organ/external/new_organ = SSwardrobe.provide_type(organ_path)
-		new_organ.Insert(src)
+		//Copied from /datum/species/proc/on_species_gain()
+		for(var/obj/item/organ/organ_path as anything in dna.species.mutant_organs)
+			//Load a persons preferences from DNA
+			var/zone = initial(organ_path.zone)
+			if(zone != limb_zone)
+				continue
+			var/obj/item/organ/new_organ = SSwardrobe.provide_type(organ_path)
+			new_organ.Insert(src)
 
 	update_body_parts()
 	return TRUE

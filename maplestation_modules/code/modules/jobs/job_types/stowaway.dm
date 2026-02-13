@@ -52,6 +52,9 @@
 	for(var/i in 1 to rand(3, length(skill_pool) - 1)) // give a few random skills to work with
 		spawned.mind.adjust_experience(pick_n_take(skill_pool), round(rand(100, 750), 50), TRUE)
 
+/datum/job/stowaway/get_radio_information()
+	return null
+
 // Applied to fresh stowaways to give them an option of getting a random backstory
 /datum/status_effect/backstory
 	id = "stowaway_backstory"

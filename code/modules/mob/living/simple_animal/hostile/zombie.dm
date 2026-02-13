@@ -38,6 +38,9 @@
 		fake_blood_type = random_human_blood_type()
 	return find_blood_type(fake_blood_type)
 
+/mob/living/simple_animal/hostile/zombie/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
 /mob/living/simple_animal/hostile/zombie/AttackingTarget(atom/attacked_target)
 	. = ..()
 	if(. && ishuman(target) && prob(infection_chance))

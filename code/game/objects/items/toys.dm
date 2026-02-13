@@ -131,11 +131,11 @@
 	force = 0
 	var/random_color = TRUE
 	/// the string of the dmi state the balloon has while on the floor.
-	var/world_state 
+	var/world_state
 	/// the string of the dmi state the balloon has while in your inventory.
-	var/storage_state 
+	var/storage_state
 	/// the string describing the name of balloon's current colour.
-	var/current_color 
+	var/current_color
 
 /obj/item/toy/balloon/long
 	name = "long balloon"
@@ -186,9 +186,9 @@
 	)
 	for(var/list/pair_of_colors in balloon_combos)
 		if((hit_by.current_color == pair_of_colors[1] && current_color == pair_of_colors[2]) || (current_color == pair_of_colors[1] && hit_by.current_color == pair_of_colors[2]))
-			var/path_to_spawn = balloon_combos[pair_of_colors] 
+			var/path_to_spawn = balloon_combos[pair_of_colors]
 			user.put_in_hands(new path_to_spawn)
-			break 
+			break
 	qdel(hit_by)
 	qdel(src)
 	return TRUE
@@ -1418,7 +1418,7 @@
 	. = ..()
 	AddElement(/datum/element/toy_talk)
 
-/obj/item/toy/dummy/GetVoice()
+/obj/item/toy/dummy/get_voice(add_id_name)
 	return doll_name
 
 /obj/item/toy/seashell
@@ -1518,14 +1518,6 @@
 	icon = 'icons/effects/eldritch.dmi'
 	icon_state = "pierced_illusion"
 	item_flags = NO_PIXEL_RANDOM_DROP
-
-/obj/item/storage/box/heretic_box
-	name = "box of pierced realities"
-	desc = "A box containing toys resembling pierced realities."
-
-/obj/item/storage/box/heretic_box/PopulateContents()
-	for(var/i in 1 to rand(1,4))
-		new /obj/item/toy/reality_pierce(src)
 
 /obj/item/toy/foamfinger
 	name = "foam finger"

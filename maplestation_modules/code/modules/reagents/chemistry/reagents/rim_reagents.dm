@@ -26,9 +26,9 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 12
 	ph = 12.4
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	chemical_flags = NONE
 	addiction_types = list(/datum/addiction/luciferium = 33) // 3 units = addiction
-	pain_modifier = 0.8
+	pain_modifier = 0.2
 
 /datum/reagent/medicine/luciferium/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -97,9 +97,8 @@
 
 	// Can cure wounds, too
 	if(SPT_PROB(6, seconds_per_tick))
-		var/list/shuffled_wounds = shuffle(user.all_wounds)
-		for(var/datum/wound/wound as anything in shuffled_wounds)
-			wound.remove_wound()
+		for(var/datum/wound/wound as anything in shuffle(user.all_wounds))
+			qdel(wound)
 			break
 
 	. = ..()

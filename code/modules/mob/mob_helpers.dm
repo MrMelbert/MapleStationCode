@@ -151,9 +151,10 @@
 
 	if(C.prefs?.read_preference(/datum/preference/toggle/screen_shake_darken))
 		var/type = /atom/movable/screen/fullscreen/flash/black
+		var/shake_dur = max(duration, 2 SECONDS)
 
 		M.overlay_fullscreen("flash", type)
-		addtimer(CALLBACK(M, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 3 SECONDS), 3 SECONDS)
+		addtimer(CALLBACK(M, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 1 SECONDS), shake_dur)
 
 	//How much time to allot for each pixel moved
 	var/time_scalar = (1 / world.icon_size) * TILES_PER_SECOND
@@ -182,6 +183,31 @@
 	animate(pixel_x=oldx, pixel_y=oldy, time=3)
 
 #undef TILES_PER_SECOND
+
+/// Helper proc for a similar function to shake_camera, expect this one kicks the camera back at an opposite angle rather then skake_camera's irratic jittering.
+/proc/recoil_camera(mob/recoiled_mob, duration, backtime_duration, strength, angle)
+	if(!recoiled_mob || !recoiled_mob.client || duration < 1)
+		return
+	var/client/my_client = recoiled_mob.client
+	strength *= world.icon_size
+	var/client/client_to_shake = recoiled_mob.client
+	var/oldx = client_to_shake.pixel_x
+	var/oldy = client_to_shake.pixel_y
+
+	//get pixels to move the camera in an angle
+	var/mpx = sin(angle) * strength
+	var/mpy = cos(angle) * strength
+
+
+	if(my_client.prefs?.read_preference(/datum/preference/toggle/screen_shake_darken))
+		var/type = /atom/movable/screen/fullscreen/flash/black
+		var/shake_dur = max(duration, 2 SECONDS)
+		recoiled_mob.overlay_fullscreen("flash", type)
+		addtimer(CALLBACK(recoiled_mob, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 1 SECONDS), shake_dur)
+
+
+	animate(client_to_shake, pixel_x = oldx+mpx, pixel_y = oldy+mpy, time = duration, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = oldx, pixel_y = oldy, time = backtime_duration, easing = BACK_EASING)
 
 ///Find if the message has the real name of any user mob in the mob_list
 /proc/findname(msg)
@@ -304,19 +330,6 @@
 		toast.name = header
 		toast.target_ref = WEAKREF(source)
 
-/// Heals a robotic limb on a mob
-/proc/item_heal_robotic(mob/living/carbon/human/human, mob/user, brute_heal, burn_heal)
-	var/obj/item/bodypart/affecting = human.get_bodypart(check_zone(user.zone_selected))
-	if(!affecting || IS_ORGANIC_LIMB(affecting))
-		to_chat(user, span_warning("[affecting] is already in good condition!"))
-		return FALSE
-	var/brute_damage = brute_heal > burn_heal //changes repair text based on how much brute/burn was supplied
-	if((brute_heal > 0 && affecting.brute_dam > 0) || (burn_heal > 0 && affecting.burn_dam > 0))
-		if(affecting.heal_damage(brute_heal, burn_heal, required_bodytype = BODYTYPE_ROBOTIC))
-			human.update_damage_overlays()
-		user.visible_message(span_notice("[user] fixes some of the [brute_damage ? "dents on" : "burnt wires in"] [human]'s [affecting.name]."), \
-			span_notice("You fix some of the [brute_damage ? "dents on" : "burnt wires in"] [human == user ? "your" : "[human]'s"] [affecting.name]."))
-		return TRUE //successful heal
 
 
 ///Is the passed in mob a ghost with admin powers, doesn't check for AI interact like isAdminGhost() used to

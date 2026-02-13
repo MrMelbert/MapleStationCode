@@ -29,7 +29,7 @@ Slimecrossing Armor
 	actions_types = list(/datum/action/item_action/change_prism_colour, /datum/action/item_action/place_light_prism)
 
 	forced_glass_color = TRUE
-	var/glasses_color = "#FFFFFF"
+	var/glasses_color = COLOR_WHITE
 
 /obj/item/clothing/glasses/prism_glasses/Initialize(mapload)
 	. = ..()

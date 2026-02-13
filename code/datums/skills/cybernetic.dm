@@ -3,9 +3,9 @@
 	title = "Cyberneticist"
 	blurb = "From the moment I realized the weakness of flesh, it disgusted me. I craved a better way to be."
 	earned_by = "installing and repairing cybernetic implants"
-	grants_you = "less pain when installing cybernetic implants on yourself and others"
+	grants_you = "less pain when installing cybernetic implants"
 	modifiers = list(
-		// amount of pain to reduce when installing cybernetic implants
+		// amount of pain to reduce when installing cybernetic implants (negative = more instead)
 		SKILL_VALUE_MODIFIER = list(
 			SKILL_LEVEL_NONE = -10,
 			SKILL_LEVEL_NOVICE = 0,

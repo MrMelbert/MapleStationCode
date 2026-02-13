@@ -9,7 +9,7 @@
 	var/obj/act_module = get_active_held_item()
 	if(act_module)
 		. += "It is holding [icon2html(act_module, user)] \a [act_module]."
-	. += get_status_effect_examinations()
+	. += get_status_effect_examinations(user)
 	if (getBruteLoss())
 		if (getBruteLoss() < maxHealth*0.5)
 			. += span_warning("It looks slightly dented.")
@@ -48,3 +48,6 @@
 			. += span_deadsay("It looks like its system is corrupted and requires a reset.")
 
 	. += ..()
+
+/mob/living/silicon/robot/examine_descriptor(mob/user)
+	return "cyborg"

@@ -27,6 +27,8 @@
 #define CYBORG_ITEM_TRAIT "cyborg-item"
 /// Any traits granted by quirks.
 #define QUIRK_TRAIT "quirk_trait"
+/// Trait source for personality traits
+#define PERSONALITY_TRAIT "personality_trait"
 /// (B)admins only.
 #define ADMIN_TRAIT "admin"
 /// Any traits given through a smite.
@@ -264,7 +266,7 @@
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
-* granted/removed by [/obj/item/organ/internal/tongue]
+* granted/removed by [/obj/item/organ/tongue]
 * Used for ensuring that carbons without tongues cannot taste anything
 * so it is added in Initialize, and then removed when a tongue is inserted
 * and readded when a tongue is removed.
@@ -292,3 +294,6 @@
 
 /// Trait aquired from being painted a certain color
 #define ATOM_COLOR_TRAIT "atom_color"
+
+/// Trait added by a xenobio console
+#define XENOBIO_CONSOLE_TRAIT "xenobio_console_trait"

@@ -99,6 +99,7 @@
 	stored_paper = 20
 	starting_programs = list(
 		/datum/computer_file/program/shipping,
+		/datum/computer_file/program/restock_tracker,
 	)
 
 /**
@@ -169,12 +170,6 @@
 	icon_state = "/obj/item/modular_computer/pda/science"
 	greyscale_config = /datum/greyscale_config/tablet/stripe_thick
 	greyscale_colors = "#FAFAFA#000099#B347BC"
-	starting_programs = list(
-		/datum/computer_file/program/atmosscan,
-		/datum/computer_file/program/science,
-		/datum/computer_file/program/scipaper_program,
-		/datum/computer_file/program/signal_commander,
-	)
 
 /obj/item/modular_computer/pda/roboticist
 	name = "roboticist PDA"
@@ -257,6 +252,7 @@
 		/datum/computer_file/program/shipping,
 		/datum/computer_file/program/budgetorders,
 		/datum/computer_file/program/robocontrol,
+		/datum/computer_file/program/restock_tracker,
 	)
 
 /obj/item/modular_computer/pda/shaftminer
@@ -399,6 +395,7 @@
 	starting_programs = list(
 		/datum/computer_file/program/emojipedia,
 		/datum/computer_file/program/newscaster,
+		/datum/computer_file/program/portrait_printer,
 	)
 
 /obj/item/modular_computer/pda/curator/Initialize(mapload)

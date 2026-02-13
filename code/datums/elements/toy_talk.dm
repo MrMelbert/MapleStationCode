@@ -1,7 +1,7 @@
 /**
  * Allows people to talk via the item with .l or .r
  *
- * Be sure to override [/atom/movable/proc/GetVoice] if you want the item's "voice" to not default to itself
+ * Be sure to override [/atom/movable/proc/get_voice] if you want the item's "voice" to not default to itself
  */
 /datum/element/toy_talk
 

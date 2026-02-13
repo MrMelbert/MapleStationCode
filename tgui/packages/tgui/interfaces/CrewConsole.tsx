@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Icon, Input, Section, Table } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
@@ -113,7 +113,12 @@ const HealthStat = (props: HealthStatProps) => {
 
 export const CrewConsole = () => {
   return (
-    <Window title="Crew Monitor" width={600} height={600}>
+    <Window
+      title="Crew Monitor"
+      width={600}
+      height={600}
+      theme="operating_computer" // NON-MODULE CHANGE
+    >
       <Window.Content scrollable>
         <Section minHeight="540px">
           <CrewTable />
@@ -191,9 +196,8 @@ const CrewTable = () => {
           <Input
             placeholder="Search for name..."
             width="150px" // NON-MODULE CHANGE
-            onInput={(e) =>
-              setSearchQuery((e.target as HTMLTextAreaElement).value)
-            }
+            onChange={setSearchQuery}
+            value={searchQuery}
           />
         </>
       }

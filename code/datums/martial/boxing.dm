@@ -16,14 +16,15 @@
 	/// Balloon alert cooldown for warning our boxer to alternate their blows to get more damage
 	COOLDOWN_DECLARE(warning_cooldown)
 
-/datum/martial_art/boxing/teach(mob/living/new_holder, make_temporary)
-	if(!ishuman(new_holder))
-		return FALSE
+/datum/martial_art/boxing/can_teach(mob/living/new_holder)
+	return ishuman(new_holder)
+
+/datum/martial_art/boxing/activate_style(mob/living/new_holder)
+	. = ..()
 	new_holder.add_traits(boxing_traits, BOXING_TRAIT)
 	RegisterSignal(new_holder, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(check_block))
-	return ..()
 
-/datum/martial_art/boxing/on_remove(mob/living/remove_from)
+/datum/martial_art/boxing/deactivate_style(mob/living/remove_from)
 	remove_from.remove_traits(boxing_traits, BOXING_TRAIT)
 	UnregisterSignal(remove_from, list(COMSIG_LIVING_CHECK_BLOCK))
 	return ..()
@@ -74,7 +75,7 @@
 /datum/martial_art/boxing/proc/tussle(mob/living/attacker, mob/living/defender, atk_verb = "blind jab", atk_verbed = "blind jabbed")
 
 	if(honorable_boxer) //Being a good sport, you never hit someone on the ground or already knocked down. It shows you're the better person.
-		if(defender.body_position == LYING_DOWN && defender.getStaminaLoss() >= 100 || defender.IsUnconscious()) //If they're in stamcrit or unconscious, don't bloody punch them
+		if(defender.body_position == LYING_DOWN && defender.getStaminaLoss() >= 100 || HAS_TRAIT(defender, TRAIT_KNOCKEDOUT)) //If they're in stamcrit or unconscious, don't bloody punch them
 			attacker.balloon_alert(attacker, "unsportsmanlike behaviour!")
 			return FALSE
 
@@ -107,7 +108,7 @@
 	if(honor_check(defender))
 		var/strength_bonus = HAS_TRAIT(attacker, TRAIT_STRENGTH) ? 2 : 0 //Investing into genetic strength improvements makes you a better boxer
 
-		var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = attacker.get_organ_slot(ORGAN_SLOT_SPINE) //Getting a cyberspine also pushes you further than just mere meat
+		var/obj/item/organ/cyberimp/chest/spine/potential_spine = attacker.get_organ_slot(ORGAN_SLOT_SPINE) //Getting a cyberspine also pushes you further than just mere meat
 		if(istype(potential_spine))
 			strength_bonus *= potential_spine.strength_bonus
 
@@ -162,10 +163,10 @@
 		skill_experience_adjustment(attacker, (damage/lower_force))
 
 	//Determine our attackers athletics level as a knockout probability bonus
-	var/attacker_athletics_skill =  (attacker.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
+	var/attacker_athletics_skill =  (attacker.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
 
 	// Defender boxing skill and armor block are used as a defense here. This has already factored in base_unarmed_effectiveness from the attacker
-	var/defender_athletics_skill =  clamp(defender.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
+	var/defender_athletics_skill =  clamp(defender.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
 
 	//Determine our final probability, using a clamp to stop any prob() weirdness.
 	var/final_knockout_probability = clamp(round(attacker_athletics_skill - defender_athletics_skill), 0 , 100)
@@ -243,7 +244,7 @@
 	var/base_unarmed_effectiveness = active_arm.unarmed_effectiveness
 
 	// Out athletics skill is added to our block potential
-	var/athletics_skill_rands =  boxer.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
+	var/athletics_skill_rands =  boxer.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
 
 	var/block_chance = base_unarmed_effectiveness + athletics_skill_rands
 

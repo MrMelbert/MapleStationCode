@@ -2,14 +2,6 @@
 /////Initial Building/////
 //////////////////////////
 
-/// Inits GLOB.surgeries
-/proc/init_surgeries()
-	var/surgeries = list()
-	for(var/path in subtypesof(/datum/surgery))
-		surgeries += new path()
-	sort_list(surgeries, GLOBAL_PROC_REF(cmp_typepaths_asc))
-	return surgeries
-
 /// Legacy procs that really should be replaced with proper _INIT macros
 /proc/make_datum_reference_lists()
 	// I tried to eliminate this proc but I couldn't untangle their init-order interdependencies -Dominion/Cyberboss
@@ -208,3 +200,18 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	/obj/machinery/light,
 	/obj/structure/light_construct,
 )))
+
+/// A static typecache of all the money-based items that can be actively used as currency.
+GLOBAL_LIST_INIT(allowed_money, typecacheof(list(
+	/obj/item/coin,
+	/obj/item/holochip,
+	/obj/item/stack/spacecash,
+)))
+
+/// Inits GLOB.plant_traits
+/proc/init_plant_traits()
+	var/traits = list()
+	for(var/trait_path in subtypesof(/datum/plant_gene))
+		traits += new trait_path
+	sort_list(traits, GLOBAL_PROC_REF(cmp_typepaths_asc))
+	return traits

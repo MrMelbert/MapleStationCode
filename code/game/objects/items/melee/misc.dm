@@ -4,6 +4,7 @@
 
 /obj/item/melee/chainofcommand
 	name = "chain of command"
+	article = "the"
 	desc = "A tool used by great men to placate the frothing masses."
 	icon = 'icons/obj/weapons/whip.dmi'
 	icon_state = "chain"
@@ -63,7 +64,7 @@
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY
 	obj_flags = UNIQUE_RENAME
-	force = 15
+	force = 20
 	throwforce = 10
 	demolition_mod = 0.75 //but not metal
 	w_class = WEIGHT_CLASS_BULKY
@@ -100,7 +101,7 @@
  */
 /obj/item/melee/sabre/proc/attempt_bane(element_owner, mob/living/carbon/criminal)
 	SIGNAL_HANDLER
-	var/obj/item/organ/internal/liver/liver = criminal.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = criminal.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(isnull(liver) || !HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		return COMPONENT_CANCEL_BANING
 
@@ -161,7 +162,7 @@
 	if(!QDELETED(affecting) && !(affecting.bodypart_flags & BODYPART_UNREMOVABLE) && affecting.owner == user && !QDELETED(user))
 		playsound(user, hitsound, 25, TRUE)
 		affecting.dismember(BRUTE)
-		user.adjustBruteLoss(20)
+		user.adjustBruteLoss(force * 1.25)
 
 /obj/item/melee/sabre/proc/manual_suicide(mob/living/user, originally_nodropped)
 	if(!QDELETED(user))
@@ -483,7 +484,7 @@
 	greyscale_config_inhand_left = /datum/greyscale_config/cleric_mace_lefthand
 	greyscale_config_inhand_right = /datum/greyscale_config/cleric_mace_righthand
 	greyscale_config_worn = /datum/greyscale_config/cleric_mace
-	greyscale_colors = "#FFFFFF"
+	greyscale_colors = COLOR_WHITE
 
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE | MATERIAL_AFFECT_STATISTICS //Material type changes the prefix as well as the color.
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*6)  //Defaults to an Iron Mace.

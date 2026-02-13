@@ -15,10 +15,9 @@
 #define CLOTH (1<<14)
 #define NUTS (1<<15)
 #define SEAFOOD (1<<16)
-#define ORANGES (1<<17)
-#define BUGS (1<<18)
-#define GORE (1<<19)
-#define STONE (1<<20)
+#define BUGS (1<<17)
+#define GORE (1<<18)
+#define STONE (1<<19)
 
 DEFINE_BITFIELD(foodtypes, list(
 	"MEAT" = MEAT,
@@ -38,7 +37,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH" = CLOTH,
 	"NUTS" = NUTS,
 	"SEAFOOD" = SEAFOOD,
-	"ORANGES" = ORANGES,
 	"BUGS" = BUGS,
 	"GORE" = GORE,
 	"STONE" = STONE,
@@ -63,7 +61,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"CLOTH", \
 	"NUTS", \
 	"SEAFOOD", \
-	"ORANGES", \
 	"BUGS", \
 	"GORE", \
 	"STONE", \
@@ -88,7 +85,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"Clothing", \
 	"Nuts", \
 	"Seafood", \
-	"Oranges", \
 	"Bugs", \
 	"Gore", \
 	"Rocks", \
@@ -99,6 +95,7 @@ DEFINE_BITFIELD(foodtypes, list(
 #define DRINK_GOOD 3
 #define DRINK_VERYGOOD 4
 #define DRINK_FANTASTIC 5
+
 #define FOOD_AMAZING 6
 
 #define FOOD_QUALITY_NORMAL 1
@@ -127,18 +124,7 @@ GLOBAL_LIST_INIT(food_quality_description, list(
 	FOOD_QUALITY_TOP = "godlike",
 ))
 
-/// Mood events for food quality
-GLOBAL_LIST_INIT(food_quality_events, list(
-	FOOD_QUALITY_NORMAL = /datum/mood_event/food,
-	FOOD_QUALITY_NICE = /datum/mood_event/food/nice,
-	FOOD_QUALITY_GOOD = /datum/mood_event/food/good,
-	FOOD_QUALITY_VERYGOOD = /datum/mood_event/food/verygood,
-	FOOD_QUALITY_FANTASTIC = /datum/mood_event/food/fantastic,
-	FOOD_QUALITY_AMAZING = /datum/mood_event/food/amazing,
-	FOOD_QUALITY_TOP = /datum/mood_event/food/top,
-))
-
-/// Crafted food buffs grouped by crafting_complexity
+/// Weighted lists of crafted food buffs randomly given according to crafting_complexity unless the food has a specific buff
 GLOBAL_LIST_INIT(food_buffs, list(
 	FOOD_COMPLEXITY_1 = list(
 		/datum/status_effect/food/haste = 1,
@@ -190,19 +176,15 @@ DEFINE_BITFIELD(food_flags, list(
 
 #define STOP_SERVING_BREAKFAST (15 MINUTES)
 
-#define FOOD_MEAT_NORMAL 5
 #define FOOD_MEAT_HUMAN 50
 #define FOOD_MEAT_MUTANT 100
 #define FOOD_MEAT_MUTANT_RARE 200
 
 #define IS_EDIBLE(O) (O.GetComponent(/datum/component/edible))
 
-
 ///Food trash flags
 #define FOOD_TRASH_POPABLE (1<<0)
 #define FOOD_TRASH_OPENABLE (1<<1)
-
-
 
 ///Food preference enums
 #define FOOD_LIKED 1
@@ -212,8 +194,6 @@ DEFINE_BITFIELD(food_flags, list(
 
 ///Venue reagent requirement
 #define VENUE_BAR_MINIMUM_REAGENTS 10
-
-
 
 ///***Food price classes***
 ///Foods that are meant to have no value, such as lollypops from medborgs.

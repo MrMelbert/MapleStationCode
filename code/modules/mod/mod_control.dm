@@ -194,6 +194,7 @@
 		set_wearer(user)
 	else if(wearer)
 		unset_wearer()
+	return ..()
 
 /obj/item/mod/control/dropped(mob/user)
 	. = ..()
@@ -336,7 +337,6 @@
 
 			paint_kit.proxy_view.appearance = paint_kit.editing_mod.appearance
 			paint_kit.proxy_view.color = null
-			paint_kit.proxy_view.display_to(user)
 			paint_kit.ui_interact(user)
 			return ITEM_INTERACT_SUCCESS
 		else // Left click
@@ -689,6 +689,9 @@
 		part.slowdown = total_slowdown / length(mod_parts)
 		if (!part_datum.sealed)
 			part.slowdown = max(part.slowdown, 0)
+		if(istype(part, /obj/item/clothing/shoes/mod)) // NON-MODULE CHANGE
+			var/obj/item/clothing/shoes/mod/shoe_part = part
+			shoe_part.update_footstep_sounds()
 	wearer?.update_equipment_speed_mods()
 
 /obj/item/mod/control/proc/power_off()

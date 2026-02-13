@@ -15,12 +15,12 @@
 	/// Probability of successfully blocking attacks while on throw mode
 	var/block_chance = 75
 
-/datum/martial_art/cqc/on_teach(mob/living/new_holder)
+/datum/martial_art/cqc/activate_style(mob/living/new_holder)
 	. = ..()
 	RegisterSignal(new_holder, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_holder, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(check_block))
 
-/datum/martial_art/cqc/on_remove(mob/living/remove_from)
+/datum/martial_art/cqc/deactivate_style(mob/living/remove_from)
 	UnregisterSignal(remove_from, list(COMSIG_ATOM_ATTACKBY, COMSIG_LIVING_CHECK_BLOCK))
 	return ..()
 
@@ -115,7 +115,7 @@
 		return FALSE
 
 	attacker.do_attack_animation(defender)
-	if(defender.body_position == LYING_DOWN && !defender.IsUnconscious() && defender.getStaminaLoss() >= 100)
+	if(defender.body_position == LYING_DOWN && !HAS_TRAIT(defender, TRAIT_KNOCKEDOUT) && defender.getStaminaLoss() >= 100)
 		log_combat(attacker, defender, "knocked out (Head kick)(CQC)")
 		defender.visible_message(
 			span_danger("[attacker] kicks [defender]'s head, knocking [defender.p_them()] out!"),
@@ -145,7 +145,7 @@
 		var/atom/throw_target = get_edge_target_turf(defender, attacker.dir)
 		defender.throw_at(throw_target, 1, 14, attacker)
 		defender.apply_damage(10, attacker.get_attack_type())
-		if(defender.body_position == LYING_DOWN && !defender.IsUnconscious())
+		if(defender.body_position == LYING_DOWN && !HAS_TRAIT(defender, TRAIT_KNOCKEDOUT))
 			defender.apply_damage(45, STAMINA)
 		log_combat(attacker, defender, "kicked (CQC)")
 
