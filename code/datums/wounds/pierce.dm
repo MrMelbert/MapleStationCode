@@ -78,12 +78,8 @@
 		return
 	if(!limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-	if(limb.body_zone != BODY_ZONE_CHEST)
-		wounding_dmg *= 0.5
-	var/splint_mod = get_splint_power()
-	if(splint_mod < 1)
-		wounding_dmg *= (1 - splint_mod)
-	var/blood_bled = sqrt(wounding_dmg) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
+	var/dmg_modifier = limb.get_splint_factor() * (limb.body_zone == BODY_ZONE_CHEST ? 1 : 0.5)
+	var/blood_bled = sqrt(wounding_dmg * dmg_modifier) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
 			victim.visible_message(
@@ -120,7 +116,7 @@
 		return BLOOD_FLOW_STEADY
 	if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 		return BLOOD_FLOW_INCREASING
-	if(limb.current_gauze)
+	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE) || clot_rate > 0)
 		return BLOOD_FLOW_DECREASING
 	return BLOOD_FLOW_STEADY
 
@@ -142,10 +138,15 @@
 			if(QDELETED(src))
 				return
 
-	if(limb.current_gauze)
-		var/gauze_power = limb.current_gauze.absorption_rate
+	//gauze always reduces blood flow, even for non bleeders
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
+		var/gauze_power = current_gauze.absorption_rate
 		limb.seep_gauze(gauze_power * seconds_per_tick)
-		adjust_blood_flow(-gauze_power * gauzed_clot_rate * seconds_per_tick)
+		adjust_blood_flow((-clot_rate * seconds_per_tick) + (-gauze_power * gauzed_clot_rate * seconds_per_tick))
+	//otherwise, only clot if it's a bleeder
+	else if(limb.can_bleed())
+		adjust_blood_flow(-clot_rate * seconds_per_tick)
 
 /datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
 	. = ..()

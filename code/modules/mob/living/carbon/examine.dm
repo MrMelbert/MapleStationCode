@@ -63,7 +63,8 @@
 	for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
 		if(body_part.bodypart_disabled)
 			disabled += body_part
-		missing -= body_part.body_zone
+
+		var/treatment_distance = isliving(user) && get_dist(src, user) <= CARBON_EXAMINE_EMBEDDING_MAX_DIST
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
 			if(embedded.get_embed().stealthy_embed)
 				continue
@@ -72,11 +73,23 @@
 			var/span_to_use = harmless ? "notice" : "boldwarning"
 			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"
 
-		if(body_part.current_gauze)
-			var/gauze_href = body_part.current_gauze.name
-			if(adjacent && isliving(user)) // only shows the href if we're adjacent
+		var/obj/item/current_gauze = LAZYACCESS(body_part.applied_items, LIMB_ITEM_GAUZE)
+		if(current_gauze)
+			var/gauze_href = current_gauze.name
+			if(treatment_distance) // only shows the href if we're adjacent
 				gauze_href = "<a href='byond://?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
-			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
+			. += span_notice("There is [icon2html(current_gauze, user)] some [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
+
+		var/obj/item/tourniquet/current_tourniquet = LAZYACCESS(body_part.applied_items, LIMB_ITEM_TOURNIQUET)
+		if(current_tourniquet)
+			var/tourniquet_href = "\a [current_tourniquet]"
+			if(treatment_distance)
+				tourniquet_href = "<a href='byond://?src=[REF(src)];remove_tourniquet=[REF(body_part)]'>[tourniquet_href]</a>"
+			var/tourniquet_msg = "[t_He] [t_has] [icon2html(current_tourniquet, user)] [tourniquet_href] tightly secured around [t_his] [body_part.body_zone == BODY_ZONE_HEAD ? "neck" : body_part.plaintext_zone]."
+			if(body_part.body_zone == BODY_ZONE_HEAD)
+				. += span_boldwarning(tourniquet_msg)
+			else
+				. += span_notice(tourniquet_msg)
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
 			var/wound_msg = iter_wound.get_examine_description(user)
@@ -101,7 +114,7 @@
 	//stores missing limbs
 	var/l_limbs_missing = 0
 	var/r_limbs_missing = 0
-	for(var/gone in missing)
+	for(var/gone in get_missing_limbs())
 		if(gone == BODY_ZONE_HEAD)
 			. += span_deadsay("<B>[t_His] [parse_zone(gone)] is missing!</B>")
 			continue

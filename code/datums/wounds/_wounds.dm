@@ -283,7 +283,6 @@
 	. = limb
 	if(limb) // if we're nulling limb, we're basically detaching from it, so we should remove ourselves in that case
 		UnregisterSignal(limb, COMSIG_QDELETING)
-		UnregisterSignal(limb, list(COMSIG_BODYPART_GAUZED, COMSIG_BODYPART_UNGAUZED))
 		LAZYREMOVE(limb.wounds, src)
 		limb.update_wounds(replaced)
 		if (disabling)
@@ -295,7 +294,6 @@
 
 	if (limb)
 		RegisterSignal(limb, COMSIG_QDELETING, PROC_REF(source_died))
-		RegisterSignals(limb, list(COMSIG_BODYPART_GAUZED, COMSIG_BODYPART_UNGAUZED), PROC_REF(gauze_state_changed))
 		if (disabling)
 			limb.add_traits(list(TRAIT_PARALYSIS, TRAIT_DISABLED_BY_WOUND), REF(src))
 
@@ -405,30 +403,23 @@
 
 	return 0
 
-/// Signal proc for if gauze has been applied or removed from our limb.
-/datum/wound/proc/gauze_state_changed()
-	SIGNAL_HANDLER
-
-	if (wound_flags & ACCEPTS_GAUZE)
-		update_inefficiencies()
-
-/// Gets modifier from splints. Returns a decimal value 0-1, not including 0.
-/datum/wound/proc/get_splint_power()
-	return limb?.current_gauze?.splint_factor || 1
-
 /// Updates our limping and interaction penalties in accordance with our gauze.
 /datum/wound/proc/update_inefficiencies(replaced_or_replacing = FALSE)
-	if(wound_flags & ACCEPTS_GAUZE)
-		var/splint_power = get_splint_power()
-		if(limb.body_zone == BODY_ZONE_L_LEG || limb.body_zone == BODY_ZONE_R_LEG)
-			limp_slowdown = initial(limp_slowdown) * splint_power
-			limp_chance = initial(limp_chance) * splint_power
+	SHOULD_NOT_SLEEP(TRUE)
 
-		if(limb.body_zone == BODY_ZONE_L_ARM || limb.body_zone == BODY_ZONE_R_ARM)
-			update_actionspeed_modifier()
+	if (wound_flags & ACCEPTS_GAUZE)
+		var/splint_factor = limb.get_splint_factor()
+		if(limb.body_zone in GLOB.leg_zones)
+			limp_slowdown = initial(limp_slowdown) * splint_factor
+			limp_chance = initial(limp_chance) * splint_factor
+		else if(limb.body_zone in GLOB.arm_zones)
+			if(splint_factor < 1)
+				set_interaction_efficiency_penalty(1 + (get_effective_actionspeed_modifier() * splint_factor))
+			else
+				set_interaction_efficiency_penalty(initial(interaction_efficiency_penalty))
 
 		if(initial(disabling))
-			set_disabling(isnull(limb.current_gauze))
+			set_disabling(splint_factor < 1)
 
 		limb.update_wounds(replaced_or_replacing)
 
@@ -609,9 +600,10 @@
 /datum/wound/proc/get_wound_description(mob/user)
 	var/desc
 
-	if ((wound_flags & ACCEPTS_GAUZE) && limb.current_gauze)
-		desc = "[victim.p_Their()] [limb.plaintext_zone] is [get_gauze_condition()] fastened in a sling of [limb.current_gauze.name]"
-	else if(examine_desc)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if ((wound_flags & ACCEPTS_GAUZE) && current_gauze)
+		desc = "[victim.p_Their()] [limb.plaintext_zone] is [get_gauze_condition()] fastened in a sling of [current_gauze.name]"
+	else
 		desc = "[victim.p_Their()] [limb.plaintext_zone] [examine_desc]"
 
 	if(!desc)
@@ -674,10 +666,11 @@
 
 /datum/wound/proc/get_gauze_condition()
 	SHOULD_BE_PURE(TRUE)
-	if (!limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if (!current_gauze)
 		return null
 
-	switch(limb.current_gauze.absorption_capacity)
+	switch(current_gauze.absorption_capacity)
 		if(0 to 1.25)
 			return "just barely"
 		if(1.25 to 2.75)

@@ -70,8 +70,6 @@
 	var/list/embedded_objects = list()
 	/// are we a hand? if so, which one!
 	var/held_index = 0
-	/// A speed modifier we apply to the owner when attached, if any. Positive numbers make it move slower, negative numbers make it move faster.
-	var/speed_modifier = 0
 
 	// Limb disabling variables
 	///Whether it is possible for the limb to be disabled whatsoever. TRUE means that it is possible.
@@ -155,11 +153,11 @@
 	/// Our current bleed rate. Cached, update with refresh_bleed_rate()
 	var/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
-	var/generic_bleedstacks = 0
-	/// If we have a gauze wrapping currently applied (not including splints)
-	var/obj/item/stack/medical/gauze/current_gauze
+	var/generic_bleedstacks
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
+	/// Lazylist of category to item applied to this limb
+	var/list/applied_items
 
 	///A list of all bodypart overlays to draw
 	var/list/bodypart_overlays = list()
@@ -260,6 +258,9 @@
 		wounds.Cut()
 
 	owner = null
+
+	QDEL_LIST_ASSOC_VAL(applied_items)
+	QDEL_LAZYLIST(scars)
 
 	for(var/atom/movable/movable in contents)
 		qdel(movable)
@@ -396,8 +397,19 @@
 		var/span_to_use = harmless ? "notice" : "boldwarning"
 		check_list += "\t<span class='[span_to_use]'><a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [plaintext_zone]!</a></span>"
 
-	if(current_gauze)
-		check_list += span_notice("\t\tThere is some <a href='byond://?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
+	var/obj/item/tourniquet/current_tourniquet = LAZYACCESS(applied_items, LIMB_ITEM_TOURNIQUET)
+	if(current_tourniquet || current_gauze)
+		if(current_tourniquet)
+			var/tourniquet_href = "<a href='byond://?src=[REF(owner)];remove_tourniquet=[REF(src)]'>[icon2html(current_tourniquet, examiner)] \a [current_tourniquet]</a>"
+			var/tourniquet_text = "\tThere is [tourniquet_href] tightly secured around [body_zone == BODY_ZONE_HEAD ? "your neck!" : "it."]"
+			if(body_zone == BODY_ZONE_HEAD)
+				check_list += span_boldwarning(tourniquet_text)
+			else
+				check_list += span_warning(tourniquet_text)
+		if(current_gauze)
+			check_list += span_notice("\tThere is some <a href='byond://?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
+
 	else if(can_bleed())
 		var/bleed_text = ""
 		switch(cached_bleed_rate)
@@ -595,8 +607,6 @@
 
 	var/atom/drop_loc = drop_location()
 	var/play_sfx = FALSE
-
-	QDEL_NULL(current_gauze)
 
 	for(var/obj/item/organ/bodypart_organ in contents)
 		if(bodypart_organ.organ_flags & ORGAN_UNREMOVABLE)
@@ -902,8 +912,6 @@
 
 	owner = null
 
-	if(speed_modifier)
-		old_owner.update_bodypart_speed_modifier()
 	if(LAZYLEN(bodypart_traits))
 		old_owner.remove_traits(bodypart_traits, bodypart_trait_source)
 
@@ -926,8 +934,6 @@
 
 	owner = new_owner
 
-	if(speed_modifier)
-		owner.update_bodypart_speed_modifier()
 	if(LAZYLEN(bodypart_traits))
 		owner.add_traits(bodypart_traits, bodypart_trait_source)
 
@@ -1367,10 +1373,10 @@
 		var/surgery_bloodloss = 0
 		// better clamp those up quick
 		if(HAS_ANY_SURGERY_STATE(surgery_state, SURGERY_VESSELS_UNCLAMPED))
-			surgery_bloodloss += 1.5
+			surgery_bloodloss += UNCLAMPED_VESSELS_BLEEDING
 		// better, but still not exactly ideal
 		else if(HAS_ANY_SURGERY_STATE(surgery_state, SURGERY_VESSELS_CLAMPED|SURGERY_ORGANS_CUT))
-			surgery_bloodloss += 0.2
+			surgery_bloodloss += CLAMPED_VESSELS_BLEEDING
 
 		// modify rate so cutting everything open won't nuke people
 		if(body_zone == BODY_ZONE_HEAD)
@@ -1378,7 +1384,7 @@
 		else if(body_zone != BODY_ZONE_CHEST)
 			surgery_bloodloss *= 0.25
 		// bonus for being gauzed up
-		if(current_gauze)
+		if(LAZYACCESS(applied_items, LIMB_ITEM_GAUZE))
 			surgery_bloodloss *= 0.4
 
 		cached_bleed_rate += surgery_bloodloss
@@ -1397,8 +1403,8 @@
 	if(grasped_by)
 		cached_bleed_rate *= 0.7
 
-	// Flat multiplier applied to all bleeding for pacing purposes
-	cached_bleed_rate *= 0.5
+	if(LAZYACCESS(applied_items, LIMB_ITEM_TOURNIQUET))
+		cached_bleed_rate *= 0.1
 
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?
 	if(cached_bleed_rate != old_bleed_rate)
@@ -1451,7 +1457,78 @@
 /obj/item/bodypart/proc/can_bleed()
 	SHOULD_BE_PURE(TRUE)
 
-	return ((biological_state & BIO_BLOODED) && (!owner || !HAS_TRAIT(owner, TRAIT_NOBLOOD)))
+	return ((biological_state & BIO_BLOODED) && (!owner || owner.can_bleed()))
+
+/**
+ * Inserts an item into the applied items list for this bodypart
+ *
+ * Note: Forcemoves the item to the bodypart's contents when called!
+ *
+ * Arguments:
+ * * applying_item - The item to apply
+ * * category - The category of item being applied (e.g. LIMB_ITEM_GAUZE). If null, defaults to the REF of the applying_item
+ * * override - If TRUE, will force the application of the item even if an item of the same category is already applied
+ *
+ * Returns TRUE if the item was successfully applied
+ * Returns FALSE if the item was not applied (e.g. an item of the same category is already applied and override is FALSE)
+ */
+/obj/item/bodypart/proc/apply_item(obj/item/applying_item, category, override = FALSE)
+	if(isnull(category))
+		category = REF(applying_item)
+
+	if(!override && LAZYACCESS(applied_items, category))
+		return FALSE
+
+	applying_item.forceMove(src)
+	LAZYSET(applied_items, category, applying_item)
+	SEND_SIGNAL(applying_item, COMSIG_ITEM_APPLIED_TO_LIMB, src)
+	return TRUE
+
+/obj/item/bodypart/Exited(atom/movable/gone, direction)
+	. = ..()
+	for(var/category, item in applied_items)
+		if(item != gone)
+			continue
+		LAZYREMOVE(applied_items, category)
+		SEND_SIGNAL(gone, COMSIG_ITEM_UNAPPLIED_FROM_LIMB, src)
+
+/**
+ * Get how splinted this bodypart is based on applied items
+ *
+ * Multiplier applied to maluses, so lower = better
+ */
+/obj/item/bodypart/proc/get_splint_factor()
+	var/factor = 1
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
+		factor *= current_gauze.splint_factor
+	return factor
+
+/**
+ * Attempts to use up some of gauze applied
+ * If we use up all of the gauze, it is deleted
+ *
+ * Arguments:
+ * * seep_amt - How much absorption capacity we're removing from our current bandages (think, how much blood or pus are we soaking up this tick?)
+ *
+ * Return TRUE if we successfully used up some gauze
+ * Return FALSE if we had no gauze to use up
+ */
+/obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
+	if(!current_gauze)
+		return FALSE
+	current_gauze.absorption_capacity -= seep_amt
+	current_gauze.update_appearance()
+	if(current_gauze.absorption_capacity <= 0)
+		owner.visible_message(
+			span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
+			span_warning("[current_gauze] on your [name] falls away in rags."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
+		remove_gauze(drop_location())
+	owner.update_damage_overlays()
+	return TRUE
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
 /obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)

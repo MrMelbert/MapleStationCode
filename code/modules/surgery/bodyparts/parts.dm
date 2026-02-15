@@ -137,6 +137,12 @@
 	unarmed_damage_low = 5
 	unarmed_damage_high = 10
 	body_zone = BODY_ZONE_L_ARM
+
+	/// Actionspeed modifier applied to doafters being done while this arm is active
+	var/interaction_modifier = 0
+	/// Modifier to all click cds while this arm is active
+	var/click_cd_modifier = 1
+
 	/// Datum describing how to offset things worn on the hands of this arm, note that an x offset won't do anything here
 	var/datum/worn_feature_offset/worn_glove_offset
 	/// Datum describing how to offset things held in the hands of this arm, the x offset IS functional here
@@ -151,16 +157,26 @@
 	QDEL_NULL(held_hand_offset)
 	return ..()
 
+/obj/item/bodypart/arm/proc/set_speed_modifiers(interaction = 0, click = 1)
+	if(interaction_modifier == interaction && click_cd_modifier == click)
+		return
+
+	owner?.remove_status_effect(/datum/status_effect/arm_speed_penalty, held_index)
+	interaction_modifier = interaction
+	click_cd_modifier = click
+	if(interaction_modifier != 0 || click_cd_modifier != 1)
+		owner?.apply_status_effect(/datum/status_effect/arm_speed_penalty, held_index, interaction, click)
+
 /// We need to clear out hand hud items and appearance, so do that here
 /obj/item/bodypart/arm/clear_ownership(mob/living/carbon/old_owner)
-	..()
-
+	. = ..()
 	old_owner.update_worn_gloves()
-
 	if(!held_index)
 		return
 
 	old_owner.on_lost_hand(src)
+	if(interaction_modifier != 0 || click_cd_modifier != 1)
+		old_owner.remove_status_effect(/datum/status_effect/arm_speed_penalty, held_index)
 
 	if(!old_owner.hud_used)
 		return
@@ -170,7 +186,7 @@
 
 /// We need to add hand hud items and appearance, so do that here
 /obj/item/bodypart/arm/apply_ownership(mob/living/carbon/new_owner)
-	..()
+	. = ..()
 
 	new_owner.update_worn_gloves()
 
@@ -178,12 +194,71 @@
 		return
 
 	new_owner.on_added_hand(src, held_index)
+	if(interaction_modifier != 0 || click_cd_modifier != 1)
+		new_owner.apply_status_effect(/datum/status_effect/arm_speed_penalty, held_index, interaction_modifier, click_cd_modifier)
 
 	if(!new_owner.hud_used)
 		return
 
 	var/atom/movable/screen/inventory/hand/hand = new_owner.hud_used.hand_slots["[held_index]"]
 	hand.update_appearance()
+
+/datum/status_effect/arm_speed_penalty
+	id = "arm_speed_penalty"
+	alert_type = null
+	status_type = STATUS_EFFECT_MULTIPLE
+	duration = STATUS_EFFECT_PERMANENT
+	tick_interval = STATUS_EFFECT_NO_TICK
+	/// Typepath of the actionspeed modifier applied by this status effect
+	VAR_FINAL/actionspeed_typepath = /datum/actionspeed_modifier/arm_speed_penalty
+	/// Index this status effect is applied for
+	var/hand_index
+	/// Actionspeed modifier amount
+	var/actionspeed_mod = 0
+	/// Click cd modifier amount
+	var/click_cd_mod = 1
+
+/datum/status_effect/arm_speed_penalty/on_creation(mob/living/new_owner, hand_index, new_actionspeed = 0, new_click_cd = 1)
+	src.hand_index = hand_index
+	src.actionspeed_mod = new_actionspeed
+	src.click_cd_mod = new_click_cd
+
+	switch(hand_index)
+		if(1)
+			actionspeed_typepath = /datum/actionspeed_modifier/arm_speed_penalty/left_hand
+		if(2)
+			actionspeed_typepath = /datum/actionspeed_modifier/arm_speed_penalty/right_hand
+
+	return ..()
+
+/datum/status_effect/arm_speed_penalty/before_remove(hand_index)
+	return (src.hand_index == hand_index)
+
+/datum/status_effect/arm_speed_penalty/on_apply()
+	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, PROC_REF(on_handswap))
+	on_handswap(owner)
+	return TRUE
+
+/datum/status_effect/arm_speed_penalty/on_remove()
+	owner.remove_actionspeed_modifier(actionspeed_typepath)
+	UnregisterSignal(owner, COMSIG_MOB_SWAP_HANDS)
+
+/datum/status_effect/arm_speed_penalty/proc/on_handswap(mob/living/carbon/source)
+	SIGNAL_HANDLER
+	if(owner.active_hand_index == hand_index)
+		owner.add_or_update_variable_actionspeed_modifier(actionspeed_typepath, update = TRUE, multiplicative_slowdown = actionspeed_mod)
+	else
+		owner.remove_actionspeed_modifier(actionspeed_typepath)
+
+/datum/status_effect/arm_speed_penalty/nextmove_modifier()
+	return (owner.active_hand_index == hand_index) ? click_cd_mod : 1
+
+/datum/actionspeed_modifier/arm_speed_penalty
+	variable = TRUE
+
+/datum/actionspeed_modifier/arm_speed_penalty/left_hand
+
+/datum/actionspeed_modifier/arm_speed_penalty/right_hand
 
 /obj/item/bodypart/arm/left
 	name = "left arm"
@@ -403,15 +478,47 @@
 	unarmed_damage_low = 7
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 15
+	biological_state = BIO_STANDARD_JOINTED
+	/// A speed modifier we apply to the owner when attached, if any. Positive numbers make it move slower, negative numbers make it move faster.
+	var/speed_modifier = 0
 	/// Datum describing how to offset things worn on the foot of this leg, note that an x offset won't do anything here
 	var/datum/worn_feature_offset/worn_foot_offset
 	/// What does our footsteps (barefoot) sound like?
 	var/footstep_type = FOOTSTEP_MOB_BAREFOOT
-	biological_state = BIO_STANDARD_JOINTED
 
 /obj/item/bodypart/leg/Destroy()
 	QDEL_NULL(worn_foot_offset)
 	return ..()
+
+/obj/item/bodypart/leg/set_disabled(new_disabled, update_limbs = TRUE)
+	. = ..()
+	if(isnull(.) || !owner || !update_limbs)
+		return
+
+	if(!.)
+		if(bodypart_disabled)
+			owner.set_usable_legs(owner.usable_legs - 1)
+			if(owner.stat < UNCONSCIOUS)
+				to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
+	else if(!bodypart_disabled)
+		owner.set_usable_legs(owner.usable_legs + 1)
+
+/obj/item/bodypart/leg/apply_ownership(mob/living/carbon/new_owner)
+	. = ..()
+	if(speed_modifier)
+		new_owner.update_bodypart_speed_modifier()
+
+/obj/item/bodypart/leg/clear_ownership(mob/living/carbon/old_owner)
+	. = ..()
+	if(speed_modifier)
+		old_owner.update_bodypart_speed_modifier()
+
+/obj/item/bodypart/leg/proc/set_speed_modifier(new_modifier)
+	if(speed_modifier == new_modifier)
+		return
+
+	speed_modifier = new_modifier
+	owner?.update_bodypart_speed_modifier()
 
 /obj/item/bodypart/leg/left
 	name = "left leg"
@@ -457,19 +564,6 @@
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_L_LEG)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_L_LEG))
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_L_LEG), PROC_REF(on_owner_paralysis_gain))
-
-/obj/item/bodypart/leg/left/set_disabled(new_disabled)
-	. = ..()
-	if(isnull(.) || !owner)
-		return
-
-	if(!.)
-		if(bodypart_disabled)
-			owner.set_usable_legs(owner.usable_legs - 1)
-			if(owner.stat < UNCONSCIOUS)
-				to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
-	else if(!bodypart_disabled)
-		owner.set_usable_legs(owner.usable_legs + 1)
 
 /obj/item/bodypart/leg/left/monkey
 	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
@@ -548,20 +642,6 @@
 	REMOVE_TRAIT(src, TRAIT_PARALYSIS, TRAIT_PARALYSIS_R_LEG)
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS_R_LEG))
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS_R_LEG), PROC_REF(on_owner_paralysis_gain))
-
-
-/obj/item/bodypart/leg/right/set_disabled(new_disabled)
-	. = ..()
-	if(isnull(.) || !owner)
-		return
-
-	if(!.)
-		if(bodypart_disabled)
-			owner.set_usable_legs(owner.usable_legs - 1)
-			if(owner.stat < UNCONSCIOUS)
-				to_chat(owner, span_userdanger("You lose control of your [plaintext_zone]!"))
-	else if(!bodypart_disabled)
-		owner.set_usable_legs(owner.usable_legs + 1)
 
 /obj/item/bodypart/leg/right/monkey
 	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'

@@ -161,8 +161,8 @@
 	desc = "Ensure that an arbitrary prosthetic is properly attached to a patient's body."
 	implements = list(
 		/obj/item/stack/medical/suture = 1,
-		/obj/item/stack/sticky_tape/surgical = 1.25,
-		/obj/item/stack/sticky_tape = 2,
+		/obj/item/stack/medical/wrap/sticky_tape/surgical = 1.25,
+		/obj/item/stack/medical/wrap/sticky_tape = 2,
 	)
 	time = 4.8 SECONDS
 	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_STANDING_ALLOWED
@@ -171,7 +171,7 @@
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/get_default_radial_image()
 	return image(/obj/item/stack/medical/suture)
 
-/datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/tool, list/operation_args)
+/datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/medical/tool, list/operation_args)
 	display_results(
 		surgeon,
 		limb.owner,
@@ -187,7 +187,7 @@
 		mechanical_surgery = IS_ROBOTIC_LIMB(limb),
 	)
 
-/datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/tool, list/operation_args)
+/datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/medical/tool, list/operation_args)
 	display_results(
 		surgeon,
 		limb.owner,

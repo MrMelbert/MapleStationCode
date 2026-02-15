@@ -48,7 +48,8 @@
 		if(reagent.chemical_flags & REAGENT_AFFECTS_WOUNDS)
 			reagent.on_burn_wound_processing(src)
 
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		limb.seep_gauze(WOUND_BURN_SANITIZATION_RATE * seconds_per_tick)
 
 	handle_healing(seconds_per_tick)
@@ -65,6 +66,7 @@
 
 	if(flesh_healing > 0)
 		// good bandages multiply the length of flesh healing
+		var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
 		var/bandage_factor = limb.current_gauze?.burn_cleanliness_bonus || 1
 		flesh_damage = max(flesh_damage - (damage_decay_mod * seconds_per_tick), 0)
 		flesh_healing = max(flesh_healing - (heal_decay_mod * bandage_factor * seconds_per_tick), 0) // good bandages multiply the length of flesh healing
@@ -74,7 +76,8 @@
 		sanitization += 0.5 * seconds_per_tick
 
 	if(sanitization > 0)
-		var/bandage_factor = limb.current_gauze?.burn_cleanliness_bonus || 1
+		var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+		var/bandage_factor = current_gauze?.burn_cleanliness_bonus || 1
 		infection = max(infection - (WOUND_BURN_SANITIZATION_RATE * seconds_per_tick), 0)
 		sanitization = max(sanitization - (WOUND_BURN_SANITIZATION_RATE * bandage_factor * seconds_per_tick), 0)
 
@@ -150,9 +153,10 @@
 		return span_deadsay("<B>[victim.p_Their()] [limb.plaintext_zone] has locked up completely and is non-functional.</B>")
 
 	var/list/condition = list("[victim.p_Their()] [limb.plaintext_zone] [examine_desc]")
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		var/bandage_condition
-		switch(limb.current_gauze.absorption_capacity)
+		switch(current_gauze.absorption_capacity)
 			if(0 to 1.25)
 				bandage_condition = "nearly ruined"
 			if(1.25 to 2.75)
@@ -162,7 +166,7 @@
 			if(4 to INFINITY)
 				bandage_condition = "clean"
 
-		condition += " underneath a dressing of [bandage_condition] [limb.current_gauze.name]."
+		condition += " underneath a dressing of [bandage_condition] [current_gauze.name]."
 	else
 		switch(infection)
 			if(WOUND_INFECTION_MODERATE to WOUND_INFECTION_SEVERE)

@@ -586,3 +586,12 @@
 #define COMSIG_ITEM_POST_USED_AS_PROSTHETIC "item_post_used_as_prosthetic"
 /// Item has been unequipped from a mob as a prosthetic limb
 #define COMSIG_ITEM_DROPPED_FROM_PROSTHETIC "item_dropped_from_prosthetic"
+
+/// Sent from /obj/item/bodypart/limb/proc/apply_item(): (obj/item/bodypart/limb)
+#define COMSIG_ITEM_APPLIED_TO_LIMB "item_applied_to_limb"
+/// Sent from /obj/item/bodypart/limb/proc/Exited(): (obj/item/bodypart/limb)
+#define COMSIG_ITEM_UNAPPLIED_FROM_LIMB "item_removed_from_limb"
+
+/// Sent from /obj/effect/rune/convert/try_sacrifice_item(obj/effect/rune/convert/rune)
+#define COMSIG_ITEM_CULT_SACRIFICE "item_cult_sacrifice"
+	#define COMPONENT_SACRIFICE_SUCCESSFUL (1<<0)
