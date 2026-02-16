@@ -6801,6 +6801,7 @@
 #include "maplestation_modules\story_content\__crit_equipment\code\areas.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\heat_blade.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\pendant.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\spells.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\library\invitation.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\library\lazy_templates.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\library\weapons.dm"
