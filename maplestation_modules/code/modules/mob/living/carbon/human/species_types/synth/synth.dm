@@ -433,7 +433,6 @@
 
 	preference = "feature_synth_head_cover"
 
-	dna_block = DNA_SYNTH_HEAD_COVER_BLOCK
 	organ_flags = ORGAN_ROBOTIC
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover

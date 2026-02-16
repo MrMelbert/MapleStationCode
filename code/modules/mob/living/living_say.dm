@@ -279,6 +279,12 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	var/message = ""
 	var/raw_dist = get_dist(speaker, src)
+	// NON-MODULE CHANGE - check for projected whispers, calculate distance from the projected tile if so
+	if(message_mods[WHISPER_MODE] && message_range != INFINITY)
+		var/turf/in_front = get_step(speaker, speaker.dir)
+		if(in_front && HAS_TRAIT(in_front, TRAIT_TURF_PROJECTS_WHISPERS))
+			raw_dist = min(raw_dist, get_dist(in_front, src))
+
 	// Infinite range implies something like telecomms, ie something that should never be distance modified
 	if(!HAS_TRAIT(src, TRAIT_GOOD_HEARING) && message_range != INFINITY)
 		// How far we are we outside the message range?
@@ -387,6 +393,13 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	var/list/in_view = get_hearers_in_view(message_range + whisper_range, source)
 	var/list/listening = get_hearers_in_range(message_range + whisper_range, source)
+
+	// NON-MODULE CHANGE - check for projected whispers, add new potential hearers if so
+	if(is_speaker_whispering)
+		var/turf/in_front = get_step(src, dir)
+		if(in_front && HAS_TRAIT(in_front, TRAIT_TURF_PROJECTS_WHISPERS))
+			in_view |= get_hearers_in_view(message_range + whisper_range, in_front)
+			listening |= get_hearers_in_range(message_range + whisper_range, in_front)
 
 	// Pre-process listeners to account for line-of-sight
 	for(var/atom/movable/listening_movable as anything in listening)

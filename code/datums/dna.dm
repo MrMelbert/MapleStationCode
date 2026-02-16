@@ -242,9 +242,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_AVIAN_EARS_BLOCK] = construct_block(SSaccessories.avian_ears_list.Find(features["ears_avian"]), length(SSaccessories.avian_ears_list))
 	if(features["feathers"]) // NON-MODULE CHANGE
 		L[DNA_FEATHER_COLOR_BLOCK] = sanitize_hexcolor(features["feathers"], include_crunch = FALSE)
-	if(features["synth_head_cover"]) // NON-MODULE CHANGE
-		L[DNA_SYNTH_HEAD_COVER_BLOCK] = construct_block(SSaccessories.synth_head_cover_list.Find(features["synth_head_cover"]), length(SSaccessories.synth_head_cover_list))
-
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -397,9 +394,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(SSaccessories.avian_ears_list.Find(features["ears_avian"]), length(SSaccessories.avian_ears_list)))
 		if(DNA_FEATHER_COLOR_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["feathers"], include_crunch = FALSE))
-		if(DNA_SYNTH_HEAD_COVER_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(SSaccessories.synth_head_cover_list.Find(features["head_tentacles"]), length(SSaccessories.synth_head_cover_list)))
-
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/human_mutation)
@@ -705,8 +699,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["ears_avian"] = SSaccessories.avian_ears_list[deconstruct_block(get_uni_feature_block(features, DNA_AVIAN_EARS_BLOCK), length(SSaccessories.avian_ears_list))]
 	if(dna.features["feathers"]) // NON-MODULE CHANGE
 		dna.features["feathers"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_FEATHER_COLOR_BLOCK))
-	if(dna.features["synth_head_cover"]) // NON-MODULE CHANGE
-		dna.features["synth_head_cover"] = SSaccessories.synth_head_cover_list[deconstruct_block(get_uni_feature_block(features, DNA_SYNTH_HEAD_COVER_BLOCK), length(SSaccessories.synth_head_cover_list))]
 	for(var/obj/item/organ/organ in organs)
 		organ.mutate_feature(features, src)
 

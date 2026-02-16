@@ -47,6 +47,15 @@
 	/// Stops further processing
 	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
 
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -121,6 +130,11 @@
 /// Kind of jank, refactor at a later day when I can think of a better solution.
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
+
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
 
 #define COLOR_BLOOD "#c90000"
 

@@ -328,7 +328,7 @@
 /obj/item/organ/stomach/cybernetic/surplus
 	name = "surplus prosthetic stomach"
 	desc = "A mechanical plastic oval that utilizes sulfuric acid instead of stomach acid. \
-		Very fragile, with painfully slow metabolism.\
+		Very fragile, with painfully slow metabolism. \
 		Offers no protection against EMPs."
 	icon_state = "stomach-c-s"
 	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.35

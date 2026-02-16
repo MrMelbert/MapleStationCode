@@ -7,11 +7,11 @@
 	inhand_icon_state = "fire_extinguisher"
 	hitsound = 'sound/weapons/smash.ogg'
 	obj_flags = CONDUCTS_ELECTRICITY
-	throwforce = 10
-	w_class = WEIGHT_CLASS_NORMAL
+	throwforce = 13
+	w_class = WEIGHT_CLASS_BULKY
 	throw_speed = 2
 	throw_range = 7
-	force = 10
+	force = 13
 	demolition_mod = 1.25
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.9)
 	attack_verb_continuous = list("slams", "whacks", "bashes", "thunks", "batters", "bludgeons", "thrashes")
@@ -23,7 +23,7 @@
 
 	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 	/// The max amount of water this extinguisher can hold.
-	var/max_water = 50
+	var/max_water = 100
 	/// Does the welder extinguisher start with water.
 	var/starting_water = TRUE
 	/// Cooldown between uses.
@@ -134,11 +134,13 @@
 	inhand_icon_state = "foam_extinguisher"
 	tank_holder_icon_state = "holder_foam_extinguisher"
 	dog_fashion = null
+	throwforce = 10
+	w_class = WEIGHT_CLASS_NORMAL
+	force = 10
 	chem = /datum/reagent/firefighting_foam
 	tanktype = /obj/structure/reagent_dispensers/foamtank
 	sprite_name = "foam_extinguisher"
 	precision = TRUE
-	max_water = 100
 
 /obj/item/extinguisher/advanced/empty
 	starting_water = FALSE

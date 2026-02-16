@@ -163,7 +163,7 @@
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
-	affected_mob.cause_pain(1 * power * REM * seconds_per_tick)
+	affected_mob.cause_pain(BODY_ZONES_ALL, 1 * power * REM * seconds_per_tick)
 	affected_mob.adjust_traumatic_shock(-0.12 * power * REM * seconds_per_tick)
 
 	if(need_mob_update)
@@ -710,7 +710,7 @@
 	ph = 12
 	purity = REAGENT_STANDARD_PURITY
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 4) //1.6 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 150)
 	inverse_chem = /datum/reagent/inverse/corazargh
 	inverse_chem_val = 0.4
 
@@ -780,7 +780,7 @@
 	overdose_threshold = 30
 	ph = 8.96
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 10)
+	addiction_types = list(/datum/addiction/opioids = 30)
 
 /datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
@@ -1296,18 +1296,17 @@
 	overdose_threshold = 60
 	ph = 8.7
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_NO_RANDOM_RECIPE
-	addiction_types = list(/datum/addiction/stimulants = 4) //0.8 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 150)
+	metabolized_traits = list(TRAIT_BATON_RESISTANCE/*, TRAIT_STIMULATED*/)
 	pain_modifier = 0.5
 
 /datum/reagent/medicine/stimulants/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
 	affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/reagent/stimulants)
-	ADD_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
 
 /datum/reagent/medicine/stimulants/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/stimulants)
-	REMOVE_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
 
 /datum/reagent/medicine/stimulants/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1427,7 +1426,8 @@
 	overdose_threshold = 25
 	ph = 11
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 14)
+	addiction_types = list(/datum/addiction/hallucinogens = 90)
+	metabolized_traits = list(TRAIT_PACIFISM)
 
 /datum/reagent/medicine/earthsblood/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1452,14 +1452,6 @@
 	affected_mob.adjust_drugginess_up_to(20 SECONDS * REM * seconds_per_tick, 30 SECONDS * REM * seconds_per_tick)
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
-
-/datum/reagent/medicine/earthsblood/on_mob_metabolize(mob/living/affected_mob)
-	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_PACIFISM, type)
-
-/datum/reagent/medicine/earthsblood/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_PACIFISM, type)
 
 /datum/reagent/medicine/earthsblood/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
