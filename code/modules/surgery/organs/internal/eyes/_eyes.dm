@@ -140,7 +140,7 @@
 	organ_owner.update_tint()
 	organ_owner.update_sight()
 	// NON-MODULE CHANGE
-	UnregisterSignals(organ_owner, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)))
+	UnregisterSignal(organ_owner, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)))
 
 /// Updates eyelid state on signal
 /obj/item/organ/eyes/proc/update_eyelids(datum/source)
