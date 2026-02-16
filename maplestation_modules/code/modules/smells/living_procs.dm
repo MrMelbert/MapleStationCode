@@ -31,6 +31,8 @@
 
 	return TRUE
 
+#define SPACE_INPUT(input) ("[input ? " [input] " : " "]")
+
 /// Attempt to smell things around us
 /mob/living/proc/smell_something()
 	if(!can_smell())
@@ -109,12 +111,12 @@
 
 		smell_effect.on_smell(src, smell_intensity)
 
-		var/smell_adjective = smell_effect.get_adjective(src)
-		var/smell_category = smell_effect.get_category(src)
+		var/smell_adjective = smell_effect.get_adjective(src, smell_intensity)
+		var/smell_category = smell_effect.get_category(src, smell_intensity)
 
 		collected_smell_info[smell_adjective] ||= list()
 		collected_smell_info[smell_adjective][smell_category] ||= list()
-		collected_smell_info[smell_adjective][smell_category] += smell_effect
+		collected_smell_info[smell_adjective][smell_category] += smell_effect.text
 
 		// every time you smell something, further smells are -2 intensity, which compounds
 		LAZYADDASSOC(recently_smelled, smell_effect, 2)
@@ -131,24 +133,29 @@
 		var/only_adjective = collected_smell_info[1]
 		var/only_category = collected_smell_info[only_adjective][1]
 		var/only_smells = collected_smell_info[only_adjective][only_category]
-		formatted_smell = "\A [only_adjective] [only_category] of [english_list(only_smell)]"
+		if(only_adjective)
+			formatted_smell = "\A [only_adjective] [only_category] of [english_list(only_smells)]"
+		else
+			formatted_smell = "\A [only_category] of [english_list(only_smells)]"
 
 	else
 		for(var/adjective in collected_smell_info)
 			for(var/category, smell_effects in collected_smell_info[adjective])
 				if(formatted_smell)
 					if(adjective == collected_smell_info[length(collected_smell_info)])
-						formatted_smell += " and the [adjective] [category] of [english_list(smell_effects)]"
+						formatted_smell += " and the[SPACE_INPUT(adjective)][category] of [english_list(smell_effects)]"
 					else
-						formatted_smell += ", the [adjective] [category] of [english_list(smell_effects)]"
+						formatted_smell += ", the[SPACE_INPUT(adjective)][category] of [english_list(smell_effects)]"
 				else
-					formatted_smell = "The [adjective] [category] of [english_list(smell_effects)]"
+					formatted_smell = "The[SPACE_INPUT(adjective)][category] of [english_list(smell_effects)]"
 
 	to_chat(src, span_smallnoticeital("[formatted_smell] [(mob_biotypes & MOB_ORGANIC) ? "fills the air around you" : "is detected nearby"]."))
 	COOLDOWN_START(src, smell_cd, clamp((15 MINUTES) / (values_sum(all_smells) / LAZYLEN(all_smells)), 30 SECONDS, 5 MINUTES))
 
 /mob/living/proc/remove_recent_smell(datum/smell/smell_effect)
 	LAZYREMOVE(recently_smelled, smell_effect)
+
+#undef SPACE_INPUT
 
 /mob/living/carbon/human/death(gibbed, cause_of_death)
 	. = ..()

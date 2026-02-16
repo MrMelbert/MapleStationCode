@@ -47,7 +47,9 @@
 			for(var/j in 1 to gibamounts[i])
 				var/gibType = gibtypes[i]
 				gib = new gibType(loc, diseases)
-
+				// maploaded gibspawners will have their "unknown" dna that we need to clear
+				gib.clear_smells()
+				gib.forensics?.wipe_blood_DNA()
 				gib.add_blood_DNA(dna_to_add)
 
 				var/list/directions = gibdirections[i]

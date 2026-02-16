@@ -43,6 +43,12 @@
 	intensity = SMELL_INTENSITY_WEAK
 	duration = 2 MINUTES
 
+/obj/effect/abstract/smell/reagent/lube
+	name = "cherry"
+	category = "fragrance"
+	intensity = SMELL_INTENSITY_WEAK
+	duration = 2 MINUTES
+
 /obj/effect/abstract/smell/reagent/disinfectant
 	smell = "disinfectant"
 	category = "scent"

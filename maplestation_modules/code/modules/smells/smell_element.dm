@@ -1,8 +1,8 @@
 /// Returns singleton for a passed smell typepath or string+category
-/proc/get_smell(smell, category = /datum/smell::category)
+/proc/get_smell(smell, category = /datum/smell::category, smell_basetype = /datum/smell)
 	var/static/list/smell_register = list()
 
-	var/key = "[smell]-[category]"
+	var/key = "[smell]-[category]-[ispath(smell, /datum/smell) ? smell : smell_basetype]"
 
 	. = smell_register[key]
 	if(isnull(.))
@@ -11,7 +11,7 @@
 			smell_register[key] = .
 
 		else if(istext(smell))
-			. = new /datum/smell(smell, category)
+			. = new smell_basetype(smell, category)
 			smell_register[key] = .
 
 		else
@@ -36,16 +36,32 @@
 	/// Primarily used for complex smells which may stack multiple times on the same atom, like bloody clothing
 	var/id
 
-/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = 1, radius = 2, category, id = "innate")
+/**
+ * Arguments:
+ *
+ * * smell - either a string representing the smell type or a /datum/smell typepath.
+ * If a string is passed, a smell singleton will be generated for that string and the provided category.
+ * If a smell typepath is passed, it will be used directly. Smell basetype and category arguments will be ignored in this case.
+ * * intensity - how strong the smell is.
+ * * radius - how far the smell reaches.
+ * Smell intensity will fall off linearly over distance.
+ * * category - Optional: the smell category, used for categorizing smells and determining how they interact with each other.
+ * Only used if smell is passed as a string.
+ * * id - Optional: identifier for this smell instance, used to differentiate between multiple instances of the same smell on the same atom.
+ * * smell_basetype - Optional: the basetype to use when generating a smell singleton from a string. Defaults to /datum/smell.
+ */
+/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = SMELL_INTENSITY_FAINT, radius = 2, category, id = "innate", smell_basetype = /datum/smell)
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
+	if(intensity < SMELL_INTENSITY_FAINT)
+		stack_trace("A simple smell was created with invalid intensity - we will coerce it, but it should be fixed: [intensity]")
 
 	src.id = id
 	if(isnull(src.smell))
-		src.smell = get_smell(smell, category)
-		src.intensity = intensity
-		src.radius = radius
+		src.smell = get_smell(smell, category, smell_basetype)
+		src.intensity = max(intensity, SMELL_INTENSITY_FAINT)
+		src.radius = max(radius, 0)
 
 	var/atom/atom_target = target
 	if(isturf(atom_target.loc))

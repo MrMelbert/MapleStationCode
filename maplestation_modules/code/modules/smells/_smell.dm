@@ -20,7 +20,7 @@
 	return
 
 /// Returns what adjective to use for the smell for output
-/datum/smell/proc/get_adjective(mob/living/for_whom)
+/datum/smell/proc/get_adjective(mob/living/for_whom, intensity)
 	switch(intensity)
 		if(SMELL_INTENSITY_FAINT to SMELL_INTENSITY_WEAK)
 			return "faint"
@@ -36,7 +36,7 @@
 	return ""
 
 /// Return what category of smell this is for output
-/datum/smell/proc/get_category(mob/living/for_whom)
+/datum/smell/proc/get_category(mob/living/for_whom, intensity)
 	return category
 
 // Blood
@@ -47,7 +47,7 @@
 /datum/smell/blood/on_smell(mob/living/whom, intensity)
 	whom.add_mood_event("blood-smell", /datum/mood_event/blood_smell)
 
-/datum/smell/blood/get_category(mob/living/for_whom)
+/datum/smell/blood/get_category(mob/living/for_whom, intensity)
 	return (HAS_TRAIT(for_whom, TRAIT_MORBID) || isvampire(for_whom)) ? "scent" : "stench"
 
 // Oil
