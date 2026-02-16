@@ -275,11 +275,11 @@
 		carbon_view.mob_mood.set_sanity(carbon_sanity - 5)
 		if(carbon_sanity < 30)
 			if(SPT_PROB(20, seconds_per_tick))
-				to_chat(carbon_view, span_warning("You feel your mind beginning to rend!"))
+				to_chat(carbon_view, span_warning("you feel your mind beginning to rend!"))
 			carbon_view.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
 		if(carbon_sanity < 10)
 			if(SPT_PROB(20, seconds_per_tick))
-				to_chat(carbon_view, span_warning("It echoes through you!"))
+				to_chat(carbon_view, span_warning("it echoes through you!"))
 			visible_hallucination_pulse(
 				center = get_turf(carbon_view),
 				radius = 7,
