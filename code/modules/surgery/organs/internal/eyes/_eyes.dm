@@ -84,6 +84,7 @@
 	receiver.cure_blind(NO_EYES)
 	apply_damaged_eye_effects()
 	refresh(receiver, call_update = TRUE)
+	// NON-MODULE CHANGE
 	RegisterSignals(receiver, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)), PROC_REF(update_eyelids))
 
 /// Refreshes the visuals of the eyes
@@ -138,6 +139,7 @@
 
 	organ_owner.update_tint()
 	organ_owner.update_sight()
+	// NON-MODULE CHANGE
 	UnregisterSignals(organ_owner, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)))
 
 /// Updates eyelid state on signal
