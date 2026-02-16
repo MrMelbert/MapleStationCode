@@ -81,7 +81,10 @@
 
 /datum/surgery_operation/limb/repair_hairline/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
 	. = ..()
+	// NON-MODULE CHANGE
 	for(var/datum/wound/blunt/bone/bone_wound in limb.wounds)
+		if(!istype(bone_wound, /datum/wound/blunt/bone/severe) && !istype(bone_wound, /datum/wound/blunt/bone/rib_break))
+			continue
 		if(HAS_TRAIT(bone_wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
