@@ -3,7 +3,7 @@
 	if(HAS_TRAIT(src, TRAIT_ANOSMIA))
 		return FALSE
 
-	if(stat == DEAD)
+	if(stat == DEAD || HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 		return FALSE
 
 	return TRUE
@@ -94,8 +94,9 @@
 	if(!length(all_smells))
 		return
 
-	var/list/readable_smells = list()
+	var/list/collected_smell_info = list()
 	var/highest_intensity = all_smells[all_smells[1]]
+	var/formatted_smell = ""
 
 	for(var/i in 1 to length(all_smells))
 		var/datum/smell/smell_effect = all_smells[i]
@@ -107,14 +108,43 @@
 			break
 
 		smell_effect.on_smell(src, smell_intensity)
-		readable_smells += smell_effect.format_smell(src, smell_intensity, solo = (length(all_smells) == 1))
+
+		var/smell_adjective = smell_effect.get_adjective(src)
+		var/smell_category = smell_effect.get_category(src)
+
+		collected_smell_info[smell_adjective] ||= list()
+		collected_smell_info[smell_adjective][smell_category] ||= list()
+		collected_smell_info[smell_adjective][smell_category] += smell_effect
+
 		// every time you smell something, further smells are -2 intensity, which compounds
 		LAZYADDASSOC(recently_smelled, smell_effect, 2)
 		// after 5 minutes of not smelling it, we lose all acclimation to it.
 		// however the reset timer is restarted each time we smell it
 		addtimer(CALLBACK(src, PROC_REF(remove_recent_smell), smell_effect), 5 MINUTES, TIMER_UNIQUE|TIMER_DELETE_ME|TIMER_OVERRIDE)
 
-	to_chat(src, span_smallnoticeital("[capitalize(english_list(readable_smells))] [(mob_biotypes & MOB_ORGANIC) ? "fills the air" : "detected"] around you."))
+	// now we need to stringify the smells
+	// smells are grouped by category and adjective so we can output them in a more natural way.
+	// e.g. "a strong stench of decay and blood and a faint smell of perfume"
+	// instead of "a strong stench of decay, a strong stench of blood, and a faint smell of perfume"
+
+	if(length(collected_smell_info) == 1)
+		var/only_adjective = collected_smell_info[1]
+		var/only_category = collected_smell_info[only_adjective][1]
+		var/only_smells = collected_smell_info[only_adjective][only_category]
+		formatted_smell = "\A [only_adjective] [only_category] of [english_list(only_smell)]"
+
+	else
+		for(var/adjective in collected_smell_info)
+			for(var/category, smell_effects in collected_smell_info[adjective])
+				if(formatted_smell)
+					if(adjective == collected_smell_info[length(collected_smell_info)])
+						formatted_smell += " and the [adjective] [category] of [english_list(smell_effects)]"
+					else
+						formatted_smell += ", the [adjective] [category] of [english_list(smell_effects)]"
+				else
+					formatted_smell = "The [adjective] [category] of [english_list(smell_effects)]"
+
+	to_chat(src, span_smallnoticeital("[formatted_smell] [(mob_biotypes & MOB_ORGANIC) ? "fills the air around you" : "is detected nearby"]."))
 	COOLDOWN_START(src, smell_cd, clamp((15 MINUTES) / (values_sum(all_smells) / LAZYLEN(all_smells)), 30 SECONDS, 5 MINUTES))
 
 /mob/living/proc/remove_recent_smell(datum/smell/smell_effect)

@@ -19,22 +19,25 @@
 /datum/smell/proc/on_smell(mob/living/whom, intensity)
 	return
 
-/// Format the smell to output text
-/datum/smell/proc/format_smell(mob/living/for_whom, intensity, solo = FALSE, used_text = src.text, used_category = src.category)
+/// Returns what adjective to use for the smell for output
+/datum/smell/proc/get_adjective(mob/living/for_whom)
 	switch(intensity)
 		if(SMELL_INTENSITY_FAINT to SMELL_INTENSITY_WEAK)
-			return "[solo ? "the" : "a"] faint [used_category] of [used_text]"
+			return "faint"
 		if(SMELL_INTENSITY_WEAK to SMELL_INTENSITY_MODERATE)
-			return "[solo ? "the" : "a"] weak [used_category] of [used_text]"
+			return "weak"
 		if(SMELL_INTENSITY_MODERATE to SMELL_INTENSITY_STRONG)
-			return "the [used_category] of [used_text]"
+			return ""
 		if(SMELL_INTENSITY_STRONG to SMELL_INTENSITY_OVERPOWERING)
-			return "[solo ? "the" : "a"] strong [used_category] of [used_text]"
+			return "strong"
 		if(SMELL_INTENSITY_OVERPOWERING to INFINITY)
-			return "[solo ? "the" : "an"] overpowering [used_category] of [used_text]"
+			return "overpowering"
 
-	stack_trace("Invalid intensity [intensity] passed to /datum/smell/format_smell")
-	return used_text // fallback
+	return ""
+
+/// Return what category of smell this is for output
+/datum/smell/proc/get_category(mob/living/for_whom)
+	return category
 
 // Blood
 /datum/smell/blood
@@ -44,10 +47,8 @@
 /datum/smell/blood/on_smell(mob/living/whom, intensity)
 	whom.add_mood_event("blood-smell", /datum/mood_event/blood_smell)
 
-/datum/smell/blood/format_smell(mob/living/for_whom, intensity, solo, used_text, used_category)
-	if(HAS_TRAIT(for_whom, TRAIT_MORBID) || isvampire(for_whom))
-		used_category = "scent"
-	return ..()
+/datum/smell/blood/get_category(mob/living/for_whom)
+	return (HAS_TRAIT(for_whom, TRAIT_MORBID) || isvampire(for_whom)) ? "scent" : "stench"
 
 // Oil
 /datum/smell/oil
