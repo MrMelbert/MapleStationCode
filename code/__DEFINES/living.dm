@@ -126,6 +126,9 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Eyelids are closed so long as this trait is present
+#define TRAIT_CLOSED_EYES "closed_eyes"
+
 /// Attach to a turf to have whispers project across it if the speaker is facing it
 /// (basically expanding the range of whispers by one tile in the direction of the speaker)
 /// Used to allow people to whisper across desks/tables since they otherwise are too distant
