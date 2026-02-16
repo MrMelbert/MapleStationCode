@@ -125,6 +125,7 @@
 	removing.remove_actionspeed_modifier(/datum/actionspeed_modifier/hot_android)
 	removing.remove_movespeed_modifier(/datum/movespeed_modifier/hot_android)
 	removing.clear_alert(ALERT_TEMPERATURE)
+	removing.clear_mood_event(ALERT_TEMPERATURE)
 
 /datum/species/android/proc/remove_cold_modifiers(mob/living/carbon/human/removing)
 	if(!is_overcooled)
@@ -134,6 +135,7 @@
 	removing.remove_actionspeed_modifier(/datum/actionspeed_modifier/cold_android)
 	removing.remove_movespeed_modifier(/datum/movespeed_modifier/cold_android)
 	removing.clear_alert(ALERT_TEMPERATURE)
+	removing.clear_mood_event(ALERT_TEMPERATURE)
 
 /**
  * let's go over the mechanics
@@ -301,6 +303,10 @@
 			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overheat)
 			is_overheating = 1
 
+	else // ??
+		if(is_overheating != 0)
+			remove_heat_modifiers()
+
 /datum/species/android/proc/update_cold_modifiers(mob/living/carbon/human/source)
 	var/obj/item/organ/lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(HAS_TRAIT_NOT_FROM_LUNGS(source, TRAIT_RESISTCOLD, lungs))
@@ -330,6 +336,10 @@
 			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
 			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overcool)
 			is_overcooled = 1
+
+	else // ??
+		if(is_overcooled != 0)
+			remove_cold_modifiers()
 
 #undef HAS_TRAIT_NOT_FROM_LUNGS
 
