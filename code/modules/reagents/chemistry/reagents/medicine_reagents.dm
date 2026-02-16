@@ -317,17 +317,19 @@
 
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
+	var/datum/blood_type/affected_blood = affected_mob.get_blood_type()
+	if(affected_blood?.salgu_compatible)
+		if(last_added)
+			affected_mob.blood_volume -= last_added
+			last_added = 0
+		if(affected_mob.blood_volume < maximum_reachable) //Can only up to double your effective blood level.
+			var/amount_to_add = min(affected_mob.blood_volume, 5*volume)
+			var/new_blood_level = min(affected_mob.blood_volume + amount_to_add, maximum_reachable)
+			last_added = new_blood_level - affected_mob.blood_volume
+			affected_mob.blood_volume = new_blood_level + (extra_regen * REM * seconds_per_tick)
 	var/need_mob_update
-	if(last_added)
-		affected_mob.blood_volume -= last_added
-		last_added = 0
-	if(affected_mob.blood_volume < maximum_reachable) //Can only up to double your effective blood level.
-		var/amount_to_add = min(affected_mob.blood_volume, 5*volume)
-		var/new_blood_level = min(affected_mob.blood_volume + amount_to_add, maximum_reachable)
-		last_added = new_blood_level - affected_mob.blood_volume
-		affected_mob.blood_volume = new_blood_level + (extra_regen * REM * seconds_per_tick)
 	if(SPT_PROB(18, seconds_per_tick))
-		need_mob_update = affected_mob.adjustBruteLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_biotype)
+		need_mob_update += affected_mob.adjustBruteLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_biotype)
 		need_mob_update += affected_mob.adjustFireLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_biotype)
 	affected_mob.adjust_traumatic_shock(-0.2 * REM * seconds_per_tick)
 	if(need_mob_update)

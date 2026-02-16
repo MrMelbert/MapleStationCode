@@ -14,7 +14,6 @@
 		TRAIT_RADIMMUNE, // rework this later - warping wires or something
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_UNHUSKABLE,
-		// TRAIT_VIRUSIMMUNE, // shouldn't be necessary
 	)
 
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
@@ -92,6 +91,8 @@
 	RegisterSignal(gained_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(brittle_modifier))
 	RegisterSignal(gained_species, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB, PROC_REF(block_fleshy_bits))
 	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE, PROC_REF(handle_breath_temperature))
+	RegisterSignal(gained_species, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_limb_gained))
+	RegisterSignal(gained_species, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_limb_lost))
 	return ..()
 
 /datum/species/android/on_species_loss(mob/living/carbon/human/lost_species, datum/species/new_species, pref_load)
@@ -102,6 +103,8 @@
 	UnregisterSignal(lost_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
 	UnregisterSignal(lost_species, COMSIG_ATTEMPT_CARBON_ATTACH_LIMB)
 	UnregisterSignal(lost_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE)
+	UnregisterSignal(lost_species, COMSIG_CARBON_POST_ATTACH_LIMB)
+	UnregisterSignal(lost_species, COMSIG_CARBON_REMOVE_LIMB)
 	if(is_leaking)
 		remove_leaking(lost_species)
 	if(is_overheating)
@@ -165,10 +168,25 @@
 	if(is_overcooled)
 		android.temperature_cold_damage(0.5 * is_overcooled * seconds_per_tick)
 
+/// Disallows organic limbs from being attached to android chassis
 /datum/species/android/proc/block_fleshy_bits(mob/living/carbon/human/source, obj/item/bodypart/attaching, special)
 	SIGNAL_HANDLER
 
 	return (!allow_fleshy_bits && IS_ORGANIC_LIMB(attaching)) ? COMPONENT_NO_ATTACH : NONE
+
+/// Newly attached robotic limbs gain the blooded tag to enable bleeding oil
+/datum/species/android/proc/on_limb_gained(mob/living/carbon/human/source, obj/item/bodypart/attaching)
+	SIGNAL_HANDLER
+
+	if(IS_ROBOTIC_LIMB(attaching))
+		attaching.biological_state |= BIO_BLOODED
+
+/// Make sure removed robo limbs lose their blooded tag in case they are reused
+/datum/species/android/proc/on_limb_lost(mob/living/carbon/human/source, obj/item/bodypart/losing)
+	SIGNAL_HANDLER
+
+	if(IS_ROBOTIC_LIMB(losing))
+		losing.biological_state = initial(losing.biological_state)
 
 /datum/species/android/proc/brittle_modifier(mob/living/carbon/human/source, list/damage_mods, damage_type, damage, damage_amount, ...)
 	SIGNAL_HANDLER
