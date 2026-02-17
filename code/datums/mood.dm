@@ -38,7 +38,6 @@
 	var/insanity_effect = 0
 	/// The screen object for the current mood level
 	var/atom/movable/screen/mood/mood_screen_object
-
 	/// List of mood events currently active on this datum
 	var/list/mood_events = list()
 
@@ -183,6 +182,12 @@
 	new_event.on_add(src, mob_parent, params)
 	mood_events[category] = new_event
 	update_mood()
+	if(mob_parent.client)
+		var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, new_event, active_mood_maptexts)
+		active_mood_maptexts += 1
+		mob_parent.client.screen += new_maptext
+		addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
+
 	if(new_event.mood_change == 0 || new_event.hidden)
 		return
 	if(new_event.mood_change > 0)
@@ -195,6 +200,74 @@
 			/datum/personality/empathetic = /datum/mood_event/empathetic_sad,
 			/datum/personality/misanthropic = /datum/mood_event/misanthropic_happy
 		), range = 4)
+
+/datum/mood
+	/// Counts
+	var/active_mood_maptexts = 0
+
+	var/debug_fadeless = FALSE
+
+/datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade)
+	if(QDELETED(maptext_to_fade) || debug_fadeless)
+		return
+	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
+	addtimer(CALLBACK(src, PROC_REF(clear_mood_maptext), maptext_to_fade), 2 SECONDS)
+
+/datum/mood/proc/clear_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_clear)
+	active_mood_maptexts -= 1
+	mob_parent.client?.screen -= maptext_to_clear
+	qdel(maptext_to_clear)
+
+/atom/movable/screen/mood_maptext
+	alpha = 200
+	maptext_width = 200
+	maptext_height = 40
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	var/maptext_color
+	var/running_time_length = 0
+
+/atom/movable/screen/mood_maptext/Initialize(mapload, datum/hud/hud_owner, datum/mood_event/base, offset = 0)
+	. = ..()
+	if(isnull(base))
+		return INITIALIZE_HINT_QDEL
+
+	maptext_color = base.screentext_color
+	if(isnull(maptext_color))
+		if(base.mood_change > 0)
+			maptext_color = COLOR_ETHIOPIA_GREEN
+		else if(base.mood_change < 0)
+			maptext_color = COLOR_ETHIOPIA_RED
+
+	var/shown_text = base.description
+	var/list/shown_words = splittext(shown_text, " ")
+	if(length(shown_words) == 1)
+		maptext = "<center>[MAPTEXT(shown_text)]</center>"
+	else
+		var/list/words = list(shown_words[1])
+		maptext = construct_maptext(words)
+		for(var/i in 2 to length(shown_words))
+			var/new_time_length = max(1, floor(length_char(shown_words[i - 1]) * 0.75))
+			words += shown_words[i]
+			animate(src, time = new_time_length, maptext = construct_maptext(words), flags = ANIMATION_CONTINUE)
+			running_time_length += new_time_length
+
+	screen_loc = "CENTER-3:16,SOUTH+3:[offset * 20]"
+
+/atom/movable/screen/mood_maptext/proc/construct_maptext(list/words)
+	var/output = ""
+	var/linebreaks = 0
+	for(var/i in 1 to  length(words))
+		var/word = words[i]
+		if(i == length(words))
+			output += "[word]"
+
+		else if(linebreaks < 1 && findtext(word, GLOB.is_punctuation))
+			output += "[word]<br>"
+			linebreaks += 1
+		else
+			output += "[word] "
+
+	return "<center>[MAPTEXT("<font color='[maptext_color]'>[output]</font>")]</center>"
 
 /**
  * Removes a mood event from the mob

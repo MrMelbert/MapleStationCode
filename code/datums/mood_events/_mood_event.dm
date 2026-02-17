@@ -24,6 +24,9 @@
 	var/mob/living/owner
 	/// List of required jobs for this mood event
 	var/list/required_job
+	/// Color of the maptext for this mood event, if applicable
+	/// If null defaults to picking it based on intensity
+	var/screentext_color
 
 /datum/mood_event/New(category)
 	src.category = category

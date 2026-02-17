@@ -92,11 +92,6 @@
 	mood_change = -10
 	timeout = 6 MINUTES
 
-/datum/mood_event/narcotic_light
-	description = "I feel numb."
-	mood_change = 4
-	timeout = 3 MINUTES
-
 /**
  * Obviousnly not all ailments of a mob are treatable while dead,
  * so we need to apply a "buffer" status effect post-revival
