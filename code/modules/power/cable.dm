@@ -563,24 +563,47 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 ///////////////////////////////////
 // General procedures
 ///////////////////////////////////
-//you can use wires to heal robotics
+
 /obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ishuman(interacting_with))
 		return NONE
-	var/mob/living/carbon/human/H = interacting_with
-	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
-	if(!affecting || !IS_ROBOTIC_LIMB(affecting))
+
+	if(user.combat_mode)
 		return NONE
-	var/delay = 0.5 SECONDS
-	if(user == H)
-		delay = 4 SECONDS
-	user.visible_message(
-		span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."),
-			span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))
-	delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
-	if(!use_tool(H, delay, user, amount = 1))
+
+	return try_heal_loop(interacting_with, user)
+
+/obj/item/stack/cable_coil/proc/try_heal_loop(atom/interacting_with, mob/living/user, repeating = FALSE)
+	var/mob/living/carbon/human/attacked_humanoid = interacting_with
+	var/obj/item/clothing/under/uniform = attacked_humanoid.w_uniform
+	if(uniform?.repair_sensors(user))
+		return ITEM_INTERACT_SUCCESS
+
+	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(check_zone(user.zone_selected))
+	if(isnull(affecting) || !IS_ROBOTIC_LIMB(affecting))
+		return NONE
+
+	if (!affecting.burn_dam)
+		balloon_alert(user, "limb not damaged")
 		return ITEM_INTERACT_BLOCKING
-	H.item_heal(user, 0, 15, "dents", "burnt wires", BODYTYPE_ROBOTIC)
+
+	user.visible_message(span_notice("[user] starts to fix some of the wires in [attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s"] [affecting.name]."),
+		span_notice("You start fixing some of the wires in [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
+
+	var/use_delay = repeating ? 1 SECONDS : 0.5 SECONDS
+	if(user == attacked_humanoid)
+		use_delay = 5 SECONDS
+
+	delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
+	if(!use_tool(user, use_delay, attacked_humanoid, amount = 1))
+		return ITEM_INTERACT_BLOCKING
+
+	if (!attacked_humanoid.item_heal(user, brute_heal = 0, burn_heal = 15, heal_message_brute = "dents", heal_message_burn = "burnt wires", required_bodytype = BODYTYPE_ROBOTIC))
+		return ITEM_INTERACT_BLOCKING
+
+	if (amount > 0)
+		INVOKE_ASYNC(src, PROC_REF(try_heal_loop), interacting_with, user, TRUE)
+
 	return ITEM_INTERACT_SUCCESS
 
 
