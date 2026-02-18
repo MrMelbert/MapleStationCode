@@ -206,7 +206,7 @@
 	// arbitrary modifiers
 	base_amount += (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST))
 	base_amount -= (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW))
-	// hypoxima
+	// hypoxia
 	base_amount += owner.getOxyLoss() / 5
 	// stress (primarily pain and shock modelled here)
 	base_amount += owner.pain_controller?.get_total_pain() / 5
