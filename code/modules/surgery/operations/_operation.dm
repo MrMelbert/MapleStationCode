@@ -262,6 +262,8 @@
  * If null, it will be permanent until removed.
  */
 /mob/living/proc/add_surgery_speed_mod(id, amount, duration)
+	if(QDELING(src))
+		return
 	ASSERT(!isnull(id), "Surgery speed mod ID cannot be null")
 	ASSERT(isnum(amount), "Surgery speed mod amount must be a number")
 	ASSERT(isnum(duration) || isnull(duration), "Surgery speed mod duration must be a number or null")
