@@ -145,7 +145,7 @@
 /// Updates eyelid state on signal
 /obj/item/organ/eyes/proc/update_eyelids(datum/source)
 	SIGNAL_HANDLER
-	owner.dna.species.handle_body(owner)
+	owner.dna?.species?.handle_body(owner)
 
 #define OFFSET_X 1
 #define OFFSET_Y 2
