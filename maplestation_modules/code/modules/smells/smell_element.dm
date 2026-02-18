@@ -9,8 +9,8 @@
 	. = smell_register[key]
 	if(isnull(.))
 #ifdef UNIT_TESTS
-		for(var/key in smell_register)
-			var/datum/smell/smell_datum = smell_register[key]
+		for(var/k in smell_register)
+			var/datum/smell/smell_datum = smell_register[k]
 			if(smell_datum.text != smell || smell_datum.category != category)
 				continue
 			if(smell_datum.type == smell)
