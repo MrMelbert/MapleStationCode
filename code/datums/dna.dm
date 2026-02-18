@@ -497,7 +497,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(human_blood_type == found_key)
 		return
 	human_blood_type = found_key
-	if(istype(holder?.blood_type, /datum/blood_type/crew/human))
+	if(!isnull(holder) && (istype(holder.blood_type, /datum/blood_type/crew/human) || isnull(holder.blood_type)))
 		holder.set_blood_type(new_type, update)
 
 /datum/dna/stored //subtype used by brain mob's stored_dna
