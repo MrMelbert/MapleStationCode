@@ -150,14 +150,16 @@
 	if(isnull(affecting) || !IS_ROBOTIC_LIMB(affecting))
 		return NONE
 
-	var/use_delay = 0
+	var/use_delay = 0.5 SECONDS
 
 	if(user == attacked_humanoid)
 		user.visible_message(span_notice("[user] starts to fix some of the dents on [attacked_humanoid]'s [affecting.name]."),
 			span_notice("You start fixing some of the dents on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
-		use_delay = 5 SECONDS
+		use_delay = 4 SECONDS
 
-	if(!use_tool(attacked_humanoid, user, use_delay, volume=50, amount=1))
+	use_delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
+
+	if(!use_tool(attacked_humanoid, user, use_delay, volume = 50, amount = 1))
 		return ITEM_INTERACT_BLOCKING
 
 	attacked_humanoid.item_heal(user, brute_heal = 15, burn_heal = 0, heal_message_brute = "dents", heal_message_burn = "burnt wires", required_bodytype = BODYTYPE_ROBOTIC)
