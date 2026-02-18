@@ -135,6 +135,9 @@
 	/// Minimal character age for this job
 	var/required_character_age
 
+	/// List of [typepath] to [base skill level] that this job starts with
+	var/list/base_skills
+
 	/// Priority for the job on the crew monitor.
 	var/crewmonitor_priority
 
@@ -163,6 +166,9 @@
 	var/obj/item/organ/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
+
+	for(var/skill in base_skills)
+		spawned.mind.set_level(skill, base_skills[skill], silent = TRUE)
 
 	if(!ishuman(spawned))
 		return
