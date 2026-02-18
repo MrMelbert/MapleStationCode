@@ -203,7 +203,7 @@
 
 /datum/species/android/synth/on_limb_lost(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
 	. = ..()
-	if(!limb_updates_on_change || QDELING(limb))
+	if(!limb_updates_on_change || !disguise_species || QDELING(limb))
 		return
 	if(!limb_lost(source, limb, update = TRUE))
 		return
@@ -218,7 +218,7 @@
 
 /datum/species/android/synth/on_limb_gained(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
 	. = ..()
-	if(!limb_updates_on_change)
+	if(!limb_updates_on_change || !disguise_species)
 		return
 	if(!limb_gained(source, limb, update = TRUE))
 		return
