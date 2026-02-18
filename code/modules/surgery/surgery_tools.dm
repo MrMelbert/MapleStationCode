@@ -62,6 +62,15 @@
 	icon = 'icons/mob/silicon/robot_items.dmi'
 	icon_state = "toolkit_medborg_hemostat"
 
+/obj/item/hemostat/tweezers
+	name = "tweezers"
+	desc = "Precision instrument for grasping small objects."
+	toolspeed = 1.5
+
+/obj/item/hemostat/tweezers/Initialize(mapload)
+	. = ..()
+	transform = transform.Scale(0.5, 0.5)
+
 /obj/item/cautery
 	name = "cautery"
 	desc = "This stops bleeding."

@@ -349,16 +349,19 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 25
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
-	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
+	grind_results = list(/datum/reagent/medicine/c2/libital = 3)
 	merge_type = /obj/item/stack/medical/bruise_pack
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
+
+/obj/item/stack/medical/bruise_pack/ekit
+	amount = 2
 
 /obj/item/stack/medical/gauze
 	name = "medical gauze"
@@ -592,14 +595,8 @@
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
-/obj/item/stack/medical/suture/emergency
-	name = "emergency sutures"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	singular_name = "emergency suture"
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
+/obj/item/stack/medical/suture/ekit
+	amount = 4
 
 /obj/item/stack/medical/suture/medicated
 	name = "medicated sutures"
@@ -627,13 +624,16 @@
 	heal_burn = 5
 	flesh_regeneration = 5
 	sanitization = 1
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/c2/lenturi = 3)
 	merge_type = /obj/item/stack/medical/ointment
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [user.p_do(TRUE)]n't [user.p_they()] know that stuff is toxic?"))
 	return TOXLOSS
+
+/obj/item/stack/medical/ointment/ekit
+	amount = 4
 
 /obj/item/stack/medical/mesh
 	name = "regenerative mesh"

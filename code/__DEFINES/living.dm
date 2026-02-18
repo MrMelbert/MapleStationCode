@@ -19,6 +19,8 @@
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack is applied to a mob. (source = obj/item/temperature_pack)
+#define COMISG_TEMPERATURE_PACK_ENABLED "temperature_pack_enabled"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
@@ -147,6 +149,11 @@
 
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
+
+// Frozen item temperature pack defaults
+#define FROZEN_ITEM_PAIN_RATE 0.1 // so cold that it barely heals
+#define FROZEN_ITEM_PAIN_MODIFIER 0.25
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -2 KELVIN
 
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)

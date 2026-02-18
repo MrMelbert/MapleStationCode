@@ -6,8 +6,23 @@
 	description = "A pungent liquid that's often used in preservatives and synthesizing of other chemicals."
 	reagent_state = LIQUID
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	metabolization_rate = 2 * REAGENTS_METABOLISM
 	color = "#c7a9c9"
 	ph = 7
+	taste_description = "salt"
+
+// Component in sanguirite, also umami
+/datum/reagent/glutamic_acid
+	name = "Glutamic Acid"
+	description = "An amino acid synthesized from the fermentation of gluten. Known for its novel flavor, \
+		which is often described as 'umami' or savory. Also used in synthesizing other chemicals."
+	reagent_state = SOLID
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	metabolization_rate = 3 * REAGENTS_METABOLISM
+	color = "#ffdead"
+	ph = 3.2
+	taste_description = "umami"
+	taste_mult = 4
 
 // Diphenhydramine can be upgraded into Dimenhydrinate, less good against allergens but better against nausea
 /datum/reagent/medicine/dimenhydrinate
