@@ -155,7 +155,7 @@
 					SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
 
 	var/bloodpressure = get_blood_pressure()
-	if(bloodpressure > 120)
+	if(bloodpressure > 140)
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
@@ -172,7 +172,7 @@
 	else
 		REMOVE_TRAIT(owner, TRAIT_LABOURED_BREATHING, type)
 
-	if(bloodpressure < 80)
+	if(bloodpressure < 60)
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
