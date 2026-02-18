@@ -48,7 +48,7 @@
 	if(HAS_PERSONALITY(owner, /datum/personality/gourmand))
 		if(effective_quality <= FOOD_QUALITY_GOOD)
 			effective_quality = FOOD_QUALITY_NORMAL
-	if(HAS_PERSONALITY(owner, /datum/personality/snob))
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
 		if(effective_quality <= FOOD_QUALITY_VERYGOOD)
 			effective_quality = FOOD_QUALITY_NORMAL
 
@@ -58,7 +58,7 @@
 	return ceil(mood)
 
 /datum/mood_event/food/proc/update_description(quality)
-	if(HAS_PERSONALITY(owner, /datum/personality/snob))
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
 		if(quality <= FOOD_QUALITY_VERYGOOD)
 			description = "That food was [GLOB.food_quality_description[quality]], but I expect better."
 		else
