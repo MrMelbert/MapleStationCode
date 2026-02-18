@@ -36,6 +36,7 @@
 	/// whether the heart's been operated on to fix some of its damages
 	var/operated = FALSE
 
+	/// Keeps the random variation on BPM consistent so it doesn't look weird
 	VAR_PRIVATE/random_bpm_modifier = 0
 
 /obj/item/organ/heart/update_icon_state()
