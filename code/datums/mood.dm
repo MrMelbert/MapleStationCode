@@ -40,6 +40,10 @@
 	var/atom/movable/screen/mood/mood_screen_object
 	/// List of mood events currently active on this datum
 	var/list/mood_events = list()
+	/// Counts number of maptexts currently active so we can avoid stacking them on top of each other
+	var/active_mood_maptexts = 0
+	/// Assoc lazylist of mood event types to the next world.time where we show that mood text again, to prevent spam
+	var/list/mood_maptext_cooldowns
 
 	/// Tracks the last mob stat, updates on change
 	/// Used to stop processing SSmood
@@ -182,11 +186,15 @@
 	new_event.on_add(src, mob_parent, params)
 	mood_events[category] = new_event
 	update_mood()
-	if(mob_parent.client)
+
+	var/mood_text_setting = mob_parent.client?.prefs.read_preference(/datum/preference/numeric/mood_text_alpha) || 0
+	if(mood_text_setting > 0 && LAZYACCESS(mood_maptext_cooldowns, new_event.type) <= world.time)
 		var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, new_event, active_mood_maptexts)
+		new_maptext.alpha = 255 * mood_text_setting
 		active_mood_maptexts += 1
 		mob_parent.client.screen += new_maptext
 		addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
+		LAZYSET(mood_maptext_cooldowns, new_event.type, world.time + 30 SECONDS) // arbitrary 30s cd
 
 	if(new_event.mood_change == 0 || new_event.hidden)
 		return
@@ -201,15 +209,7 @@
 			/datum/personality/misanthropic = /datum/mood_event/misanthropic_happy
 		), range = 4)
 
-/datum/mood
-	/// Counts
-	var/active_mood_maptexts = 0
-
-	var/debug_fadeless = FALSE
-
 /datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade)
-	if(QDELETED(maptext_to_fade) || debug_fadeless)
-		return
 	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
 	addtimer(CALLBACK(src, PROC_REF(clear_mood_maptext), maptext_to_fade), 2 SECONDS)
 
@@ -219,12 +219,12 @@
 	qdel(maptext_to_clear)
 
 /atom/movable/screen/mood_maptext
-	alpha = 200
 	maptext_width = 200
 	maptext_height = 40
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	var/maptext_color
-	var/running_time_length = 0
+	layer = BELOW_OBJ_LAYER // render underneath storage
+	VAR_FINAL/maptext_color
+	VAR_FINAL/running_time_length = 0
 
 /atom/movable/screen/mood_maptext/Initialize(mapload, datum/hud/hud_owner, datum/mood_event/base, offset = 0)
 	. = ..()
@@ -232,11 +232,20 @@
 		return INITIALIZE_HINT_QDEL
 
 	maptext_color = base.screentext_color
-	if(isnull(maptext_color))
-		if(base.mood_change > 0)
-			maptext_color = COLOR_ETHIOPIA_GREEN
-		else if(base.mood_change < 0)
-			maptext_color = COLOR_ETHIOPIA_RED
+	if(isnull(maptext_color) && base.mood_change != 0)
+		switch(base.mood_change)
+			if(-INFINITY to MOOD_SAD2)
+				maptext_color = COLOR_DARK_RED
+			if(MOOD_SAD2 to MOOD_SAD1)
+				maptext_color = COLOR_RED
+			if(MOOD_SAD1 to MOOD_NEUTRAL)
+				maptext_color = COLOR_GRAY
+			if(MOOD_NEUTRAL to MOOD_HAPPY1)
+				maptext_color = COLOR_WHITE
+			if(MOOD_HAPPY1 to MOOD_HAPPY2)
+				maptext_color = COLOR_LIME
+			if(MOOD_HAPPY2 to INFINITY)
+				maptext_color = COLOR_DARK_LIME
 
 	var/shown_text = base.description
 	var/list/shown_words = splittext(shown_text, " ")

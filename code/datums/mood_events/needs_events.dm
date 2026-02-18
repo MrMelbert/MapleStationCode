@@ -50,16 +50,19 @@
 
 //Disgust
 /datum/mood_event/gross
-	description = "I saw something gross."
+	description = "I don't feel so good..."
 	mood_change = -4
+	screentext_color = COLOR_OLIVE
 
 /datum/mood_event/verygross
-	description = "I think I'm going to puke..."
+	description = "I think I'm going to puke..!"
 	mood_change = -6
+	screentext_color = COLOR_OLIVE
 
 /datum/mood_event/disgusted
-	description = "Oh god, that's disgusting..."
+	description = "I definitely going to puke!"
 	mood_change = -8
+	screentext_color = COLOR_OLIVE
 
 /datum/mood_event/disgust/bad_smell
 	description = "I can smell something horribly decayed inside this room."

@@ -226,12 +226,12 @@
 	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/vomit
-	description = "I just threw up. Gross."
+	description = "I just threw up. Gross..."
 	mood_change = -2
 	timeout = 2 MINUTES
 
 /datum/mood_event/vomitself
-	description = "I just threw up all over myself. This is disgusting."
+	description = "I just threw up all over myself. This is disgusting..."
 	mood_change = -4
 	timeout = 3 MINUTES
 
