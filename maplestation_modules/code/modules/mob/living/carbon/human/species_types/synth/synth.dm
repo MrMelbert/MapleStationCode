@@ -172,8 +172,6 @@
 	if(limb_updates_on_change)
 		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
 			limb_gained(synth, part, update = FALSE)
-		RegisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(limb_lost_sig))
-		RegisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limb_gained_sig))
 
 	synth.update_body(TRUE)
 
@@ -195,21 +193,17 @@
 
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
-	if(limb_updates_on_change)
-		if(!skip_bodyparts)
-			for(var/obj/item/bodypart/part as anything in synth.bodyparts)
-				limb_lost(synth, part, update = FALSE)
-		UnregisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB)
-		UnregisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB)
+	if(limb_updates_on_change && !skip_bodyparts)
+		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
+			limb_lost(synth, part, update = FALSE)
 
 	QDEL_NULL(disguise_species)
 	regenerate_organs(synth)
 	synth.update_body(TRUE)
 
-/datum/species/android/synth/proc/limb_lost_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
-	SIGNAL_HANDLER
-
-	if(QDELING(limb))
+/datum/species/android/synth/on_limb_lost(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
+	. = ..()
+	if(!limb_updates_on_change || QDELING(limb))
 		return
 	if(!limb_lost(source, limb, update = TRUE))
 		return
@@ -222,9 +216,10 @@
 	limb.change_appearance_into(limb, update)
 	return TRUE
 
-/datum/species/android/synth/proc/limb_gained_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
-	SIGNAL_HANDLER
-
+/datum/species/android/synth/on_limb_gained(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
+	. = ..()
+	if(!limb_updates_on_change)
+		return
 	if(!limb_gained(source, limb, update = TRUE))
 		return
 	source.visible_message(span_warning("[source]'s [limb.plaintext_zone] changes appearance!"))
