@@ -229,11 +229,35 @@
 	description = "I just threw up. Gross..."
 	mood_change = -2
 	timeout = 2 MINUTES
+	/// Replaces the description with this + taste of blood if it was blood vomid
+	var/bloody_description = "I just threw up..."
+	/// Was it vomitting blood
+	var/was_bloody = FALSE
 
-/datum/mood_event/vomitself
+/datum/mood_event/vomit/add_effects(blood = FALSE)
+	was_bloody = blood
+
+	var/datum/blood_type/owner_blood = owner.get_blood_type()
+	if(!was_bloody || isnull(owner_blood))
+		return // probably shouldn't happen but who knows
+
+	description = "[bloody_description] Why do I taste [owner_blood.reagent_type::taste_description]..?"
+	mood_change *= 2
+	timeout *= 1.5
+
+/datum/mood_event/vomit/be_refreshed(datum/mood/home, blood = FALSE)
+	if(!was_bloody && blood)
+		return ALLOW_NEW_MOOD // re-apply with new description
+	return ..() // normal refresh
+
+/datum/mood_event/vomit/self
 	description = "I just threw up all over myself. This is disgusting..."
+	bloody_description = "I just threw up all over myself..."
 	mood_change = -4
 	timeout = 3 MINUTES
+
+/datum/mood_event/vomit/self/be_replaced(datum/mood/home, datum/mood_event/new_event, blood)
+	return be_refreshed(home, blood) // vomit self won't be replaced with vomit other, just refreshed
 
 /datum/mood_event/painful_medicine
 	description = "Medicine may be good for me but right now it stings like hell."

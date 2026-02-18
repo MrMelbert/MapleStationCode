@@ -335,7 +335,7 @@
 				span_danger("[src] throws up all over [p_them()]self!"),
 				span_userdanger("You throw up all over yourself!"),
 			)
-			add_mood_event("vomit", /datum/mood_event/vomitself)
+			add_mood_event("vomit", /datum/mood_event/vomit/self)
 		distance = 0
 	else
 		if(message)
