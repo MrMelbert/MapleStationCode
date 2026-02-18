@@ -250,7 +250,7 @@
 			add_fingerprint(user)
 
 /obj/item/mod/control/wrench_act(mob/living/user, obj/item/wrench)
-	if(seconds_electrified && get_charge() && shock(user))
+	if(seconds_electrified && get_charge() && shock(user, 100))
 		return ITEM_INTERACT_BLOCKING
 	if(open)
 		if(!core)
