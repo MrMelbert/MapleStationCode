@@ -1134,17 +1134,23 @@
 	if(!delay && !tool_start_check(user, amount))
 		return
 
-	var/skill_modifier = 1
+	// NON-MODULE CHANGE
+	if(tool_behaviour == TOOL_MINING)
+		delay *= user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		if(prob(user.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))
+			mineral_scan_pulse(get_turf(user), 2)
 
-	if(tool_behaviour == TOOL_MINING && ishuman(user))
-		if(user.mind)
-			skill_modifier = user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+	if((tool_behaviour in GLOB.all_mechanical_tools) && tool_behaviour != TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/mechanics, SKILL_SPEED_MODIFIER)
 
-			if(user.mind.get_skill_level(/datum/skill/mining) >= SKILL_LEVEL_JOURNEYMAN && prob(user.mind.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER))) // we check if the skill level is greater than Journeyman and then we check for the probality for that specific level.
-				mineral_scan_pulse(get_turf(user), SKILL_LEVEL_JOURNEYMAN - 2) //SKILL_LEVEL_JOURNEYMAN = 3 So to get range of 1+ we have to subtract 2 from it,.
+	if(istype(src, /obj/item/stack/cable_coil) || tool_behaviour == TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/electronics, SKILL_SPEED_MODIFIER)
 
-	delay *= toolspeed * skill_modifier
+	if(tool_behaviour in GLOB.all_surgical_tools)
+		delay *= user.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
+	// NON-MODULE CHANGE END
 
+	delay *= toolspeed
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)

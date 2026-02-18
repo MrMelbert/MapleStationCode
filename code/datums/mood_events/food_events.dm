@@ -35,26 +35,58 @@
 /datum/mood_event/food/add_effects(quality = FOOD_QUALITY_NORMAL, timeout_mod = 1)
 	mood_change = calculate_mood_change(quality)
 	timeout *= timeout_mod
-	description = "That food was [GLOB.food_quality_description[quality]]."
+	update_description(quality)
 
 /datum/mood_event/food/be_refreshed(datum/mood/home, quality, timeout_mod)
-	var/old_mood = mood_change
-	// updates timeout (which is handled in parent call) and mood
 	timeout = max(timeout, initial(timeout) * timeout_mod)
 	mood_change = max(mood_change, calculate_mood_change(quality))
-	// if mood_change is the same, we don't need to update the description
-	if(old_mood != mood_change)
-		description = "That food was [GLOB.food_quality_description[quality]]."
+	update_description(quality)
 	return ..()
 
 /datum/mood_event/food/proc/calculate_mood_change(base_quality)
-	var/quality = 1 + 1.5 * base_quality
-	if(HAS_PERSONALITY(owner, /datum/personality/ascetic))
-		quality *= 0.5
+	var/effective_quality = base_quality
 	if(HAS_PERSONALITY(owner, /datum/personality/gourmand))
-		if(quality <= FOOD_QUALITY_GOOD)
-			quality = FOOD_QUALITY_NORMAL
-	return ceil(quality)
+		if(effective_quality <= FOOD_QUALITY_GOOD)
+			effective_quality = FOOD_QUALITY_NORMAL
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
+		if(effective_quality <= FOOD_QUALITY_VERYGOOD)
+			effective_quality = FOOD_QUALITY_NORMAL
+
+	var/mood = 1 + 1.5 * effective_quality
+	if(HAS_PERSONALITY(owner, /datum/personality/ascetic))
+		mood *= 0.5
+	return ceil(mood)
+
+/datum/mood_event/food/proc/update_description(quality)
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
+		if(quality <= FOOD_QUALITY_VERYGOOD)
+			description = "That food was [GLOB.food_quality_description[quality]], but I expect better."
+		else
+			description = "That food was [GLOB.food_quality_description[quality]]. Perfection!"
+	else
+		description = "That food was [GLOB.food_quality_description[quality]]."
+
+// NON-MODULE CHANGE
+/datum/mood_event/mid_food
+	timeout = 5 MINUTES
+	description = "That's some shockingly mediocre food."
+	mood_change = 0
+
+/datum/mood_event/mid_food/add_effects()
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
+		mood_change = -2
+		description = "That's some shockingly mediocre food - I expect better!"
+
+// NON-MODULE CHANGE
+/datum/mood_event/bad_food
+	timeout = 5 MINUTES
+	description = "That food wasn't very good, but at least it didn't make me sick."
+	mood_change = -2
+
+/datum/mood_event/bad_food/add_effects()
+	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
+		mood_change = -4
+		description = "That food wasn't very good. I expect better!"
 
 /datum/mood_event/pacifist_eating_fish_item
 	description = "I shouldn't be eating living creatures..."

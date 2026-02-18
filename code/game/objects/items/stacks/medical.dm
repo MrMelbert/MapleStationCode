@@ -129,9 +129,10 @@
 				span_notice("You begin applying [src] on yourself..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			self_delay * (auto_change_zone ? 1 : 0.9),
+			self_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -148,9 +149,10 @@
 				span_notice("You begin applying [src] on [patient]..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			other_delay * (auto_change_zone ? 1 : 0.9),
+			other_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -177,6 +179,8 @@
 	else
 		CRASH("Stack medical item healing a non-carbon, non-animal mob [patient] ([patient.type])")
 
+	// NON-MODULE CHANGE
+	user.mind?.adjust_experience(/datum/skill/first_aid, user == patient ? 5 : 8)
 	log_combat(user, patient, "healed", src)
 	if(!use(1) || !repeating || amount <= 0)
 		var/atom/alert_loc = QDELETED(src) ? user : src
@@ -349,16 +353,19 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 25
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
-	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
+	grind_results = list(/datum/reagent/medicine/c2/libital = 3)
 	merge_type = /obj/item/stack/medical/bruise_pack
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
+
+/obj/item/stack/medical/bruise_pack/ekit
+	amount = 2
 
 /obj/item/stack/medical/gauze
 	name = "medical gauze"
@@ -461,7 +468,8 @@
 // gauze is only relevant for wounds, which are handled in the wounds themselves
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, healed_zone, silent, auto_change_zone)
 	var/obj/item/bodypart/limb = patient.get_bodypart(healed_zone)
-	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	// NON-MODULE CHANGE
+	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER))
 	var/any_scanned = FALSE
 	for(var/datum/wound/woundies as anything in limb.wounds)
 		if(HAS_TRAIT(woundies, TRAIT_WOUND_SCANNED))
@@ -592,14 +600,8 @@
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
-/obj/item/stack/medical/suture/emergency
-	name = "emergency sutures"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	singular_name = "emergency suture"
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
+/obj/item/stack/medical/suture/ekit
+	amount = 4
 
 /obj/item/stack/medical/suture/medicated
 	name = "medicated sutures"
@@ -627,13 +629,16 @@
 	heal_burn = 5
 	flesh_regeneration = 5
 	sanitization = 1
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/c2/lenturi = 3)
 	merge_type = /obj/item/stack/medical/ointment
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [user.p_do(TRUE)]n't [user.p_they()] know that stuff is toxic?"))
 	return TOXLOSS
+
+/obj/item/stack/medical/ointment/ekit
+	amount = 4
 
 /obj/item/stack/medical/mesh
 	name = "regenerative mesh"

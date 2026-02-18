@@ -149,7 +149,7 @@ GLOBAL_LIST_EMPTY(fishing_challenges_by_user)
 		if(rod.hook.fishing_hook_traits & FISHING_HOOK_KILL)
 			special_effects |= FISHING_MINIGAME_RULE_KILL
 
-	completion_loss += user.mind?.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)/5
+	completion_loss += user.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)/5
 
 /datum/fishing_challenge/Destroy(force)
 	GLOB.fishing_challenges_by_user -= user

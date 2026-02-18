@@ -84,6 +84,8 @@
 	receiver.cure_blind(NO_EYES)
 	apply_damaged_eye_effects()
 	refresh(receiver, call_update = TRUE)
+	// NON-MODULE CHANGE
+	RegisterSignals(receiver, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)), PROC_REF(update_eyelids))
 
 /// Refreshes the visuals of the eyes
 /// If call_update is TRUE, we also will call update_body
@@ -137,6 +139,13 @@
 
 	organ_owner.update_tint()
 	organ_owner.update_sight()
+	// NON-MODULE CHANGE
+	UnregisterSignal(organ_owner, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)))
+
+/// Updates eyelid state on signal
+/obj/item/organ/eyes/proc/update_eyelids(datum/source)
+	SIGNAL_HANDLER
+	owner.dna?.species?.handle_body(owner)
 
 #define OFFSET_X 1
 #define OFFSET_Y 2
@@ -291,8 +300,8 @@
 	base_color[2] *= 0.85
 	base_color[3] *= 0.85
 	var/eyelid_color = rgb(base_color[1], base_color[2], base_color[3], (length(base_color) >= 4 ? base_color[4] : null), COLORSPACE_HSL)
-	// If we're knocked out, just color the eyes
-	if (!parent.appears_alive() || HAS_TRAIT(parent, TRAIT_KNOCKEDOUT))
+	// NON-MODULE CHANGE
+	if (HAS_TRAIT(parent, TRAIT_CLOSED_EYES))
 		eye_right.color = eyelid_color
 		eye_left.color = eyelid_color
 		return

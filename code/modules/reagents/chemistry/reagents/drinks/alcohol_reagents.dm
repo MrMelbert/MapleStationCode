@@ -47,11 +47,12 @@
 			name = "Natural " + name
 		if(data["boozepwr"])
 			boozepwr = data["boozepwr"]
-	addiction_types = list(/datum/addiction/alcohol = 0.05 * boozepwr)
-	if(boozepwr >= 1 && isnull(pain_modifier))
-		var/new_pain_modifier = 12 / (boozepwr * 0.2)
-		if(new_pain_modifier < 1)
-			pain_modifier = new_pain_modifier
+	if(boozepwr > 0)
+		// the stronger the drink, the more pain relief it provides
+		if(isnull(pain_modifier))
+			pain_modifier = min(12 / (boozepwr * 0.2), 1)
+		// the stronger the drink, the less total of the drink is needed to reach addiction
+		LAZYSET(addiction_types, /datum/addiction/alcohol, max(50, round(150 - boozepwr, 5)))
 	return ..()
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
@@ -347,7 +348,7 @@
 	taste_description = "extra-spiked butterscotch"
 	default_container = /obj/item/reagent_containers/cup/glass/bottle/rum/aged
 	quality = DRINK_FANTASTIC
-	var/metabolized_traits = list(TRAIT_STRONG_STOMACH) // Non-module change : double definition to error if/when we get this var
+	metabolized_traits = list(TRAIT_STRONG_STOMACH)
 
 /datum/reagent/consumable/ethanol/rum/aged/on_mob_metabolize(mob/living/drinker)
 	. = ..()
@@ -462,7 +463,7 @@
 	color = "#664300" // rgb: 102, 67, 0
 	boozepwr = 100
 	taste_description = "pure resignation"
-	addiction_types = list(/datum/addiction/alcohol = 5, /datum/addiction/maintenance_drugs = 2)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 600)
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/ethanol/ale

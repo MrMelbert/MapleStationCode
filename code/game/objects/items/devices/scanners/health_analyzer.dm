@@ -531,7 +531,7 @@
 		if(LAZYLEN(target.mind?.active_addictions))
 			render_list += "<span class='boldannounce ml-1'>Subject is addicted to the following types of drug:</span><br>"
 			for(var/datum/addiction/addiction_type as anything in target.mind.active_addictions)
-				render_list += "<span class='alert ml-2'>[initial(addiction_type.name)]</span><br>"
+				render_list += "<span class='alert ml-2'>[capitalize(initial(addiction_type.name))]</span><br>"
 
 		// Special eigenstasium addiction
 		if(target.has_status_effect(/datum/status_effect/eigenstasium))
@@ -636,6 +636,9 @@
 		greed_warning(user)
 	else
 		violence(user)
+
+/obj/item/healthanalyzer/simple/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	return NONE
 
 /obj/item/healthanalyzer/simple/proc/greed_warning(mob/user)
 	to_chat(user, span_warning("[src] displays an eerily high-definition frowny face, chastizing you for asking it for too much encouragement."))

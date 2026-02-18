@@ -133,6 +133,7 @@
 		return // should never happen
 	if(operation_args[OPERATION_REJECTION_DAMAGE] > 0)
 		chest.owner.apply_damage(operation_args[OPERATION_REJECTION_DAMAGE], TOX)
+
 	if(isbodypart(tool))
 		handle_bodypart(chest.owner, surgeon, tool)
 		return
@@ -153,6 +154,10 @@
 		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel synthetic sensation wash from your [bodypart_to_attach.plaintext_zone], which you can feel again!",
 	)
+	// NON-MODULE CHANGE
+	patient.cause_pain(bodypart_to_attach.body_zone, -1 * surgeon.get_skill_modifier(/datum/skill/cybernetics, SKILL_VALUE_MODIFIER))
+	if(IS_ROBOTIC_LIMB(bodypart_to_attach))
+		surgeon.mind?.adjust_experience(/datum/skill/cybernetics, 100)
 
 /datum/surgery_operation/prosthetic_replacement/proc/handle_arbitrary_prosthetic(mob/living/carbon/patient, mob/living/surgeon, obj/item/thing_to_attach, target_zone)
 	SSblackbox.record_feedback("tally", "arbitrary_prosthetic", 1, initial(thing_to_attach.name))
@@ -169,6 +174,8 @@
 		affected_locations = BODY_ZONE_CHEST,
 		pain_message = "You feel a strange sensation as [thing_to_attach] takes the place of your arm!",
 	)
+	// NON-MODULE CHANGE
+	surgeon.mind?.adjust_experience(/datum/skill/cybernetics, thing_to_attach.w_class * 25)
 
 #undef OPERATION_REJECTION_DAMAGE
 
