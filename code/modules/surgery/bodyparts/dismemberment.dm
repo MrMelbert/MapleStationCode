@@ -308,7 +308,8 @@
 
 	if(new_limb_owner.mob_mood?.has_mood_of_category("dismembered_[body_zone]"))
 		new_limb_owner.clear_mood_event("dismembered_[body_zone]")
-		new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
+		if(!special)
+			new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
 
 	update_bodypart_damage_state()
 	if(can_be_disabled)
