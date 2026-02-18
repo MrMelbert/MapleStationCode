@@ -1135,10 +1135,20 @@
 		return
 
 	// NON-MODULE CHANGE
-	if(tool_behaviour == TOOL_MINING && user.mind)
-		delay *= user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
-		if(prob(user.mind.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))
+	if(tool_behaviour == TOOL_MINING)
+		delay *= user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		if(prob(user.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))
 			mineral_scan_pulse(get_turf(user), 2)
+
+	if((tool_behaviour in GLOB.all_mechanical_tools) && tool_behaviour != TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/mechanics, SKILL_SPEED_MODIFIER)
+
+	if(istype(src, /obj/item/stack/cable_coil) || tool_behaviour == TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/electronics, SKILL_SPEED_MODIFIER)
+
+	if(tool_behaviour in GLOB.all_surgical_tools)
+		delay *= user.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
+	// NON-MODULE CHANGE END
 
 	delay *= toolspeed
 

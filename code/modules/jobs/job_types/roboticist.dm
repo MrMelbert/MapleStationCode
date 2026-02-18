@@ -41,13 +41,12 @@
 	job_flags = STATION_JOB_FLAGS
 
 	base_skills = list(
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 		/datum/skill/cybernetics = SKILL_LEVEL_EXPERT,
 		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/eva = SKILL_LEVEL_NOVICE,
-		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
 		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 		/datum/skill/piloting = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/robotics = SKILL_LEVEL_EXPERT,
 		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
 	)
 
