@@ -58,7 +58,7 @@
 /datum/wound/bleed_internal/proc/update_flavor()
 	if(!isnull(limb) && IS_ROBOTIC_LIMB(limb))
 		name = "Internal Hydraulics Leak"
-		description = "The patient is leaking hydraulic fluid internally, causing difficulty moving."
+		desc = "The patient is leaking hydraulic fluid internally, causing difficulty moving."
 		if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
 			treat_text_short = "Repair surgically or wait."
 			treat_text = "The leak may heal on its own over time, but surgical repair is also an option."
@@ -70,7 +70,7 @@
 
 	else
 		name = initial(name)
-		description = initial(desc)
+		desc = initial(desc)
 		if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
 			treat_text_short = initial(treat_text_short)
 			treat_text = initial(treat_text)
