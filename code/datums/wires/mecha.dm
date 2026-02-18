@@ -69,7 +69,7 @@
 	if(.)
 		return
 	var/obj/vehicle/sealed/mecha/mecha = holder
-	if(!issilicon(usr) && mecha.internal_damage & MECHA_INT_SHORT_CIRCUIT && mecha.shock(usr))
+	if(!issilicon(usr) && (mecha.internal_damage & MECHA_INT_SHORT_CIRCUIT) && mecha.shock(usr, 100))
 		return FALSE
 
 /datum/wires/mecha/can_reveal_wires(mob/user)

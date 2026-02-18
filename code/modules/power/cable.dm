@@ -211,14 +211,9 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 
 // shock the user with probability prb
-/obj/structure/cable/proc/shock(mob/user, prb, siemens_coeff = 1)
-	if(!prob(prb))
-		return FALSE
-	if(electrocute_mob(user, powernet, src, siemens_coeff))
-		do_sparks(5, TRUE, src)
-		return TRUE
-	else
-		return FALSE
+/obj/structure/cable/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	shock_source = powernet
+	return ..()
 
 /obj/structure/cable/singularity_pull(S, current_size)
 	..()
@@ -569,21 +564,24 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 // General procedures
 ///////////////////////////////////
 //you can use wires to heal robotics
-/obj/item/stack/cable_coil/attack(mob/living/carbon/human/H, mob/user)
-	if(!istype(H))
-		return ..()
-
+/obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
+	var/mob/living/carbon/human/H = interacting_with
 	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
-	if(affecting && IS_ROBOTIC_LIMB(affecting))
-		if(user == H)
-			user.visible_message(span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."), span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))
-			if(!do_after(user, 5 SECONDS, H))
-				return
-		if(H.item_heal(user, 0, 15, "dents", "burnt wires", BODYTYPE_ROBOTIC))
-			use(1)
-		return
-	else
-		return ..()
+	if(!affecting || !IS_ROBOTIC_LIMB(affecting))
+		return NONE
+	var/delay = 0.5 SECONDS
+	if(user == H)
+		delay = 4 SECONDS
+	user.visible_message(
+		span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."),
+			span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))
+	delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
+	if(!use_tool(H, delay, user, amount = 1))
+		return ITEM_INTERACT_BLOCKING
+	H.item_heal(user, 0, 15, "dents", "burnt wires", BODYTYPE_ROBOTIC)
+	return ITEM_INTERACT_SUCCESS
 
 
 ///////////////////////////////////////////////
@@ -625,9 +623,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	use(1)
 
 	// NON-MODULE CHANGE
-	if(C.shock(user, 50 - user.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
-		if(prob(50)) //fail
-			C.deconstruct()
+	if(C.shock(user, 50) && prob(50)) //fail
+		C.deconstruct()
 
 	return C
 

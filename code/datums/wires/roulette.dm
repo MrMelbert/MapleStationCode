@@ -33,8 +33,7 @@
 	var/obj/machinery/roulette/R = holder
 	switch(wire)
 		if(WIRE_SHOCK)
-			// NON-MODULE CHANGE
-			R.shock(usr, 50 - usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			R.shock(usr, 50)
 		if(WIRE_BOLTS) // Pulse to toggle bolts (but only raise if power is on).
 			if(!R.on)
 				return
@@ -44,8 +43,7 @@
 			R.audible_message(span_warning("Owner reset!"))
 			R.locked = FALSE
 		if(WIRE_PRIZEVEND)
-			// NON-MODULE CHANGE
-			R.shock(usr, 70- usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			R.shock(usr, 70)
 			if(R.locked)
 				return
 			R.audible_message(span_warning("Unauthorized prize vend detected! Locking down machine!"))
@@ -55,8 +53,7 @@
 	var/obj/machinery/roulette/R = holder
 	switch(wire)
 		if(WIRE_SHOCK)
-			// NON-MODULE CHANGE
-			R.shock(usr, 60- usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			R.shock(usr, 60)
 			if(mend)
 				R.on = TRUE
 			else
@@ -66,11 +63,9 @@
 				return
 			R.set_anchored(TRUE)
 		if(WIRE_RESETOWNER)
-			// NON-MODULE CHANGE
-			R.shock(usr, 70- usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			R.shock(usr, 70)
 		if(WIRE_PRIZEVEND)
-			// NON-MODULE CHANGE
-			R.shock(usr, 75- usr.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			R.shock(usr, 75)
 			if(R.locked)
 				return
 			R.audible_message(span_warning("Unauthorized prize vend detected! Locking down machine!"))
