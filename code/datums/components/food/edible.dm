@@ -641,10 +641,10 @@ Behavior that's still missing from this component that original food items had t
 		switch(special_reaction) //return early for special foods
 			if(FOOD_LIKED)
 				// NON-MODULE CHANGE
-				return round(LIKED_FOOD_QUALITY_CHANGE * 1.25)
+				return ceil(LIKED_FOOD_QUALITY_CHANGE)
 			if(FOOD_DISLIKED)
 				// NON-MODULE CHANGE
-				return round(DISLIKED_FOOD_QUALITY_CHANGE * 1.25)
+				return ceil(DISLIKED_FOOD_QUALITY_CHANGE)
 			if(FOOD_TOXIC)
 				return TOXIC_FOOD_QUALITY_THRESHOLD
 			if(FOOD_ALLERGIC)
