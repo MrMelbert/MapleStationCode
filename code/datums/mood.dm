@@ -45,10 +45,6 @@
 	/// Assoc lazylist of mood event types to the next world.time where we show that mood text again, to prevent spam
 	var/list/mood_maptext_cooldowns
 
-	/// Tracks the last mob stat, updates on change
-	/// Used to stop processing SSmood
-	var/last_stat = CONSCIOUS
-
 /datum/mood/New(mob/living/mob_to_make_moody)
 	if (!istype(mob_to_make_moody))
 		stack_trace("Tried to apply mood to a non-living atom!")
@@ -62,7 +58,7 @@
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
 	RegisterSignal(mob_to_make_moody, COMSIG_ENTER_AREA, PROC_REF(check_area_mood))
 	RegisterSignal(mob_to_make_moody, COMSIG_EXIT_AREA, PROC_REF(exit_area))
-	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
+	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_aheal))
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
 	RegisterSignal(mob_to_make_moody, COMSIG_QDELETING, PROC_REF(clear_parent_ref))
 
@@ -81,7 +77,7 @@
 
 	unmodify_hud()
 	mob_parent.lose_area_sensitivity(MOOD_DATUM_TRAIT)
-	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
+	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
 	var/area/our_area = get_area(mob_parent)
 	if(our_area)
 		UnregisterSignal(our_area, COMSIG_AREA_BEAUTY_UPDATED)
@@ -94,34 +90,63 @@
 	return ..()
 
 /datum/mood/process(seconds_per_tick)
+	var/change = 0
+	var/new_min = SANITY_INSANE
+	var/new_max = SANITY_GREAT
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			set_sanity(sanity - 0.3 * seconds_per_tick, SANITY_INSANE)
+			change = -0.3
 		if(MOOD_LEVEL_SAD3)
-			set_sanity(sanity - 0.15 * seconds_per_tick, SANITY_CRAZY)
+			change = -0.15
+			new_min = SANITY_CRAZY
 		if(MOOD_LEVEL_SAD2)
-			set_sanity(sanity - 0.1 * seconds_per_tick, SANITY_UNSTABLE)
+			change = -0.1
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_SAD1)
-			set_sanity(sanity - 0.05 * seconds_per_tick, SANITY_UNSTABLE)
+			change = -0.05
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_NEUTRAL)
-			set_sanity(sanity, SANITY_UNSTABLE) //This makes sure that mood gets increased should you be below the minimum.
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY1)
-			set_sanity(sanity + 0.2 * seconds_per_tick, SANITY_UNSTABLE)
+			change = 0.2
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY2)
-			set_sanity(sanity + 0.3 * seconds_per_tick, SANITY_UNSTABLE)
+			change = 0.3
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY3)
-			set_sanity(sanity + 0.4 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			change = 0.4
+			new_min = SANITY_NEUTRAL
+			new_max = SANITY_MAXIMUM
 		if(MOOD_LEVEL_HAPPY4)
-			set_sanity(sanity + 0.6 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			change = 0.6
+			new_min = SANITY_NEUTRAL
+			new_max = SANITY_MAXIMUM
 
-/datum/mood/proc/handle_mob_death(datum/source)
+	// If our sanity is beneath our new lower threshold,
+	// a significant boost is added to help recover up to it
+	if(sanity < new_min)
+		change += 0.7
+		new_min = SANITY_INSANE
+
+	if(change)
+		adjust_sanity(change * seconds_per_tick, new_min, new_max)
+
+	if(sanity_level >= SANITY_LEVEL_CRAZY && SPT_PROB(sanity_level == SANITY_LEVEL_CRAZY ? 2 : 5, seconds_per_tick))
+		mob_parent.set_jitter_if_lower(3 SECONDS)
+		if(prob(50))
+			mob_parent.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
+		for(var/mood_cat in shuffle(mood_events))
+			var/datum/mood_event/event = mood_events[mood_cat]
+			if(event.insanity_message(sanity))
+				break
+
+/datum/mood/proc/handle_mob_death(datum/source, new_stat, old_stat)
 	SIGNAL_HANDLER
 
-	if (last_stat == DEAD && mob_parent.stat != DEAD)
+	if (old_stat == DEAD && new_stat != DEAD)
 		START_PROCESSING(SSmood, src)
-	else if (last_stat != DEAD && mob_parent.stat == DEAD)
+	else if (old_stat != DEAD && new_stat == DEAD)
 		STOP_PROCESSING(SSmood, src)
-	last_stat = mob_parent.stat
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
@@ -156,11 +181,13 @@
  *
  * Arguments:
  * * category - (text) category of the mood event - see /datum/mood_event for category explanation
- * * type - (path) any /datum/mood_event
+ * * type - (path) any /datum/mood_event (besides /datum/mood_event/conditional)
  */
 /datum/mood/proc/add_mood_event(category, new_type, ...)
 	if (!ispath(new_type, /datum/mood_event))
 		CRASH("A non path ([new_type]), was used to add a mood event. This shouldn't be happening.")
+	if (ispath(new_type, /datum/mood_event/conditional))
+		CRASH("A conditional mood event ([new_type]) was used in add_mood_event. Use add_conditional_mood_event instead.")
 	if (!istext(category))
 		category = REF(category)
 
@@ -170,6 +197,14 @@
 		qdel(new_event)
 		return
 
+	add_mood_event_instance(new_event, params)
+
+/**
+ * Handles adding a mood event instance, including replacing or refreshing existing events
+ */
+/datum/mood/proc/add_mood_event_instance(datum/mood_event/new_event, list/params)
+	PRIVATE_PROC(TRUE)
+	var/category = new_event.category
 	var/datum/mood_event/existing_event = mood_events[category]
 	if(existing_event)
 		var/continue_adding = FALSE
@@ -287,6 +322,43 @@
 	return "<center>[MAPTEXT("<font color='[maptext_color]'>[output]</font>")]</center>"
 
 /**
+ * Adds a conditional mood event to the mob
+ *
+ * Arguments:
+ * * category - (text) category of the mood event - see /datum/mood_event for category explanation
+ * * base_type - (path) any /datum/mood_event/conditional
+ */
+/datum/mood/proc/add_conditional_mood_event(category, datum/base_type, ...)
+	if (!ispath(base_type, /datum/mood_event/conditional))
+		if (ispath(base_type, /datum/mood_event))
+			CRASH("A non-conditional mood event ([base_type]) was used in add_conditional_mood_event. Use add_mood_event instead.")
+		CRASH("A non path ([base_type]), was used to add a mood event. This shouldn't be happening.")
+	if (!istext(category))
+		category = REF(category)
+
+	var/list/params = args.Copy(3)
+	var/list/datum/mood_event/conditional/all_valid_conditional_events = list()
+	for(var/event_subtype in typesof(base_type))
+		var/datum/mood_event/potential_event = new event_subtype(category)
+		if(!potential_event.can_effect_mob(arglist(list(src, mob_parent) + params)))
+			qdel(potential_event)
+			continue
+
+		all_valid_conditional_events += potential_event
+
+	if(!length(all_valid_conditional_events))
+		return //no valid events to add
+
+	var/datum/mood_event/conditional/highest_priority_event
+	for(var/datum/mood_event/conditional/checked_event as anything in all_valid_conditional_events)
+		if(!highest_priority_event || checked_event.priority > highest_priority_event.priority)
+			highest_priority_event = checked_event
+
+	add_mood_event_instance(highest_priority_event, params)
+	all_valid_conditional_events -= highest_priority_event // you are the chosen one
+	QDEL_LIST(all_valid_conditional_events) // clean up the losers
+
+/**
  * Removes a mood event from the mob
  *
  * Arguments:
@@ -304,6 +376,9 @@
 	qdel(event)
 	update_mood()
 
+/datum/mood/proc/get_mood_event(category)
+	return mood_events[category]
+
 /// Updates the mobs mood.
 /// Called after mood events have been added/removed.
 /datum/mood/proc/update_mood()
@@ -311,8 +386,6 @@
 		return
 	mood = 0
 	shown_mood = 0
-
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_MOOD_UPDATE)
 
 	for(var/category in mood_events)
 		var/datum/mood_event/the_event = mood_events[category]
@@ -346,10 +419,11 @@
 			mood_level = MOOD_LEVEL_HAPPY4
 
 	update_mood_icon()
+	SEND_SIGNAL(mob_parent, COMSIG_CARBON_MOOD_UPDATE)
 
 /// Updates the mob's mood icon
 /datum/mood/proc/update_mood_icon()
-	if (!(mob_parent.client || mob_parent.hud_used))
+	if (!(mob_parent.client || mob_parent.hud_used) || isnull(mood_screen_object))
 		return
 
 	mood_screen_object.cut_overlays()
@@ -383,7 +457,7 @@
 		if (SANITY_LEVEL_INSANE)
 			mood_screen_object.color = "#f15d36"
 
-	if (!conflicting_moodies.len) // theres no special icons, use the normal icon states
+	if (!conflicting_moodies.len) // there's no special icons, use the normal icon states
 		mood_screen_object.icon_state = "mood[mood_level]"
 		return
 
@@ -413,6 +487,7 @@
 	if(hud?.infodisplay)
 		hud.infodisplay -= mood_screen_object
 	QDEL_NULL(mood_screen_object)
+	UnregisterSignal(hud, COMSIG_QDELETING)
 
 /// Handles clicking on the mood HUD object
 /datum/mood/proc/hud_click(datum/source, location, control, params, mob/user)
@@ -499,6 +574,11 @@
 			msg += "[span_boldnicegreen("I feel amazing!")]<br>"
 		if(MOOD_LEVEL_HAPPY4)
 			msg += "[span_boldnicegreen("I love life!")]<br>"
+
+	var/list/additional_lines = list()
+	SEND_SIGNAL(user, COMSIG_CARBON_MOOD_CHECK, additional_lines)
+	if (length(additional_lines))
+		msg += "[additional_lines.Join("<br>")]<br>"
 
 	msg += "[span_notice("Moodlets:")]<br>"//All moodlets
 	if(mood_events.len)
@@ -589,24 +669,26 @@
 	UnregisterSignal(old_area, COMSIG_AREA_BEAUTY_UPDATED)
 
 /// Called when parent is ahealed.
-/datum/mood/proc/on_revive(datum/source, full_heal)
+/datum/mood/proc/on_aheal(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
-	if (!full_heal)
+	if (!(heal_flags & HEAL_ADMIN))
 		return
 	remove_temp_moods()
 	set_sanity(initial(sanity), override = TRUE)
 
 /// Sets sanity to the specified amount and applies effects.
-/datum/mood/proc/set_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
-	// If we're out of the acceptable minimum-maximum range move back towards it in steps of 0.7
-	// If the new amount would move towards the acceptable range faster then use it instead
-	if(amount < minimum)
-		amount += clamp(minimum - amount, 0, 0.7)
-	if((!override && HAS_TRAIT(mob_parent, TRAIT_UNSTABLE)) || amount > maximum)
-		amount = min(sanity, amount)
+/datum/mood/proc/set_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_MAXIMUM, override = FALSE)
+	if(!override)
+		if(HAS_TRAIT(mob_parent, TRAIT_UNSTABLE))
+			maximum = sanity
+			minimum = min(minimum, maximum)
+
+	amount = clamp(round(amount, 0.01), minimum, maximum)
+
 	if(amount == sanity) //Prevents stuff from flicking around.
 		return
+
 	sanity = amount
 	SEND_SIGNAL(mob_parent, COMSIG_CARBON_SANITY_UPDATE, amount)
 	switch(sanity)
@@ -648,6 +730,11 @@
 		mob_parent.remove_status_effect(/datum/status_effect/hallucination/sanity)
 
 	update_mood_icon()
+	update_sanity_screen()
+
+/// Sets sanity to a specific amount, useful for callbacks
+/datum/mood/proc/reset_sanity(amount)
+	set_sanity(amount, override = TRUE)
 
 /// Sets sanity to a specific amount, useful for callbacks
 /datum/mood/proc/reset_sanity(amount)
@@ -656,6 +743,93 @@
 /// Adjusts sanity by a value
 /datum/mood/proc/adjust_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
 	set_sanity(sanity + amount, minimum, maximum, override)
+
+/datum/client_colour/sanity
+	fade_in = 2 SECONDS
+	fade_out = 2 SECONDS
+	var/desaturation = 1.0
+
+/datum/client_colour/sanity/New(mob/owner)
+	. = ..()
+	src.colour = color_matrix_saturation(desaturation)
+
+/datum/client_colour/sanity/tier4
+	desaturation = 0.6
+
+/datum/client_colour/sanity/tier3
+	desaturation = 0.7
+
+/datum/client_colour/sanity/tier2
+	desaturation = 0.8
+
+/datum/client_colour/sanity/tier1
+	desaturation = 0.9
+
+/atom/movable/screen/fullscreen/sanity
+	show_when_dead = FALSE
+	icon_state = "passage"
+	layer = UI_DAMAGE_LAYER - 0.1
+	plane = FULLSCREEN_PLANE
+	color = "#270227"
+
+/atom/movable/screen/fullscreen/static_vision/sanity
+	show_when_dead = FALSE
+	color = "#e0e0e0"
+	alpha = 25
+
+/datum/mood/proc/update_sanity_screen()
+	var/obj/old_screen = mob_parent.screens["sanity"]
+	var/old_state = old_screen?.icon_state
+	var/obj/new_screen
+
+	var/esanity = sanity
+	// since you're stuck with your sanity while unstable, the effect is lessened
+	if(HAS_TRAIT(mob_parent, TRAIT_UNSTABLE))
+		if(esanity <= 20)
+			esanity = 30
+		else if(esanity <= 40)
+			esanity = 40
+
+	switch(esanity)
+		if (0 to 10)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 4)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier4, "sanity")
+		if (10 to 20)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 3)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier3, "sanity")
+		if (20 to 30)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 2)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier2, "sanity")
+		if (30 to 40)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 1)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier1, "sanity")
+		else
+			mob_parent.clear_fullscreen("sanity")
+			mob_parent.clear_fullscreen("sanity_static")
+			mob_parent.remove_client_colour("sanity")
+
+	if(new_screen && old_state != new_screen.icon_state)
+		// updating static effect for new sanity level
+		var/had_effect = !!mob_parent.screens["sanity_static"]
+		mob_parent.clear_fullscreen("sanity_static", animated = FALSE)
+		var/obj/staticystuff = mob_parent.overlay_fullscreen("sanity_static", /atom/movable/screen/fullscreen/static_vision/sanity)
+		var/new_alpha = staticystuff.alpha - (esanity * 0.5)
+		if(had_effect)
+			animate(staticystuff, time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+		else
+			staticystuff.alpha = 0
+			animate(staticystuff, time = 0.5 MINUTES, alpha = new_alpha)
+			animate(time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+
+		// resetting filter stuff
+		new_screen.add_filter("sanity_filter", 1, outline_filter(1, "#270227"))
+		new_screen.add_filter("sanity_blur", 2, drop_shadow_filter(1, 1, 10, 0, "#270227"))
+		var/blur = new_screen.get_filter("sanity_blur")
+		// makes a pulsing effect - screen gets darker but the radius gets smaller
+		animate(blur, time = 10 SECONDS, size = 100, loop = -1)
+		animate(time = 10 SECONDS, size = 10, loop = -1)
 
 /// Sets the insanity effect on the mob
 /datum/mood/proc/set_insanity_effect(newval)
@@ -676,11 +850,10 @@
 
 /// Helper to forcefully drain sanity
 /datum/mood/proc/direct_sanity_drain(amount)
-	set_sanity(sanity + amount, override = TRUE)
+	adjust_sanity(amount, override = TRUE)
 
 /**
  * Returns true if you already have a mood from a provided category.
- * You may think to yourself, why am I trying to get a boolean from a component? Well, this system probably should not be a component.
  *
  * Arguments
  * * category - Mood category to validate against.

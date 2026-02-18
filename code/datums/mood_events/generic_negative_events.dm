@@ -12,10 +12,18 @@
 	mood_change = -12
 	event_flags = MOOD_EVENT_FEAR
 
+/datum/mood_event/on_fire/insanity_message(sanity)
+	to_chat(owner, span_userdanger(pick("PUT IT OUT! PUT IT OUT!!", description)))
+	return TRUE
+
 /datum/mood_event/suffocation
 	description = "CAN'T... BREATHE..."
 	mood_change = -12
 	event_flags = MOOD_EVENT_FEAR
+
+/datum/mood_event/suffocation/insanity_message(sanity)
+	to_chat(owner, span_userdanger(pick("AIR! I NEED AIR...", description)))
+	return TRUE
 
 /datum/mood_event/burnt_thumb
 	description = "I shouldn't play with lighters..."
@@ -93,6 +101,10 @@
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_mild)
 	return BLOCK_NEW_MOOD
 
+/datum/mood_event/depression_minimal/insanity_message(sanity)
+	to_chat(owner, span_warning("Things aren't doing so good..."))
+	return TRUE
+
 /datum/mood_event/depression_mild
 	description = "I feel sad for no particular reason."
 	mood_change = -12
@@ -101,6 +113,10 @@
 /datum/mood_event/depression_mild/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_moderate)
 	return BLOCK_NEW_MOOD
+
+/datum/mood_event/depression_mild/insanity_message(sanity)
+	to_chat(owner, span_warning("I feel so empty."))
+	return TRUE
 
 /datum/mood_event/depression_moderate
 	description = "I feel miserable."
@@ -111,15 +127,27 @@
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_severe)
 	return BLOCK_NEW_MOOD
 
+/datum/mood_event/depression_moderate/insanity_message(sanity)
+	to_chat(owner, span_boldwarning("What's the point of anything anymore...?"))
+	return TRUE
+
 /datum/mood_event/depression_severe
 	description = "I've lost all hope."
 	mood_change = -16
 	timeout = 2 MINUTES
 
+/datum/mood_event/depression_severe/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
+
 /datum/mood_event/shameful_suicide //suicide_acts that return SHAME, like sord
 	description = "I can't even end it all!"
 	mood_change = -15
 	timeout = 60 SECONDS
+
+/datum/mood_event/shameful_suicide/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
 
 /datum/mood_event/dismembered
 	description = "AHH! MY LIMB! I WAS USING THAT!"
@@ -129,6 +157,10 @@
 /datum/mood_event/dismembered/add_effects(obj/item/bodypart/limb)
 	if(limb)
 		description = "AHH! MY [uppertext(limb.plaintext_zone)]! I WAS USING THAT!"
+
+/datum/mood_event/dismembered/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
 
 /datum/mood_event/reattachment
 	description = "Ouch! My limb feels like I fell asleep on it."
@@ -200,6 +232,10 @@
 	description = "I hate it in the light...I need to find a darker place..."
 	mood_change = -12
 
+/datum/mood_event/bright_light/insanity_message(sanity)
+	to_chat(owner, span_boldwarning("The light, it burns!!"))
+	return TRUE
+
 /datum/mood_event/family_heirloom_missing
 	description = "I'm missing my family heirloom..."
 	mood_change = -4
@@ -225,6 +261,10 @@
 	description = "I CAN'T BREATHE!!!"
 	mood_change = -10
 	event_flags = MOOD_EVENT_FEAR
+
+/datum/mood_event/choke/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
 
 /datum/mood_event/vomit
 	description = "I just threw up. Gross..."
@@ -307,6 +347,10 @@
 	var/unhinged = uppertext(unstable.Join(""))//example Tinea Luxor > TINEA LUXORRRR (with randomness in how long that slur is)
 	description = "THEY NEEEEEEED [unhinged]!!"
 
+/datum/mood_event/notcreepingsevere/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
+
 /datum/mood_event/tower_of_babel
 	description = "My ability to communicate is an incoherent babel..."
 	mood_change = -1
@@ -351,6 +395,10 @@
 	description = "This is it... I'm really going to die."
 	mood_change = -20
 
+/datum/mood_event/deaths_door/insanity_message(sanity)
+	to_chat(owner, span_userdanger(description))
+	return TRUE
+
 /datum/mood_event/gunpoint
 	description = "This guy is insane! I better be careful..."
 	mood_change = -10
@@ -371,6 +419,10 @@
 	mood_change = -25
 	timeout = 4 MINUTES
 	event_flags = MOOD_EVENT_FEAR
+
+/datum/mood_event/gates_of_mansus/insanity_message(sanity)
+	to_chat(owner, span_boldwarning(description))
+	return TRUE
 
 /datum/mood_event/high_five_alone
 	description = "I tried getting a high-five with no one around, how embarassing!"
@@ -632,113 +684,6 @@
 	if(HAS_TRAIT(owner, TRAIT_SMOKER))
 		description = "Blowing smoke in my face, really?"
 		mood_change = 0
-
-/datum/mood_event/see_death
-	description = "I just saw someone die. How horrible..."
-	mood_change = -8
-	timeout = 5 MINUTES
-	/// Message variant for callous people
-	var/dont_care_message = "Oh, %DEAD_MOB% died. Shame, I guess."
-	/// Message variant for people who care about animals
-	var/pet_message = "%DEAD_MOB% just died!!"
-	/// Message variant for desensitized people (security, medical, cult with halo, etc)
-	var/desensitized_message = "I saw %DEAD_MOB% die."
-	/// Standard message variant
-	var/normal_message = "I just saw %DEAD_MOB% die. How horrible..."
-	/// Naive mobs are immune to the effect
-	var/naive_immune = TRUE
-
-/datum/mood_event/see_death/add_effects(mob/dead_mob)
-	if(isnull(dead_mob))
-		return
-	if(HAS_TRAIT(owner, TRAIT_NAIVE) && naive_immune)
-		description = "Have a good nap, [dead_mob.name]."
-		mood_change = 0
-		timeout *= 0.2
-		return
-	if(HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB))
-		mood_change *= 0.25
-		timeout *= 0.2
-	if(istype(owner.mind?.assigned_role, /datum/job/bitrunning_glitch) || istype(owner.mind?.assigned_role, /datum/job/bit_avatar))
-		// Digital beings shouldn't care about death it's just gaming
-		mood_change *= -0.25
-		description = "Another one bites the dust!"
-		return
-	if(HAS_TRAIT(owner, TRAIT_CULT_HALO) && !HAS_TRAIT(dead_mob, TRAIT_CULT_HALO))
-		// When cultists get halos, they stop caring about death
-		mood_change *= -0.5
-		description = "More souls for the Geometer!"
-		return
-
-	var/ispet = istype(dead_mob, /mob/living/basic/pet) || ismonkey(dead_mob)
-	if(HAS_PERSONALITY(owner, /datum/personality/callous) || (ispet && HAS_PERSONALITY(owner, /datum/personality/animal_disliker)))
-		description = replacetext(dont_care_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-		mood_change = 0
-		timeout *= 0.5
-		return
-	// future todo : make the hop care about ian, cmo runtime, etc.
-	if(ispet)
-		description = replacetext(pet_message, "%DEAD_MOB%", capitalize(dead_mob.name)) // doesn't use a descriptor, so it says "Ian died"
-		if(HAS_PERSONALITY(owner, /datum/personality/animal_friend))
-			mood_change *= 1.5
-			timeout *= 1.25
-		else if(!HAS_PERSONALITY(owner, /datum/personality/compassionate))
-			mood_change *= 0.25
-			timeout *= 0.5
-		return
-	if(HAS_PERSONALITY(owner, /datum/personality/compassionate))
-		mood_change *= 1.5
-		timeout *= 1.5
-	if(HAS_TRAIT(owner, TRAIT_DESENSITIZED))
-		mood_change *= 0.5
-		timeout *= 0.5
-		description = replacetext(desensitized_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-		return
-
-	description = replacetext(normal_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-
-/datum/mood_event/see_death/be_refreshed(datum/mood/home, mob/dead_mob, ...)
-	// Every time we get refreshed we get worse if not desensitized
-	if(!HAS_TRAIT(owner, TRAIT_DESENSITIZED) && !HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB))
-		mood_change *= 1.5
-	return ..()
-
-/datum/mood_event/see_death/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
-	// Only be replaced if the incoming event's base mood is worse than our base mood
-	// (IE: replace normal death events with gib events, but not the other way around)
-	if(initial(new_event.mood_change) > initial(mood_change))
-		new_event.mood_change = max(new_event.mood_change, mood_change * 1.5)
-		return ..()
-	// Otherwise if it's equivalent or worse, refresh it instead
-	return be_refreshed(home)
-
-/// Changes "I saw Joe x" to "I saw the engineer x"
-/datum/mood_event/see_death/proc/get_descriptor(mob/dead_mob)
-	if(isnull(dead_mob))
-		return "something"
-	if(dead_mob.name != "Unknown" && dead_mob.mind?.assigned_role?.job_flags & JOB_CREW_MEMBER)
-		return "the [LOWER_TEXT(dead_mob.mind?.assigned_role.title)]"
-	return "someone"
-
-/datum/mood_event/see_death/gibbed
-	description = "Someone just exploded in front of me!!"
-	mood_change = -12
-	timeout = 10 MINUTES
-	dont_care_message = "Oh, %DEAD_MOB% exploded. Now I have to get the mop."
-	pet_message = "%DEAD_MOB% just exploded!!"
-	desensitized_message = "I saw %DEAD_MOB% explode."
-	normal_message = "%DEAD_MOB% just exploded in front of me!!"
-	naive_immune = FALSE
-
-/datum/mood_event/see_death/dusted
-	description = "Someone was just vaporized in front of me!! I don't feel so good..."
-	mood_change = -12
-	timeout = 10 MINUTES
-	dont_care_message = "Oh, %DEAD_MOB% was vaporized. Now I have to get the dustpan."
-	pet_message = "%DEAD_MOB% just vaporized!!"
-	desensitized_message = "I saw %DEAD_MOB% get vaporized."
-	normal_message = "%DEAD_MOB% was just vaporized in front of me!!"
-	naive_immune = FALSE
 
 /datum/mood_event/slots/loss
 	description = "Aww dang it!"
