@@ -12,18 +12,10 @@
 	mood_change = -12
 	event_flags = MOOD_EVENT_FEAR
 
-/datum/mood_event/on_fire/insanity_message(sanity)
-	to_chat(owner, span_userdanger(pick("PUT IT OUT! PUT IT OUT!!", description)))
-	return TRUE
-
 /datum/mood_event/suffocation
 	description = "CAN'T... BREATHE..."
 	mood_change = -12
 	event_flags = MOOD_EVENT_FEAR
-
-/datum/mood_event/suffocation/insanity_message(sanity)
-	to_chat(owner, span_userdanger(pick("AIR! I NEED AIR...", description)))
-	return TRUE
 
 /datum/mood_event/burnt_thumb
 	description = "I shouldn't play with lighters..."
@@ -101,10 +93,6 @@
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_mild)
 	return BLOCK_NEW_MOOD
 
-/datum/mood_event/depression_minimal/insanity_message(sanity)
-	to_chat(owner, span_warning("Things aren't doing so good..."))
-	return TRUE
-
 /datum/mood_event/depression_mild
 	description = "I feel sad for no particular reason."
 	mood_change = -12
@@ -113,10 +101,6 @@
 /datum/mood_event/depression_mild/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_moderate)
 	return BLOCK_NEW_MOOD
-
-/datum/mood_event/depression_mild/insanity_message(sanity)
-	to_chat(owner, span_warning("I feel so empty."))
-	return TRUE
 
 /datum/mood_event/depression_moderate
 	description = "I feel miserable."
@@ -127,27 +111,15 @@
 	home.add_mood_event(new_event.category, /datum/mood_event/depression_severe)
 	return BLOCK_NEW_MOOD
 
-/datum/mood_event/depression_moderate/insanity_message(sanity)
-	to_chat(owner, span_boldwarning("What's the point of anything anymore...?"))
-	return TRUE
-
 /datum/mood_event/depression_severe
 	description = "I've lost all hope."
 	mood_change = -16
 	timeout = 2 MINUTES
 
-/datum/mood_event/depression_severe/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
-
 /datum/mood_event/shameful_suicide //suicide_acts that return SHAME, like sord
 	description = "I can't even end it all!"
 	mood_change = -15
 	timeout = 60 SECONDS
-
-/datum/mood_event/shameful_suicide/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
 
 /datum/mood_event/dismembered
 	description = "AHH! MY LIMB! I WAS USING THAT!"
@@ -157,10 +129,6 @@
 /datum/mood_event/dismembered/add_effects(obj/item/bodypart/limb)
 	if(limb)
 		description = "AHH! MY [uppertext(limb.plaintext_zone)]! I WAS USING THAT!"
-
-/datum/mood_event/dismembered/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
 
 /datum/mood_event/reattachment
 	description = "Ouch! My limb feels like I fell asleep on it."
@@ -232,10 +200,6 @@
 	description = "I hate it in the light...I need to find a darker place..."
 	mood_change = -12
 
-/datum/mood_event/bright_light/insanity_message(sanity)
-	to_chat(owner, span_boldwarning("The light, it burns!!"))
-	return TRUE
-
 /datum/mood_event/family_heirloom_missing
 	description = "I'm missing my family heirloom..."
 	mood_change = -4
@@ -261,10 +225,6 @@
 	description = "I CAN'T BREATHE!!!"
 	mood_change = -10
 	event_flags = MOOD_EVENT_FEAR
-
-/datum/mood_event/choke/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
 
 /datum/mood_event/vomit
 	description = "I just threw up. Gross..."
@@ -347,10 +307,6 @@
 	var/unhinged = uppertext(unstable.Join(""))//example Tinea Luxor > TINEA LUXORRRR (with randomness in how long that slur is)
 	description = "THEY NEEEEEEED [unhinged]!!"
 
-/datum/mood_event/notcreepingsevere/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
-
 /datum/mood_event/tower_of_babel
 	description = "My ability to communicate is an incoherent babel..."
 	mood_change = -1
@@ -395,10 +351,6 @@
 	description = "This is it... I'm really going to die."
 	mood_change = -20
 
-/datum/mood_event/deaths_door/insanity_message(sanity)
-	to_chat(owner, span_userdanger(description))
-	return TRUE
-
 /datum/mood_event/gunpoint
 	description = "This guy is insane! I better be careful..."
 	mood_change = -10
@@ -419,10 +371,6 @@
 	mood_change = -25
 	timeout = 4 MINUTES
 	event_flags = MOOD_EVENT_FEAR
-
-/datum/mood_event/gates_of_mansus/insanity_message(sanity)
-	to_chat(owner, span_boldwarning(description))
-	return TRUE
 
 /datum/mood_event/high_five_alone
 	description = "I tried getting a high-five with no one around, how embarassing!"

@@ -172,7 +172,7 @@
 /mob/living/simple_animal/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
 	return // I don't care about you anymore
 
-/mob/living/carbon/human/send_death_moodlets(datum/mood_event/moodlet)
+/mob/living/carbon/human/send_death_moodlets(dusted = FALSE, gibbed = FALSE)
 	// Deaths of people undergoing surgery don't count
 	// otherwise surgeons would be depressed and that would be too realistic
 	if(HAS_TRAIT(src, TRAIT_READY_TO_OPERATE))

@@ -24,11 +24,6 @@
 	var/mob/living/owner
 	/// List of required jobs for this mood event
 	var/list/required_job
-	/// Color of the maptext for this mood event, if applicable
-	/// If null defaults to picking it based on intensity
-	var/screentext_color
-	/// Cooldown between showing text for this mood event if the mood event is applied multiple times
-	var/screentext_cooldown = 20 SECONDS
 
 /datum/mood_event/New(category)
 	src.category = category
@@ -109,10 +104,14 @@
 	if(timeout)
 		addtimer(CALLBACK(home, TYPE_PROC_REF(/datum/mood, clear_mood_event), category), timeout, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT))
 
-/// Called when someone is suffering from this mood event and is crazy or insane
-/// Return TRUE to handle the message, ie no other mood events are checked
-/datum/mood_event/proc/insanity_message(sanity)
-	return FALSE
+/// Called when someone affected by this mood event has an insanity event happen to them
+/// Returning TRUE will prevent other events from applying their own insanity effects
+/datum/mood_event/proc/insanity_effect(sanity)
+	if(mood_change >= 0)
+		return FALSE
+	if(prob(10))
+		mob_parent.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
+	return TRUE
 
 /**
  * Called when added to a mob

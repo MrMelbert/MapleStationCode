@@ -133,11 +133,9 @@
 
 	if(sanity_level >= SANITY_LEVEL_CRAZY && SPT_PROB(sanity_level == SANITY_LEVEL_CRAZY ? 2 : 5, seconds_per_tick))
 		mob_parent.set_jitter_if_lower(3 SECONDS)
-		if(prob(50))
-			mob_parent.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
 		for(var/mood_cat in shuffle(mood_events))
 			var/datum/mood_event/event = mood_events[mood_cat]
-			if(event.insanity_message(sanity))
+			if(event.insanity_effect(sanity))
 				break
 
 /datum/mood/proc/handle_mob_death(datum/source, new_stat, old_stat)
