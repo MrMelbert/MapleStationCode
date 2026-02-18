@@ -24,6 +24,11 @@
 	var/mob/living/owner
 	/// List of required jobs for this mood event
 	var/list/required_job
+	/// Color of the moodlet's screen text
+	/// If null/unset is auto-picked based on mood intensity
+	var/screentext_color
+	/// Cooldown between allowing the same type of mood event from showing screentext
+	var/screentext_cooldown = 20 SECONDS
 
 /datum/mood_event/New(category)
 	src.category = category
@@ -110,7 +115,7 @@
 	if(mood_change >= 0)
 		return FALSE
 	if(prob(10))
-		mob_parent.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
+		owner.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
 	return TRUE
 
 /**
