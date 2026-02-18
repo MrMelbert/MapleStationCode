@@ -190,13 +190,15 @@
 
 /obj/effect/decal/cleanable/blood/proc/refresh_smells()
 	clear_smells()
-	var/list/unique_blood = list()
+	var/list/unique_smells = list()
 	for(var/some_dna, blood_type in GET_ATOM_BLOOD_DNA(src))
-		unique_blood[blood_type] += 1
-	for(var/blood_type, count in unique_blood)
 		var/datum/blood_type/blood = find_blood_type(blood_type)
-		if(blood.scent_text)
-			add_smell(blood.scent_text, blood.scent_category, count / values_sum(unique_blood))
+		if(!blood.scent_text)
+			continue
+		unique_smells["[blood.scent_text]-[blood.scent_category]"] += 1
+	for(var/blood_smell, count in unique_smells)
+		var/resplit_smell = splittext(blood_smell, "-")
+		add_smell(text2path(resplit_smell[1]) || resplit_smell[1], resplit_smell[2], count / GET_ATOM_BLOOD_DNA_LENGTH(src))
 	last_bloodiness_refresh = bloodiness
 
 /obj/effect/decal/cleanable/blood/proc/clear_smells()

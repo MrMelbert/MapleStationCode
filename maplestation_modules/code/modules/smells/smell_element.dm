@@ -2,10 +2,22 @@
 /proc/get_smell(smell, category = /datum/smell::category, smell_basetype = /datum/smell)
 	var/static/list/smell_register = list()
 
-	var/key = "[smell]-[category]-[ispath(smell, /datum/smell) ? smell : smell_basetype]"
+	var/key = "[smell]"
+	if(istext(smell))
+		key += "-[category]-[smell_basetype]"
 
 	. = smell_register[key]
 	if(isnull(.))
+#ifdef UNIT_TESTS
+		for(var/key in smell_register)
+			var/datum/smell/smell = smell_register[key]
+			if(smell.text != smell || smell.category != category)
+				continue
+			if(smell.type == smell)
+				stack_trace("Smell register has an instantiated smell, but failed to retrieve it with key [key].")
+			else
+				stack_trace("Smell register has a smell of matching text and category, but failed to retrieve it with key [key].")
+#endif
 		if(ispath(smell, /datum/smell))
 			. = new smell()
 			smell_register[key] = .
