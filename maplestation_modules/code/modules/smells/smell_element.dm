@@ -10,10 +10,10 @@
 	if(isnull(.))
 #ifdef UNIT_TESTS
 		for(var/key in smell_register)
-			var/datum/smell/smell = smell_register[key]
-			if(smell.text != smell || smell.category != category)
+			var/datum/smell/smell_datum = smell_register[key]
+			if(smell_datum.text != smell || smell_datum.category != category)
 				continue
-			if(smell.type == smell)
+			if(smell_datum.type == smell)
 				stack_trace("Smell register has an instantiated smell, but failed to retrieve it with key [key].")
 			else
 				stack_trace("Smell register has a smell of matching text and category, but failed to retrieve it with key [key].")
