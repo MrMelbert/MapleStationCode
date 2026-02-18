@@ -2,7 +2,7 @@
 	name = "EVA"
 	title = "EVA Training"
 	blurb = "Space is long and dark and empty."
-	grants_you = "more effective use of EVA gear"
+	grants_you = "reduced slowdown by EVA equipment"
 	modifiers = list(
 		// EVA gear speed modifier
 		SKILL_SPEED_MODIFIER = list(
@@ -48,4 +48,7 @@
 	return slowdown * for_who.get_skill_modifier(/datum/skill/eva, SKILL_SPEED_MODIFIER)
 
 /obj/item/mod/control/get_slowdown(mob/living/for_who)
+	return slowdown * for_who.get_skill_modifier(/datum/skill/eva, SKILL_SPEED_MODIFIER)
+
+/obj/item/clothing/shoes/magboots/get_slowdown(mob/living/for_who)
 	return slowdown * for_who.get_skill_modifier(/datum/skill/eva, SKILL_SPEED_MODIFIER)

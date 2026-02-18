@@ -3,7 +3,7 @@
 	title = "Cleaner"
 	blurb = "It's not who I am underneath, but what I mop up that defines me."
 	earned_by = "cleaning grime and blood"
-	grants_you = "an improved proficiency with cleaning tools"
+	grants_you = "improved proficiency with cleaning tools"
 	modifiers = list(
 		// speed also touches probability in using up a soap's charge
 		SKILL_SPEED_MODIFIER = list(

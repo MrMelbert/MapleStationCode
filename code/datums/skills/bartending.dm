@@ -3,7 +3,7 @@
 	title = "Mixologist"
 	blurb = "It's time to mix drinks and change lives."
 	earned_by = "mixing drinks"
-	// grants_you = "tastier drinks"
+	// grants_you = "tastier drinks" // to implement when fermichem is gone
 	modifiers = list()
 
 /**

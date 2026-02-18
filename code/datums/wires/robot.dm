@@ -108,12 +108,10 @@
 	// NON-MODULE CHANGE
 	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
-
 	return ..()
 
 /datum/wires/robot/always_reveal_wire(color)
 	// Always reveal the reset model wire.
 	if(color == get_color_of_wire(WIRE_RESET_MODEL))
 		return TRUE
-
 	return ..()

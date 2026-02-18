@@ -293,7 +293,6 @@
 	// new/obj/item/skillchip/job/roboticist(src)
 	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
 	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
-	new /obj/item/skillchip/job/skills(src, null, /datum/job/roboticist)
 	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
 	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
 	new /obj/item/skillchip/job/skills(src, null, /datum/job/scientist)
