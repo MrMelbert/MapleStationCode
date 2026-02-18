@@ -38,10 +38,10 @@
 	/// Tracks the bloodiness at the last time we refreshed smells, we can avoid refreshing until a significant change has been made
 	VAR_PRIVATE/last_bloodiness_refresh = 0
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	. = ..()
-	if(mapload)
-		add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+	if(mapload || starting_dna)
+		init_dna(starting_dna)
 	if(dried)
 		dry()
 	else if(can_dry)
@@ -51,6 +51,9 @@
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
 	return ..()
+
+/obj/effect/decal/cleanable/blood/proc/init_dna(list/starting_dna)
+	add_blood_DNA(starting_dna || list("UNKNOWN DNA" = random_human_blood_type()))
 
 /obj/effect/decal/cleanable/blood/on_entered(datum/source, atom/movable/AM)
 	if(dried)
@@ -267,7 +270,7 @@
 	/// All the components of the trail
 	var/list/obj/effect/decal/cleanable/blood/trail/trail_components
 
-/obj/effect/decal/cleanable/blood/trail_holder/Initialize(mapload)
+/obj/effect/decal/cleanable/blood/trail_holder/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	. = ..()
 	icon_state = ""
 	if(mapload)
@@ -392,7 +395,7 @@
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
-/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
 
@@ -490,7 +493,7 @@
 	dry_prefix = ""
 	dry_desc = ""
 
-/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
@@ -534,7 +537,7 @@
 /obj/effect/decal/cleanable/blood/footprints/get_save_vars()
 	return ..() - NAMEOF(src, icon_state)
 
-/obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
+/obj/effect/decal/cleanable/blood/footprints/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
@@ -647,7 +650,7 @@
 	/// Tracks what direction we're flying
 	var/flight_dir = NONE
 
-/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, list/datum/disease/diseases, splatter_strength)
+/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, list/datum/disease/diseases, list/starting_dna, splatter_strength)
 	. = ..()
 	prev_loc = loc //Just so we are sure prev_loc exists
 	if(splatter_strength)
@@ -751,9 +754,9 @@
 /obj/effect/decal/cleanable/blood/pre_dna
 	var/list/dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus)
 
-/obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload)
-	. = ..()
-	add_blood_DNA(dna_types)
+/obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
+	starting_dna = dna_types
+	return ..()
 
 /obj/effect/decal/cleanable/blood/pre_dna/lizard
 	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/lizard)

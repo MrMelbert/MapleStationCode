@@ -1397,8 +1397,7 @@
 	if(!islist(blood_dna))
 		CRASH("spray_blood called without a valid blood_dna list!")
 
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, splatter_strength)
-	our_splatter.add_blood_DNA(blood_dna)
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, blood_dna, splatter_strength)
 	our_splatter.fly_towards(get_ranged_target_turf(src, splatter_direction, splatter_strength), splatter_strength)
 
 /mob/living/carbon/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)
