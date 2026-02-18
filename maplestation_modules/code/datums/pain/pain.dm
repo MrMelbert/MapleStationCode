@@ -262,14 +262,12 @@
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 			set_pain_modifier(PAINSHOCK, 1.2)
 			parent.add_max_consciousness_value(PAINSHOCK, 60)
-			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	else
 		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 			unset_pain_modifier(PAINSHOCK)
 			parent.remove_max_consciousness_value(PAINSHOCK)
-			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 #ifdef HEALTH_DEBUG
@@ -486,16 +484,6 @@
 		if(SPT_PROB(2, seconds_per_tick))
 			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
 
-	if((traumatic_shock >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
-		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
-			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
-			parent.adjust_eye_blur_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
-			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
-			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-
 	if((traumatic_shock >= 40 || curr_pain >= 80) && parent.stat != HARD_CRIT)
 		if(SPT_PROB(traumatic_shock / 60, seconds_per_tick))
 			//parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
@@ -558,9 +546,6 @@
 						to_chat(parent, span_userdanger("You feel your body shutting down!"))
 	else
 		heart_attack_counter = 0
-
-	if(traumatic_shock >= SHOCK_CRIT_THRESHOLD || curr_pain >= PAIN_CRIT_THRESOLD)
-		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 120 SECONDS)
 
 	parent.paincrit_check()
 

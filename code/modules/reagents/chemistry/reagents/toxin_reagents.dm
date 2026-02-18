@@ -901,14 +901,6 @@
 	if(current_cycle > 22)
 		affected_mob.Sleeping(40 * REM * normalise_creation_purity() * seconds_per_tick)
 
-/datum/reagent/nitroglycerin/on_mob_metabolize(mob/living/carbon/user)
-	. = ..()
-	ADD_TRAIT(user, TRAIT_HEART_RATE_SLOW, type)
-
-/datum/reagent/nitroglycerin/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
-
 /datum/reagent/toxin/amanitin
 	name = "Amanitin"
 	description = "A very powerful delayed toxin. Upon full metabolization, a massive amount of toxin damage will be dealt depending on how long it has been in the victim's bloodstream."
