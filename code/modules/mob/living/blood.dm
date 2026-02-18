@@ -111,7 +111,6 @@
 
 	if(temp_bleed)
 		bleed(temp_bleed)
-		bleed_warn(temp_bleed)
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
@@ -148,62 +147,6 @@
 /mob/living/carbon/human/get_bleed_rate()
 	. = ..()
 	. *= physiology.bleed_mod
-
-/**
- * bleed_warn() is used to for carbons with an active client to occasionally receive messages warning them about their bleeding status (if applicable)
- *
- * Arguments:
- * * bleed_amt- When we run this from [/mob/living/carbon/human/proc/handle_blood] we already know how much blood we're losing this tick, so we can skip tallying it again with this
- * * forced-
- */
-/mob/living/carbon/proc/bleed_warn(bleed_amt = get_bleed_rate(), forced = FALSE)
-	// NON-MODULE CHANGE for blood
-	if(!client || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
-	if((!COOLDOWN_FINISHED(src, bleeding_message_cd) || HAS_TRAIT(src, TRAIT_KNOCKEDOUT)) && !forced)
-		return
-
-	var/bleeding_severity = ""
-	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD
-
-	switch(bleed_amt)
-		if(-INFINITY to 0)
-			return
-		if(0 to 1)
-			bleeding_severity = "You feel light trickles of blood across your skin"
-			next_cooldown *= 2.5
-		if(1 to 3)
-			bleeding_severity = "You feel a small stream of blood running across your body"
-			next_cooldown *= 2
-		if(3 to 5)
-			bleeding_severity = "You skin feels clammy from the flow of blood leaving your body"
-			next_cooldown *= 1.7
-		if(5 to 7)
-			bleeding_severity = "Your body grows more and more numb as blood streams out"
-			next_cooldown *= 1.5
-		if(7 to INFINITY)
-			bleeding_severity = "Your heartbeat thrashes wildly trying to keep up with your bloodloss"
-
-	var/rate_of_change = ", but it's getting better." // if there's no wounds actively getting bloodier or maintaining the same flow, we must be getting better!
-	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
-		rate_of_change = ", but it's clotting up quickly!"
-	else
-		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/datum/wound/iter_wound as anything in all_wounds)
-			if(!iter_wound.blood_flow)
-				continue
-			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
-			switch(iter_wound_roc)
-				if(BLOOD_FLOW_INCREASING) // assume the worst, if one wound is getting bloodier, we focus on that
-					rate_of_change = ", <b>and it's getting worse!</b>"
-					break
-				if(BLOOD_FLOW_STEADY) // our best case now is that our bleeding isn't getting worse
-					rate_of_change = ", and it's holding steady."
-				if(BLOOD_FLOW_DECREASING) // this only matters if none of the wounds fit the above two cases, included here for completeness
-					continue
-
-	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
-	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
 /mob/living/proc/restore_blood()
 	blood_volume = initial(blood_volume)

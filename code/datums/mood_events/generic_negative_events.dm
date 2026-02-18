@@ -215,6 +215,7 @@
 /datum/mood_event/jittery
 	description = "I'm nervous and on edge and I can't stand still!!"
 	mood_change = -2
+	screentext_cooldown = 1 MINUTES
 
 /datum/mood_event/jittery/add_effects(...)
 	if(HAS_PERSONALITY(owner, /datum/personality/paranoid))

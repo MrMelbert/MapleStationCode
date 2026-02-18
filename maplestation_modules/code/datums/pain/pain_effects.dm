@@ -181,3 +181,78 @@
 /datum/status_effect/revival_sickess/proc/died_again(...)
 	SIGNAL_HANDLER
 	qdel(src)
+
+/datum/mood_event/compound_fracture
+	description = "I'm pretty sure that bone is not supposed to be there!"
+	mood_change = -8
+
+/mob/living/carbon/proc/bleed_rate_changed()
+	var/sum_blood_flow = get_total_bleed_rate()
+	if(HAS_MIND_TRAIT(src, TRAIT_MORBID))
+		sum_blood_flow *= 0.25
+	if(HAS_PERSONALITY(src, /datum/personality/apathetic) || HAS_PERSONALITY(src, /datum/personality/brave))
+		sum_blood_flow *= 0.5
+	if(HAS_PERSONALITY(src, /datum/personality/paranoid) || HAS_PERSONALITY(src, /datum/personality/cowardly))
+		sum_blood_flow *= 2
+
+	switch(sum_blood_flow)
+		if(-INFINITY to 0)
+			clear_mood_event("bleeding")
+		if(0 to 1)
+			mob_mood?.add_mood_event("bleeding", /datum/mood_event/bleeding/low)
+		if(1 to 3)
+			mob_mood?.add_mood_event("bleeding", /datum/mood_event/bleeding/med)
+		if(3 to 5)
+			mob_mood?.add_mood_event("bleeding", /datum/mood_event/bleeding/high)
+		if(5 to 7)
+			mob_mood?.add_mood_event("bleeding", /datum/mood_event/bleeding/vhigh)
+		if(7 to INFINITY)
+			mob_mood?.add_mood_event("bleeding", /datum/mood_event/bleeding/critical)
+
+/datum/mood_event/bleeding
+	var/downgrade_description = ""
+	var/upgrade_description = ""
+
+/datum/mood_event/bleeding/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	if(istype(new_event, /datum/mood_event/bleeding))
+		var/datum/mood_event/bleeding/new_bleeding_event = new_event
+		new_bleeding_event.replacing(src)
+		return ALLOW_NEW_MOOD
+	return BLOCK_NEW_MOOD
+
+/datum/mood_event/bleeding/proc/replacing(datum/mood_event/bleeding/existing_event)
+	if(existing_event.mood_change < mood_change) // inverted because more negative = worse
+		description = downgrade_description
+	if(existing_event.mood_change > mood_change) // inverted because less negative = better
+		description = upgrade_description
+	if(!description)
+		stack_trace("[existing_event.type] to [type] has no description set!")
+		description = initial(description)
+
+/datum/mood_event/bleeding/low
+	description = "Just a scrape."
+	downgrade_description = "Phew, bleeding's almost stopped."
+	mood_change = -1
+
+/datum/mood_event/bleeding/med
+	description = "I'm bleeding..."
+	downgrade_description = "I think the bleeding's slowing down."
+	upgrade_description = "I think i'm bleeding more than I thought."
+	mood_change = -3
+
+/datum/mood_event/bleeding/high
+	description = "I'm bleeding a lot!"
+	downgrade_description = "The bleeding is getting better, but I'm still losing a lot of blood."
+	upgrade_description = "The bleeding is getting worse, I need to stop it!"
+	mood_change = -6
+
+/datum/mood_event/bleeding/vhigh
+	description = "The blood won't stop!"
+	downgrade_description = "The bleeding is getting better, but I'm still losing a dangerous amount of blood."
+	upgrade_description = "The bleeding is getting worse, I need to stop it fast!"
+	mood_change = -8
+
+/datum/mood_event/bleeding/critical
+	description = "I'm losing so much blood!!"
+	upgrade_description = "The bleeding can't get any worse, I need to stop it immediately!"
+	mood_change = -12

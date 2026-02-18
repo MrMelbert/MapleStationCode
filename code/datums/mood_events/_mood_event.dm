@@ -27,6 +27,8 @@
 	/// Color of the maptext for this mood event, if applicable
 	/// If null defaults to picking it based on intensity
 	var/screentext_color
+	/// Cooldown between showing text for this mood event if the mood event is applied multiple times
+	var/screentext_cooldown = 20 SECONDS
 
 /datum/mood_event/New(category)
 	src.category = category

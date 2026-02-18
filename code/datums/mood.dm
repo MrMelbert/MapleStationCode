@@ -40,8 +40,8 @@
 	var/atom/movable/screen/mood/mood_screen_object
 	/// List of mood events currently active on this datum
 	var/list/mood_events = list()
-	/// Counts number of maptexts currently active so we can avoid stacking them on top of each other
-	var/active_mood_maptexts = 0
+	/// Lazylist that maps mood text slots currently active so we can avoid stacking them on top of each other
+	var/list/active_mood_maptexts
 	/// Assoc lazylist of mood event types to the next world.time where we show that mood text again, to prevent spam
 	var/list/mood_maptext_cooldowns
 
@@ -186,15 +186,7 @@
 	new_event.on_add(src, mob_parent, params)
 	mood_events[category] = new_event
 	update_mood()
-
-	var/mood_text_setting = mob_parent.client?.prefs.read_preference(/datum/preference/numeric/mood_text_alpha) || 0
-	if(mood_text_setting > 0 && LAZYACCESS(mood_maptext_cooldowns, new_event.type) <= world.time)
-		var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, new_event, active_mood_maptexts)
-		new_maptext.alpha = 255 * mood_text_setting
-		active_mood_maptexts += 1
-		mob_parent.client.screen += new_maptext
-		addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
-		LAZYSET(mood_maptext_cooldowns, new_event.type, world.time + 30 SECONDS) // arbitrary 30s cd
+	show_mood_maptext(new_event)
 
 	if(new_event.mood_change == 0 || new_event.hidden)
 		return
@@ -209,12 +201,28 @@
 			/datum/personality/misanthropic = /datum/mood_event/misanthropic_happy
 		), range = 4)
 
-/datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade)
-	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
-	addtimer(CALLBACK(src, PROC_REF(clear_mood_maptext), maptext_to_fade), 2 SECONDS)
+/datum/mood/proc/show_mood_maptext(datum/mood_event/event)
+	if(isnull(mob_parent.client) || mob_parent.stat >= UNCONSCIOUS || LAZYACCESS(mood_maptext_cooldowns, event.type) > world.time)
+		return
+	LAZYINITLISTLEN(active_mood_maptexts, mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_cap))
+	var/first_open_index = 1
+	while(LAZYACCESS(active_mood_maptexts, first_open_index))
+		first_open_index += 1
+	if(first_open_index > LAZYLEN(active_mood_maptexts))
+		return
+	var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, event, first_open_index)
+	new_maptext.alpha = 255 * mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_alpha)
+	mob_parent.client.screen += new_maptext
+	addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext, first_open_index), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
+	LAZYSET(active_mood_maptexts, first_open_index, REF(new_maptext))
+	LAZYSET(mood_maptext_cooldowns, event.type, world.time + event.screentext_cooldown)
 
-/datum/mood/proc/clear_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_clear)
-	active_mood_maptexts -= 1
+/datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade, index)
+	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
+	addtimer(CALLBACK(src, PROC_REF(clear_mood_maptext), maptext_to_fade, index), 2 SECONDS)
+
+/datum/mood/proc/clear_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_clear, index)
+	LAZYSET(active_mood_maptexts, index, null)
 	mob_parent.client?.screen -= maptext_to_clear
 	qdel(maptext_to_clear)
 

@@ -35,7 +35,7 @@
 	obj/item/weapon,
 	harmful = weapon?.is_embed_harmless(),
 )
-	addtimer(CALLBACK(src, PROC_REF(embed_msg), victim, limb, weapon, harmful), 0.2 SECONDS)
+	// addtimer(CALLBACK(src, PROC_REF(embed_msg), victim, limb, weapon, harmful), 0.2 SECONDS)
 	if(harmful)
 		playsound(victim, pick(
 			'maplestation_modules/sound/items/bullets/bullet_meat1.ogg',
@@ -44,10 +44,10 @@
 			'maplestation_modules/sound/items/bullets/bullet_meat4.ogg',
 		), 40)
 
-/datum/embed_data/bullet/proc/embed_msg(mob/living/carbon/victim, obj/item/bodypart/limb, obj/item/weapon, harmful = TRUE)
-	if(QDELETED(victim) || QDELETED(limb) || QDELETED(weapon) || limb.owner != victim || victim.stat == DEAD)
-		return
-	to_chat(victim, span_userdanger("You feel a [(CAN_FEEL_PAIN(victim) && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
+// /datum/embed_data/bullet/proc/embed_msg(mob/living/carbon/victim, obj/item/bodypart/limb, obj/item/weapon, harmful = TRUE)
+// 	if(QDELETED(victim) || QDELETED(limb) || QDELETED(weapon) || limb.owner != victim || victim.stat == DEAD)
+// 		return
+// 	to_chat(victim, span_danger("You feel a [(CAN_FEEL_PAIN(victim) && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
 
 /datum/embed_data/bullet/pellet
 	blood_loss = 0.01

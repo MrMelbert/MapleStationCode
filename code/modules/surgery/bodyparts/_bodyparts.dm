@@ -1335,7 +1335,7 @@
 
 	var/old_bleed_rate = cached_bleed_rate
 	cached_bleed_rate = 0
-	if(!owner)
+	if(isnull(owner))
 		return
 
 	if(!can_bleed())
@@ -1388,6 +1388,7 @@
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?
 	if(cached_bleed_rate != old_bleed_rate)
 		update_part_wound_overlay()
+		addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/living/carbon, bleed_rate_changed)), 1, TIMER_UNIQUE|TIMER_DELETE_ME)
 
 	return cached_bleed_rate
 

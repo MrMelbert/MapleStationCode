@@ -81,8 +81,8 @@
 		return FALSE
 
 	owner.visible_message(
-		span_danger("[owner]'s body slackens noticeably!"),
-		span_boldwarning("Your adrenaline rush dies off, and the pain from your wounds come aching back in..."),
+		span_warning("[owner]'s body slackens noticeably!"),
+		span_grey("Your adrenaline rush dies off, and the pain from your wounds come aching back in..."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/determination_crash)
