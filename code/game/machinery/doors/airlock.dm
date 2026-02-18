@@ -475,7 +475,7 @@
 /obj/machinery/door/airlock/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
 	if(!hasPower()) // unpowered, no shock
 		return FALSE
-	if(HAS_TRAIT(user, TRAIT_AIRLOCK_SHOCKIMMUNE)) // Be a bit more clever man come on
+	if(HAS_TRAIT(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE)) // Be a bit more clever man come on
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, shockCooldown))
 		return FALSE //Already shocked someone recently?
@@ -483,8 +483,8 @@
 		return FALSE
 	COOLDOWN_START(src, shockCooldown, 1 SECONDS)
 	// Provides timed airlock shock immunity, to prevent overly cheesy deathtraps
-	ADD_TRAIT(user, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src))
-	addtimer(TRAIT_CALLBACK_REMOVE(user, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src)), 1 SECONDS)
+	ADD_TRAIT(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src))
+	addtimer(TRAIT_CALLBACK_REMOVE(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src)), 1 SECONDS)
 	return TRUE
 
 /obj/machinery/door/airlock/proc/is_secure()

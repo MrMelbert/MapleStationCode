@@ -318,8 +318,6 @@
 /obj/structure/grille/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff = 1)
 	if(!anchored || broken) // anchored/broken grilles are never connected
 		return FALSE
-	if(!in_range(src, user))//To prevent TK and mech users from getting shocked
-		return FALSE
 	var/turf/grill_loc = get_turf(src)
 	if(grill_loc.overfloor_placed)//cant be a floor in the way!
 		return FALSE

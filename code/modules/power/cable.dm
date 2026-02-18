@@ -575,10 +575,6 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 /obj/item/stack/cable_coil/proc/try_heal_loop(atom/interacting_with, mob/living/user, repeating = FALSE)
 	var/mob/living/carbon/human/attacked_humanoid = interacting_with
-	var/obj/item/clothing/under/uniform = attacked_humanoid.w_uniform
-	if(uniform?.repair_sensors(user))
-		return ITEM_INTERACT_SUCCESS
-
 	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(check_zone(user.zone_selected))
 	if(isnull(affecting) || !IS_ROBOTIC_LIMB(affecting))
 		return NONE
@@ -594,7 +590,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	if(user == attacked_humanoid)
 		use_delay = 5 SECONDS
 
-	delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
+	use_delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
 	if(!use_tool(user, use_delay, attacked_humanoid, amount = 1))
 		return ITEM_INTERACT_BLOCKING
 

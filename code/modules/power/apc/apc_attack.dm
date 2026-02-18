@@ -154,7 +154,7 @@
 	return TRUE
 
 /obj/machinery/power/apc/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
-	if(isalien(user))
+	if(isalien(shocking))
 		return FALSE
 	shock_source = src
 	return ..()
