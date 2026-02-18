@@ -30,8 +30,8 @@
 	add_verb(src, /mob/living/proc/mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_resting)
 
-	set_blood_type(initial_blood_type) // needs to be done before bodyparts and organs
 	create_bodyparts() //initialize bodyparts
+	set_blood_type(initial_blood_type) // needs to be done after bodyparts but before organs..... ew
 	create_internal_organs()
 
 	add_traits(list(TRAIT_NEVER_WOUNDED, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
