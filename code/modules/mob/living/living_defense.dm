@@ -181,6 +181,12 @@
 	)
 	if(hitting_projectile.dismemberment > 0 && !hitting_projectile.grazing)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
+
+	if(isliving(hitting_projectile.firer))
+		var/mob/living/firer = hitting_projectile.firer
+		firer.combat_lock_on(src, TRUE)
+		combat_lock_on(firer)
+
 	return BULLET_ACT_HIT
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
@@ -697,6 +703,9 @@
 					shove_flags |= SHOVE_DIRECTIONAL_BLOCKED
 					break
 
+	target.combat_lock_on(src, TRUE)
+	combat_lock_on(target)
+
 	if(shove_flags & SHOVE_CAN_HIT_SOMETHING)
 		//Don't hit people through windows, ok?
 		if(!(shove_flags & SHOVE_DIRECTIONAL_BLOCKED) && (SEND_SIGNAL(target_shove_turf, COMSIG_LIVING_DISARM_COLLIDE, src, target, shove_flags, weapon) & COMSIG_LIVING_SHOVE_HANDLED))
@@ -764,3 +773,56 @@
 		return TRUE
 
 	return FALSE
+
+/mob/living/proc/combat_lock_on(mob/living/target, is_attacker = FALSE)
+	if(target == src)
+		return
+	var/target_dist = get_dist(src, target)
+	if(target_dist > 7)
+		return
+	if(!isnull(combat_target))
+		if(!is_attacker && get_dist(src, combat_target) <= target_dist)
+			return
+		drop_combat_lock()
+	if(combat_mode)
+		face_atom(target)
+
+	combat_target = target
+	RegisterSignal(target, COMSIG_QDELETING, PROC_REF(drop_combat_lock))
+	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(combat_lock_moved))
+	addtimer(CALLBACK(src, PROC_REF(drop_combat_lock_timer), REF(target)), 20 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME)
+
+/mob/living/proc/face_combat_target()
+	if(isnull(combat_target) || !combat_mode || pulledby || HAS_TRAIT(src, TRAIT_INCAPACITATED))
+		return FALSE
+	if(isnull(ai_controller) && (isnull(mind) || !mind.active))
+		return
+	if(!isturf(loc) || !isturf(combat_target.loc) || loc == combat_target.loc)
+		return FALSE
+	if(combat_target.alpha <= 50 || combat_target.invisibility > see_invisible)
+		return FALSE
+	var/combat_dist = get_dist(src, combat_target)
+	if(combat_dist > 7)
+		drop_combat_lock()
+		return FALSE
+	if(!(src in viewers(5, combat_target)))
+		return FALSE
+	face_atom(combat_target)
+	return TRUE
+
+/mob/living/proc/drop_combat_lock_timer(target_ref)
+	if(isnull(combat_target) || REF(combat_target) != target_ref)
+		return
+	drop_combat_lock()
+
+/mob/living/proc/drop_combat_lock()
+	SIGNAL_HANDLER
+
+	UnregisterSignal(combat_target, COMSIG_QDELETING)
+	UnregisterSignal(combat_target, COMSIG_MOVABLE_MOVED)
+	combat_target = null
+	set_dir_on_move = initial(set_dir_on_move)
+
+/mob/living/proc/combat_lock_moved(...)
+	SIGNAL_HANDLER
+	face_combat_target()

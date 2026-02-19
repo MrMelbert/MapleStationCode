@@ -278,3 +278,6 @@
 	/// First element is the current martial art - any other elements are "saved" for if they unlearn the first one
 	/// Reference handling is done by the martial arts themselves
 	var/list/datum/martial_art/martial_arts
+
+	/// Current target we are engaged in combat with
+	VAR_PRIVATE/mob/living/combat_target
