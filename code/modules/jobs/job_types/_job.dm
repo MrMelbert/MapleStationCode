@@ -185,6 +185,12 @@
 	for(var/password_id, password_info in GLOB.important_passwords[type])
 		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
 
+	if(job_flags & JOB_ASSIGN_QUIRKS)
+		if(SSticker.current_state == GAME_STATE_SETTING_UP)
+			addtimer(CALLBACK(spawned, TYPE_PROC_REF(/mob/living, add_mood_event), "roundstart", /datum/mood_event/conditional/roundstart), 5 SECONDS)
+		else
+			addtimer(CALLBACK(spawned, TYPE_PROC_REF(/mob/living, add_mood_event), "latejoin", /datum/mood_event/conditional/latejoin), 5 SECONDS)
+
 /// Return the outfit to use
 /datum/job/proc/get_outfit(consistent, title)
 	return title_options[title] || base_outfit
