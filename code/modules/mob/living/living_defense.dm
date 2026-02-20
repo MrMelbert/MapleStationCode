@@ -717,6 +717,7 @@
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living, SetKnockdown), 0), SHOVE_CHAIN_PARALYZE)
 		log_combat(src, target, "kicks", "onto their side (paralyzing)")
 		target.set_headset_block_if_lower(3 SECONDS)
+		target.drop_all_held_items()
 		return
 
 	target.get_shoving_message(src, weapon, shove_flags)
