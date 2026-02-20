@@ -749,11 +749,8 @@
 
 /// Handles what happens when we breathe in something we need to live
 /obj/item/organ/lungs/proc/heal_oxyloss_on_breath(mob/living/carbon/human/breather, datum/gas_mixture/breath)
-	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-		breather.adjustOxyLoss(-4)
-	else
-		// Less blood so breaths give you less oxygen
-		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	// Less blood makes breaths give you less oxygen
+	breather.adjustOxyLoss(-4 * min(1, HAS_TRAIT(breather, TRAIT_NOBLOOD) ? 1 : (BLOOD_VOLUME_NORMAL / breather.blood_volume)))
 
 /// Applies suffocation side-effects to a given Human, scaling based on ratio of required pressure VS "true" pressure.
 /// If pressure is greater than 0, the return value will represent the amount of gas successfully breathed.

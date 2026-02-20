@@ -707,32 +707,43 @@
 	affected_mob.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
 
-/datum/reagent/toxin/fentanyl
+/datum/reagent/medicine/painkiller/fentanyl
 	name = "Fentanyl"
-	description = "Inhibits brain function and causes toxin damage before eventually knocking out the patient."
+	description = "An incredibly potent painkiller used to treat extreme pain. \
+		It has a high potential for brain damage and addiction, and should be used with caution."
 	reagent_state = LIQUID
 	color = "#64916E"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	creation_purity = REAGENT_STANDARD_PURITY
 	purity = REAGENT_STANDARD_PURITY
-	toxpwr = 0
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/opioids = 25)
 	pain_modifier = 0.5
+	overdose_threshold = 10
 
-/datum/reagent/toxin/fentanyl/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+/datum/reagent/medicine/painkiller/fentanyl/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	var/need_mob_update
-	need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * REM * normalise_creation_purity() * seconds_per_tick, 150)
-	if(affected_mob.toxloss <= 60)
-		need_mob_update += affected_mob.adjustToxLoss(1 * REM * normalise_creation_purity() * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
-	if(current_cycle > 4)
+	if(affected_mob.getToxLoss() <= 60 && (overdosed || SPT_PROB(current_cycle / 5, seconds_per_tick))) // 1% chance per second per 1u
+		affected_mob.adjustToxLoss(1 * REM * normalise_creation_purity() * seconds_per_tick, required_biotype = affected_biotype)
+
+	affected_mob.heal_pain(8 * REM * normalise_creation_purity() * seconds_per_tick)
+	if(current_cycle > 5) // 1u
 		affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy, name)
-	if(current_cycle > 18)
-		affected_mob.Sleeping(40 * REM * normalise_creation_purity() * seconds_per_tick)
-	if(need_mob_update)
-		return UPDATE_MOB_HEALTH
+		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
+	if(current_cycle > 20) // 4u
+		affected_mob.adjust_drowsiness_up_to(4 SECONDS * REM * normalise_creation_purity() * seconds_per_tick, 24 SECONDS)
+	if(current_cycle > 30 || overdosed) // 6u
+		affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, clamp((current_cycle - 20) / 10, 1, 4) * REM * normalise_creation_purity() * seconds_per_tick, 150)
+
+/datum/reagent/medicine/painkiller/fentanyl/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
+
+/datum/reagent/medicine/painkiller/fentanyl/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	if(current_cycle > 10)
+		affected_mob.Sleeping(4 SECONDS * REM * normalise_creation_purity() * seconds_per_tick)
 
 /datum/reagent/toxin/cyanide
 	name = "Cyanide"

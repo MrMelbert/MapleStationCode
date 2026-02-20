@@ -179,10 +179,15 @@
 
 /obj/item/reagent_containers/syringe/paracetamol
 	name = "syringe (paracetamol)"
-	desc = "Contains fiteen units of Paracetamol. Used to treat general pain. Metabolizes slowly."
+	desc = "Contains fifteen units of Paracetamol. Used to treat general pain. Metabolizes slowly."
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 15)
 
-/obj/item/reagent_containers/pill/morphine/diluted
+/obj/item/reagent_containers/syringe/fentanyl
+	name = "syringe (fentanyl)"
+	desc = "Contains three injections of Fentanyl diluted with Water. Used to treat extreme pain. Rapid acting, extremely addictive."
+	list_reagents = list(/datum/reagent/medicine/painkiller/fentanyl = 9, /datum/reagent/water = 6)
+
+/obj/item/reagent_containers/pill/morphine/smaller
 	desc = "Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
 	icon_state = "pill11"
 	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain) // NON-MODULE CHANGE
@@ -202,8 +207,8 @@
 
 /obj/item/reagent_containers/syringe/oxycodone
 	name = "syringe (oxycodone)"
-	desc = "Contains three injections of Oxycodone. Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
-	list_reagents = list(/datum/reagent/medicine/painkiller/oxycodone = 15)
+	desc = "Contains three injections of Oxycodone diluted with Water. Used to treat severe to extreme pain. Rapid acting, may cause delirium, very addictive."
+	list_reagents = list(/datum/reagent/medicine/painkiller/oxycodone = 12, /datum/reagent/water = 3)
 
 /obj/item/reagent_containers/pill/aspirin_para_coffee
 	name = "aspirin/paracetamol/caffeine pill"
@@ -257,7 +262,7 @@
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/paracetamol(src)
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/morphine/diluted(src)
+		new /obj/item/reagent_containers/pill/morphine/smaller(src)
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/pill/oxycodone(src)
 

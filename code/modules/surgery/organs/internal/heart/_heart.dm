@@ -103,6 +103,12 @@
 		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 
+/obj/item/organ/heart/proc/stop_on_beat()
+	if(owner?.needs_heart() && Stop())
+		if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
+			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
+		to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
+
 /obj/item/organ/heart/OnEatFrom(eater, feeder)
 	. = ..()
 	Stop()
@@ -130,17 +136,19 @@
 
 	// Handle "sudden" heart attack
 	if(!beating || (organ_flags & ORGAN_FAILING))
-		if(owner.can_heartattack() && Stop())
-			if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
-				owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
-			to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
+		stop_on_beat()
 		return
 
 	// randomly climbs up and down to create believable variation in heart rate
 	random_bpm_modifier = clamp(random_bpm_modifier + rand(-1, 1), -10, 10)
 
+	var/heartrate = get_heart_rate()
+	if(heartrate <= 0 && owner.needs_heart() && Stop())
+		stop_on_beat()
+	if(heartrate >= 160)
+		apply_organ_damage((heartrate >= 200 ? 1 : 0.5) * seconds_per_tick, required_organ_flag = ORGAN_ORGANIC)
+
 	if(owner.client?.prefs.read_preference(/datum/preference/toggle/heartbeat))
-		var/heartrate = get_heart_rate()
 		switch(heartrate)
 			if(1 to SLOW_HEARTBEAT_THRESHOLD)
 				if(playing_heartbeat_sfx != BEAT_SLOW)
@@ -161,7 +169,7 @@
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
 				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
-			else
+			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
 				to_chat(owner, span_warning("You feel [pick("tired", "confused", "numb", "weak", "flush")]."))
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
@@ -169,16 +177,13 @@
 			owner.ominous_nosebleed()
 		if(SPT_PROB(2, seconds_per_tick))
 			to_chat(owner, span_warning("Your chest feels [pick("tight", "uncomfortable")]."))
-		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type)
-	else
-		REMOVE_TRAIT(owner, TRAIT_LABOURED_BREATHING, type)
-
-	if(bloodpressure < 60)
+		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shortness of breath
+	else if(bloodpressure < 60)
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
 				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
-			else
+			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
 				to_chat(owner, span_warning("You feel [pick("lightheaded", "tired", "confused", "like you can't focus")]."))
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
@@ -187,13 +192,16 @@
 		if(SPT_PROB(2, seconds_per_tick))
 			if(owner.usable_hands > 0)
 				to_chat(owner, span_warning("Your hand[owner.usable_hands > 1 ? "s" : ""] feel[owner.usable_hands > 1 ? "" : "s"] clammy."))
-			else
+			else if(!HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
 				to_chat(owner, span_warning("You feel clammy."))
 		if(SPT_PROB(1, seconds_per_tick))
 			if(prob(10))
 				owner.emote("faint")
-			else
+			else if(!HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
 				to_chat(owner, span_warning("Your feel like you're about to faint."))
+		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shallow breathing
+	else
+		REMOVE_TRAIT(owner, TRAIT_LABOURED_BREATHING, type)
 
 /obj/item/organ/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantheart
@@ -299,13 +307,34 @@
 	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
 	return heart?.get_blood_pressure() || 0
 
-/// Returns the mob's blood pressure range (calculated from average bp with some variance)
+/// The IRL average pressure of a pulse
+#define AVERAGE_HUMAN_PULSE_PRESSURE 40
+
+/// Return the mob's pulse pressure, which is primarily only relevant in calculating blood pressure
+/mob/living/proc/get_pp()
+	if(!(mob_biotypes & MOB_ORGANIC))
+		return 0
+
+	return AVERAGE_HUMAN_PULSE_PRESSURE
+
+/mob/living/carbon/human/get_pp()
+	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
+	if(isnull(heart))
+		return needs_heart() ? 0 : AVERAGE_HUMAN_PULSE_PRESSURE
+
+	return heart.get_heart_strength() * AVERAGE_HUMAN_PULSE_PRESSURE
+
+/// Returns the mob's blood pressure range (calculated from average bp with some variance) as a list/tuple of (diastolic pressure, systolic pressure)
 /mob/living/proc/get_bp_range()
-	var/bp = get_bp()
-	return list(
-		/*diastolic*/round(bp * 0.85),
-		/*systolic*/round(bp * 1.30),
-	)
+	var/avg_blood_pressure = get_bp()
+	var/avg_pulse_pressure = get_pp()
+
+	var/diastolic = avg_blood_pressure - (avg_pulse_pressure * 0.33)
+	var/systolic = diastolic + avg_pulse_pressure
+
+	return list(floor(diastolic), floor(systolic))
+
+#undef AVERAGE_HUMAN_PULSE_PRESSURE
 
 /obj/item/organ/heart/feel_for_damage(self_aware)
 	if(owner.needs_heart() && (!beating || (organ_flags & ORGAN_FAILING)))
