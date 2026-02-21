@@ -51,7 +51,7 @@
 "RC" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Sm" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "St" = (/turf/template_noop,/area/template_noop)
-"TM" = (/obj/structure/closet/crate,/obj/item/ammo_casing/shotgun/godslayer,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
+"TM" = (/obj/structure/closet/crate,/obj/item/reagent_containers/cup/beaker/redlightning/filled,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "WU" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 "Zd" = (/obj/structure/rack,/obj/item/clothing/neck/cloak/redtech_dread,/obj/item/clothing/mask/collector,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/diamonds)
 
