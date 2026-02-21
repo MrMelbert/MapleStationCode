@@ -101,6 +101,9 @@
 
 	STOP_PROCESSING(SSmagic, src)
 
+	if(!parent)
+		return ..()
+
 	if (parent.mana_pool != src)
 		stack_trace("[parent].mana_pool was not [src] when src had parent registered!")
 	else

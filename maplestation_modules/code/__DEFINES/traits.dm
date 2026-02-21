@@ -8,3 +8,5 @@
 #define TRAIT_FULL_PSIONIC "full_psionic"
 /// Used to empower other mental effects, notably the meditate family
 #define TRAIT_EMPOWERED_MEDITATION "empowered_meditation"
+/// used to indicate a mob is meant to have a completely blank "mana pool"
+#define TRAIT_MAGICALLY_BLANK "magically_blank"

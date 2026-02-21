@@ -57,3 +57,22 @@
 				mana_pool.adjust_mana(amount_to_adjust)
 		else
 			mana_pool.adjust_mana(amount_to_adjust)
+
+/datum/mana_pool/mob/living/carbon/blank // exists entirely for quirks or other odd permanent effects that make you basically unable to hold mana
+	// to be precise, this is for when you also want to have additional behavior, like the status report being altered: if you just want to hemorrage the player's mana/disable it, you can just set the softcap to zero through proc easily
+	softcap = 1
+	amount = 0
+
+/datum/mana_pool/mob/living/carbon/blank/mana_status_report(datum/source, list/status_tab)
+	SIGNAL_HANDLER
+	// basically just only show the status report if you're overloaded or bugged
+	var/general_amount_estimate
+	if(amount)
+		if (amount <= softcap)
+			return
+		else if (amount > softcap)
+			general_amount_estimate = "OVERLOADED"
+	else
+		general_amount_estimate = "ERROR"
+
+	status_tab += "Mana Count: [general_amount_estimate]"
