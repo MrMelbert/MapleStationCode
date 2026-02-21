@@ -64,7 +64,6 @@
 	amount = 0
 
 /datum/mana_pool/mob/living/carbon/blank/mana_status_report(datum/source, list/status_tab)
-	SIGNAL_HANDLER
 	// basically just only show the status report if you're overloaded or bugged
 	var/general_amount_estimate
 	if(amount)
