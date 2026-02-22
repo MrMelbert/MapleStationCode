@@ -70,12 +70,13 @@
 
 /obj/item/stack/sheet/mineral/miracle_matter
 	name = "Miracle Matter"
-	desc = "Its amorphous form contains untold destructive potential. Wish upon a star."
+	desc = "Its indescribable form contains untold destructive potential. Wish upon a star."
 	singular_name = "Miracle Matter"
-	icon = ""
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/redmaterials.dmi'
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
-	icon_state = "sheet-runite"
+	icon_state = "sheet-miracle"
+	inhand_icon_state = "sheet-runed"
 	mats_per_unit = list(/datum/material/miracle=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/miracle = 1)
 	merge_type = /obj/item/stack/sheet/mineral/miracle_matter
