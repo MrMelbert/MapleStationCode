@@ -174,7 +174,14 @@
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
 		if(SPT_PROB(1, seconds_per_tick))
-			owner.ominous_nosebleed()
+			if(prob(90) && owner.get_bodypart(BODY_ZONE_HEAD))
+				var/face_covered = owner.obscured_slots & HIDEMASK
+				owner.bleed(rand(2, 5), leave_pool = !face_covered)
+				to_chat(owner, span_warning("You get a nosebleed."))
+				if(!face_covered)
+					owner.visible_message(span_warning("[owner] gets a nosebleed."), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = owner)
+			else
+				to_chat(owner, span_warning("You feel a bit nauseous."))
 		if(SPT_PROB(2, seconds_per_tick))
 			to_chat(owner, span_warning("Your chest feels [pick("tight", "uncomfortable")]."))
 		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shortness of breath
