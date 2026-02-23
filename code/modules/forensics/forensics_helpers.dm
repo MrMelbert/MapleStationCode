@@ -158,7 +158,7 @@
 	if(item_flags & NO_BLOOD_ON_ITEM)
 		return FALSE
 	. = ..()
-	add_blood_scent(blood_DNA_to_add)
+	// add_blood_scent(blood_DNA_to_add)
 
 // NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
@@ -227,7 +227,7 @@
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		if(dirty_hands)
 			blood_in_hands = rand(2, 4)
-		add_blood_scent(blood_DNA_to_add, radius = 1)
+		// add_blood_scent(blood_DNA_to_add, radius = 1)
 
 	cached_blood_dna_color = null
 	update_clothing(slots_to_bloody)
