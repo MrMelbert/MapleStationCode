@@ -203,6 +203,8 @@
 	AddElement(/datum/element/toy_talk)
 	if(!IS_ORGANIC_LIMB(src))
 		head_flags &= ~HEAD_SHOW_ORGANS_ON_EXAMINE
+	// specifically to facilitate finding decapitated heads
+	AddElement(/datum/element/simple_smell, /datum/smell/decay, SMELL_INTENSITY_MODERATE, 2)
 
 /obj/item/bodypart/head/get_voice(add_id_name)
 	return "The head of [real_name]"

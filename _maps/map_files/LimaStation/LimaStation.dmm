@@ -34870,8 +34870,11 @@
 /turf/open/floor/grass,
 /area/station/medical/medbay/lobby)
 "lhq" = (
-/obj/machinery/computer/rdconsole{
-	dir = 4
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/command/heads_quarters/rd)

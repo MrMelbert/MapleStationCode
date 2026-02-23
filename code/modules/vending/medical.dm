@@ -78,26 +78,23 @@
 	panel_type = "panel11"
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	products = list(
-		/obj/item/reagent_containers/pill/patch/libital = 5,
-		/obj/item/reagent_containers/pill/patch/aiuri = 5,
-		/obj/item/reagent_containers/syringe/convermol = 2,
-		/obj/item/reagent_containers/pill/insulin = 5,
-		/obj/item/reagent_containers/cup/bottle/multiver = 2,
-		/obj/item/reagent_containers/cup/bottle/syriniver = 2,
 		/obj/item/reagent_containers/cup/bottle/epinephrine = 3,
 		/obj/item/reagent_containers/cup/bottle/morphine = 4,
+		/obj/item/reagent_containers/cup/bottle/multiver = 2,
 		/obj/item/reagent_containers/cup/bottle/potass_iodide = 1,
 		/obj/item/reagent_containers/cup/bottle/salglu_solution = 3,
+		/obj/item/reagent_containers/cup/bottle/syriniver = 2,
 		/obj/item/reagent_containers/cup/bottle/toxin = 3,
-		/obj/item/reagent_containers/syringe/antiviral = 6,
-		/obj/item/reagent_containers/medigel/libital = 2,
 		/obj/item/reagent_containers/medigel/aiuri = 2,
+		/obj/item/reagent_containers/medigel/libital = 2,
 		/obj/item/reagent_containers/medigel/sterilizine = 1,
-	)
-	contraband = list(
-		/obj/item/reagent_containers/pill/tox = 3,
-		/obj/item/reagent_containers/pill/morphine = 4,
-		/obj/item/reagent_containers/pill/multiver = 6,
+		/obj/item/reagent_containers/pill/insulin = 6,
+		/obj/item/reagent_containers/pill/mutadone/less = 3,
+		/obj/item/reagent_containers/pill/neurine = 3,
+		/obj/item/reagent_containers/pill/patch/aiuri = 5,
+		/obj/item/reagent_containers/pill/patch/libital = 5,
+		/obj/item/reagent_containers/syringe/antiviral = 6,
+		/obj/item/reagent_containers/syringe/convermol = 2,
 	)
 	premium = list(
 		/obj/item/reagent_containers/medigel/synthflesh = 2,

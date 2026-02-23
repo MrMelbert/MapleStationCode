@@ -11,8 +11,9 @@
 	///Time spent baking so far
 	var/current_bake_time = 0
 
-	/// REF() to the mind which placed us in an oven
-	var/who_baked_us
+	// NON-MODULE CHANGE
+	/// WEAKREF() to the mind which placed us in an oven
+	var/datum/weakref/who_baked_us
 
 	/// Reagents that should be added to the result
 	var/list/added_reagents
@@ -53,8 +54,8 @@
 /datum/component/bakeable/proc/on_baking_start(datum/source, atom/used_oven, mob/baker)
 	SIGNAL_HANDLER
 
-	if(baker && baker.mind)
-		who_baked_us = REF(baker.mind)
+	// NON-MODULE CHANGE
+	who_baked_us = WEAKREF(baker?.mind)
 
 ///Ran every time an item is baked by something
 /datum/component/bakeable/proc/on_bake(datum/source, atom/used_oven, seconds_per_tick = 1)
@@ -80,8 +81,8 @@
 		if(added_reagents) // Add any new reagents that should be added
 			baked_result.reagents.add_reagent_list(added_reagents)
 
-	if(who_baked_us)
-		ADD_TRAIT(baked_result, TRAIT_FOOD_CHEF_MADE, who_baked_us)
+	// NON-MODULE CHANGE
+	handle_chef_made_food(baked_result, original_object, who_baked_us?.resolve())
 
 	if(original_object.custom_materials)
 		baked_result.set_custom_materials(original_object.custom_materials, 1)
@@ -91,10 +92,11 @@
 	used_tray.AddToPlate(baked_result)
 
 	if(positive_result)
-		used_oven.visible_message(span_notice("You smell something great coming from [used_oven]."), blind_message = span_notice("You smell something great..."))
+		new /obj/effect/abstract/smell/oven/good(used_oven.loc)
 		BLACKBOX_LOG_FOOD_MADE(baked_result.type)
 	else
-		used_oven.visible_message(span_warning("You smell a burnt smell coming from [used_oven]."), blind_message = span_warning("You smell a burnt smell..."))
+		new /obj/effect/abstract/smell/oven/bad(used_oven.loc)
+
 	SEND_SIGNAL(parent, COMSIG_ITEM_BAKED, baked_result)
 	qdel(parent)
 

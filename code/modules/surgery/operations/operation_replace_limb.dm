@@ -85,6 +85,10 @@
 	if(tool.check_for_frankenstein(patient))
 		tool.bodypart_flags |= BODYPART_IMPLANTED
 
+	// NON-MODULE CHANGE
+	patient.cause_pain(tool.body_zone, -1 * surgeon.get_skill_modifier(/datum/skill/cybernetics, SKILL_VALUE_MODIFIER))
+	surgeon.mind?.adjust_experience(/datum/skill/cybernetics, 100)
+
 	display_results(
 		surgeon,
 		patient,

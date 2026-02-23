@@ -44,8 +44,23 @@
 	var/obj/machinery/computer/operating/operating_computer = locate_operating_computer(limb)
 	if (!isnull(operating_computer))
 		SEND_SIGNAL(operating_computer, COMSIG_OPERATING_COMPUTER_AUTOPSY_COMPLETE, limb.owner)
+
+	// NON-MODULE CHANGE
+	var/xp_given = 200 // some alien species
+	if(limb.bodytype & BODYTYPE_ALIEN)
+		xp_given *= 2.5 // truly foreign
+	if(ishumanbasic(limb.owner) || isfelinid(limb.owner) || isanimid(limb.owner) || isandroid(limb.owner) || ismonkey(limb.owner))
+		xp_given *= 0.25 // well documented
+	if(HAS_TRAIT(limb.owner, TRAIT_SURGICALLY_ANALYZED))
+		xp_given *= 0 // this body has already been cut open! useless
+
 	if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID))
 		surgeon.add_mood_event("morbid_dissection_success", /datum/mood_event/morbid_dissection_success)
+		xp_given *= 1.5 // truly something worth seeing!
+
+	if(xp_given > 0)
+		surgeon.mind?.adjust_experience(/datum/skill/surgery, xp_given)
+	// NON-MODULE CHANGE END
 	return ..()
 
 /datum/surgery_operation/limb/autopsy/mechanic

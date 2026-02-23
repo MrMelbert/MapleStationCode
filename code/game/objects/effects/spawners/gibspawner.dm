@@ -46,9 +46,7 @@
 		if(gibamounts[i])
 			for(var/j in 1 to gibamounts[i])
 				var/gibType = gibtypes[i]
-				gib = new gibType(loc, diseases)
-
-				gib.add_blood_DNA(dna_to_add)
+				gib = new gibType(loc, diseases, dna_to_add)
 
 				var/list/directions = gibdirections[i]
 				if(isturf(loc))

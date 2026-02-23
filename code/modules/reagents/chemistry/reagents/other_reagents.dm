@@ -595,6 +595,7 @@
 		return
 	if(reac_volume >= 1)
 		exposed_turf.MakeSlippery(lube_kind, 15 SECONDS, min(reac_volume * 2 SECONDS, 120))
+		new /obj/effect/abstract/smell/reagent/lube(exposed_turf)
 
 /datum/reagent/lube/used_on_fish(obj/item/fish/fish)
 	ADD_TRAIT(fish, TRAIT_FISH_FED_LUBE, type) //required for the lubefish mutation
@@ -1173,6 +1174,7 @@
 	taste_description = "bitterness"
 	ph = 10.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_AFFECTS_WOUNDS
+	smell_type = /obj/effect/abstract/smell/reagent/disinfectant
 
 /datum/reagent/space_cleaner/sterilizine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
@@ -1352,16 +1354,31 @@
 	taste_description = "sourness"
 	reagent_weight = 0.6 //so it sprays further
 	penetrates_skin = VAPOR
-	var/clean_types = CLEAN_WASH
 	ph = 5.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS|REAGENT_AFFECTS_WOUNDS
 
+	var/clean_types = CLEAN_WASH
+	/// What type of smell to produce when exposed
+	var/obj/effect/abstract/smell/smell_type = /obj/effect/abstract/smell/reagent/cleaning_chemicals
+
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
-	exposed_obj?.wash(clean_types)
+	exposed_obj.wash(clean_types)
+	if(QDELETED(exposed_obj))
+		return
+	exposed_obj.AddComponent( \
+		/datum/component/complex_smell, \
+		duration = smell_type::duration, \
+		smell = smell_type::smell, \
+		intensity = smell_type::intensity * (reac_volume / 5), \
+		radius = 1, \
+		category = smell_type::category, \
+		fade_intensity_over_time = TRUE, \
+	)
 
 /datum/reagent/space_cleaner/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
+	new smell_type(exposed_turf, reac_volume)
 	if(reac_volume < 1)
 		return
 
@@ -1377,8 +1394,20 @@
 
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
-	if(methods & (TOUCH|VAPOR))
-		exposed_mob.wash(clean_types)
+	if(!(methods & (TOUCH|VAPOR)))
+		return
+	exposed_mob.wash(clean_types)
+	if(QDELETED(exposed_mob))
+		return
+	exposed_mob.AddComponent( \
+		/datum/component/complex_smell, \
+		duration = smell_type::duration, \
+		smell = smell_type::smell, \
+		intensity = smell_type::intensity * (reac_volume / 5), \
+		radius = 1, \
+		category = smell_type::category, \
+		fade_intensity_over_time = TRUE, \
+	)
 
 /datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.3

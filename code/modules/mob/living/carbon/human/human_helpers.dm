@@ -334,4 +334,6 @@
 	affecting.heal_damage(brute_heal, burn_heal, required_bodytype)
 	user.visible_message(span_notice("[user] fixes some of the [message] [src]'s [affecting.name]."), \
 		span_notice("You fix some of the [message] [src == user ? "your" : "[src]'s"] [affecting.name]."))
+	if(required_bodytype == BODYTYPE_ROBOTIC)
+		user.mind?.adjust_experience(/datum/skill/cybernetics, brute_heal + burn_heal)
 	return TRUE

@@ -1,35 +1,15 @@
 // -- Implements and equipment to help reduce pain. --
 // Temperature pack stuff - things you can press to people to help reduce pain.
-/// Heal rate and modifier for generic items that are frozen.
-#define FROZEN_ITEM_PAIN_RATE 2
-#define FROZEN_ITEM_PAIN_MODIFIER 0.5
-#define FROZEN_ITEM_TEMPERATURE_CHANGE -5
-
 // Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/cup/glass/bottle/beer/Initialize(mapload)
 	. = ..()
 	if(reagents.get_reagent_amount(/datum/reagent/consumable/ethanol/beer) > 1)
-		AddElement(/datum/element/temperature_pack, \
+		AddElement( \
+			/datum/element/temperature_pack, \
 			pain_heal_rate = 0.3, \
 			pain_modifier_on_limb = 0.9, \
-			temperature_change = -2)
-
-// Frozen items become usable temperature packs.
-/datum/element/frozen/Attach(datum/target)
-	. = ..()
-	if(. == ELEMENT_INCOMPATIBLE)
-		return
-	if(!isitem(target))
-		return
-
-	target.AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
-
-/datum/element/frozen/Detach(datum/source, ...)
-	. = ..()
-	if(!isitem(source))
-		return
-
-	source.RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+			temperature_change = COLD_DRINK, \
+		)
 
 /// Temperature packs (heat packs, cold packs). Apply to hurt limb to un-hurty.
 /obj/item/temperature_pack
@@ -100,11 +80,13 @@
  * Activate [src] from [user], making it into a temperature pack that can be used, that expires in 5 minutes.
  */
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
+	SEND_SIGNAL(src, COMISG_TEMPERATURE_PACK_ENABLED)
 	addtimer(CALLBACK(src, PROC_REF(deactivate_pack)), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = TRUE
 	update_appearance()
+	playsound(src, 'sound/effects/wounds/crack2.ogg', 25, TRUE)
 
 /**
  * Deactivate [src], making it unusable, and sending signal [COMSIG_TEMPERATURE_PACK_EXPIRED].
@@ -118,21 +100,21 @@
 	desc = "A used up [name]. It's no use to anyone anymore."
 	update_appearance()
 
-// Head packs have a stronger modifier, but heals less.
+// Heat packs heal pain directly
 /obj/item/temperature_pack/heat
 	name = "heat pack"
 	desc = "A heat pack. Crack it to turn it on and apply it to an aching limb to reduce joint stress and moderate pain."
-	temperature_change = 5
-	pain_heal_amount = 2
-	pain_limb_modifier = 0.5
+	temperature_change = 1 KELVIN
+	pain_heal_amount = 3
+	pain_limb_modifier = 0.8
 
-// Cold packs heal more, but have a weaker modifier.
+// Cold packs cause the limb to go numb - combined with a mild painkiller like paracetamol and the limb loses feeling entirely
 /obj/item/temperature_pack/cold
 	name = "cold pack"
 	desc = "A cold pack. Crack it on and apply it to a hurt limb to abate sharp pain."
-	temperature_change = -5
-	pain_heal_amount = 3
-	pain_limb_modifier = 0.75
+	temperature_change = -1 KELVIN
+	pain_heal_amount = 1
+	pain_limb_modifier = 0.5
 
 /obj/item/reagent_containers/pill/aspirin
 	name = "aspirin pill"
@@ -323,6 +305,80 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
+/obj/item/reagent_containers/chem_pack/saline
+	name = "saline-glucose pack"
+	desc = "A plastic pressure bag filled with a sterile saline-glucose solution for IV administration. \
+		Used to treat hypovolemia and dehydration."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/saline/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume)
+
+/obj/item/reagent_containers/chem_pack/potassium_iodide
+	name = "potassium iodide pack"
+	desc = "A plastic pressure bag filled with a potassium iodide solution for IV administration. \
+		Used to treat radiation exposure."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/potassium_iodide/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/potass_iodide, volume * 0.5)
+
+/obj/item/reagent_containers/chem_pack/epinephrine
+	name = "epinephrine pack"
+	desc = "A plastic pressure bag filled with a epinephrine solution, diluted with saline-glucose, for IV administration. \
+		Used to treat severe allergic reactions, shock, or cardiac arrest."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/epinephrine/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/epinephrine, volume * 0.25)
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume * 0.25)
+
+/obj/item/reagent_containers/chem_pack/morphine
+	name = "morphine pack"
+	desc = "A plastic pressure bag filled with a morphine solution, diluted with paracetamol, for IV administration. \
+		Used to treat major to severe pain or shock."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/morphine/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/painkiller/morphine, volume * 0.2)
+	reagents.add_reagent(/datum/reagent/medicine/painkiller/paracetamol, volume * 0.3)
+
+/obj/item/reagent_containers/chem_pack/ondasteron
+	name = "ondansetron pack"
+	desc = "A plastic pressure bag filled with an ondansetron solution, diluted with saline-glucose, for IV administration. \
+		Used to combat nausea caused by other strong painkillers or surgical anesthesia."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/ondasteron/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/ondansetron, volume * 0.25)
+	reagents.add_reagent(/datum/reagent/medicine/salglu_solution, volume * 0.25)
+
+/obj/item/reagent_containers/chem_pack/vitamins
+	name = "vitamin pack"
+	desc = "A plastic pressure bag filled with a mixture of vitamins and minerals for IV administration. \
+		Used to treat malnutrition and vitamin deficiencies, particularly for patients incapable of (or unwilling to) eat."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/vitamins/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/consumable/nutriment/vitamin, volume * 0.1)
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, volume * 0.4)
+
+/obj/item/reagent_containers/chem_pack/syriniver
+	name = "syriniver pack"
+	desc = "A plastic pressure bag filled with a syriniver solution for IV administration. \
+		Used to treat toxin exposure."
+	sealed = TRUE
+
+/obj/item/reagent_containers/chem_pack/syriniver/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/medicine/c2/syriniver, volume * 0.5)
+
 /datum/armor/shock_blanket
 	laser = 20
 	energy = 20
@@ -501,6 +557,15 @@
 				/obj/item/storage/pill_bottle/painkillers = 2,
 			)
 		),
+	)
+	added_premium = list(
+		/obj/item/reagent_containers/chem_pack/epinephrine = 2,
+		/obj/item/reagent_containers/chem_pack/morphine = 2,
+		/obj/item/reagent_containers/chem_pack/ondasteron = 2,
+		/obj/item/reagent_containers/chem_pack/potassium_iodide = 2,
+		/obj/item/reagent_containers/chem_pack/syriniver = 2,
+		/obj/item/reagent_containers/chem_pack/vitamins = 1,
+		/obj/item/reagent_containers/chem_pack/saline = 3,
 	)
 
 /obj/machinery/vending/medical

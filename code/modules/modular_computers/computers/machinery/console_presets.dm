@@ -26,11 +26,13 @@
 	name = "research director's console"
 	desc = "A stationary computer. This one comes preloaded with research programs."
 	starting_programs = list(
-		/datum/computer_file/program/ntnetmonitor,
-		/datum/computer_file/program/chatclient,
 		/datum/computer_file/program/ai_restorer,
+		/datum/computer_file/program/chatclient,
+		/datum/computer_file/program/ntnetmonitor,
 		/datum/computer_file/program/robocontrol,
+		/datum/computer_file/program/science,
 		/datum/computer_file/program/scipaper_program,
+		/datum/computer_file/program/status,
 	)
 
 /obj/machinery/modular_computer/preset/research/away

@@ -81,7 +81,10 @@
 
 /datum/surgery_operation/limb/repair_hairline/get_time_modifiers(obj/item/bodypart/limb, mob/living/surgeon, tool)
 	. = ..()
-	for(var/datum/wound/blunt/bone/critical/bone_wound in limb.wounds)
+	// NON-MODULE CHANGE
+	for(var/datum/wound/blunt/bone/bone_wound in limb.wounds)
+		if(!istype(bone_wound, /datum/wound/blunt/bone/severe) && !istype(bone_wound, /datum/wound/blunt/bone/rib_break))
+			continue
 		if(HAS_TRAIT(bone_wound, TRAIT_WOUND_SCANNED))
 			. *= 0.5
 
@@ -89,11 +92,15 @@
 	return image(/obj/item/bonesetter)
 
 /datum/surgery_operation/limb/repair_hairline/all_required_strings()
-	return list("the limb must have a hairline fracture") + ..()
+	// NON-MODULE CHANGE
+	return list("the limb must have a hairline or rib fracture") + ..()
 
 /datum/surgery_operation/limb/repair_hairline/state_check(obj/item/bodypart/limb)
-	if(!(locate(/datum/wound/blunt/bone/severe) in limb.wounds))
-		return FALSE
+	// NON-MODULE CHANGE: broken ribs are repaired the same way
+	if(locate(/datum/wound/blunt/bone/severe) in limb.wounds)
+		return TRUE
+	if(locate(/datum/wound/blunt/bone/rib_break) in limb.wounds)
+		return TRUE
 	return TRUE
 
 /datum/surgery_operation/limb/repair_hairline/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
