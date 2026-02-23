@@ -44061,9 +44061,14 @@
 /obj/effect/turf_decal/siding/blue/corner{
 	dir = 1
 	},
-/obj/structure/filingcabinet/chestdrawer,
 /obj/effect/turf_decal/tile/neutral/opposingcorners{
 	dir = 1
+	},
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
@@ -46143,9 +46148,14 @@
 /turf/open/floor/iron,
 /area/station/maintenance/disposal/incinerator)
 "pxX" = (
-/obj/structure/filingcabinet/chestdrawer,
 /obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted,
+/obj/structure/filingcabinet/medical{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "pyb" = (
@@ -49953,10 +49963,10 @@
 /obj/effect/turf_decal/siding/blue/corner{
 	dir = 4
 	},
-/obj/machinery/pdapainter/research,
 /obj/effect/turf_decal/tile/neutral/opposingcorners{
 	dir = 1
 	},
+/obj/structure/table,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "qXH" = (
@@ -53890,12 +53900,12 @@
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "sAI" = (
-/obj/machinery/modular_computer/preset/id{
-	dir = 4
-	},
 /obj/machinery/airalarm/directional/west,
 /obj/effect/turf_decal/tile/neutral/opposingcorners{
 	dir = 1
+	},
+/obj/machinery/computer/mecha{
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
@@ -61917,12 +61927,10 @@
 /turf/open/floor/iron/dark,
 /area/station/security/courtroom)
 "vFs" = (
-/obj/machinery/computer/rdconsole{
-	dir = 8
-	},
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 6
 	},
+/obj/machinery/pdapainter/research,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "vFN" = (
@@ -64617,9 +64625,6 @@
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "wLY" = (
-/obj/machinery/computer/mecha{
-	dir = 8
-	},
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 5
 	},
@@ -64631,6 +64636,9 @@
 /obj/effect/mapping_helpers/requests_console/information,
 /obj/effect/mapping_helpers/requests_console/assistance,
 /obj/machinery/computer/security/telescreen/rd/directional/north,
+/obj/machinery/modular_computer/preset/id{
+	dir = 8
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "wMh" = (
@@ -68140,6 +68148,9 @@
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable,
 /obj/effect/landmark/start/hangover,
+/obj/structure/filingcabinet{
+	pixel_x = 4
+	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "ygE" = (

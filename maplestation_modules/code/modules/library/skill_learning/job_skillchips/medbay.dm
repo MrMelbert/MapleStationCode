@@ -12,28 +12,23 @@
 	auto_traits = list(TRAIT_CPR_CERTIFIED)
 	complexity = 0 // it's pretty minor, all things considered
 
-/datum/outfit/job/doctor/New()
-	. = ..()
-	LAZYADD(skillchips, /obj/item/skillchip/job/cpr)
-
-/datum/outfit/job/paramedic/New()
-	. = ..()
-	LAZYADD(skillchips, /obj/item/skillchip/job/cpr)
-
-/datum/outfit/job/cmo/New()
-	. = ..()
-	LAZYADD(skillchips, /obj/item/skillchip/job/cpr)
-
 /obj/item/storage/box/skillchips/medbay
 	name = "box of medbay skillchips"
 	desc = "Contains spares of every medical job skillchip."
 
 /obj/item/storage/box/skillchips/medbay/PopulateContents()
-	new /obj/item/skillchip/job/cpr(src)
-	new /obj/item/skillchip/job/cpr(src)
-	new /obj/item/skillchip/job/cpr(src)
-	new /obj/item/skillchip/job/cpr(src)
-	new /obj/item/skillchip/entrails_reader(src)
+	// new /obj/item/skillchip/job/cpr(src)
+	// new /obj/item/skillchip/job/cpr(src)
+	// new /obj/item/skillchip/job/cpr(src)
+	// new /obj/item/skillchip/job/cpr(src)
+// 	new /obj/item/skillchip/entrails_reader(src)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/chemist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/chemist)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/coroner)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/doctor)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/doctor)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/paramedic)
+	new /obj/item/skillchip/job/skills(src, null, /datum/job/virologist)
 
 /obj/structure/closet/secure_closet/chief_medical/PopulateContents()
 	. = ..()

@@ -2,6 +2,7 @@
 #define BLINDFOLD_BLACK_PREFERENCE "Blindfold (Black)"
 #define SPECTRUM_VISION_VISOR_PREFERENCE "Spectrum Amplification Visor"
 #define SUNGLASSES_PREFERENCE "Sunglasses"
+#define CLOSED_EYES_PREFERENCE "Closed Eyes"
 #define NONE_PREFERENCE "None"
 
 /// Preference for blind characters to choose their eyecover of choice
@@ -21,6 +22,7 @@
 		BLINDFOLD_BLACK_PREFERENCE,
 		SPECTRUM_VISION_VISOR_PREFERENCE,
 		SUNGLASSES_PREFERENCE,
+		CLOSED_EYES_PREFERENCE,
 		NONE_PREFERENCE,
 	)
 
@@ -34,6 +36,8 @@
 			return uni_icon(/obj/item/clothing/glasses/blindness_visor::icon, /obj/item/clothing/glasses/blindness_visor::icon_state)
 		if(SUNGLASSES_PREFERENCE)
 			return uni_icon(/obj/item/clothing/glasses/sunglasses::icon, /obj/item/clothing/glasses/sunglasses::icon_state)
+		if(CLOSED_EYES_PREFERENCE)
+			return uni_icon(/obj/item/organ/eyes::icon, /obj/item/organ/eyes::icon_state)
 		if(NONE_PREFERENCE)
 			return uni_icon('icons/hud/screen_gen.dmi', "x")
 
@@ -75,6 +79,8 @@
 	give_item_to_holder(type_to_give, list(LOCATION_EYES = ITEM_SLOT_EYES, LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
 
 #undef BLINDFOLD_COLORED_PREFERENCE
+#undef BLINDFOLD_BLACK_PREFERENCE
 #undef SPECTRUM_VISION_VISOR_PREFERENCE
 #undef SUNGLASSES_PREFERENCE
+#undef CLOSED_EYES_PREFERENCE
 #undef NONE_PREFERENCE
