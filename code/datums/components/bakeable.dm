@@ -92,10 +92,11 @@
 	used_tray.AddToPlate(baked_result)
 
 	if(positive_result)
-		used_oven.visible_message(span_notice("You smell something great coming from [used_oven]."), blind_message = span_notice("You smell something great..."))
+		new /obj/effect/abstract/smell/oven/good(used_oven.loc)
 		BLACKBOX_LOG_FOOD_MADE(baked_result.type)
 	else
-		used_oven.visible_message(span_warning("You smell a burnt smell coming from [used_oven]."), blind_message = span_warning("You smell a burnt smell..."))
+		new /obj/effect/abstract/smell/oven/bad(used_oven.loc)
+
 	SEND_SIGNAL(parent, COMSIG_ITEM_BAKED, baked_result)
 	qdel(parent)
 

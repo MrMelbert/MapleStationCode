@@ -291,7 +291,8 @@
 
 	var/ratio = (breath.gases[/datum/gas/oxygen][MOLES] / safe_oxygen_max) * 10
 	breather.apply_damage(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type, spread_damage = TRUE)
-	breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
+	if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+		breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
 
 /// Handles NOT having too much o2. only relevant if safe_oxygen_max has a value
 /obj/item/organ/lungs/proc/safe_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, old_o2_pp)
@@ -310,7 +311,8 @@
 	if(nitro_pp < safe_nitro_min)
 		// Suffocation side-effects.
 		// Not safe to check the old pp because of can_breath_vacuum
-		breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
 		var/gas_breathed = handle_suffocation(breather, nitro_pp, safe_nitro_min, breath.gases[/datum/gas/nitrogen][MOLES])
 		if(nitro_pp)
 			breathe_gas_volume(breath, /datum/gas/nitrogen, /datum/gas/carbon_dioxide, volume = gas_breathed)
@@ -341,7 +343,8 @@
 		breather.emote("cough")
 
 	if((world.time - breather.co2overloadtime) > 12 SECONDS)
-		breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
 		breather.Unconscious(6 SECONDS)
 		// Lets hurt em a little, let them know we mean business.
 		breather.apply_damage(3, co2_damage_type, spread_damage = TRUE)
@@ -360,7 +363,8 @@
 	// Suffocation side-effects.
 	if(plasma_pp < safe_plasma_min)
 		// Could check old_plasma_pp but vacuum breathing hates me
-		breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
 		// Breathe insufficient amount of Plasma, exhale CO2.
 		var/gas_breathed = handle_suffocation(breather, plasma_pp, safe_plasma_min, breath.gases[/datum/gas/plasma][MOLES])
 		if(plasma_pp)
@@ -383,7 +387,8 @@
 
 	// If it's the first breath with too much CO2 in it, lets start a counter, then have them pass out after 12s or so.
 	if(old_plasma_pp < safe_plasma_max)
-		breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 
 	var/ratio = (breath.gases[/datum/gas/plasma][MOLES] / safe_plasma_max) * 10
 	breather.apply_damage(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type, spread_damage = TRUE)
@@ -483,31 +488,9 @@
 			miasma_disease.name = "Unknown"
 			breather.AirborneContractDisease(miasma_disease, TRUE)
 	// Miasma side effects
-	switch(miasma_pp)
-		if(0.25 to 5)
-			// At lower pp, give out a little warning
-			breather.clear_mood_event("smell")
-			if(prob(5))
-				to_chat(breather, span_notice("There is an unpleasant smell in the air."))
-		if(5 to 15)
-			//At somewhat higher pp, warning becomes more obvious
-			if(prob(15))
-				to_chat(breather, span_warning("You smell something horribly decayed inside this room."))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/bad_smell)
-		if(15 to 30)
-			//Small chance to vomit. By now, people have internals on anyway
-			if(prob(5))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		if(30 to INFINITY)
-			//Higher chance to vomit. Let the horror start
-			if(prob(15))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		else
-			breather.clear_mood_event("smell")
+	if (!breather.can_smell()) //Anosmia quirk holder cannot smell miasma, but can get diseases from it.
+		return
+
 	// In a full miasma atmosphere with 101.34 pKa, about 10 disgust per breath, is pretty low compared to threshholds
 	// Then again, this is a purely hypothetical scenario and hardly reachable
 	breather.adjust_disgust(0.1 * miasma_pp)
@@ -534,7 +517,7 @@
 		return
 
 	// More N2O, more severe side-effects. Causes stun/sleep.
-	if(old_n2o_pp < n2o_para_min)
+	if(old_n2o_pp < n2o_para_min && !HAS_TRAIT(breather, TRAIT_ANOSMIA))
 		breather.throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
 
 	// give them one second of grace to wake up and run away a bit!

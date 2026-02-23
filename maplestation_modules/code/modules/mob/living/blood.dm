@@ -79,6 +79,12 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	var/datum/reagent/restoration_chem = /datum/reagent/iron
 	/// If saline glucose acts as a temporary substitute for this blood type
 	var/salgu_compatible = FALSE
+	/// The smell associated with this blood
+	/// It can be a string, a /datum/smell, or null
+	var/scent_text = /datum/smell/blood
+	/// The smell category of this blood
+	/// It should be a string or null, alternatively is inherited from /datum/smell
+	var/scent_category
 
 /datum/blood_type/New()
 	. = ..()
@@ -293,6 +299,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = "#c9c9c99c"
 	reagent_type = /datum/reagent/silver
 	restoration_chem = /datum/reagent/silver
+	scent_text = null
 
 /datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.can_dry = FALSE
@@ -314,6 +321,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = "#97ee63"
 	reagent_type = /datum/reagent/consumable/liquidelectricity
 	salgu_compatible = TRUE
+	scent_text = null
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
@@ -347,6 +355,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = "#1f1a00"
 	reagent_type = /datum/reagent/fuel/oil
 	restoration_chem = /datum/reagent/fuel/oil
+	scent_text = /datum/smell/oil
 
 /datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	if(!new_splat)
@@ -375,12 +384,15 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = "#FF00FF"
 	reagent_type = /datum/reagent/colorful_reagent
 	salgu_compatible = TRUE
+	scent_text = "crayons"
 
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
 /datum/blood_type/slime
 	name = "TOX"
 	color = /datum/reagent/toxin/slimejelly::color
 	reagent_type = /datum/reagent/toxin/slimejelly
+	scent_text = "fruit"
+	scent_category = "fragrance"
 
 /// Water based blood for Podpeople primairly
 /datum/blood_type/water
@@ -388,12 +400,15 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = /datum/reagent/water::color
 	reagent_type = /datum/reagent/water
 	salgu_compatible = TRUE
+	scent_text = null
 
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
 	reagent_type = /datum/reagent/lube
 	salgu_compatible = TRUE
+	scent_text = /obj/effect/abstract/smell/reagent/lube::name
+	scent_category = /obj/effect/abstract/smell/reagent/lube::category
 
 /datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
@@ -407,6 +422,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "X*"
 	color = "#96bb00"
 	reagent_type = /datum/reagent/toxin/acid
+	scent_text = "acid"
 
 /// For simplemob blood, which also largely don't actually use blood
 /datum/blood_type/animal
