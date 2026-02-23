@@ -232,6 +232,18 @@
 /// For consistent examine span formatting (small size)
 #define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
 
+// Smell intensities
+/// Very faint - Often low enough to not noticed, but if noticed, people get used to it quickly
+#define SMELL_INTENSITY_FAINT 1
+/// Will be noticed for a short time but eventually people get used to it
+#define SMELL_INTENSITY_WEAK 6
+/// Noticable, will take a while to get used to
+#define SMELL_INTENSITY_MODERATE 12
+/// Very strong, hard to ignore, very unlikely to get used to
+#define SMELL_INTENSITY_STRONG 24
+/// Overpowers all other smells, extremely hard to ignore
+#define SMELL_INTENSITY_OVERPOWERING 48
+
 /// Damtype is "physical" like a slap to the face
 #define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
 /// Damtype is intended to disable rather than kill

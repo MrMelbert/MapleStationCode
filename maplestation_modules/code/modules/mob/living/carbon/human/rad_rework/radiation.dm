@@ -99,24 +99,28 @@
 	playsound(owner, pick('sound/effects/wounds/sizzle1.ogg', 'sound/effects/wounds/sizzle2.ogg'), 50, vary = TRUE)
 
 /datum/status_effect/irradiated/proc/random_effects(time_since_irradiated, seconds_per_tick)
+	if(time_since_irradiated > 1 MINUTES && SPT_PROB(2, seconds_per_tick))
+		var/datum/blood_type/blood_type = owner.get_blood_type()
+		if(time_since_irradiated > 2 MINUTES && prob(33))
+			var/mob/living/carbon/get_sick = owner
+			get_sick.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 10)
+		else if(blood_type)
+			to_chat(owner, span_notice("You can taste [blood_type.reagent_type::name]."))
+
 	if(time_since_irradiated > 2 MINUTES && SPT_PROB(0.5, seconds_per_tick))
 		if(!owner.IsParalyzed())
 			owner.emote("collapse")
 		owner.Paralyze(0.3 SECONDS)
 		to_chat(owner, span_danger("You feel weak."))
 
-	if(time_since_irradiated > 2 MINUTES && SPT_PROB(0.5, seconds_per_tick))
-		var/mob/living/carbon/get_sick = owner
-		get_sick.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 10)
-
-	if(time_since_irradiated > 2 MINUTES && SPT_PROB(0.5, seconds_per_tick) && owner.can_mutate())
+	if(time_since_irradiated > 3 MINUTES && SPT_PROB(0.5, seconds_per_tick) && owner.can_mutate())
 		var/mob/living/carbon/get_mutated = owner
 		to_chat(owner, span_danger("You mutate!"))
 		get_mutated.easy_random_mutate(NEGATIVE | MINOR_NEGATIVE)
 		get_mutated.emote("gasp")
 		get_mutated.domutcheck()
 
-	if(time_since_irradiated > 1 MINUTES && SPT_PROB(7.5, seconds_per_tick))
+	if(time_since_irradiated > 5 MINUTES && SPT_PROB(7.5, seconds_per_tick))
 		var/obj/item/bodypart/head/head = owner.get_bodypart(BODY_ZONE_HEAD)
 		if(!isnull(head) && head.hairstyle != "Bald" && (head.head_flags & (HEAD_HAIR|HEAD_FACIAL_HAIR)))
 			to_chat(owner, span_danger("Your hair starts to fall out in clumps..."))
