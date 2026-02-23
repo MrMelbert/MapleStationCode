@@ -215,7 +215,7 @@
 /datum/mood_event/jittery
 	description = "I'm nervous and on edge and I can't stand still!!"
 	mood_change = -2
-	screentext_cooldown = 1 MINUTES
+	screentext_cooldown = 2 MINUTES
 
 /datum/mood_event/jittery/add_effects(...)
 	if(HAS_PERSONALITY(owner, /datum/personality/paranoid))
@@ -665,11 +665,13 @@
 	description = "I'm alone with someone - what if they want to kill me?"
 	mood_change = -3
 	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/paranoid/large_group
 	description = "There are so many people around - any one of them could be out to get me!"
 	mood_change = -3
 	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/nt_disillusioned
 	description = "I hate the company, and everything it stands for."
@@ -688,6 +690,7 @@
 /datum/mood_event/slacking_off_diligent
 	description = "I should get back to work."
 	mood_change = -1
+	screentext_cooldown = 10 MINUTES
 
 /datum/mood_event/unimaginative_patronage
 	description = "That felt like a waste of money."
@@ -708,6 +711,7 @@
 	description = "Eugh, I just got coated in blood!"
 	mood_change = -4
 	timeout = 4 MINUTES
+	screentext_cooldown = 1 MINUTES
 
 /datum/mood_event/splattered_with_blood/can_effect_mob(datum/mood/home, mob/living/who, ...)
 	if(isvampire(who))
