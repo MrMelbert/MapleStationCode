@@ -131,7 +131,7 @@
 	if(change)
 		adjust_sanity(change * seconds_per_tick, new_min, new_max)
 
-	if(sanity_level >= SANITY_LEVEL_CRAZY && SPT_PROB(sanity_level == SANITY_LEVEL_CRAZY ? 2 : 5, seconds_per_tick))
+	if(sanity_level >= SANITY_LEVEL_CRAZY && mood_level <= MOOD_LEVEL_SAD2 && SPT_PROB(sanity_level == SANITY_LEVEL_CRAZY ? 2 : 5, seconds_per_tick))
 		mob_parent.set_jitter_if_lower(3 SECONDS)
 		for(var/mood_cat in shuffle(mood_events))
 			var/datum/mood_event/event = mood_events[mood_cat]
