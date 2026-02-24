@@ -23,10 +23,18 @@
 /datum/action/cooldown/spell/spirit_force_camellia/cast(mob/living/cast_on)
 	. = ..()
 
-	if(cast_on.mob_mood.sanity_level <= SANITY_UNSTABLE)
+	to_chat(cast_on, "cast start")
+
+	if(cast_on.has_status_effect(/datum/status_effect/spirit_force_camellia))
+		to_chat(cast_on, "cast DELET")
+		cast_on.remove_status_effect(/datum/status_effect/spirit_force_camellia)
+
+	if(cast_on.mob_mood.sanity <= SANITY_UNSTABLE)
+		to_chat(cast_on, "cast cancel")
 		return SPELL_CANCEL_CAST
 
 	cast_on.apply_status_effect(/datum/status_effect/spirit_force_camellia)
+	to_chat(cast_on, "cast done")
 
 /datum/mood_event/spirit_force_camellia
 	description = "My spirit is on fire."
@@ -39,6 +47,7 @@
 	UnregisterSignal(owner, COMSIG_MOB_AFTER_APPLY_DAMAGE)
 
 /datum/mood_event/spirit_force_camellia/proc/update_mood(atom/source, damage)
+	to_chat(owner, "mood update")
 	var/old_mood = mood_change
 	mood_change -= damage * 0.1 //add a max mood change malus and make it not count negative damage
 	if(old_mood != mood_change)
@@ -50,19 +59,22 @@
 	alert_type = /atom/movable/screen/alert/status_effect/spirit_force_camellia
 
 /datum/status_effect/spirit_force_camellia/on_apply()
+	to_chat(owner, "status apply")
 	owner.add_mood_event("spirit_force_camellia", /datum/mood_event/spirit_force_camellia)
 	owner.add_filter("spirit_force", 2, list("type" = "drop_shadow", "x" = 0, "y" = 1, "color" = COLOR_DARK_RED, "size" = 2))
 	owner.add_consciousness_modifier("spirit_force", 0)
 	return ..()
 
 /datum/status_effect/spirit_force_camellia/on_remove()
+	to_chat(owner, "status remove")
 	owner.clear_mood_event("spirit_force_camellia")
 	owner.remove_filter("spirit_force")
 
 /datum/status_effect/spirit_force_camellia/tick(seconds_between_ticks)
 	. = ..()
 
-	if(owner.mob_mood.sanity_level <= SANITY_UNSTABLE)
+	if(owner.mob_mood.sanity <= SANITY_UNSTABLE)
+		to_chat(owner, "status DELETE")
 		qdel(src)
 
 /atom/movable/screen/alert/status_effect/spirit_force_camellia

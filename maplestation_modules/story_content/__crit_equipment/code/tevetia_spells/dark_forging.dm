@@ -1,4 +1,5 @@
 /datum/action/cooldown/spell/conjure_item/dark_forging
+	name = "Dark Forging"
 	button_icon_state = "shapeshift"
 	cooldown_time = 20 SECONDS
 
@@ -7,14 +8,15 @@
 	/// All the weapons we've previously casted, used to track if we can use Piercer
 	var/list/casted_weapons = list()
 
-/datum/action/cooldown/spell/dark_forging/before_cast(mob/living/cast_on)
+/datum/action/cooldown/spell/conjure_item/dark_forging/before_cast(mob/living/cast_on)
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return
 
 	var/list/summonable_weapons = list()
+	var/list/summonable_weapon_types = list()
 	for(var/atom/path as anything in subtypesof(/obj/item/melee/dark_forged))
-		if(path == /obj/item/melee/dark_forged/piercer)
+		if(path == /obj/item/melee/dark_forged/piercer && (length(casted_weapons) != (length(subtypesof(/obj/item/melee/dark_forged)) - 1)))
 			continue
 		var/path_name = initial(path.name)
 		summonable_weapon_types[path_name] = path
@@ -30,7 +32,7 @@
 
 	item_type = summonable_weapon_types[picked_item]
 
-/datum/action/cooldown/spell/dark_forging/post_created(atom/cast_on, atom/created)
+/datum/action/cooldown/spell/conjure_item/dark_forging/post_created(atom/cast_on, atom/created)
 	if(!casted_weapons.Find(created.name) && created != /obj/item/melee/dark_forged/piercer)
 		casted_weapons += created.name
 	if(created == /obj/item/melee/dark_forged/piercer)
@@ -52,6 +54,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	color = "#000000" // for placeholder purposes
 
 /obj/item/melee/dark_forged/lance
 	name = "dark forged lance"
