@@ -6810,6 +6810,7 @@
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\prince_of_cosmos.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\princess_of_cosmos.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\silvered_huntress.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\tevetia_spells\dark_forging.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\tevetia_spells\dark_smoke.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
