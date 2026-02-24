@@ -6,6 +6,7 @@
 /datum/story_rapid_status/silvered_huntress/apply(mob/living/carbon/human/selected)
 	var/list/datum/action/cooldown/spell/spells_to_grant = list(
 		/datum/action/cooldown/spell/smoke/tevetia,
+		/datum/action/cooldown/spell/conjure_item/dark_forging,
 	)
 
 	grant_spell_list(selected, spells_to_grant, TRUE)
