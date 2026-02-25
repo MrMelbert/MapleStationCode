@@ -1,8 +1,10 @@
 import {
+  type FeatureChoiced,
   FeatureNumberInput,
   type FeatureNumeric,
   FeatureSliderInput,
 } from '../base';
+import { FeatureDropdownInput } from '../dropdowns';
 
 export const mood_text_alpha: FeatureNumeric = {
   name: 'Mood Text Transparency',
@@ -17,4 +19,11 @@ export const mood_text_cap: FeatureNumeric = {
   description: `Controls how many moodlet screen text popups can be visible at once.
     Setting this to 0 will disable moodlet text popups entirely.`,
   component: FeatureNumberInput,
+};
+
+export const mood_text_location: FeatureChoiced = {
+  name: 'Mood Text Location',
+  category: 'GAMEPLAY',
+  description: `Controls where moodlet screen text popups appear on the screen.`,
+  component: FeatureDropdownInput,
 };

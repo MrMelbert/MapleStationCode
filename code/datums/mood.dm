@@ -243,7 +243,8 @@
 		first_open_index += 1
 	if(first_open_index > LAZYLEN(active_mood_maptexts))
 		return
-	var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, event, first_open_index)
+	var/maptext_location = mob_parent.client.prefs.read_preference(/datum/preference/choiced/mood_text_location)
+	var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, event, first_open_index, maptext_location)
 	new_maptext.alpha = 255 * mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_alpha)
 	mob_parent.client.screen += new_maptext
 	addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext, first_open_index), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
@@ -267,7 +268,7 @@
 	VAR_FINAL/maptext_color
 	VAR_FINAL/running_time_length = 0
 
-/atom/movable/screen/mood_maptext/Initialize(mapload, datum/hud/hud_owner, datum/mood_event/base, offset = 0)
+/atom/movable/screen/mood_maptext/Initialize(mapload, datum/hud/hud_owner, datum/mood_event/base, offset = 0, maptext_location = MOOD_TEXT_ABOVE_CHARACTER)
 	. = ..()
 	if(isnull(base))
 		return INITIALIZE_HINT_QDEL
@@ -301,7 +302,11 @@
 			animate(src, time = new_time_length, maptext = construct_maptext(words), flags = ANIMATION_CONTINUE)
 			running_time_length += new_time_length
 
-	screen_loc = "CENTER-3:16,SOUTH+3:[offset * 20]"
+	switch(maptext_location)
+		if(MOOD_TEXT_ABOVE_CHARACTER)
+			screen_loc = "CENTER-3:16,NORTH-1:[(offset - 1) * -20]"
+		if(MOOD_TEXT_BELOW_CHARACTER)
+			screen_loc = "CENTER-3:16,SOUTH+3:[(offset - 1) * 20]"
 
 /atom/movable/screen/mood_maptext/proc/construct_maptext(list/words)
 	var/output = ""
