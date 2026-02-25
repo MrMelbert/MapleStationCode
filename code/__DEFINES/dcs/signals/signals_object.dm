@@ -587,6 +587,9 @@
 /// Item has been unequipped from a mob as a prosthetic limb
 #define COMSIG_ITEM_DROPPED_FROM_PROSTHETIC "item_dropped_from_prosthetic"
 
+/// Sent from /obj/machinery/vitals_monitor/proc/set_patient() : (mob/living/old_patient, mob/living/new_patient)
+#define COMSIG_VITALS_SET_PATIENT "vitals_set_patient"
+
 /// Sent from /obj/item/bodypart/limb/proc/apply_item(): (obj/item/bodypart/limb)
 #define COMSIG_ITEM_APPLIED_TO_LIMB "item_applied_to_limb"
 /// Sent from /obj/item/bodypart/limb/proc/Exited(): (obj/item/bodypart/limb)
@@ -597,7 +600,6 @@
 	#define COMPONENT_SACRIFICE_SUCCESSFUL (1<<0)
 
 /// Send to items that have been unwrapped from a gift
-#define COMSIG_ITEM_OPENED_FROM_GIFT "gift_opened"
 
 /// From /obj/machinery/vending/ui_interact(): (mob/user, datum/vending_ui/ui)
 #define COMSIG_VENDING_UI_INTERACT "vending_ui_interact"

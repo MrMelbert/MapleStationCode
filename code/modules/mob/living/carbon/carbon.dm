@@ -966,6 +966,7 @@
 	return TRUE
 
 /mob/living/carbon/proc/can_defib()
+	SHOULD_BE_PURE(TRUE)
 	if (HAS_TRAIT(src, TRAIT_SUICIDED))
 		return DEFIB_FAIL_SUICIDE
 
