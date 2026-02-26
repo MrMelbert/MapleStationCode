@@ -551,13 +551,13 @@
 	if(crit_percent() < 100 || HAS_TRAIT(src, TRAIT_NOSOFTCRIT)) // melbert todo
 		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 			Paralyze(2 SECONDS)
-			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 		return
 
 	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 		return
 	var/is_standing = body_position == STANDING_UP
-	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 	if(stat == DEAD)
 		return
 	if(buckled)
@@ -922,9 +922,8 @@
 	if(heal_flags & HEAL_TRAUMAS)
 		cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 		// Addictions are like traumas
-		if(mind)
-			for(var/addiction_type in subtypesof(/datum/addiction))
-				mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
+		for(var/addiction_type in GLOB.addictions)
+			mind?.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
 
 	if(heal_flags & HEAL_RESTRAINTS)
 		QDEL_NULL(handcuffed)
@@ -1397,8 +1396,7 @@
 	if(!islist(blood_dna))
 		CRASH("spray_blood called without a valid blood_dna list!")
 
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, splatter_strength)
-	our_splatter.add_blood_DNA(blood_dna)
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, blood_dna, splatter_strength)
 	our_splatter.fly_towards(get_ranged_target_turf(src, splatter_direction, splatter_strength), splatter_strength)
 
 /mob/living/carbon/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)

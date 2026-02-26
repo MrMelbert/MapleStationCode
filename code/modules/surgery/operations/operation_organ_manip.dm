@@ -192,7 +192,7 @@
 	if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID))
 		surgeon.add_mood_event("morbid_abominable_surgery_success", /datum/mood_event/morbid_abominable_surgery_success)
 
-/datum/surgery_operation/limb/organ_manipulation/proc/on_success_remove_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ, obj/item/tool)
+/datum/surgery_operation/limb/organ_manipulation/proc/on_success_remove_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ, obj/item/tool, list/operation_args)
 	display_results(
 		surgeon,
 		limb.owner,
@@ -204,14 +204,14 @@
 		target = limb.owner,
 		affected_locations = limb,
 		pain_message = "Your [limb.plaintext_zone] throbs with pain, you can't feel your [organ.name] anymore!",
-		pain_amount = get_tool_quality(tool) * SURGERY_PAIN_MEDIUM,
+		pain_amount = operation_args[OPERATION_TOOL_QUALITY] * SURGERY_PAIN_MEDIUM,
 	)
 	log_combat(surgeon, limb.owner, "surgically removed [organ.name] from")
 	organ.Remove(limb.owner)
 	organ.forceMove(limb.owner.drop_location())
 	organ.on_surgical_removal(surgeon, limb, tool)
 
-/datum/surgery_operation/limb/organ_manipulation/proc/on_success_insert_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ)
+/datum/surgery_operation/limb/organ_manipulation/proc/on_success_insert_organ(obj/item/bodypart/limb, mob/living/surgeon, obj/item/organ/organ, list/operation_args)
 	surgeon.temporarilyRemoveItemFromInventory(organ, TRUE)
 	organ.pre_surgical_insertion(surgeon, limb, limb.body_zone)
 	organ.Insert(limb.owner)

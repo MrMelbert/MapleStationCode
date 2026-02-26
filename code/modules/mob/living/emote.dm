@@ -475,6 +475,10 @@
 	message_mime = "sniffs silently."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 
+/datum/emote/living/sniff/run_emote(mob/living/user, params, type_override, intentional)
+	. = ..()
+	user.smell_something()
+
 /datum/emote/living/snore
 	key = "snore"
 	key_third_person = "snores"

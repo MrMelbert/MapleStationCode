@@ -105,6 +105,7 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_ship_ambience_volume/apply_to_client_updated(client/client, value)
+	client.current_ambient_sound = null
 	client.mob.refresh_looping_ambience()
 
 /// Heartbeats

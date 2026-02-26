@@ -66,6 +66,16 @@
 	if(nuke_team?.tracked_nuke && nuke_team?.memorized_code)
 		memorize_code()
 
+	// future melbert todo - tie to nukeop jobs
+	owner.set_level(/datum/skill/electronics, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
+	owner.set_level(/datum/skill/mechanics, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/surgery, SKILL_LEVEL_MASTER, silent = TRUE)
+	owner.set_level(/datum/skill/piloting, SKILL_LEVEL_EXPERT, silent = TRUE)
+
 /datum/antagonist/nukeop/get_team()
 	return nuke_team
 

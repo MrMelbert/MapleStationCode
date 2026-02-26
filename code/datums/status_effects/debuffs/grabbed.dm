@@ -16,11 +16,59 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
+/obj/item/grabbing_hand/equipped(mob/user, slot, initial)
+	. = ..()
+	var/hand = user.get_held_index_of_item(src)
+	if(IS_RIGHT_INDEX(hand))
+		transform = transform.Scale(-1, 1)
+	RegisterSignal(user, COMSIG_MOVABLE_SET_GRAB_STATE, PROC_REF(update_state_color), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_PINNING_MOB, PROC_REF(rotate_grab), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_UNPINNING_MOB, PROC_REF(unrotate_grab), TRUE)
+
+/obj/item/grabbing_hand/dropped(mob/user, silent)
+	. = ..()
+	UnregisterSignal(user, list(
+		COMSIG_MOVABLE_SET_GRAB_STATE,
+		COMSIG_MOVABLE_PINNING_MOB,
+		COMSIG_MOVABLE_UNPINNING_MOB,
+	))
+
+/obj/item/grabbing_hand/proc/update_state_color(mob/source, new_state)
+	SIGNAL_HANDLER
+	switch(new_state)
+		if(GRAB_PASSIVE)
+			color = COLOR_WHITE
+		if(GRAB_AGGRESSIVE)
+			color = COLOR_SOFT_RED
+		if(GRAB_NECK)
+			color = COLOR_RED
+		if(GRAB_KILL)
+			color = COLOR_DARK_RED
+
+/obj/item/grabbing_hand/proc/rotate_grab(mob/source, mob/living/being_pinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? -90 : 90)
+
+/obj/item/grabbing_hand/proc/unrotate_grab(mob/source, mob/living/being_unpinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? 90 : -90)
+
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
 
 /obj/item/grabbing_hand/attack_self(mob/user, modifiers)
 	return user.start_pulling(user.pulling)
+
+/// Returns what direction we look when we're lying down.
+/// If we're not lying down, returns own dir
+/mob/living/proc/get_lying_dir()
+	if(lying_angle == LYING_ANGLE_WEST)
+		return WEST
+	if(lying_angle == LYING_ANGLE_EAST)
+		return EAST
+	return dir
 
 /// Status effect applied to someone grabbing something
 /datum/status_effect/grabbing
@@ -389,6 +437,12 @@
 	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, LINK_SOURCE(id)))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
 		return
+	owner.Knockdown(3 SECONDS)
+	if(grabbing_us.loc != owner.loc)
+		grabbing_us.Move(owner.loc)
+		if(grabbing_us.loc != owner.loc)
+			to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
+			return
 
 	owner.visible_message(
 		span_danger("[grabbing_us] pins [owner] to the ground!"),
@@ -408,9 +462,10 @@
 	ADD_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	owner.Paralyze(2 SECONDS)
 	owner.setDir(SOUTH)
-	grabbing_us.Move(owner.loc)
-	grabbing_us.setDir(UNLINT(owner.lying_angle) == 270 ? WEST : EAST) // melbert todo
+	grabbing_us.setDir(owner.get_lying_dir()) // face the same way the person is lying
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(start_dragging))
+	SEND_SIGNAL(owner, COMSIG_LIVING_PINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_PINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/pin_check()
 	return !QDELETED(src) && !QDELETED(grabbing_us) && !pin && grabbing_us.grab_state >= GRAB_AGGRESSIVE
@@ -456,6 +511,8 @@
 	REMOVE_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, PIN_SOURCE(id))
 	UnregisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE)
+	SEND_SIGNAL(owner, COMSIG_LIVING_UNPINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_UNPINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/update_state(datum/source, new_state)
 	SIGNAL_HANDLER

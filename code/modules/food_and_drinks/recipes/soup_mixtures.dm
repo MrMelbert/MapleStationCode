@@ -222,6 +222,7 @@
 
 	testing("Soup reaction finished with a total react volume of [react_vol] and [length(pot.added_ingredients)] ingredients. Cleaning up.")
 	clean_up(holder, reaction, react_vol)
+	new /obj/effect/abstract/smell/oven/good(get_turf(pot))
 
 /**
  * Cleans up the ingredients and adds whatever leftover reagents to the mixture

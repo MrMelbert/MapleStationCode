@@ -90,6 +90,10 @@
 	if(blood_bled >= 14)
 		victim.do_splatter_effect(attack_direction)
 
+/datum/wound/pierce/bleed/item_can_treat(obj/item/potential_treater, mob/user)
+	// assume that - if mended and still ready to operate - that we want to do surgery instead of manual treatment
+	return ..() && !mend_state && !HAS_TRAIT(limb, TRAIT_READY_TO_OPERATE)
+
 /datum/wound/pierce/bleed/get_bleed_rate_of_change()
 	//basically if a species doesn't bleed, the wound is stagnant and will not heal on it's own (nor get worse)
 	if(!limb.can_bleed())

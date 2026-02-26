@@ -38,7 +38,7 @@
 	overdose_threshold = 30
 	ph = 8.96
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 30) //5u = 100 progress, 25-30u = addiction
+	addiction_types = list(/datum/addiction/opioids = 30)
 	// Morphine is THE painkiller
 	pain_modifier = 0.5
 
@@ -273,7 +273,7 @@
 	overdose_threshold = 30
 	ph = 5.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 45) //5u = 150 progress, 15-20u = addiction
+	addiction_types = list(/datum/addiction/opioids = 20)
 	pain_modifier = 0.4
 
 /datum/reagent/medicine/painkiller/oxycodone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
@@ -336,7 +336,7 @@
 // depending on what type of pain the part's feeling
 /datum/reagent/medicine/painkiller/specialized
 	name = "specialized painkiller"
-	addiction_types = list(/datum/addiction/opioids = 15) //5u = 50 progress, 60u = addiction
+	addiction_types = list(/datum/addiction/opioids = 60)
 
 	/// How much pain we restore on life ticks, modified by modifiers (yeah?)
 	var/pain_heal_amount = 1.5

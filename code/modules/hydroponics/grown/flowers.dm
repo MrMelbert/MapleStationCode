@@ -32,6 +32,10 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
+/obj/item/food/grown/poppy/Initialize(mapload, obj/item/seeds/new_seed)
+	. = ..()
+	AddElement(/datum/element/simple_smell, "flowers", SMELL_INTENSITY_WEAK, 1, "fragrance")
+
 // Lily
 /obj/item/seeds/poppy/lily
 	name = "lily seed pack"
@@ -308,6 +312,10 @@
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES | GROSS
+
+/obj/item/food/grown/rose/Initialize(mapload, obj/item/seeds/new_seed)
+	. = ..()
+	AddElement(/datum/element/simple_smell, "roses", SMELL_INTENSITY_WEAK, 1, "fragrance")
 
 /obj/item/food/grown/rose/equipped(mob/user, slot, initial)
 	. = ..()

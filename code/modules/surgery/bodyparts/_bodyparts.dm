@@ -405,6 +405,21 @@
 			check_list += "\t[span_tooltip("You are loosing blood. You should wrap your limb in gauze \
 				or apply pressure to it by grabbing yourself (while targeting the limb) to stem the flow.", bleed_text)]"
 
+	// NON-MODULE CHANGE
+	if(CAN_FEEL_PAIN(owner)) // haha you thought
+		switch(get_modified_pain())
+			if(10 to 40)
+				check_list += "\t\t[span_danger("It's experiencing mild pain \
+					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
+
+			if(40 to 100)
+				check_list += "\t\t[span_warning("It's experiencing moderate pain \
+					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
+
+			if(100 to INFINITY)
+				check_list += "\t\t[span_boldwarning("It's experiencing severe pain \
+					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
+
 	return jointext(check_list, "<br>")
 
 /// Returns surgery self-check information for this bodypart
@@ -1077,7 +1092,7 @@
 	else
 		draw_color = null
 
-	damage_color = owner?.get_blood_type()?.color || COLOR_BLOOD // NON-MODULE CHANGE
+	damage_color = owner?.get_expected_blood_type().color || COLOR_BLOOD // NON-MODULE CHANGE
 
 	if(!is_creating || !owner)
 		return
@@ -1244,6 +1259,7 @@
 		var/mutable_appearance/husk_blood = mutable_appearance(icon_husk, "[husk_type]_husk_[body_zone]")
 		husk_blood.blend_mode = BLEND_INSET_OVERLAY
 		husk_blood.appearance_flags |= RESET_COLOR
+		husk_blood.color = damage_color
 		husk_blood.dir = thing_to_husk.dir
 		thing_to_husk.add_overlay(husk_blood)
 
