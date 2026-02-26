@@ -87,6 +87,7 @@
 #define TGUI_LAYOUT_LIST "list"
 
 //Job preferences levels
+#define JP_ANY 0
 #define JP_LOW 1
 #define JP_MEDIUM 2
 #define JP_HIGH 3

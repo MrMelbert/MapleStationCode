@@ -16,7 +16,7 @@
 	paycheck = PAYCHECK_ZERO
 	total_positions = 0
 	spawn_positions = 1
-	supervisors = "no one"
+	supervisors = "no one (yet)"
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "STOWAWAY"
 	faction = FACTION_STATION
@@ -36,6 +36,10 @@
 
 /datum/job/stowaway/get_default_roundstart_spawn_point()
 	return find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE)
+
+/datum/job/stowaway/get_spawn_message_information()
+	. = ..()
+	. += span_notice("You are free to steal and evade security as you please, but remember you are not an antagonist.")
 
 /datum/job/stowaway/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()

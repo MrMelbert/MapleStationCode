@@ -2555,8 +2555,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_exp_list(minutes)
 	var/list/exp_list = list()
 
-	if(mind && mind.special_role && !(mind.datum_flags & DF_VAR_EDITED))
-		exp_list[mind.special_role] = minutes
+	if(!(mind.datum_flags & DF_VAR_EDITED))
+		for(var/datum/antagonist/antag as anything in mind?.antag_datums)
+			var/flag_to_check = antag.jobban_flag || antag.pref_flag
+			if(flag_to_check)
+				exp_list[flag_to_check] = minutes
 
 	if(mind.assigned_role.title in GLOB.exp_specialmap[EXP_TYPE_SPECIAL])
 		exp_list[mind.assigned_role.title] = minutes
@@ -2756,10 +2759,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(isnull(guardian_client))
 		return
 	else if(guardian_client == "Poll Ghosts")
-		var/list/candidates = SSpolling.poll_ghost_candidates("Do you want to play as an admin created Guardian Spirit of [real_name]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, pic_source = src, role_name_text = "guardian spirit")
-		if(LAZYLEN(candidates))
-			var/mob/dead/observer/candidate = pick(candidates)
-			guardian_client = candidate.client
+		var/mob/chosen_one = SSpolling.poll_ghost_candidates("Do you want to play as an admin created [span_notice("Guardian Spirit")] of [span_danger(real_name)]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, alert_pic = mutable_appearance('icons/mob/nonhuman-player/guardian.dmi', "magicexample"), jump_target = src, role_name_text = "guardian spirit", amount_to_pick = 1)
+		if(chosen_one)
+			guardian_client = chosen_one.client
 		else
 			tgui_alert(admin, "No ghost candidates.", "Guardian Controller")
 			return

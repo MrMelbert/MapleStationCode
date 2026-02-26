@@ -191,7 +191,7 @@
 #define JOB_ANNOUNCE_ARRIVAL (1<<0)
 /// Whether the mob is added to the crew manifest.
 #define JOB_CREW_MANIFEST (1<<1)
-/// Whether the mob is equipped through SSjob.EquipRank() on spawn.
+/// Whether the mob is equipped through SSjob.equip_rank() on spawn.
 #define JOB_EQUIP_RANK (1<<2)
 /// Whether the job is considered a regular crew member of the station. Equipment such as AI and cyborgs not included.
 #define JOB_CREW_MEMBER (1<<3)
@@ -213,6 +213,10 @@
 #define JOB_LATEJOIN_ONLY (1<<11)
 /// This job is a head of staff.
 #define JOB_HEAD_OF_STAFF (1<<12)
+/// This job will NEVER be selected as an antag role
+#define JOB_ANTAG_BLACKLISTED (1<<13)
+/// This job will never be selected as an antag role IF config `protect_roles_from_antagonist` is set
+#define JOB_ANTAG_PROTECTED (1<<14)
 
 /// Combination flag for jobs which are considered regular crew members of the station.
 #define STATION_JOB_FLAGS (JOB_ANNOUNCE_ARRIVAL|JOB_CREW_MANIFEST|JOB_EQUIP_RANK|JOB_CREW_MEMBER|JOB_NEW_PLAYER_JOINABLE|JOB_REOPEN_ON_ROUNDSTART_LOSS|JOB_ASSIGN_QUIRKS|JOB_CAN_BE_INTERN)
