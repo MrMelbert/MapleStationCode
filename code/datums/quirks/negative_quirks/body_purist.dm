@@ -67,3 +67,6 @@
 	if(IS_ROBOTIC_LIMB(old_limb))
 		cybernetics_level--
 		update_mood()
+
+/datum/quirk/body_purist/is_species_appropriate(datum/species/mob_species)
+	return !ispath(mob_species, /datum/species/android)

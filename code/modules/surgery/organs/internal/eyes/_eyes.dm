@@ -468,6 +468,7 @@
 	iris_overlays = FALSE
 	organ_flags = ORGAN_ROBOTIC
 	failing_desc = "seems to be broken."
+	lighting_cutoff = LIGHTING_CUTOFF_REAL_LOW
 
 /obj/item/organ/eyes/robotic/emp_act(severity)
 	. = ..()

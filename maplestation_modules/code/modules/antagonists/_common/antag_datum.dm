@@ -1,7 +1,6 @@
 /// -- Extension of the base antagonist datum. --
 /// Extra vars for datum/antagonists
 /datum/antagonist
-	antag_flags = FLAG_CAN_SEE_EXPOITABLE_INFO
 	/// Whether we spawn with our equpiment or we wait to receive it.
 	var/finalize_antag = TRUE
 	/// The advanced antag datum we are linked to.

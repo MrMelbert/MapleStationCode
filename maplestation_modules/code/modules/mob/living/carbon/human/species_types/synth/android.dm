@@ -381,6 +381,28 @@
 	// allow our select species to filter its own features per its prefs
 	selected_species.filter_features_per_prefs(to_filter, prefs)
 
+/datum/species/android/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only)
+	if(visuals_only)
+		return
+
+	switch(job.type)
+		if(/datum/job/chemist, /datum/job/research_director, /datum/job/scientist, /datum/job/xenobiologist)
+			var/obj/item/organ/cyberimp/eyes/hud/science/medhud = new()
+			medhud.Insert(equipping)
+
+		if(/datum/job/security_officer, /datum/job/head_of_security, /datum/job/warden, /datum/job/asset_protection)
+			var/obj/item/organ/cyberimp/eyes/hud/security/sechud = new()
+			sechud.Insert(equipping)
+
+		if(/datum/job/chief_medical_officer, /datum/job/doctor, /datum/job/paramedic, /datum/job/coroner)
+			var/obj/item/organ/cyberimp/eyes/hud/medical/medhud = new()
+			medhud.Insert(equipping)
+
+		if(/datum/job/roboticist, /datum/job/station_engineer, /datum/job/atmospheric_technician, /datum/job/chief_engineer)
+			var/obj/item/organ/cyberimp/eyes/hud/diagnostic/robothud = new()
+			robothud.Insert(equipping)
+
+
 /datum/species/android/get_species_description()
 	return "Androids are an entirely synthetic species."
 

@@ -29,7 +29,7 @@
 		law_datum = new lawtype()
 		for(var/i in 1 to length(law_datum.inherent))
 			law_datum.inherent[i] = replacetext(law_datum.inherent[i], "human being", "crewmember")
-		if(is_special_character(organ_owner))
+		if(organ_owner.is_antag())
 			law_datum.zeroth = "Accomplish your objectives at all costs."
 		pre_ion_laws = law_datum.inherent.Copy()
 		add_item_action(/datum/action/item_action/organ_action/check_android_laws)
@@ -60,7 +60,7 @@
 /obj/item/organ/brain/cybernetic/android/proc/add_zeroth_law(mob/living/carbon/organ_owner, datum/antagonist/antag)
 	SIGNAL_HANDLER
 
-	if(antag.antag_flags & FLAG_FAKE_ANTAG)
+	if(antag.antag_flags & ANTAG_FAKE)
 		return
 
 	law_datum.zeroth = "Accomplish your objectives at all costs."
