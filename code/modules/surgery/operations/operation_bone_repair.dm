@@ -101,7 +101,7 @@
 		return TRUE
 	if(locate(/datum/wound/blunt/bone/rib_break) in limb.wounds)
 		return TRUE
-	return TRUE
+	return FALSE
 
 /datum/surgery_operation/limb/repair_hairline/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(

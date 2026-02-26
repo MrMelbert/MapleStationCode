@@ -105,7 +105,7 @@
 			var/mob/living/carbon/get_sick = owner
 			get_sick.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 10)
 		else if(blood_type)
-			to_chat(owner, span_notice("You can taste [blood_type.reagent_type::name]."))
+			to_chat(owner, span_notice("You can taste [LOWER_TEXT(blood_type.reagent_type::name)]."))
 
 	if(time_since_irradiated > 2 MINUTES && SPT_PROB(0.5, seconds_per_tick))
 		if(!owner.IsParalyzed())

@@ -90,6 +90,7 @@
 
 /obj/item/clothing/under/rank/medical/scrubs
 	name = "medical scrubs"
+	gender = PLURAL
 
 /obj/item/clothing/under/rank/medical/scrubs/Initialize(mapload)
 	. = ..()
