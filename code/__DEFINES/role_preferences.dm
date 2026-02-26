@@ -65,6 +65,7 @@
 #define ROLE_REV "Revolutionary"
 #define ROLE_REVENANT "Revenant"
 #define ROLE_SENTIENCE "Sentience Potion Spawn"
+#define ROLE_EVIL_CLONE "Evil Clone"
 /// This flag specifically is used as a generic catch-all antag ban
 #define ROLE_SYNDICATE "Syndicate"
 

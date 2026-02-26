@@ -19,7 +19,7 @@
 	. = ..()
 	if(isnull(job_type))
 		return INITIALIZE_HINT_QDEL
-	var/datum/job/job_datum = SSjob.GetJobType(job_type)
+	var/datum/job/job_datum = SSjob.get_job_type(job_type)
 	if(!length(job_datum.base_skills))
 		stack_trace("Skill job skillchip on a job with no skills, USELESS. (job type: [job_type])")
 		return INITIALIZE_HINT_QDEL
