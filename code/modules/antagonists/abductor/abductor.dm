@@ -2,11 +2,13 @@
 	name = "\improper Abductor"
 	roundend_category = "abductors"
 	antagpanel_category = ANTAG_GROUP_ABDUCTORS
-	job_rank = ROLE_ABDUCTOR
+	pref_flag = ROLE_ABDUCTOR
 	antag_hud_name = "abductor"
 	show_in_antagpanel = FALSE //should only show subtypes
 	show_to_ghosts = TRUE
 	suicide_cry = "FOR THE MOTHERSHIP!!" // They can't even talk but y'know
+	stinger_sound = 'sound/ambience/antag/ayylien.ogg'
+
 	var/datum/team/abductor_team/team
 	var/sub_role
 	var/outfit
@@ -69,15 +71,13 @@
 	return team
 
 /datum/antagonist/abductor/on_gain()
-	owner.set_assigned_role(SSjob.GetJobType(role_job))
-	owner.special_role = ROLE_ABDUCTOR
+	owner.set_assigned_role(SSjob.get_job_type(role_job))
 	objectives += team.objectives
 	finalize_abductor()
 	ADD_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
 	return ..()
 
 /datum/antagonist/abductor/on_removal()
-	owner.special_role = null
 	REMOVE_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
 	return ..()
 

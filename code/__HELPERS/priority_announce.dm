@@ -91,7 +91,7 @@
 		else
 			GLOB.news_network.submit_article(text, "[command_name()] Update", NEWSCASTER_STATION_ANNOUNCEMENTS , null)
 
-/proc/print_command_report(text = "", title = null, announce=TRUE)
+/proc/print_command_report(text = "", title = null, announce = TRUE, contains_advanced_html = FALSE)
 	if(!title)
 		title = "Classified [command_name()] Update"
 
@@ -107,7 +107,7 @@
 	message.title = title
 	message.content = text
 
-	SScommunications.send_message(message)
+	GLOB.communications_controller.send_message(message, contains_advanced_html = contains_advanced_html)
 
 /**
  * Sends a minor annoucement to players.

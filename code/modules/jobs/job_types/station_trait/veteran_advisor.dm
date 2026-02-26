@@ -37,7 +37,7 @@
 	)
 	rpg_title = "Royal Advisor"
 	allow_bureaucratic_error = FALSE
-	job_flags = STATION_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | STATION_TRAIT_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 	crewmonitor_priority = 18
 

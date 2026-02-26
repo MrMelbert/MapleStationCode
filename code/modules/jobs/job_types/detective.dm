@@ -48,7 +48,7 @@
 		/obj/item/reagent_containers/cup/glass/flask/det,
 	)
 	rpg_title = "Thiefcatcher" //I guess they caught them all rip thief...
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 	job_tone = "objection"
 

@@ -1,5 +1,5 @@
-/datum/asset/spritesheet/simple/paper
-	name = "paper"
+/datum/asset/spritesheet/simple/stamps
+	name = "stamps"
 	assets = list(
 		"stamp-clown" = 'icons/stamp_icons/large_stamp-clown.png',
 		"stamp-deny" = 'icons/stamp_icons/large_stamp-deny.png',
@@ -20,4 +20,10 @@
 		"stamp-syndicate" = 'icons/stamp_icons/large_stamp-syndicate.png',
 		"stamp-bo" = 'maplestation_modules/icons/stamp_icons/large_stamp-bo.png',
 		"stamp-ap" = 'maplestation_modules/icons/stamp_icons/large_stamp-ap.png',
+	)
+
+// Contains 256x128 versions of various in game company logos
+/datum/asset/simple/logos
+	assets = list(
+		"nanotrasen-logo" = 'maplestation_modules/icons/nanotrasen-logo.png',
 	)
