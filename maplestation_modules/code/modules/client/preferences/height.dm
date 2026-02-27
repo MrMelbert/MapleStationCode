@@ -133,7 +133,7 @@
 /mob/living/carbon/human/dummy/apply_height_offsets(image/appearance, upper_torso)
 	return
 
+/// Check if the passed preferences datum has a silicon role prioritized
 /datum/preference/proc/has_silicon_prioritized(datum/preferences/preferences)
-	// If you have a silicon job, don't show the height preference
 	var/datum/job/fav_job = preferences.get_highest_priority_job()
 	return istype(fav_job, /datum/job/ai) || istype(fav_job, /datum/job/cyborg)
