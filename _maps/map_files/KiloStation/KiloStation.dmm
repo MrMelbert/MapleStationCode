@@ -1953,7 +1953,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_edge,
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "ajW" = (
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/poddoor/preopen{
@@ -23678,7 +23678,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "dgT" = (
 /obj/structure/table/wood,
 /obj/machinery/door/firedoor,
@@ -24543,7 +24543,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "dum" = (
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/machinery/door/airlock/maintenance,
@@ -26688,7 +26688,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "ejw" = (
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
@@ -34744,7 +34744,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "gOH" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -37370,7 +37370,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "hIT" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/line{
@@ -38434,10 +38434,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/public/glass{
-	name = "Crew Storage"
+	name = "Long Term Crew Storage"
 	},
 /turf/open/floor/iron,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "iba" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -43534,9 +43534,9 @@
 /turf/open/floor/engine,
 /area/station/engineering/supermatter/room)
 "jKG" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "jLn" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/chair/office{
@@ -48908,7 +48908,7 @@
 /area/station/cargo/office)
 "lwp" = (
 /turf/closed/wall,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "lwt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -52183,7 +52183,7 @@
 /obj/machinery/holopad,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "mCW" = (
 /obj/structure/reagent_dispensers/fueltank,
 /obj/effect/turf_decal/delivery,
@@ -57278,7 +57278,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_edge,
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "ooX" = (
 /obj/machinery/door/airlock/external{
 	name = "Departure Shuttle Airlock"
@@ -58093,7 +58093,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_edge,
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "oBY" = (
 /obj/structure/grille/broken,
 /obj/effect/decal/cleanable/glass,
@@ -61171,7 +61171,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "pxv" = (
 /obj/structure/chair/comfy/brown{
 	buildstackamount = 0;
@@ -61399,7 +61399,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "pCm" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -62641,6 +62641,10 @@
 /obj/structure/sign/clock/directional/north,
 /turf/open/floor/carpet/green,
 /area/station/service/electronic_marketing_den)
+"pVg" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/station/commons/long_term_storage)
 "pVC" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -62776,7 +62780,7 @@
 /obj/effect/turf_decal/tile/green/diagonal_edge,
 /obj/effect/turf_decal/tile/green/diagonal_centre,
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "pXL" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -71160,7 +71164,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/diagonal,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "sGk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/ore_box,
@@ -79696,7 +79700,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "vuR" = (
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
@@ -80664,7 +80668,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "vKK" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -84159,7 +84163,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/white,
-/area/station/commons/lounge)
+/area/station/commons/long_term_storage)
 "wVS" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -105086,9 +105090,9 @@ skO
 crP
 rbF
 amA
-jKG
-jKG
-jKG
+pVg
+pVg
+pVg
 lwp
 lwp
 jyL
@@ -106628,9 +106632,9 @@ mwd
 eNm
 shj
 aQN
-jKG
-jKG
-jKG
+pVg
+pVg
+pVg
 lwp
 lwp
 gvU

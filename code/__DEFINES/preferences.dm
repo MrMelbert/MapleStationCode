@@ -187,7 +187,7 @@
 #define LOWER_LIP "Lower"
 
 // Latejoin Spawnpoints
-#define SPAWNPOINT_CRYO "Cryogenic Storage"
+#define SPAWNPOINT_CRYO "Long-Term Crew Storage"
 #define SPAWNPOINT_ARRIVALS "Arrivals Shuttle"
 
 // Job greyscale colors for loadout items

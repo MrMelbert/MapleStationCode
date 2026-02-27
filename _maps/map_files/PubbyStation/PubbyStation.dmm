@@ -61729,6 +61729,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/maintenance/disposal)
+"xFB" = (
+/obj/machinery/sleeper/cryo,
+/obj/structure/sign/warning/cold_temp/directional/north,
+/turf/open/floor/iron/white/smooth_large,
+/area/station/commons/fitness/recreation)
 "xFF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/cafeteria,
@@ -103694,7 +103699,7 @@ sFK
 sFK
 sFK
 aiS
-sum
+xFB
 fVJ
 lFK
 lFK

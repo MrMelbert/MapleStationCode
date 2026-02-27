@@ -390,7 +390,7 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 #define IS_SPAWNING "spawning"
 
 /obj/machinery/sleeper/cryo
-	name = "cryogenic pod"
+	name = "long-term crew storage pod"
 	desc = "An enclosed machine designed to put subjects in a state of suspended animation for long-term storage."
 	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
 	icon_state = "cryopod"
@@ -420,7 +420,10 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 	if(isliving(occupant) && user != occupant)
 		var/mob/living/occupant_l = occupant
 		var/obj/item/card/id/their_id = occupant_l.get_idcard()
-		. += span_notice("Inside, you can see [occupant][their_id ? ", the [their_id.assignment]" : ""][HAS_TRAIT(occupant, TRAIT_KNOCKEDOUT) ? " - sound asleep" : ""].")
+		. += span_notice("Inside, you can see [occupant][their_id ? ", the [their_id.assignment]" : ""][(HAS_TRAIT(occupant, TRAIT_KNOCKEDOUT) || (occupant_l.key && !occupant_l.client)) ? " - sound asleep" : ""].")
+	else if(isliving(user))
+		. += span_info(span_slightly_smaller("You can enter the pod to be put into stasis temporarily, or to despawn your character."))
+		. += span_info(span_slightly_smaller("This machine is not intended to be used medicinally. Avoid placing wounded patients inside, even in emergencies."))
 
 /obj/machinery/sleeper/cryo/set_occupant(atom/movable/new_occupant)
 	var/mob/living/old_occupant = occupant
@@ -429,21 +432,27 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 	var/skey = REF(src)
 	if(istype(old_occupant))
 		old_occupant.remove_status_effect(/datum/status_effect/grouped/stasis, skey)
-		// REMOVE_TRAIT(old_occupant, TRAIT_KNOCKEDOUT, IS_SPAWNING)
-		// REMOVE_TRAIT(old_occupant, TRAIT_MUTE, skey)
 		REMOVE_TRAIT(old_occupant, TRAIT_BLOCK_HEADSET_USE, skey)
 		REMOVE_TRAIT(old_occupant, TRAIT_SOFTSPOKEN, skey)
+		REMOVE_TRAIT(old_occupant, TRAIT_RADSTORM_IMMUNE, skey)
 		UnregisterSignal(old_occupant, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE)
 		if(throw_alert)
 			old_occupant.clear_alert(skey)
 	if(istype(new_occupant_l))
 		new_occupant_l.apply_status_effect(/datum/status_effect/grouped/stasis, skey)
-		// ADD_TRAIT(new_occupant_l, TRAIT_MUTE, skey)
 		ADD_TRAIT(new_occupant_l, TRAIT_BLOCK_HEADSET_USE, skey)
 		ADD_TRAIT(new_occupant_l, TRAIT_SOFTSPOKEN, skey)
+		ADD_TRAIT(new_occupant_l, TRAIT_RADSTORM_IMMUNE, skey)
 		RegisterSignal(new_occupant_l, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(early_move_check))
 		if(throw_alert)
 			new_occupant_l.throw_alert(skey, /atom/movable/screen/alert/cryosleep)
+			// if they have a mind, we can consider despawning them, however:
+			// ...if the mind is active, they are being forced to be "here", so we should be on the safe side and leave them
+			// ...if they have a key, but no client, they're just disconnected. leave them in the pod for if they return
+			// ...if they have a client, they're actively in the game, definitely don't despawn them
+			// ...if they have an ai controller, then it's probably just an NPC, so it doesn't need to be despawned
+			if(new_occupant_l.mind && !new_occupant_l.mind.active && !new_occupant_l.key && !new_occupant_l.client && !new_occupant_l.ai_controller)
+				addtimer(CALLBACK(src, PROC_REF(auto_despawn), new_occupant_l), 5 MINUTES)
 
 /obj/machinery/sleeper/cryo/proc/early_move_check(mob/living/mob_occupant, new_loc, direct)
 	SIGNAL_HANDLER
@@ -452,6 +461,11 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 		return NONE
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, relaymove), mob_occupant, direct)
 	return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE
+
+/obj/machinery/sleeper/cryo/proc/auto_despawn(mob/living/mob_occupant)
+	if(QDELETED(mob_occupant) || occupant != mob_occupant)
+		return
+	despawn_occupant()
 
 /obj/machinery/sleeper/cryo/close_machine(mob/user, density_to_set)
 	. = ..()
@@ -524,14 +538,16 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 	qdel(mob_occupant)
 	open_machine()
 
-	var/datum/record/associated_record = find_record(mob_occupant.real_name)
+	var/datum/record/crew/associated_record = find_record(mob_occupant.real_name)
 	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 	if(!QDELETED(associated_record) && !QDELETED(announcer))
 		announcer.announce("DESPAWN", mob_occupant.name, associated_record.rank, list())
+		associated_record.physical_status = PHYSICAL_UNCONSCIOUS
+		associated_record.medical_notes += new /datum/medical_note("Record Database", "In long-term crew storage.")
 
 	deadchat_broadcast(
-		"<span class='game'> has entered cryogenic storage.</span>",
-		"<span class='game'><span class='name'>[mob_occupant.real_name]</span> ([associated_record?.rank || "Unknown"])</span>",
+		" has entered long-term crew storage storage.",
+		"[span_name(mob_occupant.real_name)] ([associated_record?.rank || "Unknown"])",
 		turf_target = get_turf(src),
 		message_type = DEADCHAT_ARRIVALRATTLE,
 	)
@@ -539,8 +555,8 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 #undef IS_SPAWNING
 
 /atom/movable/screen/alert/cryosleep
-	name = "Cryosleep"
-	desc = "Click this button to despawn your character."
+	name = "Enter Crew Storage"
+	desc = "You are free to idle in stasis for as long as you need, but you may also click this button to despawn your character."
 	mouse_over_pointer = MOUSE_HAND_POINTER
 	icon_state = "cold"
 
@@ -559,3 +575,6 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 
 	sleeper.despawn_occupant()
 	return TRUE
+
+/area/station/commons/long_term_storage
+	name = "Long-Term Crew Storage"

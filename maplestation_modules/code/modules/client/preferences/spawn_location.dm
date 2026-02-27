@@ -1,7 +1,7 @@
 /datum/preference/choiced/preferred_latejoin_spawn
 	savefile_key = "preferred_latejoin_spawn"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
 /datum/preference/choiced/preferred_latejoin_spawn/create_default_value()
