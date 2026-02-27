@@ -485,9 +485,13 @@ GLOBAL_LIST_INIT(cryo_sleepers, list())
 		close_machine()
 	set_occupant(joining_mob)
 	joining_mob.forceMove(src)
+	ADD_TRAIT(joining_mob, TRAIT_NO_EYELIDS, IS_SPAWNING) // this is solely here to prevent the record picture from having closed eyes
 	ADD_TRAIT(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING)
-	addtimer(TRAIT_CALLBACK_REMOVE(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING), rand(8, 12) * 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(finish_joining_player), joining_mob), rand(8, 12) SECONDS)
 	throw_alert = TRUE
+
+/obj/machinery/sleeper/cryo/proc/finish_joining_player(mob/living/joining_mob)
+	REMOVE_TRAITS_IN(joining_mob, IS_SPAWNING)
 
 /obj/machinery/sleeper/cryo/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel = 0, custom_deconstruct = FALSE)
 	return FALSE
