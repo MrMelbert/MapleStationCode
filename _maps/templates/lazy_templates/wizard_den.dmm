@@ -750,7 +750,7 @@
 /area/centcom/wizard_station)
 "Nd" = (
 /obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_y = -9;
 	pixel_x = -5
 	},

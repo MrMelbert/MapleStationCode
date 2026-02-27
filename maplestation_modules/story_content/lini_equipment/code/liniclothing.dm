@@ -9,7 +9,10 @@
 /datum/loadout_item/under/jumpsuit/pilot
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/pilot/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/shoes/liniboots
 	name = "Berbier Boots"
@@ -22,4 +25,7 @@
 /datum/loadout_item/shoes/lini
 	name = "Berbier Boots"
 	item_path = /obj/item/clothing/shoes/liniboots
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/lini/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

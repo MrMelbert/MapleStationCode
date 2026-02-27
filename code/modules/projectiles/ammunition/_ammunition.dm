@@ -16,7 +16,7 @@
 	///Which kind of guns it can be loaded into
 	var/caliber = null
 	///The bullet type to create when New() is called
-	var/projectile_type = null
+	var/obj/projectile/projectile_type = null
 	///the loaded projectile in this ammo casing
 	var/obj/projectile/loaded_projectile = null
 	///Pellets for spreadshot
@@ -33,10 +33,6 @@
 	var/firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect
 	///pacifism check for boolet, set to FALSE if bullet is non-lethal
 	var/harmful = TRUE
-
-/obj/item/ammo_casing/spent
-	name = "spent bullet casing"
-	loaded_projectile = null
 
 /obj/item/ammo_casing/Initialize(mapload)
 	. = ..()
@@ -100,10 +96,6 @@
 	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : null]"
 	return ..()
 
-/obj/item/ammo_casing/update_desc()
-	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
-	return ..()
-
 /*
  * On accidental consumption, 'spend' the ammo, and add in some gunpowder
  */
@@ -154,3 +146,23 @@
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/items/welder.ogg', 20, 1), bounce_delay) //If the turf is made of water and the shell casing is still hot, make a sizzling sound when it's ejected.
 	else if(T?.bullet_bounce_sound)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, T.bullet_bounce_sound, 20, 1), bounce_delay) //Soft / non-solid turfs that shouldn't make a sound when a shell casing is ejected over them.
+
+/obj/item/ammo_casing/proc/is_spent(mapload = FALSE)
+	if(!mapload)
+		AddComponent(/datum/component/complex_smell, \
+			duration = 4 MINUTES, \
+			smell = "gunpowder", \
+			intensity = SMELL_INTENSITY_FAINT, \
+			radius = 1, \
+			wash_types = CLEAN_TYPE_FINGERPRINTS, \
+		)
+
+	name = "spent [name]"
+	desc += " This one is spent."
+
+/obj/item/ammo_casing/spent
+	loaded_projectile = null
+
+/obj/item/ammo_casing/spent/Initialize(mapload)
+	. = ..()
+	is_spent(mapload)

@@ -1,7 +1,8 @@
 /datum/job/chief_medical_officer
 	title = JOB_CHIEF_MEDICAL_OFFICER
-	description = "Coordinate doctors and other medbay employees, ensure they \
-		know how to save lives, check for injuries on the crew monitor."
+	description = "Coordinate doctors and other medbay employees, \
+		ensure they're all saving lives (and not taking them), \
+		have utmost authority over medical matters."
 	department_head = list(JOB_CAPTAIN)
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	head_announce = list(RADIO_CHANNEL_MEDICAL)
@@ -27,7 +28,7 @@
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_MED
 
-	mind_traits = list(HEAD_OF_STAFF_MIND_TRAITS)
+	mind_traits = list(HEAD_OF_STAFF_MIND_TRAITS, MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_CHIEF_MEDICAL_OFFICER
@@ -39,12 +40,30 @@
 		/obj/effect/spawner/random/medical/surgery_tool_advanced = 4,
 		/obj/effect/spawner/random/medical/surgery_tool_alien = 1
 	)
-	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom, /obj/item/scalpel, /obj/item/hemostat, /obj/item/circular_saw, /obj/item/retractor, /obj/item/cautery, /obj/item/statuebust/hippocratic)
+	family_heirlooms = list(
+		// /obj/item/storage/medkit/ancient/heirloom,
+		/obj/item/scalpel,
+		/obj/item/hemostat,
+		/obj/item/circular_saw,
+		/obj/item/retractor,
+		/obj/item/cautery,
+		// /obj/item/statuebust/hippocratic,
+	)
 	rpg_title = "High Cleric"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_EXPERT,
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_EXPERT,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_MASTER,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/surgery = SKILL_LEVEL_MASTER,
+	)
 
 /datum/job/chief_medical_officer/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
@@ -60,7 +79,7 @@
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
 	suit_store = /obj/item/flashlight/pen/paramedic
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/silver = 1,
 		)
 	belt = /obj/item/modular_computer/pda/heads/cmo
 	ears = /obj/item/radio/headset/heads/cmo
@@ -80,7 +99,7 @@
 		/obj/item/gun/syringe,
 		/obj/item/stamp/head/cmo,
 		)
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/cmo/mod
 	name = "Chief Medical Officer (MODsuit)"

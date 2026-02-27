@@ -1,10 +1,4 @@
 // -- plush business. --
-/obj/item/toy/plush/lizard_plushie
-	icon = 'maplestation_modules/icons/obj/plushes.dmi'
-
-/obj/item/toy/plush/lizard_plushie/space
-	icon = 'icons/obj/toys/plushes.dmi'
-
 /obj/item/toy/plush/peepy
 	name = "peepy"
 	desc = "After committing a dangerous and disrespectful crime, Peepy is out on bail and ready to come to your house."

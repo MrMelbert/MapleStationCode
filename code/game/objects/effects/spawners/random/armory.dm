@@ -28,12 +28,39 @@
 /obj/effect/spawner/random/armory/disablers
 	name = "disabler spawner"
 	icon_state = "disabler"
-	loot = list(/obj/item/gun/energy/disabler)
+	loot = list(/obj/item/gun/energy/disabler, /obj/item/gun/energy/disabler/phaser)
 
 /obj/effect/spawner/random/armory/laser_gun
 	name = "laser gun spawner"
 	icon_state = "laser_gun"
 	loot = list(/obj/item/gun/energy/laser)
+
+/obj/effect/spawner/random/armory/laser_pistol
+	name = "laser pistol spawner"
+	icon_state = "laser_gun"
+	spawn_loot_count = 6
+	loot = list(/obj/item/gun/energy/laser/pistol)
+
+/obj/effect/spawner/random/armory/laser_carbine
+	name = "laser_carbine spawner"
+	icon_state = "laser_gun"
+	loot = list(/obj/item/gun/energy/laser/carbine)
+
+/obj/effect/spawner/random/armory/assault_laser
+	name = "assault laser gun spawner"
+	icon_state = "laser_gun"
+	spawn_loot_count = 1
+	loot = list(/obj/item/gun/energy/laser/assault)
+
+/obj/effect/spawner/random/armory/pick_laser_loadout
+	name = "laser gun type randomizer"
+	icon_state = "laser_gun"
+	spawn_loot_count = 1
+	loot = list(
+		/obj/effect/spawner/random/armory/laser_gun = 30,
+		/obj/effect/spawner/random/armory/laser_carbine = 30,
+		/obj/effect/spawner/random/armory/laser_pistol = 10,
+	)
 
 /obj/effect/spawner/random/armory/e_gun
 	name = "energy gun spawner"

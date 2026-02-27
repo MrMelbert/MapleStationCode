@@ -18,8 +18,9 @@
 	throw_range = 2
 	layer = MOB_LAYER
 
-	icon = 'maplestation_modules/icons/mob/clothing/under/towel.dmi'
-	icon_state = "towel"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/towel"
+	post_init_icon_state = "towel"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/towel.dmi'
 	worn_icon_state = "towel_worn"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/towel_inhand_lefthand.dmi'
@@ -261,8 +262,9 @@
 	density = FALSE
 	anchored = TRUE
 
-	icon = 'maplestation_modules/icons/mob/clothing/under/towel.dmi'
-	icon_state = "towel_placed"
+	icon = 'icons/map_icons/objects.dmi'
+	icon_state = "/obj/structure/beach_towel"
+	post_init_icon_state = "towel_placed"
 
 	greyscale_config = /datum/greyscale_config/towel_placed
 	greyscale_colors = "#dddddd"

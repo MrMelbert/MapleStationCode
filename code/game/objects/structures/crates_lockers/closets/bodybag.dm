@@ -19,6 +19,7 @@
 	can_install_electronics = FALSE
 	paint_jobs = null
 	can_weld_shut = FALSE
+	door_anim_time = 0
 	// For subtypes that seal
 	air_volume = TANK_STANDARD_VOLUME
 
@@ -261,7 +262,7 @@
 			pinned.forceMove(drop_location())
 			return TRUE // force open
 		balloon_alert(user, "paper removed")
-		if(!user.put_in_inactive_hand(pinned) || pinned.loc == src)
+		if(!user.put_in_inactive_hand(pinned))
 			pinned.forceMove(drop_location())
 		return FALSE // blocked the open action
 	return TRUE

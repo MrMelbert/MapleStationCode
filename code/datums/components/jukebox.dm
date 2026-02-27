@@ -1,6 +1,3 @@
-/// Checks if the mob has jukebox muted in their preferences
-#define IS_PREF_MUTED(mob) (!isnull(mob.client) && !mob.client.prefs.read_preference(/datum/preference/toggle/sound_jukebox))
-
 // Reasons for appling STATUS_MUTE to a mob's sound status
 /// The mob is deaf
 #define MUTE_DEAF (1<<0)
@@ -112,7 +109,11 @@
 
 		if(!length(config_songs))
 			var/datum/track/default/default_track = new()
-			config_songs[default_track.song_name] = default_track
+			config_songs["[default_track.song_name] (Default)"] = default_track
+
+		for(var/datum/track/track_subtype as anything in subtypesof(/datum/track/preset))
+			var/datum/track/new_preset = new(track_subtype)
+			config_songs["[new_preset.song_name] (Lag Free)"] = new_preset
 
 	// returns a copy so it can mutate if desired.
 	return config_songs.Copy()
@@ -220,8 +221,8 @@
 
 	RegisterSignal(new_listener, COMSIG_MOVABLE_MOVED, PROC_REF(listener_moved))
 	RegisterSignals(new_listener, list(SIGNAL_ADDTRAIT(TRAIT_DEAF), SIGNAL_REMOVETRAIT(TRAIT_DEAF)), PROC_REF(listener_deaf))
-
-	if(HAS_TRAIT(new_listener, TRAIT_DEAF) || IS_PREF_MUTED(new_listener))
+	var/pref_volume = new_listener.client?.prefs.read_preference(/datum/preference/numeric/volume/sound_instruments)
+	if(HAS_TRAIT(new_listener, TRAIT_DEAF) || !pref_volume)
 		listeners[new_listener] |= SOUND_MUTE
 
 	if(isnull(active_song_sound))
@@ -230,7 +231,7 @@
 		active_song_sound.channel = CHANNEL_JUKEBOX
 		active_song_sound.priority = 255
 		active_song_sound.falloff = 2
-		active_song_sound.volume = volume
+		active_song_sound.volume = volume * (pref_volume/100)
 		active_song_sound.y = 1
 		active_song_sound.environment = juke_area.sound_environment || SOUND_ENVIRONMENT_NONE
 		active_song_sound.repeat = sound_loops
@@ -283,8 +284,8 @@
 
 	if((reason & MUTE_DEAF) && HAS_TRAIT(listener, TRAIT_DEAF))
 		return FALSE
-
-	if((reason & MUTE_PREF) && IS_PREF_MUTED(listener))
+	var/pref_volume = listener.client?.prefs.read_preference(/datum/preference/numeric/volume/sound_instruments)
+	if((reason & MUTE_PREF) && !pref_volume)
 		return FALSE
 
 	if(reason & MUTE_RANGE)
@@ -380,8 +381,6 @@
 /datum/jukebox/single_mob/start_music(mob/solo_listener)
 	register_listener(solo_listener)
 
-#undef IS_PREF_MUTED
-
 #undef MUTE_DEAF
 #undef MUTE_PREF
 #undef MUTE_RANGE
@@ -400,6 +399,30 @@
 
 // Default track supplied for testing and also because it's a banger
 /datum/track/default
+	song_path = 'sound/ambience/title3.ogg'
+	song_name = "Tintin on the Moon"
+	song_length = 3 MINUTES + 52 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/title_zero
+	song_path = 'sound/ambience/title0.ogg'
+	song_name = "Endless Space"
+	song_length = 3 MINUTES + 33 SECONDS
+	song_beat = 2 SECONDS
+
+/datum/track/preset/title_one
+	song_path = 'sound/ambience/title1.mod'
+	song_name = "Flip Flap"
+	song_length = 2 MINUTES + 31 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/title_two
+	song_path = 'sound/ambience/title2.ogg'
+	song_name = "Robocop"
+	song_length = 1 MINUTES + 58 SECONDS
+	song_beat = 4 SECONDS
+
+/datum/track/preset/title_three
 	song_path = 'sound/ambience/title3.ogg'
 	song_name = "Tintin on the Moon"
 	song_length = 3 MINUTES + 52 SECONDS

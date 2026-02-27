@@ -56,7 +56,8 @@
 	))
 
 /obj/item/storage/belt/utility/chief
-	name = "\improper Chief Engineer's toolbelt" //"the Chief Engineer's toolbelt", because "Chief Engineer's toolbelt" is not a proper noun
+	name = "chief engineer's toolbelt"
+	article = "the"
 	desc = "Holds tools, looks snazzy."
 	icon_state = "utility_ce"
 	inhand_icon_state = "utility_ce"
@@ -222,6 +223,7 @@
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/muzzle,
 		/obj/item/clothing/mask/surgical,
+		/obj/item/clothing/head/utility/surgerycap,
 		/obj/item/construction/plumbing,
 		/obj/item/dnainjector,
 		/obj/item/extinguisher/mini,
@@ -397,7 +399,7 @@
 		/obj/item/lighter,
 		/obj/item/mining_scanner,
 		/obj/item/multitool,
-		/obj/item/organ/internal/monster_core,
+		/obj/item/organ/monster_core,
 		/obj/item/pickaxe,
 		/obj/item/radio,
 		/obj/item/reagent_containers/cup/glass,
@@ -441,7 +443,7 @@
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/hypospray/medipen/survival(src)
 	for(var/i in 1 to 2)
-		var/obj/item/organ/internal/monster_core/core = new /obj/item/organ/internal/monster_core/regenerative_core/legion(src)
+		var/obj/item/organ/monster_core/core = new /obj/item/organ/monster_core/regenerative_core/legion(src)
 		core.preserve()
 
 /obj/item/storage/belt/mining/primitive
@@ -489,6 +491,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/clothing/mask/luchador,
 	))
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
 
 /obj/item/storage/belt/military
 	name = "chest rig"

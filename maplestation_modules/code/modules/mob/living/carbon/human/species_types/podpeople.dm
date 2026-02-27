@@ -73,7 +73,7 @@
 	))
 	return perks
 
-/obj/item/organ/internal/tongue/pod
+/obj/item/organ/tongue/pod
 	speech_sound_list = list(
 		'maplestation_modules/sound/voice/pod.ogg' = 70,
 		'maplestation_modules/sound/voice/pod2.ogg' = 60,

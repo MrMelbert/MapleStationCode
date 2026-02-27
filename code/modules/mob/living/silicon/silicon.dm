@@ -38,9 +38,7 @@
 
 	///Are our siliconHUDs on? TRUE for yes, FALSE for no.
 	var/sensors_on = TRUE
-	var/med_hud = DATA_HUD_MEDICAL_ADVANCED //Determines the med hud to use
-	var/sec_hud = DATA_HUD_SECURITY_ADVANCED //Determines the sec hud to use
-	var/d_hud = DATA_HUD_DIAGNOSTIC_BASIC //Determines the diag hud to use
+	var/list/silicon_huds = list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, TRAIT_DIAGNOSTIC_HUD)
 
 	var/law_change_counter = 0
 	var/obj/machinery/camera/builtInCamera = null
@@ -75,7 +73,7 @@
 		TRAIT_MADNESS_IMMUNE,
 		TRAIT_MARTIAL_ARTS_IMMUNE,
 		TRAIT_NOFIRE_SPREAD,
-		TRAIT_SHOVE_KNOCKDOWN_BLOCKED,
+		TRAIT_BRAWLING_KNOCKDOWN_BLOCKED,
 	)
 
 	add_traits(traits_to_apply, ROUNDSTART_TRAIT)
@@ -380,21 +378,16 @@
 /mob/living/silicon/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //Secbots won't hunt silicon units
 	return -10
 
+/// Innate, toggleable silicon HUDs
+#define SILICON_HUD_TRAIT "silicon_hud"
+
 /mob/living/silicon/proc/remove_sensors()
-	var/datum/atom_hud/secsensor = GLOB.huds[sec_hud]
-	var/datum/atom_hud/medsensor = GLOB.huds[med_hud]
-	var/datum/atom_hud/diagsensor = GLOB.huds[d_hud]
-	secsensor.hide_from(src)
-	medsensor.hide_from(src)
-	diagsensor.hide_from(src)
+	remove_traits(silicon_huds, SILICON_HUD_TRAIT)
 
 /mob/living/silicon/proc/add_sensors()
-	var/datum/atom_hud/secsensor = GLOB.huds[sec_hud]
-	var/datum/atom_hud/medsensor = GLOB.huds[med_hud]
-	var/datum/atom_hud/diagsensor = GLOB.huds[d_hud]
-	secsensor.show_to(src)
-	medsensor.show_to(src)
-	diagsensor.show_to(src)
+	add_traits(silicon_huds, SILICON_HUD_TRAIT)
+
+#undef SILICON_HUD_TRAIT
 
 /mob/living/silicon/proc/toggle_sensors()
 	if(incapacitated())
@@ -431,6 +424,9 @@
 
 /mob/living/silicon/on_standing_up()
 	return // Silicons are always standing by default.
+
+/mob/living/silicon/get_butt_sprite()
+	return BUTT_SPRITE_QR_CODE
 
 /**
  * Records an IC event log entry in the cyborg's internal tablet.

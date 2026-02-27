@@ -8,6 +8,7 @@
 
 /obj/item/clothing/suit/toggle/labcoat/ce
 	name = "chief engineer's labcoat"
+	article = "the"
 	desc = "Has black and gold panels unlike the standard labcoat model."
 	icon_state = "labcoat_ce"
 	icon = 'maplestation_modules/icons/mob/clothing/suit.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.

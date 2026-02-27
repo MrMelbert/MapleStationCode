@@ -14,8 +14,10 @@
 	if(!blood_type_singletons)
 		blood_type_singletons = list()
 		for(var/datum/blood_type/blood_type_type as anything in subtypesof(/datum/blood_type))
-			if(initial(blood_type_type.name))
-				blood_type_singletons[blood_type_type] = new blood_type_type()
+			if(!blood_type_type::name) // future todo : make this use valid_subtypesof
+				continue
+			var/datum/blood_type/blood_type_instance = new blood_type_type()
+			blood_type_singletons[blood_type_instance.type_key()] = blood_type_instance
 
 	// either a blood type, or a reagent that has been instantiated as a blood type
 	if(blood_type_singletons[name_reagent_or_typepath])
@@ -75,6 +77,12 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	var/datum/reagent/reagent_type = /datum/reagent/blood
 	/// What chem is used to restore this blood type (outside of itself, of course)?
 	var/datum/reagent/restoration_chem = /datum/reagent/iron
+	/// The smell associated with this blood
+	/// It can be a string, a /datum/smell, or null
+	var/scent_text = /datum/smell/blood
+	/// The smell category of this blood
+	/// It should be a string or null, alternatively is inherited from /datum/smell
+	var/scent_category
 
 /datum/blood_type/New()
 	. = ..()
@@ -116,17 +124,17 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * Helper proc to make a blood splatter from the passed mob of this type
  *
  * Arguments
- * * bleeding - the mob bleeding the blood, note we assume this blood type is that mob's blood
+ * * dna - associative list of blood DNA to add to the blood splatter
  * * blood_turf - the turf to spawn the blood on
  * * drip - whether to spawn a drip or a splatter
+ * * viruses - list of viruses to add to the blood splatter
  */
-/datum/blood_type/proc/make_blood_splatter(mob/living/bleeding, turf/blood_turf, drip)
+/datum/blood_type/proc/make_blood_splatter(turf/blood_turf, drip, list/dna = list("UNKNOWN" = type), list/viruses)
 	if(isgroundlessturf(blood_turf))
 		blood_turf = GET_TURF_BELOW(blood_turf)
 	if(isnull(blood_turf) || isclosedturf(blood_turf))
 		return
 
-	var/list/temp_blood_DNA
 	if(drip)
 		var/new_blood = /obj/effect/decal/cleanable/blood/drip::bloodiness
 		// Only a certain number of drips (or one large splatter) can be on a given turf.
@@ -134,14 +142,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		if(isnull(drop))
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 			if(!QDELETED(splatter) && !splatter.dried)
-				splatter.add_mob_blood(bleeding)
+				splatter.add_blood_DNA(dna)
 				splatter.adjust_bloodiness(new_blood)
 				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				return splatter
 
-			drop = new(blood_turf, bleeding.get_static_viruses())
+			drop = new(blood_turf, viruses)
 			if(!QDELETED(drop))
-				drop.add_mob_blood(bleeding)
+				drop.add_blood_DNA(dna)
 				drop.random_icon_states -= drop.icon_state
 			return drop
 
@@ -154,32 +162,30 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			new_drop.color = color
 			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
 			new_drop.appearance_flags |= (RESET_COLOR)
-			new_drop.add_mob_blood(bleeding)
+			new_drop.add_blood_DNA(dna)
 			drop.gender = PLURAL
 			drop.base_name = "drips of"
 			drop.vis_contents += new_drop
 			// Handle adding blood to the base atom
 			drop.adjust_bloodiness(new_blood)
-			drop.add_mob_blood(bleeding)
-			drop.add_viruses(bleeding.get_static_viruses())
+			drop.add_blood_DNA(dna)
+			drop.add_viruses(viruses)
 			return drop
 
-		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
+		dna |= GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
 		qdel(drop)//the drip is replaced by a bigger splatter
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 	if(isnull(splatter) || splatter.dried)
-		splatter = new(blood_turf, bleeding.get_static_viruses())
+		splatter = new(blood_turf, viruses)
 		if(QDELETED(splatter)) //Give it up
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
-		splatter.add_viruses(bleeding.get_static_viruses())
+		splatter.add_viruses(viruses)
 		splatter.slow_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
-	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
-	if(LAZYLEN(temp_blood_DNA))
-		splatter.add_blood_DNA(temp_blood_DNA)
+	splatter.add_blood_DNA(dna) //give blood info to the blood decal.
 	return splatter
 
 /// A base type for all blood related to the crew, for organization's sake
@@ -288,6 +294,8 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Ag"
 	color = "#c9c9c99c"
 	reagent_type = /datum/reagent/silver
+	restoration_chem = /datum/reagent/silver
+	scent_text = null
 
 /datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.can_dry = FALSE
@@ -306,13 +314,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "LE"
 	color = "#97ee63"
 	reagent_type = /datum/reagent/consumable/liquidelectricity
+	scent_text = null
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
 	if(!new_splat)
 		return
 	blood.can_dry = FALSE
-	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
+	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned), override = TRUE)
 
 /datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
 	SIGNAL_HANDLER
@@ -338,13 +347,19 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Oil"
 	color = "#1f1a00"
 	reagent_type = /datum/reagent/fuel/oil
+	scent_text = /datum/smell/oil
 
 /datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
 	blood.can_dry = FALSE
+	// This is evil code, all it does is prevent easy ignte from being attached twice
+	blood.RemoveElement(/datum/element/easy_ignite)
 	blood.AddElement(/datum/element/easy_ignite)
+
+/datum/blood_type/oil/heavy
+	name = "Heavy Oil"
 
 /// A universal blood type which accepts everything
 /datum/blood_type/universal
@@ -359,23 +374,29 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "C"
 	color = "#FF00FF"
 	reagent_type = /datum/reagent/colorful_reagent
+	scent_text = "crayons"
 
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
 /datum/blood_type/slime
 	name = "TOX"
 	color = /datum/reagent/toxin/slimejelly::color
 	reagent_type = /datum/reagent/toxin/slimejelly
+	scent_text = "fruit"
+	scent_category = "fragrance"
 
 /// Water based blood for Podpeople primairly
 /datum/blood_type/water
 	name = "H2O"
 	color = /datum/reagent/water::color
 	reagent_type = /datum/reagent/water
+	scent_text = null
 
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
 	reagent_type = /datum/reagent/lube
+	scent_text = /obj/effect/abstract/smell/reagent/lube::name
+	scent_category = /obj/effect/abstract/smell/reagent/lube::category
 
 /datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
@@ -389,6 +410,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "X*"
 	color = "#96bb00"
 	reagent_type = /datum/reagent/toxin/acid
+	scent_text = "acid"
 
 /// For simplemob blood, which also largely don't actually use blood
 /datum/blood_type/animal

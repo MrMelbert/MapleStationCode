@@ -129,6 +129,11 @@
 /atom/movable/screen/fullscreen/blind/cyborg
 	show_when_dead = TRUE
 
+/atom/movable/screen/fullscreen/blind/noflicker
+	icon_state = "blackimageoverlaystatic"
+	layer = BLIND_LAYER
+	plane = FULLSCREEN_PLANE
+
 /atom/movable/screen/fullscreen/curse
 	icon_state = "curse"
 	layer = CURSE_LAYER
@@ -214,7 +219,7 @@
 	icon_state = "flash"
 	plane = SPLASHSCREEN_PLANE
 	layer = CINEMATIC_LAYER
-	color = "#000000"
+	color = COLOR_BLACK
 	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/lighting_backdrop

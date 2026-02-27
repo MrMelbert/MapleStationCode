@@ -69,7 +69,10 @@
 /datum/loadout_item/neck/casual_cloak
 	name = "Fuzzy Cloak"
 	item_path = /obj/item/clothing/neck/cloak/casual
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/casual_cloak/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/glasses/sunglasses/casual
 	name = "casual sunglasses"

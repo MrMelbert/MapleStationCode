@@ -30,7 +30,7 @@
 		return
 	if(contents.len)
 		var/obj/item/I = pick(contents)
-		user.put_in_hands(I)
+		try_put_in_hand(I, user)
 		to_chat(user, span_notice("You carefully remove the photo from \the [src]."))
 		displayed = null
 		update_appearance()

@@ -127,6 +127,11 @@
 	desc = "A small bottle. Contains cold sauce."
 	list_reagents = list(/datum/reagent/consumable/frostoil = 30)
 
+/obj/item/reagent_containers/cup/bottle/strange_reagent
+	name = "Strange Reagent Bottle"
+	desc = "A small bottle. May be used to revive people."
+	list_reagents = list(/datum/reagent/medicine/strange_reagent = 30)
+
 /obj/item/reagent_containers/cup/bottle/traitor
 	name = "syndicate bottle"
 	desc = "A small bottle. Contains a random nasty chemical."
@@ -242,6 +247,11 @@
 	name = "Basic buffer bottle"
 	desc = "A small bottle of basic buffer."
 	list_reagents = list(/datum/reagent/reaction_agent/basic_buffer = 30)
+
+/obj/item/reagent_containers/cup/bottle/inversing_buffer
+	name = "Chiral inversing buffer bottle"
+	desc = "A small bottle of chiral inversing buffer."
+	list_reagents = list(/datum/reagent/reaction_agent/inversing_buffer = 30)
 
 /obj/item/reagent_containers/cup/bottle/romerol
 	name = "romerol bottle"
@@ -429,7 +439,7 @@
 
 /obj/item/reagent_containers/cup/bottle/thermite
 	name = "thermite bottle"
-	list_reagents = list(/datum/reagent/thermite = 30)
+	list_reagents = list(/datum/reagent/thermite = 50)
 
 // Bottles for mail goodies.
 

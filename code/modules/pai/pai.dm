@@ -16,7 +16,7 @@
 	light_flags = LIGHT_ATTACHED
 	light_on = FALSE
 	light_range = 3
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	maxHealth = 500
 	mob_size = MOB_SIZE_TINY
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
@@ -59,12 +59,8 @@
 	var/master_name
 	/// DNA string for owner verification
 	var/master_dna
-	/// Toggles whether the Medical  HUD is active or not
-	var/medHUD = FALSE
 	/// Used as currency to purchase different abilities
 	var/ram = 100
-	/// Toggles whether the Security HUD is active or not
-	var/secHUD = FALSE
 	/// The current leash to the owner
 	var/datum/component/leash/leash
 
@@ -215,6 +211,7 @@
 
 /mob/living/silicon/pai/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/holographic_nature)
 	if(istype(loc, /obj/item/modular_computer))
 		give_messenger_ability()
 	START_PROCESSING(SSfastprocess, src)
@@ -340,6 +337,12 @@
 	QDEL_NULL(leash) // Freedom!!!
 	to_chat(src, span_danger("ALERT: Foreign software detected."))
 	to_chat(src, span_danger("WARN: Holochasis range restrictions disabled."))
+	return TRUE
+
+/mob/living/silicon/pai/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
+	set_silence_if_lower(disrupt_duration)
+	balloon_alert(src, "muted!")
 	return TRUE
 
 /**

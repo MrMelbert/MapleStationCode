@@ -12,6 +12,7 @@
 		"mod_gauntlets",
 		"mod_boots",
 		"mod_plating_standard",
+		"mod_plating_civilian",
 		"mod_paint_kit",
 		"mod_storage",
 		"mod_plasma",
@@ -28,11 +29,12 @@
 		"mod_clamp",
 		"mod_tether",
 		"mod_welding",
-//		"mod_safety",
+		"mod_safety",
 		"mod_mouthhole",
 		"mod_longfall",
 		"mod_thermal_regulator",
 		"mod_sign_radio",
+		"mod_mister_janitor",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 
@@ -58,7 +60,7 @@
 		"mod_plating_medical",
 		"mod_quick_carry",
 		"mod_injector",
-		"mod_organ_thrower",
+		"mod_organizer",
 		"mod_patienttransport",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
@@ -83,7 +85,7 @@
 	description = "Security suits for space crime handling."
 	prereq_ids = list(TECHWEB_NODE_MOD_EQUIP)
 	design_ids = list(
-		"mod_plating_security",
+		"mod_mirage_grenade",
 		"mod_stealth",
 		"mod_mag_harness",
 		"mod_pathfinder",

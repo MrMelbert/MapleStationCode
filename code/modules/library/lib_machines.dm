@@ -406,7 +406,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return data
 
 /obj/machinery/computer/libraryconsole/bookmanagement/ui_assets(mob/user)
-	return list(get_asset_datum(/datum/asset/spritesheet/bibles))
+	return list(get_asset_datum(/datum/asset/spritesheet_batched/bibles))
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/load_nearby_books()
 	for(var/datum/book_info/book as anything in SSlibrary.get_area_books(get_area(src)))
@@ -505,12 +505,8 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 				return
 			if(!GLOB.news_network)
 				say("No news network found on station. Aborting.")
-			var/channelexists = FALSE
-			for(var/datum/feed_channel/feed in GLOB.news_network.network_channels)
-				if(feed.channel_name == LIBRARY_NEWSFEED)
-					channelexists = TRUE
-					break
-			if(!channelexists)
+			var/datum/feed_channel/library_channel = GLOB.news_network.network_channels_by_name[LIBRARY_NEWSFEED]
+			if(isnull(library_channel))
 				GLOB.news_network.create_feed_channel(LIBRARY_NEWSFEED, "Library", "The official station book club!", null)
 
 			var/obj/machinery/libraryscanner/scan = get_scanner()
@@ -688,10 +684,21 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	icon = 'icons/obj/service/library.dmi'
 	icon_state = "bigscanner"
 	desc = "It's an industrial strength book scanner. Perfect!"
+	circuit = /obj/item/circuitboard/machine/libraryscanner
 	density = TRUE
 	var/obj/item/book/held_book
 	///Our scanned-in book
 	var/datum/book_info/cache
+
+/obj/machinery/libraryscanner/screwdriver_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_screwdriver(user, "bigscanner2", "bigscanner", tool))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/libraryscanner/crowbar_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/libraryscanner/Destroy()
 	held_book = null
@@ -760,6 +767,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	icon = 'icons/obj/service/library.dmi'
 	icon_state = "binder"
 	desc = "Only intended for binding paper products."
+	circuit = /obj/item/circuitboard/machine/bookbinder
 	density = TRUE
 
 	/// Are we currently binding a book?
@@ -768,10 +776,15 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	/// Name of the author for the book, set by scanning your ID.
 	var/scanned_name
 
-/obj/machinery/bookbinder/wrench_act(mob/living/user, obj/item/tool)
+/obj/machinery/bookbinder/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
-	default_unfasten_wrench(user, tool)
-	return ITEM_INTERACT_SUCCESS
+	if(default_deconstruction_screwdriver(user, "binder2", "binder", tool))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/bookbinder/crowbar_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bookbinder/attackby(obj/hitby, mob/user, params)
 	if(istype(hitby, /obj/item/paper))

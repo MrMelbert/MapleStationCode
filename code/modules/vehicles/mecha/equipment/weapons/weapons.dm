@@ -202,7 +202,7 @@
 		to_chat(M, "<font color='red' size='7'>HONK</font>")
 		M.SetSleeping(0)
 		M.adjust_stutter(40 SECONDS)
-		var/obj/item/organ/internal/ears/ears = M.get_organ_slot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = M.get_organ_slot(ORGAN_SLOT_EARS)
 		if(ears)
 			ears.adjustEarDamage(0, 30)
 		M.Paralyze(60)
@@ -597,8 +597,7 @@
 		to_chat(mobtarget, "[span_warning("You have been moved into [secmech.cargo_hold]. You can attempt to resist out if you wish.")]")
 		if(autocuff && iscarbon(target))
 			var/mob/living/carbon/carbontarget = target
-			carbontarget.set_handcuffed(new cuff_type(carbontarget))
-			carbontarget.update_handcuffed()
+			carbontarget.equip_to_slot(new cuff_type(carbontarget), ITEM_SLOT_HANDCUFFED)
 		return
 
 	if(istype(target, /obj/machinery/door))

@@ -3,11 +3,13 @@ SUBSYSTEM_DEF(research)
 	name = "Research"
 	priority = FIRE_PRIORITY_RESEARCH
 	wait = 10
-	init_order = INIT_ORDER_RESEARCH
+	dependencies = list(
+		/datum/controller/subsystem/processing/station
+	)
 	//TECHWEB STATIC
 	var/list/techweb_nodes = list() //associative id = node datum
 	var/list/techweb_designs = list() //associative id = node datum
-	var/list/datum/design/item_to_design = list() //typepath = list of design datums
+	var/list/list/datum/design/item_to_design = list() //typepath = list of design datums
 
 	///List of all techwebs, generating points or not.
 	///Autolathes, Mechfabs, and others all have shared techwebs, for example.
@@ -101,10 +103,11 @@ SUBSYSTEM_DEF(research)
 
 		techweb_list.last_income = world.time
 
-		if(techweb_list.research_queue_nodes.len)
+		if(length(techweb_list.research_queue_nodes))
 			techweb_list.research_node_id(techweb_list.research_queue_nodes[1]) // Attempt to research the first node in queue if possible
 
-			for(var/datum/techweb_node/node as anything in techweb_list.research_queue_nodes)
+			for(var/node_id in techweb_list.research_queue_nodes)
+				var/datum/techweb_node/node = SSresearch.techweb_node_by_id(node_id)
 				if(node.is_free(techweb_list)) // Automatically research all free nodes in queue if any
 					techweb_list.research_node(node)
 

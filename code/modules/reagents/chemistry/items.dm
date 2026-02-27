@@ -335,15 +335,9 @@
 	return data
 
 /obj/item/thermometer/proc/remove_thermometer(mob/target)
+	to_chat(target, span_notice("You remove [src] from [attached_to_reagents.my_atom]."))
 	try_put_in_hand(src, target)
 	attached_to_reagents = null
-
-/obj/item/thermometer/proc/try_put_in_hand(obj/object, mob/living/user)
-	to_chat(user, span_notice("You remove the [src] from [attached_to_reagents.my_atom]."))
-	if(!issilicon(user) && in_range(loc, user))
-		user.put_in_hands(object)
-	else
-		object.forceMove(drop_location())
 
 /obj/item/thermometer/pen
 	color = "#888888"

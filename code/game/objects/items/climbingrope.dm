@@ -52,7 +52,7 @@
 	playsound(user_turf, 'sound/effects/picaxe1.ogg', 50)
 	var/list/effects = list(new /obj/effect/temp_visual/climbing_hook(target, away_dir), new /obj/effect/temp_visual/climbing_hook(user_turf, away_dir))
 
-	if(do_after(user, climb_time, target))
+	if(do_after(user, user.get_climb_speed(climb_time), target))
 		user.forceMove(target)
 		uses--
 

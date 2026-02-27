@@ -153,10 +153,9 @@
 	return
 
 ///Get active players who are playing in the round
-/proc/get_active_player_count(alive_check = FALSE, afk_check = FALSE, human_check = FALSE)
-	var/active_players = 0
-	for(var/i = 1; i <= GLOB.player_list.len; i++)
-		var/mob/player_mob = GLOB.player_list[i]
+/proc/get_active_player_list(alive_check = FALSE, afk_check = FALSE, human_check = FALSE)
+	var/list/active_players = list()
+	for(var/mob/player_mob as anything in GLOB.player_list)
 		if(!player_mob?.client)
 			continue
 		if(alive_check && player_mob.stat)
@@ -171,8 +170,12 @@
 			var/mob/dead/observer/ghost_player = player_mob
 			if(ghost_player.started_as_observer) // Exclude people who started as observers
 				continue
-		active_players++
+		active_players += player_mob
 	return active_players
+
+///Counts active players who are playing in the round
+/proc/get_active_player_count(alive_check = FALSE, afk_check = FALSE, human_check = FALSE)
+	return length(get_active_player_list(alive_check, afk_check, human_check))
 
 ///Uses stripped down and bastardized code from respawn character
 /proc/make_body(mob/dead/observer/ghost_player)
@@ -181,7 +184,7 @@
 
 	//First we spawn a dude.
 	var/mob/living/carbon/human/new_character = new//The mob being spawned.
-	SSjob.SendToLateJoin(new_character)
+	SSjob.send_to_late_join(new_character)
 
 	ghost_player.client.prefs.safe_transfer_prefs_to(new_character)
 	new_character.dna.update_dna_identity()
@@ -242,7 +245,7 @@
 		return
 	var/datum/record/crew/crew_record = find_record(character.real_name)
 	var/obj/item/card/id/crew_id = character.get_idcard(hand_first = FALSE)
-	var/job_title = crew_record?.rank || crew_id?.assignment || crew_id?.trim?.assignment || backup_job_title
+	var/job_title = crew_id?.assignment || crew_id?.trim?.assignment || crew_record?.rank || backup_job_title
 	if(try_queue && SSshuttle.arrivals)
 		// queue announcement basically just calls this proc again, but with the try_queue flag set to false, after the shuttle has finished docking
 		SSshuttle.arrivals.QueueAnnounce(character, job_title)

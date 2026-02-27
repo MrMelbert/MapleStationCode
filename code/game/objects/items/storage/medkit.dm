@@ -76,6 +76,7 @@
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
 		/obj/item/stack/sticky_tape,
+		/obj/item/razor,
 	)
 
 /obj/item/storage/medkit/Initialize(mapload)
@@ -96,8 +97,7 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/bruise_pack = 1,
-		/obj/item/stack/medical/suture = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/reagent_containers/hypospray/medipen/morphine = 1,
@@ -120,13 +120,15 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer/simple = 1,
+		/obj/item/hemostat/tweezers = 1,
 		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture/emergency = 1,
-		/obj/item/stack/medical/ointment = 1,
-		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
-		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/stack/medical/bruise_pack/ekit = 1,
+		/obj/item/stack/medical/ointment/ekit = 1,
+		/obj/item/temperature_pack/cold = 1,
 		/obj/item/shock_blanket/emergency = 1,
+		/obj/item/reagent_containers/hypospray/medipen/ekit = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
 	)
 	generate_items_inside(items_inside,src)
 
@@ -221,12 +223,12 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/storage/pill_bottle/multiver/less = 1,
 		/obj/item/reagent_containers/syringe/syriniver = 3,
+		/obj/item/storage/pill_bottle/multiver/less = 1,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
 		/obj/item/reagent_containers/hypospray/medipen/penacid = 1,
 		/obj/item/healthanalyzer/simple/disease = 1,
-		)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/o2
@@ -248,9 +250,11 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/syringe/convermol = 3,
+		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
-		/obj/item/storage/pill_bottle/iron = 1)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/brute
@@ -272,8 +276,8 @@
 		return
 	var/static/list/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/gauze = 1,
 		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
 		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,
 	)
@@ -814,3 +818,8 @@
 /obj/item/storage/test_tube_rack/update_icon_state()
 	icon_state = "[base_icon_state][contents.len > 0 ? contents.len : null]"
 	return ..()
+
+/obj/item/storage/test_tube_rack/full/PopulateContents()
+	for(var/i in 1 to atom_storage.max_slots)
+		new /obj/item/reagent_containers/cup/tube(src)
+	update_appearance(UPDATE_ICON_STATE)

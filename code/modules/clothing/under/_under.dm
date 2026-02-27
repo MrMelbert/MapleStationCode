@@ -70,7 +70,7 @@
 
 	var/changed = FALSE
 
-	if(isnull(held_item) && has_sensor == HAS_SENSORS)
+	if((isnull(held_item) || held_item == src) && has_sensor == HAS_SENSORS)
 		context[SCREENTIP_CONTEXT_RMB] = "Toggle suit sensors"
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Set suit sensors to tracking"
 		changed = TRUE
@@ -101,7 +101,6 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-		// NON-MODULE CHANGE reworking clothing blood overlays
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -119,6 +118,14 @@
 	return ..()
 
 /obj/item/clothing/under/attack_hand_secondary(mob/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	toggle()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/clothing/under/attack_self_secondary(mob/user, modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
@@ -165,7 +172,7 @@
 
 	if((supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION) && ishuman(user))
 		var/mob/living/carbon/human/wearer = user
-		if(wearer.bodytype & BODYTYPE_DIGITIGRADE)
+		if(wearer.bodyshape & BODYSHAPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
 			update_appearance()
 
@@ -208,14 +215,15 @@
 
 	LAZYADD(attached_accessories, accessory)
 	accessory.forceMove(src)
+
+	if(isnull(accessory_overlay))
+		create_accessory_overlay()
+
 	// Allow for accessories to react to the acccessory list now
 	accessory.successful_attach(src)
 
 	if(user && attach_message)
 		balloon_alert(user, "accessory attached")
-
-	if(isnull(accessory_overlay))
-		create_accessory_overlay()
 
 	update_appearance()
 	return TRUE
@@ -239,10 +247,11 @@
 
 	// Remove it from the list before detaching
 	LAZYREMOVE(attached_accessories, removed)
-	removed.detach(src)
 
 	if(isnull(accessory_overlay) && LAZYLEN(attached_accessories))
 		create_accessory_overlay()
+
+	removed.detach(src)
 
 	update_appearance()
 
@@ -286,24 +295,27 @@
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
 	// NON-MODULE CHANGEs
-	if(can_adjust)
-		. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
-	if(has_sensor == BROKEN_SENSORS)
-		. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
-	else if(has_sensor > NO_SENSORS)
-		switch(sensor_mode)
-			if(SENSOR_OFF)
-				. += "&bull; Its sensors appear to be disabled."
-			if(SENSOR_LIVING)
-				. += "&bull; Its binary life sensors appear to be enabled."
-			if(SENSOR_VITALS)
-				. += "&bull; Its vital tracker appears to be enabled."
-			if(SENSOR_COORDS)
-				. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
+	var/is_examinable = !ismob(loc) || loc == user // hide some information if another player is examining our uniform
+	if(is_examinable)
+		if(can_adjust)
+			. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
+		if(has_sensor == BROKEN_SENSORS)
+			. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
+		else if(has_sensor > NO_SENSORS)
+			switch(sensor_mode)
+				if(SENSOR_OFF)
+					. += "&bull; Its sensors appear to be disabled."
+				if(SENSOR_LIVING)
+					. += "&bull; Its binary life sensors appear to be enabled."
+				if(SENSOR_VITALS)
+					. += "&bull; Its vital tracker appears to be enabled."
+				if(SENSOR_COORDS)
+					. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
 	if(LAZYLEN(attached_accessories))
 		var/list/accessories = list_accessories_with_icon(user)
 		. += "&bull; It has [english_list(accessories)] attached."
-		. += "Alt-Right-Click to remove [attached_accessories[1]]."
+		if(is_examinable)
+			. += "Alt-Right-Click to remove [attached_accessories[1]]."
 
 /// Helper to list out all accessories with an icon besides it, for use in examine
 /obj/item/clothing/under/proc/list_accessories_with_icon(mob/user)

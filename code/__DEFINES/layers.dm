@@ -59,15 +59,17 @@
 #define EMISSIVE_SPACE_LAYER 3
 #define EMISSIVE_WALL_LAYER 4
 
-#define EMISSIVE_BLOOM_PLATE 15
+#define EMISSIVE_BLOOM_MASK_PLATE 15
+#define EMISSIVE_BLOOM_MASK_TARGET "*EMISSIVE_BLOOM_MASK_PLATE"
+#define EMISSIVE_BLOOM_PLATE 16
 
 //-------------------- Game plane assembly ---------------------
 
-#define RENDER_PLANE_GAME 16
+#define RENDER_PLANE_GAME 17
 /// If fov is enabled we'll draw game to this and do shit to it
-#define RENDER_PLANE_GAME_MASKED 17
+#define RENDER_PLANE_GAME_MASKED 18
 /// The bit of the game plane that is let alone is sent here
-#define RENDER_PLANE_GAME_UNMASKED 18
+#define RENDER_PLANE_GAME_UNMASKED 19
 
 //-------------------- Lighting ---------------------
 
@@ -188,7 +190,6 @@
 #define DOOR_HELPER_LAYER 2.72 //keep this above DOOR_ACCESS_HELPER_LAYER and OPEN_DOOR_LAYER since the others tend to have tiny sprites that tend to be covered up.
 #define PROJECTILE_HIT_THRESHHOLD_LAYER 2.75 //projectiles won't hit objects at or below this layer if possible
 #define TABLE_LAYER 2.8
-#define GATEWAY_UNDERLAY_LAYER 2.85
 #define BELOW_OBJ_LAYER 2.9
 #define LOW_ITEM_LAYER 2.95
 //#define OBJ_LAYER 3 //For easy recordkeeping; this is a byond define
@@ -254,7 +255,6 @@
 /// Stuff that needs to draw above everything else on this plane
 #define LIGHTING_ABOVE_ALL 20
 
-
 //---------- EMISSIVES -------------
 //Layering order of these is not particularly meaningful.
 //Important part is the seperation of the planes for control via plane_master
@@ -293,9 +293,6 @@
 
 /// Layer for light overlays
 #define LIGHT_DEBUG_LAYER 6
-
-#define LOBBY_BACKGROUND_LAYER 3
-#define LOBBY_BUTTON_LAYER 4
 
 ///Layer for lobby menu collapse button
 #define LOBBY_BELOW_MENU_LAYER 2

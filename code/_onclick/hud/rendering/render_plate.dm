@@ -211,9 +211,9 @@
 	name = "Lighting plate"
 	documentation = "Anything on this plane will be <b>multiplied</b> with the plane it's rendered onto (typically the game plane).\
 		<br>That's how lighting functions at base. Because it uses BLEND_MULTIPLY and occasionally color matrixes, it needs a backdrop of blackness.\
-		<br>See <a href=\"https://secure.byond.com/forum/?post=2141928\">This byond post</a>\
+		<br>See <a href=\"https://secure.byond.com/forum/?post=2141928\">this byond post</a>\
 		<br>Lemme see uh, we're masked by the emissive plane so it can actually function (IE: make things glow in the dark).\
-		<br>We're also masked by the overlay lighting plane, which contains all the movable lights in the game. It draws to us and also the game plane.\
+		<br>We're also masked by the overlay lighting plane, which contains all the well overlay lights in the game. It draws to us and also the game plane.\
 		<br>Masks us out so it has the breathing room to apply its effect.\
 		<br>Oh and we quite often have our alpha changed to achive night vision effects, or things of that sort."
 	plane = RENDER_PLANE_LIGHTING
@@ -376,12 +376,20 @@
 	plane = RENDER_PLANE_NON_GAME
 	render_relay_planes = list(RENDER_PLANE_MASTER)
 
+/atom/movable/screen/plane_master/rendering_plate/emissive_bloom_mask
+	name = "Emissive bloom mask plate"
+	documentation = "A holder plate used purely as a way to full-white bloom emissives before applying them as a mask onto the emissive bloom plate."
+	plane = EMISSIVE_BLOOM_MASK_PLATE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	render_relay_planes = list()
+	render_target = EMISSIVE_BLOOM_MASK_TARGET
+	critical = PLANE_CRITICAL_DISPLAY
+
 /atom/movable/screen/plane_master/rendering_plate/emissive_bloom
 	name = "Emissive bloom plate"
-	documentation = "Plate used to bloom emissives before adding them onto the overlay lighting plane. This relies on game rendering plate,\
-		which assembles all in-world planes affected by lighting, is above the emissive plane - which allows us to bypass having to fullbright\
-		the emissive plane on a separate plate before alpha masking the rendering plate copy via multiplying fullbright emissive created here\
-		with the game plate, which technically achieves the same effect. Odd, but it works, and is significantly graphically cheaper."
+	documentation = "Plate used to bloom emissives before adding them onto the overlay lighting plane. We do this by multiplying the game plate\
+		onto a fullbright emissive, then alpha masking it by emissive's color to solve the problem of blockers, both alone and covered by emissives."
 	plane = EMISSIVE_BLOOM_PLATE
 	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -391,7 +399,8 @@
 
 /atom/movable/screen/plane_master/rendering_plate/emissive_bloom/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
 	. = ..()
-	add_filter("emissive_bloom", 1, bloom_filter(threshold = COLOR_BLACK, size = 2, offset = 1))
+	add_filter("emissive_mask", 1, alpha_mask_filter(render_source = OFFSET_RENDER_TARGET(EMISSIVE_BLOOM_MASK_TARGET, offset)))
+	add_filter("emissive_bloom", 2, bloom_filter(threshold = COLOR_BLACK, size = 2, offset = 1))
 
 /atom/movable/screen/plane_master/rendering_plate/turf_lighting
 	name = "Turf lighting post-processing plate"
@@ -399,6 +408,7 @@
 	plane = TURF_LIGHTING_PLATE
 	render_relay_planes = list(RENDER_PLANE_LIGHTING)
 	blend_mode = BLEND_ADD
+	critical = PLANE_CRITICAL_DISPLAY
 
 /atom/movable/screen/plane_master/rendering_plate/lit_game
 	name = "Lit game rendering plate"

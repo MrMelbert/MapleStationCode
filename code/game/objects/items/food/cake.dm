@@ -132,7 +132,7 @@
 	desc = "A cake with added orange."
 	icon_state = "orangecake"
 	tastes = list("cake" = 5, "sweetness" = 2, "oranges" = 2)
-	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR | ORANGES
+	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR
 	venue_value = FOOD_PRICE_CHEAP
 	slice_type = /obj/item/food/cakeslice/orange
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -142,7 +142,7 @@
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "orangecake_slice"
 	tastes = list("cake" = 5, "sweetness" = 2, "oranges" = 2)
-	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR | ORANGES
+	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/lime

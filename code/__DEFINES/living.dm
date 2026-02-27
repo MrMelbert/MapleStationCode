@@ -1,6 +1,9 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Always does *deathgasp when they die
+/// If unset mobs will only deathgasp if supplied a death sound or custom death message
+#define ALWAYS_DEATHGASP (1<<1)
 /// Nutrition changed last life tick, so we should bulk update this tick
 #define QUEUE_NUTRITION_UPDATE (1<<3)
 
@@ -16,6 +19,8 @@
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack is applied to a mob. (source = obj/item/temperature_pack)
+#define COMISG_TEMPERATURE_PACK_ENABLED "temperature_pack_enabled"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
@@ -23,6 +28,30 @@
 	#define HANDLE_BLOOD_HANDLED (1<<0)
 	#define HANDLE_BLOOD_NO_NUTRITION_DRAIN (1<<1)
 	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
+#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+
+#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
+	/// Return to do no homeostasis at all
+	#define HOMEOSTASIS_HANDLED (1<<0)
+	/// Return to not reduce hunger at all
+	#define HOMEOSTASIS_NO_HUNGER (1<<1)
+
+//from base of living/set_pull_offset(): (mob/living/pull_target, grab_state)
+#define COMSIG_LIVING_SET_PULL_OFFSET "living_set_pull_offset"
+//from base of living/reset_pull_offsets(): (mob/living/pull_target, override)
+#define COMSIG_LIVING_RESET_PULL_OFFSETS "living_reset_pull_offsets"
+//from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
+#define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
+	#define COMPONENT_LIVING_PASSABLE (1<<0)
+
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
 
 /// Various lists of body zones affected by pain.
 
@@ -85,6 +114,8 @@
 #define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
 /// Doesn't let a mob shift this atom around with move_pulled
 #define TRAIT_NO_MOVE_PULL "no_move_pull"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
 /// Boosts the heart rate of the mob
 #define TRAIT_HEART_RATE_BOOST "heart_rate_boost"
@@ -99,17 +130,19 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Eyelids are closed so long as this trait is present
+#define TRAIT_CLOSED_EYES "closed_eyes"
+
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
+
 #define COLOR_BLOOD "#c90000"
 
-/// Checks if the value is "left"
-/// Used primarily for hand or foot indexes
-#define IS_RIGHT(value) (value % 2 == 0)
-/// Checks if the value is "right"
-/// Used primarily for hand or foot indexes
-#define IS_LEFT(value) (value % 2 != 0)
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEX(value) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey
@@ -121,6 +154,11 @@
 
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
+
+// Frozen item temperature pack defaults
+#define FROZEN_ITEM_PAIN_RATE 0.1 // so cold that it barely heals
+#define FROZEN_ITEM_PAIN_MODIFIER 0.25
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -2 KELVIN
 
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)
@@ -165,3 +203,48 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Calculates hunger drain per step taken
+#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) ( amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1) )
+/// Checks if a mob is moving intentionally (ie, nothing is forcing them to move like another mob or a conveyor)
+#define IS_MOVING_INTENTIONALLY(mob) ( mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
+
+/// For consistent examine span formatting (normal size)
+#define examining_span_normal(msg) span_infoplain(span_italics(msg))
+/// For consistent examine span formatting (small size)
+#define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
+
+// Smell intensities
+/// Very faint - Often low enough to not noticed, but if noticed, people get used to it quickly
+#define SMELL_INTENSITY_FAINT 1
+/// Will be noticed for a short time but eventually people get used to it
+#define SMELL_INTENSITY_WEAK 6
+/// Noticable, will take a while to get used to
+#define SMELL_INTENSITY_MODERATE 12
+/// Very strong, hard to ignore, very unlikely to get used to
+#define SMELL_INTENSITY_STRONG 24
+/// Overpowers all other smells, extremely hard to ignore
+#define SMELL_INTENSITY_OVERPOWERING 48
+
+/// Damtype is "physical" like a slap to the face
+#define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
+/// Damtype is intended to disable rather than kill
+#define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)

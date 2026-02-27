@@ -29,7 +29,7 @@
 	///The molar mass of the reagent - if you're adding a reagent that doesn't have a recipe, just add a random number between 10 - 800. Higher numbers are "harder" but it's mostly arbitary.
 	var/mass
 	/// color it looks in containers etc
-	var/color = "#000000" // rgb: 0, 0, 0
+	var/color = COLOR_BLACK // rgb: 0, 0, 0
 	///how fast the reagent is metabolized by the mob
 	var/metabolization_rate = REAGENTS_METABOLISM
 	/// above this overdoses happen
@@ -44,11 +44,9 @@
 	var/metabolizing = FALSE
 	/// Are we from a material? We might wanna know that for special stuff. Like metalgen. Is replaced with a ref of the material on New()
 	var/datum/material/material
-	///A list of causes why this chem should skip being removed, if the length is 0 it will be removed from holder naturally, if this is >0 it will not be removed from the holder.
-	var/list/reagent_removal_skip_list = list()
 	///The set of exposure methods this penetrates skin with.
 	var/penetrates_skin = VAPOR
-	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_DONOTSPLIT, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
+	/// See fermi_readme.dm REAGENT_DEAD_PROCESS, REAGENT_INVISIBLE, REAGENT_SNEAKYNAME, REAGENT_SPLITRETAINVOL, REAGENT_CANSYNTH, REAGENT_IMPURE
 	var/chemical_flags = NONE
 	/// If the impurity is below 0.5, replace ALL of the chem with inverse_chem upon metabolising
 	var/inverse_chem_val = 0.25
@@ -60,7 +58,13 @@
 	var/burning_temperature = null
 	///How much is consumed when it is burnt per second
 	var/burning_volume = 0.5
-	///Assoc list with key type of addiction this reagent feeds, and value amount of addiction points added per unit of reagent metabolzied (which means * REAGENTS_METABOLISM every life())
+	/**
+	 * Lazyassoc list of [addiction typepath] to [threshold value].
+	 *
+	 * [threshold value] can be interpreted as the number of units that must be consumed before an addiction is formed.
+	 *
+	 * Ex: list(/datum/addiction/stimulants = 50) -> "become addicted to stimulants after metabolizing 50 units of this reagent".
+	 */
 	var/list/addiction_types = null
 	/// The affected organ_flags, if the reagent damages/heals organ damage of an affected mob.
 	/// See "Organ defines for carbon mobs" in /code/_DEFINES/surgery.dm
@@ -74,6 +78,8 @@
 	/// The affected respiration type, if the reagent damages/heals oxygen damage of an affected mob.
 	/// See "Mob bio-types flags" in /code/_DEFINES/mobs.dm
 	var/affected_respiration_type = ALL
+	/// A list of traits to apply while the reagent is being metabolized.
+	var/list/metabolized_traits
 
 	///The default reagent container for the reagent, used for icon generation
 	var/obj/item/reagent_containers/default_container = /obj/item/reagent_containers/cup/bottle
@@ -159,21 +165,11 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 ///Metabolizes a portion of the reagent after on_mob_life() is called
-/datum/reagent/proc/metabolize_reagent(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	if(length(reagent_removal_skip_list))
-		return
+/datum/reagent/proc/metabolize_reagent(mob/living/carbon/affected_mob, metabolizing_out = 0)
 	if(isnull(holder))
 		return
 
-	var/metabolizing_out = metabolization_rate * seconds_per_tick
-	if(!(chemical_flags & REAGENT_UNAFFECTED_BY_METABOLISM))
-		if(chemical_flags & REAGENT_REVERSE_METABOLISM)
-			metabolizing_out /= affected_mob.metabolism_efficiency
-		else
-			metabolizing_out *= affected_mob.metabolism_efficiency
-
 	holder.remove_reagent(type, metabolizing_out)
-
 
 /// Called in burns.dm *if* the reagent has the REAGENT_AFFECTS_WOUNDS process flag
 /datum/reagent/proc/on_burn_wound_processing(datum/wound/flesh/burn_wound)
@@ -205,12 +201,15 @@ Primarily used in reagents/reaction_agents
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnum(pain_modifier))
 		affected_mob.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
+	if(metabolized_traits)
+		affected_mob.add_traits(metabolized_traits, "metabolize:[type]")
 
 /// Called when this reagent stops being metabolized by a liver
 /datum/reagent/proc/on_mob_end_metabolize(mob/living/affected_mob)
 	SHOULD_CALL_PARENT(TRUE)
 	if(isnum(pain_modifier))
 		affected_mob.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
+	REMOVE_TRAITS_IN(affected_mob, "metabolize:[type]")
 
 /**
  * Called when a reagent is inside of a mob when they are dead if the reagent has the REAGENT_DEAD_PROCESS flag
@@ -279,6 +278,10 @@ Primarily used in reagents/reaction_agents
 	if(!purity)
 		purity = src.purity
 	return min(1-inverse_chem_val + purity + 0.01, 1) //Gives inverse reactions a 1% purity threshold for being 100% pure to appease players with OCD.
+
+///Called when feeding a fish. If TRUE is returned, a portion of reagent will be consumed.
+/datum/reagent/proc/used_on_fish(obj/item/fish/fish)
+	return FALSE
 
 /**
  * Input a reagent_list, outputs pretty readable text!

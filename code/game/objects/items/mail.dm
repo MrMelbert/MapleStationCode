@@ -84,7 +84,7 @@
 		)
 		stamp_image.pixel_w = pixel_w = stamp_offset_x
 		stamp_image.pixel_z = stamp_offset_y + bonus_stamp_offset
-		stamp_image.appearance_flags |= RESET_COLOR|KEEP_APART
+		stamp_image.appearance_flags |= RESET_COLOR|KEEP_APART|KEEP_APART
 		bonus_stamp_offset -= 5
 		. += stamp_image
 
@@ -95,7 +95,7 @@
 		)
 		postmark_image.pixel_w = stamp_offset_x + rand(-3, 1)
 		postmark_image.pixel_z = stamp_offset_y + rand(bonus_stamp_offset + 3, 1)
-		postmark_image.appearance_flags |= RESET_COLOR|KEEP_APART
+		postmark_image.appearance_flags |= RESET_COLOR|KEEP_APART|KEEP_APART
 		. += postmark_image
 
 /obj/item/mail/attackby(obj/item/W, mob/user, params)
@@ -513,7 +513,7 @@
 		return FALSE
 	if(loc != user)
 		return FALSE
-	mail_type = lowertext(mail_type)
+	mail_type = LOWER_TEXT(mail_type)
 
 	var/mail_armed = tgui_alert(user, "Arm it?", "Mail Counterfeiting", list("Yes", "No")) == "Yes"
 	if(isnull(mail_armed))

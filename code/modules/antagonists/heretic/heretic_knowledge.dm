@@ -547,14 +547,13 @@
 	animate(summoned, 10 SECONDS, alpha = 155)
 
 	message_admins("A [summoned.name] is being summoned by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(summoned)].")
-	var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as a [summoned.name]?", check_jobban = ROLE_HERETIC, poll_time = 10 SECONDS, target_mob = summoned, ignore_category = poll_ignore_define, pic_source = summoned, role_name_text = summoned.name)
-	if(!LAZYLEN(candidates))
+	var/mob/picked_candidate = SSpolling.poll_ghosts_for_target(check_jobban = ROLE_HERETIC, poll_time = 10 SECONDS, checked_target = summoned, ignore_category = poll_ignore_define, alert_pic = summoned, role_name_text = summoned.name)
+	if(isnull(picked_candidate))
 		loc.balloon_alert(user, "ritual failed, no ghosts!")
 		animate(summoned, 0.5 SECONDS, alpha = 0)
 		QDEL_IN(summoned, 0.6 SECONDS)
 		return FALSE
 
-	var/mob/dead/observer/picked_candidate = pick(candidates)
 	// Ok let's make them an interactable mob now, since we got a ghost
 	summoned.alpha = 255
 	REMOVE_TRAIT(summoned, TRAIT_NO_TRANSFORM, REF(src))
@@ -597,15 +596,15 @@
 /datum/heretic_knowledge/knowledge_ritual/New()
 	. = ..()
 	var/static/list/potential_organs = list(
-		/obj/item/organ/internal/appendix,
-		/obj/item/organ/external/tail,
-		/obj/item/organ/internal/eyes,
-		/obj/item/organ/internal/tongue,
-		/obj/item/organ/internal/ears,
-		/obj/item/organ/internal/heart,
-		/obj/item/organ/internal/liver,
-		/obj/item/organ/internal/stomach,
-		/obj/item/organ/internal/lungs,
+		/obj/item/organ/appendix,
+		/obj/item/organ/tail,
+		/obj/item/organ/eyes,
+		/obj/item/organ/tongue,
+		/obj/item/organ/ears,
+		/obj/item/organ/heart,
+		/obj/item/organ/liver,
+		/obj/item/organ/stomach,
+		/obj/item/organ/lungs,
 	)
 
 	var/static/list/potential_easy_items = list(
@@ -749,6 +748,7 @@
 	)
 	if(!isnull(ascension_achievement))
 		user.client?.give_award(ascension_achievement, user)
+	ADD_TRAIT(user, TRAIT_DESENSITIZED, type)
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/cleanup_atoms(list/selected_atoms)

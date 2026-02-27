@@ -1,21 +1,21 @@
 // Vampire Business
 /datum/species/vampire
-	mutanteyes = /obj/item/organ/internal/eyes/night_vision/vampire
+	mutanteyes = /obj/item/organ/eyes/night_vision/vampire
 
 // Heart gives you Bat Form, but with a downside
-/obj/item/organ/internal/heart/vampire
+/obj/item/organ/heart/vampire
 	actions_types = list(/datum/action/cooldown/spell/shapeshift/vampire)
 
-/obj/item/organ/internal/heart/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/heart/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	organ_owner.AddComponent(/datum/component/verbal_confirmation)
 
-/obj/item/organ/internal/heart/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/heart/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	qdel(organ_owner.GetComponent(/datum/component/verbal_confirmation))
 
 // Vampire eyes, make you vulnerable to the light, but also has nightvision
-/obj/item/organ/internal/eyes/night_vision/vampire
+/obj/item/organ/eyes/night_vision/vampire
 	name = "blood red eyes"
 	desc = "A pair of blood red eyes."
 	flash_protect = FLASH_PROTECTION_SENSITIVE
@@ -23,15 +23,15 @@
 	medium_light_cutoff = list(30, 5, 10)
 	high_light_cutoff = list(40, 10, 20)
 
-/obj/item/organ/internal/eyes/night_vision/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/eyes/night_vision/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT, PROC_REF(do_damage))
 
-/obj/item/organ/internal/eyes/night_vision/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/eyes/night_vision/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT)
 
-/obj/item/organ/internal/eyes/night_vision/vampire/proc/do_damage(mob/living/carbon/source, intensity)
+/obj/item/organ/eyes/night_vision/vampire/proc/do_damage(mob/living/carbon/source, intensity)
 	SIGNAL_HANDLER
 
 	var/damage = 3 * (intensity - source.get_eye_protection())

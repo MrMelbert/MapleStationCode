@@ -328,10 +328,8 @@
 	current_gauze.absorption_capacity = new_gauze.absorption_capacity
 	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
 	current_gauze.update_appearance()
-	if(can_bleed() && get_modified_bleed_rate())
+	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
-		if(!QDELETED(new_gauze))
-			new_gauze.add_mob_blood(owner)
 	SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, current_gauze, new_gauze)
 	owner.update_damage_overlays()
 
@@ -341,7 +339,7 @@
 		current_gauze.forceMove(remove_to)
 	else
 		current_gauze.moveToNullspace()
-	if(can_bleed() && get_modified_bleed_rate())
+	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
 	current_gauze.worn_icon_state = initial(current_gauze.worn_icon_state)
 	current_gauze.update_appearance()
@@ -383,10 +381,9 @@
 	if(!helper.can_perform_action(owner, NEED_HANDS|FORBID_TELEKINESIS_REACH)) // telekinetic removal can be added later
 		return
 
-	var/whose = helper == owner ? "your" : "[owner]'s"
 	helper.visible_message(
-		span_notice("[helper] starts carefully removing [current_gauze] from [whose] [plaintext_zone]."),
-		span_notice("You start carefully removing [current_gauze] from [whose] [plaintext_zone]..."),
+		span_notice("[helper] starts carefully removing [current_gauze] from [helper == owner ? helper.p_their() : "[owner]'s"] [plaintext_zone]."),
+		span_notice("You start carefully removing [current_gauze] from [helper == owner ? "your" : "[owner]'s"] [plaintext_zone]..."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 	helper.balloon_alert(helper, "removing gauze...")
@@ -399,10 +396,9 @@
 	if(!current_gauze)
 		return
 
-	var/theirs = helper == owner ? helper.p_their() : "[owner]'s"
 	helper.visible_message(
-		span_notice("[helper] finishes removing [current_gauze] from [theirs] [plaintext_zone]."),
-		span_notice("You finish removing [current_gauze] from [theirs] [plaintext_zone]."),
+		span_notice("[helper] finishes removing [current_gauze] from [helper == owner ? helper.p_their() : "[owner]'s"] [plaintext_zone]."),
+		span_notice("You finish removing [current_gauze] from [helper == owner ? "your" : "[owner]'s"] [plaintext_zone]."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 

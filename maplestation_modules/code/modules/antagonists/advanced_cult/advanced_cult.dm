@@ -2,7 +2,7 @@
 /datum/antagonist/advanced_cult
 	ui_name = null
 	show_in_antagpanel = FALSE
-	job_rank = ROLE_CULTIST
+	pref_flag = ROLE_CULTIST
 	roundend_category = "cultists"
 	antagpanel_category = "Cult"
 	suicide_cry = "FOR MY GOD!!"
@@ -41,7 +41,6 @@
 
 /datum/antagonist/advanced_cult/finalize_antag()
 	cultist_style.on_cultist_made(src, owner.current)
-	owner.special_role = ROLE_CULTIST
 
 /datum/antagonist/advanced_cult/on_removal()
 	cultist_style.on_cultist_lost(src, owner.current)

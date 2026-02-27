@@ -22,7 +22,10 @@ Assistant
 
 	department_for_prefs = /datum/job_department/assistant
 
-	family_heirlooms = list(/obj/item/storage/toolbox/mechanical/old/heirloom, /obj/item/clothing/gloves/cut/heirloom)
+	// family_heirlooms = list(
+	// 	/obj/item/storage/toolbox/mechanical/old/heirloom,
+	// 	/obj/item/clothing/gloves/cut/heirloom,
+	// )
 
 	mail_goodies = list(
 		/obj/effect/spawner/random/food_or_drink/donkpockets = 10,
@@ -36,6 +39,12 @@ Assistant
 	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Lout"
 	config_tag = "ASSISTANT"
+
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/botany = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/job/assistant/get_outfit(consistent, title)
 	if(consistent)

@@ -18,7 +18,7 @@
 /obj/structure/closet/crate/necropolis/tendril/attackby(obj/item/item, mob/user, params)
 	if(!istype(item, /obj/item/skeleton_key) || spawned_loot)
 		return ..()
-	var/loot = rand(1,20)
+	var/loot = rand(1,21)
 	var/mod
 	switch(loot)
 		if(1)
@@ -26,7 +26,7 @@
 		if(2)
 			new /obj/item/soulstone/anybody/mining(src)
 		if(3)
-			new /obj/item/organ/internal/cyberimp/arm/shard/katana(src)
+			new /obj/item/organ/cyberimp/arm/shard/katana(src)
 		if(4)
 			new /obj/item/clothing/glasses/godeye(src)
 		if(5)
@@ -47,7 +47,7 @@
 		if(8)
 			new /obj/item/rod_of_asclepius(src)
 		if(9)
-			new /obj/item/organ/internal/heart/cursed/wizard(src)
+			new /obj/item/organ/heart/cursed/wizard(src)
 		if(10)
 			new /obj/item/ship_in_a_bottle(src)
 		if(11)
@@ -71,6 +71,9 @@
 			new /obj/item/bedsheet/cult(src)
 		if(20)
 			new /obj/item/clothing/neck/necklace/memento_mori(src)
+		if(21)
+			new /obj/item/clothing/gloves/fingerless/punch_mitts(src)
+			new /obj/item/clothing/head/cowboy(src)
 	if(!contents.len)
 		to_chat(user, span_warning("[src] makes a clunking sound as you try to open it. You feel compelled to let the gods know! (Please open an adminhelp and try again!)"))
 		CRASH("Failed to generate loot. loot number: [loot][mod ? "subloot: [mod]" : null]")
@@ -150,7 +153,7 @@
 	var/list/choices = subtypesof(/obj/machinery/anomalous_crystal)
 	var/random_crystal = pick(choices)
 	new random_crystal(src)
-	new /obj/item/organ/internal/vocal_cords/colossus(src)
+	new /obj/item/organ/vocal_cords/colossus(src)
 
 /obj/structure/closet/crate/necropolis/colossus/crusher
 	name = "angelic colossus chest"

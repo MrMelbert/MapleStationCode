@@ -150,7 +150,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		investigate_log("Chef's [SSshuttle.chef_groceries.len] sized produce order arrived. Cost was deducted from orderer, not cargo.", INVESTIGATE_CARGO)
 		for(var/datum/orderable_item/item as anything in SSshuttle.chef_groceries)//every order
 			for(var/amt in 1 to SSshuttle.chef_groceries[item])//every order amount
-				new item.item_path(grocery_crate)
+				new item.purchase_path(grocery_crate)
 		SSshuttle.chef_groceries.Cut() //This lets the console know it can order another round.
 
 	if(!SSshuttle.shopping_list.len)
@@ -200,7 +200,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 			if(spawning_order.charge_on_purchase)
 				receiver_message += " [price] credits have been charged to your bank account"
 			paying_for_this.bank_card_talk(receiver_message)
-			SSeconomy.track_purchase(paying_for_this, price, spawning_order.pack.name)
+			SSeconomy.add_audit_entry(paying_for_this, price, spawning_order.pack.name)
 			var/datum/bank_account/department/cargo = SSeconomy.get_dep_account(ACCOUNT_CAR)
 			cargo.adjust_money(price - pack_cost) //Cargo gets the handling fee
 		value += pack_cost

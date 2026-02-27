@@ -121,7 +121,9 @@
 			. += span_notice("- [reagent_gene.get_name()] -")
 
 /// Copy all the variables from one seed to a new instance of the same seed and return it.
-/obj/item/seeds/proc/Copy()
+// NON-MODULE CHANGE
+/obj/item/seeds/proc/Copy() as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
 	var/obj/item/seeds/copy_seed = new type(null, TRUE)
 	// Copy all the stats
 	copy_seed.lifespan = lifespan
@@ -236,7 +238,7 @@
 		else
 			t_prod = new product(output_loc, new_seed = src)
 		if(parent.myseed.plantname != initial(parent.myseed.plantname))
-			t_prod.name = lowertext(parent.myseed.plantname)
+			t_prod.name = LOWER_TEXT(parent.myseed.plantname)
 		if(productdesc)
 			t_prod.desc = productdesc
 		t_prod.seed.name = parent.myseed.name
@@ -247,8 +249,15 @@
 			return
 		t_amount++
 		product_name = parent.myseed.plantname
+
+	// NON-MODULE CHANGE
 	if(product_count >= 1)
 		SSblackbox.record_feedback("tally", "food_harvested", product_count, product_name)
+		user.mind?.adjust_experience(/datum/skill/botany, 0.5 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
+
+	else if(product_count == 0 && user.mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_MASTER)
+		Copy().forceMove(output_loc)
+
 	parent.update_tray(user, product_count)
 
 	return result
@@ -452,9 +461,11 @@
 
 /**
  * Override for seeds with unique text for their analyzer. (No newlines at the start or end of unique text!)
- * Returns null if no unique text, or a string of text if there is.
+ * Returns null if no unique data
+ * Return an assoc list (label = text) to add a new line to the analyzer
+ * Return an assoc list (label = list(text = tooltip, text = tooltip)) to add a new collapsible section to the analyzer
  */
-/obj/item/seeds/proc/get_unique_analyzer_text()
+/obj/item/seeds/proc/get_unique_analyzer_data()
 	return null
 
 /**
@@ -477,7 +488,7 @@
 					return
 				if(!user.can_perform_action(src))
 					return
-				name = "[lowertext(newplantname)]"
+				name = "[LOWER_TEXT(newplantname)]"
 				plantname = newplantname
 			if("Seed Description")
 				var/newdesc = tgui_input_text(user, "Write a new seed description", "Seed Description", desc, 180)
@@ -618,6 +629,30 @@
 
 /obj/item/grown/get_plant_seed()
 	return seed
+
+/obj/item/seeds/proc/perform_reagent_pollination(obj/item/seeds/donor)
+	var/list/datum/plant_gene/reagent/valid_reagents = list()
+	for(var/datum/plant_gene/reagent/donor_reagent in donor.genes)
+		var/repeated = FALSE
+		for(var/datum/plant_gene/reagent/receptor_reagent in genes)
+			if(donor_reagent.reagent_id == receptor_reagent.reagent_id)
+				if(receptor_reagent.rate < donor_reagent.rate)
+					receptor_reagent.rate = donor_reagent.rate
+					// sucessful pollination/upgrade, we stop here.
+					reagents_from_genes()
+					return
+				else
+					repeated = TRUE
+					break
+
+		if(!repeated)
+			valid_reagents += donor_reagent
+
+	if(length(valid_reagents))
+		// pick a valid reagent that our receptor seed don't have and add the gene to it
+		var/datum/plant_gene/reagent/selected_reagent = pick(valid_reagents)
+		genes += selected_reagent
+		reagents_from_genes()
 
 /// Returns a mutable appearance to be used as an overlay for the plant in hydro trays.
 /obj/item/seeds/proc/get_tray_overlay(age, status)

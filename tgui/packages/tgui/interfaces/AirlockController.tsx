@@ -169,7 +169,7 @@ const PressureIndicator = () => {
   };
 
   const { color, icon } = StatusFromState();
-  let spin =
+  const spin =
     icon === 'fan' &&
     (pumpStatus === PumpStatus.Pressurizing ||
       pumpStatus === PumpStatus.Depressurizing);

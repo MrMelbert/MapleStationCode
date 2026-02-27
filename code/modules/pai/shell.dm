@@ -4,7 +4,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/silicon/pai/start_pulling(atom/movable/thing, state, force = move_force, supress_message = FALSE)
+/mob/living/silicon/pai/start_pulling(atom/movable/thing, state, force = move_force, supress_message = FALSE, willing_pull = FALSE)
 	return FALSE
 
 /mob/living/silicon/pai/update_resting()

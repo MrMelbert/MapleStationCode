@@ -33,9 +33,6 @@
 /datum/preference/choiced/mob_size/apply_to_human(mob/living/carbon/human/target, value)
 	if(value == HEIGHT_NO_CHANGE)
 		return
-	if(target.get_mob_height() != HUMAN_HEIGHT_MEDIUM) // not compatible, nope
-		return
-
 	// Snowflake, but otherwise the dummy in the prefs menu will be resized and you can't see anything
 	if(isdummy(target))
 		return
@@ -43,7 +40,6 @@
 	if(!ishuman(target))
 		return
 
-	target.transform = null
 	var/resize_amount = 1
 
 	switch(value)
@@ -61,9 +57,9 @@
 			resize_amount = 0.7
 
 	if(value >= HEIGHT_VERY_LARGE)
-		ADD_TRAIT(target, TRAIT_GIANT, ROUNDSTART_TRAIT)
+		ADD_TRAIT(target, TRAIT_HUGE, TRAIT_SMALL)
 	else if(value <= HEIGHT_VERY_SMALL)
-		ADD_TRAIT(target, TRAIT_DWARF, ROUNDSTART_TRAIT)
+		ADD_TRAIT(target, TRAIT_SMALL, INNATE_TRAIT)
 
 	target.update_transform(resize_amount)
 
@@ -95,7 +91,7 @@
 		"Short" = HUMAN_HEIGHT_SHORT,
 		DEFAULT_HEIGHT = HUMAN_HEIGHT_MEDIUM,
 		"Tall" = HUMAN_HEIGHT_TALL,
-		"Tallest" = HUMAN_HEIGHT_TALLEST,
+		"Tallest" = HUMAN_HEIGHT_TALLER,
 	)
 
 /datum/preference/choiced/mob_height/init_possible_values()
@@ -136,20 +132,6 @@
 // Not necessary with above
 /mob/living/carbon/human/dummy/apply_height_offsets(image/appearance, upper_torso)
 	return
-
-/mob/living/carbon/human/get_mob_height()
-	// If you have roundstart dwarfism (IE: resized), it'll just return normal mob height, so no filters are applied
-	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
-		return mob_height
-
-	return ..()
-
-/mob/living/carbon/human/on_dwarf_trait(datum/source)
-	// If you have roundstart dwarfism (IE: resized), don't bother regenning icons or toggling passtable
-	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
-		return
-
-	return ..()
 
 /datum/preference/proc/has_silicon_prioritized(datum/preferences/preferences)
 	// If you have a silicon job, don't show the height preference

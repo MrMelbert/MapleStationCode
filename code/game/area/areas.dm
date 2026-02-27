@@ -566,6 +566,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		beauty = 0
 		return FALSE //Too big
 	beauty = totalbeauty / areasize
+	SEND_SIGNAL(src, COMSIG_AREA_BEAUTY_UPDATED)
 
 /**
  * Setup an area (with the given name)
