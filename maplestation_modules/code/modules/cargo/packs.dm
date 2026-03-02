@@ -293,7 +293,7 @@
 		/obj/item/mana_battery/mana_crystal/standard,
 	)
 
-/datum/supply_pack/science/volite_shipment
+/datum/supply_pack/science/volite_shipment_small
 	name = "Small Volite Crystal Shipment"
 	desc = "A bundle containing 6 miniature volite crystals."
 	cost = PAYCHECK_COMMAND * 5
