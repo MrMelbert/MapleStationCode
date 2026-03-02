@@ -346,3 +346,7 @@
 /datum/loadout_item/pocket_items/black_parasol
 	name = "Umbrella (Black Parasol)"
 	item_path = /obj/item/umbrella/parasol
+
+/datum/loadout_item/pocket_items/perfume
+	name = "Perfume"
+	item_path = /obj/item/reagent_containers/spray/perfume

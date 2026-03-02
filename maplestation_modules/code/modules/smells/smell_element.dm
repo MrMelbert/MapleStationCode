@@ -44,9 +44,6 @@
 	var/intensity
 	/// How big the smell radius is
 	var/radius
-	/// For smells which may be identical to another smell in all respects but need to be tracked separately
-	/// Primarily used for complex smells which may stack multiple times on the same atom, like bloody clothing
-	var/id
 
 /**
  * Arguments:
@@ -59,17 +56,15 @@
  * Smell intensity will fall off linearly over distance.
  * * category - Optional: the smell category, used for categorizing smells and determining how they interact with each other.
  * Only used if smell is passed as a string.
- * * id - Optional: identifier for this smell instance, used to differentiate between multiple instances of the same smell on the same atom.
  * * smell_basetype - Optional: the basetype to use when generating a smell singleton from a string. Defaults to /datum/smell.
  */
-/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = SMELL_INTENSITY_FAINT, radius = 2, category, id = "innate", smell_basetype = /datum/smell)
+/datum/element/simple_smell/Attach(datum/target, smell = "stink", intensity = SMELL_INTENSITY_FAINT, radius = 2, category, smell_basetype = /datum/smell)
 	. = ..()
 	if(!isatom(target))
 		return ELEMENT_INCOMPATIBLE
 	if(intensity < SMELL_INTENSITY_FAINT)
 		stack_trace("A simple smell was created with invalid intensity - we will coerce it, but it should be fixed: [intensity]")
 
-	src.id = id
 	if(isnull(src.smell))
 		src.smell = get_smell(smell, category, smell_basetype)
 		src.intensity = max(intensity, SMELL_INTENSITY_FAINT)
@@ -79,13 +74,20 @@
 	if(isturf(atom_target.loc))
 		mark_turfs(target, atom_target.loc)
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(update_turfs))
+	RegisterSignal(target, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(double_examine))
 
 /datum/element/simple_smell/Detach(datum/target)
 	. = ..()
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(target, COMSIG_ATOM_EXAMINE_MORE)
 	var/atom/atom_target = target
 	if(isturf(atom_target.loc))
 		unmark_turfs(target, atom_target.loc)
+
+/datum/element/simple_smell/proc/double_examine(atom/movable/source, mob/examiner, list/examine_list)
+	SIGNAL_HANDLER
+	if(examiner.can_smell())
+		examine_list += span_info(smell.get_examine_text(examiner, source, intensity))
 
 /datum/element/simple_smell/proc/update_turfs(atom/movable/source, atom/old_loc)
 	SIGNAL_HANDLER

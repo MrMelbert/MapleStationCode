@@ -31,10 +31,17 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/vermouth
 	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
+	juice_typepath = /datum/reagent/medicine/painkiller/oxycodone
 
 /obj/item/food/grown/poppy/Initialize(mapload, obj/item/seeds/new_seed)
 	. = ..()
-	AddElement(/datum/element/simple_smell, "flowers", SMELL_INTENSITY_WEAK, 1, "fragrance")
+	add_smell(category = "fragrance", smell = "flowers", intensity = SMELL_INTENSITY_WEAK, radius = 1)
+
+/obj/item/food/grown/poppy/grind(datum/reagents/target_holder, mob/user)
+	. = ..()
+	if(!.)
+		return
+	target_holder.add_reagent(/datum/reagent/perfume, round(seed.potency * pick(0.01, 0.02, 0.03), CHEMICAL_VOLUME_ROUNDING))
 
 // Lily
 /obj/item/seeds/poppy/lily
@@ -55,6 +62,7 @@
 	name = "lily"
 	desc = "A beautiful white flower."
 	icon_state = "lily"
+	juice_typepath = null
 
 	//Spacemans's Trumpet
 /obj/item/seeds/poppy/lily/trumpet
@@ -111,6 +119,7 @@
 	name = "geranium"
 	desc = "A beautiful blue flower."
 	icon_state = "geranium"
+	juice_typepath = null
 
 ///Fraxinella seeds.
 /obj/item/seeds/poppy/geranium/fraxinella
@@ -315,7 +324,7 @@
 
 /obj/item/food/grown/rose/Initialize(mapload, obj/item/seeds/new_seed)
 	. = ..()
-	AddElement(/datum/element/simple_smell, "roses", SMELL_INTENSITY_WEAK, 1, "fragrance")
+	add_smell(category = "fragrance", smell = "roses", intensity = SMELL_INTENSITY_WEAK, radius = 1)
 
 /obj/item/food/grown/rose/equipped(mob/user, slot, initial)
 	. = ..()
