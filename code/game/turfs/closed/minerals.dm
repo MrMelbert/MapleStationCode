@@ -660,6 +660,11 @@
 	desc = "This rock is filled with pockets of breathable air."
 	baseturfs = /turf/open/misc/asteroid
 
+/turf/closed/mineral/sand
+	name = "sandy rock"
+	color = "#ffcc66"
+	baseturfs = /turf/open/misc/beach/sand
+
 //GIBTONITE
 
 /turf/closed/mineral/gibtonite

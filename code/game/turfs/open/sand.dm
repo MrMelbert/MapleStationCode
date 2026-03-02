@@ -25,6 +25,7 @@
 	icon_state = "sand"
 	base_icon_state = "sand"
 	baseturfs = /turf/open/misc/beach/sand
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
 
 /turf/open/misc/beach/sand/Initialize(mapload)
 	. = ..()
