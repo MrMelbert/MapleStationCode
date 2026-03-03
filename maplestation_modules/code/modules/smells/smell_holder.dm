@@ -85,9 +85,10 @@
 	/// Think of this in terms of "You need at least vol/x units to get the full duration"
 	var/volume_duration_scale = 1
 
-/obj/effect/abstract/smell/reagent/Initialize(mapload, volume = 1)
-	intensity *= clamp(round(volume * volume_intensity_scale, 0.1), 0.1, 1)
-	duration *= clamp(round(volume * volume_duration_scale, 0.1), 0.1, 1)
+/obj/effect/abstract/smell/reagent/Initialize(mapload, volume)
+	if(isnum(volume))
+		intensity *= clamp(round(volume * volume_intensity_scale, 0.1), 0.1, 1)
+		duration *= clamp(round(volume * volume_duration_scale, 0.1), 0.1, 1)
 	return ..()
 
 /obj/effect/abstract/smell/reagent/cleaning_chemicals
