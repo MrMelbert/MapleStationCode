@@ -579,7 +579,7 @@
 	owner.Paralyze(2 SECONDS)
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOSOFTCRIT))
 
-/datum/status_effect/paincrit/clean_up()
+/datum/status_effect/paincrit/proc/clean_up()
 	SIGNAL_HANDLER
 	qdel(src)
 
