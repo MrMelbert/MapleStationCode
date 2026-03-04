@@ -419,8 +419,10 @@
 		clothes[CLOTHING_SLOT(NECK)] = "[t_He] [t_is] wearing [wear_neck.examine_title(user, href = TRUE)] around [t_his] neck."
 	//eyes
 	if(!(obscured_slots & HIDEEYES))
-		if(glasses  && !HAS_TRAIT(glasses, TRAIT_EXAMINE_SKIP))
+		if(glasses && !HAS_TRAIT(glasses, TRAIT_EXAMINE_SKIP))
 			clothes[CLOTHING_SLOT(EYES)] = "[t_He] [t_has] [glasses.examine_title(user, href = TRUE)] covering [t_his] eyes."
+		else if(HAS_TRAIT(src, TRAIT_CLOSED_EYES))
+			clothes[CLOTHING_SLOT(EYES)] = "[t_His] eyes are closed."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
 			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are glowing with an unnatural red aura!")
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))

@@ -42,7 +42,13 @@
 		/obj/item/storage/box/lethalshot = 5
 	)
 	rpg_title = "Jailor"
-	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT
+	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_ANTAG_PROTECTED
+
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/warden
 	name = "Warden"

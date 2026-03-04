@@ -756,7 +756,8 @@
 
 /obj/item/stack/update_name(updates)
 	. = ..()
-	maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
+	if(max_amount != 1)
+		maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
 	if(!singular_name)
 		return
 	if(amount > 1)

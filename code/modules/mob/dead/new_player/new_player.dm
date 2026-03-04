@@ -126,7 +126,7 @@
 	return GENERIC_JOB_UNAVAILABLE_ERROR
 
 /mob/dead/new_player/proc/IsJobUnavailable(rank, latejoin = FALSE)
-	var/datum/job/job = SSjob.GetJob(rank)
+	var/datum/job/job = SSjob.get_job(rank)
 	if(!(job.job_flags & JOB_NEW_PLAYER_JOINABLE))
 		return JOB_UNAVAILABLE_GENERIC
 	if((job.current_positions >= job.total_positions) && job.total_positions != -1)
@@ -171,9 +171,9 @@
 	SSticker.queued_players -= src
 	SSticker.queue_delay = 4
 
-	var/datum/job/job = SSjob.GetJob(rank)
+	var/datum/job/job = SSjob.get_job(rank)
 
-	if(!SSjob.AssignRole(src, job, TRUE))
+	if(!SSjob.assign_role(src, job, TRUE))
 		tgui_alert(usr, "There was an unexpected error putting you into your requested job. If you cannot join with any job, you should contact an admin.")
 		return FALSE
 
@@ -186,7 +186,7 @@
 		CRASH("Failed to create a character for latejoin.")
 	transfer_character()
 
-	SSjob.EquipRank(character, job, character.client)
+	SSjob.equip_rank(character, job, character.client)
 	job.after_latejoin_spawn(character)
 
 	#define IS_NOT_CAPTAIN 0
@@ -216,7 +216,6 @@
 
 	if(humanc) //These procs all expect humans
 		announce_arrival(humanc, rank, try_queue = TRUE)
-		AddEmploymentContract(humanc)
 
 		humanc.increment_scar_slot()
 		humanc.load_persistent_scars()
@@ -226,14 +225,8 @@
 
 	GLOB.joined_player_list += character.ckey
 
-	if(CONFIG_GET(flag/allow_latejoin_antagonists) && humanc) //Borgs aren't allowed to be antags. Will need to be tweaked if we get true latejoin ais.
-		if(SSshuttle.emergency)
-			switch(SSshuttle.emergency.mode)
-				if(SHUTTLE_RECALL, SHUTTLE_IDLE)
-					SSdynamic.make_antag_chance(humanc)
-				if(SHUTTLE_CALL)
-					if(SSshuttle.emergency.timeLeft(1) > initial(SSshuttle.emergency_call_time)*0.5)
-						SSdynamic.make_antag_chance(humanc)
+	if(CONFIG_GET(flag/allow_latejoin_antagonists) && !EMERGENCY_PAST_POINT_OF_NO_RETURN && humanc) //Borgs aren't allowed to be antags. Will need to be tweaked if we get true latejoin ais.
+		SSdynamic.on_latejoin(humanc)
 
 	if(humanc)
 		if(job.job_flags & JOB_ASSIGN_QUIRKS)
@@ -248,13 +241,6 @@
 	if(humanc && arrivals && !arrivals.power_environ) //arrivals depowered
 		humanc.put_in_hands(new /obj/item/crowbar/large/emergency(get_turf(humanc))) //if hands full then just drops on the floor
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
-
-/mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
-	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.
-	for(var/C in GLOB.employmentCabinets)
-		var/obj/structure/filingcabinet/employment/employmentCabinet = C
-		if(!employmentCabinet.virgin)
-			employmentCabinet.addFile(employee)
 
 /// Creates, assigns and returns the new_character to spawn as. Assumes a valid mind.assigned_role exists.
 /mob/dead/new_player/proc/create_character(atom/destination)
@@ -307,23 +293,24 @@
 // Prevents "antag rolling" by setting antag prefs on, all jobs to never, and "return to lobby if preferences not available"
 // Doing so would previously allow you to roll for antag, then send you back to lobby if you didn't get an antag role
 // This also does some admin notification and logging as well, as well as some extra logic to make sure things don't go wrong
-/mob/dead/new_player/proc/check_preferences()
+/mob/dead/new_player/proc/check_job_preferences(warn = TRUE)
 	if(!client)
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
 	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
 	// If they have antags enabled, they're potentially doing this on purpose instead of by accident. Notify admins if so.
-	var/has_antags = FALSE
-	if(client.prefs.be_special.len > 0)
-		has_antags = TRUE
+	var/has_antags = length(client.prefs.be_special) > 0
 	if(client.prefs.job_preferences.len == 0)
-		if(!ineligible_for_roles)
-			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. This makes you ineligible for any round start role, please update your job preferences."))
-		ineligible_for_roles = TRUE
+		if(warn)
+			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. \
+				This makes you ineligible for any round start role, please update your job preferences."))
 		unready()
 		if(has_antags)
-			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. The player has been forcefully returned to the lobby.")
-			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
+			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] \
+				antag preferences enabled. The player has been forcefully returned to the lobby.")
+			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] \
+				antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences \
+				and has been forcefully returned to the lobby.")
 		return FALSE //This is the only case someone should actually be completely blocked from antag rolling as well
 	return TRUE
 

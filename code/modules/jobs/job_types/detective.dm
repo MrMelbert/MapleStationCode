@@ -48,10 +48,16 @@
 		/obj/item/reagent_containers/cup/glass/flask/det,
 	)
 	rpg_title = "Thiefcatcher" //I guess they caught them all rip thief...
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 	job_tone = "objection"
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/detective
 	name = "Detective"

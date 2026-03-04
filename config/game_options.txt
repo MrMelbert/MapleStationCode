@@ -81,10 +81,18 @@ ALERT_DELTA Destruction of the station is imminent. All crew are instructed to o
 ## The total weight of station goals possible for a round (allows multiple goals)
 STATION_GOAL_BUDGET 1
 
+## If TRUE / 1, station is raised to blue alert at roundstart.
+## If FALSE / 0, station remains at green alert.
+## Roundstart command report and greendshift announcements are unaffected.
+ROUNDSTART_BLUE_ALERT 0
+
 ## GAME MODES ###
 
-## Uncomment to not send a roundstart intercept report. Gamemodes may override this.
+## Uncomment to not send a roundstart intercept report.
 #NO_INTERCEPT_REPORT
+
+## Uncomment to not include dynamic info in the roundstart report.
+NO_DYNAMIC_REPORT
 
 ## Percent weight reductions for three of the most recent modes
 
@@ -92,13 +100,6 @@ REPEATED_MODE_ADJUST 45 30 10
 
 ## The amount of time it takes for the emergency shuttle to be called, from round start.
 SHUTTLE_REFUEL_DELAY 12000
-
-## Variables calculate how number of antagonists will scale to population.
-## Used as (Antagonists = Population / Coeff)
-## Set to 0 to disable scaling and use default numbers instead.
-TRAITOR_SCALING_COEFF 6
-BROTHER_SCALING_COEFF 6
-CHANGELING_SCALING_COEFF 6
 
 ## Variables calculate how number of open security officer positions will scale to population.
 ## Used as (Officers = Population / Coeff)

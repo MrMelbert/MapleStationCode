@@ -295,7 +295,7 @@
 	clone.age = age
 	dna.transfer_identity(clone, transfer_SE = TRUE, transfer_species = TRUE)
 
-	clone.dress_up_as_job(SSjob.GetJob(job))
+	clone.dress_up_as_job(SSjob.get_job(job))
 
 	for(var/datum/quirk/original_quircks as anything in quirks)
 		clone.add_quirk(original_quircks.type, override_client = client, announce = FALSE)
@@ -334,4 +334,6 @@
 	affecting.heal_damage(brute_heal, burn_heal, required_bodytype)
 	user.visible_message(span_notice("[user] fixes some of the [message] [src]'s [affecting.name]."), \
 		span_notice("You fix some of the [message] [src == user ? "your" : "[src]'s"] [affecting.name]."))
+	if(required_bodytype == BODYTYPE_ROBOTIC)
+		user.mind?.adjust_experience(/datum/skill/cybernetics, brute_heal + burn_heal)
 	return TRUE

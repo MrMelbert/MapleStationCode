@@ -148,7 +148,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		audible_message(span_notice("[src] dings!"))
 	else if (cook_time >= DEEPFRYER_BURNTIME && !frying_burnt)
 		frying_burnt = TRUE
-		visible_message(span_warning("[src] emits an acrid smell!"))
+		new /obj/effect/abstract/smell/oven/bad/fryer(loc)
 
 	use_energy(active_power_usage)
 
@@ -182,8 +182,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	// Give them reagents to put frying oil in
 	if(isnull(frying.reagents))
 		frying.create_reagents(50, INJECTABLE)
-	if(user.mind)
-		ADD_TRAIT(frying, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	// NON-MODULE CHANGE
+	handle_chef_made_food(frying, frying, user.mind, 0.25)
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
 	flick("fryer_start", src) // NON-MODULE CHANGE

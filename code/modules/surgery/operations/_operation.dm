@@ -262,6 +262,8 @@
  * If null, it will be permanent until removed.
  */
 /mob/living/proc/add_surgery_speed_mod(id, amount, duration)
+	if(QDELING(src))
+		return
 	ASSERT(!isnull(id), "Surgery speed mod ID cannot be null")
 	ASSERT(isnum(amount), "Surgery speed mod amount must be a number")
 	ASSERT(isnum(duration) || isnull(duration), "Surgery speed mod duration must be a number or null")
@@ -733,6 +735,9 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	// Using TRAIT_SELF_SURGERY on a surgery which doesn't normally allow self surgery imparts a penalty
 	if(patient == surgeon && HAS_TRAIT(surgeon, TRAIT_SELF_SURGERY) && !(operation_flags & OPERATION_SELF_OPERABLE))
 		total_mod *= 1.5
+
+	total_mod *= surgeon.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
+
 	return total_mod
 	// NON-MODULE CHANGE END
 
@@ -825,7 +830,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 
 	do
 		// NON-MODULE CHANGE
-		var/tool_quality = get_tool_quality(tool)
+		var/tool_quality = get_tool_quality(tool) + surgeon.get_skill_modifier(/datum/skill/surgery, SKILL_VALUE_MODIFIER)
 		operation_args[OPERATION_SPEED] = round(get_time_modifiers(operating_on, surgeon, tool) * tool_quality, 0.01)
 		operation_args[OPERATION_TOOL_QUALITY] = tool_quality
 
@@ -1152,9 +1157,14 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 
+	// NON-MODULE CHANGE
+	var/mob/living/patient = get_patient(operating_on)
 	if(operation_flags & OPERATION_NOTABLE)
 		SSblackbox.record_feedback("tally", "surgeries_completed", 1, type)
-		surgeon.add_mob_memory(/datum/memory/surgery, deuteragonist = surgeon, surgery_type = name)
+		surgeon.add_mob_memory(/datum/memory/surgery, deuteragonist = patient, surgery_type = name)
+
+	if((patient.mind || surgeon.mind?.get_skill_level(/datum/skill/surgery) <= SKILL_LEVEL_NOVICE) && !HAS_TRAIT(surgeon, TRAIT_IGNORE_SURGERY_MODIFIERS))
+		surgeon.mind?.adjust_experience(/datum/skill/surgery, time * 0.5) // 1 xp per 2 second of surgery - 50 xp for brain surgery
 
 	SEND_SIGNAL(surgeon, COMSIG_LIVING_SURGERY_SUCCESS, src, operating_on, tool)
 	play_operation_sound(operating_on, surgeon, tool, success_sound)

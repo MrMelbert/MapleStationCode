@@ -163,10 +163,10 @@
 		skill_experience_adjustment(attacker, (damage/lower_force))
 
 	//Determine our attackers athletics level as a knockout probability bonus
-	var/attacker_athletics_skill =  (attacker.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
+	var/attacker_athletics_skill =  (attacker.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
 
 	// Defender boxing skill and armor block are used as a defense here. This has already factored in base_unarmed_effectiveness from the attacker
-	var/defender_athletics_skill =  clamp(defender.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
+	var/defender_athletics_skill =  clamp(defender.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
 
 	//Determine our final probability, using a clamp to stop any prob() weirdness.
 	var/final_knockout_probability = clamp(round(attacker_athletics_skill - defender_athletics_skill), 0 , 100)
@@ -244,7 +244,7 @@
 	var/base_unarmed_effectiveness = active_arm.unarmed_effectiveness
 
 	// Out athletics skill is added to our block potential
-	var/athletics_skill_rands =  boxer.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
+	var/athletics_skill_rands =  boxer.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
 
 	var/block_chance = base_unarmed_effectiveness + athletics_skill_rands
 
