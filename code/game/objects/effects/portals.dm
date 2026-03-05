@@ -168,7 +168,6 @@
 				var/turf/next_segment = get_ranged_target_turf_direct(last_segment, real_target, segment_distance)
 				if(!istype(next_segment))
 					break
-				message_admins("[last_segment.x], [last_segment.y], [last_segment.z] to [next_segment.x], [next_segment.y], [next_segment.z]")
 				last_segment.Beam(next_segment, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS)
 				last_segment = get_step_multiz(next_segment, next_segment.z < real_target.z ? UP : DOWN)
 				if(!istype(last_segment))
