@@ -1,7 +1,7 @@
 /datum/market_item/misc
 	category = "Miscellaneous"
 
-/datum/market_item/misc/Clear_PDA
+/datum/market_item/misc/clear_pda
 	name = "Clear PDA"
 	desc = "Show off your style with this limited edition clear PDA!."
 	item = /obj/item/modular_computer/pda/clear
@@ -11,7 +11,7 @@
 	stock_max = 2
 	availability_prob = 50
 
-/datum/market_item/misc/jade_Lantern
+/datum/market_item/misc/jade_lantern
 	name = "Jade Lantern"
 	desc = "Found in a box labeled 'Danger: Radioactive'. Probably safe."
 	item = /obj/item/flashlight/lantern/jade
@@ -49,6 +49,33 @@
 	price_max = CARGO_CRATE_VALUE * 4.5
 	stock_max = 2
 	availability_prob = 30
+
+/datum/market_item/misc/atrocinator
+	name = "MOD Anti-Gravity Module"
+	desc = "We found this module in a maintenance tunnel, behind several warning cones and hazard signs, unlabeled. It's probably safe."
+	item = /obj/item/mod/module/atrocinator
+	price_min = CARGO_CRATE_VALUE * 4
+	price_max = CARGO_CRATE_VALUE * 7
+	stock_max = 1
+	availability_prob = 22
+
+/datum/market_item/misc/tanner
+	name = "MOD Tanning Module"
+	desc = "Ever wanted to be at the beach AND at work? Now you can with this snazzy tanning module!"
+	item = /obj/item/mod/module/tanner
+	price_min = CARGO_CRATE_VALUE * 2
+	price_max = CARGO_CRATE_VALUE * 3
+	stock_max = 2
+	availability_prob = 30
+
+/datum/market_item/misc/hat_stabilizer
+	name = "MOD Hat Stabilizer Module"
+	desc = "Don't sacrifice style for substance with this module! Hats not included."
+	item = /obj/item/mod/module/hat_stabilizer
+	price_min = CARGO_CRATE_VALUE * 2
+	price_max = CARGO_CRATE_VALUE * 3
+	stock_max = 2
+	availability_prob = 35
 
 /datum/market_item/misc/shove_blocker
 	name = "MOD Bulwark Module"

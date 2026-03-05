@@ -9,25 +9,35 @@
 	target.rad_glow()
 	RegisterSignal(target, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
-	if(isinternalorgan(target))
-		var/obj/item/organ/internal/organ = target
-		organ.organ_flags |= ORGAN_IRRADIATED
-		RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
-		RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(rad_organ_removed))
-		if(organ.owner)
-			rad_organ_implanted(organ, organ.owner)
+	if (!isorgan(target))
+		return
+	var/obj/item/organ/organ = target
+
+	if (organ.organ_flags & ORGAN_EXTERNAL)
+		return
+
+	organ.organ_flags |= ORGAN_IRRADIATED
+	RegisterSignal(organ, COMSIG_ORGAN_IMPLANTED, PROC_REF(rad_organ_implanted))
+	RegisterSignal(organ, COMSIG_ORGAN_REMOVED, PROC_REF(rad_organ_removed))
+	if(organ.owner)
+		rad_organ_implanted(organ, organ.owner)
 
 /datum/element/simple_rad/Detach(datum/source, ...)
 	REMOVE_TRAIT(source, TRAIT_IRRADIATED, type)
 	source.remove_filter("rad_glow")
 	UnregisterSignal(source, COMSIG_COMPONENT_CLEAN_ACT)
 
-	if(isinternalorgan(source))
-		var/obj/item/organ/internal/organ = source
-		organ.organ_flags &= ~ORGAN_IRRADIATED
-		UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
-		if(organ.owner)
-			rad_organ_removed(organ, organ.owner)
+	if (!isorgan(source))
+		return ..()
+
+	var/obj/item/organ/organ = source
+	if((organ.organ_flags & ORGAN_EXTERNAL))
+		return ..()
+
+	organ.organ_flags &= ~ORGAN_IRRADIATED
+	UnregisterSignal(organ, list(COMSIG_ORGAN_IMPLANTED, COMSIG_ORGAN_REMOVED))
+	if(organ.owner)
+		rad_organ_removed(organ, organ.owner)
 
 	return ..()
 
@@ -37,12 +47,12 @@
 	if(clean_types & CLEAN_TYPE_RADIATION)
 		Detach(source)
 
-/datum/element/simple_rad/proc/rad_organ_implanted(obj/item/organ/internal/source, mob/living/carbon/new_owner)
+/datum/element/simple_rad/proc/rad_organ_implanted(obj/item/organ/source, mob/living/carbon/new_owner)
 	SIGNAL_HANDLER
 
 	new_owner.apply_status_effect(/datum/status_effect/grouped/has_irradiated_organs, REF(source))
 
-/datum/element/simple_rad/proc/rad_organ_removed(obj/item/organ/internal/source, mob/living/carbon/old_owner)
+/datum/element/simple_rad/proc/rad_organ_removed(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
 	old_owner.remove_status_effect(/datum/status_effect/grouped/has_irradiated_organs, REF(source))
@@ -57,7 +67,9 @@
 /datum/status_effect/grouped/has_irradiated_organs/on_remove()
 	. = ..()
 	var/mob/living/carbon/carbon_owner = owner
-	for(var/obj/item/organ/internal/organ in carbon_owner.organs)
+	for(var/obj/item/organ/organ as anything in carbon_owner.organs)
+		if (organ.organ_flags & ORGAN_EXTERNAL)
+			continue
 		organ.RemoveElement(/datum/element/simple_rad)
 
 /datum/status_effect/grouped/has_irradiated_organs/tick(seconds_between_ticks)

@@ -12,4 +12,7 @@
 /datum/loadout_item/head/goldfulu
 	name = "Golden Fulu"
 	item_path = /obj/item/clothing/head/costume/goldfulu
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/goldfulu/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

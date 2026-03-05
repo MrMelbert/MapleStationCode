@@ -151,9 +151,10 @@
 
 	if(C.prefs?.read_preference(/datum/preference/toggle/screen_shake_darken))
 		var/type = /atom/movable/screen/fullscreen/flash/black
+		var/shake_dur = max(duration, 2 SECONDS)
 
 		M.overlay_fullscreen("flash", type)
-		addtimer(CALLBACK(M, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 3 SECONDS), 3 SECONDS)
+		addtimer(CALLBACK(M, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 1 SECONDS), shake_dur)
 
 	//How much time to allot for each pixel moved
 	var/time_scalar = (1 / world.icon_size) * TILES_PER_SECOND
@@ -183,6 +184,31 @@
 
 #undef TILES_PER_SECOND
 
+/// Helper proc for a similar function to shake_camera, expect this one kicks the camera back at an opposite angle rather then skake_camera's irratic jittering.
+/proc/recoil_camera(mob/recoiled_mob, duration, backtime_duration, strength, angle)
+	if(!recoiled_mob || !recoiled_mob.client || duration < 1)
+		return
+	var/client/my_client = recoiled_mob.client
+	strength *= world.icon_size
+	var/client/client_to_shake = recoiled_mob.client
+	var/oldx = client_to_shake.pixel_x
+	var/oldy = client_to_shake.pixel_y
+
+	//get pixels to move the camera in an angle
+	var/mpx = sin(angle) * strength
+	var/mpy = cos(angle) * strength
+
+
+	if(my_client.prefs?.read_preference(/datum/preference/toggle/screen_shake_darken))
+		var/type = /atom/movable/screen/fullscreen/flash/black
+		var/shake_dur = max(duration, 2 SECONDS)
+		recoiled_mob.overlay_fullscreen("flash", type)
+		addtimer(CALLBACK(recoiled_mob, TYPE_PROC_REF(/mob, clear_fullscreen), "flash", 1 SECONDS), shake_dur)
+
+
+	animate(client_to_shake, pixel_x = oldx+mpx, pixel_y = oldy+mpy, time = duration, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = oldx, pixel_y = oldy, time = backtime_duration, easing = BACK_EASING)
+
 ///Find if the message has the real name of any user mob in the mob_list
 /proc/findname(msg)
 	if(!istext(msg))
@@ -199,39 +225,22 @@
 		return " \[[real_name]\]"
 	return ""
 
-// moved out of admins.dm because things other than admin procs were calling this.
 /**
- * Returns TRUE if the game has started and we're either an AI with a 0th law, or we're someone with a special role/antag datum
- * If allow_fake_antags is set to FALSE, Valentines, ERTs, and any such roles with FLAG_FAKE_ANTAG won't pass.
-*/
-/proc/is_special_character(mob/M, allow_fake_antags = FALSE)
-	if(!SSticker.HasRoundStarted())
-		return FALSE
-	if(!istype(M))
-		return FALSE
-	if(iscyborg(M)) //as a borg you're now beholden to your laws rather than greentext
-		return FALSE
-
-
-	// Returns TRUE if AI has a zeroth law *and* either has a special role *or* an antag datum.
-	if(isAI(M))
-		var/mob/living/silicon/ai/A = M
-		return (A.laws?.zeroth && (A.mind?.special_role || !isnull(M.mind?.antag_datums)))
-
-	if(M.mind?.special_role)
-		return TRUE
-
-	// Turns 'faker' to TRUE if the antag datum is fake. If it's not fake, returns TRUE directly.
-	var/faker = FALSE
-	for(var/datum/antagonist/antag_datum as anything in M.mind?.antag_datums)
-		if((antag_datum.antag_flags & FLAG_FAKE_ANTAG))
-			faker = TRUE
-		else
+ * Checks if this mob is an antag
+ * By default excludes antags like Valentines, which are "fake antags"
+ */
+/mob/proc/is_antag(blacklisted_antag_flags = ANTAG_FAKE)
+	for(var/datum/antagonist/antag_datum as anything in mind?.antag_datums)
+		if(!blacklisted_antag_flags || !(antag_datum.antag_flags & blacklisted_antag_flags))
 			return TRUE
 
-	// If 'faker' was assigned TRUE in the above loop and the argument 'allow_fake_antags' is set to TRUE, this passes.
-	// Else, return FALSE.
-	return (faker && allow_fake_antags)
+	return FALSE
+
+/mob/living/silicon/robot/is_antag(blacklisted_antag_flags)
+	return FALSE
+
+/mob/living/silicon/ai/is_antag(blacklisted_antag_flags)
+	return ..() && !!(laws?.zeroth) // AIs only count as antags if they have a zeroth law (apparently)
 
 /**
  * Fancy notifications for ghosts
@@ -304,19 +313,6 @@
 		toast.name = header
 		toast.target_ref = WEAKREF(source)
 
-/// Heals a robotic limb on a mob
-/proc/item_heal_robotic(mob/living/carbon/human/human, mob/user, brute_heal, burn_heal)
-	var/obj/item/bodypart/affecting = human.get_bodypart(check_zone(user.zone_selected))
-	if(!affecting || IS_ORGANIC_LIMB(affecting))
-		to_chat(user, span_warning("[affecting] is already in good condition!"))
-		return FALSE
-	var/brute_damage = brute_heal > burn_heal //changes repair text based on how much brute/burn was supplied
-	if((brute_heal > 0 && affecting.brute_dam > 0) || (burn_heal > 0 && affecting.burn_dam > 0))
-		if(affecting.heal_damage(brute_heal, burn_heal, required_bodytype = BODYTYPE_ROBOTIC))
-			human.update_damage_overlays()
-		user.visible_message(span_notice("[user] fixes some of the [brute_damage ? "dents on" : "burnt wires in"] [human]'s [affecting.name]."), \
-			span_notice("You fix some of the [brute_damage ? "dents on" : "burnt wires in"] [human == user ? "your" : "[human]'s"] [affecting.name]."))
-		return TRUE //successful heal
 
 
 ///Is the passed in mob a ghost with admin powers, doesn't check for AI interact like isAdminGhost() used to
@@ -349,23 +345,18 @@
 	if(usr)
 		log_admin("[key_name(usr)] has offered control of ([key_name(M)]) to ghosts.")
 		message_admins("[key_name_admin(usr)] has offered control of ([ADMIN_LOOKUPFLW(M)]) to ghosts")
-	var/poll_message = "Do you want to play as [M.real_name]?"
-	if(M.mind)
-		poll_message = "[poll_message] Job: [M.mind.assigned_role.title]."
-		if(M.mind.special_role)
-			poll_message = "[poll_message] Status: [M.mind.special_role]."
-		else
-			var/datum/antagonist/A = M.mind.has_antag_datum(/datum/antagonist/)
-			if(A)
-				poll_message = "[poll_message] Status: [A.name]."
-	var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob(poll_message, check_jobban = ROLE_PAI, poll_time = 10 SECONDS, target_mob = M, pic_source = M, role_name_text = "ghost control")
+	var/whomst = span_danger(M.real_name)
+	if(M.mind && !is_unassigned_job(M.mind?.assigned_role))
+		whomst += "Job: [span_notice(M.mind.assigned_role.title)]."
+	if(length(M.mind?.get_special_roles()))
+		whomst += "Status: [span_boldnotice(english_list(M.mind?.get_special_roles()))]."
+	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [whomst]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, checked_target = M, alert_pic = M, role_name_text = "ghost control")
 
-	if(LAZYLEN(candidates))
-		var/mob/dead/observer/C = pick(candidates)
+	if(chosen_one)
 		to_chat(M, "Your mob has been taken over by a ghost!")
-		message_admins("[key_name_admin(C)] has taken control of ([ADMIN_LOOKUPFLW(M)])")
+		message_admins("[key_name_admin(chosen_one)] has taken control of ([ADMIN_LOOKUPFLW(M)])")
 		M.ghostize(FALSE)
-		M.key = C.key
+		M.key = chosen_one.key
 		M.client?.init_verbs()
 		return TRUE
 	else
@@ -396,13 +387,17 @@
 /mob/proc/get_policy_keywords()
 	. = list()
 	. += "[type]"
-	if(mind)
-		if(mind.assigned_role.policy_index)
-			. += mind.assigned_role.policy_index
-		. += mind.assigned_role.title //A bit redunant, but both title and policy index are used
-		. += mind.special_role //In case there's something special leftover, try to avoid
-		for(var/datum/antagonist/antag_datum as anything in mind.antag_datums)
-			. += "[antag_datum.type]"
+	if(isnull(mind))
+		return
+	if(mind.assigned_role.policy_index)
+		. += mind.assigned_role.policy_index
+	. += mind.assigned_role.title //A bit redunant, but both title and policy index are used
+	for(var/datum/antagonist/antag_datum as anything in mind.antag_datums)
+		. += "[antag_datum.type]"
+		if(antag_datum.pref_flag)
+			. += antag_datum.pref_flag
+		if(antag_datum.jobban_flag)
+			. += antag_datum.jobban_flag
 
 ///Can the mob see reagents inside of containers?
 /mob/proc/can_see_reagents()

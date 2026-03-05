@@ -2,7 +2,7 @@
 // SUIT STORAGE UNIT /////////////////
 /obj/machinery/suit_storage_unit
 	name = "suit storage unit"
-	desc = "An industrial unit made to hold and decontaminate irradiated equipment. It comes with a built-in UV cauterization mechanism. A small warning label advises that organic matter should not be placed into the unit."
+	desc = "An industrial unit made to hold, charge, and decontaminate equipment. It comes with a built-in UV cauterization mechanism. A small warning label advises that organic matter should not be placed into the unit."
 	icon = 'icons/obj/machines/suit_storage.dmi'
 	icon_state = "classic"
 	base_icon_state = "classic"
@@ -401,7 +401,7 @@
 			if (occupant && safeties)
 				say("Alert: safeties triggered, occupant detected!")
 				return
-			else if (!helmet && !mask && !suit && !storage && !occupant)
+			else if (!helmet && !mask && !suit && !mod && !storage && !occupant)
 				to_chat(user, "There's nothing inside [src] to disinfect!")
 				return
 			else
@@ -565,14 +565,6 @@
 	var/charge_per_item = (final_charge_rate * seconds_per_tick) / cell_count
 	for(var/obj/item/stock_parts/power_store/cell as anything in cells_to_charge)
 		charge_cell(charge_per_item, cell, grid_only = TRUE)
-
-/obj/machinery/suit_storage_unit/proc/shock(mob/user, prb)
-	if(!prob(prb))
-		var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-		s.set_up(5, 1, src)
-		s.start()
-		if(electrocute_mob(user, src, src, 1, TRUE))
-			return 1
 
 /obj/machinery/suit_storage_unit/relaymove(mob/living/user, direction)
 	if(locked)
@@ -750,9 +742,9 @@
 			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			mask = weapon
-		else if(istype(weapon, /obj/item/mod/control))
+		else if(istype(weapon, /obj/item/storage/backpack) || istype(weapon, /obj/item/mod/control))
 			if(mod)
-				to_chat(user, span_warning("The unit already contains a MOD!"))
+				to_chat(user, span_warning("The unit already contains a backpack or MOD!"))
 				return
 			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return

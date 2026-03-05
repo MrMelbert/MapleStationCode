@@ -4,7 +4,7 @@
 	/// Icon file for the sechud.
 	var/sechud_icon = 'icons/mob/huds/hud.dmi'
 
-/mob/living/carbon/human/sec_hud_set_ID()
+/mob/living/carbon/human/update_ID_card()
 	. = ..()
 	var/image/holder = hud_list[ID_HUD]
 	var/obj/item/card/id/id = wear_id?.GetID()

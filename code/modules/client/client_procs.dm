@@ -34,7 +34,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		return
 
 #ifndef TESTING
-	if (lowertext(hsrc_command) == "_debug") //disable the integrated byond vv in the client side debugging tools since it doesn't respect vv read protections
+	if (LOWER_TEXT(hsrc_command) == "_debug") //disable the integrated byond vv in the client side debugging tools since it doesn't respect vv read protections
 		return
 #endif
 
@@ -538,7 +538,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, span_warning("Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
 
-	update_ambience_pref(prefs.read_preference(/datum/preference/toggle/sound_ambience))
+	update_ambience_pref(prefs.read_preference(/datum/preference/numeric/volume/sound_ambience_volume))
 
 	//This is down here because of the browse() calls in tooltip/New()
 	if(!tooltips)
@@ -548,7 +548,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		initialize_menus()
 
 	loot_panel = new(src)
-	
+
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
 	view_size.setZoomMode()

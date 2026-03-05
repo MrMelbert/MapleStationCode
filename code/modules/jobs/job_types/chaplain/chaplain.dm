@@ -13,6 +13,8 @@
 	base_outfit = /datum/outfit/job/chaplain
 	plasmaman_outfit = /datum/outfit/plasmaman/chaplain
 
+	mind_traits = list(TRAIT_SPIRITUAL, TRAIT_DESENSITIZED)
+
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SRV
 
@@ -21,7 +23,9 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/toy/windup_toolbox, /obj/item/reagent_containers/cup/glass/bottle/holywater)
+	family_heirlooms = list(
+		/obj/item/book/bible, // Chaplain's heirloom is the nullrod typically, so this is a fallback
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/glass/bottle/holywater = 30,
@@ -36,6 +40,13 @@
 
 	job_tone = "holy"
 
+	// future todo : grant these skills when selecting a sect, not by default.
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // chaplain gun
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_APPRENTICE, // robot sect
+		/datum/skill/botany = SKILL_LEVEL_APPRENTICE,
+	)
 	title_options = list(
 		"Magister",
 	)
@@ -72,7 +83,7 @@
 	var/new_bible = player_client?.prefs?.read_preference(/datum/preference/name/bible) || DEFAULT_BIBLE
 
 	holy_bible.deity_name = new_deity
-	switch(lowertext(new_religion))
+	switch(LOWER_TEXT(new_religion))
 		if("homosexuality", "gay", "penis", "ass", "cock", "cocks")
 			new_bible = pick("Guys Gone Wild","Coming Out of The Closet","War of Cocks")
 			switch(new_bible)
@@ -129,4 +140,4 @@
 	satchel = /obj/item/storage/backpack/cultpack
 
 	chameleon_extras = /obj/item/stamp/chap
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)

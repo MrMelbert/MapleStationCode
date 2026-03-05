@@ -61,9 +61,8 @@
 #define DNA_AVIAN_EARS_BLOCK 18 // NON-MODULE CHANGE
 #define DNA_AVIAN_TAIL_BLOCK 19 // NON-MODULE CHANGE
 #define DNA_FEATHER_COLOR_BLOCK 20 // NON-MODULE CHANGE
-#define DNA_SYNTH_HEAD_COVER_BLOCK 21 // NON-MODULE CHANGE
 
-#define DNA_FEATURE_BLOCKS 21 // NON-MODULE CHANGE
+#define DNA_FEATURE_BLOCKS 20 // NON-MODULE CHANGE
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -73,8 +72,12 @@
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
 #define ORGAN_SLOT_APPENDIX "appendix"
 #define ORGAN_SLOT_BRAIN "brain"
-#define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
-#define ORGAN_SLOT_BRAIN_ANTISTUN "brain_antistun"
+/// Brain implants that affect the mob's motor control (grabbing, moving, attacking)
+#define ORGAN_SLOT_BRAIN_CEREBELLUM "brain_motorcontrol"
+/// Brain implants that affect the mob's sensory systems (pain, vision, hearing, etc)
+#define ORGAN_SLOT_BRAIN_CNS "brain_cns"
+/// Brain implants that affect the mob's memory and cognition (skills, knowledge, etc)
+#define ORGAN_SLOT_BRAIN_HIPPOCAMPUS "brain_memory"
 #define ORGAN_SLOT_BREATHING_TUBE "breathing_tube"
 #define ORGAN_SLOT_EARS "ears"
 #define ORGAN_SLOT_EYES "eye_sight"
@@ -87,6 +90,7 @@
 #define ORGAN_SLOT_MONSTER_CORE "monstercore"
 #define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
 #define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together
+#define ORGAN_SLOT_SPINE "spine"
 #define ORGAN_SLOT_STOMACH "stomach"
 #define ORGAN_SLOT_STOMACH_AID "stomach_aid"
 #define ORGAN_SLOT_THRUSTERS "thrusters"
@@ -103,7 +107,6 @@
 #define ORGAN_SLOT_EXTERNAL_HORNS "horns"
 #define ORGAN_SLOT_EXTERNAL_WINGS "wings"
 #define ORGAN_SLOT_EXTERNAL_ANTENNAE "antennae"
-#define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES "head_tentacles" // NON-MODULE CHANGE
 #define ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER "synth_head_cover" //NON-MODULE CHANGE
@@ -157,8 +160,9 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_VOICE,
 	ORGAN_SLOT_ADAMANTINE_RESONATOR,
 	ORGAN_SLOT_HEART_AID,
-	ORGAN_SLOT_BRAIN_ANTIDROP,
-	ORGAN_SLOT_BRAIN_ANTISTUN,
+	ORGAN_SLOT_BRAIN_CEREBELLUM,
+	ORGAN_SLOT_BRAIN_CNS,
+	ORGAN_SLOT_BRAIN_HIPPOCAMPUS,
 	ORGAN_SLOT_PARASITE_EGG,
 	ORGAN_SLOT_MONSTER_CORE,
 	ORGAN_SLOT_XENO_PLASMAVESSEL,

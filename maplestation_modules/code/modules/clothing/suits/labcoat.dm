@@ -6,6 +6,15 @@
 	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 
+/obj/item/clothing/suit/toggle/labcoat/ce
+	name = "chief engineer's labcoat"
+	article = "the"
+	desc = "Has black and gold panels unlike the standard labcoat model."
+	icon_state = "labcoat_ce"
+	icon = 'maplestation_modules/icons/mob/clothing/suit.dmi' //I could make a sprite for this but i'm lazy, so have same as ingame sprite.
+	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
+	resistance_flags = FIRE_PROOF //all CE items should be fireproof
+
 /obj/item/clothing/suit/toggle/labcoat/toxic
 	name = "ordnance technician labcoat"
 	desc = "A suit that protects against plasma exposure. Has a turquoise stripe on the shoulder."

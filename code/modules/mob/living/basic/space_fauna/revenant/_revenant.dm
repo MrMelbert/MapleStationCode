@@ -125,8 +125,7 @@
 		return TRUE
 
 	generated_objectives_and_spells = TRUE
-	mind.set_assigned_role(SSjob.GetJobType(/datum/job/revenant))
-	mind.special_role = ROLE_REVENANT
+	mind.set_assigned_role(SSjob.get_job_type(/datum/job/revenant))
 	SEND_SOUND(src, sound('sound/effects/ghost.ogg'))
 	mind.add_antag_datum(/datum/antagonist/revenant)
 	return TRUE
@@ -172,7 +171,19 @@
 		essencecolor = "#1D2953" //oh jeez you're dying
 	hud_used.healths.maptext = MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='[essencecolor]'>[essence]E</font></div>")
 
-/mob/living/basic/revenant/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, message_range = 7, datum/saymode/saymode = null)
+/mob/living/basic/revenant/say(
+	message,
+	bubble_type,
+	list/spans = list(),
+	sanitize = TRUE,
+	datum/language/language,
+	ignore_spam = FALSE,
+	forced,
+	filterproof = FALSE,
+	message_range = 7,
+	datum/saymode/saymode,
+	list/message_mods = list(),
+)
 	if(!message)
 		return
 

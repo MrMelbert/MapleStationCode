@@ -83,15 +83,6 @@
 	soft_type = "grey"
 	dog_fashion = null
 
-/* A grey baseball cap that grants TRAIT_JOLLY when it's on your head.
- * Used for testing that gaining and losing the JOLLY trait behaves properly.
- * Also a perfectly valid weird admin reward.
- */
-/obj/item/clothing/head/soft/grey/jolly
-	name = "jolly grey cap"
-	desc = "It's a baseball hat in a sublime grey colour. Why, wearing this alone would boost a person's spirits!"
-	clothing_traits = list(TRAIT_JOLLY)
-
 /obj/item/clothing/head/soft/orange
 	name = "orange cap"
 	desc = "It's a baseball hat in a tasteless orange colour."
@@ -137,6 +128,15 @@
 	strip_delay = 60
 	dog_fashion = null
 
+/obj/item/clothing/head/soft/veteran
+	name = "veteran cap"
+	desc = "It's a robust baseball hat in tasteful black colour with a golden connotation to \"REMEMBER\"."
+	icon_state = "veteransoft"
+	soft_type = "veteran"
+	armor_type = /datum/armor/cosmetic_sec
+	strip_delay = 60
+	dog_fashion = null
+
 /obj/item/clothing/head/soft/paramedic
 	name = "paramedic cap"
 	desc = "It's a baseball hat with a dark turquoise color and a reflective cross on the top."
@@ -160,10 +160,12 @@
 	clothing_flags = SNUG_FIT
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE
 	dog_fashion = null
+	clothing_traits = list(TRAIT_SCARY_FISHERMAN) //Fish, carps, lobstrosities and frogs fear me.
 
 /obj/item/clothing/head/soft/fishing_hat/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/skill_reward, /datum/skill/fishing)
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4)
 
 #define PROPHAT_MOOD "prophat"
 

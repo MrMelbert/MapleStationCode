@@ -55,6 +55,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	create_reagents(50, OPENCONTAINER)
 	reagents.add_reagent(/datum/reagent/consumable/nutriment/fat/oil, 25)
 	fry_loop = new(src, FALSE)
+	AddComponent(/datum/component/fishing_spot, GLOB.preset_fish_sources[/datum/fish_source/deepfryer])
+	AddElement(/datum/element/fish_safe_storage) //Prevents fryish and fritterish from dying inside the deepfryer.
 
 /obj/machinery/deepfryer/Destroy()
 	QDEL_NULL(fry_loop)
@@ -139,14 +141,14 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		return
 
 	reagents.trans_to(frying, oil_use * seconds_per_tick, multiplier = fry_speed * 3) //Fried foods gain more of the reagent thanks to space magic
-	cook_time += fry_speed * seconds_per_tick
+	cook_time += fry_speed * seconds_per_tick SECONDS
 	if(cook_time >= DEEPFRYER_COOKTIME && !frying_fried)
 		frying_fried = TRUE //frying... frying... fried
 		playsound(src.loc, 'sound/machines/ding.ogg', 50, TRUE)
 		audible_message(span_notice("[src] dings!"))
 	else if (cook_time >= DEEPFRYER_BURNTIME && !frying_burnt)
 		frying_burnt = TRUE
-		visible_message(span_warning("[src] emits an acrid smell!"))
+		new /obj/effect/abstract/smell/oven/bad/fryer(loc)
 
 	use_energy(active_power_usage)
 
@@ -180,8 +182,8 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	// Give them reagents to put frying oil in
 	if(isnull(frying.reagents))
 		frying.create_reagents(50, INJECTABLE)
-	if(user.mind)
-		ADD_TRAIT(frying, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	// NON-MODULE CHANGE
+	handle_chef_made_food(frying, frying, user.mind, 0.25)
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
 	flick("fryer_start", src) // NON-MODULE CHANGE
@@ -211,7 +213,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		var/mob/living/carbon/dunking_target = user.pulling
 		log_combat(user, dunking_target, "dunked", null, "into [src]")
 		user.visible_message(span_danger("[user] dunks [dunking_target]'s face in [src]!"))
-		reagents.expose(dunking_target, TOUCH)
+		reagents.expose(dunking_target, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 		var/bio_multiplier = dunking_target.getarmor(BODY_ZONE_HEAD, BIO) * 0.01
 		var/target_temp = dunking_target.body_temperature
 		var/cold_multiplier = 1

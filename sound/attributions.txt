@@ -193,5 +193,9 @@ scifi_scare_a.aiff by realtheremin under CC0 -- https://freesound.org/people/Fun
 paper_flip.ogg is made by gynation from Freesound.org, CC0
 https://freesound.org/people/gynation/sounds/82378/
 
+nightmare_poof.ogg and nightmare_reappear.ogg are comprised of breath_01.wav by Nightflame (CC0) and slide-click.wav by Qat (CC0)
+https://freesound.org/people/Qat/sounds/108332/
+https://freesound.org/people/Nightflame/sounds/368615/
+
 cryo_1.ogg, cryo_2.ogg, cryo_3.ogg, cryo_4.ogg, cryo_5.ogg, cryo_6.ogg, cryo_7.ogg, cryo_8.ogg, cryo_9.ogg, cryo_10.ogg:
 converted to OGG / split apart (but is otherwise unchanged) -- original from https://freesound.org/people/DudeAwesome/sounds/386023/ by DudeAwesome -- License: CC BY 4.0

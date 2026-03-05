@@ -5,6 +5,7 @@
 	icon_state = "riotgun"
 	inhand_icon_state = "riotgun"
 	w_class = WEIGHT_CLASS_BULKY
+	can_muzzle_flash = FALSE
 	throw_speed = 2
 	throw_range = 7
 	force = 5
@@ -57,3 +58,4 @@
 	F.icon_state = initial(F.icon_state) + "_active"
 	playsound(user.loc, 'sound/weapons/armbomb.ogg', 75, TRUE, -3)
 	addtimer(CALLBACK(F, TYPE_PROC_REF(/obj/item/grenade, detonate)), 1.5 SECONDS)
+	return TRUE

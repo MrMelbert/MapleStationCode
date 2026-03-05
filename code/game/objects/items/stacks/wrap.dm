@@ -24,14 +24,14 @@
 		//Generate random valid colors for paper and ribbon
 		var/generated_base_color = "#" + random_color()
 		var/generated_ribbon_color = "#" + random_color()
-		var/temp_base_hsv = RGBtoHSV(generated_base_color)
-		var/temp_ribbon_hsv = RGBtoHSV(generated_ribbon_color)
+		var/list/base_hsv = rgb2hsv(generated_base_color)
+		var/list/ribbon_hsv = rgb2hsv(generated_ribbon_color)
 
 		//If colors are too dark, set to original colors
-		if(ReadHSV(temp_base_hsv)[3] < ReadHSV("7F7F7F")[3])
-			generated_base_color = "#00FF00"
-		if(ReadHSV(temp_ribbon_hsv)[3] < ReadHSV("7F7F7F")[3])
-			generated_ribbon_color = "#FF0000"
+		if(base_hsv[3] < 50)
+			generated_base_color = COLOR_VIBRANT_LIME
+		if(ribbon_hsv[3] < 50)
+			generated_ribbon_color = COLOR_RED
 
 		//Set layers to these colors, base then ribbon
 		set_greyscale(colors = list(generated_base_color, generated_ribbon_color))
@@ -47,6 +47,9 @@
 
 //preset wrapping paper meant to fill the original color configuration
 /obj/item/stack/wrapping_paper/xmas
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/stack/wrapping_paper/xmas"
+	post_init_icon_state = "wrap_paper"
 	greyscale_colors = "#00FF00#FF0000"
 
 /obj/item/stack/wrapping_paper/use(used, transfer, check = TRUE)

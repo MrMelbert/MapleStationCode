@@ -17,6 +17,7 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	apply_verb = "treating"
 	/// Sound played when heal doafter begins
 	var/heal_sound
 	/// How long it takes to apply it to yourself
@@ -35,8 +36,6 @@
 	var/sanitization
 	/// How much we add to flesh_healing for burn wounds on application
 	var/flesh_regeneration
-	/// Verb used when applying this object to someone
-	var/apply_verb = "treating"
 	/// Whether this item can be used on dead bodies
 	var/works_on_dead = FALSE
 	/// Optional flags to supply to can_inject
@@ -130,9 +129,10 @@
 				span_notice("You begin applying [src] on yourself..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			self_delay * (auto_change_zone ? 1 : 0.9),
+			self_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -149,9 +149,10 @@
 				span_notice("You begin applying [src] on [patient]..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
-			other_delay * (auto_change_zone ? 1 : 0.9),
+			other_delay * (auto_change_zone ? 1 : 0.9) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER)),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user, healed_zone),
 		))
@@ -178,6 +179,8 @@
 	else
 		CRASH("Stack medical item healing a non-carbon, non-animal mob [patient] ([patient.type])")
 
+	// NON-MODULE CHANGE
+	user.mind?.adjust_experience(/datum/skill/first_aid, user == patient ? 5 : 8)
 	log_combat(user, patient, "healed", src)
 	if(!use(1) || !repeating || amount <= 0)
 		var/atom/alert_loc = QDELETED(src) ? user : src
@@ -267,7 +270,7 @@
 
 		var/datum/wound/flesh/any_burn_wound = locate() in affecting.wounds
 		var/can_heal_burn_wounds = (flesh_regeneration || sanitization) && any_burn_wound?.can_be_ointmented_or_meshed()
-		var/can_suture_bleeding = stop_bleeding && affecting.get_modified_bleed_rate() > 0
+		var/can_suture_bleeding = stop_bleeding && affecting.cached_bleed_rate > 0
 		var/brute_to_heal = heal_brute && affecting.brute_dam > 0
 		var/burn_to_heal = heal_burn && affecting.burn_dam > 0
 
@@ -321,7 +324,7 @@
 				break // one at a time
 		affecting.adjustBleedStacks(-1 * stop_bleeding)
 	if(flesh_regeneration || sanitization)
-		for(var/datum/wound/flesh/burn/wound as anything in affecting.wounds)
+		for(var/datum/wound/flesh/wound in affecting.wounds)
 			if(wound.can_be_ointmented_or_meshed())
 				wound.flesh_healing += flesh_regeneration
 				wound.sanitization += sanitization
@@ -344,22 +347,25 @@
 	return
 
 /obj/item/stack/medical/bruise_pack
-	name = "bruise pack"
+	name = "bruise packs"
 	singular_name = "bruise pack"
 	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma."
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 25
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
-	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
+	grind_results = list(/datum/reagent/medicine/c2/libital = 3)
 	merge_type = /obj/item/stack/medical/bruise_pack
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return BRUTELOSS
+
+/obj/item/stack/medical/bruise_pack/ekit
+	amount = 2
 
 /obj/item/stack/medical/gauze
 	name = "medical gauze"
@@ -375,6 +381,8 @@
 	custom_price = PAYCHECK_CREW * 2
 	absorption_rate = 0.125
 	absorption_capacity = 5
+	sanitization = 3
+	flesh_regeneration = 5
 	splint_factor = 0.7
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/gauze
@@ -401,6 +409,19 @@
 	else
 		name = initial(name)
 
+/obj/item/stack/medical/gauze/update_icon(updates)
+	. = ..()
+	var/base_cap = initial(absorption_capacity)
+	if(!base_cap)
+		return
+
+	if(absorption_capacity <= base_cap * 0.2)
+		add_atom_colour(COLOR_DARK_BROWN, TEMPORARY_COLOUR_PRIORITY)
+	else if(absorption_capacity <= base_cap * 0.8)
+		add_atom_colour(COLOR_BROWN, TEMPORARY_COLOUR_PRIORITY)
+	else
+		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
+
 /obj/item/stack/medical/gauze/can_merge(obj/item/stack/medical/gauze/check, inhand)
 	. = ..()
 	if(!.)
@@ -421,7 +442,7 @@
 	var/clean_to = initial(absorption_capacity) * (3 / (times_cleaned + 3))
 	if(absorption_capacity < clean_to)
 		absorption_capacity = clean_to
-		update_appearance(UPDATE_NAME)
+		update_appearance()
 		. = TRUE
 
 	return .
@@ -447,7 +468,8 @@
 // gauze is only relevant for wounds, which are handled in the wounds themselves
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, healed_zone, silent, auto_change_zone)
 	var/obj/item/bodypart/limb = patient.get_bodypart(healed_zone)
-	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	// NON-MODULE CHANGE
+	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER))
 	var/any_scanned = FALSE
 	for(var/datum/wound/woundies as anything in limb.wounds)
 		if(HAS_TRAIT(woundies, TRAIT_WOUND_SCANNED))
@@ -488,6 +510,16 @@
 			span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
+
+	if(limb.cached_bleed_rate)
+		add_mob_blood(patient)
+
+	// Dressing burns provides a "one-time" bonus to sanitization and healing
+	// However, any notable infection will reduce the effectiveness of this bonus
+	for(var/datum/wound/flesh/wound in limb.wounds)
+		wound.sanitization += sanitization * (wound.infection > 0.1 ? 0.2 : 1)
+		wound.flesh_healing += flesh_regeneration * (wound.infection > 0.1 ? 0 : 1)
+
 	limb.apply_gauze(src)
 
 /obj/item/stack/medical/gauze/twelve
@@ -540,6 +572,8 @@
 	burn_cleanliness_bonus = 0.7
 	absorption_rate = 0.075
 	absorption_capacity = 4
+	sanitization = 1
+	flesh_regeneration = 3
 	merge_type = /obj/item/stack/medical/gauze/improvised
 
 	/*
@@ -551,9 +585,8 @@
 	 */
 
 /obj/item/stack/medical/suture
-	name = "suture"
+	name = "sutures"
 	desc = "Basic sterile sutures used to seal up cuts and lacerations and stop bleeding."
-	gender = PLURAL
 	singular_name = "suture"
 	icon_state = "suture"
 	self_delay = 3 SECONDS
@@ -567,18 +600,14 @@
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
-/obj/item/stack/medical/suture/emergency
-	name = "emergency suture"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
+/obj/item/stack/medical/suture/ekit
+	amount = 4
 
 /obj/item/stack/medical/suture/medicated
-	name = "medicated suture"
-	icon_state = "suture_purp"
+	name = "medicated sutures"
 	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
+	singular_name = "medicated suture"
+	icon_state = "suture_purp"
 	heal_brute = 15
 	stop_bleeding = 1
 	grind_results = list(/datum/reagent/medicine/polypyr = 1)
@@ -600,13 +629,16 @@
 	heal_burn = 5
 	flesh_regeneration = 5
 	sanitization = 1
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/c2/lenturi = 3)
 	merge_type = /obj/item/stack/medical/ointment
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [user.p_do(TRUE)]n't [user.p_they()] know that stuff is toxic?"))
 	return TOXLOSS
+
+/obj/item/stack/medical/ointment/ekit
+	amount = 4
 
 /obj/item/stack/medical/mesh
 	name = "regenerative mesh"

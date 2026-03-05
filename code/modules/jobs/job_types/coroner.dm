@@ -1,7 +1,7 @@
 /datum/job/coroner
 	title = JOB_CORONER
-	description = "Perform Autopsies whenever needed, \
-		Update medical records accordingly, apply formaldehyde."
+	description = "Perform autopsies, update medical records, \
+		apply buckets of formaldehyde, harvest organs."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -13,7 +13,7 @@
 	base_outfit = /datum/outfit/job/coroner
 	plasmaman_outfit = /datum/outfit/plasmaman/coroner
 
-	mind_traits = list(TRAIT_MORBID)
+	mind_traits = list(TRAIT_MORBID, MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_CORONER_METABOLISM)
 
 	paycheck = PAYCHECK_CREW
@@ -37,11 +37,19 @@
 		/obj/item/scythe = 1,
 	)
 
-	family_heirlooms = list(/obj/item/clothing/head/helmet/skull, /obj/item/table_clock, /obj/item/shovel, /obj/item/storage/fancy/pickles_jar)
+	family_heirlooms = list(
+		/obj/item/clothing/head/helmet/skull,
+	)
 
 	job_flags = STATION_JOB_FLAGS
 
 	rpg_title = "Undertaker"
+
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/coroner
 	name = "Coroner"
@@ -71,4 +79,4 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/coroner
 	messenger = /obj/item/storage/backpack/messenger/coroner
 
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)

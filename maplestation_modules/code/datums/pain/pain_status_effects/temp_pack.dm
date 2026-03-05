@@ -3,7 +3,7 @@
 	id = "temp_pack"
 	status_type = STATUS_EFFECT_MULTIPLE
 	on_remove_on_mob_delete = TRUE
-	tick_interval = 5 SECONDS
+	tick_interval = 3 SECONDS
 	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
 	alert_type = null
 	/// The item we're using to heal pain.
@@ -38,11 +38,7 @@
 	return ..()
 
 /datum/status_effect/temperature_pack/on_apply()
-	if(!ishuman(owner))
-		return FALSE
-
-	var/mob/living/carbon/human/human_owner = owner
-	if(!human_owner.pain_controller || human_owner.stat == DEAD)
+	if(!owner.pain_controller || owner.stat == DEAD)
 		return FALSE
 
 	if(QDELETED(pressed_item))
@@ -52,34 +48,34 @@
 		return FALSE
 
 	for(var/datum/status_effect/temperature_pack/pre_existing_effect in owner.status_effects)
-		if(pre_existing_effect == src)
-			continue
 		if(pre_existing_effect.targeted_zone == targeted_zone)
 			return FALSE
 
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
-	if(!held_bodypart)
+	if(!held_bodypart || !IS_ORGANIC_LIMB(held_bodypart))
 		return FALSE
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
 	pressed_item.AddComponent(/datum/component/make_item_slow)
-	RegisterSignals(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
+	RegisterSignals(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects_comsig))
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, PROC_REF(check_adjacency))
 	return TRUE
 
-/datum/status_effect/temperature_pack/tick()
-	if(QDELETED(holder) || QDELETED(pressed_item) || owner.stat == DEAD || !holder.is_holding(pressed_item))
+/datum/status_effect/temperature_pack/tick(seconds_between_ticks)
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
+	if(QDELETED(holder) || QDELETED(pressed_item) || owner.stat == DEAD || !holder.is_holding(pressed_item) || QDELETED(held_bodypart))
 		stop_effects(silent = TRUE)
 		return
 
-	if(temperature_change)
-		owner.adjust_body_temperature(temperature_change, owner.bodytemp_cold_damage_limit + 5 KELVIN, owner.bodytemp_heat_damage_limit - 5 KELVIN)
-	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
-	if(held_bodypart && prob(66))
-		owner.cause_pain(targeted_zone, -pain_heal_amount)
-		if(prob(10) && held_bodypart.get_modified_pain() > 0)
-			to_chat(owner, span_italics(span_notice("[pressed_item] dulls the pain in your [held_bodypart.name] a little.")))
+	if(temperature_change != 0)
+		owner.adjust_body_temperature(temperature_change * seconds_between_ticks, owner.bodytemp_cold_damage_limit + 5 KELVIN, owner.bodytemp_heat_damage_limit - 5 KELVIN)
+		if(temperature_change < 0)
+			held_bodypart.heal_damage(1 * seconds_between_ticks)
+	if(pain_heal_amount > 0)
+		owner.heal_pain(pain_heal_amount * seconds_between_ticks, targeted_zone)
+	if(SPT_PROB(10, seconds_between_ticks) && held_bodypart.get_modified_pain() > 0)
+		to_chat(owner, span_smallnoticeital("[pressed_item] dulls the pain in your [held_bodypart.name] a little."))
 
 /**
  * Check on move whether [holder] is still adjacent to [owner].
@@ -91,11 +87,16 @@
 		stop_effects(silent = FALSE)
 
 /**
+ * Signal handler to stop effects when [pressed_item] is deleted, dropped, or expired.
+ */
+/datum/status_effect/temperature_pack/proc/stop_effects_comsig(datum/source)
+	SIGNAL_HANDLER
+	stop_effects(silent = FALSE)
+
+/**
  * Stop the effects of this status effect, deleting it, and sending a message if [silent] is TRUE.
  */
 /datum/status_effect/temperature_pack/proc/stop_effects(datum/source, silent = FALSE)
-	SIGNAL_HANDLER
-
 	if(!silent && !QDELETED(holder) && !QDELETED(pressed_item))
 		to_chat(holder, span_notice("You stop pressing [pressed_item] against [owner == holder ? "yourself":"[owner]"]."))
 	qdel(src)

@@ -1017,9 +1017,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 							mobs_found += found
 							if(!ai_found && isAI(found))
 								ai_found = 1
-							var/is_antag = 0
-							if(is_special_character(found))
-								is_antag = 1
+							var/is_antag = found.is_antag()
 							founds += "Name: [found.name]([found.real_name]) Key: [found.key] Ckey: [found.ckey] [is_antag ? "(Antag)" : null] "
 							msg += "[original_word]<font size='1' color='[is_antag ? "red" : "black"]'>(<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo=[REF(found)]'>?</A>|<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservefollow=[REF(found)]'>F</A>)</font> "
 							continue
@@ -1048,10 +1046,10 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 		if(!M.mind)
 			continue
 
-		for(var/string in splittext(lowertext(M.real_name), " "))
+		for(var/string in splittext(LOWER_TEXT(M.real_name), " "))
 			if(!(string in ignored_words))
 				nameWords += string
-		for(var/string in splittext(lowertext(M.name), " "))
+		for(var/string in splittext(LOWER_TEXT(M.name), " "))
 			if(!(string in ignored_words))
 				nameWords += string
 

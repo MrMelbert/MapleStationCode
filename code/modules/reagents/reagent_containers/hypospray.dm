@@ -54,7 +54,7 @@
 			if(!infinite)
 				trans = reagents.trans_to(affected_mob, amount_per_transfer_from_this, transferred_by = user, methods = INJECT)
 			else
-				reagents.expose(affected_mob, INJECT, fraction)
+				reagents.expose(affected_mob, INJECT, fraction, exposed_zone = user.zone_selected) // NON-MODULE CHANGE
 				trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
 			to_chat(user, span_notice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
 			log_combat(user, affected_mob, "injected", src, "([contained])")
@@ -124,7 +124,7 @@
 	ignore_flags = 1 //so you can medipen through spacesuits
 	reagent_flags = DRAWABLE
 	flags_1 = null
-	list_reagents = list(/datum/reagent/medicine/epinephrine = 10, /datum/reagent/toxin/formaldehyde = 3, /datum/reagent/medicine/coagulant = 2)
+	list_reagents = list(/datum/reagent/medicine/epinephrine = 12.5, /datum/reagent/toxin/formaldehyde = 2.5)
 	custom_price = PAYCHECK_CREW
 	custom_premium_price = PAYCHECK_COMMAND
 	var/label_examine = TRUE

@@ -143,7 +143,7 @@
 	var/combat_speed = 0.5
 
 	///50 percent chance to drop a special item...
-	var/tractor_field = /obj/item/organ/internal/cyberimp/chest/tractorfield
+	var/tractor_field = /obj/item/organ/cyberimp/chest/tractorfield
 
 	///the sound the vroomba makes when entering combat mode.
 	var/combat_sound = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_combat_mode.ogg'

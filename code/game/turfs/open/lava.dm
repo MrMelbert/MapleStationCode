@@ -44,7 +44,9 @@
 /turf/open/lava/Initialize(mapload)
 	. = ..()
 	if(fish_source_type)
-		AddElement(/datum/element/lazy_fishing_spot, fish_source_type)
+		add_lazy_fishing(fish_source_type)
+	// You can release chrabs and lavaloops and likes in lava, or be an absolute scumbag and drop other fish there too.
+	ADD_TRAIT(src, TRAIT_CATCH_AND_RELEASE, INNATE_TRAIT)
 	refresh_light()
 	if(!smoothing_flags)
 		update_appearance()
@@ -119,6 +121,8 @@
 	update_appearance(~UPDATE_SMOOTHING)
 
 /turf/open/lava/ex_act(severity, target)
+	if(fish_source)
+		GLOB.preset_fish_sources[fish_source].spawn_reward_from_explosion(src, severity)
 	return FALSE
 
 /turf/open/lava/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
@@ -205,8 +209,8 @@
 			to_chat(user, span_warning("You need one rod to build a heatproof lattice."))
 		return
 	// Light a cigarette in the lava
-	if(istype(C, /obj/item/clothing/mask/cigarette))
-		var/obj/item/clothing/mask/cigarette/ciggie = C
+	if(istype(C, /obj/item/cigarette))
+		var/obj/item/cigarette/ciggie = C
 		if(ciggie.lit)
 			to_chat(user, span_warning("The [ciggie.name] is already lit!"))
 			return TRUE
@@ -249,7 +253,7 @@
 /turf/open/lava/proc/can_burn_stuff(atom/movable/burn_target)
 	if(QDELETED(burn_target))
 		return LAVA_BE_IGNORING
-	if(burn_target.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) //you're flying over it.
+	if(burn_target.movement_type & MOVETYPES_NOT_TOUCHING_GROUND || !burn_target.has_gravity()) //you're flying over it.
 		return LAVA_BE_IGNORING
 
 	if(isobj(burn_target))
@@ -268,7 +272,7 @@
 	var/mob/living/burn_living = burn_target
 	var/atom/movable/burn_buckled = burn_living.buckled
 	if(burn_buckled)
-		if(burn_buckled.movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
+		if(burn_buckled.movement_type & MOVETYPES_NOT_TOUCHING_GROUND || !burn_buckled.has_gravity())
 			return LAVA_BE_PROCESSING
 		if(isobj(burn_buckled))
 			var/obj/burn_buckled_obj = burn_buckled

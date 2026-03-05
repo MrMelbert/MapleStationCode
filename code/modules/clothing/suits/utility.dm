@@ -37,6 +37,10 @@
 	equip_delay_other = 60
 	resistance_flags = FIRE_PROOF
 
+/obj/item/clothing/suit/utility/fire/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+
 /datum/armor/utility_fire
 	melee = 15
 	bullet = 5
@@ -55,6 +59,7 @@
 /obj/item/clothing/suit/utility/fire/firefighter
 	icon_state = "firesuit"
 	inhand_icon_state = "firefighter"
+	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS
 
 /obj/item/clothing/suit/utility/fire/heavy
@@ -93,6 +98,12 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 
+/obj/item/clothing/head/utility/bomb_hood/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/clothing_dirt, "bomb_dirt")
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+
 /datum/armor/utility_bomb_hood
 	melee = 20
 	laser = 20
@@ -118,6 +129,10 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = NONE
+
+/obj/item/clothing/suit/utility/bomb_suit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
 
 /datum/armor/utility_bomb_suit
 	melee = 20
@@ -163,14 +178,17 @@
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
+/obj/item/clothing/head/utility/radiation/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/radiation_protected_clothing)
+	AddComponent(/datum/component/clothing_dirt, "rad_dirt")
+
 /datum/armor/utility_radiation
 	bio = 60
 	fire = 30
 	acid = 30
-
-/obj/item/clothing/head/utility/radiation/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/suit/utility/radiation
 	name = "radiation suit"
@@ -195,3 +213,4 @@
 /obj/item/clothing/suit/utility/radiation/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)

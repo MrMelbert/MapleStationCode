@@ -32,7 +32,6 @@
 //Mecha cooldowns
 #define COOLDOWN_MECHA_MESSAGE "mecha_message"
 #define COOLDOWN_MECHA_EQUIPMENT(type) ("mecha_equip_[type]")
-#define COOLDOWN_MECHA_ARMOR "mecha_armor"
 #define COOLDOWN_MECHA_MELEE_ATTACK "mecha_melee"
 #define COOLDOWN_MECHA_SMOKE "mecha_smoke"
 #define COOLDOWN_MECHA_SKYFALL "mecha_skyfall"
@@ -117,3 +116,8 @@
 #define COOLDOWN_STARTED(cd_source, cd_index) (cd_source.cd_index != 0)
 
 #define COOLDOWN_TIMELEFT(cd_source, cd_index) (max(0, cd_source.cd_index - world.time))
+
+/// Add time to an ongoing cooldown or start a cooldown of given time if not started yet
+#define COOLDOWN_ADD(cd_source, cd_index, cd_time) (cd_source.cd_index = (cd_source.cd_index == 0 ? world.time : cd_source.cd_index) + (cd_time))
+/// Sets the cooldown to whichever is larger, any ongoing cooldown or the given time
+#define COOLDOWN_MINIMUM(cd_source, cd_index, cd_time) (cd_source.cd_index = max(cd_source.cd_index, world.time + (cd_time)))

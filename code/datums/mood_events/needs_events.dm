@@ -61,18 +61,18 @@
 	description = "Oh god, that's disgusting..."
 	mood_change = -8
 
-/datum/mood_event/disgust/bad_smell
-	description = "I can smell something horribly decayed inside this room."
-	mood_change = -6
-
-/datum/mood_event/disgust/nauseating_stench
-	description = "The stench of rotting carcasses is unbearable!"
-	mood_change = -12
-
 /datum/mood_event/disgust/dirty_food
 	description = "That was too dirty to eat..."
 	mood_change = -6
 	timeout = 4 MINUTES
+
+/datum/mood_event/disgust/dirty_food/add_effects(...)
+	if(HAS_PERSONALITY(owner, /datum/personality/ascetic))
+		mood_change *= 0.25
+		description = "That food was dirty, but edible."
+	if(HAS_PERSONALITY(owner, /datum/personality/gourmand))
+		mood_change *= 1.5
+		description = "That food was filthy, was it made in a dumpster?!"
 
 //Generic needs events
 /datum/mood_event/nice_shower

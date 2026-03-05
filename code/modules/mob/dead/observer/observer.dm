@@ -16,9 +16,9 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	invisibility = INVISIBILITY_OBSERVER
 	hud_type = /datum/hud/ghost
 	movement_type = GROUND | FLYING
-	light_system = MOVABLE_LIGHT
-	light_range = 1
-	light_power = 2
+	light_system = OVERLAY_LIGHT
+	light_range = 2.5
+	light_power = 0.6
 	light_on = FALSE
 	shift_to_open_context_menu = FALSE
 	var/can_reenter_corpse
@@ -36,7 +36,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/health_scan = FALSE //Are health scans currently enabled?
 	var/chem_scan = FALSE //Are chem scans currently enabled?
 	var/gas_scan = FALSE //Are gas scans currently enabled?
-	var/list/datahuds = list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED) //list of data HUDs shown to ghosts.
 	var/ghost_orbit = GHOST_ORBIT_CIRCLE
 
 	//These variables store hair data if the ghost originates from a species with head and/or facial hair.
@@ -62,6 +61,13 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 	/// The POI we're orbiting (orbit menu)
 	var/orbiting_ref
+
+	var/static/list/observer_hud_traits = list(
+		TRAIT_SECURITY_HUD,
+		TRAIT_MEDICAL_HUD,
+		TRAIT_DIAGNOSTIC_HUD,
+		TRAIT_BOT_PATH_HUD
+	)
 
 /mob/dead/observer/Initialize(mapload)
 	set_invisibility(GLOB.observer_default_invisibility)
@@ -148,8 +154,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	data_huds_on = 1
 
 	SSpoints_of_interest.make_point_of_interest(src)
-	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_DARKNESS, ref(src))
-	ADD_TRAIT(src, TRAIT_SECURITY_HUD, ref(src))
+	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_DARKNESS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_GOOD_HEARING, INNATE_TRAIT)
 
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
 	if(!invisibility || camera.see_ghosts)
@@ -157,7 +163,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 /mob/dead/observer/narsie_act()
 	var/old_color = color
-	color = "#960000"
+	color = COLOR_CULT_RED
 	animate(src, color = old_color, time = 10, flags = ANIMATION_PARALLEL)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 1 SECONDS)
 
@@ -219,7 +225,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 	if(ghost_accs == GHOST_ACCS_FULL && (icon_state in GLOB.ghost_forms_with_accessories_list)) //check if this form supports accessories and if the client wants to show them
 		if(facial_hairstyle)
-			var/datum/sprite_accessory/S = GLOB.facial_hairstyles_list[facial_hairstyle]
+			var/datum/sprite_accessory/S = SSaccessories.facial_hairstyles_list[facial_hairstyle]
 			if(S)
 				facial_hair_overlay = mutable_appearance(S.icon, "[S.icon_state]", -HAIR_LAYER)
 				if(facial_hair_color)
@@ -227,7 +233,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 				facial_hair_overlay.alpha = 200
 				add_overlay(facial_hair_overlay)
 		if(hairstyle)
-			var/datum/sprite_accessory/hair/S = GLOB.hairstyles_list[hairstyle]
+			var/datum/sprite_accessory/hair/S = SSaccessories.hairstyles_list[hairstyle]
 			if(S)
 				hair_overlay = mutable_appearance(S.icon, "[S.icon_state]", -HAIR_LAYER)
 				if(hair_color)
@@ -243,24 +249,10 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
  * I'll make this proc global and move it to its own file in a future update. |- Ricotez - UPDATE: They never did :(
  */
 /mob/proc/brighten_color(input_color)
-	if(input_color[1] == "#")
-		input_color = copytext(input_color, 2) // Removing the # at the beginning.
-	var/r_val
-	var/b_val
-	var/g_val
-	var/color_format = length(input_color)
-	if(color_format != length_char(input_color))
-		return 0
-	if(color_format == 3)
-		r_val = hex2num(copytext(input_color, 1, 2)) * 16
-		g_val = hex2num(copytext(input_color, 2, 3)) * 16
-		b_val = hex2num(copytext(input_color, 3, 4)) * 16
-	else if(color_format == 6)
-		r_val = hex2num(copytext(input_color, 1, 3))
-		g_val = hex2num(copytext(input_color, 3, 5))
-		b_val = hex2num(copytext(input_color, 5, 7))
-	else
-		return 0 //If the color format is not 3 or 6, you're using an unexpected way to represent a color.
+	var/list/read_color = rgb2num(input_color)
+	var/r_val = read_color[1]
+	var/b_val = read_color[2]
+	var/g_val = read_color[3]
 
 	r_val += (255 - r_val) * 0.4
 	if(r_val > 255)
@@ -291,8 +283,8 @@ Works together with spawning an observer, noted above.
 		if(ishuman(usr)) //following code only applies to those capable of having an ethereal heart, ie humans
 			var/mob/living/carbon/human/crystal_fella = usr
 			var/our_heart = crystal_fella.get_organ_slot(ORGAN_SLOT_HEART)
-			if(istype(our_heart, /obj/item/organ/internal/heart/ethereal)) //so you got the heart?
-				var/obj/item/organ/internal/heart/ethereal/ethereal_heart = our_heart
+			if(istype(our_heart, /obj/item/organ/heart/ethereal)) //so you got the heart?
+				var/obj/item/organ/heart/ethereal/ethereal_heart = our_heart
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
@@ -779,14 +771,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return
 
 /mob/dead/observer/proc/show_data_huds()
-	for(var/hudtype in datahuds)
-		var/datum/atom_hud/data_hud = GLOB.huds[hudtype]
-		data_hud.show_to(src)
+	add_traits(observer_hud_traits, REF(src))
 
 /mob/dead/observer/proc/remove_data_huds()
-	for(var/hudtype in datahuds)
-		var/datum/atom_hud/data_hud = GLOB.huds[hudtype]
-		data_hud.hide_from(src)
+	remove_traits(observer_hud_traits, REF(src))
 
 /mob/dead/observer/verb/toggle_data_huds()
 	set name = "Toggle Sec/Med/Diag HUD"

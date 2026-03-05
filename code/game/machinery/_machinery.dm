@@ -152,6 +152,9 @@
 	/// What was our power state the last time we updated its appearance?
 	/// TRUE for on, FALSE for off, -1 for never checked
 	var/appearance_power_state = -1
+	/// If true, show "x looks at the machine" when opening the UI
+	var/examine_feedback_on_ui = FALSE
+
 	armor_type = /datum/armor/obj_machinery
 
 /datum/armor/obj_machinery
@@ -161,12 +164,22 @@
 	fire = 50
 	acid = 70
 
+///Needed by machine frame & flatpacker i.e the named arg board
+/obj/machinery/New(loc, obj/item/circuitboard/board, ...)
+	if(istype(board))
+		circuit = board
+		//we don't want machines that override Initialize() have the board passed as a param e.g. atmos
+		return ..(loc)
+
+	return ..()
+
 /obj/machinery/Initialize(mapload)
 	. = ..()
 	SSmachines.register_machine(src)
 
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
+	if(istype(circuit))
 		circuit.apply_default_parts(src)
 
 	if(processing_flags & START_PROCESSING_ON_INIT)
@@ -404,18 +417,28 @@
 /**
  * Puts passed object in to user's hand
  *
- * Puts the passed object in to the users hand if they are adjacent.
- * If the user is not adjacent then place the object on top of the machine.
+ * The passed object is usually something that was in the object and is being ejected
+ *
+ * Handles checking if the user can hold the item and if they are in range,
+ * otherwise dumps the item on the ground of src
  *
  * Vars:
  * * object (obj) The object to be moved in to the users hand.
  * * user (mob/living) The user to recive the object
+ *
+ * Returns TRUE if the object was put in to the users hand, FALSE if it was dropped on the ground.
  */
-/obj/machinery/proc/try_put_in_hand(obj/object, mob/living/user)
-	if(!issilicon(user) && in_range(src, user))
-		user.put_in_hands(object)
-	else
-		object.forceMove(drop_location())
+/obj/proc/try_put_in_hand(obj/item/object, mob/living/user)
+	if(user?.can_hold_items(object) && in_range(src, user))
+		object.add_fingerprint(user)
+		add_fingerprint(user)
+		if(user.put_in_hands(object, ignore_animation = TRUE))
+			if(get(src, /mob) != user) // Only play pickup if we aren't also being held
+				object.do_pickup_animation(user, src)
+			return TRUE
+	object.forceMove(drop_location())
+	object.do_drop_animation(src)
+	return FALSE
 
 /obj/machinery/proc/can_be_occupant(atom/movable/occupant_atom)
 	return occupant_typecache ? is_type_in_typecache(occupant_atom, occupant_typecache) : isliving(occupant_atom)
@@ -691,7 +714,11 @@
 	if(interaction_flags_machine & INTERACT_MACHINE_SET_MACHINE)
 		user.set_machine(src)
 	update_last_used(user)
+	var/had_ui = examine_feedback_on_ui && !issilicon(user) && SStgui.get_open_ui(user, src)
 	. = ..()
+	var/has_ui = examine_feedback_on_ui && !issilicon(user) && SStgui.get_open_ui(user, src)
+	if(!had_ui && has_ui)
+		user.examine_feedback(src)
 
 /obj/machinery/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	add_fingerprint(usr)
@@ -983,7 +1010,7 @@
 	if(!panel_open && !replacer_tool.works_from_distance)
 		to_chat(user, display_parts(user))
 		if(shouldplaysound)
-			replacer_tool.play_rped_sound()
+			replacer_tool.play_rped_effect()
 		return FALSE
 
 	var/obj/item/circuitboard/machine/machine_board = locate(/obj/item/circuitboard/machine) in component_parts
@@ -1069,7 +1096,7 @@
 	RefreshParts()
 
 	if(shouldplaysound)
-		replacer_tool.play_rped_sound()
+		replacer_tool.play_rped_effect()
 	return TRUE
 
 /obj/machinery/proc/display_parts(mob/user)
@@ -1142,10 +1169,13 @@
 			if(0 to 25)
 				. += span_warning("It's falling apart!")
 
+/obj/machinery/examine_descriptor(mob/user)
+	return "machine"
+
 /obj/machinery/examine_more(mob/user)
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) && component_parts)
-		. += display_parts(user, TRUE)
+		. += display_parts(user)
 
 //called on machinery construction (i.e from frame to machinery) but not on initialization
 /obj/machinery/proc/on_construction(mob/user)

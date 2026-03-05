@@ -10,6 +10,7 @@
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
 	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
+	examine_feedback_on_ui = TRUE
 
 	///Is the autolathe hacked via wiring
 	var/hacked = FALSE
@@ -128,7 +129,6 @@
 		ui = new(user, src, "Autolathe")
 		ui.open()
 
-
 /**
  * Converts all the designs supported by this autolathe into UI data
  * Arguments
@@ -140,7 +140,7 @@
 
 	var/list/output = list()
 
-	var/datum/asset/spritesheet/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet/research_designs)
+	var/datum/asset/spritesheet_batched/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	var/size32x32 = "[spritesheet.name]32x32"
 
 	for(var/design_id in designs)
@@ -190,11 +190,10 @@
 
 	return data
 
-
 /obj/machinery/autolathe/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials),
-		get_asset_datum(/datum/asset/spritesheet/research_designs),
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 /obj/machinery/autolathe/ui_data(mob/user)
@@ -355,9 +354,20 @@
 
 	var/atom/movable/created
 	if(is_stack)
-		created = new design.build_path(target, items_remaining)
+		var/obj/item/stack/stack_item = initial(design.build_path)
+		var/max_stack_amount = initial(stack_item.max_amount)
+		var/number_to_make = (initial(stack_item.amount) * items_remaining)
+		while(number_to_make > max_stack_amount)
+			created = new stack_item(null, max_stack_amount) //it's imporant to spawn things in nullspace, since obj's like stacks qdel when they enter a tile/merge with other stacks of the same type, resulting in runtimes.
+			created.pixel_x = created.base_pixel_x + rand(-6, 6)
+			created.pixel_y = created.base_pixel_y + rand(-6, 6)
+			created.forceMove(target)
+			number_to_make -= max_stack_amount
+
+		created = new stack_item(null, number_to_make)
+
 	else
-		created = new design.build_path(target)
+		created = new design.build_path(null)
 		split_materials_uniformly(materials_needed, material_cost_coefficient, created)
 
 	created.pixel_x = created.base_pixel_x + rand(-6, 6)
@@ -487,22 +497,12 @@
 			if(!wires.is_cut(wire))
 				disabled = FALSE
 
-/**
- * Shock a mob who is trying to interact with the autolathe
- * Arguments
- *
- * * mob/user - the mob we are trying to shock
- * * prb - the probability of getting shocked
- */
-/obj/machinery/autolathe/proc/shock(mob/user, prb)
+/obj/machinery/autolathe/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock
 		return FALSE
-	if(!prob(prb))
-		return FALSE
-	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-	s.set_up(5, 1, src)
-	s.start()
-	return electrocute_mob(user, get_area(src), src, 0.7, TRUE)
+	if(isnull(siemens_coeff))
+		siemens_coeff = 0.7
+	return ..()
 
 /**
  * Is the autolathe hacked. Allowing us to acess hidden designs

@@ -115,7 +115,7 @@
 	desc = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
 
 /datum/reagent/consumable/pilk/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love pilk
+	if(HAS_TRAIT(M, TRAIT_CATLIKE_GRACE)) //felinids love pilk
 		M.add_mood_event("full_on_pilk", /datum/mood_event/full_on_pilk, name)
 	else if(isskeleton(M))
 		M.adjustBruteLoss(1, FALSE) //ITS POISON
@@ -144,7 +144,7 @@
 	desc = "Its time to get PEGGED!"
 
 /datum/reagent/consumable/ethanol/peg_nog/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love peg nog too!
+	if(HAS_TRAIT(M, TRAIT_CATLIKE_GRACE)) //felinids love peg nog too!
 		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	else if(isskeleton(M))
 		M.adjustBruteLoss(2, FALSE) //when drinking this you wish for bone hurting juice
@@ -391,7 +391,7 @@
 	description = "A subtly sweet coffee seemingly out of this world."
 	nutriment_factor = 8
 	color = "#361329"
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "hauntingly familiar allure"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -407,7 +407,7 @@
 	description = "A delightful shake made with a rare starfruit."
 	color = "#a551be"
 	nutriment_factor = 0
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "smooth starlight"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -423,7 +423,7 @@
 	description = "A cosmic cry of a bygone era."
 	boozepwr = 55
 	color = "#434294"
-	quality = DRINK_GOOD
+	quality = DRINK_FANTASTIC
 	taste_description = "dreamy, tropical starlit sweetness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
@@ -439,7 +439,7 @@
 	description = "Enticing flames."
 	boozepwr = 55
 	color = "#6b3481"
-	quality = DRINK_GOOD
+	quality = DRINK_VERYGOOD
 	taste_description = "enticing warmth"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 

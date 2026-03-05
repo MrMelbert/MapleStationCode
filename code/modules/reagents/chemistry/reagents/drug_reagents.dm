@@ -21,7 +21,7 @@
 	overdose_threshold = 30
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 10) //4 per 2 seconds
+	addiction_types = list(/datum/addiction/hallucinogens = 60)
 	pain_modifier = 0.8
 
 /datum/reagent/drug/space_drugs/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -80,7 +80,7 @@
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	ph = 8
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/nicotine = 15) // 6 per 2 seconds
+	addiction_types = list(/datum/addiction/nicotine = 10)
 
 	//Nicotine is used as a pesticide IRL.
 /datum/reagent/drug/nicotine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
@@ -125,8 +125,7 @@
 	overdose_threshold = 20
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 18) //7.2 per 2 seconds
-
+	addiction_types = list(/datum/addiction/opioids = 30)
 
 /datum/reagent/drug/krokodil/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -161,7 +160,8 @@
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	ph = 5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 75)
+	// metabolized_traits = list(TRAIT_STIMULATED)
 	pain_modifier = 0.8
 
 /datum/reagent/drug/methamphetamine/on_new(data)
@@ -230,15 +230,15 @@
 	color = "#FAFAFA"
 	overdose_threshold = 20
 	taste_description = "salt" // because they're bathsalts?
-	addiction_types = list(/datum/addiction/stimulants = 25)  //8 per 2 seconds
-	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
+	addiction_types = list(/datum/addiction/stimulants = 25)
 	ph = 8.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	pain_modifier = 0.5
+	metabolized_traits = list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE)
+	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 
 /datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	affected_mob.add_traits(list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE), type)
 	if(iscarbon(affected_mob))
 		var/mob/living/carbon/carbon_mob = affected_mob
 		rage = new()
@@ -246,9 +246,7 @@
 
 /datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
-	affected_mob.remove_traits(list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE), type)
-	if(rage)
-		QDEL_NULL(rage)
+	QDEL_NULL(rage)
 
 /datum/reagent/drug/bath_salts/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -283,8 +281,9 @@
 	reagent_state = LIQUID
 	color = "#78FFF0"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 8)
+	addiction_types = list(/datum/addiction/stimulants = 75)
 	pain_modifier = 0.66
+	// metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/aranesp/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -308,16 +307,17 @@
 	overdose_threshold = 20
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	taste_description = "paint thinner"
-	addiction_types = list(/datum/addiction/hallucinogens = 18)
+	// inverse_chem_val = 0.4
+	// inverse_chem = /datum/reagent/inverse/happiness
+	addiction_types = list(/datum/addiction/hallucinogens = 30)
+	metabolized_traits = list(TRAIT_FEARLESS)
 
 /datum/reagent/drug/happiness/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_FEARLESS, type)
 	affected_mob.add_mood_event("happiness_drug", /datum/mood_event/happiness_drug)
 
 /datum/reagent/drug/happiness/on_mob_delete(mob/living/affected_mob)
 	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_FEARLESS, type)
 	affected_mob.clear_mood_event("happiness_drug")
 
 /datum/reagent/drug/happiness/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -353,19 +353,15 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 6) //2.6 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 400)
+	metabolized_traits = list(TRAIT_BATON_RESISTANCE/*, TRAIT_STIMULATED*/)
 
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
-	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		affected_mob.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
-
-/datum/reagent/drug/pumpup/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
 
 /datum/reagent/drug/pumpup/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -409,7 +405,7 @@
 		return
 
 	var/mob/living/carbon/carbon_mob = affected_mob
-	var/obj/item/organ/internal/liver/liver = carbon_mob.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = carbon_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		carbon_mob.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
@@ -422,7 +418,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 15
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 14)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 50)
 
 /datum/reagent/drug/maint/powder/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -450,20 +446,13 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	overdose_threshold = 25
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 8)
-
-/datum/reagent/drug/maint/sludge/on_mob_metabolize(mob/living/affected_mob)
-	. = ..()
-	ADD_TRAIT(affected_mob,TRAIT_HARDLY_WOUNDED,type)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 300)
+	metabolized_traits = list(TRAIT_HARDLY_WOUNDED)
 
 /datum/reagent/drug/maint/sludge/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(affected_mob.adjustToxLoss(0.5 * REM * seconds_per_tick, required_biotype = affected_biotype))
 		return UPDATE_MOB_HEALTH
-
-/datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HARDLY_WOUNDED,type)
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -483,10 +472,10 @@
 	name = "Maintenance Tar"
 	description = "An unknown tar that you most likely gotten from an assistant, a bored chemist... or cooked yourself. Raw tar, straight from the floor. It can help you with escaping bad situations at the cost of liver damage."
 	reagent_state = LIQUID
-	color = "#000000"
+	color = COLOR_BLACK
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 120)
 
 /datum/reagent/drug/maint/tar/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -515,7 +504,7 @@
 	ph = 11
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 12)
+	addiction_types = list(/datum/addiction/hallucinogens = 20)
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_life(mob/living/carbon/psychonaut, seconds_per_tick, times_fired)
 	. = ..()
@@ -543,18 +532,29 @@
 
 	var/atom/movable/plane_master_controller/game_plane_master_controller = psychonaut.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 
-	var/list/col_filter_identity = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.000,0,0,0)
-	var/list/col_filter_green = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.333,0,0,0)
-	var/list/col_filter_blue = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.666,0,0,0)
-	var/list/col_filter_red = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 1.000,0,0,0) //visually this is identical to the identity
+	// Info for non-matrix plebs like me!
 
-	game_plane_master_controller.add_filter("rainbow", 10, color_matrix_filter(col_filter_red, FILTER_COLOR_HSL))
+	// This doesn't change the RGB matrixes directly at all. Instead, it shifts all the colors' Hue by 33%,
+	// Shifting them up the color wheel, turning R to G, G to B, B to R, making a psychedelic effect.
+	// The second moves them two colors up instead, turning R to B, G to R, B to G.
+	// The third does a full spin, or resets it back to normal.
+	// Imagine a triangle on the color wheel with the points located at the color peaks, rotating by 90 degrees each time.
+	// The value with decimals is the Hue. The rest are Saturation, Luminosity, and Alpha, though they're unused here.
+
+	// The filters were initially named _green, _blue, _red, despite every filter changing all the colors. It caused me a 2-years-long headache.
+
+	var/list/col_filter_identity = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.000,0,0,0)
+	var/list/col_filter_shift_once = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.333,0,0,0)
+	var/list/col_filter_shift_twice = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.666,0,0,0)
+	var/list/col_filter_reset = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 1.000,0,0,0) //visually this is identical to the identity
+
+	game_plane_master_controller.add_filter("rainbow", 10, color_matrix_filter(col_filter_reset, FILTER_COLOR_HSL))
 
 	for(var/filter in game_plane_master_controller.get_filters("rainbow"))
 		animate(filter, color = col_filter_identity, time = 0 SECONDS, loop = -1, flags = ANIMATION_PARALLEL)
-		animate(color = col_filter_green, time = 4 SECONDS)
-		animate(color = col_filter_blue, time = 4 SECONDS)
-		animate(color = col_filter_red, time = 4 SECONDS)
+		animate(color = col_filter_shift_once, time = 4 SECONDS)
+		animate(color = col_filter_shift_twice, time = 4 SECONDS)
+		animate(color = col_filter_reset, time = 4 SECONDS)
 
 	game_plane_master_controller.add_filter("psilocybin_wave", 1, list("type" = "wave", "size" = 2, "x" = 32, "y" = 32))
 
@@ -587,7 +587,8 @@
 	ph = 5
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 15)
+	addiction_types = list(/datum/addiction/hallucinogens = 40)
+	// metabolized_traits = list(TRAIT_STIMULATED)
 	///How many flips have we done so far?
 	var/flip_count = 0
 	///How many spin have we done so far?
@@ -607,18 +608,18 @@
 
 	var/atom/movable/plane_master_controller/game_plane_master_controller = dancer.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 
-	var/list/col_filter_blue = list(0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.764,0,0,0) //most blue color
+	var/list/col_filter_shift_twice = list(0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.764,0,0,0) //most blue color
 	var/list/col_filter_mid = list(0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.832,0,0,0) //red/blue mix midpoint
-	var/list/col_filter_red = list(0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.900,0,0,0) //most red color
+	var/list/col_filter_reset = list(0,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0.900,0,0,0) //most red color
 
 	game_plane_master_controller.add_filter("blastoff_filter", 10, color_matrix_filter(col_filter_mid, FILTER_COLOR_HCY))
 	game_plane_master_controller.add_filter("blastoff_wave", 1, list("type" = "wave", "x" = 32, "y" = 32))
 
 
 	for(var/filter in game_plane_master_controller.get_filters("blastoff_filter"))
-		animate(filter, color = col_filter_blue, time = 3 SECONDS, loop = -1, flags = ANIMATION_PARALLEL)
+		animate(filter, color = col_filter_shift_twice, time = 3 SECONDS, loop = -1, flags = ANIMATION_PARALLEL)
 		animate(color = col_filter_mid, time = 3 SECONDS)
-		animate(color = col_filter_red, time = 3 SECONDS)
+		animate(color = col_filter_reset, time = 3 SECONDS)
 		animate(color = col_filter_mid, time = 3 SECONDS)
 
 	for(var/filter in game_plane_master_controller.get_filters("blastoff_wave"))
@@ -713,7 +714,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	ph = 10
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 20)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 30)
 
 /datum/reagent/drug/saturnx/on_mob_life(mob/living/carbon/invisible_man, seconds_per_tick, times_fired)
 	. = ..()
@@ -802,7 +803,7 @@
 	description = "A chemical extract originating from the Saturn-X compound, stabilized and safer for tactical use. After the recipe was discovered, it was planned to be put into mass production, but the program fell apart after its lead disappeared and was never seen again."
 	metabolization_rate = 0.15 * REAGENTS_METABOLISM
 	overdose_threshold = 50
-	addiction_types = list(/datum/addiction/maintenance_drugs = 35)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
 
 /datum/reagent/drug/kronkaine
 	name = "Kronkaine"
@@ -814,7 +815,26 @@
 	overdose_threshold = 20
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 20)
+	addiction_types = list(/datum/addiction/stimulants = 50)
+	// metabolized_traits = list(TRAIT_STIMULATED)
+
+/datum/reagent/drug/kronkaine/on_new(data)
+	. = ..()
+	// Kronkaine also makes for a great fishing bait (found in "natural" baits)
+	if(!istype(holder?.my_atom, /obj/item/food))
+		return
+	ADD_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
+	RegisterSignal(holder, COMSIG_REAGENTS_CLEAR_REAGENTS, PROC_REF(on_reagents_clear))
+	RegisterSignal(holder, COMSIG_REAGENTS_DEL_REAGENT, PROC_REF(on_reagent_delete))
+
+/datum/reagent/drug/kronkaine/proc/on_reagents_clear(datum/reagents/reagents)
+	SIGNAL_HANDLER
+	REMOVE_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
+
+/datum/reagent/drug/kronkaine/proc/on_reagent_delete(datum/reagents/reagents, datum/reagent/deleted_reagent)
+	SIGNAL_HANDLER
+	if(deleted_reagent == src)
+		REMOVE_TRAIT(holder.my_atom, TRAIT_GREAT_QUALITY_BAIT, type)
 
 /datum/reagent/drug/kronkaine/on_mob_metabolize(mob/living/kronkaine_fiend)
 	. = ..()
@@ -885,7 +905,7 @@
 	ph = 7
 	overdose_threshold = 10
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 20)
+	addiction_types = list(/datum/addiction/hallucinogens = 50)
 	/// Track the active hallucination we're giving out so we don't replace it by accident
 	VAR_PRIVATE/datum/weakref/active_hallucination_weakref
 

@@ -14,7 +14,7 @@
 	var/active = FALSE
 	var/transfer_rate = TANK_COMPRESSOR_MAX_TRANSFER_RATE
 	var/datum/gas_mixture/leaked_gas_buffer
-	var/list/compressor_record
+	var/list/compressor_record = list()
 	var/last_recorded_pressure = 0
 	var/record_number = 1
 	var/obj/item/tank/inserted_tank
@@ -26,7 +26,6 @@
 /obj/machinery/atmospherics/components/binary/tank_compressor/Initialize(mapload)
 	. = ..()
 	leaked_gas_buffer = new(200)
-	compressor_record = list()
 
 	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(explosion_handle))
 
@@ -211,20 +210,14 @@
 	if(tank_air.return_pressure() >= (PUMP_MAX_PRESSURE + ONE_ATMOSPHERE))
 		return FALSE
 	flush_buffer()
-	if(user)
-		user.put_in_hands(inserted_tank)
-	else
-		inserted_tank.forceMove(drop_location())
+	try_put_in_hand(inserted_tank, user)
 	active = FALSE
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/proc/eject_disk(mob/user)
 	if(!inserted_disk)
 		return FALSE
-	if(user)
-		user.put_in_hands(inserted_disk)
-	else
-		inserted_disk.forceMove(drop_location())
+	try_put_in_hand(inserted_disk, user)
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 	return TRUE
 
@@ -247,7 +240,7 @@
 	inserted_tank = null
 	inserted_disk = null
 	leaked_gas_buffer = null
-	QDEL_NULL(compressor_record) //We only want the list nuked, not the contents.
+	compressor_record.Cut() // We only want to clear the list itself, not delete its contents.
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/update_icon_state()

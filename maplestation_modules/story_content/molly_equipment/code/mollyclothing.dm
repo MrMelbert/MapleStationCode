@@ -15,7 +15,10 @@
 /datum/loadout_item/suit/molly
 	name = "Six Shooter's Cloak"
 	item_path = /obj/item/clothing/suit/toggle/mollycloak
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/suit/molly/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/head/hats/mollyhat
 	name = "Six Shooter's Hat"
@@ -28,4 +31,7 @@
 /datum/loadout_item/head/molly
 	name = "Six Shooter's Hat"
 	item_path = /obj/item/clothing/head/hats/mollyhat
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/molly/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"

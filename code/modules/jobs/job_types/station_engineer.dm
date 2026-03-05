@@ -1,7 +1,7 @@
 /datum/job/station_engineer
 	title = JOB_STATION_ENGINEER
 	description = "Start the Supermatter, wire the solars, repair station hull \
-		and wiring damage."
+		and wiring damage... or build a deathtrap in the bar."
 	title_options = list(
 		"Junior Engineer",
 		"Station Electrician",
@@ -31,7 +31,14 @@
 		/datum/job_department/engineering,
 		)
 
-	family_heirlooms = list(/obj/item/clothing/head/utility/hardhat, /obj/item/screwdriver, /obj/item/wrench, /obj/item/weldingtool, /obj/item/crowbar, /obj/item/wirecutters)
+	family_heirlooms = list(
+		/obj/item/clothing/head/utility/hardhat,
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/weldingtool,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/box/lights/mixed = 20,
@@ -43,6 +50,12 @@
 	rpg_title = "Crystallomancer"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_EXPERT,
+		/datum/skill/mechanics = SKILL_LEVEL_EXPERT,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/engineer
 	name = "Station Engineer"
@@ -68,7 +81,7 @@
 
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
-	skillchips = list(/obj/item/skillchip/job/engineer)
+	// skillchips = list(/obj/item/skillchip/job/engineer)
 
 /datum/outfit/job/engineer/gloved
 	name = "Station Engineer (Gloves)"

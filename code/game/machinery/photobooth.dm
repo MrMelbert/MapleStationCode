@@ -12,7 +12,7 @@
 	base_icon_state = "booth"
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/photobooth
-	light_system = MOVABLE_LIGHT_DIRECTIONAL //Used as a flash here.
+	light_system = OVERLAY_LIGHT_DIRECTIONAL //Used as a flash here.
 	light_range = 6
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER

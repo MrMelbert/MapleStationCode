@@ -1,4 +1,4 @@
 // -- Shadowperson (& Nightmare) species additions --
 /datum/species/shadow
 	name = "Shadowperson"
-	mutanttongue = /obj/item/organ/internal/tongue/shadow
+	mutanttongue = /obj/item/organ/tongue/shadow

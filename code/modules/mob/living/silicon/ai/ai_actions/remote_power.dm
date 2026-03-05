@@ -14,14 +14,14 @@
 	enable_text = span_notice("You prepare to power any APC you see.")
 	disable_text = span_notice("You stop focusing on powering APCs.")
 
-/datum/action/innate/ai/ranged/power_apc/do_ability(mob/living/caller, atom/clicked_on)
+/datum/action/innate/ai/ranged/power_apc/do_ability(mob/living/clicker, atom/clicked_on)
 
-	if (!isAI(caller))
+	if (!isAI(clicker))
 		return FALSE
-	var/mob/living/silicon/ai/ai_caller = caller
+	var/mob/living/silicon/ai/ai_caller = clicker
 
-	if(caller.incapacitated()) // Non-module change
-		unset_ranged_ability(caller)
+	if(ai_caller.incapacitated()) // Non-module change
+		unset_ranged_ability(ai_caller)
 		return FALSE
 
 	if(!isapc(clicked_on))
@@ -36,6 +36,3 @@
 	var/obj/item/stock_parts/power_store/cell = apc.get_cell()
 	cell.give(STANDARD_BATTERY_CHARGE)
 	ai_caller.battery -= 50
-
-
-

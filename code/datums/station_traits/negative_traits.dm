@@ -148,7 +148,7 @@
 /datum/station_trait/overflow_job_bureaucracy/proc/set_overflow_job_override(datum/source)
 	SIGNAL_HANDLER
 	var/datum/job/picked_job = pick(SSjob.get_valid_overflow_jobs())
-	chosen_job_name = lowertext(picked_job.title) // like Chief Engineers vs like chief engineers
+	chosen_job_name = LOWER_TEXT(picked_job.title) // like Chief Engineers vs like chief engineers
 	SSjob.set_overflow_role(picked_job.type)
 
 /datum/station_trait/slow_shuttle
@@ -556,7 +556,6 @@
 	trait_to_give = STATION_TRAIT_RADIOACTIVE_NEBULA
 
 	blacklist = list(/datum/station_trait/random_event_weight_modifier/rad_storms)
-	threat_reduction = 30
 	dynamic_threat_id = "Radioactive Nebula"
 
 	intensity_increment_time = 5 MINUTES

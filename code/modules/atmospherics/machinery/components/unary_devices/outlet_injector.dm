@@ -10,6 +10,7 @@
 	hide = TRUE
 	layer = GAS_SCRUBBER_LAYER
 	pipe_state = "injector"
+	has_cap_visuals = TRUE
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF //really helpful in building gas chambers for xenomorphs
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.25
@@ -76,7 +77,11 @@
 	cut_overlays()
 	if(showpipe)
 		// everything is already shifted so don't shift the cap
-		add_overlay(get_pipe_image(icon, "inje_cap", initialize_directions, pipe_color))
+		var/image/cap = get_pipe_image(icon, "inje_cap", initialize_directions, pipe_color)
+		cap.appearance_flags |= RESET_COLOR|KEEP_APART
+		add_overlay(cap)
+	else
+		PIPING_LAYER_SHIFT(src, PIPING_LAYER_DEFAULT)
 
 	if(!nodes[1] || !on || !is_operational)
 		icon_state = "inje_off"

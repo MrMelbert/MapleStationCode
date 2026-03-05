@@ -58,6 +58,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	var/cutting_tool = /obj/item/weldingtool
 	var/open_sound = 'sound/machines/closet_open.ogg'
 	var/close_sound = 'sound/machines/closet_close.ogg'
+	var/lock_sound = 'sound/machines/closet/closet_lock.ogg'
+	var/unlock_sound = 'sound/machines/closet/closet_unlock.ogg'
 	var/open_sound_volume = 35
 	var/close_sound_volume = 50
 	var/material_drop = /obj/item/stack/sheet/iron
@@ -101,6 +103,14 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	bomb = 10
 	fire = 70
 	acid = 60
+
+/obj/structure/closet/get_save_vars()
+	. = ..()
+	. += NAMEOF(src, welded)
+	. += NAMEOF(src, opened)
+	. += NAMEOF(src, locked)
+	. += NAMEOF(src, anchorable)
+	return .
 
 /obj/structure/closet/Initialize(mapload)
 	. = ..()
@@ -239,7 +249,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 			. += door_overlay
 			door_overlay.overlays += emissive_blocker(door_overlay.icon, door_overlay.icon_state, src, alpha = door_overlay.alpha) // If we don't do this the door doesn't block emissives and it looks weird.
 		else if(has_closed_overlay)
-			. += "[icon_door || overlay_state]_door"
+			var/mutable_appearance/door_overlay = mutable_appearance(icon, "[icon_door || overlay_state]_door", alpha = src.alpha)
+			. += door_overlay
 
 	if(opened)
 		return
@@ -278,12 +289,27 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	if(vname in list(NAMEOF(src, locked), NAMEOF(src, welded), NAMEOF(src, secure), NAMEOF(src, icon_welded), NAMEOF(src, delivery_icon)))
 		update_appearance()
 
+// Clone of closet items
+/obj/effect/appearance_clone/closet_item
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 /// Animates the closet door opening and closing
 /obj/structure/closet/proc/animate_door(closing = FALSE)
 	if(!door_anim_time)
 		return
 	if(!door_obj)
 		door_obj = new
+	if(closing && length(contents))
+		var/icon/mask_icon = icon(icon, has_closed_overlay ? "[icon_door || base_icon_state || initial(icon_state)]_door" : icon_state)
+		// When closing, all of our contents are already in src - they've already disappeared from the world
+		// So to make the animation less jarring, we create a clone of everything in the closet to show in the animation
+		for(var/content in src)
+			var/obj/effect/appearance_clone/closet_item/clone = new(loc, content)
+			// Mask keeps in in bounds of the inside of the closet
+			clone.add_filter("closet_mask", 1, alpha_mask_filter(x = -1 * (clone.pixel_x + clone.pixel_w), y = -1 * (clone.pixel_y + clone.pixel_z), icon = mask_icon))
+			clone.layer = FLOAT_LAYER - 1
+			vis_contents += clone
+
 	var/default_door_icon = "[icon_door || icon_state]_door"
 	vis_contents += door_obj
 	door_obj.icon = icon
@@ -319,6 +345,9 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/end_door_animation()
 	is_animating_door = FALSE
 	vis_contents -= door_obj
+	for(var/obj/effect/appearance_clone/closet_item/clone in vis_contents)
+		vis_contents -= clone
+		qdel(clone)
 	update_icon()
 
 /// Calculates the matrix to be applied to the animated door overlay
@@ -487,7 +516,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	if(!before_open(user, force) || (SEND_SIGNAL(src, COMSIG_CLOSET_PRE_OPEN, user, force) & BLOCK_OPEN))
 		return FALSE
 	welded = FALSE
-	locked = FALSE
+	unlock()
 	if(special_effects)
 		playsound(loc, open_sound, open_sound_volume, TRUE, -3)
 	opened = TRUE
@@ -869,7 +898,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 				return
 		if (user.combat_mode)
 			return
-		if(user.transferItemToLoc(weapon, drop_location(), silent = FALSE)) // so we put in unlit welder too
+		if(user.transfer_item_to_turf(weapon, drop_location())) // so we put in unlit welder too
 			return
 
 	else if(weapon.tool_behaviour == TOOL_WELDER && can_weld_shut)
@@ -1051,7 +1080,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/bust_open()
 	SIGNAL_HANDLER
 	welded = FALSE //applies to all lockers
-	locked = FALSE //applies to critter crates and secure lockers only
+	unlock() //applies to critter crates and secure lockers only
 	broken = TRUE //applies to secure lockers only
 	open(force = TRUE, special_effects = FALSE)
 
@@ -1104,11 +1133,32 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	if(iscarbon(user))
 		add_fingerprint(user)
 	locked = !locked
+	play_closet_lock_sound()
 	user.visible_message(
 		span_notice("[user] [locked ? "locks" : "unlocks"] [src]."),
 		span_notice("You [locked ? "locked" : "unlocked"] [src]."),
 	)
 	update_appearance()
+
+/// toggles the lock state of a closet
+/obj/structure/closet/proc/lock()
+	if(locked)
+		return
+	locked = TRUE
+	play_closet_lock_sound()
+	update_appearance()
+
+/// unlocks the closet
+/obj/structure/closet/proc/unlock()
+	if(!locked)
+		return
+	locked = FALSE
+	play_closet_lock_sound()
+	update_appearance()
+
+/// plays the closet's lock/unlock sound, this should be placed AFTER you've changed the lock state
+/obj/structure/closet/proc/play_closet_lock_sound()
+	playsound(src, locked ? lock_sound : unlock_sound, 50, TRUE)
 
 /obj/structure/closet/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(secure && !broken)
@@ -1187,7 +1237,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, atom/caster)
 	SIGNAL_HANDLER
 
-	locked = FALSE
+	INVOKE_ASYNC(src, PROC_REF(unlock))
 	INVOKE_ASYNC(src, PROC_REF(open))
 
 /obj/structure/closet/preopen

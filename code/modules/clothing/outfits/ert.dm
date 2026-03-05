@@ -53,12 +53,14 @@
 /datum/outfit/centcom/ert/commander/alert
 	name = "ERT Commander - High Alert"
 
+	l_hand = /obj/item/gun/energy/disabler/smg
 	backpack_contents = list(
 		/obj/item/gun/energy/pulse/pistol/loyalpin = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 	)
 	glasses = /obj/item/clothing/glasses/thermal/eyepatch
 	l_pocket = /obj/item/melee/energy/sword/saber
+	suit_store = /obj/item/gun/energy/laser/assault
 
 /datum/outfit/centcom/ert/security
 	name = "ERT Security"
@@ -472,10 +474,11 @@
 	var/obj/item/mod/control/mod = squaddie.back
 	if(!istype(mod))
 		return
-	var/obj/item/mod/module/hat_stabilizer/hat_holder = locate() in mod.modules
-	var/obj/item/clothing/head/helmet/space/beret/beret = new(hat_holder)
-	hat_holder.attached_hat = beret
-	squaddie.update_clothing(mod.slot_flags)
+	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
+	var/obj/item/clothing/head/helmet/space/beret/beret = new(helmet)
+	var/datum/component/hat_stabilizer/component = helmet.GetComponent(/datum/component/hat_stabilizer)
+	component.attach_hat(beret)
+	squaddie.update_clothing(helmet.slot_flags)
 
 /datum/outfit/centcom/ert/marine
 	name = "Marine Commander"

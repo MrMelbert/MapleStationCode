@@ -3,10 +3,10 @@
 	desc = "Your sense of smell is comparable to that of a canine."
 	quality = POSITIVE
 	difficulty = 12
-	text_gain_indication = "<span class='notice'>Smells begin to make more sense...</span>"
-	text_lose_indication = "<span class='notice'>Your sense of smell goes back to normal.</span>"
+	text_gain_indication = span_notice("Smells begin to make more sense...")
+	text_lose_indication = span_notice("Your sense of smell goes back to normal.")
 	power_path = /datum/action/cooldown/spell/olfaction
-	instability = 30
+	instability = POSITIVE_INSTABILITY_MODERATE
 	synchronizer_coeff = 1
 
 /datum/mutation/human/olfaction/modify()
@@ -38,6 +38,10 @@
 	var/mob/living/living_cast_on = cast_on
 	if(ishuman(living_cast_on) && !living_cast_on.get_bodypart(BODY_ZONE_HEAD))
 		to_chat(owner, span_warning("You have no nose!"))
+		return FALSE
+
+	if(!living_cast_on.can_smell()) //Anosmia quirk holders can't smell anything
+		to_chat(owner, span_warning("You can't smell!"))
 		return FALSE
 
 	return TRUE

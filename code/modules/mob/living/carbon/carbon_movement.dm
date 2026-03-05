@@ -8,23 +8,21 @@
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
-	if(!. || (movement_type & FLOATING)) //floating is easy
+	if(!.)
 		return
 	if(stat == DEAD)
 		return
 
-	if(nutrition > 0)
-		var/hunger_loss = HUNGER_FACTOR * MOVEMENT_HUNGER_MULTIPLIER
+	if(IS_MOVING_INTENTIONALLY(src))
 		if(move_intent == MOVE_INTENT_RUN)
-			hunger_loss *= 2
-		adjust_nutrition(-1 * hunger_loss)
+			drain_sprint(1 + ((movement_type & FLYING) ? 1 : 0) + length(buckled_mobs) * 0.5)
+		if(!(movement_type & FLOATING))
+			adjust_nutrition(-1 * BASE_MOVEMENT_HUNGER_DRAIN(HUNGER_FACTOR, src))
 
 	// NON-MODULE CHANGE START
 	if(!moving_diagonally)
 		SEND_SIGNAL(src, COMSIG_CARBON_STEP, NewLoc, direct)
 
-	if(move_intent == MOVE_INTENT_RUN && !(movement_type & FLYING) && (mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)) && !pulledby)
-		drain_sprint()
 	if(momentum_dir & direct)
 		momentum_distance++
 		if(!has_momentum && momentum_distance >= 4 && add_movespeed_modifier(/datum/movespeed_modifier/momentum))

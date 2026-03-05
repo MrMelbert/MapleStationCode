@@ -9,7 +9,7 @@ import {
   Section,
   Stack,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
@@ -266,7 +266,7 @@ const ChoicesPanel = (props) => {
                       />
                     )}
                   {currentVote.displayStatistics
-                    ? choice.votes + ' Votes'
+                    ? `${choice.votes} Votes`
                     : null}
                 </LabeledList.Item>
                 <LabeledList.Divider />
@@ -300,7 +300,9 @@ const ChoicesPanel = (props) => {
                   user.multiSelection[user.ckey.concat(choice.name)] === 1 ? (
                     <Icon align="right" mr={2} color="blue" name="vote-yea" />
                   ) : null}
-                  {choice.votes} Votes
+                  {currentVote.displayStatistics
+                    ? `${choice.votes} Votes`
+                    : null}
                 </LabeledList.Item>
                 <LabeledList.Divider />
               </Box>

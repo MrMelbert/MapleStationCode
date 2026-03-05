@@ -86,6 +86,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	GLOB.fax_machines += src
 	set_room_tag(TRUE, !mapload)
 	wires = new /datum/wires/fax(src)
+	if(name != initial(name))
+		article = "the"
 
 /obj/machinery/fax/Destroy()
 	QDEL_NULL(stored_paper)
@@ -371,10 +373,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(to_curr_room)
 		room_tag = get_area_name(src, TRUE) // no proper or improper tags on this
 		if(name == initial(name))
-			name = "[fax_name || get_area_name(src, FALSE)] [name]"
+			name = "[fax_name || get_area_name(src, TRUE)] [name]"
+			article = "the"
 	else
 		room_tag = null
 		name = initial(name)
+		article = initial(article)
 
 	if(update_all_faxes)
 		for(var/obj/machinery/fax/other_fax as anything in GLOB.fax_machines)
@@ -721,7 +725,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/was_faxed_from
 
 /obj/item/paper/processed
-	name = "\proper classified paperwork"
+	name = "classified paperwork"
 	desc = "Some classified paperwork sent by the big men themselves."
 	/// Assoc list of data related to our paper.
 	var/list/paper_data

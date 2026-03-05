@@ -2,7 +2,7 @@
 "ae" = (
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "cK" = (
 /obj/effect/landmark/bitrunning/mob_segment,
@@ -13,11 +13,11 @@
 /area/virtual_domain/safehouse)
 "df" = (
 /obj/effect/spawner/random/vending/snackvend,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "do" = (
 /obj/effect/spawner/random/trash/garbage,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "eU" = (
 /obj/effect/spawner/random/structure/crate,
@@ -26,35 +26,38 @@
 /area/virtual_domain)
 "gh" = (
 /obj/effect/spawner/random/vending/colavend,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "hz" = (
 /obj/item/clothing/head/cowboy,
 /obj/item/clothing/head/cowboy,
 /obj/item/clothing/head/cowboy,
 /obj/structure/closet,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
 /turf/template_noop,
 /area/virtual_domain/safehouse)
 "il" = (
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "it" = (
 /obj/modular_map_root/generic{
 	key = "station_medium"
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "iJ" = (
 /obj/machinery/light/directional/south,
 /obj/effect/spawner/random/structure/table,
 /obj/effect/spawner/random/entertainment/plushie,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "iO" = (
 /obj/effect/spawner/random/structure/crate,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "jt" = (
 /obj/item/gun/energy/marksman_revolver{
@@ -76,7 +79,7 @@
 /obj/effect/spawner/random/structure/table,
 /obj/effect/spawner/random/decoration/generic,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "mq" = (
 /obj/effect/baseturf_helper/virtual_domain,
@@ -101,7 +104,7 @@
 /obj/effect/spawner/random/structure/chair_maintenance{
 	dir = 8
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "po" = (
 /obj/effect/baseturf_helper/virtual_domain,
@@ -112,11 +115,11 @@
 /area/virtual_domain/safehouse)
 "sX" = (
 /obj/effect/spawner/random/decoration/statue,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "uW" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "ve" = (
 /obj/effect/spawner/random/trash/graffiti,
@@ -136,7 +139,7 @@
 /obj/effect/spawner/random/structure/table,
 /obj/effect/spawner/random/food_or_drink/snack,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "zU" = (
 /obj/machinery/light/directional/south,
@@ -146,7 +149,7 @@
 	pixel_x = 8;
 	pixel_y = 4
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Au" = (
 /obj/effect/spawner/random/trash/garbage,
@@ -156,51 +159,51 @@
 "AF" = (
 /obj/effect/turf_decal/tile/dark_red/half,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Bi" = (
 /obj/effect/spawner/random/structure/chair_maintenance{
 	dir = 4
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "BX" = (
 /obj/effect/spawner/random/trash/graffiti,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Ey" = (
 /obj/machinery/light/directional/south,
 /obj/effect/spawner/random/structure/table,
 /obj/effect/spawner/random/decoration/ornament,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "EK" = (
 /obj/effect/spawner/random/structure/chair_maintenance{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Gz" = (
 /obj/effect/spawner/random/structure/crate,
 /obj/effect/turf_decal/tile/dark_red/half,
 /obj/effect/spawner/random/armory/shotgun,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "GY" = (
 /obj/effect/spawner/random/entertainment/arcade,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Ib" = (
 /obj/effect/spawner/random/trash/bin,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Il" = (
 /obj/effect/turf_decal/tile/dark_red/half,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Ix" = (
 /obj/structure/closet,
@@ -236,7 +239,7 @@
 	},
 /obj/effect/turf_decal/tile/dark_red/half,
 /obj/machinery/light/directional/south,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "MG" = (
 /obj/effect/spawner/random/trash/graffiti,
@@ -245,7 +248,7 @@
 /area/virtual_domain)
 "Oq" = (
 /obj/machinery/light/small/directional/south,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Ox" = (
 /obj/structure/closet,
@@ -259,7 +262,7 @@
 /area/virtual_domain)
 "OZ" = (
 /obj/effect/spawner/random/structure/billboard,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "PE" = (
 /turf/template_noop,
@@ -268,28 +271,28 @@
 /obj/modular_map_root/generic{
 	key = "station_small"
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "QM" = (
 /obj/modular_map_root/generic{
 	key = "station_large"
 	},
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "QO" = (
 /obj/machinery/light/directional/east,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Rk" = (
 /obj/effect/spawner/random/trash/graffiti,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Te" = (
 /obj/machinery/light/directional/south,
 /obj/effect/spawner/random/structure/table,
 /obj/effect/spawner/random/engineering/toolbox,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Tn" = (
 /turf/open/space/basic,
@@ -297,19 +300,19 @@
 "TM" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "VX" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Wd" = (
 /obj/effect/turf_decal/tile/dark_red/half,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 "Wp" = (
 /obj/effect/landmark/bitrunning/mob_segment,
-/turf/open/floor/sepia,
+/turf/open/floor/iron/sepia,
 /area/virtual_domain)
 
 (1,1,1) = {"

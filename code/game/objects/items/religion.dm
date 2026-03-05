@@ -49,7 +49,7 @@
 		if(H.mind && (has_job_loyalties || has_role_loyalties))
 			if(has_job_loyalties && (H.mind.assigned_role.departments_bitflags & job_loyalties))
 				inspired += H
-			else if(has_role_loyalties && (H.mind.special_role in role_loyalties))
+			else if(has_role_loyalties && length(H.mind.get_special_roles() & role_loyalties))
 				inspired += H
 		else if(check_inspiration(H))
 			inspired += H
@@ -386,6 +386,7 @@
 	icon_state = "crusader"
 	w_class = WEIGHT_CLASS_NORMAL
 	armor_type = /datum/armor/shoes_plate
+	body_parts_covered = FEET|LEGS
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = SHOES_MAX_TEMP_PROTECT

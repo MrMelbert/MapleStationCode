@@ -28,8 +28,12 @@
 
 	// NON-MODULE CHANGE: point to new icons
 	generate_possible_icon_states_list("maplestation_modules/icons/mob/inhands")
-	generate_possible_icon_states_list("maplestation_modules/story_content/captain_equipment")
-	generate_possible_icon_states_list("maplestation_modules/story_content/prince_equipment/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/bartender_equipment/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/casual_clothing/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/chaplain_equipment/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/kimono/icons")
+	generate_possible_icon_states_list("maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons")
 	// NON-MODULE CHANGE END
 
 	for(var/obj/item/item_path as anything in subtypesof(/obj/item))

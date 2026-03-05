@@ -16,13 +16,13 @@
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	old_hair = human_holder.hairstyle
 	human_holder.set_hairstyle("Bald", update = TRUE)
-	RegisterSignal(human_holder, COMSIG_CARBON_EQUIP_HAT, PROC_REF(equip_hat))
-	RegisterSignal(human_holder, COMSIG_CARBON_UNEQUIP_HAT, PROC_REF(unequip_hat))
+	RegisterSignal(human_holder, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(equip_hat))
+	RegisterSignal(human_holder, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(unequip_hat))
 
 /datum/quirk/item_quirk/bald/add_unique(client/client_source)
 	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
 	if(old_hair == "Bald")
-		baldie_wig.hairstyle = pick(GLOB.hairstyles_list - "Bald")
+		baldie_wig.hairstyle = pick(SSaccessories.hairstyles_list - "Bald")
 	else
 		baldie_wig.hairstyle = old_hair
 
@@ -70,7 +70,7 @@
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	if(human_holder.hairstyle == "Bald" && old_hair != "Bald")
 		human_holder.set_hairstyle(old_hair, update = TRUE)
-	UnregisterSignal(human_holder, list(COMSIG_CARBON_EQUIP_HAT, COMSIG_CARBON_UNEQUIP_HAT))
+	UnregisterSignal(human_holder, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM))
 	human_holder.clear_mood_event("bad_hair_day")
 
 ///Checks if the headgear equipped is a wig and sets the mood event accordingly
@@ -83,7 +83,7 @@
 		quirk_holder.clear_mood_event("bad_hair_day") //Our head is covered
 
 ///Applies a bad moodlet for having an uncovered head
-/datum/quirk/item_quirk/bald/proc/unequip_hat(mob/user, obj/item/clothing, force, newloc, no_move, invdrop, silent)
+/datum/quirk/item_quirk/bald/proc/unequip_hat(mob/user, obj/item/clothing)
 	SIGNAL_HANDLER
 
 	quirk_holder.add_mood_event("bad_hair_day", /datum/mood_event/bald)

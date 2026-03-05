@@ -119,6 +119,9 @@
 /obj/item/piggy_bank/museum
 	name = "Pigston Swinelord VI"
 	desc = "The museum's mascot piggy bank and favorite embezzler, known to carry donations between shifts without paying taxes. The space IRS hates him."
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/piggy_bank/museum"
+	post_init_icon_state = "piggy_bank"
 	persistence_id = "museum_piggy"
 	greyscale_colors = COLOR_PINK
 	maximum_value = PAYCHECK_COMMAND * 100

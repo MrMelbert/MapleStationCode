@@ -1,8 +1,7 @@
 /datum/job/warden
 	title = JOB_WARDEN
-	description = "Watch over the Brig and Prison Wing, release prisoners when \
-		their time is up, issue equipment to security, be a security officer when \
-		they all eventually die."
+	description = "Watch over the brig, handle prisoners, issue equipment to security. \
+		Never let the armory go unsupervised - even for a second."
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
 	faction = FACTION_STATION
@@ -21,6 +20,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
 
+	mind_traits = list(SECURITY_MIND_TRAITS)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_PRETENDER_ROYAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_WARDEN
@@ -29,7 +29,9 @@
 		/datum/job_department/security,
 		)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 15,
@@ -40,7 +42,13 @@
 		/obj/item/storage/box/lethalshot = 5
 	)
 	rpg_title = "Jailor"
-	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT
+	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_ANTAG_PROTECTED
+
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/warden
 	name = "Warden"
@@ -49,14 +57,14 @@
 	id_trim = /datum/id_trim/job/warden
 	uniform = /obj/item/clothing/under/rank/security/warden
 	suit = /obj/item/clothing/suit/armor/vest/warden/alt
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	backpack_contents = list(
 		/obj/item/evidencebag = 1,
 		)
 	belt = /obj/item/modular_computer/pda/warden
 	ears = /obj/item/radio/headset/headset_sec/alt
 	glasses = /obj/item/clothing/glasses/hud/security/sunglasses
-	gloves = /obj/item/clothing/gloves/color/black
+	gloves = /obj/item/clothing/gloves/color/black/security
 	head = /obj/item/clothing/head/hats/warden/red
 	shoes = /obj/item/clothing/shoes/jackboots/sec
 	l_pocket = /obj/item/restraints/handcuffs

@@ -43,6 +43,7 @@
 		/datum/language/common,
 		/datum/language/impdraconic,
 		/datum/language/isatoa,
+		/datum/language/kuiperian,
 		/datum/language/piratespeak,
 		/datum/language/shadowtongue,
 		/datum/language/uncommon,

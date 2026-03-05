@@ -9,6 +9,11 @@
 		CHOICE_CONTINUE,
 	)
 
+/datum/vote/autotransfer/initiate_vote(initiator, duration)
+	. = ..()
+	. += "<br>"
+	. += span_slightly_smaller("This vote is OOC. On a success, a transfer shuttle will be called.")
+
 /datum/vote/autotransfer/toggle_votable()
 	CONFIG_SET(flag/allow_vote_transfer, !CONFIG_GET(flag/allow_vote_transfer))
 
@@ -23,10 +28,7 @@
 	if(!forced && !CONFIG_GET(flag/allow_vote_transfer))
 		return "Transfer votes are disabled."
 
-	if(!SScrewtransfer)
-		return "Transfer subsystem missing. Can't really host a vote for it! This is a bug."
-
-	if(SScrewtransfer.transfer_vote_successful)
+	if(SScrewtransfer?.transfer_vote_successful)
 		return "A transfer vote has already passed."
 
 	return VOTE_AVAILABLE

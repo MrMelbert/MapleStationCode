@@ -210,6 +210,8 @@
 	var/damage_falloff_tile
 	///How much we want to drop stamina damage (defined by the stamina variable) per tile as it travels through the air
 	var/stamina_falloff_tile
+	///How much we want to drop pain (defined by the pain variable) per tile as it travels through the air
+	var/pain_falloff_tile
 	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
 	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
@@ -241,12 +243,14 @@
 		damage += damage_falloff_tile
 	if(stamina_falloff_tile && stamina >= 0)
 		stamina += stamina_falloff_tile
+	if(pain_falloff_tile && pain >= 0)
+		pain += pain_falloff_tile
 
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_RANGE)
 	if(range <= 0 && loc)
 		on_range()
 
-	if(damage_falloff_tile && damage <= 0 || stamina_falloff_tile && stamina <= 0)
+	if((damage_falloff_tile && damage <= 0) || (stamina_falloff_tile && stamina <= 0) || (pain_falloff_tile && pain <= 0))
 		on_range()
 
 /obj/projectile/proc/on_range() //if we want there to be effects when they reach the end of their range
@@ -994,10 +998,14 @@
 	forceMove(source_loc)
 	trajectory_ignore_forcemove = FALSE
 
-	starting = source_loc
 	pixel_x = source.pixel_x
 	pixel_y = source.pixel_y
 	original = target
+
+	if (starting != source_loc)
+		starting = source_loc
+		forceMove(source_loc)
+
 	if(length(modifiers))
 		var/list/calculated = calculate_projectile_angle_and_pixel_offsets(source, target_loc && target, modifiers)
 
@@ -1090,7 +1098,9 @@
 	if(tracer_type)
 		var/tempref = REF(src)
 		for(var/datum/point/p in beam_segments)
-			generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
+			// NON-MODULE CHANGE
+			var/obj/effect/tracer = generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
+			animate(tracer, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 	if(muzzle_type && duration > 0)
 		var/datum/point/p = beam_segments[1]
 		var/atom/movable/thing = new muzzle_type
@@ -1099,7 +1109,9 @@
 		matrix.Turn(original_angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
+		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override || color)
+		// NON-MODULE CHANGE
+		animate(thing, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
@@ -1110,6 +1122,8 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(impact_light_range, impact_light_intensity, impact_light_color_override? impact_light_color_override : color)
+		// NON-MODULE CHANGE
+		animate(thing, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
 	if(cleanup)
 		cleanup_beam_segments()
@@ -1126,7 +1140,7 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
-	if(damage > 0 || stamina > 0)
+	if(damage > 0 || stamina > 0 || pain > 0)
 		return TRUE
 
 	if(paralyze + stun + immobilize + knockdown > 0 SECONDS)

@@ -34,8 +34,9 @@
 /// The base zap power transmission of the supermatter crystal in W/MeV.
 #define BASE_POWER_TRANSMISSION_RATE 1040
 
-//These would be what you would get at point blank, decreases with distance
-#define DETONATION_HALLUCINATION (20 MINUTES)
+//These would be what you would get at point blank, decreases with distance up to a minimum
+#define DETONATION_HALLUCINATION_MAX (20 MINUTES)
+#define DETONATION_HALLUCINATION_MIN (100 SECONDS)
 
 /// All humans within this range will be irradiated
 #define DETONATION_RADIATION_RANGE 20
@@ -190,7 +191,7 @@
 /// Colours used for effects.
 #define SUPERMATTER_COLOUR "#ffd04f"
 #define SUPERMATTER_RED "#aa2c16"
-#define SUPERMATTER_CASCADE_COLOUR "#333333"
+#define SUPERMATTER_CASCADE_COLOUR COLOR_ALMOST_BLACK
 #define SUPERMATTER_TESLA_COLOUR "#00ffff"
 #define SUPERMATTER_SINGULARITY_RAYS_COLOUR "#750000"
 #define SUPERMATTER_SINGULARITY_LIGHT_COLOUR "#400060"

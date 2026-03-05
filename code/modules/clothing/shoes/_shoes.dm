@@ -7,10 +7,8 @@
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
-
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
-
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
@@ -54,7 +52,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 		// NON-MODULE CHANGE reworking clothing blood overlays
@@ -104,6 +101,9 @@
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_worn_shoes()
+
+/obj/item/clothing/shoes/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	return icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "boots_worn")
 
 /**
  * adjust_laces adjusts whether our shoes (assuming they can_be_tied) and tied, untied, or knotted

@@ -133,7 +133,7 @@
 	target.share_blood_on_touch(src)
 
 	// check panic state
-	var/cpr_certified = HAS_TRAIT(src, TRAIT_CPR_CERTIFIED)
+	var/cpr_certified = HAS_MIND_TRAIT(src, TRAIT_CPR_CERTIFIED)
 	var/should_panic = beat >= BEATS_PER_CPR_CYCLE + 1 && target.get_bpm() <= 0
 	if(panicking)
 		if(!should_panic)
@@ -225,7 +225,7 @@
 		if(IS_ORGANIC_LIMB(chest))
 			to_chat(target, span_notice("You feel the pressure on your chest ease!"))
 			chest.heal_damage(brute = 3)
-			target.cause_pain(BODY_ZONE_CHEST, -3)
+			target.heal_pain(3, BODY_ZONE_CHEST)
 
 		log_combat(src, target, "CPRed", addition = "(breath)")
 

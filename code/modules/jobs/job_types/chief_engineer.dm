@@ -1,7 +1,7 @@
 /datum/job/chief_engineer
 	title = JOB_CHIEF_ENGINEER
 	description = "Coordinate engineering, ensure equipment doesn't get stolen, \
-		make sure the Supermatter doesn't blow up, maintain telecommunications."
+		stop the Supermatter from blowing up, maintain telecommunications."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list("Engineering")
@@ -33,7 +33,14 @@
 	display_order = JOB_DISPLAY_ORDER_CHIEF_ENGINEER
 	bounty_types = CIV_JOB_ENG
 
-	family_heirlooms = list(/obj/item/clothing/head/utility/hardhat/white, /obj/item/screwdriver, /obj/item/wrench, /obj/item/weldingtool, /obj/item/crowbar, /obj/item/wirecutters)
+	family_heirlooms = list(
+		/obj/item/clothing/head/utility/hardhat/white,
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/weldingtool,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/cracker = 25, //you know. for poly
@@ -48,6 +55,13 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_MASTER,
+		/datum/skill/eva = SKILL_LEVEL_EXPERT,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_MASTER,
+	)
 
 /datum/job/chief_engineer/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
@@ -65,7 +79,7 @@
 	id_trim = /datum/id_trim/job/chief_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/chief_engineer
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/silver = 1,
 		/obj/item/construction/rcd/ce = 1,
 	)
 	belt = /obj/item/storage/belt/utility/chief/full
@@ -82,7 +96,7 @@
 
 	box = /obj/item/storage/box/survival/engineer
 	chameleon_extras = /obj/item/stamp/head/ce
-	skillchips = list(/obj/item/skillchip/job/engineer)
+	// skillchips = list(/obj/item/skillchip/job/engineer)
 	pda_slot = ITEM_SLOT_LPOCKET
 
 /datum/outfit/job/ce/mod

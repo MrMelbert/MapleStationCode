@@ -147,7 +147,7 @@
 		owner.updatehealth()
 
 	// Heal some pain too
-	owner.cause_pain(BODY_ZONES_ALL, -3)
+	owner.heal_pain(3)
 
 /datum/status_effect/fleshmend/proc/on_ignited(datum/source)
 	SIGNAL_HANDLER
@@ -199,6 +199,9 @@
 	if(HAS_TRAIT(new_owner, TRAIT_HULK))
 		modifier += 0.5
 
+	if(HAS_TRAIT(new_owner, TRAIT_STIMMED)) // Naturally produces stimulants to help get you PUMPED
+		modifier += 1
+
 	if(HAS_TRAIT(new_owner, TRAIT_FAT)) // less xp until you get into shape
 		modifier -= 0.5
 
@@ -213,10 +216,10 @@
 		if(new_owner.reagents.has_reagent(workout_reagent))
 			food_boost += supplementary_reagents_bonus[workout_reagent]
 
-	var/skill_level_boost = (new_owner.mind.get_skill_level(/datum/skill/fitness) - 1) * 2 SECONDS
+	var/skill_level_boost = (new_owner.mind.get_skill_level(/datum/skill/athletics) - 1) * 2 SECONDS
 	bonus_time = (bonus_time + food_boost + skill_level_boost) * modifier
 
-	var/exhaustion_limit = new_owner.mind.get_skill_modifier(/datum/skill/fitness, SKILL_VALUE_MODIFIER) + world.time
+	var/exhaustion_limit = new_owner.mind.get_skill_modifier(/datum/skill/athletics, SKILL_VALUE_MODIFIER) + world.time
 	if(duration + bonus_time >= exhaustion_limit)
 		duration = exhaustion_limit
 		to_chat(new_owner, span_userdanger("Your muscles are exhausted! Might be a good idea to sleep..."))
@@ -232,10 +235,10 @@
 /datum/status_effect/exercised/refresh(mob/living/new_owner, bonus_time)
 	duration += workout_duration(new_owner, bonus_time)
 	new_owner.clear_mood_event("exercise") // we need to reset the old mood event in case our fitness skill changes
-	new_owner.add_mood_event("exercise", /datum/mood_event/exercise, new_owner.mind.get_skill_level(/datum/skill/fitness))
+	new_owner.add_mood_event("exercise", /datum/mood_event/exercise, new_owner.mind.get_skill_level(/datum/skill/athletics))
 
 /datum/status_effect/exercised/on_apply()
-	owner.add_mood_event("exercise", /datum/mood_event/exercise, owner.mind.get_skill_level(/datum/skill/fitness))
+	owner.add_mood_event("exercise", /datum/mood_event/exercise, owner.mind.get_skill_level(/datum/skill/athletics))
 	return ..()
 
 /datum/status_effect/exercised/on_remove()
@@ -278,15 +281,13 @@
 
 	//Makes the user passive, it's in their oath not to harm!
 	ADD_TRAIT(owner, TRAIT_PACIFISM, HIPPOCRATIC_OATH_TRAIT)
-	var/datum/atom_hud/med_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	med_hud.show_to(owner)
+	ADD_TRAIT(owner, TRAIT_MEDICAL_HUD, HIPPOCRATIC_OATH_TRAIT)
 	return ..()
 
 /datum/status_effect/hippocratic_oath/on_remove()
 	QDEL_NULL(aura_healing)
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, HIPPOCRATIC_OATH_TRAIT)
-	var/datum/atom_hud/med_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	med_hud.hide_from(owner)
+	REMOVE_TRAIT(owner, TRAIT_MEDICAL_HUD, HIPPOCRATIC_OATH_TRAIT)
 
 /datum/status_effect/hippocratic_oath/get_examine_text()
 	return span_notice("[owner.p_They()] seem[owner.p_s()] to have an aura of healing and helpfulness about [owner.p_them()].")
@@ -386,9 +387,8 @@
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	owner.heal_overall_damage(25, 25)
 	owner.fully_heal(HEAL_CC_STATUS|HEAL_TEMP)
-	owner.cause_pain(BODY_ZONES_LIMBS, -30)
-	owner.cause_pain(BODY_ZONE_CHEST, -40)
-	owner.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
+	for(var/zone in BODY_ZONES_ALL)
+		owner.heal_pain(zone == BODY_ZONE_CHEST ? 40 : 15, zone)
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
@@ -624,4 +624,31 @@
 	owner.adjustOxyLoss(-1 * modifier * seconds_between_ticks)
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume += modifier * seconds_between_ticks
-	owner.cause_pain(BODY_ZONES_ALL, -0.5 * modifier * seconds_between_ticks)
+	owner.heal_pain(0.5 * modifier * seconds_between_ticks)
+
+/// Heal in darkness and potentially trigger other effects, persists for a short duration after leaving
+/datum/status_effect/shadow_regeneration
+	id = "shadow_regeneration"
+	duration = 2 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = /atom/movable/screen/alert/status_effect/shadow_regeneration
+
+/datum/status_effect/shadow_regeneration/on_apply()
+	. = ..()
+	if (!.)
+		return FALSE
+	heal_owner()
+	return TRUE
+
+/datum/status_effect/shadow_regeneration/refresh(effect)
+	. = ..()
+	heal_owner()
+
+/// Regenerate health whenever this status effect is applied or reapplied
+/datum/status_effect/shadow_regeneration/proc/heal_owner()
+	owner.heal_overall_damage(brute = 1, burn = 1, required_bodytype = BODYTYPE_ORGANIC)
+
+/atom/movable/screen/alert/status_effect/shadow_regeneration
+	name = "Shadow Regeneration"
+	desc = "Bathed in soothing darkness, you will slowly heal yourself."
+	icon_state = "lightless"

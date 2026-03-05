@@ -12,6 +12,8 @@
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	// drop_sound = 'sound/items/handling/glove_drop.ogg'
+	// pickup_sound = 'sound/items/handling/glove_pick_up.ogg'
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20
@@ -52,7 +54,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 		// NON-MODULE CHANGE reworking clothing blood overlays
