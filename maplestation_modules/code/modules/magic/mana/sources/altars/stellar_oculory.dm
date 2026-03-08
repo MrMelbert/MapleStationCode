@@ -80,12 +80,15 @@
 		if(FULL_STARLIGHT)
 			last_pulse_value = FULL_STARLIGHT
 			pulse_value = high_pulse_value
+			icon_state = "stellar_high"
 		if(PARTIAL_STARLIGHT)
 			last_pulse_value = PARTIAL_STARLIGHT
 			pulse_value = medium_pulse_value
+			icon_state = "stellar_medium"
 		if(NO_STARLIGHT)
 			last_pulse_value = NO_STARLIGHT
 			pulse_value = low_pulse_value
+			icon_state = "stellar"
 	// anims here
 	// also update sprite
 	mana_pool.amount += pulse_value
