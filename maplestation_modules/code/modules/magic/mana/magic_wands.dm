@@ -76,13 +76,13 @@
 		if(!transfer_confirmation || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
 			return
 		balloon_alert(user, "transferring mana...")
-		wand_pool.start_transfer(wand_pool)
+		wand_pool.start_transfer(user_pool)
 	else
 		transfer_confirmation = (tgui_alert(user, "Do you want to break the transfer from the [name] into yourself?", "Break Transfer?", options) == "Yes")
 		if(!transfer_confirmation || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
 			return
 		balloon_alert(user, "cancelled draw")
-		wand_pool.stop_transfer(wand_pool)
+		wand_pool.stop_transfer(user_pool)
 		return
 
 /obj/item/magic_wand/equipped(mob/user, slot, initial)
