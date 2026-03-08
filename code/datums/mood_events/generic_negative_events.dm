@@ -372,12 +372,12 @@
 	mood_change *= people_laughing_at_you
 	return ..()
 
-//These are unused so far but I want to remember them to use them later
-/datum/mood_event/surgery
-	description = "THEY'RE CUTTING ME OPEN!!"
-	mood_change = -8
-	event_flags = MOOD_EVENT_FEAR
-	// var/surgery_completed = FALSE
+// //These are unused so far but I want to remember them to use them later
+// /datum/mood_event/surgery
+// 	description = "THEY'RE CUTTING ME OPEN!!"
+// 	mood_change = -8
+// 	event_flags = MOOD_EVENT_FEAR
+// 	var/surgery_completed = FALSE
 
 // /datum/mood_event/surgery/success
 // 	description = "That surgery really hurt... Glad it worked, I guess..."
@@ -489,6 +489,11 @@
 	timeout = 3 MINUTES
 	event_flags = MOOD_EVENT_WHIMSY | MOOD_EVENT_GAMING
 
+/datum/mood_event/russian_roulette_lose_cheater
+	description = "I gambled and lost! Good thing I wasn't aiming for my head..."
+	mood_change = -10
+	timeout = 10 MINUTES
+
 /datum/mood_event/russian_roulette_lose
 	description = "I gambled my life and lost! I guess this is the end..."
 	mood_change = -20
@@ -585,14 +590,14 @@
 	timeout = 1 MINUTES
 
 /datum/mood_event/smoke_in_face
-	description = "Cigarette smoke is disgusting."
+	description = "They just blew disgusting smoke in my face!"
 	mood_change = -3
 	timeout = 30 SECONDS
 
 /datum/mood_event/smoke_in_face/add_effects(param)
-	// if(HAS_TRAIT(owner, TRAIT_ANOSMIA))
-	// 	description = "Cigarette smoke is unpleasant."
-	// 	mood_change = -1
+	if(!owner.can_smell())
+		description = "They just blew some unpleasant smoke in my face."
+		mood_change = -1
 	if(HAS_TRAIT(owner, TRAIT_SMOKER))
 		description = "Blowing smoke in my face, really?"
 		mood_change = 0

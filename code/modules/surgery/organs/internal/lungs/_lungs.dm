@@ -65,6 +65,10 @@
 	///Whether these lungs react negatively to miasma
 	var/suffers_miasma = TRUE
 
+	/// All incoming breaths will have their pressure multiplied against this. Higher values allow more air to be breathed at once,
+	/// while lower values can cause suffocation in low pressure environments.
+	var/received_pressure_mult = 1
+
 	var/oxy_breath_dam_min = MIN_TOXIC_GAS_DAMAGE
 	var/oxy_breath_dam_max = MAX_TOXIC_GAS_DAMAGE
 	var/oxy_damage_type = OXY
@@ -178,8 +182,9 @@
 	organ_owner.clear_alert(ALERT_NOT_ENOUGH_N2O)
 	RegisterSignal(organ_owner, COMSIG_CARBON_ATTEMPT_BREATHE, PROC_REF(block_breath))
 	organ_owner.remove_status_effect(/datum/status_effect/lungless)
+	update_bronchodilation_alerts()
 
-/obj/item/organ/lungs/on_mob_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/lungs/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	// This is very "manual" I realize, but it's useful to ensure cleanup for gases we're removing happens
 	// Avoids stuck alerts and such
@@ -286,7 +291,8 @@
 
 	var/ratio = (breath.gases[/datum/gas/oxygen][MOLES] / safe_oxygen_max) * 10
 	breather.apply_damage(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type, spread_damage = TRUE)
-	breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
+	if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+		breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
 
 /// Handles NOT having too much o2. only relevant if safe_oxygen_max has a value
 /obj/item/organ/lungs/proc/safe_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, old_o2_pp)
@@ -305,7 +311,8 @@
 	if(nitro_pp < safe_nitro_min)
 		// Suffocation side-effects.
 		// Not safe to check the old pp because of can_breath_vacuum
-		breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
 		var/gas_breathed = handle_suffocation(breather, nitro_pp, safe_nitro_min, breath.gases[/datum/gas/nitrogen][MOLES])
 		if(nitro_pp)
 			breathe_gas_volume(breath, /datum/gas/nitrogen, /datum/gas/carbon_dioxide, volume = gas_breathed)
@@ -336,7 +343,8 @@
 		breather.emote("cough")
 
 	if((world.time - breather.co2overloadtime) > 12 SECONDS)
-		breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
 		breather.Unconscious(6 SECONDS)
 		// Lets hurt em a little, let them know we mean business.
 		breather.apply_damage(3, co2_damage_type, spread_damage = TRUE)
@@ -355,7 +363,8 @@
 	// Suffocation side-effects.
 	if(plasma_pp < safe_plasma_min)
 		// Could check old_plasma_pp but vacuum breathing hates me
-		breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
 		// Breathe insufficient amount of Plasma, exhale CO2.
 		var/gas_breathed = handle_suffocation(breather, plasma_pp, safe_plasma_min, breath.gases[/datum/gas/plasma][MOLES])
 		if(plasma_pp)
@@ -378,7 +387,8 @@
 
 	// If it's the first breath with too much CO2 in it, lets start a counter, then have them pass out after 12s or so.
 	if(old_plasma_pp < safe_plasma_max)
-		breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
+		if(!HAS_TRAIT(breather, TRAIT_ANOSMIA))
+			breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 
 	var/ratio = (breath.gases[/datum/gas/plasma][MOLES] / safe_plasma_max) * 10
 	breather.apply_damage(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type, spread_damage = TRUE)
@@ -478,31 +488,9 @@
 			miasma_disease.name = "Unknown"
 			breather.AirborneContractDisease(miasma_disease, TRUE)
 	// Miasma side effects
-	switch(miasma_pp)
-		if(0.25 to 5)
-			// At lower pp, give out a little warning
-			breather.clear_mood_event("smell")
-			if(prob(5))
-				to_chat(breather, span_notice("There is an unpleasant smell in the air."))
-		if(5 to 15)
-			//At somewhat higher pp, warning becomes more obvious
-			if(prob(15))
-				to_chat(breather, span_warning("You smell something horribly decayed inside this room."))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/bad_smell)
-		if(15 to 30)
-			//Small chance to vomit. By now, people have internals on anyway
-			if(prob(5))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		if(30 to INFINITY)
-			//Higher chance to vomit. Let the horror start
-			if(prob(15))
-				to_chat(breather, span_warning("The stench of rotting carcasses is unbearable!"))
-				breather.add_mood_event("smell", /datum/mood_event/disgust/nauseating_stench)
-				breather.vomit(VOMIT_CATEGORY_DEFAULT)
-		else
-			breather.clear_mood_event("smell")
+	if (!breather.can_smell()) //Anosmia quirk holder cannot smell miasma, but can get diseases from it.
+		return
+
 	// In a full miasma atmosphere with 101.34 pKa, about 10 disgust per breath, is pretty low compared to threshholds
 	// Then again, this is a purely hypothetical scenario and hardly reachable
 	breather.adjust_disgust(0.1 * miasma_pp)
@@ -529,7 +517,7 @@
 		return
 
 	// More N2O, more severe side-effects. Causes stun/sleep.
-	if(old_n2o_pp < n2o_para_min)
+	if(old_n2o_pp < n2o_para_min && !HAS_TRAIT(breather, TRAIT_ANOSMIA))
 		breather.throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
 
 	// give them one second of grace to wake up and run away a bit!
@@ -667,7 +655,7 @@
 	// Build out our partial pressures, for use as we go
 	var/list/partial_pressures = list()
 	for(var/gas_id in breath_gases)
-		partial_pressures[gas_id] = breath.get_breath_partial_pressure(breath_gases[gas_id][MOLES])
+		partial_pressures[gas_id] = breath.get_breath_partial_pressure(breath_gases[gas_id][MOLES] * received_pressure_mult)
 
 	// Treat gas as other types of gas
 	for(var/list/conversion_packet in treat_as)
@@ -924,6 +912,35 @@
 		return span_boldwarning("Your lungs feel extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 	return span_boldwarning("It feels extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 
+/obj/item/organ/lungs/get_status_appendix(advanced, add_tooltips)
+	var/initial_pressure_mult = initial(received_pressure_mult)
+	if (received_pressure_mult == initial_pressure_mult)
+		return
+
+	var/tooltip
+	var/dilation_text
+	var/beginning_text = "Lung Dilation: "
+	if (received_pressure_mult > initial_pressure_mult) // higher than usual
+		beginning_text = span_blue("<b>[beginning_text]</b>")
+		dilation_text = span_blue("[(received_pressure_mult * 100) - 100]%")
+		tooltip = "Subject's lungs are dilated and breathing more air than usual. \
+			Increases the effectiveness of healium and other gases."
+
+	else
+		beginning_text = span_danger("<b>[beginning_text]</b>")
+		if (received_pressure_mult <= 0) // lethal
+			dilation_text = span_bolddanger("[received_pressure_mult * 100]%")
+			tooltip = "Subject's lungs are completely shut. Subject is unable to breathe and requires emergency surgery. \
+				If asthmatic, perform asthmatic bypass surgery and adminster albuterol inhalant. \
+				Otherwise, replace lungs."
+		else
+			dilation_text = span_danger("[received_pressure_mult * 100]%")
+			tooltip = "Subject's lungs are partially shut. \
+				If unable to breathe, administer a high-pressure internals tank or replace lungs. \
+				If asthmatic, inhaled albuterol or bypass surgery will likely help."
+
+	return beginning_text + conditional_tooltip(dilation_text, tooltip, add_tooltips)
+
 #define SMOKER_ORGAN_HEALTH (STANDARD_ORGAN_THRESHOLD * 0.75)
 #define SMOKER_LUNG_HEALING (STANDARD_ORGAN_HEALING * 0.75)
 
@@ -1078,6 +1095,38 @@
 
 
 #undef GAS_TOLERANCE
+
+/// Adjusting proc for [received_pressure_mult]. Updates bronchodilation alerts.
+/obj/item/organ/lungs/proc/adjust_received_pressure_mult(adjustment)
+	received_pressure_mult = max(received_pressure_mult + adjustment, 0)
+	update_bronchodilation_alerts()
+
+/// Setter proc for [received_pressure_mult]. Updates bronchodilation alerts.
+/obj/item/organ/lungs/proc/set_received_pressure_mult(new_value)
+	received_pressure_mult = max(new_value, 0)
+	update_bronchodilation_alerts()
+
+#define LUNG_CAPACITY_ALERT_BUFFER 0.003
+/// Depending on [received_pressure_mult], gives either a bronchocontraction or bronchoconstriction alert to our owner (if we have one), or clears the alert
+/// if [received_pressure_mult] is near 1.
+/obj/item/organ/lungs/proc/update_bronchodilation_alerts()
+	if (!owner)
+		return
+
+	var/initial_value = initial(received_pressure_mult)
+
+	// you wont really notice if youre only breathing a bit more or a bit less
+	var/dilated = (received_pressure_mult > (initial_value + LUNG_CAPACITY_ALERT_BUFFER))
+	var/constricted = (received_pressure_mult < (initial_value - LUNG_CAPACITY_ALERT_BUFFER))
+
+	if (dilated)
+		owner.throw_alert(ALERT_BRONCHODILATION, /atom/movable/screen/alert/bronchodilated)
+	else if (constricted)
+		owner.throw_alert(ALERT_BRONCHODILATION, /atom/movable/screen/alert/bronchoconstricted)
+	else
+		owner.clear_alert(ALERT_BRONCHODILATION)
+
+#undef LUNG_CAPACITY_ALERT_BUFFER
 
 /obj/item/organ/lungs/ethereal
 	name = "aeration reticulum"

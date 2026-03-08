@@ -998,10 +998,14 @@
 	forceMove(source_loc)
 	trajectory_ignore_forcemove = FALSE
 
-	starting = source_loc
 	pixel_x = source.pixel_x
 	pixel_y = source.pixel_y
 	original = target
+
+	if (starting != source_loc)
+		starting = source_loc
+		forceMove(source_loc)
+
 	if(length(modifiers))
 		var/list/calculated = calculate_projectile_angle_and_pixel_offsets(source, target_loc && target, modifiers)
 
@@ -1105,7 +1109,7 @@
 		matrix.Turn(original_angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
+		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override || color)
 		// NON-MODULE CHANGE
 		animate(thing, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
@@ -1136,7 +1140,7 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
-	if(damage > 0 || stamina > 0)
+	if(damage > 0 || stamina > 0 || pain > 0)
 		return TRUE
 
 	if(paralyze + stun + immobilize + knockdown > 0 SECONDS)

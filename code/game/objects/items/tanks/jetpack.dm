@@ -103,16 +103,15 @@
 		return FALSE
 	on = TRUE
 	update_icon(UPDATE_ICON_STATE)
-	if(full_speed)
-		user.add_movespeed_modifier(/datum/movespeed_modifier/jetpack/fullspeed)
+	user.add_movespeed_modifier(full_speed ? /datum/movespeed_modifier/jetpack/fullspeed : /datum/movespeed_modifier/jetpack)
 	return TRUE
 
 /obj/item/tank/jetpack/proc/turn_off(mob/user)
 	SEND_SIGNAL(src, COMSIG_JETPACK_DEACTIVATED, user)
 	on = FALSE
 	update_icon(UPDATE_ICON_STATE)
-	if(user)
-		user.remove_movespeed_modifier(/datum/movespeed_modifier/jetpack/fullspeed)
+	user?.remove_movespeed_modifier(/datum/movespeed_modifier/jetpack/fullspeed)
+	user?.remove_movespeed_modifier(/datum/movespeed_modifier/jetpack)
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, use_fuel = TRUE)
 	if(!ismob(loc))

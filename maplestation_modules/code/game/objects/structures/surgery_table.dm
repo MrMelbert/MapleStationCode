@@ -74,7 +74,7 @@
 
 /obj/structure/table/optable/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/tank/internals))
-		return ITEM_INTERACT_BLOCKING
+		return NONE
 	else if(!isnull(attached_tank))
 		balloon_alert(user, "already has a tank!")
 		return ITEM_INTERACT_BLOCKING

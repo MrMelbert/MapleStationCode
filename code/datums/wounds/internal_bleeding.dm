@@ -65,7 +65,7 @@
 	if(!victim || victim.stat == DEAD || HAS_TRAIT(victim, TRAIT_STASIS) || !victim.needs_heart())
 		return
 	var/severity_mod = (severity + 1)
-	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, drip = FALSE)
+	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, leave_pool = FALSE)
 	if(severity == WOUND_SEVERITY_TRIVIAL)
 		if(highest_severity == WOUND_SEVERITY_TRIVIAL)
 			var/percent = 0.01
@@ -76,6 +76,11 @@
 			heal_percent(percent * seconds_per_tick)
 		if(QDELETED(src))
 			return
+
+	if(SPT_PROB(1, seconds_per_tick))
+		var/datum/blood_type/blood_type = victim.get_blood_type()
+		if(blood_type)
+			to_chat(victim, span_notice("You can taste [LOWER_TEXT(blood_type.reagent_type::name)]."))
 
 	switch(limb.body_zone)
 		if(BODY_ZONE_HEAD)

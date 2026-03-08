@@ -52,7 +52,7 @@
 
 /datum/reagent/clf3
 	name = "Chlorine Trifluoride"
-	description = "Makes a temporary 3x3 fireball when it comes into existence, so be careful when mixing. ClF3 applied to a surface burns things that wouldn't otherwise burn, sometimes through the very floors of the station and exposing it to the vacuum of space."
+	description = "A very flammable liquid capable of burning even through the hull of the station. Bursts into a fireball upon creation."
 	reagent_state = LIQUID
 	color = "#FFC8C8"
 	metabolization_rate = 10 * REAGENTS_METABOLISM
@@ -248,7 +248,8 @@
 
 /datum/reagent/cryostylane/on_mob_add(mob/living/affected_mob, amount)
 	. = ..()
-	affected_mob.add_surgery_speed_mod(type, 1 + ((CRYO_SPEED_PREFACTOR * (1 - creation_purity)) + CRYO_SPEED_CONSTANT)) //10% - 30% slower
+	// Between a 1.1x and a 1.5x to surgery time depending on purity
+	affected_mob.add_surgery_speed_mod(type, 1 + ((CRYO_SPEED_PREFACTOR * (1 - creation_purity)) + CRYO_SPEED_CONSTANT), min(amount * 1 MINUTES, 5 MINUTES))
 	affected_mob.add_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
 	ADD_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 

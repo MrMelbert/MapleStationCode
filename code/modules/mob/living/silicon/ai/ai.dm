@@ -27,9 +27,10 @@
 	mob_size = MOB_SIZE_LARGE
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE
+	mob_flags = MOB_HAS_HEARING_RELAY
 	var/battery = 200 //emergency power if the AI's APC is off
 	var/list/network = list(CAMERANET_NETWORK_SS13)
-	var/obj/machinery/camera/current
+	var/obj/machinery/holopad/current
 	var/list/connected_robots = list()
 	var/aiRestorePowerRoutine = POWER_RESTORATION_OFF
 	var/requires_power = POWER_REQ_ALL
@@ -132,7 +133,7 @@
 
 	if(target_ai.mind)
 		target_ai.mind.transfer_to(src)
-		if(mind.special_role)
+		if(is_antag())
 			to_chat(src, span_userdanger("You have been installed as an AI! "))
 			to_chat(src, span_danger("You must obey your silicon laws above all else. Your objectives will consider you to be dead."))
 		if(!mind.has_ever_been_ai)
@@ -277,9 +278,14 @@
 		if(hologram_choice == "Random")
 			hologram_choice = pick(GLOB.ai_hologram_icons)
 
-		hologram_appearance = mutable_appearance(GLOB.ai_hologram_icons[hologram_choice], GLOB.ai_hologram_icon_state[hologram_choice])
+		set_hologram_appearance(mutable_appearance(GLOB.ai_hologram_icons[hologram_choice], GLOB.ai_hologram_icon_state[hologram_choice]))
+		return
 
-	hologram_appearance ||= mutable_appearance(GLOB.ai_hologram_icons[AI_HOLOGRAM_DEFAULT], GLOB.ai_hologram_icon_state[AI_HOLOGRAM_DEFAULT])
+	set_hologram_appearance(mutable_appearance(GLOB.ai_hologram_icons[AI_HOLOGRAM_DEFAULT], GLOB.ai_hologram_icon_state[AI_HOLOGRAM_DEFAULT]))
+
+/mob/living/silicon/ai/proc/set_hologram_appearance(mutable_appearance/new_appearance)
+	hologram_appearance = new_appearance
+	refresh_eyeobj_appearance()
 
 /// Apply an AI's emote display preference
 /mob/living/silicon/ai/proc/apply_pref_emote_display(client/player_client)
@@ -708,7 +714,7 @@
 					var/mutable_appearance/character_icon = personnel_list[input]
 					if(character_icon)
 						character_icon.setDir(SOUTH)
-						hologram_appearance = character_icon
+						set_hologram_appearance(character_icon)
 
 				if("My Character")
 					switch(tgui_alert(usr,"WARNING: Your AI hologram will take the appearance of your currently selected character ([usr.client.prefs?.read_preference(/datum/preference/name/real_name)]). Are you sure you want to proceed?", "Customize", list("Yes","No")))
@@ -717,7 +723,7 @@
 							var/mutable_appearance/dummy_appearance = usr.client.prefs.render_new_preview_appearance(ai_dummy)
 							if(dummy_appearance)
 								qdel(ai_dummy)
-								hologram_appearance = dummy_appearance
+								set_hologram_appearance(dummy_appearance)
 						if("No")
 							return FALSE
 
@@ -753,7 +759,7 @@
 					working_state = "guard"
 				else
 					working_state = input
-			hologram_appearance = mutable_appearance(icon_list[input], working_state)
+			set_hologram_appearance(mutable_appearance(icon_list[input], working_state))
 		else
 			var/list/icon_list = list(
 				"default" = 'icons/mob/silicon/ai.dmi',
@@ -777,7 +783,7 @@
 					working_state = "alienq"
 				else
 					working_state = input
-			hologram_appearance = mutable_appearance(icon_list[input], working_state)
+			set_hologram_appearance(mutable_appearance(icon_list[input], working_state))
 	return
 
 /datum/action/innate/core_return
@@ -1150,11 +1156,7 @@
 
 /mob/living/silicon/ai/get_exp_list(minutes)
 	. = ..()
-
-	var/datum/job/ai/ai_job_ref = SSjob.GetJobType(/datum/job/ai)
-
-	.[ai_job_ref.title] = minutes
-
+	.[/datum/job/ai::title] = minutes
 
 /mob/living/silicon/ai/get_voice(add_id_name)
 	if(ai_voicechanger?.changing_voice)
@@ -1162,3 +1164,19 @@
 	return ..()
 
 #undef CALL_BOT_COOLDOWN
+
+/mob/living/silicon/ai/init_unconscious_appearance()
+	var/image/static_overlay = image('icons/effects/effects.dmi', null, "static_base")
+	static_overlay.blend_mode = BLEND_INSET_OVERLAY
+
+	var/image/static_image = image('icons/mob/silicon/ai.dmi', src, "ai-empty")
+	static_image.appearance_flags |= KEEP_TOGETHER
+	static_image.overlays += static_overlay
+	static_image.override = TRUE
+	static_image.name = "unknown AI"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)

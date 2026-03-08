@@ -67,17 +67,15 @@
 	return ..()
 
 /obj/item/organ/monster_core/mob_insert(mob/living/carbon/target_carbon, special = FALSE, movement_flags)
-	. = ..()
-
 	if (inert)
 		to_chat(target_carbon, span_notice("[src] breaks down as you try to insert it."))
 		qdel(src)
 		return FALSE
+	. = ..()
 	if (!decay_timer)
-		return TRUE
+		return
 	preserve(TRUE)
 	target_carbon.visible_message(span_notice("[src] stabilizes as it's inserted."))
-	return TRUE
 
 /obj/item/organ/monster_core/mob_remove(mob/living/carbon/target_carbon, special, movement_flags)
 	if (!inert && !special)

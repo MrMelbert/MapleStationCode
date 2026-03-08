@@ -33,6 +33,8 @@
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(statchange))
+	RegisterSignal(owner, COMSIG_MOB_REMOVING_CUFFS, PROC_REF(on_cuff_resist))
+	RegisterSignal(owner, COMSIG_MOB_REMOVED_CUFFS, PROC_REF(on_cuff_break))
 	owner.add_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
@@ -100,6 +102,8 @@
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
 	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
+	UnregisterSignal(owner, COMSIG_MOB_REMOVING_CUFFS)
+	UnregisterSignal(owner, COMSIG_MOB_REMOVED_CUFFS)
 	owner.remove_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/human/hulk/proc/handle_speech(datum/source, list/speech_args)
@@ -113,6 +117,15 @@
 	// the reason we don't just uppertext(message) in this proc is so that our hulk speech
 	// can uppercase all other speech moidifiers after they are done (by returning COMPONENT_UPPERCASE_SPEECH)
 	return COMPONENT_UPPERCASE_SPEECH
+
+/datum/mutation/human/hulk/proc/on_cuff_resist(mob/living/source, ...)
+	SIGNAL_HANDLER
+	INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
+	return NONE
+
+/datum/mutation/human/hulk/proc/on_cuff_break()
+	SIGNAL_HANDLER
+	return BREAK_CUFFS
 
 /// How many steps it takes to throw the mob
 #define HULK_TAILTHROW_STEPS 28

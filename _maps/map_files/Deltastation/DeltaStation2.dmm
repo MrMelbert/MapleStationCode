@@ -5171,9 +5171,6 @@
 /turf/open/floor/iron,
 /area/station/security/execution/transfer)
 "bbw" = (
-/obj/machinery/computer/rdconsole{
-	dir = 8
-	},
 /obj/machinery/camera/directional/east{
 	c_tag = "Science - Research Director's Office";
 	name = "science camera";
@@ -5181,6 +5178,9 @@
 	},
 /obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/tile/purple,
+/obj/machinery/modular_computer/preset/research{
+	dir = 8
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "bbz" = (
@@ -14772,6 +14772,7 @@
 /obj/effect/turf_decal/tile/purple/half/contrasted{
 	dir = 4
 	},
+/obj/item/taperecorder,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "cNd" = (
@@ -15809,12 +15810,8 @@
 /turf/open/floor/iron/white,
 /area/station/science/lobby)
 "cTP" = (
-/obj/structure/filingcabinet/chestdrawer,
 /obj/effect/turf_decal/bot,
 /obj/machinery/status_display/evac/directional/east,
-/obj/item/taperecorder{
-	pixel_y = 7
-	},
 /obj/machinery/light_switch/directional/north{
 	pixel_x = 9;
 	pixel_y = 32
@@ -15823,6 +15820,12 @@
 	dir = 8
 	},
 /obj/machinery/light/small/directional/east,
+/obj/structure/filingcabinet/genetic_backups{
+	pixel_x = 7
+	},
+/obj/structure/filingcabinet/filingcabinet{
+	pixel_x = -7
+	},
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/rd)
 "cTU" = (

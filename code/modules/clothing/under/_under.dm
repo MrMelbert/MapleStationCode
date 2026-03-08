@@ -295,24 +295,27 @@
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
 	// NON-MODULE CHANGEs
-	if(can_adjust)
-		. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
-	if(has_sensor == BROKEN_SENSORS)
-		. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
-	else if(has_sensor > NO_SENSORS)
-		switch(sensor_mode)
-			if(SENSOR_OFF)
-				. += "&bull; Its sensors appear to be disabled."
-			if(SENSOR_LIVING)
-				. += "&bull; Its binary life sensors appear to be enabled."
-			if(SENSOR_VITALS)
-				. += "&bull; Its vital tracker appears to be enabled."
-			if(SENSOR_COORDS)
-				. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
+	var/is_examinable = !ismob(loc) || loc == user // hide some information if another player is examining our uniform
+	if(is_examinable)
+		if(can_adjust)
+			. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
+		if(has_sensor == BROKEN_SENSORS)
+			. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
+		else if(has_sensor > NO_SENSORS)
+			switch(sensor_mode)
+				if(SENSOR_OFF)
+					. += "&bull; Its sensors appear to be disabled."
+				if(SENSOR_LIVING)
+					. += "&bull; Its binary life sensors appear to be enabled."
+				if(SENSOR_VITALS)
+					. += "&bull; Its vital tracker appears to be enabled."
+				if(SENSOR_COORDS)
+					. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
 	if(LAZYLEN(attached_accessories))
 		var/list/accessories = list_accessories_with_icon(user)
 		. += "&bull; It has [english_list(accessories)] attached."
-		. += "Alt-Right-Click to remove [attached_accessories[1]]."
+		if(is_examinable)
+			. += "Alt-Right-Click to remove [attached_accessories[1]]."
 
 /// Helper to list out all accessories with an icon besides it, for use in examine
 /obj/item/clothing/under/proc/list_accessories_with_icon(mob/user)

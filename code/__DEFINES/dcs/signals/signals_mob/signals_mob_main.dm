@@ -15,7 +15,9 @@
 #define COMSIG_MOB_REAGENT_CHECK "mob_reagent_check"
 	///stops the reagent check call
 	#define COMSIG_MOB_STOP_REAGENT_CHECK (1<<0)
-///from base of mob/clickon(): (atom/A, params)
+	///Allows for most on_life calls BUT metabolize()
+	#define COMSIG_MOB_STOP_REAGENT_METABOLISM (1<<1)
+///from base of mob/clickon(): (atom/A, list/modifiers)
 #define COMSIG_MOB_CLICKON "mob_clickon"
 ///from base of mob/MiddleClickOn(): (atom/A)
 #define COMSIG_MOB_MIDDLECLICKON "mob_middleclickon"
@@ -74,6 +76,9 @@
 #define COMSIG_MOB_MIND_TRANSFERRED_OUT_OF "mob_mind_transferred_out_of"
 /// From /mob/proc/ghostize() Called when a mob sucessfully ghosts
 #define COMSIG_MOB_GHOSTIZED "mob_ghostized"
+/// can_roll_midround(datum/antagonist/antag_type) from certain midround rulesets, (mob/living/source, datum/mind/mind, datum/antagonist/antagonist)
+#define COMSIG_MOB_MIND_BEFORE_MIDROUND_ROLL "mob_mind_before_midround_roll"
+	#define CANCEL_ROLL (1<<1)
 
 ///signal sent when a mob has their holy role set. Sent to the mob having their role changed.
 #define COMSIG_MOB_MIND_SET_HOLY_ROLE "mob_mind_set_holy_role"

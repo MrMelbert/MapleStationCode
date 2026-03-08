@@ -191,8 +191,11 @@
 		var/mob/wearer = get(src, /mob/living) || loc
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN_APPEARANCE) || !can_examine_when_worn(viewer))
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN_APPEARANCE))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
+			return
+		if(!can_examine_when_worn(viewer))
+			to_chat(viewer, span_notice("You can't make out that item from here."))
 			return
 
 		if(href_list["point_at"])
@@ -201,10 +204,12 @@
 			viewer.examinate(src)
 
 /// Checks if this item, when examined / pointed at while being worn, can actually be examined by the given mob
-/atom/movable/proc/can_examine_when_worn(mob/examiner)
-	return (examiner in viewers(loc))
+/atom/movable/proc/can_examine_when_worn(mob/examiner, min_range = 7)
+	return examiner.can_examine_worn_item(src, min_range)
 
-/obj/item/can_examine_when_worn(mob/examiner)
+/obj/item/can_examine_when_worn(mob/examiner, min_range = 7)
+	if(HAS_TRAIT(src, TRAIT_EXAMINE_SKIP))
+		return FALSE
 	if(!slot_flags)
 		return ..()
 	var/mob/living/carbon/wearer = loc
@@ -214,11 +219,21 @@
 		return FALSE
 	return ..()
 
-/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner)
+/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner, min_range = 7)
 	if(isclothing(loc))
 		var/obj/item/clothing/shirt = loc
-		return shirt.can_examine_when_worn(examiner)
+		return shirt.can_examine_when_worn(examiner, min_range)
 	return ..()
+
+/// Checks if this mob can examine the given worn item
+/mob/proc/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return TRUE
+
+/mob/living/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return (src in viewers(min_range, worn_item.loc))
+
+/mob/living/silicon/ai/can_examine_worn_item(obj/item/worn_item, min_range = 7)
+	return GLOB.cameranet.checkCameraVis(worn_item.loc)
 
 /obj/item/card/id/Topic(href, list/href_list)
 	. = ..()
@@ -231,15 +246,21 @@
 			to_chat(viewer, span_notice("[old_wearer?.p_They() || "They"] [old_wearer?.p_are() || "are"] no longer wearing that ID card."))
 			return
 
-		var/can_see_still = (viewer in viewers(old_wearer))
-		var/viable_time = can_see_still ? 3 MINUTES : 1 MINUTES // assuming 3min is the length of a hop line visit - give some leeway if they're still in sight
+		// assuming 3min is the length of a hop line visit - give some leeway if they're still in sight
+		var/viable_time = can_examine_when_worn(viewer) ? 3 MINUTES : 1 MINUTES
 		if((text2num(href_list["examine_time"]) + viable_time) < world.time)
-			to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
+			if(isobserver(viewer))
+				to_chat(viewer, span_notice("Examine [p_them()] again to refresh ID information."))
+			else if(isAI(viewer))
+				to_chat(viewer, span_notice("You can't access that ID's information anymore. Examine [p_them()] again."))
+			else
+				to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
 			return
 		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN_APPEARANCE))
 			to_chat(viewer, span_notice("You can't make out that ID anymore."))
 			return
-		if(!isobserver(viewer) && get_dist(viewer, old_wearer) > ID_EXAMINE_DISTANCE + 1) // leeway, ignored if the viewer is a ghost
+		// +1 range - gives a bit of leeway if they're wandering off
+		if(!can_examine_when_worn(viewer, min_range = ID_EXAMINE_DISTANCE + 1))
 			to_chat(viewer, span_notice("You can't make out that ID from here."))
 			return
 

@@ -104,7 +104,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_CORE
 	acceptable_bodyshape = BODYSHAPE_HUMANOID
-	wing_types = NONE
+	wing_types = null
+	biological_state = BIO_STANDARD_ALIEN
 	burn_modifier = 2
 
 /obj/item/bodypart/chest/larva
@@ -282,6 +283,7 @@
 	should_draw_greyscale = FALSE
 	appendage_noun = "scythe-like hand"
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /obj/item/bodypart/arm/right
 	name = "right arm"
@@ -381,6 +383,7 @@
 	should_draw_greyscale = FALSE
 	appendage_noun = "scythe-like hand"
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /// Parent Type for legs, should not appear in game.
 /obj/item/bodypart/leg
@@ -493,6 +496,7 @@
 	max_damage = LIMB_MAX_HP_ALIEN_LIMBS
 	should_draw_greyscale = FALSE
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /obj/item/bodypart/leg/right
 	name = "right leg"
@@ -583,3 +587,4 @@
 	max_damage = LIMB_MAX_HP_ALIEN_LIMBS
 	should_draw_greyscale = FALSE
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN

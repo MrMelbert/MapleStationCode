@@ -6,12 +6,18 @@
 	id = "digitigrade_cyber_r_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/right/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/borg_l_leg/digi
 	name = "Digitigrade Cybernetic Left Leg"
 	desc = /datum/design/borg_r_leg/digi::desc
 	id = "digitigrade_cyber_l_leg"
 	build_path = /obj/item/bodypart/leg/left/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_r_leg/digi
 	name = "Digitigrade Advanced Right Leg"
@@ -20,6 +26,9 @@
 		though makes it difficult to wear normal shoes."
 	id = "digitigrade_advanced_r_leg"
 	build_path = /obj/item/bodypart/leg/right/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_l_leg/digi
 	name = "Digitigrade Advanced Left Leg"
@@ -27,6 +36,9 @@
 	id = "digitigrade_advanced_l_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/left/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 // Limbs
 /obj/item/bodypart/leg/right/robot/digi

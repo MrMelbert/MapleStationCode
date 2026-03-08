@@ -123,18 +123,42 @@
 		return FALSE
 	if(dried)
 		return TRUE
-	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
-	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
+	// unique blood type effects like oil being ignitable
+	var/list/unique_blood = list()
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		if(unique_blood[blood_type])
+			continue
+		var/datum/blood_type/blood = find_blood_type(blood_type)
 		blood.set_up_blood(src, first_dna == 0)
+		unique_blood[blood_type] = TRUE
+	// handle smells
+	refresh_smells()
+	// updates name/overlay/desc
 	update_appearance()
+	// and changes its color accordingly
 	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE
+
+/// Add the scent of blood to this movable from the inputted blood DNA
+/atom/movable/proc/add_blood_scent(list/blood_DNA_to_add, duration = 2 MINUTES, intensity = SMELL_INTENSITY_WEAK, radius = 2)
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		var/datum/blood_type/blood = find_blood_type(blood_type)
+		if(blood.scent_text)
+			AddComponent( \
+				/datum/component/complex_smell, \
+				duration = duration, \
+				smell = blood.scent_text, \
+				category = blood.scent_category, \
+				smell_basetype = /datum/smell/blood, \
+				intensity = intensity, \
+				radius = radius, \
+			)
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
 	if(item_flags & NO_BLOOD_ON_ITEM)
 		return FALSE
-	return ..()
+	. = ..()
+	add_blood_scent(blood_DNA_to_add)
 
 // NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
@@ -203,6 +227,7 @@
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		if(dirty_hands)
 			blood_in_hands = rand(2, 4)
+		add_blood_scent(blood_DNA_to_add, radius = 1)
 
 	cached_blood_dna_color = null
 	update_clothing(slots_to_bloody)

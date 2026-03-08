@@ -1,11 +1,18 @@
 /datum/crafting_recipe/food
 	mass_craftable = TRUE
+	crafting_flags = parent_type::crafting_flags | CRAFT_TRANSFERS_REAGENT_COMPONENTS | CRAFT_CLEARS_REAGENTS
 
 /datum/crafting_recipe/food/on_craft_completion(mob/user, atom/result)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
-	if(istype(result) && !isnull(user.mind))
-		ADD_TRAIT(result, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	// NON-MODULE CHANGE
+	if(istype(result))
+		var/complexity = 1
+		if(istype(result, /obj/item/food))
+			var/obj/item/food/food = result
+			complexity = food.crafting_complexity
+
+		handle_chef_made_food(result, result, user.mind, complexity)
 
 /datum/crafting_recipe/food/New()
 	. = ..()
@@ -274,7 +281,7 @@
 	required_reagents = list(/datum/reagent/consumable/liquidelectricity/enriched = 2, /datum/reagent/consumable/grounding_solution = 1)
 	mix_message = "The mixture lets off a sharp snap as the electricity discharges."
 	mix_sound = 'sound/weapons/taser.ogg'
-	reaction_flags = REACTION_INSTANT
+	reaction_flags = REACTION_INSTANT | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/food/martian_batter
 	results = list(/datum/reagent/consumable/martian_batter = 10)

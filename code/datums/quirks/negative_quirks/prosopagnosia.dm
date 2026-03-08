@@ -35,23 +35,26 @@
 /datum/status_effect/grouped/see_no_names/proc/examine_name_override(datum/source, mob/living/carbon/human/examined, visible_name, list/name_override)
 	SIGNAL_HANDLER
 
-	if(!ishuman(examined) || source == examined)
+	if(!isliving(examined) || source == examined)
 		return NONE
+	if(!ishuman(examined) || !see_ids)
+		name_override[1] = "Unknown"
+		return COMPONENT_EXAMINE_NAME_OVERRIDEN
 
-	var/id_name =  see_ids && examined.get_id_name("", honorifics = TRUE)
+	var/id_name = examined.get_id_name("", honorifics = TRUE)
 	name_override[1] = id_name ? "[id_name]?" : "Unknown"
 	return COMPONENT_EXAMINE_NAME_OVERRIDEN
 
 /datum/status_effect/grouped/see_no_names/proc/screentip_name_override(datum/source, list/returned_name, obj/item/held_item, mob/living/carbon/human/hovered)
 	SIGNAL_HANDLER
 
-	if(!ishuman(hovered) || source == hovered)
+	if(!isliving(hovered) || source == hovered)
 		return NONE
-	if(!see_ids)
+	if(!ishuman(hovered) || !see_ids)
 		returned_name[1] = "Unknown"
 		return SCREENTIP_NAME_SET
 
-	var/id_name = see_ids && hovered.get_id_name("", honorifics = TRUE)
+	var/id_name = hovered.get_id_name("", honorifics = TRUE)
 	returned_name[1] = id_name ? "[id_name]?" : "Unknown"
 	return SCREENTIP_NAME_SET
 

@@ -221,7 +221,7 @@
 			return null
 
 		var/sound/hiss_sound = sound(speech_sound)
-		hiss_sound.frequency = 0.25
+		hiss_sound.frequency = 0.5
 		return hiss_sound
 	return null
 
@@ -261,6 +261,29 @@
 	// Set to update_body until update_body_parts_head_only is fixed
 	for (var/i in 1 to 3)
 		addtimer(CALLBACK(user, TYPE_PROC_REF(/mob, update_body)), i * 0.3 SECONDS)
+
+/datum/emote/living/carbon/human/close_eyes
+	key = "close"
+	key_third_person = "closes eyes"
+	message = "closes their eyes for a moment."
+	cooldown = 10 SECONDS
+
+/datum/emote/living/carbon/human/close_eyes/can_run_emote(mob/living/carbon/human/user, status_check, intentional, params)
+	return ..() && user.get_organ_slot(ORGAN_SLOT_EYES) && !HAS_TRAIT(user, TRAIT_NO_EYELIDS)
+
+/datum/emote/living/carbon/human/close_eyes/run_emote(mob/living/carbon/human/user, params, type_override, intentional)
+	. = ..()
+	ADD_TRAIT(user, TRAIT_CLOSED_EYES, type)
+	addtimer(TRAIT_CALLBACK_REMOVE(user, TRAIT_CLOSED_EYES, type), cooldown, TIMER_UNIQUE|TIMER_OVERRIDE)
+
+/datum/emote/living/carbon/human/close_eyes/check_cooldown(mob/user, intentional)
+	if(LAZYACCESS(user.emotes_used, src) + cooldown > world.time)
+		// snowflake behavior - attempting to use the emote while it is on cooldown will keep your eyes closed for a bit longer
+		addtimer(TRAIT_CALLBACK_REMOVE(user, TRAIT_CLOSED_EYES, type), cooldown, TIMER_UNIQUE|TIMER_OVERRIDE)
+		LAZYSET(user.emotes_used, src, world.time)
+		return FALSE
+
+	return ..()
 
 ///Snowflake emotes only for le epic chimp
 /datum/emote/living/carbon/human/monkey

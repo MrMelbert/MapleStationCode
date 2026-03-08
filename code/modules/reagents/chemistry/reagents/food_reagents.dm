@@ -118,7 +118,7 @@
 	data = taste_amounts
 
 /datum/reagent/consumable/nutriment/get_taste_description(mob/living/taster)
-	return data
+	return LAZYLEN(data) ? data - "quality_modifier" : null // NON-MODULE CHANGE
 
 /datum/reagent/consumable/nutriment/vitamin
 	name = "Vitamin"
@@ -418,7 +418,7 @@
 		return
 
 	var/mob/living/carbon/victim = exposed_mob
-	if(methods & (TOUCH|VAPOR))
+	if(methods & (TOUCH|VAPOR|INHALE))
 		//check for protection
 		//actually handle the pepperspray effects
 		if (!victim.is_pepper_proof()) // you need both eye and mouth protection
@@ -493,10 +493,10 @@
 	to_chat(carbies, span_notice("The salt bits seep in and stick to [LOWER_TEXT(src)], painfully irritating the skin but soaking up most of the blood."))
 
 /datum/wound/flesh/burn/on_salt(reac_volume)
-	// Slightly sanitizes and disinfects, but also increases infestation rate (some bacteria are aided by salt), and decreases flesh healing (can damage the skin from moisture absorption)
+	// Slightly sanitizes and disinfects, but also increases infection rate (some bacteria are aided by salt), and decreases flesh healing (can damage the skin from moisture absorption)
 	sanitization += VALUE_PER(0.4, 30) * reac_volume
-	infestation -= max(VALUE_PER(0.3, 30) * reac_volume, 0)
-	infestation_rate += VALUE_PER(0.12, 30) * reac_volume
+	infection -= max(VALUE_PER(0.3, 30) * reac_volume, 0)
+	infection_rate += VALUE_PER(0.12, 30) * reac_volume
 	flesh_healing -= max(VALUE_PER(5, 30) * reac_volume, 0)
 	to_chat(victim, span_notice("The salt bits seep in and stick to [LOWER_TEXT(src)], painfully irritating the skin! After a few moments, it feels marginally better."))
 
@@ -538,7 +538,10 @@
 	. = ..()
 	if(isvampire(affected_mob)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.
 		if(SPT_PROB(min((current_cycle-1)/2, 12.5), seconds_per_tick))
-			to_chat(affected_mob, span_danger("You can't get the scent of garlic out of your nose! You can barely think..."))
+			if(HAS_TRAIT(affected_mob, TRAIT_ANOSMIA))
+				to_chat(affected_mob, span_danger("You feel that something is wrong, your strength is leaving you! You can barely think..."))
+			else
+				to_chat(affected_mob, span_danger("You can't get the scent of garlic out of your nose! You can barely think..."))
 			affected_mob.Paralyze(10)
 			affected_mob.set_jitter_if_lower(20 SECONDS)
 	else
@@ -561,7 +564,7 @@
 		return
 
 	var/mob/living/carbon/victim = exposed_mob
-	if(methods & (TOUCH | VAPOR))
+	if(methods & (TOUCH | VAPOR | INHALE))
 		var/tear_proof = victim.is_eyes_covered()
 		if (!tear_proof)
 			to_chat(exposed_mob, span_warning("Your eyes sting!"))
@@ -669,7 +672,7 @@
 /datum/wound/flesh/burn/on_flour(reac_volume)
 	to_chat(victim, span_notice("The flour seeps into [LOWER_TEXT(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 1)
-	infestation += 0.2
+	infection += 0.2
 	return
 
 /datum/reagent/consumable/flour/expose_turf(turf/exposed_turf, reac_volume)
@@ -775,7 +778,7 @@
 /datum/wound/flesh/burn/on_starch(reac_volume, mob/living/carbon/carbies)
 	to_chat(carbies, span_notice("The slimey starch seeps into [LOWER_TEXT(src)], spiking you with intense pain! That probably wasn't a good idea..."))
 	sanitization -= min(0, 0.5)
-	infestation += 0.1
+	infection += 0.1
 	return
 
 /datum/reagent/consumable/corn_syrup
@@ -826,7 +829,7 @@
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
 
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.4, min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod(type, 0.6, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/consumable/mayonnaise
 	name = "Mayonnaise"
@@ -945,7 +948,7 @@
 
 /datum/reagent/consumable/liquidelectricity/enriched/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume) //can't be on life because of the way blood works.
 	. = ..()
-	if(!(methods & (INGEST|INJECT|PATCH)) || !iscarbon(exposed_mob))
+	if(!(methods & (INGEST|INJECT|PATCH|INHALE)) || !iscarbon(exposed_mob))
 		return
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob

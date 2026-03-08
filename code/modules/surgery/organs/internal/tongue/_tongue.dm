@@ -44,6 +44,9 @@
 	/// Whether this tongue modifies speech via signal
 	var/modifies_speech = FALSE
 
+	/// Additive modifier to how sensitive to smell the tongue is (we don't have a nose organ)
+	var/smell_sensitivity = 0
+
 /obj/item/organ/tongue/Initialize(mapload)
 	. = ..()
 	// Setup the possible languages list
@@ -120,7 +123,7 @@
 		food_taste_reaction = FOOD_LIKED
 	return food_taste_reaction
 
-/obj/item/organ/tongue/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/tongue/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 
 	if(modifies_speech)
@@ -134,7 +137,7 @@
 	REMOVE_TRAIT(receiver, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 	apply_tongue_effects()
 
-/obj/item/organ/tongue/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/tongue/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	temp_say_mod = ""

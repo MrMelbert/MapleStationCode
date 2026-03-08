@@ -18,6 +18,7 @@
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
+	init_unconscious_appearance()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +27,24 @@
 /mob/living/proc/prepare_data_huds()
 	med_hud_set_health()
 	med_hud_set_status()
+
+/// Inits the human_unconscious appearance for when the mob is unconscious
+/mob/living/proc/init_unconscious_appearance()
+	return
+
+/// Generic helper to add a static-y humanoid appearance shown to other mobs when unconscious
+/mob/living/proc/add_generic_humanoid_static_appearance()
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "unknown humanoid"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/Destroy()
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -46,7 +65,6 @@
 		imaginary_group -= src
 		QDEL_LIST(imaginary_group)
 	QDEL_LAZYLIST(diseases)
-	QDEL_LIST(surgeries)
 	QDEL_LAZYLIST(quirks)
 	return ..()
 
@@ -347,7 +365,7 @@
 		AM.setDir(current_dir)
 	now_pushing = FALSE
 
-/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
+/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE, willing_pull = FALSE)
 	if(!AM || !src)
 		return FALSE
 	if(!(AM.can_be_pulled(src, state, force)))
@@ -451,7 +469,7 @@
 		if(isliving(M))
 			var/mob/living/L = M
 
-			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src)
+			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src, willing_pull)
 			//Share diseases that are spread by touch
 			for(var/datum/disease/thing as anything in diseases)
 				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
@@ -555,9 +573,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	to_chat(src, span_notice("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	to_chat(src, examining_span_normal("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
 	for(var/mob/viewer in oviewers(src))
-		viewer.show_message(span_notice("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
+		viewer.show_message(examining_span_normal("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
@@ -1089,29 +1107,26 @@
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
-	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
+/**
+ * Leaves a trail of blood.
+ *
+ * This is on the atom level so you can have arbitrary objects leave "blood trails" if desired,
+ * you just need to pass a blood_dna.
+ *
+ * Arguments:
+ * * target_turf - The turf where the blood trail will be made
+ * * start - The turf where the mob started moving from
+ * * was_facing - The direction the mob was facing before moving
+ * * movement_direction - The direction the mob is moving towards
+ * * blood_to_add - The amount of blood to add to the trail
+ * * blood_dna - The DNA to add to the trail. Autoset for mobs.
+ * * static_viruses - The viruses to add to the trail
+ */
+/atom/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1, blood_dna, list/static_viruses)
+	if(!has_gravity() || !isturf(start))
 		return
-
-	var/base_bleed_rate = get_bleed_rate()
-	var/base_brute = getBruteLoss()
-
-	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
-	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
-	// we only leave a trail if we're below a certain blood threshold
-	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
-		return
-
-	var/blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
-	if(body_position == LYING_DOWN)
-		blood_to_add += bleedDragAmount()
-		bleed(blood_to_add, drip = FALSE)
-	else
-		blood_to_add += base_bleed_rate
-	// if we're very damaged or bleeding a lot, add even more blood to the trail
-	if(base_brute >= 300 || base_bleed_rate >= 7)
-		blood_to_add *= 2
+	if(!islist(blood_dna))
+		CRASH("make_blood_trail called without a valid blood_dna list!")
 
 	var/trail_dir = REVERSE_DIR(movement_direction)
 	// the mob is performing a diagonal movement so we need to make a diagonal trail
@@ -1150,24 +1165,54 @@
 			break
 
 	if(isnull(trail))
-		trail = new(start, get_static_viruses())
+		trail = new(start, static_viruses)
 		if(QDELETED(trail))
 			return
 		trail.bloodiness = blood_to_add
 	else
-		trail.add_viruses(get_static_viruses())
+		trail.add_viruses(static_viruses)
 
 	// update the holder with our new dna and bloodiness
-	trail.add_mob_blood(src)
+	trail.add_blood_DNA(blood_dna)
 	trail.adjust_bloodiness(blood_to_add)
 	// also update the trail component, this is what matters for its appearance
 	var/obj/effect/decal/cleanable/blood/trail/trail_component = trail.add_dir_to_trail(trail_dir, blood_to_add)
 	if(isnull(trail_component))
 		return
-	trail_component.add_mob_blood(src)
+	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
 
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
+/mob/living/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add, blood_dna, list/static_viruses)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
+
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
+		return
+
+	if(isnull(static_viruses))
+		static_viruses = get_static_viruses()
+	if(isnull(blood_dna))
+		blood_dna = get_blood_dna_list()
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
+	if(body_position == LYING_DOWN)
+		bleed(blood_to_add, leave_pool = FALSE)
+
+	return ..()
+
+/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction, blood_to_add, blood_dna, list/static_viruses)
 	if(!is_bleeding())
 		return
 	return ..()
@@ -1233,7 +1278,9 @@
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
-	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_RESIST) & RESIST_HANDLED)
+		return
+
 	//resisting grabs (as if it helps anyone...)
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
 		log_combat(src, pulledby, "resisted grab")
@@ -1242,42 +1289,54 @@
 
 	//unbuckling yourself
 	if(buckled && last_special <= world.time)
-		resist_buckle()
+		buckled.user_unbuckle_mob(src, src)
 
 	//Breaking out of a container (Locker, sleeper, cryo...)
 	else if(loc != get_turf(src))
 		loc.container_resist_act(src)
 
-	else if(mobility_flags & MOBILITY_MOVE)
-		if(on_fire)
-			resist_fire() //stop, drop, and roll
-		else if(last_special <= world.time)
-			resist_restraints() //trying to remove cuffs.
+	else if((mobility_flags & MOBILITY_MOVE) && on_fire)
+		resist_fire() //stop, drop, and roll
 
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
-		pulledby.stop_pulling()
-		return FALSE
+	//Our effective grab state. GRAB_PASSIVE is equal to 0, so if we have no other altering factors to our grab state, we can break free immediately on resist.
+	var/effective_grab_state = pulledby.grab_state
+	//The amount of damage inflicted on a failed resist attempt.
+	var/damage_on_resist_fail = rand(7, 13)
+	// Base chance to escape a grab. Divided by effective grab state
+	var/escape_chance = BASE_GRAB_RESIST_CHANCE
 
 	var/vulnerability_delta = 0
 	if(isliving(pulledby))
 		var/mob/living/grabber = pulledby
-		// Just compare resist strength vs resist strength
-		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+		// Just compare resist strength vs grab strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_strength()
 	else
 		// Just assume 4 (roughly the same as a human with no buffs)
 		vulnerability_delta = get_grab_resist_strength() - 4
 
-	var/altered_grab_state = pulledby.grab_state
 	if(vulnerability_delta <= 2)
-		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+		effective_grab_state = min(effective_grab_state + 1, GRAB_NECK)
+	escape_chance += (vulnerability_delta * 5) // More vulnerable = higher escape chance, less vulnerable = lower escape chance
 
-	var/resist_chance = BASE_GRAB_RESIST_CHANCE
-	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
-	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(isliving(pulledby))
+		var/mob/living/martial_artist = pulledby
+		var/datum/martial_art/puller_art = GET_ACTIVE_MARTIAL_ART(martial_artist)
+		if(puller_art?.can_use(martial_artist))
+			damage_on_resist_fail += puller_art.grab_damage_modifier
+			escape_chance += puller_art.grab_escape_chance_modifier
+
+	// see defines/combat.dm, this should be baseline 60%
+	// Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
+	var/resist_chance = clamp(escape_chance / effective_grab_state, 0, 100)
+
+	if(effective_grab_state <= GRAB_PASSIVE)
+		pulledby.stop_pulling()
+		return FALSE
+
 	if(prob(resist_chance))
 		visible_message(
 			span_danger("[src] breaks free of [pulledby]'s grip!"),
@@ -1293,7 +1352,7 @@
 		pulledby.stop_pulling()
 		return FALSE
 
-	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	adjustStaminaLoss(damage_on_resist_fail) //failure to escape still imparts a pretty serious penalty
 	visible_message(
 		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
 		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
@@ -1308,9 +1367,6 @@
 	if(moving_resist) //we resisted by trying to move
 		client?.move_delay = world.time + 4 SECONDS
 	return TRUE
-
-/mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return FALSE
@@ -2501,8 +2557,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_exp_list(minutes)
 	var/list/exp_list = list()
 
-	if(mind && mind.special_role && !(mind.datum_flags & DF_VAR_EDITED))
-		exp_list[mind.special_role] = minutes
+	if(!(mind.datum_flags & DF_VAR_EDITED))
+		for(var/datum/antagonist/antag as anything in mind?.antag_datums)
+			var/flag_to_check = antag.jobban_flag || antag.pref_flag
+			if(flag_to_check)
+				exp_list[flag_to_check] = minutes
 
 	if(mind.assigned_role.title in GLOB.exp_specialmap[EXP_TYPE_SPECIAL])
 		exp_list[mind.assigned_role.title] = minutes
@@ -2702,10 +2761,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(isnull(guardian_client))
 		return
 	else if(guardian_client == "Poll Ghosts")
-		var/list/candidates = SSpolling.poll_ghost_candidates("Do you want to play as an admin created Guardian Spirit of [real_name]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, pic_source = src, role_name_text = "guardian spirit")
-		if(LAZYLEN(candidates))
-			var/mob/dead/observer/candidate = pick(candidates)
-			guardian_client = candidate.client
+		var/mob/chosen_one = SSpolling.poll_ghost_candidates("Do you want to play as an admin created [span_notice("Guardian Spirit")] of [span_danger(real_name)]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, alert_pic = mutable_appearance('icons/mob/nonhuman-player/guardian.dmi', "magicexample"), jump_target = src, role_name_text = "guardian spirit", amount_to_pick = 1)
+		if(chosen_one)
+			guardian_client = chosen_one.client
 		else
 			tgui_alert(admin, "No ghost candidates.", "Guardian Controller")
 			return

@@ -298,7 +298,10 @@
 		if(prob(7.5))
 			wearer.cause_hallucination(/datum/hallucination/oh_yeah, "H.E.C.K suit", haunt_them = TRUE)
 		else
-			to_chat(wearer, span_warning("[pick("You hear faint whispers.","You smell ash.","You feel hot.","You hear a roar in the distance.")]"))
+			if(HAS_TRAIT(wearer, TRAIT_ANOSMIA)) //Anosmia quirk holder cannot fell any smell
+				to_chat(wearer, span_warning("[pick("You hear faint whispers.","You feel hot.","You hear a roar in the distance.")]"))
+			else
+				to_chat(wearer, span_warning("[pick("You hear faint whispers.","You smell ash.","You feel hot.","You hear a roar in the distance.")]"))
 
 /obj/item/clothing/head/hooded/hostile_environment
 	name = "H.E.C.K. helmet"
@@ -504,8 +507,9 @@
 	SIGNAL_HANDLER
 
 	if(isturf(loc))
-		return
+		return NONE
 	INVOKE_ASYNC(src, PROC_REF(break_out))
+	return RESIST_HANDLED
 
 /obj/item/soulscythe/proc/break_out()
 	if(!use_blood(10))
