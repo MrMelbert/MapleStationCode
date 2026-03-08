@@ -8,6 +8,8 @@
 	allow_duplicates = FALSE
 	cost = 2
 
+	unpickable = TRUE
+
 /datum/map_template/ruin/lavaland/diamonds_shattering
 	id = "diamonds_shattering"
 	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
@@ -18,6 +20,8 @@
 	allow_duplicates = FALSE
 	cost = 2
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering)
+
+	unpickable = TRUE
 
 /datum/map_template/ruin/lavaland/hearts_shattering
 	id = "hearts_shattering"
@@ -30,6 +34,8 @@
 	cost = 8
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering)
 
+	unpickable = TRUE
+
 /datum/map_template/ruin/icemoon/clubs_shattering
 	id = "clubs_shattering"
 	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
@@ -37,3 +43,5 @@
 	name = "Ice-Ruin The Shattering Of Clubs"
 	description = "The wreckage of a redtech sensor array, now smeared across space and time."
 	allow_duplicates = FALSE
+
+	unpickable = TRUE
