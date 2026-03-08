@@ -178,7 +178,7 @@
 		return FALSE
 
 	mind.late_joiner = TRUE
-	var/atom/destination = mind.assigned_role.get_latejoin_spawn_point()
+	var/atom/destination = mind.assigned_role.get_latejoin_spawn_point(client.prefs)
 	if(!destination)
 		CRASH("Failed to find a latejoin spawn point.")
 	var/mob/living/character = create_character(destination)
