@@ -28,6 +28,10 @@
 	var/can_alter_user_transfer = TRUE
 	var/can_be_cast_from = TRUE
 
+/obj/item/magic_wand/examine(mob/user)
+	. = ..()
+	. += "You can draw mana from it by activating it in hand."
+
 /obj/item/magic_wand/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_wand
 
