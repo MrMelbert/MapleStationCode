@@ -8,7 +8,7 @@
 	amount = 0
 	max_donation_rate_per_second = 4
 
-/obj/machinery/power/magic_contraption/stellar
+/obj/machinery/power/magic_contraption/stellar_oculory
 	name = "stellar oculory"
 	desc = "an advanced machine which focuses starlight into mana for use."
 	desc_controls = "Alt-Click to disable the gathering of starlight."
@@ -27,7 +27,7 @@
 	var/last_pulse_value = NO_STARLIGHT // how strong was our last starlight pulse? this is used for checks for stuff like examines
 	var/starlight_check_range = 3
 
-/obj/machinery/power/magic_contraption/stellar/Initialize(mapload)
+/obj/machinery/power/magic_contraption/stellar_oculory/Initialize(mapload)
 	. = ..()
 
 	var/static/list/tool_behaviors
@@ -44,10 +44,10 @@
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
 	ADD_TRAIT(src, TRAIT_POOL_GENERATOR, INNATE_TRAIT)
 
-/obj/machinery/power/magic_contraption/stellar/get_initial_mana_pool_type()
+/obj/machinery/power/magic_contraption/stellar_oculory/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/stellar
 
-/obj/machinery/power/magic_contraption/stellar/click_alt(mob/user)
+/obj/machinery/power/magic_contraption/stellar_oculory/click_alt(mob/user)
 	if(panel_open)
 		return balloon_alert(user, "close the panel first!")
 	if(active)
@@ -59,7 +59,7 @@
 		icon_state = "stellar"
 		return balloon_alert(user, "activated the oculory")
 
-/obj/machinery/power/magic_contraption/stellar/process(seconds_per_tick)
+/obj/machinery/power/magic_contraption/stellar_oculory/process(seconds_per_tick)
 	if(!active)
 		return
 	if(!check_delay())
@@ -69,12 +69,12 @@
 	var/starlight_level = src.checkstarlight(starlight_check_range)
 	pulse_mana(starlight_level)
 
-/obj/machinery/power/magic_contraption/stellar/proc/check_delay()
+/obj/machinery/power/magic_contraption/stellar_oculory/proc/check_delay()
 	if((last_pulse + pulse_delay) <= world.time)
 		return TRUE
 	return FALSE
 
-/obj/machinery/power/magic_contraption/stellar/proc/pulse_mana(starlight_level)
+/obj/machinery/power/magic_contraption/stellar_oculory/proc/pulse_mana(starlight_level)
 	var/pulse_value = 0
 	switch(starlight_level)
 		if(FULL_STARLIGHT)
@@ -91,7 +91,7 @@
 	mana_pool.amount += pulse_value
 	last_pulse = world.time
 
-/obj/machinery/power/magic_contraption/stellar/examine(mob/user)
+/obj/machinery/power/magic_contraption/stellar_oculory/examine(mob/user)
 	. = ..()
 	if(!active)
 		return . += "The oculory can be turned on using Alt-Click."
@@ -107,14 +107,14 @@
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MAGIC
-	build_path = /obj/machinery/power/magic_contraption/stellar
+	build_path = /obj/machinery/power/magic_contraption/stellar_oculory
 	req_components = list(
 		/datum/stock_part/capacitor/tier3 = 3,
 		/datum/stock_part/servo/tier3 = 1,
 		/obj/item/stack/sheet/mineral/gold = 2,
 		/obj/item/mana_battery/mana_crystal/small = 3, // small crystals can be printed at the protolathe
 	)
-/obj/machinery/power/magic_contraption/stellar/screwdriver_act(mob/living/user, obj/item/tool)
+/obj/machinery/power/magic_contraption/stellar_oculory/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if (active)
 		user.balloon_alert(user, "deactivate first!")

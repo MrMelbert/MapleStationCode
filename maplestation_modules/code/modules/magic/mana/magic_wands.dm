@@ -1,11 +1,13 @@
 #define MAGIC_WAND_BASE_CAP 80
 #define MAGIC_WAND_BASE_SOFTCAP 60
-#define VANISHING_WAND_CAP 20
+#define VANISHING_WAND_CAP 40
+#define MAGIC_WAND_BASE_DONATION_SPEED 5
 // wands, their main use is to initiate and manage player magic transfer alongside a few doodads down the lines
 /datum/mana_pool/magic_wand
 	maximum_mana_capacity = MAGIC_WAND_BASE_CAP
 	amount = 0
 	softcap = MAGIC_WAND_BASE_SOFTCAP
+	max_donation_rate_per_second = MAGIC_WAND_BASE_DONATION_SPEED
 
 /datum/mana_pool/magic_wand/stable // same as above, just doesn't have a softcap, and has no risk of passing your cap
 	softcap = MAGIC_WAND_BASE_CAP
@@ -14,13 +16,14 @@
 /datum/mana_pool/magic_wand/stable/vanishing
 	softcap = VANISHING_WAND_CAP
 	maximum_mana_capacity = VANISHING_WAND_CAP
+	default_mana_transfer_ruleset = MANA_TRANSFER_SOFTCAP_NO_PASS
 
 /obj/item/magic_wand
 	name = "Makeshift Wand"
 	desc = "A 'wand' made out of scraps and reused office materials. Unless this is a part of your religion or something, you should probably ditch this for something better when you can."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "makeshift"
-	w_class = WEIGHT_CLASS_NORMAL // meant to be big and hard to store, additional reason to not use this
+	w_class = WEIGHT_CLASS_NORMAL
 	has_initial_mana_pool = TRUE
 	var/can_alter_user_transfer = TRUE
 	var/can_be_cast_from = TRUE
@@ -32,7 +35,7 @@
 	if(isturf(interacting_with))
 		return
 	var/datum/mana_pool/target_mana_pool = interacting_with.mana_pool
-	var/datum/mana_pool/wand_pool = mana_pool
+	var/datum/mana_pool/wand_pool = src.mana_pool
 
 	if(!target_mana_pool)
 		return  // no response for this failing, as else it would proc on ~70% of things in the codebase
@@ -64,7 +67,7 @@
 	. = ..()
 	if(!can_alter_user_transfer)
 		return
-	var/datum/mana_pool/wand_pool = mana_pool
+	var/datum/mana_pool/wand_pool = src.mana_pool
 	var/datum/mana_pool/user_pool = user.mana_pool
 
 	var/static/list/options = list("Yes", "No")
@@ -92,7 +95,7 @@
 
 /obj/item/magic_wand/dropped(mob/user, silent)
 	. = ..()
-	if(can_be_cast_from) // paired with the equip logic, added here in case a subtype has other logic
+	if(can_be_cast_from) // paired with the equip logic, added here in case a subtype has other logic that determines castability
 		REMOVE_TRAIT(src, TRAIT_POOL_AVAILABLE_FOR_CAST, INNATE_TRAIT)
 
 /obj/item/magic_wand/techie
@@ -100,7 +103,6 @@
 	desc = "An overengineered device produced and researched on board to manipulate and move residual mana within objects."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "techie"
-	w_class = WEIGHT_CLASS_SMALL // Can actually fit in pockets
 
 /obj/item/magic_wand/techie/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_wand/stable
@@ -110,7 +112,6 @@
 	desc = "A traditional wood body and gold capped wand. Can still manipulate mana surprisingly well for its simplicity."
 	icon = 'maplestation_modules/icons/obj/magic/wands.dmi'
 	icon_state = "wooden"
-	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/magic_wand/wooden/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_wand/stable
@@ -125,7 +126,7 @@
 
 /obj/item/magic_wand/temporary/equipped(mob/user, slot, initial) // no dropped ver cause this is on a dropdel
 	. = ..()
-	var/datum/mana_pool/wand_pool = mana_pool
+	var/datum/mana_pool/wand_pool = src.mana_pool
 	var/datum/mana_pool/user_pool = user.mana_pool
 	wand_pool.start_transfer(user_pool)
 
