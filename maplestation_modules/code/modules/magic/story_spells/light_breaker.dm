@@ -34,3 +34,6 @@
 		mana_required = mana_cost, \
 		attunements = attunements, \
 	)
+
+#undef LIGHT_BREAKER_ATTUNEMENT_DARK
+#undef LIGHT_BREAKER_MANA_COST

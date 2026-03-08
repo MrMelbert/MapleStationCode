@@ -70,10 +70,6 @@
 	// if any of the transfer rules fail, do we stop the transfer?
 	var/frail_transfer = FALSE
 
-	/// used by MANA_TRANSFER_MANUAL_RULES so this does nothing unless you're using that transfer ruleset.
-	/// and if you are, what is that cap?
-	var/cap_transfer_limit
-
 /datum/mana_pool/New(atom/parent = null)
 	. = ..()
 	donation_budget_this_tick = max_donation_rate_per_second
@@ -156,12 +152,6 @@
 			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap))
 		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
 			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap_no_pass))
-		if (MANA_TRANSFER_MANUAL_RULES)
-			if (!cap_transfer_limit)
-				stack_trace("Manual Transfer rules were set on [src] without a transfer limit defined!") // forgetting something?
-				// by default, after this, it will be a ruleless transfer
-			else
-				src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_manual_rules))
 
 // order of operations is as follows:
 // 1. we recharge
@@ -269,6 +259,7 @@
 	adjust_mana(-adjusted_amount)
 	return other_pool.adjust_mana(adjusted_amount, attunements)
 
+// begin a mana transfer to the pool targeted in the parentheses
 /datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool, force_process = FALSE)
 
 	if (target_pool == src)
@@ -290,6 +281,7 @@
 
 	return MANA_POOL_TRANSFER_START
 
+// stop a mana transfer to the pool targeted in the parentheses
 /datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool, forced = FALSE)
 
 	if (!forced && !QDELETED(target_pool) && (transferring_to[target_pool] & MANA_POOL_SKIP_NEXT_TRANSFER))
@@ -434,14 +426,6 @@
 	var/softcap_check = (target_pool.amount >= target_pool.softcap)
 	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
 	if ((softcap_check) || softcap_pass_check)
-		return FALSE
-	return TRUE
-
-/datum/mana_pool/proc/transfer_rule_manual_rules(datum/mana_pool/pool, transferred_mana)
-	var/datum/mana_pool/target_pool = pool
-	if (!cap_transfer_limit) // this should've been caught during init but i'm adding a second failsafe anyways
-		return FALSE // no runtime either, because this is processed each tick, it would be runtime hell
-	if (target_pool.amount >= cap_transfer_limit)
 		return FALSE
 	return TRUE
 

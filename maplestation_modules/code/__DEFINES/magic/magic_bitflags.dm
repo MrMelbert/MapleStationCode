@@ -17,5 +17,3 @@
 #define MANA_TRANSFER_SOFTCAP (1<<1)
 // Same as the above, but with added behavior to prevent a transfer that would put someone above the softcap
 #define MANA_TRANSFER_SOFTCAP_NO_PASS (1<<2)
-// None of the above, just adds manual rules to transfer.
-#define MANA_TRANSFER_MANUAL_RULES (1<<3)

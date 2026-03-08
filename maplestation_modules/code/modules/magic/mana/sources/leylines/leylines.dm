@@ -43,8 +43,6 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 	// also this is insurance against "overload teetering" which was a problem during their first modern implementation
 	default_mana_transfer_ruleset = MANA_TRANSFER_SOFTCAP_NO_PASS
 
-	cap_transfer_limit = BASE_MANA_SOFTCAP
-
 /datum/mana_pool/leyline/New()
 	GLOB.all_leylines += src
 

@@ -57,3 +57,7 @@
 // MAGIC TRAITS GO HERE
 // give this to an object to declare that its pool can be used during cast.
 #define TRAIT_POOL_AVAILABLE_FOR_CAST "pool_available_for_cast"
+// placed on objects meant to be used as a mana battery, primarily for handling mana channeling
+#define TRAIT_POOL_BATTERY "pool_is_a_battery"
+// placed on objects that are mana generators
+#define TRAIT_POOL_GENERATOR "pool_is_a_generator"

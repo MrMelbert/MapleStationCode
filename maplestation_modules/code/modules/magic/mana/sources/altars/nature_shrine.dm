@@ -49,6 +49,7 @@
 			),
 		))
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
+	ADD_TRAIT(src, TRAIT_POOL_GENERATOR, INNATE_TRAIT)
 
 /obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
 	..()

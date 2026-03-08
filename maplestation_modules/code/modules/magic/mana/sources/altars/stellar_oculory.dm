@@ -11,6 +11,7 @@
 /obj/machinery/power/magic_contraption/stellar
 	name = "stellar oculory"
 	desc = "an advanced machine which focuses starlight into mana for use."
+	desc_controls = "Alt-Click to disable the gathering of starlight."
 	icon_state = "stellar"
 	base_icon_state = "stellar"
 	circuit = /obj/item/circuitboard/machine/stellar_oculory
@@ -41,11 +42,12 @@
 			),
 		))
 	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
+	ADD_TRAIT(src, TRAIT_POOL_GENERATOR, INNATE_TRAIT)
 
 /obj/machinery/power/magic_contraption/stellar/get_initial_mana_pool_type()
 	return /datum/mana_pool/magic_altar/stellar
 
-/obj/machinery/power/magic_contraption/stellar/interact(mob/user)
+/obj/machinery/power/magic_contraption/stellar/click_alt(mob/user)
 	if(panel_open)
 		return balloon_alert(user, "close the panel first!")
 	if(active)
@@ -92,7 +94,7 @@
 /obj/machinery/power/magic_contraption/stellar/examine(mob/user)
 	. = ..()
 	if(!active)
-		return . += "The oculory is currently powered off."
+		return . += "The oculory can be turned on using Alt-Click."
 	switch(last_pulse_value)
 		if(FULL_STARLIGHT)
 			. += span_warning("The oculory is beaming with starlight!")
@@ -100,6 +102,7 @@
 			. += "The oculory is functioning under normal conditions."
 		if(NO_STARLIGHT)
 			. += span_warning("The oculory needs to gather more starlight.")
+	return += "The oculory can be shut off using Alt-Click."
 
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"
@@ -109,7 +112,7 @@
 		/datum/stock_part/capacitor/tier3 = 3,
 		/datum/stock_part/servo/tier3 = 1,
 		/obj/item/stack/sheet/mineral/gold = 2,
-		/obj/item/mana_battery/mana_crystal/standard = 1,
+		/obj/item/mana_battery/mana_crystal/small = 3, // small crystals can be printed at the protolathe
 	)
 /obj/machinery/power/magic_contraption/stellar/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
