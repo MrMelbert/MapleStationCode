@@ -247,7 +247,7 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	if(job_greyscale_palettes[jobtype])
 		return job_greyscale_palettes[jobtype]
 
-	var/datum/job/job = SSjob.GetJobType(jobtype)
+	var/datum/job/job = SSjob.get_job_type(jobtype)
 	if(job.department_for_prefs && job_greyscale_palettes[job.department_for_prefs])
 		return job_greyscale_palettes[job.department_for_prefs]
 

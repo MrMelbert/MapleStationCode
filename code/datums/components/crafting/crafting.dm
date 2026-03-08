@@ -260,13 +260,12 @@
 		if(result.atom_storage && recipe.delete_contents)
 			for(var/obj/item/thing in result)
 				qdel(thing)
+	if(recipe.crafting_flags & CRAFT_CLEARS_REAGENTS)
+		result.reagents?.clear_reagents()
 	var/datum/reagents/holder = locate() in parts
 	if(holder) //transfer reagents from ingredients to result
-		if(!ispath(recipe.result,  /obj/item/reagent_containers) && result.reagents)
-			if(recipe.crafting_flags & CRAFT_CLEARS_REAGENTS)
-				result.reagents.clear_reagents()
-			if(recipe.crafting_flags & CRAFT_TRANSFERS_REAGENTS)
-				holder.trans_to(result.reagents, holder.total_volume, no_react = TRUE)
+		if(result.reagents && (recipe.crafting_flags & CRAFT_TRANSFERS_REAGENT_COMPONENTS))
+			holder.trans_to(result.reagents, holder.total_volume, no_react = TRUE)
 		parts -= holder
 		qdel(holder)
 	result.CheckParts(parts, recipe)

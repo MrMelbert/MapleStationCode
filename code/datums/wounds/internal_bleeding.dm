@@ -80,7 +80,7 @@
 	if(SPT_PROB(1, seconds_per_tick))
 		var/datum/blood_type/blood_type = victim.get_blood_type()
 		if(blood_type)
-			to_chat(victim, span_notice("You can taste [blood_type.reagent_type::name]."))
+			to_chat(victim, span_notice("You can taste [LOWER_TEXT(blood_type.reagent_type::name)]."))
 
 	switch(limb.body_zone)
 		if(BODY_ZONE_HEAD)

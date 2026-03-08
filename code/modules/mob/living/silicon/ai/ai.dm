@@ -133,7 +133,7 @@
 
 	if(target_ai.mind)
 		target_ai.mind.transfer_to(src)
-		if(mind.special_role)
+		if(is_antag())
 			to_chat(src, span_userdanger("You have been installed as an AI! "))
 			to_chat(src, span_danger("You must obey your silicon laws above all else. Your objectives will consider you to be dead."))
 		if(!mind.has_ever_been_ai)
@@ -1156,11 +1156,7 @@
 
 /mob/living/silicon/ai/get_exp_list(minutes)
 	. = ..()
-
-	var/datum/job/ai/ai_job_ref = SSjob.GetJobType(/datum/job/ai)
-
-	.[ai_job_ref.title] = minutes
-
+	.[/datum/job/ai::title] = minutes
 
 /mob/living/silicon/ai/get_voice(add_id_name)
 	if(ai_voicechanger?.changing_voice)
