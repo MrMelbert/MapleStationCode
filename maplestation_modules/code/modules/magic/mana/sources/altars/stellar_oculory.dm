@@ -102,7 +102,7 @@
 			. += "The oculory is functioning under normal conditions."
 		if(NO_STARLIGHT)
 			. += span_warning("The oculory needs to gather more starlight.")
-	return += "The oculory can be shut off using Alt-Click."
+	return . += "The oculory can be shut off using Alt-Click."
 
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"
