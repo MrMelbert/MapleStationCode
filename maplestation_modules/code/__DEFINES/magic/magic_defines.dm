@@ -7,7 +7,7 @@
 #define MANA_CRYSTAL_BASE_RECHARGE 0.001
 
 #define BASE_MANA_CAPACITY 1000
-#define MANA_CRYSTAL_BASE_MANA_CAPACITY (BASE_MANA_CAPACITY * 0.2)
+#define MANA_CRYSTAL_BASE_MANA_CAPACITY (BASE_MANA_CAPACITY * 0.3)
 #define CARBON_BASE_MANA_CAPACITY (BASE_MANA_CAPACITY)
 #define LEYLINE_BASE_CAPACITY 600 //todo: standardize
 
@@ -36,11 +36,12 @@
 #define MANA_CRYSTAL_BASE_DECAY_DIVISOR (BASE_MANA_EXPONENTIAL_DIVISOR * 5)
 
 // in vols per second
-#define BASE_MANA_DONATION_RATE (BASE_MANA_CAPACITY * 0.5)
+#define BASE_MANA_DONATION_RATE (BASE_MANA_CAPACITY * 0.1)
 #define BASE_MANA_CRYSTAL_DONATION_RATE (BASE_MANA_DONATION_RATE * 0.1)
 #define BASE_LEYLINE_DONATION_RATE 30
 
 #define MANA_BATTERY_MAX_TRANSFER_DISTANCE 3
+#define MAGIC_ALTAR_MAX_TRANSFER_DISTANCE 6
 
 #define MAGIC_MATERIAL_NAME "Volite"
 #define MAGIC_UNIT_OF_MEASUREMENT "Vol"
@@ -56,3 +57,7 @@
 // MAGIC TRAITS GO HERE
 // give this to an object to declare that its pool can be used during cast.
 #define TRAIT_POOL_AVAILABLE_FOR_CAST "pool_available_for_cast"
+// placed on objects meant to be used as a mana battery, primarily for handling mana channeling
+#define TRAIT_POOL_BATTERY "pool_is_a_battery"
+// placed on objects that are mana generators
+#define TRAIT_POOL_GENERATOR "pool_is_a_generator"

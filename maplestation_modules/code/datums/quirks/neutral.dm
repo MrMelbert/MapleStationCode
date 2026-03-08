@@ -286,3 +286,45 @@
 #undef COLORBLINDNESS_PROTANOPIA
 #undef COLORBLINDNESS_DEUTERANOPIA
 #undef COLORBLINDNESS_TRITANOPIA
+
+/// MAGICALLY BLANK
+// also, if you just so happen to be here to figure out how to set something as blank/"magicless" in this system, you can just set the soft cap to 1 (or 0/0.1 if you fear no floating point imprecision)
+// example: your_mob.mana_pool.softcap = 1
+
+/datum/quirk/magically_blank // Hello there, this is a neutral trait because i don't want people being rewarded for purposefully not engaging with an optional system, this is mostly for flavor/RP
+	name = "Magically Blank"
+	desc = "Your body is completely unable to stably store mana."
+	medical_record_text = "Patient's body appears to reject any and all raw sources of mana."
+	icon = FA_ICON_STAR_HALF_ALT
+	value = 0 // see above, please strongly consider the current balancing of the magic system before you change this from zero
+	mob_trait = TRAIT_MAGICALLY_BLANK
+
+/datum/quirk/magically_blank/add(client/client_source)
+	if(!iscarbon(quirk_holder)) // Please don't apply this quirk to non-carbons, but because its trivial to do this, heres the same functionality
+		quirk_holder.mana_pool.softcap = 1
+		return
+	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
+
+	if(carbon_quirk_holder.mana_pool) // if we already have a pool, get rid of it, which the player should probably have one at this moment
+		var/datum/mana_pool/pool_to_destroy = carbon_quirk_holder.mana_pool
+		QDEL_NULL(pool_to_destroy)
+
+	var/datum/mana_pool/mob/living/carbon/blank/pool_to_add = new()
+	carbon_quirk_holder.mana_pool = pool_to_add
+
+/datum/quirk/magically_blank/remove()
+	if(!iscarbon(quirk_holder))
+		quirk_holder.mana_pool.softcap = BASE_MANA_SOFTCAP
+		return
+
+	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
+
+	if(carbon_quirk_holder.mana_pool) // this check is absolutely a failsafe because this quirk implies you'll have a pseudo-pool to begin with, but this check is just in case you some how got it deleted
+		var/datum/mana_pool/pool_to_destroy = carbon_quirk_holder.mana_pool
+		QDEL_NULL(pool_to_destroy)
+
+	var/datum/mana_pool/type = carbon_quirk_holder.get_initial_mana_pool_type()
+
+	var/datum/mana_pool/pool_to_add = new type()
+
+	carbon_quirk_holder.mana_pool = pool_to_add
