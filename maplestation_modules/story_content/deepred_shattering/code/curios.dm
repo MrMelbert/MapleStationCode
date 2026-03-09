@@ -33,37 +33,6 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 
-/obj/item/ammo_casing/shotgun/godslayer
-	name = "godslayer slug"
-	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy, despite the lack of an obvious power source. You feel that shooting this would be a really bad idea."
-	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
-	icon_state = "godslayer"
-
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-
-	projectile_type = /obj/projectile/bullet/godslayer
-	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
-	fire_sound = 'maplestation_modules/story_content/deepred_shattering/sound/techblaster.ogg'
-
-	var/obj/item/gun/fired_record
-
-/obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
-	if(isgun(fired_from))
-		fired_record = fired_from
-		fired_record.fire_sound_volume = 0
-		fired_record.recoil = initial(fired_record.recoil) + 3
-
-	. = ..()
-	playsound(src, fire_sound, 100, extrarange = 10)
-
-	if(fired_record)
-		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)
-
-/obj/item/ammo_casing/shotgun/godslayer/proc/reset_gunstats()
-	if(fired_record)
-		fired_record.fire_sound_volume = initial(fired_record.fire_sound_volume)
-		fired_record.recoil = initial(fired_record.recoil)
-
 /obj/item/redtech_nan_sample
 	name = "redtech nanite sample"
 	desc = "A small, hard cube that glows a deep red at its seams. It seems to move and shift geometrically in place."

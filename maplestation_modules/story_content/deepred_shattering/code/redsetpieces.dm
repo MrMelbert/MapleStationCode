@@ -32,6 +32,16 @@
 	desc = "A contained multipurpose compression device, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
 	icon_state = "singularity_off"
 
+/obj/structure/redtech_indestructable/industrial_off
+	name = "redtech autofactory"
+	desc = "A large piece of fabrication machinery, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
+	icon_state = "industrial_off"
+
+/obj/structure/redtech_indestructable/power_off
+	name = "redtech capacitor array"
+	desc = "A large capacitor array designed for military applications, which seems to be deactivated at the moment. Its construction looks nigh-indestructable."
+	icon_state = "power_off"
+
 /obj/structure/inert_AV
 	name = "inert Anti Void"
 	desc = "Something has gone terribly wrong."
