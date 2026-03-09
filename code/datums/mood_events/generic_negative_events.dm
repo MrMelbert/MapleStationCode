@@ -26,31 +26,37 @@
 	description = "I'm feeling a bit chilly."
 	mood_change = -2
 	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/cold
 	description = "It's way too cold."
 	mood_change = -3
 	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/freezing
 	description = "It's freezing cold!"
 	mood_change = -6
 	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/warm
 	description = "I'm feeling a bit warm."
 	mood_change = -2
 	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/hot
 	description = "It's way too hot."
 	mood_change = -3
 	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/overhot
 	description = "It's scorching hot!"
 	mood_change = -6
 	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/creampie
 	description = "I've been creamed. Tastes like pie flavor."
