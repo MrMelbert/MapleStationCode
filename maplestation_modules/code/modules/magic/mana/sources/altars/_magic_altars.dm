@@ -28,16 +28,24 @@
 		return FALSE
 	var/atom/movable/pool_owner = target_pool.parent
 
-	if (!(pool_owner.loc))
-		return FALSE
-	if (!is_valid_z_level(altar, pool_owner))
+	var/atom/movable/target_pool_owner
+
+	if (ismob(pool_owner.loc))
+		target_pool_owner = pool_owner.loc
+	else
+		if (!(pool_owner.loc))
+			return FALSE
+		else
+			target_pool_owner = pool_owner
+
+	if (!is_valid_z_level(altar, target_pool_owner))
 		return FALSE
 
-	if (altar.loc == pool_owner.loc)
+	if (altar.loc == target_pool_owner.loc)
 		return TRUE
 
-	var/xy_dist = get_dist_euclidian(altar, pool_owner)
-	var/z_dist = abs(altar.z - pool_owner.z)
+	var/xy_dist = get_dist_euclidian(altar, target_pool_owner)
+	var/z_dist = abs(altar.z - target_pool_owner.z)
 	var/total_dist = xy_dist + z_dist
 	if (total_dist > max_allowed_transfer_distance)
 		return FALSE
