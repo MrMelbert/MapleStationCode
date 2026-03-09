@@ -50,19 +50,23 @@
 /datum/actionspeed_modifier/pain/crippling
 	multiplicative_slowdown = 0.5
 
-/datum/mood_event/light_pain
+/datum/mood_event/pain
+	screentext_id = "pain"
+	screentext_cooldown = 5 SECONDS
+
+/datum/mood_event/pain/light
 	description = "It aches."
 	mood_change = -3
 
-/datum/mood_event/med_pain
+/datum/mood_event/pain/medium
 	description = "I feel very sore."
 	mood_change = -6
 
-/datum/mood_event/heavy_pain
+/datum/mood_event/pain/heavy
 	description = "It hurts!"
 	mood_change = -10
 
-/datum/mood_event/crippling_pain
+/datum/mood_event/pain/crippling
 	description = "STOP THE PAIN!"
 	mood_change = -15
 

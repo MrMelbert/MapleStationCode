@@ -214,6 +214,9 @@
 			update_mood()
 			qdel(new_event)
 			return
+		// instantly refreshes mood text cooldown if the new event is stronger than any existing one
+		if(abs(existing_event.mood_change) < abs(new_event.mood_change))
+			LAZYREMOVE(active_mood_maptexts, existing_event.screentext_id)
 		clear_mood_event(category)
 
 	new_event.on_add(src, mob_parent, params)
@@ -235,7 +238,7 @@
 		), range = 4)
 
 /datum/mood/proc/show_mood_maptext(datum/mood_event/event)
-	if(isnull(mob_parent.client) || mob_parent.stat >= UNCONSCIOUS || LAZYACCESS(mood_maptext_cooldowns, event.type) > world.time)
+	if(isnull(mob_parent.client) || mob_parent.stat >= UNCONSCIOUS || LAZYACCESS(mood_maptext_cooldowns, event.screentext_id) > world.time)
 		return
 	LAZYINITLISTLEN(active_mood_maptexts, mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_cap))
 	var/first_open_index = 1
@@ -249,7 +252,7 @@
 	mob_parent.client.screen += new_maptext
 	addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext, first_open_index), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
 	LAZYSET(active_mood_maptexts, first_open_index, REF(new_maptext))
-	LAZYSET(mood_maptext_cooldowns, event.type, world.time + event.screentext_cooldown)
+	LAZYSET(mood_maptext_cooldowns, event.screentext_id, world.time + event.screentext_cooldown)
 
 /datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade, index)
 	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
@@ -272,6 +275,9 @@
 	. = ..()
 	if(isnull(base))
 		return INITIALIZE_HINT_QDEL
+
+	add_filter("dropshadow-a", 1, outline_filter(size = 0.1, color = "#04080F", flags = OUTLINE_SQUARE))
+	add_filter("dropshadow-b", 2, drop_shadow_filter(x = 0, y = -1, size = 0.5, color = "#04080F"))
 
 	maptext_color = base.screentext_color
 	if(isnull(maptext_color) && base.mood_change != 0)

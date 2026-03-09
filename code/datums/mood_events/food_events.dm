@@ -3,18 +3,21 @@
 	mood_change = 5
 	timeout = 4 MINUTES
 	event_flags = MOOD_EVENT_FOOD
+	screentext_id = "quality"
 
 /datum/mood_event/gross_food
 	description = "I really didn't like that food."
 	mood_change = -2
 	timeout = 4 MINUTES
 	event_flags = MOOD_EVENT_FOOD
+	screentext_id = "quality"
 
 /datum/mood_event/disgusting_food
 	description = "That food was disgusting!"
 	mood_change = -6
 	timeout = 4 MINUTES
 	event_flags = MOOD_EVENT_FOOD
+	screentext_id = "quality"
 
 /datum/mood_event/allergic_food
 	description = "My throat itches."
@@ -31,6 +34,7 @@
 /datum/mood_event/food
 	timeout = 5 MINUTES
 	event_flags = MOOD_EVENT_FOOD
+	screentext_id = "quality"
 
 /datum/mood_event/food/add_effects(quality = FOOD_QUALITY_NORMAL, timeout_mod = 1)
 	mood_change = calculate_mood_change(quality)
@@ -71,6 +75,7 @@
 	timeout = 5 MINUTES
 	description = "That's some shockingly mediocre food."
 	mood_change = 0
+	screentext_id = "quality"
 
 /datum/mood_event/mid_food/add_effects()
 	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))
@@ -82,6 +87,7 @@
 	timeout = 5 MINUTES
 	description = "That food wasn't very good, but at least it didn't make me sick."
 	mood_change = -2
+	screentext_id = "quality"
 
 /datum/mood_event/bad_food/add_effects()
 	if(HAS_MIND_TRAIT(owner, TRAIT_SNOB))

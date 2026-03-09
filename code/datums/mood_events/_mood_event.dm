@@ -29,9 +29,13 @@
 	var/screentext_color
 	/// Cooldown between allowing the same type of mood event from showing screentext
 	var/screentext_cooldown = 20 SECONDS
+	/// ID of this screen event for cooldown purposes
+	/// If null/unset uses the typepath of the mood event as the ID
+	var/screentext_id
 
 /datum/mood_event/New(category)
 	src.category = category
+	src.screentext_id ||= type
 
 /datum/mood_event/Destroy()
 	if(owner)

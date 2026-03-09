@@ -628,25 +628,25 @@
 			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/light)
 		if(75 to 125)
 			parent.add_surgery_speed_mod(PAIN, 1.25)
 			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/medium)
 		if(125 to 200)
 			parent.add_surgery_speed_mod(PAIN, 1.4)
 			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/heavy)
 		if(200 to INFINITY)
 			parent.add_surgery_speed_mod(PAIN, 1.5)
 			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			parent.add_mood_event(PAIN, /datum/mood_event/crippling_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/crippling)
 
 /**
  * Run a pain related emote, if a few checks are successful.

@@ -13,6 +13,7 @@
 /datum/mood_event/conditional/see_death
 	mood_change = -8
 	timeout = 5 MINUTES
+	screentext_id = "death"
 
 /datum/mood_event/conditional/see_death/can_effect_mob(datum/mood/home, mob/living/who, mob/dead_mob, dusted, gibbed)
 	if(isnull(dead_mob))
