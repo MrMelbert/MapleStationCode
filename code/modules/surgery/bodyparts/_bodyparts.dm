@@ -377,7 +377,6 @@
 		if(feeling)
 			check_list += "\t[feeling]"
 
-	// melbert todo : if you have clothes covering, it's harder to diagnose
 	for(var/datum/wound/wound as anything in wounds)
 		var/wound_desc = wound.get_self_check_description(self_aware, medical_skill, covering)
 		if(wound_desc)
