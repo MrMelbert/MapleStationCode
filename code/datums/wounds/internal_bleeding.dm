@@ -35,7 +35,11 @@
 /datum/wound/bleed_internal/second_wind()
 	return
 
-/datum/wound/bleed_internal/get_self_check_description(mob/user)
+/datum/wound/bleed_internal/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(medical_skill >= SKILL_LEVEL_APPRENTICE)
+		if(medical_skill >= SKILL_LEVEL_EXPERT || limb.body_zone != BODY_ZONE_CHEST)
+			return span_warning("It feels tense to the touch - likely internal bleeding.")
+		return span_warning("It feels tense to the touch - likely either internal bleeding or a fractured rib.")
 	return span_warning("It feels tense to the touch.") // same as rib fracture!
 
 /datum/wound/bleed_internal/severity_text()
@@ -78,9 +82,7 @@
 			return
 
 	if(SPT_PROB(1, seconds_per_tick))
-		var/datum/blood_type/blood_type = victim.get_blood_type()
-		if(blood_type)
-			to_chat(victim, span_notice("You can taste [LOWER_TEXT(blood_type.reagent_type::name)]."))
+		to_chat(victim, span_notice("You can taste [LOWER_TEXT(victim.get_blood_name())]."))
 
 	switch(limb.body_zone)
 		if(BODY_ZONE_HEAD)

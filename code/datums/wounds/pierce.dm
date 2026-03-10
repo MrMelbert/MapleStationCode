@@ -5,19 +5,39 @@
 /datum/wound/pierce
 	undiagnosed_name = "Puncture"
 
-/datum/wound/pierce/get_self_check_description(self_aware)
+/datum/wound/pierce/get_self_check_description(self_aware, medical_skill, list/covering)
 	if(!limb.can_bleed())
 		return ..()
+	if(limb.current_gauze)
+		return ""
+
+	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
+	var/blood_name = LOWER_TEXT(victim.get_blood_name())
+
+	for(var/obj/item/clothing/clothing as anything in covering)
+		if(clothing.clothing_flags & THICKMATERIAL)
+			return "Underneath [clothing] feels [severity > WOUND_SEVERITY_MODERATE ? "soaked" : "damp"] and warm - sweat or [blood_name]?"
 
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return span_danger("It's leaking blood from a small [LOWER_TEXT(undiagnosed_name || name)].")
+			if(length(covering) > 0)
+				return "" // not enough blood to even notice if covered
+			return span_danger("It's leaking [blood_name] from a small [shown_name].")
+
 		if(WOUND_SEVERITY_MODERATE)
-			return span_warning("It's leaking blood from a [LOWER_TEXT(undiagnosed_name || name)].")
+			if(length(covering) > 0)
+				return span_warning("[covering[1]] feels damp and warm.")
+			return span_warning("It's leaking [blood_name] from a [shown_name].")
+
 		if(WOUND_SEVERITY_SEVERE)
-			return span_boldwarning("It's leaking blood from a serious [LOWER_TEXT(undiagnosed_name || name)]!")
+			if(length(covering) > 0)
+				return span_boldwarning("[covering[1]] is soaked with [blood_name]!")
+			return span_boldwarning("It's leaking [blood_name] from a serious [shown_name]!")
+
 		if(WOUND_SEVERITY_CRITICAL)
-			return span_boldwarning("It's leaking blood from a major [LOWER_TEXT(undiagnosed_name || name)]!!")
+			if(length(covering) > 0)
+				return span_boldwarning("[covering[1]] is heavily soaked with [blood_name]!!")
+			return span_boldwarning("It's leaking [blood_name] from a major [shown_name]!!")
 
 /datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
 	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
@@ -115,7 +135,7 @@
 			if(QDELETED(src))
 				return
 			if(SPT_PROB(2.5, seconds_per_tick))
-				to_chat(victim, span_notice("You feel the [LOWER_TEXT(undiagnosed_name || name)] in your [limb.plaintext_zone] firming up from the cold!"))
+				to_chat(victim, span_notice("You feel the [LOWER_TEXT(get_displayed_name_for_mob(victim))] in your [limb.plaintext_zone] firming up from the cold!"))
 
 		if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 			adjust_blood_flow(0.25 * seconds_per_tick) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first

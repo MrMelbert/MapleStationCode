@@ -176,7 +176,7 @@
 /obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutanttongue
 
-/obj/item/organ/tongue/feel_for_damage(self_aware)
+/obj/item/organ/tongue/feel_for_damage(self_aware, medical_skill)
 	// No effect
 	return ""
 

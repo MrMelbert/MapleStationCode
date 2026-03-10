@@ -167,8 +167,8 @@
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
 
-	for(var/skill in base_skills)
-		spawned.mind.set_level(skill, base_skills[skill], silent = TRUE)
+	for(var/skill, level in base_skills)
+		spawned.adjust_skill_experience(skill, SKILL_EXP_LIST[level], silent = TRUE)
 
 	if(!ishuman(spawned))
 		return
@@ -186,7 +186,7 @@
 
 	if(roundstart_experience)
 		for(var/i in roundstart_experience)
-			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
+			spawned_human.adjust_skill_experience(i, roundstart_experience[i], TRUE)
 
 	for(var/password_id, password_info in GLOB.important_passwords[type])
 		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])

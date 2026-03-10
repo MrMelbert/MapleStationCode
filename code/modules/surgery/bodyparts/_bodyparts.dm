@@ -318,7 +318,7 @@
 	var/shown_brute = limb_damage[BRUTE]
 	var/shown_burn = limb_damage[BURN]
 	var/status = ""
-	var/self_aware = HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
+	var/self_aware = owner == examiner && HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
 
 	if(self_aware)
 		if(!shown_brute && !shown_burn)
@@ -361,17 +361,25 @@
 
 	check_list += "<span class='[no_damage ? "notice" : "warning"]'>Your [plaintext_zone][is_disabled][self_aware ? " has " : " looks "][status].</span>"
 
-	var/adept_organ_feeler = owner == examiner && HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
+	var/list/covering = owner.get_clothing_on_part(src)
+	// if we have multiple clothing items covering the part,
+	// ensure jumpsuits are index 1 so that they are prioritized in wound descriptions
+	for(var/obj/item/clothing/under/clothing in covering)
+		if(clothing != covering[1])
+			covering.Remove(clothing)
+			covering.Insert(1, clothing)
+
+	var/medical_skill = examiner.get_highest_skill_level(list(/datum/skill/first_aid, /datum/skill/surgery))
 	for(var/obj/item/organ/organ in src)
 		if(organ.organ_flags & ORGAN_HIDDEN)
 			continue
-		var/feeling = organ.feel_for_damage(adept_organ_feeler)
+		var/feeling = organ.feel_for_damage(self_aware, medical_skill)
 		if(feeling)
 			check_list += "\t[feeling]"
 
 	// melbert todo : if you have clothes covering, it's harder to diagnose
 	for(var/datum/wound/wound as anything in wounds)
-		var/wound_desc = wound.get_self_check_description(adept_organ_feeler)
+		var/wound_desc = wound.get_self_check_description(self_aware, medical_skill, covering)
 		if(wound_desc)
 			check_list += "\t[wound_desc]"
 
@@ -409,15 +417,15 @@
 	if(CAN_FEEL_PAIN(owner)) // haha you thought
 		switch(get_modified_pain())
 			if(10 to 40)
-				check_list += "\t\t[span_danger("It's experiencing mild pain \
+				check_list += "\t[span_danger("It's experiencing mild pain \
 					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
 
 			if(40 to 100)
-				check_list += "\t\t[span_warning("It's experiencing moderate pain \
+				check_list += "\t[span_warning("It's experiencing moderate pain \
 					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
 			if(100 to INFINITY)
-				check_list += "\t\t[span_boldwarning("It's experiencing severe pain \
+				check_list += "\t[span_boldwarning("It's experiencing severe pain \
 					and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
 	return jointext(check_list, "<br>")

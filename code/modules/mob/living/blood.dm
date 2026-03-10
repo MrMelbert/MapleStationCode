@@ -279,6 +279,10 @@
 /mob/living/carbon/alien/get_expected_blood_type()
 	return find_blood_type(/datum/blood_type/xenomorph)
 
+/mob/living/proc/get_blood_name()
+	var/datum/reagent/blood_reagent = get_blood_type()?.reagent_type
+	return blood_reagent ? blood_reagent::name : "blood"
+
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
 	return get_blood_type()?.make_blood_splatter(blood_turf, small_drip, get_blood_dna_list(), get_static_viruses())

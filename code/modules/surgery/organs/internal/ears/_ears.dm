@@ -148,7 +148,7 @@
 /obj/item/organ/ears/invincible
 	damage_multiplier = 0
 
-/obj/item/organ/ears/feel_for_damage(self_aware)
+/obj/item/organ/ears/feel_for_damage(self_aware, medical_skill)
 	// Ear damage has audible effects, so we don't really need to "feel" it when self-examining
 	return ""
 
