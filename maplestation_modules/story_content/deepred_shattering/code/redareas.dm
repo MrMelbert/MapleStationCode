@@ -45,3 +45,27 @@
 	mood_message = "Reality seems to distort around the edges of your vision..."
 	min_ambience_cooldown = 240 SECONDS
 	max_ambience_cooldown = 300 SECONDS
+
+/area/ruin/space/unpowered/redgeneric
+	name = "Redtech Space Ruins"
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
+	icon_state = "generic"
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	forced_ambience = TRUE
+	ambient_buzz_vol = 5
+	mood_bonus = -7
+	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS
+
+/area/ruin/unpowered/redgeneric
+	name = "Redtech Planetary Ruins"
+	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
+	icon_state = "generic"
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	forced_ambience = TRUE
+	ambient_buzz_vol = 5
+	mood_bonus = -7
+	mood_message = "Reality seems to distort around the edges of your vision..."
+	min_ambience_cooldown = 240 SECONDS
+	max_ambience_cooldown = 300 SECONDS

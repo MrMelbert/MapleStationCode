@@ -8,8 +8,6 @@
 	allow_duplicates = FALSE
 	cost = 2
 
-	unpickable = TRUE
-
 /datum/map_template/ruin/lavaland/diamonds_shattering
 	id = "diamonds_shattering"
 	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
@@ -19,9 +17,7 @@
 
 	allow_duplicates = FALSE
 	cost = 2
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering)
-
-	unpickable = TRUE
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink)
 
 /datum/map_template/ruin/lavaland/hearts_shattering
 	id = "hearts_shattering"
@@ -32,9 +28,7 @@
 
 	allow_duplicates = FALSE
 	cost = 8
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering)
-
-	unpickable = TRUE
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink)
 
 /datum/map_template/ruin/icemoon/clubs_shattering
 	id = "clubs_shattering"
@@ -42,6 +36,25 @@
 	suffix = "clubsshattering.dmm"
 	name = "Ice-Ruin The Shattering Of Clubs"
 	description = "The wreckage of a redtech sensor array, now smeared across space and time."
+
 	allow_duplicates = FALSE
 
-	unpickable = TRUE
+/datum/map_template/ruin/lavaland/genericengine
+	id = "engine_generic"
+	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
+	suffix = "genericengine.dmm"
+	name = "Lava-Ruin Redtech Engine"
+	description = "The wreckage of a redtech engine, now smeared across space and time."
+
+	allow_duplicates = FALSE
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericheatsink)
+
+/datum/map_template/ruin/lavaland/genericheatsink
+	id = "heatsink_generic"
+	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
+	suffix = "genericheatsink.dmm"
+	name = "Lava-Ruin Redtech Heatsink"
+	description = "The wreckage of a redtech heatsink, now smeared across space and time."
+
+	allow_duplicates = FALSE
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine)
