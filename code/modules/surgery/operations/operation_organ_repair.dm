@@ -261,7 +261,7 @@
 /datum/surgery_operation/organ/repair/coronary_bypass/on_failure(obj/item/organ/organ, mob/living/surgeon, obj/item/tool, list/operation_args)
 	. = ..()
 	organ.bodypart_owner.adjustBleedStacks(30)
-	var/blood_name = LOWER_TEXT(organ.owner.get_blood_type()?.name) || "blood"
+	var/blood_name = LOWER_TEXT(organ.owner.get_blood_name())
 	display_results(
 		surgeon,
 		organ.owner,
