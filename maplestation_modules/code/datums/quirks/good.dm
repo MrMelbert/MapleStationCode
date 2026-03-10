@@ -146,12 +146,12 @@
 	skills = list(
 		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
 	)
-	icon = FA_ICON_SUITCASE_MEDICAL
+	icon = FA_ICON_FIRST_AID
 	value = 2
 
 /datum/quirk/skill/electronics
-	name = "Hobbyist Electronics"
-	desc = "You have some innate experience with electronics, either from a natural aptitude or from a hobby."
+	name = "Hobbyist Electrician"
+	desc = "You have some innate experience with electronics, either from natural aptitude or from a hobby."
 	skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
 	)
@@ -160,7 +160,7 @@
 
 /datum/quirk/skill/mechanics
 	name = "Hobbyist Mechanic"
-	desc = "You have some innate experience with mechanics, either from a natural aptitude or from a hobby."
+	desc = "You have some innate experience with mechanics, either from natural aptitude or from a hobby."
 	skills = list(
 		/datum/skill/mechanics = SKILL_LEVEL_JOURNEYMAN,
 	)
@@ -169,7 +169,7 @@
 
 /datum/quirk/skill/cooking
 	name = "Home Cook"
-	desc = "You have some innate experience with cooking, either from a natural aptitude or from a hobby."
+	desc = "You have some innate experience with cooking, either from natural aptitude or from a hobby."
 	skills = list(
 		/datum/skill/cooking = SKILL_LEVEL_JOURNEYMAN,
 	)
@@ -178,7 +178,7 @@
 
 /datum/quirk/skill/hydroponics
 	name = "Green Thumb"
-	desc = "You have some innate experience with plants, either from a natural aptitude or from a hobby."
+	desc = "You have some innate experience with plants, either from natural aptitude or from a hobby."
 	skills = list(
 		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
 	)
@@ -187,8 +187,7 @@
 
 /datum/quirk/skill/firearms
 	name = "Gun Enthusiast"
-	desc = "You have past experience using ballistic or energy weapons, \
-		either from a natural aptitude or from a hobby."
+	desc = "You have past experience using ballistic or energy weapons, either from natural aptitude or from a hobby."
 	skills = list(
 		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
 	)
@@ -197,7 +196,7 @@
 
 /datum/quirk/skill/athletics
 	name = "Fit"
-	desc = "You are relatively well fit, granting you higher innate athletics skill."
+	desc = "Whether you have trained yourself diligently or are just naturally well built, you have some innate athletic ability."
 	skills = list(
 		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
 	)
