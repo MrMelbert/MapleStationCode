@@ -18,6 +18,11 @@
 	)
 	skill_flags = SKILL_ALWAYS_PRINT
 
+/datum/skill/first_aid/New()
+	. = ..()
+	level_up_messages[SKILL_LEVEL_APPRENTICE] = span_nicegreen("I'm getting a little better at [name] - now I can perform proper CPR!")
+	level_down_messages[SKILL_LEVEL_APPRENTICE] = span_nicegreen("I'm getting a little worse at [name] - I don't think I can perform proper CPR anymore...")
+
 /datum/skill/first_aid/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
 	if(new_level >= SKILL_LEVEL_APPRENTICE)
