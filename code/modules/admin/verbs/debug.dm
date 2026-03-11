@@ -924,7 +924,7 @@ ADMIN_VERB_CUSTOM_EXIST_CHECK(queue_tracy)
 		ui.open()
 
 /datum/mc_dependency_ui/ui_state(mob/user)
-	return GLOB.admin_state // ADMIN_STATE(R_DEBUG)
+	return ADMIN_STATE(R_DEBUG)
 
 /datum/mc_dependency_ui/ui_data(mob/user)
 	var/list/data = list()
