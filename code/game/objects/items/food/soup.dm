@@ -1,6 +1,7 @@
 /obj/item/food/bowled
 	w_class = WEIGHT_CLASS_NORMAL
 	icon = 'icons/obj/food/soupsalad.dmi'
+	abstract_type = /obj/item/food/bowled
 	bite_consumption = 5
 	max_volume = 80
 	foodtypes = NONE

@@ -28,4 +28,5 @@
 	name = "spooky ghost"
 	desc = "This is obviously just a bedsheet, but maybe try it on?"
 	user_vars_to_edit = list("name" = "Spooky Ghost", "real_name" = "Spooky Ghost" , "incorporeal_move" = INCORPOREAL_MOVE_BASIC, "appearance_flags" = KEEP_TOGETHER|TILE_BOUND, "alpha" = 150)
+	icon_state = "ghost_sheet"
 	alternate_worn_layer = ABOVE_BODY_FRONT_LAYER //so the bedsheet goes over everything but fire

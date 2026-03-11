@@ -1,9 +1,10 @@
 ///Subtype for any kind of ballistic gun
 ///This has a shitload of vars on it, and I'm sorry for that, but it does make making new subtypes really easy
 /obj/item/gun/ballistic
-	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
 	name = "projectile gun"
+	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
 	icon_state = "debug"
+	abstract_type = /obj/item/gun/ballistic
 	w_class = WEIGHT_CLASS_NORMAL
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'

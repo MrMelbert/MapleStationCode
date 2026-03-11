@@ -82,7 +82,7 @@
 
 	/**
 	 * Parent types.
-	 * 
+	 *
 	 * Abstract-ness is a meta-property of a class that is used to indicate
 	 * that the class is intended to be used as a base class for others, and
 	 * should not (or cannot) be instantiated.
