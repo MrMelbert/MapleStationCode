@@ -924,14 +924,14 @@
 			Increases the effectiveness of healium and other gases."
 
 	else
-		beginning_text = span_danger("<b>[beginning_text]</b>")
+		beginning_text = span_alert("<b>[beginning_text]</b>")
 		if (received_pressure_mult <= 0) // lethal
-			dilation_text = span_bolddanger("[received_pressure_mult * 100]%")
+			dilation_text = span_alert("<b>[received_pressure_mult * 100]%</b>")
 			tooltip = "Subject's lungs are completely shut. Subject is unable to breathe and requires emergency surgery. \
 				If asthmatic, perform asthmatic bypass surgery and adminster albuterol inhalant. \
 				Otherwise, replace lungs."
 		else
-			dilation_text = span_danger("[received_pressure_mult * 100]%")
+			dilation_text = span_alert("[received_pressure_mult * 100]%")
 			tooltip = "Subject's lungs are partially shut. \
 				If unable to breathe, administer a high-pressure internals tank or replace lungs. \
 				If asthmatic, inhaled albuterol or bypass surgery will likely help."

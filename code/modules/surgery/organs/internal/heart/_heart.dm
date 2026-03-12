@@ -46,13 +46,13 @@
 /obj/item/organ/heart/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	if(beating)
-		organ_owner.remove_status_effect(/datum/status_effect/heart_attack)
+		organ_owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
 	random_bpm_modifier = rand(-5, 5)
 
 /obj/item/organ/heart/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	if(!special)
-		organ_owner.apply_status_effect(/datum/status_effect/heart_attack)
+		organ_owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 12 SECONDS)
 	playing_heartbeat_sfx = BEAT_NONE
 	organ_owner.stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -88,7 +88,7 @@
 	playing_heartbeat_sfx = BEAT_NONE
 	if(!isnull(owner))
 		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-		owner.apply_status_effect(/datum/status_effect/heart_attack)
+		owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
 		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 
@@ -99,7 +99,7 @@
 	beating = TRUE
 	update_appearance()
 	if(!isnull(owner))
-		owner.remove_status_effect(/datum/status_effect/heart_attack)
+		owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
 		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 
@@ -120,8 +120,29 @@
 
 /obj/item/organ/heart/get_status_text(advanced, add_tooltips)
 	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Defibrillate immediately. Similar electric shocks may work in emergencies.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", \
+			"Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies).", add_tooltips)
+
 	return ..()
+
+/obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
+	var/bpm = get_heart_rate()
+	. = "Pulse rate: [bpm]" + span_slightly_smaller("bpm")
+	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
+		. = span_alert(.)
+
+	if(advanced)
+		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
+			. += " "
+			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
+				"Heart rate is below average - while typically not life threatening, it may be indicative of an underlying condition. \
+				Can be treated with medication such as [/datum/reagent/medicine/atropine::name].", add_tooltips))
+
+		if(bpm >= FAST_HEARTBEAT_THRESHOLD)
+			. += " "
+			. += span_notice(conditional_tooltip("(Notice: Tachycardia)", \
+				"Heart rate is above average - while typically not life threatening, it may be indicative of an underlying condition. \
+				Can be treated with medication such as [/datum/reagent/medicine/psicodine::name].", add_tooltips))
 
 /obj/item/organ/heart/show_on_condensed_scans()
 	// Always show if the guy needs a heart (so its status can be monitored)
@@ -134,7 +155,7 @@
 	if(!owner.needs_heart())
 		return
 
-	// Handle "sudden" heart attack
+	// Handle "sudden" cardiac arrest
 	if(!beating || (organ_flags & ORGAN_FAILING))
 		stop_on_beat()
 		return
@@ -241,7 +262,7 @@
 	if(!is_beating() || isnull(owner))
 		return 0
 
-	var/heart_strength = (maxHealth - damage) / maxHealth
+	var/heart_strength = min(1, 0.1 + (maxHealth - (0.8 * damage)) / maxHealth)
 	// stress (boost from adrenaline)
 	heart_strength += (owner.has_status_effect(/datum/status_effect/determined) ? 0.2 : 0)
 	// low blood volume decreases heart strength

@@ -66,12 +66,12 @@
 		return
 	if(advanced)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, QUIRK_TRAIT))
-			return conditional_tooltip("Subject is permanently deaf.", "Irreparable under normal circumstances.", add_tooltips)
+			return conditional_tooltip(span_alert("Subject is permanently deaf."), "Irreparable under normal circumstances.", add_tooltips)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, GENETIC_MUTATION))
-			return conditional_tooltip("Subject is genetically deaf.", "Use medication such as [/datum/reagent/medicine/mutadone::name].", add_tooltips)
+			return conditional_tooltip(span_alert("Subject is genetically deaf."), "Use medication such as [/datum/reagent/medicine/mutadone::name].", add_tooltips)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
-			return conditional_tooltip("Subject is [(organ_flags & ORGAN_FAILING) ? "permanently": "temporarily"] deaf from ear damage.", "Repair surgically, use medication such as [/datum/reagent/medicine/inacusiate::name], or protect ears with earmuffs.", add_tooltips)
-	return "Subject is deaf."
+			return conditional_tooltip(span_alert("Subject is [(organ_flags & ORGAN_FAILING) ? "permanently": "temporarily"] deaf from ear damage."), "Repair surgically, use medication such as [/datum/reagent/medicine/inacusiate::name], or protect ears with earmuffs.", add_tooltips)
+	return span_alert("Subject is deaf.")
 
 /obj/item/organ/ears/show_on_condensed_scans()
 	// Always show if we have an appendix

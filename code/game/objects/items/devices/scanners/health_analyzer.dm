@@ -321,7 +321,7 @@
 					<td>[status]</td>\
 					</tr>"
 				if(appendix)
-					toReport += "<tr><td colspan=4><span class='alert ml-2'>&rdsh; [appendix]</span></td></tr>"
+					toReport += "<tr><td colspan=4><span class='info ml-2'>&rdsh; [appendix]</span></td></tr>"
 
 		if(render)
 			render_list += "<hr>"
