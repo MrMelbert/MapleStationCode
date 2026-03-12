@@ -924,7 +924,7 @@
 		)
 		if(cutting != user)
 			to_chat(cutting, span_warning("[cutting.is_blind() ? "Someone" : user] starts cutting through [to_cut] on your [targeting.plaintext_zone]!"))
-		if(!use_tool(cutting, user, 4 SECONDS * (cutting.body_position == LYING_DOWN ? 1 : 2), volume = 50))
+		if(!use_tool(cutting, user, 3 SECONDS * (cutting.incapacitated(IGNORE_RESTRAINTS) ? 1 : 2.5), volume = 50))
 			return .
 
 		cutting.balloon_alert(user, "cut through [to_cut]")
