@@ -210,7 +210,9 @@
 /mob/living/proc/get_quirk_string(medical = FALSE, category = CAT_QUIRK_ALL, from_scan = FALSE)
 	var/list/dat = list()
 	for(var/datum/quirk/candidate as anything in quirks)
-		if(from_scan & candidate.quirk_flags & QUIRK_HIDE_FROM_SCAN)
+		if(from_scan && (candidate.quirk_flags & QUIRK_HIDE_FROM_SCAN))
+			continue
+		if(medical && !candidate.medical_record_text)
 			continue
 		switch(category)
 			if(CAT_QUIRK_MAJOR_DISABILITY)

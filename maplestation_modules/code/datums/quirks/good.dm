@@ -119,6 +119,7 @@
 
 /datum/quirk/skill
 	abstract_parent_type = /datum/quirk/skill
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	var/list/skills
 
 /datum/quirk/skill/add()
