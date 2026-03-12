@@ -9,7 +9,10 @@
 /datum/loadout_item/head/reshiacap
 	name = "Cap (Delinquent, Black)"
 	item_path = /obj/item/clothing/head/hats/reshiacap
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/reshiacap/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 // --- coat ---
 /obj/item/clothing/under/jumpsuit/reshiacoat
@@ -22,7 +25,10 @@
 /datum/loadout_item/under/formal/reshiacoat
 	name = "Black Uniform Coat"
 	item_path = /obj/item/clothing/under/jumpsuit/reshiacoat
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/formal/reshiacoat/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 // --- shoes ---
 /obj/item/clothing/shoes/reshiaboot

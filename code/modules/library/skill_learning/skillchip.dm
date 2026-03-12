@@ -42,7 +42,7 @@
 	/// Set to TRUE when the skill chip's effects are applied. Set to FALSE when they're not.
 	var/active = FALSE
 	/// Brain that holds this skillchip.
-	var/obj/item/organ/internal/brain/holding_brain
+	var/obj/item/organ/brain/holding_brain
 
 /obj/item/skillchip/Initialize(mapload, is_removable = TRUE)
 	. = ..()
@@ -127,7 +127,7 @@
  * Arguments:
  * * owner_brain - The brain that this skillchip was implanted in to.
  */
-/obj/item/skillchip/proc/on_implant(obj/item/organ/internal/brain/owner_brain)
+/obj/item/skillchip/proc/on_implant(obj/item/organ/brain/owner_brain)
 	if(holding_brain)
 		CRASH("Skillchip is trying to be implanted into [owner_brain], but it's already implanted in [holding_brain]")
 
@@ -195,7 +195,7 @@
  * Arguments:
  * * skillchip - The skillchip you're intending to activate. Does not activate the chip.
  */
-/obj/item/skillchip/proc/has_activate_incompatibility(obj/item/organ/internal/brain/brain)
+/obj/item/skillchip/proc/has_activate_incompatibility(obj/item/organ/brain/brain)
 	if(QDELETED(brain))
 		return "No brain detected."
 
@@ -245,7 +245,7 @@
 		return "Incompatible lifeform detected."
 
 	// No brain
-	var/obj/item/organ/internal/brain/brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(QDELETED(brain))
 		return "No brain detected."
 
@@ -264,7 +264,7 @@
  * Arguments:
  * * brain - The brain to check for implantability with.
  */
-/obj/item/skillchip/proc/has_brain_incompatibility(obj/item/organ/internal/brain/brain)
+/obj/item/skillchip/proc/has_brain_incompatibility(obj/item/organ/brain/brain)
 	if(!istype(brain))
 		stack_trace("Attempted to check incompatibility with invalid brain object [brain].")
 		return "Incompatible brain."
@@ -486,9 +486,9 @@
 
 /obj/item/skillchip/master_angler
 	name = "Mast-Angl-Er skillchip"
-	auto_traits = list(TRAIT_REVEAL_FISH)
+	auto_traits = list(TRAIT_REVEAL_FISH, TRAIT_EXAMINE_FISHING_SPOT, TRAIT_EXAMINE_FISH, TRAIT_EXAMINE_DEEPER_FISH)
 	skill_name = "Fisherman's Discernment"
-	skill_description = "While fishing, it'll make a smidge easier to guess whatever you're trying to catch."
+	skill_description = "Lists fishes when examining a fishing spot, gives a hint of whatever thing's biting the hook and more."
 	skill_icon = "fish"
 	activate_message = span_notice("You feel the knowledge and passion of several sunbaked, seasoned fishermen burn within you.")
 	deactivate_message = span_notice("You no longer feel like casting a fishing rod by the sunny riverside.")

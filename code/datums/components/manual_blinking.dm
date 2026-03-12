@@ -1,7 +1,7 @@
 /datum/component/manual_blinking
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 
-	var/obj/item/organ/internal/eyes/parent_eyes
+	var/obj/item/organ/eyes/parent_eyes
 	var/warn_grace = FALSE
 	var/warn_dying = FALSE
 	var/last_blink
@@ -83,7 +83,7 @@
 /datum/component/manual_blinking/proc/check_added_organ(mob/who_cares, obj/item/organ/added_organ)
 	SIGNAL_HANDLER
 
-	if(istype(added_organ, /obj/item/organ/internal/eyes))
+	if(istype(added_organ, /obj/item/organ/eyes))
 		parent_eyes = added_organ
 		if (IS_ROBOTIC_ORGAN(parent_eyes))
 			parent_eyes = null

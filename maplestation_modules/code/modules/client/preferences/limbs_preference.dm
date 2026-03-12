@@ -2,6 +2,7 @@
 	savefile_key = "limb_list"
 	savefile_identifier = PREFERENCE_CHARACTER
 	can_randomize = FALSE
+	priority = PREFERENCE_PRIORITY_BODYPARTS
 
 /datum/preference/limbs/apply_to_human(mob/living/carbon/human/target, value)
 	var/list/in_order_datums = list(

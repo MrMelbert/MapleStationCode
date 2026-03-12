@@ -113,6 +113,10 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(mouse_over_pointer == MOUSE_HAND_POINTER)
+		add_filter("clickglow", 2, outline_filter(color = COLOR_GOLD, size = 1))
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -135,7 +139,7 @@
 
 //Gas alerts
 // Gas alerts are continuously thrown/cleared by:
-// * /obj/item/organ/internal/lungs/proc/check_breath()
+// * /obj/item/organ/lungs/proc/check_breath()
 // * /mob/living/carbon/check_breath()
 // * /mob/living/carbon/human/check_breath()
 // * /datum/element/atmos_requirements/proc/on_non_stasis_life()
@@ -192,6 +196,16 @@
 	icon_state = ALERT_TOO_MUCH_N2O
 
 //End gas alerts
+
+/atom/movable/screen/alert/bronchodilated
+	name = "Bronchodilated"
+	desc = "You feel like your lungs are larger than usual! You're taking deeper breaths!"
+	icon_state = "bronchodilated"
+
+/atom/movable/screen/alert/bronchoconstricted
+	name = "Bronchocontracted"
+	desc = "You feel like your lungs are smaller than usual! You might need a higher pressure environment/internals to breathe!"
+	icon_state = "bronchoconstricted"
 
 /atom/movable/screen/alert/gross
 	name = "Grossed out."
@@ -426,6 +440,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!examinable)
 		return ..()
 
+	user.examine_feedback(offer.offered_item)
 	return list(
 		span_boldnotice(name),
 		span_info("[offer.owner] is offering you the following item (click the alert to take it!):"),
@@ -1031,43 +1046,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = ALERT_BUCKLED
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
-/atom/movable/screen/alert/restrained/handcuffed
-	name = "Handcuffed"
-	desc = "You're handcuffed and can't act. If anyone drags you, you won't be able to move. Click the alert to free yourself."
-	click_master = FALSE
-
-/atom/movable/screen/alert/restrained/legcuffed
-	name = "Legcuffed"
-	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
-	click_master = FALSE
-	mouse_over_pointer = MOUSE_HAND_POINTER
-
-/atom/movable/screen/alert/restrained/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if((living_owner.mobility_flags & MOBILITY_MOVE) && (living_owner.last_special <= world.time))
-		return living_owner.resist_restraints()
-
 /atom/movable/screen/alert/buckled/Click()
 	. = ..()
 	if(!.)
 		return
 
 	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+	return living_owner.execute_resist()
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"

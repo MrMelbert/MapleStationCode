@@ -188,7 +188,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	else if(W.tool_behaviour == TOOL_MULTITOOL)
 		to_chat(user, get_power_info())
-		shock(user, 5, 0.2)
+		shock(user, 5, null, 0.2)
 
 	add_fingerprint(user)
 
@@ -209,14 +209,9 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 
 // shock the user with probability prb
-/obj/structure/cable/proc/shock(mob/user, prb, siemens_coeff = 1)
-	if(!prob(prb))
-		return FALSE
-	if(electrocute_mob(user, powernet, src, siemens_coeff))
-		do_sparks(5, TRUE, src)
-		return TRUE
-	else
-		return FALSE
+/obj/structure/cable/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	shock_source = powernet
+	return ..()
 
 /obj/structure/cable/singularity_pull(S, current_size)
 	..()
@@ -566,22 +561,44 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 ///////////////////////////////////
 // General procedures
 ///////////////////////////////////
-//you can use wires to heal robotics
-/obj/item/stack/cable_coil/attack(mob/living/carbon/human/H, mob/user)
-	if(!istype(H))
-		return ..()
 
-	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
-	if(affecting && IS_ROBOTIC_LIMB(affecting))
-		if(user == H)
-			user.visible_message(span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."), span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))
-			if(!do_after(user, 5 SECONDS, H))
-				return
-		if(item_heal_robotic(H, user, 0, 15))
-			use(1)
-		return
-	else
-		return ..()
+/obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
+
+	if(user.combat_mode)
+		return NONE
+
+	return try_heal_loop(interacting_with, user)
+
+/obj/item/stack/cable_coil/proc/try_heal_loop(atom/interacting_with, mob/living/user, repeating = FALSE)
+	var/mob/living/carbon/human/attacked_humanoid = interacting_with
+	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(check_zone(user.zone_selected))
+	if(isnull(affecting) || !IS_ROBOTIC_LIMB(affecting))
+		return NONE
+
+	if (!affecting.burn_dam)
+		balloon_alert(user, "limb not damaged")
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(span_notice("[user] starts to fix some of the wires in [attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s"] [affecting.name]."),
+		span_notice("You start fixing some of the wires in [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
+
+	var/use_delay = repeating ? 1 SECONDS : 0.5 SECONDS
+	if(user == attacked_humanoid)
+		use_delay = 5 SECONDS
+
+	use_delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
+	if(!use_tool(attacked_humanoid, user, use_delay, amount = 1))
+		return ITEM_INTERACT_BLOCKING
+
+	if (!attacked_humanoid.item_heal(user, brute_heal = 0, burn_heal = 15, heal_message_brute = "dents", heal_message_burn = "burnt wires", required_bodytype = BODYTYPE_ROBOTIC))
+		return ITEM_INTERACT_BLOCKING
+
+	if (amount > 0)
+		INVOKE_ASYNC(src, PROC_REF(try_heal_loop), interacting_with, user, TRUE)
+
+	return ITEM_INTERACT_SUCCESS
 
 
 ///////////////////////////////////////////////
@@ -622,9 +639,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	use(1)
 
-	if(C.shock(user, 50))
-		if(prob(50)) //fail
-			C.deconstruct()
+	if(C.shock(user, 50) && prob(50)) //fail
+		C.deconstruct()
 
 	return C
 

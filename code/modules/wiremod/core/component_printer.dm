@@ -88,7 +88,8 @@
 
 /obj/machinery/component_printer/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials)
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/component_printer/RefreshParts()
@@ -177,7 +178,7 @@
 
 	var/list/designs = list()
 
-	var/datum/asset/spritesheet/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet/research_designs)
+	var/datum/asset/spritesheet_batched/research_designs/spritesheet = get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	var/size32x32 = "[spritesheet.name]32x32"
 
 	// for (var/datum/design/component/component_design_type as anything in subtypesof(/datum/design/component))
@@ -259,10 +260,11 @@
 		var/datum/design/design = SSresearch.techweb_design_by_id(id)
 		if((design.build_type & COMPONENT_PRINTER) && design.build_path)
 			all_circuit_designs[design.build_path] = list(
+				"id" = design.build_path,
+				"categories" = design.category,
+				"cost" = design.materials,
+				"desc" = design.desc,
 				"name" = design.name,
-				"description" = design.desc,
-				"materials" = design.materials,
-				"categories" = design.category
 			)
 
 	for(var/obj/item/circuit_component/component as anything in subtypesof(/obj/item/circuit_component))
@@ -271,10 +273,11 @@
 			categories = list("Admin")
 		if(!(component in all_circuit_designs))
 			all_circuit_designs[component] = list(
-				"name" = initial(component.display_name),
-				"description" = initial(component.desc),
-				"materials" = list(),
+				"id" = component.type,
 				"categories" = categories,
+				"cost" = list(),
+				"desc" = initial(component.desc),
+				"name" = initial(component.display_name),
 			)
 
 /obj/machinery/debug_component_printer/ui_interact(mob/user, datum/tgui/ui)
@@ -285,8 +288,8 @@
 
 /obj/machinery/debug_component_printer/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials),
-		get_asset_datum(/datum/asset/spritesheet/research_designs)
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/debug_component_printer/ui_act(action, list/params)
@@ -301,7 +304,7 @@
 				return TRUE
 
 			var/list/design = all_circuit_designs[build_path]
-			if(!design)
+			if (!design)
 				return TRUE
 
 			balloon_alert_to_viewers("printed [design["name"]]")
@@ -314,8 +317,10 @@
 /obj/machinery/debug_component_printer/ui_static_data(mob/user)
 	var/list/data = list()
 
-	data["materials"] = list()
+	data["debug"] = TRUE
 	data["designs"] = all_circuit_designs
+	data["materials"] = list()
+	data["SHEET_MATERIAL_AMOUNT"] = SHEET_MATERIAL_AMOUNT
 
 	return data
 
@@ -350,8 +355,8 @@
 
 /obj/machinery/module_duplicator/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials),
-		get_asset_datum(/datum/asset/spritesheet/research_designs)
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs)
 	)
 
 /obj/machinery/module_duplicator/RefreshParts()

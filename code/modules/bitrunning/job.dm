@@ -18,7 +18,9 @@
 		/datum/job_department/cargo,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind)
+	// family_heirlooms = list(
+	// 	/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+	// )
 
 	mail_goodies = list(
 		/obj/item/food/cornchips = 1,
@@ -31,6 +33,11 @@
 	rpg_title = "Recluse"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/gaming = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/bitrunner
 	name = "Bitrunner"
 	jobtype = /datum/job/bitrunner
@@ -39,3 +46,6 @@
 	uniform = /obj/item/clothing/under/rank/cargo/bitrunner
 	belt = /obj/item/modular_computer/pda/bitrunner
 	ears = /obj/item/radio/headset/headset_cargo
+
+/datum/job/bit_avatar
+	title = "Bit Avatar"

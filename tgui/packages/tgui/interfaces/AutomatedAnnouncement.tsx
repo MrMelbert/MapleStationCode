@@ -1,5 +1,5 @@
 import { Button, Input, LabeledList, Section } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
@@ -47,7 +47,7 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={arrival}
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('ArrivalText', {
                     newText: value,
                   })
@@ -81,7 +81,8 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={newhead}
-                onChange={(e, value) =>
+                // non-module change, ok so just like in general if you grab the announcement stuff, you're going to need to grab changes from inputs rework to this file
+                onChange={(value) =>
                   act('NewheadText', {
                     newText: value,
                   })

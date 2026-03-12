@@ -15,6 +15,7 @@ import { Window } from '../layouts';
 import { getLayoutState, LAYOUT, LayoutToggle } from './common/LayoutToggle';
 
 type VendingData = {
+  all_products_free: boolean;
   onstation: boolean;
   department: string;
   jobDiscount: number;
@@ -29,6 +30,8 @@ type VendingData = {
   access: boolean;
   vending_machine_input: CustomInput[];
   categories: Record<string, Category>;
+  // NON-MODULE CHANGE
+  theme: string | null;
 };
 
 type Category = {
@@ -84,6 +87,7 @@ export const Vending = (props) => {
     coin_records = [],
     hidden_records = [],
     categories,
+    theme,
   } = data;
 
   const [selectedCategory, setSelectedCategory] = useState(
@@ -128,7 +132,7 @@ export const Vending = (props) => {
   );
 
   return (
-    <Window width={431} height={635}>
+    <Window width={431} height={635} theme={theme || undefined}>
       <Window.Content>
         <Stack fill vertical>
           {!!onstation && (
@@ -143,7 +147,6 @@ export const Vending = (props) => {
               stockSearch={stockSearch}
               setStockSearch={setStockSearch}
               selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
             />
           </Stack.Item>
 
@@ -191,20 +194,13 @@ const ProductDisplay = (props: {
   stockSearch: string;
   setStockSearch: (search: string) => void;
   selectedCategory: string | null;
-  setSelectedCategory: (category: string) => void;
 }) => {
   const { data } = useBackend<VendingData>();
-  const {
-    custom,
-    inventory,
-    stockSearch,
-    setStockSearch,
-    selectedCategory,
-    setSelectedCategory,
-  } = props;
+  const { custom, inventory, stockSearch, setStockSearch, selectedCategory } =
+    props;
   const {
     stock,
-    onstation,
+    all_products_free,
     user,
     displayed_currency_icon,
     displayed_currency_name,
@@ -218,16 +214,17 @@ const ProductDisplay = (props: {
       title="Products"
       buttons={
         <Stack>
-          {!!onstation && user && (
+          {!all_products_free && user && (
             <Stack.Item fontSize="16px" color="green">
-              {(user && user.cash) || 0}
+              {user?.cash || 0}
               {displayed_currency_name}
               <Icon name={displayed_currency_icon} color="gold" />
             </Stack.Item>
           )}
           <Stack.Item>
             <Input
-              onInput={(_, value) => setStockSearch(value)}
+              onChange={setStockSearch}
+              expensive
               placeholder="Search..."
               value={stockSearch}
             />
@@ -263,17 +260,17 @@ const ProductDisplay = (props: {
 const Product = (props) => {
   const { act, data } = useBackend<VendingData>();
   const { custom, product, productStock, fluid } = props;
-  const { access, department, jobDiscount, onstation, user } = data;
+  const { access, department, jobDiscount, all_products_free, user } = data;
 
   const colorable = !!productStock?.colorable;
-  const free = !onstation || product.price === 0;
+  const free = all_products_free || product.price === 0;
   const discount = !product.premium && department === user?.department;
   const remaining = custom ? product.amount : productStock.amount;
   const redPrice = Math.round(product.price * jobDiscount);
   const disabled =
     remaining === 0 ||
-    (onstation && !user) ||
-    (onstation &&
+    (!all_products_free && !user) ||
+    (!all_products_free &&
       !access &&
       (discount ? redPrice : product.price) > user?.cash);
 
@@ -297,6 +294,7 @@ const Product = (props) => {
           })
         : act('vend', {
             ref: product.ref,
+            discountless: !!product.premium,
           });
     },
   };

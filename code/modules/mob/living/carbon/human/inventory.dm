@@ -1,3 +1,20 @@
+
+/**
+ * Used to return a list of equipped items on a human mob; does not by default include held items, see include_flags
+ *
+ * Argument(s):
+ * * Optional - include_flags, (see obj.flags.dm) describes which optional things to include or not (pockets, accessories, held items)
+ */
+
+/mob/living/carbon/human/get_equipped_items(include_flags = NONE)
+	var/list/items = ..()
+	if(!(include_flags & INCLUDE_POCKETS))
+		items -= list(l_store, r_store, s_store)
+	if((include_flags & INCLUDE_ACCESSORIES) && w_uniform)
+		var/obj/item/clothing/under/worn_under = w_uniform
+		items += worn_under.attached_accessories
+	return items
+
 /mob/living/carbon/human/can_equip(obj/item/equip_target, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_EQUIPPING_ITEM, equip_target, slot) == COMPONENT_BLOCK_EQUIP)
 		return FALSE
@@ -128,7 +145,7 @@
 			if(wear_id)
 				return
 			wear_id = equipping
-			sec_hud_set_ID()
+			update_ID_card()
 			update_worn_id()
 		if(ITEM_SLOT_EARS)
 			if(ears)
@@ -139,8 +156,6 @@
 			if(glasses)
 				return
 			glasses = equipping
-			if(glasses.glass_colour_type)
-				update_glasses_color(glasses, 1)
 			if(glasses.vision_flags || glasses.invis_override || glasses.invis_view || !isnull(glasses.lighting_cutoff))
 				update_sight()
 			update_worn_glasses()
@@ -188,23 +203,17 @@
 	//Item is handled and in slot, valid to call callback, for this proc should always be true
 	if(!not_handled)
 		has_equipped(equipping, slot, initial)
-		hud_used?.update_locked_slots()
-
-		// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
-		if(equipping.body_parts_covered & FEET || (equipping.flags_inv | equipping.transparent_protection) & HIDESHOES)
-			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_SHOECOVER, equipping, slot, initial, redraw_mob)
 
 	return not_handled //For future deeper overrides
 
 /mob/living/carbon/human/get_equipped_speed_mod_items()
 	return ..() - list(l_store, r_store, s_store)
 
-/mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/human/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
-	if(!. || !I)
+	if(!. || !item_dropping)
 		return
-	var/not_handled = FALSE //if we actually unequipped an item, this is because we dont want to run this proc twice, once for carbons and once for humans
-	if(I == wear_suit)
+	if(item_dropping == wear_suit)
 		if(s_store && invdrop)
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
 		if(wear_suit.breakouttime) //when unequipping a straightjacket
@@ -214,7 +223,7 @@
 		wear_suit = null
 		if(!QDELETED(src)) //no need to update we're getting deleted anyway
 			update_worn_oversuit()
-	else if(I == w_uniform)
+	else if(item_dropping == w_uniform)
 		w_uniform = null
 		update_suit_sensors()
 		if(!QDELETED(src))
@@ -228,61 +237,52 @@
 				dropItemToGround(wear_id)
 			if(belt && !can_equip(belt, ITEM_SLOT_BELT, TRUE, ignore_equipped = TRUE))
 				dropItemToGround(belt)
-	else if(I == gloves)
+	else if(item_dropping == gloves)
 		gloves = null
 		if(!QDELETED(src))
 			update_worn_gloves()
-	else if(I == glasses)
+	else if(item_dropping == glasses)
 		glasses = null
-		var/obj/item/clothing/glasses/G = I
-		if(G.glass_colour_type)
-			update_glasses_color(G, 0)
-		if(G.vision_flags || G.invis_override || G.invis_view || !isnull(G.lighting_cutoff))
+		var/obj/item/clothing/glasses/old_glasses = item_dropping
+		if(old_glasses.vision_flags || old_glasses.invis_override || old_glasses.invis_view || !isnull(old_glasses.lighting_cutoff))
 			update_sight()
 		if(!QDELETED(src))
 			update_worn_glasses()
-	else if(I == ears)
+	else if(item_dropping == ears)
 		ears = null
 		if(!QDELETED(src))
 			update_worn_ears()
-	else if(I == shoes)
+	else if(item_dropping == shoes)
 		shoes = null
 		if(!QDELETED(src))
 			update_worn_shoes()
-	else if(I == belt)
+	else if(item_dropping == belt)
 		belt = null
 		if(!QDELETED(src))
 			update_worn_belt()
-	else if(I == wear_id)
+	else if(item_dropping == wear_id)
 		wear_id = null
-		sec_hud_set_ID()
+		update_ID_card()
 		if(!QDELETED(src))
 			update_worn_id()
-	else if(I == r_store)
+	else if(item_dropping == r_store)
 		r_store = null
 		if(!QDELETED(src))
 			update_pockets()
-	else if(I == l_store)
+	else if(item_dropping == l_store)
 		l_store = null
 		if(!QDELETED(src))
 			update_pockets()
-	else if(I == s_store)
+	else if(item_dropping == s_store)
 		s_store = null
 		if(!QDELETED(src))
 			update_suit_storage()
-	else
-		not_handled = TRUE
 
-	// Send a signal for when we unequip an item that used to cover our feet/shoes. Used for bloody feet
-	if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
-		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_SHOECOVER, I, force, newloc, no_move, invdrop, silent)
-
-	if(not_handled)
-		return
-
-	update_equipment_speed_mods()
-	update_obscured_slots(I.flags_inv)
-	hud_used?.update_locked_slots()
+/mob/living/carbon/human/item_coverage_changed(added_slots, removed_slots)
+	. = ..()
+	if((added_slots|removed_slots) & HIDEFACE)
+		sec_hud_set_security_status()
+		update_visible_name()
 
 /mob/living/carbon/human/toggle_internals(obj/item/tank, is_external = FALSE)
 	// Just close the tank if it's the one the mob already has open.
@@ -294,8 +294,8 @@
 		return toggle_open_internals(tank, is_external)
 	// Use mask in absence of tube.
 	if(isclothing(wear_mask) && ((wear_mask.visor_flags & MASKINTERNALS) || (wear_mask.clothing_flags & MASKINTERNALS)))
-		// Adjust dishevelled breathing mask back onto face.
-		if (wear_mask.up)
+		// Adjust dishevelled breathing mask back onto face unless it is exempt.
+		if ((wear_mask.up) && !(wear_mask.clothing_flags & INTERNALS_ADJUST_EXEMPT))
 			wear_mask.adjust_visor(src)
 		return toggle_open_internals(tank, is_external)
 	// Use helmet in absence of tube or valid mask.
@@ -349,7 +349,7 @@
 
 //delete all equipment without dropping anything
 /mob/living/carbon/human/proc/delete_equipment()
-	for(var/slot in get_equipped_items(include_pockets = TRUE))//order matters, dependant slots go first
+	for(var/slot in get_equipped_items(INCLUDE_POCKETS))//order matters, dependant slots go first
 		qdel(slot)
 	for(var/obj/item/held_item in held_items)
 		qdel(held_item)
@@ -392,3 +392,24 @@
 		return
 	stored.attack_hand(src) // take out thing from item in storage slot
 	return
+
+/mob/living/carbon/human/change_number_of_hands(amt)
+	var/old_limbs = held_items.len
+	if(amt < old_limbs)
+		for(var/i in hand_bodyparts.len to amt step -1)
+			var/obj/item/bodypart/BP = hand_bodyparts[i]
+			BP.dismember()
+			hand_bodyparts[i] = null
+		hand_bodyparts.len = amt
+	else if(amt > old_limbs)
+		hand_bodyparts.len = amt
+		for(var/i in old_limbs+1 to amt)
+			var/path = /obj/item/bodypart/arm/left
+			if(!(i % 2))
+				path = /obj/item/bodypart/arm/right
+
+			var/obj/item/bodypart/BP = new path ()
+			BP.held_index = i
+			BP.try_attach_limb(src, TRUE)
+			hand_bodyparts[i] = BP
+	..() //Don't redraw hands until we have organs for them

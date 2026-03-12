@@ -176,15 +176,13 @@
 
 	if(!soon_to_be_ghoul.mind || !soon_to_be_ghoul.client)
 		message_admins("[ADMIN_LOOKUPFLW(user)] is creating a voiceless dead of a body with no player.")
-		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as a [soon_to_be_ghoul.real_name], a voiceless dead?", check_jobban = ROLE_HERETIC, role = ROLE_HERETIC, poll_time = 5 SECONDS, target_mob = soon_to_be_ghoul, pic_source = soon_to_be_ghoul, role_name_text = "voiceless dead")
-		if(!LAZYLEN(candidates))
+		var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [span_danger(soon_to_be_ghoul.real_name)], a [span_notice("voiceless dead")]?", check_jobban = ROLE_HERETIC, role = ROLE_HERETIC, poll_time = 5 SECONDS, checked_target = soon_to_be_ghoul, alert_pic = mutable_appearance('icons/mob/human/human.dmi', "husk"), jump_target = soon_to_be_ghoul, role_name_text = "voiceless dead")
+		if(isnull(chosen_one))
 			loc.balloon_alert(user, "ritual failed, no ghosts!")
 			return FALSE
-
-		var/mob/dead/observer/chosen_candidate = pick(candidates)
-		message_admins("[key_name_admin(chosen_candidate)] has taken control of ([key_name_admin(soon_to_be_ghoul)]) to replace an AFK player.")
+		message_admins("[key_name_admin(chosen_one)] has taken control of ([key_name_admin(soon_to_be_ghoul)]) to replace an AFK player.")
 		soon_to_be_ghoul.ghostize(FALSE)
-		soon_to_be_ghoul.key = chosen_candidate.key
+		soon_to_be_ghoul.key = chosen_one.key
 
 	selected_atoms -= soon_to_be_ghoul
 	make_ghoul(user, soon_to_be_ghoul)
@@ -253,7 +251,7 @@
 		/datum/heretic_knowledge/spell/opening_blast,
 	)
 	required_atoms = list(
-		/obj/item/organ/internal/eyes = 1,
+		/obj/item/organ/eyes = 1,
 		/obj/effect/decal/cleanable/blood = 1,
 		/obj/item/bodypart/arm/left = 1,
 	)
@@ -296,9 +294,9 @@
 		/datum/heretic_knowledge/spell/cleave,
 	)
 	required_atoms = list(
-		/obj/item/organ/external/tail = 1,
-		/obj/item/organ/internal/stomach = 1,
-		/obj/item/organ/internal/tongue = 1,
+		/obj/item/organ/tail = 1,
+		/obj/item/organ/stomach = 1,
+		/obj/item/organ/tongue = 1,
 		/obj/item/pen = 1,
 		/obj/item/paper = 1,
 	)

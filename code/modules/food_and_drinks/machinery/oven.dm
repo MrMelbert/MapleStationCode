@@ -90,7 +90,8 @@
 		baked_item.fire_act(1000) //Hot hot hot!
 
 		if(SPT_PROB(10, seconds_per_tick))
-			visible_message(span_danger("You smell a burnt smell coming from [src]!"))
+			new /obj/effect/abstract/smell/oven/bad(loc)
+
 	set_smoke_state(worst_cooked_food_state)
 	update_appearance()
 	use_energy(active_power_usage)

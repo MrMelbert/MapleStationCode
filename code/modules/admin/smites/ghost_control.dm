@@ -12,7 +12,7 @@
 		"swear" = CALLBACK(target, TYPE_PROC_REF(/mob, emote), "swear"),
 		"drop" = CALLBACK(target, TYPE_PROC_REF(/mob, drop_all_held_items)),
 		"fall" = CALLBACK(target, TYPE_PROC_REF(/mob/living, Knockdown), 1 SECONDS),
-		"stand" = CALLBACK(target, TYPE_PROC_REF(/mob/living, resist_buckle)),
+		"stand" = CALLBACK(target, TYPE_PROC_REF(/mob/living, execute_resist)),
 		"throw" = CALLBACK(target, TYPE_PROC_REF(/mob, throw_item), get_edge_target_turf(target, pick(GLOB.alldirs))),
 		"shove" = CALLBACK(src, PROC_REF(ghost_shove), target),
 		"sit" = CALLBACK(src, PROC_REF(ghost_sit), target),

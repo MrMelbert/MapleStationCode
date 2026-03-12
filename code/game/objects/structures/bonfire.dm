@@ -115,6 +115,7 @@
 	bonfire_burn()
 	particles = new /particles/bonfire()
 	START_PROCESSING(SSobj, src)
+	AddElement(/datum/element/simple_smell, "smoke", SMELL_INTENSITY_STRONG, 5)
 
 /obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
 	start_burning()
@@ -173,6 +174,7 @@
 	set_light(0)
 	QDEL_NULL(particles)
 	STOP_PROCESSING(SSobj, src)
+	RemoveElement(/datum/element/simple_smell, "smoke", SMELL_INTENSITY_STRONG, 5)
 
 /obj/structure/bonfire/buckle_mob(mob/living/buckled_mob, force = FALSE, check_loc = TRUE)
 	if(..())

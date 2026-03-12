@@ -189,7 +189,7 @@
 					if(!inserted_disk)
 						return
 
-					user.put_in_hands(inserted_disk)
+					try_put_in_hand(inserted_disk, user)
 					inserted_disk = null
 					playsound(src, 'sound/machines/card_slide.ogg', 50)
 					return TRUE

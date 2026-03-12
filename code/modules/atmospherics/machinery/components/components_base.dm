@@ -19,11 +19,19 @@
 	///Handles whether the custom reconcilation handling should be used
 	var/custom_reconcilation = FALSE
 
-/obj/machinery/atmospherics/components/New()
+/obj/machinery/atmospherics/components/get_save_vars()
+	. = ..()
+	if(!override_naming)
+		// Prevents saving the dynamic name with \proper due to it converting to "???"
+		. -= NAMEOF(src, name)
+	. += NAMEOF(src, welded)
+	return .
+
+/obj/machinery/atmospherics/components/Initialize(mapload)
 	parents = new(device_type)
 	airs = new(device_type)
 
-	..()
+	. = ..()
 
 	for(var/i in 1 to device_type)
 		if(airs[i])
@@ -32,11 +40,7 @@
 		component_mixture.volume = 200
 		airs[i] = component_mixture
 
-/obj/machinery/atmospherics/components/Initialize(mapload)
-	. = ..()
-
-	if(hide)
-		RegisterSignal(src, COMSIG_OBJ_HIDE, PROC_REF(hide_pipe))
+	update_appearance()
 
 // Iconnery
 
@@ -46,11 +50,14 @@
 /obj/machinery/atmospherics/components/proc/update_icon_nopipes()
 	return
 
+/obj/machinery/atmospherics/components/on_hide(datum/source, underfloor_accessibility)
+	hide_pipe(underfloor_accessibility)
+	return ..()
+
 /**
- * Called in Initialize(), set the showpipe var to true or false depending on the situation, calls update_icon()
+ * Called in on_hide(), set the showpipe var to true or false depending on the situation, calls update_icon()
  */
-/obj/machinery/atmospherics/components/proc/hide_pipe(datum/source, underfloor_accessibility)
-	SIGNAL_HANDLER
+/obj/machinery/atmospherics/components/proc/hide_pipe(underfloor_accessibility)
 	showpipe = !!underfloor_accessibility
 	if(showpipe)
 		REMOVE_TRAIT(src, TRAIT_UNDERFLOOR, REF(src))
@@ -68,6 +75,8 @@
 
 	if(!showpipe)
 		return ..()
+	if(pipe_flags & PIPING_DISTRO_AND_WASTE_LAYERS)
+		return ..()
 
 	var/connected = 0 //Direction bitset
 
@@ -78,14 +87,14 @@
 			continue
 		var/obj/machinery/atmospherics/node = nodes[i]
 		var/node_dir = get_dir(src, node)
-		var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/pipes_n_cables/pipe_underlays.dmi', "intact_[node_dir]_[underlay_pipe_layer]")
-		pipe_appearance.color = node.pipe_color
+		var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/pipes_n_cables/pipe_underlays.dmi', "intact_[node_dir]_[underlay_pipe_layer]", appearance_flags = RESET_COLOR|KEEP_APART)
+		pipe_appearance.color = (node.pipe_color == ATMOS_COLOR_OMNI || istype(node, /obj/machinery/atmospherics/pipe/color_adapter)) ? pipe_color : node.pipe_color
 		underlays += pipe_appearance
 		connected |= node_dir
 
 	for(var/direction in GLOB.cardinals)
 		if((initialize_directions & direction) && !(connected & direction))
-			var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/pipes_n_cables/pipe_underlays.dmi', "exposed_[direction]_[underlay_pipe_layer]")
+			var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/pipes_n_cables/pipe_underlays.dmi', "exposed_[direction]_[underlay_pipe_layer]", appearance_flags = RESET_COLOR|KEEP_APART)
 			pipe_appearance.color = pipe_color
 			underlays += pipe_appearance
 
@@ -268,6 +277,10 @@
 	if(!.)
 		return FALSE
 	set_init_directions()
+	reconnect_nodes()
+	return TRUE
+
+/obj/machinery/atmospherics/components/proc/reconnect_nodes()
 	for(var/i in 1 to device_type)
 		var/obj/machinery/atmospherics/node = nodes[i]
 		if(node)
@@ -285,7 +298,6 @@
 			node.add_member(src)
 			update_parents()
 		SSair.add_to_rebuild_queue(src)
-	return TRUE
 
 /**
  * Disconnects all nodes from ourselves, remove us from the node's nodes.

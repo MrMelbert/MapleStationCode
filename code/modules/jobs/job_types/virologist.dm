@@ -1,7 +1,7 @@
 /datum/job/virologist
 	title = JOB_VIROLOGIST
-	description = "Study the effects of various diseases and synthesize a \
-		vaccine for them. Engineer beneficial viruses."
+	description = "Study the effects of various diseases, synthesize vaccines, \
+		engineer (hopefully) beneficial viruses."
 	title_options = list(
 		"Pathologist",
 	)
@@ -29,7 +29,10 @@
 		/datum/job_department/medical,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/syringe, /obj/item/statuebust/hippocratic)
+	family_heirlooms = list(
+		// /obj/item/reagent_containers/syringe,
+		// /obj/item/statuebust/hippocratic,
+	)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/cup/bottle/random_virus = 15,
@@ -41,6 +44,12 @@
 	rpg_title = "Plague Doctor"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_EXPERT,
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/virologist
 	name = "Virologist"

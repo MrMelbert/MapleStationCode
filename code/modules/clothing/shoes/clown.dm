@@ -15,19 +15,20 @@
 	create_storage(storage_type = /datum/storage/pockets/shoes/clown)
 	LoadComponent(/datum/component/squeak, squeak_sound, 50, falloff_exponent = 20) //die off quick please
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 3) //Goofy
 	AddElement(/datum/element/ignites_matches)
 
 /obj/item/clothing/shoes/clown_shoes/equipped(mob/living/user, slot)
 	. = ..()
 	if(slot & ITEM_SLOT_FEET)
 		if(enabled_waddle)
-			user.AddElement(/datum/element/waddling)
+			user.AddElementTrait(TRAIT_WADDLING, SHOES_TRAIT, /datum/element/waddling)
 		if(is_clown_job(user.mind?.assigned_role))
 			user.add_mood_event("clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/clothing/shoes/clown_shoes/dropped(mob/living/user)
 	. = ..()
-	user.RemoveElement(/datum/element/waddling)
+	REMOVE_TRAIT(user, TRAIT_WADDLING, SHOES_TRAIT)
 	if(is_clown_job(user.mind?.assigned_role))
 		user.clear_mood_event("clownshoes")
 
@@ -55,3 +56,9 @@
 	desc = "The adorable sound they make when you walk will mean making friends is more likely."
 	icon_state = "meown_shoes"
 	squeak_sound = list('sound/effects/footstep/meowstep1.ogg'=1) //mew mew mew mew
+
+/obj/item/clothing/shoes/clown_shoes/moffers
+	name = "moffers"
+	desc = "No moths were harmed in the making of these slippers."
+	icon_state = "moffers"
+	squeak_sound = list('sound/effects/footstep/moffstep01.ogg'=1) //like sweet music to my ears

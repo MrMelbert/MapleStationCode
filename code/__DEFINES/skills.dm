@@ -49,3 +49,8 @@
 //while using the SKILLCHIP_RESTRICTED_CATEGORIES flag
 /// General related skillchip category
 #define SKILLCHIP_CATEGORY_GENERAL "general"
+
+/// Always print this skill in print_skills
+#define SKILL_ALWAYS_PRINT (1<<0)
+/// Skill is is physical, not mental, and doesn't apply through skillchips or mindswaps
+#define SKILL_PHYSICAL (1<<1)

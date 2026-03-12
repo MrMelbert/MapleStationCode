@@ -28,14 +28,10 @@
 
 /datum/loadout_item/pocket_items
 	abstract_type = /datum/loadout_item/pocket_items
+	group = "Other"
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
-/datum/loadout_item/pocket_items/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/pocket_items/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
 		return NONE
@@ -47,7 +43,7 @@
 	name = "Wallet"
 	item_path = /obj/item/storage/wallet
 
-/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(visuals_only || isdummy(equipper))
 		return
 	if(!job_equipping_step)
@@ -56,13 +52,7 @@
 	// We wait for the end of prefs setup so we can check the equipper's bag for any other loadout items / quirk items to put in the wallet.
 	RegisterSignal(equipper, COMSIG_HUMAN_CHARACTER_SETUP, PROC_REF(apply_after_setup), override = TRUE)
 
-/datum/loadout_item/pocket_items/wallet/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/pocket_items/wallet/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
 	return NONE
 
 /datum/loadout_item/pocket_items/wallet/proc/apply_after_setup(mob/living/carbon/human/source, ...)
@@ -119,21 +109,20 @@
 /datum/loadout_item/pocket_items/lipstick
 	name = "Lipstick"
 	item_path = /obj/item/lipstick
-	additional_displayed_text = list("Recolorable")
 
-/datum/loadout_item/pocket_items/lipstick/on_equip_item(
-	obj/item/lipstick/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only,
-)
+/datum/loadout_item/pocket_items/lipstick/get_item_information()
 	. = ..()
-	var/picked_style = style_to_style(preference_list[item_path]?[INFO_LAYER])
-	var/picked_color = preference_list[item_path]?[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
-	if(istype(equipped_item)) // can be null for visuals_only
-		equipped_item.style = picked_style
-		equipped_item.lipstick_color = picked_color
+	.[FA_ICON_PALETTE] = "Recolorable"
+
+/datum/loadout_item/pocket_items/lipstick/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/job/outfit, visuals_only = FALSE)
+	. = ..()
+	if(isnull(equipped_item))
+		return
+	var/picked_style = style_to_style(item_details[INFO_LAYER])
+	var/picked_color = item_details[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
+	var/obj/item/lipstick/lipstick_item = equipped_item
+	lipstick_item.style = picked_style
+	lipstick_item.lipstick_color = picked_color
 	equipper.update_lips(picked_style, picked_color)
 
 /// Converts style (readable) to style (internal)
@@ -190,9 +179,14 @@
 	name = "Lighter"
 	item_path = /obj/item/lighter
 
+/datum/loadout_item/pocket_items/lighter/cheap
+	name = "Cheap Lighter"
+	item_path = /obj/item/lighter/greyscale
+
 /datum/loadout_item/pocket_items/plush
 	abstract_type = /datum/loadout_item/pocket_items/plush
-	can_be_named = TRUE
+	loadout_flags = parent_type::loadout_flags | LOADOUT_FLAG_ALLOW_NAMING
+	group = "Plushes"
 
 /datum/loadout_item/pocket_items/plush/bee
 	name = "Plush (Bee)"
@@ -208,9 +202,10 @@
 
 /datum/loadout_item/pocket_items/plush/lizard_random
 	name = "Plush (Lizard, Random)"
-	can_be_greyscale = DONT_GREYSCALE
+	loadout_flags = parent_type::loadout_flags | LOADOUT_FLAG_BLOCK_GREYSCALING
 	item_path = /obj/item/toy/plush/lizard_plushie
-	additional_displayed_text = list("Random color")
+	ui_icon = /obj/item/toy/plush/lizard_plushie/greyscale::icon
+	ui_icon_state = /obj/item/toy/plush/lizard_plushie/greyscale::icon_state
 
 /datum/loadout_item/pocket_items/plush/moth
 	name = "Plush (Moth)"
@@ -244,91 +239,99 @@
 	name = "Plush (Snake)"
 	item_path = /obj/item/toy/plush/snakeplushie
 
-/datum/loadout_item/pocket_items/card_binder
+/datum/loadout_item/pocket_items/cards
+	abstract_type = /datum/loadout_item/pocket_items/cards
+	group = "Card Games"
+
+/datum/loadout_item/pocket_items/cards/card_binder
 	name = "Card Binder"
 	item_path = /obj/item/storage/card_binder
 
-/datum/loadout_item/pocket_items/card_deck
+/datum/loadout_item/pocket_items/cards/card_deck
 	name = "Playing Card Deck"
 	item_path = /obj/item/toy/cards/deck
 
-/datum/loadout_item/pocket_items/kotahi_deck
+/datum/loadout_item/pocket_items/cards/kotahi_deck
 	name = "Kotahi Deck"
 	item_path = /obj/item/toy/cards/deck/kotahi
 
-/datum/loadout_item/pocket_items/wizoff_deck
+/datum/loadout_item/pocket_items/cards/wizoff_deck
 	name = "Wizoff Deck"
 	item_path = /obj/item/toy/cards/deck/wizoff
 
-/datum/loadout_item/pocket_items/dice_bag
+/datum/loadout_item/pocket_items/dice
+	abstract_type = /datum/loadout_item/pocket_items/dice
+	group = "Dice"
+
+/datum/loadout_item/pocket_items/dice/dice_bag
 	name = "Dice Bag"
 	item_path = /obj/item/storage/dice
 
-/datum/loadout_item/pocket_items/d1
+/datum/loadout_item/pocket_items/dice/d1
 	name = "D1"
 	item_path = /obj/item/dice/d1
 
-/datum/loadout_item/pocket_items/d2
+/datum/loadout_item/pocket_items/dice/d2
 	name = "D2"
 	item_path = /obj/item/dice/d2
 
-/datum/loadout_item/pocket_items/d4
+/datum/loadout_item/pocket_items/dice/d4
 	name = "D4"
 	item_path = /obj/item/dice/d4
 
-/datum/loadout_item/pocket_items/d6
+/datum/loadout_item/pocket_items/dice/d6
 	name = "D6"
 	item_path = /obj/item/dice/d6
 
-/datum/loadout_item/pocket_items/d6_ebony
+/datum/loadout_item/pocket_items/dice/d6_ebony
 	name = "D6 (Ebony)"
 	item_path = /obj/item/dice/d6/ebony
 
-/datum/loadout_item/pocket_items/d6_space
+/datum/loadout_item/pocket_items/dice/d6_space
 	name = "D6 (Space)"
 	item_path = /obj/item/dice/d6/space
 
-/datum/loadout_item/pocket_items/d8
+/datum/loadout_item/pocket_items/dice/d8
 	name = "D8"
 	item_path = /obj/item/dice/d8
 
-/datum/loadout_item/pocket_items/d10
+/datum/loadout_item/pocket_items/dice/d10
 	name = "D10"
 	item_path = /obj/item/dice/d10
 
-/datum/loadout_item/pocket_items/d12
+/datum/loadout_item/pocket_items/dice/d12
 	name = "D12"
 	item_path = /obj/item/dice/d12
 
-/datum/loadout_item/pocket_items/d20
+/datum/loadout_item/pocket_items/dice/d20
 	name = "D20"
 	item_path = /obj/item/dice/d20
 
-/datum/loadout_item/pocket_items/d100
+/datum/loadout_item/pocket_items/dice/d100
 	name = "D100"
 	item_path = /obj/item/dice/d100
 
-/datum/loadout_item/pocket_items/d00
+/datum/loadout_item/pocket_items/dice/d00
 	name = "D00"
 	item_path = /obj/item/dice/d00
 
-/datum/loadout_item/pocket_items/tdatet_pack_red
+/datum/loadout_item/pocket_items/cards/tdatet_pack_red
 	name = "TDATET Red Pack"
 	item_path = /obj/item/cardpack/tdatet
 
-/datum/loadout_item/pocket_items/tdatet_pack_green
+/datum/loadout_item/pocket_items/cards/tdatet_pack_green
 	name = "TDATET Green Pack"
 	item_path = /obj/item/cardpack/tdatet/green
 
-/datum/loadout_item/pocket_items/tdatet_pack_blue
+/datum/loadout_item/pocket_items/cards/tdatet_pack_blue
 	name = "TDATET Blue Pack"
 	item_path = /obj/item/cardpack/tdatet/blue
 
-/datum/loadout_item/pocket_items/tdatet_pack_mixed
+/datum/loadout_item/pocket_items/cards/tdatet_pack_mixed
 	name = "TDATET Mixed Pack"
 	item_path = /obj/item/cardpack/tdatet/mixed
 
-/datum/loadout_item/pocket_items/counter
+/datum/loadout_item/pocket_items/cards/counter
 	name = "Counter"
 	item_path = /obj/item/toy/counter
 

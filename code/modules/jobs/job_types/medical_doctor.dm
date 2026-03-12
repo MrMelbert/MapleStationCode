@@ -5,8 +5,7 @@
 		"Nurse" = /datum/outfit/job/doctor/nurse,
 		"Medical Resident" = /datum/outfit/job/doctor/nurse,
 	)
-	description = "Save lives, run around the station looking for victims, \
-		scan everyone in sight"
+	description = "Heal everyone, save lives, revive people who you couldn't save, keep malpractice to a minimum."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -21,6 +20,7 @@
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_MEDICAL_DOCTOR
@@ -29,7 +29,15 @@
 		/datum/job_department/medical,
 		)
 
-	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom, /obj/item/scalpel, /obj/item/hemostat, /obj/item/circular_saw, /obj/item/retractor, /obj/item/cautery, /obj/item/statuebust/hippocratic)
+	family_heirlooms = list(
+		// /obj/item/storage/medkit/ancient/heirloom,
+		/obj/item/scalpel,
+		/obj/item/hemostat,
+		/obj/item/circular_saw,
+		/obj/item/retractor,
+		/obj/item/cautery,
+		// /obj/item/statuebust/hippocratic,
+	)
 
 	mail_goodies = list(
 		/obj/item/healthanalyzer/advanced = 15,
@@ -43,6 +51,14 @@
 	rpg_title = "Cleric"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
+		/datum/skill/surgery = SKILL_LEVEL_EXPERT,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/doctor
 	name = "Medical Doctor"
@@ -64,7 +80,7 @@
 
 	box = /obj/item/storage/pouch/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/doctor/nurse
 	name = "Nurse"

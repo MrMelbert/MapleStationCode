@@ -1,5 +1,6 @@
 /obj/item/clothing/under/rank/captain/formal
 	name = "captain's turtleneck"
+	article = "the"
 	desc = "Clothing designed for the commander of the station, the turtleneck is soft to the touch."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -20,6 +21,7 @@
 
 /obj/item/clothing/under/rank/captain/formal/skirt
 	name = "captain's skirtleneck"
+	article = "the"
 	desc = "A uniform designed for the commander of the station, the skirt is just long enough to clear the length standard."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -40,6 +42,7 @@
 
 /obj/item/clothing/shoes/jackboots/captain
 	name = "captain's boots"
+	article = "the"
 	desc = "Hard leather boots meant for the commander of the station, these boots look combat ready."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -58,6 +61,7 @@
 
 /obj/item/clothing/gloves/captain/formal
 	name = "captain's black gloves"
+	article = "the"
 	desc = "Black gloves commanding officer gloves with a sleek appearance to them."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -77,6 +81,7 @@
 
 /obj/item/clothing/suit/armor/vest/capformalcarapace
 	name = "captain's quality carapace"
+	article = "the"
 	desc = "A high quality carapace fitted with sturdy painted metal plating. This one is meant for the stations commander."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -94,6 +99,7 @@
 
 /obj/item/clothing/suit/armor/vest/capvestformal
 	name = "captain's vest"
+	article = "the"
 	desc = "An elegant heavy duty vest. It appears that this vest was modified from a bullet proof vest."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -111,6 +117,7 @@
 
 /obj/item/clothing/neck/cloak/capformal
 	name = "captain's half cape"
+	article = "the"
 	desc = "Worn by the commander of the station, this cape only covers half of the body."
 	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_icon.dmi'
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/captain_equipment/captain_worn.dmi'
@@ -124,6 +131,7 @@
 
 /obj/item/storage/bag/garment/cap_cust
 	name = "captain's extended garment bag"
+	article = "the"
 	desc = "Due to the captain's over-extravagance, a second garment bag had to be requisitioned to hold all of their various outfits."
 
 	// Clothes to the bag

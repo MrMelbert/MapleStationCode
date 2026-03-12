@@ -46,6 +46,20 @@
 			),
 		),
 		list(
+			"name" = "Fishing",
+			"icon" = "fish",
+			"products" = list(
+				/obj/item/storage/toolbox/fishing = 2,
+				/obj/item/storage/box/fishing_hooks = 2,
+				/obj/item/storage/box/fishing_lines = 2,
+				/obj/item/storage/box/fishing_lures = 2,
+				/obj/item/book/manual/fish_catalog = 5,
+				/obj/item/fish_feed = 4,
+				/obj/item/fish_analyzer = 2,
+				/obj/item/fishing_rod/telescopic = 1,
+			),
+		),
+		list(
 			"name" = "Skillchips",
 			"icon" = "floppy-disk",
 			"products" = list(
@@ -96,6 +110,7 @@
 	extra_price = PAYCHECK_COMMAND * 1.25
 	payment_department = ACCOUNT_SRV
 	light_mask = "games-light-mask"
+	allow_custom = TRUE
 
 /obj/item/vending_refill/games
 	machine_name = "\improper Good Clean Fun"

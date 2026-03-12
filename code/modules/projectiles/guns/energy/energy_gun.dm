@@ -8,6 +8,7 @@
 	modifystate = TRUE
 	ammo_x_offset = 3
 	dual_wield_spread = 60
+	light_color = LIGHT_COLOR_CYAN
 
 /obj/item/gun/energy/e_gun/Initialize(mapload)
 	. = ..()
@@ -16,8 +17,8 @@
 		return
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/advancedegun, /datum/crafting_recipe/tempgun, /datum/crafting_recipe/beam_rifle)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -74,6 +75,7 @@
 
 /obj/item/gun/energy/e_gun/hos
 	name = "\improper X-01 MultiPhase Energy Gun"
+	article = "the"
 	desc = "This is an expensive, modern recreation of an antique laser gun. This gun has several unique firemodes, but lacks the ability to recharge over time."
 	cell_type = /obj/item/stock_parts/power_store/cell/hos_gun
 	icon_state = "hoslaser"

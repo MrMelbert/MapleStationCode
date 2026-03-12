@@ -23,19 +23,20 @@
 	if(!(rendered[length(rendered)] in list(",",":",";",".","?","!","\'","-")))
 		rendered += "." //Good punctuation is important :)
 	deadchat_broadcast(rendered, "<b>[brainwash_victim]</b>", follow_target = brainwash_victim, turf_target = get_turf(brainwash_victim), message_type=DEADCHAT_ANNOUNCEMENT)
-	if(check_holidays(APRIL_FOOLS))
+	if(check_holidays(APRIL_FOOLS) && HAS_PERSONALITY(brainwash_victim, /datum/personality/whimsical))
 		// Note: most of the time you're getting brainwashed you're unconscious
 		brainwash_victim.say("You son of a bitch! I'm in.", forced = "That son of a bitch! They're in. (April Fools)")
 
 /datum/antagonist/brainwashed
 	name = "\improper Brainwashed Victim"
-	job_rank = ROLE_BRAINWASHED
+	pref_flag = ROLE_BRAINWASHED
+	stinger_sound = 'sound/ambience/antag/brainwashed.ogg'
 	roundend_category = "brainwashed victims"
 	show_in_antagpanel = TRUE
 	antag_hud_name = "brainwashed"
 	antagpanel_category = ANTAG_GROUP_CREW
 	show_name_in_check_antagonists = TRUE
-	count_against_dynamic_roll_chance = FALSE
+	antag_flags = ANTAG_FAKE|ANTAG_SKIP_GLOBAL_LIST
 	ui_name = "AntagInfoBrainwashed"
 	suicide_cry = "FOR... SOMEONE!!"
 

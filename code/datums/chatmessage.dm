@@ -155,12 +155,12 @@
 		if(HAS_TRAIT(target, TRAIT_SIGN_LANG))
 			chat_color_name_to_use = target.get_visible_name(add_id_name = FALSE) // use face name for signers too
 		else
-			chat_color_name_to_use = target.GetVoice() // for everything else, use the target's voice name
+			chat_color_name_to_use = target.get_voice() // for everything else, use the target's voice name
 
 	// Calculate target color if not already present
 	if (!target.chat_color || target.chat_color_name != chat_color_name_to_use)
-		target.chat_color = colorize_string(chat_color_name_to_use)
-		target.chat_color_darkened = colorize_string(chat_color_name_to_use, 0.85, 0.85)
+		target.chat_color = get_chat_color(chat_color_name_to_use)
+		target.chat_color_darkened = darken_hsl(target.chat_color)
 		target.chat_color_name = chat_color_name_to_use
 
 	// Append language icon if the language uses one
@@ -317,7 +317,7 @@
 	if(HAS_TRAIT(speaker, TRAIT_RUNECHAT_HIDDEN))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
-	spans = spans ? spans.Copy() : list()
+	spans = spans?.Copy() || list()
 
 	// Check for virtual speakers (aka hearing a message through a radio)
 	var/atom/movable/originalSpeaker = speaker
@@ -342,6 +342,15 @@
 #define CM_COLOR_LUM_MIN 0.65
 #define CM_COLOR_LUM_MAX 0.75
 
+/// Assoc name to color, forced colors for runechat rather than generating the color from the name.
+GLOBAL_LIST_INIT(forced_runechat_names, list())
+
+/// Gets (or generates and stores) a color for a name, will return the same color for a given string consistently within a round.atom
+/proc/get_chat_color(name)
+	if(!GLOB.forced_runechat_names[name])
+		GLOB.forced_runechat_names[name] = colorize_string(name)
+	return GLOB.forced_runechat_names[name]
+
 /**
  * Gets a color for a name, will return the same color for a given string consistently within a round.atom
  *
@@ -352,7 +361,7 @@
  * * sat_shift - A value between 0 and 1 that will be multiplied against the saturation
  * * lum_shift - A value between 0 and 1 that will be multiplied against the luminescence
  */
-/datum/chatmessage/proc/colorize_string(name, sat_shift = 1, lum_shift = 1)
+/proc/colorize_string(name)
 	// seed to help randomness
 	var/static/rseed = rand(1,26)
 
@@ -361,10 +370,6 @@
 	var/h = hex2num(copytext(hash, 1, 3)) * (360 / 255)
 	var/s = (hex2num(copytext(hash, 3, 5)) >> 2) * ((CM_COLOR_SAT_MAX - CM_COLOR_SAT_MIN) / 63) + CM_COLOR_SAT_MIN
 	var/l = (hex2num(copytext(hash, 5, 7)) >> 2) * ((CM_COLOR_LUM_MAX - CM_COLOR_LUM_MIN) / 63) + CM_COLOR_LUM_MIN
-
-	// adjust for shifts
-	s *= clamp(sat_shift, 0, 1)
-	l *= clamp(lum_shift, 0, 1)
 
 	// convert to rgb
 	var/h_int = round(h/60) // mapping each section of H to 60 degree sections
@@ -388,6 +393,19 @@
 		if(5)
 			return "#[num2hex(c, 2)][num2hex(m, 2)][num2hex(x, 2)]"
 
+/**
+ * When given a color, returns a darker version via HSL manipulation.
+ */
+/proc/darken_hsl(color, sat_factor = 0.85, lum_factor = 0.85)
+	if (islist(color))
+		color = "#[num2hex(color[1], 2)][num2hex(color[2], 2)][num2hex(color[3], 2)]"
+
+	var/list/raw_color = rgb2num(color, COLORSPACE_HSL)
+
+	raw_color[2] = clamp(raw_color[2] * sat_factor, 0, 100)
+	raw_color[3] = clamp(raw_color[3] * lum_factor, 0, 100)
+
+	return rgb(raw_color[1], raw_color[2], raw_color[3], space = COLORSPACE_HSL)
 
 #undef CHAT_LAYER_MAX_Z
 #undef CHAT_LAYER_Z_STEP

@@ -221,7 +221,7 @@
 	owner.clear_mood_event("on_fire")
 	SEND_SIGNAL(owner, COMSIG_LIVING_EXTINGUISHED, owner)
 	cache_stacks()
-	for(var/obj/item/equipped in owner.get_equipped_items())
+	for(var/obj/item/equipped in (owner.get_equipped_items(INCLUDE_HELD)))
 		equipped.extinguish()
 
 /datum/status_effect/fire_handler/fire_stacks/on_remove()
@@ -235,6 +235,7 @@
 /datum/status_effect/fire_handler/fire_stacks/on_apply()
 	. = ..()
 	RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(add_fire_overlay))
+	RegisterSignal(owner, COMSIG_ATOM_EXTINGUISH, PROC_REF(extinguish))
 	owner.update_appearance(UPDATE_OVERLAYS)
 
 /datum/status_effect/fire_handler/fire_stacks/proc/add_fire_overlay(mob/living/source, list/overlays)
@@ -248,11 +249,6 @@
 		return
 
 	overlays |= created_overlay
-
-/obj/effect/dummy/lighting_obj/moblight/fire
-	name = "fire"
-	light_color = LIGHT_COLOR_FIRE
-	light_range = LIGHT_RANGE_FIRE
 
 /datum/status_effect/fire_handler/wet_stacks
 	id = "wet_stacks"

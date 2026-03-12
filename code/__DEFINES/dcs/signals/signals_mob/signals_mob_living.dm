@@ -12,6 +12,13 @@
 #define COMSIG_ORGAN_BEING_REPLACED "organ_being_replaced"
 /// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/old_owner, target_zone, obj/item/tool)
 #define COMSIG_ORGAN_SURGICALLY_REMOVED "organ_surgically_removed"
+/// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/new_owner, target_zone, obj/item/tool)
+#define COMSIG_ORGAN_SURGICALLY_INSERTED "organ_surgically_inserted"
+/// Called when an organ finishes inserting into a bodypart (obj/item/bodypart/limb, movement_flags)
+#define COMSIG_ORGAN_BODYPART_INSERTED "organ_bodypart_inserted"
+
+///Called when movement intent is toggled.
+#define COMSIG_MOVE_INTENT_TOGGLED "move_intent_toggled"
 
 ///from base of mob/update_transform()
 #define COMSIG_LIVING_POST_UPDATE_TRANSFORM "living_post_update_transform"
@@ -20,6 +27,7 @@
 #define COMSIG_LIVING_DOORCRUSHED "living_doorcrush"
 ///from base of mob/living/resist() (/mob/living)
 #define COMSIG_LIVING_RESIST "living_resist"
+	#define RESIST_HANDLED (1<<0)
 ///from base of mob/living/ignite_mob() (/mob/living)
 #define COMSIG_LIVING_IGNITED "living_ignite"
 ///from base of mob/living/extinguish_mob() (/mob/living)
@@ -130,6 +138,8 @@
 #define COMSIG_LIVING_SLAM_TABLE "living_slam_table"
 ///from /obj/item/hand_item/slapper/attack(): (source=mob/living/slapper, mob/living/slapped)
 #define COMSIG_LIVING_SLAP_MOB "living_slap_mob"
+///from /obj/item/hand_item/slapper/attack(): (source=mob/living/slapper, mob/living/slapped)
+#define COMSIG_LIVING_SLAPPED "living_slapped"
 /// from /mob/living/*/UnarmedAttack(), before sending [COMSIG_LIVING_UNARMED_ATTACK]: (mob/living/source, atom/target, proximity, modifiers)
 /// The only reason this exists is so hulk can fire before Fists of the North Star.
 /// Note that this is called before [/mob/living/proc/can_unarmed_attack] is called, so be wary of that.
@@ -155,9 +165,9 @@
 	#define ZIMPACT_NO_SPIN (1<<2)
 
 /// From mob/living/try_speak(): (message, ignore_spam, forced)
-#define COMSIG_LIVING_TRY_SPEECH "living_vocal_speech"
-	/// Return if the mob can speak the message, regardless of any other signal returns or checks.
-	#define COMPONENT_CAN_ALWAYS_SPEAK (1<<0)
+#define COMSIG_MOB_TRY_SPEECH "living_vocal_speech"
+	/// Return to skip can_speak check, IE, forcing success. Overrides below.
+	#define COMPONENT_IGNORE_CAN_SPEAK (1<<0)
 	/// Return if the mob cannot speak.
 	#define COMPONENT_CANNOT_SPEAK (1<<1)
 
@@ -167,6 +177,7 @@
 	#define TREAT_MESSAGE_ARG 1
 	#define TREAT_TTS_MESSAGE_ARG 2
 	#define TREAT_TTS_FILTER_ARG 3
+	#define TREAT_CAPITALIZE_MESSAGE 4
 
 ///From obj/item/toy/crayon/spraycan
 #define COMSIG_LIVING_MOB_PAINTED "living_mob_painted"
@@ -250,7 +261,9 @@
 /// Sent from a mob to their loc when starting to remove cuffs on itself
 #define COMSIG_MOB_REMOVING_CUFFS "living_removing_cuffs"
 	/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
-	#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+	#define BLOCK_CUFF_REMOVAL (1<<0)
+#define COMSIG_MOB_REMOVED_CUFFS "living_removed_cuffs"
+	#define BREAK_CUFFS (1<<1)
 
 /// Sent to a mob grabbing another mob: (mob/living/grabbing)
 #define COMSIG_LIVING_GRAB "living_grab"
@@ -263,19 +276,46 @@
 
 /// From /datum/element/basic_eating/finish_eating()
 #define COMSIG_MOB_ATE "mob_ate"
+	///cancel post eating
+	#define COMSIG_MOB_TERMINATE_EAT (1<<0)
 
-#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+///From /datum/component/happiness()
+#define COMSIG_MOB_HAPPINESS_CHANGE "happiness_change"
 
-#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
-	/// Return to do no homeostasis at all
-	#define HOMEOSTASIS_HANDLED (1<<0)
-	/// Return to not reduce hunger at all
-	#define HOMEOSTASIS_NO_HUNGER (1<<1)
+///From mob/living/carbon/proc/throw_mode_on and throw_mode_off
+#define COMSIG_LIVING_THROW_MODE_TOGGLE "living_throw_mode_toggle"
+/// From mob/living/proc/on_fall
+#define COMSIG_LIVING_THUD "living_thud"
 
-//from base of living/set_pull_offset(): (mob/living/pull_target, grab_state)
-#define COMSIG_LIVING_SET_PULL_OFFSET "living_set_pull_offset"
-//from base of living/reset_pull_offsets(): (mob/living/pull_target, override)
-#define COMSIG_LIVING_RESET_PULL_OFFSETS "living_reset_pull_offsets"
-//from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
-#define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
-	#define COMPONENT_LIVING_PASSABLE (1<<0)
+/// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
+#define COMSIG_MOB_BATONED "mob_batoned"
+
+/// From /obj/machinery/gibber/startgibbing(): (mob/living/user, /obj/machinery/gibber, list/results)
+#define COMSIG_LIVING_GIBBER_ACT "living_gibber_act"
+
+/// Sent to the mob when their mind is slaved
+#define COMSIG_MOB_ENSLAVED_TO "mob_enslaved_to"
+/// From /obj/item/proc/attack_atom: (mob/living/attacker, atom/attacked)
+#define COMSIG_LIVING_ATTACK_ATOM "living_attack_atom"
+/// From /mob/living/proc/stop_leaning()
+#define COMSIG_LIVING_STOPPED_LEANING "living_stopped_leaning"
+
+/// When a living mob is table slamming another mob: (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_SLAMMING "living_table_slamming"
+/// When a living mob is table slamming another mob, neck grab (so a limb slam): (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_LIMB_SLAMMING "living_table_limb_slamming"
+
+/// From /mob/living/get_examine_name(mob/user) : (mob/examined, visible_name, list/name_override)
+/// Allows mobs to override how they perceive others when examining
+#define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"
+	#define COMPONENT_EXAMINE_NAME_OVERRIDEN (1<<0)
+
+/// From /datum/element/death_drops/on_death(mob/living/target, gibbed) : (list/loot, gibbed)
+#define COMSIG_LIVING_DROP_LOOT "living_drop_loot"
+	/// Prevent loot from being dropped
+	#define COMPONENT_NO_LOOT_DROP (1<<0)
+/// From /datum/element/death_drops/on_death(mob/living/target, gibbed) : (list/loot, gibbed)
+#define COMSIG_LIVING_DROPPED_LOOT "living_dropped_loot"
+
+/// Sent to a mob when one of their bodypart's surgery state changes, OR sent from the basic_surgery_state holder when its surgery state changes (old_state, new_state, changed_states)
+#define COMSIG_LIVING_UPDATING_SURGERY_STATE "carbon_updating_surgery_state"

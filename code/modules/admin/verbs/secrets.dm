@@ -88,7 +88,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 		if("infinite_sec")
 			if(!is_debugger)
 				return
-			var/datum/job/sec_job = SSjob.GetJobType(/datum/job/security_officer)
+			var/datum/job/sec_job = SSjob.get_job_type(/datum/job/security_officer)
 			sec_job.total_positions = -1
 			sec_job.spawn_positions = -1
 			message_admins("[key_name_admin(holder)] has removed the cap on security officers.")
@@ -378,7 +378,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 					"playersonly" = list("desc" = "Only spawn ghost-controlled mobs", "type" = "boolean", "value" = "No"),
 					"ghostpoll" = list("desc" = "Ghost poll question", "type" = "string", "value" = "Do you want to play as %TYPE% portal invader?"),
 					"delay" = list("desc" = "Time between portals, in deciseconds", "type" = "number", "value" = 50),
-					"color" = list("desc" = "Portal color", "type" = "color", "value" = "#00FF00"),
+					"color" = list("desc" = "Portal color", "type" = "color", "value" = COLOR_VIBRANT_LIME),
 					"playlightning" = list("desc" = "Play lightning sounds on announcement", "type" = "boolean", "value" = "Yes"),
 					"announce_players" = list("desc" = "Make an announcement", "type" = "boolean", "value" = "Yes"),
 					"announcement" = list("desc" = "Announcement", "type" = "string", "value" = "Massive bluespace anomaly detected en route to %STATION%. Brace for impact."),
@@ -406,7 +406,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 				var/list/candidates = list()
 
 				if (prefs["offerghosts"]["value"] == "Yes")
-					candidates = SSpolling.poll_ghost_candidates(replacetext(prefs["ghostpoll"]["value"], "%TYPE%", initial(pathToSpawn.name)), check_jobban = ROLE_TRAITOR, pic_source = pathToSpawn, role_name_text = "portal storm")
+					candidates = SSpolling.poll_ghost_candidates(replacetext(prefs["ghostpoll"]["value"], "%TYPE%", initial(pathToSpawn.name)), check_jobban = ROLE_TRAITOR, alert_pic = pathToSpawn, role_name_text = "portal storm")
 
 				if (prefs["playersonly"]["value"] == "Yes" && length(candidates) < prefs["minplayers"]["value"])
 					message_admins("Not enough players signed up to create a portal storm, the minimum was [prefs["minplayers"]["value"]] and the number of signups [length(candidates)]")
@@ -497,60 +497,6 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 			message_admins("[key_name_admin(holder)] made everybody brain damaged")
 		if("floorlava")
 			SSweather.run_weather(/datum/weather/floor_is_lava)
-		if("anime")
-			if(!is_funmin)
-				return
-			var/animetype = tgui_alert(usr,"Would you like to have the clothes be changed?",,list("Yes","No","Cancel"))
-
-			var/droptype
-			if(animetype == "Yes")
-				droptype = tgui_alert(usr,"Make the uniforms Nodrop?",,list("Yes","No","Cancel"))
-
-			if(animetype == "Cancel" || droptype == "Cancel")
-				return
-			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Chinese Cartoons"))
-			message_admins("[key_name_admin(holder)] made everything kawaii.")
-			for(var/i in GLOB.human_list)
-				var/mob/living/carbon/human/H = i
-				SEND_SOUND(H, sound(SSstation.announcer.event_sounds[ANNOUNCER_ANIMES]))
-
-				if(H.dna.species.id == SPECIES_HUMAN)
-					if(H.dna.features["tail_human"] == "None" || H.dna.features["ears"] == "None")
-						var/obj/item/organ/internal/ears/cat/ears = new
-						var/obj/item/organ/external/tail/cat/tail = new
-						ears.Insert(H, movement_flags = DELETE_IF_REPLACED)
-						tail.Insert(H, movement_flags = DELETE_IF_REPLACED)
-					var/list/honorifics = list("[MALE]" = list("kun"), "[FEMALE]" = list("chan","tan"), "[NEUTER]" = list("san"), "[PLURAL]" = list("san")) //John Robust -> Robust-kun
-					var/list/names = splittext(H.real_name," ")
-					var/forename = names.len > 1 ? names[2] : names[1]
-					var/newname = "[forename]-[pick(honorifics["[H.gender]"])]"
-					H.fully_replace_character_name(H.real_name,newname)
-					H.update_mutant_bodyparts()
-					if(animetype == "Yes")
-						var/seifuku = pick(typesof(/obj/item/clothing/under/costume/schoolgirl))
-						var/obj/item/clothing/under/costume/schoolgirl/I = new seifuku
-						var/olduniform = H.w_uniform
-						H.temporarilyRemoveItemFromInventory(H.w_uniform, TRUE, FALSE)
-						H.equip_to_slot_or_del(I, ITEM_SLOT_ICLOTHING)
-						qdel(olduniform)
-						if(droptype == "Yes")
-							ADD_TRAIT(I, TRAIT_NODROP, ADMIN_TRAIT)
-				else
-					to_chat(H, span_warning("You're not kawaii enough for this!"), confidential = TRUE)
-		if("masspurrbation")
-			if(!is_funmin)
-				return
-			mass_purrbation()
-			message_admins("[key_name_admin(holder)] has put everyone on \
-				purrbation!")
-			log_admin("[key_name(holder)] has put everyone on purrbation.")
-		if("massremovepurrbation")
-			if(!is_funmin)
-				return
-			mass_remove_purrbation()
-			message_admins("[key_name_admin(holder)] has removed everyone from \
-				purrbation.")
-			log_admin("[key_name(holder)] has removed everyone from purrbation.")
 		if("massimmerse")
 			if(!is_funmin)
 				return
@@ -577,7 +523,7 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 			if(teamsize <= 0)
 				return FALSE
 
-			candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a Nanotrasen emergency response drone?", check_jobban = ROLE_DRONE, pic_source = /mob/living/basic/drone/classic, role_name_text = "nanotrasen emergency response drone")
+			candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a Nanotrasen emergency response drone?", check_jobban = ROLE_DRONE, alert_pic = /mob/living/basic/drone/classic, role_name_text = "nanotrasen emergency response drone")
 
 			if(length(candidates) == 0)
 				return FALSE
@@ -692,7 +638,6 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 				assign_admin_objective_and_antag(player, antag_datum)
 				var/datum/uplink_handler/uplink = antag_datum.uplink_handler
 				uplink.has_progression = FALSE
-				uplink.has_objectives = FALSE
 			if(ROLE_CHANGELING)
 				var/datum/antagonist/changeling/antag_datum = new
 				antag_datum.give_objectives = keep_generic_objecives
@@ -728,4 +673,3 @@ ADMIN_VERB(secrets, R_NONE, "Secrets", "Abuse harder than you ever have before w
 		var/datum/antagonist/malf_ai/antag_datum = new
 		antag_datum.give_objectives = keep_generic_objecives
 		assign_admin_objective_and_antag(player, antag_datum)
-

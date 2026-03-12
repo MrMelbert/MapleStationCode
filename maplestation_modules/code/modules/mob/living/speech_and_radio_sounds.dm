@@ -52,11 +52,11 @@
 	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /mob/living/carbon/get_speech_sounds(sound_type)
-	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE))
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return null
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(isnull(tongue) || !tongue.speech_sounds_enabled)
 		return null
 	switch(sound_type)

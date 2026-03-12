@@ -51,7 +51,9 @@ SUBSYSTEM_DEF(ambience)
 ///Attempts to play an ambient sound to a mob, returning the cooldown in deciseconds
 /area/proc/play_ambience(mob/M, sound/override_sound, volume = 27)
 	var/sound/new_sound = override_sound || pick(ambientsounds)
-	new_sound = sound(new_sound, repeat = 0, wait = 0, volume = volume, channel = CHANNEL_AMBIENCE)
+	/// volume modifier for ambience as set by the player in preferences.
+	var/volume_modifier = (M.client?.prefs.read_preference(/datum/preference/numeric/volume/sound_ambience_volume))/100
+	new_sound = sound(new_sound, repeat = 0, wait = 0, volume = volume*volume_modifier, channel = CHANNEL_AMBIENCE)
 	SEND_SOUND(M, new_sound)
 
 	return rand(min_ambience_cooldown, max_ambience_cooldown)
@@ -110,8 +112,9 @@ SUBSYSTEM_DEF(ambience)
 
 	var/area/my_area = get_area(src)
 	var/sound_to_use = my_area.ambient_buzz
+	var/volume_modifier = client.prefs.read_preference(/datum/preference/numeric/volume/sound_ship_ambience_volume) || 0
 
-	if(!sound_to_use || !(client.prefs.read_preference(/datum/preference/toggle/sound_ship_ambience)))
+	if(!sound_to_use || volume_modifier <= 0)
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
 		client.current_ambient_sound = null
 		return
@@ -123,4 +126,4 @@ SUBSYSTEM_DEF(ambience)
 		return
 	else if(sound_to_use != client.current_ambient_sound) // Don't reset current loops
 		client.current_ambient_sound = sound_to_use
-		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))
+		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol * (volume_modifier / 100), channel = CHANNEL_BUZZ))

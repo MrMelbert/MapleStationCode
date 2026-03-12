@@ -128,7 +128,7 @@
 
 ///store ores in our body
 /datum/ai_planning_subtree/find_and_hunt_target/hunt_ores/minebot
-	hunting_behavior = /datum/ai_behavior/hunt_target/unarmed_attack_target/consume_ores/minebot
+	hunting_behavior = /datum/ai_behavior/hunt_target/interact_with_target/consume_ores/minebot
 	hunt_chance = 100
 
 /datum/ai_planning_subtree/find_and_hunt_target/hunt_ores/minebot/SelectBehaviors(datum/ai_controller/controller, seconds_per_tick)
@@ -140,10 +140,10 @@
 
 	return ..()
 
-/datum/ai_behavior/hunt_target/unarmed_attack_target/consume_ores/minebot
+/datum/ai_behavior/hunt_target/interact_with_target/consume_ores/minebot
 	hunt_cooldown = 2 SECONDS
 
-/datum/ai_behavior/hunt_target/unarmed_attack_target/consume_ores/minebot/target_caught(mob/living/hunter, obj/item/stack/ore/hunted)
+/datum/ai_behavior/hunt_target/interact_with_target/consume_ores/minebot/target_caught(mob/living/hunter, obj/item/stack/ore/hunted)
 	if(hunter.combat_mode)
 		hunter.set_combat_mode(FALSE)
 	return ..()

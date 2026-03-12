@@ -21,9 +21,19 @@
 		if(!PERFORM_ALL_TESTS(organ_sanity))
 			stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
 		return FALSE
+	if(!mob_insert(receiver, special, movement_flags))
+		return FALSE
+	if(bodypart_owner && loc == bodypart_owner && receiver == bodypart_owner.owner)
+		// ok this is a bit confusing but essentially, thanks to some EXTREME shenanigans
+		// (tl;dr mob_insert -> set_species -> replace_limb -> bodypart_insert)
+		// mob_insert can result in bodypart_insert being handled already
+		// to avoid double insertion, and potential bugs, we'll stop here
+		return TRUE
 
-	mob_insert(receiver, special, movement_flags)
 	bodypart_insert(limb_owner = receiver, movement_flags = movement_flags)
+
+	if(!special)
+		receiver.update_body_parts()
 
 	return TRUE
 
@@ -39,6 +49,9 @@
 	mob_remove(organ_owner, special, movement_flags)
 	bodypart_remove(limb_owner = organ_owner, movement_flags = movement_flags)
 
+	if(!special)
+		organ_owner.update_body_parts()
+
 /*
  * Insert the organ into the select mob.
  *
@@ -51,11 +64,11 @@
 
 	if(!iscarbon(receiver))
 		stack_trace("Tried to insert organ into non-carbon: [receiver.type]")
-		return
+		return FALSE
 
 	if(owner == receiver)
 		stack_trace("Organ receiver is already organ owner")
-		return
+		return FALSE
 
 	var/obj/item/organ/replaced = receiver.get_organ_slot(slot)
 	if(replaced)
@@ -71,6 +84,11 @@
 		// wash also adds the blood dna again
 		wash(CLEAN_TYPE_BLOOD)
 		organ_flags &= ~ORGAN_VIRGIN
+
+	if(external_bodytypes)
+		receiver.synchronize_bodytypes()
+	if(external_bodyshapes)
+		receiver.synchronize_bodyshapes()
 
 	receiver.organs |= src
 	receiver.organs_slot[slot] = src
@@ -95,7 +113,6 @@
 	for(var/datum/status_effect/effect as anything in organ_effects)
 		organ_owner.apply_status_effect(effect, type)
 
-	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_owner_examine))
 	SEND_SIGNAL(src, COMSIG_ORGAN_IMPLANTED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_GAIN_ORGAN, src, special)
 
@@ -107,25 +124,36 @@
 	if(limb_owner)
 		bodypart = limb_owner.get_bodypart(deprecise_zone(zone))
 
-	// The true movement
-	forceMove(bodypart)
-	bodypart.contents |= src
-	bodypart_owner = bodypart
+	if(bodypart_owner == bodypart)
+		stack_trace("Organ bodypart_insert called when organ is already owned by that bodypart")
+	else if(!isnull(bodypart_owner))
+		stack_trace("Organ bodypart_insert called when organ is already owned by a different bodypart")
 
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(forced_removal))
+	// In the event that we're already in the bodypart, DO NOT MOVE IT! otherwise it triggers forced_removal
+	if(loc != bodypart)
+		forceMove(bodypart) // The true movement
 
-	// Apply unique side-effects. Return value does not matter.
-	on_bodypart_insert(bodypart)
+	// Don't re-register if we are already owned
+	if(bodypart_owner != bodypart)
+		bodypart_owner = bodypart
+		RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(forced_removal))
+		// Apply unique side-effects. Return value does not matter.
+		on_bodypart_insert(bodypart)
 
 	return TRUE
 
 /// Add any limb specific effects you might want here
-/obj/item/organ/proc/on_bodypart_insert(obj/item/bodypart/limb, movement_flags)
+/obj/item/organ/proc/on_bodypart_insert(obj/item/bodypart/limb)
 	SHOULD_CALL_PARENT(TRUE)
 
 	item_flags |= ABSTRACT
 	ADD_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
 	interaction_flags_item &= ~INTERACT_ITEM_ATTACK_HAND_PICKUP
+
+	if(bodypart_overlay)
+		limb.add_bodypart_overlay(bodypart_overlay)
+
+	SEND_SIGNAL(src, COMSIG_ORGAN_BODYPART_INSERTED, limb)
 
 /*
  * Remove the organ from the select mob.
@@ -168,6 +196,9 @@
 	UnregisterSignal(organ_owner, COMSIG_ATOM_EXAMINE)
 	SEND_SIGNAL(src, COMSIG_ORGAN_REMOVED, organ_owner)
 	SEND_SIGNAL(organ_owner, COMSIG_CARBON_LOSE_ORGAN, src, special)
+
+	organ_owner.synchronize_bodytypes()
+	organ_owner.synchronize_bodyshapes()
 
 	var/list/diseases = organ_owner.get_static_viruses()
 	if(!LAZYLEN(diseases))
@@ -219,14 +250,34 @@
 	REMOVE_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
 	interaction_flags_item |= INTERACT_ITEM_ATTACK_HAND_PICKUP
 
+	if(!bodypart_overlay)
+		return
+
+	limb.remove_bodypart_overlay(bodypart_overlay)
+
+	if(use_mob_sprite_as_obj_sprite)
+		update_appearance(UPDATE_OVERLAYS)
+
+	save_color()
+
+/// Saves color on organ removal so pink felinid = pink tail
+/obj/item/organ/proc/save_color()
+	color = bodypart_overlay.draw_color
+
 /// In space station videogame, nothing is sacred. If somehow an organ is removed unexpectedly, handle it properly
-/obj/item/organ/proc/forced_removal()
+/obj/item/organ/proc/forced_removal(datum/source, atom/old_loc, ...)
 	SIGNAL_HANDLER
 
 	if(owner)
-		Remove(owner)
+		if(loc?.loc == owner) // loc = some bodypart, loc.loc = some bodypart's owner
+			stack_trace("Forced removal triggered on [src] ([type]) moving into the same mob [owner] ([owner.type])!")
+		else
+			Remove(owner)
 	else if(bodypart_owner)
-		bodypart_remove(bodypart_owner)
+		if(loc == bodypart_owner)
+			stack_trace("Forced removal triggered on [src] ([type]) moving into the same bodypart [bodypart_owner] ([bodypart_owner.type])!")
+		else
+			bodypart_remove(bodypart_owner)
 	else
 		stack_trace("Force removed an already removed organ!")
 
@@ -234,7 +285,26 @@
  * Proc that gets called when the organ is surgically removed by someone, can be used for special effects
  * Currently only used so surplus organs can explode when surgically removed.
  */
-/obj/item/organ/proc/on_surgical_removal(mob/living/user, mob/living/carbon/old_owner, target_zone, obj/item/tool)
+/obj/item/organ/proc/on_surgical_removal(mob/living/user, obj/item/bodypart/limb, obj/item/tool)
 	SHOULD_CALL_PARENT(TRUE)
-	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_REMOVED, user, old_owner, target_zone, tool)
+	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_REMOVED, user, limb.owner, limb.body_zone, tool)
 	RemoveElement(/datum/element/decal/blood)
+
+/**
+ * Proc that gets called when the organ is surgically inserted by someone. Seem familiar?
+ */
+/obj/item/organ/proc/on_surgical_insertion(mob/living/user, obj/item/bodypart/limb)
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_INSERTED, user, limb.owner, limb.body_zone)
+
+/// Proc that gets called when someone starts surgically inserting the organ
+/obj/item/organ/proc/pre_surgical_insertion(mob/living/user, mob/living/carbon/new_owner, target_zone)
+	if (valid_zones)
+		swap_zone(target_zone)
+
+/// Readjusts the organ to fit into a different body zone/slot
+/obj/item/organ/proc/swap_zone(target_zone)
+	if (!valid_zones[target_zone])
+		CRASH("[src]'s ([type]) swap_zone was called with invalid zone [target_zone]")
+	zone = target_zone
+	slot = valid_zones[zone]

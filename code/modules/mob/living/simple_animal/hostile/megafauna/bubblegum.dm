@@ -152,7 +152,7 @@ Difficulty: Hard
  */
 /mob/living/simple_animal/hostile/megafauna/bubblegum/attackby(obj/item/W, mob/user, params)
 	. = ..()
-	if(istype(W, /obj/item/organ/internal/tongue))
+	if(istype(W, /obj/item/organ/tongue))
 		user.client?.give_award(/datum/award/achievement/jobs/frenching, user)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/try_bloodattack()
@@ -359,8 +359,7 @@ Difficulty: Hard
 	base_name = ""
 	can_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/bubblegum/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
+/obj/effect/decal/cleanable/blood/bubblegum/init_dna()
 	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/bubblegum/can_bloodcrawl_in()
@@ -374,8 +373,7 @@ Difficulty: Hard
 	base_name = ""
 	can_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/gibs/bubblegum/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
+/obj/effect/decal/cleanable/blood/gibs/bubblegum/init_dna()
 	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/can_bloodcrawl_in()

@@ -13,6 +13,10 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
+/obj/item/clothing/gloves/bracer/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 2)
+
 /datum/armor/gloves_bracer
 	melee = 15
 	bullet = 25

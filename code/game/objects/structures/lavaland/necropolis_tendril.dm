@@ -6,7 +6,7 @@
 	icon = 'icons/mob/simple/lavaland/nest.dmi'
 	icon_state = "tendril"
 
-	faction = list(FACTION_MINING)
+	faction = list(FACTION_MINING, FACTION_ASHWALKER)
 	max_mobs = 3
 	max_integrity = 250
 	mob_types = list(/mob/living/basic/mining/watcher)
@@ -113,7 +113,7 @@ GLOBAL_LIST_INIT(tendrils, list())
 	collected += WEAKREF(collector)
 
 /obj/effect/collapse/Destroy()
-	QDEL_NULL(collected)
+	collected.Cut()
 	QDEL_NULL(emitted_light)
 	return ..()
 

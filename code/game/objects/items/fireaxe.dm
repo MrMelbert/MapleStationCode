@@ -46,6 +46,9 @@
 	//axes are not known for being precision butchering tools
 	AddComponent(/datum/component/two_handed, force_unwielded=force_unwielded, force_wielded=force_wielded, icon_wielded="[base_icon_state]1")
 
+/obj/item/fireaxe/get_demolition_modifier(obj/target)
+	return HAS_TRAIT(src, TRAIT_WIELDED) ? demolition_mod : 0.8
+
 /obj/item/fireaxe/update_icon_state()
 	icon_state = "[base_icon_state]0"
 	return ..()

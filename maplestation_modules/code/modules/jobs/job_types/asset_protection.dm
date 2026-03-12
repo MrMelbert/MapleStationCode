@@ -2,7 +2,7 @@
 /datum/job/asset_protection
 	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
-		from foreign threats and themselves. Exert authority over the Bridge Officer."
+		from foreign threats (and themselves). Exert authority over the bridge officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -32,7 +32,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -50,6 +53,13 @@
 	rpg_title = "Royal Guard"
 	crewmonitor_priority = 9 // after cap, right before sec
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_MASTER,
+		/datum/skill/first_aid = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/piloting = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/asset_protection
 	name = "Asset Protection"
 	jobtype = /datum/job/asset_protection
@@ -63,7 +73,7 @@
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	id_trim = /datum/id_trim/job/asset_protection
 	box = /obj/item/storage/pouch/survival/security
 

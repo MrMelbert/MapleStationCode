@@ -2,7 +2,6 @@ SUBSYSTEM_DEF(blackbox)
 	name = "Blackbox"
 	wait = 6000
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
-	init_order = INIT_ORDER_BLACKBOX
 
 	var/list/feedback_list = list() //list of datum/feedback_variable
 	var/list/first_death = list() //the first death of this round, assoc. vars keep track of different things
@@ -348,7 +347,7 @@ Versioning
 		"name" = L.real_name,
 		"key" = L.ckey,
 		"job" = L.mind.assigned_role.title,
-		"special" = L.mind.special_role,
+		"special" = jointext(L.mind.get_special_roles(), " | "),
 		"pod" = get_area_name(L, TRUE),
 		"laname" = L.lastattacker,
 		"lakey" = L.lastattackerckey,

@@ -14,6 +14,7 @@
 
 /obj/item/clothing/under/rank/captain/skirt
 	name = "captain's jumpskirt"
+	article = "the"
 	desc = "It's a blue jumpskirt with some gold markings denoting the rank of \"Captain\"."
 	icon_state = "captain_skirt"
 	inhand_icon_state = "b_suit"
@@ -24,6 +25,7 @@
 
 /obj/item/clothing/under/rank/captain/suit
 	name = "captain's suit"
+	article = "the"
 	desc = "A green suit and yellow necktie. Exemplifies authority."
 	icon_state = "green_suit"
 	inhand_icon_state = "dg_suit"
@@ -31,6 +33,7 @@
 
 /obj/item/clothing/under/rank/captain/suit/skirt
 	name = "green suitskirt"
+	article = "the"
 	desc = "A green suitskirt and yellow necktie. Exemplifies authority."
 	icon_state = "green_suit_skirt"
 	inhand_icon_state = "dg_suit"
@@ -41,6 +44,7 @@
 
 /obj/item/clothing/under/rank/captain/parade
 	name = "captain's parade uniform"
+	article = "the"
 	desc = "A captain's luxury-wear, for special occasions."
 	icon_state = "captain_parade"
 	inhand_icon_state = null

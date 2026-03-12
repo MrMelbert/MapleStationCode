@@ -2,7 +2,7 @@
 	name = "\improper Space Dragon"
 	roundend_category = "space dragons"
 	antagpanel_category = ANTAG_GROUP_LEVIATHANS
-	job_rank = ROLE_SPACE_DRAGON
+	pref_flag = ROLE_SPACE_DRAGON
 	show_in_antagpanel = FALSE
 	show_name_in_check_antagonists = TRUE
 	show_to_ghosts = TRUE
@@ -66,13 +66,11 @@
 /datum/antagonist/space_dragon/on_gain()
 	forge_objectives()
 	rift_ability = new()
-	owner.special_role = ROLE_SPACE_DRAGON
-	owner.set_assigned_role(SSjob.GetJobType(/datum/job/space_dragon))
+	owner.set_assigned_role(SSjob.get_job_type(/datum/job/space_dragon))
 	return ..()
 
 /datum/antagonist/space_dragon/on_removal()
-	owner.special_role = null
-	owner.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
+	owner.set_assigned_role(SSjob.get_job_type(/datum/job/unassigned))
 	return ..()
 
 /datum/antagonist/space_dragon/apply_innate_effects(mob/living/mob_override)
@@ -112,7 +110,7 @@
 	var/icon/icon = icon('icons/mob/nonhuman-player/spacedragon.dmi', "spacedragon")
 
 	icon.Blend(COLOR_STRONG_VIOLET, ICON_MULTIPLY)
-	icon.Blend(icon('icons/mob/nonhuman-player/spacedragon.dmi', "overlay_base"), ICON_OVERLAY)
+	icon.Blend(icon('icons/mob/nonhuman-player/spacedragon.dmi', "spacedragon_overlay_base"), ICON_OVERLAY)
 
 	icon.Crop(10, 9, 54, 53)
 	icon.Scale(ANTAGONIST_PREVIEW_ICON_SIZE, ANTAGONIST_PREVIEW_ICON_SIZE)
@@ -196,7 +194,7 @@
  */
 /datum/antagonist/space_dragon/proc/permanant_empower()
 	owner.current.fully_heal()
-	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = "#ff330030", "size" = 5))
+	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = COLOR_CARP_RIFT_RED, "size" = 5))
 	owner.current.add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
 
 /**
@@ -207,7 +205,7 @@
  */
 /datum/antagonist/space_dragon/proc/rift_empower()
 	owner.current.fully_heal()
-	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = "#ff330030", "size" = 5))
+	owner.current.add_filter("anger_glow", 3, list("type" = "outline", "color" = COLOR_CARP_RIFT_RED, "size" = 5))
 	owner.current.add_movespeed_modifier(/datum/movespeed_modifier/dragon_rage)
 	addtimer(CALLBACK(src, PROC_REF(rift_depower)), 30 SECONDS)
 

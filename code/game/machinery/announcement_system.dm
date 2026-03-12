@@ -3,6 +3,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /obj/machinery/announcement_system
 	density = TRUE
 	name = "\improper Automated Announcement System"
+	article = "the"
 	desc = "An automated announcement system that handles minor announcements over the radio."
 	icon = 'icons/obj/machines/telecomms.dmi'
 	icon_state = "AAS_On"
@@ -90,6 +91,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		message = CompileText(newhead, user, rank)
 	else if(message_type == "ARRIVALS_BROKEN")
 		message = "The arrivals shuttle has been damaged. Docking for repairs..."
+	else if(message_type == "DESPAWN")
+		message = CompileText("%PERSON, %RANK, has entered long-term crew storage.", user, rank)
 
 	broadcast(message, channels)
 

@@ -102,10 +102,12 @@
 	  */
 	var/incorporeal_move = FALSE
 
+	/// Lazylist of all quirks the mob has. These are not singletons
 	var/list/quirks
-	///a list of surgery datums. generally empty, they're added when the player wants them.
-	var/list/surgeries = list()
-	/// Lazylist of surgery speed modifiers
+	/// Lazylist of all typepaths of personalities the mob has.
+	var/list/personalities
+
+	/// Lazylist of surgery speed modifiers - id to number - 2 = 2x faster, 0.5x = 0.5x slower
 	var/list/mob_surgery_speed_mods
 
 	/// Used by [living/Bump()][/mob/living/proc/Bump] and [living/PushAM()][/mob/living/proc/PushAM] to prevent potential infinite loop.
@@ -151,6 +153,8 @@
 	/// Cell tracker datum we use to manage the pipes around us, for faster ventcrawling
 	/// Should only exist if you're in a pipe
 	var/datum/cell_tracker/pipetracker
+	/// Cooldown for welded vent movement messages to prevent spam
+	COOLDOWN_DECLARE(welded_vent_message_cd)
 
 	var/smoke_delay = 0 ///used to prevent spam with smoke reagent reaction on mob.
 
@@ -267,3 +271,15 @@
 	/// Modify this via add_offsets and remove_offsets,
 	/// NOT directly (and definitely avoid modifying offsets directly)
 	VAR_PRIVATE/list/offsets
+
+	var/eavesdrop_range = EAVESDROP_EXTRA_RANGE
+
+	/// Lazylist of martial arts this mob knows
+	/// First element is the current martial art - any other elements are "saved" for if they unlearn the first one
+	/// Reference handling is done by the martial arts themselves
+	var/list/datum/martial_art/martial_arts
+
+	/// List of smell datums we smelled recently, we get accustomed to it over time
+	VAR_FINAL/list/recently_smelled
+	/// Cooldown between smell attempts
+	COOLDOWN_DECLARE(smell_cd)

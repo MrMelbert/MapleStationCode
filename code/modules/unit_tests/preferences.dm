@@ -45,10 +45,10 @@
 		if (!istype(preference))
 			continue
 
-		if (preference.category != PREFERENCE_CATEGORY_FEATURES && preference.category != PREFERENCE_CATEGORY_CLOTHING)
+		if (preference.category != PREFERENCE_CATEGORY_FEATURES && preference.category != PREFERENCE_CATEGORY_CLOTHING && preference.category != PREFERENCE_CATEGORY_HAIR)
 			continue
 
-		TEST_ASSERT(!isnull(preference.main_feature_name), "Preference [preference_type] does not have a main_feature_name set!")
+		TEST_ASSERT(!isnull(preference.main_feature_name) || !isnull(preference.relevant_external_organ), "Preference [preference_type] does not have a main_feature_name or an organ to draw a name from!")
 
 /// Validates that every choiced preference with should_generate_icons implements icon_for,
 /// and that every one that doesn't, doesn't.
@@ -65,7 +65,7 @@
 		if (choiced_preference.should_generate_icons)
 			for (var/value in values)
 				var/icon = choiced_preference.icon_for(value)
-				TEST_ASSERT(istype(icon, /icon) || ispath(icon), "[preference_type] gave [icon] as an icon for [value], which is not a valid value")
+				TEST_ASSERT(istype(icon, /datum/universal_icon) || ispath(icon), "[preference_type] gave [icon] as an icon for [value], which is not a valid value")
 		else
 			var/errored = FALSE
 

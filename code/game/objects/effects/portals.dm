@@ -20,7 +20,7 @@
 	anchored = TRUE
 	density = TRUE // dense for receiving bumbs
 	layer = HIGH_OBJ_LAYER
-	light_system = STATIC_LIGHT
+	light_system = COMPLEX_LIGHT
 	light_range = 3
 	light_power = 1
 	light_on = TRUE
@@ -154,7 +154,28 @@
 		new /obj/effect/temp_visual/portal_animation(start_turf, src, M)
 		playsound(start_turf, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		playsound(real_target, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-		Beam(real_target, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS) //NON-MODULAR CHANGE
+		var/turf/beam_turf = get_turf(src)
+		//NON-MODULAR CHANGE
+		// same z level has a direct beam
+		if(beam_turf.z == real_target.z)
+			beam_turf.Beam(real_target, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS)
+		// similar z level (station-station) splits up the beams per z level travelled
+		else if(is_valid_z_level(beam_turf, real_target))
+			var/z_diff = abs(beam_turf.z - real_target.z) + 1
+			var/segment_distance = ceil((get_dist(beam_turf, real_target)) / z_diff)
+			var/turf/last_segment = beam_turf
+			for(var/i in 1 to z_diff)
+				var/turf/next_segment = get_ranged_target_turf_direct(last_segment, real_target, segment_distance)
+				if(!istype(next_segment))
+					break
+				last_segment.Beam(next_segment, icon_state = "portal", icon = 'maplestation_modules/icons/effects/beam.dmi', time = 0.5 SECONDS)
+				last_segment = get_step_multiz(next_segment, next_segment.z < real_target.z ? UP : DOWN)
+				if(!istype(last_segment))
+					break
+		// different z level entirely has no indicator (currently...)
+		else
+			pass()
+
 		return TRUE
 	return FALSE
 
@@ -192,6 +213,17 @@
 /obj/effect/portal/permanent/teleport(atom/movable/M, force = FALSE)
 	set_linked() // update portal links
 	. = ..()
+
+/obj/effect/portal/permanent/autolink
+
+/obj/effect/portal/permanent/autolink/set_linked()
+	if(linked)
+		return
+	for(var/obj/effect/portal/permanent/autolink/P in GLOB.portals - src)
+		if(P.linked)
+			continue
+		P.linked = src
+		linked = P
 
 /obj/effect/portal/permanent/one_way // doesn't have a return portal, can have multiple exits, /obj/effect/landmark/portal_exit to mark them
 	name = "one-way portal"
