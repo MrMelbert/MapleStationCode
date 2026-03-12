@@ -763,6 +763,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
 	hitsound = 'sound/weapons/bladeslice.ogg' // 'maplestation_modules/sound/items/snip.ogg' // melbert todo : maybe too funny. add a custom one?
 	shave_sound = 'maplestation_modules/sound/items/snip.ogg'
+	usesound = 'maplestation_modules/sound/items/snip.ogg'
 	mob_throw_hit_sound = 'sound/weapons/pierce.ogg'
 	article = "a pair of"
 
@@ -812,15 +813,13 @@
 		span_notice("[user] begins cutting through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
 		span_notice("You begin cutting through [target_limb.current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
 	)
-	playsound(src, shave_sound, 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	if(!do_after(user, 3 SECONDS, cutting))
+	if(!use_tool(cutting, user, 3 SECONDS, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 
 	target_limb = cutting.get_bodypart(user.zone_selected)
 	if(isnull(target_limb?.current_gauze))
 		return ITEM_INTERACT_BLOCKING
 
-	playsound(src, shave_sound, 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	cutting.balloon_alert(user, "bandages cut")
 	user.visible_message(
 		span_notice("[user] cut through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]."),
@@ -887,6 +886,59 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass = SHEET_MATERIAL_AMOUNT)
 	force = 15
 	toolspeed = 1
+
+// If there's no gauze to cut, maybe we can cut straight through the clothing to access the body
+/obj/item/razor/scissors/medical/trauma/cut_gauze_on_mob(mob/living/carbon/cutting, mob/living/user)
+	. = ..()
+	if(.)
+		return .
+
+	var/cutting_zone = user.zone_selected
+	var/obj/item/bodypart/targeting = cutting.get_bodypart(cutting_zone)
+	if(isnull(targeting))
+		return NONE
+
+	var/list/covering_clothes = cutting.get_clothing_on_part(targeting)
+	var/failure_message = "no coverings to cut!"
+	for(var/obj/item/clothing/covering as anything in covering_clothes)
+		if(!istype(covering) || (covering.clothing_flags & THICKMATERIAL))
+			covering_clothes -= covering
+			failure_message = "coverings too thick to cut!"
+
+	. = ITEM_INTERACT_BLOCKING
+	if(!length(covering_clothes))
+		cutting.balloon_alert(user, failure_message)
+		return .
+
+	for(var/obj/item/clothing/oversuit as anything in covering_clothes)
+		if(oversuit.slot_flags & ITEM_SLOT_OCLOTHING)
+			covering_clothes.Remove(oversuit)
+			covering_clothes.Insert(1, oversuit)
+
+	for(var/obj/item/clothing/to_cut as anything in covering_clothes)
+		cutting.balloon_alert(user, "cutting through [to_cut]...")
+		user.visible_message(
+			span_notice("[user] starts cutting through [to_cut] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [targeting.plaintext_zone]..."),
+			span_notice("You begin cutting through [to_cut] on [cutting == user ? "your" : "[cutting]'s"] [targeting.plaintext_zone]..."),
+			ignored_mobs = cutting,
+		)
+		if(cutting != user)
+			to_chat(cutting, span_warning("[cutting.is_blind() ? "Someone" : user] starts cutting through [to_cut] on your [targeting.plaintext_zone]!"))
+		if(!use_tool(cutting, user, 4 SECONDS * (cutting.body_position == LYING_DOWN ? 1 : 2), volume = 50))
+			return .
+
+		cutting.balloon_alert(user, "cut through [to_cut]")
+		user.visible_message(
+			span_notice("[user] cuts through [to_cut] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [targeting.plaintext_zone]!"),
+			span_notice("You cut through [to_cut] on [cutting == user ? "your" : "[cutting]'s"] [targeting.plaintext_zone]."),
+			ignored_mobs = cutting,
+		)
+		if(cutting != user)
+			to_chat(cutting, span_warning("[cutting.is_blind() ? "Someone" : user] cuts through [to_cut] on your [targeting.plaintext_zone]!"))
+		to_cut.disable_zone(cutting_zone, BRUTE)
+		. = ITEM_INTERACT_SUCCESS
+
+	return .
 
 /obj/item/razor/scissors/barber
 	name = "barber scissors"
