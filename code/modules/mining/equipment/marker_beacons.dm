@@ -25,6 +25,7 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	novariants = TRUE
 	cost = 1
 	source = /datum/robot_energy_storage/beacon
+	w_class = WEIGHT_CLASS_SMALL
 	var/picked_color = "Random"
 
 /obj/item/stack/marker_beacon/ten //miners start with 10 of these

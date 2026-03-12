@@ -4,6 +4,16 @@
 	max_total_storage = 10
 	storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
+/datum/storage/pouch/can_insert(obj/item/to_insert, mob/user, messages, force)
+	. = ..()
+	if(!.)
+		return FALSE
+	if(parent.loc?.atom_storage && !force)
+		if(messages && user)
+			parent.balloon_alert(user, "[LOWER_TEXT(parent.loc)] is in the way!")
+		return FALSE
+	return TRUE
+
 /datum/storage/pouch/survival
 	max_specific_storage = WEIGHT_CLASS_TINY
 	max_slots = 5
@@ -55,6 +65,8 @@
 		/obj/item/pinpointer,
 		/obj/item/radio,
 		/obj/item/restraints/handcuffs,
+		/obj/item/stack/cable_coil,
+		/obj/item/stack/medical,
 		/obj/item/stock_parts/power_store/cell,
 		/obj/item/storage/pill_bottle,
 		/obj/item/storage/wallet,
@@ -76,18 +88,10 @@
 		return FALSE
 	// items in the exception list are still limited to max storage + 2
 	if(to_insert.w_class >= max_specific_storage + 2)
-		if(messages)
+		if(messages && user)
 			to_insert.balloon_alert(user, "too big!")
 		return FALSE
 	return TRUE
-
-/datum/storage/pouch/open_storage(mob/to_show)
-	if(parent.loc?.atom_storage)
-		if(!silent)
-			parent.balloon_alert(to_show, "[LOWER_TEXT(parent.loc)] is in the way!")
-		return FALSE
-
-	return ..()
 
 /obj/item/storage/pouch
 	name = "pouch"
@@ -135,12 +139,83 @@
 	recently_opened = FALSE
 	update_appearance(UPDATE_ICON_STATE)
 
+/obj/item/storage/pouch/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
+		RegisterSignal(user, COMSIG_CARBON_CLOTHING_EXAMINE, PROC_REF(on_examine))
+	else
+		UnregisterSignal(user, COMSIG_CARBON_CLOTHING_EXAMINE)
+
+/obj/item/storage/pouch/dropped(mob/user, silent)
+	. = ..()
+	UnregisterSignal(user, COMSIG_CARBON_CLOTHING_EXAMINE)
+
+/obj/item/storage/pouch/proc/on_examine(mob/source, mob/examiner, list/examine_list)
+	SIGNAL_HANDLER
+	if(HAS_TRAIT(src, TRAIT_EXAMINE_SKIP))
+		return
+	examine_list[type] = "[source.p_They()] [source.p_have()] [examine_title(examiner, href = TRUE)] clipped to [source.p_their()] pocket."
+
 /obj/item/storage/pouch/tools
 	name = "tool pouch"
 	desc = "A pocket sized pouch, perfectly capable of holding a few tools."
 	overlay_state = "wrench"
 	custom_price = PAYCHECK_COMMAND
 	custom_premium_price = PAYCHECK_COMMAND
+
+/obj/item/storage/pouch/pills
+	name = "pill pouch"
+	desc = "A pocket sized pouch, perfect for holding a few pills or small bottles."
+	overlay_state = "writing"
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
+
+/obj/item/storage/pouch/sharps
+	name = "sharps pouch"
+	desc = "A pocket sized pouch, perfect for holding a few syringes or small tools."
+	icon_state = "sharps"
+	overlay_state = "syringe"
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
+
+/obj/item/storage/pouch/handcuffs
+	name = "handcuff pouch"
+	desc = "A pocket sized pouch, capable of holding an extra pair of handcuffs or a flash."
+	overlay_state = "handcuffs"
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
+
+/obj/item/storage/pouch/flare
+	name = "flare pouch"
+	desc = "A pocket sized pouch, made to hold a few flares for an emergency."
+	overlay_state = "flare"
+
+/obj/item/storage/pouch/flare/PopulateContents()
+	. = ..()
+	for(var/i in 1 to 5)
+		new /obj/item/flashlight/flare(src)
+
+/obj/item/storage/pouch/mining
+	name = "mining pouch"
+	desc = "A pocket sized pouch, made to hold mining supplies."
+	overlay_state = "mining"
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
+
+// /obj/item/storage/pouch/mining/Initialize(mapload)
+// 	. = ..()
+// 	atom_storage.set_holdable(list(
+// 		/obj/item/key/lasso,
+// 		/obj/item/mining_stabilizer,
+// 		/obj/item/organ/monster_core,
+// 		/obj/item/resonator,
+// 		/obj/item/skeleton_key,
+// 		/obj/item/stack/marker_beacon,
+// 		/obj/item/stack/sheet/animalhide,
+// 		/obj/item/stack/sheet/bone,
+// 		/obj/item/stack/sheet/sinew,
+// 		/obj/item/wormhole_jaunter,
+// 	))
 
 /obj/item/storage/pouch/survival
 	name = "surival pouch"
@@ -261,3 +336,25 @@
 	added_premium = list(
 		/obj/item/storage/pouch/tools = 5,
 	)
+
+/obj/machinery/vending/wardrobe/medi_wardrobe
+	added_premium = list(
+		/obj/item/storage/pouch/sharps = 4,
+		/obj/item/storage/pouch/pills = 4,
+	)
+
+/obj/machinery/vending/wardrobe/chem_wardrobe
+	added_premium = list(
+		/obj/item/storage/pouch/sharps = 2,
+		/obj/item/storage/pouch/pills = 2,
+	)
+
+/obj/machinery/vending/wardrobe/sec_wardrobe
+	added_premium = list(
+		/obj/item/storage/pouch/handcuffs = 5,
+	)
+
+/obj/structure/closet/wardrobe/miner/PopulateContents()
+	. = ..()
+	new /obj/item/storage/pouch/mining(src)
+	new /obj/item/storage/pouch/mining(src)

@@ -53,6 +53,8 @@
 /// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
 #define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
 
+#define COMSIG_CARBON_CLOTHING_EXAMINE "carbon_clothing_examine"
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
