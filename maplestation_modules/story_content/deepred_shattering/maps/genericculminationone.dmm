@@ -1,0 +1,39 @@
+"a" = (/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/redgeneric)
+"d" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"g" = (/turf/closed/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"h" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"i" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/power_store/cell/redtech/empty,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"m" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"r" = (/turf/template_noop,/area/template_noop)
+"t" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"w" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"x" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"y" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"z" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"A" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"C" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"I" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"K" = (/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"L" = (/obj/structure/redtech_indestructable/power_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"O" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"Q" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"R" = (/obj/structure/redtech_indestructable/dimensional_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"T" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"U" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"X" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+
+(1,1,1) = {"
+raaaaraaaaaaaarrrrrrr
+raQOaaadaOQCQaarrrrrr
+raaaaaaaaaaaaaaaaaarr
+aaagggggggggggggggaaa
+aOaaLXRRRIIUThIXLLLLa
+aaQaaKKyKmyKmKyKKaaQa
+adCaaLXRRzXRRRLaaLaaa
+aQaadKymyyKKKmyKKKyda
+aaaaLIixIItIwIIXLLaaa
+rraaaggggggggggggaarr
+rrraaaaaaaaaaaaaaaaaa
+rrraCAaaaCQaQQaaOAQQa
+rrraaaaraaaaaaaaaaaaa
+"}
