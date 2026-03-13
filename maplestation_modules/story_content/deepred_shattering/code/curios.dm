@@ -306,6 +306,7 @@
 	addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
 	qdel(src.GetComponent(/datum/component/gps))
 	src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are manually disabled!"))
+	playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 	gps_enabled = FALSE
 
 /obj/item/rtechdrive/emp_act(severity)
@@ -314,6 +315,7 @@
 		if(severity == EMP_HEAVY)
 			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(40 MINUTES, 60 MINUTES))
 			src.visible_message(span_boldwarning("The blackbox buzzes loudly as its internal GPS systems are disrupted!"))
+			playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		else
 			addtimer(CALLBACK(src, PROC_REF(restart_gps)), rand(20 MINUTES, 30 MINUTES))
 			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
