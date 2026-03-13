@@ -135,13 +135,13 @@
 		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
-				"Heart rate is below average - while typically not life threatening, it may be indicative of an underlying condition. \
+				"Heart rate is below average - While typically not life threatening, may be indicative of an underlying condition. \
 				Can be treated with medication such as [/datum/reagent/medicine/atropine::name].", add_tooltips))
 
 		if(bpm >= FAST_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Tachycardia)", \
-				"Heart rate is above average - while typically not life threatening, it may be indicative of an underlying condition. \
+				"Heart rate is above average - While typically not life threatening, may be indicative of an underlying condition. \
 				Can be treated with medication such as [/datum/reagent/medicine/psicodine::name].", add_tooltips))
 
 /obj/item/organ/heart/show_on_condensed_scans()

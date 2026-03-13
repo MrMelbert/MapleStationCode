@@ -385,12 +385,12 @@
 		if(needs_heart)
 			if(bp[1] > 140 && bp[2] > 90) // high blood pressure
 				bp_format = conditional_tooltip(span_alert("[bp_format] (Warning: Hypertension)"), \
-					"To fix, resolve underlying causes such as pain, hypoxima, or blood loss. Side effects can be abated by \
-					supplying vasodilators such as [/datum/reagent/potassium::name] or [/datum/reagent/nitroglycerin::name].", tochat)
+					"Blood pressure is above average - Indicative of more severe conditions such as pain, hypoxima, or blood loss. \
+					Can be treated with vasodilators such as [/datum/reagent/potassium::name] or [/datum/reagent/nitroglycerin::name].", tochat)
 			if(bp[1] < 90 && bp[2] < 60) // low blood pressure
 				bp_format = conditional_tooltip(span_alert("[bp_format] (Warning: Hypotension)"), \
-					"To fix, resolve underlying causes such as heart damage or blood loss. Side effects can be abated by \
-					supplying vasoconstrictors such as [/datum/reagent/medicine/epinephrine::name].", tochat)
+					"Blood pressure is below average - Indicative of more severe conditions such as heart damage or blood loss. \
+					Can be treated with vasoconstrictors such as [/datum/reagent/medicine/epinephrine::name].", tochat)
 
 		switch(target.blood_volume)
 			if(BLOOD_VOLUME_EXCESS to INFINITY)
