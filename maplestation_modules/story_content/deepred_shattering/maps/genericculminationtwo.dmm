@@ -1,0 +1,46 @@
+"a" = (/turf/template_noop,/area/ruin/space/unpowered/redgeneric)
+"b" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"j" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"m" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"r" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/scanning_module/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"s" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"t" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"z" = (/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"A" = (/turf/template_noop,/area/template_noop)
+"B" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"D" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"G" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"H" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"I" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"K" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"M" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"O" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"Q" = (/obj/structure/redtech_indestructable/dimensional_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"S" = (/turf/closed/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"T" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"U" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"V" = (/obj/structure/redtech_indestructable/power_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+
+(1,1,1) = {"
+AAaaaaaaaaaMaaaMBaUaA
+AaaMUaaaaMMBaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaa
+aSSSSSSSSSSSSSSSSSSSa
+aaOVKQGGQQIIQGQKVVaaa
+aaBzzzzHzHjBMMjTzMMaa
+aaaVKQGGQmaaaaaQbVVra
+aaaMMzMMjMMMMaaaaatMa
+asVGVQQaaaaaaaaaaKGVa
+aSSSSSSSSSSaaaaaSSSSa
+aaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaMaaaaaaaa
+aaaaaSTaaaaMUMMaaaMaa
+aMaaSSSaaaaaaaaaaaaaa
+aaaaDSaaaaaaaaajMMaaA
+aaaaaaaaaaaaaaaaaaaaa
+aaaaaaaMMaaaSSKTVQUaa
+aaaaaaaaMaaMKVBMSSaaa
+aaMMaaaaaaaaaaaaaaaaM
+AaaaaaUMaaaaaaaMaaaaa
+AAaaaaaaaaAAAaaaaaaaA
+"}

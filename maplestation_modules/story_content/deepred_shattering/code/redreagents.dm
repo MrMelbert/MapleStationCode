@@ -16,7 +16,7 @@
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 	if(affected_mob?.mana_pool)
-		affected_mob.adjust_personal_mana(10) // HOLY JESUS, BATMAN.
+		affected_mob.adjust_personal_mana(10)
 
 /datum/chemical_reaction/auricelectrolysis
 	results = list(/datum/reagent/oxygen = 10, /datum/reagent/hydrogen = 20)
@@ -63,7 +63,7 @@
 
 /datum/chemical_reaction/resmythril_emp/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
-	empulse(location, round(created_volume / 12), round(created_volume / 7), 1)
+	empulse(location, round(created_volume / 6), round(created_volume / 3), 1)
 	holder.clear_reagents()
 
 /datum/chemical_reaction/resmythrilomni

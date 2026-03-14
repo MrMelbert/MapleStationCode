@@ -7,6 +7,7 @@
 
 	allow_duplicates = FALSE
 	cost = 2
+	never_spawn_with = list(/datum/map_template/ruin/space/genericculminationtwo, /datum/map_template/ruin/space/generichangar)
 
 /datum/map_template/ruin/lavaland/diamonds_shattering
 	id = "diamonds_shattering"
@@ -78,3 +79,23 @@
 
 	allow_duplicates = FALSE
 	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone)
+
+/datum/map_template/ruin/space/genericculminationtwo
+	id = "culminationtwo_generic"
+	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
+	suffix = "genericculminationtwo.dmm"
+	name = "Space-Ruin Redtech Culmination Two"
+	description = "The second piece of the wreckage of the redtech Culmination, now smeared across space and time."
+
+	allow_duplicates = FALSE
+	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/generichangar)
+
+/datum/map_template/ruin/space/generichangar
+	id = "hangar_generic"
+	prefix = "maplestation_modules/story_content/deepred_shattering/maps/"
+	suffix = "generichangar.dmm"
+	name = "Space-Ruin Redtech Hangar"
+	description = "The wreckage of a redtech hangar, now smeared across space and time."
+
+	allow_duplicates = FALSE
+	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/genericculminationtwo)
