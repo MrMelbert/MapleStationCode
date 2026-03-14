@@ -318,7 +318,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SPINNING_WEB_TURF "spinning_web_turf"
 #define TRAIT_ABDUCTOR_TRAINING "abductor-training"
 #define TRAIT_ABDUCTOR_SCIENTIST_TRAINING "abductor-scientist-training"
-#define TRAIT_SURGEON "surgeon"
 #define TRAIT_STRONG_GRABBER "strong_grabber"
 #define TRAIT_SOOTHED_THROAT "soothed-throat"
 #define TRAIT_SOOTHED_HEADACHE "soothed-headache"
@@ -723,6 +722,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FOOD_SILVER "food_silver"
 /// If this item's been made by a chef instead of being map-spawned or admin-spawned or such
 #define TRAIT_FOOD_CHEF_MADE "food_made_by_chef"
+/// If this item is microwaved or cooked, it won't gain TRAIT_FOOD_CHEF_MADE unless it already had it
+#define TRAIT_FOOD_MUST_INHERIT_CHEF_MADE "food_must_inherit_chef_made"
 /// This atom has a quality_food_ingredient element attached
 #define TRAIT_QUALITY_FOOD_INGREDIENT "quality_food_ingredient"
 /// The items needs two hands to be carried
@@ -787,6 +788,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
+#define TRAIT_ANOSMIA "anosmia"
 #define TRAIT_HEAVY_DRINKER "heavy_drinker"
 #define TRAIT_AGEUSIA "ageusia"
 #define TRAIT_HEAVY_SLEEPER "heavy_sleeper"
@@ -1232,7 +1234,28 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mob gets far less severe negative moodlets from seeing death / blood
 #define TRAIT_DESENSITIZED "desensitized"
 
+/// Allows a mob to perform any operation on themselves (with a penalty), where normally only specific operations allow self-surgery.
+#define TRAIT_SELF_SURGERY "self_surgery"
+/// This mob's surgical operations ignore ALL speed modifiers (even positive ones!) besides tool quality.
+/// The mob can also no longer fail their operations, unless the operation says otherwise
+#define TRAIT_IGNORE_SURGERY_MODIFIERS "ignore_surgery_modifiers"
+/// Trait applied to mobs or bodyparts which allows for them to be operated on
+#define TRAIT_READY_TO_OPERATE "ready_to_operate"
+
+/// Applied to an organ that has been operated on - some organs can't be operated on multiple times
+#define TRAIT_ORGAN_OPERATED_ON "organ_operated_on"
+
 /// Mob is artificially spawned rather than being created through more natural means - applied to monkey cubes and such
 #define TRAIT_SPAWNED_MOB "spawned_mob"
+
+/// Turf is one that ai mobs will generally avoid pathing through
+/// Doesn't need to be applied to any turfs that override can_cross_safely
+#define TRAIT_AI_AVOID_TURF "warning_turf"
+
+/// Demolition modifier when hitting this object is inverted (ie, 1 / demolition)
+#define TRAIT_INVERTED_DEMOLITION "demolition_inverted"
+
+/// This trait lets you attach limbs to any player without surgery.
+#define TRAIT_EASY_ATTACH "easy_attach"
 
 // END TRAIT DEFINES

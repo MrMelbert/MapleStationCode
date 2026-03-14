@@ -9,7 +9,6 @@
 
 	default_scar_file = FLESH_SCAR_FILE
 	processes = TRUE
-	treatable_by = list(/obj/item/stack/medical/ointment, /obj/item/stack/medical/mesh) // sterilizer and alcohol will require reagent treatments, coming soon
 
 	/// Shorthand for the name of the wound for the analyzer
 	var/scanner_name = ""
@@ -236,10 +235,10 @@
 /datum/wound/flesh/proc/uv(obj/item/flashlight/pen/paramedic/I, mob/user)
 	if(!COOLDOWN_FINISHED(I, uv_cooldown))
 		to_chat(user, span_notice("[I] is still recharging!"))
-		return TRUE
+		return
 	if(infection <= 0 || infection < sanitization)
 		to_chat(user, span_notice("There's no infection to treat on [victim]'s [limb.plaintext_zone]!"))
-		return TRUE
+		return
 
 	user.visible_message(
 		span_notice("[user] flashes the burns on [victim]'s [limb] with [I]."),
@@ -249,11 +248,6 @@
 	)
 	sanitization += I.uv_power
 	COOLDOWN_START(I, uv_cooldown, I.uv_cooldown_length)
-	return TRUE
-
-/datum/wound/flesh/treat(obj/item/I, mob/user)
-	if(istype(I, /obj/item/flashlight/pen/paramedic))
-		return uv(I, user)
 
 // people complained about burns not healing on stasis beds, so in addition to checking if it's cured, they also get the special ability to very slowly heal on stasis beds if they have the healing effects stored
 /datum/wound/flesh/on_stasis(seconds_per_tick, times_fired)
@@ -357,7 +351,7 @@
 	damage_multiplier_penalty = 1.2
 	threshold_penalty = 40
 	status_effect_type = /datum/status_effect/wound/burn/flesh/severe
-	treatable_by = list(/obj/item/flashlight/pen/paramedic, /obj/item/stack/medical/ointment, /obj/item/stack/medical/mesh)
+	treatable_by = list(/obj/item/flashlight/pen/paramedic)
 	infection_rate = 0.07 // appx 9 minutes to reach sepsis without any treatment
 	flesh_damage = 12.5
 	scar_keyword = "burnsevere"
@@ -388,7 +382,7 @@
 	sound_effect = 'sound/effects/wounds/sizzle2.ogg'
 	threshold_penalty = 80
 	status_effect_type = /datum/status_effect/wound/burn/flesh/critical
-	treatable_by = list(/obj/item/flashlight/pen/paramedic, /obj/item/stack/medical/ointment, /obj/item/stack/medical/mesh)
+	treatable_by = list(/obj/item/flashlight/pen/paramedic)
 	infection_rate = 0.075 // appx 4.33 minutes to reach sepsis without any treatment
 	flesh_damage = 20
 	scar_keyword = "burncritical"
@@ -450,9 +444,9 @@
 	damage_multiplier_penalty = 1.1
 	interaction_efficiency_penalty = 0.9
 	threshold_penalty = 25
-	infection_rate = 0.05
+	infection_rate = 0.01
 	flesh_damage = 10
-	treatable_by = list(/obj/item/flashlight/pen/paramedic, /obj/item/stack/medical/ointment, /obj/item/stack/medical/mesh)
+	treatable_by = list(/obj/item/flashlight/pen/paramedic)
 
 	simple_desc = "Patient's skin is frozen and dying, with a risk of infection and reduced limb integrity."
 	simple_treat_text = "Bandage and monitor for worsening condition while rewarming the limb. Regenerative mesh will not directly help, but will sanitize the wound."
@@ -473,13 +467,13 @@
 		return
 	switch(severity)
 		if(WOUND_SEVERITY_SEVERE)
-			infection_rate = 0.075
+			infection_rate = 0.025
 			damage_multiplier_penalty = 1.2
 			interaction_efficiency_penalty = 0.6
 			threshold_penalty = 50
 			examine_desc = "is turning white"
 		if(WOUND_SEVERITY_CRITICAL)
-			infection_rate = 0.1
+			infection_rate = 0.05
 			damage_multiplier_penalty = 1.25
 			interaction_efficiency_penalty = 0.3
 			threshold_penalty = 75

@@ -75,6 +75,7 @@
 		// NON-MODULE CHANGE
 		if(pref_to_use && listening_mob.client && !listening_mob.client.prefs.read_preference(pref_to_use))
 			continue
+
 		if(get_dist(listening_mob, turf_source) > maxdistance)
 			if(!(listening_mob.mob_flags & MOB_HAS_HEARING_RELAY))
 				continue
@@ -222,14 +223,13 @@
 	return src
 
 /mob/living/silicon/ai/get_hearing_relay(atom/source)
-	if(QDELETED(eyeobj))
-		return null
+	return eyeobj
 
-	for(var/obj/item/radio/intercom/radio in view(5, source))
+/mob/camera/ai_eye/proc/has_nearby_radio(turf/turf_source)
+	for(var/obj/item/radio/intercom/radio in dview(5, turf_source))
 		if(radio.is_on_and_listening())
-			return eyeobj
-
-	return null
+			return TRUE
+	return FALSE
 
 /mob/camera/ai_eye/playsound_local(turf/turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, sound/sound_to_use, max_distance, falloff_distance, distance_multiplier, use_reverb)
 	if(client)
@@ -238,11 +238,20 @@
 	if(isnull(ai?.client))
 		// don't waste time
 		return
+	if(!has_nearby_radio(turf_source))
+		// no intercom to "transmit" the sound
+		return
+
+	// we gotta be on the same z-level right
+	if(turf_source.z != ai.z)
+		turf_source = locate(turf_source.x, turf_source.y, ai.z)
 
 	// moves the source to somewhere around the ai, otherwise they wouldn't hear it
 	turf_source = get_ranged_target_turf(ai, get_dir(src, turf_source), max_distance * 0.5)
+	// if a sound datum was passed, we need to make a copy or else we mutate everyone else's sound
+	sound_to_use = isdatum(sound_to_use) ? copy_sound(sound_to_use) : sound(get_sfx(soundin))
 	// pitches down the sound a bit so the ai can differentiate it from sounds actually near their core
-	sound_to_use ||= sound(get_sfx(soundin))
+	sound_to_use.pitch ||= 1
 	sound_to_use.pitch *= 0.8
 	// and disable these since we're beaming it straight to the ai
 	use_reverb = FALSE
@@ -258,6 +267,26 @@
 ///get_rand_frequency but lower range.
 /proc/get_rand_frequency_low_range()
 	return rand(38000, 45000)
+
+/// Make a copy of a sound datum
+/proc/copy_sound(sound/input)
+	var/sound/new_sound = sound(input.file)
+	new_sound.channel = input.channel
+	new_sound.environment = input.environment
+	new_sound.falloff = input.falloff
+	new_sound.frequency = input.frequency
+	new_sound.offset = input.offset
+	new_sound.pan = input.pan
+	new_sound.pitch = input.pitch
+	new_sound.repeat = input.repeat
+	new_sound.volume = input.volume
+	new_sound.x = input.x
+	new_sound.y = input.y
+	new_sound.z = input.z
+	if(islist(new_sound.echo))
+		var/list/old_echo = input.echo
+		new_sound.echo = old_echo.Copy()
+	return new_sound
 
 /proc/get_sfx(soundin)
 	if(!istext(soundin))

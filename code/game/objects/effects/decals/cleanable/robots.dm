@@ -15,7 +15,7 @@
 /obj/effect/decal/cleanable/robot_debris/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
-	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
+	add_blood_DNA(list("CRUDE OIL" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
 
 /obj/effect/decal/cleanable/robot_debris/proc/streak(list/directions, mapload=FALSE)
 	var/direction = pick(directions)
@@ -87,24 +87,8 @@
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	AddElement(/datum/element/easy_ignite) // NON-MODULE CHANGE
-	add_blood_DNA(list("UNKNOWN DNA" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
-
-// /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
-// 	var/attacked_by_hot_thing = I.get_temperature()
-// 	if(attacked_by_hot_thing)
-// 		user.visible_message(span_warning("[user] tries to ignite [src] with [I]!"), span_warning("You try to ignite [src] with [I]."))
-// 		log_combat(user, src, (attacked_by_hot_thing < 480) ? "tried to ignite" : "ignited", I)
-// 		fire_act(attacked_by_hot_thing)
-// 		return
-// 	return ..()
-
-// /obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume)
-// 	if(exposed_temperature < 480)
-// 		return
-// 	visible_message(span_danger("[src] catches fire!"))
-// 	var/turf/T = get_turf(src)
-// 	qdel(src)
-// 	new /obj/effect/hotspot(T)
+	AddElement(/datum/element/simple_smell, /datum/smell/oil, SMELL_INTENSITY_STRONG, 2) // NON-MODULE CHANGE
+	add_blood_DNA(list("CRUDE OIL" = /datum/blood_type/oil)) // NON-MODULE CHANGE : For bloody shoes // Yeah don't think about it too much
 
 /obj/effect/decal/cleanable/oil/streak
 	icon_state = "streak1"

@@ -69,10 +69,11 @@
 	if(.)
 		return
 	var/obj/vehicle/sealed/mecha/mecha = holder
-	if(!issilicon(usr) && mecha.internal_damage & MECHA_INT_SHORT_CIRCUIT && mecha.shock(usr))
+	if(!issilicon(usr) && (mecha.internal_damage & MECHA_INT_SHORT_CIRCUIT) && mecha.shock(usr, 100))
 		return FALSE
 
 /datum/wires/mecha/can_reveal_wires(mob/user)
-	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
+	// NON-MODULE CHANGE
+	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

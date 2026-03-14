@@ -61,14 +61,6 @@
 	description = "Oh god, that's disgusting..."
 	mood_change = -8
 
-/datum/mood_event/disgust/bad_smell
-	description = "I can smell something horribly decayed inside this room."
-	mood_change = -6
-
-/datum/mood_event/disgust/nauseating_stench
-	description = "The stench of rotting carcasses is unbearable!"
-	mood_change = -12
-
 /datum/mood_event/disgust/dirty_food
 	description = "That was too dirty to eat..."
 	mood_change = -6

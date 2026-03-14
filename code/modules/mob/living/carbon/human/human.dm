@@ -71,8 +71,6 @@
 
 /mob/living/carbon/human/Destroy()
 	QDEL_NULL(physiology)
-	if(biowares)
-		QDEL_LIST(biowares)
 	GLOB.human_list -= src
 
 	if (mob_mood)
@@ -873,7 +871,7 @@
 		return
 
 	var/skills_space
-	var/carrydelay = get_grab_speed(target, 8 SECONDS)
+	var/carrydelay = get_grab_speed(target, 8 SECONDS, lifting = TRUE)
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
@@ -942,7 +940,6 @@
 
 /mob/living/carbon/human/get_exp_list(minutes)
 	. = ..()
-
 	if(mind.assigned_role.title in SSjob.name_occupations)
 		.[mind.assigned_role.title] = minutes
 

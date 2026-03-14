@@ -85,6 +85,8 @@
 #define COMSIG_CARBON_LOSE_ADDICTION "carbon_lose_addiction"
 ///Called when a carbon gets a brain trauma (source = carbon, trauma = what trauma was added) - this is before on_gain()
 #define COMSIG_CARBON_GAIN_TRAUMA "carbon_gain_trauma"
+	/// Return if you want to prevent the carbon from gaining the brain trauma.
+	#define COMSIG_CARBON_BLOCK_TRAUMA (1 << 0)
 ///Called when a carbon loses a brain trauma (source = carbon, trauma = what trauma was removed)
 #define COMSIG_CARBON_LOSE_TRAUMA "carbon_lose_trauma"
 ///Called when a carbon's health hud is updated. (source = carbon, shown_health_amount)
@@ -107,8 +109,8 @@
 #define COMSIG_CARBON_MOOD_UPDATE "carbon_mood_update"
 ///Called when a carbon attempts to eat (eating)
 #define COMSIG_CARBON_ATTEMPT_EAT "carbon_attempt_eat"
-	// Prevents the breath
-	#define COMSIG_CARBON_BLOCK_EAT (1 << 0)
+	// Prevents eating the food
+	#define BLOCK_EAT_ATTEMPT (1 << 0)
 ///Called when a carbon vomits : (distance, force)
 #define COMSIG_CARBON_VOMITED "carbon_vomited"
 ///Called from apply_overlay(cache_index, overlay)
@@ -120,7 +122,7 @@
 
 ///Applied preferences to a human
 #define COMSIG_HUMAN_PREFS_APPLIED "human_prefs_applied"
-///Whenever EquipRanked is called, called after job is set
+///Whenever equip_ranked is called, called after job is set
 #define COMSIG_JOB_RECEIVED "job_received"
 ///from /datum/species/handle_fire. Called when the human is set on fire and burning clothes and stuff
 #define COMSIG_HUMAN_BURNING "human_burning"
@@ -173,3 +175,11 @@
 /// from /obj/item/toy/crayon/spraycan/use_on(target, user, modifiers): (atom/target, mob/user)
 #define COMSIG_CARBON_SPRAYPAINTED "comsig_carbon_spraypainted"
 	#define COMPONENT_CANCEL_SPRAYPAINT (1<<0)
+
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacker, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_GOT_PUNCHED "human_got_punched"
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacked, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_PUNCHED "human_punched"
+
+//from base of [/obj/effect/particle_effect/fluid/smoke/proc/smoke_mob]: (seconds_per_tick)
+#define COMSIG_CARBON_EXPOSED_TO_SMOKE "carbon_exposed_to_smoke"

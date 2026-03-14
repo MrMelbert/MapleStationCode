@@ -329,9 +329,15 @@
 	name = "stool"
 	desc = "Apply butt."
 	icon_state = "stool"
-	can_buckle = FALSE
 	buildstackamount = 1
 	item_chair = /obj/item/chair/stool
+
+/obj/structure/chair/stool/post_buckle_mob(mob/living/sitting)
+	sitting.add_offsets(type, z_add = 4)
+	. = ..()
+
+/obj/structure/chair/stool/post_unbuckle_mob(mob/living/sitting)
+	sitting.remove_offsets(type)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 
@@ -358,13 +364,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 	desc = "It has some unsavory stains on it..."
 	icon_state = "bar"
 	item_chair = /obj/item/chair/stool/bar
-	can_buckle = TRUE
-
-/obj/structure/chair/stool/bar/post_buckle_mob(mob/living/M)
-	M.pixel_y += 4
-
-/obj/structure/chair/stool/bar/post_unbuckle_mob(mob/living/M)
-	M.pixel_y -= 4
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 

@@ -154,7 +154,8 @@
 	toggle_active(source)
 	if(!(SEND_SIGNAL(source, COMSIG_TRANSFORMING_ON_TRANSFORM, user, active) & COMPONENT_NO_DEFAULT_MESSAGE))
 		default_transform_message(source, user)
-
+	if(!isnull(user))
+		SEND_SIGNAL(user, COMSIG_MOB_TRANSFORMING_ITEM, source, active)
 	if(isnum(transform_cooldown_time))
 		COOLDOWN_START(src, transform_cooldown, transform_cooldown_time)
 	if(user)
@@ -212,6 +213,7 @@
 	source.icon_state = "[source.icon_state]_on"
 	if(inhand_icon_change && source.inhand_icon_state)
 		source.inhand_icon_state = "[source.inhand_icon_state]_on"
+	source.update_appearance()
 	source.update_inhand_icon()
 
 /*
@@ -243,9 +245,8 @@
 	else
 		source.icon_state = initial(source.icon_state) // NON-MODULE CHANGE END
 	source.inhand_icon_state = initial(source.inhand_icon_state)
-	if(ismob(source.loc))
-		var/mob/loc_mob = source.loc
-		loc_mob.update_held_items()
+	source.update_appearance()
+	source.update_inhand_icon()
 
 /*
  * If [clumsy_check] is set to TRUE, attempt to cause a side effect for clumsy people activating this item.

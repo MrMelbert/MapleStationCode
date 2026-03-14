@@ -25,7 +25,7 @@
 // Reagent exposure methods.
 /// Used for splashing.
 #define TOUCH (1<<0)
-/// Used for ingesting the reagents. Food, drinks, inhaling smoke.
+/// Used for ingesting the reagents. Food and drinks.
 #define INGEST (1<<1)
 /// Used by foams, sprays, and blob attacks.
 #define VAPOR (1<<2)
@@ -33,6 +33,10 @@
 #define PATCH (1<<3)
 /// Used for direct injection of reagents.
 #define INJECT (1<<4)
+/// Exclusive to just plumbing. if set we use the round robin technique else we use proportional
+#define LINEAR (1<<5)
+/// Used by smoke or inhaling from a source. Smoke, cigarettes, and inhalers.
+#define INHALE (1<<6)
 
 /// When returned by on_mob_life(), on_mob_dead(), overdose_start() or overdose_processed(), will cause the mob to updatehealth() afterwards
 #define UPDATE_MOB_HEALTH 1
@@ -80,31 +84,29 @@
 //reagent bitflags, used for altering how they works
 ///allows on_mob_dead() if present in a dead body
 #define REAGENT_DEAD_PROCESS (1<<0)
-///Do not split the chem at all during processing - ignores all purity effects
-#define REAGENT_DONOTSPLIT (1<<1)
 ///Doesn't appear on handheld health analyzers.
-#define REAGENT_INVISIBLE (1<<2)
+#define REAGENT_INVISIBLE (1<<1)
 ///When inverted, the inverted chem uses the name of the original chem
-#define REAGENT_SNEAKYNAME (1<<3)
+#define REAGENT_SNEAKYNAME (1<<2)
 ///Retains initial volume of chem when splitting for purity effects
-#define REAGENT_SPLITRETAINVOL (1<<4)
+#define REAGENT_SPLITRETAINVOL (1<<3)
 ///Lets a given reagent be synthesized important for random reagents and things like the odysseus syringe gun(Replaces the old can_synth variable)
-#define REAGENT_CAN_BE_SYNTHESIZED (1<<5)
+#define REAGENT_CAN_BE_SYNTHESIZED (1<<4)
 ///Allows a reagent to work on a mob regardless of stasis
-#define REAGENT_IGNORE_STASIS (1<<6)
+#define REAGENT_IGNORE_STASIS (1<<5)
 ///This reagent won't be used in most randomized recipes. Meant for reagents that could be synthetized but are normally inaccessible or TOO hard to get.
-#define REAGENT_NO_RANDOM_RECIPE (1<<7)
+#define REAGENT_NO_RANDOM_RECIPE (1<<6)
 ///Does this reagent clean things?
-#define REAGENT_CLEANS (1<<8)
+#define REAGENT_CLEANS (1<<7)
 ///Does this reagent affect wounds? Used to check if some procs should be ran.
-#define REAGENT_AFFECTS_WOUNDS (1<<9)
+#define REAGENT_AFFECTS_WOUNDS (1<<8)
 /// If present, when metabolizing out of a mob, we divide by the mob's metabolism rather than multiply.
 /// Without this flag: Higher metabolism means the reagent exits the system faster.
 /// With this flag: Higher metabolism means the reagent exits the system slower.
-#define REAGENT_REVERSE_METABOLISM (1<<10)
+#define REAGENT_REVERSE_METABOLISM (1<<9)
 /// If present, this reagent will not be affected by the mob's metabolism at all, meaning it exits at a fixed rate for all mobs.
 /// Supercedes [REAGENT_REVERSE_METABOLISM].
-#define REAGENT_UNAFFECTED_BY_METABOLISM (1<<11)
+#define REAGENT_UNAFFECTED_BY_METABOLISM (1<<10)
 
 //Chemical reaction flags, for determining reaction specialties
 ///Convert into impure/pure on reaction completion
@@ -187,6 +189,49 @@
 #define REACTION_TAG_COMPETITIVE (1<<20)
 /// This reaction is produces a product which assuages (or causes) pain
 #define REACTION_TAG_PAIN (1<<21)
+/// Reaction produces a reagent that is a common component for other reactions
+#define REACTION_TAG_COMPONENT (1<<22)
+/// Denotes reactions that will immediately do something on reaction, like an explosion, smoke, etc.
+#define REACTION_TAG_ACTIVE (1<<23)
+
+/// Readable list of reagent reaction tags (in the same order as they are defined!)
+#define REACTION_TAG_READABLE list(\
+	"BRUTE" = REACTION_TAG_BRUTE,\
+	"BURN" = REACTION_TAG_BURN,\
+	"TOXIN" = REACTION_TAG_TOXIN,\
+	"OXY" = REACTION_TAG_OXY,\
+	"HEALING" = REACTION_TAG_HEALING,\
+	"DAMAGING" = REACTION_TAG_DAMAGING,\
+	"EXPLOSIVE" = REACTION_TAG_EXPLOSIVE,\
+	"OTHER" = REACTION_TAG_OTHER,\
+	"DANGEROUS" = REACTION_TAG_DANGEROUS,\
+	"EASY" = REACTION_TAG_EASY,\
+	"MODERATE" = REACTION_TAG_MODERATE,\
+	"HARD" = REACTION_TAG_HARD,\
+	"ORGAN" = REACTION_TAG_ORGAN,\
+	"DRINK" = REACTION_TAG_DRINK,\
+	"FOOD" = REACTION_TAG_FOOD,\
+	"SLIME" = REACTION_TAG_SLIME,\
+	"DRUG" = REACTION_TAG_DRUG,\
+	"UNIQUE" = REACTION_TAG_UNIQUE,\
+	"CHEMICAL" = REACTION_TAG_CHEMICAL,\
+	"PLANT" = REACTION_TAG_PLANT,\
+	"COMPETITIVE" = REACTION_TAG_COMPETITIVE,\
+	"PAIN" = REACTION_TAG_PAIN,\
+	"COMPONENT" = REACTION_TAG_COMPONENT,\
+	"ACTIVE" = REACTION_TAG_ACTIVE,\
+)
+
+/// Reaction tags for basic damgae types
+#define DAMAGE_HEALING_REACTION_TAGS (REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_PAIN)
+/// Reaction tags for medication
+#define MEDICATION_REACTION_TAGS (REACTION_TAG_HEALING | REACTION_TAG_DAMAGING | REACTION_TAG_ORGAN | REACTION_TAG_DRUG | REACTION_TAG_PAIN)
+/// Reaction tags for things the chemist would make
+#define CHEMIST_REACTION_TAGS (REACTION_TAG_EXPLOSIVE | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPETITIVE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_COMPONENT)
+/// Reaction tags for botanist stuff
+#define BOTANIST_REACTION_TAGS (REACTION_TAG_PLANT | REACTION_TAG_COMPONENT)
+/// Reaction tags for food and drink mainly
+#define KITCHEN_REACTION_TAGS (REACTION_TAG_FOOD | REACTION_TAG_DRINK | REACTION_TAG_COMPONENT)
 
 //flags used by holder.dm to locate an reagent
 ///Direct type

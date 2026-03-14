@@ -85,7 +85,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"Clothing", \
 	"Nuts", \
 	"Seafood", \
-	"Oranges", \
 	"Bugs", \
 	"Gore", \
 	"Rocks", \
@@ -147,8 +146,10 @@ GLOBAL_LIST_INIT(food_buffs, list(
 ))
 
 /// Food quality change according to species diet
-#define DISLIKED_FOOD_QUALITY_CHANGE -2
-#define LIKED_FOOD_QUALITY_CHANGE 2
+#define DISLIKED_FOOD_QUALITY_CHANGE -1.5
+#define LIKED_FOOD_QUALITY_CHANGE 1.5
+/// Threshold for food to be considered gross
+#define GROSS_FOOD_QUALITY_THRESHOLD -2
 /// Threshold for food to give a toxic reaction
 #define TOXIC_FOOD_QUALITY_THRESHOLD -8
 /// Food is dangerous to consume

@@ -120,7 +120,7 @@
 
 	target.visible_message(span_danger("[src] [target_part ? "tears off and attaches itself" : "attaches itself"] to where [target][target.p_s()] limb used to be!"))
 	current_bodypart = new part_type(TRUE) //dont_spawn_flesh, we cant use named arguments here
-	current_bodypart.replace_limb(target, TRUE)
+	current_bodypart.replace_limb(target)
 	forceMove(current_bodypart)
 	register_to_limb(current_bodypart)
 

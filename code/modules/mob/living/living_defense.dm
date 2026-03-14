@@ -98,6 +98,20 @@
 /mob/living/proc/is_ears_covered()
 	return null
 
+/**
+ * Check if the passed body zone is covered by some clothes
+ *
+ * * location: body zone to check
+ * ([BODY_ZONE_CHEST], [BODY_ZONE_HEAD], etc)
+ * * exluded_equipment_slots: equipment slots to ignore when checking coverage
+ * (for example, if you want to ignore helmets, pass [ITEM_SLOT_HEAD])
+ *
+ * Returns TRUE if the location is accessible (not covered)
+ * Returns FALSE if the location is covered by something
+ */
+/mob/living/proc/is_location_accessible(location, exluded_equipment_slots = NONE)
+	return TRUE
+
 /mob/living/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
 	. = ..()
 	if(. != BULLET_ACT_HIT)
@@ -105,6 +119,7 @@
 	if(!hitting_projectile.is_hostile_projectile())
 		return BULLET_ACT_HIT
 
+	hitting_projectile.award_firearms_exp(isnull(mind) ? SKILL_LEVEL_JOURNEYMAN : SKILL_LEVEL_LEGENDARY)
 	// we need a second, silent armor check to actually know how much to reduce damage taken, as opposed to
 	// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
 	var/armor_check = min(ARMOR_MAX_BLOCK, check_projectile_armor(def_zone, hitting_projectile, is_silent = TRUE))
@@ -382,13 +397,8 @@
 	if(.)
 		return TRUE
 
-	for(var/datum/surgery/operations as anything in surgeries)
-		if(user.combat_mode)
-			break
-		if(IS_IN_INVALID_SURGICAL_POSITION(src, operations))
-			continue
-		if(operations.next_step(user, modifiers))
-			return TRUE
+	if(!user.combat_mode && HAS_TRAIT(src, TRAIT_READY_TO_OPERATE) && user.perform_surgery(src))
+		return TRUE
 
 	return FALSE
 
@@ -614,7 +624,7 @@
 
 /** Handles exposing a mob to reagents.
  *
- * If the methods include INGEST the mob tastes the reagents.
+ * If the methods include INGEST or INHALE, the mob tastes the reagents.
  * If the methods include VAPOR it incorporates permiability protection.
  */
 /mob/living/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_zone = BODY_ZONE_CHEST)
@@ -622,7 +632,7 @@
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	if(methods & INGEST)
+	if(methods & (INGEST | INHALE))
 		taste(source)
 
 	var/touch_protection = (methods & VAPOR) ? getarmor(null, BIO) * 0.01 : 0
@@ -754,35 +764,3 @@
 		return TRUE
 
 	return FALSE
-
-/// Adds a modifier to the mob's surgery and updates any ongoing surgeries.
-/// Multiplicative, so two 0.8 modifiers would result in a 0.64 speed modifier, meaning surgery is 0.64x faster.
-/mob/living/proc/add_surgery_speed_mod(id, speed_mod)
-	if(LAZYACCESS(mob_surgery_speed_mods, id) == speed_mod)
-		return FALSE
-	if(LAZYACCESS(mob_surgery_speed_mods, id))
-		remove_surgery_speed_mod(id)
-
-	LAZYSET(mob_surgery_speed_mods, id, speed_mod)
-	for(var/datum/surgery/ongoing as anything in surgeries)
-		ongoing.speed_modifier *= speed_mod
-	return TRUE
-
-/// Removes a modifier from the mob's surgery and updates any ongoing surgeries.
-/mob/living/proc/remove_surgery_speed_mod(id)
-	var/removing_mod = LAZYACCESS(mob_surgery_speed_mods, id)
-	if(!removing_mod)
-		return FALSE
-
-	LAZYREMOVE(mob_surgery_speed_mods, id)
-	for(var/datum/surgery/ongoing as anything in surgeries)
-		ongoing.speed_modifier /= removing_mod
-	return TRUE
-
-/// Helper to add a surgery speed modifier which is removed after a set duration.
-/mob/living/proc/add_timed_surgery_speed_mod(id, speed_mod, duration)
-	if(QDELING(src))
-		return
-	if(!add_surgery_speed_mod(id, speed_mod))
-		return
-	addtimer(CALLBACK(src, PROC_REF(remove_surgery_speed_mod), id), duration)

@@ -136,6 +136,9 @@
 		return
 
 	var/list/new_args = hear_args.Copy()
+	var/list/existing_spans = new_args[HEARING_SPANS]
+
+	new_args[HEARING_SPANS] = LAZYCOPY(existing_spans)
 	new_args[HEARING_SPANS] |= "purple"
 	new_args[HEARING_RANGE] = INFINITY // so we can hear it from any distance away
 	owner.Hear(arglist(new_args))

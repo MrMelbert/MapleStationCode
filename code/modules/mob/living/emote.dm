@@ -362,6 +362,12 @@
 				H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
 	return ..()
 
+/datum/emote/living/wheeze
+	key = "wheeze"
+	key_third_person = "wheezes"
+	message = "wheezes!"
+	emote_type = EMOTE_AUDIBLE
+
 /datum/emote/living/pout
 	key = "pout"
 	key_third_person = "pouts"
@@ -407,6 +413,11 @@
 		animate(pixel_w = 2, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
 	animate(pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 #undef SHIVER_LOOP_DURATION
+
+/datum/emote/living/shiver/shudder
+	key = "shudder"
+	key_third_person = "shudders"
+	message = "shudders."
 
 /datum/emote/living/sigh
 	key = "sigh"
@@ -463,6 +474,10 @@
 	message = "sniffs."
 	message_mime = "sniffs silently."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+
+/datum/emote/living/sniff/run_emote(mob/living/user, params, type_override, intentional)
+	. = ..()
+	user.smell_something()
 
 /datum/emote/living/snore
 	key = "snore"

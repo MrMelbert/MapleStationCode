@@ -2,9 +2,14 @@
 	name = "arm-mounted implant"
 	desc = "You shouldn't see this! Adminhelp and report this as an issue on github!"
 	zone = BODY_ZONE_R_ARM
+	slot = ORGAN_SLOT_RIGHT_ARM_AUG
 	icon_state = "toolkit_generic"
 	w_class = WEIGHT_CLASS_SMALL
 	actions_types = list(/datum/action/item_action/organ_action/toggle)
+	valid_zones = list(
+		BODY_ZONE_R_ARM = ORGAN_SLOT_RIGHT_ARM_AUG,
+		BODY_ZONE_L_ARM = ORGAN_SLOT_LEFT_ARM_AUG,
+	)
 	///A ref for the arm we're taking up. Mostly for the unregister signal upon removal
 	var/obj/hand
 	//A list of typepaths to create and insert into ourself on init
@@ -28,9 +33,6 @@
 		var/atom/new_item = new typepath(src)
 		items_list += WEAKREF(new_item)
 
-	update_appearance()
-	SetSlotFromZone()
-
 /obj/item/organ/cyberimp/arm/Destroy()
 	hand = null
 	active_item = null
@@ -44,37 +46,6 @@
 
 /datum/action/item_action/organ_action/toggle/toolkit
 	desc = "You can also activate your empty hand or the tool in your hand to open the tools radial menu."
-
-/obj/item/organ/cyberimp/arm/proc/SetSlotFromZone()
-	switch(zone)
-		if(BODY_ZONE_L_ARM)
-			slot = ORGAN_SLOT_LEFT_ARM_AUG
-		if(BODY_ZONE_R_ARM)
-			slot = ORGAN_SLOT_RIGHT_ARM_AUG
-		else
-			CRASH("Invalid zone for [type]")
-
-/obj/item/organ/cyberimp/arm/update_icon()
-	. = ..()
-	transform = (zone == BODY_ZONE_R_ARM) ? null : matrix(-1, 0, 0, 0, 1, 0)
-
-/obj/item/organ/cyberimp/arm/examine(mob/user)
-	. = ..()
-	if(IS_ROBOTIC_ORGAN(src))
-		. += span_info("[src] is assembled in the [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm configuration. You can use a screwdriver to reassemble it.")
-
-/obj/item/organ/cyberimp/arm/screwdriver_act(mob/living/user, obj/item/screwtool)
-	. = ..()
-	if(.)
-		return TRUE
-	screwtool.play_tool_sound(src)
-	if(zone == BODY_ZONE_R_ARM)
-		zone = BODY_ZONE_L_ARM
-	else
-		zone = BODY_ZONE_R_ARM
-	SetSlotFromZone()
-	to_chat(user, span_notice("You modify [src] to be installed on the [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm."))
-	update_appearance()
 
 /obj/item/organ/cyberimp/arm/on_mob_insert(mob/living/carbon/arm_owner)
 	. = ..()
@@ -126,8 +97,8 @@
 		return FALSE
 	if(owner)
 		owner.visible_message(
-			span_notice("[owner] retracts [active_item] back into [owner.p_their()] [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm."),
-			span_notice("[active_item] snaps back into your [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm."),
+			span_notice("[owner] retracts [active_item] back into [owner.p_their()] [parse_zone(zone)]."),
+			span_notice("[active_item] snaps back into your [parse_zone(zone)]."),
 			span_hear("You hear a short mechanical noise."),
 		)
 
@@ -146,13 +117,12 @@
 		return
 
 	active_item = augment
-
 	active_item.resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	ADD_TRAIT(active_item, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 	active_item.slot_flags = null
 	active_item.set_custom_materials(null)
 
-	var/side = zone == BODY_ZONE_R_ARM? RIGHT_HANDS : LEFT_HANDS
+	var/side = zone == BODY_ZONE_R_ARM ? RIGHT_HANDS : LEFT_HANDS
 	var/hand = owner.get_empty_held_index_for_side(side)
 	if(hand)
 		owner.put_in_hand(active_item, hand)
@@ -172,8 +142,8 @@
 			for(var/i in failure_message)
 				to_chat(owner, i)
 			return
-	owner.visible_message(span_notice("[owner] extends [active_item] from [owner.p_their()] [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm."),
-		span_notice("You extend [active_item] from your [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm."),
+	owner.visible_message(span_notice("[owner] extends [active_item] from [owner.p_their()] [parse_zone(zone)]."),
+		span_notice("You extend [active_item] from your [parse_zone(zone)]."),
 		span_hear("You hear a short mechanical noise."))
 	playsound(get_turf(owner), extend_sound, 50, TRUE)
 
@@ -209,21 +179,19 @@
 	else
 		Retract()
 
-
 /obj/item/organ/cyberimp/arm/gun/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 	if(prob(30/severity) && owner && !(organ_flags & ORGAN_FAILING))
 		Retract()
-		owner.visible_message(span_danger("A loud bang comes from [owner]\'s [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm!"))
+		owner.visible_message(span_danger("A loud bang comes from [owner]\'s [parse_zone(zone)]!"))
 		playsound(get_turf(owner), 'sound/weapons/flashbang.ogg', 100, TRUE)
-		to_chat(owner, span_userdanger("You feel an explosion erupt inside your [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm as your implant breaks!"))
+		to_chat(owner, span_userdanger("You feel an explosion erupt inside your [parse_zone(zone)] as your implant breaks!"))
 		owner.adjust_fire_stacks(20)
 		owner.ignite_mob()
 		owner.adjustFireLoss(25)
 		organ_flags |= ORGAN_FAILING
-
 
 /obj/item/organ/cyberimp/arm/gun/laser
 	name = "arm-mounted laser implant"
@@ -231,17 +199,11 @@
 	icon_state = "arm_laser"
 	items_to_create = list(/obj/item/gun/energy/laser/mounted/augment)
 
-/obj/item/organ/cyberimp/arm/gun/laser/l
-	zone = BODY_ZONE_L_ARM
-
 /obj/item/organ/cyberimp/arm/gun/taser
 	name = "arm-mounted taser implant"
 	desc = "A variant of the arm cannon implant that fires electrodes and disabler shots. The cannon emerges from the subject's arm and remains inside when not in use."
 	icon_state = "arm_taser"
 	items_to_create = list(/obj/item/gun/energy/e_gun/advtaser/mounted)
-
-/obj/item/organ/cyberimp/arm/gun/taser/l
-	zone = BODY_ZONE_L_ARM
 
 /obj/item/organ/cyberimp/arm/toolset
 	name = "integrated toolset implant"
@@ -256,9 +218,6 @@
 		/obj/item/wirecutters/cyborg,
 		/obj/item/multitool/cyborg,
 	)
-
-/obj/item/organ/cyberimp/arm/toolset/l
-	zone = BODY_ZONE_L_ARM
 
 /obj/item/organ/cyberimp/arm/toolset/emag_act(mob/user, obj/item/card/emag/emag_card)
 	for(var/datum/weakref/created_item in items_list)
@@ -279,7 +238,6 @@
 	name = "integrated medical beamgun"
 	desc = "A cybernetic implant that allows the user to project a healing beam from their hand."
 	items_to_create = list(/obj/item/gun/medbeam)
-
 
 /obj/item/organ/cyberimp/arm/flash
 	name = "integrated high-intensity photon projector" //Why not
@@ -358,13 +316,19 @@
 		/obj/item/knife/combat/cyborg,
 	)
 
-/obj/item/organ/cyberimp/arm/muscle
+#define DOAFTER_SOURCE_STRONGARM_INTERACTION "strongarm interaction"
+
+/obj/item/organ/cyberimp/arm/strongarm
 	name = "\proper Strong-Arm empowered musculature implant"
 	desc = "When implanted, this cybernetic implant will enhance the muscles of the arm to deliver more power-per-action."
 	icon_state = "muscle_implant"
 
 	zone = BODY_ZONE_R_ARM
 	slot = ORGAN_SLOT_RIGHT_ARM_AUG
+	valid_zones = list(
+		BODY_ZONE_R_ARM = ORGAN_SLOT_RIGHT_ARM_AUG,
+		BODY_ZONE_L_ARM = ORGAN_SLOT_LEFT_ARM_AUG,
+	)
 
 	actions_types = list()
 
@@ -380,17 +344,25 @@
 	var/throw_power_max = 4
 	///How long will the implant malfunction if it is EMP'd
 	var/emp_base_duration = 9 SECONDS
+	///How long before we get another slam punch; consider that these usually come in pairs of two
+	var/slam_cooldown_duration = 5 SECONDS
+	///Tracks how soon we can perform another slam attack
+	COOLDOWN_DECLARE(slam_cooldown)
 
-/obj/item/organ/cyberimp/arm/muscle/on_mob_insert(mob/living/carbon/arm_owner)
+/obj/item/organ/cyberimp/arm/strongarm/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/strongarm)
+
+/obj/item/organ/cyberimp/arm/strongarm/on_mob_insert(mob/living/carbon/arm_owner)
 	. = ..()
 	if(ishuman(arm_owner)) //Sorry, only humans
 		RegisterSignal(arm_owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 
-/obj/item/organ/cyberimp/arm/muscle/on_mob_remove(mob/living/carbon/arm_owner)
+/obj/item/organ/cyberimp/arm/strongarm/on_mob_remove(mob/living/carbon/arm_owner)
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
-/obj/item/organ/cyberimp/arm/muscle/emp_act(severity)
+/obj/item/organ/cyberimp/arm/strongarm/emp_act(severity)
 	. = ..()
 	if((organ_flags & ORGAN_FAILING) || . & EMP_PROTECT_SELF)
 		return
@@ -398,11 +370,11 @@
 	organ_flags |= ORGAN_FAILING
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
-/obj/item/organ/cyberimp/arm/muscle/proc/reboot()
+/obj/item/organ/cyberimp/arm/strongarm/proc/reboot()
 	organ_flags &= ~ORGAN_FAILING
 	owner.balloon_alert(owner, "your arm stops spasming!")
 
-/obj/item/organ/cyberimp/arm/muscle/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
+/obj/item/organ/cyberimp/arm/strongarm/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
 
 	if(source.get_active_hand() != hand || !proximity)
@@ -468,3 +440,22 @@
 	log_combat(source, target, "[picked_hit_type]ed", "muscle implant")
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
+
+/datum/status_effect/organ_set_bonus/strongarm
+	id = "organ_set_bonus_strongarm"
+	organs_needed = 2
+	bonus_activate_text = span_notice("Your improved arms allow you to open airlocks by force with your bare hands!")
+	bonus_deactivate_text = span_notice("You can no longer force open airlocks with your bare hands.")
+	required_biotype = NONE
+
+/datum/status_effect/organ_set_bonus/strongarm/enable_bonus(obj/item/organ/inserted_organ)
+	. = ..()
+	if(!.)
+		return
+	owner.AddElement(/datum/element/door_pryer, pry_time = 6 SECONDS, interaction_key = DOAFTER_SOURCE_STRONGARM_INTERACTION)
+
+/datum/status_effect/organ_set_bonus/strongarm/disable_bonus(obj/item/organ/removed_organ)
+	. = ..()
+	owner.RemoveElement(/datum/element/door_pryer, pry_time = 6 SECONDS, interaction_key = DOAFTER_SOURCE_STRONGARM_INTERACTION)
+
+#undef DOAFTER_SOURCE_STRONGARM_INTERACTION

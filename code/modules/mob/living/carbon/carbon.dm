@@ -25,16 +25,6 @@
 	QDEL_NULL(breathing_loop)
 	GLOB.carbon_list -= src
 
-/mob/living/carbon/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
-	// Needs to happen after parent call otherwise wounds are prioritized over surgery
-	for(var/datum/wound/wound as anything in shuffle(all_wounds))
-		if(wound.try_treating(tool, user))
-			return ITEM_INTERACT_SUCCESS
-	return .
-
 /mob/living/carbon/click_ctrl_shift(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
@@ -561,13 +551,13 @@
 	if(crit_percent() < 100 || HAS_TRAIT(src, TRAIT_NOSOFTCRIT)) // melbert todo
 		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 			Paralyze(2 SECONDS)
-			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 		return
 
 	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 		return
 	var/is_standing = body_position == STANDING_UP
-	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 	if(stat == DEAD)
 		return
 	if(buckled)
@@ -923,6 +913,8 @@
 
 	if(heal_flags & HEAL_LIMBS)
 		regenerate_limbs()
+		for(var/obj/item/bodypart/limb as anything in bodyparts)
+			limb.remove_surgical_state(ALL)
 
 	if(heal_flags & (HEAL_REFRESH_ORGANS|HEAL_ORGANS))
 		regenerate_organs(regenerate_existing = (heal_flags & HEAL_REFRESH_ORGANS))
@@ -930,9 +922,8 @@
 	if(heal_flags & HEAL_TRAUMAS)
 		cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 		// Addictions are like traumas
-		if(mind)
-			for(var/addiction_type in subtypesof(/datum/addiction))
-				mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
+		for(var/addiction_type in GLOB.addictions)
+			mind?.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
 
 	if(heal_flags & HEAL_RESTRAINTS)
 		QDEL_NULL(handcuffed)
@@ -1147,8 +1138,8 @@
 				if("replace")
 					var/limb2add = input(usr, "Select a bodypart type to add", "Add/Replace Bodypart") as null|anything in sort_list(limbtypes)
 					var/obj/item/bodypart/new_bp = new limb2add()
-					if(new_bp.replace_limb(src, special = TRUE))
-						admin_ticket_log("key_name_admin(usr)] has replaced [src]'s [BP.type] with [new_bp.type]")
+					if(new_bp.replace_limb(src))
+						admin_ticket_log("[key_name_admin(usr)] has replaced [src]'s [BP.type] with [new_bp.type]")
 						qdel(BP)
 					else
 						to_chat(usr, "Failed to replace bodypart! They might be incompatible.")
@@ -1173,7 +1164,7 @@
 			return
 		if(result)
 			var/chosenart = artnames[result]
-			var/datum/martial_art/MA = new chosenart
+			var/datum/martial_art/MA = new chosenart(src)
 			MA.teach(src)
 			log_admin("[key_name(usr)] has taught [MA] to [key_name(src)].")
 			message_admins(span_notice("[key_name_admin(usr)] has taught [MA] to [key_name_admin(src)]."))
@@ -1240,7 +1231,7 @@
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return FALSE
 	for(var/obj/item/bodypart/part as anything in bodyparts)
-		if(part.get_modified_bleed_rate())
+		if(part.cached_bleed_rate)
 			return TRUE
 	return FALSE
 
@@ -1251,7 +1242,7 @@
 
 	var/total_bleed_rate = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
-		total_bleed_rate += part.get_modified_bleed_rate()
+		total_bleed_rate += part.cached_bleed_rate
 
 	return total_bleed_rate
 
@@ -1388,22 +1379,32 @@
 	return FALSE
 
 /**
- * This proc is a helper for spraying blood for things like slashing/piercing wounds and dismemberment.
+ * Sprays out blood in a direction to a certain distance
  *
- * The strength of the splatter in the second argument determines how much it can dirty and how far it can go
+ * This is on atom so that arbitrary objects can also spray blood (like meat),
+ * you just need to pass a blood_dna.
  *
  * Arguments:
  * * splatter_direction: Which direction the blood is flying
  * * splatter_strength: How many tiles it can go, and how many items it can pass over and dirty
+ * * blood_dna: A list of DNA info to add to the blood decal. Autoset for mobs.
+ * * static_viruses: A list of viruses to add to the blood decal
  */
-/mob/living/carbon/proc/spray_blood(splatter_direction, splatter_strength = 3)
+/atom/proc/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)
 	if(!isturf(loc))
 		return
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, get_static_viruses(), splatter_strength)
-	our_splatter.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	our_splatter.blood_dna_info = get_blood_dna_list()
-	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
-	our_splatter.fly_towards(targ, splatter_strength)
+	if(!islist(blood_dna))
+		CRASH("spray_blood called without a valid blood_dna list!")
+
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, blood_dna, splatter_strength)
+	our_splatter.fly_towards(get_ranged_target_turf(src, splatter_direction, splatter_strength), splatter_strength)
+
+/mob/living/carbon/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)
+	if(isnull(blood_dna))
+		blood_dna = get_blood_dna_list()
+	if(isnull(static_viruses))
+		static_viruses = get_static_viruses()
+	return ..()
 
 /mob/living/carbon/dropItemToGround(obj/item/to_drop, force = FALSE, silent = FALSE, invdrop = TRUE, turf/newloc = null)
 	if((to_drop in organs) || (to_drop in bodyparts)) //let's not do this, aight?

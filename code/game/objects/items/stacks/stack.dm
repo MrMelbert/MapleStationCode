@@ -59,6 +59,8 @@
 	// They're here instead of /stack/medical
 	// because sticky tape can be used as a makeshift bandage or splint
 
+	/// Verb used when applying this object to someone
+	var/apply_verb = "applying"
 	/// If set and this used as a splint for a broken bone wound,
 	/// This is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_factor
@@ -754,7 +756,8 @@
 
 /obj/item/stack/update_name(updates)
 	. = ..()
-	maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
+	if(max_amount != 1)
+		maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
 	if(!singular_name)
 		return
 	if(amount > 1)

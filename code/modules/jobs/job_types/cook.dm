@@ -49,6 +49,13 @@
 	rpg_title = "Tavern Chef"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/bartending = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cooking = SKILL_LEVEL_EXPERT, // not all NT chefs are gordon ramsay
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/job/cook/award_service(client/winner, award)
 	winner.give_award(award, winner.mob)
 
@@ -88,7 +95,7 @@
 	..()
 	if(!change_hat)
 		return
-	var/datum/job/cook/other_chefs = SSjob.GetJobType(jobtype)
+	var/datum/job/cook/other_chefs = SSjob.get_job_type(jobtype)
 	if(other_chefs) // If there's other Chefs, you're a Cook
 		if(other_chefs.cooks > 0)//Cooks
 			id_trim = /datum/id_trim/job/cook

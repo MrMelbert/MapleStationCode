@@ -30,6 +30,8 @@ type VendingData = {
   access: boolean;
   vending_machine_input: CustomInput[];
   categories: Record<string, Category>;
+  // NON-MODULE CHANGE
+  theme: string | null;
 };
 
 type Category = {
@@ -85,6 +87,7 @@ export const Vending = (props) => {
     coin_records = [],
     hidden_records = [],
     categories,
+    theme,
   } = data;
 
   const [selectedCategory, setSelectedCategory] = useState(
@@ -129,7 +132,7 @@ export const Vending = (props) => {
   );
 
   return (
-    <Window width={431} height={635}>
+    <Window width={431} height={635} theme={theme || undefined}>
       <Window.Content>
         <Stack fill vertical>
           {!!onstation && (

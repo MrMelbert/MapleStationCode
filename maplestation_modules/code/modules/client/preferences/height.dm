@@ -64,11 +64,7 @@
 	target.update_transform(resize_amount)
 
 /datum/preference/choiced/mob_size/is_accessible(datum/preferences/preferences)
-	if(!..(preferences))
-		return FALSE
-
-	var/datum/job/fav_job = preferences.get_highest_priority_job()
-	return !istype(fav_job, /datum/job/ai) && !istype(fav_job, /datum/job/cyborg)
+	return ..() && !has_silicon_prioritized(preferences)
 
 /datum/preference/choiced/mob_size/create_default_value(datum/preferences/preferences)
 	return HEIGHT_NO_CHANGE
@@ -114,11 +110,7 @@
 	target.set_mob_height(height_actual)
 
 /datum/preference/choiced/mob_height/is_accessible(datum/preferences/preferences)
-	if(!..(preferences))
-		return FALSE
-
-	var/datum/job/fav_job = preferences.get_highest_priority_job()
-	return !istype(fav_job, /datum/job/ai) && !istype(fav_job, /datum/job/cyborg)
+	return ..() && !has_silicon_prioritized(preferences)
 
 /datum/preference/choiced/mob_height/create_default_value(datum/preferences/preferences)
 	return DEFAULT_HEIGHT
@@ -140,3 +132,8 @@
 // Not necessary with above
 /mob/living/carbon/human/dummy/apply_height_offsets(image/appearance, upper_torso)
 	return
+
+/// Check if the passed preferences datum has a silicon role prioritized
+/datum/preference/proc/has_silicon_prioritized(datum/preferences/preferences)
+	var/datum/job/fav_job = preferences.get_highest_priority_job()
+	return istype(fav_job, /datum/job/ai) || istype(fav_job, /datum/job/cyborg)

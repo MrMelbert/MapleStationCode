@@ -12,6 +12,10 @@
 #define COMSIG_ORGAN_BEING_REPLACED "organ_being_replaced"
 /// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/old_owner, target_zone, obj/item/tool)
 #define COMSIG_ORGAN_SURGICALLY_REMOVED "organ_surgically_removed"
+/// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/new_owner, target_zone, obj/item/tool)
+#define COMSIG_ORGAN_SURGICALLY_INSERTED "organ_surgically_inserted"
+/// Called when an organ finishes inserting into a bodypart (obj/item/bodypart/limb, movement_flags)
+#define COMSIG_ORGAN_BODYPART_INSERTED "organ_bodypart_inserted"
 
 ///Called when movement intent is toggled.
 #define COMSIG_MOVE_INTENT_TOGGLED "move_intent_toggled"
@@ -286,6 +290,21 @@
 /// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
 #define COMSIG_MOB_BATONED "mob_batoned"
 
+/// From /obj/machinery/gibber/startgibbing(): (mob/living/user, /obj/machinery/gibber, list/results)
+#define COMSIG_LIVING_GIBBER_ACT "living_gibber_act"
+
+/// Sent to the mob when their mind is slaved
+#define COMSIG_MOB_ENSLAVED_TO "mob_enslaved_to"
+/// From /obj/item/proc/attack_atom: (mob/living/attacker, atom/attacked)
+#define COMSIG_LIVING_ATTACK_ATOM "living_attack_atom"
+/// From /mob/living/proc/stop_leaning()
+#define COMSIG_LIVING_STOPPED_LEANING "living_stopped_leaning"
+
+/// When a living mob is table slamming another mob: (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_SLAMMING "living_table_slamming"
+/// When a living mob is table slamming another mob, neck grab (so a limb slam): (mob/living/slammed, obj/structure/table/slammed_table)
+#define COMSIG_LIVING_TABLE_LIMB_SLAMMING "living_table_limb_slamming"
+
 /// From /mob/living/get_examine_name(mob/user) : (mob/examined, visible_name, list/name_override)
 /// Allows mobs to override how they perceive others when examining
 #define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"
@@ -297,3 +316,6 @@
 	#define COMPONENT_NO_LOOT_DROP (1<<0)
 /// From /datum/element/death_drops/on_death(mob/living/target, gibbed) : (list/loot, gibbed)
 #define COMSIG_LIVING_DROPPED_LOOT "living_dropped_loot"
+
+/// Sent to a mob when one of their bodypart's surgery state changes, OR sent from the basic_surgery_state holder when its surgery state changes (old_state, new_state, changed_states)
+#define COMSIG_LIVING_UPDATING_SURGERY_STATE "carbon_updating_surgery_state"

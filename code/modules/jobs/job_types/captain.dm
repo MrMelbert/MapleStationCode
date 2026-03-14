@@ -45,11 +45,17 @@
 		/obj/item/skillchip/sabrage = 5,
 	)
 
-	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS | JOB_ANTAG_PROTECTED
 	rpg_title = "Star Duke"
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/firearms = SKILL_LEVEL_MASTER,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)
 	return "Captain [captain.real_name] on deck!"

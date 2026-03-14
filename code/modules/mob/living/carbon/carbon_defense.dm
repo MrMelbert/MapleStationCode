@@ -269,11 +269,17 @@
 			victim.electrocute_act(shock_damage*0.75, src, 1, flags, jitter_time, stutter_time, stun_duration)
 	//Stun
 	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
-	var/paralyze = !(flags & SHOCK_KNOCKDOWN)
+	var/stun = !(flags & SHOCK_KNOCKDOWN)
 	var/immediately_stun = should_stun && !(flags & SHOCK_DELAY_STUN)
 	if (immediately_stun)
-		if (paralyze)
-			Paralyze(stun_duration)
+		if (stun)
+			// intended effect here is to floor you immediately if you are shocked twice in quick succession
+			// or to keep you floored if you are already incapacitated otherwise
+			if(incapacitated(ALL))
+				Paralyze(stun_duration)
+			// otherwise it just stuns you upright - until the second shock, which floors you
+			else
+				Stun(stun_duration)
 		else
 			Knockdown(stun_duration)
 	//Jitter and other fluff.
@@ -281,7 +287,7 @@
 	adjust_jitter(jitter_time)
 	adjust_stutter(stutter_time)
 	if (should_stun)
-		addtimer(CALLBACK(src, PROC_REF(secondary_shock), paralyze, stun_duration * 1.5), 2 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(secondary_shock), stun, stun_duration * 1.5), 2 SECONDS)
 	if(. > 0)
 		var/obj/item/bodypart/zapped = get_active_hand() || get_bodypart(BODY_ZONE_CHEST)
 		var/electrical_burn_roll = . + zapped.check_woundings_mods(WOUND_BURN) + rand(-10, 5)
@@ -301,8 +307,8 @@
 			the_wound?.name = wound_name
 
 ///Called slightly after electrocute act to apply a secondary stun.
-/mob/living/carbon/proc/secondary_shock(paralyze, stun_duration)
-	if (paralyze)
+/mob/living/carbon/proc/secondary_shock(stun, stun_duration)
+	if (stun)
 		Paralyze(stun_duration)
 	else
 		Knockdown(stun_duration)
@@ -575,7 +581,7 @@
 		to_chat(src, span_danger("You can't grasp your [grasped_part.name] with itself!"))
 		return
 
-	var/bleed_rate = grasped_part.get_modified_bleed_rate()
+	var/bleed_rate = grasped_part.cached_bleed_rate
 	var/bleeding_text = (bleed_rate ? ", trying to stop the bleeding" : "")
 	to_chat(src, span_warning("You try grasping at your [grasped_part.name][bleeding_text]..."))
 	if(!do_after(src, 0.75 SECONDS))
@@ -591,7 +597,7 @@
 
 /// If TRUE, the owner of this bodypart can try grabbing it to slow bleeding, as well as various other effects.
 /obj/item/bodypart/proc/can_be_grasped()
-	if (get_modified_bleed_rate())
+	if (cached_bleed_rate)
 		return TRUE
 
 	for (var/datum/wound/iterated_wound as anything in wounds)
@@ -644,7 +650,7 @@
 	RegisterSignal(user, COMSIG_QDELETING, PROC_REF(qdel_void))
 	RegisterSignals(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_QDELETING), PROC_REF(qdel_void))
 
-	var/bleed_rate = grasped_part.get_modified_bleed_rate()
+	var/bleed_rate = grasped_part.cached_bleed_rate
 	var/bleeding_text = (bleed_rate ? ", trying to stop the bleeding" : "")
 	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.plaintext_zone][bleeding_text]."), span_notice("You grab hold of your [grasped_part.plaintext_zone] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
 	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
@@ -665,15 +671,17 @@
 		changed_something = TRUE
 		new_organ = new new_organ()
 		new_organ.replace_into(src)
+		new_organ.organ_flags |= ORGAN_MUTANT
 
-	var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
-	var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
-	if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
-		changed_something = TRUE
-		new_part = new new_part()
-		new_part.replace_limb(src, special = TRUE)
-		if (picked_user_part)
-			qdel(picked_user_part)
+	if (!HAS_TRAIT(src, TRAIT_NODISMEMBER))
+		var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
+		var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
+		if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
+			changed_something = TRUE
+			new_part = new new_part()
+			new_part.replace_limb(src)
+			if (picked_user_part)
+				qdel(picked_user_part)
 
 	if (!changed_something)
 		to_chat(src, span_notice("Your augmented body protects you from [scramble_source]!"))

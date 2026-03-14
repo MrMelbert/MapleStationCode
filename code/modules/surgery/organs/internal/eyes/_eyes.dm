@@ -84,6 +84,8 @@
 	receiver.cure_blind(NO_EYES)
 	apply_damaged_eye_effects()
 	refresh(receiver, call_update = TRUE)
+	// NON-MODULE CHANGE
+	RegisterSignals(receiver, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)), PROC_REF(update_eyelids))
 
 /// Refreshes the visuals of the eyes
 /// If call_update is TRUE, we also will call update_body
@@ -137,6 +139,13 @@
 
 	organ_owner.update_tint()
 	organ_owner.update_sight()
+	// NON-MODULE CHANGE
+	UnregisterSignal(organ_owner, list(SIGNAL_ADDTRAIT(TRAIT_CLOSED_EYES), SIGNAL_REMOVETRAIT(TRAIT_CLOSED_EYES)))
+
+/// Updates eyelid state on signal
+/obj/item/organ/eyes/proc/update_eyelids(datum/source)
+	SIGNAL_HANDLER
+	owner.dna?.species?.handle_body(owner)
 
 #define OFFSET_X 1
 #define OFFSET_Y 2
@@ -291,8 +300,8 @@
 	base_color[2] *= 0.85
 	base_color[3] *= 0.85
 	var/eyelid_color = rgb(base_color[1], base_color[2], base_color[3], (length(base_color) >= 4 ? base_color[4] : null), COLORSPACE_HSL)
-	// If we're knocked out, just color the eyes
-	if (!parent.appears_alive() || HAS_TRAIT(parent, TRAIT_KNOCKEDOUT))
+	// NON-MODULE CHANGE
+	if (HAS_TRAIT(parent, TRAIT_CLOSED_EYES))
 		eye_right.color = eyelid_color
 		eye_left.color = eyelid_color
 		return
@@ -591,14 +600,11 @@
 	deactivate(close_ui = TRUE)
 
 /// Set the initial color of the eyes on insert to be the mob's previous eye color.
-/obj/item/organ/eyes/robotic/glow/mob_insert(mob/living/carbon/eye_recipient, special = FALSE, movement_flags = DELETE_IF_REPLACED)
+/obj/item/organ/eyes/robotic/glow/on_mob_insert(mob/living/carbon/eye_recipient, special = FALSE, movement_flags = DELETE_IF_REPLACED)
 	. = ..()
 	left_eye_color_string = old_eye_color_left
 	right_eye_color_string = old_eye_color_right
 	update_mob_eye_color(eye_recipient)
-
-/obj/item/organ/eyes/robotic/glow/on_mob_insert(mob/living/carbon/eye_recipient)
-	. = ..()
 	deactivate(close_ui = TRUE)
 	eye.forceMove(eye_recipient)
 
@@ -919,8 +925,7 @@
 	ADD_TRAIT(eye_owner, TRAIT_UNNATURAL_RED_GLOWY_EYES, ORGAN_TRAIT)
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/on_life(seconds_per_tick, times_fired)
-	if(!owner.is_blind() && isturf(owner.loc) && owner.has_light_nearby(light_amount=0.5)) //we allow a little more than usual so we can produce light from the adapted eyes
-		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
+	if(owner.get_eye_protection() <= FLASH_PROTECTION_SENSITIVE && !owner.is_blind() && isturf(owner.loc) && owner.has_light_nearby(light_amount=0.5)) //we allow a little more than usual so we can produce light from the adapted eyes		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
 		apply_organ_damage(10) //blind quickly
 		playsound(owner, 'sound/machines/grill/grillsizzle.ogg', 50)
 	else

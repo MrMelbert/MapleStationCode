@@ -113,6 +113,10 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(mouse_over_pointer == MOUSE_HAND_POINTER)
+		add_filter("clickglow", 2, outline_filter(color = COLOR_GOLD, size = 1))
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -192,6 +196,16 @@
 	icon_state = ALERT_TOO_MUCH_N2O
 
 //End gas alerts
+
+/atom/movable/screen/alert/bronchodilated
+	name = "Bronchodilated"
+	desc = "You feel like your lungs are larger than usual! You're taking deeper breaths!"
+	icon_state = "bronchodilated"
+
+/atom/movable/screen/alert/bronchoconstricted
+	name = "Bronchocontracted"
+	desc = "You feel like your lungs are smaller than usual! You might need a higher pressure environment/internals to breathe!"
+	icon_state = "bronchoconstricted"
 
 /atom/movable/screen/alert/gross
 	name = "Grossed out."

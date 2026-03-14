@@ -497,7 +497,7 @@
 	return ..()
 
 
-/atom/movable/proc/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
+/atom/movable/proc/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE, willing_pull = FALSE)
 	if(QDELETED(pulled_atom))
 		return FALSE
 	if(!(pulled_atom.can_be_pulled(src, state, force)))
