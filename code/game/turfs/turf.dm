@@ -622,9 +622,22 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	AddElement(/datum/element/rust)
 
 /turf/handle_fall(mob/faller)
-	if(has_gravity(src))
-		playsound(src, SFX_BODYFALL, 50, TRUE)
-	faller.drop_all_held_items()
+	if(!has_gravity(src))
+		return
+	playsound(src, SFX_BODYFALL, 50, TRUE)
+	if(!iscarbon(faller))
+		faller.drop_all_held_items()
+		return
+
+	var/mob/living/carbon/carbon_faller = faller
+	var/is_staggered = carbon_faller.has_status_effect(/datum/status_effect/staggered)
+	for(var/obj/item/bodypart/arm/arm in carbon_faller.bodyparts)
+		var/obj/item/held = faller.get_item_for_held_index(arm.held_index)
+		if(isnull(held))
+			continue
+		if(!prob((0.3 * ((is_staggered ? 10 : 0) + (5 * held.w_class) + arm.get_modified_pain())) ** 1.5))
+			continue
+		faller.dropItemToGround(held)
 
 /turf/proc/photograph(limit=20)
 	var/image/I = new()
