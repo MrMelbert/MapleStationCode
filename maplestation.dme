@@ -6330,6 +6330,7 @@
 #include "maplestation_modules\code\datums\quirks\good.dm"
 #include "maplestation_modules\code\datums\quirks\negative.dm"
 #include "maplestation_modules\code\datums\quirks\neutral.dm"
+#include "maplestation_modules\code\datums\quirks\skills.dm"
 #include "maplestation_modules\code\datums\ruins\space.dm"
 #include "maplestation_modules\code\datums\status_effects\misc.dm"
 #include "maplestation_modules\code\datums\status_effects\resisting_cuffs.dm"
