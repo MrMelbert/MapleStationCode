@@ -78,17 +78,14 @@
 	description = "Spawns santa, who shall roam the station, handing out gifts."
 
 /datum/round_event/santa
-	var/mob/living/carbon/human/santa //who is our santa?
 
 /datum/round_event/santa/announce(fake)
 	priority_announce("Santa is coming to town!", "Unknown Transmission")
 
-/datum/round_event/santa/start()
-	var/list/candidates = SSpolling.poll_ghost_candidates("Santa is coming to town! Do you want to be Santa?", poll_time = 15 SECONDS, pic_source = /obj/item/clothing/head/costume/santa, role_name_text = "santa")
-	if(LAZYLEN(candidates))
-		var/mob/dead/observer/C = pick(candidates)
-		santa = new /mob/living/carbon/human(pick(GLOB.blobstart))
-		santa.key = C.key
-
-		var/datum/antagonist/santa/A = new
-		santa.mind.add_antag_datum(A)
+/datum/round_event/ghost_role/santa/start()
+	var/mob/chosen_one = SSpolling.poll_ghost_candidates("Santa is coming to town! Do you want to be [span_notice("Santa")]?", poll_time = 15 SECONDS, alert_pic = /obj/item/clothing/head/costume/santa, role_name_text = "Santa", amount_to_pick = 1)
+	if(isnull(chosen_one))
+		return NOT_ENOUGH_PLAYERS
+	var/mob/living/carbon/human/santa = new(pick(GLOB.blobstart))
+	santa.key = chosen_one.key
+	santa.mind.add_antag_datum(/datum/antagonist/santa)

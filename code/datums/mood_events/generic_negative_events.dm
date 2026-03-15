@@ -231,7 +231,7 @@
 
 /datum/mood_event/painful_medicine
 	description = "Medicine may be good for me but right now it stings like hell."
-	mood_change = -5
+	mood_change = -3
 	timeout = 60 SECONDS
 	event_flags = MOOD_EVENT_PAIN
 
@@ -590,14 +590,14 @@
 	timeout = 1 MINUTES
 
 /datum/mood_event/smoke_in_face
-	description = "Cigarette smoke is disgusting."
+	description = "They just blew disgusting smoke in my face!"
 	mood_change = -3
 	timeout = 30 SECONDS
 
 /datum/mood_event/smoke_in_face/add_effects(param)
-	// if(HAS_TRAIT(owner, TRAIT_ANOSMIA))
-	// 	description = "Cigarette smoke is unpleasant."
-	// 	mood_change = -1
+	if(!owner.can_smell())
+		description = "They just blew some unpleasant smoke in my face."
+		mood_change = -1
 	if(HAS_TRAIT(owner, TRAIT_SMOKER))
 		description = "Blowing smoke in my face, really?"
 		mood_change = 0

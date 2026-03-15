@@ -64,7 +64,7 @@
 	// No lungs until you get lungs
 	apply_status_effect(/datum/status_effect/lungless)
 	// No heart until you get a heart // Except this is probably unnecessary so we'll skip it
-	// apply_status_effect(/datum/status_effect/heart_attack)
+	// apply_status_effect(/datum/status_effect/cardiac_arrest)
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	randomize_human_normie(src, randomize_mutations = TRUE)
@@ -940,7 +940,6 @@
 
 /mob/living/carbon/human/get_exp_list(minutes)
 	. = ..()
-
 	if(mind.assigned_role.title in SSjob.name_occupations)
 		.[mind.assigned_role.title] = minutes
 

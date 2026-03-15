@@ -548,39 +548,46 @@
 	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
 /mob/living/carbon/proc/paincrit_check()
-	if(crit_percent() < 100 || HAS_TRAIT(src, TRAIT_NOSOFTCRIT)) // melbert todo
-		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-			Paralyze(2 SECONDS)
-			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	if(crit_percent() < 100)
+		remove_status_effect(/datum/status_effect/paincrit)
 		return
 
-	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-		return
-	var/is_standing = body_position == STANDING_UP
-	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-	if(stat == DEAD)
-		return
-	if(buckled)
-		visible_message(
-			span_warning("[src] slumps against [buckled]!"),
-			span_userdanger("You go limp, unable to move!"),
-			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-		)
+	apply_status_effect(/datum/status_effect/paincrit)
 
-	else if(is_standing && body_position != STANDING_UP)
-		visible_message(
-			span_warning("[src] collapses!"),
-			span_userdanger("You collapse, unable to stand!"),
-			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-		)
-	else if(body_position == LYING_DOWN)
-		visible_message(
-			span_warning("[src] slumps against the ground!"),
-			span_userdanger("You go limp, unable to get up!"),
-			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-		)
-	else
-		to_chat(src, span_userdanger("You can't will yourself to move!"))
+/datum/status_effect/paincrit
+	id = "paincrit"
+	alert_type = null
+	tick_interval = -1
+	duration = -1
+
+/datum/status_effect/paincrit/nextmove_modifier()
+	return 3
+
+/datum/status_effect/paincrit/on_apply()
+	. = ..()
+	owner.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_FLOORED, TRAIT_GRABWEAKNESS), id)
+	owner.add_movespeed_modifier(/datum/movespeed_modifier/paincrit)
+	owner.add_actionspeed_modifier(/datum/actionspeed_modifier/paincrit)
+	owner.drop_all_held_items()
+	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOSOFTCRIT), PROC_REF(clean_up))
+
+/datum/status_effect/paincrit/on_remove()
+	. = ..()
+	owner.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_FLOORED, TRAIT_GRABWEAKNESS), id)
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/paincrit)
+	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/paincrit)
+	owner.Paralyze(2 SECONDS)
+	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOSOFTCRIT))
+
+/datum/status_effect/paincrit/proc/clean_up()
+	SIGNAL_HANDLER
+	qdel(src)
+
+/datum/movespeed_modifier/paincrit
+	multiplicative_slowdown = 9
+
+/datum/actionspeed_modifier/paincrit
+	multiplicative_slowdown = 3
 
 /mob/living/carbon/update_sight()
 	if(!client)
@@ -1396,8 +1403,7 @@
 	if(!islist(blood_dna))
 		CRASH("spray_blood called without a valid blood_dna list!")
 
-	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, splatter_strength)
-	our_splatter.add_blood_DNA(blood_dna)
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, static_viruses, blood_dna, splatter_strength)
 	our_splatter.fly_towards(get_ranged_target_turf(src, splatter_direction, splatter_strength), splatter_strength)
 
 /mob/living/carbon/spray_blood(splatter_direction, splatter_strength = 3, blood_dna, list/static_viruses)

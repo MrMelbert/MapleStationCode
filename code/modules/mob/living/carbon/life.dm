@@ -66,7 +66,7 @@
 		if(stat == HARD_CRIT && !internal && !external) // being on internals function as a ventilator + also makes anesthetic function (revisit later)
 			losebreath = max(losebreath, 1)
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
-			losebreath += (1 / next_breath)
+			losebreath += (1 / max(2, next_breath))
 
 	if(losebreath < 1)
 		var/pre_sig_return = SEND_SIGNAL(src, COMSIG_CARBON_ATTEMPT_BREATHE, seconds_per_tick, times_fired)

@@ -60,7 +60,10 @@
 		handle_gravity(seconds_per_tick, times_fired)
 
 	if(stat != DEAD)
+		if(COOLDOWN_FINISHED(src, smell_cd) && !isnull(mind))
+			smell_something()
 		body_temperature_alerts()
+
 	handle_wounds(seconds_per_tick, times_fired)
 	if(staminaloss)
 		adjustStaminaLoss(-1 * (stat == DEAD ? 100 : 2.5) * seconds_per_tick)
@@ -176,9 +179,11 @@
 		if(feels_like > hot_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
 			add_mood_event("hot", /datum/mood_event/overhot)
+			ADD_TRAIT(src, TRAIT_VASODILATED, "extreme_temperature")
 		else if(feels_like > hot_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 			add_mood_event("hot", /datum/mood_event/hot)
+			ADD_TRAIT(src, TRAIT_VASODILATED, "high_temperature")
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
 			add_mood_event("hot", /datum/mood_event/warm)
@@ -194,9 +199,11 @@
 		if(feels_like < cold_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
 			add_mood_event("cold", /datum/mood_event/freezing)
+			ADD_TRAIT(src, TRAIT_VASOCONSTRICTED, "extreme_temperature")
 		else if(feels_like < cold_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 			add_mood_event("cold", /datum/mood_event/cold)
+			ADD_TRAIT(src, TRAIT_VASOCONSTRICTED, "high_temperature")
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
 			add_mood_event("cold", /datum/mood_event/chilly)
@@ -213,6 +220,8 @@
 		clear_mood_event("cold")
 		clear_mood_event("hot")
 		temp_alerts = FALSE
+		REMOVE_TRAITS_IN(src, "extreme_temperature")
+		REMOVE_TRAITS_IN(src, "high_temperature")
 
 /mob/living/silicon/body_temperature_alerts()
 	return // Not yet

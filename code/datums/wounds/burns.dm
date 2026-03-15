@@ -79,6 +79,9 @@
 		sanitization = max(sanitization - (WOUND_BURN_SANITIZATION_RATE * bandage_factor * seconds_per_tick), 0)
 
 /datum/wound/flesh/proc/handle_infection(seconds_per_tick)
+	if(sanitization > 0)
+		return
+
 	infection += infection_rate * seconds_per_tick
 	switch(infection)
 		if(0 to WOUND_INFECTION_MODERATE)
@@ -444,7 +447,7 @@
 	damage_multiplier_penalty = 1.1
 	interaction_efficiency_penalty = 0.9
 	threshold_penalty = 25
-	infection_rate = 0.05
+	infection_rate = 0.01
 	flesh_damage = 10
 	treatable_by = list(/obj/item/flashlight/pen/paramedic)
 
@@ -467,13 +470,13 @@
 		return
 	switch(severity)
 		if(WOUND_SEVERITY_SEVERE)
-			infection_rate = 0.075
+			infection_rate = 0.025
 			damage_multiplier_penalty = 1.2
 			interaction_efficiency_penalty = 0.6
 			threshold_penalty = 50
 			examine_desc = "is turning white"
 		if(WOUND_SEVERITY_CRITICAL)
-			infection_rate = 0.1
+			infection_rate = 0.05
 			damage_multiplier_penalty = 1.25
 			interaction_efficiency_penalty = 0.3
 			threshold_penalty = 75

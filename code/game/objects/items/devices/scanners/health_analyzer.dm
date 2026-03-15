@@ -321,7 +321,7 @@
 					<td>[status]</td>\
 					</tr>"
 				if(appendix)
-					toReport += "<tr><td colspan=4><span class='alert ml-2'>&rdsh; [appendix]</span></td></tr>"
+					toReport += "<tr><td colspan=4><span class='info ml-2'>&rdsh; [appendix]</span></td></tr>"
 
 		if(render)
 			render_list += "<hr>"
@@ -372,18 +372,25 @@
 	// Blood Level
 	var/datum/blood_type/target_blood_type = target.blood_type
 	if(target_blood_type && target.has_blood())
-		var/bpm = target.get_bpm()
+		var/list/bp = target.get_bp_range()
 		var/needs_heart = TRUE
 		if(ishuman(target))
 			var/mob/living/carbon/human/humantarget = target
 			needs_heart = humantarget.needs_heart()
 
-		var/bpm_format = "[needs_heart ? bpm : "n/a"] bpm"
-		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)] cl" // round to 0.1 but also print "100.0" and not "100"
+		var/bp_format = "[bp[1]]/[bp[2]]" + span_slightly_smaller("mmHg")
+		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)]" + span_slightly_smaller("cl") // round to 0.1 but also print "100.0" and not "100"
 		var/blood_type_format = "[target_blood_type.name]"
 
-		if(needs_heart && (bpm < 60 || bpm > 100))
-			bpm_format = span_alert(bpm_format)
+		if(needs_heart)
+			if(bp[1] > 140 && bp[2] > 90) // high blood pressure
+				bp_format = conditional_tooltip(span_alert("[bp_format] (Warning: Hypertension)"), \
+					"Blood pressure is above average - Indicative of more severe conditions such as pain, hypoxima, or blood loss. \
+					Can be treated with vasodilators such as [/datum/reagent/potassium::name] or [/datum/reagent/nitroglycerin::name].", tochat)
+			if(bp[1] < 90 && bp[2] < 60) // low blood pressure
+				bp_format = conditional_tooltip(span_alert("[bp_format] (Warning: Hypotension)"), \
+					"Blood pressure is below average - Indicative of more severe conditions such as heart damage or blood loss. \
+					Can be treated with vasoconstrictors such as [/datum/reagent/medicine/epinephrine::name].", tochat)
 
 		switch(target.blood_volume)
 			if(BLOOD_VOLUME_EXCESS to INFINITY)
@@ -410,7 +417,7 @@
 				recieve_from_text += " Regenerates slowly via [target_blood_type.restoration_chem::name] reagent."
 			blood_type_format = span_tooltip(recieve_from_text, blood_type_format)
 
-		render_list += "<span class='info ml-1'>Heart rate: [bpm_format]</span><br>"
+		render_list += "<span class='info ml-1'>Blood pressure: [bp_format]</span><br>"
 		render_list += "<span class='info ml-1'>Blood level: [level_format]</span><br>"
 		render_list += "<span class='info ml-1'>Blood type: [blood_type_format]</span><br>"
 

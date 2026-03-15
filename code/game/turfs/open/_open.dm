@@ -13,6 +13,8 @@
 	var/broken = FALSE
 	var/burnt = FALSE
 
+	/// Assoc list of smell datum to sum of intensities present on this turf
+	VAR_FINAL/list/collective_smells
 
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.

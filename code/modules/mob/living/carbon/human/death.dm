@@ -70,7 +70,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 	switch(probable_cause)
 		// This should all be refactored later it's a bit of a mess ngl
-		if(null, "revival_sickess", "anesthetics", "recent_defib")
+		if(null, /datum/status_effect/anesthetic::id, /datum/status_effect/recent_defib::id)
 			return "unknown causes"
 
 		if(OXY_DAMAGE)
@@ -80,6 +80,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 			if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && blood_volume < BLOOD_VOLUME_BAD)
 				return BLOOD_LOSS
+
+			return "hypoxia"
 
 		if(TOX_DAMAGE)
 			var/obj/item/organ/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
