@@ -19,7 +19,7 @@
 // Medkit variant that can be printed from a lathe, not actually a medkit subtype to disallow making medibots, c'est la vie
 /obj/item/storage/plastic_medkit
 	name = "plastic medkit"
-	desc = "a cheaply produced plastic medkit, quickly produced using a protolathe."
+	desc = "A printable plastic medkit.
 	icon = 'maplestation_modules/icons/obj/storage/medkit.dmi'
 	icon_state = "medkit_plastic"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/medical_lefthand.dmi'
@@ -28,6 +28,18 @@
 	throw_range = 7
 	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+	obj_flags = UNIQUE_RENAME | INFINITE_RESKIN
+	unique_reskin = list(
+		"Plain" = "medkit_plastic",
+		"Blue" = "medkit_plastic_blue",
+		"Pink" = "medkit_plastic_pink",
+		"Yellow" = "medkit_plastic_yellow",
+		"Green" = "medkit_plastic_green",
+		"Brute" = "medkit_plastic_brute",
+		"Burn" = "medkit_plastic_burn",
+		"Toxin" = "medkit_plastic_toxin",
+		"Oxygen" = "medkit_plastic_oxygen"
+	)
 	// Copied from actual medkits, forgive me but I don't want to fiddle around with making medkits *not* always allow medibots, and the storage hasn't been properly datumized here
 	var/static/list/list_of_everything_medkits_can_hold = list(
 		/obj/item/healthanalyzer,
