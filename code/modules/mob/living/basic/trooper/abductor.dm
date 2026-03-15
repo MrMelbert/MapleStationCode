@@ -6,7 +6,7 @@
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/abductor
 	corpse = /obj/effect/mob_spawn/corpse/human/abductor
 
-/mob/living/basic/trooper/abductor/get_blood_type()
+/mob/living/basic/trooper/abductor/get_fake_blood_type()
 	return null // Ayys are noblooded
 
 /mob/living/basic/trooper/abductor/melee

@@ -69,7 +69,7 @@
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan")
 
 /// Amount of pain gained (to chest) from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 90
+#define PAIN_LIMB_DISMEMBERED 120
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
@@ -122,10 +122,18 @@
 /// Does not harm patients when undergoing CPR
 #define TRAIT_CPR_CERTIFIED "cpr_certified"
 
-/// Boosts the heart rate of the mob
+/// Boosts the heart rate of the mob (raises blood pressure)
+/// One application of the trait translates to +10 bpm, which may translate to +10 blood pressure
 #define TRAIT_HEART_RATE_BOOST "heart_rate_boost"
-/// Slows the heart rate of the mob
+/// Slows the heart rate of the mob (lowers blood pressure)
+/// One application of the trait translates to -10 bpm, which may translate to -10 blood pressure
 #define TRAIT_HEART_RATE_SLOW "heart_rate_slow"
+/// Constricts blood vessels (raises blood pressure)
+/// One application of the trait translates to +0.2 "vasoconstriction", which is a +0.2 multiplier to blood pressure
+#define TRAIT_VASOCONSTRICTED "vasoconstricted"
+/// Dilates blood vessels (lowers blood pressure)
+/// One application of the trait translates to -0.2 "vasodilation", which is a -0.2 multiplier to blood pressure
+#define TRAIT_VASODILATED "vasodilated"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
@@ -196,9 +204,9 @@
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
 /// Threshold that heart beat becomes "slow"
-#define SLOW_HEARTBEAT_THRESHOLD 6
+#define SLOW_HEARTBEAT_THRESHOLD 60
 /// Threshold that heart beat becomes "fast"
-#define FAST_HEARTBEAT_THRESHOLD 11
+#define FAST_HEARTBEAT_THRESHOLD 110
 
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"

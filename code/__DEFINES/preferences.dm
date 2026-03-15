@@ -186,6 +186,10 @@
 #define MIDDLE_LIP "Middle"
 #define LOWER_LIP "Lower"
 
+// Latejoin Spawnpoints
+#define SPAWNPOINT_CRYO "Long-Term Crew Storage"
+#define SPAWNPOINT_ARRIVALS "Arrivals Shuttle"
+
 // Job greyscale colors for loadout items
 #define COLOR_JOB_ASSISTANT /obj/item/clothing/under/color/grey::greyscale_colors
 #define COLOR_JOB_BOTANIST "#33cc33"

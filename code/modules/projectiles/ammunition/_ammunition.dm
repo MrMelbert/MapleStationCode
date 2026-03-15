@@ -149,12 +149,12 @@
 
 /obj/item/ammo_casing/proc/is_spent(mapload = FALSE)
 	if(!mapload)
-		AddComponent(/datum/component/complex_smell, \
-			duration = 4 MINUTES, \
-			smell = "gunpowder", \
-			intensity = SMELL_INTENSITY_FAINT, \
-			radius = 1, \
-			wash_types = CLEAN_TYPE_FINGERPRINTS, \
+		add_smell(
+			duration = 4 MINUTES,
+			smell = "gunpowder",
+			intensity = SMELL_INTENSITY_FAINT,
+			radius = 1,
+			wash_type = CLEAN_TYPE_FINGERPRINTS,
 		)
 
 	name = "spent [name]"

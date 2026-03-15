@@ -25,6 +25,7 @@
 	bodytemp_heat_damage_limit = INFINITY // Non-module change
 	death_message = "fades out of existence!"
 	ai_controller = /datum/ai_controller/basic_controller/orbie
+	initial_blood_type = null
 	///are we happy or not?
 	var/happy_state = FALSE
 	///overlay for our neutral eyes

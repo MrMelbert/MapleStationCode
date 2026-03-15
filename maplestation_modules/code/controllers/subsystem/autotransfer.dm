@@ -93,16 +93,7 @@ SUBSYSTEM_DEF(crewtransfer)
 /// initiates the shuttle call and logs it.
 /datum/controller/subsystem/crewtransfer/proc/initiate_crew_transfer()
 	if(EMERGENCY_IDLE_OR_RECALLED)
-		/// The multiplier on the shuttle's timer
-		var/shuttle_time_mult = 1
-		/// Security level (for timer multiplier)
-		switch(SSsecurity_level.get_current_level_as_number())
-			if(SEC_LEVEL_GREEN)
-				shuttle_time_mult = 2 // = ~20 minutes
-			if(SEC_LEVEL_BLUE, SEC_LEVEL_RED)
-				shuttle_time_mult = 1.5 // = ~15 minutes, =~7.5 minutes
-
-		SSshuttle.emergency.request(reason = "\nReason:\n\n[shuttle_call_reason]", set_coefficient = shuttle_time_mult)
+		SSshuttle.emergency.request(reason = "\nReason:\n\n[shuttle_call_reason]", set_coefficient = 1.5)
 
 		log_shuttle("A crew transfer vote has passed. The shuttle has been called, and recalling the shuttle ingame is disabled.")
 		message_admins("A crew transfer vote has passed. The shuttle has been called, and recalling the shuttle ingame is disabled.")

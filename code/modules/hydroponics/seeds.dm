@@ -621,7 +621,7 @@
  *  - returned seed CAN be null in weird cases but in all applications it SHOULD NOT be.
  * Returns null if it is not a plant.
  */
-/obj/item/proc/get_plant_seed()
+/obj/item/proc/get_plant_seed() as /obj/item/seeds
 	return null
 
 /obj/item/food/grown/get_plant_seed()

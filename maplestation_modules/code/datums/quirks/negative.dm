@@ -131,13 +131,13 @@
 			give_cane(/obj/item/cane/crutch/wood, side)
 			mail_goodies |= /obj/item/cane/crutch/wood
 		if(NO_CANE)
-			mail_goodies |= /obj/item/reagent_containers/pill/morphine/diluted
+			mail_goodies |= /obj/item/reagent_containers/pill/morphine/smaller
 
 	switch(intensity)
 		if(INTENSITY_MEDIUM)
 			mail_goodies |= /obj/item/reagent_containers/pill/paracetamol
 		if(INTENSITY_HIGH)
-			mail_goodies |= /obj/item/reagent_containers/pill/morphine/diluted
+			mail_goodies |= /obj/item/reagent_containers/pill/morphine/smaller
 
 	quirk_holder.apply_status_effect(/datum/status_effect/limp/permanent, side, intensity)
 

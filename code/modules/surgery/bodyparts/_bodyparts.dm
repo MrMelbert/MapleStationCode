@@ -662,7 +662,7 @@
 	check_wounding(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus, attack_direction, damage_source, sharpness)
 
 	for(var/datum/wound/iter_wound as anything in wounds)
-		iter_wound.receive_damage(wounding_type, wounding_dmg, wound_bonus, damage_source)
+		iter_wound.receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
 
 	// END WOUND HANDLING
 
@@ -944,6 +944,7 @@
 
 	item_flags |= ABSTRACT
 	ADD_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
+	damage_color ||= new_owner.blood_type?.color || COLOR_BLOOD
 
 /// Called on removal of a bodypart.
 /obj/item/bodypart/proc/on_removal(mob/living/carbon/old_owner)
@@ -1091,8 +1092,6 @@
 		draw_color = species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 	else
 		draw_color = null
-
-	damage_color = owner?.get_expected_blood_type().color || COLOR_BLOOD // NON-MODULE CHANGE
 
 	if(!is_creating || !owner)
 		return

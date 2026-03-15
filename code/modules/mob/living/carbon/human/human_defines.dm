@@ -18,6 +18,7 @@
 
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
+	initial_blood_type = /datum/blood_type/crew/human/o_minus
 
 	//Hair colour and style
 	var/hair_color = COLOR_BLACK

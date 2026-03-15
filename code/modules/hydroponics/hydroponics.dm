@@ -1148,7 +1148,7 @@
 
 /obj/machinery/hydroponics/soil/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/simple_smell, "fresh soil", SMELL_INTENSITY_WEAK, 1)
+	add_smell(smell = "fresh soil", intensity = SMELL_INTENSITY_WEAK, radius = 1)
 
 /obj/machinery/hydroponics/soil/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	return NONE

@@ -52,17 +52,6 @@
 	required_catalysts = list(/datum/reagent/medicine/c2/aiuri = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG | REACTION_TAG_PAIN
 
-// Not really reactions, but I'm leaving these here
-// Gain oxycodone from juicing poppies
-/obj/item/food/grown/poppy
-	juice_typepath = /datum/reagent/medicine/painkiller/oxycodone
-
-/obj/item/food/grown/poppy/geranium
-	juice_typepath = null
-
-/obj/item/food/grown/poppy/lily
-	juice_typepath = null
-
 /datum/chemical_reaction/medicine/dimenhydrinate
 	results = list(/datum/reagent/medicine/dimenhydrinate = 3)
 	required_reagents = list(/datum/reagent/medicine/diphenhydramine = 1, /datum/reagent/nitrogen = 1, /datum/reagent/chlorine = 1)

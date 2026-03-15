@@ -65,13 +65,7 @@
 	return "As Disguise"
 
 /datum/preference/choiced/synth_blood/apply_to_human(mob/living/carbon/human/target, value)
-	var/datum/species/android/synth/synth = target.dna?.species
-	if(!istype(synth))
-		return
-	if(value == "As Disguise" && synth.disguise_species)
-		synth.exotic_bloodtype = synth.disguise_species.exotic_bloodtype
-	else
-		synth.exotic_bloodtype = /datum/blood_type/oil
+	return
 
 /datum/preference/choiced/synth_blood/is_accessible(datum/preferences/preferences)
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/android/synth)

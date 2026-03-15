@@ -429,6 +429,16 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Y-"
 	salgu_compatible = TRUE
 
+/// For the megafauna. Future todo, make it spawn the special blood decals.
+/datum/blood_type/animal/bubblegum
+	color = "#690000"
+
+/// For spiders and insects. Future todo, make it spawn the bug guts decal
+/datum/blood_type/animal/bug
+
+/// For blob monsters. Future todo, make it the color of the og blob
+/datum/blood_type/animal/blob
+
 /// An abstract-ish blood type used particularly for species with blood set to random reagents, such as podpeople
 /datum/blood_type/random_chemical
 

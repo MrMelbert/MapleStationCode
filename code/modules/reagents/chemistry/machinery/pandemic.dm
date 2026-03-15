@@ -148,7 +148,7 @@
 	data["has_blood"] = TRUE
 	data["blood"] = list()
 	data["blood"]["dna"] = blood.data["blood_DNA"] || "none"
-	data["blood"]["type"] = blood.data["blood_type"] || "none"
+	data["blood"]["type"] = find_blood_type(blood.data["blood_type"])?.name || "none"
 	data["viruses"] = get_viruses_data(blood)
 	data["resistances"] = get_resistance_data(blood)
 	return data

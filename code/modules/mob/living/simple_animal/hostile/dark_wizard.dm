@@ -34,6 +34,7 @@
 	del_on_death = TRUE
 
 /mob/living/simple_animal/hostile/dark_wizard/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/wizard/dark, r_hand = /obj/item/staff)
 
