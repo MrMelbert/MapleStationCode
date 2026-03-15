@@ -16,6 +16,7 @@
 	melee_damage_upper = 16
 	sight = SEE_MOBS | SEE_OBJS | SEE_TURFS
 	death_message = "shatters and vanishes, releasing a gust of cold air."
+	initial_blood_type = null
 	/// Whether we take damage when someone looks at us
 	var/harmed_by_examine = TRUE
 	/// How often being examined by a specific mob can hurt us

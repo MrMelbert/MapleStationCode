@@ -363,8 +363,8 @@
 		chaplain.adjustOxyLoss(suffocation_damage * burden_modifier, forced = TRUE)
 
 	// NON-MODULE CHANGE : Blood rework
-	var/datum/blood_type/our_blood = chaplain.get_blood_type()
-	var/datum/blood_type/their_blood = target.get_blood_type()
+	var/datum/blood_type/our_blood = chaplain.blood_type
+	var/datum/blood_type/their_blood = target.blood_type
 	if(our_blood && their_blood)
 		// melbert todo ?? logic
 		if(target.blood_volume < BLOOD_VOLUME_SAFE)

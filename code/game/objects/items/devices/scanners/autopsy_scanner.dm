@@ -92,7 +92,7 @@
 		else
 			autopsy_information += "Severe burns.</br>"
 	else if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
-		autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
+		autopsy_information += "Blood Type: [scanned.blood_type || "None"]<br>"
 		autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
 
 	for(var/datum/disease/diseases as anything in scanned.diseases)

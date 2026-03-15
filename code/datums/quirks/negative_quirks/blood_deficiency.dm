@@ -46,7 +46,7 @@
 
 	mail_goodies.Cut()
 
-	var/datum/blood_type/new_type = quirk_holder.get_blood_type()
+	var/datum/blood_type/new_type = quirk_holder.blood_type
 	if(isnull(new_type))
 		return
 

@@ -218,7 +218,7 @@
 	if(victim.stat == DEAD)
 		to_chat(user, span_warning("You need a living victim!"))
 		return FALSE
-	if(!istype(victim.get_blood_type(), /datum/blood_type/crew/human)) // NON-MODULE CHANGE
+	if(!istype(victim.blood_type, /datum/blood_type/crew/human)) // NON-MODULE CHANGE
 		to_chat(user, span_warning("[victim] doesn't have valid blood!")) // NON-MODULE CHANGE
 		return FALSE
 	COOLDOWN_START(licker_drinker, drain_cooldown, 3 SECONDS)

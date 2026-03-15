@@ -87,7 +87,7 @@
 		var/original_index = all_smells.Find(smell_effect)
 		var/correct_index = original_index
 		while(correct_index > 1)
-			if(all_smells[all_smells[correct_index - 1]] > all_smells[all_smells[correct_index]])
+			if(all_smells[all_smells[correct_index - 1]] > effective_intensity)
 				break
 			correct_index -= 1
 		if(correct_index != original_index)
@@ -177,3 +177,56 @@
 			SIGNAL_ADDTRAIT(TRAIT_NO_ORGAN_DECAY), \
 		), \
 	)
+
+/// A helper proc to add smells that abstracts away the component vs element details,
+/// since most callers won't care about the implementation details
+/atom/proc/add_smell(
+	smell,
+	intensity,
+	radius,
+	category,
+	duration,
+	base_type,
+	wash_type,
+	is_fading,
+	clear_signals,
+)
+	ASSERT(istext(smell) || ispath(smell), "Smell must be a string or a path to a /datum/smell")
+	ASSERT(intensity > 0, "Smell intensity must be greater than 0")
+	ASSERT(radius >= 0, "Smell radius must be 0 or greater")
+	ASSERT(isnull(duration) || isnum(duration), "Smell duration must be a number or null")
+	ASSERT(isnull(category) || istext(category), "Smell category must be a string or null")
+	ASSERT(isnull(base_type) || ispath(base_type), "Smell base type must be a path to a /datum/smell or null")
+	ASSERT(isnull(wash_type) || isnum(wash_type), "Smell wash type must be a wash type flag or null")
+	ASSERT(isnull(is_fading) || isnum(is_fading), "Smell fading must be a boolean or null")
+	ASSERT(isnull(clear_signals) || islist(clear_signals), "Smell clear signals must be a list or null")
+
+	var/use_complex = duration || is_fading || wash_type || length(clear_signals)
+	if(isitem(src))
+		var/obj/item/wearable = src
+		if(wearable.slot_flags)
+			use_complex = TRUE
+
+	if(use_complex)
+		AddComponent(/datum/component/complex_smell, \
+			duration = duration, \
+			smell = smell, \
+			intensity = intensity, \
+			radius = radius, \
+			category = category, \
+			smell_basetype = base_type, \
+			wash_types = wash_type, \
+			fade_intensity_over_time = is_fading, \
+			clear_signals = clear_signals, \
+		)
+	else
+		AddElement(/datum/element/simple_smell, \
+			smell = smell, \
+			intensity = intensity, \
+			radius = radius, \
+			category = category, \
+			smell_basetype = base_type, \
+		)
+
+/area/add_smell(...)
+	CRASH("Areas do not support smells")
