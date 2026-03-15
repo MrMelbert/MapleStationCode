@@ -237,7 +237,7 @@
 		carbon_owner.handle_dreams()
 
 	if(prob(5) && owner.stat == CONSCIOUS)
-		owner.emote("snore")
+		owner.organ_emote(ORGAN_SLOT_TONGUE, "snore")
 
 /atom/movable/screen/alert/status_effect/asleep
 	name = "Asleep"

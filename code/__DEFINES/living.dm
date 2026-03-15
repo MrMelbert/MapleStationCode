@@ -44,6 +44,11 @@
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
+/// Send when sharing body temperature to breath
+#define COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE "human_on_handle_breath_temperature"
+	/// Stops further processing
+	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
+
 /// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
 #define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
 /// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)

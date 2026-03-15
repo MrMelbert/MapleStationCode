@@ -255,6 +255,7 @@
 	connector_type = null
 	custom_materials = null
 	grind_results = null
+	rating = 0
 
 /obj/item/stock_parts/power_store/cell/ethereal/examine(mob/user)
 	. = ..()

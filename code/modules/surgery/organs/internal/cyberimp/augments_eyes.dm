@@ -54,6 +54,12 @@
 	icon_state = "eye_implant_diagnostic"
 	HUD_traits = list(TRAIT_DIAGNOSTIC_HUD, TRAIT_BOT_PATH_HUD)
 
+/obj/item/organ/cyberimp/eyes/hud/science
+	name = "science HUD implant"
+	desc = "These cybernetic eye implants will display a science HUD over everything you see."
+	icon_state = "eye_implant_medical"
+	HUD_traits = list(TRAIT_RESEARCH_SCANNER, TRAIT_REAGENT_SCANNER)
+
 /obj/item/organ/cyberimp/eyes/hud/security/syndicate
 	name = "contraband security HUD implant"
 	desc = "A Cybersun Industries brand Security HUD Implant. These illicit cybernetic eye implants will display a security HUD over everything you see."
