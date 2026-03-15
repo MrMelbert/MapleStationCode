@@ -363,14 +363,14 @@
 
 #undef AVERAGE_HUMAN_PULSE_PRESSURE
 
-/obj/item/organ/heart/feel_for_damage(self_aware)
+/obj/item/organ/heart/feel_for_damage(self_aware, medical_skill)
 	if(owner.needs_heart() && (!beating || (organ_flags & ORGAN_FAILING)))
-		return span_boldwarning("[self_aware ? "Your heart is not beating!" : "You don't feel your heart beating."]")
+		return span_boldwarning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart is not beating!" : "You don't feel your heart beating."]")
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
-		return span_warning("[self_aware ? "Your heart hurts." : "It hurts, and your heart rate feels irregular."]")
-	return span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts, and your heart rate is all over the place."]")
+		return span_warning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart hurts." : "It hurts, and your heart rate feels irregular."]")
+	return span_boldwarning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart seriously hurts!" : "It seriously hurts, and your heart rate is all over the place."]")
 
 /obj/item/organ/heart/cursed
 	name = "cursed heart"

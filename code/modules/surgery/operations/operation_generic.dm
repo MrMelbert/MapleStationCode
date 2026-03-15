@@ -64,7 +64,7 @@
 	if(!limb.can_bleed())
 		return
 
-	var/blood_name = full_capitalize(limb.owner.blood_type?.reagent_type::name || "Blood")
+	var/blood_name = full_capitalize(limb.owner.get_blood_name())
 	display_results(
 		surgeon,
 		limb.owner,

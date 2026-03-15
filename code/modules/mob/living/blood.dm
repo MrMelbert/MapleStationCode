@@ -285,6 +285,11 @@
 		return FALSE
 	return TRUE
 
+/// Return what our blood is called, or just "blood" if we don't have any
+/mob/living/proc/get_blood_name()
+	var/datum/reagent/blood_reagent = blood_type?.reagent_type
+	return blood_reagent ? blood_reagent::name : "blood"
+
 /**
  * Create a splat of this mob's life juice
  * Does nothing if the mob does not have a blood type set

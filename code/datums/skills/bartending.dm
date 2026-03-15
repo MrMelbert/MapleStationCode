@@ -23,11 +23,11 @@
 	if(reaction.reaction_tags & REACTION_TAG_DRINK)
 		var/xp_mod = (amount_created / 50)
 		if(reaction.reaction_tags & REACTION_TAG_EASY)
-			mixer.mind.adjust_experience(/datum/skill/bartending, 10 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/bartending, 10 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_MODERATE)
-			mixer.mind.adjust_experience(/datum/skill/bartending, 25 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/bartending, 25 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_HARD)
-			mixer.mind.adjust_experience(/datum/skill/bartending, 50 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/bartending, 50 * xp_mod)
 
 	if(reaction.reaction_tags & REACTION_TAG_FOOD)
 		var/xp_mod = (amount_created / 50)
@@ -37,20 +37,20 @@
 				xp_mod *= 5 // bonus for making actual food
 
 		if(reaction.reaction_tags & REACTION_TAG_EASY)
-			mixer.mind.adjust_experience(/datum/skill/cooking, 10 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/cooking, 10 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_MODERATE)
-			mixer.mind.adjust_experience(/datum/skill/cooking, 25 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/cooking, 25 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_HARD)
-			mixer.mind.adjust_experience(/datum/skill/cooking, 50 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/cooking, 50 * xp_mod)
 
 	if(reaction.reaction_tags & (REACTION_TAG_DRUG|REACTION_TAG_HEALING))
 		var/xp_mod = (amount_created / 50)
 		if(reaction.reaction_tags & REACTION_TAG_EASY)
-			mixer.mind.adjust_experience(/datum/skill/chemistry, 10 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/chemistry, 10 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_MODERATE)
-			mixer.mind.adjust_experience(/datum/skill/chemistry, 25 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/chemistry, 25 * xp_mod)
 		else if(reaction.reaction_tags & REACTION_TAG_HARD)
-			mixer.mind.adjust_experience(/datum/skill/chemistry, 50 * xp_mod)
+			mixer.adjust_skill_experience(/datum/skill/chemistry, 50 * xp_mod)
 
 // This blows
 /datum/chemical_reaction/drink/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)

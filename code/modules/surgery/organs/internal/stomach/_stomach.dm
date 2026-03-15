@@ -255,7 +255,7 @@
 	stomach_owner.hud_used?.hunger?.update_hunger_bar()
 	return ..()
 
-/obj/item/organ/stomach/feel_for_damage(self_aware)
+/obj/item/organ/stomach/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
