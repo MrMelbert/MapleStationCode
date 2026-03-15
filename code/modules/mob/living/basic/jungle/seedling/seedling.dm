@@ -35,6 +35,7 @@
 	sharpness = SHARP_EDGED
 	wound_bonus = -10
 	ai_controller = /datum/ai_controller/basic_controller/seedling
+	initial_blood_type = /datum/blood_type/water
 	///the state of combat we are in
 	var/combatant_state = SEEDLING_STATE_NEUTRAL
 	///the colors our petals can have

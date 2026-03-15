@@ -74,7 +74,7 @@
 				if(!infection.bypasses_immunity)
 					infection.cure(add_resistance = FALSE)
 
-	var/datum/blood_type/blood = exposed_mob.get_blood_type()
+	var/datum/blood_type/blood = exposed_mob.blood_type
 	if(blood?.reagent_type == type && ((methods & INJECT) || ((methods & INGEST) && HAS_TRAIT(exposed_mob, TRAIT_DRINKS_BLOOD))))
 		if(data["blood_type"] in blood.compatible_types)
 			exposed_mob.blood_volume = min(exposed_mob.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)

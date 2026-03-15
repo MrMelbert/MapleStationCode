@@ -16,6 +16,8 @@
 	update_fov()
 	gravity_setup()
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
+	if(initial_blood_type && isnull(blood_type))
+		set_blood_type(initial_blood_type)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
 	init_unconscious_appearance()
@@ -2101,6 +2103,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				return FALSE
 			update_transform(var_value/current_size)
 			. = TRUE
+		if(NAMEOF(src, blood_type))
+			. = set_blood_type(var_value)
+			if(!.)
+				return
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED

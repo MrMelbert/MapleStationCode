@@ -426,7 +426,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		if(IS_ORGANIC_ORGAN(src))
 			// if there is no dna, but it is organic, it must be mapspawned or something, so show dummy data
 			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
-				"Type: <font color='red'>[find_blood_type(/datum/blood_type/crew/human/o_minus)])]</font> DNA (UE): <font color='red'>Synthetic DNA</font>")
+				"Type: <font color='red'>[find_blood_type(/datum/blood_type/crew/human/o_minus)])]</font> DNA (UE): <font color='red'>SYNTHETIC DNA</font>")
 		else
 			// a robotic organ not owned by a robotic mob should show no DNA
 			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \

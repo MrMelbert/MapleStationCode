@@ -32,6 +32,7 @@
 	bodytemp_heat_damage_limit = INFINITY
 
 	ai_controller = /datum/ai_controller/basic_controller/cockroach
+	initial_blood_type = /datum/blood_type/animal/bug
 
 	var/cockroach_cell_line = CELL_LINE_TABLE_COCKROACH
 

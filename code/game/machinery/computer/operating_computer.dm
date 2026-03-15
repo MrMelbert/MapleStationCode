@@ -202,7 +202,7 @@
 	data["patient"]["health"] = patient.health
 
 	// check here to see if the patient has standard blood reagent, or special blood (like how ethereals bleed liquid electricity) to show the proper name in the computer
-	data["patient"]["blood_type"] = "[patient.get_blood_type() || "None"]" // NON-MODULE CHANGE
+	data["patient"]["blood_type"] = "[patient.blood_type || "None"]" // NON-MODULE CHANGE
 	data["patient"]["maxHealth"] = patient.maxHealth
 	data["patient"]["minHealth"] = -1 * patient.maxHealth
 	data["patient"]["bruteLoss"] = patient.getBruteLoss()

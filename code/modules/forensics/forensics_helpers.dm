@@ -114,7 +114,7 @@
 /obj/add_blood_DNA(list/blood_DNA_to_add)
 	if (QDELING(src))
 		return FALSE
-	if (isnull(blood_DNA_to_add))
+	if (!length(blood_DNA_to_add))
 		return FALSE
 	if (forensics)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)

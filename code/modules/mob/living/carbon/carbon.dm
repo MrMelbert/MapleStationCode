@@ -312,7 +312,7 @@
 	var/message = (vomit_flags & MOB_VOMIT_MESSAGE)
 	var/stun = (vomit_flags & MOB_VOMIT_STUN)
 	var/knockdown = (vomit_flags & MOB_VOMIT_KNOCKDOWN)
-	var/blood = (vomit_flags & MOB_VOMIT_BLOOD)
+	var/blood = (vomit_flags & MOB_VOMIT_BLOOD) && has_blood()
 
 	if(!force && !blood && (nutrition < 100))
 		if(message)

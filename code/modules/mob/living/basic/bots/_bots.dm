@@ -40,6 +40,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	light_range = 3
 	light_power = 0.6
 	speed = 3
+	initial_blood_type = /datum/blood_type/oil
 	///Access required to access this Bot's maintenance protocols
 	var/maints_access_required = list(ACCESS_ROBOTICS)
 	interaction_flags_click = ALLOW_SILICON_REACH
