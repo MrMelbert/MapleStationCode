@@ -15,6 +15,7 @@
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	max_grab = GRAB_KILL
 	throw_range = 4
+	examine_thats = "This is"
 
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT

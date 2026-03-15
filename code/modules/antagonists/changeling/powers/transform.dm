@@ -9,6 +9,7 @@
 
 /obj/item/clothing/glasses/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -21,6 +22,7 @@
 
 /obj/item/clothing/under/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -33,6 +35,7 @@
 
 /obj/item/clothing/suit/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	allowed = list(/obj/item/changeling)
 	item_flags = DROPDEL
 
@@ -47,6 +50,7 @@
 /obj/item/clothing/head/changeling
 	name = "flesh"
 	icon_state = null
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -59,6 +63,7 @@
 
 /obj/item/clothing/shoes/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -71,6 +76,7 @@
 
 /obj/item/clothing/gloves/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -83,6 +89,7 @@
 
 /obj/item/clothing/mask/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -95,6 +102,7 @@
 
 /obj/item/changeling
 	name = "flesh"
+	spawn_blacklisted = TRUE
 	slot_flags = ALL
 	item_flags = DROPDEL
 

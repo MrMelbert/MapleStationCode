@@ -7,6 +7,7 @@
 	article = "a pair of"
 	icon = 'icons/obj/clothing/under/shorts_pants_shirts.dmi'
 	worn_icon = 'icons/mob/clothing/under/shorts_pants_shirts.dmi'
+	abstract_type = /obj/item/clothing/under/pants
 	species_exception = list(/datum/species/golem)
 
 /obj/item/clothing/under/pants/slacks
