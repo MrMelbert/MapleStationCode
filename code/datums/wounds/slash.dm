@@ -14,7 +14,7 @@
 		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
 	return ..()
 
-/datum/wound/slash/get_self_check_description(self_aware, medical_skill, list/covering)
+/datum/wound/slash/get_self_check_description(self_aware, medical_skill, list/obj/item/covering)
 	if(!limb.can_bleed())
 		return ..()
 	if(limb.current_gauze)
@@ -25,7 +25,7 @@
 
 	for(var/obj/item/clothing/clothing as anything in covering)
 		if(clothing.clothing_flags & THICKMATERIAL)
-			return "Underneath [clothing] feels [severity > WOUND_SEVERITY_MODERATE ? "soaked" : "damp"] and warm - sweat or [blood_name]?"
+			return "Underneath your [clothing.name] feels [severity > WOUND_SEVERITY_MODERATE ? "soaked" : "damp"] and warm - sweat or [blood_name]?"
 
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
@@ -35,17 +35,17 @@
 
 		if(WOUND_SEVERITY_MODERATE)
 			if(length(covering) > 0)
-				return span_warning("[covering[1]] feels damp and warm.")
+				return span_warning("Your [covering[1].name] covering it feels damp and warm.")
 			return span_warning("It's leaking [blood_name] from a [shown_name].")
 
 		if(WOUND_SEVERITY_SEVERE)
 			if(length(covering) > 0)
-				return span_boldwarning("[covering[1]] is soaked with [blood_name]!")
+				return span_boldwarning("Your [covering[1].name] covering it is soaked with [blood_name]!")
 			return span_boldwarning("It's leaking [blood_name] from a serious [shown_name]!")
 
 		if(WOUND_SEVERITY_CRITICAL)
 			if(length(covering) > 0)
-				return span_boldwarning("[covering[1]] is heavily soaked with [blood_name]!!")
+				return span_boldwarning("Your [covering[1].name] covering it is heavily soaked with [blood_name]!!")
 			return span_boldwarning("It's leaking [blood_name] from a major [shown_name]!!")
 
 /datum/wound_pregen_data/flesh_slash
