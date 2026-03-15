@@ -25,26 +25,38 @@
 /datum/mood_event/chilly
 	description = "I'm feeling a bit chilly."
 	mood_change = -2
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/cold
 	description = "It's way too cold."
 	mood_change = -3
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/freezing
 	description = "It's freezing cold!"
 	mood_change = -6
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/warm
 	description = "I'm feeling a bit warm."
 	mood_change = -2
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/hot
 	description = "It's way too hot."
 	mood_change = -3
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/overhot
 	description = "It's scorching hot!"
 	mood_change = -6
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/creampie
 	description = "I've been creamed. Tastes like pie flavor."
@@ -209,6 +221,7 @@
 /datum/mood_event/jittery
 	description = "I'm nervous and on edge and I can't stand still!!"
 	mood_change = -2
+	screentext_cooldown = 2 MINUTES
 
 /datum/mood_event/jittery/add_effects(...)
 	if(HAS_PERSONALITY(owner, /datum/personality/paranoid))
@@ -220,14 +233,38 @@
 	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/vomit
-	description = "I just threw up. Gross."
+	description = "I just threw up. Gross..."
 	mood_change = -2
 	timeout = 2 MINUTES
+	/// Replaces the description with this + taste of blood if it was blood vomid
+	var/bloody_description = "I just threw up..."
+	/// Was it vomitting blood
+	var/was_bloody = FALSE
 
-/datum/mood_event/vomitself
-	description = "I just threw up all over myself. This is disgusting."
+/datum/mood_event/vomit/add_effects(blood = FALSE)
+	was_bloody = blood
+
+	var/datum/blood_type/owner_blood = owner.get_blood_type()
+	if(!was_bloody || isnull(owner_blood))
+		return // probably shouldn't happen but who knows
+
+	description = "[bloody_description] Why do I taste [owner_blood.reagent_type::taste_description]..?"
+	mood_change *= 2
+	timeout *= 1.5
+
+/datum/mood_event/vomit/be_refreshed(datum/mood/home, blood = FALSE)
+	if(!was_bloody && blood)
+		return ALLOW_NEW_MOOD // re-apply with new description
+	return ..() // normal refresh
+
+/datum/mood_event/vomit/self
+	description = "I just threw up all over myself. This is disgusting..."
+	bloody_description = "I just threw up all over myself..."
 	mood_change = -4
 	timeout = 3 MINUTES
+
+/datum/mood_event/vomit/self/be_replaced(datum/mood/home, datum/mood_event/new_event, blood)
+	return be_refreshed(home, blood) // vomit self won't be replaced with vomit other, just refreshed
 
 /datum/mood_event/painful_medicine
 	description = "Medicine may be good for me but right now it stings like hell."
@@ -602,113 +639,6 @@
 		description = "Blowing smoke in my face, really?"
 		mood_change = 0
 
-/datum/mood_event/see_death
-	description = "I just saw someone die. How horrible..."
-	mood_change = -8
-	timeout = 5 MINUTES
-	/// Message variant for callous people
-	var/dont_care_message = "Oh, %DEAD_MOB% died. Shame, I guess."
-	/// Message variant for people who care about animals
-	var/pet_message = "%DEAD_MOB% just died!!"
-	/// Message variant for desensitized people (security, medical, cult with halo, etc)
-	var/desensitized_message = "I saw %DEAD_MOB% die."
-	/// Standard message variant
-	var/normal_message = "I just saw %DEAD_MOB% die. How horrible..."
-	/// Naive mobs are immune to the effect
-	var/naive_immune = TRUE
-
-/datum/mood_event/see_death/add_effects(mob/dead_mob)
-	if(isnull(dead_mob))
-		return
-	if(HAS_TRAIT(owner, TRAIT_NAIVE) && naive_immune)
-		description = "Have a good nap, [dead_mob.name]."
-		mood_change = 0
-		timeout *= 0.2
-		return
-	if(HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB))
-		mood_change *= 0.25
-		timeout *= 0.2
-	if(istype(owner.mind?.assigned_role, /datum/job/bitrunning_glitch) || istype(owner.mind?.assigned_role, /datum/job/bit_avatar))
-		// Digital beings shouldn't care about death it's just gaming
-		mood_change *= -0.25
-		description = "Another one bites the dust!"
-		return
-	if(HAS_TRAIT(owner, TRAIT_CULT_HALO) && !HAS_TRAIT(dead_mob, TRAIT_CULT_HALO))
-		// When cultists get halos, they stop caring about death
-		mood_change *= -0.5
-		description = "More souls for the Geometer!"
-		return
-
-	var/ispet = istype(dead_mob, /mob/living/basic/pet) || ismonkey(dead_mob)
-	if(HAS_PERSONALITY(owner, /datum/personality/callous) || (ispet && HAS_PERSONALITY(owner, /datum/personality/animal_disliker)))
-		description = replacetext(dont_care_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-		mood_change = 0
-		timeout *= 0.5
-		return
-	// future todo : make the hop care about ian, cmo runtime, etc.
-	if(ispet)
-		description = replacetext(pet_message, "%DEAD_MOB%", capitalize(dead_mob.name)) // doesn't use a descriptor, so it says "Ian died"
-		if(HAS_PERSONALITY(owner, /datum/personality/animal_friend))
-			mood_change *= 1.5
-			timeout *= 1.25
-		else if(!HAS_PERSONALITY(owner, /datum/personality/compassionate))
-			mood_change *= 0.25
-			timeout *= 0.5
-		return
-	if(HAS_PERSONALITY(owner, /datum/personality/compassionate))
-		mood_change *= 1.5
-		timeout *= 1.5
-	if(HAS_TRAIT(owner, TRAIT_DESENSITIZED))
-		mood_change *= 0.5
-		timeout *= 0.5
-		description = replacetext(desensitized_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-		return
-
-	description = replacetext(normal_message, "%DEAD_MOB%", get_descriptor(dead_mob))
-
-/datum/mood_event/see_death/be_refreshed(datum/mood/home, mob/dead_mob, ...)
-	// Every time we get refreshed we get worse if not desensitized
-	if(!HAS_TRAIT(owner, TRAIT_DESENSITIZED) && !HAS_TRAIT(dead_mob, TRAIT_SPAWNED_MOB))
-		mood_change *= 1.5
-	return ..()
-
-/datum/mood_event/see_death/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
-	// Only be replaced if the incoming event's base mood is worse than our base mood
-	// (IE: replace normal death events with gib events, but not the other way around)
-	if(initial(new_event.mood_change) > initial(mood_change))
-		new_event.mood_change = max(new_event.mood_change, mood_change * 1.5)
-		return ..()
-	// Otherwise if it's equivalent or worse, refresh it instead
-	return be_refreshed(home)
-
-/// Changes "I saw Joe x" to "I saw the engineer x"
-/datum/mood_event/see_death/proc/get_descriptor(mob/dead_mob)
-	if(isnull(dead_mob))
-		return "something"
-	if(dead_mob.name != "Unknown" && dead_mob.mind?.assigned_role?.job_flags & JOB_CREW_MEMBER)
-		return "the [LOWER_TEXT(dead_mob.mind?.assigned_role.title)]"
-	return "someone"
-
-/datum/mood_event/see_death/gibbed
-	description = "Someone just exploded in front of me!!"
-	mood_change = -12
-	timeout = 10 MINUTES
-	dont_care_message = "Oh, %DEAD_MOB% exploded. Now I have to get the mop."
-	pet_message = "%DEAD_MOB% just exploded!!"
-	desensitized_message = "I saw %DEAD_MOB% explode."
-	normal_message = "%DEAD_MOB% just exploded in front of me!!"
-	naive_immune = FALSE
-
-/datum/mood_event/see_death/dusted
-	description = "Someone was just vaporized in front of me!! I don't feel so good..."
-	mood_change = -12
-	timeout = 10 MINUTES
-	dont_care_message = "Oh, %DEAD_MOB% was vaporized. Now I have to get the dustpan."
-	pet_message = "%DEAD_MOB% just vaporized!!"
-	desensitized_message = "I saw %DEAD_MOB% get vaporized."
-	normal_message = "%DEAD_MOB% was just vaporized in front of me!!"
-	naive_immune = FALSE
-
 /datum/mood_event/slots/loss
 	description = "Aww dang it!"
 	mood_change = -2
@@ -741,11 +671,13 @@
 	description = "I'm alone with someone - what if they want to kill me?"
 	mood_change = -3
 	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/paranoid/large_group
 	description = "There are so many people around - any one of them could be out to get me!"
 	mood_change = -3
 	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/nt_disillusioned
 	description = "I hate the company, and everything it stands for."
@@ -764,6 +696,7 @@
 /datum/mood_event/slacking_off_diligent
 	description = "I should get back to work."
 	mood_change = -1
+	screentext_cooldown = 10 MINUTES
 
 /datum/mood_event/unimaginative_patronage
 	description = "That felt like a waste of money."
@@ -784,6 +717,7 @@
 	description = "Eugh, I just got coated in blood!"
 	mood_change = -4
 	timeout = 4 MINUTES
+	screentext_cooldown = 1 MINUTES
 
 /datum/mood_event/splattered_with_blood/can_effect_mob(datum/mood/home, mob/living/who, ...)
 	if(isvampire(who))

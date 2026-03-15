@@ -137,7 +137,7 @@
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(SPT_PROB(2.5, seconds_per_tick))
 		to_chat(affected_mob, span_notice("[high_message]"))
-	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy)
+	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic/heavy)
 	if(current_cycle == 36 && creation_purity <= 0.6)
 		if(!istype(affected_mob.dna.species, /datum/species/human/krokodil_addict))
 			to_chat(affected_mob, span_userdanger("Your skin falls off easily!"))

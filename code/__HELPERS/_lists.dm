@@ -50,6 +50,8 @@
 
 ///Initialize the lazylist
 #define LAZYINITLIST(L) if (!L) { L = list(); }
+///Initialize the lazylist and set it lengths if the list was not already initialized - does not change the length of existing lists
+#define LAZYINITLISTLEN(L, V) if (!L) { L = list(); L.len = V; }
 ///If the provided list is empty, set it to null
 #define UNSETEMPTY(L) if (L && !length(L)) L = null
 ///If the provided key -> list is empty, remove it from the list

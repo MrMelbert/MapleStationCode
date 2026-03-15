@@ -1,65 +1,83 @@
 //nutrition
 /datum/mood_event/fat
-	description = "<B>I'm so fat...</B>" //muh fatshaming
+	description = "I'm so fat..."
 	mood_change = -6
+	screentext_id = "hunger"
 
 /datum/mood_event/too_wellfed
 	description = "I think I've eaten too much."
 	mood_change = 0
+	screentext_id = "hunger"
 
 /datum/mood_event/wellfed
 	description = "I'm stuffed!"
 	mood_change = 8
+	screentext_id = "hunger"
 
 /datum/mood_event/fed
 	description = "I have recently had some food."
 	mood_change = 5
+	screentext_id = "hunger"
 
 /datum/mood_event/hungry
 	description = "I'm getting a bit hungry."
 	mood_change = -3
+	screentext_id = "hunger"
 
 /datum/mood_event/hungry_very
 	description = "I'm hungry!"
 	mood_change = -6
+	screentext_id = "hunger"
 
 /datum/mood_event/starving
 	description = "I'm starving!"
 	mood_change = -10
+	screentext_id = "hunger"
 
 //charge
 /datum/mood_event/supercharged
 	description = "I can't possibly keep all this power inside, I need to release some quick!"
 	mood_change = -10
+	screentext_id = "hunger"
 
 /datum/mood_event/overcharged
 	description = "I feel dangerously overcharged, perhaps I should release some power."
 	mood_change = -4
+	screentext_id = "hunger"
 
 /datum/mood_event/charged
 	description = "I feel the power in my veins!"
 	mood_change = 6
+	screentext_id = "hunger"
 
 /datum/mood_event/lowpower
 	description = "My power is running low, I should go charge up somewhere."
 	mood_change = -6
+	screentext_id = "hunger"
 
 /datum/mood_event/decharged
 	description = "I'm in desperate need of some electricity!"
 	mood_change = -10
+	screentext_id = "hunger"
 
 //Disgust
 /datum/mood_event/gross
-	description = "I saw something gross."
+	description = "I don't feel so good..."
 	mood_change = -4
+	screentext_color = COLOR_OLIVE
+	screentext_id = "disgust"
 
 /datum/mood_event/verygross
-	description = "I think I'm going to puke..."
+	description = "I think I'm going to puke..!"
 	mood_change = -6
+	screentext_color = COLOR_OLIVE
+	screentext_id = "disgust"
 
 /datum/mood_event/disgusted
-	description = "Oh god, that's disgusting..."
+	description = "I definitely going to puke!"
 	mood_change = -8
+	screentext_color = COLOR_OLIVE
+	screentext_id = "disgust"
 
 /datum/mood_event/disgust/dirty_food
 	description = "That was too dirty to eat..."

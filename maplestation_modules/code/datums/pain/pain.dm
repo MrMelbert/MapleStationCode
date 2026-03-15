@@ -306,7 +306,7 @@
  */
 /datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, dam_type)
 	affected_part.on_gain_pain_effects(amount, dam_type)
-	refresh_pain_attributes()
+	addtimer(CALLBACK(src, PROC_REF(refresh_pain_attributes)), 1, TIMER_UNIQUE)
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 	if(amount > 20)
@@ -329,7 +329,7 @@
  */
 /datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount, type)
 	affected_part.on_lose_pain_effects(amount)
-	refresh_pain_attributes()
+	addtimer(CALLBACK(src, PROC_REF(refresh_pain_attributes)), 1, TIMER_UNIQUE)
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount, type)
 
 /// Hooks into [apply_damage] to apply pain to the parent based on incoming damage.
@@ -612,25 +612,25 @@
 			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/light)
 		if(75 to 125)
 			parent.add_surgery_speed_mod(PAIN, 1.25)
 			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
-		if(125 to 175)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/medium)
+		if(125 to 200)
 			parent.add_surgery_speed_mod(PAIN, 1.4)
 			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
-		if(225 to INFINITY)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/heavy)
+		if(200 to INFINITY)
 			parent.add_surgery_speed_mod(PAIN, 1.5)
 			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			parent.add_mood_event(PAIN, /datum/mood_event/crippling_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/crippling)
 
 /**
  * Run a pain related emote, if a few checks are successful.

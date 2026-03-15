@@ -550,7 +550,12 @@
 	if(L.body_zone == BODY_ZONE_HEAD)
 		occur_text = "splits open, exposing a bare, cracked skull through the flesh and blood"
 		examine_desc = "has an unsettling indent, with bits of skull poking out"
+	return ..()
+
+/datum/wound/blunt/bone/critical/set_victim(new_victim)
+	victim?.clear_mood_event("compound_fracture")
 	. = ..()
+	victim?.add_mood_event("compound_fracture", /datum/mood_event/compound_fracture)
 
 /// if someone is using bone gel on our wound
 /datum/wound/blunt/bone/proc/gel(obj/item/stack/medical/bone_gel/I, mob/user)
