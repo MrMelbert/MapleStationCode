@@ -18,11 +18,13 @@
 	// However, drinking with painkillers is toxic.
 	var/highest_boozepwr = 0
 	for(var/datum/reagent/consumable/ethanol/alcohol in M.reagents.reagent_list)
-		if(alcohol.boozepwr > highest_boozepwr)
-			highest_boozepwr = alcohol.boozepwr
+		highest_boozepwr = max(highest_boozepwr, alcohol.boozepwr)
 
 	if(highest_boozepwr > 0)
-		M.apply_damage(round(highest_boozepwr / 33, 0.5) * REM * seconds_per_tick, TOX)
+		if(SPT_PROB(highest_boozepwr / 25, seconds_per_tick))
+			to_chat(M, span_warning("You feel sick."))
+			M.losebreath += 1
+		M.apply_damage(round(highest_boozepwr / 40, 0.5) * REM * seconds_per_tick, TOX)
 		. = TRUE
 
 // Morphine is the well known existing painkiller.
@@ -45,9 +47,11 @@
 /datum/reagent/medicine/painkiller/morphine/on_mob_metabolize(mob/living/L)
 	. = ..()
 	L.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+	ADD_TRAIT(L, TRAIT_HEART_RATE_SLOW, type)
 
 /datum/reagent/medicine/painkiller/morphine/on_mob_end_metabolize(mob/living/L)
 	L.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+	REMOVE_TRAIT(L, TRAIT_HEART_RATE_SLOW, type)
 	return ..()
 
 /datum/reagent/medicine/painkiller/morphine/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
@@ -266,7 +270,7 @@
 // Oxycodone. Very addictive, heals pain very fast, also a drug.
 /datum/reagent/medicine/painkiller/oxycodone
 	name = "Oxycodone"
-	description = "A drug that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
+	description = "A painkiller that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
 	reagent_state = LIQUID
 	color = "#ffcb86"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
@@ -286,8 +290,18 @@
 	if(SPT_PROB(33, seconds_per_tick))
 		M.adjust_dizzy_up_to(2 SECONDS * REM * seconds_per_tick, 10 SECONDS)
 
+	if(current_cycle > 5)
+		ADD_TRAIT(M, TRAIT_HEART_RATE_SLOW, "[type]_low")
+	if(current_cycle > 20)
+		ADD_TRAIT(M, TRAIT_HEART_RATE_SLOW, "[type]_med")
+
 	..()
 	return TRUE
+
+/datum/reagent/medicine/painkiller/oxycodone/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_med")
 
 /datum/reagent/medicine/painkiller/oxycodone/overdose_process(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()

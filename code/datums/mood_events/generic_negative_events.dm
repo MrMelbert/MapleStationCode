@@ -268,7 +268,7 @@
 
 /datum/mood_event/painful_medicine
 	description = "Medicine may be good for me but right now it stings like hell."
-	mood_change = -5
+	mood_change = -3
 	timeout = 60 SECONDS
 	event_flags = MOOD_EVENT_PAIN
 
