@@ -176,8 +176,16 @@
 	///effectiveness prob. is modified negatively by this amount; positive numbers make it more difficult, negative ones make it easier
 	var/butcher_difficulty = 0
 
-	///how much blood the mob has
+	/// How much blood the mob has.
+	/// If initially 0, the mob gains TRAIT_NOBLOOD permanently.
 	var/blood_volume = 0
+	/// What blood type do we set on init.
+	/// This can be set even on mobs that don't mechanically have blood,
+	/// allowing them to create blood decals to sell the illusion of them really having blood.
+	var/initial_blood_type = null
+	/// Blood type singleton this mob currently has.
+	/// If null, the mob doesn't have blood.
+	VAR_FINAL/datum/blood_type/blood_type = null
 
 	///a list of all status effects the mob has
 	var/list/status_effects

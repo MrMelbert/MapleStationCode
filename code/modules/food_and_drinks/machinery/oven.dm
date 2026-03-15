@@ -90,7 +90,7 @@
 		baked_item.fire_act(1000) //Hot hot hot!
 
 		if(SPT_PROB(10, seconds_per_tick))
-			new /obj/effect/abstract/smell/oven/bad(loc)
+			new /obj/effect/abstract/smell/oven/bad(src)
 
 	set_smoke_state(worst_cooked_food_state)
 	update_appearance()

@@ -74,7 +74,7 @@
 				if(!infection.bypasses_immunity)
 					infection.cure(add_resistance = FALSE)
 
-	var/datum/blood_type/blood = exposed_mob.get_blood_type()
+	var/datum/blood_type/blood = exposed_mob.blood_type
 	if(blood?.reagent_type == type && ((methods & INJECT) || ((methods & INGEST) && HAS_TRAIT(exposed_mob, TRAIT_DRINKS_BLOOD))))
 		if(data["blood_type"] in blood.compatible_types)
 			exposed_mob.blood_volume = min(exposed_mob.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)
@@ -1015,7 +1015,7 @@
 /datum/reagent/potassium
 	name = "Potassium"
 	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water. \
-		Often used medicinally to treat low blood pressure, but can be dangerous in high doses."
+		Often used medicinally to treat high blood pressure, but can be dangerous in high doses."
 	reagent_state = SOLID
 	color = "#A0A0A0" // rgb: 160, 160, 160
 	taste_description = "sweetness"
@@ -1024,14 +1024,14 @@
 /datum/reagent/potassium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(volume > 10)
-		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
 	if(volume > 20)
-		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/potassium/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/mercury
 	name = "Mercury"
@@ -1364,17 +1364,6 @@
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
 	exposed_obj.wash(clean_types)
-	if(QDELETED(exposed_obj))
-		return
-	exposed_obj.AddComponent( \
-		/datum/component/complex_smell, \
-		duration = smell_type::duration, \
-		smell = smell_type::smell, \
-		intensity = smell_type::intensity * (reac_volume / 5), \
-		radius = 1, \
-		category = smell_type::category, \
-		fade_intensity_over_time = TRUE, \
-	)
 
 /datum/reagent/space_cleaner/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -1399,15 +1388,7 @@
 	exposed_mob.wash(clean_types)
 	if(QDELETED(exposed_mob))
 		return
-	exposed_mob.AddComponent( \
-		/datum/component/complex_smell, \
-		duration = smell_type::duration, \
-		smell = smell_type::smell, \
-		intensity = smell_type::intensity * (reac_volume / 5), \
-		radius = 1, \
-		category = smell_type::category, \
-		fade_intensity_over_time = TRUE, \
-	)
+	new smell_type(exposed_mob, reac_volume)
 
 /datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.3

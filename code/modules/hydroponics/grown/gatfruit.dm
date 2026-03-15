@@ -7,7 +7,7 @@
 	species = "gatfruit"
 	plantname = "Gatfruit Tree"
 	product = /obj/item/food/grown/shell/gatfruit
-	genes = list(/datum/plant_gene/trait/repeated_harvest)
+	genes = list(/datum/plant_gene/trait/repeated_harvest, /datum/plant_gene/trait/scent/sulfur)
 	lifespan = 20
 	endurance = 20
 	maturation = 40

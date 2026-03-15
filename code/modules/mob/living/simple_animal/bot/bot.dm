@@ -28,6 +28,7 @@
 	light_power = 0.6
 	del_on_death = TRUE
 	interaction_flags_click = ALLOW_SILICON_REACH
+	initial_blood_type = /datum/blood_type/oil
 
 	///Will other (noncommissioned) bots salute this bot?
 	var/commissioned = FALSE

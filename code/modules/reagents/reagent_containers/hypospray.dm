@@ -33,6 +33,8 @@
 		return FALSE
 	if(!iscarbon(affected_mob))
 		return FALSE
+	if(!pre_inject(affected_mob, user))
+		return FALSE
 
 	//Always log attemped injects for admins
 	var/list/injected = list()
@@ -61,6 +63,17 @@
 		return TRUE
 	return FALSE
 
+/obj/item/reagent_containers/hypospray/proc/pre_inject(mob/living/affected_mob, mob/user)
+	if(user.stat >= SOFT_CRIT)
+		user.visible_message(
+			span_warning("[user] struggles to inject [src] into [affected_mob == user ? user.p_themselves() : affected_mob]..."),
+			span_warning("You struggle with the cap of [src], trying to inject [affected_mob == user ? "yourself" : affected_mob]..."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		if(!do_after(user, 2.5 SECONDS, affected_mob))
+			return FALSE
+	return TRUE
 
 /obj/item/reagent_containers/hypospray/cmo
 	volume = 60
@@ -263,18 +276,18 @@
 	amount_per_transfer_from_this = 30
 	list_reagents = list( /datum/reagent/medicine/epinephrine = 8, /datum/reagent/medicine/c2/aiuri = 8, /datum/reagent/medicine/c2/libital = 8, /datum/reagent/medicine/leporazine = 6)
 
-/obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
+/obj/item/reagent_containers/hypospray/medipen/survival/pre_inject(mob/living/affected_mob, mob/user)
 	if(lavaland_equipment_pressure_check(get_turf(user)))
 		amount_per_transfer_from_this = initial(amount_per_transfer_from_this)
 		return ..()
 
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_SURVIVALPEN))
 		to_chat(user,span_notice("You are too busy to use \the [src]!"))
-		return
+		return FALSE
 
 	to_chat(user,span_notice("You start manually releasing the low-pressure gauge..."))
 	if(!do_after(user, 10 SECONDS, affected_mob, interaction_key = DOAFTER_SOURCE_SURVIVALPEN))
-		return
+		return FALSE
 
 	amount_per_transfer_from_this = initial(amount_per_transfer_from_this) * 0.5
 	return ..()

@@ -268,7 +268,7 @@
 		trauma_desc += capitalize(trauma.scan_desc)
 		LAZYADD(trauma_text, trauma_desc)
 	if(LAZYLEN(trauma_text))
-		return "Mental trauma: [english_list(trauma_text, and_text = ", and ")]."
+		return span_alert("Mental trauma: [english_list(trauma_text, and_text = ", and ")].")
 
 /obj/item/organ/brain/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)

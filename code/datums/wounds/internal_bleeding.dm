@@ -81,7 +81,7 @@
 		if(QDELETED(src))
 			return
 
-	if(SPT_PROB(1, seconds_per_tick))
+	if(SPT_PROB(1, seconds_per_tick) && victim.has_blood())
 		to_chat(victim, span_notice("You can taste [LOWER_TEXT(victim.get_blood_name())]."))
 
 	switch(limb.body_zone)
