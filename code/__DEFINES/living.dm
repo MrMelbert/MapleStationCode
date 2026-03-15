@@ -64,7 +64,7 @@
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan")
 
 /// Amount of pain gained (to chest) from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 90
+#define PAIN_LIMB_DISMEMBERED 120
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
