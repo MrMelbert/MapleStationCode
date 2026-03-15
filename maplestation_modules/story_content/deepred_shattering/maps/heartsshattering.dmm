@@ -1,0 +1,89 @@
+"a" = (/turf/template_noop,/area/template_noop)
+"b" = (/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"c" = (/turf/open/mirage{range = 2; target_turf_y = 4; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"d" = (/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"e" = (/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"f" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = -1; teleport_x_offset = 13},/turf/open/mirage{layer = 3; target_turf_x = 13; dir = 1; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"h" = (/turf/closed/indestructible/binary{desc = "Something terrible has happened here."},/area/ruin/unpowered/hearts)
+"j" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"k" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"l" = (/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"o" = (/obj/structure/redtech_indestructable/heatsink_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"q" = (/obj/effect/step_trigger/teleporter/offset{teleport_x_offset = -38},/turf/open/mirage{dir = 4; layer = 3; target_turf_x = -37; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"r" = (/turf/open/lava/smooth/lava_land_surface,/area/ruin/unpowered/hearts)
+"s" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = 24},/turf/open/mirage{target_turf_y = 23; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"t" = (/turf/open/mirage{dir = 4; range = 2; target_turf_x = -4; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"v" = (/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"w" = (/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"x" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"z" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"C" = (/obj/structure/redtech_indestructable/singularity_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"E" = (/obj/structure/redtech_indestructable/dimensional_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"F" = (/turf/open/misc/asteroid/basalt/lava_land_surface,/area/ruin/unpowered/hearts)
+"G" = (/obj/effect/step_trigger/thrower{direction = 1},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"H" = (/turf/open/mirage{dir = 8; range = 2; target_turf_x = 4; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"I" = (/obj/effect/step_trigger/teleporter/offset{teleport_x_offset = 38},/turf/open/mirage{dir = 8; layer = 3; target_turf_x = 37; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"J" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"K" = (/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"M" = (/turf/closed/indestructible/redtech{layer = 1.9; plane = -6; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"N" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = 1; teleport_x_offset = -13},/turf/open/mirage{layer = 3; target_turf_x = -13; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"O" = (/obj/effect/step_trigger/thrower{direction = 8},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"Q" = (/obj/effect/step_trigger/teleporter/offset{teleport_y_offset = -24},/turf/open/mirage{dir = 1; target_turf_y = -23; layer = 3; initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"R" = (/turf/closed/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"U" = (/obj/effect/step_trigger/thrower{direction = 4},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive/special/hearts,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+"Y" = (/obj/effect/spawner/random/environmentally_safe_anomaly/immobile,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/hearts)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaFjjFFFjjFaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaFYFFFjjjjJjjFjjjjFaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaFjFFFFFFFFFFFFFFjbjjFjFaaaaaaaaaaaaaa
+aaaaaaaaaaaaaFFjFFhhhhFFhFFFFFFFFFFjjFFaaaaaaaaaaaa
+aaaaaaaaaaaajFFFFFhFFFFehRReFFFRRjFFFFFFaaaaaaaaaaa
+aaaaaaaaaajjjFFFjFFFhhFRhjjRFFFjjwjjFFFjjFaaaaaaaaa
+aaaaaaaaajjjFFFjjFFFFhhhhhhhhhFFRRRjFjFFJFFFaaaaaaa
+aaaaaaaajjJFFFFbEvFFFhFhhwjFhFFFFFRRFdFFjFjFaaaaaaa
+aaaaaaajjFFFFFjjJjFFFFFFhxFFFFYFjFFFFjjFFFjjFaaaaaa
+aaaaaaFjjFFYFFFFFjjFhhhFhFFelFFFxRFFFFFFFFjFFaaaaaa
+aaFjFFjFjFFFFFRRFFFFFFFFFFFFFFFFjjFFRRRxFFFFFFaaaaa
+aFFFFFFFFFMMFFFRjFFRjFFjwkRRFFFjjjFFjjjjFFFFFjaaaaa
+aFjwjxFRRRffRRFjEjFdjFReejejjRFvEjFjjjFFFFRRFJjaaaa
+aFjjjxFREoeeCRFljFFjFFRNNRRRRRFjCjFjEbFYFFjRFjFFaaa
+aFFFjjFRRoeeevFjFFFFFFFMMFFFFFFjjjFjjjFFFjERFFFjaaa
+aaFFFFFFRoJjjjFFFFYFjjFFFFFFFFFFFFFFFFFjjjvRFjFjaaa
+aajjFjFFFFFFFFFFjFFFFFFMMRRRFFFFFxvFFFFFFFFFFjFjjaa
+aaFjFjFRRRFjRRRFJFFRRFFFFFFFFFRRFFFFRdRRRRFYFjFJFFa
+aaFFFFFjJjFFdEKFFFRRFFeMMMMReFFRRFjKRjzzzRFFFjFjjFa
+aFFjjFvlkjjFjvFFjFRFFeRMQQQRReFFRFjJRelllRFjdxFFFFa
+ajFFxFRRRRjFjRFxwFFFeRRMeeeRRReFFFFjRezzzRFFRRFYFFa
+ajjFFFFFFFFFFFFFFFFeRRCozezoCRReFFFvReoRRRFFFFFFFja
+ajjFFeRRFFFjbRFFFRFRRRoeeeeeoRRRFRFFReRRFFFRReFFjja
+aFjFFMIeeFFFjjFjFRFMHUeekEkeeOtMFRFFjeRFFFeeqMFFjja
+ajjFFMIeeeFFFjFjFRFMHUezEVEzeOtMFRFFFFFFFeeeqMFFjja
+ajjFFMIeeFFYFFFJFRFMHUeekekeeOtMFRFFFjhFFFeeqMFFjja
+ajJFFeRRFFFFFFFFFRFRRRoeeeeeoRRRFRFFhjhhFFFRReFFbja
+ajjFFFFFFYFFhFFFFFFeRRCoeeeoCRReFFFFhjjhjFFFFFFFjja
+ajjFjjwjFFFhhFFjFFFFeRRRGGGRRReFFFFFjbhhjjFFjjFFjja
+aFjFFRRxFFhhjFjjFFRFFeRRcccRReFFRFFhhjhhhjhFFdFjjaa
+aFjjFFFFFhhjFFjbjFRRFFeRMMMReFFRRFFFhhhhhhhhFFFJjaa
+aaFjFYFhFhjFFjJElFFRRFFFFFFFFFRRFFjFFjjhjvjjFjFjjaa
+aaFFFFFhFFFFjjFjjFFFFFFRRRRRFFrFFFJxFFhhhjhFFjFFFaa
+aaaFjFFFFhFFFFFFFFFjFYFFFFFrrrrFFFFFFFFFFFFFFFFFFaa
+aaajjFFFFFFFFFjdFFhjFFFRRRRereRRRFFjjjFFFjwRRFjjaaa
+aaaajjFvdjFRjFlRFjhjhFFKerrrrrrrRRFdEwjRFFlRFFjaaaa
+aaaajjFFjFFRJFjxFjhjvFFerrrrrrrrrRFjJjjjFjxFFjjaaaa
+aaaaaFFFFFFRbFFFFjhhjFFrrrrrrrrrRRFFFFFFFFFFFFaaaaa
+aaaaaFjlFFFRjjjFjhhhhFFRRRereRRRRFFFFjjjFYFwjaaaaaa
+aaaaaajjjFFFFFFFFjhjhFFFFFrrrFFFFFjFFFFFFFFjjaaaaaa
+aaaaaaajFFFFFjFjFhhjFFYFFeFFrrrFYFbRxFYFFFjjaaaaaaa
+aaaaaaaaFjjFFjwjFFhjFFFFeeeFFFFFFFjjjFFFJjjaaaaaaaa
+aaaaaaaaajjjFFRjFFFFFFFReeeRFFFjjFFFFFFjjjaaaaaaaaa
+aaaaaaaaaaajjFFjFjjxFjFRsssRFjjbFFYFFFjjjaaaaaaaaaa
+aaaaaaaaaaaajjFFFFFjFdFeMMMeFFjRFFFFjFFFaaaaaaaaaaa
+aaaaaaaaaaaaajFjjFFFFFFFFFFFFFjFFFjjjjaaaaaaaaaaaaa
+aaaaaaaaaaaaaaajjjjJwFFFFFYFFFFFJjjjaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaajjjjjjjjFFFjjjjjjaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaFFFjjjjjjFFjFFaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"}

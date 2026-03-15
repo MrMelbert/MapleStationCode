@@ -1,0 +1,51 @@
+"a" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"d" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"e" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"f" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"h" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/obj/item/stock_parts/micro_laser/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"m" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/power_store/cell/redtech/empty,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"p" = (/turf/template_noop,/area/template_noop)
+"s" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"u" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"w" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"A" = (/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"B" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"D" = (/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"F" = (/obj/structure/redtech_indestructable/industrial_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"I" = (/turf/closed/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"J" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"L" = (/obj/structure/redtech_indestructable/singularity_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"M" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"O" = (/turf/template_noop,/area/ruin/space/unpowered/redgeneric)
+"Q" = (/obj/structure/redtech_indestructable/server_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"R" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"S" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/matter_bin/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"U" = (/obj/item/stack/sheet/mineral/aerialite,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"V" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"Y" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+
+(1,1,1) = {"
+OOOOOppppppppppOOOOOppppp
+OOOOOOOOOOOOOOOOOOOOOOOOp
+OOaOOOOOOOOOOOOOOuOOOOOOp
+OOOOOOOIBOOOOOsaOOOOOaOOp
+OOOOaOOOOOOOOIIOOOOOOOOOO
+OOOOOOOOOOaOOOOOOOOOOOOOO
+OOaOOOOOOOOOOIRaOVOOOOaOO
+OOOOOaaOIIOOOIOOOIhOOOOOO
+OOOOOaOOMIOOOVaOAIIsOOaOO
+OOOOOOOOIIVOOOaOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOaOOOO
+ORIOOOaOIIIIIIIIIOOVIOOOp
+OOaOaOOOIFeFQLfYVOOOUaOOp
+OOOOOOOOIadADAdDaaOOOaOOp
+pOOOOOOOIFeFamLLQVOOOOOOp
+pOOasOOOIIIIIIIIIIOOaOOOp
+pOOOOOOOOOOOOOOOOOOSaOOOp
+pOOOOOOOaOOaaaOOOORsaOOOp
+ppOOOOaOOOIwOOOOOuQQIIOOp
+ppOOOOOOaOIJIOOOOQIIIOOOp
+ppOOsuOOOOOuOOOOIIIOOOOOp
+ppOOOOOOOOOsOOOOOOOOOOOOp
+ppOOOOOOpOOOOOOOOOOOOpppp
+"}

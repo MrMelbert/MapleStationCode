@@ -1,0 +1,420 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/item/stack/sheet/mineral/plastitanium,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"e" = (
+/obj/structure/frame/machine/secured,
+/obj/item/stock_parts/matter_bin/redtech,
+/obj/item/stock_parts/micro_laser/redtech,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"f" = (
+/obj/structure/redtech_indestructable/power_off,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"h" = (
+/obj/structure/frame/machine/secured,
+/obj/item/stock_parts/capacitor/redtech,
+/obj/item/stock_parts/matter_bin/redtech,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"i" = (
+/turf/open/indestructible/redtech/alt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"m" = (
+/obj/structure/redtech_indestructable/heatsink_off,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"r" = (
+/obj/structure/frame/machine/secured,
+/obj/item/stock_parts/capacitor/redtech,
+/obj/item/stock_parts/micro_laser/redtech,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"t" = (
+/turf/closed/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"v" = (
+/obj/item/stack/sheet/mineral/aerialite,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"z" = (
+/obj/structure/frame/machine/secured,
+/obj/item/stock_parts/scanning_module/redtech,
+/obj/item/stock_parts/servo/redtech,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"B" = (
+/obj/item/stack/sheet/mineral/resmythril,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"C" = (
+/obj/item/stock_parts/power_store/cell/redtech/empty,
+/obj/structure/frame/machine/secured,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"E" = (
+/obj/structure/frame/machine/secured,
+/obj/item/rtechdrive,
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"J" = (
+/obj/item/stack/sheet/mineral/resmythril,
+/turf/open/indestructible/redtech/altalt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"M" = (
+/turf/open/indestructible/redtech{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"P" = (
+/obj/item/stack/sheet/mineral/plastitanium,
+/turf/open/indestructible/redtech/altalt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"Q" = (
+/obj/item/stack/sheet/mineral/plastitanium,
+/turf/open/indestructible/redtech/alt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"S" = (
+/turf/open/lava/smooth/lava_land_surface,
+/area/ruin/unpowered/redgeneric)
+"T" = (
+/obj/item/stack/sheet/mineral/aerialite,
+/turf/open/indestructible/redtech/alt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"W" = (
+/turf/open/indestructible/redtech/altalt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
+"X" = (
+/turf/template_noop,
+/area/template_noop)
+"Z" = (
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/ruin/unpowered/redgeneric)
+
+(1,1,1) = {"
+X
+Z
+P
+J
+Z
+X
+Z
+a
+Z
+Z
+a
+v
+Z
+Q
+a
+"}
+(2,1,1) = {"
+X
+Z
+Z
+Z
+Z
+X
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+a
+"}
+(3,1,1) = {"
+X
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+a
+"}
+(4,1,1) = {"
+Z
+Z
+Z
+a
+t
+t
+Z
+Z
+Z
+Z
+t
+t
+E
+Z
+Z
+"}
+(5,1,1) = {"
+a
+Z
+t
+W
+W
+W
+v
+Z
+f
+Z
+t
+f
+W
+a
+Z
+"}
+(6,1,1) = {"
+Q
+Z
+i
+i
+S
+M
+t
+Z
+t
+Z
+t
+z
+M
+a
+Z
+"}
+(7,1,1) = {"
+T
+Z
+M
+S
+S
+m
+t
+Z
+e
+Z
+t
+i
+M
+t
+X
+"}
+(8,1,1) = {"
+P
+Z
+a
+S
+S
+h
+t
+Z
+Z
+Z
+t
+i
+m
+t
+X
+"}
+(9,1,1) = {"
+a
+Z
+a
+S
+S
+i
+i
+Z
+a
+Z
+a
+M
+m
+t
+X
+"}
+(10,1,1) = {"
+a
+Z
+a
+S
+S
+S
+v
+Z
+Z
+Z
+m
+M
+r
+t
+X
+"}
+(11,1,1) = {"
+Z
+Z
+B
+S
+S
+S
+a
+Z
+Z
+Z
+z
+W
+m
+t
+Z
+"}
+(12,1,1) = {"
+X
+Z
+v
+S
+S
+S
+P
+Z
+Z
+Z
+m
+P
+t
+t
+Z
+"}
+(13,1,1) = {"
+Z
+Z
+T
+S
+S
+S
+v
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+Z
+"}
+(14,1,1) = {"
+S
+Z
+Q
+t
+S
+S
+P
+S
+Z
+P
+Z
+Z
+Z
+Z
+B
+"}
+(15,1,1) = {"
+S
+S
+Q
+C
+S
+S
+a
+S
+Z
+Z
+Z
+T
+Q
+a
+a
+"}
+(16,1,1) = {"
+a
+S
+S
+S
+S
+S
+S
+S
+S
+Z
+Z
+a
+X
+X
+X
+"}
+(17,1,1) = {"
+a
+P
+B
+S
+S
+S
+J
+a
+S
+S
+S
+a
+X
+X
+X
+"}
