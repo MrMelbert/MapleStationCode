@@ -19,7 +19,7 @@
 // Medkit variant that can be printed from a lathe, not actually a medkit subtype to disallow making medibots, c'est la vie
 /obj/item/storage/plastic_medkit
 	name = "plastic medkit"
-	desc = "A printable plastic medkit.
+	desc = "A printable plastic medkit."
 	icon = 'maplestation_modules/icons/obj/storage/medkit.dmi'
 	icon_state = "medkit_plastic"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/medical_lefthand.dmi'
