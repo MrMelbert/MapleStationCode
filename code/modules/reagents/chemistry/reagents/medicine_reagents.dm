@@ -317,7 +317,7 @@
 
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	var/datum/blood_type/affected_blood = affected_mob.get_blood_type()
+	var/datum/blood_type/affected_blood = affected_mob.blood_type
 	if(affected_blood?.salgu_compatible)
 		if(last_added)
 			affected_mob.blood_volume -= last_added

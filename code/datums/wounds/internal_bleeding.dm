@@ -107,7 +107,7 @@
 			if(IS_ROBOTIC_LIMB(limb))
 				if(SPT_PROB(2, seconds_per_tick))
 					if(!victim.is_blind())
-						to_chat(victim, span_warning("[victim.get_blood_type()] pools up in your visual sensors, obscuring your vision."))
+						to_chat(victim, span_warning("[victim.blood_type.reagent_type::name] pools up in your visual sensors, obscuring your vision."))
 					victim.adjust_eye_blur(3 SECONDS * severity_mod)
 
 			else
@@ -147,7 +147,7 @@
 		else
 			if(IS_ROBOTIC_LIMB(limb))
 				if(SPT_PROB(2, seconds_per_tick))
-					to_chat(victim, span_warning("[victim.get_blood_type()] oozes out of your [limb.plaintext_zone]."))
+					to_chat(victim, span_warning("[victim.blood_type.reagent_type::name] oozes out of your [limb.plaintext_zone]."))
 
 			else
 				if(SPT_PROB(2, seconds_per_tick))
