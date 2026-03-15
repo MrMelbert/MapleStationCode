@@ -117,6 +117,21 @@
 	volume_intensity_scale = 0.5
 	volume_duration_scale = 0.5
 
+/obj/effect/abstract/smell/reagent/perfume/Initialize(mapload, volume, smell = "perfume")
+	src.smell = smell
+	return ..()
+
+// holder for a plant emitting a smell
+/obj/effect/abstract/smell/plant
+	duration = 20 SECONDS
+
+/obj/effect/abstract/smell/plant/Initialize(mapload, smell, category, intensity, radius)
+	src.smell = smell
+	src.category = category
+	src.intensity = intensity
+	src.radius = radius
+	return ..()
+
 /obj/effect/abstract/smell/oven
 	intensity = SMELL_INTENSITY_MODERATE
 	duration = 5 MINUTES

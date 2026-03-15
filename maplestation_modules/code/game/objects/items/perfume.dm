@@ -24,15 +24,29 @@
 	taste_description = "perfume"
 	ph = 6.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	/// What type of smell to produce when exposed
-	var/obj/effect/abstract/smell/smell_type = /obj/effect/abstract/smell/reagent/perfume
+
+/datum/reagent/perfume/on_new(list/new_data)
+	if(!length(new_data) || !islist(new_data["perfume_smell"]))
+		new_data ||= list()
+		new_data["perfume_smell"] = list("perfume" = volume)
+
+	return ..()
+
+/datum/reagent/perfume/on_merge(list/new_data, amount)
+	if(!length(new_data) || !islist(new_data["perfume_smell"]))
+		return
+
+	for(var/new_smell in new_data["perfume_smell"])
+		data["perfume_smell"][new_smell] += amount
 
 /datum/reagent/perfume/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
-	new smell_type(exposed_turf, reac_volume)
+	for(var/smell, smell_volume in data["perfume_smell"])
+		new /obj/effect/abstract/smell/reagent/perfume(exposed_turf, smell_volume, smell)
 
 /datum/reagent/perfume/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || QDELETED(exposed_mob))
 		return
-	new smell_type(exposed_mob, reac_volume)
+	for(var/smell, smell_volume in data["perfume_smell"])
+		new /obj/effect/abstract/smell/reagent/perfume(exposed_mob, smell_volume, smell)
