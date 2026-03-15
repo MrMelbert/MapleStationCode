@@ -101,6 +101,12 @@
 	var/blood_type_to_use = all_dna[all_dna[1]]
 	return find_blood_type(blood_type_to_use).color
 
+/obj/item/organ/get_blood_dna_color()
+	if(isnull(blood_dna_info))
+		return COLOR_BLOOD
+	var/blood_type_to_use = blood_dna_info[blood_dna_info[1]]
+	return find_blood_type(blood_type_to_use).color
+
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
@@ -144,14 +150,13 @@
 	for(var/some_dna, blood_type in blood_DNA_to_add)
 		var/datum/blood_type/blood = find_blood_type(blood_type)
 		if(blood.scent_text)
-			AddComponent( \
-				/datum/component/complex_smell, \
-				duration = duration, \
-				smell = blood.scent_text, \
-				category = blood.scent_category, \
-				smell_basetype = /datum/smell/blood, \
-				intensity = intensity, \
-				radius = radius, \
+			add_smell(
+				duration = duration,
+				base_type = /datum/smell/blood,
+				smell = blood.scent_text,
+				category = blood.scent_category,
+				intensity = intensity,
+				radius = radius,
 			)
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)

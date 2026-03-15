@@ -164,7 +164,7 @@
 		if(WOUND_SEVERITY_LOSS)
 			msg = "[victim.p_Their()] [limb.plaintext_zone] [description]." // different format
 			msg = span_notice("<i><b>[msg]</b></i>")
-	return "\t[msg]"
+	return msg
 
 /// Whether a scar can currently be seen by the viewer
 /datum/scar/proc/is_visible(mob/viewer)

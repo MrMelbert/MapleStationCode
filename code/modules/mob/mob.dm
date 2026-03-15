@@ -530,8 +530,10 @@
 		var/examine_time = client.recent_examines[ref_to_atom]
 		if(examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW))
 			var/list/result = examinify.examine_more(src)
-			if(!length(result))
-				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
+			if(length(result))
+				result.Insert(1, span_info("<i>You examine [examinify] closer.</i>"))
+			else
+				result += span_info("<i>You examine [examinify] closer, but find nothing of note.</i>")
 			result_combined = examine_block(jointext(result, "<br>"))
 			closer_look = TRUE
 
