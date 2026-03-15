@@ -78,7 +78,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/Initialize(mapload)
 	. = ..()
 	if(!IS_ROBOTIC_ORGAN(src))
-		blood_dna_info = list("UNKNOWN DNA" = /datum/blood_type/crew/human/o_minus)
+		blood_dna_info = list("UNKNOWN HUMAN DNA" = /datum/blood_type/crew/human/o_minus)
 		add_blood_DNA(blood_dna_info)
 	if(organ_flags & ORGAN_EDIBLE)
 		AddComponent(/datum/component/edible,\
@@ -92,6 +92,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(bodypart_overlay)
 		setup_bodypart_overlay()
+	RegisterSignal(src, COMSIG_DETECTIVE_SCANNED, PROC_REF(pass_blood_dna_info))
 
 /obj/item/organ/Destroy()
 	if(isnull(owner) && !isnull(bodypart_owner))
@@ -137,22 +138,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /obj/item/organ/proc/on_find(mob/living/finder)
 	return
-
-/// Setup blood info
-/obj/item/organ/proc/set_organ_blood(mob/living/carbon/receiver)
-	if(IS_ROBOTIC_ORGAN(src))
-		return
-	LAZYREMOVE(forensics?.blood_DNA, blood_dna_info)
-	blood_dna_info = receiver.get_blood_dna_list()
-	if(!LAZYLEN(blood_dna_info))
-		return
-	add_blood_DNA(blood_dna_info)
-
-/obj/item/organ/wash(clean_types)
-	. = ..()
-	// ensure we keep the blood info even if someone scrubs the organ
-	if(LAZYLEN(blood_dna_info) && (clean_types & CLEAN_TYPE_BLOOD))
-		add_blood_DNA(blood_dna_info)
 
 /obj/item/organ/process(seconds_per_tick, times_fired)
 	return
@@ -436,6 +421,23 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	else
 		to_chat(feeder, span_warning("The only thing you could think of doing with [source] right now is feeding it to [eater], but that doesn't seem right."))
 	return BLOCK_EAT_ATTEMPT
+
+/// Signal proc for [COMSIG_DETECTIVE_SCANNED], show innate blood info in the data
+/obj/item/organ/proc/pass_blood_dna_info(datum/source, mob/user, list/det_data)
+	SIGNAL_HANDLER
+	if(isnull(blood_dna_info))
+		if(IS_ORGANIC_ORGAN(src))
+			// if there is no dna, but it is organic, it must be mapspawned or something, so show dummy data
+			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+				"Type: <font color='red'>[find_blood_type(/datum/blood_type/crew/human/o_minus)])]</font> DNA (UE): <font color='red'>Synthetic DNA</font>")
+		else
+			// a robotic organ not owned by a robotic mob should show no DNA
+			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+				"Type: <font color='red'>N/A</font> DNA (UE): <font color='red'>N/A</font>")
+	else
+		// show the dna of the mob that owned the organ in the past to the scanner
+		LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+			"Type: <font color='red'>[find_blood_type(blood_dna_info[blood_dna_info[1]])]</font> DNA (UE): <font color='red'>[blood_dna_info[1]]</font>")
 
 /// Get all possible organ slots by checking every organ, and then store it and give it whenever needed
 /proc/get_all_slots()

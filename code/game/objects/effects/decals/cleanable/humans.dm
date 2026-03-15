@@ -170,16 +170,16 @@
 
 /// Add the passed smell with the passed category to the blood
 /// Can optionally pass a multiplier which affects both intensity and radius
-/obj/effect/decal/cleanable/blood/proc/add_smell(smell, category, multiplier = 1)
-	var/intensity = max(floor(bloodiness * 0.2 * multiplier), SMELL_INTENSITY_FAINT)
-	var/radius = round(bloodiness * 0.04 * multiplier)
+/obj/effect/decal/cleanable/blood/proc/add_tracked_smell(smell, category, multiplier = 1)
+	var/effective_bloodiness = min(bloodiness, BLOOD_AMOUNT_PER_DECAL * 2)
+	var/intensity = max(floor(effective_bloodiness * 0.1 * multiplier), SMELL_INTENSITY_FAINT)
+	var/radius = round(effective_bloodiness * 0.02 * multiplier)
 	AddElement(/datum/element/simple_smell, \
-		smell = smell, \
+		smell_basetype = /datum/smell/blood, \
 		category = category, \
+		smell = smell, \
 		intensity = intensity, \
 		radius = radius, \
-		id = "dna", \
-		smell_basetype = /datum/smell/blood, \
 	)
 	LAZYADD(smell_elements_present, list(list(
 		"smell" = smell,
@@ -198,18 +198,17 @@
 		unique_smells["[blood.scent_text]-[blood.scent_category]"] += 1
 	for(var/blood_smell, count in unique_smells)
 		var/resplit_smell = splittext(blood_smell, "-")
-		add_smell(text2path(resplit_smell[1]) || resplit_smell[1], resplit_smell[2], count / GET_ATOM_BLOOD_DNA_LENGTH(src))
+		add_tracked_smell(text2path(resplit_smell[1]) || resplit_smell[1], resplit_smell[2], count / GET_ATOM_BLOOD_DNA_LENGTH(src))
 	last_bloodiness_refresh = bloodiness
 
 /obj/effect/decal/cleanable/blood/proc/clear_smells()
 	for(var/list/smell_element as anything in smell_elements_present)
 		RemoveElement(/datum/element/simple_smell, \
-			smell = smell_element["smell"], \
+			smell_basetype = /datum/smell/blood, \
 			category = smell_element["category"], \
+			smell = smell_element["smell"], \
 			intensity = smell_element["intensity"], \
 			radius = smell_element["radius"], \
-			id = "dna", \
-			smell_basetype = /datum/smell/blood, \
 		)
 		LAZYREMOVE(smell_elements_present, list(smell_element))
 
@@ -374,7 +373,7 @@
 		very_bloody = TRUE
 		icon_state = pick("trails_1", "trails_2")
 
-/obj/effect/decal/cleanable/blood/trail/add_smell(smell, category, multiplier)
+/obj/effect/decal/cleanable/blood/trail/add_tracked_smell(smell, category, multiplier)
 	if(!isturf(loc))
 		return // fake
 	return ..()
@@ -499,7 +498,7 @@
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
-	AddElement(/datum/element/simple_smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 1)
+	add_smell(smell = /datum/smell/decay, intensity = SMELL_INTENSITY_STRONG, radius = 1)
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drop of blood"
@@ -511,7 +510,7 @@
 	dry_desc = "A dried spattering."
 	drying_time = 1 MINUTES
 
-/obj/effect/decal/cleanable/blood/drip/add_smell(smell, category, multiplier)
+/obj/effect/decal/cleanable/blood/drip/add_tracked_smell(smell, category, multiplier)
 	if(!isturf(loc))
 		return // fake
 	return ..()
@@ -657,6 +656,9 @@
 	prev_loc = loc //Just so we are sure prev_loc exists
 	if(splatter_strength)
 		src.splatter_strength = splatter_strength
+
+/obj/effect/decal/cleanable/blood/hitsplatter/add_tracked_smell(smell, category, multiplier)
+	return // ephemeral
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)

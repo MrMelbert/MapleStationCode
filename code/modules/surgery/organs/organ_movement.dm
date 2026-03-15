@@ -78,8 +78,9 @@
 		else
 			replaced.forceMove(get_turf(receiver))
 
-	if(!IS_ROBOTIC_ORGAN(src) && (organ_flags & ORGAN_VIRGIN))
-		set_organ_blood(receiver)
+	if(organ_flags & ORGAN_VIRGIN)
+		if(IS_ORGANIC_ORGAN(src) || isandroid(receiver))
+			blood_dna_info = receiver.get_blood_dna_list()
 		organ_flags &= ~ORGAN_VIRGIN
 
 	if(external_bodytypes)
@@ -239,8 +240,9 @@
 /obj/item/organ/proc/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(!IS_ROBOTIC_ORGAN(src) && !(item_flags & NO_BLOOD_ON_ITEM) && !QDELING(src))
+	if(!QDELING(src) && !isnull(blood_dna_info))
 		AddElement(/datum/element/decal/blood)
+		add_blood_scent(blood_dna_info, 5 MINUTES, SMELL_INTENSITY_MODERATE)
 
 	item_flags &= ~ABSTRACT
 	REMOVE_TRAIT(src, TRAIT_NODROP, ORGAN_INSIDE_BODY_TRAIT)
@@ -284,7 +286,6 @@
 /obj/item/organ/proc/on_surgical_removal(mob/living/user, obj/item/bodypart/limb, obj/item/tool)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ORGAN_SURGICALLY_REMOVED, user, limb.owner, limb.body_zone, tool)
-	RemoveElement(/datum/element/decal/blood)
 
 /**
  * Proc that gets called when the organ is surgically inserted by someone. Seem familiar?

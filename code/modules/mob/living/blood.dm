@@ -251,7 +251,8 @@
 	var/update_needed = FALSE
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		for(var/obj/item/organ/organ_bit in part)
-			organ_bit.set_organ_blood(src)
+			if(IS_ORGANIC_ORGAN(organ_bit) || isandroid(src))
+				organ_bit.blood_dna_info = get_blood_dna_list()
 		if(part.damage_color == blood_type.color)
 			continue
 		part.damage_color = blood_type.color
