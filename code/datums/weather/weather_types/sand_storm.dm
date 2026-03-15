@@ -2,6 +2,7 @@
 /datum/weather/sand_storm
 	name = "severe sandstorm"
 	desc = "A severe dust storm that engulfs an area, dealing intense damage to the unprotected."
+	probability = 90
 
 	telegraph_message = span_danger("You see a dust cloud rising over the horizon. That can't be good...")
 	telegraph_duration = 30 SECONDS
@@ -18,11 +19,14 @@
 	end_overlay = "dust_med"
 
 	area_type = /area
+	protect_indoors = TRUE
 	target_trait = ZTRAIT_SANDSTORM
 	// immunity_type = TRAIT_SANDSTORM_IMMUNE
 	probability = 90
 
 	// weather_flags = (WEATHER_MOBS | WEATHER_BAROMETER)
+
+	barometer_predictable = TRUE
 
 // /datum/weather/sand_storm/get_playlist_ref()
 // 	return GLOB.sand_storm_sounds

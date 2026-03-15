@@ -18,7 +18,6 @@
 			"Mining": true,
 			"Linkage": null,
 			"Gravity": true,
-			"Ice Ruins Underground": true,
 			"Baseturf": "/turf/open/lava/smooth",
 			"No Parallax": true
 		},
@@ -28,8 +27,7 @@
 			"Mining": true,
 			"Linkage": null,
 			"Gravity": true,
-			"Ice Ruins Underground": true,
-			"Baseturf": "/turf/open/openspace",
+			"Baseturf": "/turf/open/openspace/icemoon/sandy/keep_below",
 			"No Parallax": true
 		},
 		{
@@ -37,9 +35,8 @@
 			"Mining": true,
 			"Linkage": null,
 			"Gravity": true,
-			"Ice Ruins": true,
 			"Weather_Sandstorm": true,
-			"Baseturf": "/turf/open/openspace",
+			"Baseturf": "/turf/open/openspace/icemoon/sandy/keep_below",
 			"No Parallax": true
 		}
 	],

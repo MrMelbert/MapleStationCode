@@ -210,8 +210,11 @@
 	max_ambience_cooldown = 220 SECONDS
 
 /area/icemoon/surface/outdoors // parent that defines if something is on the exterior of the station.
-	name = "Icemoon Wastes"
+	name = "Sandmoon Deserts"
 	outdoors = TRUE
+	static_lighting = FALSE
+	base_lighting_alpha = 255
+	base_lighting_color = "#FFFEE0"
 
 /area/icemoon/surface/outdoors/nospawn // this is the area you use for stuff to not spawn, but if you still want weather.
 
@@ -230,7 +233,7 @@
 	map_generator =  /datum/map_generator/cave_generator/icemoon/surface/noruins
 
 /area/icemoon/surface/outdoors/labor_camp
-	name = "Icemoon Labor Camp"
+	name = "Sandmoon Labor Camp"
 	area_flags = UNIQUE_AREA
 
 /area/icemoon/surface/outdoors/unexplored //monsters and ruins spawn here
@@ -251,7 +254,7 @@
 	area_flags = UNIQUE_AREA | FLORA_ALLOWED | CAVES_ALLOWED
 
 /area/icemoon/underground
-	name = "Icemoon Caves"
+	name = "Sandmoon Caves"
 	outdoors = TRUE
 	always_unpowered = TRUE
 	requires_power = TRUE
@@ -263,7 +266,7 @@
 	max_ambience_cooldown = 220 SECONDS
 
 /area/icemoon/underground/unexplored // mobs and megafauna and ruins spawn here
-	name = "Icemoon Caves"
+	name = "Sandmoon Caves"
 	icon_state = "unexplored"
 	area_flags = CAVES_ALLOWED | FLORA_ALLOWED | MOB_SPAWN_ALLOWED | MEGAFAUNA_SPAWN_ALLOWED
 
@@ -284,7 +287,7 @@
 	area_flags = UNIQUE_AREA | CAVES_ALLOWED | FLORA_ALLOWED
 
 /area/icemoon/underground/explored // ruins can't spawn here
-	name = "Icemoon Underground"
+	name = "Sandmoon Underground"
 	area_flags = UNIQUE_AREA
 
 /area/icemoon/underground/explored/graveyard

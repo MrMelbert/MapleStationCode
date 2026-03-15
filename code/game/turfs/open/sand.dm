@@ -21,7 +21,7 @@
 /turf/open/misc/beach/sand
 	gender = PLURAL
 	name = "sand"
-	desc = "Surf's up."
+	desc = "I hate sand."
 	icon_state = "sand"
 	base_icon_state = "sand"
 	baseturfs = /turf/open/misc/beach/sand
@@ -31,6 +31,9 @@
 	. = ..()
 	if(prob(15))
 		icon_state = "sand[rand(1,4)]"
+
+/turf/open/floor/plating/sand
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
 
 /turf/open/misc/beach/coast
 	name = "coastline"
