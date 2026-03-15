@@ -1486,7 +1486,7 @@
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
-	if(stat != CONSCIOUS)
+	if(stat >= UNCONSCIOUS)
 		to_chat(src, span_warning("You are not conscious enough for this action!"))
 		return FALSE
 

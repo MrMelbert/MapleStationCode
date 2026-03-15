@@ -239,10 +239,12 @@
 
 /datum/status_effect/exercised/on_apply()
 	owner.add_mood_event("exercise", /datum/mood_event/exercise, owner.mind.get_skill_level(/datum/skill/athletics))
+	ADD_TRAIT(owner, TRAIT_HEART_RATE_BOOST, type)
 	return ..()
 
 /datum/status_effect/exercised/on_remove()
 	owner.clear_mood_event("exercise")
+	REMOVE_TRAIT(owner, TRAIT_HEART_RATE_BOOST, type)
 
 /atom/movable/screen/alert/status_effect/exercised
 	name = "Exercise"

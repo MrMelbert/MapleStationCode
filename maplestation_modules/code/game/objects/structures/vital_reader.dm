@@ -282,11 +282,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			resp_icon_state = "resp_flat"
 		else if(ishuman(patient))
 			var/mob/living/carbon/human/human_patient = patient
-			switch(human_patient.get_heart_rate())
+			switch(human_patient.get_bpm())
 				if(0)
 					ekg_icon_state = "ekg_flat"
 					resp_icon_state = "resp_flat"
-				if(11 to INFINITY)
+				if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
 					ekg_icon_state = "ekg_fast"
 
 		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)

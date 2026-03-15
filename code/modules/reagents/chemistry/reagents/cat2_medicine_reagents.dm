@@ -496,34 +496,34 @@
 	ph = 7.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/medicine/c2/synthflesh/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
+/datum/reagent/medicine/c2/synthflesh/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection, exposed_zone)
 	. = ..()
-	if(!iscarbon(exposed_mob))
-		return
-	var/mob/living/carbon/carbies = exposed_mob
-	if(carbies.stat == DEAD)
-		show_message = 0
 	if(!(methods & (PATCH|TOUCH|VAPOR)))
 		return
-	var/current_bruteloss = carbies.getBruteLoss() // because this will be changed after calling adjustBruteLoss()
-	var/current_fireloss = carbies.getFireLoss() // because this will be changed after calling adjustFireLoss()
-	var/harmies = clamp(carbies.adjustBruteLoss(-1.25 * reac_volume, updating_health = FALSE, required_bodytype = affected_bodytype), 0, current_bruteloss)
-	var/burnies = clamp(carbies.adjustFireLoss(-1.25 * reac_volume, updating_health = FALSE, required_bodytype = affected_bodytype), 0, current_fireloss)
-	for(var/i in carbies.all_wounds)
-		var/datum/wound/iter_wound = i
-		iter_wound.on_synthflesh(reac_volume)
-	var/need_mob_update = harmies + burnies
-	need_mob_update = carbies.adjustToxLoss((harmies + burnies)*(0.5 + (0.25*(1-creation_purity))), updating_health = FALSE, required_biotype = affected_biotype) || need_mob_update //0.5 - 0.75
 
-	if(need_mob_update)
-		carbies.updatehealth()
-	if(show_message)
-		to_chat(carbies, span_danger("You feel your burns and bruises healing! It stings like hell!"))
+	var/current_bruteloss = exposed_mob.getBruteLoss() // because this will be changed after calling adjustBruteLoss()
+	var/current_fireloss = exposed_mob.getFireLoss() // because this will be changed after calling adjustFireLoss()
+	var/harmies = clamp(exposed_mob.adjustBruteLoss(-1.25 * reac_volume, updating_health = FALSE, required_bodytype = affected_bodytype), 0, current_bruteloss)
+	var/burnies = clamp(exposed_mob.adjustFireLoss(-1.25 * reac_volume, updating_health = FALSE, required_bodytype = affected_bodytype), 0, current_fireloss)
 
-	carbies.add_mood_event("painful_medicine", /datum/mood_event/painful_medicine)
-	if(HAS_TRAIT_FROM(exposed_mob, TRAIT_HUSK, BURN) && carbies.getFireLoss() < UNHUSK_DAMAGE_THRESHOLD && (carbies.reagents.get_reagent_amount(/datum/reagent/medicine/c2/synthflesh) + reac_volume >= SYNTHFLESH_UNHUSK_AMOUNT))
-		carbies.cure_husk(BURN)
-		carbies.visible_message("<span class='nicegreen'>A rubbery liquid coats [carbies]'s burns. [carbies] looks a lot healthier!") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
+	if(iscarbon(exposed_mob))
+		var/mob/living/carbon/carbies = exposed_mob
+		for(var/datum/wound/iter_wound as anything in carbies.all_wounds)
+			iter_wound.on_synthflesh(reac_volume)
+
+	var/purity_mod = 0.5 + (0.25 * (1 - creation_purity)) // 0.5 at 100% purity, 0.75 at 0% purity
+	exposed_mob.adjustToxLoss((harmies + burnies) * purity_mod, updating_health = FALSE, required_biotype = affected_biotype)
+	. = UPDATE_MOB_HEALTH
+
+	if(exposed_mob.stat != DEAD)
+		if(show_message)
+			to_chat(exposed_mob, span_danger("You feel your burns and bruises healing! It stings like hell!"))
+
+		exposed_mob.add_mood_event("painful_medicine", /datum/mood_event/painful_medicine)
+		exposed_mob.sharp_pain(exposed_zone || BODY_ZONES_ALL, max(harmies, burnies) * 1.5 * purity_mod, BURN, 3 MINUTES, 0.5)
+	if(HAS_TRAIT_FROM(exposed_mob, TRAIT_HUSK, BURN) && exposed_mob.getFireLoss() < UNHUSK_DAMAGE_THRESHOLD && (exposed_mob.reagents.get_reagent_amount(/datum/reagent/medicine/c2/synthflesh) + reac_volume >= SYNTHFLESH_UNHUSK_AMOUNT))
+		exposed_mob.cure_husk(BURN)
+		exposed_mob.visible_message("<span class='nicegreen'>A rubbery liquid coats [exposed_mob]'s burns. [exposed_mob] looks a lot healthier!") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
 
 /******ORGAN HEALING******/
 /*Suffix: -rite*/
