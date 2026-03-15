@@ -285,8 +285,9 @@
 		return FALSE
 	return TRUE
 
+/// Return what our blood is called, or just "blood" if we don't have any
 /mob/living/proc/get_blood_name()
-	var/datum/reagent/blood_reagent = get_blood_type()?.reagent_type
+	var/datum/reagent/blood_reagent = blood_type?.reagent_type
 	return blood_reagent ? blood_reagent::name : "blood"
 
 /**
