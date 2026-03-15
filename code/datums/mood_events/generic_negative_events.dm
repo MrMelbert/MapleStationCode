@@ -244,7 +244,7 @@
 /datum/mood_event/vomit/add_effects(blood = FALSE)
 	was_bloody = blood
 
-	var/datum/blood_type/owner_blood = owner.get_blood_type()
+	var/datum/blood_type/owner_blood = owner.blood_type
 	if(!was_bloody || isnull(owner_blood))
 		return // probably shouldn't happen but who knows
 
