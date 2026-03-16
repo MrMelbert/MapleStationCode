@@ -388,6 +388,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	human_who_gained_species.physiology.cold_mod *= coldmod
 	human_who_gained_species.physiology.heat_mod *= heatmod
 
+	// Assigns exotic blood type if the species has one
+	// Must be done before bodypart and organ replacement as they use bloodtype
+	if(exotic_bloodtype)
+		human_who_gained_species.set_blood_type(exotic_bloodtype, update = FALSE)
+
 	if(old_species.type != type)
 		replace_body(human_who_gained_species, src)
 
@@ -396,9 +401,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Drop the items the new species can't wear
 	INVOKE_ASYNC(src, PROC_REF(worn_items_fit_body_check), human_who_gained_species, TRUE)
 
-	//Assigns exotic blood type if the species has one
-	if(exotic_bloodtype)
-		human_who_gained_species.set_blood_type(exotic_bloodtype, update = FALSE)
 
 	if(isnum(species_pain_mod) && species_pain_mod != 1)
 		human_who_gained_species.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
