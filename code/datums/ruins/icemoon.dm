@@ -179,3 +179,74 @@
 	id = "hotsprings"
 	description = "Just relax and take a dip, nothing will go wrong, I swear!"
 	suffix = "icemoon_underground_hotsprings.dmm"
+
+/datum/map_template/ruin/sandbox
+	prefix = "_maps/RandomRuins/SandRuins/"
+	allow_duplicates = FALSE
+	cost = 5
+	ruin_type = ZTRAIT_SAND_RUINS
+	default_area = /area/icemoon/surface/outdoors/unexplored
+	has_ceiling = TRUE
+	// ceiling_turf = /turf/closed/mineral/random/snow/do_not_chasm
+	// ceiling_baseturfs = list(/turf/open/misc/asteroid/snow/icemoon/do_not_chasm)
+
+/datum/map_template/ruin/sandbox/fountain_hall
+	name = "Sand-Ruin Fountain Hall"
+	id = "fountain_hall"
+	description = "The fountain has a warning on the side. DANGER: May have undeclared side effects that only become obvious when implemented."
+	prefix = "_maps/RandomRuins/AnywhereRuins/"
+	suffix = "fountain_hall.dmm"
+
+/datum/map_template/ruin/sandbox/golem_ship
+	name = "Sand-Ruin Free Golem Ship"
+	id = "golem-ship"
+	description = "Lumbering humanoids, made out of precious metals, move inside this ship. They frequently leave to mine more minerals, which they somehow turn into more of them. \
+	Seem very intent on research and individual liberty, and also geology-based naming?"
+	prefix = "_maps/RandomRuins/AnywhereRuins/"
+	suffix = "golem_ship.dmm"
+
+/datum/map_template/ruin/sandbox/casbah
+	name = "Sand-Ruin Casbah"
+	id = "casbah"
+	description = "A sandy fortification, built to withstand the harsh desert environment. \
+		It has seen better days, but still stands as a testament to the resilience of its builders."
+	suffix = "sandbox_surface_kasbah.dmm"
+	cost = 15
+
+/datum/map_template/ruin/sandbox/oasis
+	name = "Sand-Ruin Oasis"
+	id = "oasis"
+	description = "A rare and precious oasis, providing a haven of life and water in the midst of the unforgiving desert. \
+		The oasis is surrounded by lush vegetation and is home to a variety of desert creatures."
+	suffix = "sandbox_surface_oasis.dmm"
+	cost = 5
+
+/datum/map_template/ruin/sandbox/library
+	name = "Sand-Ruin Library"
+	id = "library"
+	description = "A once grand library, now lost to the confines of the desert. \
+		The library's shelves are filled with ancient tomes and scrolls, many of which have been damaged by the harsh desert conditions."
+	suffix = "sandbox_underground_library.dmm"
+	cost = 15
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
+
+/datum/map_template/ruin/sandbox/tomb
+	name = "Sand-Ruin Tomb"
+	id = "tomb"
+	description = "A mysterious tomb, buried deep beneath the sands. \
+		The tomb is said to hold the remains of a powerful and ancient ruler, and is rumored to be filled with treasures and secrets."
+	suffix = "sandbox_underground_tomb.dmm"
+	cost = 15
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
+
+/datum/map_template/ruin/sandbox/railway
+	name = "Sand-Ruin Abandoned Mine Rain"
+	id = "railway"
+	description = "An abandoned minecart railway, once used to transport valuable minerals from the depths of the desert. \
+		The railway is now rusted and overgrown, but still holds a sense of adventure and mystery for those who dare to explore it."
+	suffix = "sandbox_surface_railway.dmm"
+	cost = 10
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored

@@ -1,0 +1,207 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/item/fish/boned,
+/turf/open/misc/beach/coast{
+	dir = 1;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"b" = (
+/turf/open/water/beach{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15";
+	name = "oasis"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"d" = (
+/turf/open/misc/beach/coast{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"f" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"g" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/mob/living/basic/parrot,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"h" = (
+/turf/open/misc/beach/coast{
+	dir = 4;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"i" = (
+/turf/open/misc/beach/coast/corner{
+	dir = 4
+	},
+/area/icemoon/surface/outdoors/noruins)
+"k" = (
+/turf/open/misc/beach/coast/corner{
+	dir = 8;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"n" = (
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"o" = (
+/turf/open/misc/beach/coast{
+	dir = 1;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"r" = (
+/obj/structure/flora/coconuts,
+/obj/item/clothing/suit/costume/hawaiian{
+	pixel_y = 12;
+	pixel_x = 6
+	},
+/obj/item/clothing/glasses/sunglasses{
+	pixel_y = 9
+	},
+/obj/item/clothing/shoes/sandal/beach{
+	pixel_y = -3;
+	pixel_x = 6
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"z" = (
+/turf/open/misc/beach/coast/corner,
+/area/icemoon/surface/outdoors/noruins)
+"C" = (
+/turf/open/misc/beach/coast/corner{
+	dir = 1
+	},
+/area/icemoon/surface/outdoors/noruins)
+"E" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"H" = (
+/obj/structure/flora/rock/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"P" = (
+/turf/open/misc/beach/coast{
+	dir = 8;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"S" = (
+/obj/structure/flora/coconuts,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"T" = (
+/turf/open/misc/beach/coast{
+	dir = 5;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"Y" = (
+/turf/open/misc/beach/coast{
+	dir = 10;
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+
+(1,1,1) = {"
+n
+n
+n
+n
+n
+n
+n
+n
+n
+"}
+(2,1,1) = {"
+n
+n
+E
+f
+E
+f
+H
+r
+n
+"}
+(3,1,1) = {"
+n
+E
+z
+h
+h
+h
+k
+f
+n
+"}
+(4,1,1) = {"
+E
+f
+d
+b
+b
+b
+T
+k
+n
+"}
+(5,1,1) = {"
+n
+S
+d
+b
+b
+b
+b
+a
+E
+"}
+(6,1,1) = {"
+n
+E
+C
+Y
+b
+b
+b
+o
+E
+"}
+(7,1,1) = {"
+n
+n
+f
+C
+Y
+b
+b
+o
+f
+"}
+(8,1,1) = {"
+n
+n
+g
+n
+C
+P
+P
+i
+n
+"}
+(9,1,1) = {"
+n
+n
+n
+E
+n
+f
+E
+n
+n
+"}

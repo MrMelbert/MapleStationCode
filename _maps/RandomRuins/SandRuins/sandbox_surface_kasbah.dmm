@@ -1,0 +1,500 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/closed/wall/mineral/sandstone,
+/area/icemoon/surface/outdoors/noruins)
+"c" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"h" = (
+/obj/item/claymore/cutlass/old{
+	force = 16;
+	desc = "A scimitar used by desertfolk. Probably."
+	},
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"i" = (
+/obj/item/shield/buckler,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"n" = (
+/mob/living/basic/mining/wolf{
+	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	},
+/obj/effect/decal/remains/human,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"o" = (
+/obj/item/shield/buckler,
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"p" = (
+/obj/effect/decal/remains/human,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"q" = (
+/obj/item/clothing/suit/armor/vest/cuirass,
+/turf/closed/wall/mineral/sandstone,
+/area/icemoon/surface/outdoors/noruins)
+"r" = (
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"s" = (
+/obj/item/coin/gold,
+/obj/item/coin/gold{
+	pixel_y = 6;
+	pixel_x = 3
+	},
+/obj/item/coin/silver{
+	pixel_y = -3;
+	pixel_x = -6
+	},
+/obj/item/coin/iron{
+	pixel_y = -8
+	},
+/obj/item/coin/iron{
+	pixel_y = -4;
+	pixel_x = 6
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"t" = (
+/mob/living/basic/mining/wolf{
+	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"v" = (
+/obj/item/claymore/cutlass/old{
+	force = 16;
+	desc = "A scimitar used by desertfolk. Probably."
+	},
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"x" = (
+/turf/closed/mineral/sand,
+/area/icemoon/surface/outdoors/noruins)
+"A" = (
+/obj/item/clothing/suit/armor/militia{
+	name = "armored coat";
+	armor_type = /datum/armor/suit_armor
+	},
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"B" = (
+/obj/item/clothing/under/ethereal_tunic{
+	name = "tunic"
+	},
+/obj/item/clothing/mask/bandana/blue,
+/obj/item/clothing/neck/scarf/darkblue,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"C" = (
+/mob/living/basic/mining/wolf{
+	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	},
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"D" = (
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"E" = (
+/obj/item/clothing/head/costume/crown{
+	pixel_y = -4;
+	pixel_x = -5
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"I" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"J" = (
+/mob/living/basic/mining/wolf{
+	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	},
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"N" = (
+/obj/item/clothing/suit/armor/militia{
+	name = "armored coat";
+	armor_type = /datum/armor/suit_armor
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"P" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"S" = (
+/obj/structure/mineral_door/sandstone,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/noruins)
+"U" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"X" = (
+/mob/living/basic/mining/wolf{
+	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+"Y" = (
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/surface/outdoors/noruins)
+
+(1,1,1) = {"
+D
+c
+D
+I
+c
+D
+I
+c
+c
+D
+D
+c
+D
+D
+D
+"}
+(2,1,1) = {"
+I
+a
+a
+a
+a
+a
+c
+D
+I
+a
+a
+a
+r
+a
+c
+"}
+(3,1,1) = {"
+D
+a
+U
+c
+Y
+a
+a
+a
+a
+a
+Y
+r
+c
+a
+D
+"}
+(4,1,1) = {"
+D
+a
+E
+s
+D
+a
+Y
+Y
+U
+a
+c
+X
+r
+a
+I
+"}
+(5,1,1) = {"
+c
+a
+c
+r
+r
+Y
+P
+r
+r
+U
+r
+c
+D
+a
+c
+"}
+(6,1,1) = {"
+I
+a
+r
+c
+r
+r
+r
+r
+P
+a
+a
+a
+a
+D
+D
+"}
+(7,1,1) = {"
+D
+D
+c
+D
+Y
+r
+N
+P
+i
+r
+Y
+a
+c
+c
+D
+"}
+(8,1,1) = {"
+c
+D
+I
+c
+U
+r
+t
+v
+B
+r
+U
+a
+I
+D
+D
+"}
+(9,1,1) = {"
+D
+I
+c
+a
+Y
+P
+r
+p
+r
+r
+U
+S
+D
+c
+D
+"}
+(10,1,1) = {"
+D
+c
+D
+a
+U
+r
+r
+n
+A
+r
+Y
+S
+D
+D
+D
+"}
+(11,1,1) = {"
+c
+I
+x
+a
+U
+P
+B
+h
+P
+r
+U
+a
+I
+c
+D
+"}
+(12,1,1) = {"
+D
+x
+x
+a
+U
+r
+o
+r
+r
+r
+Y
+a
+c
+D
+c
+"}
+(13,1,1) = {"
+I
+a
+a
+D
+r
+a
+r
+P
+r
+a
+a
+a
+a
+a
+D
+"}
+(14,1,1) = {"
+D
+a
+U
+c
+r
+Y
+r
+r
+r
+Y
+r
+r
+Y
+a
+c
+"}
+(15,1,1) = {"
+D
+D
+c
+J
+c
+a
+U
+Y
+U
+a
+c
+C
+c
+a
+D
+"}
+(16,1,1) = {"
+c
+r
+D
+Y
+Y
+q
+a
+a
+a
+a
+Y
+D
+D
+a
+c
+"}
+(17,1,1) = {"
+D
+a
+a
+a
+a
+a
+c
+D
+c
+a
+a
+a
+a
+a
+I
+"}
+(18,1,1) = {"
+D
+D
+c
+I
+D
+c
+I
+D
+D
+D
+c
+D
+D
+c
+D
+"}

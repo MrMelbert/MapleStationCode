@@ -1,0 +1,792 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"bi" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/remains/human,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"bo" = (
+/obj/structure/rack/skeletal{
+	name = "rack"
+	},
+/obj/item/knife/combat/bone,
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"bJ" = (
+/mob/living/simple_animal/hostile/megafauna/blood_drunk_miner,
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"cA" = (
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"dp" = (
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/underground/unexplored)
+"eU" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"fJ" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/remains/human,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"gm" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"hF" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"ik" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/stack/sheet/bone{
+	amount = 2
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"iI" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"jU" = (
+/obj/item/stack/sheet/mineral/gold{
+	amount = 2
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"jZ" = (
+/turf/template_noop,
+/area/template_noop)
+"lF" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/spear/bonespear,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"lS" = (
+/obj/effect/decal/cleanable/cobweb,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"oI" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"oP" = (
+/obj/item/stack/sheet/mineral/silver{
+	amount = 2
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"qH" = (
+/obj/structure/rack/skeletal{
+	name = "rack"
+	},
+/obj/item/spear/bonespear,
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"rJ" = (
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"sm" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/rack/skeletal{
+	name = "rack"
+	},
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"sL" = (
+/obj/item/stack/sheet/mineral/wood{
+	amount = 6
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"tC" = (
+/obj/structure/flora/rock/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"vV" = (
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/stack/ore/glass{
+	amount = 12
+	},
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"xh" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"xu" = (
+/obj/structure/flora/rock/pile/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"xw" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/stack/ore/glass{
+	amount = 12
+	},
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"xD" = (
+/obj/effect/decal/cleanable/ash,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/headpike/bone,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"yo" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/grand_remains,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"yJ" = (
+/obj/effect/decal/cleanable/ash,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"yZ" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/underground/unexplored)
+"zt" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"An" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/structure/rack/skeletal{
+	name = "rack"
+	},
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"BJ" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/underground/unexplored)
+"FE" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/headpike/bone,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"FI" = (
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"Ge" = (
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"GK" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"HO" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/stack/ore/glass{
+	amount = 12
+	},
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"Iq" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/mob_spawn/corpse/human/miner/explorer,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/underground/unexplored)
+"IL" = (
+/obj/structure/closet/crate/coffin{
+	anchored = 1
+	},
+/obj/effect/mob_spawn/corpse/human/skeleton,
+/obj/item/clothing/head/costume/crown/fancy,
+/obj/item/coin/runite,
+/obj/item/coin/runite,
+/obj/item/coin/runite,
+/obj/item/coin/runite,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/coin/runite,
+/obj/item/book/granter/crafting_recipe/boneyard_notes,
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"MR" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"Pf" = (
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"Qa" = (
+/turf/closed/wall/mineral/sandstone,
+/area/ruin/unpowered)
+"Tg" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"TQ" = (
+/obj/structure/barricade/wooden,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"Ua" = (
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"Ud" = (
+/obj/structure/mineral_door/sandstone,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"UC" = (
+/obj/item/stack/sheet/mineral/diamond,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"Vd" = (
+/obj/structure/flora/rock/style_random,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/icemoon/underground/unexplored)
+"Xw" = (
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"Xy" = (
+/obj/effect/decal/cleanable/ash,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"XN" = (
+/obj/structure/mineral_door/sandstone,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"Zs" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/remains/human,
+/turf/open/floor/iron/terracotta/herringbone{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+"ZQ" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt/dust,
+/mob/living/basic/bear,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered)
+
+(1,1,1) = {"
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+oI
+rJ
+iI
+rJ
+rJ
+rJ
+iI
+rJ
+rJ
+rJ
+rJ
+iI
+rJ
+rJ
+"}
+(2,1,1) = {"
+jZ
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+rJ
+oI
+rJ
+rJ
+rJ
+oI
+rJ
+iI
+oI
+rJ
+rJ
+"}
+(3,1,1) = {"
+jZ
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+rJ
+iI
+xu
+oI
+iI
+rJ
+Qa
+Qa
+Qa
+Qa
+oI
+"}
+(4,1,1) = {"
+jZ
+Qa
+Qa
+GK
+MR
+MR
+MR
+MR
+zt
+MR
+MR
+Qa
+Qa
+oI
+rJ
+iI
+tC
+Qa
+Qa
+Qa
+An
+qH
+Qa
+rJ
+"}
+(5,1,1) = {"
+jZ
+Qa
+Qa
+HO
+gm
+Tg
+FI
+Tg
+Tg
+Tg
+MR
+Qa
+Qa
+rJ
+oI
+rJ
+Qa
+Qa
+MR
+XN
+Zs
+Ua
+Qa
+iI
+"}
+(6,1,1) = {"
+jZ
+Qa
+Qa
+MR
+Ge
+bi
+gm
+jU
+FI
+Tg
+HO
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+lS
+Xw
+Qa
+Qa
+Qa
+Qa
+rJ
+"}
+(7,1,1) = {"
+jZ
+Qa
+Qa
+zt
+Tg
+jU
+Tg
+Ge
+yJ
+gm
+MR
+Qa
+Qa
+GK
+zt
+MR
+MR
+MR
+MR
+MR
+Qa
+yZ
+rJ
+oI
+"}
+(8,1,1) = {"
+jZ
+Qa
+Qa
+Xw
+xw
+xh
+Tg
+hF
+ik
+Ge
+MR
+Qa
+Qa
+sL
+Tg
+ZQ
+Ge
+fJ
+Tg
+FE
+Qa
+Vd
+dp
+rJ
+"}
+(9,1,1) = {"
+jZ
+Qa
+Qa
+MR
+IL
+xh
+bJ
+yo
+Tg
+Tg
+zt
+Ud
+TQ
+zt
+Ge
+eU
+xh
+xh
+xh
+Tg
+XN
+Iq
+dp
+rJ
+"}
+(10,1,1) = {"
+jZ
+Qa
+Qa
+zt
+xh
+Ua
+eU
+Tg
+cA
+Tg
+MR
+Qa
+Qa
+MR
+xD
+ik
+Tg
+FI
+lF
+Tg
+Qa
+BJ
+yZ
+oI
+"}
+(11,1,1) = {"
+jZ
+Qa
+Qa
+MR
+Tg
+oP
+Tg
+eU
+Tg
+fJ
+MR
+Qa
+Qa
+vV
+MR
+MR
+zt
+MR
+MR
+MR
+Qa
+dp
+rJ
+rJ
+"}
+(12,1,1) = {"
+jZ
+Qa
+Qa
+HO
+FI
+Xy
+gm
+Tg
+Ge
+oP
+MR
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+MR
+MR
+Qa
+Qa
+Qa
+Qa
+rJ
+"}
+(13,1,1) = {"
+jZ
+Qa
+Qa
+MR
+gm
+Tg
+UC
+Tg
+Tg
+Tg
+Xw
+Qa
+Qa
+rJ
+iI
+rJ
+Qa
+Qa
+MR
+XN
+Ua
+Ua
+Qa
+oI
+"}
+(14,1,1) = {"
+jZ
+Qa
+Qa
+Pf
+MR
+MR
+MR
+MR
+MR
+zt
+MR
+Qa
+Qa
+oI
+rJ
+oI
+rJ
+Qa
+Qa
+Qa
+bo
+sm
+Qa
+rJ
+"}
+(15,1,1) = {"
+jZ
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+rJ
+iI
+rJ
+rJ
+iI
+oI
+Qa
+Qa
+Qa
+Qa
+iI
+"}
+(16,1,1) = {"
+jZ
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+Qa
+oI
+rJ
+oI
+oI
+rJ
+rJ
+rJ
+oI
+rJ
+rJ
+oI
+"}
+(17,1,1) = {"
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+jZ
+rJ
+rJ
+rJ
+rJ
+oI
+xu
+rJ
+iI
+oI
+rJ
+"}

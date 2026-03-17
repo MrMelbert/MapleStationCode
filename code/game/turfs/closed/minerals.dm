@@ -664,6 +664,7 @@
 	name = "sandy rock"
 	color = "#ffcc66"
 	baseturfs = /turf/open/misc/beach/sand
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
 
 //GIBTONITE
 

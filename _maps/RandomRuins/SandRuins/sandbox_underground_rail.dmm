@@ -1,0 +1,475 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/item/pickaxe/rusted,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"c" = (
+/obj/structure/minecart_rail{
+	dir = 6
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"f" = (
+/obj/item/stack/ore/gold,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"g" = (
+/obj/item/tank/internals/generic,
+/obj/item/clothing/mask/gas/explorer/folded,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"j" = (
+/obj/item/gibtonite,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"k" = (
+/obj/item/stack/ore/glass{
+	amount = 12
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"l" = (
+/obj/item/stack/ore/uranium,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"n" = (
+/obj/structure/minecart_rail{
+	dir = 1
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"o" = (
+/obj/item/shovel,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"q" = (
+/obj/structure/minecart_rail{
+	dir = 9
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"s" = (
+/obj/item/stack/ore/diamond,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"t" = (
+/obj/item/clothing/mask/facescarf,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"v" = (
+/turf/closed/mineral/ash_rock,
+/area/ruin/unpowered)
+"x" = (
+/obj/structure/fluff/minepost,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"A" = (
+/obj/item/stack/ore/iron{
+	amount = 4
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"B" = (
+/obj/item/stack/ore/glass,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"E" = (
+/obj/item/stack/ore/silver,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"H" = (
+/obj/structure/minecart_rail,
+/obj/structure/closet/crate/miningcar,
+/obj/item/pickaxe/drill,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"I" = (
+/obj/structure/minecart_rail{
+	dir = 10
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"J" = (
+/obj/structure/minecart_rail,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"K" = (
+/obj/item/stack/ore/glass{
+	amount = 12
+	},
+/obj/item/stack/ore/plasma,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"M" = (
+/obj/structure/minecart_rail{
+	dir = 5
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"O" = (
+/obj/item/stack/ore/glass,
+/obj/item/bodybag{
+	pixel_x = -10;
+	pixel_y = 9
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"P" = (
+/obj/item/stack/ore/glass{
+	amount = 6
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"R" = (
+/obj/structure/minecart_rail{
+	dir = 8
+	},
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"U" = (
+/obj/machinery/syndicatebomb/empty,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+"Y" = (
+/turf/closed/mineral/sand,
+/area/ruin/unpowered)
+"Z" = (
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered)
+
+(1,1,1) = {"
+Y
+Y
+Y
+Y
+Y
+Z
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Z
+"}
+(2,1,1) = {"
+Y
+Y
+Y
+Y
+Y
+o
+Z
+Y
+Y
+Y
+l
+U
+Y
+Y
+Y
+Y
+Y
+Y
+Z
+B
+Z
+t
+x
+Z
+Z
+Z
+"}
+(3,1,1) = {"
+Y
+Y
+Y
+Y
+v
+Z
+Z
+v
+Y
+Y
+Z
+j
+K
+Y
+Y
+v
+M
+J
+J
+J
+J
+J
+J
+H
+J
+Z
+"}
+(4,1,1) = {"
+Y
+Y
+Y
+v
+v
+v
+A
+Z
+v
+v
+Y
+Z
+Y
+Y
+v
+Z
+R
+Z
+x
+a
+Z
+A
+B
+Z
+o
+Z
+"}
+(5,1,1) = {"
+Y
+Y
+Y
+v
+v
+k
+Z
+B
+Z
+x
+Z
+Z
+a
+v
+v
+O
+R
+Z
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Z
+"}
+(6,1,1) = {"
+Y
+Y
+Y
+v
+v
+v
+M
+n
+n
+n
+n
+c
+Z
+Z
+g
+Z
+R
+B
+v
+v
+Y
+Y
+Y
+v
+Y
+Y
+"}
+(7,1,1) = {"
+Z
+Y
+Y
+v
+v
+v
+R
+Z
+Z
+B
+A
+q
+n
+n
+n
+n
+I
+Z
+v
+v
+v
+Y
+Y
+v
+v
+Y
+"}
+(8,1,1) = {"
+Z
+Z
+Y
+v
+v
+Z
+R
+Z
+v
+v
+Z
+B
+Z
+Z
+x
+Z
+A
+Z
+Z
+v
+v
+Y
+Y
+v
+v
+v
+"}
+(9,1,1) = {"
+o
+Z
+x
+E
+B
+Z
+R
+Z
+Y
+Y
+Y
+v
+v
+v
+v
+v
+Y
+Z
+P
+Z
+Y
+Y
+v
+v
+v
+v
+"}
+(10,1,1) = {"
+Z
+J
+J
+J
+J
+J
+I
+t
+Y
+Y
+Y
+Y
+v
+v
+v
+Y
+Y
+Y
+Z
+Z
+Y
+Y
+v
+v
+v
+v
+"}
+(11,1,1) = {"
+Z
+Z
+Z
+Z
+P
+a
+x
+f
+v
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+s
+Y
+Y
+v
+v
+v
+Y
+"}
+(12,1,1) = {"
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+v
+v
+v
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+Y
+v
+v
+v
+Y
+Y
+"}

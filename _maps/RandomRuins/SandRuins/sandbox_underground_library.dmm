@@ -1,0 +1,915 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ac" = (
+/obj/effect/mob_spawn/corpse/human/skeleton,
+/obj/item/clothing/head/costume/rice_hat,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"at" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper{
+	dir = 4
+	},
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"az" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/paper/crumpled/fluff/stations/lavaland/library/diary2,
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"aB" = (
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"aM" = (
+/obj/machinery/door/puzzle/keycard/library,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"aT" = (
+/turf/closed/wall/mineral/sandstone,
+/area/ruin/unpowered/buried_library)
+"bf" = (
+/obj/item/stack/sheet/mineral/wood,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"cf" = (
+/obj/item/feather,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"cg" = (
+/obj/structure/bookcase/random,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"cK" = (
+/obj/structure/fluff/paper,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"cW" = (
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered/buried_library)
+"cZ" = (
+/turf/closed/mineral/sand,
+/area/icemoon/underground/unexplored)
+"di" = (
+/obj/structure/fluff/paper/stack,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"ek" = (
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"eK" = (
+/obj/item/book/manual/random,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"fd" = (
+/obj/item/flashlight/lantern/jade{
+	start_on = 1
+	},
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"fh" = (
+/obj/item/paper/fluff/ruins/oldstation/protogun,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"gF" = (
+/obj/item/stack/sheet/mineral/wood,
+/obj/item/book/manual/random,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"gQ" = (
+/obj/structure/fluff/paper,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"ii" = (
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"iq" = (
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"iV" = (
+/obj/item/paper/crumpled/bloody/fluff/stations/lavaland/library/warning,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"jr" = (
+/obj/structure/fluff/paper{
+	dir = 1
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"jP" = (
+/obj/item/stack/sheet/mineral/wood,
+/obj/item/book/manual/random,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"jU" = (
+/obj/structure/table/wood/fancy/black,
+/obj/effect/decal/cleanable/dirt,
+/obj/item/paper/secretrecipe,
+/obj/item/flashlight/lantern/jade{
+	start_on = 1
+	},
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"km" = (
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"kv" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"lm" = (
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"lx" = (
+/obj/item/feather,
+/obj/structure/fluff/paper,
+/obj/structure/fluff/paper{
+	dir = 1
+	},
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"ol" = (
+/obj/structure/mineral_door/sandstone,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"ou" = (
+/obj/structure/fluff/paper/stack,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"oJ" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"oR" = (
+/obj/structure/fluff/paper/stack,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"pA" = (
+/obj/effect/decal/cleanable/dirt,
+/mob/living/basic/pet/fox,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"sW" = (
+/turf/closed/wall/mineral/iron,
+/area/ruin/unpowered/buried_library)
+"sZ" = (
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"tp" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper{
+	dir = 1
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"uQ" = (
+/turf/open/floor/wood{
+	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	},
+/area/ruin/unpowered/buried_library)
+"uR" = (
+/obj/item/stack/sheet/mineral/wood,
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"vT" = (
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"wf" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"xB" = (
+/obj/item/stack/sheet/mineral/wood,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"xD" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper{
+	dir = 1
+	},
+/mob/living/basic/pet/fox,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"xE" = (
+/obj/structure/fluff/paper{
+	dir = 10
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"zF" = (
+/turf/template_noop,
+/area/template_noop)
+"Cy" = (
+/obj/structure/bookcase/random,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"CG" = (
+/obj/item/stack/sheet/mineral/wood,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Dn" = (
+/obj/structure/fluff/paper/stack,
+/obj/structure/fluff/paper,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Ft" = (
+/obj/structure/table/bronze,
+/obj/item/statuebust,
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"Gn" = (
+/obj/item/stack/sheet/mineral/wood,
+/turf/closed/mineral/sand,
+/area/icemoon/underground/unexplored)
+"GX" = (
+/obj/item/feather,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"Hk" = (
+/obj/item/paper/crumpled/fluff/stations/lavaland/library/diary,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Hz" = (
+/obj/item/book/manual/random,
+/obj/item/stack/sheet/mineral/wood,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"Ip" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"IH" = (
+/obj/item/feather,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"IW" = (
+/obj/item/storage/box/fountainpens,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"JE" = (
+/obj/item/keycard/library,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"Kf" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/book_of_babel,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"KU" = (
+/obj/structure/table/bronze,
+/obj/item/statuebust/hippocratic,
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Mi" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"MB" = (
+/obj/structure/table_frame/wood,
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"MH" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Na" = (
+/obj/item/stack/sheet/mineral/wood,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"OB" = (
+/obj/structure/barricade/wooden,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"Qp" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/fluff/paper,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"QP" = (
+/obj/structure/fluff/paper{
+	dir = 5
+	},
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"QU" = (
+/obj/item/book/manual/random,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"QW" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"SU" = (
+/obj/structure/statue/bronze/marx,
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Tn" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/documents/syndicate/mining,
+/obj/effect/decal/cleanable/cobweb,
+/turf/open/floor/cult,
+/area/ruin/unpowered/buried_library)
+"To" = (
+/obj/item/stack/sheet/mineral/wood,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"TT" = (
+/obj/structure/girder,
+/turf/closed/mineral/sand,
+/area/ruin/unpowered/buried_library)
+"Uy" = (
+/obj/structure/fluff/paper/stack,
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"UF" = (
+/obj/structure/statue/sandstone/venus,
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Wj" = (
+/mob/living/basic/pet/fox,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"WC" = (
+/turf/open/floor/plating/sand,
+/area/ruin/unpowered/buried_library)
+"Xm" = (
+/obj/item/paper/fluff/ruins/oldstation/protosupermatter,
+/turf/open/misc/beach/sand,
+/area/ruin/unpowered/buried_library)
+"XW" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/item/paper/fluff/awaymissions/moonoutpost19/research/larva_autopsy,
+/turf/open/floor/wood{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+"Yg" = (
+/obj/structure/table/bronze,
+/obj/item/stack/ore/slag,
+/turf/open/floor/carpet/black{
+	initial_gas_mix = "ICEMOON_ATMOS"
+	},
+/area/ruin/unpowered/buried_library)
+
+(1,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+cZ
+cZ
+cZ
+cZ
+cZ
+cZ
+cZ
+zF
+zF
+"}
+(2,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+lm
+lm
+lm
+lm
+lm
+aT
+OB
+aT
+aT
+aT
+cZ
+cZ
+zF
+"}
+(3,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+lm
+lm
+lm
+lm
+bf
+lm
+lm
+vT
+di
+km
+xB
+xE
+aT
+cZ
+cZ
+zF
+"}
+(4,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+zF
+lm
+lm
+ou
+vT
+vT
+km
+eK
+cg
+lm
+Cy
+MH
+Cy
+Qp
+aT
+cZ
+zF
+zF
+"}
+(5,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+lm
+lm
+vT
+GX
+km
+XW
+Cy
+lm
+cg
+fh
+Cy
+oJ
+Cy
+lm
+aT
+cZ
+cZ
+zF
+"}
+(6,1,1) = {"
+zF
+zF
+zF
+zF
+cZ
+aT
+vT
+km
+vT
+jP
+Wj
+Cy
+di
+Cy
+wf
+Cy
+kv
+Cy
+jr
+aT
+cZ
+cZ
+cZ
+"}
+(7,1,1) = {"
+zF
+zF
+zF
+zF
+cZ
+aT
+lm
+di
+lm
+QW
+iq
+QW
+wf
+kv
+Ip
+Cy
+Dn
+Cy
+xD
+aT
+cZ
+cZ
+cZ
+"}
+(8,1,1) = {"
+zF
+zF
+zF
+zF
+cZ
+lm
+lm
+cg
+wf
+vT
+Yg
+sZ
+Ft
+vT
+QW
+km
+QW
+Cy
+km
+aT
+vT
+vT
+cZ
+"}
+(9,1,1) = {"
+zF
+zF
+zF
+zF
+cZ
+aT
+Xm
+cg
+eK
+cW
+sZ
+fd
+sZ
+ek
+lm
+uQ
+QW
+km
+QW
+aT
+vT
+Ip
+vT
+"}
+(10,1,1) = {"
+zF
+zF
+zF
+cZ
+cZ
+aT
+Na
+vT
+lm
+sZ
+sZ
+UF
+vT
+WC
+lm
+kv
+CG
+iq
+km
+ol
+km
+bf
+cZ
+"}
+(11,1,1) = {"
+zF
+sW
+sW
+sW
+sW
+sW
+km
+Cy
+iq
+sZ
+vT
+sZ
+sZ
+SU
+QW
+WC
+kv
+km
+oR
+aT
+iV
+vT
+cZ
+"}
+(12,1,1) = {"
+cZ
+sW
+Tn
+ac
+ii
+sW
+ou
+gF
+xB
+sZ
+KU
+Uy
+MB
+sZ
+lm
+km
+di
+Cy
+cf
+TT
+aT
+cZ
+cZ
+"}
+(13,1,1) = {"
+cZ
+sW
+Kf
+Mi
+aB
+aM
+Ip
+Cy
+kv
+km
+QW
+km
+xB
+vT
+cK
+Cy
+lm
+Cy
+cK
+aT
+cZ
+cZ
+cZ
+"}
+(14,1,1) = {"
+cZ
+sW
+jU
+aB
+IH
+sW
+gQ
+Cy
+vT
+Cy
+pA
+Cy
+Hk
+Cy
+lm
+Cy
+lm
+Hz
+oJ
+aT
+cZ
+zF
+zF
+"}
+(15,1,1) = {"
+cZ
+sW
+sW
+az
+ii
+sW
+lx
+Cy
+MH
+Cy
+wf
+Cy
+QW
+Cy
+lm
+lm
+IW
+lm
+lm
+lm
+cZ
+zF
+zF
+"}
+(16,1,1) = {"
+cZ
+cZ
+sW
+sW
+sW
+sW
+tp
+Cy
+QW
+Cy
+kv
+uR
+lm
+Cy
+vT
+lm
+oR
+To
+lm
+TT
+Gn
+zF
+zF
+"}
+(17,1,1) = {"
+zF
+cZ
+cZ
+cZ
+cZ
+aT
+QP
+at
+Ip
+JE
+Ip
+iq
+km
+vT
+lm
+QU
+lm
+cZ
+cZ
+cZ
+zF
+zF
+zF
+"}
+(18,1,1) = {"
+zF
+zF
+zF
+zF
+cZ
+aT
+aT
+aT
+aT
+aT
+aT
+OB
+aT
+aT
+vT
+cZ
+zF
+cZ
+zF
+zF
+zF
+zF
+zF
+"}
+(19,1,1) = {"
+zF
+zF
+zF
+zF
+zF
+cZ
+cZ
+cZ
+cZ
+cZ
+cZ
+zF
+cZ
+cZ
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+zF
+"}
