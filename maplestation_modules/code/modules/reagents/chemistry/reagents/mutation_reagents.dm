@@ -16,11 +16,3 @@
 	race = /datum/species/skrell
 	taste_description = "calamari"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/mutationtoxin/reploid
-	name = "Reploid Mutation Toxin"
-	description = "A synthetic toxin."
-	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/reploid
-	taste_description = "maverick dreams"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
