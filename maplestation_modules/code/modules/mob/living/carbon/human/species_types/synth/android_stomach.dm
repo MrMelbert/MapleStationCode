@@ -27,6 +27,26 @@
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_SPECIES_HANDLE_CHEMICAL)
 
+/obj/item/organ/stomach/ethereal/android/get_status_appendix(advanced, add_tooltips)
+	var/charge_percent = cell.charge() / ETHEREAL_CHARGE_FULL
+	. = "Charge: [round_and_format_decimal(charge_percent * 100)]%"
+	if(charge_percent <= 0.2)
+		. += " "
+		. += conditional_tooltip("(Critical: Low power)", "Recharge in a recharging station, though be wary not to overcharge.", add_tooltips)
+		. = span_bolddanger(.)
+	if(charge_percent <= 0.5)
+		. += " "
+		. += "(Warning: Low power)"
+		. = span_danger(.)
+	if(charge_percent >= 1.25)
+		. += " "
+		. += " (Warning: Overcharge)"
+		. = span_danger(.)
+	if(charge_percent >= 1.5)
+		. += " "
+		. += conditional_tooltip("(Critical: Overcharge)", "Await automatic discharge. Stand back once the process begins.", add_tooltips)
+		. = span_bolddanger(.)
+
 /// Conversion factor between nutrition -> charge
 #define NUTRITION_MULTIPLIER 5
 /// Conversion factor between alcohol -> charge
@@ -44,7 +64,7 @@
 /obj/item/organ/stomach/ethereal/android/proc/handle_chemical(mob/living/carbon/source, datum/reagent/chem, seconds_per_tick, times_fired)
 	SIGNAL_HANDLER
 
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & (ORGAN_FAILING|ORGAN_EMP))
 		return NONE
 
 	if(!istype(chem, /datum/reagent/consumable))

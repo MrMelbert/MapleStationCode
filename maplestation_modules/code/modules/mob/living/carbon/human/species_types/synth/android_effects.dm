@@ -73,3 +73,27 @@
 /datum/mood_event/android_critical_overcool
 	description = "System significantly below optimal temperature! To prevent chassis damage, I should warm up immediately!"
 	mood_change = -6
+
+/datum/movespeed_modifier/android_low_blood
+	id = "android_low_blood"
+
+/datum/movespeed_modifier/android_low_blood/t1
+	multiplicative_slowdown = 0.2
+
+/datum/movespeed_modifier/android_low_blood/t2
+	multiplicative_slowdown = 0.5
+
+/datum/movespeed_modifier/android_low_blood/t3
+	multiplicative_slowdown = 1.0
+
+/datum/actionspeed_modifier/android_low_blood
+	id = "android_low_blood"
+
+/datum/actionspeed_modifier/android_low_blood/t1
+	multiplicative_slowdown = 0.2
+
+/datum/actionspeed_modifier/android_low_blood/t2
+	multiplicative_slowdown = 0.5
+
+/datum/actionspeed_modifier/android_low_blood/t3
+	multiplicative_slowdown = 1.0

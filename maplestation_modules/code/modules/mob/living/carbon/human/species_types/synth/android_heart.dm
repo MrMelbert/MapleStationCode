@@ -10,6 +10,3 @@
 		return
 
 	apply_organ_damage(10 / severity)
-
-// /obj/item/organ/heart/android/get_heart_rate()
-// 	return 2 // static heart rate

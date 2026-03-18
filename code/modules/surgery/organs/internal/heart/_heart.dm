@@ -126,11 +126,11 @@
 
 /obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
 	var/bpm = get_heart_rate()
-	. = "Heart rate: [bpm]" + span_slightly_smaller("bpm")
+	. = "[IS_ORGANIC_ORGAN(src) ? "Heart" : "Pulse"] rate: [bpm]" + span_slightly_smaller("bpm")
 	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
 		. = span_alert(.)
 
-	if(advanced)
+	if(advanced && IS_ORGANIC_ORGAN(src))
 		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
@@ -154,8 +154,11 @@
 	if(!owner.needs_heart())
 		return
 
+	if(SEND_SIGNAL(owner, COMSIG_CARBON_HEARTBEAT, src, seconds_per_tick) & HEARTBEAT_HANDLED)
+		return
+
 	// Handle "sudden" cardiac arrest
-	if(!beating || (organ_flags & ORGAN_FAILING))
+	if(organ_flags & ORGAN_FAILING)
 		stop_on_beat()
 		return
 

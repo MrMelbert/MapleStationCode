@@ -28,7 +28,7 @@
 	mutantlungs = /obj/item/organ/lungs/android
 	mutanteyes = /obj/item/organ/eyes/robotic/synth
 	mutantears = /obj/item/organ/ears/android
-	species_pain_mod = 0.5 // the bodyparts themselves also reduce pain
+	species_pain_mod = 0.2 // the bodyparts themselves also reduce pain
 	exotic_bloodtype = /datum/blood_type/oil
 
 	bodypart_overrides = list(
@@ -55,6 +55,14 @@
 	VAR_FINAL/is_overheating = 0
 	/// Tracks overcooling state (0-3)
 	VAR_FINAL/is_overcooled = 0
+	/// Tracks if we have issued a BP warning
+	var/bp_warning = 0
+	/// Tracks if we have issued a BPM warning
+	var/bpm_warning = 0
+	/// Tracks if we have issued a toxicity warning, and at what level
+	var/last_toxic_warning = 0
+	/// Tracks if we've modified the bleed rate due to excess blood volume
+	var/bleed_rate_changed = FALSE
 
 	/// List of species an android can be designed as
 	var/list/android_species = list(
@@ -86,6 +94,7 @@
 			set_mutant_organ(ORGAN_SLOT_EARS, /obj/item/organ/ears/cat/cybernetic, gained_species)
 
 	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(handle_blood))
+	RegisterSignal(gained_species, COMSIG_CARBON_HEARTBEAT, PROC_REF(handle_heartbeat))
 	RegisterSignal(gained_species, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(gained_species, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE, PROC_REF(temperature_update))
 	RegisterSignal(gained_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(brittle_modifier))
@@ -93,11 +102,14 @@
 	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE, PROC_REF(handle_breath_temperature))
 	RegisterSignal(gained_species, COMSIG_CARBON_POST_ATTACH_LIMB, PROC_REF(on_limb_gained))
 	RegisterSignal(gained_species, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_limb_lost))
+	RegisterSignal(gained_species, COMSIG_MOB_REAGENT_CHECK, PROC_REF(on_reagent_tick))
+	RegisterSignal(gained_species, COMSIG_LIVING_ADJUST_TOX_DAMAGE, PROC_REF(tox_change))
 	return ..()
 
 /datum/species/android/on_species_loss(mob/living/carbon/human/lost_species, datum/species/new_species, pref_load)
 	. = ..()
 	UnregisterSignal(lost_species, COMSIG_HUMAN_ON_HANDLE_BLOOD)
+	UnregisterSignal(lost_species, COMSIG_CARBON_HEARTBEAT)
 	UnregisterSignal(lost_species, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(lost_species, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE)
 	UnregisterSignal(lost_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
@@ -105,20 +117,30 @@
 	UnregisterSignal(lost_species, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE)
 	UnregisterSignal(lost_species, COMSIG_CARBON_POST_ATTACH_LIMB)
 	UnregisterSignal(lost_species, COMSIG_CARBON_REMOVE_LIMB)
+	UnregisterSignal(lost_species, COMSIG_MOB_REAGENT_CHECK)
+	UnregisterSignal(lost_species, COMSIG_LIVING_ADJUST_TOX_DAMAGE)
 	if(is_leaking)
 		remove_leaking(lost_species)
 	if(is_overheating)
 		remove_heat_modifiers(lost_species)
 	if(is_overcooled)
 		remove_cold_modifiers(lost_species)
+	if(bleed_rate_changed)
+		lost_species.physiology.bleed_mod /= 3
 
 /datum/species/android/proc/remove_leaking(mob/living/carbon/human/removing)
 	if(!is_leaking)
 		return
 
 	is_leaking = FALSE
-	removing.physiology.bleed_mod /= 3
 	removing.clear_alert("leak_warning")
+
+/datum/species/android/proc/start_leaking(mob/living/carbon/human/source)
+	if(is_leaking)
+		return
+
+	is_leaking = TRUE
+	source.throw_alert("leak_warning", /atom/movable/screen/alert/blood_leak)
 
 /datum/species/android/proc/remove_heat_modifiers(mob/living/carbon/human/removing)
 	if(!is_overheating)
@@ -154,14 +176,30 @@
  */
 /datum/species/android/spec_life(mob/living/carbon/human/android, seconds_per_tick, times_fired)
 	. = ..()
+	var/toxicity = android.getToxLoss()
 	// model pump behavior
 	var/obj/item/organ/heart = android.get_organ_slot(ORGAN_SLOT_HEART)
-	if(isnull(heart) || IS_ORGANIC_ORGAN(heart))
+	if(isnull(heart) || IS_ORGANIC_ORGAN(heart) || (heart.organ_flags & (ORGAN_FAILING|ORGAN_EMP)))
 		// lacking a mechanical heart will eventually consume all of your oil/hydraulic fluid
 		android.bleed(0.5 * seconds_per_tick, leave_pool = FALSE)
 	else
 		// otherwise the pump generates heat passively
 		android.adjust_body_temperature(0.12 KELVIN * seconds_per_tick, max_temp = android.bodytemp_heat_damage_limit * 1.5)
+
+	var/obj/item/organ/liver = android.get_organ_slot(ORGAN_SLOT_LIVER)
+	if(isnull(liver) || IS_ORGANIC_ORGAN(liver) || (liver.organ_flags & (ORGAN_FAILING|ORGAN_EMP)))
+		// mechanical livers filter toxins, if you lack one you no longer have toxin healing
+		EMPTY_BLOCK_GUARD
+
+	else if(toxicity)
+		// having a functioning mechanical liver clears toxins
+		if(!android.reagents.has_reagent(/datum/reagent/toxin, check_subtypes = TRUE))
+			android.adjustToxLoss(-1 * seconds_per_tick)
+		android.adjust_body_temperature(0.16 * seconds_per_tick, max_temp = android.bodytemp_heat_damage_limit * 1.5)
+
+	// toxicity may lead to overheating
+	if(toxicity > 0)
+		android.adjust_body_temperature(0.5 KELVIN * (toxicity / 50) * seconds_per_tick, max_temp = android.bodytemp_heat_damage_limit * 1.5)
 
 	if(is_overheating)
 		android.temperature_burns(1.25 * is_overheating * seconds_per_tick)
@@ -212,12 +250,15 @@
 	else if(is_overcooled)
 		remove_cold_modifiers(source)
 
-/datum/species/android/proc/handle_blood(mob/living/carbon/source, seconds_per_tick, times_fired)
+/datum/species/android/proc/handle_blood(mob/living/carbon/human/source, seconds_per_tick, times_fired)
 	SIGNAL_HANDLER
 
-	switch(source.blood_volume)
+	var/bloodpressure = source.get_bp()
+	switch(source.blood_volume * clamp(bloodpressure / 100, 0.5, 1.5))
 		if(BLOOD_VOLUME_MAXIMUM to INFINITY)
-			EMPTY_BLOCK_GUARD // handled in on_moved
+			if(!bleed_rate_changed)
+				source.physiology.bleed_mod *= 3
+				bleed_rate_changed = TRUE
 		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_MAXIMUM)
 			EMPTY_BLOCK_GUARD // all good
 		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
@@ -225,17 +266,29 @@
 			source.add_consciousness_modifier(BLOOD_LOSS, -10)
 			if(SPT_PROB(2.5, seconds_per_tick))
 				source.set_eye_blur_if_lower(12 SECONDS)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/android_low_blood/t1)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/android_low_blood/t1)
 		if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 			source.add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.6)
 			source.add_consciousness_modifier(BLOOD_LOSS, -20)
 			source.set_eye_blur_if_lower(6 SECONDS)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/android_low_blood/t2)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/android_low_blood/t2)
 		if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 			source.add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.2)
 			source.add_consciousness_modifier(BLOOD_LOSS, -50)
+			source.add_actionspeed_modifier(/datum/actionspeed_modifier/android_low_blood/t3)
+			source.add_movespeed_modifier(/datum/movespeed_modifier/android_low_blood/t3)
 
 	if(source.blood_volume > BLOOD_VOLUME_OKAY)
 		source.remove_max_consciousness_value(BLOOD_LOSS)
 		source.remove_consciousness_modifier(BLOOD_LOSS)
+		source.remove_actionspeed_modifier(/datum/actionspeed_modifier/android_low_blood)
+		source.remove_movespeed_modifier(/datum/movespeed_modifier/android_low_blood)
+
+	if(source.blood_volume < BLOOD_VOLUME_MAXIMUM && bleed_rate_changed)
+		source.physiology.bleed_mod /= 3
+		bleed_rate_changed = FALSE
 
 	return HANDLE_BLOOD_HANDLED
 
@@ -245,27 +298,112 @@
 	if(!ishuman(source))
 		return // whatever man
 
-	if(source.blood_volume <= BLOOD_VOLUME_EXCESS)
-		if(is_leaking)
-			remove_leaking()
+	if(!is_leaking)
 		return
 
-	if(!is_leaking)
-		is_leaking = TRUE
-		source.physiology.bleed_mod *= 3
-		source.throw_alert("leak_warning", /atom/movable/screen/alert/blood_leak)
+	var/blood_mod = 0.02
+	switch(source.blood_volume)
+		if(BLOOD_VOLUME_EXCESS to INFINITY)
+			blood_mod = 0.33
+		if(BLOOD_VOLUME_MAXIMUM to BLOOD_VOLUME_EXCESS)
+			blood_mod = 0.1
 
-	var/shedded_blood = BLOOD_AMOUNT_PER_DECAL * (source.blood_volume >= BLOOD_VOLUME_MAXIMUM ? 0.33 : 0.1)
+	if(prob(3))
+		var/list/leak_source = list("joint", "seam", "panel")
+		if(source.getBruteLoss() >= 30)
+			leak_source += list("crack", "fracture", "rupture")
+		if(source.is_bleeding())
+			leak_source += list("gash", "hole", "tear")
+
+		var/oil_name = LOWER_TEXT(source.blood_type.reagent_type::name)
+		source.visible_message(
+			span_smalldanger("A stream of [oil_name] leaks through \a [pick(leak_source)] in [source]'s chassis."),
+			span_smalldanger("A stream of [oil_name] leaks through \a [pick(leak_source)] in your chassis."),
+			vision_distance = 2,
+		)
+
 	source.make_blood_trail(
 		target_turf = get_turf(source),
 		start = from_loc,
 		was_facing = source.dir,
 		movement_direction = movement_dir,
-		blood_to_add = shedded_blood,
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * blood_mod,
 		blood_dna = source.get_blood_dna_list(),
 		static_viruses = source.get_static_viruses(),
 	)
-	source.blood_volume -= shedded_blood
+	source.bleed(BLOOD_AMOUNT_PER_DECAL * blood_mod, FALSE)
+
+/datum/species/android/proc/handle_heartbeat(mob/living/carbon/human/owner, obj/item/organ/heart/heart, seconds_per_tick)
+	SIGNAL_HANDLER
+
+	if(!IS_ROBOTIC_ORGAN(heart))
+		return HEARTBEAT_HANDLED // invalid organ, so it does nothing.
+
+	if(!owner.needs_heart())
+		return HEARTBEAT_HANDLED // we don't need a heart rn, so it does nothing.
+
+	var/heartrate = heart.get_heart_rate()
+
+	if(heartrate <= 0 || (heart.organ_flags & ORGAN_FAILING))
+		if(heart.Stop())
+			to_chat(owner, span_binarysay("Alert: Hydraulic fluid pump failure. Seek maintenance immediately."))
+		return HEARTBEAT_HANDLED // heart isn't working, so don't do anything.
+
+	if(is_leaking)
+		if(SPT_PROB(3, seconds_per_tick))
+			var/list/leak_source = list("joint", "seam", "panel")
+			if(owner.getBruteLoss() >= 30)
+				leak_source += list("crack", "fracture", "rupture")
+			if(owner.is_bleeding())
+				leak_source += list("gash", "hole", "tear")
+
+			var/oil_name = LOWER_TEXT(owner.blood_type.reagent_type::name)
+			owner.visible_message(
+				span_smalldanger("A drop of [oil_name] leaks through \a [pick(leak_source)] in [owner]'s chassis."),
+				span_smalldanger("A drop of [oil_name] leaks through \a [pick(leak_source)] in your chassis."),
+				vision_distance = 2,
+			)
+		owner.bleed(0.5)
+
+	if(heartrate > 160)
+		if(bpm_warning != 2)
+			bpm_warning = 2
+			to_chat(owner, span_binarysay("Warning: Hydraulic fluid pump operating at critically high speed. Seek maintenance immediately."))
+
+	else if(heartrate < 40)
+		if(bpm_warning != 1)
+			bpm_warning = 1
+			to_chat(owner, span_binarysay("Warning: Hydraulic fluid pump operating at critically low speed. Seek maintenance immediately."))
+
+	else
+		if(bpm_warning != 0)
+			bpm_warning = 0
+			to_chat(owner, span_binarysay("Notice: Hydraulic fluid pump speed stabilized."))
+
+	var/bloodpressure = heart.get_blood_pressure()
+	if(bloodpressure > 140)
+		if(bp_warning != 2)
+			bp_warning = 2
+			to_chat(owner, span_binarysay("Warning: Hydraulic fluid pressure critically high. Seek maintenance immediately."))
+
+	else if(bloodpressure < 60)
+		if(bp_warning != 1)
+			bp_warning = 1
+			to_chat(owner, span_binarysay("Warning: Hydraulic fluid pressure critically low. Seek maintenance immediately."))
+
+	else
+		if(bp_warning != 0)
+			bp_warning = 0
+			to_chat(owner, span_binarysay("Notice: Hydraulic fluid pressure stabilized."))
+
+	if(bloodpressure < 60 || owner.blood_volume >= BLOOD_VOLUME_MAXIMUM)
+		if(!is_leaking)
+			start_leaking(owner)
+	else
+		if(is_leaking)
+			remove_leaking(owner)
+
+	return HEARTBEAT_HANDLED
 
 // androids don't do homeostasis, instead they use their lungs to cool themselves
 /datum/species/android/proc/handle_breath_temperature(mob/living/carbon/human/breather, datum/gas_mixture/breath, obj/item/organ/lungs)
@@ -360,6 +498,58 @@
 			remove_cold_modifiers()
 
 #undef HAS_TRAIT_NOT_FROM_LUNGS
+
+/datum/species/android/proc/on_reagent_tick(mob/living/carbon/human/source, datum/reagent/chem, seconds_per_tick)
+	SIGNAL_HANDLER
+
+	// cleaning chems reduce toxicity at a flat rate
+	if(chem.chemical_flags & REAGENT_CLEANS)
+		source.adjustToxLoss(-0.5 * seconds_per_tick)
+
+	if(istype(chem, /datum/reagent/consumable))
+		return NONE // either let stomach handle it or ignore it
+
+	var/works_on_organs = chem.affected_organ_flags & ORGAN_ROBOTIC
+	var/works_on_biotypes = chem.affected_biotype & MOB_ROBOTIC
+	var/works_on_bodytypes = chem.affected_bodytype & BODYTYPE_ROBOTIC
+	if(works_on_organs || works_on_biotypes || works_on_bodytypes)
+		return NONE // if it works on robotic parts, then it works normally
+
+	// toxins accrue as toxicity, though their standard effects are otherwise blocked
+	if(istype(chem, /datum/reagent/toxin))
+		var/datum/reagent/toxin/toxin_chem = chem
+		source.adjustToxLoss(0.5 * toxin_chem.toxpwr * seconds_per_tick)
+
+	source.reagents.remove_reagent(chem.type, 2 * chem.metabolization_rate * seconds_per_tick)
+	return COMSIG_MOB_STOP_REAGENT_CHECK
+
+/datum/species/android/proc/tox_change(mob/living/carbon/human/source, damtype, amount, force)
+	SIGNAL_HANDLER
+
+	switch(source.getToxLoss() + amount)
+		if(66 to 100)
+			if(last_toxic_warning < 3 && amount > 0)
+				last_toxic_warning = 3
+				to_chat(source, span_binarysay("Alert: Toxicity levels critical. Flushing systems with water or cleanser is advised."))
+		if(33 to 66)
+			if(last_toxic_warning < 2)
+				last_toxic_warning = 2
+				if(amount > 0)
+					to_chat(source, span_binarysay("Warning: Elevated toxicity levels detected. Consider flushing systems with water or cleanser."))
+				else
+					to_chat(source, span_binarysay("Warning: Toxicity levels have decreased but remain elevated. Further flushing recommended."))
+
+		if(16 to 33)
+			if(last_toxic_warning < 1)
+				last_toxic_warning = 1
+				if(amount > 0)
+					to_chat(source, span_binarysay("Notice: Mild toxicity levels present. Regular maintenance recommended."))
+				else
+					to_chat(source, span_binarysay("Notice: Toxicity levels have lowered to levels within reason. Continued maintenance recommended."))
+		if(0 to 16)
+			if(last_toxic_warning > 0 && amount < 0)
+				last_toxic_warning = 0
+				to_chat(source, span_binarysay("Notice: Toxicity flush complete. Systems operating within normal parameters."))
 
 // Add features from all android species for prefs
 /datum/species/android/get_features()
@@ -529,13 +719,6 @@
 		SPECIES_PERK_NAME = "Ion Vulnerability",
 		SPECIES_PERK_DESC = "Being entirely synthetic, [plural_form] are vulnerable to electromagnetic and ion pulses. \
 			These will drain their internal power, cause temporary malfunctions, and may even damage their systems if potent enough.",
-	))
-	to_add += list(list(
-		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_COGS,
-		SPECIES_PERK_NAME = "Irreplacable Parts",
-		SPECIES_PERK_DESC = "The core components of \an [name] are highly specialized. \
-			Most of their organs cannot be removed or replaced - they must be surgically repaired if damaged.",
 	))
 
 	return to_add

@@ -213,6 +213,7 @@
 	for(var/i in bodyparts)
 		var/obj/item/bodypart/BP = i
 		BP.setBleedStacks(0)
+	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /****************************************************
 				BLOOD TRANSFERS
