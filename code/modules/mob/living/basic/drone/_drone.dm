@@ -47,6 +47,7 @@
 	lighting_cutoff_red = 30
 	lighting_cutoff_green = 35
 	lighting_cutoff_blue = 25
+	initial_blood_type = /datum/blood_type/oil
 
 	can_be_held = TRUE
 	worn_slot_flags = ITEM_SLOT_HEAD

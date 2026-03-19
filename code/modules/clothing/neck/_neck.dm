@@ -307,7 +307,7 @@
 
 			//assess heart
 			if(body_part == BODY_ZONE_CHEST)//if we're listening to the chest
-				var/heart_rate = carbon_patient.get_heart_rate()
+				var/heart_rate = carbon_patient.get_bpm()
 				switch(heart_rate)
 					if(0)
 						render_list += "<span class='danger ml-1'>You don't hear a heartbeat!</span>\n"

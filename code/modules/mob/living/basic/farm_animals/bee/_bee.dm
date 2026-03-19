@@ -46,6 +46,7 @@
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	basic_mob_flags = DEL_ON_DEATH
 	ai_controller = /datum/ai_controller/basic_controller/bee
+	initial_blood_type = /datum/blood_type/animal/bug
 	///the reagent the bee has
 	var/datum/reagent/beegent = null
 	///the house we live in

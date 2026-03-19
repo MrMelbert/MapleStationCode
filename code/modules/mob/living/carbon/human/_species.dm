@@ -396,14 +396,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Drop the items the new species can't wear
 	INVOKE_ASYNC(src, PROC_REF(worn_items_fit_body_check), human_who_gained_species, TRUE)
 
-	// NON-MODULE CHANGE
-	// //Assigns exotic blood type if the species has one
-	// if(exotic_bloodtype && human_who_gained_species.dna.blood_type != exotic_bloodtype)
-	// 	human_who_gained_species.dna.blood_type = exotic_bloodtype
-	// //Otherwise, check if the previous species had an exotic bloodtype and we do not have one and assign a random blood type
-	// //(why the fuck is blood type not tied to a fucking DNA block?)
-	// else if(old_species.exotic_bloodtype && !exotic_bloodtype)
-	// 	human_who_gained_species.dna.blood_type = random_blood_type()
+	//Assigns exotic blood type if the species has one
+	if(exotic_bloodtype)
+		human_who_gained_species.set_blood_type(exotic_bloodtype, update = FALSE)
 
 	if(isnum(species_pain_mod) && species_pain_mod != 1)
 		human_who_gained_species.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
@@ -467,12 +462,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	clear_tail_moodlets(C)
 
+	C.reset_blood_type(update = FALSE)
+
 	C.unset_pain_mod(PAIN_MOD_SPECIES)
 
 	C.physiology?.cold_mod /= coldmod
 	C.physiology?.heat_mod /= heatmod
 
-	remove_body_markings(C)
+	remove_body_markings(C, update = FALSE)
 
 	// Removes all languages previously associated with [LANGUAGE_SPECIES], gaining our new species will add new ones back
 	var/datum/language_holder/losing_holder = GLOB.prototype_language_holders[species_language_holder]
@@ -762,7 +759,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Cringe but blood handles this on its own
 	// This also has problems of its own but that's better fixed later I think
 	if(!istype(chem, /datum/reagent/blood))
-		var/datum/blood_type/blood = affected.get_blood_type()
+		var/datum/blood_type/blood = affected.blood_type
 		if(chem.type == blood?.reagent_type)
 			affected.blood_volume = min(affected.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 			affected.reagents.del_reagent(chem.type)
@@ -1644,10 +1641,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		qdel(markings)
 
 /// Remove body markings
-/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
+/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman, update = TRUE)
 	for(var/obj/item/bodypart/part as anything in hooman.bodyparts)
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
-			part.remove_bodypart_overlay(marking)
+			part.remove_bodypart_overlay(marking, update = update)
 
 /**
  * Calculates the expected height values for this species

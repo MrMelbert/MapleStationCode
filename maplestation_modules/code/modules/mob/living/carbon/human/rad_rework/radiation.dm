@@ -100,12 +100,11 @@
 
 /datum/status_effect/irradiated/proc/random_effects(time_since_irradiated, seconds_per_tick)
 	if(time_since_irradiated > 1 MINUTES && SPT_PROB(2, seconds_per_tick))
-		var/datum/blood_type/blood_type = owner.get_blood_type()
 		if(time_since_irradiated > 2 MINUTES && prob(33))
 			var/mob/living/carbon/get_sick = owner
 			get_sick.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 10)
-		else if(blood_type)
-			to_chat(owner, span_notice("You can taste [LOWER_TEXT(blood_type.reagent_type::name)]."))
+		else if(owner.has_blood())
+			to_chat(owner, span_notice("You can taste [LOWER_TEXT(owner.blood_type.reagent_type::name)]."))
 
 	if(time_since_irradiated > 2 MINUTES && SPT_PROB(0.5, seconds_per_tick))
 		if(!owner.IsParalyzed())

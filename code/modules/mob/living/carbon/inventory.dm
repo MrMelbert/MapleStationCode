@@ -546,6 +546,18 @@
 	// as it would imply your chest is accessible from lacking groin coverage
 	return !(location in cover_flags2body_zones(covered_flags))
 
+/// Get all the clothing on a specific body part
+/mob/living/carbon/proc/get_clothing_on_part(obj/item/bodypart/def_zone)
+	if(istext(def_zone))
+		def_zone = get_bodypart(def_zone)
+
+	var/list/covering_part = list()
+	for(var/obj/item/clothing/clothes as anything in get_equipped_items())
+		if(clothes.body_parts_covered & def_zone.body_part)
+			covering_part += clothes
+
+	return covering_part
+
 /// Attempts to equip the given item in a conspicious place.
 /// This is used when, for instance, a character spawning with an item
 /// in their hands would be a dead giveaway that they are an antagonist.

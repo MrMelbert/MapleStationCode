@@ -211,7 +211,8 @@
 		var/obj/item/ammo_casing/energy/shot = chambered
 		cell.use(shot.e_cost)//... drain the cell cell
 		if(chambered.projectile_type::damage > 0 || chambered.projectile_type::stamina > 0 || chambered.projectile_type::pain > 0)
-			new /obj/effect/abstract/smell/ozone(get_turf(src))
+			new /obj/effect/abstract/smell/ozone(src)
+			new /obj/effect/abstract/smell/ozone/lingering(get_turf(src))
 
 	chambered = null //either way, released the prepared shot
 	recharge_newshot() //try to charge a new shot
