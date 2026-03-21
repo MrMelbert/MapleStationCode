@@ -488,6 +488,8 @@
 	enter_message = span_boldnotice("You feel a cold chill as you enter the pod. \
 		You feel your body go numb as you enter stasis.")
 	processing_flags = START_PROCESSING_ON_INIT
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 3
+	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 3
 	possible_chems = list(
 		list(),
 		list(),
@@ -677,8 +679,10 @@
 	if(metabolize_medicines_in_stasis && isliving(occupant) && HAS_TRAIT(occupant, TRAIT_STASIS) && is_operational)
 		var/update = FALSE
 		var/mob/living/patient = occupant
-		for(var/datum/reagent/medicine/medicine in patient.reagents?.reagent_list)
-			update ||= patient.reagents.metabolize_reagent(patient, medicine, seconds_per_tick, SSmobs.times_fired, can_overdose = TRUE)
+		for(var/datum/reagent/reagent as anything in patient.reagents?.reagent_list)
+			if(!istype(reagent, /datum/reagent/medicine) && !(obj_flags & EMAGGED))
+				continue
+			update ||= patient.reagents.metabolize_reagent(patient, reagent, seconds_per_tick, SSmobs.times_fired, can_overdose = TRUE)
 		if(update)
 			patient.updatehealth()
 
@@ -729,6 +733,8 @@ GLOBAL_LIST_EMPTY(cryo_sleepers)
 	state_open = FALSE
 	density = TRUE
 	resist_time = 0.5 SECONDS
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
+	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION
 	allow_storing_injecting_chems = FALSE
 	metabolize_medicines_in_stasis = FALSE
 	max_consciousness_inside = 75
