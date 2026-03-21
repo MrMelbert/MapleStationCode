@@ -393,22 +393,21 @@ const PatientStateAnesthesiaView = () => {
       <Stack fill>
         <Stack.Item width="50%" textAlign="right">
           <Button.Checkbox
-            width={anesthesia.is_tank ? "60%" : "100%"}
+            width={anesthesia.is_tank ? '60%' : '100%'}
             align="center"
             // Open is FALSE if we have no tank, likewise for can_open_tank
             disabled={!anesthesia.open && !anesthesia.can_open_tank}
             color={anesthesia.open ? 'bad' : 'good'}
-            icon={anesthesia.is_tank ? "fan" : "power-off"}
+            icon={anesthesia.is_tank ? 'fan' : 'power-off'}
             onClick={() => act('toggle_anesthesia')}
           >
             {anesthesia.open
-              ? (anesthesia.is_tank
+              ? anesthesia.is_tank
                 ? 'Close Tank'
-                : "Deactivate Suppressor")
-              : (anesthesia.is_tank
+                : 'Deactivate Suppressor'
+              : anesthesia.is_tank
                 ? 'Open Tank'
-                : 'Activate Suppressor')
-            }
+                : 'Activate Suppressor'}
           </Button.Checkbox>
         </Stack.Item>
         <Stack.Divider />
@@ -420,9 +419,9 @@ const PatientStateAnesthesiaView = () => {
                 icon={failsafe_enabled ? 'square-check-o' : 'square-o'}
                 tooltip={
                   failsafe_enabled
-                    ? (anesthesia.is_tank
+                    ? anesthesia.is_tank
                       ? 'Automatically closes the attached tank if a set amount of time has elapsed.'
-                      : 'Automatically deactivates the neural suppressor if a set amount of time has elapsed.')
+                      : 'Automatically deactivates the neural suppressor if a set amount of time has elapsed.'
                     : ''
                 }
                 onClick={() =>

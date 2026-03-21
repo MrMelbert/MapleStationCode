@@ -1,5 +1,3 @@
-import type { BooleanLike } from 'tgui-core/react';
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -9,6 +7,8 @@ import {
   Section,
   Stack,
 } from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type typePath = string;
@@ -29,6 +29,7 @@ type PodData = {
   occupied: BooleanLike;
   chems: Chem[];
   occupant: Occupant | null;
+  metabolize_medicines_in_stasis: BooleanLike;
 };
 
 const InjectButtons = (props: { chem: Chem }) => {
@@ -54,7 +55,8 @@ const InjectButtons = (props: { chem: Chem }) => {
 
 export const _StasisPod = (props) => {
   const { act, data } = useBackend<PodData>();
-  const { chems, open, occupied, occupant } = data;
+  const { chems, open, occupied, occupant, metabolize_medicines_in_stasis } =
+    data;
 
   return (
     <Window width={450} height={350} theme="operating_computer">
@@ -103,11 +105,20 @@ export const _StasisPod = (props) => {
           title="Patient Readout"
           scrollable
           buttons={
-            <Button
-              icon={open ? 'door-open' : 'door-closed'}
-              content={open ? 'Open' : 'Closed'}
-              onClick={() => act('door')}
-            />
+            <>
+              <Button.Checkbox
+                checked={metabolize_medicines_in_stasis}
+                content="Medicine Drip"
+                tooltip="While checked, the patient's body will continue
+                  to metabolize medicines despite otherwise being in stasis."
+                onClick={() => act('toggle_medicine_metab')}
+              />
+              <Button
+                icon={open ? 'door-open' : 'door-closed'}
+                content={open ? 'Open' : 'Closed'}
+                onClick={() => act('door')}
+              />
+            </>
           }
         >
           <Stack height="100px">
@@ -128,7 +139,7 @@ export const _StasisPod = (props) => {
                         }}
                       >
                         <Box textAlign="center">
-                          {reagent.name + ' (' + reagent.volume + 'u)'}
+                          {`${reagent.name} (${reagent.volume}u)`}
                         </Box>
                       </ProgressBar>
                     </Stack.Item>

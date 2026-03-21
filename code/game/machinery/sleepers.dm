@@ -515,6 +515,20 @@
 		ui = new(user, src, "_StasisPod", name)
 		ui.open()
 
+/obj/machinery/sleeper/stasis/ui_act(action, params)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("toggle_medicine_metab")
+			metabolize_medicines_in_stasis = !metabolize_medicines_in_stasis
+			. = TRUE
+
+/obj/machinery/sleeper/stasis/ui_data()
+	. = ..()
+	.["metabolize_medicines_in_stasis"] = metabolize_medicines_in_stasis
+
 /obj/machinery/sleeper/stasis/update_icon_state()
 	. = ..()
 	if(occupant && is_operational && base_icon_state == "stasis")
