@@ -27038,7 +27038,7 @@
 /turf/open/floor/iron,
 /area/station/security/processing)
 "iOc" = (
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
@@ -52674,8 +52674,8 @@
 /turf/open/floor/iron/dark,
 /area/station/security/courtroom/holding)
 "rNl" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/trimline/blue/filled/line{

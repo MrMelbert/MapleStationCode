@@ -585,8 +585,8 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "Ia" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/structure/window/reinforced/spawner/directional/south,
 /turf/open/floor/mineral/titanium/blue,
@@ -837,8 +837,8 @@
 /turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "Sd" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/structure/window/reinforced/spawner/directional/north,
 /obj/machinery/light/small/directional/west,

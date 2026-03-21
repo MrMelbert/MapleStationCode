@@ -58116,7 +58116,9 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron,
 /area/station/medical/medbay/central)
@@ -58825,7 +58827,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 1
 	},
 /obj/item/radio/intercom/directional/west,

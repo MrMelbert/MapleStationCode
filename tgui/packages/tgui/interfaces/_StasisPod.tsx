@@ -1,4 +1,4 @@
-import { BooleanLike } from '../../common/react';
+import type { BooleanLike } from 'tgui-core/react';
 import { useBackend } from '../backend';
 import {
   Box,
@@ -8,7 +8,7 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
 import { Window } from '../layouts';
 
 type typePath = string;
@@ -57,7 +57,7 @@ export const _StasisPod = (props) => {
   const { chems, open, occupied, occupant } = data;
 
   return (
-    <Window width={450} height={350}>
+    <Window width={450} height={350} theme="operating_computer">
       <Window.Content>
         <Section title="Medicines" scrollable>
           <Stack height="100px">

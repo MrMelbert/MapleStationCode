@@ -52,7 +52,9 @@
 	},
 /area/template_noop)
 "cO" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/green/anticorner/contrasted,
 /turf/open/floor/holofloor{
 	icon_state = "white"
@@ -521,8 +523,8 @@
 	},
 /area/template_noop)
 "Tt" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/green/half/contrasted,
 /turf/open/floor/holofloor{

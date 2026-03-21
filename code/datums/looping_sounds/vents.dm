@@ -1,4 +1,4 @@
-/datum/looping_sound/vent_pump_overclock
+/datum/looping_sound/fan
 	start_sound = 'sound/machines/fan_start.ogg'
 	start_length = 1.5 SECONDS
 	end_sound = 'sound/machines/fan_stop.ogg'

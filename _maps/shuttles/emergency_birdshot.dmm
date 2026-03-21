@@ -366,7 +366,7 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "qd" = (
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 8
 	},
 /obj/effect/mapping_helpers/broken_floor,

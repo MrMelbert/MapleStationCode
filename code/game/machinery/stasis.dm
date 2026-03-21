@@ -149,14 +149,12 @@
 		return
 	var/freq = rand(24750, 26550)
 	playsound(src, 'sound/effects/spray.ogg', 5, TRUE, 2, frequency = freq)
-	target.enter_stasis(STASIS_MACHINE_EFFECT)
-	// ADD_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC) // NON-MODULE CHANGE
+	target.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
 	target.extinguish_mob()
 	update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/stasis/proc/thaw_them(mob/living/target)
-	target.exit_stasis(STASIS_MACHINE_EFFECT)
-	// REMOVE_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC) // NON-MODULE CHANGE
+	target.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
 	if(target == occupant)
 		update_use_power(IDLE_POWER_USE)
 

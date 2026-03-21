@@ -18642,8 +18642,8 @@
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "eZD" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -29911,7 +29911,9 @@
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "jqO" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/light/cold/directional/north,

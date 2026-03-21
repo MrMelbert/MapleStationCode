@@ -251,8 +251,8 @@
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
 "aX" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)

@@ -918,7 +918,13 @@
 		/datum/stock_part/servo = 1,
 		/obj/item/stack/cable_coil = 2,
 		/obj/item/stack/sheet/glass = 2,
+		/obj/item/reagent_containers/cup/beaker = 1,
 	)
+
+/obj/item/circuitboard/machine/sleeper/cryo
+	name = "Long-term Crew Storage Pod"
+	build_path = /obj/machinery/sleeper/stasis/cryo
+	req_components = null
 
 /obj/item/circuitboard/machine/smoke_machine
 	name = "Smoke Machine"

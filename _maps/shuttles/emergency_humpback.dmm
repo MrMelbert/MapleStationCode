@@ -701,7 +701,9 @@
 /turf/open/floor/wood/large,
 /area/shuttle/escape)
 "Pt" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /turf/open/floor/iron/showroomfloor,
 /area/shuttle/escape)
 "PS" = (

@@ -1232,7 +1232,9 @@
 /area/shuttle/escape)
 "Bm" = (
 /obj/machinery/status_display/evac/directional/east,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/item/radio/intercom/directional/north,
 /obj/machinery/camera/autoname{
 	dir = 9
@@ -1693,7 +1695,9 @@
 /area/shuttle/escape)
 "Ho" = (
 /obj/machinery/status_display/evac/directional/east,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /turf/open/floor/iron/white/herringbone,
 /area/shuttle/escape)
 "HL" = (

@@ -673,7 +673,9 @@
 /area/shuttle/escape)
 "cu" = (
 /obj/machinery/light/directional/east,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/vending/wallmed/directional/north{
 	use_power = 0
 	},
@@ -735,7 +737,9 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "cD" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 4
 	},
@@ -829,7 +833,9 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "cN" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted,
 /turf/open/floor/iron/white,
 /area/shuttle/escape)

@@ -7146,8 +7146,8 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/effect/turf_decal/box,
 /obj/machinery/defibrillator_mount/directional/west,
@@ -31021,8 +31021,8 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/effect/turf_decal/box,
 /obj/machinery/defibrillator_mount/directional/west,

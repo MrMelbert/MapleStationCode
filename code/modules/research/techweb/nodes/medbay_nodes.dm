@@ -93,7 +93,8 @@
 	design_ids = list(
 		"cryotube",
 		"mech_sleeper",
-		"stasis",
+		// "stasis",
+		"stasis_pod",
 		"cryo_grenade",
 		"splitbeaker",
 	)

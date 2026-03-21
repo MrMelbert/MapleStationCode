@@ -1131,7 +1131,7 @@
 "arO" = (
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/south,
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/blue/full,
@@ -55336,7 +55336,7 @@
 "rxQ" = (
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/north,
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/blue/full,
@@ -68530,7 +68530,9 @@
 /turf/open/floor/iron/dark,
 /area/station/cargo/storage)
 "vED" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/light/cold/directional/south,
 /obj/machinery/defibrillator_mount/directional/south,
 /obj/effect/turf_decal/tile/blue/full,

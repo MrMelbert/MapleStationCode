@@ -310,8 +310,8 @@
 /turf/open/floor/iron/cafeteria,
 /area/shuttle/escape)
 "aX" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1

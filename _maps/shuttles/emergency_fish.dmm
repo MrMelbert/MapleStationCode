@@ -542,8 +542,8 @@
 /turf/open/floor/wood/tile,
 /area/shuttle/escape)
 "FA" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1

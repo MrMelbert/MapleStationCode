@@ -189,7 +189,9 @@
 /turf/open/floor/catwalk_floor/iron_white,
 /area/shuttle/escape)
 "qK" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/blue/anticorner,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 1
@@ -253,7 +255,9 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "xe" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 4
 	},

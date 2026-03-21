@@ -1400,7 +1400,9 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "RO" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/dark_blue/half/contrasted,
 /turf/open/floor/iron/dark/side{
 	dir = 1
@@ -1492,7 +1494,7 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "VA" = (
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/dark_blue/half/contrasted,

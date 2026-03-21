@@ -294,7 +294,9 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "bf" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "bg" = (
@@ -446,8 +448,8 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "ea" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
@@ -465,7 +467,9 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "VF" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)

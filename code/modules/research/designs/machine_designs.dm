@@ -931,6 +931,12 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
+/datum/design/board/stasis/pod
+	name = "Lifeform Stasis Pod Board"
+	desc = "The circuit board for a stasis pod."
+	id = "stasis_pod"
+	build_path = /obj/item/circuitboard/machine/sleeper/stasis
+
 /datum/design/board/medical_kiosk
 	name = "Medical Kiosk Board"
 	desc = "The circuit board for a Medical Kiosk."

@@ -755,21 +755,21 @@
 /mob/living/proc/appears_alive()
 	return stat != DEAD && !HAS_TRAIT(src, TRAIT_FAKEDEATH)
 
-/mob/living/proc/enter_stasis(source = STASIS_ADMIN)
-	apply_status_effect(/datum/status_effect/grouped/stasis, source)
+// /mob/living/proc/enter_stasis(source = STASIS_ADMIN)
+// 	apply_status_effect(/datum/status_effect/grouped/stasis, source)
 
-/mob/living/carbon/enter_stasis(source)
-	. = ..()
-	if(stat == DEAD)
-		return
-	addtimer(CALLBACK(src, PROC_REF(stasis_heartattack), source), 12 SECONDS)
+// /mob/living/carbon/enter_stasis(source)
+// 	. = ..()
+// 	if(stat == DEAD)
+// 		return
+// 	addtimer(CALLBACK(src, PROC_REF(stasis_heartattack), source), 12 SECONDS)
 
-/mob/living/carbon/proc/stasis_heartattack(source)
-	if(QDELETED(src))
-		return
-	if(!has_status_effect_from_source(/datum/status_effect/grouped/stasis, source))
-		return
-	set_heartattack(TRUE)
+// /mob/living/carbon/proc/stasis_heartattack(source)
+// 	if(QDELETED(src))
+// 		return
+// 	if(!has_status_effect_from_source(/datum/status_effect/grouped/stasis, source))
+// 		return
+// 	set_heartattack(TRUE)
 
-/mob/living/proc/exit_stasis(source = STASIS_ADMIN)
-	remove_status_effect(/datum/status_effect/grouped/stasis, source)
+// /mob/living/proc/exit_stasis(source = STASIS_ADMIN)
+// 	remove_status_effect(/datum/status_effect/grouped/stasis, source)

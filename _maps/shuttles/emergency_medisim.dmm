@@ -330,7 +330,9 @@
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "nD" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "oK" = (

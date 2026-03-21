@@ -28,6 +28,7 @@
 	id_additions = list(
 		"auto_cpr_device",
 		"vitals_monitor_advanced",
+		"neural_suppressor",
 	)
 
 /datum/techweb_node/cryostasis

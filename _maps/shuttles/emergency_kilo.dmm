@@ -992,7 +992,9 @@
 /area/shuttle/escape)
 "cu" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
 "cv" = (
@@ -1203,8 +1205,8 @@
 /area/shuttle/escape)
 "lI" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
