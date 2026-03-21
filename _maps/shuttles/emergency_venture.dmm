@@ -177,7 +177,7 @@
 /area/shuttle/escape)
 "iJ" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted,
 /turf/open/floor/iron/white,
@@ -344,7 +344,7 @@
 /area/shuttle/escape)
 "qo" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 4

@@ -35,7 +35,7 @@
 /area/shuttle/escape)
 "g" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)

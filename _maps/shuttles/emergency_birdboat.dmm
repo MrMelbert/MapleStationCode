@@ -252,7 +252,7 @@
 /area/shuttle/escape)
 "aX" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)

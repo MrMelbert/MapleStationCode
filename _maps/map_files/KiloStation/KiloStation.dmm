@@ -7147,7 +7147,7 @@
 	dir = 4
 	},
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/turf_decal/box,
 /obj/machinery/defibrillator_mount/directional/west,
@@ -31022,7 +31022,7 @@
 	dir = 4
 	},
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/turf_decal/box,
 /obj/machinery/defibrillator_mount/directional/west,

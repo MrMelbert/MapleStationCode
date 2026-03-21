@@ -190,7 +190,7 @@
 /area/shuttle/escape)
 "qK" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/anticorner,
 /turf/open/floor/iron/white/smooth_corner{
@@ -256,7 +256,7 @@
 /area/shuttle/escape)
 "xe" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 4

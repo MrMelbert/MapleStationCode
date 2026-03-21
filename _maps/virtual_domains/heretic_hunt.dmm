@@ -83,7 +83,7 @@
 /area/virtual_domain)
 "eV" = (
 /obj/machinery/sleeper/stasis{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/blue{
@@ -616,7 +616,7 @@
 /area/virtual_domain)
 "xa" = (
 /obj/machinery/sleeper/stasis{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/blue{

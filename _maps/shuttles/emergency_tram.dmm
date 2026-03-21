@@ -270,7 +270,7 @@
 /area/shuttle/escape)
 "bb" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/mineral/titanium/blue,

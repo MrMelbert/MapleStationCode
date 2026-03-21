@@ -58117,7 +58117,7 @@
 	dir = 8
 	},
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron,
@@ -58828,7 +58828,7 @@
 	dir = 8
 	},
 /obj/machinery/sleeper/stasis{
-	dir = 1
+	dir = 4
 	},
 /obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,

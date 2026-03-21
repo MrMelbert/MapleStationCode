@@ -586,7 +586,7 @@
 /area/shuttle/escape)
 "Ia" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/structure/window/reinforced/spawner/directional/south,
 /turf/open/floor/mineral/titanium/blue,
@@ -838,7 +838,7 @@
 /area/shuttle/escape)
 "Sd" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/structure/window/reinforced/spawner/directional/north,
 /obj/machinery/light/small/directional/west,

@@ -140,6 +140,8 @@
 		REMOVE_TRAIT(occupant, TRAIT_FLOORED, REF(src))
 	. = ..()
 	if(isliving(occupant))
+		var/mob/living/mob_occupant = occupant
+		mob_occupant.set_body_position(LYING_DOWN)
 		ADD_TRAIT(occupant, TRAIT_FLOORED, REF(src))
 
 /obj/machinery/sleeper/emp_act(severity)
@@ -475,6 +477,9 @@
 /obj/machinery/sleeper/stasis
 	name = "stasis pod"
 	desc = "An enclosed machine used stabilize patients and keep them in a state of stasis."
+	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
+	icon_state = "stasis"
+	base_icon_state = "stasis"
 	deconstructable = TRUE
 	min_health = -INFINITY
 	circuit = /obj/item/circuitboard/machine/sleeper/stasis
@@ -491,12 +496,16 @@
 	)
 	/// Cooldown to prevent sound spam / instantly jumping out of a pod
 	COOLDOWN_DECLARE(open_close_cd)
+	/// Cooldown for how long it must be closed before fog particles are made
+	COOLDOWN_DECLARE(fog_cd)
 	/// If TRUE we can inject chems into the patient
 	var/allow_storing_injecting_chems = TRUE
 	/// If TRUE we process medicine reagents despite stasis
 	var/metabolize_medicines_in_stasis = TRUE
+	/// Max consciousness set while inside the pod
+	var/max_consciousness_inside = 50
 	/// Fan sfx looping sound
-	var/datum/looping_sound/fan/fan_loop
+	VAR_FINAL/datum/looping_sound/fan/fan_loop
 
 /obj/machinery/sleeper/stasis/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -504,8 +513,17 @@
 		ui = new(user, src, "_StasisPod", name)
 		ui.open()
 
+/obj/machinery/sleeper/stasis/update_icon_state()
+	. = ..()
+	if(occupant && is_operational && base_icon_state == "stasis")
+		icon_state += "-working"
+
 /obj/machinery/sleeper/stasis/Initialize(mapload)
 	fan_loop = new(src, start_immediately = FALSE)
+	fan_loop.volume = 20
+	fan_loop.ignore_walls = FALSE
+	fan_loop.extra_range = SHORT_RANGE_SOUND_EXTRARANGE
+	fan_loop.falloff_exponent = 4
 	if(!allow_storing_injecting_chems)
 		return ..()
 
@@ -578,14 +596,6 @@
 		methods = TOUCH,
 	)
 
-/obj/machinery/sleeper/stasis/attack_hand(mob/living/user, list/modifiers)
-	. = ..()
-	if(.)
-		return
-
-	if(user.pulling)
-		mouse_drop_receive(src, user)
-
 /obj/machinery/sleeper/stasis/proc/freeze_mob(mob/living/to_freeze)
 	to_freeze.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
 	to_freeze.add_traits(list(
@@ -593,6 +603,7 @@
 		TRAIT_SOFTSPOKEN,
 		TRAIT_RADSTORM_IMMUNE,
 	), REF(src))
+	to_freeze.add_max_consciousness_value(REF(src), max_consciousness_inside)
 	RegisterSignal(to_freeze, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(stasis_move_eject))
 	fan_loop.start()
 	update_use_power(ACTIVE_POWER_USE)
@@ -605,6 +616,7 @@
 		TRAIT_SOFTSPOKEN,
 		TRAIT_RADSTORM_IMMUNE,
 	), REF(src))
+	to_unfreeze.remove_max_consciousness_value(REF(src))
 	UnregisterSignal(to_unfreeze, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE)
 	fan_loop.stop()
 	update_use_power(IDLE_POWER_USE)
@@ -612,6 +624,7 @@
 
 /obj/machinery/sleeper/stasis/on_set_is_operational(old_value)
 	. = ..()
+	update_appearance()
 	if(!isliving(occupant))
 		return
 	if(is_operational)
@@ -629,6 +642,8 @@
 	if(isliving(occupant) && is_operational)
 		freeze_mob(occupant)
 
+	update_appearance()
+
 /obj/machinery/sleeper/stasis/proc/stasis_move_eject(mob/source, atom/new_loc, direct)
 	SIGNAL_HANDLER
 	if(!source.can_resist() || DOING_INTERACTION_WITH_TARGET(source, src))
@@ -643,8 +658,8 @@
 	. = ..()
 	if(!is_operational)
 		return
-	COOLDOWN_START(src, open_close_cd, 1 SECONDS)
-	if(!(dir & NORTH))
+	COOLDOWN_START(src, open_close_cd, 2 SECONDS)
+	if(!(dir & NORTH) && COOLDOWN_STARTED(src, fog_cd) && COOLDOWN_FINISHED(src, fog_cd))
 		particles = new /particles/cryo_fog(dir)
 
 /obj/machinery/sleeper/stasis/close_machine(user, density_to_set)
@@ -654,7 +669,8 @@
 	. = ..()
 	if(!is_operational)
 		return
-	COOLDOWN_START(src, open_close_cd, 1 SECONDS)
+	COOLDOWN_START(src, open_close_cd, 2 SECONDS)
+	COOLDOWN_START(src, fog_cd, 10 SECONDS)
 	QDEL_NULL(particles)
 
 /obj/machinery/sleeper/stasis/process(seconds_per_tick)
@@ -704,7 +720,6 @@ GLOBAL_LIST_EMPTY(cryo_sleepers)
 /obj/machinery/sleeper/stasis/cryo
 	name = "long-term crew storage pod"
 	desc = "An enclosed machine designed to put subjects in a state of suspended animation for long-term storage."
-	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
 	icon_state = "cryopod"
 	base_icon_state = "cryopod"
 	circuit = /obj/item/circuitboard/machine/sleeper/cryo
@@ -716,6 +731,7 @@ GLOBAL_LIST_EMPTY(cryo_sleepers)
 	resist_time = 0.5 SECONDS
 	allow_storing_injecting_chems = FALSE
 	metabolize_medicines_in_stasis = FALSE
+	max_consciousness_inside = 75
 	/// If TRUE we throw an alert allowing occupants to despawn
 	var/throw_alert = TRUE
 

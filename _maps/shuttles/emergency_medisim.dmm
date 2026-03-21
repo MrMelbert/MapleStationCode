@@ -331,7 +331,7 @@
 /area/shuttle/escape)
 "nD" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)

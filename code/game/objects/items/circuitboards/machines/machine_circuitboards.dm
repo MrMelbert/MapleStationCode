@@ -924,7 +924,7 @@
 /obj/item/circuitboard/machine/sleeper/cryo
 	name = "Long-term Crew Storage Pod"
 	build_path = /obj/machinery/sleeper/stasis/cryo
-	req_components = null
+	req_components = list()
 
 /obj/item/circuitboard/machine/smoke_machine
 	name = "Smoke Machine"

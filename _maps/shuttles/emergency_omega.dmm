@@ -442,7 +442,7 @@
 /area/shuttle/escape)
 "ba" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/machinery/vending/wallmed/directional/west{
 	use_power = 0
@@ -461,7 +461,7 @@
 "bc" = (
 /obj/item/radio/intercom/directional/east,
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1

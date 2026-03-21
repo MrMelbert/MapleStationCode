@@ -5348,7 +5348,7 @@
 /area/shuttle/sbc_starfury)
 "Ri" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/loaded{
 	pixel_y = 28

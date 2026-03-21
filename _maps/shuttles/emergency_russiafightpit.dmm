@@ -436,7 +436,7 @@
 "bD" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
@@ -511,7 +511,7 @@
 "dp" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)

@@ -315,7 +315,7 @@
 /area/shuttle/escape)
 "mw" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/shuttle/escape)
@@ -544,7 +544,7 @@
 /area/shuttle/escape/engine)
 "Bm" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /turf/open/floor/iron/dark,

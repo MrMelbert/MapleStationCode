@@ -543,7 +543,7 @@
 /area/shuttle/escape)
 "FA" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1

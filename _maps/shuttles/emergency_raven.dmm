@@ -404,7 +404,7 @@
 "bh" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/white/side{
 	dir = 5
@@ -479,7 +479,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/item/radio/intercom/directional/east,
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/white/side{
 	dir = 4

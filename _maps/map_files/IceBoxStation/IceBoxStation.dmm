@@ -30587,7 +30587,7 @@
 /area/station/maintenance/port/greater)
 "jeE" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/large,
@@ -55588,7 +55588,7 @@
 /area/station/medical/virology)
 "qsQ" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/full,

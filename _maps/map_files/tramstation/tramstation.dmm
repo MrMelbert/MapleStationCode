@@ -27039,7 +27039,7 @@
 /area/station/security/processing)
 "iOc" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -52675,7 +52675,7 @@
 /area/station/security/courtroom/holding)
 "rNl" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/trimline/blue/filled/line{

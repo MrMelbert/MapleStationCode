@@ -1132,7 +1132,7 @@
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/south,
 /obj/machinery/sleeper/stasis{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
 /obj/machinery/computer/vitals_reader/directional/west,
@@ -55337,7 +55337,7 @@
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/machinery/sleeper/stasis{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
 /obj/machinery/computer/vitals_reader/directional/west,
@@ -68531,7 +68531,7 @@
 /area/station/cargo/storage)
 "vED" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/light/cold/directional/south,
 /obj/machinery/defibrillator_mount/directional/south,

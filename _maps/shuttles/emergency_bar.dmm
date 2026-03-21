@@ -334,7 +334,7 @@
 /area/shuttle/escape)
 "br" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
@@ -512,7 +512,7 @@
 "cb" = (
 /obj/machinery/light/small/directional/east,
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)

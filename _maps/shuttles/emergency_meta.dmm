@@ -358,7 +358,7 @@
 /area/shuttle/escape)
 "bl" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
@@ -725,7 +725,7 @@
 /area/shuttle/escape)
 "QL" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/camera/autoname{
 	dir = 4

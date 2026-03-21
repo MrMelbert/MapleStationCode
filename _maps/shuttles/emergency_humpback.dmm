@@ -702,7 +702,7 @@
 /area/shuttle/escape)
 "Pt" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/shuttle/escape)

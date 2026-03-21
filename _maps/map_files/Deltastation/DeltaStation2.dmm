@@ -17983,7 +17983,7 @@
 /area/station/medical/treatment_center)
 "dhb" = (
 /obj/machinery/sleeper/stasis{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -35297,7 +35297,7 @@
 /area/station/command/corporate_showroom)
 "hbs" = (
 /obj/machinery/sleeper/stasis{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/floor/iron,
