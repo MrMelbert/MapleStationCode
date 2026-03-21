@@ -32,8 +32,12 @@
 	)
 
 /datum/techweb_node/cryostasis
+	id_removals = list(
+		"stasis",
+	)
 	id_additions = list(
 		"stasis_bodybag",
+		"stasis_pod",
 	)
 
 /datum/techweb_node/surgery_exp
