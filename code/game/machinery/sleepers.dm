@@ -620,6 +620,7 @@
 		TRAIT_RADSTORM_IMMUNE,
 	), REF(src))
 	to_freeze.add_max_consciousness_value(REF(src), max_consciousness_inside)
+	to_freeze.extinguish_mob()
 	RegisterSignal(to_freeze, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(stasis_move_eject))
 	fan_loop.start()
 	update_use_power(ACTIVE_POWER_USE)
