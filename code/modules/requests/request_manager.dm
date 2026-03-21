@@ -4,6 +4,8 @@
 #define REQUEST_CENTCOM "request_centcom"
 /// Requests for the Syndicate
 #define REQUEST_SYNDICATE "request_syndicate"
+/// Requests for Mu
+#define REQUEST_MU "request_mu" //NON-MODULE CHANGE
 /// Requests for the nuke code
 #define REQUEST_NUKE "request_nuke"
 /// Requests somebody from fax
@@ -89,6 +91,18 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 /datum/request_manager/proc/message_syndicate(client/C, message)
 	request_for_client(C, REQUEST_SYNDICATE, message)
 
+//NON-MODULE CHANGE START
+/**
+ * Creates a request for a Syndicate message
+ *
+ * Arguments:
+ * * C - The client who is sending the request
+ * * message - The message
+ */
+/datum/request_manager/proc/message_mu(client/C, message)
+	request_for_client(C, REQUEST_MU, message)
+//NON-MODULE CHANGE END
+
 /**
  * Creates a request for the nuclear self destruct codes
  *
@@ -163,17 +177,18 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 
 	switch(action)
 		if ("pp")
-			var/mob/M = request.owner?.mob
-			usr.client.holder.show_player_panel(M)
+			SSadmin_verbs.dynamic_invoke_verb(ui.user, /datum/admin_verb/show_player_panel, request.owner?.mob)
 			return TRUE
+
 		if ("vv")
 			var/mob/M = request.owner?.mob
 			usr.client.debug_variables(M)
 			return TRUE
+
 		if ("sm")
-			var/mob/M = request.owner?.mob
-			usr.client.cmd_admin_subtle_message(M)
+			SSadmin_verbs.dynamic_invoke_verb(ui.user, /datum/admin_verb/cmd_admin_subtle_message, request.owner?.mob)
 			return TRUE
+
 		if ("flw")
 			var/mob/M = request.owner?.mob
 			usr.client.admin_follow(M)
@@ -192,8 +207,9 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 					D.traitor_panel()
 					return TRUE
 			else
-				usr.client.holder.show_traitor_panel(M)
+				SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/show_traitor_panel, M)
 				return TRUE
+
 		if ("logs")
 			var/mob/M = request.owner?.mob
 			if(!ismob(M))
@@ -201,22 +217,28 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 				return TRUE
 			show_individual_logging_panel(M, null, null)
 			return TRUE
+
 		if ("smite")
-			if(!check_rights(R_FUN))
-				to_chat(usr, "Insufficient permissions to smite, you require +FUN", confidential = TRUE)
-				return TRUE
-			var/mob/living/carbon/human/H = request.owner?.mob
-			if (!H || !istype(H))
-				to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human", confidential = TRUE)
-				return TRUE
-			usr.client.smite(H)
+			SSadmin_verbs.dynamic_invoke_verb(ui.user, /datum/admin_verb/admin_smite, request.owner?.mob)
 			return TRUE
+
 		if ("rply")
 			if (request.req_type == REQUEST_PRAYER)
 				to_chat(usr, "Cannot reply to a prayer", confidential = TRUE)
 				return TRUE
 			var/mob/M = request.owner?.mob
-			usr.client.admin_headset_message(M, request.req_type == REQUEST_SYNDICATE ? RADIO_CHANNEL_SYNDICATE : RADIO_CHANNEL_CENTCOM)
+			//NON-MODULE CHANGE START
+			var/channel_to_reply_with = RADIO_CHANNEL_CENTCOM
+			switch(request.req_type)
+				if(REQUEST_CENTCOM)
+					channel_to_reply_with = RADIO_CHANNEL_CENTCOM
+				if(REQUEST_SYNDICATE)
+					channel_to_reply_with = RADIO_CHANNEL_SYNDICATE
+				if(REQUEST_MU)
+					channel_to_reply_with = RADIO_CHANNEL_MU
+
+			usr.client.admin_headset_message(M, channel_to_reply_with)
+			//NON-MODULE CHANGE END
 			return TRUE
 		if ("setcode")
 			if (request.req_type != REQUEST_NUKE)
@@ -246,12 +268,10 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 			return TRUE
 
 /datum/request_manager/ui_data(mob/user)
-	. = list(
-		"requests" = list()
-	)
+	var/list/data = list()
 	for (var/ckey in requests)
 		for (var/datum/request/request as anything in requests[ckey])
-			var/list/data = list(
+			data["requests"] += list(list(
 				"id" = request.id,
 				"req_type" = request.req_type,
 				"owner" = request.owner ? "[REF(request.owner)]" : null,
@@ -261,12 +281,13 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 				"additional_info" = request.additional_information,
 				"timestamp" = request.timestamp,
 				"timestamp_str" = gameTimestamp(wtime = request.timestamp)
-			)
-			.["requests"] += list(data)
+			))
+	return data
 
 #undef REQUEST_PRAYER
 #undef REQUEST_CENTCOM
 #undef REQUEST_SYNDICATE
+#undef REQUEST_MU
 #undef REQUEST_NUKE
 #undef REQUEST_FAX
 #undef REQUEST_INTERNET_SOUND

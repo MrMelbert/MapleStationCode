@@ -154,7 +154,8 @@
 	toggle_active(source)
 	if(!(SEND_SIGNAL(source, COMSIG_TRANSFORMING_ON_TRANSFORM, user, active) & COMPONENT_NO_DEFAULT_MESSAGE))
 		default_transform_message(source, user)
-
+	if(!isnull(user))
+		SEND_SIGNAL(user, COMSIG_MOB_TRANSFORMING_ITEM, source, active)
 	if(isnum(transform_cooldown_time))
 		COOLDOWN_START(src, transform_cooldown, transform_cooldown_time)
 	if(user)
@@ -208,10 +209,11 @@
 		source.attack_verb_simple = attack_verb_simple_on
 
 	source.hitsound = hitsound_on
-	source.w_class = w_class_on
+	source.update_weight_class(w_class_on)
 	source.icon_state = "[source.icon_state]_on"
 	if(inhand_icon_change && source.inhand_icon_state)
 		source.inhand_icon_state = "[source.inhand_icon_state]_on"
+	source.update_appearance()
 	source.update_inhand_icon()
 
 /*
@@ -237,12 +239,14 @@
 		source.attack_verb_simple = attack_verb_simple_off
 
 	source.hitsound = initial(source.hitsound)
-	source.w_class = initial(source.w_class)
-	source.icon_state = initial(source.icon_state)
+	source.update_weight_class(initial(source.w_class))
+	if(source.post_init_icon_state) // NON-MODULE CHANGE START : literally just a bug fix
+		source.icon_state = initial(source.post_init_icon_state)
+	else
+		source.icon_state = initial(source.icon_state) // NON-MODULE CHANGE END
 	source.inhand_icon_state = initial(source.inhand_icon_state)
-	if(ismob(source.loc))
-		var/mob/loc_mob = source.loc
-		loc_mob.update_held_items()
+	source.update_appearance()
+	source.update_inhand_icon()
 
 /*
  * If [clumsy_check] is set to TRUE, attempt to cause a side effect for clumsy people activating this item.
@@ -266,7 +270,7 @@
 			span_warning("[user] triggers [parent] while holding it backwards and [hurt_self_verb_continuous] themself, like a doofus!"),
 			span_warning("You trigger [parent] while holding it backwards and [hurt_self_verb_simple] yourself, like a doofus!"),
 		)
-		user.take_bodypart_damage(10)
+		user.damage_random_bodypart(10)
 		return TRUE
 	return FALSE
 

@@ -13,6 +13,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FIRE_PROOF
 	force = 0
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 	/// Used on Initialize, how much time to cut cable restraints and zipties.
 	var/snap_time_weak_handcuffs = 0 SECONDS
 	/// Used on Initialize, how much time to cut real handcuffs. Null means it can't.

@@ -20,7 +20,6 @@
 	var/playsleepseconds = 0
 	var/obj/item/tape/mytape
 	var/starting_tape_type = /obj/item/tape/random
-	var/open_panel = FALSE
 	var/canprint = TRUE
 	var/list/icons_available = list()
 	var/radial_icon_file = 'icons/hud/radial_taperecorder.dmi'
@@ -58,12 +57,12 @@
 /obj/item/taperecorder/examine(mob/user)
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
-		. += span_notice("The wire panel is [open_panel ? "opened" : "closed"]. The display reads:")
+		. += span_notice("The display reads:")
 		. += "[readout()]"
 
-/obj/item/taperecorder/AltClick(mob/user)
-	. = ..()
+/obj/item/taperecorder/click_alt(mob/user)
 	play()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/taperecorder/proc/update_available_icons()
 	icons_available = list()
@@ -155,11 +154,13 @@
 	return ..()
 
 
-/obj/item/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
+/obj/item/taperecorder/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
 	. = ..()
-	if(mytape && recording)
-		mytape.timestamp += mytape.used_capacity
-		mytape.storedinfo += "\[[time2text(mytape.used_capacity,"mm:ss")]\] [raw_message]"
+	if(message_mods[MODE_RELAY] || !mytape || istype(speaker, /obj/item/taperecorder))
+		return
+
+	mytape.timestamp += mytape.used_capacity
+	mytape.storedinfo += "\[[time2text(mytape.used_capacity,"mm:ss", 0/*NO_TIMEZONE*/)]\] [speaker.get_voice()]: [raw_message]"
 
 
 /obj/item/taperecorder/verb/record()

@@ -18,6 +18,8 @@
 	toolspeed = 1.25 // 25% worse than default tools
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT)
 	hitsound = SFX_SWING_HIT
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 	///Radial menu tool options
 	var/list/options = list()
 	///Chance to select wrong tool
@@ -60,10 +62,10 @@
 		mistake_occured = TRUE
 
 	if(isnull(tool_behaviour))
-		w_class = WEIGHT_CLASS_TINY
+		update_weight_class(WEIGHT_CLASS_TINY)
 		balloon_alert(user, "folded")
 	else
-		w_class = WEIGHT_CLASS_SMALL
+		update_weight_class(WEIGHT_CLASS_SMALL)
 		balloon_alert(user, mistake_occured ? "oops! [tool_behaviour] out" : "[tool_behaviour] out")
 
 	update_tool_parameters()

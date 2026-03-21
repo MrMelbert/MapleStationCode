@@ -1,4 +1,5 @@
-#define THERMAL_REGULATOR_COST 18 // the cost per tick for the thermal regulator
+/// Charge per tick consumed by the thermal regulator
+#define THERMAL_REGULATOR_COST (0.018 * STANDARD_CELL_CHARGE)
 
 //Note: Everything in modules/clothing/spacesuits should have the entire suit grouped together.
 //      Meaning the the suit is defined directly after the corrisponding helmet. Just like below!
@@ -12,10 +13,8 @@
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | STACKABLE_HELMET_EXEMPT | HEADINTERNALS
 	armor_type = /datum/armor/helmet_space
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
-
-	cold_protection = HEAD
+	interaction_flags_click = NEED_DEXTERITY
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
-	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
 	flash_protect = FLASH_PROTECTION_WELDER
 	strip_delay = 50
@@ -23,6 +22,25 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 	dog_fashion = null
+	sound_vary = TRUE
+	equip_sound = 'sound/items/handling/helmet/helmet_equip1.ogg'
+	pickup_sound = 'sound/items/handling/helmet/helmet_pickup1.ogg'
+	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
+	///How much this helmet affects fishing difficulty
+	var/fishing_modifier = 3
+	///Icon state applied when we get spraypainted/peppersprayed. If null, does not add the dirt component
+	var/visor_dirt = "helm_dirt"
+
+/obj/item/clothing/head/helmet/space/Initialize(mapload)
+	. = ..()
+	if(visor_dirt)
+		AddComponent(/datum/component/clothing_dirt, visor_dirt)
+	if(fishing_modifier)
+		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
+	add_stabilizer()
+
+/obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = loose_hat)
 
 /datum/armor/helmet_space
 	bio = 100
@@ -49,19 +67,25 @@
 	slowdown = 1
 	armor_type = /datum/armor/suit_space
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
-	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	strip_delay = 80
 	equip_delay_other = 80
 	resistance_flags = NONE
 	actions_types = list(/datum/action/item_action/toggle_spacesuit)
-	var/temperature_setting = BODYTEMP_NORMAL /// The default temperature setting
-	var/obj/item/stock_parts/cell/cell = /obj/item/stock_parts/cell/high /// If this is a path, this gets created as an object in Initialize.
-	var/cell_cover_open = FALSE /// Status of the cell cover on the suit
-	var/thermal_on = FALSE /// Status of the thermal regulator
-	var/show_hud = TRUE /// If this is FALSE the batery status UI will be disabled. This is used for suits that don't use bateries like the changeling's flesh suit mutation.
+	interaction_flags_click = NEED_DEXTERITY|ALLOW_RESTING
+	/// The default temperature setting
+	var/temperature_setting = BODYTEMP_NORMAL
+	/// If this is a path, this gets created as an object in Initialize.
+	var/obj/item/stock_parts/power_store/cell/cell = /obj/item/stock_parts/power_store/cell/high
+	/// Status of the cell cover on the suit
+	var/cell_cover_open = FALSE
+	/// Status of the thermal regulator
+	var/thermal_on = FALSE
+	/// If this is FALSE the batery status UI will be disabled. This is used for suits that don't use bateries like the changeling's flesh suit mutation.
+	var/show_hud = TRUE
+	///How much this suit affects fishing difficulty
+	var/fishing_modifier = 5
 
 /datum/armor/suit_space
 	bio = 100
@@ -72,6 +96,9 @@
 	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
+
+	if(fishing_modifier)
+		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
 
 /// Start Processing on the space suit when it is worn to heat the wearer
 /obj/item/clothing/suit/space/equipped(mob/living/user, slot)
@@ -120,7 +147,11 @@
 
 	// If we got here, it means thermals are on, the cell is in and the cell has
 	// just had enough charge subtracted from it to power the thermal regulator
-	user.adjust_bodytemperature(get_temp_change_amount((temperature_setting - user.bodytemperature), 0.08 * seconds_per_tick))
+	if(user.body_temperature < temperature_setting)
+		user.adjust_body_temperature((temperature_setting - user.body_temperature) * 0.08 * seconds_per_tick, max_temp = temperature_setting)
+	else if(user.body_temperature > temperature_setting)
+		user.adjust_body_temperature((temperature_setting - user.body_temperature) * 0.08 * seconds_per_tick, min_temp = temperature_setting)
+
 	update_hud_icon(user)
 
 // Clean up the cell on destroy
@@ -141,7 +172,10 @@
 		thermal_on = FALSE
 
 // support for items that interact with the cell
-/obj/item/clothing/suit/space/get_cell()
+/obj/item/clothing/suit/space/get_cell(atom/movable/interface, mob/user)
+	if(istype(interface, /obj/item/inducer))
+		to_chat(user, span_alert("Error: unable to interface with [interface]."))
+		return null
 	return cell
 
 // Show the status of the suit and the cell
@@ -178,7 +212,7 @@
 
 // object handling for accessing features of the suit
 /obj/item/clothing/suit/space/attackby(obj/item/I, mob/user, params)
-	if(!cell_cover_open || !istype(I, /obj/item/stock_parts/cell))
+	if(!cell_cover_open || !istype(I, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(cell)
 		to_chat(user, span_warning("[src] already has a cell installed."))
@@ -189,18 +223,16 @@
 		return
 
 /// Open the cell cover when ALT+Click on the suit
-/obj/item/clothing/suit/space/AltClick(mob/living/user)
-	if(!user.can_perform_action(src, NEED_DEXTERITY))
-		return ..()
+/obj/item/clothing/suit/space/click_alt(mob/living/user)
 	toggle_spacesuit_cell(user)
+	return CLICK_ACTION_SUCCESS
 
 /// Remove the cell whent he cover is open on CTRL+Click
-/obj/item/clothing/suit/space/CtrlClick(mob/living/user)
-	if(user.can_perform_action(src, NEED_DEXTERITY))
-		if(cell_cover_open && cell)
-			remove_cell(user)
-			return
-	return ..()
+/obj/item/clothing/suit/space/item_ctrl_click(mob/user)
+	. = CLICK_ACTION_BLOCKING
+	if(cell_cover_open && cell)
+		remove_cell(user)
+		return CLICK_ACTION_SUCCESS
 
 // Remove the cell when using the suit on its self
 /obj/item/clothing/suit/space/attack_self(mob/user)
@@ -302,19 +334,17 @@
 		cell.emp_act(severity)
 
 /obj/item/clothing/head/helmet/space/suicide_act(mob/living/carbon/user)
-	var/datum/gas_mixture/environment = user.loc.return_air()
-	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.return_temperature() >= user.get_body_temp_cold_damage_limit())
-		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	var/datum/gas_mixture/environment = user.loc?.return_air()
+	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.return_temperature() >= user.bodytemp_cold_damage_limit)
+		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		return BRUTELOSS
 	user.say("You want proof? I'll give you proof! Here's proof of what'll happen to you if you stay here with your stuff!", forced = "space helmet suicide")
 	user.visible_message(span_suicide("[user] is removing [user.p_their()] helmet to make a point! Yo, holy shit, [user.p_they()] dead!")) //the use of p_they() instead of p_their() here is intentional
-	user.adjust_bodytemperature(-300)
+	user.adjust_body_temperature(-INFINITY, min_temp = CELCIUS_TO_KELVIN(-225 CELCIUS)) // pluto temperature
 	user.apply_status_effect(/datum/status_effect/freon)
-	if(!ishuman(user))
-		return FIRELOSS
-	var/mob/living/carbon/human/humanafterall = user
-	var/datum/disease/advance/cold/pun = new //in the show, arnold survives his stunt, but catches a cold because of it
-	humanafterall.ForceContractDisease(pun, FALSE, TRUE) //this'll show up on health analyzers and the like
+	if(ishuman(user))
+		//in the show, arnold survives his stunt, but catches a cold because of it
+		user.ForceContractDisease(new /datum/disease/advance/cold(), FALSE, TRUE)
 	return FIRELOSS
 
 #undef THERMAL_REGULATOR_COST

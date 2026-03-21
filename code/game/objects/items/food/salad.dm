@@ -65,7 +65,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 7,
 	)
 	tastes = list("sourness" = 1, "leaves" = 1)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/uncooked_rice
@@ -184,6 +184,8 @@
 	fill_icon_thresholds = list(0)
 	fill_icon_state = "fullbowl"
 	fill_icon = 'icons/obj/food/soupsalad.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 	volume = SOUP_SERVING_SIZE + 5
 	gulp_size = 3

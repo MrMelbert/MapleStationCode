@@ -3,6 +3,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /obj/machinery/announcement_system
 	density = TRUE
 	name = "\improper Automated Announcement System"
+	article = "the"
 	desc = "An automated announcement system that handles minor announcements over the radio."
 	icon = 'icons/obj/machines/telecomms.dmi'
 	icon_state = "AAS_On"
@@ -31,6 +32,9 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	GLOB.announcement_systems += src
 	radio = new /obj/item/radio/headset/silicon/ai(src)
 	update_appearance()
+
+/obj/machinery/announcement_system/randomize_language_if_on_station()
+	return
 
 /obj/machinery/announcement_system/update_icon_state()
 	icon_state = "[base_icon_state]_[is_operational ? "On" : "Off"][panel_open ? "_Open" : null]"
@@ -87,6 +91,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		message = CompileText(newhead, user, rank)
 	else if(message_type == "ARRIVALS_BROKEN")
 		message = "The arrivals shuttle has been damaged. Docking for repairs..."
+	else if(message_type == "DESPAWN")
+		message = CompileText("%PERSON, %RANK, has entered long-term crew storage.", user, rank)
 
 	broadcast(message, channels)
 
@@ -99,7 +105,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// Sends a message to the appropriate channels.
 /obj/machinery/announcement_system/proc/broadcast(message, list/channels)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	if(channels.len == 0)
 		radio.talk_into(src, message, null)
 	else

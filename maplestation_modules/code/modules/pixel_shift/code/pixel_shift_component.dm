@@ -1,7 +1,5 @@
 /datum/component/pixel_shift
 	dupe_mode = COMPONENT_DUPE_UNIQUE
-	/// Whether the mob is pixel shifted or not
-	var/is_shifted = FALSE
 	/// If we are in the shifting setting.
 	var/shifting = TRUE
 	/// Takes the four cardinal direction defines. Any atoms moving into this atom's tile will be allowed to from the added directions.
@@ -59,34 +57,32 @@
 /// Sets parent pixel offsets to default and deletes the component.
 /datum/component/pixel_shift/proc/unpixel_shift()
 	SIGNAL_HANDLER
-	passthroughable = NONE
-	if(is_shifted)
-		var/mob/living/owner = parent
-		owner.pixel_x = owner.body_position_pixel_x_offset + owner.base_pixel_x
-		owner.pixel_y = owner.body_position_pixel_y_offset + owner.base_pixel_y
+	var/mob/living/owner = parent
+	owner.remove_offsets(type)
 	qdel(src)
 
 /// In-turf pixel movement which can allow things to pass through if the threshold is met.
 /datum/component/pixel_shift/proc/pixel_shift(mob/source, direct)
 	passthroughable = NONE
 	var/mob/living/owner = parent
+	var/new_x = owner.has_offset(type, PIXEL_X_OFFSET)
+	var/new_y = owner.has_offset(type, PIXEL_Y_OFFSET)
+
 	switch(direct)
 		if(NORTH)
 			if(owner.pixel_y <= maximum_pixel_shift + owner.base_pixel_y)
-				owner.pixel_y++
-				is_shifted = TRUE
+				new_y++
 		if(EAST)
 			if(owner.pixel_x <= maximum_pixel_shift + owner.base_pixel_x)
-				owner.pixel_x++
-				is_shifted = TRUE
+				new_x++
 		if(SOUTH)
 			if(owner.pixel_y >= -maximum_pixel_shift + owner.base_pixel_y)
-				owner.pixel_y--
-				is_shifted = TRUE
+				new_y--
 		if(WEST)
 			if(owner.pixel_x >= -maximum_pixel_shift + owner.base_pixel_x)
-				owner.pixel_x--
-				is_shifted = TRUE
+				new_x--
+
+	owner.add_offsets(type, x_add = new_x, y_add = new_y)
 
 	// Yes, I know this sets it to true for everything if more than one is matched.
 	// Movement doesn't check diagonals, and instead just checks EAST or WEST, depending on where you are for those.

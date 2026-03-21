@@ -3,8 +3,8 @@
 /// Shoe Slot Items (Deletes overrided items)
 /datum/loadout_category/shoes
 	category_name = "Shoes"
-	ui_title = "Foot Slot Items"
 	type_to_generate = /datum/loadout_item/shoes
+	tab_order = 13
 
 /datum/loadout_item/shoes
 	abstract_type = /datum/loadout_item/shoes
@@ -13,26 +13,21 @@
 
 /datum/loadout_item/shoes/New()
 	. = ..()
-	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
+	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & DIGITIGRADE_VARIATIONS)
+
+/datum/loadout_item/shoes/get_item_information()
+	. = ..()
 	if(supports_digitigrade)
-		LAZYADD(additional_tooltip_contents, "This item can be worn on characters whom have digitigrade legs.")
+		.[FA_ICON_DRAGON] = "Supports digitigrade legs"
 
-// This is snowflake but digitigrade is in general
-// Need to handle shoes that don't fit digitigrade being selected
-// Ideally would be generalized with species can equip or something but OH WELL
-/datum/loadout_item/shoes/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
-	// Supports digi = needs no special handling so we can continue as normal
-	if(supports_digitigrade)
-		return ..()
+/datum/loadout_item/shoes/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	if(!..())
+		return FALSE
+	if(equipper.bodyshape & BODYSHAPE_DIGITIGRADE)
+		return supports_digitigrade
+	return TRUE
 
-	// Does not support digi and our equipper is? We shouldn't mess with it, skip
-	if(equipper.bodytype & BODYTYPE_DIGITIGRADE)
-		return
-
-	// Does not support digi and our equipper is not digi? Continue as normal
-	return ..()
-
-/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.shoes = item_path
 
 /datum/loadout_item/shoes/jackboots
@@ -44,16 +39,28 @@
 	item_path = /obj/item/clothing/shoes/winterboots
 
 /datum/loadout_item/shoes/work_boots
-	name = "Work Boots"
+	name = "Work Boots (Tan)"
 	item_path = /obj/item/clothing/shoes/workboots
 
 /datum/loadout_item/shoes/mining_boots
 	name = "Mining Boots"
 	item_path = /obj/item/clothing/shoes/workboots/mining
 
-/datum/loadout_item/shoes/laceup
-	name = "Laceup Shoes"
+/datum/loadout_item/shoes/black_work_boots
+	name = "Work Boots (Black)"
+	item_path = /obj/item/clothing/shoes/workboots/black
+
+/datum/loadout_item/shoes/black_laceup
+	name = "Black Laceup Shoes"
 	item_path = /obj/item/clothing/shoes/laceup
+
+/datum/loadout_item/shoes/burgundy_laceup
+	name = "Burgundy Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/burgundy
+
+/datum/loadout_item/shoes/brown_laceup
+	name = "Brown Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/brown
 
 /datum/loadout_item/shoes/russian_boots
 	name = "Russian Boots"
@@ -79,18 +86,6 @@
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
 
-/datum/loadout_item/shoes/blacksandals
-	name = "Black Sandals"
-	item_path = /obj/item/clothing/shoes/sandal/black
-
-/datum/loadout_item/shoes/trainers
-	name = "Workout Trainers"
-	item_path = /obj/item/clothing/shoes/trainers
-
-/datum/loadout_item/shoes/sneaker
-	name = "Casual Sneakers"
-	item_path = /obj/item/clothing/shoes/trainers/casual
-
 /datum/loadout_item/shoes/heels
 	name = "High Heels"
 	item_path = /obj/item/clothing/shoes/heels
@@ -99,10 +94,21 @@
 	name = "Fancy High Heels"
 	item_path = /obj/item/clothing/shoes/heels/fancy
 
-/datum/loadout_item/shoes/mrashoes
-	name = "Malheur Research Association boots"
-	item_path = /obj/item/clothing/shoes/mrashoes
+/datum/loadout_item/shoes/barefoot
+	name = "Barefoot"
+	item_path = /obj/item/clothing/shoes/barefoot
+	ui_icon = 'icons/mob/landmarks.dmi'
+	ui_icon_state = "x"
 
-/datum/loadout_item/shoes/reshiaboot
-	name = "Short Brown Boots"
-	item_path = /obj/item/clothing/shoes/reshiaboot
+/datum/loadout_item/shoes/barefoot/on_equip_item(obj/item/equipped_item, list/item_details, mob/living/carbon/human/equipper, datum/outfit/outfit, visuals_only)
+	return NONE
+
+/datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+	outfit.shoes = null
+
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL

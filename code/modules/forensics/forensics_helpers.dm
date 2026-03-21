@@ -1,5 +1,7 @@
 /// Adds a list of fingerprints to the atom
 /atom/proc/add_fingerprint_list(list/fingerprints_to_add) //ASSOC LIST FINGERPRINT = FINGERPRINT
+	if (QDELING(src))
+		return FALSE
 	if (isnull(fingerprints_to_add))
 		return
 	if (forensics)
@@ -19,6 +21,8 @@
 
 /// Add a list of fibers to the atom
 /atom/proc/add_fiber_list(list/fibers_to_add) //ASSOC LIST FIBERTEXT = FIBERTEXT
+	if (QDELING(src))
+		return FALSE
 	if (isnull(fibers_to_add))
 		return
 	if (forensics)
@@ -29,6 +33,8 @@
 
 /// Adds a single fiber to the atom
 /atom/proc/add_fibers(mob/living/carbon/human/suspect)
+	if (QDELING(src))
+		return FALSE
 	var/old = 0
 	if(suspect.gloves && istype(suspect.gloves, /obj/item/clothing))
 		var/obj/item/clothing/gloves/suspect_gloves = suspect.gloves
@@ -47,6 +53,8 @@
 
 /// Adds a list of hiddenprints to the atom
 /atom/proc/add_hiddenprint_list(list/hiddenprints_to_add) //NOTE: THIS IS FOR ADMINISTRATION FINGERPRINTS, YOU MUST CUSTOM SET THIS TO INCLUDE CKEY/REAL NAMES! CHECK FORENSICS.DM
+	if (QDELING(src))
+		return FALSE
 	if (isnull(hiddenprints_to_add))
 		return
 	if (forensics)
@@ -57,6 +65,8 @@
 
 /// Adds a single hiddenprint to the atom
 /atom/proc/add_hiddenprint(mob/suspect)
+	if (QDELING(src))
+		return FALSE
 	if (isnull(forensics))
 		forensics = new(src)
 	forensics.add_hiddenprint(suspect)
@@ -67,6 +77,7 @@
 	/// Cached mixed color of all blood DNA on us
 	VAR_PROTECTED/cached_blood_dna_color
 
+/// Gets what color all the blood coating this atom mixed together would be
 /atom/proc/get_blood_dna_color()
 	if(cached_blood_dna_color)
 		return cached_blood_dna_color
@@ -74,8 +85,7 @@
 	var/list/colors = list()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	for(var/dna_sample in all_dna)
-		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
-		colors += blood.color
+		colors += find_blood_type(all_dna[dna_sample]).color
 
 	var/final_color = pop(colors)
 	for(var/color in colors)
@@ -83,16 +93,28 @@
 	cached_blood_dna_color = final_color
 	return final_color
 
+/obj/effect/decal/cleanable/blood/get_blood_dna_color()
+	return ..() || COLOR_BLOOD
+
 /obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
-	return GLOB.blood_types[all_dna[all_dna[1]]]?.color
+	var/blood_type_to_use = all_dna[all_dna[1]]
+	return find_blood_type(blood_type_to_use).color
+
+/obj/item/organ/get_blood_dna_color()
+	if(isnull(blood_dna_info))
+		return COLOR_BLOOD
+	var/blood_type_to_use = blood_dna_info[blood_dna_info[1]]
+	return find_blood_type(blood_type_to_use).color
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
 /obj/add_blood_DNA(list/blood_DNA_to_add)
-	if (isnull(blood_DNA_to_add))
+	if (QDELING(src))
+		return FALSE
+	if (!length(blood_DNA_to_add))
 		return FALSE
 	if (forensics)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
@@ -105,19 +127,43 @@
 	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
 	if(!..())
 		return FALSE
-
-	color = get_blood_dna_color()
-	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
-	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
+	if(dried)
+		return TRUE
+	// unique blood type effects like oil being ignitable
+	var/list/unique_blood = list()
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		if(unique_blood[blood_type])
+			continue
+		var/datum/blood_type/blood = find_blood_type(blood_type)
 		blood.set_up_blood(src, first_dna == 0)
+		unique_blood[blood_type] = TRUE
+	// handle smells
+	refresh_smells()
+	// updates name/overlay/desc
 	update_appearance()
+	// and changes its color accordingly
+	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE
+
+/// Add the scent of blood to this movable from the inputted blood DNA
+/atom/movable/proc/add_blood_scent(list/blood_DNA_to_add, duration = 2 MINUTES, intensity = SMELL_INTENSITY_WEAK, radius = 2)
+	for(var/some_dna, blood_type in blood_DNA_to_add)
+		var/datum/blood_type/blood = find_blood_type(blood_type)
+		if(blood.scent_text)
+			add_smell(
+				duration = duration,
+				base_type = /datum/smell/blood,
+				smell = blood.scent_text,
+				category = blood.scent_category,
+				intensity = intensity,
+				radius = radius,
+			)
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
 	if(item_flags & NO_BLOOD_ON_ITEM)
 		return FALSE
-	return ..()
+	. = ..()
+	add_blood_scent(blood_DNA_to_add)
 
 // NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
@@ -138,23 +184,83 @@
 /turf/closed/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	return FALSE
 
+/obj/item/clothing/under/add_blood_DNA(list/blood_DNA_to_add)
+	. = ..()
+	if(!.)
+		return
+	for(var/obj/item/clothing/accessory/thing_accessory as anything in attached_accessories)
+		if(prob(66))
+			continue
+		thing_accessory.add_blood_DNA(blood_DNA_to_add)
+
 /mob/living/carbon/human/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
-	if(wear_suit)
-		wear_suit.add_blood_DNA(blood_DNA_to_add)
-		update_worn_oversuit()
-	else if(w_uniform)
-		w_uniform.add_blood_DNA(blood_DNA_to_add)
-		update_worn_undersuit()
-	if(gloves)
-		var/obj/item/clothing/gloves/mob_gloves = gloves
-		mob_gloves.add_blood_DNA(blood_DNA_to_add)
-	else if(length(blood_DNA_to_add))
-		if (isnull(forensics))
+	return add_blood_DNA_to_items(blood_DNA_to_add)
+
+/// Adds blood DNA to certain slots the mob is wearing
+/mob/living/carbon/human/proc/add_blood_DNA_to_items(
+	list/blood_DNA_to_add,
+	target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_GLOVES|ITEM_SLOT_HEAD|ITEM_SLOT_MASK,
+)
+	if(QDELING(src))
+		return FALSE
+	if(!length(blood_DNA_to_add))
+		return FALSE
+
+	// Don't messy up our jumpsuit if we're got a coat
+	if((target_flags & ITEM_SLOT_OCLOTHING) && (wear_suit?.body_parts_covered & CHEST))
+		target_flags &= ~ITEM_SLOT_ICLOTHING
+
+	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
+	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
+	var/slots_to_bloody = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
+	var/list/all_worn = get_equipped_items()
+	for(var/obj/item/thing as anything in all_worn)
+		if(thing.slot_flags & slots_to_bloody)
+			thing.add_blood_DNA(blood_DNA_to_add)
+		if(thing.body_parts_covered & HANDS)
+			dirty_hands = FALSE
+		if(thing.body_parts_covered & FEET)
+			dirty_feet = FALSE
+
+	if(slots_to_bloody & ITEM_SLOT_HANDS)
+		for(var/obj/item/thing in held_items)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+	if(dirty_hands || dirty_feet || !length(all_worn))
+		if(isnull(forensics))
 			forensics = new(src)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
-		blood_in_hands = rand(2, 4)
+		if(dirty_hands)
+			blood_in_hands = rand(2, 4)
+		add_blood_scent(blood_DNA_to_add, radius = 1)
+
 	cached_blood_dna_color = null
-	update_worn_gloves()
+	update_clothing(slots_to_bloody)
+	return TRUE
+
+/mob/living/carbon/human/proc/add_fingerprints_to_items(mob/living/from_mob, target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+	if(QDELING(src))
+		return FALSE
+
+	var/slots_to_fingerprint = target_flags & ~hidden_slots_to_inventory_slots(covered_slots)
+	for(var/obj/item/thing as anything in get_equipped_items())
+		if(thing.slot_flags & slots_to_fingerprint)
+			. ||= thing.add_fingerprint(from_mob)
+
+	if(!.)
+		. = add_fingerprint(from_mob)
+
+	return .
+
+/mob/living/add_blood_DNA(list/blood_DNA_to_add)
+	if(QDELING(src))
+		return FALSE
+	if(!length(blood_DNA_to_add))
+		return FALSE
+	if(isnull(forensics))
+		forensics = new(src)
+	forensics.inherit_new(blood_DNA = blood_DNA_to_add)
+	cached_blood_dna_color = null
 	return TRUE
 
 /*

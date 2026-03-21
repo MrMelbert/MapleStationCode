@@ -56,14 +56,6 @@
 	designate_time = 100
 	y_offset = -11
 
-/obj/machinery/computer/camera_advanced/shuttle_docker/cyborg_mothership/Initialize(mapload)
-	. = ..()
-	GLOB.jam_on_wardec += src
-
-/obj/machinery/computer/camera_advanced/shuttle_docker/cyborg_mothership/Destroy()
-	GLOB.jam_on_wardec -= src
-	return ..()
-
 /obj/item/disk/holodisk/ruin/cyborg_mothership
 	name = "Blackbox Print-out #101011"
 	desc = "A rusty holodisk containing the last moments of #101011."

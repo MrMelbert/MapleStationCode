@@ -3,13 +3,13 @@
 /// Mask Slot Items (Deletes overrided items)
 /datum/loadout_category/mask
 	category_name = "Mask"
-	ui_title = "Mouth Slot Items"
 	type_to_generate = /datum/loadout_item/mask
+	tab_order = 4
 
 /datum/loadout_item/mask
 	abstract_type = /datum/loadout_item/mask
 
-/datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout mask was not equipped directly due to your envirosuit mask.")
@@ -24,17 +24,18 @@
 /datum/loadout_item/mask/gas_mask
 	name = "Gas Mask"
 	item_path = /obj/item/clothing/mask/gas
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/bandana_greyscale
 	name = "Bandana"
 	item_path = /obj/item/clothing/mask/bandana
 
 /datum/loadout_item/mask/bandana_striped_greyscale
-	name = "Striped Bandana"
+	name = "Bandana (Striped)"
 	item_path = /obj/item/clothing/mask/bandana/striped
 
 /datum/loadout_item/mask/skull_bandana
-	name = "Skull Bandana"
+	name = "Bandana (Skull)"
 	item_path = /obj/item/clothing/mask/bandana/skull
 
 /datum/loadout_item/mask/surgical_mask
@@ -47,11 +48,11 @@
 
 /datum/loadout_item/mask/pipe
 	name = "Pipe"
-	item_path = /obj/item/clothing/mask/cigarette/pipe
+	item_path = /obj/item/cigarette/pipe
 
 /datum/loadout_item/mask/corn_pipe
 	name = "Corn Cob Pipe"
-	item_path = /obj/item/clothing/mask/cigarette/pipe/cobpipe
+	item_path = /obj/item/cigarette/pipe/cobpipe
 
 /datum/loadout_item/mask/plague_doctor
 	name = "Plague Doctor Mask"
@@ -72,15 +73,34 @@
 /datum/loadout_item/mask/avianmask_cardinal
 	name = "Cardinal Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/cardinal
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_secretary
 	name = "Secretary Bird Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/secretary
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_toucan
 	name = "Toucan Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/toucan
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
 
 /datum/loadout_item/mask/avianmask_bluejay
 	name = "Blue Jay Mask"
 	item_path = /obj/item/clothing/mask/breath/ornithid/bluejay
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
+
+/datum/loadout_item/mask/facescarf
+	name = "Face Scarf"
+	item_path = /obj/item/clothing/mask/facescarf
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
+
+/datum/loadout_item/mask/kitsune
+	name = "Kitsune Mask"
+	item_path = /obj/item/clothing/mask/kitsune
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM
+
+/datum/loadout_item/mask/rebellion
+	name = "Rebellion Mask"
+	item_path = /obj/item/clothing/mask/rebellion
+	loadout_flags = LOADOUT_FLAG_ALLOW_HEIRLOOM

@@ -17,6 +17,8 @@
 	attack_verb_continuous = list("sweeps", "brushes off", "bludgeons", "whacks")
 	attack_verb_simple = list("sweep", "brush off", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/pushbroom/Initialize(mapload)
 	. = ..()
@@ -55,12 +57,9 @@
 /obj/item/pushbroom/proc/on_unwield(obj/item/source, mob/user)
 	UnregisterSignal(user, COMSIG_MOVABLE_PRE_MOVE)
 
-/obj/item/pushbroom/afterattack(atom/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	sweep(user, A)
-	return . | AFTERATTACK_PROCESSED_ITEM
+/obj/item/pushbroom/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	sweep(user, interacting_with)
+	return NONE // I guess
 
 /**
  * Attempts to push up to BROOM_PUSH_LIMIT atoms from a given location the user's faced direction

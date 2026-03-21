@@ -65,13 +65,46 @@
 	return "As Disguise"
 
 /datum/preference/choiced/synth_blood/apply_to_human(mob/living/carbon/human/target, value)
-	var/datum/species/synth/synth = target.dna?.species
-	if(!istype(synth))
-		return
-	if(value == "As Disguise" && synth.disguise_species)
-		synth.exotic_bloodtype = synth.disguise_species.exotic_bloodtype
-	else
-		synth.exotic_bloodtype = /datum/blood_type/oil
+	return
 
 /datum/preference/choiced/synth_blood/is_accessible(datum/preferences/preferences)
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+
+
+
+//synth head covers (aka head design options)
+/datum/preference/choiced/synth_head_cover
+	main_feature_name = "Head Cover"
+	savefile_key = "feature_synth_head_cover"
+
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	can_randomize = TRUE
+	relevant_external_organ = /obj/item/organ/synth_head_cover
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/synth_head_cover/init_possible_values()
+	return assoc_to_keys(SSaccessories.synth_head_cover_list)
+
+/datum/preference/choiced/synth_head_cover/icon_for(value)
+	var/datum/sprite_accessory/sprite_accessory = SSaccessories.synth_head_cover_list[value]
+	var/datum/universal_icon/head = uni_icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
+
+	var/datum/universal_icon/final_icon = head.copy()
+
+	if (!isnull(sprite_accessory))
+		for(var/side in list("ADJ", "FRONT"))
+			var/datum/universal_icon/accessory_icon = uni_icon('maplestation_modules/icons/mob/synth_heads.dmi', "m_synth_head_cover_[sprite_accessory.icon_state]_ADJ", dir = SOUTH)
+			final_icon.blend_icon(accessory_icon, ICON_OVERLAY)
+
+	final_icon.crop(11, 20, 23, 32)
+	final_icon.scale(32, 32)
+	final_icon.blend_color(COLOR_GRAY, ICON_MULTIPLY)
+
+	return final_icon
+
+/datum/preference/choiced/synth_head_cover/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["synth_head_cover"] = value
+
+/datum/preference/choiced/synth_head_cover/create_default_value()
+	return /datum/sprite_accessory/synth_head_cover::name

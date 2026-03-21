@@ -219,6 +219,7 @@
 	icon_state = "white"
 	base_icon_state = "white"
 	floor_tile = /obj/item/stack/tile/iron/white
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/white/smooth_edge
 	icon_state = "white_edge"
@@ -254,6 +255,7 @@
 	icon_state = "cafeteria"
 	base_icon_state = "cafeteria"
 	floor_tile = /obj/item/stack/tile/iron/cafeteria
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/white/textured
 	icon_state = "textured_white"
@@ -386,6 +388,7 @@
 	icon_state = "kitchen"
 	base_icon_state = "kitchen"
 	floor_tile = /obj/item/stack/tile/iron/kitchen
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/kitchen/small
 	icon_state = "kitchen_small"
@@ -406,11 +409,13 @@
 	icon_state = "chapel"
 	base_icon_state = "chapel"
 	floor_tile = /obj/item/stack/tile/iron/chapel
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/showroomfloor
 	icon_state = "showroomfloor"
 	base_icon_state = "showroomfloor"
 	floor_tile = /obj/item/stack/tile/iron/showroomfloor
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/showroomfloor/airless
 	initial_gas_mix = AIRLESS_ATMOS
@@ -428,6 +433,7 @@
 	icon_state = "freezerfloor"
 	base_icon_state = "freezerfloor"
 	floor_tile = /obj/item/stack/tile/iron/freezer
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/freezer/airless
 	initial_gas_mix = AIRLESS_ATMOS
@@ -438,11 +444,13 @@
 /turf/open/floor/iron/kitchen_coldroom
 	name = "cold room floor"
 	initial_gas_mix = KITCHEN_COLDROOM_ATMOS
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor
 	icon_state = "freezerfloor"
 	base_icon_state = "freezerfloor"
 	floor_tile = /obj/item/stack/tile/iron/freezer
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/iron/grimy
 	icon_state = "grimy"

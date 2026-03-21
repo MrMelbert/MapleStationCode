@@ -11,6 +11,8 @@
 	slot_flags = ITEM_SLOT_BELT
 	item_flags = NOBLUDGEON
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 1.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 1.5)
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	var/last_perceived_radiation_danger = null
 
@@ -67,18 +69,18 @@
 	update_appearance(UPDATE_ICON)
 	balloon_alert(user, "switch [scanning ? "on" : "off"]")
 
-/obj/item/geiger_counter/afterattack(atom/target, mob/living/user, params)
-	. = ..()
-	. |= AFTERATTACK_PROCESSED_ITEM
+/obj/item/geiger_counter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(SHOULD_SKIP_INTERACTION(interacting_with, src, user))
+		return NONE
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
-	if (user.combat_mode)
-		return
+/obj/item/geiger_counter/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!CAN_IRRADIATE(interacting_with))
+		return NONE
 
-	if (!CAN_IRRADIATE(target))
-		return
-
-	user.visible_message(span_notice("[user] scans [target] with [src]."), span_notice("You scan [target]'s radiation levels with [src]..."))
-	addtimer(CALLBACK(src, PROC_REF(scan), target, user), 20, TIMER_UNIQUE) // Let's not have spamming GetAllContents
+	user.visible_message(span_notice("[user] scans [interacting_with] with [src]."), span_notice("You scan [interacting_with]'s radiation levels with [src]..."))
+	addtimer(CALLBACK(src, PROC_REF(scan), interacting_with, user), 20, TIMER_UNIQUE) // Let's not have spamming GetAllContents
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/geiger_counter/equipped(mob/user, slot, initial)
 	. = ..()
@@ -110,12 +112,11 @@
 
 	to_chat(user, span_notice("[icon2html(src, user)] [isliving(target) ? "Subject" : "Target"] is free of radioactive contamination."))
 
-/obj/item/geiger_counter/AltClick(mob/living/user)
-	if(!istype(user) || !user.can_perform_action(src))
-		return ..()
+/obj/item/geiger_counter/click_alt(mob/living/user)
 	if(!scanning)
 		to_chat(usr, span_warning("[src] must be on to reset its radiation level!"))
-		return
+		return CLICK_ACTION_BLOCKING
 	to_chat(usr, span_notice("You flush [src]'s radiation counts, resetting it to normal."))
 	last_perceived_radiation_danger = null
 	update_appearance(UPDATE_ICON)
+	return CLICK_ACTION_SUCCESS

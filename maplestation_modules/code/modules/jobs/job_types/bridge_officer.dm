@@ -1,14 +1,11 @@
 // -- Bridge Officer job & outfit datum --
-/datum/station_trait/job/bridge_assistant
-	weight = 0
-
-/datum/job/bridge_assistant
-	rpg_title = "Lesser Guildperson"
-
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
-	description = "File paperwork to Central Command via your fax machine. \
-		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	description = "File paperwork to Central Command via your fax machine, \
+		pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	title_options = list(
+		"Bridge Assistant",
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -16,7 +13,6 @@
 	spawn_positions = 1
 	supervisors = "the heads of staff and the captain"
 	// selection_color = "#ddddff"
-	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
@@ -24,7 +20,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BRIDGE_OFFICER"
 
-	outfit = /datum/outfit/job/bridge_officer
+	base_outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
@@ -38,7 +34,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -57,9 +56,17 @@
 		/obj/item/storage/fancy/cigarettes = 1,
 	)
 
-	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS
+	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Guildperson"
-	crewmonitor_priority = 59
+	crewmonitor_priority = 60.1 // after HOP, before rest of service
+
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/bartending = SKILL_LEVEL_NOVICE,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"

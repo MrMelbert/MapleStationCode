@@ -1,13 +1,13 @@
 #define MONKEY_SPEC_ATTACK_BITE_MISS_CHANCE 25
 
 /datum/species/monkey
-	name = "Monkey"
+	name = "\improper Monkey"
 	id = SPECIES_MONKEY
-	external_organs = list(
-		/obj/item/organ/external/tail/monkey = "Monkey"
+	mutant_organs = list(
+		/obj/item/organ/tail/monkey = "Monkey",
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/monkey
-	mutantbrain = /obj/item/organ/internal/brain/primate
+	mutanttongue = /obj/item/organ/tongue/monkey
+	mutantbrain = /obj/item/organ/brain/primate
 	skinned_type = /obj/item/stack/sheet/animalhide/monkey
 	meat = /obj/item/food/meat/slab/monkey
 	knife_butcher_results = list(/obj/item/food/meat/slab/monkey = 5, /obj/item/stack/sheet/animalhide/monkey = 1)
@@ -17,11 +17,13 @@
 		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_UNDERWEAR,
+		TRAIT_SHIFTY_EYES, // NON-MODULE CHANGE: monkey are shifty
 		TRAIT_VENTCRAWLER_NUDE,
 		TRAIT_WEAK_SOUL,
 	)
 	no_equip_flags = ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_SUITSTORE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN | SLIME_EXTRACT
+	species_cookie = /obj/item/food/grown/banana
 	sexes = FALSE
 	species_language_holder = /datum/language_holder/monkey
 
@@ -34,46 +36,39 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/monkey,
 	)
 	fire_overlay = "monkey"
-	dust_anim = "dust-m"
 	gib_anim = "gibbed-m"
 
 	payday_modifier = 1.5
 	ai_controlled_species = TRUE
+	monkey_type = null
+	canon_height = MONKEY_HEIGHT_MEDIUM
 
-/datum/species/monkey/random_name(gender,unique,lastname)
-	var/randname = "monkey ([rand(1,999)])"
-
-	return randname
-
-/datum/species/monkey/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
+/datum/species/monkey/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
 	. = ..()
-	passtable_on(H, SPECIES_TRAIT)
-	H.dna.add_mutation(/datum/mutation/human/race, MUT_NORMAL)
-	H.dna.activate_mutation(/datum/mutation/human/race)
-	H.AddElement(/datum/element/human_biter)
+	passtable_on(human_who_gained_species, SPECIES_TRAIT)
+	human_who_gained_species.dna.add_mutation(/datum/mutation/human/race, MUT_NORMAL)
+	human_who_gained_species.dna.activate_mutation(/datum/mutation/human/race)
+	human_who_gained_species.AddElement(/datum/element/human_biter)
+	human_who_gained_species.update_mob_height()
 
-/datum/species/monkey/on_species_loss(mob/living/carbon/C)
+/datum/species/monkey/on_species_loss(mob/living/carbon/human/C)
 	. = ..()
 	passtable_off(C, SPECIES_TRAIT)
 	C.dna.remove_mutation(/datum/mutation/human/race)
 	C.RemoveElement(/datum/element/human_biter)
+	C.update_mob_height()
 
-/datum/species/monkey/check_roundstart_eligible()
-	// STOP ADDING MONKEY SUBTYPES YOU HEATHEN
-	if(check_holidays(MONKEYDAY) && id == SPECIES_MONKEY)
-		return TRUE
-	return ..()
+/datum/species/monkey/update_species_heights(mob/living/carbon/human/holder)
+	if(HAS_TRAIT(holder, TRAIT_DWARF))
+		return MONKEY_HEIGHT_DWARF
+
+	if(HAS_TRAIT(holder, TRAIT_TOO_TALL))
+		return MONKEY_HEIGHT_TALL
+
+	return MONKEY_HEIGHT_MEDIUM
 
 /datum/species/monkey/get_scream_sound(mob/living/carbon/human/monkey)
-	return pick(
-		'sound/creatures/monkey/monkey_screech_1.ogg',
-		'sound/creatures/monkey/monkey_screech_2.ogg',
-		'sound/creatures/monkey/monkey_screech_3.ogg',
-		'sound/creatures/monkey/monkey_screech_4.ogg',
-		'sound/creatures/monkey/monkey_screech_5.ogg',
-		'sound/creatures/monkey/monkey_screech_6.ogg',
-		'sound/creatures/monkey/monkey_screech_7.ogg',
-	)
+	return get_sfx(SFX_SCREECH)
 
 /datum/species/monkey/get_physical_attributes()
 	return "Monkeys are slippery, can crawl into vents, and are more dextrous than humans.. but only when stealing things. \
@@ -135,7 +130,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/brain/primate //Ook Ook
+/obj/item/organ/brain/primate //Ook Ook
 	name = "Primate Brain"
 	desc = "This wad of meat is small, but has enlaged occipital lobes for spotting bananas."
 	organ_traits = list(TRAIT_CAN_STRIP, TRAIT_PRIMITIVE) // No literacy or advanced tool usage.
@@ -150,12 +145,8 @@
 	background_icon_state = "bg_default_on"
 	overlay_icon_state = "bg_default_border"
 
-/datum/action/item_action/organ_action/toggle_trip/Trigger(trigger_flags)
-	. = ..()
-	if(!.)
-		return
-
-	var/obj/item/organ/internal/brain/primate/monkey_brain = target
+/datum/action/item_action/organ_action/toggle_trip/do_effect(trigger_flags)
+	var/obj/item/organ/brain/primate/monkey_brain = target
 	if(monkey_brain.tripping)
 		monkey_brain.tripping = FALSE
 		background_icon_state = "bg_default"
@@ -165,17 +156,17 @@
 		background_icon_state = "bg_default_on"
 		to_chat(monkey_brain.owner, span_notice("You will now stumble while while colliding with people who are in combat mode."))
 	build_all_button_icons()
+	return TRUE
 
-
-/obj/item/organ/internal/brain/primate/on_mob_insert(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_insert(mob/living/carbon/primate)
 	. = ..()
 	RegisterSignal(primate, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed), TRUE)
 
-/obj/item/organ/internal/brain/primate/on_mob_remove(mob/living/carbon/primate)
+/obj/item/organ/brain/primate/on_mob_remove(mob/living/carbon/primate)
 	. = ..()
 	UnregisterSignal(primate, COMSIG_MOVABLE_CROSS)
 
-/obj/item/organ/internal/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
+/obj/item/organ/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
 	SIGNAL_HANDLER
 	if(!tripping)
 		return
@@ -188,26 +179,126 @@
 		return
 	in_the_way_mob.knockOver(owner)
 
-/obj/item/organ/internal/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
 	return owner.get_bodypart(BODY_ZONE_HEAD)
 
-/// Virtual monkeys that crave virtual bananas. Everything about them is ephemeral (except that bite).
-/datum/species/monkey/holodeck
-	id = SPECIES_MONKEY_HOLODECK
-	knife_butcher_results = list()
-	meat = null
-	skinned_type = null
+#undef MONKEY_SPEC_ATTACK_BITE_MISS_CHANCE
+
+/datum/species/monkey/lizard
+	name = "\improper Kobold"
+	id = SPECIES_MONKEY_LIZARD
 	inherent_traits = list(
-		TRAIT_GENELESS,
+		// monke
 		TRAIT_GUN_NATURAL,
 		TRAIT_NO_AUGMENTS,
 		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_ZOMBIFY,
-		TRAIT_NOBLOOD,
-		TRAIT_NOHUNGER,
+		TRAIT_SHIFTY_EYES, // NON-MODULE CHANGE: monkey are shifty
 		TRAIT_VENTCRAWLER_NUDE,
+		TRAIT_WEAK_SOUL,
+		// unique
+		TRAIT_MUTANT_COLORS,
+		TRAIT_TACKLING_TAILED_DEFENDER,
+	)
+	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
+	mutant_organs = list(
+		/obj/item/organ/horns = "None",
+		/obj/item/organ/frills = "None",
+		/obj/item/organ/snout = "Round",
+		/obj/item/organ/spines = "None",
+		/obj/item/organ/tail/lizard = "Smooth",
+	)
+	mutanttongue = /datum/species/lizard::mutanttongue
+	species_cookie = /datum/species/lizard::species_cookie
+	meat = /datum/species/lizard::meat
+	skinned_type = /datum/species/lizard::skinned_type
+	knife_butcher_results = list(/datum/species/lizard::meat = 5, /datum/species/lizard::skinned_type = 1)
+	species_language_holder = /datum/language_holder/lizard/ash/primative
+
+	bodytemp_heat_damage_limit = /datum/species/lizard::bodytemp_heat_damage_limit
+	bodytemp_cold_damage_limit = /datum/species/lizard::bodytemp_cold_damage_limit
+	// Cold blooded
+	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
+	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
+
+	bodypart_overrides = list(
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard/lizmonkey,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard/lizmonkey,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard/lizmonkey,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
+	digitigrade_legs = list(
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade/lizmonkey,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade/lizmonkey,
+	)
+	canon_height = parent_type::canon_height + 2
+
+/datum/species/monkey/lizard/update_species_heights(mob/living/carbon/human/holder)
+	return ..() + 2
+
+/datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
+	return pick(
+		'sound/voice/lizard/lizard_scream_1.ogg',
+		'sound/voice/lizard/lizard_scream_2.ogg',
+		'sound/voice/lizard/lizard_scream_3.ogg',
 	)
 
-#undef MONKEY_SPEC_ATTACK_BITE_MISS_CHANCE
+/datum/species/monkey/lizard/get_laugh_sound(mob/living/carbon/human/lizard)
+	return 'sound/voice/lizard/lizard_laugh1.ogg'
+
+/obj/item/bodypart/arm/left/lizard/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 1
+	unarmed_damage_high = 2
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/arm/left/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/arm/right/lizard/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 1
+	unarmed_damage_high = 2
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/arm/right/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/chest/lizard/lizmonkey
+	wound_resistance = -10
+
+/obj/item/bodypart/chest/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/head/lizard/lizmonkey
+	wound_resistance = -10
+
+/obj/item/bodypart/head/lizard/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/left/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey
+	wound_resistance = -10
+	unarmed_damage_low = 4
+	unarmed_damage_high = 6
+	unarmed_effectiveness = 0
+
+/obj/item/bodypart/leg/right/digitigrade/lizmonkey/Initialize(mapload)
+	. = ..()
+	name = "kobold [plaintext_zone]"

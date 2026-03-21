@@ -52,7 +52,7 @@
 				buckle_requires_restraints = TRUE
 				to_chat(user, span_notice("You add a rod to \the [src]."))
 				var/mutable_appearance/rod_underlay = mutable_appearance('icons/obj/service/hydroponics/equipment.dmi', "bonfire_rod")
-				rod_underlay.pixel_y = 16
+				rod_underlay.pixel_z = 16
 				underlays += rod_underlay
 			if("Grill")
 				grill = TRUE
@@ -85,7 +85,7 @@
 	if(burning)
 		to_chat(user, span_warning("You need to extinguish [src] before removing the logs!"))
 		return
-	if(!has_buckled_mobs() && do_after(user, 50, target = src))
+	if(!has_buckled_mobs() && do_after(user, 5 SECONDS, target = src))
 		for(var/obj/item/grown/log/bonfire_log in contents)
 			bonfire_log.forceMove(drop_location())
 			bonfire_log.pixel_x += rand(1,4)
@@ -115,6 +115,11 @@
 	bonfire_burn()
 	particles = new /particles/bonfire()
 	START_PROCESSING(SSobj, src)
+	AddElement(/datum/element/simple_smell, \
+		smell = "smoke", \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 5, \
+	)
 
 /obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
 	start_burning()
@@ -173,6 +178,11 @@
 	set_light(0)
 	QDEL_NULL(particles)
 	STOP_PROCESSING(SSobj, src)
+	RemoveElement(/datum/element/simple_smell, \
+		smell = "smoke", \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 5, \
+	)
 
 /obj/structure/bonfire/buckle_mob(mob/living/buckled_mob, force = FALSE, check_loc = TRUE)
 	if(..())
@@ -191,7 +201,6 @@
 
 // Late init so that we can wait for air to exist in lazyloaded templates
 /obj/structure/bonfire/prelit/LateInitialize()
-	. = ..()
 	start_burning()
 
 #undef BONFIRE_FIRE_STACK_STRENGTH

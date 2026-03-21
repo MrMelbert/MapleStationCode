@@ -64,17 +64,17 @@
 	build_all_button_icons()
 	return TRUE
 
-/datum/action/cooldown/spell/pointed/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/spell/pointed/InterceptClickOn(mob/living/clicker, params, atom/target)
+	return ..(clicker, params, aim_assist(clicker, target) || target)
 
-	var/atom/aim_assist_target
-	if(aim_assist && isturf(target))
-		// Find any human in the list. We aren't picky, it's aim assist after all
-		aim_assist_target = locate(/mob/living/carbon/human) in target
-		if(!aim_assist_target)
-			// If we didn't find a human, we settle for any living at all
-			aim_assist_target = locate(/mob/living) in target
+/datum/action/cooldown/spell/pointed/proc/aim_assist(mob/living/clicker, atom/target)
+	if(!aim_assist)
+		return
+	if(!isturf(target))
+		return
 
-	return ..(caller, params, aim_assist_target || target)
+	// Find any human, or if that fails, any living target
+	return (locate(/mob/living/carbon/human) in target) || (locate(/mob/living) in target)
 
 /datum/action/cooldown/spell/pointed/is_valid_target(atom/cast_on)
 	if(cast_on == owner)

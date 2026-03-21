@@ -1,5 +1,5 @@
 /obj/item/seeds/kronkus
-	name = "pack of kronkus seeds"
+	name = "kronkus seed pack"
 	desc = "A pack of highly illegal kronkus seeds.\nPossession of these seeds carries the death penalty in 7 sectors."
 	icon_state = "seed-kronkus"
 	plant_icon_offset = 6
@@ -24,3 +24,5 @@
 	filling_color = "#37946e"
 	foodtypes = VEGETABLES | TOXIC
 	distill_reagent = /datum/reagent/kronkus_extract
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'

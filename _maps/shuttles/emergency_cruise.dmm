@@ -377,7 +377,7 @@
 /turf/open/floor/noslip,
 /area/shuttle/escape)
 "iu" = (
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -1936,7 +1936,7 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/shuttle/escape)
 "Qw" = (
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /turf/open/floor/carpet/executive,
 /area/shuttle/escape)
 "QC" = (

@@ -11,14 +11,17 @@
 	scan_desc = "schizophrenia"
 	gain_text = span_warning("You feel your grip on reality slipping...")
 	lose_text = span_notice("You feel more grounded.")
+	/// Whether the hallucinations we give are uncapped, ie all the wacky ones
+	var/uncapped = FALSE
 
 /datum/brain_trauma/mild/hallucinations/on_life(seconds_per_tick, times_fired)
-	if(owner.stat != CONSCIOUS || owner.IsSleeping() || owner.IsUnconscious())
+	if(owner.stat >= UNCONSCIOUS)
 		return
 	if(HAS_TRAIT(owner, TRAIT_RDS_SUPPRESSED))
+		owner.adjust_hallucinations(-10 SECONDS * seconds_per_tick)
 		return
 
-	owner.adjust_hallucinations_up_to(10 SECONDS * seconds_per_tick, 100 SECONDS)
+	owner.adjust_hallucinations_up_to(((uncapped ? 12 SECONDS : 5 SECONDS) * seconds_per_tick), (uncapped ? 240 SECONDS : 60 SECONDS))
 
 /datum/brain_trauma/mild/hallucinations/on_lose()
 	owner.remove_status_effect(/datum/status_effect/hallucination)
@@ -103,8 +106,9 @@
 			if(11)
 				to_chat(owner, span_warning("You faint."))
 				owner.Unconscious(80)
-
-	..()
+	if(SPT_PROB(1, seconds_per_tick))
+		owner.cause_pain(BODY_ZONE_HEAD, 10)
+	return ..()
 
 /datum/brain_trauma/mild/healthy
 	name = "Anosognosia"
@@ -118,7 +122,7 @@
 	return ..()
 
 /datum/brain_trauma/mild/healthy/on_life(seconds_per_tick, times_fired)
-	owner.adjustStaminaLoss(-2.5 * seconds_per_tick) //no pain, no fatigue
+	owner.adjustStaminaLoss(-7.5 * seconds_per_tick) //no pain, no fatigue
 
 /datum/brain_trauma/mild/healthy/on_lose()
 	owner.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
@@ -135,7 +139,7 @@
 	var/fall_chance = 1
 	if(owner.move_intent == MOVE_INTENT_RUN)
 		fall_chance += 2
-	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && owner.body_position == STANDING_UP)
+	if(SPT_PROB(0.5 * fall_chance, seconds_per_tick) && owner.body_position == STANDING_UP && !owner.buckled)
 		to_chat(owner, span_warning("Your leg gives out!"))
 		owner.Paralyze(35)
 
@@ -146,9 +150,10 @@
 		if(SPT_PROB(0.5 * drop_chance, seconds_per_tick) && owner.dropItemToGround(I))
 			to_chat(owner, span_warning("You drop [I]!"))
 
-	else if(SPT_PROB(1.5, seconds_per_tick))
+	else if(SPT_PROB(1.5, seconds_per_tick) && owner.getStaminaLoss() < 100)
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
-		owner.adjustStaminaLoss(50)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_L_LEG)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_R_LEG)
 	..()
 
 /datum/brain_trauma/mild/muscle_spasms
@@ -179,8 +184,8 @@
 			to_chat(owner, span_warning("[pick("You have a coughing fit!", "You can't stop coughing!")]"))
 			owner.Immobilize(20)
 			owner.emote("cough")
-			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 6)
-			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 12)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 0.6 SECONDS)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/, emote), "cough"), 1.2 SECONDS)
 		owner.emote("cough")
 	..()
 
@@ -190,8 +195,6 @@
 	scan_desc = "inability to form complex sentences"
 	gain_text = span_warning("You lose your grasp on complex words.")
 	lose_text = span_notice("You feel your vocabulary returning to normal again.")
-
-	var/static/list/common_words = world.file2list("strings/1000_most_common.txt")
 
 /datum/brain_trauma/mild/expressive_aphasia/handle_speech(datum/source, list/speech_args)
 	var/message = speech_args[SPEECH_MESSAGE]
@@ -212,7 +215,7 @@
 				word = copytext(word, 1, suffix_foundon)
 			word = html_decode(word)
 
-			if(lowertext(word) in common_words)
+			if(GLOB.most_common_words[LOWER_TEXT(word)])
 				new_message += word + suffix
 			else
 				if(prob(30) && message_split.len > 2)
@@ -281,3 +284,55 @@
 /datum/brain_trauma/mild/color_blindness/on_lose(silent)
 	owner.remove_client_colour(/datum/client_colour/monochrome/colorblind)
 	return ..()
+
+/datum/brain_trauma/mild/possessive
+	name = "Possessive"
+	desc = "Patient is extremely possessive of their belongings."
+	scan_desc = "possessiveness"
+	gain_text = span_warning("You start to worry about your belongings.")
+	lose_text = span_notice("You worry less about your belongings.")
+	COOLDOWN_DECLARE(grip_cd)
+
+/datum/brain_trauma/mild/possessive/on_lose(silent)
+	. = ..()
+	for(var/obj/item/thing in owner.held_items)
+		clear_trait(thing)
+	UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
+
+/datum/brain_trauma/mild/possessive/on_gain()
+	. = ..()
+	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+
+/datum/brain_trauma/mild/possessive/on_life(seconds_per_tick, times_fired)
+	if(!SPT_PROB(5, seconds_per_tick) || !COOLDOWN_FINISHED(src, grip_cd))
+		return
+
+	var/obj/item/my_thing = pick(owner.held_items) // can pick null, that's fine
+	if(isnull(my_thing) || HAS_TRAIT(my_thing, TRAIT_NODROP) || (my_thing.item_flags & (HAND_ITEM|ABSTRACT)))
+		return
+
+	ADD_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)
+	RegisterSignals(my_thing, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_MOVED), PROC_REF(clear_trait))
+	to_chat(owner, span_warning("You feel a need to keep [my_thing] close..."))
+	addtimer(CALLBACK(src, PROC_REF(relax), my_thing), rand(30 SECONDS, 3 MINUTES), TIMER_DELETE_ME)
+
+/datum/brain_trauma/mild/possessive/proc/relax(obj/item/my_thing)
+	if(QDELETED(my_thing))
+		return
+	if(HAS_TRAIT_FROM_ONLY(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)) // in case something else adds nodrop, somehow?
+		to_chat(owner, span_notice("You feel more comfortable letting go of [my_thing]."))
+	clear_trait(my_thing)
+	COOLDOWN_START(src, grip_cd, 20 SECONDS)
+
+/datum/brain_trauma/mild/possessive/proc/clear_trait(obj/item/my_thing, ...)
+	SIGNAL_HANDLER
+
+	REMOVE_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)
+	UnregisterSignal(my_thing, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_MOVED))
+
+/datum/brain_trauma/mild/possessive/proc/on_examine(datum/source, list/examine_list)
+	SIGNAL_HANDLER
+
+	for(var/obj/item/thing in owner.held_items)
+		if(HAS_TRAIT_FROM_ONLY(thing, TRAIT_NODROP, TRAUMA_TRAIT))
+			examine_list += span_warning("[owner.p_They()] [owner.p_are()] gripping [thing] tightly.")

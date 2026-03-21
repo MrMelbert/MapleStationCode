@@ -38,8 +38,8 @@
 	light_range = 4
 	faction = list(FACTION_NEUTRAL)
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = 1500
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = 1500
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 
@@ -48,12 +48,10 @@
 /mob/living/basic/lightgeist/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_MEDICAL_HUD, INNATE_TRAIT)
 
 	remove_verb(src, /mob/living/verb/pulled)
 	remove_verb(src, /mob/verb/me_verb)
-
-	var/datum/atom_hud/medical_sensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medical_sensor.show_to(src)
 
 	AddElement(/datum/element/simple_flying)
 	AddComponent(\

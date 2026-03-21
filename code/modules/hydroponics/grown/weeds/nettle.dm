@@ -1,5 +1,5 @@
 /obj/item/seeds/nettle
-	name = "pack of nettle seeds"
+	name = "nettle seed pack"
 	desc = "These seeds grow into nettles."
 	icon_state = "seed-nettle"
 	plant_icon_offset = 0
@@ -17,7 +17,7 @@
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
 /obj/item/seeds/nettle/death
-	name = "pack of death-nettle seeds"
+	name = "death-nettle seed pack"
 	desc = "These seeds grow into death-nettles."
 	icon_state = "seed-deathnettle"
 	species = "deathnettle"
@@ -50,6 +50,8 @@
 	throw_range = 3
 	attack_verb_continuous = list("stings")
 	attack_verb_simple = list("sting")
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/nettle/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is eating some of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

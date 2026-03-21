@@ -15,7 +15,7 @@
 			popup.open()
 			return
 
-/mob/living/carbon/human/sec_hud_set_ID()
+/mob/living/carbon/human/update_ID_card()
 	. = ..()
 	var/image/holder = hud_list[ID_HUD]
 	var/obj/item/card/id/id = wear_id?.GetID()

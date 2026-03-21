@@ -97,7 +97,8 @@
 /datum/tgui_list_input/Destroy(force)
 	SStgui.close_uis(src)
 	state = null
-	QDEL_NULL(items)
+	items?.Cut()
+	items_map?.Cut()
 	return ..()
 
 /**
@@ -111,7 +112,7 @@
 /datum/tgui_list_input/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "ListInputModal")
+		ui = new(user, src, "ListInputWindow")
 		ui.open()
 
 /datum/tgui_list_input/ui_close(mob/user)

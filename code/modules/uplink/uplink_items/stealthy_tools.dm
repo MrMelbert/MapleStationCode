@@ -86,7 +86,7 @@
 /datum/uplink_item/stealthy_tools/smugglersatchel
 	name = "Smuggler's Satchel"
 	desc = "This satchel is thin enough to be hidden in the gap between plating and tiling; great for stashing \
-			your stolen goods. Comes with a crowbar, a floor tile and some contraband inside."
+			your stolen goods. Comes with a crowbar, a floor tile and some contraband inside. Its contents cannot be detected by contraband scanners."
 	item = /obj/item/storage/backpack/satchel/flat/with_tools
 	cost = 1
 	surplus = 30
@@ -119,7 +119,7 @@
 	desc = "When purchased, a virus will be uploaded to the engineering processing servers to force a routine power grid check, forcing all APCs on the station to be temporarily disabled."
 	item = /obj/effect/gibspawner/generic
 	surplus = 0
-	progression_minimum = 20 MINUTES
+	progression_minimum = 15 MINUTES
 	limited_stock = 1
 	cost = 6
 	restricted = TRUE

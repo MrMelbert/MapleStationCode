@@ -61,15 +61,14 @@
 		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
 		thealert.master_ref = master_ref
 	else
-		thealert.icon_state = "[initial(thealert.icon_state)][severity]"
-		thealert.severity = severity
+		thealert.set_severity(severity)
 
 	alerts[category] = thealert
 	if(client && hud_used)
 		hud_used.reorganize_alerts()
 	if(!no_anim)
-		thealert.transform = matrix(32, 6, MATRIX_TRANSLATE)
-		animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
+		thealert.transform = matrix(32, 0, MATRIX_TRANSLATE)
+		animate(thealert, transform = matrix(), time = 1 SECONDS, easing = ELASTIC_EASING)
 	if(timeout_override)
 		thealert.timeout = timeout_override
 	if(thealert.timeout)
@@ -114,6 +113,10 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(mouse_over_pointer == MOUSE_HAND_POINTER)
+		add_filter("clickglow", 2, outline_filter(color = COLOR_GOLD, size = 1))
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -124,10 +127,19 @@
 /atom/movable/screen/alert/MouseExited()
 	closeToolTip(usr)
 
+/atom/movable/screen/alert/proc/set_severity(new_val)
+	if(severity == new_val)
+		return
+	severity = new_val
+	update_appearance()
+
+/atom/movable/screen/alert/update_icon_state()
+	. = ..()
+	icon_state = "[base_icon_state || initial(icon_state)][severity]"
 
 //Gas alerts
 // Gas alerts are continuously thrown/cleared by:
-// * /obj/item/organ/internal/lungs/proc/check_breath()
+// * /obj/item/organ/lungs/proc/check_breath()
 // * /mob/living/carbon/check_breath()
 // * /mob/living/carbon/human/check_breath()
 // * /datum/element/atmos_requirements/proc/on_non_stasis_life()
@@ -185,21 +197,15 @@
 
 //End gas alerts
 
+/atom/movable/screen/alert/bronchodilated
+	name = "Bronchodilated"
+	desc = "You feel like your lungs are larger than usual! You're taking deeper breaths!"
+	icon_state = "bronchodilated"
 
-/atom/movable/screen/alert/fat
-	name = "Fat"
-	desc = "You ate too much food, lardass. Run around the station and lose some weight."
-	icon_state = "fat"
-
-/atom/movable/screen/alert/hungry
-	name = "Hungry"
-	desc = "Some food would be good right about now."
-	icon_state = "hungry"
-
-/atom/movable/screen/alert/starving
-	name = "Starving"
-	desc = "You're severely malnourished. The hunger pains make moving around a chore."
-	icon_state = "starving"
+/atom/movable/screen/alert/bronchoconstricted
+	name = "Bronchocontracted"
+	desc = "You feel like your lungs are smaller than usual! You might need a higher pressure environment/internals to breathe!"
+	icon_state = "bronchoconstricted"
 
 /atom/movable/screen/alert/gross
 	name = "Grossed out."
@@ -217,14 +223,52 @@
 	icon_state = "gross3"
 
 /atom/movable/screen/alert/hot
-	name = "Too Hot"
-	desc = "You're flaming hot! Get somewhere cooler and take off any insulating clothing like a fire suit."
+	name = "Hot"
 	icon_state = "hot"
 
+/atom/movable/screen/alert/hot/update_name(updates)
+	. = ..()
+	switch(severity)
+		if(1)
+			name = "Warm"
+		if(2)
+			name = "Hot"
+		if(3)
+			name = "Flaming Hot"
+
+/atom/movable/screen/alert/hot/update_desc(updates)
+	. = ..()
+	switch(severity)
+		if(1)
+			desc = "It's pretty warm around here. You might not want to stick around for long, but it won't hurt you unless it gets hotter."
+		if(2)
+			desc = "You're getting pretty hot. You might want to find somewhere cooler soon, or take off any insulating clothing like a fire suit."
+		if(3)
+			desc = "You're flaming hot! Get somewhere cooler and take off any insulating clothing like a fire suit."
+
 /atom/movable/screen/alert/cold
-	name = "Too Cold"
-	desc = "You're freezing cold! Get somewhere warmer and take off any insulating clothing like a space suit."
+	name = "Cold"
 	icon_state = "cold"
+
+/atom/movable/screen/alert/cold/update_name(updates)
+	. = ..()
+	switch(severity)
+		if(1)
+			name = "Chilly"
+		if(2)
+			name = "Cold"
+		if(3)
+			name = "Freezing"
+
+/atom/movable/screen/alert/cold/update_desc(updates)
+	. = ..()
+	switch(severity)
+		if(1)
+			desc = "You feel pretty chilly. You might not want to stick around for long, but it won't hurt you unless it gets colder."
+		if(2)
+			desc = "You're getting pretty cold. You might want to find somewhere warmer soon, or put on some insulating clothing like a space suit or winter coat."
+		if(3)
+			desc = "You're freezing cold! Get somewhere warmer and put on some insulating clothing like a space suit or winter coat."
 
 /atom/movable/screen/alert/lowpressure
 	name = "Low Pressure"
@@ -246,6 +290,7 @@
 	name = "Mind Control"
 	desc = "Your mind has been hijacked! Click to view the mind control command."
 	icon_state = ALERT_MIND_CONTROL
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/command
 
 /atom/movable/screen/alert/mind_control/Click()
@@ -259,6 +304,7 @@
 	desc = "Something got lodged into your flesh and is causing major bleeding. It might fall out with time, but surgery is the safest way. \
 		If you're feeling frisky, examine yourself and click the underlined item to pull the object out."
 	icon_state = ALERT_EMBEDDED_OBJECT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/embeddedobject/Click()
 	. = ..()
@@ -266,8 +312,7 @@
 		return
 
 	var/mob/living/carbon/carbon_owner = owner
-
-	return carbon_owner.help_shake_act(carbon_owner)
+	return carbon_owner.check_self_for_injuries()
 
 /atom/movable/screen/alert/negative
 	name = "Negative Gravity"
@@ -296,6 +341,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "On Fire"
 	desc = "You're on fire. Stop, drop and roll to put the fire out or move to a vacuum area."
 	icon_state = "fire"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/fire/Click()
 	. = ..()
@@ -310,18 +356,35 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!(living_owner.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
-	return living_owner.resist_fire()
+	return handle_stop_drop_roll(owner)
+
+/atom/movable/screen/alert/fire/proc/handle_stop_drop_roll(mob/living/roller)
+	return roller.resist_fire()
 
 /atom/movable/screen/alert/give // information set when the give alert is made
 	icon_state = "default"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// The offer we're linked to, yes this is suspiciously like a status effect alert
 	var/datum/status_effect/offering/offer
 	/// Additional text displayed in the description of the alert.
-	var/additional_desc_text = "Click this alert to take it."
+	var/additional_desc_text = "Click this alert to take it, or shift click it to examiante it."
+	/// Text to override what appears in screentips for the alert
+	var/screentip_override_text
+	/// Whether the offered item can be examined by shift-clicking the alert
+	var/examinable = TRUE
+
+/atom/movable/screen/alert/give/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	register_context()
 
 /atom/movable/screen/alert/give/Destroy()
 	offer = null
 	return ..()
+
+/atom/movable/screen/alert/give/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	context[SCREENTIP_CONTEXT_LMB] = screentip_override_text || "Take [offer.offered_item.name]"
+	context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine"
+	return CONTEXTUAL_SCREENTIP_SET
 
 /**
  * Handles assigning most of the variables for the alert that pops up when an item is offered
@@ -373,6 +436,17 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	handle_transfer()
 
+/atom/movable/screen/alert/give/examine(mob/user)
+	if(!examinable)
+		return ..()
+
+	user.examine_feedback(offer.offered_item)
+	return list(
+		span_boldnotice(name),
+		span_info("[offer.owner] is offering you the following item (click the alert to take it!):"),
+		"<hr>[jointext(offer.offered_item.examine(user), "\n")]",
+	)
+
 /// An overrideable proc used simply to hand over the item when claimed, this is a proc so that high-fives can override them since nothing is actually transferred
 /atom/movable/screen/alert/give/proc/handle_transfer()
 	var/mob/living/carbon/taker = owner
@@ -383,6 +457,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 /atom/movable/screen/alert/give/highfive
 	additional_desc_text = "Click this alert to slap it."
+	screentip_override_text = "High Five"
+	examinable = FALSE
 	/// Tracks active "to slow"ing so we can't spam click
 	var/too_slowing_this_guy = FALSE
 
@@ -441,6 +517,10 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(QDELETED(offer.offered_item))
 		examine_list += span_warning("[source]'s arm appears tensed up, as if [source.p_they()] plan on pulling it back suddenly...")
 
+/atom/movable/screen/alert/give/hand
+	screentip_override_text = "Take Hand"
+	examinable = FALSE
+
 /atom/movable/screen/alert/give/hand/get_receiving_name(mob/living/carbon/taker, mob/living/carbon/offerer, obj/item/receiving)
 	additional_desc_text = "Click this alert to take it and let [offerer.p_them()] pull you around!"
 	return "[offerer.p_their()] [receiving.name]"
@@ -456,6 +536,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Succumb"
 	desc = "Shuffle off this mortal coil."
 	icon_state = ALERT_SUCCUMB
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/succumb/Click()
 	. = ..()
@@ -744,6 +825,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 		additional processing time to unlock more malfunction abilities."
 	icon_state = ALERT_HACKING_APC
 	timeout = 60 SECONDS
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/atom/target = null
 
 /atom/movable/screen/alert/hackingapc/Click()
@@ -771,6 +853,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!"
 	icon_state = "template"
 	timeout = 300
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/revival/Click()
 	. = ..()
@@ -784,6 +867,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "This can be clicked on to perform an action."
 	icon_state = "template"
 	timeout = 30 SECONDS
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// Weakref to the target atom to use the action on
 	var/datum/weakref/target_ref
 	/// If we want to interact on click rather than jump/orbit
@@ -809,6 +893,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "template"
 	timeout = 30 SECONDS
 	ghost_screentips = TRUE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// If true you need to call START_PROCESSING manually
 	var/show_time_left = FALSE
 	/// MA for maptext showing time left for poll
@@ -959,30 +1044,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Buckled"
 	desc = "You've been buckled to something. Click the alert to unbuckle unless you're handcuffed."
 	icon_state = ALERT_BUCKLED
-
-/atom/movable/screen/alert/restrained/handcuffed
-	name = "Handcuffed"
-	desc = "You're handcuffed and can't act. If anyone drags you, you won't be able to move. Click the alert to free yourself."
-	click_master = FALSE
-
-/atom/movable/screen/alert/restrained/legcuffed
-	name = "Legcuffed"
-	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
-	click_master = FALSE
-
-/atom/movable/screen/alert/restrained/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if((living_owner.mobility_flags & MOBILITY_MOVE) && (living_owner.last_special <= world.time))
-		return living_owner.resist_restraints()
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/buckled/Click()
 	. = ..()
@@ -990,12 +1052,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 		return
 
 	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+	return living_owner.execute_resist()
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"
@@ -1006,6 +1063,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Knotted Shoes"
 	desc = "Someone tied your shoelaces together! Click the alert or your shoes to undo the knot."
 	icon_state = ALERT_SHOES_KNOT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/shoes/Click()
 	. = ..()
@@ -1024,6 +1082,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Unpossess"
 	desc = "You are possessing an object. Click this alert to unpossess it."
 	icon_state = "buckled"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/unpossess_object/Click()
 	. = ..()
@@ -1034,48 +1093,47 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 
+/// Gets the placement for the alert based on its index
+/datum/hud/proc/get_ui_alert_placement(index)
+	PRIVATE_PROC(TRUE)
+	// Only has support for 5 slots currently
+	if(index > 5)
+		return ""
+
+	return "EAST-1:28,CENTER+[6 - index]:[29 - (index * 2)]"
+
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
 /datum/hud/proc/reorganize_alerts(mob/viewmob)
 	var/mob/screenmob = viewmob || mymob
 	if(!screenmob.client)
-		return
+		return FALSE
 	var/list/alerts = mymob.alerts
 	if(!hud_shown)
-		for(var/i in 1 to alerts.len)
+		for(var/i in 1 to length(alerts))
 			screenmob.client.screen -= alerts[alerts[i]]
-		return 1
-	for(var/i in 1 to alerts.len)
+		return TRUE
+	for(var/i in 1 to length(alerts))
 		var/atom/movable/screen/alert/alert = alerts[alerts[i]]
 		if(alert.icon_state == "template")
 			alert.icon = ui_style
-		switch(i)
-			if(1)
-				. = ui_alert1
-			if(2)
-				. = ui_alert2
-			if(3)
-				. = ui_alert3
-			if(4)
-				. = ui_alert4
-			if(5)
-				. = ui_alert5 // Right now there's 5 slots
-			else
-				. = ""
-		alert.screen_loc = .
+		alert.screen_loc = get_ui_alert_placement(i)
 		screenmob.client.screen |= alert
 	if(!viewmob)
-		for(var/M in mymob.observers)
-			reorganize_alerts(M)
-	return 1
+		for(var/viewer in mymob.observers)
+			reorganize_alerts(viewer)
+	return TRUE
 
 /atom/movable/screen/alert/Click(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+
+	..()
 	if(!usr || !usr.client)
 		return FALSE
 	if(usr != owner)
 		return FALSE
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
-		to_chat(usr, span_boldnotice("[name]</span> - <span class='info'>[desc]"))
+		to_chat(usr, examine_block(jointext(examine(usr), "\n")))
 		return FALSE
 	var/datum/our_master = master_ref?.resolve()
 	if(our_master && click_master)
@@ -1089,3 +1147,9 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	master_ref = null
 	owner = null
 	screen_loc = ""
+
+/atom/movable/screen/alert/examine(mob/user)
+	return list(
+		span_boldnotice(name),
+		span_info(desc),
+	)

@@ -5,5 +5,5 @@
 
 // Adds robotics access to anesthesiology lockers
 /obj/structure/closet/secure_closet/medical2
-	req_access = null
+	req_access = list()
 	req_one_access = list(ACCESS_SURGERY, ACCESS_ROBOTICS)

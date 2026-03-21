@@ -20,6 +20,8 @@
 	trim_state = "trim_janitor"
 	department_color = COLOR_CENTCOM_BLUE
 	subdepartment_color = COLOR_SERVICE_LIME
+	honorifics = list("Custodian")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /// Trim for Centcom Thunderdome Overseers.
 /datum/id_trim/centcom/thunderdome_overseer
@@ -35,10 +37,14 @@
 /datum/id_trim/centcom/intern
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING, ACCESS_WEAPONS)
 	assignment = "CentCom Intern"
+	honorifics = list("Intern")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /// Trim for Centcom Head Interns. Different assignment, common station access added on.
 /datum/id_trim/centcom/intern/head
 	assignment = "CentCom Head Intern"
+	honorifics = list("Head Intern")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/intern/head/New()
 	. = ..()
@@ -59,6 +65,8 @@
 /datum/id_trim/centcom/medical_officer
 	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING, ACCESS_CENT_MEDICAL)
 	assignment = JOB_CENTCOM_MEDICAL_DOCTOR
+	honorifics = list("Doctor", "Dr.")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /// Trim for Centcom Research Officers.
 /datum/id_trim/centcom/research_officer
@@ -86,6 +94,8 @@
 /// Trim for Centcom Commanders. All Centcom and Station Access.
 /datum/id_trim/centcom/commander
 	assignment = JOB_CENTCOM_COMMANDER
+	honorifics = list("Commander", "CMDR.")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/commander/New()
 	. = ..()
@@ -97,6 +107,9 @@
 	assignment = JOB_ERT_DEATHSQUAD
 	trim_state = "trim_deathcommando"
 	sechud_icon_state = SECHUD_DEATH_COMMANDO
+	honorifics = list("Commando")
+	honorific_positions = HONORIFIC_POSITION_LAST
+
 
 /datum/id_trim/centcom/deathsquad/New()
 	. = ..()
@@ -106,6 +119,8 @@
 /// Trim for generic ERT interns. No universal ID card changing access.
 /datum/id_trim/centcom/ert
 	assignment = "Emergency Response Team Intern"
+	honorifics = list("Intern")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/New()
 	. = ..()
@@ -129,6 +144,8 @@
 	trim_state = "trim_securityofficer"
 	subdepartment_color = COLOR_SECURITY_RED
 	sechud_icon_state = SECHUD_SECURITY_RESPONSE_OFFICER
+	honorifics = list("Officer")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/security/New()
 	. = ..()
@@ -153,6 +170,8 @@
 	trim_state = "trim_medicaldoctor"
 	subdepartment_color = COLOR_MEDICAL_BLUE
 	sechud_icon_state = SECHUD_MEDICAL_RESPONSE_OFFICER
+	honorifics = list("Doctor", "Dr.")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/medical/New()
 	. = ..()
@@ -163,8 +182,10 @@
 /datum/id_trim/centcom/ert/chaplain
 	assignment = JOB_ERT_CHAPLAIN
 	trim_state = "trim_chaplain"
-	subdepartment_color = "#58C800"
+	subdepartment_color = COLOR_SERVICE_LIME
 	sechud_icon_state = SECHUD_RELIGIOUS_RESPONSE_OFFICER
+	honorifics = list("Chaplain")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/chaplain/New()
 	. = ..()
@@ -177,6 +198,8 @@
 	trim_state = "trim_ert_janitor"
 	subdepartment_color = COLOR_SERVICE_LIME
 	sechud_icon_state = SECHUD_JANITORIAL_RESPONSE_OFFICER
+	honorifics = list("Custodian")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/janitor/New()
 	. = ..()
@@ -197,6 +220,10 @@
 
 /datum/id_trim/centcom/ert/militia
 	assignment = "Frontier Militia"
+	honorifics = list("Minuteman")
+	honorific_positions = HONORIFIC_POSITION_LAST
 
 /datum/id_trim/centcom/ert/militia/general
 	assignment = "Frontier Militia General"
+	honorifics = list("Minuteman General", "General")
+	honorific_positions = HONORIFIC_POSITION_LAST

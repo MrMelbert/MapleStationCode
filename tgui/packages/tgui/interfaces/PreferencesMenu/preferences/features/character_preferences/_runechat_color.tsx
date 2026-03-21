@@ -1,4 +1,4 @@
-import { Feature, FeatureColorInput } from '../base';
+import { type Feature, FeatureColorInput } from '../base';
 
 export const runechat_color: Feature<string> = {
   name: 'Runechat Color',

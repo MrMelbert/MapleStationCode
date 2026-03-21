@@ -2,7 +2,7 @@
 	name ="explosive bolt"
 	icon_state= "bolter"
 	damage = 50
-	embedding = null
+	embed_type = null
 	shrapnel_type = null
 
 /obj/projectile/bullet/gyro/on_hit(atom/target, blocked = 0, pierce_hit)
@@ -13,11 +13,12 @@
 /// PM9 standard HE rocket
 /obj/projectile/bullet/rocket
 	name = "\improper HE rocket"
+	generic_name = "rocket"
 	desc = "Boom."
 	icon_state= "missile"
 	damage = 50
 	sharpness = NONE
-	embedding = null
+	embed_type = null
 	shrapnel_type = null
 	ricochets_max = 0
 	/// Whether we do extra damage when hitting a mech or silicon
@@ -29,7 +30,7 @@
 	var/random_crit_gib = FALSE
 	if(isliving(target) && prob(1) && random_crits_enabled)
 		var/mob/living/gibbed_dude = target
-		if(gibbed_dude.stat < HARD_CRIT)
+		if(gibbed_dude.stat < HARD_CRIT && HAS_PERSONALITY(gibbed_dude, /datum/personality/whimsical))
 			gibbed_dude.say("Is that a fucking ro-", forced = "hit by rocket")
 			random_crit_gib = TRUE
 	..()

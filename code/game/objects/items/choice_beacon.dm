@@ -6,6 +6,8 @@
 	inhand_icon_state = "radio"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// How many uses this item has before being deleted
 	var/uses = 1
 	/// Used in the deployment message - What company is sending the equipment, flavor
@@ -64,7 +66,7 @@
 /obj/item/choice_beacon/proc/spawn_option(obj/choice_path, mob/living/user)
 	podspawn(list(
 		"target" = get_turf(src),
-		"style" = STYLE_BLUESPACE,
+		"style" = /datum/pod_style/advanced,
 		"spawn" = choice_path,
 	))
 
@@ -141,12 +143,12 @@
 		augment_list = list()
 		// cyberimplants range from a nice bonus to fucking broken bullshit so no subtypesof
 		var/list/selectable_types = list(
-			/obj/item/organ/internal/cyberimp/brain/anti_drop,
-			/obj/item/organ/internal/cyberimp/arm/toolset,
-			/obj/item/organ/internal/cyberimp/arm/surgery,
-			/obj/item/organ/internal/cyberimp/chest/thrusters,
-			/obj/item/organ/internal/lungs/cybernetic/tier3,
-			/obj/item/organ/internal/liver/cybernetic/tier3,
+			/obj/item/organ/cyberimp/brain/anti_drop,
+			/obj/item/organ/cyberimp/arm/toolset,
+			/obj/item/organ/cyberimp/arm/surgery,
+			/obj/item/organ/cyberimp/chest/thrusters,
+			/obj/item/organ/lungs/cybernetic/tier3,
+			/obj/item/organ/liver/cybernetic/tier3,
 		)
 		for(var/obj/item/organ/organ as anything in selectable_types)
 			augment_list[initial(organ.name)] = organ

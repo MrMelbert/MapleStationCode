@@ -20,11 +20,18 @@
 /// Use this if your decal is one of one, and thus we should not spawn it if it's there already
 /// Returns either the existing cleanable, the one we created, or null if we can't spawn on that turf
 /turf/proc/spawn_unique_cleanable(obj/effect/decal/cleanable/cleanable_type)
+	var/turf/checkturf = src
+	while (isgroundlessturf(checkturf) && checkturf.zPassOut(DOWN))
+		var/turf/below = GET_TURF_BELOW(checkturf)
+		if (!below || !below.zPassIn(DOWN))
+			break
+		checkturf = below
+
 	// There is no need to spam unique cleanables, they don't stack and it just chews cpu
-	var/obj/effect/decal/cleanable/existing = locate(cleanable_type) in src
+	var/obj/effect/decal/cleanable/existing = locate(cleanable_type) in checkturf
 	if(existing)
 		return existing
-	return new cleanable_type(src)
+	return new cleanable_type(checkturf)
 
 /obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
@@ -40,13 +47,7 @@
 					handle_merge_decal(C)
 					return INITIALIZE_HINT_QDEL
 
-	if(LAZYLEN(diseases))
-		var/list/datum/disease/diseases_to_add = list()
-		for(var/datum/disease/D in diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				diseases_to_add += D
-		if(LAZYLEN(diseases_to_add))
-			AddComponent(/datum/component/infective, diseases_to_add)
+	add_viruses(diseases)
 
 	AddElement(/datum/element/beauty, beauty)
 
@@ -66,6 +67,15 @@
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	return ..()
 
+/// Adds viruses to the decal
+/obj/effect/decal/cleanable/proc/add_viruses(list/datum/disease/diseases)
+	var/list/datum/disease/diseases_to_add
+	for(var/datum/disease/virus as anything in diseases)
+		if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			LAZYADD(diseases_to_add, virus)
+	if(LAZYLEN(diseases_to_add))
+		AddComponent(/datum/component/infective, diseases_to_add)
+
 /obj/effect/decal/cleanable/proc/replace_decal(obj/effect/decal/cleanable/C) // Returns true if we should give up in favor of the pre-existing decal
 	if(mergeable_decal)
 		return TRUE
@@ -78,22 +88,11 @@
 		return FALSE
 
 	bloodiness = clamp((bloodiness + by_amount), 0, BLOOD_POOL_MAX)
-	update_appearance()
 	return TRUE
 
 /// Called before attempting to scoop up reagents from this decal to only load reagents when necessary
 /obj/effect/decal/cleanable/proc/lazy_init_reagents()
 	return
-
-#ifdef TESTING
-/obj/effect/decal/cleanable/update_overlays()
-	. = ..()
-	if(bloodiness)
-		var/mutable_appearance/blah_text = new()
-		blah_text.maptext = MAPTEXT_TINY_UNICODE("[bloodiness]")
-		blah_text.appearance_flags |= (KEEP_APART|RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM)
-		. += blah_text
-#endif
 
 /obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
 	if((istype(W, /obj/item/reagent_containers/cup) && !istype(W, /obj/item/reagent_containers/cup/rag)) || istype(W, /obj/item/reagent_containers/cup/glass))
@@ -112,7 +111,7 @@
 				qdel(src)
 				return
 	if(W.get_temperature()) //todo: make heating a reagent holder proc
-		if(istype(W, /obj/item/clothing/mask/cigarette))
+		if(istype(W, /obj/item/cigarette))
 			return
 		else
 			var/hotness = W.get_temperature()
@@ -131,7 +130,7 @@
 //This is on /cleanable because fuck this ancient mess
 /obj/effect/decal/cleanable/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	if(iscarbon(AM) && bloodiness >= 40)
+	if(isliving(AM) && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 

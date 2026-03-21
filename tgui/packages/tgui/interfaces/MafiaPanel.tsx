@@ -1,9 +1,4 @@
-import { BooleanLike, classes } from 'common/react';
-import { decodeHtmlEntities } from 'common/string';
-import { multiline } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -14,8 +9,12 @@ import {
   Stack,
   Tabs,
   TextArea,
-} from '../components';
-import { formatTime } from '../format';
+} from 'tgui-core/components';
+import { formatTime } from 'tgui-core/format';
+import { type BooleanLike, classes } from 'tgui-core/react';
+import { decodeHtmlEntities } from 'tgui-core/string';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type RoleInfo = {
@@ -107,51 +106,49 @@ export const MafiaPanelData = (props) => {
           {phase !== 'No Game' && (
             <Stack.Item>
               <Stack fill>
-                <>
-                  <Stack.Item grow>
-                    <MafiaPlayers />
-                  </Stack.Item>
-                  <Stack.Item grow>
-                    <Stack.Item>
-                      <Tabs fluid>
-                        <Tabs.Tab
-                          align="center"
-                          selected={mafia_tab === 'Role list'}
-                          onClick={() => setMafiaMode('Role list')}
-                        >
-                          Role list
-                          <Button
-                            color="transparent"
-                            icon="address-book"
-                            tooltipPosition="bottom-start"
-                            tooltip={multiline`
+                <Stack.Item grow>
+                  <MafiaPlayers />
+                </Stack.Item>
+                <Stack.Item grow>
+                  <Stack.Item>
+                    <Tabs fluid>
+                      <Tabs.Tab
+                        align="center"
+                        selected={mafia_tab === 'Role list'}
+                        onClick={() => setMafiaMode('Role list')}
+                      >
+                        Role list
+                        <Button
+                          color="transparent"
+                          icon="address-book"
+                          tooltipPosition="bottom-start"
+                          tooltip={`
                             This is the list of roles in the game. You can
                             press the question mark to get a quick blurb
                             about the role itself.`}
-                          />
-                        </Tabs.Tab>
-                        <Tabs.Tab
-                          align="center"
-                          selected={mafia_tab === 'Notes'}
-                          onClick={() => setMafiaMode('Notes')}
-                        >
-                          Notes
-                          <Button
-                            color="transparent"
-                            icon="pencil"
-                            tooltipPosition="bottom-start"
-                            tooltip={multiline`
+                        />
+                      </Tabs.Tab>
+                      <Tabs.Tab
+                        align="center"
+                        selected={mafia_tab === 'Notes'}
+                        onClick={() => setMafiaMode('Notes')}
+                      >
+                        Notes
+                        <Button
+                          color="transparent"
+                          icon="pencil"
+                          tooltipPosition="bottom-start"
+                          tooltip={`
                             This is your notes, anything you want to write
                             can be saved for future reference. You can
                             also send it to chat with a button.`}
-                          />
-                        </Tabs.Tab>
-                      </Tabs>
-                    </Stack.Item>
-                    {mafia_tab === 'Role list' && <MafiaListOfRoles />}
-                    {mafia_tab === 'Notes' && <MafiaNotesTab />}
+                        />
+                      </Tabs.Tab>
+                    </Tabs>
                   </Stack.Item>
-                </>
+                  {mafia_tab === 'Role list' && <MafiaListOfRoles />}
+                  {mafia_tab === 'Notes' && <MafiaNotesTab />}
+                </Stack.Item>
               </Stack>
             </Stack.Item>
           )}
@@ -165,12 +162,7 @@ export const MafiaPanel = (props) => {
   const { act, data } = useBackend<MafiaData>();
   const { roleinfo } = data;
   return (
-    <Window
-      title="Mafia"
-      theme={roleinfo && roleinfo.role_theme}
-      width={900}
-      height={600}
-    >
+    <Window title="Mafia" theme={roleinfo?.role_theme} width={900} height={600}>
       <Window.Content>
         <MafiaPanelData />
       </Window.Content>
@@ -196,7 +188,7 @@ const MafiaChat = (props) => {
             height="10%"
             maxLength={300}
             className="Section__title candystripe"
-            onChange={(e, value) => setMessagingBox(value)}
+            onChange={setMessagingBox}
             placeholder="Type to chat"
             value={message_to_send}
           />
@@ -234,7 +226,7 @@ const MafiaLobby = (props) => {
           <Button
             icon="clipboard-check"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               Signs you up for the next game. If there
               is an ongoing one, you will be signed up
               for the next.
@@ -245,7 +237,7 @@ const MafiaLobby = (props) => {
           <Button
             icon="arrow-right"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               Submit a vote to start the game early.
               Starts when half of the current signup list have voted to start.
               Requires a bare minimum of six players.
@@ -372,7 +364,7 @@ const MafiaNotesTab = (props) => {
         height="80%"
         maxLength={600}
         className="Section__title candystripe"
-        onChange={(_, value) => setNotesMessage(value)}
+        onChange={setNotesMessage}
         placeholder="Insert Notes..."
         value={note_message}
       />
@@ -441,7 +433,7 @@ const MafiaPlayers = (props) => {
               >
                 {player.name}
                 {(!!player.is_you && ' (YOU)') ||
-                  (!!player.role_revealed && ' - ' + player.role_revealed)}
+                  (!!player.role_revealed && ` - ${player.role_revealed}`)}
               </Stack.Item>
               <Stack.Item>
                 {player.votes !== undefined &&

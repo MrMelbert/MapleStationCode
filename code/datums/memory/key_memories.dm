@@ -31,6 +31,9 @@
 		"[remembered_id]. The numbers mason, what do they mean!?",
 	)
 
+/datum/memory/key/account/memory_key()
+	return "[type]-[remembered_id]"
+
 /// The code to the captain's spare ID, ONLY give to the real captain.
 /datum/memory/key/captains_spare_code
 	var/safe_code
@@ -54,6 +57,8 @@
 		"[safe_code][rand(0,9)]. The numbers mason, what do they mean!?", // Same as the account code
 	)
 
+/datum/memory/key/captains_spare_code/memory_key()
+	return "[type]-[safe_code]"
 
 /// The nuclear bomb code, for nuke ops
 /datum/memory/key/nuke_code
@@ -78,6 +83,9 @@
 		"A piece of paper with the number [nuclear_code] being handed to [protagonist_name] from a figure in a blood-red MODsuit.",
 	)
 
+/datum/memory/key/nuke_code/memory_key()
+	return "[type]-[nuclear_code]"
+
 /// Tracks what medicines someone with the "allergies" quirk is allergic to
 /datum/memory/key/quirk_allergy
 	memory_flags = MEMORY_FLAG_NOMOOD|MEMORY_FLAG_NOLOCATION|MEMORY_FLAG_NOPERSISTENCE|MEMORY_SKIP_UNCONSCIOUS|MEMORY_NO_STORY // No story for this
@@ -98,6 +106,9 @@
 
 /datum/memory/key/quirk_allergy/get_starts()
 	return list("[protagonist_name] sneezing after coming into contact with [allergy_string].")
+
+/datum/memory/key/quirk_allergy/memory_key()
+	return type
 
 /// Tracks what brand a smoker quirk user likes
 /datum/memory/key/quirk_smoker
@@ -127,6 +138,9 @@
 /datum/memory/key/quirk_smoker/get_moods()
 	return list("[memorizer] [mood_verb] as they light another up.")
 
+/datum/memory/key/quirk_smoker/memory_key()
+	return type
+
 /// Tracks what beverage an alcoholic quirk user likes
 /datum/memory/key/quirk_alcoholic
 	memory_flags = MEMORY_FLAG_NOLOCATION|MEMORY_FLAG_NOPERSISTENCE|MEMORY_SKIP_UNCONSCIOUS // Does not have nomood
@@ -155,6 +169,9 @@
 /datum/memory/key/quirk_alcoholic/get_moods()
 	return list("[memorizer] [mood_verb] as they drink some [preferred_brandy].")
 
+/datum/memory/key/quirk_alcoholic/memory_key()
+	return type
+
 /// Where our traitor uplink is, and what is its code
 /datum/memory/key/traitor_uplink
 	var/uplink_loc
@@ -180,6 +197,9 @@
 		"[protagonist_name] punching in [uplink_code] into their [uplink_loc].",
 		"[protagonist_name] writing down [uplink_code] with their [uplink_loc] besides them, so as to not forget it.",
 	)
+
+/datum/memory/key/traitor_uplink/memory_key()
+	return "[type]-[uplink_loc]-[uplink_code]"
 
 /datum/memory/key/traitor_uplink/implant
 
@@ -214,6 +234,9 @@
 		"[protagonist_name] committing the crimes of [crimes].",
 	)
 
+/datum/memory/key/permabrig_crimes/memory_key()
+	return "[type]-[crimes]"
+
 /datum/memory/key/message_server_key
 	var/decrypt_key
 
@@ -236,3 +259,36 @@
 		"Poly the parrot screaming \"[decrypt_key]!\" over and over again.",
 		"[protagonist_name] spilling coffee over the message monitor while typing [decrypt_key].",
 	)
+
+/datum/memory/key/message_server_key/memory_key()
+	return "[type]-[decrypt_key]"
+
+/// Generic password memory
+/datum/memory/key/important_password
+	var/location
+	var/password
+
+/datum/memory/key/important_password/New(
+	datum/mind/memorizer_mind,
+	atom/protagonist,
+	atom/deuteragonist,
+	atom/antagonist,
+	location,
+	password,
+)
+	src.location = location
+	src.password = password
+	return ..()
+
+/datum/memory/key/important_password/get_names()
+	return list("The password to [location]: [password].")
+
+/datum/memory/key/important_password/get_starts()
+	return list(
+		"[protagonist_name] writing down the password [password] for [location] on a sticky note.",
+		"[protagonist_name] typing in [password] to access [location].",
+		"[protagonist_name] being told the password [password] to access [location].",
+	)
+
+/datum/memory/key/important_password/memory_key()
+	return "[type]-[location]-[password]"

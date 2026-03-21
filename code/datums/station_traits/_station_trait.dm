@@ -31,8 +31,6 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 	var/list/lobby_buttons = list()
 	/// The ID that we look for in dynamic.json. Not synced with 'name' because I can already see this go wrong
 	var/dynamic_threat_id
-	/// If ran during dynamic, do we reduce the total threat? Will be overriden by config if set
-	var/threat_reduction = 0
 	/// Trait should not be instantiated in a round if its type matches this type
 	var/abstract_type = /datum/station_trait
 
@@ -41,8 +39,6 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 	RegisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING, PROC_REF(on_round_start))
 
-	if(threat_reduction)
-		GLOB.dynamic_station_traits[src] = threat_reduction
 	if(sign_up_button)
 		GLOB.lobby_station_traits += src
 	if(trait_processes)
@@ -52,8 +48,9 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 
 /datum/station_trait/Destroy()
 	SSstation.station_traits -= src
-	GLOB.dynamic_station_traits.Remove(src)
 	destroy_lobby_buttons()
+	GLOB.lobby_station_traits -= src
+	REMOVE_TRAIT(SSstation, trait_to_give, STATION_TRAIT)
 	return ..()
 
 /// Returns the type of info the centcom report has on this trait, if any.
@@ -91,7 +88,7 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 	SHOULD_CALL_PARENT(TRUE)
 	lobby_buttons |= lobby_button
 	RegisterSignal(lobby_button, COMSIG_ATOM_UPDATE_ICON, PROC_REF(on_lobby_button_update_icon))
-	RegisterSignal(lobby_button, COMSIG_CLICK, PROC_REF(on_lobby_button_click))
+	RegisterSignal(lobby_button, COMSIG_SCREEN_ELEMENT_CLICK, PROC_REF(on_lobby_button_click))
 	RegisterSignal(lobby_button, COMSIG_QDELETING, PROC_REF(on_lobby_button_destroyed))
 	lobby_button.update_appearance(UPDATE_ICON)
 

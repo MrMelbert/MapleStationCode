@@ -6,11 +6,16 @@
 	strip_delay = 40
 	equip_delay_other = 20
 	body_parts_covered = ARMS
-	cold_protection = ARMS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	armor_type = /datum/armor/gloves_bracer
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
+
+/obj/item/clothing/gloves/bracer/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 2)
 
 /datum/armor/gloves_bracer
 	melee = 15

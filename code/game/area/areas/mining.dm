@@ -18,6 +18,10 @@
 	name = "Mining Station Public Storage"
 	icon_state = "mining_storage"
 
+/area/mine/lobby/raptor
+	name = "Nanotrasen Raptor Farm"
+	icon_state = "mining_storage"
+
 /area/mine/production
 	name = "Mining Station Production Wing"
 	icon_state = "mining_production"
@@ -282,3 +286,13 @@
 /area/icemoon/underground/explored // ruins can't spawn here
 	name = "Icemoon Underground"
 	area_flags = UNIQUE_AREA
+
+/area/icemoon/underground/explored/graveyard
+	name = "Graveyard"
+	area_flags = UNIQUE_AREA
+	ambience_index = AMBIENCE_SPOOKY
+	icon = 'icons/area/areas_station.dmi'
+	icon_state = "graveyard"
+
+/area/icemoon/underground/explored/graveyard/chapel
+	name = "Chapel Graveyard"

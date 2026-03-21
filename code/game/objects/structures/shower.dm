@@ -184,9 +184,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 
 /obj/machinery/shower/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
-
 	I.play_tool_sound(src)
 	deconstruct()
 	return TRUE
@@ -195,7 +192,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	. = ..()
 	if(!actually_on)
 		return
-	var/mutable_appearance/water_falling = mutable_appearance('icons/obj/watercloset.dmi', "water", ABOVE_MOB_LAYER)
+	var/mutable_appearance/water_falling = mutable_appearance('icons/obj/watercloset.dmi', "water", ABOVE_MOB_LAYER, appearance_flags = KEEP_APART)
 	water_falling.color = mix_color_from_reagents(reagents.reagent_list)
 	switch(dir)
 		if(NORTH)
@@ -315,24 +312,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 
 	reagents.remove_any(SHOWER_SPRAY_VOLUME)
 
-/obj/machinery/shower/deconstruct(disassembled = TRUE)
+/obj/machinery/shower/on_deconstruction(disassembled = TRUE)
 	new /obj/item/stack/sheet/iron(drop_location(), 2)
 	if(has_water_reclaimer)
 		new /obj/item/stock_parts/water_recycler(drop_location())
-	qdel(src)
 
 /obj/machinery/shower/proc/check_heat(mob/living/L)
-	var/mob/living/carbon/C = L
-
 	if(current_temperature == SHOWER_FREEZING)
-		if(iscarbon(L))
-			C.adjust_bodytemperature(-80, 80)
-		to_chat(L, span_warning("[src] is freezing!"))
+		if(L.body_temperature >= L.standard_body_temperature - 1 KELVIN)
+			to_chat(L, span_warning("[src] is freezing!"))
+
+		L.adjust_body_temperature(-0.5 KELVIN, min_temp = CELCIUS_TO_KELVIN(10))
+
 	else if(current_temperature == SHOWER_BOILING)
-		if(iscarbon(L))
-			C.adjust_bodytemperature(35, 0, 500)
-		L.adjustFireLoss(5)
-		to_chat(L, span_danger("[src] is searing!"))
+		if(L.body_temperature <= L.standard_body_temperature + 1 KELVIN)
+			to_chat(L, span_warning("[src] is [pick("scalding", "searing")]!"))
+		L.adjust_body_temperature(0.5 KELVIN, max_temp = CELCIUS_TO_KELVIN(50))
+		L.apply_damage(6, BURN, spread_damage = TRUE)
 
 
 /obj/structure/showerframe
@@ -370,8 +366,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	deconstruct()
 	return TRUE
 
-/obj/structure/showerframe/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/effect/mist
 	name = "mist"

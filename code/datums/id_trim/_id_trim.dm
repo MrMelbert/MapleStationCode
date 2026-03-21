@@ -23,3 +23,7 @@
 	var/list/access = list()
 	/// Accesses that this trim unlocks on a card that require wildcard slots to apply. If a card cannot accept all a trim's wildcard accesses, the card is incompatible with the trim.
 	var/list/wildcard_access = list()
+	/// What honorifics, if any, will we set our wearer's name to when worn?
+	var/list/honorifics
+	/// What positions can our honorific take? To prevent names like "Peter Dr."
+	var/honorific_positions = NONE

@@ -47,6 +47,7 @@
 	lighting_cutoff_red = 30
 	lighting_cutoff_green = 35
 	lighting_cutoff_blue = 25
+	initial_blood_type = /datum/blood_type/oil
 
 	can_be_held = TRUE
 	worn_slot_flags = ITEM_SLOT_HEAD
@@ -171,6 +172,7 @@
 /mob/living/basic/drone/Initialize(mapload)
 	. = ..()
 	GLOB.drones_list += src
+	LoadComponent(/datum/component/bloodysoles/bot)
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
 	AddComponent(/datum/component/basic_inhands, y_offset = getItemPixelShiftY())
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
@@ -255,26 +257,28 @@
 
 	alert_drones(DRONE_NET_DISCONNECT)
 
-
 /mob/living/basic/drone/gib()
 	dust()
 
+/mob/living/basic/drone/get_butt_sprite()
+	return BUTT_SPRITE_DRONE
+
 /mob/living/basic/drone/examine(mob/user)
-	. = list("<span class='info'>This is [icon2html(src, user)] \a <b>[src]</b>!")
+	. = list()
 
 	//Hands
 	for(var/obj/item/held_thing in held_items)
-		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+		if(held_thing.item_flags & (ABSTRACT|HAND_ITEM) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
 			continue
-		. += "It has [held_thing.get_examine_string(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
+		. += "It has [held_thing.examine_title(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
 
 	//Internal storage
 	if(internal_storage && !(internal_storage.item_flags & ABSTRACT))
-		. += "It is holding [internal_storage.get_examine_string(user)] in its internal storage."
+		. += "It is holding [internal_storage.examine_title(user)] in its internal storage."
 
 	//Cosmetic hat - provides no function other than looks
 	if(head && !(head.item_flags & ABSTRACT))
-		. += "It is wearing [head.get_examine_string(user)] on its head."
+		. += "It is wearing [head.examine_title(user)] on its head."
 
 	//Braindead
 	if(!client && stat != DEAD)
@@ -297,8 +301,6 @@
 			. += span_deadsay("A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".")
 		else
 			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
-	. += "</span>"
-
 
 /mob/living/basic/drone/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //Secbots won't hunt maintenance drones.
 	return -10

@@ -9,6 +9,7 @@
 	density = FALSE
 	layer = ABOVE_WINDOW_LAYER
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 7, /datum/material/glass = SHEET_MATERIAL_AMOUNT * 4)
+	subsystem_type = /datum/controller/subsystem/processing/digital_clock
 
 /obj/item/wallframe/digital_clock
 	name = "digital clock frame"
@@ -69,25 +70,17 @@
 	. = ..()
 	emag_act()
 
-/obj/machinery/digital_clock/deconstruct(disassembled = TRUE)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
+/obj/machinery/digital_clock/on_deconstruction(disassembled)
 	if(disassembled)
 		new /obj/item/wallframe/digital_clock(drop_location())
 	else
 		new /obj/item/stack/sheet/iron(drop_location(), 2)
 		new /obj/item/shard(drop_location())
 		new /obj/item/shard(drop_location())
-	qdel(src)
 
 /obj/machinery/digital_clock/Initialize(mapload)
 	. = ..()
-	START_PROCESSING(SSdigital_clock, src)
 	find_and_hang_on_wall()
-
-/obj/machinery/digital_clock/Destroy()
-	STOP_PROCESSING(SSdigital_clock, src)
-	return ..()
 
 /obj/machinery/digital_clock/process(seconds_per_tick)
 	if(machine_stat & NOPOWER)

@@ -42,7 +42,9 @@
 	var/fire_sound = 'sound/weapons/sonic_jackhammer.ogg'
 	var/spin_item = TRUE //Do the projectiles spin when launched?
 	trigger_guard = TRIGGER_GUARD_NORMAL
-
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 /datum/armor/item_pneumatic_cannon
 	fire = 60
@@ -161,14 +163,15 @@
 		loadedWeightClass++
 	return TRUE
 
-/obj/item/pneumatic_cannon/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
-	if(flag && user.combat_mode)//melee attack
-		return
-	if(!istype(user))
-		return
-	Fire(user, target)
-	return AFTERATTACK_PROCESSED_ITEM
+/obj/item/pneumatic_cannon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return ITEM_INTERACT_SKIP_TO_ATTACK
+	Fire(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/pneumatic_cannon/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	Fire(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pneumatic_cannon/proc/Fire(mob/living/user, atom/target)
 	if(!istype(user) && !target)
@@ -281,7 +284,7 @@
 		if(tank)
 			to_chat(user, span_warning("\The [src] already has a tank."))
 			return
-		if(!user.transferItemToLoc(thetank, src))
+		if(!user.transferItemToLoc(thetank, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You hook \the [thetank] up to \the [src]."))
 		tank = thetank

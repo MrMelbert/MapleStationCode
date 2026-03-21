@@ -8,6 +8,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	basic_mob_flags = DEL_ON_DEATH
+	mob_biotypes = MOB_ORGANIC|MOB_MINERAL|MOB_MINING
 	speed = 2
 	maxHealth = 150
 	health = 150
@@ -18,6 +19,8 @@
 	attack_verb_simple = "slice"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = -10
 	move_force = MOVE_FORCE_VERY_STRONG
 	move_resist = MOVE_FORCE_VERY_STRONG
 	pull_force = MOVE_FORCE_VERY_STRONG
@@ -25,6 +28,7 @@
 	ai_controller = /datum/ai_controller/basic_controller/ice_demon
 	death_message = "fades as the energies that tied it to this world dissipate."
 	death_sound = 'sound/magic/demon_dies.ogg'
+	initial_blood_type = /datum/reagent/bluespace
 
 /mob/living/basic/mining/ice_demon/Initialize(mapload)
 	. = ..()
@@ -69,6 +73,7 @@
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	alpha = 80
 	ai_controller = /datum/ai_controller/basic_controller/ice_demon/afterimage
+	initial_blood_type = null
 	///how long do we exist for
 	var/existence_period = 15 SECONDS
 

@@ -1,6 +1,13 @@
 /datum/job
-	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
+	/// The base name of the job, used for preferences, bans and more.
+	/// Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
+	/// Alternate titles to register as pointing to this job.
+	/// Assoc [title] = [outfit], or [title] = [null], in which case the base outfit is used.
+	/// Base [title] = [Base outfit] will always be the first entry in the list.
+	VAR_PROTECTED/list/title_options
+	/// The base outfit of this job, used as a default in all circumstances.
+	var/base_outfit
 
 	/// The description of the job, used for preferences menu.
 	/// Keep it short and useful. Avoid in-jokes, these are for new players.
@@ -43,8 +50,6 @@
 
 	/// If you have the use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/minimal_player_age = 0
-
-	var/outfit = null
 
 	/// The job's outfit that will be assigned for plasmamen.
 	var/plasmaman_outfit = null
@@ -130,6 +135,12 @@
 	/// Minimal character age for this job
 	var/required_character_age
 
+	/// List of [typepath] to [base skill level] that this job starts with
+	var/list/base_skills
+
+	/// Priority for the job on the crew monitor.
+	var/crewmonitor_priority
+
 
 /datum/job/New()
 	. = ..()
@@ -140,6 +151,11 @@
 	if(isnum(new_total_positions))
 		total_positions = new_total_positions
 
+	var/list/alt_titles = list("[title]" = base_outfit)
+	for(var/i in title_options)
+		alt_titles[i] = title_options[i] || base_outfit
+	title_options = alt_titles
+
 /// Executes after the mob has been spawned in the map. Client might not be yet in the mob, and is thus a separate variable.
 /datum/job/proc/after_spawn(mob/living/spawned, client/player_client)
 	SHOULD_CALL_PARENT(TRUE)
@@ -147,9 +163,12 @@
 	if(length(mind_traits))
 		spawned.mind.add_traits(mind_traits, JOB_TRAIT)
 
-	var/obj/item/organ/internal/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = spawned.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
+
+	for(var/skill in base_skills)
+		spawned.mind.set_level(skill, base_skills[skill], silent = TRUE)
 
 	if(!ishuman(spawned))
 		return
@@ -169,9 +188,23 @@
 		for(var/i in roundstart_experience)
 			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
 
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
+
 /// Return the outfit to use
-/datum/job/proc/get_outfit()
-	return outfit
+/datum/job/proc/get_outfit(consistent, title)
+	return title_options[title] || base_outfit
+
+/**
+ * Returns a list of all titles this job goes by
+ *
+ * If only_selectable is TRUE, only returns titles that can be selected by players in the preferences menu.
+ *
+ * This allows for jobs to have titles not available to players outside of specific circumstances -
+ * it's important to have all titles listed here, so things can recognize alt-titles as "this job" (crew monitor, etc)
+ */
+/datum/job/proc/get_titles(only_selectable = FALSE)
+	return assoc_to_keys(title_options)
 
 /// Announce that this job as joined the round to all crew members.
 /// Note the joining mob has no client at this point.
@@ -185,38 +218,54 @@
 	return TRUE
 
 
-/mob/living/proc/on_job_equipping(datum/job/equipping)
+/mob/living/proc/on_job_equipping(datum/job/equipping, client/player_client)
 	return
 
 #define VERY_LATE_ARRIVAL_TOAST_PROB 20
 
-/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref) // NON-MODULE CHANGE: LOADOUTS
-	if(equipping.job_flags & JOB_CREW_MANIFEST) // NON-MODULE CHANGE: Only crew members get a bank account / memory
+/mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
+	if(equipping.paycheck_department && (equipping.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE: Only crew members get a bank account / memory
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-		bank_account.payday(STARTING_PAYCHECKS, TRUE)
+		bank_account.payday(STARTING_PAYCHECKS, free = TRUE)
 		account_id = bank_account.account_id
 		bank_account.replaceable = FALSE
 		add_mob_memory(/datum/memory/key/account, remembered_id = account_id)
 
-	dress_up_as_job(equipping, FALSE, used_pref) // NON-MODULE CHANGE: LOADOUTS
+	dress_up_as_job(
+		equipping = equipping,
+		visual_only = FALSE,
+		player_client = player_client,
+		consistent = FALSE,
+	)
 
 	if(EMERGENCY_PAST_POINT_OF_NO_RETURN && prob(VERY_LATE_ARRIVAL_TOAST_PROB))
 		equip_to_slot_or_del(new /obj/item/food/griddle_toast(src), ITEM_SLOT_MASK)
 
 #undef VERY_LATE_ARRIVAL_TOAST_PROB
 
-/mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
+/mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
 	return
 
-/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) // NON-MODULE CHANGE: LOADOUTS
+/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	// NON-MODULE CHANGE: LOADOUTS
-	equip_outfit_and_loadout(equipping.get_outfit(), used_pref, visual_only)
+	var/preferred_title = player_client?.prefs.read_preference(/datum/preference/job_titles)?[equipping.title] || equipping.title
+	equip_outfit_and_loadout(equipping.get_outfit(consistent, preferred_title), player_client?.prefs, visual_only, TRUE)
+	// some titles will have outfits associated, which will have custom trims associated, which handles all the assignment stuff we care about
+	// but if a title just uses the default outfit, or doesn't bother having a trim, then we need to manually set their id card
+	if(!visual_only && preferred_title)
+		var/obj/item/card/id/id = get_idcard(hand_first = FALSE)
+		if(id && id.assignment != preferred_title)
+			id.assignment = preferred_title
+			id.update_label()
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(H && GLOB.announcement_systems.len)
+		var/datum/record/crew/crew_rec = find_record(H.real_name)
+		var/obj/item/card/id/crew_id = H.get_idcard(hand_first = FALSE)
+		var/job_name = crew_rec?.rank || crew_id?.assignment || crew_id?.trim?.assignment || H.job
+		var/datum/callback/announce = CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, job_name, channels)
 		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), announce, 0.1 SECONDS))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -276,35 +325,42 @@
 /// Gets the message that shows up when spawning as this job
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	return examine_block(span_infoplain(jointext(get_spawn_message_information(), "\n&bull; ")))
+	var/final_product = "<i>[description]</i><br><br>&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
+	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "examine_block")
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
 	SHOULD_CALL_PARENT(TRUE)
 	var/list/info = list()
-	info += "<b>You are the [title].</b>\n"
 	var/related_policy = get_policy(title)
 	var/radio_info = get_radio_information()
 	if(related_policy)
 		info += related_policy
 	if(supervisors)
-		info += "As the [title] you answer directly to [supervisors]. Special circumstances may change this."
+		info += "You answer directly to [supervisors]."
 	if(radio_info)
 		info += radio_info
+	if(!CONFIG_GET(flag/jobs_have_minimal_access))
+		var/datum/outfit/joboutfit = base_outfit
+		var/datum/id_trim/job/trim = SSid_access.trim_singletons_by_path[joboutfit::id_trim]
+		if(istype(trim) && length(trim.extra_access + trim.extra_wildcard_access))
+			info += span_notice("As this station was initially staffed with a skeleton crew, \
+				additional access has been added to your ID card.")
+	var/list/known_passwords = list()
+	for(var/password_id, password_info in GLOB.important_passwords[type])
+		known_passwords += span_green(password_info[PASSWORD_LOCATION])
+	if(length(known_passwords))
+		info += "You know the passwords to [english_list(known_passwords)]."
 	if(req_admin_notify)
-		info += "<b>You are playing a job that is important for Game Progression. \
-			If you have to disconnect, please notify the admins via adminhelp.</b>"
-	if(CONFIG_GET(number/minimal_access_threshold))
-		info += span_boldnotice("As this station was initially staffed with a \
-			[CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] \
-			have been added to your ID card.")
+		info += "<i>You are playing a job that is important for game progression. \
+			If you have to disconnect, please notify the admins via <b>adminhelp</b>.</i>"
 
 	return info
 
 /// Returns information pertaining to this job's radio.
 /datum/job/proc/get_radio_information()
 	if(job_flags & JOB_CREW_MEMBER)
-		return "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+		return "Prefix messages with <b>:[MODE_KEY_DEPARTMENT]</b> to speak on your department's radio. To see other prefixes, examine your headset."
 
 /datum/outfit/job
 	name = "Standard Gear"
@@ -369,10 +425,10 @@
 	if(visualsOnly)
 		return
 
-	var/datum/job/equipped_job = SSjob.GetJobType(jobtype)
+	var/datum/job/equipped_job = SSjob.get_job_type(jobtype)
 
 	if(!equipped_job)
-		equipped_job = SSjob.GetJob(equipped.job)
+		equipped_job = SSjob.get_job(equipped.job)
 
 	var/obj/item/card/id/card = equipped.wear_id
 
@@ -392,7 +448,7 @@
 			card.registered_account = account
 			account.bank_cards += card
 
-		equipped.sec_hud_set_ID()
+		equipped.update_ID_card()
 
 	var/obj/item/modular_computer/pda/pda = equipped.get_item_by_slot(pda_slot)
 
@@ -476,9 +532,16 @@
 		log_mapping("Job [title] ([type]) couldn't find a round start spawn point.")
 
 /// Finds a valid latejoin spawn point, checking for events and special conditions.
-/datum/job/proc/get_latejoin_spawn_point()
+/datum/job/proc/get_latejoin_spawn_point(datum/preferences/prefs)
 	if(length(GLOB.jobspawn_overrides[title])) //We're doing something special today.
 		return pick(GLOB.jobspawn_overrides[title])
+	if(prefs?.read_preference(/datum/preference/choiced/preferred_latejoin_spawn) == SPAWNPOINT_CRYO)
+		var/list/common_sleepers = list()
+		for(var/obj/machinery/sleeper/stasis/cryo/sleeper as anything in GLOB.cryo_sleepers)
+			if(sleeper.can_latejoin(src))
+				common_sleepers += sleeper
+		if(length(common_sleepers))
+			return pick(common_sleepers)
 	if(length(SSjob.latejoin_trackers))
 		return pick(SSjob.latejoin_trackers)
 	return SSjob.get_last_resort_spawn_points()
@@ -541,11 +604,11 @@
 			dna.species.roundstart_changed = TRUE
 			apply_pref_name(/datum/preference/name/backup_human, player_client)
 		if(CONFIG_GET(flag/force_random_names))
-			var/species_type = player_client.prefs.read_preference(/datum/preference/choiced/species)
-			var/datum/species/species = new species_type
-
-			var/gender = player_client.prefs.read_preference(/datum/preference/choiced/gender)
-			real_name = species.random_name(gender, TRUE)
+			real_name = generate_random_name_species_based(
+				player_client.prefs.read_preference(/datum/preference/choiced/gender),
+				TRUE,
+				player_client.prefs.read_preference(/datum/preference/choiced/species),
+			)
 	dna.update_dna_identity()
 
 
@@ -567,9 +630,11 @@
 			if(!player_client)
 				return // Disconnected while checking the appearance ban.
 
-			var/species_type = player_client.prefs.read_preference(/datum/preference/choiced/species)
-			var/datum/species/species = new species_type
-			organic_name = species.random_name(player_client.prefs.read_preference(/datum/preference/choiced/gender), TRUE)
+			organic_name = generate_random_name_species_based(
+				player_client.prefs.read_preference(/datum/preference/choiced/gender),
+				TRUE,
+				player_client.prefs.read_preference(/datum/preference/choiced/species),
+			)
 		else
 			if(!player_client)
 				return // Disconnected while checking the appearance ban.
@@ -602,3 +667,11 @@
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/// Called when a mob that has this job is admin respawned
+/datum/job/proc/on_respawn(mob/new_character)
+	SSjob.equip_rank(new_character, new_character.mind.assigned_role, new_character.client)
+
+/// This proc may be called when someone of this job is made into a traitor to create custom objectives related to the job.
+/datum/job/proc/generate_traitor_objective()
+	return null

@@ -17,53 +17,42 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 /obj/item/storage/part_replacer/Initialize(mapload)
 	. = ..()
 	create_storage(storage_type = /datum/storage/rped)
-
-/obj/item/storage/part_replacer/pre_attack(obj/attacked_object, mob/living/user, params)
-	. = ..()
-	if(.)
-		return
-
-	if(!works_from_distance && !user.Adjacent(attacked_object))
-		return
-
-	return part_replace_action(attacked_object, user)
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/toolbox.ogg'
 
 /obj/item/storage/part_replacer/proc/part_replace_action(obj/attacked_object, mob/living/user)
-	if(!ismachinery(attacked_object) && !istype(attacked_object, /obj/structure/frame/machine) && !istype(attacked_object, /obj/structure/frame/computer))
+	if(!ismachinery(attacked_object) || istype(attacked_object, /obj/machinery/computer))
 		return FALSE
 
-	if(ismachinery(attacked_object) && !istype(attacked_object, /obj/machinery/computer))
-		var/obj/machinery/attacked_machinery = attacked_object
+	var/obj/machinery/attacked_machinery = attacked_object
+	if(!LAZYLEN(attacked_machinery.component_parts))
+		return FALSE
 
-		if(!attacked_machinery.component_parts)
-			return FALSE
-
-		attacked_machinery.exchange_parts(user, src)
-		if(works_from_distance)
-			user.Beam(attacked_machinery, icon_state = "rped_upgrade", time = 5)
-		return TRUE
-
-	var/obj/structure/frame/attacked_frame = attacked_object
-	if(istype(attacked_frame, /obj/structure/frame/machine))
-		var/obj/structure/frame/machine/machine_frame = attacked_frame
-		if(attacked_frame.state == 1 || (!machine_frame.components && !(locate(/obj/item/circuitboard/machine) in contents)))
-			return FALSE
-	else
-		if(attacked_frame.state == 0 || (attacked_frame.state == 1 && !(locate(/obj/item/circuitboard/computer) in contents)))
-			return FALSE
-
-	attacked_frame.attackby(src, user)
-	if(works_from_distance)
-		user.Beam(attacked_frame, icon_state = "rped_upgrade", time = 5)
+	if(attacked_machinery.exchange_parts(user, src) && works_from_distance)
+		user.Beam(attacked_machinery, icon_state = "rped_upgrade", time = 0.5 SECONDS)
 	return TRUE
 
-/obj/item/storage/part_replacer/afterattack(obj/attacked_object, mob/living/user, adjacent, params)
-	if(works_from_distance)
-		part_replace_action(attacked_object, user)
-	return ..()
+/obj/item/storage/part_replacer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(part_replace_action(interacting_with, user))
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
-/obj/item/storage/part_replacer/proc/play_rped_sound()
-	//Plays the sound for RPED exhanging or installing parts.
+/obj/item/storage/part_replacer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!works_from_distance)
+		return NONE
+	if(part_replace_action(interacting_with, user))
+		user.Beam(interacting_with, icon_state = "rped_upgrade", time = 0.5 SECONDS)
+		return ITEM_INTERACT_SUCCESS
+	if(istype(interacting_with, /obj/structure/frame))
+		// Cursed snowflake but we need to handle frame ranged interaction here
+		// Likely no longer necessary with the new framework, revisit later
+		interacting_with.item_interaction(user, src)
+		user.Beam(interacting_with, icon_state = "rped_upgrade", time = 0.5 SECONDS)
+		return ITEM_INTERACT_SUCCESS
+	return NONE
+
+///Plays the sound & flick animation for RPED exhanging or installing parts.
+/obj/item/storage/part_replacer/proc/play_rped_effect()
+	flick("[icon_state]_active", src)
 	if(alt_sound && prob(1))
 		playsound(src, alt_sound, 40, TRUE)
 	else
@@ -101,8 +90,8 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 /obj/item/storage/part_replacer/bluespace/proc/on_part_entered(datum/source, obj/item/inserted_component)
 	SIGNAL_HANDLER
 
-	if(istype(inserted_component, /obj/item/stock_parts/cell))
-		var/obj/item/stock_parts/cell/inserted_cell = inserted_component
+	if(istype(inserted_component, /obj/item/stock_parts/power_store))
+		var/obj/item/stock_parts/power_store/inserted_cell = inserted_component
 		if(inserted_cell.rigged || inserted_cell.corrupted)
 			message_admins("[ADMIN_LOOKUPFLW(usr)] has inserted rigged/corrupted [inserted_cell] into [src].")
 			usr.log_message("has inserted rigged/corrupted [inserted_cell] into [src].", LOG_GAME)
@@ -150,7 +139,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		new /obj/item/stock_parts/servo(src)
 		new /obj/item/stock_parts/micro_laser(src)
 		new /obj/item/stock_parts/matter_bin(src)
-		new /obj/item/stock_parts/cell/high(src)
+		new /obj/item/stock_parts/power_store/cell/high(src)
 
 /obj/item/storage/part_replacer/bluespace/tier2
 
@@ -161,7 +150,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		new /obj/item/stock_parts/servo/nano(src)
 		new /obj/item/stock_parts/micro_laser/high(src)
 		new /obj/item/stock_parts/matter_bin/adv(src)
-		new /obj/item/stock_parts/cell/super(src)
+		new /obj/item/stock_parts/power_store/cell/super(src)
 
 /obj/item/storage/part_replacer/bluespace/tier3
 
@@ -172,7 +161,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		new /obj/item/stock_parts/servo/pico(src)
 		new /obj/item/stock_parts/micro_laser/ultra(src)
 		new /obj/item/stock_parts/matter_bin/super(src)
-		new /obj/item/stock_parts/cell/hyper(src)
+		new /obj/item/stock_parts/power_store/cell/hyper(src)
 
 /obj/item/storage/part_replacer/bluespace/tier4
 
@@ -183,7 +172,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		new /obj/item/stock_parts/servo/femto(src)
 		new /obj/item/stock_parts/micro_laser/quadultra(src)
 		new /obj/item/stock_parts/matter_bin/bluespace(src)
-		new /obj/item/stock_parts/cell/bluespace(src)
+		new /obj/item/stock_parts/power_store/cell/bluespace(src)
 
 /obj/item/storage/part_replacer/cargo //used in a cargo crate
 
@@ -232,6 +221,8 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	desc = "What?"
 	icon = 'icons/obj/devices/stock_parts.dmi'
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/rating = 1
 	///Used when a base part has a different name to higher tiers of part. For example, machine frames want any servo and not just a micro-servo.
 	var/base_name

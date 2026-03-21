@@ -23,10 +23,12 @@
 	combat_mode = TRUE
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_CLAW
+	sharpness = SHARP_EDGED
+	wound_bonus = 0
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	faction = list(ROLE_ALIEN)
 	status_flags = CANPUSH
-	minbodytemp = 0
+	bodytemp_cold_damage_limit = -1
 	unsuitable_heat_damage = 20
 	// Going for a dark purple here
 	lighting_cutoff_red = 30
@@ -37,6 +39,7 @@
 	death_sound = 'sound/voice/hiss6.ogg'
 	death_message = "lets out a waning guttural screech, green blood bubbling from its maw..."
 	footstep_type = FOOTSTEP_MOB_CLAW
+	initial_blood_type = /datum/blood_type/xenomorph
 
 /mob/living/simple_animal/hostile/alien/drone
 	name = "alien drone"
@@ -110,6 +113,9 @@
 			egg_cooldown = initial(egg_cooldown)
 			LayEggs()
 
+/mob/living/simple_animal/hostile/alien/get_butt_sprite()
+	return BUTT_SPRITE_XENOMORPH
+
 /mob/living/simple_animal/hostile/alien/proc/SpreadPlants()
 	if(!isturf(loc) || isspaceturf(loc))
 		return
@@ -139,7 +145,7 @@
 	health = 400
 	butcher_results = list(/obj/item/food/meat/slab/xeno = 10,
 							/obj/item/stack/sheet/animalhide/xeno = 2)
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_HUGE
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/alien/maid

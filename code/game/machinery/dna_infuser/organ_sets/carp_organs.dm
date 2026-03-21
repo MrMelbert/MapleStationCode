@@ -13,42 +13,51 @@
 
 ///Carp lungs! You can breathe in space! Oh... you can't breathe on the station, you need low oxygen environments.
 /// Inverts behavior of lungs. Bypasses suffocation due to space / lack of gas, but also allows Oxygen to suffocate.
-/obj/item/organ/internal/lungs/carp
+/obj/item/organ/lungs/carp
 	name = "mutated carp-lungs"
 	desc = "Carp DNA infused into what was once some normal lungs."
 	// Oxygen causes suffocation.
 	safe_oxygen_min = 0
 	safe_oxygen_max = 15
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "lungs"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/lungs/carp"
+	post_init_icon_state = "lungs"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = CARP_COLORS
 
-/obj/item/organ/internal/lungs/carp/Initialize(mapload)
+	low_pressure_threshold = 0
+	high_pressure_threshold = ONE_ATMOSPHERE * 1.2
+
+/obj/item/organ/lungs/carp/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "neck has odd gills.", BODY_ZONE_HEAD)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
-	ADD_TRAIT(src, TRAIT_SPACEBREATHING, REF(src))
+
+/obj/item/organ/lungs/carp/pre_breath_gas_handling(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	// 0 mol breaths function as "successful breaths" and thus heal us
+	if(breath.total_moles() <= 0)
+		heal_oxyloss_on_breath(breather, breath)
 
 ///occasionally sheds carp teeth, stronger melee (bite) attacks, but you can't cover your mouth anymore.
-/obj/item/organ/internal/tongue/carp
+/obj/item/organ/tongue/carp
 	name = "mutated carp-jaws"
 	desc = "Carp DNA infused into what was once some normal teeth."
 
 	say_mod = "gnashes"
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "tongue"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/tongue/carp"
+	post_init_icon_state = "tongue"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = CARP_COLORS
 
-/obj/item/organ/internal/tongue/carp/Initialize(mapload)
+/obj/item/organ/tongue/carp/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "teeth are big and sharp.", BODY_ZONE_PRECISE_MOUTH)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
 
-/obj/item/organ/internal/tongue/carp/on_mob_insert(mob/living/carbon/tongue_owner, special, movement_flags)
+/obj/item/organ/tongue/carp/on_mob_insert(mob/living/carbon/tongue_owner, special, movement_flags)
 	. = ..()
 	if(!ishuman(tongue_owner))
 		return
@@ -58,13 +67,13 @@
 	var/datum/species/rec_species = human_receiver.dna.species
 	rec_species.update_no_equip_flags(tongue_owner, rec_species.no_equip_flags | ITEM_SLOT_MASK)
 
-/obj/item/organ/internal/tongue/carp/on_bodypart_insert(obj/item/bodypart/limb)
+/obj/item/organ/tongue/carp/on_bodypart_insert(obj/item/bodypart/limb)
 	. = ..()
 	limb.unarmed_damage_low = 10
 	limb.unarmed_damage_high = 15
 	limb.unarmed_effectiveness = 15
 
-/obj/item/organ/internal/tongue/carp/on_mob_remove(mob/living/carbon/tongue_owner)
+/obj/item/organ/tongue/carp/on_mob_remove(mob/living/carbon/tongue_owner)
 	. = ..()
 	if(!ishuman(tongue_owner))
 		return
@@ -74,14 +83,14 @@
 	var/datum/species/rec_species = human_receiver.dna.species
 	rec_species.update_no_equip_flags(tongue_owner, initial(rec_species.no_equip_flags))
 
-/obj/item/organ/internal/tongue/carp/on_bodypart_remove(obj/item/bodypart/head)
+/obj/item/organ/tongue/carp/on_bodypart_remove(obj/item/bodypart/head)
 	. = ..()
 
 	head.unarmed_damage_low = initial(head.unarmed_damage_low)
 	head.unarmed_damage_high = initial(head.unarmed_damage_high)
 	head.unarmed_effectiveness = initial(head.unarmed_effectiveness)
 
-/obj/item/organ/internal/tongue/carp/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/tongue/carp/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	if(owner.stat != CONSCIOUS || !prob(0.1))
 		return
@@ -96,12 +105,13 @@
 	icon_state = "carptooth"
 
 ///carp brain. you need to occasionally go to a new zlevel. think of it as... walking your dog!
-/obj/item/organ/internal/brain/carp
+/obj/item/organ/brain/carp
 	name = "mutated carp-brain"
 	desc = "Carp DNA infused into what was once a normal brain."
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "brain"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/brain/carp"
+	post_init_icon_state = "brain"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = CARP_COLORS
 
@@ -110,46 +120,47 @@
 	///how much time the timer is given
 	var/cooldown_time = 10 MINUTES
 
-/obj/item/organ/internal/brain/carp/Initialize(mapload)
+/obj/item/organ/brain/carp/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
 	AddElement(/datum/element/noticable_organ, "seem%PRONOUN_S unable to stay still.")
 
-/obj/item/organ/internal/brain/carp/on_mob_insert(mob/living/carbon/brain_owner)
+/obj/item/organ/brain/carp/on_mob_insert(mob/living/carbon/brain_owner)
 	. = ..()
 	cooldown_timer = addtimer(CALLBACK(src, PROC_REF(unsatisfied_nomad)), cooldown_time, TIMER_STOPPABLE|TIMER_OVERRIDE|TIMER_UNIQUE)
 	RegisterSignal(brain_owner, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(satisfied_nomad))
 
 //technically you could get around the mood issue by extracting and reimplanting the brain but it will be far easier to just go one z there and back
-/obj/item/organ/internal/brain/carp/on_mob_remove(mob/living/carbon/brain_owner)
+/obj/item/organ/brain/carp/on_mob_remove(mob/living/carbon/brain_owner)
 	. = ..()
 	UnregisterSignal(brain_owner, COMSIG_MOVABLE_Z_CHANGED)
 	deltimer(cooldown_timer)
 
-/obj/item/organ/internal/brain/carp/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/carp/get_attacking_limb(mob/living/carbon/human/target)
 	return owner.get_bodypart(BODY_ZONE_HEAD)
 
-/obj/item/organ/internal/brain/carp/proc/unsatisfied_nomad()
+/obj/item/organ/brain/carp/proc/unsatisfied_nomad()
 	owner.add_mood_event("nomad", /datum/mood_event/unsatisfied_nomad)
 
-/obj/item/organ/internal/brain/carp/proc/satisfied_nomad()
+/obj/item/organ/brain/carp/proc/satisfied_nomad()
 	SIGNAL_HANDLER
 	owner.clear_mood_event("nomad")
 	cooldown_timer = addtimer(CALLBACK(src, PROC_REF(unsatisfied_nomad)), cooldown_time, TIMER_STOPPABLE|TIMER_OVERRIDE|TIMER_UNIQUE)
 
 /// makes you cold resistant, but heat-weak.
-/obj/item/organ/internal/heart/carp
+/obj/item/organ/heart/carp
 	name = "mutated carp-heart"
 	desc = "Carp DNA infused into what was once a normal heart."
 
-	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
-	icon_state = "heart"
+	icon = 'icons/map_icons/items/_item.dmi'
+	icon_state = "/obj/item/organ/heart/carp"
+	post_init_icon_state = "heart"
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = CARP_COLORS
 
 	organ_traits = list(TRAIT_RESISTCOLD, TRAIT_RESISTLOWPRESSURE)
 
-/obj/item/organ/internal/heart/carp/Initialize(mapload)
+/obj/item/organ/heart/carp/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "skin has small patches of scales growing on it.", BODY_ZONE_CHEST)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)

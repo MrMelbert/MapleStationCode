@@ -12,6 +12,8 @@
 	breakouttime = 1 MINUTES
 	dye_color = DYE_PRISONER
 	icon = 'icons/obj/restraints.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 
 /obj/item/restraints/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -46,9 +48,13 @@
 	throw_range = 5
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 5)
 	breakouttime = 1 MINUTES
-	var/handcuff_time = 3 SECONDS
 	armor_type = /datum/armor/restraints_handcuffs
 	custom_price = PAYCHECK_COMMAND * 0.35
+
+	///How long it takes to handcuff someone
+	var/handcuff_time = 4 SECONDS
+	///Multiplier for handcuff time
+	var/handcuff_time_mod = 1
 	///Sound that plays when starting to put handcuffs on someone
 	var/cuffsound = 'sound/weapons/handcuffs.ogg'
 	///If set, handcuffs will be destroyed on application and leave behind whatever this is set to.
@@ -68,46 +74,83 @@
 	fire = 50
 	acid = 50
 
-/obj/item/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/user)
-	if(!istype(C))
+/obj/item/restraints/handcuffs/attack(mob/living/target_mob, mob/living/user)
+	if(!iscarbon(target_mob))
 		return
 
-	if(SEND_SIGNAL(C, COMSIG_CARBON_CUFF_ATTEMPTED, user) & COMSIG_CARBON_CUFF_PREVENT)
+	attempt_to_cuff(target_mob, user)
+
+/// Handles all of the checks and application in a typical situation where someone attacks a carbon victim with the handcuff item.
+/obj/item/restraints/handcuffs/proc/attempt_to_cuff(mob/living/carbon/victim, mob/living/user)
+	if(SEND_SIGNAL(victim, COMSIG_CARBON_CUFF_ATTEMPTED, user) & COMSIG_CARBON_CUFF_PREVENT)
+		victim.balloon_alert(user, "can't be handcuffed!")
 		return
 
 	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
-		to_chat(user, span_warning("Uh... how do those things work?!"))
-		apply_cuffs(user,user)
+		to_chat(user, span_smallnoticeital("Uh... how do these things work?!"))
+		if(iscarbon(user))
+			var/mob/living/carbon/carbuser = user
+			if(!carbuser.handcuffed && carbuser.canBeHandcuffed())
+				user.visible_message(
+					span_danger("You fumble with [src] and accidentally put them on yourself!"),
+					span_userdanger("[user] fumbles with [src] and accidentally puts them on [user.p_them()]self!")
+				)
+				playsound(src, cuffsound, 30, TRUE, -2)
+				log_combat(user, victim, "failed to handcuff", src, "(handcuffed self, clumsy)")
+				apply_cuffs(user, user)
+				return
+
+		user.do_attack_animation(user)
+		user.visible_message(
+			span_danger("You fumble with [src]."),
+			span_danger("[user] fumbles with [src].")
+		)
 		return
 
-	if(!C.handcuffed)
-		if(C.canBeHandcuffed())
-			C.visible_message(span_danger("[user] is trying to put [src] on [C]!"), \
-								span_userdanger("[user] is trying to put [src] on you!"))
-			if(C.is_blind())
-				to_chat(C, span_userdanger("As you feel someone grab your wrists, [src] start digging into your skin!"))
-			playsound(loc, cuffsound, 30, TRUE, -2)
-			log_combat(user, C, "attempted to handcuff")
-			if(do_after(user, handcuff_time, C, timed_action_flags = IGNORE_SLOWDOWNS) && C.canBeHandcuffed())
-				if(iscyborg(user))
-					apply_cuffs(C, user, TRUE)
-				else
-					apply_cuffs(C, user)
-				C.visible_message(span_notice("[user] handcuffs [C]."), \
-									span_userdanger("[user] handcuffs you."))
-				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
+	if(!isnull(victim.handcuffed))
+		victim.balloon_alert(user, "already handcuffed!")
+		return
 
-				log_combat(user, C, "handcuffed")
-			else
-				to_chat(user, span_warning("You fail to handcuff [C]!"))
-				log_combat(user, C, "failed to handcuff")
-		else
-			to_chat(user, span_warning("[C] doesn't have two hands..."))
+	if(!victim.canBeHandcuffed())
+		victim.balloon_alert(user, "can't be handcuffed!")
+		return
+
+	victim.visible_message(
+		span_danger("[user] is trying to put [src] on [victim]!"),
+		span_userdanger("[user] is trying to put [src] on you!"),
+	)
+
+	if(victim.is_blind())
+		to_chat(victim, span_userdanger("As you feel someone grab your wrists, [src] start digging into your skin!"))
+
+	playsound(src, cuffsound, 30, TRUE, -2) // Non-module change
+	log_combat(user, victim, "attempted to handcuff")
+
+	if(HAS_TRAIT(user, TRAIT_FAST_CUFFING))
+		handcuff_time_mod = 0.75
+	else
+		handcuff_time_mod = 1
+
+	if(!do_after(user, handcuff_time * handcuff_time_mod, victim, timed_action_flags = IGNORE_SLOWDOWNS) || !victim.canBeHandcuffed())
+		victim.balloon_alert(user, "failed to handcuff!")
+		to_chat(user, span_warning("You fail to handcuff [victim]!"))
+		log_combat(user, victim, "failed to handcuff")
+		return
+
+	apply_cuffs(victim, user, dispense = iscyborg(user))
+
+	victim.visible_message(
+		span_notice("[user] handcuffs [victim]."),
+		span_userdanger("[user] handcuffs you."),
+	)
+
+	log_combat(user, victim, "successfully handcuffed")
+	SSblackbox.record_feedback("tally", "handcuffs", 1, type)
+
 
 /**
- * This handles handcuffing people
+ * When called, this instantly puts handcuffs on someone (if actually possible)
  *
- * When called, this instantly puts handcuffs on someone (if possible)
  * Arguments:
  * * mob/living/carbon/target - Who is being handcuffed
  * * mob/user - Who or what is doing the handcuffing
@@ -130,7 +173,6 @@
 
 	if(trashtype && !dispense)
 		qdel(src)
-	return
 
 /**
  * # Alien handcuffs
@@ -151,6 +193,7 @@
 	desc = "Fake handcuffs meant for gag purposes."
 	breakouttime = 1 SECONDS
 	restraint_strength = HANDCUFFS_TYPE_WEAK
+	resist_cooldown = CLICK_CD_SLOW
 
 /**
  * # Cable restraints
@@ -189,8 +232,8 @@
 
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/bola, /datum/crafting_recipe/gonbola)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -332,6 +375,7 @@
 	name = "fake zipties"
 	desc = "Fake zipties meant for gag purposes."
 	breakouttime = 1 SECONDS
+	resist_cooldown = CLICK_CD_SLOW
 
 /obj/item/restraints/handcuffs/cable/zipties/fake/used
 	desc = "A pair of broken fake zipties."
@@ -345,7 +389,7 @@
 /obj/item/restraints/legcuffs
 	name = "leg cuffs"
 	desc = "Use this to keep prisoners in line."
-	gender = PLURAL
+	gender = NEUTER
 	icon_state = "handcuff"
 	inhand_icon_state = "handcuff"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
@@ -356,6 +400,13 @@
 	slowdown = 7
 	breakouttime = 30 SECONDS
 	slot_flags = ITEM_SLOT_LEGCUFFED
+	resist_cooldown = CLICK_CD_RANGE
+
+/obj/item/restraints/legcuffs/equipped(mob/user, slot, initial)
+	. = ..()
+	// many leg cuffs are floor based traps, resetting pixelx/pixely for the purpose of the screen alert
+	pixel_x = 0
+	pixel_y = 0
 
 /**
  * # Bear trap
@@ -368,6 +419,8 @@
 	throw_range = 1
 	icon_state = "beartrap"
 	desc = "A trap used to catch bears and other legged creatures."
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	///If true, the trap is "open" and can trigger.
 	var/armed = FALSE
 	///How much damage the trap deals when triggered.
@@ -399,7 +452,7 @@
 		return
 	armed = !armed
 	update_appearance()
-	to_chat(user, span_notice("[src] is now [armed ? "armed" : "disarmed"]"))
+	to_chat(user, span_notice("[src] is now [armed ? "armed" : "disarmed"]."))
 
 /**
  * Closes a bear trap
@@ -478,7 +531,7 @@
 
 /obj/item/restraints/legcuffs/beartrap/energy/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, PROC_REF(dissipate)), 100)
+	addtimer(CALLBACK(src, PROC_REF(dissipate)), 10 SECONDS)
 
 /**
  * Handles energy snares disappearing
@@ -497,6 +550,7 @@
 
 /obj/item/restraints/legcuffs/beartrap/energy/cyborg
 	breakouttime = 2 SECONDS // Cyborgs shouldn't have a strong restraint
+	slowdown = 3
 
 /obj/item/restraints/legcuffs/bola
 	name = "bola"

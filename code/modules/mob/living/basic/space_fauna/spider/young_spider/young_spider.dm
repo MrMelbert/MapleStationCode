@@ -48,5 +48,5 @@
 		/datum/ai_planning_subtree/spin_web,
 	)
 
-/mob/living/basic/spider/growing/young/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE) // we're TOO FUCKING WEAK
+/mob/living/basic/spider/growing/young/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE, willing_pull = FALSE) // we're TOO FUCKING WEAK
 	return

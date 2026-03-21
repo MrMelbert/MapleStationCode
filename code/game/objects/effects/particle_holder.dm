@@ -3,7 +3,7 @@
 /obj/effect/abstract/particle_holder
 	name = "particle holder"
 	desc = "How are you reading this? Please make a bug report :)"
-	appearance_flags = KEEP_APART|KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE //movable appearance_flags plus KEEP_APART and KEEP_TOGETHER
+	appearance_flags = KEEP_APART|KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE|RESET_COLOR //movable appearance_flags plus KEEP_APART and KEEP_TOGETHER
 	vis_flags = VIS_INHERIT_PLANE
 	layer = ABOVE_ALL_MOB_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -64,7 +64,6 @@
 		var/mob/particle_mob = attached.loc
 		particle_mob.vis_contents += src
 
-/// Sets the particles position to the passed coordinate list (X, Y, Z)
-/// See [https://www.byond.com/docs/ref/#/{notes}/particles] for position documentation
-/obj/effect/abstract/particle_holder/proc/set_particle_position(list/pos)
-	particles.position = pos
+/// Sets the particles position to the passed coordinates
+/obj/effect/abstract/particle_holder/proc/set_particle_position(x = 0, y = 0, z = 0)
+	particles.position = list(x, y, z)

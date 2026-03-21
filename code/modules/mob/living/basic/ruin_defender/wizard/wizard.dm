@@ -53,6 +53,7 @@
 	)
 
 /mob/living/basic/wizard/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	if(!selected_outfit)
 		selected_outfit = pick_weight(wizard_outfits)
@@ -82,6 +83,9 @@
 	var/datum/action/cooldown/spell/teleport/radius_turf/blink/lesser/blink_spell = new(src)
 	blink_spell.Grant(src)
 	ai_controller.set_blackboard_key(BB_WIZARD_BLINK_SPELL, blink_spell)
+
+/mob/living/basic/wizard/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
 
 /// Uses the colors and loadout of the original wizard simplemob
 /mob/living/basic/wizard/classic

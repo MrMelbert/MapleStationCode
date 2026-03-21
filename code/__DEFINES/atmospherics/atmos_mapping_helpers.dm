@@ -4,27 +4,27 @@
 
 //OPEN TURF ATMOS
 /// the default air mix that open turfs spawn
-#define OPENTURF_DEFAULT_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=293.15"
+#define OPENTURF_DEFAULT_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=293.15" // T20C
 /// the default low-pressure air mix used mostly for mining areas.
-#define OPENTURF_LOW_PRESSURE GAS_O2 + "=14;" + GAS_N2 + "=30;TEMP=293.15"
+#define OPENTURF_LOW_PRESSURE GAS_O2 + "=14;" + GAS_N2 + "=30;TEMP=293.15" // T20C
 /// breathable air that causes disease
-#define OPENTURF_DIRTY_ATMOS GAS_MIASMA + "=15;" + GAS_O2 + "=88;TEMP=293.15"
+#define OPENTURF_DIRTY_ATMOS GAS_MIASMA + "=15;" + GAS_O2 + "=88;TEMP=293.15" // T20C
 /// -193,15°C telecommunications. also used for xenobiology slime killrooms
-#define TCOMMS_ATMOS GAS_N2 + "=100;TEMP=80"
+#define TCOMMS_ATMOS GAS_N2 + "=100;TEMP=231.15" // CELCIUS_TO_KELVIN(-42), but originally CELCIUS_TO_KELVIN(-193.15)
 /// space
-#define AIRLESS_ATMOS "TEMP=2.7"
+#define AIRLESS_ATMOS "TEMP=2.7" // TCMB
 /// -93.15°C snow and ice turfs
-#define FROZEN_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=180"
+#define FROZEN_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=180" // CELCIUS_TO_KELVIN(-93.15 CELCIUS)
 /// -14°C snow and ice turfs, a more breatheable coldroom atmos.
-#define COLD_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=259.15"
+#define COLD_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=259.15" // CELCIUS_TO_KELVIN(-14 CELCIUS) or COLD_ROOM_TEMP
 /// -14°C kitchen coldroom, just might loss your tail; higher amount of mol to reach about 101.3 kpA
-#define KITCHEN_COLDROOM_ATMOS GAS_O2 + "=26;" + GAS_N2 + "=97;TEMP=259.15"
+#define KITCHEN_COLDROOM_ATMOS GAS_O2 + "=26;" + GAS_N2 + "=97;TEMP=259.15" // COLD_ROOM_TEMP
 /// used in the holodeck burn test program
-#define BURNMIX_ATMOS GAS_O2 + "=2500;" + GAS_PLASMA + "=5000;TEMP=370"
+#define BURNMIX_ATMOS GAS_O2 + "=2500;" + GAS_PLASMA + "=5000;TEMP=370" // CELCIUS_TO_KELVIN(96.85 CELCIUS)
 ///-153.15°C plasma air, used for burning people.
-#define BURNING_COLD GAS_N2 + "=82;" + GAS_PLASMA + "=24;TEMP=120"
+#define BURNING_COLD GAS_N2 + "=82;" + GAS_PLASMA + "=24;TEMP=120" // CELCIUS_TO_KELVIN(-153.15 CELCIUS)
 ///Space temperature hyper nob
-#define SPACE_TEMP_NOBLIUM GAS_HYPER_NOBLIUM + "=7500;TEMP=2.7"
+#define SPACE_TEMP_NOBLIUM GAS_HYPER_NOBLIUM + "=7500;TEMP=2.7" // TCMB
 
 //ATMOSPHERICS DEPARTMENT GAS TANK TURFS
 #define ATMOS_TANK_N2O GAS_N2O + "=6000;TEMP=293.15"

@@ -47,10 +47,8 @@
 /obj/structure/girder/brass/narsie_act(force, ignore_mobs, probability) // what that dog doin'?
 	return
 
-/obj/structure/girder/brass/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/brass(drop_location(), 1)
-	qdel(src)
+/obj/structure/girder/brass/atom_deconstruct(disassembled = TRUE)
+	new /obj/item/stack/sheet/brass(drop_location(), 1)
 
 // And brass walls.
 /turf/closed/wall/mineral/brass

@@ -12,7 +12,8 @@
 	var/static/list/impediments
 	if(!impediments)
 		impediments = list("Cancel" = 1)
-		for(var/datum/status_effect/speech/effect as anything in subtypesof(/datum/status_effect/speech))
+		var/list/blacklist = list(/datum/status_effect/speech/stutter/anxiety)
+		for(var/datum/status_effect/speech/effect as anything in subtypesof(/datum/status_effect/speech) - blacklist)
 			impediments[initial(effect.id)] = effect
 
 	var/picked = tgui_input_list(src, "Select a speech impediment. Lasts 1 minute, also stacks.", "Impede Speech", impediments)

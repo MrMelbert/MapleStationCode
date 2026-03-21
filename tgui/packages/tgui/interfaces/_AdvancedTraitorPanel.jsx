@@ -6,7 +6,7 @@ import {
 
 export const _AdvancedTraitorPanel = () => {
   return (
-    <AdvancedTraitorWindow theme="maple-syndicate">
+    <AdvancedTraitorWindow theme="syndicate">
       <AdvancedTraitorBackgroundSection />
       <AdvancedTraitorGoalsSection />
     </AdvancedTraitorWindow>

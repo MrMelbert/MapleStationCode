@@ -1,7 +1,7 @@
 /datum/antagonist/brother
 	name = "\improper Brother"
 	antagpanel_category = "Brother"
-	job_rank = ROLE_BROTHER
+	pref_flag = ROLE_BROTHER
 	var/special_role = ROLE_BROTHER
 	antag_hud_name = "brother"
 	hijack_speed = 0.5
@@ -9,11 +9,13 @@
 	suicide_cry = "FOR MY BROTHER!!"
 	antag_moodlet = /datum/mood_event/focused
 	hardcore_random_bonus = TRUE
+	stinger_sound = 'sound/ambience/antag/tatoralert.ogg'
 	VAR_PRIVATE
 		datum/team/brother_team/team
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
 	if(!new_team)
+		team = new()
 		return
 	if(!istype(new_team))
 		stack_trace("Wrong team type passed to [type] initialization.")
@@ -24,30 +26,43 @@
 
 /datum/antagonist/brother/on_gain()
 	objectives += team.objectives
-	owner.special_role = special_role
 	finalize_brother()
 
+	if (team.brothers_left <= 0)
+		return ..()
+
+	var/mob/living/carbon/carbon_owner = owner.current
+	if (!istype(carbon_owner))
+		return ..()
+
+	grant_conversion_skills()
+	carbon_owner.equip_conspicuous_item(new /obj/item/assembly/flash)
+
 	var/is_first_brother = team.members.len == 1
-	team.brothers_left -= 1
-
-	if (is_first_brother || team.brothers_left > 0)
-		var/mob/living/carbon/carbon_owner = owner.current
-		if (istype(carbon_owner))
-			carbon_owner.equip_conspicuous_item(new /obj/item/assembly/flash)
-			carbon_owner.AddComponentFrom(REF(src), /datum/component/can_flash_from_behind)
-			RegisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON, PROC_REF(on_mob_successful_flashed_carbon))
-
-			if (!is_first_brother)
-				to_chat(carbon_owner, span_boldwarning("The Syndicate have higher expectations from you than others. They have granted you an extra flash to convert one other person."))
+	if (!is_first_brother)
+		to_chat(carbon_owner, span_boldwarning("The Syndicate have higher expectations from you than others. They have granted you an extra flash to convert one other person."))
 
 	return ..()
 
 /datum/antagonist/brother/on_removal()
-	owner.special_role = null
-	owner.RemoveComponentSource(REF(src), /datum/component/can_flash_from_behind)
-	UnregisterSignal(owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON)
-
+	remove_conversion_skills()
 	return ..()
+
+/// Give us the ability to add another brother
+/datum/antagonist/brother/proc/grant_conversion_skills()
+	var/mob/living/carbon/carbon_owner = owner.current
+	if (!istype(carbon_owner))
+		return
+	carbon_owner.AddComponentFrom(REF(src), /datum/component/can_flash_from_behind)
+	RegisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON, PROC_REF(on_mob_successful_flashed_carbon))
+
+/// Take away the ability to add more brothers
+/datum/antagonist/brother/proc/remove_conversion_skills()
+	if (isnull(owner.current))
+		return
+	var/mob/living/carbon/carbon_owner = owner.current
+	carbon_owner.RemoveComponentSource(REF(src), /datum/component/can_flash_from_behind)
+	UnregisterSignal(carbon_owner, COMSIG_MOB_SUCCESSFUL_FLASHED_CARBON)
 
 /datum/antagonist/brother/proc/on_mob_successful_flashed_carbon(mob/living/source, mob/living/carbon/flashed, obj/item/assembly/flash/flash)
 	SIGNAL_HANDLER
@@ -67,7 +82,7 @@
 		flashed.balloon_alert(source, "[flashed.p_theyre()] loyal to someone else!")
 		return
 
-	if (HAS_TRAIT(flashed, TRAIT_MINDSHIELD) || flashed.mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_SECURITY)
+	if (HAS_TRAIT(flashed, TRAIT_MINDSHIELD))
 		flashed.balloon_alert(source, "[flashed.p_they()] resist!")
 		return
 
@@ -141,7 +156,7 @@
 	return brother_text
 
 /datum/antagonist/brother/greet()
-	to_chat(owner.current, span_alertsyndie("You are the [owner.special_role]."))
+	to_chat(owner.current, span_alertsyndie("You are a Blood Brother."))
 	owner.announce_objectives()
 
 /datum/antagonist/brother/proc/finalize_brother()

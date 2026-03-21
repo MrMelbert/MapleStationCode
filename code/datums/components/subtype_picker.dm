@@ -69,11 +69,13 @@
 		return
 
 	var/picked_subtype = name2subtype[name_of_type]
-	on_picked_callback?.Invoke(picked_subtype)
-	picked_subtype = new picked_subtype(picker.drop_location())
+	var/obj/item/picked = new picked_subtype(picker.drop_location())
+	on_picked_callback?.Invoke(picked, picker)
+	SEND_SIGNAL(picked, COMSIG_ITEM_SUBTYPE_PICKER_SELECTED, target, picker)
+	SEND_SIGNAL(target, COMSIG_ITEM_SUBTYPE_PICKER_REPLACED, picked, picker)
 
 	qdel(target)
-	picker.put_in_hands(picked_subtype)
+	picker.put_in_hands(picked)
 
 /**
  * Checks if we are allowed to interact with the radial menu

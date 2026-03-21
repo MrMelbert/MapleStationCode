@@ -23,6 +23,8 @@
 	resistance_flags = NONE
 	max_integrity = 300
 	storage_type = /datum/storage/backpack
+	drop_sound = 'maplestation_modules/sound/items/drop/backpack.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/backpack.ogg'
 
 /obj/item/storage/backpack/Initialize(mapload)
 	. = ..()
@@ -31,10 +33,6 @@
 /*
  * Backpack Types
  */
-
-/obj/item/storage/backpack/old/Initialize(mapload)
-	. = ..()
-	atom_storage.max_total_storage = 12
 
 /obj/item/bag_of_holding_inert
 	name = "inert bag of holding"
@@ -51,9 +49,8 @@
 
 /obj/item/bag_of_holding_inert/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/slapcrafting,\
-		slapcraft_recipes = list(/datum/crafting_recipe/boh)\
-	)
+	var/static/list/recipes = list(/datum/crafting_recipe/boh)
+	AddElement(/datum/element/slapcrafting, recipes)
 
 /obj/item/storage/backpack/holding
 	name = "bag of holding"
@@ -152,6 +149,7 @@
 
 /obj/item/storage/backpack/captain
 	name = "captain's backpack"
+	article = "the"
 	desc = "It's a special backpack made exclusively for Nanotrasen officers."
 	icon_state = "backpack-captain"
 	inhand_icon_state = "captainpack"
@@ -192,6 +190,12 @@
 	desc = "A backpack made of hypo-allergenic fibers. It's designed to help prevent the spread of disease. Smells like monkey."
 	icon_state = "backpack-virology"
 	inhand_icon_state = "viropack"
+
+/obj/item/storage/backpack/floortile
+	name = "floortile backpack"
+	desc = "It's a backpack especially designed for use in floortiles..."
+	icon_state = "floortile_backpack"
+	inhand_icon_state = "backpack"
 
 /obj/item/storage/backpack/ert
 	name = "emergency response team commander backpack"
@@ -282,6 +286,8 @@
 		/datum/component/bloody_spreader,\
 		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
+	add_smell(smell = "meat", intensity = SMELL_INTENSITY_STRONG, radius = 2)
+	atom_storage.storage_sound = 'sound/effects/blobattack.ogg'
 
 /*
  * Satchel Types
@@ -368,13 +374,14 @@
 
 /obj/item/storage/backpack/satchel/cap
 	name = "captain's satchel"
+	article = "the"
 	desc = "An exclusive satchel for Nanotrasen officers."
 	icon_state = "satchel-captain"
 	inhand_icon_state = "satchel-cap"
 
 /obj/item/storage/backpack/satchel/flat
 	name = "smuggler's satchel"
-	desc = "A very slim satchel that can easily fit into tight spaces."
+	desc = "A very slim satchel that can easily fit into tight spaces. Its contents cannot be detected by contraband scanners."
 	icon_state = "satchel-flat"
 	inhand_icon_state = "satchel-flat"
 	w_class = WEIGHT_CLASS_NORMAL //Can fit in backpacks itself.
@@ -383,7 +390,7 @@
 	. = ..()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, INVISIBILITY_OBSERVER, use_anchor = TRUE)
 	atom_storage.max_total_storage = 15
-	atom_storage.set_holdable(cant_hold_list = list(/obj/item/storage/backpack/satchel/flat)) //muh recursive backpacks)
+	atom_storage.set_holdable(cant_hold_list = /obj/item/storage/backpack/satchel/flat) //muh recursive backpacks
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
 	for(var/items in 1 to 4)
@@ -404,6 +411,7 @@
 	icon_state = "duffel"
 	inhand_icon_state = "duffel"
 	actions_types = list(/datum/action/item_action/zipper)
+	action_slots = ALL
 	storage_type = /datum/storage/duffel
 	// How much to slow you down if your bag isn't zipped up
 	var/zip_slowdown = 1
@@ -421,7 +429,9 @@
 
 /obj/item/storage/backpack/duffelbag/Initialize(mapload)
 	. = ..()
+	slowdown += zip_slowdown
 	set_zipper(TRUE)
+	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_speed_potioned)) // Non-module change : duffelbags were moved to their own folder during storage reworks, I'm not doing that right now.
 
 /obj/item/storage/backpack/duffelbag/update_desc(updates)
 	. = ..()
@@ -486,13 +496,13 @@
 	zipped_up = new_zip
 	SEND_SIGNAL(src, COMSIG_DUFFEL_ZIP_CHANGE, new_zip)
 	if(zipped_up)
-		slowdown = initial(slowdown)
+		slowdown -= zip_slowdown
 		atom_storage.locked = STORAGE_SOFT_LOCKED
 		atom_storage.display_contents = FALSE
 		for(var/obj/item/weapon as anything in get_all_contents_type(/obj/item)) //close ui of this and all items inside dufflebag
 			weapon.atom_storage?.close_all() //not everything has storage initialized
 	else
-		slowdown = zip_slowdown
+		slowdown += zip_slowdown
 		atom_storage.locked = STORAGE_NOT_LOCKED
 		atom_storage.display_contents = TRUE
 
@@ -500,6 +510,12 @@
 		var/mob/living/wearer = loc
 		wearer.update_equipment_speed_mods()
 	update_appearance()
+
+/// Signal handler for [COMSIG_SPEED_POTION_APPLIED]. Speed potion removes the unzipped slowdown
+/obj/item/storage/backpack/duffelbag/proc/on_speed_potioned(datum/source)
+	SIGNAL_HANDLER
+	// Don't need to touch the actual slowdown here, since the speed potion does it for us
+	zip_slowdown = 0
 
 /obj/item/storage/backpack/duffelbag/cursed
 	name = "living duffel bag"
@@ -517,6 +533,7 @@
 
 /obj/item/storage/backpack/duffelbag/captain
 	name = "captain's duffel bag"
+	article = "the"
 	desc = "A large duffel bag for holding extra captainly goods."
 	icon_state = "duffel-captain"
 	inhand_icon_state = "duffel-captain"
@@ -795,6 +812,7 @@
 	new /obj/item/gun/energy/recharge/kinetic_accelerator(src)
 	new /obj/item/knife/combat/survival(src)
 	new /obj/item/flashlight/seclite(src)
+	new /obj/item/skillchip/job/off_z_pain_resistance(src)
 
 /*
  * Messenger Bag Types
@@ -873,6 +891,7 @@
 
 /obj/item/storage/backpack/messenger/cap
 	name = "captain's messenger bag"
+	article = "the"
 	desc = "An exclusive messenger bag for Nanotrasen officers, made of real whale leather."
 	icon_state = "messenger_captain"
 	inhand_icon_state = "messenger_captain"

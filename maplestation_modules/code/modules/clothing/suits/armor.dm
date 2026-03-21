@@ -48,13 +48,6 @@
 	icon_state = "blueshift"
 	inhand_icon_state = "armor"
 
-/obj/item/clothing/suit/armor/vest/asset_protection/clanjacket
-	name = "Armored Clan Jacket" // yes, a character item outside of story_content, because i'm a special boy
-	desc = "A red and gold jacket, embroidered with iconography of the Scoria Clan of Spectra. This one has been weaved with highly-protective fabrics."
-	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
-	icon_state = "sclanjacket"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
-
 // Subtype of the toggle icon component (i know, ew) for GAGS items
 /datum/component/toggle_icon/greyscale
 	/// Config when toggled.
@@ -90,7 +83,9 @@
 /obj/item/clothing/suit/greyscale_parade
 	name = "tailored parade jacket"
 	desc = "No armor, all fashion, unfortunately."
-	icon_state = "formal"
+	icon = 'icons/map_icons/clothing/suit/_suit.dmi'
+	icon_state = "/obj/item/clothing/suit/greyscale_parade"
+	post_init_icon_state = "formal"
 	inhand_icon_state = "labcoat"
 	body_parts_covered = CHEST|GROIN|ARMS
 	allowed = list(

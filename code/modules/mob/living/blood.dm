@@ -1,4 +1,6 @@
 #define BLOOD_DRIP_RATE_MOD 90 //Greater number means creating blood drips more often while bleeding
+// Conversion between internal drunk power and common blood alcohol content
+#define DRUNK_POWER_TO_BLOOD_ALCOHOL 0.003
 
 /****************************************************
 				BLOOD SYSTEM
@@ -9,9 +11,10 @@
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
 
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		remove_max_consciousness_value(BLOOD_LOSS)
 		return
 
-	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
+	if(body_temperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
 		return
 
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_HUMAN_ON_HANDLE_BLOOD, seconds_per_tick, times_fired)
@@ -36,13 +39,7 @@
 			if(satiety > 80)
 				nutrition_ratio *= 1.25
 			adjust_nutrition(-nutrition_ratio * HUNGER_FACTOR * seconds_per_tick)
-			blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * seconds_per_tick), BLOOD_VOLUME_NORMAL)
-
-	// // we call lose_blood() here rather than quirk/process() to make sure that the blood loss happens in sync with life()
-	// if(HAS_TRAIT(src, TRAIT_BLOOD_DEFICIENCY))
-	// 	var/datum/quirk/blooddeficiency/blooddeficiency = get_quirk(/datum/quirk/blooddeficiency)
-	// 	if(!isnull(blooddeficiency))
-	// 		blooddeficiency.lose_blood(seconds_per_tick)
+			blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * physiology.blood_regen_mod * nutrition_ratio * seconds_per_tick), BLOOD_VOLUME_NORMAL)
 
 	//Effects of bloodloss
 	if(!(sigreturn & HANDLE_BLOOD_NO_EFFECTS))
@@ -62,32 +59,55 @@
 			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 				if(SPT_PROB(2.5, seconds_per_tick))
 					to_chat(src, span_warning("You feel [word]."))
-				adjustOxyLoss(round(0.005 * (BLOOD_VOLUME_NORMAL - blood_volume) * seconds_per_tick, 1))
+				var/threshold = 50 * ((BLOOD_VOLUME_SAFE - blood_volume) / (BLOOD_VOLUME_SAFE - BLOOD_VOLUME_OKAY))
+				if(getOxyLoss() < threshold)
+					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-				adjustOxyLoss(round(0.01 * (BLOOD_VOLUME_NORMAL - blood_volume) * seconds_per_tick, 1))
+				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.9)
+				add_consciousness_modifier(BLOOD_LOSS, -10)
+				adjust_traumatic_shock(0.5 * seconds_per_tick)
+				if(getOxyLoss() < 100)
+					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding - some of this will be recovered
 				if(SPT_PROB(2.5, seconds_per_tick))
 					set_eye_blur_if_lower(12 SECONDS)
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-				adjustOxyLoss(2.5 * seconds_per_tick)
+				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.6)
+				add_consciousness_modifier(BLOOD_LOSS, -20)
+				adjust_traumatic_shock(1 * seconds_per_tick)
+				if(getOxyLoss() < 150)
+					adjustOxyLoss(3)
+				set_eye_blur_if_lower(6 SECONDS)
 				if(SPT_PROB(7.5, seconds_per_tick))
-					Unconscious(rand(20,60))
+					Unconscious(rand(2, 6) * 1 SECONDS)
+					losebreath += 1
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-				if(!HAS_TRAIT(src, TRAIT_NODEATH))
-					investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
-					death()
+				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.2)
+				add_consciousness_modifier(BLOOD_LOSS, -50)
+				adjust_traumatic_shock(3 * seconds_per_tick)
+				set_eye_blur_if_lower(20 SECONDS)
+				// Unconscious(10 SECONDS)
+				var/how_screwed_are_we = 1 - ((BLOOD_VOLUME_SURVIVE - blood_volume) / BLOOD_VOLUME_SURVIVE)
+				adjustOxyLoss(max(5, 50 * how_screwed_are_we))
+				// if(!HAS_TRAIT(src, TRAIT_NODEATH))
+				// 	investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
+				// 	death()
+
+	if(blood_volume > BLOOD_VOLUME_OKAY || (sigreturn & HANDLE_BLOOD_NO_EFFECTS))
+		remove_max_consciousness_value(BLOOD_LOSS)
+		remove_consciousness_modifier(BLOOD_LOSS)
 
 	// NON-MODULE CHANGE END for blood
 
 	var/temp_bleed = 0
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
+		var/iter_bleed_rate = iter_part.cached_bleed_rate
 		temp_bleed += iter_bleed_rate * seconds_per_tick
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
-			iter_part.adjustBleedStacks(-1, 0)
+			iter_part.adjustBleedStacks(-1)
 
 	if(temp_bleed)
 		bleed(temp_bleed)
@@ -98,28 +118,31 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		iter_part.update_part_wound_overlay()
 
-//Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/carbon/proc/bleed(amt)
-	// NON-MODULE CHANGE for blood
+/// Makes a blood drop, leaking amt units of blood from the mob
+/mob/living/proc/bleed(amt, leave_pool = TRUE)
+	return
+
+/mob/living/carbon/bleed(amt, leave_pool = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 
-	//Blood loss still happens in locker, floor stays clean
-	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
+	if(leave_pool && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
-/mob/living/carbon/human/bleed(amt)
+/mob/living/carbon/human/bleed(amt, leave_pool = TRUE)
 	amt *= physiology.bleed_mod
-	// NON-MODULE CHANGE for blood
 	return ..()
 
 /// A helper to see how much blood we're losing per tick
-/mob/living/carbon/proc/get_bleed_rate()
+/mob/living/proc/get_bleed_rate()
+	return 0
+
+/mob/living/carbon/get_bleed_rate()
 	var/bleed_amt = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/iter_bodypart = X
-		bleed_amt += iter_bodypart.get_modified_bleed_rate()
+		bleed_amt += iter_bodypart.cached_bleed_rate
 	return bleed_amt
 
 /mob/living/carbon/human/get_bleed_rate()
@@ -133,15 +156,12 @@
  * * bleed_amt- When we run this from [/mob/living/carbon/human/proc/handle_blood] we already know how much blood we're losing this tick, so we can skip tallying it again with this
  * * forced-
  */
-/mob/living/carbon/proc/bleed_warn(bleed_amt = 0, forced = FALSE)
+/mob/living/carbon/proc/bleed_warn(bleed_amt = get_bleed_rate(), forced = FALSE)
 	// NON-MODULE CHANGE for blood
 	if(!client || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
-	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
+	if((!COOLDOWN_FINISHED(src, bleeding_message_cd) || HAS_TRAIT(src, TRAIT_KNOCKEDOUT)) && !forced)
 		return
-
-	if(!bleed_amt) // if we weren't provided the amount of blood we lost this tick in the args
-		bleed_amt = get_bleed_rate()
 
 	var/bleeding_severity = ""
 	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD
@@ -169,8 +189,7 @@
 		rate_of_change = ", but it's clotting up quickly!"
 	else
 		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
+		for(var/datum/wound/iter_wound as anything in all_wounds)
 			if(!iter_wound.blood_flow)
 				continue
 			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
@@ -203,8 +222,7 @@
 
 //Gets blood from mob to a container or other mob, preserving all data in it.
 /mob/living/proc/transfer_blood_to(atom/movable/AM, amount, forced)
-	var/datum/blood_type/blood = get_blood_type()
-	if(isnull(blood) || !AM.reagents)
+	if(!has_blood() || !AM.reagents)
 		return FALSE
 	if(blood_volume < BLOOD_VOLUME_BAD && !forced)
 		return FALSE
@@ -213,90 +231,95 @@
 		amount = blood_volume
 
 	blood_volume -= amount
-	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), bodytemperature)
+	AM.reagents.add_reagent(blood_type.reagent_type, amount, blood_type.get_blood_data(src), body_temperature)
 	return TRUE
 
-// /mob/living/proc/get_blood_data()
-// 	return null
+/// Updates the blood_type variable with a blood_type singleton
+/mob/living/proc/set_blood_type(input_type, update = TRUE)
+	var/new_blood = find_blood_type(input_type)
+	if(isnull(new_blood) || blood_type == new_blood)
+		return FALSE
 
-// /mob/living/carbon/get_blood_data()
-// 	if(get_blood_type()?.reagent_type != /datum/reagent/blood) //actual blood reagent
-// 		return null
+	blood_type = new_blood
+	return TRUE
 
-// 	var/list/blood_data = list()
-// 	//set the blood data
-// 	blood_data["viruses"] = list()
+/mob/living/carbon/set_blood_type(input_type, update = TRUE)
+	. = ..()
+	if(!.)
+		return
 
-// 	for(var/thing in diseases)
-// 		var/datum/disease/D = thing
-// 		blood_data["viruses"] += D.Copy()
+	var/update_needed = FALSE
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		for(var/obj/item/organ/organ_bit in part)
+			if(IS_ORGANIC_ORGAN(organ_bit) || isandroid(src))
+				organ_bit.blood_dna_info = get_blood_dna_list()
+		if(part.damage_color == blood_type.color)
+			continue
+		part.damage_color = blood_type.color
+		// only these vars are affected by damage color so we can skip updates if none of them are set
+		if(part.brutestate || part.is_husked || part.cached_bleed_rate)
+			update_needed = TRUE
 
-// 	blood_data["blood_DNA"] = dna.unique_enzymes
-// 	if(LAZYLEN(disease_resistances))
-// 		blood_data["resistances"] = disease_resistances.Copy()
-// 	var/list/temp_chem = list()
-// 	for(var/datum/reagent/R in reagents.reagent_list)
-// 		temp_chem[R.type] = R.volume
-// 	blood_data["trace_chem"] = list2params(temp_chem)
-// 	if(mind)
-// 		blood_data["mind"] = mind
-// 	else if(last_mind)
-// 		blood_data["mind"] = last_mind
-// 	if(ckey)
-// 		blood_data["ckey"] = ckey
-// 	else if(last_mind)
-// 		blood_data["ckey"] = ckey(last_mind.key)
+	if(update && update_needed)
+		update_body_parts()
 
-// 	if(!HAS_TRAIT_FROM(src, TRAIT_SUICIDED, REF(src)))
-// 		blood_data["cloneable"] = 1
-// 	blood_data["blood_type"] = dna.human_blood_type
-// 	blood_data["gender"] = gender
-// 	blood_data["real_name"] = real_name
-// 	blood_data["features"] = dna.features
-// 	blood_data["factions"] = faction
-// 	blood_data["quirks"] = list()
-// 	for(var/V in quirks)
-// 		var/datum/quirk/T = V
-// 		blood_data["quirks"] += T.type
-// 	return blood_data
-
-/mob/living/proc/get_blood_type()
-	RETURN_TYPE(/datum/blood_type)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
-	return GLOB.blood_types[/datum/blood_type/animal]
-
-/mob/living/silicon/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
-
-/mob/living/simple_animal/bot/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
-
-/mob/living/basic/bot/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
-
-/mob/living/carbon/alien/get_blood_type()
-	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
-	return GLOB.blood_types[/datum/blood_type/xenomorph]
-
-/mob/living/carbon/human/get_blood_type()
-	if(HAS_TRAIT(src, TRAIT_HUSK) || isnull(dna) || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
+/mob/living/carbon/human/set_blood_type(input_type, update = TRUE)
+	// force clowns to always have clown blood on april fools
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
-		return GLOB.blood_types[/datum/blood_type/clown]
-	if(dna.species.exotic_bloodtype)
-		return GLOB.blood_types[dna.species.exotic_bloodtype]
-	return GLOB.blood_types[dna.human_blood_type]
+		input_type = /datum/blood_type/clown
 
-//to add a splatter of blood or other mob liquid.
+	return ..()
+
+/// Resets the blood type to the initial blood type, which is determined by species and DNA.
+/mob/living/proc/reset_blood_type(update = TRUE)
+	set_blood_type(initial_blood_type, update)
+
+/mob/living/carbon/reset_blood_type(update = TRUE)
+	set_blood_type(initial(dna.species.exotic_bloodtype) || dna.human_blood_type || random_human_blood_type(), update)
+
+/// Do we have (mechanical) blood?
+/mob/living/proc/has_blood()
+	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return FALSE
+	if(isnull(blood_type))
+		return FALSE
+	return TRUE
+
+/**
+ * Create a splat of this mob's life juice
+ * Does nothing if the mob does not have a blood type set
+ * DOES work if the mob does not actually have blood but does have a blood type
+ *
+ * * blood_turf - where to make the splatter. defaults to the current turf
+ * * small_drip - whether to make a small drip or a big splat
+ */
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
-	return get_blood_type()?.make_blood_splatter(src, blood_turf, small_drip)
+	if(isnull(blood_type))
+		return
+	return blood_type.make_blood_splatter(blood_turf, small_drip, get_blood_dna_list(), get_static_viruses())
 
+/**
+ * Create a visual effect of this mob's blood splattering in a direction
+ * Does nothing if the mob does not have a blood type set
+ * DOES work if the mob does not actually have blood but does have a blood type
+ *
+ * * splat_dir - the direction to splatter in. defaults to a random cardinal direction
+ */
 /mob/living/proc/do_splatter_effect(splat_dir = pick(GLOB.cardinals))
+	if(isnull(blood_type))
+		return
 	var/obj/effect/temp_visual/dir_setting/bloodsplatter/splatter = new(get_turf(src), splat_dir)
-	splatter.color = get_blood_type()?.color
+	splatter.color = blood_type.color
 
 // NON-MODULE CHANGE END
 
+/mob/living/proc/get_blood_alcohol_content()
+	var/blood_alcohol_content = 0
+	var/datum/status_effect/inebriated/inebriation = has_status_effect(/datum/status_effect/inebriated)
+	if(!isnull(inebriation))
+		blood_alcohol_content = round(inebriation.drunk_value * DRUNK_POWER_TO_BLOOD_ALCOHOL, 0.01)
+
+	return blood_alcohol_content
+
 #undef BLOOD_DRIP_RATE_MOD
+#undef DRUNK_POWER_TO_BLOOD_ALCOHOL

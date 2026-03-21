@@ -6,6 +6,14 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nndress"
 
+/datum/loadout_item/under/formal/nndress
+	name = "Blue Dress"
+	item_path = /obj/item/clothing/under/dress/nndress
+
+/datum/loadout_item/under/formal/nndress/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
+
 /// Component to make a suit item allow the wearer to safely ventcrawl, with some drawbacks
 /datum/component/ventcrawler_clothing
 	/// Tracks if it is currently equipped and applied
@@ -154,3 +162,35 @@
 	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "amboots"
+
+// --- bnuuy ---
+
+/obj/item/clothing/head/costume/hat/blanche
+	name = "fluffy sun hat"
+	desc = "A white sunhat with fluffy rabbit ears. Stylish!"
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "blhat"
+
+/obj/item/clothing/glasses/blanche
+	name = "feathery monocle"
+	desc = "A monocle decorated with white feathers and black lace. With a red gem in front, they can't see your eye, but you can certainly see them."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "blmask"
+
+/obj/item/clothing/under/jumpsuit/blanche
+	name = "white fluffy dress"
+	desc = "A large white dress decorated with various playing card suits. On the side is a large golden stopwatch, just to check if you're late."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "bldress"
+	resistance_flags = INDESTRUCTIBLE
+	alternate_worn_layer = ABOVE_SHOES_LAYER
+
+/obj/item/clothing/shoes/blanche
+	name = "delicate white heels"
+	desc = "Small white heels with red claws in the front, along with large cuffs. Hop away!"
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "blshoes"

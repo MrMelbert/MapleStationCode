@@ -68,6 +68,8 @@ Difficulty: Hard
 	death_message = "sinks into a pool of blood, fleeing the battle. You've won, for now... "
 	death_sound = 'sound/magic/enter_blood.ogg'
 	faction = list(FACTION_MINING, FACTION_BOSS, FACTION_HELL)
+	initial_blood_type = /datum/blood_type/animal/bubblegum
+
 	/// Check to see if we should spawn blood
 	var/spawn_blood = TRUE
 	/// Actual time where enrage ends
@@ -152,7 +154,7 @@ Difficulty: Hard
  */
 /mob/living/simple_animal/hostile/megafauna/bubblegum/attackby(obj/item/W, mob/user, params)
 	. = ..()
-	if(istype(W, /obj/item/organ/internal/tongue))
+	if(istype(W, /obj/item/organ/tongue))
 		user.client?.give_award(/datum/award/achievement/jobs/frenching, user)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/try_bloodattack()
@@ -224,7 +226,7 @@ Difficulty: Hard
 				var/turf/targetturf = get_step(src, dir)
 				L.forceMove(targetturf)
 				playsound(targetturf, 'sound/magic/exit_blood.ogg', 100, TRUE, -1)
-				addtimer(CALLBACK(src, PROC_REF(devour), L), 2)
+				addtimer(CALLBACK(src, PROC_REF(devour), L), 0.2 SECONDS)
 	SLEEP_CHECK_DEATH(1, src)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/devour(mob/living/yummy_food)
@@ -328,6 +330,7 @@ Difficulty: Hard
 	death_message = "Explodes into a pool of blood!"
 	death_sound = 'sound/effects/splat.ogg'
 	true_spawn = FALSE
+	initial_blood_type = null
 	var/move_through_mob
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/Initialize(mapload)
@@ -359,8 +362,7 @@ Difficulty: Hard
 	base_name = ""
 	can_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/bubblegum/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
+/obj/effect/decal/cleanable/blood/bubblegum/init_dna()
 	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/bubblegum/can_bloodcrawl_in()
@@ -374,8 +376,7 @@ Difficulty: Hard
 	base_name = ""
 	can_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/gibs/bubblegum/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
+/obj/effect/decal/cleanable/blood/gibs/bubblegum/init_dna()
 	add_blood_DNA(list("DEMON BLOOD" = /datum/blood_type/animal))
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/can_bloodcrawl_in()

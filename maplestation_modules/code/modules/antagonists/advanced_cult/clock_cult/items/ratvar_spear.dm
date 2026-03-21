@@ -20,6 +20,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/melee/ratvar_spear/Initialize(mapload)
 	. = ..()
@@ -44,9 +47,5 @@
 		span_warning("A powerful force shoves [user] away from [target]!"),
 		span_large_brass("\"You shouldn't play with sharp things. You'll poke someone's eye out.\""),
 		)
-	if(ishuman(user))
-		var/mob/living/carbon/human/miscreant = user
-		miscreant.apply_damage(rand(force/2, force), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
-	else
-		user.adjustBruteLoss(rand(force/2, force))
+	user.apply_damage(rand(force / 2, force), BRUTE, user.get_active_hand())
 	return TRUE

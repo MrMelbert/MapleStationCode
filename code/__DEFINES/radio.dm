@@ -37,6 +37,11 @@
 #define RADIO_KEY_AI_PRIVATE "o"
 #define RADIO_TOKEN_AI_PRIVATE ":o"
 
+#define RADIO_CHANNEL_ENTERTAINMENT "Entertainment"
+#define RADIO_KEY_ENTERTAINMENT "p"
+#define RADIO_TOKEN_ENTERTAINMENT ":p"
+
+#define STATUS_DISPLAY_RELAY "Captain-Cast"
 
 #define RADIO_CHANNEL_SYNDICATE "Syndicate"
 #define RADIO_KEY_SYNDICATE "t"
@@ -73,6 +78,15 @@
 #define FREQ_MEDICAL 1355 // Medical comms frequency, soft blue
 #define FREQ_ENGINEERING 1357 // Engineering comms frequency, orange
 #define FREQ_SECURITY 1359 // Security comms frequency, red
+#define FREQ_ENTERTAINMENT 1415 // Used by entertainment monitors, cyan
+
+//NON-MODULE CHANGE START : Mu radio, f is used because F, K, Q and W are the only available radio keys.
+#define RADIO_CHANNEL_MU "Mu"
+#define RADIO_KEY_MU "f"
+#define RADIO_TOKEN_MU ":f"
+
+#define FREQ_MU 1401
+//NON-MODULE CHANGE END
 
 #define FREQ_HOLOGRID_SOLUTION 1433
 #define FREQ_STATUS_DISPLAYS 1435

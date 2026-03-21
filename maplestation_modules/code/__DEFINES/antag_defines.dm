@@ -69,8 +69,6 @@
 #define is_defeated_changeling(mob) (is_fallen_changeling(mob) || is_neutered_changeling(mob))
 
 // Defines for the changeling ability Adaptive Mimic Voice.
-/// Mob trait that makes the mob behave as if they passively had a syndicate voice changer.
-#define TRAIT_VOICE_MATCHES_ID "voice_matches_id"
 /// Source for the mob trait.
 #define CHANGELING_ABILITY "trait_source_ling"
 

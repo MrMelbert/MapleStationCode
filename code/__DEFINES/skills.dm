@@ -43,3 +43,14 @@
 #define FISHING_SKILL_DIFFIULTY_EXP_MULT 0.015
 ///How much exp one would gain per spent playing the fishing minigame at minimum difficulty. the time is multiplied by 0.1 because deciseconds...
 #define FISHING_SKILL_EXP_PER_SECOND (SKILL_EXP_LEGENDARY / (15 MINUTES * 0.1))
+
+// Skillchip categories
+//Various skillchip categories. Use these when setting which categories a skillchip restricts being paired with
+//while using the SKILLCHIP_RESTRICTED_CATEGORIES flag
+/// General related skillchip category
+#define SKILLCHIP_CATEGORY_GENERAL "general"
+
+/// Always print this skill in print_skills
+#define SKILL_ALWAYS_PRINT (1<<0)
+/// Skill is is physical, not mental, and doesn't apply through skillchips or mindswaps
+#define SKILL_PHYSICAL (1<<1)

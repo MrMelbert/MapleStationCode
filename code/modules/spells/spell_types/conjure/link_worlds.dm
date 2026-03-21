@@ -5,8 +5,7 @@
 	sound = 'sound/weapons/marauder.ogg'
 	cooldown_time = 1 MINUTES
 	cooldown_reduction_per_rank = 10 SECONDS
-
-	invocation = "WTF"
+	invocation = "FL'NT N' ST'L!"
 	invocation_type = INVOCATION_SHOUT
 	spell_requirements = NONE
 

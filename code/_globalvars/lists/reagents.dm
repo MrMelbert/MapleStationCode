@@ -56,6 +56,8 @@ GLOBAL_LIST_INIT(blacklisted_metalgen_types, typecacheof(list(
 )))
 /// Map of reagent names to its datum path
 GLOBAL_LIST_INIT(name2reagent, build_name2reagentlist())
+/// list of all plan traits
+GLOBAL_LIST_INIT(plant_traits, init_plant_traits())
 
 /// Initialises all /datum/reagent into a list indexed by reagent id
 /proc/init_chemical_reagent_list()
@@ -164,7 +166,12 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagentlist())
 
 		if(!is_type_in_typecache(reaction.type, blacklist))
 			//Master list of ALL reactions that is used in the UI lookup table. This is expensive to make, and we don't want to lag the server by creating it on UI request, so it's cached to send to UIs instantly.
-			GLOB.chemical_reactions_results_lookup_list += list(list("name" = product_name, "id" = reaction.type, "bitflags" = bitflags, "reactants" = reagents))
+			GLOB.chemical_reactions_results_lookup_list += list(list(
+				"name" = product_name,
+				"id" = reaction.type,
+				"bitflags" = bitflags,
+				"reactants" = reagents,
+			))
 
 			// Create filters based on each reagent id in the required reagents list - this is specifically for finding reactions from product(reagent) ids/typepaths.
 			for(var/id in product_ids)

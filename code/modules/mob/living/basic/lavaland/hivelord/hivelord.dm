@@ -29,7 +29,7 @@
 
 /mob/living/basic/mining/hivelord/Initialize(mapload)
 	. = ..()
-	var/static/list/death_loot = list(/obj/item/organ/internal/monster_core/regenerative_core)
+	var/static/list/death_loot = list(/obj/item/organ/monster_core/regenerative_core)
 	AddElement(/datum/element/relay_attackers)
 	AddElement(/datum/element/death_drops, death_loot)
 	AddComponent(/datum/component/clickbox, icon_state = "hivelord", max_scale = INFINITY, dead_state = "hivelord_dead") // They writhe so much.
@@ -84,8 +84,8 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	faction = list(FACTION_MINING)
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = INFINITY
 	speed = 1.5
 	maxHealth = 1
 	health = 1

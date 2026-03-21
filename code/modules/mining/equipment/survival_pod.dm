@@ -15,6 +15,8 @@
 	icon_state = "capsule"
 	icon = 'icons/obj/mining.dmi'
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	var/template_id = "shelter_alpha"
 	var/datum/map_template/shelter/template
 	var/used = FALSE
@@ -105,7 +107,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/survival_pod/spawne
 
 //Door
 /obj/machinery/door/airlock/survival_pod
-	name = "Airlock"
+	name = "\improper Airlock"
 	icon = 'icons/obj/doors/airlocks/survival/survival.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/survival/survival_overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_pod
@@ -164,8 +166,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/survival_pod/spawne
 
 /obj/item/gps/computer/wrench_act(mob/living/user, obj/item/I)
 	..()
-	if(obj_flags & NO_DECONSTRUCTION)
-		return TRUE
 
 	user.visible_message(span_warning("[user] disassembles [src]."),
 		span_notice("You start to disassemble [src]..."), span_hear("You hear clanking and banging noises."))
@@ -201,7 +201,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/survival_pod/spawne
 	light_color = COLOR_VERY_PALE_LIME_GREEN
 	max_n_of_items = 10
 	pixel_y = -4
-	obj_flags = /obj::obj_flags | NO_DECONSTRUCTION
+
+/obj/machinery/smartfridge/survival_pod/welder_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/wrench_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/screwdriver_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/crowbar_act(mob/living/user, obj/item/tool)
+	return NONE
 
 /obj/machinery/smartfridge/survival_pod/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)

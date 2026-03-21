@@ -13,6 +13,8 @@
 	var/broken = FALSE
 	var/burnt = FALSE
 
+	/// Assoc list of smell datum to sum of intensities present on this turf
+	VAR_FINAL/list/collective_smells
 
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.
@@ -50,6 +52,9 @@
 			. += mutable_appearance(damaged_dmi, pick(burnt_states))
 		else
 			. += mutable_appearance(damaged_dmi, pick(broken_states()))
+
+/turf/open/examine_descriptor(mob/user)
+	return "floor"
 
 //direction is direction of travel of A
 /turf/open/zPassIn(direction)
@@ -261,14 +266,14 @@
 	air_update_turf(FALSE, FALSE)
 
 /turf/open/proc/freeze_turf()
-	for(var/obj/I in contents)
-		if(!HAS_TRAIT(I, TRAIT_FROZEN) && !(I.resistance_flags & FREEZE_PROOF))
-			I.AddElement(/datum/element/frozen)
+	for(var/obj/iced in contents)
+		if(!HAS_TRAIT(iced, TRAIT_FROZEN) && !(iced.resistance_flags & FREEZE_PROOF))
+			iced.AddElement(/datum/element/frozen)
 
-	for(var/mob/living/L in contents)
-		if(L.bodytemperature <= 50)
-			L.apply_status_effect(/datum/status_effect/freon)
-	MakeSlippery(TURF_WET_PERMAFROST, 50)
+	for(var/mob/living/freezer in src)
+		if(freezer.get_skin_temperature() <= freezer.bodytemp_cold_damage_limit)
+			freezer.apply_status_effect(/datum/status_effect/freon)
+	MakeSlippery(TURF_WET_PERMAFROST, 10 SECONDS)
 	return TRUE
 
 /turf/open/proc/water_vapor_gas_act()
@@ -310,7 +315,7 @@
 	else
 		if(!(lube & SLIP_WHEN_CRAWLING) && (slipper.body_position == LYING_DOWN || !(slipper.status_flags & CANKNOCKDOWN))) // can't slip unbuckled mob if they're lying or can't fall.
 			return FALSE
-		if(slipper.move_intent == MOVE_INTENT_WALK && (lube & NO_SLIP_WHEN_WALKING))
+		if(slipper.move_intent != MOVE_INTENT_RUN && (lube & NO_SLIP_WHEN_WALKING)) // NON-MODULE CHANGE
 			return FALSE
 
 	if(!(lube & SLIDE_ICE))
@@ -319,8 +324,7 @@
 		playsound(slipper.loc, 'sound/misc/slip.ogg', 50, TRUE, -3)
 
 	SEND_SIGNAL(slipper, COMSIG_ON_CARBON_SLIP)
-	slipper.add_mood_event("slipped", /datum/mood_event/slipped)
-	if(force_drop)
+	if(force_drop && iscarbon(slipper)) //carbon specific behavior that living doesn't have
 		for(var/obj/item/item in slipper.held_items)
 			slipper.accident(item)
 

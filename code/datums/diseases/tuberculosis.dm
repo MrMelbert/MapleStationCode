@@ -13,10 +13,22 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
 
+/datum/disease/tuberculosis/remove_disease()
+	affected_mob.remove_consciousness_modifier(type)
+	return ..()
+
+/datum/disease/tuberculosis/update_stage(new_stage)
+	. = ..()
+	affected_mob.add_consciousness_modifier(type, -10 * new_stage)
+
 /datum/disease/tuberculosis/stage_act(seconds_per_tick, times_fired) //it begins
 	. = ..()
 	if(!.)
 		return
+
+	if(SPT_PROB(stage * 2, seconds_per_tick))
+		affected_mob.emote("cough")
+		to_chat(affected_mob, span_danger("Your chest hurts."))
 
 	switch(stage)
 		if(2)
@@ -62,6 +74,6 @@
 				affected_mob.adjust_nutrition(-100)
 			if(SPT_PROB(7.5, seconds_per_tick))
 				to_chat(affected_mob, span_danger("[pick("You feel uncomfortably hot...", "You feel like unzipping your jumpsuit...", "You feel like taking off some clothes...")]"))
-				affected_mob.adjust_bodytemperature(40)
+				affected_mob.adjust_body_temperature(3 KELVIN * seconds_per_tick, max_temp = affected_mob.bodytemp_heat_damage_limit + 10 KELVIN)
 			if(need_mob_update)
 				affected_mob.updatehealth()

@@ -1,5 +1,5 @@
 /obj/machinery/computer/rdservercontrol
-	name = "R&D Server Controller"
+	name = "\improper R&D Server Controller"
 	desc = "Manages access to research databases and consoles."
 	icon_screen = "rdcomp"
 	icon_keyboard = "rd_key"
@@ -9,7 +9,7 @@
 	///Connected techweb node the server is connected to.
 	var/datum/techweb/stored_research
 
-/obj/machinery/computer/rdservercontrol/LateInitialize()
+/obj/machinery/computer/rdservercontrol/post_machine_initialize()
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, src)

@@ -8,6 +8,11 @@
 #define USE_CUSTOM_ERROR_HANDLER
 #endif
 
+#if defined(OPENDREAM) && !defined(SPACEMAN_DMM) && !defined(CIBUILDING)
+// The code is being compiled for OpenDream, and not just for the CI linting.
+#define OPENDREAM_REAL
+#endif
+
 #ifdef TESTING
 #define DATUMVAR_DEBUGGING_MODE
 
@@ -65,9 +70,14 @@
 // If this is uncommented, we do a single run though of the game setup and tear down process with unit tests in between
 // #define UNIT_TESTS
 
-// If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
-// We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
+// If this is uncommented, will attempt to load and initialize prof.dll/libprof.so by default.
+// Even if it's not defined, you can pass "tracy" via -params in order to try to load it.
+// We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy,
+// or the fork which writes profiling data to a file: https://github.com/ParadiseSS13/byond-tracy
 // #define USE_BYOND_TRACY
+
+// If uncommented, will display info about byond-tracy's status in the MC tab.
+// #define MC_TAB_TRACY_INFO
 
 // If defined, we will compile with FULL timer debug info, rather then a limited scope
 // Be warned, this increases timer creation cost by 5x
@@ -82,6 +92,16 @@
 
 /// If this is uncommented, will profile mapload atom initializations
 // #define PROFILE_MAPLOAD_INIT_ATOM
+
+/// If uncommented, Dreamluau will be fully disabled.
+// #define DISABLE_DREAMLUAU
+
+// OpenDream currently doesn't support byondapi, so automatically disable it on OD,
+// unless CIBUILDING is defined - we still want to lint dreamluau-related code.
+// Get rid of this whenever it does have support.
+#ifdef OPENDREAM_REAL
+#define DISABLE_DREAMLUAU
+#endif
 
 /// If this is uncommented, force our verb processing into just the 2% of a tick
 /// We normally reserve for it
@@ -112,7 +132,7 @@
 #warn compiling in TESTING mode. testing() debug messages will be visible.
 #endif
 
-#ifdef CIBUILDING
+#if defined(CIBUILDING) && !defined(OPENDREAM)
 #define UNIT_TESTS
 #endif
 
@@ -137,8 +157,35 @@
 #define CBT
 #endif
 
-#if !defined(CBT) && !defined(SPACEMAN_DMM)
-#warn Building with Dream Maker is no longer supported and will result in errors.
-#warn In order to build, run BUILD.bat in the root directory.
-#warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
+#if defined(OPENDREAM)
+	#if !defined(CIBUILDING)
+		#warn You are building with OpenDream. Remember to build TGUI manually.
+		#warn You can do this by running tgui-build.cmd from the bin directory.
+	#endif
+#else
+	#if !defined(CBT) && !defined(SPACEMAN_DMM)
+		#warn Building with Dream Maker is no longer supported and will result in errors.
+		#warn In order to build, run BUILD.cmd in the root directory.
+		#warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
+	#endif
+#endif
+
+/// Runs the game in "map test mode"
+/// Map test mode prevents common annoyances, such as rats from spawning and random light fixture breakage,
+/// so mappers can test important facets of their map (working powernet, atmos, good light coverage) without these interfering.
+// #define MAP_TEST
+
+#ifdef MAP_TEST
+#warn Compiling in MAP_TEST mode. Certain game mechanics will be disabled.
+#endif
+
+// For balancing health
+// #define HEALTH_DEBUG
+
+/// Uncomment to compile content related to the story or characters of Maplestation.
+// #define MAPLESTATION_STORY_CONTENT
+
+// Always compile story content for unit tests. Todo : Just have a single unit test dedicated to story content.
+#ifdef UNIT_TESTS
+#define MAPLESTATION_STORY_CONTENT
 #endif

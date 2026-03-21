@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -7,8 +6,10 @@ import {
   ProgressBar,
   Section,
   Slider,
-} from '../components';
-import { formatPower } from '../format';
+} from 'tgui-core/components';
+import { formatPower } from 'tgui-core/format';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 // Common power multiplier
@@ -69,7 +70,7 @@ export const Smes = (props) => {
               </Box>
             </LabeledList.Item>
             <LabeledList.Item label="Target Input">
-              <Flex inline width="100%">
+              <Flex width="100%">
                 <Flex.Item>
                   <Button
                     icon="fast-backward"
@@ -99,7 +100,7 @@ export const Smes = (props) => {
                     step={5}
                     stepPixelSize={4}
                     format={(value) => formatPower(value * POWER_MUL, 1)}
-                    onDrag={(e, value) =>
+                    onChange={(e, value) =>
                       act('input', {
                         target: value * POWER_MUL,
                       })
@@ -156,7 +157,7 @@ export const Smes = (props) => {
               </Box>
             </LabeledList.Item>
             <LabeledList.Item label="Target Output">
-              <Flex inline width="100%">
+              <Flex width="100%">
                 <Flex.Item>
                   <Button
                     icon="fast-backward"
@@ -185,7 +186,7 @@ export const Smes = (props) => {
                     step={5}
                     stepPixelSize={4}
                     format={(value) => formatPower(value * POWER_MUL, 1)}
-                    onDrag={(e, value) =>
+                    onChange={(e, value) =>
                       act('output', {
                         target: value * POWER_MUL,
                       })

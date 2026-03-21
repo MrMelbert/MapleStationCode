@@ -7,6 +7,7 @@
 	id = "rainbow_protection"
 	duration = 100
 	alert_type = /atom/movable/screen/alert/status_effect/rainbow_protection
+	show_duration = TRUE
 	var/originalcolor
 
 /datum/status_effect/rainbow_protection/on_apply()
@@ -37,6 +38,7 @@
 	id = "slimeskin"
 	duration = 300
 	alert_type = /atom/movable/screen/alert/status_effect/slimeskin
+	show_duration = TRUE
 	var/originalcolor
 
 /datum/status_effect/slimeskin/on_apply()
@@ -77,7 +79,8 @@
 /datum/status_effect/slimerecall/proc/resistField()
 	SIGNAL_HANDLER
 	interrupted = TRUE
-	owner.remove_status_effect(src)
+	qdel(src)
+	return RESIST_HANDLED
 
 /datum/status_effect/slimerecall/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_RESIST)
@@ -114,7 +117,8 @@
 /datum/status_effect/frozenstasis/proc/breakCube()
 	SIGNAL_HANDLER
 
-	owner.remove_status_effect(src)
+	qdel(src)
+	return RESIST_HANDLED
 
 /datum/status_effect/frozenstasis/on_remove()
 	if(cube)
@@ -213,13 +217,12 @@
 	return ..()
 
 /datum/status_effect/bonechill/tick(seconds_between_ticks)
-	if(prob(50))
-		owner.adjustFireLoss(1)
-		owner.set_jitter_if_lower(6 SECONDS)
-		owner.adjust_bodytemperature(-10)
-		if(ishuman(owner))
-			var/mob/living/carbon/human/humi = owner
-			humi.adjust_coretemperature(-10)
+	if(!prob(50))
+		return
+
+	owner.adjustFireLoss(1)
+	owner.set_jitter_if_lower(6 SECONDS)
+	owner.adjust_body_temperature(-1 KELVIN * seconds_between_ticks)
 
 /datum/status_effect/bonechill/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
@@ -227,14 +230,6 @@
 	name = "Bonechilled"
 	desc = "You feel a shiver down your spine after hearing the haunting noise of bone rattling. You'll move slower and get frostbite for a while!"
 	icon_state = "bloodchill"
-
-/datum/status_effect/rebreathing
-	id = "rebreathing"
-	duration = -1
-	alert_type = null
-
-/datum/status_effect/rebreathing/tick(seconds_between_ticks)
-	owner.adjustOxyLoss(-6, 0) //Just a bit more than normal breathing.
 
 ///////////////////////////////////////////////////////
 //////////////////CONSUMING EXTRACTS///////////////////
@@ -247,12 +242,12 @@
 	duration = 100
 
 /datum/status_effect/firecookie/on_apply()
-	ADD_TRAIT(owner, TRAIT_RESISTCOLD,"firecookie")
-	owner.adjust_bodytemperature(110)
+	ADD_TRAIT(owner, TRAIT_RESISTCOLD, id)
+	owner.adjust_body_temperature(20 KELVIN)
 	return ..()
 
 /datum/status_effect/firecookie/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_RESISTCOLD,"firecookie")
+	REMOVE_TRAIT(owner, TRAIT_RESISTCOLD, id)
 
 /datum/status_effect/watercookie
 	id = "watercookie"
@@ -484,21 +479,12 @@
 	colour = SLIME_TYPE_ORANGE
 
 /datum/status_effect/stabilized/orange/tick(seconds_between_ticks)
-	var/body_temp_target = owner.get_body_temp_normal(apply_change = FALSE)
+	. = ..()
+	owner.update_homeostasis_level(id, owner.standard_body_temperature, 0.5 KELVIN)
 
-	var/body_temp_actual = owner.bodytemperature
-	var/body_temp_offset = body_temp_target - body_temp_actual
-	body_temp_offset = clamp(body_temp_offset, -5, 5)
-	owner.adjust_bodytemperature(body_temp_offset)
-
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human = owner
-		var/core_temp_actual = human.coretemperature
-		var/core_temp_offset = body_temp_target - core_temp_actual
-		core_temp_offset = clamp(core_temp_offset, -5, 5)
-		human.adjust_coretemperature(core_temp_offset)
-
-	return ..()
+/datum/status_effect/stabilized/orange/on_remove()
+	. = ..()
+	owner.remove_homeostasis_level(id)
 
 /datum/status_effect/stabilized/purple
 	id = "stabilizedpurple"
@@ -528,7 +514,7 @@
 
 	// Technically, "healed this tick" by now.
 	if(healed_last_tick)
-		new /obj/effect/temp_visual/heal(get_turf(owner), "#FF0000")
+		new /obj/effect/temp_visual/heal(get_turf(owner), COLOR_RED)
 
 	return ..()
 
@@ -587,11 +573,11 @@
 		return ..()
 	cooldown = max_cooldown
 	var/list/batteries = list()
-	for(var/obj/item/stock_parts/cell/C in owner.get_all_contents())
+	for(var/obj/item/stock_parts/power_store/C in owner.get_all_contents())
 		if(C.charge < C.maxcharge)
 			batteries += C
 	if(batteries.len)
-		var/obj/item/stock_parts/cell/ToCharge = pick(batteries)
+		var/obj/item/stock_parts/power_store/ToCharge = pick(batteries)
 		ToCharge.charge += min(ToCharge.maxcharge - ToCharge.charge, ToCharge.maxcharge/10) //10% of the cell, or to maximum.
 	return ..()
 
@@ -1077,7 +1063,7 @@
 		var/obj/item/slimecross/stabilized/rainbow/X = linked_extract
 		if(istype(X))
 			if(X.regencore)
-				X.regencore.afterattack(owner,owner,TRUE)
+				X.regencore.interact_with_atom(owner, owner)
 				X.regencore = null
 				owner.visible_message(span_warning("[owner] flashes a rainbow of colors, and [owner.p_their()] skin is coated in a milky regenerative goo!"))
 				qdel(src)

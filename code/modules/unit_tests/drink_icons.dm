@@ -49,13 +49,13 @@
 	glass.reagents.add_reagent(tested_reagent_type, 5)
 	TEST_ASSERT_EQUAL(glass.icon, expected_glass_type.icon, "Glass icon file did not change after gaining a reagent that would change it.")
 	TEST_ASSERT_EQUAL(glass.icon_state, expected_glass_type.icon_state, "Glass icon state did not change after gaining a reagent that would change it")
-	TEST_ASSERT_EQUAL(glass.name, expected_glass_type.name, "Glass name did not change after gaining a reagent that would change it")
+	TEST_ASSERT_EQUAL(format_text(glass.name), format_text(expected_glass_type.name), "Glass name did not change after gaining a reagent that would change it")
 	TEST_ASSERT_EQUAL(glass.desc, expected_glass_type.desc, "Glass desc did not change after gaining a reagent that would change it")
 	// Clear all units from the glass, This will reset all the previously changed values
 	glass.reagents.clear_reagents()
 	TEST_ASSERT_EQUAL(glass.icon, initial(glass.icon), "Glass icon file did not reset after clearing reagents")
 	TEST_ASSERT_EQUAL(glass.icon_state, initial(glass.icon_state), "Glass icon state did not reset after clearing reagents")
-	TEST_ASSERT_EQUAL(glass.name, initial(glass.name), "Glass name did not reset after clearing reagents")
+	TEST_ASSERT_EQUAL(format_text(glass.name), format_text(initial(glass.name)), "Glass name did not reset after clearing reagents")
 	TEST_ASSERT_EQUAL(glass.desc, initial(glass.desc), "Glass desc did not reset after clearing reagents")
 
 /// Unit tests glass subtypes have a valid icon setup
@@ -63,8 +63,15 @@
 
 /datum/unit_test/drink_icons/Run()
 	for(var/obj/item/reagent_containers/cup/glass/glass_subtypes as anything in subtypesof(/obj/item/reagent_containers/cup))
-		var/glass_icon = initial(glass_subtypes.icon)
-		var/glass_icon_state = initial(glass_subtypes.icon_state)
+		var/glass_icon
+		var/glass_icon_state
+		if(glass_subtypes::greyscale_config)
+			var/datum/greyscale_config/greyscale_config = glass_subtypes::greyscale_config
+			glass_icon = greyscale_config::icon_file
+			glass_icon_state = glass_subtypes::post_init_icon_state
+		else
+			glass_icon = glass_subtypes::icon
+			glass_icon_state = glass_subtypes::icon_state
 		if(!glass_icon_state)
 			continue
 		if(!glass_icon)

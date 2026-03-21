@@ -16,6 +16,9 @@
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/gold = SMALL_MATERIAL_AMOUNT * 0.5)
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
 	/// This is where our laws get put at for the module
 	var/list/laws = list()
 	/// Used to skip laws being checked (for reset & remove boards that have no laws)
@@ -165,7 +168,7 @@
 	name = "ai default lawset spawner"
 	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "x2"
-	color = "#00FF00"
+	color = COLOR_VIBRANT_LIME
 
 /obj/effect/spawner/round_default_module/Initialize(mapload)
 	. = ..()

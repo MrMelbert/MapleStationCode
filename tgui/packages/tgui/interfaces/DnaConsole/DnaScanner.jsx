@@ -1,4 +1,3 @@
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -6,10 +5,13 @@ import {
   LabeledList,
   ProgressBar,
   Section,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../../backend';
 import {
   SUBJECT_CONCIOUS,
   SUBJECT_DEAD,
+  SUBJECT_HARD_CRIT,
   SUBJECT_SOFT_CRIT,
   SUBJECT_TRANSFORMING,
   SUBJECT_UNCONSCIOUS,
@@ -81,7 +83,7 @@ const SubjectStatus = (props) => {
       </Box>
     );
   }
-  if (status === SUBJECT_UNCONSCIOUS) {
+  if (status === SUBJECT_UNCONSCIOUS || status === SUBJECT_HARD_CRIT) {
     return (
       <Box inline color="average">
         Unconscious
@@ -120,6 +122,7 @@ const DnaScannerContent = (props) => {
     isViableSubject,
     subjectHealth,
     subjectDamage,
+    subjectStability,
     subjectStatus,
   } = data;
   if (!isScannerConnected) {
@@ -163,6 +166,21 @@ const DnaScannerContent = (props) => {
           }}
         >
           {subjectDamage}%
+        </ProgressBar>
+      </LabeledList.Item>
+      <LabeledList.Item label="Stability">
+        <ProgressBar
+          value={subjectStability}
+          minValue={0}
+          maxValue={100}
+          ranges={{
+            olive: [101, Infinity],
+            good: [70, 101],
+            average: [30, 70],
+            bad: [-Infinity, 30],
+          }}
+        >
+          {subjectStability}%
         </ProgressBar>
       </LabeledList.Item>
     </LabeledList>

@@ -3,6 +3,8 @@
 	desc = "Someone, somewhere, is starving while wearing this. And it's definitely not you."
 	icon_state = "garland"
 	worn_icon_state = "garland"
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/clothing/head/costume/garland/equipped(mob/living/user, slot)
 	. = ..()
@@ -50,4 +52,3 @@
 	desc = "A leafy flower crown with a cluster of large white lilies at at the front."
 	icon_state = "lily_crown"
 	worn_icon_state = "lily_crown"
-

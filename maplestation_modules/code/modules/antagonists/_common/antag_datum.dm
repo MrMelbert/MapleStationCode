@@ -29,7 +29,7 @@
 /datum/antagonist/antag_listing_commands()
 	. = ..()
 	if(linked_advanced_datum)
-		. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
+		. += "<a href='byond://?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
 /// An extension of the admin topic for the extra buttons.
 /datum/admins/Topic(href, href_list)

@@ -10,7 +10,7 @@
 /obj/item/poster/wanted
 	icon_state = "rolled_poster_legit"
 	var/postHeaderText = "WANTED" // MAX 7 Characters
-	var/postHeaderColor = "#FF0000"
+	var/postHeaderColor = COLOR_RED
 	var/background = "wanted_background"
 	var/postName = "wanted poster"
 	var/postDesc = "A wanted poster for"
@@ -19,7 +19,7 @@
 	postName = "missing poster"
 	postDesc = "A missing poster for"
 	postHeaderText = "MISSING" // MAX 7 Characters
-	postHeaderColor = "#0000FF"
+	postHeaderColor = COLOR_BLUE
 
 
 /obj/item/poster/wanted/Initialize(mapload, icon/person_icon, wanted_name, description, headerText, posterHeaderColor)
@@ -84,7 +84,7 @@
 	var/textLen = min(length(text), 7)
 	var/startX = 16 - (2*textLen)
 	var/i
-	for(i=1; i <= textLen, i++)
+	for(i=1; i <= textLen; i++)
 		var/letter = uppertext(text[i])
 		var/icon/letter_icon = icon("icon" = 'icons/misc/Font_Minimal.dmi', "icon_state" = letter)
 		letter_icon.Shift(EAST, startX) //16 - (2*n)

@@ -27,7 +27,7 @@
 	/// Serial number of the tram
 	var/tram_serial
 	name = "\improper tram information plate"
-	icon_state = "commission_tram"
+	icon_state = "tram_plate"
 	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT)
 	layer = SIGN_LAYER
 
@@ -35,8 +35,7 @@
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
-/obj/structure/plaque/static_plaque/tram/LateInitialize(mapload)
-	. = ..()
+/obj/structure/plaque/static_plaque/tram/LateInitialize()
 	link_tram()
 	set_tram_serial()
 
@@ -103,7 +102,7 @@
 
 // Runtimestation: added Nov 11, 2016 (946ec1fec869eb59d6a84e32c90613af734fcd0e)
 /obj/structure/plaque/static_plaque/golden/commission
-	name = "Commission Plaque"
+	name = "commission plaque"
 	desc = "Spinward Sector Station SS-13\n'Runtime' Class Outpost\nCommissioned 03/11/2556\n'Dedicated to the Pioneers'"
 	icon_state = "commission_nt"
 	layer = BELOW_OPEN_DOOR_LAYER

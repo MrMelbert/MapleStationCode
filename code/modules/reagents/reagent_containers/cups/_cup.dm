@@ -18,12 +18,21 @@
 	var/gulp_size = 5
 	///Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it.
 	var/isGlass = FALSE
+	///What kind of chem transfer method does this cup use. Defaults to INGEST
+	var/reagent_consumption_method = INGEST
+	///What sound does our consumption play on consuming from the container?
+	var/consumption_sound = 'sound/items/drink.ogg'
 
 /obj/item/reagent_containers/cup/examine(mob/user)
 	. = ..()
 	if(drink_type)
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
-		. += span_notice("It is [lowertext(english_list(types))].")
+		. += span_notice("It is [LOWER_TEXT(english_list(types))].")
+
+/obj/item/reagent_containers/cup/examine_tags(mob/user)
+	. = ..()
+	for(var/foodtype in bitfield_to_list(drink_type, FOOD_FLAGS))
+		.[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] drink."
 
 /**
  * Checks if the mob actually liked drinking this cup.
@@ -80,14 +89,27 @@
 		target_mob.visible_message(span_danger("[user] feeds [target_mob] something from [src]."), \
 					span_userdanger("[user] feeds you something from [src]."))
 		log_combat(user, target_mob, "fed", reagents.get_reagent_log_string())
+	// NON-MODULE CHANGE
+	else if(isGlass || (reagent_flags & OPENCONTAINER))
+		var/pre_volume_percent = reagents.total_volume / reagents.maximum_volume
+		var/post_volume_percent = (reagents.total_volume - gulp_size) / reagents.maximum_volume
+		if(post_volume_percent <= 0)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's empty."))
+		else if(post_volume_percent <= 0.2 && pre_volume_percent > 0.2)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's almost empty."))
+		else if(post_volume_percent <= 0.5 && pre_volume_percent > 0.5)
+			to_chat(user, span_notice("You swallow a gulp of [src]. It's about [(user.get_quirk(/datum/quirk/jolly) || (prob(50) && !user.get_quirk(/datum/quirk/depression))) ? "half full" : "half empty"]."))
+		else
+			to_chat(user, span_notice("You swallow a gulp of [src]."))
+	// NON-MODULE CHANGE END
 	else
 		to_chat(user, span_notice("You swallow a gulp of [src]."))
 
 	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, target_mob, user)
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	reagents.trans_to(target_mob, gulp_size, transferred_by = user, methods = INGEST)
+	reagents.trans_to(target_mob, gulp_size, transferred_by = user, methods = reagent_consumption_method)
 	checkLiked(fraction, target_mob)
-	playsound(target_mob.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
+	playsound(target_mob.loc, consumption_sound, rand(10,50), TRUE)
 	if(!iscarbon(target_mob))
 		return
 	var/mob/living/carbon/carbon_drinker = target_mob
@@ -101,66 +123,67 @@
 	if(LAZYLEN(diseases_to_add))
 		AddComponent(/datum/component/infective, diseases_to_add)
 
-/obj/item/reagent_containers/cup/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag)
-		return
-
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/reagent_containers/cup/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(!check_allowed_items(target, target_self = TRUE))
-		return
-
+		return NONE
 	if(!spillable)
-		return
+		return NONE
 
 	if(target.is_refillable()) //Something like a glass. Player probably wants to transfer TO it.
 		if(!reagents.total_volume)
 			to_chat(user, span_warning("[src] is empty!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(target.reagents.holder_full())
 			to_chat(user, span_warning("[target] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transferred_by = user)
+		playsound(target.loc, SFX_LIQUID_POUR, 50)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
+		SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_TO, target)
+		target.update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
-	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
+	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty and can't be refilled!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
+		SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_FROM, target)
+		target.update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
-	target.update_appearance()
+	return NONE
 
-/obj/item/reagent_containers/cup/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	if((!proximity_flag) || !check_allowed_items(target, target_self = TRUE))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
+/obj/item/reagent_containers/cup/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+	if(!check_allowed_items(target, target_self = TRUE))
+		return NONE
 	if(!spillable)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return NONE
 
 	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty!"))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
 
 	target.update_appearance()
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/attackby(obj/item/attacking_item, mob/user, params)
 	var/hotness = attacking_item.get_temperature()
@@ -227,6 +250,8 @@
 	worn_icon_state = "beaker"
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT*5)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/reagent_containers/cup/beaker/Initialize(mapload)
 	. = ..()
@@ -240,6 +265,8 @@
 	desc = "A jar for honey. It can hold up to 50 units of sweet delight."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = "vapour"
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/reagent_containers/cup/beaker/large
 	name = "large beaker"
@@ -250,6 +277,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/plastic
 	name = "x-large beaker"
@@ -260,6 +289,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,60,120)
 	fill_icon_thresholds = list(0, 1, 10, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/meta
 	name = "metamaterial beaker"
@@ -270,6 +301,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/noreact
 	name = "cryostasis beaker"
@@ -280,6 +313,8 @@
 	reagent_flags = OPENCONTAINER | NO_REACT
 	volume = 50
 	amount_per_transfer_from_this = 10
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/bluespace
 	name = "bluespace beaker"
@@ -291,6 +326,8 @@
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/meta/omnizine
 	list_reagents = list(/datum/reagent/medicine/omnizine = 180)
@@ -361,16 +398,18 @@
 	slot_flags = ITEM_SLOT_HEAD
 	resistance_flags = NONE
 	armor_type = /datum/armor/cup_bucket
-	slot_equipment_priority = list( \
-		ITEM_SLOT_BACK, ITEM_SLOT_ID,\
-		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
-		ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-		ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
-		ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
-		ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
-		ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
+	slot_equipment_priority = list(
+		ITEM_SLOT_BACK, ITEM_SLOT_ID,
+		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,
+		ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,
+		ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,
+		ITEM_SLOT_EARS, ITEM_SLOT_EYES,
+		ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,
+		ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,
 		ITEM_SLOT_DEX_STORAGE
 	)
+	drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
 
 /datum/armor/cup_bucket
 	melee = 10
@@ -384,6 +423,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 2)
 	resistance_flags = FLAMMABLE
 	armor_type = /datum/armor/bucket_wooden
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /datum/armor/bucket_wooden
 	melee = 10
@@ -412,7 +453,7 @@
 	if (slot & ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
 			to_chat(user, span_userdanger("[src]'s contents spill all over you!"))
-			reagents.expose(user, TOUCH)
+			reagents.expose(user, TOUCH, exposed_zone = BODY_ZONE_HEAD) // NON-MODULE CHANGE
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
@@ -449,13 +490,17 @@
 	resistance_flags = FLAMMABLE
 	reagent_flags = OPENCONTAINER
 	spillable = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 	var/obj/item/grinded
 
-/obj/item/reagent_containers/cup/mortar/AltClick(mob/user)
-	if(grinded)
-		grinded.forceMove(drop_location())
-		grinded = null
-		to_chat(user, span_notice("You eject the item inside."))
+/obj/item/reagent_containers/cup/mortar/click_alt(mob/user)
+	if(!grinded)
+		return CLICK_ACTION_BLOCKING
+	grinded.forceMove(drop_location())
+	grinded = null
+	balloon_alert(user, "ejected")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/mortar/attackby(obj/item/I, mob/living/carbon/human/user)
 	..()
@@ -471,7 +516,7 @@
 			var/picked_option = show_radial_menu(user, src, choose_options, radius = 38, require_near = TRUE)
 			if(grinded && in_range(src, user) && user.is_holding(I) && picked_option)
 				to_chat(user, span_notice("You start grinding..."))
-				if(do_after(user, 25, target = src))
+				if(do_after(user, 2.5 SECONDS, target = src))
 					user.adjustStaminaLoss(40)
 					switch(picked_option)
 						if("Juice")
@@ -531,6 +576,8 @@
 	icon_state = "coffeepot"
 	fill_icon_state = "coffeepot"
 	fill_icon_thresholds = list(0, 1, 30, 60, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/coffeepot/bluespace
 	name = "bluespace coffeepot"
@@ -550,3 +597,5 @@
 	possible_transfer_amounts = list(5, 10, 15, 30)
 	volume = 30
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'

@@ -8,6 +8,7 @@
 	drop_sound = 'sound/items/handling/disk_drop.ogg'
 	pickup_sound = 'sound/items/handling/disk_pickup.ogg'
 	contents_hidden = TRUE
+	paper_overlay_state = "paperbiscuit_paper"
 	/// Is biscuit cracked open or not?
 	var/cracked = FALSE
 	/// The paper slip inside, if there is one
@@ -38,12 +39,10 @@
 	playsound(get_turf(user), 'sound/effects/wounds/crackandbleed.ogg', 40, TRUE) //Don't eat plastic cards kids, they get really sharp if you chew on them.
 	return BRUTELOSS
 
-/obj/item/folder/biscuit/update_overlays()
-	. = ..()
-	if(contents.len) //This is to prevent the unsealed biscuit from having the folder_paper overlay when it gets sealed
-		. -= "folder_paper"
-		if(cracked) //Shows overlay only when it has contents and is cracked open
-			. += "paperbiscuit_paper"
+/obj/item/folder/biscuit/get_paper_overlay()
+	if(!cracked)
+		return null
+	return ..()
 
 ///Checks if the biscuit has been already cracked.
 /obj/item/folder/biscuit/proc/crack_check(mob/user)
@@ -103,10 +102,12 @@
 
 /obj/item/folder/biscuit/confidential/spare_id_safe_code
 	name = "spare ID safe code biscuit card"
+	article = "the"
 	contained_slip = /obj/item/paper/paperslip/corporate/fluff/spare_id_safe_code
 
 /obj/item/folder/biscuit/confidential/emergency_spare_id_safe_code
 	name = "spare emergency ID safe code biscuit card"
+	article = "the"
 	contained_slip = /obj/item/paper/paperslip/corporate/fluff/emergency_spare_id_safe_code
 
 //Biscuits which start open. Used for crafting, printing, and such

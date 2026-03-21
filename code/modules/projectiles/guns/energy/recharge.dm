@@ -4,7 +4,7 @@
 	base_icon_state = "kineticgun"
 	desc = "A self recharging gun. Holds one shot at a time."
 	automatic_charge_overlays = FALSE
-	cell_type = /obj/item/stock_parts/cell/emproof
+	cell_type = /obj/item/stock_parts/power_store/cell/emproof
 	/// If set to something, instead of an overlay, sets the icon_state directly.
 	var/no_charge_state
 	/// Does it hold charge when not put away?
@@ -150,21 +150,35 @@
 	recharge_time = 1.2 SECONDS
 	ammo_type = list(/obj/item/ammo_casing/energy/fisher)
 
-/obj/item/gun/energy/recharge/fisher/examine_more(mob/user)
+/obj/item/gun/energy/recharge/fisher/Initialize(mapload)
 	. = ..()
-	. += span_notice("The SC/FISHER is an illegally-modified kinetic accelerator cut down and refit into a disassembled miniature energy gun chassis, with its pressure chamber \
-	attenuated to launch kinetic bolts that <b>disrupt flashlights and cameras, if only temporarily</b>. This effect also works on <b>cyborg headlamps<b>, and works longer in melee.<br><br>\
-	While some would argue that this is a really terrible design choice, others argue that it is very funny to be able to shoot at light sources. Caveat emptor.")
+	AddElement(/datum/element/examine_lore, \
+		lore = "The SC/FISHER is an illegally-modified kinetic accelerator that's been cut down and refit into a miniature energy gun chassis, \
+			optimized for temporary, but effective, electronic warfare.<br>\
+			<br>\
+			The reengineered kinetic accelerator central to the SC/FISHER's functionality has been modified for its kinetic bolts to \
+			<b>temporarily disrupt flashlights, cameras, APCs, and pAI speech modules</b>, in return for dealing no damage. \
+			This effect works longer against targets struck with the SC/FISHER either in melee or by having it thrown at them, but \
+			you probably shouldn't be throwing it at people.<br>\
+			<br>\
+			While some would argue that sacrificing damage for a light-disrupting, fixture-breaking gimmick \
+			makes the SC/FISHER a dead-end in equipment development, others argue that it is both amusing and tactically sound \
+			to be able to shoot at light sources and pesky pAIs to disrupt their function.<br>\
+			<br>\
+			Caveat emptor." \
+	)
 
-/obj/item/gun/energy/recharge/fisher/afterattack(atom/target, mob/living/user, flag, params)
-	// you should just shoot them, but in case you can't/wont
+/obj/item/gun/energy/recharge/fisher/attack(mob/living/target_mob, mob/living/user, params)
 	. = ..()
-	if(user.Adjacent(target))
-		var/obj/projectile/energy/fisher/melee/simulated_hit = new
-		simulated_hit.on_hit(target)
+	if(.)
+		return
+	var/obj/projectile/energy/fisher/melee/simulated_hit = new
+	simulated_hit.firer = user
+	simulated_hit.on_hit(target_mob)
 
 /obj/item/gun/energy/recharge/fisher/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	// ...you reeeeeally just shoot them, but in case you can't/won't
 	. = ..()
 	var/obj/projectile/energy/fisher/melee/simulated_hit = new
+	simulated_hit.firer = throwingdatum.get_thrower()
 	simulated_hit.on_hit(hit_atom)

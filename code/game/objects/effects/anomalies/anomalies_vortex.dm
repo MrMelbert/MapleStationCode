@@ -62,3 +62,13 @@
 				SSexplosions.medturf += T
 			if(EXPLODE_LIGHT)
 				SSexplosions.lowturf += T
+
+/obj/effect/anomaly/bhole/detonate()
+	new /obj/effect/temp_visual/circle_wave/vortex(get_turf(src))
+	playsound(src, 'sound/hallucinations/far_noise.ogg', vol = 50) // Non-module change : this should be sound/effects/hallucinations/far_noise.ogg
+
+/obj/effect/temp_visual/circle_wave/vortex
+	color = COLOR_BLACK
+	duration = 3 SECONDS
+//	amount_to_scale = 4 // Non-module change : we don't have this
+

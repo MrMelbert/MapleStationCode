@@ -12,13 +12,15 @@
 	)
 	required_atoms = list(
 		/obj/effect/decal/cleanable/ash = 1,
-		/obj/item/organ/internal/liver = 1,
+		/obj/item/organ/liver = 1,
 		/obj/item/stack/sheet/mineral/plasma = 1,
 	)
 	mob_to_summon = /mob/living/basic/heretic_summon/fire_shark
 	cost = 1
 	route = PATH_SIDE
 	poll_ignore_define = POLL_IGNORE_FIRE_SHARK
+	depth = 4
+	research_tree_icon_dir = EAST
 
 /datum/heretic_knowledge/spell/space_phase
 	name = "Space Phase"
@@ -32,6 +34,8 @@
 	spell_to_add = /datum/action/cooldown/spell/jaunt/space_crawl
 	cost = 1
 	route = PATH_SIDE
+	depth = 8
+	research_tree_icon_frame = 6
 
 /datum/heretic_knowledge/eldritch_coin
 	name = "Eldritch Coin"
@@ -50,3 +54,6 @@
 	result_atoms = list(/obj/item/coin/eldritch)
 	cost = 1
 	route = PATH_SIDE
+	research_tree_icon_path = 'icons/obj/economy.dmi'
+	research_tree_icon_state = "coin_heretic"
+	depth = 10

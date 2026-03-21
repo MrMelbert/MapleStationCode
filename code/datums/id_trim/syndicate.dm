@@ -14,6 +14,10 @@
 	access = list(ACCESS_SYNDICATE, ACCESS_ROBOTICS)
 
 /// Interdyne medical Staff
+/datum/id_trim/syndicom/Interdyne
+	honorifics = list(", PhD.")
+	honorific_positions = HONORIFIC_POSITION_LAST_FULL
+
 /datum/id_trim/syndicom/Interdyne/pharmacist
 	assignment = "Interdyne Pharmacist"
 	trim_state = "trim_medicaldoctor"
@@ -37,6 +41,9 @@
 	subdepartment_color = COLOR_COMMAND_BLUE
 	sechud_icon_state = SECHUD_DEATH_COMMANDO
 	access = list(ACCESS_SYNDICATE, ACCESS_MAINT_TUNNELS)
+	honorifics = list("Auditor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
+
 
 /datum/id_trim/syndicom/irs/auditor
 	assignment = "Internal Revenue Service Head Auditor"

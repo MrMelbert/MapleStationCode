@@ -123,7 +123,7 @@
 					to_say = "ATTACK!?!?"
 				else if (Friends[who] >= SLIME_FRIENDSHIP_ATTACK)
 					for (var/mob/living/possible_target in view(7,src)-list(src,who))
-						if (findtext(phrase, lowertext(possible_target.name)))
+						if (findtext(phrase, LOWER_TEXT(possible_target.name)))
 							if (isslime(possible_target))
 								to_say = "NO... [possible_target] slime friend"
 								add_friendship(who, -1) //Don't ask a slime to attack its friend
@@ -186,12 +186,12 @@
 				phrases += "Purr..."
 			if (attacked_stacks)
 				phrases += "Grrr..."
-			if (bodytemperature < T0C)
+			if (body_temperature < T0C)
 				phrases += "Cold..."
-			if (bodytemperature < T0C - 30)
+			if (body_temperature < T0C - 30)
 				phrases += "So... cold..."
 				phrases += "Very... cold..."
-			if (bodytemperature < T0C - 50)
+			if (body_temperature < T0C - 50)
 				phrases += "..."
 				phrases += "C... c..."
 			if (buckled)

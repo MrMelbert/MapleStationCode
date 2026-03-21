@@ -37,6 +37,11 @@
 	)
 	result_path = /obj/machinery/computer/vitals_reader
 
+/obj/item/wallframe/status_display/vitals/after_attach(obj/machinery/computer/vitals_reader/attached_to)
+	. = ..()
+	if(istype(attached_to))
+		attached_to.beeps = FALSE
+
 /obj/item/wallframe/status_display/vitals/advanced
 	name = "advanced vitals display frame"
 	desc = "Used to build advanced vitals displays. Performs a more detailed scan of the patient than the basic display."
@@ -61,11 +66,13 @@
 	layer = ABOVE_WINDOW_LAYER
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_REQUIRES_DEXTERITY
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
+	interaction_flags_click = ALLOW_SILICON_REACH | NEED_DEXTERITY
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 0
 	active_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	icon_keyboard = null
 	icon_screen = null
+	processing_flags = START_PROCESSING_MANUALLY
 
 	/// Whether we perform an advanced scan on examine or not
 	var/advanced = FALSE
@@ -93,6 +100,12 @@
 		/obj/machinery/stasis,
 		/obj/machinery/vital_floor_scanner,
 	))
+	/// Whether we go beep beep
+	var/beeps = TRUE
+	/// The last stat we beeped about
+	var/last_reported_stat = null
+	/// Cooldown between beeps
+	COOLDOWN_DECLARE(beep_cd)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
@@ -112,6 +125,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/advanced, 32)
 	interaction_flags_atom = NONE
 	interaction_flags_machine = NONE
 	max_scan_attempts = 1
+	beeps = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
@@ -132,8 +146,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return FALSE
 	if(user.combat_mode)
 		return FALSE
 	balloon_alert(user, "detaching...")
@@ -142,9 +154,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		deconstruct(TRUE)
 	return TRUE
 
-/obj/machinery/computer/vitals_reader/deconstruct(disassembled)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
+/obj/machinery/computer/vitals_reader/on_deconstruction(disassembled)
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
 		new frame(drop_loc)
@@ -166,7 +176,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else
-		. += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		. += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/0, advanced = advanced, tochat = FALSE)
 		. += chemscan(user, patient, tochat = FALSE)
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -177,13 +187,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		context[SCREENTIP_CONTEXT_LMB] = "Detach"
 	if(!isnull(patient))
 		context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine vitals"
+	if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Toggle beeps"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/computer/vitals_reader/AIShiftClick(mob/user)
 	// Lets AIs perform healthscans on people indirectly (they can't examine)
 	if(is_operational && !isnull(patient))
 		var/entire_printout = ""
-		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/0, advanced = advanced, tochat = FALSE)
 		entire_printout += chemscan(user, patient, tochat = FALSE)
 		to_chat(user, examine_block(entire_printout), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 
@@ -270,11 +282,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			resp_icon_state = "resp_flat"
 		else if(ishuman(patient))
 			var/mob/living/carbon/human/human_patient = patient
-			switch(human_patient.get_pretend_heart_rate())
+			switch(human_patient.get_bpm())
 				if(0)
 					ekg_icon_state = "ekg_flat"
 					resp_icon_state = "resp_flat"
-				if(100 to INFINITY)
+				if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
 					ekg_icon_state = "ekg_fast"
 
 		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)
@@ -408,7 +420,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			var/obj/machinery/computer/operating/op = nearby_thing
 			patient = op.table?.patient
 
-		if(!istype(patient) || (patient.mob_biotypes & MOB_ROBOTIC))
+		if(!istype(patient))
+			continue
+		// skips bots, borgs, and drones - not synths and androids
+		if((patient.mob_biotypes & MOB_ROBOTIC) && !(patient.mob_biotypes & MOB_HUMANOID))
 			continue
 
 		set_patient(patient)
@@ -419,6 +434,65 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		return
 
 	addtimer(CALLBACK(src, PROC_REF(find_active_patient), scan_attempts + 1), 5 SECONDS)
+
+/obj/machinery/computer/vitals_reader/process()
+	if(!COOLDOWN_FINISHED(src, beep_cd))
+		return
+	if(isnull(patient) || !is_operational || !active)
+		stack_trace("Vitals reader processing without a patient, not operational, or not active.")
+		end_processing()
+		return
+	if(!beeps)
+		return
+
+	var/beepsound
+	switch(patient.stat)
+		if(DEAD)
+			beepsound = 'maplestation_modules/sound/healthscanner_dead.ogg'
+			COOLDOWN_START(src, beep_cd, 11 SECONDS)
+			if(last_reported_stat != DEAD)
+				beep_message("lets out a droning beep.")
+				last_reported_stat = DEAD
+		if(HARD_CRIT)
+			beepsound = 'maplestation_modules/sound/healthscanner_danger.ogg'
+			COOLDOWN_START(src, beep_cd, 5 SECONDS)
+			if(last_reported_stat != HARD_CRIT)
+				beep_message("lets out an alternating beep.")
+				last_reported_stat = HARD_CRIT
+		if(SOFT_CRIT)
+			beepsound = 'maplestation_modules/sound/healthscanner_critical.ogg'
+			COOLDOWN_START(src, beep_cd, 7 SECONDS)
+			if(last_reported_stat != SOFT_CRIT)
+				beep_message("lets out a high pitch beep.")
+				last_reported_stat = SOFT_CRIT
+		else
+			beepsound = 'maplestation_modules/sound/healthscanner_stable.ogg'
+			COOLDOWN_START(src, beep_cd, 7 SECONDS)
+			if(last_reported_stat != CONSCIOUS)
+				beep_message("lets out a beep.")
+				last_reported_stat = CONSCIOUS
+
+	playsound(src, beepsound, 15, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+
+/obj/machinery/computer/vitals_reader/proc/beep_message(message)
+	for(var/mob/viewer as anything in viewers(src))
+		if(isnull(viewer.client) || !viewer.can_hear())
+			continue
+		if(!viewer.runechat_prefs_check(viewer, EMOTE_MESSAGE))
+			continue
+		viewer.create_chat_message(
+			speaker = src,
+			raw_message = message,
+			runechat_flags = EMOTE_MESSAGE,
+		)
+
+/obj/machinery/computer/vitals_reader/click_alt(mob/user)
+	if(!(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND))
+		return CLICK_ACTION_BLOCKING
+	beeps = !beeps
+	balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
+	playsound(src, 'sound/machines/click.ogg', 50)
+	return CLICK_ACTION_SUCCESS
 
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
@@ -440,6 +514,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		COMSIG_LIVING_HEALTH_UPDATE,
 	), PROC_REF(update_overlay_on_signal))
 	update_appearance(UPDATE_OVERLAYS)
+	begin_processing()
+	last_reported_stat = null
 
 /// Unset the current patient.
 /obj/machinery/computer/vitals_reader/proc/unset_patient(...)
@@ -456,6 +532,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	))
 
 	patient = null
+	end_processing()
 	if(QDELING(src))
 		return
 
@@ -468,13 +545,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
 
-/obj/machinery/vitals_reader/emp_act(severity)
+/obj/machinery/computer/vitals_reader/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 
+	if(beeps)
+		beeps = prob(50)
+	COOLDOWN_START(src, beep_cd, 1 SECONDS + (1 SECONDS * rand(0, (severity == EMP_HEAVY ? 60 : 30))))
 	set_machine_stat(machine_stat | EMPED)
 	addtimer(CALLBACK(src, PROC_REF(fix_emp)), (severity == EMP_HEAVY ? 150 SECONDS : 75 SECONDS))
 
-/obj/machinery/vitals_reader/proc/fix_emp()
+/obj/machinery/computer/vitals_reader/proc/fix_emp()
 	set_machine_stat(machine_stat & ~EMPED)

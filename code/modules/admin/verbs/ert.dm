@@ -25,7 +25,7 @@
 
 
 /datum/admins/proc/equipAntagOnDummy(mob/living/carbon/human/dummy/mannequin, datum/antagonist/antag)
-	for(var/I in mannequin.get_equipped_items(include_pockets = TRUE))
+	for(var/I in mannequin.get_equipped_items(INCLUDE_POCKETS))
 		qdel(I)
 	if (ispath(antag, /datum/antagonist/ert))
 		var/datum/antagonist/ert/ert = antag
@@ -121,7 +121,7 @@
 		var/list/spawnpoints = GLOB.emergencyresponseteamspawn
 		var/index = 0
 
-		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for [ertemplate.polldesc]?", check_jobban = "deathsquad", pic_source = /obj/item/card/id/advanced/centcom/ert, role_name_text = "emergency response team")
+		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for [span_notice(ertemplate.polldesc)]?", check_jobban = "deathsquad", alert_pic = /obj/item/card/id/advanced/centcom/ert/commander, role_name_text = "emergency response team")
 		var/teamSpawned = FALSE
 
 		// This list will take priority over spawnpoints if not empty
@@ -242,7 +242,16 @@
 			ert_antag.random_names = ertemplate.random_names
 
 			ert_operative.mind.add_antag_datum(ert_antag,ert_team)
-			ert_operative.mind.set_assigned_role(SSjob.GetJobType(ert_antag.ert_job_path))
+			ert_operative.mind.set_assigned_role(SSjob.get_job_type(ert_antag.ert_job_path))
+			// future melbert todo - tie to ert jobs, make ert jobs not one datum
+			ert_operative.mind.set_level(/datum/skill/electronics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/mechanics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/surgery, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/piloting, SKILL_LEVEL_EXPERT, silent = TRUE)
 
 			//Logging and cleanup
 			ert_operative.log_message("has been selected as \a [ert_antag.name].", LOG_GAME)
@@ -261,18 +270,14 @@
 
 	return
 
-/client/proc/summon_ert()
-	set category = "Admin.Fun"
-	set name = "Summon ERT"
-	set desc = "Summons an emergency response team"
-
-	message_admins("[key_name(usr)] is creating a CentCom response team...")
-	if(holder?.makeEmergencyresponseteam())
-		message_admins("[key_name(usr)] created a CentCom response team.")
-		log_admin("[key_name(usr)] created a CentCom response team.")
+ADMIN_VERB(summon_ert, R_FUN, "Summon ERT", "Summons an emergency response team.", ADMIN_CATEGORY_FUN)
+	message_admins("[key_name_admin(user)] is creating a CentCom response team...")
+	if(user.holder?.makeEmergencyresponseteam())
+		message_admins("[key_name_admin(user)] created a CentCom response team.")
+		log_admin("[key_name(user)] created a CentCom response team.")
 	else
-		message_admins("[key_name_admin(usr)] tried to create a CentCom response team. Unfortunately, there were not enough candidates available.")
-		log_admin("[key_name(usr)] failed to create a CentCom response team.")
+		message_admins("[key_name_admin(user)] tried to create a CentCom response team. Unfortunately, there were not enough candidates available.")
+		log_admin("[key_name(user)] failed to create a CentCom response team.")
 
 #undef ERT_EXPERIENCED_LEADER_CHOOSE_TOP
 #undef DUMMY_HUMAN_SLOT_ADMIN

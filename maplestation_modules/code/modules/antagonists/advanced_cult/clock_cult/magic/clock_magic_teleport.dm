@@ -58,7 +58,7 @@
 		else
 			caster.stop_pulling()
 
-	if(!do_after(caster, teleport_time, teleported_person, extra_checks = CALLBACK(src, PROC_REF(can_teleport), caster, teleported_person)))
+	if(!do_after(caster, teleport_time, teleported_person, extra_checks = CALLBACK(src, PROC_REF(can_teleport), caster, teleported_person), hidden = TRUE))
 		return
 
 	if(!can_teleport(caster, teleported_person))

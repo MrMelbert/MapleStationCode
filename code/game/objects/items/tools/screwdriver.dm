@@ -22,6 +22,7 @@
 	attack_verb_simple = list("stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = list('sound/items/screwdriver.ogg', 'sound/items/screwdriver2.ogg')
+	operating_sound = 'sound/items/screwdriver_operating.ogg'
 	tool_behaviour = TOOL_SCREWDRIVER
 	toolspeed = 1
 	armor_type = /datum/armor/item_screwdriver
@@ -65,6 +66,7 @@
 	desc = "An ultrasonic screwdriver."
 	icon = 'icons/obj/antags/abductor.dmi'
 	icon_state = "screwdriver_a"
+	post_init_icon_state = null
 	inhand_icon_state = "screwdriver_nuke"
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT*5, /datum/material/silver=SHEET_MATERIAL_AMOUNT*1.25, /datum/material/plasma =HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium =SHEET_MATERIAL_AMOUNT, /datum/material/diamond =SHEET_MATERIAL_AMOUNT)
 	usesound = 'sound/items/pshoom.ogg'
@@ -79,6 +81,7 @@
 /obj/item/screwdriver/power
 	name = "hand drill"
 	desc = "A simple powered hand drill."
+	icon = 'icons/obj/tools.dmi'
 	icon_state = "drill"
 	belt_icon_state = null
 	inhand_icon_state = "drill"
@@ -148,7 +151,7 @@
 	name = "automated screwdriver"
 	desc = "A powerful automated screwdriver, designed to be both precise and quick."
 	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "screwdriver_cyborg"
+	icon_state = "toolkit_engiborg_screwdriver"
 	hitsound = 'sound/items/drill_hit.ogg'
 	usesound = 'sound/items/drill_use.ogg'
 	toolspeed = 0.5

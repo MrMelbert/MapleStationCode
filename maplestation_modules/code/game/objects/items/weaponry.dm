@@ -61,10 +61,11 @@
 	hitsound = 'sound/weapons/genhit.ogg'
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 2
 	light_power = 1
 	light_on = FALSE
+	item_flags = NO_BLOOD_ON_ITEM
 	///force when active, passed onto component/transforming
 	var/active_force = 18
 	///throwforce when active, passed onto component/transforming
@@ -119,6 +120,8 @@
 	wound_bonus = 20
 	throwforce = 16
 	w_class = WEIGHT_CLASS_BULKY
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic2.ogg'
 
 /obj/item/melee/psych_rock/Initialize(mapload)
 	. = ..()
@@ -131,34 +134,28 @@
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
 
-/obj/item/melee/sabre/maugrim
-	name = "Maugrim"
-	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
-	force = 20
-	block_chance = 33
-	armour_penetration = 10
-	icon_state = "maugrim"
-	icon = 'maplestation_modules/icons/obj/weapons.dmi'
-	inhand_icon_state = "maugrim"
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
+/datum/embed_data/combat_knife/nullknife
+	embed_chance = 35
 
-/obj/item/melee/sabre/gehenna // matthew's sword when he's asset protection
-	name = "Gehenna"
-	desc = "The christened blade of Matthew Scoria."
-	icon_state = "amber_blade"
+/obj/item/knife/combat/nullknife
+	name = "\improper XM6N Null Knife"
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
-	worn_icon_state = "amber_blade"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
-	inhand_icon_state = "amber_blade"
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
-	// this is seperate from the null rod- this will have no anti-magic and higher stats to compensate for it being used by a command member who refuses to use energy guns
-	force = 20
-	sharpness = SHARP_EDGED
-	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_SUITSTORE
-	block_chance = 25
-	armour_penetration = 20
-	w_class = WEIGHT_CLASS_HUGE
-	attack_verb_continuous = list("stabs", "cuts", "slashes", "power attacks")
-	attack_verb_simple = list("stab", "cut", "slash", "power attack")
+	icon_state = "null_knife"
+	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
+	inhand_icon_state = "knife"
+	worn_icon_state = "knife"
+	desc = "An experimental anti-magic knife."
+	force = 17
+	throwforce = 10
+	embed_type = /datum/embed_data/combat_knife/nullknife
+	custom_materials = null
+
+/obj/item/knife/combat/nullknife/Initialize(mapload)
+	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY)
+	AddElement(/datum/element/bane, target_type = /mob/living/basic/revenant, damage_multiplier = 0, added_damage = 25, requires_combat_mode = FALSE)
+	return ..()
+
+/obj/item/knife/combat/nullknife/examine_more(mob/user)
+	. = ..()
+	. += span_notice("<i>While the weapon passed the field-testing phase with the TGMC, TerraGov declined to continue mass-production due to a lack of practical applications at the time. However, paramilitaries foreign to the Mu sector (especially those that don't use magic) will sometimes procure and issue their own knives to deal with the increased usage of magic in the area.</i>")

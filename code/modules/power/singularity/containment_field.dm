@@ -29,6 +29,7 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddElement(/datum/element/give_turf_traits, string_list(list(TRAIT_CONTAINMENT_FIELD)))
 
 /obj/machinery/field/containment/Destroy()
 	if(field_gen_1)
@@ -46,11 +47,11 @@
 	if(get_dist(src, user) > 1)
 		return FALSE
 	else
-		shock(user)
+		yeet_shock(user)
 		return TRUE
 
 /obj/machinery/field/containment/attackby(obj/item/W, mob/user, params)
-	shock(user)
+	yeet_shock(user)
 	return TRUE
 
 /obj/machinery/field/containment/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
@@ -82,7 +83,7 @@
 	if(isliving(considered_atom))
 		var/mob/living/living_moving_through_field = considered_atom
 		if(!living_moving_through_field.incorporeal_move)
-			shock(considered_atom)
+			yeet_shock(considered_atom)
 
 	if(ismachinery(considered_atom) || isstructure(considered_atom) || ismecha(considered_atom))
 		bump_field(considered_atom)
@@ -99,7 +100,7 @@
 
 	return SINGULARITY_TRY_MOVE_BLOCK
 
-/obj/machinery/field/containment/shock(mob/living/user)
+/obj/machinery/field/containment/yeet_shock(mob/living/user)
 	if(!field_gen_1 || !field_gen_2)
 		qdel(src)
 		return FALSE
@@ -121,7 +122,7 @@
 	if(has_shocked)
 		return
 	if(isliving(mover))
-		shock(mover)
+		yeet_shock(mover)
 		return
 	if(ismachinery(mover) || isstructure(mover) || isvehicle(mover))
 		bump_field(mover)
@@ -133,7 +134,7 @@
 	if(has_shocked || isliving(mover) || ismachinery(mover) || isstructure(mover) || ismecha(mover))
 		return FALSE
 
-/obj/machinery/field/proc/shock(mob/living/user)
+/obj/machinery/field/proc/yeet_shock(mob/living/user)
 	var/shock_damage = min(rand(30,40),rand(30,40))
 
 	if(iscarbon(user))
@@ -164,4 +165,4 @@
 		to_chat(considered_atom, span_userdanger("The field repels you with tremendous force!"))
 	playsound(src, 'sound/effects/gravhit.ogg', 50, TRUE)
 	considered_atom.throw_at(target, 200, 4)
-	addtimer(CALLBACK(src, PROC_REF(clear_shock)), 5)
+	addtimer(CALLBACK(src, PROC_REF(clear_shock)), 0.5 SECONDS)

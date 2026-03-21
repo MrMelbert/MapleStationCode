@@ -13,12 +13,14 @@
 
 	pipe_flags = PIPING_ONE_PER_TURF
 	pipe_state = "connector"
+	has_cap_visuals = TRUE
+
 	custom_reconcilation = TRUE
 
 	///Reference to the connected device
 	var/obj/machinery/portable_atmospherics/connected_device
 
-/obj/machinery/atmospherics/components/unary/portables_connector/New()
+/obj/machinery/atmospherics/components/unary/portables_connector/Initialize(mapload)
 	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 0
@@ -29,11 +31,14 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/update_icon_nopipes()
-	icon_state = "connector"
+	cut_overlays()
 	if(showpipe)
-		cut_overlays()
 		var/image/cap = get_pipe_image(icon, "connector_cap", initialize_directions, pipe_color)
+		cap.appearance_flags |= RESET_COLOR|KEEP_APART
 		add_overlay(cap)
+	else
+		PIPING_LAYER_SHIFT(src, PIPING_LAYER_DEFAULT)
+	icon_state = "connector"
 
 /obj/machinery/atmospherics/components/unary/portables_connector/process_atmos()
 	if(!connected_device)

@@ -17,10 +17,10 @@
 	rate_up_lim = 15
 	purity_min = 0.5
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_BRUTE | REACTION_TAG_TOXIN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_BRUTE | REACTION_TAG_TOXIN | REACTION_TAG_ORGAN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/fentanyl
-	results = list(/datum/reagent/toxin/fentanyl = 1)
+	results = list(/datum/reagent/medicine/painkiller/fentanyl = 1)
 	required_reagents = list(/datum/reagent/drug/space_drugs = 1)
 	mix_message = "The mixture turns cloudy, then becomes clear again."
 	is_cold_recipe = FALSE
@@ -37,7 +37,7 @@
 	rate_up_lim = 5
 	purity_min = 0.5
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_ORGAN | REACTION_TAG_TOXIN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_ORGAN | REACTION_TAG_TOXIN | REACTION_TAG_PAIN
 
 /datum/chemical_reaction/cyanide
 	results = list(/datum/reagent/toxin/cyanide = 3)
@@ -177,7 +177,7 @@
 	rate_up_lim = 10
 	purity_min = 0.7
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_PLANT | REACTION_TAG_OTHER
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_PLANT | REACTION_TAG_OTHER | REACTION_TAG_COMPONENT
 
 /datum/chemical_reaction/lexorin
 	results = list(/datum/reagent/toxin/lexorin = 3)
@@ -204,7 +204,7 @@
 	required_reagents = list(/datum/reagent/toxin/hot_ice = 1)
 	required_temp = T0C + 30 //Don't burst into flames when you melt
 	thermic_constant = -200//Counter the heat
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_TOXIN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_TOXIN | REACTION_TAG_ACTIVE
 
 /datum/chemical_reaction/chloralhydrate
 	results = list(/datum/reagent/toxin/chloralhydrate = 1)
@@ -328,7 +328,7 @@
 
 /datum/chemical_reaction/rotatium
 	results = list(/datum/reagent/toxin/rotatium = 3)
-	required_reagents = list(/datum/reagent/toxin/mindbreaker = 1, /datum/reagent/teslium = 1, /datum/reagent/toxin/fentanyl = 1)
+	required_reagents = list(/datum/reagent/toxin/mindbreaker = 1, /datum/reagent/teslium = 1, /datum/reagent/medicine/painkiller/fentanyl = 1)
 	mix_message = "<span class='danger'>After sparks, fire, and the smell of mindbreaker, the mix is constantly spinning with no stop in sight.</span>"
 	is_cold_recipe = FALSE
 	required_temp = 100

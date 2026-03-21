@@ -32,8 +32,7 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/open/openspace/LateInitialize()
-	. = ..()
-	AddElement(/datum/element/turf_z_transparency)
+	ADD_TURF_TRANSPARENCY(src, INNATE_TRAIT)
 
 /turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
 	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
@@ -153,7 +152,7 @@
 	return FALSE
 
 /turf/open/openspace/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
-	var/atom/movable/our_movable = pass_info.caller_ref.resolve()
+	var/atom/movable/our_movable = pass_info.requester_ref.resolve()
 	if(our_movable && !our_movable.can_z_move(DOWN, src, null, ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE
 	return FALSE
@@ -188,7 +187,9 @@
 	if(!T)
 		return
 	if(T.turf_flags & NO_RUINS && protect_ruin)
-		ChangeTurf(replacement_turf, null, CHANGETURF_IGNORE_AIR)
+		var/turf/newturf = ChangeTurf(replacement_turf, null, CHANGETURF_IGNORE_AIR)
+		if(!isopenspaceturf(newturf)) // only openspace turfs should be returning INITIALIZE_HINT_LATELOAD
+			return INITIALIZE_HINT_NORMAL
 		return
 	if(!ismineralturf(T) || !drill_below)
 		return

@@ -2505,8 +2505,8 @@
 "iY" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/white,
 /area/awaymission/undergroundoutpost45/research)
@@ -3541,8 +3541,8 @@
 /obj/item/stack/sheet/mineral/plasma{
 	amount = 26
 	},
-/obj/item/stock_parts/cell/high,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/undergroundoutpost45/engineering)
@@ -3564,7 +3564,7 @@
 "ma" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/item/stack/cable_coil{
 	pixel_x = 3;
 	pixel_y = -7
@@ -4030,6 +4030,7 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
+/obj/machinery/computer/security/telescreen/underground_outpost/research/directional/west,
 /turf/open/floor/iron,
 /area/awaymission/undergroundoutpost45/research)
 "np" = (
@@ -4040,12 +4041,6 @@
 /area/awaymission/undergroundoutpost45/research)
 "nq" = (
 /obj/structure/table,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for monitoring the research division and the labs within.";
-	dir = 8;
-	name = "research monitor";
-	network = list("uo45r")
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 4
@@ -4205,11 +4200,6 @@
 "nR" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/reinforced/spawner/directional/north,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for monitoring the research division and the labs within.";
-	name = "research monitor";
-	network = list("uo45r")
-	},
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},
@@ -4454,7 +4444,7 @@
 /area/awaymission/undergroundoutpost45/engineering)
 "ot" = (
 /obj/machinery/power/smes{
-	charge = 1.5e+006;
+	charge = 3e+007;
 	input_level = 10000;
 	inputting = 0;
 	output_level = 7000
@@ -4464,7 +4454,7 @@
 /area/awaymission/undergroundoutpost45/engineering)
 "ou" = (
 /obj/machinery/power/smes{
-	charge = 1.5e+006;
+	charge = 3e+007;
 	input_level = 30000;
 	inputting = 0;
 	output_level = 7000
@@ -4711,6 +4701,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
+/obj/machinery/computer/security/telescreen/underground_outpost/research/directional/south,
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},
@@ -6884,7 +6875,7 @@
 "vW" = (
 /obj/structure/table,
 /obj/machinery/cell_charger,
-/obj/item/stock_parts/cell/high,
+/obj/item/stock_parts/power_store/cell/high,
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/awaymission/undergroundoutpost45/engineering)

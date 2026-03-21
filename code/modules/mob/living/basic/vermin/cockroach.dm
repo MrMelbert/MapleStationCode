@@ -28,10 +28,11 @@
 	faction = list(FACTION_HOSTILE, FACTION_MAINT_CREATURES)
 
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 270
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = CELCIUS_TO_KELVIN(-3.15 CELCIUS)
+	bodytemp_heat_damage_limit = INFINITY
 
 	ai_controller = /datum/ai_controller/basic_controller/cockroach
+	initial_blood_type = /datum/blood_type/animal/bug
 
 	var/cockroach_cell_line = CELL_LINE_TABLE_COCKROACH
 
@@ -40,7 +41,6 @@
 	var/static/list/roach_drops = list(/obj/effect/decal/cleanable/insectguts)
 	AddElement(/datum/element/death_drops, roach_drops)
 	AddElement(/datum/element/swabable, cockroach_cell_line, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 7)
-	AddElement(/datum/element/basic_body_temp_sensitive, 270, INFINITY)
 	AddComponent( \
 		/datum/component/squashable, \
 		squash_chance = 50, \
@@ -72,14 +72,15 @@
 		/datum/ai_planning_subtree/find_and_hunt_target/roach,
 	)
 
-/obj/projectile/glockroachbullet
+/obj/projectile/bullet/glockroachbullet
 	damage = 10 //same damage as a hivebot
 	damage_type = BRUTE
+	generic_name = "bullet"
 
 /obj/item/ammo_casing/glockroach
 	name = "0.9mm bullet casing"
 	desc = "A... 0.9mm bullet casing? What?"
-	projectile_type = /obj/projectile/glockroachbullet
+	projectile_type = /obj/projectile/bullet/glockroachbullet
 
 
 /mob/living/basic/cockroach/glockroach
@@ -137,6 +138,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = -50
 	faction = list(FACTION_HOSTILE, FACTION_MAINT_CREATURES)
 	sharpness = SHARP_POINTY
 	ai_controller = /datum/ai_controller/basic_controller/cockroach/hauberoach

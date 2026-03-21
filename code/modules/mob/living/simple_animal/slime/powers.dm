@@ -121,39 +121,61 @@
 		return FALSE
 	return TRUE
 
+#define OFFSET_FEEDING "feeding"
+
 ///The slime will start feeding on the target
 /mob/living/simple_animal/slime/proc/start_feeding(mob/living/target_mob)
-	target_mob.unbuckle_all_mobs(force=TRUE) //Slimes rip other mobs (eg: shoulder parrots) off (Slimes Vs Slimes is already handled in can_feed_on())
-	if(target_mob.buckle_mob(src, force=TRUE))
-		layer = target_mob.layer+0.01 //appear above the target mob
-		target_mob.visible_message(span_danger("[name] latches onto [target_mob]!"), \
-						span_userdanger("[name] latches onto [target_mob]!"))
+	target_mob.unbuckle_all_mobs(force = TRUE) //Slimes rip other mobs (eg: shoulder parrots) off (Slimes Vs Slimes is already handled in can_feed_on())
+	if(target_mob.buckle_mob(src, force = TRUE))
+		add_offsets(OFFSET_FEEDING, y_add = target_mob.mob_size <= MOB_SIZE_SMALL ? 0 : 3)
+		layer = target_mob.layer + 0.01 //appear above the target mob
+		RegisterSignal(src, COMSIG_MOB_UNBUCKLED, PROC_REF(unbuckled_feeding), override = TRUE)
+		target_mob.visible_message(
+			span_danger("[name] latches onto [target_mob]!"),
+			span_userdanger("[name] latches onto [target_mob]!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		to_chat(src, span_notice("<i>I start feeding on [target_mob]...</i>"))
 	else
 		to_chat(src, span_warning("<i>I have failed to latch onto the subject!</i>"))
 
+/mob/living/simple_animal/slime/proc/unbuckled_feeding(...)
+	SIGNAL_HANDLER
+
+	stop_feeding()
+
 ///The slime will stop feeding
-/mob/living/simple_animal/slime/proc/stop_feeding(silent = FALSE, living=TRUE)
+/mob/living/simple_animal/slime/proc/stop_feeding(silent = FALSE, living = TRUE)
 	if(!buckled)
 		return
 
 	if(!living)
-		to_chat(src, "<span class='warning'>[pick("This subject is incompatible", \
-		"This subject does not have life energy", "This subject is empty", \
-		"I am not satisified", "I can not feed from this subject", \
-		"I do not feel nourished", "This subject is not food")]!</span>")
+		to_chat(src, span_warning("[pick("This subject is incompatible", \
+			"This subject does not have life energy", "This subject is empty", \
+			"I am not satisified", "I can not feed from this subject", \
+			"I do not feel nourished", "This subject is not food")]!"))
 
 	var/mob/living/victim = buckled
-
 	if(istype(victim))
 		var/bio_protection = 100 - victim.getarmor(null, BIO)
 		if(prob(bio_protection))
 			victim.apply_status_effect(/datum/status_effect/slimed, slime_type.rgb_code, slime_type.colour == SLIME_TYPE_RAINBOW)
 
 	if(!silent)
-		visible_message(span_warning("[src] lets go of [buckled]!"), \
-						span_notice("<i>I stopped feeding.</i>"))
+		victim.visible_message(
+			span_warning("[src] lets go of [buckled]!"),
+			span_warning("[src] lets go of you!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		to_chat(src, span_notice("<i>I stop feeding on [buckled]...</i>"))
+
+	remove_offsets(OFFSET_FEEDING)
 	layer = initial(layer)
-	buckled.unbuckle_mob(src,force=TRUE)
+	UnregisterSignal(src, COMSIG_MOB_UNBUCKLED)
+
+	buckled.unbuckle_mob(src, force = TRUE)
+
+#undef OFFSET_FEEDING
 
 /mob/living/simple_animal/slime/verb/Evolve()
 	set category = "Slime"

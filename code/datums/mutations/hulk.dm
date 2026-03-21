@@ -5,17 +5,16 @@
 	quality = POSITIVE
 	locked = TRUE
 	difficulty = 16
-	text_gain_indication = "<span class='notice'>Your muscles hurt!</span>"
+	text_gain_indication = span_notice("Your muscles hurt!")
 	species_allowed = list(SPECIES_HUMAN) //no skeleton/lizard hulk
 	health_req = 25
-	instability = 40
+	instability = POSITIVE_INSTABILITY_MAJOR
 	var/scream_delay = 50
 	var/last_scream = 0
 	/// List of traits to add/remove when someone gets this mutation.
-	var/list/mutation_traits = list(
+	mutation_traits = list(
 		TRAIT_CHUNKYFINGERS,
 		TRAIT_HULK,
-		TRAIT_IGNOREDAMAGESLOWDOWN,
 		TRAIT_PUSHIMMUNE,
 		TRAIT_STUNIMMUNE,
 	)
@@ -24,14 +23,19 @@
 /datum/mutation/human/hulk/on_acquiring(mob/living/carbon/human/owner)
 	if(..())
 		return
-	owner.add_traits(mutation_traits, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = "#00aa00"
+		part.variable_color = COLOR_DARK_LIME
 	owner.update_body_parts()
 	owner.add_mood_event("hulk", /datum/mood_event/hulk)
+	owner.physiology?.cold_mod *= HULK_COLD_DAMAGE_MOD
+	owner.bodytemp_cold_damage_limit += BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER
 	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
+	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(statchange))
+	RegisterSignal(owner, COMSIG_MOB_REMOVING_CUFFS, PROC_REF(on_cuff_resist))
+	RegisterSignal(owner, COMSIG_MOB_REMOVED_CUFFS, PROC_REF(on_cuff_break))
+	owner.add_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
@@ -52,7 +56,7 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/mutation/human/hulk/proc/scream_attack(mob/living/carbon/human/source)
-	source.say("WAAAAAAAAAAAAAAGH!", forced="hulk")
+	source.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced = "hulk")
 
 /**
  *Checks damage of a hulk's arm and applies bone wounds as necessary.
@@ -78,8 +82,9 @@
 
 	owner.cause_wound_of_type_and_severity(WOUND_BLUNT, arm, severity, wound_source = "hulk smashing")
 
-/datum/mutation/human/hulk/on_life(seconds_per_tick, times_fired)
-	if(owner.health < owner.crit_threshold)
+/datum/mutation/human/hulk/proc/statchange(mob/living/carbon/human/owner, stat, old_stat)
+	SIGNAL_HANDLER
+	if(stat >= UNCONSCIOUS)
 		on_losing(owner)
 		to_chat(owner, span_danger("You suddenly feel very weak."))
 		qdel(src)
@@ -87,14 +92,19 @@
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
-	owner.remove_traits(mutation_traits, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = null
 	owner.update_body_parts()
 	owner.clear_mood_event("hulk")
+	owner.physiology?.cold_mod /= HULK_COLD_DAMAGE_MOD
+	owner.bodytemp_cold_damage_limit -= BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER
 	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
+	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
+	UnregisterSignal(owner, COMSIG_MOB_REMOVING_CUFFS)
+	UnregisterSignal(owner, COMSIG_MOB_REMOVED_CUFFS)
+	owner.remove_movespeed_mod_immunities("hulk", /datum/movespeed_modifier/damage_slowdown)
 
 /datum/mutation/human/hulk/proc/handle_speech(datum/source, list/speech_args)
 	SIGNAL_HANDLER
@@ -107,6 +117,15 @@
 	// the reason we don't just uppertext(message) in this proc is so that our hulk speech
 	// can uppercase all other speech moidifiers after they are done (by returning COMPONENT_UPPERCASE_SPEECH)
 	return COMPONENT_UPPERCASE_SPEECH
+
+/datum/mutation/human/hulk/proc/on_cuff_resist(mob/living/source, ...)
+	SIGNAL_HANDLER
+	INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
+	return NONE
+
+/datum/mutation/human/hulk/proc/on_cuff_break()
+	SIGNAL_HANDLER
+	return BREAK_CUFFS
 
 /// How many steps it takes to throw the mob
 #define HULK_TAILTHROW_STEPS 28
@@ -129,7 +148,7 @@
 
 	if(ishuman(possible_throwable))
 		var/mob/living/carbon/human/human_throwable = possible_throwable
-		if(human_throwable.wear_suit && (human_throwable.wear_suit.flags_inv & HIDEJUMPSUIT))
+		if(human_throwable.obscured_slots & HIDEJUMPSUIT)
 			to_chat(user, span_warning("You can't reach [human_throwable]'s tail through [human_throwable.p_their()] [human_throwable.wear_suit.name]!"))
 			return
 
@@ -265,6 +284,7 @@
 	log_combat(the_hulk, yeeted_person, "has thrown by tail")
 
 /datum/mutation/human/hulk/wizardly
+	name = "Hulk (Magic)"
 	species_allowed = null //yes skeleton/lizard hulk - note that species that dont have skintone changing (like skellies) get custom handling
 	health_req = 0
 	instability = 0
@@ -272,7 +292,6 @@
 	/// List of traits to add/remove when someone gets this mutation.
 	mutation_traits = list(
 		TRAIT_HULK,
-		TRAIT_IGNOREDAMAGESLOWDOWN,
 		TRAIT_PUSHIMMUNE,
 		TRAIT_STUNIMMUNE,
 	) // no chunk

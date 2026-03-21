@@ -7,6 +7,7 @@
 	icon_dead = "basilisk_dead"
 	speak_emote = list("chimes")
 	damage_coeff = list(BRUTE = 1, BURN = 0.1, TOX = 1, STAMINA = 0, OXY = 1)
+	mob_biotypes = parent_type::mob_biotypes | MOB_MINERAL
 	speed = 20
 	maxHealth = 200
 	health = 200
@@ -29,7 +30,6 @@
 
 /mob/living/basic/mining/basilisk/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/basic_mob_attack_telegraph)
 	ranged_attacks = AddComponent(/datum/component/ranged_attacks, projectile_type = /obj/projectile/temp/watcher, projectile_sound = 'sound/weapons/pierce.ogg')
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(check_lava))
 

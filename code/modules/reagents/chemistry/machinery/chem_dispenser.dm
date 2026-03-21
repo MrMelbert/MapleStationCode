@@ -9,23 +9,22 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	circuit = /obj/item/circuitboard/machine/chem_dispenser
 	processing_flags = NONE
+	examine_feedback_on_ui = TRUE
 
 	/// The cell used to dispense reagents
-	var/obj/item/stock_parts/cell/cell
-	/// Efficiency used when converting cell power to reagents
-	var/powerefficiency = 0.1
+	var/obj/item/stock_parts/power_store/cell
+	/// Efficiency used when converting cell power to reagents. Joule per volume.
+	var/power_cost = 0.1 KILO WATTS
 	/// The current amount this machine is dispensing
 	var/amount = 30
-	/// The rate at which this machine recharges the power cell
-	var/recharge_amount = 10
-	/// Keep track of the intervals made during recharges
-	var/recharge_counter = 0
+	/// The rate at which this machine recharges the power cell.
+	var/recharge_amount = 0.3 KILO WATTS
 	/// The temperature reagents are dispensed into the beaker
 	var/dispensed_temperature = DEFAULT_REAGENT_TEMPERATURE
 	/// If the UI has the pH meter shown
 	var/show_ph = TRUE
 	/// The overlay used to display the beaker on the machine
-	var/mutable_appearance/beaker_overlay
+	VAR_PRIVATE/mutable_appearance/beaker_overlay
 	/// Icon to display when the machine is powered
 	var/working_state = "dispenser_working"
 	/// Icon to display when the machine is not powered
@@ -43,9 +42,14 @@
 	/// Starting purity of the created reagents
 	var/base_reagent_purity = 1
 	/// Records the reagents dispensed by the user if this list is not null
-	var/list/recording_recipe
+	VAR_PRIVATE/list/recording_recipe
 	/// Saves all the recipes recorded by the machine
-	var/list/saved_recipes = list()
+	VAR_PRIVATE/list/saved_recipes = list()
+
+	/// Filters out all reactions that don't have any of these tags from the reaction list
+	var/shown_reaction_tags = DAMAGE_HEALING_REACTION_TAGS | MEDICATION_REACTION_TAGS | CHEMIST_REACTION_TAGS
+	/// Filters out all reactions that have any one of these tags from the reaction list
+	var/hidden_reaction_tags = REACTION_TAG_ACTIVE | REACTION_TAG_FOOD | REACTION_TAG_DRINK
 
 	/// The default list of dispensable_reagents
 	var/static/list/default_dispensable_reagents = list(
@@ -92,6 +96,7 @@
 		/datum/reagent/drug/space_drugs,
 		/datum/reagent/toxin
 	)
+
 /obj/machinery/chem_dispenser/Initialize(mapload)
 	if(dispensable_reagents != null && !dispensable_reagents.len)
 		dispensable_reagents = default_dispensable_reagents
@@ -125,8 +130,8 @@
 		. += span_notice("[src]'s maintenance hatch is open!")
 	if(in_range(user, src) || isobserver(user))
 		. += "<span class='notice'>The status display reads:\n\
-		Recharging <b>[recharge_amount]</b> power units per interval.\n\
-		Power efficiency increased by <b>[round((powerefficiency * 1000) -100, 1)]%</b>.</span>"
+		Recharge rate: <b>[display_power(recharge_amount, convert = FALSE)]</b>.\n\
+		Energy cost: <b>[siunit(power_cost, "J/u", 3)]</b>.</span>"
 	. += span_notice("Use <b>RMB</b> to eject a stored beaker.")
 
 /obj/machinery/chem_dispenser/on_set_is_operational(old_value)
@@ -136,18 +141,16 @@
 		begin_processing()
 
 /obj/machinery/chem_dispenser/process(seconds_per_tick)
-	if (recharge_counter >= 8)
-		var/usedpower = cell.give(recharge_amount)
-		if(usedpower)
-			use_power(active_power_usage + recharge_amount)
-		recharge_counter = 0
+	if(cell.maxcharge == cell.charge)
 		return
-	recharge_counter += seconds_per_tick
+	use_energy(active_power_usage * seconds_per_tick) //Additional power cost before charging the cell.
+	charge_cell(recharge_amount * seconds_per_tick, cell) //This also costs power.
+
 
 /obj/machinery/chem_dispenser/proc/display_beaker()
 	var/mutable_appearance/b_o = beaker_overlay || mutable_appearance(icon, "disp_beaker")
-	b_o.pixel_y = -4
-	b_o.pixel_x = -7
+	b_o.pixel_w = -7
+	b_o.pixel_z = -4
 	return b_o
 
 /obj/machinery/chem_dispenser/proc/work_animation()
@@ -210,15 +213,14 @@
 		is_hallucinating = !!living_user.has_status_effect(/datum/status_effect/hallucination)
 	ui.set_autoupdate(!is_hallucinating) //to not ruin the immersion by constantly changing the fake chemicals
 
-/obj/machinery/chem_dispenser/ui_static_data(mob/user)
-	. = ..()
-	.["showpH"] = show_ph
-
 /obj/machinery/chem_dispenser/ui_data(mob/user)
 	. = list()
 	.["amount"] = amount
-	.["energy"] = cell.charge ? cell.charge * powerefficiency : 0 //To prevent NaN in the UI.
-	.["maxEnergy"] = cell.maxcharge * powerefficiency
+	.["energy"] = cell.charge ? cell.charge : 0 //To prevent NaN in the UI.
+	.["maxEnergy"] = cell.maxcharge
+	.["displayedUnits"] = cell.charge ? (cell.charge / power_cost) : 0
+	.["displayedMaxUnits"] = cell.maxcharge / power_cost
+	.["showpH"] = isnull(recording_recipe) ? show_ph : FALSE //virtual beakers have no ph to compute & display
 
 	var/list/chemicals = list()
 	var/is_hallucinating = FALSE
@@ -230,9 +232,11 @@
 		var/datum/reagent/temp = GLOB.chemical_reagents_list[re]
 		if(temp)
 			var/chemname = temp.name
+			var/chemcolor = temp.color
 			if(is_hallucinating && prob(5))
 				chemname = "[pick_list_replacements("hallucination.json", "chemicals")]"
-			chemicals += list(list("title" = chemname, "id" = temp.name, "pH" = temp.ph, "pHCol" = convert_ph_to_readable_color(temp.ph)))
+				chemcolor = random_colour()
+			chemicals += list(list("title" = chemname, "id" = temp.name, "pH" = temp.ph, "color" = chemcolor, "pHCol" = convert_ph_to_readable_color(temp.ph)))
 	.["chemicals"] = chemicals
 	.["recipes"] = saved_recipes
 
@@ -253,10 +257,22 @@
 		beaker_data["currentVolume"] = round(beaker.reagents.total_volume, 0.01)
 		var/list/beakerContents = list()
 		if(length(beaker.reagents.reagent_list))
-			for(var/datum/reagent/reagent in beaker.reagents.reagent_list)
+			for(var/datum/reagent/reagent as anything in beaker.reagents.reagent_list)
 				beakerContents += list(list("name" = reagent.name, "volume" = round(reagent.volume, 0.01))) // list in a list because Byond merges the first list...
 		beaker_data["contents"] = beakerContents
 	.["beaker"] = beaker_data
+
+/obj/machinery/chem_dispenser/ui_static_data(mob/user)
+	var/list/data = list()
+
+	data["reaction_list"] = get_reaction_list()
+	data["all_bitflags"] = list()
+	for(var/readable_flag, real_flag in REACTION_TAG_READABLE)
+		if((real_flag & hidden_reaction_tags) || !(real_flag & shown_reaction_tags))
+			continue
+		data["all_bitflags"][readable_flag] = real_flag
+
+	return data
 
 /obj/machinery/chem_dispenser/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -283,7 +299,10 @@
 
 					var/datum/reagents/holder = beaker.reagents
 					var/to_dispense = max(0, min(amount, holder.maximum_volume - holder.total_volume))
-					if(!cell.use(to_dispense / powerefficiency))
+					if(!to_dispense)
+						say("The container is full!")
+						return
+					if(!cell.use(to_dispense * power_cost))
 						say("Not enough energy to complete operation!")
 						return
 					holder.add_reagent(reagent, to_dispense, reagtemp = dispensed_temperature, added_purity = base_reagent_purity)
@@ -326,7 +345,7 @@
 					var/to_dispense = max(0, min(dispense_amount, holder.maximum_volume - holder.total_volume))
 					if(!to_dispense)
 						continue
-					if(!cell.use(to_dispense / powerefficiency))
+					if(!cell.use(to_dispense * power_cost))
 						say("Not enough energy to complete operation!")
 						return
 					holder.add_reagent(reagent, to_dispense, reagtemp = dispensed_temperature, added_purity = base_reagent_purity)
@@ -399,15 +418,15 @@
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
-/obj/machinery/chem_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/machinery/chem_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(is_reagent_container(tool) && !(tool.item_flags & ABSTRACT) && tool.is_open_container())
-		if(!user.transferItemToLoc(tool, src))
-			return ..()
+		if(!user.transferItemToLoc(tool, src, silent = FALSE))
+			return ITEM_INTERACT_BLOCKING
 		replace_beaker(user, tool)
 		ui_interact(user)
 		return ITEM_INTERACT_SUCCESS
 
-	return ..()
+	return NONE
 
 /obj/machinery/chem_dispenser/get_cell()
 	return cell
@@ -417,7 +436,7 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	var/list/datum/reagents/R = list()
-	var/total = min(rand(7,15), FLOOR(cell.charge*powerefficiency, 1))
+	var/total = min(rand(7,15), FLOOR(cell.charge*INVERSE(power_cost), 1))
 	var/datum/reagents/Q = new(total*10)
 	if(beaker?.reagents)
 		R += beaker.reagents
@@ -427,7 +446,7 @@
 	chem_splash(get_turf(src), null, 3, R)
 	if(beaker?.reagents)
 		beaker.reagents.remove_all()
-	cell.use(total/powerefficiency)
+	cell.use(total * power_cost)
 	cell.emp_act(severity)
 	work_animation()
 	visible_message(span_danger("[src] malfunctions, spraying chemicals everywhere!"))
@@ -435,12 +454,12 @@
 /obj/machinery/chem_dispenser/RefreshParts()
 	. = ..()
 	recharge_amount = initial(recharge_amount)
-	var/newpowereff = 0.0666666
+	var/new_power_cost = initial(power_cost)
 	var/parts_rating = 0
-	for(var/obj/item/stock_parts/cell/stock_cell in component_parts)
+	for(var/obj/item/stock_parts/power_store/stock_cell in component_parts)
 		cell = stock_cell
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
-		newpowereff += 0.0166666666 * matter_bin.tier
+		new_power_cost -= (matter_bin.tier * 0.25 KILO WATTS)
 		parts_rating += matter_bin.tier
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
 		recharge_amount *= capacitor.tier
@@ -451,7 +470,7 @@
 		else
 			dispensable_reagents -= upgrade_reagents
 		parts_rating += servo.tier
-	powerefficiency = round(newpowereff, 0.01)
+	power_cost = max(new_power_cost, 0.1 KILO WATTS)
 
 /obj/machinery/chem_dispenser/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
 	if(!user)
@@ -464,7 +483,7 @@
 	update_appearance()
 	return TRUE
 
-/obj/machinery/chem_dispenser/on_deconstruction()
+/obj/machinery/chem_dispenser/on_deconstruction(disassembled)
 	cell = null
 	if(beaker)
 		beaker.forceMove(drop_location())
@@ -486,8 +505,61 @@
 /obj/machinery/chem_dispenser/attack_ai_secondary(mob/user, list/modifiers)
 	return attack_hand_secondary(user, modifiers)
 
-/obj/machinery/chem_dispenser/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
+/obj/machinery/chem_dispenser/proc/get_reaction_list()
+	var/static/list/reaction_list
+	if(reaction_list?[type])
+		return reaction_list[type]
+
+	reaction_list ||= list()
+	reaction_list[type] = list()
+
+	var/list/new_reaction_list = list()
+	for(var/result, reactions in GLOB.chemical_reactions_list_product_index - dispensable_reagents)
+		var/datum/reagent/result_datum = GLOB.chemical_reagents_list[result]
+		for(var/datum/chemical_reaction/reaction as anything in reactions)
+			if(!(reaction.reaction_tags & shown_reaction_tags))
+				continue
+			if(reaction.reaction_tags & hidden_reaction_tags)
+				continue
+			if(reaction.required_container)
+				continue
+
+			var/index = result_datum.name
+			var/list/new_info = get_reaction_info(reaction)
+			new_info["description"] = result_datum.description
+			new_info["color"] = result_datum.color
+
+			var/num_alts = 0
+			while(new_reaction_list[index])
+				num_alts++
+				index = "[result_datum.name] (Alt[num_alts == 1 ? "" : " #[num_alts]"])"
+
+			new_reaction_list[index] = new_info
+
+	reaction_list[type] = new_reaction_list
+	return reaction_list[type]
+
+/obj/machinery/chem_dispenser/proc/get_reaction_info(datum/chemical_reaction/reaction)
+	var/list/info = list()
+	info["id"] = reaction.type
+	info["lower_temperature"] = reaction.required_temp
+	info["upper_temperature"] = reaction.optimal_temp
+	info["lower_ph"] = reaction.optimal_ph_min
+	info["upper_ph"] = reaction.optimal_ph_max
+	info["bitflags"] = reaction.reaction_tags
+	info["required_reagents"] = reagent_list_to_info(reaction.required_reagents)
+	info["required_catalysts"] = reagent_list_to_info(reaction.required_catalysts)
+	return info
+
+/obj/machinery/chem_dispenser/proc/reagent_list_to_info(list/reagent_list)
+	var/list/info = list()
+	for(var/datum/reagent/reagent_typepath as anything in reagent_list)
+		info += list(list(
+			"name" = reagent_typepath::name,
+			"amount" = reagent_list[reagent_typepath],
+			"typepath" = reagent_typepath,
+		))
+	return info
 
 /obj/machinery/chem_dispenser/drinks
 	name = "soda dispenser"
@@ -504,6 +576,8 @@
 	nopower_state = null
 	pass_flags = PASSTABLE
 	show_ph = FALSE
+	shown_reaction_tags = KITCHEN_REACTION_TAGS
+	hidden_reaction_tags = REACTION_TAG_ACTIVE
 	/// The default list of reagents dispensable by the soda dispenser
 	var/static/list/drinks_dispensable_reagents = list(
 		/datum/reagent/consumable/coffee,
@@ -560,23 +634,22 @@
 	var/mutable_appearance/b_o = beaker_overlay || mutable_appearance(icon, "disp_beaker")
 	switch(dir)
 		if(NORTH)
-			b_o.pixel_y = 7
-			b_o.pixel_x = rand(-9, 9)
+			b_o.pixel_w = rand(-9, 9)
+			b_o.pixel_z = 7
 		if(EAST)
-			b_o.pixel_x = 4
-			b_o.pixel_y = rand(-5, 7)
+			b_o.pixel_w = 4
+			b_o.pixel_z = rand(-5, 7)
 		if(WEST)
-			b_o.pixel_x = -5
-			b_o.pixel_y = rand(-5, 7)
+			b_o.pixel_w = -5
+			b_o.pixel_z = rand(-5, 7)
 		else//SOUTH
-			b_o.pixel_y = -7
-			b_o.pixel_x = rand(-9, 9)
+			b_o.pixel_w = rand(-9, 9)
+			b_o.pixel_z = -7
 	return b_o
 
 /obj/machinery/chem_dispenser/drinks/fullupgrade //fully ugpraded stock parts, emagged
 	desc = "Contains a large reservoir of soft drinks. This model has had its safeties shorted out."
-	obj_flags = CAN_BE_HIT | EMAGGED | NO_DECONSTRUCTION
-	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/fullupgrade
+	obj_flags = CAN_BE_HIT | EMAGGED
 
 /obj/machinery/chem_dispenser/drinks/fullupgrade/Initialize(mapload)
 	. = ..()
@@ -635,7 +708,7 @@
 
 /obj/machinery/chem_dispenser/drinks/beer/fullupgrade //fully ugpraded stock parts, emagged
 	desc = "Contains a large reservoir of the good stuff. This model has had its safeties shorted out."
-	obj_flags = CAN_BE_HIT | EMAGGED | NO_DECONSTRUCTION
+	obj_flags = CAN_BE_HIT | EMAGGED
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/beer/fullupgrade
 
 /obj/machinery/chem_dispenser/drinks/beer/fullupgrade/Initialize(mapload)
@@ -659,8 +732,9 @@
 /obj/machinery/chem_dispenser/mutagensaltpeter
 	name = "botanical chemical dispenser"
 	desc = "Creates and dispenses chemicals useful for botany."
-	obj_flags = /obj::obj_flags | NO_DECONSTRUCTION
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/mutagensaltpeter
+	shown_reaction_tags = BOTANIST_REACTION_TAGS
+	hidden_reaction_tags = REACTION_TAG_ACTIVE
 
 	/// The default list of dispensable reagents available in the mutagensaltpeter chem dispenser
 	var/static/list/mutagensaltpeter_dispensable_reagents = list(
@@ -685,7 +759,7 @@
 
 /obj/machinery/chem_dispenser/fullupgrade //fully ugpraded stock parts, emagged
 	desc = "Creates and dispenses chemicals. This model has had its safeties shorted out."
-	obj_flags = CAN_BE_HIT | EMAGGED | NO_DECONSTRUCTION
+	obj_flags = CAN_BE_HIT | EMAGGED
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/fullupgrade
 
 /obj/machinery/chem_dispenser/fullupgrade/Initialize(mapload)

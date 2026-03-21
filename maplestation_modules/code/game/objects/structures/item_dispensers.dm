@@ -75,7 +75,7 @@
 	QDEL_LIST(stored_things)
 	return ..()
 
-/obj/structure/item_dispenser/deconstruct(disassembled)
+/obj/structure/item_dispenser/atom_deconstruct(disassembled)
 	// don't waste time trying to drop stuff when we have no charges
 	if(curr_charges <= 0)
 		return ..()
@@ -85,7 +85,6 @@
 		var/obj/item/thing = dispense_item(below)
 		if(!disassembled)
 			thing.take_damage(thing.max_integrity * 0.65, BRUTE, MELEE)
-	return ..()
 
 /obj/structure/item_dispenser/atom_break(damage_flag)
 	// don't waste time trying to drop stuff when we have no charges
@@ -102,7 +101,7 @@
 	curr_charges -= things_to_drop
 	return ..()
 
-/obj/structure/item_dispenser/proc/dispense_item(atom/drop_loc)
+/obj/structure/item_dispenser/proc/dispense_item(atom/drop_loc = drop_location())
 	var/obj/item/dropped = LAZYLEN(stored_things) ? stored_things[1] : new stock()
 	LAZYREMOVE(stored_things, dropped)
 	dropped.forceMove(drop_loc)
@@ -151,8 +150,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	balloon_alert(user, "unsecuring...")
-	tool.play_tool_sound(src)
-	if(!tool.use_tool(src, user, 1 SECONDS))
+	if(!tool.use_tool(src, user, 1 SECONDS, volume = 50))
 		balloon_alert(user, "interrupted!")
 		return ITEM_INTERACT_BLOCKING
 
@@ -174,8 +172,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	balloon_alert(user, "adjusting spring...")
-	tool.play_tool_sound(src)
-	if(!tool.use_tool(src, user, 1 SECONDS))
+	if(!tool.use_tool(src, user, 1 SECONDS, volume = 50))
 		balloon_alert(user, "interrupted!")
 		return ITEM_INTERACT_BLOCKING
 
@@ -197,7 +194,7 @@
 		balloon_alert(user, "no items left!")
 		return
 
-	var/obj/item/grabbies = dispense_item(drop_location())
+	var/obj/item/grabbies = dispense_item()
 	var/hand_result = user.put_in_hands(grabbies)
 	balloon_alert(user, "[hand_result ? "took" : "dispensed"] [item_name]")
 	playsound(src, 'sound/machines/click.ogg', 15, TRUE, -3)
@@ -217,7 +214,7 @@
 
 /obj/structure/item_dispenser/latex
 	icon_state = "dispenser_gloves"
-	stock = /obj/item/clothing/gloves/color/latex
+	stock = /obj/item/clothing/gloves/latex
 	start_stocked = TRUE
 
 /obj/structure/item_dispenser/mask

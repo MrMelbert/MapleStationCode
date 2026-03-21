@@ -27,6 +27,10 @@
 	var/girder_type = /obj/structure/girder/displaced
 	var/opening = FALSE
 
+/obj/structure/falsewall/get_save_vars()
+	. = ..()
+	. -= NAMEOF(src, icon)
+	return .
 
 /obj/structure/falsewall/Initialize(mapload)
 	. = ..()
@@ -34,6 +38,7 @@
 	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
 	qdel(initialized_mineral)
 	air_update_turf(TRUE, TRUE)
+	update_appearance()
 
 /obj/structure/falsewall/attack_hand(mob/user, list/modifiers)
 	if(opening)
@@ -42,14 +47,13 @@
 	if(.)
 		return
 
+	if(!density)
+		for(var/mob/living/obstacle in get_turf(src)) //Stop people from using this as a shield
+			return
+
 	opening = TRUE
 	update_appearance()
-	if(!density)
-		var/srcturf = get_turf(src)
-		for(var/mob/living/obstacle in srcturf) //Stop people from using this as a shield
-			opening = FALSE
-			return
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/falsewall, toggle_open)), 5)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/structure/falsewall, toggle_open)), 0.5 SECONDS)
 
 /obj/structure/falsewall/proc/toggle_open()
 	if(!QDELETED(src))
@@ -91,7 +95,7 @@
 		qdel(src)
 	return T
 
-/obj/structure/falsewall/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+/obj/structure/falsewall/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(!opening || !tool.tool_behaviour)
 		return ..()
 	to_chat(user, span_warning("You must wait until the door has stopped moving!"))
@@ -133,14 +137,12 @@
 		playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 	deconstruct(disassembled)
 
-/obj/structure/falsewall/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(disassembled)
-			new girder_type(loc)
-		if(mineral_amount)
-			for(var/i in 1 to mineral_amount)
-				new mineral(loc)
-	qdel(src)
+/obj/structure/falsewall/atom_deconstruct(disassembled = TRUE)
+	if(disassembled)
+		new girder_type(loc)
+	if(mineral_amount)
+		for(var/i in 1 to mineral_amount)
+			new mineral(loc)
 
 /obj/structure/falsewall/get_dumping_location()
 	return null
@@ -387,14 +389,12 @@
 	canSmoothWith = SMOOTH_GROUP_MATERIAL_WALLS
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 
-/obj/structure/falsewall/material/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(disassembled)
-			new girder_type(loc)
-		for(var/material in custom_materials)
-			var/datum/material/material_datum = material
-			new material_datum.sheet_type(loc, FLOOR(custom_materials[material_datum] / SHEET_MATERIAL_AMOUNT, 1))
-	qdel(src)
+/obj/structure/falsewall/material/atom_deconstruct(disassembled = TRUE)
+	if(disassembled)
+		new girder_type(loc)
+	for(var/material in custom_materials)
+		var/datum/material/material_datum = material
+		new material_datum.sheet_type(loc, FLOOR(custom_materials[material_datum] / SHEET_MATERIAL_AMOUNT, 1))
 
 /obj/structure/falsewall/material/mat_update_desc(mat)
 	desc = "A huge chunk of [mat] used to separate rooms."
@@ -434,6 +434,5 @@
 		girder_icon_state += "_[density ? "opening" : "closing"]"
 	else if(!density)
 		girder_icon_state += "_open"
-	var/mutable_appearance/girder_underlay = mutable_appearance('icons/obj/structures.dmi', girder_icon_state, layer = LOW_OBJ_LAYER-0.01)
-	girder_underlay.appearance_flags = RESET_ALPHA | RESET_COLOR
+	var/mutable_appearance/girder_underlay = mutable_appearance('icons/obj/structures.dmi', girder_icon_state, layer = LOW_OBJ_LAYER-0.01, appearance_flags = RESET_ALPHA | RESET_COLOR | KEEP_APART)
 	underlays += girder_underlay

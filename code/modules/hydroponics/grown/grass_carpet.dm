@@ -1,6 +1,6 @@
 // Grass
 /obj/item/seeds/grass
-	name = "pack of grass seeds"
+	name = "grass seed pack"
 	desc = "These seeds grow into grass. Yummy!"
 	icon_state = "seed-grass"
 	species = "grass"
@@ -15,7 +15,7 @@
 	growthstages = 2
 	icon_grow = "grass-grow"
 	icon_dead = "grass-dead"
-	genes = list(/datum/plant_gene/trait/repeated_harvest)
+	genes = list(/datum/plant_gene/trait/repeated_harvest, /datum/plant_gene/trait/scent/grass)
 	mutatelist = list(/obj/item/seeds/grass/carpet, /obj/item/seeds/grass/fairy)
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.02, /datum/reagent/hydrogen = 0.05)
 
@@ -28,6 +28,8 @@
 	var/stacktype = /obj/item/stack/tile/grass
 	var/tile_coefficient = 0.02 // 1/50
 	wine_power = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/grass/attack_self(mob/user)
 	to_chat(user, span_notice("You prepare the astroturf."))
@@ -42,7 +44,7 @@
 
 //Fairygrass
 /obj/item/seeds/grass/fairy
-	name = "pack of fairygrass seeds"
+	name = "fairygrass seed pack"
 	desc = "These seeds grow into a more mystical grass."
 	icon_state = "seed-fairygrass"
 	species = "fairygrass"
@@ -65,7 +67,7 @@
 
 // Carpet
 /obj/item/seeds/grass/carpet
-	name = "pack of carpet seeds"
+	name = "carpet seed pack"
 	desc = "These seeds grow into stylish carpet samples."
 	icon_state = "seed-carpet"
 	species = "carpet"

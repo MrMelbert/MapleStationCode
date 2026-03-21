@@ -80,7 +80,7 @@
 		if (COOLDOWN_FINISHED(src, clack_cooldown))
 			click_clack()
 		return ..()
-	if (!IsEdible(attacked) || attacked.w_class > WEIGHT_CLASS_NORMAL || !isnull(tonged))
+	if (!IS_EDIBLE(attacked) || attacked.w_class > WEIGHT_CLASS_NORMAL || !isnull(tonged))
 		return ..()
 	tonged = attacked
 	attacked.do_pickup_animation(src)
@@ -96,6 +96,6 @@
 	held_food.layer = layer
 	held_food.plane = plane
 	held_food.transform = held_food.transform.Scale(0.7, 0.7)
-	held_food.pixel_x = 6
-	held_food.pixel_y = 6
+	held_food.pixel_w = 6
+	held_food.pixel_z = 6
 	. += held_food

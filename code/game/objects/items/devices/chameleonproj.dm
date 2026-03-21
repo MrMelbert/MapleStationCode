@@ -13,6 +13,8 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/can_use = 1
 	var/obj/effect/dummy/chameleon/active_dummy = null
 	var/saved_appearance = null
@@ -36,29 +38,36 @@
 	else
 		to_chat(user, span_warning("You can't use [src] while inside something!"))
 
-/obj/item/chameleon/afterattack(atom/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-	. |= AFTERATTACK_PROCESSED_ITEM
+/obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!can_copy(interacting_with) || SHOULD_SKIP_INTERACTION(interacting_with, src, user))
+		return NONE
+	make_copy(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/chameleon/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!can_copy(interacting_with)) // RMB scan works on storage items, LMB scan does not
+		return NONE
+	make_copy(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/chameleon/proc/can_copy(atom/target)
 	if(!check_sprite(target))
-		return
+		return FALSE
 	if(active_dummy)//I now present you the blackli(f)st
-		return
+		return FALSE
 	if(isturf(target))
-		return
+		return FALSE
 	if(ismob(target))
-		return
+		return FALSE
 	if(istype(target, /obj/structure/falsewall))
-		return
+		return FALSE
 	if(target.alpha != 255)
-		return
+		return FALSE
 	if(target.invisibility != 0)
-		return
-	if(iseffect(target))
-		if(!(istype(target, /obj/effect/decal))) //be a footprint
-			return
-	make_copy(target, user)
+		return FALSE
+	if(iseffect(target) && !istype(target, /obj/effect/decal)) //be a footprint
+		return FALSE
+	return TRUE
 
 /obj/item/chameleon/proc/make_copy(atom/target, mob/user)
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, TRUE, -6)
@@ -154,24 +163,10 @@
 /obj/effect/dummy/chameleon/relaymove(mob/living/user, direction)
 	if(!isturf(loc) || isspaceturf(loc) || !direction)
 		return //No magical movement! Trust me, this bad boy can do things like leap out of pipes if you're not careful
-
-	if(can_move < world.time)
-		var/amount
-		switch(user.bodytemperature)
-			if(300 to INFINITY)
-				amount = 10
-			if(295 to 300)
-				amount = 13
-			if(280 to 295)
-				amount = 16
-			if(260 to 280)
-				amount = 20
-			else
-				amount = 25
-
-		can_move = world.time + amount
-		try_step_multiz(direction)
-	return
+	if(can_move >= world.time)
+		return
+	can_move = world.time + 2 + (user.cached_multiplicative_slowdown * 4) // Fake movement speed calculating based on the mob's move speed
+	try_step_multiz(direction)
 
 /obj/effect/dummy/chameleon/Destroy()
 	if(master)

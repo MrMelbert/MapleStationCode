@@ -1,6 +1,7 @@
 /datum/job/janitor
 	title = JOB_JANITOR
-	description = "Clean up trash and blood. Replace broken lights. Slip people over."
+	description = "Clean up trash and blood, replace broken lights, \
+		kill pests and vermin, slip people endlessly."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -9,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "JANITOR"
 
-	outfit = /datum/outfit/job/janitor
+	base_outfit = /datum/outfit/job/janitor
 	plasmaman_outfit = /datum/outfit/plasmaman/janitor
 
 	paycheck = PAYCHECK_CREW
@@ -20,7 +21,11 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/cup/bucket, /obj/item/paper/fluff/stations/soap)
+	family_heirlooms = list(
+		/obj/item/mop,
+		// /obj/item/clothing/suit/caution,
+		/obj/item/reagent_containers/cup/bucket,
+	)
 
 	mail_goodies = list(
 		/obj/item/grenade/chem_grenade/cleaner = 30,
@@ -31,6 +36,13 @@
 	job_flags = STATION_JOB_FLAGS
 
 	job_tone = "slip"
+
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE, // i'd make this higher, but i think grinding cleaning skill IS janitor's gameplay
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // garbage day
+		/datum/skill/chemistry = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/janitor
 	name = "Janitor"
@@ -47,11 +59,12 @@
 	if(check_holidays(GARBAGEDAY))
 		backpack_contents += list(/obj/item/gun/ballistic/revolver)
 		r_pocket = /obj/item/ammo_box/a357
-
+/*
 	var/static/access_key_given = FALSE
 	if(!access_key_given && !visuals_only)
 		access_key_given = TRUE
 		backpack_contents += list(/obj/item/access_key)
+*/
 
 /datum/outfit/job/janitor/get_types_to_preload()
 	. = ..()

@@ -1,5 +1,5 @@
 /obj/item/seeds/cotton
-	name = "pack of cotton seeds"
+	name = "cotton seed pack"
 	desc = "A pack of seeds that'll grow into a cotton plant. Assistants make good free labor if neccesary."
 	icon_state = "seed-cotton"
 	species = "cotton"
@@ -30,6 +30,9 @@
 	throw_range = 3
 	attack_verb_continuous = list("pomfs")
 	attack_verb_simple = list("pomf")
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
+
 	var/cotton_type = /obj/item/stack/sheet/cotton
 	var/cotton_name = "raw cotton"
 
@@ -57,7 +60,7 @@
 
 //reinforced mutated variant
 /obj/item/seeds/cotton/durathread
-	name = "pack of durathread seeds"
+	name = "durathread seed pack"
 	desc = "A pack of seeds that'll grow into an extremely durable thread that could easily rival plasteel if woven properly."
 	icon_state = "seed-durathread"
 	species = "durathread"

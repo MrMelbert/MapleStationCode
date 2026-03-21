@@ -11,23 +11,27 @@
 	var/obj/item/assembly/signaler/anomaly/aSignal = /obj/item/assembly/signaler/anomaly
 	var/area/impact_area
 
+	/// How long till we seppuku? Blocked by immortal
 	var/lifespan = ANOMALY_COUNTDOWN_TIMER
 	var/death_time
 
+	/// Color of the countdown effect
 	var/countdown_colour
+	/// Reference to the countdown effect
 	var/obj/effect/countdown/anomaly/countdown
 
 	/// Do we drop a core when we're neutralized?
 	var/drops_core = TRUE
 	///Do we keep on living forever?
 	var/immortal = FALSE
-	///Do we stay in one place?
-	var/immobile = FALSE
+	///Chance per second that we will move
+	var/move_chance = ANOMALY_MOVECHANCE
 
 /obj/effect/anomaly/Initialize(mapload, new_lifespan, drops_core = TRUE)
 	. = ..()
 
-	SSpoints_of_interest.make_point_of_interest(src)
+	if(!mapload)
+		SSpoints_of_interest.make_point_of_interest(src)
 
 	START_PROCESSING(SSobj, src)
 	impact_area = get_area(src)
@@ -75,8 +79,12 @@
 	return ..()
 
 /obj/effect/anomaly/proc/anomalyEffect(seconds_per_tick)
-	if(!immobile && SPT_PROB(ANOMALY_MOVECHANCE, seconds_per_tick))
-		step(src,pick(GLOB.alldirs))
+	if(SPT_PROB(move_chance, seconds_per_tick))
+		move_anomaly()
+
+/// Move in a direction
+/obj/effect/anomaly/proc/move_anomaly()
+	step(src, pick(GLOB.alldirs))
 
 /obj/effect/anomaly/proc/detonate()
 	return
@@ -101,12 +109,12 @@
 
 	qdel(src)
 
-/obj/effect/anomaly/attackby(obj/item/weapon, mob/user, params)
-	if(weapon.tool_behaviour == TOOL_ANALYZER && aSignal)
+/obj/effect/anomaly/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	if(!isnull(aSignal))
 		to_chat(user, span_notice("Analyzing... [src]'s unstable field is fluctuating along frequency [format_frequency(aSignal.frequency)], code [aSignal.code]."))
-		return TRUE
-
-	return ..()
+		return ITEM_INTERACT_SUCCESS
+	to_chat(user, span_notice("Analyzing... [src]'s unstable field is not fluctuating along a stable frequency."))
+	return ITEM_INTERACT_BLOCKING
 
 ///Stabilize an anomaly, letting it stay around forever or untill destabilizes by a player. An anomaly without a core can't be signalled, but can be destabilized
 /obj/effect/anomaly/proc/stabilize(anchor = FALSE, has_core = TRUE)
@@ -115,4 +123,5 @@
 	if(!has_core)
 		drops_core = FALSE
 		QDEL_NULL(aSignal)
-	immobile = anchor
+	if (anchor)
+		move_chance = 0

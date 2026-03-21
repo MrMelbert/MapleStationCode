@@ -3,7 +3,7 @@
 	desc = "A real bonefied skeleton, doesn't seem like it wants to socialize."
 	gender = NEUTER
 	icon = 'icons/mob/simple/simple_human.dmi'
-	mob_biotypes = MOB_UNDEAD|MOB_HUMANOID
+	mob_biotypes = MOB_UNDEAD|MOB_HUMANOID|MOB_SKELETAL
 	speak_emote = list("rattles")
 	maxHealth = 40
 	health = 40
@@ -17,6 +17,9 @@
 	attack_verb_simple = "slash"
 	attack_sound = 'sound/weapons/slash.ogg'
 	attack_vis_effect = ATTACK_EFFECT_CLAW
+	sharpness = SHARP_EDGED
+	wound_bonus = -5
+	initial_blood_type = null
 	faction = list(FACTION_SKELETON)
 	// Going for a sort of pale bluegreen here, shooting for boneish
 	lighting_cutoff_red = 15
@@ -54,6 +57,9 @@
 	var/list/foods_list = good_drinks + bad_drinks
 	ai_controller?.set_blackboard_key(BB_BASIC_FOODS, typecacheof(foods_list))
 
+/mob/living/basic/skeleton/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
 /mob/living/basic/skeleton/settler
 	name = "undead settler"
 	desc = "The reanimated remains of some poor settler."
@@ -65,6 +71,7 @@
 	attack_verb_simple = "jab"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
 	death_message = "collapses into a pile of bones, its gear falling to the floor!"
 	loot = list(
 		/obj/effect/decal/remains/human,
@@ -94,6 +101,8 @@
 	attack_verb_simple = "slice"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = 5
 	death_message = "collapses into a pile of bones, its gear clanging as it hits the ground!"
 	loot = list(
 		/obj/effect/decal/remains/human,
@@ -162,7 +171,7 @@
 /// Skeletons mostly just beat people to death, but they'll also find and drink milk.
 /datum/ai_controller/basic_controller/skeleton
 	blackboard = list(
-		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic/allow_items,
+		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic,
 		BB_TARGET_MINIMUM_STAT = HARD_CRIT,
 		BB_EMOTE_KEY = "rattles",
 		BB_EMOTE_CHANCE = 20,

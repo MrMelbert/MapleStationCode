@@ -16,12 +16,15 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	resistance_flags = FLAMMABLE
 	max_integrity = 150
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 	var/folder_path = /obj/item/folder //this is the path of the folder that gets spawned in New()
 
 /obj/item/storage/briefcase/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	atom_storage.max_total_storage = 21
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 /obj/item/storage/briefcase/PopulateContents()
 	new /obj/item/pen(src)

@@ -4,6 +4,7 @@
 /atom/movable/screen/human/toggle
 	name = "toggle"
 	icon_state = "toggle"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/human/toggle/Click()
 
@@ -26,6 +27,7 @@
 /atom/movable/screen/human/equip
 	name = "equip"
 	icon_state = "act_equip"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/human/equip/Click()
 	if(ismecha(usr.loc)) // stops inventory actions in a mech
@@ -45,6 +47,7 @@
 	name = "current sting"
 	screen_loc = ui_lingstingdisplay
 	invisibility = INVISIBILITY_ABSTRACT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ling/sting/Click()
 	if(isobserver(usr))
@@ -78,7 +81,7 @@
 
 	using = new /atom/movable/screen/mov_intent(null, src)
 	using.icon = ui_style
-	using.icon_state = (owner.move_intent == MOVE_INTENT_RUN ? "running" : "walking")
+	using.update_appearance() // NON-MODULE CHANGE
 	using.screen_loc = ui_movi
 	static_inventory += using
 
@@ -268,12 +271,15 @@
 	healths = new /atom/movable/screen/healths(null, src)
 	infodisplay += healths
 
-	healthdoll = new /atom/movable/screen/healthdoll(null, src)
-	infodisplay += healthdoll
+	hunger = new /atom/movable/screen/hunger(null, src)
+	infodisplay += hunger
 
+	healthdoll = new /atom/movable/screen/healthdoll/human(null, src)
+	infodisplay += healthdoll
+/*
 	stamina = new /atom/movable/screen/stamina(null, src)
 	infodisplay += stamina
-
+*/
 	pull_icon = new /atom/movable/screen/pull(null, src)
 	pull_icon.icon = ui_style
 	pull_icon.screen_loc = ui_above_intent
@@ -298,16 +304,36 @@
 /datum/hud/human/update_locked_slots()
 	if(!mymob)
 		return
-	var/mob/living/carbon/human/H = mymob
-	if(!istype(H) || !H.dna.species)
-		return
-	var/datum/species/S = H.dna.species
+	// NON-MODULE CHANGE
+	var/blocked_slots = NONE
+
+	var/mob/living/carbon/human/human_mob = mymob
+	if(istype(human_mob))
+		blocked_slots |= human_mob.dna?.species?.no_equip_flags
+		if((isnull(human_mob.w_uniform) || !(human_mob.w_uniform.item_flags & IN_INVENTORY)) && !HAS_TRAIT(human_mob, TRAIT_NO_JUMPSUIT))
+			var/obj/item/bodypart/chest = human_mob.get_bodypart(BODY_ZONE_CHEST)
+			if(isnull(chest) || IS_ORGANIC_LIMB(chest))
+				blocked_slots |= ITEM_SLOT_ID|ITEM_SLOT_BELT
+			var/obj/item/bodypart/left_leg = human_mob.get_bodypart(BODY_ZONE_L_LEG)
+			if(isnull(left_leg) || IS_ORGANIC_LIMB(left_leg))
+				blocked_slots |= ITEM_SLOT_LPOCKET
+			var/obj/item/bodypart/right_leg = human_mob.get_bodypart(BODY_ZONE_R_LEG)
+			if(isnull(right_leg) || IS_ORGANIC_LIMB(right_leg))
+				blocked_slots |= ITEM_SLOT_RPOCKET
+		if(isnull(human_mob.wear_suit) || !(human_mob.wear_suit.item_flags & IN_INVENTORY))
+			blocked_slots |= ITEM_SLOT_SUITSTORE
+		if(human_mob.num_hands < 2)
+			blocked_slots |= ITEM_SLOT_GLOVES
+		if(human_mob.num_legs < 2)
+			blocked_slots |= ITEM_SLOT_FEET
+		var/obj/item/bodypart/head/head = human_mob.get_bodypart(BODY_ZONE_HEAD)
+		if(isnull(head))
+			blocked_slots |= ITEM_SLOT_HEAD|ITEM_SLOT_EARS|ITEM_SLOT_EYES|ITEM_SLOT_MASK
+
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
-		if(inv.slot_id)
-			if(S.no_equip_flags & inv.slot_id)
-				inv.alpha = 128
-			else
-				inv.alpha = initial(inv.alpha)
+		if(!inv.slot_id)
+			continue
+		inv.alpha = (blocked_slots & inv.slot_id) ? 128 : initial(inv.alpha)
 
 /datum/hud/human/hidden_inventory_update(mob/viewer)
 	if(!mymob)

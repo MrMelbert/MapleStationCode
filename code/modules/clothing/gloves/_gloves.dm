@@ -12,15 +12,25 @@
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	// drop_sound = 'sound/items/handling/glove_drop.ogg'
+	// pickup_sound = 'sound/items/handling/glove_pick_up.ogg'
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20
 	equip_delay_other = 40
+	article = "a pair of"
 	blood_overlay_type = "glove" // NON-MODULE CHANGE
+	drop_sound = 'maplestation_modules/sound/items/drop/gloves.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gloves.ogg'
+	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null
 	/// Used for handling bloody gloves leaving behind bloodstains on objects. Will be decremented whenever a bloodstain is left behind, and be incremented when the gloves become bloody.
 	var/transfer_blood = 0
+
+/obj/item/clothing/gloves/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/pat_out_fire)
 
 /obj/item/clothing/gloves/apply_fantasy_bonuses(bonus)
 	. = ..()
@@ -44,7 +54,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 		// NON-MODULE CHANGE reworking clothing blood overlays

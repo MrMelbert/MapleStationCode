@@ -21,18 +21,13 @@
 	. |= bullethole_overlays
 
 /obj/item/target/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
-	if(prob(25))
-		return ..() // RNG change to just not leave a mark, like walls
-	if(length(overlays) > 35)
-		return ..() // Too many bullets, we're done here
-
 	// Projectiles which do not deal damage will not leave dent / scorch mark graphics.
 	// However we snowflake some projectiles to leave them anyway, because they're appropriate.
 	var/static/list/always_leave_marks
 	if(isnull(always_leave_marks))
 		always_leave_marks = typecacheof(list(
 			/obj/projectile/beam/practice,
-			/obj/projectile/beam/laser/carbine/practice,
+			/obj/projectile/beam/laser/rapid/practice,
 		))
 
 	var/is_invalid_damage = hitting_projectile.damage_type != BRUTE && hitting_projectile.damage_type != BURN
@@ -40,6 +35,11 @@
 	var/is_generic_projectile = !is_type_in_typecache(hitting_projectile, always_leave_marks)
 	if(is_generic_projectile && (is_invalid_damage || is_safe))
 		return ..() // Don't bother unless it's real shit
+	hitting_projectile.award_firearms_exp(SKILL_LEVEL_JOURNEYMAN)
+	if(prob(25))
+		return ..() // RNG change to just not leave a mark, like walls
+	if(length(overlays) > 35)
+		return ..() // Too many bullets, we're done here
 
 	var/p_x = hitting_projectile.p_x + pick(0, 0, 0, 0, 0, -1, 1) // really ugly way of coding "sometimes offset p_x!"
 	var/p_y = hitting_projectile.p_y + pick(0, 0, 0, 0, 0, -1, 1)
@@ -52,8 +52,8 @@
 		return
 
 	var/image/bullet_hole = image('icons/effects/effects.dmi', "dent", OBJ_LAYER + 0.5)
-	bullet_hole.pixel_x = p_x - 1 //offset correction
-	bullet_hole.pixel_y = p_y - 1
+	bullet_hole.pixel_w = p_x - 1 //offset correction
+	bullet_hole.pixel_z = p_y - 1
 	if(hitting_projectile.damage_type != BRUTE)
 		bullet_hole.setDir(pick(GLOB.cardinals))// random scorch design
 		if(hitting_projectile.damage < 20 && is_generic_projectile)

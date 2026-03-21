@@ -3,7 +3,7 @@
 
 /datum/unit_test/burning/Run()
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
-	var/initial_temp = dummy.bodytemperature
+	var/initial_temp = dummy.body_temperature
 	// Light this baby up
 	dummy.set_fire_stacks(20)
 	dummy.ignite_mob()
@@ -14,4 +14,4 @@
 		handler.tick_interval = world.time - 1
 		handler.process()
 	TEST_ASSERT(dummy.fire_stacks < 20, "Dummy should have decayed firestacks, but did not. (Dummy stacks: [dummy.fire_stacks]).")
-	TEST_ASSERT(dummy.bodytemperature > initial_temp, "Dummy did not heat up despite being on fire. (Dummy temp: [dummy.bodytemperature], initial temp: [initial_temp])")
+	TEST_ASSERT(dummy.body_temperature > initial_temp, "Dummy did not heat up despite being on fire. (Dummy temp: [dummy.body_temperature], initial temp: [initial_temp])")

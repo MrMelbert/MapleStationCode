@@ -6,7 +6,6 @@
 	armour_penetration = 20
 	light_color = COLOR_RED_LIGHT
 	wound_bonus = -20
-	bare_wound_bonus = -10
 	hitscan = TRUE
 	muzzle_type = /obj/effect/projectile/muzzle/laser/er_laser
 	tracer_type = /obj/effect/projectile/tracer/laser/er_laser

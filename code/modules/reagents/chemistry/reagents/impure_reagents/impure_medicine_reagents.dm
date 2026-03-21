@@ -9,15 +9,15 @@
 /datum/reagent/impurity/healing
 	name = "Healing Impure Reagent"
 	description = "Not all impure reagents are bad! Sometimes you might want to specifically make these!"
-	chemical_flags = REAGENT_DONOTSPLIT
-	addiction_types = list(/datum/addiction/medicine = 3.5)
+	chemical_flags = NONE
+	addiction_types = list(/datum/addiction/medicine = 350)
 	liver_damage = 0
 
 /datum/reagent/inverse/healing
 	name = "Healing Inverse Reagent"
 	description = "Not all impure reagents are bad! Sometimes you might want to specifically make these!"
-	chemical_flags = REAGENT_DONOTSPLIT
-	addiction_types = list(/datum/addiction/medicine = 3)
+	chemical_flags = NONE
+	addiction_types = list(/datum/addiction/medicine = 400)
 	tox_damage = 0
 
 // END SUBTYPES
@@ -28,8 +28,8 @@
 /datum/reagent/impurity/healing/medicine_failure
 	name = "Insolvent Medicinal Precipitate"
 	description = "A viscous mess of various medicines. Will heal a damage type at random"
-	metabolization_rate = 1 * REM//This is fast
-	addiction_types = list(/datum/addiction/medicine = 7.5)
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM
+	addiction_types = list(/datum/addiction/medicine = 400)
 	ph = 11
 	affected_biotype = MOB_ORGANIC | MOB_MINERAL | MOB_PLANT // no healing ghosts
 	affected_respiration_type = ALL
@@ -136,9 +136,9 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/inverse/libitoil
 	name = "Libitoil"
 	description = "Temporarilly interferes a patient's ability to process alcohol."
-	chemical_flags = REAGENT_DONOTSPLIT
+	chemical_flags = REAGENT_SNEAKYNAME
 	ph = 13.5
-	addiction_types = list(/datum/addiction/medicine = 4)
+	addiction_types = list(/datum/addiction/medicine = 300)
 	tox_damage = 0
 
 /datum/reagent/inverse/libitoil/on_mob_life(mob/living/carbon/affected_mob, delta_time, times_fired)
@@ -152,21 +152,21 @@ Basically, we fill the time between now and 2s from now with hands based off the
 		return
 	RegisterSignal(consumer, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gained_organ))
 	RegisterSignal(consumer, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_removed_organ))
-	var/obj/item/organ/internal/liver/this_liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/this_liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
 	this_liver.alcohol_tolerance *= 2
 
 /datum/reagent/inverse/libitoil/proc/on_gained_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
-	if(!istype(organ, /obj/item/organ/internal/liver))
+	if(!istype(organ, /obj/item/organ/liver))
 		return
-	var/obj/item/organ/internal/liver/this_liver = organ
+	var/obj/item/organ/liver/this_liver = organ
 	this_liver.alcohol_tolerance *= 2
 
 /datum/reagent/inverse/libitoil/proc/on_removed_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
-	if(!istype(organ, /obj/item/organ/internal/liver))
+	if(!istype(organ, /obj/item/organ/liver))
 		return
-	var/obj/item/organ/internal/liver/this_liver = organ
+	var/obj/item/organ/liver/this_liver = organ
 	this_liver.alcohol_tolerance /= 2
 
 /datum/reagent/inverse/libitoil/on_mob_delete(mob/living/affected_mob)
@@ -174,7 +174,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	var/mob/living/carbon/consumer = affected_mob
 	UnregisterSignal(consumer, COMSIG_CARBON_LOSE_ORGAN)
 	UnregisterSignal(consumer, COMSIG_CARBON_GAIN_ORGAN)
-	var/obj/item/organ/internal/liver/this_liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/this_liver = consumer.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(!this_liver)
 		return
 	this_liver.alcohol_tolerance /= 2
@@ -189,7 +189,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	color = "#b3ff00"
 	overdose_threshold = 10
 	ph = 1
-	addiction_types = list(/datum/addiction/medicine = 5)
+	// this one is rather misleading due to it changing metabolism rate in overdose
+	addiction_types = list(/datum/addiction/medicine = 15)
 	liver_damage = 0
 
 /datum/reagent/impurity/probital_failed/overdose_start(mob/living/carbon/M)
@@ -212,8 +213,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 //inverse
 /datum/reagent/inverse/lentslurri //Okay maybe I should outsource names for these
 	name = "Lentslurri"//This is a really bad name please replace
-	description = "A highly addicitive muscle relaxant that is made when Lenturi reactions go wrong, this will cause the patient to move slowly."
-	addiction_types = list(/datum/addiction/medicine = 8)
+	description = "A highly addictive muscle relaxant that is made when Lenturi reactions go wrong, this will cause the patient to move slowly."
+	addiction_types = list(/datum/addiction/medicine = 150)
 	tox_damage = 0
 
 /datum/reagent/inverse/lentslurri/on_mob_metabolize(mob/living/carbon/affected_mob)
@@ -224,42 +225,13 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	. = ..()
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/lenturi)
 
-//failed
-/datum/reagent/inverse/ichiyuri
-	name = "Ichiyuri"
-	description = "Prolonged exposure to this chemical can cause an overwhelming urge to itch oneself."
-	reagent_state = LIQUID
-	color = "#C8A5DC"
-	ph = 1.7
-	addiction_types = list(/datum/addiction/medicine = 2.5)
-	tox_damage = 0.1
-	///Probability of scratch - increases as a function of time
-	var/resetting_probability = 0
-	///Prevents message spam
-	var/spammer = 0
-
-//Just the removed itching mechanism - omage to it's origins.
-/datum/reagent/inverse/ichiyuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	. = ..()
-	if(prob(resetting_probability) && !(HAS_TRAIT(affected_mob, TRAIT_RESTRAINED) || affected_mob.incapacitated()))
-		. = TRUE
-		if(spammer < world.time)
-			to_chat(affected_mob,span_warning("You can't help but itch yourself."))
-			spammer = world.time + (10 SECONDS)
-		var/scab = rand(1,7)
-		if(affected_mob.adjustBruteLoss(scab*REM, updating_health = FALSE))
-			. = UPDATE_MOB_HEALTH
-		affected_mob.bleed(scab)
-		resetting_probability = 0
-	resetting_probability += (5*((current_cycle-1)/10) * seconds_per_tick) // 10 iterations = >51% to itch
-
 //Aiuri
 //inverse
 /datum/reagent/inverse/aiuri
 	name = "Aivime"
 	description = "This reagent is known to interfere with the eyesight of a patient."
 	ph = 3.1
-	addiction_types = list(/datum/addiction/medicine = 1.5)
+	addiction_types = list(/datum/addiction/medicine = 800)
 	///The amount of blur applied per second. Given the average on_life interval is 2 seconds, that'd be 2.5s.
 	var/amount_of_blur_applied = 1.25 SECONDS
 	tox_damage = 0
@@ -274,51 +246,43 @@ Basically, we fill the time between now and 2s from now with hands based off the
 //inverse
 /datum/reagent/inverse/hercuri
 	name = "Herignis"
-	description = "This reagent causes a dramatic raise in the patient's body temperature. Overdosing makes the effect even stronger and causes severe liver damage."
+	description = "This reagent causes a dramatic raise in the patient's body temperature. \
+		Overdosing makes the effect even stronger and causes severe liver damage."
 	ph = 0.8
 	tox_damage = 0
 	color = "#ff1818"
 	overdose_threshold = 25
 	reagent_weight = 0.6
 	taste_description = "heat! Ouch!"
-	addiction_types = list(/datum/addiction/medicine = 2.5)
+	addiction_types = list(/datum/addiction/medicine = 480)
 
 /datum/reagent/inverse/hercuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	var/heating = rand(5, 25) * creation_purity * REM * seconds_per_tick
-	affected_mob.reagents?.chem_temp += heating
-	affected_mob.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT)
-	if(!ishuman(affected_mob))
-		return
-	var/mob/living/carbon/human/human = affected_mob
-	human.adjust_coretemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT)
+	affected_mob.reagents?.expose_temperature(affected_mob.reagents.chem_temp + heating, 1)
+	affected_mob.adjust_body_temperature(heating * 0.2 KELVIN)
 
 /datum/reagent/inverse/hercuri/expose_mob(mob/living/carbon/exposed_mob, methods=VAPOR, reac_volume)
 	. = ..()
 	if(!(methods & VAPOR))
 		return
 
-	exposed_mob.adjust_bodytemperature(reac_volume * TEMPERATURE_DAMAGE_COEFFICIENT)
+	exposed_mob.adjust_body_temperature(reac_volume * 0.33 KELVIN, use_insulation = TRUE)
 	exposed_mob.adjust_fire_stacks(reac_volume / 2)
 
 /datum/reagent/inverse/hercuri/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.adjustOrganLoss(ORGAN_SLOT_LIVER, 2 * REM * seconds_per_tick, required_organ_flag = affected_organ_flags)) //Makes it so you can't abuse it with pyroxadone very easily (liver dies from 25u unless it's fully upgraded)
-		. = UPDATE_MOB_HEALTH
-	var/heating = 10 * creation_purity * REM * seconds_per_tick * TEMPERATURE_DAMAGE_COEFFICIENT
-	affected_mob.adjust_bodytemperature(heating) //hot hot
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/human = affected_mob
-		human.adjust_coretemperature(heating)
+	affected_mob.adjustOrganLoss(ORGAN_SLOT_LIVER, 2 * REM * seconds_per_tick, required_organ_flag = affected_organ_flags) //Makes it so you can't abuse it with pyroxadone very easily (liver dies from 25u unless it's fully upgraded)
+	affected_mob.adjust_body_temperature(0.5 KELVIN * creation_purity * REM * seconds_per_tick) //hot hot
 
 /datum/reagent/inverse/healing/tirimol
 	name = "Super Melatonin"//It's melatonin, but super!
 	description = "This will send the patient to sleep, adding a bonus to the efficacy of all reagents administered."
 	ph = 12.5 //sleeping is a basic need of all lifeformsa
 	self_consuming = TRUE //No pesky liver shenanigans
-	chemical_flags = REAGENT_DONOTSPLIT | REAGENT_DEAD_PROCESS
+	chemical_flags = REAGENT_DEAD_PROCESS
 	var/cached_reagent_list = list()
-	addiction_types = list(/datum/addiction/medicine = 5)
+	addiction_types = list(/datum/addiction/medicine = 240)
 
 //Makes patients fall asleep, then boosts the purirty of their medicine reagents if they're asleep
 /datum/reagent/inverse/healing/tirimol/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -363,12 +327,12 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	description = "This reagent is known to coat the inside of a patient's lungs, providing greater protection against hot or cold air."
 	ph = 3.82
 	tox_damage = 0
-	addiction_types = list(/datum/addiction/medicine = 2.3)
+	addiction_types = list(/datum/addiction/medicine = 520)
 	//The heat damage levels of lungs when added (i.e. heat_level_1_threshold on lungs)
 	var/cached_heat_level_1
 	var/cached_heat_level_2
 	var/cached_heat_level_3
-	//The cold damage levels of lungs when added (i.e. cold_level_1_threshold on lungs)
+	//The cold damage levels of lungs when added (i.e. cold_level_warning_threshold on lungs)
 	var/cached_cold_level_1
 	var/cached_cold_level_2
 	var/cached_cold_level_3
@@ -377,54 +341,54 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	. = ..()
 	RegisterSignal(affected_mob, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gained_organ))
 	RegisterSignal(affected_mob, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_removed_organ))
-	var/obj/item/organ/internal/lungs/lungs = affected_mob.get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = affected_mob.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(!lungs)
 		return
 	apply_lung_levels(lungs)
 
 /datum/reagent/inverse/healing/convermol/proc/on_gained_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
-	if(!istype(organ, /obj/item/organ/internal/lungs))
+	if(!istype(organ, /obj/item/organ/lungs))
 		return
-	var/obj/item/organ/internal/lungs/lungs = organ
+	var/obj/item/organ/lungs/lungs = organ
 	apply_lung_levels(lungs)
 
-/datum/reagent/inverse/healing/convermol/proc/apply_lung_levels(obj/item/organ/internal/lungs/lungs)
-	cached_heat_level_1 = lungs.heat_level_1_threshold
-	cached_heat_level_2 = lungs.heat_level_2_threshold
-	cached_heat_level_3 = lungs.heat_level_3_threshold
-	cached_cold_level_1 = lungs.cold_level_1_threshold
-	cached_cold_level_2 = lungs.cold_level_2_threshold
-	cached_cold_level_3 = lungs.cold_level_3_threshold
+/datum/reagent/inverse/healing/convermol/proc/apply_lung_levels(obj/item/organ/lungs/lungs)
+	cached_heat_level_1 = lungs.heat_level_warning_threshold
+	cached_heat_level_2 = lungs.heat_level_hazard_threshold
+	cached_heat_level_3 = lungs.heat_level_danger_threshold
+	cached_cold_level_1 = lungs.cold_level_warning_threshold
+	cached_cold_level_2 = lungs.cold_level_hazard_threshold
+	cached_cold_level_3 = lungs.cold_level_danger_threshold
 	//Heat threshold is increased
-	lungs.heat_level_1_threshold *= creation_purity * 1.5
-	lungs.heat_level_2_threshold *= creation_purity * 1.5
-	lungs.heat_level_3_threshold *= creation_purity * 1.5
+	lungs.heat_level_warning_threshold *= creation_purity * 1.5
+	lungs.heat_level_hazard_threshold *= creation_purity * 1.5
+	lungs.heat_level_danger_threshold *= creation_purity * 1.5
 	//Cold threshold is decreased
-	lungs.cold_level_1_threshold *= creation_purity * 0.5
-	lungs.cold_level_2_threshold *= creation_purity * 0.5
-	lungs.cold_level_3_threshold *= creation_purity * 0.5
+	lungs.cold_level_warning_threshold *= creation_purity * 0.5
+	lungs.cold_level_hazard_threshold *= creation_purity * 0.5
+	lungs.cold_level_danger_threshold *= creation_purity * 0.5
 
 /datum/reagent/inverse/healing/convermol/proc/on_removed_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
-	if(!istype(organ, /obj/item/organ/internal/lungs))
+	if(!istype(organ, /obj/item/organ/lungs))
 		return
-	var/obj/item/organ/internal/lungs/lungs = organ
+	var/obj/item/organ/lungs/lungs = organ
 	restore_lung_levels(lungs)
 
-/datum/reagent/inverse/healing/convermol/proc/restore_lung_levels(obj/item/organ/internal/lungs/lungs)
-	lungs.heat_level_1_threshold = cached_heat_level_1
-	lungs.heat_level_2_threshold = cached_heat_level_2
-	lungs.heat_level_3_threshold = cached_heat_level_3
-	lungs.cold_level_1_threshold = cached_cold_level_1
-	lungs.cold_level_2_threshold = cached_cold_level_2
-	lungs.cold_level_3_threshold = cached_cold_level_3
+/datum/reagent/inverse/healing/convermol/proc/restore_lung_levels(obj/item/organ/lungs/lungs)
+	lungs.heat_level_warning_threshold = cached_heat_level_1
+	lungs.heat_level_hazard_threshold = cached_heat_level_2
+	lungs.heat_level_danger_threshold = cached_heat_level_3
+	lungs.cold_level_warning_threshold = cached_cold_level_1
+	lungs.cold_level_hazard_threshold = cached_cold_level_2
+	lungs.cold_level_danger_threshold = cached_cold_level_3
 
 /datum/reagent/inverse/healing/convermol/on_mob_delete(mob/living/affected_mob)
 	. = ..()
 	UnregisterSignal(affected_mob, COMSIG_CARBON_LOSE_ORGAN)
 	UnregisterSignal(affected_mob, COMSIG_CARBON_GAIN_ORGAN)
-	var/obj/item/organ/internal/lungs/lungs = affected_mob.get_organ_slot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = affected_mob.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(!lungs)
 		return
 	restore_lung_levels(lungs)
@@ -436,7 +400,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	name = "Technetium 99"
 	description = "A radioactive tracer agent that can improve a scanner's ability to detect internal organ damage. Will poison the patient when present very slowly, purging or using a low dose is recommended after use."
 	metabolization_rate = 0.3 * REM
-	chemical_flags = REAGENT_DONOTSPLIT //Do show this on scanner
+	chemical_flags = REAGENT_SNEAKYNAME //Do show this on scanner
 	tox_damage = 0
 
 	var/time_until_next_poison = 0
@@ -456,10 +420,10 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	name = "Syrinifergus"
 	description = "This reagent reduces the impurity of all non medicines within the patient, reducing their negative effects."
 	self_consuming = TRUE //No pesky liver shenanigans
-	chemical_flags = REAGENT_DONOTSPLIT | REAGENT_DEAD_PROCESS
+	chemical_flags = REAGENT_DEAD_PROCESS
 	///The list of reagents we've affected
 	var/cached_reagent_list = list()
-	addiction_types = list(/datum/addiction/medicine = 1.75)
+	addiction_types = list(/datum/addiction/medicine = 685)
 
 /datum/reagent/inverse/healing/syriniver/on_mob_add(mob/living/affected_mob, amount)
 	if(!(iscarbon(affected_mob)))
@@ -493,7 +457,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	name = "Monover"
 	description = "A toxin treating reagent, that only is effective if it's the only reagent present in the patient."
 	ph = 0.5
-	addiction_types = list(/datum/addiction/medicine = 3.5)
+	addiction_types = list(/datum/addiction/medicine = 350)
 
 //Heals toxins if it's the only thing present - kinda the oposite of multiver! Maybe that's why it's inverse!
 /datum/reagent/inverse/healing/monover/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -515,11 +479,12 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	name = "Nooartrium"
 	description = "A reagent that is known to stimulate the heart in a dead patient, temporarily bringing back recently dead patients at great cost to their heart."
 	ph = 14
-	metabolization_rate = 0.05 * REM
-	addiction_types = list(/datum/addiction/medicine = 12)
+	metabolization_rate = 0.125 * REAGENTS_METABOLISM
+	// this one is also slightly misleading due to changing metabolism rate
+	addiction_types = list(/datum/addiction/medicine = 12.5)
 	overdose_threshold = 20
 	self_consuming = TRUE //No pesky liver shenanigans
-	chemical_flags = REAGENT_DONOTSPLIT | REAGENT_DEAD_PROCESS
+	chemical_flags = REAGENT_DEAD_PROCESS
 	///If we brought someone back from the dead
 	var/back_from_the_dead = FALSE
 	/// List of trait buffs to give to the affected mob, and remove as needed.
@@ -534,17 +499,13 @@ Basically, we fill the time between now and 2s from now with hands based off the
 
 /datum/reagent/inverse/penthrite/on_mob_dead(mob/living/carbon/affected_mob, seconds_per_tick)
 	. = ..()
-	var/obj/item/organ/internal/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
 	if(!heart || heart.organ_flags & ORGAN_FAILING)
 		return
 	metabolization_rate = 0.2 * REM
 	affected_mob.add_traits(trait_buffs, type)
-	affected_mob.set_stat(CONSCIOUS) //This doesn't touch knocked out
 	affected_mob.updatehealth()
 	affected_mob.update_sight()
-	REMOVE_TRAIT(affected_mob, TRAIT_KNOCKEDOUT, STAT_TRAIT)
-	REMOVE_TRAIT(affected_mob, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT) //Because these are normally updated using set_health() - but we don't want to adjust health, and the addition of NOHARDCRIT blocks it being added after, but doesn't remove it if it was added before
-	REMOVE_TRAIT(affected_mob, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT) //Prevents the user from being knocked out by oxyloss
 	affected_mob.set_resting(FALSE) //Please get up, no one wants a deaththrows juggernaught that lies on the floor all the time
 	affected_mob.SetAllImmobility(0)
 	affected_mob.grab_ghost(force = FALSE) //Shoves them back into their freshly reanimated corpse.
@@ -557,18 +518,16 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	if(!back_from_the_dead)
 		return
 	//Following is for those brought back from the dead only
-	REMOVE_TRAIT(affected_mob, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
-	REMOVE_TRAIT(affected_mob, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.adjust_blood_flow(1-creation_purity)
 	var/need_mob_update
 	need_mob_update = affected_mob.adjustBruteLoss(5 * (1-creation_purity) * seconds_per_tick, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustOrganLoss(ORGAN_SLOT_HEART, (1 + (1-creation_purity)) * seconds_per_tick, required_organ_flag = affected_organ_flags)
-	if(affected_mob.health < HEALTH_THRESHOLD_CRIT)
+	if(affected_mob.health < 0)
 		affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/reagent/nooartrium)
-	if(affected_mob.health < HEALTH_THRESHOLD_FULLCRIT)
+	if(affected_mob.health < -100)
 		affected_mob.add_actionspeed_modifier(/datum/actionspeed_modifier/nooartrium)
-	var/obj/item/organ/internal/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
 	if(!heart || heart.organ_flags & ORGAN_FAILING)
 		remove_buffs(affected_mob)
 	if(need_mob_update)
@@ -577,7 +536,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/inverse/penthrite/on_mob_delete(mob/living/carbon/affected_mob)
 	. = ..()
 	remove_buffs(affected_mob)
-	var/obj/item/organ/internal/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
 	if(affected_mob.health < -500 || heart.organ_flags & ORGAN_FAILING)//Honestly commendable if you get -500
 		explosion(affected_mob, light_impact_range = 1, explosion_cause = src)
 		qdel(heart)
@@ -587,7 +546,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	. = ..()
 	if(!back_from_the_dead)
 		return ..()
-	var/obj/item/organ/internal/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = affected_mob.get_organ_slot(ORGAN_SLOT_HEART)
 	if(!heart) //No heart? No life!
 		REMOVE_TRAIT(affected_mob, TRAIT_NODEATH, type)
 		affected_mob.stat = DEAD
@@ -609,7 +568,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	name = "Mannitoil"
 	description = "Gives the patient a temporary speech impediment."
 	color = "#CDCDFF"
-	addiction_types = list(/datum/addiction/medicine = 5)
+	addiction_types = list(/datum/addiction/medicine = 240)
 	ph = 12.4
 	liver_damage = 0
 	///The speech we're forcing on the affected mob
@@ -652,8 +611,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	description = "Induces a temporary brain trauma in the patient by redirecting neuron activity."
 	color = "#DCDCAA"
 	ph = 13.4
-	addiction_types = list(/datum/addiction/medicine = 8)
-	metabolization_rate = 0.025 * REM
+	addiction_types = list(/datum/addiction/medicine = 10)
+	metabolization_rate = 0.0625 * REAGENTS_METABOLISM
 	tox_damage = 0
 	//The temporary trauma passed to the affected mob
 	var/datum/brain_trauma/temp_trauma
@@ -672,7 +631,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 		/datum/brain_trauma/special/honorbound, // Designed to be chaplain exclusive
 	)
 	traumalist -= forbiddentraumas
-	var/obj/item/organ/internal/brain/brain = affected_mob.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = affected_mob.get_organ_slot(ORGAN_SLOT_BRAIN)
 	traumalist = shuffle(traumalist)
 	for(var/trauma in traumalist)
 		if(brain.brain_gain_trauma(trauma, TRAUMA_RESILIENCE_MAGIC))
@@ -693,8 +652,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	color = "#5F5F5F"
 	self_consuming = TRUE
 	ph = 13.5
-	addiction_types = list(/datum/addiction/medicine = 2.5)
-	metabolization_rate = REM
+	addiction_types = list(/datum/addiction/medicine = 1200)
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_DEAD_PROCESS
 	tox_damage = 0
 
@@ -704,7 +663,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	if(!iscarbon(affected_mob))
 		return
 	var/mob/living/carbon/carbon_mob = affected_mob
-	var/obj/item/organ/internal/heart/affected_heart = carbon_mob.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/affected_heart = carbon_mob.get_organ_slot(ORGAN_SLOT_HEART)
 	if(isnull(affected_heart))
 		return
 	carbon_mob.AddComponent(/datum/component/manual_heart)
@@ -720,8 +679,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	description = "Promotes alcoholic substances within the patients body, making their effects more potent."
 	taste_description = "alcohol" //mostly for sneaky slips
 	chemical_flags = REAGENT_INVISIBLE
-	metabolization_rate = 0.05 * REM//This is fast
-	addiction_types = list(/datum/addiction/medicine = 4.5)
+	metabolization_rate = 0.125 * REAGENTS_METABOLISM
+	addiction_types = list(/datum/addiction/medicine = 30)
 	color = "#4C8000"
 	tox_damage = 0
 
@@ -735,8 +694,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	description = "Temporarily blinds the patient."
 	reagent_state = LIQUID
 	color = "#DDDDDD"
-	metabolization_rate = 0.1 * REM
-	addiction_types = list(/datum/addiction/medicine = 3)
+	addiction_types = list(/datum/addiction/medicine = 400)
 	taste_description = "funky toxin"
 	ph = 13
 	tox_damage = 0
@@ -762,8 +720,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/impurity/inacusiate
 	name = "Tinacusiate"
 	description = "Makes the patient's hearing temporarily funky."
-	reagent_state = LIQUID
-	addiction_types = list(/datum/addiction/medicine = 5.6)
+	addiction_types = list(/datum/addiction/medicine = 20)
 	color = "#DDDDFF"
 	taste_description = "the heat evaporating from your mouth."
 	ph = 1
@@ -794,6 +751,9 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	if(!isnull(speaker) && HAS_TRAIT(speaker, TRAIT_SIGN_LANG))
 		return
 
+	var/list/existing_spans = hearing_args[HEARING_SPANS]
+
+	hearing_args[HEARING_SPANS] = LAZYCOPY(existing_spans)
 	hearing_args[HEARING_SPANS] |= random_span
 
 /datum/reagent/inverse/sal_acid
@@ -831,7 +791,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/inverse/oxandrolone/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(SPT_PROB(25, seconds_per_tick))
-		affected_mob.adjust_bodytemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick)
+		affected_mob.adjust_body_temperature(1 KELVIN * REM * seconds_per_tick)
 		affected_mob.set_jitter_if_lower(3 SECONDS)
 		affected_mob.adjustStaminaLoss(5 * REM * seconds_per_tick)
 	else if(SPT_PROB(5, seconds_per_tick))

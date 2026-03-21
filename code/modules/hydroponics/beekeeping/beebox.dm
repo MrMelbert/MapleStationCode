@@ -10,17 +10,18 @@
 /mob/proc/bee_friendly()
 	return 0
 
-
-
+// NON-MODULE CHANGE
 /mob/living/carbon/human/bee_friendly()
-	if(dna && dna.species && dna.species.id == SPECIES_PODPERSON) //bees pollinate plants, duh.
-		return 1
-	if (wear_suit && head && isclothing(wear_suit) && isclothing(head))
+	if(ispodperson(src)) //bees pollinate plants, duh.
+		return TRUE
+	if(mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_LEGENDARY)
+		return TRUE
+	if (isclothing(wear_suit) && isclothing(head))
 		var/obj/item/clothing/CS = wear_suit
 		var/obj/item/clothing/CH = head
 		if (CS.clothing_flags & CH.clothing_flags & THICKMATERIAL)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 
 /obj/structure/beebox
@@ -249,7 +250,7 @@
 				visible_message(span_notice("[user] removes the queen from the apiary."))
 				queen_bee = null
 
-/obj/structure/beebox/deconstruct(disassembled = TRUE)
+/obj/structure/beebox/atom_deconstruct(disassembled = TRUE)
 	new /obj/item/stack/sheet/mineral/wood (loc, 20)
 	for(var/mob/living/basic/bee/worker as anything in bees)
 		if(worker.loc == src)
@@ -260,7 +261,6 @@
 		if(frame.loc == src)
 			frame.forceMove(get_turf(src))
 		honey_frames -= frame
-	qdel(src)
 
 /obj/structure/beebox/unwrenched
 	anchored = FALSE

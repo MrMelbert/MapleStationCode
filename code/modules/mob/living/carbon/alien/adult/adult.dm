@@ -8,6 +8,7 @@
 	melee_damage_lower = 20 //Refers to unarmed damage, aliens do unarmed attacks.
 	melee_damage_upper = 20
 	max_grab = GRAB_AGGRESSIVE
+
 	var/caste = ""
 	var/alt_icon = 'icons/mob/nonhuman-player/alienleap.dmi' //used to switch between the two alien icon files.
 	var/leap_on_click = 0
@@ -34,14 +35,18 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	. = ..()
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW, 0.5, -11)
 	AddElement(/datum/element/strippable, GLOB.strippable_alien_humanoid_items)
+	ADD_TRAIT(src, TRAIT_STRONG_GRABBER, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_NO_GRAB_SPEED_PENALTY, INNATE_TRAIT)
+	RegisterSignal(src, COMSIG_MOB_REMOVED_CUFFS, PROC_REF(on_cuff_break))
 
 /mob/living/carbon/alien/adult/create_internal_organs()
-	organs += new /obj/item/organ/internal/stomach/alien()
+	organs += new /obj/item/organ/stomach/alien()
 	return ..()
 
-/mob/living/carbon/alien/adult/cuff_resist(obj/item/I)
+/mob/living/carbon/alien/adult/proc/on_cuff_break()
+	SIGNAL_HANDLER
 	playsound(src, 'sound/voice/hiss5.ogg', 40, TRUE, TRUE)  //Alien roars when starting to break free
-	..(I, cuff_break = INSTANT_CUFFBREAK)
+	return BREAK_CUFFS
 
 /mob/living/carbon/alien/adult/resist_grab(moving_resist)
 	if(pulledby.grab_state)
@@ -64,7 +69,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 		return A
 	return FALSE
 
-/mob/living/carbon/alien/adult/check_breath(datum/gas_mixture/breath)
+/mob/living/carbon/alien/adult/check_breath(datum/gas_mixture/breath, skip_breath = FALSE)
 	if(breath?.total_moles() > 0 && !HAS_TRAIT(src, TRAIT_SNEAK))
 		playsound(get_turf(src), pick('sound/voice/lowHiss2.ogg', 'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'), 50, FALSE, -5)
 	return ..()
@@ -74,35 +79,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 		name = "[name] ([numba])"
 		real_name = name
 
-/mob/living/carbon/alien/adult/proc/grab(mob/living/carbon/human/target)
-	if(target.check_block(src, 0, "[target]'s grab"))
-		return FALSE
-	target.grabbedby(src)
-	return TRUE
-
-/mob/living/carbon/alien/adult/setGrabState(newstate)
-	if(newstate == grab_state)
-		return
-	if(newstate > GRAB_AGGRESSIVE)
-		newstate = GRAB_AGGRESSIVE
-	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_GRAB_STATE, newstate)
-	. = grab_state
-	grab_state = newstate
-	switch(grab_state) // Current state.
-		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			if(. >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		if(GRAB_AGGRESSIVE)
-			if(. >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-		if(GRAB_NECK, GRAB_KILL)
-			if(. <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-
-/mob/living/carbon/alien/adult/MouseDrop_T(atom/dropping, atom/user)
+/mob/living/carbon/alien/adult/mouse_drop_receive(atom/dropping, mob/user, params)
 	if(devour_lad(dropping))
 		return
 	return ..()
@@ -136,7 +113,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	if(!can_consume(lucky_winner))
 		return TRUE
 
-	var/obj/item/organ/internal/stomach/alien/melting_pot = get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/alien/melting_pot = get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(!istype(melting_pot))
 		visible_message(span_clown("[src] can't seem to consume [lucky_winner]!"), \
 			span_alien("You feel a pain in your... chest? You can't get [lucky_winner] down."))
@@ -148,6 +125,9 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	log_combat(src, lucky_winner, "devoured")
 	melting_pot.consume_thing(lucky_winner)
 	return TRUE
+
+/mob/living/carbon/alien/adult/get_butt_sprite()
+	return BUTT_SPRITE_XENOMORPH
 
 // Aliens can touch acid
 /mob/living/carbon/alien/can_touch_acid(atom/acided_atom, acid_power, acid_volume)

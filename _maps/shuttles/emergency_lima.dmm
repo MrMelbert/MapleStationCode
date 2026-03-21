@@ -743,7 +743,7 @@
 /area/shuttle/escape)
 "VZ" = (
 /obj/structure/table/reinforced,
-/obj/item/clothing/gloves/color/latex,
+/obj/item/clothing/gloves/latex,
 /obj/item/clothing/mask/surgical,
 /obj/item/healthanalyzer,
 /turf/open/floor/mineral/titanium/white,

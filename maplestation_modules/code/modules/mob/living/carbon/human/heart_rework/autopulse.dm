@@ -44,7 +44,7 @@
 	/// Tracks how many pulses we've done on the current patient, to prevent message spam
 	VAR_FINAL/pulse_count = 0
 	/// The cell that powers this device
-	VAR_FINAL/obj/item/stock_parts/cell/cell
+	VAR_FINAL/obj/item/stock_parts/power_store/cell/cell
 	/// How much cell charge to use per pulse / compression
 	var/charge_per_pulse = 50
 	/// How much damage / pain we do per pulse
@@ -64,9 +64,8 @@
 	QDEL_NULL(cell)
 	return ..()
 
-/obj/item/auto_cpr/deconstruct(disassembled)
+/obj/item/auto_cpr/atom_deconstruct(disassembled)
 	cell.forceMove(drop_location())
-	return ..()
 
 /obj/item/auto_cpr/examine(mob/user)
 	. = ..()
@@ -96,7 +95,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/auto_cpr/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/stock_parts/cell))
+	if(istype(attacking_item, /obj/item/stock_parts/power_store/cell))
 		if(!isnull(cell))
 			balloon_alert(user, "already has cell!")
 			return TRUE
@@ -145,10 +144,10 @@
 			wearer.set_heartattack(FALSE)
 			final_damage = min(final_damage * 25, 20)
 
-		chest.receive_damage(brute = final_damage, damage_source = "automatic chest compressions")
-		wearer.cause_pain(BODY_ZONE_CHEST, final_damage)
+		wearer.apply_damage(final_damage, BRUTE, chest, wound_bonus = CANT_WOUND, attacking_item = "automatic chest compressions")
 
 	wearer.apply_status_effect(/datum/status_effect/cpr_applied)
+	wearer.adjustOxyLoss(-0.5)
 
 	if(cell.charge < charge_per_pulse)
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, vary = TRUE, frequency = 0.75)
@@ -222,5 +221,5 @@
 
 /obj/item/auto_cpr/loaded/Initialize(mapload)
 	. = ..()
-	cell = new /obj/item/stock_parts/cell/upgraded(src)
+	cell = new /obj/item/stock_parts/power_store/cell/upgraded(src)
 	update_appearance(UPDATE_ICON_STATE)

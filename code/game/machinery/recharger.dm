@@ -40,14 +40,14 @@
 	if(using_power)
 		status_display_message_shown = TRUE
 		. += span_notice("The status display reads:")
-		. += span_notice("- Recharging <b>[recharge_coeff*10]%</b> cell charge per cycle.")
+		. += span_notice("- Recharging efficiency: <b>[recharge_coeff*100]%</b>.")
 
 	if(isnull(charging))
 		return
 	if(!status_display_message_shown)
 		. += span_notice("The status display reads:")
 
-	var/obj/item/stock_parts/cell/charging_cell = charging.get_cell()
+	var/obj/item/stock_parts/power_store/charging_cell = charging.get_cell()
 	if(charging_cell)
 		. += span_notice("- \The [charging]'s cell is at <b>[charging_cell.percent()]%</b>.")
 		return
@@ -97,7 +97,7 @@
 		if(!energy_gun.can_charge)
 			to_chat(user, span_notice("Your gun has no external power connector."))
 			return TRUE
-	user.transferItemToLoc(attacking_item, src)
+	user.transferItemToLoc(attacking_item, src, silent = FALSE)
 	return TRUE
 
 /obj/machinery/recharger/wrench_act(mob/living/user, obj/item/tool)
@@ -125,10 +125,9 @@
 	if(.)
 		return
 
-	add_fingerprint(user)
-	if(isnull(charging) || user.put_in_hands(charging))
+	if(isnull(charging))
 		return
-	charging.forceMove(drop_location())
+	try_put_in_hand(charging, user)
 
 /obj/machinery/recharger/attack_tk(mob/user)
 	if(isnull(charging))
@@ -143,11 +142,10 @@
 	using_power = FALSE
 	if(isnull(charging))
 		return PROCESS_KILL
-	var/obj/item/stock_parts/cell/charging_cell = charging.get_cell()
+	var/obj/item/stock_parts/power_store/charging_cell = charging.get_cell()
 	if(charging_cell)
 		if(charging_cell.charge < charging_cell.maxcharge)
-			charging_cell.give(charging_cell.chargerate * recharge_coeff * seconds_per_tick / 2)
-			use_power(active_power_usage * recharge_coeff * seconds_per_tick)
+			charge_cell(charging_cell.chargerate * recharge_coeff * seconds_per_tick, charging_cell)
 			using_power = TRUE
 		update_appearance()
 
@@ -155,7 +153,7 @@
 		var/obj/item/ammo_box/magazine/recharge/power_pack = charging
 		if(power_pack.stored_ammo.len < power_pack.max_ammo)
 			power_pack.stored_ammo += new power_pack.ammo_type(power_pack)
-			use_power(active_power_usage * recharge_coeff * seconds_per_tick)
+			use_energy(active_power_usage * recharge_coeff * seconds_per_tick)
 			using_power = TRUE
 		update_appearance()
 		return

@@ -14,6 +14,8 @@
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 2.5)
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/active = FALSE
 	var/atom/movable/target //The thing we're searching for
 	var/minimum_range = 0 //at what range the pinpointer declares you to be at your destination
@@ -187,16 +189,6 @@
 	if(istype(mob_holder))
 		. += "Its pair is being held by [mob_holder]."
 		return
-
-/obj/item/storage/box/pinpointer_pairs
-	name = "pinpointer pair box"
-
-/obj/item/storage/box/pinpointer_pairs/PopulateContents()
-	var/obj/item/pinpointer/pair/A = new(src)
-	var/obj/item/pinpointer/pair/B = new(src)
-
-	A.other_pair = B
-	B.other_pair = A
 
 /obj/item/pinpointer/shuttle
 	name = "bounty shuttle pinpointer"

@@ -4,6 +4,7 @@
 	icon = 'maplestation_modules/icons/obj/weapons/guns/projectile_tracer.dmi'
 	icon_state = "ppc"
 	damage = 60 //60 damage, but no armor penetration means you can easily knock this down.
+	weak_against_armour = TRUE
 	light_color = LIGHT_COLOR_HALOGEN
 	wound_bonus = -40
 	bare_wound_bonus = 5
@@ -30,5 +31,6 @@
 	impact_type = /obj/effect/projectile/impact/laser/ppc/hellstar
 	damage = 95 //ow fuck
 	armour_penetration = 50 // oh
+	weak_against_armour = FALSE
 	wound_bonus = 0
 	bare_wound_bonus = 20

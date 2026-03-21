@@ -1,7 +1,11 @@
 /datum/job/doctor
 	title = JOB_MEDICAL_DOCTOR
-	description = "Save lives, run around the station looking for victims, \
-		scan everyone in sight"
+	title_options = list(
+		"Surgeon" = /datum/outfit/job/doctor/surgeon,
+		"Nurse" = /datum/outfit/job/doctor/nurse,
+		"Medical Resident" = /datum/outfit/job/doctor/nurse,
+	)
+	description = "Heal everyone, save lives, revive people who you couldn't save, keep malpractice to a minimum."
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -10,12 +14,13 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "MEDICAL_DOCTOR"
 
-	outfit = /datum/outfit/job/doctor
+	base_outfit = /datum/outfit/job/doctor
 	plasmaman_outfit = /datum/outfit/plasmaman/medical
 
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(MEDICAL_MIND_TRAITS)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_MEDICAL_DOCTOR
@@ -24,7 +29,15 @@
 		/datum/job_department/medical,
 		)
 
-	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom, /obj/item/scalpel, /obj/item/hemostat, /obj/item/circular_saw, /obj/item/retractor, /obj/item/cautery, /obj/item/statuebust/hippocratic)
+	family_heirlooms = list(
+		// /obj/item/storage/medkit/ancient/heirloom,
+		/obj/item/scalpel,
+		/obj/item/hemostat,
+		/obj/item/circular_saw,
+		/obj/item/retractor,
+		/obj/item/cautery,
+		// /obj/item/statuebust/hippocratic,
+	)
 
 	mail_goodies = list(
 		/obj/item/healthanalyzer/advanced = 15,
@@ -38,18 +51,25 @@
 	rpg_title = "Cleric"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_EXPERT,
+		/datum/skill/surgery = SKILL_LEVEL_EXPERT,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/doctor
 	name = "Medical Doctor"
 	jobtype = /datum/job/doctor
 
 	id_trim = /datum/id_trim/job/medical_doctor
-	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
+	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat
 	suit_store = /obj/item/flashlight/pen
 	belt = /obj/item/modular_computer/pda/medical
 	ears = /obj/item/radio/headset/headset_med
-	head = /obj/item/clothing/head/utility/surgerycap
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_hand = /obj/item/storage/medkit/surgery
 
@@ -60,7 +80,25 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	// skillchips = list(/obj/item/skillchip/entrails_reader)
+
+/datum/outfit/job/doctor/nurse
+	name = "Nurse"
+
+	suit = null
+	suit_store = null
+	id_trim = /datum/id_trim/job/medical_doctor/nurse
+	backpack_contents = list(/obj/item/flashlight/pen)
+
+/datum/outfit/job/doctor/surgeon
+	name = "Surgeon"
+
+	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
+	id_trim = /datum/id_trim/job/medical_doctor/surgeon
+	head = /obj/item/clothing/head/utility/surgerycap
+	suit = /obj/item/clothing/suit/apron/surgical
+	suit_store = null
+	backpack_contents = list(/obj/item/flashlight/pen)
 
 /datum/outfit/job/doctor/mod
 	name = "Medical Doctor (MODsuit)"

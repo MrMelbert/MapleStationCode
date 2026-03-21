@@ -2,7 +2,7 @@
 	name = "energy netting"
 	icon_state = "e_netting"
 	damage = 10
-	damage_type = STAMINA
+	damage_type = PAIN
 	hitsound = 'sound/weapons/taserhit.ogg'
 	range = 10
 
@@ -40,7 +40,7 @@
 		else
 			com.target_ref = null
 
-	addtimer(CALLBACK(src, PROC_REF(pop), teletarget), 30)
+	addtimer(CALLBACK(src, PROC_REF(pop), teletarget), 3 SECONDS)
 
 /obj/effect/nettingportal/proc/pop(teletarget)
 	if(teletarget)

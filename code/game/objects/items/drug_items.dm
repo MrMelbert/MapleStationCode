@@ -39,6 +39,8 @@
 	reagent_flags = TRANSPARENT
 	spillable = FALSE
 	list_reagents = list(/datum/reagent/drug/blastoff = 10)
+	reagent_consumption_method = INHALE
+	consumption_sound = 'sound/effects/spray2.ogg'
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/update_icon_state()
 	. = ..()
@@ -69,4 +71,3 @@
 	spillable = TRUE
 	SplashReagents(hit_atom, TRUE)
 	qdel(src)
-	hit_atom.Bumped(ampoule_shard)

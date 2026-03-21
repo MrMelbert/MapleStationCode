@@ -5,7 +5,7 @@
 	damage = 10
 	damage_type = BURN
 	armor_flag = ENERGY
-	temperature = -50
+	temperature = -25 CELCIUS
 
 /obj/projectile/temp/watcher/on_hit(mob/living/target, blocked = 0, pierce_hit)
 	. = ..()
@@ -22,7 +22,7 @@
 	name = "scorching blast"
 	icon_state = "lava"
 	damage = 5
-	temperature = 200
+	temperature = 25 CELCIUS
 
 /obj/projectile/temp/watcher/magma_wing/apply_status(mob/living/target)
 	target.adjust_fire_stacks(0.1)

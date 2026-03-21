@@ -1,7 +1,7 @@
 
 // Sugarcane
 /obj/item/seeds/sugarcane
-	name = "pack of sugarcane seeds"
+	name = "sugarcane seed pack"
 	desc = "These seeds grow into sugarcane."
 	icon_state = "seed-sugarcane"
 	species = "sugarcane"
@@ -25,10 +25,12 @@
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES | SUGAR
 	distill_reagent = /datum/reagent/consumable/ethanol/rum
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 ///and bamboo!
 /obj/item/seeds/bamboo
-	name = "pack of bamboo seeds"
+	name = "bamboo seed pack"
 	desc = "A plant known for its flexible and resistant logs."
 	icon_state = "seed-bamboo"
 	species = "bamboo"
@@ -59,7 +61,7 @@
 
 //Saltcane - Gross, salty shafts!
 /obj/item/seeds/sugarcane/saltcane
-	name = "pack of saltcane seeds"
+	name = "saltcane seed pack"
 	desc = "These seeds grow into saltcane."
 	icon_state = "seed-saltcane"
 	species = "saltcane"

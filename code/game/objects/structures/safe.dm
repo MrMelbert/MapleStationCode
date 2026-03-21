@@ -64,7 +64,7 @@ FLOOR SAFES
 	if(open)
 		. = TRUE //no afterattack
 		if(attacking_item.w_class + space <= maxspace)
-			if(!user.transferItemToLoc(attacking_item, src))
+			if(!user.transferItemToLoc(attacking_item, src, silent = FALSE))
 				to_chat(user, span_warning("\The [attacking_item] is stuck to your hand, you cannot put it in the safe!"))
 				return
 			space += attacking_item.w_class

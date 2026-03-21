@@ -5,6 +5,8 @@
 	icon_state = "beekeeper"
 	inhand_icon_state = null
 	clothing_flags = THICKMATERIAL | SNUG_FIT
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 /obj/item/clothing/suit/utility/beekeeper_suit
 	name = "beekeeper suit"

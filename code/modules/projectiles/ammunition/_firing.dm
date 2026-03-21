@@ -1,3 +1,15 @@
+/**
+ * Fires the bullet in this casing
+ *
+ * * target - what was clicked on (where the bullet will go)
+ * * user - who is firing the bullet
+ * * params - click params. like x, y, shift, etc
+ * * distro - how much the bullet will spread
+ * * quiet - if the bullet is suppressed
+ * * zone_override - optional, the zone the bullet will aim for. if not supplied, uses the user's selected zone
+ * * spread - how much the bullet will spread
+ * * fired_from - the object that fired the bullet
+ */
 /obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	distro += variance
 	var/targloc = get_turf(target)
@@ -45,16 +57,16 @@
 	loaded_projectile.firer = user
 	loaded_projectile.fired_from = fired_from
 	loaded_projectile.hit_prone_targets = user.combat_mode
-	if (zone_override)
-		loaded_projectile.def_zone = zone_override
-	else
-		loaded_projectile.def_zone = user.zone_selected
+	loaded_projectile.def_zone = zone_override || user.zone_selected
 	loaded_projectile.suppressed = quiet
 
 	if(isgun(fired_from))
 		var/obj/item/gun/G = fired_from
 		loaded_projectile.damage *= G.projectile_damage_multiplier
 		loaded_projectile.stamina *= G.projectile_damage_multiplier
+		loaded_projectile.pain *= G.projectile_damage_multiplier
+
+		loaded_projectile.speed *= G.projectile_speed_multiplier
 
 		loaded_projectile.wound_bonus += G.projectile_wound_bonus
 		loaded_projectile.bare_wound_bonus += G.projectile_wound_bonus
@@ -75,7 +87,8 @@
 	var/firing_dir
 	if(loaded_projectile.firer)
 		firing_dir = get_dir(fired_from, target)
-	if(!loaded_projectile.suppressed && firing_effect_type && !tk_firing(user, fired_from))
+	// NON-MODULE CHANGE hitscan muzzle flash suppression
+	if(!loaded_projectile.suppressed && firing_effect_type && (!loaded_projectile.hitscan || !loaded_projectile.muzzle_type) && !tk_firing(user, fired_from))
 		new firing_effect_type(get_turf(src), firing_dir)
 
 	var/direct_target
@@ -83,7 +96,7 @@
 		direct_target = target
 	if(!direct_target)
 		var/modifiers = params2list(params)
-		loaded_projectile.preparePixelProjectile(target, fired_from, modifiers, spread)
+		loaded_projectile.preparePixelProjectile(target, tk_firing(user, fired_from) ? fired_from : user, modifiers, spread)
 	var/obj/projectile/loaded_projectile_cache = loaded_projectile
 	loaded_projectile = null
 	loaded_projectile_cache.fire(null, direct_target)

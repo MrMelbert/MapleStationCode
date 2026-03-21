@@ -14,3 +14,9 @@
 	)
 	icon_state = "galuncom"
 	default_priority = 90
+
+	mutual_understanding = list(
+		/datum/language/common = 33,
+		/datum/language/beachbum = 20,
+		/datum/language/kuiperian = 10,
+	)

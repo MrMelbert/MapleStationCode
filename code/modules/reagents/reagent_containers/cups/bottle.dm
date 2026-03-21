@@ -10,6 +10,9 @@
 	possible_transfer_amounts = list(5, 10, 15, 25, 50)
 	volume = 50
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+
 
 /obj/item/reagent_containers/cup/bottle/Initialize(mapload)
 	. = ..()
@@ -124,6 +127,11 @@
 	desc = "A small bottle. Contains cold sauce."
 	list_reagents = list(/datum/reagent/consumable/frostoil = 30)
 
+/obj/item/reagent_containers/cup/bottle/strange_reagent
+	name = "Strange Reagent Bottle"
+	desc = "A small bottle. May be used to revive people."
+	list_reagents = list(/datum/reagent/medicine/strange_reagent = 30)
+
 /obj/item/reagent_containers/cup/bottle/traitor
 	name = "syndicate bottle"
 	desc = "A small bottle. Contains a random nasty chemical."
@@ -132,7 +140,7 @@
 
 /obj/item/reagent_containers/cup/bottle/traitor/Initialize(mapload)
 	. = ..()
-	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
+	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/medicine/painkiller/fentanyl, /datum/reagent/toxin/cyanide)
 	reagents.add_reagent(extra_reagent, 3)
 
 /obj/item/reagent_containers/cup/bottle/polonium
@@ -153,7 +161,7 @@
 /obj/item/reagent_containers/cup/bottle/fentanyl
 	name = "fentanyl bottle"
 	desc = "A small bottle. Contains Fentanyl."
-	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
+	list_reagents = list(/datum/reagent/medicine/painkiller/fentanyl = 30)
 
 /obj/item/reagent_containers/cup/bottle/formaldehyde
 	name = "formaldehyde bottle"
@@ -239,6 +247,11 @@
 	name = "Basic buffer bottle"
 	desc = "A small bottle of basic buffer."
 	list_reagents = list(/datum/reagent/reaction_agent/basic_buffer = 30)
+
+/obj/item/reagent_containers/cup/bottle/inversing_buffer
+	name = "Chiral inversing buffer bottle"
+	desc = "A small bottle of chiral inversing buffer."
+	list_reagents = list(/datum/reagent/reaction_agent/inversing_buffer = 30)
 
 /obj/item/reagent_containers/cup/bottle/romerol
 	name = "romerol bottle"
@@ -426,7 +439,7 @@
 
 /obj/item/reagent_containers/cup/bottle/thermite
 	name = "thermite bottle"
-	list_reagents = list(/datum/reagent/thermite = 30)
+	list_reagents = list(/datum/reagent/thermite = 50)
 
 // Bottles for mail goodies.
 
@@ -474,67 +487,80 @@
 	possible_transfer_amounts = list(5, 10)
 	amount_per_transfer_from_this = 5
 	spillable = FALSE
-	///variable to tell if the bottle can be refilled
+	/// Do we currently have our pump cap on?
 	var/cap_on = TRUE
+
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/Initialize(mapload)
+	. = ..()
+	register_context()
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/examine(mob/user)
 	. = ..()
 	. += span_notice("Alt-click to toggle the pump cap.")
 	. += span_notice("Use a pen on it to rename it.")
-	return
+
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	. = ..()
+
+	context[SCREENTIP_CONTEXT_ALT_LMB] = (cap_on ? "Remove Pump Cap" : "Add Pump Cap")
+	if(IS_WRITING_UTENSIL(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Write Label"
+	else if(cap_on && held_item?.is_refillable())
+		context[SCREENTIP_CONTEXT_LMB] = "Use Pump"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 //when you attack the syrup bottle with a container it refills it
-/obj/item/reagent_containers/cup/bottle/syrup_bottle/attackby(obj/item/attacking_item, mob/user, params)
-
-	if(!cap_on)
-		return ..()
-
-	if(!check_allowed_items(attacking_item,target_self = TRUE))
-		return
-
-	if(attacking_item.is_refillable())
-		if(!reagents.total_volume)
-			balloon_alert(user, "bottle empty!")
-			return TRUE
-
-		if(attacking_item.reagents.holder_full())
-			balloon_alert(user, "container full!")
-			return TRUE
-
-		var/transfer_amount = reagents.trans_to(attacking_item, amount_per_transfer_from_this, transferred_by = user)
-		balloon_alert(user, "transferred [transfer_amount] unit\s")
-		flick("syrup_anim",src)
-
-	if(istype(attacking_item, /obj/item/pen))
-		rename(user, attacking_item)
-
-	attacking_item.update_appearance()
-	update_appearance()
-
-	return TRUE
-
-/obj/item/reagent_containers/cup/bottle/syrup_bottle/AltClick(mob/user)
-	cap_on = !cap_on
-	if(!cap_on)
-		icon_state = "syrup_open"
-		balloon_alert(user, "removed pump cap")
-	else
-		icon_state = "syrup"
-		balloon_alert(user, "put pump cap on")
-	update_icon_state()
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, params)
+	if(IS_WRITING_UTENSIL(tool))
+		return writing_utensil_act(user, tool)
+	if(cap_on && tool.is_refillable())
+		return refillable_act(user, tool)
 	return ..()
 
-/obj/item/reagent_containers/cup/bottle/syrup_bottle/proc/rename(mob/user, obj/item/writing_instrument)
-	if(!user.can_write(writing_instrument))
-		return
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/proc/writing_utensil_act(mob/user, obj/item/tool)
+	if(!user.can_write(tool))
+		return ITEM_INTERACT_BLOCKING
 
-	var/inputvalue = tgui_input_text(user, "What would you like to label the syrup bottle?", "Syrup Bottle Labelling", max_length = MAX_NAME_LEN)
+	var/input_name = tgui_input_text(user, "What would you like to label the syrup bottle?", "Syrup Bottle Labelling", max_length = MAX_NAME_LEN)
+	if(!user.can_perform_action(src))
+		return ITEM_INTERACT_BLOCKING
 
-	if(!inputvalue)
-		return
+	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
+	if(input_name)
+		name = "[input_name] bottle"
+	else
+		name = initial(name)
+	return ITEM_INTERACT_SUCCESS
 
-	if(user.can_perform_action(src))
-		name = "[(inputvalue ? "[inputvalue]" : null)] bottle"
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/proc/refillable_act(mob/user, obj/item/tool)
+	if(!reagents.total_volume)
+		balloon_alert(user, "bottle empty!")
+		return ITEM_INTERACT_BLOCKING
+	if(tool.reagents.holder_full())
+		balloon_alert(user, "container full!")
+		return ITEM_INTERACT_BLOCKING
+
+	var/transfer_amount = round(reagents.trans_to(tool, amount_per_transfer_from_this, transferred_by = user), CHEMICAL_VOLUME_ROUNDING)
+	balloon_alert(user, "transferred [transfer_amount] unit\s")
+	flick("syrup_anim",src)
+	tool.update_appearance()
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/click_alt(mob/user)
+	cap_on = !cap_on
+	if(cap_on)
+		icon_state = "syrup"
+		spillable = FALSE
+		balloon_alert(user, "put pump cap on")
+	else
+		icon_state = "syrup_open"
+		spillable = TRUE
+		balloon_alert(user, "removed pump cap")
+
+	update_icon_state()
+	return CLICK_ACTION_SUCCESS
 
 //types of syrups
 

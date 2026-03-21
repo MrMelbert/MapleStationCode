@@ -1,7 +1,7 @@
 /datum/job/quartermaster
 	title = JOB_QUARTERMASTER
-	description = "Coordinate cargo technicians and shaft miners, assist with \
-		economical purchasing."
+	description = "Coordinate your technicians and other cargo personnel, \
+		budget economically for the crew, waste money on inane things or firearms."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SUPPLY)
@@ -14,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "QUARTERMASTER"
 
-	outfit = /datum/outfit/job/quartermaster
+	base_outfit = /datum/outfit/job/quartermaster
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
 	paycheck = PAYCHECK_COMMAND
@@ -29,7 +29,10 @@
 		/datum/job_department/cargo,
 		/datum/job_department/command,
 		)
-	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
+	family_heirlooms = list(
+		/obj/item/stamp,
+		/obj/item/stamp/denied,
+	)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3
 	)
@@ -38,11 +41,16 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 	ignore_human_authority = TRUE
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/quartermaster
 	name = "Quartermaster"
 	jobtype = /datum/job/quartermaster
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/bronze = 1,
 	)
 	id_trim = /datum/id_trim/job/quartermaster
 	id = /obj/item/card/id/advanced/silver

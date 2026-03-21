@@ -1,6 +1,4 @@
 import { useState } from 'react';
-
-import { useBackend } from '../../backend';
 import {
   Button,
   ByondUi,
@@ -8,12 +6,15 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../../components';
-import { formatSiUnit } from '../../format';
+} from 'tgui-core/components';
+import { formatSiUnit } from 'tgui-core/format';
+
+import { useBackend } from '../../backend';
 import { Window } from '../../layouts';
+import { logger } from '../../logging';
 import { AccessConfig } from '../common/AccessConfig';
 import { AlertPane } from './AlertPane';
-import { MainData } from './data';
+import type { MainData } from './data';
 import { ModulesPane } from './ModulesPane';
 
 export const Mecha = (props) => {
@@ -39,7 +40,9 @@ export const Content = (props) => {
     regions,
     accesses,
   } = data;
-  const id_lock = mecha_flags & mechflag_keys['ID_LOCK_ON'];
+  logger.log(mechflag_keys);
+
+  const id_lock = mecha_flags & mechflag_keys.ID_LOCK_ON;
   return (
     <Stack fill>
       <Stack.Item grow={1}>
@@ -165,8 +168,8 @@ const PowerBar = (props) => {
           ? 'Power cell missing'
           : power_level === 1e31
             ? 'Infinite'
-            : `${formatSiUnit(power_level * 1000, 0, 'J')} of ${formatSiUnit(
-                power_max * 1000,
+            : `${formatSiUnit(power_level, 0, 'J')} of ${formatSiUnit(
+                power_max,
                 0,
                 'J',
               )}`}
@@ -200,8 +203,8 @@ const IntegrityBar = (props) => {
 const LightsBar = (props) => {
   const { act, data } = useBackend<MainData>();
   const { power_level, power_max, mecha_flags, mechflag_keys } = data;
-  const has_lights = mecha_flags & mechflag_keys['HAS_LIGHTS'];
-  const lights_on = mecha_flags & mechflag_keys['LIGHTS_ON'];
+  const has_lights = mecha_flags & mechflag_keys.HAS_LIGHTS;
+  const lights_on = mecha_flags & mechflag_keys.LIGHTS_ON;
   return (
     <LabeledList.Item label="Lights">
       <Button

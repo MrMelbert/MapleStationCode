@@ -10,6 +10,7 @@
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_OPEN | INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
 	obj_flags = CAN_BE_HIT
+	use_power = NO_POWER_USE
 
 	/// The internal air reservoir of the disposal
 	var/datum/gas_mixture/air_contents
@@ -65,7 +66,11 @@
 		COMSIG_TURF_RECEIVE_SWEEPED_ITEMS = PROC_REF(ready_for_trash),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	ADD_TRAIT(src, TRAIT_COMBAT_MODE_SKIP_INTERACTION, INNATE_TRAIT)
 	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
+
+/obj/machinery/disposal/AllowDrop()
+	return TRUE
 
 /// Checks if there a connecting trunk diposal pipe under the disposal
 /obj/machinery/disposal/proc/trunk_check()
@@ -99,7 +104,8 @@
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
-/obj/machinery/disposal/LateInitialize()
+/obj/machinery/disposal/post_machine_initialize()
+	. = ..()
 	//this will get a copy of the air turf and take a SEND PRESSURE amount of air from it
 	var/atom/L = loc
 	var/datum/gas_mixture/env = new
@@ -126,10 +132,9 @@
 				deconstruct()
 			return
 
-	if(!user.combat_mode)
-		if((I.item_flags & ABSTRACT) || !user.temporarilyRemoveItemFromInventory(I))
+	if(!user.combat_mode || (I.item_flags & NOBLUDGEON))
+		if(!place_item_in_disposal(I, user))
 			return
-		place_item_in_disposal(I, user)
 		update_appearance()
 		return 1 //no afterattack
 	else
@@ -158,13 +163,19 @@
 
 /// Moves an item into the diposal bin
 /obj/machinery/disposal/proc/place_item_in_disposal(obj/item/I, mob/user)
-	I.forceMove(src)
+	if(I.item_flags & ABSTRACT)
+		return FALSE
+	if(!user.transferItemToLoc(I, src, silent = FALSE))
+		return FALSE
 	user.visible_message(span_notice("[user.name] places \the [I] into \the [src]."), span_notice("You place \the [I] into \the [src]."))
+	return TRUE
 
 /// Mouse drop another mob or self
-/obj/machinery/disposal/MouseDrop_T(mob/living/target, mob/living/user)
+/obj/machinery/disposal/mouse_drop_receive(mob/living/target, mob/living/user, params)
 	if(istype(target))
 		stuff_mob_in(target, user)
+	if(istype(target, /obj/structure/closet/body_bag) && (user.mobility_flags & (MOBILITY_PICKUP|MOBILITY_STAND) == (MOBILITY_PICKUP|MOBILITY_STAND)))
+		stuff_bodybag_in(target, user)
 
 /// Handles stuffing a grabbed mob into the disposal
 /obj/machinery/disposal/proc/stuff_mob_in(mob/living/target, mob/living/user)
@@ -173,34 +184,65 @@
 		if (iscyborg(user))
 			var/mob/living/silicon/robot/borg = user
 			if (!borg.model || !borg.model.canDispose)
-				return
+				return FALSE
 		else
-			return
+			return FALSE
 	if(!isturf(user.loc)) //No magically doing it from inside closets
-		return
+		return FALSE
 	if(target.buckled || target.has_buckled_mobs())
-		return
+		return FALSE
 	if(target.mob_size > MOB_SIZE_HUMAN)
 		to_chat(user, span_warning("[target] doesn't fit inside [src]!"))
-		return
+		return FALSE
 	add_fingerprint(user)
 	if(user == target)
 		user.visible_message(span_warning("[user] starts climbing into [src]."), span_notice("You start climbing into [src]..."))
 	else
 		target.visible_message(span_danger("[user] starts putting [target] into [src]."), span_userdanger("[user] starts putting you into [src]!"))
-	if(do_after(user, 2 SECONDS, target))
-		if (!loc)
-			return
-		target.forceMove(src)
-		if(user == target)
-			user.visible_message(span_warning("[user] climbs into [src]."), span_notice("You climb into [src]."))
-			. = TRUE
-		else
-			target.visible_message(span_danger("[user] places [target] in [src]."), span_userdanger("[user] places you in [src]."))
-			log_combat(user, target, "stuffed", addition="into [src]")
-			target.LAssailant = WEAKREF(user)
-			. = TRUE
-		update_appearance()
+	if(!do_after(user, 2 SECONDS, target) || QDELETED(src))
+		return FALSE
+	target.forceMove(src)
+	if(user == target)
+		user.visible_message(span_warning("[user] climbs into [src]."), span_notice("You climb into [src]."))
+	else
+		target.visible_message(span_danger("[user] places [target] in [src]."), span_userdanger("[user] places you in [src]."))
+		log_combat(user, target, "stuffed", addition="into [src]")
+	update_appearance()
+	return TRUE
+
+/obj/machinery/disposal/proc/stuff_bodybag_in(obj/structure/closet/body_bag/bag, mob/living/user)
+	if(!length(bag.contents))
+		bag.undeploy_bodybag(src)
+		qdel(bag)
+		user.visible_message(
+			span_warning("[user] stuffs the empty [bag.name] into [src]."),
+			span_notice("You stuff the empty [bag.name] into [src].")
+		)
+		return TRUE
+
+	user.visible_message(
+		span_warning("[user] starts putting [bag] into [src]."),
+		span_notice("You start putting [bag] into [src]...")
+	)
+
+	if(!do_after(user, 4 SECONDS, bag) || QDELETED(src))
+		return FALSE
+
+	user.visible_message(
+		span_warning("[user] places [bag] in [src]."),
+		span_notice("You place [bag] in [src].")
+	)
+
+	if(!length(bag.contents))
+		bag.undeploy_bodybag(src)
+		qdel(bag)
+	else
+		bag.add_fingerprint(user)
+		bag.forceMove(src)
+
+	add_fingerprint(user)
+	update_appearance()
+	return TRUE
 
 /obj/machinery/disposal/relaymove(mob/living/user, direction)
 	attempt_escape(user)
@@ -276,35 +318,31 @@
 	H.vent_gas(loc)
 	qdel(H)
 
-/obj/machinery/disposal/deconstruct(disassembled = TRUE)
+/obj/machinery/disposal/on_deconstruction(disassembled)
 	var/turf/T = loc
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(stored)
-			var/obj/structure/disposalconstruct/construct = stored
-			stored = null
-			construct.forceMove(T)
-			transfer_fingerprints_to(construct)
-			construct.set_anchored(FALSE)
-			construct.set_density(TRUE)
-			construct.update_appearance()
+	if(stored)
+		var/obj/structure/disposalconstruct/construct = stored
+		stored = null
+		construct.forceMove(T)
+		transfer_fingerprints_to(construct)
+		construct.set_anchored(FALSE)
+		construct.set_density(TRUE)
+		construct.update_appearance()
 	for(var/atom/movable/AM in src) //out, out, darned crowbar!
 		AM.forceMove(T)
-	..()
 
 ///How disposal handles getting a storage dump from a storage object
-/obj/machinery/disposal/proc/on_storage_dump(datum/source, obj/item/storage_source, mob/user)
+/obj/machinery/disposal/proc/on_storage_dump(datum/source, datum/storage/storage, mob/user)
 	SIGNAL_HANDLER
 
 	. = STORAGE_DUMP_HANDLED
 
-	to_chat(user, span_notice("You dump out [storage_source] into [src]."))
+	to_chat(user, span_notice("You dump out [storage.parent] into [src]."))
 
-	for(var/obj/item/to_dump in storage_source)
-		if(to_dump.loc != storage_source)
-			continue
-		if(user.active_storage != storage_source && to_dump.on_found(user))
+	for(var/obj/item/to_dump in storage.real_location)
+		if(user.active_storage != storage && to_dump.on_found(user))
 			return
-		if(!storage_source.atom_storage.attempt_remove(to_dump, src, silent = TRUE))
+		if(!storage.attempt_remove(to_dump, src, silent = TRUE))
 			continue
 		to_dump.pixel_x = to_dump.base_pixel_x + rand(-5, 5)
 		to_dump.pixel_y = to_dump.base_pixel_y + rand(-5, 5)
@@ -320,6 +358,7 @@
 	name = "disposal unit"
 	desc = "A pneumatic waste disposal unit."
 	icon_state = "disposal"
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_IGNORE_MOBILITY
 
 // attack by item places it in to disposal
 /obj/machinery/disposal/bin/attackby(obj/item/I, mob/user, params)
@@ -453,13 +492,13 @@
 	if(machine_stat & NOPOWER) // won't charge if no power
 		return
 
-	use_power(idle_power_usage) // base power usage
+	use_energy(idle_power_usage) // base power usage
 
 	if(!pressure_charging) // if off or ready, no need to charge
 		return
 
 	// otherwise charge
-	use_power(idle_power_usage) // charging power usage
+	use_energy(idle_power_usage) // charging power usage
 
 	var/atom/L = loc //recharging from loc turf
 
@@ -497,7 +536,9 @@
 
 /obj/machinery/disposal/delivery_chute/place_item_in_disposal(obj/item/I, mob/user)
 	if(I.CanEnterDisposals())
-		..()
+		return FALSE
+	. = ..()
+	if(.)
 		flush()
 
 /obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
@@ -533,13 +574,13 @@
 	return TRUE
 
 /obj/projectile/CanEnterDisposals()
-	return
+	return FALSE
 
 /obj/effect/CanEnterDisposals()
-	return
+	return FALSE
 
 /obj/vehicle/sealed/mecha/CanEnterDisposals()
-	return
+	return FALSE
 
 /// Handles the signal for the rat king looking inside the disposal
 /obj/machinery/disposal/proc/on_rat_rummage(datum/source, mob/living/basic/regal_rat/king)

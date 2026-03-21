@@ -25,6 +25,8 @@
 	combat_mode = TRUE
 	attack_sound = 'sound/magic/demon_attack1.ogg'
 	attack_vis_effect = ATTACK_EFFECT_CLAW
+	sharpness = SHARP_EDGED
+	wound_bonus = -15
 	faction = list(FACTION_HELL)
 
 	maxHealth = 200
@@ -37,8 +39,8 @@
 	death_sound = 'sound/magic/demon_dies.ogg'
 
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = T0C - 25 //Weak to cold
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = T0C - 25 //Weak to cold
+	bodytemp_heat_damage_limit = INFINITY
 
 	basic_mob_flags = DEL_ON_DEATH
 
@@ -65,8 +67,7 @@
 	if(isnull(antag_type))
 		return // we weren't built for this proc to run
 
-	mind.set_assigned_role(SSjob.GetJobType(/datum/job/slaughter_demon))
-	mind.special_role = ROLE_SLAUGHTER_DEMON
+	mind.set_assigned_role(SSjob.get_job_type(/datum/job/slaughter_demon))
 	mind.add_antag_datum(antag_type)
 
 	SEND_SOUND(src, 'sound/magic/demon_dies.ogg')

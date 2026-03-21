@@ -6,7 +6,6 @@
 	)
 	category = EVENT_CATEGORY_INVASION
 	description = "Causes a short term antagonist to spawn in the virtual domain."
-	dynamic_should_hijack = FALSE
 	min_players = 1
 	max_occurrences = 0
 	typepath = /datum/round_event/ghost_role/bitrunning_glitch
@@ -61,7 +60,7 @@
 	var/total = 0
 	for(var/datum/weakref/server_ref in cyber_control.active_servers)
 		var/obj/machinery/quantum_server/server = server_ref?.resolve()
-		if(isnull(server))
+		if(isnull(server) || QDELETED(server))
 			continue
 
 		total += length(server.mutation_candidate_refs)
@@ -89,6 +88,10 @@
 	if(!unlucky_server.validate_mutation_candidates())
 		return WAITING_FOR_SOMETHING
 
-	spawned_mobs = unlucky_server.setup_glitch(forced_role)
+	var/mob/spawned = unlucky_server.setup_glitch(forced_role)
+	if(isnull(spawned))
+		return  WAITING_FOR_SOMETHING
+
+	spawned_mobs += spawned
 
 	return SUCCESSFUL_SPAWN

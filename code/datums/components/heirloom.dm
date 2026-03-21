@@ -1,5 +1,6 @@
 /// Heirloom component. For use with the family heirloom quirk, tracks that an item is someone's family heirloom.
 /datum/component/heirloom
+	can_transfer = TRUE
 	/// The mind that actually owns our heirloom.
 	var/datum/mind/owner
 	/// Flavor. The family name of the owner of the heirloom.
@@ -12,7 +13,20 @@
 	owner = new_owner
 	family_name = new_family_name
 
+/datum/component/heirloom/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_ITEM_SUBTYPE_PICKER_REPLACED, PROC_REF(transfer_to_new_item))
+
+/datum/component/heirloom/UnregisterFromParent()
+	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
+	UnregisterSignal(parent, COMSIG_ITEM_SUBTYPE_PICKER_REPLACED)
+
+/datum/component/heirloom/PostTransfer()
+	if(!isitem(parent))
+		return COMPONENT_INCOMPATIBLE
+	// Moves weakref to our new item
+	var/datum/quirk/item_quirk/family_heirloom/quirk = owner?.current?.get_quirk(/datum/quirk/item_quirk/family_heirloom)
+	quirk?.heirloom = WEAKREF(parent)
 
 /datum/component/heirloom/Destroy(force)
 	owner = null
@@ -38,3 +52,9 @@
 		return
 
 	examine_list += span_notice("It is the [family_name] family heirloom, belonging to [owner].")
+
+/// Transfer the component to a new item when a subtype picker replaces it.
+/datum/component/heirloom/proc/transfer_to_new_item(datum/source, obj/item/new_item, mob/user)
+	SIGNAL_HANDLER
+
+	new_item.TakeComponent(src)

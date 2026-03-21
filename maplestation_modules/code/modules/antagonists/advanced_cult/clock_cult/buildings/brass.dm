@@ -80,7 +80,7 @@ GLOBAL_LIST_INIT(brass_recipes, list( \
 	grind_results = list(/datum/reagent/iron = 5, /datum/reagent/copper = 15)
 	material_type = /datum/material/brass
 	has_unique_girder = TRUE
-	tableVariant = /obj/structure/table/reinforced/brass
+	table_type = /obj/structure/table/reinforced/brass
 	use_radial = TRUE
 
 /obj/item/stack/sheet/brass/attack_self(mob/living/user)

@@ -16,6 +16,8 @@
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	worn_icon_state = "electronic"
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/bitrunning_host_monitor/attack_self(mob/user, modifiers)
 	. = ..()

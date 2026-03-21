@@ -16,12 +16,14 @@
 		return FALSE
 
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(remove_jitter))
+	ADD_TRAIT(owner, TRAIT_HEART_RATE_BOOST, TRAIT_STATUS_EFFECT(id))
 	owner.add_mood_event(id, /datum/mood_event/jittery)
 	return TRUE
 
 /datum/status_effect/jitter/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 	owner.clear_mood_event(id)
+	REMOVE_TRAIT(owner, TRAIT_HEART_RATE_BOOST, TRAIT_STATUS_EFFECT(id))
 	// juuust in case, reset our x and y's from our jittering
 	owner.pixel_x = 0
 	owner.pixel_y = 0
@@ -56,7 +58,7 @@
 /// jitter_amount will only apply up to 300 (maximum jitter effect).
 /mob/living/proc/do_jitter_animation(jitter_amount = 100)
 	var/amplitude = min(4, (jitter_amount / 100) + 1)
-	var/pixel_x_diff = rand(-amplitude, amplitude)
-	var/pixel_y_diff = rand(-amplitude / 3, amplitude / 3)
-	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff , time = 0.2 SECONDS, loop = 6, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
-	animate(pixel_x = -pixel_x_diff , pixel_y = -pixel_y_diff , time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
+	var/pixel_w_diff = rand(-amplitude, amplitude)
+	var/pixel_z_diff = rand(-amplitude / 3, amplitude / 3)
+	animate(src, pixel_w = pixel_w_diff, pixel_z = pixel_z_diff , time = 0.2 SECONDS, loop = 6, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
+	animate(pixel_w = -pixel_w_diff , pixel_z = -pixel_z_diff , time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)

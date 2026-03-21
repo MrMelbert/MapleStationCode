@@ -22,8 +22,8 @@
 	. += span_cult("Targeting the head will cause minor lasting pain to the target's head.")
 	. += span_cult("Targeting any limbs will cause a high, sharp pain to that limb.")
 
-/obj/item/melee/blood_magic/pain/afterattack(atom/target, mob/living/carbon/user, proximity)
-	if(!ishuman(target) || !proximity || target == user)
+/obj/item/melee/blood_magic/pain/cast_spell(atom/target, mob/living/carbon/user)
+	if(!ishuman(target) || target == user)
 		return
 	var/mob/living/carbon/human/human_target = target
 	if(IS_CULTIST(human_target))
@@ -58,4 +58,4 @@
 				human_target.cause_pain(targeted_zone, 70)
 
 	uses--
-	. = ..()
+	return ..()

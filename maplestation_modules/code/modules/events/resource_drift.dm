@@ -8,10 +8,12 @@
 
 /datum/round_event_control/resource_drift
 	name = "Resource Drift"
+	category = "Resources"
 	typepath = /datum/round_event/resource_drift
 	weight = 18
 	max_occurrences = 3
 	earliest_start = 5 MINUTES
+	map_flags = EVENT_SPACE_ONLY
 
 /datum/round_event/resource_drift
 	/// The number of caches that spawn

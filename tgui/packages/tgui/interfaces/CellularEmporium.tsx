@@ -1,7 +1,4 @@
 import { useState } from 'react';
-
-import { BooleanLike } from '../../common/react';
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +8,10 @@ import {
   NoticeBox,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type typePath = string;
@@ -70,7 +70,7 @@ export const CellularEmporium = (props) => {
               <Stack.Item>
                 <Input
                   width="200px"
-                  onInput={(event, value) => setSearchAbilities(value)}
+                  onChange={setSearchAbilities}
                   placeholder="Search Abilities..."
                   value={searchAbilities}
                 />

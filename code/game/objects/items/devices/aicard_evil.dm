@@ -55,10 +55,10 @@
 	var/datum/antagonist/nukeop/nuke_datum = new()
 	nuke_datum.send_to_spawnpoint = FALSE
 	new_ai.mind.add_antag_datum(nuke_datum, op_datum.nuke_team)
-	new_ai.mind.special_role = "Syndicate AI"
+	LAZYADD(new_ai.mind.special_roles, "Syndicate AI")
 	new_ai.faction |= ROLE_SYNDICATE
 	// Make it look evil!!!
-	new_ai.hologram_appearance = mutable_appearance('icons/mob/silicon/ai.dmi',"xeno_queen") //good enough
+	new_ai.set_hologram_appearance(mutable_appearance('icons/mob/silicon/ai.dmi', "xeno_queen")) //good enough
 	new_ai.icon_state = resolve_ai_icon("hades")
 	// Transfer the AI from the core we created into the card, then delete the core
 	capture_ai(new_ai, user)

@@ -5,11 +5,12 @@
 	name = "\improper Malfunctioning AI"
 	roundend_category = "traitors"
 	antagpanel_category = "Malf AI"
-	job_rank = ROLE_MALF
+	pref_flag = ROLE_MALF
 	antag_hud_name = "traitor"
 	ui_name = "AntagInfoMalf"
 	can_assign_self_objectives = TRUE
 	default_custom_objective = "Make sure your precious crew are incapable of ever, ever leaving you."
+	stinger_sound = 'sound/ambience/antag/malf.ogg'
 	///the name of the antag flavor this traitor has.
 	var/employer
 	///assoc list of strings set up after employer is given
@@ -30,12 +31,15 @@
 		stack_trace("Attempted to give malf AI antag datum to \[[owner]\], who did not meet the requirements.")
 		return ..()
 
-	owner.special_role = job_rank
 	if(give_objectives)
 		forge_ai_objectives()
+	if(!employer)
+		employer = pick(GLOB.ai_employers)
 
-	if(finalize_antag) // NON-MODULE CHANGE
-		finalize_antag()
+	malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
+
+	add_law_zero()
+	owner.current.grant_language(/datum/language/codespeak, source = LANGUAGE_MALF)
 
 	return ..()
 
@@ -46,14 +50,10 @@
 		malf_ai.remove_malf_abilities()
 		QDEL_NULL(malf_ai.malf_picker)
 
-	owner.special_role = null
-
 	return ..()
 
 /// Generates a complete set of malf AI objectives up to the traitor objective limit.
 /datum/antagonist/malf_ai/proc/forge_ai_objectives()
-	objectives.Cut()
-
 	if(prob(PROB_SPECIAL))
 		forge_special_objective()
 
@@ -186,7 +186,7 @@
 				"name" = category,
 				"items" = (category == malf_ai.malf_picker.selected_cat ? list() : null))
 			for(var/module in malf_ai.malf_picker.possible_modules[category])
-				var/datum/ai_module/mod = malf_ai.malf_picker.possible_modules[category][module]
+				var/datum/ai_module/malf/mod = malf_ai.malf_picker.possible_modules[category][module]
 				cat["items"] += list(list(
 					"name" = mod.name,
 					"cost" = mod.cost,
@@ -211,7 +211,7 @@
 			for(var/category in malf_ai.malf_picker.possible_modules)
 				buyable_items += malf_ai.malf_picker.possible_modules[category]
 			for(var/key in buyable_items)
-				var/datum/ai_module/valid_mod = buyable_items[key]
+				var/datum/ai_module/malf/valid_mod = buyable_items[key]
 				if(valid_mod.name == item_name)
 					malf_ai.malf_picker.purchase_module(malf_ai, valid_mod)
 					return TRUE
@@ -240,7 +240,7 @@
 
 	result += objectives_text
 
-	var/special_role_text = lowertext(name)
+	var/special_role_text = LOWER_TEXT(name)
 
 	if(malf_ai_won)
 		result += span_greentext("The [special_role_text] was successful!")
@@ -264,6 +264,7 @@
 /datum/antagonist/malf_ai/infected
 	name = "Infected AI"
 	employer = "Infected AI"
+	stinger_sound = null
 	///The player, to who is this AI slaved
 	var/datum/mind/boss
 

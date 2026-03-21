@@ -38,6 +38,14 @@
 	var/priority = 0
 	/// What path is this on. If set to "null", assumed to be unreachable (or abstract).
 	var/route
+	/// In case we want to override the default UI icon getter and plug in our own icon instead.
+	/// if research_tree_icon_path is not null, research_tree_icon_state must also be specified or things may break
+	var/research_tree_icon_path
+	var/research_tree_icon_state
+	var/research_tree_icon_frame = 1
+	var/research_tree_icon_dir = SOUTH
+	/// Level of knowledge tree where this knowledge should be in the UI
+	var/depth = 1
 
 /datum/heretic_knowledge/New()
 	if(!mutually_exclusive)
@@ -260,6 +268,7 @@
 	limit = 2
 	cost = 1
 	priority = MAX_KNOWLEDGE_PRIORITY - 5
+	depth = 2
 
 /datum/heretic_knowledge/limited_amount/starting/New()
 	. = ..()
@@ -284,6 +293,7 @@
 	abstract_parent_type = /datum/heretic_knowledge/mark
 	mutually_exclusive = TRUE
 	cost = 2
+	depth = 5
 	/// The status effect typepath we apply on people on mansus grasp.
 	var/datum/status_effect/eldritch/mark_type
 
@@ -349,6 +359,7 @@
 	abstract_parent_type = /datum/heretic_knowledge/blade_upgrade
 	mutually_exclusive = TRUE
 	cost = 2
+	depth = 9
 
 /datum/heretic_knowledge/blade_upgrade/on_gain(mob/user, datum/antagonist/heretic/our_heretic)
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))
@@ -536,14 +547,13 @@
 	animate(summoned, 10 SECONDS, alpha = 155)
 
 	message_admins("A [summoned.name] is being summoned by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(summoned)].")
-	var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as a [summoned.name]?", check_jobban = ROLE_HERETIC, poll_time = 10 SECONDS, target_mob = summoned, ignore_category = poll_ignore_define, pic_source = summoned, role_name_text = summoned.name)
-	if(!LAZYLEN(candidates))
+	var/mob/picked_candidate = SSpolling.poll_ghosts_for_target(check_jobban = ROLE_HERETIC, poll_time = 10 SECONDS, checked_target = summoned, ignore_category = poll_ignore_define, alert_pic = summoned, role_name_text = summoned.name)
+	if(isnull(picked_candidate))
 		loc.balloon_alert(user, "ritual failed, no ghosts!")
 		animate(summoned, 0.5 SECONDS, alpha = 0)
 		QDEL_IN(summoned, 0.6 SECONDS)
 		return FALSE
 
-	var/mob/dead/observer/picked_candidate = pick(candidates)
 	// Ok let's make them an interactable mob now, since we got a ghost
 	summoned.alpha = 255
 	REMOVE_TRAIT(summoned, TRAIT_NO_TRANSFORM, REF(src))
@@ -577,21 +587,24 @@
 	mutually_exclusive = TRUE
 	cost = 1
 	priority = MAX_KNOWLEDGE_PRIORITY - 10 // A pretty important midgame ritual.
+	depth = 6
+	research_tree_icon_path = 'icons/obj/antags/eldritch.dmi'
+	research_tree_icon_state = "book_open"
 	/// Whether we've done the ritual. Only doable once.
 	var/was_completed = FALSE
 
 /datum/heretic_knowledge/knowledge_ritual/New()
 	. = ..()
 	var/static/list/potential_organs = list(
-		/obj/item/organ/internal/appendix,
-		/obj/item/organ/external/tail,
-		/obj/item/organ/internal/eyes,
-		/obj/item/organ/internal/tongue,
-		/obj/item/organ/internal/ears,
-		/obj/item/organ/internal/heart,
-		/obj/item/organ/internal/liver,
-		/obj/item/organ/internal/stomach,
-		/obj/item/organ/internal/lungs,
+		/obj/item/organ/appendix,
+		/obj/item/organ/tail,
+		/obj/item/organ/eyes,
+		/obj/item/organ/tongue,
+		/obj/item/organ/ears,
+		/obj/item/organ/heart,
+		/obj/item/organ/liver,
+		/obj/item/organ/stomach,
+		/obj/item/organ/lungs,
 	)
 
 	var/static/list/potential_easy_items = list(
@@ -670,6 +683,9 @@
 	cost = 2
 	priority = MAX_KNOWLEDGE_PRIORITY + 1 // Yes, the final ritual should be ABOVE the max priority.
 	required_atoms = list(/mob/living/carbon/human = 3)
+	depth = 11
+	//use this to store the achievement typepath
+	var/datum/award/achievement/misc/ascension_achievement
 
 /datum/heretic_knowledge/ultimate/on_research(mob/user, datum/antagonist/heretic/our_heretic)
 	. = ..()
@@ -730,6 +746,9 @@
 		source = user,
 		header = "A Heretic is Ascending!",
 	)
+	if(!isnull(ascension_achievement))
+		user.client?.give_award(ascension_achievement, user)
+	ADD_TRAIT(user, TRAIT_DESENSITIZED, type)
 	return TRUE
 
 /datum/heretic_knowledge/ultimate/cleanup_atoms(list/selected_atoms)

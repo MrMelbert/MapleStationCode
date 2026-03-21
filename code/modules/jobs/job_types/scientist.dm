@@ -1,6 +1,9 @@
 /datum/job/scientist
 	title = JOB_SCIENTIST
 	description = "Do experiments, perform research, feed the slimes, make bombs."
+	title_options = list(
+		"Junior Scientist",
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -11,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "SCIENTIST"
 
-	outfit = /datum/outfit/job/scientist
+	base_outfit = /datum/outfit/job/scientist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW
@@ -25,7 +28,9 @@
 		/datum/job_department/science,
 		)
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/toy/plush/slimeplushie,
+	)
 
 	mail_goodies = list(
 		/obj/item/raw_anomaly_core/random = 10,
@@ -36,6 +41,11 @@
 
 	job_tone = "boom"
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/outfit/job/scientist
 	name = "Scientist"

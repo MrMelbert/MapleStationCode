@@ -13,6 +13,17 @@
 	throw_range = 7
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
+
+	unique_reskin = list(
+		"Brown" = "clipboard",
+		"Black" = "clipboard_black",
+		"White" = "clipboard_white",
+	)
+	unique_reskin_changes_inhand = TRUE
+
 	/// The stored pen
 	var/obj/item/pen/pen
 	/// Is the pen integrated?
@@ -71,19 +82,25 @@
 	pen = null
 	update_icon()
 
-/obj/item/clipboard/AltClick(mob/user)
-	..()
-	if(pen)
-		if(integrated_pen)
-			to_chat(user, span_warning("You can't seem to find a way to remove [src]'s [pen]."))
-		else
-			remove_pen(user)
+/obj/item/clipboard/click_alt(mob/user)
+	if(isnull(pen))
+		return CLICK_ACTION_BLOCKING
+
+	if(integrated_pen)
+		to_chat(user, span_warning("You can't seem to find a way to remove [src]'s [pen]."))
+		return CLICK_ACTION_BLOCKING
+
+	remove_pen(user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/clipboard/update_overlays()
 	. = ..()
 	var/obj/item/paper/toppaper = toppaper_ref?.resolve()
 	if(toppaper)
-		. += toppaper.icon_state
+		var/image/top_paper = image(icon = src.icon, icon_state = toppaper.icon_state)
+		top_paper.color = toppaper.color
+		. += top_paper
+		// copies stamps and stuff
 		. += toppaper.overlays
 	if(pen)
 		. += "clipboard_pen"

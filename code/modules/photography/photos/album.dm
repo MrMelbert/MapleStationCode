@@ -13,6 +13,8 @@
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 	var/persistence_id
 
 /obj/item/storage/photo_album/Initialize(mapload)
@@ -58,12 +60,17 @@
 	max_total_storage = 42
 	max_slots = 21
 
-/datum/storage/photo_album/New(atom/parent, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, allow_quick_empty, collection_mode, attack_hand_interact)
+/datum/storage/photo_album/New(
+	atom/parent,
+	max_slots,
+	max_specific_storage,
+	max_total_storage,
+)
 	. = ..()
-	set_holdable(list(/obj/item/photo))
+	set_holdable(/obj/item/photo)
 
 /datum/storage/photo_album/proc/save_everything()
-	var/obj/item/storage/photo_album/album = parent.resolve()
+	var/obj/item/storage/photo_album/album = parent
 	ASSERT(istype(album))
 	SSpersistence.photo_albums_database.set_key(album.persistence_id, album.get_picture_id_list())
 

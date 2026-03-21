@@ -70,7 +70,7 @@
 	if(!iscarbon(user))
 		return .
 	var/mob/living/carbon/thrower = user
-	thrower.toggle_throw_mode()
+	thrower.throw_mode_off(THROW_MODE_TOGGLE)
 	return TRUE
 
 /obj/item/restraints/legcuffs/bola/proc/begin_spinning(mob/living/carbon/spinner)
@@ -86,7 +86,7 @@
 		spin_time_with_momentum = round(spin_time - (spin_time * 0.33 * (current_spin / max_spins)), 0.5)
 		spin_sound(spin_time_with_momentum)
 		animate(src, spin_time_with_momentum, transform = transform.Turn(90), easing = (current_spin == 1 ? CUBIC_EASING : NONE)/*, flags = ANIMATION_CONTINUE*/)
-		if(!do_after(spinner, spin_time_with_momentum, spinner, timed_action_flags = IGNORE_USER_LOC_CHANGE|IGNORE_SLOWDOWNS, extra_checks = CALLBACK(src, PROC_REF(can_keep_spinning), spinner)))
+		if(!do_after(spinner, spin_time_with_momentum, spinner, timed_action_flags = IGNORE_USER_LOC_CHANGE|IGNORE_SLOWDOWNS, extra_checks = CALLBACK(src, PROC_REF(can_keep_spinning), spinner), hidden = TRUE))
 			stop_spinning()
 			return
 

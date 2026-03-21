@@ -1,8 +1,12 @@
 // -- Xenobiologist job & outfit datum --
 /datum/job/xenobiologist
 	title = JOB_XENOBIOLOGIST
-	description = "Feed slimes all shift, never exit xenobiology for any reason. \
-		Leave after two hours as an unkillable god with an army of monsters."
+	description = "Study and feed slimes, never exit xenobiology for any reason, \
+		become an unkillable god with an army of monsters."
+	title_options = list(
+		"Microbiologist",
+		"Cytologist",
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -12,7 +16,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "XENOBIO"
 
-	outfit = /datum/outfit/job/scientist/xenobiologist
+	base_outfit = /datum/outfit/job/scientist/xenobiologist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW
@@ -21,7 +25,9 @@
 	display_order = JOB_DISPLAY_ORDER_XENOBIOLOGIST
 	bounty_types = CIV_JOB_SCI
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/toy/plush/slimeplushie,
+	)
 
 	mail_goodies = list(
 		/obj/item/toy/plush/slimeplushie = 25,
@@ -44,12 +50,17 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Beast Tamer"
-	crewmonitor_priority = 35
+	crewmonitor_priority = 34
+
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/outfit/job/scientist/xenobiologist
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio
 	uniform = /obj/item/clothing/under/rank/rnd/xenobiologist
-	belt = /obj/item/modular_computer/pda/xenobiologist
+	belt = /obj/item/modular_computer/pda/science/xenobiologist
 	jobtype = /datum/job/xenobiologist
 	id_trim = /datum/id_trim/job/xenobiologist

@@ -27,6 +27,9 @@
 	item_flags = NONE
 	clumsy_check = FALSE
 	randomspread = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	// Firing data.
 	/// The person who opened the valve on the TTV loaded into this.
@@ -110,10 +113,8 @@
 	update_appearance()
 	return TRUE
 
-/obj/item/gun/blastcannon/afterattack(atom/target, mob/user, flag, params)
-	. |= AFTERATTACK_PROCESSED_ITEM
-
-	if((!bomb && bombcheck) || !target || (get_dist(get_turf(target), get_turf(user)) <= 2))
+/obj/item/gun/blastcannon/try_fire_gun(atom/target, mob/living/user, params)
+	if((!bomb && bombcheck) || isnull(target) || (get_dist(get_turf(target), get_turf(user)) <= 2))
 		return ..()
 
 	cached_target = WEAKREF(target)
@@ -123,12 +124,12 @@
 			span_danger("[user] points [src] at [target]!"),
 			span_danger("You point [src] at [target]!")
 		)
-		return
+		return FALSE
 
 	cached_firer = WEAKREF(user)
 	if(!bomb)
-		fire_debug(target, user, flag, params)
-		return
+		fire_debug(target, user, params)
+		return TRUE
 
 	playsound(src, dry_fire_sound, 30, TRUE) // *click
 	user.visible_message(
@@ -141,8 +142,7 @@
 	user.log_message("opened blastcannon transfer valve at [AREACOORD(current_turf)] while aiming at [AREACOORD(target_turf)] (target).", LOG_GAME)
 	bomb.toggle_valve()
 	update_appearance()
-	return
-
+	return TRUE
 
 /**
  * Channels an internal explosion into a blastwave projectile.

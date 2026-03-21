@@ -1,11 +1,9 @@
 /area/station/command
 	name = "Command"
 	icon_state = "command"
-	ambientsounds = list(
-		'sound/ambience/signal.ogg',
-		)
 	airlock_wires = /datum/wires/airlock/command
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	ambience_index = AMBIENCE_COMMAND
 
 /area/station/command/bridge
 	name = "\improper Bridge"

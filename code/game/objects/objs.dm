@@ -7,10 +7,12 @@
 	/// Extra examine line to describe controls, such as right-clicking, left-clicking, etc.
 	var/desc_controls
 
+	/// The context returned when an attack against this object doesnt deal any traditional damage to the object.
+	var/no_damage_feedback = "without leaving a mark"
 	/// Icon to use as a 32x32 preview in crafting menus and such
 	var/icon_preview
 	var/icon_state_preview
-	/// The vertical pixel offset applied when the object is anchored on a tile with table
+	/// The vertical pixel_z offset applied when the object is anchored on a tile with table
 	/// Ignored when set to 0 - to avoid shifting directional wall-mounted objects above tables
 	var/anchored_tabletop_offset = 0
 
@@ -22,11 +24,9 @@
 	/// If this attacks a human with no wound armor on the affected body part, add this to the wound mod. Some attacks may be significantly worse at wounding if there's even a slight layer of armor to absorb some of it vs bare flesh
 	var/bare_wound_bonus = 0
 
-	/// A multiplier to an objecet's force when used against a stucture, vechicle, machine, or robot.
+	/// A multiplier to an object's force when used against a structure, vehicle, machine, or robot.
+	/// Use [/obj/proc/get_demolition_modifier] to get the value.
 	var/demolition_mod = 1
-
-	var/current_skin //Has the item been reskinned?
-	var/list/unique_reskin //List of options to reskin.
 
 	// Access levels, used in modules\jobs\access.dm
 	/// List of accesses needed to use this object: The user must possess all accesses in this list in order to use the object.
@@ -36,7 +36,7 @@
 	/// Example: If req_one_access = list(ACCESS_ENGINE, ACCESS_CE)- then the user must have either ACCESS_ENGINE or ACCESS_CE in order to use the object.
 	var/list/req_one_access
 
-	/// Custom fire overlay icon, will just use the default overlay if this is null
+	/// Cached custom fire overlay
 	var/custom_fire_overlay
 	/// Particles this obj uses when burning, if any
 	var/burning_particles
@@ -46,6 +46,12 @@
 	/// Map tag for something.  Tired of it being used on snowflake items.  Moved here for some semblance of a standard.
 	/// Next pr after the network fix will have me refactor door interactions, so help me god.
 	var/id_tag = null
+
+	/// The sound this obj makes when something is buckled to it
+	var/buckle_sound = null
+
+	/// The sound this obj makes when something is unbuckled from it
+	var/unbuckle_sound = null
 
 	uses_integrity = TRUE
 
@@ -77,38 +83,33 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	if(!attacking_item.force)
 		return
 
-	var/total_force = (attacking_item.force * attacking_item.demolition_mod)
-
-	var/damage = take_damage(total_force, attacking_item.damtype, MELEE, 1)
+	var/demo_mod = attacking_item.get_demolition_modifier(src)
+	var/total_force = (attacking_item.force * demo_mod)
+	var/damage = take_damage(total_force, attacking_item.damtype, MELEE, TRUE, get_dir(src, user), attacking_item.armour_penetration)
 
 	var/damage_verb = "hit"
 
-	if(attacking_item.demolition_mod > 1 && damage)
-		damage_verb = "pulverise"
-	if(attacking_item.demolition_mod < 1)
+	if(demo_mod > 1 && prob(damage * 5))
+		if(HAS_TRAIT(src, TRAIT_INVERTED_DEMOLITION))
+			damage_verb = "shred"
+		else
+			damage_verb = "pulverise"
+
+	if(demo_mod < 1)
 		damage_verb = "ineffectively pierce"
 
-	user.visible_message(span_danger("[user] [damage_verb][plural_s(damage_verb)] [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), \
-		span_danger("You [damage_verb] [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), null, COMBAT_MESSAGE_RANGE)
+	user.visible_message(span_danger("[user] [damage_verb][plural_s(damage_verb)] [src] with [attacking_item][damage ? "." : ", [no_damage_feedback]!"]"), \
+		span_danger("You [damage_verb] [src] with [attacking_item][damage ? "." : ", [no_damage_feedback]!"]"), null, COMBAT_MESSAGE_RANGE)
 	log_combat(user, src, "attacked", attacking_item)
 
 /obj/assume_air(datum/gas_mixture/giver)
-	if(loc)
-		return loc.assume_air(giver)
-	else
-		return null
+	return loc?.assume_air(giver)
 
 /obj/remove_air(amount)
-	if(loc)
-		return loc.remove_air(amount)
-	else
-		return null
+	return loc?.remove_air(amount)
 
 /obj/return_air()
-	if(loc)
-		return loc.return_air()
-	else
-		return null
+	return loc?.return_air()
 
 /obj/proc/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
 	//Return: (NONSTANDARD)
@@ -116,12 +117,16 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	// datum/air_group to tell lifeform to process using that breath return
 	//DEFAULT: Take air from turf to give to have mob process
 
-	if(breath_request>0)
-		var/datum/gas_mixture/environment = return_air()
-		var/breath_percentage = BREATH_VOLUME / environment.return_volume()
-		return remove_air(environment.total_moles() * breath_percentage)
-	else
+	if(breath_request <= 0)
 		return null
+
+	var/datum/gas_mixture/environment = return_air()
+	if(isnull(environment))
+		return null
+
+	// a little bit of handwaving is done here, exposing the mob to only a fraction (1 atm) of the total air
+	var/mols_requested = (ONE_ATMOSPHERE * breath_request) / (R_IDEAL_GAS_EQUATION * environment.return_temperature())
+	return remove_air(min(mols_requested, environment.total_moles()))
 
 /obj/proc/updateUsrDialog()
 	if(!(obj_flags & IN_USE))
@@ -231,9 +236,7 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		return
 
 	if(href_list[VV_HK_OSAY])
-		if(!check_rights(R_FUN, FALSE))
-			return
-		usr.client.object_say(src)
+		return SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/object_say, src)
 
 	if(href_list[VV_HK_MASS_DEL_TYPE])
 		if(!check_rights(R_DEBUG|R_SERVER))
@@ -276,58 +279,12 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	. = ..()
 	if(desc_controls)
 		. += span_notice(desc_controls)
-	if(obj_flags & UNIQUE_RENAME)
-		. += span_notice("Use a pen on it to rename it or change its description.")
-	if(unique_reskin && (!current_skin || (obj_flags & INFINITE_RESKIN)))
-		. += span_notice("Alt-click it to reskin it.")
 
-/obj/AltClick(mob/user)
+/obj/examine_tags(mob/user)
 	. = ..()
-	if(unique_reskin && (!current_skin || (obj_flags & INFINITE_RESKIN)) && user.can_perform_action(src, NEED_DEXTERITY))
-		reskin_obj(user)
+	if(obj_flags & UNIQUE_RENAME)
+		.["renameable"] = "Use a pen on it to rename it or change its description."
 
-/**
- * Reskins object based on a user's choice
- *
- * Arguments:
- * * M The mob choosing a reskin option
- */
-/obj/proc/reskin_obj(mob/user)
-	if(!LAZYLEN(unique_reskin))
-		return
-
-	var/list/items = list()
-	for(var/reskin_option in unique_reskin)
-		var/image/item_image = image(icon = src.icon, icon_state = unique_reskin[reskin_option])
-		items += list("[reskin_option]" = item_image)
-	sort_list(items)
-
-	var/pick = show_radial_menu(user, src, items, custom_check = CALLBACK(src, PROC_REF(check_reskin_menu), user), radius = 38, require_near = TRUE)
-	if(!pick)
-		return
-	if(!unique_reskin[pick])
-		return
-	current_skin = pick
-	icon_state = unique_reskin[pick]
-	to_chat(user, "[src] is now skinned as '[pick].'")
-	SEND_SIGNAL(src, COMSIG_OBJ_RESKIN, user, pick)
-
-/**
- * Checks if we are allowed to interact with a radial menu for reskins
- *
- * Arguments:
- * * user The mob interacting with the menu
- */
-/obj/proc/check_reskin_menu(mob/user)
-	if(QDELETED(src))
-		return FALSE
-	if(!(obj_flags & INFINITE_RESKIN) && current_skin)
-		return FALSE
-	if(!istype(user))
-		return FALSE
-	if(user.incapacitated())
-		return FALSE
-	return TRUE
 
 /obj/analyzer_act(mob/living/user, obj/item/analyzer/tool)
 	if(atmos_scan(user=user, target=src, silent=FALSE))
@@ -347,7 +304,7 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		take_damage(P.damage * receive_ricochet_damage_coeff, P.damage_type, P.armor_flag, 0, REVERSE_DIR(P.dir), P.armour_penetration) // pass along receive_ricochet_damage_coeff damage to the structure for the ricochet
 
 /// Handles exposing an object to reagents.
-/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
+/obj/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE, exposed_zone = BODY_ZONE_CHEST)
 	. = ..()
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
@@ -379,8 +336,8 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	return SUCCESSFUL_UNFASTEN
 
 /// Try to unwrench an object in a WONDERFUL DYNAMIC WAY
-/obj/proc/default_unfasten_wrench(mob/user, obj/item/wrench, time = 20)
-	if((obj_flags & NO_DECONSTRUCTION) || wrench.tool_behaviour != TOOL_WRENCH)
+/obj/proc/default_unfasten_wrench(mob/user, obj/item/wrench, time = 2 SECONDS)
+	if(wrench.tool_behaviour != TOOL_WRENCH)
 		return CANT_UNFASTEN
 
 	var/turf/ground = get_turf(src)
@@ -415,7 +372,41 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 		return FALSE
 	return TRUE
 
-/// Adjusts the vertical pixel offset when the object is anchored on a tile with table
+/// Adjusts the vertical pixel_z offset when the object is anchored on a tile with table
 /obj/proc/check_on_table()
-	if(anchored_tabletop_offset != 0 && !istype(src, /obj/structure/table) && locate(/obj/structure/table) in loc)
-		pixel_y = anchored ? anchored_tabletop_offset : initial(pixel_y)
+	if(anchored_tabletop_offset == 0)
+		return
+	if(istype(src, /obj/structure/table))
+		return
+
+	if(anchored && locate(/obj/structure/table) in loc)
+		pixel_z = anchored_tabletop_offset
+	else
+		pixel_z = initial(pixel_z)
+
+/// Returns modifier to how much damage this object does to a target considered vulnerable to "demolition" (other objects, robots, etc)
+/obj/proc/get_demolition_modifier(obj/target)
+	if(HAS_TRAIT(target, TRAIT_INVERTED_DEMOLITION))
+		return (1 / demolition_mod)
+	return demolition_mod
+
+/**
+ * Used to deliver a shock to a mob from this object
+ * The target must be adjacent to this object, or else the shock will fail
+ *
+ * * shocking - who are we zapping
+ * * chance - probability the shock fails
+ * * shock_source - used for determining where to get the power to zap them.
+ * can be an apc, a cable, an area, a cell, or even a powernet datum
+ * defaults to our cell or our current area/apc if it doesn't
+ * subtypes may override this proc to pass this up to the parent
+ * * siemens_coeff - multiplier to how much shock is delivered
+ */
+/obj/proc/shock(mob/living/shocking, chance = 100, shock_source, siemens_coeff = 1)
+	if(!isliving(shocking))
+		return FALSE
+	if(!prob(chance - shocking.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
+		return FALSE // you lucked out, no shock for you
+
+	do_sparks(5, TRUE, src)
+	return electrocute_mob(shocking, shock_source || get_cell() || get_area(src), src, siemens_coeff, TRUE)

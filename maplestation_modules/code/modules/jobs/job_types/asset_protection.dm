@@ -2,7 +2,7 @@
 /datum/job/asset_protection
 	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
-		from foreign threats and themselves. Exert authority over the Bridge Officer."
+		from foreign threats (and themselves). Exert authority over the bridge officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -18,7 +18,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "ASSET_PROTECTION"
 
-	outfit = /datum/outfit/job/asset_protection
+	base_outfit = /datum/outfit/job/asset_protection
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
@@ -32,7 +32,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -48,7 +51,14 @@
 	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_CANNOT_OPEN_SLOTS
 	voice_of_god_power = 1.2 // Not quite command staff.
 	rpg_title = "Royal Guard"
-	crewmonitor_priority = 9
+	crewmonitor_priority = 9 // after cap, right before sec
+
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_MASTER,
+		/datum/skill/first_aid = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/piloting = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/asset_protection
 	name = "Asset Protection"
@@ -63,7 +73,7 @@
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/disabler/phaser
 	id_trim = /datum/id_trim/job/asset_protection
 	box = /obj/item/storage/box/survival/security
 

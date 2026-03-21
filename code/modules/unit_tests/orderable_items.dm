@@ -6,12 +6,12 @@
 /datum/unit_test/orderable_items/Run()
 	var/list/all_paths = list()
 	for (var/datum/orderable_item/orderable_item as anything in subtypesof(/datum/orderable_item))
-		if(isnull(initial(orderable_item.item_path))) // don't check if they're not actual orderable items
+		if(isnull(initial(orderable_item.purchase_path))) // don't check if they're not actual orderable items
 			continue
 		if (!isnull(initial(orderable_item.desc))) //don't check if they have a custom description
 			continue
 
-		var/item_path = initial(orderable_item.item_path)
+		var/item_path = initial(orderable_item.purchase_path)
 
 		var/obj/item/item_instance = allocate(item_path)
 		var/initial_desc = initial(item_instance.desc)

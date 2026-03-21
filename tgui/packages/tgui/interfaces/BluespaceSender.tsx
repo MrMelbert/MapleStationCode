@@ -1,10 +1,5 @@
-import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-import { toFixed } from 'common/math';
-import { BooleanLike } from 'common/react';
-import { multiline } from 'common/string';
-
-import { useBackend } from '../backend';
+import { sortBy } from 'es-toolkit';
+import { filter } from 'es-toolkit/compat';
 import {
   Box,
   Button,
@@ -14,7 +9,11 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { getGasColor } from '../constants';
 import { Window } from '../layouts';
 
@@ -43,10 +42,10 @@ export const BluespaceSender = (props) => {
   const { act, data } = useBackend<Data>();
   const { gas_transfer_rate, credits, bluespace_network_gases = [], on } = data;
 
-  const gases: Gas[] = flow([
-    filter<Gas>((gas) => gas.amount >= 0.01),
-    sortBy<Gas>((gas) => -gas.amount),
-  ])(bluespace_network_gases);
+  const gases: Gas[] = sortBy(
+    filter(bluespace_network_gases, (gas) => gas.amount >= 0.01),
+    [(gas) => -gas.amount],
+  );
 
   const gasMax = Math.max(1, ...gases.map((gas) => gas.amount));
 
@@ -64,7 +63,7 @@ export const BluespaceSender = (props) => {
                 color="transparent"
                 icon="info"
                 tooltipPosition="bottom-start"
-                tooltip={multiline`
+                tooltip={`
                 Any gas you pipe into here will be added to the Bluespace
                 Network! That means any connected Bluespace Vendor (multitool)
                 will hook up to all the gas stored in this, and charge
@@ -73,13 +72,14 @@ export const BluespaceSender = (props) => {
               />
               <NumberInput
                 animated
+                tickWhileDragging
                 value={gas_transfer_rate}
                 step={0.01}
                 width="63px"
                 unit="moles/S"
                 minValue={0}
                 maxValue={1}
-                onDrag={(e, value) =>
+                onChange={(value) =>
                   act('rate', {
                     rate: value,
                   })
@@ -104,7 +104,7 @@ export const BluespaceSender = (props) => {
             </>
           }
         >
-          <Box>{'The vendors have made ' + credits + ' credits so far.'}</Box>
+          <Box>{`The vendors have made ${credits} credits so far.`}</Box>
           <Divider />
           <LabeledList>
             {gases.map((gas, index) => (
@@ -131,11 +131,13 @@ const GasDisplay = (props: GasDisplayProps) => {
           <NumberInput
             animated
             fluid
+            tickWhileDragging
             value={price}
+            step={1}
             unit="per mole"
             minValue={0}
             maxValue={100}
-            onDrag={(event, value) =>
+            onChange={(value) =>
               act('price', {
                 gas_price: value,
                 gas_type: id,
@@ -152,7 +154,7 @@ const GasDisplay = (props: GasDisplayProps) => {
           />
         </Stack.Item>
         <Stack.Item color="label" grow={2}>
-          {toFixed(amount, 2) + ' moles'}
+          {`${toFixed(amount, 2)} moles`}
         </Stack.Item>
       </Stack>
     </LabeledList.Item>

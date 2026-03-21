@@ -193,6 +193,11 @@
 /// HUNTERS
 #define ACCESS_HUNTER "hunter"
 
+/// - - - MISC - - -
+	// These don't really fit anywhere else
+/// For things that aren't ever supposed to be accessed
+#define ACCESS_INACCESSIBLE "inaccessible"
+
 /// - - - END ACCESS IDS - - -
 
 /// A list of access levels that, when added to an ID card, will warn admins.
@@ -586,3 +591,11 @@
 #define FORCE_ADD_ALL 2
 /// Used in ID card access adding procs. Will stack trace on fail.
 #define ERROR_ON_FAIL 3
+
+/// Tracks what jobs know what passwords
+/// Assoc - job type = list(password id = list("location" = place the password is for, "password" = the actual password))
+GLOBAL_LIST_INIT(important_passwords, list())
+/// Location of a password, ie "Front Engineering Door"
+#define PASSWORD_LOCATION "location"
+/// Actual password, "12345"
+#define PASSWORD_CODE "password"

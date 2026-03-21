@@ -9,6 +9,7 @@
 	fire_sound = 'sound/weapons/emitter.ogg'
 	obj_flags = CONDUCTS_ELECTRICITY
 	w_class = WEIGHT_CLASS_HUGE
+	can_muzzle_flash = FALSE
 	///what kind of magic is this
 	var/school = SCHOOL_EVOCATION
 	var/antimagic_flags = MAGIC_RESISTANCE
@@ -24,6 +25,8 @@
 	clumsy_check = 0
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL // Has no trigger at all, uses magic instead
 	pin = /obj/item/firing_pin/magic
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/gun/magic/Initialize(mapload)
 	. = ..()

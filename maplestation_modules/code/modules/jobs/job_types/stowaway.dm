@@ -1,18 +1,27 @@
+#define STOWAWAY_SKILLS list( \
+	/datum/skill/athletics, \
+	/datum/skill/chemistry, \
+	/datum/skill/electronics, \
+	/datum/skill/firearms, \
+	/datum/skill/first_aid, \
+	/datum/skill/mechanics, \
+)
+
 /datum/job/stowaway
 	title = "Stowaway"
-	description = "You've snuck on board, and now you're stuck here. \
-		You spawn randomly in the maintenance tunnels, with no radio, no PDA, \
+	description = "Sneak aboard the station, end up worse off than you had it before. \
+		Spawn randomly in the maintenance tunnels with no radio, no PDA, \
 		no bank account, and no records in the crew database."
 	rpg_title = "Stowaway" // TES4: Oblivion
 	paycheck = PAYCHECK_ZERO
 	total_positions = 0
 	spawn_positions = 1
-	supervisors = "no one"
+	supervisors = "no one (yet)"
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "STOWAWAY"
 	faction = FACTION_STATION
 
-	outfit = /datum/outfit/job/stowaway
+	base_outfit = /datum/outfit/job/stowaway
 	plasmaman_outfit = /datum/outfit/job/stowaway/plasmaman
 
 	paycheck = PAYCHECK_ZERO
@@ -28,16 +37,27 @@
 /datum/job/stowaway/get_default_roundstart_spawn_point()
 	return find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE)
 
+/datum/job/stowaway/get_spawn_message_information()
+	. = ..()
+	. += span_notice("You are free to steal and evade security as you please, but remember you are not an antagonist.")
+
 /datum/job/stowaway/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
 	var/datum/status_effect/backstory/backstory = spawned.apply_status_effect(/datum/status_effect/backstory)
-	var/backstory_ref = "<a href='?src=[REF(backstory)];backstory=1'>click here</a>"
+	var/backstory_ref = "<a href='byond://?src=[REF(backstory)];backstory=1'>click here</a>"
 	to_chat(player_client, examine_block("\
 		[span_boldnotice("You find yourself stown away in [get_area_name(spawned)] on [station_name()].")]\n\
 		[span_notice("All you have to your name is the clothes on your back, some tools, and a small amount of cash.")]\n\
 		[span_notice("The crew has no record of your existence.")]\n\
 		[span_notice("(If you would like to be provided an optional, random backstory, with more or less equipment: [backstory_ref].)")]\
 	"))
+
+	var/list/skill_pool = STOWAWAY_SKILLS
+	for(var/i in 1 to rand(3, length(skill_pool) - 1)) // give a few random skills to work with
+		spawned.mind.adjust_experience(pick_n_take(skill_pool), round(rand(100, 750), 50), TRUE)
+
+/datum/job/stowaway/get_radio_information()
+	return null
 
 // Applied to fresh stowaways to give them an option of getting a random backstory
 /datum/status_effect/backstory
@@ -55,10 +75,14 @@
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		return
 
+	for(var/skill in STOWAWAY_SKILLS) // wipe out existing rng skills
+		owner.mind.set_level(skill, SKILL_LEVEL_NONE, TRUE)
+
 	var/backstory_gist
 	var/backstory_suggested_goal
 	var/backstory_equipment
 	var/list/backstory_equipment_items
+	var/list/backstory_skills
 
 	var/mob/living/carbon/human/stowaway = owner
 	switch(rand(1, 7))
@@ -76,6 +100,11 @@
 				/obj/item/clothing/gloves/color/yellow = ITEM_SLOT_BACKPACK,
 			)
 			backstory_equipment = "A toolbelt and some insulated gloves."
+			backstory_skills = list(
+				/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+				/datum/skill/mechanics = SKILL_LEVEL_JOURNEYMAN,
+				/datum/skill/electronics =  SKILL_LEVEL_JOURNEYMAN,
+			)
 
 		if(3)
 			var/old_boss = pick_list(COMPANY_FILE, "bad_companies")
@@ -88,6 +117,11 @@
 				(stowaway.jumpsuit_style == PREF_SKIRT ? /obj/item/clothing/under/syndicate/skirt : /obj/item/clothing/under/syndicate) = ITEM_SLOT_BACKPACK,
 			)
 			backstory_equipment = "A syndicate turtleneck and mask, and some insulated combat gloves."
+			backstory_skills = list(
+				/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+				/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
+				/datum/skill/first_aid =  SKILL_LEVEL_APPRENTICE,
+			)
 
 		if(4)
 			var/old_boss = pick_list(COMPANY_FILE, "good_companies")
@@ -101,7 +135,7 @@
 			backstory_gist = "You are a former [old_job.title], [reasons]. You've snuck on board to get your old position back."
 			backstory_suggested_goal = "Get your job as [old_job.title] back, and prove yourself - or find a new calling."
 
-			var/datum/outfit/job/job_outfit = old_job.outfit
+			var/datum/outfit/job/job_outfit = old_job.base_outfit
 			backstory_equipment_items = list(
 				initial(job_outfit.uniform) = ITEM_SLOT_BACKPACK,
 				initial(job_outfit.head) = ITEM_SLOT_BACKPACK,
@@ -109,6 +143,7 @@
 			)
 			list_clear_nulls(backstory_equipment_items) // if the job doesn't have a head/shoes/whatever, don't spawn it
 			backstory_equipment = "Your old uniform."
+			backstory_skills = old_job.base_skills
 
 		if(6)
 			backstory_gist = "You woke up randomly in the maintenance tunnels, with no memory of who you are or how you got here."
@@ -120,14 +155,16 @@
 			backstory_suggested_goal = "Find a new life on board the station."
 
 
-	var/final_info = "<b>[backstory_gist]</b>\n\n[backstory_suggested_goal]"
+	var/final_info = "<b>[backstory_gist]</b><br><br>[backstory_suggested_goal]"
 	if(length(backstory_equipment_items) && backstory_equipment)
-		final_info += span_notice("\n\nAdditional equipment: [backstory_equipment]")
+		final_info += span_notice("<br><br>Additional equipment: [backstory_equipment]")
 
 	to_chat(owner, examine_block(span_infoplain(final_info)))
 
 	for(var/thing in backstory_equipment_items)
 		owner.equip_to_slot_if_possible(new thing(owner.loc), backstory_equipment_items[thing], disable_warning = TRUE, redraw_mob = FALSE, initial = TRUE)
+	for(var/skill in backstory_skills)
+		owner.mind.set_level(skill, backstory_skills[skill], TRUE)
 
 	qdel(src)
 
@@ -137,6 +174,7 @@
 	desc = "Not sure what to do? Click here for a random backstory and some extra equipment. \
 		This will go away shortly, so don't worry if you don't want it."
 	icon_state = "surrender"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/backstory/Click(location, control, params)
 	. = ..()
@@ -198,6 +236,8 @@
 	assignment = "Maintenance Technician"
 	trim_state = "trim_stationengineer" // for posterity, doesn't show anyways
 	department_color = COLOR_ASSISTANT_GRAY
+
+#undef STOWAWAY_SKILLS
 
 // Old toolbox subtype that spawns with a multitool
 /obj/item/storage/toolbox/mechanical/old/multitool

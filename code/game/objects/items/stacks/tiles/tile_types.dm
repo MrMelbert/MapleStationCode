@@ -28,6 +28,8 @@
 	var/list/tile_rotate_dirs
 	/// Allows us to replace the plating we are attacking if our baseturfs are the same.
 	var/replace_plating = FALSE
+	/// tile_rotate_dirs but before it gets converted to text
+	var/list/tile_rotate_dirs_number
 
 /obj/item/stack/tile/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -37,6 +39,7 @@
 	if(tile_reskin_types)
 		tile_reskin_types = tile_reskin_list(tile_reskin_types)
 	if(tile_rotate_dirs)
+		tile_rotate_dirs_number = tile_rotate_dirs.Copy()
 		var/list/values = list()
 		for(var/set_dir in tile_rotate_dirs)
 			values += dir2text(set_dir)
@@ -101,9 +104,8 @@
 	playsound(target_plating, 'sound/weapons/genhit.ogg', 50, TRUE)
 	return target_plating
 
-/obj/item/stack/tile/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)
-	if(proximity_flag)
-		target.attackby(src, user, click_parameters)
+/obj/item/stack/tile/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	target.attackby(src, user, list2params(modifiers))
 
 //Grass
 /obj/item/stack/tile/grass
@@ -115,6 +117,8 @@
 	turf_type = /turf/open/floor/grass
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/grass
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 //Fairygrass
 /obj/item/stack/tile/fairygrass
@@ -125,6 +129,8 @@
 	turf_type = /turf/open/floor/grass/fairy
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/fairygrass
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 //Wood
 /obj/item/stack/tile/wood
@@ -142,6 +148,8 @@
 		/obj/item/stack/tile/wood/tile,
 		/obj/item/stack/tile/wood/parquet,
 	)
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/stack/tile/wood/parquet
 	name = "parquet wood floor tile"
@@ -180,6 +188,8 @@
 		/obj/item/stack/tile/bamboo/tatami/purple,
 		/obj/item/stack/tile/bamboo/tatami/black,
 	)
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/stack/tile/bamboo/tatami
 	name = "Tatami with green rim"
@@ -222,13 +232,15 @@
 	inhand_icon_state = "tile-carpet"
 	turf_type = /turf/open/floor/carpet
 	resistance_flags = FLAMMABLE
-	tableVariant = /obj/structure/table/wood/fancy
+	table_type = /obj/structure/table/wood/fancy
 	merge_type = /obj/item/stack/tile/carpet
 	tile_reskin_types = list(
 		/obj/item/stack/tile/carpet,
 		/obj/item/stack/tile/carpet/symbol,
 		/obj/item/stack/tile/carpet/star,
 	)
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 /obj/item/stack/tile/carpet/symbol
 	name = "symbol carpet"
@@ -252,7 +264,7 @@
 	icon_state = "tile-carpet-black"
 	inhand_icon_state = "tile-carpet-black"
 	turf_type = /turf/open/floor/carpet/black
-	tableVariant = /obj/structure/table/wood/fancy/black
+	table_type = /obj/structure/table/wood/fancy/black
 	merge_type = /obj/item/stack/tile/carpet/black
 	tile_reskin_types = null
 
@@ -261,7 +273,7 @@
 	icon_state = "tile-carpet-blue"
 	inhand_icon_state = "tile-carpet-blue"
 	turf_type = /turf/open/floor/carpet/blue
-	tableVariant = /obj/structure/table/wood/fancy/blue
+	table_type = /obj/structure/table/wood/fancy/blue
 	merge_type = /obj/item/stack/tile/carpet/blue
 	tile_reskin_types = null
 
@@ -270,7 +282,7 @@
 	icon_state = "tile-carpet-cyan"
 	inhand_icon_state = "tile-carpet-cyan"
 	turf_type = /turf/open/floor/carpet/cyan
-	tableVariant = /obj/structure/table/wood/fancy/cyan
+	table_type = /obj/structure/table/wood/fancy/cyan
 	merge_type = /obj/item/stack/tile/carpet/cyan
 	tile_reskin_types = null
 
@@ -279,7 +291,7 @@
 	icon_state = "tile-carpet-green"
 	inhand_icon_state = "tile-carpet-green"
 	turf_type = /turf/open/floor/carpet/green
-	tableVariant = /obj/structure/table/wood/fancy/green
+	table_type = /obj/structure/table/wood/fancy/green
 	merge_type = /obj/item/stack/tile/carpet/green
 	tile_reskin_types = null
 
@@ -288,7 +300,7 @@
 	icon_state = "tile-carpet-orange"
 	inhand_icon_state = "tile-carpet-orange"
 	turf_type = /turf/open/floor/carpet/orange
-	tableVariant = /obj/structure/table/wood/fancy/orange
+	table_type = /obj/structure/table/wood/fancy/orange
 	merge_type = /obj/item/stack/tile/carpet/orange
 	tile_reskin_types = null
 
@@ -297,7 +309,7 @@
 	icon_state = "tile-carpet-purple"
 	inhand_icon_state = "tile-carpet-purple"
 	turf_type = /turf/open/floor/carpet/purple
-	tableVariant = /obj/structure/table/wood/fancy/purple
+	table_type = /obj/structure/table/wood/fancy/purple
 	merge_type = /obj/item/stack/tile/carpet/purple
 	tile_reskin_types = null
 
@@ -306,7 +318,7 @@
 	icon_state = "tile-carpet-red"
 	inhand_icon_state = "tile-carpet-red"
 	turf_type = /turf/open/floor/carpet/red
-	tableVariant = /obj/structure/table/wood/fancy/red
+	table_type = /obj/structure/table/wood/fancy/red
 	merge_type = /obj/item/stack/tile/carpet/red
 	tile_reskin_types = null
 
@@ -315,7 +327,7 @@
 	icon_state = "tile-carpet-royalblack"
 	inhand_icon_state = "tile-carpet-royalblack"
 	turf_type = /turf/open/floor/carpet/royalblack
-	tableVariant = /obj/structure/table/wood/fancy/royalblack
+	table_type = /obj/structure/table/wood/fancy/royalblack
 	merge_type = /obj/item/stack/tile/carpet/royalblack
 	tile_reskin_types = null
 
@@ -324,7 +336,7 @@
 	icon_state = "tile-carpet-royalblue"
 	inhand_icon_state = "tile-carpet-royalblue"
 	turf_type = /turf/open/floor/carpet/royalblue
-	tableVariant = /obj/structure/table/wood/fancy/royalblue
+	table_type = /obj/structure/table/wood/fancy/royalblue
 	merge_type = /obj/item/stack/tile/carpet/royalblue
 	tile_reskin_types = null
 
@@ -1076,6 +1088,11 @@
 	inhand_icon_state = "tile-bcircuit"
 	turf_type = /turf/open/floor/circuit
 	merge_type = /obj/item/stack/tile/circuit
+	tile_reskin_types = list(
+		/obj/item/stack/tile/circuit,
+		/obj/item/stack/tile/circuit/green,
+		/obj/item/stack/tile/circuit/red,
+	)
 
 /obj/item/stack/tile/circuit/green
 	name = "green circuit tile"
@@ -1142,6 +1159,8 @@
 	mats_per_unit = list(/datum/material/plastic=SMALL_MATERIAL_AMOUNT*5)
 	turf_type = /turf/open/floor/plastic
 	merge_type = /obj/item/stack/tile/plastic
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/stack/tile/material
 	name = "floor tile"
@@ -1261,7 +1280,6 @@
 		/obj/item/stack/tile/catwalk_tile/iron,
 		/obj/item/stack/tile/catwalk_tile/iron_white,
 		/obj/item/stack/tile/catwalk_tile/iron_dark,
-		/obj/item/stack/tile/catwalk_tile/flat_white,
 		/obj/item/stack/tile/catwalk_tile/titanium,
 		/obj/item/stack/tile/catwalk_tile/iron_smooth //this is the original greenish one
 	)
@@ -1286,12 +1304,6 @@
 	singular_name = "dark catwalk floor tile"
 	icon_state = "darkiron_catwalk"
 	turf_type = /turf/open/floor/catwalk_floor/iron_dark
-
-/obj/item/stack/tile/catwalk_tile/flat_white
-	name = "flat white catwalk floor"
-	singular_name = "flat white catwalk floor tile"
-	icon_state = "flatwhite_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/flat_white
 
 /obj/item/stack/tile/catwalk_tile/titanium
 	name = "titanium catwalk floor"

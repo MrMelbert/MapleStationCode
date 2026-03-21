@@ -1,6 +1,6 @@
 // Starthistle
 /obj/item/seeds/starthistle
-	name = "pack of starthistle seeds"
+	name = "starthistle seed pack"
 	desc = "A robust species of weed that often springs up in-between the cracks of spaceship parking lots."
 	icon_state = "seed-starthistle"
 	plant_icon_offset = 3
@@ -33,20 +33,20 @@
 
 // Corpse flower
 /obj/item/seeds/starthistle/corpse_flower
-	name = "pack of corpse flower seeds"
+	name = "corpse flower seed pack"
 	desc = "A species of plant that emits a horrible odor. The odor stops being produced in difficult atmospheric conditions."
 	icon_state = "seed-corpse-flower"
 	species = "corpse-flower"
 	plantname = "Corpse flower"
 	production = 2
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
-	genes = list(/datum/plant_gene/trait/gas_production)
+	genes = list(/datum/plant_gene/trait/gas_production, /datum/plant_gene/trait/scent/decay)
 	mutatelist = null
 	reagents_add = list(/datum/reagent/toxin/formaldehyde = 0.1, /datum/reagent/fluorine = 0.1)
 
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle
-	name = "pack of galaxythistle seeds"
+	name = "galaxythistle seed pack"
 	desc = "An impressive species of weed that is thought to have evolved from the simple milk thistle. Contains flavolignans that can help repair a damaged liver."
 	icon_state = "seed-galaxythistle"
 	species = "galaxythistle"
@@ -75,3 +75,5 @@
 	foodtypes = VEGETABLES
 	wine_power = 35
 	tastes = list("thistle" = 2, "artichoke" = 1)
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'

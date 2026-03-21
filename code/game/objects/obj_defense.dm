@@ -1,7 +1,88 @@
 
-/obj/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
-	..()
-	take_damage(AM.throwforce, BRUTE, MELEE, 1, get_dir(src, AM))
+/obj/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(QDELETED(src))
+		return
+	hit_by_damage(hit_by, throwingdatum)
+
+/obj/proc/hit_by_damage(atom/movable/hitting_us, datum/thrownthing/throwingdatum)
+	var/base_dam = hitting_us.throwforce
+	if(isliving(hitting_us))
+		var/mob/living/living_mob = hitting_us
+		var/speed_bonus = throwingdatum.speed - living_mob.throw_speed
+		if(speed_bonus > 0)
+			base_dam += (5 * speed_bonus)
+		base_dam += (5 * max(0, living_mob.mob_size - 1))
+	if(isitem(hitting_us))
+		var/obj/item/hit_item = hitting_us
+		base_dam += (5 * max(0, hit_item.w_class - 2))
+		base_dam *= hit_item.get_demolition_modifier(src)
+
+	// no armor penetration
+	take_damage(base_dam, BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)
+
+/obj/structure/window/Initialize(mapload, direct)
+	. = ..()
+	// glass will buckle before being pushed around
+	ADD_TRAIT(src, TRAIT_NO_THROW_HITPUSH, INNATE_TRAIT)
+
+/obj/structure/window/Cross(atom/movable/crossed_atom)
+	. = ..()
+	if(.)
+		return .
+	if(!isliving(crossed_atom) || QDELETED(crossed_atom.throwing))
+		return .
+	if(anchored && get_integrity_percentage() > 0.5)
+		return .
+
+	var/turf/old_loc = loc
+
+	take_damage(INFINITY, BRUTE, MELEE, TRUE, get_dir(src, crossed_atom), 0)
+
+	if(!QDELETED(src))
+		return .
+
+	var/mob/living/defenestrated = crossed_atom
+	var/has_grille = locate(/obj/structure/grille) in old_loc
+	var/list/obj/item/shards = list()
+	for(var/obj/item/shard/shard in old_loc)
+		shards += shard
+
+	for(var/zone in shuffle(BODY_ZONES_ALL))
+		var/obj/item/bodypart/part = defenestrated.get_bodypart(zone)
+		if(!part)
+			continue
+		if(has_grille && prob(66))
+			continue
+
+		defenestrated.apply_damage(10, BRUTE, part, blocked = min(90, defenestrated.getarmor(part, MELEE)), sharpness = SHARP_POINTY, wound_bonus = 4, bare_wound_bonus = 8, attacking_item = (length(shards) ? shards[1] : "glass"))
+		if(prob(25 * length(shards)) && shards[1].tryEmbed(part, TRUE))
+			shards -= shards[1]
+
+	if(has_grille)
+		defenestrated.Paralyze(1 SECONDS)
+		defenestrated.Knockdown(2 SECONDS)
+		defenestrated.visible_message(
+			span_danger("[defenestrated] is thrown against [src], shattering it!"),
+			span_userdanger("You are thrown against [src], shattering it!"),
+		)
+
+	else
+		defenestrated.Paralyze(3 SECONDS)
+		defenestrated.Knockdown(6 SECONDS)
+		defenestrated.visible_message(
+			span_danger("[defenestrated] is thrown clean through [src]!"),
+			span_userdanger("You are thrown clean through [src]!"),
+		)
+
+	return TRUE
+
+/obj/structure/window/hit_by_damage(atom/movable/hitting_us, datum/thrownthing/throwingdatum)
+	if(reinf || !isliving(hitting_us))
+		return ..()
+
+	// take a lot of damage from being hit with a mob - so we can defenestrate
+	take_damage(max_integrity * min(0.75, (get_armor_rating(MELEE) / 100)), BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)
 
 /obj/ex_act(severity, target)
 	if(resistance_flags & INDESTRUCTIBLE)
@@ -32,7 +113,7 @@
 	var/damage_sustained = 0
 	if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
 		damage_sustained = take_damage(
-			hitting_projectile.damage * hitting_projectile.demolition_mod,
+			hitting_projectile.damage * hitting_projectile.get_demolition_modifier(src),
 			hitting_projectile.damage_type,
 			hitting_projectile.armor_flag,
 			FALSE,
@@ -41,11 +122,24 @@
 		)
 	if(hitting_projectile.suppressed != SUPPRESSED_VERY)
 		visible_message(
-			span_danger("[src] is hit by \a [hitting_projectile][damage_sustained ? "" : ", without leaving a mark"]!"),
+			span_danger("[src] is hit by \a [hitting_projectile.generic_name || hitting_projectile][damage_sustained ? "" : ", [no_damage_feedback]"]!"), // NON-MODULE CHANGE
 			vision_distance = COMBAT_MESSAGE_RANGE,
 		)
 
 	return damage_sustained > 0 ? BULLET_ACT_HIT : BULLET_ACT_BLOCK
+
+/obj/structure/window/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
+	// don't smack the window and its grille same turf, ever
+	for(var/obj/structure/grille/grille in loc)
+		hitting_projectile.impacted[grille] = TRUE
+
+	. = ..()
+	if(QDELETED(hitting_projectile) || . != BULLET_ACT_HIT)
+		return .
+	if(QDELETED(src) && prob(80))
+		// right through the window!
+		return BULLET_ACT_FORCE_PIERCE
+	return .
 
 /obj/attack_hulk(mob/living/carbon/human/user)
 	..()
@@ -54,7 +148,7 @@
 	else
 		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 	var/damage = take_damage(hulk_damage(), BRUTE, MELEE, 0, get_dir(src, user))
-	user.visible_message(span_danger("[user] smashes [src][damage ? "" : ", without leaving a mark"]!"), span_danger("You smash [src][damage ? "" : ", without leaving a mark"]!"), null, COMBAT_MESSAGE_RANGE)
+	user.visible_message(span_danger("[user] smashes [src][damage ? "" : ", [no_damage_feedback]"]!"), span_danger("You smash [src][damage ? "" : ", [no_damage_feedback]"]!"), null, COMBAT_MESSAGE_RANGE)
 	return TRUE
 
 /obj/blob_act(obj/structure/blob/B)
@@ -96,7 +190,7 @@
 
 /obj/proc/collision_damage(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
 	var/amt = max(0, ((force - (move_resist * MOVE_FORCE_CRUSH_RATIO)) / (move_resist * MOVE_FORCE_CRUSH_RATIO)) * 10)
-	take_damage(amt, BRUTE)
+	take_damage(amt, BRUTE, attack_dir = REVERSE_DIR(direction))
 
 /obj/singularity_act()
 	SSexplosions.high_mov_atom += src
@@ -131,9 +225,13 @@
 	if(exposed_temperature && !(resistance_flags & FIRE_PROOF))
 		take_damage(clamp(0.02 * exposed_temperature, 0, 20), BURN, FIRE, 0)
 	if(!(resistance_flags & ON_FIRE) && (resistance_flags & FLAMMABLE) && !(resistance_flags & FIRE_PROOF))
-		AddComponent(/datum/component/burning, custom_fire_overlay || GLOB.fire_overlay, burning_particles)
+		AddComponent(/datum/component/burning, custom_fire_overlay() || GLOB.fire_overlay, burning_particles)
 		return TRUE
 	return ..()
+
+/// Returns a custom fire overlay, if any
+/obj/proc/custom_fire_overlay()
+	return custom_fire_overlay
 
 /// Should be called when the atom is destroyed by fire, comparable to acid_melt() proc
 /obj/proc/burn()
@@ -155,9 +253,48 @@
 			var/mob/living/buckled_mob = m
 			buckled_mob.electrocute_act((clamp(round(strength * 1.25e-3), 10, 90) + rand(-5, 5)), src, flags = SHOCK_TESLA)
 
-///the obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
+/**
+ * Custom behaviour per atom subtype on how they should deconstruct themselves
+ * Arguments
+ *
+ * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
+ */
+/obj/proc/atom_deconstruct(disassembled = TRUE)
+	PROTECTED_PROC(TRUE)
+
+	return
+
+/**
+ * The interminate proc between deconstruct() & atom_deconstruct(). By default this delegates deconstruction to
+ * atom_deconstruct if NO_DEBRIS_AFTER_DECONSTRUCTION is absent but subtypes can override this to handle NO_DEBRIS_AFTER_DECONSTRUCTION in their
+ * own unique way. Override this if for example you want to dump out important content like mobs from the
+ * atom before deconstruction regardless if NO_DEBRIS_AFTER_DECONSTRUCTION is present or not
+ * Arguments
+ *
+ * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
+ */
+/obj/proc/handle_deconstruct(disassembled = TRUE)
+	SHOULD_CALL_PARENT(FALSE)
+
+	if(!(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION))
+		atom_deconstruct(disassembled)
+
+/**
+ * The obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
+ * Arguments
+ *
+ * * disassembled - TRUE means we cleanly took this atom apart using tools. FALSE means this was destroyed in a violent way
+ */
 /obj/proc/deconstruct(disassembled = TRUE)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	//allow objects to deconstruct themselves
+	handle_deconstruct(disassembled)
+
+	//inform objects we were deconstructed
 	SEND_SIGNAL(src, COMSIG_OBJ_DECONSTRUCT, disassembled)
+
+	//delete our self
 	qdel(src)
 
 ///what happens when the obj's integrity reaches zero.

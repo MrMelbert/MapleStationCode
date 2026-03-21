@@ -33,7 +33,7 @@
 /datum/armor/medical_boots
 	bio = 95
 
-/obj/item/clothing/gloves/color/latex/nitrile/special
+/obj/item/clothing/gloves/latex/nitrile/special
 	name = "high grade nitriles"
 	desc = "Medical grade gloves made from thicker material. These are more resistant to tearing and cuts."
 	icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_item.dmi'
@@ -84,7 +84,7 @@
 	. = ..()
 	new /obj/item/clothing/under/rank/medical/chief_medical_officer/special(src)
 	new /obj/item/clothing/shoes/jackboots/medical(src)
-	new /obj/item/clothing/gloves/color/latex/nitrile/special(src)
+	new /obj/item/clothing/gloves/latex/nitrile/special(src)
 	new /obj/item/clothing/suit/toggle/labcoat/cmo/special(src)
 
 // Belt to the locker

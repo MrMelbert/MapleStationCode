@@ -26,7 +26,7 @@
 			icon_state = ""
 	GLOB.cameranet.updateVisibility(src)
 
-/obj/structure/Destroy()
+/obj/structure/Destroy(force)
 	GLOB.cameranet.updateVisibility(src)
 	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH_NEIGHBORS(src)
@@ -57,6 +57,9 @@
 		if(0 to 25)
 			if(!broken)
 				return  span_warning("It's falling apart!")
+
+/obj/structure/examine_descriptor(mob/user)
+	return "structure"
 
 /obj/structure/rust_heretic_act()
 	take_damage(500, BRUTE, "melee", 1)

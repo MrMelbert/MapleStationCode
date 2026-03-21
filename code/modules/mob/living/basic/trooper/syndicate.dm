@@ -3,16 +3,16 @@
 	name = "Syndicate Operative"
 	desc = "Death to Nanotrasen."
 	faction = list(ROLE_SYNDICATE)
-	loot = list(/obj/effect/mob_spawn/corpse/human/syndicatesoldier)
+	corpse = /obj/effect/mob_spawn/corpse/human/syndicatesoldier
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatesoldier
 
 /mob/living/basic/trooper/syndicate/space
 	name = "Syndicate Commando"
 	maxHealth = 170
 	health = 170
-	loot = list(/obj/effect/gibspawner/human)
+	corpse = /obj/effect/gibspawner/human
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
 /mob/living/basic/trooper/syndicate/space/Initialize(mapload)
@@ -29,11 +29,12 @@
 /mob/living/basic/trooper/syndicate/melee //dude with a knife and no shields
 	melee_damage_lower = 15
 	melee_damage_upper = 15
-	loot = list(/obj/effect/gibspawner/human)
+	corpse = /obj/effect/gibspawner/human
 	attack_verb_continuous = "slashes"
 	attack_verb_simple = "slash"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
 	r_hand = /obj/item/knife/combat/survival
 	var/projectile_deflect_chance = 0
 
@@ -48,7 +49,7 @@
 	maxHealth = 170
 	health = 170
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
 /mob/living/basic/trooper/syndicate/melee/space/Initialize(mapload)
@@ -81,7 +82,7 @@
 	maxHealth = 170
 	health = 170
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	projectile_deflect_chance = 50
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
@@ -99,7 +100,7 @@
 ///////////////Guns////////////
 
 /mob/living/basic/trooper/syndicate/ranged
-	loot = list(/obj/effect/gibspawner/human)
+	corpse = /obj/effect/gibspawner/human
 	ai_controller = /datum/ai_controller/basic_controller/trooper/ranged
 	r_hand = /obj/item/gun/ballistic/automatic/pistol
 	/// Type of bullet we use
@@ -125,14 +126,14 @@
 
 /mob/living/basic/trooper/syndicate/ranged/infiltrator //shuttle loan event
 	projectilesound = 'sound/weapons/gun/smg/shot_suppressed.ogg'
-	loot = list(/obj/effect/mob_spawn/corpse/human/syndicatesoldier)
+	corpse = /obj/effect/mob_spawn/corpse/human/syndicatesoldier
 
 /mob/living/basic/trooper/syndicate/ranged/space
 	name = "Syndicate Commando"
 	maxHealth = 170
 	health = 170
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
 /mob/living/basic/trooper/syndicate/ranged/space/Initialize(mapload)
@@ -154,17 +155,24 @@
 	ranged_cooldown = 3 SECONDS
 	r_hand = /obj/item/gun/ballistic/automatic/c20r
 
+///Spawns from an emagged orion trail machine set to kill the player.
+/mob/living/basic/trooper/syndicate/ranged/smg/orion
+	name = "spaceport security"
+	desc = "Premier corporate security forces for all spaceports found along the Orion Trail."
+	faction = list(FACTION_ORION)
+	corpse = null
+
 /mob/living/basic/trooper/syndicate/ranged/smg/pilot //caravan ambush ruin
 	name = "Syndicate Salvage Pilot"
-	loot = list(/obj/effect/mob_spawn/corpse/human/syndicatepilot)
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatepilot
+	corpse = /obj/effect/mob_spawn/corpse/human/syndicatepilot
 
 /mob/living/basic/trooper/syndicate/ranged/smg/space
 	name = "Syndicate Commando"
 	maxHealth = 170
 	health = 170
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
 /mob/living/basic/trooper/syndicate/ranged/smg/space/Initialize(mapload)
@@ -190,7 +198,7 @@
 	maxHealth = 170
 	health = 170
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = -1
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/syndicatecommando
 
 /mob/living/basic/trooper/syndicate/ranged/shotgun/space/Initialize(mapload)
@@ -216,8 +224,8 @@
 	mob_biotypes = MOB_ROBOTIC
 	basic_mob_flags = DEL_ON_DEATH
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = 700
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = 700
 	unsuitable_cold_damage = 0
 	health = 25
 	maxHealth = 25
@@ -239,6 +247,7 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	death_message = "is smashed into pieces!"
 	ai_controller = /datum/ai_controller/basic_controller/trooper/viscerator
+	initial_blood_type = /datum/blood_type/oil
 
 /mob/living/basic/viscerator/Initialize(mapload)
 	. = ..()

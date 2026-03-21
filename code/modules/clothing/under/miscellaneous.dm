@@ -27,12 +27,16 @@
 	icon_state = "mailman"
 	inhand_icon_state = "b_suit"
 	clothing_traits = list(TRAIT_HATED_BY_DOGS)
+	custom_premium_price = PAYCHECK_CREW
 
 /obj/item/clothing/under/misc/psyche
 	name = "psychedelic jumpsuit"
 	desc = "Groovy!"
 	icon_state = "psyche"
 	inhand_icon_state = "p_suit"
+
+/obj/item/clothing/under/misc/psyche/get_general_color(icon/base_icon)
+	return "#3f3f3f"
 
 /obj/item/clothing/under/misc/vice_officer
 	name = "vice officer's jumpsuit"
@@ -50,12 +54,14 @@
 	desc = "A cybernetically enhanced jumpsuit used for administrative duties."
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	armor_type = /datum/armor/clothing_under/adminsuit
-	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
-	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	can_adjust = FALSE
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/clothing/under/misc/adminsuit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -15)
 
 /datum/armor/clothing_under/adminsuit
 	melee = 100

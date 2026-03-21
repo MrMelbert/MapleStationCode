@@ -9,6 +9,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/silicon = 5, /datum/reagent/nitrogen = 10) //Nitrogen is used as a cheaper alternative to argon in incandescent lighbulbs
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 	///How much light it gives off
 	var/brightness = 2
 	///LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN

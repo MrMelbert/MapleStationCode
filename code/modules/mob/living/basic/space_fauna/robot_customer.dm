@@ -10,15 +10,17 @@
 	icon_state = "amerifat"
 	icon_living = "amerifat"
 
+	max_grab = GRAB_AGGRESSIVE
 	basic_mob_flags = DEL_ON_DEATH
 	mob_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_ARTIFICIAL
 
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = TCMB
-	maximum_survivable_temperature = T0C + 1000
+	bodytemp_cold_damage_limit = TCMB
+	bodytemp_heat_damage_limit = T0C + 1000
 
 	ai_controller = /datum/ai_controller/robot_customer
+	initial_blood_type = /datum/blood_type/oil
 
 	/// The clothes that we draw on this tourist.
 	var/clothes_set = "amerifat_clothes"
@@ -45,7 +47,7 @@
 	icon = customer_info.base_icon
 	icon_state = customer_info.base_icon_state
 	name = "[pick(customer_info.name_prefixes)]-bot"
-	color = rgb(rand(80,255), rand(80,255), rand(80,255))
+	add_atom_colour(rgb(rand(80,255), rand(80,255), rand(80,255)), FIXED_COLOUR_PRIORITY)
 	clothes_set = pick(customer_info.clothing_sets)
 	update_appearance(UPDATE_ICON)
 
@@ -81,22 +83,20 @@
 		underlays.Cut()
 		underlays += new_underlays
 
-	var/mutable_appearance/features = mutable_appearance(icon, "[icon_state]_features")
-	features.appearance_flags = RESET_COLOR
-	. += features
-
-	var/mutable_appearance/clothes = mutable_appearance(icon, clothes_set)
-	clothes.appearance_flags = RESET_COLOR
-	. += clothes
+	. += mutable_appearance(icon, "[icon_state]_features", appearance_flags = RESET_COLOR|KEEP_APART)
+	. += mutable_appearance(icon, clothes_set, appearance_flags = RESET_COLOR|KEEP_APART)
 
 	var/bonus_overlays = customer_info.get_overlays(src)
 	if(bonus_overlays)
 		. += bonus_overlays
 
+/*
+// Integrated into the speech sound system
 /mob/living/basic/robot_customer/send_speech(message, message_range, obj/source, bubble_type, list/spans, datum/language/message_language, list/message_mods, forced, tts_message, list/tts_filter)
 	. = ..()
 	var/datum/customer_data/customer_info = ai_controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	playsound(src, customer_info.speech_sound, 30, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, falloff_distance = 5)
+*/
 
 /mob/living/basic/robot_customer/examine(mob/user)
 	. = ..()

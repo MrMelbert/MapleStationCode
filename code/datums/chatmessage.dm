@@ -155,12 +155,12 @@
 		if(HAS_TRAIT(target, TRAIT_SIGN_LANG))
 			chat_color_name_to_use = target.get_visible_name(add_id_name = FALSE) // use face name for signers too
 		else
-			chat_color_name_to_use = target.GetVoice() // for everything else, use the target's voice name
+			chat_color_name_to_use = target.get_voice() // for everything else, use the target's voice name
 
 	// Calculate target color if not already present
 	if (!target.chat_color || target.chat_color_name != chat_color_name_to_use)
-		target.chat_color = colorize_string(chat_color_name_to_use)
-		target.chat_color_darkened = colorize_string(chat_color_name_to_use, 0.85, 0.85)
+		target.chat_color = get_chat_color(chat_color_name_to_use)
+		target.chat_color_darkened = darken_hsl(target.chat_color)
 		target.chat_color_name = chat_color_name_to_use
 
 	// Append language icon if the language uses one
@@ -211,35 +211,47 @@
 
 			// When choosing to update the remaining time we have to be careful not to update the
 			// scheduled time once the EOL has been executed.
+			var/continuing = 0
 			if (time_spent >= time_before_fade)
-				if(m.message.pixel_y < starting_height)
-					var/max_height = m.message.pixel_y + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
+				if(m.message.pixel_z < starting_height)
+					var/max_height = m.message.pixel_z + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
 					if(max_height > 0)
-						animate(m.message, pixel_y = m.message.pixel_y + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
-				else if(mheight + starting_height >= m.message.pixel_y)
-					animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+						animate(m.message, pixel_z = m.message.pixel_z + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = continuing | ANIMATION_PARALLEL)
+						continuing |= ANIMATION_CONTINUE
+				else if(mheight + starting_height >= m.message.pixel_z)
+					animate(m.message, pixel_z = m.message.pixel_z + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = continuing | ANIMATION_PARALLEL)
+					continuing |= ANIMATION_CONTINUE
 				continue
 
 			var/remaining_time = time_before_fade * (CHAT_MESSAGE_EXP_DECAY ** idx++) * (CHAT_MESSAGE_HEIGHT_DECAY ** combined_height)
 			// Ensure we don't accidentially spike alpha up or something silly like that
 			m.message.alpha = m.get_current_alpha(time_spent)
-			if (remaining_time > 0)
+			if(remaining_time > 0)
+				if(time_spent < CHAT_MESSAGE_SPAWN_TIME)
+					// We haven't even had the time to fade in yet!
+					animate(m.message, alpha = 255, CHAT_MESSAGE_SPAWN_TIME - time_spent, flags=continuing)
+					continuing |= ANIMATION_CONTINUE
 				// Stay faded in for a while, then
-				animate(m.message, alpha = 255, remaining_time)
+				animate(m.message, alpha = 255, time = remaining_time, flags=continuing)
+				continuing |= ANIMATION_CONTINUE
 				// Fade out
-				animate(alpha = 0, time = CHAT_MESSAGE_EOL_FADE)
+				animate(m.message, alpha = 0, time = CHAT_MESSAGE_EOL_FADE, flags=continuing)
+				continuing |= ANIMATION_CONTINUE
 				m.animate_lifespan = remaining_time + CHAT_MESSAGE_EOL_FADE
 			else
 				// Your time has come my son
-				animate(alpha = 0, time = CHAT_MESSAGE_EOL_FADE)
+				animate(m.message, alpha = 0, time = CHAT_MESSAGE_EOL_FADE, flags=continuing)
+				continuing |= ANIMATION_CONTINUE
 			// We run this after the alpha animate, because we don't want to interrup it, but also don't want to block it by running first
 			// Sooo instead we do this. bit messy but it fuckin works
-			if(m.message.pixel_y < starting_height)
-				var/max_height = m.message.pixel_y + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
+			if(m.message.pixel_z < starting_height)
+				var/max_height = m.message.pixel_z + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
 				if(max_height > 0)
-					animate(m.message, pixel_y = m.message.pixel_y + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
-			else if(mheight + starting_height >= m.message.pixel_y)
-				animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+					animate(m.message, pixel_z = m.message.pixel_z + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = continuing | ANIMATION_PARALLEL)
+					continuing |= ANIMATION_CONTINUE
+			else if(mheight + starting_height >= m.message.pixel_z)
+				animate(m.message, pixel_z = m.message.pixel_z + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = continuing | ANIMATION_PARALLEL)
+				continuing |= ANIMATION_CONTINUE
 
 	// Reset z index if relevant
 	if (current_z_idx >= CHAT_LAYER_MAX_Z)
@@ -250,8 +262,8 @@
 	SET_PLANE_EXPLICIT(message, RUNECHAT_PLANE, message_loc)
 	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
 	message.alpha = 0
-	message.pixel_y = starting_height
-	message.pixel_x = -target.base_pixel_x
+	message.pixel_z = starting_height
+	message.pixel_w = -target.base_pixel_w
 	message.maptext_width = CHAT_MESSAGE_WIDTH
 	message.maptext_height = mheight * 1.25 // We add extra because some characters are superscript, like actions
 	message.maptext_x = (CHAT_MESSAGE_WIDTH - owner.bound_width) * -0.5
@@ -305,7 +317,7 @@
 	if(HAS_TRAIT(speaker, TRAIT_RUNECHAT_HIDDEN))
 		return
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
-	spans = spans ? spans.Copy() : list()
+	spans = spans?.Copy() || list()
 
 	// Check for virtual speakers (aka hearing a message through a radio)
 	var/atom/movable/originalSpeaker = speaker
@@ -330,6 +342,15 @@
 #define CM_COLOR_LUM_MIN 0.65
 #define CM_COLOR_LUM_MAX 0.75
 
+/// Assoc name to color, forced colors for runechat rather than generating the color from the name.
+GLOBAL_LIST_INIT(forced_runechat_names, list())
+
+/// Gets (or generates and stores) a color for a name, will return the same color for a given string consistently within a round.atom
+/proc/get_chat_color(name)
+	if(!GLOB.forced_runechat_names[name])
+		GLOB.forced_runechat_names[name] = colorize_string(name)
+	return GLOB.forced_runechat_names[name]
+
 /**
  * Gets a color for a name, will return the same color for a given string consistently within a round.atom
  *
@@ -340,7 +361,7 @@
  * * sat_shift - A value between 0 and 1 that will be multiplied against the saturation
  * * lum_shift - A value between 0 and 1 that will be multiplied against the luminescence
  */
-/datum/chatmessage/proc/colorize_string(name, sat_shift = 1, lum_shift = 1)
+/proc/colorize_string(name)
 	// seed to help randomness
 	var/static/rseed = rand(1,26)
 
@@ -349,10 +370,6 @@
 	var/h = hex2num(copytext(hash, 1, 3)) * (360 / 255)
 	var/s = (hex2num(copytext(hash, 3, 5)) >> 2) * ((CM_COLOR_SAT_MAX - CM_COLOR_SAT_MIN) / 63) + CM_COLOR_SAT_MIN
 	var/l = (hex2num(copytext(hash, 5, 7)) >> 2) * ((CM_COLOR_LUM_MAX - CM_COLOR_LUM_MIN) / 63) + CM_COLOR_LUM_MIN
-
-	// adjust for shifts
-	s *= clamp(sat_shift, 0, 1)
-	l *= clamp(lum_shift, 0, 1)
 
 	// convert to rgb
 	var/h_int = round(h/60) // mapping each section of H to 60 degree sections
@@ -376,6 +393,19 @@
 		if(5)
 			return "#[num2hex(c, 2)][num2hex(m, 2)][num2hex(x, 2)]"
 
+/**
+ * When given a color, returns a darker version via HSL manipulation.
+ */
+/proc/darken_hsl(color, sat_factor = 0.85, lum_factor = 0.85)
+	if (islist(color))
+		color = "#[num2hex(color[1], 2)][num2hex(color[2], 2)][num2hex(color[3], 2)]"
+
+	var/list/raw_color = rgb2num(color, COLORSPACE_HSL)
+
+	raw_color[2] = clamp(raw_color[2] * sat_factor, 0, 100)
+	raw_color[3] = clamp(raw_color[3] * lum_factor, 0, 100)
+
+	return rgb(raw_color[1], raw_color[2], raw_color[3], space = COLORSPACE_HSL)
 
 #undef CHAT_LAYER_MAX_Z
 #undef CHAT_LAYER_Z_STEP

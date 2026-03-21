@@ -11,6 +11,7 @@
 	desc = "You shouldn't be seeing this. Someone screwed up."
 	icon = 'icons/obj/devices/new_assemblies.dmi'
 	icon_state = "broken_state"
+	resistance_flags = FIRE_PROOF
 
 	/// Anomaly type
 	var/anomaly_type

@@ -3987,7 +3987,7 @@
 /area/awaymission/cabin/caves)
 "km" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /turf/open/floor/wood,
 /area/awaymission/cabin/caves)
 "kn" = (

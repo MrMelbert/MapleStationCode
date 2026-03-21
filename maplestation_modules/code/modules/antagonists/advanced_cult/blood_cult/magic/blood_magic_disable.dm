@@ -35,8 +35,8 @@
 		to_chat(user, span_warning("You need to wait before using [src] on [A] again!"))
 		return TRUE
 
-/obj/item/melee/blood_magic/disable/afterattack(atom/target, mob/living/carbon/user, proximity)
-	if(!isliving(target) || !proximity || target == user)
+/obj/item/melee/blood_magic/disable/cast_spell(atom/target, mob/living/carbon/user)
+	if(!isliving(target) || target == user)
 		return
 	var/mob/living/living_target = target
 	if(IS_CULTIST(living_target))
@@ -62,7 +62,7 @@
 			living_target.flash_act(1, TRUE, visual = TRUE, length = 3 SECONDS)
 		else
 			living_target.Knockdown(1 SECONDS)
-		living_target.apply_damage(75, STAMINA, BODY_ZONE_CHEST)
+		living_target.apply_damage(75, PAIN, BODY_ZONE_CHEST)
 
 		if(!HAS_TRAIT_FROM(target, TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS, REF(user)))
 			applied_effects = TRUE
@@ -86,7 +86,7 @@
 		health_cost = 0
 
 	uses--
-	. = ..()
+	return ..()
 
 /obj/item/melee/blood_magic/disable/proc/apply_side_effects_to_target(mob/living/target, mob/living/user)
 

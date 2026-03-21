@@ -25,12 +25,12 @@
 	icon_state = "floor"
 	icon_living = "floor"
 	mob_size = MOB_SIZE_HUGE
-	mob_biotypes = MOB_SPECIAL
+	mob_biotypes = MOB_SPECIAL|MOB_MINERAL
 	status_flags = GODMODE //nothing but crowbars may kill us
 	death_message = ""
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = INFINITY
 	basic_mob_flags = DEL_ON_DEATH
 	move_resist = INFINITY
 	density = FALSE

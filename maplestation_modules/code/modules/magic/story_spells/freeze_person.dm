@@ -1,13 +1,5 @@
-/datum/component/uses_mana/story_spell/pointed/freeze_person
-	var/freeze_person_attunement = 0.5
-	var/freeze_person_cost = 50
-
-/datum/component/uses_mana/story_spell/pointed/freeze_person/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = freeze_person_attunement
-
-/datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * freeze_person_cost
+#define FREEZE_PERSON_ATTUNEMENT_ICE 0.5
+#define FREEZE_PERSON_MANA_COST 50
 
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
@@ -22,6 +14,7 @@
 	invocation = "Als Eisz'it!"
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
+	var/mana_cost = FREEZE_PERSON_MANA_COST
 
 	active_msg = "You prepare to freeze someone."
 	deactive_msg = "You stop preparing to freeze someone."
@@ -31,12 +24,17 @@
 /datum/action/cooldown/spell/pointed/freeze_person/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/freeze_person)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ICE] += FREEZE_PERSON_ATTUNEMENT_ICE
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = mana_cost, \
+		attunements = attunements, \
+	)
 
 /datum/action/cooldown/spell/pointed/freeze_person/is_valid_target(atom/cast_on)
-	. = ..()
-	if(!.)
-		return FALSE
 	if(!isliving(cast_on))
 		var/mob/caster = usr || owner
 		if(caster)
@@ -48,9 +46,27 @@
 	. = ..()
 	var/mob/caster = usr || owner
 
+	if(!do_after(caster, 3 SECONDS))
+		return . | SPELL_CANCEL_CAST
+	if(!can_see(caster, target, 10))
+		return . | SPELL_CANCEL_CAST
+
 	var/datum/effect_system/steam_spread/steam = new()
 	steam.set_up(10, FALSE, target.loc)
 	steam.start()
+
+	if (target == caster)
+		caster.visible_message(
+			span_danger("[caster] freezes [caster.p_them()]self into a cube!"),
+			span_danger("You freeze yourself into a cube!"),
+			span_hear("You hear something being frozen!"),
+		)
+	else
+		caster.visible_message(
+			span_danger("[caster] freezes [target] into a cube!"),
+			span_danger("You freeze [target] into a cube!"),
+			span_hear("You hear something being frozen!"),
+		)
 
 	caster?.Beam(target, icon_state="bsa_beam", time=5)
 	target.apply_status_effect(/datum/status_effect/freon/magic)
@@ -60,11 +76,11 @@
 	duration = 100
 	status_type = 3
 	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
-	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT)
+	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT, TRAIT_HANDS_BLOCKED, TRAIT_AI_PAUSED)
 
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
-	desc = "You're frozen inside an ice cube, and cannot move."
+	desc = "You're frozen inside an ice cube, and cannot move. Resist to break out faster!"
 	icon_state = "frozen"
 
 /datum/status_effect/freon/magic/on_apply()
@@ -78,23 +94,41 @@
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
 
+	for(var/obj/item/whatever in owner)
+		ADD_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags |= GODMODE
-	owner.adjust_bodytemperature(-50)
+	owner.adjust_body_temperature(-20 KELVIN, use_insulation = TRUE)
 	owner.move_resist = INFINITY
 	owner.move_force = INFINITY
 	owner.pull_force = INFINITY
 
 /datum/status_effect/freon/magic/do_resist()
-	return
+	to_chat(owner, span_notice("You start breaking out of the ice cube..."))
+	if(do_after(owner, (duration - world.time) / 2))
+		if(!QDELETED(src))
+			owner.visible_message(
+				span_danger("[owner] breaks out of the ice cube!"),
+				span_danger("You break out of the ice cube!"),
+				span_hear("You hear cracking!")
+			)
+			owner.remove_status_effect(/datum/status_effect/freon/magic)
+			owner.Knockdown(3 SECONDS)
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
-	owner.adjust_bodytemperature(-100)
+	owner.visible_message(
+		span_danger("The cube around [owner] melts!"),
+		span_danger("The cube around you melts!"),
+	)
+	for(var/obj/item/whatever in owner)
+		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
-	owner.Knockdown(3 SECONDS)
 	owner.move_resist = initial(owner.move_resist)
 	owner.move_force = initial(owner.move_force)
 	owner.pull_force = initial(owner.pull_force)
 	return ..()
+
+#undef FREEZE_PERSON_ATTUNEMENT_ICE
+#undef FREEZE_PERSON_MANA_COST

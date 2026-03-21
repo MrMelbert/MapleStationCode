@@ -148,7 +148,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/light/small/directional/west,
-/obj/machinery/smartfridge/drying_rack,
+/obj/machinery/smartfridge/drying/rack,
 /turf/open/floor/iron,
 /area/virtual_domain/safehouse)
 "O" = (
@@ -190,6 +190,12 @@
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/gloves/color/brown,
+/obj/item/clothing/gloves/color/brown,
+/obj/item/clothing/gloves/color/brown,
 /turf/open/floor/iron,
 /area/virtual_domain/safehouse)
 "Z" = (

@@ -63,6 +63,9 @@
 	///Cursor icon used when holding shift over things
 	var/examine_cursor_icon = 'icons/effects/mouse_pointers/examine_pointer.dmi'
 
+	/// Mob bitflags
+	var/mob_flags = NONE
+
 	/// Whether a mob is alive or dead. TODO: Move this to living - Nodrak (2019, still here)
 	var/stat = CONSCIOUS
 
@@ -88,16 +91,11 @@
 	/// What is the mobs real name (name is overridden for disguises etc)
 	var/real_name = null
 
-
-	/// Default body temperature
-	var/bodytemperature = BODYTEMP_NORMAL //310.15K / 98.6F
-	/// Our body temperatue as of the last process, prevents pointless work when handling alerts
-	var/old_bodytemperature = 0
-
 	/// Hunger level of the mob
 	var/nutrition = NUTRITION_LEVEL_START_MIN // randomised in Initialize
-	/// Satiation level of the mob
-	var/satiety = 0//Carbon
+	/// How satiated the mob is - How well fed the mob is.
+	/// Goes up when eating good food, and goes down when eating bad food.
+	var/satiety = 0
 
 	/// How many ticks this mob has been over reating
 	var/overeatduration = 0 // How long this guy is overeating //Carbon
@@ -201,3 +199,5 @@
 	///the icon currently used for the thinking indicator's bubble
 	var/active_thinking_indicator
 
+	/// A ref of the area we're taking our ambient loop from.
+	var/area/ambience_tracked_area

@@ -10,13 +10,14 @@
 /obj/machinery/computer/camera_advanced/base_construction
 	name = "generic base construction console"
 	desc = "An industrial computer integrated with a camera-assisted rapid construction drone."
-	networks = list("ss13")
+	networks = list(CAMERANET_NETWORK_SS13)
 	circuit = /obj/item/circuitboard/computer/base_construction
 	off_action = /datum/action/innate/camera_off/base_construction
 	jump_action = null
 	icon_screen = "mining"
 	icon_keyboard = "rd_key"
 	light_color = LIGHT_COLOR_PINK
+	alerts_cameras = FALSE
 	///Area that the eyeobj will be constrained to. If null, eyeobj will be able to build and move anywhere.
 	var/area/allowed_area
 	///Assoc. list ("structure_name" : count) that keeps track of the number of special structures that can't be built with an RCD, for example, tiny fans or turrets.
@@ -63,6 +64,7 @@
 		return FALSE
 	eyeobj = new /mob/camera/ai_eye/remote/base_construction(spawn_spot, src)
 	eyeobj.origin = src
+	eyeobj.set_telegraph(alerts_cameras)
 	return TRUE
 
 /obj/machinery/computer/camera_advanced/base_construction/attackby(obj/item/W, mob/user, params)

@@ -33,7 +33,7 @@
 
 /datum/station_goal/dna_vault/get_report()
 	return list(
-		"<blockquote>Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.",
+		"Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.",
 		"We need you to construct a DNA Vault aboard your station.",
 		"",
 		"The DNA Vault needs to contain samples of:",
@@ -41,7 +41,7 @@
 		"* [plant_count] unique non-standard plant data",
 		"* [human_count] unique sapient humanoid DNA data",
 		"",
-		"Base vault parts are available for shipping via cargo.</blockquote>",
+		"Base vault parts are available for shipping via cargo.",
 	).Join("\n")
 
 
@@ -73,6 +73,7 @@
 	light_range = 3
 	light_power = 1.5
 	light_color = LIGHT_COLOR_CYAN
+	examine_feedback_on_ui = TRUE
 
 	//High defaults so it's not completed automatically if there's no station goal
 	var/animals_max = 100
@@ -101,8 +102,8 @@
 		F.parent = src
 		fillers += F
 
-	var/datum/station_goal/dna_vault/dna_vault_goal = locate() in GLOB.station_goals
-	if (!isnull(dna_vault_goal))
+	var/datum/station_goal/dna_vault/dna_vault_goal = SSstation.get_station_goal(/datum/station_goal/dna_vault)
+	if(!isnull(dna_vault_goal))
 		animals_max = dna_vault_goal.animal_count
 		plants_max = dna_vault_goal.plant_count
 		dna_max = dna_vault_goal.human_count
@@ -113,32 +114,6 @@
 	for(var/obj/structure/filler/filler as anything in fillers)
 		filler.parent = null
 		qdel(filler)
-	return ..()
-
-/obj/machinery/dna_vault/attackby(obj/item/our_item, mob/user, params)
-	if(istype(our_item, /obj/item/dna_probe))
-		var/obj/item/dna_probe/our_probe = our_item
-		var/uploaded = 0
-		var/plant_dna_length = length(our_probe.stored_dna_plants)
-		var/human_dna_length = length(our_probe.stored_dna_human)
-		var/animal_dna_length = length(our_probe.stored_dna_animal)
-		if(plant_dna_length)
-			uploaded += plant_dna_length
-			plant_dna += our_probe.stored_dna_plants
-			our_probe.stored_dna_plants.Cut()
-		if(human_dna_length)
-			uploaded += human_dna_length
-			human_dna += our_probe.stored_dna_human
-			our_probe.stored_dna_human.Cut()
-		if(animal_dna_length)
-			uploaded += animal_dna_length
-			animal_dna += our_probe.stored_dna_animal
-			our_probe.stored_dna_animal.Cut()
-		check_goal()
-		playsound(src, 'sound/misc/compiler-stage1.ogg', 50)
-		to_chat(user, span_notice("[uploaded] new datapoints uploaded."))
-		return
-
 	return ..()
 
 /obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/ui)
@@ -220,7 +195,7 @@
 	H.dna.add_mutation(associated_mutation[upgrade_type], MUT_OTHER, 0)
 	ADD_TRAIT(H, TRAIT_USED_DNA_VAULT, DNA_VAULT_TRAIT)
 	power_lottery[human_weakref] = list()
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 #undef VAULT_TOXIN
 #undef VAULT_NOBREATH

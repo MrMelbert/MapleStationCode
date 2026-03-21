@@ -67,6 +67,7 @@ Difficulty: Hard
 	score_achievement_type = /datum/award/score/hierophant_score
 	del_on_death = TRUE
 	death_sound = 'sound/magic/repulse.ogg'
+	initial_blood_type = null
 	attack_action_types = list(/datum/action/innate/megafauna_attack/blink,
 							   /datum/action/innate/megafauna_attack/chaser_swarm,
 							   /datum/action/innate/megafauna_attack/cross_blasts,
@@ -231,7 +232,7 @@ Difficulty: Hard
 			blinking = TRUE
 			SLEEP_CHECK_DEATH(4 + target_slowness, src)
 		animate(src, color = oldcolor, time = 8)
-		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 8)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 0.8 SECONDS)
 		SLEEP_CHECK_DEATH(8, src)
 		blinking = FALSE
 	else
@@ -252,7 +253,7 @@ Difficulty: Hard
 			INVOKE_ASYNC(src, PROC_REF(blasts), target, GLOB.diagonals)
 		SLEEP_CHECK_DEATH(6 + target_slowness, src)
 	animate(src, color = oldcolor, time = 8)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 8)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 0.8 SECONDS)
 	SLEEP_CHECK_DEATH(8, src)
 	blinking = FALSE
 
@@ -280,7 +281,7 @@ Difficulty: Hard
 		SLEEP_CHECK_DEATH(8 + target_slowness, src)
 	update_cooldowns(list(COOLDOWN_UPDATE_SET_CHASER = chaser_cooldown_time))
 	animate(src, color = oldcolor, time = 8)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 8)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 0.8 SECONDS)
 	SLEEP_CHECK_DEATH(8, src)
 	blinking = FALSE
 
@@ -466,7 +467,7 @@ Difficulty: Hard
 					burst_range = 3
 					INVOKE_ASYNC(src, PROC_REF(burst), get_turf(src), 0.25) //melee attacks on living mobs cause it to release a fast burst if on cooldown
 				OpenFire()
-				if(L.health <= HEALTH_THRESHOLD_DEAD && HAS_TRAIT(L, TRAIT_NODEATH)) //Nope, it still kills yall
+				if(L.health <= HEALTH_THRESHOLD_LIKELY_CRIT && HAS_TRAIT(L, TRAIT_NODEATH)) //Nope, it still kills yall
 					devour(L)
 			else
 				devour(L)
@@ -582,7 +583,7 @@ Difficulty: Hard
 	friendly_fire_check = is_friendly_fire
 	if(new_speed)
 		speed = new_speed
-	addtimer(CALLBACK(src, PROC_REF(seek_target)), 1)
+	addtimer(CALLBACK(src, PROC_REF(seek_target)), 0.1 SECONDS)
 
 /obj/effect/temp_visual/hierophant/chaser/proc/get_target_dir()
 	. = get_cardinal_dir(src, targetturf)
@@ -618,6 +619,7 @@ Difficulty: Hard
 				moving--
 				sleep(speed)
 			targetturf = get_turf(target)
+
 /obj/effect/temp_visual/hierophant/chaser/proc/make_blast()
 	var/obj/effect/temp_visual/hierophant/blast/damaging/B = new(loc, caster, friendly_fire_check)
 	B.damage = damage
@@ -752,7 +754,7 @@ Difficulty: Hard
 		var/obj/item/hierophant_club/club = attacking_item
 		if(club.beacon == src)
 			to_chat(user, span_notice("You start removing your hierophant beacon..."))
-			if(do_after(user, 50, target = src))
+			if(do_after(user, 5 SECONDS, target = src))
 				playsound(src,'sound/magic/blind.ogg', 100, TRUE, -4)
 				new /obj/effect/temp_visual/hierophant/telegraph/teleport(get_turf(src), user)
 				to_chat(user, span_hierophant_warning("You collect [src], reattaching it to the club!"))

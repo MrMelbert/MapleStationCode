@@ -1,6 +1,6 @@
 // Plum
 /obj/item/seeds/plum
-	name = "pack of plum seeds"
+	name = "plum seed pack"
 	desc = "These seeds grow into plum trees."
 	icon_state = "seed-plum"
 	species = "plum"
@@ -28,13 +28,13 @@
 
 // Plumb
 /obj/item/seeds/plum/plumb
-	name = "pack of plumb seeds"
+	name = "plumb seed pack"
 	desc = "These seeds grow into plumb trees."
 	icon_state = "seed-plumb"
 	species = "plumb"
 	plantname = "Plumb Tree"
 	product = /obj/item/food/grown/plum/plumb
-	genes = list(/datum/plant_gene/trait/repeated_harvest)
+	genes = list(/datum/plant_gene/trait/repeated_harvest, /datum/plant_gene/reagent/foggy_agnosticine) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1, /datum/reagent/lead = 0.04)
 	rarity = 30

@@ -6,10 +6,23 @@
 /yarn.lock
 /.pnp.*
 
+.swcrc
+
 /docs
-/public
 /packages/tgui-polyfill
 /packages/tgfont/static
 **/*.json
 **/*.yml
 **/*.md
+
+# Avoid running on any bundles.
+/public/**/*
+*.js
+*.ts
+*.tsx
+*.css
+*.jsx
+*.json
+
+# Running it on tgui.html is fine, however.
+!/public/tgui.html

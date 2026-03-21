@@ -18,7 +18,7 @@
 /datum/quirk/nyctophobia/proc/on_holder_moved(mob/living/source, atom/old_loc, dir, forced)
 	SIGNAL_HANDLER
 
-	if(quirk_holder.stat != CONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
+	if(HAS_TRAIT(quirk_holder, TRAIT_KNOCKEDOUT))
 		return
 
 	if(HAS_TRAIT(quirk_holder, TRAIT_FEARLESS))
@@ -40,7 +40,7 @@
 		quirk_holder.clear_mood_event("nyctophobia")
 		return
 
-	if(quirk_holder.move_intent == MOVE_INTENT_RUN)
+	if(quirk_holder.move_intent != MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
 		to_chat(quirk_holder, span_warning("Easy, easy, take it slow... you're in the dark..."))
-		quirk_holder.toggle_move_intent()
+		quirk_holder.set_move_intent(MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
 	quirk_holder.add_mood_event("nyctophobia", /datum/mood_event/nyctophobia)

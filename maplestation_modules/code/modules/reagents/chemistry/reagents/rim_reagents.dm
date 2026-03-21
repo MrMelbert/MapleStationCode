@@ -19,16 +19,16 @@
 	name = "Luciferium"
 	description = "An incredibly powerful, addictive, and dangerous concoction of mechanites from the outer planets of the Spinward. \
 		Drastically improves the user's bodily functions but will cause eventual death if mechanite cohesion is not sustained with continuous dosage. \
-		Once used, the pressence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
+		Once used, the presence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
 	taste_description = "dread"
 	reagent_state = SOLID
 	color = "#a80008"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 12
 	ph = 12.4
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/luciferium = 33) // 3 units = addiction
-	pain_modifier = 0.8
+	chemical_flags = NONE
+	addiction_types = list(/datum/addiction/luciferium = 3)
+	pain_modifier = 0.2
 
 /datum/reagent/medicine/luciferium/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -44,6 +44,7 @@
 	ADD_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 	// Slight improved vision
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	user.add_consciousness_modifier(type, 20)
 
 /datum/reagent/medicine/luciferium/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -65,7 +66,7 @@
 		return ..()
 
 	// Heals pain and tons of damage (based on purity)
-	user.cause_pain(BODY_ZONES_ALL, -1 * REM * seconds_per_tick)
+	user.heal_pain(4 * REM * seconds_per_tick)
 	user.adjustBruteLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustFireLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustOxyLoss(-3 * REM * seconds_per_tick, FALSE)
@@ -96,9 +97,8 @@
 
 	// Can cure wounds, too
 	if(SPT_PROB(6, seconds_per_tick))
-		var/list/shuffled_wounds = shuffle(user.all_wounds)
-		for(var/datum/wound/wound as anything in shuffled_wounds)
-			wound.remove_wound()
+		for(var/datum/wound/wound as anything in shuffle(user.all_wounds))
+			qdel(wound)
 			break
 
 	. = ..()
@@ -124,6 +124,9 @@
  * Stop the effects of the chem.
  */
 /datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
+	if(!HAS_TRAIT_FROM(user, TRAIT_NOSOFTCRIT, type))
+		return
+
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
 	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
 	REMOVE_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
@@ -132,6 +135,7 @@
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
+	user.remove_consciousness_modifier(type)
 
 /obj/item/reagent_containers/pill/luciferium
 	name = "luciferium pill"
@@ -189,7 +193,7 @@
 	overdose_threshold = 15
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/gojuice = 30) //25-30 units = addiction
+	addiction_types = list(/datum/addiction/gojuice = 30)
 	ph = 5
 	pain_modifier = 0.1
 
@@ -199,6 +203,7 @@
 	user.add_mood_event(type, /datum/mood_event/gojuice)
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	ADD_TRAIT(user, TRAIT_NOSOFTCRIT, type)
+	user.add_consciousness_modifier(type, 25)
 
 /datum/reagent/drug/gojuice/on_mob_end_metabolize(mob/living/user)
 	. = ..()
@@ -230,15 +235,19 @@
  * Remove the effects of the drug.
  */
 /datum/reagent/drug/gojuice/proc/stop_effects(mob/living/user)
+	if(!HAS_TRAIT_FROM(user, TRAIT_NOSOFTCRIT, type))
+		return
+
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
 	user.clear_mood_event(type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
+	user.remove_consciousness_modifier(type)
 
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)
-	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
-	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
+	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine = 1, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
+	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_PAIN
 
 /obj/item/reagent_containers/cup/glass/bottle/gojuice
 	name = "go-juice bottle"
@@ -254,7 +263,7 @@
 	color = "#c9ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 60) //5u = ~190 points
+	addiction_types = list(/datum/addiction/psychite = 15)
 	ph = 2.1
 
 /datum/reagent/drug/flake/on_mob_metabolize(mob/living/carbon/user)
@@ -281,7 +290,7 @@
 	color = "#e2e2e2"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 35) //5u = ~90 points
+	addiction_types = list(/datum/addiction/psychite = 30)
 	ph = 2.4
 	pain_modifier = 0.5
 
@@ -320,7 +329,7 @@
 	color = "#f5ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 10) //5u = ~30 points
+	addiction_types = list(/datum/addiction/psychite = 100)
 	ph = 6.3
 	pain_modifier = 0.9
 
@@ -337,7 +346,7 @@
 	user.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
 	user.adjust_jitter(-4 SECONDS * REM * seconds_per_tick)
 	user.AdjustSleeping(-20 * REM * seconds_per_tick)
-	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, user.get_body_temp_normal())
+	user.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = user.standard_body_temperature)
 	. = ..()
 	return TRUE
 

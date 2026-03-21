@@ -38,11 +38,15 @@
 	)
 
 /mob/living/basic/cat_butcherer/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/cat_butcher, l_hand = /obj/item/circular_saw, bloody_slots = ITEM_SLOT_GLOVES|ITEM_SLOT_OCLOTHING)
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/death_drops, drop_on_death)
 	RegisterSignal(src, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(after_attack))
+
+/mob/living/basic/cat_butcherer/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
 
 /mob/living/basic/cat_butcherer/proc/after_attack(mob/living/basic/attacker, atom/target)
 	SIGNAL_HANDLER
@@ -51,7 +55,7 @@
 		return
 
 	var/mob/living/carbon/human/attacked = target
-	var/obj/item/organ/external/tail/cat/tail = attacked.get_organ_by_type(/obj/item/organ/external/tail/cat)
+	var/obj/item/organ/tail/cat/tail = attacked.get_organ_by_type(/obj/item/organ/tail/cat)
 	if(QDELETED(tail))
 		return
 

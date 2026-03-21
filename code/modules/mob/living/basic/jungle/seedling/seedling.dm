@@ -14,8 +14,8 @@
 	icon_living = "seedling"
 	icon_dead = "seedling_dead"
 	habitable_atmos = list("min_oxy" = 2, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = 450
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = 450
 	mob_biotypes = MOB_ORGANIC | MOB_PLANT
 	maxHealth = 100
 	health = 100
@@ -32,7 +32,10 @@
 	mob_size = MOB_SIZE_LARGE
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = -10
 	ai_controller = /datum/ai_controller/basic_controller/seedling
+	initial_blood_type = /datum/blood_type/water
 	///the state of combat we are in
 	var/combatant_state = SEEDLING_STATE_NEUTRAL
 	///the colors our petals can have
@@ -79,23 +82,24 @@
 
 	AddElement(/datum/element/wall_tearer, allow_reinforced = FALSE)
 	AddComponent(/datum/component/obeys_commands, seedling_commands)
-	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	RegisterSignal(src, COMSIG_KB_MOB_DROPITEM_DOWN, PROC_REF(drop_can))
 	update_appearance()
 
-/mob/living/basic/seedling/proc/pre_attack(mob/living/puncher, atom/target)
-	SIGNAL_HANDLER
+/mob/living/basic/seedling/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	. = ..()
+	if(!.)
+		return FALSE
 
 	if(istype(target, /obj/machinery/hydroponics))
 		treat_hydro_tray(target)
-		return COMPONENT_HOSTILE_NO_ATTACK
+		return FALSE
 
 	if(isnull(held_can))
-		return
+		return TRUE
 
 	if(istype(target, /obj/structure/sink) || istype(target, /obj/structure/reagent_dispensers))
-		INVOKE_ASYNC(held_can, TYPE_PROC_REF(/obj/item, melee_attack_chain), src, target)
-		return COMPONENT_HOSTILE_NO_ATTACK
+		held_can.melee_attack_chain(src, target)
+		return FALSE
 
 
 ///seedlings can water trays, remove weeds, or remove dead plants

@@ -8,6 +8,7 @@
 	armor_type = /datum/armor/machinery_portable_atmospherics
 	anchored = FALSE
 	layer = ABOVE_OBJ_LAYER
+	interaction_flags_click = NEED_DEXTERITY
 
 	///Stores the gas mixture of the portable component. Don't access this directly, use return_air() so you support the temporary processing it provides
 	var/datum/gas_mixture/air_contents
@@ -43,6 +44,8 @@
 	air_contents.volume = volume
 	air_contents.temperature = T20C
 	SSair.start_processing_machine(src)
+	AddElement(/datum/element/climbable, climb_time = 3 SECONDS, climb_stun = 3 SECONDS)
+	AddElement(/datum/element/elevation, pixel_shift = 8)
 
 /obj/machinery/portable_atmospherics/Destroy()
 	disconnect()
@@ -157,14 +160,12 @@
 	update_appearance()
 	return TRUE
 
-/obj/machinery/portable_atmospherics/AltClick(mob/living/user)
-	. = ..()
-	if(!istype(user) || !user.can_perform_action(src, NEED_DEXTERITY) || !can_interact(user))
-		return
+/obj/machinery/portable_atmospherics/click_alt(mob/living/user)
 	if(!holding)
-		return
+		return CLICK_ACTION_BLOCKING
 	to_chat(user, span_notice("You remove [holding] from [src]."))
 	replace_tank(user, TRUE)
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/portable_atmospherics/examine(mob/user)
 	. = ..()
@@ -184,10 +185,7 @@
 	if(!user)
 		return FALSE
 	if(holding)
-		if(Adjacent(user))
-			user.put_in_hands(holding)
-		else
-			holding.forceMove(get_turf(src))
+		try_put_in_hand(holding, user)
 		UnregisterSignal(holding, COMSIG_QDELETING)
 		holding = null
 	if(new_tank)
@@ -204,7 +202,7 @@
 	if(machine_stat & BROKEN)
 		return FALSE
 	var/obj/item/tank/insert_tank = item
-	if(!user.transferItemToLoc(insert_tank, src))
+	if(!user.transferItemToLoc(insert_tank, src, silent = FALSE))
 		return FALSE
 	to_chat(user, span_notice("[holding ? "In one smooth motion you pop [holding] out of [src]'s connector and replace it with [insert_tank]" : "You insert [insert_tank] into [src]"]."))
 	investigate_log("had its internal [holding] swapped with [insert_tank] by [key_name(user)].", INVESTIGATE_ATMOS)

@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	item_flags = NOBLUDGEON|SKIP_FANTASY_ON_SPAWN
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/trash/Initialize(mapload)
 	var/turf/T = get_turf(src)
@@ -80,9 +82,10 @@
 	name = "energybar wrapper"
 	icon_state = "energybar"
 
-/obj/item/trash/waffles
-	name = "waffles tray"
-	icon_state = "waffles"
+/obj/item/trash/fleet_ration
+	name = "surplus fleet wrapper"
+	desc = "In the Mothic Fleet every individual wrapper is carefully recycled and repurposed into fresh material. Over here they are more commonly dropped directly onto the floor."
+	icon_state = "moth_ration"
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"
@@ -100,6 +103,8 @@
 	name = "tray"
 	icon_state = "tray"
 	resistance_flags = NONE
+	drop_sound = /obj/item/storage/bag/tray::drop_sound
+	pickup_sound = /obj/item/storage/bag/tray::pickup_sound
 
 /obj/item/trash/candle
 	name = "melted candle"
@@ -116,6 +121,8 @@
 	icon_state = "cola"
 	resistance_flags = NONE
 	grind_results = list(/datum/reagent/aluminium = 10)
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
 
 /obj/item/trash/can/food
 	icon = 'icons/obj/food/canned.dmi'

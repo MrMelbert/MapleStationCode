@@ -1,7 +1,7 @@
 //Monkey defines, placed here so they can be read by other things!
 
 /// below this health value the monkey starts to flee from enemies
-#define MONKEY_FLEE_HEALTH 40
+#define MONKEY_FLEE_HEALTH 50
 /// how close an enemy must be to trigger aggression
 #define MONKEY_ENEMY_VISION 9
 /// how close an enemy must be before it triggers flee
@@ -30,6 +30,8 @@
 #define MONKEY_HATRED_AMOUNT 4
 /// amount of aggro to add to an enemy when a monkey is recruited
 #define MONKEY_RECRUIT_HATED_AMOUNT 2
+/// amount of aggro to add if someone stole the food we wanted
+#define MONKEY_FOOD_HATRED_AMOUNT 2
 /// probability of reducing aggro by one when the monkey attacks
 #define MONKEY_HATRED_REDUCTION_PROB 20
 

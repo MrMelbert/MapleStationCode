@@ -44,20 +44,20 @@
 	var/static/list/crate_paint_jobs
 	if(isnull(crate_paint_jobs))
 		crate_paint_jobs = list(
-		"Internals" = list("icon_state" = "o2crate"),
-		"Medical" = list("icon_state" = "medical"),
-		"Medical Plus" = list("icon_state" = "medicalcrate"),
-		"Radiation" = list("icon_state" = "radiation"),
-		"Hydrophonics" = list("icon_state" = "hydrocrate"),
-		"Science" = list("icon_state" = "scicrate"),
-		"Robotics" = list("icon_state" = "robo"),
-		"Solar" = list("icon_state" = "engi_e_crate"),
-		"Engineering" = list("icon_state" = "engi_crate"),
-		"Atmospherics" = list("icon_state" = "atmos"),
-		"Cargo" = list("icon_state" = "cargo"),
-		"Mining" = list("icon_state" = "mining"),
-		"Command" = list("icon_state" = "centcom")
-	)
+			"Internals" = list("icon_state" = "o2crate"),
+			"Medical" = list("icon_state" = "medical"),
+			"Medical Plus" = list("icon_state" = "medicalcrate"),
+			"Radiation" = list("icon_state" = "radiation"),
+			"Hydrophonics" = list("icon_state" = "hydrocrate"),
+			"Science" = list("icon_state" = "scicrate"),
+			"Robotics" = list("icon_state" = "robo"),
+			"Solar" = list("icon_state" = "engi_e_crate"),
+			"Engineering" = list("icon_state" = "engi_crate"),
+			"Atmospherics" = list("icon_state" = "atmos"),
+			"Cargo" = list("icon_state" = "cargo"),
+			"Mining" = list("icon_state" = "mining"),
+			"Command" = list("icon_state" = "centcom"),
+		)
 	if(paint_jobs)
 		paint_jobs = crate_paint_jobs
 
@@ -231,9 +231,9 @@
 	paint_jobs = null
 	sealed = TRUE
 	/// The rate at which the internal air mixture cools
-	var/cooling_rate_per_second = 4
+	var/cooling_rate_per_second = 4 CELCIUS
 	/// Minimum temperature of the internal air mixture
-	var/minimum_temperature = T0C - 60
+	var/minimum_temperature = BODY_PRESERVATION_TEMP
 
 /obj/structure/closet/crate/freezer/process_internal_air(seconds_per_tick)
 	if(opened)

@@ -6,7 +6,9 @@
 	righthand_file = 'icons/mob/inhands/clothing/hats_righthand.dmi'
 	body_parts_covered = HEAD
 	slot_flags = ITEM_SLOT_HEAD
-	blood_overlay_type = "helmetblood" // NON-MODULE CHANGE reworking clothing blood overlays
+	blood_overlay_type = "helmet" // NON-MODULE CHANGE reworking clothing blood overlays
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 ///Special throw_impact for hats to frisbee hats at people to place them on their heads/attempt to de-hat them.
 /obj/item/clothing/head/throw_impact(atom/hit_atom, datum/thrownthing/thrownthing)
@@ -55,14 +57,10 @@
 			R.visible_message(span_notice("[src] lands neatly on top of [R]!"), span_notice("[src] lands perfectly on top of you."))
 			R.place_on_head(src) //hats aren't designed to snugly fit borg heads or w/e so they'll always manage to knock eachother off
 
-
-
-
 /obj/item/clothing/head/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedhelmet")
 		// NON-MODULE CHANGE reworking clothing blood overlays

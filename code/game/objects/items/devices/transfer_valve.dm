@@ -10,6 +10,9 @@
 	worn_icon_state = "ttv"
 	desc = "Regulates the transfer of air between two tanks."
 	w_class = WEIGHT_CLASS_BULKY
+	resistance_flags = FIRE_PROOF
+	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gascan.ogg'
 
 	var/obj/item/tank/tank_one
 	var/obj/item/tank/tank_two
@@ -25,10 +28,35 @@
 /obj/item/transfer_valve/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_FRIED, PROC_REF(on_fried))
+	register_context()
 
 /obj/item/transfer_valve/Destroy()
 	attached_device = null
 	return ..()
+
+/obj/item/transfer_valve/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(tank_one || tank_two)
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove [tank_one || tank_two]"
+		. = CONTEXTUAL_SCREENTIP_SET
+	if(istype(held_item) && is_type_in_list(held_item, list(/obj/item/tank, /obj/item/assembly)))
+		context[SCREENTIP_CONTEXT_LMB] = "Attach [held_item]"
+		. = CONTEXTUAL_SCREENTIP_SET
+
+	return . || NONE
+
+/obj/item/transfer_valve/click_alt(mob/user)
+	if(tank_one)
+		split_gases()
+		valve_open = FALSE
+		tank_one.forceMove(drop_location())
+	else if(tank_two)
+		split_gases()
+		valve_open = FALSE
+		tank_two.forceMove(drop_location())
+
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/transfer_valve/IsAssemblyHolder()
 	return TRUE
@@ -49,12 +77,12 @@
 			return
 
 		if(!tank_one)
-			if(!user.transferItemToLoc(item, src))
+			if(!user.transferItemToLoc(item, src, silent = FALSE))
 				return
 			tank_one = item
 			to_chat(user, span_notice("You attach the tank to the transfer valve."))
 		else if(!tank_two)
-			if(!user.transferItemToLoc(item, src))
+			if(!user.transferItemToLoc(item, src, silent = FALSE))
 				return
 			tank_two = item
 			to_chat(user, span_notice("You attach the tank to the transfer valve."))
@@ -69,7 +97,7 @@
 		if(attached_device)
 			to_chat(user, span_warning("There is already a device attached to the valve, remove it first!"))
 			return
-		if(!user.transferItemToLoc(item, src))
+		if(!user.transferItemToLoc(item, src, silent = FALSE))
 			return
 		attached_device = A
 		to_chat(user, span_notice("You attach the [item] to the valve controls and secure it."))
@@ -219,7 +247,7 @@
 		if(attached_device)
 			if(issignaler(attached_device))
 				var/obj/item/assembly/signaler/attached_signaller = attached_device
-				attachment = "<A HREF='?_src_=holder;[HrefToken()];secrets=list_signalers'>[attached_signaller]</A>"
+				attachment = "<A href='byond://?_src_=holder;[HrefToken()];secrets=list_signalers'>[attached_signaller]</A>"
 				attachment_signal_log = attached_signaller.last_receive_signal_log ? "The following log entry is the last one associated with the attached signaller<br>[attached_signaller.last_receive_signal_log]" : "There is no signal log entry."
 			else
 				attachment = attached_device

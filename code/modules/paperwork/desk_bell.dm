@@ -9,6 +9,7 @@
 	anchored = FALSE
 	pass_flags = PASSTABLE // Able to place on tables
 	max_integrity = 5000 // To make attacking it not instantly break it
+
 	/// The amount of times this bell has been rang, used to check the chance it breaks
 	var/times_rang = 0
 	/// Is this bell broken?
@@ -19,6 +20,10 @@
 	var/ring_cooldown_length = 0.3 SECONDS // This is here to protect against tinnitus.
 	/// The sound the bell makes
 	var/ring_sound = 'sound/machines/microwave/microwave-end.ogg'
+	/// Whether we can be deconstructed
+	var/can_deconstruct = TRUE
+	/// Whether we can be tied to a chair
+	var/can_tie_to_chair = TRUE
 
 /obj/structure/desk_bell/Initialize(mapload)
 	. = ..()
@@ -27,7 +32,7 @@
 /obj/structure/desk_bell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
-	if(held_item?.tool_behaviour == TOOL_WRENCH)
+	if(can_deconstruct && held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_RMB] = "Disassemble"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -73,17 +78,22 @@
 		return FALSE
 	return ..()
 
+/obj/structure/desk_bell/atom_deconstruct(disassembled)
+	if(disassembled)
+		if(!broken_ringer) // Drop 2 if it's not broken.
+			new/obj/item/stack/sheet/iron(drop_location())
+		new/obj/item/stack/sheet/iron(drop_location())
+
 // Deconstruct
 /obj/structure/desk_bell/wrench_act_secondary(mob/living/user, obj/item/tool)
+	if(!can_deconstruct)
+		return ..()
 	balloon_alert(user, "taking apart...")
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 5 SECONDS))
 		balloon_alert(user, "disassembled")
 		playsound(user, 'sound/items/deconstruct.ogg', 50, vary = TRUE)
-		if(!broken_ringer) // Drop 2 if it's not broken.
-			new/obj/item/stack/sheet/iron(drop_location())
-		new/obj/item/stack/sheet/iron(drop_location())
-		qdel(src)
+		deconstruct(TRUE)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
@@ -110,17 +120,16 @@
 	desc = "The cornerstone of any customer service job. This one's been modified for hyper-performance."
 	ring_cooldown_length = 0
 
-/obj/structure/desk_bell/MouseDrop(obj/over_object, src_location, over_location)
-	if(!istype(over_object, /obj/vehicle/ridden/wheelchair))
+/obj/structure/desk_bell/mouse_drop_dragged(atom/over_object, mob/user)
+	if(!can_tie_to_chair || !isliving(user))
 		return
-	if(!Adjacent(over_object) || !Adjacent(usr))
+	if(!istype(over_object, /obj/vehicle/ridden/wheelchair))
 		return
 	var/obj/vehicle/ridden/wheelchair/target = over_object
 	if(target.bell_attached)
-		usr.balloon_alert(usr, "already has a bell!")
+		user.balloon_alert(user, "already has a bell!")
 		return
-	usr.balloon_alert(usr, "attaching bell...")
-	if(!do_after(usr, 0.5 SECONDS))
+	user.balloon_alert(user, "attaching bell...")
+	if(!do_after(user, 0.5 SECONDS))
 		return
 	target.attach_bell(src)
-	return ..()

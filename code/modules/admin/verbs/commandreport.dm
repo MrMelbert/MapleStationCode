@@ -4,35 +4,23 @@
 /// Preset central command names to chose from for centcom reports.
 #define CENTCOM_PRESET "Central Command"
 #define SYNDICATE_PRESET "The Syndicate"
+#define MU_PRESET "Aristocracy of Mu" //NON-MODULE CHANGE
 #define WIZARD_PRESET "The Wizard Federation"
 #define CUSTOM_PRESET "Custom Command Name"
 
-/// Verb to change the global command name.
-/client/proc/cmd_change_command_name()
-	set category = "Admin.Events"
-	set name = "Change Command Name"
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	var/input = input(usr, "Please input a new name for Central Command.", "What?", "") as text|null
+ADMIN_VERB(change_command_name, R_ADMIN, "Change Command Name", "Change the name of Central Command.", ADMIN_CATEGORY_EVENTS)
+	var/input = input(user, "Please input a new name for Central Command.", "What?", "") as text|null
 	if(!input)
 		return
 	change_command_name(input)
-	message_admins("[key_name_admin(src)] has changed Central Command's name to [input]")
-	log_admin("[key_name(src)] has changed the Central Command name to: [input]")
+	message_admins("[key_name_admin(user)] has changed Central Command's name to [input]")
+	log_admin("[key_name(user)] has changed the Central Command name to: [input]")
 
 /// Verb to open the create command report window and send command reports.
-/client/proc/cmd_admin_create_centcom_report()
-	set category = "Admin.Events"
-	set name = "Create Command Report"
-
-	if(!check_rights(R_ADMIN))
-		return
-
+ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a command report to be sent to the station.", ADMIN_CATEGORY_EVENTS)
 	BLACKBOX_LOG_ADMIN_VERB("Create Command Report")
-	var/datum/command_report_menu/tgui = new(usr)
-	tgui.ui_interact(usr)
+	var/datum/command_report_menu/tgui = new /datum/command_report_menu(user.mob)
+	tgui.ui_interact(user.mob)
 
 /// Datum for holding the TGUI window for command reports.
 /datum/command_report_menu
@@ -55,7 +43,7 @@
 	/// The subheader to include when sending the announcement. Keep blank to not include a subheader
 	var/subheader = ""
 	/// A static list of preset names that can be chosen.
-	var/list/preset_names = list(CENTCOM_PRESET, SYNDICATE_PRESET, WIZARD_PRESET, CUSTOM_PRESET)
+	var/list/preset_names = list(CENTCOM_PRESET, SYNDICATE_PRESET, MU_PRESET, WIZARD_PRESET, CUSTOM_PRESET) //NON-MODULE CHANGE
 
 /datum/command_report_menu/New(mob/user)
 	ui_user = user
@@ -154,12 +142,12 @@
 		if(chosen_color == "default")
 			if(command_name == SYNDICATE_PRESET)
 				chosen_color = "red"
-			else if(command_name == WIZARD_PRESET)
+			else if(command_name == WIZARD_PRESET || command_name == MU_PRESET) //NON-MODULE CHANGE
 				chosen_color = "purple"
 		priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, color_override = chosen_color)
 
 	if(!announce_contents || print_report)
-		print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents)
+		print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents, contains_advanced_html = TRUE)
 
 	change_command_name(original_command_name)
 
@@ -171,5 +159,6 @@
 
 #undef CENTCOM_PRESET
 #undef SYNDICATE_PRESET
+#undef MU_PRESET //NON-MODULE CHANGE
 #undef WIZARD_PRESET
 #undef CUSTOM_PRESET

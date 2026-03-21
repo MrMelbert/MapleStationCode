@@ -104,6 +104,19 @@
 	foodtypes = SUGAR //We use SUGAR as a base line to act in as junkfood, other wise we use fruit
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_2
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
+
+/obj/item/food/snowcones/CheckParts(list/parts_list, datum/crafting_recipe/current_recipe)
+	. = ..()
+	if(isnull(current_recipe))
+		return
+	// replaces the ice from the input with water
+	reagents.remove_reagent(/datum/reagent/consumable/ice, 15)
+	reagents.add_reagent(/datum/reagent/water, 11)
+	// then add 1u nutriment for free
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, 1)
+	// the juice component will be transferred in from crafting
 
 /obj/item/food/snowcones/lime
 	name = "lime snowcone"
@@ -163,7 +176,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "orange" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/blue
 	name = "bluecherry snowcone"
@@ -213,7 +226,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "oranges" = 5, "limes" = 5, "lemons" = 5, "citrus" = 5, "salad" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/pineapple
 	name = "pineapple snowcone"
@@ -330,6 +343,8 @@
 	foodtypes = DAIRY | SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_3
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 	var/overlay_state = "creamsicle_o" //This is the edible part of the popsicle.
 	var/bite_states = 4 //This value value is used for correctly setting the bite_consumption to ensure every bite changes the sprite. Do not set to zero.
@@ -365,6 +380,83 @@
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY
 	force = 0
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
+
+/obj/item/popsicle_stick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+	if(user.zone_selected != BODY_ZONE_PRECISE_MOUTH)
+		return NONE
+	var/mob/living/inspected = interacting_with
+	if(inspected.is_mouth_covered())
+		user.visible_message(
+			span_notice("[user] tries to stick [src] in [inspected]'s mouth, but their mouth is covered."),
+			span_warning("You can't stick [src] in someone's mouth if it's covered."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		return ITEM_INTERACT_BLOCKING
+	if(iscarbon(inspected) && !inspected.get_bodypart(BODY_ZONE_HEAD))
+		user.visible_message(
+			span_notice("[user] tries to stick [src] in [inspected]'s mouth, but they have no head."),
+			span_warning("You can't stick [src] in someone's mouth if they have no head."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(
+		span_notice("[user] tries to stick [src] in [inspected]'s mouth."),
+		span_notice("You try to stick [src] in [inspected]'s mouth."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+	if(!do_after(user, 3 SECONDS, interacting_with))
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/organ/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/report = ""
+	if(isnull(their_tongue))
+		report = "[inspected.p_They()] don't have a tongue to depress"
+	else if(their_tongue.damage > 5) // tongue damage doesn't do anything
+		report = "[inspected.p_Their()] [their_tongue.name] seems a bit damaged"
+	else
+		report = "[inspected.p_Their()] [their_tongue.name] seems perfectly healthy"
+
+	switch(inspected.getOxyLoss() + (4 * inspected.losebreath))
+		if(0)
+			report += " and [inspected.p_they()] seem to be breathing normally"
+		if(1 to 25)
+			report += " and [inspected.p_they()] seem to be having a bit of trouble breathing"
+		if(25 to 50)
+			report += " and [inspected.p_they()] seem to be having trouble breathing"
+		if(50 to INFINITY)
+			report += " and [inspected.p_they()] seem to be struggling to breathe"
+
+	user.visible_message(
+		span_notice("[user] sticks [src] in [inspected]'s mouth."),
+		span_notice("You stick [src] in [inspected]'s mouth... [report]."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/popsicle_stick/tongue_depressor
+	name = "tongue depressor"
+	desc = "A totally professional medical device used to depress the tongue and examine the back of the throat, \
+		and totally not just a popsicle stick."
+
+/obj/item/popsicle_stick/tongue_depressor/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = ..()
+	if((. & ITEM_INTERACT_SUCCESS) && name == initial(name))
+		name = "used [name]"
+
+/obj/item/storage/box/tongue_depressors
+	name = "tongue depressor box"
+	desc = "A box of tongue depressors, used to depress the tongue and examine the back of the throat."
+
+/obj/item/storage/box/tongue_depressors/PopulateContents()
+	atom_storage.max_slots = 14
+	atom_storage.max_specific_storage = 14
+	for(var/i in 1 to 14)
+		new /obj/item/popsicle_stick/tongue_depressor(src)
 
 /obj/item/food/popsicle/creamsicle_orange
 	name = "orange creamsicle"
@@ -375,7 +467,7 @@
 		/datum/reagent/consumable/vanilla = 2,
 		/datum/reagent/consumable/sugar = 4,
 	)
-	foodtypes = FRUIT | DAIRY | SUGAR | ORANGES
+	foodtypes = FRUIT | DAIRY | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/popsicle/creamsicle_berry

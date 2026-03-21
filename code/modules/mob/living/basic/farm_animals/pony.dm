@@ -40,7 +40,7 @@
 	AddElement(/datum/element/pet_bonus, "whickers.")
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/ai_flee_while_injured)
-	AddElement(/datum/element/waddling)
+	AddElementTrait(TRAIT_WADDLING, INNATE_TRAIT, /datum/element/waddling)
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/grown/apple), tame_chance = 25, bonus_tame_chance = 15, after_tame = CALLBACK(src, PROC_REF(tamed)), unique = unique_tamer)
 
 /mob/living/basic/pony/proc/tamed(mob/living/tamer)
@@ -54,7 +54,7 @@
 	ai_controller.replace_planning_subtrees(list(
 		/datum/ai_planning_subtree/find_nearest_thing_which_attacked_me_to_flee,
 		/datum/ai_planning_subtree/flee_target,
-		/datum/ai_planning_subtree/random_speech/pony/tamed
+		/datum/ai_planning_subtree/random_speech/pony/tamed,
 	))
 
 	if(unique_tamer)
@@ -118,7 +118,7 @@
 		/datum/ai_planning_subtree/flee_target,
 		/datum/ai_planning_subtree/target_retaliate,
 		/datum/ai_planning_subtree/basic_melee_attack_subtree,
-		/datum/ai_planning_subtree/random_speech/pony
+		/datum/ai_planning_subtree/random_speech/pony,
 	)
 
 // A stronger horse is required for our strongest cowboys.
@@ -130,8 +130,8 @@
 	ponycolors = list("#5d566f", COLOR_RED)
 	pressure_resistance = 200
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = 1500
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = 1500
 	unique_tamer = TRUE
 
 /mob/living/basic/pony/syndicate/Initialize(mapload)

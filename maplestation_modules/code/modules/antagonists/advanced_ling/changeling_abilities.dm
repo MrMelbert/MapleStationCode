@@ -30,13 +30,6 @@
 	to_chat(user, span_changeling("Our vocal glands will now no longer mimic the voice of your visible identity."))
 	REMOVE_TRAIT(user, TRAIT_VOICE_MATCHES_ID, CHANGELING_ABILITY)
 
-/// Extension of GetVoice for TRAIT_VOICE_MATCHES_ID.
-/mob/living/carbon/human/GetVoice()
-	if(!HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
-		return ..()
-	var/obj/item/card/id/idcard = get_idcard(FALSE)
-	return istype(idcard) ? idcard.registered_name : get_face_name()
-
 /datum/action/changeling/pain_reduction
 	name = "Nervous System Realignment"
 	desc = "We realign our nervous system, making us naturally more resistant to pain. \
@@ -76,7 +69,7 @@
 	. = ..()
 	var/mob/living/carbon/human/our_ling = user
 	to_chat(our_ling, span_notice("We reboot our nervous system, completely removing all pain affecting us."))
-	our_ling.cause_pain(BODY_ZONES_ALL, -500)
+	our_ling.cause_pain(-500)
 	COOLDOWN_START(src, pain_clear_cooldown, PAIN_CLEAR_COOLDOWN)
 	return TRUE
 
@@ -189,7 +182,7 @@
 				target.sharp_pain(BODY_ZONE_CHEST, 75, BRUTE, 20 SECONDS)
 
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Grant Powers", "[i]"))
-		if(!do_after(owner, (i * 8 SECONDS), target))
+		if(!do_after(owner, (i * 8 SECONDS), target, hidden = TRUE))
 			to_chat(owner, span_warning("Our uplifting of [target] has been interrupted!"))
 			return FALSE
 		if(QDELETED(src))

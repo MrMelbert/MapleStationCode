@@ -18,6 +18,9 @@
 	max_volume = PLANT_REAGENT_VOLUME
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
+	// drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
+	// pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
+
 	/// type path, gets converted to item on New(). It's safe to assume it's always a seed item.
 	var/obj/item/seeds/seed = null
 	///Name of the plant
@@ -104,7 +107,7 @@
 
 	return new trash_type(location || drop_location())
 
-/obj/item/food/grown/grind_requirements()
+/obj/item/food/grown/blend_requirements()
 	if(dry_grind && !HAS_TRAIT(src, TRAIT_DRIED))
 		to_chat(usr, span_warning("[src] needs to be dry before it can be ground up!"))
 		return

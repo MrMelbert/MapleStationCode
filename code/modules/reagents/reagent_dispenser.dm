@@ -31,6 +31,8 @@
 	var/mutable_appearance/assembliesoverlay
 	/// The person who attached an assembly to this dispenser, for bomb logging purposes
 	var/last_rigger = ""
+	/// is it climbable? some of our wall-mounted dispensers should not have this
+	var/climbable = FALSE
 
 // This check is necessary for assemblies to automatically detect that we are compatible
 /obj/structure/reagent_dispensers/IsSpecialAssembly()
@@ -53,6 +55,9 @@
 
 	if(icon_state == "water" && check_holidays(APRIL_FOOLS))
 		icon_state = "water_fools"
+	if(climbable)
+		AddElement(/datum/element/climbable, climb_time = 4 SECONDS, climb_stun = 4 SECONDS)
+		AddElement(/datum/element/elevation, pixel_shift = 14)
 
 /obj/structure/reagent_dispensers/examine(mob/user)
 	. = ..()
@@ -95,8 +100,8 @@
 		holder.master = src
 		holder.on_attach()
 		assembliesoverlay = holder
-		assembliesoverlay.pixel_x += 6
-		assembliesoverlay.pixel_y += 1
+		assembliesoverlay.pixel_w += 6
+		assembliesoverlay.pixel_z += 1
 		add_overlay(assembliesoverlay)
 		RegisterSignal(src, COMSIG_IGNITER_ACTIVATE, PROC_REF(rig_boom))
 		log_bomber(user, "attached [holder.name] to ", src)
@@ -191,17 +196,15 @@
 				explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 6, flame_range = 8)
 	qdel(src)
 
-/obj/structure/reagent_dispensers/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(!disassembled)
-			boom()
-	else
-		qdel(src)
+/obj/structure/reagent_dispensers/atom_deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		boom()
 
 /obj/structure/reagent_dispensers/proc/tank_leak()
 	if(leaking && reagents && reagents.total_volume >= amount_to_leak)
 		reagents.expose(get_turf(src), TOUCH, amount_to_leak / max(amount_to_leak, reagents.total_volume))
 		reagents.remove_reagent(reagent_id, amount_to_leak)
+		playsound(src, 'sound/effects/glug.ogg', 33, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return TRUE
 	return FALSE
 
@@ -233,6 +236,7 @@
 	desc = "A water tank."
 	icon_state = "water"
 	openable = TRUE
+	climbable = TRUE
 
 /obj/structure/reagent_dispensers/watertank/high
 	name = "high-capacity water tank"
@@ -247,6 +251,7 @@
 	reagent_id = /datum/reagent/firefighting_foam
 	tank_volume = 500
 	openable = TRUE
+	climbable = TRUE
 
 /obj/structure/reagent_dispensers/fueltank
 	name = "fuel tank"
@@ -255,6 +260,7 @@
 	reagent_id = /datum/reagent/fuel
 	openable = TRUE
 	accepts_rig = TRUE
+	climbable = TRUE
 
 /obj/structure/reagent_dispensers/fueltank/Initialize(mapload)
 	. = ..()
@@ -405,6 +411,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	anchored = TRUE
 	reagent_id = /datum/reagent/consumable/nutraslop
 
+/obj/structure/reagent_dispensers/servingdish/Initialize(mapload)
+	. = ..()
+	add_smell(category = "stench", smell = "slop", intensity = SMELL_INTENSITY_MODERATE, radius = 1)
+
 /obj/structure/reagent_dispensers/plumbed
 	name = "stationary water tank"
 	anchored = TRUE
@@ -430,8 +440,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	. = ..()
 	AddComponent(/datum/component/simple_rotation)
 
-/obj/structure/reagent_dispensers/plumbed/storage/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/structure/reagent_dispensers/plumbed/storage/update_overlays()
 	. = ..()

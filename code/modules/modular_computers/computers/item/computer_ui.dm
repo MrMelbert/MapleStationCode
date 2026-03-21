@@ -146,7 +146,7 @@
 		if("PC_minimize")
 			if(!active_program || (!isnull(internal_cell) && !internal_cell.charge))
 				return
-			active_program.background_program()
+			active_program.background_program(usr)
 			return TRUE
 
 		if("PC_killprogram")
@@ -189,7 +189,7 @@
 					if(!inserted_disk)
 						return
 
-					user.put_in_hands(inserted_disk)
+					try_put_in_hand(inserted_disk, user)
 					inserted_disk = null
 					playsound(src, 'sound/machines/card_slide.ogg', 50)
 					return TRUE

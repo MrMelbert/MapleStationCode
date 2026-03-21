@@ -2,7 +2,7 @@
 /datum/status_effect/limp/pain
 	id = "limp_pain"
 	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
+	alert_type = null
 	remove_on_fullheal = TRUE
 	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
 
@@ -20,22 +20,33 @@
 		return FALSE
 
 	RegisterSignals(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST), PROC_REF(update_limp))
-	to_chat(owner, span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"))
+	owner.pain_message(
+		span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"),
+		span_danger("You struggle to walk on your [next_leg?.plaintext_zone || "leg"]!"),
+	)
 
 /datum/status_effect/limp/pain/get_examine_text()
-	return span_warning("[owner.p_Theyre()] limping with every move.")
+	if(limp_chance_left > 0 && limp_chance_right > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on both legs.")
+	else if(limp_chance_left > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on [owner.p_their()] [left.plaintext_zone].")
+	else if(limp_chance_right > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on [owner.p_their()] [right.plaintext_zone].")
 
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST))
-	if(!QDELING(owner))
-		to_chat(owner, span_green("Your pained limp stops!"))
+	if(!QDELING(owner) && owner.stat <= SOFT_CRIT)
+		owner.pain_message(
+			span_green("Your pained limp stops!"),
+			span_green("It becomes easier to walk again."),
+		)
 
 /datum/status_effect/limp/pain/update_limp()
 	var/mob/living/carbon/human/limping_human = owner
 
-	left = limping_human.pain_controller.body_zones[BODY_ZONE_L_LEG]
-	right = limping_human.pain_controller.body_zones[BODY_ZONE_R_LEG]
+	left = limping_human.get_bodypart(BODY_ZONE_L_LEG)
+	right = limping_human.get_bodypart(BODY_ZONE_R_LEG)
 
 	if(!left && !right)
 		qdel(src)
@@ -54,7 +65,3 @@
 	if(slowdown_left < 3 && slowdown_right < 3)
 		qdel(src)
 		return
-
-/atom/movable/screen/alert/status_effect/limp/pain
-	name = "Pained Limping"
-	desc = "The pain in your legs is unbearable, forcing you to limp!"

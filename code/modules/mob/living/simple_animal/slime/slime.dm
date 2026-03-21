@@ -26,6 +26,7 @@
 	speak_emote = list("blorbles")
 	bubble_icon = "slime"
 	initial_language_holder = /datum/language_holder/slime
+	initial_blood_type = /datum/blood_type/slime
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
@@ -135,6 +136,7 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLIME, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	ADD_TRAIT(src, TRAIT_CANT_RIDE, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 
 	RegisterSignal(src, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(slime_pre_attack))
 
@@ -166,9 +168,11 @@
 
 /mob/living/simple_animal/slime/regenerate_icons()
 	cut_overlays()
-	var/icon_text = "[slime_type.colour] [life_stage] slime"
-	icon_dead = "[icon_text] dead"
-	if(stat != DEAD)
+	var/icon_text = "[slime_type.colour]-[life_stage]"
+	icon_dead = "[icon_text]-dead"
+	if(cores <= 0)
+		icon_state = "[slime_type.colour]-cut"
+	else if(stat != DEAD)
 		icon_state = icon_text
 		if(current_mood && !stat)
 			add_overlay("aslime-[current_mood]")
@@ -179,23 +183,22 @@
 /mob/living/simple_animal/slime/updatehealth()
 	. = ..()
 	var/mod = 0
-	if(!HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		var/health_deficiency = (maxHealth - health)
-		if(health_deficiency >= 45)
-			mod += (health_deficiency / 25)
-		if(health <= 0)
-			mod += 2
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, multiplicative_slowdown = mod)
+	var/health_deficiency = (maxHealth - health)
+	if(health_deficiency >= 45)
+		mod += (health_deficiency / 25)
+	if(health <= 0)
+		mod += 2
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, mod)
 
-/mob/living/simple_animal/slime/adjust_bodytemperature()
+/mob/living/simple_animal/slime/adjust_body_temperature(amount, min_temp, max_temp, use_insulation)
 	. = ..()
 	var/mod = 0
-	if(bodytemperature >= 330.23) // 135 F or 57.08 C
+	if(body_temperature >= CELCIUS_TO_KELVIN(55 CELCIUS))
 		mod = -1 // slimes become supercharged at high temperatures
-	else if(bodytemperature < 283.222)
-		mod = ((283.222 - bodytemperature) / 10) * 1.75
-	if(mod)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, multiplicative_slowdown = mod)
+	else if(body_temperature < CELCIUS_TO_KELVIN(10 CELCIUS))
+		mod = ((CELCIUS_TO_KELVIN(10 CELCIUS) - body_temperature) / 10) * 1.75
+
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, multiplicative_slowdown = mod)
 
 /mob/living/simple_animal/slime/ObjBump(obj/bumped_object)
 	if(client || powerlevel <= SLIME_MIN_POWER) // slimes with people in control can't accidentally attack
@@ -248,25 +251,21 @@
 			. += "Power Level: [powerlevel]"
 
 
-/mob/living/simple_animal/slime/MouseDrop(atom/movable/target_atom as mob|obj)
-	if(isliving(target_atom) && target_atom != src && usr == src)
-		var/mob/living/Food = target_atom
-		if(can_feed_on(Food))
-			start_feeding(Food)
-	return ..()
+/mob/living/simple_animal/slime/mouse_drop_dragged(atom/target_atom, mob/user) // Non-module change : porting drag & drop changes, we don't  have basic slimes yet
+	if(isliving(target_atom) && target_atom != src && user == src)
+		var/mob/living/food = target_atom
+		if(can_feed_on(food))
+			start_feeding(food)
+
 
 /mob/living/simple_animal/slime/doUnEquip(obj/item/unequipped_item, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	return
 
-/mob/living/simple_animal/slime/start_pulling(atom/movable/moveable_atom, state, force = move_force, supress_message = FALSE)
+/mob/living/simple_animal/slime/start_pulling(atom/movable/moveable_atom, state, force = move_force, supress_message = FALSE, willing_pull = FALSE)
 	return
 
 /mob/living/simple_animal/slime/attack_ui(slot, params)
 	return
-
-/mob/living/simple_animal/slime/get_mob_buckling_height(mob/seat)
-	if(..())
-		return 3
 
 /mob/living/simple_animal/slime/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] \a <EM>[src]</EM>!")

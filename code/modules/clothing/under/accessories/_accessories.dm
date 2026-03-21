@@ -18,6 +18,8 @@
 	slot_flags = NONE
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NOBLUDGEON
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	/// Whether or not the accessory displays through suits and the like.
 	var/above_suit = TRUE
 	/// TRUE if shown as a small icon in corner, FALSE if overlayed
@@ -29,6 +31,13 @@
 /obj/item/clothing/accessory/Initialize(mapload)
 	. = ..()
 	register_context()
+
+/obj/item/clothing/accessory/setup_reskinning()
+	if(!check_setup_reskinning())
+		return
+
+	// We already register context regardless in Initialize.
+	RegisterSignal(src, COMSIG_CLICK_ALT, PROC_REF(on_click_alt_reskin))
 
 /**
  * Can we be attached to the passed clothing article?
@@ -59,7 +68,7 @@
 	. = ..()
 
 	var/obj/item/clothing/under/attached_to = loc
-	
+
 	if(!istype(attached_to))
 		return
 
@@ -79,8 +88,11 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(atom_storage)
+		atom_storage.close_all()
 		attach_to.clone_storage(atom_storage)
 		attach_to.atom_storage.set_real_location(src)
+		attach_to.atom_storage.rustle_sound = TRUE // it's on the suit now
+		attach_to.atom_storage.storage_sound = SFX_RUSTLE
 
 	var/num_other_accessories = LAZYLEN(attach_to.attached_accessories)
 	layer = FLOAT_LAYER + clamp(attach_to.max_number_of_accessories - num_other_accessories, 0, 10)
@@ -88,8 +100,8 @@
 
 	if(minimize_when_attached)
 		transform *= 0.5
-		pixel_x += 8
-		pixel_y += (-8 + LAZYLEN(attach_to.attached_accessories) * 2)
+		pixel_w += 8
+		pixel_z += (-8 + LAZYLEN(attach_to.attached_accessories) * 2)
 
 	RegisterSignal(attach_to, COMSIG_ITEM_EQUIPPED, PROC_REF(on_uniform_equipped))
 	RegisterSignal(attach_to, COMSIG_ITEM_DROPPED, PROC_REF(on_uniform_dropped))
@@ -118,9 +130,8 @@
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/detach_from)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(IS_WEAKREF_OF(src, detach_from.atom_storage?.real_location))
+	if(detach_from.atom_storage?.real_location == src)
 		// Ensure void items do not stick around
-		atom_storage.close_all()
 		detach_from.atom_storage.close_all()
 		// And clean up the storage we made
 		QDEL_NULL(detach_from.atom_storage)
@@ -135,6 +146,9 @@
 
 	if(minimize_when_attached)
 		transform *= 2
+		// Reset our applied offset
+		pixel_w = 0
+		pixel_z = 0
 		// just randomize position
 		pixel_x = rand(4, -4)
 		pixel_y = rand(4, -4)
@@ -157,11 +171,12 @@
 	SIGNAL_HANDLER
 
 	accessory_dropped(source, user)
-	user.update_clothing(ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+	user.update_clothing(ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK)
 
 /// Called when the uniform this accessory is pinned to is equipped in a valid slot
 /obj/item/clothing/accessory/proc/accessory_equipped(obj/item/clothing/under/clothes, mob/living/user)
 	equipped(user, user.get_slot_by_item(clothes)) // so we get any actions, item_flags get set, etc
+	user.update_clothing(ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK)
 	return
 
 /// Called when the uniform this accessory is pinned to is dropped
@@ -202,8 +217,9 @@
 	. += "It can be worn above or below your suit. Right-click to toggle."
 
 /obj/item/clothing/accessory/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	if(!isnull(held_item))
-		return NONE
+	. = ..()
+	if(held_item != source)
+		return .
 
 	context[SCREENTIP_CONTEXT_RMB] = "Wear [above_suit ? "below" : "above"] suit"
 	return CONTEXTUAL_SCREENTIP_SET

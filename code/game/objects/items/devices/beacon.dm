@@ -6,6 +6,8 @@
 	inhand_icon_state = "beacon"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/enabled = TRUE
 	var/renamed = FALSE
 
@@ -48,7 +50,7 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/beacon/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/pen)) // needed for things that use custom names like the locator
+	if(IS_WRITING_UTENSIL(W)) // needed for things that use custom names like the locator
 		var/new_name = tgui_input_text(user, "What would you like the name to be?", "Beacon", max_length = MAX_NAME_LEN)
 		if(!user.can_perform_action(src))
 			return

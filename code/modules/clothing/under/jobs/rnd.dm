@@ -9,6 +9,7 @@
 /obj/item/clothing/under/rank/rnd/research_director
 	desc = "It's a suit worn by those with the know-how to achieve the position of \"Research Director\". Its fabric provides minor protection from biological contaminants."
 	name = "research director's vest suit"
+	article = "the"
 	icon_state = "director"
 	inhand_icon_state = "lb_suit"
 	armor_type = /datum/armor/clothing_under/rnd_research_director
@@ -26,6 +27,7 @@
 
 /obj/item/clothing/under/rank/rnd/research_director/skirt
 	name = "research director's vest suitskirt"
+	article = "the"
 	desc = "It's a suitskirt worn by those with the know-how to achieve the position of \"Research Director\". Its fabric provides minor protection from biological contaminants."
 	icon_state = "director_skirt"
 	body_parts_covered = CHEST|GROIN|ARMS
@@ -35,10 +37,12 @@
 
 /obj/item/clothing/under/rank/rnd/research_director/alt
 	name = "research director's tan suit"
+	article = "the"
 	desc = "Maybe you'll engineer your own half-man, half-pig creature some day. Its fabric provides minor protection from biological contaminants."
-	icon = 'icons/obj/clothing/under/shorts_pants_shirts.dmi'
+	icon = 'icons/map_icons/clothing/under/_under.dmi'
 	worn_icon = 'icons/mob/clothing/under/shorts_pants_shirts.dmi'
-	icon_state = "buttondown_slacks"
+	icon_state = "/obj/item/clothing/under/rank/rnd/research_director/alt"
+	post_init_icon_state = "buttondown_slacks"
 	greyscale_config = /datum/greyscale_config/buttondown_slacks
 	greyscale_config_worn = /datum/greyscale_config/buttondown_slacks/worn
 	greyscale_colors = "#ffeeb6#c2d3da#402912#615233"
@@ -47,7 +51,10 @@
 
 /obj/item/clothing/under/rank/rnd/research_director/alt/skirt
 	name = "research director's tan suitskirt"
-	icon_state = "buttondown_skirt"
+	article = "the"
+	icon = 'icons/map_icons/clothing/under/_under.dmi'
+	icon_state = "/obj/item/clothing/under/rank/rnd/research_director/alt/skirt"
+	post_init_icon_state = "buttondown_skirt"
 	greyscale_config = /datum/greyscale_config/buttondown_skirt
 	greyscale_config_worn = /datum/greyscale_config/buttondown_skirt/worn
 	body_parts_covered = CHEST|GROIN|ARMS
@@ -57,6 +64,7 @@
 /obj/item/clothing/under/rank/rnd/research_director/turtleneck
 	desc = "A Nanotrasen-purple turtleneck and black jeans, for a director with a superior sense of style."
 	name = "research director's turtleneck"
+	article = "the"
 	icon_state = "rdturtle"
 	inhand_icon_state = "p_suit"
 	can_adjust = TRUE
@@ -64,6 +72,7 @@
 
 /obj/item/clothing/under/rank/rnd/research_director/turtleneck/skirt
 	name = "research director's turtleneck skirt"
+	article = "the"
 	desc = "A Nanotrasen-purple turtleneck and a black skirt, for a director with a superior sense of style."
 	icon_state = "rdturtle_skirt"
 	body_parts_covered = CHEST|GROIN|ARMS

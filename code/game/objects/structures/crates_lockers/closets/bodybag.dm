@@ -19,6 +19,9 @@
 	can_install_electronics = FALSE
 	paint_jobs = null
 	can_weld_shut = FALSE
+	door_anim_time = 0
+	// For subtypes that seal
+	air_volume = TANK_STANDARD_VOLUME
 
 	var/foldedbag_path = /obj/item/bodybag
 	var/obj/item/bodybag/foldedbag_instance = null
@@ -26,21 +29,23 @@
 	var/tag_name
 	/// Whether you can health-analyzer through the walls of the bodybag
 	var/can_scan_through = FALSE
+	/// Paper pinned to this bag
+	var/obj/item/paper/pinned
 
-
-/obj/structure/closet/body_bag/Initialize(mapload)
+/obj/structure/closet/body_bag/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	var/static/list/tool_behaviors = list(
-		TOOL_WIRECUTTER = list(
-			SCREENTIP_CONTEXT_RMB = "Remove Tag",
-		),
-	)
-	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
-	AddElement( \
-		/datum/element/contextual_screentip_bare_hands, \
-		rmb_text = "Fold up", \
-	)
-	AddElement(/datum/element/contextual_screentip_sharpness, lmb_text = "Remove Tag")
+	if(isnull(held_item))
+		context[SCREENTIP_CONTEXT_RMB] = "Fold up"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(held_item.tool_behaviour == TOOL_WIRECUTTER || held_item.get_sharpness())
+		context[SCREENTIP_CONTEXT_LMB] = "Remove [pinned ? "Paper" : "Tag"]"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(!pinned && istype(held_item, /obj/item/paper) && !opened)
+		context[SCREENTIP_CONTEXT_LMB] = "Pin Paper"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(can_scan_through && istype(held_item, /obj/item/healthanalyzer) && !opened)
+		context[SCREENTIP_CONTEXT_LMB] = "Scan Contents"
+		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/closet/body_bag/Destroy()
 	// If we have a stored bag, and it's in nullspace (not in someone's hand), delete it.
@@ -48,25 +53,9 @@
 		QDEL_NULL(foldedbag_instance)
 	return ..()
 
-/obj/structure/closet/body_bag/attackby(obj/item/interact_tool, mob/user, params)
-	if (istype(interact_tool, /obj/item/pen) || istype(interact_tool, /obj/item/toy/crayon))
-		if(!user.can_write(interact_tool))
-			return
-		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
-		if(user.get_active_held_item() != interact_tool)
-			return
-		if(!user.can_perform_action(src))
-			return
-		handle_tag("[t ? t : initial(name)]")
-		return
-	if(!tag_name)
-		return
-	if(interact_tool.tool_behaviour == TOOL_WIRECUTTER || interact_tool.get_sharpness())
-		to_chat(user, span_notice("You cut the tag off [src]."))
-		handle_tag()
-
 ///Handles renaming of the bodybag's examine tag.
 /obj/structure/closet/body_bag/proc/handle_tag(new_name)
+	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 	tag_name = new_name
 	name = tag_name ? "[initial(name)] - [tag_name]" : initial(name)
 	update_appearance()
@@ -75,6 +64,25 @@
 	. = ..()
 	if(tag_name)
 		. += "bodybag_label"
+	if(pinned)
+		var/image/paper_image = image(
+			icon = 'maplestation_modules/icons/obj/bodybag.dmi',
+			icon_state = "paper[(pinned.is_empty() || !pinned.show_written_words) ? "" : "_written"]",
+		)
+		paper_image.color = pinned.color
+		. += paper_image
+
+/obj/structure/closet/body_bag/examine(mob/user)
+	. = ..()
+	if(tag_name)
+		. += span_info("The tag reads: [tag_name]")
+	if(can_scan_through)
+		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+	if(pinned)
+		if(get_dist(user, src) <= 2 && user.client)
+			pinned.ui_interact(user)
+		else
+			. += span_smallnoticeital("There's a paper pinned to the bag, but you can't make out what it says.")
 
 /obj/structure/closet/body_bag/after_close(mob/living/user)
 	. = ..()
@@ -118,8 +126,23 @@
 		*/
 /obj/structure/closet/body_bag/proc/perform_fold(mob/living/carbon/human/the_folder)
 	visible_message(span_notice("[the_folder] folds up [src]."))
-	var/obj/item/bodybag/folding_bodybag = foldedbag_instance || new foldedbag_path
-	the_folder.put_in_hands(folding_bodybag)
+	the_folder.put_in_hands(undeploy_bodybag(the_folder.loc))
+
+/// Makes the bag into an item, returns that item
+/obj/structure/closet/body_bag/proc/undeploy_bodybag(atom/fold_loc)
+	var/obj/item/bodybag/folding_bodybag = foldedbag_instance || new foldedbag_path()
+	if(fold_loc)
+		folding_bodybag.forceMove(fold_loc)
+	pinned?.forceMove(fold_loc || drop_location())
+	return folding_bodybag
+
+/obj/structure/closet/body_bag/container_resist_act(mob/living/user, loc_required = TRUE)
+	// ideally we support this natively but i guess that's for a later time
+	if(!istype(loc, /obj/machinery/disposal))
+		return ..()
+	for(var/atom/movable/thing as anything in src)
+		thing.forceMove(loc)
+	undeploy_bodybag(loc)
 
 /obj/structure/closet/body_bag/bluespace
 	name = "bluespace body bag"
@@ -129,6 +152,8 @@
 	foldedbag_path = /obj/item/bodybag/bluespace
 	mob_storage_capacity = 15
 	max_mob_size = MOB_SIZE_LARGE
+	sealed = TRUE
+	air_volume = TANK_STANDARD_VOLUME * 2
 
 /obj/structure/closet/body_bag/bluespace/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE
@@ -154,26 +179,24 @@
 
 /obj/structure/closet/body_bag/bluespace/perform_fold(mob/living/carbon/human/the_folder)
 	visible_message(span_notice("[the_folder] folds up [src]."))
-	var/obj/item/bodybag/folding_bodybag = foldedbag_instance || new foldedbag_path
+	var/obj/item/bodybag/bluespace/folding_bodybag = undeploy_bodybag(the_folder.loc)
+	folding_bodybag.internal_air = internal_air
+	internal_air = null
 	var/max_weight_of_contents = initial(folding_bodybag.w_class)
-	for(var/am in contents)
-		var/atom/movable/content = am
+	for(var/atom/movable/content in src)
 		content.forceMove(folding_bodybag)
 		if(isliving(content))
 			to_chat(content, span_userdanger("You're suddenly forced into a tiny, compressed space!"))
-		if(iscarbon(content))
-			var/mob/living/carbon/mob = content
-			if (mob.dna?.get_mutation(/datum/mutation/human/dwarfism))
-				max_weight_of_contents = max(WEIGHT_CLASS_NORMAL, max_weight_of_contents)
-				continue
+		if(HAS_TRAIT(content, TRAIT_DWARF))
+			max_weight_of_contents = max(WEIGHT_CLASS_NORMAL, max_weight_of_contents)
+			continue
 		if(!isitem(content))
 			max_weight_of_contents = max(WEIGHT_CLASS_BULKY, max_weight_of_contents)
 			continue
-		var/obj/item/A_is_item = content
-		if(A_is_item.w_class < max_weight_of_contents)
-			continue
-		max_weight_of_contents = A_is_item.w_class
-	folding_bodybag.w_class = max_weight_of_contents
+		var/obj/item/content_item = content
+		max_weight_of_contents = max(max_weight_of_contents, content_item.w_class)
+
+	folding_bodybag.update_weight_class(max_weight_of_contents)
 	the_folder.put_in_hands(folding_bodybag)
 
 /obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
@@ -183,24 +206,70 @@
 /obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
 	. = ..()
 	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
-
-/obj/structure/closet/body_bag/examine(mob/user)
-	. = ..()
-	if(can_scan_through)
-		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+	if(gone == pinned)
+		pinned.flags_1 &= ~IS_ONTOP_1
+		pinned = null
+		update_appearance()
 
 /obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
 
-	if(!can_scan_through || !istype(tool, /obj/item/healthanalyzer))
+	if(IS_WRITING_UTENSIL(tool))
+		if(!user.can_write(tool))
+			return . | ITEM_INTERACT_BLOCKING
+		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
+		if(user.get_active_held_item() != tool)
+			return . | ITEM_INTERACT_BLOCKING
+		if(!user.can_perform_action(src))
+			return . | ITEM_INTERACT_BLOCKING
+		balloon_alert(user, "tag set")
+		handle_tag("[t || initial(name)]")
+		return . | ITEM_INTERACT_SUCCESS
+
+	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
+		if(pinned)
+			balloon_alert(user, "paper removed")
+			pinned.forceMove(drop_location())
+			return . | ITEM_INTERACT_SUCCESS
+		else if(tag_name)
+			balloon_alert(user, "tag removed")
+			handle_tag()
+			return . | ITEM_INTERACT_SUCCESS
+
+	if(opened)
+		if(!user.combat_mode && !(tool.item_flags & (ABSTRACT|HAND_ITEM)) && user.transferItemToLoc(tool, loc, silent = FALSE))
+			return . | ITEM_INTERACT_SUCCESS
 		return .
 
-	for(var/mob/living/frozen in src)
-		return tool.interact_with_atom(frozen, user)
+	if(can_scan_through && istype(tool, /obj/item/healthanalyzer))
+		for(var/mob/living/frozen in src)
+			return tool.interact_with_atom(frozen, user)
+
+	if(!pinned && istype(tool, /obj/item/paper) && user.transferItemToLoc(tool, src, silent = FALSE))
+		pinned = tool
+		pinned.flags_1 |= IS_ONTOP_1
+		pinned.forceMove(src)
+		update_appearance()
+		return . | ITEM_INTERACT_SUCCESS
 
 	return .
+
+/obj/structure/closet/body_bag/before_open(mob/living/user, force)
+	if(pinned)
+		if(force)
+			pinned.forceMove(drop_location())
+			return TRUE // force open
+		balloon_alert(user, "paper removed")
+		if(!user.put_in_inactive_hand(pinned))
+			pinned.forceMove(drop_location())
+		return FALSE // blocked the open action
+	return TRUE
+
+/obj/structure/closet/body_bag/atom_deconstruct(disassembled)
+	. = ..()
+	pinned?.forceMove(drop_location())
 
 /// Environmental bags. They protect against bad weather.
 
@@ -213,46 +282,19 @@
 	contents_pressure_protection = 0.8
 	contents_thermal_insulation = 0.5
 	foldedbag_path = /obj/item/bodybag/environmental
+	sealed = TRUE
+	air_volume = TANK_STANDARD_VOLUME
 	/// The list of weathers we protect from.
 	var/list/weather_protection = list(TRAIT_ASHSTORM_IMMUNE, TRAIT_RADSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE, TRAIT_VOIDSTORM_IMMUNE) // Does not protect against lava or the The Floor Is Lava spell.
-	/// The contents of the gas to be distributed to an occupant. Set in Initialize()
-	var/datum/gas_mixture/air_contents = null
 
 /obj/structure/closet/body_bag/environmental/Initialize(mapload)
 	. = ..()
 	add_traits(weather_protection, INNATE_TRAIT)
-	refresh_air()
-
-/obj/structure/closet/body_bag/environmental/Destroy()
-	if(air_contents)
-		QDEL_NULL(air_contents)
-	return ..()
-
-/obj/structure/closet/body_bag/environmental/return_air()
-	refresh_air()
-	return air_contents
-
-/obj/structure/closet/body_bag/environmental/remove_air(amount)
-	refresh_air()
-	return air_contents.remove(amount)
-
-/obj/structure/closet/body_bag/environmental/return_analyzable_air()
-	refresh_air()
-	return air_contents
 
 /obj/structure/closet/body_bag/environmental/togglelock(mob/living/user, silent)
 	. = ..()
 	for(var/mob/living/target in contents)
 		to_chat(target, span_warning("You hear a faint hiss, and a white mist fills your vision..."))
-
-/obj/structure/closet/body_bag/environmental/proc/refresh_air()
-	air_contents = null
-	air_contents = new(50) //liters
-	air_contents.temperature = T20C
-
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
 
 /obj/structure/closet/body_bag/environmental/nanotrasen
 	name = "elite environmental protection bag"
@@ -304,19 +346,10 @@
 	else
 		icon_state = initial(icon_state)
 
-/obj/structure/closet/body_bag/environmental/prisoner/container_resist_act(mob/living/user)
-	/// copy-pasted with changes because flavor text as well as some other misc stuff
-	if(opened)
-		return
-	if(ismovable(loc))
-		user.changeNext_move(CLICK_CD_BREAKOUT)
-		user.last_special = world.time + CLICK_CD_BREAKOUT
-		var/atom/movable/location = loc
-		location.relay_container_resist_act(user, src)
-		return
-	if(!sinched)
-		open(user)
-		return
+/obj/structure/closet/body_bag/environmental/prisoner/container_resist_act(mob/living/user, loc_required = TRUE)
+	// copy-pasted with changes because flavor text as well as some other misc stuff
+	if(opened || ismovable(loc) || !sinched)
+		return ..()
 
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
@@ -329,6 +362,8 @@
 		//we check after a while whether there is a point of resisting anymore and whether the user is capable of resisting
 		user.visible_message(span_danger("[user] successfully broke out of [src]!"),
 							span_notice("You successfully break out of [src]!"))
+		if(istype(loc, /obj/machinery/disposal))
+			return ..()
 		bust_open()
 	else
 		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.
@@ -382,14 +417,20 @@
 	breakout_time = 8 MINUTES
 	sinch_time = 20 SECONDS
 
-/obj/structure/closet/body_bag/environmental/prisoner/pressurized/syndicate/refresh_air()
-	air_contents = null
-	air_contents = new(50) //liters
-	air_contents.temperature = T20C
+/obj/structure/closet/body_bag/environmental/prisoner/syndicate/process_internal_air(seconds_per_tick)
+	if(opened)
+		// lose a majority of all n2o when we start leaking gas, to stop this being a free (obnoxious) way to make n2o
+		internal_air.assert_gases(/datum/gas/nitrous_oxide)
+		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] *= 0.15
+		return ..()
 
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrous_oxide)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrous_oxide][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
+	internal_air.assert_gases(/datum/gas/nitrogen, /datum/gas/nitrous_oxide)
+	var/conversion_amount = min(internal_air.gases[/datum/gas/nitrogen][MOLES], 0.2 * internal_air.total_moles() * seconds_per_tick)
+	if(conversion_amount > 0)
+		// 20% of the nitrogen in the bag is converted to nitrous oxide every second while closed
+		internal_air.gases[/datum/gas/nitrogen][MOLES] = max(0, internal_air.gases[/datum/gas/nitrogen][MOLES] - conversion_amount)
+		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] += conversion_amount
+	return ..()
 
 /obj/structure/closet/body_bag/environmental/hardlight
 	name = "hardlight bodybag"
@@ -429,8 +470,6 @@
 	material_drop = /obj/item/stack/sheet/plastic
 	material_drop_amount = 2
 	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
-	/// Tracks how many seconds we've been freezing dudes for
-	var/seconds_freezing = -1
 	/// Cooldown for playing the freeze sound effect
 	COOLDOWN_DECLARE(freeze_sound_cd)
 	/// Base color filter applied to the bodybag, adjusted based on integrity
@@ -465,16 +504,30 @@
 
 	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
 
-/obj/structure/closet/body_bag/environmental/stasis/refresh_air()
-	var/mol_count = 50
-	var/inner_temp = T0C - 60
-	air_contents = null
-	air_contents = new(mol_count)
-	air_contents.temperature = inner_temp
+/obj/structure/closet/body_bag/environmental/stasis/process_internal_air(seconds_per_tick)
+	if(opened)
+		var/datum/gas_mixture/current_exposed_air = loc.return_air()
+		if(!current_exposed_air)
+			return
+		internal_air.temperature = max(current_exposed_air.temperature, internal_air.temperature)
+		return ..()
 
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * N2STANDARD
+	if(internal_air.temperature > BODY_PRESERVATION_TEMP)
+		var/temperature_decrease_this_tick = min(5 CELCIUS * seconds_per_tick, internal_air.temperature - BODY_PRESERVATION_TEMP)
+		internal_air.temperature -= temperature_decrease_this_tick
+
+	for(var/mob/living/freezing in src)
+		if(internal_air.temperature <= T20C && SPT_PROB(4 * (abs((internal_air.temperature + BODY_PRESERVATION_TEMP) / BODY_PRESERVATION_TEMP) - 1), seconds_per_tick))
+			freezing.Unconscious(1 SECONDS * seconds_per_tick)
+
+		if(internal_air.temperature <= T0C && freezing.on_fire)
+			freezing.extinguish_mob()
+
+		if(internal_air.temperature <= BODY_PRESERVATION_TEMP && !HAS_TRAIT(freezing, TRAIT_STASIS))
+			apply_stasis(freezing)
+
+		// Bout two minutes of time
+		take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
 	switch(100 * get_integrity_percentage())
@@ -485,42 +538,10 @@
 		if(0 to 25)
 			return span_boldwarning("It's falling apart!")
 
-/obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	if(!isliving(arrived))
-		return
-	if(seconds_freezing != -1)
-		return
-	START_PROCESSING(SSobj, src)
-
 /obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(!isliving(gone))
-		return
-	seconds_freezing = -1
-	STOP_PROCESSING(SSobj, src)
 	if(HAS_TRAIT(gone, TRAIT_STASIS))
 		remove_stasis(gone)
-
-/obj/structure/closet/body_bag/environmental/stasis/process(seconds_per_tick)
-
-	var/mob/living/freezing = locate() in src
-	if(isnull(freezing))
-		return PROCESS_KILL
-
-	seconds_freezing += seconds_per_tick
-
-	if(seconds_freezing > 3 && freezing.on_fire)
-		freezing.extinguish_mob()
-
-	if(seconds_freezing > 5 && !HAS_TRAIT(freezing, TRAIT_STASIS))
-		apply_stasis(freezing)
-
-	if(SPT_PROB(2 * (seconds_freezing / 60), seconds_per_tick))
-		freezing.Unconscious(1 SECONDS)
-
-	// Bout two minutes of time
-	take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/after_open(mob/living/user, force = FALSE)
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in loc))
@@ -544,10 +565,10 @@
 		to_chat(target, span_notice("You can feel your fingers and toes again."))
 	UnregisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
-/obj/structure/closet/body_bag/environmental/stasis/perform_fold(mob/living/carbon/human/the_folder)
-	foldedbag_instance ||= new foldedbag_path()
-	foldedbag_instance.update_integrity(get_integrity())
-	return ..()
+/obj/structure/closet/body_bag/environmental/stasis/undeploy_bodybag(atom/fold_loc)
+	. = ..()
+	var/obj/item/bodybag/folded = .
+	folded.update_integrity(get_integrity())
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/skip_to_attack_hand(mob/living/source, atom/attack_target)
 	SIGNAL_HANDLER
@@ -591,15 +612,13 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/closet/body_bag/environmental/stasis/deconstruct(disassembled = TRUE)
-	if (!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/effect/decal/cleanable/shreds(loc, name)
-		new /obj/item/stack/sheet/cloth(loc, 4)
-		playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
-		for(var/mob/living/left_behind in src)
-			left_behind.Knockdown(3 SECONDS)
-
-	return ..()
+/obj/structure/closet/body_bag/environmental/stasis/atom_deconstruct(disassembled = TRUE)
+	new /obj/effect/decal/cleanable/shreds(loc, name)
+	new /obj/item/stack/sheet/cloth(loc, 4)
+	playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
+	for(var/mob/living/left_behind in src)
+		left_behind.Knockdown(3 SECONDS)
+	. = ..()
 
 /obj/structure/closet/body_bag/environmental/stasis/get_remote_view_fullscreens(mob/user)
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))

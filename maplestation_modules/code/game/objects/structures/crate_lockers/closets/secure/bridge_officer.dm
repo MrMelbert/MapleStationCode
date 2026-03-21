@@ -2,7 +2,8 @@
 
 // The actual Bridge Officer's locker of equipment
 /obj/structure/closet/secure_closet/bridge_officer
-	name = "\proper bridge officer's locker"
+	name = "bridge officer's locker"
+	article = "the"
 	req_access = list(ACCESS_COMMAND)
 	icon = 'maplestation_modules/icons/obj/locker.dmi'
 	icon_state = "bo"

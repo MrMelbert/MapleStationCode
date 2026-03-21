@@ -19,14 +19,13 @@
 
 /datum/species/reploid/on_species_gain(mob/living/carbon/C)
 	. = ..()
-	C.set_safe_hunger_level()
 	// Adds robot wings to chest wing options (if it is not already robotic)
 	var/obj/item/bodypart/chest/chest = C.get_bodypart(BODY_ZONE_CHEST)
 	if(!IS_ROBOTIC_LIMB(chest))
-		chest.wing_types |= /obj/item/organ/external/wings/functional/robotic
+		chest.wing_types |= /obj/item/organ/wings/functional/robotic
 
 /datum/species/reploid/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()
 	var/obj/item/bodypart/chest/chest = C.get_bodypart(BODY_ZONE_CHEST)
 	if(!IS_ROBOTIC_LIMB(chest))
-		chest.wing_types -= /obj/item/organ/external/wings/functional/robotic
+		chest.wing_types -= /obj/item/organ/wings/functional/robotic

@@ -17,7 +17,7 @@
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	combat_mode = TRUE
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minbodytemp = 0
+	bodytemp_cold_damage_limit = -1
 	status_flags = CANPUSH
 	death_message = "collapses, flesh gone in a pile of bones!"
 	del_on_death = TRUE
@@ -28,8 +28,12 @@
 	var/outfit = /datum/outfit/corpse_doctor
 
 /mob/living/simple_animal/hostile/zombie/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, outfit, /datum/species/zombie, bloody_slots = ITEM_SLOT_OCLOTHING)
+
+/mob/living/simple_animal/hostile/zombie/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
 
 /mob/living/simple_animal/hostile/zombie/AttackingTarget(atom/attacked_target)
 	. = ..()

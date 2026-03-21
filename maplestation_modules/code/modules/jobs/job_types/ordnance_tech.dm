@@ -1,9 +1,8 @@
 // -- Ordnance Tech job & outfit datum --
 /datum/job/ordnance_tech
 	title = JOB_ORDNANCE_TECH
-	description = "Complete your bomb in the first half hour of the \
-		shift, make the station shake repeatedly as you refine cores, \
-		then sit around as you have nothing else to do."
+	description = "Further plasma research explosively. \
+		Make the station shake repeatedly as you refine anomaly cores."
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -17,7 +16,7 @@
 
 //most likely can be subtyped later
 
-	outfit = /datum/outfit/job/scientist/ordnance_tech
+	base_outfit = /datum/outfit/job/scientist/ordnance_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW
@@ -26,7 +25,9 @@
 	display_order = JOB_DISPLAY_ORDER_ORDNANCE_TECH
 	bounty_types = CIV_JOB_SCI
 
-	family_heirlooms = list(/obj/item/toy/nuke)
+	family_heirlooms = list(
+		/obj/item/toy/nuke,
+	)
 
 	mail_goodies = list(
 		/obj/item/analyzer = 50,
@@ -44,12 +45,17 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Dwarven Miner"
-	crewmonitor_priority = 34
+	crewmonitor_priority = 35
+
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/scientist/ordnance_tech
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
 	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
-	belt = /obj/item/modular_computer/pda/ordnance
+	belt = /obj/item/modular_computer/pda/science/ordnance
 	jobtype = /datum/job/ordnance_tech
 	id_trim = /datum/id_trim/job/ordnance_tech

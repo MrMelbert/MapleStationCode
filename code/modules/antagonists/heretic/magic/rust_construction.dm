@@ -10,6 +10,7 @@
 	school = SCHOOL_FORBIDDEN
 	cooldown_time = 5 SECONDS
 
+	// Both of these are changed in before_cast
 	invocation = "Someone raises a wall of rust."
 	invocation_self_message = "You raise a wall of rust."
 	invocation_type = INVOCATION_EMOTE
@@ -20,6 +21,12 @@
 
 	/// How long does the filter last on walls we make?
 	var/filter_duration = 2 MINUTES
+
+/**
+ * Overrides 'aim assist' because we always want to hit just the turf we clicked on.
+ */
+/datum/action/cooldown/spell/pointed/rust_construction/aim_assist(mob/living/clicker, atom/target)
+	return get_turf(target)
 
 /datum/action/cooldown/spell/pointed/rust_construction/is_valid_target(atom/cast_on)
 	if(!isfloorturf(cast_on))

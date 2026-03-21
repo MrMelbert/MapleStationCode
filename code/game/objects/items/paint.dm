@@ -11,6 +11,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = FLAMMABLE
 	max_integrity = 100
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 	/// With what color will we paint with
 	var/paint_color = COLOR_WHITE
 	/// How many uses are left
@@ -112,17 +114,19 @@
 		return FALSE
 	return TRUE
 
-/obj/item/paint/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/paint/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isturf(interacting_with) || isspaceturf(interacting_with))
+		return NONE
+	if(paintleft <= 0)
+		return NONE
+	paintleft--
+	var/color_type = SATURATION_MULTIPLY
+	if (LAZYACCESS(modifiers, RIGHT_CLICK))
+		color_type = SATURATION_OVERRIDE
+	interacting_with.add_atom_colour(color_transition_filter(paint_color, color_type), WASHABLE_COLOUR_PRIORITY)
 	if(paintleft <= 0)
 		icon_state = "paint_empty"
-		return
-	if(!isturf(target) || isspaceturf(target))
-		return
-	paintleft--
-	target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/paint/paint_remover
 	gender = PLURAL
@@ -130,12 +134,10 @@
 	desc = "Used to remove color from anything."
 	icon_state = "paint_neutral"
 
-/obj/item/paint/paint_remover/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(!isturf(target) || !isobj(target))
-		return
-	. |= AFTERATTACK_PROCESSED_ITEM
-	if(target.color != initial(target.color))
-		target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+/obj/item/paint/paint_remover/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isturf(interacting_with) || !isobj(interacting_with))
+		return NONE
+	if(interacting_with.color != initial(interacting_with.color))
+		interacting_with.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+		return ITEM_INTERACT_SUCCESS
+	return NONE

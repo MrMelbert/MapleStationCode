@@ -101,11 +101,11 @@
 		all_tracked_data += "subject_two"
 	if(findtext(paper_contents, "victim"))
 		var/list/possible_names = list(
-			"human" = random_unique_name(),
-			"lizard" = random_unique_lizard_name(),
-			"plasmaman" = random_unique_plasmaman_name(),
-			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),
+			"human" = generate_random_name_species_based(species_type = /datum/species/human),
+			"lizard" = generate_random_name_species_based(species_type = /datum/species/lizard),
+			"plasmaman" = generate_random_name_species_based(species_type = /datum/species/plasmaman),
+			"ethereal" = generate_random_name_species_based(species_type = /datum/species/ethereal),
+			"moth" = generate_random_name_species_based(species_type = /datum/species/moth),
 		)
 		paper_victim_species = pick(possible_names)
 		paper_victim = possible_names[paper_victim_species]

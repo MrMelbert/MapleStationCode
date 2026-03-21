@@ -1,8 +1,15 @@
-import { map } from 'common/collections';
-import { toFixed } from 'common/math';
+import { map } from 'es-toolkit/compat';
+import {
+  Box,
+  Button,
+  LabeledList,
+  NumberInput,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, NumberInput, Section } from '../components';
 import { RADIO_CHANNELS } from '../constants';
 import { Window } from '../layouts';
 
@@ -23,32 +30,33 @@ export const Radio = (props) => {
   const tunedChannel = RADIO_CHANNELS.find(
     (channel) => channel.freq === frequency,
   );
-  const channels = map((value, key) => ({
+  const channels = map(data.channels, (value, key) => ({
     name: key,
     status: !!value,
-  }))(data.channels);
+  }));
   // Calculate window height
   let height = 106;
   if (subspace) {
     if (channels.length > 0) {
-      height += channels.length * 21 + 6;
+      height += channels.length * 25 + 8;
     } else {
       height += 24;
     }
   }
   return (
-    <Window width={360} height={height}>
+    <Window width={376} height={height}>
       <Window.Content>
         <Section>
           <LabeledList>
             <LabeledList.Item label="Frequency">
               {(freqlock && (
                 <Box inline color="light-gray">
-                  {toFixed(frequency / 10, 1) + ' kHz'}
+                  {`${toFixed(frequency / 10, 1)} kHz`}
                 </Box>
               )) || (
                 <NumberInput
                   animate
+                  tickWhileDragging
                   unit="kHz"
                   step={0.2}
                   stepPixelSize={10}
@@ -56,7 +64,7 @@ export const Radio = (props) => {
                   maxValue={maxFrequency / 10}
                   value={frequency / 10}
                   format={(value) => toFixed(value, 1)}
-                  onDrag={(e, value) =>
+                  onChange={(value) =>
                     act('frequency', {
                       adjust: value - frequency / 10,
                     })
@@ -110,20 +118,22 @@ export const Radio = (props) => {
                     No encryption keys installed.
                   </Box>
                 )}
-                {channels.map((channel) => (
-                  <Box key={channel.name}>
-                    <Button
-                      icon={channel.status ? 'check-square-o' : 'square-o'}
-                      selected={channel.status}
-                      content={channel.name}
-                      onClick={() =>
-                        act('channel', {
-                          channel: channel.name,
-                        })
-                      }
-                    />
-                  </Box>
-                ))}
+                <Stack vertical>
+                  {channels.map((channel) => (
+                    <Box key={channel.name}>
+                      <Button
+                        icon={channel.status ? 'check-square-o' : 'square-o'}
+                        selected={channel.status}
+                        content={channel.name}
+                        onClick={() =>
+                          act('channel', {
+                            channel: channel.name,
+                          })
+                        }
+                      />
+                    </Box>
+                  ))}
+                </Stack>
               </LabeledList.Item>
             )}
           </LabeledList>

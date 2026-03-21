@@ -7,6 +7,8 @@
 	icon = 'icons/obj/devices/remote.dmi'
 	icon_state = "gangtool-red"
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// Job required to use the beacon; If null, anyone can
 	var/requires_job_path
 	/// Path of the locker and its contents
@@ -33,7 +35,7 @@
 	var/list/spawned_paths = list(spawned_locker_path)
 	podspawn(list(
 		"target" = get_turf(user),
-		"style" = STYLE_CENTCOM,
+		"style" = /datum/pod_style/centcom,
 		"spawn" = spawned_paths,
 		"delays" = list(POD_TRANSIT = 20, POD_FALLING = 50, POD_OPENING = 20, POD_LEAVING = 10)
 	))
@@ -66,4 +68,3 @@
 		for use when upholding the laws of joint Mu-Nanotrasen research stations."
 	requires_job_path = /datum/job/noble_ambassador
 	spawned_locker_path = /obj/structure/closet/secure_closet/noble_ambassador
-

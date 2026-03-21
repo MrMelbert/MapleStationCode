@@ -5,7 +5,6 @@
 	icon_state = "engi"
 	icon_deny = "engi-deny"
 	panel_type = "panel10"
-	req_access = list(ACCESS_ENGINE_EQUIP)
 	products = list(
 		/obj/item/clothing/under/rank/engineering/chief_engineer = 4,
 		/obj/item/clothing/under/rank/engineering/engineer = 4,
@@ -20,7 +19,8 @@
 		/obj/item/multitool = 12,
 		/obj/item/wrench = 12,
 		/obj/item/t_scanner = 12,
-		/obj/item/stock_parts/cell = 8,
+		/obj/item/stock_parts/power_store/cell = 8,
+		/obj/item/stock_parts/power_store/battery = 8,
 		/obj/item/weldingtool = 8,
 		/obj/item/clothing/head/utility/welding = 8,
 		/obj/item/light/tube = 10,
@@ -35,6 +35,7 @@
 	extra_price = PAYCHECK_COMMAND * 1.5
 	payment_department = ACCOUNT_ENG
 	light_mask = "engi-light-mask"
+	allow_custom = TRUE
 
 /obj/item/vending_refill/engineering
 	machine_name = "Robco Tool Maker"

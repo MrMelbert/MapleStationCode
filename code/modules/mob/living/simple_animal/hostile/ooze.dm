@@ -12,8 +12,8 @@
 	speak_emote = list("blorbles")
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	hud_type = /datum/hud/ooze
-	minbodytemp = 250
-	maxbodytemp = INFINITY
+	bodytemp_cold_damage_limit = 250
+	bodytemp_heat_damage_limit = INFINITY
 	faction = list(FACTION_SLIME)
 	melee_damage_lower = 10
 	melee_damage_upper = 10
@@ -27,6 +27,7 @@
 	mob_size = MOB_SIZE_LARGE
 	initial_language_holder = /datum/language_holder/slime
 	footstep_type = FOOTSTEP_MOB_SLIME
+	initial_blood_type = /datum/blood_type/slime
 	///Oozes have their own nutrition. Changes based on them eating
 	var/ooze_nutrition = 50
 	var/ooze_nutrition_loss = -0.15
@@ -181,7 +182,7 @@
 ///Heat up the mob a little
 /datum/action/cooldown/metabolicboost/proc/HeatUp()
 	var/mob/living/simple_animal/hostile/ooze/ooze = owner
-	ooze.adjust_bodytemperature(50)
+	ooze.adjust_body_temperature(3.33 KELVIN)
 
 ///Remove the speed modifier and delete the timer for heating up
 /datum/action/cooldown/metabolicboost/proc/FinishSpeedup(timerid)
@@ -223,7 +224,7 @@
 		to_chat(src, span_warning("You are already consuming another creature!"))
 		return FALSE
 	owner.visible_message(span_warning("[ooze] starts attempting to devour [target]!"), span_notice("You start attempting to devour [target]."))
-	if(!do_after(ooze, 15, target = ooze.pulling))
+	if(!do_after(ooze, 1.5 SECONDS, target = ooze.pulling))
 		return FALSE
 	var/mob/living/eat_target = ooze.pulling
 
@@ -338,7 +339,7 @@
 
 	return TRUE
 
-/datum/action/cooldown/globules/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/globules/InterceptClickOn(mob/living/clicker, params, atom/target)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -347,19 +348,19 @@
 	// Well, we need to use the params of the click intercept
 	// for passing into preparePixelProjectile, so we'll handle it here instead.
 	// We just need to make sure Pre-activate and Activate return TRUE so we make it this far
-	caller.visible_message(
-		span_nicegreen("[caller] launches a mending globule!"),
+	clicker.visible_message(
+		span_nicegreen("[clicker] launches a mending globule!"),
 		span_notice("You launch a mending globule."),
 	)
 
-	var/mob/living/simple_animal/hostile/ooze/oozy = caller
+	var/mob/living/simple_animal/hostile/ooze/oozy = clicker
 	if(istype(oozy))
 		oozy.adjust_ooze_nutrition(-5)
 
 	var/modifiers = params2list(params)
-	var/obj/projectile/globule/globule = new(caller.loc)
-	globule.preparePixelProjectile(target, caller, modifiers)
-	globule.def_zone = caller.zone_selected
+	var/obj/projectile/globule/globule = new(clicker.loc)
+	globule.preparePixelProjectile(target, clicker, modifiers)
+	globule.def_zone = clicker.zone_selected
 	globule.fire()
 
 	StartCooldown()
@@ -375,7 +376,7 @@
 	name = "mending globule"
 	icon_state = "glob_projectile"
 	shrapnel_type = /obj/item/mending_globule
-	embedding = list("embed_chance" = 100, ignore_throwspeed_threshold = TRUE, "pain_mult" = 0, "jostle_pain_mult" = 0, "fall_chance" = 0.5)
+	embed_type = /datum/embed_data/mending_globule
 	damage = 0
 
 ///This item is what is embedded into the mob, and actually handles healing of mending globules
@@ -384,9 +385,16 @@
 	desc = "It somehow heals those who touch it."
 	icon = 'icons/obj/science/vatgrowing.dmi'
 	icon_state = "globule"
-	embedding = list("embed_chance" = 100, ignore_throwspeed_threshold = TRUE, "pain_mult" = 0, "jostle_pain_mult" = 0, "fall_chance" = 0.5)
+	embed_type = /datum/embed_data/mending_globule
 	var/obj/item/bodypart/bodypart
 	var/heals_left = 35
+
+/datum/embed_data/mending_globule
+	embed_chance = 100
+	ignore_throwspeed_threshold = TRUE
+	pain_mult = 0
+	jostle_pain_mult = 0
+	fall_chance = 0.5
 
 /obj/item/mending_globule/Destroy()
 	. = ..()

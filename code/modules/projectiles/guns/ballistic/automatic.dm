@@ -2,7 +2,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	can_suppress = TRUE
 	burst_size = 3
-	fire_delay = 2
+	burst_delay = 2
 	actions_types = list(/datum/action/item_action/toggle_firemode)
 	semi_auto = TRUE
 	fire_sound = 'sound/weapons/gun/smg/shot.ogg'
@@ -72,7 +72,7 @@
 	inhand_icon_state = "c20r"
 	selector_switch_icon = TRUE
 	accepted_magazine_type = /obj/item/ammo_box/magazine/smgm45
-	fire_delay = 2
+	burst_delay = 2
 	burst_size = 3
 	pin = /obj/item/firing_pin/implant/pindicate
 	can_bayonet = TRUE
@@ -105,7 +105,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	inhand_icon_state = "arg"
 	accepted_magazine_type = /obj/item/ammo_box/magazine/wt550m9
-	fire_delay = 2
+	burst_delay = 2
 	can_suppress = FALSE
 	burst_size = 1
 	actions_types = list()
@@ -169,7 +169,7 @@
 	can_suppress = FALSE
 	var/obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel
 	burst_size = 3
-	fire_delay = 2
+	burst_delay = 2
 	spread = 5
 	pin = /obj/item/firing_pin/implant/pindicate
 	mag_display = TRUE
@@ -193,17 +193,18 @@
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
 	update_appearance()
 
-/obj/item/gun/ballistic/automatic/m90/afterattack_secondary(atom/target, mob/living/user, proximity_flag, click_parameters)
-	underbarrel.afterattack(target, user, proximity_flag, click_parameters)
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+/obj/item/gun/ballistic/automatic/m90/try_fire_gun(atom/target, mob/living/user, params)
+	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
+		return underbarrel.try_fire_gun(target, user, params)
+	return ..()
 
-/obj/item/gun/ballistic/automatic/m90/attackby(obj/item/A, mob/user, params)
-	if(isammocasing(A))
-		if(istype(A, underbarrel.magazine.ammo_type))
+/obj/item/gun/ballistic/automatic/m90/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(isammocasing(tool))
+		if(istype(tool, underbarrel.magazine.ammo_type))
 			underbarrel.attack_self(user)
-			underbarrel.attackby(A, user, params)
-	else
-		..()
+			underbarrel.attackby(tool, user, list2params(modifiers))
+		return ITEM_INTERACT_BLOCKING
+	return ..()
 
 /obj/item/gun/ballistic/automatic/m90/update_overlays()
 	. = ..()
@@ -225,7 +226,7 @@
 	can_suppress = FALSE
 	burst_size = 1
 	actions_types = list()
-	fire_delay = 1
+	burst_delay = 1
 	bolt_type = BOLT_TYPE_OPEN
 	empty_indicator = TRUE
 	show_bolt_icon = FALSE
@@ -243,7 +244,7 @@
 /obj/item/gun/ballistic/automatic/tommygun/chimpgun
 	name = "\improper Typewriter"
 	desc = "It was the best of times, it was the BLURST of times!? You stupid monkeys!"
-	fire_delay = 2
+	burst_delay = 2
 	rof = 0.2 SECONDS
 	projectile_damage_multiplier = 0.4
 	projectile_wound_bonus = -25
@@ -258,7 +259,7 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/m223
 	can_suppress = FALSE
 	burst_size = 3
-	fire_delay = 1
+	burst_delay = 1
 
 // L6 SAW //
 
@@ -302,13 +303,12 @@
 		. += span_notice("It seems like you could use an <b>empty hand</b> to remove the magazine.")
 
 
-/obj/item/gun/ballistic/automatic/l6_saw/AltClick(mob/user)
-	if(!user.can_perform_action(src))
-		return
+/obj/item/gun/ballistic/automatic/l6_saw/click_alt(mob/user)
 	cover_open = !cover_open
 	balloon_alert(user, "cover [cover_open ? "opened" : "closed"]")
 	playsound(src, 'sound/weapons/gun/l6/l6_door.ogg', 60, TRUE)
 	update_appearance()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/automatic/l6_saw/update_icon_state()
 	. = ..()
@@ -319,15 +319,15 @@
 	. += "l6_door_[cover_open ? "open" : "closed"]"
 
 
-/obj/item/gun/ballistic/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params)
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/gun/ballistic/automatic/l6_saw/try_fire_gun(atom/target, mob/living/user, params)
 	if(cover_open)
 		balloon_alert(user, "close the cover!")
-		return
-	else
-		. |= ..()
+		return FALSE
+
+	. = ..()
+	if(.)
 		update_appearance()
+	return .
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/automatic/l6_saw/attack_hand(mob/user, list/modifiers)

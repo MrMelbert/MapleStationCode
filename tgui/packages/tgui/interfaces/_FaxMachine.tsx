@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend, useLocalState, useSharedState } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -13,7 +10,10 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useLocalState, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 enum historyType {

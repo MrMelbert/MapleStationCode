@@ -17,6 +17,9 @@
 	wound_bonus = -10
 	bare_wound_bonus = 20
 	armour_penetration = 35
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
 
 /obj/item/melee/cultblade/advanced_dagger/Initialize(mapload)
 	. = ..()

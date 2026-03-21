@@ -16,12 +16,9 @@
 			wearable_item_paths |= path
 		qdel(spawned_item)
 
-	for(var/mod_path in subtypesof(/obj/item/mod/control))
-		var/obj/item/mod/control/control_mod = new
-		for(var/path in control_mod.chestplate.allowed)
-			wearable_item_paths |= path
-		qdel(control_mod)
-
+	for(var/datum/mod_theme/mod_theme as anything in GLOB.mod_themes)
+		mod_theme = GLOB.mod_themes[mod_theme]
+		wearable_item_paths |= mod_theme.allowed_suit_storage
 
 	var/list/already_warned_icons = list()
 	var/count = 1 //to be removed once the test goes live / into CI failure mode.

@@ -27,15 +27,19 @@
 	faction = list(ROLE_WIZARD)
 	footstep_type = FOOTSTEP_MOB_SHOE
 	weather_immunities = list(TRAIT_LAVA_IMMUNE, TRAIT_ASHSTORM_IMMUNE)
-	minbodytemp = 0
-	maxbodytemp = INFINITY
+	bodytemp_cold_damage_limit = -1
+	bodytemp_heat_damage_limit = INFINITY
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	loot = list(/obj/effect/decal/remains/human)
 	del_on_death = TRUE
 
 /mob/living/simple_animal/hostile/dark_wizard/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/wizard/dark, r_hand = /obj/item/staff)
+
+/mob/living/simple_animal/hostile/dark_wizard/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
 
 /obj/projectile/temp/earth_bolt
 	name = "earth bolt"
@@ -43,4 +47,4 @@
 	damage = 4
 	damage_type = BURN
 	armor_flag = ENERGY
-	temperature = -100 // closer to the old temp loss
+	temperature = -25 CELCIUS

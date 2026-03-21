@@ -25,7 +25,7 @@
 	human_holder.eye_color_heterochromatic = TRUE
 	human_holder.eye_color_right = color
 
-	var/obj/item/organ/internal/eyes/eyes_of_the_holder = quirk_holder.get_organ_by_type(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes_of_the_holder = quirk_holder.get_organ_by_type(/obj/item/organ/eyes)
 	if(!eyes_of_the_holder)
 		return
 
@@ -42,7 +42,7 @@
 	human_holder.eye_color_right = human_holder.eye_color_left
 	UnregisterSignal(human_holder, COMSIG_CARBON_LOSE_ORGAN)
 
-/datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/internal/eyes/removed)
+/datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/eyes/removed)
 	SIGNAL_HANDLER
 
 	if(!istype(removed))

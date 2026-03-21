@@ -7,7 +7,9 @@
 	density = TRUE
 	obj_flags = BLOCKS_CONSTRUCTION
 	state_open = TRUE
+	interaction_flags_mouse_drop = NEED_DEXTERITY
 	circuit = /obj/item/circuitboard/machine/sleeper
+	examine_feedback_on_ui = TRUE
 
 	payment_department = ACCOUNT_MED
 	fair_market_price = 5
@@ -22,6 +24,8 @@
 	var/deconstructable = FALSE
 	///Message sent when a user enters the machine.
 	var/enter_message = span_boldnotice("You feel cool air surround you. You go numb as your senses turn inward.")
+
+	var/resist_time = 0 SECONDS
 
 	///List of currently available chems.
 	var/list/available_chems = list()
@@ -61,6 +65,13 @@
 	update_appearance()
 	reset_chem_buttons()
 
+/obj/machinery/sleeper/on_set_panel_open(old_value)
+	. = ..()
+	if(panel_open)
+		set_machine_stat(machine_stat | MAINT)
+	else
+		set_machine_stat(machine_stat & ~MAINT)
+
 /obj/machinery/sleeper/RefreshParts()
 	. = ..()
 	var/matterbin_rating = 0
@@ -71,7 +82,7 @@
 
 	available_chems.Cut()
 	for(var/datum/stock_part/servo/servos in component_parts)
-		for(var/i in 1 to servos.tier)
+		for(var/i in 1 to min(servos.tier, length(possible_chems)))
 			available_chems |= possible_chems[i]
 
 	reset_chem_buttons()
@@ -81,8 +92,15 @@
 	return ..()
 
 /obj/machinery/sleeper/container_resist_act(mob/living/user)
-	visible_message(span_notice("[occupant] emerges from [src]!"),
-		span_notice("You climb out of [src]!"))
+	if(resist_time > 0)
+		to_chat(user, span_notice("You pull at the release lever."))
+		if(!do_after(user, resist_time, src))
+			return
+	user.visible_message(
+		span_notice("[occupant] emerges from [src]!"),
+		span_notice("You climb out of [src]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 	open_machine()
 
 /obj/machinery/sleeper/Exited(atom/movable/gone, direction)
@@ -125,8 +143,7 @@
 	if(is_operational && occupant)
 		open_machine()
 
-
-/obj/machinery/sleeper/MouseDrop_T(atom/movable/dropping, mob/user)
+/obj/machinery/sleeper/mouse_drop_receive(atom/target, mob/user, params)
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
 	if(!iscarbon(dropping))
@@ -221,7 +238,7 @@
 	return FALSE
 
 /obj/machinery/sleeper/default_pry_open(obj/item/I) //wew
-	. = !(state_open || panel_open || (obj_flags & NO_DECONSTRUCTION)) && I.tool_behaviour == TOOL_CROWBAR
+	. = !(state_open || panel_open) && I.tool_behaviour == TOOL_CROWBAR
 	if(.)
 		I.play_tool_sound(src, 50)
 		visible_message(span_notice("[usr] pries open [src]."), span_notice("You pry open [src]."))
@@ -238,15 +255,13 @@
 		ui = new(user, src, "Sleeper", name)
 		ui.open()
 
-/obj/machinery/sleeper/AltClick(mob/user)
-	. = ..()
+/obj/machinery/sleeper/click_alt(mob/user)
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
-		return
+		return CLICK_ACTION_BLOCKING
 	if(user.loc == loc)
-		return
+		return CLICK_ACTION_BLOCKING
 	if(!user.can_perform_action(src, NEED_DEXTERITY|ALLOW_SILICON_REACH|FORBID_TELEKINESIS_REACH))
-		return
-
+		return CLICK_ACTION_BLOCKING
 	if(state_open)
 		var/mob/living/carbon/scooped = locate() in loc
 		if(scooped)
@@ -255,13 +270,14 @@
 			close_machine()
 	else
 		open_machine()
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/sleeper/examine(mob/user)
 	. = ..()
 	. += span_notice("Alt-click [src] to [state_open ? "close" : "open"] it.")
 
 /obj/machinery/sleeper/process()
-	use_power(idle_power_usage)
+	use_energy(idle_power_usage)
 
 /obj/machinery/sleeper/nap_violation(mob/violator)
 	. = ..()
@@ -303,7 +319,7 @@
 				data["occupant"]["statstate"] = "bad"
 		data["occupant"]["health"] = mob_occupant.health
 		data["occupant"]["maxHealth"] = mob_occupant.maxHealth
-		data["occupant"]["minHealth"] = HEALTH_THRESHOLD_DEAD
+		data["occupant"]["minHealth"] = HEALTH_THRESHOLD_LIKELY_DEAD
 		data["occupant"]["bruteLoss"] = mob_occupant.getBruteLoss()
 		data["occupant"]["oxyLoss"] = mob_occupant.getOxyLoss()
 		data["occupant"]["toxLoss"] = mob_occupant.getToxLoss()
@@ -469,6 +485,11 @@
 	/// Cooldown to prevent sound spam / instantly jumping out of a pod
 	COOLDOWN_DECLARE(open_close_cd)
 
+	/// If TRUE we can inject chems into the patient
+	var/has_chem_support = TRUE
+	/// If TRUE we process medicine reagents despite stasis
+	var/has_processing = TRUE
+
 /obj/machinery/sleeper/stasis/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -477,6 +498,9 @@
 
 /obj/machinery/sleeper/stasis/Initialize(mapload)
 	. = ..()
+	if(!has_chem_support)
+		return
+
 	create_reagents(50, OPENCONTAINER)
 	RegisterSignals(reagents, list(
 		COMSIG_REAGENTS_ADD_REAGENT,
@@ -491,6 +515,10 @@
 
 /obj/machinery/sleeper/stasis/proc/update_chems(...)
 	SIGNAL_HANDLER
+
+	if(!has_chem_support)
+		return
+
 	possible_chems[1].Cut()
 	for(var/datum/reagent/med as anything in reagents.reagent_list)
 		if(istype(med, /datum/reagent/medicine) || (obj_flags & EMAGGED))
@@ -498,6 +526,9 @@
 	RefreshParts()
 
 /obj/machinery/sleeper/stasis/chem_allowed(chem)
+	if(!has_chem_support)
+		return FALSE
+
 	return occupant?.reagents?.get_reagent_amount(chem) <= 5 && reagents.get_reagent_amount(chem) > 0
 
 /obj/machinery/sleeper/stasis/inject_chem(chem, mob/user, amount = 10)
@@ -523,18 +554,27 @@
 	. = ..()
 	if(isliving(new_occupant_living))
 		new_occupant_living.enter_stasis(STASIS_MACHINE_EFFECT)
+		new_occupant_living.add_traits(list(
+			TRAIT_BLOCK_HEADSET_USE,
+			TRAIT_SOFTSPOKEN,
+			TRAIT_RADSTORM_IMMUNE,
+		), REF(src))
 		RegisterSignal(new_occupant_living, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(stasis_move_eject))
+
 	if(isliving(old_occupant_living))
 		old_occupant_living.exit_stasis(STASIS_MACHINE_EFFECT)
+		old_occupant_living.remove_traits(list(
+			TRAIT_BLOCK_HEADSET_USE,
+			TRAIT_SOFTSPOKEN,
+			TRAIT_RADSTORM_IMMUNE,
+		), REF(src))
 		UnregisterSignal(old_occupant_living, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE)
 
 /obj/machinery/sleeper/stasis/proc/stasis_move_eject(mob/source, ...)
 	SIGNAL_HANDLER
-	if(!source.can_resist())
+	if(!source.can_resist() || DOING_INTERACTION_WITH_TARGET(source, src))
 		return NONE
-
-	// Need to register a signal as stasis immobilizes you
-	container_resist_act(source)
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, relaymove), source, direct)
 	return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE
 
 /obj/machinery/sleeper/stasis/open_machine(drop, density_to_set)
@@ -553,11 +593,15 @@
 
 	. = ..()
 	playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
+	playsound(src, 'sound/machines/fan_stop.ogg', 50, TRUE)
 	COOLDOWN_START(src, open_close_cd, 1 SECONDS)
 	QDEL_NULL(particles)
 
 /obj/machinery/sleeper/stasis/process(seconds_per_tick)
 	. = ..()
+	if(!has_processing)
+		return
+
 	var/mob/living/patient = occupant
 	if(istype(patient) && !isnull(patient.reagents))
 		var/update = FALSE
@@ -595,3 +639,180 @@
 			position = generator(GEN_VECTOR, list(-10, -10, 0), list(16, -10, 0), NORMAL_RAND)
 		if(WEST)
 			position = generator(GEN_VECTOR, list(-16, -10, 0), list(10, -10, 0), NORMAL_RAND)
+
+GLOBAL_LIST_INIT(cryo_sleepers, list())
+
+#define IS_SPAWNING "spawning"
+
+/obj/machinery/sleeper/stasis/cryo
+	name = "long-term crew storage pod"
+	desc = "An enclosed machine designed to put subjects in a state of suspended animation for long-term storage."
+	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
+	icon_state = "cryopod"
+	base_icon_state = "cryopod"
+	deconstructable = FALSE
+	// circuit = /obj/item/circuitboard/machine/sleeper/cryo
+	enter_message = span_boldnotice("You feel a cold chill as you enter the pod. \
+		You feel your body go numb as you enter a state of suspended animation.")
+	possible_chems = null
+	state_open = FALSE
+	density = TRUE
+	resist_time = 0.5 SECONDS
+	has_chem_support = FALSE
+	has_processing = FALSE
+
+	var/throw_alert = TRUE
+
+/obj/machinery/sleeper/stasis/cryo/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
+	GLOB.cryo_sleepers += src
+	open_machine()
+
+/obj/machinery/sleeper/stasis/cryo/ui_interact(mob/user, datum/tgui/ui)
+	return
+
+/obj/machinery/sleeper/stasis/cryo/Destroy()
+	GLOB.cryo_sleepers -= src
+	return ..()
+
+/obj/machinery/sleeper/stasis/cryo/examine(mob/user)
+	. = ..()
+	if(isliving(occupant) && user != occupant)
+		var/mob/living/occupant_l = occupant
+		var/obj/item/card/id/their_id = occupant_l.get_idcard()
+		. += span_notice("Inside, you can see [occupant][their_id ? ", the [their_id.assignment]" : ""][(HAS_TRAIT(occupant, TRAIT_KNOCKEDOUT) || (occupant_l.key && !occupant_l.client)) ? " - sound asleep" : ""].")
+	else if(isliving(user))
+		. += span_info(span_slightly_smaller("You can enter the pod to be put into stasis temporarily, or to despawn your character."))
+		. += span_info(span_slightly_smaller("This machine is not intended to be used medicinally. Avoid placing wounded patients inside, even in emergencies."))
+
+/obj/machinery/sleeper/stasis/cryo/set_occupant(atom/movable/new_occupant)
+	if(!throw_alert)
+		return ..()
+
+	var/mob/living/old_occupant = occupant
+	. = ..()
+	var/mob/living/new_occupant_l = new_occupant
+	var/skey = REF(src)
+	if(istype(old_occupant))
+		old_occupant.clear_alert(skey)
+	if(istype(new_occupant_l))
+		new_occupant_l.throw_alert(skey, /atom/movable/screen/alert/cryosleep)
+		// if they have a mind, we can consider despawning them, however:
+		// ...if the mind is active, they are being forced to be "here", so we should be on the safe side and leave them
+		// ...if they have a key, but no client, they're just disconnected. leave them in the pod for if they return
+		// ...if they have a client, they're actively in the game, definitely don't despawn them
+		// ...if they have an ai controller, then it's probably just an NPC, so it doesn't need to be despawned
+		if(new_occupant_l.mind && !new_occupant_l.mind.active && !new_occupant_l.key && !new_occupant_l.client && !new_occupant_l.ai_controller)
+			addtimer(CALLBACK(src, PROC_REF(auto_despawn), new_occupant_l), 5 MINUTES)
+
+/obj/machinery/sleeper/stasis/cryo/proc/auto_despawn(mob/living/mob_occupant)
+	if(QDELETED(mob_occupant) || occupant != mob_occupant)
+		return
+	despawn_occupant()
+
+/obj/machinery/sleeper/stasis/cryo/JoinPlayerHere(mob/living/joining_mob, buckle)
+	if(occupant || !ishuman(joining_mob))
+		return ..()
+	throw_alert = FALSE
+	if(state_open)
+		close_machine()
+	set_occupant(joining_mob)
+	joining_mob.forceMove(src)
+	ADD_TRAIT(joining_mob, TRAIT_NO_EYELIDS, IS_SPAWNING) // this is solely here to prevent the record picture from having closed eyes
+	ADD_TRAIT(joining_mob, TRAIT_KNOCKEDOUT, IS_SPAWNING)
+	addtimer(CALLBACK(src, PROC_REF(finish_joining_player), joining_mob), rand(8, 12) SECONDS)
+	throw_alert = TRUE
+
+/obj/machinery/sleeper/stasis/cryo/proc/finish_joining_player(mob/living/joining_mob)
+	REMOVE_TRAITS_IN(joining_mob, IS_SPAWNING)
+
+/obj/machinery/sleeper/stasis/cryo/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel = 0, custom_deconstruct = FALSE)
+	return FALSE
+
+/obj/machinery/sleeper/stasis/cryo/default_deconstruction_screwdriver(mob/living/user, icon_state, base_icon_state, obj/item/screwdriver)
+	return FALSE
+
+/obj/machinery/sleeper/stasis/cryo/default_change_direction_wrench(mob/living/user, obj/item/wrench)
+	return FALSE
+
+/obj/machinery/sleeper/stasis/cryo/open_machine(drop = TRUE, density_to_set = FALSE)
+	density_to_set = TRUE
+	return ..()
+
+/// Checks if this can generically be used as a latejoin spawnpoint
+/obj/machinery/sleeper/stasis/cryo/proc/can_latejoin(datum/job/joining)
+	if(!isnull(occupant))
+		return FALSE
+	if(istype(joining, /datum/job/prisoner))
+		if(!istype(get_area(src), /area/station/security/prison))
+			return FALSE
+	else
+		if(!istype(get_area(src), /area/station/commons))
+			return FALSE
+	return TRUE
+
+/// Checks if the passed item should avoid deletion when being despawned
+/obj/machinery/sleeper/stasis/cryo/proc/saveable_item(obj/item/save_me)
+	if(save_me.resistance_flags & INDESTRUCTIBLE)
+		return TRUE
+	if(GLOB.steal_item_handler.objectives_by_path[save_me.type])
+		return TRUE
+	return FALSE
+
+/obj/machinery/sleeper/stasis/cryo/proc/despawn_occupant()
+	if(!isliving(occupant))
+		return
+	var/drop_loc = drop_location()
+	var/mob/living/mob_occupant = occupant
+
+	set_occupant(null)
+	mob_occupant.ghostize(FALSE)
+
+	for(var/obj/item/save_me in mob_occupant.get_all_contents())
+		if(saveable_item(save_me))
+			mob_occupant.transferItemToLoc(save_me, drop_loc, force = TRUE, silent = TRUE)
+
+	qdel(mob_occupant)
+	open_machine()
+
+	var/datum/record/crew/associated_record = find_record(mob_occupant.real_name)
+	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+	if(!QDELETED(associated_record) && !QDELETED(announcer))
+		announcer.announce("DESPAWN", mob_occupant.name, associated_record.rank, list())
+		associated_record.physical_status = PHYSICAL_UNCONSCIOUS
+		associated_record.medical_notes += new /datum/medical_note("Record Database", "In long-term crew storage.")
+
+	deadchat_broadcast(
+		" has entered long-term crew storage storage.",
+		"[span_name(mob_occupant.real_name)] ([associated_record?.rank || "Unknown"])",
+		turf_target = get_turf(src),
+		message_type = DEADCHAT_ARRIVALRATTLE,
+	)
+
+#undef IS_SPAWNING
+
+/atom/movable/screen/alert/cryosleep
+	name = "Enter Crew Storage"
+	desc = "You are free to idle in stasis for as long as you need, but you may also click this button to despawn your character."
+	mouse_over_pointer = MOUSE_HAND_POINTER
+	icon_state = "cold"
+
+/atom/movable/screen/alert/cryosleep/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return .
+	var/obj/machinery/sleeper/stasis/cryo/sleeper = owner.loc
+	if(!istype(sleeper))
+		stack_trace("[type] was clicked by [usr] without being in a sleeper.")
+		return FALSE
+
+	var/are_you_sure = tgui_alert(usr, "Are you sure you want to despawn your character?", "Despawn Character", list("Yes", "No"), 5 SECONDS)
+	if(are_you_sure != "Yes" || QDELETED(src) || QDELETED(sleeper) || sleeper.occupant != usr)
+		return FALSE
+
+	sleeper.despawn_occupant()
+	return TRUE
+
+/area/station/commons/long_term_storage
+	name = "Long-Term Crew Storage"

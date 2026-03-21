@@ -11,7 +11,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_color = LIGHT_COLOR_BLUE
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 3
 	light_power = 1
 	light_on = FALSE
@@ -27,9 +27,7 @@
 
 /obj/item/storage/book/nonamebook/Initialize(mapload) //book doubles as a casino set briefcase
 	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL //unsure how to calculate storage
-	atom_storage.max_slots = 12
-	atom_storage.max_total_storage = 24
+	create_storage(max_slots = 12, max_total_storage = 24, max_specific_storage = WEIGHT_CLASS_NORMAL)
 
 /obj/item/storage/book/nonamebook/PopulateContents() //essentially a loadout thing for nono
 	if(empty)
@@ -66,7 +64,7 @@
 	else
 		icon_state = initial(icon_state)
 	set_light_on(on)
-	if(light_system == STATIC_LIGHT)
+	if(light_system == COMPLEX_LIGHT)
 		update_light()
 
 /obj/item/storage/book/nonamebook/attack_self(mob/user)
@@ -189,5 +187,24 @@
 		/obj/item/chair/atrox = 1,
 		/obj/item/chair/plastic = 1, //coping
 		/obj/item/cane/atrox = 1,
+		/obj/item/clothing/head/costume/hat/blanche = 1,
+		/obj/item/clothing/glasses/blanche = 1,
+		/obj/item/clothing/under/jumpsuit/blanche = 1,
+		/obj/item/clothing/shoes/blanche = 1,
+		/obj/item/cane/blanche = 1,
 	)
 	generate_items_inside(items_inside, src)
+
+// --- bnuuy items ---
+
+/obj/item/cane/blanche
+	name = "red umbrella"
+	desc = "A plain red umbrella to keep you dry, or alternatively, swat people away."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	icon_state = "blbrella"
+	inhand_icon_state = "blbrella"
+	lefthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_righthand.dmi'
+	force = 5
+	throwforce = 5
+	w_class = WEIGHT_CLASS_SMALL

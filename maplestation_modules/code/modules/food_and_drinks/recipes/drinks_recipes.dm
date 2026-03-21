@@ -38,3 +38,37 @@
 /datum/chemical_reaction/drink/pile_driver
 	results = list(/datum/reagent/consumable/ethanol/piledriver = 2)
 	required_reagents = list(/datum/reagent/consumable/ethanol/rum_coke = 1, /datum/reagent/consumable/ethanol/screwdrivercocktail = 1)
+
+// block of starfruit
+/datum/chemical_reaction/drink/starfruit_soda
+	results = list(/datum/reagent/consumable/ethanol/starfruit_soda = 5)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 2, /datum/reagent/consumable/ethanol/rum = 2, /datum/reagent/consumable/ethanol/cognac = 1, /datum/reagent/consumable/sodawater = 1)
+	mix_message = "The ingredients combine into fizzy soda."
+
+/datum/chemical_reaction/drink/starfruit_lubricant
+	results = list(/datum/reagent/consumable/ethanol/starfruit_lubricant = 2)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/fuel/oil = 1)
+	mix_message = "The ingredients combine into an oily soda."
+
+/datum/chemical_reaction/drink/starfruit_latte
+	results = list(/datum/reagent/consumable/starfruit_latte = 2)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/coffee = 1)
+
+/datum/chemical_reaction/drink/starbeam_shake
+	results = list(/datum/reagent/consumable/starbeam_shake = 3)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/vanilla_dream = 1, /datum/reagent/consumable/ice = 1)
+
+/datum/chemical_reaction/drink/forgotten_star
+	results = list(/datum/reagent/consumable/ethanol/forgotten_star = 5)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/pineapplejuice = 1, /datum/reagent/consumable/ethanol/white_russian = 1, /datum/reagent/consumable/ethanol/creme_de_coconut = 1, /datum/reagent/consumable/ethanol/bitters = 1)
+	mix_message = "The ingredients combine into a shooting star."
+
+/datum/chemical_reaction/drink/astral_flame
+	results = list(/datum/reagent/consumable/ethanol/astral_flame = 6)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/ethanol/navy_rum = 1, /datum/reagent/consumable/menthol = 1, /datum/reagent/consumable/limejuice = 1, /datum/reagent/consumable/sodawater = 1)
+	mix_message = "The ingredients morph with an enticing smell."
+
+/datum/chemical_reaction/drink/space_muse
+	results = list(/datum/reagent/consumable/ethanol/space_muse = 3)
+	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/ethanol/creme_de_menthe = 1, /datum/reagent/consumable/ethanol/vodka = 1)
+	mix_message = "The mixture gives a soft crackling snap."

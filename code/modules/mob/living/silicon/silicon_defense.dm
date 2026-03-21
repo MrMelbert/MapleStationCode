@@ -1,6 +1,8 @@
 
-/mob/living/silicon/grippedby(mob/living/user, instant = FALSE)
-	return //can't upgrade a simple pull into a more aggressive grab.
+/mob/living/silicon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
+	if(user.pulling == src) // cannot upgrade grabs on robots
+		return
+	return ..()
 
 /mob/living/silicon/get_ear_protection()//no ears
 	return 2
@@ -115,9 +117,9 @@
 		return
 	switch(severity)
 		if(1)
-			src.take_bodypart_damage(20)
+			src.apply_damage(20, BRUTE)
 		if(2)
-			src.take_bodypart_damage(10)
+			src.apply_damage(10, BRUTE)
 	to_chat(src, span_userdanger("*BZZZT*"))
 	for(var/mob/living/M in buckled_mobs)
 		if(prob(severity*50))

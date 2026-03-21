@@ -43,17 +43,6 @@
 
 	qdel(src)
 
-/proc/generate_chromosome()
-	var/static/list/chromosomes
-	if(!chromosomes)
-		chromosomes = list()
-		for(var/A in subtypesof(/obj/item/chromosome))
-			var/obj/item/chromosome/CM = A
-			if(!initial(CM.weight))
-				break
-			chromosomes[A] = initial(CM.weight)
-	return pick_weight(chromosomes)
-
 
 /obj/item/chromosome/stabilizer
 	name = "stabilizer chromosome"

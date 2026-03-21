@@ -123,6 +123,8 @@
 		var/mob/living/hitmob = pick(occupants)
 		return hitmob.bullet_act(hitting_projectile, def_zone, piercing_hit) //If the sides are open, the occupant can be hit
 
+	var/old_internals = internal_damage
+
 	. = ..()
 
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
@@ -135,6 +137,9 @@
 		armour_penetration = hitting_projectile.armour_penetration,
 	), def_zone)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(REVERSE_DIR(hitting_projectile.dir), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
@@ -171,7 +176,7 @@
 	if (. & EMP_PROTECT_SELF)
 		return
 	if(get_charge())
-		use_power((cell.charge/3)/(severity*2))
+		use_energy((cell.charge/3)/(severity*2))
 		take_damage(30 / severity, BURN, ENERGY, 1)
 	log_message("EMP detected", LOG_MECHA, color="red")
 
@@ -225,6 +230,10 @@
 		ammo_resupply(weapon, user)
 		return
 
+	if(istype(weapon, /obj/item/rcd_upgrade))
+		upgrade_rcd(weapon, user)
+		return
+
 	if(weapon.GetID())
 		if(!allowed(user))
 			if(mecha_flags & ID_LOCK_ON)
@@ -257,7 +266,7 @@
 		balloon_alert(user, "open the panel first!")
 		return
 
-	if(istype(weapon, /obj/item/stock_parts/cell))
+	if(istype(weapon, /obj/item/stock_parts/power_store/cell))
 		if(!cell)
 			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
@@ -313,7 +322,9 @@
 	if(!attacking_item.force)
 		return
 
-	var/damage_taken = take_damage(attacking_item.force * attacking_item.demolition_mod, attacking_item.damtype, MELEE, 1)
+	var/old_internals = internal_damage
+
+	var/damage_taken = take_damage(attacking_item.force * attacking_item.get_demolition_modifier(src), attacking_item.damtype, MELEE, 1, get_dir(src, user))
 	try_damage_component(damage_taken, user.zone_selected)
 
 	var/hit_verb = length(attacking_item.attack_verb_simple) ? "[pick(attacking_item.attack_verb_simple)]" : "hit"
@@ -327,11 +338,23 @@
 	log_combat(user, src, "attacked", attacking_item)
 	log_message("Attacked by [user]. Item - [attacking_item], Damage - [damage_taken]", LOG_MECHA)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
+
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
+	var/old_internals = internal_damage
+
 	. = ..()
-	if(.)
-		try_damage_component(., user.zone_selected)
-		diag_hud_set_mechhealth()
+	if(!.)
+		return
+
+	try_damage_component(., user.zone_selected)
+	diag_hud_set_mechhealth()
+
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/examine(mob/user)
 	. = ..()
@@ -448,6 +471,8 @@
 		clear_internal_damage(MECHA_CABIN_AIR_BREACH)
 	if(internal_damage & MECHA_INT_CONTROL_LOST)
 		clear_internal_damage(MECHA_INT_CONTROL_LOST)
+	if(internal_damage & MECHA_INT_FUEL_LINE)
+		clear_internal_damage(MECHA_INT_FUEL_LINE)
 	diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/narsie_act()
@@ -522,3 +547,9 @@
 		else
 			balloon_alert(user, "can't use this ammo!")
 	return FALSE
+
+///Upgrades any attached RCD equipment.
+/obj/vehicle/sealed/mecha/proc/upgrade_rcd(obj/item/rcd_upgrade/rcd_upgrade, mob/user)
+	for(var/obj/item/mecha_parts/mecha_equipment/rcd/rcd_equip in flat_equipment)
+		if(rcd_equip.internal_rcd.install_upgrade(rcd_upgrade, user))
+			return

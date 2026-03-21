@@ -8,14 +8,23 @@
 	icon_state = "ai_camera"
 	icon = 'icons/mob/silicon/cameramob.dmi'
 	invisibility = INVISIBILITY_MAXIMUM
+	see_invisible = SEE_INVISIBLE_LEVEL_TWO
 	hud_possible = list(ANTAG_HUD, AI_DETECT_HUD = HUD_LIST_LIST)
 	var/list/visibleCameraChunks = list()
+	/// List of cameras within range of the AI eye. Used to toggle lights on and off as the eye moves.
+	var/list/obj/machinery/camera/cameras_near_eye = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE
 	var/use_static = TRUE
 	var/static_visibility_range = 16
 	var/ai_detector_visible = TRUE
 	var/ai_detector_color = COLOR_RED
+	/// If TRUE cameras near the eye will light up to show they're in use.
+	var/telegraph_cameras = TRUE
+	/// Range that which cameras can be telegraphed.
+	var/telegraph_range = 5
+	/// Z level we are on, only set on changing multi-z
+	var/current_z
 	interaction_range = INFINITY
 
 /mob/camera/ai_eye/Initialize(mapload)
@@ -28,7 +37,30 @@
 	. = ..()
 	if(same_z_layer)
 		return
+
+	// if our ai has a client, we add the ai's *eye* to the clients_by_zlevel list in addition to the ai mob itself
+	// this is, currently, solely so sounds can be heard by the ai eye when on a different z-level to the ai itself
+	// also we don't need to worry about adding the eye to the list as soon as the ai takes control of it
+	// because the ai eye is always initialized on the same z-level as the ai (ie: it don't matter till it goes up or down)
+	if(current_z)
+		SSmobs.clients_by_zlevel[current_z] -= src
+	current_z = new_turf?.z
+	if(ai?.client && current_z)
+		SSmobs.clients_by_zlevel[current_z] += src
+
 	update_ai_detect_hud()
+	ai?.refresh_eyeobj_appearance()
+
+/mob/camera/ai_eye/Destroy()
+	if(current_z) // maybe redundant, but let's play it safe
+		SSmobs.clients_by_zlevel[current_z] -= src
+	return ..()
+
+///Called when the AI shiftclicks on something to examinate it.
+/mob/camera/ai_eye/proc/examinate_check(mob/user, atom/source)
+	SIGNAL_HANDLER
+	if(user.client.eye == src)
+		return COMPONENT_ALLOW_EXAMINATE
 
 /mob/camera/ai_eye/examine(mob/user) //Displays a silicon's laws to ghosts
 	. = ..()
@@ -116,8 +148,7 @@
 		if(!H.move_hologram(ai, destination))
 			H.clear_holo(ai)
 
-	if(ai.camera_light_on)
-		ai.light_cameras()
+	update_cameras()
 	if(ai.master_multicam)
 		ai.master_multicam.refresh_view()
 
@@ -125,6 +156,36 @@
 	. = ..()
 	if(.)
 		setLoc(loc, force_update = TRUE)
+
+/// Updates the list of cameras near the AI eye object, also updating lights if those are on
+/mob/camera/ai_eye/proc/update_cameras()
+	var/list/obj/machinery/camera/add = list()
+	var/list/obj/machinery/camera/remove = list()
+	var/list/obj/machinery/camera/visible = list()
+	for (var/datum/camerachunk/chunk as anything in visibleCameraChunks)
+		for (var/z_key in chunk.cameras)
+			for(var/obj/machinery/camera/camera in chunk.cameras[z_key]) // might have nulls in this apparently?
+				if(!camera.can_use() || get_dist(camera, src) > telegraph_range)
+					continue
+				visible |= camera
+
+	add = visible - cameras_near_eye
+	remove = cameras_near_eye - visible
+
+	for (var/obj/machinery/camera/cam as anything in remove)
+		cameras_near_eye -= cam //Removed from list before turning off the light so that it doesn't check the AI looking away.
+		if(ai?.camera_light_on)
+			cam.toggle_ai_light(ai, FALSE)
+		if(telegraph_cameras)
+			cam.in_use_lights--
+			cam.update_appearance()
+	for (var/obj/machinery/camera/cam as anything in add)
+		cameras_near_eye += cam
+		if(ai?.camera_light_on)
+			cam.toggle_ai_light(ai, TRUE)
+		if(telegraph_cameras)
+			cam.in_use_lights++
+			cam.update_appearance()
 
 /mob/camera/ai_eye/Move()
 	return
@@ -134,13 +195,32 @@
 		return ai.client
 	return null
 
+/mob/camera/ai_eye/proc/set_telegraph(state)
+	if(telegraph_cameras == state)
+		return
+
+	telegraph_cameras = state
+	if(telegraph_cameras)
+		for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+			cam.in_use_lights++
+			cam.update_appearance()
+	else
+		for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+			cam.in_use_lights--
+			cam.update_appearance()
+
 /mob/camera/ai_eye/Destroy()
-	if(ai)
-		ai.all_eyes -= src
-		ai = null
-	for(var/V in visibleCameraChunks)
-		var/datum/camerachunk/c = V
-		c.remove(src)
+	for(var/obj/machinery/camera/cam as anything in cameras_near_eye)
+		if(ai?.camera_light_on && cam.internal_light)
+			cam.toggle_ai_light(ai, FALSE)
+		if(telegraph_cameras)
+			cam.in_use_lights--
+			cam.update_appearance()
+		cameras_near_eye -= cam
+	ai?.all_eyes -= src
+	ai = null
+	for(var/datum/camerachunk/chunk as anything in visibleCameraChunks)
+		chunk.remove(src)
 	GLOB.aiEyes -= src
 	if(ai_detector_visible)
 		var/datum/atom_hud/ai_detector/hud = GLOB.huds[DATA_HUD_AI_DETECT]
@@ -210,8 +290,21 @@
 	all_eyes += eyeobj
 	eyeobj.ai = src
 	eyeobj.setLoc(loc)
+	eyeobj.RegisterSignal(src, COMSIG_CLICK_SHIFT, TYPE_PROC_REF(/mob/camera/ai_eye, examinate_check))
 	eyeobj.name = "[name] (AI Eye)"
 	eyeobj.real_name = eyeobj.name
+
+	// humans can't see the eye
+	var/image/invis_to_humans = image(null, eyeobj)
+	invis_to_humans.override = TRUE
+	eyeobj.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/one_person/reversed, "invis_to_humans", invis_to_humans, src)
+
+	var/image/ghost_hud = image('icons/mob/silicon/cameramob.dmi', eyeobj, "ai_camera")
+	ghost_hud.override = TRUE
+	eyeobj.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/observers, "show_to_ghosts", ghost_hud, NONE)
+
+	refresh_eyeobj_appearance()
+
 	set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)
@@ -219,9 +312,21 @@
 		return
 	eyeobj.mouse_opacity = state ? MOUSE_OPACITY_ICON : initial(eyeobj.mouse_opacity)
 	if(state)
-		eyeobj.SetInvisibility(INVISIBILITY_OBSERVER, id=type)
+		eyeobj.SetInvisibility(INVISIBILITY_LEVEL_TWO, "ai_eye_invisible")
 	else
-		eyeobj.RemoveInvisibility(type)
+		eyeobj.SetInvisibility(INVISIBILITY_MAXIMUM, "ai_eye_invisible")
+
+/mob/living/silicon/ai/proc/refresh_eyeobj_appearance()
+	eyeobj.remove_alt_appearance("show_to_ai")
+
+	var/image/ai_icon = image(hologram_appearance, eyeobj)
+	ai_icon.override = TRUE
+	ai_icon.alpha = 125
+	SET_PLANE(ai_icon, HIGH_GAME_PLANE, eyeobj)
+
+	var/datum/atom_hud/alternate_appearance/eye_app = eyeobj.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/one_person, "show_to_ai", ai_icon, src)
+	eye_app.skip_z_level_check = TRUE
+	eye_app.show_to(src)
 
 /mob/living/silicon/ai/verb/toggle_acceleration()
 	set category = "AI Commands"
@@ -232,10 +337,10 @@
 	acceleration = !acceleration
 	to_chat(usr, "Camera acceleration has been toggled [acceleration ? "on" : "off"].")
 
-/mob/camera/ai_eye/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
+/mob/camera/ai_eye/Hear(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && GLOB.cameranet.checkCameraVis(speaker))
-		ai.relay_speech(message, speaker, message_language, raw_message, radio_freq, spans, message_mods)
+		ai.relay_speech(speaker, message_language, raw_message, radio_freq, spans, message_mods)
 
 /obj/effect/overlay/ai_detect_hud
 	name = ""

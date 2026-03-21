@@ -28,7 +28,7 @@
 	. = ..()
 	if(isnull(internal_storage) || (internal_storage.item_flags & ABSTRACT))
 		return
-	. += span_info("It is holding [internal_storage.get_examine_string(user)] in its internal storage.")
+	. += span_info("It is holding [internal_storage.examine_title(user)] in its internal storage.")
 
 /mob/living/basic/guardian/dextrous/recall_effects()
 	. = ..()
@@ -81,13 +81,10 @@
 	internal_storage = equipping
 	update_inv_internal_storage()
 
-	equipping.on_equipped(src, slot)
+	has_equipped(equipping, slot)
 	return TRUE
 
 /mob/living/basic/guardian/dextrous/getBackSlot()
-	return ITEM_SLOT_DEX_STORAGE
-
-/mob/living/basic/guardian/dextrous/getBeltSlot()
 	return ITEM_SLOT_DEX_STORAGE
 
 /mob/living/basic/guardian/dextrous/proc/update_inv_internal_storage()

@@ -25,7 +25,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	icon = 'icons/obj/exploration.dmi'
 	icon_state = "drone"
 	w_class = WEIGHT_CLASS_BULKY
-
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// Current drone status, see code\__DEFINES\adventure.dm
 	var/drone_status = EXODRONE_IDLE
 	/// Are we currently controlled by remote terminal, blocks other terminals from interacting with this drone.
@@ -70,9 +71,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	else
 		name_counter[name] = 1
 	GLOB.exodrones += src
-	/// Cargo storage
-	create_storage(max_slots = EXODRONE_CARGO_SLOTS)
-	atom_storage.set_holdable(cant_hold_list = GLOB.blacklisted_cargo_types)
+	// Cargo storage
+	create_storage(max_slots = EXODRONE_CARGO_SLOTS, canthold = GLOB.blacklisted_cargo_types)
 
 /obj/item/exodrone/Destroy()
 	. = ..()
@@ -454,6 +454,9 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	desc = "A compressed fuel pellet for long-distance drone flight."
 	icon = 'icons/obj/exploration.dmi'
 	icon_state = "fuel_basic"
+	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gascan.ogg'
+
 	/// The type of fuel this pellet has within.
 	var/fuel_type = FUEL_BASIC
 	/// The amount of uses left in this fuel pellet.

@@ -35,6 +35,8 @@
 	VAR_FINAL/list/paths_on_last_ui_update
 	/// Caches the last icon we generated, see above
 	VAR_FINAL/cached_icon
+	/// If TRUE update the body before next icon generation
+	VAR_FINAL/update_needed = FALSE
 
 /datum/preference_middleware/limbs/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
@@ -44,6 +46,27 @@
 	paths_on_last_ui_update = null
 	cached_icon = null
 	character_preview_view?.update_body()
+
+/datum/preference_middleware/limbs/post_set_preference(mob/user, preference, value)
+	if(isnull(cached_icon))
+		return
+	var/datum/preference/edited = GLOB.preference_entries_by_key[preference]
+	if(edited.category == PREFERENCE_CATEGORY_NON_CONTEXTUAL || edited.category == PREFERENCE_CATEGORY_GAME_PREFERENCES)
+		return
+
+	var/tainted = FALSE
+	var/list/selected = preferences.read_preference(/datum/preference/limbs)
+	for(var/limb_zone in selected)
+		var/obj/item/limb_path = selected[limb_zone]
+		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_path]
+		if(!limb_datum.can_be_selected(preferences))
+			LAZYREMOVE(selected, limb_datum.pref_list_slot)
+			tainted = TRUE
+
+	if(tainted)
+		preferences.update_preference(GLOB.preference_entries[/datum/preference/limbs], selected)
+	cached_icon = null
+	update_needed = TRUE
 
 /// Initialize our character dummy.
 /datum/preference_middleware/limbs/proc/create_character_preview_view(mob/user)
@@ -56,6 +79,8 @@
 	var/datum/limb_option_datum/selecting_datum = GLOB.limb_loadout_options[path_selecting]
 	if(isnull(selecting_datum))
 		return TRUE
+	if(!selecting_datum.can_be_selected(preferences))
+		return FALSE
 
 	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
 	LAZYSET(selected_paths, selecting_datum.pref_list_slot, path_selecting)
@@ -82,16 +107,30 @@
 
 /datum/preference_middleware/limbs/get_ui_data(mob/user)
 	var/list/data = list()
-	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
-	data["selected_limbs"] = flatten_list(selected_paths)
+	var/list/selected_paths = flatten_list(preferences.read_preference(/datum/preference/limbs))
+	data["selected_limbs"] = selected_paths
 
 	if(isnull(character_preview_view))
 		character_preview_view = create_character_preview_view(user)
 	if(isnull(cached_icon) || length(selected_paths ^ paths_on_last_ui_update) >= 1)
 		paths_on_last_ui_update = LAZYLISTDUPLICATE(selected_paths)
+		if(update_needed)
+			character_preview_view.update_body()
+			update_needed = FALSE
 		cached_icon = icon2base64(getFlatIcon(character_preview_view.body, no_anim = TRUE))
 
+	data["unavailable_paths"] = list()
+	for(var/limb_type in GLOB.limb_loadout_options)
+		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_type]
+		if(!limb_datum.can_be_selected(preferences))
+			data["unavailable_paths"] += limb_datum.type
+
 	data["preview_flat_icon"] = cached_icon
+	return data
+
+/datum/preference_middleware/limbs/get_ui_static_data(mob/user)
+	var/list/data = list()
+
 	return data
 
 /datum/preference_middleware/limbs/get_constant_data()
@@ -115,8 +154,12 @@
 
 		var/list/limb_data = list(
 			"name" = limb_datum.name,
-			"tooltip" = limb_datum.desc,
+			"tooltip" = limb_datum.tooltip,
 			"path" = limb_type,
+			"datum_type" = limb_datum.type,
+			"ui_icon" = limb_datum.ui_icon,
+			"ui_icon_state" = limb_datum.ui_icon_state,
+			"is_bodypart" = ispath(limb_type, /obj/item/bodypart),
 		)
 
 		UNTYPED_LIST_ADD(raw_limb_data[limb_zone], limb_data)

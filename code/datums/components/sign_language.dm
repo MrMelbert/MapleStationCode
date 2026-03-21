@@ -67,7 +67,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
-	var/obj/item/organ/internal/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		tongue.temp_say_mod = "signs"
 	//this speech relies on hands, which we have our own way of garbling speech when they're occupied, so we can have this always on
@@ -79,7 +79,7 @@
 	carbon_parent.verb_yell = "emphatically signs"
 	carbon_parent.bubble_icon = "signlang"
 	RegisterSignal(carbon_parent, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_added_organ))
-	RegisterSignal(carbon_parent, COMSIG_LIVING_TRY_SPEECH, PROC_REF(on_try_speech))
+	RegisterSignal(carbon_parent, COMSIG_MOB_TRY_SPEECH, PROC_REF(on_try_speech))
 	RegisterSignal(carbon_parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(on_treat_living_message))
 	RegisterSignal(carbon_parent, COMSIG_MOVABLE_USING_RADIO, PROC_REF(on_using_radio))
 	RegisterSignal(carbon_parent, COMSIG_MOVABLE_SAY_QUOTE, PROC_REF(on_say_quote))
@@ -94,7 +94,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
-	var/obj/item/organ/internal/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		tongue.temp_say_mod = ""
 	REMOVE_TRAIT(carbon_parent, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_HANDS)
@@ -106,7 +106,7 @@
 	carbon_parent.bubble_icon = initial(carbon_parent.bubble_icon)
 	UnregisterSignal(carbon_parent, list(
 		COMSIG_CARBON_GAIN_ORGAN,
-		COMSIG_LIVING_TRY_SPEECH,
+		COMSIG_MOB_TRY_SPEECH,
 		COMSIG_LIVING_TREAT_MESSAGE,
 		COMSIG_MOVABLE_USING_RADIO,
 		COMSIG_MOVABLE_SAY_QUOTE,
@@ -120,12 +120,12 @@
 /datum/component/sign_language/proc/on_added_organ(mob/living/source, obj/item/organ/new_organ)
 	SIGNAL_HANDLER
 
-	if(!istype(new_organ, /obj/item/organ/internal/tongue))
+	if(!istype(new_organ, /obj/item/organ/tongue))
 		return
-	var/obj/item/organ/internal/tongue/new_tongue = new_organ
+	var/obj/item/organ/tongue/new_tongue = new_organ
 	new_tongue.temp_say_mod = "signs"
 
-/// Signal proc for [COMSIG_LIVING_TRY_SPEECH]
+/// Signal proc for [COMSIG_MOB_TRY_SPEECH]
 /// Sign languagers can always speak regardless of they're mute (as long as they're not mimes)
 /datum/component/sign_language/proc/on_try_speech(mob/living/source, message, ignore_spam, forced)
 	SIGNAL_HANDLER
@@ -158,7 +158,7 @@
 
 	// Assuming none of the above fail, sign language users can speak
 	// regardless of being muzzled or mute toxin'd or whatever.
-	return COMPONENT_CAN_ALWAYS_SPEAK
+	return COMPONENT_IGNORE_CAN_SPEAK
 
 /// Checks to see what state this person is in and if they are able to sign or not.
 /datum/component/sign_language/proc/check_signables_state()

@@ -20,6 +20,9 @@
 #define MAGIC_ELEMENT_ICE /datum/attunement/ice
 #define MAGIC_ELEMENT_LIGHT /datum/attunement/light
 #define MAGIC_ELEMENT_WIND /datum/attunement/wind
+#define MAGIC_ELEMENT_LIFE /datum/attunement/life
+#define MAGIC_ELEMENT_EARTH /datum/attunement/earth
+#define MAGIC_ELEMENT_ELECTRIC /datum/attunement/electric
 // When other elements are used, add them here
 
 // Alignments

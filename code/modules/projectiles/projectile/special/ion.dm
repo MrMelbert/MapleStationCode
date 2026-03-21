@@ -5,6 +5,7 @@
 	damage_type = BURN
 	armor_flag = ENERGY
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/ion
+	muzzle_flash_color_override = LIGHT_COLOR_DARK_BLUE
 	var/emp_radius = 1
 
 /obj/projectile/ion/on_hit(atom/target, blocked = 0, pierce_hit)

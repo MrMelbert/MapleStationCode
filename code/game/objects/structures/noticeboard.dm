@@ -35,7 +35,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 			to_chat(user, span_warning("You are not authorized to add notices!"))
 			return
 		if(notices < MAX_NOTICES)
-			if(!user.transferItemToLoc(O, src))
+			if(!user.transferItemToLoc(O, src, silent = FALSE))
 				return
 			notices++
 			update_appearance(UPDATE_ICON)
@@ -103,22 +103,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
  * * user - The mob that is trying to get the item removed, if there is one
  */
 /obj/structure/noticeboard/proc/remove_item(obj/item/item, mob/user)
-	item.forceMove(drop_location())
+	try_put_in_hand(item, user)
 	if(user)
-		user.put_in_hands(item)
 		balloon_alert(user, "removed from board")
 	notices--
 	update_appearance(UPDATE_ICON)
 
-/obj/structure/noticeboard/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		if(!disassembled)
-			new /obj/item/stack/sheet/mineral/wood(loc)
-		else
-			new /obj/item/wallframe/noticeboard(loc)
+/obj/structure/noticeboard/atom_deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		new /obj/item/stack/sheet/mineral/wood(loc)
+	else
+		new /obj/item/wallframe/noticeboard(loc)
 	for(var/obj/item/content in contents)
 		remove_item(content)
-	qdel(src)
 
 /obj/item/wallframe/noticeboard
 	name = "notice board"

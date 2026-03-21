@@ -18,13 +18,11 @@
 	. = ..()
 	beams = list()
 	START_PROCESSING(SSobj, src)
-	AddComponent(/datum/component/simple_rotation, AfterRotation = CALLBACK(src, PROC_REF(AfterRotation)))
+	AddComponent(/datum/component/simple_rotation, post_rotation = CALLBACK(src, PROC_REF(post_rotation)))
 
-/obj/item/assembly/infra/proc/AfterRotation(mob/user, degrees)
+/obj/item/assembly/infra/proc/post_rotation(mob/user, degrees)
 	refreshBeam()
 
-/obj/item/assembly/infra/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/item/assembly/infra/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -181,7 +179,7 @@
 	. = ..()
 	refreshBeam()
 
-/obj/item/assembly/infra/ui_status(mob/user)
+/obj/item/assembly/infra/ui_status(mob/user, datum/ui_state/state)
 	if(is_secured(user))
 		return ..()
 	return UI_CLOSE

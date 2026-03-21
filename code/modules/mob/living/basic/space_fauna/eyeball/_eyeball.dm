@@ -31,8 +31,8 @@
 	speak_emote = list("telepathically cries")
 
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = T0C
-	maximum_survivable_temperature = T0C + 1500
+	bodytemp_cold_damage_limit = T0C
+	bodytemp_heat_damage_limit = T0C + 1500
 	sight = SEE_SELF|SEE_MOBS|SEE_OBJS|SEE_TURFS
 
 	lighting_cutoff_red = 40
@@ -60,7 +60,6 @@
 	AddElement(/datum/element/simple_flying)
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/grown/carrot), tame_chance = 100, after_tame = CALLBACK(src, PROC_REF(on_tame)))
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	on_hit_overlay = mutable_appearance(icon, "[icon_state]_crying")
 
 /mob/living/basic/eyeball/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
@@ -94,23 +93,20 @@
 	cut_overlay(on_hit_overlay)
 
 
-/mob/living/basic/eyeball/proc/pre_attack(mob/living/eyeball, atom/target)
-	SIGNAL_HANDLER
-
+/mob/living/basic/eyeball/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	. = ..()
+	if(!.)
+		return FALSE
 	if(!ishuman(target))
-		return
-
+		return TRUE
 	var/mob/living/carbon/human_target = target
-	var/obj/item/organ/internal/eyes/eyes = human_target.get_organ_slot(ORGAN_SLOT_EYES)
-	if(!eyes)
-		return
-	if(eyes.damage < 10)
-		return
+	var/obj/item/organ/eyes/eyes = human_target.get_organ_slot(ORGAN_SLOT_EYES)
+	if(isnull(eyes) || eyes.damage < 10)
+		return TRUE
 	heal_eye_damage(human_target, eyes)
-	return COMPONENT_HOSTILE_NO_ATTACK
+	return FALSE
 
-
-/mob/living/basic/eyeball/proc/heal_eye_damage(mob/living/target, obj/item/organ/internal/eyes/eyes)
+/mob/living/basic/eyeball/proc/heal_eye_damage(mob/living/target, obj/item/organ/eyes/eyes)
 	if(!COOLDOWN_FINISHED(src, eye_healing))
 		return
 	to_chat(target, span_warning("[src] seems to be healing your [eyes.zone]!"))

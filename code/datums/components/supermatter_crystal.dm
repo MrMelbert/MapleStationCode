@@ -130,7 +130,7 @@
 			)
 			return
 
-		var/obj/item/organ/internal/tongue/licking_tongue = user.get_organ_slot(ORGAN_SLOT_TONGUE)
+		var/obj/item/organ/tongue/licking_tongue = user.get_organ_slot(ORGAN_SLOT_TONGUE)
 		if(licking_tongue)
 			dust_mob(source, user,
 				span_danger("As [user] hesitantly leans in and licks [atom_source] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash!"),
@@ -161,8 +161,8 @@
 		return
 	if(is_type_in_typecache(item, sm_item_whitelist))
 		return FALSE
-	if(istype(item, /obj/item/clothing/mask/cigarette))
-		var/obj/item/clothing/mask/cigarette/cig = item
+	if(istype(item, /obj/item/cigarette))
+		var/obj/item/cigarette/cig = item
 		var/clumsy = HAS_TRAIT(user, TRAIT_CLUMSY)
 		if(clumsy)
 			var/which_hand = BODY_ZONE_L_ARM
@@ -180,14 +180,14 @@
 			user.visible_message(span_danger("A hideous sound echoes as [item] is ashed out on contact with \the [atom_source]. That didn't seem like a good idea..."))
 			playsound(atom_source, 'sound/effects/supermatter.ogg', 150, TRUE)
 			consume(atom_source, item)
-			radiation_pulse(atom_source, max_range = 3, threshold = 0.1, chance = 50)
+			radiation_pulse(atom_source, max_range = 3, threshold = 0.1, chance = 50, can_propogate = TRUE)
 			return
 		else
 			cig.light()
 			user.visible_message(span_danger("As [user] lights \their [item] on \the [atom_source], silence fills the room..."),\
 				span_danger("Time seems to slow to a crawl as you touch \the [atom_source] with \the [item].</span>\n<span class='notice'>\The [item] flashes alight with an eerie energy as you nonchalantly lift your hand away from \the [atom_source]. Damn."))
 			playsound(atom_source, 'sound/effects/supermatter.ogg', 50, TRUE)
-			radiation_pulse(atom_source, max_range = 1, threshold = 0, chance = 100)
+			radiation_pulse(atom_source, max_range = 1, threshold = 0, chance = 100, can_propogate = TRUE)
 			return
 
 	if(user.dropItemToGround(item))
@@ -198,7 +198,7 @@
 		consume(atom_source, item)
 		playsound(get_turf(atom_source), 'sound/effects/supermatter.ogg', 50, TRUE)
 
-		radiation_pulse(atom_source, max_range = 3, threshold = 0.1, chance = 50)
+		radiation_pulse(atom_source, max_range = 3, threshold = 0.1, chance = 50, can_propogate = TRUE)
 		return
 
 	if(atom_source.Adjacent(user)) //if the item is stuck to the person, kill the person too instead of eating just the item.
@@ -288,15 +288,23 @@
 	consume(atom_source, nom)
 
 /datum/component/supermatter_crystal/proc/consume(atom/source, atom/movable/consumed_object)
+	if(consumed_object.flags_1 & SUPERMATTER_IGNORES_1)
+		return
+	if(isliving(consumed_object))
+		var/mob/living/consumed_mob = consumed_object
+		if(consumed_mob.status_flags & GODMODE)
+			return
+
 	var/atom/atom_source = source
+	SEND_SIGNAL(consumed_object, COMSIG_SUPERMATTER_CONSUMED, atom_source)
+
 	var/object_size = 0
 	var/matter_increase = 0
 	var/damage_increase = 0
+
 	if(isliving(consumed_object))
 		var/mob/living/consumed_mob = consumed_object
 		object_size = consumed_mob.mob_size + 2
-		if(consumed_mob.status_flags & GODMODE)
-			return
 		message_admins("[atom_source] has consumed [key_name_admin(consumed_mob)] [ADMIN_JMP(atom_source)].")
 		atom_source.investigate_log("has consumed [key_name(consumed_mob)].", INVESTIGATE_ENGINE)
 		consumed_mob.investigate_log("has been dusted by [atom_source].", INVESTIGATE_DEATHS)
@@ -312,8 +320,6 @@
 		if(is_clown_job(consumed_mob.mind?.assigned_role))
 			damage_increase += rand(-30, 30) // HONK
 		consume_returns(matter_increase, damage_increase)
-	else if(consumed_object.flags_1 & SUPERMATTER_IGNORES_1)
-		return
 	else if(isobj(consumed_object))
 		if(!iseffect(consumed_object))
 			var/suspicion = ""
@@ -331,7 +337,7 @@
 			matter_increase += min(0.5 * consumed_object.max_integrity, 1000)
 
 	//Some poor sod got eaten, go ahead and irradiate people nearby.
-	radiation_pulse(atom_source, max_range = 6, threshold = 1.2 / max(object_size, 1), chance = 10 * object_size)
+	radiation_pulse(atom_source, max_range = 6, threshold = 1.2 / max(object_size, 1), chance = 10 * object_size, can_propogate = TRUE)
 	for(var/mob/living/near_mob in range(10))
 		atom_source.investigate_log("has irradiated [key_name(near_mob)] after consuming [consumed_object].", INVESTIGATE_ENGINE)
 		if (HAS_TRAIT(near_mob, TRAIT_RADIMMUNE) || issilicon(near_mob))

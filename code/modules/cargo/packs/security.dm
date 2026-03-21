@@ -25,6 +25,14 @@
 	contains = list(/obj/item/clothing/suit/armor/vest = 3)
 	crate_name = "armor crate"
 
+/datum/supply_pack/security/modsuit_plating
+	name = "Security MOD plating"
+	desc = "A single security MOD suit plating"
+	cost = CARGO_CRATE_VALUE
+	access_view = ACCESS_SECURITY
+	contains = list(/obj/item/mod/construction/plating/security)
+	crate_name = "MOD plating crate"
+
 /datum/supply_pack/security/disabler
 	name = "Disabler Crate"
 	desc = "Three stamina-draining disabler weapons."
@@ -33,10 +41,18 @@
 	contains = list(/obj/item/gun/energy/disabler = 3)
 	crate_name = "disabler crate"
 
+/datum/supply_pack/security/phaser
+	name = "Phaser Crate"
+	desc = "Two standard-issue energy phasers, designed for field use by security personnel."
+	cost = CARGO_CRATE_VALUE * 9
+	access_view = ACCESS_ARMORY
+	contains = list(/obj/item/gun/energy/disabler/phaser = 2)
+	crate_name = "phaser crate"
+
 /datum/supply_pack/security/forensics
 	name = "Forensics Crate"
 	desc = "Stay hot on the criminal's heels with Nanotrasen's Detective Essentials™. \
-		Contains a forensics scanner, six evidence bags, camera, tape recorder, white crayon, \
+		Contains a forensics scanner, six evidence bags, camera, special board for evidences, tape recorder, stick of chalk, \
 		and of course, a fedora."
 	cost = CARGO_CRATE_VALUE * 2.5
 	access_view = ACCESS_MORGUE
@@ -46,6 +62,7 @@
 					/obj/item/taperecorder,
 					/obj/item/toy/crayon/white,
 					/obj/item/clothing/head/fedora/det_hat,
+					/obj/item/wallframe/detectiveboard
 				)
 	crate_name = "forensics crate"
 
@@ -227,12 +244,21 @@
 	crate_name = "energy gun crate"
 	crate_type = /obj/structure/closet/crate/secure/plasma
 
+/datum/supply_pack/security/armory/laser
+	name = "Type 5 Laser Gun Crate"
+	desc = "Contains three Type 5 laser guns, developed by Nanotrasen. For when the going gets tough, you get going with the \
+		Type 5 Heat Delivery System. As developed by Nanotrasen."
+	cost = CARGO_CRATE_VALUE * 4
+	contains = list(/obj/item/gun/energy/laser = 3)
+	crate_name = "\improper Type 5 laser crate"
+	crate_type = /obj/structure/closet/crate/secure/plasma
+
 /datum/supply_pack/security/armory/laser_carbine
-	name = "Laser Carbine Crate"
-	desc = "Contains three laser carbines, capable of rapidly firing weak lasers."
+	name = "Type 5R Laser Carbine Crate"
+	desc = "Contains three Type 5R laser carbines, developed by Nanotrasen. Fires a rapid burst of slightly weaker laser projectiles."
 	cost = CARGO_CRATE_VALUE * 9
 	contains = list(/obj/item/gun/energy/laser/carbine = 3)
-	crate_name = "laser carbine crate"
+	crate_name = "\improper Type 5R laser carbine crate"
 	crate_type = /obj/structure/closet/crate/secure/plasma
 
 /datum/supply_pack/security/armory/disabler_smg
@@ -330,8 +356,8 @@
 /datum/supply_pack/security/armory/thermal
 	name = "Thermal Pistol Crate"
 	desc = "Contains a pair of holsters each with two experimental thermal pistols, \
-		using nanites as the basis for their ammo."
-	cost = CARGO_CRATE_VALUE * 7
+		using nanites as the basis for their ammo. Can be shaken to reload."
+	cost = CARGO_CRATE_VALUE * 10
 	contains = list(/obj/item/storage/belt/holster/energy/thermal = 2)
 	crate_name = "thermal pistol crate"
 

@@ -1,5 +1,12 @@
+import {
+  Box,
+  Button,
+  LabeledList,
+  ProgressBar,
+  Section,
+} from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, ProgressBar, Section } from '../components';
 import { Window } from '../layouts';
 
 const damageTypes = [
@@ -84,32 +91,34 @@ export const Sleeper = (props) => {
             </>
           )}
         </Section>
-        <Section
-          title="Medicines"
-          minHeight="205px"
-          buttons={
-            <Button
-              icon={open ? 'door-open' : 'door-closed'}
-              content={open ? 'Open' : 'Closed'}
-              onClick={() => act('door')}
-            />
-          }
-        >
-          {chems.map((chem) => (
-            <Button
-              key={chem.name}
-              icon="flask"
-              content={chem.name}
-              disabled={!occupied || !chem.allowed}
-              width="140px"
-              onClick={() =>
-                act('inject', {
-                  chem: chem.id,
-                })
-              }
-            />
-          ))}
-        </Section>
+        {chems.length > 0 && (
+          <Section
+            title="Medicines"
+            minHeight="205px"
+            buttons={
+              <Button
+                icon={open ? 'door-open' : 'door-closed'}
+                content={open ? 'Open' : 'Closed'}
+                onClick={() => act('door')}
+              />
+            }
+          >
+            {chems.map((chem) => (
+              <Button
+                key={chem.name}
+                icon="flask"
+                content={chem.name}
+                disabled={!occupied || !chem.allowed}
+                width="140px"
+                onClick={() =>
+                  act('inject', {
+                    chem: chem.id,
+                  })
+                }
+              />
+            ))}
+          </Section>
+        )}
       </Window.Content>
     </Window>
   );

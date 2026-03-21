@@ -9,6 +9,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	w_class = WEIGHT_CLASS_NORMAL
 	req_access = list(ACCESS_ROBOTICS)
 	braintype = "Android"
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	///Message sent to the user when polling ghosts
 	var/begin_activation_message = "<span class='notice'>You carefully locate the manual activation switch and start the positronic brain's boot process.</span>"
@@ -75,17 +77,16 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	update_appearance()
 	addtimer(CALLBACK(src, PROC_REF(check_success)), ask_delay)
 
-/obj/item/mmi/posibrain/AltClick(mob/living/user)
-	if(!istype(user) || !user.can_perform_action(src))
-		return
+/obj/item/mmi/posibrain/click_alt(mob/living/user)
 	var/input_seed = tgui_input_text(user, "Enter a personality seed", "Enter seed", ask_role, MAX_NAME_LEN)
 	if(isnull(input_seed))
-		return
-	if(!istype(user) || !user.can_perform_action(src))
+		return CLICK_ACTION_BLOCKING
+	if(!user.can_perform_action(src))
 		return
 	to_chat(user, span_notice("You set the personality seed to \"[input_seed]\"."))
 	ask_role = input_seed
 	update_appearance()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/mmi/posibrain/proc/check_success()
 	searching = FALSE
@@ -136,9 +137,9 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 			brainmob.stored_dna = new /datum/dna/stored(brainmob)
 		transferred_user.dna.copy_dna(brainmob.stored_dna)
 	brainmob.timeofdeath = transferred_user.timeofdeath
-	brainmob.set_stat(CONSCIOUS)
+	brainmob.revive()
 	if(brainmob.mind)
-		brainmob.mind.set_assigned_role(SSjob.GetJobType(posibrain_job_path))
+		brainmob.mind.set_assigned_role(SSjob.get_job_type(posibrain_job_path))
 	if(transferred_user.mind)
 		transferred_user.mind.transfer_to(brainmob)
 
@@ -161,8 +162,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	var/policy = get_policy(ROLE_POSIBRAIN)
 	if(policy)
 		to_chat(brainmob, policy)
-	brainmob.mind.set_assigned_role(SSjob.GetJobType(posibrain_job_path))
-	brainmob.set_stat(CONSCIOUS)
+	brainmob.mind.set_assigned_role(SSjob.get_job_type(posibrain_job_path))
+	brainmob.revive()
 
 	visible_message(new_mob_message)
 	check_success()

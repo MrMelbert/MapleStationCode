@@ -13,7 +13,9 @@
 
 	status_flags = CANUNCONSCIOUS|CANPUSH
 
-	heat_protection = 0.5 // minor heat insulation
+	temperature_insulation = 0.5 // minor heat insulation
+	bodytemp_heat_damage_limit = CELCIUS_TO_KELVIN(85 CELCIUS)
+	initial_blood_type = /datum/blood_type/xenomorph
 
 	///Whether or not the alien is leaping. Only used by hunters.
 	var/leaping = FALSE
@@ -29,7 +31,7 @@
 	add_verb(src, /mob/living/proc/toggle_resting)
 
 	create_bodyparts() //initialize bodyparts
-
+	set_blood_type(initial_blood_type) // needs to be done after bodyparts but before organs..... ew
 	create_internal_organs()
 
 	add_traits(list(TRAIT_NEVER_WOUNDED, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
@@ -39,43 +41,23 @@
 		update_alien_speed()
 
 /mob/living/carbon/alien/create_internal_organs()
-	organs += new /obj/item/organ/internal/brain/alien
-	organs += new /obj/item/organ/internal/alien/hivenode
-	organs += new /obj/item/organ/internal/tongue/alien
-	organs += new /obj/item/organ/internal/eyes/alien
-	organs += new /obj/item/organ/internal/liver/alien
-	organs += new /obj/item/organ/internal/ears
+	organs += new /obj/item/organ/brain/alien
+	organs += new /obj/item/organ/alien/hivenode
+	organs += new /obj/item/organ/tongue/alien
+	organs += new /obj/item/organ/eyes/alien
+	organs += new /obj/item/organ/liver/alien
+	organs += new /obj/item/organ/ears
 	..()
 
 /mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
 	return -10
 
-/mob/living/carbon/alien/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	// Run base mob body temperature proc before taking damage
-	// this balances body temp to the environment and natural stabilization
-	. = ..()
-
-	if(bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
-		//Body temperature is too hot.
+/mob/living/carbon/alien/body_temperature_alerts()
+	if(body_temperature > bodytemp_heat_damage_limit)
 		throw_alert(ALERT_XENO_FIRE, /atom/movable/screen/alert/alien_fire)
-		switch(bodytemperature)
-			if(360 to 400)
-				apply_damage(HEAT_DAMAGE_LEVEL_1 * seconds_per_tick, BURN)
-			if(400 to 460)
-				apply_damage(HEAT_DAMAGE_LEVEL_2 * seconds_per_tick, BURN)
-			if(460 to INFINITY)
-				if(on_fire)
-					apply_damage(HEAT_DAMAGE_LEVEL_3 * seconds_per_tick, BURN)
-				else
-					apply_damage(HEAT_DAMAGE_LEVEL_2 * seconds_per_tick, BURN)
 	else
 		clear_alert(ALERT_XENO_FIRE)
 
-/mob/living/carbon/alien/getTrail()
-	if(getBruteLoss() < 200)
-		return pick (list("xltrails_1", "xltrails2"))
-	else
-		return pick (list("xttrails_1", "xttrails2"))
 /*----------------------------------------
 Proc: AddInfectionImages()
 Des: Gives the client of the alien an image on each infected mob.
@@ -85,7 +67,7 @@ Des: Gives the client of the alien an image on each infected mob.
 		for (var/i in GLOB.mob_living_list)
 			var/mob/living/L = i
 			if(HAS_TRAIT(L, TRAIT_XENO_HOST))
-				var/obj/item/organ/internal/body_egg/alien_embryo/A = L.get_organ_by_type(/obj/item/organ/internal/body_egg/alien_embryo)
+				var/obj/item/organ/body_egg/alien_embryo/A = L.get_organ_by_type(/obj/item/organ/body_egg/alien_embryo)
 				if(A)
 					var/I = image('icons/mob/nonhuman-player/alien.dmi', loc = L, icon_state = "infected[A.stage]")
 					client.images += I

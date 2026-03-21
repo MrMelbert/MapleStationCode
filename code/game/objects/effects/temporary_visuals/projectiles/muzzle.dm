@@ -33,6 +33,10 @@
 	name = "emitter flash"
 	icon_state = "muzzle_emitter"
 
+/obj/effect/projectile/muzzle/laser/phaser
+	name = "phaser flash"
+	icon_state = "muzzle_xray"
+
 /obj/effect/projectile/muzzle/solar
 	icon_state = "muzzle_solar"
 

@@ -1,6 +1,9 @@
 /datum/job/bartender
 	title = JOB_BARTENDER
-	description = "Serve booze, mix drinks, keep the crew drunk."
+	title_options = list(
+		"Barista",
+	)
+	description = "Mix drinks and (pretend to) save lives. Keep the crew drunk and happy."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -9,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BARTENDER"
 
-	outfit = /datum/outfit/job/bartender
+	base_outfit = /datum/outfit/job/bartender
 	plasmaman_outfit = /datum/outfit/plasmaman/bar
 
 	paycheck = PAYCHECK_CREW
@@ -20,7 +23,11 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/cup/rag, /obj/item/clothing/head/hats/tophat, /obj/item/reagent_containers/cup/glass/shaker)
+	family_heirlooms = list(
+		/obj/item/reagent_containers/cup/rag,
+		/obj/item/clothing/head/hats/tophat,
+		/obj/item/reagent_containers/cup/glass/shaker,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/box/rubbershot = 30,
@@ -31,6 +38,13 @@
 
 	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Tavernkeeper"
+
+	base_skills = list(
+		/datum/skill/bartending = SKILL_LEVEL_EXPERT,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE, // one (wo)man bouncer
+	)
 
 /datum/job/bartender/award_service(client/winner, award)
 	winner.give_award(award, winner.mob)

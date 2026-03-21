@@ -45,3 +45,6 @@
 
 ///from /datum/bank_account/pay_debt(), after a portion or all the debt has been paid.
 #define COMSIG_BANK_ACCOUNT_DEBT_PAID "bank_account_debt_paid"
+
+/// from /datum/manifest/proc/inject(): (datum/record/crew/person)
+#define COMSIG_MANIFEST_HUMAN_INJECTED "!manifest_human_injected"

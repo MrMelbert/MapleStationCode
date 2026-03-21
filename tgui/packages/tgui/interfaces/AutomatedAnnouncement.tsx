@@ -1,11 +1,10 @@
-import { BooleanLike } from 'common/react';
-import { multiline } from 'common/string';
+import { Button, Input, LabeledList, Section } from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
-import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-const TOOLTIP_TEXT = multiline`
+const TOOLTIP_TEXT = `
   %PERSON will be replaced with their name.
   %RANK with their job.
 `;
@@ -48,7 +47,7 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={arrival}
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('ArrivalText', {
                     newText: value,
                   })
@@ -82,7 +81,8 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={newhead}
-                onChange={(e, value) =>
+                // non-module change, ok so just like in general if you grab the announcement stuff, you're going to need to grab changes from inputs rework to this file
+                onChange={(value) =>
                   act('NewheadText', {
                     newText: value,
                   })

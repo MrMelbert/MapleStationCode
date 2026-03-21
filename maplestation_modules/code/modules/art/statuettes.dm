@@ -16,11 +16,17 @@
 	AddElement(/datum/element/item_scaling, 0.4, 1)
 	AddComponent(/datum/component/simple_rotation)
 
-/obj/item/statue/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
-
 /obj/item/statue/custom/Destroy()
 	content_ma = null
+	return ..()
+
+/obj/item/statue/custom/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/paint_palette))
+		user.balloon_alert(user, "coloring in...")
+		content_ma.filters = null
+		update_appearance()
+		playsound(src, 'sound/misc/soggy.ogg', 25, TRUE)
+		return ITEM_INTERACT_SUCCESS
 	return ..()
 
 /obj/item/statue/custom/proc/set_visuals(model_appearance)
@@ -73,7 +79,7 @@
 //Inhand version of a carving block that doesnt need a chisel
 /obj/item/modeling_block
 	name = "Modeling block"
-	desc = "Ready for sculpting. Look for a subject and use in hand to sculpt."
+	desc = "Ready for sculpting. Look for a subject and use in hand to sculpt. Using a paint palette on the finished statuette will color it in just like the original subject."
 	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "block"
 	w_class = WEIGHT_CLASS_SMALL
@@ -104,7 +110,7 @@
 // Add to plastic recipes
 /obj/item/stack/sheet/plastic/get_main_recipes()
 	. = ..()
-	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2, check_density = FALSE))
+	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2, crafting_flags = NONE))
 
 
 /obj/item/modeling_block/Destroy()
@@ -113,21 +119,15 @@
 	return ..()
 
 // We aim at something nearby to turn into our sculpting target and not bop it
-/obj/item/modeling_block/pre_attack(atom/target, mob/user)
-	. = ..()
-	if(.)
-		return .
-	if (!sculpting && ismovable(target))
-		set_target(target,user)
-	return TRUE
+/obj/item/modeling_block/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 // We aim at something to turn into our sculpting target
-/obj/item/modeling_block/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-
-	if (!sculpting && ismovable(target))
-		set_target(target,user)
-	return . | AFTERATTACK_PROCESSED_ITEM
+/obj/item/modeling_block/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if (!sculpting && ismovable(interacting_with))
+		set_target(interacting_with,user)
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/modeling_block/proc/is_viable_target(mob/living/user, atom/movable/target)
 	//Only things on turfs

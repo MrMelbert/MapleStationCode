@@ -21,7 +21,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-20 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE) //the major difference between base tea and green tea, this one's a great anti-tox.
-	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, M.get_body_temp_normal())
+	M.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/ice_greentea
@@ -46,7 +46,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/green_hill_tea
@@ -77,7 +77,7 @@
 
 /datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..()
 
 /datum/reagent/consumable/green_hill_tea/overdose_process(mob/living/M, seconds_per_tick, times_fired)
@@ -115,7 +115,7 @@
 	desc = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
 
 /datum/reagent/consumable/pilk/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love pilk
+	if(HAS_TRAIT(M, TRAIT_CATLIKE_GRACE)) //felinids love pilk
 		M.add_mood_event("full_on_pilk", /datum/mood_event/full_on_pilk, name)
 	else if(isskeleton(M))
 		M.adjustBruteLoss(1, FALSE) //ITS POISON
@@ -144,7 +144,7 @@
 	desc = "Its time to get PEGGED!"
 
 /datum/reagent/consumable/ethanol/peg_nog/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love peg nog too!
+	if(HAS_TRAIT(M, TRAIT_CATLIKE_GRACE)) //felinids love peg nog too!
 		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	else if(isskeleton(M))
 		M.adjustBruteLoss(2, FALSE) //when drinking this you wish for bone hurting juice
@@ -211,7 +211,7 @@
 	icon_state = "piledriver"
 	name = "Pile Driver"
 	desc = "A drink said to be bitter and somewhat spicy. You better not have a sore throat when drinking it." //Va-11 Hall-A reference moment flushed
-	
+
 /datum/reagent/consumable/ethanol/blood_wine
 	name = "Tiziran Blood Wine"
 	description = "A Tiziran wine made from fermented blood."
@@ -344,3 +344,183 @@
 	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
 		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/energy_lover)
 
+//Starfruit drinks
+//All the drinks are good-minimum because it requires a 1k import and then growing
+
+/datum/reagent/consumable/starfruit_juice
+	name = "Starfruit Juice"
+	description = "The raw essence of a starfruit."
+	color = "#6d3890"
+	taste_description = "lush cosmic sugar"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/starfruit_soda
+	name = "Stellar Twist"
+	description = "A drink overly tired moms could hide in their thermos."
+	boozepwr = 35
+	color = "#434294"
+	quality = DRINK_GOOD
+	taste_description = "sweet stellar adventures"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_soda
+	required_drink_type = /datum/reagent/consumable/ethanol/starfruit_soda
+	name = "Stellar Twist"
+	desc = "An alcoholic starfruit soda, you can see the carbonation in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starsoda"
+
+/datum/reagent/consumable/ethanol/starfruit_lubricant
+	name = "Stellar Lubricant"
+	description = "A drink overly tired moms could hide in their thermos. Now for Synths!"
+	boozepwr = 35
+	color = "#45b33b"
+	quality = DRINK_GOOD
+	taste_description = "sweet stellar adventures"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_lubricant
+	required_drink_type = /datum/reagent/consumable/ethanol/starfruit_lubricant
+	name = "Stellar Lubricant"
+	desc = "An alcoholic synth friendly starfruit soda, you can see the carbonation in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starsodasynth"
+
+/datum/reagent/consumable/starfruit_latte
+	name = "Starlit Latte"
+	description = "A subtly sweet coffee seemingly out of this world."
+	nutriment_factor = 8
+	color = "#361329"
+	quality = DRINK_VERYGOOD
+	taste_description = "hauntingly familiar allure"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_latte
+	required_drink_type = /datum/reagent/consumable/starfruit_latte
+	name = "mug of starlit latte"
+	desc = "A simple coffee flavored with sweet starfruit juice. It takes you on a journey to a place you’ve never been, yet somehow know by heart."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starfruit_latte"
+
+/datum/reagent/consumable/starbeam_shake
+	name = "Starbeam Shake"
+	description = "A delightful shake made with a rare starfruit."
+	color = "#a551be"
+	nutriment_factor = 0
+	quality = DRINK_VERYGOOD
+	taste_description = "smooth starlight"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starbeam_shake
+	required_drink_type = /datum/reagent/consumable/starbeam_shake
+	name = "starbeam shake"
+	desc = "A thick and creamy drink that takes you for a journey in the stars."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "voidshake"
+
+/datum/reagent/consumable/ethanol/forgotten_star
+	name = "Forgotten Star"
+	description = "A cosmic cry of a bygone era."
+	boozepwr = 55
+	color = "#434294"
+	quality = DRINK_FANTASTIC
+	taste_description = "dreamy, tropical starlit sweetness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/forgotten_star
+	required_drink_type = /datum/reagent/consumable/ethanol/forgotten_star
+	name = "Forgotten Star"
+	desc = "An alcoholic starfruit cocktail, you can almost make out a distant star system in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "forgottenstar"
+
+/datum/reagent/consumable/ethanol/astral_flame
+	name = "Astral Flame"
+	description = "Enticing flames."
+	boozepwr = 55
+	color = "#6b3481"
+	quality = DRINK_VERYGOOD
+	taste_description = "enticing warmth"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/astral_flame
+	required_drink_type = /datum/reagent/consumable/ethanol/astral_flame
+	name = "Astral Flame"
+	desc = "An alcoholic starfruit mojito, the flame in the glass tempts you closer."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "astralflame"
+
+/datum/reagent/consumable/ethanol/space_muse
+	name = "Space Muse"
+	description = "A snapshot straight from your local telescope."
+	boozepwr = 35
+	color = "#7cb1e2"
+	quality = DRINK_GOOD
+	taste_description = "haughty cosmic thought"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/space_muse
+	required_drink_type = /datum/reagent/consumable/ethanol/space_muse
+	name = "Space Muse"
+	desc = "An alcoholic cocktail that draws you in with subtle bites of mint and starfruit."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "spacemuse"
+
+/datum/reagent/consumable/starfruit_jelly
+	name = "Starfruit Jelly"
+	description = "A rare sweet fruit jelly."
+	nutriment_factor = 10
+	color = "#6d3890"
+	taste_description = "starfruit"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	default_container = /obj/item/reagent_containers/condiment/starfruit_jelly
+
+//Manual with the drink recipes, to make recipe browsing more interesting
+/obj/item/book/manual/starfruit
+	name = "Starfruit Drinks and Brewing"
+	icon = 'maplestation_modules/icons/obj/starfruitbook.dmi'
+	icon_state = "cookbook"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/starfruitbook_lhand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/starfruitbook_rhand.dmi'
+	starting_author = "His Highness, Horatio Gilidan"
+	starting_title = "Starfruit Drinks and Brewing"
+	starting_content = {"<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+<style>
+h1 {font-size: 18px; margin: 15px 0px 5px;}
+h2 {font-size: 15px; margin: 15px 0px 5px;}
+li {margin: 2px 0px 2px 15px;}
+ul {list-style: none; margin: 5px; padding: 0px;}
+ol {margin: 5px; padding: 0px 15px;}
+</style>
+</head>
+<body>
+
+<h2>Murian Starfruit Beverage Recipes from all around the Nations of Mu, provided by the Heart of Cremona:</h2>
+
+<b>Starfruit Soda:</b> An alcoholic soda with a distinctly fruity taste and a common fixture in most Gilidan bars. Distinctly enjoyed by young adults and old moms alike.<br>
+Two parts starfruit juice, two parts rum, one part cognac, one part soda water.<br>
+
+<b>Starfruit Lubricant:</b> A drink commonly enjoyed by the synthetic diaspora of Mu, it's surprisingly drinkable to organics, provided you can stand the oily taste.<br>
+One part starfruit juice, one part synthetic oil.<br>
+
+<b>Starlit Latte:</b> A classic recipe from the sailors of Aquatia as a replacement to goat locker coffee, this latte doesn't actually use any dairy products. \
+The natural creaminess of starfruit juice is enough to dilute the bitterness of coffee to a pleasant sensation.<br>
+One part starfruit juice, one part coffee.<br>
+
+<b>Starbeam Shake:</b> A fruity yet aromatically deep milkshake, this one is extremely popular with children and adults alike. \
+Notably brought all of the suitors to the yard during the Celestium Succession Crisis.<br>
+One part starfruit juice, one part vanilla dream, one part ice.<br>
+
+<b>Forgotten Star:</b> An extremely rich alcoholic drink from the beaches of Agrosia, a somewhat spiced up take on the Piña Colada. It evokes memories of nice vacations.<br>
+One part starfruit juice, one part creme de coconut, one part white russian, one part pineapple juice, one part bitters.
+
+<b>Astral Flame:</b> A strong drink with the fire of Solara. It's both warming and with a minty aftertaste to bring an edge to the flames.<br>
+One Part starfruit juice, one part navy rum, one part lime juice, one part soda water, one part menthol.
+
+<b>Space Muse:</b> A simple yet complex drink, often seen in the hands of the intelligentsia of Equitas. Originally a poor man's drink, it's now associated with the nobility.<br>
+One part starfruit juice, one part creme de menthe, one part vodka.
+</body>
+</html>
+"}

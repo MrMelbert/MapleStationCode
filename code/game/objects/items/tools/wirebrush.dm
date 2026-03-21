@@ -9,3 +9,5 @@
 	icon_state = "wirebrush"
 	tool_behaviour = TOOL_RUSTSCRAPER
 	toolspeed = 1
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'

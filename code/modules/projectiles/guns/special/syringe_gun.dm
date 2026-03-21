@@ -19,11 +19,15 @@
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
 	clumsy_check = FALSE
 	fire_sound = 'sound/items/syringeproj.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	can_muzzle_flash = FALSE
+	gun_flags = NOT_A_REAL_GUN
 	var/load_sound = 'sound/weapons/gun/shotgun/insert_shell.ogg'
 	var/list/syringes = list()
 	var/max_syringes = 1 ///The number of syringes it can store.
 	var/has_syringe_overlay = TRUE ///If it has an overlay for inserted syringes. If true, the overlay is determined by the number of syringes inserted into it.
-	gun_flags = NOT_A_REAL_GUN
 
 /obj/item/gun/syringe/Initialize(mapload)
 	. = ..()
@@ -77,23 +81,23 @@
 
 	return TRUE
 
-/obj/item/gun/syringe/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
-	if(istype(A, /obj/item/reagent_containers/syringe/bluespace))
-		balloon_alert(user, "[A.name] is too big!")
-		return TRUE
-	if(istype(A, /obj/item/reagent_containers/syringe))
+/obj/item/gun/syringe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/reagent_containers/syringe/bluespace))
+		balloon_alert(user, "[tool.name] is too big!")
+		return ITEM_INTERACT_BLOCKING
+	if(istype(tool, /obj/item/reagent_containers/syringe))
 		if(syringes.len < max_syringes)
-			if(!user.transferItemToLoc(A, src))
-				return FALSE
-			balloon_alert(user, "[A.name] loaded")
-			syringes += A
+			if(!user.transferItemToLoc(tool, src))
+				return ITEM_INTERACT_BLOCKING
+			balloon_alert(user, "[tool.name] loaded")
+			syringes += tool
 			recharge_newshot()
 			update_appearance()
-			playsound(loc, load_sound, 40)
-			return TRUE
-		else
-			balloon_alert(user, "it's already full!")
-	return FALSE
+			playsound(src, load_sound, 40)
+			return ITEM_INTERACT_SUCCESS
+		balloon_alert(user, "it's full!")
+		return ITEM_INTERACT_BLOCKING
+	return NONE
 
 /obj/item/gun/syringe/update_overlays()
 	. = ..()
@@ -158,24 +162,24 @@
 	. = ..()
 	chambered = new /obj/item/ammo_casing/dnainjector(src)
 
-/obj/item/gun/syringe/dna/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
-	if(istype(A, /obj/item/dnainjector))
-		var/obj/item/dnainjector/D = A
+/obj/item/gun/syringe/dna/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/dnainjector))
+		var/obj/item/dnainjector/D = tool
 		if(D.used)
 			balloon_alert(user, "[D.name] is used up!")
-			return
+			return ITEM_INTERACT_BLOCKING
 		if(syringes.len < max_syringes)
 			if(!user.transferItemToLoc(D, src))
-				return FALSE
+				return ITEM_INTERACT_BLOCKING
 			balloon_alert(user, "[D.name] loaded")
 			syringes += D
 			recharge_newshot()
 			update_appearance()
 			playsound(loc, load_sound, 40)
-			return TRUE
-		else
-			balloon_alert(user, "it's already full!")
-	return FALSE
+			return ITEM_INTERACT_SUCCESS
+		balloon_alert(user, "it's already full!")
+		return ITEM_INTERACT_BLOCKING
+	return NONE
 
 /obj/item/gun/syringe/blowgun
 	name = "blowgun"
@@ -198,8 +202,9 @@
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 
 /obj/item/gun/syringe/blowgun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	. = ..()
+	if(!.)
+		return
 	visible_message(span_danger("[user] shoots the blowgun!"))
-
 	user.adjustStaminaLoss(20, updating_stamina = FALSE)
 	user.adjustOxyLoss(20)
-	return ..()

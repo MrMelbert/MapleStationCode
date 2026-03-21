@@ -10,6 +10,8 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 	var/damage_coeff = 1
 	var/list/fields
@@ -57,7 +59,7 @@
 			target.real_name = fields["name"]
 			target.dna.unique_enzymes = fields["UE"]
 			target.name = target.real_name
-			target.dna.human_blood_type = blood_name_to_blood_type(fields["blood_type"])
+			target.dna.set_human_blood_type(fields["blood_type"], update = (!fields["UI"] && !fields["UF"])) // only cause an update if we're not gonna do one later
 		if(fields["UI"]) //UI+UE
 			target.dna.unique_identity = merge_text(target.dna.unique_identity, fields["UI"])
 		if(fields["UF"])
@@ -134,7 +136,7 @@
 			target.real_name = fields["name"]
 			target.dna.unique_enzymes = fields["UE"]
 			target.name = target.real_name
-			target.dna.human_blood_type = blood_name_to_blood_type(fields["blood_type"])
+			target.dna.set_human_blood_type(fields["blood_type"], update = (!fields["UI"] && !fields["UF"])) // only cause an update if we're not gonna do one later
 			target.dna.temporary_mutations[UE_CHANGED] = endtime
 		if(fields["UI"]) //UI+UE
 			if(!target.dna.previous["UI"])
@@ -163,7 +165,7 @@
 /obj/item/dnainjector/activator
 	name = "\improper DNA activator"
 	desc = "Activates the current mutation on injection, if the subject has it."
-	var/doitanyway = FALSE
+	var/force_mutate = FALSE
 	var/research = FALSE //Set to true to get expended and filled injectors for chromosomes
 	var/filled = FALSE
 	var/crispr_charge = FALSE // Look for viruses, look at symptoms, if research and Dormant DNA Activator or Viral Evolutionary Acceleration, set to true
@@ -176,7 +178,7 @@
 		if(istype(added_mutation, /datum/mutation/human))
 			mutation = added_mutation.type
 		if(!target.dna.activate_mutation(added_mutation))
-			if(doitanyway)
+			if(force_mutate)
 				target.dna.add_mutation(added_mutation, MUT_EXTRA)
 		else if(research && target.client)
 			filled = TRUE
@@ -184,7 +186,7 @@
 			for(var/datum/symptom/symp in disease.symptoms)
 				if((symp.type == /datum/symptom/genetic_mutation) || (symp.type == /datum/symptom/viralevolution))
 					crispr_charge = TRUE
-		log_combat(user, target, "[!doitanyway ? "failed to inject" : "injected"]", "[src] ([mutation])[crispr_charge ? " with CRISPR charge" : ""]")
+		log_combat(user, target, "[!force_mutate ? "failed to inject" : "injected"]", "[src] ([mutation])[crispr_charge ? " with CRISPR charge" : ""]")
 	return TRUE
 
 /// DNA INJECTORS
@@ -426,12 +428,12 @@
 /obj/item/dnainjector/pressuremut
 	name = "\improper DNA injector (Pressure Adaptation)"
 	desc = "Gives you fire."
-	add_mutations = list(/datum/mutation/human/pressure_adaptation)
+	add_mutations = list(/datum/mutation/human/adaptation/pressure)
 
 /obj/item/dnainjector/antipressure
 	name = "\improper DNA injector (Anti-Pressure Adaptation)"
 	desc = "Cures fire."
-	remove_mutations = list(/datum/mutation/human/pressure_adaptation)
+	remove_mutations = list(/datum/mutation/human/adaptation/pressure)
 
 /obj/item/dnainjector/radioactive
 	name = "\improper DNA injector (Radioactive)"
@@ -500,12 +502,12 @@
 /obj/item/dnainjector/firemut
 	name = "\improper DNA injector (Temp Adaptation)"
 	desc = "Gives you fire."
-	add_mutations = list(/datum/mutation/human/temperature_adaptation)
+	add_mutations = list(/datum/mutation/human/adaptation/thermal)
 
 /obj/item/dnainjector/antifire
 	name = "\improper DNA injector (Anti-Temp Adaptation)"
 	desc = "Cures fire."
-	remove_mutations = list(/datum/mutation/human/temperature_adaptation)
+	remove_mutations = list(/datum/mutation/human/adaptation/thermal)
 
 /obj/item/dnainjector/thermal
 	name = "\improper DNA injector (Thermal Vision)"

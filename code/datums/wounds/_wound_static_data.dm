@@ -86,7 +86,14 @@
  * if we have a biotype mismatch, if the limb isnt in a viable zone, or if theres any duplicate wound types.
  * TRUE otherwise.
  */
-/datum/wound_pregen_data/proc/can_be_applied_to(obj/item/bodypart/limb, list/suggested_wounding_types = required_wounding_types, datum/wound/old_wound, random_roll = FALSE, duplicates_allowed = src.duplicates_allowed, care_about_existing_wounds = TRUE)
+/datum/wound_pregen_data/proc/can_be_applied_to(
+	obj/item/bodypart/limb,
+	list/suggested_wounding_types = required_wounding_types,
+	datum/wound/old_wound,
+	random_roll = FALSE,
+	duplicates_allowed = src.duplicates_allowed,
+	care_about_existing_wounds = TRUE,
+)
 	SHOULD_BE_PURE(TRUE)
 
 	if (!istype(limb) || !limb.owner)
@@ -176,7 +183,7 @@
  * * attack_direction: The direction of the attack that'd generate us. Nullable.
  * * damage_source: The source of the damage that'd cause us. Nullable.
  */
-/datum/wound_pregen_data/proc/get_threshold_for(obj/item/bodypart/part, attack_direction, damage_source)
+/datum/wound_pregen_data/proc/get_threshold_for(obj/item/bodypart/part)
 	return threshold_minimum
 
 /// Returns a new instance of our wound datum.

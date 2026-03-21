@@ -4,6 +4,8 @@
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = null
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// The maximum amount of reagents per transfer that will be moved out of this reagent container.
 	var/amount_per_transfer_from_this = 5
 	/// Does this container allow changing transfer amounts at all, the container can still have only one possible transfer value in possible_transfer_amounts at some point even if this is true
@@ -56,8 +58,12 @@
 		volume = vol
 	create_reagents(volume, reagent_flags)
 	if(spawned_disease)
-		var/datum/disease/F = new spawned_disease()
-		var/list/data = list("viruses"= list(F))
+		var/list/data = list(
+			"viruses"= new spawned_disease(),
+			"blood_DNA" = "UNKNOWN HUMAN DNA",
+			"blood_type" = random_human_blood_type(),
+			"resistances" = null,
+		)
 		reagents.add_reagent(/datum/reagent/blood, disease_amount, data)
 	add_initial_reagents()
 
@@ -169,7 +175,7 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.expose(target, TOUCH)
+	reagents.expose(target, TOUCH, exposed_zone = user.zone_selected) // NON-MODULE CHANGE
 	log_combat(user, target, "splashed", reagent_text)
 	reagents.clear_reagents()
 
@@ -235,8 +241,8 @@
 
 		if(thrown_by)
 			log_combat(thrown_by, M, "splashed", R)
-		reagents.expose(target, TOUCH, splash_multiplier)
-		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier)) // 1 - splash_multiplier because it's what didn't hit the target
+		reagents.expose(target, TOUCH, splash_multiplier, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
+		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier), exposed_zone = ran_zone(thrown_by?.zone_selected)) // 1 - splash_multiplier because it's what didn't hit the target // NON-MODULE CHANGE
 
 	else if(bartender_check(target) && thrown)
 		visible_message(span_notice("[src] lands onto the [target.name] without spilling a single drop."))
@@ -248,7 +254,7 @@
 			thrown_by.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
 			message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 		visible_message(span_notice("[src] spills its contents all over [target]."))
-		reagents.expose(target, TOUCH)
+		reagents.expose(target, TOUCH, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
 		if(QDELETED(src))
 			return
 
@@ -265,9 +271,6 @@
 /obj/item/reagent_containers/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
 	reagents.expose_temperature(1000)
 	return ..() | COMPONENT_MICROWAVE_SUCCESS
-
-/obj/item/reagent_containers/fire_act(temperature, volume)
-	reagents.expose_temperature(temperature)
 
 /// Updates the icon of the container when the reagents change. Eats signal args
 /obj/item/reagent_containers/proc/on_reagent_change(datum/reagents/holder, ...)

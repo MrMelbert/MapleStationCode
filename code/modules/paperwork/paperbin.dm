@@ -13,9 +13,11 @@
 	throw_speed = 3
 	throw_range = 7
 	pressure_resistance = 8
-	var/papertype = /obj/item/paper
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
+	var/obj/item/paper/papertype = /obj/item/paper
 	var/total_paper = 30
-	var/list/paper_stack = list()
+	var/list/obj/item/paper/paper_stack = list()
 	var/obj/item/pen/bin_pen
 	///Overlay of the pen on top of the bin.
 	var/mutable_appearance/pen_overlay
@@ -99,18 +101,14 @@
 		return
 	if(bin_pen)
 		var/obj/item/pen/pen = bin_pen
-		pen.add_fingerprint(user)
-		pen.forceMove(user.loc)
-		user.put_in_hands(pen)
+		try_put_in_hand(pen, user)
 		to_chat(user, span_notice("You take [pen] out of [src]."))
 		bin_pen = null
 		update_appearance()
 	else if(total_paper > 0)
 		var/obj/item/paper/top_paper = pop(paper_stack) || generate_paper()
 		total_paper -= 1
-		top_paper.add_fingerprint(user)
-		top_paper.forceMove(user.loc)
-		user.put_in_hands(top_paper)
+		try_put_in_hand(top_paper, user)
 		to_chat(user, span_notice("You take [top_paper] out of [src]."))
 		update_appearance()
 	else
@@ -189,7 +187,12 @@
 				: reference_paper
 
 			var/mutable_appearance/paper_overlay = mutable_appearance(current_paper.icon, current_paper.icon_state)
-			paper_overlay.color = current_paper.color
+			if(current_paper == reference_paper)
+				paper_overlay.color = initial(papertype.color)
+				if(initial(papertype.show_written_words) && initial(papertype.default_raw_text))
+					paper_overlay.icon_state += "_words"
+			else
+				paper_overlay.color = current_paper.color
 			paper_overlay.pixel_z = paper_number/PAPERS_PER_OVERLAY - PAPER_OVERLAY_PIXEL_SHIFT //gives the illusion of stacking
 			. += paper_overlay
 			if(paper_number == total_paper) //this is our top paper
@@ -240,7 +243,7 @@
 	if(total_paper == 0)
 		deconstruct(FALSE)
 
-/obj/item/paper_bin/bundlenatural/deconstruct(disassembled)
+/obj/item/paper_bin/bundlenatural/atom_deconstruct(disassembled)
 	dump_contents(drop_location())
 	return ..()
 

@@ -1,11 +1,11 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
 #define SAVEFILE_VERSION_MIN 32
 
-//This is the current version, anything below this will attempt to update (if it's not obsolete)
-// You do not need to raise this if you are adding new values that have sane defaults.
-// Only raise this value when changing the meaning/format/name/layout of an existing value
-// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 44
+/// This is the current version, anything below this will attempt to update (if it's not obsolete)
+/// You do not need to raise this if you are adding new values that have sane defaults.
+/// Only raise this value when changing the meaning/format/name/layout of an existing value
+/// where you would want the updater procs below to run
+#define SAVEFILE_VERSION_MAX 50
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -104,6 +104,58 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if (current_version < 43)
 		migrate_legacy_sound_toggles(savefile)
 
+	if (current_version < 45)
+		migrate_quirk_to_loadout(
+			quirk_to_migrate = "Pride Pin",
+			new_typepath = /obj/item/clothing/accessory/pride,
+			data_to_migrate = list(INFO_RESKIN = save_data?["pride_pin"]),
+		)
+	if (current_version < 46)
+		migrate_boolean_sound_prefs_to_default_volume()
+	if (current_version < 47)
+		migrate_boolean_sound_prefs_to_default_volume_v2()
+
+	if (current_version < 45.1)
+		migrate_quirks_to_language_menu(save_data)
+
+	if (current_version < 45.2)
+		// convert felinid to animid
+		if(save_data?["species"] == "felinid")
+			save_data["species"] = /datum/species/human/animid::id
+			save_data["animid_type"] = /datum/animid_type/cat::id
+
+	if (current_version < 48)
+		migrate_quirk_to_loadout(
+			quirk_to_migrate = "Colorist",
+			new_typepath = /obj/item/dyespray,
+		)
+
+	if(current_version < 50)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Extrovert",
+			new_typepath = /datum/personality/extrovert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Introvert",
+			new_typepath = /datum/personality/introvert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Bad Touch",
+			new_typepath = /datum/personality/aloof,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Apathetic",
+			new_typepath = /datum/personality/apathetic,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Snob",
+			new_typepath = /datum/personality/snob,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Spiritual",
+			new_typepath = /datum/personality/spiritual,
+		)
+
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
 	if(!parent)
@@ -141,7 +193,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 /datum/preferences/proc/announce_conflict(list/notadded)
 	to_chat(parent, "<span class='warningplain'><b><u>Keybinding Conflict</u></b></span>\n\
-					<span class='warningplain'><b>There are new <a href='?src=[REF(src)];open_keybindings=1'>keybindings</a> that default to keys you've already bound. The new ones will be unbound.</b></span>")
+					<span class='warningplain'><b>There are new <a href='byond://?src=[REF(src)];open_keybindings=1'>keybindings</a> that default to keys you've already bound. The new ones will be unbound.</b></span>")
 	for(var/item in notadded)
 		var/datum/keybinding/conflicted = item
 		to_chat(parent, span_danger("[conflicted.category]: [conflicted.full_name] needs updating"))
@@ -284,13 +336,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 
 	// Read everything into cache
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
+	// Uses priority order as some values may rely on others for creating default values
+	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
-		value_cache -= preference_type
-		read_preference(preference_type)
+		value_cache -= preference.type
+		read_preference(preference.type)
 
 	//Character
 	randomise = save_data?["randomise"]
@@ -318,6 +370,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
 	validate_quirks()
+
+	if(isnewplayer(parent?.mob))
+		// Update the report that appears in ready menu if applicable
+		// (Yeah I could signalize this but whatever)
+		var/mob/dead/new_player/cycle = parent?.mob
+		cycle.update_ready_report()
 
 	return TRUE
 
@@ -361,11 +419,48 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return TRUE
 
+/datum/preferences/proc/switch_to_slot(new_slot)
+	// SAFETY: `load_character` performs sanitization on the slot number
+	if (!load_character(new_slot))
+		tainted_character_profiles = TRUE
+		randomise_appearance_prefs()
+		save_character()
+
+	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
+		preference_middleware.on_new_character(usr)
+
+	character_preview_view.update_body()
+
+/datum/preferences/proc/remove_current_slot()
+	PRIVATE_PROC(TRUE)
+
+	var/closest_slot
+	for (var/other_slot in default_slot - 1 to 1 step -1)
+		var/save_data = savefile.get_entry("character[other_slot]")
+		if (!isnull(save_data))
+			closest_slot = other_slot
+			break
+
+	if (isnull(closest_slot))
+		for (var/other_slot in default_slot + 1 to max_save_slots)
+			var/save_data = savefile.get_entry("character[other_slot]")
+			if (!isnull(save_data))
+				closest_slot = other_slot
+				break
+
+	if (isnull(closest_slot))
+		stack_trace("remove_current_slot() being called when there are no slots to go to, the client should prevent this")
+		return
+
+	savefile.remove_entry("character[default_slot]")
+	tainted_character_profiles = TRUE
+	switch_to_slot(closest_slot)
+
 /datum/preferences/proc/sanitize_be_special(list/input_be_special)
 	var/list/output = list()
 
 	for (var/role in input_be_special)
-		if (role in GLOB.special_roles)
+		if (role in get_all_antag_flags())
 			output += role
 
 	return output.len == input_be_special.len ? input_be_special : output

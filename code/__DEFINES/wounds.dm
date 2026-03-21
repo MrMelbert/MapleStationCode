@@ -48,16 +48,13 @@ GLOBAL_LIST_INIT(wound_severities_chronological, list(
 
 
 // ~determination second wind defines
-// How much determination reagent to add each time someone gains a new wound in [/datum/wound/proc/second_wind]
-#define WOUND_DETERMINATION_MODERATE 1
-#define WOUND_DETERMINATION_SEVERE 2.5
-#define WOUND_DETERMINATION_CRITICAL 5
-#define WOUND_DETERMINATION_LOSS 7.5
+// How much determination to add each time someone gains a new wound in [/datum/wound/proc/second_wind]
+#define WOUND_DETERMINATION_MODERATE (5 SECONDS)
+#define WOUND_DETERMINATION_SEVERE (10 SECONDS)
+#define WOUND_DETERMINATION_CRITICAL (20 SECONDS)
+#define WOUND_DETERMINATION_LOSS (30 SECONDS)
 /// the max amount of determination you can have
-#define WOUND_DETERMINATION_MAX 10
-
-/// While someone has determination in their system, their bleed rate is slightly reduced
-#define WOUND_DETERMINATION_BLEED_MOD 0.85
+#define WOUND_DETERMINATION_MAX (1 MINUTES)
 
 /// Wounds using this competition mode will remove any wounds of a greater severity than itself in a random wound roll. In most cases, you dont want to use this.
 #define WOUND_COMPETITION_OVERPOWER_GREATERS "wound_submit"
@@ -74,12 +71,16 @@ GLOBAL_LIST_INIT(wound_severities_chronological, list(
 #define BIO_FLESH (1<<1)
 /// Has metal - allows the victim to suffer robotic blunt and burn wounds
 #define BIO_METAL (1<<2)
+/// Has wood - should probably be able to catch on fire, or something
+#define BIO_WOOD (1<<3)
 /// Is wired internally - allows the victim to suffer electrical wounds (robotic T1-T3 slash/pierce)
-#define BIO_WIRED (1<<3)
+#define BIO_WIRED (1<<4)
 /// Has bloodflow - can suffer bleeding wounds and can bleed
-#define BIO_BLOODED (1<<4)
+#define BIO_BLOODED (1<<5)
 /// Is connected by a joint - can suffer T1 bone blunt wounds (dislocation)
-#define BIO_JOINTED (1<<5)
+#define BIO_JOINTED (1<<6)
+/// Skin is covered in thick chitin and is resistant to cutting
+#define BIO_CHITIN (1<<7)
 /// Robotic - can suffer all metal/wired wounds, such as: UNIMPLEMENTED PLEASE UPDATE ONCE SYNTH WOUNDS 9/5/2023 ~Niko
 #define BIO_ROBOTIC (BIO_METAL|BIO_WIRED)
 /// Has flesh and bone - See BIO_BONE and BIO_FLESH
@@ -88,6 +89,8 @@ GLOBAL_LIST_INIT(wound_severities_chronological, list(
 #define BIO_STANDARD_UNJOINTED (BIO_FLESH_BONE|BIO_BLOODED)
 /// Standard humanoid limbs - can bleed and suffer all flesh/bone wounds, such as: T1-3 slash/pierce/burn/blunt. Can also bleed, and be dislocated. Think human arms and legs
 #define BIO_STANDARD_JOINTED (BIO_STANDARD_UNJOINTED|BIO_JOINTED)
+/// Xenomorph limbs (xenos are immune to wounds anyhow)
+#define BIO_STANDARD_ALIEN (BIO_CHITIN|BIO_BONE|BIO_BLOODED|BIO_JOINTED)
 
 // "Where" a specific biostate is within a given limb
 // Interior is hard shit, the last line, shit like bones
@@ -109,6 +112,7 @@ GLOBAL_LIST_INIT(bio_state_anatomy, list(
 	"[BIO_METAL]" = ANATOMY_INTERIOR,
 	"[BIO_FLESH]" = ANATOMY_EXTERIOR,
 	"[BIO_BONE]" = ANATOMY_INTERIOR,
+	"[BIO_CHITIN]" = ANATOMY_EXTERIOR,
 ))
 
 // Wound series
@@ -123,10 +127,6 @@ GLOBAL_LIST_INIT(bio_state_anatomy, list(
 #define WOUND_SERIES_FLESH_BURN_BASIC "wound_series_flesh_burn_basic"
 /// T1-T3 Bleeding puncture wounds. Requires flesh. Can cause bleeding, but doesn't require it. From: pierce.dm
 #define WOUND_SERIES_FLESH_PUNCTURE_BLEED "wound_series_flesh_puncture_bleed"
-/// Generic loss wounds. See loss.dm
-#define WOUND_SERIES_LOSS_BASIC "wound_series_loss_basic"
-/// Cranial fissure wound.
-#define WOUND_SERIES_CRANIAL_FISSURE "wound_series_cranial_fissure"
 
 /// A assoc list of (wound typepath -> wound_pregen_data instance). Every wound should have a pregen data.
 GLOBAL_LIST_INIT_TYPED(all_wound_pregen_data, /datum/wound_pregen_data, generate_wound_static_data())
@@ -283,7 +283,7 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 ))
 
 // ~burn wound infection defines
-// Thresholds for infection for burn wounds, once infestation hits each threshold, things get steadily worse
+// Thresholds for infection for burn wounds, once infection hits each threshold, things get steadily worse
 /// below this has no ill effects from infection
 #define WOUND_INFECTION_MODERATE 4
 /// then below here, you ooze some pus and suffer minor tox damage, but nothing serious
@@ -296,10 +296,10 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 
 
 // ~random wound balance defines
-/// how quickly sanitization removes infestation and decays per second
+/// how quickly sanitization removes infection and decays per second
 #define WOUND_BURN_SANITIZATION_RATE 0.075
-/// how much blood you can lose per tick per slash max.
-#define WOUND_SLASH_MAX_BLOODFLOW 4.5
+/// how much blood you can lose per tick per wound max.
+#define WOUND_MAX_BLOODFLOW 4.5
 /// further slash attacks on a bodypart with a slash wound have their blood_flow further increased by damage * this (10 damage slash adds .25 flow)
 #define WOUND_SLASH_DAMAGE_FLOW_COEFF 0.025
 /// if we suffer a bone wound to the head that creates brain traumas, the timer for the trauma cycle is +/- by this percent (0-100)
@@ -327,6 +327,8 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 #define ACCEPTS_GAUZE (1<<2)
 /// If this wound allows the victim to grasp it
 #define CAN_BE_GRASPED (1<<3)
+/// Makes the user's health doll flash red while present
+#define ALERTS_VICTIM (1<<4)
 
 // ~scar persistence defines
 // The following are the order placements for persistent scar save formats

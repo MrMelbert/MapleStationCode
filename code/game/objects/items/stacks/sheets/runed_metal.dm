@@ -84,6 +84,8 @@ GLOBAL_LIST_INIT(runed_metal_recipes, list( \
 	material_type = /datum/material/runedmetal
 	has_unique_girder = TRUE
 	use_radial = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/stack/sheet/runed_metal/interact(mob/user)
 	if(!IS_CULTIST(user))

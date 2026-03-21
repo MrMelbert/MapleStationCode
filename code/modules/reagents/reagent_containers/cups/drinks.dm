@@ -29,7 +29,6 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target, break_top)
 	qdel(src)
-	target.Bumped(B)
 
 /obj/item/reagent_containers/cup/glass/bullet_act(obj/projectile/P)
 	. = ..()
@@ -122,10 +121,10 @@
 	. += span_notice("Alt-click to toggle cup lid.")
 	return
 
-/obj/item/reagent_containers/cup/glass/coffee/AltClick(mob/user)
+/obj/item/reagent_containers/cup/glass/coffee/click_alt(mob/user)
 	lid_open = !lid_open
 	update_icon_state()
-	return ..()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/coffee/update_icon_state()
 	if(lid_open)
@@ -156,6 +155,8 @@
 	base_icon_state = "tea"
 	inhand_icon_state = "coffee"
 	spillable = TRUE
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
+	pickup_sound = 'sound/items/handling/drinkglass_pickup.ogg'
 
 /obj/item/reagent_containers/cup/glass/mug/update_icon_state()
 	icon_state = "[base_icon_state][reagents.total_volume ? null : "_empty"]"
@@ -248,11 +249,10 @@
 	else
 		. += span_notice("The cap has been taken off. Alt-click to put a cap on.")
 
-/obj/item/reagent_containers/cup/glass/waterbottle/AltClick(mob/user)
-	. = ..()
+/obj/item/reagent_containers/cup/glass/waterbottle/click_alt(mob/user)
 	if(cap_lost)
 		to_chat(user, span_warning("The cap seems to be missing! Where did it go?"))
-		return
+		return CLICK_ACTION_BLOCKING
 
 	var/fumbled = HAS_TRAIT(user, TRAIT_CLUMSY) && prob(5)
 	if(cap_on || fumbled)
@@ -270,6 +270,7 @@
 		spillable = FALSE
 		to_chat(user, span_notice("You put the cap on [src]."))
 	update_appearance()
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/reagent_containers/cup/glass/waterbottle/is_refillable()
 	if(cap_on)
@@ -291,20 +292,18 @@
 
 	return ..()
 
-/obj/item/reagent_containers/cup/glass/waterbottle/afterattack(obj/target, mob/living/user, proximity)
-	. |= AFTERATTACK_PROCESSED_ITEM
-
+/obj/item/reagent_containers/cup/glass/waterbottle/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(cap_on && (target.is_refillable() || target.is_drainable() || (reagents.total_volume && !user.combat_mode)))
 		to_chat(user, span_warning("You must remove the cap before you can do that!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	else if(istype(target, /obj/item/reagent_containers/cup/glass/waterbottle))
+	if(istype(target, /obj/item/reagent_containers/cup/glass/waterbottle))
 		var/obj/item/reagent_containers/cup/glass/waterbottle/other_bottle = target
 		if(other_bottle.cap_on)
 			to_chat(user, span_warning("[other_bottle] has a cap firmly twisted on!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
-	return . | ..()
+	return ..()
 
 // heehoo bottle flipping
 /obj/item/reagent_containers/cup/glass/waterbottle/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -366,6 +365,8 @@
 	volume = 10
 	spillable = TRUE
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 /obj/item/reagent_containers/cup/glass/sillycup/update_icon_state()
 	icon_state = reagents.total_volume ? "water_cup" : "water_cup_e"
@@ -395,7 +396,6 @@
 	var/obj/item/broken_bottle/bottle_shard = new (loc)
 	bottle_shard.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(bottle_shard)
 
 /obj/item/reagent_containers/cup/glass/colocup
 	name = "colo cup"
@@ -426,6 +426,7 @@
 // itself), in Chemistry-Recipes.dm (for the reaction that changes the components into the drink), and here (for the drinking glass
 // icon states.
 
+
 /obj/item/reagent_containers/cup/glass/shaker
 	name = "shaker"
 	desc = "A metal shaker to mix drinks in."
@@ -435,13 +436,85 @@
 	amount_per_transfer_from_this = 10
 	volume = 100
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+	interaction_flags_click = NEED_HANDS|FORBID_TELEKINESIS_REACH
+	/// Whether or not poured drinks should use custom names and descriptions
+	var/using_custom_drinks = FALSE
+	/// Name custom drinks will have
+	var/custom_drink_name = "Custom drink"
+	/// Description custom drinks will have
+	var/custom_drink_desc = "Mixed by your favourite bartender!"
 
 /obj/item/reagent_containers/cup/glass/shaker/Initialize(mapload)
 	. = ..()
+	register_context()
 	if(prob(10))
 		name = "\improper Nanotrasen 20th Anniversary Shaker"
 		desc += " It has an emblazoned Nanotrasen logo on it."
 		icon_state = "shaker_n"
+
+/obj/item/reagent_containers/cup/glass/shaker/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	context[SCREENTIP_CONTEXT_ALT_LMB] = "[using_custom_drinks ? "Disable" : "Enable"] custom drinks"
+	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/reagent_containers/cup/glass/shaker/examine(mob/user)
+	. = ..()
+	. += span_notice("Alt-click to [using_custom_drinks ? "disable" : "enable"] custom drink naming")
+	if(using_custom_drinks)
+		. += span_notice("Drinks poured from this shaker will have the following name: [custom_drink_name]")
+		. += span_notice("Drinks poured from this shaker will have the following description: [custom_drink_desc]")
+
+/obj/item/reagent_containers/cup/glass/shaker/click_alt(mob/user)
+	if(using_custom_drinks)
+		using_custom_drinks = FALSE
+		disable_custom_drinks()
+		balloon_alert(user, "custom drinks disabled")
+		return CLICK_ACTION_BLOCKING
+
+	var/new_name = reject_bad_text(tgui_input_text(user, "Drink name", "Set drink name", custom_drink_name, 45, FALSE), 64)
+	if(!new_name)
+		balloon_alert(user, "invalid drink name!")
+		using_custom_drinks = FALSE
+		return CLICK_ACTION_BLOCKING
+
+	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
+		return CLICK_ACTION_BLOCKING
+
+	var/new_desc = reject_bad_text(tgui_input_text(user, "Drink description", "Set drink description", custom_drink_desc, 64, TRUE), 128)
+	if(!new_desc)
+		balloon_alert(user, "invalid drink description!")
+		using_custom_drinks = FALSE
+		return CLICK_ACTION_BLOCKING
+
+	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
+		return CLICK_ACTION_BLOCKING
+
+	using_custom_drinks = TRUE
+	custom_drink_name = new_name
+	custom_drink_desc = new_desc
+
+	enable_custom_drinks()
+	balloon_alert(user, "now pouring custom drinks")
+	return CLICK_ACTION_SUCCESS
+
+/obj/item/reagent_containers/cup/glass/shaker/proc/enable_custom_drinks()
+	RegisterSignal(src, COMSIG_REAGENTS_CUP_TRANSFER_TO, PROC_REF(handle_transfer))
+
+/obj/item/reagent_containers/cup/glass/shaker/proc/disable_custom_drinks()
+	UnregisterSignal(src, COMSIG_REAGENTS_CUP_TRANSFER_TO)
+
+/obj/item/reagent_containers/cup/glass/shaker/proc/handle_transfer(atom/origin, atom/target)
+	SIGNAL_HANDLER
+	// Should only work on drinking/shot glasses
+	if(!istype(target, /obj/item/reagent_containers/cup/glass/drinkingglass))
+		return
+
+	var/obj/item/reagent_containers/cup/glass/drinkingglass/target_glass = target
+	target_glass.name = custom_drink_name
+	target_glass.desc = custom_drink_desc
+	ADD_TRAIT(target_glass, TRAIT_WAS_RENAMED, SHAKER_LABEL_TRAIT)
 
 /obj/item/reagent_containers/cup/glass/flask
 	name = "flask"
@@ -452,6 +525,8 @@
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*2.5)
 	volume = 60
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/cup/glass/flask/gold
 	name = "captain's flask"
