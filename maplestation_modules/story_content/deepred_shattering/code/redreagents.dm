@@ -1,35 +1,34 @@
-/datum/reagent/consumable/liquidelectricity/auric
+/datum/reagent/auric
 	name = "Processed Auric Tesla"
 	description = "A processed metallic gel that seems to spark and crackle with electricity. It seems to have some mana generating properties."
 	color = "#fff870"
 	taste_description = "absolute power"
-	var/shock_timer = 0
-	var/shock_speed = 20
-	chemical_flags = 0
+	chemical_flags = NONE
+	reagent_state = SOLID
+	ph = 6
+	var/regen_mana = TRUE
 
-/datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+/datum/reagent/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	shock_timer++
-	if(shock_timer >= rand(0, 50 - shock_speed))
-		shock_timer = 0
-		affected_mob.electrocute_act(rand(10, 30), "Auric Tesla in their body", 1, SHOCK_NOGLOVES)
+	if(SPT_PROB(10, seconds_per_tick))
+		affected_mob.electrocute_act(rand(10,30), "Exotic energy in their body", 1, SHOCK_NOGLOVES)
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
-	if(affected_mob?.mana_pool)
+	if(regen_mana && affected_mob?.mana_pool)
 		affected_mob.adjust_personal_mana(10)
 
 /datum/chemical_reaction/auricelectrolysis
 	results = list(/datum/reagent/oxygen = 10, /datum/reagent/hydrogen = 20)
 	required_reagents = list(/datum/reagent/water = 10)
-	required_catalysts = list(/datum/reagent/consumable/liquidelectricity/auric = 1)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	required_catalysts = list(/datum/reagent/auric = 1)
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 	mix_message = "the reaction zaps suddenly!"
 	mix_sound = 'sound/effects/supermatter.ogg'
 
 /datum/chemical_reaction/auricgodblood
 	results = list(/datum/reagent/medicine/omnizine/godblood = 5)
-	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 1, /datum/reagent/medicine/salglu_solution = 5)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	required_reagents = list(/datum/reagent/auric = 1, /datum/reagent/medicine/salglu_solution = 5)
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
 	mix_message = "the reaction pulses with divine energy!"
 	mix_sound = 'sound/magic/teleport_app.ogg'
 
@@ -38,14 +37,15 @@
 	description = "A powdered alloy of a strange blue metal that seems to defy the laws of gravity. It glitters with an otherworldly light."
 	color = "#00aaff"
 	taste_description = "the boundless sky"
-	chemical_flags = null
+	chemical_flags = NONE
 	taste_mult = 1
 	reagent_state = SOLID
+	material = /datum/material/aerialite
 
 /datum/chemical_reaction/aerialitestim
 	results = list(/datum/reagent/medicine/stimulants = 5)
 	required_reagents = list(/datum/reagent/gravitum/aerialite = 1, /datum/reagent/medicine/painkiller/morphine = 5, /datum/reagent/consumable/sugar = 5)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
 	mix_message = "the reaction lightens!"
 
 /datum/chemical_reaction/aerialitebuffer
@@ -61,10 +61,12 @@
 	color = "#14747c"
 	taste_description = "resonance"
 	reagent_state = SOLID
+	material = /datum/material/resmythril
 
 /datum/chemical_reaction/resmythril_emp
 	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/resmythril = 1)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
+	reaction_flags = REACTION_INSTANT
+	reaction_tags = REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS | REACTION_TAG_UNIQUE | REACTION_TAG_ACTIVE
 	mix_message = "the reaction resonates!"
 	mix_sound = 'sound/machines/defib_zap.ogg'
 
@@ -76,7 +78,7 @@
 /datum/chemical_reaction/resmythrilomni
 	results = list(/datum/reagent/medicine/omnizine = 5)
 	required_reagents = list(/datum/reagent/resmythril = 1, /datum/reagent/stabilizing_agent = 5)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
 	mix_message = "the reaction buzzes quietly!"
 
 /datum/chemical_reaction/mythrilbuffer
@@ -96,20 +98,23 @@
 /datum/chemical_reaction/exo_stabilizer
 	results = list(/datum/reagent/exotic_stabilizer = 1)
 	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/stabilizing_agent = 1)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPONENT
 
 /datum/chemical_reaction/exonanites
 	results = list(/datum/reagent/medicine/syndicate_nanites = 5)
 	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/iron = 5, /datum/reagent/silicon = 5, /datum/reagent/toxin/acid = 1)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
 	mix_message = "the reaction restructures!"
 
 /datum/reagent/darkplasma
 	name = "Condensed Dark Plasma"
 	description = "A swirling dark liquid that seems to dissipate any light around it. You have a bad feeling about this substance."
 	color = "#0e0033"
+	var/disintegrationpower = 100
+	var/disintegrationmult = 10
 	taste_description = "an endless void"
 	metabolization_rate = 4 * REAGENTS_METABOLISM
+	ph = 3
 
 /datum/reagent/darkplasma/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -118,6 +123,31 @@
 
 	if(affected_mob?.mana_pool)
 		affected_mob.adjust_personal_mana(-10)
+
+/datum/reagent/darkplasma/expose_mob(mob/living/carbon/exposed_carbon, methods=TOUCH, reac_volume)
+	. = ..()
+	if(!istype(exposed_carbon))
+		return
+	reac_volume = round(reac_volume,0.1) * disintegrationmult
+	if(methods & (INGEST|INHALE))
+		return
+	if(methods & INJECT)
+		return
+	exposed_carbon.acid_act(disintegrationpower, reac_volume)
+
+/datum/reagent/darkplasma/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	if(ismob(exposed_obj.loc))
+		return
+	reac_volume = round(reac_volume,0.1) * disintegrationmult
+	exposed_obj.acid_act(disintegrationpower, reac_volume)
+
+/datum/reagent/darkplasma/expose_turf(turf/exposed_turf, reac_volume)
+	. = ..()
+	if (!istype(exposed_turf))
+		return
+	reac_volume = round(reac_volume,0.1) * disintegrationmult
+	exposed_turf.acid_act(disintegrationpower, reac_volume)
 
 /datum/chemical_reaction/plasma_vortex
 	required_reagents = list(/datum/reagent/darkplasma = 1)
@@ -143,10 +173,34 @@
 	color = "#e6a6e0"
 	taste_description = "a universe far, far away"
 	metabolization_rate = 0.05 * REAGENTS_METABOLISM
+	ph = 0
+	self_consuming = TRUE
+
+/datum/reagent/New()
+	. = ..()
+	START_PROCESSING(SSfastprocess, src)
+
+/datum/reagent/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	return ..()
+
+/datum/reagent/miracle/proc/exoticresonance(firerange)
+	if(!holder || !holder.my_atom)
+		return
+	radiation_pulse(holder.my_atom, max_range = firerange + 3, threshold = 0.1, chance = 80)
+	var/turf/T = get_turf(holder.my_atom)
+	if(!firerange)
+		new /obj/effect/hotspot(T)
+		return
+	for(var/turf/target as anything in RANGE_TURFS(firerange,T))
+		new /obj/effect/hotspot(target)
+
+/datum/reagent/miracle/process(seconds_per_tick)
+	exoticresonance(1)
 
 /datum/reagent/miracle/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	radiation_pulse(affected_mob, max_range = 1, threshold = 0.1, chance = 80)
+	exoticresonance(0)
 	if(affected_mob.adjustToxLoss(10 * seconds_per_tick * REM, updating_health = FALSE) || affected_mob.adjustFireLoss(10 * seconds_per_tick * REM, updating_health = FALSE))
 		return UPDATE_MOB_HEALTH
 
@@ -155,25 +209,28 @@
 	if(isspaceturf(exposed_turf))
 		return
 
-	radiation_pulse(holder.my_atom, max_range = 4, threshold = 0.1, chance = 80)
+	exoticresonance(3)
 
 /datum/reagent/miracle/expose_obj(obj/exposed_obj)
 	. = ..()
-	radiation_pulse(holder.my_atom, max_range = 4, threshold = 0.1, chance = 80)
+	exoticresonance(3)
 
 /datum/reagent/miracle/expose_mob(mob/living/exposed_mob, methods=TOUCH)
 	. = ..()
-	radiation_pulse(exposed_mob, max_range = 4, threshold = 0.1, chance = 80)
+	exoticresonance(1)
 
 /datum/chemical_reaction/miracle_creation
 	results = list(/datum/reagent/miracle = 1)
-	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 30, /datum/reagent/gravitum/aerialite = 30, /datum/reagent/resmythril = 30, /datum/reagent/exodust = 30, /datum/reagent/darkplasma = 30)
+	required_reagents = list(/datum/reagent/auric = 30, /datum/reagent/gravitum/aerialite = 30, /datum/reagent/resmythril = 30, /datum/reagent/exodust = 30, /datum/reagent/darkplasma = 30)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction fractalizes!"
 	mix_sound = 'sound/magic/cosmic_expansion.ogg'
 
 /datum/chemical_reaction/miracle_creation/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	radiation_pulse(holder.my_atom, max_range = 6, threshold = 0.1, chance = 80)
+	var/turf/T = get_turf(holder.my_atom)
+	for(var/turf/target as anything in RANGE_TURFS(1,T))
+		new /obj/effect/hotspot(target)
 
 /datum/reagent/aggregation_agent
 	name = "Aggregation Agent"
@@ -254,12 +311,12 @@
 	for(var/i in 1 to created_volume)
 		new /obj/item/stack/sheet/mineral/resmythril(location)
 
-/datum/reagent/consumable/liquidelectricity/auric/redlightning
+/datum/reagent/auric/redlightning
 	name = "Liquid Red Lightning"
 	description = "A liquid lightning that seems to sputter with explosive power. It seems highly unstable."
 	color = "#ff4545"
-	taste_description = "godlike power"
-	shock_speed = 40
+	taste_description = "a raging storm"
+	regen_mana = FALSE
 
 /obj/item/reagent_containers/cup/beaker/redlightning
 	name = "red lightning container"
@@ -286,7 +343,7 @@
 	update_appearance()
 
 /obj/item/reagent_containers/cup/beaker/redlightning/filled
-	list_reagents = list(/datum/reagent/consumable/liquidelectricity/auric/redlightning = 300)
+	list_reagents = list(/datum/reagent/auric/redlightning = 300)
 
 /datum/reagent/aggregation_agent/advanced
 	name = "Advanced Aggregation Agent"
@@ -298,7 +355,7 @@
 
 /datum/chemical_reaction/advanced_aggregation_creation
 	results = list(/datum/reagent/aggregation_agent/advanced = 1)
-	required_reagents = list(/datum/reagent/aggregation_agent = 1, /datum/reagent/consumable/liquidelectricity/auric/redlightning = 2)
+	required_reagents = list(/datum/reagent/aggregation_agent = 1, /datum/reagent/auric/redlightning = 2)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_CHEMICAL
 
 /datum/chemical_reaction/true_miracle
