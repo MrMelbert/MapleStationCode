@@ -79,6 +79,9 @@
 		sanitization = max(sanitization - (WOUND_BURN_SANITIZATION_RATE * bandage_factor * seconds_per_tick), 0)
 
 /datum/wound/flesh/proc/handle_infection(seconds_per_tick)
+	if(sanitization > 0)
+		return
+
 	infection += infection_rate * seconds_per_tick
 	switch(infection)
 		if(0 to WOUND_INFECTION_MODERATE)

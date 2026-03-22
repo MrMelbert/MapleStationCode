@@ -33,8 +33,6 @@
 	)
 	/// A specified wizard corpse spawner to use. If null, picks from the list above instead.
 	var/selected_outfit
-	/// What's our "blood type"? So fake-humans splash blood on people in combat
-	var/fake_blood_type
 
 	/// Typepath for the wizard's targeted spell. If null, selects randomly.
 	var/targeted_spell_path
@@ -55,6 +53,7 @@
 	)
 
 /mob/living/basic/wizard/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	if(!selected_outfit)
 		selected_outfit = pick_weight(wizard_outfits)
@@ -84,11 +83,6 @@
 	var/datum/action/cooldown/spell/teleport/radius_turf/blink/lesser/blink_spell = new(src)
 	blink_spell.Grant(src)
 	ai_controller.set_blackboard_key(BB_WIZARD_BLINK_SPELL, blink_spell)
-
-/mob/living/basic/wizard/get_blood_type()
-	if(!fake_blood_type)
-		fake_blood_type = random_human_blood_type()
-	return find_blood_type(fake_blood_type)
 
 /mob/living/basic/wizard/init_unconscious_appearance()
 	add_generic_humanoid_static_appearance()

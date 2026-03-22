@@ -81,6 +81,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && blood_volume < BLOOD_VOLUME_BAD)
 				return BLOOD_LOSS
 
+			return "hypoxia"
+
 		if(TOX_DAMAGE)
 			var/obj/item/organ/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
 			if(isnull(liver) || (liver.organ_flags & ORGAN_FAILING))

@@ -602,7 +602,7 @@
 		cell.maxcharge -= min(damage_energy_consumption, cell.maxcharge)
 
 	if((internal_damage & MECHA_INT_FUEL_LINE) && oil_pool >= 0.5 && isturf(loc) && SPT_PROB(round(oil_pool / 2, 0.1), seconds_per_tick))
-		find_blood_type(oil_type)?.make_blood_splatter(loc, TRUE, list("[oil_name]" = oil_type))
+		find_blood_type(oil_type).make_blood_splatter(loc, TRUE, list("[oil_name]" = oil_type))
 		oil_pool -= 0.5
 
 /obj/vehicle/sealed/mecha/proc/process_cabin_air(seconds_per_tick)

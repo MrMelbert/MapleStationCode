@@ -75,7 +75,7 @@ export const damageTypes: damageType[] = [
     type: 'toxLoss',
   },
   {
-    label: 'Respiratory',
+    label: 'Hypoxia',
     type: 'oxyLoss',
   },
 ];

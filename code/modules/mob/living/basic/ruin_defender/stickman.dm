@@ -20,6 +20,7 @@
 	unsuitable_atmos_damage = 7.5
 	unsuitable_cold_damage = 7.5
 	unsuitable_heat_damage = 7.5
+	initial_blood_type = null
 
 	ai_controller = /datum/ai_controller/basic_controller/stickman
 
