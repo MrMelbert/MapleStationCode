@@ -5,7 +5,7 @@
 	taste_description = "absolute power"
 	var/shock_timer = 0
 	var/shock_speed = 20
-	creation_purity = 1
+	chemical_flags = 0
 
 /datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -48,6 +48,13 @@
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction lightens!"
 
+/datum/chemical_reaction/aerialitebuffer
+	results = list(/datum/reagent/reaction_agent/acidic_buffer = 5)
+	required_reagents = list(/datum/reagent/sodium = 10)
+	required_catalysts = list(/datum/reagent/gravitum/aerialite = 1)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction stabilizes!"
+
 /datum/reagent/resmythril
 	name = "Resonant Mythril"
 	description = "A powdered turquoise metal that seems to resonate with electromagnetic waves. It hums softly with latent energy."
@@ -71,6 +78,13 @@
 	required_reagents = list(/datum/reagent/resmythril = 1, /datum/reagent/stabilizing_agent = 5)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction buzzes quietly!"
+
+/datum/chemical_reaction/mythrilbuffer
+	results = list(/datum/reagent/reaction_agent/basic_buffer = 5)
+	required_reagents = list(/datum/reagent/hydrogen = 10)
+	required_catalysts = list(/datum/reagent/resmythril = 1)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction stabilizes!"
 
 /datum/reagent/exodust
 	name = "Crystalline ExoPrism"
