@@ -92,8 +92,9 @@
 
 	for(var/mob/living/carbon/human/found_human as anything in funny_looking_mobs)
 		var/image/funny_image = make_delusion_image(found_human)
+		if(found_human != hallucinator)
+			RegisterSignal(found_human, COMSIG_QDELETING, PROC_REF(on_mob_delete))
 		RegisterSignal(found_human, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_change))
-		RegisterSignal(found_human, COMSIG_QDELETING, PROC_REF(on_mob_delete))
 		// if a lighting underlay is added or removed, also add or remove it to the corresponding image
 		RegisterSignal(found_human, COMSIG_MOVABLE_LIGHT_UNDERLAY_ADDED, PROC_REF(on_mob_light_add))
 		RegisterSignal(found_human, COMSIG_MOVABLE_LIGHT_UNDERLAY_REMOVED, PROC_REF(on_mob_light_remove))
