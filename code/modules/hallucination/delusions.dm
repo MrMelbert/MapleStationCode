@@ -93,7 +93,10 @@
 	for(var/mob/living/carbon/human/found_human as anything in funny_looking_mobs)
 		var/image/funny_image = make_delusion_image(found_human)
 		RegisterSignal(found_human, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_change))
-		RegisterSignal(found_human, COMSIG_QDELETING, PROC_REF(on_mob_delete), TRUE)
+		RegisterSignal(found_human, COMSIG_QDELETING, PROC_REF(on_mob_delete))
+		// if a lighting underlay is added or removed, also add or remove it to the corresponding image
+		RegisterSignal(found_human, COMSIG_MOVABLE_LIGHT_UNDERLAY_ADDED, PROC_REF(on_mob_light_add))
+		RegisterSignal(found_human, COMSIG_MOVABLE_LIGHT_UNDERLAY_REMOVED, PROC_REF(on_mob_light_remove))
 		LAZYSET(delusions, found_human, funny_image)
 		hallucinator.client.images |= funny_image
 
@@ -113,6 +116,10 @@
 		funny_image = image(delusion_icon_file, over_who, delusion_icon_state)
 	funny_image.name = delusion_name
 	funny_image.override = TRUE
+	// copies over lighting underlays
+	for(var/image/underlay as anything in over_who.underlays)
+		if(PLANE_TO_TRUE(underlay.plane) == O_LIGHTING_VISUAL_PLANE)
+			funny_image.underlays |= underlay
 	return funny_image
 
 /datum/hallucination/delusion/proc/on_mob_delete(mob/living/carbon/human/source)
@@ -129,6 +136,16 @@
 	SIGNAL_HANDLER
 	var/image/funny_image = delusions[source]
 	SET_PLANE_EXPLICIT(funny_image, ABOVE_GAME_PLANE, source)
+
+/datum/hallucination/delusion/proc/on_mob_light_add(mob/living/carbon/human/source, image/underlay)
+	SIGNAL_HANDLER
+	var/image/funny_image = delusions[source]
+	funny_image.underlays |= underlay
+
+/datum/hallucination/delusion/proc/on_mob_light_remove(mob/living/carbon/human/source, image/underlay)
+	SIGNAL_HANDLER
+	var/image/funny_image = delusions[source]
+	funny_image.underlays -= underlay
 
 /datum/hallucination/delusion/proc/examine_name_override(datum/source, mob/living/examined, visible_name, list/name_override)
 	SIGNAL_HANDLER
