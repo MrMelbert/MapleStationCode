@@ -274,6 +274,15 @@
 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
 	default_area = /area/icemoon/underground/unexplored
 
+/datum/map_template/ruin/sandbox/grail
+	name = "Sand-Ruin Holy Grail Site"
+	id = "grail"
+	description = "The rumored location of the legendary Holy Grail, said to grant life and healing, but guarded by ancient crusaders."
+	suffix = "sandbox_underground_grail.dmm"
+	cost = 15
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
+
 /datum/map_template/ruin/sandbox/library
 	name = "Sand-Ruin Library"
 	id = "library"
@@ -292,6 +301,7 @@
 	suffix = "sandbox_underground_tomb.dmm"
 	cost = 15
 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	always_place = TRUE
 	default_area = /area/icemoon/underground/unexplored
 
 /datum/map_template/ruin/sandbox/railway
@@ -303,3 +313,172 @@
 	cost = 10
 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
 	default_area = /area/icemoon/underground/unexplored
+
+/obj/item/reagent_containers/cup/glass/trophy/grail
+	name = "holy grail"
+	desc = "The legendary Holy Grail, said to grant life and healing to those who drink from it."
+	icon = 'icons/obj/drinks/bottles.dmi'
+	icon_state = "golden_cup"
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/reagent_containers/cup/glass/trophy/grail/real
+	icon_state = "bronze_cup"
+
+/obj/item/reagent_containers/cup/glass/trophy/grail/real/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/water/holywater/grail_water, reagents.maximum_volume)
+
+/obj/item/reagent_containers/cup/glass/trophy/grail/fake
+	icon_state = "silver_cup"
+
+/obj/item/reagent_containers/cup/glass/trophy/grail/fake/Initialize(mapload, vol)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/fuel/unholywater/grail_water, reagents.maximum_volume)
+
+/obj/item/reagent_containers/cup/glass/trophy/grail/fake/b
+	icon_state = "golden_cup"
+
+/datum/reagent/fuel/unholywater/grail_water
+	name = "Grail Water"
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM
+	chemical_flags = REAGENT_UNAFFECTED_BY_METABOLISM
+	color = "#E0E8EF"
+
+/datum/reagent/fuel/unholywater/grail_water/on_mob_life(mob/living/carbon/human/user, seconds_per_tick, times_fired)
+	. = ..()
+	if(SPT_PROB(10, seconds_per_tick))
+		to_chat(user, span_red("You feel older."))
+	user.age += 1 * seconds_per_tick
+	switch(user.age)
+		if(90 to INFINITY)
+			to_chat(user, span_userdanger("You feel your life fading away!"))
+			user.death(null, "old age")
+		if(70 to 90)
+			user.cause_pain(1.5 * seconds_per_tick)
+		if(50 to 70)
+			user.cause_pain(1 * seconds_per_tick)
+		if(20 to 50)
+			user.cause_pain(0.5 * seconds_per_tick)
+
+/datum/reagent/water/holywater/grail_water
+	name = "Grail Water"
+	metabolization_rate = 2.5 * REAGENTS_METABOLISM
+	chemical_flags = REAGENT_UNAFFECTED_BY_METABOLISM
+	color = "#E0E8EF"
+
+/datum/reagent/water/holywater/grail_water/on_mob_life(mob/living/carbon/human/user, seconds_per_tick, times_fired)
+	. = ..()
+	if(SPT_PROB(10, seconds_per_tick))
+		to_chat(user, span_green("You feel a warm sensation wash over you."))
+	user.age = max(20, user.age - 0.5 * seconds_per_tick)
+	user.adjustBruteLoss(-1.5 * seconds_per_tick)
+	user.adjustFireLoss(-1.5 * seconds_per_tick)
+	user.heal_pain(1 * seconds_per_tick)
+
+/obj/item/nullrod/egyptian/cursed
+	var/has_cursed = FALSE
+
+/obj/item/nullrod/egyptian/cursed/equipped(mob/living/carbon/user, slot, initial)
+	. = ..()
+	if(has_cursed || !iscarbon(user) || isskeleton(user))
+		return
+	if(!(slot & ITEM_SLOT_HANDS))
+		return
+
+	var/datum/disease/curse_of_ra/curse = new()
+	curse.antimagic_bypass = TRUE
+	curse.cure_chance *= 0.5
+	if(user.ForceContractDisease(curse, FALSE, TRUE))
+		to_chat(user, span_hypnophrase("As you pick up [src], you feel a dark presence enter your mind... \
+			Strange symbols fill your vision, and you think for a moment you hear... 'curso fra'...?"))
+		has_cursed = TRUE
+
+/datum/disease/curse_of_ra
+	name = "Curse of Ra"
+	max_stages = 5
+	cures = list(/datum/reagent/water/holywater)
+	spread_flags = DISEASE_SPREAD_AIRBORNE | DISEASE_SPREAD_CONTACT_SKIN
+	agent = "Dark Magic"
+	viable_mobtypes = list(/mob/living/carbon/human)
+	desc = "A powerful curse."
+	infectivity = 33
+	severity = DISEASE_SEVERITY_HARMFUL
+	bypasses_immunity = TRUE
+	disease_flags = CURABLE|INCREMENTAL_CURE
+	var/antimagic_bypass = FALSE
+
+/datum/disease/curse_of_ra/stage_act(seconds_per_tick, times_fired)
+	. = ..()
+	if(!.)
+		return
+
+	switch(stage)
+		if(1)
+			if(SPT_PROB(1, seconds_per_tick))
+				affected_mob.emote("cough")
+				if(affected_mob.CanSpreadAirborneDisease())
+					spread()
+
+		if(2)
+			if(SPT_PROB(3, seconds_per_tick))
+				affected_mob.emote("cough")
+				affected_mob.apply_damage(1, OXY)
+				if(affected_mob.CanSpreadAirborneDisease())
+					spread()
+			if(SPT_PROB(1, seconds_per_tick))
+				affected_mob.emote("pale")
+
+		if(3)
+			if(SPT_PROB(3, seconds_per_tick))
+				affected_mob.emote("cough")
+				to_chat(affected_mob, span_warning("You cough up sand!"))
+				new /obj/item/stack/ore/glass(affected_mob.loc)
+				affected_mob.apply_damage(5, OXY)
+				if(affected_mob.CanSpreadAirborneDisease())
+					spread()
+
+			if(SPT_PROB(2, seconds_per_tick))
+				affected_mob.emote("pale")
+
+/datum/disease/curse_of_ra/try_infect(mob/living/infectee, make_copy)
+	if(!antimagic_bypass && infectee.can_block_magic(MAGIC_RESISTANCE_HOLY, 1))
+		return FALSE
+
+	return ..()
+
+/obj/structure/closet/crate/necropolis/ark
+	name = "ark of the covenant"
+	var/desouled = FALSE
+
+/obj/structure/closet/crate/necropolis/ark/before_open(mob/living/user, force)
+	if(force || desouled)
+		return ..()
+
+	user.visible_message(
+		span_notice("[user] attempts to pry open [src]..."),
+		span_notice("You attempt to pry open [src]... \
+			Though you really feel like you should be prepared - and [src] should be somewhere safe - before you do this..."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+	if(!do_after(user, 10 SECONDS, src))
+		return FALSE
+	user.visible_message(
+		span_notice("[user] pries open [src]!"),
+		span_notice("You pry open [src]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+	return ..()
+
+
+/obj/structure/closet/crate/necropolis/ark/after_open(mob/living/user, force)
+	. = ..()
+	if(force || desouled)
+		return
+
+	for(var/i in 1 to rand(8, 12))
+		new /mob/living/basic/ghost/hostile(loc)
+
+	desouled = TRUE
+	visible_message(
+		span_warning("Souls begin to pour out of [src] and into the world!"),
+	)

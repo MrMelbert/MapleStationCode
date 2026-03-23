@@ -372,6 +372,15 @@
 /obj/effect/turf_decal/stripes/box,
 /turf/open/floor/iron/dark,
 /area/station/engineering/lobby)
+"ahr" = (
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 6
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "ahA" = (
 /obj/structure/chair{
 	dir = 4
@@ -1042,8 +1051,8 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/medical/virology)
 "arw" = (
-/obj/machinery/power/solar,
 /obj/structure/cable,
+/obj/machinery/power/solar/titaniumglass,
 /turf/open/floor/iron/solarpanel,
 /area/icemoon/surface/outdoors/nospawn)
 "arA" = (
@@ -2719,10 +2728,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/lobby)
-"aSj" = (
-/obj/machinery/power/solar,
-/turf/open/floor/iron/solarpanel,
-/area/icemoon/surface/outdoors/nospawn)
 "aSo" = (
 /turf/closed/wall,
 /area/station/medical/medbay/aft)
@@ -7049,6 +7054,13 @@
 	dir = 1
 	},
 /area/mine/living_quarters)
+"cbj" = (
+/obj/structure/marker_beacon/burgundy,
+/obj/effect/turf_decal/weather/sand{
+	dir = 6
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "cbk" = (
 /turf/open/floor/iron,
 /area/mine/mechbay)
@@ -7367,6 +7379,13 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"cfN" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "cfT" = (
 /obj/machinery/atmospherics/pipe/multiz/supply/visible/layer4{
 	color = "#0000ff";
@@ -14377,6 +14396,9 @@
 "efJ" = (
 /obj/structure/transit_tube/curved/flipped,
 /obj/structure/cable,
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
 /turf/open/floor/plating/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "efK" = (
@@ -18924,6 +18946,13 @@
 	},
 /turf/open/floor/cult,
 /area/station/service/chapel/office)
+"fCC" = (
+/obj/effect/light_emitter/fake_outdoors,
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "fCM" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -22886,6 +22915,11 @@
 /obj/effect/turf_decal/tile/red,
 /turf/open/floor/iron,
 /area/station/security/prison/mess)
+"gOT" = (
+/obj/effect/light_emitter/fake_outdoors,
+/obj/effect/turf_decal/weather/sand,
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "gOU" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/middle{
 	dir = 1
@@ -26533,6 +26567,11 @@
 /obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
+"hVO" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/weather/sand,
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "hVW" = (
 /obj/machinery/door/window/left/directional/north{
 	base_state = "right";
@@ -27526,6 +27565,13 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/morgue)
+"ilX" = (
+/obj/structure/marker_beacon/burgundy,
+/obj/effect/turf_decal/weather/sand{
+	dir = 10
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "ilZ" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -43460,6 +43506,9 @@
 "nec" = (
 /obj/structure/transit_tube,
 /obj/structure/cable,
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
 /turf/open/floor/plating/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "ned" = (
@@ -45954,6 +46003,15 @@
 	},
 /turf/open/floor/iron/white/corner,
 /area/station/commons/storage/art)
+"nQw" = (
+/obj/effect/turf_decal/weather/sand{
+	dir = 6
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 1
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "nQx" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -50400,6 +50458,9 @@
 "pfd" = (
 /obj/structure/fence/door/opened{
 	dir = 4
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 1
 	},
 /turf/open/floor/plating/sand,
 /area/icemoon/surface/outdoors/nospawn)
@@ -232514,7 +232575,7 @@ viE
 pRj
 pRj
 pRj
-ltB
+ilX
 jEX
 jEX
 jEX
@@ -232771,7 +232832,7 @@ hrn
 lPE
 daS
 nNr
-gKs
+gOT
 jEX
 jEX
 jEX
@@ -233028,7 +233089,7 @@ pRj
 pRj
 pRj
 pRj
-ltB
+cbj
 jEX
 jEX
 jEX
@@ -236387,7 +236448,7 @@ arw
 arw
 arw
 arw
-sIK
+ayM
 jEX
 jEX
 jEX
@@ -236637,7 +236698,7 @@ sIN
 xmK
 uaG
 xdx
-sIK
+oOF
 wts
 sIK
 sIK
@@ -236645,7 +236706,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
+ayM
 jEX
 jEX
 jEX
@@ -236894,7 +236955,7 @@ rkc
 gxR
 uaG
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -237151,7 +237212,7 @@ rkc
 qWM
 lha
 jEX
-sIK
+oOF
 wts
 sIK
 sIK
@@ -237408,7 +237469,7 @@ kMY
 qde
 lha
 xdx
-sIK
+oOF
 wts
 wts
 arw
@@ -237665,7 +237726,7 @@ iBX
 aUj
 aUj
 jWa
-sIK
+oOF
 wts
 sIK
 sIK
@@ -237922,7 +237983,7 @@ qtj
 qtj
 aUj
 jEX
-sIK
+oOF
 sIK
 wts
 arw
@@ -238179,6 +238240,7 @@ wTg
 jWJ
 gyR
 ffK
+oOF
 sIK
 sIK
 sIK
@@ -238186,8 +238248,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
-sIK
+ayM
 jEX
 jEX
 jEX
@@ -238436,7 +238497,7 @@ gGt
 hrU
 rIX
 xdx
-sIK
+oOF
 wts
 wts
 arw
@@ -238693,7 +238754,7 @@ gyR
 gyR
 gyR
 ffK
-sIK
+oOF
 wts
 sIK
 sIK
@@ -238702,7 +238763,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
+ayM
 jEX
 xdx
 jEX
@@ -238948,6 +239009,8 @@ gKs
 sIK
 sIK
 gKs
+vfC
+vfC
 sIK
 sIK
 sIK
@@ -238960,9 +239023,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
-sIK
-sIK
+ayM
 jEX
 mJT
 jEX
@@ -239219,7 +239280,7 @@ arw
 arw
 arw
 arw
-sIK
+aec
 jEX
 mJT
 jEX
@@ -239724,7 +239785,7 @@ arw
 wts
 sIK
 wts
-aSj
+arw
 arw
 arw
 arw
@@ -240238,7 +240299,7 @@ wAC
 sIK
 wts
 sIK
-aSj
+arw
 arw
 arw
 arw
@@ -240247,7 +240308,7 @@ sIK
 wts
 sIK
 arw
-sIK
+aec
 jEX
 mJT
 jEX
@@ -240504,7 +240565,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
+aec
 jEX
 mJT
 jEX
@@ -240761,7 +240822,7 @@ sIK
 sIK
 wts
 wAC
-sIK
+aec
 jEX
 mJT
 jEX
@@ -242560,7 +242621,7 @@ sIK
 sIK
 sIK
 sIK
-sIK
+cwF
 jEX
 mJT
 jEX
@@ -242815,7 +242876,7 @@ wts
 sIK
 sIK
 sIK
-sIK
+cwF
 jEX
 jEX
 jEX
@@ -243579,9 +243640,9 @@ aPD
 aPD
 aPD
 sIK
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -243836,9 +243897,9 @@ mbs
 uDi
 uLr
 ngp
-sIK
+aec
 jEX
-sIK
+oOF
 sIK
 sIK
 sIK
@@ -244093,9 +244154,9 @@ gEr
 mzz
 lzy
 gKs
-sIK
+aec
 jEX
-sIK
+oOF
 sIK
 wts
 arw
@@ -244350,13 +244411,13 @@ qrm
 mzz
 aPD
 ngp
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 sIK
 sIK
-sIK
+aec
 jEX
 jEX
 jEX
@@ -244606,10 +244667,10 @@ iaY
 duh
 duh
 duh
-sIK
-sIK
+oOF
+aec
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -244863,10 +244924,10 @@ dFo
 kKy
 duh
 jEX
-sIK
-sIK
+oOF
+aec
 jEX
-sIK
+oOF
 wts
 sIK
 sIK
@@ -245120,10 +245181,10 @@ lhO
 fFi
 duh
 jEX
-sIK
-sIK
+oOF
+aec
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -245378,13 +245439,13 @@ nTL
 cHf
 rYg
 wts
-sIK
+aec
 jEX
+oOF
 sIK
 sIK
 sIK
-sIK
-sIK
+aec
 jEX
 jEX
 jEX
@@ -245633,11 +245694,11 @@ njm
 njm
 njm
 duh
-sIK
+oOF
 dnd
-sIK
+aec
 jEX
-sIK
+oOF
 sIK
 wts
 arw
@@ -245892,13 +245953,13 @@ jEX
 jEX
 jEX
 nRJ
-sIK
+aec
 jEX
+oOF
 sIK
 sIK
 sIK
-sIK
-sIK
+aec
 jEX
 jEX
 jEX
@@ -246149,9 +246210,9 @@ jEX
 jEX
 jEX
 eiw
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -246399,20 +246460,20 @@ jEX
 jEX
 jEX
 jEX
-sIK
+aec
 jEX
 jEX
 jEX
 jEX
 jEX
 eiw
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 sIK
 sIK
-sIK
+aec
 jEX
 jEX
 jEX
@@ -246656,16 +246717,16 @@ jEX
 jEX
 ilq
 jEX
-gKs
+gOT
 jEX
 jEX
 jEX
 jEX
 jEX
 nRJ
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 wts
 arw
@@ -246913,19 +246974,19 @@ jEX
 jEX
 jEX
 jEX
-sIK
+aec
 jEX
 jEX
 jEX
 jEX
 jEX
 eiw
-sIK
+aec
 jEX
-sIK
+oOF
 wts
 sIK
-sIK
+aec
 jEX
 jEX
 jEX
@@ -247161,16 +247222,16 @@ cEw
 bCT
 kfs
 sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
+rRE
+rRE
+rRE
+rRE
+rRE
+rRE
+rRE
+rRE
+rRE
+cwF
 jEX
 jEX
 jEX
@@ -247439,7 +247500,7 @@ jEX
 sIK
 jEX
 jEX
-sIK
+aec
 jEX
 jEX
 jEX
@@ -247697,9 +247758,9 @@ sIK
 sIK
 sIK
 sIK
-sIK
-sIK
-sIK
+vfC
+vfC
+ayM
 jEX
 jEX
 mJT
@@ -247934,20 +247995,20 @@ rCW
 lfF
 fJe
 sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
-wts
+rRE
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+hjF
+cfN
 efJ
 nec
 nec
@@ -247956,7 +248017,7 @@ nec
 sjr
 wts
 wts
-wts
+hVO
 jEX
 jEX
 fQQ
@@ -248190,7 +248251,7 @@ loV
 kfs
 kfs
 kfs
-sIK
+aec
 xdx
 jEX
 jEX
@@ -248213,7 +248274,7 @@ jEX
 ltB
 fNF
 sIK
-wts
+hVO
 jEX
 jEX
 mJT
@@ -248712,14 +248773,14 @@ wvI
 wvI
 pwF
 wvI
-sIK
-gKs
-sIK
-sIK
-sIK
-sIK
-sIK
-sIK
+vfC
+fCC
+vfC
+vfC
+vfC
+vfC
+vfC
+ahr
 jEX
 jEX
 jEX
@@ -251296,7 +251357,7 @@ jEX
 jEX
 jEX
 jEX
-sIK
+oOF
 xdx
 jEX
 jEX
@@ -251810,7 +251871,7 @@ jEX
 jEX
 jEX
 jEX
-sIK
+nQw
 jEX
 jEX
 jEX

@@ -278,6 +278,8 @@
 /obj/item/coin/runite,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/mob_spawn/corpse/human/skeleton/mummy/pharoh,
+/obj/item/nullrod/egyptian/cursed,
+/obj/item/organ/heart/cursed,
 /turf/open/floor/iron/terracotta/herringbone{
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},

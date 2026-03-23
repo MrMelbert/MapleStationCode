@@ -40,4 +40,4 @@
 	name = "Pharaoh Mummy"
 	uniform = /obj/item/clothing/under/costume/mummy
 	head = /obj/item/clothing/head/costume/pharaoh
-	r_hand = /obj/item/nullrod/egyptian
+	// r_hand = /obj/item/nullrod/egyptian/cursed

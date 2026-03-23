@@ -21,7 +21,7 @@
 	area_type = /area
 	protect_indoors = TRUE
 	target_trait = ZTRAIT_SANDSTORM
-	// immunity_type = TRAIT_SANDSTORM_IMMUNE
+	immunity_type = TRAIT_SANDSTORM_IMMUNE
 	probability = 90
 
 	// weather_flags = (WEATHER_MOBS | WEATHER_BAROMETER)
@@ -76,7 +76,12 @@
 	GLOB.sand_storm_sounds.Cut()
 
 /datum/weather/sand_storm/weather_act(mob/living/victim)
-	victim.adjustBruteLoss(5, required_bodytype = BODYTYPE_ORGANIC)
+	if(!ishuman(victim))
+		victim.adjustBruteLoss(5, required_bodytype = BODYTYPE_ORGANIC)
+		return
+
+	for(var/zone in GLOB.all_body_zones)
+		victim.apply_damage(1, BRUTE, zone, victim.getarmor(zone, BOMB))
 
 /datum/weather/sand_storm/harmless
 	name = "sandfall"

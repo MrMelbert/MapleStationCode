@@ -118,3 +118,7 @@
 	melee_damage_upper = 10
 	death_message = "wails as it is torn back to the realm from which it came!"
 	random_identity = FALSE
+
+/mob/living/basic/ghost/hostile
+	faction = list(FACTION_HOSTILE)
+	ai_controller = /datum/ai_controller/basic_controller/blobbernaut

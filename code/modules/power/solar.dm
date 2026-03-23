@@ -404,6 +404,14 @@
 		return TRUE
 	return ..()
 
+/obj/machinery/power/solar/titaniumglass
+	material_type = /datum/material/alloy/titaniumglass
+	power_tier = 2
+
+/obj/machinery/power/solar/titaniumglass/Initialize(mapload, obj/item/solar_assembly/S)
+	. = ..()
+	update_appearance()
+
 //
 // Solar Control Computer
 //

@@ -21,6 +21,12 @@
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
+"k" = (
+/obj/item/clothing/suit/armor/vest/cuirass,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/surface/outdoors/nospawn)
 "n" = (
 /mob/living/basic/mining/wolf{
 	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
@@ -44,10 +50,6 @@
 /turf/open/misc/sandy_dirt{
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
-/area/icemoon/surface/outdoors/nospawn)
-"q" = (
-/obj/item/clothing/suit/armor/vest/cuirass,
-/turf/closed/wall/mineral/sandstone,
 /area/icemoon/surface/outdoors/nospawn)
 "r" = (
 /turf/open/misc/sandy_dirt{
@@ -453,12 +455,12 @@ r
 D
 Y
 Y
-q
 a
 a
 a
 a
-Y
+a
+k
 D
 D
 a

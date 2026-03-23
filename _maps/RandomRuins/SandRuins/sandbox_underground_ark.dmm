@@ -24,14 +24,14 @@
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/ruin/unpowered)
-"g" = (
-/turf/open/floor/iron/terracotta/small,
-/area/ruin/unpowered)
-"h" = (
-/mob/living/basic/skeleton/templar,
-/turf/open/floor/iron/terracotta{
+"f" = (
+/obj/effect/decal/cleanable/cobweb,
+/turf/open/chasm{
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
+/area/ruin/unpowered)
+"g" = (
+/turf/open/floor/iron/terracotta/small,
 /area/ruin/unpowered)
 "l" = (
 /obj/structure/railing{
@@ -79,6 +79,12 @@
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/ruin/unpowered)
+"u" = (
+/obj/effect/decal/cleanable/cobweb/cobweb2,
+/turf/open/chasm{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
 "w" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta/small,
@@ -97,10 +103,18 @@
 	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/ruin/unpowered)
+"C" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/light_emitter/fake_outdoors,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
 "D" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
 /turf/open/misc/beach/sand,
 /area/icemoon/underground/unexplored)
+"E" = (
+/turf/closed/indestructible/sandstone,
+/area/ruin/unpowered)
 "F" = (
 /obj/structure/flora/tree/palm/style_random,
 /turf/open/misc/beach/sand,
@@ -110,10 +124,8 @@
 /turf/open/floor/iron/terracotta/small,
 /area/ruin/unpowered)
 "I" = (
-/obj/structure/closet/crate/necropolis{
-	name = "ark of the covenant"
-	},
-/obj/item/veilrender/vealrender,
+/obj/structure/closet/crate/necropolis/ark,
+/obj/effect/decal/cleanable/cobweb/cobweb2,
 /turf/open/floor/iron/terracotta/small,
 /area/ruin/unpowered)
 "J" = (
@@ -187,14 +199,14 @@ N
 (2,1,1) = {"
 N
 N
-d
-d
-d
-d
-d
-d
-d
-d
+E
+E
+E
+E
+E
+E
+E
+E
 d
 d
 d
@@ -203,9 +215,9 @@ N
 "}
 (3,1,1) = {"
 N
-d
-d
-M
+E
+E
+f
 M
 M
 M
@@ -220,7 +232,7 @@ a
 "}
 (4,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -237,7 +249,7 @@ a
 "}
 (5,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -254,7 +266,7 @@ D
 "}
 (6,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -271,7 +283,7 @@ a
 "}
 (7,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -288,7 +300,7 @@ a
 "}
 (8,1,1) = {"
 N
-d
+E
 s
 s
 s
@@ -305,9 +317,9 @@ a
 "}
 (9,1,1) = {"
 N
-d
-d
-d
+E
+E
+E
 S
 V
 g
@@ -322,11 +334,11 @@ D
 "}
 (10,1,1) = {"
 N
-d
-d
+E
+E
 I
-w
-h
+C
+U
 U
 V
 V
@@ -339,9 +351,9 @@ a
 "}
 (11,1,1) = {"
 N
-d
-d
-d
+E
+E
+E
 g
 V
 g
@@ -356,7 +368,7 @@ D
 "}
 (12,1,1) = {"
 N
-d
+E
 m
 m
 m
@@ -373,7 +385,7 @@ a
 "}
 (13,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -390,7 +402,7 @@ a
 "}
 (14,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -407,7 +419,7 @@ Z
 "}
 (15,1,1) = {"
 N
-d
+E
 M
 M
 M
@@ -424,8 +436,8 @@ a
 "}
 (16,1,1) = {"
 N
-d
-M
+E
+u
 M
 M
 M
@@ -441,8 +453,8 @@ N
 "}
 (17,1,1) = {"
 N
-d
-d
+E
+E
 M
 M
 M
@@ -459,14 +471,14 @@ N
 (18,1,1) = {"
 N
 N
-d
-d
-d
-d
-d
-d
-d
-d
+E
+E
+E
+E
+E
+E
+E
+E
 d
 d
 d
