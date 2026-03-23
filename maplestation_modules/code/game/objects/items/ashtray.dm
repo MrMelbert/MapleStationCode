@@ -81,16 +81,12 @@
 	return .
 
 /obj/item/ashtray/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(. & ITEM_INTERACT_BLOCKING)
-		return .
-
 	if(!istype(tool, /obj/item/cigarette) \
 		&& !istype(tool, /obj/item/cigbutt) \
 		&& !istype(tool, /obj/item/food/candy_trash) \
 		&& !istype(tool, /obj/item/match) \
 	)
-		return .
+		return NONE
 
 	if(length(contents) > 24)
 		balloon_alert(user, "it's full!")
@@ -116,6 +112,7 @@
 		cig.transfer_fingerprints_to(butt)
 		cig.transfer_fibers_to(butt)
 		qdel(cig)
+		new /obj/effect/abstract/smell/cigarette_smoke/lingering/longer(src)
 
 	else
 		user.visible_message(

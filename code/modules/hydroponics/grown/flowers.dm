@@ -15,7 +15,7 @@
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	icon_grow = "poppy-grow"
 	icon_dead = "poppy-dead"
-	genes = list(/datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/preserved, /datum/plant_gene/trait/scent)
 	mutatelist = list(/obj/item/seeds/poppy/geranium, /obj/item/seeds/poppy/lily)
 	reagents_add = list(/datum/reagent/medicine/c2/libital = 0.2, /datum/reagent/consumable/nutriment = 0.05)
 
@@ -31,10 +31,7 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/vermouth
 	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
-
-/obj/item/food/grown/poppy/Initialize(mapload, obj/item/seeds/new_seed)
-	. = ..()
-	AddElement(/datum/element/simple_smell, "flowers", SMELL_INTENSITY_WEAK, 1, "fragrance")
+	juice_typepath = /datum/reagent/medicine/painkiller/oxycodone
 
 // Lily
 /obj/item/seeds/poppy/lily
@@ -55,6 +52,7 @@
 	name = "lily"
 	desc = "A beautiful white flower."
 	icon_state = "lily"
+	juice_typepath = null
 
 	//Spacemans's Trumpet
 /obj/item/seeds/poppy/lily/trumpet
@@ -77,7 +75,7 @@
 	icon_grow = "spacemanstrumpet-grow"
 	icon_dead = "spacemanstrumpet-dead"
 	mutatelist = null
-	genes = list(/datum/plant_gene/reagent/preset/polypyr, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/reagent/preset/polypyr, /datum/plant_gene/trait/preserved, /datum/plant_gene/trait/scent/grass)
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05)
 	rarity = 30
 	graft_gene = /datum/plant_gene/reagent/preset/polypyr
@@ -111,6 +109,7 @@
 	name = "geranium"
 	desc = "A beautiful blue flower."
 	icon_state = "geranium"
+	juice_typepath = null
 
 ///Fraxinella seeds.
 /obj/item/seeds/poppy/geranium/fraxinella
@@ -150,7 +149,7 @@
 	potency = 30
 	instability = 1
 	growthstages = 4
-	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy, /datum/plant_gene/trait/preserved, /datum/plant_gene/trait/scent)
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.04)
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
@@ -175,7 +174,7 @@
 	species = "sunflower"
 	plantname = "Sunflowers"
 	product = /obj/item/food/grown/sunflower
-	genes = list(/datum/plant_gene/trait/attack/sunflower_attack, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/attack/sunflower_attack, /datum/plant_gene/trait/preserved, /datum/plant_gene/trait/scent)
 	endurance = 20
 	production = 2
 	yield = 2
@@ -290,7 +289,7 @@
 	potency = 15
 	instability = 20 //Roses crossbreed easily, and there's many many species of them.
 	growthstages = 3
-	genes = list(/datum/plant_gene/trait/repeated_harvest, /datum/plant_gene/trait/backfire/rose_thorns, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/repeated_harvest, /datum/plant_gene/trait/backfire/rose_thorns, /datum/plant_gene/trait/preserved, /datum/plant_gene/trait/scent)
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	icon_grow = "rose-grow"
 	icon_dead = "rose-dead"
@@ -300,7 +299,7 @@
 
 /obj/item/food/grown/rose
 	seed = /obj/item/seeds/rose
-	name = "\improper rose"
+	name = "rose"
 	desc = "The classic fleur d'amour - flower of love. Watch for its thorns!"
 	base_icon_state = "rose"
 	icon_state = "rose"
@@ -312,10 +311,6 @@
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES | GROSS
-
-/obj/item/food/grown/rose/Initialize(mapload, obj/item/seeds/new_seed)
-	. = ..()
-	AddElement(/datum/element/simple_smell, "roses", SMELL_INTENSITY_WEAK, 1, "fragrance")
 
 /obj/item/food/grown/rose/equipped(mob/user, slot, initial)
 	. = ..()

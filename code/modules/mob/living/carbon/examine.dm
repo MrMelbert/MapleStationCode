@@ -624,7 +624,7 @@
 			age_text = "very old"
 		if(101 to INFINITY)
 			age_text = "withering away"
-	. += list(span_notice("[p_They()] appear[p_s()] to be [age_text]."))
+	. += list(span_info("[p_They()] appear[p_s()] to be [age_text]."))
 
 /// Reports the height difference between src and user
 /mob/living/carbon/proc/get_height_difference(mob/user)
@@ -693,7 +693,7 @@
 			if(6 to INFINITY)
 				. += " [p_Theyre()] also significantly taller than a typical [dna.species]."
 
-	return span_notice(.)
+	return span_info(.)
 
 /// Returns the mob height modified by traits purely
 /mob/living/carbon/human/proc/get_visual_height()
@@ -735,7 +735,7 @@
 	if(!.)
 		return
 
-	return span_notice(.)
+	return span_info(.)
 
 
 /mob/living/carbon/human/proc/get_visual_strength()

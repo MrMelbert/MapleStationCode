@@ -256,12 +256,12 @@
 /obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
-	AddComponent(/datum/component/complex_smell, \
-		duration = 30 SECONDS, \
-		smell = "gunpowder", \
-		intensity = SMELL_INTENSITY_WEAK, \
-		radius = 2, \
-		wash_types = CLEAN_TYPE_FINGERPRINTS, \
+	add_smell(
+		duration = 30 SECONDS,
+		smell = "gunpowder",
+		intensity = SMELL_INTENSITY_WEAK,
+		radius = 2,
+		wash_type = CLEAN_TYPE_FINGERPRINTS,
 	)
 
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round

@@ -940,12 +940,14 @@
 	ADD_TRAIT(affected_mob, TRAIT_PREVENT_IMPLANT_AUTO_EXPLOSION, type)
 	ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
 	ADD_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
+	ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, type)
 
 /datum/reagent/medicine/atropine/on_mob_delete(mob/living/affected_mob)
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_PREVENT_IMPLANT_AUTO_EXPLOSION, type)
 	REMOVE_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
 	REMOVE_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, type)
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -989,13 +991,13 @@
 	. = ..()
 	ADD_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
 	ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
-	ADD_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
+	ADD_TRAIT(affected_mob, TRAIT_VASOCONSTRICTED, type)
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
-	REMOVE_TRAIT(affected_mob, TRAIT_NOCRITDAMAGE, type)
+	REMOVE_TRAIT(affected_mob, TRAIT_VASOCONSTRICTED, type)
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()

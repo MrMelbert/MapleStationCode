@@ -25,6 +25,7 @@
 	faction = list(FACTION_MUSHROOM)
 	speak_emote = list("squeaks")
 	death_message = "fainted!"
+	initial_blood_type = /datum/blood_type/water
 
 	ai_controller = /datum/ai_controller/basic_controller/mushroom
 	var/cap_color = "#ffffff"

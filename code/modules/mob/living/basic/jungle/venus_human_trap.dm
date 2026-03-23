@@ -162,6 +162,7 @@
 	speed = 1.2
 	melee_attack_cooldown = 1.2 SECONDS
 	ai_controller = /datum/ai_controller/basic_controller/human_trap
+	initial_blood_type = /datum/blood_type/water
 	///how much damage we take out of weeds
 	var/no_weed_damage = 12.5
 	///how much do we heal in weeds
