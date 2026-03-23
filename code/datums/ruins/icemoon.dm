@@ -187,8 +187,8 @@
 	ruin_type = ZTRAIT_SAND_RUINS
 	default_area = /area/icemoon/surface/outdoors/unexplored
 	has_ceiling = TRUE
-	// ceiling_turf = /turf/closed/mineral/random/snow/do_not_chasm
-	// ceiling_baseturfs = list(/turf/open/misc/asteroid/snow/icemoon/do_not_chasm)
+	ceiling_turf = /turf/closed/mineral/random/sand/do_not_chasm
+	ceiling_baseturfs = list(/turf/open/misc/beach/sand/no_ruins)
 
 /datum/map_template/ruin/sandbox/fountain_hall
 	name = "Sand-Ruin Fountain Hall"
@@ -204,6 +204,8 @@
 	Seem very intent on research and individual liberty, and also geology-based naming?"
 	prefix = "_maps/RandomRuins/AnywhereRuins/"
 	suffix = "golem_ship.dmm"
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
 
 /datum/map_template/ruin/sandbox/casbah
 	name = "Sand-Ruin Casbah"
@@ -216,10 +218,61 @@
 /datum/map_template/ruin/sandbox/oasis
 	name = "Sand-Ruin Oasis"
 	id = "oasis"
-	description = "A rare and precious oasis, providing a haven of life and water in the midst of the unforgiving desert. \
-		The oasis is surrounded by lush vegetation and is home to a variety of desert creatures."
+	description = "A rare and precious oasis, providing a haven of life and water in the midst of the unforgiving desert."
 	suffix = "sandbox_surface_oasis.dmm"
 	cost = 5
+	// allow_duplicates = TRUE
+
+/datum/map_template/ruin/sandbox/beach
+	name = "Sand-Ruin Beach"
+	id = "beach"
+	description = "A sandy beach, once a popular destination for travelers and adventurers. \
+		The beach is now desolate and windswept, but still holds a sense of nostalgia and beauty for those who visit it."
+	suffix = "sandbox_surface_beach.dmm"
+	cost = 10
+
+/datum/map_template/ruin/sandbox/minecraft
+	name = "Sand-Ruin Minecraft Temple"
+	id = "minecraft"
+	description = "A mysterious temple, found in strange locations across the desert. \
+		Said to hold ancient treasure within."
+	suffix = "sandbox_surface_minecraft.dmm"
+	cost = 15
+	always_place = TRUE
+	always_spawn_with = list(/datum/map_template/ruin/sandbox/minecraft/below = PLACE_BELOW)
+
+/datum/map_template/ruin/sandbox/minecraft/below
+	name = "Sand-Ruin Minecraft Temple Underground"
+	id = "minecraft-underground"
+	description = "The underground portion of the mysterious temple."
+	suffix = "sandbox_underground_minecraft.dmm"
+	has_ceiling = FALSE
+	unpickable = TRUE
+
+/datum/map_template/ruin/sandbox/ruins
+	name = "Sand-Ruin Generic Ruins"
+	id = "generic_ruins"
+	description = "Generic ruins. Who knows what they used to be?"
+	suffix = "sandbox_surface_ruins.dmm"
+	cost = 5
+
+/datum/map_template/ruin/sandbox/mummies
+	name = "Sand-Ruin Mummy Tomb"
+	id = "mummies"
+	description = "A tomb filled with mummies, preserved by the dry desert air."
+	suffix = "sandbox_underground_mummies.dmm"
+	cost = 15
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
+
+/datum/map_template/ruin/sandbox/ark
+	name = "Sand-Ruin Ark of the Covenant"
+	id = "ark"
+	description = "The legendary Ark of the Covenant, said to hold immense power and secrets, but guarded by ancient crusaders."
+	suffix = "sandbox_underground_ark.dmm"
+	cost = 15
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
 
 /datum/map_template/ruin/sandbox/library
 	name = "Sand-Ruin Library"
@@ -242,7 +295,7 @@
 	default_area = /area/icemoon/underground/unexplored
 
 /datum/map_template/ruin/sandbox/railway
-	name = "Sand-Ruin Abandoned Mine Rain"
+	name = "Sand-Ruin Abandoned Mine Rail"
 	id = "railway"
 	description = "An abandoned minecart railway, once used to transport valuable minerals from the depths of the desert. \
 		The railway is now rusted and overgrown, but still holds a sense of adventure and mystery for those who dare to explore it."

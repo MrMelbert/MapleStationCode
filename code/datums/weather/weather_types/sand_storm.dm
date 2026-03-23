@@ -71,6 +71,10 @@
 		GLOB.sand_storm_sounds[impacted_area] = /datum/looping_sound/weak_outside_ashstorm
 	return ..()
 
+/datum/weather/sand_storm/end()
+	. = ..()
+	GLOB.sand_storm_sounds.Cut()
+
 /datum/weather/sand_storm/weather_act(mob/living/victim)
 	victim.adjustBruteLoss(5, required_bodytype = BODYTYPE_ORGANIC)
 

@@ -1,0 +1,492 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"c" = (
+/obj/structure/railing{
+	dir = 1;
+	color = "#330000"
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"d" = (
+/turf/closed/wall/mineral/sandstone,
+/area/ruin/unpowered)
+"e" = (
+/obj/structure/railing/corner{
+	dir = 1;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"g" = (
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"h" = (
+/mob/living/basic/skeleton/templar,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"l" = (
+/obj/structure/railing{
+	dir = 5;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"m" = (
+/obj/structure/railing{
+	dir = 4;
+	color = "#330000"
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"n" = (
+/obj/structure/railing/corner{
+	dir = 4;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"s" = (
+/obj/structure/railing{
+	dir = 8;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"t" = (
+/obj/structure/railing{
+	dir = 1;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"w" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"x" = (
+/mob/living/basic/skeleton/templar,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"z" = (
+/obj/structure/railing{
+	dir = 9;
+	color = "#330000"
+	},
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"D" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"F" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+"H" = (
+/mob/living/basic/skeleton/templar,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"I" = (
+/obj/structure/closet/crate/necropolis{
+	name = "ark of the covenant"
+	},
+/obj/item/veilrender/vealrender,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"J" = (
+/obj/structure/mineral_door/sandstone,
+/obj/effect/turf_decal/weather/sand,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"L" = (
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/underground/unexplored)
+"M" = (
+/turf/open/chasm{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"N" = (
+/turf/template_noop,
+/area/template_noop)
+"Q" = (
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"S" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"U" = (
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"V" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/terracotta{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/ruin/unpowered)
+"X" = (
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/iron/terracotta/small,
+/area/ruin/unpowered)
+"Z" = (
+/obj/structure/flora/ash/cacti,
+/turf/open/misc/beach/sand,
+/area/icemoon/underground/unexplored)
+
+(1,1,1) = {"
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+"}
+(2,1,1) = {"
+N
+N
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+N
+"}
+(3,1,1) = {"
+N
+d
+d
+M
+M
+M
+M
+M
+t
+w
+V
+U
+d
+d
+a
+"}
+(4,1,1) = {"
+N
+d
+M
+M
+M
+M
+M
+M
+t
+x
+U
+d
+d
+a
+a
+"}
+(5,1,1) = {"
+N
+d
+M
+M
+M
+M
+M
+M
+c
+Q
+U
+d
+a
+a
+D
+"}
+(6,1,1) = {"
+N
+d
+M
+M
+M
+z
+s
+s
+e
+V
+d
+d
+F
+D
+a
+"}
+(7,1,1) = {"
+N
+d
+M
+M
+M
+t
+w
+g
+w
+U
+d
+d
+L
+Z
+a
+"}
+(8,1,1) = {"
+N
+d
+s
+s
+s
+e
+w
+x
+X
+U
+d
+a
+L
+D
+a
+"}
+(9,1,1) = {"
+N
+d
+d
+d
+S
+V
+g
+g
+g
+V
+d
+L
+L
+a
+D
+"}
+(10,1,1) = {"
+N
+d
+d
+I
+w
+h
+U
+V
+V
+U
+J
+L
+L
+a
+a
+"}
+(11,1,1) = {"
+N
+d
+d
+d
+g
+V
+g
+w
+g
+U
+d
+L
+L
+a
+D
+"}
+(12,1,1) = {"
+N
+d
+m
+m
+m
+n
+X
+H
+w
+U
+d
+a
+L
+L
+a
+"}
+(13,1,1) = {"
+N
+d
+M
+M
+M
+t
+g
+w
+g
+U
+d
+d
+L
+D
+a
+"}
+(14,1,1) = {"
+N
+d
+M
+M
+M
+l
+m
+m
+n
+U
+d
+d
+D
+F
+Z
+"}
+(15,1,1) = {"
+N
+d
+M
+M
+M
+M
+M
+M
+c
+V
+U
+d
+D
+a
+a
+"}
+(16,1,1) = {"
+N
+d
+M
+M
+M
+M
+M
+M
+c
+x
+U
+d
+d
+N
+N
+"}
+(17,1,1) = {"
+N
+d
+d
+M
+M
+M
+M
+M
+t
+w
+V
+U
+d
+d
+N
+"}
+(18,1,1) = {"
+N
+N
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+d
+N
+"}
+(19,1,1) = {"
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+"}

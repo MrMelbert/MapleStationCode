@@ -1,0 +1,176 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"f" = (
+/obj/structure/statue/bone/rib{
+	dir = 1
+	},
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"n" = (
+/obj/structure/statue/bone/rib,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"t" = (
+/turf/closed/wall/mineral/sandstone,
+/area/icemoon/surface/outdoors/nospawn)
+"u" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/surface/outdoors/nospawn)
+"A" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"F" = (
+/obj/structure/flora/ash/cacti,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"I" = (
+/obj/structure/statue/bone/rib,
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/surface/outdoors/nospawn)
+"L" = (
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/surface/outdoors/nospawn)
+"Q" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
+"Y" = (
+/obj/structure/statue/bone/rib{
+	dir = 1
+	},
+/turf/open/misc/sandy_dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
+/area/icemoon/surface/outdoors/nospawn)
+
+(1,1,1) = {"
+Q
+F
+L
+Q
+a
+a
+Q
+a
+"}
+(2,1,1) = {"
+A
+Q
+a
+t
+t
+t
+Y
+Q
+"}
+(3,1,1) = {"
+a
+L
+t
+L
+u
+L
+L
+L
+"}
+(4,1,1) = {"
+a
+f
+L
+a
+A
+u
+L
+L
+"}
+(5,1,1) = {"
+Q
+a
+a
+a
+L
+L
+u
+a
+"}
+(6,1,1) = {"
+Q
+a
+Q
+L
+t
+t
+L
+Q
+"}
+(7,1,1) = {"
+a
+A
+L
+L
+t
+t
+L
+a
+"}
+(8,1,1) = {"
+a
+L
+a
+Q
+a
+a
+u
+L
+"}
+(9,1,1) = {"
+a
+n
+L
+a
+a
+a
+A
+L
+"}
+(10,1,1) = {"
+Q
+a
+t
+L
+L
+u
+L
+L
+"}
+(11,1,1) = {"
+a
+a
+a
+t
+t
+t
+I
+F
+"}
+(12,1,1) = {"
+a
+Q
+a
+Q
+a
+a
+a
+Q
+"}

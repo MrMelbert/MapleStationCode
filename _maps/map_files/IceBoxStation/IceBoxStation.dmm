@@ -1,7 +1,9 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "aah" = (
 /obj/machinery/light/cold/directional/east,
-/turf/open/floor/plating,
+/turf/open/water/beach{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "aap" = (
 /obj/effect/spawner/random/engineering/tracking_beacon,
@@ -58,7 +60,7 @@
 	dir = 5
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "abe" = (
@@ -591,7 +593,7 @@
 /obj/effect/turf_decal/weather/sand,
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "akZ" = (
@@ -1606,7 +1608,7 @@
 "azH" = (
 /obj/structure/ore_container/food_trough/raptor_trough,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "azN" = (
@@ -3594,7 +3596,9 @@
 /area/station/security/prison/rec)
 "beU" = (
 /obj/machinery/light/cold/directional/west,
-/turf/open/floor/plating,
+/turf/open/misc/beach/sand{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "beZ" = (
 /turf/closed/indestructible/riveted{
@@ -3827,14 +3831,11 @@
 /turf/open/floor/engine,
 /area/station/science/xenobiology)
 "biM" = (
-/obj/structure/flora/bush/sparsegrass/style_random,
 /obj/machinery/camera/directional/south{
 	c_tag = "Ordnance Lower Mix Lab";
 	network = list("ss13","rd")
 	},
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "biR" = (
 /obj/structure/table/glass,
@@ -5398,6 +5399,10 @@
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/white,
 /area/station/maintenance/aft/greater)
+"bEr" = (
+/obj/structure/fence/door,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "bEz" = (
 /obj/machinery/door/airlock/command/glass{
 	name = "Secure EVA Storage"
@@ -5808,7 +5813,7 @@
 /area/station/maintenance/port/aft)
 "bKw" = (
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "bKA" = (
@@ -6738,7 +6743,7 @@
 	dir = 1
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "bXF" = (
@@ -7365,6 +7370,13 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
+"cgL" = (
+/obj/effect/light_emitter/fake_outdoors,
+/obj/structure/sign/nanotrasen{
+	pixel_y = 32
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "cgR" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 8
@@ -8283,7 +8295,7 @@
 	dir = 9
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "cur" = (
@@ -9111,9 +9123,7 @@
 /area/station/security/prison/rec)
 "cFe" = (
 /obj/item/food/grown/carrot,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "cFJ" = (
 /obj/effect/spawner/random/structure/steam_vent,
@@ -9659,6 +9669,13 @@
 /obj/machinery/mecha_part_fabricator,
 /turf/open/floor/iron,
 /area/station/science/robotics/lab)
+"cOI" = (
+/obj/effect/light_emitter/fake_outdoors,
+/obj/structure/sign/nanotrasen{
+	pixel_y = -32
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "cOP" = (
 /obj/structure/chair{
 	dir = 1;
@@ -10076,7 +10093,7 @@
 /area/station/security/detectives_office)
 "cVs" = (
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "cVz" = (
@@ -10287,7 +10304,7 @@
 /obj/item/flashlight,
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "cZd" = (
@@ -10860,7 +10877,7 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/security/checkpoint/medical)
 "dhq" = (
-/turf/closed/mineral/random/labormineral/ice,
+/turf/closed/mineral/random/labormineral/sand,
 /area/icemoon/surface/outdoors/labor_camp)
 "dhH" = (
 /obj/machinery/light/small/directional/west,
@@ -13491,7 +13508,9 @@
 "dVr" = (
 /obj/structure/kitchenspike,
 /obj/machinery/status_display/evac/directional/west,
-/turf/open/floor/plating,
+/turf/open/misc/beach/sand{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "dVt" = (
 /obj/structure/chair/stool/directional/west,
@@ -13534,7 +13553,9 @@
 /obj/structure/minecart_rail{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "dVQ" = (
 /obj/machinery/vending/coffee,
@@ -13934,7 +13955,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "ecn" = (
@@ -15990,7 +16011,7 @@
 /area/station/command/heads_quarters/cmo)
 "eLo" = (
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "eLr" = (
@@ -17049,7 +17070,7 @@
 	pixel_x = 7
 	},
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "fcI" = (
@@ -17080,9 +17101,8 @@
 /mob/living/basic/pet/penguin/emperor{
 	name = "Club"
 	},
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/obj/structure/flora/grass/both/style_random,
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "fcY" = (
 /obj/structure/cable,
@@ -18369,7 +18389,7 @@
 	pixel_x = -2
 	},
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "fyr" = (
@@ -18555,7 +18575,7 @@
 	dir = 6
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "fBs" = (
@@ -18585,7 +18605,7 @@
 	dir = 6
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "fBF" = (
@@ -20341,7 +20361,7 @@
 "ged" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "geg" = (
@@ -20547,6 +20567,12 @@
 /obj/structure/sign/warning/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/lesser)
+"giC" = (
+/obj/structure/fence/corner{
+	dir = 4
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "giN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/trimline/yellow/line,
@@ -21946,7 +21972,7 @@
 	dir = 1
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "gET" = (
@@ -22152,7 +22178,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "gHA" = (
-/mob/living/basic/bear,
+/mob/living/basic/bear{
+	name = "Mohammad"
+	},
 /turf/open/misc/beach/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "gHD" = (
@@ -22582,7 +22610,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "gOq" = (
@@ -23271,7 +23299,7 @@
 "gZz" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "gZP" = (
@@ -23771,7 +23799,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "hhN" = (
@@ -23806,7 +23834,7 @@
 "hiJ" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "hjh" = (
@@ -24003,13 +24031,13 @@
 	pixel_y = 4;
 	pixel_x = -2
 	},
-/turf/open/floor/plating,
+/turf/open/water/beach{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "hmW" = (
-/obj/structure/flora/bush/sparsegrass/style_random,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/obj/structure/flora/bush/snow/style_random,
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "hmX" = (
 /obj/machinery/atmospherics/pipe/multiz/supply/visible/layer4{
@@ -25159,7 +25187,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "hEm" = (
@@ -25994,7 +26022,7 @@
 "hSs" = (
 /obj/structure/reagent_dispensers/cooking_oil,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "hSt" = (
@@ -26419,7 +26447,7 @@
 /obj/structure/flora/coconuts,
 /obj/structure/flora/coconuts,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "iao" = (
@@ -26993,7 +27021,15 @@
 	},
 /obj/structure/cable,
 /obj/structure/minecart_rail/railbreak,
-/turf/open/floor/plating,
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "iiH" = (
 /obj/machinery/door/airlock/security/glass{
@@ -27581,7 +27617,9 @@
 	dir = 1
 	},
 /obj/machinery/light/small/red/directional/north,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "iry" = (
 /obj/structure/grille,
@@ -27760,7 +27798,7 @@
 	dir = 10
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "itY" = (
@@ -27836,7 +27874,7 @@
 	dir = 9
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "iuS" = (
@@ -28415,6 +28453,21 @@
 /obj/machinery/atmospherics/pipe/smart/simple/dark/visible,
 /turf/open/floor/iron,
 /area/station/maintenance/disposal/incinerator)
+"iEn" = (
+/obj/structure/cable,
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
+/obj/structure/minecart_rail{
+	dir = 1
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "iEy" = (
 /obj/machinery/door/airlock/external,
 /obj/effect/mapping_helpers/airlock/access/any/engineering/external,
@@ -28761,7 +28814,7 @@
 "iLl" = (
 /obj/machinery/light/small/dim/directional/south,
 /turf/open/floor/iron/smooth_half{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "iLt" = (
@@ -29063,7 +29116,15 @@
 	frequency = 1453;
 	name = "Kitchen Intercom"
 	},
-/turf/open/floor/plating,
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "iQj" = (
 /obj/item/radio/intercom/directional/north,
@@ -29762,7 +29823,9 @@
 /obj/effect/turf_decal/weather/sand{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "jaO" = (
 /obj/machinery/door/airlock/atmos/glass{
@@ -29971,6 +30034,12 @@
 	},
 /turf/open/floor/plating,
 /area/station/science/robotics/lab)
+"jdw" = (
+/mob/living/basic/bear{
+	name = "Krilliam"
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "jdJ" = (
 /obj/structure/chair/wood,
 /turf/open/floor/carpet,
@@ -30202,10 +30271,8 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "jhY" = (
-/obj/structure/flora/coconuts,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/obj/structure/flora/grass/both/style_random,
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "jiV" = (
 /obj/item/stack/cable_coil,
@@ -30995,11 +31062,8 @@
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "juB" = (
-/obj/structure/flora/coconuts,
 /mob/living/basic/pet/dog/corgi,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "juH" = (
 /obj/structure/filingcabinet/chestdrawer,
@@ -31371,7 +31435,9 @@
 /area/icemoon/underground/explored)
 "jBB" = (
 /obj/structure/kitchenspike,
-/turf/open/floor/plating,
+/turf/open/misc/beach/sand{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "jBH" = (
 /obj/structure/lattice,
@@ -32495,7 +32561,7 @@
 	},
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "jRV" = (
@@ -32709,6 +32775,13 @@
 /obj/structure/sign/warning/hot_temp/directional/south,
 /turf/open/floor/plating,
 /area/station/cargo/drone_bay)
+"jVA" = (
+/obj/effect/light_emitter/fake_outdoors,
+/obj/structure/fence/cut/large{
+	dir = 8
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "jVE" = (
 /obj/effect/turf_decal/box/white,
 /turf/open/floor/engine,
@@ -32894,7 +32967,9 @@
 	dir = 9
 	},
 /obj/structure/cable,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "jZe" = (
 /obj/structure/disposalpipe/segment{
@@ -33003,7 +33078,7 @@
 /obj/structure/table/wood,
 /obj/item/flashlight/lantern/on,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "kaK" = (
@@ -33846,14 +33921,9 @@
 /turf/open/floor/carpet/blue,
 /area/station/security/prison/work)
 "klB" = (
-/obj/item/clothing/head/beanie/orange{
-	pixel_y = 8
-	},
-/obj/item/clothing/suit/hooded/wintercoat,
-/obj/item/clothing/shoes/wheelys/skishoes{
-	pixel_y = -8
-	},
 /obj/effect/decal/remains/human,
+/obj/item/clothing/under/costume/mummy,
+/obj/item/clothing/mask/mummy,
 /turf/open/misc/beach/sand,
 /area/icemoon/underground/explored)
 "klP" = (
@@ -34019,7 +34089,7 @@
 	dir = 8
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "koH" = (
@@ -34858,10 +34928,6 @@
 /obj/item/multitool,
 /turf/open/floor/plating,
 /area/station/engineering/storage/tech)
-"kzU" = (
-/obj/effect/turf_decal/weather/sand,
-/turf/open/floor/plating,
-/area/station/service/kitchen/coldroom)
 "kzZ" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -35152,6 +35218,12 @@
 	dir = 4
 	},
 /area/mine/eva)
+"kDP" = (
+/obj/structure/fence/corner{
+	dir = 9
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "kEj" = (
 /obj/machinery/computer/libraryconsole/bookmanagement,
 /obj/structure/table,
@@ -36099,7 +36171,7 @@
 "kSK" = (
 /obj/structure/marker_beacon/yellow,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "kSU" = (
@@ -36205,7 +36277,10 @@
 /obj/item/grown/log/tree{
 	pixel_x = 7
 	},
-/turf/open/floor/plating,
+/turf/open/misc/beach/coast{
+	dir = 4;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "kUJ" = (
 /obj/effect/decal/cleanable/dirt,
@@ -36638,7 +36713,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "lca" = (
@@ -36651,7 +36726,7 @@
 "lce" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "lch" = (
@@ -36868,7 +36943,7 @@
 	dir = 9
 	},
 /turf/open/floor/iron/smooth_corner{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "lfs" = (
@@ -38591,7 +38666,7 @@
 	dir = 8
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "lGK" = (
@@ -38923,7 +38998,9 @@
 	dir = 10
 	},
 /obj/structure/sign/warning/directional/west,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "lMd" = (
 /obj/structure/table,
@@ -39125,7 +39202,7 @@
 	dir = 4
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "lPb" = (
@@ -42282,7 +42359,10 @@
 	},
 /area/station/command/gateway)
 "mQk" = (
-/turf/open/floor/plating,
+/turf/open/misc/beach/coast{
+	dir = 1;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "mQq" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -42429,7 +42509,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "mTh" = (
@@ -42516,10 +42596,6 @@
 /obj/machinery/button/ignition/incinerator/atmos,
 /turf/closed/wall/r_wall,
 /area/station/maintenance/disposal/incinerator)
-"mVm" = (
-/obj/structure/grille/broken,
-/turf/open/misc/beach/sand,
-/area/icemoon/surface/outdoors/nospawn)
 "mVp" = (
 /obj/structure/cable,
 /turf/open/floor/catwalk_floor/iron_dark,
@@ -42622,7 +42698,7 @@
 /area/station/cargo/storage)
 "mWF" = (
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "mWK" = (
@@ -45344,7 +45420,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "nHq" = (
@@ -46424,7 +46500,7 @@
 	dir = 4
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "obu" = (
@@ -46477,7 +46553,7 @@
 "obY" = (
 /obj/structure/flora/coconuts,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "obZ" = (
@@ -46575,7 +46651,7 @@
 	dir = 10
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "odW" = (
@@ -47729,6 +47805,12 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron/white,
 /area/station/science/robotics/lab)
+"otU" = (
+/obj/structure/fence/cut/medium{
+	dir = 4
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "oua" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -48436,7 +48518,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "oDB" = (
@@ -48552,7 +48634,7 @@
 	dir = 6
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "oFW" = (
@@ -48605,7 +48687,9 @@
 /obj/structure/minecart_rail{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "oGm" = (
 /obj/machinery/power/solar_control{
@@ -48790,7 +48874,9 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "oJH" = (
 /obj/structure/marker_beacon/burgundy,
@@ -49105,6 +49191,12 @@
 /obj/item/storage/photo_album/library,
 /turf/open/floor/engine/cult,
 /area/station/service/library)
+"oNW" = (
+/obj/structure/fence/corner{
+	dir = 6
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "oOb" = (
 /obj/structure/sign/warning/fire/directional/north,
 /turf/open/floor/glass/reinforced,
@@ -49149,7 +49241,7 @@
 	dir = 5
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "oOO" = (
@@ -49249,7 +49341,7 @@
 	dir = 10
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "oQn" = (
@@ -49317,7 +49409,7 @@
 /area/station/medical/virology)
 "oRh" = (
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "oRk" = (
@@ -50235,6 +50327,12 @@
 /obj/effect/mapping_helpers/airlock/access/all/science/research,
 /turf/open/floor/iron/dark,
 /area/station/science/explab)
+"pem" = (
+/obj/structure/fence/corner{
+	dir = 1
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "pez" = (
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /turf/open/floor/iron/dark/textured_edge{
@@ -53779,6 +53877,12 @@
 /obj/machinery/light/floor,
 /turf/open/floor/iron/dark/side,
 /area/station/security/processing)
+"qhR" = (
+/obj/structure/fence/door/opened{
+	dir = 4
+	},
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "qhS" = (
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
@@ -53805,7 +53909,7 @@
 	dir = 5
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "qiD" = (
@@ -54110,7 +54214,7 @@
 	dir = 9
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "qlY" = (
@@ -55456,7 +55560,9 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/water/beach{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "qFn" = (
 /obj/machinery/door/airlock/mining/glass{
@@ -55999,7 +56105,7 @@
 	},
 /obj/item/raptor_dex,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "qNl" = (
@@ -56214,7 +56320,7 @@
 "qPE" = (
 /obj/structure/closet/secure_closet/freezer/meat,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "qPI" = (
@@ -57347,6 +57453,11 @@
 	dir = 5
 	},
 /area/station/hallway/secondary/entry)
+"ris" = (
+/obj/structure/fence,
+/obj/effect/light_emitter/fake_outdoors,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "riv" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -57476,6 +57587,12 @@
 	},
 /turf/open/floor/iron/checker,
 /area/station/maintenance/port/fore)
+"rkg" = (
+/mob/living/basic/bear{
+	name = "Mirage"
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "rkl" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
@@ -57930,7 +58047,7 @@
 /area/mine/eva)
 "rss" = (
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "rsw" = (
@@ -58255,7 +58372,9 @@
 "rxu" = (
 /obj/structure/girder,
 /obj/structure/grille,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "rxz" = (
 /obj/structure/girder,
@@ -59487,7 +59606,7 @@
 "rRn" = (
 /obj/structure/flora/rock/pile/style_random,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "rRM" = (
@@ -60074,7 +60193,7 @@
 	dir = 5
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "sbc" = (
@@ -60463,7 +60582,7 @@
 	},
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "shc" = (
@@ -61486,7 +61605,9 @@
 /obj/structure/minecart_rail{
 	dir = 1
 	},
-/turf/open/floor/iron/textured,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "suO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -62206,7 +62327,7 @@
 /area/station/science/explab)
 "sFy" = (
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "sFA" = (
@@ -62218,7 +62339,7 @@
 "sFF" = (
 /obj/machinery/gibber,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "sFG" = (
@@ -62907,9 +63028,8 @@
 /area/station/hallway/primary/starboard)
 "sQY" = (
 /mob/living/basic/pet/penguin/baby/permanent,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/obj/structure/flora/grass/both/style_random,
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "sRp" = (
 /obj/structure/fence,
@@ -63375,7 +63495,9 @@
 	id = "minecraft_shutter";
 	name = "Cart Shutters"
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "sYG" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -63960,7 +64082,7 @@
 	dir = 9
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "tjN" = (
@@ -63992,13 +64114,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
-"tkh" = (
-/obj/structure/flora/bush/sparsegrass/style_random,
-/mob/living/basic/pet/penguin/baby/permanent,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
-/area/station/science/cytology)
 "tku" = (
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -64067,7 +64182,7 @@
 "tlE" = (
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "tlH" = (
@@ -64661,6 +64776,13 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/mine/laborcamp)
+"twd" = (
+/obj/structure/fence/door{
+	dir = 4
+	},
+/obj/effect/light_emitter/fake_outdoors,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "twn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -64872,7 +64994,7 @@
 /obj/item/reagent_containers/cup/glass/ice,
 /obj/item/reagent_containers/cup/glass/ice,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/icemoon/underground/explored)
 "tzE" = (
@@ -65017,7 +65139,9 @@
 /turf/closed/wall/r_wall,
 /area/icemoon/surface/outdoors/nospawn)
 "tCr" = (
-/obj/structure/grille,
+/obj/structure/fence/corner{
+	dir = 4
+	},
 /turf/open/misc/beach/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "tCu" = (
@@ -65087,7 +65211,7 @@
 	dir = 4
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "tDj" = (
@@ -65144,7 +65268,15 @@
 /obj/structure/minecart_rail{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/obj/effect/turf_decal/weather/sand{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/sand{
+	dir = 4
+	},
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "tDJ" = (
 /obj/machinery/requests_console/auto_name/directional/east,
@@ -66393,7 +66525,7 @@
 "tXy" = (
 /obj/item/flashlight/lantern/on,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "tXB" = (
@@ -67731,7 +67863,9 @@
 /area/station/hallway/secondary/exit/departure_lounge)
 "urG" = (
 /obj/effect/turf_decal/weather/sand,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "urJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -67786,7 +67920,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_half{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "utr" = (
@@ -68456,6 +68590,12 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
+"uDX" = (
+/obj/structure/fence/cut/medium{
+	dir = 1
+	},
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "uEe" = (
 /obj/machinery/light/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -69814,6 +69954,11 @@
 /obj/effect/spawner/random/food_or_drink/snack,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel)
+"vbE" = (
+/turf/open/water/beach{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "vbF" = (
 /obj/structure/table/wood,
 /obj/structure/cable,
@@ -69830,10 +69975,6 @@
 	},
 /turf/open/floor/wood/large,
 /area/station/command/heads_quarters/hos)
-"vbG" = (
-/obj/structure/railing,
-/turf/open/misc/beach/sand,
-/area/icemoon/surface/outdoors/nospawn)
 "vbO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
 /obj/item/kirbyplants/random,
@@ -70675,6 +70816,11 @@
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /turf/open/floor/iron,
 /area/station/security/brig/upper)
+"voD" = (
+/turf/open/misc/beach/coast/corner{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "voH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -70695,7 +70841,7 @@
 	},
 /obj/item/soap/deluxe,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "voY" = (
@@ -70869,6 +71015,10 @@
 	dir = 1
 	},
 /area/station/hallway/secondary/service)
+"vrB" = (
+/obj/structure/fence,
+/turf/open/floor/plating/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "vrC" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -71102,9 +71252,7 @@
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
 "vvo" = (
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "vvu" = (
 /obj/structure/railing,
@@ -71657,8 +71805,10 @@
 "vCf" = (
 /obj/item/food/chococoin,
 /obj/structure/closet/secure_closet/freezer/fridge,
-/obj/effect/turf_decal/weather/sand,
-/turf/open/floor/plating,
+/turf/open/misc/beach/coast{
+	dir = 1;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "vCn" = (
 /obj/structure/cable,
@@ -71760,7 +71910,10 @@
 /area/mine/laborcamp)
 "vDX" = (
 /obj/machinery/status_display/ai/directional/east,
-/turf/open/floor/plating,
+/turf/open/misc/beach/coast{
+	dir = 2;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "vEw" = (
 /obj/machinery/camera/directional/west{
@@ -72030,7 +72183,7 @@
 "vJh" = (
 /obj/structure/railing/wooden_fence,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "vJk" = (
@@ -72631,6 +72784,12 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
+"vTZ" = (
+/turf/open/misc/beach/coast{
+	dir = 4;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "vUr" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible{
 	dir = 4
@@ -72802,7 +72961,7 @@
 	dir = 6
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "vXn" = (
@@ -72816,7 +72975,7 @@
 	dir = 10
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored)
 "vXv" = (
@@ -73308,7 +73467,9 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/turf/open/floor/plating,
+/turf/open/misc/beach/sand{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "wfc" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -73928,7 +74089,9 @@
 /obj/structure/cable,
 /obj/structure/sign/warning/directional/south,
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating,
+/turf/open/floor/plating{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/icemoon/underground/explored)
 "wnB" = (
 /obj/machinery/camera/directional/east{
@@ -74140,7 +74303,7 @@
 "wpP" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "wpQ" = (
@@ -74429,7 +74592,7 @@
 "wub" = (
 /obj/structure/closet/crate/grave/filled,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "wug" = (
@@ -74965,6 +75128,12 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel)
+"wDd" = (
+/turf/open/misc/beach/coast{
+	dir = 2;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "wDe" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -75159,7 +75328,9 @@
 	pixel_x = 6;
 	pixel_y = 3
 	},
-/turf/open/floor/plating,
+/turf/open/water/beach{
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
 /area/station/service/kitchen/coldroom)
 "wFg" = (
 /obj/machinery/door/airlock/maintenance,
@@ -75385,7 +75556,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "wIZ" = (
-/obj/effect/decal/remains/plasma,
+/obj/effect/decal/remains/human,
 /turf/open/misc/beach/sand,
 /area/icemoon/underground/explored)
 "wJi" = (
@@ -75634,7 +75805,7 @@
 "wNA" = (
 /obj/structure/flora/rock/pile/style_random,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "wND" = (
@@ -76381,6 +76552,12 @@
 /obj/machinery/requests_console/auto_name/directional/north,
 /turf/open/floor/iron/cafeteria,
 /area/station/commons/dorms/laundry)
+"wYG" = (
+/turf/open/misc/beach/coast{
+	dir = 6;
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
+	},
+/area/station/service/kitchen/coldroom)
 "wYJ" = (
 /turf/closed/wall,
 /area/station/engineering/storage_shared)
@@ -80019,7 +80196,7 @@
 	pixel_y = 32
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "ydH" = (
@@ -80189,9 +80366,7 @@
 /area/station/engineering/main)
 "yhO" = (
 /obj/machinery/vending/cytopro,
-/turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
-	},
+/turf/open/misc/snow/actually_safe,
 /area/station/science/cytology)
 "yhU" = (
 /obj/structure/chair/stool/directional/north,
@@ -80278,7 +80453,7 @@
 "ykr" = (
 /mob/living/basic/goat/pete/icebox,
 /turf/open/misc/beach/sand{
-	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	initial_gas_mix = "o2=26;n2=97;TEMP=259.15"
 	},
 /area/station/service/kitchen/coldroom)
 "ykw" = (
@@ -184357,7 +184532,7 @@ jre
 iQe
 iiF
 tDC
-dVO
+iEn
 oGh
 oGh
 dVO
@@ -184611,9 +184786,9 @@ lZK
 xXK
 cAS
 dVr
-mQk
+voD
 kUF
-mQk
+vTZ
 fwB
 fwB
 fwB
@@ -184868,9 +185043,9 @@ fjT
 eEm
 lPZ
 jBB
-mQk
+wDd
 wFf
-mQk
+vbE
 mQk
 fwB
 ykr
@@ -185124,11 +185299,11 @@ jre
 wHU
 mkq
 fIq
-mQk
-mQk
+voD
+wYG
 hmF
+vbE
 mQk
-kzU
 mWF
 obY
 fwB
@@ -185382,7 +185557,7 @@ wHU
 hZq
 obz
 vDX
-mQk
+vbE
 qFm
 aah
 vCf
@@ -192867,7 +193042,7 @@ uXw
 jnU
 hUw
 yfj
-tkh
+sQY
 vvo
 hmW
 jhY
@@ -225274,11 +225449,11 @@ bln
 bln
 bln
 bln
-tCr
-tCr
-tCr
-tCr
-tCr
+kDP
+wEo
+wEo
+wEo
+pem
 bln
 bln
 bln
@@ -225434,15 +225609,15 @@ mET
 bln
 bln
 bln
-mET
 bln
 bln
 bln
-mET
 bln
 bln
 bln
-mET
+bln
+bln
+bln
 bln
 bln
 mET
@@ -225531,11 +225706,11 @@ bln
 bln
 bln
 mET
-tCr
+kmS
 bln
 bln
 bln
-tCr
+kmS
 mET
 bln
 bln
@@ -225688,27 +225863,27 @@ ozo
 bln
 bln
 bln
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-mVm
-tCr
-tCr
-bln
-bln
-uer
-bln
-bln
-bln
+pno
+hQh
+hQh
+uzu
+eKi
+ohM
+hQh
+uzu
+hQh
+hQh
+hQh
+uzu
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+eKi
+hQh
+hQh
 lJO
 gwM
 xdU
@@ -225788,11 +225963,11 @@ mET
 bln
 bln
 bln
-tCr
+kmS
 bln
 cnx
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -225945,7 +226120,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -225959,9 +226134,9 @@ bln
 bln
 hty
 bln
-tCr
 bln
 bln
+uer
 lBD
 bln
 bln
@@ -226039,23 +226214,23 @@ aBR
 bln
 bln
 bln
-tCr
-tCr
-tCr
-tCr
-tCr
-bln
-bln
+kDP
+eKi
+hQh
+hQh
+hQh
+hQh
+oNW
 bln
 tmR
 bln
-bln
-bln
-tCr
-tCr
-mVm
-tCr
-tCr
+upz
+hQh
+hQh
+uDX
+hQh
+hQh
+pem
 bln
 bln
 wNO
@@ -226202,7 +226377,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 uei
 lhC
@@ -226216,7 +226391,7 @@ uei
 lhC
 uei
 bln
-tCr
+bln
 bln
 bln
 bln
@@ -226296,7 +226471,7 @@ aBR
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -226312,7 +226487,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -226459,7 +226634,7 @@ bln
 bln
 bln
 bln
-tCr
+yjJ
 bln
 uei
 lhC
@@ -226553,7 +226728,7 @@ aBR
 bln
 bln
 bln
-tCr
+kmS
 bln
 xxB
 xxB
@@ -226569,7 +226744,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -226716,7 +226891,7 @@ bln
 bln
 bln
 mET
-tCr
+kmS
 bln
 uei
 tmR
@@ -226809,8 +226984,8 @@ aBR
 aBR
 bln
 bln
-mET
-tCr
+cOI
+jlv
 bln
 lhC
 lhC
@@ -226826,8 +227001,8 @@ tmR
 lhC
 lhC
 bln
-tCr
-mET
+jlv
+cgL
 bln
 wNO
 wNO
@@ -226973,7 +227148,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 uei
 lhC
@@ -227067,7 +227242,7 @@ aBR
 bln
 bln
 bln
-tCr
+kmS
 bln
 xxB
 xxB
@@ -227083,7 +227258,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -227227,10 +227402,10 @@ wNO
 wNO
 bln
 bln
-tCr
-tCr
-tCr
-bln
+pno
+wEo
+wEo
+xUd
 bln
 uei
 lhC
@@ -227324,7 +227499,7 @@ aBR
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -227340,7 +227515,7 @@ bln
 bln
 bln
 bln
-mVm
+kmS
 bln
 bln
 wNO
@@ -227484,7 +227659,7 @@ wNO
 wNO
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -227581,7 +227756,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 xxB
 xxB
@@ -227597,7 +227772,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -227741,8 +227916,8 @@ wNO
 wNO
 bln
 mET
-tCr
-bln
+jlv
+mET
 cnx
 lhC
 lhC
@@ -227838,7 +228013,7 @@ bln
 ozo
 bln
 mET
-tCr
+kmS
 bln
 lhC
 lhC
@@ -227854,7 +228029,7 @@ tmR
 lhC
 lhC
 bln
-tCr
+kmS
 mET
 bln
 wNO
@@ -227998,7 +228173,7 @@ wNO
 wNO
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -228095,7 +228270,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 muK
 xxB
 xxB
@@ -228111,7 +228286,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -228255,10 +228430,10 @@ wNO
 wNO
 bln
 bln
-tCr
-mVm
-tCr
-bln
+upz
+hQh
+hQh
+pem
 bln
 uei
 lhC
@@ -228352,7 +228527,7 @@ bln
 bln
 bln
 bln
-mVm
+kmS
 bln
 bln
 bln
@@ -228368,7 +228543,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -228515,7 +228690,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 uei
 lhC
@@ -228609,7 +228784,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 xxB
 xxB
@@ -228625,7 +228800,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -228772,7 +228947,7 @@ bln
 bln
 bln
 mET
-tCr
+kmS
 bln
 uei
 tmR
@@ -228865,8 +229040,8 @@ uGo
 bln
 bln
 bln
-mET
-tCr
+cOI
+jlv
 bln
 lhC
 lhC
@@ -228882,8 +229057,8 @@ tmR
 lhC
 lhC
 bln
-tCr
-mET
+jlv
+cgL
 bln
 wNO
 wNO
@@ -229029,7 +229204,7 @@ bln
 bln
 bln
 bln
-tCr
+yjJ
 bln
 uei
 lhC
@@ -229123,7 +229298,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 xxB
 xxB
@@ -229139,7 +229314,7 @@ xxB
 xxB
 xxB
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -229286,7 +229461,7 @@ bln
 bln
 bln
 bln
-tCr
+bfK
 bln
 uei
 lhC
@@ -229300,7 +229475,7 @@ uei
 lhC
 uei
 bln
-tCr
+bln
 lJO
 khW
 iSn
@@ -229380,7 +229555,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -229396,7 +229571,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -229543,7 +229718,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -229557,7 +229732,7 @@ bln
 bln
 bln
 bln
-tCr
+bln
 lJO
 gDZ
 gDZ
@@ -229637,9 +229812,9 @@ bln
 bln
 bln
 bln
-tCr
-tCr
-tCr
+bfK
+bln
+bln
 bln
 bln
 bln
@@ -229651,9 +229826,9 @@ mET
 bln
 bln
 bln
-tCr
-tCr
-tCr
+bln
+bln
+kmS
 bln
 bln
 wNO
@@ -229800,21 +229975,21 @@ bln
 bln
 bln
 bln
-tCr
-tCr
-tCr
-tCr
-tCj
-mVm
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
+upz
+fzl
+eKi
+ris
+pno
+fzl
+hQh
+ris
+hQh
+fzl
+hQh
+twd
+hQh
+fzl
+ohM
 lJO
 gLZ
 pPP
@@ -229894,7 +230069,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 mET
 bln
@@ -229910,7 +230085,7 @@ bln
 bln
 mET
 bln
-bln
+bfK
 bln
 bln
 wNO
@@ -230060,15 +230235,15 @@ mET
 bln
 bln
 bln
-mET
-vbG
+bln
+kmS
 bln
 bln
 mET
 bln
 bln
 bln
-mET
+bln
 bln
 bln
 mET
@@ -230167,7 +230342,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 wNO
@@ -230318,7 +230493,7 @@ bln
 bln
 bln
 bln
-vbG
+kmS
 bln
 bln
 uer
@@ -230424,7 +230599,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 wNO
@@ -230575,7 +230750,7 @@ bln
 bln
 bln
 bln
-vbG
+kmS
 bln
 fsm
 lBD
@@ -230676,12 +230851,12 @@ smj
 smj
 iCX
 glh
-bln
-bln
-bln
-bln
-bln
-bln
+uDX
+hQh
+eKi
+hQh
+hQh
+oNW
 bln
 bln
 wNO
@@ -230832,7 +231007,7 @@ bln
 bln
 bln
 bln
-vbG
+bEr
 bln
 bln
 bln
@@ -231089,7 +231264,7 @@ bln
 bln
 bln
 bln
-vbG
+kmS
 bln
 bln
 bln
@@ -231346,7 +231521,7 @@ bln
 bln
 bln
 bln
-vbG
+kmS
 bln
 bln
 lBD
@@ -232879,7 +233054,7 @@ tGr
 tGr
 tGr
 bln
-gHA
+rkg
 bln
 bln
 fsm
@@ -234420,7 +234595,7 @@ tGr
 tGr
 tGr
 fsm
-gHA
+jdw
 bln
 bln
 bln
@@ -234547,7 +234722,7 @@ bln
 bln
 bln
 bln
-bln
+iWb
 bln
 bln
 bln
@@ -234798,23 +234973,23 @@ pRj
 ptf
 ptf
 ptf
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
+hQh
+hQh
+uDX
+hQh
+eKi
+hQh
+fzl
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+pem
 bln
 bln
 bln
@@ -235071,7 +235246,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -235328,7 +235503,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -235585,7 +235760,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -235842,7 +236017,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -236099,8 +236274,8 @@ bln
 bln
 bln
 bln
-bln
-bln
+jlv
+tMa
 bln
 bln
 wNO
@@ -236356,7 +236531,7 @@ bln
 bln
 bln
 bln
-bln
+bfK
 bln
 bln
 bln
@@ -236613,7 +236788,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 ozo
 bln
 bln
@@ -236870,7 +237045,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -237127,7 +237302,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -237384,7 +237559,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -237641,7 +237816,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -237898,7 +238073,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -238155,7 +238330,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -238412,7 +238587,7 @@ bln
 mET
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -238669,7 +238844,7 @@ sEB
 sEB
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -238926,7 +239101,7 @@ gka
 gka
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -239183,7 +239358,7 @@ sEB
 lhC
 gka
 mET
-bln
+kmS
 bln
 bln
 bln
@@ -239440,8 +239615,8 @@ gka
 lhC
 gka
 bln
-bln
-bln
+jlv
+tMa
 bln
 bln
 wNO
@@ -239697,7 +239872,7 @@ sEB
 lhC
 gka
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -239954,7 +240129,7 @@ sEB
 gka
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -240211,7 +240386,7 @@ sEB
 sEB
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -240468,7 +240643,7 @@ lhC
 ind
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -240725,7 +240900,7 @@ sEB
 sEB
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -240982,7 +241157,7 @@ sEB
 gka
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -241239,7 +241414,7 @@ sEB
 lhC
 gka
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -241496,8 +241671,8 @@ gka
 lhC
 gka
 bln
-bln
-bln
+jlv
+tMa
 bln
 bln
 wNO
@@ -241753,7 +241928,7 @@ sEB
 lhC
 gka
 mET
-bln
+kmS
 bln
 bln
 bln
@@ -242010,7 +242185,7 @@ gka
 gka
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -242267,7 +242442,7 @@ sEB
 sEB
 sEB
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -242524,7 +242699,7 @@ sEB
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -242781,7 +242956,7 @@ gka
 mET
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -243038,7 +243213,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -243295,7 +243470,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -243552,7 +243727,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -243809,7 +243984,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -244066,7 +244241,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -244323,7 +244498,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -244580,7 +244755,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -244837,7 +245012,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -245094,7 +245269,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -245351,7 +245526,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 ozo
 bln
 bln
@@ -245608,7 +245783,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -245865,7 +246040,7 @@ gka
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -246122,7 +246297,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -246379,8 +246554,8 @@ gka
 bln
 bln
 bln
-bln
-bln
+jlv
+tMa
 bln
 bln
 wNO
@@ -246636,7 +246811,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -246893,7 +247068,7 @@ bln
 bln
 bln
 bln
-bln
+otU
 bln
 bln
 bln
@@ -247150,7 +247325,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -247407,7 +247582,7 @@ sEB
 sEB
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -247664,7 +247839,7 @@ lhC
 lhC
 bln
 bln
-bln
+bfK
 bln
 bln
 bln
@@ -247921,7 +248096,7 @@ sEB
 lhC
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -248178,11 +248353,11 @@ sEB
 lhC
 sEB
 sEB
-sEB
-sEB
-sEB
-sEB
-sEB
+giC
+vrB
+vrB
+vrB
+vrB
 mfD
 mfD
 mfD
@@ -250487,7 +250662,7 @@ bln
 bln
 bln
 bln
-bln
+sEB
 bln
 bln
 mwo
@@ -250744,7 +250919,7 @@ uer
 bln
 mET
 bln
-bln
+sEB
 bln
 bln
 bln
@@ -251001,7 +251176,7 @@ bln
 bln
 bln
 bln
-bln
+sEB
 mET
 bln
 bln
@@ -251246,22 +251421,22 @@ bln
 uer
 bln
 bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
+pno
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+fzl
+hQh
+hQh
+hQh
+qhR
+hQh
+hQh
+hQh
 swF
 swF
 swF
@@ -251503,7 +251678,7 @@ bln
 bln
 bln
 bln
-mET
+jVA
 bln
 bln
 bln
@@ -251515,7 +251690,7 @@ bln
 bln
 bln
 bln
-bln
+sEB
 bln
 bln
 bln
@@ -253559,7 +253734,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 mET
 bln
@@ -253816,7 +253991,7 @@ uer
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -254073,8 +254248,8 @@ bln
 bln
 bln
 bln
-bln
-bln
+jlv
+tMa
 bln
 uer
 bln
@@ -254330,7 +254505,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -254587,7 +254762,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -254844,7 +255019,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -255101,7 +255276,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -255358,7 +255533,7 @@ bln
 bln
 bln
 bln
-bln
+bEr
 bln
 bln
 bln
@@ -255615,7 +255790,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -255872,7 +256047,7 @@ bln
 bln
 bln
 bln
-bln
+kmS
 mET
 bln
 bln
@@ -259468,20 +259643,20 @@ bln
 bln
 mET
 bln
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-mVm
-tCr
-tCr
-tCr
-tCr
-tCr
+bln
+xUd
+uzu
+hQh
+hQh
+hQh
+uzu
+hQh
+eKi
+hQh
+uzu
+hQh
+hQh
+pem
 bln
 bln
 bln
@@ -259738,7 +259913,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -259995,8 +260170,8 @@ sUN
 lhC
 sUN
 bln
-tCr
-bln
+jlv
+tMa
 bln
 bln
 bln
@@ -260252,7 +260427,7 @@ sUN
 lhC
 sUN
 bln
-tCr
+otU
 bln
 bln
 bln
@@ -260509,7 +260684,7 @@ sUN
 lhC
 sUN
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -260766,7 +260941,7 @@ sUN
 lhC
 sUN
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -261023,10 +261198,10 @@ sUN
 lhC
 sUN
 bln
-bln
-tCr
-tCr
-tCr
+upz
+hQh
+hQh
+pem
 bln
 bln
 wNO
@@ -261283,7 +261458,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -261540,8 +261715,8 @@ lhC
 lhC
 cnx
 bln
-tCr
-bln
+jlv
+tMa
 bln
 wNO
 wNO
@@ -261797,7 +261972,7 @@ bln
 bln
 bln
 bln
-tCr
+kmS
 bln
 bln
 wNO
@@ -262051,9 +262226,9 @@ sUN
 lhC
 sUN
 bln
-bln
-tCr
-tCr
+pno
+hQh
+hQh
 tCr
 bln
 bln
@@ -262308,7 +262483,7 @@ sUN
 lhC
 sUN
 bln
-bln
+kmS
 bln
 bln
 bln
@@ -262565,7 +262740,7 @@ sUN
 lhC
 sUN
 bln
-tCr
+bfK
 bln
 bln
 bln
@@ -262822,7 +262997,7 @@ sUN
 lhC
 sUN
 bln
-tCr
+kmS
 bln
 bln
 bln
@@ -263065,7 +263240,7 @@ bln
 bln
 bln
 bln
-mVm
+bln
 bln
 sUN
 lhC
@@ -263079,8 +263254,8 @@ sUN
 lhC
 sUN
 bln
-tCr
-bln
+jlv
+tMa
 bln
 bln
 bln
@@ -263312,7 +263487,7 @@ caU
 vzD
 bln
 bln
-bln
+kmS
 mET
 bln
 bln
@@ -263322,7 +263497,6 @@ bln
 bln
 bln
 bln
-tCr
 bln
 bln
 bln
@@ -263336,7 +263510,8 @@ bln
 bln
 bln
 bln
-mVm
+bln
+kmS
 bln
 bln
 bln
@@ -263569,30 +263744,30 @@ ltk
 vzD
 mET
 bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-bln
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
-tCr
+xUd
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+hQh
+uzu
+eKi
+ohM
+hQh
+uzu
+hQh
+hQh
+hQh
+uzu
+hQh
+hQh
 tCr
 bln
 bln

@@ -50,7 +50,7 @@
 /area/ruin/unpowered/buried_library)
 "cW" = (
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/ruin/unpowered/buried_library)
 "cZ" = (
@@ -208,7 +208,7 @@
 /area/ruin/unpowered/buried_library)
 "uQ" = (
 /turf/open/floor/wood{
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 	},
 /area/ruin/unpowered/buried_library)
 "uR" = (

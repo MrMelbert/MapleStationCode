@@ -417,6 +417,59 @@
 		/obj/item/stack/ore/uranium = 35,
 	)
 
+/turf/closed/mineral/random/sand
+	name = "sandy rock"
+	color = "#ffcc66"
+	baseturfs = /turf/open/misc/beach/sand
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+
+/turf/closed/mineral/random/sand/mineral_chances()
+	return list(
+		/obj/item/stack/ore/diamond = 1,
+		/obj/item/stack/ore/gold = 5,
+		/obj/item/stack/ore/iron = 30,
+		/obj/item/stack/ore/plasma = 10,
+		/obj/item/stack/ore/silver = 8,
+		/obj/item/stack/ore/titanium = 5,
+		/obj/item/stack/ore/uranium = 2,
+	)
+
+/turf/closed/mineral/random/sand/high_chance
+	mineralChance = 15
+
+/turf/closed/mineral/random/sand/high_chance/mineral_chances()
+	return list(
+		/obj/item/stack/ore/bluespace_crystal = 1,
+		/obj/item/stack/ore/diamond = 5,
+		/obj/item/stack/ore/gold = 15,
+		/obj/item/stack/ore/plasma = 20,
+		/obj/item/stack/ore/silver = 20,
+		/obj/item/stack/ore/titanium = 15,
+		/obj/item/stack/ore/uranium = 10,
+	)
+
+/turf/closed/mineral/random/sand/underground
+	// abundant ore
+	mineralChance = 20
+
+/turf/closed/mineral/random/sand/underground/mineral_chances()
+	return list(
+		/obj/item/stack/ore/bananium = 1,
+		/obj/item/stack/ore/bluespace_crystal = 2,
+		/obj/item/stack/ore/diamond = 4,
+		/obj/item/stack/ore/gold = 20,
+		/obj/item/stack/ore/iron = 20,
+		/obj/item/stack/ore/plasma = 20,
+		/obj/item/stack/ore/silver = 24,
+		/obj/item/stack/ore/titanium = 22,
+		/obj/item/stack/ore/uranium = 10,
+	)
+
+/turf/closed/mineral/random/sand/do_not_chasm
+	turf_type = /turf/open/misc/beach/sand/no_ruins
+	baseturfs = /turf/open/misc/beach/sand/no_ruins
+	turf_flags = NO_RUINS
+
 /turf/closed/mineral/random/labormineral
 	icon_state = "rock_labor"
 
@@ -485,6 +538,12 @@
 		icon_state = "icerock_wall-0"
 		base_icon_state = "icerock_wall"
 		smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
+
+/turf/closed/mineral/random/labormineral/sand
+	name = "sandy rock"
+	color = "#ffcc66"
+	baseturfs = /turf/open/misc/beach/sand
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 
 /turf/closed/mineral/iron
 	mineralType = /obj/item/stack/ore/iron
@@ -664,7 +723,7 @@
 	name = "sandy rock"
 	color = "#ffcc66"
 	baseturfs = /turf/open/misc/beach/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 
 //GIBTONITE
 

@@ -22,3 +22,22 @@
 	name = "Abductor Corpse"
 	uniform = /obj/item/clothing/under/color/grey
 	shoes = /obj/item/clothing/shoes/combat
+
+/obj/effect/mob_spawn/corpse/human/skeleton/mummy
+	name = "mummy"
+	outfit = /datum/outfit/mummycorpse
+
+/obj/effect/mob_spawn/corpse/human/skeleton/mummy/pharoh
+	name = "pharaoh mummy"
+	outfit = /datum/outfit/mummycorpse/pharoh
+
+/datum/outfit/mummycorpse
+	name = "Mummy"
+	uniform = /obj/item/clothing/under/costume/mummy
+	head = /obj/item/clothing/mask/mummy
+
+/datum/outfit/mummycorpse/pharoh
+	name = "Pharaoh Mummy"
+	uniform = /obj/item/clothing/under/costume/mummy
+	head = /obj/item/clothing/head/costume/pharaoh
+	r_hand = /obj/item/nullrod/egyptian

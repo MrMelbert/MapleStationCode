@@ -1,6 +1,6 @@
 /datum/map_generator/cave_generator/icemoon
 	weighted_open_turf_types = list(/turf/open/misc/beach/sand = 1)
-	weighted_closed_turf_types = list(/turf/closed/mineral/sand = 1)
+	weighted_closed_turf_types = list(/turf/closed/mineral/random/sand = 1)
 
 
 	// weighted_mob_spawn_list = list(
@@ -20,6 +20,7 @@
 		/obj/structure/flora/coconuts = 5,
 		/obj/structure/flora/rock/style_random = 5,
 		/obj/structure/flora/rock/pile/style_random = 5,
+		/obj/structure/flora/ash/cacti = 10,
 	)
 	///Note that this spawn list is also in the lavaland generator
 	weighted_feature_spawn_list = list(
@@ -61,16 +62,16 @@
 	initial_closed_chance = 10
 
 	flora_spawn_chance = 80
-	weighted_flora_spawn_list = list(
-		/obj/structure/flora/tree/pine/style_random = 18,
-		/obj/structure/flora/tree/dead/style_random = 1,
-		/obj/structure/flora/tree/stump = 1,
-		/obj/structure/flora/rock/icy/style_random = 1,
-		/obj/structure/flora/rock/pile/icy/style_random = 3,
-		/obj/structure/flora/grass/both/style_random = 50,
-		/obj/structure/flora/bush/flowers_pp/style_random = 25,
-		/obj/structure/flora/ash/chilly = 1,
-	)
+	// weighted_flora_spawn_list = list(
+	// 	/obj/structure/flora/tree/pine/style_random = 18,
+	// 	/obj/structure/flora/tree/dead/style_random = 1,
+	// 	/obj/structure/flora/tree/stump = 1,
+	// 	/obj/structure/flora/rock/icy/style_random = 1,
+	// 	/obj/structure/flora/rock/pile/icy/style_random = 3,
+	// 	/obj/structure/flora/grass/both/style_random = 50,
+	// 	/obj/structure/flora/bush/flowers_pp/style_random = 25,
+	// 	/obj/structure/flora/ash/chilly = 1,
+	// )
 
 	mob_spawn_chance = 0.2
 	// weighted_mob_spawn_list = list(/mob/living/basic/deer/ice = 99, /mob/living/basic/tree = 1, /obj/effect/spawner/random/lavaland_mob/raptor = 15)
@@ -78,7 +79,7 @@
 /datum/map_generator/cave_generator/icemoon/surface/noruins //use this for when you don't want ruins to spawn in a certain area
 
 /datum/map_generator/cave_generator/icemoon/deep
-	weighted_closed_turf_types = list(/turf/closed/mineral/sand = 1)
+	weighted_closed_turf_types = list(/turf/closed/mineral/random/sand/underground = 1)
 	// weighted_mob_spawn_list = list(
 	// 	SPAWN_MEGAFAUNA = 1,
 	// 	/mob/living/basic/mining/ice_demon = 100,

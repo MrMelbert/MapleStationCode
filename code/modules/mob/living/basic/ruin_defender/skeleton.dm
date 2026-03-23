@@ -185,3 +185,15 @@
 		/datum/ai_planning_subtree/simple_find_target,
 		/datum/ai_planning_subtree/basic_melee_attack_subtree,
 	)
+
+/mob/living/basic/skeleton/mummy
+	name = "mummy"
+	desc = "A skeleton wrapped in tattered, ancient bandages. It smells like it's been dead for a long time."
+	outfit = /datum/outfit/mummycorpse
+	held_item = /obj/item/knife/ritual
+	loot = list(
+		/obj/item/knife/ritual,
+		/obj/effect/decal/remains/human,
+		/obj/item/clothing/under/costume/mummy,
+		/obj/item/clothing/mask/mummy,
+	)

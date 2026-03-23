@@ -206,7 +206,7 @@
 	drill_below = FALSE
 
 /turf/open/openspace/icemoon/sandy
-	initial_gas_mix = "o2=22;n2=82;TEMP=313.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
 
 /turf/open/openspace/icemoon/sandy/keep_below
 	drill_below = FALSE

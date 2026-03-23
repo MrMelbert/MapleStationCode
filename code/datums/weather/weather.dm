@@ -59,6 +59,8 @@
 	var/list/protected_areas = list()
 	/// The list of z-levels that this weather is actively affecting
 	var/impacted_z_levels
+	/// Areas affected by weather have their blend modes changed
+	VAR_FINAL/list/impacted_areas_blend_modes = list()
 
 	/// Since it's above everything else, this is the layer used by default. TURF_LAYER is below mobs and walls if you need to use that.
 	var/overlay_layer = AREA_LAYER
@@ -235,8 +237,17 @@
 	for(var/area/impacted as anything in impacted_areas)
 		if(length(overlay_cache))
 			impacted.overlays -= overlay_cache
+			if(impacted_areas_blend_modes[impacted])
+				// revert the blend mode to the old state
+				impacted.blend_mode = impacted_areas_blend_modes[impacted]
+				impacted_areas_blend_modes[impacted] = null
 		if(length(new_overlay_cache))
 			impacted.overlays += new_overlay_cache
+			// only change the blend mode if it's not default or overlay
+			if(impacted.blend_mode > BLEND_OVERLAY)
+				// save the old blend mode state
+				impacted_areas_blend_modes[impacted] = impacted.blend_mode
+				impacted.blend_mode = BLEND_OVERLAY
 
 	overlay_cache = new_overlay_cache
 

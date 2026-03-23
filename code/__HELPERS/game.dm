@@ -269,7 +269,7 @@
 	if(!istype(environment))
 		return
 	var/pressure = environment.return_pressure()
-	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
+	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE || pressure >= 108)
 		. = TRUE
 
 ///Find an obstruction free turf that's within the range of the center. Can also condition on if it is of a certain area type.
