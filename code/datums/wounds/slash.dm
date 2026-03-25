@@ -134,7 +134,7 @@
 			msg += "slightly bloodied"
 		if(4 to INFINITY)
 			msg += "clean"
-	msg += " [current_gauze.name]!"
+	msg += "[current_gauze.name]!"
 
 	return "<B>[msg.Join()]</B>"
 

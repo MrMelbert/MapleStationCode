@@ -455,6 +455,7 @@
 		apply_category = LIMB_ITEM_GAUZE, \
 		override_existing = TRUE, \
 		can_apply = CALLBACK(src, PROC_REF(can_gauze_limb)), \
+		do_apply = CALLBACK(src, PROC_REF(do_gauze_limb)), \
 		on_apply = CALLBACK(src, PROC_REF(on_gauze_limb)), \
 	)
 	RegisterSignals(src, list(COMSIG_ITEM_APPLIED_TO_LIMB, COMSIG_ITEM_UNAPPLIED_FROM_LIMB), PROC_REF(update_wounds))
@@ -462,25 +463,30 @@
 /obj/item/stack/medical/wrap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	return NONE // uses component
 
-#define LACKS_WOUND 0
-#define HAS_WOUND 1
-#define HAS_SCANNED_WOUND 2
-
 /// Callback for limb applicability component
 /obj/item/stack/medical/wrap/proc/can_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
-	var/has_wound = FALSE
-	for(var/datum/wound/woundies as anything in limb.wounds)
-		if(!(woundies.wound_flags & ACCEPTS_GAUZE))
-			continue
-		has_wound = TRUE
-
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
 	if(current_gauze && (current_gauze.absorption_capacity * 1.2 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
+		if(HAS_TRAIT(limb, TRAIT_READY_TO_OPERATE))
+			return LIMB_APPLICABLE_BLOCK_APPLICATION
+
 		patient.balloon_alert(user, pick("already bandaged!", "bandage is clean!")) // good enough
-		return FALSE
+		return LIMB_APPLICABLE_BLOCK_APPLICATION | LIMB_APPLICABLE_BLOCK_ITEM_INTERACTION
+
+	return NONE
+
+/// Callback for limb applicability component
+/obj/item/stack/medical/wrap/proc/do_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
+
+	var/scanned_wound = FALSE
+	for(var/datum/wound/wound as anything in limb.wounds)
+		if(!HAS_TRAIT(wound, TRAIT_WOUND_SCANNED))
+			continue
+		scanned_wound = TRUE
+		break
 
 	var/treatment_delay = (user == patient ? self_delay : other_delay)
-	if(has_wound)
+	if(scanned_wound)
 		treatment_delay *= 0.5
 		if(user == patient)
 			user.visible_message(
@@ -531,10 +537,6 @@
 	SIGNAL_HANDLER
 	for(var/datum/wound/gauzed as anything in limb.wounds)
 		gauzed.update_inefficiencies()
-
-#undef LACKS_WOUND
-#undef HAS_WOUND
-#undef HAS_SCANNED_WOUND
 
 /obj/item/stack/medical/wrap/gauze
 	name = "medical gauze"
