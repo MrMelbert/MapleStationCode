@@ -1,4 +1,5 @@
 "a" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
+"c" = (/obj/effect/spawner/random/random_snowglobe,/turf/open/indestructible/redtech/alt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
 "d" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
 "e" = (/obj/structure/redtech_indestructable/esoteric_off,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
 "f" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/capacitor/redtech,/obj/item/stock_parts/scanning_module/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "TEMP=2.7"},/area/ruin/space/unpowered/redgeneric)
@@ -38,7 +39,7 @@ OOOOOOOOIIVOOOaOOOOOOOOOO
 OOOOOOOOOOOOOOOOOOOOaOOOO
 ORIOOOaOIIIIIIIIIOOVIOOOp
 OOaOaOOOIFeFQLfYVOOOUaOOp
-OOOOOOOOIadADAdDaaOOOaOOp
+OOOOOOOOIadAcAdDaaOOOaOOp
 pOOOOOOOIFeFamLLQVOOOOOOp
 pOOasOOOIIIIIIIIIIOOaOOOp
 pOOOOOOOOOOOOOOOOOOSaOOOp

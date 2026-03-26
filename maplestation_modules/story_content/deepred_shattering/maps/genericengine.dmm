@@ -96,6 +96,12 @@
 	initial_gas_mix = "LAVALAND_ATMOS"
 	},
 /area/ruin/unpowered/redgeneric)
+"O" = (
+/obj/effect/spawner/random/random_snowglobe,
+/turf/open/indestructible/redtech/alt{
+	initial_gas_mix = "LAVALAND_ATMOS"
+	},
+/area/ruin/unpowered/redgeneric)
 "P" = (
 /obj/item/stack/sheet/mineral/plastitanium,
 /turf/open/indestructible/redtech/altalt{
@@ -271,7 +277,7 @@ Z
 a
 S
 S
-i
+O
 i
 Z
 a

@@ -173,6 +173,66 @@
 /obj/item/snowglobe/extra/silence
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man in a black suit and black gloves, with a featureless mask."
 
+/obj/item/snowglobe/evtra
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a tall, ribboned lady with a parasol standing on an old, abandoned train platform."
+	var/decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of an empty train platform."
+
+/obj/item/snowglobe/evtra/examine(mob/user)
+	. = ..()
+	if(isliving(user))
+		desc = decc
+
+/obj/item/snowglobe/evtra/tre
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man behind a tree."
+	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a tree."
+
+/obj/item/snowglobe/evtra/gst
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a mysterious man in a grey room."
+	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of an empty grey room."
+
+/obj/item/snowglobe/evtra/ndl
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a deity of light, tending to the garden."
+	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of the garden."
+
+/obj/item/snowglobe/evtra/crm
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a shapeless voice of light."
+	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of pure light."
+
+/obj/item/snowglobe/zvtupbt
+	name = "snowglobe?"
+	desc = "A small glass globe filled with a miniature winter scene. Something about this one seems off."
+	var/jvuzahua = "A small glass globe filled with a miniature winter scene. Something about this one seems off.\n"
+	var/zlclu = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
+	var/aptpun = 0
+
+/obj/item/snowglobe/zvtupbt/proc/jpwoly(var/puwba)
+	var/ylzbsa = ""
+	for(var/i = 1, i <= length(puwba), i++)
+		var/jvkl = text2ascii(puwba, i)
+		if(jvkl >= 65 && jvkl <= 90)
+			jvkl = 65 + ((jvkl - 65 + 7) % 26)
+			if(jvkl < 65)
+				jvkl += 26
+		else if(jvkl >= 97 && jvkl <= 122)
+			jvkl = 97 + ((jvkl - 97 + 7) % 26)
+			if(jvkl < 97)
+				jvkl += 26
+		ylzbsa += ascii2text(jvkl)
+	if(aptpun == 25)
+		aptpun = 0
+	else
+		aptpun++
+	return ylzbsa
+
+/obj/item/snowglobe/zvtupbt/examine(mob/user)
+	. = ..()
+	if(isliving(user))
+		zlclu = jpwoly(zlclu)
+	if(aptpun - 18 == 7)
+		desc = jvuzahua + zlclu
+	else
+		desc = jvuzahua + "<span class='upside_down'>" + zlclu + "</span>"
+
 /obj/effect/spawner/random/shattering_snowglobes
 	name = "snowglobe spawner (originals)"
 	desc = "The Collector's old collection."
@@ -184,7 +244,6 @@
 
 	loot = list(
 		/obj/item/snowglobe/reimu,
-		/obj/item/snowglobe/yukari,
 		/obj/item/snowglobe/sdm,
 		/obj/item/snowglobe/draedon,
 		/obj/item/snowglobe/starfarers,
@@ -225,7 +284,6 @@
 
 	loot = list(
 		/obj/item/snowglobe/reimu,
-		/obj/item/snowglobe/yukari,
 		/obj/item/snowglobe/sdm,
 		/obj/item/snowglobe/draedon,
 		/obj/item/snowglobe/starfarers,
@@ -247,6 +305,12 @@
 		/obj/item/snowglobe/extra/arbiter,
 		/obj/item/snowglobe/extra/limbus,
 		/obj/item/snowglobe/extra/silence,
+		/obj/item/snowglobe/evtra,
+		/obj/item/snowglobe/evtra/tre,
+		/obj/item/snowglobe/evtra/gst,
+		/obj/item/snowglobe/evtra/ndl,
+		/obj/item/snowglobe/evtra/crm,
+		/obj/item/snowglobe/zvtupbt,
 	)
 
 /obj/item/rtechdrive

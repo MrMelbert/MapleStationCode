@@ -18,12 +18,13 @@
 "S" = (/turf/closed/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "U" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "V" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech/alt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"Z" = (/obj/effect/spawner/random/random_snowglobe,/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 
 (1,1,1) = {"
 DaaDDaKKKKaa
 waaaaaSSSSaD
 aaxIUxxxxxai
-KaRnsRRnnsaw
+KaRnZRRnnsaw
 aaxOexxxxgaa
 DaRnnsRnnRaK
 VaxxbxxxJxaa
