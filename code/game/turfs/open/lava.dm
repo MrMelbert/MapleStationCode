@@ -357,7 +357,7 @@
 	initial_gas_mix = AIRLESS_ATMOS
 
 /turf/open/lava/smooth/sandy
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 
 /turf/open/lava/plasma
 	name = "liquid plasma"

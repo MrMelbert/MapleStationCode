@@ -3,7 +3,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/remains/human,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "bo" = (
@@ -12,7 +12,7 @@
 	},
 /obj/item/knife/combat/bone,
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "bJ" = (
@@ -20,24 +20,24 @@
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "cA" = (
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "dp" = (
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "eU" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "fJ" = (
@@ -45,21 +45,21 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/remains/human,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "gm" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "hF" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "ik" = (
@@ -68,7 +68,7 @@
 	amount = 2
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "iI" = (
@@ -81,7 +81,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "jZ" = (
@@ -92,12 +92,14 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/item/spear/bonespear,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "lS" = (
 /obj/effect/decal/cleanable/cobweb,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "oI" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
@@ -109,7 +111,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "qH" = (
@@ -118,7 +120,7 @@
 	},
 /obj/item/spear/bonespear,
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "rJ" = (
@@ -130,7 +132,7 @@
 	name = "rack"
 	},
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "sL" = (
@@ -138,7 +140,9 @@
 	amount = 6
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "tC" = (
 /obj/structure/flora/rock/style_random,
@@ -150,12 +154,14 @@
 /obj/item/stack/ore/glass{
 	amount = 12
 	},
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "xh" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "xu" = (
@@ -168,7 +174,7 @@
 	amount = 12
 	},
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "xD" = (
@@ -176,33 +182,35 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/headpike/bone,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "yo" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/grand_remains,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "yJ" = (
 /obj/effect/decal/cleanable/ash,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "yZ" = (
 /obj/structure/flora/tree/palm/style_random,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "zt" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "An" = (
 /obj/effect/decal/cleanable/cobweb,
@@ -210,61 +218,65 @@
 	name = "rack"
 	},
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Bf" = (
 /obj/structure/mineral_door/sandstone,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "BJ" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "FE" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/headpike/bone,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "FI" = (
 /mob/living/basic/spider/giant/guard,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Ge" = (
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "GK" = (
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "HO" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/item/stack/ore/glass{
 	amount = 12
 	},
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Iq" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/mob_spawn/corpse/human/miner/explorer,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "ID" = (
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "IL" = (
@@ -281,17 +293,21 @@
 /obj/item/nullrod/egyptian/cursed,
 /obj/item/organ/heart/cursed,
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "MR" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Pf" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Pv" = (
 /obj/structure/flora/ash/cacti,
@@ -303,57 +319,63 @@
 "Tg" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "TQ" = (
 /obj/structure/barricade/wooden,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Ua" = (
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Ud" = (
 /obj/structure/mineral_door/sandstone,
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "UC" = (
 /obj/item/stack/sheet/mineral/diamond,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Vd" = (
 /obj/structure/flora/rock/style_random,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "Xw" = (
-/turf/open/floor/iron/sepia,
+/turf/open/floor/iron/sepia{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Xy" = (
 /obj/effect/decal/cleanable/ash,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "XN" = (
 /obj/structure/mineral_door/sandstone,
 /obj/effect/turf_decal/weather/sand,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Zs" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/remains/human,
 /turf/open/floor/iron/terracotta/herringbone{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "ZQ" = (
@@ -361,7 +383,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /mob/living/basic/spider/giant/guard,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 

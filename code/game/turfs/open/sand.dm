@@ -25,7 +25,7 @@
 	icon_state = "sand"
 	base_icon_state = "sand"
 	baseturfs = /turf/open/misc/beach/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	planetary_atmos = TRUE
 	slowdown = 0.5
 
@@ -38,7 +38,7 @@
 	turf_flags = parent_type::turf_flags | NO_RUINS
 
 /turf/open/floor/plating/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 
 /turf/open/misc/beach/coast
 	name = "coastline"

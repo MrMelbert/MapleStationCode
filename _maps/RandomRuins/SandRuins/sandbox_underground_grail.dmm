@@ -5,7 +5,7 @@
 	alpha = 150
 	},
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "b" = (
@@ -15,7 +15,7 @@
 	alpha = 50
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "c" = (
@@ -25,13 +25,13 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "d" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "f" = (
@@ -40,7 +40,9 @@
 "g" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "i" = (
 /obj/structure/railing{
@@ -48,7 +50,7 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "j" = (
@@ -68,7 +70,7 @@
 	},
 /obj/effect/decal/cleanable/food/salt,
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "q" = (
@@ -77,7 +79,7 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "r" = (
@@ -92,18 +94,20 @@
 	alpha = 150
 	},
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "s" = (
 /obj/structure/table/bronze,
 /obj/item/reagent_containers/cup/glass/trophy/grail/fake/b,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "t" = (
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "u" = (
@@ -112,7 +116,7 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "v" = (
@@ -121,11 +125,13 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "y" = (
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "A" = (
 /obj/structure/railing{
@@ -133,7 +139,7 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "D" = (
@@ -145,7 +151,7 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "F" = (
@@ -154,7 +160,9 @@
 /area/icemoon/underground/unexplored)
 "H" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "I" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
@@ -163,29 +171,31 @@
 "J" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/light_emitter/fake_outdoors,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "K" = (
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "L" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "N" = (
 /obj/structure/mineral_door/sandstone,
 /obj/effect/turf_decal/weather/sand,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "O" = (
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/unexplored)
 "P" = (
@@ -200,13 +210,15 @@
 	alpha = 150
 	},
 /turf/open/chasm{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "Q" = (
 /obj/structure/table/bronze,
 /obj/item/reagent_containers/cup/glass/trophy/grail/fake,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "R" = (
 /obj/structure/railing{
@@ -214,12 +226,12 @@
 	color = "#330000"
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "S" = (
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "U" = (
@@ -227,7 +239,7 @@
 	faction = list("neutral")
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "V" = (
@@ -237,13 +249,15 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 "W" = (
 /obj/structure/table/bronze,
 /obj/item/reagent_containers/cup/glass/trophy/grail/real,
-/turf/open/floor/iron/terracotta/small,
+/turf/open/floor/iron/terracotta/small{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/ruin/unpowered)
 "Y" = (
 /obj/effect/decal/cleanable/crayon{
@@ -251,7 +265,7 @@
 	alpha = 50
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered)
 

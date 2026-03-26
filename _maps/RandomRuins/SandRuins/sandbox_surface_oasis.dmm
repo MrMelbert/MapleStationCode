@@ -3,18 +3,18 @@
 /obj/item/fish/boned,
 /turf/open/misc/beach/coast{
 	dir = 1;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "b" = (
 /turf/open/water/beach{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15";
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15";
 	name = "oasis"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "d" = (
 /turf/open/misc/beach/coast{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "f" = (
@@ -29,18 +29,19 @@
 "h" = (
 /turf/open/misc/beach/coast{
 	dir = 4;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "i" = (
 /turf/open/misc/beach/coast/corner{
-	dir = 4
+	dir = 4;
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "k" = (
 /turf/open/misc/beach/coast/corner{
 	dir = 8;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "m" = (
@@ -53,7 +54,7 @@
 "o" = (
 /turf/open/misc/beach/coast{
 	dir = 1;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "r" = (
@@ -72,11 +73,14 @@
 /turf/open/misc/beach/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "z" = (
-/turf/open/misc/beach/coast/corner,
+/turf/open/misc/beach/coast/corner{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/icemoon/surface/outdoors/nospawn)
 "C" = (
 /turf/open/misc/beach/coast/corner{
-	dir = 1
+	dir = 1;
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "E" = (
@@ -90,7 +94,7 @@
 "P" = (
 /turf/open/misc/beach/coast{
 	dir = 8;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "S" = (
@@ -100,13 +104,13 @@
 "T" = (
 /turf/open/misc/beach/coast{
 	dir = 5;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "Y" = (
 /turf/open/misc/beach/coast{
 	dir = 10;
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 

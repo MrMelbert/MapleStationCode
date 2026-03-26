@@ -12,19 +12,19 @@
 	desc = "A scimitar used by desertfolk. Probably."
 	},
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "i" = (
 /obj/item/shield/buckler,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "k" = (
 /obj/item/clothing/suit/armor/vest/cuirass,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "n" = (
@@ -34,26 +34,26 @@
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "o" = (
 /obj/item/shield/buckler,
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "p" = (
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "r" = (
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "s" = (
@@ -75,7 +75,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "t" = (
@@ -84,7 +84,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "v" = (
@@ -94,7 +94,7 @@
 	},
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "x" = (
@@ -106,7 +106,7 @@
 	armor_type = /datum/armor/suit_armor
 	},
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "B" = (
@@ -116,7 +116,7 @@
 /obj/item/clothing/mask/bandana/blue,
 /obj/item/clothing/neck/scarf/darkblue,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "C" = (
@@ -124,7 +124,7 @@
 	desc = "Pack hunters of the desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
 	},
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "D" = (
@@ -136,7 +136,7 @@
 	pixel_x = -5
 	},
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "I" = (
@@ -150,7 +150,7 @@
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "N" = (
@@ -160,13 +160,13 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "P" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "S" = (
@@ -176,7 +176,7 @@
 "U" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "X" = (
@@ -185,12 +185,12 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "Y" = (
 /turf/open/floor/iron/terracotta{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 

@@ -10,7 +10,7 @@
 	dir = 4
 	},
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "az" = (
@@ -37,7 +37,7 @@
 "cf" = (
 /obj/item/feather,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "cg" = (
@@ -47,11 +47,6 @@
 "cK" = (
 /obj/structure/fluff/paper,
 /turf/open/misc/beach/sand,
-/area/ruin/unpowered/buried_library)
-"cW" = (
-/turf/open/floor/carpet/black{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
-	},
 /area/ruin/unpowered/buried_library)
 "cZ" = (
 /turf/closed/mineral/sand,
@@ -63,7 +58,7 @@
 "ek" = (
 /obj/structure/fluff/paper/stack,
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "eK" = (
@@ -84,13 +79,13 @@
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/book/manual/random,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "gQ" = (
 /obj/structure/fluff/paper,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "ii" = (
@@ -99,14 +94,14 @@
 "iq" = (
 /obj/structure/fluff/paper/stack,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "iV" = (
 /obj/item/paper/crumpled/bloody/fluff/stations/lavaland/library/warning,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "jr" = (
@@ -115,7 +110,7 @@
 	},
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "jP" = (
@@ -134,13 +129,13 @@
 /area/ruin/unpowered/buried_library)
 "km" = (
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "kv" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "lm" = (
@@ -153,20 +148,20 @@
 	dir = 1
 	},
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "ol" = (
 /obj/structure/mineral_door/sandstone,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "ou" = (
 /obj/structure/fluff/paper/stack,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "oJ" = (
@@ -174,7 +169,7 @@
 /obj/structure/fluff/paper,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "oR" = (
@@ -185,7 +180,7 @@
 /obj/effect/decal/cleanable/dirt,
 /mob/living/basic/pet/fox,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "sW" = (
@@ -193,7 +188,7 @@
 /area/ruin/unpowered/buried_library)
 "sZ" = (
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "tp" = (
@@ -203,19 +198,14 @@
 	},
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
-	},
-/area/ruin/unpowered/buried_library)
-"uQ" = (
-/turf/open/floor/wood{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "uR" = (
 /obj/item/stack/sheet/mineral/wood,
 /obj/structure/fluff/paper/stack,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "vT" = (
@@ -228,7 +218,7 @@
 "xB" = (
 /obj/item/stack/sheet/mineral/wood,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "xD" = (
@@ -238,7 +228,7 @@
 	},
 /mob/living/basic/pet/fox,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "xE" = (
@@ -247,7 +237,7 @@
 	},
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "zF" = (
@@ -256,21 +246,21 @@
 "Cy" = (
 /obj/structure/bookcase/random,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "CG" = (
 /obj/item/stack/sheet/mineral/wood,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Dn" = (
 /obj/structure/fluff/paper/stack,
 /obj/structure/fluff/paper,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Ft" = (
@@ -289,7 +279,7 @@
 "Hk" = (
 /obj/item/paper/crumpled/fluff/stations/lavaland/library/diary,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Hz" = (
@@ -300,7 +290,7 @@
 "Ip" = (
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "IH" = (
@@ -325,7 +315,7 @@
 /obj/structure/table/bronze,
 /obj/item/statuebust/hippocratic,
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Mi" = (
@@ -340,14 +330,14 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/fluff/paper/stack,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Na" = (
 /obj/item/stack/sheet/mineral/wood,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "OB" = (
@@ -358,7 +348,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/fluff/paper,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "QP" = (
@@ -366,7 +356,7 @@
 	dir = 5
 	},
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "QU" = (
@@ -377,13 +367,13 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "SU" = (
 /obj/structure/statue/bronze/marx,
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Tn" = (
@@ -407,13 +397,13 @@
 "UF" = (
 /obj/structure/statue/sandstone/venus,
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Wj" = (
 /mob/living/basic/pet/fox,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "WC" = (
@@ -427,14 +417,14 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/item/paper/fluff/awaymissions/moonoutpost19/research/larva_autopsy,
 /turf/open/floor/wood{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 "Yg" = (
 /obj/structure/table/bronze,
 /obj/item/hourglass,
 /turf/open/floor/carpet/black{
-	initial_gas_mix = "ICEMOON_ATMOS"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/ruin/unpowered/buried_library)
 
@@ -648,13 +638,13 @@ aT
 Xm
 cg
 eK
-cW
+sZ
 sZ
 fd
 sZ
 ek
 lm
-uQ
+km
 QW
 km
 QW

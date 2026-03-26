@@ -19,7 +19,7 @@
 "u" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "A" = (
@@ -33,12 +33,12 @@
 "I" = (
 /obj/structure/statue/bone/rib,
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "L" = (
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "Q" = (
@@ -50,7 +50,7 @@
 	dir = 1
 	},
 /turf/open/misc/sandy_dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 

@@ -680,10 +680,6 @@
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
-"amt" = (
-/obj/structure/cable,
-/turf/open/floor/glass/reinforced,
-/area/station/service/chapel)
 "amx" = (
 /obj/structure/curtain,
 /turf/open/floor/iron/showroomfloor,
@@ -1051,7 +1047,9 @@
 "arw" = (
 /obj/structure/cable,
 /obj/machinery/power/solar/titaniumglass,
-/turf/open/floor/iron/solarpanel,
+/turf/open/floor/iron/solarpanel{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/icemoon/surface/outdoors/nospawn)
 "arA" = (
 /obj/effect/spawner/structure/window,
@@ -1865,7 +1863,7 @@
 	dir = 6
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "aEz" = (
@@ -2101,7 +2099,7 @@
 	dir = 10
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "aJr" = (
@@ -3305,7 +3303,7 @@
 	dir = 9
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "bam" = (
@@ -3784,7 +3782,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/station/security/brig/entrance)
 "bgU" = (
@@ -6014,7 +6012,7 @@
 /area/station/maintenance/starboard/aft)
 "bMe" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 1
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
@@ -6672,7 +6670,7 @@
 /obj/effect/turf_decal/weather/sand{
 	dir = 8
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating/sand,
 /area/icemoon/surface/outdoors/nospawn)
 "bVS" = (
 /obj/structure/table,
@@ -6869,13 +6867,6 @@
 /obj/effect/spawner/random/armory/laser_gun,
 /turf/open/floor/iron/dark/textured,
 /area/station/ai_monitored/security/armory)
-"bYm" = (
-/obj/structure/chair/pew{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/glass/reinforced,
-/area/station/service/chapel)
 "bYu" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -6948,7 +6939,7 @@
 /area/station/maintenance/department/medical/morgue)
 "bYV" = (
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "bYY" = (
@@ -7575,7 +7566,7 @@
 /area/station/hallway/primary/starboard)
 "ciw" = (
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "ciG" = (
@@ -8194,7 +8185,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "crS" = (
@@ -8393,6 +8384,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
+"cuZ" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/iron/dark,
+/area/station/service/chapel)
 "cvg" = (
 /obj/effect/mapping_helpers/trapdoor_placer,
 /obj/effect/turf_decal/delivery,
@@ -9832,7 +9830,7 @@
 "cPj" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "cPo" = (
@@ -10303,7 +10301,7 @@
 "cWQ" = (
 /obj/structure/closet/crate/grave/filled,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "cXa" = (
@@ -10883,7 +10881,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "deO" = (
@@ -12012,7 +12010,9 @@
 "dvb" = (
 /obj/structure/cable,
 /obj/machinery/power/tracker,
-/turf/open/floor/iron/solarpanel,
+/turf/open/floor/iron/solarpanel{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/icemoon/surface/outdoors/nospawn)
 "dvc" = (
 /obj/structure/disposalpipe/segment,
@@ -12395,7 +12395,7 @@
 	dir = 6
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "dAP" = (
@@ -12803,7 +12803,7 @@
 	dir = 6
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "dGK" = (
@@ -14900,7 +14900,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_half{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "eos" = (
@@ -15274,7 +15274,7 @@
 	dir = 4
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/station/security/brig/entrance)
 "esS" = (
@@ -15694,7 +15694,7 @@
 	dir = 9
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "eAg" = (
@@ -15942,7 +15942,7 @@
 /obj/effect/turf_decal/weather/sand,
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "eEY" = (
@@ -18364,7 +18364,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "ftA" = (
@@ -19823,7 +19823,7 @@
 	dir = 4
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "fRz" = (
@@ -19842,6 +19842,10 @@
 /obj/structure/chair/stool/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"fRS" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron/dark,
+/area/station/service/chapel)
 "fSi" = (
 /obj/structure/cable/multilayer/multiz,
 /obj/effect/turf_decal/stripes/line{
@@ -21195,6 +21199,12 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/engineering/engine_smes)
+"gmT" = (
+/obj/structure/cable,
+/turf/open/floor/iron/chapel{
+	dir = 1
+	},
+/area/station/service/chapel)
 "gmW" = (
 /turf/closed/wall,
 /area/station/commons/fitness)
@@ -22378,15 +22388,12 @@
 /area/station/engineering/atmos/storage)
 "gGE" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/clothing/suit/hooded/wintercoat,
-/obj/item/clothing/shoes/winterboots,
-/obj/item/clothing/shoes/winterboots,
 /obj/machinery/firealarm/directional/south,
 /obj/item/radio/intercom/directional/west,
+/obj/item/clothing/shoes/sandal/black,
+/obj/item/clothing/shoes/sandal/black,
+/obj/item/clothing/glasses/sunglasses,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/exit/departure_lounge)
 "gGF" = (
@@ -22429,6 +22436,7 @@
 /area/mine/laborcamp)
 "gHj" = (
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/towel_rack/full_beach,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
 "gHl" = (
@@ -23386,7 +23394,7 @@
 "gVU" = (
 /obj/structure/railing/wooden_fence,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "gWd" = (
@@ -27783,7 +27791,7 @@
 "ipz" = (
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "ipA" = (
@@ -28089,7 +28097,7 @@
 	},
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "iuH" = (
@@ -28461,7 +28469,7 @@
 "iAn" = (
 /obj/structure/ore_container/food_trough/raptor_trough,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "iAp" = (
@@ -28902,7 +28910,7 @@
 	dir = 10
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "iHV" = (
@@ -29212,7 +29220,7 @@
 	dir = 10
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "iNn" = (
@@ -31531,7 +31539,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "jzC" = (
@@ -33117,7 +33125,7 @@
 "jXQ" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "jXY" = (
@@ -36260,9 +36268,9 @@
 /area/icemoon/surface/outdoors/nospawn)
 "kRc" = (
 /obj/machinery/light/directional/west,
-/obj/structure/closet/wardrobe/grey,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/ai/directional/west,
+/obj/structure/towel_rack/full_beach,
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "kRd" = (
@@ -37129,7 +37137,7 @@
 	dir = 9
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "leM" = (
@@ -37625,7 +37633,7 @@
 	dir = 5
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "lmM" = (
@@ -40035,7 +40043,7 @@
 	dir = 4
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "lZK" = (
@@ -40563,7 +40571,7 @@
 	dir = 4
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "mhQ" = (
@@ -44465,7 +44473,7 @@
 	dir = 8
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "nrF" = (
@@ -46515,7 +46523,7 @@
 /area/station/command/bridge)
 "nYG" = (
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "nYZ" = (
@@ -48370,7 +48378,7 @@
 /area/station/maintenance/department/medical/morgue)
 "oAh" = (
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/station/security/brig/entrance)
 "oAl" = (
@@ -49691,6 +49699,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat_interior)
+"oUg" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/iron/dark,
+/area/station/service/chapel)
 "oUr" = (
 /obj/structure/chair/sofa/bench{
 	dir = 4
@@ -50247,14 +50262,6 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark/textured,
 /area/station/engineering/atmos/storage/gas)
-"pcB" = (
-/obj/structure/chair/pew{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/assistant,
-/turf/open/floor/glass/reinforced,
-/area/station/service/chapel)
 "pcC" = (
 /obj/effect/turf_decal/siding/white/corner{
 	dir = 4
@@ -51913,7 +51920,7 @@
 /obj/item/flashlight,
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "pzC" = (
@@ -51979,7 +51986,7 @@
 	dir = 8
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "pAN" = (
@@ -53153,7 +53160,7 @@
 	dir = 5
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "pSd" = (
@@ -53938,14 +53945,6 @@
 	},
 /turf/open/openspace,
 /area/station/science/xenobiology)
-"qeR" = (
-/obj/structure/chair/pew{
-	dir = 1
-	},
-/obj/structure/cable,
-/obj/effect/landmark/start/hangover,
-/turf/open/floor/glass/reinforced,
-/area/station/service/chapel)
 "qeX" = (
 /obj/structure/table/wood,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -54354,7 +54353,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "qlw" = (
@@ -54418,7 +54417,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/station/security/brig/entrance)
 "qmt" = (
@@ -54773,7 +54772,7 @@
 	},
 /obj/effect/light_emitter/fake_outdoors,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "qqA" = (
@@ -55083,7 +55082,7 @@
 	dir = 10
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "qvM" = (
@@ -56045,7 +56044,7 @@
 	},
 /obj/item/soap/deluxe,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "qIF" = (
@@ -57142,7 +57141,7 @@
 "qZc" = (
 /obj/item/flashlight/lantern/on,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "qZh" = (
@@ -58145,15 +58144,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
-"rpK" = (
-/obj/structure/chair/pew/left{
-	dir = 1
-	},
-/obj/structure/cable,
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
-/area/station/service/chapel)
 "rpM" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /turf/open/floor/iron/white,
@@ -58605,7 +58595,7 @@
 "rye" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "ryf" = (
@@ -59545,7 +59535,7 @@
 "rMW" = (
 /obj/structure/marker_beacon/yellow,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "rMY" = (
@@ -61680,7 +61670,7 @@
 "ssw" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "ssF" = (
@@ -61714,7 +61704,7 @@
 	dir = 1
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "stb" = (
@@ -62937,7 +62927,7 @@
 "sKG" = (
 /obj/machinery/light/small/dim/directional/south,
 /turf/open/floor/iron/smooth_half{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "sKV" = (
@@ -63282,7 +63272,7 @@
 /area/station/security/brig/upper)
 "sQD" = (
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "sQE" = (
@@ -64277,7 +64267,7 @@
 	dir = 1
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "tis" = (
@@ -65885,7 +65875,7 @@
 	dir = 6
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "tIS" = (
@@ -66467,7 +66457,7 @@
 /area/station/security/prison/workout)
 "tSy" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
@@ -71005,7 +70995,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "voY" = (
@@ -71422,7 +71412,7 @@
 	dir = 9
 	},
 /turf/open/floor/iron/smooth_corner{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "vvu" = (
@@ -72082,7 +72072,7 @@
 /area/station/engineering/atmos)
 "vEF" = (
 /turf/open/floor/iron/smooth_large{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "vEJ" = (
@@ -72190,7 +72180,7 @@
 	dir = 5
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "vGy" = (
@@ -72437,7 +72427,7 @@
 	},
 /obj/item/raptor_dex,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "vLj" = (
@@ -75130,7 +75120,9 @@
 "wAC" = (
 /obj/machinery/power/tracker,
 /obj/structure/cable,
-/turf/open/floor/iron/solarpanel,
+/turf/open/floor/iron/solarpanel{
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
+	},
 /area/icemoon/surface/outdoors/nospawn)
 "wAF" = (
 /obj/machinery/duct,
@@ -75512,7 +75504,7 @@
 	dir = 8
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "wFN" = (
@@ -75808,7 +75800,7 @@
 	pixel_y = 32
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "wKv" = (
@@ -75981,7 +75973,7 @@
 /obj/structure/table/wood,
 /obj/item/flashlight/lantern/on,
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "wMT" = (
@@ -77350,7 +77342,7 @@
 "xhE" = (
 /obj/effect/turf_decal/weather/sand,
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard)
 "xhK" = (
@@ -77489,7 +77481,7 @@
 	dir = 5
 	},
 /turf/open/misc/hay/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored)
 "xkZ" = (
@@ -79041,7 +79033,7 @@
 	dir = 9
 	},
 /turf/open/misc/dirt{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/underground/explored/graveyard/chapel)
 "xHE" = (
@@ -79191,7 +79183,7 @@
 	dir = 4
 	},
 /turf/open/floor/glass/reinforced/icemoon{
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 	},
 /area/icemoon/surface/outdoors/nospawn)
 "xKo" = (
@@ -79899,13 +79891,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"xXE" = (
-/obj/structure/chair/pew{
-	dir = 1
-	},
-/obj/structure/cable,
-/turf/open/floor/glass/reinforced,
-/area/station/service/chapel)
 "xXK" = (
 /obj/structure/closet/emcloset,
 /obj/machinery/power/apc/auto_name/directional/west,
@@ -191881,9 +191866,9 @@ qEJ
 qEJ
 qEJ
 tJi
-wBA
-bAF
-rpK
+cuZ
+gmT
+epB
 bAF
 epB
 oTA
@@ -192138,9 +192123,9 @@ gNJ
 qEJ
 eog
 lUa
-dtC
+oUg
 txs
-qeR
+nMP
 txs
 nJy
 oTA
@@ -192396,10 +192381,10 @@ gQO
 mPJ
 mle
 bWZ
-amt
-xXE
 txs
-pcB
+nJy
+txs
+irQ
 tSy
 uJt
 uJt
@@ -192657,7 +192642,7 @@ sab
 syh
 sab
 lqj
-oTA
+ewC
 uJt
 uJt
 rcD
@@ -193685,7 +193670,7 @@ bAF
 epB
 bAF
 uko
-oTA
+fRS
 uJt
 uJt
 rcD
@@ -193941,7 +193926,7 @@ oTA
 txs
 irQ
 txs
-bYm
+nJy
 bMe
 uJt
 uJt

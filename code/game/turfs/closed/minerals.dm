@@ -421,7 +421,7 @@
 	name = "sandy rock"
 	color = "#ffcc66"
 	baseturfs = /turf/open/misc/beach/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 
 /turf/closed/mineral/random/sand/mineral_chances()
 	return list(
@@ -543,7 +543,7 @@
 	name = "sandy rock"
 	color = "#ffcc66"
 	baseturfs = /turf/open/misc/beach/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 
 /turf/closed/mineral/iron
 	mineralType = /obj/item/stack/ore/iron
@@ -723,7 +723,7 @@
 	name = "sandy rock"
 	color = "#ffcc66"
 	baseturfs = /turf/open/misc/beach/sand
-	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	initial_gas_mix = "o2=22;n2=82;TEMP=323.15"
 
 //GIBTONITE
 
