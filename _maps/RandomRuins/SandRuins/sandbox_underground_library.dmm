@@ -432,7 +432,7 @@
 /area/ruin/unpowered/buried_library)
 "Yg" = (
 /obj/structure/table/bronze,
-/obj/item/stack/ore/slag,
+/obj/item/hourglass,
 /turf/open/floor/carpet/black{
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},

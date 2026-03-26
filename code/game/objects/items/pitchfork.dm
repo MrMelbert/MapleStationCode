@@ -12,7 +12,7 @@
 	righthand_file = 'icons/mob/inhands/weapons/polearms_righthand.dmi'
 	name = "pitchfork"
 	desc = "A simple tool used for moving hay."
-	force = 7
+	force = 12
 	throwforce = 15
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("attacks", "impales", "pierces")
@@ -30,7 +30,7 @@
 /obj/item/pitchfork/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/jousting)
-	AddComponent(/datum/component/two_handed, force_unwielded=7, force_wielded=15, icon_wielded="[base_icon_state]1")
+	AddComponent(/datum/component/two_handed, force_unwielded=12, force_wielded=20, icon_wielded="[base_icon_state]1")
 
 /obj/item/pitchfork/update_icon_state()
 	icon_state = "[base_icon_state]0"

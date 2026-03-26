@@ -197,15 +197,15 @@
 	prefix = "_maps/RandomRuins/AnywhereRuins/"
 	suffix = "fountain_hall.dmm"
 
-/datum/map_template/ruin/sandbox/golem_ship
-	name = "Sand-Ruin Free Golem Ship"
-	id = "golem-ship"
-	description = "Lumbering humanoids, made out of precious metals, move inside this ship. They frequently leave to mine more minerals, which they somehow turn into more of them. \
-	Seem very intent on research and individual liberty, and also geology-based naming?"
-	prefix = "_maps/RandomRuins/AnywhereRuins/"
-	suffix = "golem_ship.dmm"
-	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
-	default_area = /area/icemoon/underground/unexplored
+// /datum/map_template/ruin/sandbox/golem_ship
+// 	name = "Sand-Ruin Free Golem Ship"
+// 	id = "golem-ship"
+// 	description = "Lumbering humanoids, made out of precious metals, move inside this ship. They frequently leave to mine more minerals, which they somehow turn into more of them. \
+// 	Seem very intent on research and individual liberty, and also geology-based naming?"
+// 	prefix = "_maps/RandomRuins/AnywhereRuins/"
+// 	suffix = "golem_ship.dmm"
+// 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+// 	default_area = /area/icemoon/underground/unexplored
 
 /datum/map_template/ruin/sandbox/casbah
 	name = "Sand-Ruin Casbah"
@@ -230,6 +230,13 @@
 		The beach is now desolate and windswept, but still holds a sense of nostalgia and beauty for those who visit it."
 	suffix = "sandbox_surface_beach.dmm"
 	cost = 10
+
+/datum/map_template/ruin/sandbox/ufo_crash
+	name = "Sand-Ruin UFO Crash Site"
+	id = "ufo_crash"
+	description = "The remains of a UFO crash, long since abandoned and buried by the sands. The crash site is rumored to hold advanced alien technology."
+	suffix = "sandbox_surface_ufo_crash.dmm"
+	cost = 5
 
 /datum/map_template/ruin/sandbox/minecraft
 	name = "Sand-Ruin Minecraft Temple"
@@ -314,12 +321,22 @@
 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
 	default_area = /area/icemoon/underground/unexplored
 
+/datum/map_template/ruin/sandbox/lava
+	name = "Sand-Ruin Underground Lava"
+	id = "lava"
+	description = "A subterranean lava flow with an item in the middle."
+	suffix = "sandbox_underground_lava.dmm"
+	cost = 5
+	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
+	default_area = /area/icemoon/underground/unexplored
+
 /obj/item/reagent_containers/cup/glass/trophy/grail
 	name = "holy grail"
 	desc = "The legendary Holy Grail, said to grant life and healing to those who drink from it."
 	icon = 'icons/obj/drinks/bottles.dmi'
 	icon_state = "golden_cup"
 	w_class = WEIGHT_CLASS_SMALL
+	volume = 30
 
 /obj/item/reagent_containers/cup/glass/trophy/grail/real
 	icon_state = "bronze_cup"
@@ -347,18 +364,18 @@
 /datum/reagent/fuel/unholywater/grail_water/on_mob_life(mob/living/carbon/human/user, seconds_per_tick, times_fired)
 	. = ..()
 	if(SPT_PROB(10, seconds_per_tick))
-		to_chat(user, span_red("You feel older."))
+		to_chat(user, span_warning("You feel older."))
 	user.age += 1 * seconds_per_tick
 	switch(user.age)
 		if(90 to INFINITY)
 			to_chat(user, span_userdanger("You feel your life fading away!"))
 			user.death(null, "old age")
 		if(70 to 90)
-			user.cause_pain(1.5 * seconds_per_tick)
+			user.cause_pain(BODY_ZONES_ALL, 1.5 * seconds_per_tick)
 		if(50 to 70)
-			user.cause_pain(1 * seconds_per_tick)
+			user.cause_pain(BODY_ZONES_ALL, 1 * seconds_per_tick)
 		if(20 to 50)
-			user.cause_pain(0.5 * seconds_per_tick)
+			user.cause_pain(BODY_ZONES_ALL, 0.5 * seconds_per_tick)
 
 /datum/reagent/water/holywater/grail_water
 	name = "Grail Water"
