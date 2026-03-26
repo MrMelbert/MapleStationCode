@@ -48,6 +48,7 @@
 	AddElement(/datum/element/ai_retaliate)
 	AddComponent(/datum/component/tree_climber, climbing_distance = 15)
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /mob/living/basic/bear/Login()
 	. = ..()

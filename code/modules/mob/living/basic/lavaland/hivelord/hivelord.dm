@@ -37,6 +37,7 @@
 	spawn_brood = new(src)
 	spawn_brood.Grant(src)
 	ai_controller.set_blackboard_key(BB_TARGETED_ACTION, spawn_brood)
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /mob/living/basic/mining/hivelord/Destroy()
 	QDEL_NULL(spawn_brood)

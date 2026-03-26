@@ -82,6 +82,13 @@
 
 	for(var/zone in GLOB.all_body_zones)
 		victim.apply_damage(1, BRUTE, zone, victim.getarmor(zone, BOMB))
+	victim.adjust_body_temperature(0.5 KELVIN, use_insulation = TRUE)
+	if(!victim.is_eyes_covered() && victim.get_organ_slot(ORGAN_SLOT_EYES))
+		victim.adjust_eye_blur_up_to(4 SECONDS, 1 MINUTES)
+		if(prob(10))
+			to_chat(victim, span_warning("Sand gets in your eyes!"))
+			if(prob(20))
+				victim.adjust_temp_blindness(4 SECONDS)
 
 /datum/weather/sand_storm/harmless
 	name = "sandfall"

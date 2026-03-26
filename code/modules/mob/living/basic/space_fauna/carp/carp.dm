@@ -105,6 +105,7 @@
 	teleport.Grant(src)
 	ai_controller.set_blackboard_key(BB_CARP_RIFT, teleport)
 	ai_controller.set_blackboard_key(BB_OBSTACLE_TARGETING_WHITELIST, allowed_obstacle_targets)
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /// Tell the elements and the blackboard what food we want to eat
 /mob/living/basic/carp/proc/setup_eating()

@@ -31,6 +31,7 @@
 	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, outfit, /datum/species/zombie, bloody_slots = ITEM_SLOT_OCLOTHING)
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/zombie/init_unconscious_appearance()
 	add_generic_humanoid_static_appearance()

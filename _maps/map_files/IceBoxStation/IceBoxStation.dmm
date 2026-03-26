@@ -682,9 +682,7 @@
 /area/station/maintenance/starboard/fore)
 "amt" = (
 /obj/structure/cable,
-/turf/open/floor/iron/chapel{
-	dir = 4
-	},
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "amx" = (
 /obj/structure/curtain,
@@ -1921,19 +1919,13 @@
 /area/station/science/genetics)
 "aFx" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -2;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
 /obj/structure/sign/nanotrasen{
 	pixel_x = -32
 	},
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "aFz" = (
@@ -3786,10 +3778,14 @@
 /turf/open/floor/iron,
 /area/station/cargo/lobby)
 "bgN" = (
-/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/iron,
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/floor/iron{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
 /area/station/security/brig/entrance)
 "bgU" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -6878,9 +6874,7 @@
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "bYu" = (
 /obj/effect/decal/cleanable/dirt,
@@ -7003,19 +6997,12 @@
 /area/station/hallway/primary/fore)
 "bZB" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_x = 1;
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -1;
-	pixel_y = 4
-	},
 /obj/machinery/light/directional/east,
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
 /obj/structure/sign/warning/electric_shock/directional/east,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "bZK" = (
@@ -15005,7 +14992,9 @@
 /obj/structure/chair/pew/left{
 	dir = 1
 	},
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/chapel{
+	dir = 8
+	},
 /area/station/service/chapel)
 "epF" = (
 /obj/structure/disposalpipe/segment{
@@ -15278,9 +15267,15 @@
 /turf/open/floor/plating,
 /area/station/command/gateway)
 "esK" = (
-/obj/structure/window/reinforced/spawner/directional/west,
-/obj/structure/window/reinforced/spawner/directional/east,
-/turf/open/floor/glass/reinforced,
+/obj/structure/railing{
+	dir = 8
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/floor/glass/reinforced/icemoon{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
 /area/station/security/brig/entrance)
 "esS" = (
 /obj/machinery/computer/shuttle/labor{
@@ -22527,6 +22522,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron,
 /area/station/security/brig/upper)
 "gIY" = (
@@ -27311,6 +27307,7 @@
 	cycle_id = "brigoutpost"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron/dark/textured_edge{
 	dir = 4
 	},
@@ -27942,9 +27939,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/assistant,
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "irX" = (
 /obj/item/kirbyplants/random,
@@ -28817,7 +28812,6 @@
 /area/station/maintenance/starboard/fore)
 "iFL" = (
 /obj/structure/bed/dogbed/renault,
-/mob/living/basic/pet/fox/renault,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
@@ -30780,18 +30774,11 @@
 /area/icemoon/underground/explored)
 "joh" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_x = 1;
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -1;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
 /obj/machinery/status_display/ai/directional/east,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "jol" = (
@@ -31558,6 +31545,7 @@
 	cycle_id = "brigentrance"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron,
 /area/station/security/brig/upper)
 "jzY" = (
@@ -31725,6 +31713,11 @@
 /obj/machinery/computer/security/telescreen/entertainment/directional/west,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
+"jCT" = (
+/obj/structure/beach_towel,
+/obj/structure/fluff/beach_umbrella,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "jDc" = (
 /obj/effect/spawner/random/vending/snackvend,
 /obj/structure/sign/departments/restroom/directional/south,
@@ -37879,7 +37872,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/start/hangover,
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/chapel,
 /area/station/service/chapel)
 "lqz" = (
 /obj/structure/cable,
@@ -37944,6 +37937,11 @@
 /obj/structure/curtain,
 /turf/open/floor/iron/freezer,
 /area/station/command/heads_quarters/captain)
+"lrX" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/obj/item/toy/beach_ball/branded,
+/turf/open/misc/beach/sand,
+/area/icemoon/surface/outdoors/nospawn)
 "lsa" = (
 /obj/machinery/door/poddoor/shutters/preopen{
 	dir = 4;
@@ -40354,17 +40352,10 @@
 /area/station/science/explab)
 "mdM" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_x = 1;
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -1;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "mdP" = (
@@ -43379,6 +43370,7 @@
 	cycle_id = "brigentrance"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron,
 /area/station/security/brig/upper)
 "ncP" = (
@@ -44282,19 +44274,10 @@
 "npu" = (
 /obj/structure/rack,
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_x = 1;
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -1;
-	pixel_y = 4
-	},
-/obj/item/clothing/gloves/color/black{
-	pixel_x = 1;
-	pixel_y = 2
-	},
-/obj/item/clothing/mask/breath,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
+/obj/item/umbrella,
 /turf/open/floor/iron/dark/textured,
 /area/station/ai_monitored/command/storage/eva)
 "npx" = (
@@ -45628,9 +45611,7 @@
 /obj/structure/chair/pew{
 	dir = 1
 	},
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "nJI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
@@ -45835,7 +45816,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/hangover,
-/turf/open/floor/iron/chapel,
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "nNe" = (
 /obj/structure/disposalpipe/segment{
@@ -48388,7 +48369,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/morgue)
 "oAh" = (
-/turf/open/floor/glass/reinforced,
+/turf/open/floor/glass/reinforced/icemoon{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
 /area/station/security/brig/entrance)
 "oAl" = (
 /obj/machinery/door/airlock/atmos/glass{
@@ -50270,7 +50253,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/landmark/start/assistant,
-/turf/open/floor/iron/chapel,
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "pcC" = (
 /obj/effect/turf_decal/siding/white/corner{
@@ -53961,9 +53944,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/landmark/start/hangover,
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "qeX" = (
 /obj/structure/table/wood,
@@ -54431,10 +54412,14 @@
 /turf/open/floor/iron,
 /area/station/cargo/lobby)
 "qml" = (
-/obj/structure/window/reinforced/spawner/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/iron{
+	initial_gas_mix = "o2=22;n2=82;TEMP=318.15"
+	},
 /area/station/security/brig/entrance)
 "qmt" = (
 /turf/closed/wall,
@@ -57103,12 +57088,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/station/maintenance/fore/lesser)
-"qYh" = (
-/obj/structure/chair/pew{
-	dir = 1
-	},
-/turf/open/floor/iron/chapel,
-/area/station/service/chapel)
 "qYw" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -58171,7 +58150,9 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/chapel{
+	dir = 8
+	},
 /area/station/service/chapel)
 "rpM" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
@@ -62071,7 +62052,7 @@
 /obj/structure/chair/pew/right{
 	dir = 1
 	},
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/chapel,
 /area/station/service/chapel)
 "sym" = (
 /obj/structure/plasticflaps,
@@ -65199,6 +65180,9 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/plating,
 /area/station/medical/treatment_center)
+"txs" = (
+/turf/open/floor/glass/reinforced,
+/area/station/service/chapel)
 "txE" = (
 /obj/item/cigbutt,
 /obj/effect/decal/cleanable/dirt,
@@ -66400,6 +66384,7 @@
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/machinery/door/firedoor,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron,
 /area/station/security/brig/entrance)
 "tPY" = (
@@ -67547,7 +67532,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/hangover,
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/chapel{
+	dir = 8
+	},
 /area/station/service/chapel)
 "uks" = (
 /obj/machinery/door/airlock/command{
@@ -68295,6 +68282,7 @@
 	cycle_id = "brigoutpost"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/iron/dark/textured_edge{
 	dir = 8
 	},
@@ -77209,17 +77197,11 @@
 /area/station/security/execution/transfer)
 "xgg" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -2;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
 /obj/item/radio/intercom/directional/west,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "xgi" = (
@@ -78201,17 +78183,11 @@
 /area/station/cargo/storage)
 "xwr" = (
 /obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/eva{
-	pixel_y = 9
-	},
-/obj/item/clothing/shoes/winterboots/ice_boots/eva{
-	pixel_x = -2;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/delivery/red,
-/obj/item/clothing/gloves/color/grey/protects_cold,
-/obj/item/clothing/mask/gas,
 /obj/machinery/light/directional/west,
+/obj/item/clothing/suit/costume/hawaiian,
+/obj/item/clothing/shoes/sandal,
+/obj/item/clothing/glasses/sunglasses,
 /turf/open/floor/iron/textured,
 /area/station/ai_monitored/command/storage/eva)
 "xws" = (
@@ -79928,7 +79904,7 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/turf/open/floor/iron/chapel,
+/turf/open/floor/glass/reinforced,
 /area/station/service/chapel)
 "xXK" = (
 /obj/structure/closet/emcloset,
@@ -125859,8 +125835,8 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
+ltF
+ira
 oSU
 oSU
 oSU
@@ -126115,10 +126091,10 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
+ltF
+ltF
+ira
+ira
 oSU
 oSU
 oSU
@@ -126370,12 +126346,12 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+ltF
+ltF
+ira
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -126626,13 +126602,13 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+ltF
+ira
+ira
+ira
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -126883,12 +126859,12 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+ira
+ira
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -127139,13 +127115,13 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+ira
+ira
+ira
+ira
+vPp
+vPp
 oSU
 oSU
 oSU
@@ -127396,13 +127372,13 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+ira
+ira
+ira
+ira
+vPp
+ltF
 oSU
 oSU
 oSU
@@ -127651,15 +127627,15 @@ oSU
 oSU
 oSU
 oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+vPp
+vPp
+ira
+ira
+ira
+ira
+vPp
+ltF
 oSU
 oSU
 oSU
@@ -127904,19 +127880,19 @@ ltF
 vPp
 vPp
 vPp
-ltF
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+vPp
+vPp
+vPp
+vPp
+vPp
+ira
+ira
+ira
+ira
+ira
+vPp
+vPp
 oSU
 oSU
 oSU
@@ -128163,17 +128139,17 @@ vPp
 vPp
 vPp
 vPp
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -128418,19 +128394,19 @@ vPp
 vPp
 ira
 ira
-vPp
-vPp
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
+ira
 oSU
 oSU
 oSU
@@ -128676,18 +128652,18 @@ vPp
 ira
 ira
 ira
+ira
+ira
 vPp
 vPp
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+vPp
+vPp
+ira
+ira
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -128935,15 +128911,15 @@ ira
 ira
 ira
 vPp
-ltF
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+vPp
+vPp
+vPp
+vPp
+vPp
+ira
+ira
+vPp
 oSU
 oSU
 oSU
@@ -129192,14 +129168,14 @@ ira
 ira
 ira
 vPp
+vPp
 ltF
 ltF
-oSU
-oSU
-oSU
-oSU
-oSU
-oSU
+vPp
+vPp
+vPp
+vPp
+vPp
 oSU
 oSU
 oSU
@@ -129451,8 +129427,8 @@ ira
 vPp
 vPp
 ltF
-oSU
-oSU
+ltF
+ltF
 oSU
 oSU
 oSU
@@ -191906,9 +191882,9 @@ qEJ
 qEJ
 tJi
 wBA
-oTA
+bAF
 rpK
-oTA
+bAF
 epB
 oTA
 wrX
@@ -192163,9 +192139,9 @@ qEJ
 eog
 lUa
 dtC
-bAF
+txs
 qeR
-bAF
+txs
 nJy
 oTA
 cMj
@@ -192422,7 +192398,7 @@ mle
 bWZ
 amt
 xXE
-sab
+txs
 pcB
 tSy
 uJt
@@ -192677,9 +192653,9 @@ qEJ
 oxN
 mHJ
 oTA
-oTA
+sab
 syh
-oTA
+sab
 lqj
 oTA
 uJt
@@ -193705,9 +193681,9 @@ wrX
 fIn
 jcP
 oTA
-oTA
+bAF
 epB
-oTA
+bAF
 uko
 oTA
 uJt
@@ -193962,9 +193938,9 @@ wrX
 uDC
 wBA
 oTA
-bAF
+txs
 irQ
-bAF
+txs
 bYm
 bMe
 uJt
@@ -194219,10 +194195,10 @@ wrX
 uJI
 xBt
 iih
-sab
+txs
 nMP
-sab
-qYh
+txs
+nJy
 oTA
 avo
 tTw
@@ -194476,9 +194452,9 @@ wrX
 wrX
 ffp
 wBA
-oTA
+sab
 syh
-oTA
+sab
 syh
 oTA
 wrX
@@ -237911,7 +237887,7 @@ igQ
 euZ
 utR
 pAZ
-tLD
+lrX
 kmw
 qWZ
 oVR
@@ -243308,7 +243284,7 @@ dct
 iuv
 utR
 pAZ
-ivZ
+jCT
 dDM
 qWZ
 kjY

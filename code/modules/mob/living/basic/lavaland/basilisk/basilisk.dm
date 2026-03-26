@@ -32,6 +32,7 @@
 	. = ..()
 	ranged_attacks = AddComponent(/datum/component/ranged_attacks, projectile_type = /obj/projectile/temp/watcher, projectile_sound = 'sound/weapons/pierce.ogg')
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(check_lava))
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /mob/living/basic/mining/basilisk/Destroy()
 	QDEL_NULL(ranged_attacks)
