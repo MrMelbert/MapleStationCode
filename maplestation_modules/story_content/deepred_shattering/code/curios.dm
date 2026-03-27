@@ -205,7 +205,7 @@
 	var/zlclu = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
 	var/aptpun = 0
 
-/obj/item/snowglobe/zvtupbt/proc/jpwoly(var/puwba)
+/obj/item/snowglobe/zvtupbt/proc/jpwoly(puwba)
 	var/ylzbsa = ""
 	for(var/i = 1, i <= length(puwba), i++)
 		var/jvkl = text2ascii(puwba, i)
