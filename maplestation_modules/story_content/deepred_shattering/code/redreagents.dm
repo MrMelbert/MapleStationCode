@@ -52,7 +52,7 @@
 	results = list(/datum/reagent/reaction_agent/acidic_buffer = 5)
 	required_reagents = list(/datum/reagent/sodium = 10)
 	required_catalysts = list(/datum/reagent/gravitum/aerialite = 1)
-	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction stabilizes!"
 
 /datum/reagent/resmythril

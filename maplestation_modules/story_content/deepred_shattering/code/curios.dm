@@ -204,6 +204,17 @@
 	var/jvuzahua = "A small glass globe filled with a miniature winter scene. Something about this one seems off.\n"
 	var/zlclu = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
 	var/aptpun = 0
+	var/wyvaljalk = TRUE
+
+/obj/item/snowglobe/zvtupbt/Initialize(mapload)
+    . = ..()
+    if(. == INITIALIZE_HINT_QDEL)
+        return INITIALIZE_HINT_QDEL
+    if(mapload)
+        return .
+    if(wyvaljalk)
+        return INITIALIZE_HINT_QDEL
+    return .
 
 /obj/item/snowglobe/zvtupbt/proc/jpwoly(puwba)
 	var/ylzbsa = ""
