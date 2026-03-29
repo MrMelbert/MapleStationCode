@@ -31,6 +31,10 @@
 	mob_types = list(/mob/living/basic/mining/watcher/icewing)
 	mob_gps_id = "WT|I" // icewing
 
+/obj/structure/spawner/lavaland/basilisk
+	mob_types = list(/mob/living/basic/mining/basilisk)
+	mob_gps_id = "BS"
+
 GLOBAL_LIST_INIT(tendrils, list())
 /obj/structure/spawner/lavaland/Initialize(mapload)
 	. = ..()

@@ -3,16 +3,16 @@
 	weighted_closed_turf_types = list(/turf/closed/mineral/random/sand = 1)
 
 
-	// weighted_mob_spawn_list = list(
-	// 	/mob/living/basic/mining/goldgrub = 10,
-	// 	/mob/living/basic/mining/legion/snow = 50,
-	// 	/mob/living/basic/mining/lobstrosity = 15,
-	// 	/mob/living/basic/mining/wolf = 50,
-	// 	/obj/effect/spawner/random/lavaland_mob/raptor = 15,
-	// 	/mob/living/simple_animal/hostile/asteroid/polarbear = 30,
-	// 	/obj/structure/spawner/ice_moon = 3,
-	// 	/obj/structure/spawner/ice_moon/polarbear = 3,
-	// )
+	weighted_mob_spawn_list = list(
+		/mob/living/basic/mining/goldgrub = 10,
+		/mob/living/basic/mining/basilisk = 50,
+		/mob/living/basic/mining/lobstrosity = 15,
+		/mob/living/basic/mining/wolf = 50,
+		/obj/effect/spawner/random/lavaland_mob/raptor = 15,
+		/mob/living/basic/bear = 30,
+		/obj/structure/spawner/icemoon/polarbear/nonpolar = 3,
+		/obj/structure/spawner/icemoon/wolf = 3,
+	)
 	weighted_flora_spawn_list = list(
 		/obj/structure/flora/tree/palm/style_random = 10,
 		/obj/structure/flora/bush/sparsegrass/style_random = 10,
@@ -80,18 +80,18 @@
 
 /datum/map_generator/cave_generator/icemoon/deep
 	weighted_closed_turf_types = list(/turf/closed/mineral/random/sand/underground = 1)
-	// weighted_mob_spawn_list = list(
-	// 	SPAWN_MEGAFAUNA = 1,
-	// 	/mob/living/basic/mining/ice_demon = 100,
-	// 	/mob/living/basic/mining/ice_whelp = 60,
-	// 	/mob/living/basic/mining/legion/snow = 100,
-	// 	/obj/effect/spawner/random/lavaland_mob/raptor = 25,
+	weighted_mob_spawn_list = list(
+		SPAWN_MEGAFAUNA = 1,
+		/mob/living/basic/skeleton/mummy = 100,
+		/mob/living/basic/skeleton = 60,
+		/mob/living/basic/mining/legion = 100,
+		/obj/effect/spawner/random/lavaland_mob/raptor = 25,
 
-	// 	/obj/structure/spawner/ice_moon/demonic_portal = 6,
-	// 	/obj/structure/spawner/ice_moon/demonic_portal/ice_whelp = 6,
-	// 	/obj/structure/spawner/ice_moon/demonic_portal/snowlegion = 6,
-	// )
-	// weighted_megafauna_spawn_list = list(/mob/living/simple_animal/hostile/megafauna/colossus = 1)
+		/obj/structure/spawner/ice_moon/demonic_portal/normallegion = 6,
+		/obj/structure/spawner/icemoon/basilisk = 6,
+		/obj/structure/spawner/icemoon/polarbear/nonpolar = 6,
+	)
+	weighted_megafauna_spawn_list = list(/mob/living/simple_animal/hostile/megafauna/colossus = 1)
 	// weighted_flora_spawn_list = list(
 	// 	/obj/structure/flora/rock/icy/style_random = 6,
 	// 	/obj/structure/flora/rock/pile/icy/style_random = 6,

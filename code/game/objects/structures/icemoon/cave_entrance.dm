@@ -75,6 +75,17 @@ GLOBAL_LIST_INIT(ore_probability, list(
 			var/turf/closed/mineral/clearable = potential
 			clearable.ScrapeAway(flags = CHANGETURF_IGNORE_AIR)
 
+/obj/structure/spawner/icemoon/polarbear/nonpolar
+	mob_types = list(/mob/living/basic/bear)
+
+/obj/structure/spawner/icemoon/basilisk
+	mob_types = list(/mob/living/basic/mining/basilisk)
+	mob_gps_id = "BS" // basilisk
+
+/obj/structure/spawner/icemoon/wolf
+	mob_types = list(/mob/living/basic/mining/wolf)
+	mob_gps_id = "WF" // wolf
+
 /obj/structure/spawner/ice_moon/demonic_portal
 	name = "demonic portal"
 	desc = "A portal that goes to another world, normal creatures couldn't survive there."
@@ -110,6 +121,10 @@ GLOBAL_LIST_INIT(ore_probability, list(
 /obj/structure/spawner/ice_moon/demonic_portal/snowlegion
 	mob_types = list(/mob/living/basic/mining/legion/snow/spawner_made)
 	mob_gps_id = "LG|S" // legion | snow
+
+/obj/structure/spawner/ice_moon/demonic_portal/normallegion
+	mob_types = list(/mob/living/basic/mining/legion/spawner_made)
+	mob_gps_id = "LG|N" // legion | normal
 
 /obj/effect/collapsing_demonic_portal
 	name = "collapsing demonic portal"

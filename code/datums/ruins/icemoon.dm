@@ -197,16 +197,6 @@
 	prefix = "_maps/RandomRuins/AnywhereRuins/"
 	suffix = "fountain_hall.dmm"
 
-// /datum/map_template/ruin/sandbox/golem_ship
-// 	name = "Sand-Ruin Free Golem Ship"
-// 	id = "golem-ship"
-// 	description = "Lumbering humanoids, made out of precious metals, move inside this ship. They frequently leave to mine more minerals, which they somehow turn into more of them. \
-// 	Seem very intent on research and individual liberty, and also geology-based naming?"
-// 	prefix = "_maps/RandomRuins/AnywhereRuins/"
-// 	suffix = "golem_ship.dmm"
-// 	ruin_type = ZTRAIT_SAND_RUINS_UNDERGROUND
-// 	default_area = /area/icemoon/underground/unexplored
-
 /datum/map_template/ruin/sandbox/casbah
 	name = "Sand-Ruin Casbah"
 	id = "casbah"

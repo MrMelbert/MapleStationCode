@@ -1,6 +1,6 @@
 /mob/living/basic/mining/wolf
 	name = "white wolf"
-	desc = "Pack hunters of the Icemoon wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
+	desc = "Pack hunters of the Desert wastes. While a mere nuisance individually, they become fearsome foes in larger groups."
 	icon = 'icons/mob/simple/icemoon/icemoon_monsters.dmi'
 	icon_state = "whitewolf"
 	icon_living = "whitewolf"
@@ -62,6 +62,7 @@
 
 	if(can_tame)
 		make_tameable()
+	ADD_TRAIT(src, TRAIT_SANDSTORM_IMMUNE, INNATE_TRAIT)
 
 /mob/living/basic/mining/wolf/proc/make_tameable()
 	AddComponent(\
