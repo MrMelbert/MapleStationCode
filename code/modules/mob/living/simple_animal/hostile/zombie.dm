@@ -41,6 +41,10 @@
 	if(. && ishuman(target) && prob(infection_chance))
 		try_to_zombie_infect(target)
 
+/datum/outfit/steve
+	uniform = /obj/item/clothing/under/color/darkblue
+	shoes = /obj/item/clothing/shoes/workboots/mining
+
 /datum/outfit/corpse_doctor
 	name = "Corpse Doctor"
 	suit = /obj/item/clothing/suit/toggle/labcoat

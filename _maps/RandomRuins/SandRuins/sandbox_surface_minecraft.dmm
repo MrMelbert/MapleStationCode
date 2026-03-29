@@ -104,7 +104,8 @@
 /area/template_noop)
 "Z" = (
 /mob/living/simple_animal/hostile/zombie{
-	outfit = /datum/outfit;
+	outfit = /datum/outfit/steve;
+	infection_chance = 0;
 	name = "zombie"
 	},
 /obj/effect/decal/cleanable/dirt/dust,
