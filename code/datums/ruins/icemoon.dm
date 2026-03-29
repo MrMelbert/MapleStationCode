@@ -362,6 +362,7 @@
 			user.death(null, "old age")
 		if(70 to 90)
 			user.cause_pain(BODY_ZONES_ALL, 1.5 * seconds_per_tick)
+			user.adjust_traumatic_shock(0.5 * seconds_per_tick)
 		if(50 to 70)
 			user.cause_pain(BODY_ZONES_ALL, 1 * seconds_per_tick)
 		if(20 to 50)
@@ -381,6 +382,7 @@
 	user.adjustBruteLoss(-1.5 * seconds_per_tick)
 	user.adjustFireLoss(-1.5 * seconds_per_tick)
 	user.heal_pain(1 * seconds_per_tick)
+	user.adjust_traumatic_shock(-3 * seconds_per_tick)
 
 /obj/item/nullrod/egyptian/cursed
 	var/has_cursed = FALSE
@@ -469,6 +471,8 @@
 	var/obj/item/nullrod/staff/blue/staff = new(src)
 	staff.name = "staff of spirits"
 	staff.force = 16
+	staff.obj_flags &= ~UNIQUE_RENAME
+	staff.AddElement(/datum/element/bane, mob_biotypes = MOB_SPIRIT|MOB_UNDEAD, damage_multiplier = 1.5)
 
 /obj/structure/closet/crate/necropolis/ark/before_open(mob/living/user, force)
 	if(force || desouled)
