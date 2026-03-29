@@ -312,7 +312,9 @@
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(iter_part.bleed_overlay_icon)
 			wound_overlay ||= mutable_appearance('icons/mob/effects/bleed_overlays.dmi', "blank", -WOUND_LAYER, appearance_flags = KEEP_TOGETHER)
-			wound_overlay.add_overlay(iter_part.bleed_overlay_icon)
+			var/image/bleed_overlay = image('icons/mob/effects/bleed_overlays.dmi', iter_part.bleed_overlay_icon)
+			bleed_overlay.color = iter_part.damage_color
+			wound_overlay.add_overlay(bleed_overlay)
 
 	if(isnull(wound_overlay))
 		return

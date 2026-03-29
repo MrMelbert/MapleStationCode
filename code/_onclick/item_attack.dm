@@ -216,7 +216,7 @@
 	if(item_flags & NOBLUDGEON)
 		return FALSE
 
-	if(IS_DISABLING_DAMAGE(damtype) && force && HAS_TRAIT(user, TRAIT_PACIFISM))
+	if(!IS_DISABLING_DAMAGE(damtype) && force && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return FALSE
 
