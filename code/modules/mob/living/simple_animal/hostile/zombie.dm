@@ -42,6 +42,7 @@
 		try_to_zombie_infect(target)
 
 /datum/outfit/steve
+	name = "Steve"
 	uniform = /obj/item/clothing/under/color/darkblue
 	shoes = /obj/item/clothing/shoes/workboots/mining
 
