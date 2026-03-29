@@ -18,7 +18,7 @@
 "N" = (/obj/structure/redtech_indestructable/industrial_off,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "O" = (/obj/item/stack/sheet/mineral/plastitanium,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "P" = (/turf/open/indestructible/redtech/altalt{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
-"R" = (/obj/effect/spawner/random/random_snowglobe,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
+"R" = (/obj/effect/spawner/random/random_snowglobe{tampered = 0},/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "S" = (/obj/item/stack/sheet/mineral/resmythril,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "V" = (/obj/structure/frame/machine/secured,/obj/item/rtechdrive,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)
 "Z" = (/obj/structure/frame/machine/secured,/obj/item/stock_parts/micro_laser/redtech,/obj/item/stock_parts/servo/redtech,/turf/open/indestructible/redtech{initial_gas_mix = "LAVALAND_ATMOS"},/area/ruin/unpowered/redgeneric)

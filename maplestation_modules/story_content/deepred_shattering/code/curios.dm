@@ -204,9 +204,8 @@
 	var/jvuzahua = "A small glass globe filled with a miniature winter scene. Something about this one seems off.\n"
 	var/zlclu = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
 	var/aptpun = 0
-	var/wyvaljalk = TRUE
 
-/obj/item/snowglobe/zvtupbt/Initialize(mapload)
+/obj/item/snowglobe/zvtupbt/Initialize(mapload, wyvaljalk = TRUE)
     . = ..()
     if(. == INITIALIZE_HINT_QDEL)
         return INITIALIZE_HINT_QDEL
@@ -292,6 +291,7 @@
 	desc = "A spawner that can create any random snowglobe."
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/curios.dmi'
 	icon_state = "snowglobe"
+	var/tampered = TRUE
 
 	loot = list(
 		/obj/item/snowglobe/reimu,
@@ -323,6 +323,11 @@
 		/obj/item/snowglobe/evtra/crm,
 		/obj/item/snowglobe/zvtupbt,
 	)
+
+/obj/effect/spawner/random/random_snowglobe/make_item(spawn_loc, type_path_to_make)
+	if(type_path_to_make == /obj/item/snowglobe/zvtupbt)
+		return new type_path_to_make(spawn_loc, tampered)
+	return new type_path_to_make(spawn_loc)
 
 /obj/item/rtechdrive
 	name = "redtech data drive"

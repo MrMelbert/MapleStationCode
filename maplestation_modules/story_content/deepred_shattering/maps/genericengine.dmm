@@ -97,7 +97,9 @@
 	},
 /area/ruin/unpowered/redgeneric)
 "O" = (
-/obj/effect/spawner/random/random_snowglobe,
+/obj/effect/spawner/random/random_snowglobe{
+	tampered = 0
+	},
 /turf/open/indestructible/redtech/alt{
 	initial_gas_mix = "LAVALAND_ATMOS"
 	},
