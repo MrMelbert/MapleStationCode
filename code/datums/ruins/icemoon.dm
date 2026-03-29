@@ -385,6 +385,7 @@
 	user.adjust_traumatic_shock(-3 * seconds_per_tick)
 
 /obj/item/nullrod/egyptian/cursed
+	chaplain_spawnable = FALSE
 	var/has_cursed = FALSE
 
 /obj/item/nullrod/egyptian/cursed/Initialize(mapload)
