@@ -385,6 +385,10 @@
 /obj/item/nullrod/egyptian/cursed
 	var/has_cursed = FALSE
 
+/obj/item/nullrod/egyptian/cursed/Initialize(mapload)
+	. = ..()
+	add_filter("cursefilter", 1, outline_filter(size = 2, color = COLOR_DARK_PURPLE))
+
 /obj/item/nullrod/egyptian/cursed/equipped(mob/living/carbon/user, slot, initial)
 	. = ..()
 	if(has_cursed || !iscarbon(user) || isskeleton(user))
@@ -399,6 +403,7 @@
 		to_chat(user, span_hypnophrase("As you pick up [src], you feel a dark presence enter your mind... \
 			Strange symbols fill your vision, and you think for a moment you hear... 'curso fra'...?"))
 		has_cursed = TRUE
+		transition_filter("cursefilter", outline_filter(size = 0), 1 SECONDS)
 
 /datum/disease/curse_of_ra
 	name = "Curse of Ra"
