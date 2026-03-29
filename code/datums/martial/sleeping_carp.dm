@@ -248,13 +248,15 @@
 	force = 10
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	throwforce = 20
+	throwforce = 16
 	throw_speed = 2
 	attack_verb_continuous = list("smashes", "slams", "whacks", "thwacks")
 	attack_verb_simple = list("smash", "slam", "whack", "thwack")
 	icon = 'icons/obj/weapons/staff.dmi'
 	icon_state = "bostaff0"
 	base_icon_state = "bostaff"
+	inhand_icon_state = "bostaff0"
+	worn_icon_state = "bostaff0"
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
 	block_chance = 50
@@ -265,7 +267,7 @@
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
 		force_unwielded = 10, \
-		force_wielded = 24, \
+		force_wielded = 18, \
 		icon_wielded = "[base_icon_state]1", \
 	)
 
@@ -298,24 +300,27 @@
 			return ..()
 		if(!ishuman(target))
 			return ..()
+		user.do_attack_animation(target)
 		var/mob/living/carbon/human/H = target
 		var/list/fluffmessages = list("club", "smack", "broadside", "beat", "slam")
 		H.visible_message(span_warning("[user] [pick(fluffmessages)]s [H] with [src]!"), \
 						span_userdanger("[user] [pick(fluffmessages)]s you with [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 		to_chat(user, span_danger("You [pick(fluffmessages)] [H] with [src]!"))
 		playsound(get_turf(user), 'sound/effects/woodhit.ogg', 75, TRUE, -1)
-		H.apply_damage(rand(13, 20), STAMINA)
+		H.apply_damage(rand(8, 16), PAIN)
+		H.apply_damage(rand(12, 20), STAMINA)
 		if(prob(10))
 			H.visible_message(span_warning("[H] collapses!"), \
 							span_userdanger("Your legs give out!"))
-			H.Paralyze(8 SECONDS)
+			H.Knockdown(4 SECONDS)
+			H.Paralyze(1 SECONDS)
 		if(H.getStaminaLoss() && !H.IsSleeping())
 			var/total_health = (H.health - H.getStaminaLoss())
 			if(total_health <= 0 && !H.stat)
 				H.visible_message(span_warning("[user] delivers a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"), \
 								span_userdanger("You're knocked unconscious by [user]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 				to_chat(user, span_danger("You deliver a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"))
-				H.SetSleeping(60 SECONDS)
+				H.SetSleeping(8 SECONDS)
 				H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 150)
 	else
 		return ..()

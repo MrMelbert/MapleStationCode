@@ -406,6 +406,8 @@
 	cures = list(/datum/reagent/water/holywater)
 	spread_flags = DISEASE_SPREAD_AIRBORNE | DISEASE_SPREAD_CONTACT_SKIN
 	agent = "Dark Magic"
+	spread_text = "Airbourne"
+	cure_text = "Holy Water"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "A powerful curse."
 	infectivity = 33
@@ -456,10 +458,20 @@
 /obj/structure/closet/crate/necropolis/ark
 	name = "ark of the covenant"
 	var/desouled = FALSE
+	COOLDOWN_DECLARE(ghost_sound)
+
+/obj/structure/closet/crate/necropolis/ark/PopulateContents()
+	var/obj/item/nullrod/staff/blue/staff = new(src)
+	staff.name = "staff of spirits"
+	staff.force = 16
 
 /obj/structure/closet/crate/necropolis/ark/before_open(mob/living/user, force)
 	if(force || desouled)
 		return ..()
+
+	if(COOLDOWN_FINISHED(src, ghost_sound))
+		playsound(src, 'sound/effects/ghost.ogg', 50, TRUE)
+		COOLDOWN_START(src, ghost_sound, 10 SECONDS)
 
 	user.visible_message(
 		span_notice("[user] attempts to pry open [src]..."),
@@ -489,3 +501,4 @@
 	visible_message(
 		span_warning("Souls begin to pour out of [src] and into the world!"),
 	)
+	playsound(src, 'sound/effects/ghost2.ogg', 50, TRUE)
