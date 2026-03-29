@@ -27,22 +27,31 @@
 "v" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/ladder,
+/obj/effect/light_emitter/fake_outdoors{
+	set_luminosity = 4
+	},
 /turf/open/floor/iron/terracotta{
 	color = "#7777FF"
 	},
 /area/ruin/unpowered)
-"x" = (
-/obj/item/gun/ballistic/bow,
+"C" = (
 /obj/item/ammo_casing/arrow,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/item/gun/ballistic/bow,
 /turf/open/floor/iron/sepia,
 /area/ruin/unpowered)
 "D" = (
-/mob/living/basic/skeleton{
+/mob/living/basic/skeleton/bow{
 	name = "skeleton";
 	faction = list("hostile")
 	},
 /obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/sepia,
+/area/ruin/unpowered)
+"F" = (
+/mob/living/basic/skeleton/bow{
+	name = "skeleton";
+	faction = list("hostile")
+	},
 /turf/open/floor/iron/sepia,
 /area/ruin/unpowered)
 "G" = (
@@ -57,7 +66,10 @@
 /area/ruin/unpowered)
 "N" = (
 /obj/item/ammo_casing/arrow,
-/obj/item/ammo_casing/arrow,
+/obj/item/ammo_casing/arrow{
+	pixel_x = 3;
+	pixel_y = 9
+	},
 /turf/open/floor/iron/sepia,
 /area/ruin/unpowered)
 "Q" = (
@@ -67,16 +79,20 @@
 "R" = (
 /obj/item/storage/bag/quiver,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/sepia,
-/area/ruin/unpowered)
-"S" = (
-/obj/item/gun/ballistic/bow,
-/obj/item/ammo_casing/arrow,
+/obj/item/ammo_casing/arrow{
+	pixel_y = 0
+	},
+/obj/item/ammo_casing/arrow{
+	pixel_y = 3;
+	pixel_x = -4
+	},
 /turf/open/floor/iron/sepia,
 /area/ruin/unpowered)
 "T" = (
 /obj/item/ammo_casing/arrow,
-/obj/item/ammo_casing/arrow,
+/obj/item/ammo_casing/arrow{
+	pixel_y = -6
+	},
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/sepia,
 /area/ruin/unpowered)
@@ -162,7 +178,7 @@ a
 a
 a
 a
-W
+F
 i
 a
 Y
@@ -190,7 +206,7 @@ Y
 Y
 a
 W
-S
+W
 W
 a
 i
@@ -467,7 +483,7 @@ D
 i
 a
 W
-x
+i
 W
 a
 g
@@ -540,7 +556,7 @@ Y
 Y
 g
 a
-N
+C
 R
 a
 Y

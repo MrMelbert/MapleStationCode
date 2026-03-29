@@ -199,3 +199,21 @@
 		/obj/item/clothing/under/costume/mummy,
 		/obj/item/clothing/mask/mummy,
 	)
+
+/mob/living/basic/skeleton/bow
+	loot = list(
+		/obj/item/gun/ballistic/bow,
+		/obj/item/ammo_casing/arrow,
+		/obj/effect/decal/remains/human,
+	)
+	held_item = /obj/item/gun/ballistic/bow
+	ai_controller = /datum/ai_controller/basic_controller/trooper/ranged
+
+/mob/living/basic/skeleton/bow/Initialize(mapload)
+	. = ..()
+	AddComponent(\
+		/datum/component/ranged_attacks, \
+		casing_type = /obj/item/ammo_casing/arrow, \
+		projectile_sound = 'sound/weapons/gun/bow/bow_fire.ogg',\
+		cooldown_time = rand(3, 6) SECONDS, \
+	)
