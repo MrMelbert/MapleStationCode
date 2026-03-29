@@ -206,14 +206,14 @@
 	var/aptpun = 0
 
 /obj/item/snowglobe/zvtupbt/Initialize(mapload, wyvaljalk = TRUE)
-    . = ..()
-    if(. == INITIALIZE_HINT_QDEL)
-        return INITIALIZE_HINT_QDEL
-    if(mapload)
-        return .
-    if(wyvaljalk)
-        return INITIALIZE_HINT_QDEL
-    return .
+	. = ..()
+	if(. == INITIALIZE_HINT_QDEL)
+		return INITIALIZE_HINT_QDEL
+	if(mapload)
+		return .
+	if(wyvaljalk)
+		return INITIALIZE_HINT_QDEL
+	return .
 
 /obj/item/snowglobe/zvtupbt/proc/jpwoly(puwba)
 	var/ylzbsa = ""
