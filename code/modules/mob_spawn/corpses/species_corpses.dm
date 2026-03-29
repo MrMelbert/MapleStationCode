@@ -34,7 +34,7 @@
 /datum/outfit/mummycorpse
 	name = "Mummy"
 	uniform = /obj/item/clothing/under/costume/mummy
-	head = /obj/item/clothing/mask/mummy
+	mask = /obj/item/clothing/mask/mummy
 
 /datum/outfit/mummycorpse/pharoh
 	name = "Pharaoh Mummy"
