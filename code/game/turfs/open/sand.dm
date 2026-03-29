@@ -33,6 +33,7 @@
 	. = ..()
 	if(prob(15))
 		icon_state = "sand[rand(1,4)]"
+	AddElement(/datum/element/diggable, /obj/item/stack/ore/glass, 2)
 
 /turf/open/misc/beach/sand/no_ruins
 	turf_flags = parent_type::turf_flags | NO_RUINS
