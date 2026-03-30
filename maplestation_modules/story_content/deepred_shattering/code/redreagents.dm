@@ -18,7 +18,7 @@
 		affected_mob.adjust_personal_mana(10)
 
 /datum/chemical_reaction/auricelectrolysis
-	results = list(/datum/reagent/oxygen = 10, /datum/reagent/hydrogen = 20)
+	results = list(/datum/reagent/oxygen = 5, /datum/reagent/hydrogen = 10, /datum/reagent/water/hollowwater = 5)
 	required_reagents = list(/datum/reagent/water = 10)
 	required_catalysts = list(/datum/reagent/auric = 1)
 	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE
@@ -27,8 +27,9 @@
 
 /datum/chemical_reaction/auricgodblood
 	results = list(/datum/reagent/medicine/omnizine/godblood = 5)
-	required_reagents = list(/datum/reagent/auric = 1, /datum/reagent/medicine/salglu_solution = 5)
-	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	required_reagents = list(/datum/reagent/auric = 1, /datum/reagent/blood = 5)
+	mob_react = FALSE
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 	mix_message = "the reaction pulses with divine energy!"
 	mix_sound = 'sound/magic/teleport_app.ogg'
 
@@ -45,14 +46,14 @@
 /datum/chemical_reaction/aerialitestim
 	results = list(/datum/reagent/medicine/stimulants = 5)
 	required_reagents = list(/datum/reagent/gravitum/aerialite = 1, /datum/reagent/medicine/painkiller/morphine = 5, /datum/reagent/consumable/sugar = 5)
-	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_MODERATE | REACTION_TAG_UNIQUE
 	mix_message = "the reaction lightens!"
 
 /datum/chemical_reaction/aerialitebuffer
 	results = list(/datum/reagent/reaction_agent/acidic_buffer = 5)
 	required_reagents = list(/datum/reagent/sodium = 10)
 	required_catalysts = list(/datum/reagent/gravitum/aerialite = 1)
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction stabilizes!"
 
 /datum/reagent/resmythril
@@ -66,7 +67,7 @@
 /datum/chemical_reaction/resmythril_emp
 	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/resmythril = 1)
 	reaction_flags = REACTION_INSTANT
-	reaction_tags = REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS | REACTION_TAG_UNIQUE | REACTION_TAG_ACTIVE
+	reaction_tags = REACTION_TAG_EXPLOSIVE | REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_DANGEROUS | REACTION_TAG_UNIQUE | REACTION_TAG_ACTIVE
 	mix_message = "the reaction resonates!"
 	mix_sound = 'sound/machines/defib_zap.ogg'
 
@@ -78,15 +79,22 @@
 /datum/chemical_reaction/resmythrilomni
 	results = list(/datum/reagent/medicine/omnizine = 5)
 	required_reagents = list(/datum/reagent/resmythril = 1, /datum/reagent/stabilizing_agent = 5)
-	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 	mix_message = "the reaction buzzes quietly!"
 
 /datum/chemical_reaction/mythrilbuffer
 	results = list(/datum/reagent/reaction_agent/basic_buffer = 5)
 	required_reagents = list(/datum/reagent/hydrogen = 10)
 	required_catalysts = list(/datum/reagent/resmythril = 1)
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction stabilizes!"
+
+/datum/chemical_reaction/wittelsynthesis
+	results = list(/datum/reagent/wittel = 1, /datum/reagent/mercury = 1)
+	required_reagents = list(/datum/reagent/silver = 1)
+	required_catalysts = list(/datum/reagent/gravitum/aerialite = 1, /datum/reagent/resmythril = 1)
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_COMPONENT
+	mix_message = "the silver is transmuted!"
 
 /datum/reagent/exodust
 	name = "Crystalline ExoPrism"
@@ -98,12 +106,12 @@
 /datum/chemical_reaction/exo_stabilizer
 	results = list(/datum/reagent/exotic_stabilizer = 1)
 	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/stabilizing_agent = 1)
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPONENT
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL | REACTION_TAG_COMPONENT
 
 /datum/chemical_reaction/exonanites
 	results = list(/datum/reagent/medicine/syndicate_nanites = 5)
 	required_reagents = list(/datum/reagent/exodust = 1, /datum/reagent/iron = 5, /datum/reagent/silicon = 5, /datum/reagent/toxin/acid = 1)
-	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	reaction_tags = REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_MODERATE | REACTION_TAG_UNIQUE
 	mix_message = "the reaction restructures!"
 
 /datum/reagent/darkplasma
@@ -152,7 +160,7 @@
 /datum/chemical_reaction/plasma_vortex
 	required_reagents = list(/datum/reagent/darkplasma = 1)
 	required_temp = 474
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS | REACTION_TAG_ACTIVE
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS | REACTION_TAG_ACTIVE
 	mix_message = "the reaction destabilizes!"
 	mix_sound = 'sound/magic/cosmic_energy.ogg'
 
@@ -164,7 +172,7 @@
 /datum/chemical_reaction/plasmastrange
 	results = list(/datum/reagent/medicine/strange_reagent = 5)
 	required_reagents = list(/datum/reagent/darkplasma = 1, /datum/reagent/lithium = 5)
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_EASY | REACTION_TAG_UNIQUE
 	mix_message = "the reaction turns strange!"
 
 /datum/reagent/miracle
@@ -222,7 +230,7 @@
 /datum/chemical_reaction/miracle_creation
 	results = list(/datum/reagent/miracle = 1)
 	required_reagents = list(/datum/reagent/auric = 30, /datum/reagent/gravitum/aerialite = 30, /datum/reagent/resmythril = 30, /datum/reagent/exodust = 30, /datum/reagent/darkplasma = 30)
-	reaction_tags = REACTION_TAG_DAMAGING | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS | REACTION_TAG_UNIQUE | REACTION_TAG_COMPONENT
+	reaction_tags = REACTION_TAG_DAMAGING | REACTION_TAG_OTHER | REACTION_TAG_DANGEROUS | REACTION_TAG_HARD | REACTION_TAG_UNIQUE | REACTION_TAG_COMPONENT
 	mix_message = "the reaction fractalizes!"
 	mix_sound = 'sound/magic/cosmic_expansion.ogg'
 
@@ -351,7 +359,7 @@
 	reagent_state = LIQUID
 	color = "#ff8400"
 	taste_description = "otherworldly space"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	chemical_flags = NONE
 
 /datum/chemical_reaction/advanced_aggregation_creation
 	results = list(/datum/reagent/aggregation_agent/advanced = 1)
@@ -362,7 +370,7 @@
 	required_reagents = list(/datum/reagent/aggregation_agent/advanced = 150, /datum/reagent/miracle = 1)
 	mob_react = FALSE
 	reaction_flags = REACTION_INSTANT
-	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_UNIQUE
+	reaction_tags = REACTION_TAG_OTHER | REACTION_TAG_HARD | REACTION_TAG_UNIQUE
 
 /datum/chemical_reaction/true_miracle/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
