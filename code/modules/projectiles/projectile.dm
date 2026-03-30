@@ -471,12 +471,16 @@
 	if(!HAS_TRAIT(src, TRAIT_ALWAYS_HIT_ZONE) && isliving(A))
 		var/mob/living/who_is_shot = A
 		var/distance = decayedRange - range
+		// Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
 		var/hit_prob = max(100 - (7 * distance), 5)
 		if(who_is_shot.body_position == LYING_DOWN)
 			hit_prob *= 1.2
+		// if nothing bothered to set a zone we need a random one
+		if(isnull(def_zone))
+			def_zone = who_is_shot.get_random_valid_zone(BODY_ZONE_CHEST, min(80, hit_prob))
 		// melbert todo : make people more skilled with weapons have a lower miss chance
 		if(!prob(hit_prob))
-			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0) // Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0)
 			grazing = !prob(hit_prob) // jeez you missed twice? that's a graze
 			var/datum/embed_data/data = get_embed()
 			if(data?.embed_chance > 10)
@@ -486,7 +490,6 @@
 			if(grazing)
 				wound_bonus = CANT_WOUND
 				bare_wound_bonus = CANT_WOUND
-
 	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
 
 /**
