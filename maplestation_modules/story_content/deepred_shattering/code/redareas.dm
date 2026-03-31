@@ -2,7 +2,7 @@
 	name = "Redtech Server Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "spades"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
@@ -14,7 +14,7 @@
 	name = "Redtech Cargo Bay Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "diamonds"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
@@ -26,7 +26,7 @@
 	name = "Redtech Bunker Ring Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "hearts"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
@@ -38,7 +38,7 @@
 	name = "Redtech Sensor Array Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "clubs"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
@@ -50,7 +50,7 @@
 	name = "Redtech Space Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "generic"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
@@ -62,7 +62,7 @@
 	name = "Redtech Planetary Ruins"
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/rareas.dmi'
 	icon_state = "generic"
-	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/CSFMDAlomix.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDArdiman.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/CSFMDMRSEEO.ogg')
+	ambientsounds = list('maplestation_modules/story_content/deepred_shattering/sound/AlomixSorrowAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/ArdimanWhentheskythegrayAmb.ogg', 'maplestation_modules/story_content/deepred_shattering/sound/MrseeoMoonandSeaAmb.ogg')
 	forced_ambience = TRUE
 	ambient_buzz_vol = 5
 	mood_bonus = -7
