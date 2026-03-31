@@ -7,8 +7,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
 
 /area/ruin/unpowered/diamonds
 	name = "Redtech Cargo Bay Ruins"
@@ -19,8 +19,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
 
 /area/ruin/unpowered/hearts
 	name = "Redtech Bunker Ring Ruins"
@@ -31,8 +31,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
 
 /area/ruin/unpowered/clubs
 	name = "Redtech Sensor Array Ruins"
@@ -43,8 +43,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
 
 /area/ruin/space/unpowered/redgeneric
 	name = "Redtech Space Ruins"
@@ -55,8 +55,8 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
 
 /area/ruin/unpowered/redgeneric
 	name = "Redtech Planetary Ruins"
@@ -67,5 +67,5 @@
 	ambient_buzz_vol = 5
 	mood_bonus = -7
 	mood_message = "Reality seems to distort around the edges of your vision..."
-	min_ambience_cooldown = 240 SECONDS
-	max_ambience_cooldown = 300 SECONDS
+	min_ambience_cooldown = 190 SECONDS
+	max_ambience_cooldown = 220 SECONDS
