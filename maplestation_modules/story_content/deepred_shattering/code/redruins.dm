@@ -7,7 +7,7 @@
 
 	allow_duplicates = FALSE
 	cost = 2
-	never_spawn_with = list(/datum/map_template/ruin/space/genericculminationtwo, /datum/map_template/ruin/space/generichangar)
+	never_spawn_with = list(/datum/map_template/ruin/space/genericculminationtwo, /datum/map_template/ruin/space/generichangar,)
 
 /datum/map_template/ruin/lavaland/diamonds_shattering
 	id = "diamonds_shattering"
@@ -18,7 +18,7 @@
 
 	allow_duplicates = FALSE
 	cost = 2
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory,)
 
 /datum/map_template/ruin/lavaland/hearts_shattering
 	id = "hearts_shattering"
@@ -29,7 +29,7 @@
 
 	allow_duplicates = FALSE
 	cost = 8
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory,)
 
 /datum/map_template/ruin/icemoon/clubs_shattering
 	id = "clubs_shattering"
@@ -48,7 +48,7 @@
 	description = "The wreckage of a redtech engine, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory,)
 
 /datum/map_template/ruin/lavaland/genericheatsink
 	id = "heatsink_generic"
@@ -58,7 +58,7 @@
 	description = "The wreckage of a redtech heatsink, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericculminationone, /datum/map_template/ruin/lavaland/genericautofactory,)
 
 /datum/map_template/ruin/lavaland/genericculminationone
 	id = "culminationone_generic"
@@ -68,7 +68,7 @@
 	description = "The first piece of the wreckage of the redtech Culmination, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericautofactory)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericautofactory,)
 
 /datum/map_template/ruin/lavaland/genericautofactory
 	id = "autofactory_generic"
@@ -78,7 +78,7 @@
 	description = "The wreckage of a redtech auto factory, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone)
+	never_spawn_with = list(/datum/map_template/ruin/lavaland/hearts_shattering, /datum/map_template/ruin/lavaland/diamonds_shattering, /datum/map_template/ruin/lavaland/genericengine, /datum/map_template/ruin/lavaland/genericheatsink, /datum/map_template/ruin/lavaland/genericculminationone,)
 
 /datum/map_template/ruin/space/genericculminationtwo
 	id = "culminationtwo_generic"
@@ -88,7 +88,7 @@
 	description = "The second piece of the wreckage of the redtech Culmination, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/generichangar)
+	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/generichangar,)
 
 /datum/map_template/ruin/space/generichangar
 	id = "hangar_generic"
@@ -98,4 +98,4 @@
 	description = "The wreckage of a redtech hangar, now smeared across space and time."
 
 	allow_duplicates = FALSE
-	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/genericculminationtwo)
+	never_spawn_with = list(/datum/map_template/ruin/space/spades_shattering, /datum/map_template/ruin/space/genericculminationtwo,)

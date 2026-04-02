@@ -152,7 +152,7 @@
 /obj/item/snowglobe/extra/lunar
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a vast cityscape, built on the far side of the Moon."
 
-/obj/item/snowglobe/extra/needlecastle
+/obj/item/snowglobe/extra/needle_castle
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a large palace, suspended in the sky upside down."
 
 /obj/item/snowglobe/extra/astral
@@ -198,50 +198,50 @@
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a shapeless voice of light."
 	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of pure light."
 
-/obj/item/snowglobe/zvtupbt
+/obj/item/snowglobe/secret
 	name = "snowglobe?"
 	desc = "A small glass globe filled with a miniature winter scene. Something about this one seems off."
-	var/jvuzahua = "A small glass globe filled with a miniature winter scene. Something about this one seems off.\n"
-	var/zlclu = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
-	var/aptpun = 0
+	var/start = "A small glass globe filled with a miniature winter scene. Something about this one seems off.\n"
+	var/end = "Puzpkl pz h tpuphabyl tvkls vm adv mpnbylz zpaapun avnlaoly pu h ayhpu dpao uv zahya huk uv luk. Vul pz kylzzlk hz h uldzivf huk vul hz h zhpsvy. Aolf zllt av il xbpal mvuk vm ypiivuz dpao vul adpza pu aolt."
+	var/counter = 0
 
-/obj/item/snowglobe/zvtupbt/Initialize(mapload, wyvaljalk = TRUE)
+/obj/item/snowglobe/secret/Initialize(mapload, tamper = TRUE)
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return INITIALIZE_HINT_QDEL
 	if(mapload)
 		return .
-	if(wyvaljalk)
+	if(tamper)
 		return INITIALIZE_HINT_QDEL
 	return .
 
-/obj/item/snowglobe/zvtupbt/proc/jpwoly(puwba)
-	var/ylzbsa = ""
+/obj/item/snowglobe/secret/proc/cipher(puwba)
+	var/text = ""
 	for(var/i = 1, i <= length(puwba), i++)
-		var/jvkl = text2ascii(puwba, i)
-		if(jvkl >= 65 && jvkl <= 90)
-			jvkl = 65 + ((jvkl - 65 + 7) % 26)
-			if(jvkl < 65)
-				jvkl += 26
-		else if(jvkl >= 97 && jvkl <= 122)
-			jvkl = 97 + ((jvkl - 97 + 7) % 26)
-			if(jvkl < 97)
-				jvkl += 26
-		ylzbsa += ascii2text(jvkl)
-	if(aptpun == 25)
-		aptpun = 0
+		var/current = text2ascii(puwba, i)
+		if(current >= 65 && current <= 90)
+			current = 65 + ((current - 65 + 7) % 26)
+			if(current < 65)
+				current += 26
+		else if(current >= 97 && current <= 122)
+			current = 97 + ((current - 97 + 7) % 26)
+			if(current < 97)
+				current += 26
+		text += ascii2text(current)
+	if(counter == 25)
+		counter = 0
 	else
-		aptpun++
-	return ylzbsa
+		counter++
+	return text
 
-/obj/item/snowglobe/zvtupbt/examine(mob/user)
+/obj/item/snowglobe/secret/examine(mob/user)
 	. = ..()
 	if(isliving(user))
-		zlclu = jpwoly(zlclu)
-	if(aptpun - 18 == 7)
-		desc = jvuzahua + zlclu
+		end = cipher(end)
+	if(counter == 25)
+		desc = start + end
 	else
-		desc = jvuzahua + "<span class='upside_down'>" + zlclu + "</span>"
+		desc = start + "<span class='upside_down'>" + end + "</span>"
 
 /obj/effect/spawner/random/shattering_snowglobes
 	name = "snowglobe spawner (originals)"
@@ -277,7 +277,7 @@
 		/obj/item/snowglobe/extra/mars,
 		/obj/item/snowglobe/extra/marisa,
 		/obj/item/snowglobe/extra/lunar,
-		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/needle_castle,
 		/obj/item/snowglobe/extra/astral,
 		/obj/item/snowglobe/extra/dog,
 		/obj/item/snowglobe/extra/goozma,
@@ -309,7 +309,7 @@
 		/obj/item/snowglobe/extra/mars,
 		/obj/item/snowglobe/extra/marisa,
 		/obj/item/snowglobe/extra/lunar,
-		/obj/item/snowglobe/extra/needlecastle,
+		/obj/item/snowglobe/extra/needle_castle,
 		/obj/item/snowglobe/extra/astral,
 		/obj/item/snowglobe/extra/dog,
 		/obj/item/snowglobe/extra/goozma,
@@ -321,20 +321,20 @@
 		/obj/item/snowglobe/evtra/gst,
 		/obj/item/snowglobe/evtra/ndl,
 		/obj/item/snowglobe/evtra/crm,
-		/obj/item/snowglobe/zvtupbt,
+		/obj/item/snowglobe/secret,
 	)
 
 /obj/effect/spawner/random/random_snowglobe/make_item(spawn_loc, type_path_to_make)
-	if(type_path_to_make == /obj/item/snowglobe/zvtupbt)
+	if(type_path_to_make == /obj/item/snowglobe/secret)
 		return new type_path_to_make(spawn_loc, tampered)
 	return new type_path_to_make(spawn_loc)
 
-/obj/item/rtechdrive
+/obj/item/redtech_drive
 	name = "redtech data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-	armor_type = /datum/armor/rtechdrive
+	armor_type = /datum/armor/redtech_drive
 	w_class = WEIGHT_CLASS_BULKY
 
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/blackbox.dmi'
@@ -347,32 +347,32 @@
 	var/signaltype = "Redtech Signal"
 	var/gps_enabled = FALSE
 
-/datum/armor/rtechdrive
+/datum/armor/redtech_drive
 	bomb = 100
 	fire = 100
 	acid = 100
 
-/obj/item/rtechdrive/Initialize(mapload)
+/obj/item/redtech_drive/Initialize(mapload)
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(40 MINUTES, 60 MINUTES))
 
-/obj/item/rtechdrive/examine(mob/user)
+/obj/item/redtech_drive/examine(mob/user)
 	. = ..()
 	if(gps_enabled)
 		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online. You might be able to disable them with a multitool or EMP device.")
 	else
 		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline. You'll need to wait for them to come back online.")
 
-/obj/item/rtechdrive/examine_more(mob/user)
+/obj/item/redtech_drive/examine_more(mob/user)
 	. = ..()
 	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
 
-/obj/item/rtechdrive/proc/send_echo()
+/obj/item/redtech_drive/proc/send_echo()
 	AddComponent(/datum/component/gps, signaltype)
 	gps_enabled = TRUE
 
-/obj/item/rtechdrive/multitool_act(mob/living/user, obj/item/tool)
+/obj/item/redtech_drive/multitool_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(!gps_enabled)
 		balloon_alert(user, "the blackbox's GPS is already offline")
@@ -389,7 +389,7 @@
 	playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 	gps_enabled = FALSE
 
-/obj/item/rtechdrive/emp_act(severity)
+/obj/item/redtech_drive/emp_act(severity)
 	if(gps_enabled)
 		qdel(src.GetComponent(/datum/component/gps))
 		if(severity == EMP_HEAVY)
@@ -401,15 +401,15 @@
 			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
 		gps_enabled = FALSE
 
-/obj/item/rtechdrive/proc/restart_gps()
+/obj/item/redtech_drive/proc/restart_gps()
 	if(!gps_enabled)
 		AddComponent(/datum/component/gps, signaltype)
 		gps_enabled = TRUE
 		src.visible_message(span_boldwarning("The blackbox emits a faint hum as its internal GPS systems come back online."))
 
-/obj/item/rtechdrive/special
+/obj/item/redtech_drive/special
 
-/obj/item/rtechdrive/special/send_echo()
+/obj/item/redtech_drive/special/send_echo()
 	. = ..()
 
 	for(var/obj/item/gps/target_gps in world)
@@ -419,25 +419,25 @@
 		if(prob(10) && target_light.on)
 			target_light.flicker()
 
-/obj/item/rtechdrive/special/hearts
+/obj/item/redtech_drive/special/hearts
 	name = "redtech hearts data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
 	icon_state = "heart"
 	signaltype = "Redtech Hearts Signal"
 
-/obj/item/rtechdrive/special/diamonds
+/obj/item/redtech_drive/special/diamonds
 	name = "redtech diamonds data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
 	icon_state = "diamond"
 	signaltype = "Redtech Diamonds Signal"
 
-/obj/item/rtechdrive/special/clubs
+/obj/item/redtech_drive/special/clubs
 	name = "redtech clubs data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
 	icon_state = "club"
 	signaltype = "Redtech Clubs Signal"
 
-/obj/item/rtechdrive/special/spades
+/obj/item/redtech_drive/special/spades
 	name = "redtech spades data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
 	icon_state = "spade"
