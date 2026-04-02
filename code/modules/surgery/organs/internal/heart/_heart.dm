@@ -137,7 +137,13 @@
 				"Heart rate is below average - While typically not life threatening, may be indicative of an underlying condition. \
 				Can be treated with medication such as [/datum/reagent/medicine/atropine::name].", add_tooltips))
 
-		if(bpm >= FAST_HEARTBEAT_THRESHOLD)
+		if(bpm >= 160)
+			. += " "
+			. += span_warning(conditional_tooltip("(Alert: Tachycardia)", \
+				"Heart rate is far above average, causing damage to the heart. Will lead to heart failure if conditions don't improve. \
+				Defibrillate or treat with medication such as [/datum/reagent/medicine/psicodine::name].", add_tooltips))
+
+		else if(bpm >= FAST_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Tachycardia)", \
 				"Heart rate is above average - While typically not life threatening, may be indicative of an underlying condition. \
@@ -163,7 +169,7 @@
 	random_bpm_modifier = clamp(random_bpm_modifier + rand(-1, 1), -10, 10)
 
 	var/heartrate = get_heart_rate()
-	if(heartrate <= 0 && owner.needs_heart() && Stop())
+	if(heartrate <= 0 && Stop())
 		stop_on_beat()
 	if(heartrate >= 160)
 		apply_organ_damage((heartrate >= 200 ? 1 : 0.5) * seconds_per_tick, required_organ_flag = ORGAN_ORGANIC)
@@ -239,22 +245,26 @@
 		return 0
 
 	var/base_amount = 80 + random_bpm_modifier
+	var/final_amount = base_amount
 	// arbitrary modifiers
-	base_amount += (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST))
-	base_amount -= (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW))
+	final_amount += (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST))
+	final_amount -= (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW))
 	// hypoxia
-	base_amount += owner.getOxyLoss() / 5
+	final_amount += owner.getOxyLoss() / 5
 	// stress (primarily pain and shock modelled here)
-	base_amount += owner.pain_controller?.get_total_pain() / 5
-	base_amount += owner.pain_controller?.traumatic_shock / 2.5
+	final_amount += owner.pain_controller?.get_total_pain() / 5
+	final_amount += owner.pain_controller?.traumatic_shock / 2.5
 	// low blood volume increases heart rate
-	base_amount += (BLOOD_VOLUME_NORMAL - owner.blood_volume) / 25
+	final_amount += (BLOOD_VOLUME_NORMAL - owner.blood_volume) / 25
 	// sprinting (to represent exercise) and actual exercise
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		base_amount += (10 * ((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max))
+		final_amount += (10 * ((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max))
 
-	return max(0, round(base_amount, 1))
+	if(HAS_TRAIT(owner, TRAIT_HEART_RATE_STABILIZED))
+		final_amount += ((final_amount - base_amount) * -0.5)
+
+	return max(0, round(final_amount, 1))
 
 /// Returns the strength of the heart as a multiplier (0 to 1+)
 /obj/item/organ/heart/proc/get_heart_strength()

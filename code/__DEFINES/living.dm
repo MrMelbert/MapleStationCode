@@ -130,6 +130,9 @@
 /// One application of the trait translates to -0.2 "vasodilation", which is a -0.2 multiplier to blood pressure
 #define TRAIT_VASODILATED "vasodilated"
 
+/// Attempts to stabilize the heart, boosting it if it's too slow and slowing it if it's too fast.
+#define TRAIT_HEART_RATE_STABILIZED "heart_rate_stabilized"
+
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 
