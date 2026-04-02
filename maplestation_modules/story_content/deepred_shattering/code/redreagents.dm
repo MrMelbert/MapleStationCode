@@ -192,7 +192,7 @@
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
-/datum/reagent/miracle/proc/exoticresonance(firerange)
+/datum/reagent/miracle/proc/exotic_resonance(firerange)
 	if(!holder || !holder.my_atom)
 		return
 	radiation_pulse(holder.my_atom, max_range = firerange + 3, threshold = 0.1, chance = 80)
@@ -204,11 +204,11 @@
 		new /obj/effect/hotspot(target)
 
 /datum/reagent/miracle/process(seconds_per_tick)
-	exoticresonance(1)
+	exotic_resonance(1)
 
 /datum/reagent/miracle/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	exoticresonance(0)
+	exotic_resonance(0)
 	if(affected_mob.adjustToxLoss(10 * seconds_per_tick * REM, updating_health = FALSE) || affected_mob.adjustFireLoss(10 * seconds_per_tick * REM, updating_health = FALSE))
 		return UPDATE_MOB_HEALTH
 
@@ -217,15 +217,15 @@
 	if(isspaceturf(exposed_turf))
 		return
 
-	exoticresonance(3)
+	exotic_resonance(3)
 
 /datum/reagent/miracle/expose_obj(obj/exposed_obj)
 	. = ..()
-	exoticresonance(3)
+	exotic_resonance(3)
 
 /datum/reagent/miracle/expose_mob(mob/living/exposed_mob, methods=TOUCH)
 	. = ..()
-	exoticresonance(1)
+	exotic_resonance(1)
 
 /datum/chemical_reaction/miracle_creation
 	results = list(/datum/reagent/miracle = 1)

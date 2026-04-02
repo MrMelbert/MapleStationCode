@@ -329,12 +329,12 @@
 		return new type_path_to_make(spawn_loc, tampered)
 	return new type_path_to_make(spawn_loc)
 
-/obj/item/redtech_drive
+/obj/item/rtechdrive
 	name = "redtech data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one is unlabeled. Maybe you should examine it more closely."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-	armor_type = /datum/armor/redtech_drive
+	armor_type = /datum/armor/rtechdrive
 	w_class = WEIGHT_CLASS_BULKY
 
 	icon = 'maplestation_modules/story_content/deepred_shattering/icons/blackbox.dmi'
@@ -347,32 +347,32 @@
 	var/signaltype = "Redtech Signal"
 	var/gps_enabled = FALSE
 
-/datum/armor/redtech_drive
+/datum/armor/rtechdrive
 	bomb = 100
 	fire = 100
 	acid = 100
 
-/obj/item/redtech_drive/Initialize(mapload)
+/obj/item/rtechdrive/Initialize(mapload)
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
 	addtimer(CALLBACK(src, PROC_REF(send_echo)), rand(40 MINUTES, 60 MINUTES))
 
-/obj/item/redtech_drive/examine(mob/user)
+/obj/item/rtechdrive/examine(mob/user)
 	. = ..()
 	if(gps_enabled)
 		. += span_notice("It appears to emit a faint hum, indicating that its internal GPS systems are online. You might be able to disable them with a multitool or EMP device.")
 	else
 		. += span_warning("It appears to be silent, indicating that its internal GPS systems are offline. You'll need to wait for them to come back online.")
 
-/obj/item/redtech_drive/examine_more(mob/user)
+/obj/item/rtechdrive/examine_more(mob/user)
 	. = ..()
 	. += span_notice("If you end the shift with this data drive in your possession, you may wish to inform the author in order to decode its contents in the Discord.")
 
-/obj/item/redtech_drive/proc/send_echo()
+/obj/item/rtechdrive/proc/send_echo()
 	AddComponent(/datum/component/gps, signaltype)
 	gps_enabled = TRUE
 
-/obj/item/redtech_drive/multitool_act(mob/living/user, obj/item/tool)
+/obj/item/rtechdrive/multitool_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(!gps_enabled)
 		balloon_alert(user, "the blackbox's GPS is already offline")
@@ -389,7 +389,7 @@
 	playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 	gps_enabled = FALSE
 
-/obj/item/redtech_drive/emp_act(severity)
+/obj/item/rtechdrive/emp_act(severity)
 	if(gps_enabled)
 		qdel(src.GetComponent(/datum/component/gps))
 		if(severity == EMP_HEAVY)
@@ -401,15 +401,15 @@
 			src.visible_message(span_boldwarning("The blackbox buzzes quietly as its internal GPS systems are disrupted."))
 		gps_enabled = FALSE
 
-/obj/item/redtech_drive/proc/restart_gps()
+/obj/item/rtechdrive/proc/restart_gps()
 	if(!gps_enabled)
 		AddComponent(/datum/component/gps, signaltype)
 		gps_enabled = TRUE
 		src.visible_message(span_boldwarning("The blackbox emits a faint hum as its internal GPS systems come back online."))
 
-/obj/item/redtech_drive/special
+/obj/item/rtechdrive/special
 
-/obj/item/redtech_drive/special/send_echo()
+/obj/item/rtechdrive/special/send_echo()
 	. = ..()
 
 	for(var/obj/item/gps/target_gps in world)
@@ -419,25 +419,25 @@
 		if(prob(10) && target_light.on)
 			target_light.flicker()
 
-/obj/item/redtech_drive/special/hearts
+/obj/item/rtechdrive/special/hearts
 	name = "redtech hearts data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a heart symbol on it, seemingly signifying that it contains advanced dimensional data. Maybe you should examine it more closely."
 	icon_state = "heart"
 	signaltype = "Redtech Hearts Signal"
 
-/obj/item/redtech_drive/special/diamonds
+/obj/item/rtechdrive/special/diamonds
 	name = "redtech diamonds data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a diamond symbol on it, seemingly signifying that it contains redtech technological designs. Maybe you should examine it more closely."
 	icon_state = "diamond"
 	signaltype = "Redtech Diamonds Signal"
 
-/obj/item/redtech_drive/special/clubs
+/obj/item/rtechdrive/special/clubs
 	name = "redtech clubs data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a club symbol on it, seemingly signifying that it contains redtech magical observations. Maybe you should examine it more closely."
 	icon_state = "club"
 	signaltype = "Redtech Clubs Signal"
 
-/obj/item/redtech_drive/special/spades
+/obj/item/rtechdrive/special/spades
 	name = "redtech spades data drive"
 	desc = "A sleek, metallic data drive with a red cable coming out of it. This one has a spade symbol on it, seemingly signifying that it contains artificial intelligence records. Maybe you should examine it more closely."
 	icon_state = "spade"
