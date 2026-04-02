@@ -364,13 +364,25 @@
 #undef AVERAGE_HUMAN_PULSE_PRESSURE
 
 /obj/item/organ/heart/feel_for_damage(self_aware)
-	if(owner.needs_heart() && (!beating || (organ_flags & ORGAN_FAILING)))
-		return span_boldwarning("[self_aware ? "Your heart is not beating!" : "You don't feel your heart beating."]")
-	if(damage < low_threshold)
+	if(!owner.needs_heart())
 		return ""
-	if(damage < high_threshold)
-		return span_warning("[self_aware ? "Your heart hurts." : "It hurts, and your heart rate feels irregular."]")
-	return span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts, and your heart rate is all over the place."]")
+
+	var/bpm_msg = ""
+	var/bpm = get_heart_rate()
+	if(bpm <= 0)
+		bpm_msg = span_boldwarning("You don't feel your heart beating!")
+	else if(bpm < SLOW_HEARTBEAT_THRESHOLD)
+		bpm_msg = span_warning("Your heartbeat feels very slow.")
+	else if(bpm > FAST_HEARTBEAT_THRESHOLD)
+		bpm_msg = span_warning("Your heartbeat feels very fast.")
+
+	var/dmg_msg = ""
+	if(damage > high_threshold)
+		dmg_msg = span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts."]") // it = "your chest"
+	else if(damage > low_threshold)
+		dmg_msg = span_warning("[self_aware ? "Your heart hurts." : "It hurts."]") // it = "your chest"
+
+	return bpm_msg + (bpm_msg ? "<br>" : "") + dmg_msg
 
 /obj/item/organ/heart/cursed
 	name = "cursed heart"
