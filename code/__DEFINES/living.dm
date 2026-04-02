@@ -205,6 +205,10 @@
 #define SLOW_HEARTBEAT_THRESHOLD 60
 /// Threshold that heart beat becomes "fast"
 #define FAST_HEARTBEAT_THRESHOLD 110
+/// Threshold that heart beat starts to cause heart damaage
+#define DANGER_HEARTBEAT_THRESHOLD 160
+/// Threshold that heart beat's heart damage doubles and it has a chance to stop outright
+#define DEADLY_HEARTBEAT_THRESHOLD 200
 
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"

@@ -156,23 +156,28 @@
 /obj/item/organ/heart/on_life(seconds_per_tick, times_fired)
 	. = ..()
 
-	// If the owner doesn't need a heart, we don't need to do anything with it.
-	if(!owner.needs_heart())
-		return
-
-	// Handle "sudden" cardiac arrest
-	if(!beating || (organ_flags & ORGAN_FAILING))
-		stop_on_beat()
-		return
-
 	// randomly climbs up and down to create believable variation in heart rate
 	random_bpm_modifier = clamp(random_bpm_modifier + rand(-1, 1), -10, 10)
 
+	// not needing a heart and a non-beating heart are treated the same - don't check blood pressure, don't do heartbeat sfx, etc.
+	if(!owner.needs_heart() || !is_beating())
+		return
+
 	var/heartrate = get_heart_rate()
-	if(heartrate <= 0 && Stop())
+	// 0 heart beat (likely due to heart failure) = stop beating
+	if(heartrate <= 0)
 		stop_on_beat()
-	if(heartrate >= 160)
-		apply_organ_damage((heartrate >= 200 ? 1 : 0.5) * seconds_per_tick, required_organ_flag = ORGAN_ORGANIC)
+
+	// extreme heart rate causes heart damage
+	if(heartrate >= DANGER_HEARTBEAT_THRESHOLD)
+		apply_organ_damage((heartrate >= DEADLY_HEARTBEAT_THRESHOLD ? 1 : 0.5) * seconds_per_tick)
+		// if high heart beat persists, there is a chance to stop it outright
+		if(SPT_PROB(0.5 * sqrt(damage - 50), seconds_per_tick) && IS_ORGANIC_ORGAN(src))
+			stop_on_beat()
+
+	// no blood, nothing to pump
+	if(owner.blood_volume < BLOOD_VOLUME_SURVIVE)
+		stop_on_beat()
 
 	if(owner.client?.prefs.read_preference(/datum/preference/toggle/heartbeat))
 		switch(heartrate)
@@ -189,7 +194,7 @@
 					playing_heartbeat_sfx = BEAT_FAST
 					SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
 
-	var/bloodpressure = get_blood_pressure()
+	var/bloodpressure = get_blood_pressure(heartrate)
 	if(bloodpressure > 140)
 		if(SPT_PROB(10, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
@@ -241,7 +246,7 @@
 
 /// Gets the heart rate of the heart (resting 80, varies between 0 and 200+)
 /obj/item/organ/heart/proc/get_heart_rate()
-	if(!is_beating() || isnull(owner))
+	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner))
 		return 0
 
 	var/base_amount = 80 + random_bpm_modifier
@@ -253,7 +258,7 @@
 	final_amount += owner.getOxyLoss() / 5
 	// stress (primarily pain and shock modelled here)
 	final_amount += owner.pain_controller?.get_total_pain() / 5
-	final_amount += owner.pain_controller?.traumatic_shock / 2.5
+	final_amount += owner.pain_controller?.traumatic_shock / 2
 	// low blood volume increases heart rate
 	final_amount += (BLOOD_VOLUME_NORMAL - owner.blood_volume) / 25
 	// sprinting (to represent exercise) and actual exercise
@@ -297,11 +302,11 @@
 	return clamp(round(vessel_status, 0.1), 0.5, 2)
 
 /// Returns the average blood pressure of the heart, from a combination of bpm + strength + vessel status.
-/obj/item/organ/heart/proc/get_blood_pressure()
-	var/heart_rate = get_heart_rate()
-	var/heart_strength = get_heart_strength()
-	var/heart_vessel_status = get_heart_vessel_status()
-
+/obj/item/organ/heart/proc/get_blood_pressure(
+	heart_rate = get_heart_rate(),
+	heart_strength = get_heart_strength(),
+	heart_vessel_status = get_heart_vessel_status(),
+)
 	// TL;DR
 	//
 	// - higher heart rate = higher blood pressure
