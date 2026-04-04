@@ -277,7 +277,7 @@
 	foodtypes = SUGAR
 
 /obj/item/food/snowcones/spacemountainwind
-	name = "Space Mountain Wind snowcone"
+	name = "space mountain wind snowcone"
 	desc = "Space Mountain Wind drizzled over a snowball in a paper cup."
 	icon_state = "mountainwind_sc"
 	food_reagents = list(
@@ -496,7 +496,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/popsicle/licorice_creamsicle
-	name = "Void Bar™"
+	name = "\improper Void Bar™"
 	desc = "A salty licorice ice cream. A salty frozen treat."
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 4,
@@ -528,7 +528,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/popsicle/meatsicle
-	name = "Meatsicle"
+	name = "meatsicle"
 	desc = "A horrific abomination of raw meat, glazed with sugar on a stick, then frozen."
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 4,

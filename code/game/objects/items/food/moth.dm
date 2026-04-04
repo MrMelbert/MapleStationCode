@@ -467,7 +467,7 @@
 		/datum/reagent/consumable/nutriment/protein = 6,
 	)
 	tastes = list("bacon" = 1, "eggs" = 1)
-	foodtypes = MEAT|GRAIN|FRIED
+	foodtypes = MEAT|GRAIN|FRIED|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_4
 

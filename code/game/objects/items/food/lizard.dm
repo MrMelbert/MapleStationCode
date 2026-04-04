@@ -616,7 +616,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("bread" = 1, "liver" = 1, "family" = 1)
-	foodtypes = VEGETABLES | NUTS | MEAT
+	foodtypes = VEGETABLES | NUTS | MEAT | EGG
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/pizza/flatbread/fish
@@ -697,7 +697,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("eggs" = 1, "greens" = 1, "blood" = 1)
-	foodtypes = MEAT | BREAKFAST | GORE
+	foodtypes = MEAT | BREAKFAST | GORE | EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -713,7 +713,7 @@
 		/datum/reagent/consumable/capsaicin = 2,
 	)
 	tastes = list("eggs" = 1, "tomato" = 1, "heat" = 1)
-	foodtypes = VEGETABLES | MEAT | BREAKFAST
+	foodtypes = VEGETABLES | MEAT | BREAKFAST | EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -922,7 +922,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("muffin" = 2, "bacon" = 3)
-	foodtypes = NUTS | MEAT | BREAKFAST | VEGETABLES | FRIED
+	foodtypes = NUTS | MEAT | BREAKFAST | VEGETABLES | FRIED | EGG
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_4
 
@@ -960,7 +960,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/burger/rootfish
-	name = "Fish rootwich"
+	name = "fish rootwich"
 	desc = "Lightly battered fish, sandwiched in a rootroll."
 	icon_state = "rootfish"
 	icon = 'icons/obj/food/lizard.dmi'

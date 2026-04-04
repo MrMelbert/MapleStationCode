@@ -452,7 +452,7 @@
 	bite_consumption = 7
 	max_volume = 100
 	tastes = list("bun" = 4, "type two diabetes" = 10)
-	foodtypes = GRAIN | MEAT | DAIRY | VEGETABLES
+	foodtypes = GRAIN | MEAT | DAIRY | VEGETABLES | EGG
 	venue_value = FOOD_PRICE_EXOTIC
 	crafting_complexity = FOOD_COMPLEXITY_5
 
@@ -604,7 +604,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("muffin" = 2, "bacon" = 3)
-	foodtypes = GRAIN | MEAT | BREAKFAST | FRIED
+	foodtypes = GRAIN | MEAT | BREAKFAST | FRIED | EGG
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_3
 

@@ -418,7 +418,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/bearsteak
-	name = "Filet migrawr"
+	name = "filet migrawr"
 	desc = "Because eating bear wasn't manly enough."
 	icon = 'icons/obj/food/meat.dmi'
 	icon_state = "bearsteak"
@@ -731,7 +731,7 @@
 	)
 	bite_consumption = 4
 	tastes = list("meat" = 1, "the colour green" = 1)
-	foodtypes = MEAT|BUGS
+	foodtypes = MEAT|BUGS|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -746,7 +746,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("fish" = 1, "hot peppers" = 1)
-	foodtypes = MEAT|SEAFOOD|BUGS
+	foodtypes = MEAT|SEAFOOD|BUGS|EGG
 	w_class = WEIGHT_CLASS_TINY
 	//total price of this dish is 20 and a small amount more for soy sauce, all of which are available at the orders console
 	venue_value = FOOD_PRICE_CHEAP
@@ -840,7 +840,7 @@
 	AddComponent(/datum/component/slippery, 3 SECONDS)
 
 /obj/item/food/lasagna
-	name = "Lasagna"
+	name = "lasagna"
 	desc = "A slice of lasagna. Perfect for a Monday afternoon."
 	icon_state = "lasagna"
 	food_reagents = list(
@@ -1011,7 +1011,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/korta_wellington
-	name = "Kotra wellington"
+	name = "korta wellington"
 	desc = "A luxurious log of beef, covered in a fine mushroom duxelle and pancetta ham, then bound in korta pastry."
 	icon = 'icons/obj/food/meat.dmi'
 	icon_state = "korta_wellington"
@@ -1152,7 +1152,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("sausage" = 1, "bacon" = 1, "egg" = 1, "tomato" = 1, "mushrooms" = 1, "bread" = 1, "beans" = 1)
-	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY|FRIED|BREAKFAST
+	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY|FRIED|BREAKFAST|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
 	crafting_complexity = FOOD_COMPLEXITY_5
@@ -1245,7 +1245,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 5, "egg" = 3, "dried seaweed" = 2, "cucumber" = 2)
-	foodtypes = MEAT|VEGETABLES|GRAIN|SEAFOOD
+	foodtypes = MEAT|VEGETABLES|GRAIN|SEAFOOD|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -1267,7 +1267,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/philadelphia_sushi_roll
-	name = "Philadelphia sushi roll"
+	name = "philadelphia sushi roll"
 	desc = "A roll of Philadelphia sushi, made of cheese, fish, and cucumber. Sliceable"
 	icon_state = "philadelphia_sushi_roll"
 	food_reagents = list(
@@ -1284,7 +1284,7 @@
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/philadelphia_sushi_slice, 4, screentip_verb = "Chop")
 
 /obj/item/food/philadelphia_sushi_slice
-	name = "Philadelphia sushi slice"
+	name = "philadelphia sushi slice"
 	desc = "A roll of Philadelphia sushi, made of cheese, fish, and cucumber."
 	icon_state = "philadelphia_sushi_slice"
 	food_reagents = list(
