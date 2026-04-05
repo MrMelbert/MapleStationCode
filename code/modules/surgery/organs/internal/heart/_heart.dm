@@ -55,6 +55,7 @@
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 12 SECONDS)
 	playing_heartbeat_sfx = BEAT_NONE
 	organ_owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+	REMOVE_TRAIT(organ_owner, TRAIT_LABOURED_BREATHING, type)
 
 /obj/item/organ/heart/proc/stop_if_unowned()
 	if(QDELETED(src))
