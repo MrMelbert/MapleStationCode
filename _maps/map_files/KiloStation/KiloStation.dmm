@@ -7146,7 +7146,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 4
 	},
 /obj/effect/turf_decal/box,
@@ -24533,7 +24533,7 @@
 "dug" = (
 /obj/machinery/status_display/ai/directional/north,
 /obj/machinery/light/small/directional/north,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/line{
@@ -31021,7 +31021,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 4
 	},
 /obj/effect/turf_decal/box,
@@ -32396,7 +32396,7 @@
 	req_access = list("brig")
 	},
 /obj/machinery/computer/security/telescreen/isolation/directional/north,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron,
@@ -61389,7 +61389,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos/pumproom)
 "pCg" = (
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
@@ -79690,7 +79690,7 @@
 "vuP" = (
 /obj/machinery/firealarm/directional/east,
 /obj/machinery/light/small/directional/south,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
@@ -80658,7 +80658,7 @@
 /turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "vKG" = (
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/line{

@@ -53059,7 +53059,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)
 "sum" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/commons/fitness/recreation)
 "sut" = (
@@ -58116,7 +58116,9 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron,
 /area/station/medical/medbay/central)
@@ -58825,8 +58827,8 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/stasis{
-	dir = 1
+/obj/machinery/sleeper/stasis{
+	dir = 4
 	},
 /obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,
@@ -61730,7 +61732,7 @@
 /turf/open/floor/iron,
 /area/station/maintenance/disposal)
 "xFB" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/structure/sign/warning/cold_temp/directional/north,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/commons/fitness/recreation)
@@ -62236,7 +62238,7 @@
 /area/station/engineering/storage_shared)
 "xTt" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/dark/side{

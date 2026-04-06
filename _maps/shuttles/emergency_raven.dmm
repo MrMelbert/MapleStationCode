@@ -403,7 +403,9 @@
 /area/shuttle/escape)
 "bh" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/iron/white/side{
 	dir = 5
 	},
@@ -476,7 +478,9 @@
 "bq" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/radio/intercom/directional/east,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/iron/white/side{
 	dir = 4
 	},

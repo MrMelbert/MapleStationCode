@@ -510,7 +510,9 @@
 /turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "Ja" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "Jb" = (
@@ -700,7 +702,9 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Un" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "Uq" = (

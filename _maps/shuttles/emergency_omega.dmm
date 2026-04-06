@@ -441,7 +441,7 @@
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
 "ba" = (
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 4
 	},
 /obj/machinery/vending/wallmed/directional/west{
@@ -460,7 +460,9 @@
 /area/shuttle/escape)
 "bc" = (
 /obj/item/radio/intercom/directional/east,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},

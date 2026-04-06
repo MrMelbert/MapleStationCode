@@ -1948,7 +1948,7 @@
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
 "aFw" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
 	},
@@ -25858,7 +25858,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "hJz" = (
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line{
@@ -30586,7 +30586,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/greater)
 "jeE" = (
-/obj/machinery/stasis{
+/obj/machinery/sleeper/stasis{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
@@ -47097,7 +47097,7 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 1
 	},
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/prison)
 "nYn" = (
@@ -55587,7 +55587,9 @@
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "qsQ" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/large,
@@ -68170,7 +68172,7 @@
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/prison)
 "ugR" = (
@@ -70494,7 +70496,7 @@
 	},
 /area/station/hallway/secondary/entry)
 "uRy" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},

@@ -65495,7 +65495,9 @@
 /area/station/service/chapel/office)
 "qPu" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/defibrillator_mount/directional/north,
 /turf/open/floor/iron/white/textured,
 /area/station/medical/treatment_center)
@@ -76902,8 +76904,8 @@
 /area/station/ai_monitored/turret_protected/aisat/service)
 "tOW" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /turf/open/floor/iron/white/textured,
@@ -196817,7 +196819,7 @@ wMN
 tsN
 dhZ
 sRR
-tOW
+qPu
 rwv
 aTc
 dgm
@@ -197845,7 +197847,7 @@ tEe
 fYt
 loQ
 sRR
-qPu
+tOW
 sEl
 vOo
 xwZ

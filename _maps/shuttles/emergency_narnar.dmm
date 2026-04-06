@@ -254,7 +254,9 @@
 /turf/open/floor/cult,
 /area/shuttle/escape)
 "Z" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/cult,
 /area/shuttle/escape)
 

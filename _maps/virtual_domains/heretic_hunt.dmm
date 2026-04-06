@@ -82,8 +82,8 @@
 /turf/closed/indestructible/binary,
 /area/virtual_domain)
 "eV" = (
-/obj/machinery/stasis{
-	dir = 1
+/obj/machinery/sleeper/stasis{
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/blue{
@@ -615,8 +615,8 @@
 /turf/open/floor/plating/heretic_rust,
 /area/virtual_domain)
 "xa" = (
-/obj/machinery/stasis{
-	dir = 1
+/obj/machinery/sleeper/stasis{
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/turf_decal/siding/blue{

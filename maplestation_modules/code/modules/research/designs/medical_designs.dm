@@ -26,3 +26,20 @@
 		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_EQUIPMENT_MEDICAL
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
+/datum/design/neural_suppressor
+	name = "Surgical Neural Suppressor"
+	desc = "A device that suppresses the nervous system - a more advanced form of anesthetic."
+	id = "neural_suppressor"
+	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
+	construction_time = 30
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = SMALL_MATERIAL_AMOUNT,
+		/datum/material/gold = SMALL_MATERIAL_AMOUNT,
+	)
+	build_path = /obj/item/surgery_neural_suppressor
+	category = list(
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_EQUIPMENT_MEDICAL
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL

@@ -338,7 +338,9 @@
 /turf/open/floor/carpet/red,
 /area/shuttle/escape/luxury)
 "on" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape/luxury)
 "ot" = (

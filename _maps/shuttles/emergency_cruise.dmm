@@ -1332,7 +1332,9 @@
 /obj/effect/turf_decal/trimline/blue/mid_joiner{
 	dir = 1
 	},
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/iron/white/smooth_large,
 /area/shuttle/escape)
 "CJ" = (

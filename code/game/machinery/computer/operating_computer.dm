@@ -1,6 +1,3 @@
-#define MENU_OPERATION 1
-#define MENU_SURGERIES 2
-
 /obj/machinery/computer/operating
 	name = "operating computer"
 	desc = "Monitors patient vitals and displays surgery steps. Can be loaded with surgery disks to perform experimental procedures. Automatically syncs to operating tables within its line of sight for surgical tech advancement."
@@ -58,6 +55,7 @@
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table && table.computer == src)
 			table.computer = null
+			table.update_appearance() // NON-MODULE CHANGE
 	QDEL_NULL(experiment_handler)
 	return ..()
 
@@ -104,16 +102,18 @@
 // NON-MODULE CHANGE
 /obj/machinery/computer/operating/on_set_is_operational(old_value)
 	update_static_data_for_all_viewers()
+	table?.update_appearance(UPDATE_OVERLAYS)
 	if(is_operational)
 		return
 	// Losing power / getting broken will auto disable anesthesia
-	table.safety_disable()
+	table?.safety_disable()
 
 /obj/machinery/computer/operating/proc/find_table()
 	for(var/direction in GLOB.alldirs)
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table)
 			table.computer = src
+			table.update_appearance() // NON-MODULE CHANGE
 			break
 
 /obj/machinery/computer/operating/ui_status(mob/user, datum/ui_state/state)
@@ -221,13 +221,14 @@
 	data["patient"]["heartratestate"] = patient_bpm >= 140 ? "bad" : (patient_bpm >= 120 ? "average" : (patient_bpm >= 60 ? "good" : (patient_bpm >= 40 ? "average" : "bad")))
 	// We can also show pain and stuff here if we want.
 
-	var/tank_exists = !isnull(table.attached_tank)
+	var/anesthetic_exists = !isnull(table.attached_anesthetic)
 	var/patient_exists = !isnull(table.patient)
 	data["anesthesia"] = list(
-		"has_tank" = tank_exists,
-		"open" = tank_exists && patient_exists && table.patient.external == table.attached_tank,
-		"can_open_tank" = tank_exists && patient_exists && table.can_have_tank_opened(table.patient),
+		"has_tank" = anesthetic_exists,
+		"open" = anesthetic_exists && patient_exists && table.patient_set_at != -1,
+		"can_open_tank" = anesthetic_exists && patient_exists && table.can_have_anesthetic(table.patient),
 		"failsafe" = table.failsafe_time == INFINITY ? -1 : (table.failsafe_time / 10),
+		"is_tank" = istype(table.attached_anesthetic, /obj/item/tank/internals),
 	)
 	// NON-MODULE CHANGE END
 	return data
@@ -322,13 +323,12 @@
 
 		// NON-MODULE CHANGE START
 		if("toggle_anesthesia")
-			if(iscarbon(usr))
-				var/mob/living/carbon/toggler = usr
-				if(toggler == table.patient && table.patient_set_at == -1 && table.failsafe_time >= 5 MINUTES)
-					to_chat(toggler, span_warning("You feel as if you know better than to do that."))
-					return FALSE
+			var/mob/living/toggler = ui.user
+			if(toggler == table.patient && table.patient_set_at == -1 && table.failsafe_time >= 5 MINUTES)
+				to_chat(toggler, span_warning("You feel as if you know better than to do that."))
+				return FALSE
 
-			table.toggle_anesthesia()
+			table.toggle_anesthesia(toggler)
 			return TRUE
 
 		if("set_failsafe")
@@ -365,6 +365,3 @@
 	SIGNAL_HANDLER
 
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, update_static_data_for_all_viewers)), 0.1 SECONDS, TIMER_UNIQUE)
-
-#undef MENU_OPERATION
-#undef MENU_SURGERIES

@@ -48,7 +48,7 @@
 	var/examine_condition
 
 	/// Datum for managing the overclock sound loop
-	var/datum/looping_sound/vent_pump_overclock/sound_loop
+	var/datum/looping_sound/fan/sound_loop
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Initialize(mapload)
 	if(!id_tag)
@@ -230,7 +230,7 @@
 	fan_overclocked = !fan_overclocked
 
 	if(from_break)
-		playsound(src, 'sound/machines/fan_break.ogg', 100)
+		playsound(src, 'sound/machines/fan/fan_break.ogg', 100)
 		fan_overclocked = FALSE
 
 	if(fan_overclocked)

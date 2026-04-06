@@ -1063,7 +1063,9 @@
 /area/shuttle/escape)
 "ts" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -1106,7 +1108,9 @@
 /area/shuttle/escape)
 "uK" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/structure/sign/poster/official/moth_epi/directional/north,
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/effect/turf_decal/stripes/line{

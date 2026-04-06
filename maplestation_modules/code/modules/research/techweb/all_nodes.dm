@@ -28,11 +28,16 @@
 	id_additions = list(
 		"auto_cpr_device",
 		"vitals_monitor_advanced",
+		"neural_suppressor",
 	)
 
 /datum/techweb_node/cryostasis
+	id_removals = list(
+		"stasis",
+	)
 	id_additions = list(
 		"stasis_bodybag",
+		"stasis_pod",
 	)
 
 /datum/techweb_node/surgery_exp

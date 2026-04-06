@@ -5944,7 +5944,7 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 10
 	},
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron/white,
@@ -15546,7 +15546,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "dTc" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/machinery/airalarm/directional/north,
 /obj/effect/turf_decal/tile/green/opposingcorners{
 	dir = 1
@@ -18642,8 +18642,8 @@
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "eZD" = (
-/obj/machinery/stasis{
-	dir = 4
+/obj/machinery/sleeper/stasis{
+	dir = 8
 	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -19969,7 +19969,7 @@
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "fym" = (
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/green/opposingcorners{
@@ -29911,7 +29911,9 @@
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "jqO" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
 /obj/machinery/defibrillator_mount/directional/north,
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/light/cold/directional/north,
@@ -45274,7 +45276,7 @@
 /turf/open/floor/iron,
 /area/station/security/prison)
 "pgZ" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/tile/green/opposingcorners{
 	dir = 1
@@ -65192,7 +65194,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "wVp" = (
-/obj/machinery/sleeper/cryo,
+/obj/machinery/sleeper/stasis/cryo,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/green/opposingcorners{
@@ -88820,7 +88822,7 @@ uWR
 dux
 dux
 dux
-eZD
+jqO
 nCO
 gIf
 vjp
@@ -90362,7 +90364,7 @@ iEO
 ifK
 gfu
 mRw
-jqO
+eZD
 duA
 uNh
 vsw

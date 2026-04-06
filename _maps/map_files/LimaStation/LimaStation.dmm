@@ -1131,8 +1131,8 @@
 "arO" = (
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/south,
-/obj/machinery/stasis{
-	dir = 1
+/obj/machinery/sleeper/stasis{
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
 /obj/machinery/computer/vitals_reader/directional/west,
@@ -9234,7 +9234,7 @@
 	dir = 8
 	},
 /obj/machinery/airalarm/directional/south,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron/freezer,
@@ -27416,7 +27416,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron/freezer,
@@ -55336,8 +55336,8 @@
 "rxQ" = (
 /obj/machinery/light/cold/directional/west,
 /obj/machinery/defibrillator_mount/directional/north,
-/obj/machinery/stasis{
-	dir = 1
+/obj/machinery/sleeper/stasis{
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/full,
 /obj/machinery/computer/vitals_reader/directional/west,
@@ -58092,7 +58092,7 @@
 /area/station/maintenance/department/cargo)
 "slB" = (
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron,
@@ -60548,7 +60548,7 @@
 	c_tag = "Prison Wing - Foyer";
 	network = list("ss13", "prison")
 	},
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 4
 	},
 /turf/open/floor/iron,
@@ -63337,7 +63337,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/newscaster/directional/east,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,
@@ -67463,7 +67463,7 @@
 	},
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,
@@ -68530,7 +68530,9 @@
 /turf/open/floor/iron/dark,
 /area/station/cargo/storage)
 "vED" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/machinery/light/cold/directional/south,
 /obj/machinery/defibrillator_mount/directional/south,
 /obj/effect/turf_decal/tile/blue/full,
@@ -69507,7 +69509,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/firealarm/directional/east,
-/obj/machinery/sleeper/cryo{
+/obj/machinery/sleeper/stasis/cryo{
 	dir = 8
 	},
 /turf/open/floor/iron/freezer,

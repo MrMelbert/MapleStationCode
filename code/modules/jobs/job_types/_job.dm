@@ -537,7 +537,7 @@
 		return pick(GLOB.jobspawn_overrides[title])
 	if(prefs?.read_preference(/datum/preference/choiced/preferred_latejoin_spawn) == SPAWNPOINT_CRYO)
 		var/list/common_sleepers = list()
-		for(var/obj/machinery/sleeper/cryo/sleeper as anything in GLOB.cryo_sleepers)
+		for(var/obj/machinery/sleeper/stasis/cryo/sleeper as anything in GLOB.cryo_sleepers)
 			if(sleeper.can_latejoin(src))
 				common_sleepers += sleeper
 		if(length(common_sleepers))
