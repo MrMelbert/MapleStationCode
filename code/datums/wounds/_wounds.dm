@@ -631,19 +631,42 @@
  * you would add something like "It is bleeding."
  *
  * * self_aware - if TRUE, the examiner is more aware of themselves and thus may get more detailed information
+ * * medical_skill - the medical skill of the examiner, used to determine how much information they get.
+ * * is_covered - list of clothing covering the wound(ed bodypart)
  *
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
-/datum/wound/proc/get_self_check_description(self_aware)
+/datum/wound/proc/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(limb.current_gauze)
+		return ""
+	for(var/obj/item/clothing/clothing as anything in covering)
+		if(clothing.clothing_flags & THICKMATERIAL)
+			return ""
+
+	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return span_danger("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+			return span_danger("It's suffering [a_or_from] [shown_name].")
 		if(WOUND_SEVERITY_MODERATE)
-			return span_warning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+			return span_warning("It's suffering [a_or_from] [shown_name].")
 		if(WOUND_SEVERITY_SEVERE)
-			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!")
+			return span_boldwarning("It's suffering [a_or_from] [shown_name]!")
 		if(WOUND_SEVERITY_CRITICAL)
-			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!!")
+			return span_boldwarning("It's suffering [a_or_from] [shown_name]!!")
+
+/// Returns what name we should show for this wound for the passed mob
+/// If the mob has the medical skill to recognize the wound, it returns the actual name.
+/// Otherwise, it returns a more vague name that doesn't specify the wound type.
+/// If there's no vague name, it just returns the actual name.
+/datum/wound/proc/get_displayed_name(medical_skill = SKILL_LEVEL_NONE)
+	if(!undiagnosed_name || medical_skill >= SKILL_LEVEL_JOURNEYMAN)
+		return name
+
+	return undiagnosed_name
+
+/// get_displayed_name_for_mob but it accepts a mob rather than a skill level
+/datum/wound/proc/get_displayed_name_for_mob(mob/user)
+	return get_displayed_name(user.get_highest_skill_level(list(/datum/skill/first_aid, /datum/skill/surgery)))
 
 /// A hook proc used to modify desc before it is spanned via [get_desc_intensity]. Useful for inserting spans yourself.
 /datum/wound/proc/modify_desc_before_span(desc, mob/user)

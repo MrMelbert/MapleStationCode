@@ -19,7 +19,7 @@
  * * force_old_level: If set to any skill level, we will act as if the skill was at that level before the adjustment, rather than their current level
  */
 /datum/mind/proc/adjust_experience(skill, amt, silent = FALSE, force_old_level)
-	var/datum/skill/S = GetSkillRef(skill)
+	var/datum/skill/skill_datum = SSskills.all_skills[skill]
 	var/old_level = force_old_level || known_skills[skill][SKILL_LVL] //Get current level of the S skill
 	experience_multiplier = initial(experience_multiplier)
 	for(var/key in experience_multiplier_reasons)
@@ -27,15 +27,41 @@
 	known_skills[skill][SKILL_EXP] = max(0, known_skills[skill][SKILL_EXP] + amt*experience_multiplier) //Update exp. Prevent going below 0
 	known_skills[skill][SKILL_LVL] = update_skill_level(skill)//Check what the current skill level is based on that skill's exp
 	if(known_skills[skill][SKILL_LVL] > old_level)
-		S.level_gained(src, known_skills[skill][SKILL_LVL], old_level, silent)
+		skill_datum.level_gained(src, known_skills[skill][SKILL_LVL], old_level, silent)
 	else if(known_skills[skill][SKILL_LVL] < old_level)
-		S.level_lost(src, known_skills[skill][SKILL_LVL], old_level, silent)
+		skill_datum.level_lost(src, known_skills[skill][SKILL_LVL], old_level, silent)
+
+/// Adjust the experience of a specific skill for a mob. Does nothing for mindless mobs.
+/mob/proc/adjust_skill_experience(skill, amt, silent = FALSE, force_old_level)
+	if(isnull(mind))
+		return
+	mind.adjust_experience(skill, amt, silent, force_old_level)
 
 ///Set experience of a specific skill to a number
 /datum/mind/proc/set_experience(skill, amt, silent = FALSE)
 	var/old_level = known_skills[skill][SKILL_EXP]
 	known_skills[skill][SKILL_EXP] = amt
 	adjust_experience(skill, 0, silent, old_level) //Make a call to adjust_experience to handle updating level
+
+/**
+ * Set the skill level of a mob. Does nothing for mindless mobs.
+ *
+ * * skill - the skill to set, typepath
+ * * newlevel - the level to set the skill to
+ * * silent - if TRUE, don't send messages to the player about level changes
+ * * only_if_higher - if TRUE, only set the level if the new level is higher than the current level
+ * * only_if_lower - if TRUE, only set the level if the new level is lower than the current level
+ */
+/mob/proc/set_skill_level(skill, newlevel, silent = FALSE, only_if_higher = FALSE, only_if_lower = FALSE)
+	if(isnull(mind))
+		return
+
+	var/current_level = get_skill_level(skill)
+	if(only_if_higher && newlevel <= current_level)
+		return
+	if(only_if_lower && newlevel >= current_level)
+		return
+	mind.set_level(skill, newlevel, silent)
 
 ///Set level of a specific skill
 /datum/mind/proc/set_level(skill, newlevel, silent = FALSE)
@@ -70,6 +96,22 @@
 
 /mob/living/carbon/human/dummy/get_skill_modifier(skill, modifier)
 	return 1
+
+/// Gets the mob's skill level for the passed skill typepath
+/// If the mob has no mind, assume 0 skill
+/mob/proc/get_skill_level(skill)
+	return mind?.get_skill_level(skill) || SKILL_LEVEL_NONE
+
+/// When given a list of skill typepaths, return the highest skill LEVEL among them.
+/// If a mob has no mind, it will assume 0 for all skills, and thus return 0 skill.
+/mob/proc/get_highest_skill_level(list/skills)
+	ASSERT(islist(skills))
+
+	var/highest_level = SKILL_LEVEL_NONE
+	for(var/skill in skills)
+		highest_level = max(get_skill_level(skill), highest_level)
+
+	return highest_level
 
 ///Gets the player's current level number from the relevant skill
 /datum/mind/proc/get_skill_level(skill)

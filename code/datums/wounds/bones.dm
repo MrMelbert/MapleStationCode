@@ -120,7 +120,7 @@
 		if(!victim || !limb)
 			qdel(src)
 			return
-		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWER_TEXT(undiagnosed_name || name)]!"))
+		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWER_TEXT(get_displayed_name_for_mob(victim))]!"))
 		remove_wound()
 
 /// If we're a human who's punching something with a broken arm, we might hurt ourselves doing so
@@ -313,9 +313,14 @@
 		though this is quite difficult for most people to do so individually \
 		unless they've dosed themselves with one or more <b>painkillers</b>."
 
-/datum/wound/blunt/bone/rib_break/get_self_check_description(mob/user)
+/datum/wound/blunt/bone/rib_break/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(medical_skill >= SKILL_LEVEL_EXPERT)
+		return span_warning("It feels tense to the touch - likely a fractured rib.")
 	if(locate(/datum/wound/bleed_internal) in limb.wounds)
-		return null
+		return null // prioritize the message IB gives, since it's identical
+	if(medical_skill >= SKILL_LEVEL_APPRENTICE)
+		return span_warning("It feels tense to the touch - likely either internal bleeding or a fractured rib.")
+
 	return span_warning("It feels tense to the touch.") // same as IB!
 
 /// Joint Dislocation (Moderate Blunt)
@@ -368,7 +373,10 @@
 
 	return ..()
 
-/datum/wound/blunt/bone/moderate/get_self_check_description(self_aware)
+/datum/wound/blunt/bone/moderate/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(medical_skill >= SKILL_LEVEL_APPRENTICE)
+		return span_warning("It's dislocated.")
+
 	return span_warning("It feels dislocated!")
 
 /// Getting smushed in an airlock/firelock is a last-ditch attempt to try relocating your limb
@@ -383,7 +391,7 @@
 		return FALSE
 
 	if(user.grab_state == GRAB_PASSIVE)
-		to_chat(user, span_warning("You must have [victim] in an aggressive grab to manipulate [victim.p_their()] [LOWER_TEXT(undiagnosed_name || name)]!"))
+		to_chat(user, span_warning("You must have [victim] in an aggressive grab to manipulate [victim.p_their()] [LOWER_TEXT(get_displayed_name_for_mob(user))]!"))
 		return TRUE
 
 	if(user.grab_state >= GRAB_AGGRESSIVE)

@@ -101,7 +101,7 @@
 	return
 
 /mob/living/carbon/human/drain_sprint(sprint_amt = 1)
-	sprint_amt = abs(sprint_amt)
+	sprint_amt = abs(sprint_amt * get_skill_modifier(/datum/skill/athletics, SKILL_VALUE_MODIFIER))
 	adjust_sprint_left(-1 * sprint_amt)
 	if((movement_type & FLOATING) || !(mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)))
 		set_move_intent(MOVE_INTENT_WALK)

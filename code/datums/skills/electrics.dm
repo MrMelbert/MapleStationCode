@@ -26,6 +26,11 @@
 	)
 	skill_flags = SKILL_ALWAYS_PRINT
 
+/datum/skill/electronics/New()
+	. = ..()
+	level_up_messages[SKILL_LEVEL_EXPERT] = span_nicegreen("I feel like I've become quite proficient at [name] - I've now memorized various station wiring diagrams!")
+	level_down_messages[SKILL_LEVEL_EXPERT] = span_nicegreen("I'm losing my [name] expertise... I can't even remember any wiring diagrams anymore!")
+
 /datum/skill/electronics/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
 	if(new_level >= SKILL_LEVEL_EXPERT)
