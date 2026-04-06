@@ -2416,7 +2416,7 @@
 
 /datum/reagent/consumable/ethanol/drunken_espatier/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.add_mood_event("numb", /datum/mood_event/narcotic_medium, name) //comfortably numb
+	drinker.add_mood_event("numb", /datum/mood_event/narcotic/medium, name) //comfortably numb
 
 /datum/reagent/consumable/ethanol/drunken_espatier/on_mob_metabolize(mob/living/drinker)
 	. = ..()

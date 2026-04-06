@@ -1694,17 +1694,26 @@
 	overdose_threshold = 30
 	ph = 9.12
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	/// Running total of how much sanity we gained
+	VAR_FINAL/regained_sanity = 0
 
 /datum/reagent/medicine/psicodine/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
 	ADD_TRAIT(affected_mob, TRAIT_FEARLESS, type)
+	// NON-MODULE CHANGE
 	ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
+	for(var/datum/status_effect/psicodine_wear_off/debuff in affected_mob.status_effects)
+		regained_sanity += debuff.sanity_to_lose
+		qdel(debuff)
 
 /datum/reagent/medicine/psicodine/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
 	REMOVE_TRAIT(affected_mob, TRAIT_FEARLESS, type)
+	// NON-MODULE CHANGE
 	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
 	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_overdose")
+	if(regained_sanity > 0)
+		affected_mob.apply_status_effect(/datum/status_effect/psicodine_wear_off, current_cycle, regained_sanity)
 
 /datum/reagent/medicine/psicodine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1712,9 +1721,13 @@
 	affected_mob.adjust_dizzy(-12 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_confusion(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_disgust(-6 SECONDS * REM * seconds_per_tick)
-	if(affected_mob.mob_mood && affected_mob.mob_mood.sanity <= SANITY_NEUTRAL) // only take effect if in negative sanity and then...
-		affected_mob.mob_mood.set_sanity(min(affected_mob.mob_mood.sanity + (5 * REM * seconds_per_tick), SANITY_NEUTRAL)) // set minimum to prevent unwanted spiking over neutral
+	// NON-MODULE CHANGE
+	// boosts sanity directly up to neutral. tracks sanity regained this way. after the drug effect ends, sanity gained is lost over time.
+	var/pre_sanity = affected_mob.mob_mood?.sanity
+	affected_mob.mob_mood?.adjust_sanity(5 * REM * seconds_per_tick, maximum = SANITY_NEUTRAL, override = TRUE)
+	regained_sanity += max(0, affected_mob.mob_mood?.sanity - pre_sanity)
 
+// NON-MODULE CHANGE
 /datum/reagent/medicine/psicodine/overdose_start(mob/living/affected_mob)
 	. = ..()
 	ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_overdose")
@@ -1724,6 +1737,35 @@
 	affected_mob.adjust_hallucinations_up_to(10 SECONDS * REM * seconds_per_tick, 120 SECONDS)
 	if(affected_mob.adjustToxLoss(1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 		return UPDATE_MOB_HEALTH
+
+// NON-MODULE CHANGE
+/datum/status_effect/psicodine_wear_off
+	id = "psicodine_wear_off"
+	duration = 2 MINUTES
+	tick_interval = 1 SECONDS
+	alert_type = null
+	remove_on_fullheal = TRUE
+	/// Base duration of the effect, calculated based on how much psicodine was metabolized
+	VAR_FINAL/base_duration = 0
+	/// Total sanity to lose over the course of the effect
+	VAR_FINAL/sanity_to_lose = 0
+	/// Sanity lost per tick, calculated based on total sanity to lose and base duration
+	VAR_FINAL/sanity_per_tick = 0
+
+/datum/status_effect/psicodine_wear_off/on_creation(mob/living/new_owner, psicodine_cycle = 1, sanity_to_lose = 0)
+	src.base_duration = psicodine_cycle * SSmobs.wait
+	src.duration = src.base_duration
+	src.sanity_to_lose = sanity_to_lose * (HAS_TRAIT(new_owner, TRAIT_UNSTABLE) ? 1 : 0.2)
+	src.sanity_per_tick = src.sanity_to_lose / (src.base_duration / src.tick_interval)
+	return ..()
+
+/datum/status_effect/psicodine_wear_off/tick(seconds_between_ticks)
+	if(sanity_to_lose <= 0)
+		qdel(src)
+		return
+
+	owner.mob_mood?.adjust_sanity(-1 * sanity_per_tick, override = TRUE)
+	sanity_to_lose -= sanity_per_tick
 
 /datum/reagent/medicine/metafactor
 	name = "Mitogen Metabolism Factor"

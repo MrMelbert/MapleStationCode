@@ -9,11 +9,11 @@
 	if(current_cycle >= 5)
 		switch(pain_modifier)
 			if(0 to 0.45)
-				M.add_mood_event("numb", /datum/mood_event/narcotic_heavy, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/heavy, name)
 			if(0.45 to 0.55)
-				M.add_mood_event("numb", /datum/mood_event/narcotic_medium, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/medium, name)
 			else
-				M.add_mood_event("numb", /datum/mood_event/narcotic_light, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/light, name)
 
 	// However, drinking with painkillers is toxic.
 	var/highest_boozepwr = 0
