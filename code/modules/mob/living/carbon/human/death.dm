@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(most_toxic)
 				return "[LOWER_TEXT(most_toxic.name)] poisoning"
 
-		if("cardiac_arrest")
+		if(/datum/status_effect/cardiac_arrest::id)
 			return "cardiac arrest"
 
 		if("drunk")
@@ -123,7 +123,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(findtext(probable_cause, "addiction"))
 				return "addiction"
 
-	return probable_cause
+	return replacetext(probable_cause, "_", " ")
 
 /mob/living/carbon/human/proc/reagents_readout()
 	var/readout = "Blood:"
