@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(most_toxic)
 				return "[LOWER_TEXT(most_toxic.name)] poisoning"
 
-		if("heart_attack")
+		if("cardiac_arrest")
 			return "cardiac arrest"
 
 		if("drunk")
