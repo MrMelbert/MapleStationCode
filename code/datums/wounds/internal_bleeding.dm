@@ -53,16 +53,38 @@
 
 	severity = new_severity
 	bleed_amount = initial(bleed_amount)
-	if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
-		treat_text_short = initial(treat_text_short)
-		treat_text = initial(treat_text)
+	update_flavor()
+
+/datum/wound/bleed_internal/proc/update_flavor()
+	if(!isnull(limb) && IS_ROBOTIC_LIMB(limb))
+		name = "Internal Hydraulics Leak"
+		desc = "The patient is leaking hydraulic fluid internally, causing difficulty moving."
+		if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
+			treat_text_short = "Repair surgically or wait."
+			treat_text = "The leak may heal on its own over time, but surgical repair is also an option."
+
+		else
+			treat_text_short = "Surgical repair required."
+			treat_text = "Surgical repair of the affected hydraulics is necessary. \
+				Only very rare and advanced repair materials can fix it on its own, and blood clotting medication will not help."
+
 	else
-		treat_text_short = "Surgical repair required."
-		treat_text = "Surgical repair of the affected vein is necessary. \
-			Blood clotting medical will slow the bleeding, but only very rare and advanced medication can repair it on its own."
+		name = initial(name)
+		desc = initial(desc)
+		if(severity == WOUND_SEVERITY_TRIVIAL && highest_severity == WOUND_SEVERITY_TRIVIAL)
+			treat_text_short = initial(treat_text_short)
+			treat_text = initial(treat_text)
+		else
+			treat_text_short = "Surgical repair required."
+			treat_text = "Surgical repair of the affected vein is necessary. \
+				Blood clotting medical will stem the bleeding, but only very rare and advanced medication can repair it outright."
+
+/datum/wound/bleed_internal/set_limb(obj/item/bodypart/new_value, replaced)
+	. = ..()
+	update_flavor()
 
 /datum/wound/bleed_internal/handle_process(seconds_per_tick, times_fired)
-	if(!victim || victim.stat == DEAD || HAS_TRAIT(victim, TRAIT_STASIS) || !victim.needs_heart())
+	if(!victim || victim.stat == DEAD || HAS_TRAIT(victim, TRAIT_STASIS) || HAS_TRAIT(victim, TRAIT_NOBLOOD))
 		return
 	var/severity_mod = (severity + 1)
 	victim.bleed(bleed_amount * severity_mod * seconds_per_tick, leave_pool = FALSE)
@@ -82,38 +104,54 @@
 
 	switch(limb.body_zone)
 		if(BODY_ZONE_HEAD)
-			if(SPT_PROB(2, seconds_per_tick))
-				victim.adjust_dizzy(2 SECONDS * severity_mod)
-			if(SPT_PROB(1, seconds_per_tick))
-				victim.adjust_eye_blur(1 SECONDS * severity_mod)
-			if(SPT_PROB(1, seconds_per_tick))
-				victim.adjust_drowsiness(1 SECONDS * severity_mod)
-			if(SPT_PROB(2, seconds_per_tick))
-				victim.add_consciousness_modifier(type, -1.25 * severity_mod)
-				addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob/living, remove_consciousness_modifier), type), rand(1, 4) * severity_mod * 1 SECONDS)
+			if(IS_ROBOTIC_LIMB(limb))
+				if(SPT_PROB(2, seconds_per_tick))
+					if(!victim.is_blind())
+						to_chat(victim, span_warning("[victim.blood_type.reagent_type::name] pools up in your visual sensors, obscuring your vision."))
+					victim.adjust_eye_blur(3 SECONDS * severity_mod)
+
+			else
+				if(SPT_PROB(2, seconds_per_tick))
+					victim.adjust_dizzy(2 SECONDS * severity_mod)
+				if(SPT_PROB(1, seconds_per_tick))
+					victim.adjust_eye_blur(1 SECONDS * severity_mod)
+				if(SPT_PROB(1, seconds_per_tick))
+					victim.adjust_drowsiness(1 SECONDS * severity_mod)
+				if(SPT_PROB(2, seconds_per_tick))
+					victim.add_consciousness_modifier(type, -1.25 * severity_mod)
+					addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob/living, remove_consciousness_modifier), type), rand(1, 4) * severity_mod * 1 SECONDS)
 
 		if(BODY_ZONE_CHEST)
-			if(SPT_PROB(2, seconds_per_tick))
-				victim.adjust_dizzy(2 SECONDS * severity_mod)
-			if(SPT_PROB(2, seconds_per_tick))
-				victim.losebreath += (1 / ((WOUND_SEVERITY_CRITICAL + 1) / severity_mod))
-			if(SPT_PROB(1, seconds_per_tick))
-				victim.emote("cough")
-				victim.visible_message(
-					span_warning("[victim] coughs up blood."),
-					span_warning("You cough up blood."),
-					vision_distance = COMBAT_MESSAGE_RANGE,
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-			if(SPT_PROB(2, seconds_per_tick))
-				victim.adjust_disgust(5 * severity_mod)
-			if(SPT_PROB(0.1, seconds_per_tick))
-				victim.adjust_disgust(10 * severity_mod)
-				victim.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 0)
+			if(IS_ROBOTIC_LIMB(limb))
+				pass()
+
+			else
+				if(SPT_PROB(2, seconds_per_tick))
+					victim.adjust_dizzy(2 SECONDS * severity_mod)
+				if(SPT_PROB(2, seconds_per_tick))
+					victim.losebreath += (1 / ((WOUND_SEVERITY_CRITICAL + 1) / severity_mod))
+				if(SPT_PROB(1, seconds_per_tick))
+					victim.emote("cough")
+					victim.visible_message(
+						span_warning("[victim] coughs up blood."),
+						span_warning("You cough up blood."),
+						vision_distance = COMBAT_MESSAGE_RANGE,
+						visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+					)
+				if(SPT_PROB(2, seconds_per_tick))
+					victim.adjust_disgust(5 * severity_mod)
+				if(SPT_PROB(0.1, seconds_per_tick))
+					victim.adjust_disgust(10 * severity_mod)
+					victim.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 0)
 
 		else
-			if(SPT_PROB(2, seconds_per_tick))
-				to_chat(victim, span_warning("Your [limb.plaintext_zone] feels [pick("tense", "sore", "weak")] as you move it."))
+			if(IS_ROBOTIC_LIMB(limb))
+				if(SPT_PROB(2, seconds_per_tick))
+					to_chat(victim, span_warning("[victim.blood_type.reagent_type::name] oozes out of your [limb.plaintext_zone]."))
+
+			else
+				if(SPT_PROB(2, seconds_per_tick))
+					to_chat(victim, span_warning("Your [limb.plaintext_zone] feels [pick("tense", "sore", "weak")] as you move it."))
 
 	if(SPT_PROB(2, seconds_per_tick))
 		victim.sharp_pain(limb.body_zone, amount = (severity_mod * 3), duration = 30 SECONDS, return_mod = 0.5)

@@ -127,18 +127,16 @@
 
 	switch(color_source)
 		if(ORGAN_COLOR_OVERRIDE)
-			draw_color = override_color(bodypart_owner)
+			var/tmpv = override_color(bodypart_owner)
+			draw_color = tmpv
 		if(ORGAN_COLOR_INHERIT)
 			draw_color = bodypart_owner.draw_color
 		if(ORGAN_COLOR_HAIR)
-			if(!ishuman(bodypart_owner.owner))
-				return
-			var/mob/living/carbon/human/human_owner = bodypart_owner.owner
-			var/obj/item/bodypart/head/my_head = human_owner.get_bodypart(BODY_ZONE_HEAD) //not always the same as bodypart_owner
-			//head hair color takes priority, owner hair color is a backup if we lack a head or something
-			if(my_head)
-				draw_color = my_head.hair_color
-			else
+			var/obj/item/bodypart/head/my_head = astype(bodypart_owner) || bodypart_owner.owner?.get_bodypart(BODY_ZONE_HEAD)
+
+			draw_color = my_head?.hair_color
+			if(isnull(draw_color) && ishuman(bodypart_owner.owner))
+				var/mob/living/carbon/human/human_owner = bodypart_owner.owner
 				draw_color = human_owner.hair_color
 
 	return TRUE

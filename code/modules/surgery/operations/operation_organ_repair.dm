@@ -22,8 +22,11 @@
 		desc += " This procedure can only be performed once per organ."
 
 /datum/surgery_operation/organ/repair/state_check(obj/item/organ/organ)
-	if(organ.damage < (organ.maxHealth * heal_to_percent) || (!repeatable && HAS_TRAIT(organ, TRAIT_ORGAN_OPERATED_ON)))
+	if(organ.damage < (organ.maxHealth * heal_to_percent))
 		return FALSE // conditionally available so we don't spam the radial with useless options, alas
+	// NON-MODULE CHANGE
+	if(!repeatable && HAS_TRAIT(organ, TRAIT_ORGAN_OPERATED_ON) && !(organ.organ_flags & ORGAN_UNREMOVABLE))
+		return FALSE
 	return TRUE
 
 /datum/surgery_operation/organ/repair/all_required_strings()
