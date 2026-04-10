@@ -205,9 +205,9 @@
 	var/start = "A small glass globe filled with a miniature winter scene. Some odd substance constantly shifts and changes within.\n"
 	var/data = list(
 		"H tpuphabyl tvkls vm hu bumhtpsphy mpnbyl kylzzlk pu h uldzivf vbampa svvrz ihjr bw ha FVB dpao h zbywypzlk lewylzzpvu vu aolpy mhjl.",
-		// "Aol bumhtpsphy mpnbyl ayplz av alss FVB av uva spzalu av aol ylk kljlpcly.", // Uv, P kvu'a aopur zv.
+		// "Aol bumhtpsphy mpnbyl ayplz av alss FVB av uva spzalu av aol ylk kljlpcly.", // nv, i kvua aopur zv
 		"H tpuphabyl tvkls vm h mhtpsphy mpnbyl bupmvyt pu h zhpsvy vbampa splz mhjl kvdu pu aol zuvd.",
-		"Zvtl zvya vm zahapj isvjrz FVBY cpld puav aol zuvdnsvil.", // Mhujf tllapun fvb olyl, mypluk.
+		"Zvtl zvya vm zahapj isvjrz FVBY cpld puav aol zuvdnsvil.", // mhujf tllapun fvb olyl, mypluk
 	)
 	var/counter = 0
 	var/cycle_target = 25
