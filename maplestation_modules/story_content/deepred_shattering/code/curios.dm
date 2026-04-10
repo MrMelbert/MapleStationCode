@@ -113,9 +113,6 @@
 /obj/item/snowglobe/draedon
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a strange robotic figure sitting on a flying chair, flanked by a landscape of metal and machinery."
 
-/obj/item/snowglobe/starfarers
-	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of two twins, both wearing purple, starry attire. They stand on a floating island with a towering spire, surrounded by a sea of clouds."
-
 /obj/item/snowglobe/calamitas
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a dark skinned sorceress wearing red robes, standing in a incinerated city."
 
@@ -195,6 +192,10 @@
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a star shaped mage."
 	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a bookcase."
 
+/obj/item/snowglobe/evtra/str
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of twin starfarers."
+	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of an island in the clouds."
+
 /obj/item/snowglobe/evtra/crm
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a shapeless voice."
 	decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of pure light."
@@ -206,6 +207,7 @@
 	var/data = list(
 		"H tpuphabyl tvkls vm hu bumhtpsphy mpnbyl kylzzlk pu h uldzivf vbampa svvrz ihjr bw ha FVB dpao h zbywypzlk lewylzzpvu vu aolpy mhjl.",
 		// "Aol bumhtpsphy mpnbyl ayplz av alss FVB av uva spzalu av aol ylk kljlpcly.", // nv, i kvua aopur zv
+		// "Aol bumhtpsphy mpnbyl svvrz bwzla. Aolf ayf av als- // aohaz luvbno vm aoha
 		"H tpuphabyl tvkls vm h mhtpsphy mpnbyl bupmvyt pu h zhpsvy vbampa splz mhjl kvdu pu aol zuvd.",
 		"Zvtl zvya vm zahapj isvjrz FVBY cpld puav aol zuvdnsvil.", // mhujf tllapun fvb olyl, mypluk
 	)
@@ -269,7 +271,6 @@
 		/obj/item/snowglobe/reimu,
 		/obj/item/snowglobe/sdm,
 		/obj/item/snowglobe/draedon,
-		/obj/item/snowglobe/starfarers,
 		/obj/item/snowglobe/calamitas,
 		/obj/item/snowglobe/angela,
 		/obj/item/snowglobe/library,
@@ -310,7 +311,6 @@
 		/obj/item/snowglobe/reimu,
 		/obj/item/snowglobe/sdm,
 		/obj/item/snowglobe/draedon,
-		/obj/item/snowglobe/starfarers,
 		/obj/item/snowglobe/calamitas,
 		/obj/item/snowglobe/angela,
 		/obj/item/snowglobe/library,
@@ -333,8 +333,9 @@
 		/obj/item/snowglobe/evtra/tre,
 		/obj/item/snowglobe/evtra/gst,
 		/obj/item/snowglobe/evtra/ndl,
-		/obj/item/snowglobe/evtra/crm,
 		/obj/item/snowglobe/evtra/sol,
+		/obj/item/snowglobe/evtra/str,
+		/obj/item/snowglobe/evtra/crm,
 		/obj/item/snowglobe/secret,
 	)
 
