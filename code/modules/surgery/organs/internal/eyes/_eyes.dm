@@ -279,7 +279,7 @@
 
 	damaged = TRUE
 
-/obj/item/organ/eyes/feel_for_damage(self_aware)
+/obj/item/organ/eyes/feel_for_damage(self_aware, medical_skill)
 	// Eye damage has visual effects, so we don't really need to "feel" it when self-examining
 	return ""
 
@@ -468,6 +468,7 @@
 	iris_overlays = FALSE
 	organ_flags = ORGAN_ROBOTIC
 	failing_desc = "seems to be broken."
+	lighting_cutoff = LIGHTING_CUTOFF_REAL_LOW
 
 /obj/item/organ/eyes/robotic/emp_act(severity)
 	. = ..()

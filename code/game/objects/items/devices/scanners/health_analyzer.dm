@@ -417,8 +417,9 @@
 				recieve_from_text += " Regenerates slowly via [target_blood_type.restoration_chem::name] reagent."
 			blood_type_format = span_tooltip(recieve_from_text, blood_type_format)
 
-		render_list += "<span class='info ml-1'>Blood pressure: [bp_format]</span><br>"
-		render_list += "<span class='info ml-1'>Blood level: [level_format]</span><br>"
+		var/blood_name = target_blood_type.reagent_type::name
+		render_list += "<span class='info ml-1'>[blood_name] pressure: [bp_format]</span><br>"
+		render_list += "<span class='info ml-1'>[blood_name] level: [level_format]</span><br>"
 		render_list += "<span class='info ml-1'>Blood type: [blood_type_format]</span><br>"
 
 	// NON-MODULE CHANGE END

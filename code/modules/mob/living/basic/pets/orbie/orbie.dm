@@ -52,6 +52,7 @@
 	var/static/list/food_types = list(/obj/item/food/virtual_chocolate)
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 	AddElement(/datum/element/basic_eating, food_types = food_types)
+	ADD_TRAIT(src, TRAIT_SILICON_EMOTES_ALLOWED, INNATE_TRAIT)
 	RegisterSignal(src, COMSIG_VIRTUAL_PET_LEVEL_UP, PROC_REF(on_level_up))
 	RegisterSignal(src, COMSIG_ATOM_UPDATE_LIGHT_ON, PROC_REF(on_lights))
 	ai_controller.set_blackboard_key(BB_BASIC_FOODS, typecacheof(food_types))

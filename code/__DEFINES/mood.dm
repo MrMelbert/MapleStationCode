@@ -93,3 +93,6 @@
 #define BLOCK_NEW_MOOD FALSE
 /// Return from /be_replaced or /be_refreshed to actually go through and allow the new mood event to be added
 #define ALLOW_NEW_MOOD TRUE
+
+#define MOOD_TEXT_ABOVE_CHARACTER "Above Character"
+#define MOOD_TEXT_BELOW_CHARACTER "Below Character"

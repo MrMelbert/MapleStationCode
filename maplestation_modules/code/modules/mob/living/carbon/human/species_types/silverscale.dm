@@ -274,7 +274,7 @@
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield",
 			SPECIES_PERK_NAME = "Armored",
-			SPECIES_PERK_DESC = "Your scales are silvery and robust, reducing incoming damage by 10%!"
+			SPECIES_PERK_DESC = "Your scales are silvery and robust, reducing incoming damage."
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,

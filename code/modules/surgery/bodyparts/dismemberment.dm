@@ -118,7 +118,6 @@
 	update_icon_dropped()
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
-	phantom_owner.update_body_parts()
 
 	if(bodypart_flags & BODYPART_PSEUDOPART)
 		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
@@ -308,7 +307,8 @@
 
 	if(new_limb_owner.mob_mood?.has_mood_of_category("dismembered_[body_zone]"))
 		new_limb_owner.clear_mood_event("dismembered_[body_zone]")
-		new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
+		if(!special)
+			new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
 
 	update_bodypart_damage_state()
 	if(can_be_disabled)

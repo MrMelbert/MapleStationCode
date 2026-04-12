@@ -729,7 +729,7 @@
 
 	affected_mob.heal_pain(8 * REM * normalise_creation_purity() * seconds_per_tick)
 	if(current_cycle > 5) // 1u
-		affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy, name)
+		affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic/heavy, name)
 		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
 	if(current_cycle > 20) // 4u
 		affected_mob.adjust_drowsiness_up_to(4 SECONDS * REM * normalise_creation_purity() * seconds_per_tick, 24 SECONDS)

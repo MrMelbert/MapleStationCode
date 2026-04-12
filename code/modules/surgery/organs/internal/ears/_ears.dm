@@ -42,7 +42,7 @@
 	if(organ_flags & ORGAN_FAILING)
 		return
 	adjustEarDamage(0, -0.5 * seconds_per_tick)
-	if((damage > low_threshold) && SPT_PROB(damage / 60, seconds_per_tick))
+	if((damage > low_threshold) && IS_ORGANIC_ORGAN(src) && SPT_PROB(damage / 60, seconds_per_tick))
 		adjustEarDamage(0, 4)
 		SEND_SOUND(owner, sound('sound/weapons/flash_ring.ogg'))
 
@@ -148,7 +148,7 @@
 /obj/item/organ/ears/invincible
 	damage_multiplier = 0
 
-/obj/item/organ/ears/feel_for_damage(self_aware)
+/obj/item/organ/ears/feel_for_damage(self_aware, medical_skill)
 	// Ear damage has audible effects, so we don't really need to "feel" it when self-examining
 	return ""
 

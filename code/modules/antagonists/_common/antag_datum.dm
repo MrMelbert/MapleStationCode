@@ -265,6 +265,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	LAZYADD(owner.special_roles, (jobban_flag || pref_flag))
 
 	SEND_SIGNAL(owner, COMSIG_ANTAGONIST_GAINED, src)
+	SEND_SIGNAL(owner.current, COMSIG_MOB_ANTAGONIST_GAINED, src)
 
 /**
  * Proc that checks the sent mob aganst the banlistfor this antagonist.

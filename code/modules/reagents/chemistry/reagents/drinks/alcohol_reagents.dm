@@ -2416,7 +2416,7 @@
 
 /datum/reagent/consumable/ethanol/drunken_espatier/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.add_mood_event("numb", /datum/mood_event/narcotic_medium, name) //comfortably numb
+	drinker.add_mood_event("numb", /datum/mood_event/narcotic/medium, name) //comfortably numb
 
 /datum/reagent/consumable/ethanol/drunken_espatier/on_mob_metabolize(mob/living/drinker)
 	. = ..()
@@ -2674,7 +2674,7 @@
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
-	if(istype(stomach))
+	if(istype(stomach) && IS_ORGANIC_ORGAN(stomach))
 		stomach.adjust_charge(reac_volume * 5 * ETHEREAL_DISCHARGE_RATE)
 
 /datum/reagent/consumable/ethanol/telepole
@@ -2701,7 +2701,7 @@
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
-	if(istype(stomach))
+	if(istype(stomach) && IS_ORGANIC_ORGAN(stomach))
 		stomach.adjust_charge(reac_volume * 10 * ETHEREAL_DISCHARGE_RATE)
 
 /datum/reagent/consumable/ethanol/pod_tesla
@@ -2728,7 +2728,7 @@
 
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
-	if(istype(stomach))
+	if(istype(stomach) && IS_ORGANIC_ORGAN(stomach))
 		stomach.adjust_charge(reac_volume * 30 * ETHEREAL_DISCHARGE_RATE)
 
 // Welcome to the Blue Room Bar and Grill, home to Mars' finest cocktails
