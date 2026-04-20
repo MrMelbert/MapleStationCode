@@ -168,8 +168,8 @@
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man in a black suit and black gloves, with a featureless mask."
 
 /obj/item/snowglobe/evtra
-	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a tall, ribboned lady with a parasol standing on an old, abandoned train platform."
-	var/decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of an empty train platform."
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a ribboned lady."
+	var/decc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a train platform."
 
 /obj/item/snowglobe/evtra/examine(mob/user)
 	. = ..()
