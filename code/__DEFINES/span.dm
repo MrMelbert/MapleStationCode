@@ -43,6 +43,7 @@
 #define span_cultboldtalic(str) ("<span class='cultboldtalic'>" + str + "</span>")
 #define span_cultitalic(str) ("<span class='cultitalic'>" + str + "</span>")
 #define span_cultlarge(str) ("<span class='cultlarge'>" + str + "</span>")
+#define span_cyan(str) ("<span class='cyan'>" + str + "</span>")
 #define span_danger(str) ("<span class='danger'>" + str + "</span>")
 #define span_deadsay(str) ("<span class='deadsay'>" + str + "</span>")
 #define span_deconversion_message(str) ("<span class='deconversion_message'>" + str + "</span>")
