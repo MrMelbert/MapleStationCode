@@ -64,7 +64,6 @@
 					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.9)
-				add_consciousness_modifier(BLOOD_LOSS, -10)
 				adjust_traumatic_shock(0.5 * seconds_per_tick)
 				if(getOxyLoss() < 100)
 					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding - some of this will be recovered
@@ -73,7 +72,6 @@
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.6)
-				add_consciousness_modifier(BLOOD_LOSS, -20)
 				adjust_traumatic_shock(1 * seconds_per_tick)
 				if(getOxyLoss() < 150)
 					adjustOxyLoss(3)
@@ -84,7 +82,6 @@
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.2)
-				add_consciousness_modifier(BLOOD_LOSS, -50)
 				adjust_traumatic_shock(3 * seconds_per_tick)
 				set_eye_blur_if_lower(20 SECONDS)
 				// Unconscious(10 SECONDS)

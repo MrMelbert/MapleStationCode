@@ -160,19 +160,19 @@
 	random_bpm_modifier = clamp(random_bpm_modifier + rand(-1, 1), -10, 10)
 
 	// not needing a heart and a non-beating heart are treated the same - don't check blood pressure, don't do heartbeat sfx, etc.
-	if(!owner.needs_heart() || !is_beating())
+	if(!is_beating() || !owner.needs_heart() )
 		return
 
 	var/heartrate = get_heart_rate()
-	// 0 heart beat (likely due to heart failure) = stop beating
+	var/bloodpressure = get_blood_pressure(heartrate)
 	if(heartrate <= 0)
 		stop_on_beat()
 
 	// extreme heart rate causes heart damage
-	if(heartrate >= DANGER_HEARTBEAT_THRESHOLD)
+	if(heartrate >= DANGER_HEARTBEAT_THRESHOLD || ((bloodpressure >= 180 && damage < high_threshold) || bloodpressure >= 220))
 		apply_organ_damage((heartrate >= DEADLY_HEARTBEAT_THRESHOLD ? 1 : 0.5) * seconds_per_tick)
 		// if high heart beat persists, there is a chance to stop it outright
-		if(SPT_PROB(0.5 * sqrt(damage - 50), seconds_per_tick) && IS_ORGANIC_ORGAN(src))
+		if(damage > 50 && SPT_PROB(0.5 * sqrt(damage - 50), seconds_per_tick) && IS_ORGANIC_ORGAN(src))
 			stop_on_beat()
 
 	// no blood, nothing to pump
@@ -194,15 +194,18 @@
 					playing_heartbeat_sfx = BEAT_FAST
 					SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
 
-	var/bloodpressure = get_blood_pressure(heartrate)
+	else if(playing_heartbeat_sfx != BEAT_NONE)
+		playing_heartbeat_sfx = BEAT_NONE
+		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+
 	if(bloodpressure > 140)
-		if(SPT_PROB(10, seconds_per_tick))
+		if(SPT_PROB(4, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
 				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
 			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
 				to_chat(owner, span_warning("You feel [pick("tired", "confused", "numb", "weak", "flush")]."))
-		if(SPT_PROB(10, seconds_per_tick))
+		if(SPT_PROB(4, seconds_per_tick))
 			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
 		if(SPT_PROB(1, seconds_per_tick))
 			if(prob(90) && owner.get_bodypart(BODY_ZONE_HEAD))
@@ -217,13 +220,13 @@
 			to_chat(owner, span_warning("Your chest feels [pick("tight", "uncomfortable")]."))
 		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shortness of breath
 	else if(bloodpressure < 60)
-		if(SPT_PROB(10, seconds_per_tick))
+		if(SPT_PROB(4, seconds_per_tick))
 			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
 			if(prob(10))
 				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
 			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
 				to_chat(owner, span_warning("You feel [pick("lightheaded", "tired", "confused", "like you can't focus")]."))
-		if(SPT_PROB(10, seconds_per_tick))
+		if(SPT_PROB(4, seconds_per_tick))
 			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
 		if(SPT_PROB(1, seconds_per_tick))
 			owner.adjust_disgust(10, DISGUST_LEVEL_VERYGROSS)
