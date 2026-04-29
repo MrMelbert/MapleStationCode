@@ -282,6 +282,7 @@
 	var/heart_strength = min(1, 0.1 + (maxHealth - (0.8 * damage)) / maxHealth)
 	// stress (boost from adrenaline)
 	heart_strength += (owner.has_status_effect(/datum/status_effect/determined) ? 0.2 : 0)
+	heart_strength += (owner.has_status_effect(/datum/status_effect/cpr_applied) ? 0.2 : 0)
 	// low blood volume decreases heart strength
 	heart_strength -= ((BLOOD_VOLUME_NORMAL - owner.blood_volume) / (2 * BLOOD_VOLUME_NORMAL))
 
