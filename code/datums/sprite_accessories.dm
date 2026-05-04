@@ -833,8 +833,8 @@
 	var/gradient_category = GRADIENT_APPLIES_TO_HAIR|GRADIENT_APPLIES_TO_FACIAL_HAIR
 
 /datum/sprite_accessory/gradient/none
-	name = "None"
-	icon_state = "none"
+	name = SPRITE_ACCESSORY_NONE
+	icon_state = SPRITE_ACCESSORY_NONE
 
 /datum/sprite_accessory/gradient/full
 	name = "Full"
@@ -1081,7 +1081,7 @@
 
 /datum/sprite_accessory/facial_hair/shaved
 	name = "Shaved"
-	icon_state = null
+	icon_state = SPRITE_ACCESSORY_NONE
 	gender = NEUTER
 
 ///////////////////////////

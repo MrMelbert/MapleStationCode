@@ -490,6 +490,9 @@
 		overlays_standing[BODYPARTS_LAYER] = new_limbs
 
 	apply_overlay(BODYPARTS_LAYER)
+	// for legacy support, head changes triggers an eye/hair update
+	update_eyes()
+	update_hair()
 
 /////////////////////////
 // Limb Icon Cache 2.0 //
@@ -524,6 +527,12 @@
 		. += "-[human_owner.mob_height]"
 	return .
 
+/obj/item/bodypart/head/generate_icon_key()
+	. = ..()
+	if(lip_style)
+		. += lip_color
+		. += lip_style
+
 ///Generates a cache key specifically for husks
 /obj/item/bodypart/proc/generate_husk_key()
 	RETURN_TYPE(/list)
@@ -536,42 +545,6 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		. += "-[human_owner.mob_height]"
-	return .
-
-/obj/item/bodypart/head/generate_icon_key()
-	. = ..()
-	if(lip_style)
-		. += "-[lip_style]"
-		. += "-[lip_color]"
-
-	if(facial_hair_hidden)
-		. += "-FACIAL_HAIR_HIDDEN"
-	else
-		. += "-[facial_hairstyle]"
-		. += "-[override_hair_color || fixed_hair_color || facial_hair_color]"
-		. += "-[facial_hair_alpha]"
-		if(gradient_styles?[GRADIENT_FACIAL_HAIR_KEY])
-			. += "-[gradient_styles[GRADIENT_FACIAL_HAIR_KEY]]"
-			. += "-[gradient_colors[GRADIENT_FACIAL_HAIR_KEY]]"
-
-	if(show_eyeless)
-		. += "-SHOW_EYELESS"
-	if(show_debrained)
-		. += "-SHOW_DEBRAINED"
-		return .
-
-	if(hair_hidden)
-		. += "-HAIR_HIDDEN"
-	else
-		. += "-[hairstyle]"
-		. += "-[override_hair_color || fixed_hair_color || hair_color]"
-		. += "-[hair_alpha]"
-		if(gradient_styles?[GRADIENT_HAIR_KEY])
-			. += "-[gradient_styles[GRADIENT_HAIR_KEY]]"
-			. += "-[gradient_colors[GRADIENT_HAIR_KEY]]"
-		if(LAZYLEN(hair_masks))
-			. += "-[jointext(hair_masks, "-")]"
-
 	return .
 
 GLOBAL_LIST_EMPTY(masked_leg_icons_cache)

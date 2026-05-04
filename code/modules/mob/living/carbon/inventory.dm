@@ -168,7 +168,8 @@
 	if(!(slot & item.slot_flags)) // Things below only update if slotted in (ie: not held)
 		return
 	if(item.hair_mask)
-		update_body()
+		LAZYADD(hair_masks, item.hair_mask)
+		update_hair()
 	add_item_coverage(item)
 
 /mob/living/carbon/has_unequipped(obj/item/item)
@@ -179,7 +180,8 @@
 	update_equipment_speed_mods()
 	hud_used?.update_locked_slots()
 	if(item.hair_mask)
-		update_body()
+		LAZYREMOVE(hair_masks, item.hair_mask)
+		update_hair()
 	remove_item_coverage(item)
 
 /mob/living/carbon/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
