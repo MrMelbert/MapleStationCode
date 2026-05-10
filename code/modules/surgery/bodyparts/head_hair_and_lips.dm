@@ -114,14 +114,14 @@
 	all_hair_overlays += image(base_icon, layer = -HAIR_LAYER, dir = image_dir)
 	// If we have any hair appendages (ponytails, etc.) sticking out on a particular side,
 	// we need to add an additional hair layer to go above hats/helmets for the sides they stick out on
-	if(LAZYLEN(hair_sprite_accessory.hair_appendages_outer))
-		var/strictly_masked_zones = NONE
-		for(var/datum/hair_mask/mask as anything in owner?.hair_masks)
-			strictly_masked_zones |= mask.strict_coverage_zones
-		for(var/appendage_icon_state in hair_sprite_accessory.hair_appendages_outer)
-			var/appendage_zone = hair_sprite_accessory.hair_appendages_outer[appendage_icon_state]
-			if(!(appendage_zone & strictly_masked_zones)) // if there are no strict masks in this zone
-				all_hair_overlays += image(hair_sprite_accessory.icon, icon_state = appendage_icon_state, layer = -OUTER_HAIR_LAYER, dir = image_dir)
+	// if(LAZYLEN(hair_sprite_accessory.hair_appendages_outer))
+	// 	var/strictly_masked_zones = NONE
+	// 	for(var/datum/hair_mask/mask as anything in owner?.hair_masks)
+	// 		strictly_masked_zones |= mask.strict_coverage_zones
+	// 	for(var/appendage_icon_state in hair_sprite_accessory.hair_appendages_outer)
+	// 		var/appendage_zone = hair_sprite_accessory.hair_appendages_outer[appendage_icon_state]
+	// 		if(!(appendage_zone & strictly_masked_zones)) // if there are no strict masks in this zone
+	// 			all_hair_overlays += image(hair_sprite_accessory.icon, icon_state = appendage_icon_state, layer = -OUTER_HAIR_LAYER, dir = image_dir)
 
 	for(var/image/hair_overlay as anything in all_hair_overlays)
 		set_overlay_hair_color(hair_overlay)
@@ -301,19 +301,13 @@
 	return
 
 /mob/living/carbon/human/set_hair_gradient_style(new_style, update = TRUE)
-	if(new_style == "None")
-		new_style = null
 	if(LAZYACCESS(grad_style, GRADIENT_HAIR_KEY) == new_style)
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
-	LAZYSETLEN(grad_style, GRADIENTS_LEN)
-	LAZYSETLEN(grad_color, GRADIENTS_LEN)
-	grad_style[GRADIENT_HAIR_KEY] = new_style
+	LAZYSET(grad_style, GRADIENT_HAIR_KEY, new_style)
 	if(my_head)
-		LAZYSETLEN(my_head.gradient_styles, GRADIENTS_LEN)
-		LAZYSETLEN(my_head.gradient_colors, GRADIENTS_LEN)
-		my_head.gradient_styles[GRADIENT_HAIR_KEY] = new_style
+		LAZYSET(my_head.gradient_styles, GRADIENT_HAIR_KEY, new_style)
 
 	if(update)
 		update_hair()
@@ -330,17 +324,80 @@
 		return
 	var/obj/item/bodypart/head/my_head = get_bodypart(BODY_ZONE_HEAD)
 
-
-	LAZYSETLEN(grad_style, GRADIENTS_LEN)
-	LAZYSETLEN(grad_color, GRADIENTS_LEN)
-	grad_color[GRADIENT_HAIR_KEY] = new_color
+	LAZYSET(grad_color, GRADIENT_HAIR_KEY, new_color)
 	if(my_head)
-		LAZYSETLEN(my_head.gradient_styles, GRADIENTS_LEN)
-		LAZYSETLEN(my_head.gradient_colors, GRADIENTS_LEN)
-		my_head.gradient_colors[GRADIENT_HAIR_KEY] = new_color
+		LAZYSET(my_head.gradient_colors, GRADIENT_HAIR_KEY, new_color)
 
 	if(update)
 		update_hair()
+
+/**
+ * Get the hair gradient style of a human.
+ * Defaults to "None".
+ * arguments:
+ * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
+ **/
+/mob/living/proc/get_hair_gradient_style(key)
+	return
+
+/mob/living/carbon/human/get_hair_gradient_style(key)
+	if(key)
+		return LAZYACCESS(grad_style, key) || "None"
+
+	return grad_style || list(
+		"None",	//Hair Gradient Style
+		"None",	//Facial Hair Gradient Style
+	)
+
+/**
+ * Get the hair gradient color of a human.
+ * Defaults to black.
+ *
+ * arguments:
+ * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
+ **/
+/mob/living/proc/get_hair_gradient_color(key)
+	return
+
+/mob/living/carbon/human/get_hair_gradient_color(key)
+	if(key)
+		return LAZYACCESS(grad_color, key) || COLOR_BLACK
+
+	return grad_color || list(
+		COLOR_BLACK, //Hair Gradient Color
+		COLOR_BLACK, //Facial Hair Gradient Color
+	)
+
+/**
+ * Get the hair gradient style of a head.
+ * Defaults to "None".
+ * arguments:
+ * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
+ **/
+/obj/item/bodypart/head/proc/get_hair_gradient_style(key)
+	if(key)
+		return LAZYACCESS(gradient_styles, key) || "None"
+
+	return gradient_styles || list(
+		"None",	//Hair Gradient Style
+		"None",	//Facial Hair Gradient Style
+	)
+
+/**
+ * Get the hair gradient color of a head.
+ * Defaults to black.
+ *
+ * arguments:
+ * * key (optional) - corresponds to hair or facial hair index. If no key is provided returns whole list.
+ **/
+/obj/item/bodypart/head/proc/get_hair_gradient_color(key)
+	if(key)
+		return LAZYACCESS(gradient_colors, key) || COLOR_BLACK
+
+	return gradient_colors || list(
+		COLOR_BLACK, //Hair Gradient Color
+		COLOR_BLACK, //Facial Hair Gradient Color
+	)
 
 /**
  * Set the facial hair style of a human.

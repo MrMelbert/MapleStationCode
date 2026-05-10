@@ -162,7 +162,7 @@
 /// Updates eyelid state on signal
 /obj/item/organ/eyes/proc/update_eyelids(datum/source)
 	SIGNAL_HANDLER
-	owner.dna?.species?.handle_body(owner)
+	owner.update_eyes()
 
 #define OFFSET_X 1
 #define OFFSET_Y 2
@@ -210,12 +210,12 @@
 
 	var/list/overlays = list(eye_left, eye_right)
 
-	if(my_head.owner && !(my_head.owner.obscured_slots & HIDEEYES))
-		overlays += get_emissive_overlays(eye_left, eye_right, my_head)
+	// if(my_head.owner && !(my_head.owner.obscured_slots & HIDEEYES))
+	// 	overlays += get_emissive_overlays(eye_left, eye_right, my_head)
 
 	if(my_head.head_flags & HEAD_EYECOLOR)
-		eye_right.color = eye_color_right || my_head.owner?.eye_color_right
-		eye_left.color = eye_color_left || my_head.owner?.eye_color_left
+		eye_right.color = eye_color_right || my_head.owner?.get_right_eye_color()
+		eye_left.color = eye_color_left || my_head.owner?.get_left_eye_color()
 		var/list/eyelids = get_eyelid_overlays(eye_left, eye_right, my_head)
 		if (LAZYLEN(eyelids))
 			overlays += eyelids
@@ -828,7 +828,7 @@
 	var/obj/item/bodypart/head/head = eye_owner.get_bodypart(BODY_ZONE_HEAD) //if we have eyes we definently have a head anyway
 	var/previous_flags = head.head_flags
 	head.head_flags = previous_flags | HEAD_EYECOLOR
-	eye_owner.dna.species.handle_body(eye_owner)
+	eye_owner.update_eyes()
 	head.head_flags = previous_flags
 
 #undef MATCH_LIGHT_COLOR

@@ -611,8 +611,8 @@
 #define GET_TARGETS_FROM(who) (who.targets_from ? who.get_targets_from() : who)
 
 //defines for grad_color and grad_styles list access keys
-#define GRADIENT_HAIR_KEY 1
-#define GRADIENT_FACIAL_HAIR_KEY 2
+#define GRADIENT_HAIR_KEY "head_hair"
+#define GRADIENT_FACIAL_HAIR_KEY "facial_hair"
 //Keep up to date with the highest key value
 #define GRADIENTS_LEN 2
 

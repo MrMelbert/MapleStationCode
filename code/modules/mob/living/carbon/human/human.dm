@@ -927,6 +927,18 @@
 /mob/living/carbon/human/update_stamina()
 	update_damage_movespeed()
 
+/mob/living/carbon/proc/get_right_eye_color()
+	return
+
+/mob/living/carbon/human/get_right_eye_color()
+	return eye_color_right /*|| eye_color*/
+
+/mob/living/carbon/proc/get_left_eye_color()
+	return
+
+/mob/living/carbon/human/get_left_eye_color()
+	return eye_color_left /*|| eye_color*/
+
 /mob/living/carbon/human/proc/update_damage_movespeed()
 	var/health_deficiency = max((maxHealth - health), staminaloss * 2)
 	if(health_deficiency > 0)

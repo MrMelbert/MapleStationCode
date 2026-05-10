@@ -20,7 +20,7 @@
 		if(OFFSET_HEAD)
 			update_worn_head()
 		if(OFFSET_FACE)
-			dna?.species?.handle_body(src) // updates eye icon
+			update_face_offset() // updates eye and lipstick icon
 			update_worn_mask()
 		if(OFFSET_BELT)
 			update_worn_belt()
@@ -49,7 +49,6 @@
 	SEND_SIGNAL(src, COMSIG_CARBON_REMOVE_OVERLAY, cache_index, I)
 
 /mob/living/carbon/update_body(is_creating = FALSE)
-	dna?.species.handle_body(src)
 	update_body_parts(is_creating)
 
 /mob/living/carbon/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
@@ -493,6 +492,9 @@
 	// for legacy support, head changes triggers an eye/hair update
 	update_eyes()
 	update_hair()
+
+/mob/living/carbon/proc/update_face_offset()
+	return
 
 /////////////////////////
 // Limb Icon Cache 2.0 //
