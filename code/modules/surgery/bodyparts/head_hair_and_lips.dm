@@ -114,14 +114,14 @@
 	all_hair_overlays += image(base_icon, layer = -HAIR_LAYER, dir = image_dir)
 	// If we have any hair appendages (ponytails, etc.) sticking out on a particular side,
 	// we need to add an additional hair layer to go above hats/helmets for the sides they stick out on
-	// if(LAZYLEN(hair_sprite_accessory.hair_appendages_outer))
-	// 	var/strictly_masked_zones = NONE
-	// 	for(var/datum/hair_mask/mask as anything in owner?.hair_masks)
-	// 		strictly_masked_zones |= mask.strict_coverage_zones
-	// 	for(var/appendage_icon_state in hair_sprite_accessory.hair_appendages_outer)
-	// 		var/appendage_zone = hair_sprite_accessory.hair_appendages_outer[appendage_icon_state]
-	// 		if(!(appendage_zone & strictly_masked_zones)) // if there are no strict masks in this zone
-	// 			all_hair_overlays += image(hair_sprite_accessory.icon, icon_state = appendage_icon_state, layer = -OUTER_HAIR_LAYER, dir = image_dir)
+	if(LAZYLEN(hair_sprite_accessory.hair_appendages_outer))
+		var/strictly_masked_zones = NONE
+		for(var/datum/hair_mask/mask as anything in owner?.hair_masks)
+			strictly_masked_zones |= mask.strict_coverage_zones
+		for(var/appendage_icon_state in hair_sprite_accessory.hair_appendages_outer)
+			var/appendage_zone = hair_sprite_accessory.hair_appendages_outer[appendage_icon_state]
+			if(!(appendage_zone & strictly_masked_zones)) // if there are no strict masks in this zone
+				all_hair_overlays += image(hair_sprite_accessory.icon, icon_state = appendage_icon_state, layer = -OUTER_HAIR_LAYER, dir = image_dir)
 
 	for(var/image/hair_overlay as anything in all_hair_overlays)
 		set_overlay_hair_color(hair_overlay)
