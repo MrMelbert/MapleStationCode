@@ -628,23 +628,28 @@
 	description = "Seeing happy people makes me happy."
 	mood_change = 2
 	timeout = 2 MINUTES
+	screentext_cooldown = 6 MINUTES
 
 /datum/mood_event/misanthropic_happy
 	description = "Seeing sad people makes me glad."
 	mood_change = 2
 	timeout = 2 MINUTES
+	screentext_cooldown = 6 MINUTES
 
 /datum/mood_event/paranoid/alone
 	description = "Peace and quiet, no one around to threaten me."
 	mood_change = 1
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/paranoid/small_group
 	description = "I feel safer in this small group. We've got each other's backs."
 	mood_change = 2
+	screentext_cooldown = 3 MINUTES
 
 /datum/mood_event/nt_loyalist
 	description = "I feel proud to be part of the NT™ family!"
 	mood_change = 2
+	screentext_cooldown = 12 MINUTES
 
 /datum/mood_event/loyalist_revs_lost
 	description = "The revolution was defeated! Long live the Nanotrasen!"
@@ -659,14 +664,17 @@
 /datum/mood_event/enjoying_department_area
 	description = "I love my job."
 	mood_change = 1
+	screentext_cooldown = 12 MINUTES
 
 /datum/mood_event/slacking_off_lazy
 	description = "Boss makes a dollar, I make a dime. That's why I slack on job time."
 	mood_change = 1
+	screentext_cooldown = 12 MINUTES
 
 /datum/mood_event/working_diligent
 	description = "Working hard is its own reward."
 	mood_change = 1
+	screentext_cooldown = 12 MINUTES
 
 /datum/mood_event/creative_patronage
 	description = "Support artists!"
@@ -688,3 +696,4 @@
 	mood_change = 3
 	timeout = 2 MINUTES
 	event_flags = MOOD_EVENT_WHIMSY
+	screentext_cooldown = 3 MINUTES

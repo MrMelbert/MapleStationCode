@@ -17,7 +17,7 @@
 		/datum/skill/surgery,
 	)
 	for(var/i in 1 to rand(3, floor(length(skill_pool) * 0.5))) // give a few random skills to work with
-		spawned.mind.adjust_experience(pick_n_take(skill_pool), round(rand(100, 750), 50), TRUE)
+		spawned.adjust_skill_experience(pick_n_take(skill_pool), round(rand(SKILL_EXP_LIST[SKILL_LEVEL_NOVICE], SKILL_EXP_LIST[SKILL_LEVEL_JOURNEYMAN] * 1.5), 50), silent = TRUE)
 
 /datum/job/assistant/get_radio_information()
 	return null

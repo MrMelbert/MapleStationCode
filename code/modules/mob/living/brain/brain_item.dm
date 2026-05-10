@@ -270,10 +270,10 @@
 	if(LAZYLEN(trauma_text))
 		return span_alert("Mental trauma: [english_list(trauma_text, and_text = ", and ")].")
 
-/obj/item/organ/brain/feel_for_damage(self_aware)
+/obj/item/organ/brain/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return ""
-	if(self_aware)
+	if(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE)
 		if(damage < high_threshold)
 			return span_warning("Your brain hurts a bit.")
 		return span_warning("Your brain hurts a lot.")

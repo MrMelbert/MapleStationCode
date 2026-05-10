@@ -230,6 +230,7 @@
 	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/mariinskyipc.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/mariinskyipc.dmi'
+	head_flags = parent_type::head_flags & ~HEAD_EYESPRITES
 
 /obj/item/bodypart/arm/right/robot/mcg
 	icon_state = "robotic_r_arm"

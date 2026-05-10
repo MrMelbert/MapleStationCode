@@ -5,7 +5,7 @@
 /// You do not need to raise this if you are adding new values that have sane defaults.
 /// Only raise this value when changing the meaning/format/name/layout of an existing value
 /// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 50
+#define SAVEFILE_VERSION_MAX 50.1
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -104,6 +104,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if (current_version < 43)
 		migrate_legacy_sound_toggles(savefile)
 
+	if(current_version < 43.1)
+		save_loadout(src, save_data?["loadout_list"])
+
 	if (current_version < 45)
 		migrate_quirk_to_loadout(
 			quirk_to_migrate = "Pride Pin",
@@ -155,6 +158,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			quirk_to_migrate = "Spiritual",
 			new_typepath = /datum/personality/spiritual,
 		)
+
+	if(current_version < 50.1)
+		// #aaaaaa used to be the color for randomizing runechat - now it's "null"
+		if(save_data?["runechat_color"] == "#aaaaaa")
+			save_data["runechat_color"] = null
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

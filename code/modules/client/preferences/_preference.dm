@@ -329,7 +329,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/proc/current_species_has_savekey(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = GLOB.species_prototypes[species_type]
-	return (savefile_key in (species.get_features() - species.get_filtered_features_per_prefs(preferences)))
+	return (savefile_key in species.get_filtered_features_per_prefs(preferences))
 
 /// Checks if this preference is relevant and thus visible to the passed preferences object.
 /datum/preference/proc/has_relevant_feature(datum/preferences/preferences)
@@ -450,18 +450,20 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Will give the value as 6 hex digits, without a hash.
 /datum/preference/color
 	abstract_type = /datum/preference/color
+	/// If TRUE, the color may be set to null, representing no color selected.
+	var/nullable = FALSE
 
 /datum/preference/color/deserialize(input, datum/preferences/preferences)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/create_default_value()
 	return random_color()
 
 /datum/preference/color/serialize(input)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/is_valid(value)
-	return findtext(value, GLOB.is_color)
+	return (nullable && isnull(value)) || findtext(value, GLOB.is_color)
 
 /// A numeric preference with a minimum and maximum value
 /datum/preference/numeric

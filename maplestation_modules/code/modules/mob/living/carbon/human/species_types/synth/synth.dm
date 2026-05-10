@@ -3,38 +3,20 @@
 #define BODYPART_ID_SYNTH "synth"
 
 /mob/living/carbon/human/species/synth
-	race = /datum/species/synth
+	race = /datum/species/android/synth
 
 /mob/living/carbon/human/species/synth/disguised
 
 /mob/living/carbon/human/species/synth/disguised/Initialize(mapload)
 	. = ..()
-	var/datum/species/synth/synth = dna.species
+	var/datum/species/android/synth/synth = dna.species
 	synth.disguise_as(src, /datum/species/human)
 
-/datum/species/synth
-	name = "Synth"
+/datum/species/android/synth
+	name = "Synthetic"
+	plural_form = "Synthetics"
 	id = SPECIES_SYNTH
 	sexes = TRUE
-	inherent_traits = list(
-		TRAIT_AGEUSIA,
-		TRAIT_GENELESS,
-		TRAIT_NOBREATH,
-		TRAIT_NOHUNGER,
-		TRAIT_NOLIMBDISABLE,
-		TRAIT_NO_DNA_COPY,
-		TRAIT_NO_PLASMA_TRANSFORM,
-		TRAIT_RADIMMUNE,
-		TRAIT_UNHUSKABLE,
-		TRAIT_VIRUSIMMUNE,
-	)
-	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
-	meat = null
-	changesource_flags = MIRROR_BADMIN|MIRROR_PRIDE|MIRROR_MAGIC
-	species_language_holder = /datum/language_holder/synthetic
-
-	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
-	bodytemp_cold_damage_limit = BODYTEMP_COLD_ICEBOX_SAFE
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/synth,
@@ -45,19 +27,12 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
+	digitigrade_legs = null
 
-	mutantbrain = /obj/item/organ/brain/cybernetic
-	mutanttongue = /obj/item/organ/tongue/robot
-	mutantstomach = /obj/item/organ/stomach/cybernetic/tier2
-	mutantappendix = null
-	mutantheart = /obj/item/organ/heart/cybernetic/tier2
-	mutantliver = /obj/item/organ/liver/cybernetic/tier2
-	mutantlungs = null
-	mutanteyes = /obj/item/organ/eyes/robotic/synth
-	mutantears = /obj/item/organ/ears/cybernetic
-	species_pain_mod = 0.2
-	exotic_bloodtype = /datum/blood_type/oil
+	mutanttongue = /obj/item/organ/tongue/robot/synth
+	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
+	allow_fleshy_bits = TRUE
+
 	/// Reference to the species we're disguised as.
 	VAR_FINAL/datum/species/disguise_species
 	/// If TRUE, synth limbs will update when attached and detached.
@@ -67,11 +42,12 @@
 	/// Species which generally work well with synth, and can be disguised as.
 	var/list/valid_species = list(
 		SPECIES_ABDUCTOR,
-		SPECIES_FELINE,
+		SPECIES_ANIMALID,
 		SPECIES_HUMAN,
 		SPECIES_LIZARD,
 		SPECIES_MOTH,
 		SPECIES_ORNITHID,
+		SPECIES_SKRELL,
 	)
 	/// Reference to the action we give Synths to change species
 	var/datum/action/cooldown/change_disguise/disguise_action
@@ -80,7 +56,7 @@
 	/// If health is lower than this %, the synth will start to show signs of damage.
 	var/disuise_damage_threshold = 25
 
-/datum/species/synth/on_species_gain(mob/living/carbon/human/synth, datum/species/old_species)
+/datum/species/android/synth/on_species_gain(mob/living/carbon/human/synth, datum/species/old_species)
 	. = ..()
 	synth.AddComponent(/datum/component/ion_storm_randomization)
 
@@ -93,7 +69,7 @@
 	if(initial_disguise)
 		disguise_as(synth, initial_disguise)
 
-/datum/species/synth/on_species_loss(mob/living/carbon/human/synth)
+/datum/species/android/synth/on_species_loss(mob/living/carbon/human/synth)
 	qdel(synth.GetComponent(/datum/component/ion_storm_randomization))
 	drop_disguise(synth)
 	UnregisterSignal(synth, COMSIG_CARBON_LIMB_DAMAGED)
@@ -105,10 +81,31 @@
 	QDEL_NULL(disguise_action)
 	return ..()
 
-/datum/species/synth/get_species_description()
+/datum/species/android/synth/get_features()
+	. = ..()
+	for(var/species_id in valid_species)
+		. |= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
+
+/datum/species/android/synth/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	. = ..()
+	var/selected_species_id = prefs.read_preference(/datum/preference/choiced/synth_species)
+	// filter out all unselected species features
+	for(var/species_id in android_species - selected_species_id)
+		to_filter -= GLOB.species_prototypes[ID_TO_TYPEPATH(species_id)].get_features()
+
+	// re-add features that we may have filtered from our selected species
+	var/datum/species/selected_species = GLOB.species_prototypes[ID_TO_TYPEPATH(selected_species_id)]
+	if(isnull(selected_species)) // no disguise
+		return
+
+	to_filter |= selected_species.get_features()
+	// allow our select species to filter its own features per its prefs
+	selected_species.filter_features_per_prefs(to_filter, prefs)
+
+/datum/species/android/synth/get_species_description()
 	return "While they appear organic, Synths are secretly Androids disguised as the various species of the Galaxy."
 
-/datum/species/synth/get_species_lore()
+/datum/species/android/synth/get_species_lore()
 	return list(
 		"The reasons for a Synth's existence can vary. \
 		Some were created as robotic assistants with a fresh coat of paint, to acclimate better to their organic counterparts. \
@@ -117,24 +114,16 @@
 		Regardless of their origins, Synths are a diverse and mysterious group of beings."
 	)
 
-/datum/species/synth/create_pref_unique_perks()
-	var/list/perks = list()
-
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = FA_ICON_ROBOT,
-		SPECIES_PERK_NAME = "Robot Rock",
-		SPECIES_PERK_DESC = "Synths are robotic instead of organic, and as such may be affected by or immune to some things \
-			normal humanoids are or aren't.",
-	))
-	perks += list(list(
+/datum/species/android/synth/create_pref_unique_perks()
+	. = ..()
+	. += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_MEDKIT,
 		SPECIES_PERK_NAME = "Partially Organic",
-		SPECIES_PERK_DESC = "Your limbs are part organic, part synthetic. \
-			Both organic (sutures, meshes) and synthetic (welder, cabling) healing methods work on you.",
+		SPECIES_PERK_DESC = "Your limbs are part organic, part synthetic. While disguised, \
+			both organic (sutures, meshes) and synthetic (welder, cabling) healing methods work on you.",
 	))
-	perks += list(list(
+	. += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_USER_SECRET,
 		SPECIES_PERK_NAME = "Incognito Mode",
@@ -142,19 +131,18 @@
 			All characteristics of your disguise species are mimicked, including the negative ones. \
 			Physical damage may cause your disguise to fail, revealing your true synthetic nature.",
 	))
-	return perks
 
-/datum/species/synth/handle_body(mob/living/carbon/human/species_human)
+/datum/species/android/synth/handle_body(mob/living/carbon/human/species_human)
 	if(disguise_species)
 		return disguise_species.handle_body(species_human)
 	return ..()
 
-/datum/species/synth/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
+/datum/species/android/synth/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
 	. = ..()
 	disguise_species?.regenerate_organs(organ_holder, replace_current = FALSE, excluded_zones = excluded_zones, visual_only = visual_only)
 
-/datum/species/synth/proc/disguise_as(mob/living/carbon/human/synth, datum/species/new_species_type)
-	if(ispath(new_species_type, /datum/species/synth))
+/datum/species/android/synth/proc/disguise_as(mob/living/carbon/human/synth, datum/species/new_species_type)
+	if(ispath(new_species_type, /datum/species/android/synth))
 		CRASH("disguise_as a synth as a synth, very funny.")
 
 	if(istype(new_species_type, /datum/species))
@@ -177,17 +165,23 @@
 
 	regenerate_organs(synth, replace_current = FALSE)
 
+	var/obj/item/organ/tongue/robot/synth/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(istype(tongue))
+		tongue.disguise_tongue(disguise_species.mutanttongue)
+
 	if(limb_updates_on_change)
 		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
 			limb_gained(synth, part, update = FALSE)
-		RegisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(limb_lost_sig))
-		RegisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limb_gained_sig))
 
 	synth.update_body(TRUE)
 
-/datum/species/synth/proc/drop_disguise(mob/living/carbon/human/synth, skip_bodyparts = FALSE)
+/datum/species/android/synth/proc/drop_disguise(mob/living/carbon/human/synth, skip_bodyparts = FALSE)
 	if(isnull(disguise_species))
 		return
+
+	var/obj/item/organ/tongue/robot/synth/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(istype(tongue))
+		tongue.restore_tongue()
 
 	update_no_equip_flags(synth, initial(no_equip_flags))
 	sexes = initial(sexes)
@@ -199,48 +193,45 @@
 
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
-	if(limb_updates_on_change)
-		if(!skip_bodyparts)
-			for(var/obj/item/bodypart/part as anything in synth.bodyparts)
-				limb_lost(synth, part, update = FALSE)
-		UnregisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB)
-		UnregisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB)
+	if(limb_updates_on_change && !skip_bodyparts)
+		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
+			limb_lost(synth, part, update = FALSE)
 
 	QDEL_NULL(disguise_species)
 	regenerate_organs(synth)
 	synth.update_body(TRUE)
 
-/datum/species/synth/proc/limb_lost_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
-	SIGNAL_HANDLER
-
-	if(QDELING(limb))
+/datum/species/android/synth/on_limb_lost(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
+	. = ..()
+	if(!limb_updates_on_change || !disguise_species || QDELING(limb))
 		return
 	if(!limb_lost(source, limb, update = TRUE))
 		return
 	source.visible_message(span_warning("[source]'s [limb.plaintext_zone] changes appearance!"))
 
-/datum/species/synth/proc/limb_lost(mob/living/carbon/human/synth, obj/item/bodypart/limb, update = FALSE)
+/datum/species/android/synth/proc/limb_lost(mob/living/carbon/human/synth, obj/item/bodypart/limb, update = FALSE)
 	if(initial(limb.limb_id) != BODYPART_ID_SYNTH)
 		return FALSE
 
 	limb.change_appearance_into(limb, update)
 	return TRUE
 
-/datum/species/synth/proc/limb_gained_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
-	SIGNAL_HANDLER
-
+/datum/species/android/synth/on_limb_gained(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
+	. = ..()
+	if(!limb_updates_on_change || !disguise_species)
+		return
 	if(!limb_gained(source, limb, update = TRUE))
 		return
 	source.visible_message(span_warning("[source]'s [limb.plaintext_zone] changes appearance!"))
 
-/datum/species/synth/proc/limb_gained(mob/living/carbon/human/synth, obj/item/bodypart/limb, update = FALSE)
+/datum/species/android/synth/proc/limb_gained(mob/living/carbon/human/synth, obj/item/bodypart/limb, update = FALSE)
 	if(initial(limb.limb_id) != BODYPART_ID_SYNTH)
 		return FALSE
 
 	limb.change_appearance_into(disguise_species.bodypart_overrides[limb.body_zone], update)
 	return TRUE
 
-/datum/species/synth/proc/disguise_damage(mob/living/carbon/human/synth)
+/datum/species/android/synth/proc/disguise_damage(mob/living/carbon/human/synth)
 	SIGNAL_HANDLER
 
 	if(!limb_updates_on_change || isnull(disguise_species))
@@ -307,13 +298,13 @@
 	. = TRUE
 
 	var/mob/living/carbon/human/synth = owner
-	var/datum/species/synth/synth_species = synth.dna.species
+	var/datum/species/android/synth/synth_species = synth.dna.species
 	var/list/synth_disguise_species = list()
 	for(var/species_id in get_selectable_species() & synth_species.valid_species)
 		var/datum/species/species_type = GLOB.species_list[species_id]
 		synth_disguise_species[initial(species_type.name)] = species_type
 
-	synth_disguise_species["(Drop Disguise)"] = /datum/species/synth
+	synth_disguise_species["(Drop Disguise)"] = /datum/species/android/synth
 
 	var/picked = tgui_input_list(
 		owner,
@@ -325,7 +316,7 @@
 	if(!picked || QDELETED(src) || QDELETED(synth_species) || QDELETED(synth) || !IsAvailable())
 		return
 	var/picked_species = synth_disguise_species[picked]
-	if(ispath(picked_species, /datum/species/synth))
+	if(ispath(picked_species, /datum/species/android/synth))
 		synth_species.drop_disguise(synth)
 		return
 

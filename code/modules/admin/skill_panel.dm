@@ -23,7 +23,7 @@
 /datum/skill_panel/ui_data(mob/user) //Sends info about the skills to UI
 	. = list()
 	for (var/type in GLOB.skill_types)
-		var/datum/skill/S = GetSkillRef(type)
+		var/datum/skill/skill_datum = SSskills.all_skills[type]
 		var/lvl_num = targetmind.get_skill_level(type)
 		var/lvl_name = uppertext(targetmind.get_skill_level_name(type))
 		var/exp = targetmind.get_skill_exp(type)
@@ -35,8 +35,8 @@
 		.["skills"] += list(list(
 			"playername" = targetmind.current,
 			"path" = type,
-			"name" = S.name,
-			"desc" = S.blurb,
+			"name" = skill_datum.name,
+			"desc" = skill_datum.blurb,
 			"lvlnum" = lvl_num,
 			"lvl" = lvl_name,
 			"exp" = exp,

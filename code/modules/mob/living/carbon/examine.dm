@@ -188,7 +188,7 @@
 				bleed_text += "Blood is visible in [t_his] open "
 			else
 				bleed_text += "<span class='warning'>"
-				bleed_text += "[t_He] [t_is] bleeding from [t_his] "
+				bleed_text += "[t_He] [t_is] [mob_biotypes & MOB_ORGANIC ? "bleeding" : "leaking [LOWER_TEXT(blood_type.reagent_type::name)]"] from [t_his] "
 
 			bleed_text += english_list(bleeding_limbs, and_text = " and ")
 

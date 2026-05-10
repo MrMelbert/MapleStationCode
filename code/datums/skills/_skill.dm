@@ -54,7 +54,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 		SKILL_LEVEL_NOVICE = span_nicegreen("I'm starting to forget what [name] really even is. I need more practice..."),
 		SKILL_LEVEL_APPRENTICE = span_nicegreen("I'm getting a little worse at [name]. I'll need to keep practicing to get better at it..."),
 		SKILL_LEVEL_JOURNEYMAN = span_nicegreen("I'm getting a little worse at [name]..."),
-		SKILL_LEVEL_EXPERT = span_nicegreen("I'm losing my [name] expertise ...."),
+		SKILL_LEVEL_EXPERT = span_nicegreen("I'm losing my [name] expertise..."),
 		SKILL_LEVEL_MASTER = span_nicegreen("I feel like I'm losing my mastery of [name]."),
 		SKILL_LEVEL_LEGENDARY = span_nicegreen("I feel as though my legendary [name] skills have deteriorated. I'll need more intense training to recover my lost skills."),
 	)

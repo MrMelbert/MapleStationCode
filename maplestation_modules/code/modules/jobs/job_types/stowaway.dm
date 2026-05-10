@@ -54,7 +54,7 @@
 
 	var/list/skill_pool = STOWAWAY_SKILLS
 	for(var/i in 1 to rand(3, length(skill_pool) - 1)) // give a few random skills to work with
-		spawned.mind.adjust_experience(pick_n_take(skill_pool), round(rand(100, 750), 50), TRUE)
+		spawned.adjust_skill_experience(pick_n_take(skill_pool), round(rand(SKILL_EXP_LIST[SKILL_LEVEL_NOVICE], SKILL_EXP_LIST[SKILL_LEVEL_JOURNEYMAN] * 1.5), 50), silent = TRUE)
 
 /datum/job/stowaway/get_radio_information()
 	return null
@@ -76,7 +76,7 @@
 		return
 
 	for(var/skill in STOWAWAY_SKILLS) // wipe out existing rng skills
-		owner.mind.set_level(skill, SKILL_LEVEL_NONE, TRUE)
+		owner.set_skill_level(skill, SKILL_LEVEL_NONE, silent = TRUE)
 
 	var/backstory_gist
 	var/backstory_suggested_goal
@@ -164,7 +164,7 @@
 	for(var/thing in backstory_equipment_items)
 		owner.equip_to_slot_if_possible(new thing(owner.loc), backstory_equipment_items[thing], disable_warning = TRUE, redraw_mob = FALSE, initial = TRUE)
 	for(var/skill in backstory_skills)
-		owner.mind.set_level(skill, backstory_skills[skill], TRUE)
+		owner.adjust_skill_experience(skill, SKILL_EXP_LIST[backstory_skills[skill]], silent = TRUE)
 
 	qdel(src)
 

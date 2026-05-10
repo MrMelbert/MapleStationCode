@@ -255,12 +255,23 @@
 	stomach_owner.hud_used?.hunger?.update_hunger_bar()
 	return ..()
 
-/obj/item/organ/stomach/feel_for_damage(self_aware)
+/obj/item/organ/stomach/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
 		return span_warning("Your stomach hurts.")
 	return span_boldwarning("Your stomach cramps in pain!")
+
+/// Returns how full this stomach is for the hunger bar
+/// If you pass skip_contents = TRUE, it does not factor in any contents of the stomach
+/obj/item/organ/stomach/proc/get_hungerbar_fullness(skip_contents = FALSE)
+	if(HAS_TRAIT(owner, TRAIT_NOHUNGER))
+		return NUTRITION_LEVEL_FED
+	if(HAS_TRAIT(owner, TRAIT_FAT))
+		return NUTRITION_LEVEL_FAT
+	if(skip_contents)
+		return owner.nutrition
+	return owner.get_fullness(only_consumable = TRUE)
 
 /obj/item/organ/stomach/bone
 	name = "mass of bones"

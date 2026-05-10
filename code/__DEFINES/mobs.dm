@@ -129,6 +129,7 @@
 #define SPECIES_SLIMEPERSON "slime"
 #define SPECIES_LUMINESCENT "luminescent"
 #define SPECIES_STARGAZER "stargazer"
+#define SPECIES_SYNTH "synth"
 #define SPECIES_LIZARD "lizard"
 #define SPECIES_LIZARD_ASH "ashwalker"
 #define SPECIES_LIZARD_SILVER "silverscale"
@@ -146,6 +147,9 @@
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
 #define SPECIES_ZOMBIE_KROKODIL "krokodil_zombie"
+
+/// Species ID to typepath helper
+#define ID_TO_TYPEPATH(id) GLOB.species_list[id]
 
 // Like species IDs, but not specifically attached a species.
 #define BODYPART_ID_ALIEN "alien"

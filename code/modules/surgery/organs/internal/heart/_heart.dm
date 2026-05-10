@@ -55,6 +55,7 @@
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 12 SECONDS)
 	playing_heartbeat_sfx = BEAT_NONE
 	organ_owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+	REMOVE_TRAIT(organ_owner, TRAIT_LABOURED_BREATHING, type)
 
 /obj/item/organ/heart/proc/stop_if_unowned()
 	if(QDELETED(src))
@@ -126,11 +127,11 @@
 
 /obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
 	var/bpm = get_heart_rate()
-	. = "Heart rate: [bpm]" + span_slightly_smaller("bpm")
+	. = "[IS_ORGANIC_ORGAN(src) ? "Heart" : "Pulse"] rate: [bpm]" + span_slightly_smaller("bpm")
 	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
 		. = span_alert(.)
 
-	if(advanced)
+	if(advanced && IS_ORGANIC_ORGAN(src))
 		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
@@ -165,6 +166,10 @@
 
 	var/heartrate = get_heart_rate()
 	var/bloodpressure = get_blood_pressure(heartrate)
+	if(SEND_SIGNAL(owner, COMSIG_CARBON_HEARTBEAT, src, seconds_per_tick) & HEARTBEAT_HANDLED)
+		return
+
+	// Handle "sudden" cardiac arrest
 	if(heartrate <= 0)
 		stop_on_beat()
 
@@ -382,7 +387,7 @@
 
 #undef AVERAGE_HUMAN_PULSE_PRESSURE
 
-/obj/item/organ/heart/feel_for_damage(self_aware)
+/obj/item/organ/heart/feel_for_damage(self_aware, medical_skill)
 	if(!owner.needs_heart())
 		return ""
 
@@ -397,9 +402,9 @@
 
 	var/dmg_msg = ""
 	if(damage > high_threshold)
-		dmg_msg = span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts."]") // it = "your chest"
+		dmg_msg = span_boldwarning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart seriously hurts!" : "It seriously hurts."]") // it = "your chest"
 	else if(damage > low_threshold)
-		dmg_msg = span_warning("[self_aware ? "Your heart hurts." : "It hurts."]") // it = "your chest"
+		dmg_msg = span_warning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart hurts." : "It hurts."]") // it = "your chest"
 
 	return bpm_msg + (bpm_msg ? "<br>" : "") + dmg_msg
 

@@ -923,11 +923,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 		screen_loc = ui_mood // Slot in where mood normally is if mood is disabled
 
 	// Burger next to the bar
-	food_image = image(icon = food_icon, icon_state = food_icon_state, pixel_x = -5)
-	food_image.plane = plane
-	food_image.appearance_flags |= KEEP_APART // To be unaffected by filters applied to src
-	food_image.add_filter("simple_outline", 2, outline_filter(1, COLOR_BLACK))
-	underlays += food_image // To be below filters applied to src
+	set_food_image(food_icon, food_icon_state)
 
 	// The actual bar
 	hunger_bar = new(src, null)
@@ -935,21 +931,31 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 
 	update_hunger_bar(instant = TRUE)
 
-/atom/movable/screen/hunger/proc/update_hunger_state()
-	var/mob/living/hungry = hud?.mymob
-	if(!istype(hungry))
-		return
+/atom/movable/screen/hunger/proc/set_food_image(new_icon, new_icon_state)
+	if(food_image)
+		underlays -= food_image
 
-	if(HAS_TRAIT(hungry, TRAIT_NOHUNGER) || !hungry.get_organ_slot(ORGAN_SLOT_STOMACH))
-		fullness = NUTRITION_LEVEL_FED
-		state = HUNGER_STATE_FINE
-		return
-	if(HAS_TRAIT(hungry, TRAIT_FAT))
-		fullness = NUTRITION_LEVEL_FAT
-		state = HUNGER_STATE_FAT
-		return
+	food_image = image(icon = new_icon, icon_state = new_icon_state, pixel_x = -5)
+	food_image.plane = plane
+	food_image.appearance_flags |= KEEP_APART // To be unaffected by filters applied to src
+	food_image.add_filter("simple_outline", 2, outline_filter(1, COLOR_BLACK))
+	underlays += food_image // To be below filters applied to src
 
-	fullness = round(hungry.get_fullness(only_consumable = TRUE), 0.05)
+/atom/movable/screen/hunger/proc/reset_food_image()
+	set_food_image(food_icon, food_icon_state)
+
+/atom/movable/screen/hunger/update_appearance(updates)
+	update_hunger_bar()
+	return ..()
+
+/// Updates the hunger bar's appearance.
+/// If `instant` is TRUE, the bar will update immediately rather than animating.
+/atom/movable/screen/hunger/proc/update_hunger_bar(instant = FALSE)
+	var/old_state = state
+	var/old_fullness = fullness
+
+	var/obj/item/organ/stomach/tumby = hud?.mymob?.get_organ_slot(ORGAN_SLOT_STOMACH)
+	fullness = round(tumby?.get_hungerbar_fullness(skip_contents = FALSE) || NUTRITION_LEVEL_FED, 0.05)
 	switch(fullness)
 		if(1 + NUTRITION_LEVEL_FULL to INFINITY)
 			state = HUNGER_STATE_FULL
@@ -962,26 +968,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 		if(0 to NUTRITION_LEVEL_STARVING)
 			state = HUNGER_STATE_STARVING
 
-/atom/movable/screen/hunger/update_appearance(updates)
-	update_hunger_bar()
-	return ..()
-
-/// Updates the hunger bar's appearance.
-/// If `instant` is TRUE, the bar will update immediately rather than animating.
-/atom/movable/screen/hunger/proc/update_hunger_bar(instant = FALSE)
-	var/old_state = state
-	var/old_fullness = fullness
-	update_hunger_state()
 	if(old_state != state || old_fullness != fullness)
 		// Fades out if we ARE "fine" AND if our stomach has no food digesting
-		var/mob/living/hungry = hud?.mymob
-		if(alpha == 255 && (state == HUNGER_STATE_FINE && abs(fullness - hungry.nutrition) < 1))
+		var/raw_fullness = round(tumby?.get_hungerbar_fullness(skip_contents = TRUE) || hud?.mymob?.nutrition, 0.05)
+		if(alpha == 255 && (state == HUNGER_STATE_FINE && abs(fullness - raw_fullness) < 1))
 			if(instant)
 				alpha = 0
 			else
 				animate(src, alpha = 0, time = 1 SECONDS)
 		// Fades in if we WERE "fine" OR if our stomach has food digesting
-		else if(alpha == 0 && (state != HUNGER_STATE_FINE || abs(fullness - hungry.nutrition) >= 1))
+		else if(alpha == 0 && (state != HUNGER_STATE_FINE || abs(fullness - raw_fullness) >= 1))
 			if(instant)
 				alpha = 255
 			else

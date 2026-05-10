@@ -28,10 +28,18 @@
 		else
 			in_order_datums["Other"] += equipping
 
+	var/need_remarking = FALSE
 	for(var/to_apply_key in in_order_datums)
 		for(var/datum/limb_option_datum/equipping_datum as anything in in_order_datums[to_apply_key])
-			if(equipping_datum.can_be_applied(target))
-				equipping_datum.apply_limb(target)
+			if(!equipping_datum.can_be_applied(target))
+				continue
+			equipping_datum.apply_limb(target)
+			if(ispath(equipping_datum.limb_path, /obj/item/bodypart))
+				need_remarking = TRUE
+
+	// Reapply body markings after changing limbs, to ensure they are on the correct bodyparts
+	if(need_remarking)
+		target.dna.species.add_body_markings(target, update = FALSE)
 
 /datum/preference/limbs/deserialize(input, datum/preferences/preferences)
 	var/list/corrected_list = list()
