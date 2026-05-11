@@ -11,10 +11,7 @@
 /obj/item/clothing/head/mod/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
-
-// Even without a hat stabilizer, hats can be worn - however, they'll fall off very easily
-/obj/item/clothing/head/mod/Initialize(mapload)
-	. = ..()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/spacesuit_mesh)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 
 /obj/item/clothing/suit/mod

@@ -38,6 +38,7 @@
 	if(fishing_modifier)
 		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
 	add_stabilizer()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/spacesuit_mesh)
 
 /obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = loose_hat)
