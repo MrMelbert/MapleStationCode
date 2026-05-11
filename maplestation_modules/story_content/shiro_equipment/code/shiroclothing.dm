@@ -5,7 +5,7 @@
 	worn_icon = 'maplestation_modules/story_content/shiro_equipment/icons/shiroclothing.dmi'
 	icon_state = "dolldress"
 	worn_icon_state = "dolldress"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 
 /obj/item/clothing/neck/cloak/shirocloak
 	name = "Side Cape"
