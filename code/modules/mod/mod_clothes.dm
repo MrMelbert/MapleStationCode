@@ -38,6 +38,7 @@
 /obj/item/clothing/suit/mod/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/spacesuit_mesh)
 
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"

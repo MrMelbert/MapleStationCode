@@ -13,7 +13,7 @@
 	. = ..()
 	cached_texture_icon = icon(texture_icon, texture_icon_state)
 
-/datum/bodypart_overlay/texture/modify_bodypart_appearance(datum/appearance)
+/datum/bodypart_overlay/texture/modify_bodypart_appearance(image/appearance)
 	appearance.add_filter("bodypart_texture_[texture_icon_state]", 1, layering_filter(icon = cached_texture_icon, blend_mode = BLEND_INSET_OVERLAY))
 
 /datum/bodypart_overlay/texture/generate_icon_cache()
@@ -29,19 +29,44 @@
 	blocks_emissive = EMISSIVE_BLOCK_NONE
 	texture_icon_state = "spacey"
 	texture_icon = 'icons/mob/human/textures.dmi'
-	// overlay_priority = BODYPART_OVERLAY_VOIDWALKER_CURSE
+	overlay_priority = BODYPART_OVERLAY_VOIDWALKER_CURSE
 
 /datum/bodypart_overlay/texture/carpskin
 	texture_icon_state = "carpskin"
 	texture_icon = 'icons/mob/human/textures.dmi'
-	// overlay_priority = BODYPART_OVERLAY_CARP_INFUSION
+	overlay_priority = BODYPART_OVERLAY_CARP_INFUSION
 
 /datum/bodypart_overlay/texture/checkered
 	texture_icon_state = "checkered"
 	texture_icon = 'icons/mob/human/textures.dmi'
-	// overlay_priority = BODYPART_OVERLAY_CSS_SUICIDE
+	overlay_priority = BODYPART_OVERLAY_CSS_SUICIDE
 
 /datum/bodypart_overlay/texture/fishscale
 	texture_icon_state = "fishscale"
 	texture_icon = 'icons/mob/human/textures.dmi'
-	// overlay_priority = BODYPART_OVERLAY_FISH_INFUSION
+	overlay_priority = BODYPART_OVERLAY_FISH_INFUSION
+
+/datum/bodypart_overlay/texture/spacesuit_mesh
+	texture_icon_state = "mesh_mask"
+	texture_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
+	overlay_priority = BODYPART_OVERLAY_SPACESUIT_MESH
+
+	var/displacement_icon_state = "mesh_mask_displacement"
+	var/displacement_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
+	var/cached_displacement_icon
+
+/datum/bodypart_overlay/texture/spacesuit_mesh/New()
+	. = ..()
+	cached_displacement_icon = icon(displacement_icon, displacement_icon_state)
+
+/datum/bodypart_overlay/texture/spacesuit_mesh/modify_bodypart_appearance(image/appearance)
+	// only modifies other bodypart overlays
+	if(!mutant_bodyparts_layertext(appearance.layer))
+		return
+	. = ..()
+	// adds a displacement map so the outline lines up with the bottom of the sprite
+	appearance.add_filter("displacement", 2, displacement_map_filter(cached_displacement_icon, size = 1))
+	// adds an outline so the texture doesn't end abruptly
+	appearance.add_filter("outline", 3, outline_filter(1, COLOR_NEARLY_ALL_BLACK, OUTLINE_SHARP))
+	// forces white (blends better with the texture)
+	appearance.color = COLOR_WHITE

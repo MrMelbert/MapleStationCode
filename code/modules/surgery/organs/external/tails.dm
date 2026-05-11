@@ -201,9 +201,21 @@
 ///Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
 	feature_key = "tail_lizard"
+	/// Items that make the tail look like it's in a mesh rather than hidden
+	var/list/net_suits = list(
+		/obj/item/clothing/suit/space,
+		/obj/item/clothing/suit/mod,
+	)
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return SSaccessories.tails_list_lizard
+
+/datum/bodypart_overlay/mutant/tail/lizard/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
+	if(!(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT))
+		return TRUE
+	if(locate(/datum/bodypart_overlay/texture/spacesuit_mesh) in bodypart_owner.bodypart_overlays)
+		return TRUE
+	return FALSE
 
 /obj/item/organ/tail/lizard/fake
 	name = "fabricated lizard tail"

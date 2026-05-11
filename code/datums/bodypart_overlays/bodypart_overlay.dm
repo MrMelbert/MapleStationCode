@@ -81,5 +81,5 @@
 	return list()
 
 /// Additionally color or texture the limb
-/datum/bodypart_overlay/proc/modify_bodypart_appearance(datum/appearance)
+/datum/bodypart_overlay/proc/modify_bodypart_appearance(image/appearance)
 	return
