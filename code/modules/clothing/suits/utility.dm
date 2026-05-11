@@ -98,11 +98,14 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/white
+
 /obj/item/clothing/head/utility/bomb_hood/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_dirt, "bomb_dirt")
 	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, texture_type)
 
 /datum/armor/utility_bomb_hood
 	melee = 20
@@ -130,9 +133,12 @@
 	equip_delay_other = 70
 	resistance_flags = NONE
 
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/white
+
 /obj/item/clothing/suit/utility/bomb_suit/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, texture_type)
 
 /datum/armor/utility_bomb_suit
 	melee = 20
@@ -146,11 +152,13 @@
 /obj/item/clothing/head/utility/bomb_hood/security
 	icon_state = "bombsuit_sec"
 	inhand_icon_state = null
+	texture_type = /datum/bodypart_overlay/texture/mesh/black
 
 /obj/item/clothing/suit/utility/bomb_suit/security
 	icon_state = "bombsuit_sec"
 	inhand_icon_state = null
 	allowed = list(/obj/item/gun/energy, /obj/item/melee/baton, /obj/item/restraints/handcuffs)
+	texture_type = /datum/bodypart_overlay/texture/mesh/black
 
 /obj/item/clothing/head/utility/bomb_hood/white
 	icon_state = "bombsuit_white"

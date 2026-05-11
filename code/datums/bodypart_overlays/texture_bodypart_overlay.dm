@@ -46,20 +46,22 @@
 	texture_icon = 'icons/mob/human/textures.dmi'
 	overlay_priority = BODYPART_OVERLAY_FISH_INFUSION
 
-/datum/bodypart_overlay/texture/spacesuit_mesh
+/datum/bodypart_overlay/texture/mesh
 	texture_icon_state = "mesh_mask"
 	texture_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
-	overlay_priority = BODYPART_OVERLAY_SPACESUIT_MESH
+	overlay_priority = BODYPART_OVERLAY_MESH
 
 	var/displacement_icon_state = "mesh_mask_displacement"
 	var/displacement_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
 	var/cached_displacement_icon
 
-/datum/bodypart_overlay/texture/spacesuit_mesh/New()
+	var/outline_color = "#080808"
+
+/datum/bodypart_overlay/texture/mesh/New()
 	. = ..()
 	cached_displacement_icon = icon(displacement_icon, displacement_icon_state)
 
-/datum/bodypart_overlay/texture/spacesuit_mesh/modify_bodypart_appearance(image/appearance)
+/datum/bodypart_overlay/texture/mesh/modify_bodypart_appearance(image/appearance)
 	// only modifies other bodypart overlays
 	if(!mutant_bodyparts_layertext(appearance.layer))
 		return
@@ -67,6 +69,14 @@
 	// adds a displacement map so the outline lines up with the bottom of the sprite
 	appearance.add_filter("displacement", 2, displacement_map_filter(cached_displacement_icon, size = 1))
 	// adds an outline so the texture doesn't end abruptly
-	appearance.add_filter("outline", 3, outline_filter(1, COLOR_NEARLY_ALL_BLACK, OUTLINE_SHARP))
+	appearance.add_filter("outline", 3, outline_filter(1, outline_color, OUTLINE_SHARP))
 	// forces white (blends better with the texture)
 	appearance.color = COLOR_WHITE
+
+/datum/bodypart_overlay/texture/mesh/black
+	texture_icon_state = "mesh_mask"
+	outline_color = "#080808"
+
+/datum/bodypart_overlay/texture/mesh/white
+	texture_icon_state = "mesh_mask_white"
+	outline_color = "#B2B2B2"

@@ -20,6 +20,7 @@
 		AddComponent(/datum/component/clothing_dirt, dirt_state)
 	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/white)
 
 /datum/armor/head_bio_hood
 	bio = 100
@@ -47,6 +48,7 @@
 /obj/item/clothing/suit/bio_suit/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/white)
 
 //Standard biosuit, orange stripe
 /datum/armor/suit_bio_suit
