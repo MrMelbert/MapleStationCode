@@ -206,11 +206,11 @@
 
 	wag_flags = WAG_ABLE
 	dna_block = DNA_LIZARD_TAIL_BLOCK
-	mesh_in_suits = TRUE
 
 ///Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
 	feature_key = "tail_lizard"
+	mesh_in_suits = TRUE
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return SSaccessories.tails_list_lizard

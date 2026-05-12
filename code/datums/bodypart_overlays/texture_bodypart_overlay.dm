@@ -50,11 +50,14 @@
 	texture_icon_state = "mesh_mask"
 	texture_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
 	overlay_priority = BODYPART_OVERLAY_MESH
-
+	/// Icon state for displacement map that comes with the texture
 	var/displacement_icon_state = "mesh_mask_displacement"
+	/// Icon file for the displacement map that comes with the texture.
 	var/displacement_icon = 'maplestation_modules/icons/mob/clothing/tail_suit_mask.dmi'
+	/// Cache the displacement icon so we dont have to make a new one each time
 	var/cached_displacement_icon
 
+	/// Color used for the outline filter
 	var/outline_color = "#080808"
 
 /datum/bodypart_overlay/texture/mesh/New()
@@ -62,9 +65,9 @@
 	cached_displacement_icon = icon(displacement_icon, displacement_icon_state)
 
 /datum/bodypart_overlay/texture/mesh/modify_bodypart_appearance(image/appearance)
-	// only modifies other bodypart overlays
-	if(!mutant_bodyparts_layertext(appearance.layer))
+	if(!should_modify(appearance))
 		return
+
 	. = ..()
 	// adds a displacement map so the outline lines up with the bottom of the sprite
 	appearance.add_filter("displacement", 2, displacement_map_filter(cached_displacement_icon, size = 1))
@@ -73,6 +76,17 @@
 	// forces white (blends better with the texture)
 	appearance.color = COLOR_WHITE
 
+/datum/bodypart_overlay/texture/mesh/proc/should_modify(image/appearance)
+	// only apply to "real planes", ie not emissive or lighting or whatever
+	var/appearance_plane = PLANE_TO_TRUE(appearance.plane)
+	if(appearance_plane != FLOAT_PLANE && appearance_plane != GAME_PLANE)
+		return FALSE
+	// only apply to other mutant bodyparts. we filter by layer which is absolutely not ideal
+	var/appearance_layer = abs(appearance.layer)
+	if(appearance_layer != BODY_ADJ_LAYER && appearance_layer != BODY_FRONT_LAYER && appearance_layer != BODY_BEHIND_LAYER)
+		return FALSE
+	return TRUE
+
 /datum/bodypart_overlay/texture/mesh/black
 	texture_icon_state = "mesh_mask"
 	outline_color = "#080808"
@@ -80,3 +94,11 @@
 /datum/bodypart_overlay/texture/mesh/white
 	texture_icon_state = "mesh_mask_white"
 	outline_color = "#B2B2B2"
+
+/datum/bodypart_overlay/texture/mesh/biosuit
+	texture_icon_state = "mesh_mask_biosuit"
+	outline_color = "#747182"
+
+/datum/bodypart_overlay/texture/mesh/biosuit_dark
+	texture_icon_state = "mesh_mask_biosuit_dark"
+	outline_color = "#514F5B"
