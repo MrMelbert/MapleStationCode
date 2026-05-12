@@ -173,6 +173,31 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	// then default to body color - though this will probably be skin color, some forced color, or pure white
 	return bodypart_owner.draw_color
 
+/datum/bodypart_overlay/mutant/frills/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	if(LAZYLEN(limb?.owner?.hair_masks))
+		. += jointext(limb.owner.hair_masks, ",")
+
+/datum/bodypart_overlay/mutant/frills/get_image(image_layer, obj/item/bodypart/limb)
+	if(!LAZYLEN(limb?.owner?.hair_masks))
+		return ..()
+
+	var/list/hair_masks_to_use = limb.owner.hair_masks
+	var/icon_state_to_use = build_icon_state(image_layer, limb)
+	var/frill_cache_key = "[sprite_datum.type]-[icon_state_to_use]-[jointext(hair_masks_to_use, ",")]"
+	var/static/list/cached_frill_icons
+	var/icon/cached_icon = LAZYACCESS(cached_frill_icons, frill_cache_key)
+	if(isnull(cached_icon))
+		cached_icon = icon(sprite_datum.icon, build_icon_state(image_layer, limb))
+		for(var/datum/hair_mask/mask as anything in hair_masks_to_use)
+			cached_icon.Blend(icon(mask::icon, mask::icon_state), ICON_ADD)
+		LAZYSET(cached_frill_icons, frill_cache_key, cached_icon)
+
+	var/mutable_appearance/uncached_appearance = mutable_appearance(cached_icon, layer = image_layer)
+	if(sprite_datum.center)
+		center_image(uncached_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
+	return uncached_appearance
+
 ///Guess what part of the lizard this is?
 /obj/item/organ/snout
 	name = "lizard snout"
@@ -190,6 +215,24 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
 	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
+
+	/// Offset to apply to equipment worn on the mouth we give to the head.
+	var/datum/worn_feature_offset/worn_mask_offset
+
+/obj/item/organ/snout/on_bodypart_insert(obj/item/bodypart/head/limb)
+	. = ..()
+	if(isnull(limb.worn_mask_offset))
+		worn_mask_offset = limb.worn_mask_offset = new(
+			attached_part = limb,
+			feature_key = OFFSET_FACEMASK,
+			offset_x = list("east" = 1, "west" = -1),
+		)
+
+/obj/item/organ/snout/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
+	if(worn_mask_offset)
+		QDEL_NULL(worn_mask_offset)
+		limb.worn_mask_offset = null
+	return ..()
 
 /datum/bodypart_overlay/mutant/snout
 	layers = EXTERNAL_ADJACENT

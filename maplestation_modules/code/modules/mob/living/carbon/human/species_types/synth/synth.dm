@@ -132,11 +132,6 @@
 			Physical damage may cause your disguise to fail, revealing your true synthetic nature.",
 	))
 
-/datum/species/android/synth/handle_body(mob/living/carbon/human/species_human)
-	if(disguise_species)
-		return disguise_species.handle_body(species_human)
-	return ..()
-
 /datum/species/android/synth/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
 	. = ..()
 	disguise_species?.regenerate_organs(organ_holder, replace_current = FALSE, excluded_zones = excluded_zones, visual_only = visual_only)
