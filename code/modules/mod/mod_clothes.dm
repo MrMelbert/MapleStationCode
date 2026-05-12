@@ -11,7 +11,7 @@
 /obj/item/clothing/head/mod/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
-	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/black)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/space)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 
 /obj/item/clothing/suit/mod
@@ -35,7 +35,7 @@
 /obj/item/clothing/suit/mod/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_SPEED_POTION, INNATE_TRAIT)
-	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/black)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/space)
 
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"

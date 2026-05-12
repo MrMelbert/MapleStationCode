@@ -38,7 +38,7 @@
 	if(fishing_modifier)
 		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
 	add_stabilizer()
-	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/black)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/space)
 
 /obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = loose_hat)
@@ -100,7 +100,7 @@
 
 	if(fishing_modifier)
 		AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier)
-	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/black)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/space)
 
 /// Start Processing on the space suit when it is worn to heat the wearer
 /obj/item/clothing/suit/space/equipped(mob/living/user, slot)
