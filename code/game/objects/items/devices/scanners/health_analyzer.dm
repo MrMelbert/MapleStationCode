@@ -200,7 +200,7 @@
 		var/any_wounded = length(carbontarget.all_wounds)
 		var/any_embeds = carbontarget.has_embedded_objects()
 		if(any_damage || (mode == SCANNER_VERBOSE && (any_missing || any_wounded || any_embeds)))
-			render_list += "<hr>"
+			render_list += span_info(separator_hr("Body Status"))
 			var/dmgreport = "\
 				<font face='Verdana'>\
 				<table class='ml-1'>\
@@ -318,7 +318,7 @@
 					toReport += "<tr><td colspan=4><span class='info ml-2'>&rdsh; [appendix]</span></td></tr>"
 
 		if(render)
-			render_list += "<hr>"
+			render_list += span_info(separator_hr("Organ Status"))
 			render_list += toReport + "</table></font>" // tables do not need extra linebreak
 
 		// Cybernetics
@@ -328,11 +328,10 @@
 				LAZYADD(cyberimps, cyberimp.examine_title(user))
 		if(LAZYLEN(cyberimps))
 			if(!render)
-				render_list += "<hr>"
-			render_list += "<span class='notice ml-1'>Detected cybernetic modifications:</span><br>"
+				render_list += span_info(separator_hr("Cybernetic Modifications"))
 			render_list += "<span class='notice ml-2'>[english_list(cyberimps, and_text = ", and ")]</span><br>"
 
-		render_list += "<hr>"
+		render_list += span_info(separator_hr("General Information"))
 
 		//Genetic stability
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
@@ -431,7 +430,7 @@
 		if(disease.visibility_flags & HIDDEN_SCANNER)
 			continue
 		if(!disease_hr)
-			render_list += "<hr>"
+			render_list += span_info(separator_hr("Disease Information"))
 			disease_hr = TRUE
 		render_list += "<span class='alert ml-1'>\
 			<b>Warning: [disease.form] detected</b><br>\
@@ -444,7 +443,7 @@
 
 	// Time of death
 	if(target.station_timestamp_timeofdeath && !target.appears_alive())
-		render_list += "<hr>"
+		render_list += span_info(separator_hr("Mortality Information"))
 		render_list += "<span class='info ml-1'>Time of Death: [target.station_timestamp_timeofdeath]</span><br>"
 		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(round(world.time - target.timeofdeath))] ago.</b></span><br>"
 

@@ -135,7 +135,7 @@
 			untrained_skills += known_skill
 
 	if(!length(shown_skills))
-		to_chat(user, examine_block(span_notice("You don't have any particularly outstanding skills.")))
+		to_chat(user, boxed_message(span_notice("You don't have any particularly outstanding skills.")))
 		return
 
 	var/list/skill_strings = list()

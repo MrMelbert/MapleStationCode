@@ -293,7 +293,7 @@
 				id_species ||= carbon_wearer.dna.species.name
 				id_blood_type ||= "[find_blood_type(carbon_wearer.dna?.species?.exotic_bloodtype || carbon_wearer.dna?.human_blood_type || random_human_blood_type())]"
 
-		var/id_examine = span_slightly_larger(separator_hr("This is <em>[old_wearer]'s ID card</em>."))
+		var/id_examine = ""
 		id_examine += "<div class='img_by_text_container'>"
 		id_examine += "[id_icon]"
 		id_examine += "<div class='img_text'>"
@@ -308,7 +308,7 @@
 		id_examine += "</div>" // container
 		id_examine += "</div>" // text
 
-		to_chat(viewer, boxed_message(span_info(id_examine)))
+		to_chat(viewer, fieldset_block(span_slightly_larger("That's <em>[old_wearer]'s ID card</em>."), span_info(id_examine), "boxed_message"))
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.
