@@ -517,7 +517,10 @@
 	if(main_weapon_examine)
 		return_message = "[p_They()] [p_are()] \a [main_weapon_examine] weapon"
 		if(ap_examine && block_examine)
-			return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+			if(ap_examine == block_examine)
+				return_message += " with [ap_examine] penetration and blocking capabilities"
+			else
+				eturn_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
 		else if(ap_examine)
 			return_message += " with [ap_examine] penetration"
 		else if(block_examine)
@@ -543,7 +546,10 @@
 		if(force * 1.5 < throwforce && throwforce >= 10)
 			return_message = "[p_They()] [p_are()] \a [thrown_weapon_examine] thrown weapon"
 			if(ap_examine && block_examine)
-				return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
 			else if(ap_examine)
 				return_message += " with [ap_examine] penetration"
 			else if(block_examine)
@@ -553,13 +559,16 @@
 
 		else if(main_weapon_examine)
 			// you can intuit a good weapon is a good thrown weapon, only report otherwise if it's significant
-			if(abs(force - throwforce) >= 10)
+			if(abs(force - throwforce) >= 10 && main_weapon_examine != thrown_weapon_examine)
 				return_message += ", that is [thrown_weapon_examine] when thrown"
 
 		else
 			return_message = "[p_They()] [p_are()] \a [thrown_weapon_examine] thrown weapon"
 			if(ap_examine && block_examine)
-				return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
 			else if(ap_examine)
 				return_message += " with [ap_examine] penetration"
 			else if(block_examine)
