@@ -9,7 +9,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*5)
-	override_notes = TRUE
 	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
@@ -50,47 +49,60 @@
 	QDEL_NULL(loaded_projectile)
 	return ..()
 
-/obj/item/ammo_casing/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ammo))
+/obj/item/ammo_casing/examine_weapon_descriptor(mob/user)
+	return projectile_examine_description()
 
-/**
- *
- * Outputs type-specific weapon stats for ammunition based on the projectile loaded inside the casing.
- * Distinguishes between critting and stam-critting in separate lines
- *
- */
-/obj/item/ammo_casing/proc/add_notes_ammo()
-	// Try to get a projectile to derive stats from
-	var/obj/projectile/exam_proj = projectile_type
-	var/initial_damage = initial(exam_proj.damage)
-	var/initial_stamina = initial(exam_proj.stamina)
-	// projectile damage multiplier for guns with snowflaked damage multipliers
-	var/proj_damage_mult = 1
-	if(!ispath(exam_proj) || pellets == 0)
-		return
+/obj/item/ammo_casing/proc/projectile_examine_description(preface = p_They(), include_caliber = TRUE)
+	var/obj/projectile/mag_ammo_projectile = projectile_type
+	var/actual_damage = 0
+	var/disabling_damage = mag_ammo_projectile::stamina + mag_ammo_projectile::pain + mag_ammo_projectile::paralyze + mag_ammo_projectile::stun
+	if(IS_DISABLING_DAMAGE(mag_ammo_projectile::damage_type))
+		disabling_damage += mag_ammo_projectile::damage
+	else
+		actual_damage += mag_ammo_projectile::damage
 
-	// are we in an ammo box?
-	if(isammobox(loc))
-		var/obj/item/ammo_box/our_box = loc
-		// is our ammo box in a gun?
-		if(isgun(our_box.loc))
-			var/obj/item/gun/our_gun = our_box.loc
-			// grab the damage multiplier
-			proj_damage_mult = our_gun.projectile_damage_multiplier
-	// if not, are we just in a gun e.g. chambered
-	else if(isgun(loc))
-		var/obj/item/gun/our_gun = loc
-		// grab the damage multiplier.
-		proj_damage_mult = our_gun.projectile_damage_multiplier
-	var/list/readout = list()
-	if(proj_damage_mult <= 0 || (initial_damage <= 0 && initial_stamina <= 0))
-		return "Our legal team has determined the offensive nature of these [span_warning(caliber)] rounds to be esoteric."
-	// No dividing by 0
-	if(initial_damage)
-		readout += "Most monkeys our legal team subjected to these [span_warning(caliber)] rounds succumbed to their wounds after [span_warning("[HITS_TO_CRIT((initial(exam_proj.damage) * proj_damage_mult) * pellets)] shot\s")] at point-blank, taking [span_warning("[pellets] shot\s")] per round."
-	if(initial_stamina)
-		readout += "[!readout.len ? "Most monkeys" : "More fortunate monkeys"] collapsed from exhaustion after [span_warning("[HITS_TO_CRIT((initial(exam_proj.stamina) * proj_damage_mult) * pellets)] impact\s")] of these [span_warning("[caliber]")] rounds."
-	return readout.Join("\n") // Sending over a single string, rather than the whole list
+	var/damage_text = ""
+	switch(actual_damage)
+		if(1 to 5)
+			damage_text = "extremely weak"
+		if(5 to 10)
+			damage_text = "weak"
+		if(10 to 15)
+			damage_text = "decent"
+		if(15 to 25)
+			damage_text = "strong"
+		if(25 to 50)
+			damage_text = "very strong"
+		if(50 to INFINITY)
+			damage_text = "extremely strong"
+
+	var/disabling_text = ""
+	switch(disabling_damage)
+		if(1 to 10)
+			disabling_text = "extremely weak"
+		if(10 to 20)
+			disabling_text = "weak"
+		if(20 to 30)
+			disabling_text = "decent"
+		if(30 to 40)
+			disabling_text = "capable"
+		if(40 to 50)
+			disabling_text = "very capable"
+		if(50 to INFINITY)
+			disabling_text = "extremely capable"
+
+	var/return_text = ""
+	if(disabling_text)
+		if(damage_text)
+			return_text = "[preface] fire\s [damage_text] [include_caliber ? "[caliber] " : ""]round\s, which are [disabling_text] at disabling targets"
+		else
+			return_text = "[preface] fire\s [disabling_text] disabling [include_caliber ? "[caliber] " : ""]round\s"
+	else if(damage_text)
+		return_text = "[preface] fire\s [damage_text] [include_caliber ? "[caliber] " : ""]round\s"
+	else
+		return_text = "[preface] fire\s [include_caliber ? "[caliber] " : ""]round\s"
+
+	return return_text
 
 /obj/item/ammo_casing/update_icon_state()
 	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : null]"
