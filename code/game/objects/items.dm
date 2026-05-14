@@ -467,17 +467,17 @@
 	var/main_weapon_examine = ""
 	switch(force)
 		if(5 to 9)
-			main_weapon_examine = "weak"
+			main_weapon_examine = "poor"
 		if(10 to 14)
 			main_weapon_examine = "decent"
 		if(15 to 19)
-			main_weapon_examine = "considerable"
+			main_weapon_examine = "good"
 		if(20 to 24)
-			main_weapon_examine = "potent"
+			main_weapon_examine = "great"
 		if(25 to 29)
-			main_weapon_examine = "powerful"
+			main_weapon_examine = "potent"
 		if(30 to INFINITY)
-			main_weapon_examine = "extremely powerful"
+			main_weapon_examine = "powerful"
 
 	var/ap_examine = ""
 	if(armour_penetration > 0)
@@ -487,7 +487,7 @@
 			if(25 to 49)
 				ap_examine += "average"
 			if(50 to 74)
-				ap_examine += "above-average"
+				ap_examine += "good"
 			if(75 to 99)
 				ap_examine += "excellent"
 			if(100)
@@ -499,28 +499,28 @@
 		switch(block_chance)
 			if(1 to 24)
 				block_examine = "minimal"
-				block_examine_alt = "weak"
+				block_examine_alt = "poor"
 			if(25 to 49)
 				block_examine = "average"
 				block_examine_alt = "decent"
 			if(50 to 74)
-				block_examine = "above-average"
-				block_examine_alt = "considerable"
+				block_examine = "good"
+				block_examine_alt = "good"
 			if(75 to 99)
 				block_examine = "excellent"
-				block_examine_alt = "potent"
+				block_examine_alt = "great"
 			if(100)
 				block_examine = "flawless"
 				block_examine_alt = "perfect"
 
 	var/return_message = ""
 	if(main_weapon_examine)
-		return_message = "[p_They()] [p_are()] \a [main_weapon_examine] weapon"
+		return_message = "that can be used as \a [main_weapon_examine] weapon"
 		if(ap_examine && block_examine)
 			if(ap_examine == block_examine)
 				return_message += " with [ap_examine] penetration and blocking capabilities"
 			else
-				eturn_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+				return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
 		else if(ap_examine)
 			return_message += " with [ap_examine] penetration"
 		else if(block_examine)
@@ -528,23 +528,23 @@
 
 	var/thrown_weapon_examine = ""
 	switch(throwforce)
-		if(5 to 9)
-			thrown_weapon_examine = "weak"
 		if(10 to 14)
+			thrown_weapon_examine = "poor"
+		if(14 to 19)
 			thrown_weapon_examine = "decent"
-		if(15 to 19)
-			thrown_weapon_examine = "considerable"
-		if(20 to 24)
+		if(19 to 24)
+			thrown_weapon_examine = "good"
+		if(24 to 29)
+			thrown_weapon_examine = "great"
+		if(29 to 39)
 			thrown_weapon_examine = "potent"
-		if(25 to 29)
+		if(40 to INFINITY)
 			thrown_weapon_examine = "powerful"
-		if(30 to INFINITY)
-			thrown_weapon_examine = "extremely powerful"
 
 	if(thrown_weapon_examine)
 		// if the weapon is far better thrown than melee, change the order
 		if(force * 1.5 < throwforce && throwforce >= 10)
-			return_message = "[p_They()] [p_are()] \a [thrown_weapon_examine] thrown weapon"
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
 			if(ap_examine && block_examine)
 				if(ap_examine == block_examine)
 					return_message += " with [ap_examine] penetration and blocking capabilities"
@@ -555,15 +555,15 @@
 			else if(block_examine)
 				return_message += " with [block_examine] blocking capabilities"
 			if(main_weapon_examine && main_weapon_examine != thrown_weapon_examine)
-				return_message += ", that is [main_weapon_examine] when used in melee"
+				return_message += ", but is [main_weapon_examine] when used in melee"
 
 		else if(main_weapon_examine)
 			// you can intuit a good weapon is a good thrown weapon, only report otherwise if it's significant
 			if(abs(force - throwforce) >= 10 && main_weapon_examine != thrown_weapon_examine)
-				return_message += ", that is [thrown_weapon_examine] when thrown"
+				return_message += ", but is [thrown_weapon_examine] when thrown"
 
 		else
-			return_message = "[p_They()] [p_are()] \a [thrown_weapon_examine] thrown weapon"
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
 			if(ap_examine && block_examine)
 				if(ap_examine == block_examine)
 					return_message += " with [ap_examine] penetration and blocking capabilities"
@@ -575,7 +575,7 @@
 				return_message += " with [block_examine] blocking capabilities"
 
 	if((!return_message || (force < 10 && throwforce < 10)) && block_examine_alt)
-		return_message = "[p_They()] [p_are()] \a [block_examine_alt] at blocking attacks"
+		return_message = "that is [block_examine_alt] at blocking attacks"
 
 	return return_message
 

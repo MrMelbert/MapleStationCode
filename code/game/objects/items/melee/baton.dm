@@ -91,7 +91,7 @@
 	if(.)
 		. += ", [force < 15 ? "but" : "and"] is [stun_strength] capable at disabling targets[affect_cyborg ? ", including cyborgs" : ""]"
 	else
-		. = "It is [stun_strength] effective at disabling targets[affect_cyborg ? ", including cyborgs" : ""]"
+		. = "that is [stun_strength] effective at disabling targets[affect_cyborg ? ", including cyborgs" : ""]"
 
 /**
  * Ok, think of baton attacks like a melee attack chain:

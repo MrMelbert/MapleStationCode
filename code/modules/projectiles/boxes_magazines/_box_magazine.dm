@@ -66,7 +66,7 @@
 	var/return_text = ""
 
 	if(caliber && max_ammo) // Text references a 'magazine' as only magazines generally have the caliber variable initialized
-		return_text += "It can hold up to [max_ammo] [caliber] [casing_phrasing][max_ammo == 1 ? "" : "s"]"
+		return_text += "that can hold up to [max_ammo] [caliber] [casing_phrasing][max_ammo == 1 ? "" : "s"]"
 
 	var/obj/item/ammo_casing/mag_ammo = get_round(TRUE)
 	if(istype(mag_ammo))

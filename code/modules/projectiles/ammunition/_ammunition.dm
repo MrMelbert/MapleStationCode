@@ -52,7 +52,7 @@
 /obj/item/ammo_casing/examine_weapon_descriptor(mob/user)
 	return projectile_examine_description()
 
-/obj/item/ammo_casing/proc/projectile_examine_description(preface = p_They(), include_caliber = TRUE)
+/obj/item/ammo_casing/proc/projectile_examine_description(preface = "that", include_caliber = TRUE)
 	var/obj/projectile/mag_ammo_projectile = projectile_type
 	var/actual_damage = 0
 	var/disabling_damage = mag_ammo_projectile::stamina + mag_ammo_projectile::pain + mag_ammo_projectile::paralyze + mag_ammo_projectile::stun
@@ -61,46 +61,26 @@
 	else
 		actual_damage += mag_ammo_projectile::damage
 
-	var/damage_text = ""
-	switch(actual_damage)
+	var/stopping_power = ""
+	switch(actual_damage + disabling_damage)
 		if(1 to 5)
-			damage_text = "extremely weak"
+			stopping_power = "very low"
 		if(5 to 10)
-			damage_text = "weak"
+			stopping_power = "low"
 		if(10 to 15)
-			damage_text = "decent"
+			stopping_power = "decent"
 		if(15 to 25)
-			damage_text = "strong"
+			stopping_power = "good"
 		if(25 to 50)
-			damage_text = "very strong"
+			stopping_power = "high"
 		if(50 to INFINITY)
-			damage_text = "extremely strong"
-
-	var/disabling_text = ""
-	switch(disabling_damage)
-		if(1 to 10)
-			disabling_text = "extremely weak"
-		if(10 to 20)
-			disabling_text = "weak"
-		if(20 to 30)
-			disabling_text = "decent"
-		if(30 to 40)
-			disabling_text = "capable"
-		if(40 to 50)
-			disabling_text = "very capable"
-		if(50 to INFINITY)
-			disabling_text = "extremely capable"
+			stopping_power = "very high"
 
 	var/return_text = ""
-	if(disabling_text)
-		if(damage_text)
-			return_text = "[preface] fire\s [damage_text] [include_caliber ? "[caliber] " : ""]round\s, which are [disabling_text] at disabling targets"
-		else
-			return_text = "[preface] fire\s [disabling_text] disabling [include_caliber ? "[caliber] " : ""]round\s"
-	else if(damage_text)
-		return_text = "[preface] fire\s [damage_text] [include_caliber ? "[caliber] " : ""]round\s"
+	if(stopping_power)
+		return_text = "[preface] fires [stopping_power][actual_damage <= 0 ? ", non-lethal" : ""] stopping power [include_caliber ? "[caliber] " : ""][mag_ammo_projectile::hitscan ? "beams" : "rounds"]"
 	else
-		return_text = "[preface] fire\s [include_caliber ? "[caliber] " : ""]round\s"
+		return_text = "[preface] fires [include_caliber ? "[caliber] " : ""][mag_ammo_projectile::hitscan ? "beams" : "rounds"]"
 
 	return return_text
 

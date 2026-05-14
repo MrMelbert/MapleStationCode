@@ -106,7 +106,7 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/gun/energy/examine_weapon_descriptor(mob/user)
-	var/return_text = "It has [length(ammo_type)] fire mode\s:"
+	var/return_text = "that has [length(ammo_type)] fire mode\s:"
 	for(var/obj/item/ammo_casing/energy/for_ammo as anything in ammo_type)
 		return_text += "<br>&bull; [for_ammo.projectile_examine_description("[capitalize(for_ammo.select_name)], which")]"
 

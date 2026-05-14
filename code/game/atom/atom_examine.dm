@@ -34,8 +34,8 @@
 		var/post_descriptor = examine_post_descriptor(user)
 		var/force_descriptor = examine_weapon_descriptor(user)
 		. += span_slightly_smaller("[p_They()] [p_are()] a [tag_string] [examine_descriptor(user)]\
-			[length(post_descriptor) ? " [jointext(post_descriptor, " ")]" : ""].\
-			[force_descriptor ? " [force_descriptor]." : ""]\
+			[length(post_descriptor) ? " [jointext(post_descriptor, " ")]" : ""]\
+			[force_descriptor ? " [force_descriptor]" : ""].\
 		")
 
 	if(reagents)
