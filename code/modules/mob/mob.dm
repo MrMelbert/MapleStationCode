@@ -1068,7 +1068,7 @@
 	return ..(M, force, check_loc, buckle_mob_flags)
 
 ///Can the mob interact() with an atom?
-/mob/proc/in_range_to_interact_with(atom/A, treat_mob_as_adjacent)
+/mob/proc/in_range_to_interact_with(atom/A, treat_mob_as_adjacent, bypass_adjacency)
 	if(isAdminGhostAI(src))
 		return TRUE
 	//Return early. we do not need to check that we are on adjacent turfs (i.e we are inside a closet)
@@ -1079,7 +1079,8 @@
 	var/datum/dna/mob_dna = has_dna()
 	if(mob_dna?.check_mutation(/datum/mutation/human/telekinesis) && tkMaxRangeCheck(src, A))
 		return TRUE
-
+	if(bypass_adjacency) // I hate badly named things
+		return TRUE
 	//range check
 	if(!interaction_range) // If you don't have extra length, GO AWAY
 		return FALSE
