@@ -53,3 +53,33 @@
 /datum/limb_option_datum/bodypart/cybernetic_l_arm
 	name = "Cybernetic Left Arm"
 	limb_path = /obj/item/bodypart/arm/left/robot
+
+// Removes the corresponding limb instead of replacing whatever's there
+/datum/limb_option_datum/bodypart/amputated
+	ui_icon = 'icons/mob/landmarks.dmi'
+	ui_icon_state = "x"
+
+/datum/limb_option_datum/bodypart/amputated/apply_limb(mob/living/carbon/human/apply_to)
+	var/obj/item/bodypart/corresponding_limb = limb_path
+	var/obj/item/bodypart/removing = apply_to.get_bodypart(corresponding_limb::body_zone)
+	if(isnull(removing))
+		return
+
+	removing.drop_limb(special = TRUE, dismembered = FALSE)
+	qdel(removing)
+
+/datum/limb_option_datum/bodypart/amputated/right_leg
+	name = "Amputated Right Arm"
+	limb_path = /obj/item/bodypart/arm/right // placeholder
+
+/datum/limb_option_datum/bodypart/amputated/left_leg
+	name = "Amputated Left Arm"
+	limb_path = /obj/item/bodypart/arm/left // placeholder
+
+/datum/limb_option_datum/bodypart/amputated/right_arm
+	name = "Amputated Right Leg"
+	limb_path = /obj/item/bodypart/leg/right // placeholder
+
+/datum/limb_option_datum/bodypart/amputated/left_arm
+	name = "Amputated Left Leg"
+	limb_path = /obj/item/bodypart/leg/left // placeholder
