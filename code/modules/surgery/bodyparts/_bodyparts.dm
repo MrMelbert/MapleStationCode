@@ -1252,7 +1252,7 @@
 		for(var/external_layer in overlay.all_layers)
 			if(overlay.layers & external_layer)
 				. += overlay.get_overlay(external_layer, src)
-		for(var/datum/layer in .)
+		for(var/image/layer in .)
 			overlay.modify_bodypart_appearance(layer)
 
 	return .
