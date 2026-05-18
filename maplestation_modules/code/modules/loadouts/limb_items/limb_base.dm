@@ -68,18 +68,18 @@
 	removing.drop_limb(special = TRUE, dismembered = FALSE)
 	qdel(removing)
 
-/datum/limb_option_datum/bodypart/amputated/right_leg
+/datum/limb_option_datum/bodypart/amputated/right_arm
 	name = "Amputated Right Arm"
 	limb_path = /obj/item/bodypart/arm/right // placeholder
 
-/datum/limb_option_datum/bodypart/amputated/left_leg
+/datum/limb_option_datum/bodypart/amputated/left_arm
 	name = "Amputated Left Arm"
 	limb_path = /obj/item/bodypart/arm/left // placeholder
 
-/datum/limb_option_datum/bodypart/amputated/right_arm
+/datum/limb_option_datum/bodypart/amputated/right_leg
 	name = "Amputated Right Leg"
 	limb_path = /obj/item/bodypart/leg/right // placeholder
 
-/datum/limb_option_datum/bodypart/amputated/left_arm
+/datum/limb_option_datum/bodypart/amputated/left_leg
 	name = "Amputated Left Leg"
 	limb_path = /obj/item/bodypart/leg/left // placeholder
