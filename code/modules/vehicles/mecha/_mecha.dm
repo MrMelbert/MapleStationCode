@@ -523,7 +523,7 @@
 			readout += "It fully encloses its occupants, protecting them from the atmosphere or lack thereof."
 
 		var/formatted_readout = span_notice("<b>PROTECTION CLASSES</b><hr>[jointext(readout, "\n")]")
-		to_chat(usr, examine_block(formatted_readout))
+		to_chat(usr, boxed_message(formatted_readout))
 
 /obj/vehicle/sealed/mecha/generate_integrity_message()
 	var/examine_text = ""

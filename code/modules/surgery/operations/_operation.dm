@@ -204,7 +204,7 @@
 
 	var/list/operations = surgeon.get_available_operations(src, surgeon.get_active_held_item())
 	if(!length(operations))
-		to_chat(surgeon, examine_block(span_info("No available surgeries.")))
+		to_chat(surgeon, boxed_message(span_info("No available surgeries.")))
 		return
 
 	var/list/operations_info = list()
@@ -213,7 +213,7 @@
 		var/atom/movable/operating_on = operations[radial_slice][2]
 		operations_info += "[radial_slice]: [operation.name] on [operating_on]"
 
-	to_chat(surgeon, examine_block(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
+	to_chat(surgeon, boxed_message(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
 
 /// Takes a target zone and returns a list of readable surgery states for that zone.
 /// Example output may be list("Skin is cut", "Blood vessels are unclamped", "Bone is sawed")

@@ -207,7 +207,7 @@
  * * Category- Which types of quirks we want to print out. Defaults to everything
  * * from_scan- If the source of this call is like a health analyzer or HUD, in which case QUIRK_HIDE_FROM_MEDICAL hides the quirk.
  */
-/mob/living/proc/get_quirk_string(medical = FALSE, category = CAT_QUIRK_ALL, from_scan = FALSE)
+/mob/living/proc/get_quirk_string(medical = FALSE, category = CAT_QUIRK_ALL, from_scan = FALSE, none_text)
 	var/list/dat = list()
 	for(var/datum/quirk/candidate as anything in quirks)
 		if(from_scan && (candidate.quirk_flags & QUIRK_HIDE_FROM_SCAN))
@@ -227,7 +227,7 @@
 		dat += medical ? candidate.medical_record_text : candidate.name
 
 	if(!dat.len)
-		return medical ? "No issues have been declared." : "None"
+		return isnull(none_text) ? (medical ? "No issues have been declared." : "None") : none_text
 	return medical ?  dat.Join("<br>") : dat.Join(", ")
 
 /mob/living/proc/cleanse_quirk_datums() //removes all trait datums

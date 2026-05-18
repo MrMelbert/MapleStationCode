@@ -57,13 +57,13 @@
 	autopsy_information += "Time of Autopsy - [station_time_timestamp()]"
 	autopsy_information += "Autopsy Coroner - [user.name]"
 
-	autopsy_information += "Toxin damage: [CEILING(scanned.getToxLoss(), 1)]"
-	autopsy_information += "Oxygen damage: [CEILING(scanned.getOxyLoss(), 1)]"
+	autopsy_information += "TOXICITY: [format_internal_damage(scanned.getToxLoss())]"
+	autopsy_information += "HYPOXIA: [format_internal_damage(scanned.getOxyLoss())]"
 
 	autopsy_information += "<center>Bodypart Data</center><br>"
 	for(var/obj/item/bodypart/bodyparts as anything in scanned.bodyparts)
 		autopsy_information += "<b>[bodyparts.name]</b><br>"
-		autopsy_information += "BRUTE: [bodyparts.brute_dam] | BURN: [bodyparts.burn_dam]<br>"
+		autopsy_information += "BRUISING: [format_physical_damage(bodyparts.brute_dam)] | BURNING: [format_physical_damage(bodyparts.burn_dam)]<br>"
 		if(!bodyparts.wounds)
 			continue
 		autopsy_information += "Wounds found:<br>"
@@ -73,7 +73,7 @@
 
 	autopsy_information += "<center>Organ Data</center>"
 	for(var/obj/item/organ/organs as anything in scanned.organs)
-		autopsy_information += "[organs.name]: <b>[CEILING(organs.damage, 1)] damage</b><br>"
+		autopsy_information += "[organs.name]: <b>[organs.get_status_text()]</b><br>"
 
 	autopsy_information += "<center>Chemical Data</center>"
 	for(var/datum/reagent/scanned_reagents as anything in scanned.reagents.reagent_list)

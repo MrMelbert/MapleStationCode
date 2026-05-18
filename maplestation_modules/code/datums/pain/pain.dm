@@ -876,7 +876,7 @@
 /datum/pain/proc/debug_print_pain()
 
 	var/list/final_print = list()
-	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
+	final_print += "<div class='boxed_message'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
 	final_print += "[parent] has a total pain of [get_total_pain()]."
 	final_print += "[parent] has a traumatic shock of [traumatic_shock]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."

@@ -69,7 +69,7 @@
 
 /obj/item/organ/brain/cybernetic/android/proc/print_laws(top_text = "You are bound by a set of laws")
 	var/law_msg = "[top_text]:<hr>[jointext(law_datum.get_law_list(include_zeroth = TRUE, render_html = TRUE), "<br>")]"
-	to_chat(owner, examine_block(span_info(law_msg)))
+	to_chat(owner, boxed_message(span_info(law_msg)))
 
 /obj/item/organ/brain/cybernetic/android/proc/on_ion_storm(...)
 	SIGNAL_HANDLER

@@ -75,7 +75,7 @@ Behavior that's still missing from this component that original food items had t
 
 /datum/component/edible/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(examine))
-	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(examine_tags))
+	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_POST_DESCRIPTOR, PROC_REF(post_examine_tags))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))
 	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, PROC_REF(OnCraft))
 	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, PROC_REF(on_ooze_eat))
@@ -111,7 +111,7 @@ Behavior that's still missing from this component that original food items had t
 		COMSIG_ITEM_USED_AS_INGREDIENT,
 		COMSIG_OOZE_EAT_ATOM,
 		COMSIG_ATOM_EXAMINE,
-		COMSIG_ATOM_EXAMINE_TAGS,
+		COMSIG_ATOM_EXAMINE_POST_DESCRIPTOR,
 	))
 
 	qdel(GetComponent(/datum/component/connect_loc_behalf))
@@ -281,13 +281,16 @@ Behavior that's still missing from this component that original food items had t
 		var/mob/living/living_user = user
 		living_user.taste(owner.reagents)
 
-/datum/component/edible/proc/examine_tags(datum/source, mob/user, list/examine_tags)
+/datum/component/edible/proc/post_examine_tags(datum/source, mob/user, list/examine_tags, list/materials_list)
 	SIGNAL_HANDLER
 
 	if(food_flags & FOOD_NO_EXAMINE)
 		return
 	for(var/foodtype in bitfield_to_list(foodtypes, FOOD_FLAGS))
-		examine_tags[LOWER_TEXT(foodtype)] = "It's \a [LOWER_TEXT(foodtype)] food."
+		var/foodtype_string = LOWER_TEXT(foodtype)
+		if(materials_list[foodtype_string])
+			continue // meat material and meat foodtype, primarily
+		materials_list[foodtype_string] = "It's \a [foodtype_string] food."
 
 /datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/M, mob/living/user)
 	SIGNAL_HANDLER

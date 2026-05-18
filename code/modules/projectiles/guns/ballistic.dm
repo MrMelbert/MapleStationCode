@@ -159,9 +159,6 @@
 	QDEL_NULL(magazine)
 	return ..()
 
-/obj/item/gun/ballistic/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ballistic))
-
 /obj/item/gun/ballistic/fire_sounds()
 	var/max_ammo = magazine?.max_ammo || initial(spawn_magazine_type.max_ammo)
 	var/current_ammo = get_ammo()
@@ -177,20 +174,12 @@
 		if(play_click && click_on_low_ammo)
 			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
 
-
-/**
- *
- * Outputs type-specific weapon stats for ballistic weaponry based on its magazine and its caliber.
- * It contains extra breaks for the sake of presentation
- *
- **/
-/obj/item/gun/ballistic/proc/add_notes_ballistic()
-	if(magazine) // Make sure you have a magazine, to get the notes from
-		return "\n[magazine.add_notes_box()]"
-	else if(chambered) // if you don't have a magazine, is there something chambered?
-		return "\n[chambered.add_notes_ammo()]"
-	else // we have a very expensive mechanical paperweight.
-		return "\nThe lack of magazine and usable cartridge in chamber makes its usefulness questionable, at best."
+/obj/item/gun/ballistic/examine_weapon_descriptor(mob/user)
+	if(magazine)
+		return magazine.examine_weapon_descriptor(user)
+	if(chambered)
+		return chambered.projectile_examine_description(p_They())
+	return ""
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
