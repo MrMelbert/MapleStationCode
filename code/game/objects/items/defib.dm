@@ -591,7 +591,7 @@
 	if(SEND_SIGNAL(H, COMSIG_DEFIBRILLATOR_PRE_HELP_ZAP, user, src) & COMPONENT_DEFIB_STOP)
 		do_cancel()
 		return
-	var/obj/item/organ/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = H.get_organ_slot(ORGAN_SLOT_HEART)
 	if(H.stat == DEAD)
 		H.visible_message(span_warning("[H]'s body convulses a bit."))
 		playsound(src, SFX_BODYFALL, 50, TRUE)
@@ -653,20 +653,29 @@
 		user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Patient's heart is missing. Operation aborted."))
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
 
-	else if(H.undergoing_cardiac_arrest())
+	else if(!heart.is_beating())
 		playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
-		if(!(heart.organ_flags & ORGAN_FAILING))
-			H.set_heartattack(FALSE)
+		if(heart.organ_flags & ORGAN_FAILING)
+			user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed, heart damage detected."))
+		else
+			heart.Restart()
 			H.apply_status_effect(/datum/status_effect/recent_defib)
 			user.audible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart is now beating again."))
 			H.emote("gasp")
 			H.Knockdown(8 SECONDS)
 			H.set_jitter_if_lower(200 SECONDS)
-			heart?.apply_organ_damage(10, 95, ORGAN_ORGANIC)
+			heart.apply_organ_damage(10, 95, ORGAN_ORGANIC)
 			SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 			do_success()
-		else
-			user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed, heart damage detected."))
+
+	else if(heart.get_heart_rate() >= 160)
+		playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
+		user.audible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heartbeat stabilized."))
+		H.emote("gasp")
+		SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
+		do_success()
+		ADD_TRAIT(H, TRAIT_HEART_RATE_STABILIZED, TRAIT_GENERIC)
+		addtimer(TRAIT_CALLBACK_REMOVE(H, TRAIT_HEART_RATE_STABILIZED, TRAIT_GENERIC), 60 SECONDS)
 
 	else
 		user.visible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Patient is not in a valid state. Operation aborted."))
