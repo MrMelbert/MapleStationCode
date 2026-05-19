@@ -496,6 +496,7 @@
 		/obj/item/reagent_containers/cup/tube,
 		/obj/item/reagent_containers/hypospray/medipen,
 		/obj/item/reagent_containers/syringe,
+		/obj/item/food/meat/slab,
 	))
 
 /*
@@ -556,6 +557,7 @@
 		/obj/item/stack/ore/bluespace_crystal,
 		/obj/item/stock_parts,
 		/obj/item/wallframe/camera,
+		/obj/item/stack/sheet,
 	))
 
 /obj/item/storage/bag/harpoon_quiver

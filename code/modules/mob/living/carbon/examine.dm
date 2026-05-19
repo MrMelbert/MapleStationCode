@@ -21,8 +21,7 @@
 
 	. = list()
 	var/list/clothes_info = get_clothing_examine_info(user)
-	for(var/slot in clothes_info)
-		var/slot_text = clothes_info[slot]
+	for(var/slot, slot_text in clothes_info)
 		if(slot_text)
 			. += slot_text
 
@@ -430,6 +429,8 @@
 	//ears
 	if(ears && !(obscured_slots & HIDEEARS) && !HAS_TRAIT(ears, TRAIT_EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] ears."
+
+	SEND_SIGNAL(src, COMSIG_CARBON_CLOTHING_EXAMINE, user, clothes)
 
 	return clothes
 
