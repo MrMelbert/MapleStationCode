@@ -17,7 +17,7 @@
 		to_chat(user, "You are viewing [linked_antagonist.owner.current]'s advanced traitor panel as an admin.")
 		if(isliving(user)) // If they're in a mob...
 			message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
-		return GLOB.admin_state
+		return ADMIN_STATE(R_ADMIN)
 	else
 		return GLOB.always_state
 

@@ -12,6 +12,7 @@
 	icon = 'icons/obj/service/kitchen.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
+	abstract_type = /obj/item/kitchen
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
