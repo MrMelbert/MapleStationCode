@@ -2428,7 +2428,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_legs
 	num_legs = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_legs and hook behavior associated to this event.
@@ -2479,7 +2479,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_hands
 	num_hands = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_hands and hook behavior associated to this event.

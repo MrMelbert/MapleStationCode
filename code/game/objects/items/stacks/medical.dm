@@ -212,7 +212,7 @@
 	PRIVATE_PROC(TRUE)
 
 	var/list/other_affected_limbs = list()
-	for(var/obj/item/bodypart/limb as anything in patient.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in patient.get_bodyparts())
 		if(!try_heal_checks(patient, user, limb.body_zone, silent = TRUE))
 			continue
 		other_affected_limbs += limb.body_zone
@@ -773,8 +773,8 @@
 		return BRUTELOSS
 
 	patient.emote("scream")
-	for(var/i in patient.bodyparts)
-		var/obj/item/bodypart/bone = i // fine to just, use these raw, its a meme anyway
+	for(var/obj/item/bodypart/bone as anything in patient.get_bodyparts())
+		// fine to just, use these raw, its a meme anyway
 		var/datum/wound/blunt/bone/severe/oof_ouch = new
 		oof_ouch.apply_wound(bone, wound_source = "bone gel")
 		var/datum/wound/blunt/bone/critical/oof_OUCH = new

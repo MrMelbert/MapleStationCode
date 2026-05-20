@@ -13,8 +13,7 @@
 		//If a specific bodypart is targeted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		armorval += check_armor(BP, type)
 		organnum++
 	return (armorval/max(organnum, 1))
@@ -332,8 +331,7 @@
 			if(EXPLODE_DEVASTATE)
 				max_limb_loss = 4
 				probability = 50
-		for(var/X in bodyparts)
-			var/obj/item/bodypart/BP = X
+		for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
 				BP.receive_damage(INFINITY, wound_bonus = CANT_WOUND) //Capped by proc
 				BP.dismember()
@@ -557,10 +555,12 @@
 
 	combined_msg += span_boldnotice("You check yourself for injuries.")
 
-	var/list/missing = BODY_ZONES_ALL
 
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		missing -= body_part.body_zone
+	for(var/part_zone, body_part_untyped in get_bodyparts_by_zones())
+		var/obj/item/bodypart/body_part = body_part_untyped
+		if(isnull(body_part) || IS_STUMP(body_part))
+			combined_msg += span_boldannounce("&rdsh; Your [parse_zone(body_part?.body_zone || part_zone)] is missing!")
+			continue
 		if(body_part.bodypart_flags & BODYPART_PSEUDOPART) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
 			continue
 
@@ -568,10 +568,7 @@
 		if(bodypart_report)
 			combined_msg += "[span_notice("&rdsh;")] [bodypart_report]"
 
-	for(var/t in missing)
-		combined_msg += span_boldannounce("&rdsh; Your [parse_zone(t)] is missing!")
-
-	var/tox = getToxLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
+	var/tox = getToLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
 	switch(tox)
 		if(10 to 20)
 			combined_msg += span_danger("You feel sick.")

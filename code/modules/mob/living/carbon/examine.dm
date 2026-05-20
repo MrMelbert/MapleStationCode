@@ -60,7 +60,7 @@
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
 	var/adjacent = user.Adjacent(src)
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
+	for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
@@ -175,7 +175,7 @@
 		var/list/obj/item/bodypart/bleeding_limbs = list()
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
-		for(var/obj/item/bodypart/body_part as anything in bodyparts)
+		for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
 			if(!body_part.current_gauze && body_part.cached_bleed_rate)
 				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
@@ -342,7 +342,7 @@
 	var/list/seen_damage = list() // This looks like: ({Damage type} = list({Damage description for that damage type} = {number of times it has appeared}, ...), ...)
 	var/list/most_seen_damage = list() // This looks like: ({Damage type} = {Frequency of the most common description}, ...)
 	var/list/final_descriptions = list() // This looks like: ({Damage type} = {Most common damage description for that type}, ...)
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		for(var/damage_type in part.damage_examines)
 			var/damage_desc = part.damage_examines[damage_type]
 			if(!seen_damage[damage_type])
@@ -399,7 +399,7 @@
 		if(clothes[CLOTHING_SLOT(HANDS)])
 			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
 		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_is] holding [held_thing.examine_title(user, href = TRUE)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
-	for(var/obj/item/bodypart/arm/part in bodyparts)
+	for(var/obj/item/bodypart/arm/part in get_bodyparts())
 		if(!(part.bodypart_flags & BODYPART_PSEUDOPART))
 			continue
 		var/obj/item/corresponding_item = get_item_for_held_index(part.held_index) || part
@@ -590,7 +590,7 @@
 /mob/living/carbon/human/proc/get_mismatched_limb_text()
 	var/list/covered = get_covered_body_zones()
 	var/list/texts = list()
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		var/part_id = part.limb_id
 		var/obj/item/bodypart/expected_part = dna?.species?.bodypart_overrides[part.body_zone]
 		var/expected_id = initial(expected_part?.limb_id)

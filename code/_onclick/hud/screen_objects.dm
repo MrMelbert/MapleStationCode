@@ -691,6 +691,9 @@
 		var/mob/living/carbon/C = usr
 		C.check_self_for_injuries()
 
+/atom/movable/screen/healthdoll/proc/update_body_zones()
+	return
+
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"
 	screen_loc = ui_living_healthdoll
@@ -705,8 +708,17 @@
 
 /atom/movable/screen/healthdoll/human/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	limbs = list()
-	for(var/i in BODY_ZONES_ALL)
+	if(isnull(hud_owner)) //we require a hud owner to work properly, so return out.
+		return
+	update_body_zones()
+	update_appearance()
+
+/atom/movable/screen/healthdoll/human/update_body_zones()
+	vis_contents.Cut()
+	QDEL_LIST_ASSOC_VAL(limbs)
+	limbs ||= list()
+	var/mob/living/carbon/human/owner = hud.mymob
+	for(var/body_zone in owner.get_all_limbs())
 		var/atom/movable/screen/healthdoll_limb/limb = new(src, null)
 		// layer chest above other limbs, it's the center after all
 		limb.layer = i == BODY_ZONE_CHEST ? layer + 0.05 : layer
@@ -732,12 +744,13 @@
 
 	var/list/current_animated = LAZYLISTDUPLICATE(animated_zones)
 
-	for(var/obj/item/bodypart/body_part as anything in owner.bodyparts)
+	for(var/part_zone, body_part_untyped in owner.get_bodyparts_by_zones())
 		var/icon_key = 0
-		var/part_zone = body_part.body_zone
-
+		var/obj/item/bodypart/body_part = body_part_untyped
 		var/list/overridable_key = list(icon_key)
-		if(body_part.bodypart_disabled)
+		if(isnull(body_part) || IS_STUMP(body_part))
+			icon_key = 6
+		else if(body_part.bodypart_disabled)
 			icon_key = 7
 		else if(owner.stat == DEAD)
 			icon_key = "DEAD"
@@ -761,10 +774,6 @@
 			LAZYREMOVE(animated_zones, part_zone)
 
 		limbs[part_zone].icon_state = "[part_zone][icon_key]"
-	// handle leftovers
-	for(var/missing_zone in owner.get_missing_limbs())
-		limbs[missing_zone].icon_state = "[missing_zone]6"
-		LAZYREMOVE(animated_zones, missing_zone)
 	// time to re-sync animations, something changed
 	if(animated_zones ~! current_animated)
 		for(var/animated_zone in animated_zones)

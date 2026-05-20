@@ -266,6 +266,18 @@
 		final_block_chance = 0 //Don't bring a sword to a gunfight, and also you aren't going to really block someone full body tackling you with a sword
 	return ..()
 
+/obj/item/gun/magic/staff/spellblade/do_suicide(mob/living/user)
+	. = ..()
+	if (!iscarbon(user))
+		return BRUTELOSS
+	var/mob/living/carbon/suicider = user
+	for (var/obj/item/bodypart/limb in suicider.get_bodyparts())
+		limb.dismember(BRUTE, silent = FALSE, wounding_type = WOUND_SLASH)
+		sleep(0.25 SECONDS)
+
+	return BRUTELOSS
+
+/// Welds people into flying lockers
 /obj/item/gun/magic/staff/locker
 	name = "staff of the locker"
 	desc = "An artefact that expells encapsulating bolts, for incapacitating thy enemy."

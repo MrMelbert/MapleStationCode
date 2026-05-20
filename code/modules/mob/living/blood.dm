@@ -114,7 +114,7 @@
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
-	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
+	for(var/obj/item/bodypart/iter_part as anything in get_bodyparts())
 		iter_part.update_part_wound_overlay()
 
 /// Makes a blood drop, leaking amt units of blood from the mob
@@ -138,11 +138,12 @@
 	return 0
 
 /mob/living/carbon/get_bleed_rate()
-	var/bleed_amt = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/iter_bodypart = X
-		bleed_amt += iter_bodypart.cached_bleed_rate
-	return bleed_amt
+	if(HAS_TRAIT(src, TRAIT_GODMODE) || !can_bleed())
+		return 0
+
+	. = 0
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+		. += bodypart.cached_bleed_rate
 
 /mob/living/carbon/human/get_bleed_rate()
 	. = ..()
@@ -150,13 +151,12 @@
 
 /mob/living/proc/restore_blood()
 	blood_volume = initial(blood_volume)
+	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /mob/living/carbon/restore_blood()
-	blood_volume = BLOOD_VOLUME_NORMAL
-	for(var/i in bodyparts)
-		var/obj/item/bodypart/BP = i
-		BP.setBleedStacks(0)
-	handle_blood(SSmobs.wait) // updates modifiers and whatnot
+	. = ..()
+	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts())
+		bodypart_to_restore.setBleedStacks(0)
 
 /****************************************************
 				BLOOD TRANSFERS
@@ -193,7 +193,7 @@
 		return
 
 	var/update_needed = FALSE
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		for(var/obj/item/organ/organ_bit in part)
 			if(IS_ORGANIC_ORGAN(organ_bit) || isandroid(src))
 				organ_bit.blood_dna_info = get_blood_dna_list()

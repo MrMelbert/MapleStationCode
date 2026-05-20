@@ -1319,6 +1319,9 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	abstract_type = /datum/surgery_operation/limb
 	/// Body type required to perform this operation
 	var/required_bodytype = NONE
+	/// If TRUE, this operation can be performed on stumps.
+	/// If FALSE, the target limb must be a full limb.
+	var/allow_stumps = FALSE
 
 /datum/surgery_operation/limb/all_blocked_strings()
 	. = ..()
@@ -1328,7 +1331,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		. += "the limb must not be cybernetic"
 
 /datum/surgery_operation/limb/get_operation_target(mob/living/patient, body_zone)
-	return patient.get_bodypart(deprecise_zone(body_zone))
+	return patient.get_bodypart(deprecise_zone(body_zone), allow_stumps)
 
 /datum/surgery_operation/limb/is_available(obj/item/bodypart/limb, operated_zone)
 	SHOULD_NOT_OVERRIDE(TRUE)

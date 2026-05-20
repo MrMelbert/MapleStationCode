@@ -472,7 +472,7 @@
 
 	if(total_burn > maxHealth * 4 && stat == DEAD && !HAS_TRAIT(src, TRAIT_UNHUSKABLE) && !HAS_TRAIT(src, TRAIT_HUSK))
 		var/num_seared_parts = 0
-		for(var/obj/item/bodypart/part as anything in bodyparts)
+		for(var/obj/item/bodypart/part as anything in get_bodyparts())
 			if(IS_ROBOTIC_LIMB(part) || part.burn_dam <= (LIMB_MAX_HP_DEFAULT / 3))
 				continue
 			num_seared_parts++
@@ -920,7 +920,7 @@
 
 	if(heal_flags & HEAL_LIMBS)
 		regenerate_limbs()
-		for(var/obj/item/bodypart/limb as anything in bodyparts)
+		for(var/obj/item/bodypart/limb as anything in get_bodyparts(include_stumps = TRUE))
 			limb.remove_surgical_state(ALL)
 
 	if(heal_flags & (HEAL_REFRESH_ORGANS|HEAL_ORGANS))
@@ -1037,13 +1037,15 @@
 
 	switch(new_bodypart.body_part)
 		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs + 1)
+			if(!IS_STUMP(new_bodypart))
+				set_num_legs(num_legs + 1)
+				if(!new_bodypart.bodypart_disabled)
+					set_usable_legs(usable_legs + 1)
 		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands + 1)
-			if(!new_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands + 1)
+			if(!IS_STUMP(new_bodypart))
+				set_num_hands(num_hands + 1)
+				if(!new_bodypart.bodypart_disabled)
+					set_usable_hands(usable_hands + 1)
 
 	synchronize_bodytypes()
 	synchronize_bodyshapes()
@@ -1064,13 +1066,27 @@
 
 	switch(old_bodypart.body_part)
 		if(LEG_LEFT, LEG_RIGHT)
-			set_num_legs(num_legs - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_legs(usable_legs - 1)
+			if(!IS_STUMP(old_bodypart))
+				set_num_legs(num_legs - 1)
+				if(!old_bodypart.bodypart_disabled)
+					set_usable_legs(usable_legs - 1)
 		if(ARM_LEFT, ARM_RIGHT)
-			set_num_hands(num_hands - 1)
-			if(!old_bodypart.bodypart_disabled)
-				set_usable_hands(usable_hands - 1)
+			if(!IS_STUMP(old_bodypart))
+				set_num_hands(num_hands - 1)
+				if(!old_bodypart.bodypart_disabled)
+					set_usable_hands(usable_hands - 1)
+
+	if(!special && old_bodypart.stump_typepath)
+		if(old_bodypart.type == old_bodypart.stump_typepath)
+			stack_trace("Attempted to replace a stump with a stump")
+		else
+			var/obj/item/bodypart/stump = new old_bodypart.stump_typepath()
+			stump.bodyshape = old_bodypart.bodyshape
+			stump.bodytype = old_bodypart.bodytype
+			if(!stump.try_attach_limb(src, special = TRUE))
+				// the only way this can happen is if the stump is rejected via signal
+				// not much we can do about that besides hope they know what they're doing
+				qdel(stump)
 
 	synchronize_bodytypes()
 	synchronize_bodyshapes()
@@ -1078,7 +1094,7 @@
 ///Updates the bodypart speed modifier based on our bodyparts.
 /mob/living/carbon/proc/update_bodypart_speed_modifier()
 	var/final_modification = 0
-	for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+	for(var/obj/item/bodypart/leg/bodypart in get_bodyparts())
 		final_modification += bodypart.speed_modifier
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bodypart, update = TRUE, multiplicative_slowdown = final_modification)
 
@@ -1112,9 +1128,9 @@
 			return
 		var/list/limb_list = list()
 		if(edit_action == "remove")
-			for(var/obj/item/bodypart/B as anything in bodyparts)
-				limb_list += B.body_zone
-				limb_list -= BODY_ZONE_CHEST
+			for(var/obj/item/bodypart/iter_part as anything in get_bodyparts())
+				limb_list += iter_part.body_zone
+			limb_list -= BODY_ZONE_CHEST
 		else
 			limb_list = list(BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_CHEST)
 		var/result = input(usr, "Please choose which bodypart to [edit_action]","[capitalize(edit_action)] Bodypart") as null|anything in sort_list(limb_list)
@@ -1146,7 +1162,7 @@
 					var/limb2add = input(usr, "Select a bodypart type to add", "Add/Replace Bodypart") as null|anything in sort_list(limbtypes)
 					var/obj/item/bodypart/new_bp = new limb2add()
 					if(new_bp.replace_limb(src))
-						admin_ticket_log("[key_name_admin(usr)] has replaced [src]'s [BP.type] with [new_bp.type]")
+						admin_ticket_log("key_name_admin(usr)] has replaced [src]'s [part?.type || "missing limb"] with [new_bp.type]")
 						qdel(BP)
 					else
 						to_chat(usr, "Failed to replace bodypart! They might be incompatible.")
@@ -1237,7 +1253,7 @@
 /mob/living/carbon/proc/is_bleeding()
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return FALSE
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		if(part.cached_bleed_rate)
 			return TRUE
 	return FALSE
@@ -1248,7 +1264,7 @@
 		return 0
 
 	var/total_bleed_rate = 0
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		total_bleed_rate += part.cached_bleed_rate
 
 	return total_bleed_rate

@@ -192,6 +192,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/New()
 	if(!plural_form)
 		plural_form = "[name]\s"
+	if(!examine_limb_id)
+		examine_limb_id = id
+	// Carbons determine bodypart order by this list, so we need to make sure it's sorted properly
+	sortTim(bodypart_overrides, GLOBAL_PROC_REF(cmp_bodypart_by_body_part_asc), associative = TRUE)
+
 	return ..()
 
 /// Gets a list of all species available to choose in roundstart.
@@ -1581,7 +1586,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		final_bodypart_overrides[BODY_ZONE_R_LEG] = digitigrade_legs[BODY_ZONE_R_LEG]
 		final_bodypart_overrides[BODY_ZONE_L_LEG] = digitigrade_legs[BODY_ZONE_L_LEG]
 
-	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
+	for(var/obj/item/bodypart/old_part as anything in target.get_bodyparts())
 		if((old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES) || (old_part.bodypart_flags & BODYPART_IMPLANTED))
 			continue
 
@@ -1656,7 +1661,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /// Remove body markings
 /datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman, update = TRUE)
 	var/need_update = FALSE
-	for(var/obj/item/bodypart/part as anything in hooman.bodyparts)
+	for(var/obj/item/bodypart/part as anything in hooman.get_bodyparts())
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
 			part.remove_bodypart_overlay(marking, update = FALSE)
 			need_update = TRUE
