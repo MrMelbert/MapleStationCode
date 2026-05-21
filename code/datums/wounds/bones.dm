@@ -301,7 +301,7 @@
 
 	severity = WOUND_SEVERITY_MODERATE
 	threshold_penalty = 20
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/rib_break
 	scar_keyword = "dislocate"
 	internal_bleeding_chance = 25

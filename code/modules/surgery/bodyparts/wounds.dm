@@ -324,6 +324,7 @@
 	if(!isnull(current_gauze))
 		remove_gauze(drop_location())
 
+	#warn fixme
 	current_gauze = new new_gauze.type(src, 1)
 	current_gauze.absorption_capacity = new_gauze.absorption_capacity
 	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
@@ -339,6 +340,7 @@
 		current_gauze.forceMove(remove_to)
 	else
 		current_gauze.moveToNullspace()
+	#warn fixme
 	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
 	current_gauze.worn_icon_state = initial(current_gauze.worn_icon_state)
@@ -347,28 +349,6 @@
 	current_gauze = null
 	owner.update_damage_overlays()
 	return .
-
-/**
- * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
- *
- * The passed amount of seepage is deducted from the bandage's absorption capacity, and if we reach a negative absorption capacity, the bandages falls off and we're left with nothing.
- *
- * Arguments:
- * * seep_amt - How much absorption capacity we're removing from our current bandages (think, how much blood or pus are we soaking up this tick?)
- */
-/obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
-	if(!current_gauze)
-		return
-	current_gauze.absorption_capacity -= seep_amt
-	current_gauze.update_appearance()
-	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(
-			span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
-			span_warning("[current_gauze] on your [name] falls away in rags."),
-			vision_distance = COMBAT_MESSAGE_RANGE,
-		)
-		remove_gauze(drop_location())
-	owner.update_damage_overlays()
 
 /**
  * Helper for someone helping to remove our gauze
