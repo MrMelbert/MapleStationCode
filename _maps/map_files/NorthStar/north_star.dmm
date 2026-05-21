@@ -55457,7 +55457,7 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/door/firedoor,
 /obj/structure/window/reinforced/spawner/directional/east,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron/dark/textured,
 /area/station/medical/medbay/lobby)
 "ojl" = (
@@ -71117,7 +71117,7 @@
 /area/station/medical/office)
 "ssx" = (
 /obj/item/stack/medical/suture/ekit,
-/obj/item/stack/medical/gauze/improvised{
+/obj/item/stack/medical/wrap/gauze/improvised{
 	pixel_y = 12
 	},
 /obj/structure/table,
@@ -71447,7 +71447,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate/freezer,
 /obj/item/stack/medical/suture,
-/obj/item/stack/medical/gauze/twelve,
+/obj/item/stack/medical/wrap/gauze/twelve,
 /obj/item/stack/medical/bone_gel,
 /turf/open/floor/iron/white,
 /area/station/maintenance/floor3/starboard/aft)
@@ -72211,7 +72211,7 @@
 /obj/structure/table,
 /obj/machinery/vending/wallmed/directional/north,
 /obj/machinery/duct,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "sHq" = (
