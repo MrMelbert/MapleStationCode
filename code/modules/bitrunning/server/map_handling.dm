@@ -168,8 +168,7 @@
 			continue
 
 		if(istype(thing, /obj/effect/landmark/bitrunning/loot_signal))
-			var/turf/signaler_turf = get_turf(thing)
-			signaler_turf.AddComponent(/datum/component/bitrunning_points, generated_domain)
+			generated_domain.main_crate_loc = thing.loc
 			qdel(thing)
 			continue
 
