@@ -189,9 +189,13 @@
 
 	// extreme heart rate causes heart damage
 	if(heartrate >= DANGER_HEARTBEAT_THRESHOLD || ((bloodpressure >= 180 && damage < high_threshold) || bloodpressure >= 220))
-		apply_organ_damage((heartrate >= DEADLY_HEARTBEAT_THRESHOLD ? 1 : 0.5) * seconds_per_tick)
-		// if high heart beat persists, there is a chance to stop it outright
-		if(damage > 50 && SPT_PROB(0.5 * sqrt(damage - 50), seconds_per_tick) && IS_ORGANIC_ORGAN(src))
+		// 1.5 heart damage per second, doubling to 3 heart damage when over the "deadly" threshold
+		var/heartrate_bonus = heartrate >= DEADLY_HEARTBEAT_THRESHOLD ? 2 : 1
+		apply_organ_damage(0.75 * heartrate_bonus * seconds_per_tick)
+		// if high heart beat persists, there is a chance to stop outright starting at 50 damage
+		// this formula aims for a 25% chance to stop over 60 seconds at 60 damage, or a 97.5% chance to stop over 60 seconds at 85 damage
+		// when over the "deadly" threshold, it shifts closer to a 25% chance at 57 damage or a 97.5% chance at 75 damage
+		if(damage > 50 && IS_ORGANIC_ORGAN(src) && SPT_PROB(heartrate_bonus * (0.005 * (damage - 50) ** 2), seconds_per_tick))
 			stop_on_beat()
 
 	// no blood, nothing to pump
@@ -422,7 +426,10 @@
 	else if(damage > low_threshold)
 		dmg_msg = span_warning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart hurts." : "It hurts."]") // it = "your chest"
 
-	return bpm_msg + (bpm_msg ? "<br>" : "") + dmg_msg
+	if(dmg_msg && bpm_msg)
+		return dmg_msg + "<br>\t" + bpm_msg
+
+	return dmg_msg || bpm_msg
 
 /obj/item/organ/heart/cursed
 	name = "cursed heart"
