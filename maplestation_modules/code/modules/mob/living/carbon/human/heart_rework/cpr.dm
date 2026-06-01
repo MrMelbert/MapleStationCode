@@ -93,26 +93,38 @@
 
 /// Check the pulse of a target
 /mob/living/carbon/human/proc/check_pulse(mob/living/carbon/human/target)
-	if(target.on_fire) // you have better things to worry about than a pulse
+	if(HAS_TRAIT(src, TRAIT_INCAPACITATED) || target.on_fire) // you have better things to worry about than a pulse
+		return
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+		to_chat(src, span_warning("Your hands are occupied, you can't check [target == src ? "your" : "[target.name]'s"] pulse!"))
 		return
 
 	target.balloon_alert(src, "checking pulse...")
 	visible_message(
-		span_notice("[src] checks [target.name]'s pulse..."),
-		span_notice("You check [target.name]'s pulse..."),
+		span_notice("[src] checks [target == src ? p_their() : "[target.name]'s"] pulse..."),
+		span_notice("You check [target == src ? "your" : "[target.name]'s"] pulse..."),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	target.share_blood_on_touch(src, ITEM_SLOT_NECK)
 	if(!do_after(src, 6 SECONDS, target))
 		return
-	var/own_bpm_penalty = get_bpm() > FAST_HEARTBEAT_THRESHOLD ? 1.2 : 1
-	var/bpm_a = round(target.get_bpm() * own_bpm_penalty, 1)
-	if(bpm_a <= 0)
-		to_chat(src, span_warning("<i>[target.name] has no pulse!</i>"))
+
+	var/base_bpm = target.get_bpm()
+	if(base_bpm <= 0)
+		to_chat(src, span_danger("<i>[target == src ? "You have" : "[target.name] has"] no pulse!</i>"))
 		return
 
-	var/bpm_b = round(target.get_bpm() * 1.2 * own_bpm_penalty, 1)
-	to_chat(src, span_notice("<i>[target.name]'s pulse is around [min(bpm_a, bpm_b)] to [max(bpm_a, bpm_b)] bpm.</i>"))
+	var/med_skill_bonus = 0.01 * (3 - get_highest_skill_level(list(/datum/skill/first_aid, /datum/skill/surgery)))
+	var/own_bpm_penalty = get_bpm() > FAST_HEARTBEAT_THRESHOLD ? 0.06 : 0
+	var/b_multiplier = 1.05 + med_skill_bonus + own_bpm_penalty + pick(0.01, -0.01, 0.02, -0.02, 0.03, -0.03)
+	var/a_multiplier = 0.95 - med_skill_bonus - own_bpm_penalty - pick(0.01, -0.01, 0.02, -0.02, 0.03, -0.03)
+
+	var/bpm_a  = floor(base_bpm * a_multiplier)
+	var/bpm_b = ceil(base_bpm * b_multiplier)
+
+	to_chat(src, span_notice("<i>[target == src ? "Your" : "[target.name]'s"] pulse is around [min(bpm_a, bpm_b)] to [max(bpm_a, bpm_b)] bpm.</i>"))
 
 /// Number of "beats" per CPR cycle
 /// This corresponds to N - 1 compressions and 1 breath
@@ -124,8 +136,10 @@
 /mob/living/carbon/human/proc/cpr_process(mob/living/carbon/human/target, beat = 0, panicking = FALSE)
 	set waitfor = FALSE
 
-	if(get_active_held_item() || get_inactive_held_item() || usable_hands <= 0)
-		to_chat(src, span_warning("Your hands are full, you can't perform CPR!"))
+	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
+		return
+	if(get_active_held_item() || get_inactive_held_item() || HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+		to_chat(src, span_warning("Your hands are occupied, you can't perform CPR!"))
 		return
 
 	// -- cpr begins --

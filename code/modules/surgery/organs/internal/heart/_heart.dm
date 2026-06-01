@@ -38,6 +38,9 @@
 	/// Keeps the random variation on BPM consistent so it doesn't look weird
 	VAR_PRIVATE/random_bpm_modifier = 0
 
+	VAR_FINAL/last_bpm = 0
+	VAR_FINAL/last_bp = 0
+
 /obj/item/organ/heart/update_icon_state()
 	. = ..()
 	icon_state = "[base_icon_state]-[beating ? "on" : "off"]"
@@ -46,7 +49,8 @@
 	. = ..()
 	if(beating)
 		organ_owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
-	random_bpm_modifier = rand(-5, 5)
+	last_bpm = get_heart_rate()
+	last_bp = get_blood_pressure()
 
 /obj/item/organ/heart/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -54,6 +58,8 @@
 		organ_owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 12 SECONDS)
 	playing_heartbeat_sfx = BEAT_NONE
+	last_bpm = 0
+	last_bp = 0
 	organ_owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 	REMOVE_TRAIT(organ_owner, TRAIT_LABOURED_BREATHING, type)
 
@@ -86,10 +92,12 @@
 	beating = FALSE
 	update_appearance()
 	playing_heartbeat_sfx = BEAT_NONE
+	last_bpm = 0
+	last_bp = 0
 	if(!isnull(owner))
 		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 		owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
-		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH|UPDATE_SELF_HEALTH)
 	return TRUE
 
 /obj/item/organ/heart/proc/Restart()
@@ -100,7 +108,7 @@
 	update_appearance()
 	if(!isnull(owner))
 		owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
-		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH|UPDATE_SELF_HEALTH)
 	return TRUE
 
 /obj/item/organ/heart/proc/stop_on_beat()
@@ -118,20 +126,25 @@
 /obj/item/organ/heart/proc/is_beating()
 	return beating
 
-/obj/item/organ/heart/get_status_text(advanced, add_tooltips)
-	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", \
-			"Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies).", add_tooltips)
-
-	return ..()
-
 /obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
 	var/bpm = get_heart_rate()
 	. = "[IS_ORGANIC_ORGAN(src) ? "Heart" : "Pulse"] rate: [bpm]" + span_slightly_smaller("bpm")
 	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
 		. = span_alert(.)
 
-	if(advanced && IS_ORGANIC_ORGAN(src))
+	if(bpm <= 0)
+		if(IS_ROBOTIC_ORGAN(src))
+			. += " "
+			. += span_boldwarning(conditional_tooltip("(Critical: Heart Malfunction)", \
+				"Heart has stopped entirely. Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies). \
+				Heart transplant surgery may be necessary to return circulation if the heart has sustained critical damage.", add_tooltips))
+		else
+			. += " "
+			. += span_boldwarning(conditional_tooltip("(Critical: Cardiac Arrest)", \
+				"Heart has stopped entirely. Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies). \
+				Coronary artery bypass or heart transplant surgery may be necessary to return circulation if the heart has sustained critical damage.", add_tooltips))
+
+	else if(advanced && IS_ORGANIC_ORGAN(src))
 		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
 			. += " "
 			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
@@ -157,15 +170,16 @@
 /obj/item/organ/heart/on_life(seconds_per_tick, times_fired)
 	. = ..()
 
-	// randomly climbs up and down to create believable variation in heart rate
-	random_bpm_modifier = clamp(random_bpm_modifier + rand(-1, 1), -10, 10)
-
 	// not needing a heart and a non-beating heart are treated the same - don't check blood pressure, don't do heartbeat sfx, etc.
 	if(!is_beating() || !owner.needs_heart() )
 		return
 
 	var/heartrate = get_heart_rate()
 	var/bloodpressure = get_blood_pressure(heartrate)
+	if((round(last_bpm, 10) - round(heartrate, 10)) != 0)
+		SShealth_updates.queue_update(owner, UPDATE_SELF_HEALTH)
+	last_bpm = heartrate
+	last_bp = bloodpressure
 	if(SEND_SIGNAL(owner, COMSIG_CARBON_HEARTBEAT, src, seconds_per_tick) & HEARTBEAT_HANDLED)
 		return
 
@@ -257,13 +271,15 @@
 	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner))
 		return 0
 
-	var/base_amount = 80 + random_bpm_modifier
+	var/base_amount = 80 + rand(-5, 5)
 	var/final_amount = base_amount
 	// arbitrary modifiers
 	final_amount += (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST))
 	final_amount -= (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW))
-	// hypoxia
+	// hypoxia (not hypoxemia, which is modelled more from blood volume)
 	final_amount += owner.getOxyLoss() / 5
+	// fake pain / general exertion
+	final_amount += owner.getStaminaLoss() / 10
 	// stress (primarily pain and shock modelled here)
 	final_amount += owner.pain_controller?.get_total_pain() / 5
 	final_amount += owner.pain_controller?.traumatic_shock / 2
@@ -345,7 +361,7 @@
 
 /mob/living/carbon/human/get_bpm()
 	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
-	return heart?.get_heart_rate() || 0
+	return heart?.last_bpm || 0
 
 /// Return the mob's blood pressure
 /mob/living/proc/get_bp()
@@ -356,7 +372,7 @@
 
 /mob/living/carbon/human/get_bp()
 	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
-	return heart?.get_blood_pressure() || 0
+	return heart?.last_bp || 0
 
 /// The IRL average pressure of a pulse
 #define AVERAGE_HUMAN_PULSE_PRESSURE 40

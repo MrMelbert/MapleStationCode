@@ -736,23 +736,48 @@
 	if(SEND_SIGNAL(src, COMSIG_CARBON_UPDATING_HEALTH_HUD) & COMPONENT_OVERRIDE_HEALTH_HUD)
 		return
 
+	hud_used.healths.icon_state = get_health_hud_icon()
+
+/mob/living/carbon/proc/get_health_hud_icon()
 	if(stat >= SOFT_CRIT)
-		hud_used.healths.icon_state = "health6"
-		return
+		return "health6"
 
 	switch(100 - crit_percent())
 		if(95 to INFINITY)
-			hud_used.healths.icon_state = "health0"
+			return "health0"
 		if(80 to 95)
-			hud_used.healths.icon_state = "health1"
+			return "health1"
 		if(60 to 80)
-			hud_used.healths.icon_state = "health2"
+			return "health2"
 		if(40 to 60)
-			hud_used.healths.icon_state = "health3"
+			return "health3"
 		if(20 to 40)
-			hud_used.healths.icon_state = "health4"
+			return "health4"
 		else
-			hud_used.healths.icon_state = "health5"
+			return "health5"
+
+/mob/living/carbon/human/get_health_hud_icon()
+	switch(get_bpm())
+		if(0) // not beating or no heart
+			if(!needs_heart())
+				return "[..()]-alwaysflat"
+
+			return "health6"
+
+		if(70 to 90) // standard
+			return "health1"
+
+		if(60 to 70, 90 to 120) // elevated
+			return "health2"
+
+		if(50 to 60, 120 to 160) // high
+			return "health3"
+
+		if(30 to 50, 160 to DANGER_HEARTBEAT_THRESHOLD) // very high
+			return "health4"
+
+		if(10 to 30, DANGER_HEARTBEAT_THRESHOLD to INFINITY) // critical
+			return "health5"
 
 /// Upsed specifically to update the spacesuit hud element
 /mob/living/carbon/proc/update_spacesuit_hud_icon(cell_state = "empty")

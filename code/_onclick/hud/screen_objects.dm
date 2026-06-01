@@ -646,8 +646,16 @@
 
 /atom/movable/screen/healths
 	name = "health"
+	icon = 'maplestation_modules/icons/hud/screen_gen.dmi'
 	icon_state = "health0"
 	screen_loc = ui_health
+	mouse_over_pointer = MOUSE_HAND_POINTER
+
+/atom/movable/screen/healths/Click(location, control, params)
+	. = ..()
+	if(ishuman(usr))
+		var/mob/living/carbon/human/human_user = usr
+		human_user.check_pulse(human_user)
 
 /atom/movable/screen/healths/alien
 	icon = 'icons/hud/screen_alien.dmi'
