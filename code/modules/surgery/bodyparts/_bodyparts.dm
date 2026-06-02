@@ -636,10 +636,9 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(seconds_per_tick, times_fired)
 	SHOULD_CALL_PARENT(TRUE)
-	if(!(bodypart_flags & BODYPART_STUMP))
-		return
-	if(generic_bleedstacks < 2 && !seep_gauze(0.1 * seconds_per_tick))
-		adjust_bleed_stacks(2 - generic_bleedstacks)
+
+	if((biological_state & BIOSTATE_HAS_VESSELS) && (HAS_SURGERY_STATE(surgery_state, SURGERY_VESSELS_CLAMPED|SURGERY_VESSELS_UNCLAMPED)))
+		seep_gauze((HAS_SURGERY_STATE(surgery_state, SURGERY_VESSELS_UNCLAMPED) ? UNCLAMPED_VESSELS_BLEEDING : CLAMPED_VESSELS_BLEEDING) * 0.33 * seconds_per_tick)
 
 /**
  * #receive_damage
@@ -1385,12 +1384,15 @@
 
 		// modify rate so cutting everything open won't nuke people
 		if(body_zone == BODY_ZONE_HEAD)
-			surgery_bloodloss *= 0.5
+			surgery_bloodloss *= (bodypart_flags & BODYPART_STUMP) ? 1 : 0.5
 		else if(body_zone != BODY_ZONE_CHEST)
-			surgery_bloodloss *= 0.25
+			surgery_bloodloss *= (bodypart_flags & BODYPART_STUMP) ? 0.75 : 0.25
+
 		// bonus for being gauzed up
-		if(LAZYACCESS(applied_items, LIMB_ITEM_GAUZE))
-			surgery_bloodloss *= 0.4
+		if(!HAS_SURGERY_STATE(surgery_state, SURGERY_ORGANS_CUT))
+			var/obj/item/stack/medical/wrap/gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
+			if(gauze?.absorption_capacity > 0)
+				surgery_bloodloss *= 0.5
 
 		cached_bleed_rate += surgery_bloodloss
 
@@ -1524,6 +1526,8 @@
 	if(!current_gauze || current_gauze.absorption_capacity <= 0)
 		return FALSE
 	current_gauze.absorption_capacity = max(current_gauze.absorption_capacity - seep_amt, 0)
+	if(current_gauze.absorption_capacity <= 0)
+		refresh_bleed_rate()
 	current_gauze.update_appearance()
 	owner.update_damage_overlays()
 	return TRUE

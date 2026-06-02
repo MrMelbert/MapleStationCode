@@ -89,7 +89,7 @@
 	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, special, dismembered)
 	SEND_SIGNAL(src, COMSIG_BODYPART_REMOVED, owner, special, dismembered)
 	bodypart_flags &= ~BODYPART_IMPLANTED //limb is out and about, it can't really be considered an implant
-	owner.remove_bodypart(src, special)
+	owner.remove_bodypart(src, special, dismembered)
 
 	for(var/datum/scar/scar as anything in scars)
 		scar.victim = null

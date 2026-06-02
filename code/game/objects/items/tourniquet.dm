@@ -67,9 +67,9 @@
 		return PROCESS_KILL
 
 	if(SPT_PROB(2, seconds_per_tick))
-		limb.apply_damage(1, BRUTE, limb, forced = TRUE, attacking_item = src) // damage from cutting off blood flow
-		limb.apply_damage(2, PAIN, limb, forced = TRUE, attacking_item = src) // pain from tight wrapping
-		limb.apply_damage(4, STAMINA, limb, forced = TRUE, attacking_item = src)
+		limb.owner.apply_damage(1 * seconds_per_tick, BRUTE, limb, forced = TRUE, attacking_item = src) // damage from cutting off blood flow
+		limb.owner.apply_damage(2 * seconds_per_tick, PAIN, limb, forced = TRUE, attacking_item = src) // pain from tight wrapping
+		limb.owner.apply_damage(4 * seconds_per_tick, STAMINA, limb, forced = TRUE, attacking_item = src)
 
 	if(limb.body_zone != BODY_ZONE_HEAD)
 		return

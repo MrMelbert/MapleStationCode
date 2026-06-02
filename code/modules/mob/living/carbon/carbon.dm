@@ -1067,7 +1067,7 @@
 	synchronize_bodyshapes()
 
 ///Proc to hook behavior on bodypart removals.  Do not directly call. You're looking for [/obj/item/bodypart/proc/drop_limb()].
-/mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart, special)
+/mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart, special, dismembered)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(special)
@@ -1100,6 +1100,8 @@
 			stump.bodyshape = old_bodypart.bodyshape
 			stump.bodytype = old_bodypart.bodytype
 			stump.add_biostate(old_bodypart.biological_state & ~BIO_JOINTED)
+			if(dismembered)
+				stump.add_surgical_state(SURGERY_SKIN_OPEN|SURGERY_VESSELS_UNCLAMPED)
 			if(!stump.try_attach_limb(src, special = TRUE))
 				// the only way this can happen is if the stump is rejected via signal
 				// not much we can do about that besides hope they know what they're doing
