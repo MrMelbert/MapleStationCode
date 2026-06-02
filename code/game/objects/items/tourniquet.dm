@@ -45,8 +45,8 @@
 		if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			var/obj/item/bodypart/leg/leg = limb
 			leg.set_speed_modifier(leg.speed_modifier + 0.5)
-		if(BODY_ZONE_HEAD)
-			START_PROCESSING(SSobj, src)
+
+	START_PROCESSING(SSobj, src)
 
 /obj/item/tourniquet/proc/on_removed_from_limb(datum/source, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
@@ -58,20 +58,28 @@
 		if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			var/obj/item/bodypart/leg/leg = limb
 			leg.set_speed_modifier(leg.speed_modifier - 0.5)
-		if(BODY_ZONE_HEAD)
-			START_PROCESSING(SSobj, src)
+
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/tourniquet/process(seconds_per_tick)
 	var/obj/item/bodypart/limb = loc
 	if(!istype(limb) || isnull(limb.owner))
 		return PROCESS_KILL
+
+	if(SPT_PROB(2, seconds_per_tick))
+		limb.apply_damage(1, BRUTE, limb, forced = TRUE, attacking_item = src) // damage from cutting off blood flow
+		limb.apply_damage(2, PAIN, limb, forced = TRUE, attacking_item = src) // pain from tight wrapping
+		limb.apply_damage(4, STAMINA, limb, forced = TRUE, attacking_item = src)
+
+	if(limb.body_zone != BODY_ZONE_HEAD)
+		return
 	if(HAS_TRAIT(limb.owner, TRAIT_NOBREATH))
 		return // you win this time
 
 	limb.owner.losebreath += 1 * seconds_per_tick // incapable of breathing
-	limb.owner.apply_damage(1 * seconds_per_tick, OXY, BODY_ZONE_HEAD, forced = TRUE) // no blood getting to brain
+	limb.owner.apply_damage(1 * seconds_per_tick, OXY, BODY_ZONE_HEAD, forced = TRUE, attacking_item = src) // damage from suffocating
 	if(SPT_PROB(6, seconds_per_tick))
-		limb.owner.apply_damage(10, STAMINA, BODY_ZONE_HEAD, forced = TRUE)
+		limb.owner.apply_damage(10, STAMINA, BODY_ZONE_HEAD, forced = TRUE, attacking_item = src)
 	if(SPT_PROB(5, seconds_per_tick))
 		limb.owner.adjust_eye_blur(4 SECONDS)
 	if(SPT_PROB(4, seconds_per_tick))
@@ -143,5 +151,6 @@
 
 	// pain from tight wrapping
 	patient.apply_damage(5, BRUTE, limb, attacking_item = src)
+	patient.apply_damage(10, PAIN, limb, attacking_item = src)
 	patient.apply_damage(20, STAMINA, limb, attacking_item = src)
 	return TRUE
