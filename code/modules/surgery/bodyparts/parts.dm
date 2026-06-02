@@ -207,8 +207,8 @@
 	id = "arm_speed_penalty"
 	alert_type = null
 	status_type = STATUS_EFFECT_MULTIPLE
-	duration = STATUS_EFFECT_PERMANENT
-	tick_interval = STATUS_EFFECT_NO_TICK
+	duration = -1
+	tick_interval = -1
 	/// Typepath of the actionspeed modifier applied by this status effect
 	VAR_FINAL/actionspeed_typepath = /datum/actionspeed_modifier/arm_speed_penalty
 	/// Index this status effect is applied for

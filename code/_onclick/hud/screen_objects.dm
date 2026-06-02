@@ -721,8 +721,8 @@
 	for(var/body_zone in owner.get_all_limbs())
 		var/atom/movable/screen/healthdoll_limb/limb = new(src, null)
 		// layer chest above other limbs, it's the center after all
-		limb.layer = i == BODY_ZONE_CHEST ? layer + 0.05 : layer
-		limbs[i] = limb
+		limb.layer = body_zone == BODY_ZONE_CHEST ? layer + 0.05 : layer
+		limbs[body_zone] = limb
 		// why viscontents? why not overlays? - because i want to animate filters
 		vis_contents += limb
 	update_appearance()

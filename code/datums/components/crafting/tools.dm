@@ -87,6 +87,6 @@
 		/obj/item/stack/rods = 1,
 		/obj/item/stack/sheet/glass = 1,
 	)
-	crafting_flags = CRAFT_SKIP_MATERIALS_PARITY
+	// crafting_flags = CRAFT_SKIP_MATERIALS_PARITY
 	tool_behaviors = list(TOOL_SCREWDRIVER)
 	category = CAT_TOOLS

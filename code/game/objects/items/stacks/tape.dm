@@ -17,25 +17,22 @@
 	apply_verb = "taping"
 	heal_begin_sound = 'sound/items/duct_tape_rip.ogg'
 	heal_end_sound = 'sound/items/duct_tape_rip.ogg'
-
+	greyscale_config = /datum/greyscale_config/tape
+	greyscale_colors = "#B2B2B2#BD6A62"
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	grind_results = list(/datum/reagent/cellulose = 5)
 	/// Prefix applied to the target when wrapped with this tape.
 	var/prefix = "sticky"
 	/// Embed applied to the target when wrapped with this tape.
 	var/conferred_embed = /datum/embed_data/sticky_tape
 	///The tape type you get when ripping off a piece of tape.
 	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
-	greyscale_config = /datum/greyscale_config/tape
-	greyscale_colors = "#B2B2B2#BD6A62"
-	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 
 /datum/embed_data/sticky_tape
 	pain_mult = 0
 	jostle_pain_mult = 0
 	ignore_throwspeed_threshold = TRUE
-
-/obj/item/stack/medical/wrap/sticky_tape/grind_results()
-	return list(/datum/reagent/cellulose = 5)
 
 /obj/item/stack/medical/wrap/sticky_tape/attack_hand(mob/user, list/modifiers)
 	if(user.get_inactive_held_item() == src)

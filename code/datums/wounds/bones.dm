@@ -139,7 +139,7 @@
 	if(!prob((severity - 1) * 15))
 		return NONE
 	// bonus roll if you splint it
-	if(prob(180 * (1 - get_splint_power())))
+	if(prob(180 * (1 - limb.get_splint_factor())))
 		return NONE
 
 	var/painless = !CAN_FEEL_PAIN(victim)
@@ -178,7 +178,7 @@
 	if(footstep_counter >= 8)
 		footstep_counter = 1
 
-	if(get_splint_power() <= 0.75 || !CAN_FEEL_PAIN(victim))
+	if(limb.get_splint_factor() <= 0.75 || !CAN_FEEL_PAIN(victim))
 		return
 	if(limb.body_zone == SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		return
@@ -203,7 +203,7 @@
 
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return NONE
-	if(!CAN_FEEL_PAIN(victim) || get_splint_power() <= 0.75)
+	if(!CAN_FEEL_PAIN(victim) || limb.get_splint_factor() <= 0.75)
 		return NONE
 	var/pain_prob = min(75, 20 * severity * (victim.body_position == LYING_DOWN ? 1.5 : 1))
 	if(!prob(pain_prob))
@@ -224,10 +224,7 @@
 		return
 	if(limb.body_zone != BODY_ZONE_CHEST || !limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-	var/splint_mod = get_splint_power()
-	if(splint_mod < 1)
-		wounding_dmg *= (1 - splint_mod)
-	var/blood_bled = sqrt(wounding_dmg) * (severity * 0.75) * pick(0.75, 1, 1.25) // melbert todo : push upstream
+	var/blood_bled = sqrt(wounding_dmg) * severity * limb.get_splint_factor() * pick(0.66, 0.75, 1) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
 			victim.visible_message(

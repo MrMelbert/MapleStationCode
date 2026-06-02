@@ -12,7 +12,7 @@
 		TOOL_WIRECUTTER = 2,
 		/obj/item/stack/medical/wrap/sticky_tape/surgical = 5,
 		/obj/item/stack/cable_coil = 10,
-		/obj/item/stack/sticky_tape = 10,
+		/obj/item/stack/medical/wrap/sticky_tape = 10,
 	)
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 
@@ -85,7 +85,7 @@
 		TOOL_HEMOSTAT = 1,
 		TOOL_WIRECUTTER = 1,
 		/obj/item/stack/medical/wrap/sticky_tape/surgical = 2,
-		/obj/item/stack/sticky_tape = 3,
+		/obj/item/stack/medical/wrap/sticky_tape = 3,
 		/obj/item/stack/cable_coil = 5,
 	)
 	damage_descriptor = "hydraulics leak"

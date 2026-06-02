@@ -17,12 +17,12 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
-	apply_verb = "treating"
+
 	/// Sound played when heal doafter begins
 	var/heal_sound
 
 	/// Verb used when applying this object to someone
-	var/apply_verb = "applying"
+	var/apply_verb = "treating"
 	/// If set and this used as a splint for a broken bone wound,
 	/// This is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_factor
@@ -394,6 +394,10 @@
 	heal_sound = SFX_CLOTH_RIP
 	/// tracks how many times we've been scrubbed thoroughly
 	var/times_cleaned = 0
+	/// Sound when starting a wrap
+	var/heal_begin_sound = SFX_BANDAGE_BEGIN
+	/// Sound when finishing a wrap
+	var/heal_end_sound = SFX_BANDAGE_END
 
 /obj/item/stack/medical/wrap/update_name(updates)
 	. = ..()
@@ -423,7 +427,7 @@
 	else
 		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
 
-/obj/item/stack/medical/wrap/can_merge(obj/item/stack/medical/gauze/check, inhand)
+/obj/item/stack/medical/wrap/can_merge(obj/item/stack/medical/wrap/check, inhand)
 	. = ..()
 	if(!.)
 		return .
@@ -532,11 +536,16 @@
 		wound.sanitization += sanitization * (wound.infection > 0.1 ? 0.2 : 1)
 		wound.flesh_healing += flesh_regeneration * (wound.infection > 0.1 ? 0 : 1)
 
+	worn_icon_state = "[limb.body_zone][rand(1, 3)]"
+
 /// Used via signal to update wounds
 /obj/item/stack/medical/wrap/proc/update_wounds(datum/source, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 	for(var/datum/wound/gauzed as anything in limb.wounds)
 		gauzed.update_inefficiencies()
+
+	update_appearance()
+	limb.owner?.update_damage_overlays()
 
 /obj/item/stack/medical/wrap/gauze
 	name = "medical gauze"
@@ -554,13 +563,9 @@
 	splint_factor = 0.7
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/wrap/gauze
-	heal_end_sound = SFX_BANDAGE_END
-	heal_begin_sound = SFX_BANDAGE_BEGIN
 	drop_sound = SFX_CLOTH_DROP
 	pickup_sound = SFX_CLOTH_PICKUP
-
-/obj/item/stack/medical/wrap/gauze/grind_results()
-	return list(/datum/reagent/cellulose = 2)
+	grind_results = list(/datum/reagent/cellulose = 2)
 
 /obj/item/stack/medical/wrap/gauze/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	. = ..()

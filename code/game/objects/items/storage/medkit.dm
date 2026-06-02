@@ -75,7 +75,7 @@
 		/obj/item/implanter,
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
-		/obj/item/stack/sticky_tape,
+		/obj/item/stack/medical/wrap/sticky_tape,
 		/obj/item/razor,
 	)
 

@@ -388,7 +388,7 @@
 /datum/wound/proc/get_effective_actionspeed_modifier()
 	. = interaction_efficiency_penalty - 1
 	if(wound_flags & ACCEPTS_GAUZE)
-		. *= get_splint_power()
+		. *= limb.get_splint_factor()
 	return .
 
 /// Returns the decisecond multiplier of any click interactions, assuming our limb is being used.
@@ -413,10 +413,7 @@
 			limp_slowdown = initial(limp_slowdown) * splint_factor
 			limp_chance = initial(limp_chance) * splint_factor
 		else if(limb.body_zone in GLOB.arm_zones)
-			if(splint_factor < 1)
-				set_interaction_efficiency_penalty(1 + (get_effective_actionspeed_modifier() * splint_factor))
-			else
-				set_interaction_efficiency_penalty(initial(interaction_efficiency_penalty))
+			update_actionspeed_modifier()
 
 		if(initial(disabling))
 			set_disabling(splint_factor < 1)
@@ -629,7 +626,8 @@
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
 /datum/wound/proc/get_self_check_description(self_aware, medical_skill, list/covering)
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		return ""
 	for(var/obj/item/clothing/clothing as anything in covering)
 		if(clothing.clothing_flags & THICKMATERIAL)

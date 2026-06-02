@@ -138,7 +138,7 @@
 	return 0
 
 /mob/living/carbon/get_bleed_rate()
-	if(HAS_TRAIT(src, TRAIT_GODMODE) || !can_bleed())
+	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return 0
 
 	. = 0
@@ -151,12 +151,12 @@
 
 /mob/living/proc/restore_blood()
 	blood_volume = initial(blood_volume)
-	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /mob/living/carbon/restore_blood()
 	. = ..()
 	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts())
 		bodypart_to_restore.setBleedStacks(0)
+	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /****************************************************
 				BLOOD TRANSFERS

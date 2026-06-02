@@ -8,7 +8,8 @@
 /datum/wound/pierce/get_self_check_description(self_aware, medical_skill, list/obj/item/covering)
 	if(!limb.can_bleed())
 		return ..()
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		return ""
 
 	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
@@ -40,9 +41,10 @@
 			return span_boldwarning("It's leaking [blood_name] from a major [shown_name]!!")
 
 /datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
-	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(!old_wound && current_gauze && (wound_flags & ACCEPTS_GAUZE))
 		// oops your existing gauze got penetrated through! need a new one now
-		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
+		limb.seep_gauze(initial(current_gauze.absorption_capacity) * 0.8)
 	return ..()
 
 /datum/wound/pierce/bleed
@@ -116,7 +118,7 @@
 		return BLOOD_FLOW_STEADY
 	if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 		return BLOOD_FLOW_INCREASING
-	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE) || clot_rate > 0)
+	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE))
 		return BLOOD_FLOW_DECREASING
 	return BLOOD_FLOW_STEADY
 
@@ -143,10 +145,7 @@
 	if(current_gauze?.absorption_rate)
 		var/gauze_power = current_gauze.absorption_rate
 		limb.seep_gauze(gauze_power * seconds_per_tick)
-		adjust_blood_flow((-clot_rate * seconds_per_tick) + (-gauze_power * gauzed_clot_rate * seconds_per_tick))
-	//otherwise, only clot if it's a bleeder
-	else if(limb.can_bleed())
-		adjust_blood_flow(-clot_rate * seconds_per_tick)
+		adjust_blood_flow(-gauze_power * gauzed_clot_rate * seconds_per_tick)
 
 /datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
 	. = ..()

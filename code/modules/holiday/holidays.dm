@@ -402,11 +402,11 @@
 	begin_day = 1
 	begin_month = JULY
 	holiday_hat = /obj/item/clothing/head/costume/nursehat
-	holiday_mail = list(
-		/obj/item/stack/medical/wrap/gauze,
-		/obj/item/stack/medical/ointment,
-		/obj/item/storage/box/bandages,
-	)
+	// holiday_mail = list(
+	// 	/obj/item/stack/medical/wrap/gauze,
+	// 	/obj/item/stack/medical/ointment,
+	// 	/obj/item/storage/box/bandages,
+	// )
 
 /datum/holiday/ufo
 	name = "UFO Day"

@@ -223,7 +223,7 @@
 		TOOL_WRENCH = 1,
 		TOOL_RETRACTOR = 1.33,
 	)
-	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC | OPERATION_NO_PATIENT_REQUIRED
+	operation_flags = OPERATION_SELF_OPERABLE | OPERATION_MECHANIC
 	time = 2.4 SECONDS
 	preop_sound = 'sound/items/ratchet.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED

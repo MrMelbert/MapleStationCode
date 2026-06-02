@@ -67,7 +67,7 @@
 	if(flesh_healing > 0)
 		// good bandages multiply the length of flesh healing
 		var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
-		var/bandage_factor = limb.current_gauze?.burn_cleanliness_bonus || 1
+		var/bandage_factor = current_gauze?.burn_cleanliness_bonus || 1
 		flesh_damage = max(flesh_damage - (damage_decay_mod * seconds_per_tick), 0)
 		flesh_healing = max(flesh_healing - (heal_decay_mod * bandage_factor * seconds_per_tick), 0) // good bandages multiply the length of flesh healing
 
@@ -299,8 +299,9 @@
 		qdel(src)
 
 /datum/wound/flesh/burn/wound_injury(datum/wound/old_wound, attack_direction)
-	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
-		qdel(limb.remove_gauze())
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(!old_wound && current_gauze && (wound_flags & ACCEPTS_GAUZE))
+		qdel(current_gauze)
 		// oops your existing gauze got burned, need a new one now
 		var/obj/effect/decal/cleanable/ash/ash = new(limb.drop_location())
 		ash.desc += " It looks like it used to be some kind of bandage."

@@ -1070,6 +1070,7 @@
 			layer = -DAMAGE_LAYER,
 		)
 		LAZYADD(overlays, burn_overlay)
+	var/obj/item/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
 	if(current_gauze)
 		var/mutable_appearance/gauze_overlay = current_gauze.build_worn_icon(
 			default_layer = DAMAGE_LAYER - 0.1, // proc inverts it for us
@@ -1457,7 +1458,7 @@
 /obj/item/bodypart/proc/can_bleed()
 	SHOULD_BE_PURE(TRUE)
 
-	return ((biological_state & BIO_BLOODED) && (!owner || owner.can_bleed()))
+	return ((biological_state & BIO_BLOODED) && (!owner || HAS_TRAIT(owner, TRAIT_NOBLOOD)))
 
 /**
  * Inserts an item into the applied items list for this bodypart
@@ -1516,17 +1517,10 @@
  */
 /obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
-	if(!current_gauze || !current_gauze.absorption_capacity)
+	if(!current_gauze || current_gauze.absorption_capacity <= 0)
 		return FALSE
-	current_gauze.absorption_capacity -= seep_amt
+	current_gauze.absorption_capacity = max(current_gauze.absorption_capacity - seep_amt, 0)
 	current_gauze.update_appearance()
-	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(
-			span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
-			span_warning("[current_gauze] on your [name] falls away in rags."),
-			vision_distance = COMBAT_MESSAGE_RANGE,
-		)
-		remove_gauze(drop_location())
 	owner.update_damage_overlays()
 	return TRUE
 

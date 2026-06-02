@@ -57,14 +57,12 @@
 	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
-	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	var/adjacent = user.Adjacent(src)
+	var/treatment_distance = isliving(user) && get_dist(src, user) <= 3
 	for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 
-		var/treatment_distance = isliving(user) && get_dist(src, user) <= CARBON_EXAMINE_EMBEDDING_MAX_DIST
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
 			if(embedded.get_embed().stealthy_embed)
 				continue
@@ -189,7 +187,8 @@
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
-			if(!body_part.current_gauze && body_part.cached_bleed_rate)
+			var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(body_part.applied_items, LIMB_ITEM_GAUZE)
+			if(!current_gauze && body_part.cached_bleed_rate)
 				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
 				grasped_limbs += body_part.plaintext_zone

@@ -184,7 +184,6 @@
 		target = limb.owner,
 		affected_locations = list(limb, chest),
 		pain_message = "[surgeon] begins to [tool.singular_name] [limb] to your body!",
-		mechanical_surgery = IS_ROBOTIC_LIMB(limb),
 	)
 
 /datum/surgery_operation/limb/secure_arbitrary_prosthetic/on_success(obj/item/bodypart/limb, mob/living/surgeon, obj/item/stack/medical/tool, list/operation_args)
@@ -200,7 +199,6 @@
 		target = limb.owner,
 		affected_locations = list(limb, chest),
 		pain_message = "You feel more secure as your prosthetic is firmly attached to your body!",
-		mechanical_surgery = IS_ROBOTIC_LIMB(limb),
 	)
 	limb.remove_surgical_state(SURGERY_PROSTHETIC_UNSECURED)
 	limb.AddComponent(/datum/component/item_as_prosthetic_limb, null, 0) // updates drop probability to zero

@@ -235,10 +235,10 @@
 
 	if(href_list["gauze_limb"])
 		var/obj/item/bodypart/gauzed = locate(href_list["gauze_limb"]) in bodyparts
-		if(isnull(gauzed?.current_gauze))
-			return
-		// rest of the sanity is handled in the proc itself
-		gauzed.help_remove_gauze(usr)
+		var/obj/item/stack/medical/wrap/gauze = LAZYACCESS(gauzed?.applied_items, LIMB_ITEM_GAUZE)
+		if(!isnull(gauze))
+			// rest of the sanity is handled in the proc itself
+			gauzed.help_remove_gauze(usr)
 		return
 
 	if(href_list["remove_tourniquet"])
@@ -1179,7 +1179,7 @@
 					var/limb2add = input(usr, "Select a bodypart type to add", "Add/Replace Bodypart") as null|anything in sort_list(limbtypes)
 					var/obj/item/bodypart/new_bp = new limb2add()
 					if(new_bp.replace_limb(src))
-						admin_ticket_log("key_name_admin(usr)] has replaced [src]'s [part?.type || "missing limb"] with [new_bp.type]")
+						admin_ticket_log("key_name_admin(usr)] has replaced [src]'s [BP?.type || "missing limb"] with [new_bp.type]")
 						qdel(BP)
 					else
 						to_chat(usr, "Failed to replace bodypart! They might be incompatible.")

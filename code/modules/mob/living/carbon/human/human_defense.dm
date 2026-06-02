@@ -568,7 +568,7 @@
 		if(bodypart_report)
 			combined_msg += "[span_notice("&rdsh;")] [bodypart_report]"
 
-	var/tox = getToLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
+	var/tox = getToxLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
 	switch(tox)
 		if(10 to 20)
 			combined_msg += span_danger("You feel sick.")

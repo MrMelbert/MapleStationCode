@@ -441,7 +441,7 @@
 				// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
 				visible_message(span_smallnoticeital("[src] examines [p_them()]self."), \
 					span_notice("You check yourself for shrapnel."))
-			if(I.is_embed_harmless())
+			if(weapon.is_embed_harmless())
 				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(weapon)];embedded_limb=[REF(limb)]' class='warning'>There is \a [weapon] stuck to your [limb.plaintext_zone]!</a>")
 			else
 				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(weapon)];embedded_limb=[REF(limb)]' class='warning'>There is \a [weapon] embedded in your [limb.plaintext_zone]!</a>")
