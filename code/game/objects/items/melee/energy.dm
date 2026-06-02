@@ -1,5 +1,6 @@
 /obj/item/melee/energy
 	icon = 'icons/obj/weapons/transforming_energy.dmi'
+	abstract_type = /obj/item/melee/energy
 	max_integrity = 200
 	armor_type = /datum/armor/melee_energy
 	attack_verb_continuous = list("hits", "taps", "pokes")

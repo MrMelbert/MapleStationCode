@@ -6,6 +6,7 @@
 	name = "grown_weapon"
 	icon = 'icons/obj/service/hydroponics/harvest.dmi'
 	worn_icon = 'icons/mob/clothing/head/hydroponics.dmi'
+	abstract_type = /obj/item/grown
 	resistance_flags = FLAMMABLE
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'

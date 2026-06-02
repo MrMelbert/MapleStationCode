@@ -1,5 +1,6 @@
 /mob/living/silicon
 	gender = NEUTER
+	abstract_type = /mob/living/silicon
 	has_unlimited_silicon_privilege = TRUE
 	verb_say = "states"
 	verb_ask = "queries"

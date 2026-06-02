@@ -30,6 +30,8 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
  * Singleton that holds all the information about each loadout items, and how to equip them.
  */
 /datum/loadout_item
+	/// The abstract parent of this loadout item, to determine which items to not instantiate
+	abstract_type = /datum/loadout_item
 	/// The category of the loadout item. Set automatically in New
 	VAR_FINAL/datum/loadout_category/category
 	/// Displayed name of the loadout item.
@@ -42,8 +44,6 @@ GLOBAL_LIST_INIT_TYPED(all_loadout_categories, /datum/loadout_category, init_loa
 	var/loadout_flags = NONE
 	/// If set, this item can only be selected during the holiday specified.
 	var/required_holiday
-	/// The abstract parent of this loadout item, to determine which items to not instantiate
-	var/abstract_type = /datum/loadout_item
 	/// The actual item path of the loadout item.
 	var/obj/item/item_path
 	/// Icon file (DMI) for the UI to use for preview icons.

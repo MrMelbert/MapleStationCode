@@ -4,6 +4,7 @@
 	righthand_file = 'icons/mob/inhands/antag/abductor_righthand.dmi'
 	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+	abstract_type = /obj/item/abductor
 
 /obj/item/proc/AbductorCheck(mob/user)
 	if (HAS_TRAIT(user, TRAIT_ABDUCTOR_TRAINING))
