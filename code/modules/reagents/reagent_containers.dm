@@ -3,6 +3,7 @@
 	desc = "..."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = null
+	abstract_type = /obj/item/reagent_containers
 	w_class = WEIGHT_CLASS_TINY
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
