@@ -552,7 +552,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/verb/observe()
 	set name = "Observe"
 
-	if(!isobserver(usr) || HAS_TRAIT(src, TRAIT_NO_OBSERVE)) //Make sure they're an observer!
+	if(!isobserver(usr)) //Make sure they're an observer!
 		return
 
 	reset_perspective(null)
@@ -997,17 +997,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		minigames_menu = new(src)
 
 	minigames_menu.ui_interact(src)
-
-/mob/dead/observer/proc/tray_view()
-	set category = "Ghost"
-	set name = "T-ray scan"
-	set desc = "Perfom a scan to view sub-floor objects"
-
-	if(SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] && !client?.holder)
-		to_chat(usr, span_notice("That verb is currently globally disabled."))
-		return
-
-	t_ray_scan(src)
 
 /mob/dead/observer/default_lighting_cutoff()
 	var/datum/preferences/prefs = client?.prefs
