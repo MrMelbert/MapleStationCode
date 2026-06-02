@@ -96,7 +96,7 @@
 	var/obj/item/applying = parent
 	if(isstack(parent))
 		var/obj/item/stack/stack_parent = parent
-		applying = stack_parent.split_stack(1)
+		applying = stack_parent.split_stack(user, 1)
 
 	else if(!user.temporarilyRemoveItemFromInventory(applying))
 		target.balloon_alert(user, "can't part with [applying.name]!")

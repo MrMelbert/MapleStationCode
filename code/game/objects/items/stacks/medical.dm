@@ -494,20 +494,20 @@
 		treatment_delay *= 0.5
 		if(user == patient)
 			user.visible_message(
-				span_warning("[user] begins expertly wrapping the wounds on [p_their()]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin quickly wrapping the wounds on your [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+				span_notice("[user] begins expertly wrapping the wounds on [p_their()]'s [limb.plaintext_zone] with [src]..."),
+				span_notice("You begin quickly wrapping the wounds on your [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		else
 			user.visible_message(
-				span_warning("[user] begins expertly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin quickly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+				span_notice("[user] begins expertly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
+				span_notice("You begin quickly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 	else
 		user.visible_message(
-			span_warning("[user] begins wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-			span_warning("You begin wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+			span_notice("[user] begins wrapping [patient == user ? p_their() : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+			span_notice("You begin wrapping [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 	if(heal_begin_sound)
@@ -524,8 +524,8 @@
 /obj/item/stack/medical/wrap/proc/on_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
 	patient.balloon_alert(user, "wrapped [limb.plaintext_zone]")
 	user.visible_message(
-		span_green("[user] applies [src] to [patient]'s [limb.plaintext_zone]."),
-		span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
+		span_notice("[user] applies [src] to [patient == user ? user.p_their() : "[patient]'s"] [limb.plaintext_zone]."),
+		span_notice("You apply [src] to [patient == user ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	if(limb.cached_bleed_rate)
@@ -536,14 +536,13 @@
 		wound.sanitization += sanitization * (wound.infection > 0.1 ? 0.2 : 1)
 		wound.flesh_healing += flesh_regeneration * (wound.infection > 0.1 ? 0 : 1)
 
-	worn_icon_state = "[limb.body_zone][rand(1, 3)]"
-
 /// Used via signal to update wounds
 /obj/item/stack/medical/wrap/proc/update_wounds(datum/source, obj/item/bodypart/limb)
 	SIGNAL_HANDLER
 	for(var/datum/wound/gauzed as anything in limb.wounds)
 		gauzed.update_inefficiencies()
 
+	worn_icon_state = "[limb.body_zone][rand(1, 3)]"
 	update_appearance()
 	limb.owner?.update_damage_overlays()
 

@@ -13,15 +13,14 @@
 	other_delay = 5 SECONDS
 	splint_factor = 0.65
 	merge_type = /obj/item/stack/medical/wrap/sticky_tape
-	greyscale_config = /datum/greyscale_config/tape
 	apply_verb = "taping"
 	heal_begin_sound = 'sound/items/duct_tape_rip.ogg'
 	heal_end_sound = 'sound/items/duct_tape_rip.ogg'
 	greyscale_config = /datum/greyscale_config/tape
 	greyscale_colors = "#B2B2B2#BD6A62"
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 	grind_results = list(/datum/reagent/cellulose = 5)
+	novariants = TRUE
 	/// Prefix applied to the target when wrapped with this tape.
 	var/prefix = "sticky"
 	/// Embed applied to the target when wrapped with this tape.

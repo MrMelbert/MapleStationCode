@@ -1072,7 +1072,7 @@
 		)
 		LAZYADD(overlays, burn_overlay)
 	var/obj/item/current_gauze = LAZYACCESS(applied_items, LIMB_ITEM_GAUZE)
-	if(current_gauze)
+	if(current_gauze?.worn_icon_state)
 		var/mutable_appearance/gauze_overlay = current_gauze.build_worn_icon(
 			default_layer = DAMAGE_LAYER - 0.1, // proc inverts it for us
 			override_file = 'maplestation_modules/icons/mob/bandage.dmi',

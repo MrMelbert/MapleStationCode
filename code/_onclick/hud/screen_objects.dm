@@ -763,7 +763,7 @@
 
 		// NON-MODULE CHANGE
 		var/has_noticable_wound = FALSE
-		for(var/datum/wound/wound as anything in body_part.wounds)
+		for(var/datum/wound/wound as anything in body_part?.wounds)
 			if(wound.wound_flags & ALERTS_VICTIM)
 				has_noticable_wound = TRUE
 				break
