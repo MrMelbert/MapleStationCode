@@ -93,10 +93,13 @@
 		if(!woundies.blood_flow)
 			continue
 		if(HAS_TRAIT(woundies, TRAIT_WOUND_SCANNED) && limb.body_zone != BODY_ZONE_HEAD)
-			speed_multiplier = 0.5
+			speed_multiplier = min(speed_multiplier, 0.5)
 			speed_boosted = TRUE
 			break
-		speed_multiplier = 1
+		speed_multiplier = min(speed_multiplier, 1)
+
+	if(limb.bodypart_flags & BODYPART_STUMP)
+		speed_multiplier = min(speed_multiplier, 0.75)
 
 	if(limb.body_zone == BODY_ZONE_HEAD)
 		speed_multiplier *= 2 // are you sure about that?
