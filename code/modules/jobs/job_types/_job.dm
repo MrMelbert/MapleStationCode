@@ -332,7 +332,7 @@
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/final_product = "<i>[description]</i><br><br>&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
-	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "examine_block")
+	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "boxed_message")
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
