@@ -6309,6 +6309,7 @@
 #include "maplestation_modules\code\datums\diseases\disease_resistance.dm"
 #include "maplestation_modules\code\datums\elements\bodypart_sprint_buff.dm"
 #include "maplestation_modules\code\datums\elements\digitigrade_limb.dm"
+#include "maplestation_modules\code\datums\elements\equipment_bodypart_overlay.dm"
 #include "maplestation_modules\code\datums\elements\fire_patting_item.dm"
 #include "maplestation_modules\code\datums\elements\glove_slapper.dm"
 #include "maplestation_modules\code\datums\elements\rip_off_able.dm"
