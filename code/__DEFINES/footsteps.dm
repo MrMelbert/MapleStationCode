@@ -45,7 +45,7 @@
 #define FOOTSTEP_RANGE 3
 
 GLOBAL_LIST_INIT(footstep, list(
-	FOOTSTEP_WOOD = list(
+	FOOTSTEP_WOOD = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/wood1.ogg' = 1,
 			'sound/effects/footstep/wood2.ogg' = 1,
@@ -56,7 +56,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_FLOOR = list(
+	FOOTSTEP_FLOOR = alist(
 			FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/floor1.ogg' = 1,
 			'sound/effects/footstep/floor2.ogg' = 1,
@@ -67,7 +67,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE -1,
 	),
-	FOOTSTEP_PLATING = list(
+	FOOTSTEP_PLATING = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/plating1.ogg' = 1,
 			'sound/effects/footstep/plating2.ogg' = 1,
@@ -78,7 +78,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 1,
 		),
-	FOOTSTEP_CARPET = list(
+	FOOTSTEP_CARPET = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/carpet1.ogg' = 1,
 			'sound/effects/footstep/carpet2.ogg' = 1,
@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = -1,
 	),
-	FOOTSTEP_SAND = list(
+	FOOTSTEP_SAND = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/asteroid1.ogg' = 1,
 			'sound/effects/footstep/asteroid2.ogg' = 1,
@@ -100,7 +100,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_GRASS = list(
+	FOOTSTEP_GRASS = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/grass1.ogg' = 1,
 			'sound/effects/footstep/grass2.ogg' = 1,
@@ -110,7 +110,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_WATER = list(
+	FOOTSTEP_WATER = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/water1.ogg' = 1,
 			'sound/effects/footstep/water2.ogg' = 1,
@@ -120,7 +120,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 1,
 	),
-	FOOTSTEP_LAVA = list(
+	FOOTSTEP_LAVA = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/lava1.ogg' = 1,
 			'sound/effects/footstep/lava2.ogg' = 1,
@@ -129,14 +129,14 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_MEAT = list(
+	FOOTSTEP_MEAT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/meatslap.ogg' = 1,
 		),
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_CATWALK = list(
+	FOOTSTEP_CATWALK = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/catwalk1.ogg' = 1,
 			'sound/effects/footstep/catwalk2.ogg' = 1,
@@ -147,7 +147,7 @@ GLOBAL_LIST_INIT(footstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 1,
 	),
-	FOOTSTEP_TILES = list(
+	FOOTSTEP_TILES = alist(
 		FOOTSTEP_SOUNDS = list(
 			'maplestation_modules/sound/footstep/tile1.ogg' = 6,
 			'maplestation_modules/sound/footstep/tile2.ogg' = 6,
@@ -160,7 +160,7 @@ GLOBAL_LIST_INIT(footstep, list(
 ))
 //bare footsteps lists
 GLOBAL_LIST_INIT(barefootstep, list(
-	FOOTSTEP_WOOD_BAREFOOT = list(
+	FOOTSTEP_WOOD_BAREFOOT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/woodbarefoot1.ogg' = 1,
 			'sound/effects/footstep/woodbarefoot2.ogg' = 1,
@@ -171,7 +171,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 80,
 		FOOTSTEP_RANGE = -1,
 	),
-	FOOTSTEP_HARD_BAREFOOT = list(
+	FOOTSTEP_HARD_BAREFOOT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/hardbarefoot1.ogg' = 1,
 			'sound/effects/footstep/hardbarefoot2.ogg' = 1,
@@ -182,7 +182,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 80,
 		FOOTSTEP_RANGE = -1,
 	),
-	FOOTSTEP_CARPET_BAREFOOT = list(
+	FOOTSTEP_CARPET_BAREFOOT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/carpetbarefoot1.ogg' = 1,
 			'sound/effects/footstep/carpetbarefoot2.ogg' = 1,
@@ -193,7 +193,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = -2,
 	),
-	FOOTSTEP_SAND = list(
+	FOOTSTEP_SAND = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/asteroid1.ogg' = 1,
 			'sound/effects/footstep/asteroid2.ogg' = 1,
@@ -204,7 +204,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_GRASS = list(
+	FOOTSTEP_GRASS = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/grass1.ogg' = 1,
 			'sound/effects/footstep/grass2.ogg' = 1,
@@ -214,7 +214,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_WATER = list(
+	FOOTSTEP_WATER = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/water1.ogg' = 1,
 			'sound/effects/footstep/water2.ogg' = 1,
@@ -224,7 +224,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 1,
 	),
-	FOOTSTEP_LAVA = list(
+	FOOTSTEP_LAVA = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/lava1.ogg' = 1,
 			'sound/effects/footstep/lava2.ogg' = 1,
@@ -233,7 +233,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE = 0,
 	),
-	FOOTSTEP_MEAT = list(
+	FOOTSTEP_MEAT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/meatslap.ogg' = 1,
 		),
@@ -244,7 +244,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 
 //claw footsteps lists
 GLOBAL_LIST_INIT(clawfootstep, list(
-	FOOTSTEP_WOOD_CLAW = list(
+	FOOTSTEP_WOOD_CLAW = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/woodclaw1.ogg' = 1,
 			'sound/effects/footstep/woodclaw2.ogg' = 1,
@@ -255,7 +255,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 90,
 		FOOTSTEP_RANGE = 1,
 	),
-	FOOTSTEP_HARD_CLAW = list(
+	FOOTSTEP_HARD_CLAW = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/hardclaw1.ogg' = 1,
 			'sound/effects/footstep/hardclaw2.ogg' = 1,
@@ -266,7 +266,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 90,
 		FOOTSTEP_RANGE = 1,
 	),
-	FOOTSTEP_CARPET_BAREFOOT = list(
+	FOOTSTEP_CARPET_BAREFOOT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/carpetbarefoot1.ogg' = 1,
 			'sound/effects/footstep/carpetbarefoot2.ogg' = 1,
@@ -277,7 +277,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE = -2,
 	),
-	FOOTSTEP_SAND = list(
+	FOOTSTEP_SAND = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/asteroid1.ogg' = 1,
 			'sound/effects/footstep/asteroid2.ogg' = 1,
@@ -288,7 +288,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE =  0,
 	),
-	FOOTSTEP_GRASS = list(
+	FOOTSTEP_GRASS = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/grass1.ogg' = 1,
 			'sound/effects/footstep/grass2.ogg' = 1,
@@ -298,7 +298,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 75,
 		FOOTSTEP_RANGE =  0,
 	),
-	FOOTSTEP_WATER = list(
+	FOOTSTEP_WATER = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/water1.ogg' = 1,
 			'sound/effects/footstep/water2.ogg' = 1,
@@ -308,7 +308,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE =  1,
 	),
-	FOOTSTEP_LAVA = list(
+	FOOTSTEP_LAVA = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/lava1.ogg' = 1,
 			'sound/effects/footstep/lava2.ogg' = 1,
@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE =  0),
 	,
-	FOOTSTEP_MEAT = list(
+	FOOTSTEP_MEAT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/meatslap.ogg' = 1,
 		),
@@ -328,7 +328,7 @@ GLOBAL_LIST_INIT(clawfootstep, list(
 
 //heavy footsteps list
 GLOBAL_LIST_INIT(heavyfootstep, list(
-	FOOTSTEP_GENERIC_HEAVY = list(
+	FOOTSTEP_GENERIC_HEAVY = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/heavy1.ogg' = 1,
 			'sound/effects/footstep/heavy2.ogg' = 1,
@@ -336,7 +336,7 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE =  2,
 	),
-	FOOTSTEP_WATER = list(
+	FOOTSTEP_WATER = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/water1.ogg' = 1,
 			'sound/effects/footstep/water2.ogg' = 1,
@@ -346,7 +346,7 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE =  2,
 	),
-	FOOTSTEP_LAVA = list(
+	FOOTSTEP_LAVA = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/footstep/lava1.ogg' = 1,
 			'sound/effects/footstep/lava2.ogg' = 1,
@@ -355,7 +355,7 @@ GLOBAL_LIST_INIT(heavyfootstep, list(
 		FOOTSTEP_VOLUME = 100,
 		FOOTSTEP_RANGE =  0,
 	),
-	FOOTSTEP_MEAT = list(
+	FOOTSTEP_MEAT = alist(
 		FOOTSTEP_SOUNDS = list(
 			'sound/effects/meatslap.ogg' = 1,
 		),

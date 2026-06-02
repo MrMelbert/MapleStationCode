@@ -6,7 +6,7 @@
 	grants_you = "an improved proficiency with mining tools"
 	higher_levels_grant_you = "the ability to see the contents of nearby rocks when mining"
 	modifiers = list(
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.1,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 0.9,
@@ -15,7 +15,7 @@
 			SKILL_LEVEL_MASTER = 0.6,
 			SKILL_LEVEL_LEGENDARY = 0.5,
 		),
-		SKILL_PROBS_MODIFIER = list(
+		SKILL_PROBS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = 0,

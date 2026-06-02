@@ -5,7 +5,7 @@
 	grants_you = "reduced slowdown by EVA equipment"
 	modifiers = list(
 		// EVA gear speed modifier
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.1,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 1,
