@@ -65,7 +65,7 @@ GLOBAL_LIST_INIT(footstep, list(
 			'sound/effects/footstep/floor5.ogg' = 1,
 		),
 		FOOTSTEP_VOLUME = 75,
-		FOOTSTEP_RANGE -1,
+		FOOTSTEP_RANGE = -1,
 	),
 	FOOTSTEP_PLATING = alist(
 		FOOTSTEP_SOUNDS = list(
