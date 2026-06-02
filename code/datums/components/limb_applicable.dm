@@ -15,7 +15,10 @@
 	var/apply_category
 	/// If TRUE, replaces existing items with new ones
 	/// If FALSE, application will fail if an item of the same category is already applied
-	var/override_existing
+	var/override_existing = TRUE
+	/// If TRUE, can be applied to stump limbs
+	/// If FALSE, application will fail if the limb is a stump/missing
+	var/apply_to_stumps = FALSE
 	/// Callback to determine if application can be attempted. Cannot sleep. (Return FALSE to block application)
 	var/datum/callback/can_apply
 	/// Callback to attempt application, I.E. do_after()s. Can sleep.
@@ -30,6 +33,7 @@
 	datum/callback/can_apply,
 	datum/callback/do_apply,
 	datum/callback/on_apply,
+	apply_to_stumps = FALSE,
 )
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -40,7 +44,7 @@
 	src.can_apply = can_apply
 	src.do_apply = do_apply
 	src.on_apply = on_apply
-
+	src.apply_to_stumps = apply_to_stumps
 
 /datum/component/limb_applicable/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_apply))
@@ -66,7 +70,7 @@
 		return NONE
 
 	var/mob/living/target = interacting_with
-	var/obj/item/bodypart/applying_to = target.get_bodypart(deprecise_zone(user.zone_selected))
+	var/obj/item/bodypart/applying_to = target.get_bodypart(deprecise_zone(user.zone_selected), apply_to_stumps)
 
 	if(isnull(applying_to))
 		target.balloon_alert(user, "no bodypart!")

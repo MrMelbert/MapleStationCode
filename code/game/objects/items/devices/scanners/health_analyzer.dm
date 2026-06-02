@@ -397,6 +397,10 @@
 			if(-INFINITY to BLOOD_VOLUME_BAD)
 				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Critical: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
 
+		var/bleeding_rate = needs_heart && target.get_bleed_rate()
+		if(bleeding_rate > 0)
+			level_format += span_slightly_smaller(span_alert(" (-[round_and_format_decimal(bleeding_rate, 0.01)] cl/s)"))
+
 		if(tochat && length(target_blood_type.compatible_types))
 			var/list/compatible_types_readable = list()
 			for(var/datum/blood_type/blood_type as anything in target_blood_type.compatible_types)

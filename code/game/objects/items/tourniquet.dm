@@ -17,6 +17,7 @@
 		valid_zones = GLOB.limb_zones.Copy() + BODY_ZONE_HEAD, \
 		apply_category = LIMB_ITEM_TOURNIQUET, \
 		do_apply = CALLBACK(src, PROC_REF(do_apply_tourniquet)), \
+		apply_to_stumps = TRUE, \
 	)
 	RegisterSignal(src, COMSIG_ITEM_APPLIED_TO_LIMB, PROC_REF(on_applied_to_limb))
 	RegisterSignal(src, COMSIG_ITEM_UNAPPLIED_FROM_LIMB, PROC_REF(on_removed_from_limb))

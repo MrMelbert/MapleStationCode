@@ -338,7 +338,7 @@
 			if(wound.blood_flow)
 				wound.adjust_blood_flow(-1 * stop_bleeding * (user == patient ? 0.7 : 1))
 				break // one at a time
-		affecting.adjustBleedStacks(-1 * stop_bleeding)
+		affecting.adjust_bleed_stacks(-1 * stop_bleeding)
 	if(flesh_regeneration || sanitization)
 		for(var/datum/wound/flesh/wound in affecting.wounds)
 			if(wound.can_be_ointmented_or_meshed())
@@ -461,6 +461,7 @@
 		can_apply = CALLBACK(src, PROC_REF(can_gauze_limb)), \
 		do_apply = CALLBACK(src, PROC_REF(do_gauze_limb)), \
 		on_apply = CALLBACK(src, PROC_REF(on_gauze_limb)), \
+		apply_to_stumps = TRUE, \
 	)
 	RegisterSignals(src, list(COMSIG_ITEM_APPLIED_TO_LIMB, COMSIG_ITEM_UNAPPLIED_FROM_LIMB), PROC_REF(update_wounds))
 

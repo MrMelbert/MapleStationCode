@@ -59,7 +59,7 @@
 
 	var/list/disabled = list()
 	var/treatment_distance = isliving(user) && get_dist(src, user) <= 3
-	for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
+	for(var/obj/item/bodypart/body_part as anything in get_bodyparts(include_stumps = TRUE))
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 

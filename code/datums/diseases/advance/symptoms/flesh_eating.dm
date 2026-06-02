@@ -77,11 +77,10 @@ Bonus
 	M.take_overall_damage(brute = get_damage, required_bodytype = BODYTYPE_ORGANIC)
 	if(pain)
 		M.apply_damage(get_damage * 2, STAMINA)
-	if(bleed)
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			var/obj/item/bodypart/random_part = pick(H.get_bodyparts())
-			random_part.adjustBleedStacks(5 * power)
+	if(bleed && ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/bodypart/random_part = pick(H.get_bodyparts())
+		random_part.adjust_bleed_stacks(5 * power)
 	return 1
 
 /*

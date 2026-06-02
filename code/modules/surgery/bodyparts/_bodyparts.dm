@@ -154,7 +154,7 @@
 	/// Our current bleed rate. Cached, update with refresh_bleed_rate()
 	var/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
-	var/generic_bleedstacks
+	var/generic_bleedstacks = 0
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
 	var/obj/item/hand_item/self_grasp/grasped_by
 	/// Lazylist of category to item applied to this limb
@@ -636,6 +636,10 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(seconds_per_tick, times_fired)
 	SHOULD_CALL_PARENT(TRUE)
+	if(!(bodypart_flags & BODYPART_STUMP))
+		return
+	if(generic_bleedstacks < 2 && !seep_gauze(0.1 * seconds_per_tick))
+		adjust_bleed_stacks(2 - generic_bleedstacks)
 
 /**
  * #receive_damage
@@ -1333,21 +1337,20 @@
 	refresh_bleed_rate()
 
 /// Sets our generic bleedstacks
-/obj/item/bodypart/proc/setBleedStacks(set_to)
-	SHOULD_CALL_PARENT(TRUE)
-	adjustBleedStacks(set_to - generic_bleedstacks)
+/obj/item/bodypart/proc/set_bleed_stacks(set_to)
+	adjust_bleed_stacks(set_to - generic_bleedstacks)
 
 /// Modifies our generic bleedstacks. You must use this to change the variable
 /// Takes the amount to adjust by, and the lowest amount we're allowed to have post adjust
-/obj/item/bodypart/proc/adjustBleedStacks(adjust_by, minimum = 0)
+/obj/item/bodypart/proc/adjust_bleed_stacks(adjust_by, minimum = 0)
 	if(!adjust_by)
 		return
+
 	var/old_bleedstacks = generic_bleedstacks
 	generic_bleedstacks = max(generic_bleedstacks + adjust_by, minimum)
 
 	// If we've started or stopped bleeding, we need to refresh our bleed rate
-	if((old_bleedstacks <= 0 && generic_bleedstacks > 0) \
-		|| old_bleedstacks > 0 && generic_bleedstacks <= 0)
+	if((old_bleedstacks <= 0 && generic_bleedstacks > 0) || old_bleedstacks > 0 && generic_bleedstacks <= 0)
 		refresh_bleed_rate()
 
 /// Refresh the cache of our rate of bleeding sans any modifiers
@@ -1459,7 +1462,7 @@
 /obj/item/bodypart/proc/can_bleed()
 	SHOULD_BE_PURE(TRUE)
 
-	return ((biological_state & BIO_BLOODED) && (!owner || HAS_TRAIT(owner, TRAIT_NOBLOOD)))
+	return ((biological_state & BIO_BLOODED) && (isnull(owner) || !HAS_TRAIT(owner, TRAIT_NOBLOOD)))
 
 /**
  * Inserts an item into the applied items list for this bodypart
@@ -1716,6 +1719,8 @@
 		remove_surgical_state(BONELESS_SURGERY_STATES)
 	if(!had_vessels && LIMB_HAS_VESSELS(src))
 		remove_surgical_state(VESSELLESS_SURGERY_STATES)
+	if(new_biostate & BIO_BLOODED)
+		refresh_bleed_rate()
 
 /// Removes biostate from the limb and ensures surgical states are updated accordingly
 /obj/item/bodypart/proc/remove_biostate(old_biostate)
@@ -1729,3 +1734,5 @@
 		add_surgical_state(BONELESS_SURGERY_STATES)
 	if(!LIMB_HAS_VESSELS(src))
 		add_surgical_state(VESSELLESS_SURGERY_STATES)
+	if(old_biostate & BIO_BLOODED)
+		refresh_bleed_rate()

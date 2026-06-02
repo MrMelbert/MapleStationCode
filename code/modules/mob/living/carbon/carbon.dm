@@ -1475,5 +1475,5 @@
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		to_chat(src, span_notice("You get a headache."))
 		return
-	head.adjustBleedStacks(5)
+	head.adjust_bleed_stacks(5)
 	visible_message(span_notice("[src] gets a nosebleed."), span_warning("You get a nosebleed."))

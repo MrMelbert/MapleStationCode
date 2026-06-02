@@ -103,11 +103,9 @@
 	var/temp_bleed = 0
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		var/iter_bleed_rate = iter_part.cached_bleed_rate
-		temp_bleed += iter_bleed_rate * seconds_per_tick
-
-		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
-			iter_part.adjustBleedStacks(-1)
+		temp_bleed += iter_part.cached_bleed_rate * seconds_per_tick
+		if(iter_part.generic_bleedstacks > 0) // If you don't have any bleedstacks, don't try and heal them
+			iter_part.adjust_bleed_stacks(-1)
 
 	if(temp_bleed)
 		bleed(temp_bleed)
@@ -142,7 +140,7 @@
 		return 0
 
 	. = 0
-	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts(include_stumps = TRUE))
 		. += bodypart.cached_bleed_rate
 
 /mob/living/carbon/human/get_bleed_rate()
@@ -154,8 +152,8 @@
 
 /mob/living/carbon/restore_blood()
 	. = ..()
-	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts())
-		bodypart_to_restore.setBleedStacks(0)
+	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts(include_stumps = TRUE))
+		bodypart_to_restore.set_bleed_stacks(0)
 	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /****************************************************
