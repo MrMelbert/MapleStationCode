@@ -26,7 +26,11 @@
 		// Weird bit but ensures that if the final element has its own "and" we don't add another one
 		tag_string = english_list(tag_string, and_text = (findtext(tag_string[length(tag_string)], " and ")) ? ", " : " and ")
 		var/post_descriptor = examine_post_descriptor(user)
-		. += "[p_They()] [p_are()] a [tag_string] [examine_descriptor(user)][length(post_descriptor) ? " [jointext(post_descriptor, " ")]" : ""]."
+		var/force_descriptor = examine_weapon_descriptor(user)
+		. += span_slightly_smaller("[p_They()] [p_are()] a [tag_string] [examine_descriptor(user)]\
+			[length(post_descriptor) ? " [jointext(post_descriptor, " ")]" : ""]\
+			[force_descriptor ? " [force_descriptor]" : ""].\
+		")
 
 	if(reagents)
 		var/user_sees_reagents = user.can_see_reagents()
@@ -75,13 +79,21 @@
 /// Returns a list of strings to be displayed after the descriptor
 /atom/proc/examine_post_descriptor(mob/user)
 	. = list()
-	if(!custom_materials)
-		return
-	var/mats_list = list()
+	var/list/mats_list = list()
 	for(var/custom_material in custom_materials)
 		var/datum/material/current_material = GET_MATERIAL_REF(custom_material)
-		mats_list += span_tooltip("It is made out of [current_material.name].", current_material.name)
-	. += "made of [english_list(mats_list)]"
+		mats_list[current_material.name] = "It is made out of [current_material.name]."
+	SEND_SIGNAL(src, COMSIG_ATOM_EXAMINE_POST_DESCRIPTOR, user, ., mats_list)
+	if(!length(mats_list))
+		return .
+	var/list/mats_list_flattened = list()
+	for(var/mat_name, mat_tooltip in mats_list)
+		mats_list_flattened += span_tooltip(mat_tooltip, mat_name)
+
+	. += "made of [english_list(mats_list_flattened)]"
+
+/atom/proc/examine_weapon_descriptor(mob/user)
+	return
 
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)
@@ -278,7 +290,7 @@
 				id_species ||= carbon_wearer.dna.species.name
 				id_blood_type ||= "[find_blood_type(carbon_wearer.dna?.species?.exotic_bloodtype || carbon_wearer.dna?.human_blood_type || random_human_blood_type())]"
 
-		var/id_examine = span_slightly_larger(separator_hr("This is <em>[old_wearer]'s ID card</em>."))
+		var/id_examine = ""
 		id_examine += "<div class='img_by_text_container'>"
 		id_examine += "[id_icon]"
 		id_examine += "<div class='img_text'>"
@@ -293,7 +305,7 @@
 		id_examine += "</div>" // container
 		id_examine += "</div>" // text
 
-		to_chat(viewer, examine_block(span_info(id_examine)))
+		to_chat(viewer, fieldset_block(span_slightly_larger("That's <em>[old_wearer]'s ID card</em>."), span_info(id_examine), "boxed_message"))
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.
