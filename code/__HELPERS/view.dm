@@ -4,6 +4,9 @@
 		view = world.view
 
 	if(isnum(view))
+		//resetting back to 0- this is the same as just checking !view but we want to be clear the point of the check.
+		if(view == 0)
+			return list(0, 0)
 		var/totalviewrange = (view < 0 ? -1 : 1) + 2 * view
 		return list(totalviewrange, totalviewrange)
 	else
