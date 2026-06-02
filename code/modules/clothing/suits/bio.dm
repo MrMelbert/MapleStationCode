@@ -11,6 +11,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 	resistance_flags = ACID_PROOF
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/biosuit
 	// Icon_state passed into clothing dirt component
 	var/dirt_state = "bio_dirt"
 
@@ -20,6 +21,7 @@
 		AddComponent(/datum/component/clothing_dirt, dirt_state)
 	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, texture_type)
 
 /datum/armor/head_bio_hood
 	bio = 100
@@ -43,10 +45,12 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = ACID_PROOF
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/biosuit
 
 /obj/item/clothing/suit/bio_suit/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, texture_type)
 
 //Standard biosuit, orange stripe
 /datum/armor/suit_bio_suit
@@ -103,9 +107,11 @@
 //Janitor's biosuit, grey with purple arms
 /obj/item/clothing/head/bio_hood/janitor
 	icon_state = "bio_janitor"
+	texture_type = /datum/bodypart_overlay/texture/mesh/biosuit_dark
 
 /obj/item/clothing/suit/bio_suit/janitor
 	icon_state = "bio_janitor"
+	texture_type = /datum/bodypart_overlay/texture/mesh/biosuit_dark
 
 /obj/item/clothing/suit/bio_suit/janitor/Initialize(mapload)
 	. = ..()
@@ -137,6 +143,7 @@
 	inhand_icon_state = "bio_suit"
 	strip_delay = 40
 	equip_delay_other = 20
+	texture_type = /datum/bodypart_overlay/texture/mesh/black
 
 /obj/item/clothing/suit/bio_suit/plaguedoctorsuit/Initialize(mapload)
 	. = ..()

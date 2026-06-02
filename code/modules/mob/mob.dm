@@ -535,7 +535,7 @@
 				result.Insert(1, span_info("<i>You examine [examinify] closer.</i>"))
 			else
 				result += span_info("<i>You examine [examinify] closer, but find nothing of note.</i>")
-			result_combined = examine_block(jointext(result, "<br>"))
+			result_combined = boxed_message(jointext(result, "<br>"))
 			closer_look = TRUE
 
 		else
@@ -548,7 +548,7 @@
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
 		if(removes_double_click)
 			result += span_notice("<i>You can <a href=byond://?src=[REF(src)];run_examinate=[REF(examinify)]>examine</a> [examinify] closer...</i>")
-		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
+		result_combined = (atom_title ? fieldset_block("[atom_title]", jointext(result, "<br>"), "boxed_message") : boxed_message(jointext(result, "<br>")))
 
 	if(!blind)
 		examine_feedback(examinify, closer_look)
