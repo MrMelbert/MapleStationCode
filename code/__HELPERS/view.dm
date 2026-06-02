@@ -1,7 +1,5 @@
-/proc/getviewsize(view)
-	if(!view) // Just to avoid any runtimes that could otherwise cause constant disconnect loops.
-		stack_trace("Missing value for 'view' in getviewsize(), defaulting to world.view!")
-		view = world.view
+/proc/getviewsize(view = world.view)
+	SHOULD_BE_PURE(TRUE)
 
 	if(isnum(view))
 		//resetting back to 0- this is the same as just checking !view but we want to be clear the point of the check.
