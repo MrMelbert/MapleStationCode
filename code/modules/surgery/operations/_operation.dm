@@ -381,7 +381,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * but allows for operations to target any mob type, rather than only those with limbs or organs.
  */
 /datum/surgery_operation
-	var/abstract_type = /datum/surgery_operation
+	abstract_type = /datum/surgery_operation
 	/// Required - Name of the operation, keep it short and format it like an action - "amputate limb", "remove organ"
 	/// Don't capitalize it, it will be capitalized automatically where necessary.
 	var/name

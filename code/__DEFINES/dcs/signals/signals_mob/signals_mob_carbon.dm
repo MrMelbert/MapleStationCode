@@ -58,6 +58,15 @@
 /// From /obj/item/bodypart/proc/update_limb(): (dropping_limb, is_creating)
 #define COMSIG_BODYPART_UPDATED "bodypart_updated"
 
+/// Sent to a limb when something *attempts* to change its surgery state (old_state, new_state, changed_states)
+#define COMSIG_BODYPART_UPDATING_SURGERY_STATE "bodypart_updating_surgery_state"
+
+/// Called from /obj/item/bodypart/proc/get_limb_icon(dropped) : (list/limb_icons, dropped, mob/living/carbon/update_on)
+#define COMSIG_BODYPART_GET_LIMB_ICON "bodypart_get_limb_icon"
+
+/// Called from /obj/item/bodypart/proc/generate_icon_key() : (list/icon_keys)
+#define COMSIG_BODYPART_GENERATE_ICON_KEY "bodypart_generate_icon_key"
+
 ///from base of mob/living/carbon/soundbang_act(): (list(intensity))
 #define COMSIG_CARBON_SOUNDBANG "carbon_soundbang"
 ///from /item/organ/proc/Insert() (/obj/item/organ/)

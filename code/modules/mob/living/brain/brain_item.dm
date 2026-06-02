@@ -132,6 +132,7 @@
 		organ_owner.update_body_parts()
 		organ_owner.clear_mood_event(BRAIN_DAMAGE)
 		organ_owner.remove_consciousness_modifier(BRAIN_DAMAGE)
+		organ_owner.med_hud_set_status()
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s [initial(name)]"
@@ -332,9 +333,21 @@
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death(null, "total [BRAIN_DAMAGE]")
 
+/obj/item/organ/brain/on_bodypart_insert(obj/item/bodypart/limb)
+	. = ..()
+	if(ishuman(limb.owner))
+		limb.owner.update_hair()
+	else
+		limb.update_icon_dropped()
+
 /obj/item/organ/brain/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
 	. = ..()
-	update_brain_color(animate = FALSE) // once it's out in the world we need to make sure it's the right color
+	if(ishuman(limb.owner))
+		limb.owner.update_hair()
+	else
+		limb.update_icon_dropped()
+	// once it's out in the world we need to make sure it's the right color
+	update_brain_color(animate = FALSE)
 
 /obj/item/organ/brain/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
 	. = ..()

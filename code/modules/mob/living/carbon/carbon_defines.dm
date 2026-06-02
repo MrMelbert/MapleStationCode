@@ -1,4 +1,5 @@
 /mob/living/carbon
+	abstract_type = /mob/living/carbon
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	pressure_resistance = 15
@@ -124,3 +125,6 @@
 	var/obscured_slots = NONE
 	/// Covered hide flags (hideflags that can be seen, BUT can't be interacted with)
 	var/covered_slots = NONE
+
+	/// Lazylist of all hair masks applied to this mob's hairstyles
+	var/list/hair_masks

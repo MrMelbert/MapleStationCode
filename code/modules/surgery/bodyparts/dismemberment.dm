@@ -331,6 +331,8 @@
 	new_limb_owner.updatehealth()
 	new_limb_owner.update_body()
 	new_limb_owner.update_damage_overlays()
+	if(!special)
+		new_limb_owner.hud_used?.update_locked_slots()
 	SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_POST_ATTACH_LIMB, src, special)
 	return TRUE
 
@@ -372,7 +374,7 @@
 		sexy_chad.lip_color = lip_color
 
 	new_head_owner.updatehealth()
-	new_head_owner.update_body()
+	new_head_owner.update_body() // updates lips + hair + eyes
 	new_head_owner.update_damage_overlays()
 
 /obj/item/bodypart/arm/try_attach_limb(mob/living/carbon/new_arm_owner, special = FALSE)

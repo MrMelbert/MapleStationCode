@@ -7,7 +7,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/casual_clothing/icons/casual_rhand.dmi'
 	icon_state = "hoodie"
 	inhand_icon_state = "hoodie"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 
 /datum/loadout_item/under/jumpsuit/hoodie
 	name = "Workout Hoodie"
@@ -22,7 +22,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/casual_clothing/icons/casual_rhand.dmi'
 	icon_state = "skirt"
 	inhand_icon_state = "skirt"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = FALSE
 
 /datum/loadout_item/under/jumpsuit/casualdress
