@@ -46,7 +46,7 @@
 	return FALSE
 
 /mob/living/carbon/has_bones()
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts(include_stumps = TRUE))
 		if(part.biological_state & BIO_BONE)
 			return TRUE
 	return FALSE

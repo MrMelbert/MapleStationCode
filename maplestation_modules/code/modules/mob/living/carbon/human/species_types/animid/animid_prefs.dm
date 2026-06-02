@@ -70,7 +70,7 @@
 	var/key = jointext(list(greyscale, color, dir) + bodyparts, "-")
 	if(!bodies?[key])
 		var/datum/universal_icon/result
-		for(var/obj/item/bodypart/bodypart as anything in bodyparts)
+		for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
 			var/base_icon = greyscale ? bodypart::icon_greyscale : bodypart::icon_static
 			var/base_icon_state = "[bodypart::limb_id]_[bodypart::body_zone][bodypart::is_dimorphic ? "_m" : ""]"
 			var/datum/universal_icon/part = uni_icon(base_icon, base_icon_state, dir)

@@ -74,7 +74,7 @@
 	drop_disguise(synth)
 	UnregisterSignal(synth, COMSIG_CARBON_LIMB_DAMAGED)
 
-	for(var/obj/item/bodypart/limb as anything in synth.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in synth.get_bodyparts())
 		if(initial(limb.limb_id) == BODYPART_ID_SYNTH)
 			limb.change_exempt_flags &= ~BP_BLOCK_CHANGE_SPECIES
 
@@ -165,7 +165,7 @@
 		tongue.disguise_tongue(disguise_species.mutanttongue)
 
 	if(limb_updates_on_change)
-		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
+		for(var/obj/item/bodypart/part as anything in synth.get_bodyparts())
 			limb_gained(synth, part, update = FALSE)
 
 	synth.update_body(TRUE)
@@ -189,7 +189,7 @@
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
 	if(limb_updates_on_change && !skip_bodyparts)
-		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
+		for(var/obj/item/bodypart/part as anything in synth.get_bodyparts())
 			limb_lost(synth, part, update = FALSE)
 
 	QDEL_NULL(disguise_species)
@@ -233,7 +233,7 @@
 		return
 
 	var/list/obj/item/bodypart/changed_limbs = list()
-	for(var/obj/item/bodypart/limb as anything in synth.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in synth.get_bodyparts())
 		var/below_threshold = (limb.max_damage - limb.get_damage()) / limb.max_damage * 100 <= disuise_damage_threshold
 		if(limb.limb_id == BODYPART_ID_SYNTH)
 			if(!below_threshold)

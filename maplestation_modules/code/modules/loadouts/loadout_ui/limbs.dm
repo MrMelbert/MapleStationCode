@@ -1,7 +1,7 @@
 /mob/living/carbon/human/dummy/wipe_state()
 	. = ..()
 	// Gets rid of prosthetics and stuff that may have been added
-	for(var/obj/item/bodypart/whatever as anything in bodyparts)
+	for(var/obj/item/bodypart/whatever as anything in get_bodyparts())
 		whatever.change_exempt_flags &= ~BP_BLOCK_CHANGE_SPECIES
 	dna?.species?.replace_body(src)
 
