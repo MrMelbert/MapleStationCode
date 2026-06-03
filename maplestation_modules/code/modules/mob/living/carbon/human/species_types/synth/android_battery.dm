@@ -21,7 +21,3 @@
 
 #undef NUTRITION_MULTIPLIER
 #undef BOOZE_MULTIPLIER
-
-
-/datum/component/edible/proc/TryToEat(mob/living/eater, mob/living/feeder)
-	. = ..()
