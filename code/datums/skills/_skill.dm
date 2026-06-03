@@ -15,7 +15,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	var/higher_levels_grant_you
 	/// Dictionary of modifier type - list of modifiers (indexed by level).
 	var/list/modifiers = list(
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 1,
@@ -40,7 +40,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 
 /datum/skill/New()
 	. = ..()
-	level_up_messages = list(
+	level_up_messages = alist(
 		SKILL_LEVEL_NONE = "", // Everyone starts at NONE, you can't go up to it
 		SKILL_LEVEL_NOVICE = span_nicegreen("I'm starting to figure out what [name] really is!"),
 		SKILL_LEVEL_APPRENTICE = span_nicegreen("I'm getting a little better at [name]!"),
@@ -49,7 +49,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 		SKILL_LEVEL_MASTER = span_nicegreen("After lots of practice, I've begun to truly understand the intricacies and surprising depth behind [name]. I now consider myself a master [title]."),
 		SKILL_LEVEL_LEGENDARY = span_nicegreen("Through incredible determination and effort, I've reached the peak of my [name] abiltities. I'm finally able to consider myself a legendary [title]!"),
 	)
-	level_down_messages = list(
+	level_down_messages = alist(
 		SKILL_LEVEL_NONE =  span_nicegreen("I have somehow completely lost all understanding of [name]."),
 		SKILL_LEVEL_NOVICE = span_nicegreen("I'm starting to forget what [name] really even is. I need more practice..."),
 		SKILL_LEVEL_APPRENTICE = span_nicegreen("I'm getting a little worse at [name]. I'll need to keep practicing to get better at it..."),

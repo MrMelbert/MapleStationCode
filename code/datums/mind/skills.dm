@@ -1,6 +1,6 @@
 /datum/mind/proc/init_known_skills()
 	for (var/type in GLOB.skill_types)
-		known_skills[type] = list(SKILL_LVL = SKILL_LEVEL_NONE, SKILL_EXP = 0)
+		known_skills[type] = alist(SKILL_LVL = SKILL_LEVEL_NONE, SKILL_EXP = 0)
 
 ///Return the amount of EXP needed to go to the next level. Returns 0 if max level
 /datum/mind/proc/exp_needed_to_level_up(skill)
