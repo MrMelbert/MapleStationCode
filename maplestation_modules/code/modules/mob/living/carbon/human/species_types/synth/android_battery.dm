@@ -27,7 +27,7 @@
 #define HAS_MOOD_EVENT (1 << 1)
 #define HAS_DEATH_TIMER (1 << 2)
 
-//Tweaked charge code which majes overcharged shocking less often (I hate shocking people so bad.) Pretend it has some overcurrent protection or something.
+//Tweaked charge code which makes overcharged shocking less often (I hate shocking people so bad.) Pretend it has some overcurrent protection or something.
 /obj/item/organ/stomach/ethereal/android/battery_core/handle_charge(mob/living/carbon/carbon, seconds_per_tick, times_fired)
 	var/has_flags = NONE
 	switch(cell.charge())
