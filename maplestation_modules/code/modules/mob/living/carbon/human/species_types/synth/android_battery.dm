@@ -63,7 +63,7 @@
 		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_supercharged)
 			has_flags |= HAS_MOOD_EVENT
-			if(SPT_PROB(0.5, seconds_per_tick)) // UPDATED FROM 5% to 0.5% each second for ethereals to explosively release excess energy if it reaches dangerous levels
+			if(SPT_PROB(0.5, seconds_per_tick)) // UPDATED FROM 5% to 0.5% each second for the android to explosively release excess energy if it reaches dangerous levels
 				discharge_process(carbon)
 
 	carbon.hud_used?.hunger?.update_hunger_bar()
