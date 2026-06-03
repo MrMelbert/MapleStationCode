@@ -8,8 +8,7 @@
 	stomach_blood_transfer_rate = 0 //chems don't work too...
 
 
-//stop eating
-
+//stop eating benefits
 #define NUTRITION_MULTIPLIER 0 //does this even work?
 #define BOOZE_MULTIPLIER 0
 /obj/item/organ/stomach/ethereal/android/battery_core/effective_charge()
@@ -22,9 +21,8 @@
 #undef NUTRITION_MULTIPLIER
 #undef BOOZE_MULTIPLIER
 
-
+//Tweaked charge code which majes overcharged shocking less often (I hate shocking people so bad.) Pretend it has some overcurrent protection or something.
 /obj/item/organ/stomach/ethereal/android/battery_core/handle_charge(mob/living/carbon/carbon, seconds_per_tick, times_fired)
-	//tweaked version which lowers the chance of shocking to make it handle overcharged a bit better (I hate shocking people so bad.) Pretend it has some overcurrent protection or something.
 	var/has_flags = NONE
 	switch(cell.charge())
 		if(-INFINITY to ETHEREAL_CHARGE_NONE)
