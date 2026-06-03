@@ -30,7 +30,6 @@
 	digitigrade_legs = null
 
 	mutanttongue = /obj/item/organ/tongue/robot/synth
-	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
 	allow_fleshy_bits = TRUE
 
 	/// Reference to the species we're disguised as.
@@ -411,86 +410,5 @@
 
 /obj/item/organ/eyes/robotic/synth
 	name = "synth eyes"
-
-// Organ for synth head covers.
-
-/obj/item/organ/synth_head_cover
-	name = "Head Cover"
-	desc = "It is a cover that goes on a synth head."
-
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER
-
-	preference = "feature_synth_head_cover"
-
-	organ_flags = ORGAN_ROBOTIC
-
-	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
-	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
-
-
-/obj/item/organ/synth_head_cover/on_bodypart_insert(obj/item/bodypart/head/limb, movement_flags)
-	. = ..()
-	limb.head_flags &= ~HEAD_EYESPRITES
-
-/obj/item/organ/synth_head_cover/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
-	. = ..()
-	if(initial(limb.head_flags) & HEAD_EYESPRITES)
-		limb.head_flags |= HEAD_EYESPRITES
-
-//-- overlay --
-/datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
-	return SSaccessories.synth_head_cover_list
-
-/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
-	if(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
-		return FALSE
-	if(bodypart_owner.limb_id == BODYPART_ID_SYNTH) // disguised = no head cover
-		return TRUE
-	if(IS_ROBOTIC_LIMB(bodypart_owner)) // works on android limbs too
-		return TRUE
-	return FALSE
-
-/datum/bodypart_overlay/mutant/synth_head_cover
-	feature_key = "synth_head_cover"
-	layers = ALL_EXTERNAL_OVERLAYS
-
-//-- accessories --
-//the path to the icon for the head covers
-/datum/sprite_accessory/synth_head_cover
-	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
-
-//head covers
-/datum/sprite_accessory/synth_head_cover/none // for those that don't want a cover.
-	name = "None"
-	icon_state = null
-
-//A kind of helmet looking thing with a big black screen/face cover thing. I dunno what else to call this.
-/datum/sprite_accessory/synth_head_cover/helm
-	name = "Helm"
-	icon_state = "helm"
-
-//helm with white plastic on the sides.
-/datum/sprite_accessory/synth_head_cover/helm_white
-	name = "White Helm"
-	icon_state = "helm_white"
-
-//just the IPC TV that is already in the code base
-/datum/sprite_accessory/synth_head_cover/tv_blank
-	name = "Tv_blank"
-	icon_state = "tv_blank"
-
-//a cool design inspired from cloak pilots in titanfall 2, *sorta*.
-/datum/sprite_accessory/synth_head_cover/cloakp
-	name = "Cloakp"
-	icon_state = "cloakp"
-
-//GUMTEETH's head
-/datum/sprite_accessory/synth_head_cover/gumhead
-	name = "GUMHEAD"
-	icon_state = "gumhead"
-
-// add more here!!
-
 
 #undef BODYPART_ID_SYNTH
