@@ -72,7 +72,7 @@
 	limb_path = /obj/item/bodypart/head/robot/cloak
 
 /datum/limb_option_datum/bodypart/cybernetic_head/gumhead
-	name = "S-Tech GUM Model hHead"
+	name = "S-Tech GUM Model Head"
 	limb_path = /obj/item/bodypart/head/robot/gumhead
 
 /datum/limb_option_datum/bodypart/cybernetic_head/skull
