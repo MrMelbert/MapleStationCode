@@ -469,8 +469,8 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
 
 /obj/item/bodypart/head/robot/nemo
-	icon = 'maplestation_modules/icons/mob/augmentation/nemo.dmi'
-	icon_static = 'maplestation_modules/icons/mob/augmentation/nemo.dmi'
+	icon = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
 
 /obj/item/bodypart/head/robot/cloak
 	icon = 'maplestation_modules/icons/mob/augmentation/cloak.dmi'
@@ -487,5 +487,3 @@
 /obj/item/bodypart/head/robot/drone
 	icon = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
-
-// -- Previously synth head coverings --
