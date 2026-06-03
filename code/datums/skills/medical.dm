@@ -6,7 +6,7 @@
 	grants_you = "an improved proficiency medical tools such as sutures or bandages"
 	higher_levels_grant_you = "the ability do CPR without harming the patient"
 	modifiers = list(
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.15,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 1,
