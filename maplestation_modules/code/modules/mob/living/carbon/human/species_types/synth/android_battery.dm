@@ -21,6 +21,11 @@
 #undef NUTRITION_MULTIPLIER
 #undef BOOZE_MULTIPLIER
 
+
+#define NO_CHARGE "Low Power"
+#define HAS_CON_MOD (1 << 0)
+#define HAS_MOOD_EVENT (1 << 1)
+#define HAS_DEATH_TIMER (1 << 2)
 //Tweaked charge code which majes overcharged shocking less often (I hate shocking people so bad.) Pretend it has some overcurrent protection or something.
 /obj/item/organ/stomach/ethereal/android/battery_core/handle_charge(mob/living/carbon/carbon, seconds_per_tick, times_fired)
 	var/has_flags = NONE
@@ -70,3 +75,7 @@
 	if(!(has_flags & HAS_DEATH_TIMER) && death_timer)
 		deltimer(death_timer)
 		death_timer = null
+
+#undef EAT_TIME_FORCE_FEED
+#undef EAT_TIME_VORACIOUS_MULT
+#undef EAT_TIME_VORACIOUS_FULL_MULT
