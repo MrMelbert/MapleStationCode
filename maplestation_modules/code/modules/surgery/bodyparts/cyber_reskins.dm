@@ -465,25 +465,31 @@
 // -- Previously synth head coverings --
 
 /obj/item/bodypart/head/robot/helm
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
 
 /obj/item/bodypart/head/robot/nemo
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
 
 /obj/item/bodypart/head/robot/cloak
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/cloak.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/cloak.dmi'
 
 /obj/item/bodypart/head/robot/gumhead
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/s-tech.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/s-tech.dmi'
 
 /obj/item/bodypart/head/robot/skull
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/skull.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/skull.dmi'
 
 /obj/item/bodypart/head/robot/drone
+	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
