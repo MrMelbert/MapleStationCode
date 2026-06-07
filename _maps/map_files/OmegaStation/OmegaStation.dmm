@@ -6,9 +6,6 @@
 /obj/effect/landmark/carpspawn,
 /turf/open/space,
 /area/space)
-"aac" = (
-/turf/open/misc/asteroid/airless,
-/area/centcom/asteroid/nearstation)
 "aad" = (
 /turf/closed/mineral/random/labormineral,
 /area/centcom/asteroid/nearstation)
@@ -37,7 +34,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "bridgewindows";
-	name = "Bridge View Blast door"
+	name = "Bridge View Blast Door"
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -129,7 +126,7 @@
 /obj/machinery/computer/records/security,
 /obj/machinery/button/door{
 	id = "bridgewindows";
-	name = "Bridge View Blast doors";
+	name = "Bridge View Blast Doors";
 	pixel_x = 8;
 	pixel_y = 25
 	},
@@ -1437,7 +1434,7 @@
 	},
 /obj/machinery/door/poddoor{
 	id = "cargounload";
-	name = "supply dock unloading door"
+	name = "Supply Dock Unloading Door"
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
@@ -2323,7 +2320,7 @@
 	},
 /obj/machinery/button/door{
 	id = "hopblast";
-	name = "Lockdown Blast doors";
+	name = "Lockdown Blast Doors";
 	pixel_x = 4;
 	pixel_y = -24;
 	req_access = list("hop")
@@ -2608,7 +2605,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "hopblast";
-	name = "HoP Blast door"
+	name = "HoP Blast Door"
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -2638,7 +2635,7 @@
 	},
 /obj/machinery/door/poddoor/preopen{
 	id = "hopblast";
-	name = "HoP Blast door"
+	name = "HoP Blast Door"
 	},
 /obj/effect/turf_decal/bot,
 /obj/structure/desk_bell/ringer/hop{
@@ -2683,7 +2680,7 @@
 	},
 /obj/machinery/door/poddoor{
 	id = "cargoload";
-	name = "supply dock loading door"
+	name = "Supply Dock Loading Door"
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
@@ -6927,7 +6924,7 @@
 	},
 /obj/machinery/door/poddoor/preopen{
 	id = "brigfront";
-	name = "Brig Blast door"
+	name = "Brig Blast Door"
 	},
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -8452,7 +8449,7 @@
 /obj/structure/plasticflaps/opaque,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/window/right/directional/east{
@@ -9327,7 +9324,7 @@
 "aze" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "brigfront";
-	name = "Brig Blast door"
+	name = "Brig Blast Door"
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -9932,7 +9929,6 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Gen-Pop Access"
 	},
-/obj/structure/cable,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -10374,7 +10370,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/structure/sign/warning/electric_shock/directional/west,
 /turf/open/floor/plating,
@@ -10382,7 +10378,7 @@
 "aCI" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/machinery/door/firedoor,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
@@ -10405,7 +10401,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /turf/open/floor/plating,
 /area/station/engineering/atmos/office)
@@ -10417,7 +10413,7 @@
 /obj/item/pen,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/machinery/door/firedoor,
 /obj/machinery/door/window/right/directional/west{
@@ -12000,7 +11996,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "cmo_cat_containment";
-	name = "CMO Privacy Blast door"
+	name = "CMO Privacy Blast Door"
 	},
 /turf/open/floor/plating,
 /area/station/command/heads_quarters/cmo)
@@ -14687,7 +14683,6 @@
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/server)
 "aNY" = (
-/obj/effect/mapping_helpers/airalarm/unlocked,
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -16394,6 +16389,7 @@
 /obj/structure/chair/office/light,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/duct,
+/obj/effect/landmark/start/virologist,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "aSK" = (
@@ -17174,31 +17170,31 @@
 	},
 /obj/structure/lattice/catwalk,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aUR" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	dir = 10
 	},
 /obj/structure/lattice,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aUS" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	dir = 6
 	},
 /obj/structure/lattice,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aUT" = (
 /obj/structure/lattice,
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aUU" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /obj/structure/lattice/catwalk,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aUV" = (
 /obj/structure/table/wood,
 /obj/item/clipboard,
@@ -17455,14 +17451,14 @@
 /obj/structure/lattice/catwalk,
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aVL" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	dir = 9
 	},
 /obj/structure/lattice/catwalk,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aVM" = (
 /obj/effect/turf_decal/trimline/green/line{
 	dir = 8
@@ -17803,7 +17799,7 @@
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple,
 /obj/structure/lattice,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aWA" = (
 /obj/structure/table/wood,
 /obj/machinery/computer/libraryconsole/bookmanagement{
@@ -18032,10 +18028,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden,
 /turf/open/floor/plating,
 /area/station/science/server)
-"aXc" = (
-/obj/structure/lattice/catwalk,
-/turf/open/space,
-/area/station/asteroid)
 "aXd" = (
 /obj/machinery/door/firedoor,
 /obj/effect/mapping_helpers/airlock/locked,
@@ -18517,7 +18509,7 @@
 	dir = 4
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "aYw" = (
 /obj/machinery/light/small/directional/west,
 /obj/structure/table/wood,
@@ -24003,7 +23995,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -24476,7 +24468,7 @@
 "cWR" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "atmoslock";
-	name = "Atmospherics Lockdown Blast door"
+	name = "Atmospherics Lockdown Blast Door"
 	},
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/window/right/directional/east{
@@ -25377,7 +25369,7 @@
 	},
 /obj/machinery/door/poddoor{
 	id = "cargoload";
-	name = "supply dock loading door"
+	name = "Supply Dock Loading Door"
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
@@ -26299,7 +26291,7 @@
 	dir = 6
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "gax" = (
 /obj/structure/chair/stool/directional/west,
 /obj/effect/landmark/start/hangover,
@@ -26858,7 +26850,7 @@
 	dir = 9
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "hlA" = (
 /obj/machinery/power/solar{
 	id = "aftport";
@@ -27474,11 +27466,6 @@
 	name = "Hydroponics Counter Shutters";
 	dir = 4
 	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	id = "hydrodesk";
-	name = "Hydroponics Counter Shutters";
-	dir = 4
-	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "idU" = (
@@ -27641,7 +27628,7 @@
 	dir = 4
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "iBx" = (
 /obj/structure/grille/broken,
 /obj/effect/turf_decal/sand/plating,
@@ -28257,7 +28244,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "detectivewindows";
-	name = "HoS Privacy Blast door"
+	name = "HoS Privacy Blast Door"
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -28756,7 +28743,7 @@
 /obj/structure/lattice/catwalk,
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold,
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "klL" = (
 /obj/machinery/door/airlock/maintenance_hatch{
 	name = "Maintenance Hatch"
@@ -30260,7 +30247,7 @@
 	dir = 8
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "mWR" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/newscaster/directional/west,
@@ -31483,7 +31470,7 @@
 	dir = 10
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "phF" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -33003,7 +32990,7 @@
 	dir = 8
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "rFA" = (
 /obj/structure/table,
 /turf/open/floor/iron,
@@ -34202,7 +34189,7 @@
 "sLJ" = (
 /obj/machinery/door/poddoor{
 	id = "cargounload";
-	name = "supply dock unloading door"
+	name = "Supply Dock Unloading Door"
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/status_display/supply{
@@ -34234,7 +34221,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "aicorewindow";
-	name = "AI core shutters";
+	name = "AI Core Shutters";
 	dir = 1
 	},
 /turf/open/floor/plating,
@@ -34301,7 +34288,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "bridgewindows";
-	name = "Bridge View Blast door"
+	name = "Bridge View Blast Door"
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -34332,13 +34319,13 @@
 /obj/effect/landmark/start/ai,
 /obj/machinery/button/door{
 	id = "aicorewindow";
-	name = "AI Core shutters control";
+	name = "AI Core Shutters Control";
 	pixel_x = 24;
 	pixel_y = -22
 	},
 /obj/machinery/button/door{
 	id = "aicoredoor";
-	name = "AI Chamber entrance shutters control";
+	name = "AI Chamber Entrance Shutters Control";
 	pixel_x = -23;
 	pixel_y = -23
 	},
@@ -36164,10 +36151,6 @@
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/server)
-"uDr" = (
-/obj/structure/lattice,
-/turf/closed/wall,
-/area/station/command/gateway)
 "uEu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/spawner/structure/window/reinforced/plasma,
@@ -37077,7 +37060,7 @@
 	dir = 4
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "wtw" = (
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/stripes/line{
@@ -37315,7 +37298,6 @@
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/layer2{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/airlock/access/all/science/ordnance,
 /obj/effect/mapping_helpers/airlock/autoname,
 /obj/effect/mapping_helpers/airlock/locked,
 /obj/effect/mapping_helpers/airlock/access/any/science/ordnance,
@@ -37676,7 +37658,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "brigfront";
-	name = "Brig Blast door"
+	name = "Brig Blast Door"
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -38043,7 +38025,7 @@
 	dir = 5
 	},
 /turf/open/space,
-/area/station/asteroid)
+/area/space/nearstation)
 "xYD" = (
 /turf/closed/wall/rust,
 /area/station/maintenance/department/cargo)
@@ -61583,11 +61565,11 @@ aQO
 aRL
 aCL
 alI
-aXc
+sNM
 aYv
 aYv
-aXc
-aXc
+sNM
+sNM
 aqo
 aqo
 maY
@@ -79292,7 +79274,7 @@ aae
 aaf
 aaf
 aIZ
-uDr
+xMZ
 xMZ
 msl
 xMZ
@@ -79340,7 +79322,7 @@ pMh
 lwH
 pMh
 aiQ
-aac
+uTo
 aaa
 aaa
 aaa
@@ -79597,7 +79579,7 @@ kMb
 cgi
 pMh
 xAQ
-aac
+uTo
 aaa
 aaa
 aaa
