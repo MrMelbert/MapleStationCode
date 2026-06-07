@@ -81,13 +81,11 @@
 
 /datum/component/embedded/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(jostleCheck))
-	RegisterSignal(parent, COMSIG_CARBON_EMBED_RIP, PROC_REF(ripOut))
-	RegisterSignal(parent, COMSIG_CARBON_EMBED_REMOVAL, PROC_REF(safeRemove))
 	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(checkTweeze))
 	RegisterSignal(parent, COMSIG_MAGIC_RECALL, PROC_REF(magic_pull))
 
 /datum/component/embedded/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_EMBED_RIP, COMSIG_CARBON_EMBED_REMOVAL, COMSIG_ATOM_ATTACKBY, COMSIG_MAGIC_RECALL))
+	UnregisterSignal(parent, list(COMSIG_MOVABLE_MOVED, COMSIG_ATOM_ATTACKBY, COMSIG_MAGIC_RECALL))
 
 /datum/component/embedded/process(seconds_per_tick)
 	var/mob/living/carbon/victim = parent
@@ -176,10 +174,11 @@
 
 	if(I != weapon || src.limb != limb)
 		return
-	var/mob/living/carbon/victim = parent
-	var/datum/embed_data/embed_data = weapon.get_embed()
-	var/time_taken = embed_data.rip_time * weapon.w_class * 2 // melbert todo : remove this *2 when other people can rip out things from you
-	INVOKE_ASYNC(src, PROC_REF(complete_rip_out), victim, I, limb, time_taken)
+	limb?.open_embed_interface(usr)
+	// var/mob/living/carbon/victim = parent
+	// var/datum/embed_data/embed_data = weapon.get_embed()
+	// var/time_taken = embed_data.rip_time * weapon.w_class * 2 // melbert todo : remove this *2 when other people can rip out things from you
+	// INVOKE_ASYNC(src, PROC_REF(complete_rip_out), victim, I, limb, time_taken)
 
 /// everything async that ripOut used to do
 /datum/component/embedded/proc/complete_rip_out(mob/living/carbon/victim, obj/item/I, obj/item/bodypart/limb, time_taken)
@@ -241,55 +240,52 @@
 	if(!istype(victim) || (possible_tweezers.tool_behaviour != TOOL_HEMOSTAT && possible_tweezers.tool_behaviour != TOOL_WIRECUTTER) || user.zone_selected != limb.body_zone)
 		return
 
-	if(weapon != limb.embedded_objects[1]) // just pluck the first one, since we can't easily coordinate with other embedded components affecting this limb who is highest priority
-		return
-
 	if(ishuman(victim)) // check to see if the limb is actually exposed
 		var/mob/living/carbon/human/victim_human = victim
 		if(!victim_human.try_inject(user, limb.body_zone, INJECT_CHECK_IGNORE_SPECIES | INJECT_TRY_SHOW_ERROR_MESSAGE))
-			return TRUE
+			return COMPONENT_NO_AFTERATTACK
 
-	INVOKE_ASYNC(src, PROC_REF(tweezePluck), possible_tweezers, user)
+	limb.open_embed_interface(user)
 	return COMPONENT_NO_AFTERATTACK
 
 /// The actual action for pulling out an embedded object with a hemostat
-/datum/component/embedded/proc/tweezePluck(obj/item/possible_tweezers, mob/user)
-	var/mob/living/carbon/victim = parent
-	var/datum/embed_data/embed_data = weapon.get_embed()
-	var/self_pluck = (user == victim)
-	// quality of the tool we're using
-	var/tweezer_speed = possible_tweezers.toolspeed
-	// is this an actual piece of medical equipment
-	var/tweezer_safe = (possible_tweezers.tool_behaviour == TOOL_HEMOSTAT)
-	var/pluck_time = embed_data.rip_time * (weapon.w_class * 0.3) * (self_pluck ? 1.5 : 1) * tweezer_speed * (tweezer_safe ? 1 : 1.5)
+// /datum/component/embedded/proc/tweezePluck(obj/item/possible_tweezers, mob/user)
+// 	var/mob/living/carbon/victim = parent
+// 	var/datum/embed_data/embed_data = weapon.get_embed()
+// 	var/self_pluck = (user == victim)
+// 	// quality of the tool we're using
+// 	var/tweezer_speed = possible_tweezers.toolspeed
+// 	// is this an actual piece of medical equipment
+// 	var/tweezer_safe = (possible_tweezers.tool_behaviour == TOOL_HEMOSTAT)
+// 	var/pluck_time = embed_data.rip_time * (weapon.w_class * 0.3) * (self_pluck ? 1.5 : 1) * tweezer_speed * (tweezer_safe ? 1 : 1.5)
 
-	user.visible_message(
-		span_danger("[user] begins plucking [weapon] from [user == victim ? user.p_their() : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]..."),
-		span_notice("You start plucking [weapon] from [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)].)"),
-		vision_distance = COMBAT_MESSAGE_RANGE
-	)
+// 	user.visible_message(
+// 		span_danger("[user] begins plucking [weapon] from [user == victim ? user.p_their() : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]..."),
+// 		span_notice("You start plucking [weapon] from [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)].)"),
+// 		vision_distance = COMBAT_MESSAGE_RANGE
+// 	)
 
-	playsound(user, 'sound/surgery/hemostat1.ogg', 50, TRUE, falloff_exponent = 12, falloff_distance = 1)
-	if(!do_after(user, pluck_time, victim))
-		return
-	if(QDELETED(src))
-		return
+// 	playsound(user, 'sound/surgery/hemostat1.ogg', 50, TRUE, falloff_exponent = 12, falloff_distance = 1)
+// 	if(!do_after(user, pluck_time, victim))
+// 		return
+// 	if(QDELETED(src))
+// 		return
 
-	user.visible_message(
-		span_danger("[user] plucks [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but hurt [victim.p_them()] in the process."]"),
-		span_notice("You pluck [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but it's not perfect."]"),
-		vision_distance = COMBAT_MESSAGE_RANGE,
-	)
+// 	user.visible_message(
+// 		span_danger("[user] plucks [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but hurt [victim.p_them()] in the process."]"),
+// 		span_notice("You pluck [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but it's not perfect."]"),
+// 		vision_distance = COMBAT_MESSAGE_RANGE,
+// 	)
 
-	var/obj/item/bodypart/our_limb = limb // because we null after removing
+// 	var/obj/item/bodypart/our_limb = limb // because we null after removing
 
-	if(!tweezer_safe)
-		// sure it still hurts but it sucks less
-		damaging_removal(victim, weapon, limb, (0.4 * possible_tweezers.w_class))
-	safeRemove(user)
+// 	if(!tweezer_safe)
+// 		// sure it still hurts but it sucks less
+// 		damaging_removal(victim, weapon, limb, (0.4 * possible_tweezers.w_class))
+// 	safeRemove(user)
 
-	if(length(our_limb.embedded_objects))
-		victim.attackby(possible_tweezers, user) // loop if we can
+// 	if(length(our_limb.embedded_objects))
+// 		victim.attackby(possible_tweezers, user) // loop if we can
 
 /// Called when an object is ripped out of someone's body by magic or other abnormal means
 /datum/component/embedded/proc/magic_pull(datum/source, mob/living/caster, obj/marked_item)

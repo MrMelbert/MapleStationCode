@@ -58,7 +58,7 @@
 	pain_stam_pct = 0.4
 	pain_mult = 5
 	jostle_pain_mult = 6
-	rip_time = 10 SECONDS
+	max_pull_speed = 10
 
 // Rebar (Rebar Crossbow)
 /obj/projectile/bullet/rebar
@@ -83,7 +83,7 @@
 	pain_stam_pct = 0.4
 	pain_mult = 4
 	jostle_pain_mult = 2
-	rip_time = 5 SECONDS
+	max_pull_speed = 2.75
 
 /obj/projectile/bullet/rebarsyndie
 	name = "rebar"
@@ -104,4 +104,4 @@
 	fall_chance = 0.0006
 	jostle_chance = 3
 	pain_mult = 3
-	rip_time = 6 SECONDS
+	max_pull_speed = 3

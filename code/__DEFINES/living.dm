@@ -248,6 +248,9 @@
 /// For consistent examine span formatting (small size)
 #define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
 
+/// When a bodypart has something embedded in it
+#define COMSIG_BODYPART_ON_EMBEDDED "bodypart_on_embedded"
+
 // Smell intensities
 /// Very faint - Often low enough to not noticed, but if noticed, people get used to it quickly
 #define SMELL_INTENSITY_FAINT 1

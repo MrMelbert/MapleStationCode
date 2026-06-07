@@ -43,7 +43,7 @@
 	pain_stam_pct = 0.5
 	pain_mult = 3
 	jostle_pain_mult = 3
-	rip_time = 1 SECONDS
+	max_pull_speed = 20
 
 /// holy arrows
 /obj/item/ammo_casing/arrow/holy

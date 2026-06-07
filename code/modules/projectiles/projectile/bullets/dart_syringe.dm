@@ -65,7 +65,7 @@
 /datum/embed_data/syringe
 	embed_chance = 0 // only when forced
 	fall_chance = 0 // only when edited
-	rip_time = 1.5 SECONDS
+	max_pull_speed = 5
 	pain_stam_pct = 0.75
 	impact_pain_mult = 8 // half this if syringe w class goes up.
 	remove_pain_mult = 8 // same

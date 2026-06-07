@@ -25,7 +25,7 @@
 	ignore_throwspeed_threshold = TRUE
 	pain_stam_pct = 0.5
 	pain_mult = 3
-	rip_time = 10 SECONDS
+	max_pull_speed = 1.5
 	stealthy_embed = TRUE
 	blood_loss = 0.05
 
@@ -51,6 +51,7 @@
 
 /datum/embed_data/bullet/pellet
 	blood_loss = 0.01
+	bulk_remove = 3
 
 /turf/closed/wall/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
 	. = ..()

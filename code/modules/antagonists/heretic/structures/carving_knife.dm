@@ -33,7 +33,7 @@
 	jostle_pain_mult = 5
 	pain_stam_pct = 0.4
 	pain_mult = 3
-	rip_time = 15
+	max_pull_speed = 8
 
 /obj/item/melee/rune_carver/examine(mob/user)
 	. = ..()

@@ -238,7 +238,7 @@
 	ignore_throwspeed_threshold = TRUE
 	pain_stam_pct = 0.5
 	pain_mult = 3
-	rip_time = 2 SECONDS
+	max_pull_speed = 10
 
 /obj/projectile/bullet/lollipop/Initialize(mapload)
 	. = ..()
