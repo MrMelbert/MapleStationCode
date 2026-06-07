@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(skills)
 	///Dictionary of skill.type || skill ref
 	var/list/datum/skill/all_skills = list()
 	///List of level names with index corresponding to skill level
-	var/list/level_names = list(
+	var/list/level_names = alist(
 		SKILL_LEVEL_NONE = "Untrained",
 		SKILL_LEVEL_NOVICE = "Novice",
 		SKILL_LEVEL_APPRENTICE = "Apprentice",

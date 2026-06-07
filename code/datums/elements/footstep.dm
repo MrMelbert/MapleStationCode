@@ -168,7 +168,7 @@
 				FOOTSTEP_WOOD_BAREFOOT = 1,
 			)
 			// the actual synthetic footstep sound
-			var/static/list/synthetic_footsteps = list(
+			var/static/list/synthetic_footsteps = alist(
 				FOOTSTEP_SOUNDS = list(
 					'maplestation_modules/sound/items/rigstep.ogg' = 1,
 					'maplestation_modules/sound/items/rigstep.ogg' = 1,

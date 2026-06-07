@@ -5,7 +5,7 @@
 	grants_you = "faster electronics tool usage and a reduced chance of being shocked when hacking"
 	higher_levels_grant_you = "innate knowledge of airlock and APC wiring"
 	modifiers = list(
-		SKILL_PROBS_MODIFIER = list(
+		SKILL_PROBS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = 10,
@@ -14,7 +14,7 @@
 			SKILL_LEVEL_MASTER = 40,
 			SKILL_LEVEL_LEGENDARY = 50,
 		),
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.2,
 			SKILL_LEVEL_NOVICE = 1.1,
 			SKILL_LEVEL_APPRENTICE = 1,

@@ -7,7 +7,7 @@
 	higher_levels_grant_you = "the ability to exercise for longer periods of time"
 	// The skill value modifier effects the max duration that is possible for /datum/status_effect/exercised; The rands modifier determines block probability and crit probability while boxing against boxers
 	modifiers = list(
-		SKILL_VALUE_MODIFIER = list(
+		SKILL_VALUE_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.2,
 			SKILL_LEVEL_NOVICE = 1.1,
 			SKILL_LEVEL_APPRENTICE = 1,

@@ -149,6 +149,9 @@
 /atom/movable/screen/language_menu/Click()
 	usr.get_language_holder().open_language_menu(usr)
 
+/atom/movable/screen/language_menu/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
+
 /atom/movable/screen/inventory
 	/// The identifier for the slot. It has nothing to do with ID cards.
 	var/slot_id
@@ -345,6 +348,38 @@
 	icon = 'icons/hud/screen_cyborg.dmi'
 	screen_loc = ui_borg_intents
 
+/atom/movable/screen/floor_changer
+	name = "change floor"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "floor_change"
+	screen_loc = ui_above_intent
+	mouse_over_pointer = MOUSE_HAND_POINTER
+	var/vertical = FALSE
+
+/atom/movable/screen/floor_changer/Click(location,control,params)
+	var/list/modifiers = params2list(params)
+
+	var/mouse_position
+
+	if(vertical)
+		mouse_position = text2num(LAZYACCESS(modifiers, ICON_Y))
+	else
+		mouse_position = text2num(LAZYACCESS(modifiers, ICON_X))
+
+	if(mouse_position > 16)
+		usr.up()
+		return
+
+	usr.down()
+	return
+
+/atom/movable/screen/floor_changer/vertical
+	icon_state = "floor_change_v"
+	vertical = TRUE
+
+/atom/movable/screen/floor_changer/vertical/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
+
 /atom/movable/screen/spacesuit
 	name = "Space suit cell status"
 	icon_state = "spacesuit_0"
@@ -396,10 +431,12 @@
 	name = "resist"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_resist"
+	base_icon_state = "act_resist"
 	plane = HUD_PLANE
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/resist/Click()
+	flick("[base_icon_state]_on", src)
 	if(isliving(usr))
 		var/mob/living/L = usr
 		L.resist()
@@ -421,8 +458,34 @@
 	var/mob/living/user = hud?.mymob
 	if(!istype(user))
 		return ..()
-	icon_state = "[base_icon_state][user.resting ? 0 : null]"
+	icon_state = "[base_icon_state][user.resting ? "_on" : null]"
 	return ..()
+
+/atom/movable/screen/sleep
+	name = "sleep"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "act_sleep"
+	base_icon_state = "act_sleep"
+	plane = HUD_PLANE
+	mouse_over_pointer = MOUSE_HAND_POINTER
+
+/atom/movable/screen/sleep/Click()
+	if(!isliving(usr) || HAS_TRAIT(usr, TRAIT_KNOCKEDOUT))
+		return
+	if(usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
+		var/tgui_answer = tgui_alert(usr, "You sure you want to sleep for a while?", "Sleeping", list("Yes", "No"))
+		if(tgui_answer == "Yes" && !HAS_TRAIT(usr, TRAIT_KNOCKEDOUT))
+			var/mob/living/L = usr
+			L.SetSleeping(400)
+	else
+		flick("[base_icon_state]_flick", src)
+
+/atom/movable/screen/sleep/DblClick(location, control, params)
+	if(!isliving(usr) || usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
+		return
+	if(isliving(usr))
+		var/mob/living/L = usr
+		L.SetSleeping(400)
 
 /atom/movable/screen/storage
 	name = "storage"
@@ -494,7 +557,7 @@
 /atom/movable/screen/throw_catch
 	name = "throw/catch"
 	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "act_throw_off"
+	icon_state = "act_throw"
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/throw_catch/Click()

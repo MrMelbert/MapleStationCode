@@ -63,8 +63,8 @@
 	faction += FACTION_SILICON
 	if(ispath(radio))
 		radio = new radio(src)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 	diag_hud_set_status()
 	diag_hud_set_health()
 	add_sensors()
@@ -348,10 +348,6 @@
 /mob/living/silicon/proc/ai_roster()
 	if(!client)
 		return
-	if(world.time < client.crew_manifest_delay)
-		return
-	client.crew_manifest_delay = world.time + (1 SECONDS)
-
 	GLOB.manifest.ui_interact(src)
 
 /mob/living/silicon/proc/set_autosay() //For allowing the AI and borgs to set the radio behavior of auto announcements (state laws, arrivals).
