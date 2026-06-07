@@ -193,10 +193,11 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	embed_holder.vis_flags |= VIS_INHERIT_ID
 	embed_holder.appearance_flags |= PIXEL_SCALE
 	embed_holder.transform = embedded_item.transform.Scale(2, 2)
-	embed_holder.pixel_x = 6 + 36 * (length(tracked_embeds) % 3)
+	embed_holder.pixel_x = 36 * (length(tracked_embeds) % 3) + rand(-6, 12)
 	embed_holder.pixel_y = 2 * rand(1, 4)
 	embed_holder.layer = src.layer + 1
 	embed_holder.plane = src.plane
+	embed_holder.remove_progress = pixel_y
 
 	var/datum/embed_data/embed_data = embedded_item.get_embed()
 	embed_holder.max_speed = embed_data.max_pull_speed
@@ -389,12 +390,13 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 		else
 			embed_holder.remove_progress = max(embed_holder.remove_progress + dy, 0)
 			if(embed_holder.remove_progress > 120)
-				var/using_improper_tool = is_using_improper_tool(remover)
+				var/obj/item/holding = GET_REMOVAL_TOOL(remover, target_limb)
+				var/using_improper_tool = is_improper_tool(holding)
 				if(using_improper_tool)
 					damage_limb(currently_selected, 0.5) // you can bypass the speed limit but it still applies a bit of damage
-					log_combat(remover, target_limb.owner, "damaged limb by removing embedded object with improvised tool", tool)
+					log_combat(remover, target_limb.owner, "damaged limb by removing embedded object with improvised tool", holding)
 
-				var/embeds_to_remove = ceil(currently_selected.get_embed().bulk_remove * (using_improper_tool ? 0.5 : 1), 1)  + 1
+				var/embeds_to_remove = ceil(currently_selected.get_embed().bulk_remove * (using_improper_tool ? 0.5 : 1)) + 1
 				if(embeds_to_remove <= 1)
 					target_limb.owner.remove_embedded_object(currently_selected, remover)
 				else
@@ -417,15 +419,14 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	viewers[remover]["last_move_y_num"] = cursor_y
 
 /atom/movable/screen/embed_interface/proc/can_bypass_speed_check(mob/who)
-	return is_using_safe_tool(who) || is_using_improper_tool(who)
-
-/atom/movable/screen/embed_interface/proc/is_using_safe_tool(mob/who)
 	var/obj/item/holding = GET_REMOVAL_TOOL(who, target_limb)
-	return holding?.tool_behaviour == TOOL_HEMOSTAT
+	return is_safe_tool(holding) || is_improper_tool(holding)
 
-/atom/movable/screen/embed_interface/proc/is_using_improper_tool(mob/who)
-	var/obj/item/holding = GET_REMOVAL_TOOL(who, target_limb)
-	return holding?.tool_behaviour == TOOL_WIRECUTTER || holding?.get_sharpness()
+/atom/movable/screen/embed_interface/proc/is_safe_tool(obj/item/tool)
+	return tool?.tool_behaviour == TOOL_HEMOSTAT
+
+/atom/movable/screen/embed_interface/proc/is_improper_tool(obj/item/tool)
+	return tool?.tool_behaviour == TOOL_WIRECUTTER || tool?.get_sharpness()
 
 /atom/movable/screen/embed_interface/proc/find_clicked_embed(x_num, y_num)
 	for (var/u_embed_datum, u_embed_holder in tracked_embeds)
