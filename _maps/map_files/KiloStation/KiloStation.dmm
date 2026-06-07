@@ -16113,18 +16113,6 @@
 /obj/structure/closet{
 	name = "detective closet"
 	},
-/obj/item/clothing/suit/jacket{
-	desc = "All the class of a trenchcoat without the security fibers.";
-	icon_state = "noirdet";
-	name = "trenchcoat";
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/clothing/suit/jacket{
-	desc = "All the class of a trenchcoat without the security fibers.";
-	icon_state = "detective";
-	name = "trenchcoat"
-	},
 /obj/item/clothing/head/fedora{
 	pixel_x = 4;
 	pixel_y = 4
@@ -16132,6 +16120,8 @@
 /obj/item/clothing/head/fedora{
 	icon_state = "detective"
 	},
+/obj/item/clothing/suit/jacket/leather_trenchcoat,
+/obj/item/clothing/suit/jacket/leather_trenchcoat,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security)
 "bWT" = (
@@ -35719,7 +35709,8 @@
 "hfA" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/vault{
-	name = "Vault"
+	name = "Vault";
+	id_tag = "VAULT_PASSWORD_PANEL"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -38436,6 +38427,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Long Term Crew Storage"
 	},
+/obj/effect/landmark/navigate_destination,
 /turf/open/floor/iron,
 /area/station/commons/long_term_storage)
 "iba" = (
@@ -86597,6 +86589,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/landmark/navigate_destination,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
 "xGK" = (
