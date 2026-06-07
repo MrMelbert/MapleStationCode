@@ -51,6 +51,7 @@
 
 /datum/embed_data/bullet/pellet
 	blood_loss = 0.01
+	bulk_remove = 3
 
 /turf/closed/wall/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
 	. = ..()

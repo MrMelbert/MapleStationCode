@@ -42,6 +42,8 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	var/blood_loss = 0.25
 	/// Max speed we can pull the embedded object out without causing damage
 	var/max_pull_speed = 2
+	/// A number that indicates how many other embedded objects of the same type will be removed when one is removed
+	var/bulk_remove = 0
 
 /datum/embed_data/proc/generate_with_values(
 	embed_chance = src.embed_chance,
@@ -304,7 +306,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	var/list/modifiers = params2list(params)
 	var/cursor_x = text2num(LAZYACCESS(modifiers, ICON_X))
 	var/cursor_y = text2num(LAZYACCESS(modifiers, ICON_Y))
-	update_effect(cursor_x, cursor_y)
+	update_effect(usr, cursor_x, cursor_y)
 
 /atom/movable/screen/embed_interface/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
 	var/list/modifiers = params2list(params)
@@ -319,7 +321,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 			return
 		set_currently_selected(clicked, usr)
 
-	update_effect(cursor_x, cursor_y)
+	update_effect(usr, cursor_x, cursor_y)
 
 /atom/movable/screen/embed_interface/Click(location, control, params)
 	var/list/modifiers = params2list(params)
@@ -337,7 +339,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 		return
 
 	set_currently_selected(clicked, usr)
-	update_effect(cursor_x, cursor_y)
+	update_effect(usr, cursor_x, cursor_y)
 
 /atom/movable/screen/embed_interface/proc/damage_limb(obj/item/from_what, multiplier = 1)
 	var/datum/embed_data/stats = from_what.get_embed()
@@ -355,7 +357,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 		damage_source = from_what,
 	)
 
-/atom/movable/screen/embed_interface/proc/update_effect(cursor_x, cursor_y)
+/atom/movable/screen/embed_interface/proc/update_effect(mob/remover, cursor_x, cursor_y)
 	var/last_move_world_time = viewers[usr]["last_move_world_time"]
 	var/last_move_x_num = viewers[usr]["last_move_x_num"]
 	var/last_move_y_num = viewers[usr]["last_move_y_num"]
@@ -368,42 +370,62 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 		var/obj/effect/appearance_clone/embedded_item/embed_holder = tracked_embeds[currently_selected]
 		if(isnull(embed_holder))
 			stack_trace("Embed appearance for [currently_selected] is null in embed interface!")
-			set_currently_selected(null, usr)
+			set_currently_selected(null, remover)
 
 		// if you move too fast, it causes damage and drops the embed
 		var/time_diff = max(1, world.time - last_move_world_time)
 		var/speed = sqrt((dx * dx) + (dy * dy)) / time_diff
-		if (speed > embed_holder.max_speed && !viewers[usr]["bypass_fail"])
+		if (speed > embed_holder.max_speed && !viewers[remover]["bypass_fail"])
 			// flick("[icon_state]_fast", src)
 			icon_state = "[initial(icon_state)]_fast"
 			addtimer(VARSET_CALLBACK(src, icon_state, initial(icon_state)), 1 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 			if(embed_holder.remove_progress > 36) // damage is not applied until out of the red zone
 				embed_holder.remove_progress *= 0.9
-				damage_limb(currently_selected, (COOLDOWN_FINISHED(src, viewers[usr]["last_fail"]) ? 1 : 0.2))
-				log_combat(usr, target_limb.owner, "damaged limb by moving embedded object too quickly")
-				COOLDOWN_START(src, viewers[usr]["last_fail"], 10 SECONDS)
-			set_currently_selected(null, usr)
+				damage_limb(currently_selected, (COOLDOWN_FINISHED(src, viewers[remover]["last_fail"]) ? 1 : 0.2))
+				log_combat(remover, target_limb.owner, "damaged limb by moving embedded object too quickly")
+				COOLDOWN_START(src, viewers[remover]["last_fail"], 10 SECONDS)
+			set_currently_selected(null, remover)
 
 		else
-			embed_holder.remove_progress += dy
+			embed_holder.remove_progress = max(embed_holder.remove_progress + dy, 0)
 			if(embed_holder.remove_progress > 120)
-				var/obj/item/tool = GET_REMOVAL_TOOL(usr, target_limb)
-				if(tool?.tool_behaviour == TOOL_WIRECUTTER || tool?.get_sharpness())
+				var/using_improper_tool = is_using_improper_tool(remover)
+				if(using_improper_tool)
 					damage_limb(currently_selected, 0.5) // you can bypass the speed limit but it still applies a bit of damage
-					log_combat(usr, target_limb.owner, "damaged limb by removing embedded object with improvised tool", tool)
-				target_limb.owner.remove_embedded_object(currently_selected, usr)
+					log_combat(remover, target_limb.owner, "damaged limb by removing embedded object with improvised tool", tool)
+
+				var/embeds_to_remove = ceil(currently_selected.get_embed().bulk_remove * (using_improper_tool ? 0.5 : 1), 1)  + 1
+				if(embeds_to_remove <= 1)
+					target_limb.owner.remove_embedded_object(currently_selected, remover)
+				else
+					var/list/removed_embeds = list(currently_selected)
+					for(var/obj/item/embed as anything in tracked_embeds)
+						if(embed != currently_selected && istype(embed, currently_selected.type) && !QDELING(embed))
+							removed_embeds += embed
+						if(length(removed_embeds) >= embeds_to_remove)
+							break
+
+					for(var/obj/item/embed as anything in removed_embeds)
+						target_limb.owner.remove_embedded_object(embed, remover)
 				return
 
 		embed_holder?.pixel_x = clamp(cursor_x - 16, 8, 120)
 		embed_holder?.pixel_y = clamp(embed_holder.remove_progress, 0, 180)
 
-	viewers[usr]["last_move_world_time"] = world.time
-	viewers[usr]["last_move_x_num"] = cursor_x
-	viewers[usr]["last_move_y_num"] = cursor_y
+	viewers[remover]["last_move_world_time"] = world.time
+	viewers[remover]["last_move_x_num"] = cursor_x
+	viewers[remover]["last_move_y_num"] = cursor_y
 
 /atom/movable/screen/embed_interface/proc/can_bypass_speed_check(mob/who)
+	return is_using_safe_tool(who) || is_using_improper_tool(who)
+
+/atom/movable/screen/embed_interface/proc/is_using_safe_tool(mob/who)
 	var/obj/item/holding = GET_REMOVAL_TOOL(who, target_limb)
-	return holding?.tool_behaviour == TOOL_HEMOSTAT || holding?.tool_behaviour == TOOL_WIRECUTTER || holding?.get_sharpness()
+	return holding?.tool_behaviour == TOOL_HEMOSTAT
+
+/atom/movable/screen/embed_interface/proc/is_using_improper_tool(mob/who)
+	var/obj/item/holding = GET_REMOVAL_TOOL(who, target_limb)
+	return holding?.tool_behaviour == TOOL_WIRECUTTER || holding?.get_sharpness()
 
 /atom/movable/screen/embed_interface/proc/find_clicked_embed(x_num, y_num)
 	for (var/u_embed_datum, u_embed_holder in tracked_embeds)

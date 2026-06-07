@@ -57,6 +57,7 @@
 	ignore_throwspeed_threshold = TRUE
 	fall_chance = 0.0020
 	stealthy_embed = TRUE
+	bulk_remove = 1
 
 /obj/projectile/bullet/shrapnel/mega
 	name = "flying shrapnel hunk"
