@@ -33,18 +33,18 @@
 	var/picked_severity
 	switch(strength)
 		if("Low")
-			picked_severity = pick_weight(list(
+			picked_severity = pick_weight(alist(
 				WOUND_SEVERITY_MODERATE = 2,
 				WOUND_SEVERITY_SEVERE = 1,
 			))
 		if("Moderate")
-			picked_severity = pick_weight(list(
+			picked_severity = pick_weight(alist(
 				WOUND_SEVERITY_MODERATE = 1,
 				WOUND_SEVERITY_SEVERE = 2,
 				WOUND_SEVERITY_CRITICAL = 1,
 			))
 		if("High")
-			picked_severity = pick_weight(list(
+			picked_severity = pick_weight(alist(
 				WOUND_SEVERITY_MODERATE = 1,
 				WOUND_SEVERITY_SEVERE = 1,
 				WOUND_SEVERITY_CRITICAL = 3,
