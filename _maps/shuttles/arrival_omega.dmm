@@ -87,51 +87,10 @@
 /obj/effect/turf_decal/caution{
 	dir = 4
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/arrival)
-"l" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/arrival)
 "m" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/sign/poster/official/enlist/directional/east,
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/arrival)
-"n" = (
-/obj/structure/extinguisher_cabinet{
-	pixel_x = -26
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/arrival)
-"o" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/machinery/light{
-	dir = 4
-	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/arrival)
 "p" = (
@@ -159,35 +118,21 @@
 	},
 /obj/item/paper_bin,
 /obj/item/pen,
+/obj/machinery/light/cold/dim/directional/west,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/arrival)
 "t" = (
-/obj/structure/table/reinforced,
-/obj/machinery/light{
-	dir = 4
-	},
-/obj/machinery/cell_charger,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/turf_decal/caution{
 	dir = 8
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/arrival)
 "u" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/turf/open/floor/mineral/titanium/white,
+/obj/structure/table/reinforced,
+/obj/machinery/cell_charger,
+/turf/open/floor/mineral/plastitanium,
 /area/shuttle/arrival)
 "v" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/arrival)
 "w" = (
@@ -201,18 +146,19 @@
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
 /obj/effect/turf_decal/delivery,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/item/crowbar/large/emergency,
 /obj/item/crowbar/large/emergency,
 /obj/item/crowbar/large/emergency,
 /obj/item/crowbar/large/emergency,
-/turf/open/floor/mineral/titanium/white,
+/turf/open/floor/mineral/plastitanium,
 /area/shuttle/arrival)
 "x" = (
 /obj/machinery/door/airlock/shuttle/glass,
-/turf/open/floor/mineral/plastitanium,
+/obj/effect/turf_decal/stripes/red/line,
+/obj/effect/turf_decal/stripes/red/line{
+	dir = 1
+	},
+/turf/open/floor/plating,
 /area/shuttle/arrival)
 "y" = (
 /obj/machinery/light/small{
@@ -235,19 +181,26 @@
 	department = "Arrival shuttle";
 	name = "Arrival Shuttle Requests Console"
 	},
+/obj/machinery/light/cold/dim/directional/east,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/arrival)
 "F" = (
 /obj/structure/sign/nanotrasen,
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/arrival)
+"P" = (
+/obj/structure/extinguisher_cabinet{
+	pixel_x = -26
+	},
+/turf/open/floor/mineral/titanium/white,
+/area/shuttle/arrival)
 
 (1,1,1) = {"
 a
 d
 f
-j
 f
+j
 p
 p
 d
@@ -264,8 +217,8 @@ a
 b
 e
 g
+P
 k
-n
 q
 q
 s
@@ -282,14 +235,14 @@ p
 c
 d
 h
-l
-l
-l
-l
-l
-l
-l
-l
+v
+v
+v
+v
+v
+v
+v
+v
 v
 x
 y
@@ -301,7 +254,7 @@ b
 e
 i
 m
-o
+t
 r
 r
 C
@@ -319,13 +272,13 @@ a
 d
 f
 f
-f
+j
 p
 p
 d
 p
 p
-f
+j
 F
 f
 a
