@@ -44,6 +44,9 @@
 	/// Whether this tongue modifies speech via signal
 	var/modifies_speech = FALSE
 
+	/// Additive modifier to how sensitive to smell the tongue is (we don't have a nose organ)
+	var/smell_sensitivity = 0
+
 /obj/item/organ/tongue/Initialize(mapload)
 	. = ..()
 	// Setup the possible languages list
@@ -120,7 +123,7 @@
 		food_taste_reaction = FOOD_LIKED
 	return food_taste_reaction
 
-/obj/item/organ/tongue/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/tongue/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 
 	if(modifies_speech)
@@ -134,7 +137,7 @@
 	REMOVE_TRAIT(receiver, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 	apply_tongue_effects()
 
-/obj/item/organ/tongue/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/tongue/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	temp_say_mod = ""
@@ -173,7 +176,7 @@
 /obj/item/organ/tongue/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutanttongue
 
-/obj/item/organ/tongue/feel_for_damage(self_aware)
+/obj/item/organ/tongue/feel_for_damage(self_aware, medical_skill)
 	// No effect
 	return ""
 
@@ -561,10 +564,14 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	attack_verb_simple = list("beep", "boop")
 	modifies_speech = TRUE
 	taste_sensitivity = 25 // not as good as an organic tongue
+	organ_traits = list(TRAIT_SILICON_EMOTES_ALLOWED)
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
 
 /obj/item/organ/tongue/robot/can_speak_language(language)
 	return TRUE // THE MAGIC OF ELECTRONICS
+
+/obj/item/organ/tongue/robot/could_speak_language(datum/language/language_path)
+	return TRUE
 
 /obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT

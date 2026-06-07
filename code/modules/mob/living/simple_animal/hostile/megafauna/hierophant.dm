@@ -67,6 +67,7 @@ Difficulty: Hard
 	score_achievement_type = /datum/award/score/hierophant_score
 	del_on_death = TRUE
 	death_sound = 'sound/magic/repulse.ogg'
+	initial_blood_type = null
 	attack_action_types = list(/datum/action/innate/megafauna_attack/blink,
 							   /datum/action/innate/megafauna_attack/chaser_swarm,
 							   /datum/action/innate/megafauna_attack/cross_blasts,
@@ -500,9 +501,6 @@ Difficulty: Hard
 	anger_modifier = clamp(((maxHealth - health) / 42),0,50)
 	burst_range = initial(burst_range) + round(anger_modifier * 0.08)
 	beam_range = initial(beam_range) + round(anger_modifier * 0.12)
-
-/mob/living/simple_animal/hostile/megafauna/hierophant/get_blood_type()
-	return null
 
 //Hierophant overlays
 /obj/effect/temp_visual/hierophant

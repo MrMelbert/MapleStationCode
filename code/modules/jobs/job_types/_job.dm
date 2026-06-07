@@ -135,6 +135,9 @@
 	/// Minimal character age for this job
 	var/required_character_age
 
+	/// List of [typepath] to [base skill level] that this job starts with
+	var/list/base_skills
+
 	/// Priority for the job on the crew monitor.
 	var/crewmonitor_priority
 
@@ -164,6 +167,9 @@
 	if(liver && length(liver_traits))
 		liver.add_traits(liver_traits, JOB_TRAIT)
 
+	for(var/skill, level in base_skills)
+		spawned.adjust_skill_experience(skill, SKILL_EXP_LIST[level], silent = TRUE)
+
 	if(!ishuman(spawned))
 		return
 
@@ -180,10 +186,16 @@
 
 	if(roundstart_experience)
 		for(var/i in roundstart_experience)
-			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
+			spawned_human.adjust_skill_experience(i, roundstart_experience[i], TRUE)
 
 	for(var/password_id, password_info in GLOB.important_passwords[type])
 		spawned.add_mob_memory(/datum/memory/key/important_password, location = password_info[PASSWORD_LOCATION], password = password_info[PASSWORD_CODE])
+
+	if(job_flags & JOB_ASSIGN_QUIRKS)
+		if(SSticker.current_state == GAME_STATE_SETTING_UP)
+			addtimer(CALLBACK(spawned, TYPE_PROC_REF(/mob/living, add_mood_event), "roundstart", /datum/mood_event/conditional/roundstart), 5 SECONDS)
+		else
+			addtimer(CALLBACK(spawned, TYPE_PROC_REF(/mob/living, add_mood_event), "latejoin", /datum/mood_event/conditional/latejoin), 5 SECONDS)
 
 /// Return the outfit to use
 /datum/job/proc/get_outfit(consistent, title)
@@ -320,7 +332,7 @@
 /datum/job/proc/get_spawn_message()
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/final_product = "<i>[description]</i><br><br>&bull; [jointext(get_spawn_message_information(), "<br>&bull; ")]"
-	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "examine_block")
+	return fieldset_block(span_big("You are the <b>[title]</b>."), span_infoplain(final_product), "boxed_message")
 
 /// Returns a list of strings that correspond to chat messages sent to this mob when they join the round.
 /datum/job/proc/get_spawn_message_information()
@@ -419,10 +431,10 @@
 	if(visualsOnly)
 		return
 
-	var/datum/job/equipped_job = SSjob.GetJobType(jobtype)
+	var/datum/job/equipped_job = SSjob.get_job_type(jobtype)
 
 	if(!equipped_job)
-		equipped_job = SSjob.GetJob(equipped.job)
+		equipped_job = SSjob.get_job(equipped.job)
 
 	var/obj/item/card/id/card = equipped.wear_id
 
@@ -526,9 +538,16 @@
 		log_mapping("Job [title] ([type]) couldn't find a round start spawn point.")
 
 /// Finds a valid latejoin spawn point, checking for events and special conditions.
-/datum/job/proc/get_latejoin_spawn_point()
+/datum/job/proc/get_latejoin_spawn_point(datum/preferences/prefs)
 	if(length(GLOB.jobspawn_overrides[title])) //We're doing something special today.
 		return pick(GLOB.jobspawn_overrides[title])
+	if(prefs?.read_preference(/datum/preference/choiced/preferred_latejoin_spawn) == SPAWNPOINT_CRYO)
+		var/list/common_sleepers = list()
+		for(var/obj/machinery/sleeper/cryo/sleeper as anything in GLOB.cryo_sleepers)
+			if(sleeper.can_latejoin(src))
+				common_sleepers += sleeper
+		if(length(common_sleepers))
+			return pick(common_sleepers)
 	if(length(SSjob.latejoin_trackers))
 		return pick(SSjob.latejoin_trackers)
 	return SSjob.get_last_resort_spawn_points()
@@ -654,3 +673,11 @@
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/// Called when a mob that has this job is admin respawned
+/datum/job/proc/on_respawn(mob/new_character)
+	SSjob.equip_rank(new_character, new_character.mind.assigned_role, new_character.client)
+
+/// This proc may be called when someone of this job is made into a traitor to create custom objectives related to the job.
+/datum/job/proc/generate_traitor_objective()
+	return null

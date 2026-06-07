@@ -6,6 +6,7 @@
 	icon = 'icons/obj/service/hydroponics/seeds.dmi'
 	icon_state = "seed" // Unknown plant seed - these shouldn't exist in-game.
 	worn_icon_state = "seed"
+	abstract_type = /obj/item/seeds
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
@@ -121,7 +122,9 @@
 			. += span_notice("- [reagent_gene.get_name()] -")
 
 /// Copy all the variables from one seed to a new instance of the same seed and return it.
-/obj/item/seeds/proc/Copy()
+// NON-MODULE CHANGE
+/obj/item/seeds/proc/Copy() as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
 	var/obj/item/seeds/copy_seed = new type(null, TRUE)
 	// Copy all the stats
 	copy_seed.lifespan = lifespan
@@ -247,8 +250,15 @@
 			return
 		t_amount++
 		product_name = parent.myseed.plantname
+
+	// NON-MODULE CHANGE
 	if(product_count >= 1)
 		SSblackbox.record_feedback("tally", "food_harvested", product_count, product_name)
+		user.mind?.adjust_experience(/datum/skill/botany, 0.5 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
+
+	else if(product_count == 0 && user.mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_MASTER)
+		Copy().forceMove(output_loc)
+
 	parent.update_tray(user, product_count)
 
 	return result
@@ -612,7 +622,7 @@
  *  - returned seed CAN be null in weird cases but in all applications it SHOULD NOT be.
  * Returns null if it is not a plant.
  */
-/obj/item/proc/get_plant_seed()
+/obj/item/proc/get_plant_seed() as /obj/item/seeds
 	return null
 
 /obj/item/food/grown/get_plant_seed()

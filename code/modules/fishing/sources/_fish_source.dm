@@ -141,7 +141,7 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 	// Difficulty modifier added by the fisher's skill level
 	if(!(challenge.special_effects & FISHING_MINIGAME_RULE_NO_EXP))
-		difficulty_holder[1] += fisherman.mind?.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)
+		difficulty_holder[1] += fisherman.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)
 
 	if(challenge.special_effects & FISHING_MINIGAME_RULE_KILL)
 		challenge.RegisterSignal(src, COMSIG_FISH_SOURCE_REWARD_DISPENSED, TYPE_PROC_REF(/datum/fishing_challenge, hurt_fish))
@@ -163,7 +163,7 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 	// Difficulty modifier added by the fisher's skill level
 	if(!(challenge?.special_effects & FISHING_MINIGAME_RULE_NO_EXP))
-		. += fisherman.mind?.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)
+		. += fisherman.get_skill_modifier(/datum/skill/fishing, SKILL_VALUE_MODIFIER)
 
 	// Difficulty modifier added by the rod
 	. += rod.difficulty_modifier
@@ -463,7 +463,7 @@ GLOBAL_LIST_INIT(specific_fish_icons, generate_specific_fish_icons())
 
 	if(rod)
 		info = span_tooltip("boldened are the fish you're more likely to catch with your current setup. The opposite is true for smaller names", info)
-	examine_text += examine_block(span_info("[info]: [english_list(known_fishes)]."))
+	examine_text += boxed_message(span_info("[info]: [english_list(known_fishes)]."))
 
 /datum/fish_source/proc/spawn_reward_from_explosion(atom/location, severity)
 	if(!explosive_malus)

@@ -113,6 +113,10 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(mouse_over_pointer == MOUSE_HAND_POINTER)
+		add_filter("clickglow", 2, outline_filter(color = COLOR_GOLD, size = 1))
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -192,6 +196,16 @@
 	icon_state = ALERT_TOO_MUCH_N2O
 
 //End gas alerts
+
+/atom/movable/screen/alert/bronchodilated
+	name = "Bronchodilated"
+	desc = "You feel like your lungs are larger than usual! You're taking deeper breaths!"
+	icon_state = "bronchodilated"
+
+/atom/movable/screen/alert/bronchoconstricted
+	name = "Bronchocontracted"
+	desc = "You feel like your lungs are smaller than usual! You might need a higher pressure environment/internals to breathe!"
+	icon_state = "bronchoconstricted"
 
 /atom/movable/screen/alert/gross
 	name = "Grossed out."
@@ -716,7 +730,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_borgcharger_areas))
-		desc += " Recharging stations are available in [english_list(GLOB.roundstart_station_borgcharger_areas)]."
+		desc += "<br><br>Recharging stations are available in [english_list(GLOB.roundstart_station_borgcharger_areas)]."
 
 /atom/movable/screen/alert/lowcell
 	name = "Low Charge"
@@ -731,7 +745,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_borgcharger_areas))
-		desc += " Recharging stations are available in [english_list(GLOB.roundstart_station_borgcharger_areas)]."
+		desc += "<br><br>Recharging stations are available in [english_list(GLOB.roundstart_station_borgcharger_areas)]."
 
 //MECH
 
@@ -739,13 +753,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_mechcharger_areas))
-		desc += " Power ports are available in [english_list(GLOB.roundstart_station_mechcharger_areas)]."
+		desc += "<br><br>Power ports are available in [english_list(GLOB.roundstart_station_mechcharger_areas)]."
 
 /atom/movable/screen/alert/emptycell/mech/update_desc()
 	. = ..()
 	desc = initial(desc)
 	if(length(GLOB.roundstart_station_mechcharger_areas))
-		desc += " Power ports are available in [english_list(GLOB.roundstart_station_mechcharger_areas)]."
+		desc += "<br><br>Power ports are available in [english_list(GLOB.roundstart_station_mechcharger_areas)]."
 
 //Ethereal
 
@@ -1119,7 +1133,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 		return FALSE
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
-		to_chat(usr, examine_block(jointext(examine(usr), "\n")))
+		to_chat(usr, boxed_message(jointext(examine(usr), "\n")))
 		return FALSE
 	var/datum/our_master = master_ref?.resolve()
 	if(our_master && click_master)

@@ -8,6 +8,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	basic_mob_flags = DEL_ON_DEATH
+	mob_biotypes = MOB_ORGANIC|MOB_MINERAL|MOB_MINING
 	speed = 2
 	maxHealth = 150
 	health = 150
@@ -27,6 +28,7 @@
 	ai_controller = /datum/ai_controller/basic_controller/ice_demon
 	death_message = "fades as the energies that tied it to this world dissipate."
 	death_sound = 'sound/magic/demon_dies.ogg'
+	initial_blood_type = /datum/reagent/bluespace
 
 /mob/living/basic/mining/ice_demon/Initialize(mapload)
 	. = ..()
@@ -51,9 +53,6 @@
 		new /obj/item/raw_anomaly_core/bluespace(loc)
 	return ..()
 
-/mob/living/basic/mining/ice_demon/get_blood_type()
-	return null
-
 /mob/living/basic/mining/demon_afterimage
 	name = "afterimage demonic watcher"
 	desc = "Is this some sort of illusion?"
@@ -74,6 +73,7 @@
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	alpha = 80
 	ai_controller = /datum/ai_controller/basic_controller/ice_demon/afterimage
+	initial_blood_type = null
 	///how long do we exist for
 	var/existence_period = 15 SECONDS
 
@@ -90,6 +90,3 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	existence_period = 7 SECONDS
-
-/mob/living/basic/mining/demon_afterimage/get_blood_type()
-	return null

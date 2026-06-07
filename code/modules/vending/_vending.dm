@@ -70,6 +70,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	light_power = 0.7
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
+	examine_feedback_on_ui = TRUE
 
 	/// Is the machine active (No sales pitches if off)!
 	var/active = 1
@@ -1589,26 +1590,13 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 /obj/machinery/vending/proc/pre_throw(obj/item/thrown_item)
 	return
 
-/**
- * Shock the passed in user
- *
- * This checks we have power and that the passed in prob is passed, then generates some sparks
- * and calls electrocute_mob on the user
- *
- * Arguments:
- * * user - the user to shock
- * * shock_chance - probability the shock happens
- */
-/obj/machinery/vending/proc/shock(mob/living/user, shock_chance)
-	if(!istype(user) || machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock
+/obj/machinery/vending/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	if(machine_stat & (BROKEN|NOPOWER))
 		return FALSE
-	if(!prob(shock_chance))
-		return FALSE
-	do_sparks(5, TRUE, src)
-	if(electrocute_mob(user, get_area(src), src, 0.7, dist_check = TRUE))
-		return TRUE
-	else
-		return FALSE
+	if(isnull(siemens_coeff))
+		siemens_coeff = 0.7
+	return ..()
+
 /**
  * Are we able to load the item passed in
  *

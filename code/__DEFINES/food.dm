@@ -85,7 +85,6 @@ DEFINE_BITFIELD(foodtypes, list(
 	"Clothing", \
 	"Nuts", \
 	"Seafood", \
-	"Oranges", \
 	"Bugs", \
 	"Gore", \
 	"Rocks", \
@@ -115,7 +114,7 @@ DEFINE_BITFIELD(foodtypes, list(
 #define FOOD_COMPLEXITY_5 5
 
 /// Labels for food quality
-GLOBAL_LIST_INIT(food_quality_description, list(
+GLOBAL_ALIST_INIT(food_quality_description, alist(
 	FOOD_QUALITY_NORMAL = "okay",
 	FOOD_QUALITY_NICE = "nice",
 	FOOD_QUALITY_GOOD = "good",
@@ -126,7 +125,7 @@ GLOBAL_LIST_INIT(food_quality_description, list(
 ))
 
 /// Weighted lists of crafted food buffs randomly given according to crafting_complexity unless the food has a specific buff
-GLOBAL_LIST_INIT(food_buffs, list(
+GLOBAL_ALIST_INIT(food_buffs, alist(
 	FOOD_COMPLEXITY_1 = list(
 		/datum/status_effect/food/haste = 1,
 	),
@@ -147,8 +146,10 @@ GLOBAL_LIST_INIT(food_buffs, list(
 ))
 
 /// Food quality change according to species diet
-#define DISLIKED_FOOD_QUALITY_CHANGE -2
-#define LIKED_FOOD_QUALITY_CHANGE 2
+#define DISLIKED_FOOD_QUALITY_CHANGE -1.5
+#define LIKED_FOOD_QUALITY_CHANGE 1.5
+/// Threshold for food to be considered gross
+#define GROSS_FOOD_QUALITY_THRESHOLD -2
 /// Threshold for food to give a toxic reaction
 #define TOXIC_FOOD_QUALITY_THRESHOLD -8
 /// Food is dangerous to consume

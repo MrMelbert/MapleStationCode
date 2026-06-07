@@ -234,7 +234,6 @@
 		/datum/job/warden = /obj/item/organ/cyberimp/eyes/hud/security,
 		// NON-MODULE CHANGE
 		/datum/job/asset_protection = /obj/item/organ/eyes/robotic/thermals,
-		/datum/job/bridge_assistant = /obj/item/organ/eyes/robotic,
 		/datum/job/bridge_officer = /obj/item/organ/eyes/robotic,
 		/datum/job/noble_ambassador = /obj/item/organ/cyberimp/chest/nutriment/plus,
 		/datum/job/ordnance_tech = /obj/item/organ/cyberimp/arm/toolset,

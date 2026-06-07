@@ -328,10 +328,8 @@
 	current_gauze.absorption_capacity = new_gauze.absorption_capacity
 	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
 	current_gauze.update_appearance()
-	if(can_bleed() && get_modified_bleed_rate())
+	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
-		if(!QDELETED(new_gauze))
-			new_gauze.add_mob_blood(owner)
 	SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, current_gauze, new_gauze)
 	owner.update_damage_overlays()
 
@@ -341,7 +339,7 @@
 		current_gauze.forceMove(remove_to)
 	else
 		current_gauze.moveToNullspace()
-	if(can_bleed() && get_modified_bleed_rate())
+	if(can_bleed() && cached_bleed_rate)
 		current_gauze.add_mob_blood(owner)
 	current_gauze.worn_icon_state = initial(current_gauze.worn_icon_state)
 	current_gauze.update_appearance()

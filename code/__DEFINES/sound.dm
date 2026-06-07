@@ -90,7 +90,7 @@
 
 /// The default echo settings used by the sound system
 // This isn't actually set by default, by (default in byond it's null)
-#define EAX2_DEFAULT_ECHO list( \
+#define EAX2_DEFAULT_ECHO alist( \
 	ECHO_INDEX_DIRECT = 0, \
 	ECHO_INDEX_DIRECTHF = 0, \
 	ECHO_INDEX_ROOM = 0, \

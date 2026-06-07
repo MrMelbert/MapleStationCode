@@ -103,7 +103,7 @@
 	var/temp_bleed = 0
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
+		var/iter_bleed_rate = iter_part.cached_bleed_rate
 		temp_bleed += iter_bleed_rate * seconds_per_tick
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
@@ -111,7 +111,6 @@
 
 	if(temp_bleed)
 		bleed(temp_bleed)
-		bleed_warn(temp_bleed)
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
@@ -119,18 +118,18 @@
 		iter_part.update_part_wound_overlay()
 
 /// Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/proc/bleed(amt, drip = TRUE)
+/mob/living/proc/bleed(amt, leave_pool = TRUE)
 	return
 
-/mob/living/carbon/bleed(amt, drip = TRUE)
+/mob/living/carbon/bleed(amt, leave_pool = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 
-	if(drip && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
+	if(leave_pool && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
-/mob/living/carbon/human/bleed(amt, drip = TRUE)
+/mob/living/carbon/human/bleed(amt, leave_pool = TRUE)
 	amt *= physiology.bleed_mod
 	return ..()
 
@@ -142,68 +141,12 @@
 	var/bleed_amt = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/iter_bodypart = X
-		bleed_amt += iter_bodypart.get_modified_bleed_rate()
+		bleed_amt += iter_bodypart.cached_bleed_rate
 	return bleed_amt
 
 /mob/living/carbon/human/get_bleed_rate()
 	. = ..()
 	. *= physiology.bleed_mod
-
-/**
- * bleed_warn() is used to for carbons with an active client to occasionally receive messages warning them about their bleeding status (if applicable)
- *
- * Arguments:
- * * bleed_amt- When we run this from [/mob/living/carbon/human/proc/handle_blood] we already know how much blood we're losing this tick, so we can skip tallying it again with this
- * * forced-
- */
-/mob/living/carbon/proc/bleed_warn(bleed_amt = get_bleed_rate(), forced = FALSE)
-	// NON-MODULE CHANGE for blood
-	if(!client || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
-	if((!COOLDOWN_FINISHED(src, bleeding_message_cd) || HAS_TRAIT(src, TRAIT_KNOCKEDOUT)) && !forced)
-		return
-
-	var/bleeding_severity = ""
-	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD
-
-	switch(bleed_amt)
-		if(-INFINITY to 0)
-			return
-		if(0 to 1)
-			bleeding_severity = "You feel light trickles of blood across your skin"
-			next_cooldown *= 2.5
-		if(1 to 3)
-			bleeding_severity = "You feel a small stream of blood running across your body"
-			next_cooldown *= 2
-		if(3 to 5)
-			bleeding_severity = "You skin feels clammy from the flow of blood leaving your body"
-			next_cooldown *= 1.7
-		if(5 to 7)
-			bleeding_severity = "Your body grows more and more numb as blood streams out"
-			next_cooldown *= 1.5
-		if(7 to INFINITY)
-			bleeding_severity = "Your heartbeat thrashes wildly trying to keep up with your bloodloss"
-
-	var/rate_of_change = ", but it's getting better." // if there's no wounds actively getting bloodier or maintaining the same flow, we must be getting better!
-	if(HAS_TRAIT(src, TRAIT_COAGULATING)) // if we have coagulant, we're getting better quick
-		rate_of_change = ", but it's clotting up quickly!"
-	else
-		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/datum/wound/iter_wound as anything in all_wounds)
-			if(!iter_wound.blood_flow)
-				continue
-			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()
-			switch(iter_wound_roc)
-				if(BLOOD_FLOW_INCREASING) // assume the worst, if one wound is getting bloodier, we focus on that
-					rate_of_change = ", <b>and it's getting worse!</b>"
-					break
-				if(BLOOD_FLOW_STEADY) // our best case now is that our bleeding isn't getting worse
-					rate_of_change = ", and it's holding steady."
-				if(BLOOD_FLOW_DECREASING) // this only matters if none of the wounds fit the above two cases, included here for completeness
-					continue
-
-	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
-	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
 /mob/living/proc/restore_blood()
 	blood_volume = initial(blood_volume)
@@ -213,6 +156,7 @@
 	for(var/i in bodyparts)
 		var/obj/item/bodypart/BP = i
 		BP.setBleedStacks(0)
+	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /****************************************************
 				BLOOD TRANSFERS
@@ -222,8 +166,7 @@
 
 //Gets blood from mob to a container or other mob, preserving all data in it.
 /mob/living/proc/transfer_blood_to(atom/movable/AM, amount, forced)
-	var/datum/blood_type/blood = get_blood_type()
-	if(isnull(blood) || !AM.reagents)
+	if(!has_blood() || !AM.reagents)
 		return FALSE
 	if(blood_volume < BLOOD_VOLUME_BAD && !forced)
 		return FALSE
@@ -232,57 +175,90 @@
 		amount = blood_volume
 
 	blood_volume -= amount
-	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), body_temperature)
+	AM.reagents.add_reagent(blood_type.reagent_type, amount, blood_type.get_blood_data(src), body_temperature)
 	return TRUE
 
-/mob/living/proc/get_blood_type()
-	RETURN_TYPE(/datum/blood_type)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
-	return find_blood_type(/datum/blood_type/animal)
+/// Updates the blood_type variable with a blood_type singleton
+/mob/living/proc/set_blood_type(input_type, update = TRUE)
+	var/new_blood = find_blood_type(input_type)
+	if(isnull(new_blood) || blood_type == new_blood)
+		return FALSE
 
-/mob/living/basic/get_blood_type()
-	// All basic mobs are noblood but we should still pretend
-	return find_blood_type(/datum/blood_type/animal)
+	blood_type = new_blood
+	return TRUE
 
-/mob/living/simple_animal/get_blood_type()
-	// Same here
-	return find_blood_type(/datum/blood_type/animal)
+/mob/living/carbon/set_blood_type(input_type, update = TRUE)
+	. = ..()
+	if(!.)
+		return
 
-/mob/living/silicon/get_blood_type()
-	return find_blood_type(/datum/blood_type/oil)
+	var/update_needed = FALSE
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		for(var/obj/item/organ/organ_bit in part)
+			if(IS_ORGANIC_ORGAN(organ_bit) || isandroid(src))
+				organ_bit.blood_dna_info = get_blood_dna_list()
+		if(part.damage_color == blood_type.color)
+			continue
+		part.damage_color = blood_type.color
+		// only these vars are affected by damage color so we can skip updates if none of them are set
+		if(part.brutestate || part.is_husked || part.cached_bleed_rate)
+			update_needed = TRUE
 
-/mob/living/simple_animal/bot/get_blood_type()
-	return find_blood_type(/datum/blood_type/oil)
+	if(update && update_needed)
+		update_body_parts()
 
-/mob/living/basic/bot/get_blood_type()
-	return find_blood_type(/datum/blood_type/oil)
-
-/mob/living/basic/drone/get_blood_type()
-	return find_blood_type(/datum/blood_type/oil)
-
-/mob/living/basic/hivebot/get_blood_type()
-	return find_blood_type(/datum/blood_type/oil)
-
-/mob/living/carbon/alien/get_blood_type()
-	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
-	return find_blood_type(/datum/blood_type/xenomorph)
-
-/mob/living/carbon/human/get_blood_type()
-	if(HAS_TRAIT(src, TRAIT_HUSK) || isnull(dna) || HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return null
+/mob/living/carbon/human/set_blood_type(input_type, update = TRUE)
+	// force clowns to always have clown blood on april fools
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
-		return find_blood_type(/datum/blood_type/clown)
-	return find_blood_type(dna.species.exotic_bloodtype || dna.human_blood_type)
+		input_type = /datum/blood_type/clown
 
-//to add a splatter of blood or other mob liquid.
+	return ..()
+
+/// Resets the blood type to the initial blood type, which is determined by species and DNA.
+/mob/living/proc/reset_blood_type(update = TRUE)
+	set_blood_type(initial_blood_type, update)
+
+/mob/living/carbon/reset_blood_type(update = TRUE)
+	set_blood_type(initial(dna.species.exotic_bloodtype) || dna.human_blood_type || random_human_blood_type(), update)
+
+/// Do we have (mechanical) blood?
+/mob/living/proc/has_blood()
+	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return FALSE
+	if(isnull(blood_type))
+		return FALSE
+	return TRUE
+
+/// Return what our blood is called, or just "blood" if we don't have any
+/mob/living/proc/get_blood_name()
+	var/datum/reagent/blood_reagent = blood_type?.reagent_type
+	return blood_reagent ? blood_reagent::name : "blood"
+
+/**
+ * Create a splat of this mob's life juice
+ * Does nothing if the mob does not have a blood type set
+ * DOES work if the mob does not actually have blood but does have a blood type
+ *
+ * * blood_turf - where to make the splatter. defaults to the current turf
+ * * small_drip - whether to make a small drip or a big splat
+ */
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
-	return get_blood_type()?.make_blood_splatter(src, blood_turf, small_drip)
+	if(isnull(blood_type))
+		return
+	return blood_type.make_blood_splatter(blood_turf, small_drip, get_blood_dna_list(), get_static_viruses())
 
+/**
+ * Create a visual effect of this mob's blood splattering in a direction
+ * Does nothing if the mob does not have a blood type set
+ * DOES work if the mob does not actually have blood but does have a blood type
+ *
+ * * splat_dir - the direction to splatter in. defaults to a random cardinal direction
+ */
 /mob/living/proc/do_splatter_effect(splat_dir = pick(GLOB.cardinals))
+	if(isnull(blood_type))
+		return
 	var/obj/effect/temp_visual/dir_setting/bloodsplatter/splatter = new(get_turf(src), splat_dir)
-	splatter.color = get_blood_type()?.color
+	splatter.color = blood_type.color
 
 // NON-MODULE CHANGE END
 

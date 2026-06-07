@@ -72,16 +72,16 @@
 	//  organ_traits = list(TRAIT_FLOPPING, TRAIT_SWIMMER)
 	restyle_flags = EXTERNAL_RESTYLE_FLESH
 
-	// // Fishlike reagents, you could serve it raw like fish
-	// food_reagents = list(
-	// 	/datum/reagent/consumable/nutriment/protein = 10,
-	// 	/datum/reagent/consumable/nutriment/vitamin = 5,
-	// 	/datum/reagent/consumable/nutriment/fat = 10,
-	// )
-	// // Seafood instead of meat, because it's a fish organ
-	// foodtype_flags = RAW | SEAFOOD | GORE
-	// // Also just tastes like fish
-	// food_tastes = list("fatty fish" = 1)
+	// Fishlike reagents, you could serve it raw like fish
+	food_reagents = list(
+		/datum/reagent/consumable/nutriment/protein = 10,
+		/datum/reagent/consumable/nutriment/vitamin = 5,
+		/datum/reagent/consumable/nutriment/fat = 10,
+	)
+	// Seafood instead of meat, because it's a fish organ
+	foodtype_flags = RAW | SEAFOOD | GORE
+	// Also just tastes like fish
+	food_tastes = list("fatty fish" = 1)
 	/// The fillet type this fish tail is processable into
 	var/fillet_type = /obj/item/food/fishmeat/fish_tail
 	/// The amount of fillets this gets processed into
@@ -130,6 +130,7 @@
 /datum/bodypart_overlay/mutant/tail/fish
 	feature_key = "fish_tail"
 	color_source = ORGAN_COLOR_OVERRIDE
+	mesh_in_suits = TRUE
 
 /datum/bodypart_overlay/mutant/tail/fish/override_color(obj/item/bodypart/bodypart_owner)
 	//If the owner uses mutant colors, inherit the color of the bodypart

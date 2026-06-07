@@ -1,3 +1,5 @@
+#define BIOTYPE_ANALOG(organic, synthetic) (parent.mob_biotypes & MOB_ORGANIC ? ##organic : ##synthetic)
+
 /**
  * # Pain controller
  *
@@ -117,11 +119,10 @@
 		if(!special && !(HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (lost_limb.bodytype & BODYTYPE_ROBOTIC)))
 			var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
 			var/datum/mutation/human/autotomy = source.dna?.get_mutation(/datum/mutation/human/self_amputation)
-			limb_removed_pain *= (autotomy ? (0.5 * GET_MUTATION_SYNCHRONIZER(autotomy)) : 1)
+			limb_removed_pain *= (autotomy ? (0.45 * GET_MUTATION_SYNCHRONIZER(autotomy)) : 1)
 			adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
-			for(var/zone in BODY_ZONES_MINUS_CHEST)
-				adjust_bodypart_pain(zone, limb_removed_pain / 3)
-			adjust_traumatic_shock(limb_removed_pain / 4)
+			if(!autotomy)
+				adjust_traumatic_shock(limb_removed_pain / 4)
 
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
@@ -262,14 +263,12 @@
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 			set_pain_modifier(PAINSHOCK, 1.2)
 			parent.add_max_consciousness_value(PAINSHOCK, 60)
-			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	else
 		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 			unset_pain_modifier(PAINSHOCK)
 			parent.remove_max_consciousness_value(PAINSHOCK)
-			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 #ifdef HEALTH_DEBUG
@@ -309,9 +308,12 @@
  */
 /datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, dam_type)
 	affected_part.on_gain_pain_effects(amount, dam_type)
-	refresh_pain_attributes()
+	addtimer(CALLBACK(src, PROC_REF(refresh_pain_attributes)), 1, TIMER_UNIQUE)
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
+	if(!CAN_FEEL_PAIN(parent))
+		return
+
 	if(amount > 20)
 		if(prob(33))
 			parent.pain_emote("scream", 5 SECONDS)
@@ -332,7 +334,7 @@
  */
 /datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount, type)
 	affected_part.on_lose_pain_effects(amount)
-	refresh_pain_attributes()
+	addtimer(CALLBACK(src, PROC_REF(refresh_pain_attributes)), 1, TIMER_UNIQUE)
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount, type)
 
 /// Hooks into [apply_damage] to apply pain to the parent based on incoming damage.
@@ -480,21 +482,17 @@
 	else if(curr_pain < 200)
 		parent.adjust_traumatic_shock(1 * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
-			do_pain_message(span_bolddanger(pick("It hurts.", "You really need some painkillers.")))
+			do_pain_message(BIOTYPE_ANALOG( \
+				span_bolddanger(pick("It hurts.", "You really need some painkillers.")), \
+				span_binarysay(pick("Stress level rising.", "Systems under strain.")) \
+			))
 	else
 		parent.adjust_traumatic_shock(clamp(round(0.5 * (curr_pain / 100), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
-			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
-
-	if((traumatic_shock >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
-		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
-			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
-			parent.adjust_eye_blur_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
-			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
-			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+			do_pain_message(BIOTYPE_ANALOG( \
+				span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")), \
+				span_binarysay(pick("Critical stress level reached.", "Systems critically strained.")) \
+			))
 
 	if((traumatic_shock >= 40 || curr_pain >= 80) && parent.stat != HARD_CRIT)
 		if(SPT_PROB(traumatic_shock / 60, seconds_per_tick))
@@ -551,16 +549,13 @@
 					if(-INFINITY to 0)
 						pass()
 					if(1)
-						to_chat(parent, span_userdanger("You feel your heart beat irregularly."))
+						to_chat(parent, span_userdanger("Your pulse starts to feel irregular."))
 					if(2)
-						to_chat(parent, span_userdanger("You feel your heart skip a beat."))
+						to_chat(parent, span_userdanger("Your heart skips a beat."))
 					else
-						to_chat(parent, span_userdanger("You feel your body shutting down!"))
+						to_chat(parent, span_userdanger("Your body starts shutting down!"))
 	else
 		heart_attack_counter = 0
-
-	if(traumatic_shock >= SHOCK_CRIT_THRESHOLD || curr_pain >= PAIN_CRIT_THRESOLD)
-		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 120 SECONDS)
 
 	parent.paincrit_check()
 
@@ -569,13 +564,20 @@
 		// No decay if you're burning (because you'll be gaining pain constantly anyways)
 		return
 
-	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss) && parent.stat == CONSCIOUS)
-		natural_pain_decay = max(natural_pain_decay + (base_pain_decay * 0.05), natural_pain_decay * 3)
+	var/decay_modifier = 1
+	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+		// after a while, decay naturally ramps up every tick we have not gained pain
+		if(parent.stat != HARD_CRIT)
+			natural_pain_decay = max(natural_pain_decay + (base_pain_decay * 0.05), natural_pain_decay * 3)
+		// robots will rapidly destress, as they cannot use painkillers
+		if(parent.mob_biotypes & MOB_ROBOTIC)
+			decay_modifier *= 5
+			adjust_traumatic_shock(-2 * seconds_per_tick, down_to = 0)
 	else
 		natural_pain_decay = base_pain_decay
 
 	for(var/part in parent.bodyparts)
-		adjust_bodypart_pain(part, natural_pain_decay)
+		adjust_bodypart_pain(part, natural_pain_decay * decay_modifier)
 
 /// Affect accuracy of fired guns while in pain.
 /datum/pain/proc/on_mob_fired_gun(mob/living/carbon/human/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
@@ -592,6 +594,11 @@
 	penalty += chest.get_modified_pain() * 0.5
 	penalty += head?.get_modified_pain() * 0.5 // HARS guard
 	penalty /= 3
+	// Factor in firearms skill
+	if(penalty > 0)
+		penalty += user.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
+	if(penalty <= 0)
+		return
 	// Applying min and max
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += floor(penalty / 3)
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += floor(penalty)
@@ -623,25 +630,25 @@
 			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/light)
 		if(75 to 125)
 			parent.add_surgery_speed_mod(PAIN, 1.25)
 			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
-		if(125 to 175)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/medium)
+		if(125 to 200)
 			parent.add_surgery_speed_mod(PAIN, 1.4)
 			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
-		if(225 to INFINITY)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/heavy)
+		if(200 to INFINITY)
 			parent.add_surgery_speed_mod(PAIN, 1.5)
 			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			parent.add_mood_event(PAIN, /datum/mood_event/crippling_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/pain/crippling)
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -791,19 +798,23 @@
 	switch(get_total_pain())
 		if(10 to 50)
 			amount = "minor"
-			pain_tip += "Pain should subside in time."
+			pain_tip += "[BIOTYPE_ANALOG("Pain", "Stress")] should subside in time."
 		if(50 to 100)
 			amount = "moderate"
-			pain_tip += "Pain should subside in time and can be quickened with rest or painkilling medication."
+			pain_tip += "[BIOTYPE_ANALOG("Pain", "Stress")] should subside in time \
+				and can be quickened with rest[BIOTYPE_ANALOG("or painkilling medication", "")]."
 		if(100 to 150)
 			amount = "major"
-			pain_tip += "Treat wounds and abate pain with rest, cryogenics, and painkilling medication."
+			pain_tip += "Treat wounds and abate [BIOTYPE_ANALOG("pain", "stress")] with \
+				rest[BIOTYPE_ANALOG(", cryogenics, and painkilling medication", "")]."
 		if(150 to 200)
 			amount = span_bold("severe")
-			pain_tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
+			pain_tip += "Treat wounds and abate [BIOTYPE_ANALOG("pain", "stress")] with \
+				long rest[BIOTYPE_ANALOG(", cryogenics, and moderate painkilling medication", "")]."
 		if(200 to INFINITY)
 			amount = span_bold("extreme")
-			pain_tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
+			pain_tip += "Treat wounds and abate [BIOTYPE_ANALOG("pain", "stress")] with \
+				long rest[BIOTYPE_ANALOG(", cryogenics, and heavy painkilling medication", "")]."
 
 	var/shock = ""
 	var/shock_tip = ""
@@ -811,26 +822,29 @@
 	switch(traumatic_shock)
 		if(20 to 60)
 			shock = "Warning"
-			shock_tip += "Supply epinephrine and pain relief."
+			shock_tip += BIOTYPE_ANALOG("Supply epinephrine and pain relief.", \
+				"Ensure charge and hydraulic fluid levels are high.")
 		if(60 to 120)
 			shock = span_bold("Alert")
-			shock_tip += "Supply epinephrine and immediate pain relief."
+			shock_tip += BIOTYPE_ANALOG("Supply epinephrine and immediate pain relief.", \
+				"Ensure charge and hydraulic fluid levels are high.")
 		if(120 to MAX_TRAUMATIC_SHOCK)
 			shock = span_bold("Critical")
-			shock_tip += "Supply epinephrine and immediate pain relief. Monitor for cardiac or respiratory arrest."
+			shock_tip += BIOTYPE_ANALOG("Supply epinephrine and immediate pain relief. Monitor for cardiac or respiratory arrest.", \
+				"Ensure charge and hydraulic fluid levels are high. Monitor for core pump and cooling system failures.")
 
 	if(!amount && !shock)
 		return
 
 	var/amount_text = ""
 	if(amount)
-		amount_text = span_danger("Subject is experiencing [amount] pain.")
+		amount_text = span_danger("Subject is experiencing [amount] [BIOTYPE_ANALOG("pain", "stress")].")
 		if(tochat && pain_tip)
 			amount_text = span_tooltip(pain_tip, amount_text)
 
 	var/shock_text = ""
 	if(shock)
-		shock_text = span_danger("[shock]: Traumatic shock")
+		shock_text = span_danger("[shock]: [BIOTYPE_ANALOG("Traumatic shock", "System wear")]")
 		if(tochat && shock_tip)
 			shock_text = span_tooltip(shock_tip, shock_text)
 
@@ -862,7 +876,7 @@
 /datum/pain/proc/debug_print_pain()
 
 	var/list/final_print = list()
-	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
+	final_print += "<div class='boxed_message'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
 	final_print += "[parent] has a total pain of [get_total_pain()]."
 	final_print += "[parent] has a traumatic shock of [traumatic_shock]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."

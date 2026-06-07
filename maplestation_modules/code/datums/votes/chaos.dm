@@ -10,6 +10,11 @@
 	count_method = VOTE_COUNT_METHOD_MULTI
 	display_statistics = FALSE
 
+/datum/vote/round_chaos/initiate_vote(initiator, duration)
+	. = ..()
+	. += "<br>"
+	. += span_slightly_smaller("This vote is used to gauge player sentiment and has no mechanical effect.")
+
 /datum/vote/round_chaos/can_mob_vote(mob/voter)
 	// Roundstart observers / people who DNR'd have no say
 	if(isobserver(voter) && isnull(voter.mind))
@@ -25,7 +30,15 @@
 	return ..()
 
 /datum/vote/round_chaos/tiebreaker(list/winners)
-	return jointext(winners, "-")
+	switch(length(winners))
+		if(2)
+			return jointext(winners, "-")
+		if(3)
+			return winners[2] // averaged out
+		if(4)
+			return "Any"
+
+	return "Unknown"
 
 /datum/vote/round_chaos/finalize_vote(winning_option)
 	SSticker.voted_round_chaos = winning_option

@@ -104,7 +104,8 @@
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_CORE
 	acceptable_bodyshape = BODYSHAPE_HUMANOID
-	wing_types = NONE
+	wing_types = null
+	biological_state = BIO_STANDARD_ALIEN
 	burn_modifier = 2
 
 /obj/item/bodypart/chest/larva
@@ -125,6 +126,7 @@
 /obj/item/bodypart/arm
 	name = "arm"
 	desc = "Hey buddy give me a HAND and report this to the github because you shouldn't be seeing this."
+	abstract_type = /obj/item/bodypart/arm
 	attack_verb_continuous = list("slaps", "punches")
 	attack_verb_simple = list("slap", "punch")
 	max_damage = LIMB_MAX_HP_DEFAULT
@@ -282,6 +284,7 @@
 	should_draw_greyscale = FALSE
 	appendage_noun = "scythe-like hand"
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /obj/item/bodypart/arm/right
 	name = "right arm"
@@ -381,11 +384,13 @@
 	should_draw_greyscale = FALSE
 	appendage_noun = "scythe-like hand"
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /// Parent Type for legs, should not appear in game.
 /obj/item/bodypart/leg
 	name = "leg"
 	desc = "This item shouldn't exist. Talk about breaking a leg. Badum-Tss!"
+	abstract_type = /obj/item/bodypart/leg
 	attack_verb_continuous = list("kicks", "stomps")
 	attack_verb_simple = list("kick", "stomp")
 	max_damage = LIMB_MAX_HP_DEFAULT
@@ -493,6 +498,7 @@
 	max_damage = LIMB_MAX_HP_ALIEN_LIMBS
 	should_draw_greyscale = FALSE
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN
 
 /obj/item/bodypart/leg/right
 	name = "right leg"
@@ -583,3 +589,4 @@
 	max_damage = LIMB_MAX_HP_ALIEN_LIMBS
 	should_draw_greyscale = FALSE
 	burn_modifier = 2
+	biological_state = BIO_STANDARD_ALIEN

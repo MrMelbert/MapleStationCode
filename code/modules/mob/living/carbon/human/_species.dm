@@ -388,6 +388,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	human_who_gained_species.physiology.cold_mod *= coldmod
 	human_who_gained_species.physiology.heat_mod *= heatmod
 
+	// Assigns exotic blood type if the species has one
+	// Must be done before bodypart and organ replacement as they use bloodtype
+	if(exotic_bloodtype)
+		human_who_gained_species.set_blood_type(exotic_bloodtype, update = FALSE)
+
 	if(old_species.type != type)
 		replace_body(human_who_gained_species, src)
 
@@ -396,14 +401,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Drop the items the new species can't wear
 	INVOKE_ASYNC(src, PROC_REF(worn_items_fit_body_check), human_who_gained_species, TRUE)
 
-	// NON-MODULE CHANGE
-	// //Assigns exotic blood type if the species has one
-	// if(exotic_bloodtype && human_who_gained_species.dna.blood_type != exotic_bloodtype)
-	// 	human_who_gained_species.dna.blood_type = exotic_bloodtype
-	// //Otherwise, check if the previous species had an exotic bloodtype and we do not have one and assign a random blood type
-	// //(why the fuck is blood type not tied to a fucking DNA block?)
-	// else if(old_species.exotic_bloodtype && !exotic_bloodtype)
-	// 	human_who_gained_species.dna.blood_type = random_blood_type()
 
 	if(isnum(species_pain_mod) && species_pain_mod != 1)
 		human_who_gained_species.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
@@ -411,7 +408,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	//Resets blood if it is excessively high so they don't gib
 	normalize_blood(human_who_gained_species)
 
-	add_body_markings(human_who_gained_species)
+	add_body_markings(human_who_gained_species, update = FALSE)
 
 	if(length(inherent_traits))
 		human_who_gained_species.add_traits(inherent_traits, SPECIES_TRAIT)
@@ -467,12 +464,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	clear_tail_moodlets(C)
 
+	C.reset_blood_type(update = FALSE)
+
 	C.unset_pain_mod(PAIN_MOD_SPECIES)
 
 	C.physiology?.cold_mod /= coldmod
 	C.physiology?.heat_mod /= heatmod
 
-	remove_body_markings(C)
+	remove_body_markings(C, update = FALSE)
 
 	// Removes all languages previously associated with [LANGUAGE_SPECIES], gaining our new species will add new ones back
 	var/datum/language_holder/losing_holder = GLOB.prototype_language_holders[species_language_holder]
@@ -484,56 +483,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		C.remove_blocked_language(language, LANGUAGE_SPECIES)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
-
-/**
- * Handles the body of a human
- *
- * Handles lipstick, having no eyes, eye color, undergarnments like underwear, undershirts, and socks, and body layers.
- * Arguments:
- * * species_human - Human, whoever we're handling the body for
- */
-/datum/species/proc/handle_body(mob/living/carbon/human/species_human)
-	species_human.remove_overlay(BODY_LAYER)
-	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
-		return
-	var/list/standing = list()
-
-	if(!HAS_TRAIT(species_human, TRAIT_HUSK))
-		var/obj/item/bodypart/head/noggin = species_human.get_bodypart(BODY_ZONE_HEAD)
-		if(noggin?.head_flags & HEAD_EYESPRITES)
-			// eyes (missing eye sprites get handled by the head itself, but sadly we have to do this stupid shit here, for now)
-			var/obj/item/organ/eyes/eye_organ = species_human.get_organ_slot(ORGAN_SLOT_EYES)
-			if(eye_organ)
-				eye_organ.refresh(call_update = FALSE)
-				standing += eye_organ.generate_body_overlay(species_human)
-
-	//Underwear, Undershirts & Socks
-	if(!HAS_TRAIT(species_human, TRAIT_NO_UNDERWEAR))
-		if(species_human.underwear)
-			var/datum/sprite_accessory/underwear/underwear = SSaccessories.underwear_list[species_human.underwear]
-			var/mutable_appearance/underwear_overlay = underwear?.make_appearance(species_human)
-			if(underwear_overlay)
-				standing += underwear_overlay
-
-		if(species_human.undershirt)
-			var/datum/sprite_accessory/undershirt/undershirt = SSaccessories.undershirt_list[species_human.undershirt]
-			if(undershirt)
-				var/mutable_appearance/working_shirt
-				if(species_human.dna.species.sexes && species_human.physique == FEMALE)
-					working_shirt = mutable_appearance(wear_female_version(undershirt.icon_state, undershirt.icon), layer = -BODY_LAYER)
-				else
-					working_shirt = mutable_appearance(undershirt.icon, undershirt.icon_state, layer = -BODY_LAYER)
-				standing += working_shirt
-
-		if(species_human.socks && species_human.num_legs >= 2 && !(species_human.bodyshape & BODYSHAPE_DIGITIGRADE))
-			var/datum/sprite_accessory/socks/socks = SSaccessories.socks_list[species_human.socks]
-			if(socks)
-				standing += mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
-
-	if(standing.len)
-		species_human.overlays_standing[BODY_LAYER] = standing
-
-	species_human.apply_overlay(BODY_LAYER)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -704,7 +653,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_SUITSTORE)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
-			if(!H.wear_suit)
+			if(!istype(H.wear_suit))
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a suit before you can attach this [I.name]!"))
 				return FALSE
@@ -762,7 +711,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Cringe but blood handles this on its own
 	// This also has problems of its own but that's better fixed later I think
 	if(!istype(chem, /datum/reagent/blood))
-		var/datum/blood_type/blood = affected.get_blood_type()
+		var/datum/blood_type/blood = affected.blood_type
 		if(chem.type == blood?.reagent_type)
 			affected.blood_volume = min(affected.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 			affected.reagents.del_reagent(chem.type)
@@ -999,7 +948,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
-/datum/species/proc/get_features()
+/datum/species/proc/get_features() as /list
 	var/cached_features = GLOB.features_by_species[type]
 	if (!isnull(cached_features))
 		return cached_features
@@ -1025,9 +974,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	return features
 
-/// Returns a list of features not applicable to the species given a preference set.
+/// Returns a list of strings representing features this species has, filtered by the given preferences.
 /datum/species/proc/get_filtered_features_per_prefs(datum/preferences/prefs)
-	return list()
+	var/list/features = get_features().Copy() // don't mutate the cached version
+	filter_features_per_prefs(features, prefs) // filter, pass by ref
+	return features
+
+/// Passed a list of features, will filter them according to the given preferences.
+/datum/species/proc/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
+	return
 
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
@@ -1277,6 +1232,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_ICON = "shield-alt",
 			SPECIES_PERK_NAME = "Shock Resilience",
 			SPECIES_PERK_DESC = "[plural_form] are resilient to being shocked.",
+		))
+
+	if(inherent_biotypes & (MOB_ROBOTIC|MOB_MINERAL))
+		to_add += list(list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_HAMMER,
+			SPECIES_PERK_NAME = "Tough Frame",
+			SPECIES_PERK_DESC = "[plural_form] are more resistant to slashing and stabbing, but more vulnerable to impacts.",
 		))
 
 	return to_add
@@ -1576,7 +1539,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/bodypart/new_part
 		if(path)
 			new_part = new path()
-			new_part.replace_limb(target, TRUE)
+			new_part.replace_limb(target)
 			new_part.update_limb(is_creating = TRUE)
 			new_part.set_initial_damage(old_part.brute_dam, old_part.burn_dam)
 		qdel(old_part)
@@ -1620,26 +1583,36 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return null
 
 /// Add species appropriate body markings
-/datum/species/proc/add_body_markings(mob/living/carbon/human/hooman)
+/datum/species/proc/add_body_markings(mob/living/carbon/human/hooman, update = FALSE)
+	var/need_update = FALSE
 	for(var/markings_type in body_markings) //loop through possible species markings
 		var/datum/bodypart_overlay/simple/body_marking/markings = new markings_type() // made to die... mostly because we cant use initial on lists but its convenient and organized
 		var/accessory_name = hooman.dna.features[markings.dna_feature_key] || body_markings[markings_type] //get the accessory name from dna
 		for(var/obj/item/bodypart/part as anything in markings.applies_to) //check through our limbs
 			var/obj/item/bodypart/people_part = hooman.get_bodypart(initial(part.body_zone)) // and see if we have a compatible marking for that limb
-			if(isnull(people_part))
+			if(isnull(people_part) || (locate(markings_type) in people_part.bodypart_overlays))
 				continue
 
 			var/datum/bodypart_overlay/simple/body_marking/overlay = new markings_type()
 			overlay.set_appearance(accessory_name, hooman.dna.features["mcolor"])
-			people_part.add_bodypart_overlay(overlay)
+			people_part.add_bodypart_overlay(overlay, update = FALSE)
+			need_update = TRUE
 
 		qdel(markings)
 
+	if(need_update && update)
+		hooman.update_body_parts()
+
 /// Remove body markings
-/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman)
+/datum/species/proc/remove_body_markings(mob/living/carbon/human/hooman, update = TRUE)
+	var/need_update = FALSE
 	for(var/obj/item/bodypart/part as anything in hooman.bodyparts)
 		for(var/datum/bodypart_overlay/simple/body_marking/marking in part.bodypart_overlays)
-			part.remove_bodypart_overlay(marking)
+			part.remove_bodypart_overlay(marking, update = FALSE)
+			need_update = TRUE
+
+	if(need_update && update)
+		hooman.update_body_parts()
 
 /**
  * Calculates the expected height values for this species

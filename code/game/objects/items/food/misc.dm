@@ -119,8 +119,20 @@
 // We override the parent procs here to prevent burned messes from cooking into burned messes.
 /obj/item/food/badrecipe/make_grillable()
 	return
+
 /obj/item/food/badrecipe/make_bakeable()
 	return
+
+// Everyone thinks bad recipes are toxic unless you like gross food.
+/obj/item/food/badrecipe/make_edible()
+	. = ..()
+	AddComponent(/datum/component/edible, check_liked = CALLBACK(src, PROC_REF(check_liked)))
+
+/obj/item/food/badrecipe/proc/check_liked(mob/living/carbon/human/consumer)
+	if(consumer.get_liked_foodtypes() & GROSS)
+		return null
+	// ignores Ageusia
+	return FOOD_TOXIC
 
 /obj/item/food/badrecipe/moldy
 	name = "moldy mess"

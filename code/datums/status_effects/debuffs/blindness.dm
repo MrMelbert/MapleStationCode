@@ -120,10 +120,14 @@
 		return FALSE
 
 	owner.become_blind(id)
+	// NON-MODULE CHANGE
+	ADD_TRAIT(owner, TRAIT_CLOSED_EYES, TRAIT_STATUS_EFFECT(id))
 	return TRUE
 
 /datum/status_effect/temporary_blindness/on_remove()
 	owner.cure_blind(id)
+	// NON-MODULE CHANGE
+	REMOVE_TRAIT(owner, TRAIT_CLOSED_EYES, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/temporary_blindness/tick(seconds_between_ticks)
 	if(owner.stat == DEAD)

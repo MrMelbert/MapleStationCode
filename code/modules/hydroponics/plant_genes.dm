@@ -921,6 +921,67 @@
 	if(istype(grown_plant))
 		grown_plant.preserved_food = TRUE
 
+/// Plant result smells
+/datum/plant_gene/trait/scent
+	name = "Distinct Scent"
+	description = "This plant has a distinct scent."
+	mutability_flags = PLANT_GENE_REMOVABLE
+	icon = FA_ICON_WIND
+	var/category = "fragrance"
+	var/smell
+	var/intensity_base = SMELL_INTENSITY_WEAK * 1.5
+	var/radius = 1
+	var/reagent_type = /datum/reagent/perfume
+
+/datum/plant_gene/trait/scent/on_new_plant(obj/item/our_plant, newloc)
+	. = ..()
+	if(!.)
+		return
+
+	our_plant.add_smell(
+		category = category,
+		smell = smell || our_plant.name, // "fragrance of poppy"
+		intensity = max(intensity_base * (our_plant.get_plant_seed().potency / 100), SMELL_INTENSITY_FAINT),
+		radius = radius,
+	)
+	RegisterSignal(our_plant, COMSIG_ITEM_ON_GRIND, PROC_REF(grinded))
+
+/datum/plant_gene/trait/scent/proc/grinded(obj/item/our_plant)
+	SIGNAL_HANDLER
+
+	if(!reagent_type || !our_plant.reagents)
+		return
+
+	var/added_volume = round(our_plant.get_plant_seed().potency * pick(0.01, 0.02, 0.03), CHEMICAL_VOLUME_ROUNDING)
+	our_plant.reagents.add_reagent(reagent_type, added_volume, list("perfume_smell" = list("[smell || our_plant.name]" = added_volume)))
+
+/datum/plant_gene/trait/scent/on_new_seed(obj/item/seeds/new_seed)
+	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(on_grow))
+
+/datum/plant_gene/trait/scent/on_removed(obj/item/seeds/old_seed)
+	UnregisterSignal(old_seed, COMSIG_SEED_ON_GROW)
+
+/datum/plant_gene/trait/scent/proc/on_grow(obj/item/seeds/our_seed, obj/machinery/hydroponics/our_tray)
+	SIGNAL_HANDLER
+
+	if(our_tray.age <= our_seed.maturation * 0.5)
+		return
+	new /obj/effect/abstract/smell/plant(our_tray, LOWER_TEXT(smell || our_seed.plantname), category, max(intensity_base * (our_seed.potency / 100), SMELL_INTENSITY_FAINT), radius)
+
+/datum/plant_gene/trait/scent/grass
+	smell = "freshly cut grass"
+	reagent_type = null
+
+/datum/plant_gene/trait/scent/decay
+	smell = "rotting vegetation"
+	intensity_base = SMELL_INTENSITY_STRONG
+	radius = 2
+
+/datum/plant_gene/trait/scent/sulfur
+	smell = "sulfur"
+	intensity_base = SMELL_INTENSITY_STRONG
+	reagent_type = null
+
 /datum/plant_gene/trait/carnivory
 	name = "Obligate Carnivory"
 	description = "Pests have positive effect on the plant health."

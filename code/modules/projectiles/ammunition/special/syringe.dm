@@ -16,6 +16,7 @@
 		if(!length(syringe_gun.syringes))
 			return ..()
 
+		// manual syringe gun syringes are pre-loaded with reagents
 		loaded_dart.add_syringe(popleft(syringe_gun.syringes))
 
 	else if(istype(loc, /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun))
@@ -23,7 +24,10 @@
 		if(!LAZYLEN(syringe_gun.syringes))
 			return ..()
 
-		loaded_dart.add_syringe(popleft(syringe_gun.syringes))
+		// mecha syringe gun are not, they scoop up reagents that the gun itself holds
+		var/obj/item/reagent_containers/syringe/to_fire = popleft(syringe_gun.syringes)
+		syringe_gun.reagents.trans_to(to_fire, to_fire.reagents.maximum_volume, transferred_by = user)
+		loaded_dart.add_syringe(to_fire)
 		loaded_dart.range *= 4
 
 	return ..()

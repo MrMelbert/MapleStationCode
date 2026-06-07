@@ -177,8 +177,8 @@
 		damage_deflection = AIRLOCK_DAMAGE_DEFLECTION_R
 
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 
 	diag_hud_set_electrified()
 
@@ -302,8 +302,8 @@
 		LAZYNULL(close_others)
 	QDEL_NULL(note)
 	QDEL_NULL(seal)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/door/airlock/Exited(atom/movable/gone, direction)
@@ -472,28 +472,20 @@
 /obj/machinery/door/airlock/proc/regainBackupPower()
 	set_backup_outage(0 SECONDS)
 
-// shock user with probability prb (if all connections & power are working)
-// returns TRUE if shocked, FALSE otherwise
-// The preceding comment was borrowed from the grille's shock script
-/obj/machinery/door/airlock/proc/shock(mob/living/user, prb)
-	if(!istype(user) || !hasPower()) // unpowered, no shock
+/obj/machinery/door/airlock/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	if(!hasPower()) // unpowered, no shock
 		return FALSE
-	if(HAS_TRAIT(user, TRAIT_AIRLOCK_SHOCKIMMUNE)) // Be a bit more clever man come on
+	if(HAS_TRAIT(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE)) // Be a bit more clever man come on
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, shockCooldown))
 		return FALSE //Already shocked someone recently?
-	if(!prob(prb))
-		return FALSE //you lucked out, no shock for you
-	do_sparks(5, TRUE, src)
-	var/check_range = TRUE
-	if(electrocute_mob(user, get_area(src), src, 1, check_range))
-		COOLDOWN_START(src, shockCooldown, 1 SECONDS)
-		// Provides timed airlock shock immunity, to prevent overly cheesy deathtraps
-		ADD_TRAIT(user, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src))
-		addtimer(TRAIT_CALLBACK_REMOVE(user, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src)), 1 SECONDS)
-		return TRUE
-	else
+	if(!..())
 		return FALSE
+	COOLDOWN_START(src, shockCooldown, 1 SECONDS)
+	// Provides timed airlock shock immunity, to prevent overly cheesy deathtraps
+	ADD_TRAIT(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src))
+	addtimer(TRAIT_CALLBACK_REMOVE(shocking, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src)), 1 SECONDS)
+	return TRUE
 
 /obj/machinery/door/airlock/proc/is_secure()
 	return (security_level > 0)

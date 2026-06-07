@@ -223,7 +223,7 @@
 		mob_bar = null
 		to_chat(owner, span_warning("Your struggle is interrupted, losing some progress towards escaping [linked_cuffs]."))
 		break_out_progress = max(0, break_out_progress - stun_amount)
-	else
+	else if(break_out_progress > 0)
 		to_chat(owner, span_warning("You lose some progress towards escaping [linked_cuffs]."))
 		break_out_progress = max(0, break_out_progress - stun_amount * 0.5)
 

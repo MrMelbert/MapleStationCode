@@ -50,17 +50,13 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /proc/init_preference_entries()
 	var/list/output = list()
-	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
-			continue
+	for (var/datum/preference/preference_type as anything in valid_subtypesof(/datum/preference))
 		output[preference_type] = new preference_type
 	return output
 
 /proc/init_preference_entries_by_key()
 	var/list/output = list()
-	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
-			continue
+	for (var/datum/preference/preference_type as anything in valid_subtypesof(/datum/preference))
 		output[initial(preference_type.savefile_key)] = GLOB.preference_entries[preference_type]
 	return output
 
@@ -79,6 +75,9 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /// Represents an individual preference.
 /datum/preference
+	/// Do not instantiate if type matches this.
+	abstract_type = /datum/preference
+
 	/// The key inside the savefile to use.
 	/// This is also sent to the UI.
 	/// Once you pick this, don't change it.
@@ -88,9 +87,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// This isn't used for anything other than as a key for UI data.
 	/// It is up to the PreferencesMenu UI itself to interpret it.
 	var/category = "misc"
-
-	/// Do not instantiate if type matches this.
-	var/abstract_type = /datum/preference
 
 	/// What savefile should this preference be read from?
 	/// Valid values are PREFERENCE_CHARACTER and PREFERENCE_PLAYER.
@@ -329,7 +325,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/proc/current_species_has_savekey(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
 	var/datum/species/species = GLOB.species_prototypes[species_type]
-	return (savefile_key in (species.get_features() - species.get_filtered_features_per_prefs(preferences)))
+	return (savefile_key in species.get_filtered_features_per_prefs(preferences))
 
 /// Checks if this preference is relevant and thus visible to the passed preferences object.
 /datum/preference/proc/has_relevant_feature(datum/preferences/preferences)
@@ -450,18 +446,20 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Will give the value as 6 hex digits, without a hash.
 /datum/preference/color
 	abstract_type = /datum/preference/color
+	/// If TRUE, the color may be set to null, representing no color selected.
+	var/nullable = FALSE
 
 /datum/preference/color/deserialize(input, datum/preferences/preferences)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/create_default_value()
 	return random_color()
 
 /datum/preference/color/serialize(input)
-	return sanitize_hexcolor(input)
+	return (nullable && isnull(input)) ? input : sanitize_hexcolor(input)
 
 /datum/preference/color/is_valid(value)
-	return findtext(value, GLOB.is_color)
+	return (nullable && isnull(value)) || findtext(value, GLOB.is_color)
 
 /// A numeric preference with a minimum and maximum value
 /datum/preference/numeric

@@ -499,7 +499,7 @@
 
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
 
-/mob/proc/run_examinate(atom/examinify)
+/mob/proc/run_examinate(atom/examinify, force_examinate_more = FALSE)
 
 	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client?.view || world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
@@ -524,15 +524,18 @@
 	var/result_combined
 	var/closer_look = FALSE
 	var/eye_contact = FALSE
+	var/removes_double_click = client?.prefs.read_preference(/datum/preference/toggle/remove_double_click)
 	if(client)
 		LAZYINITLIST(client.recent_examines)
 		var/ref_to_atom = REF(examinify)
 		var/examine_time = client.recent_examines[ref_to_atom]
-		if(examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW))
+		if(force_examinate_more || (examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW) && !removes_double_click))
 			var/list/result = examinify.examine_more(src)
-			if(!length(result))
-				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
-			result_combined = examine_block(jointext(result, "<br>"))
+			if(length(result))
+				result.Insert(1, span_info("<i>You examine [examinify] closer.</i>"))
+			else
+				result += span_info("<i>You examine [examinify] closer, but find nothing of note.</i>")
+			result_combined = boxed_message(jointext(result, "<br>"))
 			closer_look = TRUE
 
 		else
@@ -543,7 +546,9 @@
 		var/list/result = examinify.examine(src)
 		var/atom_title = examinify.examine_title(src, thats = TRUE, href = TRUE)
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
-		result_combined = (atom_title ? fieldset_block("[span_slightly_larger(atom_title)].", jointext(result, "<br>"), "examine_block") : examine_block(jointext(result, "<br>")))
+		if(removes_double_click)
+			result += span_notice("<i>You can <a href=byond://?src=[REF(src)];run_examinate=[REF(examinify)]>examine</a> [examinify] closer...</i>")
+		result_combined = (atom_title ? fieldset_block("[atom_title]", jointext(result, "<br>"), "boxed_message") : boxed_message(jointext(result, "<br>")))
 
 	if(!blind)
 		examine_feedback(examinify, closer_look)
@@ -553,6 +558,16 @@
 
 	to_chat(src, span_infoplain(result_combined))
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
+
+/mob/Topic(href, list/href_list)
+	. = ..()
+	if(.)
+		return
+	if(href_list["run_examinate"])
+		var/atom/examined_atom = locate(href_list["run_examinate"])
+		//run_examinate only early returns this check for turfs for some reason.
+		if(examined_atom in view(client ? client.view : world.view, src))
+			run_examinate(examined_atom, force_examinate_more = TRUE)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
@@ -738,7 +753,10 @@
 
 ///Update the resting hud icon
 /mob/proc/update_rest_hud_icon()
-	hud_used?.rest_icon?.update_appearance()
+	if(!hud_used)
+		return FALSE
+	hud_used.rest_icon?.update_appearance()
+	return TRUE
 
 /**
  * Verb to activate the object in your held hand
@@ -1518,13 +1536,13 @@
 	var/immutable_speedies = 0
 	for(var/obj/item/thing in get_equipped_speed_mod_items())
 		if(thing.item_flags & IMMUTABLE_SLOW)
-			immutable_speedies += thing.slowdown
+			immutable_speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 		else
-			speedies += thing.slowdown
+			speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 
 	//if  we have TRAIT_STURDY_FRAME, we reduce our overall speed penalty UNLESS that penalty would be a negative value, and therefore a speed boost.
 	if(speedies > 0 && HAS_TRAIT(src, TRAIT_STURDY_FRAME))
-		speedies *= 0.2
+		speedies *= 0.8 // NON-MODULE CHANGE
 
 	if(immutable_speedies)
 		add_or_update_variable_movespeed_modifier(

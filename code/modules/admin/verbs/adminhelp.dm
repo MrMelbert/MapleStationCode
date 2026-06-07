@@ -403,7 +403,12 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	msg = sanitize(copytext_char(msg, 1, MAX_MESSAGE_LEN))
 	var/ref_src = "[REF(src)]"
 	//Message to be sent to all admins
-	var/admin_msg = span_adminnotice(span_adminhelp("Ticket [TicketHref("#[id]", ref_src)]</span><b>: [LinkedReplyName(ref_src)] [FullMonty(ref_src)]:</b> [span_linkify(keywords_lookup(msg))]"))
+	var/admin_msg = fieldset_block(
+		span_adminhelp("Ticket [TicketHref("#[id]", ref_src)]"),
+		"<b>[LinkedReplyName(ref_src)]</b>\n\n\
+		[span_linkify(keywords_lookup(msg))]\n\n\
+		<b class='smaller'>[FullMonty(ref_src)]</b>",
+		"boxed_message red_box")
 
 	AddInteraction("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>", player_message = "<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
 	log_admin_private("Ticket #[id]: [key_name(initiator)]: [msg]")
@@ -1017,9 +1022,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 							mobs_found += found
 							if(!ai_found && isAI(found))
 								ai_found = 1
-							var/is_antag = 0
-							if(is_special_character(found))
-								is_antag = 1
+							var/is_antag = found.is_antag()
 							founds += "Name: [found.name]([found.real_name]) Key: [found.key] Ckey: [found.ckey] [is_antag ? "(Antag)" : null] "
 							msg += "[original_word]<font size='1' color='[is_antag ? "red" : "black"]'>(<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo=[REF(found)]'>?</A>|<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservefollow=[REF(found)]'>F</A>)</font> "
 							continue

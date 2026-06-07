@@ -9,7 +9,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*5)
-	override_notes = TRUE
 	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
@@ -34,10 +33,6 @@
 	///pacifism check for boolet, set to FALSE if bullet is non-lethal
 	var/harmful = TRUE
 
-/obj/item/ammo_casing/spent
-	name = "spent bullet casing"
-	loaded_projectile = null
-
 /obj/item/ammo_casing/Initialize(mapload)
 	. = ..()
 	if(projectile_type)
@@ -54,54 +49,43 @@
 	QDEL_NULL(loaded_projectile)
 	return ..()
 
-/obj/item/ammo_casing/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ammo))
+/obj/item/ammo_casing/examine_weapon_descriptor(mob/user)
+	return projectile_examine_description()
 
-/**
- *
- * Outputs type-specific weapon stats for ammunition based on the projectile loaded inside the casing.
- * Distinguishes between critting and stam-critting in separate lines
- *
- */
-/obj/item/ammo_casing/proc/add_notes_ammo()
-	// Try to get a projectile to derive stats from
-	var/obj/projectile/exam_proj = projectile_type
-	var/initial_damage = initial(exam_proj.damage)
-	var/initial_stamina = initial(exam_proj.stamina)
-	// projectile damage multiplier for guns with snowflaked damage multipliers
-	var/proj_damage_mult = 1
-	if(!ispath(exam_proj) || pellets == 0)
-		return
+/obj/item/ammo_casing/proc/projectile_examine_description(preface = "that", include_caliber = TRUE)
+	var/obj/projectile/mag_ammo_projectile = projectile_type
+	var/actual_damage = 0
+	var/disabling_damage = mag_ammo_projectile::stamina + mag_ammo_projectile::pain + mag_ammo_projectile::paralyze + mag_ammo_projectile::stun
+	if(IS_DISABLING_DAMAGE(mag_ammo_projectile::damage_type))
+		disabling_damage += mag_ammo_projectile::damage
+	else
+		actual_damage += mag_ammo_projectile::damage
 
-	// are we in an ammo box?
-	if(isammobox(loc))
-		var/obj/item/ammo_box/our_box = loc
-		// is our ammo box in a gun?
-		if(isgun(our_box.loc))
-			var/obj/item/gun/our_gun = our_box.loc
-			// grab the damage multiplier
-			proj_damage_mult = our_gun.projectile_damage_multiplier
-	// if not, are we just in a gun e.g. chambered
-	else if(isgun(loc))
-		var/obj/item/gun/our_gun = loc
-		// grab the damage multiplier.
-		proj_damage_mult = our_gun.projectile_damage_multiplier
-	var/list/readout = list()
-	if(proj_damage_mult <= 0 || (initial_damage <= 0 && initial_stamina <= 0))
-		return "Our legal team has determined the offensive nature of these [span_warning(caliber)] rounds to be esoteric."
-	// No dividing by 0
-	if(initial_damage)
-		readout += "Most monkeys our legal team subjected to these [span_warning(caliber)] rounds succumbed to their wounds after [span_warning("[HITS_TO_CRIT((initial(exam_proj.damage) * proj_damage_mult) * pellets)] shot\s")] at point-blank, taking [span_warning("[pellets] shot\s")] per round."
-	if(initial_stamina)
-		readout += "[!readout.len ? "Most monkeys" : "More fortunate monkeys"] collapsed from exhaustion after [span_warning("[HITS_TO_CRIT((initial(exam_proj.stamina) * proj_damage_mult) * pellets)] impact\s")] of these [span_warning("[caliber]")] rounds."
-	return readout.Join("\n") // Sending over a single string, rather than the whole list
+	var/stopping_power = ""
+	switch(actual_damage + disabling_damage)
+		if(1 to 5)
+			stopping_power = "very low"
+		if(5 to 10)
+			stopping_power = "low"
+		if(10 to 15)
+			stopping_power = "decent"
+		if(15 to 25)
+			stopping_power = "good"
+		if(25 to 50)
+			stopping_power = "high"
+		if(50 to INFINITY)
+			stopping_power = "very high"
+
+	var/return_text = ""
+	if(stopping_power)
+		return_text = "[preface] fires [stopping_power][actual_damage <= 0 ? ", non-lethal" : ""] stopping power [include_caliber ? "[caliber] " : ""][mag_ammo_projectile::hitscan ? "beams" : "rounds"]"
+	else
+		return_text = "[preface] fires [include_caliber ? "[caliber] " : ""][mag_ammo_projectile::hitscan ? "beams" : "rounds"]"
+
+	return return_text
 
 /obj/item/ammo_casing/update_icon_state()
 	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : null]"
-	return ..()
-
-/obj/item/ammo_casing/update_desc()
-	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
 	return ..()
 
 /*
@@ -154,3 +138,23 @@
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/items/welder.ogg', 20, 1), bounce_delay) //If the turf is made of water and the shell casing is still hot, make a sizzling sound when it's ejected.
 	else if(T?.bullet_bounce_sound)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, T.bullet_bounce_sound, 20, 1), bounce_delay) //Soft / non-solid turfs that shouldn't make a sound when a shell casing is ejected over them.
+
+/obj/item/ammo_casing/proc/is_spent(mapload = FALSE)
+	if(!mapload)
+		add_smell(
+			duration = 4 MINUTES,
+			smell = "gunpowder",
+			intensity = SMELL_INTENSITY_FAINT,
+			radius = 1,
+			wash_type = CLEAN_TYPE_FINGERPRINTS,
+		)
+
+	name = "spent [name]"
+	desc += " This one is spent."
+
+/obj/item/ammo_casing/spent
+	loaded_projectile = null
+
+/obj/item/ammo_casing/spent/Initialize(mapload)
+	. = ..()
+	is_spent(mapload)

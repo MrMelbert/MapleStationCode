@@ -1146,6 +1146,10 @@
 	self_sustaining_overlay_icon_state = null
 	maxnutri = 15
 
+/obj/machinery/hydroponics/soil/Initialize(mapload)
+	. = ..()
+	add_smell(smell = "fresh soil", intensity = SMELL_INTENSITY_WEAK, radius = 1)
+
 /obj/machinery/hydroponics/soil/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	return NONE
 

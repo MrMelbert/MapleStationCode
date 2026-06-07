@@ -295,7 +295,7 @@
 	clone.age = age
 	dna.transfer_identity(clone, transfer_SE = TRUE, transfer_species = TRUE)
 
-	clone.dress_up_as_job(SSjob.GetJob(job))
+	clone.dress_up_as_job(SSjob.get_job(job))
 
 	for(var/datum/quirk/original_quircks as anything in quirks)
 		clone.add_quirk(original_quircks.type, override_client = client, announce = FALSE)
@@ -309,3 +309,31 @@
 	clone.domutcheck()
 
 	return clone
+
+/mob/living/carbon/human/proc/item_heal(mob/user, brute_heal, burn_heal, heal_message_brute, heal_message_burn, required_bodytype)
+	var/obj/item/bodypart/affecting = src.get_bodypart(check_zone(user.zone_selected))
+	if (!affecting || !(affecting.bodytype == required_bodytype))
+		to_chat(user, span_warning("[affecting] is already in good condition!"))
+		return FALSE
+
+	var/brute_damaged = affecting.brute_dam > 0
+	var/burn_damaged = affecting.burn_dam > 0
+
+	var/nothing_to_heal = ((brute_heal <= 0 || !brute_damaged) && (burn_heal <= 0 || !burn_damaged))
+	if (nothing_to_heal)
+		to_chat(user, span_notice("[affecting] is already in good condition!"))
+		return FALSE
+
+	var/message
+	if ((brute_damaged && brute_heal > 0) && (burn_damaged && burn_heal > 0))
+		message = "[heal_message_brute] and [heal_message_burn] on"
+	else if (brute_damaged && brute_heal > 0)
+		message = "[heal_message_brute] on"
+	else
+		message = "[heal_message_burn] on"
+	affecting.heal_damage(brute_heal, burn_heal, required_bodytype)
+	user.visible_message(span_notice("[user] fixes some of the [message] [src]'s [affecting.name]."), \
+		span_notice("You fix some of the [message] [src == user ? "your" : "[src]'s"] [affecting.name]."))
+	if(required_bodytype == BODYTYPE_ROBOTIC)
+		user.mind?.adjust_experience(/datum/skill/cybernetics, brute_heal + burn_heal)
+	return TRUE

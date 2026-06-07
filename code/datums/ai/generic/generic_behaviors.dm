@@ -216,7 +216,7 @@
 	. = ..()
 	set_movement_target(controller, controller.blackboard[target_key])
 
-/datum/ai_behavior/navigate_to_and_pick_up/setup(datum/ai_controller/controller, target_key, drop_held = TRUE)
+/datum/ai_behavior/navigate_to_and_pick_up/perform(seconds_per_tick, datum/ai_controller/controller, target_key, drop_held = TRUE)
 	var/mob/living/living_pawn = controller.pawn
 	var/obj/item/target = controller.blackboard[target_key]
 	if(QDELETED(target))

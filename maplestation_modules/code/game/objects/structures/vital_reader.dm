@@ -197,7 +197,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		var/entire_printout = ""
 		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/0, advanced = advanced, tochat = FALSE)
 		entire_printout += chemscan(user, patient, tochat = FALSE)
-		to_chat(user, examine_block(entire_printout), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+		to_chat(user, boxed_message(entire_printout), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 
 #define LOWER_BAR_OFFSET -3
 
@@ -282,11 +282,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			resp_icon_state = "resp_flat"
 		else if(ishuman(patient))
 			var/mob/living/carbon/human/human_patient = patient
-			switch(human_patient.get_heart_rate())
+			switch(human_patient.get_bpm())
 				if(0)
 					ekg_icon_state = "ekg_flat"
 					resp_icon_state = "resp_flat"
-				if(11 to INFINITY)
+				if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
 					ekg_icon_state = "ekg_fast"
 
 		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)

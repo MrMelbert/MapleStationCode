@@ -6,12 +6,15 @@
 	inhand_icon_state = "greyscale_gloves"
 	lefthand_file = 'icons/mob/inhands/clothing/gloves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/gloves_righthand.dmi'
+	abstract_type = /obj/item/clothing/gloves
 	greyscale_colors = null
 	greyscale_config_inhand_left = /datum/greyscale_config/gloves_inhand_left
 	greyscale_config_inhand_right = /datum/greyscale_config/gloves_inhand_right
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	// drop_sound = 'sound/items/handling/glove_drop.ogg'
+	// pickup_sound = 'sound/items/handling/glove_pick_up.ogg'
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20

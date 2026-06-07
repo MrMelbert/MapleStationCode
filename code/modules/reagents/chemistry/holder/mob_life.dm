@@ -50,38 +50,51 @@
  * * liverless - Stops reagents that aren't set as [/datum/reagent/var/self_consuming] from metabolizing
  */
 /datum/reagents/proc/metabolize_reagent(mob/living/carbon/owner, datum/reagent/reagent, seconds_per_tick, times_fired, can_overdose = FALSE, liverless = FALSE, dead = FALSE)
-	var/need_mob_update = FALSE
 	if(QDELETED(reagent.holder))
 		return FALSE
 
 	if(!owner)
 		owner = reagent.holder.my_atom
 
-	if(owner && reagent && (!dead || (reagent.chemical_flags & REAGENT_DEAD_PROCESS)))
-		if(owner.reagent_check(reagent, seconds_per_tick, times_fired))
-			return
-		if(liverless && !reagent.self_consuming) //need to be metabolized
-			return
-		if(!reagent.metabolizing)
-			reagent.metabolizing = TRUE
-			reagent.on_mob_metabolize(owner)
-		if(can_overdose && !HAS_TRAIT(owner, TRAIT_OVERDOSEIMMUNE))
-			if(reagent.overdose_threshold)
-				if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)
-					reagent.overdosed = TRUE
-					need_mob_update += reagent.overdose_start(owner)
-					owner.log_message("has started overdosing on [reagent.name] at [reagent.volume] units.", LOG_GAME)
-			for(var/addiction in reagent.addiction_types)
-				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * REAGENTS_METABOLISM)
+	if(!owner || !reagent || (dead && !(reagent.chemical_flags & REAGENT_DEAD_PROCESS)))
+		return FALSE
 
-			if(reagent.overdosed)
-				need_mob_update += reagent.overdose_process(owner, seconds_per_tick, times_fired)
-		reagent.current_cycle++
-		need_mob_update += reagent.on_mob_life(owner, seconds_per_tick, times_fired)
-		if(dead && !QDELETED(owner) && !QDELETED(reagent))
-			need_mob_update += reagent.on_mob_dead(owner, seconds_per_tick)
-		if(!QDELETED(owner) && !QDELETED(reagent))
-			reagent.metabolize_reagent(owner, seconds_per_tick, times_fired)
+	var/tick_return = owner.reagent_check(reagent, seconds_per_tick, times_fired)
+	if(tick_return & COMSIG_MOB_STOP_REAGENT_CHECK)
+		return FALSE
+	if(liverless && !reagent.self_consuming) //need to be metabolized
+		return FALSE
+	if(!reagent.metabolizing)
+		reagent.metabolizing = TRUE
+		reagent.on_mob_metabolize(owner)
+
+	var/need_mob_update = FALSE
+	var/metabolizing_out = reagent.metabolization_rate * seconds_per_tick
+	if(!(reagent.chemical_flags & REAGENT_UNAFFECTED_BY_METABOLISM))
+		if(reagent.chemical_flags & REAGENT_REVERSE_METABOLISM)
+			metabolizing_out /= owner.metabolism_efficiency
+		else
+			metabolizing_out *= owner.metabolism_efficiency
+
+	if(can_overdose && !HAS_TRAIT(owner, TRAIT_OVERDOSEIMMUNE))
+		if(reagent.overdose_threshold)
+			if(reagent.volume >= reagent.overdose_threshold && !reagent.overdosed)
+				reagent.overdosed = TRUE
+				need_mob_update += reagent.overdose_start(owner)
+				owner.log_message("has started overdosing on [reagent.name] at [reagent.volume] units.", LOG_GAME)
+		for(var/addiction, threshold in reagent.addiction_types)
+			var/datum/addiction/addiction_type = addiction
+			// point gain is scaled based on how much we metabolized per second
+			owner.mind?.add_addiction_points(addiction, addiction_type::addiction_gain_threshold / (threshold / metabolizing_out))
+
+		if(reagent.overdosed)
+			need_mob_update += reagent.overdose_process(owner, seconds_per_tick, times_fired)
+	reagent.current_cycle++
+	need_mob_update += reagent.on_mob_life(owner, seconds_per_tick, times_fired)
+	if(dead && !QDELETED(owner) && !QDELETED(reagent))
+		need_mob_update += reagent.on_mob_dead(owner, seconds_per_tick)
+	if(!QDELETED(owner) && !QDELETED(reagent) && !(tick_return & COMSIG_MOB_STOP_REAGENT_METABOLISM))
+		reagent.metabolize_reagent(owner, metabolizing_out)
 
 	return need_mob_update
 
@@ -115,23 +128,21 @@
  * returns the volume of the original, pure, reagent to add / keep
  */
 /datum/reagents/proc/process_mob_reagent_purity(datum/reagent/reagent, added_volume, added_purity)
-	if(!reagent)
-		stack_trace("Attempted to process a mob's reagent purity for a null reagent!")
-		return FALSE
+	PRIVATE_PROC(TRUE)
+
+	//no splitting when purity is perfect
 	if(added_purity == 1)
 		return added_volume
-	if(reagent.chemical_flags & REAGENT_DONOTSPLIT)
-		return added_volume
-	if(added_purity < 0)
-		stack_trace("Purity below 0 for chem on mob splitting: [reagent.type]!")
-		added_purity = 0
 
-	if((reagent.inverse_chem_val > added_purity) && (reagent.inverse_chem))//Turns all of a added reagent into the inverse chem
-		add_reagent(reagent.inverse_chem, added_volume, FALSE, added_purity = reagent.get_inverse_purity(reagent.creation_purity))
+	//Turns all of a added reagent into the inverse chem
+	if(reagent.inverse_chem_val > added_purity && reagent.inverse_chem)
+		var/added_amount = add_reagent(reagent.inverse_chem, added_volume, FALSE, added_purity = reagent.get_inverse_purity(reagent.creation_purity))
 		var/datum/reagent/inverse_reagent = has_reagent(reagent.inverse_chem)
 		if(inverse_reagent.chemical_flags & REAGENT_SNEAKYNAME)
-			inverse_reagent.name = reagent.name//Negative effects are hidden
-		return FALSE //prevent addition
+			inverse_reagent.name = reagent.name //Negative effects are hidden
+		return added_amount * -1
+
+	//reagent did not split because purity was above inverse value
 	return added_volume
 
 /**

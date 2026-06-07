@@ -35,14 +35,14 @@
 	QDEL_NULL(fly)
 	return ..()
 
-/obj/item/organ/wings/functional/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/wings/functional/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 
 	if(QDELETED(fly))
 		fly = new
 	fly.Grant(receiver)
 
-/obj/item/organ/wings/functional/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+/obj/item/organ/wings/functional/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	fly?.Remove(organ_owner)
@@ -162,7 +162,7 @@
 	feature_key = initial(feature_key)
 	set_appearance_from_name(sprite_datum.name)
 
-/datum/bodypart_overlay/mutant/wings/functional/generate_icon_cache()
+/datum/bodypart_overlay/mutant/wings/functional/generate_icon_cache(obj/item/bodypart/limb)
 	. = ..()
 	. += wings_open ? "open" : "closed"
 

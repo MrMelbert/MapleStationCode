@@ -93,14 +93,10 @@
 	if(!showpipe)
 		return
 
-	var/mutable_appearance/distro_pipe_appearance = get_pipe_image(icon, "pipe_exposed", dir, COLOR_BLUE, piping_layer = 4)
-	if(nodes[1])
-		distro_pipe_appearance = get_pipe_image(icon, "pipe_intact", dir, COLOR_BLUE, piping_layer = 4)
+	var/mutable_appearance/distro_pipe_appearance = get_pipe_image(icon, "pipe_[nodes[1] ? "intact" : "exposed"]", dir, nodes[1]?.color || COLOR_BLUE, piping_layer = 4)
 	. += distro_pipe_appearance
 
-	var/mutable_appearance/waste_pipe_appearance = get_pipe_image(icon, "pipe_exposed", dir, COLOR_RED, piping_layer = 2)
-	if(nodes[2])
-		waste_pipe_appearance = get_pipe_image(icon, "pipe_intact", dir, COLOR_RED, piping_layer = 2)
+	var/mutable_appearance/waste_pipe_appearance = get_pipe_image(icon, "pipe_[nodes[2] ? "intact" : "exposed"]", dir, nodes[2]?.color || COLOR_RED, piping_layer = 2)
 	. += waste_pipe_appearance
 
 	var/mutable_appearance/distro_cap_appearance = get_pipe_image(icon, "vent_cap", dir, piping_layer = 4)

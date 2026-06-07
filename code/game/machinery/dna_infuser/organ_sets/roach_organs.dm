@@ -21,7 +21,7 @@
 	/// Storing biotypes pre-organ bonus applied so we don't remove bug from mobs which should have it.
 	var/old_biotypes = NONE
 
-/datum/status_effect/organ_set_bonus/roach/enable_bonus()
+/datum/status_effect/organ_set_bonus/roach/enable_bonus(obj/item/organ/inserted_organ)
 	. = ..()
 	if(!ishuman(owner))
 		return
@@ -32,7 +32,7 @@
 	old_biotypes = human_owner.mob_biotypes
 	human_owner.mob_biotypes |= MOB_BUG
 
-/datum/status_effect/organ_set_bonus/roach/disable_bonus()
+/datum/status_effect/organ_set_bonus/roach/disable_bonus(obj/item/organ/removed_organ)
 	. = ..()
 	if(!ishuman(owner) || QDELETED(owner))
 		return

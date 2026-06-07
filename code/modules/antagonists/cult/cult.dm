@@ -5,8 +5,9 @@
 	antag_moodlet = /datum/mood_event/cult
 	suicide_cry = "FOR NAR'SIE!!"
 	preview_outfit = /datum/outfit/cultist
-	job_rank = ROLE_CULTIST
+	pref_flag = ROLE_CULTIST
 	antag_hud_name = "cult"
+	stinger_sound = 'sound/ambience/antag/bloodcult/bloodcult_gain.ogg'
 
 	///The vote ability Cultists have to elect someone to be the leader.
 	var/datum/action/innate/cult/mastervote/vote_ability
@@ -289,7 +290,7 @@
 /datum/outfit/cultist/post_equip(mob/living/carbon/human/equipped, visualsOnly)
 	equipped.eye_color_left = BLOODCULT_EYE
 	equipped.eye_color_right = BLOODCULT_EYE
-	equipped.update_body()
+	equipped.update_eyes()
 
 ///Returns whether the given mob is convertable to the blood cult
 /proc/is_convertable_to_cult(mob/living/target, datum/team/cult/specific_cult)

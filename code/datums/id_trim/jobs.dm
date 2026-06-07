@@ -24,7 +24,7 @@
 
 /datum/id_trim/job/New()
 	if(ispath(job))
-		job = SSjob.GetJobType(job)
+		job = SSjob.get_job_type(job)
 
 	if(isnull(job_changes))
 		job_changes = SSmapping.config.job_changes
@@ -204,30 +204,6 @@
 		ACCESS_HOP,
 		)
 	job = /datum/job/botanist
-
-/datum/id_trim/job/bridge_assistant
-	assignment = "Bridge Assistant"
-	trim_state = "trim_assistant"
-	department_color = COLOR_COMMAND_BLUE
-	subdepartment_color = COLOR_COMMAND_BLUE
-	sechud_icon_state = SECHUD_BRIDGE_ASSISTANT
-	minimal_access = list(
-		ACCESS_COMMAND,
-		ACCESS_EVA,
-		ACCESS_GATEWAY,
-		ACCESS_MAINT_TUNNELS,
-		ACCESS_RC_ANNOUNCE,
-		ACCESS_TELEPORTER,
-		ACCESS_WEAPONS,
-	)
-	extra_access = list()
-	template_access = list(
-		ACCESS_CAPTAIN,
-		ACCESS_CHANGE_IDS,
-	)
-	job = /datum/job/bridge_assistant
-	honorifics = list("Underling", "Assistant", "Mate")
-	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/captain
 	assignment = "Captain"
@@ -1154,7 +1130,7 @@
 
 	if(CONFIG_GET(number/depsec_access_level) == POPULATION_SCALED_ACCESS)
 		var/minimal_security_officers = 3 // We do not spawn in any more lockers if there are 5 or less security officers, so let's keep it lower than that number.
-		var/datum/job/J = SSjob.GetJob(JOB_SECURITY_OFFICER)
+		var/datum/job/J = SSjob.get_job(JOB_SECURITY_OFFICER)
 		if((J.spawn_positions - minimal_security_officers) <= 0)
 			access |= elevated_access
 

@@ -121,7 +121,7 @@
 		var/list/spawnpoints = GLOB.emergencyresponseteamspawn
 		var/index = 0
 
-		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for [ertemplate.polldesc]?", check_jobban = "deathsquad", pic_source = /obj/item/card/id/advanced/centcom/ert, role_name_text = "emergency response team")
+		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for [span_notice(ertemplate.polldesc)]?", check_jobban = "deathsquad", alert_pic = /obj/item/card/id/advanced/centcom/ert/commander, role_name_text = "emergency response team")
 		var/teamSpawned = FALSE
 
 		// This list will take priority over spawnpoints if not empty
@@ -242,7 +242,16 @@
 			ert_antag.random_names = ertemplate.random_names
 
 			ert_operative.mind.add_antag_datum(ert_antag,ert_team)
-			ert_operative.mind.set_assigned_role(SSjob.GetJobType(ert_antag.ert_job_path))
+			ert_operative.mind.set_assigned_role(SSjob.get_job_type(ert_antag.ert_job_path))
+			// future melbert todo - tie to ert jobs, make ert jobs not one datum
+			ert_operative.mind.set_level(/datum/skill/electronics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/eva, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/firearms, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/first_aid, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/athletics, SKILL_LEVEL_EXPERT, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/mechanics, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/surgery, SKILL_LEVEL_MASTER, silent = TRUE)
+			ert_operative.mind.set_level(/datum/skill/piloting, SKILL_LEVEL_EXPERT, silent = TRUE)
 
 			//Logging and cleanup
 			ert_operative.log_message("has been selected as \a [ert_antag.name].", LOG_GAME)

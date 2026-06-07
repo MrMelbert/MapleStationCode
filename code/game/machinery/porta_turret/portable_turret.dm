@@ -573,7 +573,7 @@ DEFINE_BITFIELD(turret_flags, list(
 
 	// If we aren't shooting heads then return a threatcount of 0
 	if (!(turret_flags & TURRET_FLAG_SHOOT_HEADS))
-		var/datum/job/apparent_job = SSjob.GetJob(perp.get_assignment())
+		var/datum/job/apparent_job = SSjob.get_job(perp.get_assignment())
 		if(apparent_job?.job_flags & JOB_HEAD_OF_STAFF)
 			return 0
 
@@ -918,6 +918,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	req_access = list(ACCESS_AI_UPLOAD)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	interaction_flags_click = ALLOW_SILICON_REACH
+	examine_feedback_on_ui = TRUE
 	/// Variable dictating if linked turrets are active and will shoot targets
 	var/enabled = TRUE
 	/// Variable dictating if linked turrets will shoot lethal projectiles

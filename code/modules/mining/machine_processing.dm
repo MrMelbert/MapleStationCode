@@ -6,6 +6,7 @@
 /obj/machinery/mineral
 	processing_flags = START_PROCESSING_MANUALLY
 	subsystem_type = /datum/controller/subsystem/processing/fastprocess
+	examine_feedback_on_ui = TRUE
 	/// The current direction of `input_turf`, in relation to the machine.
 	var/input_dir = NORTH
 	/// The current direction, in relation to the machine, that items will be output to.

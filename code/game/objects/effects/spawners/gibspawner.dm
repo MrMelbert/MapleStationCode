@@ -39,16 +39,14 @@
 		dna_to_add = temp_mob.get_blood_dna_list()
 		qdel(temp_mob)
 	else
-		dna_to_add = list("UNKNOWN DNA" = random_human_blood_type()) //else, generate a random bloodtype for it. // NON-MODULE CHANGE
+		dna_to_add = list("UNKNOWN HUMAN DNA" = random_human_blood_type()) //else, generate a random bloodtype for it. // NON-MODULE CHANGE
 
 
 	for(var/i in 1 to gibtypes.len)
 		if(gibamounts[i])
 			for(var/j in 1 to gibamounts[i])
 				var/gibType = gibtypes[i]
-				gib = new gibType(loc, diseases)
-
-				gib.add_blood_DNA(dna_to_add)
+				gib = new gibType(loc, diseases, dna_to_add)
 
 				var/list/directions = gibdirections[i]
 				if(isturf(loc))

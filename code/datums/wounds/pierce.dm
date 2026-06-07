@@ -5,19 +5,39 @@
 /datum/wound/pierce
 	undiagnosed_name = "Puncture"
 
-/datum/wound/pierce/get_self_check_description(self_aware)
+/datum/wound/pierce/get_self_check_description(self_aware, medical_skill, list/obj/item/covering)
 	if(!limb.can_bleed())
 		return ..()
+	if(limb.current_gauze)
+		return ""
+
+	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
+	var/blood_name = LOWER_TEXT(victim.get_blood_name())
+
+	for(var/obj/item/clothing/clothing as anything in covering)
+		if(clothing.clothing_flags & THICKMATERIAL)
+			return "Underneath your [clothing.name] feels [severity > WOUND_SEVERITY_MODERATE ? "soaked" : "damp"] and warm - sweat or [blood_name]?"
 
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return span_danger("It's leaking blood from a small [LOWER_TEXT(undiagnosed_name || name)].")
+			if(length(covering) > 0)
+				return "" // not enough blood to even notice if covered
+			return span_danger("It's leaking [blood_name] from a small [shown_name].")
+
 		if(WOUND_SEVERITY_MODERATE)
-			return span_warning("It's leaking blood from a [LOWER_TEXT(undiagnosed_name || name)].")
+			if(length(covering) > 0)
+				return span_warning("Your [covering[1].name] covering it feels damp and warm.")
+			return span_warning("It's leaking [blood_name] from a [shown_name].")
+
 		if(WOUND_SEVERITY_SEVERE)
-			return span_boldwarning("It's leaking blood from a serious [LOWER_TEXT(undiagnosed_name || name)]!")
+			if(length(covering) > 0)
+				return span_boldwarning("Your [covering[1].name] covering it is soaked with [blood_name]!")
+			return span_boldwarning("It's leaking [blood_name] from a serious [shown_name]!")
+
 		if(WOUND_SEVERITY_CRITICAL)
-			return span_boldwarning("It's leaking blood from a major [LOWER_TEXT(undiagnosed_name || name)]!!")
+			if(length(covering) > 0)
+				return span_boldwarning("Your [covering[1].name] covering it is heavily soaked with [blood_name]!!")
+			return span_boldwarning("It's leaking [blood_name] from a major [shown_name]!!")
 
 /datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
 	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
@@ -29,7 +49,6 @@
 	name = "Piercing Wound"
 	sound_effect = 'sound/weapons/slice.ogg'
 	processes = TRUE
-	treatable_by = list(/obj/item/stack/medical/suture)
 	treatable_tools = list(TOOL_CAUTERY)
 	base_treat_time = 3 SECONDS
 	wound_flags = parent_type::wound_flags | CAN_BE_GRASPED
@@ -45,6 +64,8 @@
 	var/internal_bleeding_chance
 	/// If we let off blood when hit, the max blood lost is this * the incoming damage
 	var/internal_bleeding_coefficient
+	/// If TRUE we are ready to be mended in surgery
+	VAR_FINAL/mend_state = FALSE
 
 /datum/wound/pierce/bleed/wound_injury(datum/wound/old_wound = null, attack_direction = null)
 	set_blood_flow(initial_flow)
@@ -89,6 +110,10 @@
 	if(blood_bled >= 14)
 		victim.do_splatter_effect(attack_direction)
 
+/datum/wound/pierce/bleed/item_can_treat(obj/item/potential_treater, mob/user)
+	// assume that - if mended and still ready to operate - that we want to do surgery instead of manual treatment
+	return ..() && !mend_state && !HAS_TRAIT(limb, TRAIT_READY_TO_OPERATE)
+
 /datum/wound/pierce/bleed/get_bleed_rate_of_change()
 	//basically if a species doesn't bleed, the wound is stagnant and will not heal on it's own (nor get worse)
 	if(!limb.can_bleed())
@@ -110,7 +135,7 @@
 			if(QDELETED(src))
 				return
 			if(SPT_PROB(2.5, seconds_per_tick))
-				to_chat(victim, span_notice("You feel the [LOWER_TEXT(undiagnosed_name || name)] in your [limb.plaintext_zone] firming up from the cold!"))
+				to_chat(victim, span_notice("You feel the [LOWER_TEXT(get_displayed_name_for_mob(victim))] in your [limb.plaintext_zone] firming up from the cold!"))
 
 		if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 			adjust_blood_flow(0.25 * seconds_per_tick) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first
@@ -130,13 +155,14 @@
 		to_chat(victim, span_green("The holes on your [limb.plaintext_zone] have [!limb.can_bleed() ? "healed up" : "stopped bleeding"]!"))
 		qdel(src)
 
-/datum/wound/pierce/bleed/check_grab_treatments(obj/item/I, mob/user)
-	if(I.get_temperature()) // if we're using something hot but not a cautery, we need to be aggro grabbing them first, so we don't try treating someone we're eswording
-		return TRUE
+/datum/wound/pierce/bleed/check_grab_treatments(obj/item/tool, mob/user)
+	// if we're using something hot but not a cautery, we need to be aggro grabbing them first,
+	// so we don't try treating someone we're eswording
+	return tool.get_temperature()
 
-/datum/wound/pierce/bleed/treat(obj/item/I, mob/user)
-	if(I.tool_behaviour == TOOL_CAUTERY || I.get_temperature())
-		return tool_cauterize(I, user)
+/datum/wound/pierce/bleed/treat(obj/item/tool, mob/user)
+	if(tool.tool_behaviour == TOOL_CAUTERY || tool.get_temperature())
+		tool_cauterize(tool, user)
 
 /datum/wound/pierce/bleed/on_xadone(power)
 	. = ..()
@@ -176,13 +202,12 @@
 	adjust_blood_flow(-blood_cauterized)
 
 	if(blood_flow > 0)
-		return try_treating(I, user)
-	return TRUE
+		try_treating(I, user)
 
 /datum/wound_pregen_data/flesh_pierce
 	abstract = TRUE
 
-	required_limb_biostate = (BIO_FLESH)
+	required_limb_biostate = BIO_FLESH
 	required_wounding_types = list(WOUND_PIERCE)
 
 	wound_series = WOUND_SERIES_FLESH_PUNCTURE_BLEED

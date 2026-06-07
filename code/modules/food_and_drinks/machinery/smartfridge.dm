@@ -671,7 +671,7 @@
 /obj/machinery/smartfridge/organ
 	name = "smart organ storage"
 	desc = "A refrigerated storage unit for organ storage."
-	max_n_of_items = 20 //vastly lower to prevent processing too long
+	max_n_of_items = 50 //vastly lower to prevent processing too long
 	base_build_path = /obj/machinery/smartfridge/organ
 	contents_overlay_icon = "organ"
 	/// The rate at which this fridge will repair damaged organs
@@ -697,7 +697,6 @@
 /obj/machinery/smartfridge/organ/RefreshParts()
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
-		max_n_of_items = 20 * matter_bin.tier
 		repair_rate = max(0, STANDARD_ORGAN_HEALING * (matter_bin.tier - 1) * 0.5)
 
 /obj/machinery/smartfridge/organ/process(seconds_per_tick)

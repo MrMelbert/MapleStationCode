@@ -76,7 +76,7 @@
 	if(stat == DEAD || !old_head || !old_brain)
 		return FALSE
 	var/obj/item/bodypart/head/psyker/psyker_head = new()
-	if(!psyker_head.replace_limb(src, special = TRUE))
+	if(!psyker_head.replace_limb(src))
 		return FALSE
 	qdel(old_head)
 	var/obj/item/organ/brain/psyker/psyker_brain = new()

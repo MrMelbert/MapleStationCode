@@ -10,6 +10,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 	mouse_over_pointer = MOUSE_HAND_POINTER
 	armor_type = /datum/armor/machinery_button
 	power_channel = AREA_USAGE_ENVIRON
+	examine_feedback_on_ui = TRUE
 
 	/// Password to open the door rather than having access from an ID card.
 	var/password = "00000"

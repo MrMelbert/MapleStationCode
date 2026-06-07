@@ -53,10 +53,16 @@
 /datum/preference/choiced/sound_tts/create_default_value()
 	return TTS_SOUND_ENABLED
 
+/datum/preference/choiced/sound_tts/is_accessible(datum/preferences/preferences)
+	return ..() && SStts.tts_enabled
+
 /datum/preference/numeric/volume/sound_tts_volume
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 	savefile_key = "sound_tts_volume"
 	savefile_identifier = PREFERENCE_PLAYER
+
+/datum/preference/numeric/volume/sound_tts_volume/is_accessible(datum/preferences/preferences)
+	return ..() && SStts.tts_enabled
 
 /datum/preference/choiced/sound_achievement
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
@@ -99,6 +105,7 @@
 	savefile_identifier = PREFERENCE_PLAYER
 
 /datum/preference/numeric/volume/sound_ship_ambience_volume/apply_to_client_updated(client/client, value)
+	client.current_ambient_sound = null
 	client.mob.refresh_looping_ambience()
 
 /// Heartbeats

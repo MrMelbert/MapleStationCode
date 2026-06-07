@@ -21,16 +21,14 @@
 		if(.) //not dead
 			handle_blood(seconds_per_tick, times_fired)
 
-		if(stat != DEAD)
+		if(stat != DEAD) // still not dead (blood could have changed that)
+			for(var/key in mind?.addiction_points)
+				GLOB.addictions[key].process_addiction(src, seconds_per_tick)
 			handle_brain_damage(seconds_per_tick, times_fired)
 
 	if(stat != DEAD)
 		handle_bodyparts(seconds_per_tick, times_fired)
 
-	if(. && mind) //. == not dead
-		for(var/key in mind.addiction_points)
-			var/datum/addiction/addiction = SSaddiction.all_addictions[key]
-			addiction.process_addiction(src, seconds_per_tick, times_fired)
 	if(stat != DEAD)
 		return TRUE
 
@@ -68,7 +66,7 @@
 		if(stat == HARD_CRIT && !internal && !external) // being on internals function as a ventilator + also makes anesthetic function (revisit later)
 			losebreath = max(losebreath, 1)
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
-			losebreath += (1 / next_breath)
+			losebreath += (1 / max(2, next_breath))
 
 	if(losebreath < 1)
 		var/pre_sig_return = SEND_SIGNAL(src, COMSIG_CARBON_ATTEMPT_BREATHE, seconds_per_tick, times_fired)
@@ -250,7 +248,7 @@
 					dna.unique_enzymes = dna.previous["UE"]
 					dna.previous.Remove("UE")
 				if(dna.previous["blood_type"])
-					dna.human_blood_type = find_blood_type(dna.previous["blood_type"])
+					dna.set_human_blood_type(dna.previous["blood_type"])
 					dna.previous.Remove("blood_type")
 				dna.temporary_mutations.Remove(mut)
 				continue

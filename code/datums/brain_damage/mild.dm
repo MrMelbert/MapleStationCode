@@ -291,14 +291,20 @@
 	scan_desc = "possessiveness"
 	gain_text = span_warning("You start to worry about your belongings.")
 	lose_text = span_notice("You worry less about your belongings.")
+	COOLDOWN_DECLARE(grip_cd)
 
 /datum/brain_trauma/mild/possessive/on_lose(silent)
 	. = ..()
 	for(var/obj/item/thing in owner.held_items)
 		clear_trait(thing)
+	UnregisterSignal(owner, COMSIG_ATOM_EXAMINE)
+
+/datum/brain_trauma/mild/possessive/on_gain()
+	. = ..()
+	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/brain_trauma/mild/possessive/on_life(seconds_per_tick, times_fired)
-	if(!SPT_PROB(5, seconds_per_tick))
+	if(!SPT_PROB(5, seconds_per_tick) || !COOLDOWN_FINISHED(src, grip_cd))
 		return
 
 	var/obj/item/my_thing = pick(owner.held_items) // can pick null, that's fine
@@ -316,9 +322,17 @@
 	if(HAS_TRAIT_FROM_ONLY(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)) // in case something else adds nodrop, somehow?
 		to_chat(owner, span_notice("You feel more comfortable letting go of [my_thing]."))
 	clear_trait(my_thing)
+	COOLDOWN_START(src, grip_cd, 20 SECONDS)
 
 /datum/brain_trauma/mild/possessive/proc/clear_trait(obj/item/my_thing, ...)
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(my_thing, TRAIT_NODROP, TRAUMA_TRAIT)
 	UnregisterSignal(my_thing, list(COMSIG_ITEM_DROPPED, COMSIG_MOVABLE_MOVED))
+
+/datum/brain_trauma/mild/possessive/proc/on_examine(datum/source, list/examine_list)
+	SIGNAL_HANDLER
+
+	for(var/obj/item/thing in owner.held_items)
+		if(HAS_TRAIT_FROM_ONLY(thing, TRAIT_NODROP, TRAUMA_TRAIT))
+			examine_list += span_warning("[owner.p_They()] [owner.p_are()] gripping [thing] tightly.")

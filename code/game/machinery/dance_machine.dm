@@ -8,6 +8,7 @@
 	density = TRUE
 	req_access = list(ACCESS_BAR)
 	processing_flags = START_PROCESSING_MANUALLY
+	examine_feedback_on_ui = TRUE
 	/// Cooldown between "Error" sound effects being played
 	COOLDOWN_DECLARE(jukebox_error_cd)
 	/// Cooldown between being allowed to play another song

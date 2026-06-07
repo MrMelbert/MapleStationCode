@@ -1,6 +1,7 @@
 /obj/item/organ
 	name = "organ"
 	icon = 'icons/obj/medical/organs/organs.dmi'
+	abstract_type = /obj/item/organ
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 0
 	/// The mob that owns this organ.
@@ -8,7 +9,7 @@
 	/// Reference to the limb we're inside of
 	var/obj/item/bodypart/bodypart_owner
 	/// The cached info about the blood this organ belongs to
-	var/list/blood_dna_info = list("Synthetic DNA" = /datum/blood_type/crew/human/o_minus) // not every organ spawns inside a person
+	var/list/blood_dna_info
 	/// The body zone this organ is supposed to inhabit.
 	var/zone = BODY_ZONE_CHEST
 	/**
@@ -46,6 +47,10 @@
 
 	/// Food reagents if the organ is edible
 	var/list/food_reagents = list(/datum/reagent/consumable/nutriment = 5)
+	/// Foodtypes if the organ is edible
+	var/foodtype_flags = RAW | MEAT | GORE
+	/// Overrides tastes if the organ is edible
+	var/food_tastes
 	/// The size of the reagent container if the organ is edible
 	var/reagent_vol = 10
 
@@ -62,6 +67,8 @@
 	var/list/organ_effects
 	/// String displayed when the organ has decayed.
 	var/failing_desc = "has decayed for too long, and has turned a sickly color. It probably won't work without repairs."
+	/// Assoc list of alternate zones where this can organ be slotted to organ slot for that zone
+	var/list/valid_zones = null
 
 // Players can look at prefs before atoms SS init, and without this
 // they would not be able to see external organs, such as moth wings.
@@ -73,13 +80,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	. = ..()
 	if(organ_flags & ORGAN_EDIBLE)
 		AddComponent(/datum/component/edible,\
-			initial_reagents = food_reagents,\
-			foodtypes = RAW | MEAT | GORE,\
-			volume = reagent_vol,\
-			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
+			initial_reagents = food_reagents, \
+			foodtypes = foodtype_flags, \
+			volume = reagent_vol, \
+			tastes = food_tastes, \
+			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)), \
+		)
+		RegisterSignal(src, COMSIG_FOOD_ATTEMPT_EAT, PROC_REF(block_nom))
 
 	if(bodypart_overlay)
 		setup_bodypart_overlay()
+	RegisterSignal(src, COMSIG_DETECTIVE_SCANNED, PROC_REF(pass_blood_dna_info))
 
 /obj/item/organ/Destroy()
 	if(isnull(owner) && !isnull(bodypart_owner))
@@ -123,19 +134,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 	owner.remove_status_effect(status, type)
 
-/obj/item/organ/proc/on_owner_examine(datum/source, mob/user, list/examine_list)
-	SIGNAL_HANDLER
-	return
-
 /obj/item/organ/proc/on_find(mob/living/finder)
 	return
-
-/obj/item/organ/wash(clean_types)
-	. = ..()
-
-	// always add the original dna to the organ after it's washed
-	if(!IS_ROBOTIC_ORGAN(src) && (clean_types & CLEAN_TYPE_BLOOD))
-		add_blood_DNA(blood_dna_info)
 
 /obj/item/organ/process(seconds_per_tick, times_fired)
 	return
@@ -149,7 +149,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/examine(mob/user)
 	. = ..()
 
-	. += span_notice("It should be inserted in the [parse_zone(zone)].")
+	. += zones_tip()
 
 	if(organ_flags & ORGAN_FAILING)
 		. += span_warning("[src] [failing_desc]")
@@ -161,6 +161,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			return
 		. += span_warning("[src] is starting to look discolored.")
 
+/// Returns a line to be displayed regarding valid insertion zones
+/obj/item/organ/proc/zones_tip()
+	if (!valid_zones)
+		return span_notice("It should be inserted in the [parse_zone(zone)].")
+
+	var/list/fit_zones = list()
+	for (var/valid_zone in valid_zones)
+		fit_zones += parse_zone(valid_zone)
+	return span_notice("It should be inserted in the [english_list(fit_zones, and_text = " or ")].")
+
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
 	if(!sprite_accessory_override)
@@ -171,10 +181,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return
 
 /obj/item/organ/proc/OnEatFrom(eater, feeder)
-	useable = FALSE //You can't use it anymore after eating it you spaztic
+	// You can't use it anymore after eating it
+	organ_flags |= ORGAN_UNUSABLE
 
 /obj/item/organ/item_action_slot_check(slot,mob/user)
 	return //so we don't grant the organ's action to mobs who pick up the organ.
+
+/obj/item/organ/grant_action_to_bearer(datum/action/action)
+	if(isnull(owner))
+		return
+	action.Grant(owner)
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage. Returns the net change in organ damage.
 /obj/item/organ/proc/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE) //use for damaging effects
@@ -259,6 +275,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		lungs = new()
 		lungs.Insert(src)
 	lungs.set_organ_damage(0)
+	lungs.received_pressure_mult = lungs::received_pressure_mult
 
 	var/obj/item/organ/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	if(heart)
@@ -383,20 +400,46 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
  *
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
-/obj/item/organ/proc/feel_for_damage(self_aware)
+/obj/item/organ/proc/feel_for_damage(self_aware, medical_skill)
+	if(organ_flags & ORGAN_EXTERNAL)
+		return ""
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
-		return span_warning("[self_aware ? "[capitalize(slot)]" : "It"] feels a bit off.")
-	return span_boldwarning("[self_aware ? "[capitalize(slot)]" : "It"] feels terrible!")
-
-/obj/item/organ/feel_for_damage(self_aware)
-	return ""
+		return span_warning("[(self_aware || medical_skill >= SKILL_LEVEL_EXPERT) ? "[capitalize(slot)]" : "It"] feels a bit off.")
+	return span_boldwarning("[(self_aware || medical_skill >= SKILL_LEVEL_EXPERT) ? "[capitalize(slot)]" : "It"] feels terrible!")
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)
 	return Insert(new_owner, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
+/// Signal proc for [COMSIG_FOOD_ATTEMPT_EAT], block feeding an organ to a mob if they are marked as ready to operate - to prevent mistakenly feeding your patient
+/obj/item/organ/proc/block_nom(datum/source, mob/living/carbon/eater, mob/living/carbon/feeder)
+	SIGNAL_HANDLER
+	if(!HAS_TRAIT(eater, TRAIT_READY_TO_OPERATE))
+		return NONE
+	if(eater == feeder)
+		to_chat(feeder, span_warning("You feel it unwise to eat [source] while you're undergoing surgery."))
+	else
+		to_chat(feeder, span_warning("The only thing you could think of doing with [source] right now is feeding it to [eater], but that doesn't seem right."))
+	return BLOCK_EAT_ATTEMPT
+
+/// Signal proc for [COMSIG_DETECTIVE_SCANNED], show innate blood info in the data
+/obj/item/organ/proc/pass_blood_dna_info(datum/source, mob/user, list/det_data)
+	SIGNAL_HANDLER
+	if(isnull(blood_dna_info))
+		if(IS_ORGANIC_ORGAN(src))
+			// if there is no dna, but it is organic, it must be mapspawned or something, so show dummy data
+			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+				"Type: <font color='red'>[find_blood_type(/datum/blood_type/crew/human/o_minus)])]</font> DNA (UE): <font color='red'>SYNTHETIC DNA</font>")
+		else
+			// a robotic organ not owned by a robotic mob should show no DNA
+			LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+				"Type: <font color='red'>N/A</font> DNA (UE): <font color='red'>N/A</font>")
+	else
+		// show the dna of the mob that owned the organ in the past to the scanner
+		LAZYADD(det_data[DETSCAN_CATEGORY_BLOOD], \
+			"Type: <font color='red'>[find_blood_type(blood_dna_info[blood_dna_info[1]])]</font> DNA (UE): <font color='red'>[blood_dna_info[1]]</font>")
 
 /// Get all possible organ slots by checking every organ, and then store it and give it whenever needed
 /proc/get_all_slots()

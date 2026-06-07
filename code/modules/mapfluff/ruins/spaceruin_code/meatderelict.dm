@@ -132,6 +132,8 @@
 	var/list/dirs = throw_diagonals ? GLOB.diagonals : GLOB.cardinals
 	throw_diagonals = !throw_diagonals
 	playsound(src, 'sound/magic/lightningbolt.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE)
+	if(length(signal_turfs))
+		clear_signals()
 	for(var/direction in dirs)
 		var/victim_turf = get_step(src, direction)
 		if(isclosedturf(victim_turf))

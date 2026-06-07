@@ -28,10 +28,9 @@
 	var/r_hand
 	/// Path of the left hand held item we give to the mob's visuals.
 	var/l_hand
-	/// What's our "blood type"? So fake-humans splash blood on people in combat
-	var/fake_blood_type
 
 /mob/living/basic/trooper/Initialize(mapload)
+	initial_blood_type = get_fake_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = mob_spawner, r_hand = r_hand, l_hand = l_hand)
 	if(LAZYLEN(loot) || corpse)
@@ -40,10 +39,8 @@
 		AddElement(/datum/element/death_drops, loot)
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
 
-/mob/living/basic/trooper/get_blood_type()
-	if(!fake_blood_type)
-		fake_blood_type = random_human_blood_type()
-	return find_blood_type(fake_blood_type)
+/mob/living/basic/trooper/proc/get_fake_blood_type()
+	return random_human_blood_type()
 
 /mob/living/basic/trooper/init_unconscious_appearance()
 	add_generic_humanoid_static_appearance()

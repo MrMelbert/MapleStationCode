@@ -107,6 +107,17 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
+/obj/item/food/snowcones/CheckParts(list/parts_list, datum/crafting_recipe/current_recipe)
+	. = ..()
+	if(isnull(current_recipe))
+		return
+	// replaces the ice from the input with water
+	reagents.remove_reagent(/datum/reagent/consumable/ice, 15)
+	reagents.add_reagent(/datum/reagent/water, 11)
+	// then add 1u nutriment for free
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, 1)
+	// the juice component will be transferred in from crafting
+
 /obj/item/food/snowcones/lime
 	name = "lime snowcone"
 	desc = "Lime syrup drizzled over a snowball in a paper cup."

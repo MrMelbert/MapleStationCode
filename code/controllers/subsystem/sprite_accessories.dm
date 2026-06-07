@@ -20,19 +20,20 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/facial_hairstyles_female_list //! stores only hair names
 	var/list/hair_gradients_list //! stores /datum/sprite_accessory/hair_gradient indexed by name
 	var/list/facial_hair_gradients_list //! stores /datum/sprite_accessory/facial_hair_gradient indexed by name
+	var/list/hair_masks_list //! stores /datum/hair_mask indexed by type
 
 	//Underwear
-	var/list/underwear_list //! stores /datum/sprite_accessory/underwear indexed by name
+	var/list/underwear_list //! stores /datum/sprite_accessory/clothing/underwear indexed by name
 	var/list/underwear_m //! stores only underwear name
 	var/list/underwear_f //! stores only underwear name
 
 	//Undershirts
-	var/list/undershirt_list //! stores /datum/sprite_accessory/undershirt indexed by name
+	var/list/undershirt_list //! stores /datum/sprite_accessory/clothing/undershirt indexed by name
 	var/list/undershirt_m //! stores only undershirt name
 	var/list/undershirt_f //! stores only undershirt name
 
 	//Socks
-	var/list/socks_list //! stores /datum/sprite_accessory/socks indexed by name
+	var/list/socks_list //! stores /datum/sprite_accessory/clothing/socks indexed by name
 
 	//Lizard Bits (all datum lists indexed by name)
 	var/list/lizard_markings_list
@@ -79,6 +80,7 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 /datum/controller/subsystem/accessories/PreInit() // this stuff NEEDS to be set up before GLOB for preferences and stuff to work so this must go here. sorry
 	setup_lists()
 	init_hair_gradients()
+	init_hair_masks()
 
 /// Sets up all of the lists for later utilization in the round and building sprites.
 /// In an ideal world we could tack everything that just needed `DEFAULT_SPRITE_LIST` into static variables on the top, but due to the initialization order
@@ -95,17 +97,17 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	facial_hairstyles_male_list = facial_hair_lists[MALE_SPRITE_LIST]
 	facial_hairstyles_female_list = facial_hair_lists[FEMALE_SPRITE_LIST]
 
-	var/underwear_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear)
+	var/underwear_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/clothing/underwear)
 	underwear_list = underwear_lists[DEFAULT_SPRITE_LIST]
 	underwear_m = underwear_lists[MALE_SPRITE_LIST]
 	underwear_f = underwear_lists[FEMALE_SPRITE_LIST]
 
-	var/undershirt_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt)
+	var/undershirt_lists = init_sprite_accessory_subtypes(/datum/sprite_accessory/clothing/undershirt)
 	undershirt_list = undershirt_lists[DEFAULT_SPRITE_LIST]
 	undershirt_m = undershirt_lists[MALE_SPRITE_LIST]
 	undershirt_f = undershirt_lists[FEMALE_SPRITE_LIST]
 
-	socks_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/socks)[DEFAULT_SPRITE_LIST]
+	socks_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/clothing/socks)[DEFAULT_SPRITE_LIST]
 
 	lizard_markings_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/lizard_markings, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	tails_list_human = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
@@ -156,6 +158,12 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 			hair_gradients_list[gradient.name] = gradient
 		if(gradient.gradient_category & GRADIENT_APPLIES_TO_FACIAL_HAIR)
 			facial_hair_gradients_list[gradient.name] = gradient
+
+/datum/controller/subsystem/accessories/proc/init_hair_masks()
+	hair_masks_list = list()
+	for(var/path in subtypesof(/datum/hair_mask))
+		var/datum/hair_mask/mask = new path
+		hair_masks_list[path] = mask
 
 /// This reads the applicable sprite accessory datum's subtypes and adds it to the subsystem's list of sprite accessories.
 /// The boolean `add_blank` argument just adds a "None" option to the list of sprite accessories, like if a felinid doesn't want a tail or something, typically good for gated-off things.

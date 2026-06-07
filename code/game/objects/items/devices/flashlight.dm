@@ -129,26 +129,31 @@
 
 	if(M == user) //they're using it on themselves
 		user.visible_message(span_warning("[user] shines [src] into [M.p_their()] eyes."), ignored_mobs = user)
-		. += span_info("You direct [src] to into your eyes:\n")
+		. += span_info("You direct [src] to into your eyes:<br>")
 
 		if(M.is_blind())
-			. += "<span class='notice ml-1'>You're not entirely certain what you were expecting...</span>\n"
+			. += "<span class='notice ml-1'>You're not entirely certain what you were expecting...</span><br>"
 		else
-			. += "<span class='notice ml-1'>Trippy!</span>\n"
+			. += "<span class='notice ml-1'>Trippy!</span><br>"
 
 	else
-		user.visible_message(span_warning("[user] directs [src] to [M]'s eyes."), ignored_mobs = user)
-		. += span_info("You direct [src] to [M]'s eyes:\n")
+		if(HAS_TRAIT(M, TRAIT_CLOSED_EYES) && !HAS_TRAIT(M, TRAIT_NO_EYELIDS))
+			user.visible_message(span_warning("[user] lifts [M]'s eyelids and shines [src] into [M.p_their()] eyes."), ignored_mobs = user)
+			. += span_info("You lift [M.p_their()] eyelids and direct [src] into [M.p_their()] eyes:\n")
+
+		else
+			user.visible_message(span_warning("[user] directs [src] to [M]'s eyes."), ignored_mobs = user)
+			. += span_info("You direct [src] to [M]'s eyes:\n")
 
 		if(M.stat == DEAD || M.is_blind() || M.get_eye_protection() > FLASH_PROTECTION_WELDER)
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils don't react to the light!</span>\n"//mob is dead
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils don't react to the light!</span><br>"//mob is dead
 		else if(brain.damage > 20)
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils contract unevenly!</span>\n"//mob has sustained damage to their brain
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils contract unevenly!</span><br>"//mob has sustained damage to their brain
 		else
-			. += "<span class='notice ml-1'>[M.p_Their()] pupils narrow.</span>\n"//they're okay :D
+			. += "<span class='notice ml-1'>[M.p_Their()] pupils narrow.</span><br>"//they're okay :D
 
 		if(M.dna && M.dna.check_mutation(/datum/mutation/human/xray))
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils give an eerie glow!</span>\n"//mob has X-ray vision
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils give an eerie glow!</span><br>"//mob has X-ray vision
 
 	return .
 
@@ -175,7 +180,7 @@
 			organ_list += (O.gender == "plural" ? O.name : "\an [O.name]")
 
 	var/pill_count = 0
-	for(var/datum/action/item_action/hands_free/activate_pill/AP in M.actions)
+	for(var/datum/action/item_action/activate_pill/AP in M.actions)
 		pill_count++
 
 	if(M == user)//if we're looking on our own mouth
@@ -274,7 +279,7 @@
 
 	if(length(render_list))
 		//display our packaged information in an examine block for easy reading
-		to_chat(user, examine_block(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
+		to_chat(user, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
@@ -956,6 +961,7 @@
 /obj/item/flashlight/eyelight
 	name = "eyelight"
 	desc = "This shouldn't exist outside of someone's head, how are you seeing this?"
+	spawn_blacklisted = TRUE
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = DROPDEL
 	actions_types = list()

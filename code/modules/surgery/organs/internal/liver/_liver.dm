@@ -64,6 +64,7 @@
 /obj/item/organ/liver/on_mob_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_SPECIES_HANDLE_CHEMICAL, PROC_REF(handle_chemical))
+	RegisterSignal(owner, COMSIG_ATOM_EXAMINE, PROC_REF(on_owner_examine))
 
 /// Unregisters COMSIG_SPECIES_HANDLE_CHEMICAL from owner
 /obj/item/organ/liver/on_mob_remove(mob/living/carbon/organ_owner, special)
@@ -222,7 +223,8 @@
 			if(SPT_PROB(3, seconds_per_tick))
 				owner.emote("drool")
 
-/obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
+/obj/item/organ/liver/proc/on_owner_examine(datum/source, mob/user, list/examine_list)
+	SIGNAL_HANDLER
 	if(!ishuman(owner) || !(organ_flags & ORGAN_FAILING))
 		return
 
@@ -240,12 +242,12 @@
 /obj/item/organ/liver/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantliver
 
-/obj/item/organ/liver/feel_for_damage(self_aware)
+/obj/item/organ/liver/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return
 	if(damage < high_threshold)
-		return span_warning("Your [self_aware ? "liver" : "lower abdomen"] feels sore.")
-	return span_boldwarning("Your [self_aware ? "liver" : "lower abdomen"] feels like it's on fire!")
+		return span_warning("Your [(self_aware || medical_skill >= SKILL_LEVEL_JOURNEYMAN) ? "liver" : "lower abdomen"] feels sore.")
+	return span_boldwarning("Your [(self_aware || medical_skill >= SKILL_LEVEL_JOURNEYMAN) ? "liver" : "lower abdomen"] feels like it's on fire!")
 
 // alien livers can ignore up to 15u of toxins, but they take x3 liver damage
 /obj/item/organ/liver/alien

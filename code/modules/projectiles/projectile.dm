@@ -6,6 +6,7 @@
 	name = "projectile"
 	icon = 'icons/obj/weapons/guns/projectiles.dmi'
 	icon_state = "bullet"
+	abstract_type = /obj/projectile
 	density = FALSE
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -314,7 +315,7 @@
 	if(blocked != 100) // not completely blocked
 		var/obj/item/bodypart/hit_bodypart = living_target.get_bodypart(def_zone)
 		if (damage && damage_type == BRUTE)
-			if (living_target.get_blood_type() && (isnull(hit_bodypart) || hit_bodypart.can_bleed()))
+			if (hit_bodypart?.can_bleed())
 				living_target.do_splatter_effect(dir) // NON-MODULE CHANGE
 				if(prob(33))
 					living_target.add_splatter_floor(target_turf)
@@ -471,12 +472,16 @@
 	if(!HAS_TRAIT(src, TRAIT_ALWAYS_HIT_ZONE) && isliving(A))
 		var/mob/living/who_is_shot = A
 		var/distance = decayedRange - range
+		// Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
 		var/hit_prob = max(100 - (7 * distance), 5)
 		if(who_is_shot.body_position == LYING_DOWN)
 			hit_prob *= 1.2
+		// if nothing bothered to set a zone we need a random one
+		if(isnull(def_zone))
+			def_zone = who_is_shot.get_random_valid_zone(BODY_ZONE_CHEST, min(80, hit_prob))
 		// melbert todo : make people more skilled with weapons have a lower miss chance
 		if(!prob(hit_prob))
-			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0) // Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0)
 			grazing = !prob(hit_prob) // jeez you missed twice? that's a graze
 			var/datum/embed_data/data = get_embed()
 			if(data?.embed_chance > 10)
@@ -486,7 +491,6 @@
 			if(grazing)
 				wound_bonus = CANT_WOUND
 				bare_wound_bonus = CANT_WOUND
-
 	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
 
 /**
@@ -1140,7 +1144,7 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
-	if(damage > 0 || stamina > 0)
+	if(damage > 0 || stamina > 0 || pain > 0)
 		return TRUE
 
 	if(paralyze + stun + immobilize + knockdown > 0 SECONDS)

@@ -1,6 +1,7 @@
 /obj/item/clothing/neck
 	name = "necklace"
 	icon = 'icons/obj/clothing/neck.dmi'
+	abstract_type = /obj/item/clothing/neck
 	body_parts_covered = NECK
 	slot_flags = ITEM_SLOT_NECK
 	interaction_flags_click = NEED_DEXTERITY
@@ -218,7 +219,7 @@
 
 /obj/item/clothing/neck/robe_cape/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/surgery_initiator)
+	AddElement(/datum/element/surgery_aid, "cape")
 
 /obj/item/clothing/neck/tie/disco
 	name = "horrific necktie"
@@ -307,7 +308,7 @@
 
 			//assess heart
 			if(body_part == BODY_ZONE_CHEST)//if we're listening to the chest
-				var/heart_rate = carbon_patient.get_heart_rate()
+				var/heart_rate = carbon_patient.get_bpm()
 				switch(heart_rate)
 					if(0)
 						render_list += "<span class='danger ml-1'>You don't hear a heartbeat!</span>\n"
@@ -379,7 +380,7 @@
 				render_list += "<span class='notice ml-1'>[M.p_Their()] pulse is [pulse_pressure] and [heart_strength].</span>\n"
 
 	//display our packaged information in an examine block for easy reading
-	to_chat(user, examine_block(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
+	to_chat(user, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 
 ///////////
 //SCARVES//

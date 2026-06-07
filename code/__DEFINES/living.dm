@@ -19,6 +19,8 @@
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack is applied to a mob. (source = obj/item/temperature_pack)
+#define COMISG_TEMPERATURE_PACK_ENABLED "temperature_pack_enabled"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
@@ -42,6 +44,23 @@
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
+/// Send when sharing body temperature to breath
+#define COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE "human_on_handle_breath_temperature"
+	/// Stops further processing
+	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
+
+#define COMSIG_CARBON_HEARTBEAT "carbon_heartbeat"
+	#define HEARTBEAT_HANDLED (1<<0)
+
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -53,7 +72,7 @@
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan")
 
 /// Amount of pain gained (to chest) from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 90
+#define PAIN_LIMB_DISMEMBERED 120
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
@@ -103,11 +122,21 @@
 #define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
 /// Doesn't let a mob shift this atom around with move_pulled
 #define TRAIT_NO_MOVE_PULL "no_move_pull"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
-/// Boosts the heart rate of the mob
+/// Boosts the heart rate of the mob (raises blood pressure)
+/// One application of the trait translates to +10 bpm, which may translate to +10 blood pressure
 #define TRAIT_HEART_RATE_BOOST "heart_rate_boost"
-/// Slows the heart rate of the mob
+/// Slows the heart rate of the mob (lowers blood pressure)
+/// One application of the trait translates to -10 bpm, which may translate to -10 blood pressure
 #define TRAIT_HEART_RATE_SLOW "heart_rate_slow"
+/// Constricts blood vessels (raises blood pressure)
+/// One application of the trait translates to +0.2 "vasoconstriction", which is a +0.2 multiplier to blood pressure
+#define TRAIT_VASOCONSTRICTED "vasoconstricted"
+/// Dilates blood vessels (lowers blood pressure)
+/// One application of the trait translates to -0.2 "vasodilation", which is a -0.2 multiplier to blood pressure
+#define TRAIT_VASODILATED "vasodilated"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
@@ -117,17 +146,19 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Eyelids are closed so long as this trait is present
+#define TRAIT_CLOSED_EYES "closed_eyes"
+
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
+
 #define COLOR_BLOOD "#c90000"
 
-/// Checks if the value is "left"
-/// Used primarily for hand or foot indexes
-#define IS_RIGHT(value) (value % 2 == 0)
-/// Checks if the value is "right"
-/// Used primarily for hand or foot indexes
-#define IS_LEFT(value) (value % 2 != 0)
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEX(value) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey
@@ -139,6 +170,11 @@
 
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
+
+// Frozen item temperature pack defaults
+#define FROZEN_ITEM_PAIN_RATE 0.1 // so cold that it barely heals
+#define FROZEN_ITEM_PAIN_MODIFIER 0.25
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -2 KELVIN
 
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)
@@ -171,9 +207,9 @@
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
 /// Threshold that heart beat becomes "slow"
-#define SLOW_HEARTBEAT_THRESHOLD 6
+#define SLOW_HEARTBEAT_THRESHOLD 60
 /// Threshold that heart beat becomes "fast"
-#define FAST_HEARTBEAT_THRESHOLD 11
+#define FAST_HEARTBEAT_THRESHOLD 110
 
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"
@@ -214,3 +250,20 @@
 
 /// When a bodypart has something embedded in it
 #define COMSIG_BODYPART_ON_EMBEDDED "bodypart_on_embedded"
+
+// Smell intensities
+/// Very faint - Often low enough to not noticed, but if noticed, people get used to it quickly
+#define SMELL_INTENSITY_FAINT 1
+/// Will be noticed for a short time but eventually people get used to it
+#define SMELL_INTENSITY_WEAK 6
+/// Noticable, will take a while to get used to
+#define SMELL_INTENSITY_MODERATE 12
+/// Very strong, hard to ignore, very unlikely to get used to
+#define SMELL_INTENSITY_STRONG 24
+/// Overpowers all other smells, extremely hard to ignore
+#define SMELL_INTENSITY_OVERPOWERING 48
+
+/// Damtype is "physical" like a slap to the face
+#define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
+/// Damtype is intended to disable rather than kill
+#define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)

@@ -2,6 +2,7 @@
 	name = "generic drug"
 	desc = "I am error"
 	icon = 'icons/obj/medical/drugs.dmi'
+	abstract_type = /obj/item/food/drug
 	foodtypes = GROSS
 	food_flags = FOOD_FINGER_FOOD
 	max_volume = 50
@@ -39,6 +40,8 @@
 	reagent_flags = TRANSPARENT
 	spillable = FALSE
 	list_reagents = list(/datum/reagent/drug/blastoff = 10)
+	reagent_consumption_method = INHALE
+	consumption_sound = 'sound/effects/spray2.ogg'
 
 /obj/item/reagent_containers/cup/blastoff_ampoule/update_icon_state()
 	. = ..()

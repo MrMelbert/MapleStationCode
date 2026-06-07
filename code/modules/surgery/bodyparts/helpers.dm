@@ -80,6 +80,9 @@
 /mob/living/carbon/alien/larva/has_right_hand(check_disabled = TRUE)
 	return TRUE
 
+/// Returns the bodypart holding the passed item
+/mob/living/carbon/proc/get_hand_of_item(obj/item/I)
+	return get_bodypart(get_hand_zone_of_item(I))
 
 /mob/living/carbon/proc/get_missing_limbs()
 	RETURN_TYPE(/list)
@@ -189,6 +192,16 @@
 		all_limb_flags |= limb.bodyshape
 
 	bodyshape = all_limb_flags
+
+/// Get all bodyshapes but filter out bodyshapes that are currently being hidden
+/mob/living/carbon/proc/get_active_bodyshapes()
+	var/active_shapes = bodyshape
+	// future todo: both of these are state based, maybe we can just remove relevant bodyshapes directly. would remove the need for this proc
+	if((active_shapes & BODYSHAPE_DIGITIGRADE) && is_digitigrade_squished())
+		active_shapes &= ~BODYSHAPE_DIGITIGRADE
+	if((active_shapes & BODYSHAPE_SNOUTED) && (obscured_slots & HIDESNOUT))
+		active_shapes &= ~BODYSHAPE_SNOUTED
+	return active_shapes
 
 /proc/skintone2hex(skin_tone)
 	. = 0

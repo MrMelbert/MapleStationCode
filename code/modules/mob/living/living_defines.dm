@@ -1,5 +1,6 @@
 /mob/living
 	see_invisible = SEE_INVISIBLE_LIVING
+	abstract_type = /mob/living
 	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
 	pressure_resistance = 10
 	hud_type = /datum/hud/living
@@ -107,9 +108,7 @@
 	/// Lazylist of all typepaths of personalities the mob has.
 	var/list/personalities
 
-	///a list of surgery datums. generally empty, they're added when the player wants them.
-	var/list/surgeries = list()
-	/// Lazylist of surgery speed modifiers
+	/// Lazylist of surgery speed modifiers - id to number - 2 = 2x faster, 0.5x = 0.5x slower
 	var/list/mob_surgery_speed_mods
 
 	/// Used by [living/Bump()][/mob/living/proc/Bump] and [living/PushAM()][/mob/living/proc/PushAM] to prevent potential infinite loop.
@@ -178,8 +177,16 @@
 	///effectiveness prob. is modified negatively by this amount; positive numbers make it more difficult, negative ones make it easier
 	var/butcher_difficulty = 0
 
-	///how much blood the mob has
+	/// How much blood the mob has.
+	/// If initially 0, the mob gains TRAIT_NOBLOOD permanently.
 	var/blood_volume = 0
+	/// What blood type do we set on init.
+	/// This can be set even on mobs that don't mechanically have blood,
+	/// allowing them to create blood decals to sell the illusion of them really having blood.
+	var/initial_blood_type = null
+	/// Blood type singleton this mob currently has.
+	/// If null, the mob doesn't have blood.
+	VAR_FINAL/datum/blood_type/blood_type = null
 
 	///a list of all status effects the mob has
 	var/list/status_effects
@@ -280,3 +287,8 @@
 	/// First element is the current martial art - any other elements are "saved" for if they unlearn the first one
 	/// Reference handling is done by the martial arts themselves
 	var/list/datum/martial_art/martial_arts
+
+	/// List of smell datums we smelled recently, we get accustomed to it over time
+	VAR_FINAL/list/recently_smelled
+	/// Cooldown between smell attempts
+	COOLDOWN_DECLARE(smell_cd)

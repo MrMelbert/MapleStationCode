@@ -16,11 +16,59 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
+/obj/item/grabbing_hand/equipped(mob/user, slot, initial)
+	. = ..()
+	var/hand = user.get_held_index_of_item(src)
+	if(IS_RIGHT_INDEX(hand))
+		transform = transform.Scale(-1, 1)
+	RegisterSignal(user, COMSIG_MOVABLE_SET_GRAB_STATE, PROC_REF(update_state_color), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_PINNING_MOB, PROC_REF(rotate_grab), TRUE)
+	RegisterSignal(user, COMSIG_MOVABLE_UNPINNING_MOB, PROC_REF(unrotate_grab), TRUE)
+
+/obj/item/grabbing_hand/dropped(mob/user, silent)
+	. = ..()
+	UnregisterSignal(user, list(
+		COMSIG_MOVABLE_SET_GRAB_STATE,
+		COMSIG_MOVABLE_PINNING_MOB,
+		COMSIG_MOVABLE_UNPINNING_MOB,
+	))
+
+/obj/item/grabbing_hand/proc/update_state_color(mob/source, new_state)
+	SIGNAL_HANDLER
+	switch(new_state)
+		if(GRAB_PASSIVE)
+			color = COLOR_WHITE
+		if(GRAB_AGGRESSIVE)
+			color = COLOR_SOFT_RED
+		if(GRAB_NECK)
+			color = COLOR_RED
+		if(GRAB_KILL)
+			color = COLOR_DARK_RED
+
+/obj/item/grabbing_hand/proc/rotate_grab(mob/source, mob/living/being_pinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? -90 : 90)
+
+/obj/item/grabbing_hand/proc/unrotate_grab(mob/source, mob/living/being_unpinned)
+	SIGNAL_HANDLER
+	var/hand = source.get_held_index_of_item(src)
+	transform = transform.Turn(IS_RIGHT_INDEX(hand) ? 90 : -90)
+
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
 
 /obj/item/grabbing_hand/attack_self(mob/user, modifiers)
 	return user.start_pulling(user.pulling)
+
+/// Returns what direction we look when we're lying down.
+/// If we're not lying down, returns own dir
+/mob/living/proc/get_lying_dir()
+	if(lying_angle == LYING_ANGLE_WEST)
+		return WEST
+	if(lying_angle == LYING_ANGLE_EAST)
+		return EAST
+	return dir
 
 /// Status effect applied to someone grabbing something
 /datum/status_effect/grabbing
@@ -389,6 +437,12 @@
 	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, LINK_SOURCE(id)))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
 		return
+	owner.Knockdown(3 SECONDS)
+	if(grabbing_us.loc != owner.loc)
+		grabbing_us.Move(owner.loc)
+		if(grabbing_us.loc != owner.loc)
+			to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
+			return
 
 	owner.visible_message(
 		span_danger("[grabbing_us] pins [owner] to the ground!"),
@@ -408,9 +462,10 @@
 	ADD_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	owner.Paralyze(2 SECONDS)
 	owner.setDir(SOUTH)
-	grabbing_us.Move(owner.loc)
-	grabbing_us.setDir(UNLINT(owner.lying_angle) == 270 ? WEST : EAST) // melbert todo
+	grabbing_us.setDir(owner.get_lying_dir()) // face the same way the person is lying
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(start_dragging))
+	SEND_SIGNAL(owner, COMSIG_LIVING_PINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_PINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/pin_check()
 	return !QDELETED(src) && !QDELETED(grabbing_us) && !pin && grabbing_us.grab_state >= GRAB_AGGRESSIVE
@@ -456,6 +511,8 @@
 	REMOVE_TRAIT(owner, TRAIT_FLOORED, PIN_SOURCE(id))
 	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, PIN_SOURCE(id))
 	UnregisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE)
+	SEND_SIGNAL(owner, COMSIG_LIVING_UNPINNED_BY, grabbing_us)
+	SEND_SIGNAL(grabbing_us, COMSIG_MOVABLE_UNPINNING_MOB, owner)
 
 /datum/status_effect/grabbed/proc/update_state(datum/source, new_state)
 	SIGNAL_HANDLER
@@ -577,12 +634,6 @@
 #undef CRIT_SOURCE
 #undef PIN_SOURCE
 
-#define IS_VULNERABLE(mob) (\
-	mob.incapacitated(IGNORE_GRAB|IGNORE_STASIS) \
-	|| mob.body_position == LYING_DOWN \
-	|| (mob.has_status_effect(/datum/status_effect/staggered) && mob.getStaminaLoss() >= 30) \
-)
-
 /**
  * Checks how strong our grabs are.
  *
@@ -590,7 +641,9 @@
  * somewhere in the range of 0-10 for a normal human.
  */
 /atom/movable/proc/get_grab_strength()
+	// resist strength and grab strength overlap in plenty of ways so we will re-use it for our base
 	. = get_grab_resist_strength()
+	// strength adds a bonus on top of resist strength (stacking with the strengh bonus already factored in to resistance)
 	if(HAS_TRAIT(src, TRAIT_STRENGTH))
 		. += 1
 
@@ -629,27 +682,40 @@
 	return 5
 
 /mob/living/get_grab_resist_strength()
+	// base resistance is base on size
 	. += mob_size * 2
+	// athletics skill can give a decent boost
 	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 2), -1, 3)
+	// monkey wrangling buff
 	if(ismonkey(src))
 		. -= 1
+	// dead people are not actively resisting, though this is not an absurdly high nubmer like -20
+	// because grabbing a corpse should still be cumbersome and unwieldy
 	if(stat == DEAD)
 		. -= 4
-	else if(IS_VULNERABLE(src))
+	// otherwise being in soft crit or incapacitated means you can't fight back well
+	else if(HAS_TRAIT(src, TRAIT_SOFT_CRIT) || incapacitated(IGNORE_GRAB|IGNORE_STASIS))
 		. -= 2
-	if(HAS_TRAIT(src, TRAIT_STRENGTH))
-		. += 1
+	// lying down or staggered represents a vulnerable position which has you disadvanteged
+	if(body_position == LYING_DOWN || (has_status_effect(/datum/status_effect/staggered) && getStaminaLoss() >= 30))
+		. -= 2
+	// generic grab weakness such as from quirks
 	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		. -= 2
-	// these two are not
+	// grabs you grabs you grabs you
 	if(HAS_TRAIT(src, TRAIT_SMALL))
 		. -= 2
+
+	// generic buff
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
+	// hulks are the pinnacle of strength
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		. += 3
+	// being large also helps considerably
+	// mutually exclusive with hulk as hulk's strength can be interpreted as coming from size
 	else if(HAS_TRAIT(src, TRAIT_GIANT) || HAS_TRAIT(src, TRAIT_HUGE))
 		. += 2
-
-#undef IS_VULNERABLE
 
 /**
  * When given a base climb speed, modifies it based on how good a climber we are.

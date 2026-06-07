@@ -59,7 +59,7 @@
 
 			exposed_mob.ForceContractDisease(strain)
 
-		else if((methods & VAPOR) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
+		else if((methods & (VAPOR|INHALE)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
 			if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_LUNGS))
 				continue
 
@@ -68,13 +68,13 @@
 		else if((methods & TOUCH) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
 			exposed_mob.ContactContractDisease(strain)
 
-	if(length(data?["resistances"]) && (methods & (INGEST|INJECT)))
+	if(length(data?["resistances"]) && (methods & (INGEST|INJECT|INHALE)))
 		for(var/datum/disease/infection as anything in exposed_mob.diseases)
 			if(infection.GetDiseaseID() in data["resistances"])
 				if(!infection.bypasses_immunity)
 					infection.cure(add_resistance = FALSE)
 
-	var/datum/blood_type/blood = exposed_mob.get_blood_type()
+	var/datum/blood_type/blood = exposed_mob.blood_type
 	if(blood?.reagent_type == type && ((methods & INJECT) || ((methods & INGEST) && HAS_TRAIT(exposed_mob, TRAIT_DRINKS_BLOOD))))
 		if(data["blood_type"] in blood.compatible_types)
 			exposed_mob.blood_volume = min(exposed_mob.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)
@@ -595,6 +595,7 @@
 		return
 	if(reac_volume >= 1)
 		exposed_turf.MakeSlippery(lube_kind, 15 SECONDS, min(reac_volume * 2 SECONDS, 120))
+		new /obj/effect/abstract/smell/reagent/lube(exposed_turf)
 
 /datum/reagent/lube/used_on_fish(obj/item/fish/fish)
 	ADD_TRAIT(fish, TRAIT_FISH_FED_LUBE, type) //required for the lubefish mutation
@@ -1014,7 +1015,7 @@
 /datum/reagent/potassium
 	name = "Potassium"
 	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water. \
-		Often used medicinally to treat low blood pressure, but can be dangerous in high doses."
+		Often used medicinally to treat high blood pressure, but can be dangerous in high doses."
 	reagent_state = SOLID
 	color = "#A0A0A0" // rgb: 160, 160, 160
 	taste_description = "sweetness"
@@ -1023,14 +1024,14 @@
 /datum/reagent/potassium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(volume > 10)
-		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
 	if(volume > 20)
-		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/potassium/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/mercury
 	name = "Mercury"
@@ -1173,12 +1174,13 @@
 	taste_description = "bitterness"
 	ph = 10.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_AFFECTS_WOUNDS
+	smell_type = /obj/effect/abstract/smell/reagent/disinfectant
 
 /datum/reagent/space_cleaner/sterilizine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR|PATCH)))
 		return
-	exposed_mob.add_timed_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
+	exposed_mob.add_surgery_speed_mod(type, 0.8, min(reac_volume * 1 MINUTES, 5 MINUTES))
 
 /datum/reagent/space_cleaner/sterilizine/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.9
@@ -1314,7 +1316,7 @@
 	burning_temperature = 1725 //more refined than oil
 	burning_volume = 0.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/alcohol = 4)
+	addiction_types = list(/datum/addiction/alcohol = 300)
 
 /datum/glass_style/drinking_glass/fuel
 	required_drink_type = /datum/reagent/fuel
@@ -1352,16 +1354,20 @@
 	taste_description = "sourness"
 	reagent_weight = 0.6 //so it sprays further
 	penetrates_skin = VAPOR
-	var/clean_types = CLEAN_WASH
 	ph = 5.5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED|REAGENT_CLEANS|REAGENT_AFFECTS_WOUNDS
 
+	var/clean_types = CLEAN_WASH
+	/// What type of smell to produce when exposed
+	var/obj/effect/abstract/smell/smell_type = /obj/effect/abstract/smell/reagent/cleaning_chemicals
+
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
-	exposed_obj?.wash(clean_types)
+	exposed_obj.wash(clean_types)
 
 /datum/reagent/space_cleaner/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
+	new smell_type(exposed_turf, reac_volume)
 	if(reac_volume < 1)
 		return
 
@@ -1377,8 +1383,12 @@
 
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
-	if(methods & (TOUCH|VAPOR))
-		exposed_mob.wash(clean_types)
+	if(!(methods & (TOUCH|VAPOR)))
+		return
+	exposed_mob.wash(clean_types)
+	if(QDELETED(exposed_mob))
+		return
+	new smell_type(exposed_mob, reac_volume)
 
 /datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	burn_wound.sanitization += 0.3
@@ -1449,7 +1459,7 @@
 	taste_description = "numbness"
 	ph = 9.1
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 10)
+	addiction_types = list(/datum/addiction/opioids = 120)
 
 /datum/reagent/impedrezene/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1471,7 +1481,7 @@
 
 /datum/reagent/cyborg_mutation_nanomachines/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/robot(), FALSE, TRUE)
 
 /datum/reagent/xenomicrobes
@@ -1483,7 +1493,7 @@
 
 /datum/reagent/xenomicrobes/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/transformation/xeno(), FALSE, TRUE)
 
 /datum/reagent/fungalspores
@@ -1496,7 +1506,7 @@
 
 /datum/reagent/fungalspores/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/snail
@@ -1509,7 +1519,7 @@
 
 /datum/reagent/snail/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new /datum/disease/gastrolosis(), FALSE, TRUE)
 
 /datum/reagent/fluorosurfactant//foam precursor
@@ -1606,10 +1616,13 @@
 
 /datum/reagent/nitrous_oxide/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
-	if(methods & VAPOR)
+	if(methods & (VAPOR|INHALE))
 		// apply 2 seconds of drowsiness per unit applied, with a min duration of 4 seconds
 		var/drowsiness_to_apply = max(round(reac_volume, 1) * 2 SECONDS, 4 SECONDS)
 		exposed_mob.adjust_drowsiness(drowsiness_to_apply)
+	if(methods & INHALE)
+		exposed_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25 * reac_volume, required_organ_flag = affected_organ_flags)
+		exposed_mob.adjust_hallucinations(10 SECONDS * reac_volume)
 
 /datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
@@ -2645,7 +2658,7 @@
 
 /datum/reagent/gondola_mutation_toxin/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
-	if((methods & (PATCH|INGEST|INJECT)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if((methods & (PATCH|INGEST|INJECT|INHALE)) || ((methods & VAPOR) && prob(min(reac_volume,100)*(1 - touch_protection))))
 		exposed_mob.ForceContractDisease(new gondola_disease, FALSE, TRUE)
 
 
@@ -2971,7 +2984,7 @@
 	taste_description = "bitterness"
 	color = "#228f63"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 5)
+	addiction_types = list(/datum/addiction/stimulants = 120)
 
 /datum/reagent/kronkus_extract/on_mob_life(mob/living/carbon/kronkus_enjoyer)
 	. = ..()

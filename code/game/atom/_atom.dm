@@ -5,6 +5,7 @@
  * as much as possible to the components/elements system
  */
 /atom
+	abstract_type = /atom
 	layer = TURF_LAYER
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
@@ -140,6 +141,9 @@
 	var/interaction_flags_click = NONE
 	/// Flags to check for in can_perform_action for mouse drag & drop checks. To bypass checks see interaction_flags_atom mouse drop flags
 	var/interaction_flags_mouse_drop = NONE
+
+	/// Generally for niche objects, atoms blacklisted can spawn if enabled by spawner.
+	var/spawn_blacklisted = FALSE
 
 /**
  * Top level of the destroy chain for most atoms
@@ -503,19 +507,20 @@
 
 ///returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
-	var/datum/blood_type/blood = get_blood_type()
-	if(!isnull(blood))
-		return list("UNKNOWN DNA" = blood.type_key())
-	return null
+	if(!has_blood())
+		return null
+	return list("UNKNOWN DNA" = blood_type.type_key())
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
-	if(isnull(dna)) // Xenos
+	if(isnull(dna)) // ???
 		return ..()
-	var/datum/blood_type/blood = get_blood_type()
-	if(isnull(blood)) // Skeletons?
+	if(!has_blood())
 		return null
-	return list("[dna.unique_enzymes]" = blood.type_key())
+	return list("[dna.unique_enzymes]" = blood_type.type_key())
+
+/mob/living/carbon/alien/get_blood_dna_list()
+	return list("UNKNOWN ALIEN DNA" = blood_type.type_key())
 
 // NON-MODULE CHANGE END
 
@@ -686,8 +691,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_ATOM_CREATEDBY_PROCESSING, original_atom, chosen_option)
-	if(user.mind)
-		ADD_TRAIT(src, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	handle_chef_made_food(src, original_atom, user.mind)
 
 ///Connect this atom to a shuttle
 /atom/proc/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)

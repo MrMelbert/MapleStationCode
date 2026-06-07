@@ -13,6 +13,12 @@
 	if(trippy)
 		affected_mob.clear_mood_event("[type]_high")
 	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, type)
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_overdose")
+
+/datum/reagent/drug/overdose_start(mob/living/affected_mob)
+	. = ..()
+	affected_mob.add_mood_event("[type]_overdose", /datum/mood_event/overdose, name)
+	ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_overdose")
 
 /datum/reagent/drug/space_drugs
 	name = "Space Drugs"
@@ -21,7 +27,7 @@
 	overdose_threshold = 30
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 10) //4 per 2 seconds
+	addiction_types = list(/datum/addiction/hallucinogens = 60)
 	pain_modifier = 0.8
 
 /datum/reagent/drug/space_drugs/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -35,7 +41,6 @@
 /datum/reagent/drug/space_drugs/overdose_start(mob/living/affected_mob)
 	. = ..()
 	to_chat(affected_mob, span_userdanger("You start tripping hard!"))
-	affected_mob.add_mood_event("[type]_overdose", /datum/mood_event/overdose, name)
 
 /datum/reagent/drug/space_drugs/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -80,7 +85,7 @@
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	ph = 8
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/nicotine = 15) // 6 per 2 seconds
+	addiction_types = list(/datum/addiction/nicotine = 10)
 
 	//Nicotine is used as a pesticide IRL.
 /datum/reagent/drug/nicotine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
@@ -125,15 +130,14 @@
 	overdose_threshold = 20
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 18) //7.2 per 2 seconds
-
+	addiction_types = list(/datum/addiction/opioids = 30)
 
 /datum/reagent/drug/krokodil/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(SPT_PROB(2.5, seconds_per_tick))
 		to_chat(affected_mob, span_notice("[high_message]"))
-	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy)
+	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic/heavy)
 	if(current_cycle == 36 && creation_purity <= 0.6)
 		if(!istype(affected_mob.dna.species, /datum/species/human/krokodil_addict))
 			to_chat(affected_mob, span_userdanger("Your skin falls off easily!"))
@@ -161,7 +165,8 @@
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	ph = 5
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 12) //4.8 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 75)
+	// metabolized_traits = list(TRAIT_STIMULATED)
 	pain_modifier = 0.8
 
 /datum/reagent/drug/methamphetamine/on_new(data)
@@ -230,15 +235,15 @@
 	color = "#FAFAFA"
 	overdose_threshold = 20
 	taste_description = "salt" // because they're bathsalts?
-	addiction_types = list(/datum/addiction/stimulants = 25)  //8 per 2 seconds
-	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
+	addiction_types = list(/datum/addiction/stimulants = 25)
 	ph = 8.2
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	pain_modifier = 0.5
+	metabolized_traits = list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE)
+	var/datum/brain_trauma/special/psychotic_brawling/bath_salts/rage
 
 /datum/reagent/drug/bath_salts/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	affected_mob.add_traits(list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE), type)
 	if(iscarbon(affected_mob))
 		var/mob/living/carbon/carbon_mob = affected_mob
 		rage = new()
@@ -246,9 +251,7 @@
 
 /datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
-	affected_mob.remove_traits(list(TRAIT_STUNIMMUNE, TRAIT_SLEEPIMMUNE), type)
-	if(rage)
-		QDEL_NULL(rage)
+	QDEL_NULL(rage)
 
 /datum/reagent/drug/bath_salts/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -283,8 +286,9 @@
 	reagent_state = LIQUID
 	color = "#78FFF0"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 8)
+	addiction_types = list(/datum/addiction/stimulants = 75)
 	pain_modifier = 0.66
+	// metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/aranesp/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -308,16 +312,17 @@
 	overdose_threshold = 20
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	taste_description = "paint thinner"
-	addiction_types = list(/datum/addiction/hallucinogens = 18)
+	// inverse_chem_val = 0.4
+	// inverse_chem = /datum/reagent/inverse/happiness
+	addiction_types = list(/datum/addiction/hallucinogens = 30)
+	metabolized_traits = list(TRAIT_FEARLESS)
 
 /datum/reagent/drug/happiness/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_FEARLESS, type)
 	affected_mob.add_mood_event("happiness_drug", /datum/mood_event/happiness_drug)
 
 /datum/reagent/drug/happiness/on_mob_delete(mob/living/affected_mob)
 	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_FEARLESS, type)
 	affected_mob.clear_mood_event("happiness_drug")
 
 /datum/reagent/drug/happiness/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -353,19 +358,15 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 6) //2.6 per 2 seconds
+	addiction_types = list(/datum/addiction/stimulants = 400)
+	metabolized_traits = list(TRAIT_BATON_RESISTANCE/*, TRAIT_STIMULATED*/)
 
 /datum/reagent/drug/pumpup/on_mob_metabolize(mob/living/carbon/affected_mob)
 	. = ..()
-	ADD_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
 	var/obj/item/organ/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_MAINTENANCE_METABOLISM))
 		affected_mob.add_mood_event("maintenance_fun", /datum/mood_event/maintenance_high)
 		metabolization_rate *= 0.8
-
-/datum/reagent/drug/pumpup/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_BATON_RESISTANCE, type)
 
 /datum/reagent/drug/pumpup/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -422,7 +423,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 15
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 14)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 50)
 
 /datum/reagent/drug/maint/powder/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -450,20 +451,13 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	overdose_threshold = 25
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 8)
-
-/datum/reagent/drug/maint/sludge/on_mob_metabolize(mob/living/affected_mob)
-	. = ..()
-	ADD_TRAIT(affected_mob,TRAIT_HARDLY_WOUNDED,type)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 300)
+	metabolized_traits = list(TRAIT_HARDLY_WOUNDED)
 
 /datum/reagent/drug/maint/sludge/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(affected_mob.adjustToxLoss(0.5 * REM * seconds_per_tick, required_biotype = affected_biotype))
 		return UPDATE_MOB_HEALTH
-
-/datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/affected_mob)
-	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HARDLY_WOUNDED,type)
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -486,7 +480,7 @@
 	color = COLOR_BLACK
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 120)
 
 /datum/reagent/drug/maint/tar/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -515,7 +509,7 @@
 	ph = 11
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 12)
+	addiction_types = list(/datum/addiction/hallucinogens = 20)
 
 /datum/reagent/drug/mushroomhallucinogen/on_mob_life(mob/living/carbon/psychonaut, seconds_per_tick, times_fired)
 	. = ..()
@@ -598,7 +592,8 @@
 	ph = 5
 	overdose_threshold = 30
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 15)
+	addiction_types = list(/datum/addiction/hallucinogens = 40)
+	// metabolized_traits = list(TRAIT_STIMULATED)
 	///How many flips have we done so far?
 	var/flip_count = 0
 	///How many spin have we done so far?
@@ -724,7 +719,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	ph = 10
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/maintenance_drugs = 20)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 30)
 
 /datum/reagent/drug/saturnx/on_mob_life(mob/living/carbon/invisible_man, seconds_per_tick, times_fired)
 	. = ..()
@@ -777,7 +772,6 @@
 
 	invisible_man.add_traits(list(TRAIT_INVISIBLE_MAN, TRAIT_HIDE_EXTERNAL_ORGANS, TRAIT_NO_BLOOD_OVERLAY), type)
 
-	invisible_man.update_body()
 	invisible_man.remove_from_all_data_huds()
 	invisible_man.sound_environment_override = SOUND_ENVIROMENT_PHASED
 
@@ -789,7 +783,6 @@
 
 		to_chat(invisible_man, span_notice("As you sober up, opacity once again returns to your body meats."))
 
-	invisible_man.update_body()
 	invisible_man.sound_environment_override = NONE
 
 	if(!invisible_man.hud_used)
@@ -813,7 +806,7 @@
 	description = "A chemical extract originating from the Saturn-X compound, stabilized and safer for tactical use. After the recipe was discovered, it was planned to be put into mass production, but the program fell apart after its lead disappeared and was never seen again."
 	metabolization_rate = 0.15 * REAGENTS_METABOLISM
 	overdose_threshold = 50
-	addiction_types = list(/datum/addiction/maintenance_drugs = 35)
+	addiction_types = list(/datum/addiction/maintenance_drugs = 5)
 
 /datum/reagent/drug/kronkaine
 	name = "Kronkaine"
@@ -825,7 +818,8 @@
 	overdose_threshold = 20
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/stimulants = 20)
+	addiction_types = list(/datum/addiction/stimulants = 50)
+	// metabolized_traits = list(TRAIT_STIMULATED)
 
 /datum/reagent/drug/kronkaine/on_new(data)
 	. = ..()
@@ -914,7 +908,7 @@
 	ph = 7
 	overdose_threshold = 10
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/hallucinogens = 20)
+	addiction_types = list(/datum/addiction/hallucinogens = 50)
 	/// Track the active hallucination we're giving out so we don't replace it by accident
 	VAR_PRIVATE/datum/weakref/active_hallucination_weakref
 

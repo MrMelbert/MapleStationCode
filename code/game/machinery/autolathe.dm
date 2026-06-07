@@ -10,6 +10,7 @@
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
 	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
+	examine_feedback_on_ui = TRUE
 
 	///Is the autolathe hacked via wiring
 	var/hacked = FALSE
@@ -496,22 +497,12 @@
 			if(!wires.is_cut(wire))
 				disabled = FALSE
 
-/**
- * Shock a mob who is trying to interact with the autolathe
- * Arguments
- *
- * * mob/user - the mob we are trying to shock
- * * prb - the probability of getting shocked
- */
-/obj/machinery/autolathe/proc/shock(mob/user, prb)
+/obj/machinery/autolathe/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
 	if(machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock
 		return FALSE
-	if(!prob(prb))
-		return FALSE
-	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-	s.set_up(5, 1, src)
-	s.start()
-	return electrocute_mob(user, get_area(src), src, 0.7, TRUE)
+	if(isnull(siemens_coeff))
+		siemens_coeff = 0.7
+	return ..()
 
 /**
  * Is the autolathe hacked. Allowing us to acess hidden designs

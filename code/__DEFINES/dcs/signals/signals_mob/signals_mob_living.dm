@@ -12,6 +12,10 @@
 #define COMSIG_ORGAN_BEING_REPLACED "organ_being_replaced"
 /// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/old_owner, target_zone, obj/item/tool)
 #define COMSIG_ORGAN_SURGICALLY_REMOVED "organ_surgically_removed"
+/// Called when an organ gets surgically removed (mob/living/user, mob/living/carbon/new_owner, target_zone, obj/item/tool)
+#define COMSIG_ORGAN_SURGICALLY_INSERTED "organ_surgically_inserted"
+/// Called when an organ finishes inserting into a bodypart (obj/item/bodypart/limb, movement_flags)
+#define COMSIG_ORGAN_BODYPART_INSERTED "organ_bodypart_inserted"
 
 ///Called when movement intent is toggled.
 #define COMSIG_MOVE_INTENT_TOGGLED "move_intent_toggled"
@@ -312,3 +316,6 @@
 	#define COMPONENT_NO_LOOT_DROP (1<<0)
 /// From /datum/element/death_drops/on_death(mob/living/target, gibbed) : (list/loot, gibbed)
 #define COMSIG_LIVING_DROPPED_LOOT "living_dropped_loot"
+
+/// Sent to a mob when one of their bodypart's surgery state changes, OR sent from the basic_surgery_state holder when its surgery state changes (old_state, new_state, changed_states)
+#define COMSIG_LIVING_UPDATING_SURGERY_STATE "carbon_updating_surgery_state"

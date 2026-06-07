@@ -15,6 +15,7 @@
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
 	item_flags = SKIP_FANTASY_ON_SPAWN
+	abstract_type = /obj/item/stack
 	/// A list to all recipies this stack item can create.
 	var/list/datum/stack_recipe/recipes
 	/// What's the name of just 1 of this stack. You have a stack of leather, but one piece of leather
@@ -59,6 +60,8 @@
 	// They're here instead of /stack/medical
 	// because sticky tape can be used as a makeshift bandage or splint
 
+	/// Verb used when applying this object to someone
+	var/apply_verb = "applying"
 	/// If set and this used as a splint for a broken bone wound,
 	/// This is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_factor
@@ -754,7 +757,8 @@
 
 /obj/item/stack/update_name(updates)
 	. = ..()
-	maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
+	if(max_amount != 1)
+		maptext = (ismob(loc) || loc?.atom_storage) ? MAPTEXT("<font color='white'>[amount]</font>") : ""
 	if(!singular_name)
 		return
 	if(amount > 1)

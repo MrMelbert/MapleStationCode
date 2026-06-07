@@ -58,6 +58,8 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	var/cutting_tool = /obj/item/weldingtool
 	var/open_sound = 'sound/machines/closet_open.ogg'
 	var/close_sound = 'sound/machines/closet_close.ogg'
+	var/lock_sound = 'sound/machines/closet/closet_lock.ogg'
+	var/unlock_sound = 'sound/machines/closet/closet_unlock.ogg'
 	var/open_sound_volume = 35
 	var/close_sound_volume = 50
 	var/material_drop = /obj/item/stack/sheet/iron
@@ -514,7 +516,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	if(!before_open(user, force) || (SEND_SIGNAL(src, COMSIG_CLOSET_PRE_OPEN, user, force) & BLOCK_OPEN))
 		return FALSE
 	welded = FALSE
-	locked = FALSE
+	unlock()
 	if(special_effects)
 		playsound(loc, open_sound, open_sound_volume, TRUE, -3)
 	opened = TRUE
@@ -1078,7 +1080,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/bust_open()
 	SIGNAL_HANDLER
 	welded = FALSE //applies to all lockers
-	locked = FALSE //applies to critter crates and secure lockers only
+	unlock() //applies to critter crates and secure lockers only
 	broken = TRUE //applies to secure lockers only
 	open(force = TRUE, special_effects = FALSE)
 
@@ -1131,11 +1133,32 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 	if(iscarbon(user))
 		add_fingerprint(user)
 	locked = !locked
+	play_closet_lock_sound()
 	user.visible_message(
 		span_notice("[user] [locked ? "locks" : "unlocks"] [src]."),
 		span_notice("You [locked ? "locked" : "unlocked"] [src]."),
 	)
 	update_appearance()
+
+/// toggles the lock state of a closet
+/obj/structure/closet/proc/lock()
+	if(locked)
+		return
+	locked = TRUE
+	play_closet_lock_sound()
+	update_appearance()
+
+/// unlocks the closet
+/obj/structure/closet/proc/unlock()
+	if(!locked)
+		return
+	locked = FALSE
+	play_closet_lock_sound()
+	update_appearance()
+
+/// plays the closet's lock/unlock sound, this should be placed AFTER you've changed the lock state
+/obj/structure/closet/proc/play_closet_lock_sound()
+	playsound(src, locked ? lock_sound : unlock_sound, 50, TRUE)
 
 /obj/structure/closet/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(secure && !broken)
@@ -1214,7 +1237,7 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 /obj/structure/closet/proc/on_magic_unlock(datum/source, datum/action/cooldown/spell/aoe/knock/spell, atom/caster)
 	SIGNAL_HANDLER
 
-	locked = FALSE
+	INVOKE_ASYNC(src, PROC_REF(unlock))
 	INVOKE_ASYNC(src, PROC_REF(open))
 
 /obj/structure/closet/preopen

@@ -186,6 +186,7 @@
 	)
 	result = /obj/item/food/rootdough
 	category = CAT_LIZARD
+	crafting_flags = parent_type::crafting_flags & ~CRAFT_TRANSFERS_REAGENT_COMPONENTS // prevents water from reacting immediately, clearing the dish
 
 /datum/crafting_recipe/food/rootdough2
 	name = "Rootdough"
@@ -197,6 +198,7 @@
 	)
 	result = /obj/item/food/rootdough
 	category = CAT_LIZARD
+	crafting_flags = parent_type::crafting_flags & ~CRAFT_TRANSFERS_REAGENT_COMPONENTS // prevents water from reacting immediately, clearing the dish
 
 /datum/crafting_recipe/food/snail_nizaya
 	name = "Desert snail nizaya"

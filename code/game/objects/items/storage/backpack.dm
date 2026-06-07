@@ -286,6 +286,7 @@
 		/datum/component/bloody_spreader,\
 		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
+	add_smell(smell = "meat", intensity = SMELL_INTENSITY_STRONG, radius = 2)
 	atom_storage.storage_sound = 'sound/effects/blobattack.ogg'
 
 /*

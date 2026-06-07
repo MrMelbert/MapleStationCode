@@ -51,6 +51,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	head_flags = NONE
+	teeth_count = 0
 
 /obj/item/bodypart/chest/abductor
 	limb_id = SPECIES_ABDUCTOR
@@ -216,6 +217,7 @@
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
 	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN
+	teeth_count = 0
 
 /obj/item/bodypart/chest/pod
 	limb_id = SPECIES_PODPERSON
@@ -258,6 +260,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	teeth_count = 0
 
 /obj/item/bodypart/chest/fly
 	limb_id = SPECIES_FLYPERSON
@@ -375,6 +378,7 @@
 	is_dimorphic = TRUE
 	burn_modifier = 1.25
 	head_flags = NONE
+	teeth_count = 0
 
 /obj/item/bodypart/chest/mushroom
 	limb_id = SPECIES_MUSHROOM
@@ -444,6 +448,7 @@
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = null
 	head_flags = NONE
+	teeth_count = 0
 
 /obj/item/bodypart/head/golem/Initialize(mapload)
 	worn_ears_offset = new(

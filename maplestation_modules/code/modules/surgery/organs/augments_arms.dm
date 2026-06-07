@@ -188,7 +188,7 @@
 /obj/item/organ/cyberimp/arm/surgery
 	icon_state = "toolkit_surgical"
 
-/obj/item/organ/cyberimp/arm/muscle
+/obj/item/organ/cyberimp/arm/strongarm
 	icon_state = "muscle_implant"
 
 /obj/item/organ/cyberimp/arm/gun/taser

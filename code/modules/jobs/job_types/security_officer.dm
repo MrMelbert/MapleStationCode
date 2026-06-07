@@ -45,7 +45,15 @@
 		/obj/item/melee/baton/security/boomerang/loaded = 1
 	)
 	rpg_title = "Guard"
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
+
+	base_skills = list(
+		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/piloting = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/job/security_officer/get_titles(only_selectable = FALSE)
 	. = ..()

@@ -20,6 +20,9 @@
 			var/turf/T = D
 			T.ScrapeAway()
 		else
+			if(ismob(D))
+				var/mob/M = D
+				M.ghostize(FALSE)
 			vv_update_display(D, "deleted", VV_MSG_DELETED)
 			qdel(D)
 			if(!QDELETED(D))

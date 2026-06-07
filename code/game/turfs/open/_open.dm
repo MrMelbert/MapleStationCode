@@ -1,4 +1,5 @@
 /turf/open
+	abstract_type = /turf/open
 	plane = FLOOR_PLANE
 	///negative for faster, positive for slower
 	var/slowdown = 0
@@ -13,6 +14,8 @@
 	var/broken = FALSE
 	var/burnt = FALSE
 
+	/// Assoc list of smell datum to sum of intensities present on this turf
+	VAR_FINAL/list/collective_smells
 
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.

@@ -7,6 +7,7 @@
 	base_icon_state = "tdoppler"
 	density = TRUE
 	verb_say = "states coldly"
+	examine_feedback_on_ui = TRUE
 	var/cooldown = 10
 	var/next_announce = 0
 	var/max_dist = 150

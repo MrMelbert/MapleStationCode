@@ -234,11 +234,11 @@ GLOBAL_VAR(round_default_lawset)
 		return FALSE
 
 	// If the owner is an antag (has a special role) they also shouldn't be wiped
-	if(owner?.mind?.special_role)
+	if(owner?.is_antag())
 		return FALSE
 	if (isAI(owner))
 		var/mob/living/silicon/ai/ai_owner = owner
-		if(ai_owner.deployed_shell?.mind?.special_role)
+		if(ai_owner.deployed_shell?.is_antag())
 			return FALSE
 
 	zeroth = null
@@ -426,7 +426,7 @@ GLOBAL_VAR(round_default_lawset)
 
 /datum/ai_laws/proc/show_laws(mob/to_who)
 	var/list/printable_laws = get_law_list(include_zeroth = TRUE)
-	to_chat(to_who, examine_block(jointext(printable_laws, "\n")))
+	to_chat(to_who, boxed_message(jointext(printable_laws, "\n")))
 
 /datum/ai_laws/proc/associate(mob/living/silicon/M)
 	if(!owner)

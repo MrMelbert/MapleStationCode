@@ -42,7 +42,7 @@
 	if(organ_flags & ORGAN_FAILING)
 		return
 	adjustEarDamage(0, -0.5 * seconds_per_tick)
-	if((damage > low_threshold) && SPT_PROB(damage / 60, seconds_per_tick))
+	if((damage > low_threshold) && IS_ORGANIC_ORGAN(src) && SPT_PROB(damage / 60, seconds_per_tick))
 		adjustEarDamage(0, 4)
 		SEND_SOUND(owner, sound('sound/weapons/flash_ring.ogg'))
 
@@ -66,12 +66,12 @@
 		return
 	if(advanced)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, QUIRK_TRAIT))
-			return conditional_tooltip("Subject is permanently deaf.", "Irreparable under normal circumstances.", add_tooltips)
+			return conditional_tooltip(span_alert("Subject is permanently deaf."), "Irreparable under normal circumstances.", add_tooltips)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, GENETIC_MUTATION))
-			return conditional_tooltip("Subject is genetically deaf.", "Use medication such as [/datum/reagent/medicine/mutadone::name].", add_tooltips)
+			return conditional_tooltip(span_alert("Subject is genetically deaf."), "Use medication such as [/datum/reagent/medicine/mutadone::name].", add_tooltips)
 		if(HAS_TRAIT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
-			return conditional_tooltip("Subject is [(organ_flags & ORGAN_FAILING) ? "permanently": "temporarily"] deaf from ear damage.", "Repair surgically, use medication such as [/datum/reagent/medicine/inacusiate::name], or protect ears with earmuffs.", add_tooltips)
-	return "Subject is deaf."
+			return conditional_tooltip(span_alert("Subject is [(organ_flags & ORGAN_FAILING) ? "permanently": "temporarily"] deaf from ear damage."), "Repair surgically, use medication such as [/datum/reagent/medicine/inacusiate::name], or protect ears with earmuffs.", add_tooltips)
+	return span_alert("Subject is deaf.")
 
 /obj/item/organ/ears/show_on_condensed_scans()
 	// Always show if we have an appendix
@@ -148,7 +148,7 @@
 /obj/item/organ/ears/invincible
 	damage_multiplier = 0
 
-/obj/item/organ/ears/feel_for_damage(self_aware)
+/obj/item/organ/ears/feel_for_damage(self_aware, medical_skill)
 	// Ear damage has audible effects, so we don't really need to "feel" it when self-examining
 	return ""
 

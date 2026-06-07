@@ -18,7 +18,7 @@
 	var/datum/mind/targetmind = user.mind
 	if(targetmind)
 		for (var/type in GLOB.skill_types)
-			var/datum/skill/skill = GetSkillRef(type)
+			var/datum/skill/skill = SSskills.all_skills[type]
 			var/lvl_num = targetmind.get_skill_level(type)
 			var/lvl_name = uppertext(targetmind.get_skill_level_name(type))
 			var/exp = targetmind.get_skill_exp(type)
@@ -29,14 +29,17 @@
 
 			var/list/skilldata = list(
 				"name" = skill.name,
-				"desc" = skill.desc,
+				"blurb" = skill.blurb,
+				"earned_by" = skill.earned_by,
+				"grants_you" = skill.grants_you,
+				"higher_levels_grant_you" = skill.higher_levels_grant_you,
 				"title" = skill.title,
 				"lvl_name" = lvl_name
 			)
 			if (exp && xp_req_to_level)
 				skilldata["progress_percent"] = (xp_req_to_level-xp_prog_to_level)/xp_req_to_level
 				skilldata["overall_percent"] = exp / SKILL_EXP_LIST[length(SKILL_EXP_LIST)]
-			if (lvl_num >= length(SKILL_EXP_LIST) && !(type in targetmind.skills_rewarded))
+			if (lvl_num >= length(SKILL_EXP_LIST) && !(type in targetmind.skills_rewarded) && ispath(skill.skill_item_path))
 				skilldata["reward"] = TRUE
 			skills[++skills.len] = skilldata
 
@@ -44,7 +47,7 @@
 
 /datum/computer_file/program/skill_tracker/proc/find_skilltype(name)
 	for(var/type in GLOB.skill_types)
-		var/datum/skill/skill = GetSkillRef(type)
+		var/datum/skill/skill = SSskills.all_skills[type]
 		if(skill.name == name)
 			return type
 
@@ -56,7 +59,7 @@
 		if("PRG_reward")
 			var/skill_type = find_skilltype(params["skill"])
 			if(skill_type)
-				var/datum/skill/skill = GetSkillRef(skill_type)
+				var/datum/skill/skill = SSskills.all_skills[skill_type]
 				var/datum/mind/mind = ui.user.mind
 				var/new_level = mind.get_skill_level(skill_type)
 				skill.try_skill_reward(mind, new_level)

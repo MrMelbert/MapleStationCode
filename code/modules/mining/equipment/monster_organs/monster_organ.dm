@@ -67,17 +67,15 @@
 	return ..()
 
 /obj/item/organ/monster_core/mob_insert(mob/living/carbon/target_carbon, special = FALSE, movement_flags)
-	. = ..()
-
 	if (inert)
 		to_chat(target_carbon, span_notice("[src] breaks down as you try to insert it."))
 		qdel(src)
 		return FALSE
+	. = ..()
 	if (!decay_timer)
-		return TRUE
+		return
 	preserve(TRUE)
 	target_carbon.visible_message(span_notice("[src] stabilizes as it's inserted."))
-	return TRUE
 
 /obj/item/organ/monster_core/mob_remove(mob/living/carbon/target_carbon, special, movement_flags)
 	if (!inert && !special)
@@ -191,7 +189,7 @@
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Someone forgot to make their organ do something when you implant it.")
 
-/obj/item/organ/monster_core/feel_for_damage(self_aware)
+/obj/item/organ/monster_core/feel_for_damage(self_aware, medical_skill)
 	return ""
 
 /**

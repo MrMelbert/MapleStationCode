@@ -133,7 +133,7 @@
 /obj/item/card/id/Initialize(mapload)
 	. = ..()
 
-	var/datum/bank_account/blank_bank_account = new("Unassigned", SSjob.GetJobType(/datum/job/unassigned), player_account = FALSE)
+	var/datum/bank_account/blank_bank_account = new("Unassigned", SSjob.get_job_type(/datum/job/unassigned), player_account = FALSE)
 	registered_account = blank_bank_account
 	registered_account.replaceable = TRUE
 
@@ -1302,7 +1302,7 @@
 	registered_name = "Emergency Response Intern"
 	trim = /datum/id_trim/centcom/ert
 
-/obj/item/card/id/advanced/centcom/ert
+/obj/item/card/id/advanced/centcom/ert/commander
 	registered_name = JOB_ERT_COMMANDER
 	trim = /datum/id_trim/centcom/ert/commander
 
@@ -1398,7 +1398,7 @@
 /obj/item/card/id/advanced/debug/Initialize(mapload)
 	. = ..()
 	registered_account = SSeconomy.get_dep_account(ACCOUNT_CAR)
-	registered_account.account_job = SSjob.GetJobType(/datum/job/admin) // so we can actually use this account without being filtered as a "departmental" card
+	registered_account.account_job = SSjob.get_job_type(/datum/job/admin) // so we can actually use this account without being filtered as a "departmental" card
 
 /obj/item/card/id/advanced/prisoner
 	name = "prisoner ID card"

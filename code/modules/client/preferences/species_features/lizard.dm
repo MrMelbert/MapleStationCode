@@ -61,6 +61,11 @@
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/frills
 
+/datum/preference/choiced/lizard_frills/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_frill_color"
+	return data
+
 /datum/preference/choiced/lizard_frills/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.frills_list)
 
@@ -77,6 +82,11 @@
 	main_feature_name = "Horns"
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/horns
+
+/datum/preference/choiced/lizard_horns/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_horn_color"
+	return data
 
 /datum/preference/choiced/lizard_horns/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.horns_list)
@@ -125,7 +135,7 @@
 		if(!path)
 			continue
 		var/obj/item/bodypart/new_part = new path()
-		new_part.replace_limb(target, TRUE)
+		new_part.replace_limb(target)
 		new_part.update_limb(is_creating = TRUE)
 		qdel(old_part)
 
