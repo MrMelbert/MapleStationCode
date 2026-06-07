@@ -1,6 +1,7 @@
 /obj/item/bodypart
 	name = "limb"
 	desc = "Why is it detached..."
+	abstract_type = /obj/item/bodypart
 	force = 3
 	throwforce = 3
 	w_class = WEIGHT_CLASS_SMALL
@@ -1101,7 +1102,7 @@
 		draw_color = null
 
 	if(!is_creating || !owner)
-		return
+		return FALSE
 
 	// There should technically to be an ishuman(owner) check here, but it is absent because no basetype carbons use bodyparts
 	// No, xenos don't actually use bodyparts. Don't ask.
@@ -1252,7 +1253,7 @@
 		for(var/external_layer in overlay.all_layers)
 			if(overlay.layers & external_layer)
 				. += overlay.get_overlay(external_layer, src)
-		for(var/datum/layer in .)
+		for(var/image/layer in .)
 			overlay.modify_bodypart_appearance(layer)
 
 	return .

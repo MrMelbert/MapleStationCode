@@ -12,6 +12,7 @@
 /obj/item/clothing/head/hooded/cult_hoodie/eldritch/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/heretic_focus)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/heretic)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch
 	name = "ominous armor"
@@ -24,6 +25,10 @@
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/eldritch
 	// Slightly better than normal cult robes
 	armor_type = /datum/armor/cultrobes_eldritch
+
+/obj/item/clothing/suit/hooded/cultrobes/eldritch/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/heretic)
 
 /datum/armor/cultrobes_eldritch
 	melee = 50

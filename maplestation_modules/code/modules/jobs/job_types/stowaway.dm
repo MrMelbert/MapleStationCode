@@ -45,7 +45,7 @@
 	. = ..()
 	var/datum/status_effect/backstory/backstory = spawned.apply_status_effect(/datum/status_effect/backstory)
 	var/backstory_ref = "<a href='byond://?src=[REF(backstory)];backstory=1'>click here</a>"
-	to_chat(player_client, examine_block("\
+	to_chat(player_client, boxed_message("\
 		[span_boldnotice("You find yourself stown away in [get_area_name(spawned)] on [station_name()].")]\n\
 		[span_notice("All you have to your name is the clothes on your back, some tools, and a small amount of cash.")]\n\
 		[span_notice("The crew has no record of your existence.")]\n\
@@ -159,7 +159,7 @@
 	if(length(backstory_equipment_items) && backstory_equipment)
 		final_info += span_notice("<br><br>Additional equipment: [backstory_equipment]")
 
-	to_chat(owner, examine_block(span_infoplain(final_info)))
+	to_chat(owner, boxed_message(span_infoplain(final_info)))
 
 	for(var/thing in backstory_equipment_items)
 		owner.equip_to_slot_if_possible(new thing(owner.loc), backstory_equipment_items[thing], disable_warning = TRUE, redraw_mob = FALSE, initial = TRUE)

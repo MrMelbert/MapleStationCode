@@ -13,7 +13,7 @@
 	// Worn: "capturtleneck"
 	icon_state = "capturtleneck"
 	inhand_icon_state = "capturtleneck"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
@@ -34,7 +34,7 @@
 	// Worn: "capskirtleneck"
 	icon_state = "capskirtleneck"
 	inhand_icon_state = "capturtleneck"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE

@@ -11,7 +11,7 @@
 	inhand_icon_state = null
 	armor_type = /datum/armor/utility_hardhat
 	flags_inv = 0
-	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
+	hair_mask = /datum/hair_mask/standard_hat_middle
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	resistance_flags = FIRE_PROOF
@@ -195,6 +195,10 @@
 	transparent_protection = HIDEMASK|HIDEEYES
 	visor_flags_inv = NONE
 	visor_state = "weldvisor_atmos"
+
+/obj/item/clothing/head/utility/hardhat/welding/atmos/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/firesuit)
 
 /obj/item/clothing/head/utility/hardhat/welding/atmos/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()

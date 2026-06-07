@@ -130,6 +130,7 @@
 /datum/bodypart_overlay/mutant/tail/fish
 	feature_key = "fish_tail"
 	color_source = ORGAN_COLOR_OVERRIDE
+	mesh_in_suits = TRUE
 
 /datum/bodypart_overlay/mutant/tail/fish/override_color(obj/item/bodypart/bodypart_owner)
 	//If the owner uses mutant colors, inherit the color of the bodypart

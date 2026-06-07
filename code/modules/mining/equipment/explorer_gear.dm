@@ -182,6 +182,7 @@
 /obj/item/clothing/suit/armor/bone/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/armor_plate, upgrade_item = /obj/item/clothing/accessory/talisman)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/drake)
 	allowed = GLOB.mining_suit_allowed
 
 /obj/item/clothing/head/helmet/skull
@@ -227,6 +228,7 @@
 /obj/item/clothing/suit/hooded/cloak/drake/Initialize(mapload)
 	. = ..()
 	allowed = GLOB.mining_suit_allowed
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/drake)
 
 /obj/item/clothing/head/hooded/cloakhood/drake
 	name = "drake helm"
@@ -239,6 +241,10 @@
 	min_cold_protection_temperature = FIRE_HELM_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/clothing/head/hooded/cloakhood/drake/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/drake)
 
 /obj/item/clothing/suit/hooded/cloak/godslayer
 	name = "godslayer armour"

@@ -1,6 +1,6 @@
 /datum/mind/proc/init_known_skills()
 	for (var/type in GLOB.skill_types)
-		known_skills[type] = list(SKILL_LVL = SKILL_LEVEL_NONE, SKILL_EXP = 0)
+		known_skills[type] = alist(SKILL_LVL = SKILL_LEVEL_NONE, SKILL_EXP = 0)
 
 ///Return the amount of EXP needed to go to the next level. Returns 0 if max level
 /datum/mind/proc/exp_needed_to_level_up(skill)
@@ -135,7 +135,7 @@
 			untrained_skills += known_skill
 
 	if(!length(shown_skills))
-		to_chat(user, examine_block(span_notice("You don't have any particularly outstanding skills.")))
+		to_chat(user, boxed_message(span_notice("You don't have any particularly outstanding skills.")))
 		return
 
 	var/list/skill_strings = list()
@@ -145,4 +145,4 @@
 		skill_strings += span_smallnoticeital("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
 
 	sortTim(skill_strings, GLOBAL_PROC_REF(cmp_text_asc))
-	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))
+	to_chat(user, boxed_message("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))
