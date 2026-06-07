@@ -5511,16 +5511,13 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/yellow,
-/obj/machinery/computer/security/telescreen/ce{
-	dir = 1;
-	pixel_y = -32
-	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/orange/hidden{
 	dir = 4
 	},
+/obj/machinery/computer/security/telescreen/ce/directional/south,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/ce)
 "aoq" = (
@@ -8923,6 +8920,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
+/obj/machinery/computer/security/telescreen/ordnance/directional/east,
 /turf/open/floor/iron/white,
 /area/station/science/ordnance/testlab)
 "axW" = (
@@ -14472,11 +14470,6 @@
 /turf/open/floor/iron/dark/side,
 /area/station/service/janitor)
 "aNl" = (
-/obj/machinery/computer/security/telescreen/cmo{
-	dir = 4;
-	pixel_x = -32;
-	network = list("medbay","viro")
-	},
 /obj/machinery/camera/directional/west{
 	network = list("ss13","medbay","heads");
 	c_tag = "Medical - Chief Medical Officer's Office"
@@ -14489,6 +14482,7 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 4
 	},
+/obj/machinery/computer/security/telescreen/cmo/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
 "aNm" = (
@@ -21439,7 +21433,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark,
 /area/station/science/xenobiology)
 "bfR" = (
@@ -21461,7 +21454,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark,
 /area/station/science/xenobiology)
@@ -24781,6 +24773,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/storage)
+"dla" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/station/cargo/storage)
 "dlR" = (
 /obj/machinery/smartfridge/organ,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -27895,6 +27891,10 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/security/brig)
+"iSv" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/plating,
+/area/station/cargo/bitrunning/den)
 "iSQ" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -33834,9 +33834,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit)
-"sIc" = (
-/turf/closed/wall/rust,
-/area/space/nearstation)
 "sIe" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -35214,9 +35211,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "sYn" = (
-/obj/machinery/computer/security/telescreen/ordnance{
-	dir = 8
-	},
 /obj/machinery/computer/pod/old/mass_driver_controller/ordnancedriver{
 	pixel_y = 28
 	},
@@ -36234,7 +36228,7 @@
 "uDr" = (
 /obj/structure/lattice,
 /turf/closed/wall,
-/area/space/nearstation)
+/area/station/command/gateway)
 "uEu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/spawner/structure/window/reinforced/plasma,
@@ -36469,15 +36463,9 @@
 /area/station/security/prison)
 "vlJ" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the Engine.";
-	dir = 1;
-	name = "Engine Monitor";
-	network = list("engine");
-	pixel_y = -30
-	},
 /obj/effect/turf_decal/stripes/box,
 /obj/machinery/rnd/production/techfab/department/engineering,
+/obj/machinery/computer/security/telescreen/engine/directional/south,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "vmj" = (
@@ -76010,9 +75998,9 @@ bhI
 xYD
 bhI
 ajH
-ado
+dla
 adn
-ado
+dla
 adn
 ajn
 sNd
@@ -76270,7 +76258,7 @@ ajI
 akL
 alA
 amv
-ado
+dla
 aqM
 aqn
 aGr
@@ -76784,7 +76772,7 @@ afE
 sNy
 alB
 amx
-ado
+dla
 aqM
 aqn
 aGp
@@ -77298,7 +77286,7 @@ ajI
 aht
 hfs
 amA
-ado
+dla
 bcc
 bei
 bfq
@@ -78065,7 +78053,7 @@ aPy
 ayY
 adn
 ahl
-dfQ
+iSv
 qPG
 ahl
 amC
@@ -79107,7 +79095,7 @@ aaa
 aaa
 aaa
 aaa
-sIc
+msl
 poi
 rVP
 kbe
