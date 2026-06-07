@@ -1070,9 +1070,7 @@
 	id = "engsm";
 	name = "Radiation Chamber Shutters"
 	},
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/one_two,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter)
 "adt" = (
@@ -11708,9 +11706,7 @@
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/mapping_helpers/airlock/access/any/engineering/engine_equipment,
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/one_two,
 /turf/open/floor/iron/dark/side,
 /area/station/engineering/supermatter/room)
 "aGl" = (
@@ -26555,9 +26551,7 @@
 	id = "engsm";
 	name = "Radiation Chamber Shutters"
 	},
-/obj/structure/cable/multilayer/connected{
-	cable_layer = 3
-	},
+/obj/structure/cable/multilayer/one_two,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter)
 "gIP" = (
