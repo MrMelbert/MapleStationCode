@@ -26101,13 +26101,13 @@
 /turf/closed/wall,
 /area/station/maintenance/department/science)
 "fHF" = (
-/obj/structure/closet/crate/bin,
 /obj/structure/cable,
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/machinery/camera/directional/west{
 	c_tag = "Library - Port"
 	},
+/obj/machinery/skill_station,
 /turf/open/floor/iron/dark,
 /area/station/service/library)
 "fIX" = (
@@ -31687,6 +31687,7 @@
 /area/station/maintenance/department/medical)
 "pvN" = (
 /obj/effect/turf_decal/siding/wood,
+/obj/structure/closet/crate/bin,
 /turf/open/floor/iron/dark/side{
 	dir = 10
 	},
