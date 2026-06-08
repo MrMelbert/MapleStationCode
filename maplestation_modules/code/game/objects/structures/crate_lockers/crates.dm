@@ -271,7 +271,7 @@
 // No, it's blacklisted from the events that use it for a reason.
 /obj/structure/closet/crate/resource_cache/random_materials
 	desc = "A steel crate. This one seems like trouble."
-	storage_capacity = 50
+	storage_capacity = 60
 
 /obj/structure/closet/crate/resource_cache/random_materials/Initialize(mapload)
 	var/random_types = subtypesof(/obj/item/stack)
