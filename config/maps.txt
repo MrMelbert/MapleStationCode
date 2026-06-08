@@ -57,10 +57,6 @@ map pubbystation
 	votable
 endmap
 
-map omegastation
-	votable
-endmap
-
 ## DEBUG MAPS
 
 map runtimestation
