@@ -1145,6 +1145,7 @@
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
 		return
 	for(var/image/img as anything in standing)
+		img.dir = SOUTH
 		img.pixel_w += px_x
 		img.pixel_z += px_y
 	add_overlay(standing)

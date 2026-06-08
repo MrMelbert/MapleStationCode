@@ -4,6 +4,10 @@
 	icon_state = /obj/item/organ/heart/cybernetic/tier2::icon_state
 	organ_flags = ORGAN_ROBOTIC
 
+/obj/item/organ/heart/android/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/update_icon_blocker)
+
 /obj/item/organ/heart/android/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
