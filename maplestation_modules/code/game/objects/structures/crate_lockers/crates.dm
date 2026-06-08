@@ -276,7 +276,7 @@
 /obj/structure/closet/crate/resource_cache/random_materials/Initialize(mapload)
 	var/random_types = subtypesof(/obj/item/stack)
 	for(var/i in 1 to rand(2, 4))
-		resources[pick(random_types)] = round(rand(1, 50), 5)
+		resources[pick(random_types)] = round(rand(5, 50), 5)
 	return ..()
 
 //---
