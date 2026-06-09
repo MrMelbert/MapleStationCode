@@ -2,7 +2,8 @@
 /obj/item/organ/stomach/ethereal/android/battery_core
 	name = "Battery Core"
 	desc = "This is a large battery that stores charge for an android. Since it is missing the standard bioreactor, it holds more energy, however the user cannot eat to gain power."
-	icon_state = /obj/item/organ/stomach/cybernetic/tier2::icon_state //TEMPORARY SPRITE
+	icon = 'maplestation_modules/icons/obj/medical/organs/organs.dmi'
+	icon_state = "stomach_battery"
 
 	passive_drain_multiplier = 0.3 //drains slower than default robots
 	stomach_blood_transfer_rate = 0 //chems don't work too...

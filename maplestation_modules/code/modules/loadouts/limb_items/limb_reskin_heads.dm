@@ -72,6 +72,7 @@
 	limb_path = /obj/item/bodypart/head/robot/cloak
 
 /datum/limb_option_datum/bodypart/cybernetic_head/gumhead
+	tooltip = "Character Item. Unique to Androids and Synthetics"
 	name = "S-Tech GUM Model Head"
 	limb_path = /obj/item/bodypart/head/robot/gumhead
 
@@ -84,5 +85,6 @@
 	limb_path = /obj/item/bodypart/head/robot/drone
 
 /datum/limb_option_datum/bodypart/cybernetic_head/fss_clara
+	tooltip = "Character Item. Unique to Androids and Synthetics"
 	name = "FSS Redesigned Head"
 	limb_path = /obj/item/bodypart/head/robot/fss_clara

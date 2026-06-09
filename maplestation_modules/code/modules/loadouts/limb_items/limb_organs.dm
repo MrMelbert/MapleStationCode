@@ -56,7 +56,7 @@
 
 //battery core stuff
 /datum/limb_option_datum/organ/synthetic
-	tooltip = "Can only be selected by Androids or Synthetics."
+	tooltip = "Replaces the stomach with a battery with more charge, but cannot process food or chemicals. Only available for androids and synthetics"
 
 /datum/limb_option_datum/organ/synthetic/can_be_selected(datum/preferences/prefs)
 	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
