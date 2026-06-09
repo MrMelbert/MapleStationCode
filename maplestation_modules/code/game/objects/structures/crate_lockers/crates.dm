@@ -265,7 +265,7 @@
 		/obj/item/stack/sheet/hauntium = 6,
 		/obj/item/stack/sheet/mineral/runite = 12,
 		/obj/item/stack/sheet/runed_metal = 20,
-		)
+	)
 
 // Yes, this crate can have literally any stack item.
 // No, it's blacklisted from the events that use it for a reason.
