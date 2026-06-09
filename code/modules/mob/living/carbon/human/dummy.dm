@@ -138,7 +138,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["dog_ears"] = get_consistent_feature_entry(SSaccessories.dog_ears_list) //NON-MODULE CHANGE
 	target.dna.features["dog_tail"] = get_consistent_feature_entry(SSaccessories.dog_tail_list) //NON-MODULE CHANGE
 	target.dna.features["fish_tail"] = get_consistent_feature_entry(SSaccessories.tails_list_fish) //NON-MODULE CHANGE
-	target.dna.features["legs"] = NORMAL_LEGS
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly
 	// In practice this doesn't matter, but this is for the sake of 100%(ish) consistency

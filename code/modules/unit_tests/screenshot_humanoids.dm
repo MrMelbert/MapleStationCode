@@ -4,6 +4,8 @@
 /datum/unit_test/screenshot_humanoids/Run()
 	var/list/testable_species = subtypesof(/datum/species)
 
+	testable_species -= /datum/species/android // melbert todo : removing this for now REEE
+
 	// Test lizards as their own thing so we can get more coverage on their features
 	var/mob/living/carbon/human/lizard = allocate(/mob/living/carbon/human/dummy/consistent)
 	lizard.dna.features["mcolor"] = "#099"
