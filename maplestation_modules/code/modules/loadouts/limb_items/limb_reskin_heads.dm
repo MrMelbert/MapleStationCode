@@ -82,3 +82,7 @@
 /datum/limb_option_datum/bodypart/cybernetic_head/drone
 	name = "Drone Head"
 	limb_path = /obj/item/bodypart/head/robot/drone
+
+/datum/limb_option_datum/bodypart/cybernetic_head/fss_clara
+	name = "FSS Redesigned Head"
+	limb_path = /obj/item/bodypart/head/robot/fss_clara

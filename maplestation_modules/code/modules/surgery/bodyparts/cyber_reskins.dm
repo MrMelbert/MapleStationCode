@@ -499,3 +499,8 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
 	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES|HEAD_HAIR
 
+/obj/item/bodypart/head/robot/fss_clara
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/FSS.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/FSS.dmi'
+	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES
