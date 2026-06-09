@@ -25,7 +25,7 @@
 	result = /obj/item/weaponcrafting/receiver
 	reqs = list(
 		/obj/item/stack/sheet/iron = 5,
-		/obj/item/stack/sticky_tape = 1,
+		/obj/item/stack/medical/wrap/sticky_tape = 1,
 		/obj/item/screwdriver = 1,
 		/obj/item/assembly/mousetrap = 1,
 	)
@@ -38,7 +38,7 @@
 	result = /obj/item/weaponcrafting/stock
 	reqs = list(
 		/obj/item/stack/sheet/mineral/wood = 8,
-		/obj/item/stack/sticky_tape = 1,
+		/obj/item/stack/medical/wrap/sticky_tape = 1,
 	)
 	time = 5 SECONDS
 	category = CAT_WEAPON_RANGED
@@ -184,7 +184,7 @@
 	reqs = list(/obj/item/weaponcrafting/receiver = 1,
 		/obj/item/pipe = 1,
 		/obj/item/weaponcrafting/stock = 1,
-		/obj/item/stack/sticky_tape = 1,
+		/obj/item/stack/medical/wrap/sticky_tape = 1,
 	)
 	tool_behaviors = list(TOOL_SCREWDRIVER)
 	time = 5 SECONDS

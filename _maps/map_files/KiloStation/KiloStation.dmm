@@ -6951,7 +6951,7 @@
 	pixel_x = 10;
 	pixel_y = 10
 	},
-/obj/item/stack/medical/gauze{
+/obj/item/stack/medical/wrap/gauze{
 	pixel_x = 8
 	},
 /obj/item/stack/medical/mesh{
@@ -25742,7 +25742,7 @@
 /area/station/maintenance/department/chapel/monastery)
 "dRQ" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/small/directional/north,
@@ -41718,7 +41718,7 @@
 /obj/structure/table,
 /obj/machinery/light/small/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/effect/decal/cleanable/cobweb,
 /obj/structure/sign/poster/contraband/random/directional/west,
 /obj/effect/turf_decal/stripes/line{
@@ -64817,7 +64817,7 @@
 /area/station/hallway/primary/aft)
 "qGE" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /obj/machinery/power/apc/auto_name/directional/north,

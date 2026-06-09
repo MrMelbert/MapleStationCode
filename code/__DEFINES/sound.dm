@@ -244,3 +244,7 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_VISOR_UP "visor_up"
 #define SFX_VISOR_DOWN "visor_down"
 #define SFX_PLATE_ARMOR_RUSTLE "plate_armor_rustle"
+#define SFX_CLOTH_PICKUP "cloth_pickup"
+#define SFX_CLOTH_DROP "cloth_drop"
+#define SFX_BANDAGE_BEGIN "bandage_begin"
+#define SFX_BANDAGE_END "bandage_end"

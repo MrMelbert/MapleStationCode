@@ -672,4 +672,39 @@
 				'sound/effects/industrial_scan/industrial_scan2.ogg',
 				'sound/effects/industrial_scan/industrial_scan3.ogg',
 			)
+		if(SFX_CLOTH_PICKUP)
+			soundin = pick(
+				'sound/items/handling/cloth/cloth_pickup2.ogg',
+				'sound/items/handling/cloth/cloth_pickup3.ogg',
+				'sound/items/handling/cloth/cloth_pickup4.ogg',
+				'sound/items/handling/cloth/cloth_pickup5.ogg',
+			)
+		if(SFX_CLOTH_DROP)
+			soundin = pick(
+				'sound/items/handling/cloth/cloth_drop1.ogg',
+				'sound/items/handling/cloth/cloth_drop2.ogg',
+				'sound/items/handling/cloth/cloth_drop3.ogg',
+				'sound/items/handling/cloth/cloth_drop4.ogg',
+			)
+		if(SFX_BANDAGE_BEGIN)
+			soundin = pick(
+				'sound/items/gauze/bandage_begin1.ogg',
+				'sound/items/gauze/bandage_begin2.ogg',
+				'sound/items/gauze/bandage_begin3.ogg',
+				'sound/items/gauze/bandage_begin4.ogg',
+			)
+		if(SFX_BANDAGE_END)
+			// soundin = pick(
+			// 	'sound/items/gauze/bandage_end1.ogg',
+			// 	'sound/items/gauze/bandage_end2.ogg',
+			// 	'sound/items/gauze/bandage_end3.ogg',
+			// 	'sound/items/gauze/bandage_end4.ogg',
+			// )
+			soundin = pick(
+				'maplestation_modules/sound/items/rip1.ogg',
+				'maplestation_modules/sound/items/rip2.ogg',
+				'maplestation_modules/sound/items/rip3.ogg',
+				'maplestation_modules/sound/items/rip4.ogg',
+			)
+
 	return soundin

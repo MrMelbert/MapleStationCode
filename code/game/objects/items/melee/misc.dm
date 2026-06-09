@@ -140,7 +140,7 @@
 		var/list/legs = list()
 		var/obj/item/bodypart/bodypart
 
-		for(bodypart in Cuser.bodyparts)
+		for(bodypart in Cuser.get_bodyparts())
 			if(bodypart == holding_bodypart)
 				continue
 			if(bodypart.body_part & ARMS)

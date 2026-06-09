@@ -45,8 +45,6 @@
 	// these amounts will be multiplied by the stack size in on_grind()
 	/// Amount of matter given back to RCDs
 	var/matter_amount = 0
-	/// Does this stack require a unique girder in order to make a wall?
-	var/has_unique_girder = FALSE
 	/// What typepath table we create from this stack
 	var/obj/structure/table/table_type
 	/// What typepath stairs do we create from this stack
@@ -56,28 +54,18 @@
 	/// If use_radial is TRUE, this is the radius of the radial
 	var/radial_radius = 52
 
-	// The following are all for medical treatment
-	// They're here instead of /stack/medical
-	// because sticky tape can be used as a makeshift bandage or splint
+	/// Can this stack be used for contruction of girders?
+	var/usable_for_construction = FALSE
+	/// Does this stack require a unique girder in order to make a wall?
+	var/has_unique_girder = FALSE
+	///What type of wall does this sheet spawn
+	var/walltype
 
-	/// Verb used when applying this object to someone
-	var/apply_verb = "applying"
-	/// If set and this used as a splint for a broken bone wound,
-	/// This is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
-	var/splint_factor
-	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
-	var/burn_cleanliness_bonus
-	/// How much blood flow this stack can absorb if used as a bandage on a cut wound.
-	/// note that absorption is how much we lower the flow rate, not the raw amount of blood we suck up
-	var/absorption_capacity
-	/// How quickly we lower the blood flow on a cut wound we're bandaging.
-	/// Expected lifetime of this bandage in seconds is thus absorption_capacity/absorption_rate,
-	/// or until the cut heals, whichever comes first
-	var/absorption_rate
-
-/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
-	if(new_amount != null)
-		amount = new_amount
+/obj/item/stack/Initialize(mapload, new_amount = amount, merge = TRUE, list/mat_override = null, mat_amt = 1)
+	amount = new_amount
+	if(amount <= 0)
+		stack_trace("invalid amount [amount]!")
+		return INITIALIZE_HINT_QDEL
 	while(amount > max_amount)
 		amount -= max_amount
 		new type(loc, max_amount, FALSE)
@@ -203,12 +191,12 @@
 	if(novariants)
 		return ..()
 	if(amount <= (max_amount * (1/3)))
-		icon_state = initial(icon_state)
+		icon_state = post_init_icon_state || initial(icon_state)
 		return ..()
 	if (amount <= (max_amount * (2/3)))
-		icon_state = "[initial(icon_state)]_2"
+		icon_state = "[post_init_icon_state || initial(icon_state)]_2"
 		return ..()
-	icon_state = "[initial(icon_state)]_3"
+	icon_state = "[post_init_icon_state || initial(icon_state)]_3"
 	return ..()
 
 /obj/item/stack/examine(mob/user)

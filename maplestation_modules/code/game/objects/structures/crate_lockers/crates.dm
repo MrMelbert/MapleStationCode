@@ -265,18 +265,18 @@
 		/obj/item/stack/sheet/hauntium = 6,
 		/obj/item/stack/sheet/mineral/runite = 12,
 		/obj/item/stack/sheet/runed_metal = 20,
-		)
+	)
 
 // Yes, this crate can have literally any stack item.
 // No, it's blacklisted from the events that use it for a reason.
 /obj/structure/closet/crate/resource_cache/random_materials
 	desc = "A steel crate. This one seems like trouble."
-	storage_capacity = 50
+	storage_capacity = 60
 
 /obj/structure/closet/crate/resource_cache/random_materials/Initialize(mapload)
 	var/random_types = subtypesof(/obj/item/stack)
 	for(var/i in 1 to rand(2, 4))
-		resources[pick(random_types)] = round(rand(1, 50), 5)
+		resources[pick(random_types)] = round(rand(5, 50), 5)
 	return ..()
 
 //---

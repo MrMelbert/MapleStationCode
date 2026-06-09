@@ -259,7 +259,7 @@
 /obj/structure/table/reinforced,
 /obj/item/book/manual/wiki/surgery,
 /obj/item/stack/medical/mesh/advanced,
-/obj/item/stack/medical/gauze/twelve,
+/obj/item/stack/medical/wrap/gauze/twelve,
 /obj/item/stack/medical/suture/medicated,
 /turf/open/floor/iron/white/smooth_large,
 /area/shuttle/escape)

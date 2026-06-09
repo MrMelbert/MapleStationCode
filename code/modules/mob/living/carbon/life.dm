@@ -181,8 +181,8 @@
 	return
 
 /mob/living/carbon/proc/handle_bodyparts(seconds_per_tick, times_fired)
-	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		. |= limb.on_life(seconds_per_tick, times_fired)
+	for(var/obj/item/bodypart/limb as anything in get_bodyparts(include_stumps = TRUE))
+		. |= limb.on_life(seconds_per_tick)
 
 /mob/living/carbon/proc/handle_organs(seconds_per_tick, times_fired)
 	if(stat == DEAD)

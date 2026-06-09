@@ -141,8 +141,7 @@
 				var/status = ""
 				if(getBruteLoss())
 					to_chat(human_user, "<b>Physical trauma analysis:</b>")
-					for(var/X in bodyparts)
-						var/obj/item/bodypart/BP = X
+					for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 						var/brutedamage = BP.brute_dam
 						if(brutedamage > 0)
 							status = "received minor physical injuries."
@@ -157,8 +156,7 @@
 							to_chat(human_user, "<span class='[span]'>[BP] appears to have [status]</span>")
 				if(getFireLoss())
 					to_chat(human_user, "<b>Analysis of skin burns:</b>")
-					for(var/X in bodyparts)
-						var/obj/item/bodypart/BP = X
+					for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 						var/burndamage = BP.burn_dam
 						if(burndamage > 0)
 							status = "signs of minor burns."

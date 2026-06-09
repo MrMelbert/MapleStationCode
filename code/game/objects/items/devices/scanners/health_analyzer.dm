@@ -196,7 +196,7 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		var/any_damage = brute_loss > 0 || fire_loss > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0
-		var/any_missing = length(carbontarget.bodyparts) < (carbontarget.dna?.species?.max_bodypart_count || 6)
+		var/any_missing = length(carbontarget.get_missing_limbs())
 		var/any_wounded = length(carbontarget.all_wounds)
 		var/any_embeds = carbontarget.has_embedded_objects()
 		if(any_damage || (mode == SCANNER_VERBOSE && (any_missing || any_wounded || any_embeds)))
@@ -396,6 +396,10 @@
 				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Alert: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
 			if(-INFINITY to BLOOD_VOLUME_BAD)
 				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Critical: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
+
+		var/bleeding_rate = needs_heart && target.get_bleed_rate()
+		if(bleeding_rate > 0)
+			level_format += span_slightly_smaller(span_alert(" (-[round_and_format_decimal(bleeding_rate, 0.01)] cl/s)"))
 
 		if(tochat && length(target_blood_type.compatible_types))
 			var/list/compatible_types_readable = list()

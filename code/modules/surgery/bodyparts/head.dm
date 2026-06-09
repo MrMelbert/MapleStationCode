@@ -25,6 +25,7 @@
 	unarmed_damage_high = 3
 	unarmed_effectiveness = 0
 	bodypart_trait_source = HEAD_TRAIT
+	stump_typepath = /obj/item/bodypart/head/stump
 
 	//Limb appearance info:
 	/// Replacement name

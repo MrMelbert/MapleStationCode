@@ -46,7 +46,7 @@
 
 	parent = new_parent
 
-	for(var/obj/item/bodypart/parent_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/parent_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		add_bodypart(parent, parent_bodypart, TRUE)
 
 	register_pain_signals()
@@ -441,7 +441,7 @@
 	var/has_pain = FALSE
 	var/just_cant_feel_anything = !CAN_FEEL_PAIN(parent)
 	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
-	for(var/obj/item/bodypart/checked_bodypart as anything in shuffle(parent.bodyparts))
+	for(var/obj/item/bodypart/checked_bodypart as anything in shuffle(parent.get_bodyparts(include_stumps = TRUE)))
 		if(checked_bodypart.pain <= 0)
 			continue
 		has_pain = TRUE
@@ -576,7 +576,7 @@
 	else
 		natural_pain_decay = base_pain_decay
 
-	for(var/part in parent.bodyparts)
+	for(var/part in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_pain(part, natural_pain_decay * decay_modifier)
 
 /// Affect accuracy of fired guns while in pain.
@@ -702,7 +702,7 @@
 /// Get the total pain of all bodyparts.
 /datum/pain/proc/get_total_pain()
 	var/total_pain = 0
-	for(var/obj/item/bodypart/part as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/part as anything in parent.get_bodyparts(include_stumps = TRUE))
 		total_pain += part.pain
 
 	return total_pain
@@ -747,7 +747,7 @@
 	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
 		return
 
-	for(var/obj/item/bodypart/healed_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/healed_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_min_pain(healed_bodypart, -INFINITY)
 		adjust_bodypart_pain(healed_bodypart, -INFINITY)
 		// Shouldn't be necessary but you never know!
@@ -773,7 +773,7 @@
 	SIGNAL_HANDLER
 
 	parent.adjust_traumatic_shock(traumatic_shock * -0.66)
-	for(var/obj/item/bodypart/revived_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/revived_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_pain(revived_bodypart, revived_bodypart.pain * -0.9)
 
 /**
@@ -882,7 +882,7 @@
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
 	final_print += "[parent] bodypart printout: (min / current)"
-	for(var/obj/item/bodypart/checked_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/checked_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain]"
 
 	final_print += " - - - - "

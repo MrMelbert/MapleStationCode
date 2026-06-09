@@ -546,7 +546,7 @@
 		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
 		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee = 1,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/medical/wrap/gauze = 1,
 		/obj/item/storage/pill_bottle/penacid = 1
 	)
 	generate_items_inside(items_inside, src)

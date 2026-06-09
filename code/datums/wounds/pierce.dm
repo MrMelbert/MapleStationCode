@@ -8,7 +8,8 @@
 /datum/wound/pierce/get_self_check_description(self_aware, medical_skill, list/obj/item/covering)
 	if(!limb.can_bleed())
 		return ..()
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		return ""
 
 	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
@@ -40,9 +41,10 @@
 			return span_boldwarning("It's leaking [blood_name] from a major [shown_name]!!")
 
 /datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
-	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(!old_wound && current_gauze && (wound_flags & ACCEPTS_GAUZE))
 		// oops your existing gauze got penetrated through! need a new one now
-		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
+		limb.seep_gauze(initial(current_gauze.absorption_capacity) * 0.8)
 	return ..()
 
 /datum/wound/pierce/bleed
@@ -78,12 +80,8 @@
 		return
 	if(!limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-	if(limb.body_zone != BODY_ZONE_CHEST)
-		wounding_dmg *= 0.5
-	var/splint_mod = get_splint_power()
-	if(splint_mod < 1)
-		wounding_dmg *= (1 - splint_mod)
-	var/blood_bled = sqrt(wounding_dmg) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
+	var/dmg_modifier = limb.get_splint_factor() * (limb.body_zone == BODY_ZONE_CHEST ? 1 : 0.5)
+	var/blood_bled = sqrt(wounding_dmg * dmg_modifier) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
 			victim.visible_message(
@@ -120,7 +118,7 @@
 		return BLOOD_FLOW_STEADY
 	if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 		return BLOOD_FLOW_INCREASING
-	if(limb.current_gauze)
+	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE))
 		return BLOOD_FLOW_DECREASING
 	return BLOOD_FLOW_STEADY
 
@@ -142,8 +140,10 @@
 			if(QDELETED(src))
 				return
 
-	if(limb.current_gauze)
-		var/gauze_power = limb.current_gauze.absorption_rate
+	//gauze always reduces blood flow, even for non bleeders
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze?.absorption_rate)
+		var/gauze_power = current_gauze.absorption_rate
 		limb.seep_gauze(gauze_power * seconds_per_tick)
 		adjust_blood_flow(-gauze_power * gauzed_clot_rate * seconds_per_tick)
 

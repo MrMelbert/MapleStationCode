@@ -869,7 +869,7 @@
 	id = "super_sticky_tape"
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/plastic =SHEET_MATERIAL_AMOUNT * 1.5)
-	build_path = /obj/item/stack/sticky_tape/super
+	build_path = /obj/item/stack/medical/wrap/sticky_tape/super
 	category = list(
 		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
 	)
@@ -880,7 +880,7 @@
 	id = "pointy_tape"
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/iron =HALF_SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plastic =HALF_SHEET_MATERIAL_AMOUNT)
-	build_path = /obj/item/stack/sticky_tape/pointy
+	build_path = /obj/item/stack/medical/wrap/sticky_tape/pointy
 	category = list(
 		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
 	)
@@ -891,7 +891,7 @@
 	id = "super_pointy_tape"
 	build_type = PROTOLATHE | AWAY_LATHE
 	materials = list(/datum/material/iron =SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plastic =SHEET_MATERIAL_AMOUNT)
-	build_path = /obj/item/stack/sticky_tape/pointy/super
+	build_path = /obj/item/stack/medical/wrap/sticky_tape/pointy/super
 	category = list(
 		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_SERVICE
 	)

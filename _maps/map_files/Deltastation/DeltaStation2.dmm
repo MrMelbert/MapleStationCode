@@ -3447,10 +3447,10 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "aHQ" = (
-/obj/item/stack/sticky_tape/surgical,
+/obj/item/stack/medical/wrap/sticky_tape/surgical,
 /obj/structure/table/glass,
 /obj/item/radio/intercom/directional/north,
-/obj/item/stack/sticky_tape/surgical,
+/obj/item/stack/medical/wrap/sticky_tape/surgical,
 /obj/item/stack/medical/bone_gel,
 /obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -17745,7 +17745,7 @@
 /area/station/science/lab)
 "dfw" = (
 /obj/machinery/firealarm/directional/north,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/mesh,
 /obj/structure/table/reinforced/rglass,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -17764,7 +17764,7 @@
 /area/station/medical/treatment_center)
 "dfz" = (
 /obj/structure/extinguisher_cabinet/directional/north,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/suture,
 /obj/machinery/camera/directional/north{
 	c_tag = "Medbay - Treatment Center";
@@ -30081,7 +30081,7 @@
 /area/station/security/prison/garden)
 "fBo" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -40269,7 +40269,7 @@
 /area/station/command/gateway)
 "iog" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/suture,
 /obj/item/stack/medical/mesh,
 /obj/item/reagent_containers/syringe/epinephrine{

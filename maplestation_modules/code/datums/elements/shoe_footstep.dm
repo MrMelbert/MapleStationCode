@@ -120,7 +120,7 @@
 		qdel(tape)
 		return TRUE
 
-	if(istype(tape, /obj/item/stack/sticky_tape))
+	if(istype(tape, /obj/item/stack/medical/wrap/sticky_tape))
 		return tape.use(1)
 
 	return FALSE
@@ -134,7 +134,7 @@
 /datum/component/shoe_footstep/proc/on_requesting_context_from_item(datum/source, list/context, obj/item/held_item, mob/user)
 	SIGNAL_HANDLER
 
-	if(istype(held_item, /obj/item/clothing/mask/muzzle/tape) || istype(held_item, /obj/item/stack/sticky_tape))
+	if(istype(held_item, /obj/item/clothing/mask/muzzle/tape) || istype(held_item, /obj/item/stack/medical/wrap/sticky_tape))
 		context[SCREENTIP_CONTEXT_LMB] = "Tape soles"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE

@@ -19,7 +19,7 @@
 	if(!silent)
 		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
 	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
-	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
+	playsound(limb_owner, 'sound/effects/dismember.ogg', 80, TRUE)
 	limb_owner.add_mood_event("dismembered_[body_zone]", /datum/mood_event/dismembered, src)
 	limb_owner.add_mob_memory(/datum/memory/was_dismembered, lost_limb = src)
 
@@ -89,7 +89,7 @@
 	SEND_SIGNAL(owner, COMSIG_CARBON_REMOVE_LIMB, src, special, dismembered)
 	SEND_SIGNAL(src, COMSIG_BODYPART_REMOVED, owner, special, dismembered)
 	bodypart_flags &= ~BODYPART_IMPLANTED //limb is out and about, it can't really be considered an implant
-	owner.remove_bodypart(src, special)
+	owner.remove_bodypart(src, special, dismembered)
 
 	for(var/datum/scar/scar as anything in scars)
 		scar.victim = null
@@ -119,7 +119,7 @@
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
 
-	if(bodypart_flags & BODYPART_PSEUDOPART)
+	if(bodypart_flags & (BODYPART_PSEUDOPART|BODYPART_STUMP))
 		drop_organs(phantom_owner) //Psuedoparts shouldn't have organs, but just in case
 		if(!QDELING(src)) // we might be removed as a part of something qdeling us
 			qdel(src)
@@ -279,6 +279,13 @@
 	if(!can_attach_limb(new_limb_owner, special))
 		return FALSE
 
+	var/obj/item/bodypart/existing_limb = new_limb_owner.get_bodypart(body_zone, include_stumps = TRUE)
+	if(existing_limb)
+		if(existing_limb.type != stump_typepath)
+			stack_trace("Attempted to attach a limb to [new_limb_owner] in zone [body_zone] where they already have a non-stump limb")
+		existing_limb.drop_limb(special = TRUE)
+		qdel(existing_limb)
+
 	SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_ATTACH_LIMB, src, special)
 	SEND_SIGNAL(src, COMSIG_BODYPART_ATTACHED, new_limb_owner, special)
 	new_limb_owner.add_bodypart(src)
@@ -299,16 +306,16 @@
 		LAZYREMOVE(wounds, wound)
 		wound.apply_wound(src, TRUE, wound_source = wound.wound_source)
 
+	if(new_limb_owner.mob_mood?.has_mood_of_category("dismembered_[body_zone]") && !(bodypart_flags & BODYPART_STUMP))
+		new_limb_owner.clear_mood_event("dismembered_[body_zone]")
+		if(!special)
+			new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
+
 	for(var/datum/scar/scar as anything in scars)
 		if(scar in new_limb_owner.all_scars) // prevent double scars from happening for whatever reason
 			continue
 		scar.victim = new_limb_owner
 		LAZYADD(new_limb_owner.all_scars, scar)
-
-	if(new_limb_owner.mob_mood?.has_mood_of_category("dismembered_[body_zone]"))
-		new_limb_owner.clear_mood_event("dismembered_[body_zone]")
-		if(!special)
-			new_limb_owner.add_mood_event("phantom_pain_[body_zone]", /datum/mood_event/reattachment, src)
 
 	update_bodypart_damage_state()
 	if(can_be_disabled)

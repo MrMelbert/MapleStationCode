@@ -57,13 +57,12 @@
 	if(get_bodypart(BODY_ZONE_HEAD) && !get_organ_by_type(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
-	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	var/adjacent = user.Adjacent(src)
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		if(body_part.bodypart_disabled)
+	var/treatment_distance = isliving(user) && get_dist(src, user) <= 3
+	for(var/obj/item/bodypart/body_part as anything in get_bodyparts(include_stumps = TRUE))
+		if(body_part.bodypart_disabled && !(body_part.bodypart_flags & BODYPART_STUMP))
 			disabled += body_part
-		missing -= body_part.body_zone
+
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
 			if(embedded.get_embed().stealthy_embed)
 				continue
@@ -72,11 +71,23 @@
 			var/span_to_use = harmless ? "notice" : "boldwarning"
 			. += "<span class='[span_to_use]'>[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!</span>"
 
-		if(body_part.current_gauze)
-			var/gauze_href = body_part.current_gauze.name
-			if(adjacent && isliving(user)) // only shows the href if we're adjacent
+		var/obj/item/current_gauze = LAZYACCESS(body_part.applied_items, LIMB_ITEM_GAUZE)
+		if(current_gauze)
+			var/gauze_href = current_gauze.name
+			if(treatment_distance) // only shows the href if we're adjacent
 				gauze_href = "<a href='byond://?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
-			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
+			. += span_notice("There is [icon2html(current_gauze, user)] some [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].")
+
+		var/obj/item/tourniquet/current_tourniquet = LAZYACCESS(body_part.applied_items, LIMB_ITEM_TOURNIQUET)
+		if(current_tourniquet)
+			var/tourniquet_href = "\a [current_tourniquet]"
+			if(treatment_distance)
+				tourniquet_href = "<a href='byond://?src=[REF(src)];remove_tourniquet=[REF(body_part)]'>[tourniquet_href]</a>"
+			var/tourniquet_msg = "[t_He] [t_has] [icon2html(current_tourniquet, user)] [tourniquet_href] tightly secured around [t_his] [body_part.body_zone == BODY_ZONE_HEAD ? "neck" : body_part.plaintext_zone]."
+			if(body_part.body_zone == BODY_ZONE_HEAD)
+				. += span_boldwarning(tourniquet_msg)
+			else
+				. += span_notice(tourniquet_msg)
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
 			var/wound_msg = iter_wound.get_examine_description(user)
@@ -101,7 +112,7 @@
 	//stores missing limbs
 	var/l_limbs_missing = 0
 	var/r_limbs_missing = 0
-	for(var/gone in missing)
+	for(var/gone in get_missing_limbs())
 		if(gone == BODY_ZONE_HEAD)
 			. += span_deadsay("<B>[t_His] [parse_zone(gone)] is missing!</B>")
 			continue
@@ -175,8 +186,9 @@
 		var/list/obj/item/bodypart/bleeding_limbs = list()
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
-		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(!body_part.current_gauze && body_part.cached_bleed_rate)
+		for(var/obj/item/bodypart/body_part as anything in get_bodyparts())
+			var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(body_part.applied_items, LIMB_ITEM_GAUZE)
+			if(!current_gauze && body_part.cached_bleed_rate)
 				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
 				grasped_limbs += body_part.plaintext_zone
@@ -342,7 +354,7 @@
 	var/list/seen_damage = list() // This looks like: ({Damage type} = list({Damage description for that damage type} = {number of times it has appeared}, ...), ...)
 	var/list/most_seen_damage = list() // This looks like: ({Damage type} = {Frequency of the most common description}, ...)
 	var/list/final_descriptions = list() // This looks like: ({Damage type} = {Most common damage description for that type}, ...)
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		for(var/damage_type in part.damage_examines)
 			var/damage_desc = part.damage_examines[damage_type]
 			if(!seen_damage[damage_type])
@@ -399,7 +411,7 @@
 		if(clothes[CLOTHING_SLOT(HANDS)])
 			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
 		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_is] holding [held_thing.examine_title(user, href = TRUE)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
-	for(var/obj/item/bodypart/arm/part in bodyparts)
+	for(var/obj/item/bodypart/arm/part in get_bodyparts())
 		if(!(part.bodypart_flags & BODYPART_PSEUDOPART))
 			continue
 		var/obj/item/corresponding_item = get_item_for_held_index(part.held_index) || part
@@ -590,7 +602,7 @@
 /mob/living/carbon/human/proc/get_mismatched_limb_text()
 	var/list/covered = get_covered_body_zones()
 	var/list/texts = list()
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		var/part_id = part.limb_id
 		var/obj/item/bodypart/expected_part = dna?.species?.bodypart_overrides[part.body_zone]
 		var/expected_id = initial(expected_part?.limb_id)
