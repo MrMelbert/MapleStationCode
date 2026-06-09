@@ -468,7 +468,6 @@
 	icon_state = "robotic_head"
 	icon = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
-	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES|HEAD_EYEHOLES
 
 /obj/item/bodypart/head/robot/nemo
 	icon_state = "robotic_head"

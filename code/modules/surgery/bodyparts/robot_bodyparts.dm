@@ -393,7 +393,7 @@
 
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 
-	head_flags = HEAD_EYESPRITES
+	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 	var/obj/item/assembly/flash/handheld/flash1 = null
