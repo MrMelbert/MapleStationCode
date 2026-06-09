@@ -780,4 +780,13 @@ GLOBAL_LIST(hub_radial_layer_list)
 
 // This is a mapping aid. In order for this to be placed on a map and function, all three layers need to have their nodes active
 /obj/structure/cable/multilayer/connected
-		cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2 | CABLE_LAYER_3
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2 | CABLE_LAYER_3
+
+/obj/structure/cable/multilayer/one_two
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2
+
+/obj/structure/cable/multilayer/one_three
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_3
+
+/obj/structure/cable/multilayer/two_three
+	cable_layer = CABLE_LAYER_2 | CABLE_LAYER_3

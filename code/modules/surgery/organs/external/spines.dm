@@ -3,6 +3,7 @@
 	name = "lizard spines"
 	desc = "Not an actual spine, obviously."
 	icon_state = "spines"
+	gender = PLURAL
 
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_SPINES
