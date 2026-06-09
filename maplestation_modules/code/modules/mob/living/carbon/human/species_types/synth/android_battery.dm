@@ -1,7 +1,7 @@
 //Adds a new android stomach type which has more charge than the android stomach, but makes it impossible to eat.
 /obj/item/organ/stomach/ethereal/android/battery_core
 	name = "Battery Core"
-	desc = "This is a large battery that stores charge for an android. Since it is missing the standard bioreactor, it holds more energy, however the user cannot eat to gain power."
+	desc = "This is a stomach replacement that stores charge for an android. It replaces the bioreactor with batteries for more energy, as a result the user cannot eat to gain energy."
 	icon = 'maplestation_modules/icons/obj/medical/organs/organs.dmi'
 	icon_state = "stomach_battery"
 
