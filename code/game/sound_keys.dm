@@ -21,68 +21,68 @@
 /datum/sound_effect/shatter
 	key = SFX_SHATTER
 	file_paths = list(
-		'sound/effects/glass/glassbr1.ogg',
-		'sound/effects/glass/glassbr2.ogg',
-		'sound/effects/glass/glassbr3.ogg',
+		'sound/effects/glassbr1.ogg',
+		'sound/effects/glassbr2.ogg',
+		'sound/effects/glassbr3.ogg',
 	)
 
 /datum/sound_effect/explosion
 	key = SFX_EXPLOSION
 	file_paths = list(
-		'sound/effects/explosion/explosion1.ogg',
-		'sound/effects/explosion/explosion2.ogg',
+		'sound/effects/explosion1.ogg',
+		'sound/effects/explosion2.ogg',
 	)
 
 /datum/sound_effect/explosion_creaking
 	key = SFX_EXPLOSION_CREAKING
 	file_paths = list(
-		'sound/effects/explosion/explosioncreak1.ogg',
-		'sound/effects/explosion/explosioncreak2.ogg',
+		'sound/effects/explosioncreak1.ogg',
+		'sound/effects/explosioncreak2.ogg',
 	)
 
 /datum/sound_effect/hull_creaking
 	key = SFX_HULL_CREAKING
 	file_paths = list(
-		'sound/effects/creak/creak1.ogg',
-		'sound/effects/creak/creak2.ogg',
-		'sound/effects/creak/creak3.ogg',
+		'sound/effects/creak1.ogg',
+		'sound/effects/creak2.ogg',
+		'sound/effects/creak3.ogg',
 	)
 
 /datum/sound_effect/sparks
 	key = SFX_SPARKS
 	file_paths = list(
-		'sound/effects/sparks/sparks1.ogg',
-		'sound/effects/sparks/sparks2.ogg',
-		'sound/effects/sparks/sparks3.ogg',
-		'sound/effects/sparks/sparks4.ogg',
+		'sound/effects/sparks1.ogg',
+		'sound/effects/sparks2.ogg',
+		'sound/effects/sparks3.ogg',
+		'sound/effects/sparks4.ogg',
 	)
 
 /datum/sound_effect/rustle
 	key = SFX_RUSTLE
 	file_paths = list(
-		'sound/effects/rustle/rustle1.ogg',
-		'sound/effects/rustle/rustle2.ogg',
-		'sound/effects/rustle/rustle3.ogg',
-		'sound/effects/rustle/rustle4.ogg',
-		'sound/effects/rustle/rustle5.ogg',
+		'sound/effects/rustle1.ogg',
+		'sound/effects/rustle2.ogg',
+		'sound/effects/rustle3.ogg',
+		'sound/effects/rustle4.ogg',
+		'sound/effects/rustle5.ogg',
 	)
 
 /datum/sound_effect/bodyfall
 	key = SFX_BODYFALL
 	file_paths = list(
-		'sound/effects/bodyfall/bodyfall1.ogg',
-		'sound/effects/bodyfall/bodyfall2.ogg',
-		'sound/effects/bodyfall/bodyfall3.ogg',
-		'sound/effects/bodyfall/bodyfall4.ogg',
+		'sound/effects/bodyfall1.ogg',
+		'sound/effects/bodyfall2.ogg',
+		'sound/effects/bodyfall3.ogg',
+		'sound/effects/bodyfall4.ogg',
 	)
 
 /datum/sound_effect/punch
 	key = SFX_PUNCH
 	file_paths = list(
-		'sound/items/weapons/punch1.ogg',
-		'sound/items/weapons/punch2.ogg',
-		'sound/items/weapons/punch3.ogg',
-		'sound/items/weapons/punch4.ogg',
+		'sound/weapons/punch1.ogg',
+		'sound/weapons/punch2.ogg',
+		'sound/weapons/punch3.ogg',
+		'sound/weapons/punch4.ogg',
 	)
 
 /datum/sound_effect/clown_step
@@ -102,128 +102,128 @@
 /datum/sound_effect/swing_hit
 	key = SFX_SWING_HIT
 	file_paths = list(
-		'sound/items/weapons/genhit1.ogg',
-		'sound/items/weapons/genhit2.ogg',
-		'sound/items/weapons/genhit3.ogg',
+		'sound/weapons/genhit1.ogg',
+		'sound/weapons/genhit2.ogg',
+		'sound/weapons/genhit3.ogg',
 	)
 
 /datum/sound_effect/hiss
 	key = SFX_HISS
 	file_paths = list(
-		'sound/mobs/non-humanoids/hiss/hiss1.ogg',
-		'sound/mobs/non-humanoids/hiss/hiss2.ogg',
-		'sound/mobs/non-humanoids/hiss/hiss3.ogg',
-		'sound/mobs/non-humanoids/hiss/hiss4.ogg',
+		'sound/voice/hiss1.ogg',
+		'sound/voice/hiss2.ogg',
+		'sound/voice/hiss3.ogg',
+		'sound/voice/hiss4.ogg',
 	)
 
 /datum/sound_effect/page_turn
 	key = SFX_PAGE_TURN
 	file_paths = list(
-		'sound/effects/page_turn/pageturn1.ogg',
-		'sound/effects/page_turn/pageturn2.ogg',
-		'sound/effects/page_turn/pageturn3.ogg',
+		'sound/effects/pageturn1.ogg',
+		'sound/effects/pageturn2.ogg',
+		'sound/effects/pageturn3.ogg',
 	)
 
 /datum/sound_effect/ricochet
 	key = SFX_RICOCHET
 	file_paths = list(
-		'sound/items/weapons/effects/ric1.ogg',
-		'sound/items/weapons/effects/ric2.ogg',
-		'sound/items/weapons/effects/ric3.ogg',
-		'sound/items/weapons/effects/ric4.ogg',
-		'sound/items/weapons/effects/ric5.ogg',
+		'sound/weapons/effects/ric1.ogg',
+		'sound/weapons/effects/ric2.ogg',
+		'sound/weapons/effects/ric3.ogg',
+		'sound/weapons/effects/ric4.ogg',
+		'sound/weapons/effects/ric5.ogg',
 	)
 
 /datum/sound_effect/terminal_type
 	key = SFX_TERMINAL_TYPE
 	file_paths = list(
-		'sound/machines/terminal/terminal_button01.ogg',
-		'sound/machines/terminal/terminal_button02.ogg',
-		'sound/machines/terminal/terminal_button03.ogg',
-		'sound/machines/terminal/terminal_button04.ogg',
-		'sound/machines/terminal/terminal_button05.ogg',
-		'sound/machines/terminal/terminal_button06.ogg',
-		'sound/machines/terminal/terminal_button07.ogg',
-		'sound/machines/terminal/terminal_button08.ogg',
+		'sound/machines/terminal_button01.ogg',
+		'sound/machines/terminal_button02.ogg',
+		'sound/machines/terminal_button03.ogg',
+		'sound/machines/terminal_button04.ogg',
+		'sound/machines/terminal_button05.ogg',
+		'sound/machines/terminal_button06.ogg',
+		'sound/machines/terminal_button07.ogg',
+		'sound/machines/terminal_button08.ogg',
 	)
 
 /datum/sound_effect/desecration
 	key = SFX_DESECRATION
 	file_paths = list(
-		'sound/effects/desecration/desecration-01.ogg',
-		'sound/effects/desecration/desecration-02.ogg',
-		'sound/effects/desecration/desecration-03.ogg',
+		'sound/misc/desecration-01.ogg',
+		'sound/misc/desecration-02.ogg',
+		'sound/misc/desecration-03.ogg',
 	)
 
-/datum/sound_effect/im_here
-	key = SFX_IM_HERE
-	file_paths = list(
-		'sound/effects/hallucinations/im_here1.ogg',
-		'sound/effects/hallucinations/im_here2.ogg',
-	)
+// /datum/sound_effect/im_here
+// 	key = SFX_IM_HERE
+// 	file_paths = list(
+// 		'sound/effects/hallucinations/im_here1.ogg',
+// 		'sound/effects/hallucinations/im_here2.ogg',
+// 	)
 
 /datum/sound_effect/can_open
 	key = SFX_CAN_OPEN
 	file_paths = list(
-		'sound/items/can/can_open1.ogg',
-		'sound/items/can/can_open2.ogg',
-		'sound/items/can/can_open3.ogg',
+		'sound/effects/can_open1.ogg',
+		'sound/effects/can_open2.ogg',
+		'sound/effects/can_open3.ogg',
 	)
 
 /datum/sound_effect/bullet_miss
 	key = SFX_BULLET_MISS
 	file_paths = list(
-		'sound/items/weapons/bulletflyby.ogg',
-		'sound/items/weapons/bulletflyby2.ogg',
-		'sound/items/weapons/bulletflyby3.ogg',
+		'sound/weapons/bulletflyby.ogg',
+		'sound/weapons/bulletflyby2.ogg',
+		'sound/weapons/bulletflyby3.ogg',
 	)
 
 /datum/sound_effect/revolver_spin
 	key = SFX_REVOLVER_SPIN
 	file_paths = list(
-		'sound/items/weapons/gun/revolver/spin1.ogg',
-		'sound/items/weapons/gun/revolver/spin2.ogg',
-		'sound/items/weapons/gun/revolver/spin3.ogg',
+		'sound/weapons/gun/revolver/spin1.ogg',
+		'sound/weapons/gun/revolver/spin2.ogg',
+		'sound/weapons/gun/revolver/spin3.ogg',
 	)
 
 /datum/sound_effect/law
 	key = SFX_LAW
 	file_paths = list(
-		'sound/mobs/non-humanoids/beepsky/creep.ogg',
-		'sound/mobs/non-humanoids/beepsky/god.ogg',
-		'sound/mobs/non-humanoids/beepsky/iamthelaw.ogg',
-		'sound/mobs/non-humanoids/beepsky/insult.ogg',
-		'sound/mobs/non-humanoids/beepsky/radio.ogg',
-		'sound/mobs/non-humanoids/beepsky/secureday.ogg',
+		'sound/voice/beepsky/creep.ogg',
+		'sound/voice/beepsky/god.ogg',
+		'sound/voice/beepsky/iamthelaw.ogg',
+		'sound/voice/beepsky/insult.ogg',
+		'sound/voice/beepsky/radio.ogg',
+		'sound/voice/beepsky/secureday.ogg',
 	)
 
 /datum/sound_effect/honkbot_e
 	key = SFX_HONKBOT_E
 	file_paths = list(
 		'sound/effects/pray.ogg',
-		'sound/mobs/non-humanoids/frog/reee.ogg',
-		'sound/items/airhorn/AirHorn.ogg',
-		'sound/items/airhorn/AirHorn2.ogg',
+		'sound/effects/huuu.ogg',
+		'sound/items/AirHorn.ogg',
+		'sound/items/AirHorn2.ogg',
 		'sound/items/bikehorn.ogg',
 		'sound/items/WEEOO1.ogg',
-		'sound/machines/buzz/buzz-sigh.ogg',
+		'sound/machines/buzz-sigh.ogg',
 		'sound/machines/ping.ogg',
-		'sound/effects/magic/Fireball.ogg',
+		'sound/magic/Fireball.ogg',
 		'sound/misc/sadtrombone.ogg',
-		'sound/mobs/non-humanoids/beepsky/creep.ogg',
-		'sound/mobs/non-humanoids/beepsky/iamthelaw.ogg',
-		'sound/mobs/non-humanoids/hiss/hiss1.ogg',
-		'sound/items/weapons/bladeslice.ogg',
-		'sound/items/weapons/flashbang.ogg',
+		'sound/voice/beepsky/creep.ogg',
+		'sound/voice/beepsky/iamthelaw.ogg',
+		'sound/voice/hiss1.ogg',
+		'sound/weapons/bladeslice.ogg',
+		'sound/weapons/flashbang.ogg',
 	)
 
 /datum/sound_effect/goose
 	key = SFX_GOOSE
 	file_paths = list(
-		'sound/mobs/non-humanoids/goose/goose1.ogg',
-		'sound/mobs/non-humanoids/goose/goose2.ogg',
-		'sound/mobs/non-humanoids/goose/goose3.ogg',
-		'sound/mobs/non-humanoids/goose/goose4.ogg',
+		'sound/creatures/goose1.ogg',
+		'sound/creatures/goose2.ogg',
+		'sound/creatures/goose3.ogg',
+		'sound/creatures/goose4.ogg',
 	)
 
 /datum/sound_effect/warpspeed
@@ -385,80 +385,80 @@
 /datum/sound_effect/crunchy_bush_whack
 	key = SFX_CRUNCHY_BUSH_WHACK
 	file_paths = list(
-		'sound/effects/bush/crunchybushwhack1.ogg',
-		'sound/effects/bush/crunchybushwhack2.ogg',
-		'sound/effects/bush/crunchybushwhack3.ogg',
+		'sound/effects/crunchybushwhack1.ogg',
+		'sound/effects/crunchybushwhack2.ogg',
+		'sound/effects/crunchybushwhack3.ogg',
 	)
 
 /datum/sound_effect/tree_chop
 	key = SFX_TREE_CHOP
 	file_paths = list(
-		'sound/effects/treechop/treechop1.ogg',
-		'sound/effects/treechop/treechop2.ogg',
-		'sound/effects/treechop/treechop3.ogg',
+		'sound/effects/treechop1.ogg',
+		'sound/effects/treechop2.ogg',
+		'sound/effects/treechop3.ogg',
 	)
 
 /datum/sound_effect/rock_tap
 	key = SFX_ROCK_TAP
 	file_paths = list(
-		'sound/effects/rock/rocktap1.ogg',
-		'sound/effects/rock/rocktap2.ogg',
-		'sound/effects/rock/rocktap3.ogg',
+		'sound/effects/rocktap1.ogg',
+		'sound/effects/rocktap2.ogg',
+		'sound/effects/rocktap3.ogg',
 	)
 
 /datum/sound_effect/sear
 	key = SFX_SEAR
-	file_paths = list('sound/items/weapons/sear.ogg')
+	file_paths = list('sound/weapons/sear.ogg')
 
 /datum/sound_effect/reel
 	key = SFX_REEL
 	file_paths = list(
-		'sound/items/reel/reel1.ogg',
-		'sound/items/reel/reel2.ogg',
-		'sound/items/reel/reel3.ogg',
-		'sound/items/reel/reel4.ogg',
-		'sound/items/reel/reel5.ogg',
+		'sound/items/reel1.ogg',
+		'sound/items/reel2.ogg',
+		'sound/items/reel3.ogg',
+		'sound/items/reel4.ogg',
+		'sound/items/reel5.ogg',
 	)
 
 /datum/sound_effect/rattle
 	key = SFX_RATTLE
 	file_paths = list(
-		'sound/items/rattle/rattle1.ogg',
-		'sound/items/rattle/rattle2.ogg',
-		'sound/items/rattle/rattle3.ogg',
+		'sound/items/rattle1.ogg',
+		'sound/items/rattle2.ogg',
+		'sound/items/rattle3.ogg',
 	)
 
 /datum/sound_effect/portal_close
 	key = SFX_PORTAL_CLOSE
-	file_paths = list('sound/effects/portal/portal_close.ogg')
+	file_paths = list('sound/effects/portal_close.ogg')
 
 /datum/sound_effect/portal_enter
 	key = SFX_PORTAL_ENTER
-	file_paths = list('sound/effects/portal/portal_travel.ogg')
+	file_paths = list('sound/effects/portal_travel.ogg')
 
 /datum/sound_effect/portal_created
 	key = SFX_PORTAL_CREATED
 	file_paths = list(
-		'sound/effects/portal/portal_open_1.ogg',
-		'sound/effects/portal/portal_open_2.ogg',
-		'sound/effects/portal/portal_open_3.ogg',
+		'sound/effects/portal_open_1.ogg',
+		'sound/effects/portal_open_2.ogg',
+		'sound/effects/portal_open_3.ogg',
 	)
 
 /datum/sound_effect/screech
 	key = SFX_SCREECH
 	file_paths = list(
-		'sound/mobs/non-humanoids/monkey/monkey_screech_1.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_2.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_3.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_4.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_5.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_6.ogg',
-		'sound/mobs/non-humanoids/monkey/monkey_screech_7.ogg',
+		'sound/creatures/monkey/monkey_screech_1.ogg',
+		'sound/creatures/monkey/monkey_screech_2.ogg',
+		'sound/creatures/monkey/monkey_screech_3.ogg',
+		'sound/creatures/monkey/monkey_screech_4.ogg',
+		'sound/creatures/monkey/monkey_screech_5.ogg',
+		'sound/creatures/monkey/monkey_screech_6.ogg',
+		'sound/creatures/monkey/monkey_screech_7.ogg',
 	)
 
 /datum/sound_effect/tool_switch
 	key = SFX_TOOL_SWITCH
-	file_paths = list('sound/items/tools/tool_switch.ogg')
+	file_paths = list('sound/items/handling/tool_switch.ogg')
 
 /datum/sound_effect/keyboard_clicks
 	key = SFX_KEYBOARD_CLICKS
@@ -503,25 +503,25 @@
 
 /datum/sound_effect/default_fish_slap
 	key = SFX_DEFAULT_FISH_SLAP
-	file_paths = list('sound/mobs/non-humanoids/fish/fish_slap1.ogg')
+	file_paths = list('sound/creatures/fish/fish_slap1.ogg')
 
 /datum/sound_effect/alt_fish_slap
 	key = SFX_ALT_FISH_SLAP
-	file_paths = list('sound/mobs/non-humanoids/fish/fish_slap2.ogg')
+	file_paths = list('sound/creatures/fish/fish_slap2.ogg')
 
 /datum/sound_effect/fish_pickup
 	key = SFX_FISH_PICKUP
 	file_paths = list(
-		'sound/mobs/non-humanoids/fish/fish_pickup1.ogg',
-		'sound/mobs/non-humanoids/fish/fish_pickup2.ogg',
+		'sound/creatures/fish/fish_pickup1.ogg',
+		'sound/creatures/fish/fish_pickup2.ogg',
 	)
 
 /datum/sound_effect/liquid_pour
 	key = SFX_LIQUID_POUR
 	file_paths = list(
-		'sound/effects/liquid_pour/liquid_pour1.ogg',
-		'sound/effects/liquid_pour/liquid_pour2.ogg',
-		'sound/effects/liquid_pour/liquid_pour3.ogg',
+		'sound/effects/liquid_pour1.ogg',
+		'sound/effects/liquid_pour2.ogg',
+		'sound/effects/liquid_pour3.ogg',
 	)
 
 // /datum/sound_effect/cat_purr
@@ -589,8 +589,8 @@
 /datum/sound_effect/polaroid
 	key = SFX_POLAROID
 	file_paths = list(
-		'sound/items/polaroid/polaroid1.ogg',
-		'sound/items/polaroid/polaroid2.ogg',
+		'sound/items/polaroid1.ogg',
+		'sound/items/polaroid2.ogg',
 	)
 
 // /datum/sound_effect/hallucination_turn_around
@@ -607,13 +607,13 @@
 // 		'sound/effects/hallucinations/i_see_you2.ogg',
 // 	)
 
-/datum/sound_effect/low_hiss
-	key = SFX_LOW_HISS
-	file_paths = list(
-		'sound/mobs/non-humanoids/hiss/lowHiss2.ogg',
-		'sound/mobs/non-humanoids/hiss/lowHiss3.ogg',
-		'sound/mobs/non-humanoids/hiss/lowHiss4.ogg',
-	)
+// /datum/sound_effect/low_hiss
+// 	key = SFX_LOW_HISS
+// 	file_paths = list(
+// 		'sound/mobs/non-humanoids/hiss/lowHiss2.ogg',
+// 		'sound/mobs/non-humanoids/hiss/lowHiss3.ogg',
+// 		'sound/mobs/non-humanoids/hiss/lowHiss4.ogg',
+// 	)
 
 // /datum/sound_effect/hallucination_i_m_here
 // 	key = SFX_HALLUCINATION_I_M_HERE
@@ -640,17 +640,17 @@
 /datum/sound_effect/male_sigh
 	key = SFX_MALE_SIGH
 	file_paths = list(
-		'sound/mobs/humanoids/human/sigh/male_sigh1.ogg',
-		'sound/mobs/humanoids/human/sigh/male_sigh2.ogg',
-		'sound/mobs/humanoids/human/sigh/male_sigh3.ogg',
+		'sound/voice/human/sigh/male_sigh1.ogg',
+		'sound/voice/human/sigh/male_sigh2.ogg',
+		'sound/voice/human/sigh/male_sigh3.ogg',
 	)
 
 /datum/sound_effect/female_sigh
 	key = SFX_FEMALE_SIGH
 	file_paths = list(
-		'sound/mobs/humanoids/human/sigh/female_sigh1.ogg',
-		'sound/mobs/humanoids/human/sigh/female_sigh2.ogg',
-		'sound/mobs/humanoids/human/sigh/female_sigh3.ogg',
+		'sound/voice/human/sigh/female_sigh1.ogg',
+		'sound/voice/human/sigh/female_sigh2.ogg',
+		'sound/voice/human/sigh/female_sigh3.ogg',
 	)
 
 /datum/sound_effect/writing_pen
@@ -836,21 +836,21 @@
 /datum/sound_effect/assoc/snore_female
 	key = SFX_SNORE_FEMALE
 	file_paths = list(
-		'sound/mobs/humanoids/human/snore/snore_female1.ogg' = 33,
-		'sound/mobs/humanoids/human/snore/snore_female2.ogg' = 33,
-		'sound/mobs/humanoids/human/snore/snore_female3.ogg' = 33,
-		'sound/mobs/humanoids/human/snore/snore_mimimi1.ogg' = 1,
+		'sound/voice/human/snore/snore_female1.ogg' = 33,
+		'sound/voice/human/snore/snore_female2.ogg' = 33,
+		'sound/voice/human/snore/snore_female3.ogg' = 33,
+		'sound/voice/human/snore/snore_mimimi1.ogg' = 1,
 	)
 
 /datum/sound_effect/assoc/snore_male
 	key = SFX_SNORE_MALE
 	file_paths = list(
-		'sound/mobs/humanoids/human/snore/snore_male1.ogg' = 20,
-		'sound/mobs/humanoids/human/snore/snore_male2.ogg' = 20,
-		'sound/mobs/humanoids/human/snore/snore_male3.ogg' = 20,
-		'sound/mobs/humanoids/human/snore/snore_male4.ogg' = 20,
-		'sound/mobs/humanoids/human/snore/snore_male5.ogg' = 20,
-		'sound/mobs/humanoids/human/snore/snore_mimimi2.ogg' = 1,
+		'sound/voice/human/snore/snore_male1.ogg' = 20,
+		'sound/voice/human/snore/snore_male2.ogg' = 20,
+		'sound/voice/human/snore/snore_male3.ogg' = 20,
+		'sound/voice/human/snore/snore_male4.ogg' = 20,
+		'sound/voice/human/snore/snore_male5.ogg' = 20,
+		'sound/voice/human/snore/snore_mimimi2.ogg' = 1,
 	)
 
 // /datum/sound_effect/assoc/cat_meow
