@@ -31,7 +31,7 @@ import {
   TABS,
 } from './types';
 
-export function PersonalCrafting(props) {
+export function PersonalCrafting(props: any) {
   const { act, data } = useBackend<CraftingData>();
   const {
     mode,
@@ -41,6 +41,7 @@ export function PersonalCrafting(props) {
     display_craftable_only,
     craftability,
     diet,
+    atom_data,
   } = data;
 
   const [searchText, setSearchText] = useState('');
@@ -300,7 +301,7 @@ export function PersonalCrafting(props) {
                           </Tabs.Tab>
                         ))}
                       {tabMode === TABS.material &&
-                        material_occurences.map((material) => (
+                        filteredMaterials.map((material) => (
                           <Tabs.Tab
                             key={material.atom_id}
                             selected={
@@ -320,7 +321,7 @@ export function PersonalCrafting(props) {
                           >
                             <MaterialContent
                               atom_id={material.atom_id}
-                              occurences={material.occurences}
+                              occurences={(material as Material).occurences}
                             />
                           </Tabs.Tab>
                         ))}

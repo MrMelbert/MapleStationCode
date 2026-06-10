@@ -28,9 +28,9 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sandwich/cheese/make_grillable()
-	AddComponent(/datum/component/grillable, /obj/item/food/sandwich/cheese/grilled, rand(30 SECONDS, 60 SECONDS), TRUE)
+	AddComponent(/datum/component/grillable, /obj/item/food/sandwich/grilled_cheese, rand(30 SECONDS, 60 SECONDS), TRUE)
 
-/obj/item/food/sandwich/cheese/grilled
+/obj/item/food/sandwich/grilled_cheese
 	name = "grilled cheese sandwich"
 	desc = "A warm, melty sandwich that goes perfectly with tomato soup."
 	icon_state = "toastedsandwich"

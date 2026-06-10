@@ -324,7 +324,7 @@
 /turf/open/floor/holofloor/beach/water,
 /area/shuttle/escape/luxury)
 "nC" = (
-/obj/item/food/sandwich/cheese/grilled{
+/obj/item/food/sandwich/grilled_cheese{
 	pixel_y = 11
 	},
 /obj/structure/table/wood/fancy/black,
