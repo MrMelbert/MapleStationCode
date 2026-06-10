@@ -472,20 +472,20 @@
 		'sound/machines/computer/keyboard_clicks_7.ogg',
 	)
 
-/datum/sound_effect/stone_drop
-	key = SFX_STONE_DROP
-	file_paths = list(
-		'sound/items/stones/stone_drop1.ogg',
-		'sound/items/stones/stone_drop2.ogg',
-		'sound/items/stones/stone_drop3.ogg',
-	)
+// /datum/sound_effect/stone_drop
+// 	key = SFX_STONE_DROP
+// 	file_paths = list(
+// 		'sound/items/stones/stone_drop1.ogg',
+// 		'sound/items/stones/stone_drop2.ogg',
+// 		'sound/items/stones/stone_drop3.ogg',
+// 	)
 
-/datum/sound_effect/stone_pickup
-	key = SFX_STONE_PICKUP
-	file_paths = list(
-		'sound/items/stones/stone_pick_up1.ogg',
-		'sound/items/stones/stone_pick_up2.ogg',
-	)
+// /datum/sound_effect/stone_pickup
+// 	key = SFX_STONE_PICKUP
+// 	file_paths = list(
+// 		'sound/items/stones/stone_pick_up1.ogg',
+// 		'sound/items/stones/stone_pick_up2.ogg',
+// 	)
 
 /datum/sound_effect/muffled_speech
 	key = SFX_MUFFLED_SPEECH
@@ -523,38 +523,39 @@
 		'sound/effects/liquid_pour/liquid_pour2.ogg',
 		'sound/effects/liquid_pour/liquid_pour3.ogg',
 	)
-/datum/sound_effect/cat_purr
-	key = SFX_CAT_PURR
-	file_paths = list(
-		'sound/mobs/non-humanoids/cat/cat_purr1.ogg',
-		'sound/mobs/non-humanoids/cat/cat_purr2.ogg',
-		'sound/mobs/non-humanoids/cat/cat_purr3.ogg',
-		'sound/mobs/non-humanoids/cat/cat_purr4.ogg',
-	)
 
-/datum/sound_effect/default_liquid_slosh
-	key = SFX_DEFAULT_LIQUID_SLOSH
-	file_paths = list(
-		'sound/items/handling/reagent_containers/default/default_liquid_slosh1.ogg',
-		'sound/items/handling/reagent_containers/default/default_liquid_slosh2.ogg',
-		'sound/items/handling/reagent_containers/default/default_liquid_slosh3.ogg',
-		'sound/items/handling/reagent_containers/default/default_liquid_slosh4.ogg',
-		'sound/items/handling/reagent_containers/default/default_liquid_slosh5.ogg',
-	)
+// /datum/sound_effect/cat_purr
+// 	key = SFX_CAT_PURR
+// 	file_paths = list(
+// 		'sound/mobs/non-humanoids/cat/cat_purr1.ogg',
+// 		'sound/mobs/non-humanoids/cat/cat_purr2.ogg',
+// 		'sound/mobs/non-humanoids/cat/cat_purr3.ogg',
+// 		'sound/mobs/non-humanoids/cat/cat_purr4.ogg',
+// 	)
 
-/datum/sound_effect/plastic_bottle_liquid_slosh
-	key = SFX_PLASTIC_BOTTLE_LIQUID_SLOSH
-	file_paths = list(
-		'sound/items/handling/reagent_containers/plastic_bottle/plastic_bottle_liquid_slosh1.ogg',
-		'sound/items/handling/reagent_containers/plastic_bottle/plastic_bottle_liquid_slosh2.ogg',
-	)
+// /datum/sound_effect/default_liquid_slosh
+// 	key = SFX_DEFAULT_LIQUID_SLOSH
+// 	file_paths = list(
+// 		'sound/items/handling/reagent_containers/default/default_liquid_slosh1.ogg',
+// 		'sound/items/handling/reagent_containers/default/default_liquid_slosh2.ogg',
+// 		'sound/items/handling/reagent_containers/default/default_liquid_slosh3.ogg',
+// 		'sound/items/handling/reagent_containers/default/default_liquid_slosh4.ogg',
+// 		'sound/items/handling/reagent_containers/default/default_liquid_slosh5.ogg',
+// 	)
 
-/datum/sound_effect/pig_oink
-	key = SFX_PIG_OINK
-	file_paths = list(
-		'sound/mobs/non-humanoids/pig/pig1.ogg',
-		'sound/mobs/non-humanoids/pig/pig2.ogg',
-	)
+// /datum/sound_effect/plastic_bottle_liquid_slosh
+// 	key = SFX_PLASTIC_BOTTLE_LIQUID_SLOSH
+// 	file_paths = list(
+// 		'sound/items/handling/reagent_containers/plastic_bottle/plastic_bottle_liquid_slosh1.ogg',
+// 		'sound/items/handling/reagent_containers/plastic_bottle/plastic_bottle_liquid_slosh2.ogg',
+// 	)
+
+// /datum/sound_effect/pig_oink
+// 	key = SFX_PIG_OINK
+// 	file_paths = list(
+// 		'sound/mobs/non-humanoids/pig/pig1.ogg',
+// 		'sound/mobs/non-humanoids/pig/pig2.ogg',
+// 	)
 
 /datum/sound_effect/visor_down
 	key = SFX_VISOR_DOWN
@@ -571,19 +572,19 @@
 		'sound/items/handling/helmet/visor_up2.ogg',
 	)
 
-/datum/sound_effect/growl
-	key = SFX_GROWL
-	file_paths = list(
-		'sound/mobs/non-humanoids/dog/growl1.ogg',
-		'sound/mobs/non-humanoids/dog/growl2.ogg',
-	)
+// /datum/sound_effect/growl
+// 	key = SFX_GROWL
+// 	file_paths = list(
+// 		'sound/mobs/non-humanoids/dog/growl1.ogg',
+// 		'sound/mobs/non-humanoids/dog/growl2.ogg',
+// 	)
 
-/datum/sound_effect/sizzle
-	key = SFX_SIZZLE
-	file_paths = list(
-		'sound/effects/wounds/sizzle1.ogg',
-		'sound/effects/wounds/sizzle2.ogg',
-	)
+// /datum/sound_effect/sizzle
+// 	key = SFX_SIZZLE
+// 	file_paths = list(
+// 		'sound/effects/wounds/sizzle1.ogg',
+// 		'sound/effects/wounds/sizzle2.ogg',
+// 	)
 
 /datum/sound_effect/polaroid
 	key = SFX_POLAROID
@@ -592,19 +593,19 @@
 		'sound/items/polaroid/polaroid2.ogg',
 	)
 
-/datum/sound_effect/hallucination_turn_around
-	key = SFX_HALLUCINATION_TURN_AROUND
-	file_paths = list(
-		'sound/effects/hallucinations/turn_around1.ogg',
-		'sound/effects/hallucinations/turn_around2.ogg',
-	)
+// /datum/sound_effect/hallucination_turn_around
+// 	key = SFX_HALLUCINATION_TURN_AROUND
+// 	file_paths = list(
+// 		'sound/effects/hallucinations/turn_around1.ogg',
+// 		'sound/effects/hallucinations/turn_around2.ogg',
+// 	)
 
-/datum/sound_effect/hallucination_i_see_you
-	key = SFX_HALLUCINATION_I_SEE_YOU
-	file_paths = list(
-		'sound/effects/hallucinations/i_see_you1.ogg',
-		'sound/effects/hallucinations/i_see_you2.ogg',
-	)
+// /datum/sound_effect/hallucination_i_see_you
+// 	key = SFX_HALLUCINATION_I_SEE_YOU
+// 	file_paths = list(
+// 		'sound/effects/hallucinations/i_see_you1.ogg',
+// 		'sound/effects/hallucinations/i_see_you2.ogg',
+// 	)
 
 /datum/sound_effect/low_hiss
 	key = SFX_LOW_HISS
@@ -614,19 +615,19 @@
 		'sound/mobs/non-humanoids/hiss/lowHiss4.ogg',
 	)
 
-/datum/sound_effect/hallucination_i_m_here
-	key = SFX_HALLUCINATION_I_M_HERE
-	file_paths = list(
-		'sound/effects/hallucinations/im_here1.ogg',
-		'sound/effects/hallucinations/im_here2.ogg',
-	)
+// /datum/sound_effect/hallucination_i_m_here
+// 	key = SFX_HALLUCINATION_I_M_HERE
+// 	file_paths = list(
+// 		'sound/effects/hallucinations/im_here1.ogg',
+// 		'sound/effects/hallucinations/im_here2.ogg',
+// 	)
 
-/datum/sound_effect/hallucination_over_here
-	key = SFX_HALLUCINATION_OVER_HERE
-	file_paths = list(
-		'sound/effects/hallucinations/over_here2.ogg',
-		'sound/effects/hallucinations/over_here3.ogg',
-	)
+// /datum/sound_effect/hallucination_over_here
+// 	key = SFX_HALLUCINATION_OVER_HERE
+// 	file_paths = list(
+// 		'sound/effects/hallucinations/over_here2.ogg',
+// 		'sound/effects/hallucinations/over_here3.ogg',
+// 	)
 
 /datum/sound_effect/industrial_scan
 	key = SFX_INDUSTRIAL_SCAN
@@ -664,12 +665,12 @@
 		'sound/effects/writing_pen/writing_pen7.ogg',
 	)
 
-/datum/sound_effect/clown_car_load
-	key = SFX_CLOWN_CAR_LOAD
-	file_paths = list(
-		'sound/vehicles/clown_car/clowncar_load1.ogg',
-		'sound/vehicles/clown_car/clowncar_load2.ogg',
-	)
+// /datum/sound_effect/clown_car_load
+// 	key = SFX_CLOWN_CAR_LOAD
+// 	file_paths = list(
+// 		'sound/vehicles/clown_car/clowncar_load1.ogg',
+// 		'sound/vehicles/clown_car/clowncar_load2.ogg',
+// 	)
 
 /datum/sound_effect/seatbelt_buckle
 	key = SFX_SEATBELT_BUCKLE
@@ -687,20 +688,20 @@
 		'sound/machines/buckle/unbuckle3.ogg',
 	)
 
-/datum/sound_effect/headset_equip
-	key = SFX_HEADSET_EQUIP
-	file_paths = list(
-		'sound/items/equip/headset_equip1.ogg',
-		'sound/items/equip/headset_equip2.ogg',
-	)
+// /datum/sound_effect/headset_equip
+// 	key = SFX_HEADSET_EQUIP
+// 	file_paths = list(
+// 		'sound/items/equip/headset_equip1.ogg',
+// 		'sound/items/equip/headset_equip2.ogg',
+// 	)
 
-/datum/sound_effect/headset_pickup
-	key = SFX_HEADSET_PICKUP
-	file_paths = list(
-		'sound/items/handling/headset/headset_pickup1.ogg',
-		'sound/items/handling/headset/headset_pickup2.ogg',
-		'sound/items/handling/headset/headset_pickup3.ogg',
-	)
+// /datum/sound_effect/headset_pickup
+// 	key = SFX_HEADSET_PICKUP
+// 	file_paths = list(
+// 		'sound/items/handling/headset/headset_pickup1.ogg',
+// 		'sound/items/handling/headset/headset_pickup2.ogg',
+// 		'sound/items/handling/headset/headset_pickup3.ogg',
+// 	)
 
 /datum/sound_effect/bandage_begin
 	key = SFX_BANDAGE_BEGIN
@@ -719,7 +720,7 @@
 	// 	'sound/items/gauze/bandage_end3.ogg',
 	// 	'sound/items/gauze/bandage_end4.ogg',
 	// )
-	file_paths list(
+	file_paths = list(
 		'maplestation_modules/sound/items/rip1.ogg',
 		'maplestation_modules/sound/items/rip2.ogg',
 		'maplestation_modules/sound/items/rip3.ogg',
@@ -745,78 +746,78 @@
 		'sound/items/handling/cloth/cloth_pickup5.ogg',
 	)
 
-/datum/sound_effect/suture_begin
-	key = SFX_SUTURE_BEGIN
-	file_paths = list('sound/items/suture/suture_begin1.ogg')
+// /datum/sound_effect/suture_begin
+// 	key = SFX_SUTURE_BEGIN
+// 	file_paths = list('sound/items/suture/suture_begin1.ogg')
 
-/datum/sound_effect/suture_continuous
-	key = SFX_SUTURE_CONTINUOUS
-	file_paths = list(
-		'sound/items/suture/suture_continuous1.ogg',
-		'sound/items/suture/suture_continuous2.ogg',
-		'sound/items/suture/suture_continuous3.ogg',
-	)
+// /datum/sound_effect/suture_continuous
+// 	key = SFX_SUTURE_CONTINUOUS
+// 	file_paths = list(
+// 		'sound/items/suture/suture_continuous1.ogg',
+// 		'sound/items/suture/suture_continuous2.ogg',
+// 		'sound/items/suture/suture_continuous3.ogg',
+// 	)
 
-/datum/sound_effect/suture_end
-	key = SFX_SUTURE_END
-	file_paths = list(
-		'sound/items/suture/suture_end1.ogg',
-		'sound/items/suture/suture_end2.ogg',
-		'sound/items/suture/suture_end3.ogg',
-	)
+// /datum/sound_effect/suture_end
+// 	key = SFX_SUTURE_END
+// 	file_paths = list(
+// 		'sound/items/suture/suture_end1.ogg',
+// 		'sound/items/suture/suture_end2.ogg',
+// 		'sound/items/suture/suture_end3.ogg',
+// 	)
 
-/datum/sound_effect/suture_pickup
-	key = SFX_SUTURE_PICKUP
-	file_paths = list(
-		'sound/items/handling/suture/needle_pickup1.ogg',
-		'sound/items/handling/suture/needle_pickup2.ogg',
-	)
+// /datum/sound_effect/suture_pickup
+// 	key = SFX_SUTURE_PICKUP
+// 	file_paths = list(
+// 		'sound/items/handling/suture/needle_pickup1.ogg',
+// 		'sound/items/handling/suture/needle_pickup2.ogg',
+// 	)
 
-/datum/sound_effect/suture_drop
-	key = SFX_SUTURE_DROP
-	file_paths = list(
-		'sound/items/handling/suture/needle_drop1.ogg',
-		'sound/items/handling/suture/needle_drop2.ogg',
-		'sound/items/handling/suture/needle_drop3.ogg',
-	)
+// /datum/sound_effect/suture_drop
+// 	key = SFX_SUTURE_DROP
+// 	file_paths = list(
+// 		'sound/items/handling/suture/needle_drop1.ogg',
+// 		'sound/items/handling/suture/needle_drop2.ogg',
+// 		'sound/items/handling/suture/needle_drop3.ogg',
+// 	)
 
-/datum/sound_effect/regen_mesh_begin
-	key = SFX_REGEN_MESH_BEGIN
-	file_paths = list(
-		'sound/items/regenerative_mesh/regen_mesh_begin1.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_begin2.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_begin3.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_begin4.ogg',
-	)
+// /datum/sound_effect/regen_mesh_begin
+// 	key = SFX_REGEN_MESH_BEGIN
+// 	file_paths = list(
+// 		'sound/items/regenerative_mesh/regen_mesh_begin1.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_begin2.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_begin3.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_begin4.ogg',
+// 	)
 
-/datum/sound_effect/regen_mesh_continuous
-	key = SFX_REGEN_MESH_CONTINUOUS
-	file_paths = list(
-		'sound/items/regenerative_mesh/regen_mesh_continuous1.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_continuous2.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_continuous3.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_continuous4.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_continuous5.ogg',
-	)
+// /datum/sound_effect/regen_mesh_continuous
+// 	key = SFX_REGEN_MESH_CONTINUOUS
+// 	file_paths = list(
+// 		'sound/items/regenerative_mesh/regen_mesh_continuous1.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_continuous2.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_continuous3.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_continuous4.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_continuous5.ogg',
+// 	)
 
-/datum/sound_effect/regen_mesh_end
-	key = SFX_REGEN_MESH_END
-	file_paths = list(
-		'sound/items/regenerative_mesh/regen_mesh_end1.ogg',
-		'sound/items/regenerative_mesh/regen_mesh_end2.ogg',
-	)
+// /datum/sound_effect/regen_mesh_end
+// 	key = SFX_REGEN_MESH_END
+// 	file_paths = list(
+// 		'sound/items/regenerative_mesh/regen_mesh_end1.ogg',
+// 		'sound/items/regenerative_mesh/regen_mesh_end2.ogg',
+// 	)
 
-/datum/sound_effect/regen_mesh_pickup
-	key = SFX_REGEN_MESH_PICKUP
-	file_paths = list(
-		'sound/items/handling/regenerative_mesh/regen_mesh_pickup1.ogg',
-		'sound/items/handling/regenerative_mesh/regen_mesh_pickup2.ogg',
-		'sound/items/handling/regenerative_mesh/regen_mesh_pickup3.ogg',
-	)
+// /datum/sound_effect/regen_mesh_pickup
+// 	key = SFX_REGEN_MESH_PICKUP
+// 	file_paths = list(
+// 		'sound/items/handling/regenerative_mesh/regen_mesh_pickup1.ogg',
+// 		'sound/items/handling/regenerative_mesh/regen_mesh_pickup2.ogg',
+// 		'sound/items/handling/regenerative_mesh/regen_mesh_pickup3.ogg',
+// 	)
 
-/datum/sound_effect/regen_mesh_drop
-	key = SFX_REGEN_MESH_DROP
-	file_paths = list('sound/items/regenerative_mesh/regen_mesh_drop1.ogg')
+// /datum/sound_effect/regen_mesh_drop
+// 	key = SFX_REGEN_MESH_DROP
+// 	file_paths = list('sound/items/regenerative_mesh/regen_mesh_drop1.ogg')
 
 
 /* assoc lists go next */
@@ -852,14 +853,14 @@
 		'sound/mobs/humanoids/human/snore/snore_mimimi2.ogg' = 1,
 	)
 
-/datum/sound_effect/assoc/cat_meow
-	key = SFX_CAT_MEOW
-	file_paths = list(
-		'sound/mobs/non-humanoids/cat/cat_meow1.ogg' = 33,
-		'sound/mobs/non-humanoids/cat/cat_meow2.ogg' = 33,
-		'sound/mobs/non-humanoids/cat/cat_meow3.ogg' = 33,
-		'sound/mobs/non-humanoids/cat/oranges_meow1.ogg' = 1,
-	)
+// /datum/sound_effect/assoc/cat_meow
+// 	key = SFX_CAT_MEOW
+// 	file_paths = list(
+// 		'sound/mobs/non-humanoids/cat/cat_meow1.ogg' = 33,
+// 		'sound/mobs/non-humanoids/cat/cat_meow2.ogg' = 33,
+// 		'sound/mobs/non-humanoids/cat/cat_meow3.ogg' = 33,
+// 		'sound/mobs/non-humanoids/cat/oranges_meow1.ogg' = 1,
+// 	)
 
 /datum/sound_effect/cloth_rip
 	key = SFX_CLOTH_RIP
