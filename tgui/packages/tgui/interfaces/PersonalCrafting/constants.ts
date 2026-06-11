@@ -84,4 +84,5 @@ export const CATEGORY_ICONS_COOKING = {
   Breakfast: 'sun',
   Snack: 'compress',
   Condiment: 'bottle-water',
+  Starfruit: 'star', // NON-MODULE CHANGE
 } as const;

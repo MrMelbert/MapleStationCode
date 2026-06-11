@@ -992,7 +992,7 @@
 		/datum/reagent/consumable/orangejuice = 4,
 	)
 	tastes = list("meat" = 1, "crepes" = 1, "orange" = 1)
-	foodtypes = MEAT|GRAIN|FRUIT|SUGAR|ORANGES
+	foodtypes = MEAT | GRAIN | FRUIT | SUGAR
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 

@@ -44,6 +44,7 @@
 	#define CUISINE_MEXICAN "Mexican"
 	#define CUISINE_MOTHIC "Mothic"
 	#define CUISINE_TERRAN "Terran" // catch-all for earth food that we don't have a more specific category for
+	#define CUISINE_STARFRUIT "Starfruit" // NON-MODULE CHANGE
 	// dish categories
 	#define DISH_BREAD "Bread"
 	#define DISH_BURGER "Burger"

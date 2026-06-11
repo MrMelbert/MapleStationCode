@@ -138,4 +138,4 @@
 		return
 	final_foodtypes &= ~current_recipe.removed_foodtypes
 	///Update the foodtypes
-	AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, foodtypes = final_foodtypes)
+	AddComponent(/datum/component/edible, foodtypes = final_foodtypes)

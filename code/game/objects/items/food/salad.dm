@@ -45,7 +45,7 @@
 	icon_state = "fruitsalad"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 9, /datum/reagent/consumable/nutriment/vitamin = 5)
 	tastes = list("fruit" = 1)
-	foodtypes = FRUIT|ORANGES
+	foodtypes = FRUIT
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/salad/jungle

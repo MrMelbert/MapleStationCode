@@ -339,6 +339,7 @@
 	)
 	result = /obj/item/food/donkpocket/homemade
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_APPETIZER
 
 /datum/crafting_recipe/food/dankpocket
 	time = 15
@@ -471,6 +472,7 @@
 	added_foodtypes = BREAKFAST|SUGAR|DAIRY
 	result = /obj/item/food/muffin
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_BREAKFAST
 
 /datum/crafting_recipe/food/berrymuffin
 	name = "Berry muffin"
@@ -482,6 +484,7 @@
 	result = /obj/item/food/muffin/berry
 	added_foodtypes = BREAKFAST|SUGAR|FRUIT|DAIRY
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_BREAKFAST
 
 /datum/crafting_recipe/food/booberrymuffin
 	name = "Booberry muffin"
@@ -494,6 +497,7 @@
 	result = /obj/item/food/muffin/booberry
 	added_foodtypes = BREAKFAST|SUGAR|DAIRY
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_BREAKFAST
 
 ////////////////////////////////////////////OTHER////////////////////////////////////////////
 
@@ -520,6 +524,7 @@
 	result = /obj/item/food/cookie/sugar
 	added_foodtypes = JUNKFOOD|SUGAR
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/spookyskull
 	time = 15
@@ -532,6 +537,7 @@
 	result = /obj/item/food/cookie/sugar/spookyskull
 	added_foodtypes = JUNKFOOD|SUGAR
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/spookycoffin
 	time = 15
@@ -544,6 +550,7 @@
 	result = /obj/item/food/cookie/sugar/spookycoffin
 	added_foodtypes = JUNKFOOD|SUGAR
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/fortunecookie
 	time = 15
@@ -559,6 +566,7 @@
 	added_foodtypes = SUGAR
 	dish_category = DISH_COOKIE
 	// requirements_mats_blacklist = list(/obj/item/paper)
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/poppypretzel
 	time = 15
@@ -590,6 +598,7 @@
 	)
 	result = /obj/item/food/cracker
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/chococornet
 	name = "Choco cornet"
@@ -600,6 +609,7 @@
 	)
 	result = /obj/item/food/chococornet
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/oatmealcookie
 	name = "Oatmeal cookie"
@@ -609,6 +619,7 @@
 	)
 	result = /obj/item/food/cookie/oatmeal
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/raisincookie
 	name = "Raisin cookie"
@@ -620,6 +631,7 @@
 	result = /obj/item/food/cookie/raisin
 	removed_foodtypes = JUNKFOOD
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/cherrycupcake
 	name = "Cherry cupcake"
@@ -630,6 +642,7 @@
 	result = /obj/item/food/cherrycupcake
 	added_foodtypes = SUGAR
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/bluecherrycupcake
 	name = "Blue cherry cupcake"
@@ -640,6 +653,7 @@
 	result = /obj/item/food/cherrycupcake/blue
 	added_foodtypes = SUGAR
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/jupitercupcake
 	name = "Jupiter-cup-cake"
@@ -651,16 +665,7 @@
 	result = /obj/item/food/jupitercupcake
 	added_foodtypes = SUGAR
 	dish_category = DISH_PASTRY
-
-/datum/crafting_recipe/food/jupitercupcake
-	name = "Jupiter-cup-cake"
-	reqs = list(
-		/obj/item/food/pastrybase = 1,
-		/obj/item/food/grown/mushroom/jupitercup = 1,
-		/datum/reagent/consumable/caramel = 3,
-	)
-	result = /obj/item/food/jupitercupcake
-	category = CAT_PASTRY
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/honeybun
 	name = "Honey bun"
@@ -671,6 +676,7 @@
 	result = /obj/item/food/honeybun
 	added_foodtypes = SUGAR
 	dish_category = DISH_PASTRY
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/cannoli
 	name = "Cannoli"
@@ -692,6 +698,7 @@
 	result = /obj/item/food/cookie/peanut_butter
 	added_foodtypes = JUNKFOOD|NUTS
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/raw_brownie_batter
 	name = "Raw brownie batter"
@@ -743,6 +750,7 @@
 	result = /obj/item/food/cookie/chocolate_chip_cookie
 	removed_foodtypes = JUNKFOOD
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/snickerdoodle
 	name = "Snickerdoodle"
@@ -753,6 +761,7 @@
 	result = /obj/item/food/cookie/snickerdoodle
 	added_foodtypes = SUGAR
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/thumbprint_cookie
 	name = "Thumbprint cookie"
@@ -763,6 +772,7 @@
 	result = /obj/item/food/cookie/thumbprint_cookie
 	added_foodtypes = FRUIT|SUGAR
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/macaron
 	name = "Macaron"
@@ -773,3 +783,4 @@
 	)
 	result = /obj/item/food/cookie/macaron
 	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
