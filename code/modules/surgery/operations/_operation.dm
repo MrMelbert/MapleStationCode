@@ -133,7 +133,7 @@
 	visible_message(
 		span_notice("[src] attempts to close [p_their()] own [limb.plaintext_zone] with [tool]..."),
 		span_notice("You attempt to close your own [limb.plaintext_zone] with [tool]..."),
-		span_hear("You hear singing."),
+		span_hear("You hear [tool?.get_temperature() ? "singeing" : "stitching"] sounds."),
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
@@ -149,7 +149,7 @@
 	visible_message(
 		span_notice("[src] closes [p_their()] own [limb.plaintext_zone] with [tool]."),
 		span_notice("You close your own [limb.plaintext_zone] with [tool]."),
-		span_hear("You hear singing."),
+		span_hear("You hear [tool?.get_temperature() ? "singeing" : "stitching"] sounds."),
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
