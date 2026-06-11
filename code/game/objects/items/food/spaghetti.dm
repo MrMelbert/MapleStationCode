@@ -263,4 +263,3 @@
 	tastes = list("spaghetti" = 1, "parmigiano reggiano" = 1,  "guanciale" = 1)
 	foodtypes = GRAIN | MEAT | DAIRY | EGG
 	crafting_complexity = FOOD_COMPLEXITY_4
-	crafted_food_buff = /datum/status_effect/food/speech/italian
