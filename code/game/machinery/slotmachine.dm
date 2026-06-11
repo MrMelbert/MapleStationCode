@@ -253,7 +253,7 @@
 
 	// Play the lever pull sound and a reel spin sound after a short delay
 	playsound(src, 'sound/machines/lever/lever_start.ogg', 50)
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/machines/roulette/roulettewheel.ogg', 20), 0.3 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/machines/roulettewheel.ogg', 20), 0.3 SECONDS)
 
 	// Randomize reels to get the new final state.
 	randomize_reels()
@@ -303,7 +303,7 @@
 	else if(check_jackpot(JACKPOT_SEVENS))
 		winning = WINNING_JACKPOT
 		var/prize = money + PRIZE_JACKPOT
-		says("JACKPOT! You win [prize] credits!")
+		say("JACKPOT! You win [prize] credits!")
 		priority_announce("Congratulations to [user ? user.real_name : usrname] for winning the jackpot at the slot machine in [get_area(src)]!")
 		if(isliving(user) && (user in viewers(src)))
 			var/mob/living/living_user = user
@@ -322,7 +322,7 @@
 
 	else if(linelength == 5)
 		winning = WINNING_BIG
-		says("Big Winner! You win a thousand credits!")
+		say("Big Winner! You win a thousand credits!")
 		give_money(PRIZE_BIG)
 		if(isliving(user) && (user in viewers(src)))
 			var/mob/living/living_user = user
@@ -330,7 +330,7 @@
 
 	else if(linelength == 4)
 		winning = WINNING_SMALL
-		says("Winner! You win four hundred credits!")
+		say("Winner! You win four hundred credits!")
 		give_money(PRIZE_SMALL)
 		if(isliving(user) && (user in viewers(src)))
 			var/mob/living/living_user = user
@@ -338,7 +338,7 @@
 
 	else if(linelength == 3)
 		winning = WINNING_FREESPIN
-		says("Winner! You win three free spins!")
+		say("Winner! You win three free spins!")
 		balance += SPIN_PRICE * 4
 		money = max(money - SPIN_PRICE * 4, money)
 
