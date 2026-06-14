@@ -27,7 +27,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("tender meat" = 2, "sweet sauce" = 1, "smokey BBQ" = 1, "sugary glaze" = 1)
-	foodtypes = MEAT | VEGETABLES | SUGAR
+	foodtypes = MEAT | VEGETABLES | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/starfruit_chicken_alfredo
@@ -55,7 +55,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 2, "starfruit" = 2, "fish" = 2)
-	foodtypes = SEAFOOD | VEGETABLES | GRAIN
+	foodtypes = VEGETABLES | GRAIN | FRUIT | SUGAR | SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
