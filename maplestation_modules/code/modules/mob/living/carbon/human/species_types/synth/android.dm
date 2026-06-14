@@ -515,6 +515,10 @@
 	if(works_on_organs || works_on_biotypes || works_on_bodytypes)
 		return NONE // if it works on robotic parts, then it works normally
 
+	var/datum/blood_type/bloodtype = source.blood_type
+	if(istype(chem, bloodtype.restoration_chem) || istype(chem, bloodtype.reagent_type))
+		return NONE // if it's a blood booster or restorer, it works normally
+
 	// toxins accrue as toxicity, though their standard effects are otherwise blocked
 	if(istype(chem, /datum/reagent/toxin))
 		var/datum/reagent/toxin/toxin_chem = chem
