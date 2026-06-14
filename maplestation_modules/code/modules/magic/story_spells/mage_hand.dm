@@ -1,4 +1,5 @@
 #define MAGE_HAND_MANA_COST 20
+#define MAGE_HAND_PSIONIC_MANA_REFUND 5 // more significant cost because its more powerful
 
 // Yeah, it's just a spell that gives you telekinesis for a short period, sue me
 /datum/action/cooldown/spell/apply_mutations/mage_hand
@@ -70,4 +71,14 @@
 /datum/mutation/human/telekinesis/mage_hand/get_visual_indicator()
 	return
 
+/datum/action/cooldown/spell/apply_mutations/mage_hand/after_cast(...)
+	. = ..()
+	// ditto, with the comments on this part in sending/telepathy's file
+	var/mob/living/carbon/psychic = owner
+	if(!psychic)
+		return
+	if(HAS_TRAIT(psychic, TRAIT_FULL_PSIONIC))
+		psychic.safe_adjust_personal_mana(MAGE_HAND_PSIONIC_MANA_REFUND)
+
 #undef MAGE_HAND_MANA_COST
+#undef MAGE_HAND_PSIONIC_MANA_REFUND

@@ -1,5 +1,9 @@
 #define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (1<<2)
 
+/// the lowest decimal place we round to during dispersion
+/// keep this to one decimal place unless you know what you're doing because anything more causes tomfoolery and really ugly decimals
+#define MANA_DECIMAL_FLOOR 0.1
+
 /* DESIGN NOTES
 * This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
 * on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
@@ -56,8 +60,15 @@
 	/// Uses defines from magic_charge_bitflags.dm.
 	var/discharge_method = MANA_SEQUENTIAL
 
-	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
-	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
+	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm. set this to null if you don't want to use any of the default transfer rules whatso ever
+	var/intrinsic_recharge_sources = NONE
+
+	/// what ruleset do we abide by in regards to mana transferrence? flags in magic_bitflags.dm, and the default callback procs are later down this file
+	var/default_mana_transfer_ruleset = MANA_TRANSFER_ANARCHY
+	var/list/check_ruleset_callbacks = list() // where we store what rule procs we use, don't touch this unless you're doing stuff that can't be done with other rulesets
+
+	// if any of the transfer rules fail, do we stop the transfer?
+	var/frail_transfer = FALSE
 
 /datum/mana_pool/New(atom/parent = null)
 	. = ..()
@@ -68,16 +79,26 @@
 
 	START_PROCESSING(SSmagic, src)
 
+	if(default_mana_transfer_ruleset)
+		update_transfer_ruleset()
+
 /datum/mana_pool/Destroy(force, ...)
 	attunements = null
 	attunements_to_generate = null
 
-	QDEL_LIST(transfer_rates)
-	QDEL_LIST(transfer_caps)
-	QDEL_LIST(transferring_to)
-	QDEL_LIST(transferring_from) // we already have a signal registered, so if we qdel we stop transfers
+	transfer_rates.Cut()
+	transfer_caps.Cut()
+	check_ruleset_callbacks.Cut()
+
+	for (var/datum/mana_pool/pool_to_detach as anything in transferring_to)
+		stop_transfer(pool_to_detach, TRUE)
+	for (var/datum/mana_pool/pool_to_detach as anything in transferring_from)
+		pool_to_detach.stop_transfer(src, TRUE)
 
 	STOP_PROCESSING(SSmagic, src)
+
+	if(!parent)
+		return ..()
 
 	if (parent.mana_pool != src)
 		stack_trace("[parent].mana_pool was not [src] when src had parent registered!")
@@ -103,7 +124,7 @@
 
 	//determines what the status displays, it'll be a generic/non-obvious value as a design choice
 	if(amount)
-		if (amount < sc_very_low)
+		if (amount <= sc_very_low)
 			general_amount_estimate = "VERY LOW"
 		else if (amount > sc_very_low && amount < sc_low)
 			general_amount_estimate = "LOW"
@@ -125,22 +146,36 @@
 
 	return GLOB.default_attunements.Copy()
 
+/datum/mana_pool/proc/update_transfer_ruleset()
+	switch (default_mana_transfer_ruleset)
+		if (MANA_TRANSFER_SOFTCAP)
+			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap))
+		if (MANA_TRANSFER_SOFTCAP_NO_PASS)
+			src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_softcap_no_pass))
+
 // order of operations is as follows:
 // 1. we recharge
 // 2. we transfer mana
 // 3. we discharge excess mana
 /datum/mana_pool/process(seconds_per_tick)
-
-	donation_budget_this_tick = (max_donation_rate_per_second * seconds_per_tick) //TODO: stop float imprecision
+	var/donation_this_tick = (max_donation_rate_per_second * seconds_per_tick)
+	donation_budget_this_tick = FLOOR(donation_this_tick, MANA_DECIMAL_FLOOR)//TODO: stop float imprecision but harder because i added a round? or not?
 
 	if (ethereal_recharge_rate != 0)
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
+
 	if (length(transferring_to) > 0)
 		switch (transfer_method)
 			if (MANA_SEQUENTIAL)
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					var/amount_to_transfer = get_transfer_rate_for(iterated_pool) * seconds_per_tick
+
 					if (amount <= 0 || donation_budget_this_tick <= 0)
 						break
+
+					if(!check_rulesets(iterated_pool, amount_to_transfer))
+						continue
+
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
@@ -148,15 +183,21 @@
 					transfer_mana_to(iterated_pool, seconds_per_tick)
 
 			if (MANA_DISPERSE_EVENLY)
-				var/mana_to_disperse = (SAFE_DIVIDE(donation_budget_this_tick, length(transferring_to)))
+				var/budgeted_mana_to_disperse = SAFE_DIVIDE(donation_budget_this_tick, length(transferring_to))
+				var/mana_to_disperse = (FLOOR(budgeted_mana_to_disperse, MANA_DECIMAL_FLOOR))
 
 				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					if (amount <= 0 || donation_budget_this_tick <= 0)
+						break
+
+					if(!check_rulesets(iterated_pool, mana_to_disperse))
+						continue
+
 					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
 						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
 						continue
 
 					transfer_specific_mana(iterated_pool, mana_to_disperse)
-			// ...
 
 	if (parent)
 		if (amount > parent.mana_overload_threshold)
@@ -165,7 +206,7 @@
 		else if (parent.mana_overloaded)
 			parent.stop_mana_overload()
 
-	if (amount > softcap) // why was this amount < softcap
+	if (amount > softcap)
 	// exponential decay
 	// exponentially decays amount when amount surpasses softcap, with [exponential_decay_divisor] being the (inverse) decay factor
 	// can only decay however much amount we are over softcap
@@ -218,6 +259,7 @@
 	adjust_mana(-adjusted_amount)
 	return other_pool.adjust_mana(adjusted_amount, attunements)
 
+// begin a mana transfer to the pool targeted in the parentheses
 /datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool, force_process = FALSE)
 
 	if (target_pool == src)
@@ -230,9 +272,8 @@
 	if (target_pool in transferring_to)
 		return MANA_POOL_ALREADY_TRANSFERRING
 
+	transferring_to += target_pool
 	target_pool.incoming_transfer_start(src)
-
-	RegisterSignal(target_pool, COMSIG_QDELETING, PROC_REF(stop_transfer))
 
 	if (force_process)
 		transferring_to[target_pool] |= MANA_POOL_SKIP_NEXT_TRANSFER
@@ -240,16 +281,14 @@
 
 	return MANA_POOL_TRANSFER_START
 
+// stop a mana transfer to the pool targeted in the parentheses
 /datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool, forced = FALSE)
-	SIGNAL_HANDLER
 
 	if (!forced && !QDELETED(target_pool) && (transferring_to[target_pool] & MANA_POOL_SKIP_NEXT_TRANSFER))
 		return MANA_POOL_TRANSFER_SKIP_ACTIVE // nope!
 
 	transferring_to -= target_pool
 	target_pool.incoming_transfer_end(src)
-
-	UnregisterSignal(target_pool, COMSIG_QDELETING)
 
 	return MANA_POOL_TRANSFER_STOP
 
@@ -325,15 +364,15 @@
 	return GLOB.default_attunements.Copy()
 
 /datum/mana_pool/proc/set_max_mana(new_max, change_amount = FALSE, change_softcap = TRUE)
-	var/percent = get_percent_to_max() //originally this was a duplicate redefinition- see change_amount
+	var/percent = get_percent_to_max()
 	var/softcap_percent = get_percent_of_softcap_to_max()
 
 	if (change_softcap)
-		softcap_percent = get_percent_of_softcap_to_max() // originally softcap_percent was defined here
+		softcap_percent = get_percent_of_softcap_to_max()
 		softcap = new_max * (softcap_percent / 100)
 
 	if (change_amount)
-		percent = get_percent_to_max() // this used to be var/percent. why?
+		percent = get_percent_to_max()
 		amount = new_max * (percent / 100)
 
 	maximum_mana_capacity = new_max
@@ -352,5 +391,42 @@
 	SHOULD_BE_PURE(TRUE)
 
 	return (softcap / maximum_mana_capacity) * 100
+
+// wrapper proc for determining rulesets
+/datum/mana_pool/proc/check_rulesets(datum/mana_pool/pool, transferred_mana)
+	if(!length(check_ruleset_callbacks)) // if there are no rules set, just return true.
+		return TRUE
+
+	var/datum/mana_pool/target_pool = pool
+	var/datum/callback/callback
+
+	for(callback in check_ruleset_callbacks)
+		if(!callback.Invoke(target_pool, transferred_mana))
+
+			if(frail_transfer)
+				stop_transfer(target_pool)
+
+			return FALSE
+	return TRUE
+
+// default transfer rules, all call backs decided by what you put in default_mana_transfer_ruleset, set in check_ruleset_callbacks, called by most transfer things.
+// these aren't used by default, and you can set you own for whatever pool you use: though feel to add those you use on multiple different subtypes here, because this is just a place where the most common ones are stored
+
+// FOR THE LOVE OF GOD READ THIS: MAKE SURE ALL OF THESE, AND ANY NEW CALLBACKS YOU MAKE, HAVE THE SAME ARGS, EVEN IF THEY'RE NOT USED. AND MAKE SURE ANY TIME YOU ADD A NEW INVOKE, IT SENDS THE SAME SET OF ARGS, IT WILL SAVE EVERYONE HEADACHES
+
+/datum/mana_pool/proc/transfer_rule_softcap(datum/mana_pool/pool, transferred_mana)
+	var/datum/mana_pool/target_pool = pool
+	var/softcap_check = (target_pool.amount >= target_pool.softcap)
+	if (softcap_check)
+		return FALSE
+	return TRUE
+
+/datum/mana_pool/proc/transfer_rule_softcap_no_pass(datum/mana_pool/pool, transferred_mana)
+	var/datum/mana_pool/target_pool = pool
+	var/softcap_check = (target_pool.amount >= target_pool.softcap)
+	var/softcap_pass_check = ((target_pool.amount + transferred_mana) > target_pool.softcap)
+	if ((softcap_check) || softcap_pass_check)
+		return FALSE
+	return TRUE
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS
