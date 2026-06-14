@@ -1,0 +1,879 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ai" = (
+/obj/structure/closet,
+/obj/item/melee/maple_plasma_blade,
+/obj/item/knife/combat/survival,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"ax" = (
+/obj/effect/turf_decal/tile/neutral,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"aD" = (
+/obj/structure/filingcabinet,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"dc" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/structure/filingcabinet/chestdrawer,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"dg" = (
+/obj/structure/table/wood,
+/obj/item/paper_bin,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"dC" = (
+/obj/machinery/light/small/dim/directional/north,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"dS" = (
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/observation)
+"em" = (
+/obj/structure/table/wood,
+/obj/machinery/coffeemaker/impressa,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"eN" = (
+/obj/structure/table/wood,
+/obj/item/storage/box/coffeepack,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"fb" = (
+/obj/machinery/light/small/dim/directional/north,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/observation)
+"gM" = (
+/obj/structure/chair/comfy/brown{
+	dir = 1
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/observation)
+"hd" = (
+/turf/closed/indestructible/syndicate,
+/area/grand_library/confidential_dept/librarian)
+"hf" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"jf" = (
+/turf/open/space/basic,
+/area/space)
+"ks" = (
+/obj/structure/table/wood,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"lw" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/filingcabinet/chestdrawer,
+/obj/structure/filingcabinet/chestdrawer,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"mG" = (
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"qe" = (
+/obj/structure/chair/sofa/corp/right{
+	dir = 8
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"qn" = (
+/obj/structure/closet,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"sy" = (
+/obj/structure/filingcabinet,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"tO" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/dim/directional/west,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"ui" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/dim/directional/east,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"ws" = (
+/obj/structure/chair/sofa/corp/corner{
+	dir = 8
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"xF" = (
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"xP" = (
+/obj/structure/filingcabinet,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"yy" = (
+/obj/structure/sink/directional/east{
+	pixel_y = -8
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"Ci" = (
+/obj/machinery/light/small/dim/directional/south,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"Co" = (
+/obj/structure/table/wood,
+/obj/item/flashlight/lamp/green,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"Cu" = (
+/obj/machinery/door/airlock/vault,
+/obj/effect/mapping_helpers/airlock/locked,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept/librarian)
+"Dc" = (
+/obj/machinery/light/dim/directional/south,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/observation)
+"Dz" = (
+/obj/structure/chair/comfy/black{
+	dir = 1
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"Ey" = (
+/obj/structure/filingcabinet,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/filingcabinet,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"EM" = (
+/obj/structure/table/wood,
+/obj/machinery/coffeemaker/impressa,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"Fa" = (
+/obj/machinery/light/small/dim/directional/south,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"Fr" = (
+/obj/structure/table/wood,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"HO" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/filingcabinet/chestdrawer,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"IQ" = (
+/turf/closed/indestructible/opsglass,
+/area/grand_library/confidential_dept/observation)
+"Jk" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/filingcabinet/chestdrawer,
+/obj/machinery/light/floor,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"Ll" = (
+/obj/structure/table/wood,
+/obj/item/flashlight/lamp/green,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"Ng" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/filingcabinet/chestdrawer,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"Or" = (
+/obj/structure/chair/sofa/corp{
+	dir = 8
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"OD" = (
+/obj/structure/filingcabinet,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"Pc" = (
+/obj/structure/filingcabinet,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/dim/directional/south,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"PK" = (
+/turf/closed/indestructible/fakedoor,
+/area/grand_library/confidential_dept/librarian)
+"QZ" = (
+/turf/closed/indestructible/fakedoor,
+/area/grand_library/confidential_dept/observation)
+"Ru" = (
+/obj/structure/filingcabinet,
+/obj/machinery/light/small/dim/directional/north,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"SY" = (
+/turf/closed/indestructible/syndicate,
+/area/grand_library/confidential_dept/reception)
+"Tb" = (
+/obj/machinery/door/airlock/vault,
+/obj/effect/mapping_helpers/airlock/locked,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept/reception)
+"TD" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"Ue" = (
+/obj/structure/dresser,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"UH" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/turf/open/floor/iron/dark,
+/area/grand_library/confidential_dept)
+"Vm" = (
+/obj/structure/chair/comfy/black,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/librarian)
+"WI" = (
+/obj/structure/closet,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"Xp" = (
+/turf/closed/indestructible/syndicate,
+/area/grand_library/confidential_dept/observation)
+"XM" = (
+/obj/structure/chair/sofa/corp/left{
+	dir = 1
+	},
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"YL" = (
+/turf/closed/indestructible/syndicate,
+/area/grand_library/confidential_dept)
+"Zs" = (
+/obj/machinery/light/small/dim/directional/north,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+"ZJ" = (
+/obj/machinery/light/small/dim/directional/west,
+/turf/open/floor/carpet/black,
+/area/grand_library/confidential_dept/reception)
+
+(1,1,1) = {"
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+hd
+hd
+PK
+hd
+hd
+hd
+hd
+"}
+(2,1,1) = {"
+YL
+xP
+hf
+tO
+dc
+dc
+ax
+dc
+UH
+tO
+hf
+Ey
+hd
+Ru
+mG
+yy
+EM
+Fr
+hd
+"}
+(3,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+UH
+HO
+UH
+UH
+hf
+hf
+hf
+hd
+sy
+mG
+mG
+mG
+Fa
+hd
+"}
+(4,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+HO
+UH
+UH
+UH
+hf
+hf
+hf
+Cu
+mG
+mG
+Co
+Fr
+mG
+hd
+"}
+(5,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+hf
+hd
+mG
+Vm
+Fr
+Dz
+Fa
+hd
+"}
+(6,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+UH
+HO
+UH
+UH
+hf
+hf
+xP
+hd
+dC
+Vm
+dg
+sy
+qn
+hd
+"}
+(7,1,1) = {"
+YL
+OD
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+aD
+hd
+hd
+hd
+hd
+hd
+hd
+hd
+"}
+(8,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+HO
+UH
+HO
+UH
+hf
+hf
+xP
+Xp
+dS
+dS
+dS
+dS
+Xp
+jf
+"}
+(9,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+HO
+Jk
+lw
+HO
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(10,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+Dc
+Xp
+jf
+"}
+(11,1,1) = {"
+YL
+xP
+hf
+hf
+ax
+ax
+ax
+ax
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(12,1,1) = {"
+YL
+OD
+hf
+hf
+UH
+UH
+UH
+UH
+HO
+Ng
+hf
+Pc
+Xp
+fb
+dS
+dS
+dS
+Xp
+jf
+"}
+(13,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+HO
+Jk
+HO
+HO
+Ng
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+QZ
+jf
+"}
+(14,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(15,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(16,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+HO
+HO
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(17,1,1) = {"
+YL
+xP
+hf
+Ng
+HO
+HO
+Jk
+HO
+HO
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+QZ
+jf
+"}
+(18,1,1) = {"
+YL
+OD
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+Pc
+Xp
+fb
+dS
+dS
+dS
+Xp
+jf
+"}
+(19,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(20,1,1) = {"
+YL
+xP
+hf
+hf
+ax
+ax
+ax
+ax
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+Dc
+Xp
+jf
+"}
+(21,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+HO
+UH
+UH
+UH
+hf
+hf
+xP
+IQ
+dS
+gM
+dS
+dS
+Xp
+jf
+"}
+(22,1,1) = {"
+YL
+xP
+hf
+hf
+HO
+HO
+Jk
+HO
+UH
+hf
+hf
+xP
+Xp
+dS
+dS
+dS
+dS
+Xp
+jf
+"}
+(23,1,1) = {"
+YL
+OD
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+aD
+SY
+SY
+SY
+SY
+SY
+SY
+SY
+"}
+(24,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+xP
+SY
+eN
+em
+ks
+ZJ
+Ue
+SY
+"}
+(25,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+HO
+HO
+HO
+HO
+hf
+hf
+hf
+SY
+Zs
+xF
+xF
+xF
+WI
+SY
+"}
+(26,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+HO
+UH
+hf
+hf
+hf
+Tb
+xF
+xF
+xF
+xF
+Ci
+SY
+"}
+(27,1,1) = {"
+YL
+xP
+hf
+hf
+UH
+UH
+UH
+UH
+UH
+hf
+hf
+hf
+SY
+ai
+xF
+xF
+xF
+XM
+SY
+"}
+(28,1,1) = {"
+YL
+xP
+hf
+ui
+TD
+TD
+TD
+TD
+UH
+ui
+hf
+xP
+SY
+Ll
+qe
+Or
+Or
+ws
+SY
+"}
+(29,1,1) = {"
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+YL
+SY
+SY
+SY
+SY
+SY
+SY
+SY
+"}
