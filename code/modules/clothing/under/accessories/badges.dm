@@ -3,6 +3,7 @@
 	name = "attorney's badge"
 	desc = "Fills you with the conviction of JUSTICE. Lawyers tend to want to show it to everyone they meet."
 	icon_state = "lawyerbadge"
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/clothing/accessory/lawyers_badge/interact(mob/user)
 	. = ..()
@@ -28,6 +29,7 @@
 	name = "\improper Clown Pin"
 	desc = "A pin to show off your appreciation for clowns and clowning!"
 	icon_state = "clown_enjoyer_pin"
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/clothing/accessory/clown_enjoyer_pin/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
 	. = ..()
@@ -56,6 +58,7 @@
 	name = "\improper Mime Pin"
 	desc = "A pin to show off your appreciation for mimes and miming!"
 	icon_state = "mime_fan_pin"
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/clothing/accessory/mime_fan_pin/can_attach_accessory(obj/item/clothing/under/attach_to, mob/living/user)
 	. = ..()
@@ -198,18 +201,21 @@
 	name = "deaf personnel pin"
 	desc = "Indicates that the wearer is deaf."
 	icon_state = "deaf_pin"
+	w_class = WEIGHT_CLASS_TINY
 
 ///Awarded for being dutiful and extinguishing the debt from the "Indebted" quirk.
 /obj/item/clothing/accessory/debt_payer_pin
 	name = "debt payer pin"
 	desc = "I've paid my debt and all I've got was this pin."
 	icon_state = "debt_payer_pin"
+	w_class = WEIGHT_CLASS_TINY
 
 /// Self-identify as a dangerous subversive
 /obj/item/clothing/accessory/anti_sec_pin
 	name = "subversive pin"
 	desc = "A badge which loudly and proudly proclaims your hostility to the Nanotrasen Security Team, and authority in general."
 	icon_state = "anti_sec"
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/clothing/accessory/anti_sec_pin/Initialize(mapload)
 	. = ..()
@@ -244,6 +250,7 @@
 	desc_controls = "Click person with it to show them it"
 	icon_state = "press_badge"
 	attachment_slot = NONE // actually NECK but that doesn't make sense
+	w_class = WEIGHT_CLASS_TINY
 	/// The name of the person in the badge
 	var/journalist_name
 	/// The name of the press person is working for

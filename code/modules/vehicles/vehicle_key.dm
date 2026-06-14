@@ -94,3 +94,4 @@
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/whip.ogg'
 	slot_flags = ITEM_SLOT_BELT
+	w_class = WEIGHT_CLASS_SMALL
