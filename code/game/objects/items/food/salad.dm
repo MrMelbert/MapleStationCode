@@ -37,7 +37,7 @@
 	icon_state = "validsalad"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/protein = 5, /datum/reagent/consumable/doctor_delight = 8, /datum/reagent/consumable/nutriment/vitamin = 6)
 	tastes = list("leaves" = 1, "potato" = 1, "meat" = 1, "valids" = 1)
-	foodtypes = VEGETABLES | MEAT | FRIED | FRUIT
+	foodtypes = VEGETABLES | MEAT | FRIED
 
 /obj/item/food/salad/fruit
 	name = "fruit salad"
@@ -130,7 +130,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("rice" = 1, "cheese" = 1)
-	foodtypes = GRAIN | DAIRY
+	foodtypes = GRAIN|DAIRY|VEGETABLES
 	venue_value = FOOD_PRICE_EXOTIC
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -144,7 +144,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("rice" = 1, "egg" = 1)
-	foodtypes = GRAIN | MEAT //EGG = MEAT -NinjaNomNom 2017
+	foodtypes = MEAT|VEGETABLES|GRAIN|EGG
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/salad/edensalad
@@ -261,7 +261,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/salad/greek_salad
-	name = "Greek salad"
+	name = "greek salad"
 	desc = "A popular salad made of tomatoes, onions, feta cheese, and olives all drizzled in olive oil. Though it feels like it's missing something..."
 	icon_state = "greek_salad"
 	food_reagents = list(
@@ -269,11 +269,11 @@
 		/datum/reagent/consumable/nutriment = 14,
 	)
 	tastes = list("healthy greens" = 2, "olive dressing" = 1, "feta cheese" = 1)
-	foodtypes = VEGETABLES | DAIRY
+	foodtypes = VEGETABLES|FRUIT|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/salad/caesar_salad
-	name = "Caesar salad"
+	name = "caesar salad"
 	desc = "A simple yet flavorful salad of onions, lettuce, croutons, and shreds of cheese dressed in oil. Comes with a slice of pita bread!"
 	icon_state = "caesar_salad"
 	food_reagents = list(
@@ -306,7 +306,7 @@
 		/datum/reagent/consumable/nutriment/protein = 4,
 	)
 	tastes = list("creamy potatoes" = 2, "eggs" = 2, "mayonnaise" = 1, "onions" = 1)
-	foodtypes = VEGETABLES | BREAKFAST
+	foodtypes = MEAT|VEGETABLES|BREAKFAST|EGG
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/salad/spinach_fruit_salad
@@ -318,7 +318,7 @@
 		/datum/reagent/consumable/nutriment = 12,
 	)
 	tastes = list("spinach" = 2, "berries" = 2, "pineapple" = 2, "dressing" = 1)
-	foodtypes = VEGETABLES | FRUIT
+	foodtypes = VEGETABLES|FRUIT|PINEAPPLE
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/salad/antipasto_salad
@@ -331,5 +331,5 @@
 		/datum/reagent/consumable/nutriment/protein = 6,
 	)
 	tastes = list("lettuce" = 2, "salami" = 2, "mozzarella cheese" = 2, "tomatoes" = 2, "dressing" = 1)
-	foodtypes = VEGETABLES | DAIRY | MEAT
+	foodtypes = MEAT|VEGETABLES|FRUIT|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_4

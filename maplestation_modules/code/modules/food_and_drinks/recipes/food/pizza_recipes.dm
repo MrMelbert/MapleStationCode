@@ -6,4 +6,6 @@
 		/obj/item/food/spaghetti/boiledspaghetti = 2,
 	)
 	result = /obj/item/food/pizza/spaghetti/raw
-	category = CAT_PIZZA
+	cuisine_category = CUISINE_ITALIAN
+	dish_category = DISH_PIZZA // or DISH_NOODLES ?
+	added_foodtypes = RAW

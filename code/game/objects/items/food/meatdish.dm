@@ -16,7 +16,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("fish" = 4, "batter" = 1, "hot peppers" = 1)
-	foodtypes = SEAFOOD | FRIED
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD|FRIED
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -170,7 +170,7 @@
 	)
 	bite_consumption = 1
 	tastes = list("fish" = 1, "breadcrumbs" = 1)
-	foodtypes = SEAFOOD | FRIED
+	foodtypes = GRAIN|SEAFOOD|FRIED
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
 	crafting_complexity = FOOD_COMPLEXITY_2
@@ -213,7 +213,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 4, "carrots" = 2, "potato" = 2)
-	foodtypes = VEGETABLES
+	foodtypes = VEGETABLES|GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -229,7 +229,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("boiled rice" = 4, "carrots" = 2, "potato" = 2)
-	foodtypes = VEGETABLES
+	foodtypes = VEGETABLES|GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -244,7 +244,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 2, "spicyness" = 2)
-	foodtypes = VEGETABLES | SEAFOOD
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -262,14 +262,14 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 2, "spicyness" = 2)
-	foodtypes = VEGETABLES | SEAFOOD
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 // empty sushi for custom sushi
 /obj/item/food/sushi/empty
 	name = "sushi"
-	foodtypes = NONE
+	foodtypes = VEGETABLES
 	tastes = list()
 	icon_state = "vegetariansushiroll"
 	desc = "A roll of customized sushi."
@@ -280,7 +280,7 @@
 
 /obj/item/food/sushislice/empty
 	name = "sushi slice"
-	foodtypes = NONE
+	foodtypes = VEGETABLES
 	tastes = list()
 	icon_state = "vegetariansushislice"
 	desc = "A slice of customized sushi."
@@ -293,7 +293,7 @@
 	icon_state = "nigiri_sushi"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 10, /datum/reagent/consumable/nutriment/vitamin = 6, /datum/reagent/consumable/nutriment/protein = 2)
 	tastes = list("boiled rice" = 4, "fish filet" = 2, "soy sauce" = 2)
-	foodtypes = SEAFOOD | VEGETABLES
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -307,7 +307,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 		/datum/reagent/consumable/nutriment/protein = 2,
 	)
-	foodtypes = SEAFOOD | MEAT | VEGETABLES
+	foodtypes = MEAT|VEGETABLES|GRAIN
 	tastes = list("rice and meat" = 4, "lettuce" = 2, "soy sauce" = 2)
 	trash_type = /obj/item/reagent_containers/cup/bowl
 	w_class = WEIGHT_CLASS_SMALL
@@ -323,7 +323,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 		/datum/reagent/consumable/nutriment/protein = 2,
 	)
-	foodtypes = SEAFOOD | VEGETABLES
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD
 	tastes = list("rice and fish" = 4, "lettuce" = 2, "soy sauce" = 2)
 	trash_type = /obj/item/reagent_containers/cup/bowl
 	w_class = WEIGHT_CLASS_SMALL
@@ -345,7 +345,7 @@
 
 // sliceable into 4xtempehslices
 /obj/item/food/tempeh/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/tempehslice, 4, 5 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/tempehslice, 4, 5 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 //add an icon for slices
 /obj/item/food/tempehslice
@@ -418,7 +418,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/bearsteak
-	name = "Filet migrawr"
+	name = "filet migrawr"
 	desc = "Because eating bear wasn't manly enough."
 	icon = 'icons/obj/food/meat.dmi'
 	icon_state = "bearsteak"
@@ -449,7 +449,7 @@
 	AddComponent(/datum/component/grillable, meatball_type, rand(30 SECONDS, 40 SECONDS), TRUE)
 
 /obj/item/food/raw_meatball/make_processable()
-	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, patty_type, 1, table_required = TRUE, screentip_verb = "Flatten")
+	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, patty_type, 1, table_required = TRUE, screentip_verb = "Flatten", sound_to_play = SFX_ROLLING_PIN_ROLLING)
 
 /obj/item/food/raw_meatball/human
 	name = "strange raw meatball"
@@ -616,8 +616,8 @@
 	custom_price = PAYCHECK_CREW * 0.6
 
 /obj/item/food/sausage/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/salami, 6, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice")
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/sausage/american, 1, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/salami, 6, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/sausage/american, 1, 3 SECONDS, table_required = TRUE,  screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/sausage/american
 	name = "american sausage"
@@ -651,7 +651,7 @@
 		/datum/reagent/consumable/garlic = 1,
 	)
 	tastes = list("meat" = 1, "onions" = 1, "garlic" = 1)
-	foodtypes = MEAT
+	foodtypes = MEAT|GRAIN|VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -671,7 +671,7 @@
 	)
 	bite_consumption = 3
 	tastes = list("meat" = 1, "onions" = 1, "garlic" = 1)
-	foodtypes = MEAT
+	foodtypes = MEAT|GRAIN|VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -731,13 +731,13 @@
 	)
 	bite_consumption = 4
 	tastes = list("meat" = 1, "the colour green" = 1)
-	foodtypes = MEAT
+	foodtypes = MEAT|BUGS|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sashimi
-	name = "carp sashimi"
-	desc = "Celebrate surviving attack from hostile alien lifeforms by hospitalising yourself. You sure hope whoever made this is skilled."
+	name = "spider sashimi"
+	desc = "Celebrate surviving an attack from hostile alien lifeforms by hospitalising yourself. You sure hope whoever made this is skilled."
 	icon = 'icons/obj/food/meat.dmi'
 	icon_state = "sashimi"
 	food_reagents = list(
@@ -746,7 +746,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("fish" = 1, "hot peppers" = 1)
-	foodtypes = SEAFOOD
+	foodtypes = MEAT|SEAFOOD|BUGS|EGG
 	w_class = WEIGHT_CLASS_TINY
 	//total price of this dish is 20 and a small amount more for soy sauce, all of which are available at the orders console
 	venue_value = FOOD_PRICE_CHEAP
@@ -840,7 +840,7 @@
 	AddComponent(/datum/component/slippery, 3 SECONDS)
 
 /obj/item/food/lasagna
-	name = "Lasagna"
+	name = "lasagna"
 	desc = "A slice of lasagna. Perfect for a Monday afternoon."
 	icon_state = "lasagna"
 	food_reagents = list(
@@ -849,7 +849,7 @@
 		/datum/reagent/consumable/tomatojuice = 10,
 	)
 	tastes = list("meat" = 3, "pasta" = 3, "tomato" = 2, "cheese" = 2)
-	foodtypes = MEAT | DAIRY | GRAIN
+	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -917,7 +917,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("rat meat" = 1, "metal" = 1)
-	foodtypes = MEAT | GORE
+	foodtypes = MEAT|RAW|GORE
 	venue_value = FOOD_PRICE_CHEAP
 
 /obj/item/food/kebab/rat/double
@@ -1011,7 +1011,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/korta_wellington
-	name = "Kotra wellington"
+	name = "korta wellington"
 	desc = "A luxurious log of beef, covered in a fine mushroom duxelle and pancetta ham, then bound in korta pastry."
 	icon = 'icons/obj/food/meat.dmi'
 	icon_state = "korta_wellington"
@@ -1152,7 +1152,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("sausage" = 1, "bacon" = 1, "egg" = 1, "tomato" = 1, "mushrooms" = 1, "bread" = 1, "beans" = 1)
-	foodtypes = MEAT | VEGETABLES | GRAIN | BREAKFAST
+	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY|FRIED|BREAKFAST|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
 	crafting_complexity = FOOD_COMPLEXITY_5
@@ -1245,7 +1245,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 5, "egg" = 3, "dried seaweed" = 2, "cucumber" = 2)
-	foodtypes = VEGETABLES | SEAFOOD
+	foodtypes = MEAT|VEGETABLES|GRAIN|SEAFOOD|EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -1262,12 +1262,12 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 5, "egg" = 3, "dried seaweed" = 2, "cucumber" = 2)
-	foodtypes = VEGETABLES | SEAFOOD
+	foodtypes = VEGETABLES|GRAIN|DAIRY|SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/philadelphia_sushi_roll
-	name = "Philadelphia sushi roll"
+	name = "philadelphia sushi roll"
 	desc = "A roll of Philadelphia sushi, made of cheese, fish, and cucumber. Sliceable"
 	icon_state = "philadelphia_sushi_roll"
 	food_reagents = list(
@@ -1276,7 +1276,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 8,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 5, "creamy cheese" = 3, "dried seaweed" = 2, "cucumber" = 2)
-	foodtypes = VEGETABLES | SEAFOOD | DAIRY
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD|DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -1284,7 +1284,7 @@
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/philadelphia_sushi_slice, 4, screentip_verb = "Chop")
 
 /obj/item/food/philadelphia_sushi_slice
-	name = "Philadelphia sushi slice"
+	name = "philadelphia sushi slice"
 	desc = "A roll of Philadelphia sushi, made of cheese, fish, and cucumber."
 	icon_state = "philadelphia_sushi_slice"
 	food_reagents = list(
@@ -1293,6 +1293,6 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("boiled rice" = 4, "fish" = 5, "creamy cheese" = 3, "dried seaweed" = 2, "cucumber" = 2)
-	foodtypes = VEGETABLES | SEAFOOD | DAIRY
+	foodtypes = VEGETABLES|GRAIN|SEAFOOD|DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3

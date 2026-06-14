@@ -612,7 +612,6 @@
 			data["name"] = "[data["name"]] [recipe.result_amount]x"
 		data["desc"] = recipe.desc || initial(atom.desc)
 
-
 	// Crafting
 	if(recipe.non_craftable)
 		data["non_craftable"] = recipe.non_craftable

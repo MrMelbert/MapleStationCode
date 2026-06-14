@@ -22,7 +22,7 @@
 
 /obj/item/food/bread/make_processable()
 	if (slice_type)
-		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 		AddElement(/datum/element/processable, TOOL_SAW, slice_type, yield, 4 SECONDS, table_required = TRUE, screentip_verb = "Slice")
 
 // Abstract parent object for sliced bread items. Should not be made obtainable in game.
@@ -106,7 +106,7 @@
 		/datum/reagent/consumable/nutriment/protein = 12,
 	)
 	tastes = list("bread" = 10, "meat" = 10)
-	foodtypes = GRAIN | MEAT
+	foodtypes = GRAIN | MEAT | DAIRY
 	venue_value = FOOD_PRICE_CHEAP
 	slice_type = /obj/item/food/breadslice/meat
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -121,7 +121,7 @@
 		/datum/reagent/consumable/nutriment/protein = 2.4,
 	)
 	tastes = list("bread" = 1, "meat" = 1)
-	foodtypes = GRAIN | MEAT
+	foodtypes = GRAIN | MEAT | DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/sausage
@@ -161,7 +161,7 @@
 		/datum/reagent/consumable/nutriment/protein = 15,
 	)
 	tastes = list("bread" = 10, "acid" = 10)
-	foodtypes = GRAIN | MEAT
+	foodtypes = GRAIN | MEAT | DAIRY
 	slice_type = /obj/item/food/breadslice/xenomeat
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -175,7 +175,7 @@
 		/datum/reagent/consumable/nutriment/protein = 3,
 	)
 	tastes = list("bread" = 10, "acid" = 10)
-	foodtypes = GRAIN | MEAT
+	foodtypes = GRAIN | MEAT | DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/spidermeat
@@ -189,7 +189,7 @@
 		/datum/reagent/consumable/nutriment/protein = 12,
 	)
 	tastes = list("bread" = 10, "cobwebs" = 5)
-	foodtypes = GRAIN | MEAT | TOXIC
+	foodtypes = GRAIN|MEAT|DAIRY|TOXIC
 	slice_type = /obj/item/food/breadslice/spidermeat
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -204,7 +204,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("bread" = 10, "cobwebs" = 5)
-	foodtypes = GRAIN | MEAT | TOXIC
+	foodtypes = GRAIN|MEAT|DAIRY|TOXIC
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/banana
@@ -216,7 +216,7 @@
 		/datum/reagent/consumable/banana = 20,
 	)
 	tastes = list("bread" = 10) // bananjuice will also flavour
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN | FRUIT | MEAT
 	slice_type = /obj/item/food/breadslice/banana
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -229,11 +229,11 @@
 		/datum/reagent/consumable/banana = 4,
 	)
 	tastes = list("bread" = 10)
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN | FRUIT | MEAT
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/tofu
-	name = "Tofubread"
+	name = "tofubread"
 	desc = "Like meatbread but for vegetarians. Not guaranteed to give superpowers."
 	icon_state = "tofubread"
 	food_reagents = list(
@@ -242,7 +242,7 @@
 		/datum/reagent/consumable/nutriment/protein = 10,
 	)
 	tastes = list("bread" = 10, "tofu" = 10)
-	foodtypes = GRAIN | VEGETABLES
+	foodtypes = GRAIN | VEGETABLES | DAIRY
 	venue_value = FOOD_PRICE_TRASH
 	slice_type = /obj/item/food/breadslice/tofu
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -257,7 +257,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("bread" = 10, "tofu" = 10)
-	foodtypes = GRAIN | VEGETABLES
+	foodtypes = GRAIN | VEGETABLES | DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/creamcheese
@@ -296,7 +296,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 10,
 	)
 	tastes = list("bread" = 10, "silence" = 10)
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN | FRUIT | VEGETABLES
 	slice_type = /obj/item/food/breadslice/mimana
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -311,7 +311,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("bread" = 10, "silence" = 10)
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN | FRUIT | VEGETABLES
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/bread/empty
@@ -450,7 +450,7 @@
 	)
 	bite_consumption = 3
 	tastes = list("bread" = 1, "garlic" = 1, "butter" = 1)
-	foodtypes = GRAIN
+	foodtypes = VEGETABLES|GRAIN|DAIRY
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -464,7 +464,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("butter" = 1, "biscuit" = 1)
-	foodtypes = GRAIN | BREAKFAST
+	foodtypes = GRAIN | BREAKFAST | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_CHEAP
 	crafting_complexity = FOOD_COMPLEXITY_2
@@ -499,7 +499,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("raw egg" = 2, "soaked bread" = 1)
-	foodtypes = GRAIN | RAW | BREAKFAST
+	foodtypes = GRAIN | RAW | BREAKFAST | MEAT | EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -516,7 +516,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("french toast" = 1, "syrup" = 1, "golden deliciousness" = 1)
-	foodtypes = GRAIN | BREAKFAST
+	foodtypes = GRAIN | BREAKFAST | MEAT | EGG
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 

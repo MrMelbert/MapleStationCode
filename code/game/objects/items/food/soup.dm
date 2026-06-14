@@ -26,14 +26,14 @@
 		reagents.add_reagent(/datum/reagent/consumable/nutriment/vitamin, 1)
 
 /obj/item/food/bowled/mammi
-	name = "Mammi"
+	name = "mammi"
 	desc = "A bowl of mushy bread and milk. It reminds you, not too fondly, of a bowel movement."
 	icon_state = "mammi"
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 11,
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
-	foodtypes = SUGAR | DAIRY
+	foodtypes = SUGAR | DAIRY | JUNKFOOD | GRAIN
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/bowled/spacylibertyduff
