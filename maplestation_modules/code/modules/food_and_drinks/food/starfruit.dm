@@ -11,7 +11,7 @@
 		/datum/reagent/consumable/starfruit_juice = 5,
 	)
 	tastes = list("tender meat" = 2, "sweet sauce" = 1, "sugary glaze" = 1)
-	foodtypes = MEAT | FRYUT | SUGAR
+	foodtypes = MEAT | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/meat_platter
