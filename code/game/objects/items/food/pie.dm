@@ -38,6 +38,7 @@
 	tastes = list("pie" = 1)
 	crafting_complexity = FOOD_COMPLEXITY_2
 
+/*
 /obj/item/food/pie/plain/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/customizable_reagent_holder, /obj/item/food/pie/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
@@ -56,6 +57,7 @@
 /obj/item/food/pieslice/empty/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/customizable_reagent_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
+*/
 
 /obj/item/food/pie/cream
 	name = "banana cream pie"
