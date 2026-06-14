@@ -31,6 +31,7 @@
 	result = /obj/item/food/starfruit_chicken_alfredo
 	cuisine_category = CUISINE_STARFRUIT
 	dish_category = DISH_NOODLES
+	removed_foodtypes = RAW
 
 /datum/crafting_recipe/food/starfruit_sushi_roll
 	name = "Starfruit Sushi Roll"
@@ -42,6 +43,7 @@
 	result = /obj/item/food/starfruit_sushi_roll
 	cuisine_category = CUISINE_STARFRUIT
 	dish_category = DISH_SUSHI
+	removed_foodtypes = BREAKFAST
 
 /datum/crafting_recipe/food/starfruit_sashimi
 	name = "Starfruit Sashimi"
@@ -147,6 +149,7 @@
 	cuisine_category = CUISINE_STARFRUIT
 	dish_category = DISH_BREAD
 	meal_category = MEAL_BREAKFAST
+	added_foodtypes = BREAKFAST
 
 /datum/crafting_recipe/food/starfruit_pie
 	name = "Starfruit Pie"

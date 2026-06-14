@@ -8,3 +8,4 @@
 	result = /obj/item/food/pizza/spaghetti/raw
 	cuisine_category = CUISINE_ITALIAN
 	dish_category = DISH_PIZZA // or DISH_NOODLES ?
+	added_foodtypes = RAW
