@@ -461,3 +461,46 @@
 	icon = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	icon_static = 'maplestation_modules/icons/mob/augmentation/monokai.dmi'
 	is_emissive = TRUE
+
+// -- Previously synth head coverings --
+
+/obj/item/bodypart/head/robot/helm
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi'
+
+/obj/item/bodypart/head/robot/nemo
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
+	head_flags = NONE
+
+/obj/item/bodypart/head/robot/cloak
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/cloak.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/cloak.dmi'
+	head_flags = NONE
+
+/obj/item/bodypart/head/robot/gumhead
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/s-tech.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/s-tech.dmi'
+	head_flags = NONE
+
+/obj/item/bodypart/head/robot/skull
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/skull.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/skull.dmi'
+	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES|HEAD_EYEHOLES
+
+/obj/item/bodypart/head/robot/drone
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/drone.dmi'
+	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES|HEAD_HAIR
+
+/obj/item/bodypart/head/robot/fss_clara
+	icon_state = "robotic_head"
+	icon = 'maplestation_modules/icons/mob/augmentation/FSS.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/FSS.dmi'
+	head_flags = HEAD_EYECOLOR|HEAD_EYESPRITES

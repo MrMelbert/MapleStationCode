@@ -57,3 +57,34 @@
 /datum/limb_option_datum/bodypart/cybernetic_head/zhp
 	name = "ZHP Cybernetic Head"
 	limb_path = /obj/item/bodypart/head/robot/zhp
+
+// // -- Synth&Android DLC --
+/datum/limb_option_datum/bodypart/cybernetic_head/helm
+	name = "Vintage 2415 Cybersun Head"
+	limb_path = /obj/item/bodypart/head/robot/helm
+
+/datum/limb_option_datum/bodypart/cybernetic_head/nemo
+	name = "Nemo Screen Head"
+	limb_path = /obj/item/bodypart/head/robot/nemo
+
+/datum/limb_option_datum/bodypart/cybernetic_head/cloak
+	name = "Frontech Model X Head"
+	limb_path = /obj/item/bodypart/head/robot/cloak
+
+/datum/limb_option_datum/bodypart/cybernetic_head/gumhead
+	tooltip = "Character Item. Unique to Androids and Synthetics"
+	name = "S-Tech GUM Model Head"
+	limb_path = /obj/item/bodypart/head/robot/gumhead
+
+/datum/limb_option_datum/bodypart/cybernetic_head/skull
+	name = "Robotic Skull"
+	limb_path = /obj/item/bodypart/head/robot/skull
+
+/datum/limb_option_datum/bodypart/cybernetic_head/drone
+	name = "Drone Head"
+	limb_path = /obj/item/bodypart/head/robot/drone
+
+/datum/limb_option_datum/bodypart/cybernetic_head/fss_clara
+	tooltip = "Character Item. Unique to Androids and Synthetics"
+	name = "FSS Redesigned Head"
+	limb_path = /obj/item/bodypart/head/robot/fss_clara

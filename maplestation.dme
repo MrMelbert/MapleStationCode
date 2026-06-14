@@ -6710,6 +6710,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\animid\animid_prefs.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\animid\animid_rat.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_battery.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_brain.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_ears.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synth\android_effects.dm"
