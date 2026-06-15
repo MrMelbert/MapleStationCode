@@ -10,12 +10,11 @@
 
 /datum/status_effect/food/on_creation(mob/living/new_owner, timeout_mod = 1, strength = 1)
 	src.strength = strength
-	//Generate alert when not specified
-	if(alert_type == /atom/movable/screen/alert/status_effect)
-		alert_type = "/atom/movable/screen/alert/status_effect/food/buff_[strength]"
 	if(isnum(timeout_mod))
 		duration *= timeout_mod
 	. = ..()
+	if(istype(linked_alert, /atom/movable/screen/alert/status_effect/food))
+		linked_alert.icon_state = "food_buff_[strength]"
 
 /atom/movable/screen/alert/status_effect/food
 	name = "Hand-crafted meal"
