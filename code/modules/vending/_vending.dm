@@ -1451,8 +1451,10 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	item_record.amount--
-	if(usr.CanReach(src) && try_put_in_hand(vended_item, usr))
+	var/sigreturn = SEND_SIGNAL(user, COMSIG_MOB_VENDING_PURCHASE, src, vended_item)
+	if(!(sigreturn & VENDING_NO_PICKUP) && usr.CanReach(src) && try_put_in_hand(vended_item, usr))
 		to_chat(usr, span_notice("You take [item_record.name] out of the slot."))
+		vended_item.do_pickup_animation(user, src)
 	else
 		to_chat(usr, span_warning("[capitalize(format_text(item_record.name))] falls onto the floor!"))
 	SSblackbox.record_feedback("nested tally", "vending_machine_usage", 1, list("[type]", "[item_record.product_path]"))
