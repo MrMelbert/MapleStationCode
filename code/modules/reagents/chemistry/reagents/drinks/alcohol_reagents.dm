@@ -52,7 +52,7 @@
 		if(isnull(pain_modifier))
 			pain_modifier = min(12 / (boozepwr * 0.2), 1)
 		// the stronger the drink, the less total of the drink is needed to reach addiction
-		LAZYSET(addiction_types, /datum/addiction/alcohol, max(50, round(150 - boozepwr, 5)))
+		LAZYSET(addiction_types, /datum/addiction/alcohol, max(50, round(200 - boozepwr, 5)))
 	return ..()
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
