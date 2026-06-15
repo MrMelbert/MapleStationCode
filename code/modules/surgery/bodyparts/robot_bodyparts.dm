@@ -47,7 +47,8 @@
 
 /obj/item/bodypart/arm/left/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/arm/right/robot
 	name = "cyborg right arm"
@@ -86,7 +87,8 @@
 
 /obj/item/bodypart/arm/right/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/leg/left/robot
 	name = "cyborg left leg"
@@ -143,7 +145,8 @@
 
 /obj/item/bodypart/leg/left/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
@@ -200,7 +203,8 @@
 
 /obj/item/bodypart/leg/right/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
@@ -380,7 +384,10 @@
 
 /obj/item/bodypart/chest/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	// When we reskin cybernetic limbs, we solely change their icon, nothing else
+	// So we need to include the relevant icon in the cache key
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/head/robot
 	name = "cyborg head"
@@ -503,7 +510,8 @@
 
 /obj/item/bodypart/head/robot/generate_icon_key()
 	. = ..()
-	. += icon_static
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 // Prosthetics - Cheap, mediocre, and worse than organic limbs
 // Actively make you less healthy by being on your body, contributing a whopping 250% to overall health at only 20 max health
