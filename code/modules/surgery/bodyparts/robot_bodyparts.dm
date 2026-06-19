@@ -45,6 +45,11 @@
 	disabling_threshold_percentage = 1
 	bodypart_flags = BODYPART_UNHUSKABLE
 
+/obj/item/bodypart/arm/left/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/arm/right/robot
 	name = "cyborg right arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -79,6 +84,11 @@
 
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
+
+/obj/item/bodypart/arm/right/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/leg/left/robot
 	name = "cyborg left leg"
@@ -133,6 +143,11 @@
 		return
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
 
+/obj/item/bodypart/leg/left/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -185,6 +200,11 @@
 	if(owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)) // So the message isn't duplicated. If they were stunned beforehand by something else, then the message not showing makes more sense anyways.
 		return
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
+
+/obj/item/bodypart/leg/right/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
@@ -362,6 +382,13 @@
 	cell?.forceMove(drop_loc)
 	return ..()
 
+/obj/item/bodypart/chest/robot/generate_icon_key()
+	. = ..()
+	// When we reskin cybernetic limbs, we solely change their icon, nothing else
+	// So we need to include the relevant icon in the cache key
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/head/robot
 	name = "cyborg head"
 	desc = "A standard reinforced braincase, with spine-plugged neural socket and sensor gimbals."
@@ -480,6 +507,11 @@
 	flash1?.forceMove(drop_loc)
 	flash2?.forceMove(drop_loc)
 	return ..()
+
+/obj/item/bodypart/head/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 // Prosthetics - Cheap, mediocre, and worse than organic limbs
 // Actively make you less healthy by being on your body, contributing a whopping 250% to overall health at only 20 max health

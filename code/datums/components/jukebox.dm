@@ -112,8 +112,8 @@
 			config_songs["[default_track.song_name] (Default)"] = default_track
 
 		for(var/datum/track/track_subtype as anything in subtypesof(/datum/track/preset))
-			var/datum/track/new_preset = new(track_subtype)
-			config_songs["[new_preset.song_name] (Lag Free)"] = new_preset
+			var/datum/track/new_preset = new track_subtype()
+			config_songs["[new_preset.song_name] (Preset)"] = new_preset
 
 	// returns a copy so it can mutate if desired.
 	return config_songs.Copy()

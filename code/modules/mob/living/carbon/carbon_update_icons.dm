@@ -523,6 +523,10 @@
 		. += draw_color
 	if(is_invisible)
 		. += "invisible"
+	if(is_emissive)
+		. += "emissive"
+	if(blocks_emissive != EMISSIVE_BLOCK_NONE)
+		. += "emissive_blocker"
 	for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
 		if(!overlay.can_draw_on_bodypart(src))
 			continue
