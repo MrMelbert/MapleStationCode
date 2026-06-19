@@ -29,7 +29,7 @@
 	return "Any sharp edged item"
 
 /datum/surgery_operation/limb/incise_skin/get_default_radial_image()
-	return image(/obj/item/scalpel)
+	return image('icons/hud/surgery_radial.dmi', "make_incision")
 
 /datum/surgery_operation/limb/incise_skin/tool_check(obj/item/tool)
 	// Require edged sharpness OR a tool behavior match
@@ -117,7 +117,7 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/retract_skin/get_default_radial_image()
-	return image(/obj/item/retractor)
+	return image('icons/hud/surgery_radial.dmi', "retract_skin")
 
 /datum/surgery_operation/limb/retract_skin/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(
@@ -173,7 +173,7 @@
 	return "Any heat source"
 
 /datum/surgery_operation/limb/close_skin/get_default_radial_image()
-	return image(/obj/item/cautery)
+	return image('icons/hud/surgery_radial.dmi', "mend_incision")
 
 /datum/surgery_operation/limb/close_skin/all_required_strings()
 	return ..() + list("the limb must have skin")
@@ -237,7 +237,7 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/clamp_bleeders/get_default_radial_image()
-	return image(/obj/item/hemostat)
+	return image('icons/hud/surgery_radial.dmi', "clamp_bleeders")
 
 /datum/surgery_operation/limb/clamp_bleeders/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(
@@ -285,7 +285,7 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/unclamp_bleeders/get_default_radial_image()
-	return image(/obj/item/hemostat)
+	return image('icons/hud/surgery_radial.dmi', "unclamp_bleeders")
 
 /datum/surgery_operation/limb/unclamp_bleeders/all_required_strings()
 	return ..() + list("the limb must have blood vessels")
@@ -351,7 +351,7 @@
 	return "Any sharp edged item with decent force"
 
 /datum/surgery_operation/limb/saw_bones/get_default_radial_image()
-	return image(/obj/item/circular_saw)
+	return image('icons/hud/surgery_radial.dmi', "saw_bones")
 
 /datum/surgery_operation/limb/saw_bones/tool_check(obj/item/tool)
 	// Require edged sharpness and sufficient force OR a tool behavior match
@@ -414,7 +414,7 @@
 	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/fix_bones/get_default_radial_image()
-	return image(/obj/item/stack/medical/bone_gel)
+	return image('icons/hud/surgery_radial.dmi', "fix_bones")
 
 /datum/surgery_operation/limb/fix_bones/all_required_strings()
 	return ..() + list("the limb must have bones")
@@ -466,7 +466,7 @@
 	return "Any sharp pointed item with decent force"
 
 /datum/surgery_operation/limb/drill_bones/get_default_radial_image()
-	return image(/obj/item/surgicaldrill)
+	return image('icons/hud/surgery_radial.dmi', "drill_bones")
 
 /datum/surgery_operation/limb/drill_bones/tool_check(obj/item/tool)
 	// Require pointy sharpness and sufficient force OR a tool behavior match
@@ -500,7 +500,7 @@
 
 /datum/surgery_operation/limb/incise_organs
 	name = "incise organs"
-	desc = "Make an incision in patient's internal organ tissue to allow for manipulation or repair. \
+	desc = "Make an incision in the patient's internal organ tissue to allow for manipulation or repair. \
 		Causes \"organs cut\" surgical state."
 	required_bodytype = ~BODYTYPE_ROBOTIC
 	replaced_by = /datum/surgery_operation/limb/incise_organs/abductor
@@ -523,7 +523,7 @@
 	return "Any sharp edged item"
 
 /datum/surgery_operation/limb/incise_organs/get_default_radial_image()
-	return image(/obj/item/scalpel)
+	return image('icons/hud/surgery_radial.dmi', "incise_organs")
 
 /datum/surgery_operation/limb/incise_organs/tool_check(obj/item/tool)
 	// Require edged sharpness OR a tool behavior match. Also saws are a no-go, you'll rip up the organs!

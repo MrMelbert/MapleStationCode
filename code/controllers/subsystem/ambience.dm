@@ -20,18 +20,22 @@ SUBSYSTEM_DEF(ambience)
 		var/client/client_iterator = cached_clients[cached_clients.len]
 		cached_clients.len--
 
-		//Check to see if the client exists and isn't held by a new player
-		var/mob/client_mob = client_iterator?.mob
-		if(isnull(client_iterator) || !client_mob || isnewplayer(client_mob))
+		//Check to see if the client exists
+		if(isnull(client_iterator))
 			ambience_listening_clients -= client_iterator
 			client_old_areas -= client_iterator
+			continue
+
+		// skip them this tick if they're on the lobby screen or somehow dont have a mob??
+		var/mob/client_mob = client_iterator?.mob
+		if(!client_mob || isnewplayer(client_mob))
 			continue
 
 		//Check to see if the client-mob is in a valid area
 		var/area/current_area = get_area(client_mob)
 		if(!current_area) //Something's gone horribly wrong
 			stack_trace("[key_name(client_mob)] has somehow ended up in nullspace. WTF did you do")
-			ambience_listening_clients -= client_iterator
+			remove_ambience_client(client_iterator)
 			continue
 
 		if(ambience_listening_clients[client_iterator] > world.time)
@@ -56,7 +60,8 @@ SUBSYSTEM_DEF(ambience)
 	new_sound = sound(new_sound, repeat = 0, wait = 0, volume = volume*volume_modifier, channel = CHANNEL_AMBIENCE)
 	SEND_SOUND(M, new_sound)
 
-	return rand(min_ambience_cooldown, max_ambience_cooldown)
+	var/sound_length = SSsounds.get_sound_length(new_sound.file)
+	return sound_length + rand(min_ambience_cooldown, max_ambience_cooldown)
 
 /datum/controller/subsystem/ambience/proc/remove_ambience_client(client/to_remove)
 	ambience_listening_clients -= to_remove
@@ -64,8 +69,6 @@ SUBSYSTEM_DEF(ambience)
 	currentrun -= to_remove
 
 /area/station/maintenance
-	min_ambience_cooldown = 20 SECONDS
-	max_ambience_cooldown = 35 SECONDS
 
 	///A list of rare sound effects to fuck with players. No, it does not contain actual minecraft sounds anymore.
 	var/static/list/minecraft_cave_noises = list(

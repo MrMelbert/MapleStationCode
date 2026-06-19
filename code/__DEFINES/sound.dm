@@ -187,7 +187,18 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 	ANNOUNCER_SPANOMALIES,
 ))
 
-/// List of all of our sound keys.
+/**
+# assoc list of datum by key
+* k = SFX_KEY (see below)
+* v = singleton sound_effect datum ref
+* initialized in SSsounds init
+*/
+GLOBAL_LIST_EMPTY(sfx_datum_by_key)
+
+/* List of all of our sound keys.
+	used with /datum/sound_effect as the key
+	see code\game\sound_keys.dm
+*/
 #define SFX_BODYFALL "bodyfall"
 #define SFX_BULLET_MISS "bullet_miss"
 #define SFX_CAN_OPEN "can_open"
@@ -201,7 +212,6 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_HULL_CREAKING "hull_creaking"
 #define SFX_HYPERTORUS_CALM "hypertorus_calm"
 #define SFX_HYPERTORUS_MELTING "hypertorus_melting"
-#define SFX_IM_HERE "im_here"
 #define SFX_LAW "law"
 #define SFX_PAGE_TURN "page_turn"
 #define SFX_PUNCH "punch"
@@ -248,3 +258,45 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_CLOTH_DROP "cloth_drop"
 #define SFX_BANDAGE_BEGIN "bandage_begin"
 #define SFX_BANDAGE_END "bandage_end"
+#define SFX_POLAROID "polaroid"
+#define SFX_KEYBOARD_CLICKS "keyboard_clicks"
+// #define SFX_SUTURE_BEGIN "suture_begin"
+// #define SFX_SUTURE_CONTINUOUS "suture_continuous"
+// #define SFX_SUTURE_END "suture_end"
+// #define SFX_SUTURE_PICKUP "suture_pickup"
+// #define SFX_SUTURE_DROP "suture_drop"
+// #define SFX_REGEN_MESH_BEGIN "regen_mesh_begin"
+// #define SFX_REGEN_MESH_CONTINUOUS "regen_mesh_continuous"
+// #define SFX_REGEN_MESH_END "regen_mesh_end"
+// #define SFX_REGEN_MESH_PICKUP "regen_mesh_pickup"
+// #define SFX_REGEN_MESH_DROP "regen_mesh_drop"
+// #define SFX_CIG_PACK_DROP "cig_pack_drop"
+// #define SFX_CIG_PACK_INSERT "cig_pack_insert"
+// #define SFX_CIG_PACK_PICKUP "cig_pack_pickup"
+// #define SFX_CIG_PACK_RUSTLE "cig_pack_rustle"
+// #define SFX_CIG_PACK_THROW_DROP "cig_pack_throw_drop"
+// #define	SFX_RORO_WARBLE "roro_warble"
+// #define SFX_POTTED_PLANT_PICKUP "potted_plant_pickup"
+// #define SFX_POTTED_PLANT_DROP "potted_plant_drop"
+// #define SFX_GOGGLES_PICKUP "goggles_pickup"
+// #define SFX_GOGGLES_DROP "goggles_drop"
+// #define SFX_GOGGLES_EQUIP "goggles_equip"
+// #define SFX_GLASSES_PICKUP "glasses_pickup"
+// #define SFX_GLASSES_DROP "glasses_drop"
+// #define SFX_GLASSES_EQUIP "glasses_equip"
+#define SFX_FOOD_PLATE_PICKUP "food_plate_pickup"
+#define SFX_FOOD_PLATE_DROP "food_plate_drop"
+#define SFX_TRAY_PICKUP "tray_pickup"
+#define SFX_TRAY_DROP "tray_drop"
+#define SFX_TRAY_INSERT "tray_insert"
+#define SFX_CUTLERY_PICKUP "generic_cutlery_pickup"
+#define SFX_CUTLERY_DROP "generic_cutlery_drop"
+#define SFX_KNIFE_PICKUP "knife_pickup"
+#define SFX_KNIFE_DROP "knife_drop"
+#define SFX_KNIFE_SLICE "knife_slice"
+#define SFX_POT_PICKUP "pot_pickup"
+#define SFX_POT_DROP "pot_drop"
+#define SFX_ROLLING_PIN_PICKUP "rolling_pin_pickup"
+#define SFX_ROLLING_PIN_DROP "rolling_pin_drop"
+#define SFX_ROLLING_PIN_ROLLING "rolling_pin_rolling"
+#define SFX_FIRE_MODE_SWITCH "fire_mode_switch"

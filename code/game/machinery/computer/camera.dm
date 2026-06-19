@@ -110,7 +110,6 @@
 	if(action == "switch_camera")
 		var/obj/machinery/camera/selected_camera = locate(params["camera"]) in GLOB.cameranet.cameras
 		set_active_camera(selected_camera)
-		playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)
 
 		return TRUE
 

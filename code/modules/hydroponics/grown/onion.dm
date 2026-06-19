@@ -26,6 +26,7 @@
 	wine_power = 30
 	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
+	foodtypes = VEGETABLES
 
 /obj/item/food/grown/onion/make_processable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/onion_slice, 2, 15, screentip_verb = "Cut")
@@ -65,6 +66,7 @@
 	icon_state = "onionslice"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/vitamin = 2)
 	w_class = WEIGHT_CLASS_TINY
+	foodtypes = VEGETABLES
 
 /obj/item/food/onion_slice/make_bakeable()
 	AddComponent(/datum/component/bakeable, /obj/item/food/onionrings, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)

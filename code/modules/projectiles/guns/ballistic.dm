@@ -137,6 +137,16 @@
 	///What is the cap on our misfire probability? Do not set this to 100.
 	var/misfire_probability_cap = 25
 
+	/// Fire Selector Variables ///
+	// /// Tracks the firemode of burst weapons. TRUE means it is in burst mode.
+	// var/burst_fire_selection = FALSE
+	// /// If it has an icon for a selector switch indicating current firemode.
+	// var/selector_switch_icon = FALSE
+	// /// Suppressor attached to the gun, if any
+	// var/obj/item/suppressor/suppressor = null
+	/// Sound played when the burst mode is changed
+	var/burst_select_sound = SFX_FIRE_MODE_SWITCH
+
 /obj/item/gun/ballistic/Initialize(mapload)
 	. = ..()
 	if(!spawn_magazine_type)
