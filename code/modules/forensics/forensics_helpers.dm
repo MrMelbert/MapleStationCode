@@ -135,7 +135,7 @@
 		if(unique_blood[blood_type])
 			continue
 		var/datum/blood_type/blood = find_blood_type(blood_type)
-		blood.set_up_blood(src, first_dna == 0, only_dna = length(blood_DNA_to_add) == 1)
+		blood.set_up_blood(src, first_dna == 0, only_type = length(blood_DNA_to_add) == 1)
 		unique_blood[blood_type] = TRUE
 	// handle smells
 	refresh_smells()

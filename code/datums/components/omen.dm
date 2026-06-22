@@ -319,10 +319,10 @@
 	consume_omen()
 
 /// Hijack the mood system to see if we get the blessing mood event to cancel the omen
-/datum/component/omen/proc/check_bless(mob/living/our_guy, category)
+/datum/component/omen/proc/check_bless(mob/living/our_guy, mob/blesser, obj/item/bible, bless_result)
 	SIGNAL_HANDLER
 
-	if(incidents_left == INFINITY || bless_result != BLESSING_SUCCESS || !bless_fixable)
+	if(incidents_left == INFINITY || !bless_result/* != BLESSING_SUCCESS*/ || !bless_fixable)
 		return
 
 	playsound(our_guy, 'sound/effects/pray_chaplain.ogg', 40, TRUE)

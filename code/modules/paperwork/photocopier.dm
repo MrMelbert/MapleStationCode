@@ -240,7 +240,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		data["is_photo"] = TRUE
 		data["color_mode"] = color_mode
 
-	if(HAS_AI_ACCESS(user))
+	if(isAI(user) || isAdminGhostAI(user))
 		data["isAI"] = TRUE
 		data["can_AI_print"] = toner_cartridge && (toner_cartridge.charges >= PHOTO_TONER_USE) && (get_paper_count(created_paper) >= PHOTO_PAPER_USE)
 	else
@@ -790,7 +790,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /obj/machinery/photocopier/atom_break(damage_flag)
 	. = ..()
 	if(. && toner_cartridge?.charges)
-		new /obj/effect/decal/cleanable/blood/oil(get_turf(src))
+		new /obj/effect/decal/cleanable/oil(get_turf(src))
 		toner_cartridge.charges = 0
 
 /obj/machinery/photocopier/mouse_drop_receive(mob/target, mob/user, params)
@@ -882,11 +882,9 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "tonercartridge"
 	w_class = WEIGHT_CLASS_SMALL
+	grind_results = list(/datum/reagent/iodine = 40, /datum/reagent/iron = 10)
 	var/charges = 5
 	var/max_charges = 5
-
-/obj/item/toner/grind_results()
-	return list(/datum/reagent/iodine = 40, /datum/reagent/iron = 10)
 
 /obj/item/toner/examine(mob/user)
 	. = ..()
@@ -897,9 +895,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	desc = "A hefty cartridge of Nanotrasen ValueBrand toner. Fits photocopiers and autopainters alike."
 	charges = 25
 	max_charges = 25
-
-/obj/item/toner/large/grind_results()
-	return list(/datum/reagent/iodine = 90, /datum/reagent/iron = 10)
+	grind_results = list(/datum/reagent/iodine = 90, /datum/reagent/iron = 10)
 
 /obj/item/toner/extreme
 	name = "extremely large toner cartridge"
