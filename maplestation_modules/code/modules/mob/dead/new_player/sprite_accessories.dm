@@ -490,33 +490,9 @@
 	icon_state = "sideswept"
 
 /// -- Undershirts --
-/datum/sprite_accessory/undershirt/ratvarsoul
-	name = "Ratvar's Soul"
-	icon_state = "ratvarsoul"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/defib
-	name = "Defib"
-	icon_state = "defib"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/fleshmass
-	name = "Pulsating Mass"
-	icon_state = "fleshmass"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
 /datum/sprite_accessory/undershirt/whiteblouse
 	name = "White Blouse and Bloomers"
 	icon_state = "blouse"
-	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/enmagradient
-	name = "Red and Blue Gradients"
-	icon_state = "redblue"
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 
@@ -550,6 +526,7 @@
 	name = "Mismatched Checkered Socks"
 	icon_state = "mismatchpoker"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/socks/pokersocks
 	name = "High Black Stockings"
