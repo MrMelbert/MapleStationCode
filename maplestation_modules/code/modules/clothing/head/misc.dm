@@ -6,4 +6,3 @@
 	worn_icon_state = "eggcellent_hat"
 	icon = 'maplestation_modules/icons/obj/clothing/hats.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/head.dmi'
-

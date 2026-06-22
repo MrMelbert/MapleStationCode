@@ -362,6 +362,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_toxiclong"
 
+/datum/sprite_accessory/hair/nia
+	name = "Nia"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nia"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
