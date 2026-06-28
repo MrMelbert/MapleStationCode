@@ -118,8 +118,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * Arguments
  * * blood - the blood being set up
  * * new_splat - whether this is a newly instantiated blood decal, or an existing one this blood is being added to
+ * * only_type - whether this blood decal is only of this blood type, or if it has other blood types mixed in
  */
-/datum/blood_type/proc/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+/datum/blood_type/proc/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE, only_type = TRUE)
 	return
 
 /**
@@ -301,7 +302,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	restoration_chem = /datum/reagent/silver
 	scent_text = null
 
-/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	blood.can_dry = FALSE
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
 
@@ -323,7 +324,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	salgu_compatible = TRUE
 	scent_text = null
 
-/datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
 	if(!new_splat)
 		return
@@ -357,7 +358,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	restoration_chem = /datum/reagent/fuel/oil
 	scent_text = /datum/smell/oil
 
-/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
@@ -402,6 +403,11 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	salgu_compatible = TRUE
 	scent_text = null
 
+/datum/blood_type/water/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
+	if(!new_splat || !only_type)
+		return
+	blood.qdel_on_dry = TRUE
+
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
@@ -410,7 +416,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	scent_text = /obj/effect/abstract/smell/reagent/lube::name
 	scent_category = /obj/effect/abstract/smell/reagent/lube::category
 
-/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
 		return
 	var/slip_amt = new_splat ? 4 SECONDS : 1 SECONDS

@@ -13216,7 +13216,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hos)
@@ -17780,7 +17780,7 @@
 "eJb" = (
 /obj/machinery/airalarm/directional/south,
 /obj/effect/turf_decal/stripes/corner,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
@@ -20446,7 +20446,7 @@
 /area/station/science/xenobiology)
 "fFD" = (
 /obj/structure/cable,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hop)
 "fFJ" = (
@@ -21688,7 +21688,7 @@
 /turf/open/floor/carpet,
 /area/station/service/theater)
 "gdY" = (
-/obj/machinery/photocopier{
+/obj/machinery/photocopier/prebuilt{
 	pixel_y = 3
 	},
 /turf/open/floor/wood,
@@ -27647,7 +27647,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "isH" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "isK" = (
@@ -32142,7 +32142,7 @@
 /area/station/maintenance/port/fore)
 "kjv" = (
 /obj/effect/decal/cleanable/cobweb,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/wood,
 /area/station/service/library)
 "kjG" = (
@@ -32872,7 +32872,7 @@
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "kyN" = (
-/obj/machinery/photocopier{
+/obj/machinery/photocopier/prebuilt{
 	pixel_y = 3
 	},
 /turf/open/floor/iron/dark,
@@ -34266,7 +34266,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 5
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/medical/office)
 "lcd" = (
@@ -54456,7 +54456,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "sJV" = (
-/obj/machinery/photocopier{
+/obj/machinery/photocopier/prebuilt{
 	pixel_y = 3
 	},
 /obj/effect/turf_decal/tile/red/half/contrasted{
@@ -54635,7 +54635,7 @@
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
 "sOr" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/camera/directional/east{
 	c_tag = "Law Office"
 	},
@@ -64771,7 +64771,7 @@
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hop)
 "wNe" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted{
 	dir = 8
 	},

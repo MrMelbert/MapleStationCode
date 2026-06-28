@@ -831,7 +831,7 @@
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "aeM" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
@@ -13162,7 +13162,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office)
@@ -28199,7 +28199,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
@@ -39173,7 +39173,7 @@
 /area/station/maintenance/starboard/aft)
 "imu" = (
 /obj/machinery/light/small/directional/west,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -52088,7 +52088,7 @@
 /area/station/security/prison/safe)
 "mAS" = (
 /obj/effect/turf_decal/tile/red,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/structure/sign/poster/official/space_cops/directional/south,
 /turf/open/floor/iron,
 /area/station/security/office)
@@ -54435,7 +54435,7 @@
 /obj/structure/sign/painting/library{
 	pixel_x = 32
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/box/white,
 /turf/open/floor/iron/dark,
@@ -58767,7 +58767,7 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "oMj" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
@@ -76110,7 +76110,7 @@
 "uou" = (
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -78254,7 +78254,7 @@
 /area/station/cargo/warehouse)
 "vaK" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/newspaper{
 	pixel_x = 4;
 	pixel_y = 4
@@ -86702,7 +86702,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/hos)
 "xJP" = (

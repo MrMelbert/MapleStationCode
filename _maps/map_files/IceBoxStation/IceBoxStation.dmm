@@ -193,7 +193,7 @@
 /area/station/science/xenobiology)
 "adZ" = (
 /obj/effect/turf_decal/tile/brown/fourcorners,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/engineering/lobby)
 "aee" = (
@@ -17599,7 +17599,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "fgm" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/structure/sign/poster/official/random/directional/east,
 /turf/open/floor/wood,
 /area/station/service/library)
@@ -23772,7 +23772,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "hbp" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/wood,
 /area/station/command/meeting_room)
 "hbt" = (
@@ -24476,7 +24476,7 @@
 /turf/open/openspace,
 /area/station/science/xenobiology)
 "hnP" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/cafeteria{
 	dir = 8
 	},
@@ -25303,7 +25303,7 @@
 	},
 /area/station/science/research)
 "hAo" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/structure/sign/calendar/directional/west,
 /turf/open/floor/wood,
@@ -28536,7 +28536,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
 "iyL" = (
@@ -33506,7 +33506,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "kaw" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron,
 /area/station/cargo/office)
@@ -61156,7 +61156,7 @@
 /area/station/science/ordnance)
 "sbi" = (
 /obj/machinery/newscaster/directional/north,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
 "sbv" = (
@@ -73360,7 +73360,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "vLt" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
@@ -73954,7 +73954,7 @@
 /obj/machinery/light_switch/directional/west{
 	pixel_y = 5
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/hallway/secondary/service)
