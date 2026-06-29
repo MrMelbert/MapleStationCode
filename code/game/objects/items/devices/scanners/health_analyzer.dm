@@ -369,7 +369,7 @@
 			var/mob/living/carbon/human/humantarget = target
 			needs_heart = humantarget.needs_heart()
 
-		var/bp_format = "[bp[1]]/[bp[2]]" + span_slightly_smaller("mmHg")
+		var/bp_format = "[bp[2]]/[bp[1]]" + span_slightly_smaller("mmHg")
 		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)]" + span_slightly_smaller("cl") // round to 0.1 but also print "100.0" and not "100"
 		var/blood_type_format = "[target_blood_type.name]"
 
