@@ -42,3 +42,31 @@
 	desc = "Fancy high heels. Despite the looks, these weren't tailor-made for you by a fairy godmother."
 	icon_state = "/obj/item/clothing/shoes/heels/fancy"
 	post_init_icon_state = "fancy_heels"
+
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL
+
+/obj/item/clothing/shoes/workboots/designershoes
+	name = "designer boots"
+	desc = "Fashionable leather boots with golden details. Worth more than your monthly salary."
+	icon = 'maplestation_modules/icons/obj/clothing/designer.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/designer.dmi'
+	icon_state = "designerboots"
+
+/obj/item/clothing/shoes/workboots/brown
+	name = "short brown boots"
+	desc = "Leather boots that have seem to be roughly cut short. Looks like they've seen better days."
+	icon = 'maplestation_modules/icons/mob/clothing/delinquent.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/delinquent.dmi'
+	icon_state = "shortboot"
+
+/obj/item/clothing/shoes/workboots/mercenary
+	name = "mercenary boots"
+	desc = "Steel toed boots, durable and lightweight."
+	icon = 'maplestation_modules/icons/obj/clothing/mercenary.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/mercenary.dmi'
+	icon_state = "liniboots"

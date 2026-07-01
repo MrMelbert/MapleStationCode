@@ -280,3 +280,7 @@
 	name = "Santa Hat"
 	item_path = /obj/item/clothing/head/costume/santa/gags
 	required_holiday = FESTIVE_SEASON
+
+/datum/loadout_item/head/sweet_bow
+	name = "Sweet Bow"
+	item_path = /obj/item/clothing/head/bow/sweet

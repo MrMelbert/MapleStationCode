@@ -106,9 +106,10 @@
 /datum/loadout_item/shoes/barefoot/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	outfit.shoes = null
 
-// loadout items are indexed by typepath, so this is here to be a placeholder.
-/obj/item/clothing/shoes/barefoot
-	name = "barefoot"
-	icon = null
-	icon_state = null
-	item_flags = ABSTRACT|DROPDEL
+/datum/loadout_item/shoes/designer
+	name = "Designer Boots"
+	item_path = /obj/item/clothing/shoes/workboots/designershoes
+
+/datum/loadout_item/shoes/reshiaboot
+	name = "Short Brown Boots"
+	item_path = /obj/item/clothing/shoes/workboots/brown
