@@ -40,6 +40,11 @@
 		"stasis_pod",
 	)
 
+/datum/techweb_node/alien_surgery
+	id_additions = list(
+		"stasis",
+	)
+
 /datum/techweb_node/surgery_exp
 	id_additions = list(
 		"surgery_neuter_ling",

@@ -32,7 +32,6 @@
 	desc = "A device that suppresses the nervous system - a more advanced form of anesthetic."
 	id = "neural_suppressor"
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
-	construction_time = 30
 	materials = list(
 		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
 		/datum/material/silver = SMALL_MATERIAL_AMOUNT,
