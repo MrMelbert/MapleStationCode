@@ -807,6 +807,7 @@
 		computer = locate(/obj/machinery/computer/operating) in get_step(src, direction)
 		if(computer)
 			computer.table = src
+			update_appearance()
 			break
 
 	var/static/list/loc_connections = list(

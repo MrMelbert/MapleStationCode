@@ -51,13 +51,6 @@
 	icon_state = "white"
 	},
 /area/template_noop)
-"cO" = (
-/obj/machinery/stasis,
-/obj/effect/turf_decal/tile/green/anticorner/contrasted,
-/turf/open/floor/holofloor{
-	icon_state = "white"
-	},
-/area/template_noop)
 "cR" = (
 /obj/effect/turf_decal/tile/green/half/contrasted{
 	dir = 4
@@ -148,10 +141,28 @@
 	icon_state = "white"
 	},
 /area/template_noop)
+"jG" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/green/anticorner/contrasted,
+/turf/open/floor/holofloor{
+	icon_state = "white"
+	},
+/area/template_noop)
 "kJ" = (
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1
 	},
+/turf/open/floor/holofloor{
+	icon_state = "white"
+	},
+/area/template_noop)
+"kS" = (
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/green/half/contrasted,
 /turf/open/floor/holofloor{
 	icon_state = "white"
 	},
@@ -468,7 +479,7 @@
 	icon_state = "white"
 	},
 /area/template_noop)
-"Qu" = (
+"PU" = (
 /obj/structure/table/glass,
 /obj/item/stack/medical/wrap/gauze,
 /obj/item/cautery,
@@ -516,15 +527,6 @@
 /area/template_noop)
 "Sj" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
-/turf/open/floor/holofloor{
-	icon_state = "white"
-	},
-/area/template_noop)
-"Tt" = (
-/obj/machinery/stasis{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/green/half/contrasted,
 /turf/open/floor/holofloor{
 	icon_state = "white"
 	},
@@ -600,7 +602,7 @@ NV
 Ke
 BT
 tI
-Tt
+kS
 "}
 (3,1,1) = {"
 Sb
@@ -624,10 +626,10 @@ NV
 GN
 TI
 cR
-cO
+jG
 "}
 (5,1,1) = {"
-Qu
+PU
 tI
 xf
 hK

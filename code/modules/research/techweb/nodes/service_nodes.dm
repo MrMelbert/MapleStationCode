@@ -38,6 +38,7 @@
 		"ticket_machine",
 		"radio_entertainment",
 		"barber_scissors",
+		"photocopier",
 	)
 
 /datum/techweb_node/sanitation

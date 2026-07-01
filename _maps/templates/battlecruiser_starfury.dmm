@@ -5347,7 +5347,9 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/sbc_starfury)
 "Ri" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/machinery/defibrillator_mount/loaded{
 	pixel_y = 28
 	},
