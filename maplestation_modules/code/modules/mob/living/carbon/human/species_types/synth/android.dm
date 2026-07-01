@@ -432,7 +432,7 @@
 /datum/species/android/proc/update_heat_modifiers(mob/living/carbon/human/source)
 	var/obj/item/organ/lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(HAS_TRAIT_NOT_FROM_LUNGS(source, TRAIT_RESISTHEAT, lungs))
-		remove_heat_modifiers()
+		remove_heat_modifiers(source)
 		return
 
 	if(source.body_temperature > source.bodytemp_heat_damage_limit * 2)
@@ -461,12 +461,12 @@
 
 	else // ??
 		if(is_overheating != 0)
-			remove_heat_modifiers()
+			remove_heat_modifiers(source)
 
 /datum/species/android/proc/update_cold_modifiers(mob/living/carbon/human/source)
 	var/obj/item/organ/lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(HAS_TRAIT_NOT_FROM_LUNGS(source, TRAIT_RESISTCOLD, lungs))
-		remove_cold_modifiers()
+		remove_cold_modifiers(source)
 		return
 
 	if(source.body_temperature < source.bodytemp_cold_damage_limit * 2)
@@ -495,7 +495,7 @@
 
 	else // ??
 		if(is_overcooled != 0)
-			remove_cold_modifiers()
+			remove_cold_modifiers(source)
 
 #undef HAS_TRAIT_NOT_FROM_LUNGS
 

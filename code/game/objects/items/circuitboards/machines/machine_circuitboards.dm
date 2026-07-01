@@ -725,6 +725,16 @@
 		/datum/stock_part/scanning_module = 1,
 	)
 
+/obj/item/circuitboard/machine/photocopier
+	name = "Photocopier"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/photocopier
+	req_components = list(
+		/datum/stock_part/scanning_module = 1,
+		/datum/stock_part/micro_laser = 1,
+		/datum/stock_part/matter_bin = 1
+	)
+
 //Medical
 
 /obj/item/circuitboard/machine/chem_dispenser
@@ -1669,3 +1679,23 @@
 		/datum/stock_part/capacitor = 2,
 		/datum/stock_part/micro_laser = 2,
 		/obj/item/stack/sheet/glass = 1)
+
+// /obj/item/circuitboard/machine/atmos_shield_gen
+// 	name = /obj/machinery/atmos_shield_gen::name
+// 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+// 	build_path = /obj/machinery/atmos_shield_gen
+// 	req_components = list(
+// 		/datum/stock_part/micro_laser = 1,
+// 		/datum/stock_part/capacitor = 1,
+// 	)
+
+/obj/item/circuitboard/machine/washing_machine
+	name = "Washing Machine"
+	greyscale_colors = CIRCUIT_COLOR_SERVICE
+	build_path = /obj/machinery/washing_machine
+	req_components = list(
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/reagent_containers/cup/beaker = 2,
+		/datum/stock_part/water_recycler = 1,
+		/datum/stock_part/servo = 1,
+	)
