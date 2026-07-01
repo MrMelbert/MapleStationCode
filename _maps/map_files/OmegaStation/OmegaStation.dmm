@@ -14703,9 +14703,9 @@
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "aNS" = (
-/obj/machinery/sleeper/cryo,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/siding/dark_green,
+/obj/machinery/sleeper/stasis/cryo,
 /turf/open/floor/iron/white,
 /area/station/commons/long_term_storage)
 "aNT" = (
@@ -18435,17 +18435,17 @@
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "aXU" = (
-/obj/machinery/stasis{
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/sleeper/stasis{
 	dir = 4
 	},
-/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "aXX" = (
-/obj/machinery/stasis{
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/sleeper/stasis{
 	dir = 8
 	},
-/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "aXZ" = (
@@ -30205,9 +30205,6 @@
 /turf/open/floor/iron,
 /area/station/service/cafeteria)
 "mJn" = (
-/obj/machinery/sleeper/cryo{
-	dir = 4
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
@@ -30215,6 +30212,9 @@
 	dir = 4
 	},
 /obj/machinery/firealarm/directional/south,
+/obj/machinery/sleeper/stasis/cryo{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/commons/long_term_storage)
 "mJF" = (
@@ -36525,9 +36525,6 @@
 /turf/open/floor/plating/airless,
 /area/station/asteroid)
 "veL" = (
-/obj/machinery/sleeper/cryo{
-	dir = 4
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
@@ -36535,6 +36532,9 @@
 	dir = 4
 	},
 /obj/structure/sign/warning/cold_temp/directional/north,
+/obj/machinery/sleeper/stasis/cryo{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/commons/long_term_storage)
 "vfx" = (
