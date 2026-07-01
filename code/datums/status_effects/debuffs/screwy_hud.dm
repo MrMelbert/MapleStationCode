@@ -39,7 +39,7 @@
 		if(other_screwy_hud.priority > priority)
 			return
 
-	source.hud_used.healths.icon_state = override_icon
+	source.hud_used.healths.icon_state = "[override_icon][source.needs_heart() ? "" : "-alwaysflat"]"
 	return COMPONENT_OVERRIDE_HEALTH_HUD
 
 /datum/status_effect/grouped/screwy_hud/fake_dead
@@ -55,7 +55,7 @@
 /datum/status_effect/grouped/screwy_hud/fake_healthy
 	id = "fake_hud_healthy"
 	priority = 10 // fully healthy is the opposite of death, which is absolute
-	override_icon = "health0"
+	override_icon = "health1"
 
 /datum/status_effect/grouped/screwy_hud/fake_healthy/on_apply()
 	. = ..()

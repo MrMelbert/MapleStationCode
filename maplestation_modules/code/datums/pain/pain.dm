@@ -30,14 +30,10 @@
 	VAR_FINAL/base_pain_decay
 	/// Amount of traumatic shock building up from higher levels of pain
 	VAR_FINAL/traumatic_shock = 0
-	/// Tracks how many successful heart attack rolls in a row
-	VAR_FINAL/heart_attack_counter = 0
 	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
 	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
-	/// Cooldown to track last time heart attack counter went up.
-	COOLDOWN_DECLARE(time_since_last_heart_attack_counter)
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
 	if(!iscarbon(new_parent) || isdummy(new_parent))
@@ -521,41 +517,6 @@
 				span_warning(pick("You black out!", "You feel like you're about to die!", "You lose consciousness!")),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-
-	// This is death
-	if(traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD && !parent.undergoing_cardiac_arrest())
-		var/heart_attack_prob = 0
-		if(parent.health <= parent.maxHealth * -1)
-			heart_attack_prob += abs(parent.health + parent.maxHealth) * 0.1
-		if(traumatic_shock >= 180)
-			heart_attack_prob += (traumatic_shock * 0.1)
-		if(SPT_PROB(min(20, heart_attack_prob), seconds_per_tick))
-			if(!COOLDOWN_FINISHED(src, time_since_last_heart_attack_counter))
-				parent.losebreath += 1
-			else if(!parent.can_heartattack())
-				parent.losebreath += 4
-			else if(heart_attack_counter >= 3)
-				to_chat(parent, span_userdanger("Your heart stops!"))
-				if(!parent.incapacitated())
-					parent.visible_message(span_danger("[parent] grabs at [parent.p_their()] chest!"), ignored_mobs = parent)
-				parent.set_heartattack(TRUE)
-				heart_attack_counter = -2
-			else
-				COOLDOWN_START(src, time_since_last_heart_attack_counter, 6 SECONDS)
-				parent.losebreath += 1
-				parent.playsound_local(get_turf(parent), 'sound/effects/singlebeat.ogg', 40, 1, use_reverb = FALSE)
-				heart_attack_counter += 1
-				switch(heart_attack_counter)
-					if(-INFINITY to 0)
-						pass()
-					if(1)
-						to_chat(parent, span_userdanger("Your pulse starts to feel irregular."))
-					if(2)
-						to_chat(parent, span_userdanger("Your heart skips a beat."))
-					else
-						to_chat(parent, span_userdanger("Your body starts shutting down!"))
-	else
-		heart_attack_counter = 0
 
 	parent.paincrit_check()
 
