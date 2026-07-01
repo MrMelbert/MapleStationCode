@@ -77,20 +77,19 @@
 	},
 /turf/template_noop,
 /area/virtual_domain/safehouse)
+"eB" = (
+/obj/machinery/defibrillator_mount/directional/west,
+/obj/structure/table/glass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/stack/medical/wrap/gauze/improvised,
+/obj/effect/turf_decal/siding/blue{
+	dir = 4
+	},
+/turf/open/floor/plastic,
+/area/virtual_domain)
 "eT" = (
 /obj/effect/baseturf_helper/virtual_domain,
 /turf/closed/indestructible/binary,
-/area/virtual_domain)
-"eV" = (
-/obj/machinery/sleeper/stasis{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/effect/turf_decal/siding/blue{
-	dir = 6
-	},
-/obj/structure/cable,
-/turf/open/floor/plastic,
 /area/virtual_domain)
 "fd" = (
 /obj/structure/frame/computer{
@@ -379,18 +378,6 @@
 /obj/item/storage/belt/unfathomable_curio,
 /turf/open/floor/iron,
 /area/virtual_domain)
-"oD" = (
-/mob/living/basic/fake_crewman/assistant,
-/obj/effect/mapping_helpers/broken_floor,
-/obj/item/restraints/handcuffs/cable/yellow{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/stack/medical/gauze/improvised{
-	pixel_y = -2
-	},
-/turf/open/floor/plating,
-/area/virtual_domain)
 "oL" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/structure/cable,
@@ -437,6 +424,17 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/plating,
+/area/virtual_domain)
+"qS" = (
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/siding/blue{
+	dir = 5
+	},
+/obj/structure/cable,
+/turf/open/floor/plastic,
 /area/virtual_domain)
 "rq" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
@@ -569,16 +567,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/virtual_domain)
-"vO" = (
-/obj/machinery/defibrillator_mount/directional/west,
-/obj/structure/table/glass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/item/stack/medical/gauze/improvised,
-/obj/effect/turf_decal/siding/blue{
-	dir = 4
-	},
-/turf/open/floor/plastic,
-/area/virtual_domain)
 "vP" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
@@ -613,17 +601,6 @@
 	light_on = 1
 	},
 /turf/open/floor/plating/heretic_rust,
-/area/virtual_domain)
-"xa" = (
-/obj/machinery/sleeper/stasis{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/effect/turf_decal/siding/blue{
-	dir = 5
-	},
-/obj/structure/cable,
-/turf/open/floor/plastic,
 /area/virtual_domain)
 "xg" = (
 /obj/effect/turf_decal/tile/red{
@@ -861,6 +838,16 @@
 	},
 /obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron,
+/area/virtual_domain)
+"GI" = (
+/obj/structure/table/glass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/siding/blue/end{
+	dir = 1
+	},
+/obj/item/stack/medical/wrap/gauze/improvised,
+/obj/structure/cable,
+/turf/open/floor/plastic,
 /area/virtual_domain)
 "GO" = (
 /obj/structure/frame/computer{
@@ -1109,17 +1096,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating/heretic_rust,
 /area/virtual_domain)
-"NN" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
-	pixel_y = 4
-	},
-/obj/effect/turf_decal/siding/blue{
-	dir = 8
-	},
-/turf/open/floor/plastic,
-/area/virtual_domain)
 "NO" = (
 /mob/living/basic/fake_crewman/md,
 /turf/open/floor/plastic,
@@ -1145,16 +1121,6 @@
 /area/virtual_domain)
 "Pr" = (
 /turf/closed/indestructible/binary,
-/area/virtual_domain)
-"PB" = (
-/obj/structure/table/glass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/effect/turf_decal/siding/blue/end{
-	dir = 1
-	},
-/obj/item/stack/medical/gauze/improvised,
-/obj/structure/cable,
-/turf/open/floor/plastic,
 /area/virtual_domain)
 "PJ" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1226,6 +1192,18 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/spawner/random/trash/mess,
 /obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/plating,
+/area/virtual_domain)
+"RP" = (
+/mob/living/basic/fake_crewman/assistant,
+/obj/effect/mapping_helpers/broken_floor,
+/obj/item/restraints/handcuffs/cable/yellow{
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/item/stack/medical/wrap/gauze/improvised{
+	pixel_y = -2
+	},
 /turf/open/floor/plating,
 /area/virtual_domain)
 "RQ" = (
@@ -1330,6 +1308,17 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating/heretic_rust,
 /area/virtual_domain)
+"VU" = (
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/siding/blue{
+	dir = 6
+	},
+/obj/structure/cable,
+/turf/open/floor/plastic,
+/area/virtual_domain)
 "VW" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /obj/structure/tank_dispenser,
@@ -1424,6 +1413,17 @@
 /obj/item/reagent_containers/cup/bottle{
 	pixel_y = 13;
 	pixel_x = 3
+	},
+/obj/effect/turf_decal/siding/blue{
+	dir = 8
+	},
+/turf/open/floor/plastic,
+/area/virtual_domain)
+"YC" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/structure/table/glass,
+/obj/item/stack/medical/wrap/gauze{
+	pixel_y = 4
 	},
 /obj/effect/turf_decal/siding/blue{
 	dir = 8
@@ -1825,7 +1825,7 @@ ge
 Vh
 rC
 rt
-oD
+RP
 Zu
 JG
 MF
@@ -2062,10 +2062,10 @@ JG
 Zu
 Zu
 FH
-eV
+VU
 sT
-xa
-vO
+qS
+eB
 Zu
 iL
 oa
@@ -2161,7 +2161,7 @@ dh
 uS
 uj
 uj
-PB
+GI
 vt
 JA
 KR
@@ -2267,7 +2267,7 @@ Wo
 Zu
 VX
 Yy
-NN
+YC
 Zu
 Zt
 Pr

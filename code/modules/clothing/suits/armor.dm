@@ -2,6 +2,7 @@
 	name = "armor"
 	icon = 'icons/obj/clothing/suits/armor.dmi'
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
+	abstract_type = /obj/item/clothing/suit/armor
 	allowed = null
 	body_parts_covered = CHEST
 	min_cold_protection_temperature = ARMOR_MIN_TEMP_PROTECT
@@ -293,9 +294,13 @@
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, 5)
 	init_rustle_component()
+	init_equipment_overlay()
 
 /obj/item/clothing/suit/armor/riot/proc/init_rustle_component()
 	AddComponent(/datum/component/item_equipped_movement_rustle)
+
+/obj/item/clothing/suit/armor/riot/proc/init_equipment_overlay()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/black)
 
 /datum/armor/armor_riot
 	melee = 50
@@ -515,7 +520,11 @@
 		/obj/item/nullrod,
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
-		)
+	)
+
+/obj/item/clothing/suit/armor/riot/knight/init_equipment_overlay()
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/biosuit_dark)
+
 /obj/item/clothing/suit/armor/riot/knight/init_rustle_component()
 	AddComponent(/datum/component/item_equipped_movement_rustle, SFX_PLATE_ARMOR_RUSTLE, 8)
 

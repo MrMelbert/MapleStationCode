@@ -168,7 +168,7 @@
 		/datum/reagent/toxin = 2,
 	)
 	tastes = list("cobwebs" = 1)
-	foodtypes = MEAT | TOXIC | BUGS
+	foodtypes = MEAT | TOXIC | BUGS | EGG
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/food/spidereggs/processed
@@ -204,7 +204,7 @@
 	)
 	w_class = WEIGHT_CLASS_NORMAL
 	tastes = list("melon" = 1)
-	foodtypes = FRUIT
+	foodtypes = VEGETABLES | FRUIT
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_4
 
@@ -246,7 +246,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/powercrepe
-	name = "Powercrepe"
+	name = "powercrepe"
 	desc = "With great power, comes great crepes.  It looks like a pancake filled with jelly but packs quite a punch."
 	icon_state = "powercrepe"
 	inhand_icon_state = "powercrepe"
@@ -278,7 +278,7 @@
 		/datum/reagent/consumable/salt = 8,
 	)
 	tastes = list("bran" = 4, "raisins" = 3, "salt" = 1)
-	foodtypes = GRAIN | FRUIT | BREAKFAST
+	foodtypes = SUGAR|GRAIN|FRUIT|BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -320,7 +320,7 @@
 	venue_value = FOOD_PRICE_CHEAP
 
 /obj/item/food/butter/make_processable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/butterslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/butterslice, 3, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/butterslice
 	name = "butter slice"
@@ -432,7 +432,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 	)
 	tastes = list("juicy meat" = 1, "rice" = 1, "cabbage" = 1)
-	foodtypes = MEAT | VEGETABLES
+	foodtypes = MEAT|VEGETABLES|GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -475,7 +475,7 @@
 		/datum/reagent/consumable/nutriment/protein = 4,
 	)
 	tastes = list("granola" = 1, "nuts" = 1, "chocolate" = 1, "raisin" = 1)
-	foodtypes = GRAIN | NUTS | FRUIT | SUGAR | DAIRY
+	foodtypes = GRAIN|NUTS|FRUIT|SUGAR
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_4
 
@@ -489,7 +489,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("rice" = 1, "dried seaweed" = 1)
-	foodtypes = VEGETABLES
+	foodtypes = VEGETABLES|GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -502,7 +502,7 @@
 	name = "onigiri"
 	desc = "A ball of cooked rice surrounding a filling formed into a triangular shape and wrapped in seaweed."
 	icon_state = "onigiri"
-	foodtypes = VEGETABLES
+	foodtypes = VEGETABLES|GRAIN
 	tastes = list()
 
 /obj/item/food/pacoca
@@ -611,7 +611,7 @@
 		/datum/reagent/consumable/nutriment/protein = 20,
 	)
 	tastes = list("cooked eggplant" = 5, "potato" = 1, "baked veggies" = 2, "meat" = 4, "bechamel sauce" = 3)
-	foodtypes = MEAT | DAIRY | VEGETABLES
+	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/moussaka/make_processable()
@@ -627,7 +627,7 @@
 		/datum/reagent/consumable/nutriment/protein = 5,
 	)
 	tastes = list("cooked eggplant" = 5, "potato" = 1, "baked veggies" = 2, "meat" = 4, "bechamel sauce" = 3)
-	foodtypes = MEAT | DAIRY | VEGETABLES
+	foodtypes = MEAT|VEGETABLES|GRAIN|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/candied_pineapple
@@ -640,7 +640,7 @@
 	icon_state = "candied_pineapple_1"
 	base_icon_state = "candied_pineapple"
 	tastes = list("sugar" = 2, "chewy pineapple" = 4)
-	foodtypes = FRUIT | SUGAR
+	foodtypes = SUGAR|FRUIT|PINEAPPLE
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_TINY
 	crafting_complexity = FOOD_COMPLEXITY_1

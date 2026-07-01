@@ -199,7 +199,7 @@
 	var/mob/living/real_owner = owner?.resolve()
 	if(real_owner)
 		to_chat(real_owner, span_userdanger("[victim.real_name] has stepped foot on the alert rune in [get_area(src)]!"))
-		real_owner.playsound_local(get_turf(real_owner), 'sound/magic/curse.ogg', 50, TRUE)
+		real_owner.playsound_local(get_turf(real_owner), 'sound/effects/magic/curse.ogg', 50, TRUE)
 
 /obj/structure/trap/eldritch/tentacle
 	name = "grasping carving"

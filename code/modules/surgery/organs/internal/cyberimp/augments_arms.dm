@@ -1,5 +1,6 @@
 /obj/item/organ/cyberimp/arm
 	name = "arm-mounted implant"
+	abstract_type = /obj/item/organ/cyberimp/arm
 	desc = "You shouldn't see this! Adminhelp and report this as an issue on github!"
 	zone = BODY_ZONE_R_ARM
 	slot = ORGAN_SLOT_RIGHT_ARM_AUG

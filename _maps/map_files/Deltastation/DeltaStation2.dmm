@@ -1861,6 +1861,22 @@
 "aoF" = (
 /turf/closed/wall,
 /area/station/maintenance/disposal)
+"aoP" = (
+/obj/structure/toilet{
+	dir = 8
+	},
+/obj/machinery/newscaster/directional/west,
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/east,
+/obj/machinery/button/door/directional/south{
+	id = "Toilet_Med";
+	name = "Lock Control";
+	normaldoorcontrol = 1;
+	specialfunctions = 4
+	},
+/obj/item/food/sandwich/grilled_cheese,
+/turf/open/floor/iron/cafeteria,
+/area/station/medical/break_room)
 "aoW" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -3446,16 +3462,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
-"aHQ" = (
-/obj/item/stack/sticky_tape/surgical,
-/obj/structure/table/glass,
-/obj/item/radio/intercom/directional/north,
-/obj/item/stack/sticky_tape/surgical,
-/obj/item/stack/medical/bone_gel,
-/obj/machinery/light/directional/north,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron/dark,
-/area/station/medical/surgery/theatre)
 "aIa" = (
 /obj/effect/landmark/start/hangover,
 /obj/structure/chair/stool/bar/directional/north,
@@ -7526,6 +7532,16 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/station/science/research)
+"bAV" = (
+/obj/item/stack/medical/wrap/sticky_tape/surgical,
+/obj/structure/table/glass,
+/obj/item/radio/intercom/directional/north,
+/obj/item/stack/medical/wrap/sticky_tape/surgical,
+/obj/item/stack/medical/bone_gel,
+/obj/machinery/light/directional/north,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/station/medical/surgery/theatre)
 "bBb" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -17743,15 +17759,6 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/station/science/lab)
-"dfw" = (
-/obj/machinery/firealarm/directional/north,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/mesh,
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/light/cold/directional/north,
-/turf/open/floor/iron,
-/area/station/medical/treatment_center)
 "dfx" = (
 /obj/effect/turf_decal/trimline/blue/filled/warning{
 	dir = 1
@@ -17761,19 +17768,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
-/area/station/medical/treatment_center)
-"dfz" = (
-/obj/structure/extinguisher_cabinet/directional/north,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/suture,
-/obj/machinery/camera/directional/north{
-	c_tag = "Medbay - Treatment Center";
-	name = "medbay camera";
-	network = list("ss13","medbay")
-	},
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dfD" = (
 /obj/effect/spawner/random/vending/snackvend,
@@ -17980,14 +17974,6 @@
 	dir = 5
 	},
 /turf/open/floor/iron/white,
-/area/station/medical/treatment_center)
-"dhb" = (
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/obj/machinery/newscaster/directional/east,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron,
 /area/station/medical/treatment_center)
 "dhf" = (
 /obj/machinery/newscaster/directional/south,
@@ -30081,16 +30067,6 @@
 /obj/effect/landmark/event_spawn,
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
-"fBo" = (
-/obj/structure/table,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/mesh,
-/obj/item/stack/medical/suture,
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 1
-	},
-/turf/open/floor/iron/white,
-/area/station/medical/medbay/lobby)
 "fBp" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -31116,6 +31092,15 @@
 "fQS" = (
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
+"fQV" = (
+/obj/machinery/firealarm/directional/north,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/mesh,
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/light/cold/directional/north,
+/turf/open/floor/iron,
+/area/station/medical/treatment_center)
 "fRh" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -32005,6 +31990,14 @@
 /obj/effect/turf_decal/trimline/yellow/filled/line,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"gge" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/obj/machinery/newscaster/directional/east,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/station/medical/treatment_center)
 "ggi" = (
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
@@ -32222,6 +32215,24 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs/aft)
+"gjJ" = (
+/obj/structure/rack,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/suture,
+/obj/item/stack/medical/mesh,
+/obj/item/reagent_containers/syringe/epinephrine{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/syringe/multiver,
+/obj/machinery/camera/directional/west{
+	c_tag = "Bridge - Gateway Atrium";
+	name = "command camera"
+	},
+/obj/effect/turf_decal/bot,
+/obj/machinery/vending/wallmed/directional/west,
+/turf/open/floor/iron,
+/area/station/command/gateway)
 "gjL" = (
 /obj/structure/chair/comfy/black{
 	dir = 1
@@ -35295,13 +35306,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/corporate_showroom)
-"hbs" = (
-/obj/machinery/sleeper/stasis{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron,
-/area/station/medical/treatment_center)
 "hbu" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -36727,6 +36731,13 @@
 /mob/living/simple_animal/bot/mulebot,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
+"hrZ" = (
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/station/medical/treatment_center)
 "hsa" = (
 /obj/machinery/light/small/directional/west,
 /obj/effect/turf_decal/bot,
@@ -40268,24 +40279,6 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
-/area/station/command/gateway)
-"iog" = (
-/obj/structure/rack,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/suture,
-/obj/item/stack/medical/mesh,
-/obj/item/reagent_containers/syringe/epinephrine{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/syringe/multiver,
-/obj/machinery/camera/directional/west{
-	c_tag = "Bridge - Gateway Atrium";
-	name = "command camera"
-	},
-/obj/effect/turf_decal/bot,
-/obj/machinery/vending/wallmed/directional/west,
-/turf/open/floor/iron,
 /area/station/command/gateway)
 "iok" = (
 /obj/structure/disposalpipe/segment,
@@ -55861,22 +55854,6 @@
 "mMn" = (
 /turf/open/floor/carpet,
 /area/station/commons/vacant_room/office)
-"mMw" = (
-/obj/structure/toilet{
-	dir = 8
-	},
-/obj/machinery/newscaster/directional/west,
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/small/directional/east,
-/obj/machinery/button/door/directional/south{
-	id = "Toilet_Med";
-	name = "Lock Control";
-	normaldoorcontrol = 1;
-	specialfunctions = 4
-	},
-/obj/item/food/sandwich/cheese/grilled,
-/turf/open/floor/iron/cafeteria,
-/area/station/medical/break_room)
 "mMH" = (
 /obj/structure/closet/secure_closet/captains,
 /obj/effect/turf_decal/stripes/line{
@@ -76841,6 +76818,19 @@
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron,
 /area/station/command/teleporter)
+"sEQ" = (
+/obj/structure/extinguisher_cabinet/directional/north,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/suture,
+/obj/machinery/camera/directional/north{
+	c_tag = "Medbay - Treatment Center";
+	name = "medbay camera";
+	network = list("ss13","medbay")
+	},
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron,
+/area/station/medical/treatment_center)
 "sES" = (
 /obj/machinery/porta_turret/ai,
 /obj/machinery/status_display/evac/directional/north,
@@ -88415,6 +88405,16 @@
 /obj/effect/spawner/random/structure/closet_empty/crate,
 /turf/open/floor/iron,
 /area/station/maintenance/department/medical/morgue)
+"vWQ" = (
+/obj/structure/table,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/mesh,
+/obj/item/stack/medical/suture,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/station/medical/medbay/lobby)
 "vWT" = (
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -136827,12 +136827,12 @@ dbb
 dcN
 whw
 pxG
-hbs
+hrZ
 dip
 dba
 wHY
 nAG
-hbs
+hrZ
 dqC
 sdI
 hpY
@@ -137083,7 +137083,7 @@ cZp
 dbc
 lYb
 whw
-dfw
+fQV
 dip
 diq
 dkg
@@ -137359,7 +137359,7 @@ fYL
 oiq
 pnH
 eOx
-aHQ
+bAV
 dVm
 dVm
 wDX
@@ -137836,7 +137836,7 @@ xsl
 bAs
 kMC
 kaN
-iog
+gjJ
 fWV
 peu
 vZj
@@ -138368,7 +138368,7 @@ mOg
 dbh
 dcT
 whw
-dfz
+sEQ
 dha
 dit
 pfC
@@ -138615,7 +138615,7 @@ xwl
 irp
 iJj
 cmm
-fBo
+vWQ
 lAf
 bJK
 taB
@@ -138626,7 +138626,7 @@ wmA
 tHg
 wmA
 nls
-dhb
+gge
 diu
 ndH
 bXP
@@ -139676,7 +139676,7 @@ ope
 dIW
 mZL
 kIl
-mMw
+aoP
 bEA
 bEA
 bEA

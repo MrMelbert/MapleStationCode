@@ -3,10 +3,14 @@
 	icon_state = "stomach-p" //Welp. At least it's more unique in functionaliy.
 	desc = "A crystal-like organ that stores the electric charge of ethereals."
 	organ_traits = list(TRAIT_NOHUNGER) // We have our own hunger mechanic.
+	food_reagents = list()
+	organ_flags = parent_type::organ_flags & ~ORGAN_EDIBLE
 	/// Where the energy of the stomach is stored.
 	var/obj/item/stock_parts/power_store/cell
 	///used to keep ethereals from spam draining power sources
 	var/drain_time = 0
+	/// multiplier to passive drain over time
+	var/passive_drain_multiplier = PASSIVE_HUNGER_MULTIPLIER
 
 /obj/item/organ/stomach/ethereal/Initialize(mapload)
 	. = ..()
@@ -18,7 +22,7 @@
 
 /obj/item/organ/stomach/ethereal/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	adjust_charge(-1 * PASSIVE_HUNGER_MULTIPLIER * ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
+	adjust_charge(-1 * passive_drain_multiplier * ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
 	handle_charge(owner, seconds_per_tick, times_fired)
 
 /obj/item/organ/stomach/ethereal/on_mob_insert(mob/living/carbon/stomach_owner)
@@ -27,6 +31,9 @@
 	RegisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 	RegisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS, PROC_REF(handle_temp))
 	RegisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED, PROC_REF(handle_move))
+	RegisterSignal(stomach_owner, COMSIG_MOB_HUD_CREATED, PROC_REF(update_hunger_icon))
+	RegisterSignal(stomach_owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_aheal))
+	update_hunger_icon()
 
 /obj/item/organ/stomach/ethereal/on_mob_remove(mob/living/carbon/stomach_owner)
 	. = ..()
@@ -34,12 +41,33 @@
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS)
 	UnregisterSignal(stomach_owner, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(stomach_owner, COMSIG_LIVING_POST_FULLY_HEAL)
 	stomach_owner.clear_mood_event("charge")
-	stomach_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
-	stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
+	// stomach_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
+	// stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
+	UnregisterSignal(stomach_owner, COMSIG_MOB_HUD_CREATED)
+	stomach_owner.hud_used?.hunger?.reset_food_image()
+
+/obj/item/organ/stomach/ethereal/get_hungerbar_fullness(skip_contents = FALSE)
+	// we need to convert charge (which is on a scale 0-20000+)
+	// into effective fullness, which is on a scale of 0-600+
+	return (skip_contents ? cell.charge() : effective_charge()) / ETHEREAL_CHARGE_OVERLOAD * 600
+
+/// Calculates effective charge, rather than actual charge, though they may often be the same.
+/obj/item/organ/stomach/ethereal/proc/effective_charge()
+	return cell.charge()
+
+/obj/item/organ/stomach/ethereal/proc/update_hunger_icon(datum/source)
+	SIGNAL_HANDLER
+	owner.hud_used?.hunger?.set_food_image('icons/obj/machines/cell_charger.dmi', "9v_cell")
 
 /obj/item/organ/stomach/ethereal/handle_hunger_slowdown(mob/living/carbon/human/human)
 	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (1.5 * (1 - cell.charge() / 100)))
+
+/obj/item/organ/stomach/ethereal/proc/on_aheal(datum/source, heal_flags)
+	SIGNAL_HANDLER
+	if(heal_flags & HEAL_STATUS)
+		cell.charge = ETHEREAL_CHARGE_FULL
 
 /obj/item/organ/stomach/ethereal/proc/charge(datum/source, datum/callback/charge_cell, seconds_per_tick)
 	SIGNAL_HANDLER
@@ -83,33 +111,33 @@
 	switch(cell.charge())
 		if(-INFINITY to ETHEREAL_CHARGE_NONE)
 			carbon.add_mood_event("charge", /datum/mood_event/decharged)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/emptycell/ethereal)
+			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/emptycell/ethereal)
 			if(carbon.health > 10.5)
 				carbon.apply_damage(0.65, TOX, null, null, carbon)
 		if(ETHEREAL_CHARGE_NONE to ETHEREAL_CHARGE_LOWPOWER)
 			carbon.add_mood_event("charge", /datum/mood_event/decharged)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 3)
+			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 3)
 			if(carbon.health > 10.5)
 				carbon.apply_damage(0.325 * seconds_per_tick, TOX, null, null, carbon)
 		if(ETHEREAL_CHARGE_LOWPOWER to ETHEREAL_CHARGE_NORMAL)
 			carbon.add_mood_event("charge", /datum/mood_event/lowpower)
-			carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 2)
+			// carbon.throw_alert(ALERT_ETHEREAL_CHARGE, /atom/movable/screen/alert/lowcell/ethereal, 2)
 		if(ETHEREAL_CHARGE_ALMOSTFULL to ETHEREAL_CHARGE_FULL)
 			carbon.add_mood_event("charge", /datum/mood_event/charged)
 		if(ETHEREAL_CHARGE_FULL to ETHEREAL_CHARGE_OVERLOAD)
 			carbon.add_mood_event("charge", /datum/mood_event/overcharged)
-			carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 1)
+			// carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 1)
 			carbon.apply_damage(0.2, TOX, null, null, carbon)
 		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
 			carbon.add_mood_event("charge", /datum/mood_event/supercharged)
-			carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 2)
+			// carbon.throw_alert(ALERT_ETHEREAL_OVERCHARGE, /atom/movable/screen/alert/ethereal_overcharge, 2)
 			carbon.apply_damage(0.325 * seconds_per_tick, TOX, null, null, carbon)
 			if(SPT_PROB(5, seconds_per_tick)) // 5% each seacond for ethereals to explosively release excess energy if it reaches dangerous levels
 				discharge_process(carbon)
 		else
 			owner.clear_mood_event("charge")
-			carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
-			carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
+			// carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
+			// carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
 
 /obj/item/organ/stomach/ethereal/proc/discharge_process(mob/living/carbon/carbon)
 	to_chat(carbon, span_warning("You begin to lose control over your charge!"))
@@ -119,13 +147,8 @@
 	overcharge = overcharge || mutable_appearance('icons/effects/effects.dmi', "electricity", EFFECTS_LAYER)
 	carbon.add_overlay(overcharge)
 
-	if(do_after(carbon, 5 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_INCAPACITATED)))
-		if(ishuman(carbon))
-			var/mob/living/carbon/human/human = carbon
-			if(human.dna?.species)
-				//fixed_mut_color is also ethereal color (for some reason)
-				carbon.flash_lighting_fx(5, 7, human.dna.species.fixed_mut_color ? human.dna.species.fixed_mut_color : human.dna.features["mcolor"])
-
+	if(do_after(carbon, 5 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS)))
+		carbon.flash_lighting_fx(5, 7, carbon.dna?.species?.fixed_mut_color || carbon.dna?.features["mcolor"])
 		playsound(carbon, 'sound/magic/lightningshock.ogg', 100, TRUE, extrarange = 5)
 		carbon.cut_overlay(overcharge)
 		// Only a small amount of the energy gets discharged as the zap. The rest dissipates as heat. Keeps the damage and energy from the zap the same regardless of what STANDARD_CELL_CHARGE is.

@@ -234,7 +234,7 @@
 		things_to_attach += organ
 
 	if(!HAS_TRAIT(clone, TRAIT_NODISMEMBER))
-		for(var/obj/item/bodypart/part as anything in clone.bodyparts)
+		for(var/obj/item/bodypart/part as anything in clone.get_bodyparts())
 			if(part.body_zone == BODY_ZONE_CHEST || part.body_zone == BODY_ZONE_HEAD)
 				continue
 			part.drop_limb()

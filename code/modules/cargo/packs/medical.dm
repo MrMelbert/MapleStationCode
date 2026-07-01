@@ -90,7 +90,7 @@
 					/obj/item/reagent_containers/cup/bottle/morphine,
 					/obj/item/reagent_containers/cup/bottle/toxin,
 					/obj/item/reagent_containers/cup/beaker/large,
-					/obj/item/stack/medical/gauze,
+					/obj/item/stack/medical/wrap/gauze,
 					/obj/item/storage/box/bandages,
 					/obj/item/storage/box/beakers,
 					/obj/item/storage/box/medigels,

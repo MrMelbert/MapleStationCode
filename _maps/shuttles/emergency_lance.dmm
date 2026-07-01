@@ -1071,6 +1071,15 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
+"Jd" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/dark_blue/half/contrasted,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/shuttle/escape)
 "JN" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/dark_blue/opposingcorners{
@@ -1113,6 +1122,15 @@
 "Kz" = (
 /obj/machinery/power/shuttle_engine/large,
 /turf/open/floor/plating/airless,
+/area/shuttle/escape)
+"Lb" = (
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/dark_blue/half/contrasted,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
 /area/shuttle/escape)
 "Ld" = (
 /obj/item/storage/medkit/fire{
@@ -1234,15 +1252,6 @@
 	dir = 1
 	},
 /turf/open/floor/iron/checker,
-/area/shuttle/escape)
-"NA" = (
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/dark_blue/half/contrasted,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
 /area/shuttle/escape)
 "NS" = (
 /obj/structure/chair/comfy/shuttle,
@@ -1408,15 +1417,6 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"RO" = (
-/obj/machinery/sleeper/stasis{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/dark_blue/half/contrasted,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/shuttle/escape)
 "So" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
@@ -1494,6 +1494,17 @@
 	dir = 6
 	},
 /area/shuttle/escape)
+"Va" = (
+/obj/effect/turf_decal/bot_white,
+/obj/structure/rack,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/bruise_pack,
+/obj/item/stack/medical/ointment{
+	pixel_x = 5
+	},
+/obj/item/stack/medical/bone_gel,
+/turf/open/floor/iron/dark/textured,
+/area/shuttle/escape)
 "Vf" = (
 /obj/machinery/shieldgen,
 /obj/effect/turf_decal/stripes/line{
@@ -1501,17 +1512,6 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
-/area/shuttle/escape)
-"Wg" = (
-/obj/effect/turf_decal/bot_white,
-/obj/structure/rack,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/bruise_pack,
-/obj/item/stack/medical/ointment{
-	pixel_x = 5
-	},
-/obj/item/stack/medical/bone_gel,
-/turf/open/floor/iron/dark/textured,
 /area/shuttle/escape)
 "WI" = (
 /obj/effect/turf_decal/tile/dark_blue/fourcorners,
@@ -1944,7 +1944,7 @@ UG
 WQ
 Pe
 WQ
-RO
+Lb
 WI
 WI
 WI
@@ -2065,7 +2065,7 @@ qH
 bV
 WQ
 WQ
-Wg
+Va
 kN
 So
 iy
@@ -2360,7 +2360,7 @@ kz
 yB
 Ao
 WQ
-NA
+Jd
 WI
 WI
 WI

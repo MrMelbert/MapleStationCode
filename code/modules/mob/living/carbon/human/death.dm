@@ -47,8 +47,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	death_block += span_danger("<center><span style='font-size: 32px'>You have succumbed to [cause_of_death].</font></center>")
 	death_block += "<hr>"
 	death_block += span_danger("Barring complete bodyloss, you can (in most cases) be revived by other players. \
-		If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab.")
-	to_chat(src, examine_block(death_block))
+		\
+		If you do not wish to be brought back, use the \"Do Not Resuscitate\" button at the bottom of your screen.")
+	to_chat(src, boxed_message(death_block))
 
 /mob/living/carbon/human/proc/get_cause_of_death(probable_cause)
 	if(!probable_cause)

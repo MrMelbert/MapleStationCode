@@ -98,3 +98,8 @@
 	id_additions = list(
 		"antiblindnessvisor",
 	)
+
+/datum/techweb_node/medbay_equip
+	id_additions = list(
+		"plasticmedkit",
+	)

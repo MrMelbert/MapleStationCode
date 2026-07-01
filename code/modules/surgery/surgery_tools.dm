@@ -599,7 +599,7 @@
 /obj/item/shears/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is pinching [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/timer = 1 SECONDS
-	for(var/obj/item/bodypart/thing in user.bodyparts)
+	for(var/obj/item/bodypart/thing in user.get_bodyparts())
 		if(thing.body_part == CHEST)
 			continue
 		addtimer(CALLBACK(thing, TYPE_PROC_REF(/obj/item/bodypart/, dismember)), timer)
@@ -805,28 +805,30 @@
 
 /obj/item/razor/scissors/proc/cut_gauze_on_mob(mob/living/carbon/cutting, mob/living/user)
 	var/obj/item/bodypart/target_limb = cutting.get_bodypart(user.zone_selected)
-	if(isnull(target_limb?.current_gauze))
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(target_limb?.applied_items, LIMB_ITEM_GAUZE)
+	if(isnull(current_gauze))
 		return NONE
 
 	cutting.balloon_alert(user, "cutting bandages...")
 	user.visible_message(
-		span_notice("[user] begins cutting through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
-		span_notice("You begin cutting through [target_limb.current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
+		span_notice("[user] begins cutting through [current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
+		span_notice("You begin cutting through [current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]..."),
 	)
 	if(!use_tool(cutting, user, 3 SECONDS, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 
 	target_limb = cutting.get_bodypart(user.zone_selected)
-	if(isnull(target_limb?.current_gauze))
+	current_gauze = LAZYACCESS(target_limb?.applied_items, LIMB_ITEM_GAUZE)
+	if(isnull(current_gauze))
 		return ITEM_INTERACT_BLOCKING
 
 	cutting.balloon_alert(user, "bandages cut")
 	user.visible_message(
-		span_notice("[user] cut through [target_limb.current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]."),
-		span_notice("You cut through [target_limb.current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]."),
+		span_notice("[user] cut through [current_gauze] on [cutting == user ? "[user.p_their()]" : "[cutting]'s"] [target_limb.plaintext_zone]."),
+		span_notice("You cut through [current_gauze] on [cutting == user ? "your" : "[cutting]'s"] [target_limb.plaintext_zone]."),
 	)
-	new /obj/effect/decal/cleanable/shreds(cutting.drop_location(), target_limb.current_gauze.name)
-	qdel(target_limb.remove_gauze())
+	new /obj/effect/decal/cleanable/shreds(cutting.drop_location(), current_gauze.name)
+	qdel(current_gauze)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/razor/scissors/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)

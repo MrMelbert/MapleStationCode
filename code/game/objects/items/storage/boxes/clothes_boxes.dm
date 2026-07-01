@@ -35,7 +35,7 @@
 	new /obj/item/clothing/head/wizard/tape/fake(src)
 	new /obj/item/clothing/suit/wizrobe/tape/fake(src)
 	new /obj/item/staff/tape(src)
-	new /obj/item/stack/sticky_tape(src)
+	new /obj/item/stack/medical/wrap/sticky_tape(src)
 
 /obj/item/storage/box/fakesyndiesuit
 	name = "boxed space suit and helmet"

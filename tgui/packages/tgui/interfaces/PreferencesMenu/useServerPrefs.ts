@@ -37,6 +37,9 @@ export const ServerPrefs = createContext<ServerData | undefined>({
     max_spoken_languages: 0,
     max_understood_languages: 0,
   },
+  laws: {
+    lawname_to_laws: {},
+  },
   // NON-MODULE CHANGE END
 });
 

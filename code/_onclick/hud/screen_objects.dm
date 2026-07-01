@@ -149,6 +149,9 @@
 /atom/movable/screen/language_menu/Click()
 	usr.get_language_holder().open_language_menu(usr)
 
+/atom/movable/screen/language_menu/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
+
 /atom/movable/screen/inventory
 	/// The identifier for the slot. It has nothing to do with ID cards.
 	var/slot_id
@@ -345,6 +348,38 @@
 	icon = 'icons/hud/screen_cyborg.dmi'
 	screen_loc = ui_borg_intents
 
+/atom/movable/screen/floor_changer
+	name = "change floor"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "floor_change"
+	screen_loc = ui_above_intent
+	mouse_over_pointer = MOUSE_HAND_POINTER
+	var/vertical = FALSE
+
+/atom/movable/screen/floor_changer/Click(location,control,params)
+	var/list/modifiers = params2list(params)
+
+	var/mouse_position
+
+	if(vertical)
+		mouse_position = text2num(LAZYACCESS(modifiers, ICON_Y))
+	else
+		mouse_position = text2num(LAZYACCESS(modifiers, ICON_X))
+
+	if(mouse_position > 16)
+		usr.up()
+		return
+
+	usr.down()
+	return
+
+/atom/movable/screen/floor_changer/vertical
+	icon_state = "floor_change_v"
+	vertical = TRUE
+
+/atom/movable/screen/floor_changer/vertical/ghost
+	icon = 'icons/hud/screen_ghost.dmi'
+
 /atom/movable/screen/spacesuit
 	name = "Space suit cell status"
 	icon_state = "spacesuit_0"
@@ -396,10 +431,12 @@
 	name = "resist"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_resist"
+	base_icon_state = "act_resist"
 	plane = HUD_PLANE
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/resist/Click()
+	flick("[base_icon_state]_on", src)
 	if(isliving(usr))
 		var/mob/living/L = usr
 		L.resist()
@@ -421,8 +458,34 @@
 	var/mob/living/user = hud?.mymob
 	if(!istype(user))
 		return ..()
-	icon_state = "[base_icon_state][user.resting ? 0 : null]"
+	icon_state = "[base_icon_state][user.resting ? "_on" : null]"
 	return ..()
+
+/atom/movable/screen/sleep
+	name = "sleep"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "act_sleep"
+	base_icon_state = "act_sleep"
+	plane = HUD_PLANE
+	mouse_over_pointer = MOUSE_HAND_POINTER
+
+/atom/movable/screen/sleep/Click()
+	if(!isliving(usr) || HAS_TRAIT(usr, TRAIT_KNOCKEDOUT))
+		return
+	if(usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
+		var/tgui_answer = tgui_alert(usr, "You sure you want to sleep for a while?", "Sleeping", list("Yes", "No"))
+		if(tgui_answer == "Yes" && !HAS_TRAIT(usr, TRAIT_KNOCKEDOUT))
+			var/mob/living/L = usr
+			L.SetSleeping(400)
+	else
+		flick("[base_icon_state]_flick", src)
+
+/atom/movable/screen/sleep/DblClick(location, control, params)
+	if(!isliving(usr) || usr.client?.prefs.read_preference(/datum/preference/toggle/remove_double_click))
+		return
+	if(isliving(usr))
+		var/mob/living/L = usr
+		L.SetSleeping(400)
 
 /atom/movable/screen/storage
 	name = "storage"
@@ -494,7 +557,7 @@
 /atom/movable/screen/throw_catch
 	name = "throw/catch"
 	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "act_throw_off"
+	icon_state = "act_throw"
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/throw_catch/Click()
@@ -691,6 +754,9 @@
 		var/mob/living/carbon/C = usr
 		C.check_self_for_injuries()
 
+/atom/movable/screen/healthdoll/proc/update_body_zones()
+	return
+
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"
 	screen_loc = ui_living_healthdoll
@@ -705,12 +771,21 @@
 
 /atom/movable/screen/healthdoll/human/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	limbs = list()
-	for(var/i in BODY_ZONES_ALL)
+	if(isnull(hud_owner)) //we require a hud owner to work properly, so return out.
+		return
+	update_body_zones()
+	update_appearance()
+
+/atom/movable/screen/healthdoll/human/update_body_zones()
+	vis_contents.Cut()
+	QDEL_LIST_ASSOC_VAL(limbs)
+	limbs ||= list()
+	var/mob/living/carbon/human/owner = hud.mymob
+	for(var/body_zone in owner.get_all_limbs())
 		var/atom/movable/screen/healthdoll_limb/limb = new(src, null)
 		// layer chest above other limbs, it's the center after all
-		limb.layer = i == BODY_ZONE_CHEST ? layer + 0.05 : layer
-		limbs[i] = limb
+		limb.layer = body_zone == BODY_ZONE_CHEST ? layer + 0.05 : layer
+		limbs[body_zone] = limb
 		// why viscontents? why not overlays? - because i want to animate filters
 		vis_contents += limb
 	update_appearance()
@@ -732,12 +807,13 @@
 
 	var/list/current_animated = LAZYLISTDUPLICATE(animated_zones)
 
-	for(var/obj/item/bodypart/body_part as anything in owner.bodyparts)
+	for(var/part_zone, body_part_untyped in owner.get_bodyparts_by_zones())
 		var/icon_key = 0
-		var/part_zone = body_part.body_zone
-
+		var/obj/item/bodypart/body_part = body_part_untyped
 		var/list/overridable_key = list(icon_key)
-		if(body_part.bodypart_disabled)
+		if(isnull(body_part) || IS_STUMP(body_part))
+			icon_key = 6
+		else if(body_part.bodypart_disabled)
 			icon_key = 7
 		else if(owner.stat == DEAD)
 			icon_key = "DEAD"
@@ -750,7 +826,7 @@
 
 		// NON-MODULE CHANGE
 		var/has_noticable_wound = FALSE
-		for(var/datum/wound/wound as anything in body_part.wounds)
+		for(var/datum/wound/wound as anything in body_part?.wounds)
 			if(wound.wound_flags & ALERTS_VICTIM)
 				has_noticable_wound = TRUE
 				break
@@ -761,10 +837,6 @@
 			LAZYREMOVE(animated_zones, part_zone)
 
 		limbs[part_zone].icon_state = "[part_zone][icon_key]"
-	// handle leftovers
-	for(var/missing_zone in owner.get_missing_limbs())
-		limbs[missing_zone].icon_state = "[missing_zone]6"
-		LAZYREMOVE(animated_zones, missing_zone)
 	// time to re-sync animations, something changed
 	if(animated_zones ~! current_animated)
 		for(var/animated_zone in animated_zones)
@@ -923,11 +995,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 		screen_loc = ui_mood // Slot in where mood normally is if mood is disabled
 
 	// Burger next to the bar
-	food_image = image(icon = food_icon, icon_state = food_icon_state, pixel_x = -5)
-	food_image.plane = plane
-	food_image.appearance_flags |= KEEP_APART // To be unaffected by filters applied to src
-	food_image.add_filter("simple_outline", 2, outline_filter(1, COLOR_BLACK))
-	underlays += food_image // To be below filters applied to src
+	set_food_image(food_icon, food_icon_state)
 
 	// The actual bar
 	hunger_bar = new(src, null)
@@ -935,21 +1003,31 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 
 	update_hunger_bar(instant = TRUE)
 
-/atom/movable/screen/hunger/proc/update_hunger_state()
-	var/mob/living/hungry = hud?.mymob
-	if(!istype(hungry))
-		return
+/atom/movable/screen/hunger/proc/set_food_image(new_icon, new_icon_state)
+	if(food_image)
+		underlays -= food_image
 
-	if(HAS_TRAIT(hungry, TRAIT_NOHUNGER) || !hungry.get_organ_slot(ORGAN_SLOT_STOMACH))
-		fullness = NUTRITION_LEVEL_FED
-		state = HUNGER_STATE_FINE
-		return
-	if(HAS_TRAIT(hungry, TRAIT_FAT))
-		fullness = NUTRITION_LEVEL_FAT
-		state = HUNGER_STATE_FAT
-		return
+	food_image = image(icon = new_icon, icon_state = new_icon_state, pixel_x = -5)
+	food_image.plane = plane
+	food_image.appearance_flags |= KEEP_APART // To be unaffected by filters applied to src
+	food_image.add_filter("simple_outline", 2, outline_filter(1, COLOR_BLACK))
+	underlays += food_image // To be below filters applied to src
 
-	fullness = round(hungry.get_fullness(only_consumable = TRUE), 0.05)
+/atom/movable/screen/hunger/proc/reset_food_image()
+	set_food_image(food_icon, food_icon_state)
+
+/atom/movable/screen/hunger/update_appearance(updates)
+	update_hunger_bar()
+	return ..()
+
+/// Updates the hunger bar's appearance.
+/// If `instant` is TRUE, the bar will update immediately rather than animating.
+/atom/movable/screen/hunger/proc/update_hunger_bar(instant = FALSE)
+	var/old_state = state
+	var/old_fullness = fullness
+
+	var/obj/item/organ/stomach/tumby = hud?.mymob?.get_organ_slot(ORGAN_SLOT_STOMACH)
+	fullness = round(tumby?.get_hungerbar_fullness(skip_contents = FALSE) || NUTRITION_LEVEL_FED, 0.05)
 	switch(fullness)
 		if(1 + NUTRITION_LEVEL_FULL to INFINITY)
 			state = HUNGER_STATE_FULL
@@ -962,26 +1040,16 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 		if(0 to NUTRITION_LEVEL_STARVING)
 			state = HUNGER_STATE_STARVING
 
-/atom/movable/screen/hunger/update_appearance(updates)
-	update_hunger_bar()
-	return ..()
-
-/// Updates the hunger bar's appearance.
-/// If `instant` is TRUE, the bar will update immediately rather than animating.
-/atom/movable/screen/hunger/proc/update_hunger_bar(instant = FALSE)
-	var/old_state = state
-	var/old_fullness = fullness
-	update_hunger_state()
 	if(old_state != state || old_fullness != fullness)
 		// Fades out if we ARE "fine" AND if our stomach has no food digesting
-		var/mob/living/hungry = hud?.mymob
-		if(alpha == 255 && (state == HUNGER_STATE_FINE && abs(fullness - hungry.nutrition) < 1))
+		var/raw_fullness = round(tumby?.get_hungerbar_fullness(skip_contents = TRUE) || hud?.mymob?.nutrition, 0.05)
+		if(alpha == 255 && (state == HUNGER_STATE_FINE && abs(fullness - raw_fullness) < 1))
 			if(instant)
 				alpha = 0
 			else
 				animate(src, alpha = 0, time = 1 SECONDS)
 		// Fades in if we WERE "fine" OR if our stomach has food digesting
-		else if(alpha == 0 && (state != HUNGER_STATE_FINE || abs(fullness - hungry.nutrition) >= 1))
+		else if(alpha == 0 && (state != HUNGER_STATE_FINE || abs(fullness - raw_fullness) >= 1))
 			if(instant)
 				alpha = 255
 			else

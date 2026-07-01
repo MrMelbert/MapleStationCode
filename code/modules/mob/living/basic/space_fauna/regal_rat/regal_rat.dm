@@ -76,7 +76,17 @@
 	var/datum/component/potential_component = GetComponent(/datum/component/ghost_direct_control)
 	if(!QDELETED(potential_component))
 		qdel(potential_component)
-	return ..()
+	. = ..()
+	if(gibbed)
+		return
+	AddComponent( \
+		/datum/component/complex_smell, \
+		duration = 30 MINUTES, \
+		smell = /datum/smell/decay, \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 3, \
+		clear_signals = list(COMSIG_MOB_STATCHANGE), \
+	)
 
 /mob/living/basic/regal_rat/examine(mob/user)
 	. = ..()

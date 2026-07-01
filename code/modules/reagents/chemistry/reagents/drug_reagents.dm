@@ -85,7 +85,7 @@
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	ph = 8
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/nicotine = 10)
+	addiction_types = list(/datum/addiction/nicotine = 20)
 
 	//Nicotine is used as a pesticide IRL.
 /datum/reagent/drug/nicotine/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
@@ -137,7 +137,7 @@
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(SPT_PROB(2.5, seconds_per_tick))
 		to_chat(affected_mob, span_notice("[high_message]"))
-	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy)
+	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic/heavy)
 	if(current_cycle == 36 && creation_purity <= 0.6)
 		if(!istype(affected_mob.dna.species, /datum/species/human/krokodil_addict))
 			to_chat(affected_mob, span_userdanger("Your skin falls off easily!"))
@@ -772,7 +772,6 @@
 
 	invisible_man.add_traits(list(TRAIT_INVISIBLE_MAN, TRAIT_HIDE_EXTERNAL_ORGANS, TRAIT_NO_BLOOD_OVERLAY), type)
 
-	invisible_man.update_body()
 	invisible_man.remove_from_all_data_huds()
 	invisible_man.sound_environment_override = SOUND_ENVIROMENT_PHASED
 
@@ -784,7 +783,6 @@
 
 		to_chat(invisible_man, span_notice("As you sober up, opacity once again returns to your body meats."))
 
-	invisible_man.update_body()
 	invisible_man.sound_environment_override = NONE
 
 	if(!invisible_man.hud_used)

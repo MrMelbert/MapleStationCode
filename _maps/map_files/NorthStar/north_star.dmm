@@ -8599,6 +8599,14 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/security/checkpoint/second)
+"cfd" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/sleeper/stasis{
+	dir = 4
+	},
+/obj/machinery/defibrillator_mount/directional/north,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/treatment_center)
 "cfe" = (
 /obj/machinery/airalarm/directional/south,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -11241,6 +11249,14 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/floor2/starboard/fore)
+"cNr" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/obj/machinery/defibrillator_mount/directional/north,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/treatment_center)
 "cNx" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable,
@@ -50490,6 +50506,14 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark/textured,
 /area/station/maintenance/floor2/starboard/aft)
+"mXb" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/closet/crate/freezer,
+/obj/item/stack/medical/suture,
+/obj/item/stack/medical/wrap/gauze/twelve,
+/obj/item/stack/medical/bone_gel,
+/turf/open/floor/iron/white,
+/area/station/maintenance/floor3/starboard/aft)
 "mXf" = (
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /obj/effect/turf_decal/tile/brown/opposingcorners,
@@ -55452,14 +55476,6 @@
 /obj/structure/cable,
 /turf/open/floor/wood/tile,
 /area/station/service/library)
-"ojg" = (
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/door/firedoor,
-/obj/structure/window/reinforced/spawner/directional/east,
-/obj/item/stack/medical/gauze,
-/turf/open/floor/iron/dark/textured,
-/area/station/medical/medbay/lobby)
 "ojl" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -56141,6 +56157,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/carpet,
 /area/station/medical/psychology)
+"osf" = (
+/obj/item/stack/medical/suture/ekit,
+/obj/item/stack/medical/wrap/gauze/improvised{
+	pixel_y = 12
+	},
+/obj/structure/table,
+/turf/open/floor/pod/light,
+/area/station/maintenance/floor1/port/aft)
 "osk" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -65493,14 +65517,6 @@
 /obj/item/radio/intercom/chapel/directional/south,
 /turf/open/floor/iron/dark/small,
 /area/station/service/chapel/office)
-"qPu" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/sleeper/stasis{
-	dir = 4
-	},
-/obj/machinery/defibrillator_mount/directional/north,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/treatment_center)
 "qPv" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron/dark,
@@ -71117,14 +71133,6 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/floor/iron/white/textured,
 /area/station/medical/office)
-"ssx" = (
-/obj/item/stack/medical/suture/ekit,
-/obj/item/stack/medical/gauze/improvised{
-	pixel_y = 12
-	},
-/obj/structure/table,
-/turf/open/floor/pod/light,
-/area/station/maintenance/floor1/port/aft)
 "ssy" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/reagent_dispensers/watertank,
@@ -71445,14 +71453,6 @@
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
-"swM" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/closet/crate/freezer,
-/obj/item/stack/medical/suture,
-/obj/item/stack/medical/gauze/twelve,
-/obj/item/stack/medical/bone_gel,
-/turf/open/floor/iron/white,
-/area/station/maintenance/floor3/starboard/aft)
 "swT" = (
 /turf/closed/wall/r_wall,
 /area/station/science/circuits)
@@ -72206,16 +72206,6 @@
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/pod/dark,
 /area/station/maintenance/floor2/starboard/aft)
-"sHd" = (
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 1
-	},
-/obj/structure/table,
-/obj/machinery/vending/wallmed/directional/north,
-/obj/machinery/duct,
-/obj/item/stack/medical/gauze,
-/turf/open/floor/iron/white,
-/area/station/medical/medbay/central)
 "sHq" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -72803,6 +72793,14 @@
 	},
 /turf/open/floor/iron/textured_large,
 /area/station/cargo/sorting)
+"sNy" = (
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/door/firedoor,
+/obj/structure/window/reinforced/spawner/directional/east,
+/obj/item/stack/medical/wrap/gauze,
+/turf/open/floor/iron/dark/textured,
+/area/station/medical/medbay/lobby)
 "sNE" = (
 /obj/machinery/vending/cigarette,
 /turf/open/floor/iron,
@@ -76902,14 +76900,6 @@
 /obj/structure/cable,
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/aisat/service)
-"tOW" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/obj/machinery/defibrillator_mount/directional/north,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/treatment_center)
 "tPj" = (
 /obj/effect/turf_decal/tile/purple/opposingcorners,
 /obj/structure/table/glass,
@@ -87230,6 +87220,16 @@
 "wuL" = (
 /turf/closed/wall,
 /area/station/commons/dorms/apartment2)
+"wuO" = (
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 1
+	},
+/obj/structure/table,
+/obj/machinery/vending/wallmed/directional/north,
+/obj/machinery/duct,
+/obj/item/stack/medical/wrap/gauze,
+/turf/open/floor/iron/white,
+/area/station/medical/medbay/central)
 "wuZ" = (
 /obj/structure/rack,
 /obj/effect/decal/cleanable/dirt,
@@ -139000,7 +139000,7 @@ dEc
 gqO
 vcr
 pzY
-ssx
+osf
 vcr
 xep
 ldD
@@ -192966,7 +192966,7 @@ aog
 sSO
 aIe
 kKr
-sHd
+wuO
 wyE
 xKq
 bYB
@@ -196301,7 +196301,7 @@ xYM
 jLQ
 usK
 ilR
-ojg
+sNy
 hHe
 ftD
 aHk
@@ -196819,7 +196819,7 @@ wMN
 tsN
 dhZ
 sRR
-qPu
+cfd
 rwv
 aTc
 dgm
@@ -197847,7 +197847,7 @@ tEe
 fYt
 loQ
 sRR
-tOW
+cNr
 sEl
 vOo
 xwZ
@@ -268763,7 +268763,7 @@ kRw
 qQi
 iAg
 lgw
-swM
+mXb
 kRw
 axP
 hdg

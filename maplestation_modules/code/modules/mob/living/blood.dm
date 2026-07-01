@@ -77,6 +77,8 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	var/datum/reagent/reagent_type = /datum/reagent/blood
 	/// What chem is used to restore this blood type (outside of itself, of course)?
 	var/datum/reagent/restoration_chem = /datum/reagent/iron
+	/// If saline glucose acts as a temporary substitute for this blood type
+	var/salgu_compatible = FALSE
 	/// The smell associated with this blood
 	/// It can be a string, a /datum/smell, or null
 	var/scent_text = /datum/smell/blood
@@ -193,6 +195,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /// A base type for all blood used by humans (NOT humanoids), for organization's sake
 /datum/blood_type/crew/human
+	salgu_compatible = TRUE
 
 /datum/blood_type/crew/human/get_blood_data(mob/living/carbon/sampled_from)
 	if(!istype(sampled_from) || isnull(sampled_from.dna))
@@ -289,6 +292,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "L"
 	color = "#047200" // Some species of lizards have mutated green blood due to biliverdin build up
 	compatible_types = list(/datum/blood_type/silver/lizard)
+	salgu_compatible = TRUE
 
 /datum/blood_type/silver
 	name = "Ag"
@@ -304,16 +308,19 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/silver/lizard
 	name = "sL"
 	compatible_types = list(/datum/blood_type/crew/lizard)
+	salgu_compatible = TRUE
 
 /datum/blood_type/crew/skrell
 	name = "S"
 	color = "#009696" // Did you know octopi have blue blood, as it contains hemocyanin rather than hemoglobin? It binds to copper instead of Iron
 	restoration_chem = /datum/reagent/copper
+	salgu_compatible = TRUE
 
 /datum/blood_type/crew/ethereal
 	name = "LE"
 	color = "#97ee63"
 	reagent_type = /datum/reagent/consumable/liquidelectricity
+	salgu_compatible = TRUE
 	scent_text = null
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
@@ -347,6 +354,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Oil"
 	color = "#1f1a00"
 	reagent_type = /datum/reagent/fuel/oil
+	restoration_chem = /datum/reagent/fuel/oil
 	scent_text = /datum/smell/oil
 
 /datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
@@ -364,6 +372,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// A universal blood type which accepts everything
 /datum/blood_type/universal
 	name = "U"
+	salgu_compatible = TRUE
 
 /datum/blood_type/universal/New()
 	. = ..()
@@ -374,6 +383,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "C"
 	color = "#FF00FF"
 	reagent_type = /datum/reagent/colorful_reagent
+	salgu_compatible = TRUE
 	scent_text = "crayons"
 
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
@@ -389,12 +399,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "H2O"
 	color = /datum/reagent/water::color
 	reagent_type = /datum/reagent/water
+	salgu_compatible = TRUE
 	scent_text = null
 
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
 	reagent_type = /datum/reagent/lube
+	salgu_compatible = TRUE
 	scent_text = /obj/effect/abstract/smell/reagent/lube::name
 	scent_category = /obj/effect/abstract/smell/reagent/lube::category
 
@@ -415,6 +427,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// For simplemob blood, which also largely don't actually use blood
 /datum/blood_type/animal
 	name = "Y-"
+	salgu_compatible = TRUE
 
 /// For the megafauna. Future todo, make it spawn the special blood decals.
 /datum/blood_type/animal/bubblegum

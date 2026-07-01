@@ -6,7 +6,7 @@
 	grants_you = "improved proficiency with cleaning tools"
 	modifiers = list(
 		// speed also touches probability in using up a soap's charge
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.1,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 0.9,

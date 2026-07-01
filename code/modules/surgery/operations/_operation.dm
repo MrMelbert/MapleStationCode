@@ -133,7 +133,7 @@
 	visible_message(
 		span_notice("[src] attempts to close [p_their()] own [limb.plaintext_zone] with [tool]..."),
 		span_notice("You attempt to close your own [limb.plaintext_zone] with [tool]..."),
-		span_hear("You hear singing."),
+		span_hear("You hear [tool?.get_temperature() ? "singeing" : "stitching"] sounds."),
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
@@ -149,7 +149,7 @@
 	visible_message(
 		span_notice("[src] closes [p_their()] own [limb.plaintext_zone] with [tool]."),
 		span_notice("You close your own [limb.plaintext_zone] with [tool]."),
-		span_hear("You hear singing."),
+		span_hear("You hear [tool?.get_temperature() ? "singeing" : "stitching"] sounds."),
 		vision_distance = 5,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
@@ -204,7 +204,7 @@
 
 	var/list/operations = surgeon.get_available_operations(src, surgeon.get_active_held_item())
 	if(!length(operations))
-		to_chat(surgeon, examine_block(span_info("No available surgeries.")))
+		to_chat(surgeon, boxed_message(span_info("No available surgeries.")))
 		return
 
 	var/list/operations_info = list()
@@ -213,7 +213,7 @@
 		var/atom/movable/operating_on = operations[radial_slice][2]
 		operations_info += "[radial_slice]: [operation.name] on [operating_on]"
 
-	to_chat(surgeon, examine_block(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
+	to_chat(surgeon, boxed_message(span_info("Available surgeries:<br><hr>[jointext(operations_info, "<br>")]")))
 
 /// Takes a target zone and returns a list of readable surgery states for that zone.
 /// Example output may be list("Skin is cut", "Blood vessels are unclamped", "Bone is sawed")
@@ -381,7 +381,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
  * but allows for operations to target any mob type, rather than only those with limbs or organs.
  */
 /datum/surgery_operation
-	var/abstract_type = /datum/surgery_operation
+	abstract_type = /datum/surgery_operation
 	/// Required - Name of the operation, keep it short and format it like an action - "amputate limb", "remove organ"
 	/// Don't capitalize it, it will be capitalized automatically where necessary.
 	var/name
@@ -1319,6 +1319,9 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 	abstract_type = /datum/surgery_operation/limb
 	/// Body type required to perform this operation
 	var/required_bodytype = NONE
+	/// If TRUE, this operation can be performed on stumps.
+	/// If FALSE, the target limb must be a full limb.
+	var/allow_stumps = FALSE
 
 /datum/surgery_operation/limb/all_blocked_strings()
 	. = ..()
@@ -1328,7 +1331,7 @@ GLOBAL_DATUM_INIT(operations, /datum/operation_holder, new)
 		. += "the limb must not be cybernetic"
 
 /datum/surgery_operation/limb/get_operation_target(mob/living/patient, body_zone)
-	return patient.get_bodypart(deprecise_zone(body_zone))
+	return patient.get_bodypart(deprecise_zone(body_zone), allow_stumps)
 
 /datum/surgery_operation/limb/is_available(obj/item/bodypart/limb, operated_zone)
 	SHOULD_NOT_OVERRIDE(TRUE)

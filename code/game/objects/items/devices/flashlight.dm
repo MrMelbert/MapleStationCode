@@ -279,7 +279,7 @@
 
 	if(length(render_list))
 		//display our packaged information in an examine block for easy reading
-		to_chat(user, examine_block(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
+		to_chat(user, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
@@ -961,6 +961,7 @@
 /obj/item/flashlight/eyelight
 	name = "eyelight"
 	desc = "This shouldn't exist outside of someone's head, how are you seeing this?"
+	spawn_blacklisted = TRUE
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = DROPDEL
 	actions_types = list()

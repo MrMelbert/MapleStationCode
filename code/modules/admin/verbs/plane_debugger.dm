@@ -89,7 +89,7 @@
 	set_target(get_target(), explicit_mirror)
 
 /datum/plane_master_debug/ui_state(mob/user)
-	return GLOB.admin_state
+	return ADMIN_STATE(R_DEBUG)
 
 /datum/plane_master_debug/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

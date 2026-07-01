@@ -107,8 +107,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(handle_loop_movement))
 	RegisterSignal(src, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(after_attacked))
 	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
-	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
 	LoadComponent(/datum/component/bloodysoles/bot)
+	add_traits(list(TRAIT_NO_GLIDE, TRAIT_SILICON_EMOTES_ALLOWED), INNATE_TRAIT)
 	GLOB.bots_list += src
 
 	// Give bots a fancy new ID card that can hold any access.
@@ -126,8 +126,8 @@ GLOBAL_LIST_INIT(command_strings, list(
 
 	//Adds bot to the diagnostic HUD system
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 	diag_hud_set_bothealth()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()

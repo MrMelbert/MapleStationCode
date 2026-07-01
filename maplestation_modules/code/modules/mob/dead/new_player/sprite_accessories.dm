@@ -369,6 +369,12 @@
 	icon_state = "snaketail"
 	spine_key = NONE
 
+// From Effigy
+/datum/sprite_accessory/tails/lizard/cybernetic
+	name = "Cybernetic"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "synthliz"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns
 	name = "Horns"

@@ -280,13 +280,6 @@
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
-"aT" = (
-/obj/structure/table,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/bruise_pack,
-/obj/item/stack/medical/ointment,
-/turf/open/floor/mineral/titanium/blue,
-/area/shuttle/escape)
 "aW" = (
 /obj/machinery/door/airlock/command{
 	name = "Emergency Recovery Airlock"
@@ -355,12 +348,6 @@
 "bk" = (
 /obj/machinery/shower/directional/south,
 /turf/open/floor/mineral/titanium/white,
-/area/shuttle/escape)
-"bl" = (
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "bm" = (
 /obj/structure/rack,
@@ -713,6 +700,21 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
+"At" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
+"JY" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/obj/machinery/camera/autoname{
+	dir = 4
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
 "Lk" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
@@ -721,15 +723,6 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "LY" = (
-/turf/open/floor/mineral/titanium,
-/area/shuttle/escape)
-"QL" = (
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/obj/machinery/camera/autoname{
-	dir = 4
-	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "QU" = (
@@ -772,6 +765,13 @@
 /area/shuttle/escape)
 "Vs" = (
 /turf/open/floor/mineral/titanium/white,
+/area/shuttle/escape)
+"Wn" = (
+/obj/structure/table,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/bruise_pack,
+/obj/item/stack/medical/ointment,
+/turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 
 (1,1,1) = {"
@@ -1040,8 +1040,8 @@ ar
 LY
 aE
 ac
-QL
-bl
+JY
+At
 Vs
 bK
 ad
@@ -1150,7 +1150,7 @@ at
 LY
 aN
 LY
-aT
+Wn
 ag
 bq
 bp

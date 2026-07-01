@@ -447,7 +447,7 @@
 		for (var/i in 1 to range)
 			var/turf/my_turf = get_turf(src)
 			if(!isgroundlessturf(my_turf) || GET_TURF_BELOW(my_turf))
-				new /obj/effect/decal/cleanable/blood/splatter(my_turf)
+				new /obj/effect/decal/cleanable/blood/splatter(my_turf, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 			if (!step_to(src, get_step(src, direction), 0))
 				break
 		return
@@ -459,7 +459,7 @@
 	SIGNAL_HANDLER
 	if(NeverShouldHaveComeHere(loc))
 		return
-	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases)
+	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/gibs/up
 	icon_state = "gibup1"

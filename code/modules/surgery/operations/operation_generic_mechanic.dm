@@ -16,12 +16,13 @@
 	preop_sound = 'sound/items/screwdriver.ogg'
 	success_sound = 'sound/items/screwdriver2.ogg'
 	any_surgery_states_blocked = ALL_SURGERY_SKIN_STATES
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_incision/get_any_tool()
 	return "Any sharp item"
 
 /datum/surgery_operation/limb/mechanical_incision/get_default_radial_image()
-	return image(/obj/item/screwdriver)
+	return image('icons/hud/surgery_radial.dmi', "unscrew_shell")
 
 /datum/surgery_operation/limb/mechanical_incision/tool_check(obj/item/tool)
 	// Require any sharpness OR a tool behavior match
@@ -60,9 +61,10 @@
 	preop_sound = 'sound/items/ratchet.ogg'
 	success_sound = 'sound/machines/doorclick.ogg'
 	all_surgery_states_required = SURGERY_SKIN_CUT
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_open/get_default_radial_image()
-	return image('icons/hud/screen_gen.dmi', "arrow_large_still")
+	return image('icons/hud/surgery_radial.dmi', "open_hatch")
 
 /datum/surgery_operation/limb/mechanical_open/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(
@@ -101,12 +103,13 @@
 	preop_sound = 'sound/items/screwdriver.ogg'
 	success_sound = 'sound/items/screwdriver2.ogg'
 	any_surgery_states_required = ALL_SURGERY_SKIN_STATES
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanical_close/get_any_tool()
 	return "Any sharp item"
 
 /datum/surgery_operation/limb/mechanical_close/get_default_radial_image()
-	return image(/obj/item/screwdriver)
+	return image('icons/hud/surgery_radial.dmi', "screw_shell")
 
 /datum/surgery_operation/limb/mechanical_close/tool_check(obj/item/tool)
 	// Require any sharpness OR a tool behavior match
@@ -149,9 +152,10 @@
 	success_sound = 'sound/items/taperecorder/taperecorder_close.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 	any_surgery_states_blocked = SURGERY_ORGANS_CUT
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/prepare_electronics/get_default_radial_image()
-	return image(/obj/item/multitool)
+	return image('icons/hud/surgery_radial.dmi', "prepare_electronics")
 
 /datum/surgery_operation/limb/prepare_electronics/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(
@@ -186,9 +190,10 @@
 	preop_sound = 'sound/items/ratchet.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN
 	any_surgery_states_blocked = SURGERY_BONE_SAWED|SURGERY_BONE_DRILLED
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanic_unwrench/get_default_radial_image()
-	return image(/obj/item/wrench)
+	return image('icons/hud/surgery_radial.dmi', "unwrench_endoskeleton")
 
 /datum/surgery_operation/limb/mechanic_unwrench/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(
@@ -222,6 +227,7 @@
 	time = 2.4 SECONDS
 	preop_sound = 'sound/items/ratchet.ogg'
 	all_surgery_states_required = SURGERY_SKIN_OPEN|SURGERY_BONE_SAWED
+	allow_stumps = TRUE
 
 /datum/surgery_operation/limb/mechanic_wrench/state_check(obj/item/bodypart/limb)
 	return LIMB_HAS_BONES(limb)
@@ -230,7 +236,7 @@
 	return ..() + list("the limb must have bones")
 
 /datum/surgery_operation/limb/mechanic_wrench/get_default_radial_image()
-	return image(/obj/item/wrench)
+	return image('icons/hud/surgery_radial.dmi', "wrench_endoskeleton")
 
 /datum/surgery_operation/limb/mechanic_wrench/on_preop(obj/item/bodypart/limb, mob/living/surgeon, obj/item/tool, list/operation_args)
 	display_results(

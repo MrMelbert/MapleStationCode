@@ -401,15 +401,6 @@
 	dir = 4
 	},
 /area/shuttle/escape)
-"bh" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/turf/open/floor/iron/white/side{
-	dir = 5
-	},
-/area/shuttle/escape)
 "bi" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -473,16 +464,6 @@
 "bp" = (
 /turf/open/floor/iron/white/side{
 	dir = 8
-	},
-/area/shuttle/escape)
-"bq" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/item/radio/intercom/directional/east,
-/obj/machinery/sleeper/stasis{
-	dir = 8
-	},
-/turf/open/floor/iron/white/side{
-	dir = 4
 	},
 /area/shuttle/escape)
 "br" = (
@@ -1345,17 +1326,6 @@
 /obj/item/radio/off,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"dx" = (
-/obj/effect/turf_decal/bot_white,
-/obj/structure/rack,
-/obj/effect/decal/cleanable/dirt,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/bruise_pack,
-/obj/item/stack/medical/ointment{
-	pixel_x = 5
-	},
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "dy" = (
 /obj/effect/turf_decal/bot_white,
 /obj/structure/rack,
@@ -1644,6 +1614,36 @@
 	},
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"gL" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/item/radio/intercom/directional/east,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/turf/open/floor/iron/white/side{
+	dir = 4
+	},
+/area/shuttle/escape)
+"rT" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/turf/open/floor/iron/white/side{
+	dir = 5
+	},
+/area/shuttle/escape)
+"BL" = (
+/obj/effect/turf_decal/bot_white,
+/obj/structure/rack,
+/obj/effect/decal/cleanable/dirt,
+/obj/item/stack/medical/wrap/gauze,
+/obj/item/stack/medical/bruise_pack,
+/obj/item/stack/medical/ointment{
+	pixel_x = 5
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
@@ -2161,7 +2161,7 @@ bO
 br
 dg
 cr
-dx
+BL
 dB
 dK
 dJ
@@ -2246,8 +2246,8 @@ aa
 aa
 aN
 ax
-bh
-bq
+rT
+gL
 bB
 bM
 ax

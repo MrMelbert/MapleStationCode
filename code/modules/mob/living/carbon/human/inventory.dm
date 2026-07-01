@@ -403,13 +403,16 @@
 		hand_bodyparts.len = amt
 	else if(amt > old_limbs)
 		hand_bodyparts.len = amt
-		for(var/i in old_limbs+1 to amt)
-			var/path = /obj/item/bodypart/arm/left
-			if(!(i % 2))
-				path = /obj/item/bodypart/arm/right
+		for(var/i in old_limbs + 1 to amt)
+			var/obj/item/bodypart/new_bodypart
+			if(IS_RIGHT_INDEX(i))
+				new_bodypart = newBodyPart(BODY_ZONE_R_ARM)
+			else
+				new_bodypart = newBodyPart(BODY_ZONE_L_ARM)
 
-			var/obj/item/bodypart/BP = new path ()
-			BP.held_index = i
-			BP.try_attach_limb(src, TRUE)
-			hand_bodyparts[i] = BP
+			new_bodypart.held_index = i
+			if(i >= 3) // start indexing them as right_arm2 and so on
+				new_bodypart.body_zone = "[new_bodypart.body_zone]_[ceil(i / 2)]"
+			new_bodypart.try_attach_limb(src, TRUE)
+			hand_bodyparts[i] = new_bodypart
 	..() //Don't redraw hands until we have organs for them

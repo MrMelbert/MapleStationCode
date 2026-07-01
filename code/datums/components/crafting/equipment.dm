@@ -224,7 +224,7 @@
 	name = "Improvised Gripper Gloves"
 	reqs = list(
 		/obj/item/clothing/gloves/fingerless = 1,
-		/obj/item/stack/sticky_tape = 1,
+		/obj/item/stack/medical/wrap/sticky_tape = 1,
 	)
 	result = /obj/item/clothing/gloves/tackler/offbrand
 	category = CAT_EQUIPMENT
@@ -237,7 +237,7 @@
 	result = /obj/item/inspector/clown/bananium
 	reqs = list(
 		/obj/item/inspector/clown = 1,
-		/obj/item/stack/sticky_tape = 3,
+		/obj/item/stack/medical/wrap/sticky_tape = 3,
 		/obj/item/stack/sheet/mineral/bananium = 5,
 	) //the chainsaw of prank tools
 	tool_paths = list(/obj/item/bikehorn)
