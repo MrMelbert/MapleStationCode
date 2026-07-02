@@ -15,11 +15,11 @@
 		"defibmountdefault",
 		"dropper",
 		"hemostat",
-		// "jerrycan",
+		// "jerrycan", // melbert todo
 		"large_beaker",
 		"medicalbed",
 		"operating",
-		// "organ_jar",
+		// "organ_jar", // melbert todo
 		"penlight",
 		"penlight_paramedic",
 		"pillbottle",

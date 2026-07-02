@@ -6405,7 +6405,6 @@
 #include "maplestation_modules\code\game\objects\structures\surgery_table.dm"
 #include "maplestation_modules\code\game\objects\structures\tables_racks.dm"
 #include "maplestation_modules\code\game\objects\structures\vital_floor_scanner.dm"
-#include "maplestation_modules\code\game\objects\structures\vital_reader.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\crates.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\asset_protection.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\bridge_officer.dm"
