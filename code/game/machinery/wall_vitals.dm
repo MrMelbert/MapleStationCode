@@ -533,7 +533,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 			COMSIG_CARBON_POST_REMOVE_LIMB,
 			COMSIG_CARBON_POST_ATTACH_LIMB,
 			COMSIG_LIVING_HEALTH_UPDATE,
-			COMSIG_LIVING_UPDATE_BLOOD_STATUS,
+			SIGNAL_ADDTRAIT(TRAIT_NOBLOOD),
+			SIGNAL_REMOVETRAIT(TRAIT_NOBLOOD),
+			SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+			SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
 		))
 
 		patient = null
@@ -723,12 +726,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/one_beep, 32)
 	status_updated.set_output(COMPONENT_SIGNAL)
 
 	patient_overall_health.set_output(GET_PATIENT_VALUE(linked_monitor, health))
-	patient_brute_damage.set_output(GET_PATIENT_VALUE(linked_monitor, get_brute_loss()))
-	patient_burn_damage.set_output(GET_PATIENT_VALUE(linked_monitor, get_fire_loss()))
-	patient_oxy_loss.set_output(GET_PATIENT_VALUE(linked_monitor, get_oxy_loss()))
-	patient_tox_loss.set_output(GET_PATIENT_VALUE(linked_monitor, get_tox_loss()))
+	patient_brute_damage.set_output(GET_PATIENT_VALUE(linked_monitor, getBruteLoss()))
+	patient_burn_damage.set_output(GET_PATIENT_VALUE(linked_monitor, getFireLoss()))
+	patient_oxy_loss.set_output(GET_PATIENT_VALUE(linked_monitor, getOxyLoss()))
+	patient_tox_loss.set_output(GET_PATIENT_VALUE(linked_monitor, getToxLoss()))
 	patient_brain_damage.set_output(GET_PATIENT_VALUE(linked_monitor, get_organ_loss(ORGAN_SLOT_BRAIN)))
-	patient_blood_level.set_output(GET_PATIENT_VALUE(linked_monitor, get_blood_volume(TRUE)))
+	patient_blood_level.set_output(GET_PATIENT_VALUE(linked_monitor, blood_volume))
 
 	var/is_defib_possible = DEFIB_POSSIBLE
 	if(iscarbon(linked_monitor.patient))
@@ -738,11 +741,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/one_beep, 32)
 	switch(is_defib_possible)
 		if(DEFIB_POSSIBLE)
 			defib_state.set_output("Possible")
-		if(DEFIB_FAIL_SUICIDE, DEFIB_FAIL_BLACKLISTED, DEFIB_FAIL_NO_INTELLIGENCE, DEFIB_FAIL_GOLEM)
+		if(DEFIB_FAIL_SUICIDE, DEFIB_FAIL_BLACKLISTED, DEFIB_FAIL_NO_INTELLIGENCE)
 			defib_state.set_output("Impossible")
 		if(DEFIB_FAIL_HUSK)
 			defib_state.set_output("Husked")
-		if(DEFIB_FAIL_TISSUE_DAMAGE)
+		if(DEFIB_FAIL_CON)
 			defib_state.set_output("Damaged")
 		if(DEFIB_FAIL_FAILING_HEART, DEFIB_FAIL_NO_HEART)
 			defib_state.set_output("Heart Failure")
