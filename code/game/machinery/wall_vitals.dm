@@ -74,7 +74,7 @@
 	/// The last stat we beeped about
 	VAR_FINAL/last_reported_stat = null
 	/// Whether we go beep beep
-	var/beeps = TRUE
+	var/beeps = BEEP_FULL_BEEP
 	/// Number of beeps on this patient
 	VAR_FINAL/beep_count = 0
 	/// CD between beeps
