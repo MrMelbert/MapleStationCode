@@ -1,12 +1,3 @@
-// Describes the three modes of scanning available for health analyzers
-#define SCANMODE_HEALTH 0
-#define SCANMODE_WOUND 1
-#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
-#define SCANNER_CONDENSED 0
-#define SCANNER_VERBOSE 1
-// Not updating above count because you're not meant to switch to this mode.
-#define SCANNER_NO_MODE -1
-
 /obj/item/healthanalyzer
 	name = "health analyzer"
 	icon = 'icons/obj/devices/scanner.dmi'
@@ -148,9 +139,6 @@
  * tochat - Whether to immediately post the result into the chat of the user, otherwise it will return the results.
  */
 /proc/healthscan(mob/user, mob/living/target, mode = SCANNER_VERBOSE, advanced = FALSE, tochat = TRUE)
-	if(user.incapacitated())
-		return
-
 	// the final list of strings to render
 	var/list/render_list = list()
 
@@ -513,9 +501,6 @@
 	scanner_busy = FALSE
 
 /proc/chemscan(mob/living/user, mob/living/target, tochat = TRUE) // NON-MODULE CHANGE
-	if(user.incapacitated())
-		return
-
 	if(istype(target) && target.reagents)
 		var/list/render_list = list() //The master list of readouts, including reagents in the blood/stomach, addictions, quirks, etc.
 		var/list/render_block = list() //A second block of readout strings. If this ends up empty after checking stomach/blood contents, we give the "empty" header.
@@ -790,13 +775,6 @@
 		to_chat(user, span_notice(render.Join("")))
 		scanner.emotion = AID_EMOTION_WARN
 		playsound(scanner, 'sound/machines/twobeep.ogg', 50, FALSE)
-
-#undef SCANMODE_HEALTH
-#undef SCANMODE_WOUND
-#undef SCANMODE_COUNT
-#undef SCANNER_CONDENSED
-#undef SCANNER_VERBOSE
-#undef SCANNER_NO_MODE
 
 #undef AID_EMOTION_NEUTRAL
 #undef AID_EMOTION_HAPPY

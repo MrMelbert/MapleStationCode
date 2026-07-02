@@ -7,7 +7,7 @@
 		"beaker",
 		"blood_filter",
 		"blood_pack",
-		"blood_scanner", // melbert todo
+		// "blood_scanner", // melbert todo
 		"bonesetter",
 		"cautery",
 		"chem_pack",
@@ -23,7 +23,7 @@
 		"penlight",
 		"penlight_paramedic",
 		"pillbottle",
-		"reflex_hammer", // melbert todo
+		// "reflex_hammer", // melbert todo
 		"retractor",
 		"scalpel",
 		"stethoscope",

@@ -48018,7 +48018,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/vitals_reader/no_beep/directional/south,
+/obj/machinery/vitals_reader/one_beep/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "oWw" = (

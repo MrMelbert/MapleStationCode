@@ -17466,13 +17466,13 @@
 "aWR" = (
 /obj/structure/closet/crate/bin,
 /obj/effect/spawner/random/trash/food_packaging,
-/obj/machinery/newscaster/directional/south,
 /obj/machinery/light/warm/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/hallway/primary/aft)
 "aWS" = (
 /obj/structure/sign/poster/official/random/directional/south,
 /obj/effect/spawner/random/vending/snackvend,
+/obj/machinery/newscaster/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/hallway/primary/aft)
 "aWU" = (
@@ -17849,6 +17849,7 @@
 	pixel_y = 1
 	},
 /obj/machinery/light/small/directional/north,
+/obj/machinery/vitals_reader/one_beep/directional/north,
 /turf/open/floor/iron/dark/side{
 	dir = 1
 	},
@@ -20615,7 +20616,9 @@
 "bfv" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/effect/turf_decal/box/red,
-/obj/machinery/medical_kiosk,
+/obj/machinery/vital_floor_scanner{
+	dir = 1
+	},
 /turf/open/floor/iron/dark/side{
 	dir = 1
 	},

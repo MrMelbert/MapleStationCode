@@ -886,9 +886,6 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	var/charges = 5
 	var/max_charges = 5
 
-/obj/item/toner/grind_results()
-	return list(/datum/reagent/iodine = 40, /datum/reagent/iron = 10)
-
 /obj/item/toner/examine(mob/user)
 	. = ..()
 	. += span_notice("The ink level gauge on the side reads [round(charges / max_charges * 100)]%")
@@ -899,9 +896,6 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	charges = 25
 	max_charges = 25
 	grind_results = list(/datum/reagent/iodine = 90, /datum/reagent/iron = 10)
-
-/obj/item/toner/large/grind_results()
-	return list(/datum/reagent/iodine = 90, /datum/reagent/iron = 10)
 
 /obj/item/toner/extreme
 	name = "extremely large toner cartridge"

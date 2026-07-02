@@ -20,6 +20,10 @@
 	)
 	result_path = /obj/machinery/vitals_reader/advanced
 
+#define BEEP_FULL_BEEP 0
+#define BEEP_ONE_BEEP 1
+#define BEEP_NO_BEEP 2
+
 /// A wall mounted screen that showcases the vitals of a patient nearby.
 /obj/machinery/vitals_reader
 	name = "vitals display"
@@ -61,12 +65,15 @@
 		/obj/machinery/implantchair,
 		/obj/machinery/sleeper,
 		/obj/machinery/stasis,
+		/obj/machinery/vital_floor_scanner,
 		/obj/structure/table/optable,
 	))
 	/// The last stat we beeped about
 	VAR_FINAL/last_reported_stat = null
 	/// Whether we go beep beep
 	var/beeps = TRUE
+	/// Number of beeps on this patient
+	VAR_FINAL/beep_count = 0
 	/// CD between beeps
 	COOLDOWN_DECLARE(beep_cd)
 	/// Reference to the mob that is being tracked / scanned
@@ -101,7 +108,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 /obj/machinery/vitals_reader/post_machine_initialize()
 	. = ..()
-	find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
+	if(isnull(connected))
+		find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
 	if(is_operational)
 		set_light_on(TRUE)
 
@@ -119,6 +127,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 /obj/machinery/vitals_reader/proc/connected_occupant_changed(datum/source, mob/living/new_patient)
 	SIGNAL_HANDLER
+
+	// snowflake behavior for floor scanners to only show after a delay
+	if(istype(source, /obj/machinery/vital_floor_scanner) && !isnull(new_patient))
+		addtimer(CALLBACK(src, PROC_REF(set_patient_on_delay), source, new_patient), /obj/effect/temp_visual/vitals_scan_effect::duration, TIMER_DELETE_ME|TIMER_OVERRIDE|TIMER_UNIQUE)
+		return
+
+	set_patient(new_patient)
+
+/obj/machinery/vitals_reader/proc/set_patient_on_delay(datum/source, mob/living/new_patient)
+	if(QDELETED(connected) || connected != source || QDELETED(new_patient) || connected.occupant != new_patient)
+		return
 
 	set_patient(new_patient)
 
@@ -274,7 +293,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		var/bodypart_color = isnull(real_part) ? COLOR_GRAY : percent_to_color((real_part.brute_dam + real_part.burn_dam) / real_part.max_damage)
 		returned_overlays += construct_overlay("human_[body_zone]", bodypart_color)
 
-	if(CAN_HAVE_BLOOD(patient))
+	if(!HAS_TRAIT(patient, TRAIT_NOBLOOD))
 		var/blood_color = "#a51919"
 		switch((patient.blood_volume - BLOOD_VOLUME_SURVIVE) / (BLOOD_VOLUME_NORMAL - BLOOD_VOLUME_SURVIVE))
 			if(-INFINITY to 0.2)
@@ -295,13 +314,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	if(HAS_TRAIT(patient, TRAIT_NOBREATH))
 		returned_overlays += construct_overlay("bar9", COLOR_GRAY)
 	else
-		var/oxy_percent = patient.get_oxy_loss() / patient.maxHealth
+		var/oxy_percent = patient.getOxyLoss() / patient.maxHealth
 		returned_overlays += construct_overlay(percent_to_bar(oxy_percent), "#2A72AA")
 
 	if(HAS_TRAIT(patient, TRAIT_TOXIMMUNE))
 		returned_overlays += construct_overlay("bar9", COLOR_GRAY, LOWER_BAR_OFFSET)
 	else
-		var/tox_percent = patient.get_tox_loss() / patient.maxHealth
+		var/tox_percent = patient.getToxLoss() / patient.maxHealth
 		returned_overlays += construct_overlay(percent_to_bar(tox_percent), "#5d9c11", LOWER_BAR_OFFSET)
 
 	return returned_overlays
@@ -421,15 +440,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	set_light_on(is_operational)
 
 /obj/machinery/vitals_reader/process()
-	if(!COOLDOWN_FINISHED(src, beep_cd) || !is_operational)
-		return
 	if(isnull(patient))
 		stack_trace("[src] has no patient but is still processing!")
 		end_processing()
 		return
-	if(!beeps)
-		return
 
+	beep()
+
+/obj/machinery/vitals_reader/proc/beep()
+	if(!COOLDOWN_FINISHED(src, beep_cd) || !is_operational)
+		return
+	switch(beeps)
+		if(BEEP_NO_BEEP)
+			return
+		if(BEEP_ONE_BEEP)
+			if(beep_count > 0)
+				return
+
+	beep_count += 1
 	var/patient_stat = patient.stat
 	if(machine_stat & (EMPED|EMAGGED))
 		patient_stat = pick(CONSCIOUS, SOFT_CRIT, HARD_CRIT, DEAD, DEAD, DEAD)
@@ -476,11 +504,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		)
 
 /obj/machinery/vitals_reader/click_alt(mob/user)
-	if(!initial(beeps))
+	if(initial(beeps) != BEEP_FULL_BEEP)
 		return CLICK_ACTION_BLOCKING
 
-	beeps = !beeps
-	balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
+	switch(beeps)
+		if(BEEP_FULL_BEEP)
+			beeps = BEEP_NO_BEEP
+			balloon_alert(user, "beeps disabled")
+		if(BEEP_NO_BEEP)
+			beeps = BEEP_ONE_BEEP
+			balloon_alert(user, "beeps minimized")
+		if(BEEP_ONE_BEEP)
+			beeps = BEEP_FULL_BEEP
+			balloon_alert(user, "beeps enabled")
+
 	playsound(src, 'sound/machines/click.ogg', 50)
 	return CLICK_ACTION_SUCCESS
 
@@ -502,12 +539,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		COMSIG_CARBON_POST_REMOVE_LIMB,
 		COMSIG_CARBON_POST_ATTACH_LIMB,
 		COMSIG_LIVING_HEALTH_UPDATE,
-		COMSIG_LIVING_UPDATE_BLOOD_STATUS,
+		SIGNAL_ADDTRAIT(TRAIT_NOBLOOD),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBLOOD),
+		SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
 	), PROC_REF(update_overlay_on_signal))
 	update_appearance()
 	begin_processing()
 	update_use_power(ACTIVE_POWER_USE)
 	last_reported_stat = null
+	beep_count = 0
+	if(!(machine_stat & (EMPED|EMAGGED)))
+		COOLDOWN_RESET(src, beep_cd)
+	beep()
 
 /// Unset the current patient.
 /obj/machinery/vitals_reader/proc/unset_patient(...)
@@ -520,7 +564,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		COMSIG_CARBON_POST_REMOVE_LIMB,
 		COMSIG_CARBON_POST_ATTACH_LIMB,
 		COMSIG_LIVING_HEALTH_UPDATE,
-		COMSIG_LIVING_UPDATE_BLOOD_STATUS,
+		SIGNAL_ADDTRAIT(TRAIT_NOBLOOD),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBLOOD),
+		SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
 	))
 
 	patient = null
@@ -554,12 +601,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 			if(machine_stat & BROKEN)
 				playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', 70, TRUE)
 			else
-				playsound(src, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
+				playsound(src, 'sound/effects/glasshit.ogg', 75, TRUE)
 		if(BURN)
-			playsound(src, 'sound/items/tools/welder.ogg', 100, TRUE)
+			playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 
 /obj/machinery/vitals_reader/no_beep
 	desc = parent_type::desc + " This one has no speakers."
-	beeps = FALSE
+	beeps = BEEP_NO_BEEP
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/no_beep, 32)
+
+/obj/machinery/vitals_reader/one_beep
+	desc = parent_type::desc + " This one has a single speaker."
+	beeps = BEEP_ONE_BEEP
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/one_beep, 32)
+
+#undef BEEP_FULL_BEEP
+#undef BEEP_ONE_BEEP
+#undef BEEP_NO_BEEP

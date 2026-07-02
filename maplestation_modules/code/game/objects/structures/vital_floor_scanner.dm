@@ -55,6 +55,15 @@
 	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)
 	update_appearance(UPDATE_OVERLAYS)
 	register_context()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/vital_floor_scanner/post_machine_initialize()
+	. = ..()
+	for(var/obj/machinery/vitals_reader/vitals_reader in view(src, LINK_RANGE))
+		if(isnull(vitals_reader.connected))
+			vitals_reader.find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
+	if(is_operational)
+		set_light_on(TRUE)
 
 /obj/machinery/vital_floor_scanner/examine(mob/user)
 	. = ..()
@@ -97,49 +106,8 @@
 		return
 	set_occupant(null)
 
-/obj/machinery/vital_floor_scanner/proc/enable_vitals_nearby()
-	if(!is_operational || QDELETED(occupant))
-		return
-
-	for(var/obj/machinery/vitals_reader/reader in range(LINK_RANGE, src))
-		if(!reader.is_operational)
-			continue
-
-		if(!reader.active)
-			reader.toggle_active()
-
-		else if(isnull(reader.patient))
-			reader.set_patient(occupant)
-
-		if(isnull(reader.patient)) // It failed I guess
-			continue
-
-		reader.beeps = FALSE
-		var/scansound = 'maplestation_modules/sound/healthscanner_stable.ogg'
-		switch(reader.patient.stat)
-			if(DEAD)
-				scansound = 'maplestation_modules/sound/healthscanner_dead.ogg'
-				reader.beep_message("lets out a droning beep.")
-			if(HARD_CRIT)
-				scansound = 'maplestation_modules/sound/healthscanner_danger.ogg'
-				reader.beep_message("lets out an alternating beep.")
-			if(SOFT_CRIT)
-				scansound = 'maplestation_modules/sound/healthscanner_critical.ogg'
-				reader.beep_message("lets out a high pitch beep.")
-			else
-				reader.beep_message("lets out a beep.")
-
-		playsound(reader, scansound, 15, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
-		return
-
-/obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)
-	for(var/obj/machinery/vitals_reader/reader in range(LINK_RANGE, src))
-		if(reader.active && reader.patient == leaving)
-			reader.toggle_active()
-			return
-
 /obj/machinery/vital_floor_scanner/proc/can_scan(mob/living/who)
-	if(who.mob_biotypes & MOB_ROBOTIC)
+	if((who.mob_biotypes & MOB_ROBOTIC) && !ishuman(who))
 		return FALSE
 	if(who.body_position != STANDING_UP)
 		return FALSE
@@ -166,11 +134,9 @@
 	if(QDELING(src))
 		return
 	if(!isnull(occupant))
-		addtimer(CALLBACK(src, PROC_REF(enable_vitals_nearby)), /obj/effect/temp_visual/vitals_scan_effect::duration, TIMER_UNIQUE)
 		scan_effect()
 
 	else if(!isnull(old_occupant))
-		disable_vitals_nearby(old_occupant)
 		for(var/obj/effect/temp_visual/vitals_scan_effect/effect in old_occupant)
 			animate(effect, alpha = 0, time = 0.2 SECONDS, flags = ANIMATION_PARALLEL)
 
