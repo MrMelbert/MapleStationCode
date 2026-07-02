@@ -13,6 +13,7 @@
 		"chem_pack",
 		"circular_saw",
 		"defibmountdefault",
+		"defibrillator", // revisit later
 		"dropper",
 		"hemostat",
 		// "jerrycan", // melbert todo

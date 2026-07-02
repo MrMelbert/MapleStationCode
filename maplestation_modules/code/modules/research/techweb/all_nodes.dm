@@ -21,13 +21,11 @@
 	id_additions = list(
 		"scanning_pad",
 		"triage_zone_projector",
-		"vitals_monitor",
 	)
 
 /datum/techweb_node/medbay_equip_adv
 	id_additions = list(
 		"auto_cpr_device",
-		"vitals_monitor_advanced",
 		"neural_suppressor",
 		"medical_scissors_trauma",
 	)
