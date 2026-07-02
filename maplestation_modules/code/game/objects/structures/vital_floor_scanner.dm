@@ -58,12 +58,12 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/vital_floor_scanner/post_machine_initialize()
-	. = ..()
 	for(var/obj/machinery/vitals_reader/vitals_reader in view(src, LINK_RANGE))
 		if(isnull(vitals_reader.connected))
 			vitals_reader.find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
 	if(is_operational)
 		set_light_on(TRUE)
+	return ..()
 
 /obj/machinery/vital_floor_scanner/examine(mob/user)
 	. = ..()

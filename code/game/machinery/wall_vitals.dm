@@ -83,6 +83,8 @@
 	VAR_FINAL/mob/living/patient
 	/// What machine are we talking to
 	VAR_FINAL/obj/machinery/connected
+	/// Tracks if power was setup so we can avoid double setup
+	VAR_PRIVATE/power_setup = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader, 32)
 
@@ -111,11 +113,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/vitals_reader/post_machine_initialize()
-	. = ..()
 	if(isnull(connected))
 		find_machine(prioritize_by_id = TRUE) // mappers can set an id tag to connect it to specific machines
 	if(is_operational)
 		set_light_on(TRUE)
+	. = ..()
+	power_setup = TRUE
 
 /obj/machinery/vitals_reader/Destroy(force)
 	set_connection(null)
@@ -158,7 +161,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		UnregisterSignal(connected, COMSIG_MOVABLE_MOVED)
 		connected = null
 		set_patient(null)
-		update_use_power(NO_POWER_USE)
+		if(power_setup)
+			update_use_power(NO_POWER_USE)
+		else
+			use_power = NO_POWER_USE
 	if(isnull(new_connected))
 		return
 
@@ -166,7 +172,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	RegisterSignal(connected, COMSIG_QDELETING, PROC_REF(comsig_unset_connected))
 	RegisterSignals(connected, list(COMSIG_OPERATING_TABLE_SET_PATIENT, COMSIG_MACHINERY_SET_OCCUPANT), PROC_REF(connected_occupant_changed))
 	RegisterSignal(connected, COMSIG_MOVABLE_MOVED, PROC_REF(connected_moved))
-	update_use_power(IDLE_POWER_USE)
+	if(power_setup)
+		update_use_power(IDLE_POWER_USE)
+	else
+		use_power = IDLE_POWER_USE
 
 	if(ismachinery(connected))
 		var/obj/machinery/connected_machine = connected
@@ -542,7 +551,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		patient = null
 		end_processing()
 		if(!QDELING(src))
-			update_use_power(IDLE_POWER_USE)
+			if(power_setup)
+				update_use_power(IDLE_POWER_USE)
+			else
+				use_power = IDLE_POWER_USE
 			update_appearance()
 	if(isnull(new_patient))
 		return
@@ -562,7 +574,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 	), PROC_REF(update_overlay_on_signal))
 	update_appearance()
 	begin_processing()
-	update_use_power(ACTIVE_POWER_USE)
+	if(power_setup)
+		update_use_power(ACTIVE_POWER_USE)
+	else
+		use_power = ACTIVE_POWER_USE
 	last_reported_stat = null
 	beep_count = 0
 	if(!(machine_stat & (EMPED|EMAGGED)))
