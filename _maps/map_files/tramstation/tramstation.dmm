@@ -8016,7 +8016,6 @@
 	dir = 10
 	},
 /obj/machinery/light/directional/west,
-/obj/item/storage/medkit/regular,
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
@@ -14514,17 +14513,11 @@
 "dXo" = (
 /obj/structure/table/glass,
 /obj/item/reagent_containers/chem_pack{
-	pixel_x = 10;
-	pixel_y = 10
-	},
-/obj/item/storage/box/rxglasses{
-	pixel_x = -4;
-	pixel_y = 8
-	},
-/obj/item/stack/medical/wrap/gauze{
-	pixel_x = 8
+	pixel_x = 6;
+	pixel_y = 9
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/reagent_containers/chem_pack,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "dXA" = (
@@ -21222,8 +21215,8 @@
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/storage/box/bodybags,
 /obj/machinery/light/cold/directional/south,
+/obj/item/storage/box/syringes,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "gBL" = (
@@ -29919,16 +29912,13 @@
 /area/station/commons/fitness)
 "jKi" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/beakers,
-/obj/item/storage/box/bodybags{
-	pixel_x = 5;
-	pixel_y = 5
-	},
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 5
 	},
 /obj/item/radio/intercom/directional/east,
 /obj/machinery/light/directional/east,
+/obj/item/stack/medical/mesh,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "jKq" = (
@@ -50957,8 +50947,6 @@
 /area/station/security/processing)
 "rdJ" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/mesh,
-/obj/item/stack/medical/wrap/gauze,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
@@ -50970,16 +50958,11 @@
 	network = list("ss13","medbay")
 	},
 /obj/machinery/light/directional/east,
-/obj/item/stack/medical/mesh,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/obj/machinery/camera/directional/east{
-	network = list("ss13","medbay");
-	c_tag = "Medical - Treatment South-East"
-	},
-/obj/machinery/light/directional/east,
 /obj/machinery/vending/wallmed/directional/south,
+/obj/item/storage/box/bodybags{
+	pixel_x = 5;
+	pixel_y = 5
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "rdN" = (
@@ -65754,9 +65737,9 @@
 /area/station/security/prison/mess)
 "whF" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/beakers,
-/obj/item/clothing/neck/stethoscope,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/storage/medkit/regular,
+/obj/item/clothing/neck/stethoscope,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "whI" = (
