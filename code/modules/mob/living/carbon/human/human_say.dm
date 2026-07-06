@@ -62,18 +62,25 @@
 	// NON-MODULE CHANGE
 	if(isnull(ears))
 		return NONE
+
+	var/using_common = message_mods[MODE_HEADSET]
+	var/using_department = message_mods[RADIO_EXTENSION] == MODE_DEPARTMENT
+	var/using_specific = GLOB.radiochannels[message_mods[RADIO_EXTENSION]]
+	if(!using_common && !using_department && !using_specific)
+		return NONE
+
 	if(HAS_TRAIT(src, TRAIT_BLOCK_HEADSET_USE))
 		// adding a to-chat as well as a balloon alert, as they might have split attention
 		to_chat(src, span_warning("You can't use your headset right now!"))
 		balloon_alert(src, "can't use headset!")
-		return ITALICS | REDUCE_RANGE
-	if(message_mods[MODE_HEADSET])
-		ears.talk_into(src, message, , spans, language, message_mods)
-		return ITALICS | REDUCE_RANGE
-	else if(message_mods[RADIO_EXTENSION] == MODE_DEPARTMENT)
-		ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
-		return ITALICS | REDUCE_RANGE
-	else if(GLOB.radiochannels[message_mods[RADIO_EXTENSION]])
-		ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
-		return ITALICS | REDUCE_RANGE
-	return NONE
+		return ITALICS
+
+	ears.talk_into(
+		speaker = src,
+		message = message,
+		channel = (using_common ? null : message_mods[RADIO_EXTENSION]),
+		spans = spans,
+		language = language,
+		message_mods = message_mods,
+	)
+	return ITALICS | REDUCE_RANGE
