@@ -115,10 +115,12 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
+/obj/machinery/door/firedoor/get_name_chaser(mob/user, list/name_chaser)
+	. = ..()
+	. += span_info("It has an ID serial: <b>[id_tag]</b>, and belongs to [get_area_name(my_area)].")
+
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	. += span_info("It belongs to [get_area_name(my_area)], and is ID [id_tag].")
-
 	if(!density)
 		. += span_notice("It is open, but could be <b>pried</b> closed.")
 	else if(!welded)

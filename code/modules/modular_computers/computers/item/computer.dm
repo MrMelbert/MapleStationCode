@@ -765,10 +765,7 @@
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	if(!saved_identification && !saved_job)
-		name = initial(name)
-		return
-	name = "[saved_identification] ([saved_job])"
+	return
 
 /obj/item/modular_computer/screwdriver_act_secondary(mob/living/user, obj/item/tool)
 	. = ..()

@@ -194,15 +194,16 @@
 	inhand_icon_state = null
 	blood_overlay_type = "armor"
 	allowed = list(
+		/obj/item/crowbar/power,
 		/obj/item/fireaxe/metal_h2_axe,
 		/obj/item/flashlight,
+		/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
 		/obj/item/radio,
 		/obj/item/storage/bag/construction,
+		/obj/item/storage/belt/chest_pouch,
+		/obj/item/t_scanner,
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
-		/obj/item/t_scanner,
-		/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
-		/obj/item/storage/belt/chest_pouch,
 	)
 	resistance_flags = NONE
 	species_exception = list(/datum/species/golem)
@@ -446,6 +447,7 @@
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/extinguisher,
+		/obj/item/crowbar/power,
 	)
 
 /obj/item/clothing/suit/atmos_overalls/Initialize(mapload)

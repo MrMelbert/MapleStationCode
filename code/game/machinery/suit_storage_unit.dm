@@ -82,38 +82,51 @@
 	mask_type = /obj/item/clothing/mask/gas/atmos/captain
 	storage_type = /obj/item/tank/jetpack/oxygen/captain
 	mod_type = /obj/item/mod/control/pre_equipped/magnate
+	req_access = list(ACCESS_CAPTAIN)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/centcom
 	mask_type = /obj/item/clothing/mask/gas/atmos/centcom
 	storage_type = /obj/item/tank/jetpack/oxygen/captain
 	mod_type = /obj/item/mod/control/pre_equipped/corporate
+	req_access = list(ACCESS_CENT_GENERAL)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/engine
 	mask_type = /obj/item/clothing/mask/breath
 	mod_type = /obj/item/mod/control/pre_equipped/engineering
+	req_access = list(ACCESS_ENGINEERING)
 
 /obj/machinery/suit_storage_unit/atmos
 	mask_type = /obj/item/clothing/mask/gas/atmos
 	storage_type = /obj/item/watertank/atmos
 	mod_type = /obj/item/mod/control/pre_equipped/atmospheric
+	req_access = list(ACCESS_ATMOSPHERICS)
 
 /obj/machinery/suit_storage_unit/ce
 	mask_type = /obj/item/clothing/mask/breath
 	storage_type = /obj/item/clothing/shoes/magboots/advance
 	mod_type = /obj/item/mod/control/pre_equipped/advanced
+	req_access = list(ACCESS_CE)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/security
 	mask_type = /obj/item/clothing/mask/gas/sechailer
 	mod_type = /obj/item/mod/control/pre_equipped/security
+	req_access = list(ACCESS_SECURITY)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/hos
 	mask_type = /obj/item/clothing/mask/gas/sechailer
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/safeguard
+	req_access = list(ACCESS_HOS)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/mining
 	suit_type = /obj/item/clothing/suit/hooded/explorer
 	mask_type = /obj/item/clothing/mask/gas/explorer
+	req_access = list(ACCESS_MINING)
 
 /obj/machinery/suit_storage_unit/mining/eva
 	suit_type = null
@@ -124,21 +137,28 @@
 	mask_type = /obj/item/clothing/mask/breath/medical
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/medical
+	req_access = list(ACCESS_MEDICAL)
 
 /obj/machinery/suit_storage_unit/cmo
 	mask_type = /obj/item/clothing/mask/breath/medical
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/rescue
+	req_access = list(ACCESS_CMO)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/rd
 	mask_type = /obj/item/clothing/mask/breath
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/research
+	req_access = list(ACCESS_RD)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/syndicate
 	mask_type = /obj/item/clothing/mask/gas/syndicate
 	storage_type = /obj/item/tank/jetpack/oxygen/harness
 	mod_type = /obj/item/mod/control/pre_equipped/nuclear
+	req_access = list(ACCESS_SYNDICATE)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/syndicate/lavaland
 	mod_type = /obj/item/mod/control/pre_equipped/nuclear/no_jetpack
@@ -147,6 +167,8 @@
 	mask_type = /obj/item/clothing/mask/gas/syndicate
 	storage_type = /obj/item/tank/internals/oxygen
 	mod_type = /obj/item/mod/control/pre_equipped/interdyne
+	req_access = list(ACCESS_SYNDICATE)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/void_old
 	suit_type = /obj/item/clothing/suit/space/nasavoid/old
@@ -165,6 +187,8 @@
 /obj/machinery/suit_storage_unit/nuke_med
 	suit_type = /obj/item/clothing/suit/space/syndicate/black/med
 	helmet_type = /obj/item/clothing/head/helmet/space/syndicate/black/med
+	req_access = list(ACCESS_SYNDICATE)
+	locked = TRUE
 
 /obj/machinery/suit_storage_unit/open
 	state_open = TRUE
@@ -180,8 +204,7 @@
 
 /obj/machinery/suit_storage_unit/Initialize(mapload)
 	. = ..()
-
-	set_access()
+	set_access(req_access, req_one_access)
 	set_wires(new /datum/wires/suit_storage_unit(src))
 	if(suit_type)
 		suit = new suit_type(src)
@@ -241,7 +264,7 @@
 			. += "[base_icon_state]_helm"
 		if(storage)
 			. += "[base_icon_state]_storage"
-	if(!(machine_stat & BROKEN || machine_stat & NOPOWER))
+	if(is_operational)
 		if(state_open)
 			. += "[base_icon_state]_lights_open"
 		else
@@ -271,13 +294,17 @@
 		. += span_notice("A card reader can be installed for further control access after opening its panel.")
 
 /// copy over access of electronics
-/obj/machinery/suit_storage_unit/proc/set_access(list/accesses)
+/obj/machinery/suit_storage_unit/proc/set_access(list/accesses, list/one_accesses)
 	var/obj/item/electronics/airlock/electronics = locate() in component_parts
 	if(QDELETED(electronics))
 		return
 
 	if(!isnull(accesses))
 		electronics.accesses = accesses
+	else if(!isnull(one_accesses))
+		electronics.accesses = one_accesses
+		electronics.one_access = TRUE
+
 	if(electronics.one_access)
 		req_one_access = electronics.accesses
 		req_access = null
@@ -320,8 +347,6 @@
 			name = initial(name)
 			desc = initial(desc)
 			id_card = null
-			req_access = list()
-			req_one_access = null
 			set_access(list())
 			return TRUE
 		if(user.get_idcard() != id)
@@ -681,8 +706,6 @@
 			if("None") //free for all
 				name = initial(name)
 				desc = initial(desc)
-				req_access = list()
-				req_one_access = null
 				set_access(list())
 
 		if(!isnull(id_card))

@@ -61,6 +61,7 @@
 	icon_state = "sosjerky"
 	desc = "Beef jerky made from the finest space cows."
 	trash_type = /obj/item/trash/sosjerky
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment/protein = 3,
 		/datum/reagent/consumable/sugar = 2,
@@ -87,6 +88,7 @@
 	icon_state = "chips"
 	trash_type = /obj/item/trash/chips
 	bite_consumption = 1
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 1,
 		/datum/reagent/consumable/sugar = 3,
@@ -120,6 +122,7 @@
 	name = "\improper 4no raisins"
 	icon_state = "4no_raisins"
 	desc = "Best raisins in the universe. Not sure why."
+	gender = PLURAL
 	trash_type = /obj/item/trash/raisins
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 2,
@@ -184,6 +187,7 @@
 	desc = "Bite sized cheesie snacks that will honk all over your mouth."
 	icon_state = "cheesie_honkers"
 	trash_type = /obj/item/trash/cheesie
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 1,
 		/datum/reagent/consumable/sugar = 3,
@@ -198,6 +202,7 @@
 	icon_state = "syndi_cakes"
 	desc = "An extremely moist snack cake that tastes just as good after being nuked."
 	trash_type = /obj/item/trash/syndi_cakes
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 4,
 		/datum/reagent/consumable/doctor_delight = 5,
@@ -207,9 +212,9 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/energybar
-	name = "\improper High-power energy bars"
+	name = "\improper High-power energy bar"
 	icon_state = "energybar"
-	desc = "An energy bar with a lot of punch, you probably shouldn't eat this if you're not an Ethereal."
+	desc = "An energy bar with a lot of punch - typically more punch than a non-Ethereal can handle."
 	trash_type = /obj/item/trash/energybar
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 3,
@@ -225,6 +230,7 @@
 	desc = "A favourite amongst the terminally angry."
 	icon_state = "peanuts"
 	trash_type = /obj/item/trash/peanuts
+	gender = PLURAL
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("peanuts" = 4, "anger" = 1)
 	foodtypes = JUNKFOOD | NUTS
@@ -314,6 +320,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "Legally, we cannot say that these won't melt in your hands."
 	icon_state = "cnds"
 	trash_type = /obj/item/trash/cnds
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/sugar = 3,
 		/datum/reagent/consumable/coco = 1,
@@ -389,6 +396,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "A pack of Sweetie's brand premium pistacios."
 	icon_state = "pistachio"
 	trash_type = /obj/item/trash/pistachios
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 2,
 		/datum/reagent/consumable/nutriment/vitamin = 1,
@@ -405,6 +413,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "A pack of roasted sunflower seeds. Beloved by space russians and babushka alike."
 	icon_state = "semki"
 	trash_type = /obj/item/trash/semki
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment/fat/oil = 1,
 		/datum/reagent/consumable/salt = 6,
@@ -436,6 +445,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	icon_state = "boritos"
 	trash_type = /obj/item/trash/boritos
 	bite_consumption = 2
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 3,
 		/datum/reagent/consumable/nutriment/fat/oil = 2,
@@ -531,6 +541,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "The ultimate baseball snack. Once you start, it's hard to stop!"
 	icon_state = "hot_shots"
 	trash_type = /obj/item/trash/hot_shots
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 2,
 		/datum/reagent/consumable/nutriment/vitamin = 1,
@@ -546,6 +557,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "A classic treat for all ages, it's Sticko, the original chocolate-coated biscuit stick! This one's the original (and as some would say, best) flavour: biscuit and milk chocolate."
 	icon_state = "sticko_classic"
 	trash_type = /obj/item/trash/sticko
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/sugar = 3,
 		/datum/reagent/consumable/coco = 1,
@@ -626,6 +638,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	desc = "You've heard of Snap-Roks, now get ready for Shok-Roks: the popping candy for Ethereals! Available in 5 exciting flavours, of which this bag contains Stormcloud Candy- like cotton candy, but electric!"
 	icon_state = "shok_roks_candy"
 	trash_type = /obj/item/trash/shok_roks
+	gender = PLURAL
 	food_reagents = list(
 		/datum/reagent/consumable/liquidelectricity/enriched = 2,
 		/datum/reagent/consumable/sugar = 3

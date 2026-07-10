@@ -73,7 +73,7 @@
 #define DOOR_VISION_DISTANCE 11 ///The maximum distance a door will see out to
 
 /obj/machinery/door/airlock
-	name = "\improper Airlock"
+	name = "airlock"
 	icon = 'icons/obj/doors/airlocks/station/public.dmi'
 	icon_state = "closed"
 	max_integrity = 300
@@ -153,6 +153,8 @@
 	/// How many seconds remain until the door is no longer electrified. -1/MACHINE_ELECTRIFIED_PERMANENT = permanently electrified until someone fixes it.
 	var/secondsElectrified = MACHINE_NOT_ELECTRIFIED
 
+	var/nameplate = null
+
 	flags_1 = HTML_USE_INITAL_ICON_1
 	rad_insulation = RAD_MEDIUM_INSULATION
 
@@ -188,6 +190,17 @@
 	RegisterSignal(src, COMSIG_MACHINERY_BROKEN, PROC_REF(on_break))
 
 	RegisterSignal(SSdcs, COMSIG_GLOB_GREY_TIDE, PROC_REF(grey_tide))
+
+	if(mapload)
+		if(name != initial(name))
+			nameplate = name
+			name = initial(name)
+		if(glass)
+			name = replacetext(name, " glass ", " ")
+
+/obj/machinery/door/airlock/get_examine_name(mob/user)
+	. = ..()
+
 
 /obj/machinery/door/airlock/proc/grey_tide(datum/source, list/grey_tide_areas)
 	SIGNAL_HANDLER
@@ -623,6 +636,11 @@
 			return 0.5 SECONDS
 		if(AIRLOCK_CLOSING_FINISHED)
 			return 0.6 SECONDS
+
+/obj/machinery/door/airlock/get_name_chaser(mob/user, list/name_chaser)
+	. = ..()
+	if(nameplate)
+		. += span_info("It has a nameplate: <b>[nameplate]</b>.")
 
 /obj/machinery/door/airlock/examine(mob/user)
 	. = ..()
@@ -1868,7 +1886,7 @@
 	assemblytype = /obj/structure/door_assembly/door_assembly_extmai
 
 /obj/machinery/door/airlock/mining
-	name = "mining airlock"
+	name = "cargo airlock"
 	icon = 'icons/obj/doors/airlocks/station/mining.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_min
 
@@ -1911,11 +1929,11 @@
 	req_access = list(ACCESS_SYNDICATE)
 
 /obj/machinery/door/airlock/glass/incinerator/syndicatelava_interior
-	name = "Turbine Interior Airlock"
+	name = "turbine interior airlock"
 	id_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_INTERIOR
 
 /obj/machinery/door/airlock/glass/incinerator/syndicatelava_exterior
-	name = "Turbine Exterior Airlock"
+	name = "turbine exterior airlock"
 	id_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_EXTERIOR
 
 /obj/machinery/door/airlock/command/glass
@@ -1943,7 +1961,7 @@
 	opacity = FALSE
 	glass = TRUE
 
-/obj/machinery/door/airlock/hydroponics/glass //Uses same icon as medical/glass, maybe update it with its own unique icon one day?
+/obj/machinery/door/airlock/hydroponics/glass
 	name = "hydroponics glass airlock"
 	opacity = FALSE
 	glass = TRUE
@@ -1958,20 +1976,20 @@
 	heat_proof = TRUE
 
 /obj/machinery/door/airlock/research/glass/incinerator/ordmix_interior
-	name = "Mixing Room Interior Airlock"
+	name = "mixing room interior airlock"
 	id_tag = INCINERATOR_ORDMIX_AIRLOCK_INTERIOR
 
 /obj/machinery/door/airlock/research/glass/incinerator/ordmix_exterior
-	name = "Mixing Room Exterior Airlock"
+	name = "mixing room exterior airlock"
 	id_tag = INCINERATOR_ORDMIX_AIRLOCK_EXTERIOR
 
 /obj/machinery/door/airlock/mining/glass
-	name = "mining glass airlock"
+	name = "cargo glass airlock"
 	opacity = FALSE
 	glass = TRUE
 
 /obj/machinery/door/airlock/atmos/glass
-	name = "atmospheric glass airlock"
+	name = "atmospherics glass airlock"
 	opacity = FALSE
 	glass = TRUE
 
