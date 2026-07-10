@@ -301,6 +301,7 @@
 
 	if(!isnull(accesses))
 		electronics.accesses = accesses
+		electronics.one_access = FALSE
 	else if(!isnull(one_accesses))
 		electronics.accesses = one_accesses
 		electronics.one_access = TRUE
@@ -318,7 +319,7 @@
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
 		final_charge_rate = base_charge_rate + (capacitor.tier * 0.05 * STANDARD_CELL_RATE)
 
-	set_access()
+	set_access(req_access, req_one_access)
 
 /obj/machinery/suit_storage_unit/power_change()
 	. = ..()
