@@ -86,6 +86,9 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	. = ..()
+	if(welded)
+		. += "It seems welded shut."
+
 	. += span_notice("You can link it with an air sensor using a multitool.")
 
 	if(fan_overclocked)

@@ -302,7 +302,7 @@
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
 		return FALSE
 
-/obj/machinery/atmospherics/components/unary/get_name_chaser(mob/user, list/name_chaser)
+/obj/machinery/atmospherics/components/unary/vent_scrubber/get_name_chaser(mob/user, list/name_chaser)
 	. = ..()
 	. += span_info("It has an ID serial: <b>[id_tag]</b>, and belongs to [get_area_name(src)].")
 
