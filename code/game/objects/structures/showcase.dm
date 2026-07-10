@@ -85,12 +85,6 @@
 	icon = 'icons/obj/machines/microwave.dmi'
 	icon_state = "mw_complete"
 
-/obj/structure/showcase/machinery/microwave_engineering
-	name = "\improper Nanotrasen Wave(tm) microwave"
-	desc = "Just when everyone thought Nanotrasen couldn't improve on their famous microwave, this 2563 model features Wave™! A Nanotrasen exclusive, Wave™ allows your PDA to be charged wirelessly through microwave frequencies. Because nothing says 'future' like charging your PDA while overcooking your leftovers. Nanotrasen Wave™ - Multitasking, redefined."
-	icon = 'icons/obj/machines/microwave.dmi'
-	icon_state = "engi_mw_complete"
-
 /obj/structure/showcase/machinery/cloning_pod
 	name = "cloning pod exhibit"
 	desc = "Depicts a prototype from a failed attempt at reliable cloning technology. The technology was scrapped after reports of severe mutations, wiggly ear syndrome and spontaneous tail growth. The date 11.11.2558 is engraved on the base."
