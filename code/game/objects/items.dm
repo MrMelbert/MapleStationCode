@@ -566,7 +566,7 @@
 		else if(main_weapon_examine)
 			// you can intuit a good weapon is a good thrown weapon, only report otherwise if it's significant
 			if(abs(force - throwforce) >= 10 && main_weapon_examine != thrown_weapon_examine)
-				if(throw_force < 20)
+				if(throwforce < 20)
 					return_message += ", but is [thrown_weapon_examine] when thrown"
 				else
 					return_message += ", while being [thrown_weapon_examine] when thrown"
