@@ -159,7 +159,8 @@
 		tgui_alert(usr, get_job_unavailable_error_message(error, rank))
 		return FALSE
 
-	if(SSshuttle.arrivals)
+	var/latejoin_spawn_preference = client.prefs.read_preference(/datum/preference/choiced/preferred_latejoin_spawn)
+	if(SSshuttle.arrivals && latejoin_spawn_preference == SPAWNPOINT_ARRIVALS)
 		if(SSshuttle.arrivals.damaged && CONFIG_GET(flag/arrivals_shuttle_require_safe_latejoin))
 			tgui_alert(usr,"The arrivals shuttle is currently malfunctioning! You cannot join.")
 			return FALSE
@@ -215,7 +216,7 @@
 		humanc = character //Let's retypecast the var to be human,
 
 	if(humanc) //These procs all expect humans
-		announce_arrival(humanc, rank, try_queue = TRUE)
+		announce_arrival(humanc, rank, try_queue = (latejoin_spawn_preference == SPAWNPOINT_ARRIVALS))
 
 		humanc.increment_scar_slot()
 		humanc.load_persistent_scars()
@@ -238,7 +239,7 @@
 		// SEND_SIGNAL(humanc, COMSIG_HUMAN_CHARACTER_SETUP_FINISHED)
 
 	var/area/station/arrivals = GLOB.areas_by_type[/area/station/hallway/secondary/entry]
-	if(humanc && arrivals && !arrivals.power_environ) //arrivals depowered
+	if(humanc && arrivals && !arrivals.power_environ && latejoin_spawn_preference == SPAWNPOINT_ARRIVALS) //arrivals depowered
 		humanc.put_in_hands(new /obj/item/crowbar/large/emergency(get_turf(humanc))) //if hands full then just drops on the floor
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 

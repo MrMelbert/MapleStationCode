@@ -222,23 +222,19 @@
 	SIGNAL_HANDLER
 	owner.dir = new_dir
 
-/datum/status_effect/choke/proc/thrusting_continues(mob/living/victim, mob/aggressor, before_work = FALSE)
-	if(iscarbon(aggressor))
-		var/free_hands = 0
-		// Listen bud, you need at least 2 free hands for this
-		for(var/hand_i in 1 to length(aggressor.held_items))
-			if(!aggressor.has_hand_for_held_index(hand_i) || aggressor.held_items[hand_i])
-				continue
-			free_hands += 1
-		if(free_hands < 2)
-			victim.balloon_alert(aggressor, "need 2 free hands!")
-			return FALSE
+/datum/status_effect/choke/proc/thrusting_continues(mob/living/victim, mob/living/aggressor, before_work = FALSE)
+	var/free_hands = aggressor.usable_hands
+	for(var/obj/item/held_item in aggressor.held_items)
+		if(!(held_item.item_flags & HAND_ITEM))
+			free_hands -= 1
 
-	if(iscarbon(victim))
-		var/mob/living/carbon/carbon_victim = victim
-		if(!carbon_victim.appears_alive())
-			victim.balloon_alert(aggressor, "too late...")
-			return FALSE
+	if(free_hands < 2)
+		victim.balloon_alert(aggressor, "need 2 free hands!")
+		return FALSE
+
+	if(!victim.appears_alive())
+		victim.balloon_alert(aggressor, "too late...")
+		return FALSE
 
 	if(!choking_on_ref)
 		return FALSE
