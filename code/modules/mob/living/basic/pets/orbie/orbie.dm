@@ -25,6 +25,7 @@
 	bodytemp_heat_damage_limit = INFINITY // Non-module change
 	death_message = "fades out of existence!"
 	ai_controller = /datum/ai_controller/basic_controller/orbie
+	initial_blood_type = null
 	///are we happy or not?
 	var/happy_state = FALSE
 	///overlay for our neutral eyes
@@ -51,6 +52,7 @@
 	var/static/list/food_types = list(/obj/item/food/virtual_chocolate)
 	AddComponent(/datum/component/obeys_commands, pet_commands)
 	AddElement(/datum/element/basic_eating, food_types = food_types)
+	ADD_TRAIT(src, TRAIT_SILICON_EMOTES_ALLOWED, INNATE_TRAIT)
 	RegisterSignal(src, COMSIG_VIRTUAL_PET_LEVEL_UP, PROC_REF(on_level_up))
 	RegisterSignal(src, COMSIG_ATOM_UPDATE_LIGHT_ON, PROC_REF(on_lights))
 	ai_controller.set_blackboard_key(BB_BASIC_FOODS, typecacheof(food_types))

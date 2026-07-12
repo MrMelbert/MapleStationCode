@@ -8,14 +8,16 @@
 		set_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	update_fov()
 	gravity_setup()
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
+	if(initial_blood_type && isnull(blood_type))
+		set_blood_type(initial_blood_type)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
 	init_unconscious_appearance()
@@ -801,6 +803,19 @@
 	else
 		set_density(TRUE)
 
+/mob/living/update_rest_hud_icon()
+	. = ..()
+	if(!.)
+		return FALSE
+	if(!hud_used.sleep_icon || HAS_TRAIT(src, TRAIT_SLEEPIMMUNE))
+		return TRUE
+	if(resting || HAS_TRAIT(src, TRAIT_FLOORED))
+		hud_used.static_inventory |= hud_used.sleep_icon
+	else
+		hud_used.static_inventory -= hud_used.sleep_icon
+	hud_used.show_hud(hud_used.hud_version)
+	return TRUE
+
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
 	var/list/ret = list()
@@ -1089,13 +1104,7 @@
 		if(!storage_is_important_recurisve && !can_reach_active_storage)
 			active_storage.hide_contents(src)
 
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && !buckled && !moving_diagonally && get_turf(src) != was_loc)
-		// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
-		var/blood_flow = get_bleed_rate()
-		var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
-		var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
-		if(health_check || bleeding_check)
-			make_blood_trail(newloc, was_loc, was_facing, direct)
+	passive_blood_trail(newloc, was_loc, was_facing, dir)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
@@ -1106,6 +1115,45 @@
 
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
+
+/mob/living/proc/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || buckled || moving_diagonally || get_turf(src) == was_loc)
+		return
+	// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
+	var/blood_flow = get_bleed_rate()
+	var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
+	var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
+	if(!health_check && !bleeding_check)
+		return
+
+	var/blood_to_add = 0
+	var/base_bleed_rate = get_bleed_rate()
+	var/base_brute = getBruteLoss()
+
+	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
+		return
+
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
+	if(body_position == LYING_DOWN)
+		bleed(blood_to_add, leave_pool = FALSE)
+
+	make_blood_trail(new_loc, was_loc, was_facing, now_facing, blood_to_add, get_blood_dna_list(), get_static_viruses())
+
+/mob/living/carbon/human/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(!is_bleeding())
+		return
+	return ..()
 
 /**
  * Leaves a trail of blood.
@@ -1181,41 +1229,6 @@
 		return
 	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
-
-/mob/living/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add, blood_dna, list/static_viruses)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
-	var/base_bleed_rate = get_bleed_rate()
-	var/base_brute = getBruteLoss()
-
-	var/brute_ratio = round(base_brute / (maxHealth * 4), 0.1)
-	var/bleeding_rate =  round(base_bleed_rate / 4, 0.1)
-	// we only leave a trail if we're below a certain blood threshold
-	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
-		return
-
-	if(isnull(static_viruses))
-		static_viruses = get_static_viruses()
-	if(isnull(blood_dna))
-		blood_dna = get_blood_dna_list()
-	if(isnull(blood_to_add))
-		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
-		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
-		// if we're very damaged or bleeding a lot, add even more blood to the trail
-		if(base_brute >= 300 || base_bleed_rate >= 7)
-			blood_to_add *= 2
-
-	// this is where people losing extra blood from being dragged is handled
-	if(body_position == LYING_DOWN)
-		bleed(blood_to_add, leave_pool = FALSE)
-
-	return ..()
-
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction, blood_to_add, blood_dna, list/static_viruses)
-	if(!is_bleeding())
-		return
-	return ..()
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/make_blood_trail]
 /mob/living/proc/bleedDragAmount()
@@ -1486,7 +1499,7 @@
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
-	if(stat != CONSCIOUS)
+	if(stat >= UNCONSCIOUS)
 		to_chat(src, span_warning("You are not conscious enough for this action!"))
 		return FALSE
 
@@ -2101,6 +2114,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				return FALSE
 			update_transform(var_value/current_size)
 			. = TRUE
+		if(NAMEOF(src, blood_type))
+			. = set_blood_type(var_value)
+			if(!.)
+				return
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED
@@ -2424,7 +2441,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_legs
 	num_legs = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_legs and hook behavior associated to this event.
@@ -2475,7 +2492,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_hands
 	num_hands = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_hands and hook behavior associated to this event.
@@ -2517,6 +2534,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		on_lying_down()
 	else // From lying down to standing up.
 		on_standing_up()
+	update_rest_hud_icon()
 
 
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
@@ -2663,7 +2681,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/add_mood_event(category, type, ...)
 	if(QDELETED(mob_mood))
 		return
-	mob_mood.add_mood_event(arglist(args))
+
+	if(ispath(type, /datum/mood_event/conditional))
+		mob_mood.add_conditional_mood_event(arglist(args))
+	else
+		mob_mood.add_mood_event(arglist(args))
 
 /// Clears a mood event from the mob
 /mob/living/proc/clear_mood_event(category)

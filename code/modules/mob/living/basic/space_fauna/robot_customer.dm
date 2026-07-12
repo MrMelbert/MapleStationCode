@@ -20,6 +20,7 @@
 	bodytemp_heat_damage_limit = T0C + 1000
 
 	ai_controller = /datum/ai_controller/robot_customer
+	initial_blood_type = /datum/blood_type/oil
 
 	/// The clothes that we draw on this tourist.
 	var/clothes_set = "amerifat_clothes"

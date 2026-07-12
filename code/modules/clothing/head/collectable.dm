@@ -7,6 +7,7 @@
 	icon = 'icons/obj/clothing/head/costume.dmi'
 	worn_icon = 'icons/mob/clothing/head/costume.dmi'
 	icon_state = null
+	abstract_type = /obj/item/clothing/head/collectable
 
 /obj/item/clothing/head/collectable/Initialize(mapload)
 	. = ..()
@@ -74,7 +75,7 @@
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
 	greyscale_colors = "#972A2A"
 	dog_fashion = /datum/dog_fashion/head/beret
-	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
+	hair_mask = /datum/hair_mask/standard_hat_middle
 	flags_1 = NO_NEW_GAGS_PREVIEW_1
 
 /obj/item/clothing/head/collectable/welding

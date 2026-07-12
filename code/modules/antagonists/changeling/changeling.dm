@@ -781,7 +781,7 @@
 
 	chosen_dna.transfer_identity(user, TRUE)
 
-	for(var/obj/item/bodypart/limb as anything in user.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in user.get_bodyparts())
 		limb.update_limb(is_creating = TRUE)
 
 	user.updateappearance(mutcolor_update = TRUE)

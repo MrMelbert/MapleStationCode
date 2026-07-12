@@ -91,7 +91,8 @@
 		"Short" = HUMAN_HEIGHT_SHORT,
 		DEFAULT_HEIGHT = HUMAN_HEIGHT_MEDIUM,
 		"Tall" = HUMAN_HEIGHT_TALL,
-		"Tallest" = HUMAN_HEIGHT_TALLER,
+		"Taller" = HUMAN_HEIGHT_TALLER,
+		"Tallest" = HUMAN_HEIGHT_TALLEST,
 	)
 
 /datum/preference/choiced/mob_height/init_possible_values()

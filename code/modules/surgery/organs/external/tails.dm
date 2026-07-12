@@ -144,14 +144,23 @@
 ///Tail parent type, with wagging functionality
 /datum/bodypart_overlay/mutant/tail
 	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
-	var/wagging = FALSE
 	dyable = TRUE
+	/// Tracks if it's currently wagging or not
+	var/wagging = FALSE
+	/// If TRUE the tail is shown when over supported suits like space suits
+	var/mesh_in_suits = FALSE
 
 /datum/bodypart_overlay/mutant/tail/get_base_icon_state()
 	return "[wagging ? "wagging_" : ""][sprite_datum.icon_state]" //add the wagging tag if we be wagging
 
 /datum/bodypart_overlay/mutant/tail/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
-	return !(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT)
+	if(!(bodypart_owner.owner?.obscured_slots & HIDEJUMPSUIT))
+		return TRUE
+	if(!mesh_in_suits)
+		return FALSE
+	if(locate(/datum/bodypart_overlay/texture/mesh) in bodypart_owner.bodypart_overlays)
+		return TRUE
+	return FALSE
 
 /obj/item/organ/tail/cat
 	name = "cat tail"
@@ -201,6 +210,7 @@
 ///Lizard tail bodypart overlay datum
 /datum/bodypart_overlay/mutant/tail/lizard
 	feature_key = "tail_lizard"
+	mesh_in_suits = TRUE
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return SSaccessories.tails_list_lizard

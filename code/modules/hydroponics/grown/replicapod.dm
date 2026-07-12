@@ -213,7 +213,7 @@
 
 	//if there's none: get water
 	most_plentiful_reagent ||= /datum/reagent/water
-	podman.dna.species.exotic_bloodtype = most_plentiful_reagent
+	podman.set_blood_type(most_plentiful_reagent)
 	investigate_log("[key_name(mind)] cloned as a podman via [src] in [parent]", INVESTIGATE_BOTANY)
 	parent.update_tray(user, 1)
 	return result

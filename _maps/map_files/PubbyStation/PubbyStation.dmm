@@ -2685,7 +2685,7 @@
 /turf/open/floor/iron/large,
 /area/station/security)
 "ajp" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/large,
 /area/station/security)
@@ -7981,7 +7981,7 @@
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aBC" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
@@ -10460,7 +10460,7 @@
 /turf/open/floor/iron,
 /area/station/commons/storage/art)
 "aLz" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -21119,7 +21119,7 @@
 /obj/machinery/light_switch/directional/east{
 	name = "Light Switch"
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "bDy" = (
@@ -22588,7 +22588,7 @@
 /turf/open/floor/engine,
 /area/station/maintenance/department/engine)
 "bKl" = (
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -28283,7 +28283,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "ckl" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library/lounge)
@@ -33008,7 +33008,7 @@
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/cargo/sorting)
 "dWk" = (
@@ -39567,7 +39567,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron,
 /area/station/medical/medbay/central)
 "iGY" = (
@@ -40117,7 +40117,7 @@
 /area/station/cargo/storage)
 "jdj" = (
 /obj/structure/disposalpipe/segment,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 8
 	},
@@ -42600,7 +42600,7 @@
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 4
 	},
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -42979,7 +42979,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
 "lui" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "luA" = (
@@ -47469,7 +47469,7 @@
 	layer = 2.9
 	},
 /obj/item/pen/red,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/hand_labeler,
 /obj/item/book/manual/wiki/infections,
 /obj/machinery/light/small/directional/east,
@@ -48186,7 +48186,7 @@
 /area/station/hallway/primary/fore)
 "pac" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/clothing/neck/stethoscope,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -49812,7 +49812,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron,
 /area/station/medical/medbay/central)
 "qic" = (
@@ -59405,7 +59405,7 @@
 /turf/open/floor/iron/dark/smooth_edge,
 /area/station/command/heads_quarters/rd)
 "wrU" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
 /turf/open/floor/wood,
@@ -60245,7 +60245,7 @@
 "wNV" = (
 /obj/machinery/firealarm/directional/east,
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /turf/open/floor/iron/white,
@@ -61649,7 +61649,7 @@
 	},
 /area/station/science/ordnance)
 "xBR" = (
-/obj/item/stack/medical/gauze{
+/obj/item/stack/medical/wrap/gauze{
 	pixel_x = 2
 	},
 /obj/machinery/door/firedoor,

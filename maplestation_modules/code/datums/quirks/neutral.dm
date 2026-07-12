@@ -121,6 +121,7 @@
 	sprint_length_multiplier = new_sprint_length
 	sprint_regen_multiplier = new_sprint_regen
 	quirk_human.sprint_length_max *= new_sprint_length
+	quirk_human.sprint_length = min(quirk_human.sprint_length_max, quirk_human.sprint_length)
 	quirk_human.sprint_regen_per_second *= new_sprint_regen
 
 #define RANDOM_INNATE_MUTATION "Random"

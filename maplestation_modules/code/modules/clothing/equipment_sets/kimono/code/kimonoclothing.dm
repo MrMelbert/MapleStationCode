@@ -83,7 +83,7 @@
 	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/kimono/icons/kimono_worn.dmi'
 	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/kimono/icons/kimono_lhand.dmi'
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/kimono/icons/kimono_rhand.dmi'
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	icon_state = "blacksandals"
 	inhand_icon_state = "blacksandals"
 

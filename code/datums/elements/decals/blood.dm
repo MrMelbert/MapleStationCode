@@ -15,9 +15,10 @@
 	. = ..()
 	RegisterSignal(as_item, COMSIG_ATOM_GET_EXAMINE_NAME, PROC_REF(get_examine_name), TRUE)
 	RegisterSignal(as_item, COMSIG_ATOM_COLOR_UPDATED, PROC_REF(on_color_update), TRUE)
+	RegisterSignal(as_item, COMSIG_ORGAN_SURGICALLY_REMOVED, PROC_REF(Detach), TRUE)
 
 /datum/element/decal/blood/Detach(atom/source)
-	UnregisterSignal(source, list(COMSIG_ATOM_GET_EXAMINE_NAME, COMSIG_ATOM_COLOR_UPDATED))
+	UnregisterSignal(source, list(COMSIG_ATOM_GET_EXAMINE_NAME, COMSIG_ATOM_COLOR_UPDATED, COMSIG_ORGAN_SURGICALLY_REMOVED))
 	if (isitem(source))
 		var/obj/item/source_item = source
 		REMOVE_KEEP_TOGETHER(source_item, type)

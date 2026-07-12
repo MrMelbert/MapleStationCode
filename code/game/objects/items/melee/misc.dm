@@ -1,5 +1,6 @@
 // Deprecated, you do not need to use this type for melee weapons.
 /obj/item/melee
+	abstract_type = /obj/item/melee
 	item_flags = NEEDS_PERMIT
 
 /obj/item/melee/chainofcommand
@@ -139,7 +140,7 @@
 		var/list/legs = list()
 		var/obj/item/bodypart/bodypart
 
-		for(bodypart in Cuser.bodyparts)
+		for(bodypart in Cuser.get_bodyparts())
 			if(bodypart == holding_bodypart)
 				continue
 			if(bodypart.body_part & ARMS)

@@ -247,6 +247,7 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	death_message = "is smashed into pieces!"
 	ai_controller = /datum/ai_controller/basic_controller/trooper/viscerator
+	initial_blood_type = /datum/blood_type/oil
 
 /mob/living/basic/viscerator/Initialize(mapload)
 	. = ..()

@@ -1028,7 +1028,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 			if (!iscarbon(atom_target))
 				return FALSE
 			var/mob/living/carbon/carbon_target = atom_target
-			for(var/obj/item/bodypart/squish_part in carbon_target.bodyparts)
+			for(var/obj/item/bodypart/squish_part in carbon_target.get_bodyparts())
 				var/severity = pick(WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_SEVERE, WOUND_SEVERITY_CRITICAL)
 				if (!carbon_target.cause_wound_of_type_and_severity(WOUND_BLUNT, squish_part, severity, wound_source = "crushed by [src]"))
 					carbon_target.apply_damage(30, BRUTE, squish_part)
@@ -1451,7 +1451,8 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	item_record.amount--
-	if(usr.CanReach(src) && try_put_in_hand(vended_item, usr))
+	var/sigreturn = SEND_SIGNAL(usr, COMSIG_MOB_VENDING_PURCHASE, src, vended_item)
+	if(!(sigreturn & VENDING_NO_PICKUP) && usr.CanReach(src) && try_put_in_hand(vended_item, usr))
 		to_chat(usr, span_notice("You take [item_record.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(format_text(item_record.name))] falls onto the floor!"))

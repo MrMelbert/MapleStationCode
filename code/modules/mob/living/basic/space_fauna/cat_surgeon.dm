@@ -36,20 +36,14 @@
 		/obj/effect/mob_spawn/corpse/human/cat_butcher,
 		/obj/item/circular_saw,
 	)
-	/// What's our "blood type"? So fake-humans splash blood on people in combat
-	var/fake_blood_type
 
 /mob/living/basic/cat_butcherer/Initialize(mapload)
+	initial_blood_type = random_human_blood_type()
 	. = ..()
 	apply_dynamic_human_appearance(src, mob_spawn_path = /obj/effect/mob_spawn/corpse/human/cat_butcher, l_hand = /obj/item/circular_saw, bloody_slots = ITEM_SLOT_GLOVES|ITEM_SLOT_OCLOTHING)
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/death_drops, drop_on_death)
 	RegisterSignal(src, COMSIG_HOSTILE_POST_ATTACKINGTARGET, PROC_REF(after_attack))
-
-/mob/living/basic/cat_butcherer/get_blood_type()
-	if(!fake_blood_type)
-		fake_blood_type = random_human_blood_type()
-	return find_blood_type(fake_blood_type)
 
 /mob/living/basic/cat_butcherer/init_unconscious_appearance()
 	add_generic_humanoid_static_appearance()

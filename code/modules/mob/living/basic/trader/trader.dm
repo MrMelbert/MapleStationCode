@@ -80,3 +80,4 @@
 	held_weapon_visual = /obj/item/gun/ballistic/revolver
 
 	trader_data_path = /datum/trader_data/mr_bones
+	initial_blood_type = null

@@ -254,8 +254,8 @@
 	log_message("[src.name] created.", LOG_MECHA)
 	GLOB.mechas_list += src //global mech list
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 	diag_hud_set_mechhealth()
 	diag_hud_set_mechcell()
 	diag_hud_set_mechstat()
@@ -306,8 +306,8 @@
 	QDEL_NULL(chassis_camera)
 
 	GLOB.mechas_list -= src //global mech list
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src) //YEET
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.remove_atom_from_hud(src) //YEET
 	return ..()
 
 ///Add parts on mech spawning. Skipped in manual construction.
@@ -523,7 +523,7 @@
 			readout += "It fully encloses its occupants, protecting them from the atmosphere or lack thereof."
 
 		var/formatted_readout = span_notice("<b>PROTECTION CLASSES</b><hr>[jointext(readout, "\n")]")
-		to_chat(usr, examine_block(formatted_readout))
+		to_chat(usr, boxed_message(formatted_readout))
 
 /obj/vehicle/sealed/mecha/generate_integrity_message()
 	var/examine_text = ""
@@ -602,7 +602,7 @@
 		cell.maxcharge -= min(damage_energy_consumption, cell.maxcharge)
 
 	if((internal_damage & MECHA_INT_FUEL_LINE) && oil_pool >= 0.5 && isturf(loc) && SPT_PROB(round(oil_pool / 2, 0.1), seconds_per_tick))
-		find_blood_type(oil_type)?.make_blood_splatter(loc, TRUE, list("[oil_name]" = oil_type))
+		find_blood_type(oil_type).make_blood_splatter(loc, TRUE, list("[oil_name]" = oil_type))
 		oil_pool -= 0.5
 
 /obj/vehicle/sealed/mecha/proc/process_cabin_air(seconds_per_tick)

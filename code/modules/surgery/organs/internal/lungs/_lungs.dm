@@ -732,11 +732,8 @@
 
 /// Handles what happens when we breathe in something we need to live
 /obj/item/organ/lungs/proc/heal_oxyloss_on_breath(mob/living/carbon/human/breather, datum/gas_mixture/breath)
-	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-		breather.adjustOxyLoss(-4)
-	else
-		// Less blood so breaths give you less oxygen
-		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	// Less blood makes breaths give you less oxygen
+	breather.adjustOxyLoss(-4 * min(1, HAS_TRAIT(breather, TRAIT_NOBLOOD) ? 1 : (BLOOD_VOLUME_NORMAL / breather.blood_volume)))
 
 /// Applies suffocation side-effects to a given Human, scaling based on ratio of required pressure VS "true" pressure.
 /// If pressure is greater than 0, the return value will represent the amount of gas successfully breathed.
@@ -770,6 +767,9 @@
 
 
 /obj/item/organ/lungs/proc/handle_breath_temperature(datum/gas_mixture/breath, mob/living/carbon/human/breather) // called by human/life, handles temperatures
+	if(SEND_SIGNAL(breather, COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE, breath, src) & HANDLE_BREATH_TEMPERATURE_HANDLED)
+		return
+
 	var/breath_temperature = breath.temperature
 
 	if(breath_temperature < cold_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTCOLD) && !breather.has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE)) // COLD DAMAGE
@@ -897,18 +897,18 @@
 /obj/item/organ/lungs/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantlungs
 
-/obj/item/organ/lungs/feel_for_damage(self_aware)
+/obj/item/organ/lungs/feel_for_damage(self_aware, medical_skill)
 	if(organ_flags & ORGAN_FAILING)
-		if(self_aware)
+		if(self_aware || medical_skill >= SKILL_LEVEL_EXPERT)
 			return span_boldwarning("Your lungs hurt madly[HAS_TRAIT(owner, TRAIT_NOBREATH) ? "" : ", and you can't breathe"]!")
 		return span_boldwarning("It hurts madly[HAS_TRAIT(owner, TRAIT_NOBREATH) ? "" : ", and you can't breathe"]!")
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
-		if(self_aware)
+		if(self_aware || medical_skill >= SKILL_LEVEL_EXPERT)
 			return span_warning("Your lungs feel tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and breathing is harder"].")
 		return span_warning("It feels tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and breathing is harder"].")
-	if(self_aware)
+	if(self_aware || medical_skill >= SKILL_LEVEL_EXPERT)
 		return span_boldwarning("Your lungs feel extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 	return span_boldwarning("It feels extremely tight[HAS_TRAIT(owner, TRAIT_NOBREATH) ?  "" : ", and every breath is a struggle"].")
 
@@ -927,14 +927,14 @@
 			Increases the effectiveness of healium and other gases."
 
 	else
-		beginning_text = span_danger("<b>[beginning_text]</b>")
+		beginning_text = span_alert("<b>[beginning_text]</b>")
 		if (received_pressure_mult <= 0) // lethal
-			dilation_text = span_bolddanger("[received_pressure_mult * 100]%")
+			dilation_text = span_alert("<b>[received_pressure_mult * 100]%</b>")
 			tooltip = "Subject's lungs are completely shut. Subject is unable to breathe and requires emergency surgery. \
 				If asthmatic, perform asthmatic bypass surgery and adminster albuterol inhalant. \
 				Otherwise, replace lungs."
 		else
-			dilation_text = span_danger("[received_pressure_mult * 100]%")
+			dilation_text = span_alert("[received_pressure_mult * 100]%")
 			tooltip = "Subject's lungs are partially shut. \
 				If unable to breathe, administer a high-pressure internals tank or replace lungs. \
 				If asthmatic, inhaled albuterol or bypass surgery will likely help."

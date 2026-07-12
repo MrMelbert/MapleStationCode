@@ -93,7 +93,6 @@
 				var/chosen_zone
 				if(spread_damage || isnull(def_zone))
 					chosen_zone = BODY_ZONES_ALL
-					pain_amount /= 6
 				else if(isbodypart(def_zone))
 					var/obj/item/bodypart/actual_hit = def_zone
 					chosen_zone = actual_hit.body_zone

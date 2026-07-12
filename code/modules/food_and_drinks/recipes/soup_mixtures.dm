@@ -222,7 +222,7 @@
 
 	testing("Soup reaction finished with a total react volume of [react_vol] and [length(pot.added_ingredients)] ingredients. Cleaning up.")
 	clean_up(holder, reaction, react_vol)
-	new /obj/effect/abstract/smell/oven/good(get_turf(pot))
+	new /obj/effect/abstract/smell/oven/good(pot)
 
 /**
  * Cleans up the ingredients and adds whatever leftover reagents to the mixture
@@ -1469,6 +1469,18 @@
 	results = list(
 		/datum/reagent/consumable/nutriment/soup/jellyfish = 30,
 		/datum/reagent/water = 5,
+	)
+//Fresh Jellyfish fillet soup!
+/datum/chemical_reaction/food/soup/jellyfish_stew_two
+	required_reagents = list(/datum/reagent/water = 50)
+	required_ingredients = list(
+		/obj/item/food/fishmeat/gunner_jellyfish = 1,
+		/obj/item/food/grown/soybeans = 1,
+		/obj/item/food/grown/redbeet = 1,
+		/obj/item/food/grown/potato = 1
+	)
+	results = list(
+		/datum/reagent/consumable/nutriment/soup/jellyfish = 50,
 	)
 
 // Rootbread Soup

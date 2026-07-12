@@ -584,9 +584,9 @@
 /obj/item/mod/module/thermal_regulator/on_active_process(seconds_per_tick)
 	var/mob/living/user = mod.wearer
 	if(user.body_temperature < temperature_setting)
-		user.adjust_body_temperature((temperature_setting - user.body_temperature) * 0.08 * seconds_per_tick, max_temp = temperature_setting)
+		user.adjust_body_temperature(min(-1 KELVIN, (temperature_setting - user.body_temperature) * 0.08) * seconds_per_tick, max_temp = temperature_setting)
 	else if(user.body_temperature > temperature_setting)
-		user.adjust_body_temperature((temperature_setting - user.body_temperature) * 0.08 * seconds_per_tick, min_temp = temperature_setting)
+		user.adjust_body_temperature(max(1 KELVIN, (temperature_setting - user.body_temperature) * 0.08) * seconds_per_tick, min_temp = temperature_setting)
 
 ///DNA Lock - Prevents people without the set DNA from activating the suit.
 /obj/item/mod/module/dna_lock

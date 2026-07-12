@@ -13,8 +13,7 @@
 		//If a specific bodypart is targeted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		armorval += check_armor(BP, type)
 		organnum++
 	return (armorval/max(organnum, 1))
@@ -30,19 +29,6 @@
 			protection *= (100 - min(clothing_item.get_armor_rating(damage_type), 100)) * 0.01
 	protection *= (100 - min(physiology.armor.get_rating(damage_type), 100)) * 0.01
 	return 100 - protection
-
-///Get all the clothing on a specific body part
-/mob/living/carbon/human/proc/get_clothing_on_part(obj/item/bodypart/def_zone)
-	var/list/covering_part = list()
-	var/list/body_parts = list(head, wear_mask, wear_suit, w_uniform, back, gloves, shoes, belt, s_store, glasses, ears, wear_id, wear_neck) //Everything but pockets. Pockets are l_store and r_store. (if pockets were allowed, putting something armored, gloves or hats for example, would double up on the armor)
-	for(var/bp in body_parts)
-		if(!bp)
-			continue
-		if(bp && istype(bp , /obj/item/clothing))
-			var/obj/item/clothing/C = bp
-			if(C.body_parts_covered & def_zone.body_part)
-				covering_part += C
-	return covering_part
 
 /mob/living/carbon/human/bullet_act(obj/projectile/bullet, def_zone, piercing_hit = FALSE)
 
@@ -345,8 +331,7 @@
 			if(EXPLODE_DEVASTATE)
 				max_limb_loss = 4
 				probability = 50
-		for(var/X in bodyparts)
-			var/obj/item/bodypart/BP = X
+		for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
 				BP.receive_damage(INFINITY, wound_bonus = CANT_WOUND) //Capped by proc
 				BP.dismember()
@@ -570,19 +555,18 @@
 
 	combined_msg += span_boldnotice("You check yourself for injuries.")
 
-	var/list/missing = BODY_ZONES_ALL
 
-	for(var/obj/item/bodypart/body_part as anything in bodyparts)
-		missing -= body_part.body_zone
+	for(var/part_zone, body_part_untyped in get_bodyparts_by_zones())
+		var/obj/item/bodypart/body_part = body_part_untyped
+		if(isnull(body_part) || IS_STUMP(body_part))
+			combined_msg += span_boldannounce("&rdsh; Your [parse_zone(body_part?.body_zone || part_zone)] is missing!")
+			continue
 		if(body_part.bodypart_flags & BODYPART_PSEUDOPART) //don't show injury text for fake bodyparts; ie chainsaw arms or synthetic armblades
 			continue
 
 		var/bodypart_report = body_part.check_for_injuries(src)
 		if(bodypart_report)
 			combined_msg += "[span_notice("&rdsh;")] [bodypart_report]"
-
-	for(var/t in missing)
-		combined_msg += span_boldannounce("&rdsh; Your [parse_zone(t)] is missing!")
 
 	var/tox = getToxLoss() + (disgust / 5) + (HAS_TRAIT(src, TRAIT_SELF_AWARE) ? 0 : (rand(-3, 0) * 5))
 	switch(tox)
@@ -608,7 +592,7 @@
 		else
 			combined_msg += span_info("You feel fatigued.")
 
-	to_chat(src, examine_block(combined_msg.Join("<br>")))
+	to_chat(src, boxed_message(combined_msg.Join("<br>")))
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
 	if(damage_type != BRUTE && damage_type != BURN)

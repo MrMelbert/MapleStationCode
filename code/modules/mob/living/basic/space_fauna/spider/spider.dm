@@ -19,6 +19,7 @@
 	status_flags = NONE
 	unsuitable_cold_damage = 4
 	unsuitable_heat_damage = 4
+	initial_blood_type = /datum/blood_type/animal/bug
 	combat_mode = TRUE
 	faction = list(FACTION_SPIDER)
 	pass_flags = PASSTABLE

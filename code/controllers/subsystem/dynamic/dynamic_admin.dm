@@ -15,7 +15,7 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 /datum/dynamic_panel
 
 /datum/dynamic_panel/ui_state(mob/user)
-	return /*ADMIN_STATE(R_ADMIN)*/ GLOB.admin_state
+	return ADMIN_STATE(R_ADMIN)
 
 /datum/dynamic_panel/ui_close()
 	qdel(src)
@@ -185,7 +185,7 @@ ADMIN_VERB(dynamic_panel, R_ADMIN, "Dynamic Panel", "Mess with dynamic.", ADMIN_
 			var/list/tiers = list()
 			for(var/datum/dynamic_tier/tier as anything in subtypesof(/datum/dynamic_tier))
 				tiers[initial(tier.name)] = tier
-			var/datum/dynamic_tier/picked = tgui_input_list(ui.user, "Pick a dynamic tier before the game starts", "Pick tier", tiers, ui_state = /*ADMIN_STATE(R_ADMIN)*/GLOB.admin_state)
+			var/datum/dynamic_tier/picked = tgui_input_list(ui.user, "Pick a dynamic tier before the game starts", "Pick tier", tiers, ui_state = ADMIN_STATE(R_ADMIN))
 			if(picked && !SSticker.HasRoundStarted())
 				SSdynamic.set_tier(tiers[picked])
 				message_admins("[key_name_admin(ui.user)] set the dynamic tier to [initial(picked.tier)].")

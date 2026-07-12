@@ -167,7 +167,7 @@
 	leave_smell()
 
 /obj/effect/decal/cleanable/vomit/proc/leave_smell()
-	AddElement(/datum/element/simple_smell, "vomit", SMELL_INTENSITY_STRONG, 1)
+	add_smell(smell = "vomit", intensity = SMELL_INTENSITY_STRONG, radius = 1)
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -336,7 +336,7 @@
 /obj/effect/decal/cleanable/garbage/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 15)
-	AddElement(/datum/element/simple_smell, "rotting garbage", SMELL_INTENSITY_MODERATE, 2, "stench")
+	add_smell(category = "stench", smell = "rotting garbage", intensity = SMELL_INTENSITY_MODERATE, radius = 2)
 
 /obj/effect/decal/cleanable/ants
 	name = "space ants"
@@ -454,9 +454,9 @@
 		return INITIALIZE_HINT_QDEL
 
 	if(burn_stacks)
-		burn_amount = max(min(burn_stacks, 10), 1)
-
-	AddElement(/datum/element/simple_smell, "fuel", floor(SMELL_INTENSITY_MODERATE * burn_amount * 0.1), 1, "stench")
+		burn_amount = clamp(burn_stacks, 1, 10)
+	if(burn_amount > 1)
+		add_smell(category = "stench", smell = "fuel", intensity = floor(SMELL_INTENSITY_MODERATE * burn_amount * 0.1), radius = 1)
 
 /obj/effect/decal/cleanable/fuel_pool/fire_act(exposed_temperature, exposed_volume)
 	. = ..()

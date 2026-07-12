@@ -286,13 +286,7 @@
 		/datum/component/bloody_spreader,\
 		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
-	AddComponent(
-		/datum/component/complex_smell, \
-		duration = INFINITY, \
-		smell = "meat", \
-		intensity = SMELL_INTENSITY_STRONG, \
-		radius = 2, \
-	)
+	add_smell(smell = "meat", intensity = SMELL_INTENSITY_STRONG, radius = 2)
 	atom_storage.storage_sound = 'sound/effects/blobattack.ogg'
 
 /*
@@ -699,7 +693,7 @@
 	new /obj/item/bonesetter(src)
 	new /obj/item/blood_filter(src)
 	new /obj/item/stack/medical/bone_gel(src)
-	new /obj/item/stack/sticky_tape/surgical(src)
+	new /obj/item/stack/medical/wrap/sticky_tape/surgical(src)
 	new /obj/item/emergency_bed(src)
 	new /obj/item/clothing/suit/jacket/straight_jacket(src)
 	new /obj/item/clothing/mask/muzzle(src)

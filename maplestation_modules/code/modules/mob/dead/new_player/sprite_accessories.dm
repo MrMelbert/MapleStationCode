@@ -362,12 +362,23 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_toxiclong"
 
+/datum/sprite_accessory/hair/nia
+	name = "Nia"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nia"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
 	spine_key = NONE
+
+// From Effigy
+/datum/sprite_accessory/tails/lizard/cybernetic
+	name = "Cybernetic"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "synthliz"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns
@@ -479,33 +490,9 @@
 	icon_state = "sideswept"
 
 /// -- Undershirts --
-/datum/sprite_accessory/undershirt/ratvarsoul
-	name = "Ratvar's Soul"
-	icon_state = "ratvarsoul"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/defib
-	name = "Defib"
-	icon_state = "defib"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/fleshmass
-	name = "Pulsating Mass"
-	icon_state = "fleshmass"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
 /datum/sprite_accessory/undershirt/whiteblouse
 	name = "White Blouse and Bloomers"
 	icon_state = "blouse"
-	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/enmagradient
-	name = "Red and Blue Gradients"
-	icon_state = "redblue"
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 
@@ -539,6 +526,7 @@
 	name = "Mismatched Checkered Socks"
 	icon_state = "mismatchpoker"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/socks/pokersocks
 	name = "High Black Stockings"

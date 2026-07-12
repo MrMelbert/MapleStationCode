@@ -16,6 +16,8 @@
 	var/can_dry = TRUE
 	/// Is this blood dried out?
 	var/dried = FALSE
+	/// Do we delete ourselves when we dry out?
+	var/qdel_on_dry = FALSE
 
 	/// How much our blood glows, up to 255 (it's the alpha of the EM overlay). 0 = no glow
 	var/emissive_alpha = 0
@@ -43,6 +45,9 @@
 	if(mapload || starting_dna)
 		init_dna(starting_dna)
 	if(dried)
+		if(qdel_on_dry)
+			stack_trace("Blood decal set to dry on init but qdel on dry, you probably don't want that?")
+			qdel_on_dry = FALSE
 		dry()
 	else if(can_dry)
 		START_PROCESSING(SSblood_drying, src)
@@ -53,7 +58,7 @@
 	return ..()
 
 /obj/effect/decal/cleanable/blood/proc/init_dna(list/starting_dna)
-	add_blood_DNA(starting_dna || list("UNKNOWN DNA" = random_human_blood_type()))
+	add_blood_DNA(starting_dna || list("UNKNOWN HUMAN DNA" = random_human_blood_type()))
 
 /obj/effect/decal/cleanable/blood/on_entered(datum/source, atom/movable/AM)
 	if(dried)
@@ -159,6 +164,8 @@
 	update_atom_colour()
 	STOP_PROCESSING(SSblood_drying, src)
 	clear_smells()
+	if(qdel_on_dry)
+		qdel(src)
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/adjust_bloodiness(by_amount)
@@ -170,16 +177,16 @@
 
 /// Add the passed smell with the passed category to the blood
 /// Can optionally pass a multiplier which affects both intensity and radius
-/obj/effect/decal/cleanable/blood/proc/add_smell(smell, category, multiplier = 1)
-	var/intensity = max(floor(bloodiness * 0.2 * multiplier), SMELL_INTENSITY_FAINT)
-	var/radius = round(bloodiness * 0.04 * multiplier)
+/obj/effect/decal/cleanable/blood/proc/add_tracked_smell(smell, category, multiplier = 1)
+	var/effective_bloodiness = min(bloodiness, BLOOD_AMOUNT_PER_DECAL * 2)
+	var/intensity = max(floor(effective_bloodiness * 0.1 * multiplier), SMELL_INTENSITY_FAINT)
+	var/radius = round(effective_bloodiness * 0.02 * multiplier)
 	AddElement(/datum/element/simple_smell, \
-		smell = smell, \
+		smell_basetype = /datum/smell/blood, \
 		category = category, \
+		smell = smell, \
 		intensity = intensity, \
 		radius = radius, \
-		id = "dna", \
-		smell_basetype = /datum/smell/blood, \
 	)
 	LAZYADD(smell_elements_present, list(list(
 		"smell" = smell,
@@ -198,18 +205,17 @@
 		unique_smells["[blood.scent_text]-[blood.scent_category]"] += 1
 	for(var/blood_smell, count in unique_smells)
 		var/resplit_smell = splittext(blood_smell, "-")
-		add_smell(text2path(resplit_smell[1]) || resplit_smell[1], resplit_smell[2], count / GET_ATOM_BLOOD_DNA_LENGTH(src))
+		add_tracked_smell(text2path(resplit_smell[1]) || resplit_smell[1], resplit_smell[2], count / GET_ATOM_BLOOD_DNA_LENGTH(src))
 	last_bloodiness_refresh = bloodiness
 
 /obj/effect/decal/cleanable/blood/proc/clear_smells()
 	for(var/list/smell_element as anything in smell_elements_present)
 		RemoveElement(/datum/element/simple_smell, \
-			smell = smell_element["smell"], \
+			smell_basetype = /datum/smell/blood, \
 			category = smell_element["category"], \
+			smell = smell_element["smell"], \
 			intensity = smell_element["intensity"], \
 			radius = smell_element["radius"], \
-			id = "dna", \
-			smell_basetype = /datum/smell/blood, \
 		)
 		LAZYREMOVE(smell_elements_present, list(smell_element))
 
@@ -374,7 +380,7 @@
 		very_bloody = TRUE
 		icon_state = pick("trails_1", "trails_2")
 
-/obj/effect/decal/cleanable/blood/trail/add_smell(smell, category, multiplier)
+/obj/effect/decal/cleanable/blood/trail/add_tracked_smell(smell, category, multiplier)
 	if(!isturf(loc))
 		return // fake
 	return ..()
@@ -448,7 +454,7 @@
 		for (var/i in 1 to range)
 			var/turf/my_turf = get_turf(src)
 			if(!isgroundlessturf(my_turf) || GET_TURF_BELOW(my_turf))
-				new /obj/effect/decal/cleanable/blood/splatter(my_turf)
+				new /obj/effect/decal/cleanable/blood/splatter(my_turf, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 			if (!step_to(src, get_step(src, direction), 0))
 				break
 		return
@@ -460,7 +466,7 @@
 	SIGNAL_HANDLER
 	if(NeverShouldHaveComeHere(loc))
 		return
-	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases)
+	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/gibs/up
 	icon_state = "gibup1"
@@ -499,7 +505,7 @@
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
-	AddElement(/datum/element/simple_smell, /datum/smell/decay, SMELL_INTENSITY_STRONG, 1)
+	add_smell(smell = /datum/smell/decay, intensity = SMELL_INTENSITY_STRONG, radius = 1)
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drop of blood"
@@ -511,7 +517,7 @@
 	dry_desc = "A dried spattering."
 	drying_time = 1 MINUTES
 
-/obj/effect/decal/cleanable/blood/drip/add_smell(smell, category, multiplier)
+/obj/effect/decal/cleanable/blood/drip/add_tracked_smell(smell, category, multiplier)
 	if(!isturf(loc))
 		return // fake
 	return ..()
@@ -658,6 +664,9 @@
 	if(splatter_strength)
 		src.splatter_strength = splatter_strength
 
+/obj/effect/decal/cleanable/blood/hitsplatter/add_tracked_smell(smell, category, multiplier)
+	return // ephemeral
+
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
@@ -754,17 +763,17 @@
 /// Subtype which has random DNA baked in OUTSIDE of mapload.
 /// For testing, mapping, or badmins
 /obj/effect/decal/cleanable/blood/pre_dna
-	var/list/dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus)
+	var/list/dna_types = list("UNKNOWN HUMAN DNA" = /datum/blood_type/crew/human/a_minus)
 
 /obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload, list/datum/disease/diseases, list/starting_dna)
 	starting_dna = dna_types
 	return ..()
 
 /obj/effect/decal/cleanable/blood/pre_dna/lizard
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/lizard)
+	dna_types = list("UNKNOWN TIZIRAN DNA" = /datum/blood_type/crew/lizard)
 
 /obj/effect/decal/cleanable/blood/pre_dna/lizhuman
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus, "UNKNOWN DNA B" = /datum/blood_type/crew/lizard)
+	dna_types = list("UNKNOWN HUMAN DNA" = /datum/blood_type/crew/human/a_minus, "UNKNOWN TIZIRAN DNA" = /datum/blood_type/crew/lizard)
 
 /obj/effect/decal/cleanable/blood/pre_dna/ethereal
-	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/ethereal)
+	dna_types = list("UNKNOWN ETHEREAL DNA" = /datum/blood_type/crew/ethereal)

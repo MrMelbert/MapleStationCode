@@ -1721,7 +1721,7 @@
 /turf/open/floor/iron,
 /area/shuttle/pirate)
 "SQ" = (
-/obj/machinery/photocopier/gratis,
+/obj/machinery/photocopier/gratis/prebuilt,
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white,
 /area/shuttle/pirate)

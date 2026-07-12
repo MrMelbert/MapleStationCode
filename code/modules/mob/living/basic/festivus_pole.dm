@@ -41,6 +41,7 @@
 	death_message = "is hacked into pieces!"
 
 	ai_controller = /datum/ai_controller/basic_controller/festivus_pole
+	initial_blood_type = null
 
 /mob/living/basic/festivus/Initialize(mapload)
 	. = ..()

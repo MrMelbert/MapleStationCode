@@ -158,15 +158,7 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /// This proc is used to define what item types valid_types is filled with
 /obj/structure/mystery_box/proc/generate_valid_types()
-	valid_types = list()
-
-	for(var/iter_path in typesof(selectable_base_type))
-		if(!ispath(iter_path, /obj/item))
-			continue
-		var/obj/item/iter_item = iter_path
-		if((initial(iter_item.item_flags) & ABSTRACT) || !initial(iter_item.icon_state) || !initial(iter_item.inhand_icon_state))
-			continue
-		valid_types += iter_path
+	valid_types = get_sane_item_types(selectable_base_type)
 
 /// The box has been activated, play the sound and spawn the prop item
 /obj/structure/mystery_box/proc/activate(mob/living/user)
@@ -250,6 +242,12 @@ GLOBAL_LIST_INIT(mystery_fishing, list(
 
 /obj/structure/mystery_box/tdome/generate_valid_types()
 	valid_types = GLOB.mystery_box_guns + GLOB.mystery_box_extended
+
+/obj/structure/mystery_box/wildcard
+	desc = "A wooden crate that seems equally magical and mysterious, capable of granting the user all kinds of different pieces of gear. This one has an EXTREAMLY extended array of weaponry."
+
+/obj/structure/mystery_box/wildcard/generate_valid_types()
+	valid_types = GLOB.summoned_all_guns
 
 ///One of a kind, rarely found by fishing in the ocean.
 /obj/structure/mystery_box/fishing

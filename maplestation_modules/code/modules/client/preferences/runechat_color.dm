@@ -4,12 +4,13 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS // go after names please
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	nullable = TRUE
 
 /datum/preference/color/runechat_color/create_default_value()
-	return "#aaaaaa"
+	return null
 
 /datum/preference/color/runechat_color/apply_to_human(mob/living/carbon/human/target, value)
-	if(value == create_default_value())
+	if(isnull(value))
 		return
 
 	target.chat_color = value
@@ -18,7 +19,4 @@
 	GLOB.forced_runechat_names[target.name] = value
 
 /datum/preference/color/runechat_color/is_valid(value)
-	if (!..(value))
-		return FALSE
-
-	return !is_color_dark(value)
+	return ..() && (isnull(value) || !is_color_dark(value))

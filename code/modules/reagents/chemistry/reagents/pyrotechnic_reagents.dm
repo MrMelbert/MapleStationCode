@@ -29,14 +29,15 @@
 	. = ..()
 	if(affected_mob.adjustOrganLoss(ORGAN_SLOT_HEART, -1 * REM * seconds_per_tick * normalise_creation_purity(), required_organ_flag = affected_organ_flags))
 		return UPDATE_MOB_HEALTH
-
-/datum/reagent/nitroglycerin/on_mob_metabolize(mob/living/carbon/user)
-	. = ..()
-	ADD_TRAIT(user, TRAIT_HEART_RATE_BOOST, type)
+	if(volume > 5)
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
+	if(volume > 10)
+		ADD_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/nitroglycerin/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
-	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, type)
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_VASODILATED, "[type]_high")
 
 /datum/reagent/stabilizing_agent
 	name = "Stabilizing Agent"

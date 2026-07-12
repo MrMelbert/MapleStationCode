@@ -23,4 +23,4 @@ You can also use this to create a custom \"say emote\" (that is, what your messa
 It will automatically insert a comma for you, so you don't need to worry about that.
 </span>"}
 
-	to_chat(usr, examine_block("[header]\n[text]"))
+	to_chat(usr, boxed_message("[header]\n[text]"))

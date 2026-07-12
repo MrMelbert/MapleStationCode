@@ -16,6 +16,7 @@
 	has_limbs = TRUE
 	hud_type = /datum/hud/robot
 	mouse_drop_zone = TRUE
+	examine_thats = "This is"
 
 	///Represents the cyborg's model (engineering, medical, etc.)
 	var/obj/item/robot_model/model = null

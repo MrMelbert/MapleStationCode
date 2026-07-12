@@ -324,7 +324,7 @@
 /turf/open/floor/holofloor/beach/water,
 /area/shuttle/escape/luxury)
 "nC" = (
-/obj/item/food/sandwich/cheese/grilled{
+/obj/item/food/sandwich/grilled_cheese{
 	pixel_y = 11
 	},
 /obj/structure/table/wood/fancy/black,
@@ -1202,7 +1202,7 @@
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/reagent_containers/cup/glass/bottle/whiskey,
 /obj/item/reagent_containers/cup/bottle/ethanol,
-/obj/item/stack/medical/gauze/improvised,
+/obj/item/stack/medical/wrap/gauze/improvised,
 /obj/item/bot_assembly/medbot,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,

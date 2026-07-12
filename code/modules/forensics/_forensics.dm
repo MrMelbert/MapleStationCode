@@ -231,7 +231,7 @@
 
 /// Updates the blood displayed on parent
 /datum/forensics/proc/check_blood()
-	if(!isitem(parent) || isorgan(parent)) // organs don't spawn with blood decals by default
+	if(!isitem(parent))
 		return
 	if(!length(blood_DNA))
 		return

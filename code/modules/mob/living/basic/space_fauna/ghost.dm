@@ -26,6 +26,7 @@
 	light_range = 2.5 // same glowing as visible player ghosts
 	light_power = 0.6
 	ai_controller = /datum/ai_controller/basic_controller/ghost
+	initial_blood_type = null
 
 	///What hairstyle will this ghost have
 	var/ghost_hairstyle

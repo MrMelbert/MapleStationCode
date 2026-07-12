@@ -66,7 +66,7 @@
 		if(stat == HARD_CRIT && !internal && !external) // being on internals function as a ventilator + also makes anesthetic function (revisit later)
 			losebreath = max(losebreath, 1)
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
-			losebreath += (1 / next_breath)
+			losebreath += (1 / max(2, next_breath))
 
 	if(losebreath < 1)
 		var/pre_sig_return = SEND_SIGNAL(src, COMSIG_CARBON_ATTEMPT_BREATHE, seconds_per_tick, times_fired)
@@ -181,8 +181,8 @@
 	return
 
 /mob/living/carbon/proc/handle_bodyparts(seconds_per_tick, times_fired)
-	for(var/obj/item/bodypart/limb as anything in bodyparts)
-		. |= limb.on_life(seconds_per_tick, times_fired)
+	for(var/obj/item/bodypart/limb as anything in get_bodyparts(include_stumps = TRUE))
+		. |= limb.on_life(seconds_per_tick)
 
 /mob/living/carbon/proc/handle_organs(seconds_per_tick, times_fired)
 	if(stat == DEAD)
@@ -248,7 +248,7 @@
 					dna.unique_enzymes = dna.previous["UE"]
 					dna.previous.Remove("UE")
 				if(dna.previous["blood_type"])
-					dna.human_blood_type = find_blood_type(dna.previous["blood_type"])
+					dna.set_human_blood_type(dna.previous["blood_type"])
 					dna.previous.Remove("blood_type")
 				dna.temporary_mutations.Remove(mut)
 				continue

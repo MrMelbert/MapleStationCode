@@ -7,7 +7,7 @@
 	higher_levels_grant_you = "innate knowledge of cyborg, modsuit, and mecha wiring"
 	modifiers = list(
 		// amount of pain to reduce when installing cybernetic implants (negative = more instead)
-		SKILL_VALUE_MODIFIER = list(
+		SKILL_VALUE_MODIFIER = alist(
 			SKILL_LEVEL_NONE = -10,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = 0,
@@ -16,7 +16,7 @@
 			SKILL_LEVEL_MASTER = 30,
 			SKILL_LEVEL_LEGENDARY = 50,
 		),
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.2,
 			SKILL_LEVEL_NOVICE = 1.1,
 			SKILL_LEVEL_APPRENTICE = 1,
@@ -27,6 +27,11 @@
 		),
 	)
 	skill_flags = SKILL_ALWAYS_PRINT
+
+/datum/skill/cybernetics/New()
+	. = ..()
+	level_up_messages[SKILL_LEVEL_EXPERT] = span_nicegreen("I feel like I've become quite proficient at [name] - I've now memorized cyborg wiring diagrams!")
+	level_down_messages[SKILL_LEVEL_EXPERT] = span_nicegreen("I'm losing my [name] expertise... - I can't even remember cyborg wiring diagrams anymore!")
 
 /datum/skill/cybernetics/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()

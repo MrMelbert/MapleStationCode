@@ -6,7 +6,7 @@
 	grants_you = "greater skill in arcade games"
 	higher_levels_grant_you = "a taste for gamer fuel"
 	modifiers = list(
-		SKILL_PROBS_MODIFIER = list(
+		SKILL_PROBS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0,
 			SKILL_LEVEL_NOVICE = 5,
 			SKILL_LEVEL_APPRENTICE = 10,
@@ -15,7 +15,7 @@
 			SKILL_LEVEL_MASTER = 20,
 			SKILL_LEVEL_LEGENDARY = 25,
 		),
-		SKILL_RANDS_MODIFIER = list(
+		SKILL_RANDS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 2,

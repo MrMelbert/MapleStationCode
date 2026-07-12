@@ -43,6 +43,8 @@
 	var/waddles = TRUE
 
 /mob/living/basic/clown/Initialize(mapload)
+	if(check_holidays(APRIL_FOOLS))
+		initial_blood_type = /datum/blood_type/clown
 	. = ..()
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
 	AddComponent(/datum/component/ai_retaliate_advanced, CALLBACK(src, PROC_REF(retaliate_callback)))

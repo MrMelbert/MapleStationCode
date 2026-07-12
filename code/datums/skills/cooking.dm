@@ -8,7 +8,7 @@
 		// modifiers food reagent purity in cooked products
 		// with poor skill, you make fantastic ingredients good, and mediocre ingredients bad
 		// but with high skill, you can make bad ingredients good, and the best is even better
-		SKILL_VALUE_MODIFIER = list(
+		SKILL_VALUE_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0.75,
 			SKILL_LEVEL_NOVICE = 0.9,
 			SKILL_LEVEL_APPRENTICE = 1,
@@ -20,7 +20,7 @@
 		// flat addition to food quality
 		// with poor skill "nice" food becomes "normal"
 		// but with high skill "nice" food becomes "very nice" or even "fantastic"
-		SKILL_RANDS_MODIFIER = list(
+		SKILL_RANDS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = -1,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = 0,

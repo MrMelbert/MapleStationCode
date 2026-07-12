@@ -248,7 +248,7 @@
 			break
 
 	//Department checks
-	if(examiner_mind.assigned_role.departments_bitflags & special_desc_req[1])
+	if(isnum(special_desc_req[1]) && (examiner_mind.assigned_role.departments_bitflags & special_desc_req[1]))
 		fulfilled_requirements[EXAMINE_CHECK_DEPARTMENT] = TRUE
 
 	//Standard faction checks

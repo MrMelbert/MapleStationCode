@@ -83,7 +83,7 @@
 	return ..()
 
 /datum/component/complex_smell/proc/add_element()
-	parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
+	parent.AddElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
 	// propagate to wearer if applicable
 	if(isitem(parent))
 		var/obj/item/item_parent = parent
@@ -91,7 +91,7 @@
 			on_worn(item_parent, item_parent.loc)
 
 /datum/component/complex_smell/proc/remove_element()
-	parent.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
+	parent.RemoveElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
 	// clear from wearer if applicable
 	if(isitem(parent))
 		var/obj/item/item_parent = parent
@@ -113,12 +113,12 @@
 
 /datum/component/complex_smell/proc/on_worn(datum/source, mob/wearer)
 	SIGNAL_HANDLER
-	wearer.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
-	wearer.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
+	wearer.RemoveElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
+	wearer.AddElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
 
 /datum/component/complex_smell/proc/on_unworn(datum/source, mob/wearer)
 	SIGNAL_HANDLER
-	wearer.RemoveElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
+	wearer.RemoveElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
 
 /datum/component/complex_smell/proc/clean_up(...)
 	SIGNAL_HANDLER
@@ -142,14 +142,19 @@
 	fade_intensity_over_time,
 	list/clear_signals,
 )
-	if(smell != src.smell || category != src.category || wash_types != src.wash_types)
+	if(smell != src.smell || category != src.category || src.smell_basetype != smell_basetype)
 		return FALSE
 
+	// only replace the smell if the new one is stronger
 	if(intensity > src.intensity || radius > src.radius)
-		parent.RemoveElement(/datum/element/simple_smell, smell, src.intensity, src.radius, category, REF(src), smell_basetype)
-		parent.AddElement(/datum/element/simple_smell, smell, intensity, radius, category, REF(src), smell_basetype)
+		parent.RemoveElement(/datum/element/simple_smell, smell, ceil(src.intensity), src.radius, category, smell_basetype)
+		parent.AddElement(/datum/element/simple_smell, smell, ceil(intensity), radius, category, smell_basetype)
 		src.intensity = intensity
 		src.radius = radius
 
-	addtimer(CALLBACK(src, PROC_REF(clean_up)), duration, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME|TIMER_NO_HASH_WAIT)
+	// easier to just combine the wash types than try to determine which is stronger
+	src.wash_types |= wash_types
+	// otherwise just refresh duration
+	if(duration != INFINITY)
+		addtimer(CALLBACK(src, PROC_REF(clean_up)), duration, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME|TIMER_NO_HASH_WAIT)
 	return TRUE

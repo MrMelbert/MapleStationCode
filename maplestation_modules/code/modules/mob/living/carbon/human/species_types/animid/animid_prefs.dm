@@ -8,22 +8,27 @@
 	target.dna.features["animid_type"] = value
 
 /datum/preference/choiced/animid_type/init_possible_values()
-	var/datum/species/human/animid/animid = GLOB.species_prototypes[__IMPLIED_TYPE__]
-	pass(animid) // linter trips up on static accesses
-	return assoc_to_keys(animid.animid_singletons)
+	return assoc_to_keys(GLOB.animid_singletons)
 
 /datum/preference/choiced/animid_type/is_accessible(datum/preferences/preferences)
 	if(!..())
 		return FALSE
 
-	return ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)
+	var/pref_typepath = preferences.read_preference(/datum/preference/choiced/species)
+	if(ispath(pref_typepath, /datum/species/human/animid))
+		return TRUE
+	if(ispath(pref_typepath, /datum/species/android/synth))
+		return preferences.read_preference(/datum/preference/choiced/synth_species) == SPECIES_ANIMALID
+	if(ispath(pref_typepath, /datum/species/android))
+		return preferences.read_preference(/datum/preference/choiced/android_species) == SPECIES_ANIMALID
+	return FALSE
 
 /datum/preference/choiced/animid_type/compile_constant_data()
 	var/datum/species/human/animid/animid = GLOB.species_prototypes[__IMPLIED_TYPE__]
 	var/list/data = list()
 	data["animid_customization"] = list()
-	for(var/animalid_id in animid.animid_singletons)
-		var/datum/animid_type/atype = animid.animid_singletons[animalid_id]
+	for(var/animalid_id in GLOB.animid_singletons)
+		var/datum/animid_type/atype = GLOB.animid_singletons[animalid_id]
 
 		data["animid_customization"][animalid_id] = list(
 			"id" = animalid_id,

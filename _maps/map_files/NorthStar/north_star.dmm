@@ -9869,7 +9869,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/office)
 "cuK" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/hop)
 "cuL" = (
@@ -41052,7 +41052,7 @@
 /turf/open/floor/engine,
 /area/station/maintenance/floor4/starboard/aft)
 "kFJ" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/camera/autoname/directional/north,
 /obj/machinery/light_switch/directional/north,
 /turf/open/floor/wood/tile,
@@ -50770,7 +50770,7 @@
 	},
 /area/station/commons/fitness/recreation)
 "naI" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/turf_decal/tile/purple/opposingcorners,
 /turf/open/floor/iron/white,
 /area/station/science/circuits)
@@ -53740,7 +53740,7 @@
 /turf/open/floor/iron/dark,
 /area/station/hallway/floor4/aft)
 "nMD" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/half{
 	dir = 1
 	},
@@ -54640,7 +54640,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/floor3/aft)
 "nXJ" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/white,
 /area/station/science/lower)
 "nXO" = (
@@ -55457,7 +55457,7 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/door/firedoor,
 /obj/structure/window/reinforced/spawner/directional/east,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron/dark/textured,
 /area/station/medical/medbay/lobby)
 "ojl" = (
@@ -55727,7 +55727,7 @@
 "omG" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/bot,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark/textured_large,
 /area/station/service/library/printer)
 "omK" = (
@@ -57408,7 +57408,7 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/engineering/storage/tech)
 "oKD" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/machinery/requests_console/directional/west{
 	department = "Detective";
 	name = "Detective Requests Console"
@@ -58506,7 +58506,7 @@
 "oYL" = (
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "oYT" = (
@@ -61804,7 +61804,7 @@
 	},
 /obj/structure/window/reinforced/spawner/directional/west,
 /obj/machinery/status_display/ai/directional/south,
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /turf/open/floor/iron/dark/side{
 	dir = 8
 	},
@@ -70343,7 +70343,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/floor4/port/aft)
 "sfR" = (
-/obj/machinery/photocopier,
+/obj/machinery/photocopier/prebuilt,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/wood/parquet,
 /area/station/service/lawoffice)
@@ -71117,7 +71117,7 @@
 /area/station/medical/office)
 "ssx" = (
 /obj/item/stack/medical/suture/ekit,
-/obj/item/stack/medical/gauze/improvised{
+/obj/item/stack/medical/wrap/gauze/improvised{
 	pixel_y = 12
 	},
 /obj/structure/table,
@@ -71447,7 +71447,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate/freezer,
 /obj/item/stack/medical/suture,
-/obj/item/stack/medical/gauze/twelve,
+/obj/item/stack/medical/wrap/gauze/twelve,
 /obj/item/stack/medical/bone_gel,
 /turf/open/floor/iron/white,
 /area/station/maintenance/floor3/starboard/aft)
@@ -72211,7 +72211,7 @@
 /obj/structure/table,
 /obj/machinery/vending/wallmed/directional/north,
 /obj/machinery/duct,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/medical/wrap/gauze,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "sHq" = (

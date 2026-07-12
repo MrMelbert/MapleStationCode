@@ -168,7 +168,9 @@
 	if(!(slot & item.slot_flags)) // Things below only update if slotted in (ie: not held)
 		return
 	if(item.hair_mask)
-		update_body()
+		LAZYADD(hair_masks, item.hair_mask)
+		update_hair()
+		update_body() // this is solely for lizard frills
 	add_item_coverage(item)
 
 /mob/living/carbon/has_unequipped(obj/item/item)
@@ -179,7 +181,9 @@
 	update_equipment_speed_mods()
 	hud_used?.update_locked_slots()
 	if(item.hair_mask)
-		update_body()
+		LAZYREMOVE(hair_masks, item.hair_mask)
+		update_hair()
+		update_body() // this is solely for lizard frills
 	remove_item_coverage(item)
 
 /mob/living/carbon/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
@@ -255,7 +259,13 @@
  */
 /mob/living/carbon/proc/item_coverage_changed(added_slots, removed_slots)
 	update_clothing(hidden_slots_to_inventory_slots(added_slots|removed_slots))
-	if((added_slots|removed_slots) & (HIDEJUMPSUIT|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT|HIDEMUTWINGS|HIDEANTENNAE))
+	if((added_slots|removed_slots) & (HIDEHAIR|HIDEFACIALHAIR))
+		update_hair()
+	if((added_slots|removed_slots) & HIDEEYES)
+		update_eyes()
+	// HIDEJUMPSUIT is for digitigrade legs, HIDEEARS is for lizard frills, HIDEHAIR is for felinid ears and lizard horns, the others should be obvious
+	// future todo; we should collect a list of all bodypart overlays and what conceals/reveals them dynamically, rather than hardcoding this
+	if((added_slots|removed_slots) & (HIDEJUMPSUIT|HIDEEARS|HIDEHAIR|HIDESNOUT|HIDEMUTWINGS|HIDEANTENNAE))
 		update_body()
 
 /// Returns TRUE if an air tank compatible helmet is equipped.
@@ -545,6 +555,18 @@
 	// checking for ((CHEST|GROIN) & (GROIN|LEGS)) == (CHEST|GROIN) would also be incorrect,
 	// as it would imply your chest is accessible from lacking groin coverage
 	return !(location in cover_flags2body_zones(covered_flags))
+
+/// Get all the clothing on a specific body part
+/mob/living/carbon/proc/get_clothing_on_part(obj/item/bodypart/def_zone)
+	if(istext(def_zone))
+		def_zone = get_bodypart(def_zone)
+
+	var/list/covering_part = list()
+	for(var/obj/item/clothing/clothes as anything in get_equipped_items())
+		if(clothes.body_parts_covered & def_zone.body_part)
+			covering_part += clothes
+
+	return covering_part
 
 /// Attempts to equip the given item in a conspicious place.
 /// This is used when, for instance, a character spawning with an item

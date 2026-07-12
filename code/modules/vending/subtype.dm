@@ -24,7 +24,7 @@
 	products = list()
 	product_records = list()
 
-	for(var/type in typesof(type_to_vend))
+	for(var/type in get_sane_item_types(type_to_vend))
 		LAZYADDASSOC(products, type, 50)
 
 	build_inventories()

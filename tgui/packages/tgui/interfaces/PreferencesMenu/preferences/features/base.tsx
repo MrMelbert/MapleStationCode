@@ -61,9 +61,13 @@ export type FeatureValueProps<
   value: TReceiving;
 }>;
 
-export function FeatureColorInput(props: FeatureValueProps<string>) {
+type FeatureColorProps = FeatureValueProps<string> & {
+  nullable?: boolean;
+};
+
+export function FeatureColorInput(props: FeatureColorProps) {
   const { act } = useBackend<PreferencesMenuData>();
-  const { featureId, shrink, value } = props;
+  const { featureId, shrink, value, nullable } = props;
 
   return (
     <Button
@@ -72,12 +76,31 @@ export function FeatureColorInput(props: FeatureValueProps<string>) {
           preference: featureId,
         });
       }}
+      onContextMenu={
+        nullable
+          ? () => {
+              act('set_preference', {
+                preference: featureId,
+                value: null,
+              });
+            }
+          : undefined
+      }
+      tooltip={
+        nullable
+          ? 'Left click to change color. Right click to clear color.'
+          : 'Left click to change color.'
+      }
     >
       <Stack align="center" fill>
         <Stack.Item>
           <Box
             style={{
-              background: value.startsWith('#') ? value : `#${value}`,
+              background: value
+                ? value.startsWith('#')
+                  ? value
+                  : `#${value}`
+                : 'transparent',
               border: '2px solid white',
               boxSizing: 'content-box',
               height: '11px',
@@ -95,6 +118,10 @@ export function FeatureColorInput(props: FeatureValueProps<string>) {
       </Stack>
     </Button>
   );
+}
+
+export function FeatureColorInputNullable(props: FeatureValueProps<string>) {
+  return <FeatureColorInput {...props} nullable />;
 }
 
 export type FeatureToggle = Feature<BooleanLike, boolean>;

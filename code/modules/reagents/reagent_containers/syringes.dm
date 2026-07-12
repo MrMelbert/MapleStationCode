@@ -323,7 +323,7 @@
 	list_reagents = list(/datum/reagent/drug/bath_salts = 15)
 
 /obj/item/reagent_containers/syringe/contraband/fentanyl
-	list_reagents = list(/datum/reagent/toxin/fentanyl = 15)
+	list_reagents = list(/datum/reagent/medicine/painkiller/fentanyl = 15)
 
 /obj/item/reagent_containers/syringe/contraband/morphine
 	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 15) // NON-MODULE CHANGE

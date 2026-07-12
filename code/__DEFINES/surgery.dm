@@ -51,6 +51,9 @@
 /// Helper to figure out if a limb is a peg limb
 #define IS_PEG_LIMB(limb) (limb.bodytype & BODYTYPE_PEG)
 
+/// Is the bodypart a stump
+#define IS_STUMP(limb) (limb.bodypart_flags & BODYPART_STUMP)
+
 // Flags for the bodypart_flags var on /obj/item/bodypart
 /// Bodypart cannot be dismembered or amputated
 #define BODYPART_UNREMOVABLE (1<<0)
@@ -60,6 +63,10 @@
 #define BODYPART_IMPLANTED (1<<2)
 /// Bodypart never displays as a husk
 #define BODYPART_UNHUSKABLE (1<<3)
+/// Bodypart has never been added to a mob
+#define BODYPART_VIRGIN (1<<4)
+/// Not a full bodypart, but in fact is part of a missing limb
+#define BODYPART_STUMP (1<<5)
 
 // Bodypart change blocking flags
 ///Bodypart does not get replaced during set_species()
@@ -84,8 +91,11 @@
 #define HEAD_NO_DISFIGURE (1<<7)
 /// Show organs (like brain) when examined with examine verb
 #define HEAD_SHOW_ORGANS_ON_EXAMINE (1<<8)
+
 /// Default for most heads
 #define HEAD_DEFAULT_FEATURES (HEAD_HAIR|HEAD_FACIAL_HAIR|HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN|HEAD_SHOW_ORGANS_ON_EXAMINE)
+/// All hair related flags
+#define HEAD_ALL_HAIR_FLAGS (HEAD_HAIR | HEAD_FACIAL_HAIR)
 
 /// Checks if the mob is lying down if they can lie down, otherwise always passes
 #define IS_LYING_OR_CANNOT_LIE(mob) ((mob.mobility_flags & MOBILITY_LIEDOWN) ? (mob.body_position == LYING_DOWN) : TRUE)

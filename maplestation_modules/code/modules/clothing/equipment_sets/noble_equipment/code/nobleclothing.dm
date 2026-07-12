@@ -9,7 +9,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "noblesuit"
 	inhand_icon_state = "noblesuit"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 
 /obj/item/clothing/under/rank/noblealt
@@ -21,7 +21,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "nobledress"
 	inhand_icon_state = "nobledress"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	body_parts_covered = CHEST|GROIN|LEGS
 	flags_inv = HIDESHOES
 
@@ -110,7 +110,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "elegantdress"
 	inhand_icon_state = "elegantdress"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	body_parts_covered = CHEST|GROIN|LEGS
 	flags_inv = HIDESHOES
 
@@ -179,7 +179,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "penrosesuit"
 	inhand_icon_state = "penrosesuit"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 
@@ -246,7 +246,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "kimono_fancy"
 	inhand_icon_state = "kimono_fancy"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 	body_parts_covered = CHEST|GROIN|ARMS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
@@ -303,7 +303,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plaguedress"
 	inhand_icon_state = "plaguedress"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
@@ -325,7 +325,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plaguebeak"
 	inhand_icon_state = "plaguebeak"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	body_parts_covered = HIDEFACE
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	armor_type = /datum/armor/plauge
@@ -475,7 +475,7 @@
 	desc = "A dress made from an unidentifiable material, it shimmers in the light with movement to reflect the very stars around you."
 	icon_state = "stardress"
 	inhand_icon_state = "stardress"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	body_parts_covered = CHEST|GROIN|LEGS
 
 /obj/item/clothing/gloves/chiffon/alt
@@ -515,7 +515,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervuni"
 	inhand_icon_state = "penrosesuit"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = FALSE
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 

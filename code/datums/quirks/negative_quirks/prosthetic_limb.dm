@@ -31,6 +31,18 @@
 	to_chat(quirk_holder, span_boldannounce("Your [slot_string] has been replaced with a surplus prosthetic. It has almost no muscle force, and makes you unhealthier by just having it. Additionally, \
 	you need to use a welding tool and cables to repair it, instead of sutures and regenerative meshes."))
 
+/datum/quirk/prosthetic_limb/add()
+	if(isnull(quirk_holder.mind))
+		RegisterSignal(quirk_holder, COMSIG_MOB_MIND_INITIALIZED, PROC_REF(add_skill))
+	else
+		add_skill()
+
+/datum/quirk/prosthetic_limb/proc/add_skill(...)
+	SIGNAL_HANDLER
+
+	quirk_holder.set_skill_level(/datum/skill/cybernetics, SKILL_LEVEL_NOVICE, silent = TRUE, only_if_higher = TRUE)
+	UnregisterSignal(quirk_holder, COMSIG_MOB_MIND_INITIALIZED)
+
 /datum/quirk/prosthetic_limb/remove()
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.del_and_replace_bodypart(old_limb, special = TRUE)

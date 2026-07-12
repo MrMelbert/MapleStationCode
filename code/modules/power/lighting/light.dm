@@ -313,7 +313,11 @@
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/machinery/light/proc/set_on(turn_on)
+	var/was_on = on
 	on = (turn_on && status == LIGHT_OK)
+	if(on == was_on)
+		return
+	SEND_SIGNAL(src, COMSIG_LIGHT_FIXTURE_TOGGLED, on)
 	update()
 
 /obj/machinery/light/get_cell()
@@ -488,13 +492,13 @@
 		)
 	return TRUE
 
-
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
 	if(flickering)
 		return
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
+		. = TRUE //did we actually flicker? Send this now because we expect immediate response, before sleeping.
 		for(var/i in 1 to amount)
 			if(status != LIGHT_OK || !has_power())
 				break
@@ -506,7 +510,6 @@
 		else
 			on = FALSE
 		update(FALSE)
-		. = TRUE //did we actually flicker?
 	flickering = FALSE
 
 // ai attack - make lights flicker, because why not
@@ -630,12 +633,15 @@
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		return
 
+	var/was_ok = (status == LIGHT_OK || status == LIGHT_BURNED)
+	status = LIGHT_BROKEN
+
+	SEND_SIGNAL(src, COMSIG_LIGHT_FIXTURE_BROKEN, was_ok)
 	if(!skip_sound_and_sparks)
-		if(status == LIGHT_OK || status == LIGHT_BURNED)
+		if(was_ok)
 			playsound(loc, 'sound/effects/glasshit.ogg', 75, TRUE)
 		if(on)
 			do_sparks(3, TRUE, src)
-	status = LIGHT_BROKEN
 	update()
 
 /obj/machinery/light/proc/fix()

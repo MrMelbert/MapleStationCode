@@ -16,7 +16,7 @@
 	icon = FA_ICON_DROPLET
 
 /datum/animid_type/bat/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
-	species.exotic_bloodtype = /datum/blood_type/universal
+	species.exotic_bloodtype = /datum/blood_type/universal // set_blood_type has yet to be called so this is safe
 
 /datum/animid_type/bat/get_extra_perks()
 	var/list/to_add = list()

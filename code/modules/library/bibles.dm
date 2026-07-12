@@ -212,9 +212,9 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 	if(GLOB.religious_sect)
 		return GLOB.religious_sect.sect_bless(blessed,user)
 	if(!ishuman(blessed))
-		return
+		return FALSE
 	var/mob/living/carbon/human/built_in_his_image = blessed
-	for(var/obj/item/bodypart/bodypart as anything in built_in_his_image.bodyparts)
+	for(var/obj/item/bodypart/bodypart as anything in built_in_his_image.get_bodyparts())
 		if(!IS_ORGANIC_LIMB(bodypart))
 			balloon_alert(user, "can't heal inorganic!")
 			return FALSE
@@ -265,6 +265,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list(
 		smack_chance = GLOB.religious_sect.smack_chance
 	var/success = !prob(smack_chance) && bless(target_mob, user)
 	if(success)
+		SEND_SIGNAL(target_mob, COMSIG_LIVING_BLESSED, user, src, success)
 		return
 	if(iscarbon(target_mob))
 		var/mob/living/carbon/carbon_target = target_mob

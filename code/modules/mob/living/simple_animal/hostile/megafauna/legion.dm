@@ -57,6 +57,7 @@
 	elimination = TRUE
 	appearance_flags = LONG_GLIDE
 	mouse_opacity = MOUSE_OPACITY_ICON
+	initial_blood_type = null
 	attack_action_types = list(/datum/action/innate/megafauna_attack/create_skull,
 							   /datum/action/innate/megafauna_attack/charge_target,
 							   /datum/action/innate/megafauna_attack/create_turrets)
