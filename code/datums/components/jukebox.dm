@@ -109,11 +109,15 @@
 
 		if(!length(config_songs))
 			var/datum/track/default/default_track = new()
-			config_songs["[default_track.song_name] (Default)"] = default_track
+			var/default_track_name = "[default_track.song_name] (Default)"
+			default_track.song_name = default_track_name
+			config_songs[default_track_name] = default_track
 
 		for(var/datum/track/track_subtype as anything in subtypesof(/datum/track/preset))
 			var/datum/track/new_preset = new track_subtype()
-			config_songs["[new_preset.song_name] (Preset)"] = new_preset
+			var/preset_name = "[new_preset.song_name] (Preset)"
+			new_preset.song_name = preset_name
+			config_songs[preset_name] = new_preset
 
 	// returns a copy so it can mutate if desired.
 	return config_songs.Copy()
