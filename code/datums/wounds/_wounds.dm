@@ -595,20 +595,14 @@
 	return .
 
 /datum/wound/proc/get_wound_description(mob/user)
-	var/desc
+	if(!examine_desc)
+		return // no examine text
 
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
 	if ((wound_flags & ACCEPTS_GAUZE) && current_gauze)
-		desc = "[victim.p_Their()] [limb.plaintext_zone] is [get_gauze_condition()]fastened in a sling of [current_gauze.name]"
-	else
-		desc = "[victim.p_Their()] [limb.plaintext_zone] [examine_desc]"
+		return // gauze is covering the wound
 
-	if(!desc)
-		return
-
-	desc = modify_desc_before_span(desc, user)
-
-	return get_desc_intensity(desc)
+	return get_desc_intensity(modify_desc_before_span("[victim.p_Their()] [limb.plaintext_zone] [examine_desc]", user))
 
 /**
  * Used when a mob is examining themselves / their limbs
