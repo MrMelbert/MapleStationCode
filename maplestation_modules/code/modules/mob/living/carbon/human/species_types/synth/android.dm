@@ -1,3 +1,5 @@
+#define LOST_TONGUE "lost_tongue"
+
 /datum/species/android
 	name = "Android"
 	plural_form = "Androids"
@@ -104,6 +106,8 @@
 	RegisterSignal(gained_species, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_limb_lost))
 	RegisterSignal(gained_species, COMSIG_MOB_REAGENT_CHECK, PROC_REF(on_reagent_tick))
 	RegisterSignal(gained_species, COMSIG_LIVING_ADJUST_TOX_DAMAGE, PROC_REF(tox_change))
+	RegisterSignal(gained_species, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(organ_lost))
+	RegisterSignal(gained_species, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(organ_gained))
 	return ..()
 
 /datum/species/android/on_species_loss(mob/living/carbon/human/lost_species, datum/species/new_species, pref_load)
@@ -119,6 +123,8 @@
 	UnregisterSignal(lost_species, COMSIG_CARBON_REMOVE_LIMB)
 	UnregisterSignal(lost_species, COMSIG_MOB_REAGENT_CHECK)
 	UnregisterSignal(lost_species, COMSIG_LIVING_ADJUST_TOX_DAMAGE)
+	UnregisterSignal(lost_species, COMSIG_CARBON_LOSE_ORGAN)
+	unregisterSignal(lost_species, COMSIG_CARBON_GAIN_ORGAN)
 	if(is_leaking)
 		remove_leaking(lost_species)
 	if(is_overheating)
@@ -127,6 +133,7 @@
 		remove_cold_modifiers(lost_species)
 	if(bleed_rate_changed)
 		lost_species.physiology.bleed_mod /= 3
+	REMOVE_TRAIT(lost_species, TRAIT_MUTE, LOST_TONGUE)
 
 /datum/species/android/proc/remove_leaking(mob/living/carbon/human/removing)
 	if(!is_leaking)
@@ -554,6 +561,18 @@
 			if(last_toxic_warning > 0 && amount < 0)
 				last_toxic_warning = 0
 				to_chat(source, span_binarysay("Notice: Toxicity flush complete. Systems operating within normal parameters."))
+
+/datum/species/android/proc/organ_lost(mob/living/carbon/human/source, obj/item/organ/organ)
+	SIGNAL_HANDLER
+
+	if(istype(organ, /obj/item/organ/tongue))
+		ADD_TRAIT(source, TRAIT_MUTE, LOST_TONGUE)
+
+/datum/species/android/proc/organ_gained(mob/living/carbon/human/source, obj/item/organ/organ)
+	SIGNAL_HANDLER
+
+	if(istype(organ, /obj/item/organ/tongue) && IS_ROBOTIC_ORGAN(organ))
+		REMOVE_TRAIT(source, TRAIT_MUTE, LOST_TONGUE)
 
 // Add features from all android species for prefs
 /datum/species/android/get_features()

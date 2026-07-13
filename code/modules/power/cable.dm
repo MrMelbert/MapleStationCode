@@ -639,7 +639,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	use(1)
 
-	if(C.shock(user, 50) && prob(50)) //fail
+	if(C.powernet.avail && C.shock(user, 50) && prob(50)) //fail
 		C.deconstruct()
 
 	return C
