@@ -33,7 +33,7 @@
 	display_pain(
 		target = organ.owner,
 		affected_locations = organ,
-		pain_message = "Your vision begins to fill with static!",
+		pain_message = "Your vision fills with static!",
 	)
 	organ.owner.set_static_vision(30 SECONDS)
 
