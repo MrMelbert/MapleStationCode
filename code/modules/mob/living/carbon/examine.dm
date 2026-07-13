@@ -725,12 +725,13 @@
 
 /// Returns the mob height modified by traits purely
 /mob/living/carbon/human/proc/get_visual_height()
-	. = mob_height + (2 * mob_size)
+	var/height_var = mob_height
 	// these traits don't modify the height so we have to account for them here
 	if(HAS_TRAIT(src, TRAIT_SMALL))
-		. = min(., HUMAN_HEIGHT_DWARF)
+		height_var = min(height_var, HUMAN_HEIGHT_DWARF)
 	if(HAS_TRAIT(src, TRAIT_HUGE) || HAS_TRAIT(src, TRAIT_GIANT))
-		. = max(., HUMAN_HEIGHT_TALLEST)
+		height_var = max(height_var, HUMAN_HEIGHT_TALLEST)
+	return (height_var + (2 * mob_size)) * current_size
 
 /mob/living/carbon/proc/get_build_difference(mob/user)
 	return

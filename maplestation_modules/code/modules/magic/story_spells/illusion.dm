@@ -55,6 +55,7 @@
 	var/mob/living/simple_animal/hostile/illusion/conjured/decoy = new(castturf)
 	if(!isnull(copy_target))
 		decoy.Copy_Parent(copy_target, conjured_duration, conjured_hp)
+		decoy.transform.scale(caster.current_size)
 		decoy.face_atom(caster || copy_target)
 
 	decoy.spin(0.4 SECONDS, 0.1 SECONDS)
