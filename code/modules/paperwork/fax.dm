@@ -152,7 +152,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		fax_name = new_fax_name
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/fax/attackby(obj/item/item, mob/user, params)
+/obj/machinery/fax/attackby(obj/item/item, mob/user, list/modifiers)
 	if (jammed && clear_jam(item, user))
 		return
 	if (panel_open)

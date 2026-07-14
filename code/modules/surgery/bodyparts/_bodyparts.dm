@@ -577,7 +577,7 @@
 	// NON-MODULE CHANGE END
 	return ..()
 
-/obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
+/obj/item/bodypart/attackby(obj/item/weapon, mob/user, list/modifiers)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(weapon.get_sharpness())

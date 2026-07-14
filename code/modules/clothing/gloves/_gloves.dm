@@ -72,7 +72,7 @@
 		return FALSE // We don't want to cut dyed gloves.
 	return TRUE
 
-/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, params)
+/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, list/modifiers)
 	. = ..()
 	if(.)
 		return

@@ -126,7 +126,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/ai_core/latejoin_inactive/attackby(obj/item/tool, mob/user, params)
+/obj/structure/ai_core/latejoin_inactive/attackby(obj/item/tool, mob/user, list/modifiers)
 	if(tool.tool_behaviour == TOOL_MULTITOOL)
 		active = !active
 		to_chat(user, span_notice("You [active? "activate" : "deactivate"] \the [src]'s transmitters."))
@@ -156,7 +156,7 @@
 			balloon_alert(user, "connected neural network")
 			return ITEM_INTERACT_SUCCESS
 
-/obj/structure/ai_core/attackby(obj/item/tool, mob/living/user, params)
+/obj/structure/ai_core/attackby(obj/item/tool, mob/living/user, list/modifiers)
 	if(!anchored)
 		if(tool.tool_behaviour == TOOL_WELDER)
 			if(state != EMPTY_CORE)

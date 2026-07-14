@@ -88,7 +88,7 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 		new /mob/living/basic/chick(spawn_turf)
 		GLOB.chicks_from_eggs++
 
-/obj/item/food/egg/attackby(obj/item/item, mob/user, params)
+/obj/item/food/egg/attackby(obj/item/item, mob/user, list/modifiers)
 	if(istype(item, /obj/item/toy/crayon))
 		var/obj/item/toy/crayon/crayon = item
 		var/clr = crayon.crayon_color
@@ -278,7 +278,7 @@ GLOBAL_VAR_INIT(chicks_from_eggs, 0)
 	venue_value = FOOD_PRICE_CHEAP
 	crafting_complexity = FOOD_COMPLEXITY_2
 
-/obj/item/food/omelette/attackby(obj/item/item, mob/user, params)
+/obj/item/food/omelette/attackby(obj/item/item, mob/user, list/modifiers)
 	if(istype(item, /obj/item/kitchen/fork))
 		var/obj/item/kitchen/fork/fork = item
 		if(fork.forkload)

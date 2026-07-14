@@ -569,7 +569,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 
 	INVOKE_ASYNC(clicker, TYPE_PROC_REF(/mob, ClickOn), src, params)
 
-/obj/structure/tray/attackby(obj/P, mob/user, params)
+/obj/structure/tray/attackby(obj/P, mob/user, list/modifiers)
 	if(!istype(P, /obj/item/riding_offhand))
 		return ..()
 

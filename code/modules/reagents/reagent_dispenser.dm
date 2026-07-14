@@ -82,7 +82,7 @@
 		if(tank_volume && (damage_flag == BULLET || damage_flag == LASER))
 			boom()
 
-/obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user, params)
+/obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user, list/modifiers)
 	if(W.is_refillable())
 		return FALSE //so we can refill them via their afterattack.
 	if(istype(W, /obj/item/assembly_holder) && accepts_rig)

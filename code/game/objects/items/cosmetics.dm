@@ -201,7 +201,7 @@
 		skinhead.set_hairstyle("Skinhead", update = TRUE)
 	playsound(loc, shave_sound, 33, TRUE)
 
-/obj/item/razor/attack(mob/target_mob, mob/living/user, params)
+/obj/item/razor/attack(mob/target_mob, mob/living/user, list/modifiers)
 	if(!ishuman(target_mob))
 		return ..()
 	var/mob/living/carbon/human/human_target = target_mob
