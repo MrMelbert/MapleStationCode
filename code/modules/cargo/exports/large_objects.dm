@@ -120,32 +120,37 @@
 	export_types = list(/obj/machinery/portable_atmospherics/canister)
 	k_elasticity = 0.00033
 
-/datum/export/large/gas_canister/get_cost(obj/O)
-	var/obj/machinery/portable_atmospherics/canister/C = O
-	var/worth = cost
-	var/datum/gas_mixture/canister_mix = C.return_air()
-	var/canister_gas = canister_mix.gases
-	var/list/gases_to_check = list(
-								/datum/gas/bz,
-								/datum/gas/nitrium,
-								/datum/gas/hypernoblium,
-								/datum/gas/miasma,
-								/datum/gas/tritium,
-								/datum/gas/pluoxium,
-								/datum/gas/freon,
-								/datum/gas/hydrogen,
-								/datum/gas/healium,
-								/datum/gas/proto_nitrate,
-								/datum/gas/zauker,
-								/datum/gas/helium,
-								/datum/gas/antinoblium,
-								/datum/gas/halon,
-								)
+/datum/export/large/gas_canister/get_cost(obj/machinery/portable_atmospherics/canister/canister)
+	var/datum/gas_mixture/canister_mix = canister.return_air()
+	if(!canister_mix.total_moles())
+		return 0
+	var/cached_moles = canister_mix.moles
 
-	for(var/gasID in gases_to_check)
-		canister_mix.assert_gas(gasID)
-		if(canister_gas[gasID][MOLES] > 0)
-			worth += get_gas_value(gasID, canister_gas[gasID][MOLES])
+	var/static/list/gases_to_check = list(
+		/datum/gas/bz,
+		/datum/gas/nitrium,
+		/datum/gas/hypernoblium,
+		/datum/gas/miasma,
+		/datum/gas/tritium,
+		/datum/gas/pluoxium,
+		/datum/gas/freon,
+		/datum/gas/hydrogen,
+		/datum/gas/healium,
+		/datum/gas/proto_nitrate,
+		/datum/gas/zauker,
+		/datum/gas/helium,
+		/datum/gas/antinoblium,
+		/datum/gas/halon,
+	)
+
+	var/worth = cost
+	for(var/gas_id in gases_to_check)
+		canister_mix.assert_gas(gas_id)
+		if(cached_moles[gas_id] > 0)
+			worth += get_gas_value(gas_id, cached_moles[gas_id])
+			if(worth > MAX_GAS_CREDITS)
+				worth = MAX_GAS_CREDITS
+				break
 
 	canister_mix.garbage_collect()
 	return worth

@@ -24,13 +24,13 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 
 /datum/electrolyzer_reaction/proc/reaction_check(datum/gas_mixture/air_mixture)
 	var/temp = air_mixture.temperature
-	var/list/cached_gases = air_mixture.gases
+	var/list/cached_moles = air_mixture.moles
 	if((requirements["MIN_TEMP"] && temp < requirements["MIN_TEMP"]) || (requirements["MAX_TEMP"] && temp > requirements["MAX_TEMP"]))
 		return FALSE
 	for(var/id in requirements)
 		if (id == "MIN_TEMP" || id == "MAX_TEMP")
 			continue
-		if(!cached_gases[id] || cached_gases[id][MOLES] < requirements[id])
+		if(cached_moles[id] < requirements[id])
 			return FALSE
 	return TRUE
 
@@ -52,7 +52,7 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 
 	var/old_heat_capacity = air_mixture.heat_capacity()
 
-	var/proportion = min(air_mixture.gases[/datum/gas/water_vapor][MOLES] * INVERSE(2), (2.5 * (working_power ** 2)))
+	var/proportion = min(air_mixture.moles[/datum/gas/water_vapor] * INVERSE(2), (2.5 * (working_power ** 2)))
 	air_mixture.adjust_gas(/datum/gas/water_vapor, -proportion * 2)
 	air_mixture.adjust_gas(/datum/gas/oxygen, proportion)
 	air_mixture.adjust_gas(/datum/gas/hydrogen, proportion * 2)

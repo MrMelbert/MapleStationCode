@@ -168,35 +168,72 @@
 /datum/wound/blunt/bone/proc/carbon_step(datum/source)
 	SIGNAL_HANDLER
 
-	if(limb.body_zone != BODY_ZONE_L_LEG && limb.body_zone != BODY_ZONE_R_LEG)
-		return
-	if(victim.body_position == LYING_DOWN || isobj(victim.buckled)) // wheelchair = fine, being pulled = not fine
-		return
-	if(victim.has_status_effect(/datum/status_effect/determined))
-		return
 	footstep_counter += 1
 	if(footstep_counter >= 8)
 		footstep_counter = 1
 
-	if(limb.get_splint_factor() <= 0.75 || !CAN_FEEL_PAIN(victim))
+	// crawling
+	if(victim.body_position == LYING_DOWN)
+		// crawling, and we're not dealing with broken arms or ribs - skip
+		if(limb.body_zone == BODY_ZONE_CHEST)
+			pass()
+		else if(limb.body_zone != SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
+			return
+
+	// walking
+	else
+		// walking, and we're not dealing with broken legs or ribs - skip
+		if(limb.body_zone == BODY_ZONE_CHEST)
+			pass()
+		else if(limb.body_zone != SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
+			return
+
+	// secured via something like a wheelchair or gurney
+	if(isobj(victim.buckled))
 		return
-	if(limb.body_zone == SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
+
+	// adrenaline rush
+	if(victim.has_status_effect(/datum/status_effect/determined))
 		return
-	var/mod = 1
+
+	if(!CAN_FEEL_PAIN(victim))
+		return
+
+	var/splint_factor = limb.get_splint_factor()
+	var/mod = 1 - splint_factor
 	switch(victim.move_intent)
 		if(MOVE_INTENT_RUN)
-			mod = 1.5
+			mod += 0.5
 		if(MOVE_INTENT_WALK)
-			mod = 1
+			pass()
 		if(MOVE_INTENT_SNEAK)
-			mod = 0.5
+			mod -= 0.5
+	// since chest can trigger on both left and right steps, halve the chance to be fair
+	if(limb.body_zone == BODY_ZONE_CHEST)
+		mod *= 0.5
+
 	if(!prob(severity * mod * 20))
 		return
 	if(SEND_SIGNAL(victim, COMSIG_CARBON_PAINED_STEP, limb, footstep_counter) & STOP_PAIN)
 		return
 
-	to_chat(victim, span_danger("Your [limb.plaintext_zone] [pick("aches", "pangs", "stings")] as you take a step!"))
-	victim.sharp_pain(limb.body_zone, severity * 6, BRUTE, 10 SECONDS)
+	// we can be in one of t
+	var/situation = ""
+	// crawling or being dragged
+	if(victim.body_position == LYING_DOWN)
+		situation = isnull(victim.pulledby) ? "as you crawl" : "as you are dragged"
+	// being pulled/grabbed
+	else if(!isnull(victim.pulledby))
+		situation = "as you are pulled along"
+	// being fireman carried
+	else if(ismob(victim.buckled))
+		situation = "as you are carried limply"
+	// walking as normal
+	else
+		situation = "as you take a step"
+
+	to_chat(victim, span_danger("Your [limb.plaintext_zone] [pick("aches", "pangs", "stings")] [situation]!"))
+	victim.sharp_pain(limb.body_zone, severity * 6 * splint_factor, BRUTE, 10 SECONDS)
 
 /datum/wound/blunt/bone/proc/breath(...)
 	SIGNAL_HANDLER

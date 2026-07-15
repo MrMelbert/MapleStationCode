@@ -38,7 +38,7 @@ Now then, into the breach.
  The air controller is, at its core, quite simple, yet it is absolutely fundamental to the atmospheric system. The air controller is the clock which triggers all continuous actions within the atmos system, such as vents distributing air or gas moving between tiles. The actions taken by the air controller are quite simple, and will be enumerated here. Much of the substance of the air ticker is due to the game's master controller, whose intricacies I will not delve into for this document. I will however go into more detail about how SSAir in particular works in Chapter 6. In any case, this is a simplified list of the air controller's actions in a single tick:
 1. Rebuild Pipenets
     - Runs each time SSAir processes, sometimes out of order. It ensures that no pipeline sit unresolved or unbuilt
-    - Processes the `rebuild_queue` list into the `expansion_queue` list, and then builds a full pipeline piecemeal. We do a ton of fenagling here to reduce overrun 
+    - Processes the `rebuild_queue` list into the `expansion_queue` list, and then builds a full pipeline piecemeal. We do a ton of fenagling here to reduce overrun
 2. Pipenets
     - Updates the internal gasmixes of attached pipe machinery, and reacts the gases in a pipeline
 	- Calls `process()` on each `/datum/pipenet` in the `networks` list
@@ -109,20 +109,27 @@ Each gas mixture has an associative list, gases, which maps according to a key t
 
 Each type of gas is defined by defining a new subtype of /datum/gas. These datums do not get instantiated; they merely serve as a convenient and familiar means for a coder unfamiliar with the inner workings of listmos to define a new gas. Additionally, the type paths serve a second use as the keys used to access a particular gas within the gases list. It is easiest to demonstrate the manipulation of gas, including these list accesses, with an example.
 
+### Vectorized xgm-like system
+Current system uses two associative arrays: `moles` and `moles_archived` with the key being `/datum/gas`. The gas metadata array is stored in a static variable `gas_mixture::gas_meta`. The layout of keys in the array is `gas_meta[META_INDEX][gas_path]`. This allows us to use vector functions like `values_sum` and `values_dot` (introduced in BYOND v516). This approach showed improvement of ~20% on process_cell and memory footprint stayed the same.
+
+While these vector functions are extremely fast, they can only work with associative arrays of number. To calculate total moles you would write `values_sum(moles)` and to calculate heat capacity, it would be `values_dot(moles, gas_meta[META_GAS_SPECIFIC_HEAT])`. This does not seem like a lot, but when a subsytem is doing 1000 updates each simulation tick every microsecond matters.
+
+Another benefit of using one-dimensional associative arrays is that for any arithmetic or logic operation a missing key acts like a 0. For example you could write `moles[/datum/gas/oxygen] += 10` even if `/datum/gas/oxygen` is not in the list.
+
 ### Interfacing with a Gas Mixture
 
 ```DM
 var/datum/gas_mixture/air = new
 air.assert_gas(/datum/gas/oxygen)
-air.gases[/datum/gas/oxygen][MOLES] = 100
-world << air.gases[/datum/gas/oxygen][GAS_META][META_GAS_NAME] //outputs "Oxygen"
-world << air.gases.heat_capacity() //outputs 2000 (100 mol * 20 J/K/mol)
-air.gases[/datum/gas/oxygen][MOLES] -= 110
+air.moles[/datum/gas/oxygen] = 100
+world << air.gas_meta[META_GAS_NAME][/datum/gas/oxygen] //outputs "Oxygen"
+world << air.heat_capacity() //outputs 2000 (100 mol * 20 J/K/mol)
+air.moles[/datum/gas/oxygen] -= 110
 air.garbage_collect() //oxygen is now removed from the gases list, since it was empty
 ```
 *Snippet 4.2: gas mixture usage examples*
 
-Of particular note in this snippet are the two procs assert_gas() and garbage_collect(). These procs are very important while interfacing with gas mixtures. If you are uncertain about whether a given mixture has a particular gas, you must use assert_gas() before any reads or writes from the gas. If you fail to use assert_gas() then there will be runtime errors when you try to access the inner lists. When you remove any number of moles from a given gas, be sure to call garbage_collect(). This proc removes all gases which have mole counts less than or equal to 0. This is a memory and performance enhancement for list accesses achieved by reducing the size of the list, and also saves us from having to do sanity checks for negative moles whenever gas is removed. As a quick reference, here is a list of common procs/vars/list indices which the average coder may wish to use when interfacing with a gas mixture.
+Of particular note in this snippet are the two procs assert_gas() and garbage_collect(). These procs are very important while interfacing with gas mixtures. If you are uncertain about whether a given mixture has a particular gas, you must use assert_gas() before any reads or writes from the gas. When you remove any number of moles from a given gas, be sure to call garbage_collect(). This proc removes all gases which have mole counts less than or equal to 0. This is a memory and performance enhancement for list accesses achieved by reducing the size of the list, and also saves us from having to do sanity checks for negative moles whenever gas is removed. As a quick reference, here is a list of common procs/vars/list indices which the average coder may wish to use when interfacing with a gas mixture.
 
 ##### Gas Mixture Datum
 * *`/datum/gas_mixture/proc/assert_gas()`* - Used before accessing a particular type of gas.
@@ -141,10 +148,13 @@ It's used by `/datum/gas_mixture/immutable/space`, which implements some particu
 It's also implemented by `/datum/gas_mixture/immutable/planetary`, which is used for planetary turfs, and has some code that makes actually having a gasmix possible.
 
 
-##### Gas List
-* *`gases[path][MOLES]`* - Quantity of a particular gas within a mixture.
-* *`gases[path][GAS_META][META_GAS_NAME]`* - The long name of a gas, ex. "Oxygen" or "Hyper-noblium"
-* *`gases[path][GAS_META][META_GAS_ID]`* - The internal ID of a given gas, ex. "o2" or "nob"
+- _`moles[path]`_ - Quantity of a particular gas within a mixture.
+- _`gas_meta[META_GAS_NAME][path]`_ - The long name of a gas, ex. "Oxygen" or "Hyper-noblium"
+- _`gas_meta[META_GAS_ID][path]`_ - The internal ID of a given gas, ex. "o2" or "nob"
+
+##### Gas Meta
+As was said previously gas metadata is stored in a static variable `gas_mixture.gas_meta`. This is done so you can easily access this variable from within gas_mixture, but if you are outside of gas_mixture code and you need gas metadata you can use convenience macro `GAS_META`. There is also third name for that list and it is `GLOB.meta_gas_info`. All of those variables point to the same list and you can use either. As the rule of thumb, in the performance critical code use `GAS_META` or `gas_meta`, otherwise `GLOB.meta_gas_info`.
+
 
 ### Reactions
 While defining a new gas on its own is very simple, there is no gas-specific behavior defined within /datum/gas. This behavior gets defined in a few places, notably breath code (to be discussed later) and in reactions. The most important and well known reaction in SS13 is fire - the combustion of plasma. Reactions are used for several things - in particular, it is conventional (though by no means enforced) that to form a gas, a reaction must occur. Creating a new reaction is fairly simple, this is the area of atmos that has received the most attention over the last few years, and the best place to start. Don't be scared of the size of reactions.dm, it's not that complex.
@@ -180,7 +190,7 @@ You may notice something like this in `process_cell()`. It's not quite the same 
 
 Back in the old FEA days, neighbor count was hardcoded to 4 (Likely because this is what cell sharing on an infinite grid would look like). This means that turf A -> turf B is the same as turf B -> turf A, because they're each portioning up the gas in the same way.
 
-But when we moved to LINDA, we started using the length of our atmos_adjacent_turfs list (or an analog). 
+But when we moved to LINDA, we started using the length of our atmos_adjacent_turfs list (or an analog).
 We need this so things like multiz can work, and so tiles in a corner share in a way that makes sense.
 
 Because of this, turf A -> turf B was no longer the same as turf B -> turf A, assuming one of those turfs had a different neighbor count, from I DON'T KNOW WALLS?
