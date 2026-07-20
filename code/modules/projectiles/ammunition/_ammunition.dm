@@ -152,6 +152,9 @@
 	name = "spent [name]"
 	desc += " This one is spent."
 
+/obj/item/ammo_casing/foam_dart/is_spent(mapload = FALSE)
+	return
+
 /obj/item/ammo_casing/spent
 	loaded_projectile = null
 
