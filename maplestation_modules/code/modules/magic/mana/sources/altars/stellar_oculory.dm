@@ -49,15 +49,18 @@
 
 /obj/machinery/power/magic_contraption/stellar_oculory/click_alt(mob/user)
 	if(panel_open)
-		return balloon_alert(user, "close the panel first!")
+		balloon_alert(user, "close the panel first!")
+		return CLICK_ACTION_BLOCKING
 	if(active)
 		active = FALSE
-		icon_state = "stellar_inactive"
-		return balloon_alert(user, "deactivated the oculory")
+		balloon_alert(user, "deactivated the oculory")
+		update_appearance()
+		return CLICK_ACTION_SUCCESS
 	if(!active)
 		active = TRUE
-		icon_state = "stellar"
-		return balloon_alert(user, "activated the oculory")
+		balloon_alert(user, "activated the oculory")
+		update_appearance()
+		return CLICK_ACTION_SUCCESS
 
 /obj/machinery/power/magic_contraption/stellar_oculory/process(seconds_per_tick)
 	if(!active)
@@ -74,23 +77,34 @@
 		return TRUE
 	return FALSE
 
+/obj/machinery/power/magic_contraption/stellar_oculory/update_icon_state()
+	if (!active)
+		icon_state = "[base_icon_state]_inactive"
+		return ..()
+	switch(last_pulse_value)
+		if(FULL_STARLIGHT)
+			icon_state = "[base_icon_state]_high"
+		if(PARTIAL_STARLIGHT)
+			icon_state = "[base_icon_state]_medium"
+		if(NO_STARLIGHT)
+			icon_state = "[base_icon_state]"
+	return ..()
+
 /obj/machinery/power/magic_contraption/stellar_oculory/proc/pulse_mana(starlight_level)
 	var/pulse_value = 0
 	switch(starlight_level)
 		if(FULL_STARLIGHT)
 			last_pulse_value = FULL_STARLIGHT
 			pulse_value = high_pulse_value
-			icon_state = "stellar_high"
 		if(PARTIAL_STARLIGHT)
 			last_pulse_value = PARTIAL_STARLIGHT
 			pulse_value = medium_pulse_value
-			icon_state = "stellar_medium"
 		if(NO_STARLIGHT)
 			last_pulse_value = NO_STARLIGHT
 			pulse_value = low_pulse_value
-			icon_state = "stellar"
 	// anims here
 	// also update sprite
+	update_appearance()
 	mana_pool.amount += pulse_value
 	last_pulse = world.time
 
@@ -108,6 +122,13 @@
 			. += span_warning("[src] needs to gather more starlight.")
 	. += span_notice("[src] can be shut off using <b>Alt-Click</b>.")
 
+/obj/machinery/power/magic_contraption/stellar_oculory/screwdriver_act(mob/living/user, obj/item/tool)
+	if (active)
+		user.balloon_alert(user, "deactivate first!")
+		return ITEM_INTERACT_BLOCKING
+	if(default_deconstruction_screwdriver(user,"stellar_t", "stellar, tool"))
+		return ITEM_INTERACT_SUCCESS
+
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MAGIC
@@ -118,10 +139,4 @@
 		/obj/item/stack/sheet/mineral/gold = 2,
 		/obj/item/mana_battery/mana_crystal/small = 3, // small crystals can be printed at the protolathe
 	)
-/obj/machinery/power/magic_contraption/stellar_oculory/screwdriver_act(mob/living/user, obj/item/tool)
-	. = ITEM_INTERACT_BLOCKING
-	if (active)
-		user.balloon_alert(user, "deactivate first!")
-		return .
-	if(default_deconstruction_screwdriver(user, "stellar_t", "stellar", tool))
-		return ITEM_INTERACT_SUCCESS
+

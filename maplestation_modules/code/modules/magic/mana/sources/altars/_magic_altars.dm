@@ -76,8 +76,11 @@
 	return /datum/mana_pool/magic_altar
 
 /obj/structure/magic_altar/wrench_act(mob/living/user, obj/item/tool)
-	if(default_unfasten_wrench(user, tool, 5 SECONDS))
-		return ITEM_INTERACT_SUCCESS
+	switch(default_unfasten_wrench(user, tool, 4 SECONDS))
+		if(SUCCESSFUL_UNFASTEN)
+			return ITEM_INTERACT_SUCCESS
+		if(FAILED_UNFASTEN)
+			return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/power/magic_contraption // used for magitech stuff that needs to process.
 	name = "magic contraption basetype"

@@ -42,12 +42,12 @@
 	var/datum/mana_pool/wand_pool = src.mana_pool
 
 	if(!target_mana_pool)
-		return  // no response for this failing, as else it would proc on ~70% of things in the codebase
+		return NONE // just none for this failing, as else it would proc on ~70% of things in the codebase
 	if(ismob(interacting_with)) // todo: add exceptions for if we want leeching from mob pools, but i see no case that needs that just this yet
 		balloon_alert(user, "can't take from this!")
-		return
+		return ITEM_INTERACT_BLOCKING
 	if(!user.is_holding(src))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/static/list/options = list("Yes", "No")
 	var/transfer_confirmation
@@ -56,16 +56,16 @@
 	if (!already_transferring)
 		transfer_confirmation = (tgui_alert(user, "Do you want to transfer mana from [interacting_with] into your [name]?", "Transfer Mana?", options) == "Yes")
 		if(!transfer_confirmation || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
-			return
+			return ITEM_INTERACT_BLOCKING
 		balloon_alert(user, "transferring mana...")
 		target_mana_pool.start_transfer(wand_pool)
 	else
 		transfer_confirmation = (tgui_alert(user, "Do you want to break the transfer from [interacting_with] into your [name]?", "Break Transfer?", options) == "Yes")
 		if(!transfer_confirmation || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
-			return
+			return ITEM_INTERACT_BLOCKING
 		balloon_alert(user, "cancelled draw")
 		target_mana_pool.stop_transfer(wand_pool)
-		return
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/magic_wand/attack_self(mob/user, modifiers)
 	. = ..()

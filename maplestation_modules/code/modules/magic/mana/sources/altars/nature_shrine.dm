@@ -52,19 +52,27 @@
 	ADD_TRAIT(src, TRAIT_POOL_GENERATOR, INNATE_TRAIT)
 
 /obj/structure/magic_altar/nature/item_interaction(mob/living/user, obj/item/sacrifice, list/modifiers)
-	..()
-	if (is_type_in_typecache(sacrifice, nature_shrine_mana_high)) // todo: add feedback to the player for this
+	if (is_type_in_typecache(sacrifice, nature_shrine_mana_high))
 		accept_sacrifice(sacrifice, nature_shrine_mana_high)
-		return
+		to_chat(user, span_smallnotice("A small flash runs through the stump's rings."))
+		return ITEM_INTERACT_SUCCESS
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_med))
 		accept_sacrifice(sacrifice, nature_shrine_mana_med)
-		return
+		to_chat(user, span_smallnotice("For a moment, the rings on the surface light up."))
+		return ITEM_INTERACT_SUCCESS
 	if (is_type_in_typecache(sacrifice, nature_shrine_mana_low))
 		accept_sacrifice(sacrifice, nature_shrine_mana_low)
-		return
+		to_chat(user, span_smallnotice("Lights course throughout the stump's crevices."))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/magic_altar/nature/proc/accept_sacrifice(obj/item/sacrifice, mana_value)
-	QDEL_NULL(sacrifice)
+	qdel(sacrifice)
+	var/sacri_sound = pick( // not all of the "curse" sfx, just picked based on what fit best
+		'sound/effects/curse2.ogg',
+		'sound/effects/curse5.ogg',
+		'sound/effects/curse6.ogg',
+	)
+	playsound(src, sacri_sound, 35, TRUE, 1)
 	mana_pool.amount += mana_value
 
 /obj/structure/magic_altar/nature/crowbar_act(mob/living/user, obj/item/tool)
@@ -73,16 +81,12 @@
 		return ITEM_INTERACT_BLOCKING
 	balloon_alert(user, "stump deconstructed")
 	tool.play_tool_sound(src)
-	new /obj/item/stack/sheet/mineral/wood(get_turf(src), drop_amount)
-	new /obj/item/mana_battery/mana_crystal/standard(get_turf(src), 1)
-	qdel(src)
+	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/structure/magic_altar/nature/wrench_act(mob/living/user, obj/item/tool)
-	. = ..()
-	switch(default_unfasten_wrench(user, tool, 4 SECONDS))
-		if(SUCCESSFUL_UNFASTEN)
-			return ITEM_INTERACT_SUCCESS
-		if(FAILED_UNFASTEN)
-			return ITEM_INTERACT_BLOCKING
-	return .
+/obj/structure/magic_altar/nature/atom_deconstruct(disassembled)
+	if(disassembled)
+		new /obj/item/stack/sheet/mineral/wood(drop_location(), drop_amount)
+		new /obj/item/mana_battery/mana_crystal/standard(drop_location(), 1)
+	else
+		new /obj/item/stack/sheet/mineral/wood(drop_location(), drop_amount)

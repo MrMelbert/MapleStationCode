@@ -66,9 +66,9 @@
 /datum/mana_pool/mob/living/carbon/blank/mana_status_report(datum/source, list/status_tab)
 	// basically just only show the status report if you're overloaded or bugged
 	var/general_amount_estimate
-	if(amount)
+	if(!isnull(amount))
 		if (amount <= softcap)
-			return
+			return // skips everything else, doesn't change the status display
 		else if (amount > softcap)
 			general_amount_estimate = "OVERLOADED"
 	else

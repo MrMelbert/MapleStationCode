@@ -123,7 +123,7 @@
 	var/sc_high = (softcap * 0.8)
 
 	//determines what the status displays, it'll be a generic/non-obvious value as a design choice
-	if(amount)
+	if(!isnull(amount))
 		if (amount <= sc_very_low)
 			general_amount_estimate = "VERY LOW"
 		else if (amount > sc_very_low && amount < sc_low)
