@@ -124,7 +124,7 @@
 	UnregisterSignal(lost_species, COMSIG_MOB_REAGENT_CHECK)
 	UnregisterSignal(lost_species, COMSIG_LIVING_ADJUST_TOX_DAMAGE)
 	UnregisterSignal(lost_species, COMSIG_CARBON_LOSE_ORGAN)
-	unregisterSignal(lost_species, COMSIG_CARBON_GAIN_ORGAN)
+	UnregisterSignal(lost_species, COMSIG_CARBON_GAIN_ORGAN)
 	if(is_leaking)
 		remove_leaking(lost_species)
 	if(is_overheating)
