@@ -22,10 +22,30 @@
 /obj/item/organ/stomach/ethereal/android/on_mob_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_SPECIES_HANDLE_CHEMICAL, PROC_REF(handle_chemical))
+	RegisterSignal(organ_owner, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_sleep))
+	RegisterSignal(organ_owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_wake))
+
+	if(HAS_TRAIT(organ_owner, TRAIT_KNOCKEDOUT))
+		passive_drain_multiplier *= 0.5
 
 /obj/item/organ/stomach/ethereal/android/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_SPECIES_HANDLE_CHEMICAL)
+	UnregisterSignal(organ_owner, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT))
+	UnregisterSignal(organ_owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT))
+
+	if(HAS_TRAIT(organ_owner, TRAIT_KNOCKEDOUT))
+		passive_drain_multiplier /= 0.5
+
+/obj/item/organ/stomach/ethereal/android/proc/on_sleep(...)
+	SIGNAL_HANDLER
+
+	passive_drain_multiplier *= 0.5
+
+/obj/item/organ/stomach/ethereal/android/proc/on_wake(...)
+	SIGNAL_HANDLER
+
+	passive_drain_multiplier /= 0.5
 
 /obj/item/organ/stomach/ethereal/android/get_status_appendix(advanced, add_tooltips)
 	var/charge_percent = cell.charge() / ETHEREAL_CHARGE_FULL
