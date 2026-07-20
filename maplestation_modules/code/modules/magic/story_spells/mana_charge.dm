@@ -67,6 +67,4 @@
 	. = ..()
 	var/random_bloodloss_value = rand(random_value_floor, random_value_ceiling)
 	var/blood_drain = base_bloodloss + random_bloodloss_value
-	cast_on.blood_volume -= blood_drain
-	var/turf/location = get_turf(cast_on)
-	cast_on.add_splatter_floor(location)
+	cast_on.bleed(blood_drain)

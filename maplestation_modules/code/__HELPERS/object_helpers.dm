@@ -57,19 +57,14 @@
 	if(current_starlight_level && satisfied_with_penalty) // do not care if there is a +penalty or no
 		return current_starlight_level
 	var/starlight_level_from_above = checktilestarlightdirectional(original_turf, UP, starlight_max_range)
-	if(starlight_level_from_above > current_starlight_level)
-		return starlight_level_from_above
-	else
-		return current_starlight_level
+	return max(current_starlight_level, starlight_level_from_above)
 
 /atom/movable/proc/checkstarlight(check_range)
 	var/starlight_max_range = check_range
 	var/turf/turf_of_target = get_turf(src)
-	switch(checktilestarlight(turf_of_target, FALSE, starlight_max_range))
-		if(PARTIAL_STARLIGHT)
-			return PARTIAL_STARLIGHT
-		if(FULL_STARLIGHT)
-			return FULL_STARLIGHT
+	var/tile_starlight = checktilestarlight(turf_of_target, FALSE, starlight_max_range)
+	if(tile_starlight)
+		return tile_starlight
 	for(var/turf/turf_to_check in view(src, starlight_max_range))
 		if(checktilestarlight(turf_to_check, TRUE, starlight_max_range))
 			return PARTIAL_STARLIGHT

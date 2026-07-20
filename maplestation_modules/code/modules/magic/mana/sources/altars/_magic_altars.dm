@@ -33,10 +33,9 @@
 	if (ismob(pool_owner.loc))
 		target_pool_owner = pool_owner.loc
 	else
-		if (!(pool_owner.loc))
+		if (isnull(pool_owner.loc))
 			return FALSE
-		else
-			target_pool_owner = pool_owner
+		target_pool_owner = pool_owner
 
 	if (!is_valid_z_level(altar, target_pool_owner))
 		return FALSE
@@ -77,9 +76,8 @@
 	return /datum/mana_pool/magic_altar
 
 /obj/structure/magic_altar/wrench_act(mob/living/user, obj/item/tool)
-	. = ..()
-	default_unfasten_wrench(user, tool, 5 SECONDS)
-	return ITEM_INTERACT_SUCCESS
+	if(default_unfasten_wrench(user, tool, 5 SECONDS))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/magic_contraption // used for magitech stuff that needs to process.
 	name = "magic contraption basetype"
@@ -97,12 +95,10 @@
 	return /datum/mana_pool/magic_altar
 
 /obj/machinery/power/magic_contraption/wrench_act(mob/living/user, obj/item/tool)
-	. = ..()
 	if(default_unfasten_wrench(user, tool, 4 SECONDS))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/magic_contraption/crowbar_act(mob/living/user, obj/item/tool)
-	. = NONE
 	if(default_deconstruction_crowbar(tool))
 		return ITEM_INTERACT_SUCCESS
 

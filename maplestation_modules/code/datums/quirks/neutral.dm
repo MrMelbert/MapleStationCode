@@ -306,12 +306,9 @@
 		return
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
 
-	if(carbon_quirk_holder.mana_pool) // if we already have a pool, get rid of it, which the player should probably have one at this moment
-		var/datum/mana_pool/pool_to_destroy = carbon_quirk_holder.mana_pool
-		QDEL_NULL(pool_to_destroy)
+	QDEL_NULL(carbon_quirk_holder.mana_pool)
 
-	var/datum/mana_pool/mob/living/carbon/blank/pool_to_add = new()
-	carbon_quirk_holder.mana_pool = pool_to_add
+	carbon_quirk_holder.mana_pool = new /datum/mana_pool/mob/living/carbon/blank()
 
 /datum/quirk/magically_blank/remove()
 	if(!iscarbon(quirk_holder))
@@ -320,12 +317,8 @@
 
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
 
-	if(carbon_quirk_holder.mana_pool) // this check is absolutely a failsafe because this quirk implies you'll have a pseudo-pool to begin with, but this check is just in case you some how got it deleted
-		var/datum/mana_pool/pool_to_destroy = carbon_quirk_holder.mana_pool
-		QDEL_NULL(pool_to_destroy)
+	QDEL_NULL(carbon_quirk_holder.mana_pool) 
 
-	var/datum/mana_pool/type = carbon_quirk_holder.get_initial_mana_pool_type()
+	var/datum/mana_pool/pool_type = carbon_quirk_holder.get_initial_mana_pool_type()
 
-	var/datum/mana_pool/pool_to_add = new type()
-
-	carbon_quirk_holder.mana_pool = pool_to_add
+	carbon_quirk_holder.mana_pool = new pool_type()

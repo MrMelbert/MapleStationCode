@@ -70,7 +70,7 @@
 /obj/structure/magic_altar/nature/crowbar_act(mob/living/user, obj/item/tool)
 	balloon_alert(user, "deconstructing stump...")
 	if(!tool.use_tool(src, user, 5 SECONDS, volume=50))
-		return
+		return ITEM_INTERACT_BLOCKING
 	balloon_alert(user, "stump deconstructed")
 	tool.play_tool_sound(src)
 	new /obj/item/stack/sheet/mineral/wood(get_turf(src), drop_amount)

@@ -97,15 +97,16 @@
 /obj/machinery/power/magic_contraption/stellar_oculory/examine(mob/user)
 	. = ..()
 	if(!active)
-		return . += "The oculory can be turned on using Alt-Click."
+		. += span_notice("[src] can be turned on using <b>Alt-Click</b>.")
+		return
 	switch(last_pulse_value)
 		if(FULL_STARLIGHT)
-			. += span_warning("The oculory is beaming with starlight!")
+			. += span_warning("[src] is beaming with starlight!")
 		if(PARTIAL_STARLIGHT)
-			. += "The oculory is functioning under normal conditions."
+			. += "[src] is functioning under normal conditions."
 		if(NO_STARLIGHT)
-			. += span_warning("The oculory needs to gather more starlight.")
-	return . += "The oculory can be shut off using Alt-Click."
+			. += span_warning("[src] needs to gather more starlight.")
+	. += span_notice("[src] can be shut off using <b>Alt-Click</b>.")
 
 /obj/item/circuitboard/machine/stellar_oculory
 	name = "\improper Stellar oculory (Machine Board)"
