@@ -70,6 +70,7 @@
 	payment_department = ACCOUNT_SRV
 	light_mask = "dinnerware-light-mask"
 	allow_custom = TRUE
+	department_discount = 0
 
 /obj/item/vending_refill/dinnerware
 	machine_name = "Plasteel Chef's Dinnerware Vendor"
