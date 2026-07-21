@@ -9,6 +9,7 @@
 	passive_drain_multiplier = 0.6 // power hungry
 
 	VAR_PRIVATE/death_timer
+	var/sleep_mode_multiplier = sleep_mode_multiplier
 
 /obj/item/organ/stomach/ethereal/android/emp_act(severity)
 	. = ..()
@@ -26,7 +27,7 @@
 	RegisterSignal(organ_owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(on_wake))
 
 	if(HAS_TRAIT(organ_owner, TRAIT_KNOCKEDOUT))
-		passive_drain_multiplier *= 0.5
+		passive_drain_multiplier *= sleep_mode_multiplier
 
 /obj/item/organ/stomach/ethereal/android/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -35,17 +36,17 @@
 	UnregisterSignal(organ_owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT))
 
 	if(HAS_TRAIT(organ_owner, TRAIT_KNOCKEDOUT))
-		passive_drain_multiplier /= 0.5
+		passive_drain_multiplier /= sleep_mode_multiplier
 
 /obj/item/organ/stomach/ethereal/android/proc/on_sleep(...)
 	SIGNAL_HANDLER
 
-	passive_drain_multiplier *= 0.5
+	passive_drain_multiplier *= sleep_mode_multiplier
 
 /obj/item/organ/stomach/ethereal/android/proc/on_wake(...)
 	SIGNAL_HANDLER
 
-	passive_drain_multiplier /= 0.5
+	passive_drain_multiplier /= sleep_mode_multiplier
 
 /obj/item/organ/stomach/ethereal/android/get_status_appendix(advanced, add_tooltips)
 	var/charge_percent = cell.charge() / ETHEREAL_CHARGE_FULL
