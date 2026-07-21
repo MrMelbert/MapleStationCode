@@ -9,7 +9,7 @@
 	passive_drain_multiplier = 0.6 // power hungry
 
 	VAR_PRIVATE/death_timer
-	var/sleep_mode_multiplier = sleep_mode_multiplier
+	var/sleep_mode_multiplier = 0.33
 
 /obj/item/organ/stomach/ethereal/android/emp_act(severity)
 	. = ..()
