@@ -16,7 +16,7 @@
 	)
 
 	name = "Reptilid"
-	icon = FA_ICON_HAND_LIZARD
+	icon = FA_ICON_DRAGON
 
 /datum/animid_type/lizard/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
@@ -55,8 +55,7 @@
 	default_value = FALSE
 
 /datum/preference/toggle/liz_tongue_hissing/apply_to_human(mob/living/carbon/human/target, value)
-	if(!(is_species(target, /datum/species/human/animid) && (target.dna.features["animid_type"] == "Lizard")))
-		return // sorry, but we're not blocking lizardpeople from hissing in this codebase
+	// behavior is only applied on animids by default
 	target.dna.features["Hissing"] = value
 
 /datum/preference/toggle/liz_tongue_hissing/is_accessible(datum/preferences/preferences)

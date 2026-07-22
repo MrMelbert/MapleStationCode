@@ -62,7 +62,9 @@
 
 /datum/preference/numeric/hiss_length/is_accessible(datum/preferences/preferences)
 	var/datum/species/target_species = preferences.read_preference(/datum/preference/choiced/species)
-	return ..() && ispath(target_species::mutanttongue, /obj/item/organ/tongue/lizard)
+	// lizard animids, are, for many reasons, a bit funky so i'll add an exception for them
+	var/species_check = (ispath(target_species, /datum/species/human/animid)) && (preferences.read_preference(/datum/preference/choiced/animid_type) == "Lizard")
+	return ..() && (ispath(target_species::mutanttongue, /obj/item/organ/tongue/lizard) || species_check)
 
 /datum/preference/numeric/hiss_length/apply_to_human(mob/living/carbon/human/target, value)
 	var/obj/item/organ/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)

@@ -129,15 +129,8 @@
 
 /datum/bodypart_overlay/mutant/tail/fish
 	feature_key = "fish_tail"
-	color_source = ORGAN_COLOR_OVERRIDE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE
 	mesh_in_suits = TRUE
-
-/datum/bodypart_overlay/mutant/tail/fish/override_color(obj/item/bodypart/bodypart_owner)
-	//If the owner uses mutant colors, inherit the color of the bodypart
-	if(!bodypart_owner.owner || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS))
-		return bodypart_owner.draw_color
-
-	return bodypart_owner.owner.dna?.features["forced_mut_color"] || bodypart_owner.draw_color
 
 /datum/bodypart_overlay/mutant/tail/fish/get_global_feature_list()
 	return SSaccessories.tails_list_fish
@@ -213,6 +206,7 @@
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
 	brute_modifier = 0.9
 	burn_modifier = 0.9
+	wing_types = list(/obj/item/organ/wings/functional/angel, /obj/item/organ/wings/functional/dragon)
 
 /obj/item/bodypart/head/scaled
 	texture_bodypart_overlay = /datum/bodypart_overlay/texture/fishscale
