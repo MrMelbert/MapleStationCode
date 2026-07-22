@@ -34,6 +34,21 @@
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
 	feature_key = "spines"
 	dyable = TRUE
+	color_source = ORGAN_COLOR_OVERRIDE // NON-MODULE CHANGE
+
+// BEGIN NON-MODULE CHANGE
+/datum/bodypart_overlay/mutant/spines/override_color(obj/item/bodypart/bodypart_owner)
+
+	// by default, use body color if we should be mutant colored
+	if(isnull(bodypart_owner.owner) || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS) || HAS_TRAIT(bodypart_owner, TRAIT_MUTANT_COLORS))
+		return bodypart_owner.draw_color
+	// then use forced color - for non-mutant-colored species, like reptilids
+	if(bodypart_owner?.owner?.dna?.features["forced_mut_color"])
+		return bodypart_owner.owner.dna.features["forced_mut_color"]
+	// then default to body color - though this will probably be skin color, some forced color, or pure white
+	return bodypart_owner.draw_color
+
+// END NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/spines/get_global_feature_list()
 	return SSaccessories.spines_list

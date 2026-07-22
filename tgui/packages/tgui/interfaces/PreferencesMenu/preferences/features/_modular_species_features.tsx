@@ -166,6 +166,11 @@ export const feature_fox_tail: FeatureChoiced = {
   name: 'Fox Tail',
   component: FeatureDropdownInput,
 };
+export const liz_tongue_hissing: FeatureToggle = {
+  name: 'Lizard Speech',
+  description: 'If checked, you will sssspeak like a lizardperson.',
+  component: CheckboxInput,
+};
 
 export const feature_android_species: FeatureChoiced = {
   name: 'Android Species',

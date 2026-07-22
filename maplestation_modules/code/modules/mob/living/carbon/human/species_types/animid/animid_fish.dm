@@ -20,7 +20,7 @@
 
 /datum/animid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
-	new_animid.dna?.features["forced_fish_color"] = new_animid.dna?.features["mcolor"]
+	new_animid.dna?.features["forced_mut_color"] = new_animid.dna?.features["mcolor"]
 
 /datum/animid_type/fish/extra_feature_keys()
 	return list(/datum/preference/color/mutant_color::savefile_key)
@@ -95,7 +95,7 @@
 	. = ..()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_location))
 	check_location(owner, null)
-	owner.dna.features["forced_fish_color"] ||= pick("#B4B8DD", "#85C7D0", "#67BBEE", "#2F4450", "#55CCBB", "#999FD0", "#345066", "#585B69", "#7381A0", "#B6DDE5", "#4E4E50")
+	owner.dna.features["forced_mut_color"] ||= pick("#B4B8DD", "#85C7D0", "#67BBEE", "#2F4450", "#55CCBB", "#999FD0", "#345066", "#585B69", "#7381A0", "#B6DDE5", "#4E4E50")
 
 /obj/item/organ/tail/fish/on_mob_remove(mob/living/carbon/owner)
 	. = ..()
@@ -137,7 +137,7 @@
 	if(!bodypart_owner.owner || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS))
 		return bodypart_owner.draw_color
 
-	return bodypart_owner.owner.dna?.features["forced_fish_color"] || bodypart_owner.draw_color
+	return bodypart_owner.owner.dna?.features["forced_mut_color"] || bodypart_owner.draw_color
 
 /datum/bodypart_overlay/mutant/tail/fish/get_global_feature_list()
 	return SSaccessories.tails_list_fish

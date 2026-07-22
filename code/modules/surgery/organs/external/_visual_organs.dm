@@ -168,8 +168,8 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	if(isnull(bodypart_owner.owner) || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS) || HAS_TRAIT(bodypart_owner, TRAIT_MUTANT_COLORS))
 		return bodypart_owner.draw_color
 	// then use forced color - for non-mutant-colored species, like piscinids
-	if(bodypart_owner?.owner?.dna?.features["forced_fish_color"])
-		return bodypart_owner.owner.dna.features["forced_fish_color"]
+	if(bodypart_owner?.owner?.dna?.features["forced_mut_color"])
+		return bodypart_owner.owner.dna.features["forced_mut_color"]
 	// then default to body color - though this will probably be skin color, some forced color, or pure white
 	return bodypart_owner.draw_color
 
