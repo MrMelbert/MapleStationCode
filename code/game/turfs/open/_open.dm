@@ -316,7 +316,7 @@
 	else
 		if(!(lube & SLIP_WHEN_CRAWLING) && (slipper.body_position == LYING_DOWN || !(slipper.status_flags & CANKNOCKDOWN))) // can't slip unbuckled mob if they're lying or can't fall.
 			return FALSE
-		if(move_intent != MOVE_INTENT_RUN && (lube_flags & NO_SLIP_WHEN_WALKING)) // NON-MODULE CHANGE
+		if(slipper.move_intent != MOVE_INTENT_RUN && (lube & NO_SLIP_WHEN_WALKING)) // NON-MODULE CHANGE
 			return FALSE
 
 	if(!(lube & SLIDE_ICE))
