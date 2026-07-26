@@ -11,7 +11,7 @@
 			/obj/item/organ/horns = SPRITE_ACCESSORY_NONE,
 			/obj/item/organ/frills = SPRITE_ACCESSORY_NONE,
 			/obj/item/organ/spines = SPRITE_ACCESSORY_NONE,
-			/obj/item/organ/tail/lizard = "Smooth",
+			/obj/item/organ/tail/lizard = /datum/sprite_accessory/tails/lizard/smooth::name,
 		),
 	)
 
@@ -59,7 +59,7 @@
 	target.dna.features["Hissing"] = value
 
 /datum/preference/toggle/liz_tongue_hissing/is_accessible(datum/preferences/preferences)
-	return ..() && ((ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)) && (preferences.read_preference(/datum/preference/choiced/animid_type) == "Lizard"))
+	return ..() && ((ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)) && (preferences.read_preference(/datum/preference/choiced/animid_type) == /datum/animid_type/lizard::id))
 
 /obj/item/organ/tongue/lizard/no_hiss // because modifies_speech only affects things on init
 	name = "mutated forked tongue"
