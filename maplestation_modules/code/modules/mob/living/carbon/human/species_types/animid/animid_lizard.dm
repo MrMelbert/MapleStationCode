@@ -21,13 +21,10 @@
 /datum/animid_type/lizard/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
 	new_animid.dna?.features["forced_mut_color"] = new_animid.dna?.features["mcolor"]
-	if (new_animid.dna?.features["Hissing"] == TRUE)
-		components.Add(list(ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/lizard))
-	else
-		components.Add(list(ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/lizard/no_hiss))
+	species.mutanttongue = new_animid.dna?.features["hissing"] ? /obj/item/organ/tongue/lizard : /obj/item/organ/tongue/lizard/no_hiss
 
 /datum/animid_type/lizard/extra_feature_keys()
-	return list(/datum/preference/color/mutant_color::savefile_key, /datum/preference/toggle/liz_tongue_hissing::savefile_key)
+	return list(/datum/preference/color/mutant_color::savefile_key)
 
 /datum/animid_type/lizard/get_readable_features()
 	return ..() + "Scales"
@@ -56,7 +53,7 @@
 
 /datum/preference/toggle/liz_tongue_hissing/apply_to_human(mob/living/carbon/human/target, value)
 	// behavior is only applied on animids by default
-	target.dna.features["Hissing"] = value
+	target.dna.features["hissing"] = value
 
 /datum/preference/toggle/liz_tongue_hissing/is_accessible(datum/preferences/preferences)
 	return ..() && ((ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)) && (preferences.read_preference(/datum/preference/choiced/animid_type) == /datum/animid_type/lizard::id))
