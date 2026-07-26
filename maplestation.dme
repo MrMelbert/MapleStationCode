@@ -6774,6 +6774,7 @@
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_humanoid.dm"
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_reskins.dm"
 #include "maplestation_modules\code\modules\surgery\bodyparts\cyber_tech.dm"
+#include "maplestation_modules\code\modules\surgery\operations\install_laws.dm"
 #include "maplestation_modules\code\modules\surgery\operations\internal_bleeding.dm"
 #include "maplestation_modules\code\modules\surgery\organs\augments_arms.dm"
 #include "maplestation_modules\code\modules\surgery\organs\augments_chest.dm"
