@@ -874,6 +874,7 @@
 	inhand_icon_state = "explorer2"
 	worn_icon_state = "explorer2"
 	storage_type = /datum/storage/backpack
+	mirror_icon = 'icons/mob/clothing/belt.dmi'
 
 /obj/item/storage/belt/chest_pouch/Initialize(mapload)
 	. = ..()

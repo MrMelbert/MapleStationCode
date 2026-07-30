@@ -62,9 +62,12 @@
 	/// The noun that is displayed to the user on toggle. EX: "Toggles the suit's [buttons]".
 	var/toggle_noun = "buttons"
 
+	var/pocket_slots = 2
+
 /obj/item/clothing/suit/toggle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/toggle_icon, toggle_noun)
+	create_storage(max_slots = pocket_slots, max_specific_storage = WEIGHT_CLASS_SMALL)
 
 /obj/item/clothing/head/hooded
 	abstract_type = /obj/item/clothing/head/hooded

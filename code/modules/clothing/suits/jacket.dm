@@ -15,10 +15,12 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	species_exception = list(/datum/species/golem)
+	var/pocket_slots = 2
 
 /obj/item/clothing/suit/jacket/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/pat_out_fire)
+	create_storage(max_slots = pocket_slots, max_specific_storage = WEIGHT_CLASS_SMALL)
 
 /obj/item/clothing/suit/toggle/jacket
 	icon = 'icons/obj/clothing/suits/jacket.dmi'
@@ -61,6 +63,7 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 	blood_overlay_type = "coat"
 	flags_inv = HIDEBELT
+	pocket_slots = 4
 
 /obj/item/clothing/suit/jacket/blazer
 	name = "blazer jacket"
@@ -83,6 +86,7 @@
 	greyscale_config_worn = /datum/greyscale_config/jacket_oversized/worn
 	greyscale_colors = "#414344"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	pocket_slots = 4
 
 /obj/item/clothing/suit/jacket/fancy
 	name = "fancy fur coat"

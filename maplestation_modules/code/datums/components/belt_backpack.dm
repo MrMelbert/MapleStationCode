@@ -28,7 +28,7 @@
 /datum/component/slows_with_backpack/proc/on_equipped(obj/item/source, mob/user, slot)
 	SIGNAL_HANDLER
 
-	if(!(slot & source.slot_flags))
+	if(!(slot & (source.slot_flags|ITEM_SLOT_SUITSTORE)))
 		return
 
 	RegisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_for_backpack))

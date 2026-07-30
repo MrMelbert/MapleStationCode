@@ -263,6 +263,7 @@ GLOBAL_LIST_INIT(security_vest_allowed, list(
 	/obj/item/storage/belt/holster/energy,
 	/obj/item/gun/ballistic/shotgun/automatic/combat/compact,
 	/obj/item/pen/red/security,
+	/obj/item/storage/belt/security/webbing,
 ))
 
 GLOBAL_LIST_INIT(security_wintercoat_allowed, list(
@@ -309,6 +310,8 @@ GLOBAL_LIST_INIT(mining_suit_allowed, list(
 	/obj/item/pickaxe,
 	/obj/item/resonator,
 	/obj/item/spear,
+	/obj/item/storage/belt/mining,
+	/obj/item/storage/belt/chest_pouch,
 ))
 
 /// List of all "tools" that can fit into belts or work from toolboxes

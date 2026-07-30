@@ -298,34 +298,16 @@
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
 	inhand_icon_state = "satchel-norm"
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
 
-/obj/item/storage/backpack/satchel/examine(mob/user)
+/obj/item/storage/backpack/satchel/equipped(mob/user, slot, initial)
 	. = ..()
-	if(slot_flags == initial(slot_flags))
-		. += span_info("You could adjust the strap to wear it on your waist.")
-	else
-		.+= span_info("The strap is adjusted to wear on your waist. You could adjust it back into position.")
-
-/obj/item/storage/backpack/satchel/attack_self(mob/user, modifiers)
-	. = ..()
-	if(.)
-		return
-	if(!user.is_holding(src))
-		return
-
-	. = TRUE
-	balloon_alert(user, "adjusting the strap...")
-	if(!do_after(user, 1 SECONDS, src))
-		return
-	balloon_alert(user, "strap adjusted")
-	if(slot_flags == initial(slot_flags))
-		slot_flags = ITEM_SLOT_BELT
+	if(slot & ITEM_SLOT_BELT)
 		AddComponent(/datum/component/slows_with_backpack)
 
-	else
-		slot_flags = initial(slot_flags)
-		qdel(GetComponent(/datum/component/slows_with_backpack))
+/obj/item/storage/backpack/satchel/dropped(mob/user, silent)
+	. = ..()
+	qdel(GetComponent(/datum/component/slows_with_backpack))
 
 /obj/item/storage/backpack/satchel/leather
 	name = "leather satchel"

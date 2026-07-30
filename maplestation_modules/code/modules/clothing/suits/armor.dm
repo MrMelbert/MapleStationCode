@@ -115,3 +115,4 @@
 /obj/item/clothing/suit/greyscale_parade/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/toggle_icon/greyscale, "buttons", /datum/greyscale_config/parade_formal_open, /datum/greyscale_config/parade_formal_open_worn)
+	create_storage(max_slots = 3, max_specific_storage = WEIGHT_CLASS_SMALL)
