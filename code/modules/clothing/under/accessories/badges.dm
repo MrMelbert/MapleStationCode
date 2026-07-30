@@ -185,6 +185,7 @@
 		"Transgender Pride" = "pride_trans",
 		"Intersex Pride" = "pride_intersex",
 		"Lesbian Pride" = "pride_lesbian",
+		"Gay Pride" = "pride_gay",
 	)
 
 /obj/item/clothing/accessory/pride/setup_reskinning()
