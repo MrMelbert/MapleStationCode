@@ -82,9 +82,6 @@
 		CRASH("No socks to choose from!")
 	return pick(SSaccessories.socks_list)
 
-/proc/random_backpack()
-	return pick(GLOB.backpacklist)
-
 /proc/random_hairstyle(gender)
 	switch(gender)
 		if(MALE)

@@ -4,15 +4,15 @@
 	max_total_storage = 10
 	storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
-/datum/storage/pouch/can_insert(obj/item/to_insert, mob/user, messages, force)
-	. = ..()
-	if(!.)
-		return FALSE
-	if(parent.loc?.atom_storage && !force)
-		if(messages && user)
-			parent.balloon_alert(user, "[LOWER_TEXT(parent.loc)] is in the way!")
-		return FALSE
-	return TRUE
+// /datum/storage/pouch/can_insert(obj/item/to_insert, mob/user, messages, force)
+// 	. = ..()
+// 	if(!.)
+// 		return FALSE
+// 	if(parent.loc?.atom_storage && !force)
+// 		if(messages && user)
+// 			parent.balloon_alert(user, "[LOWER_TEXT(parent.loc)] is in the way!")
+// 		return FALSE
+// 	return TRUE
 
 /datum/storage/pouch/survival
 	max_specific_storage = WEIGHT_CLASS_TINY

@@ -865,3 +865,17 @@
 		/obj/item/seeds,
 		/obj/item/shovel/spade,
 	))
+
+/obj/item/storage/belt/chest_pouch
+	name = "chest pouches"
+	desc = "A bunch of pouches worn across the chest."
+	gender = PLURAL
+	icon_state = "explorer2"
+	inhand_icon_state = "explorer2"
+	worn_icon_state = "explorer2"
+
+/obj/item/storage/belt/chest_pouch/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/slows_with_backpack)
+	atom_storage.max_total_storage = 18
+	atom_storage.max_slots = 18

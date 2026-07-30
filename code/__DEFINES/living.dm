@@ -61,6 +61,7 @@
 /// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
 #define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
 
+/// Sent when a carbon's clothes are examined
 #define COMSIG_CARBON_CLOTHING_EXAMINE "carbon_clothing_examine"
 
 /// Various lists of body zones affected by pain.

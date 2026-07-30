@@ -683,8 +683,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_BACKPACK)
-			if(H.back && H.back.atom_storage?.can_insert(I, H, messages = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED))
-				return TRUE
+			for(var/obj/item/thing in list(H.get_item_by_slot(ITEM_SLOT_BACKPACK), H.get_item_by_slot(ITEM_SLOT_BELT)))
+				if(thing.atom_storage?.can_insert(I, H, messages = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED))
+					return TRUE
 			return FALSE
 	return FALSE //Unsupported slot
 

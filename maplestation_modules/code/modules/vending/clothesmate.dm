@@ -44,6 +44,17 @@
 				/obj/item/clothing/shoes/heels = 3,
 			),
 		),
+
+		list(
+			"name" = "Storage",
+			"products" = list(
+				/obj/item/storage/backpack/messenger = 2,
+				/obj/item/storage/backpack/satchel = 2,
+				/obj/item/storage/backpack/satchel/leather = 2,
+				/obj/item/storage/belt/chest_pouch = 4,
+				/obj/item/storage/pouch = 6,
+			),
+		),
 	)
 	added_premium = list(
 		/obj/item/clothing/shoes/heels/fancy = 2,

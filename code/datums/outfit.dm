@@ -498,3 +498,34 @@
 		if(!check_rights(NONE))
 			return
 		usr.client.open_outfit_editor(src)
+
+/// Replaces the current belt with the passed in belt, without losing whatever was in the current belt slot
+/// Returns TRUE if the replacement was successful, FALSE if it failed
+/datum/outfit/proc/replace_belt_keep_old(obj/item/replaced_belt)
+	if(!belt)
+		belt = replaced_belt
+		return TRUE
+
+	// try to move the existing belt to the backpack
+	if(l_hand && r_hand && belt::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, belt)
+		belt = replaced_belt
+		return TRUE
+
+	// try to carry the existing belt in a hand
+	if(!l_hand)
+		l_hand = belt
+		belt = replaced_belt
+		return TRUE
+
+	if(!r_hand)
+		r_hand = belt
+		belt = replaced_belt
+		return TRUE
+
+	// failed to equip the new belt, try to add it to the backpack instead
+	if(replaced_belt::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, replaced_belt)
+		return TRUE
+
+	return FALSE

@@ -31,6 +31,7 @@
 		DSATCHEL,
 		DDUFFELBAG,
 		DMESSENGER,
+		BELT_POUCH,
 	)
 
 /datum/preference/choiced/backpack/create_default_value()
@@ -48,6 +49,8 @@
 			return /obj/item/storage/backpack/duffelbag
 		if (GMESSENGER)
 			return /obj/item/storage/backpack/messenger
+		if (BELT_POUCH)
+			return /obj/item/storage/belt/chest_pouch
 
 		// In a perfect world, these would be your department's backpack.
 		// However, this doesn't factor in assistants, or no high slot, and would

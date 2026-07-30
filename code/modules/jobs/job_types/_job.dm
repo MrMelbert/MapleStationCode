@@ -409,6 +409,10 @@
 				back = duffelbag //Department duffel bag
 			if(DMESSENGER)
 				back = messenger //Department messenger bag
+			if(BELT_POUCH)
+				if(replace_belt_keep_old(/obj/item/storage/belt/chest_pouch))
+					back = null // Replaces the backpack with belt pouch
+
 			else
 				back = backpack //Department backpack
 

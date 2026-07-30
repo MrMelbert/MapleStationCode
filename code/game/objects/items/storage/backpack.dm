@@ -298,6 +298,43 @@
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
 	inhand_icon_state = "satchel-norm"
+	slot_flags = ITEM_SLOT_BACK
+
+/obj/item/storage/backpack/satchel/examine(mob/user)
+	. = ..()
+	if(slot_flags == initial(slot_flags))
+		. += span_info("You could adjust the strap to wear it on your waist.")
+	else
+		.+= span_info("The strap is adjusted to wear on your waist. You could adjust it back into position.")
+
+/obj/item/storage/backpack/satchel/attack_self(mob/user, modifiers)
+	. = ..()
+	if(.)
+		return
+	if(!user.is_holding(src))
+		return
+
+	. = TRUE
+	balloon_alert(user, "adjusting the strap...")
+	if(!do_after(user, 1 SECONDS, src))
+		return
+	balloon_alert(user, "strap adjusted")
+	if(slot_flags == initial(slot_flags))
+		slot_flags = ITEM_SLOT_BELT
+		AddComponent(/datum/component/slows_with_backpack)
+		atom_storage.max_slots = 18
+		atom_storage.max_total_storage = 18
+		// dump out anything that doesn't fit in the new storage
+		for(var/obj/item/thing as anything in src)
+			if(!atom_storage.can_insert(thing, user, messages = FALSE, force = STORAGE_FULLY_LOCKED))
+				thing.forceMove(user.drop_location())
+				to_chat(user, span_warning("You dump out [thing] from [src] in the process of adjusting the strap."))
+
+	else
+		slot_flags = initial(slot_flags)
+		qdel(GetComponent(/datum/component/slows_with_backpack))
+		atom_storage.max_slots = initial(atom_storage.max_slots)
+		atom_storage.max_total_storage = initial(atom_storage.max_total_storage)
 
 /obj/item/storage/backpack/satchel/leather
 	name = "leather satchel"
