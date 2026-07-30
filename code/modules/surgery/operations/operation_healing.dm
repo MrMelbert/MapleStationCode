@@ -174,7 +174,7 @@
 /datum/surgery_operation/basic/tend_wounds/proc/show_stats(mob/living/surgeon, mob/living/patient)
 	if(surgeon.is_holding_item_of_type(/obj/item/healthanalyzer))
 		return TRUE
-	for(var/obj/machinery/computer/vitals_reader/vitals in view(4, patient))
+	for(var/obj/machinery/vitals_reader/vitals in view(4, patient))
 		if(vitals.patient == patient)
 			return TRUE
 	for(var/obj/machinery/computer/operating/op_pc in range(1, patient))

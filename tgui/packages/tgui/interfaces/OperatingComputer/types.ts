@@ -54,6 +54,7 @@ type AnesthesiaStatus = {
   open: BooleanLike;
   failsafe: number;
   can_open_tank: BooleanLike;
+  is_tank: BooleanLike;
 };
 
 export type damageType = {

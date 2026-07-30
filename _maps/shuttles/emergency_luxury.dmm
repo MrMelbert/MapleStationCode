@@ -323,23 +323,12 @@
 /obj/item/bikehorn/rubberducky,
 /turf/open/floor/holofloor/beach/water,
 /area/shuttle/escape/luxury)
-"nC" = (
-/obj/item/food/sandwich/grilled_cheese{
-	pixel_y = 11
-	},
-/obj/structure/table/wood/fancy/black,
-/turf/open/floor/carpet/red,
-/area/shuttle/escape/luxury)
 "od" = (
 /obj/item/food/honkdae{
 	pixel_y = 8
 	},
 /obj/structure/table/wood/fancy/black,
 /turf/open/floor/carpet/red,
-/area/shuttle/escape/luxury)
-"on" = (
-/obj/machinery/stasis,
-/turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape/luxury)
 "ot" = (
 /obj/structure/chair/wood{
@@ -351,6 +340,16 @@
 "oA" = (
 /turf/open/floor/carpet/green,
 /area/shuttle/escape/luxury)
+"oL" = (
+/obj/structure/closet/crate/freezer,
+/obj/effect/decal/cleanable/blood/old,
+/obj/item/reagent_containers/cup/glass/bottle/whiskey,
+/obj/item/reagent_containers/cup/bottle/ethanol,
+/obj/item/stack/medical/wrap/gauze/improvised,
+/obj/item/bot_assembly/medbot,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "oP" = (
 /obj/structure/musician/piano,
 /turf/open/floor/carpet/green,
@@ -666,6 +665,13 @@
 "CQ" = (
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
+"CY" = (
+/obj/item/food/sandwich/grilled_cheese{
+	pixel_y = 11
+	},
+/obj/structure/table/wood/fancy/black,
+/turf/open/floor/carpet/red,
+/area/shuttle/escape/luxury)
 "CZ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/glass,
@@ -941,6 +947,12 @@
 	},
 /turf/open/floor/carpet/green,
 /area/shuttle/escape/luxury)
+"MN" = (
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape/luxury)
 "Na" = (
 /obj/item/food/spaghetti/pastatomato{
 	pixel_y = 5
@@ -1197,16 +1209,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/shuttle/escape/luxury)
-"XK" = (
-/obj/structure/closet/crate/freezer,
-/obj/effect/decal/cleanable/blood/old,
-/obj/item/reagent_containers/cup/glass/bottle/whiskey,
-/obj/item/reagent_containers/cup/bottle/ethanol,
-/obj/item/stack/medical/wrap/gauze/improvised,
-/obj/item/bot_assembly/medbot,
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "XU" = (
 /obj/item/stack/tile/iron/base,
 /obj/effect/decal/cleanable/dirt,
@@ -1327,7 +1329,7 @@ gM
 RU
 JV
 md
-XK
+oL
 RM
 CQ
 "}
@@ -1590,7 +1592,7 @@ xY
 Ka
 PY
 We
-nC
+CY
 xK
 PY
 Ex
@@ -1866,10 +1868,10 @@ Ek
 cV
 vH
 Ex
-on
-on
-on
-on
+MN
+MN
+MN
+MN
 Ex
 YV
 YV
