@@ -92,10 +92,10 @@
 	used_tray.AddToPlate(baked_result)
 
 	if(positive_result)
-		new /obj/effect/abstract/smell/oven/good(used_oven.loc)
+		new /obj/effect/abstract/smell/oven/good(used_oven)
 		BLACKBOX_LOG_FOOD_MADE(baked_result.type)
 	else
-		new /obj/effect/abstract/smell/oven/bad(used_oven.loc)
+		new /obj/effect/abstract/smell/oven/bad(used_oven)
 
 	SEND_SIGNAL(parent, COMSIG_ITEM_BAKED, baked_result)
 	qdel(parent)

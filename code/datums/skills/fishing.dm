@@ -9,7 +9,7 @@
 	earned_by = "attempting a fishing challenge"
 	grants_you = "reduced difficulty in fishing challenges"
 	modifiers = list(
-		SKILL_VALUE_MODIFIER = list(
+		SKILL_VALUE_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1,
 			SKILL_LEVEL_NOVICE = 1,
 			SKILL_LEVEL_APPRENTICE = 0,

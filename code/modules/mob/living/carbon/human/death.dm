@@ -47,8 +47,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	death_block += span_danger("<center><span style='font-size: 32px'>You have succumbed to [cause_of_death].</font></center>")
 	death_block += "<hr>"
 	death_block += span_danger("Barring complete bodyloss, you can (in most cases) be revived by other players. \
-		If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab.")
-	to_chat(src, examine_block(death_block))
+		\
+		If you do not wish to be brought back, use the \"Do Not Resuscitate\" button at the bottom of your screen.")
+	to_chat(src, boxed_message(death_block))
 
 /mob/living/carbon/human/proc/get_cause_of_death(probable_cause)
 	if(!probable_cause)
@@ -81,6 +82,8 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && blood_volume < BLOOD_VOLUME_BAD)
 				return BLOOD_LOSS
 
+			return "hypoxia"
+
 		if(TOX_DAMAGE)
 			var/obj/item/organ/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
 			if(isnull(liver) || (liver.organ_flags & ORGAN_FAILING))
@@ -94,7 +97,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(most_toxic)
 				return "[LOWER_TEXT(most_toxic.name)] poisoning"
 
-		if("heart_attack")
+		if(/datum/status_effect/cardiac_arrest::id)
 			return "cardiac arrest"
 
 		if("drunk")
@@ -121,7 +124,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 			if(findtext(probable_cause, "addiction"))
 				return "addiction"
 
-	return probable_cause
+	return replacetext(probable_cause, "_", " ")
 
 /mob/living/carbon/human/proc/reagents_readout()
 	var/readout = "Blood:"

@@ -46,7 +46,7 @@
 	var/organic_bodytypes = 0
 	var/silicon_bodytypes = 0
 	var/other_bodytypes = FALSE
-	for(var/obj/item/bodypart/part as anything in target.bodyparts)
+	for(var/obj/item/bodypart/part as anything in target.get_bodyparts())
 		if(part.bodytype & BODYTYPE_ROBOTIC)
 			silicon_bodytypes += 1
 		else if(part.bodytype & BODYTYPE_ORGANIC)
@@ -61,7 +61,7 @@
 			else if(organ.organ_flags & ORGAN_ORGANIC)
 				organic_bodytypes += 0.02
 
-	return list(
+	return alist(
 		BODYPART_SCORE_ORGANIC = organic_bodytypes,
 		BODYPART_SCORE_SILICON = silicon_bodytypes,
 		BODYPART_SCORE_OTHER_BODYTYPES = other_bodytypes,
@@ -71,7 +71,7 @@
 
 /datum/quirk/transhumanist/proc/calculate_bodypart_score()
 	SIGNAL_HANDLER
-	var/list/score = get_bodypart_score(quirk_holder)
+	var/alist/score = get_bodypart_score(quirk_holder)
 	var/organic_bodytypes = score[BODYPART_SCORE_ORGANIC]
 	var/silicon_bodytypes = score[BODYPART_SCORE_SILICON]
 	var/other_bodytypes = score[BODYPART_SCORE_OTHER_BODYTYPES]
@@ -164,7 +164,7 @@
 			continue
 
 		if(iscarbon(target))
-			var/list/score = get_bodypart_score(target, limbs_only = TRUE)
+			var/alist/score = get_bodypart_score(target, limbs_only = TRUE)
 			// For an average human, they'll need 2 augmented limbs to not get counted as an organic nor a silicon.
 			// If some monstrosity has 20-30 organic limbs, they'll likely need more.
 			if(score[BODYPART_SCORE_OVERALL] < 1)

@@ -136,7 +136,7 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 	var/datum/record/locked/lockfile = new(
 		age = person.age,
-		blood_type = "[person.get_blood_type() || "None"]",
+		blood_type = "[person.blood_type || "None"]",
 		character_appearance = character_appearance,
 		dna_string = record_dna.unique_enzymes,
 		fingerprint = md5(record_dna.unique_identity),
@@ -153,7 +153,7 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 
 	new /datum/record/crew(
 		age = person.age,
-		blood_type = "[person.get_blood_type() || "None"]",
+		blood_type = "[person.blood_type || "None"]",
 		character_appearance = character_appearance,
 		dna_string = record_dna.unique_enzymes,
 		fingerprint = md5(record_dna.unique_identity),

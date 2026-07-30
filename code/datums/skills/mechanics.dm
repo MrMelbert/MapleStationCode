@@ -6,7 +6,7 @@
 	grants_you = "faster mechanical tool usage"
 	skill_flags = SKILL_ALWAYS_PRINT
 	modifiers = list(
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 1.2,
 			SKILL_LEVEL_NOVICE = 1.1,
 			SKILL_LEVEL_APPRENTICE = 1,

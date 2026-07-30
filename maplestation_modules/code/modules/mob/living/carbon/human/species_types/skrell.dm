@@ -124,4 +124,4 @@
 
 /obj/item/organ/eyes/skrell
 	desc = "Gooey."
-	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
+	eye_icon = 'maplestation_modules/icons/mob/skrell_eyes.dmi'

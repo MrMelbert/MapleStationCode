@@ -6,7 +6,8 @@
 		/datum/reagent/consumable/starfruit_juice = 5,
 	)
 	result = /obj/item/food/starfruit_ribs
-	category = CAT_MEAT
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_MEAT
 
 /datum/crafting_recipe/food/meat_platter
 	name = "BBQ Meat Platter"
@@ -16,7 +17,8 @@
 		/obj/item/food/roasted_bell_pepper = 2,
 	)
 	result = /obj/item/food/meat_platter
-	category = CAT_MEAT
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_MEAT
 
 /datum/crafting_recipe/food/starfruit_chicken_alfredo
 	name = "Starfruit Chicken Alfredo"
@@ -27,7 +29,9 @@
 		/obj/item/food/spaghetti/boiledspaghetti = 1
 	)
 	result = /obj/item/food/starfruit_chicken_alfredo
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_NOODLES
+	removed_foodtypes = RAW
 
 /datum/crafting_recipe/food/starfruit_sushi_roll
 	name = "Starfruit Sushi Roll"
@@ -37,7 +41,9 @@
 		/obj/item/food/starfruit_sashimi = 1,
 	)
 	result = /obj/item/food/starfruit_sushi_roll
-	category = CAT_SEAFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_SUSHI
+	removed_foodtypes = BREAKFAST
 
 /datum/crafting_recipe/food/starfruit_sashimi
 	name = "Starfruit Sashimi"
@@ -47,7 +53,8 @@
 		/obj/item/food/grown/starfruit = 1,
 	)
 	result = /obj/item/food/starfruit_sashimi
-	category = CAT_SEAFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_SUSHI
 
 /datum/crafting_recipe/food/eggplant_fry
 	name = "Starfruit Eggplant Stir Fry"
@@ -59,7 +66,8 @@
 		/obj/item/food/grown/carrot = 1,
 	)
 	result = /obj/item/food/eggplant_fry
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_SALAD
 
 /datum/crafting_recipe/food/starfruit_tofu_beef
 	name = "Starfruit Tofu Beef Teriyaki"
@@ -71,7 +79,8 @@
 		/datum/reagent/consumable/nutriment/soup/teriyaki = 5,
 	)
 	result = /obj/item/food/starfruit_tofu_beef
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_NOODLES
 
 /datum/crafting_recipe/food/starfruit_noodles
 	name = "Starfruit Noodles"
@@ -82,7 +91,8 @@
 		/obj/item/food/spaghetti/pastatomato = 1,
 	)
 	result = /obj/item/food/starfruit_noodles
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_NOODLES
 
 /datum/crafting_recipe/food/starfruit_cake
 	name = "Starfruit Cake"
@@ -91,7 +101,9 @@
 		/obj/item/food/grown/starfruit = 5
 	)
 	result = /obj/item/food/cake/starfruit
-	category = CAT_CAKE
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_CAKE
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/bottled/starfruit_jelly
 	name = "Starfruit Jelly"
@@ -100,7 +112,7 @@
 		/datum/reagent/water = 25,
 	)
 	result = /obj/item/reagent_containers/condiment/starfruit_jelly
-	category = CAT_MISCFOOD
+	category = CAT_DRINK
 
 /datum/crafting_recipe/food/macaron/starfruit
 	name = "Starfruit Macaron"
@@ -111,7 +123,9 @@
 		/datum/reagent/consumable/starfruit_jelly = 5,
 	)
 	result = /obj/item/food/cookie/macaron/starfruit
-	category = CAT_PASTRY
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_COOKIE
+	meal_category = MEAL_SNACK
 
 /datum/crafting_recipe/food/starfruit_cobbler
 	name = "Starfruit Cobbler"
@@ -121,7 +135,9 @@
 		/datum/reagent/consumable/starfruit_jelly = 10,
 	)
 	result = /obj/item/food/pie/starfruit_cobbler
-	category = CAT_PASTRY
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_PASTRY
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/starfruit_toast
 	name = "Starfruit Jelly Toast"
@@ -130,7 +146,10 @@
 		/datum/reagent/consumable/starfruit_jelly = 5,
 	)
 	result = /obj/item/food/starfruit_toast
-	category = CAT_BREAD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_BREAD
+	meal_category = MEAL_BREAKFAST
+	added_foodtypes = BREAKFAST
 
 /datum/crafting_recipe/food/starfruit_pie
 	name = "Starfruit Pie"
@@ -139,7 +158,9 @@
 		/obj/item/food/grown/starfruit = 2,
 	)
 	result = /obj/item/food/pie/starfruit_pie
-	category = CAT_PASTRY
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_PIE
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/starfruit_compote
 	name = "Starfruit Compote"
@@ -149,7 +170,9 @@
 		/datum/reagent/consumable/ethanol/cognac = 10,
 	)
 	result = /obj/item/food/starfruit_compote
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_SALAD
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/starfruit_brulee
 	name = "Starfruit Creme Brulee"
@@ -161,7 +184,9 @@
 		/datum/reagent/consumable/eggwhite = 4,
 	)
 	result = /obj/item/food/starfruit_brulee
-	category = CAT_MISCFOOD
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_UNCATEGORIZED
+	meal_category = MEAL_DESSERT
 
 /datum/crafting_recipe/food/starfruit_cupcake
 	name = "Starfruit Cupcake"
@@ -170,4 +195,7 @@
 		/obj/item/food/grown/starfruit = 2
 	)
 	result = /obj/item/food/starfruit_cupcake
-	category = CAT_PASTRY
+	added_foodtypes = SUGAR
+	cuisine_category = CUISINE_STARFRUIT
+	dish_category = DISH_PASTRY
+	meal_category = MEAL_DESSERT

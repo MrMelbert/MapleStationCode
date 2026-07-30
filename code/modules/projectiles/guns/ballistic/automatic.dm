@@ -1,4 +1,5 @@
 /obj/item/gun/ballistic/automatic
+	abstract_type = /obj/item/gun/ballistic/automatic
 	w_class = WEIGHT_CLASS_NORMAL
 	can_suppress = TRUE
 	burst_size = 3
@@ -41,7 +42,7 @@
 		fire_delay = initial(fire_delay)
 		balloon_alert(user, "switched to [burst_size]-round burst")
 
-	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
+	playsound(user, burst_select_sound || 'sound/weapons/empty.ogg', burst_select_sound ? 50 : 100, TRUE)
 	update_appearance()
 	update_item_action_buttons()
 

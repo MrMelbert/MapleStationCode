@@ -27,6 +27,7 @@
  * Intento
  */
 /obj/item/toy
+	abstract_type = /obj/item/toy
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 7
@@ -538,6 +539,9 @@
 		span_danger("You fire [src] at [interacting_with]!"), \
 		span_hear("You hear a gunshot!"))
 	return ITEM_INTERACT_SUCCESS
+
+/obj/item/toy/ammo
+	abstract_type = /obj/item/toy/ammo
 
 /obj/item/toy/ammo/gun
 	name = "capgun ammo"

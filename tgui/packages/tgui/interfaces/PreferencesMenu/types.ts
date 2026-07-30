@@ -31,6 +31,7 @@ export enum Food {
   Sugar = 'SUGAR',
   Toxic = 'TOXIC',
   Vegetables = 'VEGETABLES',
+  Egg = 'EGG',
 }
 
 export enum JobPriority {
@@ -237,6 +238,9 @@ export type ServerData = {
     base_languages: Language[];
     max_spoken_languages: number;
     max_understood_languages: number;
+  };
+  laws: {
+    lawname_to_laws: Record<string, string[]>;
   };
   // NON-MODULE CHANGE END
   [otheyKey: string]: unknown;

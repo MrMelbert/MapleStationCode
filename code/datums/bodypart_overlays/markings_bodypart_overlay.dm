@@ -28,14 +28,13 @@
 	icon_state = accessory.icon_state
 	use_gender = accessory.gender_specific
 	draw_color = accessory.color_src ? set_color : null
-	cache_key = jointext(generate_icon_cache(), "_")
 
-/datum/bodypart_overlay/simple/body_marking/generate_icon_cache()
+/datum/bodypart_overlay/simple/body_marking/generate_icon_cache(obj/item/bodypart/limb)
 	. = ..()
 	. += use_gender
 	. += draw_color
 
-/datum/bodypart_overlay/simple/body_marking/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/simple/body_marking/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
 	return icon_state != SPRITE_ACCESSORY_NONE
 
 /datum/bodypart_overlay/simple/body_marking/get_image(layer, obj/item/bodypart/limb)

@@ -88,3 +88,30 @@
 
 /obj/item/fish/skin_crab/get_fish_taste_cooked()
 	return list("cooked crab" = 2)
+
+/obj/item/fish/skin_crab/suicide_act(mob/living/carbon/human/user)
+	user.visible_message(span_suicide("[user] puts [user.p_their()] hand on [src] and focuses intently! It looks like [user.p_theyre()] trying to transfer [user.p_their()] skin to [src]!"))
+	if(!ishuman(user) || HAS_TRAIT(user, TRAIT_UNHUSKABLE))
+		user.visible_message(span_suicide("[user] has no skin! How embarrassing!"))
+		return SHAME
+
+	if(status == FISH_DEAD)
+		user.visible_message(span_suicide("[src] is dead! [user] just looks like a doofus!"))
+		return SHAME
+
+	var/skin_tone
+	for(var/obj/item/bodypart/to_wound as anything in user.get_bodyparts())
+		if(to_wound == user.get_bodypart(BODY_ZONE_CHEST))
+			skin_tone = to_wound.species_color || skintone2hex(to_wound.skin_tone)
+		user.cause_wound_of_type_and_severity(WOUND_SLASH, to_wound, WOUND_SEVERITY_CRITICAL, WOUND_SEVERITY_CRITICAL)
+		user.cause_wound_of_type_and_severity(WOUND_PIERCE, to_wound, WOUND_SEVERITY_CRITICAL, WOUND_SEVERITY_CRITICAL)
+		user.cause_wound_of_type_and_severity(WOUND_BLUNT, to_wound, WOUND_SEVERITY_CRITICAL, WOUND_SEVERITY_CRITICAL)
+		user.become_husk(REF(src))
+		to_wound.skin_tone = COLOR_RED // skin is gone. (if they somehow get revived, don't worry - death from loss of skin takes longer than dehydration, so it's still realistic)
+
+	// skin crab grows powerful
+	color = skin_tone //skintone2hex(skin_tone) //wait til smartkar's recolorwork
+	visible_message(span_danger("[user] starts glowing eerily..."))
+	AddElement(/datum/element/haunted, haunt_color = skin_tone)
+
+	return BRUTELOSS

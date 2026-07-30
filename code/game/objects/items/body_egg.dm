@@ -10,7 +10,7 @@
 	..()
 	to_chat(finder, span_warning("You found an unknown alien organism in [owner]'s [zone]!"))
 
-/obj/item/organ/body_egg/feel_for_damage(self_aware)
+/obj/item/organ/body_egg/feel_for_damage(self_aware, medical_skill)
 	// keep these stealthy for now, revisit later
 	return ""
 

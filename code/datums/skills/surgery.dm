@@ -8,7 +8,7 @@
 	higher_levels_grant_you = "the ability to perform more complex surgeries with worse (or improvised) tools and greater knowledge of entrails"
 	modifiers = list(
 		// modifier to surgery speed
-		SKILL_SPEED_MODIFIER = list(
+		SKILL_SPEED_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0.85,
 			SKILL_LEVEL_NOVICE = 0.9,
 			SKILL_LEVEL_APPRENTICE = 1,
@@ -20,7 +20,7 @@
 		// flat modifier to tool quality used in surgery
 		// ie a 0.1 modifier makes a 1.0 quality tool, 1.1 quality
 		// which in turn translates to a 10% speed decrease
-		SKILL_VALUE_MODIFIER = list(
+		SKILL_VALUE_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 0.1,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = 0,

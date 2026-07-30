@@ -1305,7 +1305,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 1
 	},
-/obj/machinery/photocopier/gratis,
+/obj/machinery/photocopier/gratis/prebuilt,
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/cargo)
 "gQ" = (

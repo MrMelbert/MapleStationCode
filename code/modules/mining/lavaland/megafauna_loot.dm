@@ -607,6 +607,7 @@
 	mob_biotypes = MOB_SPIRIT
 	faction = list()
 	weather_immunities = list(TRAIT_ASHSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
+	initial_blood_type = null
 	/// Blood level, used for movement and abilities in a soulscythe
 	var/blood_level = MAX_BLOOD_LEVEL
 

@@ -326,4 +326,4 @@
 		message = html_encode(message)
 	else
 		message = copytext(message, 2)
-	to_chat(target, span_purple(examine_block("<b>Tip of the round: </b>[message]")))
+	to_chat(target, custom_boxed_message("purple_box", span_purple("<b>Tip of the round: </b>[message]")))

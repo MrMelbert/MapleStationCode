@@ -83,12 +83,22 @@
 	timeout = 30 SECONDS
 	special_screen_obj = "mood_happiness_bad"
 
-/datum/mood_event/narcotic_medium
+/datum/mood_event/narcotic
+
+/datum/mood_event/narcotic/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	return (new_event.mood_change < mood_change) ? BLOCK_NEW_MOOD : ALLOW_NEW_MOOD
+
+/datum/mood_event/narcotic/light
+	description = "I feel numb."
+	mood_change = 4
+	timeout = 3 MINUTES
+
+/datum/mood_event/narcotic/medium
 	description = "I feel comfortably numb."
 	mood_change = 4
 	timeout = 3 MINUTES
 
-/datum/mood_event/narcotic_heavy
+/datum/mood_event/narcotic/heavy
 	description = "I feel like I'm wrapped up in cotton!"
 	mood_change = 9
 	timeout = 3 MINUTES

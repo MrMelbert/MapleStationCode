@@ -30,6 +30,7 @@
 	attack_verb_simple = "bite"
 	attack_sound = 'sound/weapons/bite.ogg'
 	attack_vis_effect = ATTACK_EFFECT_BITE
+	initial_blood_type = null
 
 	faction = list(FACTION_HOSTILE)
 	speak_emote = list("pines")

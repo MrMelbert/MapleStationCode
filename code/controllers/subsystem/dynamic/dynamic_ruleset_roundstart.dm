@@ -49,7 +49,7 @@
 	pref_flag = ROLE_MALF
 	preview_antag_datum = /datum/antagonist/malf_ai
 	ruleset_flags = RULESET_HIGH_IMPACT
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 1,
 		DYNAMIC_TIER_MEDIUMHIGH = 3,
@@ -113,7 +113,7 @@
 	preview_antag_datum = /datum/antagonist/wizard
 	pref_flag = ROLE_WIZARD
 	ruleset_flags = RULESET_INVADER|RULESET_HIGH_IMPACT
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 0,
 		DYNAMIC_TIER_MEDIUMHIGH = 1,
@@ -144,7 +144,7 @@
 	preview_antag_datum = /datum/antagonist/cult
 	pref_flag = ROLE_CULTIST
 	ruleset_flags = RULESET_HIGH_IMPACT
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 1,
 		DYNAMIC_TIER_MEDIUMHIGH = 3,
@@ -205,7 +205,7 @@
 	preview_antag_datum = /datum/antagonist/nukeop
 	pref_flag = ROLE_OPERATIVE
 	ruleset_flags = RULESET_INVADER|RULESET_HIGH_IMPACT
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 1,
 		DYNAMIC_TIER_MEDIUMHIGH = 3,
@@ -289,7 +289,7 @@
 	preview_antag_datum = /datum/antagonist/rev/head
 	pref_flag = ROLE_REV_HEAD
 	ruleset_flags = RULESET_HIGH_IMPACT
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 1,
 		DYNAMIC_TIER_MEDIUMHIGH = 3,
@@ -365,7 +365,7 @@
 	config_tag = "Roundstart Spies"
 	preview_antag_datum = /datum/antagonist/spy
 	pref_flag = ROLE_SPY
-	weight = list(
+	weight = alist(
 		DYNAMIC_TIER_LOW = 0,
 		DYNAMIC_TIER_LOWMEDIUM = 1,
 		DYNAMIC_TIER_MEDIUMHIGH = 3,

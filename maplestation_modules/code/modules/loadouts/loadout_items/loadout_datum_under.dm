@@ -343,3 +343,15 @@
 /datum/loadout_item/under/jumpsuit/mvfjumpsuit
 	name = "Pale Jumpsuit"
 	item_path = /obj/item/clothing/under/mvfjumpsuit
+
+/datum/loadout_item/under/plainclothes/redshirt
+	name = "Deep Red Shirt"
+	item_path = /obj/item/clothing/under/jumpsuit/redshirt
+
+/datum/loadout_item/under/formal/designer
+	name = "Designer Outfit"
+	item_path = /obj/item/clothing/under/jumpsuit/designershirt
+
+/datum/loadout_item/under/plainclothes/mercenary
+	name = "Mercenary Uniform"
+	item_path = /obj/item/clothing/under/jumpsuit/merc

@@ -112,7 +112,8 @@ SUBSYSTEM_DEF(vote)
 		"final_winner" = final_winner_string,
 	)
 	log_vote("vote finalized", vote_log_data)
-	to_chat(world, examine_block(span_infoplain(vote_font("[to_display]"))))
+	if(to_display)
+		to_chat(world, span_infoplain(vote_font(to_display)))
 
 	// Finally, doing any effects on vote completion
 	if (final_winner) // if no one voted, or the vote cannot be won, final_winner will be null
@@ -224,7 +225,7 @@ SUBSYSTEM_DEF(vote)
 	var/to_display = current_vote.initiate_vote(vote_initiator_name, duration)
 
 	log_vote(to_display)
-	to_chat(world, examine_block(span_infoplain(vote_font("[span_bold(to_display)]<br>\
+	to_chat(world, custom_boxed_message("purple_box center", span_infoplain(vote_font("[span_bold(to_display)]<br>\
 		Type <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.<br>\
 		You have [DisplayTimeText(duration)] to vote."))))
 

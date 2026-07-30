@@ -166,6 +166,10 @@
 	if(damage_done > 5 && !hitting_projectile.grazing && hitting_projectile.is_hostile_projectile())
 		set_headset_block_if_lower(hitting_projectile.damage_type == STAMINA ? 3 SECONDS : 5 SECONDS)
 
+	if(hitting_projectile.damage_type == BRUTE && damage_done >= 10 && hitting_projectile.speed >= 1 && prob(0.1))
+		var/obj/item/organ/brain/a_brain = locate() in get_bodypart(def_zone)
+		a_brain?.cure_trauma_type(resilience = TRAUMA_RESILIENCE_LOBOTOMY)
+
 	apply_effects(
 		stun = hitting_projectile.stun,
 		knockdown = hitting_projectile.knockdown + extra_knockdown,

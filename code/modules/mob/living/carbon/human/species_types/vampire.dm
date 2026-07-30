@@ -33,7 +33,6 @@
 	. = ..()
 	to_chat(new_vampire, "[info_text]")
 	new_vampire.skin_tone = "albino"
-	new_vampire.update_body(0)
 	RegisterSignal(new_vampire, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(damage_weakness))
 
 /datum/species/vampire/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
@@ -218,7 +217,7 @@
 	if(victim.stat == DEAD)
 		to_chat(user, span_warning("You need a living victim!"))
 		return FALSE
-	if(!istype(victim.get_blood_type(), /datum/blood_type/crew/human)) // NON-MODULE CHANGE
+	if(!istype(victim.blood_type, /datum/blood_type/crew/human)) // NON-MODULE CHANGE
 		to_chat(user, span_warning("[victim] doesn't have valid blood!")) // NON-MODULE CHANGE
 		return FALSE
 	COOLDOWN_START(licker_drinker, drain_cooldown, 3 SECONDS)

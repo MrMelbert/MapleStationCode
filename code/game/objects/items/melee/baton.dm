@@ -75,26 +75,23 @@
 
 	register_item_context()
 
-/obj/item/melee/baton/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_baton_notes))
+/obj/item/melee/baton/examine_weapon_descriptor(mob/user)
+	. = ..()
+	var/stun_strength
+	switch(stamina_damage)
+		if(0)
+			stun_strength = "surprisingly"
+		if(10 to 30)
+			stun_strength = "minimally"
+		if(30 to 60)
+			stun_strength = "moderately"
+		if(60 to 100)
+			stun_strength = "highly"
 
-/obj/item/melee/baton/proc/add_baton_notes()
-	var/list/readout = list()
-
-	if(affect_cyborg)
-		readout += "It can stun cyborgs for [round((stun_time_cyborg/10), 1)] seconds."
-
-	readout += "\n[active ? "It is currently [span_warning("[activated_word]")], and capable of stunning." : "It is [span_warning("not [activated_word]")], and not capable of stunning."]"
-
-	if(stamina_damage <= 0) // The advanced baton actually does have 0 stamina damage so...yeah.
-		readout += "Either is is [span_warning("completely unable to perform a stunning strike")], or it [span_warning("attacks via some unusual method")]."
-		return readout.Join("\n")
-
-	readout += "It takes [span_warning("[HITS_TO_CRIT(stamina_damage)] strike\s")] to stun an enemy."
-
-	readout += "\nThe effects of each strike can be mitigated by utilizing [span_warning("[armour_type_against_stun]")] armor."
-
-	return readout.Join("\n")
+	if(.)
+		. += ", [force < 15 ? "but" : "and"] is [stun_strength] capable at disabling targets[affect_cyborg ? ", including cyborgs" : ""]"
+	else
+		. = "that is [stun_strength] effective at disabling targets[affect_cyborg ? ", including cyborgs" : ""]"
 
 /**
  * Ok, think of baton attacks like a melee attack chain:

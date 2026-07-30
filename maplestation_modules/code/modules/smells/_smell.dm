@@ -19,6 +19,14 @@
 /datum/smell/proc/on_smell(mob/living/whom, intensity)
 	return
 
+/// Returns the text shown when double-examining an atom with this smell
+/datum/smell/proc/get_examine_text(mob/living/for_whom, atom/movable/source, intensity)
+	var/adj = get_adjective(for_whom, intensity)
+	var/cat = get_category(for_whom, intensity)
+	if(adj)
+		return "[source.p_They()] [source.p_are()] emitting \a [adj] [cat] of [text]."
+	return "[source.p_They()] [source.p_are()] emitting \a [cat] of [text]."
+
 /// Returns what adjective to use for the smell for output
 /datum/smell/proc/get_adjective(mob/living/for_whom, intensity)
 	switch(intensity)
@@ -126,3 +134,15 @@
 
 /datum/smell/burnt_food/fryer
 	text = "something acrid"
+
+/datum/smell/perfume
+	text = "perfume"
+	category = "fragrance"
+
+/datum/smell/perfume/on_smell(mob/living/whom, intensity)
+	whom.add_mood_event("perfume-smell", /datum/mood_event/perfume_smell)
+
+/datum/mood_event/perfume_smell
+	description = "What a nice smell."
+	mood_change = 1
+	timeout = 40 SECONDS

@@ -27,6 +27,12 @@
 	tool_behaviour = TOOL_KNIFE
 	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
+	// var/list/alt_continuous = list("stabs", "pierces", "shanks")
+	// var/list/alt_simple = list("stab", "pierce", "shank")
+	// sound_vary = TRUE
+	operating_sound = SFX_KNIFE_SLICE
+	// pickup_sound = SFX_KNIFE_PICKUP
+	// drop_sound = SFX_KNIFE_DROP
 
 /datum/armor/item_knife
 	fire = 50

@@ -36,6 +36,7 @@
 	unsuitable_atmos_damage = 0
 	unsuitable_cold_damage = 0
 	unsuitable_heat_damage = 0
+	initial_blood_type = null
 
 	animate_movement = NO_STEPS // Do not animate movement, you jump around as you're a scary statue.
 	hud_possible = list(ANTAG_HUD)

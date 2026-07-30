@@ -63,7 +63,7 @@
 	gain_text = "<span class='notice'>You no longer have an appendix.</span>"
 	lose_text = "<span class='danger'>You miss your appendix?</span>"
 	medical_record_text = "Patient had appendicitis in the past and has had their appendix surgically removed as a consequence."
-	mail_goodies = list(/obj/item/stack/medical/gauze)
+	mail_goodies = list(/obj/item/stack/medical/wrap/gauze)
 
 /datum/quirk/no_appendix/post_add()
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
@@ -116,3 +116,17 @@
 	if(istype(human_holder))
 		human_holder.sprint_length_max /= 1.5
 		human_holder.sprint_length = human_holder.sprint_length_max
+
+/datum/quirk/power_granting/psionic
+	name = "Psionic"
+	desc = "You are able to manipulate and control the flow of mana with your mind."
+	icon = FA_ICON_HAND_SPOCK // because theres not really many better options, and this one is highly unlikely to be used elsewise
+	value = 2
+	mob_trait = TRAIT_FULL_PSIONIC
+	gain_text = span_notice("You feel as if you can see a form of light you've never seen before.")
+	lose_text = span_danger("You feel as if a part of your being was ripped from you.")
+	medical_record_text = "Patient displays provable extrasensory perception."
+	action_type = /datum/action/cooldown/spell/touch/mana_tap
+
+
+

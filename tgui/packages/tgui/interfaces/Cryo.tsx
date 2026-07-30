@@ -18,7 +18,7 @@ const damageTypes = [
     type: 'bruteLoss',
   },
   {
-    label: 'Respiratory',
+    label: 'Hypoxia',
     type: 'oxyLoss',
   },
   {

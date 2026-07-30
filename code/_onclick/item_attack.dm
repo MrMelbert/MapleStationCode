@@ -216,7 +216,7 @@
 	if(item_flags & NOBLUDGEON)
 		return FALSE
 
-	if(IS_DISABLING_DAMAGE(damtype) && force && HAS_TRAIT(user, TRAIT_PACIFISM))
+	if(!IS_DISABLING_DAMAGE(damtype) && force && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return FALSE
 
@@ -392,7 +392,7 @@
 	return ..() || .
 
 /mob/living/carbon/attack_effects(damage_done, hit_zone, armor_block, obj/item/attacking_item, mob/living/attacker)
-	var/obj/item/bodypart/hit_bodypart = get_bodypart(hit_zone) || bodyparts[1]
+	var/obj/item/bodypart/hit_bodypart = get_bodypart(hit_zone) || get_bodypart()
 	if(!hit_bodypart.can_bleed())
 		return FALSE
 

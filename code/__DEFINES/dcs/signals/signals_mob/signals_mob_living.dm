@@ -310,6 +310,9 @@
 #define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"
 	#define COMPONENT_EXAMINE_NAME_OVERRIDEN (1<<0)
 
+/// From /obj/item/book/bible/attack() : (mob/living/user, obj/item/book/bible/bible, bless_result)
+#define COMSIG_LIVING_BLESSED "living_blessed"
+
 /// From /datum/element/death_drops/on_death(mob/living/target, gibbed) : (list/loot, gibbed)
 #define COMSIG_LIVING_DROP_LOOT "living_drop_loot"
 	/// Prevent loot from being dropped
