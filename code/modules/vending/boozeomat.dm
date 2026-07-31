@@ -91,6 +91,7 @@
 	payment_department = ACCOUNT_SRV
 	light_mask = "boozeomat-light-mask"
 	allow_custom = TRUE
+	department_discount = 0
 
 /obj/machinery/vending/boozeomat/syndicate
 	age_restrictions = FALSE

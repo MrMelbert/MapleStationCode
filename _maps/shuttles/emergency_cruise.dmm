@@ -247,22 +247,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"fo" = (
-/obj/effect/turf_decal/trimline/blue/line{
-	dir = 9
-	},
-/obj/effect/turf_decal/trimline/blue/mid_joiner{
-	dir = 1
-	},
-/obj/structure/window/reinforced/spawner/directional/west,
-/obj/structure/window/reinforced/spawner/directional/south,
-/obj/structure/table/reinforced,
-/obj/item/book/manual/wiki/surgery,
-/obj/item/stack/medical/mesh/advanced,
-/obj/item/stack/medical/wrap/gauze/twelve,
-/obj/item/stack/medical/suture/medicated,
-/turf/open/floor/iron/white/smooth_large,
-/area/shuttle/escape)
 "fA" = (
 /mob/living/basic/drone/snowflake/bardrone,
 /turf/open/floor/wood/parquet,
@@ -533,6 +517,22 @@
 	},
 /obj/structure/railing,
 /turf/open/floor/iron,
+/area/shuttle/escape)
+"lR" = (
+/obj/effect/turf_decal/trimline/blue/line{
+	dir = 9
+	},
+/obj/effect/turf_decal/trimline/blue/mid_joiner{
+	dir = 1
+	},
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/window/reinforced/spawner/directional/south,
+/obj/structure/table/reinforced,
+/obj/item/book/manual/wiki/surgery,
+/obj/item/stack/medical/mesh/advanced,
+/obj/item/stack/medical/wrap/gauze/twelve,
+/obj/item/stack/medical/suture/medicated,
+/turf/open/floor/iron/white/smooth_large,
 /area/shuttle/escape)
 "lZ" = (
 /obj/effect/turf_decal/trimline/dark_blue/filled/corner{
@@ -1325,16 +1325,6 @@
 	},
 /turf/open/floor/plating/elevatorshaft,
 /area/shuttle/escape)
-"CE" = (
-/obj/effect/turf_decal/trimline/blue/line{
-	dir = 5
-	},
-/obj/effect/turf_decal/trimline/blue/mid_joiner{
-	dir = 1
-	},
-/obj/machinery/stasis,
-/turf/open/floor/iron/white/smooth_large,
-/area/shuttle/escape)
 "CJ" = (
 /obj/machinery/sleeper{
 	dir = 8
@@ -1874,6 +1864,18 @@
 /obj/structure/railing/corner,
 /obj/machinery/light/directional/south,
 /turf/open/floor/carpet/red,
+/area/shuttle/escape)
+"Oy" = (
+/obj/effect/turf_decal/trimline/blue/line{
+	dir = 5
+	},
+/obj/effect/turf_decal/trimline/blue/mid_joiner{
+	dir = 1
+	},
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
+/turf/open/floor/iron/white/smooth_large,
 /area/shuttle/escape)
 "OJ" = (
 /turf/open/floor/light/colour_cycle/dancefloor_a,
@@ -3100,7 +3102,7 @@ Aq
 jt
 uJ
 QH
-CE
+Oy
 GT
 jt
 zx
@@ -3146,7 +3148,7 @@ sf
 jt
 yQ
 tg
-fo
+lR
 SN
 sY
 YZ

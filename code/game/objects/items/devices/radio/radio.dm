@@ -275,17 +275,17 @@
 		set_broadcasting(FALSE, actual_setting = FALSE)//fake set them to off
 		set_listening(FALSE, actual_setting = FALSE)
 
-/obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
-	if(SEND_SIGNAL(talking_movable, COMSIG_MOVABLE_USING_RADIO, src) & COMPONENT_CANNOT_USE_RADIO)
+/obj/item/radio/talk_into(atom/movable/speaker, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(SEND_SIGNAL(speaker, COMSIG_MOVABLE_USING_RADIO, src) & COMPONENT_CANNOT_USE_RADIO)
 		return NONE
-	if(SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel) & COMPONENT_CANNOT_USE_RADIO)
+	if(SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, speaker, message, channel) & COMPONENT_CANNOT_USE_RADIO)
 		return NONE
 
 	if(!spans)
-		spans = list(talking_movable.speech_span)
+		spans = list(speaker.speech_span)
 	if(!language)
-		language = talking_movable.get_selected_language()
-	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, LAZYLISTDUPLICATE(spans), language, LAZYLISTDUPLICATE(message_mods))
+		language = speaker.get_selected_language()
+	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), speaker, message, channel, LAZYLISTDUPLICATE(spans), language, LAZYLISTDUPLICATE(message_mods))
 	return ITALICS | REDUCE_RANGE
 
 /**

@@ -1,5 +1,35 @@
 /datum/mana_pool/mana_battery
 	amount = 0
+	intrinsic_recharge_sources = NONE
+	discharge_destinations = NONE
+
+	frail_transfer = TRUE
+	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
+
+/datum/mana_pool/mana_battery/New(...)
+	. = ..()
+	src.check_ruleset_callbacks += CALLBACK(src, PROC_REF(transfer_rule_distance_from_self))
+
+/datum/mana_pool/mana_battery/proc/transfer_rule_distance_from_self(datum/mana_pool/pool, transferred_mana)
+	var/obj/item/mana_battery/battery = parent
+	var/datum/mana_pool/target_pool = pool
+
+	if(!target_pool.parent)
+		return FALSE
+	var/atom/movable/pool_owner = target_pool.parent
+
+	if (!is_valid_z_level(battery, pool_owner))
+		return FALSE
+
+	if (battery.loc == pool_owner.loc)
+		return TRUE
+
+	var/xy_dist = get_dist_euclidian(battery, pool_owner)
+	var/z_dist = abs(battery.z - pool_owner.z)
+	var/total_dist = xy_dist + z_dist
+	if (total_dist > max_allowed_transfer_distance)
+		return FALSE
+	return TRUE
 
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -9,14 +39,14 @@
 	if (battery.loc == target_pool.parent.loc)
 		return TRUE
 
-	if (get_dist(battery, target_pool.parent) > battery.max_allowed_transfer_distance)
+	if (get_dist(battery, target_pool.parent) > max_allowed_transfer_distance)
 		return FALSE
 	return ..()
+
 
 /obj/item/mana_battery
 	name = "generic mana battery"
 	has_initial_mana_pool = TRUE
-	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_battery/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal
@@ -92,7 +122,7 @@
 	name = "Stabilized Volite Crystal"
 	desc = "A stabilized Volite Crystal, one of the few objects capable of stably storing mana without binding."
 	icon_state = "standard"
-	grind_results = list(/datum/reagent/volite_powder = 10)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/standard
@@ -103,7 +133,7 @@
 	name = "Small Volite Crystal"
 	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
 	icon_state = "small"
-	grind_results = list(/datum/reagent/volite_powder = 5)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 5)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/mana_battery/mana_crystal/small/get_initial_mana_pool_type()
@@ -113,7 +143,7 @@
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
-	grind_results = list(/datum/reagent/volite_powder = 10)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
@@ -122,7 +152,7 @@
 	name = "Volitious Lignite"
 	desc = "A natural source of Volite. It is formed not unlike coal, where magical plants has been compressed over millions of years by rock."
 	icon_state = "lignite"
-	grind_results = list(/datum/reagent/volite_powder = 5, /datum/reagent/carbon = 5)
+	grind_results = list(/datum/reagent/medicine/quintessence/volite_powder = 5, /datum/reagent/carbon = 5)
 
 ///Just like coal, if the temperature of the object is over 300, then ignite
 /obj/item/mana_battery/mana_crystal/lignite/attackby(obj/item/W, mob/user, params)
@@ -160,10 +190,12 @@
 
 /datum/mana_pool/mana_star
 	// a special type of mana battery that regenerates passively- but cannot be given mana
-	maximum_mana_capacity = 400 // 400 by default
-	softcap = 400
+	maximum_mana_capacity = 100
+	softcap = 100 // should be equal to maximum cap in this case
 	amount = 0
-	ethereal_recharge_rate = 2 // forgot this was a thing LMFAO
+
+	intrinsic_recharge_sources = MANA_ALL_LEYLINES // originally i was gonna have this be reliable, and have everyone else regen from leylines, but theres a ton of headaches and optimization worries so y'know what, fuck it
+	discharge_destinations = NONE
 
 /obj/item/clothing/neck/mana_star
 	name = "Volite Amulet"

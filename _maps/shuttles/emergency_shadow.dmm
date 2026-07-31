@@ -314,7 +314,9 @@
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/escape)
 "mw" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/shuttle/escape)
 "np" = (
@@ -541,7 +543,9 @@
 /turf/open/floor/iron/dark/small,
 /area/shuttle/escape/engine)
 "Bm" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
