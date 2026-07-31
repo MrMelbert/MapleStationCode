@@ -21,18 +21,27 @@
 	id_additions = list(
 		"scanning_pad",
 		"triage_zone_projector",
-		"vitals_monitor",
 	)
 
 /datum/techweb_node/medbay_equip_adv
 	id_additions = list(
 		"auto_cpr_device",
-		"vitals_monitor_advanced",
+		"neural_suppressor",
+		"medical_scissors_trauma",
 	)
 
 /datum/techweb_node/cryostasis
+	id_removals = list(
+		"stasis",
+	)
 	id_additions = list(
 		"stasis_bodybag",
+		"stasis_pod",
+	)
+
+/datum/techweb_node/alien_surgery
+	id_additions = list(
+		"stasis",
 	)
 
 /datum/techweb_node/surgery_exp
@@ -97,4 +106,5 @@
 /datum/techweb_node/medbay_equip
 	id_additions = list(
 		"plasticmedkit",
+		"medical_scissors",
 	)

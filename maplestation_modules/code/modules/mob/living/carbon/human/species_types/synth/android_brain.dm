@@ -17,6 +17,25 @@
 		return FALSE
 	return TRUE
 
+/obj/item/organ/brain/cybernetic/android/proc/init_law_datum()
+	if(!isnull(law_datum) || isnull(owner) || isdummy(owner))
+		return
+
+	if(owner.dna?.features["android_laws"])
+		var/lawtype = lawid_to_type(owner.dna.features["android_laws"])
+		law_datum = new lawtype()
+		for(var/i in 1 to length(law_datum.inherent))
+			law_datum.inherent[i] = replacetext(law_datum.inherent[i], "human being", "crewmember")
+		if(owner?.is_antag())
+			law_datum.zeroth = "Accomplish your objectives at all costs."
+
+	else
+		law_datum = new()
+
+	add_item_action(/datum/action/item_action/organ_action/check_android_laws)
+	RegisterGlobalSignal(COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
+	RegisterSignal(owner, COMSIG_MOB_ANTAGONIST_GAINED, PROC_REF(add_zeroth_law))
+
 /obj/item/organ/brain/cybernetic/android/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	if(organ_owner.dna?.features["android_emotionless"] && organ_owner.mob_mood)
@@ -24,21 +43,11 @@
 		organ_owner.mob_mood.mood_modifier -= 101
 		emotions_nullified = TRUE
 
-	if(organ_owner.dna?.features["android_laws"] && !isdummy(organ_owner))
-		var/lawtype = lawid_to_type(organ_owner.dna.features["android_laws"])
-		law_datum = new lawtype()
-		for(var/i in 1 to length(law_datum.inherent))
-			law_datum.inherent[i] = replacetext(law_datum.inherent[i], "human being", "crewmember")
-		if(organ_owner.is_antag())
-			law_datum.zeroth = "Accomplish your objectives at all costs."
-		pre_ion_laws = law_datum.inherent.Copy()
-		add_item_action(/datum/action/item_action/organ_action/check_android_laws)
-		if(organ_owner.client)
-			addtimer(CALLBACK(src, PROC_REF(print_laws)), 1 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
-		else
-			RegisterSignal(organ_owner, COMSIG_MOB_LOGIN, PROC_REF(on_login))
-		RegisterGlobalSignal(COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
-		RegisterSignal(organ_owner, COMSIG_MOB_ANTAGONIST_GAINED, PROC_REF(add_zeroth_law))
+	init_law_datum()
+	if(isnull(organ_owner.client))
+		RegisterSignal(organ_owner, COMSIG_MOB_LOGIN, PROC_REF(on_login))
+	else
+		addtimer(CALLBACK(src, PROC_REF(print_laws)), 1 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/organ/brain/cybernetic/android/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
@@ -99,7 +108,7 @@
 	if(QDELETED(law_datum) || isnull(pre_ion_laws))
 		return
 
-	law_datum.inherent = pre_ion_laws
+	law_datum.inherent = pre_ion_laws || list()
 	law_datum.ion.Cut()
 	pre_ion_laws = null
 	print_laws("Your laws have been restored")

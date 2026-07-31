@@ -24,9 +24,6 @@
 
 #define MAX_GRANT_DPT 500
 
-//What should vending machines charge when you buy something in-department.
-#define DEPARTMENT_DISCOUNT 0.2
-
 #define ACCOUNT_CIV "CIV"
 #define ACCOUNT_CIV_NAME "Civil Budget"
 #define ACCOUNT_ENG "ENG"
@@ -93,5 +90,3 @@
 ##path/fifty {\
 	amount = 50; \
 }
-
-

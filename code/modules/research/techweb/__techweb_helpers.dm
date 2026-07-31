@@ -7,7 +7,7 @@
 	return L.len
 
 /proc/node_boost_error(id, message)
-	WARNING("Invalid boost information for node \[[id]\]: [message]")
+	stack_trace("Invalid boost information for node \[[id]\]: [message]")
 	SSresearch.invalid_node_boost[id] = message
 
 ///Returns an associative list of techweb node datums with values of the nodes it unlocks.

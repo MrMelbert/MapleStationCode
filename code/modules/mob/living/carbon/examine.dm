@@ -594,7 +594,7 @@
 	if(build_difference)
 		. += build_difference
 
-	var/agetext = get_age_text()
+	var/agetext = get_age_text(user)
 	if(agetext)
 		. += agetext
 
@@ -619,7 +619,7 @@
 	return texts
 
 /// Reports how old the mob appears to be
-/mob/living/carbon/human/proc/get_age_text()
+/mob/living/carbon/human/proc/get_age_text(mob/user)
 	if(obscured_slots & HIDEFACE)
 		return
 	var/age_text
@@ -636,7 +636,23 @@
 			age_text = "very old"
 		if(101 to INFINITY)
 			age_text = "withering away"
-	. += list(span_info("[p_They()] appear[p_s()] to be [age_text]."))
+
+	var/age_to_you_text
+	if(ishuman(user))
+		var/mob/living/carbon/human/examiner = user
+		switch(age - examiner.age)
+			if(-INFINITY to -16)
+				age_to_you_text = "far younger than you"
+			if(-15 to -6)
+				age_to_you_text = "younger than you"
+			if(-5 to 5)
+				age_to_you_text = "about your age"
+			if(6 to 15)
+				age_to_you_text = "older than you"
+			if(16 to INFINITY)
+				age_to_you_text = "far older than you"
+
+	. += list(span_info("[p_They()] appear[p_s()] to be [age_text][age_to_you_text ? " - [age_to_you_text]" : ""]."))
 
 /// Reports the height difference between src and user
 /mob/living/carbon/proc/get_height_difference(mob/user)
@@ -709,12 +725,13 @@
 
 /// Returns the mob height modified by traits purely
 /mob/living/carbon/human/proc/get_visual_height()
-	. = mob_height + (2 * mob_size)
+	var/height_var = mob_height
 	// these traits don't modify the height so we have to account for them here
 	if(HAS_TRAIT(src, TRAIT_SMALL))
-		. = min(., HUMAN_HEIGHT_DWARF)
+		height_var = min(height_var, HUMAN_HEIGHT_DWARF)
 	if(HAS_TRAIT(src, TRAIT_HUGE) || HAS_TRAIT(src, TRAIT_GIANT))
-		. = max(., HUMAN_HEIGHT_TALLEST)
+		height_var = max(height_var, HUMAN_HEIGHT_TALLEST)
+	return (height_var + (2 * mob_size)) * current_size
 
 /mob/living/carbon/proc/get_build_difference(mob/user)
 	return
