@@ -133,8 +133,7 @@
 				draw_color = human_owner.hair_color
 		// BEGIN NON-MODULE CHANGE
 		if(ORGAN_COLOR_MUTANT_OVERRIDE)
-			var/the_color = mutant_override_color(bodypart_owner)
-			draw_color = the_color
+			draw_color = mutant_override_color(bodypart_owner)
 		// END NON-MODULE CHANGE
 
 	return TRUE
