@@ -131,6 +131,10 @@
 			if(isnull(draw_color) && ishuman(bodypart_owner.owner))
 				var/mob/living/carbon/human/human_owner = bodypart_owner.owner
 				draw_color = human_owner.hair_color
+		// BEGIN NON-MODULE CHANGE
+		if(ORGAN_COLOR_MUTANT_OVERRIDE)
+			draw_color = mutant_override_color(bodypart_owner)
+		// END NON-MODULE CHANGE
 
 	return TRUE
 

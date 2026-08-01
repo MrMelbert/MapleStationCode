@@ -179,6 +179,7 @@
 	name = "dragon wings"
 	desc = "Hey, HEY- NOT lizard wings. Dragon wings. Mighty dragon wings."
 	sprite_accessory_override = /datum/sprite_accessory/wings/dragon
+	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/functional/mutant_color // NON_MODULE CHANGE
 
 ///robotic wings, which relate to androids.
 /obj/item/organ/wings/functional/robotic

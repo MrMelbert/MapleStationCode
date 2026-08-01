@@ -211,6 +211,7 @@
 /datum/bodypart_overlay/mutant/tail/lizard
 	feature_key = "tail_lizard"
 	mesh_in_suits = TRUE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE // NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/tail/lizard/get_global_feature_list()
 	return SSaccessories.tails_list_lizard
@@ -227,6 +228,7 @@
 	var/wagging = FALSE
 	/// Key for tail spine states, depends on the shape of the tail. Defined in the tail sprite datum.
 	var/tail_spine_key = NONE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE // NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/tail_spines/get_global_feature_list()
 	return SSaccessories.tail_spines_list
