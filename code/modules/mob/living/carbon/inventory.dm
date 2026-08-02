@@ -140,8 +140,8 @@
 			update_held_items()
 		if(ITEM_SLOT_BACKPACK)
 			not_handled = TRUE
-			for(var/obj/item/thing in list(get_item_by_slot(ITEM_SLOT_BACKPACK), get_item_by_slot(ITEM_SLOT_BELT)))
-				if(thing.atom_storage?.attempt_insert(equipping, src, override = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED))
+			for(var/obj/item/thing in list(get_item_by_slot(ITEM_SLOT_BACK), get_item_by_slot(ITEM_SLOT_BELT)))
+				if(thing.atom_storage?.attempt_insert(equipping, src, override = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED, messages = !initial && !indirect_action))
 					not_handled = FALSE
 					break
 		else
