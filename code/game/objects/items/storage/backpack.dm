@@ -301,9 +301,9 @@
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
 
 /obj/item/storage/backpack/satchel/equipped(mob/user, slot, initial)
-	. = ..()
 	if(slot & ITEM_SLOT_BELT)
 		AddComponent(/datum/component/slows_with_backpack)
+	return ..()
 
 /obj/item/storage/backpack/satchel/dropped(mob/user, silent)
 	. = ..()
