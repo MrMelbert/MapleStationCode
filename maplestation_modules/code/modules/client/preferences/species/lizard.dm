@@ -95,6 +95,10 @@
 	appearance.layer = -1 * new_layer
 	return appearance
 
+/datum/bodypart_overlay/mutant/horns/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	. += limb.owner?.dna?.features["lizard_horn_layer"] || BODY_ADJ_LAYER
+
 // The preference
 /datum/preference/choiced/lizard_horn_layer
 	savefile_key = "feature_lizard_horn_layer"
@@ -142,6 +146,10 @@
 	var/mutable_appearance/appearance = ..()
 	appearance.layer = -1 * new_layer
 	return appearance
+
+/datum/bodypart_overlay/mutant/frills/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	. += limb.owner?.dna?.features["lizard_frill_layer"] || BODY_ADJ_LAYER
 
 /datum/preference/choiced/lizard_frill_layer
 	savefile_key = "feature_lizard_frill_layer"
