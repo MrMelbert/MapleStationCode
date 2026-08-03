@@ -6398,6 +6398,7 @@
 #include "maplestation_modules\code\game\objects\items\other_loadout_items\loadout_inhand_items.dm"
 #include "maplestation_modules\code\game\objects\items\storage\belt.dm"
 #include "maplestation_modules\code\game\objects\items\storage\boxes.dm"
+#include "maplestation_modules\code\game\objects\items\storage\coatpocket.dm"
 #include "maplestation_modules\code\game\objects\items\storage\garment.dm"
 #include "maplestation_modules\code\game\objects\items\storage\medkit.dm"
 #include "maplestation_modules\code\game\objects\items\storage\pouch.dm"

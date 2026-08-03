@@ -67,7 +67,7 @@
 /obj/item/clothing/suit/toggle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/toggle_icon, toggle_noun)
-	create_storage(max_slots = pocket_slots, max_specific_storage = WEIGHT_CLASS_SMALL)
+	create_storage(storage_type = /datum/storage/coatpocket, max_slots = pocket_slots)
 
 /obj/item/clothing/head/hooded
 	abstract_type = /obj/item/clothing/head/hooded

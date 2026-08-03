@@ -31,7 +31,7 @@
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/toy,
 	)
-	create_storage(max_slots = 3, max_specific_storage = WEIGHT_CLASS_SMALL)
+	create_storage(storage_type = /datum/storage/coatpocket)  // melbert todo : contents moment
 
 /obj/item/clothing/suit/hooded/wintercoat/on_hood_up(obj/item/clothing/head/hooded/hood)
 	. = ..()

@@ -20,7 +20,7 @@
 /obj/item/clothing/suit/jacket/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/pat_out_fire)
-	create_storage(max_slots = pocket_slots, max_specific_storage = WEIGHT_CLASS_SMALL)
+	create_storage(storage_type = /datum/storage/coatpocket, max_slots = pocket_slots)
 
 /obj/item/clothing/suit/toggle/jacket
 	icon = 'icons/obj/clothing/suits/jacket.dmi'

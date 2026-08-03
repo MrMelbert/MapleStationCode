@@ -33,7 +33,7 @@
 
 /obj/item/clothing/suit/apron/Initialize(mapload)
 	. = ..()
-	create_storage(max_slots = 3, max_specific_storage = WEIGHT_CLASS_SMALL)
+	create_storage(storage_type = /datum/storage/coatpocket)
 
 /datum/armor/suit_apron
 	bio = 50
@@ -443,7 +443,7 @@
 
 /obj/item/clothing/suit/atmos_overalls/Initialize(mapload)
 	. = ..()
-	create_storage(max_slots = 3, max_specific_storage = WEIGHT_CLASS_SMALL)
+	create_storage(storage_type = /datum/storage/coatpocket)
 
 /datum/armor/atmos_overalls
 	fire = 100
