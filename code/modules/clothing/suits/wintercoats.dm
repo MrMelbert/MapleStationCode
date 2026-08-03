@@ -12,13 +12,17 @@
 	armor_type = /datum/armor/hooded_wintercoat
 	hood_down_overlay_suffix = "_hood"
 	/// How snug are we?
-	var/zipped = FALSE
+	var/zipped = TRUE
+	/// Hoods are stored in contents, so we have to have a second dummy object that our coat pockets point to to hide that
+	var/obj/storage_pocket_holder
 
 /datum/armor/hooded_wintercoat
 	bio = 10
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
 	. = ..()
+	update_appearance(UPDATE_ICON_STATE)
+	register_context()
 	AddElement(/datum/element/pat_out_fire)
 	allowed += list(
 		/obj/item/flashlight,
@@ -31,32 +35,54 @@
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/toy,
 	)
+	storage_pocket_holder = new(src)
+	storage_pocket_holder.name = "pockets"
 	create_storage(storage_type = /datum/storage/coatpocket)  // melbert todo : contents moment
+	atom_storage.set_real_location(storage_pocket_holder)
 
-/obj/item/clothing/suit/hooded/wintercoat/on_hood_up(obj/item/clothing/head/hooded/hood)
-	. = ..()
-	zipped = TRUE
+/obj/item/clothing/suit/hooded/wintercoat/Destroy()
+	QDEL_NULL(storage_pocket_holder)
+	return ..()
 
-/// Called when the hood is hidden
-/obj/item/clothing/suit/hooded/wintercoat/on_hood_down(obj/item/clothing/head/hooded/hood)
+/obj/item/clothing/suit/hooded/wintercoat/Exited(atom/movable/gone, direction)
 	. = ..()
-	zipped = FALSE
+	if(gone == storage_po1cket_holder)
+		storage_pocket_holder = null
+		if(!QDELING(gone)) // where the hell do you think you're doing
+			qdel(gone)
+
+/obj/item/clothing/suit/hooded/wintercoat/atom_deconstruct(disassembled)
+	storage_pocket_holder?.deconstruct(disassembled) // propagate deconstruction so storage items dump out
+	return ..()
+
+// /obj/item/clothing/suit/hooded/wintercoat/on_hood_up(obj/item/clothing/head/hooded/hood)
+// 	. = ..()
+// 	zipped = TRUE
+
+// /obj/item/clothing/suit/hooded/wintercoat/on_hood_down(obj/item/clothing/head/hooded/hood)
+// 	. = ..()
+// 	zipped = FALSE
+
+
+/obj/item/clothing/suit/hooded/wintercoat/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	context[SCREENTIP_CONTEXT_ALT_RMB] = zipped ? "Unzip" : "Zip"
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/suit/hooded/wintercoat/examine(mob/user)
 	. = ..()
+	. += span_notice("<b>Alt-Right-click</b> to [zipped ? "un" : ""]zip.")
 
-	. += span_notice("<b>Alt-click</b> to [zipped ? "un" : ""]zip.")
+/obj/item/clothing/suit/hooded/wintercoat/update_icon_state()
+	. = ..()
+	worn_icon_state = "[initial(post_init_icon_state) || initial(icon_state)][zipped ? "_t" : ""]"
 
-
-/obj/item/clothing/suit/hooded/wintercoat/click_alt(mob/user)
+/obj/item/clothing/suit/hooded/wintercoat/click_alt_secondary(mob/user)
 	zipped = !zipped
 	playsound(src, 'sound/items/zip_up.ogg', 30, TRUE, -3)
-	worn_icon_state = "[initial(post_init_icon_state) || initial(icon_state)][zipped ? "_t" : ""]"
 	balloon_alert(user, "[zipped ? "" : "un"]zipped")
-
-	if(ishuman(loc))
-		var/mob/living/carbon/human/wearer = loc
-		wearer.update_worn_oversuit()
+	update_appearance(UPDATE_ICON_STATE)
+	update_slot_icon()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/head/hooded/winterhood
