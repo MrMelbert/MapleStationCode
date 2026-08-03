@@ -6,7 +6,7 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	if(to_insert.atom_storage && to_insert.w_class >= parent.w_class - 1 && !force)
+	if(to_insert.atom_storage && to_insert.w_class >= max_specific_storage)
 		if(messages && user)
 			parent.balloon_alert(user, "too big!")
 		return FALSE

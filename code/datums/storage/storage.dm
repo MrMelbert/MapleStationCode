@@ -836,10 +836,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		user.active_storage.hide_contents(user)
 		hide_contents(user)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
-	if(ishuman(user))
-		var/mob/living/carbon/human/hum = user
-		if(hum.l_store == parent || hum.r_store == parent)
-			return
+	// Non-module change: Commented out because it messes with pocket pouches
+	// if(ishuman(user))
+	// 	var/mob/living/carbon/human/hum = user
+	// 	if(hum.l_store == parent || hum.r_store == parent)
+	// 		return
 	if(parent.loc == user)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user)
 		return COMPONENT_CANCEL_ATTACK_CHAIN

@@ -466,6 +466,7 @@
 /obj/item/storage/pill_bottle/Initialize(mapload)
 	. = ..()
 	atom_storage.allow_quick_gather = TRUE
+	atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
 	atom_storage.set_holdable(list(
 		/obj/item/reagent_containers/pill,
 		/obj/item/food/bait/natural,

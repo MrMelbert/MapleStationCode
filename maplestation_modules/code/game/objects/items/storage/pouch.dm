@@ -3,7 +3,9 @@
 	max_slots = 5
 	max_total_storage = 10
 	storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
+	allow_big_nesting = TRUE
 
+// Commented out because people will probably hate this
 // /datum/storage/pouch/can_insert(obj/item/to_insert, mob/user, messages, force)
 // 	. = ..()
 // 	if(!.)
@@ -17,7 +19,7 @@
 /datum/storage/pouch/survival
 	max_specific_storage = WEIGHT_CLASS_TINY
 	max_slots = 5
-	max_total_storage = 8
+	max_total_storage = 9
 
 /datum/storage/pouch/survival/New(atom/parent, max_slots, max_specific_storage, max_total_storage)
 	. = ..()
@@ -61,6 +63,7 @@
 		/obj/item/melee/energy,
 		/obj/item/melee/rune_carver,
 		/obj/item/mining_scanner,
+		/obj/item/modular_computer/pda,
 		/obj/item/multitool,
 		/obj/item/pinpointer,
 		/obj/item/radio,
@@ -86,8 +89,8 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	// items in the exception list are still limited to max storage + 2
-	if(to_insert.w_class >= max_specific_storage + 2)
+	// items in the exception list are still limited
+	if(to_insert.w_class >= WEIGHT_CLASS_NORMAL)
 		if(messages && user)
 			to_insert.balloon_alert(user, "too big!")
 		return FALSE
@@ -110,6 +113,8 @@
 	w_class = POCKET_WEIGHT_CLASS
 	storage_type = /datum/storage/pouch
 	slot_flags = ITEM_SLOT_BELT
+	custom_price = PAYCHECK_COMMAND
+	custom_premium_price = PAYCHECK_COMMAND
 	/// Overlay to apply to the pouch
 	var/overlay_state = ""
 	/// Changes the icon state if an item was recently added or removed to storage
@@ -154,36 +159,29 @@
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(src, TRAIT_EXAMINE_SKIP))
 		return
-	examine_list[type] = "[source.p_They()] [source.p_have()] [examine_title(examiner, href = TRUE)] clipped to [source.p_their()] pocket."
+	examine_list[type] = "[source.p_They()] [source.p_have()] [examine_title(examiner, href = TRUE)] \
+		clipped to [source.p_their()] [source.get_slot_by_item(src) == ITEM_SLOT_LPOCKET ? "left" : "right"] pocket."
 
 /obj/item/storage/pouch/tools
 	name = "tool pouch"
 	desc = "A pocket sized pouch, perfectly capable of holding a few tools."
 	overlay_state = "wrench"
-	custom_price = PAYCHECK_COMMAND
-	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/storage/pouch/pills
 	name = "pill pouch"
 	desc = "A pocket sized pouch, perfect for holding a few pills or small bottles."
 	overlay_state = "writing"
-	custom_price = PAYCHECK_COMMAND
-	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/storage/pouch/sharps
 	name = "sharps pouch"
 	desc = "A pocket sized pouch, perfect for holding a few syringes or small tools."
 	icon_state = "sharps"
 	overlay_state = "syringe"
-	custom_price = PAYCHECK_COMMAND
-	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/storage/pouch/handcuffs
 	name = "handcuff pouch"
 	desc = "A pocket sized pouch, capable of holding an extra pair of handcuffs or a flash."
 	overlay_state = "handcuffs"
-	custom_price = PAYCHECK_COMMAND
-	custom_premium_price = PAYCHECK_COMMAND
 
 /obj/item/storage/pouch/flare
 	name = "flare pouch"
@@ -195,13 +193,17 @@
 	for(var/i in 1 to 5)
 		new /obj/item/flashlight/flare(src)
 
+/obj/item/storage/pouch/botany
+	name = "botany pouch"
+	desc = "A pocket sized pouch, perfect for holding a few seeds, bottles, or small tools."
+	// overlay_state = "botany"
+
 /obj/item/storage/pouch/mining
 	name = "mining pouch"
 	desc = "A pocket sized pouch, made to hold mining supplies."
 	overlay_state = "mining"
-	custom_price = PAYCHECK_COMMAND
-	custom_premium_price = PAYCHECK_COMMAND
 
+// Commented out because they fit already I think
 // /obj/item/storage/pouch/mining/Initialize(mapload)
 // 	. = ..()
 // 	atom_storage.set_holdable(list(
@@ -358,3 +360,14 @@
 	. = ..()
 	new /obj/item/storage/pouch/mining(src)
 	new /obj/item/storage/pouch/mining(src)
+
+/obj/machinery/vending/wardrobe/hydro_wardrobe
+	added_premium = list(
+		/obj/item/storage/pouch/botany = 4,
+	)
+
+/obj/machinery/vending/wardrobe/cargo_wardrobe
+	added_premium = list(
+		/obj/item/storage/pouch = 4,
+		/obj/item/storage/pouch/tools = 2,
+	)

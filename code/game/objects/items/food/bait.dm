@@ -39,6 +39,7 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	inhand_icon_state = "pen"
+	w_class = WEIGHT_CLASS_TINY
 	bait_quality = TRAIT_GREAT_QUALITY_BAIT //this is only here for autowiki purposes, it's removed on init.
 	food_reagents = list(/datum/reagent/drug/kronkaine = 2) //The kronkaine is the thing that makes this a great bait.
 	tastes = list("hypocrisy" = 1)
@@ -89,4 +90,3 @@
 /obj/item/food/bait/doughball/synthetic/unconsumable/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_BAIT_UNCONSUMABLE, INNATE_TRAIT)
-
