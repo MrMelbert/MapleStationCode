@@ -1,6 +1,6 @@
 /datum/storage/coatpocket
 	max_slots = 3
-	max_specific_storage = WEIGHT_CLASS_SMALL
+	max_specific_storage = POCKET_WEIGHT_CLASS
 
 /datum/storage/coatpocket/can_insert(obj/item/to_insert, mob/user, messages, force)
 	. = ..()

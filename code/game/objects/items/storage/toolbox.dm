@@ -81,7 +81,7 @@
 	if (!user.put_in_inactive_hand(picked_item))
 		return ITEM_INTERACT_BLOCKING
 
-	atom_storage.animate_parent()
+	atom_storage.animate_storage()
 	if (istype(picked_item, /obj/item/weldingtool))
 		var/obj/item/weldingtool/welder = picked_item
 		if (!welder.welding)

@@ -14,7 +14,7 @@
 	/// How snug are we?
 	var/zipped = TRUE
 	/// Hoods are stored in contents, so we have to have a second dummy object that our coat pockets point to to hide that
-	var/obj/storage_pocket_holder
+	var/obj/effect/abstract/abstract_storage/coat_pockets/storage_pocket_holder
 
 /datum/armor/hooded_wintercoat
 	bio = 10
@@ -46,7 +46,7 @@
 
 /obj/item/clothing/suit/hooded/wintercoat/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(gone == storage_po1cket_holder)
+	if(gone == storage_pocket_holder)
 		storage_pocket_holder = null
 		if(!QDELING(gone)) // where the hell do you think you're doing
 			qdel(gone)
