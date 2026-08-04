@@ -461,3 +461,15 @@
 	song_name = "Moonshine"
 	song_length = 3 MINUTES + 37 SECONDS
 	song_beat = 1 SECONDS
+
+/datum/track/preset/burning
+	song_path = 'sound/music/lobby_music/burning.ogg'
+	song_name = "Burning"
+	song_length = 2 MINUTES + 32 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/daydream
+	song_path = 'sound/music/lobby_music/daydream.ogg'
+	song_name = "Daydream"
+	song_length = 2 MINUTES + 38 SECONDS
+	song_beat = 1 SECONDS

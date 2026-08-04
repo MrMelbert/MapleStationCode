@@ -1,3 +1,5 @@
+sound/music/lobby_music/burning.ogg
+sound/music/lobby_music/daydream.ogg
 sound/music/lobby_music/monument.ogg
 sound/music/lobby_music/pwmur.ogg
 sound/music/lobby_music/rimward_cruise.ogg

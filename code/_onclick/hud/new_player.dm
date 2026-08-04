@@ -657,4 +657,4 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
 	animate(src, alpha = 0, time = 1 SECONDS)
 
 /atom/movable/screen/lobby_music/proc/update_maptext()
-	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, world.time - start_time), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]s")]"
+	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, world.time - start_time), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]")]"
