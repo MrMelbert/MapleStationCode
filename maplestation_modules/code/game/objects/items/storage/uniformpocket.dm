@@ -10,6 +10,12 @@
 	QDEL_NULL(pockets)
 	return ..()
 
+/obj/item/clothing/under/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
+	. = ..()
+	if(!isnull(held_item) && can_slip_in_pockets(user, held_item))
+		context[SCREENTIP_CONTEXT_RMB] = "Add to pockets"
+		. = CONTEXTUAL_SCREENTIP_SET
+
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
 	if(!pockets)
@@ -23,10 +29,16 @@
 	else if(pockets.r_pocket)
 		. += ("&bull; " + span_notice("You can see [pockets.r_pocket.w_class == WEIGHT_CLASS_TINY ? "something" : "\a [pockets.r_pocket]"] in [p_their()] right pocket."))
 
-/obj/item/clothing/under/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+/obj/item/clothing/under/proc/can_slip_in_pockets(mob/living/user, obj/item/tool)
 	if(tool.w_class > POCKET_WEIGHT_CLASS)
-		return NONE
+		return FALSE
 	if(src == user.get_item_by_slot(slot_flags))
+		return FALSE
+
+	return TRUE
+
+/obj/item/clothing/under/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	if(!can_slip_in_pockets(user, tool))
 		return NONE
 
 	if(isnull(pockets))
