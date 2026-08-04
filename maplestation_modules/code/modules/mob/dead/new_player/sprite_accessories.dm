@@ -380,6 +380,18 @@
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "synthliz"
 
+/datum/sprite_accessory/tails/lizard/dense
+	name = "Dense"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "dense"
+	spine_key = NONE
+
+/datum/sprite_accessory/tails/lizard/thin
+	name = "Thin"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "thin"
+	spine_key = NONE
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns
 	name = "Horns"
