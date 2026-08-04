@@ -1,0 +1,17 @@
+title0.ogg is Endless Space by Solus. It has been licensed under CC-BY 3.0 license. Source file downloaded from https://www.newgrounds.com/audio/listen/74946
+
+title1.mod is Flip-Flap created by Jakub "AceMan" Szeląg and taken from http://aminet.net/package/mods/xceed/Flipflap
+
+title2.ogg is Robocop Theme (gameboy) remixed by Eric Schumacker
+
+title3.ogg is Tintin On The Moon remixed by Cuboos https://tgstation13.org/phpBB/viewtopic.php?f=10&t=2157 (assumed CC under allowing it to be submitted to the github, see thread)
+
+traitor.ogg is Absconditus by Zhay Tee, licensed by CC-BY NC SA 3.0: https://bandcamp.zhaytee.net/track/absconditus
+
+clown.ogg attribution unknown
+
+monument.ogg is Monument by Six Umbrellas, licensed by CC-BY SA 4.0: https://sixumbrellas.bandcamp.com/album/the-psychedelic-and
+
+rimward_cruise.ogg is Rimward Cruise by Mikazu, licensed by CC-BY SA 3.0: https://soundcloud.com/mikazu-1/baystation-12-rimward-cruise
+
+pwmur.ogg is Phoron Will Make Us Rich by Sunbeamstress, licensed by CC-BY NC SA 3.0: https://soundcloud.com/sunbeamstress/phoron-will-make-us-rich
