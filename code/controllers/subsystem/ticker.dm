@@ -918,7 +918,7 @@ SUBSYSTEM_DEF(ticker)
 
 	// if no track is found: get sound length programatically
 	if(!login_length)
-		login_length = rustg_sound_length(new_music) || 1500 // default to 2.5 minutes if we can't get the length
+		login_length = rustg_sound_length(new_music) || (2.5 MINUTES) // default to 2.5 minutes if we can't get the length
 
 	// if no track is found: get the name from the file path
 	if(!music_name)
