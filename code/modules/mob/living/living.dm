@@ -2251,7 +2251,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return
 		to_chat(src, span_warning("There's nothing interesting up there."))
 		return
-	else if(!istransparentturf(ceiling)) //There is no turf we can look through above us
+	else if(!istransparentturf(ceiling) && !HAS_TRAIT(src, TRAIT_XRAY_VISION)) //There is no turf we can look through above us
 		var/turf/front_hole = get_step(ceiling, dir)
 		if(istransparentturf(front_hole))
 			ceiling = front_hole
@@ -2298,7 +2298,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(!lower_level) //We are at the lowest z-level.
 		to_chat(src, span_warning("You can't see through the floor below you."))
 		return
-	else if(!istransparentturf(floor)) //There is no turf we can look through below us
+	else if(!istransparentturf(floor) && !HAS_TRAIT(src, TRAIT_XRAY_VISION)) //There is no turf we can look through below us
 		var/turf/front_hole = get_step(floor, dir)
 		if(istransparentturf(front_hole))
 			floor = front_hole
