@@ -455,3 +455,9 @@
 	song_name = "Plasma Will Make Us Rich" // cheeky rename from Phoron
 	song_length = 2 MINUTES + 14 SECONDS
 	song_beat = 1 SECONDS
+
+/datum/track/preset/moonshine
+	song_path = 'sound/music/lobby_music/moonshine.ogg'
+	song_name = "Moonshine"
+	song_length = 3 MINUTES + 37 SECONDS
+	song_beat = 1 SECONDS

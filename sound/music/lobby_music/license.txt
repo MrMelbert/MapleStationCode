@@ -15,3 +15,5 @@ monument.ogg is Monument by Six Umbrellas, licensed by CC-BY SA 4.0: https://six
 rimward_cruise.ogg is Rimward Cruise by Mikazu, licensed by CC-BY SA 3.0: https://soundcloud.com/mikazu-1/baystation-12-rimward-cruise
 
 pwmur.ogg is Phoron Will Make Us Rich by Sunbeamstress, licensed by CC-BY NC SA 3.0: https://soundcloud.com/sunbeamstress/phoron-will-make-us-rich
+
+moonshine.ogg is Moonshine by mcbalaam, licensed licensed by CC-BY: (originally from the /tg/ discord)
