@@ -1,11 +1,6 @@
 /atom/movable/screen/mov_intent
 	name = "run/walk/sneak cycle"
 	desc = "Cycles between move intents. Right click to cycle backwards."
-	maptext_width = 64
-	maptext_x = -15
-	maptext_y = 20
-	/// Style applied to the maptext used on the selector
-	var/maptext_style = "text-align:center; -dm-text-outline: 1px black"
 	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
 
