@@ -617,19 +617,9 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	plane = SPLASHSCREEN_PLANE
 	screen_loc = "LEFT+0.25,TOP-0.25"
-	/// World time when the current song started playing for this player
-	var/start_time
-	/// World time when the current song will stop playing for this player
-	var/end_time
-	/// Whether we are currently tracking the song's progress for this player
-	var/tracking = FALSE
 
 /atom/movable/screen/lobby_music/New(loc, datum/hud/our_hud, ...)
 	src.hud = our_hud
-	return ..()
-
-/atom/movable/screen/lobby_music/Destroy()
-	tracking = FALSE
 	return ..()
 
 /atom/movable/screen/lobby_music/Initialize(mapload, datum/hud/hud_owner)
@@ -637,24 +627,34 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
 	if(hud?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/volume/sound_lobby_volume) <= 0)
 		alpha = 0 // we still need to init it incase they turn it back on
 
+#define MUSIC_MAPTEXT(for_step) "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, world.time + for_step - start_time), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]")]"
+
 /atom/movable/screen/lobby_music/proc/start_tracking()
+	// cancel active animations
 	animate(src)
-	alpha = 255
-	start_time = world.time
-	end_time = start_time + SSticker.login_length
-	tracking = TRUE
-	while(tracking)
-		update_maptext()
-		if(world.time >= end_time)
-			animate(src, alpha = 0, time = 5 SECONDS)
-			tracking = FALSE
-		else
-			// can't use a timer or processing because it's pre-init
-			stoplag(1 SECONDS)
+
+	var/start_time = world.time
+	var/end_time = start_time + SSticker.login_length
+
+	// adds an animation step every 1 second
+	// (we use animates here so world init won't slow it down.)
+	// a 1 second buffer is added to the end time, just in case we run into weird rounding issues
+	// (start time = 1231, end time = 1300 would mean we skip the last 0.9 seconds of the song, as the last step would be 9.)
+	for(var/i in 0 to (end_time - start_time + 1 SECONDS) step (1 SECONDS))
+		if(i + start_time > end_time)
+			break // we didn't need that 1 second buffer after all
+
+		animate(src,
+			time = 1 SECONDS,
+			maptext = MUSIC_MAPTEXT(i),
+			alpha = 255,
+			flags = ANIMATION_CONTINUE,
+		)
+	// cap off the animation with a text fade
+	animate(src, time = 5 SECONDS, alpha = 0, flags = ANIMATION_CONTINUE)
 
 /atom/movable/screen/lobby_music/proc/cancel_tracking()
-	tracking = FALSE
+	// interrupt any active antimations and then fade out the text
 	animate(src, alpha = 0, time = 1 SECONDS)
 
-/atom/movable/screen/lobby_music/proc/update_maptext()
-	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, world.time - start_time), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]")]"
+#undef MUSIC_MAPTEXT
