@@ -10,6 +10,12 @@
 
 	VAR_PRIVATE/death_timer
 	var/sleep_mode_multiplier = 0.33
+	/// Conversion factor between nutrition -> charge
+	var/nutrition_multiplier = 5
+	/// Conversion factor between booze -> charge
+	var/booze_multiplier = 0.75
+	/// Chance of discharging when overcharged
+	var/discharge_chance = 5
 
 /obj/item/organ/stomach/ethereal/android/emp_act(severity)
 	. = ..()
@@ -68,19 +74,15 @@
 		. += conditional_tooltip("(Critical: Overcharge)", "Await automatic discharge. Stand back once the process begins.", add_tooltips)
 		. = span_bolddanger(.)
 
-/// Conversion factor between nutrition -> charge
-#define NUTRITION_MULTIPLIER 5
-/// Conversion factor between alcohol -> charge
-#define BOOZE_MULTIPLIER 0.75
 
 /obj/item/organ/stomach/ethereal/android/effective_charge()
 	. = ..()
 	for(var/datum/reagent/consumable/biofuel in reagents.reagent_list)
 		if(istype(biofuel, /datum/reagent/consumable/ethanol))
 			var/datum/reagent/consumable/ethanol/ethanol = biofuel
-			. += BOOZE_MULTIPLIER * ethanol.boozepwr * (biofuel.volume / biofuel.metabolization_rate)
+			. += booze_multiplier * ethanol.boozepwr * (biofuel.volume / biofuel.metabolization_rate)
 		else
-			. += NUTRITION_MULTIPLIER * biofuel.nutriment_factor * (biofuel.volume / biofuel.metabolization_rate)
+			. += nutrition_multiplier * biofuel.nutriment_factor * (biofuel.volume / biofuel.metabolization_rate)
 
 /obj/item/organ/stomach/ethereal/android/proc/handle_chemical(mob/living/carbon/source, datum/reagent/chem, seconds_per_tick, times_fired)
 	SIGNAL_HANDLER
@@ -99,19 +101,16 @@
 	// nutriments are transformed into charge, bioreactor style
 	if(istype(chem, /datum/reagent/consumable/ethanol))
 		var/datum/reagent/consumable/ethanol/ethanol_chem = chem
-		cell.give(round(BOOZE_MULTIPLIER * ethanol_chem.boozepwr * seconds_per_tick, 1))
+		cell.give(round(booze_multiplier * ethanol_chem.boozepwr * seconds_per_tick, 1))
 		source.adjust_body_temperature(0.6 KELVIN * seconds_per_tick, max_temp = source.bodytemp_heat_damage_limit)
 
 	else
 		var/datum/reagent/consumable/consumable_chem = chem
-		cell.give(round(NUTRITION_MULTIPLIER * consumable_chem.nutriment_factor * seconds_per_tick, 1))
+		cell.give(round(nutrition_multiplier * consumable_chem.nutriment_factor * seconds_per_tick, 1))
 		source.adjust_body_temperature(0.3 KELVIN * seconds_per_tick, max_temp = source.bodytemp_heat_damage_limit)
 
 	// allows for default handling
 	return NONE
-
-#undef NUTRITION_MULTIPLIER
-#undef BOOZE_MULTIPLIER
 
 /obj/item/organ/stomach/ethereal/android/on_life(seconds_per_tick, times_fired)
 	. = ..()
@@ -170,7 +169,7 @@
 		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
 			carbon.add_mood_event(ALERT_ETHEREAL_CHARGE, /datum/mood_event/android_supercharged)
 			has_flags |= HAS_MOOD_EVENT
-			if(SPT_PROB(5, seconds_per_tick)) // 5% each seacond for ethereals to explosively release excess energy if it reaches dangerous levels
+			if(SPT_PROB(discharge_chance, seconds_per_tick)) // discharge_chance% each second for ethereals to explosively release excess energy if it reaches dangerous levels
 				discharge_process(carbon)
 
 	carbon.hud_used?.hunger?.update_hunger_bar()
