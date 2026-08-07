@@ -17,7 +17,10 @@
 	w_class = WEIGHT_CLASS_SMALL
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5, /datum/material/glass= SMALL_MATERIAL_AMOUNT * 0.2)
+	custom_materials = list(
+		/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.2,
+	)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	action_slots = ALL
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
@@ -435,7 +438,11 @@
 	var/trash_type = /obj/item/trash/flare
 	/// If the light source can be extinguished
 	var/can_be_extinguished = FALSE
-	custom_materials = list(/datum/material/plastic= SMALL_MATERIAL_AMOUNT * 0.5)
+	custom_materials = list(
+		/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/plasma = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 0.5,
+	)
 
 /obj/item/flashlight/flare/Initialize(mapload)
 	. = ..()
@@ -693,6 +700,26 @@
 	slot_flags = null
 	trash_type = /obj/effect/decal/cleanable/ash
 	can_be_extinguished = TRUE
+	custom_materials = list(/datum/material/wood = SMALL_MATERIAL_AMOUNT*0.5)
+
+/obj/item/flashlight/flare/torch/on
+	start_on = TRUE
+
+/obj/item/flashlight/flare/torch/everburning
+	name = "everburning torch"
+	desc = "A torch which burns continuously, even in the vacuum of space"
+	can_be_extinguished = FALSE
+	fuel = INFINITY
+	randomize_fuel = FALSE
+	start_on = TRUE
+	custom_materials = null
+
+/obj/item/flashlight/flare/torch/red
+	color = "#ff0000"
+	light_range = 2
+
+/obj/item/flashlight/flare/torch/red/on
+	start_on = TRUE
 
 /obj/item/flashlight/lantern
 	name = "lantern"
@@ -817,6 +844,7 @@
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	ignore_base_color = TRUE
+	custom_materials = null
 
 /obj/item/flashlight/glowstick/Initialize(mapload)
 	fuel = rand(50 MINUTES, 60 MINUTES)

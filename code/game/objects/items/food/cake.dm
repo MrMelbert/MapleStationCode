@@ -21,7 +21,7 @@
 
 /obj/item/food/cake/make_processable()
 	if (slice_type)
-		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice")
+		AddElement(/datum/element/processable, TOOL_KNIFE, slice_type, yield, 3 SECONDS, table_required = TRUE, screentip_verb = "Slice", sound_to_play = SFX_KNIFE_SLICE)
 
 /obj/item/food/cakeslice
 	icon = 'icons/obj/food/piecake.dmi'
@@ -111,7 +111,7 @@
 		/datum/reagent/consumable/nutriment/protein = 5,
 	)
 	tastes = list("cake" = 4, "cream cheese" = 3)
-	foodtypes = GRAIN | DAIRY
+	foodtypes = GRAIN | DAIRY | SUGAR
 	venue_value = FOOD_PRICE_CHEAP
 	slice_type = /obj/item/food/cakeslice/cheese
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -324,7 +324,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/slimecake
-	name = "Slime cake"
+	name = "slime cake"
 	desc = "A cake made of slimes. Probably not electrified."
 	icon_state = "slimecake"
 	tastes = list("cake" = 5, "sweetness" = 1, "slime" = 1)
@@ -345,7 +345,7 @@
 	desc = "A hollow cake with real pumpkin."
 	icon_state = "pumpkinspicecake"
 	tastes = list("cake" = 5, "sweetness" = 1, "pumpkin" = 1)
-	foodtypes = GRAIN | DAIRY | VEGETABLES | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR|VEGETABLES
 	venue_value = FOOD_PRICE_CHEAP
 	slice_type = /obj/item/food/cakeslice/pumpkinspice
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -355,7 +355,7 @@
 	desc = "A spicy slice of pumpkin goodness."
 	icon_state = "pumpkinspicecakeslice"
 	tastes = list("cake" = 5, "sweetness" = 1, "pumpkin" = 1)
-	foodtypes = GRAIN | DAIRY | VEGETABLES | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR|VEGETABLES
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/berry_vanilla_cake // blackberry strawberries vanilla cake
@@ -456,7 +456,7 @@
 		/datum/reagent/fuel/oil = 15,
 	)
 	tastes = list("acid" = 3, "metal" = 4, "glass" = 5)
-	foodtypes = GRAIN | GROSS
+	foodtypes = GRAIN|DAIRY|SUGAR|GROSS
 	slice_type = /obj/item/food/cakeslice/hardware_cake_slice
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -471,7 +471,7 @@
 		/datum/reagent/fuel/oil = 3,
 	)
 	tastes = list("acid" = 3, "metal" = 4, "glass" = 5)
-	foodtypes = GRAIN | GROSS
+	foodtypes = GRAIN|DAIRY|SUGAR|GROSS
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/vanilla_cake
@@ -485,7 +485,7 @@
 		/datum/reagent/consumable/vanilla = 15,
 	)
 	tastes = list("cake" = 1, "sugar" = 1, "vanilla" = 10)
-	foodtypes = GRAIN | SUGAR | DAIRY
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	slice_type = /obj/item/food/cakeslice/vanilla_slice
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -500,7 +500,7 @@
 		/datum/reagent/consumable/vanilla = 3,
 	)
 	tastes = list("cake" = 1, "sugar" = 1, "vanilla" = 10)
-	foodtypes = GRAIN | SUGAR | DAIRY
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/clown_cake
@@ -513,9 +513,10 @@
 		/datum/reagent/consumable/banana = 15,
 	)
 	tastes = list("cake" = 1, "sugar" = 1, "joy" = 10)
-	foodtypes = GRAIN | SUGAR | DAIRY
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	slice_type = /obj/item/food/cakeslice/clown_slice
 	crafting_complexity = FOOD_COMPLEXITY_5
+	crafted_food_buff = /datum/status_effect/food/trait/waddle
 
 /obj/item/food/cakeslice/clown_slice
 	name = "clown cake slice"
@@ -527,8 +528,9 @@
 		/datum/reagent/consumable/banana = 3,
 	)
 	tastes = list("cake" = 1, "sugar" = 1, "joy" = 10)
-	foodtypes = GRAIN | SUGAR | DAIRY
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_5
+	crafted_food_buff = /datum/status_effect/food/trait/waddle
 
 /obj/item/food/cake/trumpet
 	name = "spaceman's cake"
@@ -542,7 +544,7 @@
 		/datum/reagent/consumable/berryjuice = 5,
 	)
 	tastes = list("cake" = 4, "violets" = 2, "jam" = 2)
-	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR
+	foodtypes = GRAIN|DAIRY|FRUIT|SUGAR|VEGETABLES
 	slice_type = /obj/item/food/cakeslice/trumpet
 	crafting_complexity = FOOD_COMPLEXITY_4
 
@@ -558,7 +560,7 @@
 		/datum/reagent/consumable/berryjuice = 1,
 	)
 	tastes = list("cake" = 4, "violets" = 2, "jam" = 2)
-	foodtypes = GRAIN | DAIRY | FRUIT | SUGAR
+	foodtypes = GRAIN|DAIRY|FRUIT|SUGAR|VEGETABLES
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/cake/brioche

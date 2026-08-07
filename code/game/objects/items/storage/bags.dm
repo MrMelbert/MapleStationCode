@@ -358,6 +358,9 @@
 	custom_price = PAYCHECK_CREW * 0.6
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
+	// sound_vary = TRUE
+	// pickup_sound = SFX_TRAY_PICKUP
+	// drop_sound = SFX_TRAY_DROP
 
 /obj/item/storage/bag/tray/Initialize(mapload)
 	. = ..()

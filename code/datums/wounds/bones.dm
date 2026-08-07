@@ -139,7 +139,7 @@
 	if(!prob((severity - 1) * 15))
 		return NONE
 	// bonus roll if you splint it
-	if(prob(180 * (1 - get_splint_power())))
+	if(prob(180 * (1 - limb.get_splint_factor())))
 		return NONE
 
 	var/painless = !CAN_FEEL_PAIN(victim)
@@ -178,7 +178,7 @@
 	if(footstep_counter >= 8)
 		footstep_counter = 1
 
-	if(get_splint_power() <= 0.75 || !CAN_FEEL_PAIN(victim))
+	if(limb.get_splint_factor() <= 0.75 || !CAN_FEEL_PAIN(victim))
 		return
 	if(limb.body_zone == SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		return
@@ -203,7 +203,7 @@
 
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return NONE
-	if(!CAN_FEEL_PAIN(victim) || get_splint_power() <= 0.75)
+	if(!CAN_FEEL_PAIN(victim) || limb.get_splint_factor() <= 0.75)
 		return NONE
 	var/pain_prob = min(75, 20 * severity * (victim.body_position == LYING_DOWN ? 1.5 : 1))
 	if(!prob(pain_prob))
@@ -224,10 +224,7 @@
 		return
 	if(limb.body_zone != BODY_ZONE_CHEST || !limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-	var/splint_mod = get_splint_power()
-	if(splint_mod < 1)
-		wounding_dmg *= (1 - splint_mod)
-	var/blood_bled = sqrt(wounding_dmg) * (severity * 0.75) * pick(0.75, 1, 1.25) // melbert todo : push upstream
+	var/blood_bled = sqrt(wounding_dmg) * severity * limb.get_splint_factor() * pick(0.66, 0.75, 1) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
 			victim.visible_message(
@@ -257,7 +254,8 @@
 /datum/wound/blunt/bone/modify_desc_before_span(desc)
 	. = ..()
 
-	if (!limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if (!current_gauze)
 		if(taped)
 			. += ", [span_notice("and appears to be reforming itself under some surgical tape!")]"
 		else if(gelled)
@@ -300,7 +298,7 @@
 
 	severity = WOUND_SEVERITY_MODERATE
 	threshold_penalty = 20
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/rib_break
 	scar_keyword = "dislocate"
 	internal_bleeding_chance = 25
@@ -484,7 +482,7 @@
 	limp_slowdown = 6
 	limp_chance = 60
 	threshold_penalty = 30
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/severe
 	scar_keyword = "bluntsevere"
 	brain_trauma_group = BRAIN_TRAUMA_MILD
@@ -527,7 +525,7 @@
 	sound_effect = 'sound/effects/wounds/crack2.ogg'
 	threshold_penalty = 50
 	disabling = TRUE
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/critical
 	scar_keyword = "bluntcritical"
 	brain_trauma_group = BRAIN_TRAUMA_SEVERE
@@ -621,7 +619,7 @@
 	return TRUE
 
 /// if someone is using surgical tape on our wound
-/datum/wound/blunt/bone/proc/tape(obj/item/stack/sticky_tape/surgical/I, mob/user)
+/datum/wound/blunt/bone/proc/tape(obj/item/stack/medical/wrap/sticky_tape/surgical/I, mob/user)
 	if(!gelled)
 		to_chat(user, span_warning("[user == victim ? "Your" : "[victim]'s"] [limb.plaintext_zone] must be coated with bone gel to perform this emergency operation!"))
 		return TRUE
@@ -655,7 +653,7 @@
 /datum/wound/blunt/bone/treat(obj/item/tool, mob/user)
 	if(istype(tool, /obj/item/stack/medical/bone_gel))
 		gel(tool, user)
-	if(istype(tool, /obj/item/stack/sticky_tape/surgical))
+	if(istype(tool, /obj/item/stack/medical/wrap/sticky_tape/surgical))
 		tape(tool, user)
 
 /datum/wound/blunt/bone/get_scanner_description(mob/user)

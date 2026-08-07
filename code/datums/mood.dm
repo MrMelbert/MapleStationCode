@@ -610,6 +610,9 @@
 	else
 		msg += "&bull; [span_grey("I don't have much of a reaction to anything right now.")]<br>"
 
+	if(LAZYLEN(mob_parent.personalities))
+		msg += span_notice("You know yourself to be [mob_parent.get_parsonality_string()].<br>")
+
 	if(LAZYLEN(mob_parent.quirks))
 		msg += span_notice("You have these quirks: [mob_parent.get_quirk_string(FALSE, CAT_QUIRK_ALL)].")
 
@@ -798,20 +801,23 @@
 	switch(esanity)
 		if (0 to 10)
 			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 4)
-			mob_parent.add_client_colour(/datum/client_colour/sanity/tier4, "sanity")
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier4)
 		if (10 to 20)
 			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 3)
-			mob_parent.add_client_colour(/datum/client_colour/sanity/tier3, "sanity")
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier3)
 		if (20 to 30)
 			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 2)
-			mob_parent.add_client_colour(/datum/client_colour/sanity/tier2, "sanity")
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier2)
 		if (30 to 40)
 			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 1)
-			mob_parent.add_client_colour(/datum/client_colour/sanity/tier1, "sanity")
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier1)
 		else
 			mob_parent.clear_fullscreen("sanity")
 			mob_parent.clear_fullscreen("sanity_static")
-			mob_parent.remove_client_colour("sanity")
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier4)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier3)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier2)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier1)
 
 	if(new_screen && old_state != new_screen.icon_state)
 		// updating static effect for new sanity level

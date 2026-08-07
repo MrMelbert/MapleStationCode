@@ -16,6 +16,8 @@
 	var/can_dry = TRUE
 	/// Is this blood dried out?
 	var/dried = FALSE
+	/// Do we delete ourselves when we dry out?
+	var/qdel_on_dry = FALSE
 
 	/// How much our blood glows, up to 255 (it's the alpha of the EM overlay). 0 = no glow
 	var/emissive_alpha = 0
@@ -43,6 +45,9 @@
 	if(mapload || starting_dna)
 		init_dna(starting_dna)
 	if(dried)
+		if(qdel_on_dry)
+			stack_trace("Blood decal set to dry on init but qdel on dry, you probably don't want that?")
+			qdel_on_dry = FALSE
 		dry()
 	else if(can_dry)
 		START_PROCESSING(SSblood_drying, src)
@@ -159,6 +164,8 @@
 	update_atom_colour()
 	STOP_PROCESSING(SSblood_drying, src)
 	clear_smells()
+	if(qdel_on_dry)
+		qdel(src)
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/adjust_bloodiness(by_amount)
@@ -447,7 +454,7 @@
 		for (var/i in 1 to range)
 			var/turf/my_turf = get_turf(src)
 			if(!isgroundlessturf(my_turf) || GET_TURF_BELOW(my_turf))
-				new /obj/effect/decal/cleanable/blood/splatter(my_turf)
+				new /obj/effect/decal/cleanable/blood/splatter(my_turf, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 			if (!step_to(src, get_step(src, direction), 0))
 				break
 		return
@@ -459,7 +466,7 @@
 	SIGNAL_HANDLER
 	if(NeverShouldHaveComeHere(loc))
 		return
-	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases)
+	new /obj/effect/decal/cleanable/blood/splatter(loc, streak_diseases, GET_ATOM_BLOOD_DNA(src))
 
 /obj/effect/decal/cleanable/blood/gibs/up
 	icon_state = "gibup1"

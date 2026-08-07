@@ -159,7 +159,9 @@
 /obj/machinery/defibrillator_mount/loaded{
 	pixel_x = 32
 	},
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "oY" = (
@@ -364,7 +366,9 @@
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "Rg" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/machinery/light/dim/directional/south{
 	brightness = 5;
 	nightshift_brightness = 4

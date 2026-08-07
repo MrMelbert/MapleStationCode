@@ -30,14 +30,10 @@
 	VAR_FINAL/base_pain_decay
 	/// Amount of traumatic shock building up from higher levels of pain
 	VAR_FINAL/traumatic_shock = 0
-	/// Tracks how many successful heart attack rolls in a row
-	VAR_FINAL/heart_attack_counter = 0
 	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
 	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
-	/// Cooldown to track last time heart attack counter went up.
-	COOLDOWN_DECLARE(time_since_last_heart_attack_counter)
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
 	if(!iscarbon(new_parent) || isdummy(new_parent))
@@ -46,7 +42,7 @@
 
 	parent = new_parent
 
-	for(var/obj/item/bodypart/parent_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/parent_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		add_bodypart(parent, parent_bodypart, TRUE)
 
 	register_pain_signals()
@@ -441,7 +437,7 @@
 	var/has_pain = FALSE
 	var/just_cant_feel_anything = !CAN_FEEL_PAIN(parent)
 	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
-	for(var/obj/item/bodypart/checked_bodypart as anything in shuffle(parent.bodyparts))
+	for(var/obj/item/bodypart/checked_bodypart as anything in shuffle(parent.get_bodyparts(include_stumps = TRUE)))
 		if(checked_bodypart.pain <= 0)
 			continue
 		has_pain = TRUE
@@ -522,41 +518,6 @@
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
-	// This is death
-	if(traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD && !parent.undergoing_cardiac_arrest())
-		var/heart_attack_prob = 0
-		if(parent.health <= parent.maxHealth * -1)
-			heart_attack_prob += abs(parent.health + parent.maxHealth) * 0.1
-		if(traumatic_shock >= 180)
-			heart_attack_prob += (traumatic_shock * 0.1)
-		if(SPT_PROB(min(20, heart_attack_prob), seconds_per_tick))
-			if(!COOLDOWN_FINISHED(src, time_since_last_heart_attack_counter))
-				parent.losebreath += 1
-			else if(!parent.can_heartattack())
-				parent.losebreath += 4
-			else if(heart_attack_counter >= 3)
-				to_chat(parent, span_userdanger("Your heart stops!"))
-				if(!parent.incapacitated())
-					parent.visible_message(span_danger("[parent] grabs at [parent.p_their()] chest!"), ignored_mobs = parent)
-				parent.set_heartattack(TRUE)
-				heart_attack_counter = -2
-			else
-				COOLDOWN_START(src, time_since_last_heart_attack_counter, 6 SECONDS)
-				parent.losebreath += 1
-				parent.playsound_local(get_turf(parent), 'sound/effects/singlebeat.ogg', 40, 1, use_reverb = FALSE)
-				heart_attack_counter += 1
-				switch(heart_attack_counter)
-					if(-INFINITY to 0)
-						pass()
-					if(1)
-						to_chat(parent, span_userdanger("Your pulse starts to feel irregular."))
-					if(2)
-						to_chat(parent, span_userdanger("Your heart skips a beat."))
-					else
-						to_chat(parent, span_userdanger("Your body starts shutting down!"))
-	else
-		heart_attack_counter = 0
-
 	parent.paincrit_check()
 
 	// Finally, handle pain decay over time
@@ -576,7 +537,7 @@
 	else
 		natural_pain_decay = base_pain_decay
 
-	for(var/part in parent.bodyparts)
+	for(var/part in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_pain(part, natural_pain_decay * decay_modifier)
 
 /// Affect accuracy of fired guns while in pain.
@@ -702,7 +663,7 @@
 /// Get the total pain of all bodyparts.
 /datum/pain/proc/get_total_pain()
 	var/total_pain = 0
-	for(var/obj/item/bodypart/part as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/part as anything in parent.get_bodyparts(include_stumps = TRUE))
 		total_pain += part.pain
 
 	return total_pain
@@ -747,7 +708,7 @@
 	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
 		return
 
-	for(var/obj/item/bodypart/healed_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/healed_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_min_pain(healed_bodypart, -INFINITY)
 		adjust_bodypart_pain(healed_bodypart, -INFINITY)
 		// Shouldn't be necessary but you never know!
@@ -773,7 +734,7 @@
 	SIGNAL_HANDLER
 
 	parent.adjust_traumatic_shock(traumatic_shock * -0.66)
-	for(var/obj/item/bodypart/revived_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/revived_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		adjust_bodypart_pain(revived_bodypart, revived_bodypart.pain * -0.9)
 
 /**
@@ -882,7 +843,7 @@
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
 	final_print += "[parent] bodypart printout: (min / current)"
-	for(var/obj/item/bodypart/checked_bodypart as anything in parent.bodyparts)
+	for(var/obj/item/bodypart/checked_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
 		final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain]"
 
 	final_print += " - - - - "

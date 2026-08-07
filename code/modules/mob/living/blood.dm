@@ -64,7 +64,6 @@
 					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.9)
-				add_consciousness_modifier(BLOOD_LOSS, -10)
 				adjust_traumatic_shock(0.5 * seconds_per_tick)
 				if(getOxyLoss() < 100)
 					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding - some of this will be recovered
@@ -73,7 +72,6 @@
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.6)
-				add_consciousness_modifier(BLOOD_LOSS, -20)
 				adjust_traumatic_shock(1 * seconds_per_tick)
 				if(getOxyLoss() < 150)
 					adjustOxyLoss(3)
@@ -84,7 +82,6 @@
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 				add_max_consciousness_value(BLOOD_LOSS, CONSCIOUSNESS_MAX * 0.2)
-				add_consciousness_modifier(BLOOD_LOSS, -50)
 				adjust_traumatic_shock(3 * seconds_per_tick)
 				set_eye_blur_if_lower(20 SECONDS)
 				// Unconscious(10 SECONDS)
@@ -103,18 +100,16 @@
 	var/temp_bleed = 0
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		var/iter_bleed_rate = iter_part.cached_bleed_rate
-		temp_bleed += iter_bleed_rate * seconds_per_tick
-
-		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
-			iter_part.adjustBleedStacks(-1)
+		temp_bleed += iter_part.cached_bleed_rate * seconds_per_tick
+		if(iter_part.generic_bleedstacks > 0) // If you don't have any bleedstacks, don't try and heal them
+			iter_part.adjust_bleed_stacks(-1)
 
 	if(temp_bleed)
 		bleed(temp_bleed)
 
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
-	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
+	for(var/obj/item/bodypart/iter_part as anything in get_bodyparts())
 		iter_part.update_part_wound_overlay()
 
 /// Makes a blood drop, leaking amt units of blood from the mob
@@ -138,11 +133,12 @@
 	return 0
 
 /mob/living/carbon/get_bleed_rate()
-	var/bleed_amt = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/iter_bodypart = X
-		bleed_amt += iter_bodypart.cached_bleed_rate
-	return bleed_amt
+	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return 0
+
+	. = 0
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts(include_stumps = TRUE))
+		. += bodypart.cached_bleed_rate
 
 /mob/living/carbon/human/get_bleed_rate()
 	. = ..()
@@ -152,10 +148,9 @@
 	blood_volume = initial(blood_volume)
 
 /mob/living/carbon/restore_blood()
-	blood_volume = BLOOD_VOLUME_NORMAL
-	for(var/i in bodyparts)
-		var/obj/item/bodypart/BP = i
-		BP.setBleedStacks(0)
+	. = ..()
+	for(var/obj/item/bodypart/bodypart_to_restore as anything in get_bodyparts(include_stumps = TRUE))
+		bodypart_to_restore.set_bleed_stacks(0)
 	handle_blood(SSmobs.wait) // updates modifiers and whatnot
 
 /****************************************************
@@ -193,7 +188,7 @@
 		return
 
 	var/update_needed = FALSE
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		for(var/obj/item/organ/organ_bit in part)
 			if(IS_ORGANIC_ORGAN(organ_bit) || isandroid(src))
 				organ_bit.blood_dna_info = get_blood_dna_list()

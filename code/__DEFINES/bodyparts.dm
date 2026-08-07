@@ -163,3 +163,14 @@ DEFINE_BITFIELD(surgery_state, list(
 #define BIOSTATE_HAS_VESSELS (BIO_BLOODED|BIO_WIRED)
 /// Checks if a bodypart lacks both blood and wires, meaning it has no vessels to manipulate.
 #define LIMB_HAS_VESSELS(limb) (limb?.biological_state & BIOSTATE_HAS_VESSELS)
+
+/// How much blood is lost from unclamped vessels?
+#define UNCLAMPED_VESSELS_BLEEDING 1.5
+/// How much blood is lost from clamped vessels or cut organs?
+#define CLAMPED_VESSELS_BLEEDING 0.2
+
+// Limb item categories
+/// Gauze slot, asserted to be wrap items
+#define LIMB_ITEM_GAUZE "gauze"
+/// Tourniquet slot
+#define LIMB_ITEM_TOURNIQUET "tourniquet"

@@ -19,9 +19,9 @@
 		if(overwrite_eyes || isnull(initial(peepers.eye_color_right)))
 			peepers.eye_color_right = target.eye_color_right
 
-	if(HAS_TRAIT(target, TRAIT_USES_SKINTONES))
+	if(HAS_TRAIT(target, TRAIT_USES_SKINTONES) || HAS_TRAIT(src, TRAIT_USES_SKINTONES))
 		skin_tone = target.skin_tone
-	else if(HAS_TRAIT(target, TRAIT_MUTANT_COLORS))
+	else if(HAS_TRAIT(target, TRAIT_MUTANT_COLORS) || HAS_TRAIT(src, TRAIT_MUTANT_COLORS))
 		skin_tone = ""
 		if(target_species.fixed_mut_color)
 			species_color = target_species.fixed_mut_color

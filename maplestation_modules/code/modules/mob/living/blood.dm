@@ -106,8 +106,41 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	return type
 
 /// Gets data to pass to a reagent
-/datum/blood_type/proc/get_blood_data(mob/living/sampled_from)
-	return null
+/datum/blood_type/proc/get_blood_data(mob/living/carbon/sampled_from)
+	if(!ispath(reagent_type, /datum/reagent/blood))
+		return null // not until we get that element
+
+	var/list/blood_data = list()
+	// generic stuff
+	blood_data["blood_type"] = type
+	blood_data["blood_DNA"] = sampled_from.dna.unique_enzymes
+
+	// virus stuff
+	blood_data["resistances"] = LAZYLISTDUPLICATE(sampled_from.disease_resistances)
+	blood_data["viruses"] = list()
+	for(var/datum/disease/disease as anything in sampled_from.diseases)
+		blood_data["viruses"] += disease.Copy()
+
+	// unused but cool
+	var/list/chem_list = list()
+	for(var/datum/reagent/trace_chem as anything in sampled_from.reagents.reagent_list)
+		chem_list[trace_chem.type] = trace_chem.volume
+	blood_data["trace_chem"] = list2params(chem_list)
+
+	// pod cloning stuff
+	blood_data["quirks"] = list()
+	for(var/datum/quirk/sample_quirk as anything in sampled_from.quirks)
+		blood_data["quirks"] += sample_quirk.type
+
+	blood_data["ckey"] = sampled_from.ckey || ckey(sampled_from.last_mind?.key)
+	blood_data["cloneable"] = !HAS_TRAIT_FROM(sampled_from, TRAIT_SUICIDED, REF(sampled_from))
+	blood_data["factions"] = sampled_from.faction
+	blood_data["features"] = sampled_from.dna.features
+	blood_data["gender"] = sampled_from.gender
+	blood_data["mind"] = sampled_from.mind || sampled_from.last_mind
+	blood_data["real_name"] = sampled_from.real_name
+
+	return blood_data
 
 /**
  * Used to handle any unique facets of blood spawned of this blood type
@@ -118,8 +151,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * Arguments
  * * blood - the blood being set up
  * * new_splat - whether this is a newly instantiated blood decal, or an existing one this blood is being added to
+ * * only_type - whether this blood decal is only of this blood type, or if it has other blood types mixed in
  */
-/datum/blood_type/proc/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+/datum/blood_type/proc/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE, only_type = TRUE)
 	return
 
 /**
@@ -197,38 +231,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/crew/human
 	salgu_compatible = TRUE
 
-/datum/blood_type/crew/human/get_blood_data(mob/living/carbon/sampled_from)
-	if(!istype(sampled_from) || isnull(sampled_from.dna))
-		return ..()
-
-	var/list/blood_data = list()
-	//set the blood data
-	blood_data["viruses"] = list()
-
-	for(var/datum/disease/disease as anything in sampled_from.diseases)
-		blood_data["viruses"] += disease.Copy()
-
-	blood_data["blood_DNA"] = sampled_from.dna.unique_enzymes
-	blood_data["resistances"] = LAZYLISTDUPLICATE(sampled_from.disease_resistances)
-
-	var/list/temp_chem = list()
-	for(var/datum/reagent/trace_chem as anything in sampled_from.reagents.reagent_list)
-		temp_chem[trace_chem.type] = trace_chem.volume
-	blood_data["trace_chem"] = list2params(temp_chem)
-
-	blood_data["mind"] = sampled_from.mind || sampled_from.last_mind
-	blood_data["ckey"] = sampled_from.ckey || ckey(sampled_from.last_mind?.key)
-	blood_data["cloneable"] = !HAS_TRAIT_FROM(sampled_from, TRAIT_SUICIDED, REF(sampled_from))
-	blood_data["blood_type"] = sampled_from.dna.human_blood_type
-	blood_data["gender"] = sampled_from.gender
-	blood_data["real_name"] = sampled_from.real_name
-	blood_data["features"] = sampled_from.dna.features
-	blood_data["factions"] = sampled_from.faction
-	blood_data["quirks"] = list()
-	for(var/datum/quirk/sample_quirk as anything in sampled_from.quirks)
-		blood_data["quirks"] += sample_quirk.type
-	return blood_data
-
 /datum/blood_type/crew/human/a_minus
 	name = "A-"
 	compatible_types = list(
@@ -301,7 +303,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	restoration_chem = /datum/reagent/silver
 	scent_text = null
 
-/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	blood.can_dry = FALSE
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
 
@@ -323,7 +325,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	salgu_compatible = TRUE
 	scent_text = null
 
-/datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
 	if(!new_splat)
 		return
@@ -357,7 +359,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	restoration_chem = /datum/reagent/fuel/oil
 	scent_text = /datum/smell/oil
 
-/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
@@ -402,6 +404,11 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	salgu_compatible = TRUE
 	scent_text = null
 
+/datum/blood_type/water/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
+	if(!new_splat || !only_type)
+		return
+	blood.qdel_on_dry = TRUE
+
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
@@ -410,7 +417,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	scent_text = /obj/effect/abstract/smell/reagent/lube::name
 	scent_category = /obj/effect/abstract/smell/reagent/lube::category
 
-/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat, only_type)
 	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
 		return
 	var/slip_amt = new_splat ? 4 SECONDS : 1 SECONDS

@@ -9,15 +9,17 @@
 	sound_effect = 'sound/weapons/slice.ogg'
 
 /datum/wound/slash/wound_injury(datum/wound/old_wound, attack_direction)
-	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(!old_wound && current_gauze && (wound_flags & ACCEPTS_GAUZE))
 		// oops your existing gauze got cut through! need a new one now
-		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
+		limb.seep_gauze(initial(current_gauze.absorption_capacity) * 0.8)
 	return ..()
 
 /datum/wound/slash/get_self_check_description(self_aware, medical_skill, list/obj/item/covering)
 	if(!limb.can_bleed())
 		return ..()
-	if(limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
 		return ""
 
 	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
@@ -119,21 +121,22 @@
 	return ..()
 
 /datum/wound/slash/flesh/get_wound_description(mob/user)
-	if(!limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(!current_gauze)
 		return ..()
 
 	var/list/msg = list("The cuts on [victim.p_their()] [limb.plaintext_zone] are wrapped with ")
 	// how much life we have left in these bandages
-	switch(limb.current_gauze.absorption_capacity)
+	switch(current_gauze.absorption_capacity)
 		if(0 to 1.25)
-			msg += "nearly ruined"
+			msg += "nearly ruined "
 		if(1.25 to 2.75)
-			msg += "badly worn"
+			msg += "badly worn "
 		if(2.75 to 4)
-			msg += "slightly bloodied"
+			msg += "slightly bloodied "
 		if(4 to INFINITY)
-			msg += "clean"
-	msg += " [limb.current_gauze.name]!"
+			msg += "clean "
+	msg += "[current_gauze.name]!"
 
 	return "<B>[msg.Join()]</B>"
 
@@ -151,9 +154,11 @@
 	// compare with being at 100 brute damage before, where you bled (brute/100 * 2), = 2 blood per tile
 	var/bleed_amt = min(blood_flow * 0.1, 1) // 3 * 3 * 0.1 = 0.9 blood total, less than before! the share here is .3 blood of course.
 
-	if(limb.current_gauze) // gauze stops all bleeding from dragging on this limb, but wears the gauze out quicker
-		limb.seep_gauze(bleed_amt * 0.33)
-		return
+	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_TOURNIQUET)) // tourniquets stop all bleeding and don't wear out
+		return 0
+
+	if(limb.seep_gauze(bleed_amt * 0.33)) // gauze stops all bleeding from dragging on this limb, but wears the gauze out quicker
+		return 0
 
 	return bleed_amt
 
@@ -163,7 +168,7 @@
 		return BLOOD_FLOW_STEADY
 	if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 		return BLOOD_FLOW_INCREASING
-	if(limb.current_gauze || clot_rate > 0)
+	if(LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE) || clot_rate > 0)
 		return BLOOD_FLOW_DECREASING
 	if(clot_rate < 0)
 		return BLOOD_FLOW_INCREASING
@@ -182,8 +187,9 @@
 		if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 			adjust_blood_flow(0.25) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first
 
-	if(limb.current_gauze)
-		var/gauze_power = limb.current_gauze.absorption_rate
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze?.absorption_rate)
+		var/gauze_power = current_gauze.absorption_rate
 		limb.seep_gauze(gauze_power * seconds_per_tick)
 		adjust_blood_flow(-gauze_power * seconds_per_tick)
 

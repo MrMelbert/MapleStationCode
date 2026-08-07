@@ -18,6 +18,7 @@
 #define BUGS (1<<17)
 #define GORE (1<<18)
 #define STONE (1<<19)
+#define EGG (1<<20)
 
 DEFINE_BITFIELD(foodtypes, list(
 	"MEAT" = MEAT,
@@ -40,6 +41,7 @@ DEFINE_BITFIELD(foodtypes, list(
 	"BUGS" = BUGS,
 	"GORE" = GORE,
 	"STONE" = STONE,
+	"EGG" = EGG,
 ))
 
 /// A list of food type names, in order of their flags
@@ -64,6 +66,7 @@ DEFINE_BITFIELD(foodtypes, list(
 	"BUGS", \
 	"GORE", \
 	"STONE", \
+	"EGG", \
 )
 
 /// IC meaning (more or less) for food flags
@@ -88,6 +91,7 @@ DEFINE_BITFIELD(foodtypes, list(
 	"Bugs", \
 	"Gore", \
 	"Rocks", \
+	"Eggs", \
 )
 
 #define DRINK_REVOLTING 1
@@ -137,11 +141,9 @@ GLOBAL_ALIST_INIT(food_buffs, alist(
 	),
 	FOOD_COMPLEXITY_4 = list(
 		/datum/status_effect/food/haste = 1,
-		/datum/status_effect/food/trait/shockimmune = 1,
 	),
 	FOOD_COMPLEXITY_5 = list(
 		/datum/status_effect/food/haste = 1,
-		/datum/status_effect/food/trait/shockimmune = 2,
 	),
 ))
 

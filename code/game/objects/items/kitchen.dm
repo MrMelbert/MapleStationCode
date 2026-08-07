@@ -38,6 +38,9 @@
 	sharpness = SHARP_POINTY
 	var/datum/reagent/forkload //used to eat omelette
 	custom_price = PAYCHECK_LOWER
+	sound_vary = TRUE
+	pickup_sound = SFX_CUTLERY_PICKUP
+	drop_sound = SFX_CUTLERY_DROP
 
 /datum/armor/kitchen_fork
 	fire = 50
@@ -169,8 +172,11 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_CREW * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
-	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+	// drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	// pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+	// sound_vary = TRUE
+	pickup_sound = SFX_ROLLING_PIN_PICKUP
+	drop_sound = SFX_ROLLING_PIN_DROP
 
 /obj/item/kitchen/rollingpin/illegal
 	name = "metal rolling pin"
@@ -208,6 +214,9 @@
 	custom_price = PAYCHECK_LOWER * 2
 	tool_behaviour = TOOL_MINING
 	toolspeed = 25 // Literally 25 times worse than the base pickaxe
+	sound_vary = TRUE
+	pickup_sound = SFX_CUTLERY_PICKUP
+	drop_sound = SFX_CUTLERY_DROP
 
 	var/spoon_sip_size = 5
 

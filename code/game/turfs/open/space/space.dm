@@ -134,8 +134,8 @@ GLOBAL_LIST_EMPTY(starlight)
 		return FALSE
 	return TRUE
 
-/turf/open/space/handle_slip()
-	return
+/turf/open/space/handle_slip(mob/living/carbon/slipper, knockdown_amount, obj/slippable, lube, paralyze_amount, force_drop)
+	return FALSE
 
 /turf/open/space/attackby(obj/item/C, mob/user, params)
 	..()

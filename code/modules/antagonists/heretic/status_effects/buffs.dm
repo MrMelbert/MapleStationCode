@@ -64,7 +64,9 @@
 		return
 	var/mob/living/carbon/carbie = owner
 
-	for(var/BP in carbie.bodyparts)
+	carbie.adjustBruteLoss(-0.5 * seconds_between_ticks, updating_health = FALSE)
+	carbie.adjustFireLoss(-0.5 * seconds_between_ticks, updating_health = FALSE)
+	for(var/BP in carbie.get_bodyparts())
 		var/obj/item/bodypart/part = BP
 		for(var/W in part.wounds)
 			var/datum/wound/wound = W

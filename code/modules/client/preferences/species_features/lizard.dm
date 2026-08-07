@@ -127,7 +127,7 @@
 		correct_legs[BODY_ZONE_R_LEG] = target.dna.species.digitigrade_legs[BODY_ZONE_R_LEG]
 		correct_legs[BODY_ZONE_L_LEG] = target.dna.species.digitigrade_legs[BODY_ZONE_L_LEG]
 
-	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
+	for(var/obj/item/bodypart/old_part as anything in target.get_bodyparts())
 		if(old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES)
 			continue
 

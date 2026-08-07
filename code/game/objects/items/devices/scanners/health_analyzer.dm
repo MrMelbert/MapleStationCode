@@ -1,12 +1,3 @@
-// Describes the three modes of scanning available for health analyzers
-#define SCANMODE_HEALTH 0
-#define SCANMODE_WOUND 1
-#define SCANMODE_COUNT 2 // Update this to be the number of scan modes if you add more
-#define SCANNER_CONDENSED 0
-#define SCANNER_VERBOSE 1
-// Not updating above count because you're not meant to switch to this mode.
-#define SCANNER_NO_MODE -1
-
 /obj/item/healthanalyzer
 	name = "health analyzer"
 	icon = 'icons/obj/devices/scanner.dmi'
@@ -148,9 +139,6 @@
  * tochat - Whether to immediately post the result into the chat of the user, otherwise it will return the results.
  */
 /proc/healthscan(mob/user, mob/living/target, mode = SCANNER_VERBOSE, advanced = FALSE, tochat = TRUE)
-	if(user.incapacitated())
-		return
-
 	// the final list of strings to render
 	var/list/render_list = list()
 
@@ -196,7 +184,7 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		var/any_damage = brute_loss > 0 || fire_loss > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0
-		var/any_missing = length(carbontarget.bodyparts) < (carbontarget.dna?.species?.max_bodypart_count || 6)
+		var/any_missing = length(carbontarget.get_missing_limbs())
 		var/any_wounded = length(carbontarget.all_wounds)
 		var/any_embeds = carbontarget.has_embedded_objects()
 		if(any_damage || (mode == SCANNER_VERBOSE && (any_missing || any_wounded || any_embeds)))
@@ -369,7 +357,7 @@
 			var/mob/living/carbon/human/humantarget = target
 			needs_heart = humantarget.needs_heart()
 
-		var/bp_format = "[bp[1]]/[bp[2]]" + span_slightly_smaller("mmHg")
+		var/bp_format = "[bp[2]]/[bp[1]]" + span_slightly_smaller("mmHg")
 		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)]" + span_slightly_smaller("cl") // round to 0.1 but also print "100.0" and not "100"
 		var/blood_type_format = "[target_blood_type.name]"
 
@@ -396,6 +384,10 @@
 				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Alert: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
 			if(-INFINITY to BLOOD_VOLUME_BAD)
 				level_format = conditional_tooltip(span_alert(span_bold("[level_format] (Critical: Hypovolemic shock)")), "Supply [/datum/reagent/medicine/salglu_solution::name] and resanguinate via IV.", tochat)
+
+		var/bleeding_rate = needs_heart && target.get_bleed_rate()
+		if(bleeding_rate > 0)
+			level_format += span_slightly_smaller(span_alert(" (-[round_and_format_decimal(bleeding_rate, 0.01)] cl/s)"))
 
 		if(tochat && length(target_blood_type.compatible_types))
 			var/list/compatible_types_readable = list()
@@ -509,9 +501,6 @@
 	scanner_busy = FALSE
 
 /proc/chemscan(mob/living/user, mob/living/target, tochat = TRUE) // NON-MODULE CHANGE
-	if(user.incapacitated())
-		return
-
 	if(istype(target) && target.reagents)
 		var/list/render_list = list() //The master list of readouts, including reagents in the blood/stomach, addictions, quirks, etc.
 		var/list/render_block = list() //A second block of readout strings. If this ends up empty after checking stomach/blood contents, we give the "empty" header.
@@ -570,13 +559,11 @@
 				render_list += "<span class='alert ml-1'>Subject is extremely allergic to the following chemicals:</span><br>"
 				render_list += "<span class='alert ml-2'>[allergies]</span><br>"
 
-		// NON-MODULE CHANGE
+		// we handled the last <br> so we don't need handholding
 		if(tochat)
-			// we handled the last <br> so we don't need handholding
 			to_chat(user, custom_boxed_message("blue_box", jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 		else
 			return jointext(render_list, "")
-		// NON-MODULE CHANGE END
 
 /obj/item/healthanalyzer/click_alt(mob/user)
 	if(mode == SCANNER_NO_MODE)
@@ -788,13 +775,6 @@
 		to_chat(user, span_notice(render.Join("")))
 		scanner.emotion = AID_EMOTION_WARN
 		playsound(scanner, 'sound/machines/twobeep.ogg', 50, FALSE)
-
-#undef SCANMODE_HEALTH
-#undef SCANMODE_WOUND
-#undef SCANMODE_COUNT
-#undef SCANNER_CONDENSED
-#undef SCANNER_VERBOSE
-#undef SCANNER_NO_MODE
 
 #undef AID_EMOTION_NEUTRAL
 #undef AID_EMOTION_HAPPY

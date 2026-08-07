@@ -264,12 +264,14 @@
 	infodisplay += spacesuit
 
 	healths = new /atom/movable/screen/healths(null, src)
+	healths.name = "heart rate"
 	infodisplay += healths
 
 	hunger = new /atom/movable/screen/hunger(null, src)
 	infodisplay += hunger
 
 	healthdoll = new /atom/movable/screen/healthdoll/human(null, src)
+	healthdoll.name = "body status"
 	infodisplay += healthdoll
 /*
 	stamina = new /atom/movable/screen/stamina(null, src)

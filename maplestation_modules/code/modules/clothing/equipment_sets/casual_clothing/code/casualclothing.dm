@@ -9,7 +9,7 @@
 	inhand_icon_state = "hoodie"
 	supports_variations_flags = NONE
 
-/datum/loadout_item/under/jumpsuit/hoodie
+/datum/loadout_item/under/plainclothes/hoodie
 	name = "Workout Hoodie"
 	item_path = /obj/item/clothing/under/jumpsuit/casualhoodie
 
@@ -25,7 +25,7 @@
 	supports_variations_flags = NONE
 	can_adjust = FALSE
 
-/datum/loadout_item/under/jumpsuit/casualdress
+/datum/loadout_item/under/formal/casualdress
 	name = "Casual Dress"
 	item_path = /obj/item/clothing/under/jumpsuit/blueskirt
 
@@ -69,10 +69,6 @@
 /datum/loadout_item/neck/casual_cloak
 	name = "Fuzzy Cloak"
 	item_path = /obj/item/clothing/neck/cloak/casual
-
-/datum/loadout_item/neck/casual_cloak/get_item_information()
-	. = ..()
-	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/clothing/glasses/sunglasses/casual
 	name = "casual sunglasses"
