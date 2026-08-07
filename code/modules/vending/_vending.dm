@@ -70,6 +70,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	light_power = 0.7
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	voice_filter = "alimiter=0.9,acompressor=threshold=0.2:ratio=20:attack=10:release=50:makeup=2,highpass=f=1000"
+	examine_feedback_on_ui = TRUE
 
 	/// Is the machine active (No sales pitches if off)!
 	var/active = 1
@@ -222,6 +223,9 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 
 	///Whether this vendor can be selected when building a custom vending machine
 	var/allow_custom = FALSE
+
+	/// Discount applied to people buying non-premium items from their own department's vendor
+	var/department_discount = 0.2
 
 /datum/armor/machinery_vending
 	melee = 20
@@ -1027,7 +1031,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 			if (!iscarbon(atom_target))
 				return FALSE
 			var/mob/living/carbon/carbon_target = atom_target
-			for(var/obj/item/bodypart/squish_part in carbon_target.bodyparts)
+			for(var/obj/item/bodypart/squish_part in carbon_target.get_bodyparts())
 				var/severity = pick(WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_SEVERE, WOUND_SEVERITY_CRITICAL)
 				if (!carbon_target.cause_wound_of_type_and_severity(WOUND_BLUNT, squish_part, severity, wound_source = "crushed by [src]"))
 					carbon_target.apply_damage(30, BRUTE, squish_part)
@@ -1206,7 +1210,7 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	data["onstation"] = onstation
 	data["all_products_free"] = all_products_free
 	data["department"] = payment_department
-	data["jobDiscount"] = DEPARTMENT_DISCOUNT
+	data["jobDiscount"] = department_discount
 	data["product_records"] = list()
 	data["displayed_currency_icon"] = displayed_currency_icon
 	data["displayed_currency_name"] = displayed_currency_name
@@ -1450,7 +1454,8 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	item_record.amount--
-	if(usr.CanReach(src) && try_put_in_hand(vended_item, usr))
+	var/sigreturn = SEND_SIGNAL(usr, COMSIG_MOB_VENDING_PURCHASE, src, vended_item)
+	if(!(sigreturn & VENDING_NO_PICKUP) && usr.CanReach(src) && try_put_in_hand(vended_item, usr))
 		to_chat(usr, span_notice("You take [item_record.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(format_text(item_record.name))] falls onto the floor!"))
@@ -1485,9 +1490,9 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 		return FALSE
 	var/datum/bank_account/account = paying_id_card.registered_account
 	if(account.account_job && account.account_job.paycheck_department == payment_department && !discountless)
-		price_to_use = max(round(price_to_use * DEPARTMENT_DISCOUNT), 1) //No longer free, but signifigantly cheaper.
+		price_to_use = max(round(price_to_use * department_discount), 0) //No longer free, but signifigantly cheaper.
 	if(coin_records.Find(product_to_vend) || hidden_records.Find(product_to_vend))
-		price_to_use = product_to_vend.custom_premium_price ? product_to_vend.custom_premium_price : extra_price
+		price_to_use = product_to_vend.custom_premium_price || extra_price
 	if(LAZYLEN(product_to_vend.returned_products))
 		price_to_use = 0 //returned items are free
 	if(price_to_use && (attempt_charge(src, mob_paying, price_to_use) & COMPONENT_OBJ_CANCEL_CHARGE))
@@ -1589,26 +1594,13 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 /obj/machinery/vending/proc/pre_throw(obj/item/thrown_item)
 	return
 
-/**
- * Shock the passed in user
- *
- * This checks we have power and that the passed in prob is passed, then generates some sparks
- * and calls electrocute_mob on the user
- *
- * Arguments:
- * * user - the user to shock
- * * shock_chance - probability the shock happens
- */
-/obj/machinery/vending/proc/shock(mob/living/user, shock_chance)
-	if(!istype(user) || machine_stat & (BROKEN|NOPOWER)) // unpowered, no shock
+/obj/machinery/vending/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	if(machine_stat & (BROKEN|NOPOWER))
 		return FALSE
-	if(!prob(shock_chance))
-		return FALSE
-	do_sparks(5, TRUE, src)
-	if(electrocute_mob(user, get_area(src), src, 0.7, dist_check = TRUE))
-		return TRUE
-	else
-		return FALSE
+	if(isnull(siemens_coeff))
+		siemens_coeff = 0.7
+	return ..()
+
 /**
  * Are we able to load the item passed in
  *

@@ -30,6 +30,8 @@ type VendingData = {
   access: boolean;
   vending_machine_input: CustomInput[];
   categories: Record<string, Category>;
+  // NON-MODULE CHANGE
+  theme: string | null;
 };
 
 type Category = {
@@ -85,6 +87,7 @@ export const Vending = (props) => {
     coin_records = [],
     hidden_records = [],
     categories,
+    theme,
   } = data;
 
   const [selectedCategory, setSelectedCategory] = useState(
@@ -129,7 +132,7 @@ export const Vending = (props) => {
   );
 
   return (
-    <Window width={431} height={635}>
+    <Window width={431} height={635} theme={theme || undefined}>
       <Window.Content>
         <Stack fill vertical>
           {!!onstation && (
@@ -386,24 +389,25 @@ const ProductPrice = (props) => {
   const { act, data } = useBackend<VendingData>();
   const { access, displayed_currency_name } = data;
   const { custom, discount, free, product, redPrice } = props;
-  const customPrice = access ? 'Free' : product.price;
+  const free_text = 'Free';
+  const customPrice = access ? free_text : product.price;
   let standardPrice = product.price;
   if (free) {
-    standardPrice = 'Free';
+    standardPrice = free_text;
   } else if (discount) {
-    standardPrice = redPrice;
+    standardPrice = redPrice <= 0 ? free_text : redPrice;
   }
   return (
     <Stack.Item fontSize={0.85} color={'gold'}>
       {custom ? (
         <>
           {customPrice}
-          {!access && displayed_currency_name}
+          {customPrice !== free_text && displayed_currency_name}
         </>
       ) : (
         <>
           {standardPrice}
-          {!free && displayed_currency_name}
+          {standardPrice !== free_text && displayed_currency_name}
         </>
       )}
     </Stack.Item>

@@ -92,3 +92,6 @@
 
 /datum/job/ai/get_radio_information()
 	return "Prefix your message with <b>:[MODE_KEY_BINARY]</b> to speak with cyborgs and other AIs."
+
+/datum/job/ai/on_respawn(mob/new_character)
+	new_character.AIize()

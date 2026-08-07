@@ -44,7 +44,7 @@
 
 
 	var/list/robot_parts = list()
-	for (var/obj/item/bodypart/possible_part as anything in target.bodyparts)
+	for (var/obj/item/bodypart/possible_part as anything in target.get_bodyparts())
 		if ((possible_part.bodytype & BODYTYPE_ROBOTIC) && !(possible_part.body_zone in exclusions)) //only robot limbs and only if they're not crucial to our like, ongoing life, you know?
 			robot_parts += possible_part
 
@@ -54,7 +54,7 @@
 
 	var/obj/item/bodypart/limb_to_detach = tgui_input_list(target, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
 	if (QDELETED(src) || QDELETED(target) || QDELETED(limb_to_detach) || limb_to_detach.owner != target)
-		return 
+		return
 
 	if (length(limb_to_detach.wounds) >= 1)
 		target.balloon_alert(target, "can't detach wounded limbs!")

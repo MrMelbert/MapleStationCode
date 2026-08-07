@@ -113,7 +113,12 @@ const HealthStat = (props: HealthStatProps) => {
 
 export const CrewConsole = () => {
   return (
-    <Window title="Crew Monitor" width={600} height={600}>
+    <Window
+      title="Crew Monitor"
+      width={600}
+      height={600}
+      theme="operating_computer" // NON-MODULE CHANGE
+    >
       <Window.Content scrollable>
         <Section minHeight="540px">
           <CrewTable />

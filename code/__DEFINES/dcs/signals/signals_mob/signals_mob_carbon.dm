@@ -34,10 +34,6 @@
 ///from /obj/item/bodypart/proc/receive_damage, sent from the limb owner (limb, brute, burn)
 #define COMSIG_CARBON_LIMB_DAMAGED "carbon_limb_damaged"
 	#define COMPONENT_PREVENT_LIMB_DAMAGE (1 << 0)
-/// from /obj/item/bodypart/proc/apply_gauze(/obj/item/stack/gauze): (/obj/item/stack/medical/gauze/applied_gauze, /obj/item/stack/medical/gauze/stack_used)
-#define COMSIG_BODYPART_GAUZED "bodypart_gauzed"
-/// from /obj/item/stack/medical/gauze/Destroy(): (/obj/item/stack/medical/gauze/removed_gauze)
-#define COMSIG_BODYPART_UNGAUZED "bodypart_ungauzed"
 
 /// Called from bodypart changing owner, which could be on attach or detachment. Either argument can be null. (mob/living/carbon/new_owner, mob/living/carbon/old_owner)
 #define COMSIG_BODYPART_CHANGED_OWNER "bodypart_changed_owner"
@@ -62,6 +58,15 @@
 /// From /obj/item/bodypart/proc/update_limb(): (dropping_limb, is_creating)
 #define COMSIG_BODYPART_UPDATED "bodypart_updated"
 
+/// Sent to a limb when something *attempts* to change its surgery state (old_state, new_state, changed_states)
+#define COMSIG_BODYPART_UPDATING_SURGERY_STATE "bodypart_updating_surgery_state"
+
+/// Called from /obj/item/bodypart/proc/get_limb_icon(dropped) : (list/limb_icons, dropped, mob/living/carbon/update_on)
+#define COMSIG_BODYPART_GET_LIMB_ICON "bodypart_get_limb_icon"
+
+/// Called from /obj/item/bodypart/proc/generate_icon_key() : (list/icon_keys)
+#define COMSIG_BODYPART_GENERATE_ICON_KEY "bodypart_generate_icon_key"
+
 ///from base of mob/living/carbon/soundbang_act(): (list(intensity))
 #define COMSIG_CARBON_SOUNDBANG "carbon_soundbang"
 ///from /item/organ/proc/Insert() (/obj/item/organ/)
@@ -85,6 +90,8 @@
 #define COMSIG_CARBON_LOSE_ADDICTION "carbon_lose_addiction"
 ///Called when a carbon gets a brain trauma (source = carbon, trauma = what trauma was added) - this is before on_gain()
 #define COMSIG_CARBON_GAIN_TRAUMA "carbon_gain_trauma"
+	/// Return if you want to prevent the carbon from gaining the brain trauma.
+	#define COMSIG_CARBON_BLOCK_TRAUMA (1 << 0)
 ///Called when a carbon loses a brain trauma (source = carbon, trauma = what trauma was removed)
 #define COMSIG_CARBON_LOSE_TRAUMA "carbon_lose_trauma"
 ///Called when a carbon's health hud is updated. (source = carbon, shown_health_amount)
@@ -107,20 +114,22 @@
 #define COMSIG_CARBON_MOOD_UPDATE "carbon_mood_update"
 ///Called when a carbon attempts to eat (eating)
 #define COMSIG_CARBON_ATTEMPT_EAT "carbon_attempt_eat"
-	// Prevents the breath
-	#define COMSIG_CARBON_BLOCK_EAT (1 << 0)
+	// Prevents eating the food
+	#define BLOCK_EAT_ATTEMPT (1 << 0)
 ///Called when a carbon vomits : (distance, force)
 #define COMSIG_CARBON_VOMITED "carbon_vomited"
 ///Called from apply_overlay(cache_index, overlay)
 #define COMSIG_CARBON_APPLY_OVERLAY "carbon_apply_overlay"
 ///Called from remove_overlay(cache_index, overlay)
 #define COMSIG_CARBON_REMOVE_OVERLAY "carbon_remove_overlay"
+///Called when a carbon checks their mood
+#define COMSIG_CARBON_MOOD_CHECK "carbon_mod_check"
 
 // /mob/living/carbon/human signals
 
 ///Applied preferences to a human
 #define COMSIG_HUMAN_PREFS_APPLIED "human_prefs_applied"
-///Whenever EquipRanked is called, called after job is set
+///Whenever equip_ranked is called, called after job is set
 #define COMSIG_JOB_RECEIVED "job_received"
 ///from /datum/species/handle_fire. Called when the human is set on fire and burning clothes and stuff
 #define COMSIG_HUMAN_BURNING "human_burning"
@@ -173,3 +182,11 @@
 /// from /obj/item/toy/crayon/spraycan/use_on(target, user, modifiers): (atom/target, mob/user)
 #define COMSIG_CARBON_SPRAYPAINTED "comsig_carbon_spraypainted"
 	#define COMPONENT_CANCEL_SPRAYPAINT (1<<0)
+
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacker, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_GOT_PUNCHED "human_got_punched"
+/// Called from /datum/species/proc/harm(): (mob/living/carbon/human/attacked, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking)
+#define COMSIG_HUMAN_PUNCHED "human_punched"
+
+//from base of [/obj/effect/particle_effect/fluid/smoke/proc/smoke_mob]: (seconds_per_tick)
+#define COMSIG_CARBON_EXPOSED_TO_SMOKE "carbon_exposed_to_smoke"

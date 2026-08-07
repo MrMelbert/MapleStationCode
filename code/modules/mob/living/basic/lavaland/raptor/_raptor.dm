@@ -202,7 +202,7 @@ GLOBAL_LIST_EMPTY(raptor_population)
 	. = ..()
 	if(SSmapping.is_planetary())
 		return
-	if(is_mining_level(old_turf.z) && !is_mining_level(new_turf.z))
+	if(is_mining_level(old_turf?.z) && !is_mining_level(new_turf?.z))
 		visible_message(span_warning("[src] looks uncomfortable as it leaves the warmth of Lavaland."))
 
 /mob/living/basic/raptor/examine(mob/user)

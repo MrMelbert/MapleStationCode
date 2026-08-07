@@ -46,6 +46,7 @@
 	unique_name = TRUE
 	hud_possible = list(ANTAG_HUD)
 	hud_type = /datum/hud/revenant
+	initial_blood_type = null
 
 	/// The icon we use while just floating around.
 	var/icon_idle = "revenant_idle"
@@ -117,7 +118,7 @@
 
 	var/static/cached_string = null
 	if(isnull(cached_string))
-		cached_string = examine_block(jointext(create_login_string(), "\n"))
+		cached_string = boxed_message(jointext(create_login_string(), "\n"))
 
 	to_chat(src, cached_string, type = MESSAGE_TYPE_INFO)
 
@@ -125,8 +126,7 @@
 		return TRUE
 
 	generated_objectives_and_spells = TRUE
-	mind.set_assigned_role(SSjob.GetJobType(/datum/job/revenant))
-	mind.special_role = ROLE_REVENANT
+	mind.set_assigned_role(SSjob.get_job_type(/datum/job/revenant))
 	SEND_SOUND(src, sound('sound/effects/ghost.ogg'))
 	mind.add_antag_datum(/datum/antagonist/revenant)
 	return TRUE

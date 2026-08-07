@@ -17,13 +17,27 @@
 	affected_by_pitch = FALSE
 
 /datum/emote/living/carbon/clap/get_sound(mob/living/user)
-	if(!user.get_bodypart(BODY_ZONE_L_ARM) || !user.get_bodypart(BODY_ZONE_R_ARM))
-		return
-	return pick(
+	if(user.usable_hands >= 2)
+		return pick(get_clap_sounds())
+	return null
+
+/datum/emote/living/carbon/clap/proc/get_clap_sounds()
+	return list(
 		'sound/misc/clap1.ogg',
 		'sound/misc/clap2.ogg',
 		'sound/misc/clap3.ogg',
 		'sound/misc/clap4.ogg',
+	)
+
+/datum/emote/living/carbon/clap/slow
+	key = "slowclap"
+	key_third_person = "slowclaps"
+	message = "slowly claps."
+	audio_cooldown = 8 SECONDS
+
+/datum/emote/living/carbon/clap/slow/get_clap_sounds()
+	return list(
+		'sound/machines/slowclap.ogg',
 	)
 
 /datum/emote/living/carbon/crack

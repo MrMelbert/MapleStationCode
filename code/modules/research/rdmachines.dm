@@ -7,6 +7,7 @@
 	icon = 'icons/obj/machines/research.dmi'
 	density = TRUE
 	use_power = IDLE_POWER_USE
+	examine_feedback_on_ui = TRUE
 
 	///Are we currently printing a machine
 	var/busy = FALSE

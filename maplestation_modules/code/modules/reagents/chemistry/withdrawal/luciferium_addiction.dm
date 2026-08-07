@@ -18,12 +18,6 @@
 	medium_withdrawal_moodlet = /datum/mood_event/luciferium_medium
 	severe_withdrawal_moodlet = /datum/mood_event/luciferium_heavy
 
-/datum/addiction/luciferium/process_addiction(mob/living/carbon/affected_carbon, seconds_per_tick, times_fired)
-	if(HAS_TRAIT(affected_carbon, TRAIT_STASIS))
-		return
-
-	return ..()
-
 /datum/addiction/luciferium/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.2)

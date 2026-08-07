@@ -52,11 +52,12 @@
 
 /datum/wires/mod/ui_act(action, params)
 	var/obj/item/mod/control/mod = holder
-	if(!issilicon(usr) && mod.seconds_electrified && mod.shock(usr))
+	if(!issilicon(usr) && mod.seconds_electrified && mod.shock(usr, 100))
 		return FALSE
 	return ..()
 
 /datum/wires/mod/can_reveal_wires(mob/user)
-	if(HAS_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
+	// NON-MODULE CHANGE
+	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

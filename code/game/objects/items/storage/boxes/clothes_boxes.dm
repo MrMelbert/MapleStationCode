@@ -35,7 +35,7 @@
 	new /obj/item/clothing/head/wizard/tape/fake(src)
 	new /obj/item/clothing/suit/wizrobe/tape/fake(src)
 	new /obj/item/staff/tape(src)
-	new /obj/item/stack/sticky_tape(src)
+	new /obj/item/stack/medical/wrap/sticky_tape(src)
 
 /obj/item/storage/box/fakesyndiesuit
 	name = "boxed space suit and helmet"
@@ -46,11 +46,6 @@
 /obj/item/storage/box/fakesyndiesuit/PopulateContents()
 	new /obj/item/clothing/head/syndicatefake(src)
 	new /obj/item/clothing/suit/syndicatefake(src)
-
-/obj/item/storage/box/syndie_kit/space_dragon/PopulateContents()
-	new /obj/item/dna_probe/carp_scanner(src)
-	new /obj/item/clothing/suit/hooded/carp_costume/spaceproof/old(src)
-	new /obj/item/clothing/mask/gas/carp(src)
 
 /obj/item/storage/box/deputy
 	name = "box of deputy armbands"

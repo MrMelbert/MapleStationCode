@@ -1217,12 +1217,39 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 			return TRUE
 	return FALSE
 
-/// Round a number to a specific decimal place, while maintaining the decimal if rounded to x.0
-/// EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
-/// EX. round_and_format_decimal(1.0, 0.1) -> "1.0" (NOT "1")
-/// Returns a string
-/proc/round_and_format_decimal(input_number, round_to = 0.1)
-	var/input_rounded = round(input_number, round_to)
-	if(round(input_rounded %% 1, round_to) == 0)
-		return "[input_rounded].0"
-	return "[input_rounded]"
+///
+/**
+ * Round a number to a specific decimal place, while maintaining the decimal place in the output string, even if it's a whole number.
+ *
+ * EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
+ * EX. round_and_format_decimal(1, 1) -> "1.0"
+ * EX. round_and_format_decimal(1.253, 1, 2) -> "1.00"
+ *
+ * Arguments:
+ * * input_number - The number to round and format.
+ * * round_to - The value to round the number to.
+ * * forced_decimal_places - Optional.
+ * If unset, we just use the decimal place of the round_to argument.
+ * If set, we use the decimal place specified by this argument, and round_to is only used for the rounding.
+ *
+ * Returns a string
+ */
+/proc/round_and_format_decimal(input_number, round_to = 0.1, forced_decimal_place)
+	var/rounded_string = "[round(input_number, round_to)]"
+	var/round_to_string = "[round_to]"
+	// this just allows you to do round_and_format_decimal(1.0, 1) to get "1.0" instead of "1"
+	if(round_to %% 1 == 0 && isnull(forced_decimal_place))
+		round_to_string += ".0"
+
+	var/new_decimal_place = isnum(forced_decimal_place) ? forced_decimal_place : (length_char(round_to_string) - findtext(round_to_string, "."))
+	var/existing_decimal_place = findtext(rounded_string, ".")
+
+	if(existing_decimal_place > 0)
+		for(var/i in 1 to new_decimal_place - (length_char(rounded_string) - existing_decimal_place))
+			rounded_string += "0"
+	else
+		rounded_string += "."
+		for(var/i in 1 to new_decimal_place)
+			rounded_string += "0"
+
+	return rounded_string

@@ -3,6 +3,7 @@
 	desc = "..."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = null
+	abstract_type = /obj/item/reagent_containers
 	w_class = WEIGHT_CLASS_TINY
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
@@ -58,8 +59,12 @@
 		volume = vol
 	create_reagents(volume, reagent_flags)
 	if(spawned_disease)
-		var/datum/disease/F = new spawned_disease()
-		var/list/data = list("viruses"= list(F))
+		var/list/data = list(
+			"viruses"= new spawned_disease(),
+			"blood_DNA" = "UNKNOWN HUMAN DNA",
+			"blood_type" = random_human_blood_type(),
+			"resistances" = null,
+		)
 		reagents.add_reagent(/datum/reagent/blood, disease_amount, data)
 	add_initial_reagents()
 

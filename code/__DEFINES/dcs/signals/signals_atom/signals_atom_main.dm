@@ -11,6 +11,8 @@
 #define COMSIG_ATOM_EXAMINE "atom_examine"
 ///from base of atom/examine_tags(): (/mob, list/examine_tags)
 #define COMSIG_ATOM_EXAMINE_TAGS "atom_examine_tags"
+///from base of atom/examine_post_descriptor(): (/mob, list/examine_text, list/materials)
+#define COMSIG_ATOM_EXAMINE_POST_DESCRIPTOR "atom_examine_post_descriptor"
 ///from base of atom/get_examine_name(): (/mob, list/overrides)
 #define COMSIG_ATOM_GET_EXAMINE_NAME "atom_examine_name"
 	//Positions for overrides list

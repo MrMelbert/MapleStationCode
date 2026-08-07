@@ -132,6 +132,7 @@
 		organ_owner.update_body_parts()
 		organ_owner.clear_mood_event(BRAIN_DAMAGE)
 		organ_owner.remove_consciousness_modifier(BRAIN_DAMAGE)
+		organ_owner.med_hud_set_status()
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s [initial(name)]"
@@ -268,12 +269,12 @@
 		trauma_desc += capitalize(trauma.scan_desc)
 		LAZYADD(trauma_text, trauma_desc)
 	if(LAZYLEN(trauma_text))
-		return "Mental trauma: [english_list(trauma_text, and_text = ", and ")]."
+		return span_alert("Trauma: [english_list(trauma_text, and_text = ", and ")].")
 
-/obj/item/organ/brain/feel_for_damage(self_aware)
+/obj/item/organ/brain/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return ""
-	if(self_aware)
+	if(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE)
 		if(damage < high_threshold)
 			return span_warning("Your brain hurts a bit.")
 		return span_warning("Your brain hurts a lot.")
@@ -332,9 +333,21 @@
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death(null, "total [BRAIN_DAMAGE]")
 
+/obj/item/organ/brain/on_bodypart_insert(obj/item/bodypart/limb)
+	. = ..()
+	if(ishuman(limb.owner))
+		limb.owner.update_hair()
+	else
+		limb.update_icon_dropped()
+
 /obj/item/organ/brain/on_bodypart_remove(obj/item/bodypart/limb, movement_flags)
 	. = ..()
-	update_brain_color(animate = FALSE) // once it's out in the world we need to make sure it's the right color
+	if(ishuman(limb.owner))
+		limb.owner.update_hair()
+	else
+		limb.update_icon_dropped()
+	// once it's out in the world we need to make sure it's the right color
+	update_brain_color(animate = FALSE)
 
 /obj/item/organ/brain/apply_organ_damage(damage_amount, maximum = maxHealth, required_organ_flag = NONE)
 	. = ..()
@@ -605,8 +618,10 @@
 
 	add_trauma_to_traumas(actual_trauma)
 	if(owner)
+		if(SEND_SIGNAL(owner, COMSIG_CARBON_GAIN_TRAUMA, trauma, resilience) & COMSIG_CARBON_BLOCK_TRAUMA)
+			qdel(actual_trauma)
+			return null
 		actual_trauma.owner = owner
-		SEND_SIGNAL(owner, COMSIG_CARBON_GAIN_TRAUMA, actual_trauma)
 		actual_trauma.on_gain()
 	if(resilience)
 		actual_trauma.resilience = resilience

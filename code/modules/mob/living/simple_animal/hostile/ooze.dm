@@ -27,6 +27,7 @@
 	mob_size = MOB_SIZE_LARGE
 	initial_language_holder = /datum/language_holder/slime
 	footstep_type = FOOTSTEP_MOB_SLIME
+	initial_blood_type = /datum/blood_type/slime
 	///Oozes have their own nutrition. Changes based on them eating
 	var/ooze_nutrition = 50
 	var/ooze_nutrition_loss = -0.15

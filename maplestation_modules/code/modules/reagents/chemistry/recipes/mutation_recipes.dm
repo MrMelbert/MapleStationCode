@@ -57,7 +57,3 @@ Disabled as synths don't exist
 /datum/chemical_reaction/mutation_toxin/skrell_mutation
 	results = list(/datum/reagent/mutationtoxin/skrell = 2)
 	required_reagents = list(/datum/reagent/unstable_mutation = 1, /datum/reagent/toxin/carpotoxin = 1) //i dunno i just picked a fish thing because skrell have tentacles
-
-/datum/chemical_reaction/mutation_toxin/reploid_mutation
-	results = list(/datum/reagent/mutationtoxin/reploid = 2)
-	required_reagents = list(/datum/reagent/unstable_mutation = 1, /datum/reagent/silicon = 1)

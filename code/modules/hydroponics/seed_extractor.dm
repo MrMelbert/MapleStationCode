@@ -48,6 +48,7 @@
 	icon_state = "sextractor"
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/seed_extractor
+	examine_feedback_on_ui = TRUE
 	/// Associated list of seeds, they are all weak refs.  We check the len to see how many refs we have for each
 	// seed
 	var/list/piles = list()

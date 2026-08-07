@@ -10,7 +10,7 @@
 	..()
 	to_chat(finder, span_warning("You found an unknown alien organism in [owner]'s [zone]!"))
 
-/obj/item/organ/body_egg/feel_for_damage(self_aware)
+/obj/item/organ/body_egg/feel_for_damage(self_aware, medical_skill)
 	// keep these stealthy for now, revisit later
 	return ""
 
@@ -19,14 +19,14 @@
 	if(iscarbon(loc))
 		Insert(loc)
 
-/obj/item/organ/body_egg/mob_insert(mob/living/carbon/egg_owner, special = FALSE, movement_flags = DELETE_IF_REPLACED)
+/obj/item/organ/body_egg/on_mob_insert(mob/living/carbon/egg_owner, special = FALSE, movement_flags = DELETE_IF_REPLACED)
 	. = ..()
 
 	egg_owner.add_traits(list(TRAIT_XENO_HOST, TRAIT_XENO_IMMUNE), ORGAN_TRAIT)
 	egg_owner.med_hud_set_status()
 	INVOKE_ASYNC(src, PROC_REF(AddInfectionImages), egg_owner)
 
-/obj/item/organ/body_egg/mob_remove(mob/living/carbon/egg_owner, special, movement_flags)
+/obj/item/organ/body_egg/on_mob_remove(mob/living/carbon/egg_owner, special, movement_flags)
 	. = ..()
 	egg_owner.remove_traits(list(TRAIT_XENO_HOST, TRAIT_XENO_IMMUNE), ORGAN_TRAIT)
 	egg_owner.med_hud_set_status()

@@ -1,6 +1,7 @@
 /obj/item/clothing/neck
 	name = "necklace"
 	icon = 'icons/obj/clothing/neck.dmi'
+	abstract_type = /obj/item/clothing/neck
 	body_parts_covered = NECK
 	slot_flags = ITEM_SLOT_NECK
 	interaction_flags_click = NEED_DEXTERITY
@@ -203,6 +204,23 @@
 	greyscale_config_worn = null
 	greyscale_colors = null
 
+/obj/item/clothing/neck/robe_cape
+	name = "robe cape"
+	desc = "A comfortable cape, draped down your back and held around your neck with a brooch."
+	icon = 'icons/obj/clothing/neck.dmi'
+	icon_state = "/obj/item/clothing/neck/robe_cape"
+	post_init_icon_state = "robe_cape"
+	worn_icon = 'icons/mob/clothing/neck.dmi'
+	worn_icon_state = "robe_cape"
+	greyscale_config = /datum/greyscale_config/robe_cape
+	greyscale_config_worn = /datum/greyscale_config/robe_cape/worn
+	greyscale_colors = "#2a2844"
+	flags_1 = IS_PLAYER_COLORABLE_1
+
+/obj/item/clothing/neck/robe_cape/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/surgery_aid, "cape")
+
 /obj/item/clothing/neck/tie/disco
 	name = "horrific necktie"
 	icon = 'icons/obj/clothing/neck.dmi'
@@ -290,7 +308,7 @@
 
 			//assess heart
 			if(body_part == BODY_ZONE_CHEST)//if we're listening to the chest
-				var/heart_rate = carbon_patient.get_heart_rate()
+				var/heart_rate = carbon_patient.get_bpm()
 				switch(heart_rate)
 					if(0)
 						render_list += "<span class='danger ml-1'>You don't hear a heartbeat!</span>\n"
@@ -362,7 +380,7 @@
 				render_list += "<span class='notice ml-1'>[M.p_Their()] pulse is [pulse_pressure] and [heart_strength].</span>\n"
 
 	//display our packaged information in an examine block for easy reading
-	to_chat(user, examine_block(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
+	to_chat(user, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 
 ///////////
 //SCARVES//

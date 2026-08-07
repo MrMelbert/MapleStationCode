@@ -5,6 +5,7 @@
 	desc = "..."
 	icon = 'icons/obj/medical/chemical_tanks.dmi'
 	icon_state = "water"
+	abstract_type = /obj/structure/reagent_dispensers
 	density = TRUE
 	anchored = FALSE
 	pressure_resistance = 2*ONE_ATMOSPHERE
@@ -410,6 +411,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	icon_state = "serving"
 	anchored = TRUE
 	reagent_id = /datum/reagent/consumable/nutraslop
+
+/obj/structure/reagent_dispensers/servingdish/Initialize(mapload)
+	. = ..()
+	add_smell(category = "stench", smell = "slop", intensity = SMELL_INTENSITY_MODERATE, radius = 1)
 
 /obj/structure/reagent_dispensers/plumbed
 	name = "stationary water tank"

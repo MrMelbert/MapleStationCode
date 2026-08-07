@@ -7,7 +7,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericrobe"
 	inhand_icon_state = "clericrobe"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 
 /obj/item/clothing/under/rank/cleric/skirt
@@ -19,7 +19,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericskirt"
 	inhand_icon_state = "clericrobe"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 
 /obj/item/clothing/shoes/cleric

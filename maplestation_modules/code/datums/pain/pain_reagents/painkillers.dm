@@ -9,20 +9,22 @@
 	if(current_cycle >= 5)
 		switch(pain_modifier)
 			if(0 to 0.45)
-				M.add_mood_event("numb", /datum/mood_event/narcotic_heavy, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/heavy, name)
 			if(0.45 to 0.55)
-				M.add_mood_event("numb", /datum/mood_event/narcotic_medium, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/medium, name)
 			else
-				M.add_mood_event("numb", /datum/mood_event/narcotic_light, name)
+				M.add_mood_event("narcotic-numb", /datum/mood_event/narcotic/light, name)
 
 	// However, drinking with painkillers is toxic.
 	var/highest_boozepwr = 0
 	for(var/datum/reagent/consumable/ethanol/alcohol in M.reagents.reagent_list)
-		if(alcohol.boozepwr > highest_boozepwr)
-			highest_boozepwr = alcohol.boozepwr
+		highest_boozepwr = max(highest_boozepwr, alcohol.boozepwr)
 
 	if(highest_boozepwr > 0)
-		M.apply_damage(round(highest_boozepwr / 33, 0.5) * REM * seconds_per_tick, TOX)
+		if(SPT_PROB(highest_boozepwr / 25, seconds_per_tick))
+			to_chat(M, span_warning("You feel sick."))
+			M.losebreath += 1
+		M.apply_damage(round(highest_boozepwr / 40, 0.5) * REM * seconds_per_tick, TOX)
 		. = TRUE
 
 // Morphine is the well known existing painkiller.
@@ -38,16 +40,18 @@
 	overdose_threshold = 30
 	ph = 8.96
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 30) //5u = 100 progress, 25-30u = addiction
+	addiction_types = list(/datum/addiction/opioids = 30)
 	// Morphine is THE painkiller
 	pain_modifier = 0.5
 
 /datum/reagent/medicine/painkiller/morphine/on_mob_metabolize(mob/living/L)
 	. = ..()
 	L.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+	ADD_TRAIT(L, TRAIT_HEART_RATE_SLOW, type)
 
 /datum/reagent/medicine/painkiller/morphine/on_mob_end_metabolize(mob/living/L)
 	L.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+	REMOVE_TRAIT(L, TRAIT_HEART_RATE_SLOW, type)
 	return ..()
 
 /datum/reagent/medicine/painkiller/morphine/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
@@ -266,14 +270,14 @@
 // Oxycodone. Very addictive, heals pain very fast, also a drug.
 /datum/reagent/medicine/painkiller/oxycodone
 	name = "Oxycodone"
-	description = "A drug that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
+	description = "A painkiller that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
 	reagent_state = LIQUID
 	color = "#ffcb86"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	ph = 5.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opioids = 45) //5u = 150 progress, 15-20u = addiction
+	addiction_types = list(/datum/addiction/opioids = 20)
 	pain_modifier = 0.4
 
 /datum/reagent/medicine/painkiller/oxycodone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
@@ -286,8 +290,18 @@
 	if(SPT_PROB(33, seconds_per_tick))
 		M.adjust_dizzy_up_to(2 SECONDS * REM * seconds_per_tick, 10 SECONDS)
 
+	if(current_cycle > 5)
+		ADD_TRAIT(M, TRAIT_HEART_RATE_SLOW, "[type]_low")
+	if(current_cycle > 20)
+		ADD_TRAIT(M, TRAIT_HEART_RATE_SLOW, "[type]_med")
+
 	..()
 	return TRUE
+
+/datum/reagent/medicine/painkiller/oxycodone/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, "[type]_med")
 
 /datum/reagent/medicine/painkiller/oxycodone/overdose_process(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
@@ -336,7 +350,7 @@
 // depending on what type of pain the part's feeling
 /datum/reagent/medicine/painkiller/specialized
 	name = "specialized painkiller"
-	addiction_types = list(/datum/addiction/opioids = 15) //5u = 50 progress, 60u = addiction
+	addiction_types = list(/datum/addiction/opioids = 60)
 
 	/// How much pain we restore on life ticks, modified by modifiers (yeah?)
 	var/pain_heal_amount = 1.5

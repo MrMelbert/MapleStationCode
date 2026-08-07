@@ -1,5 +1,6 @@
 /obj/item/melee/energy
 	icon = 'icons/obj/weapons/transforming_energy.dmi'
+	abstract_type = /obj/item/melee/energy
 	max_integrity = 200
 	armor_type = /datum/armor/melee_energy
 	attack_verb_continuous = list("hits", "taps", "pokes")
@@ -90,6 +91,9 @@
 	. = span_rose("[user] swings [user.p_their()] [name][in_mouth]. [user.p_They()] light[user.p_s()] [user.p_their()] [atom.name] in the process.")
 	playsound(loc, hitsound, get_clamped_volume(), TRUE, -1)
 	add_fingerprint(user)
+
+/obj/item/melee/energy/get_demolition_modifier(obj/target)
+	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) ? demolition_mod : 1
 
 /obj/item/melee/energy/update_icon_state()
 	. = ..()

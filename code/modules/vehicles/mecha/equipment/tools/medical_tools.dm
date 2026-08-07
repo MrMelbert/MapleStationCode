@@ -380,7 +380,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/medical/mechmedbeam/process(deltatime)
 	. = ..()
-	if(.)
+	if(. || !length(chassis.occupants))
 		return
 	if(chassis.weapons_safety)
 		medigun.LoseTarget()

@@ -16,9 +16,9 @@
 #define SKILL_EXP_NOVICE 100
 #define SKILL_EXP_APPRENTICE 250
 #define SKILL_EXP_JOURNEYMAN 500
-#define SKILL_EXP_EXPERT 900
-#define SKILL_EXP_MASTER 1500
-#define SKILL_EXP_LEGENDARY 2500
+#define SKILL_EXP_EXPERT 1200
+#define SKILL_EXP_MASTER 2000
+#define SKILL_EXP_LEGENDARY 3330
 
 //Allows us to get EXP from level, or level from EXP
 #define SKILL_EXP_LIST list(SKILL_EXP_NONE, SKILL_EXP_NOVICE, SKILL_EXP_APPRENTICE, SKILL_EXP_JOURNEYMAN, SKILL_EXP_EXPERT, SKILL_EXP_MASTER, SKILL_EXP_LEGENDARY)
@@ -33,9 +33,6 @@
 ///ideally for addittive operations
 #define SKILL_VALUE_MODIFIER "skill_value_modifier"
 
-// Gets the reference for the skill type that was given
-#define GetSkillRef(A) (SSskills.all_skills[A])
-
 //number defines
 #define CLEAN_SKILL_BEAUTY_ADJUSTMENT -15//It's a denominator so no 0. Higher number = less cleaning xp per cleanable. Negative value means cleanables with negative beauty give xp.
 #define CLEAN_SKILL_GENERIC_WASH_XP 1.5//Value. Higher number = more XP when cleaning non-cleanables (walls/floors/lips)
@@ -49,3 +46,8 @@
 //while using the SKILLCHIP_RESTRICTED_CATEGORIES flag
 /// General related skillchip category
 #define SKILLCHIP_CATEGORY_GENERAL "general"
+
+/// Always print this skill in print_skills
+#define SKILL_ALWAYS_PRINT (1<<0)
+/// Skill is is physical, not mental, and doesn't apply through skillchips or mindswaps
+#define SKILL_PHYSICAL (1<<1)

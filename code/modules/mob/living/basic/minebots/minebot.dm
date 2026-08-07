@@ -31,6 +31,7 @@
 	light_on = FALSE
 	combat_mode = FALSE
 	ai_controller = /datum/ai_controller/basic_controller/minebot
+	initial_blood_type = /datum/blood_type/oil
 	///the access card we use to access mining
 	var/obj/item/card/id/access_card
 	///the gun we use to kill

@@ -50,6 +50,8 @@
 
 ///Initialize the lazylist
 #define LAZYINITLIST(L) if (!L) { L = list(); }
+///Initialize the lazylist and set it lengths if the list was not already initialized - does not change the length of existing lists
+#define LAZYINITLISTLEN(L, V) if (!L) { L = list(); L.len = V; }
 ///If the provided list is empty, set it to null
 #define UNSETEMPTY(L) if (L && !length(L)) L = null
 ///If the provided key -> list is empty, remove it from the list
@@ -96,6 +98,15 @@
 	LAZYINITLIST(lazy_list); \
 	LAZYINITLIST(lazy_list[key]); \
 	lazy_list[key] |= value;
+/// Calls Insert on the lazy list if it exists, otherwise initializes it with the value
+#define LAZYINSERT(lazylist, index, value) \
+	if (!lazylist) { \
+		lazylist = list(value); \
+	} else if (index == 0 && index > length(lazylist)) { \
+		lazylist += value; \
+	} else { \
+		lazylist.Insert(index, value); \
+	}
 
 ///Ensures the length of a list is at least I, prefilling it with V if needed. if V is a proc call, it is repeated for each new index so that list() can just make a new list for each item.
 #define LISTASSERTLEN(L, I, V...) \

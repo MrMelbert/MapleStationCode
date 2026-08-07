@@ -262,7 +262,7 @@
 			pinned.forceMove(drop_location())
 			return TRUE // force open
 		balloon_alert(user, "paper removed")
-		if(!user.put_in_inactive_hand(pinned) || pinned.loc == src)
+		if(!user.put_in_inactive_hand(pinned))
 			pinned.forceMove(drop_location())
 		return FALSE // blocked the open action
 	return TRUE

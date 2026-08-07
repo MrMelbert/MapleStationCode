@@ -79,6 +79,10 @@
 		/obj/item/pen/edagger = 1,
 	)
 
+/datum/outfit/syndicate/full/loneop
+	name = "Syndicate Operative - Full Kit (Loneop)"
+	uplink_type = /obj/item/uplink/loneop
+
 /datum/outfit/syndicate/full/plasmaman
 	name = "Syndicate Operative - Full Kit (Plasmaman)"
 	back = /obj/item/mod/control/pre_equipped/nuclear/plasmaman
@@ -163,3 +167,22 @@
 	shoes = /obj/item/clothing/shoes/laceup
 	glasses = /obj/item/clothing/glasses/sunglasses/big
 	faction = "MI13"
+
+/datum/outfit/nuclear_operative
+	name = "Nuclear Operative (Preview only)"
+
+	back = /obj/item/mod/control/pre_equipped/empty/syndicate
+	uniform = /obj/item/clothing/under/syndicate
+
+/datum/outfit/nuclear_operative_elite
+	name = "Nuclear Operative (Elite, Preview only)"
+
+	back = /obj/item/mod/control/pre_equipped/empty/elite
+	uniform = /obj/item/clothing/under/syndicate
+	l_hand = /obj/item/modular_computer/pda/nukeops
+	r_hand = /obj/item/shield/energy
+
+/datum/outfit/nuclear_operative_elite/post_equip(mob/living/carbon/human/H, visuals_only)
+	var/obj/item/shield/energy/shield = locate() in H.held_items
+	shield.icon_state = "[shield.base_icon_state]1"
+	H.update_held_items()

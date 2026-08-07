@@ -137,6 +137,7 @@
 	// Valid organ successfully picked.
 	new_organ = new new_organ()
 	new_organ.replace_into(target)
+	new_organ.organ_flags |= ORGAN_MUTANT
 	check_tier_progression(target)
 	return TRUE
 

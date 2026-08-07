@@ -16,14 +16,15 @@
 	/// Balloon alert cooldown for warning our boxer to alternate their blows to get more damage
 	COOLDOWN_DECLARE(warning_cooldown)
 
-/datum/martial_art/boxing/teach(mob/living/new_holder, make_temporary)
-	if(!ishuman(new_holder))
-		return FALSE
+/datum/martial_art/boxing/can_teach(mob/living/new_holder)
+	return ishuman(new_holder)
+
+/datum/martial_art/boxing/activate_style(mob/living/new_holder)
+	. = ..()
 	new_holder.add_traits(boxing_traits, BOXING_TRAIT)
 	RegisterSignal(new_holder, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(check_block))
-	return ..()
 
-/datum/martial_art/boxing/on_remove(mob/living/remove_from)
+/datum/martial_art/boxing/deactivate_style(mob/living/remove_from)
 	remove_from.remove_traits(boxing_traits, BOXING_TRAIT)
 	UnregisterSignal(remove_from, list(COMSIG_LIVING_CHECK_BLOCK))
 	return ..()
@@ -162,10 +163,10 @@
 		skill_experience_adjustment(attacker, (damage/lower_force))
 
 	//Determine our attackers athletics level as a knockout probability bonus
-	var/attacker_athletics_skill =  (attacker.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
+	var/attacker_athletics_skill =  (attacker.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER) + base_unarmed_effectiveness)
 
 	// Defender boxing skill and armor block are used as a defense here. This has already factored in base_unarmed_effectiveness from the attacker
-	var/defender_athletics_skill =  clamp(defender.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
+	var/defender_athletics_skill =  clamp(defender.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER), 0, 100)
 
 	//Determine our final probability, using a clamp to stop any prob() weirdness.
 	var/final_knockout_probability = clamp(round(attacker_athletics_skill - defender_athletics_skill), 0 , 100)
@@ -243,7 +244,7 @@
 	var/base_unarmed_effectiveness = active_arm.unarmed_effectiveness
 
 	// Out athletics skill is added to our block potential
-	var/athletics_skill_rands =  boxer.mind?.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
+	var/athletics_skill_rands =  boxer.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)
 
 	var/block_chance = base_unarmed_effectiveness + athletics_skill_rands
 

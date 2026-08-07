@@ -25,7 +25,7 @@
 	icon_state = "floor"
 	icon_living = "floor"
 	mob_size = MOB_SIZE_HUGE
-	mob_biotypes = MOB_SPECIAL
+	mob_biotypes = MOB_SPECIAL|MOB_MINERAL
 	status_flags = GODMODE //nothing but crowbars may kill us
 	death_message = ""
 	unsuitable_atmos_damage = 0

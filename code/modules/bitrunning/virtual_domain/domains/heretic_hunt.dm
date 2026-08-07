@@ -182,7 +182,7 @@
 	name = "engineer"
 	death_spawner = /obj/effect/mob_spawn/corpse/human/engineer
 	weapon = /obj/item/weldingtool
-	attack_sound = 'sound/items/tools/welder.ogg'
+	attack_sound = 'sound/items/welder.ogg'
 	melee_damage_type = BURN
 	damage_coeff = list(BRUTE = 1, BURN = 0.9, TOX = 1, STAMINA = 1, OXY = 1)
 

@@ -9,6 +9,7 @@
 	processing_flags = START_PROCESSING_MANUALLY
 
 	subsystem_type = /datum/controller/subsystem/processing/fastprocess
+	examine_feedback_on_ui = TRUE
 
 	/// Current items in the build queue.
 	var/list/datum/design/queue = list()

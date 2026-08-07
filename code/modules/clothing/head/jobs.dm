@@ -136,7 +136,7 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#41579A#F0CC8F"
-	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
+	hair_mask = /datum/hair_mask/standard_hat_middle
 
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
@@ -366,12 +366,13 @@
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
 	greyscale_colors = "#972A2A"
 	flags_1 = IS_PLAYER_COLORABLE_1
-	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
+	hair_mask = /datum/hair_mask/standard_hat_middle
 
 //Security
 /obj/item/clothing/head/hats/hos
 	name = "generic head of security hat"
 	desc = "Please contact the Nanotrasen Costuming Department if found."
+	abstract_type = /obj/item/clothing/head/hats/hos
 	armor_type = /datum/armor/hats_hos
 	strip_delay = 8 SECONDS
 
@@ -425,7 +426,7 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#39393f#f0cc8f"
-	hair_mask = HAIR_MASK_HIDE_ABOVE_45_DEG_MEDIUM
+	hair_mask = /datum/hair_mask/standard_hat_middle
 
 /obj/item/clothing/head/hats/hos/beret/navyhos
 	name = "head of security's formal beret"
@@ -702,7 +703,7 @@
 	else
 		var/obj/item/organ/tongue/has_tongue = human_examined.get_organ_slot(ORGAN_SLOT_TONGUE)
 		var/pill_count = 0
-		for(var/datum/action/item_action/hands_free/activate_pill/pill in human_examined.actions)
+		for(var/datum/action/item_action/activate_pill/pill in human_examined.actions)
 			pill_count++
 
 		if(pill_count >= 1 && has_tongue)

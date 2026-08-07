@@ -27,6 +27,7 @@
 	anchored = FALSE
 	max_integrity = 500
 	armor_type = /datum/armor/machinery_roulette
+	examine_feedback_on_ui = TRUE
 	var/static/list/numbers = list("0" = "green", "1" = "red", "3" = "red", "5" = "red", "7" = "red", "9" = "red", "12" = "red", "14" = "red", "16" = "red",\
 	"18" = "red", "19" = "red", "21" = "red", "23" = "red", "25" = "red", "27" = "red", "30" = "red", "32" = "red", "34" = "red", "36" = "red",\
 	"2" = "black", "4" = "black", "6" = "black", "8" = "black", "10" = "black", "11" = "black", "13" = "black", "15" = "black", "17" = "black", "20" = "black",\
@@ -433,16 +434,10 @@
 			set_machine_stat(machine_stat | MAINT)
 			icon_state = "open"
 
-/obj/machinery/roulette/proc/shock(mob/user, prb)
+/obj/machinery/roulette/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
 	if(!on) // unpowered, no shock
 		return FALSE
-	if(!prob(prb))
-		return FALSE //you lucked out, no shock for you
-	do_sparks(5, TRUE, src)
-	if(electrocute_mob(user, get_area(src), src, 1, TRUE))
-		return TRUE
-	else
-		return FALSE
+	return ..()
 
 /obj/item/roulette_wheel_beacon
 	name = "roulette wheel beacon"

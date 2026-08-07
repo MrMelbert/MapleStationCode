@@ -2,6 +2,7 @@
 /obj/item
 	name = "item"
 	icon = 'icons/obj/anomaly.dmi'
+	abstract_type = /obj/item
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	burning_particles = /particles/smoke/burning/small
 	pass_flags_self = PASSITEM
@@ -122,9 +123,9 @@
 	var/flags_inv
 	///you can see someone's mask through their transparent visor, but you can't reach it
 	var/transparent_protection = NONE
-	///Name of a mask in icons\mob\human\hair_masks.dmi to apply to hair when this item is worn
+	///Path of type /datum/hair_mask to apply to hair when this item is worn
 	///Used by certain hats to give the appearance of squishing down tall hairstyles without hiding the hair completely
-	var/hair_mask = ""
+	var/hair_mask = null
 
 	///flags for what should be done when you click on the item, default is picking it up
 	var/interaction_flags_item = INTERACT_ITEM_ATTACK_HAND_PICKUP
@@ -220,10 +221,6 @@
 	///A reagent the nutriments are converted into when the item is juiced.
 	var/datum/reagent/consumable/juice_typepath
 
-	/// Used in obj/item/examine to give additional notes on what the weapon does, separate from the predetermined output variables
-	var/offensive_notes
-	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
-	var/override_notes = FALSE
 	/// Used if we want to have a custom verb text for throwing. "John Spaceman flicks the ciggerate" for example.
 	var/throw_verb
 
@@ -270,8 +267,6 @@
 			hitsound = 'sound/items/welder.ogg'
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
-
-	add_weapon_description()
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 	if(get_embed())
@@ -368,10 +363,6 @@
 /obj/item/proc/add_stealing_item_objective()
 	return
 
-/// Adds the weapon_description element, which shows the 'warning label' for especially dangerous objects. Override this for item types with special notes.
-/obj/item/proc/add_weapon_description()
-	AddElement(/datum/element/weapon_description)
-
 /**
  * Checks if an item is allowed to be used on an atom/target
  * Returns TRUE if allowed.
@@ -444,6 +435,11 @@
 	. = parent_tags
 	.[weight_class_to_text(w_class)] = "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] item."
 
+	if(sharpness & SHARP_EDGED)
+		.["sharp"] = "It has a sharp edge. It may inflict cut wounds, and could easily slice cloth."
+	if(sharpness & SHARP_POINTY)
+		.["pointed"] = "It has a sharp point. It may inflict puncture wounds."
+
 	if(item_flags & CRUEL_IMPLEMENT)
 		.[span_red("morbid")] = "It seems quite practical for particularly <font color='red'>morbid</font> procedures and experiments."
 
@@ -467,6 +463,122 @@
 
 /obj/item/examine_descriptor(mob/user)
 	return "item"
+
+/obj/item/examine_weapon_descriptor(mob/user)
+	var/main_weapon_examine = ""
+	switch(force)
+		if(5 to 9)
+			main_weapon_examine = "poor"
+		if(10 to 14)
+			main_weapon_examine = "decent"
+		if(15 to 19)
+			main_weapon_examine = "good"
+		if(20 to 24)
+			main_weapon_examine = "great"
+		if(25 to 29)
+			main_weapon_examine = "potent"
+		if(30 to INFINITY)
+			main_weapon_examine = "powerful"
+
+	var/ap_examine = ""
+	if(armour_penetration > 0)
+		switch(armour_penetration)
+			if(1 to 14)
+				ap_examine += "minimal"
+			if(25 to 49)
+				ap_examine += "average"
+			if(50 to 74)
+				ap_examine += "good"
+			if(75 to 99)
+				ap_examine += "excellent"
+			if(100)
+				ap_examine += "flawless"
+
+	var/block_examine = ""
+	var/block_examine_alt = ""
+	if(block_chance > 0)
+		switch(block_chance)
+			if(1 to 24)
+				block_examine = "minimal"
+				block_examine_alt = "poor"
+			if(25 to 49)
+				block_examine = "average"
+				block_examine_alt = "decent"
+			if(50 to 74)
+				block_examine = "good"
+				block_examine_alt = "good"
+			if(75 to 99)
+				block_examine = "excellent"
+				block_examine_alt = "great"
+			if(100)
+				block_examine = "flawless"
+				block_examine_alt = "perfect"
+
+	var/return_message = ""
+	if(main_weapon_examine)
+		return_message = "that can be used as \a [main_weapon_examine] weapon"
+		if(ap_examine && block_examine)
+			if(ap_examine == block_examine)
+				return_message += " with [ap_examine] penetration and blocking capabilities"
+			else
+				return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+		else if(ap_examine)
+			return_message += " with [ap_examine] penetration"
+		else if(block_examine)
+			return_message += " with [block_examine] blocking capabilities"
+
+	var/thrown_weapon_examine = ""
+	switch(throwforce)
+		if(10 to 14)
+			thrown_weapon_examine = "poor"
+		if(14 to 19)
+			thrown_weapon_examine = "decent"
+		if(19 to 24)
+			thrown_weapon_examine = "good"
+		if(24 to 29)
+			thrown_weapon_examine = "great"
+		if(29 to 39)
+			thrown_weapon_examine = "potent"
+		if(40 to INFINITY)
+			thrown_weapon_examine = "powerful"
+
+	if(thrown_weapon_examine)
+		// if the weapon is far better thrown than melee, change the order
+		if(force * 1.5 < throwforce && throwforce >= 10)
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
+			if(ap_examine && block_examine)
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+			else if(ap_examine)
+				return_message += " with [ap_examine] penetration"
+			else if(block_examine)
+				return_message += " with [block_examine] blocking capabilities"
+			if(main_weapon_examine && main_weapon_examine != thrown_weapon_examine)
+				return_message += ", but is [main_weapon_examine] when used in melee"
+
+		else if(main_weapon_examine)
+			// you can intuit a good weapon is a good thrown weapon, only report otherwise if it's significant
+			if(abs(force - throwforce) >= 10 && main_weapon_examine != thrown_weapon_examine)
+				return_message += ", but is [thrown_weapon_examine] when thrown"
+
+		else
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
+			if(ap_examine && block_examine)
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+			else if(ap_examine)
+				return_message += " with [ap_examine] penetration"
+			else if(block_examine)
+				return_message += " with [block_examine] blocking capabilities"
+
+	if((!return_message || (force < 10 && throwforce < 10)) && block_examine_alt)
+		return_message = "that is [block_examine_alt] at blocking attacks"
+
+	return return_message
 
 /obj/item/examine_more(mob/user)
 	. = ..()
@@ -1134,17 +1246,23 @@
 	if(!delay && !tool_start_check(user, amount))
 		return
 
-	var/skill_modifier = 1
+	// NON-MODULE CHANGE
+	if(tool_behaviour == TOOL_MINING)
+		delay *= user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		if(prob(user.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))
+			mineral_scan_pulse(get_turf(user), 2)
 
-	if(tool_behaviour == TOOL_MINING && ishuman(user))
-		if(user.mind)
-			skill_modifier = user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+	if((tool_behaviour in GLOB.all_mechanical_tools) && tool_behaviour != TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/mechanics, SKILL_SPEED_MODIFIER)
 
-			if(user.mind.get_skill_level(/datum/skill/mining) >= SKILL_LEVEL_JOURNEYMAN && prob(user.mind.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER))) // we check if the skill level is greater than Journeyman and then we check for the probality for that specific level.
-				mineral_scan_pulse(get_turf(user), SKILL_LEVEL_JOURNEYMAN - 2) //SKILL_LEVEL_JOURNEYMAN = 3 So to get range of 1+ we have to subtract 2 from it,.
+	if(istype(src, /obj/item/stack/cable_coil) || tool_behaviour == TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/electronics, SKILL_SPEED_MODIFIER)
 
-	delay *= toolspeed * skill_modifier
+	if(tool_behaviour in GLOB.all_surgical_tools)
+		delay *= user.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
+	// NON-MODULE CHANGE END
 
+	delay *= toolspeed
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)

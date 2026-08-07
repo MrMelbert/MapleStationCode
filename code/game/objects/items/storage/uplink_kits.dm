@@ -301,7 +301,7 @@
 			new /obj/item/clothing/head/helmet/marine/pmc(src)
 			new /obj/item/clothing/mask/gas/sechailer(src)
 			new /obj/item/clothing/glasses/night(src) // 3~ TC
-			new /obj/item/clothing/gloves/krav_maga/combatglovesplus(src) //5TC
+			new /obj/item/clothing/gloves/kaza_ruk/combatglovesplus(src) //5TC
 			new /obj/item/clothing/shoes/jackboots(src)
 			new /obj/item/storage/belt/military/assault/fisher(src) //items in this belt easily costs 18 TC
 
@@ -757,13 +757,7 @@
 			human_target.reagents.add_reagent(/datum/reagent/toxin, 2)
 			return FALSE
 
-	/// If all the antag datums are 'fake' or none exist, disallow induction! No self-antagging.
-	var/faker
-	for(var/datum/antagonist/antag_datum as anything in human_target.mind.antag_datums)
-		if((antag_datum.antag_flags & FLAG_FAKE_ANTAG))
-			faker = TRUE
-
-	if(faker || isnull(human_target.mind.antag_datums)) // GTFO. Technically not foolproof but making a heartbreaker or a paradox clone a nuke op sounds hilarious
+	if(!human_target.is_antag()) // GTFO. Technically not foolproof but making a heartbreaker or a paradox clone a nuke op sounds hilarious
 		to_chat(human_target, span_notice("Huh? Nothing happened? But you're starting to feel a little ill..."))
 		human_target.reagents.add_reagent(/datum/reagent/toxin, 15)
 		return FALSE
@@ -841,7 +835,7 @@
 		/obj/item/slimepotion/slime/sentience/nuclear,
 		/obj/item/storage/box/syndie_kit/imp_radio,
 		/obj/item/storage/box/syndie_kit/imp_uplink,
-		/obj/item/clothing/gloves/krav_maga/combatglovesplus,
+		/obj/item/clothing/gloves/kaza_ruk/combatglovesplus,
 		/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot,
 		/obj/item/reagent_containers/hypospray/medipen/stimulants,
 		/obj/item/storage/box/syndie_kit/imp_freedom,

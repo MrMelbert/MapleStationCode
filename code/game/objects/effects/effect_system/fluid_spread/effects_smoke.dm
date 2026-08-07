@@ -124,6 +124,7 @@
 
 	smoker.smoke_delay = TRUE
 	addtimer(VARSET_CALLBACK(smoker, smoke_delay, FALSE), 1 SECONDS)
+	SEND_SIGNAL(smoker, COMSIG_CARBON_EXPOSED_TO_SMOKE, seconds_per_tick)
 	return TRUE
 
 /**
@@ -391,7 +392,7 @@
 
 	var/fraction = (seconds_per_tick SECONDS) / initial(lifetime)
 	reagents.copy_to(smoker, reagents.total_volume, fraction)
-	reagents.expose(smoker, INGEST, fraction)
+	reagents.expose(smoker, INHALE, fraction)
 	return TRUE
 
 /// Helper to quickly create a cloud of reagent smoke

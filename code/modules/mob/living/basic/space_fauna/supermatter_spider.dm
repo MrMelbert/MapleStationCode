@@ -9,7 +9,8 @@
 	icon_dead = "smspider_dead"
 
 	gender = NEUTER
-	mob_biotypes = MOB_BUG|MOB_ROBOTIC
+	status_flags = CANPUSH
+	mob_biotypes = MOB_BUG|MOB_ROBOTIC|MOB_MINERAL
 	speak_emote = list("vibrates")
 
 
@@ -25,6 +26,7 @@
 	bodytemp_heat_damage_limit = T0C + 1250
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	death_message = "falls to the ground, its shard dulling to a miserable grey!"
+	initial_blood_type = null
 
 	faction = list(FACTION_HOSTILE)
 

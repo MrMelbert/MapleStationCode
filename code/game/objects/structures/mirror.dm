@@ -235,7 +235,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror/broken, 28)
 	user.eye_color_right = sanitize_hexcolor(new_eye_color)
 	user.dna.update_ui_block(DNA_EYE_COLOR_LEFT_BLOCK)
 	user.dna.update_ui_block(DNA_EYE_COLOR_RIGHT_BLOCK)
-	user.update_body()
+	user.update_eyes()
 	to_chat(user, span_notice("You gaze at your new eyes with your new eyes. Perfect!"))
 
 /obj/structure/mirror/examine_status(mob/living/carbon/human/user)

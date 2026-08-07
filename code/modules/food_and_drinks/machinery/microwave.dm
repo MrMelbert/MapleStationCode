@@ -32,6 +32,7 @@
 	light_power = 3
 	anchored_tabletop_offset = 6
 	interaction_flags_click = ALLOW_SILICON_REACH
+	examine_feedback_on_ui = TRUE
 	/// Is its function wire cut?
 	var/wire_disabled = FALSE
 	/// Wire cut to run mode backwards

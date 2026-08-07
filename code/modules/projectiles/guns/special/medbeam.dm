@@ -76,6 +76,7 @@
 	RegisterSignal(current_beam, COMSIG_QDELETING, PROC_REF(beam_died))//this is a WAY better rangecheck than what was done before (process check)
 
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
+	return TRUE
 
 /obj/item/gun/medbeam/process()
 	if(!mounted && !isliving(loc))
@@ -91,7 +92,7 @@
 
 	last_check = world.time
 
-	if(!los_check(loc, current_target, mid_check = CALLBACK(src, PROC_REF(mid_los_check))))
+	if(!los_check(get_atom_on_turf(src), current_target, mid_check = CALLBACK(src, PROC_REF(mid_los_check))))
 		QDEL_NULL(current_beam)//this will give the target lost message
 		return
 

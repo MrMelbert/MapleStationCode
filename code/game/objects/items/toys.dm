@@ -27,6 +27,7 @@
  * Intento
  */
 /obj/item/toy
+	abstract_type = /obj/item/toy
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 7
@@ -538,6 +539,9 @@
 		span_danger("You fire [src] at [interacting_with]!"), \
 		span_hear("You hear a gunshot!"))
 	return ITEM_INTERACT_SUCCESS
+
+/obj/item/toy/ammo
+	abstract_type = /obj/item/toy/ammo
 
 /obj/item/toy/ammo/gun
 	name = "capgun ammo"
@@ -1518,14 +1522,6 @@
 	icon = 'icons/effects/eldritch.dmi'
 	icon_state = "pierced_illusion"
 	item_flags = NO_PIXEL_RANDOM_DROP
-
-/obj/item/storage/box/heretic_box
-	name = "box of pierced realities"
-	desc = "A box containing toys resembling pierced realities."
-
-/obj/item/storage/box/heretic_box/PopulateContents()
-	for(var/i in 1 to rand(1,4))
-		new /obj/item/toy/reality_pierce(src)
 
 /obj/item/toy/foamfinger
 	name = "foam finger"

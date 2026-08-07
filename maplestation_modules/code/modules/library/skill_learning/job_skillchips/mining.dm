@@ -57,6 +57,7 @@
 	if(station_check)
 		if(human_source.unset_pain_mod(PAIN_MOD_OFF_STATION))
 			human_source.sprint_length_max /= 1.5
+			human_source.sprint_length = min(human_source.sprint_length_max, human_source.sprint_length)
 			human_source.sprint_regen_per_second /= 1.5
 			action.Remove(human_source)
 			to_chat(human_source, span_green("Returning to the station, you feel much more vulnerable to incoming pain."))

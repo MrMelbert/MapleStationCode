@@ -96,6 +96,20 @@
 	sprite_height = 3
 	beauty = FISH_BEAUTY_NULL
 
+/obj/item/fish/holo/checkered/suicide_act(mob/living/carbon/user)
+	if(!iscarbon(user))
+		return ..()
+
+	for(var/obj/item/bodypart/limb in user.get_bodyparts())
+		// limb.add_color_override(COLOR_WHITE, LIMB_COLOR_CS_SOURCE_SUICIDE)
+		limb.add_bodypart_overlay(new /datum/bodypart_overlay/texture/checkered(), update = FALSE)
+
+	var/obj/item/bodypart/head/head = user.get_bodypart(BODY_ZONE_HEAD)
+	if(!isnull(head))
+		head.head_flags &= ~HEAD_EYESPRITES
+	user.update_body()
+	return ..()
+
 /obj/item/fish/holo/halffish
 	name = "holographic half-fish"
 	desc = "A holographic representation of... a fish reduced to all bones, except for its head. Isn't it supposed to be dead? Ehr, holo-dead?"

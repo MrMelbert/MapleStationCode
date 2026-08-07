@@ -24,9 +24,18 @@
 	var/mob/living/owner
 	/// List of required jobs for this mood event
 	var/list/required_job
+	/// Color of the moodlet's screen text
+	/// If null/unset is auto-picked based on mood intensity
+	var/screentext_color
+	/// Cooldown between allowing the same type of mood event from showing screentext
+	var/screentext_cooldown = 20 SECONDS
+	/// ID of this screen event for cooldown purposes
+	/// If null/unset uses the typepath of the mood event as the ID
+	var/screentext_id
 
 /datum/mood_event/New(category)
 	src.category = category
+	src.screentext_id ||= type
 
 /datum/mood_event/Destroy()
 	if(owner)
@@ -37,7 +46,9 @@
 /**
  * Called when this datum is created, checks if the passed mob can experience this mood event
  *
+ * * home - the mood datum we are being added to
  * * who - the mob to check
+ * * ... - any other arguments that are passed to the mood event
  *
  * Return TRUE if the mob can experience this mood event
  * Return FALSE if the mob should be unaffected
@@ -66,6 +77,10 @@
 
 /**
  * Wrapper for the mood event being added to a mob
+ *
+ * * home - the mood datum we are being added to
+ * * who - the mob to add the mood event to
+ * * mood_args - any other arguments that are passed to the mood event
  */
 /datum/mood_event/proc/on_add(datum/mood/home, mob/living/who, list/mood_args)
 	SHOULD_NOT_OVERRIDE(TRUE)
@@ -97,6 +112,15 @@
 	timeout *= max((mood_change > 0) ? home.positive_moodlet_length_modifier : home.negative_moodlet_length_modifier, 0.1)
 	if(timeout)
 		addtimer(CALLBACK(home, TYPE_PROC_REF(/datum/mood, clear_mood_event), category), timeout, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT))
+
+/// Called when someone affected by this mood event has an insanity event happen to them
+/// Returning TRUE will prevent other events from applying their own insanity effects
+/datum/mood_event/proc/insanity_effect(sanity)
+	if(mood_change >= 0)
+		return FALSE
+	if(prob(10))
+		owner.cause_hallucination(/datum/hallucination/fake_sound/weird/creepy, "low sanity")
+	return TRUE
 
 /**
  * Called when added to a mob
@@ -139,3 +163,24 @@
  */
 /datum/mood_event/proc/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
 	return ALLOW_NEW_MOOD
+
+/// Subtype of mood event that iterates over all subtypes of itself to find a suitable one to apply
+/datum/mood_event/conditional
+	/// Priority of this condition over other conditions. Higher = more priority.
+	/// If two priorities are the same, the first one found is used, which would be the one defined first in code.
+	var/priority = 0
+
+/datum/mood_event/conditional/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	return ..() && condition_fulfilled(arglist(args.Copy(2)))
+
+/**
+ * Is the condition for this mood event fulfilled for the given mob?
+ *
+ * * who - the mob to check
+ * * ... - any other arguments that are passed to the mood event
+ */
+/datum/mood_event/conditional/proc/condition_fulfilled(mob/living/who, ...)
+	return FALSE
+
+/datum/mood_event/conditional/be_replaced(datum/mood/home, datum/mood_event/conditional/new_event, ...)
+	return initial(new_event.priority) > initial(priority) ? ALLOW_NEW_MOOD : BLOCK_NEW_MOOD

@@ -18,7 +18,7 @@
 	antagpanel_category = "Heretic"
 	ui_name = "AntagInfoHeretic"
 	antag_moodlet = /datum/mood_event/heretics
-	job_rank = ROLE_HERETIC
+	pref_flag = ROLE_HERETIC
 	antag_hud_name = "heretic"
 	hijack_speed = 0.5
 	suicide_cry = "THE MANSUS SMILES UPON ME!!"
@@ -26,6 +26,7 @@
 	can_assign_self_objectives = TRUE
 	default_custom_objective = "Turn a department into a testament for your dark knowledge."
 	hardcore_random_bonus = TRUE
+	stinger_sound = 'sound/ambience/antag/ecult_op.ogg'
 	/// Whether we give this antagonist objectives on gain.
 	var/give_objectives = TRUE
 	/// Whether we've ascended! (Completed one of the final rituals)

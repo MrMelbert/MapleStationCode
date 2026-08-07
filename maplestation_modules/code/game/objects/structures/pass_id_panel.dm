@@ -10,6 +10,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel, 28)
 	mouse_over_pointer = MOUSE_HAND_POINTER
 	armor_type = /datum/armor/machinery_button
 	power_channel = AREA_USAGE_ENVIRON
+	examine_feedback_on_ui = TRUE
 
 	/// Password to open the door rather than having access from an ID card.
 	var/password = "00000"
@@ -381,3 +382,28 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/vault, 28)
 	password_location = "the Gateway Room"
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/gateway, 28)
+
+/obj/machinery/password_id_panel/ai_upload
+	id_tag = "AI_UPLOAD_PASSWORD_PANEL"
+	req_access = list(ACCESS_AI_UPLOAD)
+	password_jobs = list(
+		/datum/job/captain,
+		/datum/job/head_of_personnel,
+		/datum/job/research_director,
+	)
+	password_location = "the AI Upload"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/ai_upload, 28)
+
+/obj/machinery/password_id_panel/shared_aiupload_vault
+	id_tag = "SHARED_AIUPLOAD_VAULT_PASSWORD_PANEL"
+	req_one_access = list(ACCESS_AI_UPLOAD, ACCESS_VAULT)
+	password_jobs = list(
+		/datum/job/captain,
+		/datum/job/head_of_personnel,
+		/datum/job/research_director,
+		/datum/job/quartermaster,
+	)
+	password_location = "the AI Upload and the Vault"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/password_id_panel/shared_aiupload_vault, 28)

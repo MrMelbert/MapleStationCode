@@ -15,82 +15,68 @@
 	desc = "An dangerous experimental surgery that can potentially neuter a changeling's hostile abilities \
 		- but massively harms the internal organs of non-changelings."
 	id = "surgery_neuter_ling"
-	surgery = /datum/surgery/advanced/lobotomy
+	surgery = /datum/surgery_operation/limb/neuter_ling
 	research_icon_state = "surgery_chest"
 
-// The surgery itself.
-/datum/surgery/advanced/neuter_ling
-	name = "Neuter Changeling"
-	desc = "An experimental surgery designed to neuter the abilities of a changeling by crippling the headslug within. \
-		Can only be done on unconscious patients who have had their head removed prior. \
-		If the patient was not a changeling, causes massive internal organ damage."
-	steps = list(
-		/datum/surgery_step/incise,
-		/datum/surgery_step/retract_skin,
-		/datum/surgery_step/saw,
-		/datum/surgery_step/clamp_bleeders,
-		/datum/surgery_step/drill, // yes drill!
-		/datum/surgery_step/neuter_ling,
-		/datum/surgery_step/clamp_bleeders,
-		/datum/surgery_step/close,
-		)
-
-	target_mobtypes = list(/mob/living/carbon/human)
-	possible_locs = list(BODY_ZONE_CHEST)
-	requires_bodypart_type = 0
-	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_IGNORE_CLOTHES
-
-/datum/surgery/advanced/neuter_ling/can_start(mob/user, mob/living/carbon/target)
-	. = ..()
-	if(!.)
-		return
-	if(target.stat <= UNCONSCIOUS)
-		return FALSE
-	if(target.get_bodypart(BODY_ZONE_HEAD))
-		return FALSE
-
-// The surgical step behind the surgery.
-/datum/surgery_step/neuter_ling
-	name = "neuter headslug"
-	time = 10 SECONDS
+/datum/surgery_operation/limb/neuter_ling
+	name = "neuter changeling"
+	desc = "Attempt to neuter a changeling's headslug."
+	rnd_name = "Mutatiotripsy (Neuter Changeling)"
+	rnd_desc = "An experimental surgery that attempts to neuter the headslug of a changeling by operating within their chest cavity. \
+		Successful surgery will remove the changeling's abilities, but failed surgery will only enrage it further. \
+		If the target is not a changeling, this surgery will cause massive internal organ damage."
+	time = 15 SECONDS
+	operation_flags = OPERATION_ALWAYS_FAILABLE | OPERATION_IGNORE_CLOTHES | OPERATION_NOTABLE | OPERATION_MORBID | OPERATION_LOCKED
 	implements = list(
-		TOOL_RETRACTOR = 70, // Even a retractor is not too good at it, better get sterile
-		TOOL_HEMOSTAT = 60,
-		TOOL_SCREWDRIVER = 20,
-		TOOL_WIRECUTTER = 15
-		)
+		TOOL_RETRACTOR = 1.33,
+		TOOL_HEMOSTAT = 1.5,
+		TOOL_SCREWDRIVER = 5.0,
+		TOOL_WIRECUTTER = 6.66,
+	)
+	all_surgery_states_required = SURGERY_SKIN_OPEN | SURGERY_VESSELS_CLAMPED | SURGERY_ORGANS_CUT | SURGERY_BONE_DRILLED
 
-/// MELBERT TODO: This acts a bit strangely the way it's called in the surgery chain.
-/datum/surgery_step/neuter_ling/try_op(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail)
-	var/obj/item/other_item = user.get_inactive_held_item()
-	if(!other_item?.get_sharpness())
-		to_chat(user, span_warning("You need a sharp object in your inactive hand to do this step!"))
+/datum/surgery_operation/limb/neuter_ling/get_recommended_tool()
+	return "[..()] + scalpel"
+
+/datum/surgery_operation/limb/neuter_ling/snowflake_check_availability(obj/item/bodypart/limb, mob/living/surgeon, tool, operated_zone)
+	var/obj/item/offhand = surgeon.get_inactive_held_item()
+	return !!offhand?.get_sharpness()
+
+/datum/surgery_operation/limb/neuter_ling/state_check(obj/item/bodypart/limb)
+	if(limb.body_zone != BODY_ZONE_CHEST)
 		return FALSE
-	. = ..()
+	if(limb.owner.stat < UNCONSCIOUS)
+		return FALSE
+	return TRUE
 
-/datum/surgery_step/neuter_ling/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target,
-		span_notice("You begin operate within [target]'s chest, looking for a changeling headslug..."),
-		span_notice("[user] begins to operate within [target]'s chest, looking for a changeling headslug."),
-		span_notice("[user] begins to work within [target]'s chest."))
+/datum/surgery_operation/limb/neuter_ling/on_preop(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	display_results(
+		surgeon,
+		limb.owner,
+		span_notice("You begin operate within [limb.owner]'s [limb.plaintext_zone], looking for a changeling headslug..."),
+		span_notice("[surgeon] begins to operate within [limb.owner]'s [limb.plaintext_zone], looking for a changeling headslug."),
+		span_notice("[surgeon] begins to work within [limb.owner]'s [limb.plaintext_zone]."),
+	)
 
-/// Successfully neutering the changeling removes the changeling datum and gives them the neutered changelings datum.
-/datum/surgery_step/neuter_ling/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
+/datum/surgery_operation/limb/neuter_ling/on_success(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	var/mob/living/carbon/target = limb.owner
 	if(is_neutered_changeling(target))
-		to_chat(user, span_notice("The changeling headslug inside has already been neutered!"))
-		return TRUE
+		to_chat(surgeon, span_notice("The changeling headslug inside has already been neutered!"))
+		return
 	if(is_fallen_changeling(target))
-		to_chat(user, span_notice("The changeling headslug inside is dead!"))
-		return TRUE
+		to_chat(surgeon, span_notice("The changeling headslug inside is dead!"))
+		return
 
 	var/datum/antagonist/changeling/old_ling_datum = is_any_changeling(target)
 	if(old_ling_datum)
 		// It was a ling, good job bucko! The changeling is neutered.
-		display_results(user, target,
-			span_notice("You locate and succeed in neutering the headslug within [target]'s chest."),
-			span_notice("[user] successfully locates and neuters the headslug within [target]'s chest!"),
-			span_notice("[user] finishes working within [target]'s chest."))
-
+		display_results(
+			surgeon,
+			target,
+			span_notice("You locate and succeed in neutering the headslug within [target]'s [limb.plaintext_zone]."),
+			span_notice("[surgeon] successfully locates and neuters the headslug within [target]'s [limb.plaintext_zone]!"),
+			span_notice("[surgeon] finishes working within [target]'s [limb.plaintext_zone]."),
+		)
 		var/ling_id = old_ling_datum.changeling_id
 
 		target.mind.remove_antag_datum(/datum/antagonist/changeling)
@@ -102,7 +88,7 @@
 		var/revival_message_end = "and limply"
 		if(target.get_organ_slot(ORGAN_SLOT_HEART))
 			revival_message_end = "as their heart beats once more"
-		if(target.heal_and_revive((target.stat == DEAD ? 50 : 75), span_danger("[target] begins to write unnaturally [revival_message_end], their body struggling to regenerate!")))
+		if(target.heal_and_revive((target.stat == DEAD ? 50 : 75), span_danger("[target] begins to writhe unnaturally [revival_message_end], their body struggling to regenerate!")))
 			new_ling_datum.chem_charges += 15
 			var/datum/action/changeling/regenerate/regenerate_action = locate() in target.actions
 			regenerate_action?.sting_action(target) // Regenerate ourselves after revival, for heads / organs / whatever
@@ -111,49 +97,46 @@
 			target.cause_pain(BODY_ZONE_HEAD, 40)
 			target.cause_pain(BODY_ZONES_LIMBS, 25)
 		to_chat(target, span_big(span_green("Our headslug has been neutered! Our powers are lost... The hive screams in agony before going silent.")))
-
-		message_admins("[ADMIN_LOOKUPFLW(user)] neutered [ADMIN_LOOKUPFLW(target)]'s changeling abilities via surgery.")
-		target.log_message("has has their changeling abilities neutered by [key_name(user)] via surgery", LOG_ATTACK)
-		log_game("[key_name(user)] neutered [key_name(target)]'s changeling abilities via surgery.")
+		message_admins("[ADMIN_LOOKUPFLW(surgeon)] neutered [ADMIN_LOOKUPFLW(target)]'s changeling abilities via surgery.")
+		target.log_message("has has their changeling abilities neutered by [key_name(surgeon)] via surgery", LOG_ATTACK)
+		log_game("[key_name(surgeon)] neutered [key_name(target)]'s changeling abilities via surgery.")
 	else
 		// It wasn't a ling, idiot! Now you have a headless, all-chest-organs-destroyed body of an innocent person to fix up!
-		display_results(user, target,
-			span_danger("You succeed in operating within [target]'s chest...but find no headslug, causing heavy internal damage!"),
-			span_danger("[user] finishes operating within [target]'s chest...but finds no headslug, causing heavy internal damage!"),
-			span_notice("[user] finishes working within [target]'s chest."), TRUE)
-
+		display_results(
+			surgeon,
+			target,
+			span_danger("You succeed in operating within [target]'s [limb.plaintext_zone]...but find no headslug, causing heavy internal damage!"),
+			span_danger("[surgeon] finishes operating within [target]'s [limb.plaintext_zone]...but finds no headslug, causing heavy internal damage!"),
+			span_notice("[surgeon] finishes working within [target]'s [limb.plaintext_zone]."),
+			TRUE,
+		)
 		target.cause_pain(BODY_ZONE_CHEST, 60)
 		target.cause_pain(BODY_ZONES_LIMBS, 25)
-		for(var/obj/item/organ/stabbed_organ as anything in target.organs)
+		for(var/obj/item/organ/stabbed_organ as anything in limb)
 			if(stabbed_organ.organ_flags & ORGAN_EXTERNAL)
 				continue
-			if(deprecise_zone(stabbed_organ.zone) != BODY_ZONE_CHEST)
-				continue
 			stabbed_organ.apply_organ_damage(105) // Breaks all normal organs, severely damages cyber organs
+		message_admins("[ADMIN_LOOKUPFLW(surgeon)] attempted to changeling neuter a non-changeling, [ADMIN_LOOKUPFLW(target)] via surgery.")
 
-		message_admins("[ADMIN_LOOKUPFLW(user)] attempted to changeling neuter a non-changeling, [ADMIN_LOOKUPFLW(target)] via surgery.")
-
-	return ..()
-
-/// Failing to neuter the changeling gives them full chemicals.
-/datum/surgery_step/neuter_ling/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+/datum/surgery_operation/limb/neuter_ling/on_failure(obj/item/bodypart/limb, mob/living/surgeon, tool, list/operation_args)
+	var/mob/living/carbon/target = limb.owner
 	// Failure means they couldn't find a headslug, but there may be one in there...
-	display_results(user, target,
+	display_results(
+		surgeon,
+		target,
 		span_danger("You fail to locate a headslug within [target], causing internal damage!"),
-		span_danger("[user] fails to locate a headslug within [target], causing internal damage!"),
-		span_notice("[user] fails to locate a headslug!"), TRUE)
-
+		span_danger("[surgeon] fails to locate a headslug within [target], causing internal damage!"),
+		span_notice("[surgeon] fails to locate a headslug!"),
+		TRUE,
+	)
 	// ...And if there is, the changeling gets pissed
 	var/datum/antagonist/changeling/our_changeling = is_any_changeling(target)
 	if(our_changeling)
-		to_chat(target, span_changeling("[user] has attempted and failed to neuter our changeling abilities! We feel invigorated, we must break free!"))
+		to_chat(target, span_changeling("[surgeon] has attempted and failed to neuter our changeling abilities! We feel invigorated, we must break free!"))
 		target.do_jitter_animation(50)
-		our_changeling.chem_charges = our_changeling.total_chem_storage
-
+		our_changeling.adjust_chemicals(INFINITY)
 	// Causes organ damage nonetheless
-	for(var/obj/item/organ/stabbed_organ as anything in target.organs)
+	for(var/obj/item/organ/stabbed_organ as anything in limb)
 		if(stabbed_organ.organ_flags & ORGAN_EXTERNAL)
-			continue
-		if(deprecise_zone(stabbed_organ.zone) != BODY_ZONE_CHEST)
 			continue
 		stabbed_organ.apply_organ_damage(25)

@@ -97,3 +97,26 @@
 	icon_state = "countess"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESHOES
+
+/obj/item/clothing/under/jumpsuit/redshirt
+	name = "deep red shirt"
+	desc = "A casual gothic outfit adorned with black accessories."
+	icon = 'maplestation_modules/icons/obj/clothing/under/red.dmi'
+	worn_icon = 'maplestation_modules/icons/obj/clothing/under/red.dmi'
+	icon_state = "deepred"
+	inhand_icon_state = null
+
+/obj/item/clothing/under/jumpsuit/designershirt
+	name = "designer outfit"
+	desc = "A very expensive outfit tailored to your body. Worth more than your monthly salary."
+	icon = 'maplestation_modules/icons/obj/clothing/designer.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/designer.dmi'
+	icon_state = "designeroutfit"
+	inhand_icon_state = null
+
+/obj/item/clothing/under/jumpsuit/merc
+	name = "mercenary uniform"
+	desc = "An old uniform that a mercenary would wear."
+	icon = 'maplestation_modules/icons/obj/clothing/mercenary.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/mercenary.dmi'
+	icon_state = "liniuniform"

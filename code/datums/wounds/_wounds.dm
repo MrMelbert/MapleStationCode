@@ -63,8 +63,6 @@
 
 	/// Specific items such as bandages or sutures that can try directly treating this wound
 	var/list/treatable_by
-	/// Specific items such as bandages or sutures that can try directly treating this wound only if the user has the victim in an aggressive grab or higher
-	var/list/treatable_by_grabbed
 	/// Any tools with any of the flags in this list will be usable to try directly treating this wound
 	var/list/treatable_tools
 	/// How long it will take to treat this wound with a standard effective tool, assuming it doesn't need surgery
@@ -93,8 +91,6 @@
 
 	/// What status effect we assign on application
 	var/status_effect_type
-	/// If we're operating on this wound and it gets healed, we'll nix the surgery too
-	var/datum/surgery/attached_surgery
 	/// if you're a lazy git and just throw them in cryo, the wound will go away after accumulating severity * [base_xadone_progress_to_qdel] power
 	var/cryo_progress
 
@@ -123,7 +119,6 @@
 	update_actionspeed_modifier()
 
 /datum/wound/Destroy()
-	QDEL_NULL(attached_surgery)
 	if (limb)
 		remove_wound()
 
@@ -267,6 +262,7 @@
 		UnregisterSignal(victim, COMSIG_QDELETING)
 		UnregisterSignal(victim, COMSIG_MOB_SWAP_HANDS)
 		UnregisterSignal(victim, COMSIG_CARBON_POST_REMOVE_LIMB)
+		UnregisterSignal(victim, COMSIG_ATOM_ITEM_INTERACTION)
 		if (actionspeed_mod)
 			victim.remove_actionspeed_modifier(actionspeed_mod) // no need to qdelete it, just remove it from our victim
 
@@ -275,7 +271,7 @@
 	if(victim)
 		RegisterSignal(victim, COMSIG_QDELETING, PROC_REF(null_victim))
 		RegisterSignals(victim, list(COMSIG_MOB_SWAP_HANDS, COMSIG_CARBON_POST_REMOVE_LIMB, COMSIG_CARBON_POST_ATTACH_LIMB), PROC_REF(add_or_remove_actionspeed_mod))
-
+		RegisterSignal(victim, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(interact_try_treating))
 		if (limb)
 			start_limping_if_we_should() // the status effect already handles removing itself
 			add_or_remove_actionspeed_mod()
@@ -287,7 +283,6 @@
 	. = limb
 	if(limb) // if we're nulling limb, we're basically detaching from it, so we should remove ourselves in that case
 		UnregisterSignal(limb, COMSIG_QDELETING)
-		UnregisterSignal(limb, list(COMSIG_BODYPART_GAUZED, COMSIG_BODYPART_UNGAUZED))
 		LAZYREMOVE(limb.wounds, src)
 		limb.update_wounds(replaced)
 		if (disabling)
@@ -299,7 +294,6 @@
 
 	if (limb)
 		RegisterSignal(limb, COMSIG_QDELETING, PROC_REF(source_died))
-		RegisterSignals(limb, list(COMSIG_BODYPART_GAUZED, COMSIG_BODYPART_UNGAUZED), PROC_REF(gauze_state_changed))
 		if (disabling)
 			limb.add_traits(list(TRAIT_PARALYSIS, TRAIT_DISABLED_BY_WOUND), REF(src))
 
@@ -394,7 +388,7 @@
 /datum/wound/proc/get_effective_actionspeed_modifier()
 	. = interaction_efficiency_penalty - 1
 	if(wound_flags & ACCEPTS_GAUZE)
-		. *= get_splint_power()
+		. *= limb.get_splint_factor()
 	return .
 
 /// Returns the decisecond multiplier of any click interactions, assuming our limb is being used.
@@ -409,30 +403,20 @@
 
 	return 0
 
-/// Signal proc for if gauze has been applied or removed from our limb.
-/datum/wound/proc/gauze_state_changed()
-	SIGNAL_HANDLER
-
-	if (wound_flags & ACCEPTS_GAUZE)
-		update_inefficiencies()
-
-/// Gets modifier from splints. Returns a decimal value 0-1, not including 0.
-/datum/wound/proc/get_splint_power()
-	return limb?.current_gauze?.splint_factor || 1
-
 /// Updates our limping and interaction penalties in accordance with our gauze.
 /datum/wound/proc/update_inefficiencies(replaced_or_replacing = FALSE)
-	if(wound_flags & ACCEPTS_GAUZE)
-		var/splint_power = get_splint_power()
-		if(limb.body_zone == BODY_ZONE_L_LEG || limb.body_zone == BODY_ZONE_R_LEG)
-			limp_slowdown = initial(limp_slowdown) * splint_power
-			limp_chance = initial(limp_chance) * splint_power
+	SHOULD_NOT_SLEEP(TRUE)
 
-		if(limb.body_zone == BODY_ZONE_L_ARM || limb.body_zone == BODY_ZONE_R_ARM)
+	if (wound_flags & ACCEPTS_GAUZE)
+		var/splint_factor = limb.get_splint_factor()
+		if(limb.body_zone in GLOB.leg_zones)
+			limp_slowdown = initial(limp_slowdown) * splint_factor
+			limp_chance = initial(limp_chance) * splint_factor
+		else if(limb.body_zone in GLOB.arm_zones)
 			update_actionspeed_modifier()
 
 		if(initial(disabling))
-			set_disabling(isnull(limb.current_gauze))
+			set_disabling(splint_factor < 1)
 
 		limb.update_wounds(replaced_or_replacing)
 
@@ -451,71 +435,79 @@
 			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_CRITICAL)
 		if(WOUND_SEVERITY_LOSS)
 			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_LOSS)
-	// victim.add_reagent(/datum/reagent/medicine/epinephrine, severity * 2)
+
+/datum/wound/proc/interact_try_treating(datum/source, mob/living/user, obj/item/tool, ...)
+	SIGNAL_HANDLER
+
+	return try_treating(tool, user)
 
 /**
- * try_treating() is an intercept run from [/mob/living/carbon/proc/attackby] right after surgeries but before anything else. Return TRUE here if the item is something that is relevant to treatment to take over the interaction.
+ * Attempt to treat the wound with the given item/tool by the given user
+ * This proc leads into [/datum/wound/proc/treat]
  *
- * This proc leads into [/datum/wound/proc/treat] and probably shouldn't be added onto in children types. You can specify what items or tools you want to be intercepted
- * with var/list/treatable_by and var/treatable_tool, then if an item fulfills one of those requirements and our wound claims it first, it goes over to treat() and treat_self().
+ * You can specify what items or tools you want to be intercepted
+ * with var/list/treatable_by and var/treatable_tool,
+ * then if an item fulfills one of those requirements and our wound claims it first,
+ * it goes over to treat() and treat_self().
  *
  * Arguments:
  * * I: The item we're trying to use
  * * user: The mob trying to use it on us
  */
-/datum/wound/proc/try_treating(obj/item/I, mob/user)
-	// first we weed out if we're not dealing with our wound's bodypart, or if it might be an attack
-	if(!I || limb.body_zone != user.zone_selected)
-		return FALSE
+/datum/wound/proc/try_treating(obj/item/tool, mob/living/user)
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	if(isliving(user))
-		var/mob/living/tendee = user
-		if(I.force && tendee.combat_mode)
-			return FALSE
+	if(limb.body_zone != user.zone_selected)
+		return NONE
 
-	if(!item_can_treat(I, user))
-		return FALSE
+	if(user.combat_mode && tool.force)
+		return NONE
 
-	// now that we've determined we have a valid attempt at treating, we can stomp on their dreams if we're already interacting with the patient or if their part is obscured
+	if(!item_can_treat(tool, user))
+		return NONE
+
+	// now that we've determined we have a valid attempt at treating,
+	// we can stomp on their dreams if we're already interacting with the patient or if their part is obscured
 	if(DOING_INTERACTION_WITH_TARGET(user, victim))
 		to_chat(user, span_warning("You're already interacting with [victim]!"))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	// next we check if the bodypart in actually accessible (not under thick clothing). We skip the species trait check since skellies
 	// & such may need to use bone gel but may be wearing a space suit for..... whatever reason a skeleton would wear a space suit for
 	if(ishuman(victim))
 		var/mob/living/carbon/human/victim_human = victim
 		if(!victim_human.try_inject(user, injection_flags = INJECT_CHECK_IGNORE_SPECIES | INJECT_TRY_SHOW_ERROR_MESSAGE))
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
 
-	// lastly, treat them
-	return treat(I, user) // we allow treat to return a value so it can control if the item does its normal interaction or not
+	INVOKE_ASYNC(src, PROC_REF(treat), tool, user)
+	return ITEM_INTERACT_SUCCESS
 
 /// Returns TRUE if the item can be used to treat our wounds. Hooks into treat() - only things that return TRUE here may be used there.
 /datum/wound/proc/item_can_treat(obj/item/potential_treater, mob/user)
 	// check if we have a valid treatable tool
 	if(potential_treater.tool_behaviour in treatable_tools)
 		return TRUE
-	if((TOOL_CAUTERY in treatable_tools) && potential_treater.get_temperature() && (user == victim)) // allow improvised cauterization on yourself without an aggro grab
-		return TRUE
 	// failing that, see if we're aggro grabbing them and if we have an item that works for aggro grabs only
-	if(user.pulling == victim && user.grab_state >= GRAB_AGGRESSIVE && check_grab_treatments(potential_treater, user))
+	if((user == victim || (user.pulling == victim && user.grab_state >= GRAB_AGGRESSIVE)) && check_grab_treatments(potential_treater, user))
 		return TRUE
 	// failing THAT, we check if we have a generally allowed item
-	for(var/allowed_type in treatable_by)
-		if(istype(potential_treater, allowed_type))
-			return TRUE
-
-/// Return TRUE if we have an item that can only be used while aggro grabbed (unhanded aggro grab treatments go in [/datum/wound/proc/try_handling]). Treatment is still is handled in [/datum/wound/proc/treat]
-/datum/wound/proc/check_grab_treatments(obj/item/I, mob/user)
+	if(is_type_in_list(potential_treater, treatable_by))
+		return TRUE
 	return FALSE
 
-/// Like try_treating() but for unhanded interactions from humans, used by joint dislocations for manual bodypart chiropractice for example. Ignores thick material checks since you can pop an arm into place through a thick suit unlike using sutures
-/datum/wound/proc/try_handling(mob/living/carbon/human/user)
+/// Return TRUE if we have an item that can only be used while aggro grabbed
+/// (unhanded aggro grab treatments go in [/datum/wound/proc/try_handling]).
+/// Treatment is still is handled in [/datum/wound/proc/treat]
+/datum/wound/proc/check_grab_treatments(obj/item/tool, mob/user)
+	return FALSE
+
+/// Like try_treating() but for unhanded interactions, used by joint dislocations for manual bodypart chiropractice for example.
+/// Ignores thick material checks since you can pop an arm into place through a thick suit unlike using sutures
+/datum/wound/proc/try_handling(mob/living/user)
 	return FALSE
 
 /// Someone is using something that might be used for treating the wound on this limb
-/datum/wound/proc/treat(obj/item/I, mob/user)
+/datum/wound/proc/treat(obj/item/tool, mob/user)
 	return
 
 /// If var/processing is TRUE, this is run on each life tick
@@ -603,19 +595,14 @@
 	return .
 
 /datum/wound/proc/get_wound_description(mob/user)
-	var/desc
+	if(!examine_desc)
+		return // no examine text
 
-	if ((wound_flags & ACCEPTS_GAUZE) && limb.current_gauze)
-		desc = "[victim.p_Their()] [limb.plaintext_zone] is [get_gauze_condition()] fastened in a sling of [limb.current_gauze.name]"
-	else if(examine_desc)
-		desc = "[victim.p_Their()] [limb.plaintext_zone] [examine_desc]"
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if ((wound_flags & ACCEPTS_GAUZE) && current_gauze)
+		return // gauze is covering the wound
 
-	if(!desc)
-		return
-
-	desc = modify_desc_before_span(desc, user)
-
-	return get_desc_intensity(desc)
+	return get_desc_intensity(modify_desc_before_span("[victim.p_Their()] [limb.plaintext_zone] [examine_desc]", user))
 
 /**
  * Used when a mob is examining themselves / their limbs
@@ -627,19 +614,43 @@
  * you would add something like "It is bleeding."
  *
  * * self_aware - if TRUE, the examiner is more aware of themselves and thus may get more detailed information
+ * * medical_skill - the medical skill of the examiner, used to determine how much information they get.
+ * * is_covered - list of clothing covering the wound(ed bodypart)
  *
  * Return a string, to be concatenated with other organ / limb status strings. Include spans and punctuation.
  */
-/datum/wound/proc/get_self_check_description(self_aware)
+/datum/wound/proc/get_self_check_description(self_aware, medical_skill, list/covering)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if(current_gauze)
+		return ""
+	for(var/obj/item/clothing/clothing as anything in covering)
+		if(clothing.clothing_flags & THICKMATERIAL)
+			return ""
+
+	var/shown_name = LOWER_TEXT(get_displayed_name(medical_skill))
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return span_danger("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+			return span_danger("It's suffering [a_or_from] [shown_name].")
 		if(WOUND_SEVERITY_MODERATE)
-			return span_warning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)].")
+			return span_warning("It's suffering [a_or_from] [shown_name].")
 		if(WOUND_SEVERITY_SEVERE)
-			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!")
+			return span_boldwarning("It's suffering [a_or_from] [shown_name]!")
 		if(WOUND_SEVERITY_CRITICAL)
-			return span_boldwarning("It's suffering [a_or_from] [LOWER_TEXT(undiagnosed_name || name)]!!")
+			return span_boldwarning("It's suffering [a_or_from] [shown_name]!!")
+
+/// Returns what name we should show for this wound for the passed mob
+/// If the mob has the medical skill to recognize the wound, it returns the actual name.
+/// Otherwise, it returns a more vague name that doesn't specify the wound type.
+/// If there's no vague name, it just returns the actual name.
+/datum/wound/proc/get_displayed_name(medical_skill = SKILL_LEVEL_NONE)
+	if(!undiagnosed_name || medical_skill >= SKILL_LEVEL_JOURNEYMAN)
+		return name
+
+	return undiagnosed_name
+
+/// get_displayed_name_for_mob but it accepts a mob rather than a skill level
+/datum/wound/proc/get_displayed_name_for_mob(mob/user)
+	return get_displayed_name(user.get_highest_skill_level(list(/datum/skill/first_aid, /datum/skill/surgery)))
 
 /// A hook proc used to modify desc before it is spanned via [get_desc_intensity]. Useful for inserting spans yourself.
 /datum/wound/proc/modify_desc_before_span(desc, mob/user)
@@ -647,18 +658,19 @@
 
 /datum/wound/proc/get_gauze_condition()
 	SHOULD_BE_PURE(TRUE)
-	if (!limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if (!current_gauze)
 		return null
 
-	switch(limb.current_gauze.absorption_capacity)
+	switch(current_gauze.absorption_capacity)
 		if(0 to 1.25)
-			return "just barely"
+			return "just barely "
 		if(1.25 to 2.75)
-			return "loosely"
+			return "loosely "
 		if(2.75 to 4)
-			return "mostly"
+			return "mostly "
 		if(4 to INFINITY)
-			return "tightly"
+			return "tightly "
 
 /// Spans [desc] based on our severity.
 /datum/wound/proc/get_desc_intensity(desc)

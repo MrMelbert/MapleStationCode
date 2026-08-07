@@ -1,6 +1,7 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = FLOOR_CLEAN_LAYER
+	abstract_type = /obj/effect/decal/cleanable
 	var/list/random_icon_states = null
 	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
 	var/blood_state = ""

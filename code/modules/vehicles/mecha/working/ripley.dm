@@ -20,7 +20,7 @@
 	mecha_flags = CAN_STRAFE | HAS_LIGHTS | MMI_COMPATIBLE
 	wreckage = /obj/structure/mecha_wreckage/ripley
 	mech_type = EXOSUIT_MODULE_RIPLEY
-	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
+	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT|MECHA_INT_FUEL_LINE
 	accesses = list(ACCESS_MECH_ENGINE, ACCESS_MECH_SCIENCE, ACCESS_MECH_MINING)
 	enter_delay = 10 //can enter in a quarter of the time of other mechs
 	exit_delay = 10
@@ -76,7 +76,7 @@
 	max_temperature = 30000
 	max_integrity = 250
 	mecha_flags = CAN_STRAFE | IS_ENCLOSED | HAS_LIGHTS | MMI_COMPATIBLE
-	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_CABIN_AIR_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
+	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_CABIN_AIR_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT|MECHA_INT_FUEL_LINE
 	armor_type = /datum/armor/mecha_ripley_mk2
 	wreckage = /obj/structure/mecha_wreckage/ripley/mk2
 	enter_delay = 40
@@ -101,7 +101,7 @@
 	max_temperature = 20000
 	max_integrity = 250
 	mech_type = EXOSUIT_MODULE_PADDY
-	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
+	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT|MECHA_INT_FUEL_LINE
 	accesses = list(ACCESS_MECH_SCIENCE, ACCESS_MECH_SECURITY)
 	armor_type = /datum/armor/mecha_paddy
 	wreckage = /obj/structure/mecha_wreckage/ripley/paddy

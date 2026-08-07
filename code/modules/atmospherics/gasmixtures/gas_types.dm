@@ -66,7 +66,8 @@
 	var/desc
 	///RGB code for use when a generic color representing the gas is needed. Colors taken from contants.ts
 	var/primary_color
-
+	/// Smell string or typepath for this gas
+	var/smell
 
 /datum/gas/oxygen
 	id = GAS_O2
@@ -110,6 +111,7 @@
 	base_value = 1.5
 	desc = "A flammable gas with many other curious properties. It's research is one of NT's primary objective."
 	primary_color = "#ffc0cb"
+	smell = /datum/smell/plasma
 
 /datum/gas/water_vapor
 	id = GAS_WATER_VAPOR
@@ -149,6 +151,7 @@
 	base_value = 1.5
 	desc = "Causes drowsiness, euphoria, and eventually unconsciousness."
 	primary_color = "#ffe4c4"
+	smell = "sweet"
 
 /datum/gas/nitrium
 	id = GAS_NITRIUM
@@ -162,6 +165,7 @@
 	base_value = 6
 	desc = "An experimental performance enhancing gas. Nitrium can have amplified effects as more of it gets into your bloodstream."
 	primary_color = "#a52a2a"
+	smell = "coffee"
 
 /datum/gas/tritium
 	id = GAS_TRITIUM
@@ -187,6 +191,7 @@
 	base_value = 1.5
 	desc = "A powerful hallucinogenic nerve agent able to induce cognitive damage."
 	primary_color = "#9370db"
+	smell = "sweet"
 
 /datum/gas/pluoxium
 	id = GAS_PLUOXIUM
@@ -197,6 +202,7 @@
 	base_value = 2.5
 	desc = "A gas that could supply even more oxygen to the bloodstream when inhaled, without being an oxidizer."
 	primary_color = "#7b68ee"
+	smell = "disinfectant"
 
 /datum/gas/miasma
 	id = GAS_MIASMA
@@ -209,6 +215,7 @@
 	base_value = 1
 	desc = "Not necessarily a gas, miasma refers to biological pollutants found in the atmosphere."
 	primary_color = COLOR_OLIVE
+	smell = /datum/smell/miasma
 
 /datum/gas/freon
 	id = GAS_FREON
@@ -245,6 +252,7 @@
 	base_value = 5.5
 	desc = "Causes deep, regenerative sleep."
 	primary_color = "#fa8072"
+	smell = "sweet"
 
 /datum/gas/proto_nitrate
 	id = GAS_PROTO_NITRATE
@@ -257,6 +265,7 @@
 	base_value = 2.5
 	desc = "A very volatile gas that reacts differently with various gases."
 	primary_color = "#adff2f"
+	smell = "ozone"
 
 /datum/gas/zauker
 	id = GAS_ZAUKER
@@ -269,6 +278,7 @@
 	base_value = 7
 	desc = "A highly toxic gas, it's production is highly regulated on top of being difficult. It also breaks down when in contact with nitrogen."
 	primary_color = "#006400"
+	smell = "death"
 
 /datum/gas/halon
 	id = GAS_HALON
@@ -304,6 +314,7 @@
 	base_value = 10
 	desc = "We still don't know what it does, but it sells for a lot."
 	primary_color = COLOR_MAROON
+	smell = "yourself"
 
 /obj/effect/overlay/gas
 	icon = 'icons/effects/atmospherics.dmi'
@@ -326,4 +337,3 @@
 /obj/effect/overlay/gas/Initialize(mapload)
 	. = ..()
 	SET_PLANE_W_SCALAR(src, initial(plane), plane_offset)
-

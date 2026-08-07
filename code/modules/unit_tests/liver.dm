@@ -77,7 +77,7 @@
 
 	// Test plasma
 
-	r_arm.receive_damage(WOUND_MINIMUM_DAMAGE, 0, wound_bonus = 100, sharpness = NONE)
+	r_arm.receive_damage(2 * WOUND_MINIMUM_DAMAGE, 0, wound_bonus = 100, sharpness = NONE)
 	TEST_ASSERT(length(mrbones.all_wounds), "Plasmaman did not receive a wound on their right arm")
 
 	mrbones.reagents.add_reagent(plasma, 50)
@@ -91,7 +91,7 @@
 
 	// Test hot ice
 
-	l_arm.receive_damage(WOUND_MINIMUM_DAMAGE, 0, wound_bonus = 100, sharpness = NONE)
+	l_arm.receive_damage(2 * WOUND_MINIMUM_DAMAGE, 0, wound_bonus = 100, sharpness = NONE)
 	TEST_ASSERT(length(mrbones.all_wounds), "Plasmaman did not receive a wound on their left arm")
 
 	afflicted_wound = mrbones.all_wounds[1]

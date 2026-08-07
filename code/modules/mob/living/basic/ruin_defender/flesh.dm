@@ -86,7 +86,7 @@
 		return
 
 	var/list/zone_candidates = target.get_missing_limbs()
-	for(var/obj/item/bodypart/bodypart in target.bodyparts)
+	for(var/obj/item/bodypart/bodypart in target.get_bodyparts())
 		if(bodypart.body_zone == BODY_ZONE_HEAD || bodypart.body_zone == BODY_ZONE_CHEST)
 			continue
 		if(HAS_TRAIT(bodypart, TRAIT_IGNORED_BY_LIVING_FLESH))
@@ -120,7 +120,7 @@
 
 	target.visible_message(span_danger("[src] [target_part ? "tears off and attaches itself" : "attaches itself"] to where [target][target.p_s()] limb used to be!"))
 	current_bodypart = new part_type(TRUE) //dont_spawn_flesh, we cant use named arguments here
-	current_bodypart.replace_limb(target, TRUE)
+	current_bodypart.replace_limb(target)
 	forceMove(current_bodypart)
 	register_to_limb(current_bodypart)
 

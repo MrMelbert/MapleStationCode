@@ -75,7 +75,8 @@
 		/obj/item/implanter,
 		/obj/item/pinpointer/crew,
 		/obj/item/holosign_creator/medical,
-		/obj/item/stack/sticky_tape,
+		/obj/item/stack/medical/wrap/sticky_tape,
+		/obj/item/razor,
 	)
 
 /obj/item/storage/medkit/Initialize(mapload)
@@ -94,10 +95,9 @@
 /obj/item/storage/medkit/regular/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/bruise_pack = 1,
-		/obj/item/stack/medical/suture = 1,
+	var/list/items_inside = list(
+		/obj/item/stack/medical/wrap/gauze = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/reagent_containers/hypospray/medipen/morphine = 1,
@@ -118,15 +118,17 @@
 /obj/item/storage/medkit/emergency/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/healthanalyzer/simple = 1,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture/emergency = 1,
-		/obj/item/stack/medical/ointment = 1,
-		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
-		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/hemostat/tweezers = 1,
+		/obj/item/stack/medical/wrap/gauze = 1,
+		/obj/item/stack/medical/bruise_pack/ekit = 1,
+		/obj/item/stack/medical/ointment/ekit = 1,
+		/obj/item/temperature_pack/cold = 1,
 		/obj/item/shock_blanket/emergency = 1,
+		/obj/item/reagent_containers/hypospray/medipen/ekit = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
 	)
 	generate_items_inside(items_inside,src)
 
@@ -146,9 +148,9 @@
 /obj/item/storage/medkit/surgery/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/healthanalyzer = 1,
-		/obj/item/stack/medical/gauze/twelve = 1,
+		/obj/item/stack/medical/wrap/gauze/twelve = 1,
 		/obj/item/stack/medical/suture = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
@@ -166,10 +168,11 @@
 /obj/item/storage/medkit/ancient/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
+	var/list/items_inside = list(
+		/obj/item/stack/medical/wrap/gauze = 1,
 		/obj/item/stack/medical/bruise_pack = 3,
-		/obj/item/stack/medical/ointment= 3)
+		/obj/item/stack/medical/ointment = 3,
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient/heirloom
@@ -193,7 +196,7 @@
 /obj/item/storage/medkit/fire/PopulateContents()
 	if(empty)
 		return
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/aiuri = 3,
 		/obj/item/reagent_containers/spray/hercuri = 1,
 		/obj/item/stack/medical/ointment = 1,
@@ -220,13 +223,13 @@
 /obj/item/storage/medkit/toxin/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
-		/obj/item/storage/pill_bottle/multiver/less = 1,
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/syringe/syriniver = 3,
+		/obj/item/storage/pill_bottle/multiver/less = 1,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
 		/obj/item/reagent_containers/hypospray/medipen/penacid = 1,
 		/obj/item/healthanalyzer/simple/disease = 1,
-		)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/o2
@@ -246,11 +249,13 @@
 /obj/item/storage/medkit/o2/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/syringe/convermol = 3,
+		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
-		/obj/item/storage/pill_bottle/iron = 1)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/brute
@@ -270,10 +275,10 @@
 /obj/item/storage/medkit/brute/PopulateContents()
 	if(empty)
 		return
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/gauze = 1,
 		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
 		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,
 	)
@@ -298,11 +303,11 @@
 /obj/item/storage/medkit/advanced/PopulateContents()
 	if(empty)
 		return
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
 		/obj/item/reagent_containers/hypospray/medipen/blood_loss = 1,
 		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/medical/wrap/gauze = 1,
 		/obj/item/storage/pill_bottle/penacid = 1,
 		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee = 1,
 	)
@@ -325,7 +330,7 @@
 /obj/item/storage/medkit/tactical/PopulateContents()
 	if(empty)
 		return
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/cautery = 1,
 		/obj/item/scalpel = 1,
 		/obj/item/healthanalyzer/advanced = 1,
@@ -334,7 +339,7 @@
 		/obj/item/storage/box/bandages = 1,
 		/obj/item/surgical_drapes = 1,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
-		/obj/item/stack/medical/gauze = 2,
+		/obj/item/stack/medical/wrap/gauze = 2,
 		/obj/item/stack/medical/suture/medicated = 2,
 		/obj/item/stack/medical/mesh/advanced = 2,
 		/obj/item/reagent_containers/pill/patch/libital = 4,
@@ -358,13 +363,13 @@
 /obj/item/storage/medkit/tactical/premium/PopulateContents()
 	if(empty)
 		return
-	var/static/list/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/stack/medical/suture/medicated = 2,
 		/obj/item/stack/medical/mesh/advanced = 2,
 		/obj/item/reagent_containers/pill/patch/libital = 3,
 		/obj/item/reagent_containers/pill/patch/aiuri = 3,
 		/obj/item/healthanalyzer/advanced = 1,
-		/obj/item/stack/medical/gauze = 2,
+		/obj/item/stack/medical/wrap/gauze = 2,
 		/obj/item/mod/module/thread_ripper = 1,
 		/obj/item/mod/module/surgical_processor/preloaded = 1,
 		/obj/item/mod/module/defibrillator/combat = 1,
@@ -409,7 +414,7 @@
 /obj/item/storage/medkit/coroner/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/list/items_inside = list(
 		/obj/item/reagent_containers/cup/bottle/formaldehyde = 1,
 		/obj/item/reagent_containers/medigel/sterilizine = 1,
 		/obj/item/reagent_containers/blood = 1,

@@ -2,7 +2,7 @@
 
 // Cans
 /obj/item/food/canned
-	name = "Canned Air"
+	name = "canned air"
 	desc = "If you ever wondered where air came from..."
 	food_reagents = list(
 		/datum/reagent/oxygen = 6,
@@ -65,7 +65,7 @@
 	foodtypes = FRUIT | SUGAR
 
 /obj/item/food/canned/peaches/maint
-	name = "Maintenance Peaches"
+	name = "maintenance peaches"
 	desc = "I have a mouth and I must eat."
 	icon_state = "peachcanmaint"
 	trash_type = /obj/item/trash/can/food/peaches/maint
@@ -231,6 +231,11 @@
 
 	/// What reagents should be added when this item is warmed?
 	var/static/list/added_reagents = list(/datum/reagent/medicine/omnizine = 3)
+
+// NON-MODULE CHANGE
+/obj/item/food/ready_donk/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_FOOD_MUST_INHERIT_CHEF_MADE, INNATE_TRAIT)
 
 /obj/item/food/ready_donk/make_bakeable()
 	AddComponent(/datum/component/bakeable, warm_type, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE, added_reagents)

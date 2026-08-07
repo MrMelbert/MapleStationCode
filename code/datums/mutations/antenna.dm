@@ -129,7 +129,7 @@
 		to_chat(cast_on, span_danger("You feel something foreign enter your mind."))
 		log_info += "Target alerted!"
 
-	to_chat(owner, examine_block(span_notice(jointext(discovered_info, "<br>"))))
+	to_chat(owner, boxed_message(span_notice(jointext(discovered_info, "<br>"))))
 	log_combat(owner, cast_on, "mind read (cast intentionally)", null, "info: [english_list(log_info, and_text = ", ")]")
 
 /datum/action/cooldown/spell/pointed/mindread/proc/on_examining(mob/examiner, atom/examining)
@@ -156,12 +156,12 @@
 	if(QDELETED(examiner))
 		return
 	if(antimagic)
-		to_chat(examiner, examine_block(span_warning("You attempt to analyze [examined]'s current thoughts, but fail to penetrate [examined.p_their()] mind - It seems you've been foiled.")))
+		to_chat(examiner, boxed_message(span_warning("You attempt to analyze [examined]'s current thoughts, but fail to penetrate [examined.p_their()] mind - It seems you've been foiled.")))
 		return
 
 	var/list/log_info = list()
 
-	to_chat(examiner, examine_block(span_notice("<i>You analyze [examined]'s current thoughts...</i><br>&emsp;\"[read_text]\"...")))
+	to_chat(examiner, boxed_message(span_notice("<i>You analyze [examined]'s current thoughts...</i><br>&emsp;\"[read_text]\"...")))
 	log_info += "Current thought: \"[read_text]\""
 
 	if(prob(10))

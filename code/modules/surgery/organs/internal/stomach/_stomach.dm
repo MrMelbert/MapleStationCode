@@ -245,24 +245,33 @@
 			disgusted.throw_alert(ALERT_DISGUST, /atom/movable/screen/alert/disgusted)
 			disgusted.add_mood_event("disgust", /datum/mood_event/disgusted)
 
-/obj/item/organ/stomach/mob_insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/stomach/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 	receiver.hud_used?.hunger?.update_hunger_bar()
 
-/obj/item/organ/stomach/mob_remove(mob/living/carbon/stomach_owner, special, movement_flags)
-	if(ishuman(stomach_owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.clear_alert(ALERT_DISGUST)
-		human_owner.clear_mood_event("disgust")
+/obj/item/organ/stomach/on_mob_remove(mob/living/carbon/stomach_owner, special, movement_flags)
+	stomach_owner.clear_alert(ALERT_DISGUST)
+	stomach_owner.clear_mood_event("disgust")
 	stomach_owner.hud_used?.hunger?.update_hunger_bar()
 	return ..()
 
-/obj/item/organ/stomach/feel_for_damage(self_aware)
+/obj/item/organ/stomach/feel_for_damage(self_aware, medical_skill)
 	if(damage < low_threshold)
 		return ""
 	if(damage < high_threshold)
 		return span_warning("Your stomach hurts.")
 	return span_boldwarning("Your stomach cramps in pain!")
+
+/// Returns how full this stomach is for the hunger bar
+/// If you pass skip_contents = TRUE, it does not factor in any contents of the stomach
+/obj/item/organ/stomach/proc/get_hungerbar_fullness(skip_contents = FALSE)
+	if(HAS_TRAIT(owner, TRAIT_NOHUNGER))
+		return NUTRITION_LEVEL_FED
+	if(HAS_TRAIT(owner, TRAIT_FAT))
+		return NUTRITION_LEVEL_FAT
+	if(skip_contents)
+		return owner.nutrition
+	return owner.get_fullness(only_consumable = TRUE)
 
 /obj/item/organ/stomach/bone
 	name = "mass of bones"
@@ -319,7 +328,7 @@
 /obj/item/organ/stomach/cybernetic/surplus
 	name = "surplus prosthetic stomach"
 	desc = "A mechanical plastic oval that utilizes sulfuric acid instead of stomach acid. \
-		Very fragile, with painfully slow metabolism.\
+		Very fragile, with painfully slow metabolism. \
 		Offers no protection against EMPs."
 	icon_state = "stomach-c-s"
 	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.35

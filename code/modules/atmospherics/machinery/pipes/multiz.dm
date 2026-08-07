@@ -21,8 +21,6 @@
 	var/mutable_appearance/center = null
 	///The pipe icon
 	var/mutable_appearance/pipe = null
-	///Reference to the node
-	var/obj/machinery/atmospherics/front_node = null
 
 /obj/machinery/atmospherics/pipe/multiz/Initialize(mapload, process, setdir, init_dir)
 	icon_state = ""
@@ -39,7 +37,7 @@
 /obj/machinery/atmospherics/pipe/multiz/update_overlays()
 	. = ..()
 	pipe.appearance_flags |= RESET_COLOR|KEEP_APART
-	pipe.color = front_node ? front_node.pipe_color : ATMOS_COLOR_OMNI
+	pipe.color = nodes[1]?.pipe_color || ATMOS_COLOR_OMNI
 	pipe.icon_state = "pipe-[piping_layer]"
 	. += pipe
 	center.pixel_w = PIPING_LAYER_P_X * (piping_layer - PIPING_LAYER_DEFAULT)

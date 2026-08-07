@@ -31,6 +31,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 	RegisterSignal(target, COMSIG_MOVABLE_THROW_LANDED, PROC_REF(shatter_on_landed))
 	RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(shatter_on_throw))
 	RegisterSignal(target, COMSIG_OBJ_UNFREEZE, PROC_REF(on_unfreeze))
+	// NON-MODULE CHANGE
+	target.AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
 /datum/element/frozen/Detach(datum/source, ...)
 	var/obj/obj_source = source
@@ -39,6 +41,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 	obj_source.name = replacetext(obj_source.name, "frozen ", "")
 	obj_source.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, GLOB.freon_color_matrix)
 	obj_source.alpha += 25
+	// NON-MODULE CHANGE
+	obj_source.RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
 	if (isorgan(source))
 		var/obj/item/organ/organ = source
