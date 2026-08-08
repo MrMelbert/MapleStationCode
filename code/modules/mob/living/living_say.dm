@@ -211,6 +211,13 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			succumb()
 		return
 
+	var/static/regex/shout_regex = regex(@"\w+\s*(!+)\s*$\s*", "i")
+	if(shout_regex.Find(message))
+		message_mods[SHOUT_MODE] = length_char(shout_regex.group[1]) > 1 ? MODE_YELL : MODE_SHOUT
+		message_range = floor(message_range * (message_mods[SHOUT_MODE] ? 2 : 1.5))
+		if(message_mods[SHOUT_MODE] == MODE_YELL)
+			spans |= SPAN_YELL
+
 	//Get which verb is prefixed to the message before radio but after most modifications
 	message_mods[SAY_MOD_VERB] = say_mod(message, message_mods)
 
@@ -558,32 +565,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			return ITALICS | REDUCE_RANGE
 
 	return NONE
-
-/mob/living/say_mod(input, list/message_mods = list())
-	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
-		. = verb_whisper
-	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT && !HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
-		. = "[verb_whisper] in [p_their()] last breath"
-	else if(message_mods[MODE_SING])
-		. = verb_sing
-	// Any subtype of slurring in our status effects make us "slur"
-	else if(locate(/datum/status_effect/speech/slurring) in status_effects)
-		if (HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "loosely signs"
-		else
-			. = "slurs"
-	else if(has_status_effect(/datum/status_effect/speech/stutter))
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "shakily signs"
-		else
-			. = "stammers"
-	else if(has_status_effect(/datum/status_effect/speech/stutter/derpspeech))
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "incoherently signs"
-		else
-			. = "gibbers"
-	else
-		. = ..()
 
 /**
  * Living level whisper.

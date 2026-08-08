@@ -135,10 +135,6 @@
 	if (!ismob(target))
 		extra_classes |= "small"
 
-	// Why are you yelling?
-	if(copytext_char(text, -2) == "!!")
-		extra_classes |= SPAN_YELL
-
 	var/list/prefixes
 	var/chat_color_name_to_use
 

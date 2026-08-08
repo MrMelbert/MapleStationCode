@@ -32,6 +32,10 @@
 #define MODE_WHISPER "whisper"
 #define MODE_WHISPER_CRIT "whispercrit"
 
+#define SHOUT_MODE "the type of shout"
+#define MODE_YELL "yell" // !!
+#define MODE_SHOUT "shout" // !
+
 #define MODE_DEPARTMENT "department"
 #define MODE_KEY_DEPARTMENT "h"
 #define MODE_TOKEN_DEPARTMENT ":h"

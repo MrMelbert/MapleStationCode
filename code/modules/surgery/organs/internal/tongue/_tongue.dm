@@ -24,11 +24,8 @@
 	 * (such as no accent, hissing, or whatever)
 	 */
 	var/list/languages_native
-	///changes the verbage of how you speak. (Permille -> says <-, "I just used a verb!")
-	///i hate to say it, but because of sign language, this may have to be a component. and we may have to do some insane shit like putting a component on a component
+	/// Changes the verbage of how you speak. (Permille -> says <-, "I just used a verb!")
 	var/say_mod = "says"
-	///for temporary overrides of the above variable.
-	var/temp_say_mod = ""
 
 	/// Whether the owner of this tongue can taste anything. Being set to FALSE will mean no taste feedback will be provided.
 	var/sense_of_taste = TRUE
@@ -128,6 +125,7 @@
 
 	if(modifies_speech)
 		RegisterSignal(receiver, COMSIG_MOB_SAY, PROC_REF(handle_speech))
+	RegisterSignal(receiver, COMSIG_MOVABLE_SAY_MOD, PROC_REF(handle_saymod))
 	receiver.voice_filter = voice_filter
 	/* This could be slightly simpler, by making the removal of the
 	* NO_TONGUE_TRAIT conditional on the tongue's `sense_of_taste`, but
@@ -140,8 +138,8 @@
 /obj/item/organ/tongue/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
-	temp_say_mod = ""
 	UnregisterSignal(organ_owner, COMSIG_MOB_SAY)
+	UnregisterSignal(organ_owner, COMSIG_MOVABLE_SAY_MOD)
 	REMOVE_TRAIT(organ_owner, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_TONGUE)
 	REMOVE_TRAIT(organ_owner, TRAIT_AGEUSIA, ORGAN_TRAIT)
 	// Carbons by default start with NO_TONGUE_TRAIT caused TRAIT_AGEUSIA
@@ -180,6 +178,10 @@
 	// No effect
 	return ""
 
+/obj/item/organ/tongue/proc/handle_saymod(datum/source, datum/saymod_selector/selector)
+	SIGNAL_HANDLER
+	selector.add_saymod(SAY_MOD_DEFAULT, say_mod, SAY_MOD_PRIORITY_DEFAULT)
+
 /obj/item/organ/tongue/lizard
 	name = "forked tongue"
 	desc = "A thin and long muscle typically found in reptilian races, apparently moonlights as a nose."
@@ -199,6 +201,16 @@
 	draw_length = rand(2, 6)
 	if(prob(10))
 		draw_length += 2
+
+/obj/item/organ/tongue/lizard/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_ASK, "hisses", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_EXCLAIM, "growls", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_SING, "chuffs", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER, "hisses", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "growls", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "bellows", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "roars", SAY_MOD_PRIORITY_DEFAULT)
 
 /obj/item/organ/tongue/lizard/modify_speech(datum/source, list/speech_args)
 	var/static/regex/lizard_hiss = new("s+", "g")
@@ -576,6 +588,15 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 /obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT
 
+/obj/item/organ/tongue/robot/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_ASK, "queries", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_EXCLAIM, "blares", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_SING, "synthesizes", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER, "whirrs", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "states", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "alarms", SAY_MOD_PRIORITY_DEFAULT)
+
 /obj/item/organ/tongue/snail
 	name = "radula"
 	desc = "A minutely toothed, chitious ribbon, which as a side effect, makes all snails talk IINNCCRREEDDIIBBLLYY SSLLOOWWLLYY."
@@ -610,6 +631,15 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 /obj/item/organ/tongue/ethereal/get_possible_languages()
 	return ..() + /datum/language/voltaic
 
+/obj/item/organ/tongue/ethereal/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_ASK, "crackles", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_EXCLAIM, "crackles", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_SING, "thrums", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER, "hums", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "crackles", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "buzzes", SAY_MOD_PRIORITY_DEFAULT)
+
 /obj/item/organ/tongue/cat
 	name = "felinid tongue"
 	desc = "A fleshy muscle mostly used for meowing."
@@ -617,6 +647,14 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	liked_foodtypes = SEAFOOD | BUGS | GORE
 	disliked_foodtypes = GROSS | CLOTH | RAW
 	organ_traits = list(TRAIT_FISH_EATER)
+
+/obj/item/organ/tongue/cat/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_ASK, "mrowls", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_EXCLAIM, "hisses", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER, "purrs", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "hisses", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "yowls", SAY_MOD_PRIORITY_DEFAULT)
 
 /obj/item/organ/tongue/jelly
 	name = "jelly tongue"
@@ -638,6 +676,12 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	say_mod = "chimpers"
 	liked_foodtypes = MEAT | FRUIT | BUGS
 	disliked_foodtypes = CLOTH
+
+/obj/item/organ/tongue/monkey/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_EXCLAIM, "screeches", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "screeches", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "roars", SAY_MOD_PRIORITY_DEFAULT)
 
 /obj/item/organ/tongue/moth
 	name = "moth tongue"

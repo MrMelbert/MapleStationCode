@@ -24,10 +24,9 @@
 /mob/living/carbon/human/get_default_say_verb()
 	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(isnull(tongue))
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			return "signs"
-		return "gurgles"
-	return  tongue.temp_say_mod || tongue.say_mod || ..()
+		return HAS_TRAIT(src, TRAIT_SIGN_LANG) ? "signs" : "gurgles"
+
+	return  ..()
 
 /mob/living/carbon/human/get_voice(add_id_name = FALSE)
 	if(HAS_TRAIT(src, TRAIT_UNKNOWN_VOICE))

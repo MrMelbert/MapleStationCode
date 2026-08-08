@@ -16,10 +16,12 @@
 
 /datum/status_effect/speech/on_apply()
 	RegisterSignal(owner, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
+	RegisterSignal(owner, COMSIG_MOVABLE_SAY_MOD, PROC_REF(handle_saymod))
 	return TRUE
 
 /datum/status_effect/speech/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_TREAT_MESSAGE)
+	UnregisterSignal(owner, COMSIG_MOVABLE_SAY_MOD)
 
 /**
  * Signal proc for [COMSIG_LIVING_TREAT_MESSAGE]
@@ -74,6 +76,10 @@
 	stack_trace("[type] didn't implement apply_speech.")
 	return original_char
 
+/datum/status_effect/speech/proc/handle_saymod(datum/source, datum/saymod_selector/selector)
+	SIGNAL_HANDLER
+	return
+
 /datum/status_effect/speech/stutter
 	id = "stutter"
 	make_tts_message_original = TRUE
@@ -117,6 +123,9 @@
 
 	return some_char
 
+/datum/status_effect/speech/stutter/handle_saymod(datum/source, datum/saymod_selector/selector)
+	selector.add_saymod(SAY_MOD_DEFAULT, HAS_TRAIT(owner, TRAIT_SIGN_LANG) ? "shakily signs" : "stammers", SAY_MOD_PRIORITY_MEDIUM)
+
 /datum/status_effect/speech/stutter/anxiety
 	id = "anxiety_stutter"
 	stutter_prob = 5
@@ -132,6 +141,9 @@
 		var/datum/quirk/social_anxiety/host_quirk = owner.get_quirk(/datum/quirk/social_anxiety)
 		stutter_prob = clamp(host_quirk?.calculate_mood_mod() * 0.5, 5, 50)
 	return ..()
+
+/datum/status_effect/speech/stutter/anxiety/handle_saymod(datum/source, datum/saymod_selector/selector)
+	return
 
 /datum/status_effect/speech/stutter/derpspeech
 	id = "derp_stutter"
@@ -171,6 +183,9 @@
 
 	// Otherwise just return and don't call parent, we already modified our speech
 	return
+
+/datum/status_effect/speech/stutter/derpspeech/handle_saymod(datum/source, datum/saymod_selector/selector)
+	selector.add_saymod(SAY_MOD_DEFAULT, HAS_TRAIT(owner, TRAIT_SIGN_LANG) ? "incoherently signs" : "gibbers", SAY_MOD_PRIORITY_MEDIUM + 1)
 
 /datum/status_effect/speech/slurring
 	/// The chance that any given character in a message will be replaced with a common character

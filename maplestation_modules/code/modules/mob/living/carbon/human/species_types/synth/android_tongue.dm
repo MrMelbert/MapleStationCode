@@ -25,6 +25,12 @@
 
 	fake_tongue.handle_speech(source, speech_args)
 
+/obj/item/organ/tongue/robot/synth/handle_saymod(datum/source, datum/saymod_selector/selector)
+	if(isnull(fake_tongue))
+		return ..()
+
+	fake_tongue.handle_saymod(source, selector)
+
 /obj/item/organ/tongue/robot/synth/proc/disguise_tongue(obj/item/organ/tongue/tongue_type)
 	if(isnull(tongue_type))
 		return

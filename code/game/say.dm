@@ -194,19 +194,81 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * message_mods - A list of message modifiers, i.e. whispering/singing.
  */
 /atom/movable/proc/say_mod(input, list/message_mods = list())
-	var/ending = copytext_char(input, -1)
-	if(copytext_char(input, -2) == "!!")
-		return verb_yell
-	else if(message_mods[MODE_SING])
-		. = verb_sing
-	else if(message_mods[WHISPER_MODE])
-		. = verb_whisper
-	else if(ending == "?")
-		return verb_ask
-	else if(ending == "!")
-		return verb_exclaim
-	else
-		return get_default_say_verb()
+	var/datum/saymod_selector/selector = new()
+	SEND_SIGNAL(src, COMSIG_MOVABLE_SAY_MOD, selector)
+
+	if(message_mods[SHOUT_MODE])
+		if(message_mods[WHISPER_MODE])
+			var/whisper_yells = selector.get_saymod(SAY_MOD_WHISPER_YELL)
+			if(whisper_yells)
+				return whisper_yells
+
+			var/whispers = selector.get_saymod(SAY_MOD_WHISPER) || verb_whisper
+			var/yells = selector.get_saymod(SAY_MOD_YELL) || verb_yell
+			if(copytext_char(whispers, -1) == "s")
+				whispers = copytext_char(whispers, 1, -1)
+
+			return "[whispers]-[yells]"
+
+		if(message_mods[SHOUT_MODE] == MODE_YELL)
+			return selector.get_saymod(SAY_MOD_YELL) || verb_yell
+
+		return selector.get_saymod(SAY_MOD_EXCLAIM) || verb_exclaim
+
+	if(message_mods[MODE_SING])
+		return selector.get_saymod(SAY_MOD_SING) || verb_sing
+
+	if(message_mods[WHISPER_MODE])
+		var/whispers = selector.get_saymod(SAY_MOD_WHISPER) || verb_whisper
+		if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT && !HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
+			return"[whispers] in [p_their()] last breath"
+
+		return whispers
+
+	if(copytext_char(input, -1) == "?")
+		return selector.get_saymod(SAY_MOD_ASK) || verb_ask
+
+	return selector.get_saymod(SAY_MOD_DEFAULT) || get_default_say_verb() || verb_say
+
+/// Holder for managing saymod priorities and selection
+/datum/saymod_selector
+	var/list/say_mods
+
+/**
+ * Add a saymod to the selection pool
+ *
+ * * saymod_type - The type of saymod to add (e.g. SAY_MOD_ASK, SAY_MOD_DEFAULT, etc.)
+ * * new_verb - The verb to add to the pool (e.g. "says", "whispers", etc.)
+ * * priority - The priority of the saymod. If two saymods have the same priority, one will be chosen at random.
+ */
+/datum/saymod_selector/proc/add_saymod(saymod_type, new_verb, priority)
+	say_mods ||= alist()
+	say_mods[saymod_type] = alist()
+	say_mods[saymod_type][priority] ||= list()
+	say_mods[saymod_type][priority] |= new_verb
+
+/**
+ * Return a saymod from the selection pool, based on priority and randomness
+ *
+ * * saymod_type - The type of saymod to retrieve (e.g. SAY_MOD_ASK, SAY_MOD_DEFAULT, etc.)
+ *
+ * Returns a string, or null if there was no saymod of that type in the pool.
+ */
+/datum/saymod_selector/proc/get_saymod(saymod_type)
+	var/highest_priority = -INFINITY
+	var/list/selected_pool
+	for(var/priority, verbs in say_mods?[saymod_type])
+		if(priority < highest_priority)
+			continue
+		highest_priority = priority
+		selected_pool = verbs
+
+	if(length(selected_pool))
+		. = pick(selected_pool)
+
+	// All done, clean up
+	if(!QDELING(src))
+		qdel(src)
 
 /**
  * Gets the say verb we default to if no special verb is chosen.
@@ -231,9 +293,6 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/say_mod = message_mods[MODE_CUSTOM_SAY_EMOTE] || message_mods[SAY_MOD_VERB] || say_mod(input, message_mods)
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_SAY_QUOTE, args)
-
-	if(copytext_char(input, -2) == "!!")
-		spans |= SPAN_YELL
 
 	/* all inputs should be fully figured out past this point */
 
