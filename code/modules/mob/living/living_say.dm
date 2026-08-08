@@ -328,20 +328,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		if(outside_dist > 0)
 			raw_message = stars(raw_message)
 
-		if(client?.prefs?.read_preference(/datum/preference/toggle/distance_text_shrinking))
-			// Based on raw distance, change the font size to indicate further speech
-			var/span_to_add = null
-			switch(raw_dist)
-				if(5)
-					span_to_add = "distant_t1"
-				if(6)
-					span_to_add = "distant_t2"
-				if(7 to INFINITY)
-					span_to_add = "distant_t3"
-			if(span_to_add)
-				spans = spans?.Copy() || list() // avoid mutating the list for other hearers
-				spans |= span_to_add
-
 	// we need to send this signal before compose_message() is used since other signals need to modify
 	// the raw_message first. After the raw_message is passed through the various signals, it's ready to be formatted
 	// by compose_message() to be displayed in chat boxes for to_chat or runechat

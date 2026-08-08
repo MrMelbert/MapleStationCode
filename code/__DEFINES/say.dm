@@ -136,3 +136,6 @@
 ///Defines for priorities for the bubble_icon_override comp
 #define BUBBLE_ICON_PRIORITY_ACCESSORY 2
 #define BUBBLE_ICON_PRIORITY_ORGAN 1
+
+/// Applies a span to a message if the span is not null, otherwise just uses the text
+#define CONDITIONAL_SPAN(span, text) (span ? "<span class='[span]'>[text]</span>" : text)
