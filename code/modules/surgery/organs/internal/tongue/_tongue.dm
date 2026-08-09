@@ -691,6 +691,14 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	disliked_foodtypes = FRUIT | GROSS | BUGS | GORE
 	toxic_foodtypes = MEAT | RAW | SEAFOOD
 
+/obj/item/organ/tongue/moth/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_ASK, "flutters", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_EXCLAIM, "flutters", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER, "squeaks", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "flutters", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "flutters", SAY_MOD_PRIORITY_DEFAULT)
+
 /obj/item/organ/tongue/zombie
 	name = "rotting tongue"
 	desc = "Makes you speak like you're at the dentist and you just absolutely refuse to spit because you forgot to mention you were allergic to space shellfish."
