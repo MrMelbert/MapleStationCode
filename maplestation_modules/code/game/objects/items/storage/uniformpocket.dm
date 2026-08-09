@@ -97,7 +97,7 @@
 
 	// do not allow storage interaction while worn
 	pockets.unregister_storage_signals()
-	pockets.close_all()
+	pockets.atom_storage?.close_all()
 	// put pocket items back to relevant slots
 	for(var/equip_thing, equip_slot in pockets.get_items())
 		user.equip_to_slot_if_possible(equip_thing, equip_slot, disable_warning = TRUE)
