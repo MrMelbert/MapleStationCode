@@ -399,11 +399,12 @@
 		return
 	var/mob/living/living_hud_owner = hud.mymob
 	switch(living_hud_owner.move_intent)
-		if(MOVE_INTENT_WALK, MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
+		if(MOVE_INTENT_SNEAK) // NON-MODULE CHANGE
+			icon_state = "sneaking" // NON-MODULE CHANGE
+		if(MOVE_INTENT_WALK)
 			icon_state = "walking"
 		if(MOVE_INTENT_RUN)
 			icon_state = "running"
-	maptext = "<span style='[maptext_style]'>[capitalize(living_hud_owner.move_intent)]</span>" // NON-MODULE CHANGE
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/living/user)
