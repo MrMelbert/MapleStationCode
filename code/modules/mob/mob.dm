@@ -269,6 +269,8 @@
 
 	return null
 
+/mob/dead/get_distance_based_span(distance)
+	return null
 
 /**
  * Generate a visible message from this atom
@@ -403,7 +405,7 @@
 	var/raw_self_message = self_message
 	var/self_runechat = FALSE
 	if(audible_message_flags & EMOTE_MESSAGE)
-		self_message = span_emote("><b>[src]</b> [self_message]")
+		self_message = span_emote("<b>[src]</b> [self_message]")
 	if(audible_message_flags & ALWAYS_SHOW_SELF_MESSAGE)
 		to_chat(src, self_message)
 		self_runechat = TRUE
