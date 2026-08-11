@@ -500,7 +500,7 @@
 	. = ..()
 	ignite()
 
-/obj/effect/decal/cleanable/fuel_pool/attackby(obj/item/item, mob/user, params)
+/obj/effect/decal/cleanable/fuel_pool/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(item.ignition_effect(src, user))
 		ignite()
 	return ..()

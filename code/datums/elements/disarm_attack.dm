@@ -13,7 +13,7 @@
 	UnregisterSignal(source, list(COMSIG_ATOM_EXAMINE, COMSIG_ITEM_ATTACK_SECONDARY))
 	return ..()
 
-/datum/element/disarm_attack/proc/secondary_attack(obj/item/source, mob/living/victim, mob/living/user, params)
+/datum/element/disarm_attack/proc/secondary_attack(obj/item/source, mob/living/victim, mob/living/user, list/modifiers)
 	SIGNAL_HANDLER
 	if(!user.can_disarm(victim) || !can_disarm_attack(source, victim, user))
 		return COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN

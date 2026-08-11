@@ -1004,7 +1004,7 @@
 	update_appearance()
 	return TRUE
 
-/obj/machinery/door/airlock/attackby(obj/item/C, mob/user, params)
+/obj/machinery/door/airlock/attackby(obj/item/C, mob/user, list/modifiers, list/attack_modifiers)
 	if(!issilicon(user) && !isAdminGhostAI(user))
 		if(isElectrified() && (C.obj_flags & CONDUCTS_ELECTRICITY) && shock(user, 75))
 			return

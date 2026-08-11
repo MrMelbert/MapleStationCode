@@ -46,7 +46,7 @@
 
 #define PLATE_REINFORCE_COST 2
 
-/turf/open/floor/plating/attackby(obj/item/C, mob/user, params)
+/turf/open/floor/plating/attackby(obj/item/C, mob/user, list/modifiers)
 	if(..())
 		return
 	if(istype(C, /obj/item/stack/rods) && attachment_holes)
@@ -141,7 +141,7 @@
 /turf/open/floor/plating/foam/break_tile()
 	return //jetfuel can't break steel foam...
 
-/turf/open/floor/plating/foam/attackby(obj/item/I, mob/user, params)
+/turf/open/floor/plating/foam/attackby(obj/item/I, mob/user, list/modifiers)
 	if(istype(I, /obj/item/stack/tile/iron))
 		var/obj/item/stack/tile/iron/P = I
 		if(P.use(1))
@@ -218,7 +218,7 @@
 	icon_state = "r_plate-[deconstruction_state]"
 	return ..()
 
-/turf/open/floor/plating/reinforced/attackby(obj/item/tool_used, mob/user, params)
+/turf/open/floor/plating/reinforced/attackby(obj/item/tool_used, mob/user, list/modifiers)
 	user.changeNext_move(CLICK_CD_MELEE)
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))

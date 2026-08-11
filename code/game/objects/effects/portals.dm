@@ -69,7 +69,7 @@
 /obj/effect/portal/newtonian_move(direction, instant = FALSE, start_delay = 0)
 	return TRUE
 
-/obj/effect/portal/attackby(obj/item/W, mob/user, params)
+/obj/effect/portal/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(user && Adjacent(user))
 		teleport(user)
 		return TRUE

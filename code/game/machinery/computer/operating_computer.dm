@@ -64,7 +64,7 @@
 		linked_techweb = tool.buffer
 	return TRUE
 
-/obj/machinery/computer/operating/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+/obj/machinery/computer/operating/item_interaction(mob/living/user, obj/item/tool, list/modifiers, list/attack_modifiers)
 	if(istype(tool, /obj/item/disk/surgery))
 		user.visible_message(
 			span_notice("[user] begins to load [tool] in [src]..."),
