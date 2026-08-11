@@ -9,6 +9,21 @@
 	name = "Canid"
 	icon = FA_ICON_DOG
 
+/datum/animid_type/dog/get_extra_perks()
+	var/list/to_add = list()
+
+	to_add += list(
+		list(
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = FA_ICON_GRIN_TONGUE_SQUINT,
+			SPECIES_PERK_NAME = "Sensitive Sniffer",
+			SPECIES_PERK_DESC = "[name]s have a strong sense of smell. \
+				Pleasant and unpleasant odors alike are more potent to them.",
+		),
+	)
+
+	return to_add
+
 /obj/item/organ/tongue/dog
 	name = "dog tongue"
 	desc = "A long, rough tongue belonging to a dog."
@@ -17,6 +32,7 @@
 	disliked_foodtypes = VEGETABLES | FRUIT | NUTS // most of them don't like their veggies tho
 	toxic_foodtypes = TOXIC | SUGAR // chocolate
 
+	smell_sensitivity = SMELL_INTENSITY_MODERATE // ups all smells a bit
 
 /obj/item/organ/ears/dog
 	name = "dog ears"

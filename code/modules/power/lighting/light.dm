@@ -313,7 +313,11 @@
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/machinery/light/proc/set_on(turn_on)
+	var/was_on = on
 	on = (turn_on && status == LIGHT_OK)
+	if(on == was_on)
+		return
+	SEND_SIGNAL(src, COMSIG_LIGHT_FIXTURE_TOGGLED, on)
 	update()
 
 /obj/machinery/light/get_cell()
@@ -342,7 +346,7 @@
 
 // attack with item - insert light (if right type), otherwise try to break the light
 
-/obj/machinery/light/attackby(obj/item/tool, mob/living/user, params)
+/obj/machinery/light/attackby(obj/item/tool, mob/living/user, list/modifiers, list/attack_modifiers)
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
 		if(status == LIGHT_OK)
@@ -420,14 +424,17 @@
 		real_cell.forceMove(new_light)
 		cell = null
 
-/obj/machinery/light/attacked_by(obj/item/attacking_object, mob/living/user)
-	..()
+/obj/machinery/light/attacked_by(obj/item/attacking_object, mob/living/user, list/modifiers, list/attack_modifiers)
+	. = ..()
+	if(!.)
+		return
 	if(status != LIGHT_BROKEN && status != LIGHT_EMPTY)
 		return
 	if(!on || !(attacking_object.obj_flags & CONDUCTS_ELECTRICITY))
 		return
-	if(prob(12))
-		electrocute_mob(user, get_area(src), src, 0.3, TRUE)
+	if(!prob(12))
+		return
+	electrocute_mob(user, get_area(src), src, 0.3, TRUE)
 
 /obj/machinery/light/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
 	. = ..()
@@ -488,13 +495,13 @@
 		)
 	return TRUE
 
-
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
 	if(flickering)
 		return
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
+		. = TRUE //did we actually flicker? Send this now because we expect immediate response, before sleeping.
 		for(var/i in 1 to amount)
 			if(status != LIGHT_OK || !has_power())
 				break
@@ -506,7 +513,6 @@
 		else
 			on = FALSE
 		update(FALSE)
-		. = TRUE //did we actually flicker?
 	flickering = FALSE
 
 // ai attack - make lights flicker, because why not
@@ -630,12 +636,15 @@
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		return
 
+	var/was_ok = (status == LIGHT_OK || status == LIGHT_BURNED)
+	status = LIGHT_BROKEN
+
+	SEND_SIGNAL(src, COMSIG_LIGHT_FIXTURE_BROKEN, was_ok)
 	if(!skip_sound_and_sparks)
-		if(status == LIGHT_OK || status == LIGHT_BURNED)
+		if(was_ok)
 			playsound(loc, 'sound/effects/glasshit.ogg', 75, TRUE)
 		if(on)
 			do_sparks(3, TRUE, src)
-	status = LIGHT_BROKEN
 	update()
 
 /obj/machinery/light/proc/fix()

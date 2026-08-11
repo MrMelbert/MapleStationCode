@@ -931,6 +931,12 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
+/datum/design/board/stasis/pod
+	name = "Lifeform Stasis Pod Board"
+	desc = "The circuit board for a stasis pod."
+	id = "stasis_pod"
+	build_path = /obj/item/circuitboard/machine/sleeper/stasis
+
 /datum/design/board/medical_kiosk
 	name = "Medical Kiosk Board"
 	desc = "The circuit board for a Medical Kiosk."
@@ -1202,3 +1208,33 @@
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_CARGO
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_ENGINEERING
+
+/datum/design/board/photopcopier
+	name = "Photocopier"
+	desc = "The circuit for a photocopier."
+	id = "photocopier"
+	build_path = /obj/item/circuitboard/machine/photocopier
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_SERVICE
+
+// /datum/design/board/atmosshieldgen
+// 	name = "Atmospherics Shield Generator Board"
+// 	desc = "The circuit board for an atmospherics shield generator."
+// 	id = "atmosshieldgen"
+// 	build_path = /obj/item/circuitboard/machine/atmos_shield_gen
+// 	category = list(
+// 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_ATMOS
+// 	)
+// 	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
+
+/datum/design/board/washing_machine
+	name = "Washing Machine"
+	desc = "The circuit board to build a washing machine."
+	id = "washing_machine"
+	build_path = /obj/item/circuitboard/machine/washing_machine
+	category = list(
+		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE

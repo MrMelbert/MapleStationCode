@@ -38,8 +38,8 @@
 /obj/machinery/launchpad/Initialize(mapload)
 	. = ..()
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 
 	update_hud()
 
@@ -57,8 +57,8 @@
 	return ..()
 
 /obj/machinery/launchpad/Destroy()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/launchpad/examine(mob/user)
@@ -75,7 +75,7 @@
 	balloon_alert(user, "saved to buffer")
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/launchpad/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/launchpad/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(!stationary)
 		return ..()
 
@@ -312,13 +312,13 @@
 			closed = TRUE
 			update_indicator()
 
-/obj/machinery/launchpad/briefcase/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/launchpad_remote))
-		var/obj/item/launchpad_remote/L = I
-		if(L.pad == WEAKREF(src)) //do not attempt to link when already linked
+/obj/machinery/launchpad/briefcase/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
+	if(istype(item, /obj/item/launchpad_remote))
+		var/obj/item/launchpad_remote/launch = item
+		if(launch.pad == WEAKREF(src)) //do not attempt to link when already linked
 			return ..()
-		L.pad = WEAKREF(src)
-		to_chat(user, span_notice("You link [src] to [L]."))
+		launch.pad = WEAKREF(src)
+		to_chat(user, span_notice("You link [src] to [launch]."))
 	else
 		return ..()
 

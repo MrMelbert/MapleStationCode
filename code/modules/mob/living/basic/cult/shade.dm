@@ -27,6 +27,7 @@
 	faction = list(FACTION_CULT)
 	basic_mob_flags = DEL_ON_DEATH
 	initial_language_holder = /datum/language_holder/construct
+	initial_blood_type = null
 	/// Theme controls color. THEME_CULT is red THEME_WIZARD is purple and THEME_HOLY is blue
 	var/theme = THEME_CULT
 	/// The different flavors of goop shades can drop, depending on theme.
@@ -70,7 +71,7 @@
 		SSblackbox.record_feedback("tally", "cult_shade_suicided", 1)
 	..()
 
-/mob/living/basic/shade/attackby(obj/item/item, mob/user, params)
+/mob/living/basic/shade/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/soulstone))
 		var/obj/item/soulstone/stone = item
 		stone.capture_shade(src, user)

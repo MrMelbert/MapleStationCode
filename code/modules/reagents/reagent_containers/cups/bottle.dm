@@ -140,7 +140,7 @@
 
 /obj/item/reagent_containers/cup/bottle/traitor/Initialize(mapload)
 	. = ..()
-	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
+	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/medicine/painkiller/fentanyl, /datum/reagent/toxin/cyanide)
 	reagents.add_reagent(extra_reagent, 3)
 
 /obj/item/reagent_containers/cup/bottle/polonium
@@ -161,7 +161,7 @@
 /obj/item/reagent_containers/cup/bottle/fentanyl
 	name = "fentanyl bottle"
 	desc = "A small bottle. Contains Fentanyl."
-	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
+	list_reagents = list(/datum/reagent/medicine/painkiller/fentanyl = 30)
 
 /obj/item/reagent_containers/cup/bottle/formaldehyde
 	name = "formaldehyde bottle"
@@ -511,7 +511,7 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 //when you attack the syrup bottle with a container it refills it
-/obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, params)
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(IS_WRITING_UTENSIL(tool))
 		return writing_utensil_act(user, tool)
 	if(cap_on && tool.is_refillable())

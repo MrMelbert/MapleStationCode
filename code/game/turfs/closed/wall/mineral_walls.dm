@@ -2,6 +2,7 @@
 	name = "mineral wall"
 	desc = "This shouldn't exist"
 	icon_state = ""
+	abstract_type = /turf/closed/wall/mineral
 	smoothing_flags = SMOOTH_BITMASK
 	canSmoothWith = null
 	rcd_memory = null
@@ -124,7 +125,7 @@
 	radiate()
 	return ..()
 
-/turf/closed/wall/mineral/uranium/attackby(obj/item/W, mob/user, params)
+/turf/closed/wall/mineral/uranium/attackby(obj/item/W, mob/user, list/modifiers)
 	radiate()
 	return ..()
 

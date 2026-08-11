@@ -124,7 +124,7 @@
 			user.hud_used.show_hud(user.hud_used.hud_version)
 	return ..()
 
-/obj/machinery/computer/camera_advanced/xenobio/attackby(obj/item/used_item, mob/user, params)
+/obj/machinery/computer/camera_advanced/xenobio/attackby(obj/item/used_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(used_item, /obj/item/food/monkeycube))
 		monkeys++
 		to_chat(user, span_notice("You feed [used_item] to [src]. It now has [monkeys] monkey cubes stored."))
@@ -389,7 +389,7 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 	render_list += "&bull; Alt-click a slime to feed it a potion."
 	render_list += "&bull; Ctrl-click or a dead monkey to recycle it, or the floor to place a new monkey."
 
-	to_chat(owner, examine_block(jointext(render_list, "\n")))
+	to_chat(owner, boxed_message(jointext(render_list, "\n")))
 
 //
 // Alternate clicks for slime, monkey and open turf if using a xenobio console

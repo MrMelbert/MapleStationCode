@@ -374,7 +374,7 @@
 	INVOKE_ASYNC(src, PROC_REF(speak), "Error! Surgical efficacy decreased to [round(heal_multiplier * 100)]%!")
 
 /mob/living/basic/bot/medbot/autopatrol
-	bot_mode_flags = BOT_MODE_ON | BOT_MODE_AUTOPATROL | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_ROUNDSTART_POSSESSION
+	bot_mode_flags = BOT_MODE_ON | BOT_MODE_AUTOPATROL | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT
 
 /mob/living/basic/bot/medbot/stationary
 	medical_mode_flags = MEDBOT_DECLARE_CRIT | MEDBOT_STATIONARY_MODE | MEDBOT_SPEAK_MODE

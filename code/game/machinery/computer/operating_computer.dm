@@ -1,6 +1,3 @@
-#define MENU_OPERATION 1
-#define MENU_SURGERIES 2
-
 /obj/machinery/computer/operating
 	name = "operating computer"
 	desc = "Monitors patient vitals and displays surgery steps. Can be loaded with surgery disks to perform experimental procedures. Automatically syncs to operating tables within its line of sight for surgical tech advancement."
@@ -58,6 +55,7 @@
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table && table.computer == src)
 			table.computer = null
+			table.update_appearance() // NON-MODULE CHANGE
 	QDEL_NULL(experiment_handler)
 	return ..()
 
@@ -66,7 +64,7 @@
 		linked_techweb = tool.buffer
 	return TRUE
 
-/obj/machinery/computer/operating/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+/obj/machinery/computer/operating/item_interaction(mob/living/user, obj/item/tool, list/modifiers, list/attack_modifiers)
 	if(istype(tool, /obj/item/disk/surgery))
 		user.visible_message(
 			span_notice("[user] begins to load [tool] in [src]..."),
@@ -104,16 +102,18 @@
 // NON-MODULE CHANGE
 /obj/machinery/computer/operating/on_set_is_operational(old_value)
 	update_static_data_for_all_viewers()
+	table?.update_appearance(UPDATE_OVERLAYS)
 	if(is_operational)
 		return
 	// Losing power / getting broken will auto disable anesthesia
-	table.safety_disable()
+	table?.safety_disable()
 
 /obj/machinery/computer/operating/proc/find_table()
 	for(var/direction in GLOB.alldirs)
 		table = locate(/obj/structure/table/optable) in get_step(src, direction)
 		if(table)
 			table.computer = src
+			table.update_appearance() // NON-MODULE CHANGE
 			break
 
 /obj/machinery/computer/operating/ui_status(mob/user, datum/ui_state/state)
@@ -202,7 +202,7 @@
 	data["patient"]["health"] = patient.health
 
 	// check here to see if the patient has standard blood reagent, or special blood (like how ethereals bleed liquid electricity) to show the proper name in the computer
-	data["patient"]["blood_type"] = "[patient.get_blood_type() || "None"]" // NON-MODULE CHANGE
+	data["patient"]["blood_type"] = "[patient.blood_type || "None"]" // NON-MODULE CHANGE
 	data["patient"]["maxHealth"] = patient.maxHealth
 	data["patient"]["minHealth"] = -1 * patient.maxHealth
 	data["patient"]["bruteLoss"] = patient.getBruteLoss()
@@ -221,13 +221,14 @@
 	data["patient"]["heartratestate"] = patient_bpm >= 140 ? "bad" : (patient_bpm >= 120 ? "average" : (patient_bpm >= 60 ? "good" : (patient_bpm >= 40 ? "average" : "bad")))
 	// We can also show pain and stuff here if we want.
 
-	var/tank_exists = !isnull(table.attached_tank)
+	var/anesthetic_exists = !isnull(table.attached_anesthetic)
 	var/patient_exists = !isnull(table.patient)
 	data["anesthesia"] = list(
-		"has_tank" = tank_exists,
-		"open" = tank_exists && patient_exists && table.patient.external == table.attached_tank,
-		"can_open_tank" = tank_exists && patient_exists && table.can_have_tank_opened(table.patient),
+		"has_tank" = anesthetic_exists,
+		"open" = anesthetic_exists && patient_exists && table.patient_set_at != -1,
+		"can_open_tank" = anesthetic_exists && patient_exists && table.can_have_anesthetic(table.patient),
 		"failsafe" = table.failsafe_time == INFINITY ? -1 : (table.failsafe_time / 10),
+		"is_tank" = istype(table.attached_anesthetic, /obj/item/tank/internals),
 	)
 	// NON-MODULE CHANGE END
 	return data
@@ -273,33 +274,14 @@
 			"mechanic" = operation.operation_flags & OPERATION_MECHANIC,
 		))
 
-	if(!any_recommended && table?.patient)
-		var/obj/item/part = table.patient.get_bodypart(deprecise_zone(target_zone))
-		var/just_drapes = FALSE
-		if(table.patient.has_limbs)
-			if(isnull(part))
-				data["surgeries"] += list(list(
-					"name" = "Prepare for [/datum/surgery_operation/prosthetic_replacement::name]",
-					"desc" = "Prepare the patient's chest for prosthetic limb attachment.",
-					"tool_rec" = "operate on chest",
-					"show_as_next" = TRUE,
-					"show_in_list" = FALSE,
-				))
-
-			else if(!HAS_TRAIT(part, TRAIT_READY_TO_OPERATE))
-				just_drapes = TRUE
-
-		else if(!HAS_TRAIT(table.patient, TRAIT_READY_TO_OPERATE))
-			just_drapes = TRUE
-
-		if(just_drapes)
-			data["surgeries"] += list(list(
-				"name" = "Prepare for surgery",
-				"desc" = "Begin surgery by applying surgical drapes to the patient.",
-				"tool_rec" = /obj/item/surgical_drapes::name,
-				"show_as_next" = TRUE,
-				"show_in_list" = FALSE,
-			))
+	if(!any_recommended && table?.patient && !HAS_TRAIT(table.patient, TRAIT_READY_TO_OPERATE))
+		data["surgeries"] += list(list(
+			"name" = "Prepare for surgery",
+			"desc" = "Begin surgery by applying surgical drapes to the patient or by buckling the patient to the surgical table.",
+			"tool_rec" = /obj/item/surgical_drapes::name,
+			"show_as_next" = TRUE,
+			"show_in_list" = FALSE,
+		))
 
 	return data
 
@@ -322,13 +304,12 @@
 
 		// NON-MODULE CHANGE START
 		if("toggle_anesthesia")
-			if(iscarbon(usr))
-				var/mob/living/carbon/toggler = usr
-				if(toggler == table.patient && table.patient_set_at == -1 && table.failsafe_time >= 5 MINUTES)
-					to_chat(toggler, span_warning("You feel as if you know better than to do that."))
-					return FALSE
+			var/mob/living/toggler = ui.user
+			if(toggler == table.patient && table.patient_set_at == -1 && table.failsafe_time >= 5 MINUTES)
+				to_chat(toggler, span_warning("You feel as if you know better than to do that."))
+				return FALSE
 
-			table.toggle_anesthesia()
+			table.toggle_anesthesia(toggler)
 			return TRUE
 
 		if("set_failsafe")
@@ -365,6 +346,3 @@
 	SIGNAL_HANDLER
 
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, update_static_data_for_all_viewers)), 0.1 SECONDS, TIMER_UNIQUE)
-
-#undef MENU_OPERATION
-#undef MENU_SURGERIES

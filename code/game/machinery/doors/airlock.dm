@@ -177,8 +177,8 @@
 		damage_deflection = AIRLOCK_DAMAGE_DEFLECTION_R
 
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 
 	diag_hud_set_electrified()
 
@@ -302,8 +302,8 @@
 		LAZYNULL(close_others)
 	QDEL_NULL(note)
 	QDEL_NULL(seal)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/door/airlock/Exited(atom/movable/gone, direction)
@@ -1004,7 +1004,7 @@
 	update_appearance()
 	return TRUE
 
-/obj/machinery/door/airlock/attackby(obj/item/C, mob/user, params)
+/obj/machinery/door/airlock/attackby(obj/item/C, mob/user, list/modifiers, list/attack_modifiers)
 	if(!issilicon(user) && !isAdminGhostAI(user))
 		if(isElectrified() && (C.obj_flags & CONDUCTS_ELECTRICITY) && shock(user, 75))
 			return
@@ -1310,6 +1310,11 @@
 	if(!dangerous_close)
 		for(var/turf/checked_turf in locs)
 			for(var/atom/movable/blocking in checked_turf)
+				var/sigreturn = SEND_SIGNAL(blocking, COMSIG_MOVABLE_BLOCKING_AIRLOCK, src, forced, force_crush)
+				if(sigreturn & AIRLOCK_BLOCK_FORCE_CRUSH)
+					dangerous_close = TRUE
+					continue
+
 				if(blocking.density && blocking != src)
 					autoclose_in(DOOR_CLOSE_WAIT)
 					return FALSE

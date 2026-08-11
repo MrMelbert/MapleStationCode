@@ -6,6 +6,7 @@
 	icon = 'icons/obj/service/hydroponics/seeds.dmi'
 	icon_state = "seed" // Unknown plant seed - these shouldn't exist in-game.
 	worn_icon_state = "seed"
+	abstract_type = /obj/item/seeds
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
@@ -474,7 +475,7 @@
 /obj/item/seeds/proc/on_chem_reaction(datum/reagents/reagents)
 	return
 
-/obj/item/seeds/attackby(obj/item/O, mob/user, params)
+/obj/item/seeds/attackby(obj/item/O, mob/user, list/modifiers, list/attack_modifiers)
 	if(IS_WRITING_UTENSIL(O))
 		var/choice = tgui_input_list(usr, "What would you like to change?", "Seed Alteration", list("Plant Name", "Seed Description", "Product Description"))
 		if(isnull(choice))
@@ -621,7 +622,7 @@
  *  - returned seed CAN be null in weird cases but in all applications it SHOULD NOT be.
  * Returns null if it is not a plant.
  */
-/obj/item/proc/get_plant_seed()
+/obj/item/proc/get_plant_seed() as /obj/item/seeds
 	return null
 
 /obj/item/food/grown/get_plant_seed()

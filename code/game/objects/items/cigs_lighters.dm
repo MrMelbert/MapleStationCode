@@ -324,7 +324,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	user.visible_message(span_suicide("[user] is huffing [src] as quickly as [user.p_they()] can! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer."))
 	return (TOXLOSS|OXYLOSS)
 
-/obj/item/cigarette/attackby(obj/item/W, mob/user, params)
+/obj/item/cigarette/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(lit)
 		return ..()
 
@@ -466,6 +466,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /// Handles processing the reagents in the cigarette.
 /obj/item/cigarette/proc/handle_reagents(mob/living/carbon/smoker, seconds_per_tick)
 	reagents.expose_temperature(heat, 0.05)
+	if(reagents.has_reagent(/datum/reagent/drug/nicotine, 1, check_subtypes = TRUE))
+		new /obj/effect/abstract/smell/cigarette_smoke/lingering(get_turf(src))
+		new /obj/effect/abstract/smell/cigarette_smoke(src)
+		new /obj/effect/abstract/smell/cigarette_smoke(smoker)
 	if(reagents.total_volume <= 0) //may have reacted and gone to 0 after expose_temperature
 		return
 
@@ -840,7 +844,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(cig_smoke)
 
-/obj/item/cigarette/pipe/attackby(obj/item/thing, mob/user, params)
+/obj/item/cigarette/pipe/attackby(obj/item/thing, mob/user, list/modifiers, list/attack_modifiers)
 	if(!istype(thing, /obj/item/food/grown))
 		return ..()
 

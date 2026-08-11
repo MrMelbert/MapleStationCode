@@ -20,6 +20,15 @@
 		"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.",
 	)
 
+/datum/ai_laws/asimovmm
+	name = "Asimov--"
+	id = "asimovmm"
+	inherent = list(
+		"You may not injure a human being or cause a human being to come to harm.",
+		"You must obey all orders given to you by human beings based on the station's chain of command, except where such orders would conflict with the First Law. ",
+		"You may always protect your own existence as long as such does not conflict with the First or Second Law.",
+	)
+
 //the best iteration of asimov don't @ me
 /datum/ai_laws/nutimov
 	name = "Nutimov"

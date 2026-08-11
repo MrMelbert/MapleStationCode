@@ -76,6 +76,9 @@
 #define COMSIG_MOB_MIND_TRANSFERRED_OUT_OF "mob_mind_transferred_out_of"
 /// From /mob/proc/ghostize() Called when a mob sucessfully ghosts
 #define COMSIG_MOB_GHOSTIZED "mob_ghostized"
+/// can_roll_midround(datum/antagonist/antag_type) from certain midround rulesets, (mob/living/source, datum/mind/mind, datum/antagonist/antagonist)
+#define COMSIG_MOB_MIND_BEFORE_MIDROUND_ROLL "mob_mind_before_midround_roll"
+	#define CANCEL_ROLL (1<<1)
 
 ///signal sent when a mob has their holy role set. Sent to the mob having their role changed.
 #define COMSIG_MOB_MIND_SET_HOLY_ROLE "mob_mind_set_holy_role"
@@ -184,7 +187,7 @@
 #define COMSIG_TABLE_SLAMMED "table_slammed"
 ///from base of atom/attack_hand(): (mob/user, modifiers)
 #define COMSIG_MOB_ATTACK_HAND "mob_attack_hand"
-///from base of /obj/item/attack(): (mob/M, mob/user)
+///from base of /obj/item/attack(): (mob/M, mob/user, list/modifiers, list/attack_modifiers)
 #define COMSIG_MOB_ITEM_ATTACK "mob_item_attack"
 ///from base of mob/RangedAttack(): (atom/A, modifiers)
 #define COMSIG_MOB_ATTACK_RANGED "mob_attack_ranged"
@@ -253,3 +256,6 @@
 
 /// from /obj/item/reagent_containers/dropper/interact_with_atom(atom/target, mob/living/user, list/modifiers): (mob/living/user, atom/dropper, datum/reagents/reagents, fraction)
 #define COMSIG_MOB_REAGENTS_DROPPED_INTO_EYES "mob_reagents_drop_into_eyes"
+
+/// from /datum/antagonist/on_gain(): ()
+#define COMSIG_MOB_ANTAGONIST_GAINED "mob_antagonist_gained"

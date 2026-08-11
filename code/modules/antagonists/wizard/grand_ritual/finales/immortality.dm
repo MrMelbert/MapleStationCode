@@ -129,7 +129,7 @@
 		target_quirk.add_to_holder(target)
 
 	dna.transfer_identity(target, TRUE)
-	for(var/obj/item/bodypart/limb as anything in target.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in target.get_bodyparts())
 		limb.update_limb(is_creating = TRUE)
 	target.updateappearance(mutcolor_update = TRUE)
 	target.domutcheck()

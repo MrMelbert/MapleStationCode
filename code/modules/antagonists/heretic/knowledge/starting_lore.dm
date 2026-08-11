@@ -279,7 +279,7 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	// If it is, we will damage a random bodypart, and check that bodypart for its body type, to select between 'skin' or 'exterior'.
 	if(iscarbon(body))
 		var/mob/living/carbon/carbody = body
-		var/obj/item/bodypart/bodypart = pick(carbody.bodyparts)
+		var/obj/item/bodypart/bodypart = pick(carbody.get_bodyparts())
 		ripped_thing = bodypart
 		bodypart.receive_damage(25, sharpness = SHARP_EDGED)
 		if(!(bodypart.bodytype & BODYTYPE_ORGANIC))

@@ -25,3 +25,9 @@
 	MENTAL_UNSTABLE, \
 	MENTAL_INSANE, \
 )
+
+// Return values for the limb_applicable component's callback can_apply
+/// Block the standard application of this item
+#define LIMB_APPLICABLE_BLOCK_APPLICATION (1<<0)
+/// Block the rest of the item_interaction chain, if application is not being done.
+#define LIMB_APPLICABLE_BLOCK_ITEM_INTERACTION (1<<1)

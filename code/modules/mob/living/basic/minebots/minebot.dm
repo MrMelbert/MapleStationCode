@@ -31,6 +31,7 @@
 	light_on = FALSE
 	combat_mode = FALSE
 	ai_controller = /datum/ai_controller/basic_controller/minebot
+	initial_blood_type = /datum/blood_type/oil
 	///the access card we use to access mining
 	var/obj/item/card/id/access_card
 	///the gun we use to kill
@@ -112,9 +113,9 @@
 		user.balloon_alert(user, "successfully repaired!")
 	return TRUE
 
-/mob/living/basic/mining_drone/attackby(obj/item/item_used, mob/user, params)
+/mob/living/basic/mining_drone/attackby(obj/item/item_used, mob/user, list/modifiers, list/attack_modifiers)
 	if(item_used.tool_behaviour == TOOL_CROWBAR || istype(item_used, /obj/item/borg/upgrade/modkit))
-		item_used.melee_attack_chain(user, stored_gun, params)
+		item_used.melee_attack_chain(user, stored_gun, modifiers)
 		return
 
 	return ..()

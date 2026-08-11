@@ -7,12 +7,13 @@
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 	ADD_TRAIT(dummy, TRAIT_NOSOFTCRIT, TRAIT_GENERIC)
 	ADD_TRAIT(dummy, TRAIT_NOHARDCRIT, TRAIT_GENERIC)
+	QDEL_NULL(dummy.pain_controller) // stops the dummy from collapsing in pain during the test
 
 	var/obj/item/testing_item = allocate(/obj/item/analyzer)
 	testing_item.name = "testing item"
 
 	// Standard situation: We're holding a normal item and get dismembered.
-	test_item(dummy, testing_item, status_text = "in a normal situation")
+	test_item(dummy, testing_item, status_text = " in a normal situation")
 
 	// Abnormal situation: We're holding an undroppable item and get dismembered.
 	ADD_TRAIT(testing_item, TRAIT_NODROP, TRAIT_GENERIC)

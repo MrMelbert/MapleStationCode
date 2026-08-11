@@ -19,6 +19,7 @@
 	attack_vis_effect = ATTACK_EFFECT_CLAW
 	sharpness = SHARP_EDGED
 	wound_bonus = -5
+	initial_blood_type = null
 	faction = list(FACTION_SKELETON)
 	// Going for a sort of pale bluegreen here, shooting for boneish
 	lighting_cutoff_red = 15

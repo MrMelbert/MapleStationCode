@@ -35,3 +35,4 @@
 		return
 
 	new_owner.sprint_length_max -= buff_amount
+	new_owner.sprint_length = min(new_owner.sprint_length_max, new_owner.sprint_length)

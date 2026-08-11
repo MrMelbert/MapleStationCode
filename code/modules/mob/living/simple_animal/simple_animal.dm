@@ -2,11 +2,13 @@
 /mob/living/simple_animal
 	name = "animal"
 	icon = 'icons/mob/simple/animal.dmi'
+	abstract_type = /mob/living/simple_animal
 	health = 20
 	maxHealth = 20
 	gender = PLURAL //placeholder
 	living_flags = MOVES_ON_ITS_OWN
 	status_flags = CANPUSH
+	initial_blood_type = /datum/blood_type/animal
 
 	var/icon_living = ""
 	///Icon when the animal is dead. Don't use animated icons for this.

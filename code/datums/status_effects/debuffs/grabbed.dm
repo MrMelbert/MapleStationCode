@@ -634,12 +634,6 @@
 #undef CRIT_SOURCE
 #undef PIN_SOURCE
 
-#define IS_VULNERABLE(mob) (\
-	mob.incapacitated(IGNORE_GRAB|IGNORE_STASIS) \
-	|| mob.body_position == LYING_DOWN \
-	|| (mob.has_status_effect(/datum/status_effect/staggered) && mob.getStaminaLoss() >= 30) \
-)
-
 /**
  * Checks how strong our grabs are.
  *
@@ -647,7 +641,9 @@
  * somewhere in the range of 0-10 for a normal human.
  */
 /atom/movable/proc/get_grab_strength()
+	// resist strength and grab strength overlap in plenty of ways so we will re-use it for our base
 	. = get_grab_resist_strength()
+	// strength adds a bonus on top of resist strength (stacking with the strengh bonus already factored in to resistance)
 	if(HAS_TRAIT(src, TRAIT_STRENGTH))
 		. += 1
 
@@ -686,27 +682,40 @@
 	return 5
 
 /mob/living/get_grab_resist_strength()
+	// base resistance is base on size
 	. += mob_size * 2
+	// athletics skill can give a decent boost
 	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/athletics) || 1) - 2), -1, 3)
+	// monkey wrangling buff
 	if(ismonkey(src))
 		. -= 1
+	// dead people are not actively resisting, though this is not an absurdly high nubmer like -20
+	// because grabbing a corpse should still be cumbersome and unwieldy
 	if(stat == DEAD)
 		. -= 4
-	else if(IS_VULNERABLE(src))
+	// otherwise being in soft crit or incapacitated means you can't fight back well
+	else if(HAS_TRAIT(src, TRAIT_SOFT_CRIT) || incapacitated(IGNORE_GRAB|IGNORE_STASIS))
 		. -= 2
-	if(HAS_TRAIT(src, TRAIT_STRENGTH))
-		. += 1
+	// lying down or staggered represents a vulnerable position which has you disadvanteged
+	if(body_position == LYING_DOWN || (has_status_effect(/datum/status_effect/staggered) && getStaminaLoss() >= 30))
+		. -= 2
+	// generic grab weakness such as from quirks
 	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		. -= 2
-	// these two are not
+	// grabs you grabs you grabs you
 	if(HAS_TRAIT(src, TRAIT_SMALL))
 		. -= 2
+
+	// generic buff
+	if(HAS_TRAIT(src, TRAIT_STRENGTH))
+		. += 1
+	// hulks are the pinnacle of strength
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		. += 3
+	// being large also helps considerably
+	// mutually exclusive with hulk as hulk's strength can be interpreted as coming from size
 	else if(HAS_TRAIT(src, TRAIT_GIANT) || HAS_TRAIT(src, TRAIT_HUGE))
 		. += 2
-
-#undef IS_VULNERABLE
 
 /**
  * When given a base climb speed, modifies it based on how good a climber we are.

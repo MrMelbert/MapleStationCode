@@ -43,6 +43,8 @@
 	var/waddles = TRUE
 
 /mob/living/basic/clown/Initialize(mapload)
+	if(check_holidays(APRIL_FOOLS))
+		initial_blood_type = /datum/blood_type/clown
 	. = ..()
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
 	AddComponent(/datum/component/ai_retaliate_advanced, CALLBACK(src, PROC_REF(retaliate_callback)))
@@ -406,20 +408,16 @@
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
 	AddElement(/datum/element/damage_threshold, 10) //lots of fat to cushion blows.
 
-/mob/living/basic/clown/mutant/glutton/attacked_by(obj/item/item, mob/living/user)
-	if(!check_edible(item))
-		return ..()
-	eat_atom(item)
+/mob/living/basic/clown/mutant/glutton/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!check_edible(tool))
+		return NONE
+	eat_atom(tool)
+	return ITEM_INTERACT_SUCCESS
 
-/mob/living/basic/clown/mutant/glutton/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
-	if(!check_edible(target))
+/mob/living/basic/clown/mutant/glutton/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	if(!check_edible(attack_target))
 		return ..()
-	eat_atom(target)
-
-/mob/living/basic/clown/mutant/glutton/UnarmedAttack(atom/victim, proximity_flag, list/modifiers)
-	if(!check_edible(victim))
-		return ..()
-	eat_atom(victim)
+	eat_atom(attack_target)
 
 ///Returns whether or not the supplied movable atom is edible.
 /mob/living/basic/clown/mutant/glutton/proc/check_edible(atom/movable/potential_food)

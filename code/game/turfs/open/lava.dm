@@ -193,7 +193,7 @@
 
 /turf/open/lava/TakeTemperature(temp)
 
-/turf/open/lava/attackby(obj/item/C, mob/user, params)
+/turf/open/lava/attackby(obj/item/C, mob/user, list/modifiers)
 	..()
 	if(istype(C, /obj/item/stack/rods/lava))
 		var/obj/item/stack/rods/lava/R = C
@@ -375,7 +375,7 @@
 	. = ..()
 	. += span_info("Some <b>liquid plasma<b> could probably be scooped up with a <b>container</b>.")
 
-/turf/open/lava/plasma/attackby(obj/item/I, mob/user, params)
+/turf/open/lava/plasma/attackby(obj/item/I, mob/user, list/modifiers)
 	if(!I.is_open_container())
 		return ..()
 	if(!I.reagents.add_reagent(/datum/reagent/toxin/plasma, rand(5, 10)))
@@ -409,7 +409,7 @@
 	var/list/immune_parts = list() // Parts we can't transform because they're not organic or can't be dismembered
 	var/list/transform_parts = list() // Parts we want to transform
 
-	for(var/obj/item/bodypart/burn_limb as anything in burn_human.bodyparts)
+	for(var/obj/item/bodypart/burn_limb as anything in burn_human.get_bodyparts())
 		if(!IS_ORGANIC_LIMB(burn_limb) || !burn_limb.can_dismember())
 			immune_parts += burn_limb
 			continue

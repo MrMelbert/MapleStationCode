@@ -5,6 +5,7 @@
 	icon = 'icons/obj/weapons/shields.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
+	abstract_type = /obj/item/shield
 	block_chance = 50
 	slot_flags = ITEM_SLOT_BACK
 	force = 10
@@ -146,7 +147,7 @@
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
-/obj/item/shield/riot/attackby(obj/item/attackby_item, mob/user, params)
+/obj/item/shield/riot/attackby(obj/item/attackby_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(attackby_item, /obj/item/melee/baton))
 		if(!COOLDOWN_FINISHED(src, baton_bash))
 			return

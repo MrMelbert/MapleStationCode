@@ -52,7 +52,7 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
 		preset_names.Insert(1, command_name())
 
 /datum/command_report_menu/ui_state(mob/user)
-	return GLOB.admin_state
+	return ADMIN_STATE(R_ADMIN)
 
 /datum/command_report_menu/ui_close()
 	qdel(src)
@@ -147,7 +147,7 @@ ADMIN_VERB(create_command_report, R_ADMIN, "Create Command Report", "Create a co
 		priority_announce(command_report_content, subheader == ""? null : subheader, report_sound, has_important_message = TRUE, color_override = chosen_color)
 
 	if(!announce_contents || print_report)
-		print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents)
+		print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents, contains_advanced_html = TRUE)
 
 	change_command_name(original_command_name)
 

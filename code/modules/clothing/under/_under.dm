@@ -4,6 +4,7 @@
 	worn_icon = 'icons/mob/clothing/under/default.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/suits_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/suits_righthand.dmi'
+	abstract_type = /obj/item/clothing/under
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	slot_flags = ITEM_SLOT_ICLOTHING
 	interaction_flags_click = NEED_DEXTERITY
@@ -104,7 +105,7 @@
 	if(accessory_overlay)
 		. += accessory_overlay
 
-/obj/item/clothing/under/attackby(obj/item/attacking_item, mob/user, params)
+/obj/item/clothing/under/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(has_sensor == BROKEN_SENSORS && istype(attacking_item, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/cabling = attacking_item
 		to_chat(user, span_notice("You repair the suit sensors on [src] with [cabling]."))
@@ -465,4 +466,5 @@
 	return ..()
 
 /obj/item/clothing/under/rank
+	abstract_type = /obj/item/clothing/under/rank
 	dying_key = DYE_REGISTRY_UNDER

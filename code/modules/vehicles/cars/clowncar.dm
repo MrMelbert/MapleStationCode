@@ -100,14 +100,14 @@
 		foam.set_up(4, holder = src, location = loc, carry = foamreagent)
 		foam.start()
 
-/obj/vehicle/sealed/car/clowncar/attacked_by(obj/item/I, mob/living/user)
-	. = ..()
-	if(!istype(I, /obj/item/food/grown/banana))
+/obj/vehicle/sealed/car/clowncar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/food/grown/banana))
 		return
-	var/obj/item/food/grown/banana/banana = I
-	atom_integrity += min(banana.seed.potency, max_integrity-atom_integrity)
-	to_chat(user, span_danger("You use the [banana] to repair [src]!"))
+	var/obj/item/food/grown/banana/banana = tool
+	repair_damage(banana.seed.potency)
+	to_chat(user, span_danger("You use [banana] to repair [src]!"))
 	qdel(banana)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/sealed/car/clowncar/Bump(atom/bumped)
 	. = ..()
@@ -121,14 +121,16 @@
 			for(var/mob/living/carbon/carbon_occupant in occupants)
 				if(prob(35)) //Note: The randomstep on dump_mobs throws occupants into each other and often causes wounds regardless.
 					continue
-				for(var/obj/item/bodypart/head/head_to_wound as anything in carbon_occupant.bodyparts)
-					var/pick_mode = text2num(pick(list(
-						"[WOUND_PICK_LOWEST_SEVERITY]",
-						"[WOUND_PICK_HIGHEST_SEVERITY]"
-					)))
-					carbon_occupant.cause_wound_of_type_and_severity(WOUND_BLUNT, head_to_wound, WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_SEVERE, pick_mode)
-					carbon_occupant.playsound_local(src, 'sound/weapons/flash_ring.ogg', 50)
-					carbon_occupant.set_eye_blur_if_lower(rand(10 SECONDS, 20 SECONDS))
+				var/obj/item/bodypart/head/head_to_wound = carbon_occupant.get_bodypart(BODY_ZONE_HEAD)
+				if(isnull(head_to_wound))
+					continue
+				var/pick_mode = text2num(pick(list(
+					"[WOUND_PICK_LOWEST_SEVERITY]",
+					"[WOUND_PICK_HIGHEST_SEVERITY]"
+				)))
+				carbon_occupant.cause_wound_of_type_and_severity(WOUND_BLUNT, head_to_wound, WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_SEVERE, pick_mode)
+				carbon_occupant.playsound_local(src, 'sound/weapons/flash_ring.ogg', 50)
+				carbon_occupant.set_eye_blur_if_lower(rand(10 SECONDS, 20 SECONDS))
 
 			hittarget_living.adjustBruteLoss(200)
 			new /obj/effect/decal/cleanable/blood/splatter(get_turf(hittarget_living))

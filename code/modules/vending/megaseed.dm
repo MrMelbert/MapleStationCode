@@ -106,6 +106,7 @@
 	extra_price = PAYCHECK_CREW
 	payment_department = ACCOUNT_SRV
 	allow_custom = TRUE
+	department_discount = 0
 
 /obj/item/vending_refill/hydroseeds
 	machine_name = "MegaSeed Servitor"

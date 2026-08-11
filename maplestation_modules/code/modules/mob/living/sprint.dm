@@ -1,11 +1,6 @@
 /atom/movable/screen/mov_intent
 	name = "run/walk/sneak cycle"
 	desc = "Cycles between move intents. Right click to cycle backwards."
-	maptext_width = 64
-	maptext_x = -15
-	maptext_y = 20
-	/// Style applied to the maptext used on the selector
-	var/maptext_style = "text-align:center; -dm-text-outline: 1px black"
 	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
 
@@ -101,7 +96,7 @@
 	return
 
 /mob/living/carbon/human/drain_sprint(sprint_amt = 1)
-	sprint_amt = abs(sprint_amt)
+	sprint_amt = abs(sprint_amt * get_skill_modifier(/datum/skill/athletics, SKILL_VALUE_MODIFIER))
 	adjust_sprint_left(-1 * sprint_amt)
 	if((movement_type & FLOATING) || !(mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)))
 		set_move_intent(MOVE_INTENT_WALK)

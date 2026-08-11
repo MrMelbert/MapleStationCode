@@ -88,6 +88,7 @@
 	name = "machinery"
 	icon = 'icons/obj/machines/fax.dmi'
 	desc = "Some kind of machine."
+	abstract_type = /obj/machinery
 	verb_say = "beeps"
 	verb_yell = "blares"
 	pressure_resistance = 15
@@ -795,13 +796,13 @@
 		return attack_robot(user)
 	return _try_interact(user)
 
-/obj/machinery/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return
 	update_last_used(user)
 
-/obj/machinery/attackby_secondary(obj/item/weapon, mob/user, params)
+/obj/machinery/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

@@ -174,7 +174,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	icon_state = dir_string
 	return ..()
 
-/obj/structure/cable/proc/handlecable(obj/item/W, mob/user, params)
+/obj/structure/cable/proc/handlecable(obj/item/W, mob/user, list/modifiers)
 	var/turf/T = get_turf(src)
 	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return
@@ -204,8 +204,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 //   - Wirecutters : cut it duh !
 //   - Multitool : get the power currently passing through the cable
 //
-/obj/structure/cable/attackby(obj/item/W, mob/user, params)
-	handlecable(W, user, params)
+/obj/structure/cable/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
+	handlecable(item, user, modifiers)
 
 
 // shock the user with probability prb
@@ -589,7 +589,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 		use_delay = 5 SECONDS
 
 	use_delay *= user.get_skill_modifier(/datum/skill/cybernetics, SKILL_SPEED_MODIFIER)
-	if(!use_tool(user, use_delay, attacked_humanoid, amount = 1))
+	if(!use_tool(attacked_humanoid, user, use_delay, amount = 1))
 		return ITEM_INTERACT_BLOCKING
 
 	if (!attacked_humanoid.item_heal(user, brute_heal = 0, burn_heal = 15, heal_message_brute = "dents", heal_message_burn = "burnt wires", required_bodytype = BODYTYPE_ROBOTIC))
@@ -639,7 +639,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	use(1)
 
-	if(C.shock(user, 50) && prob(50)) //fail
+	if(C.powernet.avail && C.shock(user, 50) && prob(50)) //fail
 		C.deconstruct()
 
 	return C
@@ -780,4 +780,13 @@ GLOBAL_LIST(hub_radial_layer_list)
 
 // This is a mapping aid. In order for this to be placed on a map and function, all three layers need to have their nodes active
 /obj/structure/cable/multilayer/connected
-		cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2 | CABLE_LAYER_3
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2 | CABLE_LAYER_3
+
+/obj/structure/cable/multilayer/one_two
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_2
+
+/obj/structure/cable/multilayer/one_three
+	cable_layer = CABLE_LAYER_1 | CABLE_LAYER_3
+
+/obj/structure/cable/multilayer/two_three
+	cable_layer = CABLE_LAYER_2 | CABLE_LAYER_3

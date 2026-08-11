@@ -340,7 +340,7 @@
 	var/mob/living/carbon/human/new_clown = user
 	for(var/obj/item/to_strip in new_clown.get_equipped_items())
 		new_clown.dropItemToGround(to_strip)
-	new_clown.dress_up_as_job(SSjob.GetJobType(/datum/job/clown))
+	new_clown.dress_up_as_job(SSjob.get_job_type(/datum/job/clown))
 	clowned_mob_refs += clown_ref
 	return TRUE
 

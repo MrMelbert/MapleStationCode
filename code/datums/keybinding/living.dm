@@ -16,9 +16,19 @@
 	. = ..()
 	if(.)
 		return
-	var/mob/living/L = user.mob
-	L.resist()
+	var/mob/living/owner = user.mob
+	owner.resist()
+	if (owner.hud_used?.resist_icon)
+		owner.hud_used.resist_icon.icon_state = "[owner.hud_used.resist_icon.base_icon_state]_on"
 	return TRUE
+
+/datum/keybinding/living/resist/up(client/user)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/owner = user.mob
+	if (owner.hud_used?.resist_icon)
+		owner.hud_used.resist_icon.icon_state = owner.hud_used.resist_icon.base_icon_state
 
 /datum/keybinding/living/look_up
 	hotkey_keys = list("L")
@@ -152,3 +162,20 @@
 	var/mob/living/M = user.mob
 	M.toggle_move_intent()
 	return TRUE
+
+/datum/keybinding/living/cancel_interactions
+	name = "stop_interactions"
+	full_name = "Cancel Interactions"
+	description = "Cancels any ongoing interactions (such as using a tool, performing surgery, or climbing). \
+		Note that some interactions cannot be interrupted, and you can't cancel other player's interaction with this hotkey."
+	keybind_signal = COMSIG_KB_LIVING_STOP_INTERACTIONS_DOWN
+
+/datum/keybinding/living/cancel_interactions/down(client/user, turf/target, mousepos_x, mousepos_y)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/mob_user = user.mob
+	if(!LAZYLEN(mob_user.do_afters) || HAS_TRAIT(mob_user, TRAIT_INCAPACITATED))
+		return
+	// this is currently the best way to stop all ongoing doafters
+	mob_user.incapacitate(0.1 SECONDS, ignore_canstun = TRUE)

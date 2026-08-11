@@ -184,6 +184,8 @@
 	register_context()
 	register_item_context()
 
+	add_smell(smell = "fish", intensity = SMELL_INTENSITY_WEAK,	radius = 2)
+
 /obj/item/fish/add_item_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(HAS_TRAIT(source, TRAIT_CATCH_AND_RELEASE))
 		context[SCREENTIP_CONTEXT_RMB] = "Release"
@@ -400,7 +402,7 @@
 		icon_state = base_icon_state
 	return ..()
 
-/obj/item/fish/attackby(obj/item/item, mob/living/user, params)
+/obj/item/fish/attackby(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!istype(item, /obj/item/fish_feed))
 		return ..()
 	if(!item.reagents.total_volume)

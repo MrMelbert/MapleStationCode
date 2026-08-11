@@ -117,7 +117,7 @@
 		active_price = board.custom_cost
 	return
 
-/obj/machinery/medical_kiosk/attackby(obj/item/O, mob/user, params)
+/obj/machinery/medical_kiosk/attackby(obj/item/O, mob/user, list/modifiers, list/attack_modifiers)
 	if(default_deconstruction_screwdriver(user, "[base_icon_state]_open", "[base_icon_state]_off", O))
 		return
 	else if(default_deconstruction_crowbar(O))
@@ -237,7 +237,7 @@
 	var/bleed_status = "Patient is not currently bleeding."
 	var/blood_status = " Patient either has no blood, or does not require it to function."
 	var/blood_percent = round((patient.blood_volume / BLOOD_VOLUME_NORMAL)*100)
-	var/blood_type = "[patient.get_blood_type() || "None"]" // NON-MODULE CHANGE
+	var/blood_type = "[patient.blood_type || "None"]" // NON-MODULE CHANGE
 	var/blood_warning = " "
 	var/blood_alcohol = patient.get_blood_alcohol_content()
 

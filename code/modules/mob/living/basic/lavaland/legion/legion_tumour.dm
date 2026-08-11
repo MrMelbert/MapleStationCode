@@ -56,7 +56,7 @@
 	stage = 0
 	elapsed_time = 0
 
-/obj/item/organ/legion_tumour/attack(mob/living/target, mob/living/user, params)
+/obj/item/organ/legion_tumour/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if (try_apply(target, user))
 		qdel(src)
 		return
@@ -159,6 +159,6 @@
 	if(prob(stage * 2))
 		infest()
 
-/obj/item/organ/legion_tumour/feel_for_damage(self_aware)
+/obj/item/organ/legion_tumour/feel_for_damage(self_aware, medical_skill)
 	// keep stealthy for now, revisit later
 	return ""

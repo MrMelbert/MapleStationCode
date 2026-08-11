@@ -121,7 +121,7 @@
  * The logic is same as meters
  */
 /obj/item/air_sensor
-	name = "Air Sensor"
+	name = "air sensor"
 	desc = "A device designed to detect gases and their concentration in an area."
 	icon = 'icons/obj/wallmounts.dmi'
 	icon_state = "gsensor0"

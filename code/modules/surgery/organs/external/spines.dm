@@ -3,6 +3,7 @@
 	name = "lizard spines"
 	desc = "Not an actual spine, obviously."
 	icon_state = "spines"
+	gender = PLURAL
 
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_EXTERNAL_SPINES
@@ -33,6 +34,7 @@
 	layers = EXTERNAL_ADJACENT|EXTERNAL_BEHIND
 	feature_key = "spines"
 	dyable = TRUE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE // NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/spines/get_global_feature_list()
 	return SSaccessories.spines_list

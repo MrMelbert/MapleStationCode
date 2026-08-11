@@ -3,6 +3,7 @@
 	name = "MOD module"
 	icon = 'icons/obj/clothing/modsuit/mod_modules.dmi'
 	icon_state = "module"
+	abstract_type = /obj/item/mod/module
 	/// If it can be removed
 	var/removable = TRUE
 	/// If it's passive, togglable, usable or active
@@ -509,7 +510,7 @@
 		return FALSE
 	return TRUE
 
-/obj/item/mod/module/anomaly_locked/attackby(obj/item/item, mob/living/user, params)
+/obj/item/mod/module/anomaly_locked/attackby(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(item.type in accepted_anomalies)
 		if(core)
 			balloon_alert(user, "core already in!")

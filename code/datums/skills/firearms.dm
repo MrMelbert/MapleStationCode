@@ -5,7 +5,7 @@
 	earned_by = "training at the firing range (or shooting people)"
 	grants_you = "reduced accuracy penalties when using firearms while wounded"
 	modifiers = list(
-		SKILL_RANDS_MODIFIER = list(
+		SKILL_RANDS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 5,
 			SKILL_LEVEL_NOVICE = 0,
 			SKILL_LEVEL_APPRENTICE = -5,

@@ -347,6 +347,7 @@
  */
 /mob/proc/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
 	SEND_SIGNAL(src, COMSIG_MOB_SLIPPED, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop)
+	return TRUE
 
 /mob/living/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
 	add_mob_memory(/datum/memory/was_slipped, antagonist = slipped_on)

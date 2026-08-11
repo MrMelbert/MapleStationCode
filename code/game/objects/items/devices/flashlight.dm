@@ -17,7 +17,10 @@
 	w_class = WEIGHT_CLASS_SMALL
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5, /datum/material/glass= SMALL_MATERIAL_AMOUNT * 0.2)
+	custom_materials = list(
+		/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/glass = SMALL_MATERIAL_AMOUNT * 0.2,
+	)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	action_slots = ALL
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
@@ -129,26 +132,31 @@
 
 	if(M == user) //they're using it on themselves
 		user.visible_message(span_warning("[user] shines [src] into [M.p_their()] eyes."), ignored_mobs = user)
-		. += span_info("You direct [src] to into your eyes:\n")
+		. += span_info("You direct [src] to into your eyes:<br>")
 
 		if(M.is_blind())
-			. += "<span class='notice ml-1'>You're not entirely certain what you were expecting...</span>\n"
+			. += "<span class='notice ml-1'>You're not entirely certain what you were expecting...</span><br>"
 		else
-			. += "<span class='notice ml-1'>Trippy!</span>\n"
+			. += "<span class='notice ml-1'>Trippy!</span><br>"
 
 	else
-		user.visible_message(span_warning("[user] directs [src] to [M]'s eyes."), ignored_mobs = user)
-		. += span_info("You direct [src] to [M]'s eyes:\n")
+		if(HAS_TRAIT(M, TRAIT_CLOSED_EYES) && !HAS_TRAIT(M, TRAIT_NO_EYELIDS))
+			user.visible_message(span_warning("[user] lifts [M]'s eyelids and shines [src] into [M.p_their()] eyes."), ignored_mobs = user)
+			. += span_info("You lift [M.p_their()] eyelids and direct [src] into [M.p_their()] eyes:\n")
+
+		else
+			user.visible_message(span_warning("[user] directs [src] to [M]'s eyes."), ignored_mobs = user)
+			. += span_info("You direct [src] to [M]'s eyes:\n")
 
 		if(M.stat == DEAD || M.is_blind() || M.get_eye_protection() > FLASH_PROTECTION_WELDER)
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils don't react to the light!</span>\n"//mob is dead
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils don't react to the light!</span><br>"//mob is dead
 		else if(brain.damage > 20)
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils contract unevenly!</span>\n"//mob has sustained damage to their brain
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils contract unevenly!</span><br>"//mob has sustained damage to their brain
 		else
-			. += "<span class='notice ml-1'>[M.p_Their()] pupils narrow.</span>\n"//they're okay :D
+			. += "<span class='notice ml-1'>[M.p_Their()] pupils narrow.</span><br>"//they're okay :D
 
 		if(M.dna && M.dna.check_mutation(/datum/mutation/human/xray))
-			. += "<span class='danger ml-1'>[M.p_Their()] pupils give an eerie glow!</span>\n"//mob has X-ray vision
+			. += "<span class='danger ml-1'>[M.p_Their()] pupils give an eerie glow!</span><br>"//mob has X-ray vision
 
 	return .
 
@@ -274,7 +282,7 @@
 
 	if(length(render_list))
 		//display our packaged information in an examine block for easy reading
-		to_chat(user, examine_block(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
+		to_chat(user, boxed_message(jointext(render_list, "")), type = MESSAGE_TYPE_INFO)
 		return ITEM_INTERACT_SUCCESS
 	return ITEM_INTERACT_BLOCKING
 
@@ -430,7 +438,11 @@
 	var/trash_type = /obj/item/trash/flare
 	/// If the light source can be extinguished
 	var/can_be_extinguished = FALSE
-	custom_materials = list(/datum/material/plastic= SMALL_MATERIAL_AMOUNT * 0.5)
+	custom_materials = list(
+		/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/plasma = SMALL_MATERIAL_AMOUNT * 0.5,
+		/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 0.5,
+	)
 
 /obj/item/flashlight/flare/Initialize(mapload)
 	. = ..()
@@ -688,6 +700,26 @@
 	slot_flags = null
 	trash_type = /obj/effect/decal/cleanable/ash
 	can_be_extinguished = TRUE
+	custom_materials = list(/datum/material/wood = SMALL_MATERIAL_AMOUNT*0.5)
+
+/obj/item/flashlight/flare/torch/on
+	start_on = TRUE
+
+/obj/item/flashlight/flare/torch/everburning
+	name = "everburning torch"
+	desc = "A torch which burns continuously, even in the vacuum of space"
+	can_be_extinguished = FALSE
+	fuel = INFINITY
+	randomize_fuel = FALSE
+	start_on = TRUE
+	custom_materials = null
+
+/obj/item/flashlight/flare/torch/red
+	color = "#ff0000"
+	light_range = 2
+
+/obj/item/flashlight/flare/torch/red/on
+	start_on = TRUE
 
 /obj/item/flashlight/lantern
 	name = "lantern"
@@ -812,6 +844,7 @@
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	ignore_base_color = TRUE
+	custom_materials = null
 
 /obj/item/flashlight/glowstick/Initialize(mapload)
 	fuel = rand(50 MINUTES, 60 MINUTES)
@@ -956,6 +989,7 @@
 /obj/item/flashlight/eyelight
 	name = "eyelight"
 	desc = "This shouldn't exist outside of someone's head, how are you seeing this?"
+	spawn_blacklisted = TRUE
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = DROPDEL
 	actions_types = list()

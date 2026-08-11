@@ -3,7 +3,7 @@
 	. = ..()
 	//Its a magic drink. it regens mana, if mildly
 	if(drinker?.mana_pool)
-		drinker.safe_adjust_personal_mana(1.5)
+		drinker.safe_adjust_personal_mana(1.5) // magic number here and not a var on the base chem to keep it modular, and because it'll only be seen here
 
 /datum/reagent/consumable/ethanol/pod_tesla/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
@@ -75,10 +75,10 @@
 	color = "#4c1528"
 	mana_adjust = -0.5
 
-/datum/reagent/volite_powder
+/datum/reagent/medicine/quintessence/volite_powder
 	name = "Volite Powder"
 	description = "Pure Volite crystals which has been grinded up into a powder."
 	taste_description = "lots of little sparks"
 	ph = 8
 	color = "#22dcb5"
-	var/mana_adjust = 1
+	mana_adjust = 1

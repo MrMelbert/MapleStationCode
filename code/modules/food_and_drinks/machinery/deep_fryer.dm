@@ -88,7 +88,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/deepfryer/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/deepfryer/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	// Dissolving pills into the frier
 	if(istype(weapon, /obj/item/reagent_containers/pill))
 		if(!reagents.total_volume)
@@ -148,7 +148,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 		audible_message(span_notice("[src] dings!"))
 	else if (cook_time >= DEEPFRYER_BURNTIME && !frying_burnt)
 		frying_burnt = TRUE
-		visible_message(span_warning("[src] emits an acrid smell!"))
+		new /obj/effect/abstract/smell/oven/bad/fryer(src)
 
 	use_energy(active_power_usage)
 

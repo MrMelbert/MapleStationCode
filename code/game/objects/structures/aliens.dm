@@ -67,6 +67,7 @@
 /obj/structure/alien/resin/Initialize(mapload)
 	. = ..()
 	air_update_turf(TRUE, TRUE)
+	ADD_TRAIT(src, TRAIT_INVERTED_DEMOLITION, INNATE_TRAIT)
 
 /obj/structure/alien/resin/Destroy()
 	air_update_turf(TRUE, FALSE)
@@ -276,6 +277,10 @@
 	//we are the parent node
 	parent_node = src
 
+	return INITIALIZE_HINT_LATELOAD
+
+// we do this in LateInitialize() because weeds on the same loc may not be done initializing yet (as in create_and_destroy)
+/obj/structure/alien/weeds/node/LateInitialize()
 	//destroy any non-node weeds on turf
 	var/obj/structure/alien/weeds/check_weed = locate(/obj/structure/alien/weeds) in loc
 	if(check_weed && check_weed != src)

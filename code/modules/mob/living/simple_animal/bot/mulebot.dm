@@ -26,7 +26,6 @@
 	buckle_lying = 0
 	mob_size = MOB_SIZE_LARGE
 	buckle_prevents_pull = TRUE // No pulling loaded shit
-	bot_mode_flags = ~BOT_MODE_ROUNDSTART_POSSESSION
 	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_CARGO)
 	radio_key = /obj/item/encryptionkey/headset_cargo
 	radio_channel = RADIO_CHANNEL_SUPPLY
@@ -178,7 +177,7 @@
 	diag_hud_set_mulebotcell()
 	return ITEM_INTERACT_SUCCESS
 
-/mob/living/simple_animal/bot/mulebot/attackby(obj/item/I, mob/living/user, params)
+/mob/living/simple_animal/bot/mulebot/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(I, /obj/item/stock_parts/power_store/cell) && bot_cover_flags & BOT_COVER_OPEN)
 		if(cell)
 			to_chat(user, span_warning("[src] already has a power cell!"))

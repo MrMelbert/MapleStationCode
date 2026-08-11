@@ -5,11 +5,12 @@
 	name = "\improper Malfunctioning AI"
 	roundend_category = "traitors"
 	antagpanel_category = "Malf AI"
-	job_rank = ROLE_MALF
+	pref_flag = ROLE_MALF
 	antag_hud_name = "traitor"
 	ui_name = "AntagInfoMalf"
 	can_assign_self_objectives = TRUE
 	default_custom_objective = "Make sure your precious crew are incapable of ever, ever leaving you."
+	stinger_sound = 'sound/ambience/antag/malf.ogg'
 	///the name of the antag flavor this traitor has.
 	var/employer
 	///assoc list of strings set up after employer is given
@@ -30,12 +31,15 @@
 		stack_trace("Attempted to give malf AI antag datum to \[[owner]\], who did not meet the requirements.")
 		return ..()
 
-	owner.special_role = job_rank
 	if(give_objectives)
 		forge_ai_objectives()
+	if(!employer)
+		employer = pick(GLOB.ai_employers)
 
-	if(finalize_antag) // NON-MODULE CHANGE
-		finalize_antag()
+	malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
+
+	add_law_zero()
+	owner.current.grant_language(/datum/language/codespeak, source = LANGUAGE_MALF)
 
 	return ..()
 
@@ -45,8 +49,6 @@
 		malf_ai.set_zeroth_law("")
 		malf_ai.remove_malf_abilities()
 		QDEL_NULL(malf_ai.malf_picker)
-
-	owner.special_role = null
 
 	return ..()
 
@@ -262,6 +264,7 @@
 /datum/antagonist/malf_ai/infected
 	name = "Infected AI"
 	employer = "Infected AI"
+	stinger_sound = null
 	///The player, to who is this AI slaved
 	var/datum/mind/boss
 

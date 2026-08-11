@@ -18,7 +18,7 @@
 	var/datum/mind/targetmind = user.mind
 	if(targetmind)
 		for (var/type in GLOB.skill_types)
-			var/datum/skill/skill = GetSkillRef(type)
+			var/datum/skill/skill = SSskills.all_skills[type]
 			var/lvl_num = targetmind.get_skill_level(type)
 			var/lvl_name = uppertext(targetmind.get_skill_level_name(type))
 			var/exp = targetmind.get_skill_exp(type)
@@ -47,7 +47,7 @@
 
 /datum/computer_file/program/skill_tracker/proc/find_skilltype(name)
 	for(var/type in GLOB.skill_types)
-		var/datum/skill/skill = GetSkillRef(type)
+		var/datum/skill/skill = SSskills.all_skills[type]
 		if(skill.name == name)
 			return type
 
@@ -59,7 +59,7 @@
 		if("PRG_reward")
 			var/skill_type = find_skilltype(params["skill"])
 			if(skill_type)
-				var/datum/skill/skill = GetSkillRef(skill_type)
+				var/datum/skill/skill = SSskills.all_skills[skill_type]
 				var/datum/mind/mind = ui.user.mind
 				var/new_level = mind.get_skill_level(skill_type)
 				skill.try_skill_reward(mind, new_level)

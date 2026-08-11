@@ -6,6 +6,7 @@
 	name = "mecha part"
 	icon = 'icons/mob/mech_construct.dmi'
 	icon_state = "blank"
+	abstract_type = /obj/item/mecha_parts
 	w_class = WEIGHT_CLASS_GIGANTIC
 	obj_flags = CONDUCTS_ELECTRICITY
 
@@ -251,7 +252,7 @@
 	name = "\improper Phazon chassis"
 	construct_type = /datum/component/construction/unordered/mecha_chassis/phazon
 
-/obj/item/mecha_parts/chassis/phazon/attackby(obj/item/I, mob/user, params)
+/obj/item/mecha_parts/chassis/phazon/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(istype(I, /obj/item/assembly/signaler/anomaly) && !istype(I, /obj/item/assembly/signaler/anomaly/bluespace))
 		to_chat(user, "The anomaly core socket only accepts bluespace anomaly cores!")

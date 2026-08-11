@@ -11,6 +11,7 @@
 
 /obj/item/borg
 	icon = 'icons/mob/silicon/robot_items.dmi'
+	abstract_type = /obj/item/borg
 
 /// Cost to use the stun arm
 #define CYBORG_STUN_CHARGE_COST (0.2 * STANDARD_CELL_CHARGE)
@@ -96,7 +97,7 @@
 		if(HUG_MODE_CRUSH)
 			to_chat(user, "<span class='warningplain'>ERROR: ARM ACTUATORS OVERLOADED.</span>")
 
-/obj/item/borg/cyborghug/attack(mob/living/attacked_mob, mob/living/silicon/robot/user, params)
+/obj/item/borg/cyborghug/attack(mob/living/attacked_mob, mob/living/silicon/robot/user, list/modifiers, list/attack_modifiers)
 	if(attacked_mob == user)
 		return
 	if(attacked_mob.health < 0)
@@ -104,7 +105,6 @@
 	switch(mode)
 		if(HUG_MODE_NICE)
 			if(isanimal_or_basicmob(attacked_mob))
-				var/list/modifiers = params2list(params)
 				if (!user.combat_mode && !LAZYACCESS(modifiers, RIGHT_CLICK))
 					attacked_mob.attack_hand(user, modifiers) //This enables borgs to get the floating heart icon and mob emote from simple_animal's that have petbonus == true.
 				return

@@ -20,8 +20,8 @@ GLOBAL_VAR(string_filename_current_key)
 		CRASH("strings list not found: [STRING_DIRECTORY]/[filepath], index=[key]")
 
 /proc/strings(filepath as text, key as text, directory = STRING_DIRECTORY)
-	if(IsAdminAdvancedProcCall())
-		return
+	// if(IsAdminAdvancedProcCall())
+	// 	return
 
 	filepath = sanitize_filepath(filepath)
 	load_strings_file(filepath, directory)
@@ -34,8 +34,8 @@ GLOBAL_VAR(string_filename_current_key)
 	return pick_list(GLOB.string_filename_current_key, group1)
 
 /proc/load_strings_file(filepath, directory = STRING_DIRECTORY)
-	if(IsAdminAdvancedProcCall())
-		return
+	// if(IsAdminAdvancedProcCall())
+	// 	return
 
 	GLOB.string_filename_current_key = filepath
 	if(filepath in GLOB.string_cache)

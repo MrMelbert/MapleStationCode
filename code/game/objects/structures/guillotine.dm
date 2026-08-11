@@ -183,7 +183,7 @@
 	blade_status = GUILLOTINE_BLADE_DROPPED
 	icon_state = "guillotine"
 
-/obj/structure/guillotine/attackby(obj/item/W, mob/user, params)
+/obj/structure/guillotine/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if (istype(W, /obj/item/sharpener))
 		add_fingerprint(user)
 		if (blade_status == GUILLOTINE_BLADE_SHARPENING)
@@ -238,8 +238,7 @@
 			var/datum/species/S = victim.dna.species
 
 			if (istype(S))
-				victim.cut_overlays()
-				victim.update_body_parts_head_only()
+				victim.render_only_head()
 				victim.remove_overlay(BODY_ADJ_LAYER)
 				victim.pixel_y += -GUILLOTINE_HEAD_OFFSET // Offset their body so it looks like they're in the guillotine
 				victim.layer += GUILLOTINE_LAYER_DIFF

@@ -120,7 +120,7 @@
 		if(!victim || !limb)
 			qdel(src)
 			return
-		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWER_TEXT(undiagnosed_name || name)]!"))
+		to_chat(victim, span_green("Your [limb.plaintext_zone] has recovered from its [LOWER_TEXT(get_displayed_name_for_mob(victim))]!"))
 		remove_wound()
 
 /// If we're a human who's punching something with a broken arm, we might hurt ourselves doing so
@@ -139,7 +139,7 @@
 	if(!prob((severity - 1) * 15))
 		return NONE
 	// bonus roll if you splint it
-	if(prob(180 * (1 - get_splint_power())))
+	if(prob(180 * (1 - limb.get_splint_factor())))
 		return NONE
 
 	var/painless = !CAN_FEEL_PAIN(victim)
@@ -178,7 +178,7 @@
 	if(footstep_counter >= 8)
 		footstep_counter = 1
 
-	if(get_splint_power() <= 0.75 || !CAN_FEEL_PAIN(victim))
+	if(limb.get_splint_factor() <= 0.75 || !CAN_FEEL_PAIN(victim))
 		return
 	if(limb.body_zone == SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		return
@@ -203,7 +203,7 @@
 
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return NONE
-	if(!CAN_FEEL_PAIN(victim) || get_splint_power() <= 0.75)
+	if(!CAN_FEEL_PAIN(victim) || limb.get_splint_factor() <= 0.75)
 		return NONE
 	var/pain_prob = min(75, 20 * severity * (victim.body_position == LYING_DOWN ? 1.5 : 1))
 	if(!prob(pain_prob))
@@ -224,10 +224,7 @@
 		return
 	if(limb.body_zone != BODY_ZONE_CHEST || !limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-	var/splint_mod = get_splint_power()
-	if(splint_mod < 1)
-		wounding_dmg *= (1 - splint_mod)
-	var/blood_bled = sqrt(wounding_dmg) * (severity * 0.75) * pick(0.75, 1, 1.25) // melbert todo : push upstream
+	var/blood_bled = sqrt(wounding_dmg) * severity * limb.get_splint_factor() * pick(0.66, 0.75, 1) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
 			victim.visible_message(
@@ -257,7 +254,8 @@
 /datum/wound/blunt/bone/modify_desc_before_span(desc)
 	. = ..()
 
-	if (!limb.current_gauze)
+	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
+	if (!current_gauze)
 		if(taped)
 			. += ", [span_notice("and appears to be reforming itself under some surgical tape!")]"
 		else if(gelled)
@@ -300,7 +298,7 @@
 
 	severity = WOUND_SEVERITY_MODERATE
 	threshold_penalty = 20
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/rib_break
 	scar_keyword = "dislocate"
 	internal_bleeding_chance = 25
@@ -313,9 +311,14 @@
 		though this is quite difficult for most people to do so individually \
 		unless they've dosed themselves with one or more <b>painkillers</b>."
 
-/datum/wound/blunt/bone/rib_break/get_self_check_description(mob/user)
+/datum/wound/blunt/bone/rib_break/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(medical_skill >= SKILL_LEVEL_EXPERT)
+		return span_warning("It feels tense to the touch - likely a fractured rib.")
 	if(locate(/datum/wound/bleed_internal) in limb.wounds)
-		return null
+		return null // prioritize the message IB gives, since it's identical
+	if(medical_skill >= SKILL_LEVEL_APPRENTICE)
+		return span_warning("It feels tense to the touch - likely either internal bleeding or a fractured rib.")
+
 	return span_warning("It feels tense to the touch.") // same as IB!
 
 /// Joint Dislocation (Moderate Blunt)
@@ -368,7 +371,10 @@
 
 	return ..()
 
-/datum/wound/blunt/bone/moderate/get_self_check_description(self_aware)
+/datum/wound/blunt/bone/moderate/get_self_check_description(self_aware, medical_skill, list/covering)
+	if(medical_skill >= SKILL_LEVEL_APPRENTICE)
+		return span_warning("It's dislocated.")
+
 	return span_warning("It feels dislocated!")
 
 /// Getting smushed in an airlock/firelock is a last-ditch attempt to try relocating your limb
@@ -383,7 +389,7 @@
 		return FALSE
 
 	if(user.grab_state == GRAB_PASSIVE)
-		to_chat(user, span_warning("You must have [victim] in an aggressive grab to manipulate [victim.p_their()] [LOWER_TEXT(undiagnosed_name || name)]!"))
+		to_chat(user, span_warning("You must have [victim] in an aggressive grab to manipulate [victim.p_their()] [LOWER_TEXT(get_displayed_name_for_mob(user))]!"))
 		return TRUE
 
 	if(user.grab_state >= GRAB_AGGRESSIVE)
@@ -476,7 +482,7 @@
 	limp_slowdown = 6
 	limp_chance = 60
 	threshold_penalty = 30
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/severe
 	scar_keyword = "bluntsevere"
 	brain_trauma_group = BRAIN_TRAUMA_MILD
@@ -519,7 +525,7 @@
 	sound_effect = 'sound/effects/wounds/crack2.ogg'
 	threshold_penalty = 50
 	disabling = TRUE
-	treatable_by = list(/obj/item/stack/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
+	treatable_by = list(/obj/item/stack/medical/wrap/sticky_tape/surgical, /obj/item/stack/medical/bone_gel)
 	status_effect_type = /datum/status_effect/wound/blunt/bone/critical
 	scar_keyword = "bluntcritical"
 	brain_trauma_group = BRAIN_TRAUMA_SEVERE
@@ -550,7 +556,12 @@
 	if(L.body_zone == BODY_ZONE_HEAD)
 		occur_text = "splits open, exposing a bare, cracked skull through the flesh and blood"
 		examine_desc = "has an unsettling indent, with bits of skull poking out"
+	return ..()
+
+/datum/wound/blunt/bone/critical/set_victim(new_victim)
+	victim?.clear_mood_event("compound_fracture")
 	. = ..()
+	victim?.add_mood_event("compound_fracture", /datum/mood_event/compound_fracture)
 
 /// if someone is using bone gel on our wound
 /datum/wound/blunt/bone/proc/gel(obj/item/stack/medical/bone_gel/I, mob/user)
@@ -608,7 +619,7 @@
 	return TRUE
 
 /// if someone is using surgical tape on our wound
-/datum/wound/blunt/bone/proc/tape(obj/item/stack/sticky_tape/surgical/I, mob/user)
+/datum/wound/blunt/bone/proc/tape(obj/item/stack/medical/wrap/sticky_tape/surgical/I, mob/user)
 	if(!gelled)
 		to_chat(user, span_warning("[user == victim ? "Your" : "[victim]'s"] [limb.plaintext_zone] must be coated with bone gel to perform this emergency operation!"))
 		return TRUE
@@ -642,7 +653,7 @@
 /datum/wound/blunt/bone/treat(obj/item/tool, mob/user)
 	if(istype(tool, /obj/item/stack/medical/bone_gel))
 		gel(tool, user)
-	if(istype(tool, /obj/item/stack/sticky_tape/surgical))
+	if(istype(tool, /obj/item/stack/medical/wrap/sticky_tape/surgical))
 		tape(tool, user)
 
 /datum/wound/blunt/bone/get_scanner_description(mob/user)

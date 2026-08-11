@@ -22,6 +22,7 @@
 	if(mapload)
 		CheckParts()
 	pixel_x = rand(-8, 8)
+	add_smell(smell = /datum/smell/decay, intensity = SMELL_INTENSITY_MODERATE, radius = 2)
 
 /obj/structure/headpike/Destroy()
 	QDEL_NULL(victim)

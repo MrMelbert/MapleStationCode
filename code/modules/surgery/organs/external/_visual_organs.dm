@@ -122,6 +122,10 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 	layers = EXTERNAL_ADJACENT
 	feature_key = "horns"
 	dyable = TRUE
+	color_source = ORGAN_COLOR_OVERRIDE
+
+/datum/bodypart_overlay/mutant/horns/override_color(obj/item/bodypart/bodypart_owner)
+	return bodypart_owner?.owner?.dna?.features["lizard_horn_color"]
 
 /datum/bodypart_overlay/mutant/horns/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
 	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
@@ -148,19 +152,44 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 /datum/bodypart_overlay/mutant/frills
 	layers = EXTERNAL_ADJACENT
 	feature_key = "frills"
-	color_source = ORGAN_COLOR_OVERRIDE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE // NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
-	return !(bodypart_owner.owner?.obscured_slots & HIDEEARS)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/frills/get_global_feature_list()
 	return SSaccessories.frills_list
 
-/datum/bodypart_overlay/mutant/frills/override_color(obj/item/bodypart/bodypart_owner)
-	if(!bodypart_owner.owner || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS))
-		return bodypart_owner.draw_color
+// BEGIN NON-MODULE CHANGE
+/datum/bodypart_overlay/mutant/frills/mutant_override_color(obj/item/bodypart/bodypart_owner) // NOTE: this was originally in the slot of "override_color" but was changed to this.
+	// prioritize a specific color they have set
+	return bodypart_owner?.owner?.dna?.features["lizard_frill_color"] || ..()
+// END NON-MODULE CHANGE
 
-	return bodypart_owner.owner.dna?.features["forced_fish_color"] || bodypart_owner.draw_color
+/datum/bodypart_overlay/mutant/frills/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	if(LAZYLEN(limb?.owner?.hair_masks))
+		. += jointext(limb.owner.hair_masks, ",")
+
+/datum/bodypart_overlay/mutant/frills/get_image(image_layer, obj/item/bodypart/limb)
+	if(!LAZYLEN(limb?.owner?.hair_masks))
+		return ..()
+
+	var/list/hair_masks_to_use = limb.owner.hair_masks
+	var/icon_state_to_use = build_icon_state(image_layer, limb)
+	var/frill_cache_key = "[sprite_datum.type]-[icon_state_to_use]-[jointext(hair_masks_to_use, ",")]"
+	var/static/list/cached_frill_icons
+	var/icon/cached_icon = LAZYACCESS(cached_frill_icons, frill_cache_key)
+	if(isnull(cached_icon))
+		cached_icon = icon(sprite_datum.icon, build_icon_state(image_layer, limb))
+		for(var/datum/hair_mask/mask as anything in hair_masks_to_use)
+			cached_icon.Blend(icon(mask::icon, mask::icon_state), ICON_ADD)
+		LAZYSET(cached_frill_icons, frill_cache_key, cached_icon)
+
+	var/mutable_appearance/uncached_appearance = mutable_appearance(cached_icon, layer = image_layer)
+	if(sprite_datum.center)
+		center_image(uncached_appearance, sprite_datum.dimension_x, sprite_datum.dimension_y)
+	return uncached_appearance
 
 ///Guess what part of the lizard this is?
 /obj/item/organ/snout
@@ -179,6 +208,24 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/snout
 	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
+
+	/// Offset to apply to equipment worn on the mouth we give to the head.
+	var/datum/worn_feature_offset/worn_mask_offset
+
+/obj/item/organ/snout/on_bodypart_insert(obj/item/bodypart/head/limb)
+	. = ..()
+	if(isnull(limb.worn_mask_offset))
+		worn_mask_offset = limb.worn_mask_offset = new(
+			attached_part = limb,
+			feature_key = OFFSET_FACEMASK,
+			offset_x = list("east" = 1, "west" = -1),
+		)
+
+/obj/item/organ/snout/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
+	if(worn_mask_offset)
+		QDEL_NULL(worn_mask_offset)
+		limb.worn_mask_offset = null
+	return ..()
 
 /datum/bodypart_overlay/mutant/snout
 	layers = EXTERNAL_ADJACENT

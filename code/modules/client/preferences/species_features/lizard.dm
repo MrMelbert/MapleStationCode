@@ -61,6 +61,11 @@
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/frills
 
+/datum/preference/choiced/lizard_frills/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_frill_color"
+	return data
+
 /datum/preference/choiced/lizard_frills/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.frills_list)
 
@@ -77,6 +82,11 @@
 	main_feature_name = "Horns"
 	should_generate_icons = TRUE
 	relevant_external_organ = /obj/item/organ/horns
+
+/datum/preference/choiced/lizard_horns/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_horn_color"
+	return data
 
 /datum/preference/choiced/lizard_horns/init_possible_values()
 	return assoc_to_keys_features(SSaccessories.horns_list)
@@ -117,7 +127,7 @@
 		correct_legs[BODY_ZONE_R_LEG] = target.dna.species.digitigrade_legs[BODY_ZONE_R_LEG]
 		correct_legs[BODY_ZONE_L_LEG] = target.dna.species.digitigrade_legs[BODY_ZONE_L_LEG]
 
-	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
+	for(var/obj/item/bodypart/old_part as anything in target.get_bodyparts())
 		if(old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES)
 			continue
 

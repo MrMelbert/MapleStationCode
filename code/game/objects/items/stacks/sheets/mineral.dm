@@ -84,7 +84,7 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	icon_state = "sandbag"
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/emptysandbag/attackby(obj/item/W, mob/user, params)
+/obj/item/emptysandbag/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(W, /obj/item/stack/ore/glass))
 		var/obj/item/stack/ore/glass/G = W
 		to_chat(user, span_notice("You fill the sandbag."))
@@ -437,6 +437,7 @@ GLOBAL_LIST_INIT(adamantine_recipes, list(
 GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	new/datum/stack_recipe("alien bed", /obj/structure/bed/abductor, 2, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, category = CAT_FURNITURE), \
 	new/datum/stack_recipe("alien locker", /obj/structure/closet/abductor, 2, time = 2 SECONDS, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, category = CAT_FURNITURE), \
+	new/datum/stack_recipe("strange closet", /obj/structure/closet/acloset, 2, time = 5 SECONDS, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, category = CAT_CONTAINERS), \
 	new/datum/stack_recipe("alien table frame", /obj/structure/table_frame/abductor, 1, time = 2 SECONDS, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, category = CAT_FURNITURE), \
 	new/datum/stack_recipe("alien airlock assembly", /obj/structure/door_assembly/door_assembly_abductor, 4, time = 5 SECONDS, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, category = CAT_DOORS), \
 	null, \
@@ -461,7 +462,7 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	grind_results = list(/datum/reagent/carbon = 20)
 	novariants = TRUE
 
-/obj/item/stack/sheet/mineral/coal/attackby(obj/item/W, mob/user, params)
+/obj/item/stack/sheet/mineral/coal/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(W.get_temperature() > 300)//If the temperature of the object is over 300, then ignite
 		var/turf/T = get_turf(src)
 		message_admins("Coal ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_VERBOSEJMP(T)]")

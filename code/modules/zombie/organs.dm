@@ -23,7 +23,7 @@
 	GLOB.zombie_infection_list -= src
 	. = ..()
 
-/obj/item/organ/zombie_infection/feel_for_damage(self_aware)
+/obj/item/organ/zombie_infection/feel_for_damage(self_aware, medical_skill)
 	// keep stealthy for now, revisit later
 	return ""
 

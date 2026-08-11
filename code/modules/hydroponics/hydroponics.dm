@@ -207,7 +207,7 @@
 	if(!QDELETED(src) && gone == myseed)
 		set_seed(null, FALSE)
 
-/obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/living/user, params)
+/obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if (!user.combat_mode)
 		// handle opening the panel
 		if(default_deconstruction_screwdriver(user, icon_state, icon_state, I))
@@ -413,18 +413,16 @@
 
 //This is where stability mutations exist now.
 			if(myseed.instability >= 80)
-				var/mutation_chance = myseed.instability - 75
-				mutate(0, 0, 0, 0, 0, 0, 0, mutation_chance, 0) //Scaling odds of a random trait or chemical
+				traitmutate(myseed.instability - 75) //Scaling odds of a random trait or chemical
 			if(myseed.instability >= 60)
 				if(prob((myseed.instability)/2) && !self_sustaining && LAZYLEN(myseed.mutatelist) && !myseed.get_gene(/datum/plant_gene/trait/never_mutate)) //Minimum 30%, Maximum 50% chance of mutating every age tick when not on autogrow or having Prosophobic Inclination trait.
 					mutatespecie()
 					myseed.set_instability(myseed.instability/2)
-			if(myseed.instability >= 40)
-				if(prob(myseed.instability) && !myseed.get_gene(/datum/plant_gene/trait/stable_stats)) //No hardmutation if Symbiotic Resilience trait is present.
-					hardmutate()
-			if(myseed.instability >= 20 )
-				if(prob(myseed.instability) && !myseed.get_gene(/datum/plant_gene/trait/stable_stats)) //No mutation if Symbiotic Resilience trait is present.
-					mutate()
+			if(myseed.instability >= 20 && prob(myseed.instability) && !myseed.get_gene(/datum/plant_gene/trait/stable_stats)) //No hardmutation if Symbiotic Resilience trait is present.
+				if(myseed.instability >= 40)
+					hardmutate(stabmut = myseed.instability >= 80 ? 5 : 0)
+				else
+					mutate(stabmut = 0)
 
 //Health & Age///////////////////////////////////////////////////////////
 
@@ -690,15 +688,50 @@
 	set_pestlevel(0) // Reset
 	visible_message(span_warning("The [oldPlantName] is overtaken by some [myseed.plantname]!"))
 
+/// Mutates the stats of the current seed
 /obj/machinery/hydroponics/proc/mutate(lifemut = 2, endmut = 5, productmut = 1, yieldmut = 2, potmut = 25, wrmut = 2, wcmut = 5, traitmut = 0, stabmut = 3) // Mutates the current seed
-	if(!myseed)
-		return
-	myseed.mutate(lifemut, endmut, productmut, yieldmut, potmut, wrmut, wcmut, traitmut, stabmut)
+	myseed?.mutate(
+		lifemut = lifemut,
+		endmut = endmut,
+		productmut = productmut,
+		yieldmut = yieldmut,
+		potmut = potmut,
+		wrmut = wrmut,
+		wcmut = wcmut,
+		traitmut = traitmut,
+		stabmut = stabmut,
+	)
 
+/// Mutate but with higher default values
 /obj/machinery/hydroponics/proc/hardmutate(lifemut = 4, endmut = 10, productmut = 2, yieldmut = 4, potmut = 50, wrmut = 4, wcmut = 10, traitmut = 0, stabmut = 4)
-	mutate(lifemut, endmut, productmut, yieldmut, potmut, wrmut, wcmut, traitmut, stabmut)
+	myseed?.mutate(
+		lifemut = lifemut,
+		endmut = endmut,
+		productmut = productmut,
+		yieldmut = yieldmut,
+		potmut = potmut,
+		wrmut = wrmut,
+		wcmut = wcmut,
+		traitmut = traitmut,
+		stabmut = stabmut,
+	)
 
-/obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
+/// Mutate but only introduce a random trait
+/obj/machinery/hydroponics/proc/traitmutate(traitmut = 1)
+	myseed?.mutate(
+		lifemut = 0,
+		endmut = 0,
+		productmut = 0,
+		yieldmut = 0,
+		potmut = 0,
+		wrmut = 0,
+		wcmut = 0,
+		traitmut = traitmut,
+		stabmut = 0,
+	)
+
+/// Mutate the species of the plant into one of its mutations
+/obj/machinery/hydroponics/proc/mutatespecie()
 	if(!myseed || plant_status == HYDROTRAY_PLANT_DEAD || !LAZYLEN(myseed.mutatelist))
 		return
 
@@ -715,7 +748,8 @@
 	var/message = span_warning("[oldPlantName] suddenly mutates into [myseed.plantname]!")
 	addtimer(CALLBACK(src, PROC_REF(after_mutation), message), 0.5 SECONDS)
 
-/obj/machinery/hydroponics/proc/polymorph() // Polymorph a plant into another plant
+/// Transform the plant into a completely random species
+/obj/machinery/hydroponics/proc/polymorph()
 	if(!myseed || plant_status == HYDROTRAY_PLANT_DEAD)
 		return
 
@@ -732,21 +766,23 @@
 	var/message = span_warning("[oldPlantName] suddenly polymorphs into [myseed.plantname]!")
 	addtimer(CALLBACK(src, PROC_REF(after_mutation), message), 0.5 SECONDS)
 
-/obj/machinery/hydroponics/proc/mutateweed() // If the weeds gets the mutagent instead. Mind you, this pretty much destroys the old plant
-	if( weedlevel > 5 )
-		set_seed(null)
-		var/newWeed = pick(/obj/item/seeds/liberty, /obj/item/seeds/angel, /obj/item/seeds/nettle/death, /obj/item/seeds/kudzu)
-		set_seed(new newWeed(src))
-		hardmutate()
-		age = 0
-		set_plant_health(myseed.endurance, update_icon = FALSE)
-		lastcycle = world.time
-		set_weedlevel(0, update_icon = FALSE) // Reset
+/// Mutates the weeds in the tray into a random weed plant (which can overtake existing plants)
+/obj/machinery/hydroponics/proc/mutateweed()
+	if(weedlevel <= 5)
+		visible_message(span_warning("The few weeds in [src] seem to react, but only for a moment..."))
+		return
 
-		var/message = span_warning("The mutated weeds in [src] spawn some [myseed.plantname]!")
-		addtimer(CALLBACK(src, PROC_REF(after_mutation), message), 0.5 SECONDS)
-	else
-		to_chat(usr, span_warning("The few weeds in [src] seem to react, but only for a moment..."))
+	set_seed(null)
+	var/newWeed = pick(/obj/item/seeds/liberty, /obj/item/seeds/angel, /obj/item/seeds/nettle/death, /obj/item/seeds/kudzu)
+	set_seed(new newWeed(src))
+	hardmutate()
+	set_plant_health(myseed.endurance, update_icon = FALSE)
+	lastcycle = world.time
+	set_weedlevel(0, update_icon = FALSE) // Reset
+
+	var/message = span_warning("The mutated weeds in [src] spawn some [myseed.plantname]!")
+	addtimer(CALLBACK(src, PROC_REF(after_mutation), message), 0.5 SECONDS)
+
 /**
  * Called after plant mutation, update the appearance of the tray content and send a visible_message()
  */
@@ -820,7 +856,7 @@
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params)
+/obj/machinery/hydroponics/attackby(obj/item/O, mob/user, list/modifiers, list/attack_modifiers)
 	//Called when mob user "attacks" it with object O
 	if(IS_EDIBLE(O) || is_reagent_container(O))  // Syringe stuff (and other reagent containers now too)
 		var/obj/item/reagent_containers/reagent_source = O
@@ -1042,7 +1078,7 @@
 	else
 		return ..()
 
-/obj/machinery/hydroponics/attackby_secondary(obj/item/weapon, mob/user, params)
+/obj/machinery/hydroponics/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if (istype(weapon, /obj/item/reagent_containers/syringe))
 		to_chat(user, span_warning("You can't get any extract out of this plant."))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -1146,6 +1182,10 @@
 	self_sustaining_overlay_icon_state = null
 	maxnutri = 15
 
+/obj/machinery/hydroponics/soil/Initialize(mapload)
+	. = ..()
+	add_smell(smell = "fresh soil", intensity = SMELL_INTENSITY_WEAK, radius = 1)
+
 /obj/machinery/hydroponics/soil/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	return NONE
 
@@ -1160,7 +1200,7 @@
 /obj/machinery/hydroponics/soil/update_status_light_overlays()
 	return // Has no lights
 
-/obj/machinery/hydroponics/soil/attackby_secondary(obj/item/weapon, mob/user, params)
+/obj/machinery/hydroponics/soil/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(weapon.tool_behaviour != TOOL_SHOVEL) //Spades can still uproot plants on left click
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	balloon_alert(user, "clearing up soil...")

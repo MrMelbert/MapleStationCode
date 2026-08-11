@@ -45,7 +45,7 @@
 		/obj/item/melee/baton/security/boomerang/loaded = 1
 	)
 	rpg_title = "Guard"
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 	base_skills = list(
 		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,

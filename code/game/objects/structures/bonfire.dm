@@ -39,7 +39,7 @@
 	QDEL_NULL(burning_loop)
 	. = ..()
 
-/obj/structure/bonfire/attackby(obj/item/used_item, mob/living/user, params)
+/obj/structure/bonfire/attackby(obj/item/used_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(used_item, /obj/item/stack/rods) && !can_buckle && !grill)
 		var/obj/item/stack/rods/rods = used_item
 		var/choice = tgui_alert(user, "What would you like to construct?", "Bonfire", list("Stake","Grill"))
@@ -68,7 +68,6 @@
 		if(!user.combat_mode && !(used_item.item_flags & ABSTRACT))
 			if(user.temporarilyRemoveItemFromInventory(used_item))
 				used_item.forceMove(get_turf(src))
-				var/list/modifiers = params2list(params)
 				//Center the icon where the user clicked.
 				if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 					return
@@ -115,6 +114,11 @@
 	bonfire_burn()
 	particles = new /particles/bonfire()
 	START_PROCESSING(SSobj, src)
+	AddElement(/datum/element/simple_smell, \
+		smell = "smoke", \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 5, \
+	)
 
 /obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
 	start_burning()
@@ -173,6 +177,11 @@
 	set_light(0)
 	QDEL_NULL(particles)
 	STOP_PROCESSING(SSobj, src)
+	RemoveElement(/datum/element/simple_smell, \
+		smell = "smoke", \
+		intensity = SMELL_INTENSITY_STRONG, \
+		radius = 5, \
+	)
 
 /obj/structure/bonfire/buckle_mob(mob/living/buckled_mob, force = FALSE, check_loc = TRUE)
 	if(..())

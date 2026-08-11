@@ -7,6 +7,7 @@
 	icon = 'icons/obj/art/musician.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/instruments_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/instruments_righthand.dmi'
+	abstract_type = /obj/item/instrument
 	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 
@@ -123,7 +124,7 @@
 	. = ..()
 	AddElement(/datum/element/spooky)
 
-/obj/item/instrument/trumpet/spectral/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/instrument/trumpet/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	playsound(src, 'sound/runtime/instruments/trombone/En4.mid', 1000, 1, -1)
 	return ..()
 
@@ -147,7 +148,7 @@
 	. = ..()
 	AddElement(/datum/element/spooky)
 
-/obj/item/instrument/saxophone/spectral/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/instrument/saxophone/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	playsound(src, 'sound/runtime/instruments/trombone/En4.mid', 1000, 1, -1)
 	return ..()
 
@@ -171,7 +172,7 @@
 	. = ..()
 	AddElement(/datum/element/spooky)
 
-/obj/item/instrument/trombone/spectral/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/instrument/trombone/spectral/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	playsound(src, 'sound/runtime/instruments/trombone/Cn4.mid', 1000, 1, -1)
 	return ..()
 

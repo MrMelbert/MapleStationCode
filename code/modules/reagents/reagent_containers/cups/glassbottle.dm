@@ -674,7 +674,7 @@
 	if(do_after(user, 1 SECONDS, src))
 		return pop_cork(user, sabrage = FALSE, froth_severity = pick(0, 1))
 
-/obj/item/reagent_containers/cup/glass/bottle/champagne/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/item/reagent_containers/cup/glass/bottle/champagne/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 
 	if(spillable)
@@ -911,7 +911,7 @@
 		target.fire_act()
 		new /obj/effect/hotspot(get_turf(target))
 
-/obj/item/reagent_containers/cup/glass/bottle/molotov/attackby(obj/item/I, mob/user, params)
+/obj/item/reagent_containers/cup/glass/bottle/molotov/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(I.get_temperature() && !active)
 		active = TRUE
 		log_bomber(user, "has primed a", src, "for detonation")
@@ -995,7 +995,8 @@
 	desc = "Fermented prison wine made from fruit, sugar, and despair. You probably shouldn't drink this around Security."
 	icon_state = "trashbag1" // pruno releases air as it ferments, we don't want to simulate this in atmos, but we can make it look like it did
 	for (var/mob/living/M in view(2, get_turf(src))) // letting people and/or narcs know when the pruno is done
-		to_chat(M, span_info("A pungent smell emanates from [src], like fruit puking out its guts."))
+		if(M.can_smell())
+			to_chat(M, span_info("A pungent smell emanates from [src], like fruit puking out its guts."))
 		playsound(get_turf(src), 'sound/effects/bubbles2.ogg', 25, TRUE)
 
 /**

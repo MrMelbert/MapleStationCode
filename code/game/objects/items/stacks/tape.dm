@@ -1,34 +1,39 @@
-/obj/item/stack/sticky_tape
+/obj/item/stack/medical/wrap/sticky_tape
 	name = "sticky tape"
 	singular_name = "sticky tape"
 	desc = "Used for sticking to things for sticking said things to people."
 	icon = 'icons/map_icons/items/_item.dmi'
-	icon_state = "/obj/item/stack/sticky_tape"
+	icon_state = "/obj/item/stack/medical/wrap/sticky_tape"
 	post_init_icon_state = "tape"
-	var/prefix = "sticky"
-	w_class = WEIGHT_CLASS_TINY
-	full_w_class = WEIGHT_CLASS_TINY
 	item_flags = NOBLUDGEON
+	resistance_flags = FLAMMABLE
 	amount = 5
 	max_amount = 5
-	resistance_flags = FLAMMABLE
-	grind_results = list(/datum/reagent/cellulose = 5)
+	self_delay = 8 SECONDS
+	other_delay = 5 SECONDS
 	splint_factor = 0.65
-	merge_type = /obj/item/stack/sticky_tape
-	var/conferred_embed = /datum/embed_data/sticky_tape
-	///The tape type you get when ripping off a piece of tape.
-	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
+	merge_type = /obj/item/stack/medical/wrap/sticky_tape
+	apply_verb = "taping"
+	heal_begin_sound = 'sound/items/duct_tape_rip.ogg'
+	heal_end_sound = 'sound/items/duct_tape_rip.ogg'
 	greyscale_config = /datum/greyscale_config/tape
 	greyscale_colors = "#B2B2B2#BD6A62"
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	grind_results = list(/datum/reagent/cellulose = 5)
+	novariants = TRUE
+	/// Prefix applied to the target when wrapped with this tape.
+	var/prefix = "sticky"
+	/// Embed applied to the target when wrapped with this tape.
+	var/conferred_embed = /datum/embed_data/sticky_tape
+	///The tape type you get when ripping off a piece of tape.
+	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
 
 /datum/embed_data/sticky_tape
 	pain_mult = 0
 	jostle_pain_mult = 0
-	ignore_throwspeed_threshold = 0
+	ignore_throwspeed_threshold = TRUE
 
-/obj/item/stack/sticky_tape/attack_hand(mob/user, list/modifiers)
+/obj/item/stack/medical/wrap/sticky_tape/attack_hand(mob/user, list/modifiers)
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
@@ -43,11 +48,11 @@
 		return TRUE
 	return ..()
 
-/obj/item/stack/sticky_tape/examine(mob/user)
+/obj/item/stack/medical/wrap/sticky_tape/examine(mob/user)
 	. = ..()
 	. += "[span_notice("You could rip a piece off by using an empty hand.")]"
 
-/obj/item/stack/sticky_tape/interact_with_atom(obj/item/target, mob/living/user, list/modifiers)
+/obj/item/stack/medical/wrap/sticky_tape/interact_with_atom(obj/item/target, mob/living/user, list/modifiers)
 	if(!isitem(target))
 		return NONE
 
@@ -82,14 +87,14 @@
 
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/stack/sticky_tape/super
+/obj/item/stack/medical/wrap/sticky_tape/super
 	name = "super sticky tape"
 	singular_name = "super sticky tape"
 	desc = "Quite possibly the most mischevious substance in the galaxy. Use with extreme lack of caution."
 	prefix = "super sticky"
 	conferred_embed = /datum/embed_data/sticky_tape/super
 	splint_factor = 0.4
-	merge_type = /obj/item/stack/sticky_tape/super
+	merge_type = /obj/item/stack/medical/wrap/sticky_tape/super
 	greyscale_colors = "#4D4D4D#75433F"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
@@ -97,16 +102,16 @@
 	embed_chance = 100
 	fall_chance = 0.1
 
-/obj/item/stack/sticky_tape/pointy
+/obj/item/stack/medical/wrap/sticky_tape/pointy
 	name = "pointy tape"
 	icon = 'icons/map_icons/items/_item.dmi'
-	icon_state = "/obj/item/stack/sticky_tape/pointy"
+	icon_state = "/obj/item/stack/medical/wrap/sticky_tape/pointy"
 	post_init_icon_state = "tape_spikes"
 	singular_name = "pointy tape"
 	desc = "Used for sticking to things for sticking said things inside people."
 	prefix = "pointy"
 	conferred_embed = /datum/embed_data/pointy_tape
-	merge_type = /obj/item/stack/sticky_tape/pointy
+	merge_type = /obj/item/stack/medical/wrap/sticky_tape/pointy
 	greyscale_config = /datum/greyscale_config/tape/spikes
 	greyscale_colors = "#E64539#808080#AD2F45"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy
@@ -114,20 +119,20 @@
 /datum/embed_data/pointy_tape
 	ignore_throwspeed_threshold = TRUE
 
-/obj/item/stack/sticky_tape/pointy/super
+/obj/item/stack/medical/wrap/sticky_tape/pointy/super
 	name = "super pointy tape"
 	singular_name = "super pointy tape"
 	desc = "You didn't know tape could look so sinister. Welcome to Space Station 13."
 	prefix = "super pointy"
 	conferred_embed = /datum/embed_data/pointy_tape/super
-	merge_type = /obj/item/stack/sticky_tape/pointy/super
+	merge_type = /obj/item/stack/medical/wrap/sticky_tape/pointy/super
 	greyscale_colors = "#8C0A00#4F4F4F#300008"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/pointy/super
 
 /datum/embed_data/pointy_tape/super
 	embed_chance = 100
 
-/obj/item/stack/sticky_tape/surgical
+/obj/item/stack/medical/wrap/sticky_tape/surgical
 	name = "surgical tape"
 	singular_name = "surgical tape"
 	desc = "Made for patching broken bones back together alongside bone gel, not for playing pranks."
@@ -135,7 +140,7 @@
 	conferred_embed = /datum/embed_data/surgical_tape
 	splint_factor = 0.5
 	custom_price = PAYCHECK_CREW
-	merge_type = /obj/item/stack/sticky_tape/surgical
+	merge_type = /obj/item/stack/medical/wrap/sticky_tape/surgical
 	greyscale_colors = "#70BAE7#BD6A62"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical
 
@@ -145,5 +150,5 @@
 	pain_mult = 0
 	jostle_pain_mult = 0
 
-/obj/item/stack/sticky_tape/surgical/get_surgery_tool_overlay(tray_extended)
+/obj/item/stack/medical/wrap/sticky_tape/surgical/get_surgery_tool_overlay(tray_extended)
 	return "tape" + (tray_extended ? "" : "_out")

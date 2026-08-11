@@ -162,6 +162,13 @@
 	random_icon_states = list("vomit_1", "vomit_2", "vomit_3", "vomit_4")
 	beauty = -150
 
+/obj/effect/decal/cleanable/vomit/Initialize(mapload, list/datum/disease/diseases)
+	. = ..()
+	leave_smell()
+
+/obj/effect/decal/cleanable/vomit/proc/leave_smell()
+	add_smell(smell = "vomit", intensity = SMELL_INTENSITY_STRONG, radius = 1)
+
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(.)
@@ -188,6 +195,9 @@
 	icon_state = "vomitnanite_1"
 	random_icon_states = list("vomitnanite_1", "vomitnanite_2", "vomitnanite_3", "vomitnanite_4")
 
+/obj/effect/decal/cleanable/vomit/nanites/leave_smell()
+	return
+
 /obj/effect/decal/cleanable/vomit/nebula
 	name = "nebula vomit"
 	desc = "Gosh, how... beautiful."
@@ -198,6 +208,9 @@
 /obj/effect/decal/cleanable/vomit/nebula/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	update_appearance(UPDATE_OVERLAYS)
+
+/obj/effect/decal/cleanable/vomit/nebula/leave_smell()
+	return
 
 /obj/effect/decal/cleanable/vomit/nebula/update_overlays()
 	. = ..()
@@ -211,6 +224,9 @@
 	. = ..()
 	icon_state += "-old"
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
+
+/obj/effect/decal/cleanable/vomit/old/leave_smell()
+	return
 
 /obj/effect/decal/cleanable/vomit/old/black_bile
 	name = "black bile"
@@ -320,6 +336,7 @@
 /obj/effect/decal/cleanable/garbage/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 15)
+	add_smell(category = "stench", smell = "rotting garbage", intensity = SMELL_INTENSITY_MODERATE, radius = 2)
 
 /obj/effect/decal/cleanable/ants
 	name = "space ants"
@@ -437,7 +454,9 @@
 		return INITIALIZE_HINT_QDEL
 
 	if(burn_stacks)
-		burn_amount = max(min(burn_stacks, 10), 1)
+		burn_amount = clamp(burn_stacks, 1, 10)
+	if(burn_amount > 1)
+		add_smell(category = "stench", smell = "fuel", intensity = floor(SMELL_INTENSITY_MODERATE * burn_amount * 0.1), radius = 1)
 
 /obj/effect/decal/cleanable/fuel_pool/fire_act(exposed_temperature, exposed_volume)
 	. = ..()
@@ -481,7 +500,7 @@
 	. = ..()
 	ignite()
 
-/obj/effect/decal/cleanable/fuel_pool/attackby(obj/item/item, mob/user, params)
+/obj/effect/decal/cleanable/fuel_pool/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(item.ignition_effect(src, user))
 		ignite()
 	return ..()
