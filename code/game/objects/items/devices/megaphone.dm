@@ -39,6 +39,7 @@
 		else
 			playsound(loc, 'sound/items/megaphone.ogg', 100, FALSE, TRUE)
 			spamcheck = world.time + 50
+			speech_args[SPEECH_MODS][MODE_SHOUT] = MODE_YELL
 			speech_args[SPEECH_SPANS] |= voicespan
 
 /obj/item/megaphone/emag_act(mob/user, obj/item/card/emag/emag_card)

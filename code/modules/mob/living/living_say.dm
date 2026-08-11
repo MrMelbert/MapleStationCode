@@ -212,7 +212,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		return
 
 	var/static/regex/shout_regex = regex(@"\w+\s*(!+)\s*$\s*", "i")
-	if(shout_regex.Find(message))
+	if(!message_mods[SHOUT_MODE] && shout_regex.Find(message))
 		message_mods[SHOUT_MODE] = length_char(shout_regex.group[1]) > 1 ? MODE_YELL : MODE_SHOUT
 		message_range = floor(message_range * (message_mods[SHOUT_MODE] ? 2 : 1.5))
 		if(message_mods[SHOUT_MODE] == MODE_YELL)
