@@ -3,7 +3,7 @@
 	title = "Gunner"
 	blurb = "Did I fire six shots or only five? I lost count."
 	earned_by = "training at the firing range (or shooting people)"
-	grants_you = "reduced accuracy penalties when using firearms while wounded"
+	grants_you = "greater accuracy when using firearms"
 	modifiers = list(
 		SKILL_RANDS_MODIFIER = alist(
 			SKILL_LEVEL_NONE = 5,
