@@ -262,7 +262,7 @@
 	var/mob/thrown_by = thrown_item.thrownby?.resolve()
 	// Swaps to following the guy you hit with the thrown item
 	if(throwforce >= 5 && astype(thrown_by, /mob/living)?.combat_mode)
-		astype(thrown_by, /mob/living).combat_lock_on(src, 10 SECONDS, override_existing = TRUE)
+		astype(thrown_by, /mob/living).combat_lock_on(src, 10 SECONDS, force_override_target = TRUE)
 
 	if(check_block(AM, thrown_item.throwforce, "\the [thrown_item.name]", THROWN_PROJECTILE_ATTACK, 0, thrown_item.damtype))
 		hitpush = FALSE
@@ -783,20 +783,20 @@
  * Arguments
  * * target - The target to lock onto
  * * duration - How long to lock onto the target for
- * * override_existing - If set to FALSE, existing targets will not be overridden unless they are further than the new target.
+ * * force_override_target - If set to FALSE, existing targets will not be overridden unless they are further than the new target.
  */
-/mob/living/proc/combat_lock_on(atom/movable/target, duration, override_existing = FALSE)
+/mob/living/proc/combat_lock_on(atom/movable/target, duration, force_override_target = FALSE)
 	if(target == src || get_dist(src, target) > 7)
 		return
 
-	apply_status_effect(/datum/status_effect/combat_lock, target, duration, override_existing)
+	apply_status_effect(/datum/status_effect/combat_lock, target, duration, force_override_target)
 	if(!isliving(target))
 		return
 
 	// Immediately mirror combat lock if fighting an AI, makes it look like they're reacting to you like a player would.
 	var/mob/living/target_living = target
 	if(!isnull(target_living.ai_controller) && isnull(target_living.client))
-		target_living.combat_lock_on(src, duration, override_existing)
+		target_living.combat_lock_on(src, duration, force_override_target)
 
 /datum/status_effect/combat_lock
 	id = "combat_lock"
@@ -808,7 +808,7 @@
 	/// Movable we struck and are locked onto
 	VAR_PRIVATE/atom/movable/combat_target
 
-/datum/status_effect/combat_lock/on_creation(mob/living/new_owner, atom/movable/combat_target, duration = 20 SECONDS, override_existing)
+/datum/status_effect/combat_lock/on_creation(mob/living/new_owner, atom/movable/combat_target, duration = 20 SECONDS, force_override_target)
 	if(isnull(combat_target))
 		stack_trace("Attempted to create a combat lock without a target!")
 		qdel(src)
@@ -839,9 +839,9 @@
 	return ..()
 
 // Refresh refreshes duration - but then if a different, closer target is passed in, swap to that one instead.
-/datum/status_effect/combat_lock/refresh(effect, atom/movable/other_lock, duration = 20 SECONDS, override_existing)
+/datum/status_effect/combat_lock/refresh(effect, atom/movable/other_lock, duration = 20 SECONDS, force_override_target)
 	src.duration += duration
-	if(combat_target == other_lock || (!override_existing && get_dist(owner, combat_target) < get_dist(owner, other_lock)))
+	if(combat_target == other_lock || (!force_override_target && get_dist(owner, combat_target) < get_dist(owner, other_lock)))
 		return
 	UnregisterSignal(combat_target, COMSIG_QDELETING)
 	UnregisterSignal(combat_target, COMSIG_MOVABLE_MOVED)

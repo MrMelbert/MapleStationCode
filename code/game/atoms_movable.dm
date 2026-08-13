@@ -1382,7 +1382,7 @@
 		thrown_thing.tick()
 	// Makes the thrower track the thrown thing as it flies
 	if (astype(thrower, /mob/living)?.combat_mode)
-		astype(thrower, /mob/living).combat_lock_on(src, 1 SECONDS, override_existing = TRUE)
+		astype(thrower, /mob/living).combat_lock_on(src, 1 SECONDS, force_override_target = TRUE)
 
 /atom/movable/proc/handle_buckled_mob_movement(newloc, direct, glide_size_override)
 	for(var/mob/living/buckled_mob as anything in buckled_mobs)
