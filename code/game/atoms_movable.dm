@@ -1380,6 +1380,9 @@
 		SSthrowing.currentrun[src] = thrown_thing
 	if (quickstart)
 		thrown_thing.tick()
+	// Makes the thrower track the thrown thing as it flies
+	if (astype(thrower, /mob/living)?.combat_mode)
+		thrower.combat_lock_on(src, 1 SECONDS)
 
 /atom/movable/proc/handle_buckled_mob_movement(newloc, direct, glide_size_override)
 	for(var/mob/living/buckled_mob as anything in buckled_mobs)

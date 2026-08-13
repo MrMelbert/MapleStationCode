@@ -186,11 +186,7 @@
 	if(hitting_projectile.dismemberment > 0 && !hitting_projectile.grazing)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
 
-	if(isliving(hitting_projectile.firer))
-		var/mob/living/firer = hitting_projectile.firer
-		firer.combat_lock_on(src, TRUE)
-		combat_lock_on(firer)
-
+	astype(hitting_projectile.firer, /mob/living)?.combat_lock_on(src)
 	return BULLET_ACT_HIT
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
@@ -245,6 +241,10 @@
 		SEND_SOUND(src, sound('sound/misc/ui_toggleoffcombat.ogg', volume = 25)) //Slightly modified version of the above
 
 /mob/living/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
+	var/mob/thrown_by = thrown_item.thrownby?.resolve()
+	// Swaps to following the guy you hit with the thrown item
+	if(astype(thrown_by, /mob/living)?.combat_mode)
+		thrown_by.combat_lock_on(src, 10 SECONDS, override_existing = TRUE)
 	if(!isitem(AM))
 		// Filled with made up numbers for non-items.
 		if(check_block(AM, 30, "\the [AM.name]", THROWN_PROJECTILE_ATTACK, 0, BRUTE))
@@ -277,7 +277,6 @@
 	if(blocked)
 		return TRUE
 
-	var/mob/thrown_by = thrown_item.thrownby?.resolve()
 	if(thrown_by)
 		log_combat(thrown_by, src, "threw and hit", thrown_item)
 	else
@@ -707,8 +706,7 @@
 					shove_flags |= SHOVE_DIRECTIONAL_BLOCKED
 					break
 
-	target.combat_lock_on(src, TRUE)
-	combat_lock_on(target)
+	target.combat_lock_on(src)
 
 	if(shove_flags & SHOVE_CAN_HIT_SOMETHING)
 		//Don't hit people through windows, ok?
@@ -778,55 +776,122 @@
 
 	return FALSE
 
-/mob/living/proc/combat_lock_on(mob/living/target, is_attacker = FALSE)
-	if(target == src)
+/**
+ * Locks onto a target, turning to face the mob so long as we're in combat mode
+ *
+ * Arguments
+ * * target - The target to lock onto
+ * * duration - How long to lock onto the target for
+ * * override_existing - If set to FALSE, existing targets will not be overridden unless they are further than the new target.
+ */
+/mob/living/proc/combat_lock_on(atom/movable/target, duration, override_existing = FALSE)
+	if(target == src || get_dist(src, target) > 7)
 		return
-	var/target_dist = get_dist(src, target)
-	if(target_dist > 7)
-		return
-	if(!isnull(combat_target))
-		if(!is_attacker && get_dist(src, combat_target) <= target_dist)
-			return
-		drop_combat_lock()
-	if(combat_mode)
-		face_atom(target)
 
-	combat_target = target
-	RegisterSignal(target, COMSIG_QDELETING, PROC_REF(drop_combat_lock))
-	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(combat_lock_moved))
-	addtimer(CALLBACK(src, PROC_REF(drop_combat_lock_timer), REF(target)), 20 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_DELETE_ME)
-
-/mob/living/proc/face_combat_target()
-	if(isnull(combat_target) || !combat_mode || pulledby || HAS_TRAIT(src, TRAIT_INCAPACITATED))
-		return FALSE
-	if(isnull(ai_controller) && (isnull(mind) || !mind.active))
+	apply_status_effect(/datum/status_effect/combat_lock, target, duration, override_existing)
+	if(!isliving(target))
 		return
-	if(!isturf(loc) || !isturf(combat_target.loc) || loc == combat_target.loc)
+
+	// Immediately mirror combat lock if fighting an AI, makes it look like they're reacting to you like a player would.
+	var/mob/living/target_living = target
+	if(!isnull(target_living.ai_controller) && isnull(target_living.client))
+		target_living.combat_lock_on(src, duration, override_existing)
+
+/datum/status_effect/combat_lock
+	id = "combat_lock"
+	tick_interval = -1
+	duration = 20 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+	on_remove_on_mob_delete = TRUE
+	/// Movable we struck and are locked onto
+	VAR_PRIVATE/atom/movable/combat_target
+
+/datum/status_effect/combat_lock/on_creation(mob/living/new_owner, atom/movable/combat_target, duration = 20 SECONDS, override_existing)
+	if(isnull(combat_target))
+		stack_trace("Attempted to create a combat lock without a target!")
+		qdel(src)
+		return
+
+	src.duration = duration
+	src.combat_target = combat_target
+	RegisterSignal(combat_target, COMSIG_QDELETING, PROC_REF(drop_combat_lock))
+	RegisterSignal(combat_target, COMSIG_MOVABLE_MOVED, PROC_REF(combat_target_moved))
+	return ..()
+
+/datum/status_effect/combat_lock/on_apply()
+	if(isnull(owner.ai_controller) && isnull(owner.client))
 		return FALSE
-	if(combat_target.alpha <= 50 || combat_target.invisibility > see_invisible)
-		return FALSE
-	var/combat_dist = get_dist(src, combat_target)
-	if(combat_dist > 7)
-		drop_combat_lock()
-		return FALSE
-	if(!(src in viewers(5, combat_target)))
-		return FALSE
-	face_atom(combat_target)
+
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(owner_moved))
+	face_combat_target()
 	return TRUE
 
-/mob/living/proc/drop_combat_lock_timer(target_ref)
-	if(isnull(combat_target) || REF(combat_target) != target_ref)
-		return
-	drop_combat_lock()
+/datum/status_effect/combat_lock/on_remove()
+	. = ..()
+	owner.set_dir_on_move = initial(owner.set_dir_on_move)
 
-/mob/living/proc/drop_combat_lock()
-	SIGNAL_HANDLER
-
+/datum/status_effect/combat_lock/Destroy()
 	UnregisterSignal(combat_target, COMSIG_QDELETING)
 	UnregisterSignal(combat_target, COMSIG_MOVABLE_MOVED)
 	combat_target = null
-	set_dir_on_move = initial(set_dir_on_move)
+	return ..()
 
-/mob/living/proc/combat_lock_moved(...)
-	SIGNAL_HANDLER
+// Refresh refreshes duration - but then if a different, closer target is passed in, swap to that one instead.
+/datum/status_effect/combat_lock/refresh(effect, atom/movable/other_lock, duration = 20 SECONDS, override_existing)
+	src.duration += duration
+	if(combat_target == other_lock || (!override_existing && get_dist(owner, combat_target) < get_dist(owner, other_lock)))
+		return
+	UnregisterSignal(combat_target, COMSIG_QDELETING)
+	UnregisterSignal(combat_target, COMSIG_MOVABLE_MOVED)
+	combat_target = other_lock
+	RegisterSignal(combat_target, COMSIG_QDELETING, PROC_REF(drop_combat_lock))
+	RegisterSignal(combat_target, COMSIG_MOVABLE_MOVED, PROC_REF(combat_target_moved))
 	face_combat_target()
+
+/datum/status_effect/combat_lock/proc/drop_combat_lock(datum/source)
+	SIGNAL_HANDLER
+	// Target is gone, no more lock.
+	qdel(src)
+
+/datum/status_effect/combat_lock/proc/combat_target_moved(datum/source, ...)
+	SIGNAL_HANDLER
+	// They left the distance, drop the lock and let them reacquire it later.
+	if(get_dist(owner, combat_target) > 7)
+		qdel(src)
+		return
+	// Otherwise keep facing them wherever they are now.
+	face_combat_target()
+
+/datum/status_effect/combat_lock/proc/owner_moved(datum/source, ...)
+	SIGNAL_HANDLER
+	// Prevents the mob from turning to face their direction if they successfully faced the target.
+	owner.set_dir_on_move = !face_combat_target()
+
+/datum/status_effect/combat_lock/proc/face_combat_target()
+	// - If we're a not AI controlled, we have to be in combat mode to face the target
+	// - Otherwise if we ARE an AI mob, then skip the combat mode check, because they can enter and exit it sporadically
+	if(isnull(owner.ai_controller))
+		if(!owner.combat_mode)
+			return FALSE
+	else
+		if(isnull(owner.client))
+			return FALSE
+	// - No turn if we're being pulled, let the puller handle it.
+	// - No turn if incap, because of course we can't... we're probably dead.
+	if(!isnull(owner.pulledby) || HAS_TRAIT(owner, TRAIT_INCAPACITATED))
+		return FALSE
+	// - Turf checks are for nullspace shenanigans
+	// - Otherwise we can't face them if we're on the same tile
+	if(!isturf(owner.loc) || !isturf(combat_target.loc) || owner.loc == combat_target.loc)
+		return FALSE
+	// - Low alpha is intended to be harder to see, so don't let people aimbot them. 64 is picked as ~25% alpha.
+	// - Invisibility is obviously intended to make people incapable of being seen so don't let people aimbot them either
+	if(combat_target.alpha <= 64 || combat_target.invisibility > owner.see_invisible)
+		return FALSE
+	// - Blanket "can we even see see them" check, most expensive one (relatively) so it comes last.
+	if(!(owner in viewers(5, combat_target)))
+		return FALSE
+
+	owner.face_atom(combat_target)
+	return TRUE

@@ -341,12 +341,8 @@
 	if((attacking_item.item_flags & SURGICAL_TOOL) && !user.combat_mode && HAS_TRAIT(user, TRAIT_READY_TO_OPERATE))
 		wounding = CANT_WOUND
 
-	if(isliving(attacking_item.loc))
-		var/mob/living/attacker = attacking_item.loc
-		attacker.combat_lock_on(src, TRUE)
-		combat_lock_on(attacker)
-
 	if(user != src)
+		user.combat_lock_on(src)
 		// This doesn't factor in armor, or most damage modifiers (physiology). Your mileage may vary
 		if(check_block(attacking_item, final_force, "\the [attacking_item]", MELEE_ATTACK, attacking_item.armour_penetration, attacking_item.damtype))
 			return 0
