@@ -6670,6 +6670,7 @@
 #include "maplestation_modules\code\modules\mob\basic\farm_animals\goat\goat_subtypes.dm"
 #include "maplestation_modules\code\modules\mob\dead\new_player\sprite_accessories.dm"
 #include "maplestation_modules\code\modules\mob\living\blood.dm"
+#include "maplestation_modules\code\modules\mob\living\combat_lock.dm"
 #include "maplestation_modules\code\modules\mob\living\emote.dm"
 #include "maplestation_modules\code\modules\mob\living\impede_speech_verb.dm"
 #include "maplestation_modules\code\modules\mob\living\living_movement.dm"

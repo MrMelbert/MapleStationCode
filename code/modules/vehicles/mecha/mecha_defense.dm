@@ -343,7 +343,6 @@
 		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
 		oil_pool -= 2
 
-	user.combat_lock_on(src)
 	return damage_taken
 
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
