@@ -20,13 +20,12 @@
 				return
 
 	apply_status_effect(/datum/status_effect/combat_lock, target, duration, force_override_target)
-	if(!isliving(target) || !mirror_to_ai_mobs)
-		return
-
 	// Immediately mirror combat lock if fighting an AI, makes it look like they're reacting to you like a player would.
 	var/mob/living/target_living = target
-	if(IS_AI_MOB(target_living))
-		target_living.combat_lock_on(src, duration, force_override_target, mirror_to_ai_mobs = FALSE)
+	if(!istype(target_living) || !mirror_to_ai_mobs || !IS_AI_MOB(target_living))
+		return
+
+	target_living.combat_lock_on(src, duration, force_override_target, mirror_to_ai_mobs = FALSE)
 
 /datum/status_effect/combat_lock
 	id = "combat_lock"
