@@ -23,7 +23,7 @@
  *
  * * max_skill_level - If the firer's skill level is beyond this, no XP is awarded (equal is fine)
  */
-/obj/projectile/proc/award_firearms_exp(max_skill_level = SKILL_LEVEL_LEGENDARY)
+/obj/projectile/proc/award_firearms_exp(max_skill_level = SKILL_LEVEL_LEGENDARY, notify = FALSE)
 	if(!isliving(firer))
 		return
 	var/mob/living/firer_mob = firer
@@ -40,4 +40,4 @@
 	if(xp_gain <= 0)
 		return
 	// closer hits give less xp, encourage actually aiming and not standing right by the target
-	firer_mob.mind.adjust_experience(/datum/skill/firearms, xp_gain * clamp(get_dist(firer, src) / 10, 0.2, 1.2))
+	firer_mob.mind.adjust_experience(/datum/skill/firearms, xp_gain * clamp(get_dist(firer, src) / 10, 0.2, 1.2), !notify)

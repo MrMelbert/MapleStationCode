@@ -35,7 +35,7 @@
 	var/is_generic_projectile = !is_type_in_typecache(hitting_projectile, always_leave_marks)
 	if(is_generic_projectile && (is_invalid_damage || is_safe))
 		return ..() // Don't bother unless it's real shit
-	hitting_projectile.award_firearms_exp(SKILL_LEVEL_JOURNEYMAN)
+	hitting_projectile.award_firearms_exp(SKILL_LEVEL_JOURNEYMAN, notify = TRUE)
 	if(prob(25))
 		return ..() // RNG change to just not leave a mark, like walls
 	if(length(overlays) > 35)
