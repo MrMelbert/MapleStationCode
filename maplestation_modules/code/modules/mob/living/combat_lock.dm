@@ -1,3 +1,5 @@
+#define IS_AI_MOB(mob) (!isnull(mob.ai_controller) && isnull(mob.client))
+#define IS_PLAYER(mob) (!isnull(mob.client) && isnull(mob.ai_controller))
 
 /**
  * Locks onto a target, turning to face the mob so long as we're in combat mode
@@ -11,6 +13,11 @@
 /mob/living/proc/combat_lock_on(atom/movable/target, duration, force_override_target = FALSE, mirror_to_ai_mobs = TRUE)
 	if(target == src || get_dist(src, target) > 7)
 		return
+	// Avoid having AI mobs lock onto players using position based weapons at all (anti-frustration feature)
+	if(IS_AI_MOB(src))
+		for(var/obj/item/weapon in astype(target, /mob/living)?.held_items)
+			if(HAS_TRAIT(weapon, TRAIT_POSITION_BASED_WEAPON))
+				return
 
 	apply_status_effect(/datum/status_effect/combat_lock, target, duration, force_override_target)
 	if(!isliving(target) || !mirror_to_ai_mobs)
@@ -18,7 +25,7 @@
 
 	// Immediately mirror combat lock if fighting an AI, makes it look like they're reacting to you like a player would.
 	var/mob/living/target_living = target
-	if(!isnull(target_living.ai_controller) && isnull(target_living.client))
+	if(IS_AI_MOB(target_living))
 		target_living.combat_lock_on(src, duration, force_override_target, mirror_to_ai_mobs = FALSE)
 
 /datum/status_effect/combat_lock
@@ -44,7 +51,7 @@
 	return ..()
 
 /datum/status_effect/combat_lock/on_apply()
-	if(isnull(owner.ai_controller) && isnull(owner.client))
+	if(!IS_AI_MOB(owner) && !IS_PLAYER(owner))
 		return FALSE
 
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(owner_moved))
@@ -96,12 +103,15 @@
 /datum/status_effect/combat_lock/proc/face_combat_target()
 	// - If we're a not AI controlled, we have to be in combat mode to face the target
 	// - Otherwise if we ARE an AI mob, then skip the combat mode check, because they can enter and exit it sporadically
-	if(isnull(owner.ai_controller))
+	if(IS_PLAYER(owner))
 		if(!owner.combat_mode)
 			return FALSE
 	else
-		if(isnull(owner.client))
+		if(!IS_AI_MOB(owner))
 			return FALSE
+		for(var/obj/item/weapon in astype(combat_target, /mob/living)?.held_items)
+			if(HAS_TRAIT(weapon, TRAIT_POSITION_BASED_WEAPON))
+				return FALSE
 	// - No turn if we're being pulled, let the puller handle it.
 	// - No turn if incap, because of course we can't... we're probably dead.
 	if(!isnull(owner.pulledby) || HAS_TRAIT(owner, TRAIT_INCAPACITATED))
@@ -120,6 +130,9 @@
 
 	owner.face_atom(combat_target)
 	return TRUE
+
+#undef IS_AI_MOB
+#undef IS_PLAYER
 
 // Locking on to random relevant targets. Could make this an element but it's whatever
 /obj/machinery/porta_turret/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)

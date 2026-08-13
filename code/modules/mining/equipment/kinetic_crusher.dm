@@ -48,6 +48,7 @@
 	)
 	//technically it's huge and bulky, but this provides an incentive to use it
 	AddComponent(/datum/component/two_handed, force_unwielded=0, force_wielded=20)
+	ADD_TRAIT(src, TRAIT_POSITION_BASED_WEAPON, INNATE_TRAIT)
 
 /obj/item/kinetic_crusher/Destroy()
 	QDEL_LIST(trophies)

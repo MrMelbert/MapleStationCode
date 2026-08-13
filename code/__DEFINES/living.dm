@@ -273,3 +273,6 @@
 #define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
 /// Damtype is intended to disable rather than kill
 #define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)
+
+/// Weapon relies on positioning in some way, so we should be careful handing out combat locks to/from wielders of it
+#define TRAIT_POSITION_BASED_WEAPON "position_based_weapon"
