@@ -178,7 +178,8 @@ export const DmTarget = new Juke.Target({
   ],
   outputs: ({ get }) => {
     if (get(DmVersionParameter) || get(DefineParameter).length > 0) {
-      return []; // Always rebuild when dm version is provided
+      // Always rebuild when a dm version or explicit CLI defines are provided to ensure juke re-runs
+      return [];
     }
     return [
       `${DME_NAME}.dmb`,
