@@ -206,6 +206,10 @@
 	desc = "If you're seeing this, someone forgot to set alert_type."
 	icon_state = "paralysis"
 
+// quick fix so that replacing the effect with another one doesn't end up keeping the maluses
+/datum/status_effect/devil_webbed/be_replaced()
+	on_remove()
+	. = ..()
 
 /datum/status_effect/devil_webbed/slowdown
 	alert_type = /atom/movable/screen/alert/status_effect/devil_webbed/slowdown
