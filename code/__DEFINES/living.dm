@@ -274,5 +274,5 @@
 /// Damtype is intended to disable rather than kill
 #define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)
 
-/// Weapon relies on positioning in some way, so we should be careful handing out combat locks to/from wielders of it
-#define TRAIT_POSITION_BASED_WEAPON "position_based_weapon"
+/// Applies to weapons or mobs if it relies on positioning/facing in some way, so we should be careful with combat locks
+#define TRAIT_DIRECTION_IS_IMPORTANT "position_based_weapon"

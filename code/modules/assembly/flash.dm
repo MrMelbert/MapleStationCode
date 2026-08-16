@@ -27,9 +27,15 @@
 	var/cooldown = 0
 	var/last_trigger = 0 //Last time it was successfully triggered.
 
-/obj/item/assembly/flash/Initialize(mapload)
+// melbert todo make this an element
+/obj/item/assembly/flash/equipped(mob/living/user, slot)
 	. = ..()
-	ADD_TRAIT(src, TRAIT_POSITION_BASED_WEAPON, INNATE_TRAIT)
+	if(slot & ITEM_SLOT_HANDS)
+		ADD_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
+/obj/item/assembly/flash/dropped(mob/living/user, slot)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
 
 /obj/item/assembly/flash/suicide_act(mob/living/user)
 	if(burnt_out)

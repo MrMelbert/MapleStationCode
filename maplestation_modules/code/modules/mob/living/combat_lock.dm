@@ -14,10 +14,8 @@
 	if(target == src || get_dist(src, target) > 7)
 		return
 	// Avoid having AI mobs lock onto players using position based weapons at all (anti-frustration feature)
-	if(IS_AI_MOB(src))
-		for(var/obj/item/weapon in astype(target, /mob/living)?.held_items)
-			if(HAS_TRAIT(weapon, TRAIT_POSITION_BASED_WEAPON))
-				return
+	if(IS_AI_MOB(src) && HAS_TRAIT(target, TRAIT_DIRECTION_IS_IMPORTANT))
+		return
 
 	apply_status_effect(/datum/status_effect/combat_lock, target, duration, force_override_target)
 	// Immediately mirror combat lock if fighting an AI, makes it look like they're reacting to you like a player would.
@@ -108,9 +106,9 @@
 	else
 		if(!IS_AI_MOB(owner))
 			return FALSE
-		for(var/obj/item/weapon in astype(combat_target, /mob/living)?.held_items)
-			if(HAS_TRAIT(weapon, TRAIT_POSITION_BASED_WEAPON))
-				return FALSE
+	// - We don't want to be messing with dir if either cares about that for mechanical reasons
+	if(HAS_TRAIT(owner, TRAIT_DIRECTION_IS_IMPORTANT) || HAS_TRAIT(combat_target, TRAIT_DIRECTION_IS_IMPORTANT))
+		return FALSE
 	// - No turn if we're being pulled, let the puller handle it.
 	// - No turn if incap, because of course we can't... we're probably dead.
 	if(!isnull(owner.pulledby) || HAS_TRAIT(owner, TRAIT_INCAPACITATED))

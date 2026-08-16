@@ -48,7 +48,6 @@
 	)
 	//technically it's huge and bulky, but this provides an incentive to use it
 	AddComponent(/datum/component/two_handed, force_unwielded=0, force_wielded=20)
-	ADD_TRAIT(src, TRAIT_POSITION_BASED_WEAPON, INNATE_TRAIT)
 
 /obj/item/kinetic_crusher/Destroy()
 	QDEL_LIST(trophies)
@@ -64,6 +63,16 @@
 	. += span_notice("Does <b>[force + detonation_damage + backstab_bonus]</b> damage if the target is backstabbed, instead of <b>[force + detonation_damage]</b>.")
 	for(var/obj/item/crusher_trophy/crusher_trophy as anything in trophies)
 		. += span_notice("It has \a [crusher_trophy] attached, which causes [crusher_trophy.effect_desc()].")
+
+// melbert todo make this an element
+/obj/item/kinetic_crusher/equipped(mob/living/user, slot)
+	. = ..()
+	if(slot & ITEM_SLOT_HANDS)
+		ADD_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
+/obj/item/kinetic_crusher/dropped(mob/living/user, slot)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
 
 /obj/item/kinetic_crusher/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/crusher_trophy))
