@@ -120,3 +120,8 @@
 #define COMSIG_MOVABLE_BUMP_PUSHED "movable_bump_pushed"
 	/// Stop it from moving
 	#define COMPONENT_NO_PUSH (1<<0)
+
+/// Sent when a lighting underlay is added to the mob: (image/underlay)
+#define COMSIG_MOVABLE_LIGHT_UNDERLAY_ADDED "movable_light_underlay_added"
+/// Sent when a lighting underlay is removed from the mob: (image/underlay)
+#define COMSIG_MOVABLE_LIGHT_UNDERLAY_REMOVED "movable_light_underlay_removed"
