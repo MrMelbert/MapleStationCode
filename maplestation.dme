@@ -6825,6 +6825,7 @@
 #include "maplestation_modules\story_content\__crit_equipment\code\library\lazy_templates.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\library\weapons.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\_cosmos.dm"
+#include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\hacker_they.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\herald_of_cosmos.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\prince_of_cosmos.dm"
 #include "maplestation_modules\story_content\__crit_equipment\code\rapid_statuses\princess_of_cosmos.dm"
