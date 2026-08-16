@@ -118,8 +118,15 @@
 	if(plus_runechat)
 		hallucinator.create_chat_message(speaker, understood_language, chosen, spans)
 
+	var/list/message_mods = list()
+	if(is_radio)
+		// melbert todo - This is goofy but I'll fix it laterrrrr
+		var/obj/item/radio/headset/fake_headset = new()
+		message_mods[SAY_RADIO_ICON] = "[icon2html(fake_headset.get_radio_icon(), hallucinator)]"
+		qdel(fake_headset)
+
 	// And actually show them the message, for real.
-	var/message = hallucinator.compose_message(speaker, understood_language, chosen, is_radio ? "[FREQ_COMMON]" : null, spans, visible_name = TRUE)
+	var/message = hallucinator.compose_message(speaker, understood_language, chosen, is_radio ? "[FREQ_COMMON]" : null, spans, message_mods, TRUE)
 	to_chat(hallucinator, message)
 
 	// Then clean up.

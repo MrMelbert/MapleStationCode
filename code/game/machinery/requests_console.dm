@@ -314,12 +314,6 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 	return data
 
-/obj/machinery/requests_console/say_mod(input, list/message_mods = list())
-	if(spantext_char(input, "!", -3))
-		return "blares"
-	else
-		. = ..()
-
 /// Turns the emergency console back to its normal sprite once the emergency has timed out
 /obj/machinery/requests_console/proc/clear_emergency()
 	emergency = null

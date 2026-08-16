@@ -94,6 +94,8 @@
 			set_mutant_organ(ORGAN_SLOT_EYES, /obj/item/organ/eyes/robotic/basic/moth, gained_species)
 		if(SPECIES_FELINE)
 			set_mutant_organ(ORGAN_SLOT_EARS, /obj/item/organ/ears/cat/cybernetic, gained_species)
+		if(SPECIES_LIZARD)
+			set_mutant_organ(ORGAN_SLOT_TONGUE, /obj/item/organ/tongue/robot/android/lizard, gained_species)
 
 	RegisterSignal(gained_species, COMSIG_HUMAN_ON_HANDLE_BLOOD, PROC_REF(handle_blood))
 	RegisterSignal(gained_species, COMSIG_CARBON_HEARTBEAT, PROC_REF(handle_heartbeat))

@@ -73,6 +73,7 @@
 	qdel(synth.GetComponent(/datum/component/ion_storm_randomization))
 	drop_disguise(synth)
 	UnregisterSignal(synth, COMSIG_CARBON_LIMB_DAMAGED)
+	UnregisterSignal(synth, COMSIG_MOVABLE_SAY_MOD)
 
 	for(var/obj/item/bodypart/limb as anything in synth.get_bodyparts())
 		if(initial(limb.limb_id) == BODYPART_ID_SYNTH)
@@ -240,16 +241,14 @@
 				limb_gained(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
-					if(tongue?.temp_say_mod == "whirrs")
-						tongue.temp_say_mod = null
+					UnregisterSignal(synth, COMSIG_MOVABLE_SAY_MOD)
+
 		else
 			if(below_threshold)
 				limb_lost(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
-					tongue?.temp_say_mod = "whirrs"
+					RegisterSignal(synth, COMSIG_MOVABLE_SAY_MOD, PROC_REF(handle_saymod))
 
 	var/num_changes = length(changed_limbs)
 	if(num_changes > 0)
@@ -258,6 +257,10 @@
 		else if(num_changes == 1)
 			synth.visible_message(span_warning("[synth]'s [changed_limbs[1].plaintext_zone] changes appearance!"))
 		synth.update_body_parts(TRUE)
+
+/datum/species/android/synth/proc/handle_saymod(datum/source, datum/saymod_selector/selector)
+	SIGNAL_HANDLER
+	selector.add_saymod(SAY_MOD_DEFAULT, "whirrs", SAY_MOD_PRIORITY_MEDIUM)
 
 /// Like change appearance, but passing it a bodypart will change the appearance to that of the bodypart.
 /obj/item/bodypart/proc/change_appearance_into(obj/item/bodypart/other_part, update = TRUE)

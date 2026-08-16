@@ -31,6 +31,16 @@
 	var/regex/omissions = new ("\[!?\]", "g")
 	/// The action for toggling sign language.
 	var/datum/action/innate/sign_language/linked_action
+	/// Saymods for sign language users, overrides default saymods
+	var/static/list/say_mods = list(
+		SAY_MOD_ASK = "signs",
+		SAY_MOD_DEFAULT = "signs",
+		SAY_MOD_EXCLAIM = "signs",
+		SAY_MOD_SING = "rythmically signs",
+		SAY_MOD_WHISPER = "subtly signs",
+		SAY_MOD_WHISPER_YELL = "signs",
+		SAY_MOD_YELL = "emphatically signs",
+	)
 
 /// Replace specific characters in the input string with periods.
 /datum/component/sign_language/proc/sanitize_message(input)
@@ -67,18 +77,10 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
-	var/obj/item/organ/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
-	if(tongue)
-		tongue.temp_say_mod = "signs"
 	//this speech relies on hands, which we have our own way of garbling speech when they're occupied, so we can have this always on
 	ADD_TRAIT(carbon_parent, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_HANDS)
-	carbon_parent.verb_ask = "signs"
-	carbon_parent.verb_exclaim = "signs"
-	carbon_parent.verb_whisper = "subtly signs"
-	carbon_parent.verb_sing = "rythmically signs"
-	carbon_parent.verb_yell = "emphatically signs"
 	carbon_parent.bubble_icon = "signlang"
-	RegisterSignal(carbon_parent, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_added_organ))
+	RegisterSignal(carbon_parent, COMSIG_MOVABLE_SAY_MOD, PROC_REF(handle_saymod))
 	RegisterSignal(carbon_parent, COMSIG_MOB_TRY_SPEECH, PROC_REF(on_try_speech))
 	RegisterSignal(carbon_parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(on_treat_living_message))
 	RegisterSignal(carbon_parent, COMSIG_MOVABLE_USING_RADIO, PROC_REF(on_using_radio))
@@ -94,18 +96,10 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/carbon_parent = parent
-	var/obj/item/organ/tongue/tongue = carbon_parent.get_organ_slot(ORGAN_SLOT_TONGUE)
-	if(tongue)
-		tongue.temp_say_mod = ""
 	REMOVE_TRAIT(carbon_parent, TRAIT_SPEAKS_CLEARLY, SPEAKING_FROM_HANDS)
-	carbon_parent.verb_ask = initial(carbon_parent.verb_ask)
-	carbon_parent.verb_exclaim = initial(carbon_parent.verb_exclaim)
-	carbon_parent.verb_whisper = initial(carbon_parent.verb_whisper)
-	carbon_parent.verb_sing = initial(carbon_parent.verb_sing)
-	carbon_parent.verb_yell = initial(carbon_parent.verb_yell)
 	carbon_parent.bubble_icon = initial(carbon_parent.bubble_icon)
 	UnregisterSignal(carbon_parent, list(
-		COMSIG_CARBON_GAIN_ORGAN,
+		COMSIG_MOVABLE_SAY_MOD,
 		COMSIG_MOB_TRY_SPEECH,
 		COMSIG_LIVING_TREAT_MESSAGE,
 		COMSIG_MOVABLE_USING_RADIO,
@@ -117,13 +111,11 @@
 
 ///Signal proc for [COMSIG_CARBON_GAIN_ORGAN]
 ///Applies the new say mod to any tongues that have appeared!
-/datum/component/sign_language/proc/on_added_organ(mob/living/source, obj/item/organ/new_organ)
+/datum/component/sign_language/proc/handle_saymod(mob/living/source, datum/saymod_selector/selector)
 	SIGNAL_HANDLER
 
-	if(!istype(new_organ, /obj/item/organ/tongue))
-		return
-	var/obj/item/organ/tongue/new_tongue = new_organ
-	new_tongue.temp_say_mod = "signs"
+	for(var/saymod_type, saymod_verb in say_mods)
+		selector.add_saymod(saymod_type, saymod_verb, SAY_MOD_PRIORITY_DEFAULT + 1)
 
 /// Signal proc for [COMSIG_MOB_TRY_SPEECH]
 /// Sign languagers can always speak regardless of they're mute (as long as they're not mimes)
