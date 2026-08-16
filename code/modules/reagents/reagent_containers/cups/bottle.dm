@@ -511,7 +511,7 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 //when you attack the syrup bottle with a container it refills it
-/obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, params)
+/obj/item/reagent_containers/cup/bottle/syrup_bottle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(IS_WRITING_UTENSIL(tool))
 		return writing_utensil_act(user, tool)
 	if(cap_on && tool.is_refillable())

@@ -106,7 +106,7 @@
 			context[SCREENTIP_CONTEXT_RMB] = "Change mode to flavors"
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/icecream_vat/attackby(obj/item/reagent_containers/beaker, mob/user, params)
+/obj/machinery/icecream_vat/attackby(obj/item/reagent_containers/beaker, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return
@@ -126,7 +126,7 @@
 	balloon_alert(user, "beaker inserted")
 	custom_ice_cream_beaker = beaker
 
-/obj/machinery/icecream_vat/attackby_secondary(obj/item/reagent_containers/beaker, mob/user, params)
+/obj/machinery/icecream_vat/attackby_secondary(obj/item/reagent_containers/beaker, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return

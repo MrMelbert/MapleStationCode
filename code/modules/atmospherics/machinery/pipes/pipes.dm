@@ -28,6 +28,14 @@
 		volume = UNARY_PIPE_VOLUME * device_type
 	return ..()
 
+/obj/machinery/atmospherics/pipe/proc/set_volume(new_volume)
+	if(volume == new_volume)
+		return
+	var/datum/gas_mixture/gasmix = parent?.air
+	if(gasmix)
+		gasmix.volume = gasmix.volume + new_volume - volume
+	volume = new_volume
+
 ///I have no idea why there's a new and at this point I'm too afraid to ask
 /obj/machinery/atmospherics/pipe/Initialize(mapload)
 	. = ..()
@@ -87,7 +95,7 @@
 		return air_temporary.remove(amount)
 	return parent.air.remove(amount)
 
-/obj/machinery/atmospherics/pipe/attackby(obj/item/item, mob/user, params)
+/obj/machinery/atmospherics/pipe/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/pipe_meter))
 		var/obj/item/pipe_meter/meter = item
 		user.dropItemToGround(meter)

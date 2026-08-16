@@ -21,7 +21,7 @@
 	heat_capacity = 10000
 	tiled_dirt = TRUE
 
-/turf/open/misc/attackby(obj/item/W, mob/user, params)
+/turf/open/misc/attackby(obj/item/W, mob/user, list/modifiers)
 	. = ..()
 	if(.)
 		return TRUE

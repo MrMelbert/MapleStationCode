@@ -113,7 +113,7 @@
 		return TRUE
 	. = ..()
 
-/obj/item/clipboard/attackby(obj/item/weapon, mob/user, params)
+/obj/item/clipboard/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	var/obj/item/paper/toppaper = toppaper_ref?.resolve()
 	if(istype(weapon, /obj/item/paper))
 		//Add paper into the clipboard

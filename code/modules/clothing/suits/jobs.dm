@@ -44,6 +44,7 @@
 	icon_state = "hort_waders"
 	inhand_icon_state = null
 	body_parts_covered = CHEST|GROIN|LEGS
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 
 /obj/item/clothing/suit/apron/overalls
 	name = "coveralls"
@@ -59,6 +60,7 @@
 	greyscale_config_worn = /datum/greyscale_config/overalls/worn
 	greyscale_colors = "#313c6e"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 
 /obj/item/clothing/suit/apron/overalls/Initialize(mapload)
 	. = ..()
@@ -429,6 +431,7 @@
 	resistance_flags = FIRE_PROOF
 	armor_type = /datum/armor/atmos_overalls
 	species_exception = list(/datum/species/golem)
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 	allowed = list(
 		/obj/item/analyzer,
 		/obj/item/construction/rcd,

@@ -152,26 +152,19 @@ Unlike normal organs, we're actually inside a persons limbs at all times
 /datum/bodypart_overlay/mutant/frills
 	layers = EXTERNAL_ADJACENT
 	feature_key = "frills"
-	color_source = ORGAN_COLOR_OVERRIDE
+	color_source = ORGAN_COLOR_MUTANT_OVERRIDE // NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/frills/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
-	return !(bodypart_owner.owner?.obscured_slots & HIDEEARS)
+	return !(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
 
 /datum/bodypart_overlay/mutant/frills/get_global_feature_list()
 	return SSaccessories.frills_list
 
-/datum/bodypart_overlay/mutant/frills/override_color(obj/item/bodypart/bodypart_owner)
+// BEGIN NON-MODULE CHANGE
+/datum/bodypart_overlay/mutant/frills/mutant_override_color(obj/item/bodypart/bodypart_owner) // NOTE: this was originally in the slot of "override_color" but was changed to this.
 	// prioritize a specific color they have set
-	if(bodypart_owner?.owner?.dna?.features["lizard_frill_color"])
-		return bodypart_owner.owner.dna.features["lizard_frill_color"]
-	// then use body color if we should be mutant colored
-	if(isnull(bodypart_owner.owner) || HAS_TRAIT(bodypart_owner.owner, TRAIT_MUTANT_COLORS) || HAS_TRAIT(bodypart_owner, TRAIT_MUTANT_COLORS))
-		return bodypart_owner.draw_color
-	// then use forced color - for non-mutant-colored species, like piscinids
-	if(bodypart_owner?.owner?.dna?.features["forced_fish_color"])
-		return bodypart_owner.owner.dna.features["forced_fish_color"]
-	// then default to body color - though this will probably be skin color, some forced color, or pure white
-	return bodypart_owner.draw_color
+	return bodypart_owner?.owner?.dna?.features["lizard_frill_color"] || ..()
+// END NON-MODULE CHANGE
 
 /datum/bodypart_overlay/mutant/frills/generate_icon_cache(obj/item/bodypart/limb)
 	. = ..()

@@ -95,7 +95,7 @@
 /obj/effect/decal/cleanable/proc/lazy_init_reagents()
 	return
 
-/obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
+/obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if((istype(W, /obj/item/reagent_containers/cup) && !istype(W, /obj/item/reagent_containers/cup/rag)) || istype(W, /obj/item/reagent_containers/cup/glass))
 		if(src.reagents && W.reagents)
 			lazy_init_reagents()

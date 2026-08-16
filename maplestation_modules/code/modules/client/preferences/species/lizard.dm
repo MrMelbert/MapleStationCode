@@ -61,7 +61,10 @@
 	return 3
 
 /datum/preference/numeric/hiss_length/is_accessible(datum/preferences/preferences)
-	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard)
+	var/datum/species/target_species = preferences.read_preference(/datum/preference/choiced/species)
+	// lizard animids, are, for many reasons, a bit funky so i'll add an exception for them
+	var/species_check = (ispath(target_species, /datum/species/human/animid)) && (preferences.read_preference(/datum/preference/choiced/animid_type) == /datum/animid_type/lizard::id)
+	return ..() && (ispath(target_species::mutanttongue, /obj/item/organ/tongue/lizard) || species_check)
 
 /datum/preference/numeric/hiss_length/apply_to_human(mob/living/carbon/human/target, value)
 	var/obj/item/organ/tongue/lizard/tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)
@@ -94,6 +97,10 @@
 	var/mutable_appearance/appearance = ..()
 	appearance.layer = -1 * new_layer
 	return appearance
+
+/datum/bodypart_overlay/mutant/horns/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	. += limb.owner?.dna?.features["lizard_horn_layer"] || BODY_ADJ_LAYER
 
 // The preference
 /datum/preference/choiced/lizard_horn_layer
@@ -142,6 +149,10 @@
 	var/mutable_appearance/appearance = ..()
 	appearance.layer = -1 * new_layer
 	return appearance
+
+/datum/bodypart_overlay/mutant/frills/generate_icon_cache(obj/item/bodypart/limb)
+	. = ..()
+	. += limb.owner?.dna?.features["lizard_frill_layer"] || BODY_ADJ_LAYER
 
 /datum/preference/choiced/lizard_frill_layer
 	savefile_key = "feature_lizard_frill_layer"

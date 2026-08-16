@@ -578,7 +578,7 @@
 /obj/item/stack/medical/wrap/gauze/twelve
 	amount = 12
 
-/obj/item/stack/medical/wrap/gauze/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+/obj/item/stack/medical/wrap/gauze/item_interaction(mob/living/user, obj/item/tool, list/modifiers, list/attack_modifiers)
 	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
 		if(get_amount() < 2)
 			balloon_alert(user, "not enough gauze!")

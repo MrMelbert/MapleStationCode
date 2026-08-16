@@ -180,7 +180,7 @@ GLOBAL_LIST(labor_sheet_values)
 		return
 	user.examinate(src)
 
-/obj/machinery/mineral/labor_points_checker/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/mineral/labor_points_checker/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(!istype(weapon, /obj/item/card/id/advanced/prisoner))
 		return ..()
 	var/obj/item/card/id/advanced/prisoner/prisoner_id = weapon
