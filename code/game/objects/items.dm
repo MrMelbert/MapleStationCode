@@ -849,7 +849,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(ishuman(user) && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
-		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
+		RegisterSignal(user, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
 	return TRUE
 
 /**
@@ -1861,8 +1861,8 @@
 /// TODO: make this its own thing (/datum/advanced_filter)
 /obj/item/proc/update_dir(mob/living/carbon/human/source, dir, newdir)
 	SIGNAL_HANDLER
-	// if(dir == newdir)
-	// 	return
+	if(dir == newdir)
+		return
 	if(!istype(source) || !(source.bodyshape & BODYSHAPE_DIGITIGRADE))
 		return
 

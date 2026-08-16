@@ -11,6 +11,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	drop_sound = /obj/item/plate::drop_sound
 	pickup_sound = /obj/item/plate::pickup_sound
+	/// Tracks REFs to cigbutts that have been dumped out of this ashtray, so they can't be dumped out again
+	VAR_PRIVATE/list/tracked_butts
 
 /obj/item/ashtray/Initialize(mapload)
 	. = ..()
@@ -145,10 +147,16 @@
 	var/total_butts = 0
 	var/atom/drop_loc = drop_location()
 	for(var/obj/item/cigbutt/butt in src)
-		total_butts += 1
+		var/butt_key = REF(butt)
+		if(!LAZYFIND(tracked_butts, butt_key))
+			LAZYADD(tracked_butts, butt_key)
+			total_butts += 1
+
 		butt.forceMove(drop_loc)
 		butt.pixel_x = rand(-2, 2)
 		butt.pixel_y = rand(-2, 2)
+
+
 	if(total_butts > 12)
 		for(var/i in 1 to ceil(total_butts / 12))
 			var/obj/effect/decal/cleanable/ash/large/ash = new(drop_loc)
@@ -159,6 +167,7 @@
 			var/obj/effect/decal/cleanable/ash/ash = new(drop_loc)
 			ash.pixel_x = rand(-4, 4)
 			ash.pixel_y = rand(-4, 4)
+
 	for(var/obj/item/whatever_left in src)
 		whatever_left.forceMove(drop_loc)
 

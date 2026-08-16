@@ -476,10 +476,12 @@
 		var/hit_prob = max(100 - (7 * distance), 5)
 		if(who_is_shot.body_position == LYING_DOWN)
 			hit_prob *= 1.2
+		if(isliving(firer))
+			var/mob/living/firer_living = firer
+			hit_prob -= firer_living.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
 		// if nothing bothered to set a zone we need a random one
-		if(isnull(def_zone))
-			def_zone = who_is_shot.get_random_valid_zone(BODY_ZONE_CHEST, min(80, hit_prob))
-		// melbert todo : make people more skilled with weapons have a lower miss chance
+		def_zone ||= who_is_shot.get_random_valid_zone(BODY_ZONE_CHEST, min(80, hit_prob))
+		// then we check for if we hit the zone, or another random one (even if the zone was ALREADY randomly selected)
 		if(!prob(hit_prob))
 			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0)
 			grazing = !prob(hit_prob) // jeez you missed twice? that's a graze

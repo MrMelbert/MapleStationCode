@@ -45,6 +45,7 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = ACID_PROOF
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 	var/texture_type = /datum/bodypart_overlay/texture/mesh/biosuit
 
 /obj/item/clothing/suit/bio_suit/Initialize(mapload)
