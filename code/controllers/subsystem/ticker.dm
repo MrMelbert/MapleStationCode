@@ -906,11 +906,27 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	login_music = new_music
-	login_length = rustg_sound_length(new_music) || 1500 // default to 2.5 minutes if we can't get the length
-	var/list/music_file_components = splittext(new_music, "/")
-	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
-	var/list/music_name_components = splittext(music_file_name, "+")
-	var/music_name = length(music_name_components) && music_name_components[length(music_name_components)] || music_file_name
+
+	var/music_name
+	// consult track datums for information
+	for(var/datum/track/preset/existing_track as anything in subtypesof(/datum/track/preset))
+		if(new_music != "[existing_track::song_path]")
+			continue
+		music_name = existing_track::song_name
+		login_length = existing_track::song_length
+		break
+
+	// if no track is found: get sound length programatically
+	if(!login_length)
+		login_length = rustg_sound_length(new_music) || (2.5 MINUTES) // default to 2.5 minutes if we can't get the length
+
+	// if no track is found: get the name from the file path
+	if(!music_name)
+		var/list/music_file_components = splittext(new_music, "/")
+		var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
+		var/list/music_name_components = splittext(music_file_name, "+")
+		music_name = length(music_name_components) && music_name_components[length(music_name_components)] || music_file_name
+
 	SStitle.update_music_text(music_name)
 
 #undef ROUND_START_MUSIC_LIST
