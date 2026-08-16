@@ -4,7 +4,7 @@
 		{
 			"type": "byond",
 			"request": "launch",
-			"name": "Launch DreamSeeker",
+			"name": "Launch DreamSeeker (With selected flags)",
 			"preLaunchTask": "Build All",
 			"dmb": "${workspaceFolder}/${command:CurrentDMB}"
 		},
@@ -39,7 +39,7 @@
 		{
 			"type": "byond",
 			"request": "launch",
-			"name": "Launch DreamDaemon",
+			"name": "Launch DreamDaemon (With selected flags)",
 			"preLaunchTask": "Build All",
 			"dmb": "${workspaceFolder}/${command:CurrentDMB}",
 			"dreamDaemon": true
@@ -82,10 +82,7 @@
 			"request": "launch",
 			"program": "${command:dreammaker.returnDreamDaemonPath}",
 			"cwd": "${workspaceRoot}",
-			"args": [
-				"${command:dreammaker.getFilenameDmb}",
-				"-trusted"
-			],
+			"args": ["${command:dreammaker.getFilenameDmb}", "-trusted"],
 			"preLaunchTask": "Build All"
 		},
 		{
@@ -94,10 +91,7 @@
 			"request": "launch",
 			"program": "${command:dreammaker.returnDreamDaemonPath}",
 			"cwd": "${workspaceRoot}",
-			"args": [
-				"${command:dreammaker.getFilenameDmb}",
-				"-trusted"
-			],
+			"args": ["${command:dreammaker.getFilenameDmb}", "-trusted"],
 			"preLaunchTask": "Build All (low memory mode)"
 		}
 	]

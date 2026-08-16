@@ -177,7 +177,7 @@ export const DmTarget = new Juke.Target({
     NamedVersionFile,
   ],
   outputs: ({ get }) => {
-    if (get(DmVersionParameter)) {
+    if (get(DmVersionParameter) || get(DefineParameter).length > 0) {
       return []; // Always rebuild when dm version is provided
     }
     return [
