@@ -14,4 +14,6 @@
 
 	clawify(selected, BODY_ZONE_L_ARM, 10, 15, 20)
 
+	ADD_TRAIT(selected, TRAIT_FULL_PSIONIC, REF(selected))
+
 	return TRUE
