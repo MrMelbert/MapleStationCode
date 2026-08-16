@@ -2,7 +2,7 @@
 	name = "Bound Princess"
 	selectable = TRUE
 
-/datum/story_rapid_status/cosmos/princess_of_cosmos/apply(mob/living/carbon/human/selected)
+/datum/story_rapid_status/cosmos/bound_princess/apply(mob/living/carbon/human/selected)
 	ADD_TRAIT(selected, TRAIT_FULL_PSIONIC, REF(selected))
 	ADD_TRAIT(selected, TRAIT_SWORD_PSIONIC, REF(selected))
 
@@ -12,7 +12,7 @@
 /datum/story_rapid_status/cosmos/bound_princess/princess_of_cosmos
 	name = "Princess of Cosmos"
 
-/datum/story_rapid_status/cosmos/princess_of_cosmos/apply(mob/living/carbon/human/selected)
+/datum/story_rapid_status/cosmos/bound_princess/princess_of_cosmos/apply(mob/living/carbon/human/selected)
 	var/list/datum/action/cooldown/spell/spells_to_grant = list(
 		/datum/action/cooldown/spell/pointed/projectile/star_blast,
 		/datum/action/cooldown/spell/touch/star_touch,

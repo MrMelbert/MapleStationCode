@@ -63,6 +63,7 @@
 	attack_verb_continuous = initial(attack_verb_continuous)
 	attack_verb_simple = initial(attack_verb_simple)
 	hitsound = initial(hitsound)
+	update_appearance()
 
 // THATS RIGHT ITS THE BASEBALL BAT KNOCKBACK
 /obj/item/melee/olivia_blade/attack(mob/living/target, mob/living/user)
@@ -114,6 +115,7 @@
 	atom_storage.set_holdable(/obj/item/melee/olivia_blade)
 	atom_storage.click_alt_open = FALSE
 	atom_storage.locked = STORAGE_FULLY_LOCKED
+	update_appearance()
 
 /obj/item/storage/belt/olivia_blade_sheath/examine(mob/user)
 	. = ..()
@@ -126,7 +128,7 @@
 		user.visible_message(span_notice("[user] takes [I] out of [src]."), span_notice("You take [I] out of [src]."))
 		user.put_in_hands(I)
 		update_appearance()
-	else if(atom_storage.locked != STORAGE_NOT_LOCKED)
+	else if(length(contents) && atom_storage.locked != STORAGE_NOT_LOCKED)
 		balloon_alert(user, "it's not budging!")
 	else
 		balloon_alert(user, "it's empty!")
@@ -135,8 +137,31 @@
 /obj/item/storage/belt/olivia_blade_sheath/proc/toggle_sheath_lock()
 	if(atom_storage.locked != STORAGE_NOT_LOCKED)
 		atom_storage.locked = STORAGE_NOT_LOCKED
+		atom_storage.display_contents = TRUE
+		update_appearance()
+		return TRUE
 	else
 		atom_storage.locked = STORAGE_FULLY_LOCKED
+		atom_storage.display_contents = FALSE
+		atom_storage.close_all()
+		update_appearance()
+		return FALSE
+
+/obj/item/storage/belt/olivia_blade_sheath/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!length(contents) && istype(tool, /obj/item/melee/olivia_blade) && atom_storage.locked == STORAGE_FULLY_LOCKED)
+		if(do_after(user, 4 SECONDS, src))
+			atom_storage.attempt_insert(tool, user, force = STORAGE_FULLY_LOCKED)
+			return ITEM_INTERACT_SUCCESS
+		else
+			return ..()
+
+	if(length(contents) && istype(tool, /obj/item/melee/olivia_blade) && atom_storage.locked == STORAGE_FULLY_LOCKED) // what
+		balloon_alert(user, "it's full.")
+		return ..()
+
+	return ..()
 
 /obj/item/storage/belt/olivia_blade_sheath/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
@@ -149,6 +174,7 @@
 
 	if(contents.len)
 		. += mutable_appearance(icon, "sheath_sword", layer = layer + 0.1)
+
 	if(atom_storage.locked == STORAGE_FULLY_LOCKED)
 		. += mutable_appearance(icon, "lock", layer = layer + 0.11)
 	else
