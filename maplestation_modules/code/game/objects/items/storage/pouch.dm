@@ -220,7 +220,7 @@
 // 	))
 
 /obj/item/storage/pouch/survival
-	name = "surival pouch"
+	name = "survival pouch"
 	desc = "A pocket sized pouch, assigned to members of the crew to use in emergencies."
 	icon_state = "pouch_em"
 	base_icon_state = "pouch_em"

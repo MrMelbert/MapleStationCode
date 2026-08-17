@@ -113,7 +113,7 @@
 
 /obj/item/clothing/under/dropped(mob/living/user)
 	. = ..()
-	if(isnull(pockets))
+	if(isnull(pockets) || !(user.get_slot_by_item(src) & slot_flags))
 		return
 
 	// ensure you can interact with pockets after unequipping
