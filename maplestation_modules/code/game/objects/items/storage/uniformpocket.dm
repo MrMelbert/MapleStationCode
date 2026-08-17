@@ -113,7 +113,7 @@
 
 /obj/item/clothing/under/dropped(mob/living/user)
 	. = ..()
-	if(isnull(pockets) || !(user.get_slot_by_item(src) & slot_flags))
+	if(isnull(pockets))
 		return
 
 	// ensure you can interact with pockets after unequipping
@@ -144,7 +144,7 @@
 		return
 
 	var/mob/living/carbon/human/wearer = loc
-	if(!istype(wearer))
+	if(!istype(wearer) || wearer.get_item_by_slot(slot_flags) != src)
 		return
 	if(!wearer.wear_id && !wearer.l_store && !wearer.r_store)
 		return
