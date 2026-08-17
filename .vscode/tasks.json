@@ -47,7 +47,7 @@
 			},
 			"dependsOn": "dm: reparse",
 			"label": "Build All (low memory mode)"
-		}
+		},
 		{
 			"type": "process",
 			"command": "tools/build/build.sh",
