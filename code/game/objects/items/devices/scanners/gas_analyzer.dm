@@ -28,6 +28,8 @@
 	var/barometer_accuracy
 	/// Cached gasmix data from ui_interact
 	var/list/last_gasmix_data
+
+	var/datum/weakref/last_scanned
 	/// Max scan distance
 	var/ranged_scan_distance = 1
 
@@ -132,15 +134,20 @@
 	return return_atmos_handbooks()
 
 /obj/item/analyzer/ui_data(mob/user)
-	LAZYINITLIST(last_gasmix_data)
-	return list("gasmixes" = last_gasmix_data)
+	var/obj/item/last_scanned_real = last_scanned?.resolve()
+	if(!QDELETED(last_scanned_real) && can_see(user, last_scanned_real, ranged_scan_distance))
+		on_analyze(src, last_scanned_real) // updates last_gasmix_data as long as we're in range
+
+	return list(
+		"gasmixes" = last_gasmix_data || list(),
+	)
 
 /obj/item/analyzer/attack_self(mob/user, modifiers)
 	if(user.stat != CONSCIOUS || !user.can_read(src) || user.is_blind())
 		return
 	var/lowest_obj = ismob(loc) ? loc.loc : loc
 	atmos_scan(user = user, target = lowest_obj, silent = FALSE)
-	on_analyze(source = src, target = lowest_obj)
+	on_analyze(src, lowest_obj)
 
 /obj/item/analyzer/attack_self_secondary(mob/user, modifiers)
 	if(user.stat != CONSCIOUS || !user.can_read(src) || user.is_blind())
@@ -170,6 +177,7 @@
 			mix_name += " - Node [airs.Find(air)]"
 		new_gasmix_data += list(gas_mixture_parser(air, mix_name))
 	last_gasmix_data = new_gasmix_data
+	last_scanned = WEAKREF(target)
 
 /**
  * Outputs a message to the user describing the target's gasmixes.

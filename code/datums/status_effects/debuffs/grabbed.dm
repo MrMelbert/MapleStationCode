@@ -623,7 +623,7 @@
 	var/forwards_dir = REVERSE_DIR(grabbing_us.dir)
 	if(!(hitting_projectile.dir & forwards_dir))
 		return NONE
-	if(prob(33 * (owner.mob_size + 1)))
+	if(!prob(40 * owner.mob_size))
 		return NONE
 
 	owner.bullet_act(hitting_projectile, def_zone, piercing_hit)

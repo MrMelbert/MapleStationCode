@@ -136,7 +136,7 @@ SUBSYSTEM_DEF(mapping)
 
 	var/start_time
 
-#ifndef LOWMEMORYMODE
+#ifndef SKIP_SPACE_LEVELS
 	start_time = REALTIMEOFDAY
 	SStitle.add_init_text("Empty Space", "> Space", "<font color='yellow'>LOADING...</font>")
 	// Create space ruin levels
@@ -456,7 +456,7 @@ Used by the AI doomsday and the self-destruct nuke.
 		query_round_map_name.Execute()
 		qdel(query_round_map_name)
 
-#ifndef LOWMEMORYMODE
+#ifndef SKIP_LAVALAND
 
 	if(config.minetype == "lavaland")
 		LoadGroup(FailedZs, "Lavaland", "map_files/Mining", "Lavaland.dmm", default_traits = ZTRAITS_LAVALAND)

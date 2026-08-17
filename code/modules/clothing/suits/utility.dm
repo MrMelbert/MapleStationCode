@@ -221,6 +221,7 @@
 	equip_delay_other = 60
 	flags_inv = HIDEJUMPSUIT
 	resistance_flags = NONE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 
 /obj/item/clothing/suit/utility/radiation/Initialize(mapload)
 	. = ..()
