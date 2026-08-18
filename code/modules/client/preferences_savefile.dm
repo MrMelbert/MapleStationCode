@@ -165,8 +165,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			save_data["runechat_color"] = null
 
 	if(current_version < 50.2)
-		var/old_backpack = save_data?["backpack"]
-		switch(old_backpack)
+		switch(save_data?["backpack"])
 			if("Department Backpack")
 				add_loadout_item(/obj/item/storage/backpack/medic)
 			if("Department Satchel")
