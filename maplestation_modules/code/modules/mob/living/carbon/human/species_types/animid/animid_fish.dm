@@ -65,6 +65,7 @@
 	post_init_icon_state = "fish_tail"
 	greyscale_config = /datum/greyscale_config/fish_tail
 	greyscale_colors = "#875652"
+	w_class = WEIGHT_CLASS_BULKY
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/fish
 	// dna_block = /datum/dna_block/feature/tail_fish

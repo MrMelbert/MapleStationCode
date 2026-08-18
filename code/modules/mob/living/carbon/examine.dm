@@ -399,10 +399,10 @@
 	var/t_is = p_are()
 	//head
 	if(head && !(obscured_slots & HIDEHEADGEAR) && !HAS_TRAIT(head, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(HEAD)] = "[t_He] [t_is] wearing [head.examine_title(user, href = TRUE)] on [t_his] head."
+		clothes[CLOTHING_SLOT(HEAD)] = "[t_He] [t_is] wearing [head.examine_title(user, href = TRUE)] on [t_his] [head.wear_loc || "head"]."
 	//back
 	if(back && !HAS_TRAIT(back, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(BACK)] = "[t_He] [t_has] [back.examine_title(user, href = TRUE)] on [t_his] back."
+		clothes[CLOTHING_SLOT(BACK)] = "[t_He] [t_has] [back.examine_title(user, href = TRUE)] on [t_his] [back.wear_loc || "back"]."
 	//Hands
 	for(var/obj/item/held_thing in held_items)
 		if(held_thing.item_flags & (ABSTRACT|HAND_ITEM) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
@@ -419,19 +419,19 @@
 		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_has] a [corresponding_item.examine_title(user, href = TRUE)] in place of [t_his] [initial(part.plaintext_zone)]."
 	//gloves
 	if(gloves && !(obscured_slots & HIDEGLOVES) && !HAS_TRAIT(gloves, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
+		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] [gloves.wear_loc || "hands"]."
 	//shoes
 	if(shoes && !(obscured_slots & HIDESHOES)  && !HAS_TRAIT(shoes, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] feet."
+		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] [shoes.wear_loc || "feet"]."
 	//mask
 	if(wear_mask && !(obscured_slots & HIDEMASK)  && !HAS_TRAIT(wear_mask, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(MASK)] = "[t_He] [t_has] [wear_mask.examine_title(user, href = TRUE)] on [t_his] face."
+		clothes[CLOTHING_SLOT(MASK)] = "[t_He] [t_has] [wear_mask.examine_title(user, href = TRUE)] on [t_his] [wear_mask.wear_loc || "face"]."
 	if(wear_neck && !(obscured_slots & HIDENECK)  && !HAS_TRAIT(wear_neck, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(NECK)] = "[t_He] [t_is] wearing [wear_neck.examine_title(user, href = TRUE)] around [t_his] neck."
+		clothes[CLOTHING_SLOT(NECK)] = "[t_He] [t_is] wearing [wear_neck.examine_title(user, href = TRUE)] around [t_his] [wear_neck.wear_loc || "neck"]."
 	//eyes
 	if(!(obscured_slots & HIDEEYES))
 		if(glasses && !HAS_TRAIT(glasses, TRAIT_EXAMINE_SKIP))
-			clothes[CLOTHING_SLOT(EYES)] = "[t_He] [t_has] [glasses.examine_title(user, href = TRUE)] covering [t_his] eyes."
+			clothes[CLOTHING_SLOT(EYES)] = "[t_He] [t_has] [glasses.examine_title(user, href = TRUE)] covering [t_his] [glasses.wear_loc || "eyes"]."
 		else if(HAS_TRAIT(src, TRAIT_CLOSED_EYES))
 			clothes[CLOTHING_SLOT(EYES)] = "[t_His] eyes are closed."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
@@ -440,7 +440,7 @@
 			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are bloodshot!")
 	//ears
 	if(ears && !(obscured_slots & HIDEEARS) && !HAS_TRAIT(ears, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] ears."
+		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] [ears.wear_loc || "ears"]."
 
 	SEND_SIGNAL(src, COMSIG_CARBON_CLOTHING_EXAMINE, user, clothes)
 
@@ -489,7 +489,7 @@
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
 	if(belt && !(obscured_slots & HIDEBELT) && !HAS_TRAIT(belt, TRAIT_EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
+		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] [belt.wear_loc || "waist"]."
 
 	return clothes
 

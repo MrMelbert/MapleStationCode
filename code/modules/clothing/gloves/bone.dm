@@ -12,6 +12,7 @@
 	armor_type = /datum/armor/gloves_bracer
 	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
+	wear_loc = "wrists"
 
 /obj/item/clothing/gloves/bracer/Initialize(mapload)
 	. = ..()

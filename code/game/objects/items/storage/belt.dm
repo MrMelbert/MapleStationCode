@@ -797,6 +797,7 @@
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
 	interaction_flags_click = parent_type::interaction_flags_click | NEED_DEXTERITY | NEED_HANDS
+	wear_loc = "hip"
 
 /obj/item/storage/belt/sabre/Initialize(mapload)
 	. = ..()
@@ -875,6 +876,7 @@
 	worn_icon_state = "explorer2"
 	storage_type = /datum/storage/backpack
 	mirror_icon = 'icons/mob/clothing/belt.dmi'
+	wear_loc = "chest"
 
 /obj/item/storage/belt/chest_pouch/Initialize(mapload)
 	. = ..()

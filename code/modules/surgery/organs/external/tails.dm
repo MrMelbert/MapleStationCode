@@ -3,6 +3,7 @@
 	name = "tail"
 	desc = "A severed tail. What did you cut this off of?"
 	icon_state = "severedtail"
+	w_class = WEIGHT_CLASS_NORMAL
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
@@ -201,6 +202,7 @@
 	name = "lizard tail"
 	desc = "A severed lizard tail. Somewhere, no doubt, a lizard hater is very pleased with themselves."
 	preference = "feature_lizard_tail"
+	w_class = WEIGHT_CLASS_BULKY
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/tail/lizard
 

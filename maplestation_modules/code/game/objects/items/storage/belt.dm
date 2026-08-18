@@ -13,6 +13,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	content_overlays = TRUE
 	interaction_flags_click = NEED_HANDS|FORBID_TELEKINESIS_REACH
+	wear_loc = "hip"
 	var/list/storable_items = list()
 	var/max_weight_class = WEIGHT_CLASS_HUGE
 

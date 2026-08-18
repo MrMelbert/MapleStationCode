@@ -502,6 +502,9 @@
 /// Replaces the current belt with the passed in belt, without losing whatever was in the current belt slot
 /// Returns TRUE if the replacement was successful, FALSE if it failed
 /datum/outfit/proc/replace_belt_keep_old(obj/item/replaced_belt)
+	if(ispath(belt, replaced_belt))
+		return TRUE
+
 	if(!belt)
 		belt = replaced_belt
 		return TRUE

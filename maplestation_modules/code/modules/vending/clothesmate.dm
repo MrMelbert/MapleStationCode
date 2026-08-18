@@ -48,10 +48,16 @@
 		list(
 			"name" = "Storage",
 			"products" = list(
+				/obj/item/storage/backpack/alt = 2,
+				/obj/item/storage/backpack/alt/black = 2,
+				/obj/item/storage/backpack/alt/white = 2,
 				/obj/item/storage/backpack/messenger = 2,
 				/obj/item/storage/backpack/satchel = 2,
 				/obj/item/storage/backpack/satchel/leather = 2,
 				/obj/item/storage/belt/chest_pouch = 4,
+				/obj/item/storage/belt/chest_pouch/tail = 1,
+				/obj/item/storage/belt/chest_pouch/tail/black = 1,
+				/obj/item/storage/belt/chest_pouch/tail/white = 1,
 				/obj/item/storage/pouch = 6,
 			),
 		),

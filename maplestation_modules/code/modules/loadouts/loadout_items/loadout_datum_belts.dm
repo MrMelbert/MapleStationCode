@@ -64,3 +64,25 @@
 /datum/loadout_item/belts/candle_box
 	name = "Candle Box"
 	item_path = /obj/item/storage/fancy/candle_box
+
+/datum/loadout_item/belts/tailbag
+	name = "Tailbag (Tan)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail
+
+/datum/loadout_item/belts/tailbag/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	var/obj/item/organ/tail/tail = equipper.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(isnull(tail) || tail.w_class < WEIGHT_CLASS_BULKY)
+		return FALSE
+	return ..()
+
+/datum/loadout_item/belts/tailbag/get_item_information()
+	. = ..()
+	.[FA_ICON_DRAGON] = "Requires large tail"
+
+/datum/loadout_item/belts/tailbag/white
+	name = "Tailbag (White)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail/white
+
+/datum/loadout_item/belts/tailbag/black
+	name = "Tailbag (Black)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail/black

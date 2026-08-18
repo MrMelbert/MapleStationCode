@@ -1,5 +1,11 @@
 /// Add to an item to cause it to slow the wearer if worn simultaneously with a backpack.
 /datum/component/slows_with_backpack
+	/// Backpack or backpack like items that we can't stack without penalty
+	var/static/list/backpack_types = typecacheof(list(
+		/obj/item/storage/backpack,
+		/obj/item/tank/jetpack,
+	))
+
 
 /datum/component/slows_with_backpack/Initialize(...)
 	if(!isitem(parent))
@@ -34,7 +40,7 @@
 	RegisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_for_backpack))
 	RegisterSignal(user, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(uncheck_for_backpack))
 	var/obj/item/storage/backpack/backpack = user.get_item_by_slot(ITEM_SLOT_BACK)
-	if(isnull(backpack))
+	if(!is_type_in_typecache(backpack, backpack_types))
 		return
 
 	source.AddComponent(/datum/component/make_item_slow, 0.75)
@@ -49,14 +55,14 @@
 /datum/component/slows_with_backpack/proc/check_for_backpack(mob/living/user, obj/item/equipped, slot)
 	SIGNAL_HANDLER
 
-	if((slot & ITEM_SLOT_BACK) && (equipped.slot_flags & ITEM_SLOT_BACK) && istype(equipped, /obj/item/storage/backpack))
+	if((slot & ITEM_SLOT_BACK) && (equipped.slot_flags & ITEM_SLOT_BACK) && is_type_in_typecache(equipped, backpack_types))
 		parent.AddComponent(/datum/component/make_item_slow, 0.75)
 		to_chat(user, span_warning("Wearing [parent] and [equipped] at the same time encumbers you a bit."))
 
 /datum/component/slows_with_backpack/proc/uncheck_for_backpack(mob/living/user, obj/item/unequipped, ...)
 	SIGNAL_HANDLER
 
-	if(!istype(unequipped, /obj/item/storage/backpack))
+	if(!is_type_in_typecache(unequipped, backpack_types))
 		return
 	if(!(unequipped.slot_flags & ITEM_SLOT_BACK))
 		return
