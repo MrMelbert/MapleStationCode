@@ -549,6 +549,10 @@
 		back = replaced_backpack
 		return TRUE
 
+	// modsuits are more important than whatever we offer
+	if(ispath(back, /obj/item/mod/control))
+		return FALSE
+
 	// try to carry the existing backpack in a hand
 	if(!l_hand)
 		l_hand = back
@@ -570,7 +574,7 @@
 /// Ensures the outfit has a backpack or belt storage, if not it will add one to the outfit
 /// Returns TRUE if it was able to ensure storage, FALSE if it failed
 /datum/outfit/proc/ensure_back_or_belt_storage()
-	if(is_wearing_backpack() || is_wearing_beltpack())
+	if(is_wearing_backpack() || is_wearing_beltpack() || ispath(back, /obj/item/mod/control))
 		return TRUE
 
 	if(!back)
