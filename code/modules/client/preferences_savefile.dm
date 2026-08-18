@@ -5,7 +5,7 @@
 /// You do not need to raise this if you are adding new values that have sane defaults.
 /// Only raise this value when changing the meaning/format/name/layout of an existing value
 /// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 50.1
+#define SAVEFILE_VERSION_MAX 50.2
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -163,6 +163,33 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		// #aaaaaa used to be the color for randomizing runechat - now it's "null"
 		if(save_data?["runechat_color"] == "#aaaaaa")
 			save_data["runechat_color"] = null
+
+	if(current_version < 50.2)
+		var/old_backpack = save_data?["backpack"]
+		switch(old_backpack)
+			if("Department Backpack")
+				add_loadout_item(/obj/item/storage/backpack/medic)
+			if("Department Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel/med)
+			if("Department Duffel Bag")
+				add_loadout_item(/obj/item/storage/backpack/duffelbag/med)
+			if("Department Messenger Bag")
+				add_loadout_item(/obj/item/storage/backpack/messenger/med)
+			if("Grey Backpack")
+				add_loadout_item(/obj/item/storage/backpack)
+			if("Grey Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel)
+			if("Grey Duffel Bag")
+				add_loadout_item(/obj/item/storage/backpack/duffelbag)
+			if("Grey Messenger Bag")
+				add_loadout_item(/obj/item/storage/backpack/messenger)
+			if("Leather Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel/leather)
+			if("Chest Pouches")
+				add_loadout_item(/obj/item/storage/belt/chest_pouch)
+
+		if(old_backpack)
+			save_data["backpack"] = null
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

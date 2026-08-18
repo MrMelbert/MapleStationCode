@@ -1,4 +1,4 @@
-/datum/storage/duffel
+/datum/storage/backpack/duffel
 	max_total_storage = 30
 	max_slots = 21
 
@@ -6,11 +6,11 @@
 // You can fit any 2 bulky objects (assuming they're in the whitelist)
 // Should have traitorus stuff in here, not just useful big things
 // Idea is to allow for things we typically restrict in exchange for going loud
-/datum/storage/duffel/syndicate
+/datum/storage/backpack/duffel/syndicate
 	silent = TRUE
 	exception_max = 2
 
-/datum/storage/duffel/syndicate/New(
+/datum/storage/backpack/duffel/syndicate/New(
 	atom/parent,
 	max_slots,
 	max_specific_storage,

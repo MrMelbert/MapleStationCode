@@ -6612,6 +6612,7 @@
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_loadout_categories.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_loadout_datum.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_accessory.dm"
+#include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_back.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_belts.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_ears.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\loadout_datum_glasses.dm"

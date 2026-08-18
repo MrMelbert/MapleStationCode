@@ -20,6 +20,7 @@
 	if(ismob(item_parent.loc))
 		UnregisterSignal(item_parent.loc, COMSIG_MOB_EQUIPPED_ITEM)
 		UnregisterSignal(item_parent.loc, COMSIG_MOB_UNEQUIPPED_ITEM)
+		UnregisterSignal(item_parent.loc, COMSIG_MOB_LOGIN)
 
 	qdel(parent.GetComponent(/datum/component/make_item_slow))
 	UnregisterSignal(parent, COMSIG_ITEM_EQUIPPED)
@@ -45,11 +46,14 @@
 
 	source.AddComponent(/datum/component/make_item_slow, 0.75)
 	to_chat(user, span_warning("Wearing [source] and [backpack] at the same time encumbers you a bit."))
+	if(!user.client)
+		RegisterSignal(user, COMSIG_MOB_LOGIN, PROC_REF(on_login))
 
 /datum/component/slows_with_backpack/proc/on_unequipped(obj/item/source, mob/user, ...)
 	SIGNAL_HANDLER
 	UnregisterSignal(user, COMSIG_MOB_EQUIPPED_ITEM)
 	UnregisterSignal(user, COMSIG_MOB_UNEQUIPPED_ITEM)
+	UnregisterSignal(user, COMSIG_MOB_LOGIN)
 	qdel(source.GetComponent(/datum/component/make_item_slow))
 
 /datum/component/slows_with_backpack/proc/check_for_backpack(mob/living/user, obj/item/equipped, slot)
@@ -58,6 +62,8 @@
 	if((slot & ITEM_SLOT_BACK) && (equipped.slot_flags & ITEM_SLOT_BACK) && is_type_in_typecache(equipped, backpack_types))
 		parent.AddComponent(/datum/component/make_item_slow, 0.75)
 		to_chat(user, span_warning("Wearing [parent] and [equipped] at the same time encumbers you a bit."))
+		if(!user.client)
+			RegisterSignal(user, COMSIG_MOB_LOGIN, PROC_REF(on_login))
 
 /datum/component/slows_with_backpack/proc/uncheck_for_backpack(mob/living/user, obj/item/unequipped, ...)
 	SIGNAL_HANDLER
@@ -67,3 +73,11 @@
 	if(!(unequipped.slot_flags & ITEM_SLOT_BACK))
 		return
 	qdel(parent.GetComponent(/datum/component/make_item_slow))
+	UnregisterSignal(user, COMSIG_MOB_LOGIN)
+
+/datum/component/slows_with_backpack/proc/on_login(mob/living/user)
+	SIGNAL_HANDLER
+	addtimer(CALLBACK(src, PROC_REF(warn_on_login), user), 0.5 SECONDS)
+
+/datum/component/slows_with_backpack/proc/warn_on_login(mob/living/user)
+	to_chat(user, span_warning("Wearing [parent] and [user.get_item_by_slot(ITEM_SLOT_BACK)] at the same time encumbers you a bit."))

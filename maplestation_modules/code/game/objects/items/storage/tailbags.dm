@@ -1,8 +1,8 @@
 // Sprites ported from Doppler - https://github.com/DopplerShift13/DopplerShift/pull/546
 /obj/item/storage/belt/chest_pouch/tail
 	name = "tan tail pouches"
-	desc = "A bunch of pouches intended to be strapped around a wide tail. \
-		Popular amongst Lizardfolk as a storage solution with a lower center of gravity."
+	desc = "A set of pouches intended to be strapped around a wide tail. \
+		Favored by Lizardfolk for moving their stored equipment closer to their center of mass."
 	icon = 'maplestation_modules/icons/obj/clothing/lizard.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/lizard_worn.dmi'
 	icon_state = "tailbag_tan"

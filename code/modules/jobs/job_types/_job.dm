@@ -377,7 +377,7 @@
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
 	belt = /obj/item/modular_computer/pda
-	back = /obj/item/storage/backpack
+	// back = /obj/item/storage/backpack
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/pouch/survival
 
@@ -391,31 +391,8 @@
 	var/pda_slot = ITEM_SLOT_BELT
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	if(ispath(back, /obj/item/storage/backpack))
-		switch(H.backpack)
-			if(GBACKPACK)
-				back = /obj/item/storage/backpack //Grey backpack
-			if(GSATCHEL)
-				back = /obj/item/storage/backpack/satchel //Grey satchel
-			if(GDUFFELBAG)
-				back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
-			if(LSATCHEL)
-				back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
-			if(GMESSENGER)
-				back = /obj/item/storage/backpack/messenger //Grey messenger bag
-			if(DSATCHEL)
-				back = satchel //Department satchel
-			if(DDUFFELBAG)
-				back = duffelbag //Department duffel bag
-			if(DMESSENGER)
-				back = messenger //Department messenger bag
-			if(BELT_POUCH)
-				if(replace_belt_keep_old(/obj/item/storage/belt/chest_pouch))
-					back = null // Replaces the backpack with belt pouch
-
-			else
-				back = backpack //Department backpack
-
+	// Let's make sure the guy has somewhere to put all the stuff we're about to give him
+	ensure_back_or_belt_storage()
 	//converts the uniform string into the path we'll wear, whether it's the skirt or regular variant
 	var/holder
 	if(H.jumpsuit_style == PREF_SKIRT)
