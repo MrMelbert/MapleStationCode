@@ -187,8 +187,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			if("Chest Pouches")
 				add_loadout_item(/obj/item/storage/belt/chest_pouch)
 
-		if(old_backpack)
-			save_data["backpack"] = null
+		save_data?["backpack"] = null
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
