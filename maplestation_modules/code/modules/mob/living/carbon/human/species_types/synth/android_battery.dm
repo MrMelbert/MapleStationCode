@@ -11,9 +11,6 @@
 	booze_multiplier = 0
 	discharge_chance = 0.5
 
-/obj/item/organ/stomach/ethereal/android/battery_core/effective_charge()
-	. = ..()
-
 /obj/item/organ/stomach/ethereal/android/battery_core/handle_chemical(mob/living/carbon/source, datum/reagent/chem, seconds_per_tick, times_fired)
 	//No booze, no drink, no food. It is not a stomach, it is a battery!
 	return NONE
