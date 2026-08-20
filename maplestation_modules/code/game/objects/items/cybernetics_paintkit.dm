@@ -20,6 +20,11 @@
 		"zhenkov" = 'maplestation_modules/icons/mob/augmentation/zhenkovipc.dmi',
 		"zhenkov dark" = 'maplestation_modules/icons/mob/augmentation/zhenkovipc_dark.dmi',
 		"ZHP" = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi',
+		"Vintage Cybersun" = 'maplestation_modules/icons/mob/augmentation/vintage_cybersun.dmi',
+		"S-Tech" = 'maplestation_modules/icons/mob/augmentation/s-tech.dmi',
+		"Skull" = 'maplestation_modules/icons/mob/augmentation/skull.dmi',
+		"Drone" = 'maplestation_modules/icons/mob/augmentation/drone.dmi',
+		"Nemo" = 'maplestation_modules/icons/mob/augmentation/flat.dmi'
 	)
 
 	var/static/list/emissive_augments = list(

@@ -52,3 +52,16 @@
 	ui_zone = BODY_ZONE_L_ARM
 	pref_list_slot = ORGAN_SLOT_LEFT_ARM_AUG
 	// Yeah you can have one in both arms if you want, don't really care
+
+
+//battery core stuff
+/datum/limb_option_datum/organ/synthetic
+	tooltip = "Unique to Androids and Synthetics."
+
+/datum/limb_option_datum/organ/synthetic/can_be_selected(datum/preferences/prefs)
+	return ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/android)
+
+/datum/limb_option_datum/organ/synthetic/battery_core
+	tooltip = "Replaces the stomach with a battery with more charge, but cannot process food or chemicals. Unique to Androids and Synthetics."
+	name = "Battery Core"
+	limb_path = /obj/item/organ/stomach/ethereal/android/battery_core

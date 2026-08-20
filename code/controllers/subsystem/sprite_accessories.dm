@@ -62,7 +62,6 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/arm_wingsopen_list
 	var/list/tails_list_avian
 	var/list/avian_ears_list
-	var/list/synth_head_cover_list
 	var/list/tails_list_rat
 	var/list/rat_ears_list
 	var/list/bat_ears_list
@@ -133,7 +132,6 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	arm_wingsopen_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wingsopen)[DEFAULT_SPRITE_LIST]
 	tails_list_avian = init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/avian/)[DEFAULT_SPRITE_LIST]
 	avian_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/plumage)[DEFAULT_SPRITE_LIST]
-	synth_head_cover_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/synth_head_cover)[DEFAULT_SPRITE_LIST]
 	tails_list_rat = init_sprite_accessory_subtypes(/datum/sprite_accessory/tail_rat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	rat_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_rat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
 	bat_ears_list = init_sprite_accessory_subtypes(/datum/sprite_accessory/ears_bat, add_blank = TRUE)[DEFAULT_SPRITE_LIST]
