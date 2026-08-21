@@ -61,10 +61,13 @@
 	abstract_type = /obj/item/clothing/suit/toggle
 	/// The noun that is displayed to the user on toggle. EX: "Toggles the suit's [buttons]".
 	var/toggle_noun = "buttons"
+	/// Number of pocket slots it has
+	var/pocket_slots = 2
 
 /obj/item/clothing/suit/toggle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/toggle_icon, toggle_noun)
+	create_storage(storage_type = /datum/storage/coatpocket, max_slots = pocket_slots)
 
 /obj/item/clothing/head/hooded
 	abstract_type = /obj/item/clothing/head/hooded

@@ -10,29 +10,8 @@
 	abstract_type = /datum/loadout_item/belts
 
 /datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
-	if(!outfit.belt)
-		outfit.belt = item_path
-		return
-	// try to move the existing belt to the backpack
-	var/obj/item/move_belt = outfit.belt
-	if(outfit.l_hand && outfit.r_hand && initial(move_belt.w_class) <= WEIGHT_CLASS_NORMAL)
-		LAZYADD(outfit.backpack_contents, outfit.belt)
-		outfit.belt = item_path
-		return
-	// try to carry the existing belt in a hand
-	if(!outfit.l_hand)
-		outfit.l_hand = outfit.belt
-		outfit.belt = item_path
-		return
-	if(!outfit.r_hand)
-		outfit.r_hand = outfit.belt
-		outfit.belt = item_path
-		return
-	// failed to put it on, put it in the backpack
-	if(initial(item_path.w_class) <= WEIGHT_CLASS_NORMAL)
-		LAZYADD(outfit.backpack_contents, item_path)
-		return
-	to_chat(equipper, span_notice("Your loadout belt was not equipped to preserve your job's equipment."))
+	if(!outfit.replace_belt_keep_old(item_path))
+		to_chat(equipper, span_notice("Your loadout belt was not equipped to preserve your job's equipment."))
 
 /datum/loadout_item/belts/fanny_pack_black
 	name = "Fannypack (Black)"
@@ -85,3 +64,42 @@
 /datum/loadout_item/belts/candle_box
 	name = "Candle Box"
 	item_path = /obj/item/storage/fancy/candle_box
+
+/datum/loadout_item/belts/chest_pouch
+	name = "Chest Pouch"
+	item_path = /obj/item/storage/belt/chest_pouch
+
+/datum/loadout_item/belts/chest_pouch/get_item_information()
+	. = ..()
+	.[FA_ICON_BOXES_PACKING] = "Main storage"
+
+/datum/loadout_item/belts/chest_pouch/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
+	// If we have a belt, we can replace it with our own belt
+	if(outfit.is_wearing_beltpack() || outfit.replace_belt_keep_old(item_path))
+		outfit.back = item_path
+		return
+	// Otherwise if there was something in the way, let them know
+	if(outfit.belt)
+		to_chat(equipper, span_notice("Your loadout belt was not equipped to preserve your job's equipment."))
+
+/datum/loadout_item/belts/chest_pouch/tailbag
+	name = "Tailbag (Tan)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail
+
+/datum/loadout_item/belts/chest_pouch/tailbag/is_equippable(mob/living/carbon/human/equipper, list/item_details)
+	var/obj/item/organ/tail/tail = equipper.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(isnull(tail) || tail.w_class < WEIGHT_CLASS_BULKY)
+		return FALSE
+	return ..()
+
+/datum/loadout_item/belts/chest_pouch/tailbag/get_item_information()
+	. = ..()
+	.[FA_ICON_DRAGON] = "Requires large tail"
+
+/datum/loadout_item/belts/chest_pouch/tailbag/white
+	name = "Tailbag (White)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail/white
+
+/datum/loadout_item/belts/chest_pouch/tailbag/black
+	name = "Tailbag (Black)"
+	item_path = /obj/item/storage/belt/chest_pouch/tail/black

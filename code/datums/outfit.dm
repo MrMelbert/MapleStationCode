@@ -498,3 +498,125 @@
 		if(!check_rights(NONE))
 			return
 		usr.client.open_outfit_editor(src)
+
+/// Replaces the current belt with the passed in belt, without losing whatever was in the current belt slot
+/// Returns TRUE if the replacement was successful, FALSE if it failed
+/datum/outfit/proc/replace_belt_keep_old(obj/item/replaced_belt)
+	if(!belt)
+		belt = replaced_belt
+		return TRUE
+
+	// try to move to pockets
+	if(belt::w_class <= WEIGHT_CLASS_SMALL)
+		if(!l_pocket)
+			l_pocket = belt
+			belt = replaced_belt
+			return TRUE
+
+		if(!r_pocket)
+			r_pocket = belt
+			belt = replaced_belt
+			return TRUE
+
+	// try to move to backpack
+	if(belt::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, belt)
+		belt = replaced_belt
+		return TRUE
+
+	// try to carry the existing belt in a hand
+	if(!l_hand)
+		l_hand = belt
+		belt = replaced_belt
+		return TRUE
+
+	if(!r_hand)
+		r_hand = belt
+		belt = replaced_belt
+		return TRUE
+
+	// failed to equip the new belt, try to add it to the backpack instead
+	if(replaced_belt::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, replaced_belt)
+		return TRUE
+
+	return FALSE
+
+/// Replaces the current backpack with the passed in backpack, without losing whatever was in the current backpack slot
+/// Returns TRUE if the replacement was successful, FALSE if it failed
+/datum/outfit/proc/replace_backpack_keep_old(obj/item/replaced_backpack)
+	if(!back)
+		back = replaced_backpack
+		return TRUE
+
+	// modsuits are more important than whatever we offer
+	if(ispath(back, /obj/item/mod/control))
+		return FALSE
+
+	// try to carry the existing backpack in a hand
+	if(!l_hand)
+		l_hand = back
+		back = replaced_backpack
+		return TRUE
+
+	if(!r_hand)
+		r_hand = back
+		back = replaced_backpack
+		return TRUE
+
+	// failed to equip the new backpack, try to add it to the backpack instead
+	if(replaced_backpack::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, replaced_backpack)
+		return TRUE
+
+	return FALSE
+
+/// Ensures the outfit has a backpack or belt storage, if not it will add one to the outfit
+/// Returns TRUE if it was able to ensure storage, FALSE if it failed
+/datum/outfit/proc/ensure_back_or_belt_storage()
+	if(is_wearing_backpack() || is_wearing_beltpack() || ispath(back, /obj/item/mod/control))
+		return TRUE
+
+	if(!back)
+		back = /obj/item/storage/backpack
+		return TRUE
+
+	if(!belt)
+		belt = /obj/item/storage/belt/chest_pouch
+		return TRUE
+
+	if(!l_hand)
+		l_hand = back
+		back = /obj/item/storage/backpack
+		return TRUE
+
+	if(!r_hand)
+		r_hand = back
+		back = /obj/item/storage/backpack
+		return TRUE
+
+	if(back::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, back)
+		back = /obj/item/storage/backpack
+		return TRUE
+
+	if(belt::w_class <= WEIGHT_CLASS_NORMAL)
+		LAZYADD(backpack_contents, belt)
+		belt = /obj/item/storage/belt/chest_pouch
+		return TRUE
+
+	return FALSE
+
+/// Returns TRUE if the outfit is wearing a backpack, FALSE if not
+/datum/outfit/proc/is_wearing_backpack()
+	if(ispath(back, /obj/item/storage))
+		var/obj/item/storage/backpack/backpack = back
+		return ispath(backpack::storage_type, /datum/storage/backpack)
+	return FALSE
+
+/// Returns TRUE if the outfit is wearing a beltpack, FALSE if not
+/datum/outfit/proc/is_wearing_beltpack()
+	if(ispath(belt, /obj/item/storage))
+		var/obj/item/storage/belt/beltpack = belt
+		return ispath(beltpack::storage_type, /datum/storage/backpack)
+	return FALSE

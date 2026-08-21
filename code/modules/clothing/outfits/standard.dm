@@ -296,7 +296,7 @@
 	backpack_contents = list(
 		/obj/item/spellbook = 1,
 	)
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 	ears = /obj/item/radio/headset
 	head = /obj/item/clothing/head/wizard
 	shoes = /obj/item/clothing/shoes/sandal/magic

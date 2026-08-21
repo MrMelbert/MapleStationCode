@@ -4,6 +4,7 @@
 	ammo_type = /obj/item/ammo_casing/m7mm
 	caliber = CALIBER_A7MM
 	max_ammo = 50
+	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/ammo_box/magazine/m7mm/hollow
 	name = "box magazine (Hollow-Point 7mm)"

@@ -12,6 +12,7 @@
 	px_y = 0
 	grind_results = null
 	wound_resistance = 10
+	w_class = WEIGHT_CLASS_BULKY
 	bodypart_trait_source = CHEST_TRAIT
 	///The bodyshape(s) allowed to attach to this chest.
 	var/acceptable_bodyshape = BODYSHAPE_HUMANOID

@@ -55,6 +55,7 @@
 	strip_delay = 100 //air pods don't fall out
 	instrument_range = 0 //you're paying for quality here
 	custom_premium_price = PAYCHECK_CREW * 36 //Save up 5 shifts worth of pay just to lose it down a drainpipe on the sidewalk
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/circuit_component/synth
 	display_name = "Synthesizer"

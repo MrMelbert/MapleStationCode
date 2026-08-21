@@ -200,6 +200,33 @@ DEFINE_BITFIELD(no_equip_flags, list(
 /// The index of the entry in 'afk_thefts' with the time it happened
 #define AFK_THEFT_TIME 3
 
+/// A list of things that any suit storage can hold
+/// Should consist of ubiquitous, non-specialized items
+/// or items that are meant to be "suit storage agnostic" as
+/// a benefit, which of the time of this commit only applies
+/// to the captain's jetpack, here
+GLOBAL_LIST_INIT(any_suit_storage, typecacheof(list(
+	/obj/item/clipboard,
+	/obj/item/flashlight,
+	/obj/item/tank/internals/emergency_oxygen,
+	/obj/item/tank/internals/plasmaman,
+	/obj/item/lighter,
+	/obj/item/pen,
+	/obj/item/modular_computer/pda,
+	/obj/item/toy,
+	/obj/item/radio,
+	/obj/item/storage/bag/books,
+	/obj/item/storage/fancy/cigarettes,
+	/obj/item/tank/jetpack/oxygen/captain,
+	/obj/item/stack/spacecash,
+	/obj/item/storage/wallet,
+	/obj/item/folder,
+	/obj/item/storage/box/matches,
+	/obj/item/cigarette,
+	/obj/item/storage/belt/holster,
+	/obj/item/storage/pouch,
+)))
+
 //Allowed equipment lists for security vests.
 
 GLOBAL_LIST_INIT(detective_vest_allowed, list(
@@ -236,6 +263,7 @@ GLOBAL_LIST_INIT(security_vest_allowed, list(
 	/obj/item/storage/belt/holster/energy,
 	/obj/item/gun/ballistic/shotgun/automatic/combat/compact,
 	/obj/item/pen/red/security,
+	/obj/item/storage/belt/security/webbing,
 ))
 
 GLOBAL_LIST_INIT(security_wintercoat_allowed, list(
@@ -282,6 +310,8 @@ GLOBAL_LIST_INIT(mining_suit_allowed, list(
 	/obj/item/pickaxe,
 	/obj/item/resonator,
 	/obj/item/spear,
+	/obj/item/storage/belt/mining,
+	/obj/item/storage/belt/chest_pouch,
 ))
 
 /// List of all "tools" that can fit into belts or work from toolboxes

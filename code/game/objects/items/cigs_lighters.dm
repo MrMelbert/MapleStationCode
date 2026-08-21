@@ -190,6 +190,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	throw_verb = "flick"
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
+	wear_loc = "mouth"
 	/// Whether this cigarette has been lit.
 	VAR_FINAL/lit = FALSE
 	/// Whether this cigarette should start lit.

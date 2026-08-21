@@ -138,7 +138,7 @@
 	l_pocket = /obj/item/gun/ballistic/automatic/pistol/clandestine
 	r_pocket = /obj/item/knife/combat/survival
 
-	box = /obj/item/storage/box/survival/syndie
+	box = /obj/item/storage/pouch/survival/syndie
 
 /obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/assault
 	name = "Syndicate Battlecruiser Assault Operative"
