@@ -535,7 +535,7 @@
 	name = "\improper DJ Station Solars"
 	icon_state = "DJ"
 	area_flags = NONE
-	default_gravity = ZERO_GRAVITY
+	has_gravity = FALSE
 
 /area/ruin/space/djstation/service
 	name = "\improper DJ Station Service"

@@ -54,8 +54,11 @@
 
 	var/bonus = calculate_rewards()
 
+	var/time_difference = world.time - generated_domain.start_time
+	var/grade = grade_completion(time_difference)
+
 	var/obj/item/paper/certificate = new()
-	certificate.add_raw_text(get_completion_certificate())
+	certificate.add_raw_text(get_completion_certificate(time_difference, grade))
 	certificate.name = "certificate of domain completion"
 	certificate.update_appearance()
 
@@ -88,7 +91,7 @@
 
 
 /// Returns the markdown text containing domain completion information
-/obj/machinery/quantum_server/proc/get_completion_certificate()
+/obj/machinery/quantum_server/proc/get_completion_certificate(time_difference, grade)
 	var/base_points = generated_domain.reward_points
 	if(domain_randomized)
 		base_points -= 1
@@ -97,11 +100,9 @@
 
 	var/domain_threats = length(spawned_threat_refs)
 
-	var/time_difference = world.time - generated_domain.start_time
-
 	var/completion_time = "### Completion Time: [DisplayTimeText(time_difference)]\n"
 
-	var/grade = "\n---\n\n# Rating: [grade_completion(time_difference)]"
+	var/completion_grade = "\n---\n\n# Rating: [grade]"
 
 	var/text = "# Certificate of Domain Completion\n\n---\n\n"
 
@@ -113,7 +114,7 @@
 
 	if(bonuses <= 1)
 		text += completion_time
-		text += grade
+		text += completion_grade
 		return text
 
 	text += "### Bonuses\n"
@@ -137,7 +138,7 @@
 		text += "- **Components:** + [servo_rating]\n"
 
 	text += completion_time
-	text += grade
+	text += completion_grade
 
 	return text
 

@@ -63,8 +63,8 @@
 	name = "Archer"
 
 	granted_items = list(
-		/obj/item/clothing/under/costume/kimono,
-		/obj/item/clothing/shoes/sandal/alt,
+		/obj/item/clothing/under/kimono,
+		/obj/item/clothing/shoes/sandal/black,
 		/obj/item/storage/bag/quiver/endless,
 		/obj/item/gun/ballistic/bow/longbow,
 		/obj/item/ammo_casing/arrow/holy/blazing,
@@ -73,11 +73,11 @@
 /obj/item/storage/bag/quiver/endless
 	name = "endless quiver"
 	desc = "Holds arrows for your bow. A deep digital void is contained within."
-	max_slots = 1
 
 /obj/item/storage/bag/quiver/endless/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(handle_removed))
+	atom_storage.max_slots = 1
 
 /obj/item/storage/bag/quiver/endless/PopulateContents()
 	. = ..()

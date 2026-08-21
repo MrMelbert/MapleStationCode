@@ -123,7 +123,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		))
 	return list("config_entries" = configs)
 
-/obj/machinery/announcement_system/ui_act(action, param)
+/obj/machinery/announcement_system/ui_act(action, params)
 	. = ..()
 	if(.)
 		return
@@ -131,7 +131,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return
 	if(machine_stat & EMPED)
 		visible_message(span_warning("[src] buzzes."), span_hear("You hear a faint buzz."))
-		playsound(src.loc, 'sound/machines/buzz/buzz-two.ogg', 50, TRUE)
+		playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, TRUE)
 		return
 
 	add_fingerprint(usr)

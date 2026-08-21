@@ -16,6 +16,7 @@
 		/obj/item/gun/energy/laser/chameleon/ballistic_only = 1,
 		/obj/item/bitrunning_disk/item/mini_uzi = 1,
 	)
+	domain_flags = DOMAIN_TEST_ONLY // NON-MODULE CHANGE : we don't want island brawl here
 
 /datum/lazy_template/virtual_domain/island_brawl/setup_domain(list/created_atoms)
 	for(var/obj/effect/mob_spawn/ghost_role/human/virtual_domain/islander/spawner in created_atoms)

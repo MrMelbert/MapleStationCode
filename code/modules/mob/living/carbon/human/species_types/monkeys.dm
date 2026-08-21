@@ -166,7 +166,7 @@
 	. = ..()
 	UnregisterSignal(primate, COMSIG_LIVING_MOB_BUMPED)
 
-/obj/item/organ/internal/brain/primate/proc/on_mob_bump(mob/source, mob/living/crossing_mob)
+/obj/item/organ/brain/primate/proc/on_mob_bump(mob/source, mob/living/crossing_mob)
 	SIGNAL_HANDLER
 	if(!tripping || !crossing_mob.combat_mode)
 		return

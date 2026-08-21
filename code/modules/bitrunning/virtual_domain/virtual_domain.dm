@@ -120,10 +120,10 @@
 	if(!main_crate_loc)
 		return
 	var/turf/spawn_loc = get_turf(main_crate_loc)
-	playsound(spawn_loc, 'sound/effects/magic/blink.ogg', 50, TRUE)
+	playsound(spawn_loc, 'sound/magic/blink.ogg', 50, TRUE)
 	var/obj/structure/closet/crate/secure/bitrunning/encrypted/crate = new()
 	crate.forceMove(spawn_loc) // Triggers any on-move effects on that turf
-	do_sparks(5, FALSE, spawn_loc, spark_type = /datum/effect_system/basic/spark_spread/quantum)
+	do_sparks(5, FALSE, spawn_loc, spark_type = /datum/effect_system/spark_spread/quantum)
 	main_crate_loc = null
 
 /// Loads the ghost candidates.

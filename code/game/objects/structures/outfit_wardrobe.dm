@@ -68,17 +68,17 @@
 	chosen_class = choice
 
 	human_user.balloon_alert(human_user, LOWER_TEXT(chosen_class.name))
-	playsound(human_user, 'sound/items/zip/un_zip.ogg', 33)
-	playsound(src, 'sound/machines/closet/wooden_closet_open.ogg', 25)
+	playsound(human_user, 'sound/items/un_zip.ogg', 33)
+	playsound(src, 'sound/machines/wooden_closet_open.ogg', 25)
 	icon_state = "fullcabinet_open"
 	if(!do_after(human_user, 3 SECONDS) || selectable_outfits_to_amount[choice] == 0)
-		playsound(src, 'sound/machines/closet/wooden_closet_close.ogg', 50)
+		playsound(src, 'sound/machines/wooden_closet_close.ogg', 50)
 		icon_state = base_icon_state
 		return
 	selectable_outfits_to_amount[choice]--
-	playsound(src, 'sound/machines/closet/wooden_closet_close.ogg', 50)
+	playsound(src, 'sound/machines/wooden_closet_close.ogg', 50)
 	icon_state = base_icon_state
-	playsound(human_user, 'sound/items/zip/zip_up.ogg', 33)
+	playsound(human_user, 'sound/items/zip_up.ogg', 33)
 
 	human_user.drop_everything()
 	human_user.equipOutfit(chosen_class)

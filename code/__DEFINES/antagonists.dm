@@ -222,8 +222,11 @@ GLOBAL_LIST_INIT(ai_employers, list(
 //Tells whether or not someone is a space ninja
 #define IS_SPACE_NINJA(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/ninja))
 
+// NON-MODULE CHANGE: original IS_HERETIC check wont be ported as it's error-prone, GET_HERETIC is therefore a copy
 /// Checks if the given mob is a heretic.
 #define IS_HERETIC(mob) (mob.mind?.has_antag_datum(/datum/antagonist/heretic))
+/// Checks if the given mob is a heretic and is guaranteed to return the datum if possible - added in order to satisfy compatibility with other PRs
+#define GET_HERETIC(mob) (mob.mind?.has_antag_datum(/datum/antagonist/heretic))
 /// Check if the given mob is a heretic monster.
 #define IS_HERETIC_MONSTER(mob) (mob.mind?.has_antag_datum(/datum/antagonist/heretic_monster))
 /// Check if the given mob is a  lunatic
