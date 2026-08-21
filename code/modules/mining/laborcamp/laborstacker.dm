@@ -195,5 +195,3 @@ GLOBAL_LIST(labor_sheet_values)
 	vars_and_tooltips_map = list(
 		"PERSON" = "will be replaced with the name of the prisoner."
 	)
-
-#undef SHEET_POINT_VALUE
