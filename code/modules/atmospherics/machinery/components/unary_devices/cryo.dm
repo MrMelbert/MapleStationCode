@@ -98,8 +98,6 @@
 	var/conduction_coefficient = 0.3
 	///The beaker usually contains cryoxadone that is pumped into the mob
 	var/obj/item/reagent_containers/cup/beaker = null
-	///Inform medical about cryo status over this radio
-	var/obj/item/radio/radio
 	/// Visual content - Occupant
 	var/atom/movable/visual/cryo_occupant/occupant_vis
 	/// tracks everything the machine is currently treating
@@ -110,6 +108,8 @@
 	var/on = FALSE
 	/// The sound loop that can be heard when the generator is processing.
 	var/datum/looping_sound/cryo_cell/soundloop
+	/// For away sites, custom or admin events
+	var/broadcast_channel = RADIO_CHANNEL_MEDICAL
 
 /datum/armor/unary_cryo_cell
 	energy = 100
@@ -118,12 +118,6 @@
 
 /obj/machinery/cryo_cell/Initialize(mapload)
 	. = ..()
-
-	radio = new(src)
-	radio.keyslot = new /obj/item/encryptionkey/headset_med
-	radio.subspace_transmission = TRUE
-	radio.canhear_range = 0
-	radio.recalculateChannels()
 
 	occupant_vis = new(mapload, src)
 	vis_contents += occupant_vis
@@ -137,7 +131,6 @@
 
 	vis_contents.Cut()
 	QDEL_NULL(occupant_vis)
-	QDEL_NULL(radio)
 	QDEL_NULL(beaker)
 	QDEL_NULL(internal_connector)
 	QDEL_NULL(soundloop)
@@ -430,12 +423,10 @@
 		mob_occupant.extinguish_mob()
 	if(mob_occupant.stat == DEAD) // Notify doctors and potentially eject if the patient is dead
 		set_on(FALSE)
-		var/msg = "Patient is deceased."
+		aas_config_announce(/datum/aas_config_entry/medical_cryo_announcements, list("EJECTING" = autoeject), src, list(broadcast_channel), "Deceased")
 		if(autoeject) // Eject if configured.
-			msg += " Auto ejecting patient now."
 			open_machine()
 		playsound(src, 'sound/machines/cryo_warning.ogg', 100)
-		radio.talk_into(src, msg, RADIO_CHANNEL_MEDICAL)
 		return PROCESS_KILL
 
 	// Don't bother with fully healed people.
@@ -464,11 +455,9 @@
 	if(!ongoing_treatment)
 		set_on(FALSE)
 		playsound(src, 'sound/machines/cryo_warning.ogg', 100) // Bug the doctors.
-		var/msg = "Patient fully restored."
+		aas_config_announce(/datum/aas_config_entry/medical_cryo_announcements, list("EJECTING" = autoeject), src, list(broadcast_channel), "Fully Recovered")
 		if(autoeject) // Eject if configured.
-			msg += " Auto ejecting patient now."
 			open_machine()
-		radio.talk_into(src, msg, RADIO_CHANNEL_MEDICAL)
 		return PROCESS_KILL
 
 	var/datum/gas_mixture/air1 = internal_connector.gas_connector.airs[1]
@@ -494,11 +483,9 @@
 	//check for workable conditions
 	if(!internal_connector.gas_connector.nodes[1] || !air1 || !air1.gases.len || air1.total_moles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
 		set_on(FALSE)
-		var/msg = "Insufficient cryogenic gas, shutting down."
+		aas_config_announce(/datum/aas_config_entry/medical_cryo_announcements, list("EJECTING" = autoeject), src, list(broadcast_channel), "Insufficient Gas")
 		if(autoeject) // Eject if configured.
-			msg += " Auto ejecting patient now."
 			open_machine()
-		radio.talk_into(src, msg, RADIO_CHANNEL_MEDICAL)
 		return PROCESS_KILL
 
 	//take damage from high temperatures
@@ -706,6 +693,26 @@
 
 /obj/machinery/cryo_cell/get_remote_view_fullscreens(mob/user)
 	user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 1)
+
+/datum/aas_config_entry/medical_cryo_announcements
+	name = "Medical Alert: Cryogenics Reports"
+	announcement_lines_map = list(
+		"Autoejecting" = "Auto ejecting patient now.",
+		"Deceased" = "Cryogenics report: Patient is deceased. %AUTOEJECTING",
+		"Fully Recovered" = "Cryogenics report: Patient fully restored. %AUTOEJECTING",
+		"Insufficient Gas" = "Cryogenics report: Insufficient cryogenic gas, shutting down. %AUTOEJECTING",
+		"Wound Treatment" = "Cryogenics report: Patient vitals fully recovered, continuing automated wound treatment."
+	)
+	vars_and_tooltips_map = list(
+		"AUTOEJECTING" = "will be replaced with Autoejecting line, if system reports it's necessity"
+	)
+
+/datum/aas_config_entry/medical_cryo_announcements/compile_announce(list/variables_map, announcement_line)
+	variables_map["AUTOEJECTING"] = variables_map["EJECTING"] ? announcement_lines_map["Autoejecting"] : ""
+	. = ..()
+	// Why double replacetext_char? Well, to handle cases where variable in the middle of sentence like "also %AUTOEJECTING this", so there will be no double spaces
+	// Yeah I am bad, at this, sorry (it should be a perfect place for regex usage, but I am weak)
+	. = trim(replacetext_char(replacetext_char(., "\[NO DATA\] ", ""), "\[NO DATA\]", ""))
 
 #undef MAX_TEMPERATURE
 #undef CRYO_MULTIPLY_FACTOR

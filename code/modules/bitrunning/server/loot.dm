@@ -19,7 +19,7 @@
 /obj/machinery/quantum_server/proc/get_multiplayer_bonus()
 	var/total = 0
 	var/multiplayer = FALSE
-	for(var/datum/weakref/connection_ref in avatar_connection_refs)
+	for(var/datum/weakref/connection_ref as anything in avatar_connection_refs)
 		var/datum/component/avatar_connection/connection = connection_ref.resolve()
 		if(isnull(connection))
 			continue
@@ -34,11 +34,9 @@
 		return 0
 
 	var/total = 0
-	for(var/datum/weakref/connection_ref in avatar_connection_refs)
+	for(var/datum/weakref/connection_ref as anything in avatar_connection_refs)
 		var/datum/component/avatar_connection/connection = connection_ref.resolve()
-		if(isnull(connection))
-			continue
-		if(connection.nohit)
+		if(connection?.nohit)
 			total += nohit_bonus
 	return total
 
@@ -56,8 +54,11 @@
 
 	var/bonus = calculate_rewards()
 
+	var/time_difference = world.time - generated_domain.start_time
+	var/grade = grade_completion(time_difference)
+
 	var/obj/item/paper/certificate = new()
-	certificate.add_raw_text(get_completion_certificate())
+	certificate.add_raw_text(get_completion_certificate(time_difference, grade))
 	certificate.name = "certificate of domain completion"
 	certificate.update_appearance()
 
@@ -65,9 +66,20 @@
 	reward_cache.manifest = certificate
 	reward_cache.update_appearance()
 
+	generated_domain.submit_grade(grade)
+
+	if(can_generate_tech_disk(grade))
+		SSblackbox.record_feedback("tally", "bitrunning_bepis_rewarded", 1, generated_domain.key)
+		new /obj/item/disk/design_disk/bepis/remove_tech(reward_cache)
+		generated_domain.disk_reward_spawned = TRUE
+
 	chosen_forge.start_to_spawn(reward_cache)
+
+	domain_complete = TRUE
 	return TRUE
 
+
+/// Builds secondary loot if the achievements were met
 /obj/machinery/quantum_server/proc/generate_secondary_loot(obj/curiosity, obj/machinery/byteforge/chosen_forge)
 	spark_at_location(curiosity) // abracadabra!
 	qdel(curiosity) // and it's gone!
@@ -77,8 +89,9 @@
 	chosen_forge.start_to_spawn(reward_curiosity)
 	return TRUE
 
+
 /// Returns the markdown text containing domain completion information
-/obj/machinery/quantum_server/proc/get_completion_certificate()
+/obj/machinery/quantum_server/proc/get_completion_certificate(time_difference, grade)
 	var/base_points = generated_domain.reward_points
 	if(domain_randomized)
 		base_points -= 1
@@ -87,11 +100,9 @@
 
 	var/domain_threats = length(spawned_threat_refs)
 
-	var/time_difference = world.time - generated_domain.start_time
-
 	var/completion_time = "### Completion Time: [DisplayTimeText(time_difference)]\n"
 
-	var/grade = "\n---\n\n# Rating: [grade_completion(time_difference)]"
+	var/completion_grade = "\n---\n\n# Rating: [grade]"
 
 	var/text = "# Certificate of Domain Completion\n\n---\n\n"
 
@@ -103,7 +114,7 @@
 
 	if(bonuses <= 1)
 		text += completion_time
-		text += grade
+		text += completion_grade
 		return text
 
 	text += "### Bonuses\n"
@@ -127,9 +138,24 @@
 		text += "- **Components:** + [servo_rating]\n"
 
 	text += completion_time
-	text += grade
+	text += completion_grade
 
 	return text
+
+/// Checks if the players should get a bepis reward
+/obj/machinery/quantum_server/proc/can_generate_tech_disk(grade)
+	if(generated_domain.disk_reward_spawned)
+		return FALSE
+
+	if(!LAZYLEN(SSresearch.techweb_nodes_experimental))
+		return FALSE
+
+	var/static/list/passing_grades = list()
+	if(!passing_grades.len)
+		passing_grades = list(BITRUNNING_GRADE_A,BITRUNNING_GRADE_S)
+
+	return  generated_domain.difficulty >= BITRUNNER_DIFFICULTY_MEDIUM && (grade in passing_grades)
+
 
 /// Grades the player's run based on several factors
 /obj/machinery/quantum_server/proc/grade_completion(completion_time)
@@ -157,12 +183,12 @@
 
 	switch(score)
 		if(1 to 4)
-			return "D"
+			return BITRUNNING_GRADE_D
 		if(5 to 7)
-			return "C"
+			return BITRUNNING_GRADE_C
 		if(8 to 10)
-			return "B"
+			return BITRUNNING_GRADE_B
 		if(11 to 13)
-			return "A"
+			return BITRUNNING_GRADE_A
 		else
-			return "S"
+			return BITRUNNING_GRADE_S

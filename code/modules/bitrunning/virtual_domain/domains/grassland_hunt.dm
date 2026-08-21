@@ -8,6 +8,7 @@
 	mob_modules = list(/datum/modular_mob_segment/deer)
 	domain_flags = DOMAIN_NO_NOHIT_BONUS
 
+
 /datum/lazy_template/virtual_domain/grasslands_hunt/setup_domain(list/created_atoms)
 	for(var/obj/effect/landmark/bitrunning/mob_segment/landmark in created_atoms)
 		RegisterSignal(landmark, COMSIG_BITRUNNING_MOB_SEGMENT_SPAWNED, PROC_REF(on_spawned))
