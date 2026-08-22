@@ -185,6 +185,8 @@
 	)
 	if(hitting_projectile.dismemberment > 0 && !hitting_projectile.grazing)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
+
+	astype(hitting_projectile.firer, /mob/living)?.combat_lock_on(src)
 	return BULLET_ACT_HIT
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
@@ -229,8 +231,8 @@
 		return
 	. = combat_mode
 	combat_mode = new_mode
-	if(hud_used?.action_intent)
-		hud_used.action_intent.update_appearance()
+	SEND_SIGNAL(src, COMSIG_LIVING_COMBAT_MODE_CHANGE)
+	hud_used?.action_intent?.update_appearance()
 	if(silent || !client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
 		return
 	if(combat_mode)
@@ -257,6 +259,11 @@
 	if(thrown_item.thrownby == WEAKREF(src)) //No throwing stuff at yourself to trigger hit reactions
 		return ..()
 
+	var/mob/thrown_by = thrown_item.thrownby?.resolve()
+	// Swaps to following the guy you hit with the thrown item
+	if(throwforce >= 5 && astype(thrown_by, /mob/living)?.combat_mode)
+		astype(thrown_by, /mob/living).combat_lock_on(src, 10 SECONDS, force_override_target = TRUE)
+
 	if(check_block(AM, thrown_item.throwforce, "\the [thrown_item.name]", THROWN_PROJECTILE_ATTACK, 0, thrown_item.damtype))
 		hitpush = FALSE
 		skipcatch = TRUE
@@ -271,7 +278,6 @@
 	if(blocked)
 		return TRUE
 
-	var/mob/thrown_by = thrown_item.thrownby?.resolve()
 	if(thrown_by)
 		log_combat(thrown_by, src, "threw and hit", thrown_item)
 	else
@@ -700,6 +706,8 @@
 				if(obj_content.flags_1 & ON_BORDER_1 && obj_content.dir == REVERSE_DIR(shove_dir) && obj_content.density)
 					shove_flags |= SHOVE_DIRECTIONAL_BLOCKED
 					break
+
+	target.combat_lock_on(src)
 
 	if(shove_flags & SHOVE_CAN_HIT_SOMETHING)
 		//Don't hit people through windows, ok?
