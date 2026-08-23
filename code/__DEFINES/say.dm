@@ -32,6 +32,10 @@
 #define MODE_WHISPER "whisper"
 #define MODE_WHISPER_CRIT "whispercrit"
 
+#define SHOUT_MODE "the type of shout"
+#define MODE_YELL "yell" // !!
+#define MODE_SHOUT "shout" // !
+
 #define MODE_DEPARTMENT "department"
 #define MODE_KEY_DEPARTMENT "h"
 #define MODE_TOKEN_DEPARTMENT ":h"
@@ -132,3 +136,6 @@
 ///Defines for priorities for the bubble_icon_override comp
 #define BUBBLE_ICON_PRIORITY_ACCESSORY 2
 #define BUBBLE_ICON_PRIORITY_ORGAN 1
+
+/// Applies a span to a message if the span is not null, otherwise just uses the text
+#define CONDITIONAL_SPAN(span, text) (span ? "<span class='[span]'>[text]</span>" : text)

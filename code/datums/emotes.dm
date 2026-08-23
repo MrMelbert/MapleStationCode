@@ -62,6 +62,8 @@
 	var/can_message_change = FALSE
 	/// How long is the cooldown on the audio of the emote, if it has one?
 	var/audio_cooldown = 2 SECONDS
+	/// Range of the emotes messages
+	var/emote_range = DEFAULT_MESSAGE_RANGE
 
 /datum/emote/New()
 	switch(mob_type_allowed_typecache)
@@ -136,7 +138,7 @@
 
 	// Emote doesn't get printed to chat, runechat only
 	if(emote_type & EMOTE_RUNECHAT)
-		for(var/mob/viewer as anything in viewers(user))
+		for(var/mob/viewer as anything in viewers(emote_range, user))
 			if(isnull(viewer.client))
 				continue
 			if(!is_important && viewer != user && (!is_visual || !is_audible))
@@ -144,6 +146,10 @@
 					continue
 				if(is_visual && viewer.is_blind())
 					continue
+
+			var/personal_msg = msg
+			var/distance_span = viewer.get_distance_based_span(get_dist(user, viewer) - (is_visual ? 4 : 2)) // -2 to -4 effective distance
+
 			if(user.runechat_prefs_check(viewer, EMOTE_MESSAGE))
 				viewer.create_chat_message(
 					speaker = user,
@@ -151,22 +157,28 @@
 					runechat_flags = EMOTE_MESSAGE,
 				)
 			else if(is_important)
-				to_chat(viewer, "<span class='emote'><b>[user]</b> [msg]</span>")
+				to_chat(viewer, CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")))
 			else if(is_audible && is_visual)
 				viewer.show_message(
-					"<span class='emote'><b>[user]</b> [msg]</span>", MSG_AUDIBLE,
-					"<span class='emote'>You see how <b>[user]</b> [msg]</span>", MSG_VISUAL,
+					CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_AUDIBLE,
+					CONDITIONAL_SPAN(distance_span, span_emote("You see how <b>[user]</b> [personal_msg]")), MSG_VISUAL,
 				)
 			else if(is_audible)
-				viewer.show_message("<span class='emote'><b>[user]</b> [msg]</span>", MSG_AUDIBLE)
+				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_AUDIBLE)
 			else if(is_visual)
-				viewer.show_message("<span class='emote'><b>[user]</b> [msg]</span>", MSG_VISUAL)
+				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_VISUAL)
 		return TRUE // Early exit so no dchat message
 
 	// The emote has some important information, and should always be shown to the user
 	else if(is_important)
-		for(var/mob/viewer as anything in viewers(user))
-			to_chat(viewer, "<span class='emote'><b>[user]</b> [msg]</span>")
+		for(var/mob/viewer as anything in viewers(emote_range, user))
+			if(isnull(viewer.client))
+				continue
+
+			var/personal_msg = msg
+			var/distance_span = viewer.get_distance_based_span(get_dist(user, viewer) - 4) // -4 effective distance
+
+			to_chat(viewer, CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")))
 			if(user.runechat_prefs_check(viewer, EMOTE_MESSAGE))
 				viewer.create_chat_message(
 					speaker = user,
@@ -178,9 +190,10 @@
 	else if(is_visual && is_audible)
 		user.audible_message(
 			message = msg,
-			deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>",
+			deaf_message = span_emote("You see how <b>[user]</b> [msg]"),
 			self_message = msg,
 			audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE,
+			hearing_distance = emote_range,
 		)
 	// Emote is entirely audible, no visible component
 	else if(is_audible)
@@ -188,6 +201,7 @@
 			message = msg,
 			self_message = msg,
 			audible_message_flags = EMOTE_MESSAGE,
+			hearing_distance = emote_range,
 		)
 	// Emote is entirely visible, no audible component
 	else if(is_visual)
@@ -195,6 +209,7 @@
 			message = msg,
 			self_message = msg,
 			visible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE,
+			vision_distance = emote_range
 		)
 	else
 		CRASH("Emote [type] has no valid emote type set!")
@@ -206,7 +221,7 @@
 				continue
 			if(!(get_chat_toggles(ghost.client) & CHAT_GHOSTSIGHT))
 				continue
-			to_chat(ghost, "<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
+			to_chat(ghost, span_emote("[FOLLOW_LINK(ghost, user)] [dchatmsg]"))
 
 	return TRUE
 

@@ -141,12 +141,15 @@
 	if(message_mods[WHISPER_MODE])
 		speech_sound_vol = max(speech_sound_vol - 10, 10)
 		speech_sound_rangemod = -15 // 2 range
+	if(message_mods[SHOUT_MODE])
+		speech_sound_vol = min(speech_sound_vol + ((message_mods[SHOUT_MODE] == MODE_YELL) ? 20 : 10), 100)
+		speech_sound_rangemod = (message_mods[SHOUT_MODE] == MODE_YELL) ? -5 : -7 // 12 / 10 range
 
 	var/sound/the_sound = sound(picked_sound)
 	the_sound.pitch = speech_sound_pitch_modifier
 	the_sound.frequency = sound_frequency * speech_sound_frequency_modifier
 	if(is_mouth_covered())
-		speech_sound_vol *= 1.5
+		the_sound.frequency *= 0.75
 
 	playsound(
 		source = src,
