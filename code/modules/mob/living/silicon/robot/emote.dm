@@ -63,6 +63,7 @@
 	message = "blares an alarm!"
 	emote_type = EMOTE_AUDIBLE
 	sound = 'sound/machines/warning-buzzer.ogg'
+	emote_range = DEFAULT_MESSAGE_RANGE * 2
 
 /datum/emote/silicon/slowclap
 	key = "slowclap"

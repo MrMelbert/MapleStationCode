@@ -59,6 +59,13 @@
 	disliked_foodtypes = DAIRY | CLOTH | GROSS
 	toxic_foodtypes = SUGAR // chocolate is toxic to birds.
 
+/obj/item/organ/tongue/ornithid/handle_saymod(datum/source, datum/saymod_selector/selector)
+	. = ..()
+	selector.add_saymod(SAY_MOD_EXCLAIM, "caws", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_SING, "tweets", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_WHISPER_YELL, "croons", SAY_MOD_PRIORITY_DEFAULT)
+	selector.add_saymod(SAY_MOD_YELL, "caws", SAY_MOD_PRIORITY_DEFAULT)
+
 // High Draconic for lizard tongues
 /obj/item/organ/tongue/lizard
 	languages_native = list(/datum/language/draconic, /datum/language/impdraconic)

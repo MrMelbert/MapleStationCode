@@ -35,6 +35,10 @@
 	. = ..()
 	create_storage(storage_type = /datum/storage/coatpocket)
 
+/obj/item/clothing/suit/apron/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "apron_worn")
+	return replace_icon_legs(base_icon, legs)
+
 /datum/armor/suit_apron
 	bio = 50
 
@@ -447,6 +451,10 @@
 /obj/item/clothing/suit/atmos_overalls/Initialize(mapload)
 	. = ..()
 	create_storage(storage_type = /datum/storage/coatpocket)
+
+/obj/item/clothing/suit/atmos_overalls/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
+	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "apron_worn")
+	return replace_icon_legs(base_icon, legs)
 
 /datum/armor/atmos_overalls
 	fire = 100

@@ -30,7 +30,6 @@
 	digitigrade_legs = null
 
 	mutanttongue = /obj/item/organ/tongue/robot/synth
-	mutant_organs = list(/obj/item/organ/synth_head_cover = "Helm")
 	allow_fleshy_bits = TRUE
 
 	/// Reference to the species we're disguised as.
@@ -73,6 +72,7 @@
 	qdel(synth.GetComponent(/datum/component/ion_storm_randomization))
 	drop_disguise(synth)
 	UnregisterSignal(synth, COMSIG_CARBON_LIMB_DAMAGED)
+	UnregisterSignal(synth, COMSIG_MOVABLE_SAY_MOD)
 
 	for(var/obj/item/bodypart/limb as anything in synth.get_bodyparts())
 		if(initial(limb.limb_id) == BODYPART_ID_SYNTH)
@@ -240,16 +240,14 @@
 				limb_gained(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
-					if(tongue?.temp_say_mod == "whirrs")
-						tongue.temp_say_mod = null
+					UnregisterSignal(synth, COMSIG_MOVABLE_SAY_MOD)
+
 		else
 			if(below_threshold)
 				limb_lost(synth, limb, update = FALSE)
 				changed_limbs += limb
 				if(istype(limb, /obj/item/bodypart/head))
-					var/obj/item/organ/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
-					tongue?.temp_say_mod = "whirrs"
+					RegisterSignal(synth, COMSIG_MOVABLE_SAY_MOD, PROC_REF(handle_saymod))
 
 	var/num_changes = length(changed_limbs)
 	if(num_changes > 0)
@@ -258,6 +256,10 @@
 		else if(num_changes == 1)
 			synth.visible_message(span_warning("[synth]'s [changed_limbs[1].plaintext_zone] changes appearance!"))
 		synth.update_body_parts(TRUE)
+
+/datum/species/android/synth/proc/handle_saymod(datum/source, datum/saymod_selector/selector)
+	SIGNAL_HANDLER
+	selector.add_saymod(SAY_MOD_DEFAULT, "whirrs", SAY_MOD_PRIORITY_MEDIUM)
 
 /// Like change appearance, but passing it a bodypart will change the appearance to that of the bodypart.
 /obj/item/bodypart/proc/change_appearance_into(obj/item/bodypart/other_part, update = TRUE)
@@ -411,86 +413,5 @@
 
 /obj/item/organ/eyes/robotic/synth
 	name = "synth eyes"
-
-// Organ for synth head covers.
-
-/obj/item/organ/synth_head_cover
-	name = "Head Cover"
-	desc = "It is a cover that goes on a synth head."
-
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER
-
-	preference = "feature_synth_head_cover"
-
-	organ_flags = ORGAN_ROBOTIC
-
-	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
-	organ_flags = parent_type::organ_flags | ORGAN_EXTERNAL
-
-
-/obj/item/organ/synth_head_cover/on_bodypart_insert(obj/item/bodypart/head/limb, movement_flags)
-	. = ..()
-	limb.head_flags &= ~HEAD_EYESPRITES
-
-/obj/item/organ/synth_head_cover/on_bodypart_remove(obj/item/bodypart/head/limb, movement_flags)
-	. = ..()
-	if(initial(limb.head_flags) & HEAD_EYESPRITES)
-		limb.head_flags |= HEAD_EYESPRITES
-
-//-- overlay --
-/datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
-	return SSaccessories.synth_head_cover_list
-
-/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(obj/item/bodypart/bodypart_owner)
-	if(bodypart_owner.owner?.obscured_slots & HIDEHAIR)
-		return FALSE
-	if(bodypart_owner.limb_id == BODYPART_ID_SYNTH) // disguised = no head cover
-		return TRUE
-	if(IS_ROBOTIC_LIMB(bodypart_owner)) // works on android limbs too
-		return TRUE
-	return FALSE
-
-/datum/bodypart_overlay/mutant/synth_head_cover
-	feature_key = "synth_head_cover"
-	layers = ALL_EXTERNAL_OVERLAYS
-
-//-- accessories --
-//the path to the icon for the head covers
-/datum/sprite_accessory/synth_head_cover
-	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
-
-//head covers
-/datum/sprite_accessory/synth_head_cover/none // for those that don't want a cover.
-	name = "None"
-	icon_state = null
-
-//A kind of helmet looking thing with a big black screen/face cover thing. I dunno what else to call this.
-/datum/sprite_accessory/synth_head_cover/helm
-	name = "Helm"
-	icon_state = "helm"
-
-//helm with white plastic on the sides.
-/datum/sprite_accessory/synth_head_cover/helm_white
-	name = "White Helm"
-	icon_state = "helm_white"
-
-//just the IPC TV that is already in the code base
-/datum/sprite_accessory/synth_head_cover/tv_blank
-	name = "Tv_blank"
-	icon_state = "tv_blank"
-
-//a cool design inspired from cloak pilots in titanfall 2, *sorta*.
-/datum/sprite_accessory/synth_head_cover/cloakp
-	name = "Cloakp"
-	icon_state = "cloakp"
-
-//GUMTEETH's head
-/datum/sprite_accessory/synth_head_cover/gumhead
-	name = "GUMHEAD"
-	icon_state = "gumhead"
-
-// add more here!!
-
 
 #undef BODYPART_ID_SYNTH

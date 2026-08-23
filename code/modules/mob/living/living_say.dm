@@ -211,6 +211,13 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			succumb()
 		return
 
+	var/static/regex/shout_regex = regex(@"\w+\s*(!+)\s*$\s*", "i")
+	if(!message_mods[SHOUT_MODE] && shout_regex.Find(message))
+		message_mods[SHOUT_MODE] = length_char(shout_regex.group[1]) > 1 ? MODE_YELL : MODE_SHOUT
+		message_range = floor(message_range * (message_mods[SHOUT_MODE] ? 2 : 1.5))
+		if(message_mods[SHOUT_MODE] == MODE_YELL)
+			spans |= SPAN_YELL
+
 	//Get which verb is prefixed to the message before radio but after most modifications
 	message_mods[SAY_MOD_VERB] = say_mod(message, message_mods)
 
@@ -320,20 +327,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 		if(outside_dist > 0)
 			raw_message = stars(raw_message)
-
-		if(client?.prefs?.read_preference(/datum/preference/toggle/distance_text_shrinking))
-			// Based on raw distance, change the font size to indicate further speech
-			var/span_to_add = null
-			switch(raw_dist)
-				if(5)
-					span_to_add = "distant_t1"
-				if(6)
-					span_to_add = "distant_t2"
-				if(7 to INFINITY)
-					span_to_add = "distant_t3"
-			if(span_to_add)
-				spans = spans?.Copy() || list() // avoid mutating the list for other hearers
-				spans |= span_to_add
 
 	// we need to send this signal before compose_message() is used since other signals need to modify
 	// the raw_message first. After the raw_message is passed through the various signals, it's ready to be formatted
@@ -558,32 +551,6 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			return ITALICS | REDUCE_RANGE
 
 	return NONE
-
-/mob/living/say_mod(input, list/message_mods = list())
-	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
-		. = verb_whisper
-	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT && !HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
-		. = "[verb_whisper] in [p_their()] last breath"
-	else if(message_mods[MODE_SING])
-		. = verb_sing
-	// Any subtype of slurring in our status effects make us "slur"
-	else if(locate(/datum/status_effect/speech/slurring) in status_effects)
-		if (HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "loosely signs"
-		else
-			. = "slurs"
-	else if(has_status_effect(/datum/status_effect/speech/stutter))
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "shakily signs"
-		else
-			. = "stammers"
-	else if(has_status_effect(/datum/status_effect/speech/stutter/derpspeech))
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			. = "incoherently signs"
-		else
-			. = "gibbers"
-	else
-		. = ..()
 
 /**
  * Living level whisper.
