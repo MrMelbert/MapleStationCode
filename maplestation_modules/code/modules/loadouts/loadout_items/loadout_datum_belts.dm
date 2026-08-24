@@ -76,7 +76,6 @@
 /datum/loadout_item/belts/chest_pouch/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	// If we have a belt, we can replace it with our own belt
 	if(outfit.is_wearing_beltpack() || outfit.replace_belt_keep_old(item_path))
-		outfit.back = item_path
 		return
 	// Otherwise if there was something in the way, let them know
 	if(outfit.belt)

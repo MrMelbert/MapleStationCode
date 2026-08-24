@@ -19,8 +19,7 @@
 
 /datum/loadout_item/back/pack/insert_path_into_outfit(datum/outfit/outfit, list/item_details, mob/living/carbon/human/equipper, visuals_only, job_equipping_step)
 	// If we have a backpack, we can replace it with our own backpack
-	if(outfit.is_wearing_backpack() || outfit.replace_backpack_keep_old(item_path))
-		outfit.back = get_backpack(outfit)
+	if(outfit.is_wearing_backpack() || outfit.replace_backpack_keep_old(get_backpack(outfit)))
 		return
 	// Otherwise if there was something in the way, let them know
 	if(outfit.back)

@@ -506,6 +506,16 @@
 		belt = replaced_belt
 		return TRUE
 
+	// try to fit into suit storage
+	if(suit && is_type_in_typecache(replaced_belt, GLOB.any_suit_storage))
+		if(!suit_store)
+			suit_store = replaced_belt
+			return TRUE
+		if(suit_store::w_class <= WEIGHT_CLASS_NORMAL)
+			LAZYADD(backpack_contents, suit_store)
+			suit_store = replaced_belt
+			return TRUE
+
 	// try to move to pockets
 	if(belt::w_class <= WEIGHT_CLASS_SMALL)
 		if(!l_pocket)
@@ -618,5 +628,8 @@
 /datum/outfit/proc/is_wearing_beltpack()
 	if(ispath(belt, /obj/item/storage))
 		var/obj/item/storage/belt/beltpack = belt
+		return ispath(beltpack::storage_type, /datum/storage/backpack)
+	if(ispath(suit_store, /obj/item/storage))
+		var/obj/item/storage/belt/beltpack = suit_store
 		return ispath(beltpack::storage_type, /datum/storage/backpack)
 	return FALSE
