@@ -336,7 +336,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 ///RPG Magic.
 /datum/material/mythril
 	name = "mythril"
-	desc = "How this even exists is byond me"
+	desc = "How this even exists is byond me."
 	color = "#f2d5d7"
 	greyscale_colors = "#f2d5d7"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
@@ -365,7 +365,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 //formed when freon react with o2, emits a lot of plasma when heated
 /datum/material/hot_ice
 	name = "hot ice"
-	desc = "A weird kind of ice, feels warm to the touch"
+	desc = "A crystalline solid formed when Freon reacts with Oxygen. Extremely flammable, and will easily combust when exposed to heat."
 	color = "#88cdf1"
 	greyscale_colors = "#88cdf196"
 	alpha = 150
@@ -389,8 +389,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	return TRUE
 
 /datum/material/metalhydrogen
-	name = "Metal Hydrogen"
-	desc = "Solid metallic hydrogen. Some say it should be impossible"
+	name = "metal hydrogen"
+	desc = "Hydrogen in a metallic state, formed under extreme pressure. Some say achieving this state is impossible."
 	color = "#f2d5d7"
 	greyscale_colors = "#f2d5d796"
 	alpha = 150
@@ -561,7 +561,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 /datum/material/zaukerite
 	name = "zaukerite"
-	desc = "A light absorbing crystal"
+	desc = "A light absorbing crystal formed out of Zauker. Vaguely toxic, like the gas itself."
 	color = COLOR_ALMOST_BLACK
 	greyscale_colors = COLOR_ALMOST_BLACK
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)

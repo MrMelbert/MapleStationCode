@@ -126,7 +126,7 @@
 	greyscale_colors = "#c6c0b5"
 
 /obj/machinery/portable_atmospherics/canister/antinoblium
-	name = "\improper Antinoblium canister"
+	name = "\improper Anti-Noblium canister"
 	gas_type = /datum/gas/antinoblium
 	filled = 1
 	icon_state = "/obj/machinery/portable_atmospherics/canister/antinoblium"
@@ -213,7 +213,7 @@
 	greyscale_colors = "#e9ff5c#f4fce8"
 
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide
-	name = "\improper Nitrous oxide canister"
+	name = "\improper Nitrous Oxide canister"
 	gas_type = /datum/gas/nitrous_oxide
 	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrous_oxide"
 	post_init_icon_state = ""
@@ -229,7 +229,7 @@
 	greyscale_colors = "#7b4732"
 
 /obj/machinery/portable_atmospherics/canister/nob
-	name = "\improper Hyper-noblium canister"
+	name = "\improper Hyper-Noblium canister"
 	gas_type = /datum/gas/hypernoblium
 	icon_state = "/obj/machinery/portable_atmospherics/canister/nob"
 	post_init_icon_state = ""
@@ -253,7 +253,7 @@
 	greyscale_colors = "#2786e5"
 
 /obj/machinery/portable_atmospherics/canister/proto_nitrate
-	name = "\improper Proto Nitrate canister"
+	name = "\improper Proto-Nitrate canister"
 	gas_type = /datum/gas/proto_nitrate
 	filled = 1
 	icon_state = "/obj/machinery/portable_atmospherics/canister/proto_nitrate"
