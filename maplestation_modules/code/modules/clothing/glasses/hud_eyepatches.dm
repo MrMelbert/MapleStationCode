@@ -1,8 +1,10 @@
 // Eyepatches can also be worn with huds
 /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch
 	name = "security eyepatch HUD" // just a rename.
+	wear_loc = "eye"
 
 /obj/item/clothing/glasses/eyepatch
+	wear_loc = "eye"
 
 /obj/item/clothing/glasses/eyepatch/Initialize(mapload)
 	. = ..()

@@ -31,6 +31,10 @@
 	species_exception = list(/datum/species/golem)
 	armor_type = /datum/armor/suit_apron
 
+/obj/item/clothing/suit/apron/Initialize(mapload)
+	. = ..()
+	create_storage(storage_type = /datum/storage/coatpocket)
+
 /obj/item/clothing/suit/apron/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
 	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "apron_worn")
 	return replace_icon_legs(base_icon, legs)
@@ -69,6 +73,7 @@
 /obj/item/clothing/suit/apron/overalls/grey
 	greyscale_colors = COLOR_JOB_DEFAULT
 	icon_state = "/obj/item/clothing/suit/apron/overalls/grey"
+
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"
@@ -84,6 +89,7 @@
 	strip_delay = 60
 	equip_delay_other = 40
 	max_integrity = 250
+	pocket_slots = 3
 
 /obj/item/clothing/suit/jacket/capjacket/Initialize(mapload)
 	. = ..()
@@ -106,6 +112,7 @@
 	)
 	toggle_noun = "sleeves"
 	species_exception = list(/datum/species/golem)
+	pocket_slots = 3
 
 //Cook
 /datum/armor/toggle_chef
@@ -195,6 +202,7 @@
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/t_scanner,
 		/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
+		/obj/item/storage/belt/chest_pouch,
 	)
 	resistance_flags = NONE
 	species_exception = list(/datum/species/golem)
@@ -439,6 +447,10 @@
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/extinguisher,
 	)
+
+/obj/item/clothing/suit/atmos_overalls/Initialize(mapload)
+	. = ..()
+	create_storage(storage_type = /datum/storage/coatpocket)
 
 /obj/item/clothing/suit/atmos_overalls/generate_digitigrade_icons(icon/base_icon, greyscale_colors)
 	var/icon/legs = icon(SSgreyscale.GetColoredIconByType(/datum/greyscale_config/digitigrade, greyscale_colors), "apron_worn")

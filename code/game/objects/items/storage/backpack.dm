@@ -298,6 +298,16 @@
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
 	inhand_icon_state = "satchel-norm"
+	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
+
+/obj/item/storage/backpack/satchel/equipped(mob/user, slot, initial)
+	if(slot & ITEM_SLOT_BELT)
+		AddComponent(/datum/component/slows_with_backpack)
+	return ..()
+
+/obj/item/storage/backpack/satchel/dropped(mob/user, silent)
+	. = ..()
+	qdel(GetComponent(/datum/component/slows_with_backpack))
 
 /obj/item/storage/backpack/satchel/leather
 	name = "leather satchel"
@@ -412,7 +422,7 @@
 	inhand_icon_state = "duffel"
 	actions_types = list(/datum/action/item_action/zipper)
 	action_slots = ALL
-	storage_type = /datum/storage/duffel
+	storage_type = /datum/storage/backpack/duffel
 	// How much to slow you down if your bag isn't zipped up
 	var/zip_slowdown = 1
 	/// If this bag is zipped (contents hidden) up or not
@@ -649,7 +659,7 @@
 	desc = "A large duffel bag for holding extra tactical supplies. It contains an oiled plastitanium zipper for maximum speed tactical zipping, and is better balanced on your back than an average duffelbag. Can hold two bulky items!"
 	icon_state = "duffel-syndie"
 	inhand_icon_state = "duffel-syndieammo"
-	storage_type = /datum/storage/duffel/syndicate
+	storage_type = /datum/storage/backpack/duffel/syndicate
 	resistance_flags = FIRE_PROOF
 	// Less slowdown while unzipped. Still bulky, but it won't halve your movement speed in an active combat situation.
 	zip_slowdown = 0.3
@@ -775,7 +785,7 @@
 
 // For ClownOps.
 /obj/item/storage/backpack/duffelbag/clown/syndie
-	storage_type = /datum/storage/duffel/syndicate
+	storage_type = /datum/storage/backpack/duffel/syndicate
 
 /obj/item/storage/backpack/duffelbag/clown/syndie/PopulateContents()
 	new /obj/item/modular_computer/pda/clown(src)

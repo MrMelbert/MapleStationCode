@@ -64,7 +64,7 @@
 	suit = /obj/item/clothing/suit/toggle/noble
 	shoes = /obj/item/clothing/shoes/noble
 	id_trim = /datum/id_trim/job/noble_ambassador
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 
 	backpack_contents = list(/obj/item/melee/baton/telescopic = 1)
 

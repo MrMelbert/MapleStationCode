@@ -8,6 +8,7 @@
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	resistance_flags = NONE
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
+	wear_loc = "wrists"
 
 /obj/item/clothing/gloves/color/normal_yellow
 	name = "yellow gloves"

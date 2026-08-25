@@ -466,6 +466,7 @@
 /obj/item/storage/pill_bottle/Initialize(mapload)
 	. = ..()
 	atom_storage.allow_quick_gather = TRUE
+	atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
 	atom_storage.set_holdable(list(
 		/obj/item/reagent_containers/pill,
 		/obj/item/food/bait/natural,
@@ -802,7 +803,7 @@
 	inhand_icon_state = "contsolid"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/test_tube_rack/Initialize(mapload)
 	. = ..()

@@ -9,7 +9,7 @@
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_TINY
 	///Currently stored blulespace crystal, if any. Required to use the pointer through walls
 	var/obj/item/stack/ore/bluespace_crystal/crystal_lens
 	///Currently stored micro-laser diode

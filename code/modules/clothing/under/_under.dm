@@ -105,16 +105,16 @@
 	if(accessory_overlay)
 		. += accessory_overlay
 
-/obj/item/clothing/under/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
-	if(has_sensor == BROKEN_SENSORS && istype(attacking_item, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/cabling = attacking_item
+/obj/item/clothing/under/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(has_sensor == BROKEN_SENSORS && istype(tool, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/cabling = tool
 		to_chat(user, span_notice("You repair the suit sensors on [src] with [cabling]."))
 		cabling.use(1)
 		has_sensor = HAS_SENSORS
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
 
-	if(istype(attacking_item, /obj/item/clothing/accessory))
-		return attach_accessory(attacking_item, user)
+	if(istype(tool, /obj/item/clothing/accessory))
+		return attach_accessory(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 	return ..()
 

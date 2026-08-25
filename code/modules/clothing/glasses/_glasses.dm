@@ -177,6 +177,7 @@
 	actions_types = list(/datum/action/item_action/flip)
 	dog_fashion = /datum/dog_fashion/head/eyepatch
 	custom_materials = null
+	wear_loc = "eye"
 
 /obj/item/clothing/glasses/eyepatch/attack_self(mob/user, modifiers)
 	. = ..()
@@ -220,6 +221,7 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	clothing_traits = list(TRAIT_NEARSIGHTED_CORRECTED)
+	wear_loc = "eye"
 
 /obj/item/clothing/glasses/material
 	name = "optical material scanner"

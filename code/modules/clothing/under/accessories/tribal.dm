@@ -10,6 +10,7 @@
 	desc = "A skull shaped ornament, intended to protect the important things in life."
 	icon_state = "skull"
 	attachment_slot = GROIN
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/clothing/accessory/skilt
 	name = "Sinew Skirt"
@@ -17,3 +18,4 @@
 	icon_state = "skilt"
 	minimize_when_attached = FALSE
 	attachment_slot = GROIN
+	w_class = WEIGHT_CLASS_NORMAL

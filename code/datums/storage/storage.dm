@@ -439,7 +439,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(!can_insert(to_insert, user, messages = messages, force = force))
 		return FALSE
 
-	SEND_SIGNAL(parent, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
+	SEND_SIGNAL(parent, COMSIG_ATOM_STORED_ITEM, to_insert, user, force)
 	SEND_SIGNAL(src, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
@@ -512,7 +512,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/item_insertion_feedback(mob/user, obj/item/thing, override = FALSE)
 	if(animated)
-		animate_parent()
+		animate_storage()
 
 	if(override)
 		return
@@ -557,7 +557,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		thing.moveToNullspace()
 
 	if(animated)
-		animate_parent()
+		animate_storage()
 
 	refresh_views()
 	parent.update_appearance()
@@ -836,10 +836,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		user.active_storage.hide_contents(user)
 		hide_contents(user)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
-	if(ishuman(user))
-		var/mob/living/carbon/human/hum = user
-		if(hum.l_store == parent || hum.r_store == parent)
-			return
+	// Non-module change: Commented out because it messes with pocket pouches
+	// if(ishuman(user))
+	// 	var/mob/living/carbon/human/hum = user
+	// 	if(hum.l_store == parent || hum.r_store == parent)
+	// 		return
 	if(parent.loc == user)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -915,7 +916,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return FALSE
 
 	if(animated)
-		animate_parent()
+		animate_storage()
 
 	if(rustle_sound)
 		play_storage_sound() // NON-MODULE CHANGE
@@ -1107,9 +1108,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			parent.balloon_alert(user, "will now pick up one at a time")
 
 /// Gives a spiffy animation to our parent to represent opening and closing.
-/datum/storage/proc/animate_parent()
-	var/matrix/old_matrix = parent.transform
-	animate(parent, time = 1.5, loop = 0, transform = parent.transform.Scale(1.07, 0.9))
+/datum/storage/proc/animate_storage(atom/animate = parent)
+	var/matrix/old_matrix = animate.transform
+	animate(animate, time = 1.5, loop = 0, transform = animate.transform.Scale(1.07, 0.9))
 	animate(time = 2, transform = old_matrix)
 
 /// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to drop items out of our storage if they're suddenly too heavy.
