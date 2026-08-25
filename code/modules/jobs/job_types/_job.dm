@@ -392,7 +392,7 @@
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	// Let's make sure the guy has somewhere to put all the stuff we're about to give him
-	ensure_back_or_belt_storage()
+	ensure_back_or_belt_storage(backpack, satchel)
 	//converts the uniform string into the path we'll wear, whether it's the skirt or regular variant
 	var/holder
 	if(H.jumpsuit_style == PREF_SKIRT)

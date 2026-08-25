@@ -583,36 +583,45 @@
 
 /// Ensures the outfit has a backpack or belt storage, if not it will add one to the outfit
 /// Returns TRUE if it was able to ensure storage, FALSE if it failed
-/datum/outfit/proc/ensure_back_or_belt_storage()
+/datum/outfit/proc/ensure_back_or_belt_storage(default_backpack = /obj/item/storage/backpack, default_beltpack = /obj/item/storage/belt/chest_pouch)
 	if(is_wearing_backpack() || is_wearing_beltpack() || ispath(back, /obj/item/mod/control))
 		return TRUE
 
 	if(!back)
-		back = /obj/item/storage/backpack
+		back = default_backpack
 		return TRUE
 
 	if(!belt)
-		belt = /obj/item/storage/belt/chest_pouch
+		belt = default_beltpack
 		return TRUE
+
+	if(suit && is_type_in_typecache(default_beltpack, GLOB.any_suit_storage))
+		if(!suit_store)
+			suit_store = default_beltpack
+			return TRUE
+		if(suit_store::w_class <= WEIGHT_CLASS_NORMAL)
+			LAZYADD(backpack_contents, suit_store)
+			suit_store = default_beltpack
+			return TRUE
 
 	if(!l_hand)
 		l_hand = back
-		back = /obj/item/storage/backpack
+		back = default_backpack
 		return TRUE
 
 	if(!r_hand)
 		r_hand = back
-		back = /obj/item/storage/backpack
+		back = default_backpack
 		return TRUE
 
 	if(back::w_class <= WEIGHT_CLASS_NORMAL)
 		LAZYADD(backpack_contents, back)
-		back = /obj/item/storage/backpack
+		back = default_backpack
 		return TRUE
 
 	if(belt::w_class <= WEIGHT_CLASS_NORMAL)
 		LAZYADD(backpack_contents, belt)
-		belt = /obj/item/storage/belt/chest_pouch
+		belt = default_beltpack
 		return TRUE
 
 	return FALSE
