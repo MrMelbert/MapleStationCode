@@ -50,7 +50,16 @@
 /// Adds a box around whatever message you're sending in chat. Can apply color and/or additional classes. Available colors: red, green, blue, purple. Use it like red_box
 #define custom_boxed_message(classes, str) ("<div class='boxed_message " + classes + "'>" + str + "</div>")
 /// Makes a fieldset with a neaty styled name. Can apply additional classes.
-#define fieldset_block(title, content, classes) ("<fieldset class='fieldset " + classes + "'><legend class='fieldset_legend'>" + title + "</legend>" + content + "</fieldset>")
+#define fieldset_block(title, content, classes) ("\
+	<fieldset class='fieldset " + classes + "'>\
+	<legend class='fieldset_legend'>" + title + "</legend>" + content + "</fieldset>"\
+)
+/// Makes a fieldset with a neaty styled name. Can apply additional classes.
+#define dual_fieldset_block(title_top, title_bottom, content, classes) ("\
+	<fieldset class='fieldset dual_fieldset " + classes + "'>\
+	<legend class='fieldset_legend'>" + title_top + "</legend><span class='fieldset_legend fieldset_legend-bottom'>" + title_bottom + "</span>\
+	<span class='dual_fieldset-content'>" + content + "</span></fieldset>"\
+)
 /// Makes a horizontal line with text in the middle
 #define separator_hr(str) ("<div class='separator'>" + str + "</div>")
 #define separator_hr_danger(str) ("<div class='separator danger'>" + str + "</div>")

@@ -1003,12 +1003,15 @@ em {
   border-bottom: 1px dashed;
 }
 
+$boxed_message_color: hsl(220, 10%, 10%);
+$background_chat_color: #151515;
+
 .fieldset_legend {
   position: relative;
   max-width: 95%;
   font-size: 120%;
   padding: 0.2em 0.5em;
-  background: #151515; // Chat background color
+  background: $background_chat_color;
   border: 1px solid;
   border-color: inherit;
   border-radius: 0.33em;
@@ -1023,14 +1026,43 @@ em {
     left: 0;
     height: 1.15em;
     width: 100%;
-    background: #151515; // Chat background color
+    background: $background_chat_color;
     transform: translateY(-50%) scaleX(1.05);
     z-index: -1;
   }
 }
 
+.fieldset_legend-bottom {
+  position: absolute;
+  right: 1rem;
+  bottom: -1em;
+  padding-inline: 0.5rem;
+  font-size: 1.1rem;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 1.15em;
+    width: 100%;
+    background: $background_chat_color;
+    transform: translateY(50%) scaleX(1.05);
+    z-index: -1;
+  }
+}
+
+.dual_fieldset {
+  position: relative;
+  margin-bottom: 1.5em;
+}
+
+.dual_fieldset-content {
+  display: block;
+  max-width: 95%;
+}
+
 .boxed_message {
-  background: hsl(220, 10%, 10%);
+  background: $boxed_message_color;
   border: 1em * calc(1px / 12px) solid;
   border-left: 1em * calc(4px / 12px) solid;
   border-color: hsla(220, 40%, 75%, 0.25);

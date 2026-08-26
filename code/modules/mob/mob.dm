@@ -574,10 +574,17 @@
 	if(!result_combined)
 		var/list/result = examinify.examine(src)
 		var/atom_title = examinify.examine_title(src, thats = TRUE, href = TRUE)
+		var/atom_subtitle = examinify.examine_subtitle(src)
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
 		if(removes_double_click)
 			result += span_notice("<i>You can <a href=byond://?src=[REF(src)];run_examinate=[REF(examinify)]>examine</a> [examinify] closer...</i>")
-		result_combined = (atom_title ? fieldset_block("[atom_title]", jointext(result, "<br>"), "boxed_message") : boxed_message(jointext(result, "<br>")))
+		if(atom_title)
+			if(atom_subtitle)
+				result_combined = dual_fieldset_block("[atom_title]", "[atom_subtitle]", jointext(result, "<br>"), "boxed_message")
+			else
+				result_combined = fieldset_block("[atom_title]", jointext(result, "<br>"), "boxed_message")
+		else
+			result_combined = boxed_message(jointext(result, "<br>"))
 
 	if(!blind)
 		examine_feedback(examinify, closer_look)

@@ -170,6 +170,10 @@
 
 	return "[examine_icon ? "[examine_icon] " : ""][thats ? "[examine_thats] ":""]<em>[href_text][get_examine_name(user)][href_text ? "</a>" : ""]</em>"
 
+/// Returns a string to displayed in the bottom *right* of the examine block (where the title is normally in the top left).
+/atom/proc/examine_subtitle(mob/user)
+	return ""
+
 /**
  * Used to compose hrefs attached to the name of the item itself in examine
  *
