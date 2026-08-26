@@ -56,7 +56,7 @@
 )
 /// Makes a fieldset with a neaty styled name. Can apply additional classes.
 #define dual_fieldset_block(title_top, title_bottom, content, classes) ("\
-	<fieldset class='fieldset dual_fieldset " + classes + "'>\
+	<fieldset class='fieldset " + classes + " dual_fieldset'>\
 	<legend class='fieldset_legend'>" + title_top + "</legend><span class='fieldset_legend fieldset_legend-bottom'>" + title_bottom + "</span>\
 	<span class='dual_fieldset-content'>" + content + "</span></fieldset>"\
 )

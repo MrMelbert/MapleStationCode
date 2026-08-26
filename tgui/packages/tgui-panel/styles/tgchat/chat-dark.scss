@@ -1037,7 +1037,7 @@ $background_chat_color: #151515;
   right: 1rem;
   bottom: -1em;
   padding-inline: 0.5rem;
-  font-size: 1.1rem;
+  //font-size: 90%;
 
   &:before {
     content: '';
@@ -1049,16 +1049,6 @@ $background_chat_color: #151515;
     transform: translateY(50%) scaleX(1.05);
     z-index: -1;
   }
-}
-
-.dual_fieldset {
-  position: relative;
-  margin-bottom: 1.5em;
-}
-
-.dual_fieldset-content {
-  display: block;
-  max-width: 95%;
 }
 
 .boxed_message {
@@ -1094,6 +1084,16 @@ $background_chat_color: #151515;
     margin: 0.5em -0.75em;
     border-color: inherit;
   }
+}
+
+.dual_fieldset {
+  position: relative;
+  margin-bottom: 1.5em;
+}
+
+.dual_fieldset-content {
+  display: block;
+  margin-bottom: 0.25em;
 }
 
 // Provides a horizontal bar with text in the middle

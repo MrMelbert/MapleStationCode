@@ -20,6 +20,10 @@
 /obj/item/card/emag/get_displayed_name(honorifics = FALSE)
 	return name // That's Grey Tider (as "cryptographic sequencer")
 
+/obj/item/card/emag/examine_subtitle(mob/user)
+	// return span_red("Cybersun Industries")
+	return icon2html(src, user)
+
 /obj/item/card/emag/attack_self(mob/user) //for traitors with balls of plastitanium
 	if(Adjacent(user))
 		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show [src]."))

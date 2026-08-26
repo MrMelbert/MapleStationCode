@@ -1025,35 +1025,18 @@ $background_chat_color: #ffffff;
   right: 1rem;
   bottom: -1em;
   padding-inline: 0.5rem;
-  font-size: 1.1rem;
+  //font-size: 90%;
 
   &:before {
     content: '';
     position: absolute;
-    left: 0.05rem;
+    left: 0;
     height: 1.15em;
-    width: 95%;
+    width: 100%;
     background: $background_chat_color;
     transform: translateY(50%) scaleX(1.05);
     z-index: -1;
   }
-}
-
-.fieldset_legend-bottom {
-  position: absolute;
-  right: 1rem;
-  bottom: -0.5em;
-  padding-inline: 0.5rem;
-}
-
-.dual_fieldset {
-  position: relative;
-  margin-bottom: 1.5em;
-}
-
-.dual_fieldset-content {
-  display: block;
-  max-width: 95%;
 }
 
 .boxed_message {
@@ -1079,6 +1062,16 @@ $background_chat_color: #ffffff;
     background: hsl(260, 100%, 97.5%);
     border-color: hsla(260, 100%, 50%, 0.5);
   }
+}
+
+.dual_fieldset {
+  position: relative;
+  margin-bottom: 1.5em;
+}
+
+.dual_fieldset-content {
+  display: block;
+  margin-bottom: 0.25em;
 }
 
 // Provides a horizontal bar with text in the middle

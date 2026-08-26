@@ -37,6 +37,10 @@
 	. = ..()
 	register_item_context()
 
+/obj/item/healthanalyzer/examine_subtitle(mob/user)
+	// return span_green("Nanotrasen-DeForest")
+	return icon2html(src, user)
+
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()
 	if(src.mode != SCANNER_NO_MODE)
