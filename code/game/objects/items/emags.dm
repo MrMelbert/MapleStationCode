@@ -21,8 +21,7 @@
 	return name // That's Grey Tider (as "cryptographic sequencer")
 
 /obj/item/card/emag/examine_subtitle(mob/user)
-	// return span_red("Cybersun Industries")
-	return icon2html(src, user)
+	return span_red("Cybersun Industries")
 
 /obj/item/card/emag/attack_self(mob/user) //for traitors with balls of plastitanium
 	if(Adjacent(user))

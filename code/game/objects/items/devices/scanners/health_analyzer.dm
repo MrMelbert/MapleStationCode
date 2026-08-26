@@ -38,8 +38,7 @@
 	register_item_context()
 
 /obj/item/healthanalyzer/examine_subtitle(mob/user)
-	// return span_green("Nanotrasen-DeForest")
-	return icon2html(src, user)
+	return span_green("Nanotrasen-DeForest")
 
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()
