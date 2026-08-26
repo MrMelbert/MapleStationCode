@@ -11,6 +11,7 @@
 	step_energy_drain = 6
 	accesses = list(ACCESS_MECH_SCIENCE, ACCESS_MECH_MEDICAL)
 	pivot_step = TRUE
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/vehicle/sealed/mecha/odysseus/moved_inside(mob/living/carbon/human/human)
 	. = ..()

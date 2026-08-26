@@ -5,7 +5,7 @@
  */
 /obj/item/surgery_tray
 	name = "surgery tray"
-	desc = "A Deforest brand medical cart. It is a folding model, meaning the wheels on the bottom can be retracted and the body used as a tray."
+	desc = "A DeForest brand medical cart. It is a folding model, meaning the wheels on the bottom can be retracted and the body used as a tray."
 	icon = 'icons/obj/medicart.dmi'
 	icon_state = "tray"
 	w_class = WEIGHT_CLASS_BULKY
@@ -14,6 +14,7 @@
 	pass_flags = NONE
 	drop_sound = 'maplestation_modules/sound/items/drop/axe.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/axe.ogg'
+	manufacturer = /datum/manufacturer/deforest
 
 	/// If true we're currently portable
 	var/is_portable = TRUE
@@ -183,7 +184,7 @@
 
 /obj/item/surgery_tray/full/morgue
 	name = "autopsy tray"
-	desc = "A Deforest brand surgery tray, made for use in morgues. It is a folding model, \
+	desc = "A DeForest brand surgery tray, made for use in morgues. It is a folding model, \
 		meaning the wheels on the bottom can be extended outwards, making it a cart."
 
 /obj/item/surgery_tray/full/morgue/populate_contents()

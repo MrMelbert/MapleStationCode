@@ -893,6 +893,7 @@
 	other_delay = 1 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 2)
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/item/stack/medical/bandage/makeshift
 	name = "makeshift bandage"

@@ -6,6 +6,7 @@
 	circuit = /obj/item/circuitboard/computer/operating
 
 	light_color = LIGHT_COLOR_GREEN
+	manufacturer = /datum/manufacturer/deforest
 
 	/// Linked operating table, if any
 	var/obj/structure/table/optable/table

@@ -9,7 +9,8 @@
 	icon_screen = "crew"
 	icon_keyboard = "med_key"
 	circuit = /obj/item/circuitboard/computer/crew
-	light_color = LIGHT_COLOR_BLUE
+	light_color = LIGHT_COLOR_GREEN
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/machinery/computer/crew/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()

@@ -19,6 +19,8 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	interaction_flags_click = NEED_LITERACY|NEED_LIGHT|ALLOW_RESTING
+	manufacturer = /datum/manufacturer/deforest
+
 	/// Verbose/condensed
 	var/mode = SCANNER_VERBOSE
 	/// HEALTH/WOUND
@@ -36,9 +38,6 @@
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
 	register_item_context()
-
-/obj/item/healthanalyzer/examine_subtitle(mob/user)
-	return span_green("Nanotrasen-DeForest")
 
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()

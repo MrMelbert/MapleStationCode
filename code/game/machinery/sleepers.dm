@@ -14,6 +14,7 @@
 
 	payment_department = ACCOUNT_MED
 	fair_market_price = 5
+	manufacturer = /datum/manufacturer/deforest
 
 	///How much chems is allowed to be in a patient at once, before we force them to wait for the reagent to process.
 	var/efficiency = 1
@@ -410,6 +411,7 @@
 	base_icon_state = "sleeper_s"
 	controls_inside = TRUE
 	deconstructable = TRUE
+	manufacturer = /datum/manufacturer/syndicate/interdyne
 
 ///Fully upgraded variant, the circuit using tier 4 parts.
 /obj/machinery/sleeper/syndie/fullupgrade
@@ -424,13 +426,16 @@
 
 /obj/machinery/sleeper/party
 	name = "party pod"
-	desc = "'Sleeper' units were once known for their healing properties, until a lengthy investigation revealed they were also dosing patients with deadly lead acetate. This appears to be one of those old 'sleeper' units repurposed as a 'Party Pod'. It’s probably not a good idea to use it."
+	desc = "'Sleeper' units were once known for their healing properties, until a lengthy investigation \
+		revealed they were also dosing patients with deadly lead acetate. This appears to be one of those old 'sleeper' units \
+		repurposed as a 'Party Pod'. It's probably not a good idea to use it."
 	icon_state = "partypod"
 	base_icon_state = "partypod"
 	circuit = /obj/item/circuitboard/machine/sleeper/party
 	controls_inside = TRUE
 	deconstructable = TRUE
 	enter_message = span_boldnotice("You're surrounded by some funky music inside the chamber. You zone out as you feel waves of krunk vibe within you.")
+	manufacturer = null
 
 	//Exclusively uses non-lethal, "fun" chems. At an obvious downside.
 	possible_chems = list(

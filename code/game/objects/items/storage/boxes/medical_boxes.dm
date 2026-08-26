@@ -143,6 +143,7 @@
 	illustration = null
 	w_class = WEIGHT_CLASS_SMALL
 	custom_price = PAYCHECK_CREW * 1.75
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/item/storage/box/bandages/Initialize(mapload)
 	. = ..()

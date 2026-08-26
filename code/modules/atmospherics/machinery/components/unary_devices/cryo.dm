@@ -72,6 +72,7 @@
 /// Cryo cell
 /obj/machinery/cryo_cell
 	name = "cryo cell"
+	desc = "A cryogenic restoration chamber. Often filled with Cryoxadone to nurse all manner of injuries and ailments."
 	icon = 'icons/obj/medical/cryogenics.dmi'
 	icon_state = "pod-off"
 	density = TRUE
@@ -87,6 +88,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 1.5
 	flags_1 = PREVENT_CLICK_UNDER_1 | IGNORE_TURF_PIXEL_OFFSET_1
 	interaction_flags_mouse_drop = NEED_DEXTERITY
+	manufacturer = /datum/manufacturer/deforest
 
 	///If TRUE will eject the mob once healing is complete
 	var/autoeject = TRUE

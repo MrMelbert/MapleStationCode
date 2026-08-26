@@ -49,6 +49,7 @@
 	light_range = 1.5
 	light_power = 0.75
 	light_color = LIGHT_COLOR_FAINT_CYAN
+	manufacturer = /datum/manufacturer/deforest
 
 	/// Whether we perform an advanced scan on examine or not
 	var/advanced = FALSE

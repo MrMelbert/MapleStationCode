@@ -3,6 +3,8 @@
 	var/article
 	/// Text that appears preceding the name in examine()
 	var/examine_thats = "That's"
+	/// What company manufactured this atom - either can be a string or a manufacturer datum typepath
+	var/manufacturer
 
 /**
  * Called when a mob examines (shift click or verb) this atom
@@ -172,6 +174,10 @@
 
 /// Returns a string to displayed in the bottom *right* of the examine block (where the title is normally in the top left).
 /atom/proc/examine_subtitle(mob/user)
+	if(istext(manufacturer))
+		return manufacturer
+	if(ispath(manufacturer, /datum/manufacturer))
+		return GLOB.manufacturers[manufacturer]?.get_examine_format(user)
 	return ""
 
 /**
@@ -333,3 +339,23 @@
  */
 /atom/proc/get_visible_name(add_id_name = TRUE, force_real_name = FALSE)
 	return name
+
+GLOBAL_LIST_INIT_TYPED(manufacturers, /datum/manufacturer, init_subtypes_w_path_keys(/datum/manufacturer))
+
+/datum/manufacturer
+	var/name = "Unknown"
+	var/span = "info"
+
+/datum/manufacturer/proc/get_examine_format(mob/user)
+	return "<span class='[span]'><i>[name]</i></span>"
+
+/datum/manufacturer/deforest
+	name = "Nanotrasen-Deforest"
+	span = "green"
+
+/datum/manufacturer/syndicate
+	name = "Syndicate"
+	span = "red"
+
+/datum/manufacturer/syndicate/interdyne
+	name = "Interdyne Pharmaceuticals"
