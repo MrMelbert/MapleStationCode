@@ -53,6 +53,7 @@
 	fire_delay = gun_to_set.fire_delay
 	inhand_x_dimension = gun_to_set.inhand_x_dimension
 	inhand_y_dimension = gun_to_set.inhand_y_dimension
+	manufacturer = gun_to_set.manufacturer
 
 	if(istype(gun_to_set, /obj/item/gun/ballistic))
 		var/obj/item/gun/ballistic/ball_gun = gun_to_set

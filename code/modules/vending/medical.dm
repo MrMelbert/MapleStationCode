@@ -42,6 +42,7 @@
 	payment_department = ACCOUNT_MED
 	light_mask = "med-light-mask"
 	allow_custom = TRUE
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/item/vending_refill/medical
 	machine_name = "NanoMed Plus"
@@ -108,6 +109,7 @@
 	payment_department = ACCOUNT_MED
 	refill_canister = /obj/item/vending_refill/drugs
 	allow_custom = TRUE
+	manufacturer = /datum/manufacturer/deforest
 
 /obj/item/vending_refill/drugs
 	machine_name = "NanoDrug Plus"

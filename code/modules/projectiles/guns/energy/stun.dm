@@ -6,6 +6,7 @@
 	light_color = LIGHT_COLOR_DIM_YELLOW
 	ammo_type = list(/obj/item/ammo_casing/energy/electrode)
 	ammo_x_offset = 3
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/item/gun/energy/e_gun/advtaser
 	name = "hybrid taser"

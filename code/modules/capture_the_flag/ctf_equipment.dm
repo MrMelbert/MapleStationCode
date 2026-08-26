@@ -155,6 +155,7 @@
 	charge_sections = 5
 	ammo_x_offset = 2
 	shaded_charge = FALSE
+	manufacturer = null
 
 /obj/item/gun/energy/laser/instakill/Initialize(mapload)
 	. = ..()

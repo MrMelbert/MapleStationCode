@@ -50,6 +50,7 @@
 	desc = "A Nanotrasen hypersleep chamber - this one appears broken. \
 		There are exposed bolts for easy disassembly using a wrench."
 	icon_state = "sleeper-o"
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/structure/fluff/empty_sleeper/syndicate
 	icon_state = "sleeper_s-open"

@@ -35,6 +35,7 @@ GLOBAL_LIST_INIT(shower_mode_descriptions, list(
 	layer = ABOVE_WINDOW_LAYER
 	use_power = NO_POWER_USE
 	subsystem_type = /datum/controller/subsystem/processing/plumbing
+	manufacturer = /datum/manufacturer/nanotrasen
 	///Does the user want the shower on or off?
 	var/intended_on = FALSE
 	///Is the shower actually spitting out water currently

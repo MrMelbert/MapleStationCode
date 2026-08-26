@@ -481,7 +481,7 @@
 
 /obj/machinery/sleeper/stasis
 	name = "stasis pod"
-	desc = "An enclosed machine used stabilize patients and keep them in a state of stasis."
+	desc = "An enclosed machine used stabilize to patients, keeping them in a state of suspended animation."
 	icon = 'maplestation_modules/icons/obj/machines/sleeper.dmi'
 	icon_state = "stasis"
 	base_icon_state = "stasis"
@@ -743,7 +743,7 @@ GLOBAL_LIST_EMPTY(cryo_sleepers)
 
 /obj/machinery/sleeper/stasis/cryo
 	name = "long-term crew storage pod"
-	desc = "An enclosed machine designed to put subjects in a state of suspended animation for long-term storage."
+	desc = "An enclosed machine designed to put subjects in a state of extended suspended animation for long-term storage."
 	icon_state = "cryopod"
 	base_icon_state = "cryopod"
 	circuit = /obj/item/circuitboard/machine/sleeper/cryo

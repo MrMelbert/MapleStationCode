@@ -21,6 +21,7 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/medical_kiosk
 	payment_department = ACCOUNT_MED
+	manufacturer = /datum/manufacturer/deforest
 	var/obj/item/scanner_wand
 	/// How much it costs to use the kiosk by default.
 	var/default_price = 15          //I'm defaulting to a low price on this, but in the future I wouldn't have an issue making it more or less expensive.

@@ -129,6 +129,7 @@
 	atom_target.name = picked_item::name
 	atom_target.desc = picked_item::desc
 	atom_target.icon_state = picked_item::post_init_icon_state || picked_item::icon_state
+	atom_target.manufacturer = picked_item::manufacturer
 
 	if(isitem(atom_target))
 		var/obj/item/item_target = target

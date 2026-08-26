@@ -117,6 +117,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+	manufacturer = /datum/manufacturer/nanotrasen
 	var/list/active_portal_pairs
 	var/max_portal_pairs = 3
 

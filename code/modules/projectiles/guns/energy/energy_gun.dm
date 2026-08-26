@@ -9,6 +9,7 @@
 	ammo_x_offset = 3
 	dual_wield_spread = 60
 	light_color = LIGHT_COLOR_CYAN
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/item/gun/energy/e_gun/Initialize(mapload)
 	. = ..()
@@ -72,6 +73,7 @@
 	//You have no icons for energy types, you're a decloner
 	modifystate = FALSE
 	gun_flags = NOT_A_REAL_GUN
+	manufacturer = null
 
 /obj/item/gun/energy/e_gun/hos
 	name = "\improper X-01 MultiPhase Energy Gun"
@@ -117,6 +119,7 @@
 	weapon_weight = WEAPON_HEAVY
 	trigger_guard = TRIGGER_GUARD_NONE
 	ammo_x_offset = 2
+	manufacturer = null
 
 /obj/item/gun/energy/e_gun/turret/add_seclight_point()
 	return

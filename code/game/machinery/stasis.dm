@@ -17,6 +17,7 @@
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 3
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 3
+	manufacturer = /datum/manufacturer/deforest
 	var/stasis_enabled = TRUE
 	var/last_stasis_sound = FALSE
 	var/stasis_can_toggle = 0

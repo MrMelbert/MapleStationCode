@@ -1,6 +1,6 @@
 /obj/machinery/chem_mass_spec
-	name = "High-performance liquid chromatography machine"
-	desc = "Allows you to purify reagents & seperate out inverse reagents"
+	name = "high-performance liquid chromatography machine"
+	desc = "Allows you to purify reagents and seperate out inverse reagents."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = "HPLC"
 	base_icon_state = "HPLC"

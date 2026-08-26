@@ -11,6 +11,7 @@
 	// knife_x_offset = 22
 	// knife_y_offset = 11
 	light_color = COLOR_PURPLE
+	manufacturer = null
 
 // /obj/item/gun/energy/laser/musket/add_bayonet_point()
 // 	AddComponent(/datum/component/bayonet_attachable, offset_x = 22, offset_y = 11)

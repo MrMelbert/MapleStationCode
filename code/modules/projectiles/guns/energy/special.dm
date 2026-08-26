@@ -10,6 +10,7 @@
 	slot_flags = ITEM_SLOT_BACK
 	ammo_type = list(/obj/item/ammo_casing/energy/ion)
 	light_color = LIGHT_COLOR_BLUE
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/item/gun/energy/ionrifle/add_seclight_point()
 	AddComponent(/datum/component/seclite_attachable, \
@@ -325,6 +326,7 @@
 	name = "security temperature gun"
 	desc = "A weapon that can only be used to its full potential by the truly robust."
 	pin = /obj/item/firing_pin
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/item/gun/energy/temperature/freeze
 	name = "cryogenic temperature gun"

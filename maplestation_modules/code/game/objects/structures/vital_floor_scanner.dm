@@ -37,6 +37,7 @@
 	light_color = LIGHT_COLOR_ELECTRIC_CYAN
 	light_on = TRUE
 	circuit = /obj/item/circuitboard/machine/vital_floor_scanner
+	manufacturer = /datum/manufacturer/deforest
 	/// Cooldown between successful "scans"
 	COOLDOWN_DECLARE(scan_cooldown)
 

@@ -349,6 +349,10 @@ GLOBAL_LIST_INIT_TYPED(manufacturers, /datum/manufacturer, init_subtypes_w_path_
 /datum/manufacturer/proc/get_examine_format(mob/user)
 	return "<span class='[span]'><i>[name]</i></span>"
 
+/datum/manufacturer/nanotrasen
+	name = "Nanotrasen"
+	span = "blue"
+
 /datum/manufacturer/deforest
 	name = "Nanotrasen-Deforest"
 	span = "green"
@@ -359,3 +363,6 @@ GLOBAL_LIST_INIT_TYPED(manufacturers, /datum/manufacturer, init_subtypes_w_path_
 
 /datum/manufacturer/syndicate/interdyne
 	name = "Interdyne Pharmaceuticals"
+
+/datum/manufacturer/syndicate/cybersun
+	name = "Cybersun Industries"

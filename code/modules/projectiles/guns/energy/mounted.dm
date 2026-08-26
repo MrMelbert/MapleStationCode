@@ -8,6 +8,7 @@
 	force = 5
 	selfcharge = 1
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL // Has no trigger at all, uses neural signals instead
+	manufacturer = null
 
 /obj/item/gun/energy/e_gun/advtaser/mounted/add_seclight_point()
 	return
@@ -21,6 +22,7 @@
 	force = 5
 	selfcharge = 1
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
+	manufacturer = null
 
 /obj/item/gun/energy/laser/mounted/add_deep_lore()
 	return

@@ -13,12 +13,14 @@
 	req_one_access = list(ACCESS_SECURITY, ACCESS_HOP)
 	circuit = /obj/item/circuitboard/computer/secure_data
 	light_color = COLOR_SOFT_RED
+	manufacturer = /datum/manufacturer/nanotrasen
 	/// The current state of the printer
 	var/printing = FALSE
 
 /obj/machinery/computer/records/security/syndie
 	icon_keyboard = "syndie_key"
 	req_one_access = list(ACCESS_SYNDICATE)
+	manufacturer = /datum/manufacturer/syndicate/cybersun
 
 /obj/machinery/computer/records/security/laptop
 	name = "security laptop"
@@ -31,6 +33,7 @@
 /obj/machinery/computer/records/security/laptop/syndie
 	desc = "A cheap, jailbroken security laptop. It functions as a security records console. It's bolted to the table."
 	req_one_access = list(ACCESS_SYNDICATE)
+	manufacturer = /datum/manufacturer/syndicate/cybersun
 
 /obj/machinery/computer/records/security/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()

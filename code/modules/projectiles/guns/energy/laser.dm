@@ -8,6 +8,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun)
 	ammo_x_offset = 1
 	shaded_charge = TRUE
+	manufacturer = /datum/manufacturer/nanotrasen
 
 /obj/item/gun/energy/laser/Initialize(mapload)
 	. = ..()
@@ -161,6 +162,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/hellfire)
+	manufacturer = null
 
 /obj/item/gun/energy/laser/captain/scattershot
 	name = "scatter shot laser rifle"
@@ -224,6 +226,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/accelerator)
 	pin = null
 	ammo_x_offset = 3
+	manufacturer = null
 
 ///X-ray gun
 
@@ -250,6 +253,7 @@
 	ammo_x_offset = 2
 	selfcharge = TRUE
 	gun_flags = NOT_A_REAL_GUN
+	manufacturer = null
 
 /obj/item/gun/energy/laser/bluetag/hitscan
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/bluetag/hitscan)
@@ -268,6 +272,7 @@
 	ammo_x_offset = 2
 	selfcharge = TRUE
 	gun_flags = NOT_A_REAL_GUN
+	manufacturer = null
 
 /obj/item/gun/energy/laser/redtag/add_deep_lore()
 	return

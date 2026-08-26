@@ -70,6 +70,7 @@
 	pixel_x = -64
 	plane = SPLASHSCREEN_PLANE
 	bullet_bounce_sound = null
+	manufacturer = "Made with love"
 
 INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 
