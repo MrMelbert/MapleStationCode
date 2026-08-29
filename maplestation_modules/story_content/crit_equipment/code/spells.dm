@@ -77,7 +77,7 @@
 /datum/action/cooldown/spell/pointed/unlock_chromatic_world
 	name = "Unlock - ???"
 	desc = "The world knows better than to stand in your way. Use on a supported object to unlock it."
-	button_icon = 'maplestation_modules/story_content/__crit_equipment/icons/unlock_spell.dmi'
+	button_icon = 'maplestation_modules/story_content/crit_equipment/icons/unlock_spell.dmi'
 	button_icon_state = "unlock"
 
 	background_icon_state = "bg_default"
@@ -135,7 +135,7 @@
 /datum/action/cooldown/spell/spiders_webs
 	name = "The Spider's Webs"
 	desc = "Adjust the webs you have woven on somebody else. You can only have one effect active at once."
-	button_icon = 'maplestation_modules/story_content/__crit_equipment/icons/unlock_spell.dmi'
+	button_icon = 'maplestation_modules/story_content/crit_equipment/icons/unlock_spell.dmi'
 	button_icon_state = "webs"
 
 	background_icon_state = "bg_default"

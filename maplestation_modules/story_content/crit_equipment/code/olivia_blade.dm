@@ -4,11 +4,11 @@
 /obj/item/melee/olivia_blade
 	name = "ornate psi-blade"
 	desc = "An incredibly ornate psionic blade. It's somewhat heavy."
-	icon = 'maplestation_modules/story_content/__crit_equipment/icons/olivia_blade.dmi'
+	icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
 	icon_state = "olivia_blade"
 	inhand_icon_state = "olivia_blade"
-	lefthand_file = 'maplestation_modules/story_content/__crit_equipment/icons/olivia_blade_lefthand.dmi'
-	righthand_file = 'maplestation_modules/story_content/__crit_equipment/icons/olivia_blade_righthand.dmi'
+	lefthand_file = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY | UNIQUE_RENAME
 	force = 18
 	throwforce = 15
@@ -98,8 +98,8 @@
 	desc = "An ornate sheath designed to hold a psionic blade. It looks heavy enough to bludgeon with."
 	force = 18
 	block_chance = 30
-	icon = 'maplestation_modules/story_content/__crit_equipment/icons/olivia_blade.dmi'
-	worn_icon = 'maplestation_modules/story_content/__crit_equipment/icons/olivia_blade_sheath.dmi'
+	icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
+	worn_icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_sheath.dmi'
 	icon_state = "sheath"
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
