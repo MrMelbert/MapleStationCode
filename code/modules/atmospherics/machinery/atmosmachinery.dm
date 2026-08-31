@@ -667,8 +667,8 @@
 
 	SET_PLANE_EXPLICIT(cap_overlay, initial(plane), our_turf)
 
-	cap_overlay.color = pipe_color
-	cap_overlay.layer = layer
+	cap_overlay.color = (pipe_color == ATMOS_COLOR_OMNI && nodes[1]?.pipe_color) || pipe_color
+	cap_overlay.layer = initial(layer)
 	cap_overlay.icon_state = "[bitfield]_[piping_layer]"
 
 	cap_overlay.forceMove(our_turf)
