@@ -175,7 +175,7 @@
 	inhand_icon_state = null
 
 /obj/item/clothing/head/costume/tmc
-	name = "Lost M.C. bandana"
+	name = "thin head bandana"
 	desc = "A small, red bandana tied thin."
 	icon_state = "tmc_hat"
 	inhand_icon_state = null

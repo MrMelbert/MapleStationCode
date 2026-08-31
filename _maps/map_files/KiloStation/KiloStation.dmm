@@ -84194,7 +84194,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/bot,
-/obj/machinery/oven/range,
+/obj/machinery/smartfridge/drying,
 /turf/open/floor/iron/dark,
 /area/station/service/kitchen)
 "wWo" = (

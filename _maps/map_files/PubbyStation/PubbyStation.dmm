@@ -13877,6 +13877,9 @@
 /area/station/maintenance/department/crew_quarters/bar)
 "aYR" = (
 /obj/item/radio/intercom/directional/north,
+/obj/structure/rack,
+/obj/item/stack/package_wrap,
+/obj/item/hand_labeler,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "aYT" = (
@@ -13884,7 +13887,6 @@
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "aYU" = (
-/obj/machinery/processor,
 /obj/machinery/firealarm/directional/north,
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/cafeteria,
@@ -15319,9 +15321,7 @@
 	name = "Kitchen Window Shutters Control";
 	req_access = list("kitchen")
 	},
-/obj/structure/rack,
-/obj/item/stack/package_wrap,
-/obj/item/hand_labeler,
+/obj/machinery/smartfridge/drying,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "bfr" = (
@@ -35064,6 +35064,8 @@
 /area/station/ai_monitored/turret_protected/ai)
 "ftU" = (
 /obj/structure/cable,
+/obj/structure/table,
+/obj/machinery/processor,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "ftW" = (

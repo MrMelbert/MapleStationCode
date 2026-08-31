@@ -652,7 +652,7 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 
 /obj/item/clothing/suit/costume/tmc
-	name = "\improper Lost M.C. cut"
+	name = "biker cut"
 	desc = "Making sure everyone knows you're in the best biker gang this side of Alderney."
 	icon_state = "tmc_suit"
 	inhand_icon_state = null
