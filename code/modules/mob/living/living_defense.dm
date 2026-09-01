@@ -707,7 +707,8 @@
 					shove_flags |= SHOVE_DIRECTIONAL_BLOCKED
 					break
 
-	target.combat_lock_on(src)
+	combat_lock_on(target)
+	target.combat_lock_on(src, 2 SECONDS)
 
 	if(shove_flags & SHOVE_CAN_HIT_SOMETHING)
 		//Don't hit people through windows, ok?
