@@ -148,22 +148,22 @@
 
 	granted_items = list(
 		/obj/item/clothing/under/color/black,
-		/obj/item/clothing/shoes/sneakers/black/rogue,
+		/obj/item/clothing/shoes/sneakers/black,
 		/obj/item/clothing/mask/facescarf/rogue,
-		/obj/item/clothing/glasses/eyepatch/rogue,
+		/obj/item/clothing/glasses/eyepatch,
 		/obj/item/bedsheet/black/rogue_cape,
 		/obj/item/storage/belt/fannypack/black/rogue,
 		/obj/item/knife/combat/survival,
 	)
 
-/obj/item/clothing/shoes/sneakers/black/rogue
+/obj/item/clothing/shoes/sneakers/black
 	name = "sneaker of SNEAKING"
 
 /obj/item/clothing/mask/facescarf/rogue
 	name = "cloth of DOOM"
 	greyscale_colors = "#292929"
 
-/obj/item/clothing/glasses/eyepatch/rogue
+/obj/item/clothing/glasses/eyepatch
 	name = "eyepatch of SEALING"
 
 /obj/item/bedsheet/black/rogue_cape

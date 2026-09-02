@@ -15,6 +15,7 @@
 		/datum/modular_mob_segment/hivebots_strong
 	)
 	reward_points = BITRUNNER_REWARD_LOW
+	domain_flags = DOMAIN_TEST_ONLY // NON-MODULE CHANGE : currently impossible, you get mulched by the recycler
 
 // ID Trims
 /datum/id_trim/factory
@@ -102,4 +103,3 @@
 	name = "Factory Quartermaster"
 	outfit = /datum/outfit/factory/qm
 	icon_state = "corpsecargotech"
-

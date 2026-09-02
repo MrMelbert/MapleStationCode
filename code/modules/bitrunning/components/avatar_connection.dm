@@ -20,6 +20,7 @@
 	obj/machinery/quantum_server/server,
 	obj/machinery/netpod/pod,
 	help_text,
+	copy_body,
 	)
 
 	if(!isliving(parent) || !isliving(old_body) || !server.is_operational || !pod.is_operational)
@@ -67,6 +68,15 @@
 
 	if(alias && avatar.real_name != alias)
 		avatar.fully_replace_character_name(newname = alias)
+		avatar.voice = old_body.voice
+		avatar.voice_filter = old_body.voice_filter
+		if(ishuman(avatar) && ishuman(old_body) && copy_body)
+			var/mob/living/carbon/human/human_avatar = avatar
+			var/mob/living/carbon/human/human_old_body = old_body
+			human_avatar.dna.unique_identity = human_old_body.dna.unique_identity
+			human_avatar.physique = human_old_body.physique
+			human_avatar.updateappearance(mutcolor_update = TRUE)
+
 
 	update_avatar_id()
 	avatar.mind.set_assigned_role(SSjob.get_job_type(/datum/job/bit_avatar))
@@ -100,7 +110,7 @@
 	 */
 	RegisterSignals(parent, list(COMSIG_BITRUNNER_ALERT_SEVER, COMSIG_BITRUNNER_CACHE_SEVER, COMSIG_BITRUNNER_LADDER_SEVER), PROC_REF(on_safe_disconnect))
 	RegisterSignal(parent, COMSIG_LIVING_PILL_CONSUMED, PROC_REF(disconnect_if_red_pill))
-	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(on_sever_connection))
+	RegisterSignals(parent, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING), PROC_REF(on_sever_connection))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_linked_damage))
 
 
@@ -174,7 +184,11 @@
 	if(damage > 30 && prob(30))
 		INVOKE_ASYNC(old_body, TYPE_PROC_REF(/mob/living, emote), "scream")
 
-	old_body.apply_damage(damage, damage_type, def_zone, blocked, wound_bonus = CANT_WOUND)
+	var/zone = def_zone
+	if(isbodypart(def_zone)) // If the defined zone is a bodypart, then it is the bodypart of the domain avatar. We don't want that bodypart, we want the real body's bodypart, so we go back to zone.
+		zone = astype(def_zone, /obj/item/bodypart).body_zone
+
+	old_body.apply_damage(damage, damage_type, zone, blocked, wound_bonus = CANT_WOUND)
 
 	if(old_body.stat > SOFT_CRIT) // KO!
 		full_avatar_disconnect(cause_damage = TRUE)

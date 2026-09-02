@@ -1,9 +1,6 @@
 /// from /atom/movable/screen/alert/bitrunning/qserver_domain_complete
 #define COMSIG_BITRUNNER_ALERT_SEVER "bitrunner_alert_sever"
 
-/// from /obj/effect/bitrunning/loot_signal: (points)
-#define COMSIG_BITRUNNER_GOAL_POINT "bitrunner_goal_point"
-
 // Netpods
 
 /// from /obj/machinery/netpod/sever_connection()
@@ -45,6 +42,7 @@
 #define COMSIG_BITRUNNER_STOCKING_GEAR "bitrunner_stocking_gear"
 
 // Ladder
+
 /// from /obj/structure/hololadder/disconnect()
 #define COMSIG_BITRUNNER_LADDER_SEVER "bitrunner_ladder_sever"
 

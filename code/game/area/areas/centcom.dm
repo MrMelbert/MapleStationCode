@@ -7,8 +7,8 @@
 	icon_state = "centcom"
 	static_lighting = TRUE
 	requires_power = FALSE
+	area_flags = NOTELEPORT
 	has_gravity = STANDARD_GRAVITY
-	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
 
 // This is just to define the category
@@ -142,7 +142,6 @@
 	name = "Thunderdome Observation"
 	icon_state = "thunder_observe"
 
-
 // ENEMY
 
 // Wizard
@@ -155,13 +154,12 @@
 	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
 
-
 //Abductors
 /area/centcom/abductor_ship
 	name = "Abductor Ship"
 	icon_state = "abductor_ship"
 	requires_power = FALSE
-	area_flags = UNIQUE_AREA | NOTELEPORT
+	area_flags = NOTELEPORT
 	static_lighting = FALSE
 	base_lighting_alpha = 255
 	has_gravity = STANDARD_GRAVITY
@@ -214,12 +212,11 @@
 	name = "Mafia Minigame"
 	icon_state = "mafia"
 	static_lighting = FALSE
-
 	base_lighting_alpha = 255
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
-	area_flags = BLOCK_SUICIDE | UNIQUE_AREA
+	area_flags = BLOCK_SUICIDE
 
 //CAPTURE THE FLAG
 /area/centcom/ctf
@@ -230,7 +227,7 @@
 	base_lighting_alpha = 255
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
-	area_flags = UNIQUE_AREA | NOTELEPORT | NO_DEATH_MESSAGE | BLOCK_SUICIDE
+	area_flags = NOTELEPORT | NO_DEATH_MESSAGE | BLOCK_SUICIDE
 
 /area/centcom/ctf/control_room
 	name = "Control Room A"
@@ -284,7 +281,7 @@
 	ambience_index = AMBIENCE_RUINS
 	always_unpowered = FALSE
 	requires_power = TRUE
-	area_flags = UNIQUE_AREA | BLOBS_ALLOWED
+	area_flags = BLOBS_ALLOWED
 
 /area/centcom/asteroid/nearstation/bomb_site
 	name = "\improper Bomb Testing Asteroid"

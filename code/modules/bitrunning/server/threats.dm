@@ -4,6 +4,7 @@
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_THREAT_CREATED)
 	threat.AddComponent(/datum/component/virtual_entity, src)
 
+
 /// Choses which antagonist role is spawned based on threat
 /obj/machinery/quantum_server/proc/get_antagonist_role()
 	var/list/available = list()
@@ -18,6 +19,7 @@
 	threat -= initial(chosen.threat) * 0.5
 
 	return chosen
+
 
 /// Selects a target to mutate. Gives two attempts, then crashes if it fails.
 /obj/machinery/quantum_server/proc/get_mutation_target()
@@ -34,6 +36,7 @@
 	target_ref = pick(mutation_candidate_refs)
 	resolved = target_ref.resolve()
 	return resolved
+
 
 /// Finds any mobs with minds in the zones and gives them the bad news
 /obj/machinery/quantum_server/proc/notify_spawned_threats()
@@ -52,9 +55,11 @@
 
 		to_chat(baddie, span_userdanger("You have been flagged for deletion! Thank you for your service."))
 
+
 /// Removes a specific threat - used when station spawning
 /obj/machinery/quantum_server/proc/remove_threat(mob/living/threat)
 	spawned_threat_refs.Remove(WEAKREF(threat))
+
 
 /// Selects the role and waits for a ghost orbiter
 /obj/machinery/quantum_server/proc/setup_glitch(datum/antagonist/bitrunning_glitch/forced_role)
@@ -81,6 +86,7 @@
 	)
 
 	return mutation_target
+
 
 /// Orbit poll has concluded - spawn the antag
 /obj/machinery/quantum_server/proc/spawn_glitch(datum/antagonist/bitrunning_glitch/chosen_role, mob/living/mutation_target, mob/dead/observer/ghost)
@@ -119,17 +125,37 @@
 
 	add_threats(new_mob)
 
+
 /// Oh boy - transports the antag station side
 /obj/machinery/quantum_server/proc/station_spawn(mob/living/antag, obj/machinery/byteforge/chosen_forge)
 	antag.balloon_alert(antag, "scanning...")
 	chosen_forge.setup_particles(angry = TRUE)
-	radio.talk_into(src, "SECURITY BREACH: Unauthorized entry sequence detected.", RADIO_CHANNEL_SUPPLY)
+	var/obj/machinery/announcement_system/aas = get_announcement_system(source = src)
+	if (aas)
+		aas.broadcast("QUANTUM SERVER ALERT: Security breach detected. Unauthorized entry sequence in progress...", list(RADIO_CHANNEL_SUPPLY))
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_STATION_SPAWN)
 
 	var/timeout = 2 SECONDS
 	if(!ishuman(antag))
-		radio.talk_into(src, "Fabrication protocols have crashed unexpectedly. Please evacuate the area.", RADIO_CHANNEL_SUPPLY)
+		if (aas)
+			aas.broadcast("QUANTUM SERVER ALERT: Fabrication protocols have crashed unexpectedly. Please evacuate the area.", list(RADIO_CHANNEL_SUPPLY))
 		timeout = 10 SECONDS
+
+	var/bitrunners_alive = 0
+	var/island_brawl_exception = istype(generated_domain, /datum/lazy_template/virtual_domain/island_brawl)
+	for(var/datum/weakref/bitrunner_ref in avatar_connection_refs)
+		var/mob/living/bitrunner = astype(bitrunner_ref.resolve(), /datum/component/avatar_connection)?.parent
+		if(!bitrunner)
+			continue
+		if((bitrunner.stat > CONSCIOUS) || !bitrunner.client)
+			continue
+		if(island_brawl_exception)
+			timeout *= max(5 - generated_domain.main_crate_points, 1)
+			continue
+		bitrunners_alive++
+		timeout *= 5
+	if(bitrunners_alive)
+		to_chat(antag, span_warning("[bitrunners_alive] criminals still remain here, pilfering your domain. It will be more difficult to leave until they are handled."))
 
 	if(!do_after(antag, timeout) || QDELETED(chosen_forge) || QDELETED(antag) || QDELETED(src) || !is_ready || !is_operational)
 		chosen_forge.setup_particles()
@@ -150,8 +176,8 @@
 
 	if(ishuman(antag))
 		reset_equipment(antag)
-	else
-		radio.talk_into(src, "CRITICAL ALERT: Unregistered mechanical entity deployed.")
+	else if (aas)
+		aas.broadcast("QUANTUM SERVER CRITICAL ALERT: Unregistered mechanical entity deployed.", list())
 
 	var/datum/antagonist/antag_datum = antag.mind?.has_antag_datum(/datum/antagonist/bitrunning_glitch)
 	if(istype(antag_datum))
@@ -162,6 +188,7 @@
 		qdel(temp_body)
 
 	do_teleport(antag, get_turf(chosen_forge), forced = TRUE, asoundin = 'sound/magic/ethereal_enter.ogg', asoundout = 'sound/magic/ethereal_exit.ogg', channel = TELEPORT_CHANNEL_QUANTUM)
+
 
 /// Removes any invalid candidates from the list
 /obj/machinery/quantum_server/proc/validate_mutation_candidates()
