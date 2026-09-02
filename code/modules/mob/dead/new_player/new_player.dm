@@ -424,7 +424,7 @@
 /client/proc/lobby_chat(message)
 	VALIDATE_CLIENT(src)
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
+	if(GLOB.say_disabled)
 		to_chat(src, span_danger("Speech is currently admin-disabled."))
 		return
 	if(is_banned_from(ckey, "OOC"))
