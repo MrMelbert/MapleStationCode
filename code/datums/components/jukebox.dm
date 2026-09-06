@@ -401,33 +401,75 @@
 	/// Used to determine time between effects when played
 	var/song_beat = 0
 
-// Default track supplied for testing and also because it's a banger
+// Default track supplied for testing. And also because title3 is a banger
 /datum/track/default
-	song_path = 'sound/ambience/title3.ogg'
-	song_name = "Tintin on the Moon"
-	song_length = 3 MINUTES + 52 SECONDS
-	song_beat = 1 SECONDS
+	song_path = /datum/track/preset/title_three::song_path
+	song_name = /datum/track/preset/title_three::song_name
+	song_length = /datum/track/preset/title_three::song_length
+	song_beat = /datum/track/preset/title_three::song_beat
 
 /datum/track/preset/title_zero
-	song_path = 'sound/ambience/title0.ogg'
+	song_path = 'sound/music/lobby_music/title0.ogg'
 	song_name = "Endless Space"
 	song_length = 3 MINUTES + 33 SECONDS
 	song_beat = 2 SECONDS
 
 /datum/track/preset/title_one
-	song_path = 'sound/ambience/title1.mod'
+	song_path = 'sound/music/lobby_music/title1.mod'
 	song_name = "Flip Flap"
 	song_length = 2 MINUTES + 31 SECONDS
 	song_beat = 1 SECONDS
 
 /datum/track/preset/title_two
-	song_path = 'sound/ambience/title2.ogg'
+	song_path = 'sound/music/lobby_music/title2.ogg'
 	song_name = "Robocop"
 	song_length = 1 MINUTES + 58 SECONDS
 	song_beat = 4 SECONDS
 
 /datum/track/preset/title_three
-	song_path = 'sound/ambience/title3.ogg'
+	song_path = 'sound/music/lobby_music/title3.ogg'
 	song_name = "Tintin on the Moon"
 	song_length = 3 MINUTES + 52 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/monument
+	song_path = 'sound/music/lobby_music/monument.ogg'
+	song_name = "Monument"
+	song_length = 5 MINUTES + 24 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/rimward_cruise
+	song_path = 'sound/music/lobby_music/rimward_cruise.ogg'
+	song_name = "Rimward Cruise"
+	song_length = 3 MINUTES + 52 SECONDS // somehow the same length as title3
+	song_beat = 1 SECONDS
+
+/datum/track/preset/traitor
+	song_path = 'sound/music/lobby_music/traitor.ogg'
+	song_name = "Absconditus"
+	song_length = 5 MINUTES + 30 SECONDS
+	song_beat = 2 SECONDS
+
+/datum/track/preset/pwmur
+	song_path = 'sound/music/lobby_music/pwmur.ogg'
+	song_name = "Plasma Will Make Us Rich" // cheeky rename from Phoron
+	song_length = 2 MINUTES + 14 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/moonshine
+	song_path = 'sound/music/lobby_music/moonshine.ogg'
+	song_name = "Moonshine"
+	song_length = 3 MINUTES + 37 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/burning
+	song_path = 'sound/music/lobby_music/burning.ogg'
+	song_name = "Burning"
+	song_length = 2 MINUTES + 32 SECONDS
+	song_beat = 1 SECONDS
+
+/datum/track/preset/daydream
+	song_path = 'sound/music/lobby_music/daydream.ogg'
+	song_name = "Daydream"
+	song_length = 2 MINUTES + 38 SECONDS
 	song_beat = 1 SECONDS
