@@ -53,6 +53,7 @@
 		/obj/item/grenade,
 		/obj/item/hand_tele,
 		/obj/item/implanter,
+		/obj/item/inhaler,
 		/obj/item/instrument/harmonica,
 		/obj/item/instrument/piano_synth/headphones,
 		/obj/item/knife,

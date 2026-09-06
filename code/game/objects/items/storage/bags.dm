@@ -389,6 +389,7 @@
 	atom_storage.insert_preposition = "on"
 	atom_storage.max_slots = 8
 	atom_storage.max_total_storage = 16
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 
 /obj/item/storage/bag/tray/attack(mob/living/M, mob/living/user)
 	. = ..()

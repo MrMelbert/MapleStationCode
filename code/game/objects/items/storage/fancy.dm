@@ -544,6 +544,7 @@
 /obj/item/storage/fancy/pickles_jar/Initialize(mapload)
 	. = ..()
 	atom_storage.set_holdable(/obj/item/food/pickle)
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 
 /obj/item/storage/fancy/pickles_jar/update_icon_state()
 	. = ..()

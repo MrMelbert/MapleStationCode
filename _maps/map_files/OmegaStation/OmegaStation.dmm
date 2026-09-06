@@ -12387,11 +12387,10 @@
 /obj/machinery/light_switch/directional/north{
 	pixel_x = 5
 	},
-/obj/structure/closet/secure_closet/freezer/meat,
+/obj/machinery/smartfridge/drying,
 /turf/open/floor/iron/freezer,
 /area/station/service/kitchen/coldroom)
 "aIS" = (
-/obj/effect/turf_decal/bot,
 /obj/machinery/computer/order_console/cook,
 /obj/item/toy/figure/chef{
 	pixel_y = 0
@@ -12827,6 +12826,8 @@
 	network = list("ss13","service")
 	},
 /obj/machinery/airalarm/directional/south,
+/obj/structure/closet/secure_closet/freezer/meat,
+/obj/effect/turf_decal/bot,
 /turf/open/floor/iron/freezer,
 /area/station/service/kitchen/coldroom)
 "aKa" = (
