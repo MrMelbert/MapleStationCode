@@ -434,11 +434,11 @@
 	if(opened)
 		// lose a majority of all n2o when we start leaking gas, to stop this being a free (obnoxious) way to make n2o
 		internal_air.assert_gases(/datum/gas/nitrous_oxide)
-		internal_air.adjust_gas(/datum/gas/nitrous_oxide, internal_air.gases[/datum/gas/nitrous_oxide][MOLES] * 0.15)
+		internal_air.adjust_gas(/datum/gas/nitrous_oxide, internal_air.moles[/datum/gas/nitrous_oxide] * 0.15)
 		return ..()
 
 	internal_air.assert_gases(/datum/gas/nitrogen, /datum/gas/nitrous_oxide)
-	var/conversion_amount = min(internal_air.gases[/datum/gas/nitrogen][MOLES], 0.2 * internal_air.total_moles() * seconds_per_tick)
+	var/conversion_amount = min(internal_air.moles[/datum/gas/nitrogen], 0.2 * internal_air.total_moles() * seconds_per_tick)
 	if(conversion_amount > 0)
 		// 20% of the nitrogen in the bag is converted to nitrous oxide every second while closed
 		internal_air.convert_gas(/datum/gas/nitrogen, /datum/gas/nitrous_oxide, conversion_amount)

@@ -25,7 +25,7 @@
 /datum/disease/advance/gastritium/GetDiseaseID()
 	return "[type]"
 
-/datum/disease/advance/gastritium/stage_act(seconds_per_tick, times_fired)
+/datum/disease/gastritium/stage_act(seconds_per_tick)
 	. = ..()
 	if(!.)
 		return
@@ -49,15 +49,16 @@
 				to_chat(affected_mob, span_warning("You feel like you're about to delam..."))
 			else if(SPT_PROB(1, seconds_per_tick))
 				tritium_burp(hot_chance = TRUE)
+	var/change_limit = max(affected_mob.get_body_temp_heat_damage_limit() - 5 - affected_mob.get_body_temp_normal(apply_change=FALSE), 0)
+	affected_mob.add_body_temperature_change("gastritium", min(15 * stage, change_limit))
 
-/datum/disease/advance/gastritium/proc/tritium_burp(hot_chance = FALSE)
+/datum/disease/gastritium/proc/tritium_burp(hot_chance = FALSE)
 	var/datum/gas_mixture/burp = new
-	ADD_GAS(/datum/gas/tritium, burp.gases)
-	burp.gases[/datum/gas/tritium][MOLES] = MOLES_GAS_VISIBLE
-	burp.temperature = affected_mob.body_temperature
+	burp.set_gas(/datum/gas/tritium, MOLES_GAS_VISIBLE)
+	burp.temperature = affected_mob.bodytemperature
 	if(hot_chance && prob(tritium_burp_hot_chance))
-		burp.temperature = TRITIUM_MINIMUM_BURN_TEMPERATURE
-		if(affected_mob.stat == CONSCIOUS)
+		burp.set_temperature(TRITIUM_MINIMUM_BURN_TEMPERATURE)
+		if(!IS_UNCONSCIOUS_OR_CRIT(affected_mob))
 			to_chat(affected_mob, span_warning("Your throat feels hot!"))
 	affected_mob.visible_message("burps out green gas.", visible_message_flags = EMOTE_MESSAGE)
 	affected_mob.loc.assume_air(burp)

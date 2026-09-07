@@ -279,8 +279,7 @@
 	SIGNAL_HANDLER
 	if(ptank)
 		var/datum/gas_mixture/tank_mix = ptank.return_air()
-		tank_mix.assert_gas(/datum/gas/plasma)
-		tank_mix.gases[/datum/gas/plasma][MOLES] = (10*ONE_ATMOSPHERE)*ptank.volume/(R_IDEAL_GAS_EQUATION*T20C)
+		tank_mix.set_gas(/datum/gas/plasma, (10*ONE_ATMOSPHERE)*ptank.volume/(R_IDEAL_GAS_EQUATION*T20C))
 	else
 		ptank = new /obj/item/tank/internals/plasma/full(src)
 	update_appearance()

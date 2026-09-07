@@ -465,8 +465,8 @@
 	cached_moles[/datum/gas/nitrogen] -= heat_efficiency
 	cached_moles[/datum/gas/nitrous_oxide] += heat_efficiency
 
-	SET_REACTION_RESULTS(heat_efficency)
-	var/energy_released = heat_efficency * N2O_FORMATION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency)
+	var/energy_released = heat_efficiency * N2O_FORMATION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((air.temperature * old_heat_capacity + energy_released) / new_heat_capacity), TCMB) // The air cools down when reacting.
@@ -706,8 +706,8 @@
 	cached_moles[/datum/gas/hydrogen] += heat_efficiency
 	cached_moles[/datum/gas/nitrogen] += heat_efficiency
 
-	SET_REACTION_RESULTS(heat_efficency)
-	var/energy_released = heat_efficency * NITRIUM_DECOMPOSITION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency)
+	var/energy_released = heat_efficiency * NITRIUM_DECOMPOSITION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((temperature * old_heat_capacity + energy_released) / new_heat_capacity), TCMB) //the air heats up when reacting
@@ -855,8 +855,8 @@
 	cached_moles[/datum/gas/oxygen] -= heat_efficiency * 20
 	cached_moles[/datum/gas/pluoxium] += heat_efficiency * 2.5
 
-	SET_REACTION_RESULTS(heat_efficency * 5)
-	var/energy_used = heat_efficency * HALON_COMBUSTION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency * 5)
+	var/energy_used = heat_efficiency * HALON_COMBUSTION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((temperature * old_heat_capacity - energy_used) / new_heat_capacity), TCMB)
@@ -898,8 +898,8 @@
 	cached_moles[/datum/gas/bz] -= heat_efficiency * 0.25
 	cached_moles[/datum/gas/healium] += heat_efficiency * 3
 
-	SET_REACTION_RESULTS(heat_efficency * 3)
-	var/energy_released = heat_efficency * HEALIUM_FORMATION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency * 3)
+	var/energy_released = heat_efficiency * HEALIUM_FORMATION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((temperature * old_heat_capacity + energy_released) / new_heat_capacity), TCMB)
@@ -940,8 +940,8 @@
 	cached_moles[/datum/gas/nitrium] -= heat_efficiency * 0.5
 	cached_moles[/datum/gas/zauker] += heat_efficiency * 0.5
 
-	SET_REACTION_RESULTS(heat_efficency * 0.5)
-	var/energy_used = heat_efficency * ZAUKER_FORMATION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency * 0.5)
+	var/energy_used = heat_efficiency * ZAUKER_FORMATION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((temperature * old_heat_capacity - energy_used) / new_heat_capacity), TCMB)
@@ -1023,8 +1023,8 @@
 	cached_moles[/datum/gas/pluoxium] -= heat_efficiency * 0.2
 	cached_moles[/datum/gas/proto_nitrate] += heat_efficiency * 2.2
 
-	SET_REACTION_RESULTS(heat_efficency * 2.2)
-	var/energy_released = heat_efficency * PN_FORMATION_ENERGY
+	SET_REACTION_RESULTS(heat_efficiency * 2.2)
+	var/energy_released = heat_efficiency * PN_FORMATION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air.temperature = max(((temperature * old_heat_capacity + energy_released) / new_heat_capacity), TCMB)

@@ -284,8 +284,8 @@
 
 /datum/gas_mixture/immutable/cloner/garbage_collect()
 	. = ..()
-	gases.assert_gas(/datum/gas/nitrogen)
-	gases.set_gas(/datum/gas/nitrogen, MOLES_O2STANDARD + MOLES_N2STANDARD)
+	assert_gas(/datum/gas/nitrogen)
+	set_gas(/datum/gas/nitrogen, MOLES_O2STANDARD + MOLES_N2STANDARD)
 
 /datum/gas_mixture/immutable/cloner/heat_capacity()
 	return (MOLES_O2STANDARD + MOLES_N2STANDARD) * 20 //specific heat of nitrogen is 20

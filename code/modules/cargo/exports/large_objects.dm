@@ -101,6 +101,9 @@
 	unit_name = "security barrier"
 	export_types = list(/obj/item/grenade/barrier, /obj/structure/barricade/security)
 
+///Maximum number of credits you can earn from selling your gas canister cause its theoritically infinite
+#define MAX_GAS_CREDITS 15000
+
 /**
  * Gas canister exports.
  * I'm going to put a quick aside here as this has been a pain to balance for several years now, and I'd like to at least break how to keep gas exports tame.
@@ -158,3 +161,5 @@
 /datum/export/large/gas_canister/proc/get_gas_value(datum/gas/gasType, moles)
 	var/baseValue = initial(gasType.base_value)
 	return round((baseValue/k_elasticity) * (1 - NUM_E**(-1 * k_elasticity * moles)))
+
+#undef MAX_GAS_CREDITS

@@ -79,10 +79,9 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 
 	var/old_heat_capacity = air_mixture.heat_capacity()
 	air_mixture.assert_gases(/datum/gas/hypernoblium, /datum/gas/antinoblium)
-	var/proportion = min(air_mixture.gases[/datum/gas/hypernoblium][MOLES], (1.5 * (working_power ** 2)))
+	var/proportion = min(air_mixture.moles[/datum/gas/hypernoblium], (1.5 * (working_power ** 2)))
 
-	air_mixture.adjust_gas(/datum/gas/hypernoblium, -proportion)
-	air_mixture.adjust_gas(/datum/gas/antinoblium, proportion)
+	air_mixture.convert_gas(/datum/gas/hypernoblium, /datum/gas/antinoblium, proportion)
 
 	var/new_heat_capacity = air_mixture.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
