@@ -28,8 +28,8 @@
 
 /datum/status_effect/dream_protection
 	id = "dream_protection"
-	duration = STATUS_EFFECT_PERMANENT
-	tick_interval = STATUS_EFFECT_NO_TICK
+	duration = -1 //STATUS_EFFECT_PERMANENT
+	tick_interval = -1 //STATUS_EFFECT_NO_TICK
 	alert_type = null
 	/// Damage reduction when sleeping/dreaming, multiplicative
 	var/damage_mod = 0.75

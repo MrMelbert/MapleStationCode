@@ -1,7 +1,7 @@
 /datum/status_effect/grouped/heretic_dreams
 	id = "heretic_dreams"
-	duration = STATUS_EFFECT_PERMANENT
-	tick_interval = STATUS_EFFECT_NO_TICK
+	duration = -1 //STATUS_EFFECT_PERMANENT
+	tick_interval = -1 //STATUS_EFFECT_NO_TICK
 	alert_type = null
 	/// Cooldown between allowed dreams
 	COOLDOWN_DECLARE(dreaming_cooldown)
@@ -45,7 +45,7 @@
 	if(IS_HERETIC(dreamer))
 		return null
 
-	return get_safe_random_station_turf_equal_weight()
+	return get_safe_random_station_turf()
 
 /// Heretics can see dreams about random machinery from the perspective of a random unused influence
 /datum/dream/heretic

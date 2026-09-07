@@ -78,8 +78,8 @@
 		return
 
 	owner.heal_overall_damage(healing * seconds_between_ticks, healing * seconds_between_ticks, required_bodytype = BODYTYPE_ORGANIC)
-	owner.adjust_tox_loss(healing * seconds_between_ticks * 0.50, required_biotype = MOB_ORGANIC)
-	owner.adjust_oxy_loss(healing * seconds_between_ticks * 0.25, required_biotype = MOB_ORGANIC)
+	owner.adjustToxLoss(healing * seconds_between_ticks * 0.50, required_biotype = MOB_ORGANIC)
+	owner.adjustOxyLoss(healing * seconds_between_ticks * 0.25, required_biotype = MOB_ORGANIC)
 
 /datum/status_effect/slumber_party/proc/force_dream()
 	var/mob/living/carbon/dreamer = owner

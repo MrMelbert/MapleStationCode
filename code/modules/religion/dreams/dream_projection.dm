@@ -50,7 +50,7 @@
 
 /datum/status_effect/dream_projection
 	id = "dream_projection"
-	duration = STATUS_EFFECT_PERMANENT
+	duration = -1 //STATUS_EFFECT_PERMANENT
 	alert_type = null
 	on_remove_on_mob_delete = TRUE
 

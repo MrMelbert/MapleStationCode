@@ -119,8 +119,8 @@
 
 /datum/religion_sect/proc/standard_bless_healing(mob/living/carbon/human/blessed, mob/living/chap)
 	if(!ishuman(blessed))
-		blessed.adjust_brute_loss(-10)
-		blessed.adjust_fire_loss(-10)
+		blessed.adjustBruteLoss(-10)
+		blessed.adjustFireLoss(-10)
 		return BLESSING_SUCCESS
 
 	var/heal_amt = 10
