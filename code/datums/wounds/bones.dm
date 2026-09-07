@@ -170,7 +170,7 @@
 
 	if(limb.body_zone != BODY_ZONE_L_LEG && limb.body_zone != BODY_ZONE_R_LEG)
 		return
-	if(victim.body_position == LYING_DOWN || victim.buckled) // wheelchair = fine, being pulled = not fine
+	if(victim.body_position == LYING_DOWN || isobj(victim.buckled)) // wheelchair = fine, being pulled = not fine
 		return
 	if(victim.has_status_effect(/datum/status_effect/determined))
 		return
