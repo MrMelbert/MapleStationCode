@@ -526,8 +526,9 @@
 		if(internal_air.temperature <= BODY_PRESERVATION_TEMP && !HAS_TRAIT(freezing, TRAIT_STASIS))
 			apply_stasis(freezing)
 
-		// Bout two minutes of time
-		take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
+		if(loc?.return_air()?.return_temperature() > T0C)
+			// Bout two minutes of time
+			take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
 	switch(100 * get_integrity_percentage())
