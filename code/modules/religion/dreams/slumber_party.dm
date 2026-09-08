@@ -36,15 +36,13 @@
 	return ..()
 
 /datum/status_effect/slumber_party/on_apply()
-	if(IS_CULTIST(owner))
-		var/datum/antagonist/cult/cultist = GET_CULTIST(owner)
-		if(cultist.cult_team?.cult_ascendent)
-			return FALSE
+	var/datum/antagonist/cult/cultist = GET_CULTIST(owner)
+	if(cultist?.cult_team?.cult_ascendent)
+		return FALSE
 
-	if(IS_HERETIC(owner))
-		var/datum/antagonist/heretic/heretic = GET_HERETIC(owner)
-		if(heretic.ascended)
-			return FALSE
+	var/datum/antagonist/heretic/heretic = GET_HERETIC(owner)
+	if(heretic?.ascended)
+		return FALSE
 
 	if(!(owner.mob_biotypes & MOB_ORGANIC))
 		return FALSE

@@ -212,6 +212,8 @@ GLOBAL_LIST_INIT(ai_employers, list(
 
 /// Checks if the given mob is a blood cultist
 #define IS_CULTIST(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/cult) || mob?.mind?.has_antag_datum(/datum/antagonist/advanced_cult)) // NON-MODULE CHANGE
+/// Gets the antagonist datum for a blood cultist, or null if they are not one.
+#define GET_CULTIST(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/cult)) // NON-MODULE CHANGE
 
 /// Checks if the given mob is a changeling
 #define IS_CHANGELING(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling))

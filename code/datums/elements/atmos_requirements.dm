@@ -48,7 +48,6 @@
 	var/open_turf_moles = open_turf.air.moles
 	open_turf.air.assert_gases(/datum/gas/oxygen, /datum/gas/pluoxium, /datum/gas/nitrogen, /datum/gas/carbon_dioxide, /datum/gas/plasma)
 
-	var/list/return_gases = list()
 	var/plas =  open_turf_moles[/datum/gas/plasma]
 	var/oxy = open_turf_moles[/datum/gas/oxygen] + (open_turf_moles[/datum/gas/pluoxium] * PLUOXIUM_PROPORTION)
 	var/n2 = open_turf_moles[/datum/gas/nitrogen]

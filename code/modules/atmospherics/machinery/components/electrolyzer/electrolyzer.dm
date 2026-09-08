@@ -131,7 +131,7 @@
 
 /obj/machinery/electrolyzer/proc/call_reactions(datum/gas_mixture/env)
 	for(var/reaction in GLOB.electrolyzer_reactions)
-		var/datum/electrolyzer_reaction/current_reaction = GLOB.electrolyzer_reactions[reaction]
+		var/datum/gas_reaction/electrolyzer/current_reaction = GLOB.electrolyzer_reactions[reaction]
 
 		if(!current_reaction.reaction_check(env))
 			continue

@@ -86,7 +86,7 @@
 	new /obj/item/stack/sheet/iron(get_turf(src))
 	var/obj/item/tank/internals/plasma/ptank = new /obj/item/tank/internals/plasma(get_turf(src))
 	ptank.air_contents.set_gas(/datum/gas/plasma, 0)
-	drop_custom_materials()
+	// drop_custom_materials()
 	qdel(src)
 	return TRUE
 

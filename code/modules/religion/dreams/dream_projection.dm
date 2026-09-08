@@ -57,7 +57,7 @@
 	/// Target of the projection
 	VAR_PRIVATE/mob/living/carbon/human/target
 	/// Projection mob that the owner is put into
-	VAR_PRIVATE/mob/eye/imaginary_friend/dream_projection/projection
+	VAR_PRIVATE/mob/camera/imaginary_friend/dream_projection/projection
 
 /datum/status_effect/dream_projection/on_creation(mob/living/new_owner, mob/living/carbon/human/target)
 	if(isnull(target))
@@ -90,7 +90,8 @@
 	projection.real_name = owner.real_name
 	projection.gender = owner.gender
 	projection.human_icon = getFlatIcon(owner)
-	projection.PossessByPlayer(owner.ckey)
+	// projection.PossessByPlayer(owner.ckey)
+	projection.ckey = owner.ckey
 	projection.attach_to_owner(target)
 
 	RegisterSignal(projection, COMSIG_QDELETING, PROC_REF(stop_projection))
@@ -150,30 +151,30 @@
 	owner.SetSleeping(10 SECONDS)
 	qdel(src)
 
-/mob/eye/imaginary_friend/dream_projection
+/mob/camera/imaginary_friend/dream_projection
 	name = "dream projection"
 
-/mob/eye/imaginary_friend/dream_projection/Initialize(mapload)
+/mob/camera/imaginary_friend/dream_projection/Initialize(mapload)
 	. = ..()
 	var/datum/action/innate/stop_projection/exit_action = new(src)
 	exit_action.Grant(src)
 	overlay_fullscreen("curse", /atom/movable/screen/fullscreen/curse, 1) // todo something more fitting?
 
-/mob/eye/imaginary_friend/dream_projection/Login()
+/mob/camera/imaginary_friend/dream_projection/Login()
 	. = ..()
 	client.eye = owner || src
 
-/mob/eye/imaginary_friend/dream_projection/greet()
+/mob/camera/imaginary_friend/dream_projection/greet()
 	return
 
-/mob/eye/imaginary_friend/dream_projection/verb/stop_projection()
+/mob/camera/imaginary_friend/dream_projection/verb/stop_projection()
 	set category = "IC"
 	set name = "Stop Projection"
 	set desc = "Stop astrally projecting and return to your body."
 
 	qdel(src)
 
-/mob/eye/imaginary_friend/dream_projection/attach_to_owner(mob/living/imaginary_friend_owner)
+/mob/camera/imaginary_friend/dream_projection/attach_to_owner(mob/living/imaginary_friend_owner)
 	. = ..()
 	client?.eye = owner
 

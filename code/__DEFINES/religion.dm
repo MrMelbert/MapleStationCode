@@ -55,6 +55,13 @@
 ///brands the sinner
 #define PUNISHMENT_BRAND "brand"
 
+/// Failed to bless the target, beat them over the head
+#define BLESSING_FAILED "failed"
+/// Blessed unsuccessfully, no limbs to heal, robotic limbs, etc
+#define BLESSING_IGNORED "ignored"
+/// Blessed successfully by healing or whatever
+#define BLESSING_SUCCESS "success"
+
 ///The rite will automatically delete itself by the religious tool calling it after it's invoked.
 #define RITE_AUTO_DELETE (1<<0)
 ///The rite can be performed multiple times with a religious tool, so don't delete/null it.

@@ -91,7 +91,7 @@
 /obj/item/organ/heart/evolved/sacred/dreamer/on_blocked()
 	charges -= 1
 	addtimer(CALLBACK(src, PROC_REF(recharge)), 1 MINUTES)
-	playsound(owner, 'sound/effects/health/slowbeat.ogg', 80)
+	playsound(owner, 'sound/health/slowbeat.ogg', 80)
 
 /obj/item/organ/heart/evolved/sacred/dreamer/check_block()
 	return charges > 0
