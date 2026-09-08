@@ -609,6 +609,9 @@
 	if(!kevved)
 		return
 
+	if(prob(2 * owner.get_skill_modifier(/datum/skill/athletics, SKILL_RANDS_MODIFIER)))
+		return
+
 	var/list/messes = list()
 
 	// we split the mess-making into two parts (check what we're gonna send flying, intermission for dealing with the tackler, then actually send stuff flying) for the benefit of making sure the face-slam text
