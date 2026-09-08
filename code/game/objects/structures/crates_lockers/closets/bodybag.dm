@@ -32,6 +32,10 @@
 	/// Paper pinned to this bag
 	var/obj/item/paper/pinned
 
+/obj/structure/closet/body_bag/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_ATOM_EXAMINE_POST_DESCRIPTOR, PROC_REF(make_examine_cloth))
+
 /obj/structure/closet/body_bag/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 	if(isnull(held_item))
@@ -52,6 +56,14 @@
 	if (foldedbag_instance && !foldedbag_instance.loc)
 		QDEL_NULL(foldedbag_instance)
 	return ..()
+
+/obj/structure/closet/body_bag/proc/make_examine_cloth(mob/user, mob/user, list/examine_text, list/mat_list)
+	SIGNAL_HANDLER
+
+	// melbert todo : weeeee need a cloth material
+	mat_list -= /datum/material/iron::name
+	mat_list.Insert(1, "cloth")
+	mat_list["cloth"] = "It is made out of cloth."
 
 ///Handles renaming of the bodybag's examine tag.
 /obj/structure/closet/body_bag/proc/handle_tag(new_name)
@@ -154,6 +166,7 @@
 	max_mob_size = MOB_SIZE_LARGE
 	sealed = TRUE
 	air_volume = TANK_STANDARD_VOLUME * 2
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plasma = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/closet/body_bag/bluespace/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE
@@ -421,15 +434,14 @@
 	if(opened)
 		// lose a majority of all n2o when we start leaking gas, to stop this being a free (obnoxious) way to make n2o
 		internal_air.assert_gases(/datum/gas/nitrous_oxide)
-		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] *= 0.15
+		internal_air.adjust_gas(/datum/gas/nitrous_oxide, internal_air.moles[/datum/gas/nitrous_oxide] * 0.15)
 		return ..()
 
 	internal_air.assert_gases(/datum/gas/nitrogen, /datum/gas/nitrous_oxide)
-	var/conversion_amount = min(internal_air.gases[/datum/gas/nitrogen][MOLES], 0.2 * internal_air.total_moles() * seconds_per_tick)
+	var/conversion_amount = min(internal_air.moles[/datum/gas/nitrogen], 0.2 * internal_air.total_moles() * seconds_per_tick)
 	if(conversion_amount > 0)
 		// 20% of the nitrogen in the bag is converted to nitrous oxide every second while closed
-		internal_air.gases[/datum/gas/nitrogen][MOLES] = max(0, internal_air.gases[/datum/gas/nitrogen][MOLES] - conversion_amount)
-		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] += conversion_amount
+		internal_air.convert_gas(/datum/gas/nitrogen, /datum/gas/nitrous_oxide, conversion_amount)
 	return ..()
 
 /obj/structure/closet/body_bag/environmental/hardlight
@@ -440,6 +452,7 @@
 	foldedbag_path = null
 	weather_protection = list(TRAIT_VOIDSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
 	can_scan_through = TRUE
+	custom_materials = list(/datum/material/plastic = SHEET_MATERIAL_AMOUNT * 10, /datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/structure/closet/body_bag/environmental/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type in list(BRUTE, BURN))
@@ -526,8 +539,9 @@
 		if(internal_air.temperature <= BODY_PRESERVATION_TEMP && !HAS_TRAIT(freezing, TRAIT_STASIS))
 			apply_stasis(freezing)
 
-		// Bout two minutes of time
-		take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
+		if(loc?.return_air()?.return_temperature() > T0C)
+			// Bout two minutes of time
+			take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
 	switch(100 * get_integrity_percentage())

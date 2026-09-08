@@ -190,3 +190,10 @@
 
 //from base of [/obj/effect/particle_effect/fluid/smoke/proc/smoke_mob]: (seconds_per_tick)
 #define COMSIG_CARBON_EXPOSED_TO_SMOKE "carbon_exposed_to_smoke"
+
+/// Before a mob starts dreaming - you can add dream datums to the dream pool to override the selection: (list/dream_pool)
+#define COMSIG_PRE_DREAMING "pre_dreaming"
+/// A mob has started dreaming: (datum/dream/current_dream)
+#define COMSIG_START_DREAMING "start_dreaming"
+/// A mob has finished dreaming: (datum/dream/finished_dream)
+#define COMSIG_END_DREAMING "end_dreaming"

@@ -23,6 +23,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/mix_output
 	name = "mix tank output inlet"
 	chamber_id = ATMOS_GAS_MONITOR_MIX
+	on = FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/nitrous_output
 	name = "nitrous oxide tank output inlet"
