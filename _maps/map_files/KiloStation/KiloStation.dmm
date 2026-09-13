@@ -50521,15 +50521,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
-"maW" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron,
-/area/station/hallway/primary/central)
 "mbm" = (
 /obj/structure/cable,
 /obj/effect/landmark/event_spawn,
@@ -59210,7 +59201,6 @@
 /turf/closed/wall/rust,
 /area/station/cargo/warehouse)
 "oVn" = (
-/obj/machinery/bluespace_vendor/directional/east,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
@@ -63695,7 +63685,6 @@
 /obj/effect/turf_decal/tile/red,
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/east,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "qnL" = (
@@ -70573,7 +70562,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
 "swL" = (
@@ -71183,15 +71171,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/commons/vacant_room/commissary)
-"sGx" = (
-/obj/effect/turf_decal/tile/purple/half/contrasted,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron/white,
-/area/station/science/research)
 "sGH" = (
 /obj/structure/rack,
 /obj/item/crowbar/red,
@@ -78071,7 +78050,6 @@
 /area/station/engineering/atmos)
 "uVC" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "uVQ" = (
@@ -84902,7 +84880,6 @@
 	dir = 8
 	},
 /obj/machinery/light/directional/west,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -117697,7 +117674,7 @@ cBG
 nQy
 rMc
 bZG
-maW
+cbq
 sQQ
 ixs
 cFw
@@ -128200,7 +128177,7 @@ tJP
 rJG
 bcL
 llN
-sGx
+aTU
 bbN
 baY
 baY
