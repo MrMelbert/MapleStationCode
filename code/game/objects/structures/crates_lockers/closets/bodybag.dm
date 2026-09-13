@@ -57,7 +57,7 @@
 		QDEL_NULL(foldedbag_instance)
 	return ..()
 
-/obj/structure/closet/body_bag/proc/make_examine_cloth(mob/user, mob/user, list/examine_text, list/mat_list)
+/obj/structure/closet/body_bag/proc/make_examine_cloth(datum/source, mob/user, list/examine_text, list/mat_list)
 	SIGNAL_HANDLER
 
 	// melbert todo : weeeee need a cloth material
