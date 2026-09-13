@@ -5,114 +5,126 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
  */
 /proc/electrolyzer_reactions_list()
 	var/list/built_reaction_list = list()
-	for(var/reaction_path in subtypesof(/datum/electrolyzer_reaction))
-		var/datum/electrolyzer_reaction/reaction = new reaction_path()
+	for(var/reaction_path in subtypesof(/datum/gas_reaction/electrolyzer))
+		var/datum/gas_reaction/electrolyzer/reaction = new reaction_path()
 
 		built_reaction_list[reaction.id] = reaction
 
 	return built_reaction_list
 
-/datum/electrolyzer_reaction
-	var/list/requirements
-	var/name = "reaction"
-	var/id = "r"
-	var/desc = ""
-	var/list/factor
+/datum/gas_reaction/electrolyzer
+	abstract_type = /datum/gas_reaction/electrolyzer
 
-/datum/electrolyzer_reaction/proc/react(turf/location, datum/gas_mixture/air_mixture, working_power)
+/datum/gas_reaction/electrolyzer/New()
+	. = ..()
+	factor ||= list()
+	factor["Location"] ||= "Can only happen on tiles with an active Electrolyzer."
+
+/**
+ * Electrolyzer reaction.
+ * Args:
+ * * air_mixture: The gas_mixture receiving the electrolysis.
+ * * working_power: How much energy to put into the electrolysis, in electrolyzer units. A value of 1 is what a tier 1 electrolyzer would put in.
+ * * electrolyzer_args: Additional arguments for alternative methods of electrolysis.
+ */
+/datum/gas_reaction/electrolyzer/proc/react(turf/location, datum/gas_mixture/air_mixture, working_power)
 	return
 
-/datum/electrolyzer_reaction/proc/reaction_check(datum/gas_mixture/air_mixture)
+/**
+ * Checks whether the requirements are met for a reaction.
+ * Args:
+ * * air_mixture: The air mixture to check the requirements for.
+ * * electrolyzer_args: Additional arguments for alternative methods of electrolysis.
+ */
+/datum/gas_reaction/electrolyzer/proc/reaction_check(datum/gas_mixture/air_mixture)
 	var/temp = air_mixture.temperature
-	var/list/cached_gases = air_mixture.gases
+	var/list/cached_moles = air_mixture.moles
 	if((requirements["MIN_TEMP"] && temp < requirements["MIN_TEMP"]) || (requirements["MAX_TEMP"] && temp > requirements["MAX_TEMP"]))
 		return FALSE
 	for(var/id in requirements)
 		if (id == "MIN_TEMP" || id == "MAX_TEMP")
 			continue
-		if(!cached_gases[id] || cached_gases[id][MOLES] < requirements[id])
+		if(cached_moles[id] < requirements[id])
 			return FALSE
 	return TRUE
 
-/datum/electrolyzer_reaction/h2o_conversion
+/datum/gas_reaction/electrolyzer/h2o_conversion
 	name = "H2O Conversion"
 	id = "h2o_conversion"
-	desc = "Conversion of H2o into O2 and H2"
+	desc = "Conversion of H2O into H2 and O2."
 	requirements = list(
 		/datum/gas/water_vapor = MINIMUM_MOLE_COUNT
 	)
 	factor = list(
-		/datum/gas/water_vapor = "2 moles of H2O get consumed",
-		/datum/gas/oxygen = "1 mole of O2 gets produced",
-		/datum/gas/hydrogen = "2 moles of H2 get produced",
-		"Location" = "Can only happen on turfs with an active Electrolyzer.",
+		/datum/gas/water_vapor = "2 moles of H2O is consumed.",
+		/datum/gas/oxygen = "1 mole of O2 is produced.",
+		/datum/gas/hydrogen = "2 moles of H2 is produced.",
 	)
 
-/datum/electrolyzer_reaction/h2o_conversion/react(turf/location, datum/gas_mixture/air_mixture, working_power)
+/datum/gas_reaction/electrolyzer/h2o_conversion/react(turf/location, datum/gas_mixture/air_mixture, working_power)
 
 	var/old_heat_capacity = air_mixture.heat_capacity()
-	air_mixture.assert_gases(/datum/gas/water_vapor, /datum/gas/oxygen, /datum/gas/hydrogen)
-	var/proportion = min(air_mixture.gases[/datum/gas/water_vapor][MOLES] * INVERSE(2), (2.5 * (working_power ** 2)))
-	air_mixture.gases[/datum/gas/water_vapor][MOLES] -= proportion * 2
-	air_mixture.gases[/datum/gas/oxygen][MOLES] += proportion
-	air_mixture.gases[/datum/gas/hydrogen][MOLES] += proportion * 2
+
+	var/proportion = min(air_mixture.moles[/datum/gas/water_vapor] * INVERSE(2), (2.5 * (working_power ** 2)))
+	air_mixture.adjust_gas(/datum/gas/water_vapor, -proportion * 2)
+	air_mixture.adjust_gas(/datum/gas/oxygen, proportion)
+	air_mixture.adjust_gas(/datum/gas/hydrogen, proportion * 2)
 	var/new_heat_capacity = air_mixture.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air_mixture.temperature = max(air_mixture.temperature * old_heat_capacity / new_heat_capacity, TCMB)
 
-/datum/electrolyzer_reaction/nob_conversion
-	name = "Hypernob conversion"
+/datum/gas_reaction/electrolyzer/nob_conversion
+	name = "Hyper-Noblium Conversion"
 	id = "nob_conversion"
-	desc = "Conversion of Hypernoblium into Antinoblium"
+	desc = "Conversion of Hyper-Noblium into Anti-Noblium."
 	requirements = list(
 		/datum/gas/hypernoblium = MINIMUM_MOLE_COUNT,
 		"MAX_TEMP" = 150
 	)
 	factor = list(
-		/datum/gas/hypernoblium = "1 mole of Hypernoblium gets consumed",
-		/datum/gas/antinoblium = "0.5 moles of Antinoblium get produced",
+		/datum/gas/hypernoblium = "1 mole of Hyper-Noblium is consumed.",
+		/datum/gas/antinoblium = "1 mole of Anti-Noblium is produced.",
 		"Temperature" = "Can only occur under 150 kelvin.",
 		"Location" = "Can only happen on turfs with an active Electrolyzer.",
 	)
 
-/datum/electrolyzer_reaction/nob_conversion/react(turf/location, datum/gas_mixture/air_mixture, working_power)
+/datum/gas_reaction/electrolyzer/nob_conversion/react(turf/location, datum/gas_mixture/air_mixture, working_power)
 
 	var/old_heat_capacity = air_mixture.heat_capacity()
 	air_mixture.assert_gases(/datum/gas/hypernoblium, /datum/gas/antinoblium)
-	var/proportion = min(air_mixture.gases[/datum/gas/hypernoblium][MOLES], (1.5 * (working_power ** 2)))
-	air_mixture.gases[/datum/gas/hypernoblium][MOLES] -= proportion
-	air_mixture.gases[/datum/gas/antinoblium][MOLES] += proportion * 0.5
+	var/proportion = min(air_mixture.moles[/datum/gas/hypernoblium], (1.5 * (working_power ** 2)))
+
+	air_mixture.convert_gas(/datum/gas/hypernoblium, /datum/gas/antinoblium, proportion)
+
 	var/new_heat_capacity = air_mixture.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
 		air_mixture.temperature = max(air_mixture.temperature * old_heat_capacity / new_heat_capacity, TCMB)
 
-/datum/electrolyzer_reaction/halon_generation
-	name = "Halon generation"
+/datum/gas_reaction/electrolyzer/halon_generation
+	name = "Halon Generation"
 	id = "halon_generation"
-	desc = "Production of halon from CO2 and N2O"
+	desc = "Production of halon from the electrolysis of BZ."
 	requirements = list(
-		/datum/gas/carbon_dioxide = MINIMUM_MOLE_COUNT,
-		/datum/gas/nitrous_oxide = MINIMUM_MOLE_COUNT,
-		"MAX_TEMP" = 230
+		/datum/gas/bz = MINIMUM_MOLE_COUNT,
 	)
 	factor = list(
-		/datum/gas/carbon_dioxide = "2 moles of CO2 get consumed",
-		/datum/gas/nitrous_oxide = "1 mole of N2O gets consumed",
-		/datum/gas/halon = "1 mole of Halon gets produced",
-		"Energy" = "300 joules of energy is released per mole",
-		"Temperature" = "Can only occur under 230 kelvin.",
-		"Location" = "Can only happen on turfs with an active Electrolyzer.",
+		/datum/gas/bz = "All moles of BZ are consumed.",
+		/datum/gas/oxygen = "0.2 moles of oxygen is produced per mole of BZ consumed.",
+		/datum/gas/halon = "2 moles of Halon is produced per mole of BZ consumed.",
+		"Energy" = "91.2321 kJ of thermal energy is released per mole of BZ consumed.",
+		"Temperature" = "Reaction efficiency is proportional to temperature.",
 	)
 
-/datum/electrolyzer_reaction/halon_generation/react(turf/location, datum/gas_mixture/air_mixture, working_power)
-
+/datum/gas_reaction/electrolyzer/halon_generation/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
 	var/old_heat_capacity = air_mixture.heat_capacity()
-	air_mixture.assert_gases(/datum/gas/carbon_dioxide, /datum/gas/nitrous_oxide, /datum/gas/halon)
-	var/pressure = air_mixture.return_pressure()
-	var/reaction_efficency = min(1 / ((pressure / (0.5 * ONE_ATMOSPHERE)) * (max(air_mixture.gases[/datum/gas/carbon_dioxide][MOLES] / air_mixture.gases[/datum/gas/nitrous_oxide][MOLES], 1))), air_mixture.gases[/datum/gas/nitrous_oxide][MOLES], air_mixture.gases[/datum/gas/carbon_dioxide][MOLES] * INVERSE(2))
-	air_mixture.gases[/datum/gas/carbon_dioxide][MOLES] -= reaction_efficency * 2
-	air_mixture.gases[/datum/gas/nitrous_oxide][MOLES] -= reaction_efficency
-	air_mixture.gases[/datum/gas/halon][MOLES] += reaction_efficency
+	air_mixture.assert_gases(/datum/gas/bz, /datum/gas/oxygen, /datum/gas/halon)
+	var/bz_moles = air_mixture.moles[/datum/gas/bz]
+	var/reaction_efficency = min(bz_moles * (1 - NUM_E ** (-0.5 * air_mixture.temperature * working_power / FIRE_MINIMUM_TEMPERATURE_TO_EXIST)), bz_moles)
+
+	air_mixture.adjust_gas(/datum/gas/bz, -reaction_efficency)
+	air_mixture.adjust_gas(/datum/gas/oxygen, reaction_efficency * 0.2)
+	air_mixture.adjust_gas(/datum/gas/halon, reaction_efficency * 2)
+
 	var/energy_used = reaction_efficency * HALON_FORMATION_ENERGY
 	var/new_heat_capacity = air_mixture.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)

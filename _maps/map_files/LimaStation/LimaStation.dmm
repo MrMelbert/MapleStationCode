@@ -27328,7 +27328,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/portable_atmospherics/canister,
 /obj/effect/turf_decal/box,
-/obj/machinery/bluespace_vendor/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/storage)
 "iSV" = (
@@ -33927,7 +33926,6 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/assistant,
-/obj/machinery/bluespace_vendor/directional/west,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "kWU" = (
@@ -46220,13 +46218,6 @@
 /obj/structure/kitchenspike,
 /turf/open/floor/plating,
 /area/station/service/kitchen/abandoned)
-"oMi" = (
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 8
-	},
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron,
-/area/station/hallway/primary/upper)
 "oMn" = (
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
@@ -47893,14 +47884,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/courtroom)
-"pmN" = (
-/obj/machinery/light/directional/east,
-/obj/effect/turf_decal/trimline/neutral/filled/line{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron,
-/area/station/hallway/primary/fore)
 "pnb" = (
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 8
@@ -59799,10 +59782,6 @@
 /obj/effect/mapping_helpers/mail_sorting/science/rd_office,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
-"sLz" = (
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron,
-/area/station/hallway/secondary/exit)
 "sLD" = (
 /obj/structure/closet/crate/bin,
 /obj/effect/spawner/random/trash/food_packaging,
@@ -64265,10 +64244,6 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
-"ueI" = (
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
-/turf/open/floor/iron,
-/area/station/engineering/atmos)
 "ueJ" = (
 /obj/structure/chair/wood,
 /obj/machinery/light/small/directional/north,
@@ -75807,17 +75782,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/medical/cryo)
-"xWM" = (
-/obj/effect/turf_decal/trimline/yellow/filled/line{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/west,
-/obj/structure/disposalpipe/segment,
-/obj/effect/turf_decal/trimline/red/filled/line{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "xWN" = (
 /obj/structure/window/reinforced/spawner/directional/north,
 /obj/structure/window/reinforced/spawner/directional/south,
@@ -76065,7 +76029,6 @@
 	dir = 1
 	},
 /obj/machinery/portable_atmospherics/pump,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "yaS" = (
@@ -157651,7 +157614,7 @@ jKO
 htD
 oIu
 tms
-ueI
+oIu
 oIu
 dcA
 oIu
@@ -165830,7 +165793,7 @@ djv
 mYs
 byk
 hEg
-xWM
+eNJ
 eNJ
 eNJ
 eNJ
@@ -175073,7 +175036,7 @@ pDB
 wix
 xCA
 llv
-pmN
+iSW
 uSd
 ccy
 vsr
@@ -175108,7 +175071,7 @@ oiz
 csX
 wvu
 fcB
-oMi
+gzx
 gzx
 hBp
 cDU
@@ -175141,7 +175104,7 @@ vwL
 oVu
 att
 tut
-sLz
+uML
 xIh
 nKy
 oBH
