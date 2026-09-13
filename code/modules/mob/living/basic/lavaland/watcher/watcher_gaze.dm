@@ -28,11 +28,13 @@
 	stage_timer = addtimer(CALLBACK(src, PROC_REF(show_indicator_overlay), "eye_pulse"), animation_time, TIMER_STOPPABLE)
 	StartCooldown(360 SECONDS, 360 SECONDS)
 	owner.visible_message(span_warning("[owner]'s eye glows ominously!"))
+	ADD_TRAIT(owner, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
 	if (do_after(owner, delay = wait_delay, target = owner, hidden = TRUE))
 		trigger_effect()
 	else
 		deltimer(stage_timer)
 		clear_current_overlay()
+	REMOVE_TRAIT(owner, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
 	StartCooldown()
 	return TRUE
 
