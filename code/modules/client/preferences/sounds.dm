@@ -4,7 +4,7 @@
 	maximum = 100
 
 /datum/preference/numeric/volume/create_default_value()
-	return maximum
+	return maximum / 2
 
 /// Controls ambience volume
 /datum/preference/numeric/volume/sound_ambience_volume
