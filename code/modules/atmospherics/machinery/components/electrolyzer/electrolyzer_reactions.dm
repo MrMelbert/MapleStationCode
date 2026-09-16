@@ -115,7 +115,7 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 		"Temperature" = "Reaction efficiency is proportional to temperature.",
 	)
 
-/datum/gas_reaction/electrolyzer/halon_generation/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+/datum/gas_reaction/electrolyzer/halon_generation/react(turf/location, datum/gas_mixture/air_mixture, working_power)
 	var/old_heat_capacity = air_mixture.heat_capacity()
 	air_mixture.assert_gases(/datum/gas/bz, /datum/gas/oxygen, /datum/gas/halon)
 	var/bz_moles = air_mixture.moles[/datum/gas/bz]

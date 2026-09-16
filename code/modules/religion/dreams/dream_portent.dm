@@ -140,7 +140,7 @@
 				list("you have a terrible nightmare", "filled with stabbing pain and suffocating darkness", "leaving you with a lingering sense of panic"),
 			))
 
-	for(var/datum/team/cult/cult as anything in GLOB.antagonist_teams)
+	for(var/datum/team/cult/cult in GLOB.antagonist_teams)
 		if(cult.cult_ascendent)
 			return list("the Blood Geometer, Nar'sie, invades your dream", "her pressence overwhelming and suffocating", "she eyes you greedily")
 
