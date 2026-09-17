@@ -1,5 +1,5 @@
 //Vicky's dress
-//A fancy looking dress that is out of a hodgepodge of different frilly fabrics.
+//A fancy looking dress
 /obj/item/clothing/under/uniquedress
 	name = "Unique Dress"
 	desc = "A fancy, well worn, yet taken care of dress."
@@ -20,6 +20,9 @@
 	. = ..()
 	.[FA_ICON_MASKS_THEATER] = "Character item"
 
+
+//Vicky's cape
+// Its a cape to compliment the dress
 /obj/item/clothing/neck/cloak/uniquecape
 	name = "Unique Side Cape"
 	desc = "A green side cape that covers half the back. It has a big tuft of green feathers on the shoulder."
