@@ -6833,6 +6833,7 @@
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
 #include "maplestation_modules\story_content\shiro_equipment\code\shiroclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
+#include "maplestation_modules\story_content\vicky_Equipment\code\vicky_clothing.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\councilgifts.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\sunitems.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkancomponents.dm"
