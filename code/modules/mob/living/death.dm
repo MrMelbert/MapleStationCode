@@ -201,7 +201,7 @@
 	if(!gibbed)
 		if(death_sound || death_message || (living_flags & ALWAYS_DEATHGASP))
 			INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
-		send_death_moodlets()
+		// send_death_moodlets()
 
 	set_stat(DEAD)
 	SShealth_updates.queue_update(src, UPDATE_MEDHUD) // This is just for weird case where death is called out of nowhere
