@@ -60731,7 +60731,6 @@
 /obj/item/clothing/under/misc/assistantformal,
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/shoes/winterboots,
-/obj/machinery/bluespace_vendor/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
 "pDS" = (
@@ -93326,13 +93325,6 @@
 "xWM" = (
 /turf/open/floor/iron/dark,
 /area/station/security/eva)
-"xWO" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron/dark/side,
-/area/station/hallway/floor1/fore)
 "xWT" = (
 /obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/siding/wood{
@@ -116371,7 +116363,7 @@ xBe
 gVw
 rpj
 gqU
-xWO
+imJ
 hJy
 fZZ
 qAK

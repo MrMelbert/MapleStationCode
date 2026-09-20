@@ -2312,10 +2312,6 @@
 /obj/structure/sign/clock/directional/east,
 /turf/open/floor/wood,
 /area/station/commons/vacant_room/office)
-"aLV" = (
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "aLX" = (
 /obj/machinery/door/airlock/maintenance,
 /obj/structure/cable,
@@ -5123,13 +5119,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage)
-"bzI" = (
-/obj/machinery/bluespace_vendor/directional/west,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/fore)
 "bzJ" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/machinery/camera/directional/north{
@@ -6870,7 +6859,6 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/red/half/contrasted,
-/obj/machinery/bluespace_vendor/directional/south,
 /turf/open/floor/iron/dark/textured_edge{
 	dir = 1
 	},
@@ -42816,7 +42804,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
-/obj/machinery/bluespace_vendor/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/science/breakroom)
 "mOf" = (
@@ -51574,7 +51561,6 @@
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance)
 "pkQ" = (
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
@@ -56624,7 +56610,6 @@
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "qHO" = (
-/obj/machinery/bluespace_vendor/directional/south,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/chair/sofa/bench/right{
 	dir = 1
@@ -74453,7 +74438,6 @@
 /obj/effect/turf_decal/tile/purple/half/contrasted{
 	dir = 4
 	},
-/obj/machinery/bluespace_vendor/directional/east,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "wcv" = (
@@ -75452,11 +75436,6 @@
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},
 /area/icemoon/underground/explored/graveyard)
-"wpQ" = (
-/obj/machinery/bluespace_vendor/directional/south,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron,
-/area/station/commons/locker)
 "wpY" = (
 /obj/effect/mapping_helpers/airlock/abandoned,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -79908,7 +79887,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/bluespace_vendor/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
@@ -81485,11 +81463,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"ydT" = (
-/obj/machinery/bluespace_vendor/directional/north,
-/obj/effect/turf_decal/bot,
-/turf/open/floor/iron,
-/area/station/hallway/primary/central)
 "yef" = (
 /obj/machinery/airalarm/directional/north,
 /obj/machinery/suit_storage_unit/industrial/loader,
@@ -230027,7 +230000,7 @@ nct
 gAB
 ykG
 ykG
-wpQ
+ykG
 tOw
 sVn
 wlt
@@ -235675,7 +235648,7 @@ iFj
 hDU
 abL
 ons
-aLV
+gpp
 bXm
 bXm
 bXm
@@ -238522,7 +238495,7 @@ odN
 iZq
 dpH
 gfb
-ydT
+iIA
 iIA
 fSC
 iIA
@@ -241579,7 +241552,7 @@ vVY
 uog
 uog
 nfU
-bzI
+uog
 uog
 fWI
 mny

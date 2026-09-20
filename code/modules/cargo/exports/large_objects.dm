@@ -101,6 +101,9 @@
 	unit_name = "security barrier"
 	export_types = list(/obj/item/grenade/barrier, /obj/structure/barricade/security)
 
+///Maximum number of credits you can earn from selling your gas canister cause its theoritically infinite
+#define MAX_GAS_CREDITS 15000
+
 /**
  * Gas canister exports.
  * I'm going to put a quick aside here as this has been a pain to balance for several years now, and I'd like to at least break how to keep gas exports tame.
@@ -120,32 +123,22 @@
 	export_types = list(/obj/machinery/portable_atmospherics/canister)
 	k_elasticity = 0.00033
 
-/datum/export/large/gas_canister/get_cost(obj/O)
-	var/obj/machinery/portable_atmospherics/canister/C = O
-	var/worth = cost
-	var/datum/gas_mixture/canister_mix = C.return_air()
-	var/canister_gas = canister_mix.gases
-	var/list/gases_to_check = list(
-								/datum/gas/bz,
-								/datum/gas/nitrium,
-								/datum/gas/hypernoblium,
-								/datum/gas/miasma,
-								/datum/gas/tritium,
-								/datum/gas/pluoxium,
-								/datum/gas/freon,
-								/datum/gas/hydrogen,
-								/datum/gas/healium,
-								/datum/gas/proto_nitrate,
-								/datum/gas/zauker,
-								/datum/gas/helium,
-								/datum/gas/antinoblium,
-								/datum/gas/halon,
-								)
+/datum/export/large/gas_canister/get_cost(obj/machinery/portable_atmospherics/canister/canister)
+	var/datum/gas_mixture/canister_mix = canister.return_air()
+	if(!canister_mix.total_moles())
+		return 0
+	var/cached_moles = canister_mix.moles
 
-	for(var/gasID in gases_to_check)
-		canister_mix.assert_gas(gasID)
-		if(canister_gas[gasID][MOLES] > 0)
-			worth += get_gas_value(gasID, canister_gas[gasID][MOLES])
+	var/worth = cost
+	for(var/datum/gas/gas as anything in GLOB.meta_gas_info[META_GAS_ID])
+		if(!(initial(gas.cargo_flags) & GAS_EXPORTABLE))
+			continue
+		canister_mix.assert_gas(gas)
+		if(cached_moles[gas] > 0)
+			worth += get_gas_value(gas, cached_moles[gas])
+			if(worth > MAX_GAS_CREDITS)
+				worth = MAX_GAS_CREDITS
+				break
 
 	canister_mix.garbage_collect()
 	return worth
@@ -153,3 +146,5 @@
 /datum/export/large/gas_canister/proc/get_gas_value(datum/gas/gasType, moles)
 	var/baseValue = initial(gasType.base_value)
 	return round((baseValue/k_elasticity) * (1 - NUM_E**(-1 * k_elasticity * moles)))
+
+#undef MAX_GAS_CREDITS
