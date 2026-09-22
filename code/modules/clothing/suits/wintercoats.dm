@@ -448,6 +448,10 @@
 	inhand_icon_state = null
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/paramedic
 
+/obj/item/clothing/suit/hooded/wintercoat/medical/paramedic/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/crowbar/power
+
 /obj/item/clothing/head/hooded/winterhood/medical/paramedic
 	desc = "A white winter coat hood with blue markings."
 	icon_state = "hood_paramed"
@@ -557,7 +561,8 @@
 		/obj/item/t_scanner,
 		/obj/item/construction/rld,
 		/obj/item/construction/rtd,
-		/obj/item/gun/ballistic/rifle/rebarxbow
+		/obj/item/gun/ballistic/rifle/rebarxbow,
+		/obj/item/crowbar/power,
 	)
 	armor_type = /datum/armor/wintercoat_engineering
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering

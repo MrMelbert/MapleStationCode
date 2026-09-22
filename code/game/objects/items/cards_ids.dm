@@ -67,6 +67,7 @@
 	interaction_flags_click = FORBID_TELEKINESIS_REACH
 	armor_type = /datum/armor/card_id
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
 
 	/// The name registered on the card (for example: Dr Bryan See)
 	var/registered_name = null
@@ -109,9 +110,6 @@
 	/// List of wildcard slot names as keys with lists of wildcard data as values.
 	var/list/wildcard_slots = list()
 
-	/// Boolean value. If TRUE, the [Intern] tag gets prepended to this ID card when the label is updated.
-	var/is_intern = FALSE
-
 	/// Will this ID card use the first or last name as the name displayed with the honorific?
 	var/honorific_position = HONORIFIC_POSITION_DISABLED
 	/// What is our selected honorific?
@@ -147,8 +145,6 @@
 	register_context()
 
 	RegisterSignal(src, COMSIG_ATOM_UPDATED_ICON, PROC_REF(update_in_wallet))
-	if(prob(1))
-		ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, ROUNDSTART_TRAIT)
 
 /obj/item/card/id/Destroy()
 	if (registered_account)
@@ -176,36 +172,6 @@
 	if(honorifics && honorific_position != HONORIFIC_POSITION_DISABLED && honorific_title)
 		return honorific_title
 	return registered_name
-
-// /obj/item/card/id/proc/on_loc_equipped(datum/source, mob/equipper, slot)
-// 	SIGNAL_HANDLER
-
-// 	if (slot == ITEM_SLOT_ID)
-// 		RegisterSignal(equipper, COMSIG_MOVABLE_POINTED, PROC_REF(on_pointed))
-
-// /obj/item/card/id/proc/on_loc_dropped(datum/source, mob/dropper)
-// 	SIGNAL_HANDLER
-// 	UnregisterSignal(dropper, COMSIG_MOVABLE_POINTED)
-
-// /obj/item/card/id/proc/on_pointed(mob/living/user, atom/pointed, obj/effect/temp_visual/point/point)
-// 	SIGNAL_HANDLER
-// 	if ((!big_pointer && !pointer_color) || HAS_TRAIT(user, TRAIT_UNKNOWN_APPEARANCE))
-// 		return
-// 	if (point.icon_state != /obj/effect/temp_visual/point::icon_state) //it differs from the original icon_state already.
-// 		return
-// 	if (loc != user)
-// 		if (!isitem(loc))
-// 			return
-// 		var/obj/item/as_item = loc
-// 		if (as_item.GetID() != src)
-// 			return
-// 	if (big_pointer)
-// 		point.icon_state = "arrow_large"
-// 	if (pointer_color)
-// 		point.icon_state = "[point.icon_state]_white"
-// 		point.color = pointer_color
-// 		var/mutable_appearance/highlight = mutable_appearance(point.icon, "[point.icon_state]_highlights", appearance_flags = RESET_COLOR)
-// 		point.add_overlay(highlight)
 
 /obj/item/card/id/get_id_examine_strings(mob/user)
 	. = ..()
@@ -779,75 +745,63 @@
 			message = span_nicegreen("You pay the last [amount_to_pay] credits of your debt, extinguishing it. Congratulations!")
 		to_chat(user, message)
 
+/obj/item/card/id/MouseEntered(location, control, params)
+	. = ..()
+	if(registered_name)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/item/card/id/get_screentip_name()
+	if(registered_name)
+		return "[name] - [registered_name]"
+	return name
+
 /obj/item/card/id/examine(mob/user)
 	. = ..()
 	if(!user.can_read(src))
 		return
 
-	if(registered_account && !isnull(registered_account.account_id))
-		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
+	var/list/id_info = list()
+	id_info += "&bull; Name: [get_displayed_name(honorifics = TRUE)]"
+	id_info += "&bull; Job: [get_trim_assignment()]"
+	id_info += "&bull; Age: [registered_age]"
+	if(registered_account?.account_id)
+		id_info += "&bull; Account Owner: [registered_account.account_holder]"
+		var/balance_info = "Balance: [registered_account.account_balance]cr"
 		if(ACCESS_COMMAND in access)
 			var/datum/bank_account/linked_dept = SSeconomy.get_dep_account(registered_account.account_job.paycheck_department)
-			. += "The [linked_dept.account_holder] linked to the ID reports a balance of [linked_dept.account_balance] cr."
-	else
-		. += span_notice("Alt-Right-Click the ID to set the linked bank account.")
+			balance_info += " / Dept. Budget: [linked_dept.account_balance]cr"
+		id_info += span_slightly_smaller("&nbsp;&rdsh; [balance_info]")
+		if(registered_account.mining_points || istype(trim, /datum/id_trim/job/shaft_miner) || istype(trim, /datum/id_trim/job/bitrunner))
+			id_info += span_slightly_smaller("&nbsp;&rdsh; Mining Scrip: [registered_account.mining_points]")
 
-	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
-		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
-		if(HAS_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD) && (user.is_holding(src) || (user.CanReach(src) && user.put_in_hands(src, ignore_animation = FALSE))))
-			ADD_TRAIT(src, TRAIT_NODROP, "psycho")
-			. += span_hypnophrase("Look at that subtle coloring... The tasteful thickness of it. Oh my God, it even has a watermark...")
-			var/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
-			user.playsound_local(get_turf(src), slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
-			if(isliving(user))
-				var/mob/living/living_user = user
-				living_user.adjust_jitter(10 SECONDS)
-			addtimer(CALLBACK(src, PROC_REF(drop_card), user), 10 SECONDS)
-	. += span_notice("<i>There's more information below, you can look again to take a closer look...</i>")
+	var/list/control_info = list()
+	control_info += span_smallnotice("<b>Alt-Click</b> the ID to pull money from the linked account in the form of holochips.")
+	control_info += span_smallnotice("You can insert credits into the linked account by pressing holochips, cash, or coins against the ID.")
+	if(isnull(registered_account) || isnull(registered_account.account_id) || registered_account.replaceable)
+		control_info += span_smallnotice("<b>Alt-Right-Click</b> the ID to change the linked account.")
 
-/obj/item/card/id/proc/drop_card(mob/user)
-	user.stop_sound_channel(CHANNEL_HEARTBEAT)
-	REMOVE_TRAIT(src, TRAIT_NODROP, "psycho")
-	if(user.is_holding(src))
-		user.dropItemToGround(src)
-	for(var/mob/living/carbon/human/viewing_mob in viewers(user, 2))
-		if(viewing_mob.stat || viewing_mob == user)
-			continue
-		viewing_mob.say("Is something wrong? [first_name(user.name)]... you're sweating.", forced = "psycho")
-		break
+	var/id_info_formatted = span_info(boxed_message(jointext(id_info, "<br>")))
+	var/control_info_formatted = jointext(control_info, "<br>")
+
+	. += "[id_info_formatted][control_info_formatted]" // skipping br between the box and the controls because the box already has a br at the end.
+	if(registered_account?.account_debt || registered_account?.civilian_bounty)
+		. += span_smallnoticeital("There's more information below, you can examine again to take a closer look...")
 
 /obj/item/card/id/examine_more(mob/user)
 	. = ..()
 	if(!user.can_read(src))
 		return
 
-	. += span_notice("<i>You examine [src] closer, and note the following...</i>")
-
-	if(registered_age)
-		. += "The card indicates that the holder is [registered_age] years old. [(registered_age < AGE_MINOR) ? "There's a holographic stripe that reads <b>[span_danger("'MINOR: DO NOT SERVE ALCOHOL OR TOBACCO'")]</b> along the bottom of the card." : ""]"
 	if(registered_account)
-		if(registered_account.mining_points)
-			. += "There's [registered_account.mining_points] mining point\s loaded onto the card's bank account."
-		. += "The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr."
 		if(registered_account.account_debt)
-			. += span_warning("The account is currently indebted for [registered_account.account_debt] cr. [100*DEBT_COLLECTION_COEFF]% of all earnings will go towards extinguishing it.")
-		if(registered_account.account_job)
-			var/datum/bank_account/D = SSeconomy.get_dep_account(registered_account.account_job.paycheck_department)
-			if(D)
-				. += "The [D.account_holder] reports a balance of [D.account_balance] cr."
-		. += span_info("Alt-Click the ID to pull money from the linked account in the form of holochips.")
-		. += span_info("You can insert credits into the linked account by pressing holochips, cash, or coins against the ID.")
-		if(registered_account.replaceable)
-			. += span_info("Alt-Right-Click the ID to change the linked bank account.")
+			. += span_warning("The account is currently indebted for [registered_account.account_debt] cr. \
+				[100 * DEBT_COLLECTION_COEFF]% of all earnings will go towards extinguishing it.")
 		if(registered_account.civilian_bounty)
-			. += "<span class='info'><b>There is an active civilian bounty.</b>"
-			. += span_info("<i>[registered_account.bounty_text()]</i>")
-			. += span_info("Quantity: [registered_account.bounty_num()]")
-			. += span_info("Reward: [registered_account.bounty_value()]")
-		if(registered_account.account_holder == user.real_name)
-			. += span_boldnotice("If you lose this ID card, you can reclaim your account by Alt-Clicking a blank ID card while holding it and entering your account ID number.")
-	else
-		. += span_info("There is no registered account linked to this card. Alt-Click to add one.")
+			var/list/bounty_text = list()
+			bounty_text += "<i>[registered_account.bounty_text()]</i>"
+			bounty_text += "Quantity: [registered_account.bounty_num()]"
+			bounty_text += "Reward: [registered_account.bounty_value()]cr"
+			. += span_info(fieldset_block("Bounty Information", jointext(bounty_text, "<br>"), "boxed_message"))
 
 	return .
 
@@ -872,27 +826,10 @@
 
 /// Updates the name based on the card's vars and state.
 /obj/item/card/id/proc/update_label()
-	var/name_string
 	if(registered_name)
 		update_honorific()
-		if(honorific_title)
-			name_string = "[honorific_title]'s ID Card"
-		else
-			name_string = "[registered_name]'s ID Card"
-	else
-		name_string = initial(name)
 
-	var/assignment_string
-
-	if(is_intern)
-		if(assignment)
-			assignment_string = trim?.intern_alt_name || "Intern [assignment]"
-		else
-			assignment_string = "Intern"
-	else
-		assignment_string = assignment
-
-	name = "[name_string] ([assignment_string])"
+	name = "[LOWER_TEXT(assignment)]'s ID card"
 
 	if(ishuman(loc))
 		var/mob/living/carbon/human/human = loc
@@ -1074,7 +1011,7 @@
 	icon_state = "card_grey"
 
 	wildcard_slots = WILDCARD_LIMIT_GREY
-	flags_1 = UNPAINTABLE_1
+	flags_1 = parent_type::flags_1 | UNPAINTABLE_1
 
 	/// An overlay icon state for when the card is assigned to a name. Usually manifests itself as a little scribble to the right of the job icon.
 	var/assigned_icon_state = "assigned"
@@ -1093,16 +1030,6 @@
 	var/trim_assignment_override
 	/// If this is set, will manually override the trim shown for SecHUDs. Intended for admins to VV edit and chameleon ID cards.
 	var/sechud_icon_state_override = null
-
-/obj/item/card/id/advanced/Initialize(mapload)
-	. = ..()
-	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
-
-/obj/item/card/id/advanced/Destroy()
-	UnregisterSignal(src, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
-
-	return ..()
 
 /obj/item/card/id/advanced/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
@@ -1139,60 +1066,6 @@
 			balloon_alert(user, "recolored")
 	update_icon()
 	return ITEM_INTERACT_SUCCESS
-
-/obj/item/card/id/advanced/proc/update_intern_status(datum/source, mob/user, slot)
-	SIGNAL_HANDLER
-
-	if(!user?.client)
-		return
-	if(!CONFIG_GET(flag/use_exp_tracking))
-		return
-	if(!CONFIG_GET(flag/use_low_living_hour_intern))
-		return
-	if(!SSdbcore.Connect())
-		return
-
-	var/intern_threshold = (CONFIG_GET(number/use_low_living_hour_intern_hours) * 60) || (CONFIG_GET(number/use_exp_restrictions_heads_hours) * 60) || INTERN_THRESHOLD_FALLBACK_HOURS * 60
-	var/playtime = user.client.get_exp_living(pure_numeric = TRUE)
-
-	if((intern_threshold >= playtime) && (user.mind?.assigned_role.job_flags & JOB_CAN_BE_INTERN))
-		is_intern = TRUE
-		update_label()
-		return
-
-	if(!is_intern)
-		return
-
-	is_intern = FALSE
-	update_label()
-
-/obj/item/card/id/advanced/proc/remove_intern_status(datum/source, mob/user)
-	SIGNAL_HANDLER
-
-	if(!is_intern)
-		return
-
-	is_intern = FALSE
-	update_label()
-
-/obj/item/card/id/advanced/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
-	. = ..()
-
-	//Old loc
-	if(istype(old_loc, /obj/item/storage/wallet))
-		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
-
-	if(istype(old_loc, /obj/item/modular_computer))
-		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
-
-	//New loc
-	if(istype(loc, /obj/item/storage/wallet))
-		RegisterSignal(loc, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-		RegisterSignal(loc, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
-
-	if(istype(loc, /obj/item/modular_computer))
-		RegisterSignal(loc, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-		RegisterSignal(loc, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
 
 /obj/item/card/id/advanced/update_overlays()
 	. = ..()
@@ -1266,10 +1139,6 @@
 	assigned_icon_state = "assigned_gold"
 	wildcard_slots = WILDCARD_LIMIT_GOLD
 
-/obj/item/card/id/advanced/gold/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_TASTEFULLY_THICK_ID_CARD, ROUNDSTART_TRAIT)
-
 /obj/item/card/id/advanced/gold/captains_spare
 	name = "captain's spare ID"
 	article = "the"
@@ -1277,13 +1146,17 @@
 	registered_name = "Captain"
 	trim = /datum/id_trim/job/captain
 	registered_age = null
+	flags_1 = parent_type::flags_1 & ~HAS_UNIQUE_SCREENTIP_NAME_1
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
 	if(registered_name == "Captain")
 		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
 		update_appearance(UPDATE_ICON)
+		flags_1 &= ~HAS_UNIQUE_SCREENTIP_NAME_1
+
 	else
-		..()
+		. = ..()
+		flags_1 |= HAS_UNIQUE_SCREENTIP_NAME_1
 
 /obj/item/card/id/advanced/centcom
 	name = "\improper CentCom ID"

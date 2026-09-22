@@ -67,6 +67,7 @@
 /obj/item/clothing/suit/toggle/labcoat/paramedic/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
+	allowed += /obj/item/crowbar/power
 
 /obj/item/clothing/suit/toggle/labcoat/mad
 	name = "Mad's labcoat"

@@ -33071,7 +33071,7 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 8
 	},
-/obj/structure/sign/warning/biohazard/directional/south,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "goH" = (

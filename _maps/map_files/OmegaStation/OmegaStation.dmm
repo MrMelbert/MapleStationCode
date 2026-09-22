@@ -3514,6 +3514,7 @@
 /obj/item/storage/medkit/regular{
 	pixel_z = 6
 	},
+/obj/structure/sign/poster/official/help_others/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/storage)
 "ajF" = (
@@ -14902,7 +14903,6 @@
 /obj/machinery/computer/operating{
 	dir = 8
 	},
-/obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 4
 	},
@@ -17563,6 +17563,7 @@
 	pixel_x = 1;
 	pixel_y = 2
 	},
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "aXi" = (
@@ -22567,10 +22568,10 @@
 /turf/open/floor/iron/checker,
 /area/station/engineering/storage)
 "buV" = (
-/obj/structure/sign/poster/official/help_others/directional/north,
 /obj/effect/turf_decal/bot_white,
 /obj/effect/turf_decal/siding/blue,
 /obj/machinery/vending/wardrobe/medi_wardrobe,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/north,
 /turf/open/floor/iron/dark/side{
 	dir = 1
 	},

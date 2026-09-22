@@ -296,7 +296,7 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		for(var/obj/machinery/atmospherics/components/unary/vent_pump/vent as anything in my_area.air_vents)
 			data["vents"] += list(list(
 				"refID" = REF(vent),
-				"long_name" = sanitize(vent.name),
+				"long_name" = VENT_PUMP_NAME(vent.id_tag),
 				"power" = vent.on,
 				"overclock" = vent.fan_overclocked,
 				"integrity" = vent.get_integrity_percentage(),
@@ -317,7 +317,7 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 				filter_types += list(list("gas_id" = gas[META_GAS_ID], "gas_name" = gas[META_GAS_NAME], "enabled" = (path in scrubber.filter_types)))
 			data["scrubbers"] += list(list(
 				"refID" = REF(scrubber),
-				"long_name" = sanitize(scrubber.name),
+				"long_name" = SCRUBBER_NAME(scrubber.id_tag),
 				"power" = scrubber.on,
 				"scrubbing" = scrubber.scrubbing,
 				"widenet" = scrubber.widenet,
