@@ -155,7 +155,7 @@
 
 	var/nameplate = null
 
-	flags_1 = HTML_USE_INITAL_ICON_1
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1 | HTML_USE_INITAL_ICON_1
 	rad_insulation = RAD_MEDIUM_INSULATION
 
 /obj/machinery/door/airlock/get_save_vars()
@@ -193,7 +193,8 @@
 
 	if(mapload)
 		if(name != initial(name))
-			nameplate = name
+			if(LOWER_TEXT(name) != LOWER_TEXT(initial(name)))
+				nameplate = name
 			name = initial(name)
 		if(glass)
 			name = replacetext(name, " glass ", " ")
@@ -641,6 +642,16 @@
 	. = ..()
 	if(nameplate)
 		. += span_info("It has a nameplate: <b>[nameplate]</b>.")
+
+/obj/machinery/door/airlock/MouseEntered(location, control, params)
+	. = ..()
+	if(nameplate)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/machinery/door/airlock/get_screentip_name()
+	if(nameplate)
+		return "[name] - [nameplate]"
+	return name
 
 /obj/machinery/door/airlock/examine(mob/user)
 	. = ..()

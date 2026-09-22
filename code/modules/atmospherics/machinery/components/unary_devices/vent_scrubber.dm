@@ -16,6 +16,7 @@
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
 	interaction_flags_click = NEED_VENTCRAWL
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
 
 	///The mode of the scrubber (ATMOS_DIRECTION_SCRUBBING or ATMOS_DIRECTION_SIPHONING)
 	var/scrubbing = ATMOS_DIRECTION_SCRUBBING
@@ -305,6 +306,16 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/get_name_chaser(mob/user, list/name_chaser)
 	. = ..()
 	. += span_info("It has an ID serial: <b>[id_tag]</b>, and belongs to [get_area_name(src)].")
+
+/obj/machinery/atmospherics/components/unary/vent_scrubber/MouseEntered(location, control, params)
+	. = ..()
+	if(id_tag)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/machinery/atmospherics/components/unary/vent_scrubber/get_screentip_name()
+	if(id_tag)
+		return "[name] - [id_tag]"
+	return name
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/examine(mob/user)
 	. = ..()

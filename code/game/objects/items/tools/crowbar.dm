@@ -162,8 +162,8 @@
 
 /obj/item/crowbar/power/syndicate
 	name = "\improper Syndicate hydraulic \"rescue\" tool"
-	desc = "A pocket sized reverse engineering of Nanotrasen's standard issue \"jaws of life\". \
-		Despite its smaller size, it's still fully capable of prying open airlocks."
+	desc = "A modestly sized reverse engineering of Nanotrasen's standard issue \"hydraulic rescue tool\". \
+		Despite its smaller size, it remains as capable - if not more so - than Nanotrasen's design."
 	icon_state = "jaws_syndie"
 	w_class = WEIGHT_CLASS_NORMAL
 	toolspeed = 0.5

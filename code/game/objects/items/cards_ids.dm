@@ -67,6 +67,7 @@
 	interaction_flags_click = FORBID_TELEKINESIS_REACH
 	armor_type = /datum/armor/card_id
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
 
 	/// The name registered on the card (for example: Dr Bryan See)
 	var/registered_name = null
@@ -744,6 +745,16 @@
 			message = span_nicegreen("You pay the last [amount_to_pay] credits of your debt, extinguishing it. Congratulations!")
 		to_chat(user, message)
 
+/obj/item/card/id/MouseEntered(location, control, params)
+	. = ..()
+	if(registered_name)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/item/card/id/get_screentip_name()
+	if(registered_name)
+		return "[name] - [registered_name]"
+	return name
+
 /obj/item/card/id/examine(mob/user)
 	. = ..()
 	if(!user.can_read(src))
@@ -1000,7 +1011,7 @@
 	icon_state = "card_grey"
 
 	wildcard_slots = WILDCARD_LIMIT_GREY
-	flags_1 = UNPAINTABLE_1
+	flags_1 = parent_type::flags_1 | UNPAINTABLE_1
 
 	/// An overlay icon state for when the card is assigned to a name. Usually manifests itself as a little scribble to the right of the job icon.
 	var/assigned_icon_state = "assigned"
@@ -1135,13 +1146,17 @@
 	registered_name = "Captain"
 	trim = /datum/id_trim/job/captain
 	registered_age = null
+	flags_1 = parent_type::flags_1 & ~HAS_UNIQUE_SCREENTIP_NAME_1
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
 	if(registered_name == "Captain")
 		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
 		update_appearance(UPDATE_ICON)
+		flags_1 &= ~HAS_UNIQUE_SCREENTIP_NAME_1
+
 	else
-		..()
+		. = ..()
+		flags_1 |= HAS_UNIQUE_SCREENTIP_NAME_1
 
 /obj/item/card/id/advanced/centcom
 	name = "\improper CentCom ID"

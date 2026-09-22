@@ -19,6 +19,7 @@
 	// vents are more complex machinery and so are less resistant to damage
 	max_integrity = 100
 	interaction_flags_click = NEED_VENTCRAWL
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
 
 	///Direction of pumping the gas (ATMOS_DIRECTION_RELEASING or ATMOS_DIRECTION_SIPHONING)
 	var/pump_direction = ATMOS_DIRECTION_RELEASING
@@ -343,6 +344,16 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/get_name_chaser(mob/user, list/name_chaser)
 	. = ..()
 	. += span_info("It has an ID serial: <b>[id_tag]</b>, and belongs to [get_area_name(src)].")
+
+/obj/machinery/atmospherics/components/unary/vent_pump/MouseEntered(location, control, params)
+	. = ..()
+	if(id_tag)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/machinery/atmospherics/components/unary/vent_pump/get_screentip_name()
+	if(id_tag)
+		return "[name] - [id_tag]"
+	return name
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	. = ..()
