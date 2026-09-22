@@ -85,6 +85,7 @@
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/jousting)
 	//fast and effective, but as a sword, it might damage the results.
 	AddComponent(/datum/component/butchering, \
 		speed = 3 SECONDS, \

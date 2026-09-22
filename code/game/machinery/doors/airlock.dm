@@ -199,10 +199,6 @@
 		if(glass)
 			name = replacetext(name, " glass ", " ")
 
-/obj/machinery/door/airlock/get_examine_name(mob/user)
-	. = ..()
-
-
 /obj/machinery/door/airlock/proc/grey_tide(datum/source, list/grey_tide_areas)
 	SIGNAL_HANDLER
 
