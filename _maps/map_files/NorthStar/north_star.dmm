@@ -46774,6 +46774,7 @@
 /obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/machinery/suit_storage_unit/medical,
 /obj/machinery/camera/autoname/directional/east,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/east,
 /turf/open/floor/iron/white/textured,
 /area/station/medical/storage)
 "mbe" = (
