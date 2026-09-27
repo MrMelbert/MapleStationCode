@@ -67,7 +67,7 @@
 	interaction_flags_click = FORBID_TELEKINESIS_REACH
 	armor_type = /datum/armor/card_id
 	resistance_flags = FIRE_PROOF | ACID_PROOF
-	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
+	flags_1 = HAS_UNIQUE_SCREENTIP_NAME_1
 
 	/// The name registered on the card (for example: Dr Bryan See)
 	var/registered_name = null
