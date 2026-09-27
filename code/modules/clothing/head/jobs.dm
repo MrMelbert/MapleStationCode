@@ -615,6 +615,7 @@
 	w_class = WEIGHT_CLASS_SMALL //surgery cap can be easily crumpled
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/head/utility/surgerycap/Initialize(mapload)
 	. = ..()
