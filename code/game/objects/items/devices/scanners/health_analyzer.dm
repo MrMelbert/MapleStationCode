@@ -436,8 +436,13 @@
 	// Time of death
 	if(target.station_timestamp_timeofdeath && !target.appears_alive())
 		render_list += span_info(separator_hr("Mortality Information"))
-		render_list += "<span class='info ml-1'>Time of Death: [target.station_timestamp_timeofdeath]</span><br>"
-		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(round(world.time - target.timeofdeath))] ago.</b></span><br>"
+		render_list += "<span class='info ml-1'>Time of Death: [target.station_timestamp_timeofdeath] (<i>[DisplayTimeText(round(world.time - target.timeofdeath))] ago</i>)</span><br>"
+		var/mob/dead/observer/ghost = target.get_ghost(TRUE, TRUE)
+		if(HAS_TRAIT(target, TRAIT_SUICIDED))
+			render_list += "<span class='deadsay ml-2'>&rdsh; Subject committed suicide - <b>do not resuscitate</b>.</span><br>"
+
+		else if(isnull(target.client) && !HAS_TRAIT(target, TRAIT_MIND_TEMPORARILY_GONE) && (isnull(ghost) || !ghost.can_reenter_corpse || !ghost.client))
+			render_list += "<span class='deadsay ml-2'>&rdsh; Subject catatonic - <b>resuscitation futile</b>.</span><br>"
 
 	. = jointext(render_list, "")
 	if(tochat)
