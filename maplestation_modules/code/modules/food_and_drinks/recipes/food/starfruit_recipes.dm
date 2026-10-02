@@ -114,7 +114,7 @@
 	result = /obj/item/reagent_containers/condiment/starfruit_jelly
 	category = CAT_DRINK
 
-/datum/crafting_recipe/starfruit_jelly_reagent
+/datum/crafting_recipe/food/starfruit_jelly_reagent
 	name = "Starfruit Jelly Reagent"
 	reqs = list(
 		/obj/item/food/grown/starfruit = 10,

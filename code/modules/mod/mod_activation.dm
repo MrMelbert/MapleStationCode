@@ -131,7 +131,7 @@
 /obj/item/mod/control/proc/transfer_part_to_loc(obj/item/part, atom/newloc, force = FALSE, preserve_suit_storage = FALSE)
 	if(!preserve_suit_storage)
 		return wearer.transferItemToLoc(part, newloc, force = force)
-	if(!wearer.temporarilyRemoveItemFromInventory(part, force, idrop = FALSE, newloc = newloc))
+	if(!wearer.temporarilyRemoveItemFromInventory(part, force, idrop = FALSE/*, newloc = newloc*/))
 		return FALSE
 	part.forceMove(newloc)
 	return TRUE

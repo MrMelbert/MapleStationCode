@@ -7,6 +7,7 @@
 	gain_text = span_notice("You are a big enjoyer of clowns.")
 	lose_text = span_danger("The clown doesn't seem so great.")
 	medical_record_text = "Patient reports being a big enjoyer of clowns."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list(
 		/obj/item/bikehorn,
 		/obj/item/stamp/clown,

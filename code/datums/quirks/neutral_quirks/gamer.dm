@@ -9,6 +9,7 @@
 	medical_record_text = "Patient has a severe video game addiction."
 	mob_trait = TRAIT_GAMER
 	mail_goodies = list(/obj/item/toy/intento, /obj/item/clothing/head/fedora)
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	/// Timer for gaming withdrawal to kick in
 	var/gaming_withdrawal_timer = TIMER_ID_NULL
 
