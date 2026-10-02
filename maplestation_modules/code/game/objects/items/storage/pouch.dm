@@ -25,7 +25,7 @@
 	. = ..()
 	var/static/list/survival_typecache = typecacheof(list(
 		/obj/item/analyzer,
-		/obj/item/assembly/flash,
+		/obj/item/assembly,
 		/obj/item/chameleon,
 		/obj/item/climbing_hook/emergency,
 		/obj/item/clipboard,
