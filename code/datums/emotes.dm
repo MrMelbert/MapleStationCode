@@ -435,7 +435,7 @@
 	return TRUE
 
 /// AI can also see emotes!
-/proc/ai_eye_turf_in_view(mob/eye/camera/ai/eye, turf/target_turf)
+/proc/ai_eye_turf_in_view(mob/camera/ai_eye/eye, turf/target_turf)
 	if(!eye || !target_turf)
 		return FALSE
 
@@ -443,7 +443,10 @@
 	if(!eye_turf || eye_turf.z != target_turf.z)
 		return FALSE
 
-	if(!SScameras || !SScameras.is_visible_by_cameras(eye_turf) || !SScameras.is_visible_by_cameras(target_turf))
+	// NON-MODULE CHANGE
+	// if(!SScameras || !SScameras.is_visible_by_cameras(eye_turf) || !SScameras.is_visible_by_cameras(target_turf))
+	// 	return FALSE
+	if(!GLOB.cameranet.checkTurfVis(eye_turf) || !GLOB.cameranet.checkTurfVis(target_turf))
 		return FALSE
 
 	return (target_turf in eye.get_visible_turfs())
@@ -466,8 +469,8 @@
 		var/relayed = FALSE
 
 		var/atom/active_eye = AI.client.eye
-		if(istype(active_eye, /mob/eye/camera/ai))
-			var/mob/eye/camera/ai/ai_eye = active_eye
+		if(istype(active_eye, /mob/camera/ai_eye))
+			var/mob/camera/ai_eye/ai_eye = active_eye
 			if(ai_eye.ai == AI && ai_eye_turf_in_view(ai_eye, user_turf))
 				to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
 
@@ -476,7 +479,7 @@
 				relayed = TRUE
 
 		if(!relayed && AI.multicam_on) // Multicam
-			for(var/mob/eye/camera/ai/ai_eye as anything in AI.all_eyes)
+			for(var/mob/camera/ai_eye/ai_eye as anything in AI.all_eyes)
 				if(ai_eye_turf_in_view(ai_eye, user_turf))
 					to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
 

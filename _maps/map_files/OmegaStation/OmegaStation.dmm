@@ -7166,8 +7166,7 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/siding/dark,
 /obj/machinery/atmospherics/components/tank{
-	dir = 1;
-	showpipe = 0
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/storage)
@@ -10039,8 +10038,7 @@
 "aCh" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/components/tank/oxygen{
-	dir = 4;
-	showpipe = 0
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/storage)
@@ -32483,8 +32481,7 @@
 "qrY" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/components/tank{
-	dir = 1;
-	showpipe = 0
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/storage)

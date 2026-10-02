@@ -476,7 +476,7 @@
 	dish_category = DISH_MEAT
 
 /datum/crafting_recipe/food/knife/moonfish_fillet
-	reqs = list(/obj/item/fish/moonfish = 1)
+	reqs = list(/obj/item/fish/dwarf_moonfish = 1)
 	result = /obj/item/food/fishmeat/moonfish
 	cuisine_category = CUISINE_LIZARD
 	dish_category = DISH_MEAT
@@ -1440,7 +1440,7 @@
 
 /datum/crafting_recipe/food/egg_from_egg_plant
 	name = "Fresh Plant-Based Eggs"
-	reqs = list(/obj/item/food/grown/eggy = 1)
+	reqs = list(/obj/item/food/grown/shell/eggy = 1)
 	result = /obj/item/food/egg
 	non_craftable = TRUE
 	steps = list("Open an egg-plant in your hands")
