@@ -13,6 +13,8 @@
 	var/datum/callback/drain_antimagic
 	/// The callback invoked when twe have been depleted of all charges
 	var/datum/callback/expiration
+	/// The callback invoked to check if we should block magic
+	var/datum/callback/check_blocking
 	/// Whether we should, on equipping, alert the caster that this item can block any of their spells
 	/// This changes between true and false on equip and drop, don't set it outright to something
 	var/alert_caster_on_equip = TRUE
@@ -42,6 +44,7 @@
 		datum/callback/block_magic,
 		datum/callback/drain_antimagic,
 		datum/callback/expiration,
+		datum/callback/check_blocking,
 	)
 
 	if(isitem(parent))
@@ -59,11 +62,13 @@
 	src.block_magic = block_magic
 	src.drain_antimagic = drain_antimagic
 	src.expiration = expiration
+	src.check_blocking = check_blocking
 
 /datum/component/anti_magic/Destroy(force)
 	block_magic = null
 	drain_antimagic = null
 	expiration = null
+	check_blocking = null
 	return ..()
 
 /datum/component/anti_magic/proc/register_antimagic_signals(datum/on_what)
@@ -106,6 +111,9 @@
 
 /datum/component/anti_magic/proc/block_receiving_magic(mob/living/carbon/source, casted_magic_flags, charge_cost, list/antimagic_sources)
 	SIGNAL_HANDLER
+
+	if(check_blocking && !check_blocking.Invoke())
+		return NONE
 
 	// We do not block this type of magic, good day
 	if(!(casted_magic_flags & antimagic_flags))
