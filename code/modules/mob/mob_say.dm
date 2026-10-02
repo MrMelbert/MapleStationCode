@@ -255,7 +255,7 @@
 
 /mob/living/carbon/human/get_message_mods(message, list/mods)
 	// NON-MODULE CHANGE
-	if(losebreath > 2 || failed_last_breath)
+	if(losebreath > 2)
 		mods[WHISPER_MODE] = MODE_WHISPER
 	return ..()
 
