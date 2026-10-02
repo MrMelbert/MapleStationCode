@@ -562,8 +562,10 @@
 /obj/item/organ/heart/evolved
 	name = "evolved heart"
 	desc = "It beats ever strong."
-	icon_state = "heart-evolved-on"
-	base_icon_state = "heart-evolved"
+	// icon_state = "heart-evolved-on"
+	// base_icon_state = "heart-evolved"
+	icon_state = "demon_heart-on"
+	base_icon_state = "demon_heart"
 	maxHealth = STANDARD_ORGAN_THRESHOLD * 1.2
 	/// Chance to heal per on_life
 	var/healing_probability = 10
@@ -585,8 +587,8 @@
 	name = "sacred heart"
 	desc = "Your foul magics stand no chance against the power of LOVE!!!"
 
-	icon_state = "heart-sacred-on"
-	base_icon_state = "heart-sacred"
+	// icon_state = "heart-sacred-on"
+	// base_icon_state = "heart-sacred"
 
 	healing_probability = 5
 	base_healing = 0.5

@@ -7,6 +7,8 @@
 	var/charges
 	/// The inventory slot the object must be located at in order to activate
 	var/inventory_flags
+	/// The callback invoked when we block magic
+	var/datum/callback/block_magic
 	/// The callback invoked when we have been drained a antimagic charge
 	var/datum/callback/drain_antimagic
 	/// The callback invoked when twe have been depleted of all charges
@@ -37,6 +39,7 @@
 		antimagic_flags = MAGIC_RESISTANCE,
 		charges = INFINITY,
 		inventory_flags = ~ITEM_SLOT_BACKPACK, // items in a backpack won't activate, anywhere else is fine
+		datum/callback/block_magic,
 		datum/callback/drain_antimagic,
 		datum/callback/expiration,
 	)
@@ -53,10 +56,12 @@
 	src.antimagic_flags = antimagic_flags
 	src.charges = charges
 	src.inventory_flags = inventory_flags
+	src.block_magic = block_magic
 	src.drain_antimagic = drain_antimagic
 	src.expiration = expiration
 
 /datum/component/anti_magic/Destroy(force)
+	block_magic = null
 	drain_antimagic = null
 	expiration = null
 	return ..()
@@ -113,6 +118,7 @@
 	// Block success! Add this parent to the list of antimagic sources
 	antimagic_sources += parent
 
+	block_magic?.Invoke(source, parent)
 	if((charges != INFINITY) && charge_cost > 0)
 		drain_antimagic?.Invoke(source, parent)
 		charges -= charge_cost
