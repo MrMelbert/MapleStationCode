@@ -168,6 +168,11 @@
 	desc = "A pocket sized pouch, perfectly capable of holding a few tools."
 	overlay_state = "wrench"
 
+/obj/item/storage/pouch/tools/Initialize(mapload)
+	. = ..()
+	var/static/list/exception_cache = typecacheof(list(/obj/item/clothing/mask/gas))
+	atom_storage.exception_hold = exception_cache
+
 /obj/item/storage/pouch/pills
 	name = "pill pouch"
 	desc = "A pocket sized pouch, perfect for holding a few pills or small bottles."
@@ -208,6 +213,7 @@
 // /obj/item/storage/pouch/mining/Initialize(mapload)
 // 	. = ..()
 // 	atom_storage.set_holdable(list(
+// 		/obj/item/clothing/mask/gas,
 // 		/obj/item/key/lasso,
 // 		/obj/item/mining_stabilizer,
 // 		/obj/item/organ/monster_core,
