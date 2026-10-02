@@ -31,7 +31,6 @@
 	species_exception = list(/datum/species/golem)
 	armor_type = /datum/armor/suit_apron
 	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
-	bodyshapes_with_variations = BODYSHAPE_DIGITIGRADE
 	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/apron/Initialize(mapload)
@@ -444,7 +443,6 @@
 	armor_type = /datum/armor/atmos_overalls
 	species_exception = list(/datum/species/golem)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
-	bodyshapes_with_variations = BODYSHAPE_DIGITIGRADE
 	item_flags = CAN_BE_OVERSLOT
 	allowed = list(
 		/obj/item/analyzer,
