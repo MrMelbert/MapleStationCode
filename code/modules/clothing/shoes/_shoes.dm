@@ -14,6 +14,7 @@
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
 	article = "a pair of"
+	item_flags = CAN_BE_OVERSLOT
 
 	blood_overlay_type = "shoe" // NON-MODULE CHANGE reworking clothing blood overlays
 

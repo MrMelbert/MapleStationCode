@@ -7,6 +7,7 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HEAD
+	item_flags = NONE
 
 /obj/item/clothing/head/mod/Initialize(mapload)
 	. = ..()
@@ -31,6 +32,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS // NON-MODULE CHANGE
 	drop_sound = null
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
+	item_flags = NONE
 
 /obj/item/clothing/suit/mod/Initialize(mapload)
 	. = ..()
@@ -49,6 +51,7 @@
 	equip_sound = null
 	pickup_sound = null
 	drop_sound = null
+	item_flags = NONE
 
 /obj/item/clothing/gloves/mod/Initialize(mapload)
 	. = ..()

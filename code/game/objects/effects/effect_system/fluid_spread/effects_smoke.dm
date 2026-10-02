@@ -295,11 +295,10 @@
 		if(!distcheck || get_dist(location, chilly) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 			air.temperature = temperature
 
-		var/list/gases = air.gases
-		if(gases[/datum/gas/plasma])
-			air.assert_gas(/datum/gas/nitrogen)
-			gases[/datum/gas/nitrogen][MOLES] += gases[/datum/gas/plasma][MOLES]
-			gases[/datum/gas/plasma][MOLES] = 0
+		if(air.moles[/datum/gas/plasma])
+			var/mole_count = air.moles[/datum/gas/plasma]
+			air.adjust_gas(/datum/gas/nitrogen, mole_count)
+			air.adjust_gas(/datum/gas/plasma, -mole_count)
 			air.garbage_collect()
 
 		for(var/obj/effect/hotspot/fire in chilly)
@@ -375,7 +374,9 @@
 	for(var/atom/movable/thing as anything in location)
 		if(thing == src)
 			continue
-		if(location.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(thing, TRAIT_T_RAY_VISIBLE))
+		if(thing.invisibility >= INVISIBILITY_ABSTRACT) // Don't smoke landmarks please
+			continue
+		if(HAS_TRAIT(thing, TRAIT_UNDERFLOOR))
 			continue
 		reagents.expose(thing, TOUCH, fraction)
 

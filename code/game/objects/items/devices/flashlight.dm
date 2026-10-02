@@ -841,6 +841,8 @@
 	grind_results = list(/datum/reagent/phenol = 15, /datum/reagent/hydrogen = 10, /datum/reagent/oxygen = 5) //Meth-in-a-stick
 	sound_on = 'sound/effects/wounds/crack2.ogg' // the cracking sound isn't just for wounds silly
 	toggle_context = FALSE
+	drop_sound = null
+	pickup_sound = null
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	ignore_base_color = TRUE

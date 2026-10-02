@@ -452,6 +452,8 @@
 		.["insulated"] = "It is made from a robust electrical insulator and will block any electricity passing through it!"
 	else if (siemens_coefficient <= 0.5)
 		.["partially insulated"] = "It is made from a poor insulator that will dampen (but not fully block) electric shocks passing through it."
+	if(item_flags & CAN_BE_OVERSLOT)
+		.["form-fitting"] = "It does not block MODsuits from deploying when worn."
 
 	if(resistance_flags & INDESTRUCTIBLE)
 		.["indestructible"] = "It is extremely robust! It'll probably withstand anything that could happen to it!"

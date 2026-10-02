@@ -167,7 +167,7 @@
 	leave_smell()
 
 /obj/effect/decal/cleanable/vomit/proc/leave_smell()
-	add_smell(smell = "vomit", intensity = SMELL_INTENSITY_STRONG, radius = 1)
+	add_smell(smell = /datum/smell/vomit, intensity = SMELL_INTENSITY_STRONG, radius = 1)
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
 	. = ..()

@@ -342,6 +342,7 @@
 		wounding = CANT_WOUND
 
 	if(user != src)
+		user.combat_lock_on(src)
 		// This doesn't factor in armor, or most damage modifiers (physiology). Your mileage may vary
 		if(check_block(attacking_item, final_force, "\the [attacking_item]", MELEE_ATTACK, attacking_item.armour_penetration, attacking_item.damtype))
 			return 0

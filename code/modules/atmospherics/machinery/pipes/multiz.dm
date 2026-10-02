@@ -36,10 +36,12 @@
 
 /obj/machinery/atmospherics/pipe/multiz/update_overlays()
 	. = ..()
+
 	pipe.appearance_flags |= RESET_COLOR|KEEP_APART
-	pipe.color = nodes[1]?.pipe_color || ATMOS_COLOR_OMNI
+	pipe.color = SELECT_ATMOS_NODE_COLOR(src, nodes[1])
 	pipe.icon_state = "pipe-[piping_layer]"
 	. += pipe
+
 	center.pixel_w = PIPING_LAYER_P_X * (piping_layer - PIPING_LAYER_DEFAULT)
 	. += center
 

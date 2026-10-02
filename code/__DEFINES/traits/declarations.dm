@@ -1252,4 +1252,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// This trait lets you attach limbs to any player without surgery.
 #define TRAIT_EASY_ATTACH "easy_attach"
 
+/// Trait that signals to objects on this turf that its open (has UNDERFLOOR_INTERACTIBLE) but still covers them
+#define TRAIT_UNCOVERED_TURF "uncovered_turf"
+
 // END TRAIT DEFINES

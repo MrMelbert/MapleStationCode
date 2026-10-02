@@ -167,6 +167,11 @@
 				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_AUDIBLE)
 			else if(is_visual)
 				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_VISUAL)
+
+		// AI-eye emotes
+		if(is_visual)
+			relay_visual_emote_to_ai_runechat(user, msg)
+
 		return TRUE // Early exit so no dchat message
 
 	// The emote has some important information, and should always be shown to the user
@@ -213,6 +218,9 @@
 		)
 	else
 		CRASH("Emote [type] has no valid emote type set!")
+
+	if(is_visual)
+		relay_visual_emote_to_ai_runechat(user, msg)
 
 	if(!isnull(user.client))
 		var/dchatmsg = "<b>[user]</b> [msg]"
@@ -403,6 +411,7 @@
 
 	log_message(text, LOG_EMOTE)
 	visible_message(text, visible_message_flags = EMOTE_MESSAGE)
+
 	return TRUE
 
 /mob/manual_emote(text)
@@ -411,6 +420,9 @@
 	. = ..()
 	if (!.)
 		return FALSE
+
+	relay_visual_emote_to_ai_runechat(src, text)
+
 	if (!client)
 		return TRUE
 	var/ghost_text = "<b>[src]</b> [text]"
@@ -421,3 +433,56 @@
 		if(get_chat_toggles(ghost.client) & CHAT_GHOSTSIGHT && !(ghost in viewers(origin_turf, null)))
 			ghost.show_message("[FOLLOW_LINK(ghost, src)] [ghost_text]")
 	return TRUE
+
+/// AI can also see emotes!
+/proc/ai_eye_turf_in_view(mob/camera/ai_eye/eye, turf/target_turf)
+	if(!eye || !target_turf)
+		return FALSE
+
+	var/turf/eye_turf = get_turf(eye)
+	if(!eye_turf || eye_turf.z != target_turf.z)
+		return FALSE
+
+	// NON-MODULE CHANGE
+	// if(!SScameras || !SScameras.is_visible_by_cameras(eye_turf) || !SScameras.is_visible_by_cameras(target_turf))
+	// 	return FALSE
+	if(!GLOB.cameranet.checkTurfVis(eye_turf) || !GLOB.cameranet.checkTurfVis(target_turf))
+		return FALSE
+
+	return (target_turf in eye.get_visible_turfs())
+
+/proc/relay_visual_emote_to_ai_runechat(mob/user, msg)
+	var/turf/user_turf = get_turf(user)
+	if(!user_turf)
+		return
+
+	for(var/mob/living/silicon/ai/AI as anything in GLOB.ai_list)
+		if(!AI?.client)
+			continue
+
+		if(user.invisibility > AI.see_invisible)
+			continue
+
+		if(AI in viewers(user))// Avoid duplicates if the AI is nearby
+			continue
+
+		var/relayed = FALSE
+
+		var/atom/active_eye = AI.client.eye
+		if(istype(active_eye, /mob/camera/ai_eye))
+			var/mob/camera/ai_eye/ai_eye = active_eye
+			if(ai_eye.ai == AI && ai_eye_turf_in_view(ai_eye, user_turf))
+				to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
+
+				if(user.runechat_prefs_check(AI, EMOTE_MESSAGE))
+					AI.create_chat_message(speaker = user, raw_message = msg, runechat_flags = EMOTE_MESSAGE)
+				relayed = TRUE
+
+		if(!relayed && AI.multicam_on) // Multicam
+			for(var/mob/camera/ai_eye/ai_eye as anything in AI.all_eyes)
+				if(ai_eye_turf_in_view(ai_eye, user_turf))
+					to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
+
+					if(user.runechat_prefs_check(AI, EMOTE_MESSAGE))
+						AI.create_chat_message(speaker = user, raw_message = msg, runechat_flags = EMOTE_MESSAGE)
+					break

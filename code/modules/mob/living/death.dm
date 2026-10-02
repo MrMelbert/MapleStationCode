@@ -82,13 +82,14 @@
  * * drop_items - Should the mob drop their items before dusting?
  * * force - Should this mob be FORCABLY dusted?
 */
-/mob/living/proc/dust(just_ash, drop_items, force)
+/mob/living/proc/dust(just_ash, drop_items, give_moodlet = TRUE, force)
 	if(body_position == STANDING_UP)
 		// keep us upright so the animation fits.
 		ADD_TRAIT(src, TRAIT_FORCED_STANDING, TRAIT_GENERIC)
 	death(TRUE, "being vaporized")
 
-	send_death_moodlets(dusted = TRUE)
+	if(give_moodlet)
+		send_death_moodlets(dusted = TRUE)
 
 	if(drop_items)
 		unequip_everything()
