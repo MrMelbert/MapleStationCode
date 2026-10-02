@@ -107,9 +107,9 @@
 		icon_state = "crowbar_powergame"
 
 /obj/item/crowbar/power
-	name = "jaws of life"
-	article = "a set of"
-	desc = "A set of jaws of life, compressed through the magic of science."
+	name = "hydraulic rescue tool"
+	desc = "Colloquially known as \"the Jaws of Life\" for its use in emergency situations. \
+		Has a prying attachment for opening spaces and a cutting attachment for slicing through steel."
 	icon_state = "jaws"
 	inhand_icon_state = "jawsoflife"
 	worn_icon_state = "jawsoflife"
@@ -118,7 +118,7 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT*2.25, /datum/material/silver = SHEET_MATERIAL_AMOUNT*1.25, /datum/material/titanium = SHEET_MATERIAL_AMOUNT*1.75)
 	usesound = 'sound/items/jaws_pry.ogg'
 	force = 15
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_BULKY
 	toolspeed = 0.7
 	force_opens = TRUE
 	/// Used on Initialize, how much time to cut cable restraints and zipties.
@@ -161,16 +161,17 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/crowbar/power/syndicate
-	name = "Syndicate jaws of life"
-	desc = "A pocket sized re-engineered copy of Nanotrasen's standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
+	name = "\improper Syndicate hydraulic \"rescue\" tool"
+	desc = "A modestly sized reverse engineering of Nanotrasen's standard issue \"hydraulic rescue tool\". \
+		Despite its smaller size, it remains as capable - if not more so - than Nanotrasen's design."
 	icon_state = "jaws_syndie"
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_NORMAL
 	toolspeed = 0.5
 	force_opens = TRUE
 
 /obj/item/crowbar/power/examine()
 	. = ..()
-	. += " It's fitted with a [tool_behaviour == TOOL_CROWBAR ? "prying" : "cutting"] head."
+	. += "It's fitted with a [tool_behaviour == TOOL_CROWBAR ? "prying" : "cutting"] head."
 
 /obj/item/crowbar/power/suicide_act(mob/living/user)
 	if(tool_behaviour == TOOL_CROWBAR)

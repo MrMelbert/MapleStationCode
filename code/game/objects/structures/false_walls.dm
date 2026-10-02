@@ -34,9 +34,13 @@
 
 /obj/structure/falsewall/Initialize(mapload)
 	. = ..()
-	var/obj/item/stack/initialized_mineral = new mineral // Okay this kinda sucks.
-	set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
-	qdel(initialized_mineral)
+	// minerals are only applied to fake mineral walls
+	// ...yes, real iron walls are not actually made of iron
+	if(ispath(walltype, /turf/closed/wall/mineral))
+		var/obj/item/stack/initialized_mineral = new mineral // Okay this kinda sucks.
+		set_custom_materials(initialized_mineral.mats_per_unit, mineral_amount)
+		qdel(initialized_mineral)
+
 	air_update_turf(TRUE, TRUE)
 	update_appearance()
 
@@ -144,12 +148,11 @@
 		for(var/i in 1 to mineral_amount)
 			new mineral(loc)
 
-/obj/structure/falsewall/get_dumping_location()
-	return null
+/obj/structure/falsewall/examine_descriptor(mob/user)
+	return "wall"
 
 /obj/structure/falsewall/examine_status(mob/user) //So you can't detect falsewalls by examine.
-	to_chat(user, span_notice("The outer plating is <b>welded</b> firmly in place."))
-	return null
+	return span_notice("The outer plating is <b>welded</b> firmly in place.")
 
 /*
  * False R-Walls
@@ -166,8 +169,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 
 /obj/structure/falsewall/reinforced/examine_status(mob/user)
-	to_chat(user, span_notice("The outer <b>grille</b> is fully intact."))
-	return null
+	return span_notice("The outer <b>grille</b> is fully intact.")
 
 /obj/structure/falsewall/reinforced/attackby(obj/item/tool, mob/user)
 	..()

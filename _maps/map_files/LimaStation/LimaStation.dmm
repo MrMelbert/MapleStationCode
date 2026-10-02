@@ -3958,32 +3958,6 @@
 "boP" = (
 /turf/open/floor/iron/dark,
 /area/station/science/breakroom)
-"boR" = (
-/obj/structure/disposalpipe/segment,
-/obj/item/storage/box/beakers{
-	pixel_x = -5;
-	pixel_y = 5
-	},
-/obj/item/storage/box/beakers{
-	pixel_x = -5;
-	pixel_y = 5
-	},
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 8
-	},
-/obj/structure/table/reinforced/rglass,
-/obj/structure/item_dispenser/latex{
-	pixel_x = -31
-	},
-/obj/item/storage/box/rxglasses,
-/obj/item/reagent_containers/spray/cleaner,
-/obj/machinery/camera{
-	c_tag = "Medbay - Storage";
-	dir = 8;
-	network = list("ss13","medbay")
-	},
-/turf/open/floor/iron/white,
-/area/station/medical/storage)
 "boV" = (
 /obj/effect/spawner/random/structure/grille,
 /turf/open/floor/plating,
@@ -12720,6 +12694,15 @@
 /obj/machinery/computer/security/telescreen/entertainment/directional/south,
 /turf/open/floor/carpet,
 /area/station/hallway/primary/central)
+"eor" = (
+/obj/machinery/disposal/bin,
+/obj/effect/turf_decal/stripes/box,
+/obj/structure/disposalpipe/trunk,
+/obj/structure/item_dispenser/latex{
+	pixel_y = 28
+	},
+/turf/open/floor/iron/dark,
+/area/station/medical/storage)
 "eot" = (
 /obj/machinery/camera{
 	c_tag = "AI Chamber - Core";
@@ -16830,6 +16813,30 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/maintenance/port)
+"fEf" = (
+/obj/structure/disposalpipe/segment,
+/obj/item/storage/box/beakers{
+	pixel_x = -5;
+	pixel_y = 5
+	},
+/obj/item/storage/box/beakers{
+	pixel_x = -5;
+	pixel_y = 5
+	},
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 8
+	},
+/obj/structure/table/reinforced/rglass,
+/obj/item/storage/box/rxglasses,
+/obj/item/reagent_containers/spray/cleaner,
+/obj/machinery/camera{
+	c_tag = "Medbay - Storage";
+	dir = 8;
+	network = list("ss13","medbay")
+	},
+/obj/structure/fireaxecabinet/jaws_of_life/directional/west,
+/turf/open/floor/iron/white,
+/area/station/medical/storage)
 "fEg" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -25744,6 +25751,13 @@
 "itY" = (
 /turf/closed/wall/r_wall,
 /area/station/command/heads_quarters/ce)
+"iub" = (
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 1
+	},
+/obj/machinery/portable_atmospherics/pump,
+/turf/open/floor/iron,
+/area/station/hallway/primary/port)
 "iut" = (
 /obj/structure/table/glass,
 /obj/item/storage/briefcase/secure,
@@ -25826,12 +25840,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/showroomfloor,
 /area/station/command/heads_quarters/rd)
-"iwf" = (
-/obj/machinery/disposal/bin,
-/obj/effect/turf_decal/stripes/box,
-/obj/structure/disposalpipe/trunk,
-/turf/open/floor/iron/dark,
-/area/station/medical/storage)
 "iwm" = (
 /obj/machinery/light/directional/west,
 /obj/effect/turf_decal/stripes/line{
@@ -27324,12 +27332,6 @@
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
-"iSJ" = (
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/portable_atmospherics/canister,
-/obj/effect/turf_decal/box,
-/turf/open/floor/iron/dark,
-/area/station/science/ordnance/storage)
 "iSV" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/item/radio/intercom/directional/west,
@@ -33921,13 +33923,6 @@
 /obj/structure/table_frame,
 /turf/open/floor/iron/airless,
 /area/station/tcommsat/oldaisat/stationside)
-"kWJ" = (
-/obj/structure/chair{
-	dir = 1
-	},
-/obj/effect/landmark/start/assistant,
-/turf/open/floor/iron,
-/area/station/hallway/primary/starboard)
 "kWU" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -49490,6 +49485,13 @@
 	dir = 4
 	},
 /area/station/commons/storage/art)
+"pLv" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/obj/effect/landmark/start/assistant,
+/turf/open/floor/iron,
+/area/station/hallway/primary/starboard)
 "pLz" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Firefighting Equipment"
@@ -74088,6 +74090,12 @@
 	},
 /turf/open/floor/carpet/red,
 /area/station/service/chapel/office)
+"xtu" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/portable_atmospherics/canister,
+/obj/effect/turf_decal/box,
+/turf/open/floor/iron/dark,
+/area/station/science/ordnance/storage)
 "xtB" = (
 /obj/structure/weightmachine,
 /obj/machinery/light_switch/directional/north,
@@ -76024,13 +76032,6 @@
 /obj/effect/turf_decal/siding/green,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden)
-"yaO" = (
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
-	dir = 1
-	},
-/obj/machinery/portable_atmospherics/pump,
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "yaS" = (
 /obj/effect/spawner/random/trash/moisture_trap,
 /turf/open/floor/plating,
@@ -123653,7 +123654,7 @@ ymg
 wNX
 xsG
 xLk
-iSJ
+xtu
 rWC
 fQN
 nJg
@@ -165061,7 +165062,7 @@ gqp
 gjw
 pyO
 pwP
-yaO
+iub
 wAr
 aAM
 aJm
@@ -180185,9 +180186,9 @@ aLg
 ojD
 tBw
 hmb
-iwf
+eor
 jJA
-boR
+fEf
 vTq
 dnX
 sEj
@@ -182256,7 +182257,7 @@ vFM
 vFM
 nuJ
 rXv
-kWJ
+pLv
 olg
 wAF
 qPD

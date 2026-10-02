@@ -63,7 +63,6 @@
 			"name" = "Skillchips",
 			"icon" = "floppy-disk",
 			"products" = list(
-				/obj/item/skillchip/appraiser = 2,
 				/obj/item/skillchip/basketweaving = 2,
 				/obj/item/skillchip/bonsai = 2,
 				/obj/item/skillchip/intj = 2,
