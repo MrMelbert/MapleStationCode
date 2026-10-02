@@ -94,7 +94,9 @@
 		for(var/obj/object in turf_location)
 			if(object == src)
 				continue
-			if(turf_location.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(object, TRAIT_T_RAY_VISIBLE))
+			if(object.invisibility >= INVISIBILITY_ABSTRACT) // Don't foam landmarks please
+				continue
+			if(HAS_TRAIT(object, TRAIT_UNDERFLOOR))
 				continue
 			reagents.expose(object, VAPOR, fraction)
 
@@ -250,10 +252,9 @@
 
 	QDEL_NULL(hotspot)
 	var/datum/gas_mixture/air = location.air
-	var/list/gases = air.gases
-	if (gases[/datum/gas/plasma])
-		var/scrub_amt = min(30, gases[/datum/gas/plasma][MOLES]) //Absorb some plasma
-		gases[/datum/gas/plasma][MOLES] -= scrub_amt
+	if (air.moles[/datum/gas/plasma])
+		var/scrub_amt = min(30, air.moles[/datum/gas/plasma]) //Absorb some plasma
+		air.adjust_gas(/datum/gas/plasma, -scrub_amt)
 		absorbed_plasma += scrub_amt
 	if (air.temperature > T20C)
 		air.temperature = max(air.temperature / 2, T20C)
@@ -416,6 +417,12 @@
 	alpha = 120
 	max_integrity = 10
 	pass_flags_self = PASSGLASS
+	var/static/list/ignored_gases = typecacheof(list(
+		/datum/gas/nitrogen,
+		/datum/gas/oxygen,
+		/datum/gas/pluoxium,
+		/datum/gas/halon,
+	))
 
 /obj/structure/foamedmetal/resin/Initialize(mapload)
 	. = ..()
@@ -430,13 +437,10 @@
 		for(var/obj/effect/hotspot/fire in location)
 			qdel(fire)
 
-		var/list/gases = air.gases
-		for(var/gas_type in gases)
-			switch(gas_type)
-				if(/datum/gas/oxygen, /datum/gas/nitrogen)
-					continue
-				else
-					gases[gas_type][MOLES] = 0
+		var/list/cached_moles = air.moles
+		for(var/gas_id in cached_moles)
+			if(!(ignored_gases[gas_id]))
+				cached_moles[gas_id] = 0
 		air.garbage_collect()
 
 	for(var/obj/machinery/atmospherics/components/unary/comp in location)

@@ -30,6 +30,8 @@
 	)
 	species_exception = list(/datum/species/golem)
 	armor_type = /datum/armor/suit_apron
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/apron/Initialize(mapload)
 	. = ..()
@@ -113,6 +115,7 @@
 	toggle_noun = "sleeves"
 	species_exception = list(/datum/species/golem)
 	pocket_slots = 3
+	item_flags = CAN_BE_OVERSLOT
 
 //Cook
 /datum/armor/toggle_chef
@@ -206,6 +209,7 @@
 	)
 	resistance_flags = NONE
 	species_exception = list(/datum/species/golem)
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/hazardvest/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
@@ -228,6 +232,7 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|ARMS
 	species_exception = list(/datum/species/golem)
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/toggle/lawyer/purple
 	name = "purple formal suit jacket"
@@ -259,6 +264,7 @@
 		/obj/item/storage/bag/mail,
 		/obj/item/universal_scanner,
 	)
+	item_flags = CAN_BE_OVERSLOT
 
 // Quartermaster
 
@@ -306,6 +312,7 @@
 	greyscale_config_worn = /datum/greyscale_config/suspenders/worn
 	greyscale_colors = "#972A2A"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	item_flags = CAN_BE_OVERSLOT
 
 //Security
 /obj/item/clothing/suit/jacket/officer/blue
@@ -436,6 +443,7 @@
 	armor_type = /datum/armor/atmos_overalls
 	species_exception = list(/datum/species/golem)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+	item_flags = CAN_BE_OVERSLOT
 	allowed = list(
 		/obj/item/analyzer,
 		/obj/item/construction/rcd,

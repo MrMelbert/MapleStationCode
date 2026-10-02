@@ -7,6 +7,7 @@
 	gain_text = span_notice("You are a big fan of the Mime.")
 	lose_text = span_danger("The mime doesn't seem so great.")
 	medical_record_text = "Patient reports being a big fan of mimes."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list(
 		/obj/item/toy/crayon/mime,
 		/obj/item/clothing/mask/gas/mime,

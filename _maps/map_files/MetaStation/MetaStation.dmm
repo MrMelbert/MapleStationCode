@@ -8366,11 +8366,6 @@
 /obj/machinery/light/small/dim/directional/west,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"bWb" = (
-/obj/machinery/bluespace_vendor/directional/south,
-/obj/effect/turf_decal/tile/neutral,
-/turf/open/floor/iron,
-/area/station/commons/locker)
 "bWv" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/junction{
@@ -17973,17 +17968,6 @@
 "eMW" = (
 /turf/closed/wall,
 /area/station/service/library)
-"eMZ" = (
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/west,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/duct,
-/turf/open/floor/iron,
-/area/station/commons/fitness/recreation)
 "eNg" = (
 /obj/effect/turf_decal/trimline/blue/filled/corner{
 	dir = 1
@@ -26883,7 +26867,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},
-/obj/machinery/atmospherics/components/unary/bluespace_sender,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "ien" = (
@@ -27419,7 +27402,6 @@
 /turf/open/floor/iron/white,
 /area/station/science/lobby)
 "iov" = (
-/obj/machinery/bluespace_vendor/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
@@ -29859,7 +29841,6 @@
 "jpN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/north,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -30816,16 +30797,6 @@
 	},
 /turf/open/floor/carpet,
 /area/station/medical/psychology)
-"jIK" = (
-/obj/structure/chair{
-	dir = 4
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/obj/machinery/bluespace_vendor/directional/west,
-/turf/open/floor/iron,
-/area/station/hallway/secondary/exit/departure_lounge)
 "jIY" = (
 /turf/closed/wall/r_wall,
 /area/station/ai_monitored/aisat/exterior)
@@ -31075,14 +31046,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/science/research)
-"jOl" = (
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/west,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/station/commons/dorms)
 "jOr" = (
 /obj/machinery/suit_storage_unit/standard_unit,
 /obj/machinery/button/door/directional/south{
@@ -40254,7 +40217,6 @@
 /area/station/hallway/secondary/service)
 "nnN" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/bluespace_vendor/directional/east,
 /obj/machinery/photobooth,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
@@ -44403,13 +44365,6 @@
 	},
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/station/service/kitchen/coldroom)
-"oRa" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/bluespace_vendor/directional/west,
-/turf/open/floor/iron,
-/area/station/hallway/primary/central)
 "oRn" = (
 /obj/structure/table,
 /obj/effect/turf_decal/siding{
@@ -60947,17 +60902,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/office)
-"vlz" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/obj/structure/cable,
-/obj/machinery/bluespace_vendor/directional/north,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "vlJ" = (
 /obj/structure/closet/firecloset,
 /turf/open/floor/plating,
@@ -64468,13 +64412,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
-"wGX" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/bluespace_vendor/directional/south,
-/obj/effect/turf_decal/tile/red,
-/turf/open/floor/iron,
-/area/station/hallway/primary/fore)
 "wHx" = (
 /obj/machinery/light/directional/south,
 /obj/structure/rack,
@@ -84701,7 +84638,7 @@ baE
 bnM
 baE
 baE
-vlz
+jMF
 fve
 bNK
 ikK
@@ -93758,7 +93695,7 @@ cMS
 hpI
 cMg
 cMV
-jIK
+cMV
 eiR
 mSp
 cQJ
@@ -97007,7 +96944,7 @@ aBe
 aCp
 aDD
 aDC
-wGX
+mUK
 aHD
 aIM
 aIR
@@ -100624,7 +100561,7 @@ baT
 sgv
 bdO
 uBO
-oRa
+sgv
 xir
 oIN
 nzd
@@ -101643,7 +101580,7 @@ pRW
 mGQ
 pne
 dIw
-bWb
+tEQ
 dnh
 meJ
 kMz
@@ -103668,7 +103605,7 @@ tTW
 fvr
 scL
 lHu
-eMZ
+lHu
 dls
 pSI
 rfz
@@ -103686,7 +103623,7 @@ sTJ
 dqy
 iPs
 tDs
-jOl
+bpa
 tYB
 oUt
 fBu

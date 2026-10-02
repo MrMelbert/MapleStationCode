@@ -51,13 +51,14 @@
 	// the turf has its own smells affecting it, but we also need to factor in smells from gases present
 	var/list/collective_smells_with_gasses = LAZYLISTDUPLICATE(smellable.collective_smells)
 	var/pressuremod = 0
-	for(var/datum/gas/gas_type as anything in air.gases)
+	for(var/gas_id, mole_count in air.moles)
+		var/datum/gas/gas_type = gas_id
 		if(!gas_type::smell)
 			continue
 
 		pressuremod ||= clamp(round(air.return_pressure() / ONE_ATMOSPHERE, 0.1), 0.1, 4.0)
 		var/datum/smell/gas_smell = get_smell(gas_type::smell)
-		switch(air.gases[gas_type][MOLES] / total_moles)
+		switch(mole_count / total_moles)
 			if(0.05 to 0.25)
 				LAZYADDASSOC(collective_smells_with_gasses, gas_smell, (SMELL_INTENSITY_WEAK * pressuremod))
 			if(0.25 to 0.5)

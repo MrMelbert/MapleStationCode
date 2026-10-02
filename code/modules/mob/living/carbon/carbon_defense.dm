@@ -101,12 +101,14 @@
 		if(hit_bodypart.in_dismemberable_state())
 			extra_wound_details = hit_bodypart.get_soon_dismember_message()
 
-		else if(item_sharp)
-			extra_wound_details = ", [item_sharp == SHARP_EDGED ? "slicing" : "piercing"]"
-			if(hit_bodypart.get_mangled_state() & BODYPART_MANGLED_INTERIOR)
-				extra_wound_details += " through to the [hit_bodypart.get_internal_description()]"
-			else
-				extra_wound_details += " at the remaining [hit_bodypart.get_external_description()]"
+		else
+			var/mangled = hit_bodypart.get_mangled_state()
+			if(mangled)
+				extra_wound_details = ", [item_sharp == SHARP_EDGED ? "slicing" : "piercing"]"
+				if(mangled & BODYPART_MANGLED_INTERIOR)
+					extra_wound_details += " through to the [hit_bodypart.get_internal_description()]"
+				else
+					extra_wound_details += " at the remaining [hit_bodypart.get_external_description()]"
 
 	var/message_hit_area = ""
 	if(hit_area)
