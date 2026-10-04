@@ -40,6 +40,33 @@
 		)
 	return data
 
+/datum/preference/toggle/enable_mutant_colors
+	savefile_key = "enable_mutant_colors"
+	savefile_identifier = PREFERENCE_CHARACTER
+	priority = PREFERENCE_PRIORITY_BODYPARTS
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	can_randomize = FALSE
+	default_value = FALSE
+
+/datum/preference/toggle/enable_mutant_colors/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)
+
+/datum/preference/toggle/enable_mutant_colors/apply_to_human(mob/living/carbon/human/target, value)
+	if(value)
+		REMOVE_TRAIT(target, TRAIT_USES_SKINTONES, SPECIES_TRAIT)
+		ADD_TRAIT(target, TRAIT_MUTANT_COLORS, SPECIES_TRAIT)
+		for(var/obj/item/bodypart/limb in target.get_bodyparts())
+			if(limb.limb_id == SPECIES_HUMAN)
+				limb.limb_id = BODYPART_ID_MUTANT
+		target.update_body_parts()
+	else
+		REMOVE_TRAIT(target, TRAIT_MUTANT_COLORS, SPECIES_TRAIT)
+		ADD_TRAIT(target, TRAIT_USES_SKINTONES, SPECIES_TRAIT)
+		for(var/obj/item/bodypart/limb in target.get_bodyparts())
+			if(limb.limb_id == BODYPART_ID_MUTANT)
+				limb.limb_id = SPECIES_HUMAN
+		target.update_body_parts()
+
 /proc/generate_tail_icon(datum/sprite_accessory/tail_accessory, feature_key, tail_color = COLOR_BROWNER_BROWN)
 	var/datum/universal_icon/body = generate_body_icon(
 		bodyparts = list(

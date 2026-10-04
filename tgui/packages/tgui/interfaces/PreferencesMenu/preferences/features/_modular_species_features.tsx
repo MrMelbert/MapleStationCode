@@ -270,3 +270,8 @@ export const feature_android_laws: FeatureChoiced = {
   `,
   component: AndroidLaws,
 };
+
+export const enable_mutant_colors: FeatureToggle = {
+  name: 'Enable Mutant Colors',
+  component: CheckboxInput,
+};
