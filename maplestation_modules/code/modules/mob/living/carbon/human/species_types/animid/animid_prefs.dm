@@ -52,6 +52,8 @@
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid)
 
 /datum/preference/toggle/enable_mutant_colors/apply_to_human(mob/living/carbon/human/target, value)
+	if(!isanimid(target))
+		return
 	if(value)
 		REMOVE_TRAIT(target, TRAIT_USES_SKINTONES, SPECIES_TRAIT)
 		ADD_TRAIT(target, TRAIT_MUTANT_COLORS, SPECIES_TRAIT)
