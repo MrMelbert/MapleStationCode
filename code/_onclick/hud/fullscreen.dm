@@ -103,16 +103,19 @@
 	icon_state = "brutedamageoverlay"
 	layer = UI_DAMAGE_LAYER
 	plane = FULLSCREEN_PLANE
+	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/oxy
 	icon_state = "oxydamageoverlay"
 	layer = UI_DAMAGE_LAYER
 	plane = FULLSCREEN_PLANE
+	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/crit
 	icon_state = "passage"
 	layer = CRIT_LAYER
 	plane = FULLSCREEN_PLANE
+	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/crit/vision
 	icon_state = "oxydamageoverlay"
@@ -125,9 +128,9 @@
 	icon_state = "blackimageoverlay"
 	layer = BLIND_LAYER
 	plane = FULLSCREEN_PLANE
+	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/blind/cyborg
-	show_when_dead = TRUE
 
 /atom/movable/screen/fullscreen/blind/noflicker
 	icon_state = "blackimageoverlaystatic"
