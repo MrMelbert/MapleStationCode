@@ -108,6 +108,7 @@ GLOBAL_LIST_INIT_TYPED(animid_singletons, /datum/animid_type, init_animid_single
 	. = ..()
 	for(var/animalid_id in GLOB.animid_singletons)
 		. |= GLOB.animid_singletons[animalid_id].get_feature_keys()
+	. += /datum/preference/color/mutant_color::savefile_key
 
 // Filters out features from other animid types, to declutter the prefs screen
 /datum/species/human/animid/filter_features_per_prefs(list/to_filter, datum/preferences/prefs)
@@ -117,6 +118,9 @@ GLOBAL_LIST_INIT_TYPED(animid_singletons, /datum/animid_type, init_animid_single
 		to_filter -= GLOB.animid_singletons[other_animid_id].get_feature_keys()
 	// re-add features that we may have filtered from our selected animid type
 	to_filter |= GLOB.animid_singletons[selected_animid_id].get_feature_keys()
+
+	if(prefs.read_preference(/datum/preference/toggle/enable_mutant_colors))
+		to_filter -= /datum/preference/choiced/skin_tone::savefile_key
 
 // Shows all organs from all animid types
 /datum/species/human/animid/get_mut_organs(include_brain = TRUE)
