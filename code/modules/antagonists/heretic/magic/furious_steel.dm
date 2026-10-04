@@ -25,6 +25,14 @@
 	/// A ref to the status effect surrounding our heretic on activation.
 	var/datum/status_effect/protective_blades/blade_effect
 
+	/// NON-MODULE CHANGE : Made to make this more modular, actually
+	/// Time between each blade appearing for the protective effect.
+	var/time_between_blades = 0.66 SECONDS
+
+	/// NON-MODULE CHANGE
+	/// What status effect we apply
+	var/applied_status = /datum/status_effect/protective_blades
+
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/Grant(mob/grant_to)
 	. = ..()
 	if(!owner)
@@ -67,7 +75,7 @@
 		QDEL_NULL(blade_effect)
 
 	var/mob/living/living_user = on_who
-	blade_effect = living_user.apply_status_effect(/datum/status_effect/protective_blades, null, projectile_amount, 25, 0.66 SECONDS)
+	blade_effect = living_user.apply_status_effect(applied_status, null, projectile_amount, 25, time_between_blades) /// NON-MODULE CHANGE
 	RegisterSignal(blade_effect, COMSIG_QDELETING, PROC_REF(on_status_effect_deleted))
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/on_deactivation(mob/on_who, refund_cooldown = TRUE)
