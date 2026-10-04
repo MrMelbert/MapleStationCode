@@ -97,6 +97,7 @@
 /obj/item/melee/olivia_blade/ui_action_click(mob/user, actiontype)
 	if(!bound_mind)
 		bound_mind = user.mind
+		qdel(actiontype)
 		actions_types = null
 		actions = null
 		update_item_action_buttons()
