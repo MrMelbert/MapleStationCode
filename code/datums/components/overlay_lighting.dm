@@ -7,6 +7,20 @@
 
 #define SHORT_CAST 2
 
+/// Inserts an underlay into the holder's underlay list and then sends a signal indicating the underlay was added
+#define ADD_LIGHTING_UNDERLAY(to_holder, underlay) \
+	if(underlay) { \
+		to_holder.underlays |= underlay; \
+		SEND_SIGNAL(to_holder, COMSIG_MOVABLE_LIGHT_UNDERLAY_ADDED, underlay); \
+	}
+
+/// Removes an underlay from the holder's underlay list and then sends a signal indicating the underlay was removed
+#define REMOVE_LIGHTING_UNDERLAY(from_holder, underlay) \
+	if(underlay) { \
+		from_holder.underlays -= underlay; \
+		SEND_SIGNAL(from_holder, COMSIG_MOVABLE_LIGHT_UNDERLAY_REMOVED, underlay); \
+	}
+
 /**
  * Movable atom overlay-based lighting component.
  *
@@ -200,18 +214,16 @@
 ///Adds the luminosity and source for the affected movable atoms to keep track of their visibility.
 /datum/component/overlay_lighting/proc/add_dynamic_lumi()
 	LAZYSET(current_holder.affected_dynamic_lights, src, lumcount_range + 1)
-	current_holder.underlays += visible_mask
+	ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
+	ADD_LIGHTING_UNDERLAY(current_holder, cone)
 	current_holder.update_dynamic_luminosity()
-	if(directional)
-		current_holder.underlays += cone
 
 ///Removes the luminosity and source for the affected movable atoms to keep track of their visibility.
 /datum/component/overlay_lighting/proc/remove_dynamic_lumi()
 	LAZYREMOVE(current_holder.affected_dynamic_lights, src)
-	current_holder.underlays -= visible_mask
+	REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
+	REMOVE_LIGHTING_UNDERLAY(current_holder, cone)
 	current_holder.update_dynamic_luminosity()
-	if(directional)
-		current_holder.underlays -= cone
 
 ///Called to change the value of parent_attached_to.
 /datum/component/overlay_lighting/proc/set_parent_attached_to(atom/movable/new_parent_attached_to)
@@ -322,14 +334,14 @@
 /datum/component/overlay_lighting/proc/on_z_move(atom/source)
 	SIGNAL_HANDLER
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= visible_mask
-		current_holder.underlays -= cone
+		REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
+		REMOVE_LIGHTING_UNDERLAY(current_holder, cone)
 	SET_PLANE_EXPLICIT(visible_mask, O_LIGHTING_VISUAL_PLANE, source)
 	if(cone)
 		SET_PLANE_EXPLICIT(cone, O_LIGHTING_VISUAL_PLANE, source)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += visible_mask
-		current_holder.underlays += cone
+		ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
+		ADD_LIGHTING_UNDERLAY(current_holder, cone)
 
 ///Called when the current_holder is qdeleted, to remove the light effect.
 /datum/component/overlay_lighting/proc/on_parent_attached_to_qdel(atom/movable/source, force)
@@ -365,7 +377,7 @@
 	var/pixel_bounds = ((range - 1) * 64) + 32
 	lumcount_range = CEILING(range, 1)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= visible_mask
+		REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	visible_mask.icon = light_overlays["[pixel_bounds]"]
 	if(pixel_bounds == 32)
 		if(!directional) // it's important that we make it to the end of this function if we are a directional light
@@ -377,7 +389,7 @@
 		transform.Translate(-offset, -offset)
 		visible_mask.transform = transform
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += visible_mask
+		ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	if(directional)
 		if(beam)
 			cast_range = max(round(new_range * 0.5), 1)
@@ -397,17 +409,17 @@
 	if(directional)
 		cone.blend_mode = new_power > 0 ? BLEND_ADD : BLEND_SUBTRACT
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= visible_mask
+		REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	visible_mask.alpha = set_alpha
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += visible_mask
+		ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	if(!directional)
 		return
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= cone
+		REMOVE_LIGHTING_UNDERLAY(current_holder, cone)
 	cone.alpha = min(120, (abs(new_power) * 60) + 15)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += cone
+		ADD_LIGHTING_UNDERLAY(current_holder, cone)
 
 
 ///Changes the light's color, pretty straightforward.
@@ -415,17 +427,17 @@
 	SIGNAL_HANDLER
 	var/new_color = source.light_color
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= visible_mask
+		REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	visible_mask.color = new_color
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += visible_mask
+		ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
 	if(!directional)
 		return
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays -= cone
+		REMOVE_LIGHTING_UNDERLAY(current_holder, cone)
 	cone.color = new_color
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += cone
+		ADD_LIGHTING_UNDERLAY(current_holder, cone)
 
 
 ///Toggles the light on and off.
@@ -505,7 +517,7 @@
 			break
 		scanning = next_turf
 
-	current_holder.underlays -= visible_mask
+	REMOVE_LIGHTING_UNDERLAY(current_holder, visible_mask)
 
 	var/translate_x = -((range - 1) * 32)
 	var/translate_y = translate_x
@@ -538,7 +550,7 @@
 		transform.Translate(translate_x, translate_y)
 		visible_mask.transform = transform
 	if(overlay_lighting_flags & LIGHTING_ON)
-		current_holder.underlays += visible_mask
+		ADD_LIGHTING_UNDERLAY(current_holder, visible_mask)
 
 ///Called when current_holder changes loc.
 /datum/component/overlay_lighting/proc/on_holder_dir_change(atom/movable/source, olddir, newdir)
