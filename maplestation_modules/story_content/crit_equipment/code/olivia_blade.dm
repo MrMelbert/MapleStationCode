@@ -22,9 +22,14 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 	bare_wound_bonus = 20
+	actions_types = list(/datum/action/item_action/olivia_blade_action)
+	action_slots = ALL
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	speech_span = null
+
+	var/datum/mind/bound_mind
 
 /obj/item/melee/olivia_blade/Initialize(mapload)
 	. = ..()
@@ -88,6 +93,50 @@
 
 	if(force >= 25)
 		. += mutable_appearance(icon, "psi_effect", layer = layer + 0.1)
+
+/obj/item/melee/olivia_blade/ui_action_click(mob/user, actiontype)
+	if(!bound_mind)
+		bound_mind = user.mind
+		actions_types = null
+		actions = null
+		update_item_action_buttons()
+		var/datum/action/olivia_blade_speak/new_action = new /datum/action/olivia_blade_speak(src)
+		new_action.Grant(user)
+		new_action.bound_blade = src
+
+/obj/item/melee/olivia_blade/item_action_slot_check(slot, mob/user, datum/action/action)
+	return TRUE // jank, but necessary to let the action work through containers
+
+/datum/action/item_action/olivia_blade_action
+	name = "Bind Blade"
+
+/datum/action/item_action/olivia_blade_action/IsAvailable(feedback)
+	. = ..()
+	if(!HAS_TRAIT(owner, TRAIT_SWORD_PSIONIC))
+		return FALSE
+
+/datum/action/olivia_blade_speak
+	name = "Miguel's Speech"
+	desc = "Speak as Miguel."
+	button_icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
+	button_icon_state = "olivia_blade"
+	background_icon_state = "bg_default"
+	overlay_icon_state = "bg_default_border"
+
+	var/obj/item/melee/olivia_blade/bound_blade
+
+/datum/action/olivia_blade_speak/Trigger(trigger_flags)
+	. = ..()
+
+	if(!bound_blade) // some admin's messin' with me here
+		return
+
+	var/message = tgui_input_text(owner, "What do you want to say as [bound_blade]?", "[src]")
+	if(!message)
+		return
+
+	owner.log_talk(message, LOG_SAY, tag = "blade talk ([bound_blade])")
+	bound_blade.say(message)
 
 // Broken admin verb - gotta figure out how to make it not appear on *everything*
 //ADMIN_VERB_ONLY_CONTEXT_MENU(toggle_olivia_blade_sheath_lock, R_FUN, "Toggle Sheath Lock", obj/item/storage/belt/olivia_blade_sheath/target_sheath in world)
