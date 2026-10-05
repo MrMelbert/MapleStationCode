@@ -22,7 +22,7 @@
 		/obj/item/stack/spacecash,
 	))
 
-	var/static/list/pos_map = list(
+	var/static/alist/pos_map = list(
 		1 = list(-3, -9),
 		2 = list( 3, -9),
 		3 = list( 0, -8),
@@ -48,7 +48,7 @@
 			crack_states += "crack[i]"
 
 	AddElement(/datum/element/crackable, 'icons/obj/pipes_n_cables/stationary_canisters.dmi', crack_states)
-	if(mapload || prefilled)
+	if(prefilled)
 		if(prob(8))
 			for(var/i in 1 to rand(1, 4))
 				new /obj/effect/spawner/random/entertainment/coin(src)
