@@ -17940,7 +17940,7 @@
 /obj/effect/landmark/start/hangover,
 /obj/structure/table/wood,
 /obj/machinery/door/firedoor,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 6
 	},
 /turf/open/floor/iron/dark/smooth_half{
@@ -72330,7 +72330,7 @@
 	id = "cafe_counter";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/structure/displaycase/forsale/kitchen,
+/obj/structure/tipjar/prefilled,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 8
 	},

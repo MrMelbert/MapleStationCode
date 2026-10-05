@@ -7936,7 +7936,7 @@
 /area/station/hallway/primary/central/fore)
 "aSq" = (
 /obj/structure/table/wood,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 4
 	},
 /obj/structure/sign/picture_frame/portrait/bar{
@@ -61959,7 +61959,7 @@
 /area/station/cargo/storage)
 "pLA" = (
 /obj/structure/table/reinforced,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 4
 	},
 /obj/machinery/door/firedoor,
