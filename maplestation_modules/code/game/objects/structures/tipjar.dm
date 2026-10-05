@@ -34,10 +34,20 @@
 		9 = list( 0, -4),
 	)
 
+	var/static/list/crack_states = list()
+
 	var/prefilled = FALSE
+
+	var/glass_type = /obj/item/stack/sheet/glass
+	var/shard_type = /obj/item/shard
 
 /obj/structure/tipjar/Initialize(mapload)
 	. = ..()
+	if(!length(crack_states))
+		for(var/i in 1 to 9)
+			crack_states += "crack[i]"
+
+	AddElement(/datum/element/crackable, 'icons/obj/pipes_n_cables/stationary_canisters.dmi', crack_states)
 	if(mapload || prefilled)
 		if(prob(8))
 			for(var/i in 1 to rand(1, 4))
@@ -114,11 +124,11 @@
 
 /obj/structure/tipjar/atom_deconstruct(disassembled = TRUE)
 	if(disassembled)
-		new /obj/item/stack/sheet/glass(drop_location(), SHEET_MATERIAL_AMOUNT * 2)
+		new glass_type(drop_location(), SHEET_MATERIAL_AMOUNT * 2)
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	else
 		for(var/i in 1 to 2)
-			new /obj/item/shard(drop_location())
+			new shard_type(drop_location())
 		playsound(src, SFX_SHATTER, 50, TRUE)
 
 /obj/structure/tipjar/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
@@ -141,7 +151,7 @@
 /obj/structure/tipjar/update_overlays()
 	. = ..()
 
-	for(var/i in 1 to min(length(contents), 9))
+	for(var/i in 1 to min(length(contents), length(pos_map)))
 		var/obj/item/thing = contents[i]
 		var/image/content_overlay = image(thing, src)
 
@@ -159,3 +169,9 @@
 
 /obj/structure/tipjar/prefilled
 	prefilled = TRUE
+
+/obj/structure/tipjar/plasma
+	max_integrity = 300
+	custom_materials = list(/datum/material/alloy/plasmaglass = SHEET_MATERIAL_AMOUNT * 2)
+	glass_type = /obj/item/stack/sheet/plasmaglass
+	shard_type = /obj/item/shard/plasma
