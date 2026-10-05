@@ -3,35 +3,42 @@
 	desc = "I can't believe tipping culture made its way to the stars."
 	icon = 'maplestation_modules/icons/obj/tipjar.dmi'
 	icon_state = "jar"
-	density = FALSE
-	anchored = TRUE
+	density = TRUE
+	anchored = FALSE
 	resistance_flags = ACID_PROOF
 	max_integrity = 100
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2)
-	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX
+	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR
 
 	var/static/list/tippable_typecache = typecacheof(list(
 		/obj/item/card,
+		/obj/item/cigarette,
+		/obj/item/cigbutt, // jerk!
 		/obj/item/coin,
 		/obj/item/documents,
 		/obj/item/folder,
+		/obj/item/food/candy_trash,
 		/obj/item/holochip,
+		/obj/item/match,
 		/obj/item/paper,
 		/obj/item/paperwork,
+		/obj/item/pen,
 		/obj/item/photo,
 		/obj/item/stack/spacecash,
+		/obj/item/toy/crayon,
+		/obj/item/trash, // jerk!
 	))
 
 	var/static/alist/pos_map = alist(
-		1 = list(-3, -9),
-		2 = list( 3, -9),
-		3 = list( 0, -8),
-		4 = list(-3, -7),
-		5 = list( 3, -7),
-		6 = list( 0, -6),
-		7 = list(-3, -5),
-		8 = list( 3, -5),
-		9 = list( 0, -4),
+		1 = list(-3, -7),
+		2 = list( 3, -7),
+		3 = list( 0, -6),
+		4 = list(-3, -5),
+		5 = list( 3, -5),
+		6 = list( 0, -4),
+		7 = list(-3, -3),
+		8 = list( 3, -3),
+		9 = list( 0, -2),
 	)
 
 	var/static/list/crack_states = list()
@@ -47,7 +54,8 @@
 		for(var/i in 1 to 9)
 			crack_states += "crack[i]"
 
-	AddElement(/datum/element/crackable, 'icons/obj/pipes_n_cables/stationary_canisters.dmi', crack_states)
+	if(mapload)
+		set_anchored(TRUE)
 	if(prefilled)
 		if(prob(8))
 			for(var/i in 1 to rand(1, 4))
@@ -58,6 +66,8 @@
 		if(prob(1))
 			for(var/i in 1 to rand(1, 2))
 				new /obj/effect/spawner/random/entertainment/money(src)
+
+	AddElement(/datum/element/crackable, 'icons/obj/pipes_n_cables/stationary_canisters.dmi', crack_states)
 	update_appearance()
 
 /obj/structure/tipjar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -97,6 +107,13 @@
 		return
 
 	. = TRUE
+	if(!length(contents))
+		user.visible_message(
+			span_notice("[user] sticks [user.p_their()] hand in the empty [name], like a fool."),
+			span_warning("There's nothing to fish out of [src]!"),
+		)
+		return
+
 	user.visible_message(
 		span_notice("[user] starts fishing around in [src]..."),
 		span_notice("You start fishing around in [src]..."),
@@ -151,9 +168,19 @@
 	SIGNAL_HANDLER
 	return CANCEL_STACK_MERGE
 
+/obj/structure/tipjar/wrench_act(mob/living/user, obj/item/tool)
+	switch(default_unfasten_wrench(user, tool, 5 SECONDS))
+		if(CANT_UNFASTEN)
+			return NONE
+		if(FAILED_UNFASTEN)
+			return ITEM_INTERACT_BLOCKING
+		if(SUCCESSFUL_UNFASTEN)
+			return ITEM_INTERACT_SUCCESS
+	return NONE
+
 /obj/structure/tipjar/update_overlays()
 	. = ..()
-
+	underlays.Cut()
 	for(var/i in 1 to min(length(contents), length(pos_map)))
 		var/obj/item/thing = contents[i]
 		var/image/content_overlay = image(thing, src)
@@ -166,9 +193,7 @@
 		content_overlay.layer = FLOAT_LAYER
 		content_overlay.plane = FLOAT_PLANE
 
-		. += content_overlay
-
-	. += "jar_overlay"
+		underlays += content_overlay
 
 /obj/structure/tipjar/prefilled
 	prefilled = TRUE
