@@ -58,8 +58,9 @@
 	else
 		stop_chemming() //we're full
 
-/obj/structure/geyser/attackby(obj/item/item, mob/user, params)
+/obj/structure/geyser/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(!istype(item, /obj/item/mining_scanner) && !istype(item, /obj/item/t_scanner/adv_mining_scanner))
+		playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 		return ..() //this runs the plunger code
 
 	if(discovered)
@@ -103,6 +104,12 @@
 	reagent_id = /datum/reagent/water/hollowwater
 	true_name = "hollow water geyser"
 
+/obj/structure/geyser/chiral_buffer
+	reagent_id = /datum/reagent/reaction_agent/inversing_buffer
+	point_value = 250
+	true_name = "chiral inversing geyser"
+	discovery_message = "It's a rare chiral inversing geyser! This could be very powerful in the right hands... "
+
 /obj/structure/geyser/random
 	point_value = 500
 	true_name = "strange geyser"
@@ -135,7 +142,7 @@
 	///What layer we set it to
 	var/target_layer = DUCT_LAYER_DEFAULT
 
-/obj/item/plunger/attack_atom(obj/O, mob/living/user, params)
+/obj/item/plunger/attack_atom(obj/O, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(layer_mode)
 		SEND_SIGNAL(O, COMSIG_MOVABLE_CHANGE_DUCT_LAYER, O, target_layer)
 		return ..()

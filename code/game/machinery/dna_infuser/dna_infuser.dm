@@ -137,6 +137,7 @@
 	// Valid organ successfully picked.
 	new_organ = new new_organ()
 	new_organ.replace_into(target)
+	new_organ.organ_flags |= ORGAN_MUTANT
 	check_tier_progression(target)
 	return TRUE
 
@@ -156,7 +157,7 @@
 		if(old_organ)
 			if((old_organ.type != new_organ) && !IS_ROBOTIC_ORGAN(old_organ))
 				continue // Old organ can be mutated!
-		else if(ispath(new_organ, /obj/item/organ/external))
+		else if(new_organ::organ_flags & ORGAN_EXTERNAL)
 			continue // External organ can be grown!
 		// Internal organ is either missing, or is non-organic.
 		potential_new_organs -= new_organ
@@ -209,7 +210,7 @@
 	//we set drop to false to manually call it with an allowlist
 	dump_inventory_contents(list(occupant))
 
-/obj/machinery/dna_infuser/attackby(obj/item/used, mob/user, params)
+/obj/machinery/dna_infuser/attackby(obj/item/used, mob/user, list/modifiers, list/attack_modifiers)
 	if(infusing)
 		return
 	if(!occupant && default_deconstruction_screwdriver(user, icon_state, icon_state, used))//sent icon_state is irrelevant...

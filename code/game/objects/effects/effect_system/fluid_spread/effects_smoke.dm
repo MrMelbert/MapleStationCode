@@ -124,6 +124,7 @@
 
 	smoker.smoke_delay = TRUE
 	addtimer(VARSET_CALLBACK(smoker, smoke_delay, FALSE), 1 SECONDS)
+	SEND_SIGNAL(smoker, COMSIG_CARBON_EXPOSED_TO_SMOKE, seconds_per_tick)
 	return TRUE
 
 /**
@@ -235,7 +236,7 @@
 /// Green smoke that makes you cough.
 /obj/effect/particle_effect/fluid/smoke/bad/green
 	name = "green smoke"
-	color = "#00FF00"
+	color = COLOR_VIBRANT_LIME
 	opacity = FALSE
 
 /// A factory which produces green smoke that makes you cough.
@@ -294,11 +295,10 @@
 		if(!distcheck || get_dist(location, chilly) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 			air.temperature = temperature
 
-		var/list/gases = air.gases
-		if(gases[/datum/gas/plasma])
-			air.assert_gas(/datum/gas/nitrogen)
-			gases[/datum/gas/nitrogen][MOLES] += gases[/datum/gas/plasma][MOLES]
-			gases[/datum/gas/plasma][MOLES] = 0
+		if(air.moles[/datum/gas/plasma])
+			var/mole_count = air.moles[/datum/gas/plasma]
+			air.adjust_gas(/datum/gas/nitrogen, mole_count)
+			air.adjust_gas(/datum/gas/plasma, -mole_count)
 			air.garbage_collect()
 
 		for(var/obj/effect/hotspot/fire in chilly)
@@ -374,7 +374,9 @@
 	for(var/atom/movable/thing as anything in location)
 		if(thing == src)
 			continue
-		if(location.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(thing, TRAIT_T_RAY_VISIBLE))
+		if(thing.invisibility >= INVISIBILITY_ABSTRACT) // Don't smoke landmarks please
+			continue
+		if(HAS_TRAIT(thing, TRAIT_UNDERFLOOR))
 			continue
 		reagents.expose(thing, TOUCH, fraction)
 
@@ -391,7 +393,7 @@
 
 	var/fraction = (seconds_per_tick SECONDS) / initial(lifetime)
 	reagents.copy_to(smoker, reagents.total_volume, fraction)
-	reagents.expose(smoker, INGEST, fraction)
+	reagents.expose(smoker, INHALE, fraction)
 	return TRUE
 
 /// Helper to quickly create a cloud of reagent smoke

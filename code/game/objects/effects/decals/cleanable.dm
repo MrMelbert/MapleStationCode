@@ -1,6 +1,7 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = FLOOR_CLEAN_LAYER
+	abstract_type = /obj/effect/decal/cleanable
 	var/list/random_icon_states = null
 	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
 	var/blood_state = ""
@@ -20,11 +21,18 @@
 /// Use this if your decal is one of one, and thus we should not spawn it if it's there already
 /// Returns either the existing cleanable, the one we created, or null if we can't spawn on that turf
 /turf/proc/spawn_unique_cleanable(obj/effect/decal/cleanable/cleanable_type)
+	var/turf/checkturf = src
+	while (isgroundlessturf(checkturf) && checkturf.zPassOut(DOWN))
+		var/turf/below = GET_TURF_BELOW(checkturf)
+		if (!below || !below.zPassIn(DOWN))
+			break
+		checkturf = below
+
 	// There is no need to spam unique cleanables, they don't stack and it just chews cpu
-	var/obj/effect/decal/cleanable/existing = locate(cleanable_type) in src
+	var/obj/effect/decal/cleanable/existing = locate(cleanable_type) in checkturf
 	if(existing)
 		return existing
-	return new cleanable_type(src)
+	return new cleanable_type(checkturf)
 
 /obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
@@ -87,7 +95,7 @@
 /obj/effect/decal/cleanable/proc/lazy_init_reagents()
 	return
 
-/obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
+/obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if((istype(W, /obj/item/reagent_containers/cup) && !istype(W, /obj/item/reagent_containers/cup/rag)) || istype(W, /obj/item/reagent_containers/cup/glass))
 		if(src.reagents && W.reagents)
 			lazy_init_reagents()
@@ -104,7 +112,7 @@
 				qdel(src)
 				return
 	if(W.get_temperature()) //todo: make heating a reagent holder proc
-		if(istype(W, /obj/item/clothing/mask/cigarette))
+		if(istype(W, /obj/item/cigarette))
 			return
 		else
 			var/hotness = W.get_temperature()

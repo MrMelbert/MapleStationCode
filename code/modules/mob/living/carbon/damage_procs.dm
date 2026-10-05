@@ -19,7 +19,7 @@
 	// ALso we'll automatically covnert string def zones into bodyparts to pass into parent call.
 	else if(!isbodypart(def_zone))
 		var/random_zone = check_zone(def_zone || get_random_valid_zone(def_zone))
-		def_zone = get_bodypart(random_zone) || bodyparts[1]
+		def_zone = get_bodypart(random_zone) || get_bodypart()
 
 	. = ..()
 	// Taking brute or burn to bodyparts gives a damage flash
@@ -82,15 +82,46 @@
 //These procs fetch a cumulative total damage from all bodyparts
 /mob/living/carbon/getBruteLoss()
 	var/amount = 0
-	for(var/obj/item/bodypart/part as anything in bodyparts)
-		amount += part.brute_dam
-	return round(amount, DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+		amount += bodypart.brute_dam
+	return round(amount, DAMAGE_PRECISION)
 
 /mob/living/carbon/getFireLoss()
 	var/amount = 0
-	for(var/obj/item/bodypart/part as anything in bodyparts)
-		amount += part.burn_dam
-	return round(amount, DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+		amount += bodypart.burn_dam
+	return round(amount, DAMAGE_PRECISION)
+
+
+/**
+ * Returns the amount of bruteloss across all bodyparts meeting the matching bodytype.
+ * Useful for if you would like to check the bruteloss for only organic bodyparts, for example.
+ *
+ * Arguments:
+ * *  required_bodytype - The bodytype(s) to match against.
+ */
+/mob/living/carbon/proc/get_brute_loss_for_type(required_bodytype = ALL)
+	var/amount = 0
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+		if(!(bodypart.bodytype & required_bodytype))
+			continue
+		amount += bodypart.brute_dam
+	return round(amount, DAMAGE_PRECISION)
+
+/**
+ * Returns the amount of fireloss across all bodyparts meeting the matching bodytype.
+ * Useful for if you would like to check the fireloss for only organic bodyparts, for example.
+ *
+ * Arguments:
+ * *  required_bodytype - The bodytype(s) to match against.
+ */
+/mob/living/carbon/proc/get_fire_loss_for_type(required_bodytype = ALL)
+	var/amount = 0
+	for(var/obj/item/bodypart/bodypart as anything in get_bodyparts())
+		if(!(bodypart.bodytype & required_bodytype))
+			continue
+		amount += bodypart.burn_dam
+	return round(amount, DAMAGE_PRECISION)
 
 /mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
@@ -126,20 +157,21 @@
 		return FALSE
 	return adjustFireLoss(diff, updating_health, forced, required_bodytype)
 
-/mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
-	if(!can_adjust_tox_loss(amount, forced, required_biotype))
-		return 0
-	if(!forced && HAS_TRAIT(src, TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
-		amount = -amount
-		if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
-			amount = min(amount, 0)
-		if(amount > 0)
-			blood_volume = max(blood_volume - (5*amount), 0)
-		else
-			blood_volume = max(blood_volume - amount, 0)
-	else if(!forced && HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
-		amount = min(amount, 0)
-	return ..()
+/mob/living/carbon/human/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
+	. = ..()
+	if(. >= 0) // 0 = no damage, + values = healed damage
+		return .
+
+	if(AT_TOXIN_VOMIT_THRESHOLD(src))
+		apply_status_effect(/datum/status_effect/tox_vomit)
+
+/mob/living/carbon/human/setToxLoss(amount, updating_health, forced, required_biotype)
+	. = ..()
+	if(. >= 0)
+		return .
+
+	if(AT_TOXIN_VOMIT_THRESHOLD(src))
+		apply_status_effect(/datum/status_effect/tox_vomit)
 
 /**
  * If an organ exists in the slot requested, and we are capable of taking damage (we don't have [GODMODE] on), call the damage proc on that organ.
@@ -197,7 +229,7 @@
 ///Returns a list of damaged bodyparts
 /mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, required_bodytype = NONE, target_zone = null)
 	var/list/obj/item/bodypart/parts = list()
-	for(var/obj/item/bodypart/part as anything in bodyparts)
+	for(var/obj/item/bodypart/part as anything in get_bodyparts())
 		if(required_bodytype && !(part.bodytype & required_bodytype))
 			continue
 		if(!isnull(target_zone) && part.body_zone != target_zone)
@@ -209,8 +241,7 @@
 ///Returns a list of damageable bodyparts
 /mob/living/carbon/proc/get_damageable_bodyparts(required_bodytype)
 	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		if(required_bodytype && !(BP.bodytype & required_bodytype))
 			continue
 		if(BP.brute_dam + BP.burn_dam < BP.max_damage)
@@ -221,8 +252,7 @@
 ///Returns a list of bodyparts with wounds (in case someone has a wound on an otherwise fully healed limb)
 /mob/living/carbon/proc/get_wounded_bodyparts(required_bodytype)
 	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in get_bodyparts())
 		if(required_bodytype && !(BP.bodytype & required_bodytype))
 			continue
 		if(LAZYLEN(BP.wounds))

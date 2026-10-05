@@ -19,6 +19,7 @@
 
 //  Generic non-item
 /obj/item/storage/bag
+	abstract_type = /obj/item/storage/bag
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_BULKY
 	drop_sound = 'maplestation_modules/sound/items/drop/backpack.ogg'
@@ -357,13 +358,16 @@
 	custom_price = PAYCHECK_CREW * 0.6
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
+	// sound_vary = TRUE
+	// pickup_sound = SFX_TRAY_PICKUP
+	// drop_sound = SFX_TRAY_DROP
 
 /obj/item/storage/bag/tray/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_BULKY //Plates are required bulky to keep them out of backpacks
 	atom_storage.set_holdable(
 		can_hold_list = list(
-			/obj/item/clothing/mask/cigarette,
+			/obj/item/cigarette,
 			/obj/item/food,
 			/obj/item/kitchen,
 			/obj/item/lighter,
@@ -385,6 +389,7 @@
 	atom_storage.insert_preposition = "on"
 	atom_storage.max_slots = 8
 	atom_storage.max_total_storage = 16
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 
 /obj/item/storage/bag/tray/attack(mob/living/M, mob/living/user)
 	. = ..()
@@ -496,6 +501,7 @@
 		/obj/item/reagent_containers/cup/tube,
 		/obj/item/reagent_containers/hypospray/medipen,
 		/obj/item/reagent_containers/syringe,
+		/obj/item/food/meat/slab,
 	))
 
 /*
@@ -556,6 +562,7 @@
 		/obj/item/stack/ore/bluespace_crystal,
 		/obj/item/stock_parts,
 		/obj/item/wallframe/camera,
+		/obj/item/stack/sheet,
 	))
 
 /obj/item/storage/bag/harpoon_quiver

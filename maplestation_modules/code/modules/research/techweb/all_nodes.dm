@@ -2,7 +2,7 @@
 /// Adds illegal tech requirement to phazons.
 /datum/techweb_node/mech_infiltrator
 	prereq_id_add = list(
-		"syndicate_basic",
+		TECHWEB_NODE_SYNDICATE_BASIC,
 	)
 
 /// Adds cybernetic cat ears to cybernetic organs.
@@ -17,27 +17,31 @@
 		"fax_machine_deluxe",
 	)
 
-/datum/techweb_node/mod_equip
-	id_additions = list(
-		"mod_helmet_desync",
-	)
-
 /datum/techweb_node/bio_scan
 	id_additions = list(
 		"scanning_pad",
 		"triage_zone_projector",
-		"vitals_monitor",
 	)
 
 /datum/techweb_node/medbay_equip_adv
 	id_additions = list(
 		"auto_cpr_device",
-		"vitals_monitor_advanced",
+		"neural_suppressor",
+		"medical_scissors_trauma",
 	)
 
 /datum/techweb_node/cryostasis
+	id_removals = list(
+		"stasis",
+	)
 	id_additions = list(
 		"stasis_bodybag",
+		"stasis_pod",
+	)
+
+/datum/techweb_node/alien_surgery
+	id_additions = list(
+		"stasis",
 	)
 
 /datum/techweb_node/surgery_exp
@@ -92,4 +96,15 @@
 /datum/techweb_node/circuit_shells
 	id_additions = list(
 		"headset_shell",
+	)
+
+/datum/techweb_node/hud
+	id_additions = list(
+		"antiblindnessvisor",
+	)
+
+/datum/techweb_node/medbay_equip
+	id_additions = list(
+		"plasticmedkit",
+		"medical_scissors",
 	)

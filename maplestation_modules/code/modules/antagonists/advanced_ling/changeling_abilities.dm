@@ -30,13 +30,6 @@
 	to_chat(user, span_changeling("Our vocal glands will now no longer mimic the voice of your visible identity."))
 	REMOVE_TRAIT(user, TRAIT_VOICE_MATCHES_ID, CHANGELING_ABILITY)
 
-/// Extension of GetVoice for TRAIT_VOICE_MATCHES_ID.
-/mob/living/carbon/human/GetVoice()
-	if(!HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
-		return ..()
-	var/obj/item/card/id/idcard = get_idcard(FALSE)
-	return istype(idcard) ? idcard.registered_name : get_face_name()
-
 /datum/action/changeling/pain_reduction
 	name = "Nervous System Realignment"
 	desc = "We realign our nervous system, making us naturally more resistant to pain. \

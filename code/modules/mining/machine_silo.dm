@@ -7,6 +7,7 @@
 	circuit = /obj/item/circuitboard/machine/ore_silo
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN|INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_OPEN_SILICON
 	processing_flags = NONE
+	examine_feedback_on_ui = TRUE
 
 	/// List of all connected components that are on hold from accessing materials.
 	var/list/holds = list()
@@ -98,7 +99,7 @@
 
 /obj/machinery/ore_silo/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials)
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials)
 	)
 
 /obj/machinery/ore_silo/ui_interact(mob/user, datum/tgui/ui)

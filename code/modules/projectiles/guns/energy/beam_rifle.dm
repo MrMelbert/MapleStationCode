@@ -30,6 +30,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/beam_rifle/hitscan)
 	actions_types = list(/datum/action/item_action/zoom_lock_action)
 	cell_type = /obj/item/stock_parts/power_store/cell/beam_rifle // Non-module change : this'll conflict if you're porting the new one
+	light_color = COLOR_STRONG_BLUE // Non-module change
 	var/aiming = FALSE
 	var/aiming_time = 12
 	var/aiming_time_fire_threshold = 5

@@ -47,6 +47,7 @@
 	lighting_cutoff_red = 30
 	lighting_cutoff_green = 35
 	lighting_cutoff_blue = 25
+	initial_blood_type = /datum/blood_type/oil
 
 	can_be_held = TRUE
 	worn_slot_flags = ITEM_SLOT_HEAD
@@ -195,8 +196,8 @@
 
 	alert_drones(DRONE_NET_CONNECT)
 
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 
 	add_traits(list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_NEGATES_GRAVITY, TRAIT_LITERATE, TRAIT_KNOW_ENGI_WIRES, TRAIT_ADVANCEDTOOLUSER), INNATE_TRAIT)
 
@@ -256,16 +257,18 @@
 
 	alert_drones(DRONE_NET_DISCONNECT)
 
-
 /mob/living/basic/drone/gib()
 	dust()
+
+/mob/living/basic/drone/get_butt_sprite()
+	return BUTT_SPRITE_DRONE
 
 /mob/living/basic/drone/examine(mob/user)
 	. = list()
 
 	//Hands
 	for(var/obj/item/held_thing in held_items)
-		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+		if(held_thing.item_flags & (ABSTRACT|HAND_ITEM) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
 			continue
 		. += "It has [held_thing.examine_title(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
 

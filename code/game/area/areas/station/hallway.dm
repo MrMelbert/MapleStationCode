@@ -84,7 +84,7 @@
 /area/station/hallway/secondary/entry
 	name = "\improper Arrival Shuttle Hallway"
 	icon_state = "entry"
-	area_flags = UNIQUE_AREA | EVENT_PROTECTED
+	area_flags = EVENT_PROTECTED
 	ambience_index = AMBIENCE_ARRIVALS
 
 /area/station/hallway/secondary/dock

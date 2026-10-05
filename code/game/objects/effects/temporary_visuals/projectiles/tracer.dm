@@ -55,6 +55,10 @@
 	name = "heavy laser"
 	icon_state = "beam_heavy"
 
+/obj/effect/projectile/tracer/laser/phaser
+	name = "phaser beam"
+	icon_state = "xray"
+
 /obj/effect/projectile/tracer/solar
 	name = "solar beam"
 	icon_state = "solar"

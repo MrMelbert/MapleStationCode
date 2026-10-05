@@ -53,7 +53,7 @@
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/structure/cannon/attackby(obj/item/used_item, mob/user, params)
+/obj/structure/cannon/attackby(obj/item/used_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(charge_ignited)
 		balloon_alert(user, "it's gonna fire!")
 		return
@@ -139,6 +139,18 @@
 	new /obj/item/stack/sheet/iron/five(src.loc)
 	new /obj/item/stack/rods(src.loc)
 	. = ..()
+
+///A cannon found from the fishing mystery box.
+/obj/structure/cannon/mystery_box
+	icon_state = "mystery_box_cannon" //east facing sprite for the presented item, it'll be changed back to normal on init
+	dir = EAST
+	anchored = FALSE
+
+/obj/structure/cannon/mystery_box/Initialize(mapload)
+	. = ..()
+	icon_state = "falconet_patina"
+	reagents.add_reagent(/datum/reagent/gunpowder, charge_size)
+	loaded_cannonball = new(src)
 
 #undef BAD_FUEL_DAMAGE_TAX
 #undef BAD_FUEL_EXPLODE_PROBABILTY

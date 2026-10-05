@@ -25,6 +25,7 @@ I'd rather there be something than the clockwork ruin be entirely empty though s
 	armour_penetration = 40
 	melee_damage_lower = 20
 	melee_damage_upper = 20
+	mob_biotypes = MOB_ROBOTIC|MOB_SPECIAL|MOB_MINING|MOB_MINERAL
 	vision_range = 9
 	aggro_vision_range = 9
 	speed = 5
@@ -41,6 +42,7 @@ I'd rather there be something than the clockwork ruin be entirely empty though s
 	death_sound = SFX_BODYFALL
 	footstep_type = FOOTSTEP_MOB_HEAVY
 	attack_action_types = list()
+	initial_blood_type = /datum/blood_type/oil
 
 /mob/living/simple_animal/hostile/megafauna/clockwork_defender/Initialize(mapload)
 	. = ..()

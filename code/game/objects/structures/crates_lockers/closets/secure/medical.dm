@@ -71,6 +71,7 @@
 
 /obj/structure/closet/secure_closet/chief_medical
 	name = "chief medical officer's locker"
+	article = "the"
 	req_access = list(ACCESS_CMO)
 	icon_state = "cmo"
 

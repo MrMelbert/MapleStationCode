@@ -11,6 +11,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	drop_sound = /obj/item/plate::drop_sound
 	pickup_sound = /obj/item/plate::pickup_sound
+	/// Tracks REFs to cigbutts that have been dumped out of this ashtray, so they can't be dumped out again
+	VAR_PRIVATE/list/tracked_butts
 
 /obj/item/ashtray/Initialize(mapload)
 	. = ..()
@@ -81,16 +83,12 @@
 	return .
 
 /obj/item/ashtray/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(. & ITEM_INTERACT_BLOCKING)
-		return .
-
-	if(!istype(tool, /obj/item/clothing/mask/cigarette) \
+	if(!istype(tool, /obj/item/cigarette) \
 		&& !istype(tool, /obj/item/cigbutt) \
 		&& !istype(tool, /obj/item/food/candy_trash) \
 		&& !istype(tool, /obj/item/match) \
 	)
-		return .
+		return NONE
 
 	if(length(contents) > 24)
 		balloon_alert(user, "it's full!")
@@ -99,14 +97,14 @@
 	if(!user.transferItemToLoc(tool, src, silent = FALSE))
 		return ITEM_INTERACT_BLOCKING
 
-	if(!istype(tool, /obj/item/clothing/mask/cigarette))
+	if(!istype(tool, /obj/item/cigarette))
 		user.visible_message(
 			span_notice("[user] puts [tool] in [src]."),
 			span_notice("You put [tool] in [src]."),
 		)
 		return ITEM_INTERACT_SUCCESS
 
-	var/obj/item/clothing/mask/cigarette/cig = tool
+	var/obj/item/cigarette/cig = tool
 	if(cig.lit)
 		user.visible_message(
 			span_rose("[user] stubs out [user.p_their()] [cig.name] in [src]."),
@@ -116,6 +114,7 @@
 		cig.transfer_fingerprints_to(butt)
 		cig.transfer_fibers_to(butt)
 		qdel(cig)
+		new /obj/effect/abstract/smell/cigarette_smoke/lingering/longer(src)
 
 	else
 		user.visible_message(
@@ -148,10 +147,16 @@
 	var/total_butts = 0
 	var/atom/drop_loc = drop_location()
 	for(var/obj/item/cigbutt/butt in src)
-		total_butts += 1
+		var/butt_key = REF(butt)
+		if(!LAZYFIND(tracked_butts, butt_key))
+			LAZYADD(tracked_butts, butt_key)
+			total_butts += 1
+
 		butt.forceMove(drop_loc)
 		butt.pixel_x = rand(-2, 2)
 		butt.pixel_y = rand(-2, 2)
+
+
 	if(total_butts > 12)
 		for(var/i in 1 to ceil(total_butts / 12))
 			var/obj/effect/decal/cleanable/ash/large/ash = new(drop_loc)
@@ -162,6 +167,7 @@
 			var/obj/effect/decal/cleanable/ash/ash = new(drop_loc)
 			ash.pixel_x = rand(-4, 4)
 			ash.pixel_y = rand(-4, 4)
+
 	for(var/obj/item/whatever_left in src)
 		whatever_left.forceMove(drop_loc)
 
@@ -242,10 +248,10 @@
 
 	var/reward_msg = "It's about what you'd expect."
 	user.put_in_hands(reward)
-	if(istype(reward, /obj/item/clothing/mask/cigarette))
+	if(istype(reward, /obj/item/cigarette))
 		reward_msg = "A free smoke! Score."
 
-	else if(istype(reward, /obj/item/clothing/mask/cigarette/cigar))
+	else if(istype(reward, /obj/item/cigarette/cigar))
 		reward_msg = "A free cigar! Who left this here?"
 
 	user.visible_message(
@@ -278,9 +284,9 @@
 					match.lit = TRUE
 					match.matchburnout()
 			if(95 to 99)
-				new /obj/item/clothing/mask/cigarette(src)
+				new /obj/item/cigarette(src)
 			if(99 to 100)
-				new /obj/item/clothing/mask/cigarette/cigar(src)
+				new /obj/item/cigarette/cigar(src)
 	update_appearance()
 
 /// Shards for broken ashtrays

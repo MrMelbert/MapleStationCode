@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { ServerData } from './types';
+import type { ServerData } from './types';
 
 export const ServerPrefs = createContext<ServerData | undefined>({
   jobs: {
@@ -15,6 +15,10 @@ export const ServerPrefs = createContext<ServerData | undefined>({
     quirk_info: {},
     quirk_blacklist: [],
     points_enabled: false,
+  },
+  personality: {
+    personalities: [],
+    personality_incompatibilities: {},
   },
   random: {
     randomizable: [],
@@ -32,6 +36,9 @@ export const ServerPrefs = createContext<ServerData | undefined>({
     base_languages: [],
     max_spoken_languages: 0,
     max_understood_languages: 0,
+  },
+  laws: {
+    lawname_to_laws: {},
   },
   // NON-MODULE CHANGE END
 });

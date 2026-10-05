@@ -3,8 +3,18 @@
 	result = /obj/item/toy/plush/moth
 	reqs = list(
 		/obj/item/stack/sheet/animalhide/mothroach = 1,
-		/obj/item/organ/internal/heart = 1,
+		/obj/item/organ/heart = 1,
 		/obj/item/stack/sheet/cloth = 3,
+	)
+	category = CAT_ENTERTAINMENT
+
+/datum/crafting_recipe/sharkplush
+	name = "Shark Plushie"
+	result = /obj/item/toy/plush/shark
+	reqs = list(
+		/obj/item/clothing/suit/hooded/shark_costume = 1,
+		/obj/item/grown/cotton = 10,
+		/obj/item/stack/sheet/cloth = 5,
 	)
 	category = CAT_ENTERTAINMENT
 

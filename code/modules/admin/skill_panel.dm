@@ -12,7 +12,7 @@
 		holder = userMob.client //if its a mob, assign the mob's client to holder
 
 /datum/skill_panel/ui_state(mob/user)
-	return GLOB.admin_state
+	return ADMIN_STATE(R_ADMIN)
 
 /datum/skill_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -22,18 +22,29 @@
 
 /datum/skill_panel/ui_data(mob/user) //Sends info about the skills to UI
 	. = list()
-	if(user?.mind)
-		for (var/type in GLOB.skill_types)
-			var/datum/skill/S = GetSkillRef(type)
-			var/lvl_num = targetmind.get_skill_level(type)
-			var/lvl_name = uppertext(targetmind.get_skill_level_name(type))
-			var/exp = targetmind.get_skill_exp(type)
-			var/xp_prog_to_level = targetmind.exp_needed_to_level_up(type)
-			var/xp_req_to_level = 0
-			if (xp_prog_to_level)//is it even possible to level up?
-				xp_req_to_level = SKILL_EXP_LIST[lvl_num+1] - SKILL_EXP_LIST[lvl_num]
-			var/exp_percent = exp / SKILL_EXP_LIST[SKILL_LEVEL_LEGENDARY]
-			.["skills"] += list(list("playername" = targetmind.current, "path" = type, "name" = S.name, "desc" = S.desc, "lvlnum" = lvl_num, "lvl" = lvl_name, "exp" = exp, "exp_prog" = xp_req_to_level - xp_prog_to_level, "exp_req" = xp_req_to_level, "exp_percent" = exp_percent, "max_exp" = SKILL_EXP_LIST[length(SKILL_EXP_LIST)]))
+	for (var/type in GLOB.skill_types)
+		var/datum/skill/skill_datum = SSskills.all_skills[type]
+		var/lvl_num = targetmind.get_skill_level(type)
+		var/lvl_name = uppertext(targetmind.get_skill_level_name(type))
+		var/exp = targetmind.get_skill_exp(type)
+		var/xp_prog_to_level = targetmind.exp_needed_to_level_up(type)
+		var/xp_req_to_level = 0
+		if (xp_prog_to_level)//is it even possible to level up?
+			xp_req_to_level = SKILL_EXP_LIST[lvl_num+1] - SKILL_EXP_LIST[lvl_num]
+		var/exp_percent = exp / SKILL_EXP_LIST[SKILL_LEVEL_LEGENDARY]
+		.["skills"] += list(list(
+			"playername" = targetmind.current,
+			"path" = type,
+			"name" = skill_datum.name,
+			"desc" = skill_datum.blurb,
+			"lvlnum" = lvl_num,
+			"lvl" = lvl_name,
+			"exp" = exp,
+			"exp_prog" = xp_req_to_level - xp_prog_to_level,
+			"exp_req" = xp_req_to_level,
+			"exp_percent" = exp_percent,
+			"max_exp" = SKILL_EXP_LIST[length(SKILL_EXP_LIST)],
+		))
 
 /datum/skill_panel/ui_act(action, params)
 	. = ..()

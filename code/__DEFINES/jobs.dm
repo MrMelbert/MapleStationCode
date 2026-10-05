@@ -49,6 +49,7 @@
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_CHIEF_MEDICAL_OFFICER "Chief Medical Officer"
 #define JOB_BRIDGE_ASSISTANT "Bridge Assistant"
+#define JOB_VETERAN_ADVISOR "Veteran Security Advisor"
 //Silicon
 #define JOB_AI "AI"
 #define JOB_CYBORG "Cyborg"
@@ -156,10 +157,11 @@
 #define JOB_DISPLAY_ORDER_ROBOTICIST 33
 #define JOB_DISPLAY_ORDER_GENETICIST 34
 #define JOB_DISPLAY_ORDER_HEAD_OF_SECURITY 35
-#define JOB_DISPLAY_ORDER_WARDEN 36
-#define JOB_DISPLAY_ORDER_DETECTIVE 37
-#define JOB_DISPLAY_ORDER_SECURITY_OFFICER 38
-#define JOB_DISPLAY_ORDER_PRISONER 39
+#define JOB_DISPLAY_ORDER_VETERAN_ADVISOR 36
+#define JOB_DISPLAY_ORDER_WARDEN 37
+#define JOB_DISPLAY_ORDER_DETECTIVE 38
+#define JOB_DISPLAY_ORDER_SECURITY_OFFICER 39
+#define JOB_DISPLAY_ORDER_PRISONER 40
 
 #define DEPARTMENT_UNASSIGNED "No Department"
 
@@ -189,7 +191,7 @@
 #define JOB_ANNOUNCE_ARRIVAL (1<<0)
 /// Whether the mob is added to the crew manifest.
 #define JOB_CREW_MANIFEST (1<<1)
-/// Whether the mob is equipped through SSjob.EquipRank() on spawn.
+/// Whether the mob is equipped through SSjob.equip_rank() on spawn.
 #define JOB_EQUIP_RANK (1<<2)
 /// Whether the job is considered a regular crew member of the station. Equipment such as AI and cyborgs not included.
 #define JOB_CREW_MEMBER (1<<3)
@@ -211,6 +213,10 @@
 #define JOB_LATEJOIN_ONLY (1<<11)
 /// This job is a head of staff.
 #define JOB_HEAD_OF_STAFF (1<<12)
+/// This job will NEVER be selected as an antag role
+#define JOB_ANTAG_BLACKLISTED (1<<13)
+/// This job will never be selected as an antag role IF config `protect_roles_from_antagonist` is set
+#define JOB_ANTAG_PROTECTED (1<<14)
 
 /// Combination flag for jobs which are considered regular crew members of the station.
 #define STATION_JOB_FLAGS (JOB_ANNOUNCE_ARRIVAL|JOB_CREW_MANIFEST|JOB_EQUIP_RANK|JOB_CREW_MEMBER|JOB_NEW_PLAYER_JOINABLE|JOB_REOPEN_ON_ROUNDSTART_LOSS|JOB_ASSIGN_QUIRKS|JOB_CAN_BE_INTERN)
@@ -233,3 +239,5 @@
 
 /// Mind traits that should be shared by every head of staff. has to be this way cause byond lists lol
 #define HEAD_OF_STAFF_MIND_TRAITS TRAIT_FAST_TYING, TRAIT_HIGH_VALUE_RANSOM
+#define MEDICAL_MIND_TRAITS TRAIT_DESENSITIZED
+#define SECURITY_MIND_TRAITS TRAIT_DESENSITIZED

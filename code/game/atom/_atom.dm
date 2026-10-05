@@ -5,6 +5,7 @@
  * as much as possible to the components/elements system
  */
 /atom
+	abstract_type = /atom
 	layer = TURF_LAYER
 	plane = GAME_PLANE
 	appearance_flags = TILE_BOUND|LONG_GLIDE
@@ -65,7 +66,7 @@
 	var/datum/wires/wires = null
 
 	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
+	var/light_system = COMPLEX_LIGHT
 	///Range of the light in tiles. Zero means no light.
 	var/light_range = 0
 	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
@@ -141,6 +142,9 @@
 	/// Flags to check for in can_perform_action for mouse drag & drop checks. To bypass checks see interaction_flags_atom mouse drop flags
 	var/interaction_flags_mouse_drop = NONE
 
+	/// Generally for niche objects, atoms blacklisted can spawn if enabled by spawner.
+	var/spawn_blacklisted = FALSE
+
 /**
  * Top level of the destroy chain for most atoms
  *
@@ -186,12 +190,14 @@
 	if(smoothing_flags & SMOOTH_QUEUED)
 		SSicon_smooth.remove_from_queues(src)
 
+#ifndef DISABLE_DREAMLUAU
 	// These lists cease existing when src does, so we need to clear any lua refs to them that exist.
 	if(!(datum_flags & DF_STATIC_OBJECT))
 		DREAMLUAU_CLEAR_REF_USERDATA(contents)
 		DREAMLUAU_CLEAR_REF_USERDATA(filters)
 		DREAMLUAU_CLEAR_REF_USERDATA(overlays)
 		DREAMLUAU_CLEAR_REF_USERDATA(underlays)
+#endif
 
 	return ..()
 
@@ -373,11 +379,8 @@
 	return null
 
 ///Return the current air environment in this atom
-/atom/proc/return_air()
-	if(loc)
-		return loc.return_air()
-	else
-		return null
+/atom/proc/return_air() as /datum/gas_mixture
+	return loc?.return_air()
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
@@ -434,7 +437,7 @@
 		. |= current_reagent.expose_atom(src, reagents[current_reagent])
 	SEND_SIGNAL(src, COMSIG_ATOM_AFTER_EXPOSE_REAGENTS, reagents, source, methods, volume_modifier, show_message)
 
-/// Are you allowed to drop this atom
+/// Are you allowed to drop stuff inside this atom
 /atom/proc/AllowDrop()
 	return FALSE
 
@@ -501,19 +504,20 @@
 
 ///returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
-	var/datum/blood_type/blood = get_blood_type()
-	if(!isnull(blood))
-		return list("UNKNOWN DNA" = blood.type_key())
-	return null
+	if(!has_blood())
+		return null
+	return list("UNKNOWN DNA" = blood_type.type_key())
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
-	if(isnull(dna)) // Xenos
+	if(isnull(dna)) // ???
 		return ..()
-	var/datum/blood_type/blood = get_blood_type()
-	if(isnull(blood)) // Skeletons?
+	if(!has_blood())
 		return null
-	return list("[dna.unique_enzymes]" = blood.type_key())
+	return list("[dna.unique_enzymes]" = blood_type.type_key())
+
+/mob/living/carbon/alien/get_blood_dna_list()
+	return list("UNKNOWN ALIEN DNA" = blood_type.type_key())
 
 // NON-MODULE CHANGE END
 
@@ -655,28 +659,31 @@
 
 /atom/proc/StartProcessingAtom(mob/living/user, obj/item/process_item, list/chosen_option)
 	var/processing_time = chosen_option[TOOL_PROCESSING_TIME]
-	to_chat(user, span_notice("You start working on [src]."))
-	if(process_item.use_tool(src, user, processing_time, volume=50))
-		var/atom/atom_to_create = chosen_option[TOOL_PROCESSING_RESULT]
-		var/list/atom/created_atoms = list()
-		var/amount_to_create = chosen_option[TOOL_PROCESSING_AMOUNT]
-		for(var/i = 1 to amount_to_create)
-			var/atom/created_atom = new atom_to_create(drop_location())
-			if(custom_materials)
-				created_atom.set_custom_materials(custom_materials, 1 / amount_to_create)
-			created_atom.pixel_x = pixel_x
-			created_atom.pixel_y = pixel_y
-			if(i > 1)
-				created_atom.pixel_x += rand(-8,8)
-				created_atom.pixel_y += rand(-8,8)
-			created_atom.OnCreatedFromProcessing(user, process_item, chosen_option, src)
-			created_atoms.Add(created_atom)
-		to_chat(user, span_notice("You manage to create [amount_to_create] [initial(atom_to_create.gender) == PLURAL ? "[initial(atom_to_create.name)]" : "[initial(atom_to_create.name)][plural_s(initial(atom_to_create.name))]"] from [src]."))
-		SEND_SIGNAL(src, COMSIG_ATOM_PROCESSED, user, process_item, created_atoms)
-		UsedforProcessing(user, process_item, chosen_option)
+	var/sound_to_play = chosen_option[TOOL_PROCESSING_SOUND]
+	to_chat(user, span_notice("You start working on [src]..."))
+	if(sound_to_play)
+		playsound(src, sound_to_play, 50, TRUE)
+	if(!process_item.use_tool(src, user, processing_time, volume=50))
 		return
+	var/atom/atom_to_create = chosen_option[TOOL_PROCESSING_RESULT]
+	var/list/atom/created_atoms = list()
+	var/amount_to_create = chosen_option[TOOL_PROCESSING_AMOUNT]
+	for(var/i = 1 to amount_to_create)
+		var/atom/created_atom = new atom_to_create(drop_location())
+		if(custom_materials)
+			created_atom.set_custom_materials(custom_materials, 1 / amount_to_create)
+		created_atom.pixel_x = pixel_x
+		created_atom.pixel_y = pixel_y
+		if(i > 1)
+			created_atom.pixel_x += rand(-8,8)
+			created_atom.pixel_y += rand(-8,8)
+		created_atom.OnCreatedFromProcessing(user, process_item, chosen_option, src)
+		created_atoms.Add(created_atom)
+	to_chat(user, span_notice("You manage to create [amount_to_create] [initial(atom_to_create.gender) == PLURAL ? "[initial(atom_to_create.name)]" : "[initial(atom_to_create.name)][plural_s(initial(atom_to_create.name))]"] from [src]."))
+	SEND_SIGNAL(src, COMSIG_ATOM_PROCESSED, user, process_item, created_atoms)
+	UsedforProcessing(user, process_item, chosen_option, created_atoms)
 
-/atom/proc/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option)
+/atom/proc/UsedforProcessing(mob/living/user, obj/item/used_item, list/chosen_option, list/created_atoms)
 	qdel(src)
 	return
 
@@ -684,8 +691,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_ATOM_CREATEDBY_PROCESSING, original_atom, chosen_option)
-	if(user.mind)
-		ADD_TRAIT(src, TRAIT_FOOD_CHEF_MADE, REF(user.mind))
+	handle_chef_made_food(src, original_atom, user.mind)
 
 ///Connect this atom to a shuttle
 /atom/proc/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)

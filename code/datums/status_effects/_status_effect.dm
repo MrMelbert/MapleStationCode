@@ -56,7 +56,7 @@
 		tick_interval = world.time + tick_interval
 
 	if(alert_type)
-		var/atom/movable/screen/alert/status_effect/new_alert = owner.throw_alert(id, alert_type)
+		var/atom/movable/screen/alert/status_effect/new_alert = owner.throw_alert(id, alert_type, null, get_alert_master())
 		new_alert.attached_effect = src //so the alert can reference us, if it needs to
 		linked_alert = new_alert //so we can reference the alert, if we need to
 		update_shown_duration()
@@ -163,7 +163,7 @@
 
 /// Called before being fully removed (before on_remove)
 /// Returning FALSE will cancel removal
-/datum/status_effect/proc/before_remove()
+/datum/status_effect/proc/before_remove(...)
 	return TRUE
 
 /// Called when a status effect of status_type STATUS_EFFECT_REFRESH
@@ -212,6 +212,14 @@
 /datum/status_effect/proc/update_particles()
 	SHOULD_CALL_PARENT(FALSE)
 	return
+
+/**
+ * Gets what atom's appearance should be used in the screen alert
+ *
+ * Return null for no master / use alert's appearance
+ */
+/datum/status_effect/proc/get_alert_master()
+	return null
 
 /// Alert base type for status effect alerts
 /atom/movable/screen/alert/status_effect

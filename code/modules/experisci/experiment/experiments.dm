@@ -89,7 +89,7 @@
 	sanitized_misc = TRUE
 	sanitized_reactions = TRUE
 	require_all = FALSE
-	required_reactions = list(/datum/gas_reaction/h2fire, /datum/gas_reaction/tritfire)
+	required_reactions = list(/datum/gas_reaction/standard/h2fire, /datum/gas_reaction/standard/tritfire)
 
 /datum/experiment/ordnance/explosive/nobliumbomb
 	name = "Noblium Explosives"
@@ -99,7 +99,7 @@
 	experiment_proper = TRUE
 	sanitized_misc = TRUE
 	sanitized_reactions = TRUE
-	required_reactions = list(/datum/gas_reaction/nobliumformation)
+	required_reactions = list(/datum/gas_reaction/standard/nobliumformation)
 
 /datum/experiment/ordnance/explosive/pressurebomb
 	name = "Reactionless Explosives"
@@ -387,7 +387,7 @@
 			if (organ.type == target_species.get_mutant_organ_type_for_slot(organ.slot))
 				continue
 		else
-			if ((organ.type in target_species.mutant_organs) || (organ.type in target_species.external_organs))
+			if ((organ.type in target_species.mutant_organs))
 				continue
 		return TRUE
 	return FALSE
@@ -429,7 +429,7 @@
 	. = ..()
 	if (!.)
 		return
-	var/obj/item/organ/internal/brain/scanned_brain = check.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/scanned_brain = check.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if (isnull(scanned_brain))
 		experiment_handler.announce_message("Subject is brainless!")
 		return FALSE
@@ -452,7 +452,7 @@
 		return
 	if (isandroid(check))
 		return TRUE
-	if (check.organs < 6 || check.bodyparts < 6)
+	if (length(check.organs) < 6 || length(check.get_missing_limbs()) > 1)
 		return FALSE
 
 	var/static/list/augmented_organ_slots = list(
@@ -468,8 +468,8 @@
 			continue
 		if (!IS_ROBOTIC_ORGAN(organ))
 			return FALSE
-	for (var/obj/item/bodypart/bodypart as anything in check.bodyparts)
-		if (bodypart.bodytype != BODYTYPE_ROBOTIC)
+	for (var/obj/item/bodypart/bodypart as anything in check.get_bodyparts())
+		if (!IS_ROBOTIC_LIMB(bodypart))
 			return FALSE
 	return TRUE
 

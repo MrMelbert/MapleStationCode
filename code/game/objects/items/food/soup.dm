@@ -1,6 +1,7 @@
 /obj/item/food/bowled
 	w_class = WEIGHT_CLASS_NORMAL
 	icon = 'icons/obj/food/soupsalad.dmi'
+	abstract_type = /obj/item/food/bowled
 	bite_consumption = 5
 	max_volume = 80
 	foodtypes = NONE
@@ -25,14 +26,14 @@
 		reagents.add_reagent(/datum/reagent/consumable/nutriment/vitamin, 1)
 
 /obj/item/food/bowled/mammi
-	name = "Mammi"
+	name = "mammi"
 	desc = "A bowl of mushy bread and milk. It reminds you, not too fondly, of a bowel movement."
 	icon_state = "mammi"
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 11,
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
-	foodtypes = SUGAR | DAIRY
+	foodtypes = SUGAR | DAIRY | JUNKFOOD | GRAIN
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/bowled/spacylibertyduff

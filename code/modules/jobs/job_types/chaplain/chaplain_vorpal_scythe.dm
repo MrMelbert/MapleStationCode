@@ -5,17 +5,17 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 #define SCYTHE_SATED 1
 #define SCYTHE_EMPOWERED 2
 
-/obj/item/organ/internal/cyberimp/arm/shard/scythe
+/obj/item/organ/cyberimp/arm/shard/scythe
 	name = "sinister shard"
 	desc = "This shard seems to be directly linked to some sinister entity. It might be your god! It also gives you a really horrible rash when you hold onto it for too long."
 	items_to_create = list(/obj/item/vorpalscythe)
 
-/obj/item/organ/internal/cyberimp/arm/shard/scythe/Insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/cyberimp/arm/shard/scythe/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
 	if(receiver.mind)
 		ADD_TRAIT(receiver.mind, TRAIT_MORBID, ORGAN_TRAIT)
 
-/obj/item/organ/internal/cyberimp/arm/shard/scythe/Retract()
+/obj/item/organ/cyberimp/arm/shard/scythe/Retract()
 	var/obj/item/vorpalscythe/scythe = active_item
 	if(!scythe)
 		return FALSE
@@ -94,7 +94,7 @@ If the scythe isn't empowered when you sheath it, you take a heap of damage and 
 	)
 	AddElement(/datum/element/bane, mob_biotypes = MOB_PLANT, damage_multiplier = 0.5, requires_combat_mode = FALSE) //less good at killing revenants, much better at killing plants
 
-/obj/item/vorpalscythe/attack(mob/living/target, mob/living/user, params)
+/obj/item/vorpalscythe/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(ismonkey(target) && !target.mind) //Don't empower from hitting monkeys. Hit a corgi or something, I don't know.
 		return ..()
 

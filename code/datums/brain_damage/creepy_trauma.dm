@@ -35,6 +35,7 @@
 	antagonist.greet()
 	log_game("[key_name(antagonist)] has developed an obsession with [key_name(obsession)].")
 	RegisterSignal(owner, COMSIG_CARBON_HELPED, PROC_REF(on_hug))
+	ADD_TRAIT(owner, TRAIT_DESENSITIZED, REF(src))
 
 /datum/brain_trauma/special/obsessed/on_life(seconds_per_tick, times_fired)
 	if(!obsession || obsession.stat == DEAD)
@@ -66,11 +67,13 @@
 
 /datum/brain_trauma/special/obsessed/on_lose()
 	..()
-	owner.mind.remove_antag_datum(/datum/antagonist/obsessed)
+	if (owner.mind.remove_antag_datum(/datum/antagonist/obsessed))
+		owner.mind.add_antag_datum(/datum/antagonist/former_obsessed)
 	owner.clear_mood_event("creeping")
 	if(obsession)
 		log_game("[key_name(owner)] is no longer obsessed with [key_name(obsession)].")
 		UnregisterSignal(obsession, COMSIG_MOB_EYECONTACT)
+	REMOVE_TRAIT(owner, TRAIT_DESENSITIZED, REF(src))
 
 /datum/brain_trauma/special/obsessed/handle_speech(datum/source, list/speech_args)
 	if(!viewing)

@@ -8,6 +8,10 @@
 	///Determines which occupants provide access when bumping into doors
 	var/access_provider_flags = VEHICLE_CONTROL_DRIVE
 
+/obj/vehicle/sealed/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_SUPERMATTER_CONSUMED, PROC_REF(on_entered_supermatter))
+
 /obj/vehicle/sealed/generate_actions()
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/climb_out)
@@ -101,7 +105,7 @@
 /obj/vehicle/sealed/proc/exit_location(M)
 	return drop_location()
 
-/obj/vehicle/sealed/attackby(obj/item/I, mob/user, params)
+/obj/vehicle/sealed/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(key_type && !is_key(inserted_key) && is_key(I))
 		if(user.transferItemToLoc(I, src))
 			to_chat(user, span_notice("You insert [I] into [src]."))
@@ -160,3 +164,9 @@
 /// Sinced sealed vehicles (cars and mechs) don't have riding components, the actual movement is handled here from [/obj/vehicle/sealed/proc/relaymove]
 /obj/vehicle/sealed/proc/vehicle_move(direction)
 	return FALSE
+
+/// When we touch a crystal, kill everything inside us
+/obj/vehicle/sealed/proc/on_entered_supermatter(atom/movable/vehicle, atom/movable/supermatter)
+	SIGNAL_HANDLER
+	for (var/mob/passenger as anything in occupants)
+		passenger.Bump(supermatter)

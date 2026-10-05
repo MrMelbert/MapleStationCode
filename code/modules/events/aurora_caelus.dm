@@ -25,8 +25,9 @@
 		return
 	for(var/V in GLOB.player_list)
 		var/mob/M = V
-		if((M.client.prefs.read_preference(/datum/preference/toggle/sound_midi)) && is_station_level(M.z))
-			M.playsound_local(M, 'sound/ambience/aurora_caelus.ogg', 20, FALSE, pressure_affected = FALSE)
+		var/pref_volume = M.client.prefs.read_preference(/datum/preference/numeric/volume/sound_midi)
+		if(pref_volume > 0 && is_station_level(M.z))
+			SEND_SOUND(M, sound('sound/ambience/aurora_caelus.ogg', volume = 20 * (pref_volume / 100)))
 	fade_space(fade_in = TRUE)
 	fade_kitchen(fade_in = TRUE)
 
@@ -49,7 +50,8 @@
 					continue
 				human_blacklist += seymour
 				if(seymour.mind && istype(seymour.mind.assigned_role, /datum/job/cook))
-					seymour.say("My roast is ruined!!!", forced = "ruined roast")
+					if(HAS_PERSONALITY(seymour, /datum/personality/whimsical))
+						seymour.say("My roast is ruined!!!", forced = "ruined roast")
 					seymour.emote("scream")
 
 /datum/round_event/aurora_caelus/tick()
@@ -99,14 +101,14 @@
 	var/start_color = hsl_gradient(1, 0, "#A2FF80", 1, "#A2FFEE")
 	var/start_range = 1
 	var/start_power = 0.75
-	var/end_color = "#000000"
+	var/end_color = COLOR_BLACK
 	var/end_range = 0.5
 	var/end_power = 0
 	if(fade_in)
 		end_color = hsl_gradient(0, 0, "#A2FF80", 1, "#A2FFEE")
 		end_range = start_range
 		end_power = start_power
-		start_color = "#000000"
+		start_color = COLOR_BLACK
 		start_range = 0.5
 		start_power = 0
 

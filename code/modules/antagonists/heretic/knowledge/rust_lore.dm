@@ -66,6 +66,11 @@
 
 /datum/heretic_knowledge/rust_fist/proc/on_mansus_grasp(mob/living/source, mob/living/target)
 	SIGNAL_HANDLER
+	if(iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		for(var/obj/item/bodypart/robotic_limb as anything in carbon_target.get_bodyparts())
+			if(IS_ROBOTIC_LIMB(robotic_limb))
+				robotic_limb.receive_damage(500)
 
 	if(!issilicon(target) && !(target.mob_biotypes & MOB_ROBOTIC))
 		return

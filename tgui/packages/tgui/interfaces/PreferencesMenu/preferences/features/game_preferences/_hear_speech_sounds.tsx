@@ -1,8 +1,8 @@
-import { CheckboxInput, FeatureToggle } from '../base';
+import { CheckboxInput, type FeatureToggle } from '../base';
 
 export const hear_speech_sounds: FeatureToggle = {
-  name: 'Toggle Speech Sounds',
+  name: 'Enable Speech Sounds',
   category: 'SOUND',
-  description: 'When unchecked, you will no longer hear speech sounds.',
+  description: 'When enabled, mobs will make sounds when they speak.',
   component: CheckboxInput,
 };

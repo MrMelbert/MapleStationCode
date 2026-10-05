@@ -23,7 +23,8 @@
 	icon_state = "borg_l_arm"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -43,6 +44,11 @@
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	disabling_threshold_percentage = 1
 	bodypart_flags = BODYPART_UNHUSKABLE
+
+/obj/item/bodypart/arm/left/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 /obj/item/bodypart/arm/right/robot
 	name = "cyborg right arm"
@@ -56,7 +62,8 @@
 	icon_state = "borg_r_arm"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -78,6 +85,11 @@
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
+/obj/item/bodypart/arm/right/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/leg/left/robot
 	name = "cyborg left leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -90,9 +102,11 @@
 	icon_state = "borg_l_leg"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
+	footstep_type = FOOTSTEP_MOB_SYNTHETIC
 
 	brute_modifier = 0.8
 	burn_modifier = 0.8
@@ -129,6 +143,11 @@
 		return
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
 
+/obj/item/bodypart/leg/left/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -141,9 +160,11 @@
 	icon_state = "borg_r_leg"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
+	footstep_type = FOOTSTEP_MOB_SYNTHETIC
 
 	brute_modifier = 0.8
 	burn_modifier = 0.8
@@ -180,6 +201,11 @@
 		return
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
 
+/obj/item/bodypart/leg/right/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC || limb_id == BODYPART_ID_DIGITIGRADE)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
 	desc = "A heavily reinforced case containing cyborg logic boards, with space for a standard power cell."
@@ -191,7 +217,8 @@
 	icon_state = "borg_chest"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -213,7 +240,7 @@
 
 	robotic_emp_paralyze_damage_percent_threshold = 0.6
 
-	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
+	wing_types = list(/obj/item/organ/wings/functional/robotic)
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT) // NON-MODULE CHANGE but it should be like this anyways
 
 	var/wired = FALSE
@@ -273,7 +300,7 @@
 	SIGNAL_HANDLER
 
 	var/all_robotic = TRUE
-	for(var/obj/item/bodypart/part in owner.bodyparts)
+	for(var/obj/item/bodypart/part as anything in owner.get_bodyparts())
 		all_robotic = all_robotic && IS_ROBOTIC_LIMB(part)
 
 	if(all_robotic)
@@ -291,7 +318,7 @@
 			TRAIT_RESISTHIGHPRESSURE,
 			), AUGMENTATION_TRAIT)
 
-/obj/item/bodypart/chest/robot/attackby(obj/item/weapon, mob/user, params)
+/obj/item/bodypart/chest/robot/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(weapon, /obj/item/stock_parts/power_store/cell))
 		if(cell)
 			to_chat(user, span_warning("You have already inserted a cell!"))
@@ -355,6 +382,13 @@
 	cell?.forceMove(drop_loc)
 	return ..()
 
+/obj/item/bodypart/chest/robot/generate_icon_key()
+	. = ..()
+	// When we reskin cybernetic limbs, we solely change their icon, nothing else
+	// So we need to include the relevant icon in the cache key
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
+
 /obj/item/bodypart/head/robot
 	name = "cyborg head"
 	desc = "A standard reinforced braincase, with spine-plugged neural socket and sensor gimbals."
@@ -366,7 +400,8 @@
 	icon_state = "borg_head"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -385,7 +420,7 @@
 
 	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 
-	head_flags = HEAD_EYESPRITES
+	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 	var/obj/item/assembly/flash/handheld/flash1 = null
@@ -436,7 +471,7 @@
 			. += "It has two eye sockets occupied by flashes."
 		. += span_notice("You can remove the seated flash[single_flash ? "":"es"] with a <b>crowbar</b>.")
 
-/obj/item/bodypart/head/robot/attackby(obj/item/weapon, mob/user, params)
+/obj/item/bodypart/head/robot/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(weapon, /obj/item/assembly/flash/handheld))
 		var/obj/item/assembly/flash/handheld/flash = weapon
 		if(flash1 && flash2)
@@ -472,6 +507,11 @@
 	flash1?.forceMove(drop_loc)
 	flash2?.forceMove(drop_loc)
 	return ..()
+
+/obj/item/bodypart/head/robot/generate_icon_key()
+	. = ..()
+	if(limb_id == BODYPART_ID_ROBOTIC)
+		. += should_draw_greyscale ? icon_greyscale : icon_static
 
 // Prosthetics - Cheap, mediocre, and worse than organic limbs
 // Actively make you less healthy by being on your body, contributing a whopping 250% to overall health at only 20 max health

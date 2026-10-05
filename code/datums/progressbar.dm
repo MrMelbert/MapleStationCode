@@ -21,7 +21,7 @@
 	///Where to draw the progress bar above the icon
 	var/offset_y
 
-/datum/progressbar/New(mob/User, goal_number, atom/target)
+/datum/progressbar/New(mob/User, goal_number, atom/target, add_y = 0)
 	. = ..()
 	if (!istype(target))
 		stack_trace("Invalid target [target] passed in")
@@ -41,7 +41,7 @@
 
 	var/list/icon_offsets = target.get_oversized_icon_offsets()
 	var/offset_x = icon_offsets["x"]
-	offset_y = icon_offsets["y"]
+	offset_y = icon_offsets["y"] + add_y
 
 	bar = image('icons/effects/progressbar.dmi', bar_loc, "prog_bar_0", pixel_x = offset_x)
 	SET_PLANE_EXPLICIT(bar, ABOVE_HUD_PLANE, User)

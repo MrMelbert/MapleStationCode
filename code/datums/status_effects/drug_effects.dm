@@ -12,36 +12,6 @@
 	desc = "You feel a bit slower than usual, it seems doing things with your hands takes longer than it usually does."
 	icon_state = "woozy"
 
-/datum/status_effect/high_blood_pressure
-	id = "high_blood_pressure"
-	tick_interval = -1
-	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = null
-
-/datum/status_effect/high_blood_pressure/on_apply()
-	if(!ishuman(owner))
-		return FALSE
-
-	var/mob/living/carbon/human/human_owner = owner
-	human_owner.physiology.bleed_mod *= 1.25
-	RegisterSignal(owner, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_healthscan))
-	return TRUE
-
-/datum/status_effect/high_blood_pressure/on_remove()
-	if(!ishuman(owner))
-		return
-
-	var/mob/living/carbon/human/human_owner = owner
-	human_owner.physiology.bleed_mod /= 1.25
-	UnregisterSignal(owner, COMSIG_LIVING_HEALTHSCAN)
-
-/datum/status_effect/high_blood_pressure/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
-	SIGNAL_HANDLER
-
-	if(owner.has_status_effect(/datum/status_effect/low_blood_pressure))
-		return
-	render_list += "<span class='alert ml-1'>Hypertension detected.</span><br>"
-
 /datum/status_effect/seizure
 	id = "seizure"
 	tick_interval = -1

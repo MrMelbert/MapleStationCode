@@ -347,16 +347,49 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_elfmess"
 
+/datum/sprite_accessory/hair/elven_braid
+	name = "Elven Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_elfbraid"
+
 /datum/sprite_accessory/hair/toxic_wisp
 	name = "Toxic Wisp"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_toxic"
+
+/datum/sprite_accessory/hair/toxic_long
+	name = "Toxic Wisp Long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_toxiclong"
+
+/datum/sprite_accessory/hair/nia
+	name = "Nia"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nia"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
+	spine_key = NONE
+
+// From Effigy
+/datum/sprite_accessory/tails/lizard/cybernetic
+	name = "Cybernetic"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "synthliz"
+
+/datum/sprite_accessory/tails/lizard/dense
+	name = "Dense"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "dense"
+	spine_key = NONE
+
+/datum/sprite_accessory/tails/lizard/thin
+	name = "Thin"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "thin"
 	spine_key = NONE
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
@@ -370,7 +403,7 @@
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
 	icon_state = "hornsdouble"
 
-// ??
+// https://github.com/Skyrat-SS13/Skyrat13/pull/1292
 /datum/sprite_accessory/frills/cobra
 	name = "Cobra"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
@@ -469,24 +502,6 @@
 	icon_state = "sideswept"
 
 /// -- Undershirts --
-/datum/sprite_accessory/undershirt/ratvarsoul
-	name = "Ratvar's Soul"
-	icon_state = "ratvarsoul"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/defib
-	name = "Defib"
-	icon_state = "defib"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
-/datum/sprite_accessory/undershirt/fleshmass
-	name = "Pulsating Mass"
-	icon_state = "fleshmass"
-	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
-	gender = NEUTER
-
 /datum/sprite_accessory/undershirt/whiteblouse
 	name = "White Blouse and Bloomers"
 	icon_state = "blouse"
@@ -504,18 +519,6 @@
 	icon_state = "divinity"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
 
-// -- Synth head coverings --
-/datum/sprite_accessory/synth_head_cover
-	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
-
-/datum/sprite_accessory/synth_head_cover/helm
-	name = "Helm"
-	icon_state = "helm"
-
-/datum/sprite_accessory/synth_head_cover/tv_blank
-	name = "Tv_blank"
-	icon_state = "tv_blank"
-
 
 /// --- Socks ---
 
@@ -523,6 +526,7 @@
 	name = "Mismatched Checkered Socks"
 	icon_state = "mismatchpoker"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/socks/pokersocks
 	name = "High Black Stockings"

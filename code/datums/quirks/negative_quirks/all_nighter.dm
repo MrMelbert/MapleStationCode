@@ -57,7 +57,6 @@
 	var/obj/item/bodypart/head/face = sleepy_head.get_bodypart(BODY_ZONE_HEAD)
 	bodypart_overlay = new() //creates our overlay
 	face.add_bodypart_overlay(bodypart_overlay)
-	sleepy_head.update_body_parts() //make sure to update icon
 
 ///removes the bag overlay
 /datum/quirk/all_nighter/proc/remove_bags(client/client_source)
@@ -66,7 +65,6 @@
 	//our overlay is stored as a datum var, so referencing it is easy
 	face.remove_bodypart_overlay(bodypart_overlay)
 	QDEL_NULL(bodypart_overlay)
-	sleepy_head.update_body_parts()
 
 /**
 *Here we actively handle our moodlet & eye bags, adding/removing them as necessary

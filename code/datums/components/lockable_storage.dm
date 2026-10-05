@@ -169,6 +169,7 @@
 	. = ..()
 	if(action != "keypad")
 		return TRUE
+	playsound(src, SFX_TERMINAL_TYPE, 40, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	var/digit = params["digit"]
 	switch(digit)
 		//locking it back up

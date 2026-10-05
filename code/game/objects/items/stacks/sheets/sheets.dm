@@ -3,6 +3,7 @@
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
 	icon_state = "sheet-metal_3"
+	abstract_type = /obj/item/stack/sheet
 	full_w_class = WEIGHT_CLASS_NORMAL
 	force = 5
 	throwforce = 5
@@ -14,12 +15,14 @@
 	novariants = FALSE
 	material_flags = MATERIAL_EFFECTS
 	table_type = /obj/structure/table/greyscale
+//	pickup_sound = 'sound/items/metal_pick_up.ogg' // Non-module change
+//	drop_sound = 'sound/items/metal_drop.ogg' // Non-module change
 	var/sheettype = null //this is used for girders in the creation of walls/false walls
 	var/point_value = 0 //turn-in value for the gulag stacker - loosely relative to its rarity.
-	///What type of wall does this sheet spawn
-	var/walltype
 	/// whether this sheet can be sniffed by the material sniffer
 	var/sniffable = FALSE
+	/// this makes pickup and drop sounds vary
+	sound_vary = TRUE
 
 /obj/item/stack/sheet/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()

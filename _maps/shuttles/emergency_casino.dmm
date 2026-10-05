@@ -120,7 +120,9 @@
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "el" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "ep" = (
@@ -955,7 +957,9 @@
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "Eh" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/machinery/vending/wallmed/directional/east,
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium/blue,

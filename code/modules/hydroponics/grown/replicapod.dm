@@ -118,11 +118,10 @@
 	contains_sample = FALSE
 	return NONE
 
-/obj/item/seeds/replicapod/get_unique_analyzer_text()
+/obj/item/seeds/replicapod/get_unique_analyzer_data()
 	if(contains_sample)
-		return "It contains a blood sample with blood DNA (UE) \"[sampleDNA]\"." //blood DNA (UE) shows in medical records and is readable by forensics scanners
-	else
-		return null
+		return list("Blood DNA" = sampleDNA)
+	return null
 
 /obj/item/seeds/replicapod/harvest(mob/user) //now that one is fun -- Urist
 	var/obj/machinery/hydroponics/parent = loc
@@ -214,7 +213,7 @@
 
 	//if there's none: get water
 	most_plentiful_reagent ||= /datum/reagent/water
-	podman.dna.species.exotic_bloodtype = most_plentiful_reagent
+	podman.set_blood_type(most_plentiful_reagent)
 	investigate_log("[key_name(mind)] cloned as a podman via [src] in [parent]", INVESTIGATE_BOTANY)
 	parent.update_tray(user, 1)
 	return result

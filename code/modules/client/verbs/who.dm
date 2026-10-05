@@ -36,7 +36,7 @@
 									entry += " - <font color='black'><b>DEAD</b></font>"
 							else
 								entry += " - <font color='black'><b>DEAD</b></font>"
-					if(is_special_character(client.mob))
+					if(client.mob.is_antag())
 						entry += " - <b><font color='red'>Antagonist</font></b>"
 				entry += " [ADMIN_QUE(client.mob)]"
 				entry += " ([round(client.avgping, 1)]ms)"
@@ -85,7 +85,7 @@
 	lines += span_bold(header)
 	lines += payload_string
 
-	var/finalized_string = examine_block(jointext(lines, "\n"))
+	var/finalized_string = boxed_message(jointext(lines, "\n"))
 	to_chat(src, finalized_string)
 
 /// Proc that generates the applicable string to dispatch to the client for adminwho.

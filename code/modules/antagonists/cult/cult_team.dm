@@ -51,6 +51,7 @@
 				SEND_SOUND(mind.current, 'sound/ambience/antag/bloodcult/bloodcult_eyes.ogg')
 				to_chat(mind.current, span_cultlarge(span_warning("The veil weakens as your cult grows, your eyes begin to glow...")))
 				mind.current.AddElement(/datum/element/cult_eyes)
+				ADD_TRAIT(mind.current, TRAIT_DESENSITIZED, CULT_TRAIT)
 		cult_risen = TRUE
 		log_game("The blood cult has risen with [cultplayers] players.")
 
@@ -146,7 +147,7 @@
 	var/area/target_area = get_area(new_target)
 
 	blood_target_image = image('icons/effects/mouse_pointers/cult_target.dmi', new_target, "glow", ABOVE_MOB_LAYER)
-	blood_target_image.appearance_flags = RESET_COLOR
+	blood_target_image.appearance_flags = RESET_COLOR|KEEP_APART
 	blood_target_image.pixel_x = -new_target.pixel_x
 	blood_target_image.pixel_y = -new_target.pixel_y
 

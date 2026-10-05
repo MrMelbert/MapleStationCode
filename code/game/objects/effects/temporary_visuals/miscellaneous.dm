@@ -555,7 +555,7 @@
 	playsound(loc, 'sound/weapons/egloves.ogg', vol = 80, vary = TRUE)
 	end()
 
-/obj/effect/constructing_effect/attackby(obj/item/weapon, mob/user, params)
+/obj/effect/constructing_effect/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	attacked(user)
 
 /obj/effect/constructing_effect/attack_hand(mob/living/user, list/modifiers)

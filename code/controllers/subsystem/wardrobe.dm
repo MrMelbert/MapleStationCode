@@ -9,6 +9,10 @@ SUBSYSTEM_DEF(wardrobe)
 	name = "Wardrobe"
 	wait = 10 // This is more like a queue then anything else
 	flags = SS_BACKGROUND
+	dependencies = list(
+		/datum/controller/subsystem/atoms,
+		/datum/controller/subsystem/mapping
+	)
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT // We're going to fill up our cache while players sit in the lobby
 	/// How much to cache outfit items
 	/// Multiplier, 2 would mean cache enough items to stock 1 of each preloaded order twice, etc
@@ -312,6 +316,10 @@ SUBSYSTEM_DEF(wardrobe)
 	play_with = new /list(WARDROBE_CALLBACK_REMOVE)
 	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, TYPE_PROC_REF(/obj/item/storage/box/survival, wardrobe_removal))
 	initial_callbacks[/obj/item/storage/box/survival] = play_with
+
+	play_with = new /list(WARDROBE_CALLBACK_REMOVE)
+	play_with[WARDROBE_CALLBACK_REMOVE] = CALLBACK(null, TYPE_PROC_REF(/obj/item/storage/pouch/survival, wardrobe_removal))
+	initial_callbacks[/obj/item/storage/pouch/survival] = play_with
 
 /datum/controller/subsystem/wardrobe/proc/load_outfits()
 	for(var/datum/outfit/to_stock as anything in subtypesof(/datum/outfit))

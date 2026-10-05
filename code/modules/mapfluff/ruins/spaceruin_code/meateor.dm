@@ -11,7 +11,7 @@
 /// Tiger cultist corpse but with an exit wound
 /obj/effect/mob_spawn/corpse/human/tigercultist/perforated
 
-/obj/effect/mob_spawn/corpse/human/tigercultist/perforated/special(mob/living/carbon/human/spawned_human)
+/obj/effect/mob_spawn/corpse/human/tigercultist/perforated/special(mob/living/carbon/human/spawned_human, mob/mob_possessor)
 	. = ..()
 
 	var/obj/item/bodypart/chest/their_chest = spawned_human.get_bodypart(BODY_ZONE_CHEST)
@@ -71,34 +71,34 @@
 	var/stored_organ
 	/// Types of organ we can spawn
 	var/static/list/allowed_organs = list(
-		/obj/item/organ/internal/heart/gland/egg = 7,
-		/obj/item/organ/internal/heart/gland/plasma = 7,
-		/obj/item/organ/internal/alien/plasmavessel = 5,
-		/obj/item/organ/internal/heart/gland/chem = 5,
-		/obj/item/organ/internal/heart/gland/mindshock = 5,
-		/obj/item/organ/internal/heart/gland/spiderman = 5,
-		/obj/item/organ/internal/heart/gland/transform = 5,
-		/obj/item/organ/internal/heart/gland/slime = 4,
-		/obj/item/organ/internal/heart/gland/trauma = 4,
-		/obj/item/organ/internal/heart/carp = 3,
-		/obj/item/organ/internal/heart/rat = 3,
-		/obj/item/organ/internal/heart/gland/electric = 3,
-		/obj/item/organ/internal/monster_core/brimdust_sac = 3,
-		/obj/item/organ/internal/monster_core/regenerative_core = 3,
-		/obj/item/organ/internal/monster_core/rush_gland = 3,
-		/obj/item/organ/internal/tongue/carp = 3,
-		/obj/item/organ/internal/alien/acid = 2,
-		/obj/item/organ/internal/alien/resinspinner = 2,
-		/obj/item/organ/internal/eyes/night_vision/goliath = 2,
-		/obj/item/organ/internal/eyes/night_vision/rat = 2,
-		/obj/item/organ/internal/heart/gland/ventcrawling = 1,
+		/obj/item/organ/heart/gland/egg = 7,
+		/obj/item/organ/heart/gland/plasma = 7,
+		/obj/item/organ/alien/plasmavessel = 5,
+		/obj/item/organ/heart/gland/chem = 5,
+		/obj/item/organ/heart/gland/mindshock = 5,
+		/obj/item/organ/heart/gland/spiderman = 5,
+		/obj/item/organ/heart/gland/transform = 5,
+		/obj/item/organ/heart/gland/slime = 4,
+		/obj/item/organ/heart/gland/trauma = 4,
+		/obj/item/organ/heart/carp = 3,
+		/obj/item/organ/heart/rat = 3,
+		/obj/item/organ/heart/gland/electric = 3,
+		/obj/item/organ/monster_core/brimdust_sac = 3,
+		/obj/item/organ/monster_core/regenerative_core = 3,
+		/obj/item/organ/monster_core/rush_gland = 3,
+		/obj/item/organ/tongue/carp = 3,
+		/obj/item/organ/alien/acid = 2,
+		/obj/item/organ/alien/resinspinner = 2,
+		/obj/item/organ/eyes/night_vision/goliath = 2,
+		/obj/item/organ/eyes/night_vision/rat = 2,
+		/obj/item/organ/heart/gland/ventcrawling = 1,
 	)
 
 /obj/structure/meateor_fluff/flesh_pod/Initialize(mapload)
 	. = ..()
 	stored_organ = pick_weight(allowed_organs)
 
-/obj/structure/meateor_fluff/flesh_pod/attackby(obj/item/attacking_item, mob/user, params)
+/obj/structure/meateor_fluff/flesh_pod/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if (attacking_item.sharpness & SHARP_EDGED)
 		cut_open(user)
 		return

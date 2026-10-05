@@ -14,8 +14,6 @@
 /// Essentially a buffed version of TRAIT_VIRUS_RESISTANCE, but not as strong as TRAIT_VIRUS_IMMUNE.
 /// Outright prevents contraction of disease, but if you do get sick, you're not immune to it.
 #define TRAIT_VIRUS_CONTACT_IMMUNE "virus_contact_immune"
-/// Does not harm patients when undergoing CPR
-#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
 /// Defines for speech sounds
 #define SOUND_NORMAL "normal"
@@ -33,5 +31,3 @@
 
 /// How much "caffeine points" does 1 metabolization tick (0.2u) of energy drinks provide
 #define CAFFEINE_POINTS_ENERGY 0.8 //yes i know energy drinks actually have less caffeine than coffee IRL but this is the FUTURE
-
-#define LIMB_AVAILABLE "Available"

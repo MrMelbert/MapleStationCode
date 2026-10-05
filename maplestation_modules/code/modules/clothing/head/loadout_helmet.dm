@@ -6,11 +6,26 @@
 	name = "tailored beret"
 	desc = "A custom made beret."
 	greyscale_colors = "#ffffff"
+	icon = 'icons/map_icons/clothing/head/beret.dmi'
+	icon_state = "/obj/item/clothing/head/beret/greyscale"
 
 /obj/item/clothing/head/beret/greyscale_badge
 	name = "tailored emblazoned beret"
 	desc = "A custom made beret, with a badge emblazoned on it."
-	icon_state = "beret_badge"
+	post_init_icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#ffffff#afafaf"
+	icon = 'icons/map_icons/clothing/head/beret.dmi'
+	icon_state = "/obj/item/clothing/head/beret/greyscale_badge"
+
+/obj/item/clothing/head/bow/sweet
+	name = "sweet bow"
+	desc = "A sweet bow that you can place on the back of your head."
+	icon = 'icons/map_icons/clothing/head/_head.dmi'
+	icon_state = "/obj/item/clothing/head/bow/sweet"
+	post_init_icon_state = "sweet_bow"
+	greyscale_config = /datum/greyscale_config/sweet_bow
+	greyscale_config_worn = /datum/greyscale_config/sweet_bow/worn
+	greyscale_colors = "#7b9ab5"
+	flags_1 = IS_PLAYER_COLORABLE_1

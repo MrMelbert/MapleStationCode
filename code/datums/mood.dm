@@ -18,8 +18,18 @@
 	var/sanity = SANITY_NEUTRAL
 	/// the total combined value of all visible moodlets for the mob
 	var/shown_mood
-	/// Moodlet value modifier
+	/// Multiplier to the sum total of mood the mob is experiencing
 	var/mood_modifier = 1
+	/// Multiplier to positive moodlet values. Stacks with mood_modifier
+	var/positive_mood_modifier = 1
+	/// Multiplier to negative moodlet values. Stacks with mood_modifier
+	var/negative_mood_modifier = 1
+	/// Multiplier to the length of positive moodlets.
+	/// Please don't set this to 0
+	var/positive_moodlet_length_modifier = 1
+	/// Multiplier to the length of negative moodlets.
+	/// Please don't set this to 0
+	var/negative_moodlet_length_modifier = 1
 	/// Used to track what stage of moodies they're on (1-9)
 	var/mood_level = MOOD_LEVEL_NEUTRAL
 	/// To track what stage of sanity they're on (1-6)
@@ -28,13 +38,12 @@
 	var/insanity_effect = 0
 	/// The screen object for the current mood level
 	var/atom/movable/screen/mood/mood_screen_object
-
 	/// List of mood events currently active on this datum
 	var/list/mood_events = list()
-
-	/// Tracks the last mob stat, updates on change
-	/// Used to stop processing SSmood
-	var/last_stat = CONSCIOUS
+	/// Lazylist that maps mood text slots currently active so we can avoid stacking them on top of each other
+	var/list/active_mood_maptexts
+	/// Assoc lazylist of mood event types to the next world.time where we show that mood text again, to prevent spam
+	var/list/mood_maptext_cooldowns
 
 /datum/mood/New(mob/living/mob_to_make_moody)
 	if (!istype(mob_to_make_moody))
@@ -48,9 +57,14 @@
 
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
 	RegisterSignal(mob_to_make_moody, COMSIG_ENTER_AREA, PROC_REF(check_area_mood))
-	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
+	RegisterSignal(mob_to_make_moody, COMSIG_EXIT_AREA, PROC_REF(exit_area))
+	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(on_aheal))
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
 	RegisterSignal(mob_to_make_moody, COMSIG_QDELETING, PROC_REF(clear_parent_ref))
+
+	var/area/our_area = get_area(mob_to_make_moody)
+	if(our_area)
+		check_area_mood(mob_to_make_moody, our_area)
 
 	mob_to_make_moody.become_area_sensitive(MOOD_DATUM_TRAIT)
 	if(mob_to_make_moody.hud_used)
@@ -63,7 +77,10 @@
 
 	unmodify_hud()
 	mob_parent.lose_area_sensitivity(MOOD_DATUM_TRAIT)
-	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
+	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
+	var/area/our_area = get_area(mob_parent)
+	if(our_area)
+		UnregisterSignal(our_area, COMSIG_AREA_BEAUTY_UPDATED)
 
 	mob_parent = null
 
@@ -73,42 +90,61 @@
 	return ..()
 
 /datum/mood/process(seconds_per_tick)
+	var/change = 0
+	var/new_min = SANITY_INSANE
+	var/new_max = SANITY_GREAT
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			set_sanity(sanity - 0.3 * seconds_per_tick, SANITY_INSANE)
+			change = -0.3
 		if(MOOD_LEVEL_SAD3)
-			set_sanity(sanity - 0.15 * seconds_per_tick, SANITY_CRAZY)
+			change = -0.15
+			new_min = SANITY_CRAZY
 		if(MOOD_LEVEL_SAD2)
-			set_sanity(sanity - 0.1 * seconds_per_tick, SANITY_UNSTABLE)
+			change = -0.1
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_SAD1)
-			set_sanity(sanity - 0.05 * seconds_per_tick, SANITY_UNSTABLE)
+			change = -0.05
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_NEUTRAL)
-			set_sanity(sanity, SANITY_UNSTABLE) //This makes sure that mood gets increased should you be below the minimum.
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY1)
-			set_sanity(sanity + 0.2 * seconds_per_tick, SANITY_UNSTABLE)
+			change = 0.2
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY2)
-			set_sanity(sanity + 0.3 * seconds_per_tick, SANITY_UNSTABLE)
+			change = 0.3
+			new_min = SANITY_UNSTABLE
 		if(MOOD_LEVEL_HAPPY3)
-			set_sanity(sanity + 0.4 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			change = 0.4
+			new_min = SANITY_NEUTRAL
+			new_max = SANITY_MAXIMUM
 		if(MOOD_LEVEL_HAPPY4)
-			set_sanity(sanity + 0.6 * seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			change = 0.6
+			new_min = SANITY_NEUTRAL
+			new_max = SANITY_MAXIMUM
 
-	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
-	// mood runtime, so 50% average uptime across the hour.
-	if(HAS_TRAIT(mob_parent, TRAIT_DEPRESSION) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("depression_mild", /datum/mood_event/depression_mild)
+	// If our sanity is beneath our new lower threshold,
+	// a significant boost is added to help recover up to it
+	if(sanity < new_min)
+		change += 0.7
+		new_min = SANITY_INSANE
 
-	if(HAS_TRAIT(mob_parent, TRAIT_JOLLY) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("jolly", /datum/mood_event/jolly)
+	if(change)
+		adjust_sanity(change * seconds_per_tick, new_min, new_max)
 
-/datum/mood/proc/handle_mob_death(datum/source)
+	if(sanity_level >= SANITY_LEVEL_CRAZY && mood_level <= MOOD_LEVEL_SAD2 && SPT_PROB(sanity_level == SANITY_LEVEL_CRAZY ? 2 : 5, seconds_per_tick))
+		mob_parent.set_jitter_if_lower(3 SECONDS)
+		for(var/mood_cat in shuffle(mood_events))
+			var/datum/mood_event/event = mood_events[mood_cat]
+			if(event.insanity_effect(sanity))
+				break
+
+/datum/mood/proc/handle_mob_death(datum/source, new_stat, old_stat)
 	SIGNAL_HANDLER
 
-	if (last_stat == DEAD && mob_parent.stat != DEAD)
+	if (old_stat == DEAD && new_stat != DEAD)
 		START_PROCESSING(SSmood, src)
-	else if (last_stat != DEAD && mob_parent.stat == DEAD)
+	else if (old_stat != DEAD && new_stat == DEAD)
 		STOP_PROCESSING(SSmood, src)
-	last_stat = mob_parent.stat
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
@@ -143,50 +179,193 @@
  *
  * Arguments:
  * * category - (text) category of the mood event - see /datum/mood_event for category explanation
- * * type - (path) any /datum/mood_event
+ * * type - (path) any /datum/mood_event (besides /datum/mood_event/conditional)
  */
-/datum/mood/proc/add_mood_event(category, type, ...)
-	// we may be passed an instantiated mood datum with a modified timeout
-	// it is to be used as a vehicle to copy data from and then cleaned up afterwards.
-	// why do it this way? because the params list may contain numbers, and we may not necessarily want those to be interpreted as a timeout modifier.
-	// this is only used by the food quality system currently
-	var/datum/mood_event/mood_to_copy_from
-	if (istype(type, /datum/mood_event))
-		mood_to_copy_from = type
-		type = mood_to_copy_from.type
-	if (!ispath(type, /datum/mood_event))
-		CRASH("A non path ([type]), was used to add a mood event. This shouldn't be happening.")
+/datum/mood/proc/add_mood_event(category, new_type, ...)
+	if (!ispath(new_type, /datum/mood_event))
+		CRASH("A non path ([new_type]), was used to add a mood event. This shouldn't be happening.")
+	if (ispath(new_type, /datum/mood_event/conditional))
+		CRASH("A conditional mood event ([new_type]) was used in add_mood_event. Use add_conditional_mood_event instead.")
 	if (!istext(category))
 		category = REF(category)
 
-	var/datum/mood_event/the_event
-	if (mood_events[category])
-		the_event = mood_events[category]
-		if (the_event.type != type)
-			clear_mood_event(category)
-		else
-			if (the_event.timeout)
-				if (!isnull(mood_to_copy_from))
-					the_event.timeout = mood_to_copy_from.timeout
-				addtimer(CALLBACK(src, PROC_REF(clear_mood_event), category), the_event.timeout, (TIMER_UNIQUE|TIMER_OVERRIDE))
-			qdel(mood_to_copy_from)
-			return // Don't need to update the event.
 	var/list/params = args.Copy(3)
-
-	params.Insert(1, mob_parent)
-	the_event = new type(arglist(params))
-	if (QDELETED(the_event)) // the mood event has been deleted for whatever reason (requires a job, etc)
+	var/datum/mood_event/new_event = new new_type(category)
+	if(!new_event.can_effect_mob(arglist(list(src, mob_parent) + params)))
+		qdel(new_event)
 		return
 
-	the_event.category = category
-	if (!isnull(mood_to_copy_from))
-		the_event.timeout = mood_to_copy_from.timeout
-	qdel(mood_to_copy_from)
-	mood_events[category] = the_event
-	update_mood()
+	add_mood_event_instance(new_event, params)
 
-	if (the_event.timeout)
-		addtimer(CALLBACK(src, PROC_REF(clear_mood_event), category), the_event.timeout, (TIMER_UNIQUE|TIMER_OVERRIDE))
+/**
+ * Handles adding a mood event instance, including replacing or refreshing existing events
+ */
+/datum/mood/proc/add_mood_event_instance(datum/mood_event/new_event, list/params)
+	PRIVATE_PROC(TRUE)
+	var/category = new_event.category
+	var/datum/mood_event/existing_event = mood_events[category]
+	if(existing_event)
+		var/continue_adding = FALSE
+		if(existing_event.type == new_event.type)
+			continue_adding = existing_event.be_refreshed(arglist(list(src) + params))
+		else
+			continue_adding = existing_event.be_replaced(arglist(list(src, new_event) + params))
+		if(!continue_adding)
+			update_mood()
+			qdel(new_event)
+			return
+		// instantly refreshes mood text cooldown if the new event is stronger than any existing one
+		if(abs(existing_event.mood_change) < abs(new_event.mood_change))
+			LAZYREMOVE(active_mood_maptexts, existing_event.screentext_id)
+		clear_mood_event(category)
+
+	new_event.on_add(src, mob_parent, params)
+	mood_events[category] = new_event
+	update_mood()
+	show_mood_maptext(new_event)
+
+	if(new_event.mood_change == 0 || new_event.hidden)
+		return
+	if(new_event.mood_change > 0)
+		add_personality_mood_to_viewers(mob_parent, "other_good_moodlet", list(
+			/datum/personality/empathetic = /datum/mood_event/empathetic_happy,
+			/datum/personality/misanthropic = /datum/mood_event/misanthropic_sad
+		), range = 4)
+	else
+		add_personality_mood_to_viewers(mob_parent, "other_bad_moodlet", list(
+			/datum/personality/empathetic = /datum/mood_event/empathetic_sad,
+			/datum/personality/misanthropic = /datum/mood_event/misanthropic_happy
+		), range = 4)
+
+/datum/mood/proc/show_mood_maptext(datum/mood_event/event)
+	if(isnull(mob_parent.client) || mob_parent.stat >= UNCONSCIOUS || LAZYACCESS(mood_maptext_cooldowns, event.screentext_id) > world.time)
+		return
+	LAZYINITLISTLEN(active_mood_maptexts, mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_cap))
+	var/first_open_index = 1
+	while(LAZYACCESS(active_mood_maptexts, first_open_index))
+		first_open_index += 1
+	if(first_open_index > LAZYLEN(active_mood_maptexts))
+		return
+	var/maptext_location = mob_parent.client.prefs.read_preference(/datum/preference/choiced/mood_text_location)
+	var/atom/movable/screen/mood_maptext/new_maptext = new(null, null, event, first_open_index, maptext_location)
+	new_maptext.alpha = 255 * mob_parent.client.prefs.read_preference(/datum/preference/numeric/mood_text_alpha)
+	mob_parent.client.screen += new_maptext
+	addtimer(CALLBACK(src, PROC_REF(fade_mood_maptext), new_maptext, first_open_index), new_maptext.running_time_length + 1 SECONDS, TIMER_DELETE_ME)
+	LAZYSET(active_mood_maptexts, first_open_index, REF(new_maptext))
+	LAZYSET(mood_maptext_cooldowns, event.screentext_id, world.time + event.screentext_cooldown)
+
+/datum/mood/proc/fade_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_fade, index)
+	animate(maptext_to_fade, time = 1 SECONDS, alpha = 0)
+	addtimer(CALLBACK(src, PROC_REF(clear_mood_maptext), maptext_to_fade, index), 2 SECONDS)
+
+/datum/mood/proc/clear_mood_maptext(atom/movable/screen/mood_maptext/maptext_to_clear, index)
+	LAZYSET(active_mood_maptexts, index, null)
+	mob_parent.client?.screen -= maptext_to_clear
+	qdel(maptext_to_clear)
+
+/atom/movable/screen/mood_maptext
+	maptext_width = 200
+	maptext_height = 40
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	layer = BELOW_OBJ_LAYER // render underneath storage
+	VAR_FINAL/maptext_color
+	VAR_FINAL/running_time_length = 0
+
+/atom/movable/screen/mood_maptext/Initialize(mapload, datum/hud/hud_owner, datum/mood_event/base, offset = 0, maptext_location = MOOD_TEXT_ABOVE_CHARACTER)
+	. = ..()
+	if(isnull(base))
+		return INITIALIZE_HINT_QDEL
+
+	add_filter("dropshadow-a", 1, outline_filter(size = 0.1, color = "#04080F", flags = OUTLINE_SQUARE))
+	add_filter("dropshadow-b", 2, drop_shadow_filter(x = 0, y = -1, size = 0.5, color = "#04080F"))
+
+	maptext_color = base.screentext_color
+	if(isnull(maptext_color) && base.mood_change != 0)
+		switch(base.mood_change)
+			if(-INFINITY to MOOD_SAD2)
+				maptext_color = COLOR_DARK_RED
+			if(MOOD_SAD2 to MOOD_SAD1)
+				maptext_color = COLOR_RED
+			if(MOOD_SAD1 to MOOD_NEUTRAL)
+				maptext_color = COLOR_GRAY
+			if(MOOD_NEUTRAL to MOOD_HAPPY1)
+				maptext_color = COLOR_WHITE
+			if(MOOD_HAPPY1 to MOOD_HAPPY2)
+				maptext_color = COLOR_LIME
+			if(MOOD_HAPPY2 to INFINITY)
+				maptext_color = COLOR_DARK_LIME
+
+	var/shown_text = base.description
+	var/list/shown_words = splittext(shown_text, " ")
+	if(length(shown_words) == 1)
+		maptext = "<center>[MAPTEXT(shown_text)]</center>"
+	else
+		var/list/words = list(shown_words[1])
+		maptext = construct_maptext(words)
+		for(var/i in 2 to length(shown_words))
+			var/new_time_length = max(1, floor(length_char(shown_words[i - 1]) * 0.75))
+			words += shown_words[i]
+			animate(src, time = new_time_length, maptext = construct_maptext(words), flags = ANIMATION_CONTINUE)
+			running_time_length += new_time_length
+
+	switch(maptext_location)
+		if(MOOD_TEXT_ABOVE_CHARACTER)
+			screen_loc = "CENTER-3:16,NORTH-1:[(offset - 1) * -20]"
+		if(MOOD_TEXT_BELOW_CHARACTER)
+			screen_loc = "CENTER-3:16,SOUTH+3:[(offset - 1) * 20]"
+
+/atom/movable/screen/mood_maptext/proc/construct_maptext(list/words)
+	var/output = ""
+	var/linebreaks = 0
+	for(var/i in 1 to  length(words))
+		var/word = words[i]
+		if(i == length(words))
+			output += "[word]"
+
+		else if(linebreaks < 1 && findtext(word, GLOB.is_punctuation))
+			output += "[word]<br>"
+			linebreaks += 1
+		else
+			output += "[word] "
+
+	return "<center>[MAPTEXT("<font color='[maptext_color]'>[output]</font>")]</center>"
+
+/**
+ * Adds a conditional mood event to the mob
+ *
+ * Arguments:
+ * * category - (text) category of the mood event - see /datum/mood_event for category explanation
+ * * base_type - (path) any /datum/mood_event/conditional
+ */
+/datum/mood/proc/add_conditional_mood_event(category, datum/base_type, ...)
+	if (!ispath(base_type, /datum/mood_event/conditional))
+		if (ispath(base_type, /datum/mood_event))
+			CRASH("A non-conditional mood event ([base_type]) was used in add_conditional_mood_event. Use add_mood_event instead.")
+		CRASH("A non path ([base_type]), was used to add a mood event. This shouldn't be happening.")
+	if (!istext(category))
+		category = REF(category)
+
+	var/list/params = args.Copy(3)
+	var/list/datum/mood_event/conditional/all_valid_conditional_events = list()
+	for(var/event_subtype in typesof(base_type))
+		var/datum/mood_event/potential_event = new event_subtype(category)
+		if(!potential_event.can_effect_mob(arglist(list(src, mob_parent) + params)))
+			qdel(potential_event)
+			continue
+
+		all_valid_conditional_events += potential_event
+
+	if(!length(all_valid_conditional_events))
+		return //no valid events to add
+
+	var/datum/mood_event/conditional/highest_priority_event
+	for(var/datum/mood_event/conditional/checked_event as anything in all_valid_conditional_events)
+		if(!highest_priority_event || checked_event.priority > highest_priority_event.priority)
+			highest_priority_event = checked_event
+
+	add_mood_event_instance(highest_priority_event, params)
+	all_valid_conditional_events -= highest_priority_event // you are the chosen one
+	QDEL_LIST(all_valid_conditional_events) // clean up the losers
 
 /**
  * Removes a mood event from the mob
@@ -206,6 +385,9 @@
 	qdel(event)
 	update_mood()
 
+/datum/mood/proc/get_mood_event(category)
+	return mood_events[category]
+
 /// Updates the mobs mood.
 /// Called after mood events have been added/removed.
 /datum/mood/proc/update_mood()
@@ -214,15 +396,16 @@
 	mood = 0
 	shown_mood = 0
 
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_MOOD_UPDATE)
-
 	for(var/category in mood_events)
 		var/datum/mood_event/the_event = mood_events[category]
-		mood += the_event.mood_change
+		var/event_mood = the_event.mood_change
+		event_mood *= max((event_mood > 0) ? positive_mood_modifier : negative_mood_modifier, 0)
+		mood += event_mood
 		if (!the_event.hidden)
-			shown_mood += the_event.mood_change
-	mood *= mood_modifier
-	shown_mood *= mood_modifier
+			shown_mood += event_mood
+
+	mood *= max(mood_modifier, 0)
+	shown_mood *= max(mood_modifier, 0)
 
 	switch(mood)
 		if (-INFINITY to MOOD_SAD4)
@@ -245,10 +428,11 @@
 			mood_level = MOOD_LEVEL_HAPPY4
 
 	update_mood_icon()
+	SEND_SIGNAL(mob_parent, COMSIG_CARBON_MOOD_UPDATE)
 
 /// Updates the mob's mood icon
 /datum/mood/proc/update_mood_icon()
-	if (!(mob_parent.client || mob_parent.hud_used))
+	if (!(mob_parent.client || mob_parent.hud_used) || isnull(mood_screen_object))
 		return
 
 	mood_screen_object.cut_overlays()
@@ -282,7 +466,7 @@
 		if (SANITY_LEVEL_INSANE)
 			mood_screen_object.color = "#f15d36"
 
-	if (!conflicting_moodies.len) // theres no special icons, use the normal icon states
+	if (!conflicting_moodies.len) // there's no special icons, use the normal icon states
 		mood_screen_object.icon_state = "mood[mood_level]"
 		return
 
@@ -312,6 +496,7 @@
 	if(hud?.infodisplay)
 		hud.infodisplay -= mood_screen_object
 	QDEL_NULL(mood_screen_object)
+	UnregisterSignal(hud, COMSIG_QDELETING)
 
 /// Handles clicking on the mood HUD object
 /datum/mood/proc/hud_click(datum/source, location, control, params, mob/user)
@@ -399,6 +584,11 @@
 		if(MOOD_LEVEL_HAPPY4)
 			msg += "[span_boldnicegreen("I love life!")]<br>"
 
+	var/list/additional_lines = list()
+	SEND_SIGNAL(user, COMSIG_CARBON_MOOD_CHECK, additional_lines)
+	if (length(additional_lines))
+		msg += "[additional_lines.Join("<br>")]<br>"
+
 	msg += "[span_notice("Moodlets:")]<br>"//All moodlets
 	if(mood_events.len)
 		for(var/category in mood_events)
@@ -420,14 +610,19 @@
 	else
 		msg += "&bull; [span_grey("I don't have much of a reaction to anything right now.")]<br>"
 
+	if(LAZYLEN(mob_parent.personalities))
+		msg += span_notice("You know yourself to be [mob_parent.get_parsonality_string()].<br>")
+
 	if(LAZYLEN(mob_parent.quirks))
 		msg += span_notice("You have these quirks: [mob_parent.get_quirk_string(FALSE, CAT_QUIRK_ALL)].")
 
-	to_chat(user, examine_block(msg))
+	to_chat(user, boxed_message(msg))
 
 /// Updates the mob's moodies, if the area provides a mood bonus
 /datum/mood/proc/check_area_mood(datum/source, area/new_area)
 	SIGNAL_HANDLER
+
+	RegisterSignal(new_area, COMSIG_AREA_BEAUTY_UPDATED, PROC_REF(update_beauty))
 
 	update_beauty(new_area)
 	if (new_area.mood_bonus && (!new_area.mood_trait || HAS_TRAIT(source, new_area.mood_trait)))
@@ -437,8 +632,30 @@
 
 /// Updates the mob's given beauty moodie, based on the area
 /datum/mood/proc/update_beauty(area/area_to_beautify)
+	SIGNAL_HANDLER
 	if (area_to_beautify.outdoors) // if we're outside, we don't care
 		clear_mood_event(MOOD_CATEGORY_AREA_BEAUTY)
+		return
+
+	if(HAS_MIND_TRAIT(mob_parent, TRAIT_MORBID))
+		if(HAS_TRAIT(mob_parent, TRAIT_SNOB))
+			switch(area_to_beautify.beauty)
+				if(BEAUTY_LEVEL_DECENT to BEAUTY_LEVEL_GOOD)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/ehroom)
+					return
+				if(BEAUTY_LEVEL_GOOD to BEAUTY_LEVEL_GREAT)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/badroom)
+					return
+				if(BEAUTY_LEVEL_GREAT to INFINITY)
+					add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/horridroom)
+					return
+		switch(area_to_beautify.beauty)
+			if(-INFINITY to BEAUTY_LEVEL_HORRID)
+				add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/greatroom)
+			if(BEAUTY_LEVEL_HORRID to BEAUTY_LEVEL_BAD)
+				add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/goodroom)
+			if(BEAUTY_LEVEL_BAD to BEAUTY_LEVEL_DECENT)
+				clear_mood_event(MOOD_CATEGORY_AREA_BEAUTY)
 		return
 
 	if(HAS_TRAIT(mob_parent, TRAIT_SNOB))
@@ -459,25 +676,31 @@
 		if(BEAUTY_LEVEL_GREAT to INFINITY)
 			add_mood_event(MOOD_CATEGORY_AREA_BEAUTY, /datum/mood_event/greatroom)
 
+/datum/mood/proc/exit_area(datum/source, area/old_area)
+	SIGNAL_HANDLER
+	UnregisterSignal(old_area, COMSIG_AREA_BEAUTY_UPDATED)
+
 /// Called when parent is ahealed.
-/datum/mood/proc/on_revive(datum/source, full_heal)
+/datum/mood/proc/on_aheal(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
-	if (!full_heal)
+	if (!(heal_flags & HEAL_ADMIN))
 		return
 	remove_temp_moods()
 	set_sanity(initial(sanity), override = TRUE)
 
 /// Sets sanity to the specified amount and applies effects.
-/datum/mood/proc/set_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
-	// If we're out of the acceptable minimum-maximum range move back towards it in steps of 0.7
-	// If the new amount would move towards the acceptable range faster then use it instead
-	if(amount < minimum)
-		amount += clamp(minimum - amount, 0, 0.7)
-	if((!override && HAS_TRAIT(mob_parent, TRAIT_UNSTABLE)) || amount > maximum)
-		amount = min(sanity, amount)
+/datum/mood/proc/set_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_MAXIMUM, override = FALSE)
+	if(!override)
+		if(HAS_TRAIT(mob_parent, TRAIT_UNSTABLE))
+			maximum = sanity
+			minimum = min(minimum, maximum)
+
+	amount = clamp(round(amount, 0.01), minimum, maximum)
+
 	if(amount == sanity) //Prevents stuff from flicking around.
 		return
+
 	sanity = amount
 	SEND_SIGNAL(mob_parent, COMSIG_CARBON_SANITY_UPDATE, amount)
 	switch(sanity)
@@ -519,6 +742,105 @@
 		mob_parent.remove_status_effect(/datum/status_effect/hallucination/sanity)
 
 	update_mood_icon()
+	update_sanity_screen()
+
+/// Sets sanity to a specific amount, useful for callbacks
+/datum/mood/proc/reset_sanity(amount)
+	set_sanity(amount, override = TRUE)
+
+/// Adjusts sanity by a value
+/datum/mood/proc/adjust_sanity(amount, minimum = SANITY_INSANE, maximum = SANITY_GREAT, override = FALSE)
+	set_sanity(sanity + amount, minimum, maximum, override)
+
+/datum/client_colour/sanity
+	fade_in = 2 SECONDS
+	fade_out = 2 SECONDS
+	var/desaturation = 1.0
+
+/datum/client_colour/sanity/New(mob/owner)
+	. = ..()
+	src.colour = color_matrix_saturation(desaturation)
+
+/datum/client_colour/sanity/tier4
+	desaturation = 0.6
+
+/datum/client_colour/sanity/tier3
+	desaturation = 0.7
+
+/datum/client_colour/sanity/tier2
+	desaturation = 0.8
+
+/datum/client_colour/sanity/tier1
+	desaturation = 0.9
+
+/atom/movable/screen/fullscreen/sanity
+	show_when_dead = FALSE
+	icon_state = "passage"
+	layer = UI_DAMAGE_LAYER - 0.1
+	plane = FULLSCREEN_PLANE
+	color = "#270227"
+
+/atom/movable/screen/fullscreen/static_vision/sanity
+	show_when_dead = FALSE
+	color = "#e0e0e0"
+	alpha = 25
+
+/datum/mood/proc/update_sanity_screen()
+	var/obj/old_screen = mob_parent.screens["sanity"]
+	var/old_state = old_screen?.icon_state
+	var/obj/new_screen
+
+	var/esanity = sanity
+	// since you're stuck with your sanity while unstable, the effect is lessened
+	if(HAS_TRAIT(mob_parent, TRAIT_UNSTABLE))
+		if(esanity <= 20)
+			esanity = 30
+		else if(esanity <= 40)
+			esanity = 40
+
+	switch(esanity)
+		if (0 to 10)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 4)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier4)
+		if (10 to 20)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 3)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier3)
+		if (20 to 30)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 2)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier2)
+		if (30 to 40)
+			new_screen = mob_parent.overlay_fullscreen("sanity", /atom/movable/screen/fullscreen/sanity, 1)
+			mob_parent.add_client_colour(/datum/client_colour/sanity/tier1)
+		else
+			mob_parent.clear_fullscreen("sanity")
+			mob_parent.clear_fullscreen("sanity_static")
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier4)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier3)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier2)
+			mob_parent.remove_client_colour(/datum/client_colour/sanity/tier1)
+
+	if(new_screen && old_state != new_screen.icon_state)
+		// updating static effect for new sanity level
+		var/had_effect = !!mob_parent.screens["sanity_static"]
+		mob_parent.clear_fullscreen("sanity_static", animated = FALSE)
+		var/obj/staticystuff = mob_parent.overlay_fullscreen("sanity_static", /atom/movable/screen/fullscreen/static_vision/sanity)
+		var/new_alpha = staticystuff.alpha - (esanity * 0.5)
+		if(had_effect)
+			animate(staticystuff, time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+		else
+			staticystuff.alpha = 0
+			animate(staticystuff, time = 0.5 MINUTES, alpha = new_alpha)
+			animate(time = 2.5 MINUTES, alpha = 0, loop = -1)
+			animate(time = 2.5 MINUTES, alpha = new_alpha, loop = -1)
+
+		// resetting filter stuff
+		new_screen.add_filter("sanity_filter", 1, outline_filter(1, "#270227"))
+		new_screen.add_filter("sanity_blur", 2, drop_shadow_filter(1, 1, 10, 0, "#270227"))
+		var/blur = new_screen.get_filter("sanity_blur")
+		// makes a pulsing effect - screen gets darker but the radius gets smaller
+		animate(blur, time = 10 SECONDS, size = 100, loop = -1)
+		animate(time = 10 SECONDS, size = 10, loop = -1)
 
 /// Sets the insanity effect on the mob
 /datum/mood/proc/set_insanity_effect(newval)
@@ -539,11 +861,10 @@
 
 /// Helper to forcefully drain sanity
 /datum/mood/proc/direct_sanity_drain(amount)
-	set_sanity(sanity + amount, override = TRUE)
+	adjust_sanity(amount, override = TRUE)
 
 /**
  * Returns true if you already have a mood from a provided category.
- * You may think to yourself, why am I trying to get a boolean from a component? Well, this system probably should not be a component.
  *
  * Arguments
  * * category - Mood category to validate against.

@@ -7,6 +7,7 @@
 	gain_text = span_notice("You are a big enjoyer of clowns.")
 	lose_text = span_danger("The clown doesn't seem so great.")
 	medical_record_text = "Patient reports being a big enjoyer of clowns."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list(
 		/obj/item/bikehorn,
 		/obj/item/stamp/clown,
@@ -25,7 +26,3 @@
 
 /datum/quirk/item_quirk/clown_enjoyer/add_unique(client/client_source)
 	give_item_to_holder(/obj/item/clothing/accessory/clown_enjoyer_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-/datum/quirk/item_quirk/clown_enjoyer/add(client/client_source)
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.show_to(quirk_holder)

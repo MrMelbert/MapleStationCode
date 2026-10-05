@@ -6,12 +6,15 @@
 	inhand_icon_state = "greyscale_gloves"
 	lefthand_file = 'icons/mob/inhands/clothing/gloves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/gloves_righthand.dmi'
+	abstract_type = /obj/item/clothing/gloves
 	greyscale_colors = null
 	greyscale_config_inhand_left = /datum/greyscale_config/gloves_inhand_left
 	greyscale_config_inhand_right = /datum/greyscale_config/gloves_inhand_right
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	// drop_sound = 'sound/items/handling/glove_drop.ogg'
+	// pickup_sound = 'sound/items/handling/glove_pick_up.ogg'
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20
@@ -21,6 +24,8 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gloves.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gloves.ogg'
 	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
+	item_flags = CAN_BE_OVERSLOT
+
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null
 	/// Used for handling bloody gloves leaving behind bloodstains on objects. Will be decremented whenever a bloodstain is left behind, and be incremented when the gloves become bloody.
@@ -52,7 +57,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 		// NON-MODULE CHANGE reworking clothing blood overlays
@@ -70,7 +74,7 @@
 		return FALSE // We don't want to cut dyed gloves.
 	return TRUE
 
-/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, params)
+/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

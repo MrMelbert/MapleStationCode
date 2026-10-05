@@ -25,7 +25,7 @@
 
 /obj/vehicle/sealed/mecha/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/mecha_equipment),
+		get_asset_datum(/datum/asset/spritesheet_batched/mecha_equipment),
 	)
 
 /obj/vehicle/sealed/mecha/ui_static_data(mob/user)
@@ -55,6 +55,7 @@
 		"MECHA_CABIN_AIR_BREACH" = MECHA_CABIN_AIR_BREACH,
 		"MECHA_INT_CONTROL_LOST" = MECHA_INT_CONTROL_LOST,
 		"MECHA_INT_SHORT_CIRCUIT" = MECHA_INT_SHORT_CIRCUIT,
+		"MECHA_INT_FUEL_LINE" = MECHA_INT_FUEL_LINE,
 	)
 
 	var/list/regions = list()

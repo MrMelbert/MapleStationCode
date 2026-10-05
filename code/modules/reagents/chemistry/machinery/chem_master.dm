@@ -1,7 +1,7 @@
 #define MAX_CONTAINER_PRINT_AMOUNT 50
 
 /obj/machinery/chem_master
-	name = "ChemMaster 3000"
+	name = "\improper ChemMaster 3000"
 	desc = "Used to separate chemicals and distribute them in a variety of forms."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = "chemmaster"
@@ -11,6 +11,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.2
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	circuit = /obj/item/circuitboard/machine/chem_master
+	examine_feedback_on_ui = TRUE
 
 	/// Inserted reagent container
 	var/obj/item/reagent_containers/beaker
@@ -549,7 +550,7 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/chem_master/condimaster
-	name = "CondiMaster 3000"
+	name = "\improper CondiMaster 3000"
 	desc = "Used to create condiments and other cooking supplies."
 	icon_state = "condimaster"
 

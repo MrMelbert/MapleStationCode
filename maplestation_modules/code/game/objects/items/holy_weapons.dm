@@ -35,7 +35,7 @@
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
 	menu_description = "A transforming plasma sword. Can be changed between an extremely low damaging unlit state that can be stored easily, or a lit state that cannot be stored anywhere. Has an armor pierce grade of 20."
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 2
 	light_power = 1
 	light_on = FALSE

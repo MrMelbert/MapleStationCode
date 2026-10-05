@@ -25,6 +25,7 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 	ai_controller = /datum/ai_controller/basic_controller/butterfly
+	initial_blood_type = /datum/blood_type/animal/bug
 
 /mob/living/basic/butterfly/Initialize(mapload)
 	. = ..()

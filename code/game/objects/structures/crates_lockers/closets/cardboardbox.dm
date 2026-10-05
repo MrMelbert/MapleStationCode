@@ -9,6 +9,8 @@
 	can_weld_shut = 0
 	cutting_tool = /obj/item/wirecutters
 	material_drop = /obj/item/stack/sheet/cardboard
+	material_drop_amount = 4
+	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT * 4)
 	delivery_icon = "deliverybox"
 	anchorable = FALSE
 	open_sound = 'sound/machines/cardboard_box.ogg'
@@ -30,6 +32,14 @@
 	var/move_speed_multiplier = 1
 	/// If the speed multiplier should be applied to mobs inside this box
 	var/move_delay = FALSE
+
+/obj/structure/closet/cardboard/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_speed_potioned))
+
+/obj/structure/closet/cardboard/proc/on_speed_potioned(datum/source)
+	SIGNAL_HANDLER
+	move_speed_multiplier *= 2
 
 /obj/structure/closet/cardboard/relaymove(mob/living/user, direction)
 	if(opened || move_delay || user.incapacitated() || !isturf(loc) || !has_gravity(loc))
@@ -109,4 +119,5 @@
 	close_sound = 'sound/machines/crate_close.ogg'
 	open_sound_volume = 35
 	close_sound_volume = 50
+	custom_materials = list(/datum/material/alloy/plasteel = SHEET_MATERIAL_AMOUNT * 4)
 	material_drop = /obj/item/stack/sheet/plasteel

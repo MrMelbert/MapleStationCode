@@ -6,6 +6,7 @@
 	desc = "yummy"
 	icon = 'icons/obj/drinks/drinks.dmi'
 	icon_state = "glass_empty"
+	abstract_type = /obj/item/reagent_containers/cup/glass
 	possible_transfer_amounts = list(5,10,15,20,25,30,50)
 	resistance_flags = NONE
 
@@ -29,7 +30,6 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target, break_top)
 	qdel(src)
-	target.Bumped(B)
 
 /obj/item/reagent_containers/cup/glass/bullet_act(obj/projectile/P)
 	. = ..()
@@ -397,7 +397,6 @@
 	var/obj/item/broken_bottle/bottle_shard = new (loc)
 	bottle_shard.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(bottle_shard)
 
 /obj/item/reagent_containers/cup/glass/colocup
 	name = "colo cup"

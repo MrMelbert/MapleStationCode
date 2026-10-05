@@ -61,7 +61,7 @@
 	stored.forceMove(user.drop_location())
 	return CLICK_ACTION_SUCCESS
 
-/obj/item/borg/apparatus/pre_attack(atom/atom, mob/living/user, params)
+/obj/item/borg/apparatus/pre_attack(atom/atom, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(atom.loc, /mob/living/silicon/robot) || istype(atom.loc, /obj/item/robot_model) || HAS_TRAIT(atom, TRAIT_NODROP))
 		return ..() // Borgs should not be grabbing their own modules
 
@@ -90,9 +90,9 @@
 	update_appearance()
 	return NONE
 
-/obj/item/borg/apparatus/attackby(obj/item/item, mob/user, params)
+/obj/item/borg/apparatus/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(stored)
-		item.melee_attack_chain(user, stored, params)
+		item.melee_attack_chain(user, stored, modifiers)
 		return
 	return ..()
 
@@ -210,6 +210,23 @@
 	item_flags = SURGICAL_TOOL
 	storable = list(/obj/item/organ,
 					/obj/item/bodypart)
+	/// Underlay of whatever we have stored
+	var/image/stored_underlay
+
+/obj/item/borg/apparatus/organ_storage/update_overlays()
+	. = ..()
+	if(stored_underlay)
+		underlays -= stored_underlay
+	if(!stored)
+		return
+	stored_underlay = image(stored)
+	stored_underlay.layer = FLOAT_LAYER
+	stored_underlay.plane = FLOAT_PLANE
+	stored_underlay.pixel_w = 0
+	stored_underlay.pixel_x = 0
+	stored_underlay.pixel_y = 0
+	stored_underlay.pixel_z = 0
+	underlays += stored_underlay
 
 /obj/item/borg/apparatus/organ_storage/examine()
 	. = ..()
@@ -221,22 +238,6 @@
 		. += "Nothing."
 	. += span_notice(" <i>Alt-click</i> will drop the currently stored organ. ")
 
-/obj/item/borg/apparatus/organ_storage/update_overlays()
-	. = ..()
-	icon_state = null // hides the original icon (otherwise it's drawn underneath)
-	var/mutable_appearance/bag
-	if(stored)
-		var/mutable_appearance/stored_organ = new /mutable_appearance(stored)
-		stored_organ.layer = FLOAT_LAYER
-		stored_organ.plane = FLOAT_PLANE
-		stored_organ.pixel_w = 0
-		stored_organ.pixel_z = 0
-		. += stored_organ
-		bag = mutable_appearance(icon, icon_state = "evidence") // full bag
-	else
-		bag = mutable_appearance(icon, icon_state = "evidenceobj") // empty bag
-	. += bag
-
 /obj/item/borg/apparatus/organ_storage/click_alt(mob/living/silicon/robot/user)
 	if(!stored)
 		to_chat(user, span_notice("[src] is empty."))
@@ -244,8 +245,7 @@
 
 	var/obj/item/organ = stored
 	user.visible_message(span_notice("[user] dumps [organ] from [src]."), span_notice("You dump [organ] from [src]."))
-	cut_overlays()
-	organ.forceMove(get_turf(src))
+	organ.forceMove(drop_location())
 	return CLICK_ACTION_SUCCESS
 
 ///Apparatus to allow Engineering/Sabo borgs to manipulate any material sheets.
@@ -314,7 +314,7 @@
 		. += "The apparatus currently has [stored] secured."
 	. += span_notice(" <i>Alt-click</i> will drop the currently stored circuit. ")
 
-/obj/item/borg/apparatus/circuit/pre_attack(atom/atom, mob/living/user, params)
+/obj/item/borg/apparatus/circuit/pre_attack(atom/atom, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(atom, /obj/item/ai_module) && !stored) //If an admin wants a borg to upload laws, who am I to stop them? Otherwise, we can hint that it fails
 		to_chat(user, span_warning("This circuit board doesn't seem to have standard robot apparatus pin holes. You're unable to pick it up."))
 	return ..()

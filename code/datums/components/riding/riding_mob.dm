@@ -5,10 +5,12 @@
 	var/can_be_driven = TRUE
 	/// If TRUE, this creature's abilities can be triggered by the rider while mounted
 	var/can_use_abilities = FALSE
+	/// shall we require riders to go through the riding minigame if they arent in our friends list
+	var/require_minigame = FALSE
 	/// list of blacklisted abilities that cant be shared
 	var/list/blacklist_abilities = list()
 
-/datum/component/riding/creature/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 
@@ -95,7 +97,7 @@
 	return ..()
 
 /datum/component/riding/creature/driver_move(atom/movable/movable_parent, mob/living/user, direction)
-	if(!COOLDOWN_FINISHED(src, vehicle_move_cooldown))
+	if(!COOLDOWN_FINISHED(src, vehicle_move_cooldown) || !Process_Spacemove())
 		return COMPONENT_DRIVER_BLOCK_MOVE
 	if(!keycheck(user))
 		if(ispath(keytype, /obj/item))
@@ -104,7 +106,7 @@
 		return COMPONENT_DRIVER_BLOCK_MOVE
 	step(parent, direction)
 	var/modified_move_delay = vehicle_move_delay
-	if(HAS_TRAIT(user, TRAIT_SETTLER))
+	if(HAS_TRAIT(user, TRAIT_ROUGHRIDER))
 		switch(HAS_TRAIT(user, TRAIT_PRIMITIVE) ? SANITY_LEVEL_GREAT : user.mob_mood?.sanity_level)
 			if(SANITY_LEVEL_GREAT)
 				modified_move_delay *= 0.5
@@ -120,25 +122,18 @@
 	return ..()
 
 /// Yeets the rider off, used for animals and cyborgs, redefined for humans who shove their piggyback rider off
-/datum/component/riding/creature/proc/force_dismount(mob/living/rider, gentle = FALSE)
+/datum/component/riding/creature/proc/force_dismount(mob/living/rider, throw_range = 8, throw_speed = 3, gentle = FALSE)
 	var/atom/movable/movable_parent = parent
 	movable_parent.unbuckle_mob(rider)
-
+	rider.Knockdown(3 SECONDS)
+	if(throw_range == 0)
+		return
 	if(!iscyborg(movable_parent) && !isanimal_or_basicmob(movable_parent))
 		return
-
 	var/turf/target = get_edge_target_turf(movable_parent, movable_parent.dir)
-	var/turf/targetm = get_step(get_turf(movable_parent), movable_parent.dir)
-	rider.Move(targetm)
-	rider.Knockdown(3 SECONDS)
-	if(gentle)
-		rider.visible_message(span_warning("[rider] is thrown clear of [movable_parent]!"), \
-		span_warning("You're thrown clear of [movable_parent]!"))
-		rider.throw_at(target, 8, 3, movable_parent, gentle = TRUE)
-	else
-		rider.visible_message(span_warning("[rider] is thrown violently from [movable_parent]!"), \
-		span_warning("You're thrown violently from [movable_parent]!"))
-		rider.throw_at(target, 14, 5, movable_parent, gentle = FALSE)
+	rider.visible_message(span_warning("[rider] is thrown clear of [movable_parent]!"), \
+	span_warning("You're thrown clear of [movable_parent]!"))
+	rider.throw_at(target, throw_range, throw_speed, movable_parent, gentle = gentle)
 
 /// If we're a cyborg or animal and we spin, we yeet whoever's on us off us
 /datum/component/riding/creature/proc/check_emote(mob/living/user, datum/emote/emote)
@@ -147,7 +142,7 @@
 		return
 
 	for(var/mob/yeet_mob in user.buckled_mobs)
-		force_dismount(yeet_mob, (!user.combat_mode)) // gentle on help, byeeee if not
+		force_dismount(yeet_mob, gentle=!user.combat_mode) // gentle on help, byeeee if not
 
 
 /// If the ridden creature has abilities, and some var yet to be made is set to TRUE, the rider will be able to control those abilities
@@ -193,7 +188,7 @@
 /datum/component/riding/creature/human
 	can_be_driven = FALSE
 
-/datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	. = ..()
 	var/mob/living/carbon/human/human_parent = parent
 	if(ride_check_flags & RIDER_NEEDS_ARMS) // piggyback
@@ -207,6 +202,16 @@
 		human_parent.buckle_lying = 90
 		// melbert todo : tweak this value
 		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, round(HUMAN_CARRY_SLOWDOWN * 1.33, 0.1))
+
+/datum/component/riding/creature/handle_buckle(mob/living/rider)
+	. = ..()
+	var/mob/living/ridden = parent
+	if(!require_minigame || ridden.faction.Find(REF(rider)))
+		return
+	ridden.Shake(pixelshiftx = 1, pixelshifty = 0, duration = 1 SECONDS)
+	ridden.spin(spintime = 1 SECONDS, speed = 1)
+	ridden.balloon_alert(rider, "tries to shake you off!")
+	new /datum/riding_minigame(ridden, rider)
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
@@ -284,7 +289,7 @@
 		TEXT_WEST =  list(0, 0),
 	)
 
-/datum/component/riding/creature/human/force_dismount(mob/living/dismounted_rider)
+/datum/component/riding/creature/human/force_dismount(mob/living/dismounted_rider, throw_range = 8, throw_speed = 3, gentle = FALSE)
 	var/atom/movable/AM = parent
 	AM.unbuckle_mob(dismounted_rider)
 	dismounted_rider.Paralyze(1 SECONDS)
@@ -481,8 +486,9 @@
 /datum/component/riding/creature/goliath
 	keytype = /obj/item/key/lasso
 	vehicle_move_delay = 4
+	rider_traits = list(TRAIT_NO_FLOATING_ANIM, TRAIT_TENTACLE_IMMUNE)
 
-/datum/component/riding/creature/goliath/Initialize(mob/living/riding_mob, force, ride_check_flags, potion_boost)
+/datum/component/riding/creature/goliath/Initialize(mob/living/riding_mob, force, ride_check_flags)
 	. = ..()
 	var/mob/living/basic/mining/goliath/goliath = parent
 	goliath.add_movespeed_modifier(/datum/movespeed_modifier/goliath_mount)
@@ -583,7 +589,7 @@
 		TEXT_WEST =  list( 6, 46),
 	)
 
-/datum/component/riding/creature/leaper/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
+/datum/component/riding/creature/leaper/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE)
 	. = ..()
 	RegisterSignal(riding_mob, COMSIG_MOB_POINTED, PROC_REF(attack_pointed))
 
@@ -599,3 +605,66 @@
 /datum/component/riding/leaper/handle_unbuckle(mob/living/rider)
 	. = ..()
 	UnregisterSignal(rider,  COMSIG_MOB_POINTED)
+
+/datum/component/riding/creature/raptor
+	require_minigame = TRUE
+	ride_check_flags = RIDER_NEEDS_ARM | UNBUCKLE_DISABLED_RIDER
+
+/datum/component/riding/creature/raptor/Initialize(mob/living/riding_mob, force, ride_check_flags, potion_boost)
+	. = ..()
+	RegisterSignal(parent, COMSIG_PROJECTILE_PREHIT, PROC_REF(on_bullet_hit))
+	RegisterSignal(parent, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_attacked))
+
+/datum/component/riding/creature/raptor/proc/on_bullet_hit(atom/target, list/bullet_args, obj/projectile/hit_projectile)
+	SIGNAL_HANDLER
+
+	if(hit_projectile.armor_flag == ENERGY)
+		freak_out()
+
+/datum/component/riding/creature/raptor/proc/on_attacked(mob/living/source, damage_dealt, damagetype, def_zone, blocked, wound_bonus, bare_wound_bonus, sharpness, attack_direction, obj/item/attacking_item)
+	SIGNAL_HANDLER
+
+	if(damagetype == STAMINA)
+		freak_out()
+
+/datum/component/riding/creature/raptor/proc/freak_out()
+	var/mob/living/living_parent = parent
+	if(!length(living_parent.buckled_mobs))
+		return
+	living_parent.balloon_alert_to_viewers("freaks out!")
+	living_parent.spin(spintime = 2 SECONDS, speed = 1)
+	for(var/mob/living/buckled_mob in living_parent.buckled_mobs)
+		force_dismount(buckled_mob, throw_range = 2, gentle = TRUE)
+
+
+/datum/component/riding/creature/raptor/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	if(!SSmapping.is_planetary())
+		return list(
+			TEXT_NORTH = list(-1, 7),
+			TEXT_SOUTH = list(2, 10),
+			TEXT_EAST =  list(0, 7),
+			TEXT_WEST =  list(0, 7),
+		)
+	return list(
+		TEXT_NORTH = list(0, 7),
+		TEXT_SOUTH = list(0, 10),
+		TEXT_EAST =  list(-3, 9),
+		TEXT_WEST =  list(3, 9),
+	)
+
+/datum/component/riding/creature/raptor/get_parent_offsets_and_layers()
+	return list(
+		TEXT_NORTH = list(0, 0, OBJ_LAYER),
+		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),
+		TEXT_EAST =  list(0, 0, OBJ_LAYER),
+		TEXT_WEST =  list(0, 0, OBJ_LAYER),
+	)
+
+/datum/component/riding/creature/raptor/update_parent_layer_and_offsets(dir, animate)
+	. = ..()
+	var/mob/living/basic/raptor/raptor = parent
+	if (istype(raptor))
+		raptor.adjust_offsets(dir)
+
+/datum/component/riding/creature/raptor/fast
+	vehicle_move_delay = 1.5

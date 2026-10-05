@@ -1,11 +1,11 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
 #define SAVEFILE_VERSION_MIN 32
 
-//This is the current version, anything below this will attempt to update (if it's not obsolete)
-// You do not need to raise this if you are adding new values that have sane defaults.
-// Only raise this value when changing the meaning/format/name/layout of an existing value
-// where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 45.1
+/// This is the current version, anything below this will attempt to update (if it's not obsolete)
+/// You do not need to raise this if you are adding new values that have sane defaults.
+/// Only raise this value when changing the meaning/format/name/layout of an existing value
+/// where you would want the updater procs below to run
+#define SAVEFILE_VERSION_MAX 50.2
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -104,15 +104,90 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if (current_version < 43)
 		migrate_legacy_sound_toggles(savefile)
 
+	if(current_version < 43.1)
+		save_loadout(src, save_data?["loadout_list"])
+
 	if (current_version < 45)
 		migrate_quirk_to_loadout(
 			quirk_to_migrate = "Pride Pin",
 			new_typepath = /obj/item/clothing/accessory/pride,
 			data_to_migrate = list(INFO_RESKIN = save_data?["pride_pin"]),
 		)
+	if (current_version < 46)
+		migrate_boolean_sound_prefs_to_default_volume()
+	if (current_version < 47)
+		migrate_boolean_sound_prefs_to_default_volume_v2()
 
 	if (current_version < 45.1)
 		migrate_quirks_to_language_menu(save_data)
+
+	if (current_version < 45.2)
+		// convert felinid to animid
+		if(save_data?["species"] == "felinid")
+			save_data["species"] = /datum/species/human/animid::id
+			save_data["animid_type"] = /datum/animid_type/cat::id
+
+	if (current_version < 48)
+		migrate_quirk_to_loadout(
+			quirk_to_migrate = "Colorist",
+			new_typepath = /obj/item/dyespray,
+		)
+
+	if(current_version < 50)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Extrovert",
+			new_typepath = /datum/personality/extrovert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Introvert",
+			new_typepath = /datum/personality/introvert,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Bad Touch",
+			new_typepath = /datum/personality/aloof,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Apathetic",
+			new_typepath = /datum/personality/apathetic,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Snob",
+			new_typepath = /datum/personality/snob,
+		)
+		migrate_quirk_to_personality(
+			quirk_to_migrate = "Spiritual",
+			new_typepath = /datum/personality/spiritual,
+		)
+
+	if(current_version < 50.1)
+		// #aaaaaa used to be the color for randomizing runechat - now it's "null"
+		if(save_data?["runechat_color"] == "#aaaaaa")
+			save_data["runechat_color"] = null
+
+	if(current_version < 50.2)
+		switch(save_data?["backpack"])
+			if("Department Backpack")
+				add_loadout_item(/obj/item/storage/backpack/medic)
+			if("Department Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel/med)
+			if("Department Duffel Bag")
+				add_loadout_item(/obj/item/storage/backpack/duffelbag/med)
+			if("Department Messenger Bag")
+				add_loadout_item(/obj/item/storage/backpack/messenger/med)
+			if("Grey Backpack")
+				add_loadout_item(/obj/item/storage/backpack)
+			if("Grey Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel)
+			if("Grey Duffel Bag")
+				add_loadout_item(/obj/item/storage/backpack/duffelbag)
+			if("Grey Messenger Bag")
+				add_loadout_item(/obj/item/storage/backpack/messenger)
+			if("Leather Satchel")
+				add_loadout_item(/obj/item/storage/backpack/satchel/leather)
+			if("Chest Pouches")
+				add_loadout_item(/obj/item/storage/belt/chest_pouch)
+
+		save_data?["backpack"] = null
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
@@ -418,7 +493,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/list/output = list()
 
 	for (var/role in input_be_special)
-		if (role in GLOB.special_roles)
+		if (role in get_all_antag_flags())
 			output += role
 
 	return output.len == input_be_special.len ? input_be_special : output

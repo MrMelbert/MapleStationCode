@@ -38,16 +38,16 @@
 	if(HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		return FALSE
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(qdel_us))
-	owner.add_max_consciousness_value(type, 10)
-	owner.set_pain_mod(type, 0.1)
+	owner.add_max_consciousness_value(id, 10)
+	owner.set_pain_mod(id, 0.1)
 	applied_at = world.time
 	return TRUE
 
 /datum/status_effect/anesthetic/on_remove()
 	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE))
 	if(!QDELETED(owner))
-		owner.remove_max_consciousness_value(type)
-		owner.unset_pain_mod(type)
+		owner.remove_max_consciousness_value(id)
+		owner.unset_pain_mod(id)
 		owner.apply_status_effect(/datum/status_effect/anesthesia_grog, applied_at)
 
 /datum/status_effect/anesthetic/get_examine_text()
@@ -91,4 +91,6 @@
 /datum/status_effect/anesthesia_grog/proc/report_grog(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
-	render_list += conditional_tooltip("<span class='alert ml-1'>[strength > 50 ? "Moderate" : "Trace"] amount of anesthetic detected in bloodstream.</span>", "Will subside over time.", tochat)
+	render_list += "<span class='alert ml-1'>"
+	render_list += conditional_tooltip("[strength > 50 ? "Moderate" : "Trace"] amount of anesthetic detected in bloodstream.</span>", "Will subside over time.", tochat)
+	render_list += "</span><br>"

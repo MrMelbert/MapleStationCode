@@ -1,21 +1,24 @@
 /// -- Modular headsets --
 // Bridge Officer's headset
 /obj/item/radio/headset/heads/bridge_officer
-	name = "\proper the bridge officer's headset"
+	name = "bridge officer's headset"
+	article = "the"
 	desc = "The headset of the person in charge of filing paperwork for the heads of staff."
 	icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/bridge_officer
 
 // Asset Protection's headset
 /obj/item/radio/headset/heads/asset_protection
-	name = "\proper the asset protection officer's headset"
+	name = "asset protection officer's headset"
+	article = "the"
 	desc = "The headset of the person in charge of assisting and protecting the heads of staff."
 	icon_state = "com_headset"
 	keyslot = /obj/item/encryptionkey/heads/asset_protection
 
 // Asset Protection's bowman
 /obj/item/radio/headset/heads/asset_protection/alt
-	name = "\proper the asset protection officer's bowman headset"
+	name = "asset protection officer's bowman headset"
+	article = "the"
 	desc = "The headset of the person in charge of assisting and protecting the heads of staff. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
 
@@ -24,7 +27,8 @@
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
 /obj/item/radio/headset/heads/noble_ambassador
-	name = "\proper the noble ambassador's headset"
+	name = "noble ambassador's headset"
+	article = "the"
 	desc = "The headset of the ambassador from Mu, responsible for upholding their laws and ensuring the crew's wellbeing."
 	worn_icon = 'maplestation_modules/icons/mob/clothing/ears.dmi'
 	worn_icon_state = "noble_headset"

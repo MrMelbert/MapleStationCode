@@ -48,9 +48,7 @@
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
 
 	if(stat != DEAD)
-		var/bz_percentage =0
-		if(environment.gases[/datum/gas/bz])
-			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.total_moles()
+		var/bz_percentage = environment.moles[/datum/gas/bz] / environment.total_moles()
 		var/stasis = (bz_percentage >= 0.05 && body_temperature < (T0C + 100)) || force_stasis
 
 		switch(stat)

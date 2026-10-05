@@ -77,7 +77,7 @@
 		update_appearance()
 	return ..()
 
-/obj/machinery/recharger/attackby(obj/item/attacking_item, mob/user, params)
+/obj/machinery/recharger/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(!is_type_in_typecache(attacking_item, allowed_devices))
 		return ..()
 
@@ -125,10 +125,9 @@
 	if(.)
 		return
 
-	add_fingerprint(user)
-	if(isnull(charging) || user.put_in_hands(charging))
+	if(isnull(charging))
 		return
-	charging.forceMove(drop_location())
+	try_put_in_hand(charging, user)
 
 /obj/machinery/recharger/attack_tk(mob/user)
 	if(isnull(charging))

@@ -155,7 +155,7 @@
 	if(isgolem(victim) && victim.has_status_effect(/datum/status_effect/golem/gold))
 		return TRUE
 
-	return istype(victim.mind?.martial_art, /datum/martial_art/the_sleeping_carp)
+	return istype(GET_ACTIVE_MARTIAL_ART(victim), /datum/martial_art/the_sleeping_carp)
 
 /obj/effect/temp_visual/at_shield
 	name = "anti-toolbox field"
@@ -164,8 +164,10 @@
 	icon_state = "at_shield2"
 	layer = FLY_LAYER
 	plane = ABOVE_GAME_PLANE
-	light_system = MOVABLE_LIGHT
-	light_range = 2
+	light_system = OVERLAY_LIGHT
+	light_range = 2.5
+	light_power = 1.2
+	light_color = "#ffff66"
 	duration = 8
 	var/target
 
@@ -253,7 +255,7 @@
 		. += observer_desc
 		. += "It is activated by [activation_method]."
 
-/obj/machinery/anomalous_crystal/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
+/obj/machinery/anomalous_crystal/Hear(atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), message_range)
 	. = ..()
 	if(isliving(speaker))
 		ActivationReaction(speaker, ACTIVATE_SPEECH)
@@ -338,7 +340,7 @@
 	var/mob/living/carbon/human/new_clown = user
 	for(var/obj/item/to_strip in new_clown.get_equipped_items())
 		new_clown.dropItemToGround(to_strip)
-	new_clown.dress_up_as_job(SSjob.GetJobType(/datum/job/clown))
+	new_clown.dress_up_as_job(SSjob.get_job_type(/datum/job/clown))
 	clowned_mob_refs += clown_ref
 	return TRUE
 
@@ -495,6 +497,7 @@
 	if(isanimal_or_basicmob(loc))
 		holder_animal = loc
 		RegisterSignal(holder_animal, COMSIG_LIVING_DEATH, PROC_REF(on_holder_animal_death))
+	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL|EMP_NO_EXAMINE)
 
 /obj/structure/closet/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()

@@ -9,11 +9,12 @@
 	medical_record_text = "Patient has a severe video game addiction."
 	mob_trait = TRAIT_GAMER
 	mail_goodies = list(/obj/item/toy/intento, /obj/item/clothing/head/fedora)
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	/// Timer for gaming withdrawal to kick in
 	var/gaming_withdrawal_timer = TIMER_ID_NULL
 
 /datum/quirk/gamer/add(client/client_source)
-	var/obj/item/organ/internal/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		// Gamer diet
 		tongue.liked_foodtypes = JUNKFOOD
@@ -26,7 +27,7 @@
 	gaming_withdrawal_timer = addtimer(CALLBACK(src, PROC_REF(enter_withdrawal)), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
 
 /datum/quirk/gamer/remove()
-	var/obj/item/organ/internal/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = quirk_holder.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(tongue)
 		tongue.liked_foodtypes = initial(tongue.liked_foodtypes)
 	UnregisterSignal(quirk_holder, COMSIG_MOB_WON_VIDEOGAME)

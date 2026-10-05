@@ -47,7 +47,7 @@
 	UnregisterSignal(user, COMSIG_MOB_AFTER_EXIT_JAUNT)
 	remove_crit()
 
-/obj/item/light_eater/attack(mob/living/target, mob/living/user, params)
+/obj/item/light_eater/attack(mob/living/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(!has_crit)
 		return
@@ -73,7 +73,7 @@
 	if(has_crit)
 		return
 	has_crit = TRUE
-	add_filter("crit_glow", 3, list("type" = "outline", "color" = "#ff330030", "size" = 5))
+	add_filter("crit_glow", 3, list("type" = "outline", "color" = COLOR_CARP_RIFT_RED, "size" = 5))
 	if(ismob(loc))
 		loc.balloon_alert(loc, "critical strike ready")
 

@@ -108,7 +108,7 @@
 	// Can remotely scan objects and mobs.
 	if((get_dist(scanned_atom, user) > range) || (!(scanned_atom in view(range, user)) && view_check) || (loc != user))
 		return TRUE
-
+	playsound(src, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
 	scanner_busy = TRUE
 
 
@@ -142,7 +142,7 @@
 		// BUT letting players scan blood and read "There is no blood detected on the blood" is very ???
 		// So we'll just throw in a random blood type for filler
 		if(!length(blood) && istype(scanned_atom, /obj/effect/decal/cleanable/blood))
-			scanned_atom.add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+			scanned_atom.add_blood_DNA(list("UNKNOWN HUMAN DNA" = random_human_blood_type()))
 			blood = GET_ATOM_BLOOD_DNA(scanned_atom)
 
 		det_data[DETSCAN_CATEGORY_FINGERS] = GET_ATOM_FINGERPRINTS(scanned_atom)

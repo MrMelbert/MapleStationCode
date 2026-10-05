@@ -6,6 +6,7 @@
 	name = "projectile"
 	icon = 'icons/obj/weapons/guns/projectiles.dmi'
 	icon_state = "bullet"
+	abstract_type = /obj/projectile
 	density = FALSE
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -210,6 +211,8 @@
 	var/damage_falloff_tile
 	///How much we want to drop stamina damage (defined by the stamina variable) per tile as it travels through the air
 	var/stamina_falloff_tile
+	///How much we want to drop pain (defined by the pain variable) per tile as it travels through the air
+	var/pain_falloff_tile
 	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
 	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
@@ -241,12 +244,14 @@
 		damage += damage_falloff_tile
 	if(stamina_falloff_tile && stamina >= 0)
 		stamina += stamina_falloff_tile
+	if(pain_falloff_tile && pain >= 0)
+		pain += pain_falloff_tile
 
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_RANGE)
 	if(range <= 0 && loc)
 		on_range()
 
-	if(damage_falloff_tile && damage <= 0 || stamina_falloff_tile && stamina <= 0)
+	if((damage_falloff_tile && damage <= 0) || (stamina_falloff_tile && stamina <= 0) || (pain_falloff_tile && pain <= 0))
 		on_range()
 
 /obj/projectile/proc/on_range() //if we want there to be effects when they reach the end of their range
@@ -310,7 +315,7 @@
 	if(blocked != 100) // not completely blocked
 		var/obj/item/bodypart/hit_bodypart = living_target.get_bodypart(def_zone)
 		if (damage && damage_type == BRUTE)
-			if (living_target.get_blood_type() && (isnull(hit_bodypart) || hit_bodypart.can_bleed()))
+			if (hit_bodypart?.can_bleed())
 				living_target.do_splatter_effect(dir) // NON-MODULE CHANGE
 				if(prob(33))
 					living_target.add_splatter_floor(target_turf)
@@ -467,12 +472,18 @@
 	if(!HAS_TRAIT(src, TRAIT_ALWAYS_HIT_ZONE) && isliving(A))
 		var/mob/living/who_is_shot = A
 		var/distance = decayedRange - range
+		// Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
 		var/hit_prob = max(100 - (7 * distance), 5)
 		if(who_is_shot.body_position == LYING_DOWN)
 			hit_prob *= 1.2
-		// melbert todo : make people more skilled with weapons have a lower miss chance
+		if(isliving(firer))
+			var/mob/living/firer_living = firer
+			hit_prob -= firer_living.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
+		// if nothing bothered to set a zone we need a random one
+		def_zone ||= who_is_shot.get_random_valid_zone(BODY_ZONE_CHEST, min(80, hit_prob))
+		// then we check for if we hit the zone, or another random one (even if the zone was ALREADY randomly selected)
 		if(!prob(hit_prob))
-			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0) // Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+			def_zone = who_is_shot.get_random_valid_zone(def_zone, 0)
 			grazing = !prob(hit_prob) // jeez you missed twice? that's a graze
 			var/datum/embed_data/data = get_embed()
 			if(data?.embed_chance > 10)
@@ -482,7 +493,6 @@
 			if(grazing)
 				wound_bonus = CANT_WOUND
 				bare_wound_bonus = CANT_WOUND
-
 	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
 
 /**
@@ -994,10 +1004,14 @@
 	forceMove(source_loc)
 	trajectory_ignore_forcemove = FALSE
 
-	starting = source_loc
 	pixel_x = source.pixel_x
 	pixel_y = source.pixel_y
 	original = target
+
+	if (starting != source_loc)
+		starting = source_loc
+		forceMove(source_loc)
+
 	if(length(modifiers))
 		var/list/calculated = calculate_projectile_angle_and_pixel_offsets(source, target_loc && target, modifiers)
 
@@ -1101,7 +1115,7 @@
 		matrix.Turn(original_angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
+		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override || color)
 		// NON-MODULE CHANGE
 		animate(thing, alpha = 0, time = duration, easing = QUAD_EASING|EASE_IN)
 		QDEL_IN(thing, duration)
@@ -1132,7 +1146,7 @@
  * This is used in places such as AI responses to determine if they're being threatened or not (among other places)
  */
 /obj/projectile/proc/is_hostile_projectile()
-	if(damage > 0 || stamina > 0)
+	if(damage > 0 || stamina > 0 || pain > 0)
 		return TRUE
 
 	if(paralyze + stun + immobilize + knockdown > 0 SECONDS)

@@ -85,7 +85,7 @@
 		"borg_upgrade_expandedsynthesiser",
 		"borg_upgrade_piercinghypospray",
 		"borg_upgrade_surgicalprocessor",
-//		"borg_upgrade_surgicalomnitool",
+		"borg_upgrade_surgicalomnitool",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 
@@ -153,6 +153,7 @@
 		"ci-breather",
 		"ci-nutriment",
 		"ci-thrusters",
+		"ci-herculean",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 
@@ -180,8 +181,9 @@
 	prereq_ids = list(TECHWEB_NODE_COMBAT_IMPLANTS, TECHWEB_NODE_EXP_TOOLS)
 	design_ids = list(
 		"ci-nutrimentplus",
-		"ci-toolset",
 		"ci-surgery",
+		"ci-surgery-brain",
+		"ci-toolset",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 

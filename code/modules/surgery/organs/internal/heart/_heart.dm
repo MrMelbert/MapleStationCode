@@ -6,15 +6,14 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-/obj/item/organ/internal/heart
+/obj/item/organ/heart
 	name = "heart"
 	desc = "I feel bad for the heartless bastard who lost this."
 	icon_state = "heart-on"
 	base_icon_state = "heart"
-	visual = FALSE
+
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_HEART
-	item_flags = NO_BLOOD_ON_ITEM
 	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = 2.5 * STANDARD_ORGAN_DECAY //designed to fail around 6 minutes after death
 
@@ -36,18 +35,35 @@
 	/// whether the heart's been operated on to fix some of its damages
 	var/operated = FALSE
 
-/obj/item/organ/internal/heart/update_icon_state()
+	/// Keeps the random variation on BPM consistent so it doesn't look weird
+	VAR_PRIVATE/random_bpm_modifier = 0
+
+	VAR_FINAL/last_bpm = 0
+	VAR_FINAL/last_bp = 0
+
+/obj/item/organ/heart/update_icon_state()
 	. = ..()
 	icon_state = "[base_icon_state]-[beating ? "on" : "off"]"
 
-/obj/item/organ/internal/heart/Remove(mob/living/carbon/heartless, special, movement_flags)
+/obj/item/organ/heart/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+	if(beating)
+		organ_owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
+	last_bpm = get_heart_rate()
+	last_bp = get_blood_pressure()
+
+/obj/item/organ/heart/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	if(!special)
+		organ_owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 12 SECONDS)
 	playing_heartbeat_sfx = BEAT_NONE
-	owner?.stop_sound_channel(CHANNEL_HEARTBEAT)
+	last_bpm = 0
+	last_bp = 0
+	organ_owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+	REMOVE_TRAIT(organ_owner, TRAIT_LABOURED_BREATHING, type)
 
-/obj/item/organ/internal/heart/proc/stop_if_unowned()
+/obj/item/organ/heart/proc/stop_if_unowned()
 	if(QDELETED(src))
 		return
 	if(IS_ROBOTIC_ORGAN(src))
@@ -55,7 +71,7 @@
 	if(isnull(owner))
 		Stop()
 
-/obj/item/organ/internal/heart/attack_self(mob/user)
+/obj/item/organ/heart/attack_self(mob/user)
 	. = ..()
 	if(.)
 		return
@@ -69,133 +85,353 @@
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 8 SECONDS)
 		return TRUE
 
-/obj/item/organ/internal/heart/proc/Stop()
+/obj/item/organ/heart/proc/Stop()
 	if(!beating)
 		return FALSE
 
 	beating = FALSE
 	update_appearance()
 	playing_heartbeat_sfx = BEAT_NONE
+	last_bpm = 0
+	last_bp = 0
 	if(!isnull(owner))
 		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-		owner.apply_status_effect(/datum/status_effect/heart_attack)
-		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
+		owner.apply_status_effect(/datum/status_effect/cardiac_arrest)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH|UPDATE_SELF_HEALTH)
 	return TRUE
 
-/obj/item/organ/internal/heart/proc/Restart()
+/obj/item/organ/heart/proc/Restart()
 	if(beating)
 		return FALSE
 
 	beating = TRUE
 	update_appearance()
 	if(!isnull(owner))
-		owner.remove_status_effect(/datum/status_effect/heart_attack)
-		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
+		owner.remove_status_effect(/datum/status_effect/cardiac_arrest)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH|UPDATE_SELF_HEALTH)
 	return TRUE
 
-/obj/item/organ/internal/heart/OnEatFrom(eater, feeder)
+/obj/item/organ/heart/proc/stop_on_beat()
+	if(owner?.needs_heart() && Stop())
+		if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
+			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
+		to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
+
+/obj/item/organ/heart/OnEatFrom(eater, feeder)
 	. = ..()
 	Stop()
 
 /// Checks if the heart is beating.
 /// Can be overridden to add more conditions for more complex hearts.
-/obj/item/organ/internal/heart/proc/is_beating()
+/obj/item/organ/heart/proc/is_beating()
 	return beating
 
-/obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
-	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Defibrillate immediately. Similar electric shocks may work in emergencies.", add_tooltips)
-	return ..()
+/obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
+	var/bpm = get_heart_rate()
+	. = "[IS_ORGANIC_ORGAN(src) ? "Heart" : "Pulse"] rate: [bpm]" + span_slightly_smaller("bpm")
+	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
+		. = span_alert(.)
 
-/obj/item/organ/internal/heart/show_on_condensed_scans()
+	if(bpm <= 0)
+		if(IS_ROBOTIC_ORGAN(src))
+			. += " "
+			. += span_boldwarning(conditional_tooltip("(Critical: Heart Malfunction)", \
+				"Heart has stopped entirely. Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies). \
+				Heart transplant surgery may be necessary to return circulation if the heart has sustained critical damage.", add_tooltips))
+		else
+			. += " "
+			. += span_boldwarning(conditional_tooltip("(Critical: Cardiac Arrest)", \
+				"Heart has stopped entirely. Provide CPR, apply an Autopulse, or defibrillate immediately (similar electric shocks may work in emergencies). \
+				Coronary artery bypass or heart transplant surgery may be necessary to return circulation if the heart has sustained critical damage.", add_tooltips))
+
+	else if(advanced && IS_ORGANIC_ORGAN(src))
+		if(bpm <= SLOW_HEARTBEAT_THRESHOLD)
+			. += " "
+			. += span_notice(conditional_tooltip("(Notice: Bradycardia)", \
+				"Heart rate is below average - While typically not life threatening, may be indicative of an underlying condition. \
+				Can be treated with medication such as [/datum/reagent/medicine/atropine::name].", add_tooltips))
+
+		if(bpm >= 160)
+			. += " "
+			. += span_warning(conditional_tooltip("(Alert: Tachycardia)", \
+				"Heart rate is far above average, causing damage to the heart. Will lead to heart failure if conditions don't improve. \
+				Defibrillate or treat with medication such as [/datum/reagent/medicine/psicodine::name].", add_tooltips))
+
+		else if(bpm >= FAST_HEARTBEAT_THRESHOLD)
+			. += " "
+			. += span_notice(conditional_tooltip("(Notice: Tachycardia)", \
+				"Heart rate is above average - While typically not life threatening, may be indicative of an underlying condition. \
+				Can be treated with medication such as [/datum/reagent/medicine/psicodine::name].", add_tooltips))
+
+/obj/item/organ/heart/show_on_condensed_scans()
 	// Always show if the guy needs a heart (so its status can be monitored)
 	return ..() || owner.needs_heart()
 
-/obj/item/organ/internal/heart/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/heart/on_life(seconds_per_tick, times_fired)
 	. = ..()
 
-	// If the owner doesn't need a heart, we don't need to do anything with it.
-	if(!owner.needs_heart())
-		return
-
-	// Handle "sudden" heart attack
-	if(!beating || (organ_flags & ORGAN_FAILING))
-		if(owner.can_heartattack() && Stop())
-			if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
-				owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
-			to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
-		return
-
-	if(!owner.client?.prefs.read_preference(/datum/preference/toggle/heartbeat))
+	// not needing a heart and a non-beating heart are treated the same - don't check blood pressure, don't do heartbeat sfx, etc.
+	if(!is_beating() || !owner.needs_heart() )
 		return
 
 	var/heartrate = get_heart_rate()
-	switch(heartrate)
-		if(1 to SLOW_HEARTBEAT_THRESHOLD)
-			if(playing_heartbeat_sfx != BEAT_SLOW)
-				playing_heartbeat_sfx = BEAT_SLOW
-				SEND_SOUND(owner, sound('sound/health/slowbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
-		if(0, SLOW_HEARTBEAT_THRESHOLD to FAST_HEARTBEAT_THRESHOLD)
-			if(playing_heartbeat_sfx != BEAT_NONE)
-				playing_heartbeat_sfx = BEAT_NONE
-				owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-		if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
-			if(playing_heartbeat_sfx != BEAT_FAST)
-				playing_heartbeat_sfx = BEAT_FAST
-				SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
+	var/bloodpressure = get_blood_pressure(heartrate)
+	if((round(last_bpm, 10) - round(heartrate, 10)) != 0)
+		SShealth_updates.queue_update(owner, UPDATE_SELF_HEALTH)
+	last_bpm = heartrate
+	last_bp = bloodpressure
+	if(SEND_SIGNAL(owner, COMSIG_CARBON_HEARTBEAT, src, seconds_per_tick) & HEARTBEAT_HANDLED)
+		return
 
-/obj/item/organ/internal/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
+	// Handle "sudden" cardiac arrest
+	if(heartrate <= 0)
+		stop_on_beat()
+
+	// extreme heart rate causes heart damage
+	if(heartrate >= DANGER_HEARTBEAT_THRESHOLD || ((bloodpressure >= 180 && damage < high_threshold) || bloodpressure >= 220))
+		// 1.5 heart damage per second, doubling to 3 heart damage when over the "deadly" threshold
+		var/heartrate_bonus = heartrate >= DEADLY_HEARTBEAT_THRESHOLD ? 2 : 1
+		apply_organ_damage(0.75 * heartrate_bonus * seconds_per_tick)
+		// if high heart beat persists, there is a chance to stop outright starting at 50 damage
+		// this formula aims for a 25% chance to stop over 60 seconds at 60 damage, or a 97.5% chance to stop over 60 seconds at 85 damage
+		// when over the "deadly" threshold, it shifts closer to a 25% chance at 57 damage or a 97.5% chance at 75 damage
+		if(damage > 50 && IS_ORGANIC_ORGAN(src) && SPT_PROB(heartrate_bonus * (0.005 * (damage - 50) ** 2), seconds_per_tick))
+			stop_on_beat()
+
+	// no blood, nothing to pump
+	if(owner.blood_volume < BLOOD_VOLUME_SURVIVE)
+		stop_on_beat()
+
+	if(owner.client?.prefs.read_preference(/datum/preference/toggle/heartbeat))
+		switch(heartrate)
+			if(1 to SLOW_HEARTBEAT_THRESHOLD)
+				if(playing_heartbeat_sfx != BEAT_SLOW)
+					playing_heartbeat_sfx = BEAT_SLOW
+					SEND_SOUND(owner, sound('sound/health/slowbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
+			if(0, SLOW_HEARTBEAT_THRESHOLD to FAST_HEARTBEAT_THRESHOLD)
+				if(playing_heartbeat_sfx != BEAT_NONE)
+					playing_heartbeat_sfx = BEAT_NONE
+					owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+			if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
+				if(playing_heartbeat_sfx != BEAT_FAST)
+					playing_heartbeat_sfx = BEAT_FAST
+					SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
+
+	else if(playing_heartbeat_sfx != BEAT_NONE)
+		playing_heartbeat_sfx = BEAT_NONE
+		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+
+	if(bloodpressure > 140)
+		if(SPT_PROB(4, seconds_per_tick))
+			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
+			if(prob(10))
+				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
+			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
+				to_chat(owner, span_warning("You feel [pick("tired", "confused", "numb", "weak", "flush")]."))
+		if(SPT_PROB(4, seconds_per_tick))
+			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
+		if(SPT_PROB(1, seconds_per_tick))
+			if(prob(90) && owner.get_bodypart(BODY_ZONE_HEAD))
+				var/face_covered = owner.obscured_slots & HIDEMASK
+				owner.bleed(rand(2, 5), leave_pool = !face_covered)
+				to_chat(owner, span_warning("You get a nosebleed."))
+				if(!face_covered)
+					owner.visible_message(span_warning("[owner] gets a nosebleed."), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = owner)
+			else
+				to_chat(owner, span_warning("You feel a bit nauseous."))
+		if(SPT_PROB(2, seconds_per_tick))
+			to_chat(owner, span_warning("Your chest feels [pick("tight", "uncomfortable")]."))
+		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shortness of breath
+	else if(bloodpressure < 60)
+		if(SPT_PROB(4, seconds_per_tick))
+			owner.adjust_dizzy_up_to(5 SECONDS, 60 SECONDS)
+			if(prob(10))
+				owner.adjust_confusion_up_to(4 SECONDS, 20 SECONDS)
+			else if(!HAS_TRAIT(owner, TRAIT_INCAPACITATED))
+				to_chat(owner, span_warning("You feel [pick("lightheaded", "tired", "confused", "like you can't focus")]."))
+		if(SPT_PROB(4, seconds_per_tick))
+			owner.adjust_eye_blur_up_to(5 SECONDS, 60 SECONDS)
+		if(SPT_PROB(1, seconds_per_tick))
+			owner.adjust_disgust(10, DISGUST_LEVEL_VERYGROSS)
+		if(SPT_PROB(2, seconds_per_tick))
+			if(owner.usable_hands > 0)
+				to_chat(owner, span_warning("Your hand[owner.usable_hands > 1 ? "s" : ""] feel[owner.usable_hands > 1 ? "" : "s"] clammy."))
+			else if(!HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
+				to_chat(owner, span_warning("You feel clammy."))
+		if(SPT_PROB(1, seconds_per_tick))
+			if(prob(10))
+				owner.emote("faint")
+			else if(!HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
+				to_chat(owner, span_warning("Your feel like you're about to faint."))
+		ADD_TRAIT(owner, TRAIT_LABOURED_BREATHING, type) // shallow breathing
+	else
+		REMOVE_TRAIT(owner, TRAIT_LABOURED_BREATHING, type)
+
+/obj/item/organ/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantheart
 
-/// Gets the mob's heart rate as bpm (0 to 200(+))
-/mob/living/proc/get_bpm()
-	var/heart_rate = get_heart_rate()
-	if(heart_rate <= 0)
+/// Gets the heart rate of the heart (resting 80, varies between 0 and 200+)
+/obj/item/organ/heart/proc/get_heart_rate()
+	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner))
 		return 0
 
-	return heart_rate * 10 + rand(-10, 15)
+	var/base_amount = 80 + rand(-5, 5)
+	var/final_amount = base_amount
+	// arbitrary modifiers
+	final_amount += (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST))
+	final_amount -= (10 * COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW))
+	// hypoxia (not hypoxemia, which is modelled more from blood volume)
+	final_amount += owner.getOxyLoss() / 5
+	// fake pain / general exertion
+	final_amount += owner.getStaminaLoss() / 10
+	// stress (primarily pain and shock modelled here)
+	final_amount += owner.pain_controller?.get_total_pain() / 5
+	final_amount += owner.pain_controller?.traumatic_shock / 2
+	// low blood volume increases heart rate
+	final_amount += (BLOOD_VOLUME_NORMAL - owner.blood_volume) / 25
+	// sprinting (to represent exercise) and actual exercise
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		final_amount += (10 * ((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max))
 
-/// Gets the mob's heart rate scaled from 0 to 20(+)
-/mob/living/proc/get_heart_rate()
-	if(stat == DEAD)
-		return 0
+	if(HAS_TRAIT(owner, TRAIT_HEART_RATE_STABILIZED))
+		final_amount += ((final_amount - base_amount) * -0.5)
 
-	return rand(7, 9)
+	return max(0, round(final_amount, 1))
 
-/mob/living/carbon/human/get_heart_rate()
-	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	return heart?.get_heart_rate() || 0
-
-/// Gets the heart rate of the heart, scaled from 0 to 20(+)
-/obj/item/organ/internal/heart/proc/get_heart_rate()
+/// Returns the strength of the heart as a multiplier (0 to 1+)
+/obj/item/organ/heart/proc/get_heart_strength()
 	if(!is_beating() || isnull(owner))
 		return 0
 
-	var/base_amount = 8
-	base_amount += COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_BOOST)
-	base_amount -= COUNT_TRAIT_SOURCES(owner, TRAIT_HEART_RATE_SLOW)
-	base_amount += round(owner.getOxyLoss() / 50, 0.5)
-	base_amount += round(owner.pain_controller?.get_total_pain() / 50, 0.5)
-	base_amount += round(owner.pain_controller?.traumatic_shock / 25, 0.5)
-	base_amount += round((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 250, 0.5)
-	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 33, 0.5)
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		base_amount += round((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max, 0.1)
-	var/damage_multiplier = clamp(2.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
+	var/heart_strength = min(1, 0.1 + (maxHealth - (0.8 * damage)) / maxHealth)
+	// stress (boost from adrenaline)
+	heart_strength += (owner.has_status_effect(/datum/status_effect/determined) ? 0.2 : 0)
+	heart_strength += (owner.has_status_effect(/datum/status_effect/cpr_applied) ? 0.2 : 0)
+	// low blood volume decreases heart strength
+	heart_strength -= ((BLOOD_VOLUME_NORMAL - owner.blood_volume) / (2 * BLOOD_VOLUME_NORMAL))
 
-	return clamp(round(base_amount * damage_multiplier, 0.5), 1, 100)
+	return max(0, round(heart_strength, 0.1))
 
-/obj/item/organ/internal/heart/feel_for_damage(self_aware)
-	if(owner.needs_heart() && (!beating || (organ_flags & ORGAN_FAILING)))
-		return span_boldwarning("[self_aware ? "Your heart is not beating!" : "You don't feel your heart beating."]")
-	if(damage < low_threshold)
+/// Returns whether vessels are vasodialated (0.5 to 1) or vasoconstricted (1 to 2)
+/obj/item/organ/heart/proc/get_heart_vessel_status()
+	if(!is_beating() || isnull(owner))
+		return 0
+
+	var/vessel_status = 1
+	// arbitrary modifiers
+	vessel_status += (0.2 * COUNT_TRAIT_SOURCES(owner, TRAIT_VASOCONSTRICTED))
+	vessel_status -= (0.2 * COUNT_TRAIT_SOURCES(owner, TRAIT_VASODILATED))
+	// stress (primarily pain and shock modelled here) causes vasoconstriction(+)
+	vessel_status += owner.pain_controller?.get_total_pain() / 500
+	vessel_status += owner.pain_controller?.traumatic_shock / 250
+	// low blood volume causes vasoconstriction(+)
+	vessel_status += ((BLOOD_VOLUME_NORMAL - owner.blood_volume) / BLOOD_VOLUME_NORMAL)
+
+	return clamp(round(vessel_status, 0.1), 0.5, 2)
+
+/// Returns the average blood pressure of the heart, from a combination of bpm + strength + vessel status.
+/obj/item/organ/heart/proc/get_blood_pressure(
+	heart_rate = get_heart_rate(),
+	heart_strength = get_heart_strength(),
+	heart_vessel_status = get_heart_vessel_status(),
+)
+	// TL;DR
+	//
+	// - higher heart rate = higher blood pressure
+	//   - higher oxyloss = higher heart rate = higher blood pressure
+	//   - higher pain/shock = higher heart rate = higher blood pressure
+	//   - lower blood volume = higher heart rate = higher blood pressure
+	//
+	// - weak heart = lower blood pressure
+	//   - higher damage = weaker heart = lower blood pressure
+	//   - low blood volume = weaker heart = lower blood pressure
+	//
+	// - vasoconstricted vessels = higher blood pressure
+	// - vasodilated vessels = lower blood pressure
+	//   - stress = vasoconstriction(+) = higher blood pressure
+	//   - low blood volume = vasoconstriction(+) = higher blood pressure
+	//
+	var/blood_pressure = (heart_rate * heart_strength * heart_vessel_status)
+
+	return max(0, round(blood_pressure, 1))
+
+/// Return the mob's heart BPM
+/mob/living/proc/get_bpm()
+	if(!(mob_biotypes & MOB_ORGANIC))
+		return 0
+
+	return rand(7, 9) * 10
+
+/mob/living/carbon/human/get_bpm()
+	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
+	return heart?.last_bpm || 0
+
+/// Return the mob's blood pressure
+/mob/living/proc/get_bp()
+	if(!(mob_biotypes & MOB_ORGANIC))
+		return 0
+
+	return rand(85, 95)
+
+/mob/living/carbon/human/get_bp()
+	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
+	return heart?.last_bp || 0
+
+/// The IRL average pressure of a pulse
+#define AVERAGE_HUMAN_PULSE_PRESSURE 40
+
+/// Return the mob's pulse pressure, which is primarily only relevant in calculating blood pressure
+/mob/living/proc/get_pp()
+	if(!(mob_biotypes & MOB_ORGANIC))
+		return 0
+
+	return AVERAGE_HUMAN_PULSE_PRESSURE
+
+/mob/living/carbon/human/get_pp()
+	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
+	if(isnull(heart))
+		return needs_heart() ? 0 : AVERAGE_HUMAN_PULSE_PRESSURE
+
+	return heart.get_heart_strength() * AVERAGE_HUMAN_PULSE_PRESSURE
+
+/// Returns the mob's blood pressure range (calculated from average bp with some variance) as a list/tuple of (diastolic pressure, systolic pressure)
+/mob/living/proc/get_bp_range()
+	var/avg_blood_pressure = get_bp()
+	var/avg_pulse_pressure = get_pp()
+
+	var/diastolic = avg_blood_pressure - (avg_pulse_pressure * 0.33)
+	var/systolic = diastolic + avg_pulse_pressure
+
+	return list(floor(diastolic), floor(systolic))
+
+#undef AVERAGE_HUMAN_PULSE_PRESSURE
+
+/obj/item/organ/heart/feel_for_damage(self_aware, medical_skill)
+	if(!owner.needs_heart())
 		return ""
-	if(damage < high_threshold)
-		return span_warning("[self_aware ? "Your heart hurts." : "It hurts, and your heart rate feels irregular."]")
-	return span_boldwarning("[self_aware ? "Your heart seriously hurts!" : "It seriously hurts, and your heart rate is all over the place."]")
 
-/obj/item/organ/internal/heart/cursed
+	var/bpm_msg = ""
+	var/bpm = get_heart_rate()
+	if(bpm <= 0)
+		bpm_msg = span_boldwarning("You don't feel your heart beating!")
+	else if(bpm < SLOW_HEARTBEAT_THRESHOLD)
+		bpm_msg = span_warning("Your heartbeat feels very slow.")
+	else if(bpm > FAST_HEARTBEAT_THRESHOLD)
+		bpm_msg = span_warning("Your heartbeat feels very fast.")
+
+	var/dmg_msg = ""
+	if(damage > high_threshold)
+		dmg_msg = span_boldwarning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart seriously hurts!" : "It seriously hurts."]") // it = "your chest"
+	else if(damage > low_threshold)
+		dmg_msg = span_warning("[(self_aware || medical_skill >= SKILL_LEVEL_APPRENTICE) ? "Your heart hurts." : "It hurts."]") // it = "your chest"
+
+	if(dmg_msg && bpm_msg)
+		return dmg_msg + "<br>\t" + bpm_msg
+
+	return dmg_msg || bpm_msg
+
+/obj/item/organ/heart/cursed
 	name = "cursed heart"
 	desc = "A heart that, when inserted, will force you to pump it manually."
 	icon_state = "cursedheart-off"
@@ -207,7 +443,7 @@
 	var/heal_burn = 0
 	var/heal_oxy = 0
 
-/obj/item/organ/internal/heart/cursed/attack(mob/living/carbon/human/accursed, mob/living/carbon/human/user, obj/target)
+/obj/item/organ/heart/cursed/attack(mob/living/carbon/human/accursed, mob/living/carbon/human/user, obj/target)
 	if(accursed == user && istype(accursed))
 		playsound(user,'sound/effects/singlebeat.ogg',40,TRUE)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -215,17 +451,17 @@
 	else
 		return ..()
 
-/obj/item/organ/internal/heart/cursed/on_mob_insert(mob/living/carbon/accursed)
+/obj/item/organ/heart/cursed/on_mob_insert(mob/living/carbon/accursed)
 	. = ..()
 
 	accursed.AddComponent(/datum/component/manual_heart, pump_delay = pump_delay, blood_loss = blood_loss, heal_brute = heal_brute, heal_burn = heal_burn, heal_oxy = heal_oxy)
 
-/obj/item/organ/internal/heart/cursed/on_mob_remove(mob/living/carbon/accursed, special = FALSE)
+/obj/item/organ/heart/cursed/on_mob_remove(mob/living/carbon/accursed, special = FALSE)
 	. = ..()
 
 	qdel(accursed.GetComponent(/datum/component/manual_heart))
 
-/obj/item/organ/internal/heart/cybernetic
+/obj/item/organ/heart/cybernetic
 	name = "basic cybernetic heart"
 	desc = "A basic electronic device designed to mimic the functions of an organic human heart."
 	icon_state = "heart-c-on"
@@ -239,7 +475,7 @@
 	var/ramount = 10
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
-/obj/item/organ/internal/heart/cybernetic/emp_act(severity)
+/obj/item/organ/heart/cybernetic/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -261,16 +497,16 @@
 				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"),
 			)
 
-/obj/item/organ/internal/heart/cybernetic/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/heart/cybernetic/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	if(dose_available && owner.health <= 0 && !owner.reagents.has_reagent(rid))
 		used_dose()
 
-/obj/item/organ/internal/heart/cybernetic/proc/used_dose()
+/obj/item/organ/heart/cybernetic/proc/used_dose()
 	owner.reagents.add_reagent(rid, ramount)
 	dose_available = FALSE
 
-/obj/item/organ/internal/heart/cybernetic/tier2
+/obj/item/organ/heart/cybernetic/tier2
 	name = "cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
 	icon_state = "heart-c-u-on"
@@ -279,7 +515,7 @@
 	dose_available = TRUE
 	emp_vulnerability = 40
 
-/obj/item/organ/internal/heart/cybernetic/tier3
+/obj/item/organ/heart/cybernetic/tier3
 	name = "upgraded cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
 	icon_state = "heart-c-u2-on"
@@ -288,11 +524,11 @@
 	dose_available = TRUE
 	emp_vulnerability = 20
 
-/obj/item/organ/internal/heart/cybernetic/tier3/used_dose()
+/obj/item/organ/heart/cybernetic/tier3/used_dose()
 	. = ..()
 	addtimer(VARSET_CALLBACK(src, dose_available, TRUE), 5 MINUTES)
 
-/obj/item/organ/internal/heart/cybernetic/surplus
+/obj/item/organ/heart/cybernetic/surplus
 	name = "surplus prosthetic heart"
 	desc = "A fragile mockery of a human heart that resembles a water pump more than an actual heart. \
 		Offers no protection against EMPs."
@@ -302,18 +538,18 @@
 	emp_vulnerability = 100
 
 //surplus organs are so awful that they explode when removed, unless failing
-/obj/item/organ/internal/heart/cybernetic/surplus/Initialize(mapload)
+/obj/item/organ/heart/cybernetic/surplus/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/dangerous_surgical_removal)
 
-/obj/item/organ/internal/heart/freedom
+/obj/item/organ/heart/freedom
 	name = "heart of freedom"
 	desc = "This heart pumps with the passion to give... something freedom."
 	organ_flags = ORGAN_ROBOTIC  //the power of freedom prevents heart attacks
 	/// The cooldown until the next time this heart can give the host an adrenaline boost.
 	COOLDOWN_DECLARE(adrenaline_cooldown)
 
-/obj/item/organ/internal/heart/freedom/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/heart/freedom/on_life(seconds_per_tick, times_fired)
 	. = ..()
 	if(owner.health < 5 && COOLDOWN_FINISHED(src, adrenaline_cooldown))
 		COOLDOWN_START(src, adrenaline_cooldown, rand(25 SECONDS, 1 MINUTES))
@@ -321,3 +557,68 @@
 		owner.heal_overall_damage(brute = 15, burn = 15, required_bodytype = BODYTYPE_ORGANIC)
 		if(owner.reagents.get_reagent_amount(/datum/reagent/medicine/ephedrine) < 20)
 			owner.reagents.add_reagent(/datum/reagent/medicine/ephedrine, 10)
+
+/// An improved version of the organic heart, with more health and more "keeping you alive" potential
+/obj/item/organ/heart/evolved
+	name = "evolved heart"
+	desc = "It beats ever strong."
+	// icon_state = "heart-evolved-on"
+	// base_icon_state = "heart-evolved"
+	icon_state = "demon_heart-on"
+	base_icon_state = "demon_heart"
+	maxHealth = STANDARD_ORGAN_THRESHOLD * 1.2
+	/// Chance to heal per on_life
+	var/healing_probability = 10
+	/// Base healing we receive per tick at 0 damage and for standard versions
+	var/base_healing = 1
+
+/obj/item/organ/heart/evolved/on_life(seconds_per_tick)
+	. = ..()
+
+	if(prob(healing_probability * seconds_per_tick))
+		var/damage_to_heal = base_healing * ((maxHealth - damage) / initial(maxHealth)) * seconds_per_tick
+		owner.heal_overall_damage(damage_to_heal, damage_to_heal, required_bodytype = BODYTYPE_ORGANIC)
+
+		if(owner.stat == HARD_CRIT && !owner.has_reagent(/datum/reagent/medicine/atropine, 5))
+			owner.reagents.add_reagent(/datum/reagent/medicine/atropine, 1 * seconds_per_tick)
+
+/// A weaker evolved heart, but can block magic in exchange for our organs health!
+/obj/item/organ/heart/evolved/sacred
+	name = "sacred heart"
+	desc = "Your foul magics stand no chance against the power of LOVE!!!"
+
+	// icon_state = "heart-sacred-on"
+	// base_icon_state = "heart-sacred"
+
+	healing_probability = 5
+	base_healing = 0.5
+	// How much damage each magic block deals to us
+	var/damage_per_block = 50
+
+/obj/item/organ/heart/evolved/sacred/on_life(seconds_per_tick)
+	. = ..()
+
+	if(IS_CULTIST(owner))
+		owner.reagents.add_reagent(/datum/reagent/water/holywater, 5 * seconds_per_tick)
+
+/obj/item/organ/heart/evolved/sacred/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
+	. = ..()
+
+	receiver.AddComponent(/datum/component/anti_magic, block_magic = CALLBACK(src, PROC_REF(on_blocked)), check_blocking = CALLBACK(src, PROC_REF(check_block)))
+
+/obj/item/organ/heart/evolved/sacred/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+
+	qdel(organ_owner.GetComponent(/datum/component/anti_magic))
+
+/// When we blocked damage, do PAIN on us
+/obj/item/organ/heart/evolved/sacred/proc/on_blocked()
+	apply_organ_damage(damage_per_block)
+	owner.vomit(VOMIT_CATEGORY_BLOOD)
+	playsound(owner, 'sound/health/slowbeat.ogg', 80)
+
+/// We don't block magic if it would kill our heart
+/obj/item/organ/heart/evolved/sacred/proc/check_block()
+	if(maxHealth - damage <= damage_per_block)
+		return FALSE
+	return TRUE

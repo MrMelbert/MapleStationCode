@@ -19,7 +19,7 @@
 /obj/item/food/pizza/spaghetti/raw
 	name = "raw pizzaghetti"
 	icon_state = "pizzaghetti_raw"
-	foodtypes = GRAIN | VEGETABLES | DAIRY | BREAKFAST | RAW
+	foodtypes = GRAIN | VEGETABLES | DAIRY | RAW
 	slice_type = null
 
 /obj/item/food/pizza/spaghetti/raw/make_bakeable()
@@ -32,6 +32,5 @@
 	icon = 'maplestation_modules/icons/obj/food/pizza.dmi'
 	icon_state = "pizzaghettislice"
 	tastes = list("crust" = 1, "tomato" = 1, "cheese" = 1, "meat" = 1, "spaghetti" = 2)
-	foodtypes = GRAIN | VEGETABLES | DAIRY | BREAKFAST
+	foodtypes = GRAIN | VEGETABLES | DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_3
-

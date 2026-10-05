@@ -7,24 +7,24 @@
 	inhand_icon_state = "pwig"
 	worn_icon_state = "wig"
 	flags_inv = HIDEHAIR
-	color = "#000000"
-	drop_sound = null
-	pickup_sound = null
+	color = COLOR_BLACK
+	item_flags = CAN_BE_OVERSLOT
 	var/hairstyle = "Very Long Hair"
 	var/adjustablecolor = TRUE //can color be changed manually?
 
 /obj/item/clothing/head/wig/Initialize(mapload)
 	. = ..()
 	update_appearance()
+//	AddComponent(/datum/component/hat_stabilizer, loose_hat = FALSE) // Non-module change : uses stackable component
 
 /obj/item/clothing/head/wig/equipped(mob/user, slot)
 	. = ..()
 	if(ishuman(user) && (slot & ITEM_SLOT_HEAD))
-		item_flags |= EXAMINE_SKIP
+		ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, REF(src))
 
 /obj/item/clothing/head/wig/dropped(mob/user)
 	. = ..()
-	item_flags &= ~EXAMINE_SKIP
+	REMOVE_TRAIT(src, TRAIT_EXAMINE_SKIP, REF(src))
 
 /obj/item/clothing/head/wig/update_icon_state()
 	var/datum/sprite_accessory/hair/hair_style = SSaccessories.hairstyles_list[hairstyle]
@@ -104,7 +104,7 @@
 /obj/item/clothing/head/wig/natural
 	name = "natural wig"
 	desc = "A bunch of hair without a head attached. This one changes color to match the hair of the wearer. Nothing natural about that."
-	color = "#FFFFFF"
+	color = COLOR_WHITE
 	adjustablecolor = FALSE
 	custom_price = PAYCHECK_COMMAND
 

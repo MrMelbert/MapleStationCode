@@ -33,6 +33,8 @@
 	default_price = PAYCHECK_CREW
 	extra_price = PAYCHECK_COMMAND * 1.5
 	payment_department = ACCOUNT_ENG
+	allow_custom = TRUE
+	department_discount = 0
 
 /obj/item/vending_refill/youtool
 	machine_name = "YouTool"

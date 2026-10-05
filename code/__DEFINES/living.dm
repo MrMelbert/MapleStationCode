@@ -1,6 +1,9 @@
 // living_flags
 /// Simple mob trait, indicating it may follow continuous move actions controlled by code instead of by user input.
 #define MOVES_ON_ITS_OWN (1<<0)
+/// Always does *deathgasp when they die
+/// If unset mobs will only deathgasp if supplied a death sound or custom death message
+#define ALWAYS_DEATHGASP (1<<1)
 /// Nutrition changed last life tick, so we should bulk update this tick
 #define QUEUE_NUTRITION_UPDATE (1<<3)
 
@@ -16,6 +19,8 @@
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack is applied to a mob. (source = obj/item/temperature_pack)
+#define COMISG_TEMPERATURE_PACK_ENABLED "temperature_pack_enabled"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
@@ -39,6 +44,28 @@
 #define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
 	#define COMPONENT_LIVING_PASSABLE (1<<0)
 
+#define COMSIG_LIVING_COMBAT_MODE_CHANGE "living_combat_mode_change"
+
+/// Send when sharing body temperature to breath
+#define COMSIG_HUMAN_ON_HANDLE_BREATH_TEMPERATURE "human_on_handle_breath_temperature"
+	/// Stops further processing
+	#define HANDLE_BREATH_TEMPERATURE_HANDLED (1<<0)
+
+#define COMSIG_CARBON_HEARTBEAT "carbon_heartbeat"
+	#define HEARTBEAT_HANDLED (1<<0)
+
+/// Movable is pinning a mob (source = the mob doing the pinning, mob/living/pinned_mob)
+#define COMSIG_MOVABLE_PINNING_MOB "movable_pinning_mob"
+/// Movable is unpinning a mob (source = the mob doing the unpinning, mob/living/unpinned_mob)
+#define COMSIG_MOVABLE_UNPINNING_MOB "movable_unpinning_mob"
+/// Living mob is being pinned by some movable (source = the movable doing the pinning, atom/movable/pinning)
+#define COMSIG_LIVING_PINNED_BY "living_pinned_by"
+/// Living mob is being unpinned by some movable (source = the movable doing the unpinning, atom/movable/unpinning)
+#define COMSIG_LIVING_UNPINNED_BY "living_unpinned_by"
+
+/// Sent when a carbon's clothes are examined
+#define COMSIG_CARBON_CLOTHING_EXAMINE "carbon_clothing_examine"
+
 /// Various lists of body zones affected by pain.
 
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -50,7 +77,7 @@
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan")
 
 /// Amount of pain gained (to chest) from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 90
+#define PAIN_LIMB_DISMEMBERED 120
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
@@ -100,11 +127,24 @@
 #define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
 /// Doesn't let a mob shift this atom around with move_pulled
 #define TRAIT_NO_MOVE_PULL "no_move_pull"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
-/// Boosts the heart rate of the mob
+/// Boosts the heart rate of the mob (raises blood pressure)
+/// One application of the trait translates to +10 bpm, which may translate to +10 blood pressure
 #define TRAIT_HEART_RATE_BOOST "heart_rate_boost"
-/// Slows the heart rate of the mob
+/// Slows the heart rate of the mob (lowers blood pressure)
+/// One application of the trait translates to -10 bpm, which may translate to -10 blood pressure
 #define TRAIT_HEART_RATE_SLOW "heart_rate_slow"
+/// Constricts blood vessels (raises blood pressure)
+/// One application of the trait translates to +0.2 "vasoconstriction", which is a +0.2 multiplier to blood pressure
+#define TRAIT_VASOCONSTRICTED "vasoconstricted"
+/// Dilates blood vessels (lowers blood pressure)
+/// One application of the trait translates to -0.2 "vasodilation", which is a -0.2 multiplier to blood pressure
+#define TRAIT_VASODILATED "vasodilated"
+
+/// Attempts to stabilize the heart, boosting it if it's too slow and slowing it if it's too fast.
+#define TRAIT_HEART_RATE_STABILIZED "heart_rate_stabilized"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
@@ -114,17 +154,19 @@
 /// Just be sure to call update_limbless_locomotion() after applying / removal
 #define TRAIT_NO_LEG_AID "no_leg_aid"
 
+/// Eyelids are closed so long as this trait is present
+#define TRAIT_CLOSED_EYES "closed_eyes"
+
+/// Attach to a turf to have whispers project across it if the speaker is facing it
+/// (basically expanding the range of whispers by one tile in the direction of the speaker)
+/// Used to allow people to whisper across desks/tables since they otherwise are too distant
+#define TRAIT_TURF_PROJECTS_WHISPERS "projects_whispers"
+
 #define COLOR_BLOOD "#c90000"
 
-/// Checks if the value is "left"
-/// Used primarily for hand or foot indexes
-#define IS_RIGHT(value) (value % 2 == 0)
-/// Checks if the value is "right"
-/// Used primarily for hand or foot indexes
-#define IS_LEFT(value) (value % 2 != 0)
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEX(value) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey
@@ -136,6 +178,11 @@
 
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
+
+// Frozen item temperature pack defaults
+#define FROZEN_ITEM_PAIN_RATE 0.1 // so cold that it barely heals
+#define FROZEN_ITEM_PAIN_MODIFIER 0.25
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -2 KELVIN
 
 // Some source defines for pain and consciousness
 // Consciousness ones are human readable because of laziness (they are shown in cause of death)
@@ -168,9 +215,13 @@
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
 /// Threshold that heart beat becomes "slow"
-#define SLOW_HEARTBEAT_THRESHOLD 6
+#define SLOW_HEARTBEAT_THRESHOLD 60
 /// Threshold that heart beat becomes "fast"
-#define FAST_HEARTBEAT_THRESHOLD 11
+#define FAST_HEARTBEAT_THRESHOLD 110
+/// Threshold that heart beat starts to cause heart damaage
+#define DANGER_HEARTBEAT_THRESHOLD 160
+/// Threshold that heart beat's heart damage doubles and it has a chance to stop outright
+#define DEADLY_HEARTBEAT_THRESHOLD 200
 
 // Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"
@@ -180,3 +231,51 @@
 
 /// Disables headset use, but not internal radio / intercom use
 #define TRAIT_BLOCK_HEADSET_USE "block_headset_use"
+
+/// Calculates hunger drain per step taken
+#define BASE_MOVEMENT_HUNGER_DRAIN(amount, mob) ( amount * MOVEMENT_HUNGER_MULTIPLIER * (1 + length(mob.buckled_mobs) * 0.25) * (mob.move_intent == MOVE_INTENT_RUN ? 2 : 1) )
+/// Checks if a mob is moving intentionally (ie, nothing is forcing them to move like another mob or a conveyor)
+#define IS_MOVING_INTENTIONALLY(mob) ( mob.stat != DEAD && !mob.pulledby && !CHECK_MOVE_LOOP_FLAGS(mob, MOVEMENT_LOOP_OUTSIDE_CONTROL) )
+
+/// Dwarf but without some side effects
+#define TRAIT_SMALL "small_size_trait"
+/// Giant but without some side effects
+#define TRAIT_HUGE "huge_size_trait"
+
+/// Formats text for an object for a mob that they are examining
+/// - The mob is holding it: "your [thing.name]"
+/// - Another mob is holding it: "[mob]'s [thing.name]"
+/// - Then object is on the ground: "the [thing.name]"
+#define EXAMINING_WHAT(examiner, thing) (thing.loc == examiner ? "your [thing.name]" : (ismob(thing.loc) ? "[thing.loc]'s [thing.name]" : thing ))
+
+/// Formats text for an object for a mob witnessing another mob examining it
+/// - The mob is holding it: "their [thing.name]"
+/// - Another mob is holding it: "[other]'s [thing.name]"
+/// - Viewer is holding it: "your [thing.name]"
+/// - The object is on the ground: "the [thing.name]"
+#define WITNESSING_EXAMINE_WHAT(examiner, thing, viewer) (thing.loc == examiner ? "[examiner.p_their()] [thing.name]" : EXAMINING_WHAT(viewer, thing))
+
+/// For consistent examine span formatting (normal size)
+#define examining_span_normal(msg) span_infoplain(span_italics(msg))
+/// For consistent examine span formatting (small size)
+#define examining_span_small(msg) span_slightly_smaller(span_infoplain(span_italics(msg)))
+
+// Smell intensities
+/// Very faint - Often low enough to not noticed, but if noticed, people get used to it quickly
+#define SMELL_INTENSITY_FAINT 1
+/// Will be noticed for a short time but eventually people get used to it
+#define SMELL_INTENSITY_WEAK 6
+/// Noticable, will take a while to get used to
+#define SMELL_INTENSITY_MODERATE 12
+/// Very strong, hard to ignore, very unlikely to get used to
+#define SMELL_INTENSITY_STRONG 24
+/// Overpowers all other smells, extremely hard to ignore
+#define SMELL_INTENSITY_OVERPOWERING 48
+
+/// Damtype is "physical" like a slap to the face
+#define IS_PHYSICAL_DAMAGE(damage_type) (damage_type == BRUTE || damage_type == BURN)
+/// Damtype is intended to disable rather than kill
+#define IS_DISABLING_DAMAGE(damage_type) (damage_type == STAMINA || damage_type == PAIN)
+
+/// Applies to weapons or mobs if it relies on positioning/facing in some way, so we should be careful with combat locks
+#define TRAIT_DIRECTION_IS_IMPORTANT "position_based_weapon"

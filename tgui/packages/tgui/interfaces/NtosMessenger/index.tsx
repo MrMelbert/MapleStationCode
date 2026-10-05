@@ -1,4 +1,4 @@
-import { sortBy } from 'common/collections';
+import { sortBy } from 'es-toolkit';
 import { useState } from 'react';
 import {
   Box,
@@ -11,13 +11,13 @@ import {
   Stack,
   TextArea,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
 
 import { useBackend } from '../../backend';
 import { NtosWindow } from '../../layouts';
 import { ChatScreen } from './ChatScreen';
-import { NtChat, NtMessenger, NtPicture } from './types';
+import type { NtChat, NtMessenger, NtPicture } from './types';
 
 type NtosMessengerData = {
   can_spam: BooleanLike;
@@ -101,7 +101,7 @@ const ContactsScreen = (props: any) => {
   const [searchUser, setSearchUser] = useState('');
 
   const sortByUnreads = (array: NtChat[]) =>
-    sortBy(array, (chat) => chat.unread_messages);
+    sortBy(array, [(chat) => chat.unread_messages]);
 
   const searchChatByName = createSearch(
     searchUser,
@@ -215,7 +215,7 @@ const ContactsScreen = (props: any) => {
               width="220px"
               placeholder="Search by name or job..."
               value={searchUser}
-              onInput={(_, value) => setSearchUser(value)}
+              onChange={setSearchUser}
             />
           </Stack>
         </Section>
@@ -300,7 +300,7 @@ const SendToAllSection = (props) => {
   const { data, act } = useBackend<NtosMessengerData>();
   const { on_spam_cooldown } = data;
 
-  const [message, setmessage] = useState('');
+  const [message, setMessage] = useState('');
 
   return (
     <>
@@ -317,7 +317,7 @@ const SendToAllSection = (props) => {
               tooltip={on_spam_cooldown && 'Wait before sending more messages!'}
               onClick={() => {
                 act('PDA_sendEveryone', { message: message });
-                setmessage('');
+                setMessage('');
               }}
             >
               Send
@@ -330,7 +330,11 @@ const SendToAllSection = (props) => {
           height={6}
           value={message}
           placeholder="Send message to everyone..."
-          onChange={(event, value: string) => setmessage(value)}
+          onChange={setMessage}
+          selfClear
+          onEnter={() => {
+            act('PDA_sendEveryone', { message: message });
+          }}
         />
       </Section>
     </>

@@ -7,6 +7,7 @@
 	base_icon_state = "tdoppler"
 	density = TRUE
 	verb_say = "states coldly"
+	examine_feedback_on_ui = TRUE
 	var/cooldown = 10
 	var/next_announce = 0
 	var/max_dist = 150
@@ -18,9 +19,9 @@
 	var/obj/item/computer_disk/inserted_disk
 
 	// Lighting system to better communicate the directions.
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_range = 4
-	light_power = 1
+	light_power = 1.5
 	light_color = COLOR_RED
 
 /obj/machinery/doppler_array/Initialize(mapload)
@@ -48,7 +49,7 @@
 	. = ..()
 	. += span_notice("It is currently facing [dir2text(dir)]")
 
-/obj/machinery/doppler_array/attackby(obj/item/item, mob/user, params)
+/obj/machinery/doppler_array/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/computer_disk))
 		var/obj/item/computer_disk/disk = item
 		eject_disk(user)
@@ -243,8 +244,8 @@
 
 /obj/machinery/doppler_array/Destroy()
 	inserted_disk = null
-	QDEL_NULL(records) //We only want the list nuked, not the contents.
-	. = ..()
+	records.Cut() // We only want to clear the list itself, not delete its contents.
+	return ..()
 
 /obj/machinery/doppler_array/proc/update_doppler_light()
 	SIGNAL_HANDLER
@@ -282,7 +283,7 @@
 		// Make sure the list is indexed first.
 		if(reaction_data.len)
 			for (var/path in reaction_data[TANK_RESULTS_REACTION])
-				var/datum/gas_reaction/reaction_path = path
+				var/datum/gas_reaction/standard/reaction_path = path
 				record_data["reaction_results"] += initial(reaction_path.name)
 			if(TANK_MERGE_OVERPRESSURE in reaction_data[TANK_RESULTS_MISC])
 				record_data["reaction_results"] += "Tank overpressurized before reaction"

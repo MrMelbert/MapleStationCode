@@ -1,9 +1,9 @@
 
-/obj/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+/obj/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	. = ..()
 	if(QDELETED(src))
 		return
-	hit_by_damage(AM, throwingdatum)
+	hit_by_damage(hit_by, throwingdatum)
 
 /obj/proc/hit_by_damage(atom/movable/hitting_us, datum/thrownthing/throwingdatum)
 	var/base_dam = hitting_us.throwforce
@@ -16,6 +16,7 @@
 	if(isitem(hitting_us))
 		var/obj/item/hit_item = hitting_us
 		base_dam += (5 * max(0, hit_item.w_class - 2))
+		base_dam *= hit_item.get_demolition_modifier(src)
 
 	// no armor penetration
 	take_damage(base_dam, BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)
@@ -112,7 +113,7 @@
 	var/damage_sustained = 0
 	if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
 		damage_sustained = take_damage(
-			hitting_projectile.damage * hitting_projectile.demolition_mod,
+			hitting_projectile.damage * hitting_projectile.get_demolition_modifier(src),
 			hitting_projectile.damage_type,
 			hitting_projectile.armor_flag,
 			FALSE,
@@ -151,12 +152,8 @@
 	return TRUE
 
 /obj/blob_act(obj/structure/blob/B)
-	if (!..())
+	if (!..() || HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		return
-	if(isturf(loc))
-		var/turf/T = loc
-		if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(src, TRAIT_T_RAY_VISIBLE))
-			return
 	take_damage(400, BRUTE, MELEE, 0, get_dir(src, B))
 
 /obj/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
@@ -217,16 +214,18 @@
 
 ///Called when the obj is exposed to fire.
 /obj/fire_act(exposed_temperature, exposed_volume)
-	if(isturf(loc))
-		var/turf/our_turf = loc
-		if(our_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(src, TRAIT_T_RAY_VISIBLE))
-			return
+	if(HAS_TRAIT(src, TRAIT_UNDERFLOOR))
+		return
 	if(exposed_temperature && !(resistance_flags & FIRE_PROOF))
 		take_damage(clamp(0.02 * exposed_temperature, 0, 20), BURN, FIRE, 0)
 	if(!(resistance_flags & ON_FIRE) && (resistance_flags & FLAMMABLE) && !(resistance_flags & FIRE_PROOF))
-		AddComponent(/datum/component/burning, custom_fire_overlay || GLOB.fire_overlay, burning_particles)
+		AddComponent(/datum/component/burning, custom_fire_overlay() || GLOB.fire_overlay, burning_particles)
 		return TRUE
 	return ..()
+
+/// Returns a custom fire overlay, if any
+/obj/proc/custom_fire_overlay()
+	return custom_fire_overlay
 
 /// Should be called when the atom is destroyed by fire, comparable to acid_melt() proc
 /obj/proc/burn()

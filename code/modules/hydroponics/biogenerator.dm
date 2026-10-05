@@ -14,6 +14,7 @@
 	circuit = /obj/item/circuitboard/machine/biogenerator
 	processing_flags = START_PROCESSING_MANUALLY
 	interaction_flags_click = FORBID_TELEKINESIS_REACH
+	examine_feedback_on_ui = TRUE
 	/// Whether the biogenerator is currently processing biomass or not.
 	var/processing = FALSE
 	/// The reagent container that is currently inside of the biomass generator. Can be null.
@@ -201,7 +202,7 @@
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/biogenerator/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/biogenerator/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)
 		return ..()
 
@@ -467,7 +468,7 @@
 
 /obj/machinery/biogenerator/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/research_designs),
+		get_asset_datum(/datum/asset/spritesheet_batched/research_designs),
 	)
 
 

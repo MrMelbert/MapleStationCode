@@ -15,6 +15,7 @@
 
 	temperature_insulation = 0.5 // minor heat insulation
 	bodytemp_heat_damage_limit = CELCIUS_TO_KELVIN(85 CELCIUS)
+	initial_blood_type = /datum/blood_type/xenomorph
 
 	///Whether or not the alien is leaping. Only used by hunters.
 	var/leaping = FALSE
@@ -30,7 +31,7 @@
 	add_verb(src, /mob/living/proc/toggle_resting)
 
 	create_bodyparts() //initialize bodyparts
-
+	set_blood_type(initial_blood_type) // needs to be done after bodyparts but before organs..... ew
 	create_internal_organs()
 
 	add_traits(list(TRAIT_NEVER_WOUNDED, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
@@ -40,12 +41,12 @@
 		update_alien_speed()
 
 /mob/living/carbon/alien/create_internal_organs()
-	organs += new /obj/item/organ/internal/brain/alien
-	organs += new /obj/item/organ/internal/alien/hivenode
-	organs += new /obj/item/organ/internal/tongue/alien
-	organs += new /obj/item/organ/internal/eyes/alien
-	organs += new /obj/item/organ/internal/liver/alien
-	organs += new /obj/item/organ/internal/ears
+	organs += new /obj/item/organ/brain/alien
+	organs += new /obj/item/organ/alien/hivenode
+	organs += new /obj/item/organ/tongue/alien
+	organs += new /obj/item/organ/eyes/alien
+	organs += new /obj/item/organ/liver/alien
+	organs += new /obj/item/organ/ears
 	..()
 
 /mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
@@ -66,7 +67,7 @@ Des: Gives the client of the alien an image on each infected mob.
 		for (var/i in GLOB.mob_living_list)
 			var/mob/living/L = i
 			if(HAS_TRAIT(L, TRAIT_XENO_HOST))
-				var/obj/item/organ/internal/body_egg/alien_embryo/A = L.get_organ_by_type(/obj/item/organ/internal/body_egg/alien_embryo)
+				var/obj/item/organ/body_egg/alien_embryo/A = L.get_organ_by_type(/obj/item/organ/body_egg/alien_embryo)
 				if(A)
 					var/I = image('icons/mob/nonhuman-player/alien.dmi', loc = L, icon_state = "infected[A.stage]")
 					client.images += I

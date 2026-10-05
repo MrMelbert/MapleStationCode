@@ -20,7 +20,8 @@
 	RegisterSignal(owner, COMSIG_MOB_FIRED_GUN, PROC_REF(staff_check))
 
 	//adds the relay_attackers element to the owner so whoever attacks him becomes guilty.
-	owner.AddElement(/datum/element/relay_attackers)
+	if(!HAS_TRAIT(owner, TRAIT_RELAYING_ATTACKER))
+		owner.AddElement(/datum/element/relay_attackers)
 	RegisterSignal(owner, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(on_attacked))
 
 	//signal that checks for dishonorable attacks
@@ -123,7 +124,7 @@
 	//THE UNREADY (Applies over ANYTHING else!)
 	if(honorbound_human == target_creature)
 		return TRUE //oh come on now
-	if(target_creature.IsSleeping() || target_creature.IsUnconscious() || HAS_TRAIT(target_creature, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(target_creature, TRAIT_KNOCKEDOUT) || HAS_TRAIT(target_creature, TRAIT_RESTRAINED))
 		to_chat(honorbound_human, span_warning("There is no honor in attacking the <b>unready</b>."))
 		return FALSE
 	//THE JUST (Applies over guilt except for med, so you best be careful!)

@@ -9,6 +9,7 @@
 	var/datum/brain_trauma/mild/phobia/conspiracies/paranoia
 	var/warped = FALSE
 	interaction_flags_mouse_drop = NEED_HANDS
+	item_flags = CAN_BE_OVERSLOT
 
 /datum/armor/costume_foilhat
 	laser = -5
@@ -109,7 +110,7 @@
 		";WE REPEAT OUR LIVES DAILY WITHOUT FURTHER QUESTIONS!!"
 	)
 	user.say(pick(conspiracy_line), forced=type)
-	var/obj/item/organ/internal/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(brain)
 		brain.set_organ_damage(BRAIN_DAMAGE_DEATH)
 	return OXYLOSS

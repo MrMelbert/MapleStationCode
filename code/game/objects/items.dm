@@ -2,6 +2,7 @@
 /obj/item
 	name = "item"
 	icon = 'icons/obj/anomaly.dmi'
+	abstract_type = /obj/item
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	burning_particles = /particles/smoke/burning/small
 	pass_flags_self = PASSITEM
@@ -24,6 +25,8 @@
 
 	///Icon file for mob worn overlays.
 	var/icon/worn_icon
+	///Icon file used in occasional cases where the item must be mirrored
+	var/mirror_icon
 	///Icon state for mob worn overlays, if null the normal icon_state will be used.
 	var/worn_icon_state
 	///Icon state for the belt overlay, if null the normal icon_state will be used.
@@ -79,6 +82,8 @@
 	var/pickup_sound
 	///Sound uses when dropping the item, or when its thrown.
 	var/drop_sound
+	///Do the drop and pickup sounds vary?
+	var/sound_vary = FALSE
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
 	///Sound which is produced when blocking an attack
@@ -87,7 +92,7 @@
 	///How large is the object, used for stuff like whether it can fit in backpacks or not
 	var/w_class = WEIGHT_CLASS_NORMAL
 	///This is used to determine on which slots an item can fit.
-	var/slot_flags = 0
+	var/slot_flags = NONE
 	pass_flags = PASSTABLE
 	pressure_resistance = 4
 	/// This var exists as a weird proxy "owner" ref
@@ -112,12 +117,17 @@
 	var/list/datum/action/actions
 	///list of paths of action datums to give to the item on New().
 	var/list/actions_types
+	///Slot flags in which this item grants actions. If null, defaults to the item's slot flags (so actions are granted when worn)
+	var/action_slots = null
 
 	//Since any item can now be a piece of clothing, this has to be put here so all items share it.
 	///This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
 	var/flags_inv
 	///you can see someone's mask through their transparent visor, but you can't reach it
 	var/transparent_protection = NONE
+	///Path of type /datum/hair_mask to apply to hair when this item is worn
+	///Used by certain hats to give the appearance of squishing down tall hairstyles without hiding the hair completely
+	var/hair_mask = null
 
 	///flags for what should be done when you click on the item, default is picking it up
 	var/interaction_flags_item = INTERACT_ITEM_ATTACK_HAND_PICKUP
@@ -167,7 +177,7 @@
 	var/datum/embed_data/embed_data
 
 	///for flags such as [GLASSESCOVERSEYES]
-	var/flags_cover = 0
+	var/flags_cover = NONE
 	var/heat = 0
 	///All items with sharpness of SHARP_EDGED or higher will automatically get the butchering component.
 	var/sharpness = NONE
@@ -213,10 +223,6 @@
 	///A reagent the nutriments are converted into when the item is juiced.
 	var/datum/reagent/consumable/juice_typepath
 
-	/// Used in obj/item/examine to give additional notes on what the weapon does, separate from the predetermined output variables
-	var/offensive_notes
-	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
-	var/override_notes = FALSE
 	/// Used if we want to have a custom verb text for throwing. "John Spaceman flicks the ciggerate" for example.
 	var/throw_verb
 
@@ -225,8 +231,17 @@
 
 	/// Has the item been reskinned?
 	var/current_skin
-	///// List of options to reskin.
+	/// List of options to reskin.
 	var/list/unique_reskin
+	/// If reskins change base icon state as well
+	var/unique_reskin_changes_base_icon_state = FALSE
+	/// If reskins change inhands as well
+	var/unique_reskin_changes_inhand = FALSE
+	/// Do we apply a click cooldown when resisting this object if it is restraining them?
+	var/resist_cooldown = CLICK_CD_BREAKOUT
+
+	/// Where it is worn when worn, like flavor wise. A string, like "waist" or "ears".
+	var/wear_loc
 
 /obj/item/Initialize(mapload)
 	if(attack_verb_continuous)
@@ -257,8 +272,6 @@
 			hitsound = 'sound/items/welder.ogg'
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
-
-	add_weapon_description()
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 	if(get_embed())
@@ -355,10 +368,6 @@
 /obj/item/proc/add_stealing_item_objective()
 	return
 
-/// Adds the weapon_description element, which shows the 'warning label' for especially dangerous objects. Override this for item types with special notes.
-/obj/item/proc/add_weapon_description()
-	AddElement(/datum/element/weapon_description)
-
 /**
  * Checks if an item is allowed to be used on an atom/target
  * Returns TRUE if allowed.
@@ -425,26 +434,158 @@
 	abstract_move(null)
 	forceMove(T)
 
-/obj/item/examine(mob/user) //This might be spammy. Remove?
-	. = ..()
+/obj/item/examine_tags(mob/user)
+	var/list/parent_tags = ..()
+	parent_tags.Insert(1, weight_class_to_text(w_class)) // To make size display first, otherwise it looks goofy
+	. = parent_tags
+	.[weight_class_to_text(w_class)] = "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] item."
 
-	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] item."
+	if(sharpness & SHARP_EDGED)
+		.["sharp"] = "It has a sharp edge. It may inflict cut wounds, and could easily slice cloth."
+	if(sharpness & SHARP_POINTY)
+		.["pointed"] = "It has a sharp point. It may inflict puncture wounds."
 
 	if(item_flags & CRUEL_IMPLEMENT)
-		. += "[src] seems quite practical for particularly <font color='red'>morbid</font> procedures and experiments."
+		.[span_red("morbid")] = "It seems quite practical for particularly <font color='red'>morbid</font> procedures and experiments."
+
+	if (siemens_coefficient == 0)
+		.["insulated"] = "It is made from a robust electrical insulator and will block any electricity passing through it!"
+	else if (siemens_coefficient <= 0.5)
+		.["partially insulated"] = "It is made from a poor insulator that will dampen (but not fully block) electric shocks passing through it."
+	if(item_flags & CAN_BE_OVERSLOT)
+		.["form-fitting"] = "It does not block MODsuits from deploying when worn."
 
 	if(resistance_flags & INDESTRUCTIBLE)
-		. += "[src] seems extremely robust! It'll probably withstand anything that could happen to it!"
-	else
-		if(resistance_flags & LAVA_PROOF)
-			. += "[src] is made of an extremely heat-resistant material, it'd probably be able to withstand lava!"
-		if(resistance_flags & (ACID_PROOF | UNACIDABLE))
-			. += "[src] looks pretty robust! It'd probably be able to withstand acid!"
-		if(resistance_flags & FREEZE_PROOF)
-			. += "[src] is made of cold-resistant materials."
-		if(resistance_flags & FIRE_PROOF)
-			. += "[src] is made of fire-retardant materials."
+		.["indestructible"] = "It is extremely robust! It'll probably withstand anything that could happen to it!"
 		return
+
+	if(resistance_flags & LAVA_PROOF)
+		.["lavaproof"] = "It is made of an extremely heat-resistant material, it'd probably be able to withstand lava!"
+	if(resistance_flags & (ACID_PROOF | UNACIDABLE))
+		.["acidproof"] = "It looks pretty robust! It'd probably be able to withstand acid!"
+	if(resistance_flags & FREEZE_PROOF)
+		.["freezeproof"] = "It is made of cold-resistant materials."
+	if(resistance_flags & FIRE_PROOF)
+		.["fireproof"] = "It is made of fire-retardant materials."
+
+/obj/item/examine_descriptor(mob/user)
+	return "item"
+
+/obj/item/examine_weapon_descriptor(mob/user)
+	var/main_weapon_examine = ""
+	switch(force)
+		if(5 to 9)
+			main_weapon_examine = "poor"
+		if(10 to 14)
+			main_weapon_examine = "decent"
+		if(15 to 19)
+			main_weapon_examine = "good"
+		if(20 to 24)
+			main_weapon_examine = "great"
+		if(25 to 29)
+			main_weapon_examine = "potent"
+		if(30 to INFINITY)
+			main_weapon_examine = "powerful"
+
+	var/ap_examine = ""
+	if(armour_penetration > 0)
+		switch(armour_penetration)
+			if(1 to 14)
+				ap_examine += "minimal"
+			if(25 to 49)
+				ap_examine += "average"
+			if(50 to 74)
+				ap_examine += "good"
+			if(75 to 99)
+				ap_examine += "excellent"
+			if(100)
+				ap_examine += "flawless"
+
+	var/block_examine = ""
+	var/block_examine_alt = ""
+	if(block_chance > 0)
+		switch(block_chance)
+			if(1 to 24)
+				block_examine = "minimal"
+				block_examine_alt = "poor"
+			if(25 to 49)
+				block_examine = "average"
+				block_examine_alt = "decent"
+			if(50 to 74)
+				block_examine = "good"
+				block_examine_alt = "good"
+			if(75 to 99)
+				block_examine = "excellent"
+				block_examine_alt = "great"
+			if(100)
+				block_examine = "flawless"
+				block_examine_alt = "perfect"
+
+	var/return_message = ""
+	if(main_weapon_examine)
+		return_message = "that can be used as \a [main_weapon_examine] weapon"
+		if(ap_examine && block_examine)
+			if(ap_examine == block_examine)
+				return_message += " with [ap_examine] penetration and blocking capabilities"
+			else
+				return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+		else if(ap_examine)
+			return_message += " with [ap_examine] penetration"
+		else if(block_examine)
+			return_message += " with [block_examine] blocking capabilities"
+
+	var/thrown_weapon_examine = ""
+	switch(throwforce)
+		if(10 to 14)
+			thrown_weapon_examine = "poor"
+		if(14 to 19)
+			thrown_weapon_examine = "decent"
+		if(19 to 24)
+			thrown_weapon_examine = "good"
+		if(24 to 29)
+			thrown_weapon_examine = "great"
+		if(29 to 39)
+			thrown_weapon_examine = "potent"
+		if(40 to INFINITY)
+			thrown_weapon_examine = "powerful"
+
+	if(thrown_weapon_examine)
+		// if the weapon is far better thrown than melee, change the order
+		if(force * 1.5 < throwforce && throwforce >= 10)
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
+			if(ap_examine && block_examine)
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+			else if(ap_examine)
+				return_message += " with [ap_examine] penetration"
+			else if(block_examine)
+				return_message += " with [block_examine] blocking capabilities"
+			if(main_weapon_examine && main_weapon_examine != thrown_weapon_examine)
+				return_message += ", but is [main_weapon_examine] when used in melee"
+
+		else if(main_weapon_examine)
+			// you can intuit a good weapon is a good thrown weapon, only report otherwise if it's significant
+			if(abs(force - throwforce) >= 10 && main_weapon_examine != thrown_weapon_examine)
+				return_message += ", but is [thrown_weapon_examine] when thrown"
+
+		else
+			return_message = "that can be used as \a [thrown_weapon_examine] thrown weapon"
+			if(ap_examine && block_examine)
+				if(ap_examine == block_examine)
+					return_message += " with [ap_examine] penetration and blocking capabilities"
+				else
+					return_message += " with [ap_examine] penetration and [block_examine] blocking capabilities"
+			else if(ap_examine)
+				return_message += " with [ap_examine] penetration"
+			else if(block_examine)
+				return_message += " with [block_examine] blocking capabilities"
+
+	if((!return_message || (force < 10 && throwforce < 10)) && block_examine_alt)
+		return_message = "that is [block_examine_alt] at blocking attacks"
+
+	return return_message
 
 /obj/item/examine_more(mob/user)
 	. = ..()
@@ -574,18 +715,16 @@
 
 	//If the item is in a storage item, take it out
 	var/outside_storage = !loc.atom_storage
-	var/turf/storage_turf
-	if(loc.atom_storage)
-		//We want the pickup animation to play even if we're moving the item between movables. Unless the mob is not located on a turf.
-		if(isturf(user.loc))
-			storage_turf = get_turf(loc)
-		if(!loc.atom_storage.remove_single(user, src, user, silent = TRUE))
-			return
+	var/atom/anim_loc = loc
+	if(loc.atom_storage && !loc.atom_storage?.remove_single(user, src, user, silent = TRUE))
+		return
 	if(QDELETED(src)) //moving it out of the storage destroyed it.
 		return
 
-	if(storage_turf)
-		do_pickup_animation(user, storage_turf)
+	if(isturf(user.loc))
+		// Animation only plays if the user is on a turf
+		// However if the anim_loc is not on a turf (ie held by a mob) we need to use user loc
+		do_pickup_animation(user, (isturf(anim_loc) || isturf(anim_loc.loc)) ? anim_loc : user.loc)
 
 	if(throwing)
 		throwing.finalize(FALSE)
@@ -596,7 +735,7 @@
 	. = FALSE
 	pickup(user)
 	add_fingerprint(user)
-	if(!user.put_in_active_hand(src, ignore_animation = !outside_storage))
+	if(!user.put_in_active_hand(src, ignore_animation = TRUE))
 		user.dropItemToGround(src)
 		return TRUE
 
@@ -642,8 +781,23 @@
 		playsound(src, block_sound, BLOCK_SOUND_VOLUME, vary = TRUE)
 		return TRUE
 
-/obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
-	return ITALICS | REDUCE_RANGE
+/**
+ * Handles someone talking INTO an item
+ *
+ * Commonly used by someone holding it and using .r or .l
+ * Also used by radios
+ *
+ * * speaker - the atom that is doing the talking
+ * * message - the message being spoken
+ * * channel - the channel the message is being spoken on, only really used for radios
+ * * spans - the spans of the message
+ * * language - the language the message is in
+ * * message_mods - any message mods that should be applied to the message
+ *
+ * Return a flag that modifies the original message
+ */
+/obj/item/proc/talk_into(atom/movable/speaker, message, channel, list/spans, datum/language/language, list/message_mods)
+	return SEND_SIGNAL(src, COMSIG_ITEM_TALK_INTO, speaker, message, channel, spans, language, message_mods) || (ITALICS|REDUCE_RANGE)
 
 /// Called when a mob drops an item.
 /obj/item/proc/dropped(mob/user, silent = FALSE)
@@ -656,10 +810,10 @@
 	if(item_flags & DROPDEL && !QDELETED(src))
 		qdel(src)
 	item_flags &= ~IN_INVENTORY
+	UnregisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)))
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 	if(!silent)
-		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
-	user?.update_equipment_speed_mods()
+		playsound(src, drop_sound, DROP_SOUND_VOLUME, vary = sound_vary, ignore_walls = FALSE)
 
 	if(supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER)
 		UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
@@ -702,7 +856,8 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(ishuman(user) && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
-		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
+		RegisterSignal(user, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
+	return TRUE
 
 /**
  * Called by on_equipped. Don't call this directly, we want the ITEM_POST_EQUIPPED signal to be sent after everything else.
@@ -726,12 +881,13 @@
 		give_item_action(action, user, slot)
 
 	item_flags |= IN_INVENTORY
+	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_NO_WORN_ICON), SIGNAL_REMOVETRAIT(TRAIT_NO_WORN_ICON)), PROC_REF(update_slot_icon), override = TRUE)
+
 	if(!initial)
 		if(equip_sound && ((slot_flags|ITEM_SLOT_POCKETS|ITEM_SLOT_SUITSTORE) & slot))
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, ignore_walls = FALSE)
 		else if(slot & ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
-	user.update_equipment_speed_mods()
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)
@@ -749,6 +905,10 @@
 /obj/item/proc/item_action_slot_check(slot, mob/user, datum/action/action)
 	if(slot & (ITEM_SLOT_BACKPACK|ITEM_SLOT_LEGCUFFED)) //these aren't true slots, so avoid granting actions there
 		return FALSE
+	if(!isnull(action_slots))
+		return (slot & action_slots)
+	else if (slot_flags)
+		return (slot & slot_flags)
 	return TRUE
 
 /**
@@ -810,36 +970,30 @@
 	. = ..()
 	do_drop_animation(master_storage.parent)
 
-/obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	if(QDELETED(hit_atom))
-		return
-	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_IMPACT, hit_atom, throwingdatum) & COMPONENT_MOVABLE_IMPACT_NEVERMIND)
-		return
-	if(SEND_SIGNAL(hit_atom, COMSIG_ATOM_PREHITBY, src, throwingdatum) & COMSIG_HIT_PREVENTED)
-		return
-
-	SEND_SIGNAL(src, COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum)
-	if(get_temperature() && isliving(hit_atom))
-		var/mob/living/L = hit_atom
-		L.ignite_mob()
-	var/itempush = 1
+/obj/item/pre_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	var/impact_flags = ..()
 	if(w_class < WEIGHT_CLASS_BULKY)
-		itempush = 0 //too light to push anything
-	if(isliving(hit_atom)) //Living mobs handle hit sounds differently.
-		var/volume = get_volume_by_throwforce_and_or_w_class()
-		if (throwforce > 0 || HAS_TRAIT(src, TRAIT_CUSTOM_TAP_SOUND))
-			if (mob_throw_hit_sound)
-				playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1)
-			else if(hitsound)
-				playsound(hit_atom, hitsound, volume, TRUE, -1)
-			else
-				playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1)
-		else
-			playsound(hit_atom, 'sound/weapons/throwtap.ogg', 1, volume, -1)
+		impact_flags |= COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH
+	if(!(impact_flags & COMPONENT_MOVABLE_IMPACT_NEVERMIND) && get_temperature() && isliving(hit_atom))
+		var/mob/living/victim = hit_atom
+		victim.ignite_mob()
+	return impact_flags
 
-	else
+/obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(!isliving(hit_atom)) //Living mobs handle hit sounds differently.
 		playsound(src, drop_sound, YEET_SOUND_VOLUME, ignore_walls = FALSE)
-	return hit_atom.hitby(src, 0, itempush, throwingdatum=throwingdatum)
+		return
+	var/volume = get_volume_by_throwforce_and_or_w_class()
+	if (throwforce > 0 || HAS_TRAIT(src, TRAIT_CUSTOM_TAP_SOUND))
+		if (mob_throw_hit_sound)
+			playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1)
+		else if(hitsound)
+			playsound(hit_atom, hitsound, volume, TRUE, -1)
+		else
+			playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1)
+	else
+		playsound(hit_atom, 'sound/weapons/throwtap.ogg', 1, volume, -1)
 
 /obj/item/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
 	if(HAS_TRAIT(src, TRAIT_NODROP))
@@ -890,31 +1044,7 @@
 	if(!ismob(loc))
 		return
 	var/mob/owner = loc
-	var/flags = slot_flags
-	if(flags & ITEM_SLOT_OCLOTHING)
-		owner.update_worn_oversuit()
-	if(flags & ITEM_SLOT_ICLOTHING)
-		owner.update_worn_undersuit()
-	if(flags & ITEM_SLOT_GLOVES)
-		owner.update_worn_gloves()
-	if(flags & ITEM_SLOT_EYES)
-		owner.update_worn_glasses()
-	if(flags & ITEM_SLOT_EARS)
-		owner.update_worn_ears()
-	if(flags & ITEM_SLOT_MASK)
-		owner.update_worn_mask()
-	if(flags & ITEM_SLOT_HEAD)
-		owner.update_worn_head()
-	if(flags & ITEM_SLOT_FEET)
-		owner.update_worn_shoes()
-	if(flags & ITEM_SLOT_ID)
-		owner.update_worn_id()
-	if(flags & ITEM_SLOT_BELT)
-		owner.update_worn_belt()
-	if(flags & ITEM_SLOT_BACK)
-		owner.update_worn_back()
-	if(flags & ITEM_SLOT_NECK)
-		owner.update_worn_neck()
+	owner.update_clothing(slot_flags | owner.get_slot_by_item(src))
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
@@ -1088,7 +1218,7 @@
 /obj/item/proc/apply_outline(outline_color = null)
 	if(((get(src, /mob) != usr) && !loc?.atom_storage && !(item_flags & IN_STORAGE)) || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)
 		return FALSE
-	var/theme = lowertext(usr.client?.prefs?.read_preference(/datum/preference/choiced/ui_style))
+	var/theme = LOWER_TEXT(usr.client?.prefs?.read_preference(/datum/preference/choiced/ui_style))
 	if(!outline_color) //if we weren't provided with a color, take the theme's color
 		switch(theme) //yeah it kinda has to be this way
 			if("midnight")
@@ -1102,9 +1232,13 @@
 			if("operative")
 				outline_color = COLOR_THEME_OPERATIVE
 			if("clockwork")
-				outline_color = COLOR_THEME_CLOCKWORK //if you want free gbp go fix the fact that clockwork's tooltip css is glass'
+				outline_color = COLOR_THEME_CLOCKWORK
 			if("glass")
 				outline_color = COLOR_THEME_GLASS
+			if("trasen-knox")
+				outline_color = COLOR_THEME_TRASENKNOX
+			if("detective")
+				outline_color = COLOR_THEME_DETECTIVE
 			else //this should never happen, hopefully
 				outline_color = COLOR_WHITE
 	if(color)
@@ -1119,17 +1253,23 @@
 	if(!delay && !tool_start_check(user, amount))
 		return
 
-	var/skill_modifier = 1
+	// NON-MODULE CHANGE
+	if(tool_behaviour == TOOL_MINING)
+		delay *= user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		if(prob(user.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))
+			mineral_scan_pulse(get_turf(user), 2)
 
-	if(tool_behaviour == TOOL_MINING && ishuman(user))
-		if(user.mind)
-			skill_modifier = user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+	if((tool_behaviour in GLOB.all_mechanical_tools) && tool_behaviour != TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/mechanics, SKILL_SPEED_MODIFIER)
 
-			if(user.mind.get_skill_level(/datum/skill/mining) >= SKILL_LEVEL_JOURNEYMAN && prob(user.mind.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER))) // we check if the skill level is greater than Journeyman and then we check for the probality for that specific level.
-				mineral_scan_pulse(get_turf(user), SKILL_LEVEL_JOURNEYMAN - 2) //SKILL_LEVEL_JOURNEYMAN = 3 So to get range of 1+ we have to subtract 2 from it,.
+	if(istype(src, /obj/item/stack/cable_coil) || tool_behaviour == TOOL_MULTITOOL)
+		delay *= user.get_skill_modifier(/datum/skill/electronics, SKILL_SPEED_MODIFIER)
 
-	delay *= toolspeed * skill_modifier
+	if(tool_behaviour in GLOB.all_surgical_tools)
+		delay *= user.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
+	// NON-MODULE CHANGE END
 
+	delay *= toolspeed
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)
@@ -1255,9 +1395,11 @@
 
 ///Called by the carbon throw_item() proc. Returns null if the item negates the throw, or a reference to the thing to suffer the throw else.
 /obj/item/proc/on_thrown(mob/living/carbon/user, atom/target)
-	if((item_flags & ABSTRACT) || HAS_TRAIT(src, TRAIT_NODROP))
+	if(item_flags & ABSTRACT)
 		return
-	user.dropItemToGround(src, silent = TRUE)
+	// Skip animation is important here because it interferes with the throwing animation.
+	if(!user.transferItemToLoc(src, drop_location(), silent = TRUE, animated = FALSE))
+		return
 	if(throwforce && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_notice("You set [src] down gently on the ground."))
 		return
@@ -1446,8 +1588,8 @@
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
 	var/direction = get_dir(source, target)
-	var/to_x = target.base_pixel_x
-	var/to_y = target.base_pixel_y
+	var/to_x = (target.pixel_x + target.pixel_w) - (source.pixel_x + source.pixel_w)
+	var/to_y = (target.pixel_y + target.pixel_z) - (source.pixel_y + source.pixel_z)
 
 	if(direction & NORTH)
 		to_y += 32
@@ -1478,8 +1620,8 @@
 
 	var/turf/current_turf = get_turf(src)
 	var/direction = get_dir(moving_from, current_turf)
-	var/from_x = moving_from.base_pixel_x
-	var/from_y = moving_from.base_pixel_y
+	var/from_x = moving_from.pixel_x + moving_from.pixel_w
+	var/from_y = moving_from.pixel_y + moving_from.pixel_z
 
 	if(direction & NORTH)
 		from_y -= 32
@@ -1726,9 +1868,9 @@
 /// TODO: make this its own thing (/datum/advanced_filter)
 /obj/item/proc/update_dir(mob/living/carbon/human/source, dir, newdir)
 	SIGNAL_HANDLER
-	// if(dir == newdir)
-	// 	return
-	if(!istype(source) || !(source.bodytype & BODYTYPE_DIGITIGRADE))
+	if(dir == newdir)
+		return
+	if(!istype(source) || !(source.bodyshape & BODYSHAPE_DIGITIGRADE))
 		return
 
 	source.update_clothing(slot_flags)
@@ -1746,6 +1888,40 @@
 	embed_data = ispath(embed) ? get_embed_by_type(embed) : embed
 	SEND_SIGNAL(src, COMSIG_ITEM_EMBEDDING_UPDATE)
 
+/// Checks if the bait is liked by the fish type or not. Returns a multiplier that affects the chance of catching it.
+/obj/item/proc/check_bait(obj/item/fish/fish_type)
+	if(HAS_TRAIT(src, TRAIT_OMNI_BAIT))
+		return 1
+	var/catch_multiplier = 1
+	var/list/properties = SSfishing.fish_properties[fish_type]
+	//Bait matching likes doubles the chance
+	var/list/fav_bait = properties[FISH_PROPERTIES_FAV_BAIT]
+	for(var/bait_identifer in fav_bait)
+		if(is_matching_bait(src, bait_identifer))
+			catch_multiplier *= 2
+	//Bait matching dislikes
+	var/list/disliked_bait = properties[FISH_PROPERTIES_BAD_BAIT]
+	for(var/bait_identifer in disliked_bait)
+		if(is_matching_bait(src, bait_identifer))
+			catch_multiplier *= 0.5
+	return catch_multiplier
+
+/// Helper proc that checks if a bait matches identifier from fav/disliked bait list
+/proc/is_matching_bait(obj/item/bait, identifier)
+	if(ispath(identifier)) //Just a path
+		return istype(bait, identifier)
+	if(!islist(identifier))
+		return HAS_TRAIT(bait, identifier)
+	var/list/special_identifier = identifier
+	switch(special_identifier[FISH_BAIT_TYPE])
+		if(FISH_BAIT_FOODTYPE)
+			var/datum/component/edible/edible = bait.GetComponent(/datum/component/edible)
+			return edible?.foodtypes & special_identifier[FISH_BAIT_VALUE]
+		if(FISH_BAIT_REAGENT)
+			return bait.reagents?.has_reagent(special_identifier[FISH_BAIT_VALUE], special_identifier[FISH_BAIT_AMOUNT], check_subtypes = TRUE)
+		else
+			CRASH("Unknown bait identifier in fish favourite/disliked list")
+
 /obj/item/vv_get_header()
 	. = ..()
 	. += {"
@@ -1756,3 +1932,13 @@
 			BARE WOUND: <font size='1'><a href='byond://?_src_=vars;[HrefToken()];item_to_tweak=[REF(src)];var_tweak=bare wound' id='bare wound'>[bare_wound_bonus]</a>
 		</font>
 	"}
+
+/// Checks if we are restraining the given slot
+/// By default all equipped items with a breakouttime are considered restraining,
+/// though items with ITEM_SLOT_HANDCUFFED or ITEM_SLOT_LEGCUFFED flags only restrain those slots.
+/obj/item/proc/is_restraining(in_slot)
+	if(!breakouttime)
+		return FALSE
+	if(slot_flags & (ITEM_SLOT_HANDCUFFED|ITEM_SLOT_LEGCUFFED))
+		return in_slot & (ITEM_SLOT_HANDCUFFED|ITEM_SLOT_LEGCUFFED)
+	return in_slot & slot_flags

@@ -105,7 +105,7 @@
 	reagents.expose(user, TOUCH, 20) //Covers target in 20u of oil.
 	to_chat(user, span_notice("You touch the pool of oil, only to get oil all over yourself. It would be wise to wash this off with water."))
 
-/obj/structure/sink/oil_well/attackby(obj/item/O, mob/living/user, params)
+/obj/structure/sink/oil_well/attackby(obj/item/O, mob/living/user, list/modifiers, list/attack_modifiers)
 	flick("puddle-oil-splash",src)
 	if(O.tool_behaviour == TOOL_SHOVEL) //attempt to deconstruct the puddle with a shovel
 		to_chat(user, "You fill in the oil well with soil.")
@@ -209,7 +209,7 @@
 			new /obj/item/clothing/glasses/science(src)
 		if(7)
 			new /obj/item/clothing/glasses/sunglasses(src)
-			new /obj/item/clothing/mask/cigarette/rollie(src)
+			new /obj/item/cigarette/rollie(src)
 		else
 			//empty grave
 			return
@@ -254,16 +254,14 @@
 		if(!weapon.use_tool(src, user, delay = 15, volume = 40))
 			return TRUE
 
+		var/is_chill_with_robbing = HAS_MIND_TRAIT(user, TRAIT_MORBID) || HAS_PERSONALITY(user, /datum/personality/callous) || HAS_PERSONALITY(user, /datum/personality/misanthropic)
 		if(opened)
 			dug_closed = TRUE
 			close(user)
 		else if(open(user, force = TRUE) && affect_mood)
-			if(HAS_MIND_TRAIT(user, TRAIT_MORBID))
-				user.add_mood_event("morbid_graverobbing", /datum/mood_event/morbid_graverobbing)
-			else
-				user.add_mood_event("graverobbing", /datum/mood_event/graverobbing)
+			user.add_mood_event("graverobbing", is_chill_with_robbing ? /datum/mood_event/morbid_graverobbing : /datum/mood_event/graverobbing)
 			if(lead_tomb && first_open)
-				if(HAS_MIND_TRAIT(user, TRAIT_MORBID))
+				if(is_chill_with_robbing)
 					to_chat(user, span_notice("Did someone say something? I'm sure it was nothing."))
 				else
 					user.gain_trauma(/datum/brain_trauma/magic/stalker)

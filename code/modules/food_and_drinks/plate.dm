@@ -3,6 +3,9 @@
 	desc = "Holds food, powerful. Good for morale when you're not eating your spaghetti off of a desk."
 	icon = 'icons/obj/service/kitchen.dmi'
 	icon_state = "plate"
+	sound_vary = TRUE
+	pickup_sound = SFX_FOOD_PLATE_PICKUP
+	drop_sound = SFX_FOOD_PLATE_DROP
 	w_class = WEIGHT_CLASS_BULKY //No backpack.
 	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
@@ -26,7 +29,7 @@
 	if(fragile)
 		AddElement(/datum/element/can_shatter)
 
-/obj/item/plate/attackby(obj/item/I, mob/user, params)
+/obj/item/plate/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(!IS_EDIBLE(I))
 		balloon_alert(user, "not food!")
 		return
@@ -36,7 +39,6 @@
 	if(contents.len >= max_items)
 		balloon_alert(user, "can't fit!")
 		return
-	var/list/modifiers = params2list(params)
 	//Center the icon where the user clicked.
 	if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 		return
@@ -48,13 +50,13 @@
 	else
 		return ..()
 
-/obj/item/plate/pre_attack(atom/A, mob/living/user, params)
-	if(!iscarbon(A))
+/obj/item/plate/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	if(!iscarbon(target))
 		return
 	if(!contents.len)
 		return
 	var/obj/item/object_to_eat = contents[1]
-	A.attackby(object_to_eat, user)
+	target.attackby(object_to_eat, user)
 	return TRUE //No normal attack
 
 ///This proc adds the food to viscontents and makes sure it can deregister if this changes.

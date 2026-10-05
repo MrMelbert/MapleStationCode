@@ -22,10 +22,11 @@
 	attack_sound = 'sound/hallucinations/growl1.ogg'
 	death_message = "wails, disintegrating into a pile of ectoplasm!"
 	gold_core_spawnable = NO_SPAWN //too spooky for science
-	light_system = MOVABLE_LIGHT
-	light_range = 1 // same glowing as visible player ghosts
-	light_power = 2
+	light_system = OVERLAY_LIGHT
+	light_range = 2.5 // same glowing as visible player ghosts
+	light_power = 0.6
 	ai_controller = /datum/ai_controller/basic_controller/ghost
+	initial_blood_type = null
 
 	///What hairstyle will this ghost have
 	var/ghost_hairstyle

@@ -9,7 +9,7 @@
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 5)
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_TINY
 	///Currently stored blulespace crystal, if any. Required to use the pointer through walls
 	var/obj/item/stack/ore/bluespace_crystal/crystal_lens
 	///Currently stored micro-laser diode
@@ -82,7 +82,7 @@
 	crystal_lens = null
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/laser_pointer/attackby(obj/item/attack_item, mob/user, params)
+/obj/item/laser_pointer/attackby(obj/item/attack_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(attack_item, /obj/item/stock_parts/micro_laser))
 		if(diode)
 			balloon_alert(user, "already has a diode!")
@@ -265,8 +265,8 @@
 			outmsg = span_warning("You miss the lens of [target_camera] with [src]!")
 
 	//catpeople: make any felinid near the target to face the target, chance for felinids to pounce at the light, stepping to the target
-	for(var/mob/living/carbon/human/target_felinid in view(1, targloc))
-		if(!isfelinid(target_felinid) || target_felinid.stat == DEAD || target_felinid.is_blind() || target_felinid.incapacitated())
+	for(var/mob/living/target_felinid in view(1, targloc))
+		if(!HAS_TRAIT(target_felinid, TRAIT_CATLIKE_GRACE) || target_felinid.stat == DEAD || target_felinid.is_blind() || target_felinid.incapacitated())
 			continue
 		if(target_felinid.body_position == STANDING_UP)
 			target_felinid.setDir(get_dir(target_felinid, targloc)) // kitty always looks at the light

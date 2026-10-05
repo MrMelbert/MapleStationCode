@@ -28,7 +28,7 @@
 
 	if(params["deselect"])
 		deselect_item(interacted_item)
-	else
+	else if(!interacted_item.is_disabled())
 		select_item(interacted_item)
 	return TRUE
 
@@ -77,7 +77,7 @@
 	var/list/loadout = get_active_loadout(preferences)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		if(item.category != selected_item.category)
+		if(item.category != selected_item.category )
 			continue
 		if(!item.category.handle_duplicate_entires(src, item, selected_item, loadout_datums))
 			return

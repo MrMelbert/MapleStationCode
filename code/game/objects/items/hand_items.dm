@@ -128,7 +128,7 @@
 		return FALSE
 
 	var/obj/item/bodypart/head/the_head = target.get_bodypart(BODY_ZONE_HEAD)
-	if(!(the_head.biological_state & BIO_FLESH))
+	if(!(the_head.biological_state & (BIO_FLESH|BIO_CHITIN)))
 		to_chat(user, span_warning("You can't noogie [target], [target.p_they()] [target.p_have()] no skin on [target.p_their()] head!"))
 		return
 
@@ -218,6 +218,7 @@
 
 /obj/item/hand_item/slapper/attack(mob/living/slapped, mob/living/carbon/human/user)
 	SEND_SIGNAL(user, COMSIG_LIVING_SLAP_MOB, slapped)
+	SEND_SIGNAL(slapped, COMSIG_LIVING_SLAPPED, user)
 
 	if(iscarbon(slapped))
 		var/mob/living/carbon/potential_tailed = slapped
@@ -249,7 +250,7 @@
 			)
 
 		else
-			if(slapped.IsSleeping() || slapped.IsUnconscious())
+			if(HAS_TRAIT(slapped, TRAIT_KNOCKEDOUT))
 				user.visible_message(
 					span_notice("[user] slaps [slapped] in the face, trying to wake [slapped.p_them()] up!"),
 					span_notice("You slap [slapped] in the face, trying to wake [slapped.p_them()] up!"),
@@ -281,14 +282,14 @@
 	playsound(slapped, 'sound/weapons/slap.ogg', slap_volume, TRUE, -1)
 	return
 
-/obj/item/hand_item/slapper/pre_attack_secondary(atom/target, mob/living/user, params)
+/obj/item/hand_item/slapper/pre_attack_secondary(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!loc.Adjacent(target) || !istype(target, /obj/structure/table))
 		return ..()
 
 	slam_table(target, user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/item/hand_item/slapper/pre_attack(atom/target, mob/living/user, params)
+/obj/item/hand_item/slapper/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!loc.Adjacent(target) || !istype(target, /obj/structure/table))
 		return ..()
 
@@ -337,7 +338,7 @@
 	desc = "Sometimes, you just want to act gentlemanly."
 	inhand_icon_state = "nothing"
 
-/obj/item/hand_item/hand/pre_attack(mob/living/carbon/help_target, mob/living/carbon/helper, params)
+/obj/item/hand_item/hand/pre_attack(mob/living/carbon/help_target, mob/living/carbon/helper, list/modifiers, list/attack_modifiers)
 	if(!loc.Adjacent(help_target) || !istype(helper) || !istype(help_target))
 		return ..()
 
@@ -346,7 +347,7 @@
 		return TRUE
 
 
-/obj/item/hand_item/hand/pre_attack_secondary(mob/living/carbon/help_target, mob/living/carbon/helper, params)
+/obj/item/hand_item/hand/pre_attack_secondary(mob/living/carbon/help_target, mob/living/carbon/helper, list/modifiers, list/attack_modifiers)
 	if(!loc.Adjacent(help_target) || !istype(helper) || !istype(help_target))
 		return ..()
 
@@ -357,7 +358,7 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 
-/obj/item/hand_item/hand/attack(mob/living/carbon/target_mob, mob/living/carbon/user, params)
+/obj/item/hand_item/hand/attack(mob/living/carbon/target_mob, mob/living/carbon/user, list/modifiers, list/attack_modifiers)
 	if(!loc.Adjacent(target_mob) || !istype(user) || !istype(target_mob))
 		return TRUE
 
@@ -420,11 +421,16 @@
 	// taking taker by their hands.
 	var/offerer_zone_selected = offerer.zone_selected
 	offerer.zone_selected = "r_arm"
-	var/did_we_pull = offerer.start_pulling(taker) // Will return either null or FALSE. We only want to silence FALSE.
+	var/did_we_pull = offerer.start_pulling(taker, willing_pull = TRUE) // Will return either null or FALSE. We only want to silence FALSE.
 	offerer.zone_selected = offerer_zone_selected
 
-	if(did_we_pull == FALSE)
+	if(!did_we_pull)
 		return // That didn't work for one reason or the other. No need to display anything.
+
+	offerer.visible_message(
+		span_notice("[offerer] takes [taker] by the hand, pulling [taker.p_them()] along."),
+		ignored_mobs = list(taker, offerer),
+	)
 
 	to_chat(offerer, span_notice("[taker] takes your hand, allowing you to pull [taker.p_them()] along."))
 	to_chat(taker, span_notice("You take [offerer]'s hand, which allows [offerer.p_them()] to pull you along. How polite!"))
@@ -439,7 +445,7 @@
 	attack_verb_continuous = list("steals")
 	attack_verb_simple = list("steal")
 
-/obj/item/hand_item/stealer/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/hand_item/stealer/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if (!ishuman(target_mob))
 		return
@@ -622,7 +628,7 @@
 	if(!iscarbon(target))
 		return
 	var/mob/living/carbon/heartbreakee = target
-	var/obj/item/organ/internal/heart/dont_go_breakin_my_heart = heartbreakee.get_organ_slot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/dont_go_breakin_my_heart = heartbreakee.get_organ_slot(ORGAN_SLOT_HEART)
 	dont_go_breakin_my_heart.apply_organ_damage(999)
 
 

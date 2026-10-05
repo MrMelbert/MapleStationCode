@@ -4,6 +4,7 @@
 	icon_state = "bronze"
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 	resistance_flags = FIRE_PROOF
+	w_class = WEIGHT_CLASS_TINY
 	/// Sprite used for medalbox
 	var/medaltype = "medal"
 	/// Has this been use for a commendation?
@@ -105,6 +106,7 @@
 
 /obj/item/clothing/accessory/medal/gold/captain
 	name = "medal of captaincy"
+	article = "the"
 	desc = "A golden medal awarded exclusively to those promoted to the rank of captain. It signifies the codified responsibilities of a captain to Nanotrasen, and their undisputable authority over their crew."
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 

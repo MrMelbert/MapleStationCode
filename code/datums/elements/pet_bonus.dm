@@ -32,7 +32,7 @@
 	if(pet.stat != CONSCIOUS || petter.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))
 		return
 
-	new /obj/effect/temp_visual/heart(pet.loc)
+	new /obj/effect/temp_visual/heart(get_turf(pet))
 	SEND_SIGNAL(pet, COMSIG_ANIMAL_PET, petter, modifiers)
 	if(emote_message && prob(33))
 		pet.manual_emote(emote_message)

@@ -50,8 +50,9 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
-/obj/item/storage/part_replacer/proc/play_rped_sound()
-	//Plays the sound for RPED exhanging or installing parts.
+///Plays the sound & flick animation for RPED exhanging or installing parts.
+/obj/item/storage/part_replacer/proc/play_rped_effect()
+	flick("[icon_state]_active", src)
 	if(alt_sound && prob(1))
 		playsound(src, alt_sound, 40, TRUE)
 	else
@@ -219,6 +220,8 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	name = "stock part"
 	desc = "What?"
 	icon = 'icons/obj/devices/stock_parts.dmi'
+	///The generic category type that the stock part belongs to.  Generic objects that should not be instantiated should have the same type and abstract_type
+	abstract_type = /obj/item/stock_parts
 	w_class = WEIGHT_CLASS_SMALL
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
@@ -226,8 +229,6 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	///Used when a base part has a different name to higher tiers of part. For example, machine frames want any servo and not just a micro-servo.
 	var/base_name
 	var/energy_rating = 1
-	///The generic category type that the stock part belongs to.  Generic objects that should not be instantiated should have the same type and abstract_type
-	var/abstract_type = /obj/item/stock_parts
 
 /obj/item/stock_parts/Initialize(mapload)
 	. = ..()

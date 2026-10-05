@@ -14,6 +14,7 @@
 	hide = TRUE
 	shift_underlay_only = FALSE
 	pipe_state = "uvent"
+	has_cap_visuals = TRUE
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	// vents are more complex machinery and so are less resistant to damage
 	max_integrity = 100
@@ -47,7 +48,7 @@
 	var/examine_condition
 
 	/// Datum for managing the overclock sound loop
-	var/datum/looping_sound/vent_pump_overclock/sound_loop
+	var/datum/looping_sound/fan/sound_loop
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Initialize(mapload)
 	if(!id_tag)
@@ -188,7 +189,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_icon_nopipes()
 	cut_overlays()
-	if(showpipe)
+	if(underfloor_state)
 		var/image/cap = get_pipe_image(icon, "vent_cap", initialize_directions)
 		add_overlay(cap)
 	else
@@ -229,7 +230,7 @@
 	fan_overclocked = !fan_overclocked
 
 	if(from_break)
-		playsound(src, 'sound/machines/fan_break.ogg', 100)
+		playsound(src, 'sound/machines/fan/fan_break.ogg', 100)
 		fan_overclocked = FALSE
 
 	if(fan_overclocked)
@@ -311,12 +312,6 @@
 			air_contents.merge(removed)
 			update_parents()
 
-/obj/machinery/atmospherics/components/unary/vent_pump/update_name()
-	. = ..()
-	if(override_naming)
-		return
-	name = "\proper [get_area_name(src)] [name] [id_tag]"
-
 /obj/machinery/atmospherics/components/unary/vent_pump/welder_act(mob/living/user, obj/item/welder)
 	..()
 	if(!welder.tool_start_check(user, amount=1))
@@ -344,6 +339,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
 	. = ..()
+	. += span_info("It belongs to [get_area_name(src)], and is ID [id_tag].")
 	if(welded)
 		. += "It seems welded shut."
 
@@ -365,8 +361,8 @@
 	name = "large air vent"
 	power_channel = AREA_USAGE_EQUIP
 
-/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/Initialize(mapload)
+	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000
 

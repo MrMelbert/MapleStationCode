@@ -137,7 +137,7 @@
 	name = "mirage"
 	plane = ABOVE_HUD_PLANE
 	interaction_flags_item = NONE
-	item_flags = ABSTRACT | DROPDEL | EXAMINE_SKIP | HAND_ITEM | NOBLUDGEON // Most of these flags don't matter, but better safe than sorry
+	item_flags = ABSTRACT | DROPDEL | HAND_ITEM | NOBLUDGEON // Most of these flags don't matter, but better safe than sorry
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	/// The hallucination that created us.
 	var/datum/hallucination/parent
@@ -152,6 +152,7 @@
 	src.parent = parent
 
 	ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_EXAMINE_SKIP, INNATE_TRAIT)
 
 /obj/item/hallucinated/Destroy(force)
 	UnregisterSignal(parent, COMSIG_QDELETING)

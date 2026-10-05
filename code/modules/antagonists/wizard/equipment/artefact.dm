@@ -65,7 +65,7 @@
 		qdel(src)
 		return PROCESS_KILL
 
-/obj/effect/rend/attackby(obj/item/I, mob/user, params)
+/obj/effect/rend/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(I, /obj/item/nullrod))
 		user.visible_message(span_danger("[user] seals \the [src] with \the [I]."))
 		qdel(src)
@@ -314,7 +314,7 @@
 	head = pick(/obj/item/clothing/head/helmet/roman, /obj/item/clothing/head/helmet/roman/legionnaire)
 
 //Provides a decent heal, need to pump every 6 seconds
-/obj/item/organ/internal/heart/cursed/wizard
+/obj/item/organ/heart/cursed/wizard
 	pump_delay = 6 SECONDS
 	heal_brute = 25
 	heal_burn = 25

@@ -10,8 +10,7 @@ import {
   Tabs,
   Tooltip,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
-
+import type { BooleanLike } from 'tgui-core/react';
 import { useBackend, useSharedState } from '../backend';
 import { Window } from '../layouts';
 import { LoadingScreen } from './common/LoadingScreen';
@@ -46,13 +45,16 @@ type Avatar = {
 };
 
 type Domain = {
+  announce_ghosts: BooleanLike;
   cost: number;
   desc: string;
   difficulty: number;
   id: string;
   is_modular: BooleanLike;
+  has_secondary_objectives: BooleanLike;
   name: string;
   reward: number | string;
+  grade_symbol: string;
 };
 
 type DomainEntryProps = {
@@ -72,10 +74,11 @@ enum Difficulty {
   High,
 }
 
-const isConnected = (data: Data): data is Data & { connected: 1 } =>
-  data.connected === 1;
+function isConnected(data: Data): data is Data & { connected: 1 } {
+  return data.connected === 1;
+}
 
-const getColor = (difficulty: number) => {
+function getColor(difficulty: number) {
   switch (difficulty) {
     case Difficulty.Low:
       return 'yellow';
@@ -86,9 +89,9 @@ const getColor = (difficulty: number) => {
     default:
       return 'green';
   }
-};
+}
 
-export const QuantumConsole = (props) => {
+export function QuantumConsole(props) {
   const { data } = useBackend<Data>();
 
   return (
@@ -99,9 +102,9 @@ export const QuantumConsole = (props) => {
       </Window.Content>
     </Window>
   );
-};
+}
 
-const AccessView = (props) => {
+function AccessView(props) {
   const { act, data } = useBackend<Data>();
   const [tab, setTab] = useSharedState('tab', 0);
 
@@ -245,11 +248,22 @@ const AccessView = (props) => {
       </Stack.Item>
     </Stack>
   );
-};
+}
 
-const DomainEntry = (props: DomainEntryProps) => {
+function DomainEntry(props: DomainEntryProps) {
   const {
-    domain: { cost, desc, difficulty, id, is_modular, name, reward },
+    domain: {
+      announce_ghosts,
+      cost,
+      desc,
+      difficulty,
+      id,
+      is_modular,
+      has_secondary_objectives,
+      name,
+      reward,
+      grade_symbol,
+    },
   } = props;
   const { act, data } = useBackend<Data>();
   if (!isConnected(data)) {
@@ -272,6 +286,8 @@ const DomainEntry = (props: DomainEntryProps) => {
     buttonName = 'Deploy';
   }
 
+  const canView = name !== '???';
+
   return (
     <Collapsible
       buttons={
@@ -289,14 +305,19 @@ const DomainEntry = (props: DomainEntryProps) => {
       title={
         <>
           {name}
-          {!!is_modular && name !== '???' && <Icon name="cubes" ml={1} />}
+          {!!is_modular && canView && <Icon name="cubes" ml={1} />}
+          {!!has_secondary_objectives && canView && <Icon name="gem" ml={1} />}
+          {!!announce_ghosts && canView && <Icon name="ghost" ml={1} />}
         </>
       }
+      sideIcon={grade_symbol}
     >
       <Stack height={5}>
         <Stack.Item color="label" grow={4}>
           {desc}
           {!!is_modular && ' (Modular)'}
+          {!!has_secondary_objectives && ' (Secondary Objective Available)'}
+          {!!announce_ghosts && ' (Ghost Interaction)'}
         </Stack.Item>
         <Stack.Divider />
         <Stack.Item grow>
@@ -316,7 +337,7 @@ const DomainEntry = (props: DomainEntryProps) => {
       </Stack>
     </Collapsible>
   );
-};
+}
 
 const AvatarDisplay = (props) => {
   const { act, data } = useBackend<Data>();

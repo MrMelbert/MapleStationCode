@@ -229,6 +229,7 @@
 			result = rigged_value
 
 	. = result
+	playsound(src, 'sound/items/dice_roll.ogg', 50, TRUE)
 
 	var/fake_result = roll(sides)//Daredevil isn't as good as he used to be
 	var/comment = ""
@@ -428,11 +429,19 @@
 			var/mob/living/carbon/human/human_servant = new(drop_location())
 			do_smoke(0, holder = src, location = drop_location())
 
-			var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as [user.real_name]'s Servant?", check_jobban = ROLE_WIZARD, role = ROLE_WIZARD, poll_time = 5 SECONDS, target_mob = human_servant, pic_source = user, role_name_text = "dice servant")
-			if(LAZYLEN(candidates))
-				var/mob/dead/observer/candidate = pick(candidates)
-				message_admins("[ADMIN_LOOKUPFLW(candidate)] was spawned as Dice Servant")
-				human_servant.key = candidate.key
+			var/mob/dead/observer/chosen_one = SSpolling.poll_ghosts_for_target(
+				"Do you want to play as [user.real_name]'s Servant?",
+				check_jobban = ROLE_WIZARD,
+				role = ROLE_WIZARD,
+				poll_time = 5 SECONDS,
+				checked_target = human_servant,
+				jump_target = human_servant,
+				alert_pic = user,
+				role_name_text = "dice servant",
+			)
+			if(!isnull(chosen_one))
+				message_admins("[ADMIN_LOOKUPFLW(chosen_one)] was spawned as Dice Servant")
+				human_servant.key = chosen_one.key
 
 			human_servant.equipOutfit(/datum/outfit/butler)
 			var/datum/mind/servant_mind = new /datum/mind()

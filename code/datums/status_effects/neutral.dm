@@ -106,6 +106,34 @@
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_SOOTHED_THROAT, "[STATUS_EFFECT_TRAIT]_[id]")
 
+/datum/status_effect/headache_soothed
+	id = "headache_soothed"
+	duration = 60 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+
+/datum/status_effect/headache_soothed/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed
+	id = "headache_soothed"
+	duration = 60 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+
+/datum/status_effect/headache_soothed/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/headache_soothed/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_SOOTHED_HEADACHE, TRAIT_STATUS_EFFECT(id))
+
 /datum/status_effect/bounty
 	id = "bounty"
 	status_type = STATUS_EFFECT_UNIQUE
@@ -548,7 +576,7 @@
 			if(QDELETED(human_mob))
 				return
 			if(prob(1))//low chance of the alternative reality returning to monkey
-				var/obj/item/organ/external/tail/monkey/monkey_tail = new ()
+				var/obj/item/organ/tail/monkey/monkey_tail = new ()
 				monkey_tail.Insert(human_mob, movement_flags = DELETE_IF_REPLACED)
 			var/datum/species/human_species = human_mob.dna?.species
 			if(human_species)
@@ -588,7 +616,7 @@
 	return ..()
 
 /datum/status_effect/tinlux_light/on_apply()
-	mob_light_obj = owner.mob_light(2)
+	mob_light_obj = owner.mob_light(2, 1.5, "#ccff33")
 	return TRUE
 
 /datum/status_effect/tinlux_light/on_remove()
@@ -610,3 +638,168 @@
 /datum/status_effect/gutted/proc/stop_gutting()
 	SIGNAL_HANDLER
 	qdel(src)
+
+// /datum/status_effect/washing_regen
+// 	id = "shower_regen"
+// 	duration = STATUS_EFFECT_PERMANENT
+// 	status_type = STATUS_EFFECT_UNIQUE
+// 	alert_type = /atom/movable/screen/alert/status_effect/washing_regen
+// 	/// How much stamina we regain from washing
+// 	var/stamina_heal_per_tick = -4
+// 	/// How much brute, tox and fie damage we heal from this
+// 	var/heal_per_tick = 0
+// 	/// The main reagent used for the shower (if no reagent is at least 70% of volume then it's null)
+// 	var/datum/reagent/shower_reagent
+
+// /datum/status_effect/washing_regen/on_creation(mob/living/new_owner, shower_reagent)
+// 	if(!src.shower_reagent)
+// 		src.shower_reagent = shower_reagent
+// 	return ..()
+
+// /datum/status_effect/washing_regen/on_apply()
+// 	. = ..()
+// 	if(istype(shower_reagent, /datum/reagent/blood))
+// 		if(HAS_TRAIT(owner, TRAIT_MORBID) || HAS_TRAIT(owner, TRAIT_EVIL) || (owner.mob_biotypes & MOB_UNDEAD))
+// 			alert_type = /atom/movable/screen/alert/status_effect/washing_regen/bloody_like
+// 		else
+// 			alert_type  = /atom/movable/screen/alert/status_effect/washing_regen/bloody_dislike
+// 	else if(istype(shower_reagent, /datum/reagent/water))
+// 		if(HAS_TRAIT(owner, TRAIT_WATER_HATER) && !HAS_TRAIT(owner, TRAIT_WATER_ADAPTATION))
+// 			alert_type = /atom/movable/screen/alert/status_effect/washing_regen/hater
+// 		else
+// 			alert_type = /atom/movable/screen/alert/status_effect/washing_regen
+// 	else if(!shower_reagent) // dirty shower
+// 		alert_type  = /atom/movable/screen/alert/status_effect/washing_regen/dislike
+
+// /datum/status_effect/washing_regen/tick(seconds_between_ticks)
+// 	. = ..()
+
+// 	var/is_disgusted = FALSE
+
+// 	if(istype(shower_reagent, /datum/reagent/water))
+// 		var/water_adaptation = HAS_TRAIT(owner, TRAIT_WATER_ADAPTATION)
+// 		var/water_hater = HAS_TRAIT(owner, TRAIT_WATER_HATER)
+// 		var/stam_recovery = (water_hater && !water_adaptation ? -stamina_heal_per_tick : stamina_heal_per_tick) * seconds_between_ticks
+// 		var/recovery = heal_per_tick
+// 		if(water_adaptation)
+// 			recovery -= 1
+// 			stam_recovery *= 1.5
+// 		else if(water_hater)
+// 			recovery *= 0
+// 		recovery *= seconds_between_ticks
+
+// 		var/healed = 0
+// 		if(recovery) //very mild healing for those with the water adaptation trait (fish infusion)
+// 			healed += owner.adjustOxyLoss(recovery * (water_adaptation ? 1.5 : 1), updating_health = FALSE, required_biotype = MOB_ORGANIC)
+// 			healed += owner.adjustFireLoss(recovery, updating_health = FALSE, required_bodytype = BODYTYPE_ORGANIC)
+// 			healed += owner.adjustToxLoss(recovery, updating_health = FALSE, required_biotype = MOB_ORGANIC)
+// 			healed += owner.adjustBruteLoss(recovery, updating_health = FALSE, required_bodytype = BODYTYPE_ORGANIC)
+// 		healed += owner.adjustStaminaLoss(stam_recovery, updating_stamina = FALSE)
+// 		if(healed)
+// 			owner.updatehealth()
+// 	else if(istype(shower_reagent, /datum/reagent/blood))
+// 		var/enjoy_bloody_showers = HAS_TRAIT(owner, TRAIT_MORBID) || HAS_TRAIT(owner, TRAIT_EVIL) || (owner.mob_biotypes & MOB_UNDEAD)
+// 		is_disgusted = !enjoy_bloody_showers
+// 	else if(!shower_reagent) // dirty shower
+// 		is_disgusted = TRUE
+
+// 	if(is_disgusted)
+// 		owner.adjust_disgust(2)
+
+// /atom/movable/screen/alert/status_effect/washing_regen
+// 	name = "Washing"
+// 	desc = "A good wash fills me with energy!"
+// 	icon_state = "shower_regen"
+
+// /atom/movable/screen/alert/status_effect/washing_regen/hater
+// 	desc = "Waaater... Fuck this WATER!!"
+// 	icon_state = "shower_regen_catgirl"
+
+// /atom/movable/screen/alert/status_effect/washing_regen/dislike
+// 	desc = "This water feels dirty..."
+// 	icon_state = "shower_regen_dirty"
+
+// /atom/movable/screen/alert/status_effect/washing_regen/bloody_like
+// 	desc = "Mhhhmmmm... the crimson red drops of life. How delightful."
+// 	icon_state = "shower_regen_blood_happy"
+
+// /atom/movable/screen/alert/status_effect/washing_regen/bloody_dislike
+// 	desc = "Is that... blood? What the fuck!"
+// 	icon_state = "shower_regen_blood_bad"
+
+// /datum/status_effect/washing_regen/hot_spring
+// 	alert_type = /atom/movable/screen/alert/status_effect/washing_regen/hotspring
+// 	stamina_heal_per_tick = -4.5
+// 	heal_per_tick = -0.4
+// 	shower_reagent = /datum/reagent/water
+
+// /datum/status_effect/washing_regen/hot_spring/on_apply()
+// 	. = ..()
+// 	if(HAS_TRAIT(owner, TRAIT_WATER_HATER) && !HAS_TRAIT(owner, TRAIT_WATER_ADAPTATION))
+// 		alert_type = /atom/movable/screen/alert/status_effect/washing_regen/hotspring/hater
+
+// /datum/status_effect/washing_regen/hot_spring/tick(seconds_between_ticks)
+// 	. = ..()
+// 	owner.adjust_bodytemperature(10 * seconds_between_ticks, 0, T0C + 45)
+
+// /atom/movable/screen/alert/status_effect/washing_regen/hotspring
+// 	name = "Hotspring"
+// 	desc = "Hot Springs are so relaxing..."
+// 	icon_state = "hotspring_regen"
+
+// /atom/movable/screen/alert/status_effect/washing_regen/hotspring/hater
+// 	name = "Hotspring"
+// 	desc = "Waaater... FUCK THIS HOT WATER!!"
+// 	icon_state = "hotspring_regen_catgirl"
+
+/datum/status_effect/moodlet_in_area
+	id = "moodlet_in_area"
+	// duration = STATUS_EFFECT_PERMANENT
+	duration = -1
+	// tick_interval = STATUS_EFFECT_NO_TICK
+	tick_interval = -1
+	status_type = STATUS_EFFECT_MULTIPLE
+	alert_type = null
+	/// Moodlet to apply while in the area
+	VAR_PRIVATE/moodlet_type
+	/// Typecache of areas that will trigger the moodlet while in them
+	VAR_PRIVATE/list/allowed_areas
+	/// Optional callback to run when checking if the moodlet should be applied. Should return TRUE to apply, FALSE to not.
+	VAR_PRIVATE/datum/callback/special_check
+
+/datum/status_effect/moodlet_in_area/on_creation(mob/living/new_owner, moodlet_type, list/allowed_areas, datum/callback/special_check)
+	src.moodlet_type = moodlet_type
+	src.allowed_areas = typecacheof(allowed_areas)
+	src.special_check = special_check
+	return ..()
+
+/datum/status_effect/moodlet_in_area/before_remove(moodlet_type, ...)
+	return moodlet_type == src.moodlet_type
+
+/datum/status_effect/moodlet_in_area/on_apply()
+	if(!length(allowed_areas))
+		return FALSE
+
+	for(var/datum/status_effect/moodlet_in_area/other_effect in owner.status_effects)
+		if(other_effect.moodlet_type == moodlet_type)
+			return FALSE
+
+	owner.become_area_sensitive("[id]_[moodlet_type]")
+	RegisterSignal(owner, COMSIG_ENTER_AREA, PROC_REF(check_area))
+	return TRUE
+
+/datum/status_effect/moodlet_in_area/on_remove()
+	UnregisterSignal(owner, COMSIG_ENTER_AREA)
+	owner.lose_area_sensitivity("[id]_[moodlet_type]")
+	owner.clear_mood_event("[id]_[moodlet_type]")
+
+/datum/status_effect/moodlet_in_area/proc/check_area(datum/source, area/new_area)
+	SIGNAL_HANDLER
+
+	if(special_check && !special_check.Invoke(owner, new_area))
+		return
+
+	if(is_type_in_typecache(new_area, allowed_areas))
+		owner.add_mood_event("[id]_[moodlet_type]", moodlet_type)
+	else
+		owner.clear_mood_event("[id]_[moodlet_type]")

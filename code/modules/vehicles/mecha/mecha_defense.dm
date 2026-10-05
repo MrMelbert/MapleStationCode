@@ -123,6 +123,8 @@
 		var/mob/living/hitmob = pick(occupants)
 		return hitmob.bullet_act(hitting_projectile, def_zone, piercing_hit) //If the sides are open, the occupant can be hit
 
+	var/old_internals = internal_damage
+
 	. = ..()
 
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
@@ -135,6 +137,9 @@
 		armour_penetration = hitting_projectile.armour_penetration,
 	), def_zone)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(REVERSE_DIR(hitting_projectile.dir), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
@@ -204,14 +209,14 @@
 			cookedalive.adjust_fire_stacks(1)
 			cookedalive.ignite_mob()
 
-/obj/vehicle/sealed/mecha/attackby_secondary(obj/item/weapon, mob/user, params)
+/obj/vehicle/sealed/mecha/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(weapon, /obj/item/mecha_parts))
 		var/obj/item/mecha_parts/parts = weapon
 		parts.try_attach_part(user, src, TRUE)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
-/obj/vehicle/sealed/mecha/attackby(obj/item/weapon, mob/living/user, params)
+/obj/vehicle/sealed/mecha/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)
 		return ..()
 	if(istype(weapon, /obj/item/mmi))
@@ -313,11 +318,14 @@
 			balloon_alert(user, "already installed!")
 		return
 
-/obj/vehicle/sealed/mecha/attacked_by(obj/item/attacking_item, mob/living/user)
-	if(!attacking_item.force)
-		return
+/obj/vehicle/sealed/mecha/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	var/final_force = CALCULATE_FORCE(attacking_item, attack_modifiers) * attacking_item.get_demolition_modifier(src)
+	if(!final_force)
+		return 0
 
-	var/damage_taken = take_damage(attacking_item.force * attacking_item.demolition_mod, attacking_item.damtype, MELEE, 1, get_dir(src, user))
+	var/old_internals = internal_damage
+
+	var/damage_taken = take_damage(final_force, attacking_item.damtype, MELEE, 1, get_dir(src, user))
 	try_damage_component(damage_taken, user.zone_selected)
 
 	var/hit_verb = length(attacking_item.attack_verb_simple) ? "[pick(attacking_item.attack_verb_simple)]" : "hit"
@@ -331,11 +339,25 @@
 	log_combat(user, src, "attacked", attacking_item)
 	log_message("Attacked by [user]. Item - [attacking_item], Damage - [damage_taken]", LOG_MECHA)
 
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
+
+	return damage_taken
+
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
+	var/old_internals = internal_damage
+
 	. = ..()
-	if(.)
-		try_damage_component(., user.zone_selected)
-		diag_hud_set_mechhealth()
+	if(!.)
+		return
+
+	try_damage_component(., user.zone_selected)
+	diag_hud_set_mechhealth()
+
+	if((internal_damage & MECHA_INT_FUEL_LINE) && !(old_internals & MECHA_INT_FUEL_LINE) && oil_pool >= 10)
+		spray_blood(get_dir(user, src), rand(2, 4), list("[oil_name]" = oil_type))
+		oil_pool -= 2
 
 /obj/vehicle/sealed/mecha/examine(mob/user)
 	. = ..()
@@ -452,6 +474,8 @@
 		clear_internal_damage(MECHA_CABIN_AIR_BREACH)
 	if(internal_damage & MECHA_INT_CONTROL_LOST)
 		clear_internal_damage(MECHA_INT_CONTROL_LOST)
+	if(internal_damage & MECHA_INT_FUEL_LINE)
+		clear_internal_damage(MECHA_INT_FUEL_LINE)
 	diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/narsie_act()

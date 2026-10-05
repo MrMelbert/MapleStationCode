@@ -14,7 +14,8 @@
 		/obj/item/stock_parts/matter_bin = 3,
 		/obj/item/stock_parts/micro_laser = 3,
 		/obj/item/stock_parts/scanning_module = 3,
-		/obj/item/wirecutters = 1,
+		/obj/item/screwdriver = 2,
+		/obj/item/wirecutters = 2,
 	)
 	contraband = list(
 		/obj/item/assembly/health = 2,
@@ -22,6 +23,7 @@
 		/obj/item/assembly/voice = 2,
 		/obj/item/stock_parts/power_store/cell/high = 1,
 		/obj/item/stock_parts/power_store/battery/high = 1,
+		/obj/item/market_uplink/blackmarket = 1,
 	)
 	premium = list(
 		/obj/item/assembly/igniter/condenser = 2,
@@ -29,6 +31,7 @@
 		/obj/item/universal_scanner = 3,
 		/obj/item/vending_refill/custom = 3,
 	)
+	allow_custom = TRUE
 
 	refill_canister = /obj/item/vending_refill/assist
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"

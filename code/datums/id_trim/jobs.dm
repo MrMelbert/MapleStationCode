@@ -24,7 +24,7 @@
 
 /datum/id_trim/job/New()
 	if(ispath(job))
-		job = SSjob.GetJobType(job)
+		job = SSjob.get_job_type(job)
 
 	if(isnull(job_changes))
 		job_changes = SSmapping.config.job_changes
@@ -204,30 +204,6 @@
 		ACCESS_HOP,
 		)
 	job = /datum/job/botanist
-
-/datum/id_trim/job/bridge_assistant
-	assignment = "Bridge Assistant"
-	trim_state = "trim_assistant"
-	department_color = COLOR_COMMAND_BLUE
-	subdepartment_color = COLOR_COMMAND_BLUE
-	sechud_icon_state = SECHUD_BRIDGE_ASSISTANT
-	minimal_access = list(
-		ACCESS_COMMAND,
-		ACCESS_EVA,
-		ACCESS_GATEWAY,
-		ACCESS_MAINT_TUNNELS,
-		ACCESS_RC_ANNOUNCE,
-		ACCESS_TELEPORTER,
-		ACCESS_WEAPONS,
-	)
-	extra_access = list()
-	template_access = list(
-		ACCESS_CAPTAIN,
-		ACCESS_CHANGE_IDS,
-	)
-	job = /datum/job/bridge_assistant
-	honorifics = list("Underling", "Assistant", "Mate")
-	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/captain
 	assignment = "Captain"
@@ -1154,7 +1130,7 @@
 
 	if(CONFIG_GET(number/depsec_access_level) == POPULATION_SCALED_ACCESS)
 		var/minimal_security_officers = 3 // We do not spawn in any more lockers if there are 5 or less security officers, so let's keep it lower than that number.
-		var/datum/job/J = SSjob.GetJob(JOB_SECURITY_OFFICER)
+		var/datum/job/J = SSjob.get_job(JOB_SECURITY_OFFICER)
 		if((J.spawn_positions - minimal_security_officers) <= 0)
 			access |= elevated_access
 
@@ -1287,6 +1263,36 @@
 	job = /datum/job/station_engineer
 	honorifics = list("Engineer")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
+
+/datum/id_trim/job/veteran_advisor
+	assignment = "Veteran Security Advisor"
+	trim_state = "trim_veteranadvisor"
+	department_color = COLOR_SECURITY_RED
+	subdepartment_color = COLOR_COMMAND_BLUE
+	sechud_icon_state = SECHUD_VETERAN_ADVISOR
+	minimal_access = list(
+		ACCESS_COMMAND,
+		ACCESS_BRIG,
+		ACCESS_BRIG_ENTRANCE,
+		ACCESS_COURT,
+		ACCESS_MECH_SECURITY,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_SECURITY,
+		ACCESS_WEAPONS,
+	)
+	extra_access = list()
+	template_access = list()
+	job = /datum/job/veteran_advisor
+
+/datum/id_trim/job/veteran_advisor/refresh_trim_access()
+	. = ..()
+
+	if(!.)
+		return
+
+	// Config check for if sec has maint access.
+	if(CONFIG_GET(flag/security_has_maint_access))
+		access |= list(ACCESS_MAINT_TUNNELS)
 
 /datum/id_trim/job/virologist
 	assignment = "Virologist"

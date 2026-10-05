@@ -4,7 +4,7 @@
  * Placed machine that handles destructive experiments (but can also do the normal ones)
  */
 /obj/machinery/destructive_scanner
-	name = "Experimental Destructive Scanner"
+	name = "experimental destructive scanner"
 	desc = "A much larger version of the hand-held scanner, a charred label warns about its destructive capabilities."
 	icon = 'icons/obj/machines/destructive_scanner.dmi'
 	icon_state = "tube_open"
@@ -102,7 +102,7 @@
 	. = ..()
 	icon_state = scanning ? "tube_on" : "tube_open"
 
-/obj/machinery/destructive_scanner/attackby(obj/item/object, mob/user, params)
+/obj/machinery/destructive_scanner/attackby(obj/item/object, mob/user, list/modifiers, list/attack_modifiers)
 	if (!scanning && default_deconstruction_screwdriver(user, "tube_open", "tube_open", object) || default_deconstruction_crowbar(object))
 		update_icon()
 		return

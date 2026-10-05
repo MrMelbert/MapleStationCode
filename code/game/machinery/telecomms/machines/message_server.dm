@@ -1,6 +1,6 @@
 // A decorational representation of SSblackbox, usually placed alongside the message server. Also contains a traitor theft item.
 /obj/machinery/blackbox_recorder
-	name = "Blackbox Recorder"
+	name = "blackbox recorder"
 	icon = 'icons/obj/machines/telecomms.dmi'
 	icon_state = "blackbox"
 	density = TRUE
@@ -34,7 +34,7 @@
 		to_chat(user, span_warning("It seems that the blackbox is missing..."))
 		return
 
-/obj/machinery/blackbox_recorder/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/blackbox_recorder/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(attacking_item, /obj/item/blackbox))
 		if(HAS_TRAIT(attacking_item, TRAIT_NODROP) || !user.transferItemToLoc(attacking_item, src))
 			to_chat(user, span_warning("[attacking_item] is stuck to your hand!"))
@@ -58,7 +58,8 @@
 	return ..()
 
 /obj/item/blackbox
-	name = "\proper the blackbox"
+	name = "blackbox"
+	article = "the"
 	desc = "A strange relic, capable of recording data on extradimensional vertices. It lives inside the blackbox recorder for safe keeping."
 	icon = 'icons/obj/machines/telecomms.dmi'
 	icon_state = "blackcube"
@@ -76,7 +77,7 @@
  * require the message server.
  */
 /obj/machinery/telecomms/message_server
-	name = "Messaging Server"
+	name = "messaging server"
 	desc = "A machine that processes and routes PDA and request console messages."
 	icon_state = "message_server"
 	telecomms_type = /obj/machinery/telecomms/message_server

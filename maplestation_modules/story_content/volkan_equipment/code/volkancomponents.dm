@@ -53,7 +53,7 @@
 	return TRUE
 
 ///Manages all the stuff a tractor field can do from a distance.
-/datum/component/tractorfield/proc/on_ranged_attack(mob/source, atom/target, src)
+/datum/component/tractorfield/proc/on_ranged_attack(mob/source, atom/target)
 	SIGNAL_HANDLER
 	if(is_type_in_typecache(target, blacklisted_atoms))
 		return
@@ -166,7 +166,7 @@
 		return
 	return TRUE
 
-/datum/component/tractorfield/broken/on_ranged_attack(mob/source, atom/target, src)
+/datum/component/tractorfield/broken/on_ranged_attack(mob/source, atom/target)
 	if(is_type_in_typecache(target, blacklisted_atoms))
 		return
 	if(!tractorRangeCheck(source, target) || source.z != target.z)

@@ -3,10 +3,10 @@
 	desc = "Your sense of smell is comparable to that of a canine."
 	quality = POSITIVE
 	difficulty = 12
-	text_gain_indication = "<span class='notice'>Smells begin to make more sense...</span>"
-	text_lose_indication = "<span class='notice'>Your sense of smell goes back to normal.</span>"
+	text_gain_indication = span_notice("Smells begin to make more sense...")
+	text_lose_indication = span_notice("Your sense of smell goes back to normal.")
 	power_path = /datum/action/cooldown/spell/olfaction
-	instability = 30
+	instability = POSITIVE_INSTABILITY_MODERATE
 	synchronizer_coeff = 1
 
 /datum/mutation/human/olfaction/modify()
@@ -40,15 +40,18 @@
 		to_chat(owner, span_warning("You have no nose!"))
 		return FALSE
 
+	if(!living_cast_on.can_smell()) //Anosmia quirk holders can't smell anything
+		to_chat(owner, span_warning("You can't smell!"))
+		return FALSE
+
 	return TRUE
 
 /datum/action/cooldown/spell/olfaction/cast(mob/living/cast_on)
 	. = ..()
 	// Can we sniff? is there miasma in the air?
 	var/datum/gas_mixture/air = cast_on.loc.return_air()
-	var/list/cached_gases = air.gases
 
-	if(cached_gases[/datum/gas/miasma])
+	if(air.moles[/datum/gas/miasma])
 		cast_on.adjust_disgust(sensitivity * 45)
 		to_chat(cast_on, span_warning("With your overly sensitive nose, \
 			you get a whiff of stench and feel sick! Try moving to a cleaner area!"))

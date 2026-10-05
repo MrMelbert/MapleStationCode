@@ -106,7 +106,7 @@
 	to_chat(player, span_userdanger("...The suspense is killing you!"))
 	player.set_heartattack(status = TRUE)
 
-/obj/item/coupon/attack_atom(obj/O, mob/living/user, params)
+/obj/item/coupon/attack_atom(obj/O, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!istype(O, /obj/machinery/computer/cargo))
 		return ..()
 	if(discount_pct_off == COUPON_OMEN)

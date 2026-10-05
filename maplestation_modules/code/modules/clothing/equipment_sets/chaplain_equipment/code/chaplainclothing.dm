@@ -7,7 +7,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericrobe"
 	inhand_icon_state = "clericrobe"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 
 /obj/item/clothing/under/rank/cleric/skirt
@@ -19,7 +19,7 @@
 	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericskirt"
 	inhand_icon_state = "clericrobe"
-	supports_variations_flags = CLOTHING_NO_VARIATION
+	supports_variations_flags = NONE
 	can_adjust = TRUE
 
 /obj/item/clothing/shoes/cleric
@@ -308,7 +308,10 @@
 /datum/loadout_item/neck/cremona_necklace
 	name = "Puligard Holy Necklace"
 	item_path = /obj/item/clothing/neck/cremona
-	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/cremona_necklace/get_item_information()
+	. = ..()
+	.[FA_ICON_MASKS_THEATER] = "Character item"
 
 /obj/item/storage/bag/garment/pulimed
 	name = "Puligard Medical garment bag"

@@ -5,8 +5,52 @@
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 4)
-	build_path = /obj/item/organ/internal/ears/cat/cybernetic
+	build_path = /obj/item/organ/ears/cat/cybernetic
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_MISC
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
+/datum/design/sight_visor
+	name = "Spectrum Amplification Visor"
+	id = "antiblindnessvisor"
+	build_type = PROTOLATHE | AWAY_LATHE
+	materials = list(
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 1.2,
+		/datum/material/gold = SHEET_MATERIAL_AMOUNT * 0.8,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = SHEET_MATERIAL_AMOUNT * 1.2,
+	)
+	build_path = /obj/item/clothing/glasses/blindness_visor
+	category = list(
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_EQUIPMENT_MEDICAL
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
+/datum/design/neural_suppressor
+	name = "Surgical Neural Suppressor"
+	desc = "A device that suppresses the nervous system - a more advanced form of anesthetic."
+	id = "neural_suppressor"
+	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = SMALL_MATERIAL_AMOUNT,
+		/datum/material/gold = SMALL_MATERIAL_AMOUNT,
+	)
+	build_path = /obj/item/surgery_neural_suppressor
+	category = list(
+		RND_CATEGORY_TOOLS + RND_SUBCATEGORY_EQUIPMENT_MEDICAL
+	)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
+/datum/design/plastic_medkit
+	name = "Plastic Medkit"
+	id = "plasticmedkit"
+	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	materials = list(/datum/material/plastic =HALF_SHEET_MATERIAL_AMOUNT)
+	build_path = /obj/item/storage/plastic_medkit
+	category = list(
+		RND_CATEGORY_INITIAL,
+		RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_MEDICAL,
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL

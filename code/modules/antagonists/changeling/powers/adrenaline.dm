@@ -13,7 +13,7 @@
 	..()
 	to_chat(user, span_notice("Energy rushes through us."))
 	user.SetKnockdown(0)
-	user.set_resting(FALSE)
+	user.set_resting(FALSE, instant = TRUE)
 	user.reagents.add_reagent(/datum/reagent/medicine/changelingadrenaline, 4) //20 seconds
 	user.reagents.add_reagent(/datum/reagent/medicine/changelinghaste, 3) //6 seconds, for a really quick burst of speed
 	return TRUE

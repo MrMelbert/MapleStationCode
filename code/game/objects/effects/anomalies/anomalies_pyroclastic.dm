@@ -6,6 +6,8 @@
 	/// How many seconds between each gas release
 	var/releasedelay = 10
 	aSignal = /obj/item/assembly/signaler/anomaly/pyro
+	/// Delay before spawning a slime
+	var/poll_time = 5 SECONDS
 
 /obj/effect/anomaly/pyro/Initialize(mapload, new_lifespan, drops_core)
 	. = ..()
@@ -39,13 +41,11 @@
 	var/datum/action/innate/slime/reproduce/repro_action = new
 	repro_action.Grant(pyro)
 
-	var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as a pyroclastic anomaly slime?", check_jobban = ROLE_SENTIENCE, poll_time = 10 SECONDS, target_mob = pyro, ignore_category = POLL_IGNORE_PYROSLIME, pic_source = pyro, role_name_text = "pyroclastic anomaly slime")
-	if(!LAZYLEN(candidates))
+	var/mob/dead/observer/chosen = SSpolling.poll_ghosts_for_target(check_jobban = ROLE_SENTIENCE, poll_time = poll_time, checked_target = src, ignore_category = POLL_IGNORE_PYROSLIME, alert_pic = src, role_name_text = "pyroclastic anomaly slime")
+	if(isnull(chosen))
 		return
 
-	var/mob/dead/observer/chosen = pick(candidates)
 	pyro.key = chosen.key
-	pyro.mind.special_role = ROLE_PYROCLASTIC_SLIME
 	pyro.mind.add_antag_datum(/datum/antagonist/pyro_slime)
 	pyro.log_message("was made into a slime by pyroclastic anomaly", LOG_GAME)
 

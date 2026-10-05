@@ -166,7 +166,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	SIGNAL_HANDLER
 
 	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
-		var/datum/job/job = SSjob.GetJobType(jobtype)
+		var/datum/job/job = SSjob.get_job_type(jobtype)
 		if(isnull(job))
 			continue
 		var/job_prio = isnum(job.crewmonitor_priority) ? job.crewmonitor_priority : jobs[job.title]
@@ -185,9 +185,17 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		ui = new(user, src, "CrewConsole")
 		ui.open()
 
-/datum/crewmonitor/proc/show(mob/M, source)
-	ui_sources[WEAKREF(M)] = WEAKREF(source)
-	ui_interact(M)
+// NON-MODULE CHANGE
+/datum/crewmonitor/proc/show(mob/user, atom/source)
+	if(isobj(source) && !ui_sources[WEAKREF(user)])
+		user.examine_feedback(source)
+
+	ui_sources[WEAKREF(user)] = WEAKREF(source)
+	ui_interact(user)
+
+// NON-MODULE CHANGE
+/datum/crewmonitor/ui_close(mob/user)
+	ui_sources -= WEAKREF(user)
 
 /datum/crewmonitor/ui_host(mob/user)
 	var/datum/weakref/host_ref = ui_sources[WEAKREF(user)]

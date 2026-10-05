@@ -3,6 +3,7 @@
 	id_additions = list(
 		"digitigrade_cyber_r_leg",
 		"digitigrade_cyber_l_leg",
+		"cybernetics_paintkit",
 	)
 
 /datum/techweb_node/cybernetics

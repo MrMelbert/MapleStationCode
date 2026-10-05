@@ -40,17 +40,15 @@
 		to_chat(user, span_warning("[victim] is already bound."))
 		return
 
-	victim.set_handcuffed(new /obj/item/restraints/handcuffs/energy/clock(victim))
-	victim.update_handcuffed()
+	victim.equip_to_slot(new /obj/item/restraints/handcuffs/energy/clock(victim), ITEM_SLOT_HANDCUFFED)
 	victim.adjust_silence(10 SECONDS)
 	to_chat(user, span_notice("You shackle [victim]."))
 	log_combat(user, victim, "shackled")
 	after_successful_spell(user)
 
 /obj/item/restraints/handcuffs/energy/clock
-	name = "hateful manacles"
+	name = "\proper hateful manacles"
 	desc = "Shackles that bind the wrists in heavy yellow chains."
-	trashtype = /obj/item/restraints/handcuffs/energy/used
 	item_flags = DROPDEL
 
 /obj/item/restraints/handcuffs/energy/clock/dropped(mob/user)

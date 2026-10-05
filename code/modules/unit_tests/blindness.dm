@@ -52,14 +52,14 @@
 	// Check for the status effect, duh
 	TEST_ASSERT(dummy.is_blind(), "Dummy, [status_message], did not have the blind status effect.")
 	// Being more technical, we need to check for client color and screen overlays
-	TEST_ASSERT(HAS_CLIENT_COLOR(dummy, /datum/client_colour/monochrome/blind), "Dummy, [status_message], did not have the monochrome client color.")
+	TEST_ASSERT(HAS_CLIENT_COLOR(dummy, /datum/client_colour/blindness), "Dummy, [status_message], did not have the monochrome client color.")
 	TEST_ASSERT(HAS_SCREEN_OVERLAY(dummy, /atom/movable/screen/fullscreen/blind), "Dummy, [status_message], did not have a blind screen overlay in their list of screens.")
 
 /datum/unit_test/blindness/proc/check_if_not_blind(mob/living/carbon/human/dummy, status_message = "after being cured of blindness")
 	// Check for no status effect
 	TEST_ASSERT(!dummy.is_blind(), "Dummy, [status_message], still had the blindness status effect.")
 	// Check that the client color and screen overlay are gone
-	TEST_ASSERT(!HAS_CLIENT_COLOR(dummy, /datum/client_colour/monochrome/blind), "Dummy, [status_message], still had the monochrome client color.")
+	TEST_ASSERT(!HAS_CLIENT_COLOR(dummy, /datum/client_colour/blindness), "Dummy, [status_message], still had the monochrome client color.")
 	TEST_ASSERT(!HAS_SCREEN_OVERLAY(dummy, /atom/movable/screen/fullscreen/blind), "Dummy, [status_message], still had the blind sceen overlay.")
 
 /**
@@ -105,7 +105,7 @@
 
 /datum/unit_test/eye_damage/Run()
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
-	var/obj/item/organ/internal/eyes/eyes = dummy.get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = dummy.get_organ_slot(ORGAN_SLOT_EYES)
 	TEST_ASSERT_NOTNULL(eyes, "Eye damage unit test spawned a dummy without eyes!")
 
 	// Test blindness due to eye damage

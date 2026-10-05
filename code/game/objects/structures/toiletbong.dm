@@ -85,7 +85,8 @@
 	new /obj/item/flamethrower(get_turf(src))
 	new /obj/item/stack/sheet/iron(get_turf(src))
 	var/obj/item/tank/internals/plasma/ptank = new /obj/item/tank/internals/plasma(get_turf(src))
-	ptank.air_contents.gases[/datum/gas/plasma][MOLES] = (0)
+	ptank.air_contents.set_gas(/datum/gas/plasma, 0)
+	// drop_custom_materials()
 	qdel(src)
 	return TRUE
 
@@ -100,7 +101,7 @@
 		to_chat(user, span_boldwarning("The [emag_card] falls into the toilet. You fish it back out. Looks like you broke the toilet."))
 	return TRUE
 
-/obj/structure/toiletbong/attackby(obj/item/attacking_item, mob/user, params)
+/obj/structure/toiletbong/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(attacking_item, /obj/item/card/emag))
 		return
 	return ..()

@@ -16,7 +16,7 @@
 		/obj/item/reagent_containers/spray/waterflower/lube = 1,
 		/obj/item/mod/skin_applier/honkerative = 1,
 	)
-	box = /obj/item/storage/box/survival/syndie
+	box = /obj/item/storage/pouch/survival/syndie
 	implants = list(/obj/item/implant/sad_trombone)
 
 	uplink_type = /obj/item/uplink/clownop

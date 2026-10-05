@@ -11,7 +11,7 @@
 		/datum/reagent/consumable/starfruit_juice = 5,
 	)
 	tastes = list("tender meat" = 2, "sweet sauce" = 1, "sugary glaze" = 1)
-	foodtypes = MEAT
+	foodtypes = MEAT | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/meat_platter
@@ -27,7 +27,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("tender meat" = 2, "sweet sauce" = 1, "smokey BBQ" = 1, "sugary glaze" = 1)
-	foodtypes = MEAT
+	foodtypes = MEAT | VEGETABLES | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_5
 
 /obj/item/food/starfruit_chicken_alfredo
@@ -42,7 +42,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("sweet chicken" = 2, "creamy sauce" = 1, "cursed knowledge" = 1, "tasty noodles" = 1)
-	foodtypes = MEAT | GRAIN
+	foodtypes = MEAT | GRAIN | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/starfruit_sushi_roll
@@ -55,7 +55,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("boiled rice" = 2, "starfruit" = 2, "fish" = 2)
-	foodtypes = SEAFOOD
+	foodtypes = VEGETABLES | GRAIN | FRUIT | SUGAR | SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -88,7 +88,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("raw fish" = 2, "sweet fish" = 1, "soy sauce" = 1)
-	foodtypes = SEAFOOD
+	foodtypes = SEAFOOD | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/eggplant_fry
@@ -103,7 +103,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("eggplant" = 2, "simmered starfruit" = 1, "sauteed vegetables" = 1)
-	foodtypes = VEGETABLES
+	foodtypes = VEGETABLES | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/starfruit_tofu_beef
@@ -133,7 +133,7 @@
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
 	tastes = list("eggplant" = 2, "simmered starfruit" = 1, "sautaed vegetables" = 1)
-	foodtypes = GRAIN | MEAT
+	foodtypes = MEAT | VEGETABLES | GRAIN | FRUIT | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cake/starfruit
@@ -186,7 +186,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 	)
 	tastes = list("pie" = 1, "sugar" = 2, "starfruit" = 1, "cosmic longing" = 1)
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN | FRUIT | DAIRY | SUGAR
 
 /obj/item/food/starfruit_toast
 	name = "starfruit jellied toast"
@@ -214,7 +214,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("starfruit" = 1, "pie" = 1, "cosmic longing" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR
+	foodtypes = GRAIN | FRUIT | DAIRY | SUGAR
 	slice_type = /obj/item/food/pieslice/starfruit_pie
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -224,7 +224,7 @@
 	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
 	icon_state = "starfruitpie_slice"
 	tastes = list("pie" = 1, "starfruit" = 1, "cosmic longing" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR
+	foodtypes = GRAIN | FRUIT | DAIRY | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/starfruit_compote
@@ -266,7 +266,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("cake" = 3, "starfruit" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR
+	foodtypes = GRAIN | FRUIT | DAIRY | SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3

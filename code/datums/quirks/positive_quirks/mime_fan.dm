@@ -7,6 +7,7 @@
 	gain_text = span_notice("You are a big fan of the Mime.")
 	lose_text = span_danger("The mime doesn't seem so great.")
 	medical_record_text = "Patient reports being a big fan of mimes."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list(
 		/obj/item/toy/crayon/mime,
 		/obj/item/clothing/mask/gas/mime,
@@ -23,7 +24,3 @@
 
 /datum/quirk/item_quirk/mime_fan/add_unique(client/client_source)
 	give_item_to_holder(/obj/item/clothing/accessory/mime_fan_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-/datum/quirk/item_quirk/mime_fan/add(client/client_source)
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.show_to(quirk_holder)

@@ -1,8 +1,9 @@
 /datum/job/research_director
 	title = JOB_RESEARCH_DIRECTOR
-	description = "Supervise research efforts, ensure Robotics is in working \
-		order, make sure the AI and its Cyborgs aren't rogue, replacing them if \
-		they are."
+	description = "Supervise research efforts, \
+		ensure your staff don't destroy the station, \
+		ensure the AI and cyborg's don't destroy the station, \
+		Try not to destroy the station yourself."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list("Science")
@@ -40,12 +41,25 @@
 		/obj/item/borg/upgrade/ai = 2
 	)
 
-	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/cytology,
+		/obj/item/reagent_containers/cup/beaker,
+	)
 	rpg_title = "Archmagister"
 	job_flags = STATION_JOB_FLAGS | HEAD_OF_STAFF_JOB_FLAGS
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/chemistry = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/cybernetics = SKILL_LEVEL_MASTER,
+		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/eva = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/piloting = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/job/research_director/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
@@ -58,9 +72,9 @@
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/research_director
 	uniform = /obj/item/clothing/under/rank/rnd/research_director/turtleneck
-	suit = /obj/item/clothing/suit/jacket/research_director
+	suit = /obj/item/clothing/suit/toggle/labcoat/research_director
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
+		/obj/item/melee/baton/telescopic/silver = 1,
 		)
 	belt = /obj/item/modular_computer/pda/heads/rd
 	head = /obj/item/clothing/head/beret/science/rd

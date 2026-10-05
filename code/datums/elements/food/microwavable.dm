@@ -44,6 +44,7 @@
 
 	var/efficiency = istype(used_microwave) ? used_microwave.efficiency : 1
 	SEND_SIGNAL(result, COMSIG_ITEM_MICROWAVE_COOKED, source, efficiency)
+	SEND_SIGNAL(source, COMSIG_ITEM_MICROWAVE_COOKED_FROM, result, efficiency)
 
 	if(IS_EDIBLE(result) && (result_typepath != default_typepath))
 		BLACKBOX_LOG_FOOD_MADE(result.type)
@@ -52,8 +53,7 @@
 		if(added_reagents) // Add any new reagents that should be added
 			result.reagents.add_reagent_list(added_reagents)
 
-		if(microwaver && microwaver.mind)
-			ADD_TRAIT(result, TRAIT_FOOD_CHEF_MADE, REF(microwaver.mind))
+		handle_chef_made_food(result, source, microwaver?.mind, 0.75)
 
 	qdel(source)
 

@@ -1,6 +1,9 @@
 SUBSYSTEM_DEF(air)
 	name = "Atmospherics"
-	init_order = INIT_ORDER_AIR
+	dependencies = list(
+		/datum/controller/subsystem/mapping,
+		/datum/controller/subsystem/atoms
+	)
 	priority = FIRE_PRIORITY_AIR
 	wait = 0.5 SECONDS
 	flags = SS_BACKGROUND
@@ -560,9 +563,8 @@ SUBSYSTEM_DEF(air)
 			// If it's already been processed, then it's already talked to us
 			if(enemy_tile.current_cycle == -INFINITE)
 				continue
-			// .air instead of .return_air() because we can guarentee that the proc won't do anything
-			if(potential_diff.air.compare(enemy_tile.air))
-				//testing("Active turf found. Return value of compare(): [T.air.compare(enemy_tile.air)]")
+			// .air instead of .return_air() because we can guarantee that the proc won't do anything
+			if(potential_diff.air.compare(enemy_tile.air, FALSE))
 				if(!potential_diff.excited)
 					potential_diff.excited = TRUE
 					SSair.active_turfs += potential_diff
@@ -782,7 +784,6 @@ GLOBAL_LIST_EMPTY(colored_images)
 	strings_to_mix["[gas_string]-[gastype]"] = canonical_mix
 	gas_string = preprocess_gas_string(gas_string)
 
-	var/list/gases = canonical_mix.gases
 	var/list/gas = params2list(gas_string)
 	if(gas["TEMP"])
 		canonical_mix.temperature = text2num(gas["TEMP"])
@@ -790,12 +791,12 @@ GLOBAL_LIST_EMPTY(colored_images)
 		gas -= "TEMP"
 	else // if we do not have a temp in the new gas mix lets assume room temp.
 		canonical_mix.temperature = T20C
+	var/list/cached_moles = canonical_mix.moles
 	for(var/id in gas)
 		var/path = id
 		if(!ispath(path))
 			path = gas_id2path(path) //a lot of these strings can't have embedded expressions (especially for mappers), so support for IDs needs to stick around
-		ADD_GAS(path, gases)
-		gases[path][MOLES] = text2num(gas[id])
+		cached_moles[path] = text2num(gas[id])
 
 	if(istype(canonical_mix, /datum/gas_mixture/immutable))
 		return canonical_mix
@@ -843,7 +844,7 @@ GLOBAL_LIST_EMPTY(colored_images)
 		currentrun -= machine
 
 /datum/controller/subsystem/air/ui_state(mob/user)
-	return GLOB.debug_state
+	return ADMIN_STATE(R_DEBUG)
 
 /datum/controller/subsystem/air/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -899,7 +900,6 @@ GLOBAL_LIST_EMPTY(colored_images)
 			if(!target)
 				return
 			usr.forceMove(target)
-			usr.update_parallax_contents()
 		if("toggle-freeze")
 			can_fire = !can_fire
 			return TRUE

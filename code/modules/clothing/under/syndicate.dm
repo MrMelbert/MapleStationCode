@@ -34,6 +34,10 @@
 	can_adjust = FALSE
 	supports_variations_flags = NONE
 
+/obj/item/clothing/under/syndicate/bloodred/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //extra-tactical
+
 /datum/armor/clothing_under/syndicate_bloodred
 	melee = 10
 	bullet = 10
@@ -110,6 +114,19 @@
 	can_adjust = FALSE
 	supports_variations_flags = NONE
 
+/obj/item/clothing/under/syndicate/floortilecamo
+	name = "floortile camouflage fatigues"
+	desc = "The newest floortile camouflage fatigues used for hallway warfare. \
+		The best breathability, flexibility and comfort. Designed by Camo-J's."
+	icon_state = "camofloortile"
+	inhand_icon_state = "gy_suit"
+	can_adjust = FALSE
+	supports_variations_flags = NONE
+
+/obj/item/clothing/under/syndicate/floortilecamo/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4) //tacticool
+
 /obj/item/clothing/under/syndicate/soviet
 	name = "Ratnik 5 tracksuit"
 	desc = "Badly translated labels tell you to clean this in Vodka. Great for squatting in."
@@ -150,6 +167,10 @@
 	can_adjust = FALSE
 	supports_variations_flags = NONE
 	armor_type = /datum/armor/clothing_under/syndicate_scrubs
+
+/obj/item/clothing/under/syndicate/scrubs/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
 
 /datum/armor/clothing_under/syndicate_scrubs
 	melee = 10

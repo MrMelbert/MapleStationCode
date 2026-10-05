@@ -184,23 +184,24 @@
 	var/mob/living/carbon/human/H = user
 	user.visible_message(span_suicide("[user] starts dancing to the Rhumba Beat! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/effects/spray.ogg', 10, TRUE, -3)
-	if (!QDELETED(H))
-		H.emote("spin")
-		sleep(2 SECONDS)
-		for(var/obj/item/W in H)
-			H.dropItemToGround(W)
-			if(prob(50))
-				step(W, pick(GLOB.alldirs))
-		ADD_TRAIT(H, TRAIT_DISFIGURED, TRAIT_GENERIC)
-		for(var/obj/item/bodypart/part as anything in H.bodyparts)
-			part.adjustBleedStacks(5)
-		H.gib_animation()
-		sleep(0.3 SECONDS)
-		H.adjustBruteLoss(1000) //to make the body super-bloody
-		// if we use gib() then the body gets deleted
-		H.spawn_gibs()
-		H.spill_organs(DROP_ALL_REMAINS)
-		H.spread_bodyparts(DROP_BRAIN)
+	if(QDELETED(H))
+		return
+	H.emote("spin")
+	sleep(2 SECONDS)
+	for(var/obj/item/W in H)
+		H.dropItemToGround(W)
+		if(prob(50))
+			step(W, pick(GLOB.alldirs))
+	ADD_TRAIT(H, TRAIT_DISFIGURED, TRAIT_GENERIC)
+	for(var/obj/item/bodypart/part as anything in H.get_bodyparts())
+		part.adjust_bleed_stacks(5)
+	H.gib_animation()
+	sleep(0.3 SECONDS)
+	H.adjustBruteLoss(1000) //to make the body super-bloody
+	// if we use gib() then the body gets deleted
+	H.spawn_gibs()
+	H.spill_organs(DROP_ALL_REMAINS)
+	H.spread_bodyparts(DROP_BRAIN)
 	return BRUTELOSS
 
 /obj/item/book/manual/wiki/plumbing

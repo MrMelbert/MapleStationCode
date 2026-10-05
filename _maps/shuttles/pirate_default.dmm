@@ -14,11 +14,11 @@
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/recharger,
-/obj/item/gun/energy/laser{
+/obj/item/gun/energy/laser/soul{
 	pixel_x = -3;
 	pixel_y = 6
 	},
-/obj/item/gun/energy/laser{
+/obj/item/gun/energy/laser/soul{
 	pixel_y = 3
 	},
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
@@ -488,7 +488,7 @@
 	pixel_x = 6;
 	pixel_y = 12
 	},
-/obj/item/clothing/mask/cigarette/cigar,
+/obj/item/cigarette/cigar,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/wood,
@@ -580,9 +580,7 @@
 /turf/open/floor/iron,
 /area/shuttle/pirate)
 "bH" = (
-/obj/machinery/vending/boozeomat/all_access{
-	onstation = 0
-	},
+/obj/machinery/vending/boozeomat,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron,
 /area/shuttle/pirate)

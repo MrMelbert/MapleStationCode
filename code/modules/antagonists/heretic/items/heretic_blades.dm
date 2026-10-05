@@ -24,7 +24,7 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
 	var/after_use_message = ""
 
-/obj/item/melee/sickly_blade/pre_attack(atom/A, mob/living/user, params)
+/obj/item/melee/sickly_blade/pre_attack(atom/A, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return .
@@ -39,6 +39,13 @@
 		SEND_SIGNAL(user, COMSIG_HERETIC_BLADE_ATTACK, target, src)
 
 /obj/item/melee/sickly_blade/attack_self(mob/user)
+	if(HAS_TRAIT(user, TRAIT_NO_TELEPORT))
+		user.balloon_alert(user, "can't break!")
+		return
+	seek_safety(user)
+
+/// Attempts to teleport the passed mob to somewhere safe on the station, if they can use the blade.
+/obj/item/melee/sickly_blade/proc/seek_safety(mob/user)
 	var/turf/safe_turf = find_safe_turf(zlevels = z, extended_safety_checks = TRUE)
 	if(IS_HERETIC_OR_MONSTER(user))
 		if(do_teleport(user, safe_turf, channel = TELEPORT_CHANNEL_MAGIC))

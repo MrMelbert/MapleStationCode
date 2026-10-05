@@ -20,7 +20,7 @@
 		/obj/item/stack/spacecash,
 		/obj/item/holochip,
 		/obj/item/card,
-		/obj/item/clothing/mask/cigarette,
+		/obj/item/cigarette,
 		/obj/item/clothing/accessory/dogtag,
 		/obj/item/coin,
 		/obj/item/coupon,
@@ -87,7 +87,7 @@
 	if(ishuman(loc))
 		var/mob/living/carbon/human/wearing_human = loc
 		if(wearing_human.wear_id == src)
-			wearing_human.sec_hud_set_ID()
+			wearing_human.update_ID_card()
 
 	update_label()
 	update_appearance(UPDATE_ICON)

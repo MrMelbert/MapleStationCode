@@ -11,7 +11,7 @@
 	click_wrapper(attacker, victim)
 	TEST_ASSERT_EQUAL(victim.handcuffed, cuffs, "Handcuff attempt (non-combat-mode) failed in an otherwise valid setup.")
 
-	victim.clear_cuffs(cuffs)
+	victim.dropItemToGround(cuffs, force = TRUE)
 	attacker.put_in_active_hand(cuffs, forced = TRUE)
 	attacker.set_combat_mode(TRUE)
 	click_wrapper(attacker, victim)

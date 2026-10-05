@@ -89,3 +89,6 @@
 #define CAN_MAX_RELEASE_PRESSURE (ONE_ATMOSPHERE * 25)
 ///Min allowed pressure for canisters to release air per tick
 #define CAN_MIN_RELEASE_PRESSURE (ONE_ATMOSPHERE * 0.1)
+
+#define FIRELOCK_FAULT_NAME(tag) "Firelock [tag]"
+#define FIREALARM_FAULT_NAME(tag) "Fire Alarm [tag]"

@@ -124,10 +124,10 @@ Expects a turf. Returns true if the attack should be blocked, false if not.*/
 	else
 		. = ..()
 
-/obj/vehicle/sealed/mecha/durand/attackby(obj/item/W as obj, mob/user as mob, params)
+/obj/vehicle/sealed/mecha/durand/attackby(obj/item/W as obj, mob/user as mob, list/modifiers, list/attack_modifiers)
 	if(defense_check(user.loc))
 		log_message("Attack absorbed by defense field. Attacker - [user], with [W]", LOG_MECHA, color="orange")
-		shield.attackby(W, user, params)
+		shield.attackby(W, user, modifiers)
 	else
 		. = ..()
 
@@ -165,7 +165,7 @@ own integrity back to max. Shield is automatically dropped if we run out of powe
 	pixel_y = 4
 	max_integrity = 10000
 	anchored = TRUE
-	light_system = MOVABLE_LIGHT // Non-modular change
+	light_system = OVERLAY_LIGHT
 	light_range = 2.8
 	light_power = 1
 	light_color = LIGHT_COLOR_FAINT_CYAN

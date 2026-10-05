@@ -11,7 +11,7 @@
 	lizard.dna.features["snout"] = "Sharp + Light"
 	lizard.dna.features["horns"] = "Simple"
 	lizard.dna.features["frills"] = "Aquatic"
-	lizard.dna.features["legs"] = "Normal Legs"
+	lizard.dna.features["legs"] = NORMAL_LEGS
 	lizard.set_species(/datum/species/lizard)
 	lizard.equipOutfit(/datum/outfit/job/engineer)
 	test_screenshot("[/datum/species/lizard]", get_flat_icon_for_all_directions(lizard))
@@ -37,6 +37,15 @@
 		slime.equipOutfit(/datum/outfit/job/scientist/consistent)
 		test_screenshot("[slime_type]", get_flat_icon_for_all_directions(slime))
 		testable_species -= slime_type
+
+	// Now we need to test all the animid types
+	testable_species -= /datum/species/human/animid
+	for(var/datum/animid_type/animid_type as anything in subtypesof(/datum/animid_type))
+		var/mob/living/carbon/human/animid = allocate(/mob/living/carbon/human/dummy/consistent)
+		animid.dna.features["animid_type"] = animid_type::id
+		animid.set_species(/datum/species/human/animid)
+		animid.equipOutfit(/datum/outfit/job/cook/consistent)
+		test_screenshot("[/datum/species/human/animid]_[animid_type::id]", get_flat_icon_for_all_directions(animid))
 
 	// The rest of the species
 	for (var/datum/species/species_type as anything in testable_species)

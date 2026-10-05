@@ -77,11 +77,39 @@
 	contains = list(/obj/item/gun/energy/e_gun)
 
 /datum/supply_pack/goody/laser_single
-	name = "Laser Gun Single-Pack"
-	desc = "Contains one laser gun, the lethal workhorse of Nanotrasen security everywehere."
+	name = "Type 5 Laser Gun Single-Pack"
+	desc = "Contains one Type 5 laser gun, the lethal workhorse of Nanotrasen security everywhere."
 	cost = PAYCHECK_COMMAND * 6
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/laser)
+
+/datum/supply_pack/goody/carbine_single
+	name = "Type 5R Laser Carbine Single_Pack"
+	desc = "Contains one laser carbine. Fires a rapid burst of slightly weaker laser projectiles."
+	cost = PAYCHECK_COMMAND * 8
+	access_view = ACCESS_WEAPONS
+	contains = list(/obj/item/gun/energy/laser/carbine)
+
+/datum/supply_pack/goody/laser_pistol_single
+	name = "Type 5C Laser Pistol Single-Pack"
+	desc = "Contains one Type 5C laser pistol in an energy shoulder holster. Groovy."
+	cost = PAYCHECK_COMMAND * 2
+	access_view = ACCESS_WEAPONS
+	contains = list(/obj/item/storage/belt/holster/energy/laser_pistol)
+
+/datum/supply_pack/goody/laser_single_soul
+	name = "Type 3 Laser Gun Single-Pack"
+	desc = "Contains one Type 3 laser gun. They don't make 'em like they used to."
+	cost = PAYCHECK_COMMAND * 6
+	access_view = ACCESS_WEAPONS
+	contains = list(/obj/item/gun/energy/laser/soul)
+
+/datum/supply_pack/goody/smg_single
+	name = "Disabler SMG Single_Pack"
+	desc = "Contains one disabler SMGs, capable of rapidly firing weak disabler beams."
+	cost = PAYCHECK_COMMAND * 6
+	access_view = ACCESS_WEAPONS
+	contains = list(/obj/item/gun/energy/disabler/smg)
 
 /datum/supply_pack/goody/hell_single
 	name = "Hellgun Kit Single-Pack"
@@ -295,8 +323,8 @@
 	contains = list(/obj/item/encryptionkey/language/all_crew)
 
 /datum/supply_pack/goody/fishing_toolbox
-	name = "Fishing toolbox"
-	desc = "Complete toolbox set for your fishing adventure. Advanced hooks and lines sold separetely."
+	name = "Fishing Toolbox"
+	desc = "Complete toolbox set for your fishing adventure. Contains a valuable tip. Advanced hooks and lines sold separetely."
 	cost = PAYCHECK_CREW * 2
 	contains = list(/obj/item/storage/toolbox/fishing)
 
@@ -312,6 +340,12 @@
 	cost = PAYCHECK_CREW
 	contains = list(/obj/item/storage/box/fishing_lines)
 
+/datum/supply_pack/goody/fishing_lure_set
+	name = "Fishing Lures Set"
+	desc = "A set of bite-resistant fishing lures to fish all (most) sort of fish. Beat randomness to a curb today!"
+	cost = PAYCHECK_CREW * 8
+	contains = list(/obj/item/storage/box/fishing_lures)
+
 /datum/supply_pack/goody/fishing_hook_rescue
 	name = "Rescue Fishing Hook"
 	desc = "For when your fellow miner has inevitably fallen into a chasm, and it's up to you to save them."
@@ -323,6 +357,18 @@
 	desc = "When the standard variety is not good enough for you."
 	cost = PAYCHECK_CREW
 	contains = list(/obj/item/bait_can/worm/premium)
+
+/datum/supply_pack/goody/fish_feed
+	name = "Can of fish food"
+	desc = "For keeping your little friends fed and alive."
+	cost = PAYCHECK_CREW
+	contains = list(/obj/item/fish_feed)
+
+/datum/supply_pack/goody/naturalbait
+	name = "Freshness Jars full of Natural Bait"
+	desc = "Homemade in the Spinward Sector."
+	cost = PAYCHECK_CREW * 4 //rock on
+	contains = list(/obj/item/storage/pill_bottle/naturalbait)
 
 /datum/supply_pack/goody/telescopic_fishing_rod
 	name = "Telescopic Fishing Rod"

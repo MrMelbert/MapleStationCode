@@ -3,11 +3,13 @@ SUBSYSTEM_DEF(research)
 	name = "Research"
 	priority = FIRE_PRIORITY_RESEARCH
 	wait = 10
-	init_order = INIT_ORDER_RESEARCH
+	dependencies = list(
+		/datum/controller/subsystem/processing/station
+	)
 	//TECHWEB STATIC
 	var/list/techweb_nodes = list() //associative id = node datum
 	var/list/techweb_designs = list() //associative id = node datum
-	var/list/datum/design/item_to_design = list() //typepath = list of design datums
+	var/list/list/datum/design/item_to_design = list() //typepath = list of design datums
 
 	///List of all techwebs, generating points or not.
 	///Autolathes, Mechfabs, and others all have shared techwebs, for example.
@@ -101,10 +103,11 @@ SUBSYSTEM_DEF(research)
 
 		techweb_list.last_income = world.time
 
-		if(techweb_list.research_queue_nodes.len)
+		if(length(techweb_list.research_queue_nodes))
 			techweb_list.research_node_id(techweb_list.research_queue_nodes[1]) // Attempt to research the first node in queue if possible
 
-			for(var/datum/techweb_node/node as anything in techweb_list.research_queue_nodes)
+			for(var/node_id in techweb_list.research_queue_nodes)
+				var/datum/techweb_node/node = SSresearch.techweb_node_by_id(node_id)
 				if(node.is_free(techweb_list)) // Automatically research all free nodes in queue if any
 					techweb_list.research_node(node)
 
@@ -200,42 +203,42 @@ SUBSYSTEM_DEF(research)
 	for(var/n in techweb_nodes)
 		var/datum/techweb_node/N = techweb_nodes[n]
 		if(!istype(N))
-			WARNING("Invalid research node with ID [n] detected and removed.")
+			stack_trace("Invalid research node with ID [n] detected and removed.")
 			techweb_nodes -= n
 			research_node_id_error(n)
 			. = FALSE
 		for(var/p in N.prereq_ids)
 			var/datum/techweb_node/P = techweb_nodes[p]
 			if(!istype(P))
-				WARNING("Invalid research prerequisite node with ID [p] detected in node [N.display_name]\[[N.id]\] removed.")
+				stack_trace("Invalid research prerequisite node with ID [p] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.prereq_ids  -= p
 				research_node_id_error(p)
 				. = FALSE
 		for(var/d in N.design_ids)
 			var/datum/design/D = techweb_designs[d]
 			if(!istype(D))
-				WARNING("Invalid research design with ID [d] detected in node [N.display_name]\[[N.id]\] removed.")
+				stack_trace("Invalid research design with ID [d] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.design_ids -= d
 				design_id_error(d)
 				. = FALSE
 		for(var/u in N.unlock_ids)
 			var/datum/techweb_node/U = techweb_nodes[u]
 			if(!istype(U))
-				WARNING("Invalid research unlock node with ID [u] detected in node [N.display_name]\[[N.id]\] removed.")
+				stack_trace("Invalid research unlock node with ID [u] detected in node [N.display_name]\[[N.id]\] removed.")
 				N.unlock_ids -= u
 				research_node_id_error(u)
 				. = FALSE
 		for(var/p in N.required_items_to_unlock)
 			if(!ispath(p))
 				N.required_items_to_unlock -= p
-				WARNING("[p] is not a valid path.")
+				stack_trace("[p] is not a valid path.")
 				node_boost_error(N.id, "[p] is not a valid path.")
 				. = FALSE
 			var/list/points = N.required_items_to_unlock[p]
 			if(!isnull(points))
 				N.required_items_to_unlock -= p
 				node_boost_error(N.id, "No valid list.")
-				WARNING("No valid list.")
+				stack_trace("No valid list.")
 				. = FALSE
 		CHECK_TICK
 

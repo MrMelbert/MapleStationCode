@@ -1,6 +1,6 @@
 /datum/job/geneticist
 	title = JOB_GENETICIST
-	description = "Alter genomes, turn monkeys into humans (and vice-versa), and make DNA backups."
+	description = "Alter genomes, turn monkeys into humans (and vice-versa), make DNA backups."
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 2
@@ -27,7 +27,9 @@
 		/obj/item/storage/box/monkeycubes = 10
 	)
 
-	family_heirlooms = list(/obj/item/clothing/under/shorts/purple)
+	// family_heirlooms = list(
+	// 	/obj/item/clothing/under/shorts/purple,
+	// )
 	rpg_title = "Genemancer"
 	job_flags = STATION_JOB_FLAGS
 

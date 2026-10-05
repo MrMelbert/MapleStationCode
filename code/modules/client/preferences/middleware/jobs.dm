@@ -11,7 +11,7 @@
 	if (level != null && level != JP_LOW && level != JP_MEDIUM && level != JP_HIGH)
 		return FALSE
 
-	var/datum/job/job = SSjob.GetJob(job_title)
+	var/datum/job/job = SSjob.get_job(job_title)
 
 	if (isnull(job))
 		return FALSE
@@ -36,7 +36,7 @@
 	if(new_title == base_title)
 		new_title = null // clearing, essentially
 
-	var/datum/job/job = SSjob.GetJob(base_title)
+	var/datum/job/job = SSjob.get_job(base_title)
 	if(isnull(job))
 		return FALSE
 	if(new_title && !(new_title in job.get_titles(TRUE)))
@@ -166,7 +166,7 @@
 /datum/preference/job_titles/deserialize(input, datum/preferences/preferences)
 	var/list/input_sanitized = list()
 	for(var/job_title in input)
-		var/datum/job/job = SSjob.GetJob(job_title)
+		var/datum/job/job = SSjob.get_job(job_title)
 		if(isnull(job))
 			continue
 		if(!(input[job_title] in job.get_titles(TRUE)))

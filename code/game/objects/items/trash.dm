@@ -3,6 +3,7 @@
 	icon = 'icons/obj/service/janitor.dmi'
 	lefthand_file = 'icons/mob/inhands/items/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/food_righthand.dmi'
+	abstract_type = /obj/item/trash
 	desc = "This is rubbish."
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
@@ -86,12 +87,6 @@
 	name = "surplus fleet wrapper"
 	desc = "In the Mothic Fleet every individual wrapper is carefully recycled and repurposed into fresh material. Over here they are more commonly dropped directly onto the floor."
 	icon_state = "moth_ration"
-
-/obj/item/trash/waffles
-	name = "waffles tray"
-	icon_state = "waffles"
-	drop_sound = /obj/item/storage/bag/tray::drop_sound
-	pickup_sound = /obj/item/storage/bag/tray::pickup_sound
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"

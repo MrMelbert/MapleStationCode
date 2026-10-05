@@ -50,7 +50,7 @@
 		if("Critical")
 			return state == SOFT_CRIT || state == HARD_CRIT
 		if("Unconscious")
-			return state == UNCONSCIOUS || state == HARD_CRIT || !!organism.IsUnconscious()
+			return HAS_TRAIT(organism, TRAIT_KNOCKEDOUT)
 		if("Deceased")
 			return state == DEAD
 	//Unknown state, something fucked up really bad - just return false

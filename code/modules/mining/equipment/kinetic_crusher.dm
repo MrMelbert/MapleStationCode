@@ -28,8 +28,10 @@
 	sharpness = SHARP_EDGED
 	actions_types = list(/datum/action/item_action/toggle_light)
 	obj_flags = UNIQUE_RENAME
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 5
+	light_power = 1.2
+	light_color = "#ffff66"
 	light_on = FALSE
 	///List of all crusher trophies attached to this.
 	var/list/obj/item/crusher_trophy/trophies = list()
@@ -46,7 +48,6 @@
 	)
 	//technically it's huge and bulky, but this provides an incentive to use it
 	AddComponent(/datum/component/two_handed, force_unwielded=0, force_wielded=20)
-	RegisterSignal(src, COMSIG_HIT_BY_SABOTEUR, PROC_REF(on_saboteur))
 
 /obj/item/kinetic_crusher/Destroy()
 	QDEL_LIST(trophies)
@@ -62,6 +63,16 @@
 	. += span_notice("Does <b>[force + detonation_damage + backstab_bonus]</b> damage if the target is backstabbed, instead of <b>[force + detonation_damage]</b>.")
 	for(var/obj/item/crusher_trophy/crusher_trophy as anything in trophies)
 		. += span_notice("It has \a [crusher_trophy] attached, which causes [crusher_trophy.effect_desc()].")
+
+// melbert todo make this an element
+/obj/item/kinetic_crusher/equipped(mob/living/user, slot)
+	. = ..()
+	if(slot & ITEM_SLOT_HANDS)
+		ADD_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
+/obj/item/kinetic_crusher/dropped(mob/living/user, slot)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
 
 /obj/item/kinetic_crusher/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/crusher_trophy))
@@ -179,10 +190,11 @@
 	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
 	update_appearance()
 
-/obj/item/kinetic_crusher/proc/on_saboteur(datum/source, disrupt_duration)
+/obj/item/kinetic_crusher/on_saboteur(datum/source, disrupt_duration)
+	. = ..()
 	set_light_on(FALSE)
 	playsound(src, 'sound/weapons/empty.ogg', 100, TRUE)
-	return COMSIG_SABOTEUR_SUCCESS
+	return TRUE
 
 /obj/item/kinetic_crusher/update_icon_state()
 	inhand_icon_state = "crusher[HAS_TRAIT(src, TRAIT_WIELDED)]" // this is not icon_state and not supported by 2hcomponent

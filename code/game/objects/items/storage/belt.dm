@@ -7,6 +7,7 @@
 	worn_icon_state = "utility"
 	lefthand_file = 'icons/mob/inhands/equipment/belt_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/belt_righthand.dmi'
+	abstract_type = /obj/item/storage/belt
 	slot_flags = ITEM_SLOT_BELT
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
@@ -56,7 +57,8 @@
 	))
 
 /obj/item/storage/belt/utility/chief
-	name = "\improper Chief Engineer's toolbelt" //"the Chief Engineer's toolbelt", because "Chief Engineer's toolbelt" is not a proper noun
+	name = "chief engineer's toolbelt"
+	article = "the"
 	desc = "Holds tools, looks snazzy."
 	icon_state = "utility_ce"
 	inhand_icon_state = "utility_ce"
@@ -222,6 +224,7 @@
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/muzzle,
 		/obj/item/clothing/mask/surgical,
+		/obj/item/clothing/head/utility/surgerycap,
 		/obj/item/construction/plumbing,
 		/obj/item/dnainjector,
 		/obj/item/extinguisher/mini,
@@ -253,7 +256,7 @@
 		/obj/item/scalpel,
 		/obj/item/shears,
 		/obj/item/stack/medical,
-		/obj/item/stack/sticky_tape, //surgical tape
+		/obj/item/stack/medical/wrap/sticky_tape, //surgical tape
 		/obj/item/stamp,
 		/obj/item/sensor_device,
 		/obj/item/storage/fancy/cigarettes,
@@ -274,9 +277,10 @@
 
 /obj/item/storage/belt/medical/paramedic/PopulateContents()
 	SSwardrobe.provide_type(/obj/item/sensor_device, src)
-	SSwardrobe.provide_type(/obj/item/stack/medical/gauze/twelve, src)
-	SSwardrobe.provide_type(/obj/item/razor/scissors/medical/trauma, src)
-	SSwardrobe.provide_type(/obj/item/stack/sticky_tape/surgical, src)
+	SSwardrobe.provide_type(/obj/item/stack/medical/wrap/gauze/twelve, src)
+	// SSwardrobe.provide_type(/obj/item/razor/scissors/medical/trauma, src)
+	SSwardrobe.provide_type(/obj/item/tourniquet, src)
+	SSwardrobe.provide_type(/obj/item/bonesetter, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/syringe, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/cup/bottle/ammoniated_mercury, src)
 	SSwardrobe.provide_type(/obj/item/reagent_containers/cup/bottle/formaldehyde, src)
@@ -285,9 +289,10 @@
 /obj/item/storage/belt/medical/paramedic/get_types_to_preload()
 	var/list/to_preload = list() //Yes this is a pain. Yes this is the point
 	to_preload += /obj/item/sensor_device
-	to_preload += /obj/item/stack/medical/gauze/twelve
-	to_preload += /obj/item/stack/medical/bone_gel
-	to_preload += /obj/item/stack/sticky_tape/surgical
+	to_preload += /obj/item/stack/medical/wrap/gauze/twelve
+	// to_preload += /obj/item/razor/scissors/medical/trauma
+	to_preload += /obj/item/tourniquet
+	to_preload += /obj/item/bonesetter
 	to_preload += /obj/item/reagent_containers/syringe
 	to_preload += /obj/item/reagent_containers/cup/bottle/ammoniated_mercury
 	to_preload += /obj/item/reagent_containers/cup/bottle/formaldehyde
@@ -397,7 +402,7 @@
 		/obj/item/lighter,
 		/obj/item/mining_scanner,
 		/obj/item/multitool,
-		/obj/item/organ/internal/monster_core,
+		/obj/item/organ/monster_core,
 		/obj/item/pickaxe,
 		/obj/item/radio,
 		/obj/item/reagent_containers/cup/glass,
@@ -441,7 +446,7 @@
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/hypospray/medipen/survival(src)
 	for(var/i in 1 to 2)
-		var/obj/item/organ/internal/monster_core/core = new /obj/item/organ/internal/monster_core/regenerative_core/legion(src)
+		var/obj/item/organ/monster_core/core = new /obj/item/organ/monster_core/regenerative_core/legion(src)
 		core.preserve()
 
 /obj/item/storage/belt/mining/primitive
@@ -489,6 +494,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/clothing/mask/luchador,
 	))
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
 
 /obj/item/storage/belt/military
 	name = "chest rig"
@@ -791,6 +797,7 @@
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
 	interaction_flags_click = parent_type::interaction_flags_click | NEED_DEXTERITY | NEED_HANDS
+	wear_loc = "hip"
 
 /obj/item/storage/belt/sabre/Initialize(mapload)
 	. = ..()
@@ -859,3 +866,18 @@
 		/obj/item/seeds,
 		/obj/item/shovel/spade,
 	))
+
+/obj/item/storage/belt/chest_pouch
+	name = "chest pouches"
+	desc = "A bunch of pouches worn across the chest."
+	gender = PLURAL
+	icon_state = "explorer2"
+	inhand_icon_state = "explorer2"
+	worn_icon_state = "explorer2"
+	storage_type = /datum/storage/backpack
+	mirror_icon = 'icons/mob/clothing/belt.dmi'
+	wear_loc = "chest"
+
+/obj/item/storage/belt/chest_pouch/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/slows_with_backpack)

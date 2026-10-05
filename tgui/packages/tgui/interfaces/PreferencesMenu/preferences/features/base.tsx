@@ -1,8 +1,8 @@
-import { sortBy } from 'common/collections';
+import { sortBy } from 'es-toolkit';
 import {
-  ComponentType,
+  type ComponentType,
   createElement,
-  ReactNode,
+  type ReactNode,
   useEffect,
   useState,
 } from 'react';
@@ -12,19 +12,18 @@ import {
   Button,
   Dropdown,
   Input,
-  NoticeBox,
   NumberInput,
   Slider,
   Stack,
   TextArea,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import type { BooleanLike } from 'tgui-core/react';
 
-import { createSetPreference, PreferencesMenuData } from '../../types';
+import { createSetPreference, type PreferencesMenuData } from '../../types';
 import { useServerPrefs } from '../../useServerPrefs';
 
 export function sortChoices(array: [string, ReactNode][]) {
-  return sortBy(array, ([name]) => name);
+  return sortBy(array, [([name]) => name]);
 }
 
 export type Feature<
@@ -62,9 +61,13 @@ export type FeatureValueProps<
   value: TReceiving;
 }>;
 
-export function FeatureColorInput(props: FeatureValueProps<string>) {
+type FeatureColorProps = FeatureValueProps<string> & {
+  nullable?: boolean;
+};
+
+export function FeatureColorInput(props: FeatureColorProps) {
   const { act } = useBackend<PreferencesMenuData>();
-  const { featureId, shrink, value } = props;
+  const { featureId, shrink, value, nullable } = props;
 
   return (
     <Button
@@ -73,12 +76,31 @@ export function FeatureColorInput(props: FeatureValueProps<string>) {
           preference: featureId,
         });
       }}
+      onContextMenu={
+        nullable
+          ? () => {
+              act('set_preference', {
+                preference: featureId,
+                value: null,
+              });
+            }
+          : undefined
+      }
+      tooltip={
+        nullable
+          ? 'Left click to change color. Right click to clear color.'
+          : 'Left click to change color.'
+      }
     >
       <Stack align="center" fill>
         <Stack.Item>
           <Box
             style={{
-              background: value.startsWith('#') ? value : `#${value}`,
+              background: value
+                ? value.startsWith('#')
+                  ? value
+                  : `#${value}`
+                : 'transparent',
               border: '2px solid white',
               boxSizing: 'content-box',
               height: '11px',
@@ -96,6 +118,10 @@ export function FeatureColorInput(props: FeatureValueProps<string>) {
       </Stack>
     </Button>
   );
+}
+
+export function FeatureColorInputNullable(props: FeatureValueProps<string>) {
+  return <FeatureColorInput {...props} nullable />;
 }
 
 export type FeatureToggle = Feature<BooleanLike, boolean>;
@@ -254,11 +280,10 @@ export function FeatureShortTextInput(
   return (
     <Input
       disabled={!serverData}
-      width="100%"
+      fluid
       value={value}
       maxLength={serverData?.maximum_length}
-      updateOnPropsChange
-      onChange={(_, value) => handleSetValue(value)}
+      onBlur={handleSetValue}
     />
   );
 }
@@ -271,27 +296,21 @@ export type FeatureMultilineProps = FeatureValueProps<
   FeatureShortTextData
 >;
 
-export const MultilineText = (
+export function MultilineText(
   props: FeatureMultilineProps & {
     box_height: string | null;
   },
-) => {
-  if (!props.serverData) {
-    return (
-      <NoticeBox height={props.box_height || '36px'} width="80%">
-        Loading...
-      </NoticeBox>
-    );
-  }
+) {
+  const { serverData, handleSetValue, value, box_height } = props;
+
   return (
     <TextArea
+      disabled={!serverData}
       width="80%"
-      height={props.box_height || '36px'}
-      value={props.value}
-      maxLength={props.serverData?.maximum_length || 1024}
-      onChange={(_, new_value) => {
-        props.handleSetValue(new_value);
-      }}
+      height={box_height || '36px'}
+      value={value}
+      maxLength={serverData?.maximum_length || 1024}
+      onBlur={handleSetValue}
     />
   );
-};
+}

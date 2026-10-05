@@ -27,7 +27,7 @@
 			qdel(src)
 			return TRUE
 		if(SEND_SIGNAL(target.mind, COMSIG_MINDSHIELD_IMPLANTED, user) & COMPONENT_MINDSHIELD_DECONVERTED)
-			if(prob(1) || check_holidays(APRIL_FOOLS))
+			if(check_holidays(APRIL_FOOLS) && HAS_PERSONALITY(target, /datum/personality/whimsical))
 				target.say("I'm out! I quit! Whose kidneys are these?", forced = "They're out! They quit! Whose kidneys do they have?")
 
 	ADD_TRAIT(target, TRAIT_MINDSHIELD, IMPLANT_TRAIT)

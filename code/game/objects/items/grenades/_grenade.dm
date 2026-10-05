@@ -17,6 +17,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
+	action_slots = ALL
 	max_integrity = 40
 	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
@@ -250,7 +251,7 @@
 	return attack_hand(user, modifiers)
 
 /obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
-	if(damage && attack_type == PROJECTILE_ATTACK && damage_type != STAMINA && prob(15))
+	if(damage && attack_type == PROJECTILE_ATTACK && IS_PHYSICAL_DAMAGE(damage_type) && prob(15))
 		owner.visible_message(span_danger("[attack_text] hits [owner]'s [src], setting it off! What a shot!"))
 		var/turf/source_turf = get_turf(src)
 		var/logmsg = "held a grenade detonated by a projectile ([hitby]) at [COORD(source_turf)]"
