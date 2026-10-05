@@ -43350,7 +43350,7 @@
 	dir = 4
 	},
 /obj/machinery/door/firedoor,
-/obj/structure/displaycase/forsale/kitchen,
+/obj/structure/tipjar/prefilled,
 /turf/open/floor/iron/dark,
 /area/station/service/bar)
 "lMm" = (
@@ -52569,7 +52569,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/structure/displaycase/forsale/kitchen,
+/obj/structure/tipjar/prefilled,
 /obj/machinery/door/firedoor,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "kitchenshutters";
