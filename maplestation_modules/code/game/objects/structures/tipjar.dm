@@ -22,7 +22,7 @@
 		/obj/item/stack/spacecash,
 	))
 
-	var/static/alist/pos_map = list(
+	var/static/alist/pos_map = alist(
 		1 = list(-3, -9),
 		2 = list( 3, -9),
 		3 = list( 0, -8),
