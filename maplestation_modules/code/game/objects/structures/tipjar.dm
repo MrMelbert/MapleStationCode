@@ -95,6 +95,8 @@
 		return
 	if(!user.CanReach(src))
 		return
+
+	. = TRUE
 	user.visible_message(
 		span_notice("[user] starts fishing around in [src]..."),
 		span_notice("You start fishing around in [src]..."),

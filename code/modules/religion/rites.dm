@@ -182,7 +182,7 @@
 	name = "Purchase Personal Vending Machine"
 	desc = "Summons a custom vending machine. You can use it to sell MANY items!"
 	invoke_msg = "If I get a custom vending machine for my products, I can be RICH!"
-	money_cost = 1000 //quite a step up from vendatray
+	money_cost = 1000
 
 /datum/religion_rites/greed/custom_vending/invoke_effect(mob/living/user, atom/movable/religious_tool)
 	..()
