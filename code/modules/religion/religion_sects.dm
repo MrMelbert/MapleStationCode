@@ -269,7 +269,7 @@
 	tgui_icon = "dollar-sign"
 	altar_icon_state = "convertaltar-yellow"
 	alignment = ALIGNMENT_EVIL //greed is not good wtf
-	rites_list = list(/datum/religion_rites/greed/vendatray, /datum/religion_rites/greed/custom_vending)
+	rites_list = list(/datum/religion_rites/greed/custom_vending)
 	altar_icon_state = "convertaltar-yellow"
 
 /datum/religion_sect/greed/tool_examine(mob/living/holy_creature) //display money policy

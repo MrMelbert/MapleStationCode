@@ -62,7 +62,8 @@
 
 /obj/structure/tipjar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(is_type_in_typecache(tool, tippable_typecache))
-		if(length(contents) >= 24)
+		// while we only visually show the first pos_map items, we can store some extra...
+		if(length(contents) >= length(pos_map) * 3)
 			balloon_alert(user, "it's full!")
 			return ITEM_INTERACT_BLOCKING
 		if(user.transferItemToLoc(tool, src))

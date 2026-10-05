@@ -129,8 +129,6 @@
 /obj/item/card/id/Destroy()
 	if (registered_account)
 		registered_account.bank_cards -= src
-	if (my_store)
-		QDEL_NULL(my_store)
 	return ..()
 
 /obj/item/card/id/equipped(mob/user, slot, initial = FALSE)
@@ -457,22 +455,8 @@
 		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [src.name][minor]."), span_notice("You show \the [src.name][minor]."))
 	add_fingerprint(user)
 
-/obj/item/card/id/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
-	if(!check_allowed_items(interacting_with) || !isfloorturf(interacting_with))
-		return NONE
-	try_project_paystand(user, interacting_with)
-	return ITEM_INTERACT_SUCCESS
-
-/obj/item/card/id/attack_self_secondary(mob/user, modifiers)
-	. = ..()
-	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-		return
-	try_project_paystand(user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
 /obj/item/card/id/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-
 	context[SCREENTIP_CONTEXT_LMB] = "Show ID"
 	if(isnull(registered_account) || registered_account.replaceable) //Same check we use when we check if we can assign an account
 		context[SCREENTIP_CONTEXT_ALT_RMB] = "Assign account"
