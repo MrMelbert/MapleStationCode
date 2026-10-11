@@ -127,7 +127,7 @@
 	return beating
 
 /obj/item/organ/heart/get_status_appendix(advanced, add_tooltips)
-	var/bpm = get_heart_rate()
+	var/bpm = get_perceived_heart_rate()
 	. = "[IS_ORGANIC_ORGAN(src) ? "Heart" : "Pulse"] rate: [bpm]" + span_slightly_smaller("bpm")
 	if(bpm <= SLOW_HEARTBEAT_THRESHOLD || bpm >= FAST_HEARTBEAT_THRESHOLD)
 		. = span_alert(.)
@@ -272,7 +272,7 @@
 
 /// Gets the heart rate of the heart (resting 80, varies between 0 and 200+)
 /obj/item/organ/heart/proc/get_heart_rate()
-	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner) || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner))
 		return 0
 
 	var/base_amount = 80 + rand(-5, 5)
@@ -298,6 +298,13 @@
 		final_amount += ((final_amount - base_amount) * -0.5)
 
 	return max(0, round(final_amount, 1))
+
+/// Gets what a person would see as the heart rate, used for things that fake a non-beating heart like fakedeath
+/obj/item/organ/heart/proc/get_perceived_heart_rate()
+	if(HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+		return 0
+
+	return get_heart_rate()
 
 /// Returns the strength of the heart as a multiplier (0 to 1+)
 /obj/item/organ/heart/proc/get_heart_strength()
@@ -364,6 +371,8 @@
 	return rand(7, 9) * 10
 
 /mob/living/carbon/human/get_bpm()
+	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		return 0
 	var/obj/item/organ/heart/heart = get_organ_by_type(/obj/item/organ/heart)
 	return heart?.last_bpm || 0
 
@@ -397,6 +406,8 @@
 
 /// Returns the mob's blood pressure range (calculated from average bp with some variance) as a list/tuple of (diastolic pressure, systolic pressure)
 /mob/living/proc/get_bp_range()
+	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		return list(0, 0)
 	var/avg_blood_pressure = get_bp()
 	var/avg_pulse_pressure = get_pp()
 
@@ -412,7 +423,7 @@
 		return ""
 
 	var/bpm_msg = ""
-	var/bpm = get_heart_rate()
+	var/bpm = get_perceived_heart_rate()
 	if(bpm <= 0)
 		bpm_msg = span_boldwarning("You don't feel your heart beating!")
 	else if(bpm < SLOW_HEARTBEAT_THRESHOLD)
