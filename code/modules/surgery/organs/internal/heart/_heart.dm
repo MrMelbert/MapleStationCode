@@ -272,7 +272,7 @@
 
 /// Gets the heart rate of the heart (resting 80, varies between 0 and 200+)
 /obj/item/organ/heart/proc/get_heart_rate()
-	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner))
+	if(!is_beating() || (organ_flags & ORGAN_FAILING) || isnull(owner) || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
 		return 0
 
 	var/base_amount = 80 + rand(-5, 5)
