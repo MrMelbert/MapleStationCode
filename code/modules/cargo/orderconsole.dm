@@ -271,6 +271,13 @@
 		say("ERROR: Small crates may only be purchased by private accounts.")
 		return
 
+	if(pack.goody)
+		var/datum/supply_pack/goody/goody_to_check = pack
+		if(goody_to_check.restricted_green && SSsecurity_level.get_current_level_as_number() == SEC_LEVEL_GREEN)
+			playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
+			say("ERROR: This pack cannot be purchased unless the station is at [/datum/security_level/blue::name] alert or higher.")
+			return
+
 	var/similar_count = SSshuttle.supply.get_order_count(pack)
 	if(similar_count == OVER_ORDER_LIMIT)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)

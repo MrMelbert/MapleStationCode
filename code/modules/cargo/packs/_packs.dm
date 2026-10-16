@@ -43,6 +43,8 @@
 	var/discountable = SUPPLY_PACK_NOT_DISCOUNTABLE
 	/// NON-MODULE CHANGE : Does this override departmental orders to be unavailable from them?
 	var/no_departmental_orders = FALSE
+	/// NON-MODULE CHANGE : An override to where the departmental order area for this item goes, assign this as a list, priority from first to last element
+	var/departmental_order_area_override
 
 /datum/supply_pack/New()
 	id = type
