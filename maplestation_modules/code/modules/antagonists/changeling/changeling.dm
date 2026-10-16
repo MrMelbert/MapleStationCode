@@ -20,7 +20,7 @@
 	new_profile.flavor_text = target.linked_flavor
 	if(target.dna.features["size"])
 		new_profile.size = target.dna.features["size"]
-	new_profile.height = target.base_mob_height
+	new_profile.height = target.mob_height
 
 	return new_profile
 
