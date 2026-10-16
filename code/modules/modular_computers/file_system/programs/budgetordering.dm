@@ -254,6 +254,13 @@
 				computer.say("ERROR: Small crates may only be purchased by private accounts.")
 				return
 
+			if(pack.goody)
+				var/datum/supply_pack/goody/goody_to_check = pack
+				if(goody_to_check.restricted_green && SSsecurity_level.get_current_level_as_number() == SEC_LEVEL_GREEN)
+					playsound(computer, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
+					computer.say("ERROR: This pack cannot be purchased unless the station is at [/datum/security_level/blue::name] alert or higher.")
+					return
+
 			if(SSshuttle.supply.get_order_count(pack) == OVER_ORDER_LIMIT)
 				playsound(computer, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
 				computer.say("ERROR: No more then [CARGO_MAX_ORDER] of any pack may be ordered at once")
