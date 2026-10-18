@@ -1,11 +1,30 @@
+// License for the original tgstation profile this profile is derived from
+/*
+MIT License
+
+Copyright (c) 2026 Emirhan Erdal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 // Modified version of the default tgstation.dm profile of RMD for maplestation's older version of most code things
 
-// rmd embeds this integration for the Forced bundled profile setting. To make the profile part of a
-// tgstation checkout instead, copy it there and `#include` it from `tgstation.dme` after
-// `// END_INCLUDE`, the guard keeps BYOND compiling it to nothing. The build tool passes CBT, which
-// MAP_SWITCH needs to pick the runtime rock and wall icons, so also `#define CBT` inside the dme's
-// `__DEMIR_BAKE__` branch.
-//
 // The profile runs the codebase's own smoothing and icon-state code against a map, without
 // starting any subsystem. Calling `Initialize(TRUE)` instead faults on nearly every atom, so each
 // hook sets up only the data the icon selection it drives actually reads.
