@@ -6849,3 +6849,4 @@
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
 #endif // MAPLESTATION_STORY_CONTENT
 // END_INCLUDE
+#include "_maps\_map_profile.dm"
