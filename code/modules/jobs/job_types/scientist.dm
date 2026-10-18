@@ -3,6 +3,7 @@
 	description = "Do experiments, perform research, feed the slimes, make bombs."
 	title_options = list(
 		"Junior Scientist",
+		"Scientific Technician" = /datum/outfit/job/scientist/technician,
 	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
@@ -81,3 +82,13 @@
 
 /datum/outfit/job/scientist/consistent/try_giving_horrible_tie()
 	return
+
+/datum/outfit/job/scientist/technician // the kinda stuff gordon freeman seems to be despite the PHD
+	name = "Scientific Technician"
+	id_trim = /datum/id_trim/job/scientist/technician
+	neck = /obj/item/clothing/neck/tie/black/tied
+	uniform = /obj/item/clothing/under/costume/buttondown/slacks/service/alt_style // unnecessarily fancy but we are going for a reference
+	suit = /obj/item/clothing/suit/apron/overalls/scientist
+	shoes = /obj/item/clothing/shoes/laceup
+	glasses = /obj/item/clothing/glasses/science
+	gloves = /obj/item/clothing/gloves/color/white
