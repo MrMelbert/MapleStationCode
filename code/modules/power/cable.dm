@@ -46,7 +46,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	. = ..()
 
 	GLOB.cable_list += src //add it to the global cable list
-	Connect_cable()
+	connect_cable()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
 	if(isturf(loc))
@@ -75,7 +75,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	return COMPONENT_RAT_INTERACTED
 
 ///Set the linked indicator bitflags
-/obj/structure/cable/proc/Connect_cable(clear_before_updating = FALSE)
+/obj/structure/cable/proc/connect_cable(clear_before_updating = FALSE)
 	var/under_thing = NONE
 	if(clear_before_updating)
 		linked_dirs = 0
@@ -751,7 +751,7 @@ GLOBAL_LIST(hub_radial_layer_list)
 
 	cable_layer ^= CL
 
-	Connect_cable(TRUE)
+	connect_cable(TRUE)
 
 	Reload()
 
