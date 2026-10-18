@@ -82,7 +82,7 @@
 /obj/item/stock_parts/power_store/cell/wondertech/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
-	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(atom_destruction)) // average results of testing via admins
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(why_did_you_eat_this)) // average results of testing via admins
 
 /obj/item/stock_parts/power_store/cell/wondertech/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
@@ -102,6 +102,10 @@
 	. = ..()
 
 /obj/item/stock_parts/power_store/cell/wondertech/grind(datum/reagents/target_holder, mob/user)
+	explode()
+
+/obj/item/stock_parts/power_store/cell/wondertech/proc/why_did_you_eat_this()
+	SIGNAL_HANDLER
 	explode()
 
 //Hey so you know how these contain a mini-SM? yeah
@@ -140,7 +144,7 @@
 /obj/item/stock_parts/power_store/battery/wondertech/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
-	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(atom_destruction))
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(why_did_you_eat_this))
 
 /obj/item/stock_parts/power_store/battery/wondertech/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
@@ -158,6 +162,10 @@
 	explode()
 
 /obj/item/stock_parts/power_store/battery/wondertech/grind(datum/reagents/target_holder, mob/user)
+	explode()
+
+/obj/item/stock_parts/power_store/battery/wondertech/proc/why_did_you_eat_this()
+	SIGNAL_HANDLER
 	explode()
 
 //bigger SM means bigger boom
