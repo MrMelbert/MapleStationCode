@@ -28,26 +28,6 @@
 	// give us some space between clothing examine and the rest
 	ADD_NEWLINE_IF_NECESSARY(.)
 
-	var/appears_dead = FALSE
-	var/just_sleeping = FALSE
-
-	if(!appears_alive())
-		appears_dead = TRUE
-
-		var/obj/item/clothing/glasses/shades = get_item_by_slot(ITEM_SLOT_EYES)
-		var/are_we_in_weekend_at_bernies = shades?.tint && buckled && istype(buckled, /obj/vehicle/ridden/wheelchair)
-
-		if(isliving(user) && (HAS_MIND_TRAIT(user, TRAIT_NAIVE) || are_we_in_weekend_at_bernies))
-			just_sleeping = TRUE
-
-		if(!just_sleeping)
-			// since this is relatively important and giving it space makes it easier to read
-			ADD_NEWLINE_IF_NECESSARY(.)
-			if(HAS_TRAIT(src, TRAIT_SUICIDED))
-				. += span_warning("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
-
-			. += generate_death_examine_text()
-
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations(user)
 	if (length(status_examines))
@@ -194,21 +174,15 @@
 
 		if(length(bleeding_limbs))
 			var/bleed_text = "<b>"
-			if(appears_dead)
-				bleed_text += "<span class='deadsay'>"
-				bleed_text += "Blood is visible in [t_his] open "
-			else
-				bleed_text += "<span class='warning'>"
-				bleed_text += "[t_He] [t_is] [mob_biotypes & MOB_ORGANIC ? "bleeding" : "leaking [LOWER_TEXT(blood_type.reagent_type::name)]"] from [t_his] "
+			bleed_text += "<span class='warning'>"
+			bleed_text += "[t_He] [t_is] [mob_biotypes & MOB_ORGANIC ? "bleeding" : "leaking [LOWER_TEXT(blood_type.reagent_type::name)]"] from [t_his] "
 
 			bleed_text += english_list(bleeding_limbs, and_text = " and ")
 
-			if(appears_dead)
-				bleed_text += ", but it has pooled and is not flowing."
+			if(HAS_TRAIT(src, TRAIT_BLOODY_MESS))
+				bleed_text += " incredibly quickly!"
 			else
-				if(HAS_TRAIT(src, TRAIT_BLOODY_MESS))
-					bleed_text += " incredibly quickly"
-				bleed_text += "!"
+				bleed_text += "."
 
 			bleed_text += "</span></b>"
 
@@ -222,11 +196,13 @@
 	if(on_fire)
 		. += span_bolddanger("[t_He] [t_is] on fire!")
 
-	if(just_sleeping)
-		. += span_notice("[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.")
+	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		. += span_notice("[t_He] [t_is]n't responding to anything around [t_him].")
 
-	else if(!appears_dead)
-		var/mob/living/living_user = user
+	else if(HAS_TRAIT(src, TRAIT_SOFT_CRIT))
+		. += span_notice("[t_He] [t_is] barely conscious.")
+
+	else
 		if(src != user)
 			if(HAS_TRAIT(user, TRAIT_EMPATH))
 				if (combat_mode)
@@ -237,7 +213,7 @@
 					. += "[t_He] seem[p_s()] sickly."
 				if(mob_mood.sanity <= SANITY_DISTURBED)
 					. += "[t_He] seem[p_s()] distressed."
-					living_user.add_mood_event("empath", /datum/mood_event/sad_empath, src)
+					astype(user, /mob/living)?.add_mood_event("empath", /datum/mood_event/sad_empath, src)
 				if(is_blind())
 					. += "[t_He] appear[p_s()] to be staring off into space."
 				if (HAS_TRAIT(src, TRAIT_DEAF))
@@ -249,16 +225,10 @@
 
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role && user != src)
 				. += "[t_He] [t_has] a holy aura about [t_him]."
-				living_user.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
+				astype(user, /mob/living)?.add_mood_event("religious_comfort", /datum/mood_event/religiously_comforted)
 
-		switch(stat)
-			if(UNCONSCIOUS, HARD_CRIT)
-				. += span_notice("[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.")
-			if(SOFT_CRIT)
-				. += span_notice("[t_He] [t_is] barely conscious.")
-			if(CONSCIOUS)
-				if(HAS_TRAIT(src, TRAIT_DUMB))
-					. += "[t_He] [t_has] a stupid expression on [t_his] face."
+		if(HAS_TRAIT(src, TRAIT_DUMB))
+			. += "[t_He] [t_has] a stupid expression on [t_his] face."
 		if(get_organ_by_type(/obj/item/organ/brain) && isnull(ai_controller))
 			var/npc_message = ""
 			if(!key)
@@ -335,18 +305,6 @@
 		return
 
 	return examine_list.Join("<br>")
-
-/// Returns death message for mob examine text
-/mob/living/carbon/proc/generate_death_examine_text()
-	var/mob/dead/observer/ghost = get_ghost(TRUE, TRUE)
-	var/t_He = p_They()
-	var/t_his = p_their()
-	var/t_is = p_are()
-	//This checks to see if the body is revivable
-	if(get_organ_by_type(/obj/item/organ/brain) && (client || HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE) || (ghost?.can_reenter_corpse && ghost?.client)))
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
-	else
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
 
 /// Returns a list of "damtype" => damage description based off of which bodypart description is most common
 /mob/living/carbon/proc/get_majority_bodypart_damage_desc()

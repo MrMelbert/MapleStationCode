@@ -19,7 +19,7 @@
 	mutanteyes = /obj/item/organ/eyes/moth
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/moth
-	death_sound = 'sound/voice/moth/moth_death.ogg'
+	// death_sound = 'sound/voice/moth/moth_death.ogg'
 	payday_modifier = 1.0
 	family_heirlooms = list(/obj/item/flashlight/lantern/heirloom_moth)
 
