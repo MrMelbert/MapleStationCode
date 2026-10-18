@@ -82,6 +82,7 @@
 /obj/item/stock_parts/power_store/cell/wondertech/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(atom_destruction)) // average results of testing via admins
 
 /obj/item/stock_parts/power_store/cell/wondertech/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
@@ -94,9 +95,11 @@
 
 /obj/item/stock_parts/power_store/cell/wondertech/atom_destruction(damage_flag)
 	explode()
+	. = ..()
 
 /obj/item/stock_parts/power_store/cell/wondertech/deconstruct(disassembled)
 	explode()
+	. = ..()
 
 /obj/item/stock_parts/power_store/cell/wondertech/grind(datum/reagents/target_holder, mob/user)
 	explode()
@@ -137,6 +140,7 @@
 /obj/item/stock_parts/power_store/battery/wondertech/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(atom_destruction))
 
 /obj/item/stock_parts/power_store/battery/wondertech/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
