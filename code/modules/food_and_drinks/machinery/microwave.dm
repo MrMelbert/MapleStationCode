@@ -891,41 +891,6 @@
 		//The microwave should turn off asynchronously from any other microwaves that initialize at the same time. Keep in mind this will not turn off, since there is nothing to call the proc that ends this microwave's looping
 		addtimer(CALLBACK(src, PROC_REF(wzhzhzh)), rand(0.5 SECONDS, 3 SECONDS))
 
-/obj/machinery/microwave/engineering
-	name = "wireless microwave oven"
-	desc = "For the hard-working tradesperson who's in the middle of nowhere and just wants to warm up their pastry-based savoury item from an overpriced vending machine."
-	base_icon_state = "engi_"
-	icon_state = "engi_mw_complete"
-	circuit = /obj/item/circuitboard/machine/microwave/engineering
-	light_color = LIGHT_COLOR_BABY_BLUE
-	// We don't use area power, we always use the cell
-	use_power = NO_POWER_USE
-	cell_powered = TRUE
-	vampire_charging_capable = TRUE
-	ingredient_shifts_x = list(
-		0,
-		5,
-		-5,
-		3,
-		-3,
-	)
-	ingredient_shifts_y = list(
-		0,
-		2,
-		-2,
-	)
-
-/obj/machinery/microwave/engineering/Initialize(mapload)
-	. = ..()
-	if(mapload)
-		cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
-	update_appearance()
-
-/obj/machinery/microwave/engineering/cell_included/Initialize(mapload)
-	. = ..()
-	cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
-	update_appearance()
-
 #undef MICROWAVE_NORMAL
 #undef MICROWAVE_MUCK
 #undef MICROWAVE_PRE

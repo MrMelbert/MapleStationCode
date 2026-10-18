@@ -3502,20 +3502,6 @@
 	dir = 4
 	},
 /area/station/service/cafeteria)
-"ajB" = (
-/obj/effect/turf_decal/delivery,
-/obj/structure/window/reinforced/spawner/directional/west,
-/obj/structure/table/glass,
-/obj/item/storage/medkit/fire,
-/obj/effect/turf_decal/siding/blue{
-	dir = 1
-	},
-/obj/structure/window/reinforced/spawner/directional/north,
-/obj/item/storage/medkit/regular{
-	pixel_z = 6
-	},
-/turf/open/floor/iron,
-/area/station/medical/storage)
 "ajF" = (
 /obj/item/kirbyplants/organic/plant21,
 /obj/machinery/camera/directional/north{
@@ -7161,15 +7147,6 @@
 /obj/effect/turf_decal/tile/red,
 /turf/open/floor/iron,
 /area/station/security/prison)
-"asP" = (
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/effect/turf_decal/stripes/line,
-/obj/effect/turf_decal/siding/dark,
-/obj/machinery/atmospherics/components/tank{
-	dir = 1
-	},
-/turf/open/floor/iron/dark,
-/area/station/science/ordnance/storage)
 "asQ" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/line{
@@ -10035,13 +10012,6 @@
 	heat_capacity = 1e+006
 	},
 /area/station/hallway/primary/starboard)
-"aCh" = (
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/atmospherics/components/tank/oxygen{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
-/area/station/science/ordnance/storage)
 "aCj" = (
 /obj/structure/table,
 /obj/item/paper_bin,
@@ -14896,20 +14866,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/tcommsat/server)
-"aPH" = (
-/obj/machinery/computer/operating{
-	dir = 8
-	},
-/obj/item/radio/intercom/directional/north,
-/obj/effect/turf_decal/tile/blue/anticorner/contrasted{
-	dir = 4
-	},
-/obj/machinery/camera/directional/north{
-	c_tag = "Medical - Coroner's Office";
-	network = list("ss13","medbay")
-	},
-/turf/open/floor/iron/dark,
-/area/station/medical/morgue)
 "aPI" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -17549,20 +17505,6 @@
 	dir = 10
 	},
 /area/station/service/library)
-"aXh" = (
-/obj/structure/table/optable{
-	desc = "A cold, hard place for your final rest.";
-	name = "Morgue Slab"
-	},
-/obj/effect/turf_decal/tile/blue/half/contrasted{
-	dir = 1
-	},
-/obj/item/toy/figure/coroner{
-	pixel_x = 1;
-	pixel_y = 2
-	},
-/turf/open/floor/iron/dark,
-/area/station/medical/morgue)
 "aXi" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -22564,15 +22506,6 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/checker,
 /area/station/engineering/storage)
-"buV" = (
-/obj/structure/sign/poster/official/help_others/directional/north,
-/obj/effect/turf_decal/bot_white,
-/obj/effect/turf_decal/siding/blue,
-/obj/machinery/vending/wardrobe/medi_wardrobe,
-/turf/open/floor/iron/dark/side{
-	dir = 1
-	},
-/area/station/medical/storage)
 "buW" = (
 /turf/closed/wall/r_wall,
 /area/station/engineering/supermatter)
@@ -24009,6 +23942,13 @@
 /obj/effect/mapping_helpers/airlock/access/any/engineering/maintenance/departmental,
 /turf/open/floor/iron,
 /area/station/maintenance/department/engine)
+"dbI" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/components/tank{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/ordnance/storage)
 "dbN" = (
 /obj/item/stack/ore/iron,
 /obj/item/stack/ore/silver,
@@ -24861,6 +24801,21 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/iron,
 /area/station/maintenance/department/medical)
+"erJ" = (
+/obj/structure/table/optable{
+	desc = "A cold, hard place for your final rest.";
+	name = "Morgue Slab"
+	},
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/obj/item/toy/figure/coroner{
+	pixel_x = 1;
+	pixel_y = 2
+	},
+/obj/item/radio/intercom/directional/north,
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "erQ" = (
 /obj/machinery/door/airlock/maintenance_hatch{
 	name = "Maintenance Hatch"
@@ -26576,6 +26531,19 @@
 	},
 /turf/open/space,
 /area/space/nearstation)
+"hli" = (
+/obj/machinery/computer/operating{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/blue/anticorner/contrasted{
+	dir = 4
+	},
+/obj/machinery/camera/directional/north{
+	c_tag = "Medical - Coroner's Office";
+	network = list("ss13","medbay")
+	},
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "hlA" = (
 /obj/machinery/power/solar{
 	id = "aftport";
@@ -27333,6 +27301,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/station/science/breakroom)
+"ima" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atmospherics/components/tank/oxygen{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/ordnance/storage)
 "imR" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /turf/closed/wall/r_wall,
@@ -29399,6 +29374,15 @@
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/cargo/bitrunning/den)
+"lBF" = (
+/obj/effect/turf_decal/bot_white,
+/obj/effect/turf_decal/siding/blue,
+/obj/machinery/vending/wardrobe/medi_wardrobe,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/north,
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/station/medical/storage)
 "lBI" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
@@ -32478,13 +32462,21 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/aft)
-"qrY" = (
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/atmospherics/components/tank{
+"qtf" = (
+/obj/effect/turf_decal/delivery,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/table/glass,
+/obj/item/storage/medkit/fire,
+/obj/effect/turf_decal/siding/blue{
 	dir = 1
 	},
-/turf/open/floor/iron/dark,
-/area/station/science/ordnance/storage)
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/item/storage/medkit/regular{
+	pixel_z = 6
+	},
+/obj/structure/sign/poster/official/help_others/directional/south,
+/turf/open/floor/iron,
+/area/station/medical/storage)
 "qtg" = (
 /obj/structure/closet/crate/engineering,
 /obj/effect/spawner/random/engineering/vending_restock,
@@ -32830,6 +32822,15 @@
 	dir = 8
 	},
 /area/station/hallway/primary/aft)
+"qYa" = (
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/siding/dark,
+/obj/machinery/atmospherics/components/tank{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/ordnance/storage)
 "qZj" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/tile/purple{
@@ -67240,12 +67241,12 @@ aVb
 aVX
 iRS
 aQW
-buV
+lBF
 aOg
 aGC
 nhL
 aPA
-aXh
+erJ
 aQD
 eur
 aKm
@@ -67500,9 +67501,9 @@ khB
 wko
 aPg
 aGC
-ajB
+qtf
 mPm
-aPH
+hli
 bfD
 aQL
 aTU
@@ -79320,9 +79321,9 @@ ajP
 aQE
 bex
 ajP
-aCh
-qrY
-asP
+ima
+dbI
+qYa
 agh
 czT
 wjE
@@ -79578,8 +79579,8 @@ bdP
 bez
 ajP
 jIk
-qrY
-asP
+dbI
+qYa
 agh
 kQn
 pAC
