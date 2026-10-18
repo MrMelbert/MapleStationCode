@@ -1011,7 +1011,7 @@
 	icon_state = "card_grey"
 
 	wildcard_slots = WILDCARD_LIMIT_GREY
-	flags_1 = parent_type::flags_1 | UNPAINTABLE_1
+	flags_1 = /*parent_type::flags_1 |*/ HAS_UNIQUE_SCREENTIP_NAME_1 | UNPAINTABLE_1
 
 	/// An overlay icon state for when the card is assigned to a name. Usually manifests itself as a little scribble to the right of the job icon.
 	var/assigned_icon_state = "assigned"
@@ -1146,7 +1146,7 @@
 	registered_name = "Captain"
 	trim = /datum/id_trim/job/captain
 	registered_age = null
-	flags_1 = parent_type::flags_1 & ~HAS_UNIQUE_SCREENTIP_NAME_1
+	flags_1 = /*parent_type::flags_1 & ~HAS_UNIQUE_SCREENTIP_NAME_1*/ UNPAINTABLE_1
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
 	if(registered_name == "Captain")
