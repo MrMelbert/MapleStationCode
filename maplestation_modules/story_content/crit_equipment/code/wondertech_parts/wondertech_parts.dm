@@ -16,7 +16,7 @@
 
 /obj/item/stock_parts/scanning_module/wondertech
 	name = "ancient lightweight scanning module"
-	desc = "A very high-resolution scanning device that happens to be built so as to weigh less."
+	desc = "A very high-resolution scanning device that happens to be built so as to weigh less. It seems incredibly resistant to EMPs."
 	icon = 'maplestation_modules/story_content/crit_equipment/icons/wondertech_parts.dmi'
 	icon_state = "wondertech_scan_module"
 	rating = 6
