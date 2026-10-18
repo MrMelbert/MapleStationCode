@@ -76,6 +76,9 @@
 	greyscale_colors = COLOR_JOB_DEFAULT
 	icon_state = "/obj/item/clothing/suit/apron/overalls/grey"
 
+/obj/item/clothing/suit/apron/overalls/scientist
+	greyscale_colors = COLOR_JOB_SCI_GENERIC
+
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"

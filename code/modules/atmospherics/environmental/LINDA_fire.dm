@@ -73,7 +73,7 @@
 
 	/// base sprite used for our icon states when smoothing
 	/// BAAAASICALY the same as icon_state but is helpful to avoid duplicated work
-	var/fire_stage = ""
+	var/fire_stage = 1/*""*/
 	/**
 	 * Volume is the representation of how big and healthy a fire is.
 	 * Hotspot volume will be divided by turf volume to get the ratio for temperature setting on non bypassing mode.
@@ -307,7 +307,7 @@
 	perform_exposure()
 
 	if(bypassing)
-		set_fire_stage("heavy")
+		set_fire_stage(3/*"heavy"*/)
 		if(!cold_fire)
 			location.burn_tile()
 
@@ -323,9 +323,9 @@
 
 	else
 		if(volume > CELL_VOLUME*0.4)
-			set_fire_stage("medium")
+			set_fire_stage(2/*"medium"*/)
 		else
-			set_fire_stage("light")
+			set_fire_stage(1/*"light"*/)
 
 	if((visual_update_tick++ % 7) == 0)
 		update_color()
@@ -336,7 +336,7 @@
 	if(fire_stage == stage)
 		return
 	fire_stage = stage
-	icon_state = stage
+	icon_state = "[stage]"
 	dir = pick(GLOB.cardinals)
 	update_color()
 
