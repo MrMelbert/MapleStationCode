@@ -25,6 +25,7 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	novariants = TRUE
 	cost = 1
 	source = /datum/robot_energy_storage/beacon
+	w_class = WEIGHT_CLASS_SMALL
 	var/picked_color = "Random"
 
 /obj/item/stack/marker_beacon/ten //miners start with 10 of these
@@ -43,7 +44,7 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	"Alt-click to select a color. Current color is [picked_color].</span>"
 
 /obj/item/stack/marker_beacon/update_icon_state()
-	icon_state = "[initial(icon_state)][lowertext(picked_color)]"
+	icon_state = "[initial(icon_state)][LOWER_TEXT(picked_color)]"
 	return ..()
 
 /obj/item/stack/marker_beacon/attack_self(mob/user)
@@ -115,7 +116,7 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 	set_light(light_range, light_power, GLOB.marker_beacon_colors[picked_color])
 
 /obj/structure/marker_beacon/update_icon_state()
-	icon_state = "[icon_prefix][lowertext(picked_color)]-on"
+	icon_state = "[icon_prefix][LOWER_TEXT(picked_color)]-on"
 	return ..()
 
 /obj/structure/marker_beacon/attack_hand(mob/living/user, list/modifiers)
@@ -135,7 +136,7 @@ GLOBAL_LIST_INIT(marker_beacon_colors, sort_list(list(
 /obj/structure/marker_beacon/attack_tk(mob/user)
 	return
 
-/obj/structure/marker_beacon/attackby(obj/item/I, mob/user, params)
+/obj/structure/marker_beacon/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(I, /obj/item/stack/marker_beacon))
 		var/obj/item/stack/marker_beacon/M = I
 		to_chat(user, span_notice("You start picking [src] up..."))

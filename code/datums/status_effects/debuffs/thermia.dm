@@ -158,6 +158,9 @@
 
 /datum/status_effect/thermia/hypo/proc/apply_frostbite()
 	var/mob/living/carbon/human/human_owner = owner
+	if(human_owner.reagents.has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE))
+		return
+
 	var/list/pick_from = BODY_ZONES_LIMBS
 	while(length(pick_from))
 		var/obj/item/bodypart/bodypart = human_owner.get_bodypart(pick_n_take(pick_from))
@@ -236,6 +239,9 @@
 
 /datum/status_effect/thermia/hyper/proc/apply_burn()
 	var/mob/living/carbon/human/human_owner = owner
+	if(human_owner.reagents.has_reagent(/datum/reagent/medicine/pyroxadone, needs_metabolizing = TRUE))
+		return
+
 	// Lets pick a random body part and check for an existing burn
 	var/obj/item/bodypart/bodypart = pick(human_owner.bodyparts)
 	var/datum/wound/existing_burn

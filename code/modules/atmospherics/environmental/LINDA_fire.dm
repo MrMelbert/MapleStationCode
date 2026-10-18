@@ -1,7 +1,7 @@
 /// Returns reactions which will contribute to a hotspot's size.
 /proc/init_hotspot_reactions()
 	var/list/fire_reactions = list()
-	for (var/datum/gas_reaction/reaction as anything in subtypesof(/datum/gas_reaction))
+	for (var/datum/gas_reaction/standard/reaction as anything in subtypesof(/datum/gas_reaction/standard))
 		if(initial(reaction.expands_hotspot))
 			fire_reactions += reaction
 
@@ -15,28 +15,6 @@
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	return
 
-/turf/open/proc/set_active_hotspot(obj/effect/hotspot/new_lad)
-	if(active_hotspot == new_lad)
-		return
-	var/hotspot_around = NONE
-	if(active_hotspot)
-		if(new_lad)
-			hotspot_around = active_hotspot.smoothing_junction
-		if(!QDELETED(active_hotspot))
-			QDEL_NULL(active_hotspot)
-	else
-		for(var/direction in GLOB.cardinals)
-			var/turf/open/open = get_step(src, direction)
-			if(!isopenturf(open) || !open.active_hotspot)
-				continue
-			var/existing_directions = open.active_hotspot.smoothing_junction
-			open.active_hotspot.set_smoothed_icon_state(existing_directions | REVERSE_DIR(direction))
-			hotspot_around |= direction
-
-	active_hotspot = new_lad
-	if(active_hotspot)
-		active_hotspot.set_smoothed_icon_state(hotspot_around)
-
 /**
  * Handles the creation of hotspots and initial activation of turfs.
  * Setting the conditions for the reaction to actually happen for gasmixtures
@@ -44,46 +22,36 @@
  */
 /turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	//If the air doesn't exist we just return false
-	var/list/air_gases = air?.gases
-	if(!air_gases)
+	var/cached_moles = air?.moles
+	if(!cached_moles)
 		return
 
-	. = air_gases[/datum/gas/oxygen]
-	var/oxy = . ? .[MOLES] : 0
-	if (oxy < 0.5)
+	if (cached_moles[/datum/gas/oxygen] < 0.5)
 		return
-	. = air_gases[/datum/gas/plasma]
-	var/plas = . ? .[MOLES] : 0
-	. = air_gases[/datum/gas/tritium]
-	var/trit = . ? .[MOLES] : 0
-	. = air_gases[/datum/gas/hydrogen]
-	var/h2 = . ? .[MOLES] : 0
-	. = air_gases[/datum/gas/freon]
-	var/freon = . ? .[MOLES] : 0
+
+	var/plas_trit_h2_threshold = (\
+		   cached_moles[/datum/gas/plasma] > 0.5\
+		|| cached_moles[/datum/gas/tritium] > 0.5\
+		|| cached_moles[/datum/gas/hydrogen] > 0.5)
+	var/freon_threshold = (cached_moles[/datum/gas/freon] > 0.5)
 	if(active_hotspot)
 		if(soh)
-			if(plas > 0.5 || trit > 0.5 || h2 > 0.5)
+			if(plas_trit_h2_threshold)
 				if(active_hotspot.temperature < exposed_temperature)
 					active_hotspot.temperature = exposed_temperature
 				if(active_hotspot.volume < exposed_volume)
 					active_hotspot.volume = exposed_volume
-			else if(freon > 0.5)
+			else if(freon_threshold)
 				if(active_hotspot.temperature > exposed_temperature)
 					active_hotspot.temperature = exposed_temperature
 				if(active_hotspot.volume < exposed_volume)
 					active_hotspot.volume = exposed_volume
 		return
 
-	if(((exposed_temperature > PLASMA_MINIMUM_BURN_TEMPERATURE) && (plas > 0.5 || trit > 0.5 || h2 > 0.5)) || \
-		((exposed_temperature < FREON_MAXIMUM_BURN_TEMPERATURE) && (freon > 0.5)))
+	if (((exposed_temperature > PLASMA_MINIMUM_BURN_TEMPERATURE) && plas_trit_h2_threshold) || \
+		((exposed_temperature < FREON_MAXIMUM_BURN_TEMPERATURE) && freon_threshold))
 
-		set_active_hotspot(new /obj/effect/hotspot(src, exposed_volume * 25, exposed_temperature))
-		if(COOLDOWN_FINISHED(src, fire_puff_cooldown))
-			playsound(src, 'sound/effects/fire_puff.ogg', 30)
-			COOLDOWN_START(src, fire_puff_cooldown, 5 SECONDS)
-
-		active_hotspot.just_spawned = (current_cycle < SSair.times_fired)
-		//remove just_spawned protection if no longer processing this cell
+		new /obj/effect/hotspot(src, exposed_volume * 25, exposed_temperature)
 		SSair.add_to_active(src)
 
 /**
@@ -98,14 +66,14 @@
 	layer = GASFIRE_LAYER
 	plane = ABOVE_GAME_PLANE
 	blend_mode = BLEND_ADD
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = LIGHT_RANGE_FIRE
 	light_power = 1
 	light_color = LIGHT_COLOR_FIRE
 
 	/// base sprite used for our icon states when smoothing
 	/// BAAAASICALY the same as icon_state but is helpful to avoid duplicated work
-	var/fire_stage = ""
+	var/fire_stage = 1/*""*/
 	/**
 	 * Volume is the representation of how big and healthy a fire is.
 	 * Hotspot volume will be divided by turf volume to get the ratio for temperature setting on non bypassing mode.
@@ -131,7 +99,31 @@
 		volume = starting_volume
 	if(!isnull(starting_temperature))
 		temperature = starting_temperature
-	perform_exposure()
+
+	var/turf/open/our_turf = loc
+	//on creation we check adjacent turfs for hot spot to start grouping, if surrounding do not have hot spots we create our own
+	for(var/turf/open/to_check as anything in our_turf.atmos_adjacent_turfs)
+		if(!to_check.active_hotspot)
+			continue
+		var/obj/effect/hotspot/enemy_spot = to_check.active_hotspot
+		if(!our_hot_group)
+			enemy_spot.our_hot_group.add_to_group(src)
+		else if(our_hot_group != enemy_spot.our_hot_group && enemy_spot.our_hot_group) //if we belongs to a hot group from prior loop and we encounter another hot spot with a group then we merge
+			our_hot_group.merge_hot_groups(enemy_spot.our_hot_group)
+
+	if(!our_hot_group)//if after loop through all the adjacents turfs and we havent belong to a group yet, make our own
+		our_hot_group = new
+		our_hot_group.add_to_group(src)
+
+	// If our hotspot gets created on a turf with existing hotspots on it that just got spawned, abort
+	if(!perform_exposure())
+		if (QDELETED(src))
+			return
+		return INITIALIZE_HINT_QDEL
+
+	if(QDELETED(src)) // It is actually possible for this hotspot to become qdeleted in perform_exposure() if another hotspot gets created (for example in fire_act() of fuel pools)
+		return // In this case, we want to just leave and let the new hotspot take over.
+
 	setDir(pick(GLOB.cardinals))
 	air_update_turf(FALSE, FALSE)
 	var/static/list/loc_connections = list(
@@ -139,18 +131,13 @@
 		COMSIG_ATOM_ABSTRACT_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	var/turf/open/our_turf = loc
-	//on creation we check adjacent turfs for hot spot to start grouping, if surrounding do not have hot spots we create our own
-	for(var/turf/open/to_check as anything in our_turf.atmos_adjacent_turfs)
-		if(to_check.active_hotspot)
-			var/obj/effect/hotspot/enemy_spot = to_check.active_hotspot
-			if(!our_hot_group)
-				enemy_spot.our_hot_group.add_to_group(src)
-			else if(our_hot_group != enemy_spot.our_hot_group && enemy_spot.our_hot_group) //if we belongs to a hot group from prior loop and we encounter another hot spot with a group then we merge
-				our_hot_group.merge_hot_groups(enemy_spot.our_hot_group)
-	if(!our_hot_group)//if after loop through all the adjacents turfs and we havent belong to a group yet, make our own
-		our_hot_group = new
-		our_hot_group.add_to_group(src)
+
+	if(COOLDOWN_FINISHED(our_turf, fire_puff_cooldown))
+		playsound(our_turf, 'sound/effects/fire_puff.ogg', 30)
+		COOLDOWN_START(our_turf, fire_puff_cooldown, 5 SECONDS)
+
+	// Remove just_spawned protection if no longer processing the parent cell
+	just_spawned = (our_turf.current_cycle < SSair.times_fired)
 
 /obj/effect/hotspot/set_smoothed_icon_state(new_junction)
 
@@ -170,14 +157,22 @@
  * If the reaction is too small it will perform like the first tick.
  *
  * Also calls fire_act() which handles burning.
+ * Returns TRUE if exposed successfully, and FALSE if the hotspot should delete itself
  */
 /obj/effect/hotspot/proc/perform_exposure()
 	var/turf/open/location = loc
 	var/datum/gas_mixture/reference
-	if(!istype(location) || !(location.air))
-		return
+	if(!istype(location) || !location.air)
+		return FALSE
 
-	location.set_active_hotspot(src)
+	if(location.active_hotspot && location.active_hotspot != src)
+		// If we're attempting to spawn on a turf which *just* had a hotspot spawned on it, abort and kill ourselves
+		if(location.active_hotspot.just_spawned)
+			return FALSE
+		// When we are spawned from a deletion signal from our previous hotspot, this can happen
+		if(!QDELETED(location.active_hotspot))
+			qdel(location.active_hotspot)
+	location.active_hotspot = src
 
 	bypassing = !just_spawned && (volume > CELL_VOLUME*0.95)
 
@@ -202,12 +197,13 @@
 
 	// Handles the burning of atoms.
 	if(cold_fire)
-		return
+		return TRUE
+
 	for(var/A in location)
 		var/atom/AT = A
 		if(!QDELETED(AT) && AT != src)
 			AT.fire_act(temperature, volume)
-	return
+	return TRUE
 
 /// Mathematics to be used for color calculation.
 /obj/effect/hotspot/proc/gauss_lerp(x, x1, x2)
@@ -273,7 +269,7 @@
 	color = list(LERP(0.3, 1, 1-greyscale_fire) * heat_r,0.3 * heat_g * greyscale_fire,0.3 * heat_b * greyscale_fire, 0.59 * heat_r * greyscale_fire,LERP(0.59, 1, 1-greyscale_fire) * heat_g,0.59 * heat_b * greyscale_fire, 0.11 * heat_r * greyscale_fire,0.11 * heat_g * greyscale_fire,LERP(0.11, 1, 1-greyscale_fire) * heat_b, 0,0,0)
 	alpha = heat_a
 
-#define INSUFFICIENT(path) (!location.air.gases[path] || location.air.gases[path][MOLES] < 0.5)
+#define INSUFFICIENT(path) (!location.air.moles[path] || location.air.moles[path] < 0.5)
 
 /**
  * Regular process proc for hotspots governed by the controller.
@@ -311,7 +307,7 @@
 	perform_exposure()
 
 	if(bypassing)
-		set_fire_stage("heavy")
+		set_fire_stage(3/*"heavy"*/)
 		if(!cold_fire)
 			location.burn_tile()
 
@@ -327,9 +323,9 @@
 
 	else
 		if(volume > CELL_VOLUME*0.4)
-			set_fire_stage("medium")
+			set_fire_stage(2/*"medium"*/)
 		else
-			set_fire_stage("light")
+			set_fire_stage(1/*"light"*/)
 
 	if((visual_update_tick++ % 7) == 0)
 		update_color()
@@ -340,17 +336,18 @@
 	if(fire_stage == stage)
 		return
 	fire_stage = stage
-	icon_state = stage
+	icon_state = "[stage]"
 	dir = pick(GLOB.cardinals)
 	update_color()
 
 /obj/effect/hotspot/Destroy()
 	SSair.hotspots -= src
-	var/turf/open/T = loc
-	if(istype(T) && T.active_hotspot == src)
+	var/turf/open/cur_turf = loc
+	if(our_hot_group)
 		our_hot_group.remove_from_group(src)
 		our_hot_group = null
-		T.set_active_hotspot(null)
+	if(istype(cur_turf) && cur_turf.active_hotspot == src)
+		cur_turf.active_hotspot = null
 	return ..()
 
 /obj/effect/hotspot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
@@ -398,13 +395,16 @@
 /datum/hot_group/proc/remove_from_group(obj/effect/hotspot/target)
 	spot_list -= target
 	var/turf/open/target_turf = target.loc
-	x_coord -= target_turf.x
-	y_coord -= target_turf.y
+	if(target_turf)
+		x_coord -= target_turf.x
+		y_coord -= target_turf.y
 	if(!length(spot_list))
 		qdel(src)
 		return
 
 /datum/hot_group/proc/add_to_group(obj/effect/hotspot/target)
+	if(QDELETED(target))
+		return
 	spot_list += target
 	target.our_hot_group = src
 	var/turf/open/target_turf = target.loc

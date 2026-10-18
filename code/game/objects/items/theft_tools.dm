@@ -164,7 +164,7 @@
 /obj/item/nuke_core/supermatter_sliver/can_be_pulled(user) // no drag memes
 	return FALSE
 
-/obj/item/nuke_core/supermatter_sliver/attackby(obj/item/W, mob/living/user, params)
+/obj/item/nuke_core/supermatter_sliver/attackby(obj/item/W, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(W, /obj/item/hemostat/supermatter))
 		var/obj/item/hemostat/supermatter/tongs = W
 		if (tongs.sliver)

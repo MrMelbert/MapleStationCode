@@ -11,6 +11,10 @@
 	digitigrade_file = 'maplestation_modules/icons/mob/clothing/shoes/digi_shoes.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
+/obj/item/clothing/shoes/workboots/black
+	digitigrade_file = null
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+
 /obj/item/clothing/shoes/sandal
 	digitigrade_file = 'maplestation_modules/icons/mob/clothing/shoes/digi_shoes.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION

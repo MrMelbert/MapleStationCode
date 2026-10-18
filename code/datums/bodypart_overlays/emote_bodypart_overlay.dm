@@ -29,10 +29,6 @@
 	if(!referenced_bodypart)
 		return ..()
 	referenced_bodypart.remove_bodypart_overlay(src)
-	if(referenced_bodypart.owner) //Keep in mind that the bodypart could have been severed from the owner by now
-		referenced_bodypart.owner.update_body_parts()
-	else
-		referenced_bodypart.update_icon_dropped()
 	return ..()
 
 /**
@@ -48,8 +44,9 @@
 	var/obj/item/bodypart/bodypart = src.get_bodypart(overlay.attached_body_zone)
 	if(!bodypart)
 		return null
+	if(locate(overlay_typepath) in bodypart.bodypart_overlays)
+		return null
 	bodypart.add_bodypart_overlay(overlay)
-	src.update_body_parts()
 	return overlay
 
 /datum/bodypart_overlay/simple/emote/blush
@@ -58,6 +55,15 @@
 	layers = EXTERNAL_ADJACENT
 	offset_key = OFFSET_FACE
 	attached_body_zone = BODY_ZONE_HEAD
+
+/datum/bodypart_overlay/simple/emote/blush/color_image(image/overlay, layer, obj/item/bodypart/limb)
+	var/list/blood_hsl = rgb2num(limb.damage_color, COLORSPACE_HSL)
+	//  take blood color then just make it a lot brighter and desaturate it a bit
+	blood_hsl[2] = max(0, blood_hsl[2] - 20)
+	blood_hsl[3] = min(100, blood_hsl[3] + 30)
+
+	overlay.color = rgb(blood_hsl[1], blood_hsl[2], blood_hsl[3], space = COLORSPACE_HSL)
+	overlay.alpha = 200
 
 /datum/bodypart_overlay/simple/emote/cry
 	icon_state = "tears"

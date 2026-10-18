@@ -225,6 +225,7 @@
 	heat_capacity = 900
 	custom_materials = list(/datum/material/plastic=SMALL_MATERIAL_AMOUNT*5)
 	floor_tile = /obj/item/stack/tile/plastic
+	footstep = FOOTSTEP_TILES
 
 /turf/open/floor/plastic/broken_states()
 	return list("plastic-damaged1","plastic-damaged2")

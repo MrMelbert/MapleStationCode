@@ -16,9 +16,9 @@
 /obj/item/clothing/shoes/heels //heels
 	name = "high heels"
 	desc = "Shoes with tall heels. Useful for looking cool or stupid, depending on how high the heels are."
-	icon = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
-	icon_state = "heels"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/shoes/heels.dmi'
+	icon = 'icons/map_icons/clothing/shoes.dmi'
+	icon_state = "/obj/item/clothing/shoes/heels"
+	post_init_icon_state = "heels"
 	flags_1 = IS_PLAYER_COLORABLE_1
 	greyscale_colors = "#eeeeee"
 	greyscale_config = /datum/greyscale_config/heels
@@ -40,4 +40,33 @@
 /obj/item/clothing/shoes/heels/fancy //the cooler heels
 	name = "fancy high heels"
 	desc = "Fancy high heels. Despite the looks, these weren't tailor-made for you by a fairy godmother."
-	icon_state = "fancy_heels"
+	icon_state = "/obj/item/clothing/shoes/heels/fancy"
+	post_init_icon_state = "fancy_heels"
+
+// loadout items are indexed by typepath, so this is here to be a placeholder.
+/obj/item/clothing/shoes/barefoot
+	name = "barefoot"
+	icon = null
+	icon_state = null
+	item_flags = ABSTRACT|DROPDEL
+
+/obj/item/clothing/shoes/workboots/designershoes
+	name = "designer boots"
+	desc = "Fashionable leather boots with golden details. Worth more than your monthly salary."
+	icon = 'maplestation_modules/icons/obj/clothing/designer.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/designer.dmi'
+	icon_state = "designerboots"
+
+/obj/item/clothing/shoes/workboots/brown
+	name = "short brown boots"
+	desc = "Leather boots that have seem to be roughly cut short. Looks like they've seen better days."
+	icon = 'maplestation_modules/icons/mob/clothing/delinquent.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/delinquent.dmi'
+	icon_state = "shortboot"
+
+/obj/item/clothing/shoes/workboots/mercenary
+	name = "mercenary boots"
+	desc = "Steel toed boots, durable and lightweight."
+	icon = 'maplestation_modules/icons/obj/clothing/mercenary.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/mercenary.dmi'
+	icon_state = "liniboots"

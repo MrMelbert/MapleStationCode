@@ -3,6 +3,7 @@
 	desc = "..."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = null
+	abstract_type = /obj/item/reagent_containers
 	w_class = WEIGHT_CLASS_TINY
 	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
@@ -58,8 +59,12 @@
 		volume = vol
 	create_reagents(volume, reagent_flags)
 	if(spawned_disease)
-		var/datum/disease/F = new spawned_disease()
-		var/list/data = list("viruses"= list(F))
+		var/list/data = list(
+			"viruses"= new spawned_disease(),
+			"blood_DNA" = "UNKNOWN HUMAN DNA",
+			"blood_type" = random_human_blood_type(),
+			"resistances" = null,
+		)
 		reagents.add_reagent(/datum/reagent/blood, disease_amount, data)
 	add_initial_reagents()
 
@@ -79,7 +84,7 @@
 	RegisterSignals(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
 	RegisterSignal(reagents, COMSIG_QDELETING, PROC_REF(on_reagents_del))
 
-/obj/item/reagent_containers/attack(mob/living/target_mob, mob/living/user, params)
+/obj/item/reagent_containers/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	if (!user.combat_mode)
 		return
 	return ..()
@@ -120,7 +125,7 @@
 	balloon_alert(user, "transferring [amount_per_transfer_from_this]u")
 	mode_change_message(user)
 
-/obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
+/obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(HAS_TRAIT(target, TRAIT_DO_NOT_SPLASH))
 		return ..()
 	if(!user.combat_mode)
@@ -171,7 +176,7 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.expose(target, TOUCH)
+	reagents.expose(target, TOUCH, exposed_zone = user.zone_selected) // NON-MODULE CHANGE
 	log_combat(user, target, "splashed", reagent_text)
 	reagents.clear_reagents()
 
@@ -237,8 +242,8 @@
 
 		if(thrown_by)
 			log_combat(thrown_by, M, "splashed", R)
-		reagents.expose(target, TOUCH, splash_multiplier)
-		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier)) // 1 - splash_multiplier because it's what didn't hit the target
+		reagents.expose(target, TOUCH, splash_multiplier, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
+		reagents.expose(target_turf, TOUCH, (1 - splash_multiplier), exposed_zone = ran_zone(thrown_by?.zone_selected)) // 1 - splash_multiplier because it's what didn't hit the target // NON-MODULE CHANGE
 
 	else if(bartender_check(target) && thrown)
 		visible_message(span_notice("[src] lands onto the [target.name] without spilling a single drop."))
@@ -250,7 +255,7 @@
 			thrown_by.log_message("splashed (thrown) [english_list(reagents.reagent_list)] on [target].", LOG_ATTACK)
 			message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 		visible_message(span_notice("[src] spills its contents all over [target]."))
-		reagents.expose(target, TOUCH)
+		reagents.expose(target, TOUCH, exposed_zone = ran_zone(thrown_by?.zone_selected)) // NON-MODULE CHANGE
 		if(QDELETED(src))
 			return
 

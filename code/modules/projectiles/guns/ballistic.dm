@@ -1,13 +1,17 @@
 ///Subtype for any kind of ballistic gun
 ///This has a shitload of vars on it, and I'm sorry for that, but it does make making new subtypes really easy
 /obj/item/gun/ballistic
-	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
 	name = "projectile gun"
+	desc = "Now comes in flavors like GUN. Uses 10mm ammo, for some reason."
 	icon_state = "debug"
+	abstract_type = /obj/item/gun/ballistic
 	w_class = WEIGHT_CLASS_NORMAL
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	unique_reskin_changes_base_icon_state = TRUE
+
+	min_recoil = 0.1
 
 	///sound when inserting magazine
 	var/load_sound = 'sound/weapons/gun/general/magazine_insert_full.ogg'
@@ -133,6 +137,16 @@
 	///What is the cap on our misfire probability? Do not set this to 100.
 	var/misfire_probability_cap = 25
 
+	/// Fire Selector Variables ///
+	// /// Tracks the firemode of burst weapons. TRUE means it is in burst mode.
+	// var/burst_fire_selection = FALSE
+	// /// If it has an icon for a selector switch indicating current firemode.
+	// var/selector_switch_icon = FALSE
+	// /// Suppressor attached to the gun, if any
+	// var/obj/item/suppressor/suppressor = null
+	/// Sound played when the burst mode is changed
+	var/burst_select_sound = SFX_FIRE_MODE_SWITCH
+
 /obj/item/gun/ballistic/Initialize(mapload)
 	. = ..()
 	if(!spawn_magazine_type)
@@ -156,9 +170,6 @@
 	QDEL_NULL(magazine)
 	return ..()
 
-/obj/item/gun/ballistic/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_ballistic))
-
 /obj/item/gun/ballistic/fire_sounds()
 	var/max_ammo = magazine?.max_ammo || initial(spawn_magazine_type.max_ammo)
 	var/current_ammo = get_ammo()
@@ -174,20 +185,12 @@
 		if(play_click && click_on_low_ammo)
 			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
 
-
-/**
- *
- * Outputs type-specific weapon stats for ballistic weaponry based on its magazine and its caliber.
- * It contains extra breaks for the sake of presentation
- *
- **/
-/obj/item/gun/ballistic/proc/add_notes_ballistic()
-	if(magazine) // Make sure you have a magazine, to get the notes from
-		return "\n[magazine.add_notes_box()]"
-	else if(chambered) // if you don't have a magazine, is there something chambered?
-		return "\n[chambered.add_notes_ammo()]"
-	else // we have a very expensive mechanical paperweight.
-		return "\nThe lack of magazine and usable cartridge in chamber makes its usefulness questionable, at best."
+/obj/item/gun/ballistic/examine_weapon_descriptor(mob/user)
+	if(magazine)
+		return magazine.examine_weapon_descriptor(user)
+	if(chambered)
+		return chambered.projectile_examine_description(p_They())
+	return ""
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
@@ -195,11 +198,8 @@
 		update_appearance()
 
 /obj/item/gun/ballistic/update_icon_state()
-	if(current_skin)
-		icon_state = "[unique_reskin[current_skin]][sawn_off ? "_sawn" : ""]"
-	else
-		icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
-	return ..()
+	. = ..()
+	icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
 
 /obj/item/gun/ballistic/update_overlays()
 	. = ..()
@@ -256,8 +256,17 @@
 /obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
+	add_smell(
+		duration = 30 SECONDS,
+		smell = "gunpowder",
+		intensity = SMELL_INTENSITY_WEAK,
+		radius = 2,
+		wash_type = CLEAN_TYPE_FINGERPRINTS,
+	)
+
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
 	if(istype(casing)) //there's a chambered round
+		casing.is_spent()
 		if(QDELING(casing))
 			stack_trace("Trying to move a qdeleted casing of type [casing.type]!")
 			chambered = null
@@ -449,6 +458,7 @@
 /obj/item/gun/ballistic/proc/install_suppressor(obj/item/suppressor/S)
 	suppressed = S
 	update_weight_class(w_class + S.w_class) //so pistols do not fit in pockets when suppressed
+	can_muzzle_flash = FALSE
 	update_appearance()
 
 /obj/item/gun/ballistic/clear_suppressor()
@@ -457,6 +467,7 @@
 	if(isitem(suppressed))
 		var/obj/item/I = suppressed
 		update_weight_class(w_class - I.w_class)
+	can_muzzle_flash = initial(can_muzzle_flash)
 	return ..()
 
 /obj/item/gun/ballistic/click_alt(mob/user)
@@ -569,7 +580,7 @@
 #define BRAINS_BLOWN_THROW_SPEED 1
 
 /obj/item/gun/ballistic/suicide_act(mob/living/user)
-	var/obj/item/organ/internal/brain/B = user.get_organ_slot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/B = user.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if (B && chambered && chambered.loaded_projectile && can_trigger_gun(user) && chambered.loaded_projectile.damage > 0)
 		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
 		sleep(2.5 SECONDS)

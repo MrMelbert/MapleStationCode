@@ -58,6 +58,8 @@
 #define ACCESS_MAINT_TUNNELS "maint_tunnels"
 /// Access to get into APCs, engineering equipment lockers, typically mapped in for key power rooms across the station, engineering vending machines, emitters, and some other stuff.
 #define ACCESS_ENGINE_EQUIP "engine_equip"
+/// Access to get into air alarms, atmos equipment lockers, potentially atmos storage rooms (like the gas storage room).
+#define ACCESS_ATMOS_EQUIP "atmos_equip"
 /// Access to "construction" areas of the station. However, in mapping, it's used to get access to the front door and lathe room of the engineering department.
 #define ACCESS_CONSTRUCTION "construction"
 /// Access to the technical storage room (contains all the boards and other miscellaneous engineering gear).
@@ -193,6 +195,11 @@
 /// HUNTERS
 #define ACCESS_HUNTER "hunter"
 
+/// - - - MISC - - -
+	// These don't really fit anywhere else
+/// For things that aren't ever supposed to be accessed
+#define ACCESS_INACCESSIBLE "inaccessible"
+
 /// - - - END ACCESS IDS - - -
 
 /// A list of access levels that, when added to an ID card, will warn admins.
@@ -281,6 +288,7 @@
 /// Departmental/general/common area accesses. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON)
 #define COMMON_ACCESS list( \
 	ACCESS_ATMOSPHERICS, \
+	ACCESS_ATMOS_EQUIP, \
 	ACCESS_AUX_BASE, \
 	ACCESS_BAR, \
 	ACCESS_BIT_DEN, \
@@ -328,6 +336,7 @@
 	ACCESS_SERVICE, \
 	ACCESS_SHIPPING, \
 	ACCESS_SURGERY, \
+	ACCESS_TECH_STORAGE, \
 	ACCESS_THEATRE, \
 	ACCESS_VIROLOGY, \
 	ACCESS_WEAPONS, \
@@ -346,7 +355,6 @@
 	ACCESS_MINISAT, \
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_TCOMMS, \
-	ACCESS_TECH_STORAGE, \
 	ACCESS_TELEPORTER, \
 	ACCESS_VAULT, \
 )
@@ -478,6 +486,7 @@
 /// Used to seed the accesses_by_region list in SSid_access. A list of all engineering regional accesses that are overseen by the CE.
 #define REGION_ACCESS_ENGINEERING list( \
 	ACCESS_ATMOSPHERICS, \
+	ACCESS_ATMOS_EQUIP, \
 	ACCESS_AUX_BASE, \
 	ACCESS_CE, \
 	ACCESS_CONSTRUCTION, \
@@ -586,3 +595,11 @@
 #define FORCE_ADD_ALL 2
 /// Used in ID card access adding procs. Will stack trace on fail.
 #define ERROR_ON_FAIL 3
+
+/// Tracks what jobs know what passwords
+/// Assoc - job type = list(password id = list("location" = place the password is for, "password" = the actual password))
+GLOBAL_LIST_INIT(important_passwords, list())
+/// Location of a password, ie "Front Engineering Door"
+#define PASSWORD_LOCATION "location"
+/// Actual password, "12345"
+#define PASSWORD_CODE "password"

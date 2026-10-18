@@ -40,6 +40,48 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(user.combat_mode)
 		return ..(M, user)
 
+
+/obj/item/balloon_mallet
+	name = "balloon mallet"
+	desc = "It's a mallet, a weapon known for being heavy, but made from notoriously light balloons. Air inside removes any force from the swings. It'd be quite embarrassing to get hit by this."
+	icon = 'icons/obj/weapons/hammer.dmi'
+	icon_state = "balloon_mallet"
+	inhand_icon_state = "balloon_mallet"
+	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
+	siemens_coefficient = 0
+	force = 1
+	throw_speed = 1
+	throwforce = 1
+	throw_range = 1
+	w_class = WEIGHT_CLASS_HUGE
+	attack_verb_continuous = list("mallets", "smoother")
+	attack_verb_simple = list("mallet", "smoother")
+	max_integrity = 20
+	armor_type = /datum/armor/item_banhammer
+	resistance_flags = FIRE_PROOF
+
+/obj/item/balloon_mallet/examine(mob/user)
+	. = ..()
+	if(HAS_TRAIT(user,TRAIT_BALLOON_SUTRA))
+		. = "A sacred weapon of the higher castes from the clown planet, used to strike fear into the hearts of their foes. Wield it with care."
+
+/obj/item/balloon_mallet/attack(mob/living/target, mob/living/user)
+	playsound(loc, 'sound/creatures/clown/hehe.ogg', 20)
+	if (!isliving(target))
+		return
+	switch(target.mob_mood.sanity)
+		if (SANITY_INSANE to SANITY_CRAZY)
+			force = 8
+		if (SANITY_UNSTABLE to SANITY_DISTURBED)
+			force = 4
+			target.add_mood_event("humiliated", /datum/mood_event/mallet_humiliation)
+		if (SANITY_NEUTRAL to SANITY_GREAT)
+			target.add_mood_event("humiliated", /datum/mood_event/mallet_humiliation)
+
+	if(user.combat_mode)
+		return ..(target, user)
+
 /obj/item/sord
 	name = "\improper SORD"
 	desc = "This thing is so unspeakably shitty you are having a hard time even holding it."
@@ -120,6 +162,14 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throw_speed = 3
 	throw_range = 5
 	armour_penetration = 35
+
+/obj/item/claymore/cutlass/old
+	name = "old cutlass"
+	desc = parent_type::desc + " This one seems a tad old."
+	force = 24
+	throwforce = 17
+	armour_penetration = 20
+	block_chance = 30
 
 /obj/item/claymore/carrot
 	name = "carrot sword"
@@ -467,7 +517,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 5
 	throwforce = 5
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5)
 	attack_verb_continuous = list("bludgeons", "whacks", "disciplines", "thrashes")
 	attack_verb_simple = list("bludgeon", "whack", "discipline", "thrash")
@@ -777,7 +827,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	thrown_datums.Cut()
 	return ..()
 
-/obj/item/melee/baseball_bat/pre_attack(atom/movable/target, mob/living/user, params)
+/obj/item/melee/baseball_bat/pre_attack(atom/movable/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
 		return ..()
@@ -891,7 +941,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	))
 
 
-/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, click_parameters)
+/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
 	if(is_type_in_typecache(target, splattable))
 		to_chat(user, span_warning("You easily splat [target]."))
 		if(isliving(target))
@@ -928,12 +978,11 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	name = "\improper ACME Extendo-Hand"
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
 
-/obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, params)
+/obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, list/modifiers, list/attack_modifiers)
 	var/dist = get_dist(M, user)
 	if(dist < min_reach)
 		to_chat(user, span_warning("[M] is too close to use [src] on."))
 		return
-	var/list/modifiers = params2list(params)
 	M.attack_hand(user, modifiers)
 
 /obj/item/gohei
@@ -1033,16 +1082,16 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return TRUE
 	return FALSE
 
-/obj/item/highfrequencyblade/pre_attack(atom/A, mob/living/user, params)
+/obj/item/highfrequencyblade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return .
 	if(!HAS_TRAIT(src, TRAIT_WIELDED))
 		return . // Default attack
-	if(isliving(A) && HAS_TRAIT(src, TRAIT_PACIFISM))
+	if(isliving(target) && HAS_TRAIT(src, TRAIT_PACIFISM))
 		return . // Default attack (ultimately nothing)
 
-	return slash(A, user, params)
+	return slash(target, user, modifiers)
 
 /// triggered on wield of two handed item
 /obj/item/highfrequencyblade/proc/on_wield(obj/item/source, mob/user)
@@ -1052,9 +1101,8 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/highfrequencyblade/proc/on_unwield(obj/item/source, mob/user)
 	update_icon(UPDATE_ICON_STATE)
 
-/obj/item/highfrequencyblade/proc/slash(atom/target, mob/living/user, params)
+/obj/item/highfrequencyblade/proc/slash(atom/target, mob/living/user, list/modifiers)
 	user.do_attack_animation(target, "nothing")
-	var/list/modifiers = params2list(params)
 	var/damage_mod = 1
 	var/x_slashed = text2num(modifiers[ICON_X]) || world.icon_size/2 //in case we arent called by a client
 	var/y_slashed = text2num(modifiers[ICON_Y]) || world.icon_size/2 //in case we arent called by a client

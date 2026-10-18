@@ -20,7 +20,7 @@
 /turf/closed/indestructible/singularity_act()
 	return
 
-/turf/closed/indestructible/attackby(obj/item/attacking_item, mob/user, params)
+/turf/closed/indestructible/attackby(obj/item/attacking_item, mob/user, list/modifiers)
 	if(istype(attacking_item, /obj/item/poster) && Adjacent(user))
 		return place_poster(attacking_item, user)
 
@@ -182,6 +182,9 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	smoothing_groups = SMOOTH_GROUP_ABDUCTOR_WALLS + SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
 	canSmoothWith = SMOOTH_GROUP_ABDUCTOR_WALLS
 
+/turf/closed/indestructible/alien/nodiagonal
+	icon_state = "abductor_wall-15"
+	smoothing_flags = SMOOTH_BITMASK
 
 /turf/closed/indestructible/cult
 	name = "runed metal wall"

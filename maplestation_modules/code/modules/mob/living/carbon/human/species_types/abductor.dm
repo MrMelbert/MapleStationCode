@@ -53,5 +53,5 @@
 	))
 	return perks
 
-/obj/item/organ/internal/tongue/abductor
+/obj/item/organ/tongue/abductor
 	speech_sounds_enabled = FALSE

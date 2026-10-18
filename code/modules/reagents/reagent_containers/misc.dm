@@ -73,7 +73,7 @@
 	to_chat(user, span_notice("You screw the battery case on [src] [open ? "open" : "closed"] ."))
 	update_appearance()
 
-/obj/item/reagent_containers/cup/maunamug/attackby(obj/item/I, mob/user, params)
+/obj/item/reagent_containers/cup/maunamug/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	add_fingerprint(user)
 	if(!istype(I, /obj/item/stock_parts/power_store/cell))
 		return ..()
@@ -148,7 +148,7 @@
 		carbon_target.visible_message(span_danger("[user] smothers \the [carbon_target] with \the [src]!"), span_userdanger("[user] smothers you with \the [src]!"), span_hear("You hear some struggling and muffled cries of surprise."))
 		log_combat(user, carbon_target, "smothered", src, log_object)
 	else
-		reagents.expose(carbon_target, TOUCH)
+		reagents.expose(carbon_target, TOUCH, exposed_zone = BODY_ZONE_PRECISE_MOUTH) // NON-MODULE CHANGE
 		reagents.clear_reagents()
 		carbon_target.visible_message(span_notice("[user] touches \the [carbon_target] with \the [src]."))
 		log_combat(user, carbon_target, "touched", src, log_object)

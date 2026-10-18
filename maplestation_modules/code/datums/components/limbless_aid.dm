@@ -77,7 +77,7 @@
 	if(required_slot & ITEM_SLOT_HANDS)
 		// this is not backwards intentionally:
 		// if you're missing the left leg, you need the left leg braced
-		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG
+		var/side = IS_RIGHT_INDEX(source.get_held_index_of_item(parent)) ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG
 		leg = source.get_bodypart(side)
 
 	if(isnull(leg) || leg.bodypart_disabled)
@@ -90,7 +90,7 @@
 	if(required_slot & ITEM_SLOT_HANDS)
 		// note this is backwards intentionally:
 		// see below
-		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		var/side = IS_RIGHT_INDEX(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
 		leg = source.get_bodypart(side)
 
 	if(isnull(leg) || leg == affected_leg)
@@ -103,7 +103,7 @@
 	if(required_slot & ITEM_SLOT_HANDS)
 		// note this is backwards intentionally:
 		// you use your right arm to brace your left leg, and vice versa
-		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		var/side = IS_RIGHT_INDEX(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
 		leg = source.get_bodypart(side)
 
 	if(isnull(leg) || leg == next_leg)
@@ -113,6 +113,7 @@
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(self_brace_async), source)
+	return RESIST_HANDLED
 
 /datum/component/limbless_aid/proc/un_self_brace(mob/living/source)
 	REMOVE_TRAIT(source, TRAIT_NO_LEG_AID, "[REF(src)]_brace")

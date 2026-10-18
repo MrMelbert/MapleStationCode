@@ -8,10 +8,10 @@
 	desc = "A scavenger that eats raw ores, often found alongside ash walkers. Produces a thick, nutritious milk."
 	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
 	icon_state = "gutlunch"
-	combat_mode = FALSE
 	icon_living = "gutlunch"
 	icon_dead = "gutlunch"
-	mob_biotypes = MOB_ORGANIC|MOB_BEAST
+	combat_mode = FALSE
+	mob_biotypes = MOB_ORGANIC|MOB_BUG
 	basic_mob_flags = DEL_ON_DEATH
 	speak_emote = list("warbles", "quavers")
 	faction = list(FACTION_ASHWALKER)
@@ -34,7 +34,6 @@
 /mob/living/basic/mining/gutlunch/Initialize(mapload)
 	. = ..()
 	GLOB.gutlunch_count++
-	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	if(greyscale_config)
 		set_greyscale(colors = list(pick(possible_colors)))
 	AddElement(/datum/element/ai_retaliate)
@@ -52,19 +51,18 @@
 	GLOB.gutlunch_count--
 	return ..()
 
-/mob/living/basic/mining/gutlunch/proc/pre_attack(mob/living/puncher, atom/target)
-	SIGNAL_HANDLER
-
-	if(!istype(target, /obj/structure/ore_container/gutlunch_trough))
+/mob/living/basic/mining/gutlunch/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	. = ..()
+	if(!.)
 		return
-
+	if(!istype(target, /obj/structure/ore_container/food_trough/gutlunch_trough))
+		return TRUE
 	var/obj/ore_food = locate(/obj/item/stack/ore) in target
-
 	if(isnull(ore_food))
 		balloon_alert(src, "no food!")
 	else
 		melee_attack(ore_food)
-	return COMPONENT_HOSTILE_NO_ATTACK
+	return FALSE
 
 /mob/living/basic/mining/gutlunch/proc/after_birth(mob/living/basic/mining/gutlunch/grub/baby, mob/living/partner)
 	var/our_color = LAZYACCESS(atom_colours, FIXED_COLOUR_PRIORITY) || COLOR_GRAY

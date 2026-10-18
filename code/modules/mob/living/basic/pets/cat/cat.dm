@@ -12,8 +12,8 @@
 	unsuitable_atmos_damage = 0.5
 	butcher_results = list(
 		/obj/item/food/meat/slab = 1,
-		/obj/item/organ/internal/ears/cat = 1,
-		/obj/item/organ/external/tail/cat = 1,
+		/obj/item/organ/ears/cat = 1,
+		/obj/item/organ/tail/cat = 1,
 		/obj/item/stack/sheet/animalhide/cat = 1
 	)
 	response_help_continuous = "pets"
@@ -24,8 +24,6 @@
 	response_harm_simple = "kick"
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
 	gold_core_spawnable = FRIENDLY_SPAWN
-	collar_icon_state = "cat"
-	has_collar_resting_icon_state = TRUE
 	can_be_held = TRUE
 	ai_controller = /datum/ai_controller/basic_controller/cat
 	held_state = "cat2"
@@ -35,6 +33,8 @@
 	attack_vis_effect = ATTACK_EFFECT_CLAW
 	sharpness = SHARP_EDGED
 	wound_bonus = -10
+	///icon of the collar we can wear
+	var/collar_icon_state = "cat"
 	///can this cat breed?
 	var/can_breed = TRUE
 	///can hold items?
@@ -51,36 +51,42 @@
 	var/obj/item/held_food
 	///mutable appearance for held item
 	var/mutable_appearance/held_item_overlay
+	///icon state of our cult icon
+	var/cult_icon_state = "cat_cult"
 
 /mob/living/basic/pet/cat/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/wears_collar, collar_icon_state = collar_icon_state, collar_resting_icon_state = TRUE)
 	AddElement(/datum/element/ai_retaliate)
 	AddElement(/datum/element/pet_bonus, "purrs!")
+	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_CLAW)
+	add_cell_sample()
 	add_verb(src, /mob/living/proc/toggle_resting)
 	add_traits(list(TRAIT_CATLIKE_GRACE, TRAIT_VENTCRAWLER_ALWAYS), INNATE_TRAIT)
 	ai_controller.set_blackboard_key(BB_HUNTABLE_PREY, typecacheof(huntable_items))
 	if(can_breed)
 		add_breeding_component()
-	if(can_hold_item)
-		RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
-	if(can_interact_with_stove)
-		RegisterSignal(src, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(pre_unarmed_attack))
 
-/mob/living/basic/pet/cat/proc/pre_attack(mob/living/source, atom/movable/target)
-	SIGNAL_HANDLER
+/mob/living/basic/pet/cat/proc/add_cell_sample()
+	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CAT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
+
+/mob/living/basic/pet/cat/early_melee_attack(atom/target, list/modifiers, ignore_cooldown)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	if(istype(target, /obj/machinery/oven/range) && can_interact_with_stove)
+		target.attack_hand(src)
+		return FALSE
+
+	if(!can_hold_item)
+		return TRUE
+
 	if(!is_type_in_list(target, huntable_items) || held_food)
-		return
-	target.forceMove(src)
-
-/mob/living/basic/pet/cat/proc/pre_unarmed_attack(mob/living/hitter, atom/target, proximity, modifiers)
-	SIGNAL_HANDLER
-
-	if(!proximity || !can_unarmed_attack())
-		return NONE
-	if(!istype(target, /obj/machinery/oven/range))
-		return NONE
-	target.attack_hand(src)
-	return COMPONENT_CANCEL_ATTACK_CHAIN
+		return TRUE
+	var/atom/movable/movable_target = target
+	movable_target.forceMove(src)
+	return FALSE
 
 /mob/living/basic/pet/cat/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -142,16 +148,18 @@
 	icon_living = "breadcat"
 	icon_dead = "breadcat_dead"
 	ai_controller = /datum/ai_controller/basic_controller/cat/bread
-	collar_icon_state = null
 	held_state = "breadcat"
 	can_interact_with_stove = TRUE
 	butcher_results = list(
 		/obj/item/food/meat/slab = 2,
-		/obj/item/organ/internal/ears/cat = 1,
-		/obj/item/organ/external/tail/cat = 1,
+		/obj/item/organ/ears/cat = 1,
+		/obj/item/organ/tail/cat = 1,
 		/obj/item/food/breadslice/plain = 1
 	)
+	collar_icon_state = null
 
+/mob/living/basic/pet/cat/breadcat/add_cell_sample()
+	return
 
 /mob/living/basic/pet/cat/original
 	name = "Batsy"
@@ -160,9 +168,11 @@
 	icon_state = "original"
 	icon_living = "original"
 	icon_dead = "original_dead"
-	collar_icon_state = null
 	unique_pet = TRUE
 	held_state = "original"
+
+/mob/living/basic/pet/cat/original/add_cell_sample()
+	return
 
 /mob/living/basic/pet/cat/kitten
 	name = "kitten"
@@ -173,10 +183,10 @@
 	density = FALSE
 	pass_flags = PASSMOB
 	mob_size = MOB_SIZE_SMALL
-	collar_icon_state = "kitten"
 	can_breed = FALSE
 	ai_controller = /datum/ai_controller/basic_controller/cat/kitten
 	can_hold_item = FALSE
+	collar_icon_state = "kitten"
 
 /mob/living/basic/pet/cat/kitten/Initialize(mapload)
 	. = ..()

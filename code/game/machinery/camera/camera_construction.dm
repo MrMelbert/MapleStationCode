@@ -39,7 +39,7 @@
 				return ITEM_INTERACT_BLOCKING
 			for(var/i in tempnetwork)
 				tempnetwork -= i
-				tempnetwork += lowertext(i)
+				tempnetwork += LOWER_TEXT(i)
 			camera_construction_state = CAMERA_STATE_FINISHED
 			toggle_cam(user, displaymessage = FALSE)
 			network = tempnetwork
@@ -119,7 +119,7 @@
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
-/obj/machinery/camera/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/camera/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(camera_construction_state != CAMERA_STATE_FINISHED || panel_open)
 		if(attacking_item.tool_behaviour == TOOL_ANALYZER)
 			if(!isXRay(TRUE)) //don't reveal it was already upgraded if was done via MALF AI Upgrade Camera Network ability

@@ -71,12 +71,16 @@ GLOBAL_LIST_INIT(wound_severities_chronological, list(
 #define BIO_FLESH (1<<1)
 /// Has metal - allows the victim to suffer robotic blunt and burn wounds
 #define BIO_METAL (1<<2)
+/// Has wood - should probably be able to catch on fire, or something
+#define BIO_WOOD (1<<3)
 /// Is wired internally - allows the victim to suffer electrical wounds (robotic T1-T3 slash/pierce)
-#define BIO_WIRED (1<<3)
+#define BIO_WIRED (1<<4)
 /// Has bloodflow - can suffer bleeding wounds and can bleed
-#define BIO_BLOODED (1<<4)
+#define BIO_BLOODED (1<<5)
 /// Is connected by a joint - can suffer T1 bone blunt wounds (dislocation)
-#define BIO_JOINTED (1<<5)
+#define BIO_JOINTED (1<<6)
+/// Skin is covered in thick chitin and is resistant to cutting
+#define BIO_CHITIN (1<<7)
 /// Robotic - can suffer all metal/wired wounds, such as: UNIMPLEMENTED PLEASE UPDATE ONCE SYNTH WOUNDS 9/5/2023 ~Niko
 #define BIO_ROBOTIC (BIO_METAL|BIO_WIRED)
 /// Has flesh and bone - See BIO_BONE and BIO_FLESH
@@ -85,6 +89,8 @@ GLOBAL_LIST_INIT(wound_severities_chronological, list(
 #define BIO_STANDARD_UNJOINTED (BIO_FLESH_BONE|BIO_BLOODED)
 /// Standard humanoid limbs - can bleed and suffer all flesh/bone wounds, such as: T1-3 slash/pierce/burn/blunt. Can also bleed, and be dislocated. Think human arms and legs
 #define BIO_STANDARD_JOINTED (BIO_STANDARD_UNJOINTED|BIO_JOINTED)
+/// Xenomorph limbs (xenos are immune to wounds anyhow)
+#define BIO_STANDARD_ALIEN (BIO_CHITIN|BIO_BONE|BIO_BLOODED|BIO_JOINTED)
 
 // "Where" a specific biostate is within a given limb
 // Interior is hard shit, the last line, shit like bones
@@ -106,6 +112,7 @@ GLOBAL_LIST_INIT(bio_state_anatomy, list(
 	"[BIO_METAL]" = ANATOMY_INTERIOR,
 	"[BIO_FLESH]" = ANATOMY_EXTERIOR,
 	"[BIO_BONE]" = ANATOMY_INTERIOR,
+	"[BIO_CHITIN]" = ANATOMY_EXTERIOR,
 ))
 
 // Wound series
@@ -276,7 +283,7 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 ))
 
 // ~burn wound infection defines
-// Thresholds for infection for burn wounds, once infestation hits each threshold, things get steadily worse
+// Thresholds for infection for burn wounds, once infection hits each threshold, things get steadily worse
 /// below this has no ill effects from infection
 #define WOUND_INFECTION_MODERATE 4
 /// then below here, you ooze some pus and suffer minor tox damage, but nothing serious
@@ -289,7 +296,7 @@ GLOBAL_LIST_INIT(biotypes_to_scar_file, list(
 
 
 // ~random wound balance defines
-/// how quickly sanitization removes infestation and decays per second
+/// how quickly sanitization removes infection and decays per second
 #define WOUND_BURN_SANITIZATION_RATE 0.075
 /// how much blood you can lose per tick per wound max.
 #define WOUND_MAX_BLOODFLOW 4.5

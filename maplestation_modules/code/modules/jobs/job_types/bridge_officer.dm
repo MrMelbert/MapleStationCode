@@ -1,14 +1,8 @@
 // -- Bridge Officer job & outfit datum --
-/datum/station_trait/job/bridge_assistant
-	weight = 0
-
-/datum/job/bridge_assistant
-	rpg_title = "Lesser Guildperson"
-
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
-	description = "File paperwork to Central Command via your fax machine. \
-		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
+	description = "File paperwork to Central Command via your fax machine, \
+		pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
 	title_options = list(
 		"Bridge Assistant",
 	)
@@ -40,7 +34,10 @@
 		/datum/job_department/command,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
+	family_heirlooms = list(
+		/obj/item/book/manual/wiki/security_space_law,
+		// /obj/item/banner/command/mundane,
+	)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -63,6 +60,14 @@
 	rpg_title = "Guildperson"
 	crewmonitor_priority = 60.1 // after HOP, before rest of service
 
+	base_skills = list(
+		/datum/skill/cleaning = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+		/datum/skill/bartending = SKILL_LEVEL_NOVICE,
+		/datum/skill/cooking = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"
 	jobtype = /datum/job/bridge_officer
@@ -76,7 +81,7 @@
 	shoes = /obj/item/clothing/shoes/laceup
 	head = /obj/item/clothing/head/beret/black/bridge_officer
 	id_trim = /datum/id_trim/job/bridge_officer
-	box = /obj/item/storage/box/survival
+	box = /obj/item/storage/pouch/survival
 
 	backpack_contents = list(/obj/item/melee/baton/telescopic = 1, /obj/item/gun/energy/disabler = 1)
 

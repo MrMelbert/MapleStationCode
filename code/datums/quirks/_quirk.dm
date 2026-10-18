@@ -54,7 +54,7 @@
  * * new_holder - The mob to add this quirk to.
  * * quirk_transfer - If this is being added to the holder as part of a quirk transfer. Quirks can use this to decide not to spawn new items or apply any other one-time effects.
  */
-/datum/quirk/proc/add_to_holder(mob/living/new_holder, quirk_transfer = FALSE, client/client_source)
+/datum/quirk/proc/add_to_holder(mob/living/new_holder, quirk_transfer = FALSE, client/client_source, unique = TRUE, announce = TRUE)
 	if(!new_holder)
 		CRASH("Quirk attempted to be added to null mob.")
 
@@ -81,7 +81,7 @@
 		START_PROCESSING(SSquirks, src)
 
 	if(!quirk_transfer)
-		if(gain_text)
+		if(gain_text && announce)
 			to_chat(quirk_holder, gain_text)
 		add_unique(client_source)
 
@@ -173,7 +173,7 @@
  * * default_location - If the item isn't possible to equip in a valid slot, this is a description of where the item was spawned.
  * * notify_player - If TRUE, adds strings to where_items_spawned list to be output to the player in [/datum/quirk/item_quirk/post_add()]
  */
-/datum/quirk/item_quirk/proc/give_item_to_holder(quirk_item, list/valid_slots, flavour_text = null, default_location = "at your feet", notify_player = TRUE)
+/datum/quirk/item_quirk/proc/give_item_to_holder(obj/item/quirk_item, list/valid_slots, flavour_text = null, default_location = "at your feet", notify_player = FALSE)
 	if(ispath(quirk_item))
 		quirk_item = new quirk_item(get_turf(quirk_holder))
 
@@ -198,43 +198,3 @@
 		to_chat(quirk_holder, chat_string)
 
 	where_items_spawned = null
-
-/**
- * get_quirk_string() is used to get a printable string of all the quirk traits someone has for certain criteria
- *
- * Arguments:
- * * Medical- If we want the long, fancy descriptions that show up in medical records, or if not, just the name
- * * Category- Which types of quirks we want to print out. Defaults to everything
- * * from_scan- If the source of this call is like a health analyzer or HUD, in which case QUIRK_HIDE_FROM_MEDICAL hides the quirk.
- */
-/mob/living/proc/get_quirk_string(medical = FALSE, category = CAT_QUIRK_ALL, from_scan = FALSE)
-	var/list/dat = list()
-	for(var/datum/quirk/candidate as anything in quirks)
-		if(from_scan & candidate.quirk_flags & QUIRK_HIDE_FROM_SCAN)
-			continue
-		switch(category)
-			if(CAT_QUIRK_MAJOR_DISABILITY)
-				if(candidate.value >= -4)
-					continue
-			if(CAT_QUIRK_MINOR_DISABILITY)
-				if(!ISINRANGE(candidate.value, -4, -1))
-					continue
-			if(CAT_QUIRK_NOTES)
-				if(candidate.value < 0)
-					continue
-		dat += medical ? candidate.medical_record_text : candidate.name
-
-	if(!dat.len)
-		return medical ? "No issues have been declared." : "None"
-	return medical ?  dat.Join("<br>") : dat.Join(", ")
-
-/mob/living/proc/cleanse_quirk_datums() //removes all trait datums
-	QDEL_LAZYLIST(quirks)
-
-/mob/living/proc/transfer_quirk_datums(mob/living/to_mob)
-	// We could be done before the client was moved or after the client was moved
-	var/datum/preferences/to_pass = client || to_mob.client
-
-	for(var/datum/quirk/quirk as anything in quirks)
-		quirk.remove_from_current_holder(quirk_transfer = TRUE)
-		quirk.add_to_holder(to_mob, quirk_transfer = TRUE, client_source = to_pass)

@@ -71,8 +71,8 @@
 /obj/item/spear/proc/add_headpike_component()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpike)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -177,7 +177,7 @@
 	return CLICK_ACTION_SUCCESS
 
 
-/obj/item/spear/explosive/afterattack(atom/movable/target, mob/user, click_parameters)
+/obj/item/spear/explosive/afterattack(atom/movable/target, mob/user, list/modifiers, list/attack_modifiers)
 	if(!HAS_TRAIT(src, TRAIT_WIELDED) || !istype(target))
 		return
 	if(target.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
@@ -208,7 +208,7 @@
 	force_unwielded = 15
 	force_wielded = 25
 
-/obj/item/spear/grey_tide/afterattack(atom/movable/target, mob/living/user, click_parameters)
+/obj/item/spear/grey_tide/afterattack(atom/movable/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	user.faction |= "greytide([REF(user)])"
 	if(!isliving(target))
 		return
@@ -240,8 +240,8 @@
 /obj/item/spear/bonespear/add_headpike_component()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpikebone)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -267,7 +267,7 @@
 /obj/item/spear/bamboospear/add_headpike_component()
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/headpikebamboo)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)

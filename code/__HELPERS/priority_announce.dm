@@ -63,7 +63,7 @@
 				header += SUBHEADER_ANNOUNCEMENT_TITLE(title)
 		if(ANNOUNCEMENT_TYPE_CAPTAIN)
 			header = MAJOR_ANNOUNCEMENT_TITLE("Captain's Announcement")
-			GLOB.news_network.submit_article(text, "Captain's Announcement", "Station Announcements", null)
+			GLOB.news_network.submit_article(text, "Captain's Announcement", NEWSCASTER_STATION_ANNOUNCEMENTS , null)
 		if(ANNOUNCEMENT_TYPE_SYNDICATE)
 			header = MAJOR_ANNOUNCEMENT_TITLE("Syndicate Captain's Announcement")
 		else
@@ -87,11 +87,11 @@
 
 	if(isnull(sender_override) && players == GLOB.player_list)
 		if(length(title) > 0)
-			GLOB.news_network.submit_article(title + "<br><br>" + text, "[command_name()]", "Station Announcements", null)
+			GLOB.news_network.submit_article(title + "<br><br>" + text, "[command_name()]", NEWSCASTER_STATION_ANNOUNCEMENTS , null)
 		else
-			GLOB.news_network.submit_article(text, "[command_name()] Update", "Station Announcements", null)
+			GLOB.news_network.submit_article(text, "[command_name()] Update", NEWSCASTER_STATION_ANNOUNCEMENTS , null)
 
-/proc/print_command_report(text = "", title = null, announce=TRUE)
+/proc/print_command_report(text = "", title = null, announce = TRUE, contains_advanced_html = FALSE)
 	if(!title)
 		title = "Classified [command_name()] Update"
 
@@ -107,7 +107,7 @@
 	message.title = title
 	message.content = text
 
-	SScommunications.send_message(message)
+	GLOB.communications_controller.send_message(message, contains_advanced_html = contains_advanced_html)
 
 /**
  * Sends a minor annoucement to players.
@@ -195,7 +195,6 @@
 		to_chat(target, announcement)
 		if(!should_play_sound)
 			continue
-
 		if(target.client?.prefs.read_preference(/datum/preference/toggle/sound_announcements))
 			SEND_SOUND(target, sound(sound_to_play))
 

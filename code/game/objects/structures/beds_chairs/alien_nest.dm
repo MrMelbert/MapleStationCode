@@ -22,11 +22,39 @@
 
 	return ..()
 
+/obj/structure/bed/nest/buckle_feedback(mob/living/being_buckled, mob/buckler)
+	if(being_buckled == buckler)
+		being_buckled.visible_message(
+			span_notice("[buckler] lays down on [src], wrapping [buckler.p_them()]self in a thick, sticky resin."),
+			span_notice("You lay down on [src], wrapping yourself in a thick, sticky resin."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_buckled.visible_message(
+			span_notice("[buckler] lays [being_buckled] down on [src], wrapping [being_buckled.p_them()] in a thick, sticky resin."),
+			span_notice("[buckler] lays you down on [src], wrapping you in a thick, sticky resin."),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+/obj/structure/bed/nest/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
+	if(being_unbuckled == unbuckler)
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] pulls [unbuckler.p_them()]self free from the sticky nest!"),
+			span_notice("You pull yourself free from the sticky nest!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		being_unbuckled.visible_message(
+			span_notice("[unbuckler] pulls [being_unbuckled] free from the sticky nest!"),
+			span_notice("[unbuckler] pulls you free from the sticky nest!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/captive, mob/living/hero)
 	if(!length(buckled_mobs))
 		return
 
-	if(hero.get_organ_by_type(/obj/item/organ/internal/alien/plasmavessel))
+	if(hero.get_organ_by_type(/obj/item/organ/alien/plasmavessel))
 		unbuckle_mob(captive)
 		add_fingerprint(hero)
 		return
@@ -59,9 +87,9 @@
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.incapacitated() || M.buckled )
 		return
 
-	if(M.get_organ_by_type(/obj/item/organ/internal/alien/plasmavessel))
+	if(M.get_organ_by_type(/obj/item/organ/alien/plasmavessel))
 		return
-	if(!user.get_organ_by_type(/obj/item/organ/internal/alien/plasmavessel))
+	if(!user.get_organ_by_type(/obj/item/organ/alien/plasmavessel))
 		return
 
 	if(has_buckled_mobs())

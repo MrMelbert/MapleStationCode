@@ -40,7 +40,7 @@
 	plantname = "Corpse flower"
 	production = 2
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
-	genes = list(/datum/plant_gene/trait/gas_production)
+	genes = list(/datum/plant_gene/trait/gas_production, /datum/plant_gene/trait/scent/decay)
 	mutatelist = null
 	reagents_add = list(/datum/reagent/toxin/formaldehyde = 0.1, /datum/reagent/fluorine = 0.1)
 

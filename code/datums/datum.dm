@@ -80,6 +80,18 @@
 	var/list/cached_vars
 #endif
 
+	/**
+	 * Parent types.
+	 *
+	 * Abstract-ness is a meta-property of a class that is used to indicate
+	 * that the class is intended to be used as a base class for others, and
+	 * should not (or cannot) be instantiated.
+	 * We have no such language concept in DM, and so we provide a datum member
+	 * that can be used to hint at abstractness for circumstances where we would
+	 * like that to be the case, such as base behavior providers.
+	 */
+	var/abstract_type = /datum
+
 /**
  * Called when a href for this datum is clicked
  *
@@ -142,9 +154,11 @@
 	_clear_signal_refs()
 	//END: ECS SHIT
 
+#ifndef DISABLE_DREAMLUAU
 	if(!(datum_flags & DF_STATIC_OBJECT))
 		DREAMLUAU_CLEAR_REF_USERDATA(vars) // vars ceases existing when src does, so we need to clear any lua refs to it that exist.
 		DREAMLUAU_CLEAR_REF_USERDATA(src)
+#endif
 
 	return QDEL_HINT_QUEUE
 

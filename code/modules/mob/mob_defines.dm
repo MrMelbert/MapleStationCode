@@ -9,6 +9,7 @@
 /mob
 	density = TRUE
 	layer = MOB_LAYER
+	abstract_type = /mob
 	animate_movement = SLIDE_STEPS
 	hud_possible = list(ANTAG_HUD)
 	pressure_resistance = 8
@@ -62,6 +63,9 @@
 	var/list/datum/action/actions
 	///Cursor icon used when holding shift over things
 	var/examine_cursor_icon = 'icons/effects/mouse_pointers/examine_pointer.dmi'
+
+	/// Mob bitflags
+	var/mob_flags = NONE
 
 	/// Whether a mob is alive or dead. TODO: Move this to living - Nodrak (2019, still here)
 	var/stat = CONSCIOUS

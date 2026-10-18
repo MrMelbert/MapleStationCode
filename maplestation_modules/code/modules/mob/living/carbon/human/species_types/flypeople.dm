@@ -2,7 +2,7 @@
 /datum/species/fly
 	species_pain_mod = 1.2
 
-/obj/item/organ/internal/tongue/fly
+/obj/item/organ/tongue/fly
 	speech_sound_list = list(
 				'maplestation_modules/sound/voice/fly.ogg' = 80,
 				'maplestation_modules/sound/voice/fly2.ogg' = 80,

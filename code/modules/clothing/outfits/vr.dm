@@ -17,7 +17,7 @@
 	id_trim = /datum/id_trim/vr/operative
 	uniform = /obj/item/clothing/under/syndicate
 	back = /obj/item/storage/backpack
-	box = /obj/item/storage/box/survival/syndie
+	box = /obj/item/storage/pouch/survival/syndie
 	belt = /obj/item/gun/ballistic/automatic/pistol/clandestine
 	gloves = /obj/item/clothing/gloves/combat
 	shoes = /obj/item/clothing/shoes/combat

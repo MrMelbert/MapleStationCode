@@ -49,6 +49,7 @@
 	RegisterSignal(parent, COMSIG_ATOM_USB_CABLE_TRY_ATTACH, PROC_REF(on_atom_usb_cable_try_attach))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_TAGS, PROC_REF(on_examine_tags))
 	RegisterSignal(parent, COMSIG_MOVABLE_CIRCUIT_LOADED, PROC_REF(on_load))
 
 	for(var/obj/item/circuit_component/component as anything in circuit_components)
@@ -59,6 +60,7 @@
 		COMSIG_ATOM_USB_CABLE_TRY_ATTACH,
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_ATOM_EXAMINE,
+		COMSIG_ATOM_EXAMINE_TAGS,
 		COMSIG_MOVABLE_CIRCUIT_LOADED,
 	))
 
@@ -125,10 +127,13 @@
 /datum/component/usb_port/proc/on_examine(datum/source, mob/user, list/examine_text)
 	SIGNAL_HANDLER
 
-	if (isnull(attached_circuit))
-		examine_text += span_notice("There is a USB port on the front.")
-	else
+	if (!isnull(attached_circuit))
 		examine_text += span_notice("[attached_circuit.shell || attached_circuit] is connected to [parent.p_them()] by a USB port.")
+
+/datum/component/usb_port/proc/on_examine_tags(datum/source, mob/user, list/examine_text)
+	SIGNAL_HANDLER
+
+	examine_text["USB connected"] = "It has a USB port circuits can connect to with a USB cable."
 
 /datum/component/usb_port/proc/on_examine_shell(datum/source, mob/user, list/examine_text)
 	SIGNAL_HANDLER

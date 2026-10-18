@@ -281,12 +281,13 @@ export const AdvancedTraitorGoals = (props, context) => {
                     </Stack.Item>
                     <Stack.Item>
                       <NumberInput
+                        tickWhileDragging
                         value={selectedGoal.intensity}
                         step={1}
                         minValue={1}
                         maxValue={5}
                         stepPixelSize={15}
-                        onDrag={(e, value) =>
+                        onChange={(e, value) =>
                           act('set_goal_intensity', {
                             goal_ref: selectedGoal.ref,
                             newlevel: value,

@@ -30,6 +30,9 @@
 
 	electrocution_skeleton_anim = image(electrocution_icon, hallucinator, icon_state = electrocution_icon_state, layer = ABOVE_MOB_LAYER)
 	electrocution_skeleton_anim.appearance_flags |= RESET_COLOR|KEEP_APART
+	if(ishuman(hallucinator))
+		var/mob/living/carbon/human/human_hallucinator = hallucinator
+		human_hallucinator.apply_height_filters(electrocution_skeleton_anim)
 
 	to_chat(hallucinator, span_userdanger("You feel a powerful shock course through your body!"))
 	hallucinator.visible_message(span_warning("[hallucinator] falls to the ground, shaking!"), ignored_mobs = hallucinator)

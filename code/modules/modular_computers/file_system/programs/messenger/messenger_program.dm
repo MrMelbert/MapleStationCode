@@ -157,7 +157,7 @@
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
 	if(issilicon(user))
-		return GLOB.reverse_contained_state
+		return GLOB.deep_inventory_state
 	return GLOB.default_state
 
 /datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -384,7 +384,7 @@
 
 /datum/computer_file/program/messenger/ui_assets(mob/user)
 	. = ..()
-	. += get_asset_datum(/datum/asset/spritesheet/chat)
+	. += get_asset_datum(/datum/asset/spritesheet_batched/chat)
 
 //////////////////////
 // MESSAGE HANDLING //
@@ -631,7 +631,7 @@
 	// Log in the talk log
 	source.log_talk(message, LOG_PDA, tag="[shell_addendum][rigged ? "Rigged" : ""] PDA: [computer.saved_identification] to [signal.format_target()]")
 	if(rigged)
-		log_bomber(sender, "sent a rigged PDA message (Name: [fake_name]. Job: [fake_job]) to [english_list(stringified_targets)] [!is_special_character(sender) ? "(SENT BY NON-ANTAG)" : ""]")
+		log_bomber(sender, "sent a rigged PDA message (Name: [fake_name]. Job: [fake_job]) to [english_list(stringified_targets)] [sender.is_antag() ? "" : "(SENT BY NON-ANTAG)"]")
 
 	// Show it to ghosts
 	var/ghost_message = span_game_say("[span_name(signal.format_sender())] [rigged ? "(as [span_name(fake_name)]) Rigged " : ""]PDA Message --> [span_name("[signal.format_target()]")]: \"[signal.format_message()]\"")

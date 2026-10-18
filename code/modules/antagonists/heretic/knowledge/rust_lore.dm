@@ -66,6 +66,11 @@
 
 /datum/heretic_knowledge/rust_fist/proc/on_mansus_grasp(mob/living/source, mob/living/target)
 	SIGNAL_HANDLER
+	if(iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		for(var/obj/item/bodypart/robotic_limb as anything in carbon_target.get_bodyparts())
+			if(IS_ROBOTIC_LIMB(robotic_limb))
+				robotic_limb.receive_damage(500)
 
 	if(!issilicon(target) && !(target.mob_biotypes & MOB_ROBOTIC))
 		return
@@ -394,7 +399,7 @@
 		max_dist = max(max_dist, get_dist(found_turf, centre) + 1)
 
 	for(var/turf/nearby_turf as anything in spiral_range_turfs(max_dist, centre, FALSE))
-		if(nearby_turf in rusted_turfs || is_type_in_typecache(nearby_turf, blacklisted_turfs))
+		if((nearby_turf in rusted_turfs) || is_type_in_typecache(nearby_turf, blacklisted_turfs))
 			continue
 
 		for(var/turf/line_turf as anything in get_line(nearby_turf, centre))

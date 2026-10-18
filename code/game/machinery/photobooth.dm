@@ -12,7 +12,7 @@
 	base_icon_state = "booth"
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/photobooth
-	light_system = MOVABLE_LIGHT_DIRECTIONAL //Used as a flash here.
+	light_system = OVERLAY_LIGHT_DIRECTIONAL //Used as a flash here.
 	light_range = 6
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER
@@ -130,7 +130,7 @@
 	if(obj_flags & EMAGGED)
 		var/mob/living/carbon/carbon_occupant = occupant
 		for(var/i in 1 to 5) //play a ton of sounds to mimic it blinding you
-			playsound(src, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 75, TRUE)
+			playsound(src, SFX_POLAROID, 75, TRUE)
 			if(carbon_occupant)
 				carbon_occupant.flash_act(5)
 			sleep(0.2 SECONDS)

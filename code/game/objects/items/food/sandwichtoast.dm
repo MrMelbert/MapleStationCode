@@ -9,7 +9,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("meat" = 2, "cheese" = 1, "bread" = 2, "lettuce" = 1)
-	foodtypes = GRAIN | VEGETABLES
+	foodtypes = GRAIN | VEGETABLES | DAIRY | MEAT
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -28,9 +28,9 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sandwich/cheese/make_grillable()
-	AddComponent(/datum/component/grillable, /obj/item/food/sandwich/cheese/grilled, rand(30 SECONDS, 60 SECONDS), TRUE)
+	AddComponent(/datum/component/grillable, /obj/item/food/sandwich/grilled_cheese, rand(30 SECONDS, 60 SECONDS), TRUE)
 
-/obj/item/food/sandwich/cheese/grilled
+/obj/item/food/sandwich/grilled_cheese
 	name = "grilled cheese sandwich"
 	desc = "A warm, melty sandwich that goes perfectly with tomato soup."
 	icon_state = "toastedsandwich"
@@ -95,7 +95,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("butter" = 1, "toast" = 1)
-	foodtypes = GRAIN | BREAKFAST
+	foodtypes = GRAIN | BREAKFAST | DAIRY
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
@@ -118,7 +118,7 @@
 
 /obj/item/food/jelliedtoast/slime
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/toxin/slimejelly = 8, /datum/reagent/consumable/nutriment/vitamin = 4)
-	foodtypes = GRAIN | TOXIC | SUGAR | BREAKFAST
+	foodtypes = GRAIN | TOXIC | BREAKFAST
 
 /obj/item/food/twobread
 	name = "two bread"
@@ -219,7 +219,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/sandwich/philly_cheesesteak
-	name = "Philly cheesesteak"
+	name = "philly cheesesteak"
 	desc = "A popular sandwich made of sliced meat, onions, melted cheese in a long hoagie roll. Mouthwatering doesn't even begin to describe it."
 	icon_state = "philly_cheesesteak"
 	food_reagents = list(
@@ -241,7 +241,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("bread" = 2, "Britain" = 1, "butter" = 1, "toast" = 1)
-	foodtypes = GRAIN
+	foodtypes = GRAIN|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/sandwich/death
@@ -254,7 +254,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 6,
 	)
 	tastes = list("bread" = 1, "meat" = 1, "tomato sauce" = 1, "death" = 1)
-	foodtypes = GRAIN | MEAT
+	foodtypes = MEAT|VEGETABLES|GRAIN
 	eat_time = 4 SECONDS // Makes it harder to force-feed this to people as a weapon, as funny as that is.
 
 /obj/item/food/sandwich/death/Initialize(mapload)

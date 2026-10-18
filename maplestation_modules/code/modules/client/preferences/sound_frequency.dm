@@ -1,7 +1,7 @@
 /datum/preference/numeric/frequency_modifier
 	savefile_key = "speech_sound_frequency_modifier"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 	minimum = 0.5
 	maximum = 2
@@ -16,7 +16,7 @@
 /datum/preference/numeric/pitch_modifier
 	savefile_key = "speech_sound_pitch_modifier"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 	minimum = 0.5
 	maximum = 2
@@ -42,8 +42,8 @@
 
 	var/picked_sound = pick(speech_sounds_to_try)
 	var/sound/the_sound = sound(picked_sound)
-	the_sound.pitch = dummy.speech_sound_pitch_modifier
-	the_sound.frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) * dummy.speech_sound_frequency_modifier
+	the_sound.pitch = user.client.prefs.read_preference(/datum/preference/numeric/pitch_modifier)
+	the_sound.frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) * user.client.prefs.read_preference(/datum/preference/numeric/frequency_modifier)
 
 	user.playsound_local(
 		turf_source = get_turf(user),

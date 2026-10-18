@@ -90,6 +90,8 @@
 
 	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(try_healing)) // Players
 	RegisterSignal(parent, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(try_healing)) // NPCs
+	var/mob/living/living_parent = parent
+	living_parent.ai_controller?.set_blackboard_key(BB_BASIC_MOB_HEALER, TRUE)
 
 // Let's populate this list as we actually use it, this thing has too many args
 /datum/component/healing_touch/InheritComponent(
@@ -100,6 +102,8 @@
 	src.heal_color = heal_color
 
 /datum/component/healing_touch/UnregisterFromParent()
+	var/mob/living/living_parent = parent
+	living_parent.ai_controller?.set_blackboard_key(BB_BASIC_MOB_HEALER, FALSE)
 	UnregisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HOSTILE_PRE_ATTACKINGTARGET))
 	return ..()
 
@@ -166,7 +170,7 @@
 	if (!iscarbon(target))
 		return (target.getBruteLoss() > 0 && heal_brute) || (target.getFireLoss() > 0 && heal_burn)
 	var/mob/living/carbon/carbon_target = target
-	for (var/obj/item/bodypart/part in carbon_target.bodyparts)
+	for (var/obj/item/bodypart/part in carbon_target.get_bodyparts())
 		if (!(part.brute_dam && heal_brute) && !(part.burn_dam && heal_burn))
 			continue
 		if (!isnull(required_bodytype) && !(part.bodytype & required_bodytype))

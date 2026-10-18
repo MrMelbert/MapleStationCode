@@ -6,8 +6,9 @@
 /obj/machinery/portable_atmospherics/canister
 	name = "canister"
 	desc = "A canister for the storage of gas."
-	icon = 'icons/obj/pipes_n_cables/canisters.dmi'
-	icon_state = "#mapme"
+	icon = 'icons/map_icons/objects.dmi'
+	icon_state = "/obj/machinery/portable_atmospherics/canister"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#6b6b80"
 	density = TRUE
@@ -60,7 +61,7 @@
 		create_gas()
 
 	if(ispath(gas_type, /datum/gas))
-		desc = "[GLOB.meta_gas_info[gas_type][META_GAS_NAME]]. [GLOB.meta_gas_info[gas_type][META_GAS_DESC]]"
+		desc = "[GLOB.meta_gas_info[META_GAS_NAME][gas_type]]. [GLOB.meta_gas_info[META_GAS_DESC][gas_type]]"
 
 	update_window()
 
@@ -117,166 +118,208 @@
 // Basic canister per gas below here
 
 /obj/machinery/portable_atmospherics/canister/air
-	name = "Air canister"
+	name = "\improper Air canister"
 	desc = "Pre-mixed air."
+	icon_state = "/obj/machinery/portable_atmospherics/canister/air"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#c6c0b5"
 
 /obj/machinery/portable_atmospherics/canister/antinoblium
-	name = "Antinoblium canister"
+	name = "\improper Anti-Noblium canister"
 	gas_type = /datum/gas/antinoblium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/antinoblium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#333333#fefb30"
 
 /obj/machinery/portable_atmospherics/canister/bz
 	name = "\improper BZ canister"
 	gas_type = /datum/gas/bz
+	icon_state = "/obj/machinery/portable_atmospherics/canister/bz"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#d0d2a0"
 
 /obj/machinery/portable_atmospherics/canister/carbon_dioxide
-	name = "Carbon dioxide canister"
+	name = "\improper Carbon dioxide canister"
 	gas_type = /datum/gas/carbon_dioxide
+	icon_state = "/obj/machinery/portable_atmospherics/canister/carbon_dioxide"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#4e4c48#eaeaea"
 
 /obj/machinery/portable_atmospherics/canister/freon
-	name = "Freon canister"
+	name = "\improper Freon canister"
 	gas_type = /datum/gas/freon
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/freon"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#6696ee#fefb30"
 
 /obj/machinery/portable_atmospherics/canister/halon
-	name = "Halon canister"
+	name = "\improper Halon canister"
 	gas_type = /datum/gas/halon
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/halon"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#368bff"
 
 /obj/machinery/portable_atmospherics/canister/healium
-	name = "Healium canister"
+	name = "\improper Healium canister"
 	gas_type = /datum/gas/healium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/healium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009823#ff0e00"
 
 /obj/machinery/portable_atmospherics/canister/helium
-	name = "Helium canister"
+	name = "\improper Helium canister"
 	gas_type = /datum/gas/helium
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/helium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9b5d7f#368bff"
 
 /obj/machinery/portable_atmospherics/canister/hydrogen
-	name = "Hydrogen canister"
+	name = "\improper Hydrogen canister"
 	gas_type = /datum/gas/hydrogen
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/hydrogen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#eaeaea#be3455"
 
 /obj/machinery/portable_atmospherics/canister/miasma
-	name = "Miasma canister"
+	name = "\improper Miasma canister"
 	gas_type = /datum/gas/miasma
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/miasma"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009823#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/nitrogen
-	name = "Nitrogen canister"
+	name = "\improper Nitrogen canister"
 	gas_type = /datum/gas/nitrogen
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrogen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#e9ff5c#f4fce8"
 
 /obj/machinery/portable_atmospherics/canister/nitrous_oxide
-	name = "Nitrous oxide canister"
+	name = "\improper Nitrous Oxide canister"
 	gas_type = /datum/gas/nitrous_oxide
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrous_oxide"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#c63e3b#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/nitrium
-	name = "Nitrium canister"
+	name = "\improper Nitrium canister"
 	gas_type = /datum/gas/nitrium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nitrium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#7b4732"
 
 /obj/machinery/portable_atmospherics/canister/nob
-	name = "Hyper-noblium canister"
+	name = "\improper Hyper-Noblium canister"
 	gas_type = /datum/gas/hypernoblium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/nob"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#6399fc#b2b2b2"
 
 /obj/machinery/portable_atmospherics/canister/oxygen
-	name = "Oxygen canister"
+	name = "\improper Oxygen canister"
 	gas_type = /datum/gas/oxygen
+	icon_state = "/obj/machinery/portable_atmospherics/canister/oxygen"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
 
 /obj/machinery/portable_atmospherics/canister/pluoxium
-	name = "Pluoxium canister"
+	name = "\improper Pluoxium canister"
 	gas_type = /datum/gas/pluoxium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/pluoxium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister
 	greyscale_colors = "#2786e5"
 
 /obj/machinery/portable_atmospherics/canister/proto_nitrate
-	name = "Proto Nitrate canister"
+	name = "\improper Proto-Nitrate canister"
 	gas_type = /datum/gas/proto_nitrate
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/proto_nitrate"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#008200#33cc33"
 
 /obj/machinery/portable_atmospherics/canister/plasma
-	name = "Plasma canister"
+	name = "\improper Plasma canister"
 	gas_type = /datum/gas/plasma
+	icon_state = "/obj/machinery/portable_atmospherics/canister/plasma"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/hazard
 	greyscale_colors = "#f62800#000000"
 
 /obj/machinery/portable_atmospherics/canister/tritium
-	name = "Tritium canister"
+	name = "\improper Tritium canister"
 	gas_type = /datum/gas/tritium
+	icon_state = "/obj/machinery/portable_atmospherics/canister/tritium"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/hazard
 	greyscale_colors = "#3fcd40#000000"
 
 /obj/machinery/portable_atmospherics/canister/water_vapor
-	name = "Water vapor canister"
+	name = "\improper Water vapor canister"
 	gas_type = /datum/gas/water_vapor
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/water_vapor"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#4c4e4d#f7d5d3"
 
 /obj/machinery/portable_atmospherics/canister/zauker
-	name = "Zauker canister"
+	name = "\improper Zauker canister"
 	gas_type = /datum/gas/zauker
 	filled = 1
+	icon_state = "/obj/machinery/portable_atmospherics/canister/zauker"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#009a00#006600"
 
 // Special canisters below here
 
 /obj/machinery/portable_atmospherics/canister/fusion_test
-	name = "fusion test canister"
+	name = "\improper fusion test canister"
 	desc = "Don't be a badmin."
 	temp_limit = 1e12
 	pressure_limit = 1e14
 
 /obj/machinery/portable_atmospherics/canister/fusion_test/create_gas()
-	air_contents.add_gases(/datum/gas/hydrogen, /datum/gas/tritium)
-	air_contents.gases[/datum/gas/hydrogen][MOLES] = 300
-	air_contents.gases[/datum/gas/tritium][MOLES] = 300
+	air_contents.adjust_gas(/datum/gas/hydrogen, 300)
+	air_contents.adjust_gas(/datum/gas/tritium, 300)
 	air_contents.temperature = 10000
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix
-	name = "Anesthetic mix"
-	desc = "A mixture of N2O and Oxygen"
+	name = "\improper Anesthetic mix"
+	desc = "A mixture of N2O and Oxygen."
+	icon_state = "/obj/machinery/portable_atmospherics/canister/anesthetic_mix"
+	post_init_icon_state = ""
 	greyscale_config = /datum/greyscale_config/canister/double_stripe
 	greyscale_colors = "#9fba6c#3d4680"
 
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix/create_gas()
-	air_contents.add_gases(/datum/gas/oxygen, /datum/gas/nitrous_oxide)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (O2_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
-	air_contents.gases[/datum/gas/nitrous_oxide][MOLES] = (N2O_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
+	air_contents.adjust_gas(/datum/gas/oxygen, (O2_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjust_gas(/datum/gas/nitrous_oxide, (N2O_ANESTHETIC * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
 
 /**
@@ -286,14 +329,12 @@
 /obj/machinery/portable_atmospherics/canister/proc/create_gas()
 	if(!gas_type)
 		return
-	air_contents.add_gas(gas_type)
-	air_contents.gases[gas_type][MOLES] = (maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
+	air_contents.adjust_gas(gas_type, (maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/air/create_gas()
-	air_contents.add_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
+	air_contents.adjust_gas(/datum/gas/oxygen, (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
+	air_contents.adjust_gas(/datum/gas/nitrogen, (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature))
 	SSair.start_processing_machine(src)
 
 /obj/machinery/portable_atmospherics/canister/update_icon_state()
@@ -367,7 +408,7 @@
 	if(internal_cell)
 		internal_cell.forceMove(drop_location())
 
-/obj/machinery/portable_atmospherics/canister/attackby(obj/item/item, mob/user, params)
+/obj/machinery/portable_atmospherics/canister/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/stock_parts/power_store/cell))
 		var/obj/item/stock_parts/power_store/cell/active_cell = item
 		if(!panel_open)
@@ -643,7 +684,7 @@
 
 			var/datum/greyscale_modify_menu/menu = new(
 				src, usr, list("[initial_config]"), CALLBACK(src, PROC_REF(recolor)),
-				starting_icon_state = initial(icon_state),
+				starting_icon_state = initial(post_init_icon_state) || initial(icon_state),
 				starting_config = initial_config,
 				starting_colors = initial(greyscale_colors)
 			)
@@ -672,14 +713,16 @@
 	var/list/output = list()
 	output += "[key_name(user)] <b>opened</b> a canister [wire_pulsed ? "via wire pulse" : ""] that contains the following:"
 	var/list/admin_output = list()
-	admin_output += "[ADMIN_LOOKUPFLW(user)] <b>opened</b> a canister [wire_pulsed ? "via wire pulse" : ""] that contains the following at [ADMIN_VERBOSEJMP(src)]:"
-	var/list/gases = air_contents.gases
+	admin_output += "[ADMIN_LOOKUPFLW(user)] <b>opened</b> a canister[wire_pulsed ? " via wire pulse" : ""] that contains the following at [ADMIN_VERBOSEJMP(src)]:"
+	var/list/cached_moles = air_contents.moles
+	var/list/cached_gas_name = GAS_META[META_GAS_NAME]
+	var/list/cached_gas_danger = GAS_META[META_GAS_DANGER]
+	var/list/cached_gas_visible = GAS_META[META_GAS_MOLES_VISIBLE]
 	var/danger = FALSE
-	for(var/gas_index in 1 to length(gases))
-		var/list/gas_info = gases[gases[gas_index]]
-		var/list/meta = gas_info[GAS_META]
-		var/name = meta[META_GAS_NAME]
-		var/moles = gas_info[MOLES]
+	for(var/gas_index in 1 to length(cached_moles))
+		var/gas_id = cached_moles[gas_index]
+		var/name = cached_gas_name[gas_id]
+		var/moles = cached_moles[gas_id]
 
 		output += "[name]: [moles] moles."
 		if(gas_index <= 5) //the first five gases added
@@ -687,7 +730,7 @@
 		else if(gas_index == 6) // anddd the warning
 			admin_output += "Too many gases to log. Check investigate log."
 		//if moles_visible is undefined, default to default visibility
-		if(meta[META_GAS_DANGER] && moles > (meta[META_GAS_MOLES_VISIBLE] || MOLES_GAS_VISIBLE))
+		if(cached_gas_danger[gas_id] && moles > (cached_gas_visible[gas_id] || MOLES_GAS_VISIBLE))
 			danger = TRUE
 
 	if(danger) //sent to admin's chat if contains dangerous gases

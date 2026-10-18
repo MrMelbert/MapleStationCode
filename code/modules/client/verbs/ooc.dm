@@ -6,7 +6,11 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set category = "OOC"
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
+	if(!SSticker?.HasRoundStarted())
+		lobby_chat(msg)
+		return
+
+	if(GLOB.say_disabled) // This is here to try to identify lag problems
 		to_chat(usr, span_danger("Speech is currently admin-disabled."))
 		return
 
@@ -79,7 +83,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		if(prefs.toggles & MEMBER_PUBLIC)
 			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")][keyname]</font>"
 	if(prefs.hearted)
-		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
+		var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)
 		keyname = "[sheet.icon_tag("emoji-heart")][keyname]"
 	//The linkify span classes and linkify=TRUE below make ooc text get clickable chat href links if you pass in something resembling a url
 	for(var/client/receiver as anything in GLOB.clients)

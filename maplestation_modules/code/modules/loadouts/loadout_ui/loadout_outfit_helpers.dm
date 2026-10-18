@@ -15,8 +15,8 @@
 /mob/living/carbon/human/proc/equip_outfit_and_loadout(
 	datum/outfit/outfit = /datum/outfit,
 	datum/preferences/preference_source,
-	visuals_only = FALSE,
-	job_equipping_step = FALSE,
+	visuals_only,
+	job_equipping_step,
 )
 	if(isnull(preference_source))
 		return equipOutfit(outfit, visuals_only)
@@ -29,16 +29,23 @@
 	else
 		CRASH("Invalid outfit passed to equip_outfit_and_loadout ([outfit])")
 
-	var/list/preference_list = get_active_loadout(preference_source)
-	var/list/loadout_datums = loadout_list_to_datums(preference_list, skip_disabled = TRUE)
+	var/list/item_details = get_active_loadout(preference_source) || list()
+	var/list/loadout_datums = loadout_list_to_datums(item_details)
 	// Slap our things into the outfit given
 	for(var/datum/loadout_item/item as anything in loadout_datums)
+		var/list/specific_item_details = item_details[item.item_path] || list()
+		if(!item.is_equippable(src, specific_item_details))
+			loadout_datums -= item
+			continue
+
 		item.insert_path_into_outfit(
 			outfit = equipped_outfit,
+			item_details = specific_item_details,
 			equipper = src,
 			visuals_only = visuals_only,
 			job_equipping_step = job_equipping_step,
 		)
+
 	// Equip the outfit loadout items included
 	if(!equipped_outfit.equip(src, visuals_only))
 		return FALSE
@@ -48,9 +55,9 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		update |= item.on_equip_item(
 			equipped_item = locate(item.item_path) in new_contents,
-			preference_source = preference_source,
-			preference_list = preference_list,
+			item_details = item_details[item.item_path] || list(),
 			equipper = src,
+			outfit = equipped_outfit,
 			visuals_only = visuals_only,
 		)
 	if(update)
@@ -63,11 +70,10 @@
  * and returns a list of their singleton loadout item datums
  *
  * * loadout_list - the list being checked
- * * skip_disabled - whether to skip disabled items  (like holiday items during non-holiday seasons)
  *
- * Returns a list of singleton datums
+ * Returns a mutable list of singleton datums
  */
-/proc/loadout_list_to_datums(list/loadout_list, skip_disabled = FALSE) as /list
+/proc/loadout_list_to_datums(list/loadout_list) as /list
 	var/list/datums = list()
 
 	if(!length(GLOB.all_loadout_datums))
@@ -77,8 +83,6 @@
 		var/datum/loadout_item/actual_datum = GLOB.all_loadout_datums[path]
 		if(!istype(actual_datum))
 			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
-			continue
-		if(skip_disabled && actual_datum.is_disabled())
 			continue
 
 		datums += actual_datum

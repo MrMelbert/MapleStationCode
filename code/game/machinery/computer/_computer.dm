@@ -7,6 +7,7 @@
 	integrity_failure = 0.5
 	armor_type = /datum/armor/machinery_computer
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_REQUIRES_LITERACY
+	examine_feedback_on_ui = TRUE
 	/// How bright we are when turned on.
 	var/brightness_on = 1
 	/// Icon_state of the keyboard overlay.
@@ -124,6 +125,12 @@
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	update_use_power(ACTIVE_POWER_USE)
+
+/obj/machinery/computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	SHOULD_CALL_PARENT(TRUE)
+	. = ..()
+	if(!issilicon(ui.user))
+		playsound(src, SFX_KEYBOARD_CLICKS, 10, TRUE, FALSE)
 
 /obj/machinery/computer/ui_close(mob/user)
 	SHOULD_CALL_PARENT(TRUE)

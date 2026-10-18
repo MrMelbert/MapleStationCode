@@ -37,7 +37,7 @@
 		return
 
 	var/area/my_area = get_area(src)
-	if(!(my_area.type in GLOB.the_station_areas))
+	if(istype(my_area, /area/station/maintenance) || !(my_area.type in GLOB.the_station_areas))
 		return
 
 	var/area_name = get_area_name(src, format_text = TRUE)
@@ -106,7 +106,7 @@
 		if (!(. & EMP_PROTECT_SELF))
 			open_machine()
 
-/obj/machinery/recharge_station/attackby(obj/item/P, mob/user, params)
+/obj/machinery/recharge_station/attackby(obj/item/P, mob/user, list/modifiers, list/attack_modifiers)
 	if(state_open)
 		if(default_deconstruction_screwdriver(user, "borgdecon2", "borgcharger0", P))
 			return

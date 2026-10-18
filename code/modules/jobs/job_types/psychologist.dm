@@ -4,8 +4,8 @@
 		"Psychiatrist",
 		"Therapist",
 	)
-	description = "Advocate sanity, self-esteem, and teamwork in a station \
-		staffed with headcases."
+	description = "Advocate sanity, self-esteem, and teamwork \
+		in a station staffed with headcases."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -27,7 +27,9 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/storage/pill_bottle)
+	family_heirlooms = list(
+		/obj/item/storage/pill_bottle,
+	)
 
 	mail_goodies = list(
 		/obj/item/storage/pill_bottle/mannitol = 30,

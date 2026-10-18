@@ -101,18 +101,14 @@
 		return
 	if(bin_pen)
 		var/obj/item/pen/pen = bin_pen
-		pen.add_fingerprint(user)
-		pen.forceMove(user.loc)
-		user.put_in_hands(pen)
+		try_put_in_hand(pen, user)
 		to_chat(user, span_notice("You take [pen] out of [src]."))
 		bin_pen = null
 		update_appearance()
 	else if(total_paper > 0)
 		var/obj/item/paper/top_paper = pop(paper_stack) || generate_paper()
 		total_paper -= 1
-		top_paper.add_fingerprint(user)
-		top_paper.forceMove(user.loc)
-		user.put_in_hands(top_paper)
+		try_put_in_hand(top_paper, user)
 		to_chat(user, span_notice("You take [top_paper] out of [src]."))
 		update_appearance()
 	else
@@ -120,7 +116,7 @@
 	add_fingerprint(user)
 	return ..()
 
-/obj/item/paper_bin/attackby(obj/item/I, mob/user, params)
+/obj/item/paper_bin/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(at_overlay_limit())
 		dump_contents(drop_location(), TRUE)
 		return

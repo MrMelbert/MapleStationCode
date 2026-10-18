@@ -11,7 +11,7 @@
 	school = SCHOOL_FORBIDDEN
 	cooldown_time = 15 SECONDS
 
-	invocation = "FL'MS O'ET'RN'ITY."
+	invocation = "FL'MS O' 'T'RN'TY."
 	invocation_type = INVOCATION_WHISPER
 	spell_requirements = NONE
 
@@ -55,11 +55,11 @@
 
 	var/mob/living/carbon/carbon_target = cast_on
 	var/mob/living/carbon/carbon_user = owner
-	for(var/obj/item/bodypart/bodypart as anything in carbon_user.bodyparts)
+	for(var/obj/item/bodypart/bodypart as anything in carbon_user.get_bodyparts())
 		for(var/datum/wound/iter_wound as anything in bodypart.wounds)
 			if(prob(50))
 				continue
-			var/obj/item/bodypart/target_bodypart = locate(bodypart.type) in carbon_target.bodyparts
+			var/obj/item/bodypart/target_bodypart = carbon_target.get_bodypart(bodypart.body_zone)
 			if(!target_bodypart)
 				continue
 			iter_wound.remove_wound()

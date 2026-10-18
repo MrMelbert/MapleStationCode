@@ -9,6 +9,7 @@
 	roundend_category = "abductees"
 	antagpanel_category = ANTAG_GROUP_ABDUCTORS
 	antag_hud_name = "abductee"
+	stinger_sound = 'sound/ambience/antag/abductee.ogg'
 
 /datum/antagonist/abductee/on_gain()
 	give_objective()

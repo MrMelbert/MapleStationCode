@@ -14,7 +14,7 @@
 	return DEFAULT_TASTE_SENSITIVITY
 
 /mob/living/carbon/get_taste_sensitivity()
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(istype(tongue))
 		. = tongue.taste_sensitivity
 	else
@@ -52,27 +52,31 @@
 	return NONE
 
 /mob/living/carbon/get_liked_foodtypes()
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
-	// No tongue, no tastin'
-	if(!tongue?.sense_of_taste || HAS_TRAIT(src, TRAIT_AGEUSIA))
+	if(HAS_TRAIT(src, TRAIT_AGEUSIA))
 		return NONE
 	// Handled in here since the brain trauma can't modify taste directly (/datum/brain_trauma/severe/flesh_desire)
 	if(HAS_TRAIT(src, TRAIT_FLESH_DESIRE))
 		return GORE | MEAT
-	return tongue.liked_foodtypes
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	. = tongue.liked_foodtypes
+	if(HAS_TRAIT(src, TRAIT_VEGETARIAN))
+		. &= ~MEAT
 
 /**
  * Gets food flags that this mob dislikes
  **/
 /mob/living/proc/get_disliked_foodtypes()
+	if(HAS_TRAIT(src, TRAIT_VEGETARIAN))
+		return MEAT
 	return NONE
 
 /mob/living/carbon/get_disliked_foodtypes()
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
-	// No tongue, no tastin'
-	if(!tongue?.sense_of_taste || HAS_TRAIT(src, TRAIT_AGEUSIA))
+	if(HAS_TRAIT(src, TRAIT_AGEUSIA))
 		return NONE
-	return tongue.disliked_foodtypes
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	. = tongue.disliked_foodtypes
+	if(HAS_TRAIT(src, TRAIT_VEGETARIAN))
+		. |= MEAT
 
 /**
  * Gets food flags that this mob hates
@@ -82,10 +86,9 @@
 	return TOXIC
 
 /mob/living/carbon/get_toxic_foodtypes()
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
-	// No tongue, no tastin'
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!tongue)
-		return TOXIC
+		return ..()
 	if(HAS_TRAIT(src, TRAIT_FLESH_DESIRE))
 		return VEGETABLES | DAIRY | FRUIT | FRIED
 	return tongue.toxic_foodtypes
@@ -115,7 +118,7 @@
 	return food_taste_reaction
 
 /mob/living/carbon/get_food_taste_reaction(obj/item/food, foodtypes)
-	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
 	// No tongue, no tastin'
 	if(!tongue?.sense_of_taste || HAS_TRAIT(src, TRAIT_AGEUSIA))
 		// i hate that i have to do this, but we want to ensure toxic food is still BAD

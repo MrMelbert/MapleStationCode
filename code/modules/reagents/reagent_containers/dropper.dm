@@ -53,7 +53,7 @@
 									span_userdanger("[user] squirts something into your eyes!"))
 
 			SEND_SIGNAL(target, COMSIG_MOB_REAGENTS_DROPPED_INTO_EYES, user, src, reagents, fraction)
-			reagents.expose(target, TOUCH, fraction)
+			reagents.expose(target, TOUCH, fraction, exposed_zone = BODY_ZONE_PRECISE_EYES) // NON-MODULE CHANGE
 			var/mob/M = target
 			var/R
 			if(reagents)

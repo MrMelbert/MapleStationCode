@@ -4,7 +4,7 @@
 	. = ..()
 	if(is_blind() && !is_blind_from(list(UNCONSCIOUS_TRAIT, HYPNOCHAIR_TRAIT)))
 		return INFINITY //For all my homies that can not see in the world
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(eyes)
 		. += eyes.flash_protect
 	else
@@ -20,7 +20,7 @@
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_DEAF))
 		return INFINITY //For all my homies that can not hear in the world
-	var/obj/item/organ/internal/ears/E = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/E = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!E)
 		return INFINITY
 	else
@@ -47,12 +47,12 @@
 /mob/living/carbon/is_eyes_visible()
 	if(istype(glasses) && (glasses.flags_cover & GLASSESCOVERSEYES) && glasses.tint)
 		return FALSE
-	if(check_obscured_slots() & ITEM_SLOT_EYES)
+	if(obscured_slots & (HIDEFACE|HIDEEYES))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/is_pepper_proof(check_flags = ALL)
-	var/obj/item/organ/internal/eyes/eyes = get_organ_by_type(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes = get_organ_by_type(/obj/item/organ/eyes)
 	if(eyes && eyes.pepperspray_protect)
 		return eyes
 	if((check_flags & ITEM_SLOT_HEAD) && head && (head.flags_cover & PEPPERPROOF))
@@ -101,12 +101,14 @@
 		if(hit_bodypart.in_dismemberable_state())
 			extra_wound_details = hit_bodypart.get_soon_dismember_message()
 
-		else if(item_sharp)
-			extra_wound_details = ", [item_sharp == SHARP_EDGED ? "slicing" : "piercing"]"
-			if(hit_bodypart.get_mangled_state() & BODYPART_MANGLED_INTERIOR)
-				extra_wound_details += " through to the [hit_bodypart.get_internal_description()]"
-			else
-				extra_wound_details += " at the remaining [hit_bodypart.get_external_description()]"
+		else
+			var/mangled = hit_bodypart.get_mangled_state()
+			if(mangled)
+				extra_wound_details = ", [item_sharp == SHARP_EDGED ? "slicing" : "piercing"]"
+				if(mangled & BODYPART_MANGLED_INTERIOR)
+					extra_wound_details += " through to the [hit_bodypart.get_internal_description()]"
+				else
+					extra_wound_details += " at the remaining [hit_bodypart.get_external_description()]"
 
 	var/message_hit_area = ""
 	if(hit_area)
@@ -252,8 +254,6 @@
 		return
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
-		if(undergoing_cardiac_arrest())
-			set_heartattack(FALSE)
 		var/list/shocking_queue = list()
 		if(iscarbon(pulling) && source != pulling)
 			shocking_queue += pulling
@@ -269,11 +269,17 @@
 			victim.electrocute_act(shock_damage*0.75, src, 1, flags, jitter_time, stutter_time, stun_duration)
 	//Stun
 	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
-	var/paralyze = !(flags & SHOCK_KNOCKDOWN)
+	var/stun = !(flags & SHOCK_KNOCKDOWN)
 	var/immediately_stun = should_stun && !(flags & SHOCK_DELAY_STUN)
 	if (immediately_stun)
-		if (paralyze)
-			Paralyze(stun_duration)
+		if (stun)
+			// intended effect here is to floor you immediately if you are shocked twice in quick succession
+			// or to keep you floored if you are already incapacitated otherwise
+			if(incapacitated(ALL))
+				Paralyze(stun_duration)
+			// otherwise it just stuns you upright - until the second shock, which floors you
+			else
+				Stun(stun_duration)
 		else
 			Knockdown(stun_duration)
 	//Jitter and other fluff.
@@ -281,7 +287,7 @@
 	adjust_jitter(jitter_time)
 	adjust_stutter(stutter_time)
 	if (should_stun)
-		addtimer(CALLBACK(src, PROC_REF(secondary_shock), paralyze, stun_duration * 1.5), 2 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(secondary_shock), stun, stun_duration * 1.5), 2 SECONDS)
 	if(. > 0)
 		var/obj/item/bodypart/zapped = get_active_hand() || get_bodypart(BODY_ZONE_CHEST)
 		var/electrical_burn_roll = . + zapped.check_woundings_mods(WOUND_BURN) + rand(-10, 5)
@@ -301,8 +307,8 @@
 			the_wound?.name = wound_name
 
 ///Called slightly after electrocute act to apply a secondary stun.
-/mob/living/carbon/proc/secondary_shock(paralyze, stun_duration)
-	if (paralyze)
+/mob/living/carbon/proc/secondary_shock(stun, stun_duration)
+	if (stun)
 		Paralyze(stun_duration)
 	else
 		Knockdown(stun_duration)
@@ -340,6 +346,12 @@
 		to_chat(src, span_notice("[helper] shakes you to get you up!"))
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
+	else if(combat_mode)
+		helper.visible_message(span_warning("[helper] reaches for [src], but [src] keeps [helper.p_them()] at bay!"), null, null, DEFAULT_MESSAGE_RANGE, list(helper, src))
+		to_chat(helper, span_warning("You reach for [src], but [p_they()] keep[p_s()] you at an arm's length!"))
+		to_chat(src, span_warning("[helper] reaches for you, but you keep [p_them()] at an arm's length!"))
+		return
+
 	else if(check_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
 		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
 					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
@@ -348,27 +360,6 @@
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you pat [p_them()] on the head."))
-
-	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && !isnull(src.get_organ_by_type(/obj/item/organ/external/tail)))
-		helper.visible_message(span_notice("[helper] pulls on [src]'s tail!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You pull on [src]'s tail!"))
-		to_chat(src, span_notice("[helper] pulls on your tail!"))
-		if(HAS_TRAIT(src, TRAIT_BADTOUCH)) //How dare they!
-			to_chat(helper, span_warning("[src] makes a grumbling noise as you pull on [p_their()] tail."))
-		else
-			add_mood_event("tailpulled", /datum/mood_event/tailpulled)
-
-	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && (istype(head, /obj/item/clothing/head/costume/kitty) || istype(head, /obj/item/clothing/head/collectable/kitty)))
-		var/obj/item/clothing/head/faketail = head
-		helper.visible_message(span_danger("[helper] pulls on [src]'s tail... and it rips off!"), \
-					null, span_hear("You hear a ripping sound."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_danger("You pull on [src]'s tail... and it rips off!"))
-		to_chat(src, span_userdanger("[helper] pulls on your tail... and it rips off!"))
-		playsound(loc, 'sound/effects/cloth_rip.ogg', 75, TRUE)
-		dropItemToGround(faketail)
-		helper.put_in_hands(faketail)
-		helper.add_mood_event("rippedtail", /datum/mood_event/rippedtail)
 
 	else
 		if (helper.grab_state >= GRAB_AGGRESSIVE)
@@ -445,24 +436,23 @@
 		return
 
 	var/embeds = FALSE
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/LB = X
-		for(var/obj/item/I in LB.embedded_objects)
+	for(var/obj/item/bodypart/limb as anything in get_bodyparts())
+		for(var/obj/item/weapon as anything in limb.embedded_objects)
 			if(!embeds)
 				embeds = TRUE
 				// this way, we only visibly try to examine ourselves if we have something embedded, otherwise we'll still hug ourselves :)
-				visible_message(span_notice("[src] examines [p_them()]self."), \
+				visible_message(span_smallnoticeital("[src] examines [p_them()]self."), \
 					span_notice("You check yourself for shrapnel."))
-			if(I.is_embed_harmless())
-				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>")
+			if(weapon.is_embed_harmless())
+				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(weapon)];embedded_limb=[REF(limb)]' class='warning'>There is \a [weapon] stuck to your [limb.plaintext_zone]!</a>")
 			else
-				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>")
+				to_chat(src, "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(weapon)];embedded_limb=[REF(limb)]' class='warning'>There is \a [weapon] embedded in your [limb.plaintext_zone]!</a>")
 
 	return embeds
 
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
-	var/obj/item/organ/internal/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes) //can't flash what can't see!
 		return
 
@@ -475,16 +465,31 @@
 
 		switch(damage)
 			if(1)
-				to_chat(src, span_warning("Your eyes sting a little."))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes sting a little.",
+					"Your visual sensors flash briefly.",
+				)
 				if(prob(40))
 					eyes.apply_organ_damage(1)
 
 			if(2)
-				to_chat(src, span_warning("Your eyes burn."))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes burn.",
+					"Your visual sensors malfunction.",
+				)
 				eyes.apply_organ_damage(rand(2, 4))
 
 			if(3 to INFINITY)
-				to_chat(src, span_warning("Your eyes itch and burn severely!"))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes itch and burn severely!",
+					"Your visual sensors malfunction severely!",
+				)
 				eyes.apply_organ_damage(rand(12, 16))
 
 		if(eyes.damage > 10)
@@ -493,15 +498,30 @@
 
 			if(eyes.damage > eyes.low_threshold)
 				if(!is_nearsighted_from(EYE_DAMAGE) && prob(eyes.damage - eyes.low_threshold))
-					to_chat(src, span_warning("Your eyes start to burn badly!"))
+					organ_feedback_message(
+						eyes,
+						"warning",
+						"Your eyes start to burn badly!",
+						"Your visual sensors report severe damage!",
+					)
 					eyes.apply_organ_damage(eyes.low_threshold)
 
 				else if(!is_blind() && prob(eyes.damage - eyes.high_threshold))
-					to_chat(src, span_warning("You can't see anything!"))
+					organ_feedback_message(
+						eyes,
+						"boldwarning",
+						"You can't see anything!",
+						"Your visual sensors fail completely!",
+					)
 					eyes.apply_organ_damage(eyes.maxHealth)
 
 			else
-				to_chat(src, span_warning("Your eyes are really starting to hurt. This can't be good for you!"))
+				organ_feedback_message(
+					eyes,
+					"warning",
+					"Your eyes are really starting to hurt. This can't be good for you!",
+					"Your visual sensors flash. This can't be good.",
+				)
 		return TRUE
 
 	else if(damage == 0 && prob(20)) // just enough protection
@@ -513,7 +533,7 @@
 	SEND_SIGNAL(src, COMSIG_CARBON_SOUNDBANG, reflist)
 	intensity = reflist[1]
 	var/ear_safety = get_ear_protection()
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	var/effect_amount = intensity - ear_safety
 	if(effect_amount > 0)
 		if(stun_pwr)
@@ -555,7 +575,7 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
-	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
 	if(!isnull(ears) && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE
 	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
@@ -573,8 +593,7 @@
 
 /mob/living/carbon/get_organic_health()
 	. = health
-	for (var/_limb in bodyparts)
-		var/obj/item/bodypart/limb = _limb
+	for (var/obj/item/bodypart/limb as anything in get_bodyparts())
 		if (!IS_ORGANIC_LIMB(limb))
 			. += limb.brute_dam + limb.burn_dam
 
@@ -590,7 +609,7 @@
 		to_chat(src, span_danger("You can't grasp your [grasped_part.name] with itself!"))
 		return
 
-	var/bleed_rate = grasped_part.get_modified_bleed_rate()
+	var/bleed_rate = grasped_part.cached_bleed_rate
 	var/bleeding_text = (bleed_rate ? ", trying to stop the bleeding" : "")
 	to_chat(src, span_warning("You try grasping at your [grasped_part.name][bleeding_text]..."))
 	if(!do_after(src, 0.75 SECONDS))
@@ -606,7 +625,7 @@
 
 /// If TRUE, the owner of this bodypart can try grabbing it to slow bleeding, as well as various other effects.
 /obj/item/bodypart/proc/can_be_grasped()
-	if (get_modified_bleed_rate())
+	if (cached_bleed_rate)
 		return TRUE
 
 	for (var/datum/wound/iterated_wound as anything in wounds)
@@ -659,7 +678,7 @@
 	RegisterSignal(user, COMSIG_QDELETING, PROC_REF(qdel_void))
 	RegisterSignals(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_QDELETING), PROC_REF(qdel_void))
 
-	var/bleed_rate = grasped_part.get_modified_bleed_rate()
+	var/bleed_rate = grasped_part.cached_bleed_rate
 	var/bleeding_text = (bleed_rate ? ", trying to stop the bleeding" : "")
 	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.plaintext_zone][bleeding_text]."), span_notice("You grab hold of your [grasped_part.plaintext_zone] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
 	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
@@ -680,15 +699,17 @@
 		changed_something = TRUE
 		new_organ = new new_organ()
 		new_organ.replace_into(src)
+		new_organ.organ_flags |= ORGAN_MUTANT
 
-	var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
-	var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
-	if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
-		changed_something = TRUE
-		new_part = new new_part()
-		new_part.replace_limb(src, special = TRUE)
-		if (picked_user_part)
-			qdel(picked_user_part)
+	if (!HAS_TRAIT(src, TRAIT_NODISMEMBER))
+		var/obj/item/bodypart/new_part = pick(GLOB.bioscrambler_valid_parts)
+		var/obj/item/bodypart/picked_user_part = get_bodypart(initial(new_part.body_zone))
+		if (picked_user_part && BODYTYPE_CAN_BE_BIOSCRAMBLED(picked_user_part.bodytype))
+			changed_something = TRUE
+			new_part = new new_part()
+			new_part.replace_limb(src)
+			if (picked_user_part)
+				qdel(picked_user_part)
 
 	if (!changed_something)
 		to_chat(src, span_notice("Your augmented body protects you from [scramble_source]!"))
@@ -706,7 +727,7 @@
 		body_parts -= part
 	GLOB.bioscrambler_valid_parts = body_parts
 
-	var/list/organs = subtypesof(/obj/item/organ/internal) + subtypesof(/obj/item/organ/external)
+	var/list/organs = subtypesof(/obj/item/organ)
 	for(var/obj/item/organ/organ_type as anything in organs)
 		if(!is_type_in_typecache(organ_type, GLOB.bioscrambler_organs_blacklist) && !(initial(organ_type.organ_flags) & ORGAN_ROBOTIC))
 			continue

@@ -11,6 +11,7 @@
 #define MAGIC_TRAIT "magic"
 #define TRAUMA_TRAIT "trauma"
 #define FLIGHTPOTION_TRAIT "flightpotion"
+#define SLIME_POTION_TRAIT "slime_potion"
 /// Trait inherited by experimental surgeries
 #define EXPERIMENTAL_SURGERY_TRAIT "experimental_surgery"
 #define DISEASE_TRAIT "disease"
@@ -26,6 +27,8 @@
 #define CYBORG_ITEM_TRAIT "cyborg-item"
 /// Any traits granted by quirks.
 #define QUIRK_TRAIT "quirk_trait"
+/// Trait source for personality traits
+#define PERSONALITY_TRAIT "personality_trait"
 /// (B)admins only.
 #define ADMIN_TRAIT "admin"
 /// Any traits given through a smite.
@@ -131,6 +134,7 @@
 #define LOCKED_HELMET_TRAIT "locked-helmet"
 #define NINJA_SUIT_TRAIT "ninja-suit"
 #define SLEEPING_CARP_TRAIT "sleeping_carp"
+#define BOXING_TRAIT "boxing"
 #define TIMESTOP_TRAIT "timestop"
 #define LIFECANDLE_TRAIT "lifecandle"
 #define VENTCRAWLING_TRAIT "ventcrawling"
@@ -262,7 +266,7 @@
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
-* granted/removed by [/obj/item/organ/internal/tongue]
+* granted/removed by [/obj/item/organ/tongue]
 * Used for ensuring that carbons without tongues cannot taste anything
 * so it is added in Initialize, and then removed when a tongue is inserted
 * and readded when a tongue is removed.
@@ -284,8 +288,12 @@
 
 /// Trait from an organ being inside a bodypart
 #define ORGAN_INSIDE_BODY_TRAIT "organ_inside_body"
-/// Trait when something was labelled by the /datum/element/tool_renaming element.
-#define RENAMING_TOOL_LABEL_TRAIT "renaming_tool_label"
 
 /// Trait when a drink was renamed by a shaker
 #define SHAKER_LABEL_TRAIT "shaker_trait"
+
+/// Trait aquired from being painted a certain color
+#define ATOM_COLOR_TRAIT "atom_color"
+
+/// Trait added by a xenobio console
+#define XENOBIO_CONSOLE_TRAIT "xenobio_console_trait"

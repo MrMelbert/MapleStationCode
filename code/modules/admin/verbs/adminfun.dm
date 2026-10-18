@@ -110,7 +110,7 @@ ADMIN_VERB(mass_zombie_infection, R_ADMIN, "Mass Zombie Infection", "Infects all
 
 	for(var/i in GLOB.human_list)
 		var/mob/living/carbon/human/H = i
-		new /obj/item/organ/internal/zombie_infection/nodamage(H)
+		new /obj/item/organ/zombie_infection/nodamage(H)
 
 	message_admins("[key_name_admin(user)] added a latent zombie infection to all humans.")
 	log_admin("[key_name(user)] added a latent zombie infection to all humans.")
@@ -121,7 +121,7 @@ ADMIN_VERB(mass_zombie_cure, R_ADMIN, "Mass Zombie Cure", "Removes the zombie in
 	if(confirm != "Yes")
 		return
 
-	for(var/obj/item/organ/internal/zombie_infection/nodamage/I in GLOB.zombie_infection_list)
+	for(var/obj/item/organ/zombie_infection/nodamage/I in GLOB.zombie_infection_list)
 		qdel(I)
 
 	message_admins("[key_name_admin(user)] cured all zombies.")
@@ -154,7 +154,7 @@ ADMIN_VERB(polymorph_all, R_ADMIN, "Polymorph All", "Applies the effects of the 
 	message_admins("Mass polymorph started by [who_did_it] is complete.")
 
 ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player with divine power.", ADMIN_CATEGORY_FUN, mob/living/target in world)
-	var/punishment = input(user, "Choose a punishment", "DIVINE SMITING") as null|anything in GLOB.smites
+	var/punishment = tgui_input_list(user, "Choose a punishment", "DIVINE SMITING", GLOB.smites)
 
 	if(QDELETED(target) || !punishment)
 		return

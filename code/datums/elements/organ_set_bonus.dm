@@ -30,7 +30,7 @@
 	var/datum/status_effect/organ_set_bonus/set_bonus = receiver.has_status_effect(bonus_type)
 	if(!set_bonus)
 		set_bonus = receiver.apply_status_effect(bonus_type)
-	set_bonus.set_organs(set_bonus.organs + 1)
+	set_bonus.set_organs(set_bonus.organs + 1, target)
 
 /datum/element/organ_set_bonus/proc/on_removed(obj/item/organ/target, mob/living/carbon/loser)
 	SIGNAL_HANDLER
@@ -38,7 +38,7 @@
 	//get status effect or remove it
 	var/datum/status_effect/organ_set_bonus/set_bonus = loser.has_status_effect(bonus_type)
 	if(set_bonus)
-		set_bonus.set_organs(set_bonus.organs - 1)
+		set_bonus.set_organs(set_bonus.organs - 1, target)
 
 /datum/status_effect/organ_set_bonus
 	id = "organ_set_bonus"
@@ -58,17 +58,17 @@
 	/// A list of traits added to the mob upon bonus activation, can be of any length.
 	var/list/bonus_traits = list()
 
-/datum/status_effect/organ_set_bonus/proc/set_organs(new_value)
+/datum/status_effect/organ_set_bonus/proc/set_organs(new_value, obj/item/organ/organ)
 	organs = new_value
 	if(!organs) //initial value but won't kick in without calling the setter
 		qdel(src)
 	if(organs >= organs_needed)
 		if(!bonus_active)
-			INVOKE_ASYNC(src, PROC_REF(enable_bonus))
+			INVOKE_ASYNC(src, PROC_REF(enable_bonus), organ)
 	else if(bonus_active)
-		INVOKE_ASYNC(src, PROC_REF(disable_bonus))
+		INVOKE_ASYNC(src, PROC_REF(disable_bonus), organ)
 
-/datum/status_effect/organ_set_bonus/proc/enable_bonus()
+/datum/status_effect/organ_set_bonus/proc/enable_bonus(obj/item/organ/inserted_organ)
 	SHOULD_CALL_PARENT(TRUE)
 	if(required_biotype)
 		if(!(owner.mob_biotypes & required_biotype))
@@ -82,7 +82,7 @@
 		to_chat(owner, bonus_activate_text)
 	return TRUE
 
-/datum/status_effect/organ_set_bonus/proc/disable_bonus()
+/datum/status_effect/organ_set_bonus/proc/disable_bonus(obj/item/organ/removed_organ)
 	SHOULD_CALL_PARENT(TRUE)
 	bonus_active = FALSE
 	if(length(bonus_traits))

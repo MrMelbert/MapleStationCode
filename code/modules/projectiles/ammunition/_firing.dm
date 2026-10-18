@@ -64,6 +64,9 @@
 		var/obj/item/gun/G = fired_from
 		loaded_projectile.damage *= G.projectile_damage_multiplier
 		loaded_projectile.stamina *= G.projectile_damage_multiplier
+		loaded_projectile.pain *= G.projectile_damage_multiplier
+
+		loaded_projectile.speed *= G.projectile_speed_multiplier
 
 		loaded_projectile.wound_bonus += G.projectile_wound_bonus
 		loaded_projectile.bare_wound_bonus += G.projectile_wound_bonus
@@ -84,7 +87,8 @@
 	var/firing_dir
 	if(loaded_projectile.firer)
 		firing_dir = get_dir(fired_from, target)
-	if(!loaded_projectile.suppressed && firing_effect_type && !tk_firing(user, fired_from))
+	// NON-MODULE CHANGE hitscan muzzle flash suppression
+	if(!loaded_projectile.suppressed && firing_effect_type && (!loaded_projectile.hitscan || !loaded_projectile.muzzle_type) && !tk_firing(user, fired_from))
 		new firing_effect_type(get_turf(src), firing_dir)
 
 	var/direct_target
@@ -92,7 +96,7 @@
 		direct_target = target
 	if(!direct_target)
 		var/modifiers = params2list(params)
-		loaded_projectile.preparePixelProjectile(target, fired_from, modifiers, spread)
+		loaded_projectile.preparePixelProjectile(target, tk_firing(user, fired_from) ? fired_from : user, modifiers, spread)
 	var/obj/projectile/loaded_projectile_cache = loaded_projectile
 	loaded_projectile = null
 	loaded_projectile_cache.fire(null, direct_target)

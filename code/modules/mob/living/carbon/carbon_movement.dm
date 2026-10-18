@@ -1,30 +1,26 @@
 /mob/living/carbon/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
-	if(movement_type & MOVETYPES_NOT_TOUCHING_GROUND)
+	if(!loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop))
 		return FALSE
 	if(!(lube_flags & SLIDE_ICE))
 		log_combat(src, (slipped_on || get_turf(src)), "slipped on the", null, ((lube_flags & SLIDE) ? "(SLIDING)" : null))
-	..()
-	return loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop)
+	return ..()
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
-	if(!. || (movement_type & FLOATING)) //floating is easy
+	if(!.)
 		return
 	if(stat == DEAD)
 		return
-
-	if(nutrition > 0)
-		var/hunger_loss = HUNGER_FACTOR * MOVEMENT_HUNGER_MULTIPLIER
+	if(IS_MOVING_INTENTIONALLY(src))
 		if(move_intent == MOVE_INTENT_RUN)
-			hunger_loss *= 2
-		adjust_nutrition(-1 * hunger_loss)
+			drain_sprint(1 + ((movement_type & FLYING) ? 1 : 0) + length(buckled_mobs) * 0.5)
+		if(!(movement_type & FLOATING))
+			adjust_nutrition(-1 * BASE_MOVEMENT_HUNGER_DRAIN(HUNGER_FACTOR, src))
 
 	// NON-MODULE CHANGE START
 	if(!moving_diagonally)
 		SEND_SIGNAL(src, COMSIG_CARBON_STEP, NewLoc, direct)
 
-	if(move_intent == MOVE_INTENT_RUN && !(movement_type & FLYING) && (mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)) && !pulledby)
-		drain_sprint()
 	if(momentum_dir & direct)
 		momentum_distance++
 		if(!has_momentum && momentum_distance >= 4 && add_movespeed_modifier(/datum/movespeed_modifier/momentum))

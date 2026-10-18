@@ -261,7 +261,7 @@
 	playsound(src, SFX_SHATTER, 50, TRUE)
 	return ..()
 
-/obj/machinery/smartfridge/attackby(obj/item/weapon, mob/living/user, params)
+/obj/machinery/smartfridge/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!machine_stat)
 		var/shown_contents_length = visible_items()
 		if(shown_contents_length >= max_n_of_items)
@@ -418,8 +418,7 @@
 				if(dispensed_item in component_parts)
 					CRASH("Attempted removal of [dispensed_item] component_part from smartfridge via smartfridge interface.")
 				//dispense the item
-				if(!living_mob.put_in_hands(dispensed_item))
-					dispensed_item.forceMove(drop_location())
+				if(!try_put_in_hand(dispensed_item, living_mob))
 					adjust_item_drop_location(dispensed_item)
 				use_energy(active_power_usage) // Non-module change
 				dispensed_amount++
@@ -672,14 +671,14 @@
 /obj/machinery/smartfridge/organ
 	name = "smart organ storage"
 	desc = "A refrigerated storage unit for organ storage."
-	max_n_of_items = 20 //vastly lower to prevent processing too long
+	max_n_of_items = 50 //vastly lower to prevent processing too long
 	base_build_path = /obj/machinery/smartfridge/organ
 	contents_overlay_icon = "organ"
 	/// The rate at which this fridge will repair damaged organs
 	var/repair_rate = 0
 
 /obj/machinery/smartfridge/organ/accept_check(obj/item/O)
-	return (isorgan(O) || isbodypart(O))
+	return (isorgan(O) || isbodypart(O) || istype(O, /obj/item/food/meat/slab))
 
 /obj/machinery/smartfridge/organ/load(obj/item/item, mob/user)
 	. = ..()
@@ -698,7 +697,6 @@
 /obj/machinery/smartfridge/organ/RefreshParts()
 	. = ..()
 	for(var/datum/stock_part/matter_bin/matter_bin in component_parts)
-		max_n_of_items = 20 * matter_bin.tier
 		repair_rate = max(0, STANDARD_ORGAN_HEALING * (matter_bin.tier - 1) * 0.5)
 
 /obj/machinery/smartfridge/organ/process(seconds_per_tick)

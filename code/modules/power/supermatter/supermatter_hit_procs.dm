@@ -59,13 +59,13 @@
 	to_chat(jedi, span_userdanger("That was a really dense idea."))
 	jedi.investigate_log("had [jedi.p_their()] brain dusted by touching [src] with telekinesis.", INVESTIGATE_DEATHS)
 	jedi.ghostize()
-	var/obj/item/organ/internal/brain/rip_u = locate(/obj/item/organ/internal/brain) in jedi.organs
+	var/obj/item/organ/brain/rip_u = locate(/obj/item/organ/brain) in jedi.organs
 	if(rip_u)
 		rip_u.Remove(jedi)
 		qdel(rip_u)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/power/supermatter_crystal/attackby(obj/item/item, mob/user, params)
+/obj/machinery/power/supermatter_crystal/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/scalpel/supermatter))
 		var/obj/item/scalpel/supermatter/scalpel = item
 		to_chat(user, span_notice("You carefully begin to scrape \the [src] with \the [scalpel]..."))

@@ -75,6 +75,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()
 	set_lights(!area.lightswitch)
+	playsound(src, area.lightswitch ? 'maplestation_modules/sound/machines/switchon.ogg' : 'maplestation_modules/sound/machines/switchoff.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE) // NON-MODULE CHANGE
 
 /obj/machinery/light_switch/screwdriver_act(mob/living/user, obj/item/tool)
 	user.visible_message(span_notice("[user] starts unscrewing [src]..."), span_notice("You start unscrewing [src]..."))

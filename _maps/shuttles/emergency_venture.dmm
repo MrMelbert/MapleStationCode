@@ -176,7 +176,9 @@
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "iJ" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted,
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
@@ -341,7 +343,9 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "qo" = (
-/obj/machinery/stasis,
+/obj/machinery/sleeper/stasis{
+	dir = 8
+	},
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 4
 	},

@@ -2,7 +2,7 @@
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
 	icon = 'icons/obj/wallmounts.dmi'
-	icon_state = "extinguisher_closed"
+	icon_state = "extinguisher"
 	anchored = TRUE
 	density = FALSE
 	max_integrity = 200
@@ -65,7 +65,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		stored_extinguisher = null
 		update_appearance(UPDATE_ICON)
 
-/obj/structure/extinguisher_cabinet/attackby(obj/item/used_item, mob/living/user, params)
+/obj/structure/extinguisher_cabinet/attackby(obj/item/used_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(used_item.tool_behaviour == TOOL_WRENCH && !stored_extinguisher)
 		user.balloon_alert(user, "deconstructing cabinet...")
 		used_item.play_tool_sound(src)
@@ -100,7 +100,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	if(iscyborg(user) || isalien(user))
 		return
 	if(stored_extinguisher)
-		user.put_in_hands(stored_extinguisher)
+		try_put_in_hand(stored_extinguisher, user)
 		user.balloon_alert(user, "extinguisher removed")
 		if(!opened)
 			opened = 1
@@ -153,10 +153,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	else if(istype(stored_extinguisher, /obj/item/extinguisher))
 		icon_state += "_default"
 
-	if(!opened)
-		icon_state += "_closed"
-
 	return ..()
+
+/obj/structure/extinguisher_cabinet/update_overlays()
+	. = ..()
+	. += mutable_appearance(icon, opened ? "door_open" : "door")
 
 /obj/structure/extinguisher_cabinet/atom_break(damage_flag)
 	. = ..()
@@ -182,6 +183,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	name = "extinguisher cabinet frame"
 	desc = "Used for building wall-mounted extinguisher cabinets."
 	icon = 'icons/obj/wallmounts.dmi'
-	icon_state = "extinguisher_assembly"
+	icon_state = "extinguisher" //Reuses wallmount icon, but no door overlay
 	result_path = /obj/structure/extinguisher_cabinet
 	pixel_shift = 29

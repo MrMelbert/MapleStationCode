@@ -48,6 +48,7 @@
 	strip_delay = 40
 	equip_delay_other = 20
 	resistance_flags = NONE
+	wear_loc = "wrists"
 
 /// boots
 /obj/item/clothing/shoes/divine_archer

@@ -17,7 +17,7 @@
 		/obj/item/reagent_containers/pill/gravitum,
 	)
 	/// How high spacers get bumped up to
-	var/modded_height = HUMAN_HEIGHT_TALLER
+	var/modded_height = HUMAN_HEIGHT_TALLEST
 	/// How long on a planet before we get averse effects
 	var/planet_period = 3 MINUTES
 	/// TimerID for time spend on a planet
@@ -41,6 +41,17 @@
 
 	// Yes, it's assumed for planetary maps that you start at gravity sickness.
 	check_z(quirk_holder, skip_timers = TRUE)
+
+	if(isnull(quirk_holder.mind))
+		RegisterSignal(quirk_holder, COMSIG_MOB_MIND_INITIALIZED, PROC_REF(add_skill))
+	else
+		add_skill()
+
+/datum/quirk/spacer_born/proc/add_skill(...)
+	SIGNAL_HANDLER
+
+	quirk_holder.set_skill_level(/datum/skill/eva, SKILL_LEVEL_JOURNEYMAN, silent = TRUE, only_if_higher = TRUE)
+	UnregisterSignal(quirk_holder, COMSIG_MOB_MIND_INITIALIZED)
 
 /datum/quirk/spacer_born/add_unique(client/client_source)
 	// drift slightly faster through zero G

@@ -293,7 +293,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 	// We're not guaranteed to be a human but we'll cast here since we use it in a few branches
 	var/mob/living/carbon/human/human_convertee = convertee
 
-	if(check_holidays(APRIL_FOOLS) && prob(10))
+	if(check_holidays(APRIL_FOOLS) && HAS_PERSONALITY(convertee, /datum/personality/whimsical))
 		convertee.Paralyze(10 SECONDS)
 		if(istype(human_convertee))
 			human_convertee.force_say()
@@ -303,7 +303,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 		convertee.Unconscious(10 SECONDS)
 
 	new /obj/item/melee/cultblade/dagger(get_turf(src))
-	convertee.mind.special_role = ROLE_CULTIST
 	convertee.mind.add_antag_datum(/datum/antagonist/cult, cult_team)
 
 	to_chat(convertee, span_cultitalic("<b>Your blood pulses. Your head throbs. The world goes red. \
@@ -615,10 +614,10 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	GLOB.narsie_effect_last_modified = started
 
 	var/starting_color = GLOB.starlight_color
-	var/list/target_color = ReadHSV(RGBtoHSV(starting_color))
+	var/list/target_color = rgb2hsv(starting_color)
 	target_color[2] = target_color[2] * 0.4
 	target_color[3] = target_color[3] * 0.5
-	var/mid_color = HSVtoRGB(hsv(target_color[1], target_color[2], target_color[3]))
+	var/mid_color = hsv2rgb(target_color)
 	var/end_color = "#c21d57"
 	for(var/i in 1 to 9)
 		if(GLOB.narsie_effect_last_modified > started)
@@ -642,7 +641,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	for(var/i in 1 to 4)
 		if(GLOB.narsie_effect_last_modified > started)
 			return
-		var/starlight_color = hsv_gradient(i, 1, starting_color, 4, end_color)
+		var/starlight_color = BlendHSV(i / 4, starting_color, end_color)
 		set_starlight(starlight_color)
 		sleep(8 SECONDS)
 
@@ -740,13 +739,12 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 
 	if(!mob_to_revive.client || mob_to_revive.client.is_afk())
 		set waitfor = FALSE
-		var/list/mob/dead/observer/candidates = SSpolling.poll_ghost_candidates_for_mob("Do you want to play as a [mob_to_revive.real_name], an inactive blood cultist?", check_jobban = ROLE_CULTIST, role = ROLE_CULTIST, poll_time = 5 SECONDS, target_mob = mob_to_revive, pic_source = mob_to_revive)
-		if(LAZYLEN(candidates))
-			var/mob/dead/observer/C = pick(candidates)
+		var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to play as [span_danger(mob_to_revive.real_name)], an [span_notice("inactive blood cultist")]?", check_jobban = ROLE_CULTIST, role = ROLE_CULTIST, poll_time = 5 SECONDS, checked_target = mob_to_revive, alert_pic = mob_to_revive, role_name_text = "inactive cultist")
+		if(chosen_one)
 			to_chat(mob_to_revive.mind, "Your physical form has been taken over by another soul due to your inactivity! Ahelp if you wish to regain your form.")
-			message_admins("[key_name_admin(C)] has taken control of ([key_name_admin(mob_to_revive)]) to replace an AFK player.")
+			message_admins("[key_name_admin(chosen_one)] has taken control of ([key_name_admin(mob_to_revive)]) to replace an AFK player.")
 			mob_to_revive.ghostize(FALSE)
-			mob_to_revive.key = C.key
+			mob_to_revive.key = chosen_one.key
 		else
 			fail_invoke()
 			return
@@ -998,7 +996,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 		new_human.equipOutfit(/datum/outfit/ghost_cultist) //give them armor
 		new_human.apply_status_effect(/datum/status_effect/cultghost) //ghosts can't summon more ghosts
 		new_human.set_invis_see(SEE_INVISIBLE_OBSERVER)
-		new_human.add_traits(list(TRAIT_NOBREATH, TRAIT_PERMANENTLY_MORTAL), INNATE_TRAIT) // permanently mortal can be removed once this is a bespoke kind of mob
+		new_human.add_traits(list(TRAIT_NOBREATH, TRAIT_SPAWNED_MOB, TRAIT_PERMANENTLY_MORTAL), INNATE_TRAIT) // permanently mortal can be removed once this is a bespoke kind of mob
 		ghosts++
 		playsound(src, 'sound/magic/exit_blood.ogg', 50, TRUE)
 		visible_message(span_warning("A cloud of red mist forms above [src], and from within steps... a [new_human.gender == FEMALE ? "wo":""]man."))
@@ -1070,7 +1068,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 
 /mob/living/carbon/human/cult_ghost/get_organs_for_zone(zone, include_children)
 	. = ..()
-	for(var/obj/item/organ/internal/brain/B in .) //they're not that smart, really
+	for(var/obj/item/organ/brain/B in .) //they're not that smart, really
 		. -= B
 
 
@@ -1123,14 +1121,13 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 	empulse(T, 0.42*(intensity), 1)
 
 	var/list/images = list()
-	var/datum/atom_hud/sec_hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	for(var/mob/living/M in GLOB.alive_mob_list)
 		if(!is_valid_z_level(T, get_turf(M)))
 			continue
 		if(ishuman(M))
 			if(!IS_CULTIST(M))
-				sec_hud.hide_from(M)
-				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(hudFix), M), duration)
+				ADD_TRAIT(M, TRAIT_BLOCK_SECHUD, CULT_TRAIT)
+				addtimer(TRAIT_CALLBACK_REMOVE(M, TRAIT_BLOCK_SECHUD, CULT_TRAIT), duration)
 			var/image/A = image('icons/mob/nonhuman-player/cult.dmi',M,"cultist", ABOVE_MOB_LAYER)
 			A.override = 1
 			add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/noncult, "human_apoc", A, NONE)
@@ -1175,7 +1172,7 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 				force_event_async(/datum/round_event_control/meteor_wave, "an apocalypse rune")
 
 			if(51 to 60)
-				force_event_async(/datum/round_event_control/spider_infestation, "an apocalypse rune")
+				SSdynamic.force_run_midround(/datum/dynamic_ruleset/midround/spiders)
 
 			if(61 to 70)
 				force_event_async(/datum/round_event_control/anomaly/anomaly_flux, "an apocalypse rune")
@@ -1207,13 +1204,3 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 			if(I.icon_state != "bloodsparkles")
 				I.override = TRUE
 		sleep(19 SECONDS)
-
-
-
-/proc/hudFix(mob/living/carbon/human/target)
-	if(!target || !target.client)
-		return
-	var/obj/O = target.get_item_by_slot(ITEM_SLOT_EYES)
-	if(istype(O, /obj/item/clothing/glasses/hud/security))
-		var/datum/atom_hud/sec_hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
-		sec_hud.show_to(target)

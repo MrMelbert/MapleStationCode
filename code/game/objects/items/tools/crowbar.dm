@@ -108,6 +108,7 @@
 
 /obj/item/crowbar/power
 	name = "jaws of life"
+	article = "a set of"
 	desc = "A set of jaws of life, compressed through the magic of science."
 	icon_state = "jaws"
 	inhand_icon_state = "jawsoflife"

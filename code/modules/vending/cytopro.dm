@@ -9,7 +9,7 @@
 	light_mask = "cytopro-light-mask"
 	products = list(
 		/obj/item/storage/bag/xeno = 5,
-		// /obj/item/reagent_containers/condiment/protein = 10,
+		/obj/item/reagent_containers/condiment/protein = 10,
 		/obj/item/storage/box/swab = 3,
 		/obj/item/storage/box/petridish = 3,
 		/obj/item/storage/box/monkeycubes = 3,
@@ -29,6 +29,7 @@
 	default_price = PAYCHECK_CREW * 1
 	extra_price = PAYCHECK_COMMAND * 0.5
 	payment_department = ACCOUNT_SCI
+	allow_custom = TRUE
 
 /obj/item/vending_refill/cytopro
 	machine_name = "CytoPro"

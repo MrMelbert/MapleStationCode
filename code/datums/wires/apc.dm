@@ -87,7 +87,8 @@
 			A.aidisabled = !mend
 
 /datum/wires/apc/can_reveal_wires(mob/user)
-	if(HAS_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
+	// NON-MODULE CHANGE
+	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
 		return TRUE
 
 	return ..()

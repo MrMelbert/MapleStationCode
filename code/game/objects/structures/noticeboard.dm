@@ -29,7 +29,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 	find_and_hang_on_wall()
 
 //attaching papers!!
-/obj/structure/noticeboard/attackby(obj/item/O, mob/user, params)
+/obj/structure/noticeboard/attackby(obj/item/O, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo))
 		if(!allowed(user))
 			to_chat(user, span_warning("You are not authorized to add notices!"))
@@ -103,9 +103,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
  * * user - The mob that is trying to get the item removed, if there is one
  */
 /obj/structure/noticeboard/proc/remove_item(obj/item/item, mob/user)
-	item.forceMove(drop_location())
+	try_put_in_hand(item, user)
 	if(user)
-		user.put_in_hands(item)
 		balloon_alert(user, "removed from board")
 	notices--
 	update_appearance(UPDATE_ICON)

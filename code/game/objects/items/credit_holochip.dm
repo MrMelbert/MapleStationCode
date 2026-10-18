@@ -66,7 +66,7 @@
 		if(20 to 49)
 			overlay_color = "#358F34"
 		if(50 to 99)
-			overlay_color = "#676767"
+			overlay_color = COLOR_SLIME_METAL
 		if(100 to 199)
 			overlay_color = "#009D9B"
 		if(200 to 499)
@@ -91,7 +91,7 @@
 	else
 		return 0
 
-/obj/item/holochip/attackby(obj/item/I, mob/user, params)
+/obj/item/holochip/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	if(istype(I, /obj/item/holochip))
 		var/obj/item/holochip/H = I

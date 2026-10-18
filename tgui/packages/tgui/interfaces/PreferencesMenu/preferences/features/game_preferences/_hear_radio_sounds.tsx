@@ -1,8 +1,9 @@
-import { CheckboxInput, FeatureToggle } from '../base';
+import { CheckboxInput, type FeatureToggle } from '../base';
 
 export const hear_radio_sounds: FeatureToggle = {
-  name: 'Toggle Radio Sounds',
+  name: 'Enable Radio Sounds',
   category: 'SOUND',
-  description: 'When unchecked, you will no longer hear radio sounds.',
+  description:
+    'When enabled, you will hear a sound when you receive a radio message.',
   component: CheckboxInput,
 };

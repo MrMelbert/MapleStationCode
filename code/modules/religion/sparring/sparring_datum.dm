@@ -215,7 +215,7 @@
 			if(PUNISHMENT_BRAND)
 				var/mob/living/carbon/human/branded = interfering
 				to_chat(interfering, span_warning("[GLOB.deity] brands your flesh for interfering with [chaplain]'s sparring match!!"))
-				var/obj/item/bodypart/branded_limb = pick(branded.bodyparts)
+				var/obj/item/bodypart/branded_limb = pick(branded.get_bodyparts())
 				branded_limb.force_wound_upwards(/datum/wound/flesh/burn/severe/brand, wound_source = "divine intervention")
 				branded.emote("scream")
 

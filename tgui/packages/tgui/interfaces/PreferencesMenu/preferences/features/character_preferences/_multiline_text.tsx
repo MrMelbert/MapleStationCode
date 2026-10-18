@@ -1,27 +1,25 @@
-import { Box, TextArea } from 'tgui-core/components';
+import { TextArea } from 'tgui-core/components';
 
-import { FeatureMultiline, FeatureMultilineProps } from '../base';
+import type { FeatureMultiline, FeatureMultilineProps } from '../base';
 
-export const MultilineText = (
+export function MultilineText(
   props: FeatureMultilineProps & {
     box_height: string | null;
   },
-) => {
-  if (!props.serverData) {
-    return <Box>Loading...</Box>;
-  }
+) {
+  const { serverData, handleSetValue, value, box_height } = props;
+
   return (
     <TextArea
+      disabled={!serverData}
       width="80%"
-      height={props.box_height || '36px'}
-      value={props.value}
-      maxLength={props.serverData.maximum_length || 1024}
-      onChange={(_, new_value) => {
-        props.handleSetValue(new_value);
-      }}
+      height={box_height || '36px'}
+      value={value}
+      maxLength={serverData?.maximum_length || 1024}
+      onBlur={handleSetValue}
     />
   );
-};
+}
 
 export const flavor_text: FeatureMultiline = {
   name: 'Flavor - Flavor Text',

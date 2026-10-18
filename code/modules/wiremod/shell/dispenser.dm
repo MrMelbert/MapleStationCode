@@ -9,7 +9,7 @@
 	icon_state = "setup_drone_arms"
 
 	density = FALSE
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = FALSE
 
 	var/max_weight = WEIGHT_CLASS_NORMAL
@@ -60,7 +60,7 @@
 		new /obj/item/circuit_component/dispenser_bot()
 	), SHELL_CAPACITY_LARGE)
 
-/obj/structure/dispenser_bot/attackby(obj/item/item, mob/living/user, params)
+/obj/structure/dispenser_bot/attackby(obj/item/item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)
 		return ..()
 	if(istype(item, /obj/item/wrench) || istype(item, /obj/item/multitool) || istype(item, /obj/item/integrated_circuit))

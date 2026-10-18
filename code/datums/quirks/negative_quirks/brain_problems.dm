@@ -25,6 +25,7 @@
 			LOCATION_HANDS = ITEM_SLOT_HANDS,
 		),
 		flavour_text = "These will keep you alive until you can secure a supply of medication. Don't rely on them too much!",
+		notify_player = TRUE,
 	)
 
 /datum/quirk/item_quirk/brainproblems/process(seconds_per_tick)

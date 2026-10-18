@@ -138,7 +138,7 @@
 	l_pocket = /obj/item/gun/ballistic/automatic/pistol/clandestine
 	r_pocket = /obj/item/knife/combat/survival
 
-	box = /obj/item/storage/box/survival/syndie
+	box = /obj/item/storage/pouch/survival/syndie
 
 /obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/assault
 	name = "Syndicate Battlecruiser Assault Operative"
@@ -181,6 +181,6 @@
 	ears = /obj/item/radio/headset/syndicate/alt/leader
 	glasses = /obj/item/clothing/glasses/thermal/eyepatch
 	head = /obj/item/clothing/head/hats/hos/cap/syndicate
-	mask = /obj/item/clothing/mask/cigarette/cigar/havana
+	mask = /obj/item/cigarette/cigar/havana
 	l_pocket = /obj/item/melee/energy/sword/saber/red
 	r_pocket = /obj/item/melee/baton/telescopic

@@ -5,5 +5,8 @@
 	default_value = TRUE
 
 /datum/preference/toggle/show_init_stats/apply_to_client_updated(client/client, value)
-	if(isnewplayer(client.mob))
-		SStitle?.init_stat_holder?.check_client(client)
+	for(var/atom/movable/screen/lobby_init_text/text in client.mob?.hud_used?.static_inventory)
+		if(!value)
+			text.alpha = 0 // go away instantly
+		else if(!SStitle.stats_faded)
+			text.alpha = 255 // show instantly if possible

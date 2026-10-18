@@ -2,7 +2,8 @@
 	name = "blank chromosome"
 	icon = 'icons/obj/science/chromosomes.dmi'
 	icon_state = ""
-	desc = "A tube holding chromosomic data."
+	abstract_type = /obj/item/chromosome
+	desc = "A tube holding chromosomal data."
 	force = 0
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -42,17 +43,6 @@
 		HM.modified = TRUE
 
 	qdel(src)
-
-/proc/generate_chromosome()
-	var/static/list/chromosomes
-	if(!chromosomes)
-		chromosomes = list()
-		for(var/A in subtypesof(/obj/item/chromosome))
-			var/obj/item/chromosome/CM = A
-			if(!initial(CM.weight))
-				break
-			chromosomes[A] = initial(CM.weight)
-	return pick_weight(chromosomes)
 
 
 /obj/item/chromosome/stabilizer

@@ -21,7 +21,7 @@
 	bite_consumption = EGGS_TRUE_HERO
 	w_class = WEIGHT_CLASS_NORMAL
 	tastes = list("egg" = 1, "cheese" = 1, "biscuit" = 2, "obesity" = 10)
-	foodtypes = MEAT | BREAKFAST | DAIRY | GRAIN
+	foodtypes = MEAT | BREAKFAST | DAIRY | GRAIN | EGG
 	/// Our challenger
 	var/datum/weakref/current_challenger_weak = null
 	/// The time given to finish

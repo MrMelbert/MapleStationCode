@@ -38,14 +38,14 @@
 	var/emote_type = EMOTE_VISIBLE
 	/// Checks if the mob can use its hands before performing the emote.
 	var/hands_use_check = FALSE
-	/// Will only work if the emote is EMOTE_AUDIBLE.
-	var/muzzle_ignore = FALSE
 	/// Types that are allowed to use that emote.
 	var/list/mob_type_allowed_typecache = /mob
 	/// Types that are NOT allowed to use that emote.
 	var/list/mob_type_blacklist_typecache
 	/// Types that can use this emote regardless of their state.
 	var/list/mob_type_ignore_stat_typecache
+	/// Trait that is required to use this emote.
+	var/trait_required
 	/// In which state can you use this emote? (Check stat.dm for a full list of them)
 	var/stat_allowed = CONSCIOUS
 	/// Sound to play when emote is called.
@@ -62,6 +62,8 @@
 	var/can_message_change = FALSE
 	/// How long is the cooldown on the audio of the emote, if it has one?
 	var/audio_cooldown = 2 SECONDS
+	/// Range of the emotes messages
+	var/emote_range = DEFAULT_MESSAGE_RANGE
 
 /datum/emote/New()
 	switch(mob_type_allowed_typecache)
@@ -92,7 +94,7 @@
 /datum/emote/proc/run_emote(mob/user, params, type_override, intentional = FALSE)
 	if(!can_run_emote(user, TRUE, intentional))
 		return FALSE
-	if(SEND_SIGNAL(user, COMSIG_MOB_PRE_EMOTED, key, params, type_override, intentional) & COMPONENT_CANT_EMOTE)
+	if(SEND_SIGNAL(user, COMSIG_MOB_PRE_EMOTED, key, params, type_override, intentional, src) & COMPONENT_CANT_EMOTE)
 		return TRUE // We don't return FALSE because the error output would be incorrect, provide your own if necessary.
 	var/msg = select_message_type(user, message, intentional)
 	if(params && message_param)
@@ -136,7 +138,7 @@
 
 	// Emote doesn't get printed to chat, runechat only
 	if(emote_type & EMOTE_RUNECHAT)
-		for(var/mob/viewer as anything in viewers(user))
+		for(var/mob/viewer as anything in viewers(emote_range, user))
 			if(isnull(viewer.client))
 				continue
 			if(!is_important && viewer != user && (!is_visual || !is_audible))
@@ -144,6 +146,10 @@
 					continue
 				if(is_visual && viewer.is_blind())
 					continue
+
+			var/personal_msg = msg
+			var/distance_span = viewer.get_distance_based_span(get_dist(user, viewer) - (is_visual ? 4 : 2)) // -2 to -4 effective distance
+
 			if(user.runechat_prefs_check(viewer, EMOTE_MESSAGE))
 				viewer.create_chat_message(
 					speaker = user,
@@ -151,22 +157,33 @@
 					runechat_flags = EMOTE_MESSAGE,
 				)
 			else if(is_important)
-				to_chat(viewer, "<span class='emote'><b>[user]</b> [msg]</span>")
+				to_chat(viewer, CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")))
 			else if(is_audible && is_visual)
 				viewer.show_message(
-					"<span class='emote'><b>[user]</b> [msg]</span>", MSG_AUDIBLE,
-					"<span class='emote'>You see how <b>[user]</b> [msg]</span>", MSG_VISUAL,
+					CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_AUDIBLE,
+					CONDITIONAL_SPAN(distance_span, span_emote("You see how <b>[user]</b> [personal_msg]")), MSG_VISUAL,
 				)
 			else if(is_audible)
-				viewer.show_message("<span class='emote'><b>[user]</b> [msg]</span>", MSG_AUDIBLE)
+				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_AUDIBLE)
 			else if(is_visual)
-				viewer.show_message("<span class='emote'><b>[user]</b> [msg]</span>", MSG_VISUAL)
+				viewer.show_message(CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")), MSG_VISUAL)
+
+		// AI-eye emotes
+		if(is_visual)
+			relay_visual_emote_to_ai_runechat(user, msg)
+
 		return TRUE // Early exit so no dchat message
 
 	// The emote has some important information, and should always be shown to the user
 	else if(is_important)
-		for(var/mob/viewer as anything in viewers(user))
-			to_chat(viewer, "<span class='emote'><b>[user]</b> [msg]</span>")
+		for(var/mob/viewer as anything in viewers(emote_range, user))
+			if(isnull(viewer.client))
+				continue
+
+			var/personal_msg = msg
+			var/distance_span = viewer.get_distance_based_span(get_dist(user, viewer) - 4) // -4 effective distance
+
+			to_chat(viewer, CONDITIONAL_SPAN(distance_span, span_emote("<b>[user]</b> [personal_msg]")))
 			if(user.runechat_prefs_check(viewer, EMOTE_MESSAGE))
 				viewer.create_chat_message(
 					speaker = user,
@@ -178,9 +195,10 @@
 	else if(is_visual && is_audible)
 		user.audible_message(
 			message = msg,
-			deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>",
+			deaf_message = span_emote("You see how <b>[user]</b> [msg]"),
 			self_message = msg,
 			audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE,
+			hearing_distance = emote_range,
 		)
 	// Emote is entirely audible, no visible component
 	else if(is_audible)
@@ -188,6 +206,7 @@
 			message = msg,
 			self_message = msg,
 			audible_message_flags = EMOTE_MESSAGE,
+			hearing_distance = emote_range,
 		)
 	// Emote is entirely visible, no audible component
 	else if(is_visual)
@@ -195,9 +214,13 @@
 			message = msg,
 			self_message = msg,
 			visible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE,
+			vision_distance = emote_range
 		)
 	else
 		CRASH("Emote [type] has no valid emote type set!")
+
+	if(is_visual)
+		relay_visual_emote_to_ai_runechat(user, msg)
 
 	if(!isnull(user.client))
 		var/dchatmsg = "<b>[user]</b> [msg]"
@@ -206,7 +229,7 @@
 				continue
 			if(!(get_chat_toggles(ghost.client) & CHAT_GHOSTSIGHT))
 				continue
-			to_chat(ghost, "<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
+			to_chat(ghost, span_emote("[FOLLOW_LINK(ghost, user)] [dchatmsg]"))
 
 	return TRUE
 
@@ -280,8 +303,6 @@
 		return .
 	var/mob/living/living_user = user
 
-	if(!muzzle_ignore && user.is_muzzled() && emote_type & EMOTE_AUDIBLE)
-		return "makes a [pick("strong ", "weak ", "")]noise."
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING) && message_mime)
 		. = message_mime
 	if(isalienadult(user) && message_alien)
@@ -322,6 +343,8 @@
  * Returns a bool about whether or not the user can run the emote.
  */
 /datum/emote/proc/can_run_emote(mob/user, status_check = TRUE, intentional = FALSE)
+	if(trait_required && !HAS_TRAIT(user, trait_required))
+		return FALSE
 	if(!is_type_in_typecache(user, mob_type_allowed_typecache))
 		return FALSE
 	if(is_type_in_typecache(user, mob_type_blacklist_typecache))
@@ -359,9 +382,7 @@
  * Returns a bool about whether or not the user should play a sound when performing the emote.
  */
 /datum/emote/proc/should_play_sound(mob/user, intentional = FALSE)
-	if(emote_type & EMOTE_AUDIBLE && !muzzle_ignore)
-		if(user.is_muzzled())
-			return FALSE
+	if(emote_type & EMOTE_AUDIBLE && !hands_use_check)
 		if(HAS_TRAIT(user, TRAIT_MUTE))
 			return FALSE
 		if(ishuman(user))
@@ -390,6 +411,7 @@
 
 	log_message(text, LOG_EMOTE)
 	visible_message(text, visible_message_flags = EMOTE_MESSAGE)
+
 	return TRUE
 
 /mob/manual_emote(text)
@@ -398,6 +420,9 @@
 	. = ..()
 	if (!.)
 		return FALSE
+
+	relay_visual_emote_to_ai_runechat(src, text)
+
 	if (!client)
 		return TRUE
 	var/ghost_text = "<b>[src]</b> [text]"
@@ -408,3 +433,56 @@
 		if(get_chat_toggles(ghost.client) & CHAT_GHOSTSIGHT && !(ghost in viewers(origin_turf, null)))
 			ghost.show_message("[FOLLOW_LINK(ghost, src)] [ghost_text]")
 	return TRUE
+
+/// AI can also see emotes!
+/proc/ai_eye_turf_in_view(mob/camera/ai_eye/eye, turf/target_turf)
+	if(!eye || !target_turf)
+		return FALSE
+
+	var/turf/eye_turf = get_turf(eye)
+	if(!eye_turf || eye_turf.z != target_turf.z)
+		return FALSE
+
+	// NON-MODULE CHANGE
+	// if(!SScameras || !SScameras.is_visible_by_cameras(eye_turf) || !SScameras.is_visible_by_cameras(target_turf))
+	// 	return FALSE
+	if(!GLOB.cameranet.checkTurfVis(eye_turf) || !GLOB.cameranet.checkTurfVis(target_turf))
+		return FALSE
+
+	return (target_turf in eye.get_visible_turfs())
+
+/proc/relay_visual_emote_to_ai_runechat(mob/user, msg)
+	var/turf/user_turf = get_turf(user)
+	if(!user_turf)
+		return
+
+	for(var/mob/living/silicon/ai/AI as anything in GLOB.ai_list)
+		if(!AI?.client)
+			continue
+
+		if(user.invisibility > AI.see_invisible)
+			continue
+
+		if(AI in viewers(user))// Avoid duplicates if the AI is nearby
+			continue
+
+		var/relayed = FALSE
+
+		var/atom/active_eye = AI.client.eye
+		if(istype(active_eye, /mob/camera/ai_eye))
+			var/mob/camera/ai_eye/ai_eye = active_eye
+			if(ai_eye.ai == AI && ai_eye_turf_in_view(ai_eye, user_turf))
+				to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
+
+				if(user.runechat_prefs_check(AI, EMOTE_MESSAGE))
+					AI.create_chat_message(speaker = user, raw_message = msg, runechat_flags = EMOTE_MESSAGE)
+				relayed = TRUE
+
+		if(!relayed && AI.multicam_on) // Multicam
+			for(var/mob/camera/ai_eye/ai_eye as anything in AI.all_eyes)
+				if(ai_eye_turf_in_view(ai_eye, user_turf))
+					to_chat(AI, span_emote("You see how <b>[user]</b> [msg]"))
+
+					if(user.runechat_prefs_check(AI, EMOTE_MESSAGE))
+						AI.create_chat_message(speaker = user, raw_message = msg, runechat_flags = EMOTE_MESSAGE)
+					break

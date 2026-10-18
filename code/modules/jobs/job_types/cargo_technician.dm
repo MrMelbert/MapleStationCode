@@ -1,8 +1,7 @@
 /datum/job/cargo_technician
 	title = JOB_CARGO_TECHNICIAN
 	description = "Distribute supplies to the departments that ordered them, \
-		collect empty crates, load and unload the supply shuttle, \
-		ship bounty cubes."
+		collect empty crates, load and unload the supply shuttle, ship bounty cubes."
 	department_head = list(JOB_QUARTERMASTER)
 	faction = FACTION_STATION
 	total_positions = 5
@@ -22,7 +21,9 @@
 		/datum/job_department/cargo,
 		)
 
-	family_heirlooms = list(/obj/item/clipboard)
+	family_heirlooms = list(
+		/obj/item/clipboard,
+	)
 
 	mail_goodies = list(
 		/obj/item/pizzabox = 10,
@@ -35,6 +36,13 @@
 	rpg_title = "Merchantman"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/piloting = SKILL_LEVEL_NOVICE, // ripley
+	)
 	title_options = list(
 		"Mail Carrier",
 	)
@@ -57,3 +65,4 @@
 	name = "Cargo Technician (MODsuit)"
 
 	back = /obj/item/mod/control/pre_equipped/loader
+	suit = null

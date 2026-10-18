@@ -6,8 +6,7 @@
 	var/disease_name = ""
 
 /datum/antagonist/disease/on_gain()
-	owner.set_assigned_role(SSjob.GetJobType(/datum/job/sentient_disease))
-	owner.special_role = ROLE_SENTIENT_DISEASE
+	owner.set_assigned_role(SSjob.get_job_type(/datum/job/sentient_disease))
 	var/datum/objective/O = new /datum/objective/disease_infect()
 	O.owner = owner
 	objectives += O
@@ -54,7 +53,7 @@
 
 	result += objectives_text
 
-	var/special_role_text = lowertext(name)
+	var/special_role_text = LOWER_TEXT(name)
 
 	if(win)
 		result += span_greentext("The [special_role_text] was successful!")
