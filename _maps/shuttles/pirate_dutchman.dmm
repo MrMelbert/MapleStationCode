@@ -616,7 +616,7 @@
 	pixel_x = -4;
 	pixel_y = 12
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/cigarette/cigar{
 	pixel_x = 4
 	},
 /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
@@ -939,7 +939,7 @@
 /obj/item/restraints/legcuffs/bola,
 /obj/item/restraints/legcuffs/bola,
 /obj/item/restraints/legcuffs/bola,
-/obj/item/gun/energy/laser,
+/obj/item/gun/energy/laser/soul,
 /obj/item/megaphone,
 /obj/item/melee/chainofcommand/tailwhip/kitty,
 /obj/item/claymore/cutlass,

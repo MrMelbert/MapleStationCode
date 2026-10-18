@@ -83,7 +83,6 @@
  * * added_purity - override to force a purity when added
  * * added_ph - override to force a pH when added
  * * override_base_ph - ingore the present pH of the reagent, and instead use the default (i.e. if buffers/reactions alter it)
- * * ignore splitting - Don't call the process that handles reagent spliting in a mob (impure/inverse) - generally leave this false unless you care about REAGENTS_DONOTSPLIT flags (see reagent defines)
  */
 /datum/reagents/proc/add_reagent(
 	datum/reagent/reagent_type,
@@ -94,7 +93,6 @@
 	added_ph,
 	no_react = FALSE,
 	override_base_ph = FALSE,
-	ignore_splitting = FALSE
 )
 	if(!ispath(reagent_type))
 		stack_trace("invalid reagent passed to add reagent [reagent_type]")
@@ -117,17 +115,10 @@
 		added_ph = glob_reagent.ph
 
 	//Split up the reagent if it's in a mob
-	var/has_split = FALSE
-	if(!ignore_splitting && (flags & REAGENT_HOLDER_ALIVE)) //Stomachs are a pain - they will constantly call on_mob_add unless we split on addition to stomachs, but we also want to make sure we don't double split
-		var/adjusted_vol = process_mob_reagent_purity(glob_reagent, amount, added_purity)
-		if(!adjusted_vol) //If we're inverse or FALSE cancel addition
-			return amount
-			/* We return true here because of #63301
-			The only cases where this will be false or 0 if its an inverse chem, an impure chem of 0 purity (highly unlikely if even possible), or if glob_reagent is null (which shouldn't happen at all as there's a check for that a few lines up),
-			In the first two cases, we would want to return TRUE so trans_to and other similar methods actually delete the corresponding chemical from the original reagent holder.
-			*/
-		amount = adjusted_vol
-		has_split = TRUE
+	if(flags & REAGENT_HOLDER_ALIVE)
+		amount = process_mob_reagent_purity(glob_reagent, amount, added_purity)
+		if(amount <= 0) //Inverse or nothing was added. return true amount
+			return amount * -1
 
 	var/cached_total = total_volume
 	if(cached_total + amount > maximum_volume)
@@ -182,9 +173,6 @@
 	if(isliving(my_atom))
 		new_reagent.on_mob_add(my_atom, amount) //Must occur before it could posibly run on_mob_delete
 
-	if(has_split) //prevent it from splitting again
-		new_reagent.chemical_flags |= REAGENT_DONOTSPLIT
-
 	update_total()
 	if(reagtemp != cached_temp)
 		var/new_heat_capacity = heat_capacity()
@@ -204,11 +192,12 @@
  *
  * * [list_reagents][list] - list to add. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
  * * [data][list] - additional data to add
+ * * [added_purity][number] - an override to the default purity for each reagent to add.
  */
-/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data = null)
+/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data = null, added_purity = null)
 	for(var/r_id in list_reagents)
 		var/amt = list_reagents[r_id]
-		add_reagent(r_id, amt, data)
+		add_reagent(r_id, amt, data, added_purity = added_purity)
 
 /**
  * Removes a specific reagent. can supress reactions if needed
@@ -433,7 +422,8 @@
 	remove_blacklisted = FALSE,
 	methods = NONE,
 	show_message = TRUE,
-	ignore_stomach = FALSE
+	ignore_stomach = FALSE,
+	zone_override = null, // NON-MODULE CHANGE
 )
 	if(QDELETED(target) || !total_volume)
 		return FALSE
@@ -456,7 +446,7 @@
 	else
 		if(!ignore_stomach && (methods & INGEST) && iscarbon(target))
 			var/mob/living/carbon/eater = target
-			var/obj/item/organ/internal/stomach/belly = eater.get_organ_slot(ORGAN_SLOT_STOMACH)
+			var/obj/item/organ/stomach/belly = eater.get_organ_slot(ORGAN_SLOT_STOMACH)
 			if(!belly)
 				var/expel_amount = round(amount, CHEMICAL_QUANTISATION_LEVEL)
 				if(expel_amount > 0 )
@@ -509,7 +499,7 @@
 			trans_data = copy_data(reagent)
 		if(reagent.intercept_reagents_transfer(target_holder, cached_amount))
 			continue
-		transfered_amount = target_holder.add_reagent(reagent.type, transfer_amount * multiplier, trans_data, chem_temp, reagent.purity, reagent.ph, no_react = TRUE, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT) //we only handle reaction after every reagent has been transferred.
+		transfered_amount = target_holder.add_reagent(reagent.type, transfer_amount * multiplier, trans_data, chem_temp, reagent.purity, reagent.ph, no_react = TRUE) //we only handle reaction after every reagent has been transferred.
 		if(!transfered_amount)
 			continue
 		if(methods)
@@ -522,7 +512,10 @@
 
 	//expose target to reagent changes
 	if(methods)
-		target_holder.expose(isorgan(target_atom) ? target : target_atom, methods, part, show_message, r_to_send)
+		// NON-MODULE CHANGE
+		if(methods & INGEST)
+			zone_override = BODY_ZONE_PRECISE_MOUTH
+		target_holder.expose(isorgan(target_atom) ? target : target_atom, methods, part, show_message, r_to_send, zone_override || transferred_by?.zone_selected)
 
 	//remove chemicals that were added above
 	for(var/list/data as anything in reagents_to_remove)
@@ -592,7 +585,7 @@
 		transfer_amount = reagent.volume * part * multiplier
 		if(preserve_data)
 			trans_data = copy_data(reagent)
-		transfered_amount = target_holder.add_reagent(reagent.type, transfer_amount, trans_data, chem_temp, reagent.purity, reagent.ph, no_react = TRUE, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT)
+		transfered_amount = target_holder.add_reagent(reagent.type, transfer_amount, trans_data, chem_temp, reagent.purity, reagent.ph, no_react = TRUE)
 		if(!transfered_amount)
 			continue
 		total_transfered_amount += transfered_amount
@@ -613,17 +606,40 @@
  */
 /datum/reagents/proc/multiply_reagents(multiplier = 1)
 	var/list/cached_reagents = reagent_list
-	if(!total_volume)
+	if(!total_volume || multiplier == 1)
 		return
 	var/change = (multiplier - 1) //Get the % change
 	for(var/datum/reagent/reagent as anything in cached_reagents)
+		_multiply_reagent(reagent, change)
 		if(change > 0)
-			add_reagent(reagent.type, reagent.volume * change, added_purity = reagent.purity, ignore_splitting = reagent.chemical_flags & REAGENT_DONOTSPLIT)
+			add_reagent(reagent.type, reagent.volume * change, added_purity = reagent.purity)
 		else
 			remove_reagent(reagent.type, abs(reagent.volume * change)) //absolute value to prevent a double negative situation (removing -50% would be adding 50%)
 
 	update_total()
 	handle_reactions()
+
+/**
+ * Multiplies a single inside this holder by a specific amount
+ * Arguments
+ * * reagent_path - The path of the reagent we want to multiply the volume of.
+ * * multiplier - the amount to multiply each reagent by
+ */
+/datum/reagents/proc/multiply_single_reagent(reagent_path, multiplier = 1)
+	var/datum/reagent/reagent = locate(reagent_path) in reagent_list
+	if(!reagent || multiplier == 1)
+		return
+	var/change = (multiplier - 1) //Get the % change
+	_multiply_reagent(reagent, change)
+	update_total()
+	handle_reactions()
+
+///Proc containing the operations called by both multiply_reagents() and multiply_single_reagent()
+/datum/reagents/proc/_multiply_reagent(datum/reagent/reagent, change)
+	if(change > 0)
+		add_reagent(reagent.type, reagent.volume * change, added_purity = reagent.purity)
+	else
+		remove_reagent(reagent.type, abs(reagent.volume * change)) //absolute value to prevent a double negative situation (removing -50% would be adding 50%)
 
 /// Updates [/datum/reagents/var/total_volume]
 /datum/reagents/proc/update_total()
@@ -779,12 +795,12 @@
  *
  * Arguments
  * - Atom/target: What mob/turf/object is being exposed to reagents? This is your reaction target.
- * - Methods: What reaction type is the reagent itself going to call on the reaction target? Types are TOUCH, INGEST, VAPOR, PATCH, and INJECT.
+ * - Methods: What reaction type is the reagent itself going to call on the reaction target? Types are TOUCH, INGEST, VAPOR, PATCH, INJECT and INHALE.
  * - Volume_modifier: What is the reagent volume multiplied by when exposed? Note that this is called on the volume of EVERY reagent in the base body, so factor in your Maximum_Volume if necessary!
  * - Show_message: Whether to display anything to mobs when they are exposed.
  * - list/datum/reagent/r_to_expose: list of reagents to expose. if null will expose the reagents present in this holder instead
  */
-/datum/reagents/proc/expose(atom/target, methods = TOUCH, volume_modifier = 1, show_message = 1, list/datum/reagent/r_to_expose = null)
+/datum/reagents/proc/expose(atom/target, methods = TOUCH, volume_modifier = 1, show_message = 1, list/datum/reagent/r_to_expose = null, exposed_zone = BODY_ZONE_CHEST)
 	if(isnull(target))
 		return null
 
@@ -796,7 +812,7 @@
 	for(var/datum/reagent/reagent as anything in target_reagents)
 		reagents[reagent] = reagent.volume * volume_modifier
 
-	return target.expose_reagents(reagents, src, methods, volume_modifier, show_message)
+	return target.expose_reagents(reagents, src, methods, volume_modifier, show_message, exposed_zone)
 
 /**
  * Applies heat to this holder

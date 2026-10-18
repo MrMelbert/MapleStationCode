@@ -28,8 +28,16 @@
 		POLL_RESPONSE_TOO_LATE_TO_UNREGISTER = "It's too late to unregister yourself, selection has already begun!",
 		POLL_RESPONSE_UNREGISTERED = "You have been unregistered as a candidate for %ROLE%. You can sign up again before the poll ends.",
 	)
+	var/list/chosen_candidates = list()
 
-/datum/candidate_poll/New(polled_role, polled_question, poll_duration, poll_ignoring_category, poll_jumpable, list/custom_response_messages)
+/datum/candidate_poll/New(
+	polled_role,
+	polled_question,
+	poll_duration,
+	poll_ignoring_category,
+	poll_jumpable,
+	list/custom_response_messages = list(),
+)
 	role = polled_role
 	question = polled_question
 	duration = poll_duration
@@ -37,9 +45,9 @@
 	jump_to_me = poll_jumpable
 	signed_up = list()
 	time_started = world.time
-	poll_key = "[question]_[role || "0"]"
-	for(var/custom_message in custom_response_messages)
-		response_messages[custom_message] = custom_response_messages[custom_message]
+	poll_key = "[question]_[role ? role : "0"]"
+	if(custom_response_messages.len)
+		response_messages = custom_response_messages
 	for(var/individual_message in response_messages)
 		response_messages[individual_message] = replacetext(response_messages[individual_message], "%ROLE%", role)
 	return ..()
@@ -70,6 +78,13 @@
 		return FALSE
 
 	signed_up += candidate
+
+	log_ghost_poll("Player [candidate.key] signed candidate poll", data = list(
+		"player key" = candidate.key,
+		"role name" = role,
+		"poll question" = question,
+	))
+
 	if(!silent)
 		to_chat(candidate, span_notice(response_messages[POLL_RESPONSE_SIGNUP]))
 		// Sign them up for any other polls with the same mob type
@@ -94,6 +109,13 @@
 		return FALSE
 
 	signed_up -= candidate
+
+	log_ghost_poll("Player [candidate.key] removed from poll candidacy", data = list(
+		"player key" = candidate.key,
+		"role name" = role,
+		"poll question" = question,
+	))
+
 	if(!silent)
 		to_chat(candidate, span_danger(response_messages[POLL_RESPONSE_UNREGISTERED]))
 
@@ -124,3 +146,13 @@
 
 /datum/candidate_poll/proc/time_left()
 	return duration - (world.time - time_started)
+
+
+/// Print to chat which candidate was selected
+/datum/candidate_poll/proc/announce_chosen(list/poll_recipients)
+	if(!length(chosen_candidates))
+		return
+	for(var/mob/chosen in chosen_candidates)
+		var/client/chosen_client = chosen.client
+		for(var/mob/poll_recipient as anything in poll_recipients)
+			to_chat(poll_recipient, span_ooc("[isobserver(poll_recipient) ? FOLLOW_LINK(poll_recipient, chosen_client.mob) : null][span_warning(" [full_capitalize(role)] Poll: ")][key_name(chosen_client, include_name = FALSE)] was selected."))

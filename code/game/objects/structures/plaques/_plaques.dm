@@ -21,6 +21,9 @@
 /obj/structure/plaque/Initialize(mapload)
 	. = ..()
 	register_context()
+	if(isopenturf(loc) && !isProbablyWallMounted(src))
+		SET_PLANE_IMPLICIT(src, FLOOR_PLANE)
+		layer = HIGH_TURF_LAYER
 
 /obj/structure/plaque/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -80,7 +83,7 @@
 	atom_integrity = max_integrity
 	return TRUE
 
-/obj/structure/plaque/attackby(obj/item/I, mob/user, params)
+/obj/structure/plaque/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(I, /obj/item/pen/fountain))
 		if(engraved)
 			to_chat(user, span_warning("This plaque has already been engraved."))
@@ -153,7 +156,7 @@
 	return TRUE
 
 
-/obj/item/plaque/attackby(obj/item/I, mob/user, params) //Same as part of the above, except for the item in hand instead of the structure.
+/obj/item/plaque/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers) //Same as part of the above, except for the item in hand instead of the structure.
 	if(istype(I, /obj/item/pen/fountain))
 		if(engraved)
 			to_chat(user, span_warning("This plaque has already been engraved."))

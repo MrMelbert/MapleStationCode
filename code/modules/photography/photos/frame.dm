@@ -30,7 +30,7 @@
 		return
 	if(contents.len)
 		var/obj/item/I = pick(contents)
-		user.put_in_hands(I)
+		try_put_in_hand(I, user)
 		to_chat(user, span_notice("You carefully remove the photo from \the [src]."))
 		displayed = null
 		update_appearance()
@@ -147,7 +147,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 
-/obj/structure/sign/picture_frame/attackby(obj/item/I, mob/user, params)
+/obj/structure/sign/picture_frame/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 
 	if(istype(I, /obj/item/photo))
 		if(framed)

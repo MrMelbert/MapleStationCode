@@ -67,6 +67,7 @@ Difficulty: Hard
 	score_achievement_type = /datum/award/score/hierophant_score
 	del_on_death = TRUE
 	death_sound = 'sound/magic/repulse.ogg'
+	initial_blood_type = null
 	attack_action_types = list(/datum/action/innate/megafauna_attack/blink,
 							   /datum/action/innate/megafauna_attack/chaser_swarm,
 							   /datum/action/innate/megafauna_attack/cross_blasts,
@@ -501,9 +502,6 @@ Difficulty: Hard
 	burst_range = initial(burst_range) + round(anger_modifier * 0.08)
 	beam_range = initial(beam_range) + round(anger_modifier * 0.12)
 
-/mob/living/simple_animal/hostile/megafauna/hierophant/get_blood_type()
-	return null
-
 //Hierophant overlays
 /obj/effect/temp_visual/hierophant
 	name = "vortex energy"
@@ -751,7 +749,7 @@ Difficulty: Hard
 	layer = LOW_OBJ_LAYER
 	anchored = TRUE
 
-/obj/effect/hierophant/attackby(obj/item/attacking_item, mob/user, params)
+/obj/effect/hierophant/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(attacking_item, /obj/item/hierophant_club))
 		var/obj/item/hierophant_club/club = attacking_item
 		if(club.beacon == src)

@@ -3,18 +3,18 @@
 	icon = 'icons/obj/clothing/shoes.dmi'
 	lefthand_file = 'icons/mob/inhands/clothing/shoes_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing/shoes_righthand.dmi'
+	abstract_type = /obj/item/clothing/shoes
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
-
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET
-
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
 	article = "a pair of"
+	item_flags = CAN_BE_OVERSLOT
 
 	blood_overlay_type = "shoe" // NON-MODULE CHANGE reworking clothing blood overlays
 
@@ -54,7 +54,6 @@
 	. = ..()
 	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 		// NON-MODULE CHANGE reworking clothing blood overlays

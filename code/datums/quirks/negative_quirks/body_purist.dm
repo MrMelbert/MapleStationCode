@@ -31,7 +31,7 @@
 	var/mob/living/carbon/owner = quirk_holder
 	if(!istype(owner))
 		return
-	for(var/obj/item/bodypart/limb as anything in owner.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in owner.get_bodyparts())
 		if(IS_ROBOTIC_LIMB(limb))
 			cybernetics_level++
 	for(var/obj/item/organ/organ as anything in owner.organs)
@@ -67,3 +67,6 @@
 	if(IS_ROBOTIC_LIMB(old_limb))
 		cybernetics_level--
 		update_mood()
+
+/datum/quirk/body_purist/is_species_appropriate(datum/species/mob_species)
+	return !ispath(mob_species, /datum/species/android)

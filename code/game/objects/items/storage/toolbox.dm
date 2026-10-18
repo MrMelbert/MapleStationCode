@@ -81,7 +81,7 @@
 	if (!user.put_in_inactive_hand(picked_item))
 		return ITEM_INTERACT_BLOCKING
 
-	atom_storage.animate_parent()
+	atom_storage.animate_storage()
 	if (istype(picked_item, /obj/item/weldingtool))
 		var/obj/item/weldingtool/welder = picked_item
 		if (!welder.welding)
@@ -95,7 +95,7 @@
 
 /obj/item/storage/toolbox/proc/use_tool_on(atom/interacting_with, mob/living/user, list/modifiers, obj/item/picked_tool)
 	current_interactions += 1
-	picked_tool.melee_attack_chain(user, interacting_with, list2params(modifiers))
+	picked_tool.melee_attack_chain(user, interacting_with, modifiers)
 	current_interactions -= 1
 
 	if (QDELETED(picked_tool) || picked_tool.loc != user || !user.CanReach(picked_tool))
@@ -480,6 +480,7 @@
 	desc = "A bandana. It seems to have a little carp embroidered on the inside, as well as the kanji '魚'."
 	icon_state = "snake_eater"
 	inhand_icon_state = null
+	clothing_traits = list(TRAIT_FISH_EATER)
 
 /obj/item/clothing/head/costume/knight
 	name = "fake medieval helmet"

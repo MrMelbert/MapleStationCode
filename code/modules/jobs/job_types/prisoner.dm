@@ -1,6 +1,6 @@
 /datum/job/prisoner
 	title = JOB_PRISONER
-	description = "Keep yourself occupied in permabrig."
+	description = "Serve your sentence, keep yourself busy through labor, avoid dying of boredom."
 	department_head = list("The Security Team")
 	faction = FACTION_STATION
 	total_positions = 0
@@ -21,9 +21,16 @@
 		/obj/effect/spawner/random/contraband/prison = 1
 	)
 
-	family_heirlooms = list(/obj/item/pen/blue)
+	family_heirlooms = list(
+		/obj/item/pen/blue,
+	)
 	rpg_title = "Defeated Miniboss"
-	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS & ~JOB_REOPEN_ON_ROUNDSTART_LOSS
+	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS | JOB_ANTAG_PROTECTED & ~JOB_REOPEN_ON_ROUNDSTART_LOSS
+
+	base_skills = list(
+		/datum/skill/botany = SKILL_LEVEL_NOVICE,
+		/datum/skill/athletics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/job/prisoner/New()
 	. = ..()
@@ -72,7 +79,7 @@
 	if(!crime_name)
 		return
 	var/datum/prisoner_crime/crime = GLOB.prisoner_crimes[crime_name]
-	var/list/limbs_to_tat = new_prisoner.bodyparts.Copy()
+	var/list/limbs_to_tat = new_prisoner.get_bodyparts()
 	for(var/i in 1 to crime.tattoos)
 		if(!length(SSpersistence.prison_tattoos_to_use) || visualsOnly)
 			return

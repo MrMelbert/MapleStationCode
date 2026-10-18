@@ -5,29 +5,14 @@
 	var/pain = 15
 	/// The min amount of pain this limb can experience
 	var/min_pain = 0
-	/// Modifier applied to pain that this part receives
+	/**
+	 * Modifier applied to pain that this part feels.
+	 *
+	 * Even if this is set to 0, pain is still tracked, it just won't have any per-limb effects.
+	 */
 	var/bodypart_pain_modifier = 1
 	/// The last type of pain we received. Determines what type of pain we're recieving.
 	var/last_received_pain_type = BRUTE
-
-// Adds pain to check-self.
-/obj/item/bodypart/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
-	. = ..()
-	if(owner != examiner || !CAN_FEEL_PAIN(owner)) // haha you thought
-		return
-
-	switch(get_modified_pain())
-		if(10 to 40)
-			check_list += "\t\t[span_danger("It's experiencing mild pain \
-				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
-
-		if(40 to 100)
-			check_list += "\t\t[span_warning("It's experiencing moderate pain \
-				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
-
-		if(100 to INFINITY)
-			check_list += "\t\t[span_boldwarning("It's experiencing severe pain \
-				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
 /**
  * Gets our bodypart's effective pain (pain * pain modifiers).

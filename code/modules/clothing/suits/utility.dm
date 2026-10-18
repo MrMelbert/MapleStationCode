@@ -37,6 +37,11 @@
 	equip_delay_other = 60
 	resistance_flags = FIRE_PROOF
 
+/obj/item/clothing/suit/utility/fire/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/firesuit)
+
 /datum/armor/utility_fire
 	melee = 15
 	bullet = 5
@@ -55,6 +60,7 @@
 /obj/item/clothing/suit/utility/fire/firefighter
 	icon_state = "firesuit"
 	inhand_icon_state = "firefighter"
+	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS
 
 /obj/item/clothing/suit/utility/fire/heavy
@@ -93,6 +99,15 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit
+
+/obj/item/clothing/head/utility/bomb_hood/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/clothing_dirt, "bomb_dirt")
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, texture_type)
+
 /datum/armor/utility_bomb_hood
 	melee = 20
 	laser = 20
@@ -119,6 +134,13 @@
 	equip_delay_other = 70
 	resistance_flags = NONE
 
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit
+
+/obj/item/clothing/suit/utility/bomb_suit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, texture_type)
+
 /datum/armor/utility_bomb_suit
 	melee = 20
 	laser = 20
@@ -131,19 +153,23 @@
 /obj/item/clothing/head/utility/bomb_hood/security
 	icon_state = "bombsuit_sec"
 	inhand_icon_state = null
+	texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit_red
 
 /obj/item/clothing/suit/utility/bomb_suit/security
 	icon_state = "bombsuit_sec"
 	inhand_icon_state = null
 	allowed = list(/obj/item/gun/energy, /obj/item/melee/baton, /obj/item/restraints/handcuffs)
+	texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit_red
 
 /obj/item/clothing/head/utility/bomb_hood/white
 	icon_state = "bombsuit_white"
 	inhand_icon_state = null
+	texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit_white
 
 /obj/item/clothing/suit/utility/bomb_suit/white
 	icon_state = "bombsuit_white"
 	inhand_icon_state = null
+	texture_type = /datum/bodypart_overlay/texture/mesh/bombsuit_white
 
 /*
 * Radiation protection
@@ -163,14 +189,18 @@
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
+/obj/item/clothing/head/utility/radiation/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/radiation_protected_clothing)
+	AddComponent(/datum/component/clothing_dirt, "rad_dirt")
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, /datum/bodypart_overlay/texture/mesh/black)
+
 /datum/armor/utility_radiation
 	bio = 60
 	fire = 30
 	acid = 30
-
-/obj/item/clothing/head/utility/radiation/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/suit/utility/radiation
 	name = "radiation suit"
@@ -191,7 +221,10 @@
 	equip_delay_other = 60
 	flags_inv = HIDEJUMPSUIT
 	resistance_flags = NONE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
 
 /obj/item/clothing/suit/utility/radiation/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, /datum/bodypart_overlay/texture/mesh/black)

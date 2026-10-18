@@ -53,7 +53,7 @@
 /mob/living/silicon/robot/proc/equip_module_to_slot(obj/item/item_module, module_num)
 	var/storage_was_closed = FALSE //Just to be consistant and all
 	if(!shown_robot_modules) //Tools may be invisible if the collection is hidden
-		hud_used.toggle_show_robot_modules()
+		hud_used?.toggle_show_robot_modules()
 		storage_was_closed = TRUE
 	switch(module_num)
 		if(BORG_CHOOSE_MODULE_ONE)
@@ -76,7 +76,7 @@
 	observer_screen_update(item_module, TRUE)
 
 	if(storage_was_closed)
-		hud_used.toggle_show_robot_modules()
+		hud_used?.toggle_show_robot_modules()
 	item_module.on_equipped(src, ITEM_SLOT_HANDS)
 	return TRUE
 

@@ -93,7 +93,6 @@
 				var/chosen_zone
 				if(spread_damage || isnull(def_zone))
 					chosen_zone = BODY_ZONES_ALL
-					pain_amount /= 6
 				else if(isbodypart(def_zone))
 					var/obj/item/bodypart/actual_hit = def_zone
 					chosen_zone = actual_hit.body_zone
@@ -323,7 +322,7 @@
 		if(status_flags & GODMODE)
 			return FALSE
 		if (required_respiration_type)
-			var/obj/item/organ/internal/lungs/affected_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+			var/obj/item/organ/lungs/affected_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 			if(isnull(affected_lungs))
 				if(!(mob_respiration_type & required_respiration_type))  // if the mob has no lungs, use mob_respiration_type
 					return FALSE
@@ -350,7 +349,7 @@
 		if(status_flags & GODMODE)
 			return FALSE
 
-		var/obj/item/organ/internal/lungs/affected_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+		var/obj/item/organ/lungs/affected_lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
 		if(isnull(affected_lungs))
 			if(!(mob_respiration_type & required_respiration_type))
 				return FALSE
@@ -378,13 +377,30 @@
 /mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
 	if(!can_adjust_tox_loss(amount, forced, required_biotype))
 		return 0
+
+	if(!forced && HAS_TRAIT(src, TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
+		amount = -amount
+		if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
+			amount = min(amount, 0)
+		if(blood_volume)
+			if(amount > 0)
+				blood_volume = max(blood_volume - (5 * amount), 0)
+			else
+				blood_volume = max(blood_volume - amount, 0)
+
+	else if(!forced && HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
+		amount = min(amount, 0)
+
 	. = toxloss
 	toxloss = clamp(toxloss + amount, 0, maxHealth * 2)
 	. -= toxloss
+
 	if(!.) // no change, no need to update
 		return FALSE
+
 	if(updating_health)
 		updatehealth()
+
 
 /mob/living/proc/setToxLoss(amount, updating_health = TRUE, forced = FALSE, required_biotype = ALL)
 	if(!forced && (status_flags & GODMODE))

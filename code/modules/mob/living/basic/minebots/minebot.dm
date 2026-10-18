@@ -23,11 +23,15 @@
 	speak_emote = list("states")
 	mob_biotypes = MOB_ROBOTIC
 	death_message = "blows apart!"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_range = 6
+	// I want this to be a bit more dim, for vibes
+	light_power = 0.6
+	light_color = "#ff9933"
 	light_on = FALSE
 	combat_mode = FALSE
 	ai_controller = /datum/ai_controller/basic_controller/minebot
+	initial_blood_type = /datum/blood_type/oil
 	///the access card we use to access mining
 	var/obj/item/card/id/access_card
 	///the gun we use to kill
@@ -72,7 +76,6 @@
 	access_card = new /obj/item/card/id/advanced/gold(src)
 	SSid_access.apply_trim_to_card(access_card, /datum/id_trim/job/shaft_miner)
 
-	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
 
 /mob/living/basic/mining_drone/set_combat_mode(new_mode, silent = TRUE)
 	. = ..()
@@ -110,9 +113,9 @@
 		user.balloon_alert(user, "successfully repaired!")
 	return TRUE
 
-/mob/living/basic/mining_drone/attackby(obj/item/item_used, mob/user, params)
+/mob/living/basic/mining_drone/attackby(obj/item/item_used, mob/user, list/modifiers, list/attack_modifiers)
 	if(item_used.tool_behaviour == TOOL_CROWBAR || istype(item_used, /obj/item/borg/upgrade/modkit))
-		item_used.melee_attack_chain(user, stored_gun, params)
+		item_used.melee_attack_chain(user, stored_gun, modifiers)
 		return
 
 	return ..()

@@ -19,22 +19,9 @@
 	var/datum/component/material_container/materials
 
 /obj/machinery/recycler/Initialize(mapload)
-	var/list/allowed_materials = list(
-		/datum/material/iron,
-		/datum/material/glass,
-		/datum/material/silver,
-		/datum/material/plasma,
-		/datum/material/gold,
-		/datum/material/diamond,
-		/datum/material/plastic,
-		/datum/material/uranium,
-		/datum/material/bananium,
-		/datum/material/titanium,
-		/datum/material/bluespace
-	)
 	materials = AddComponent(
 		/datum/component/material_container, \
-		allowed_materials, \
+		SSmaterials.materials_by_category[MAT_CATEGORY_SILO], \
 		INFINITY, \
 		MATCONTAINER_NO_INSERT \
 	)
@@ -159,7 +146,7 @@
 				continue
 			var/obj/item/bodypart/head/as_head = thing
 			var/obj/item/mmi/as_mmi = thing
-			if(istype(thing, /obj/item/organ/internal/brain) || (istype(as_head) && locate(/obj/item/organ/internal/brain) in as_head) || (istype(as_mmi) && as_mmi.brain) || istype(thing, /obj/item/dullahan_relay))
+			if(istype(thing, /obj/item/organ/brain) || (istype(as_head) && locate(/obj/item/organ/brain) in as_head) || (istype(as_mmi) && as_mmi.brain) || istype(thing, /obj/item/dullahan_relay))
 				living_detected = TRUE
 			if(isitem(as_object))
 				var/obj/item/as_item = as_object

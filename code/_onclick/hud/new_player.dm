@@ -7,6 +7,7 @@
 	///Whether the menu is currently on the client's screen or not
 	var/menu_hud_status = TRUE
 
+
 /datum/hud/new_player/New(mob/owner)
 	. = ..()
 
@@ -29,6 +30,9 @@
 		if (istype(lobbyscreen, /atom/movable/screen/lobby/button))
 			var/atom/movable/screen/lobby/button/lobby_button = lobbyscreen
 			lobby_button.owner = REF(owner)
+
+	static_inventory += new /atom/movable/screen/lobby_init_text(our_hud = src)
+	static_inventory += new /atom/movable/screen/lobby_music(our_hud = src)
 	add_station_trait_buttons()
 
 /// Display buttons for relevant station traits
@@ -585,3 +589,69 @@
 #undef SHUTTER_MOVEMENT_DURATION
 #undef SHUTTER_WAIT_DURATION
 #undef MAX_STATION_TRAIT_BUTTONS_VERTICAL
+
+/atom/movable/screen/lobby_init_text
+	maptext_height = 500
+	maptext_width = 225
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = SPLASHSCREEN_PLANE
+	screen_loc = "LEFT+0.25,BOTTOM+0.25"
+
+/atom/movable/screen/lobby_init_text/New(loc, datum/hud/our_hud, ...)
+	src.hud = our_hud
+	return ..()
+
+/atom/movable/screen/lobby_init_text/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(SStitle.stats_faded || !hud?.mymob?.client?.prefs?.read_preference(/datum/preference/toggle/show_init_stats))
+		alpha = 0 // we still need to init it incase they turn it back on
+
+INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
+
+/atom/movable/screen/lobby_music
+	icon = 'maplestation_modules/icons/hud/lobby_spinner.dmi'
+	icon_state = "spinner"
+	maptext_height = 100
+	maptext_width = 225
+	maptext_y = -10
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	plane = SPLASHSCREEN_PLANE
+	screen_loc = "LEFT+0.25,TOP-0.25"
+	/// World time when the current song started playing for this player
+	var/start_time
+	/// World time when the current song will stop playing for this player
+	var/end_time
+
+/atom/movable/screen/lobby_music/New(loc, datum/hud/our_hud, ...)
+	src.hud = our_hud
+	return ..()
+
+/atom/movable/screen/lobby_music/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(hud?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/volume/sound_lobby_volume) <= 0)
+		alpha = 0 // we still need to init it incase they turn it back on
+
+/atom/movable/screen/lobby_music/proc/start_tracking()
+	animate(src)
+	alpha = 255
+	start_time = world.time
+	end_time = start_time + SSticker.login_length
+	START_PROCESSING(SSlobby_music_player, src)
+	update_maptext()
+
+/atom/movable/screen/lobby_music/process(seconds_per_tick)
+	update_maptext()
+	if(world.time >= end_time)
+		animate(src, alpha = 0, time = 5 SECONDS)
+		return PROCESS_KILL
+
+/atom/movable/screen/lobby_music/proc/cancel_tracking()
+	STOP_PROCESSING(SSlobby_music_player, src)
+	animate(src, alpha = 0, time = 1 SECONDS)
+
+/atom/movable/screen/lobby_music/proc/update_maptext()
+	maptext = "[SStitle.music_maptext]<br>[MAPTEXT("\u25B6 [time2text(max(10, min(world.time - start_time, SSticker.login_length)), "mm:ss", NO_TIMEZONE)] / [time2text(max(100, SSticker.login_length), "mm:ss", 0)]s")]"
+
+/atom/movable/screen/lobby_music/Destroy()
+	STOP_PROCESSING(SSlobby_music_player, src)
+	return ..()

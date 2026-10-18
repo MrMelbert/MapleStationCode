@@ -6,7 +6,7 @@
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 4, /datum/material/glass=SMALL_MATERIAL_AMOUNT*1.2)
-	attachable = TRUE
+	assembly_behavior = ASSEMBLY_ALL
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
 
@@ -120,7 +120,7 @@
 
 	update_appearance()
 
-/obj/item/assembly/signaler/attackby(obj/item/W, mob/user, params)
+/obj/item/assembly/signaler/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(issignaler(W))
 		var/obj/item/assembly/signaler/signaler2 = W
 		if(secured && signaler2.secured)
@@ -182,7 +182,7 @@
 
 /obj/item/assembly/signaler/cyborg
 
-/obj/item/assembly/signaler/cyborg/attackby(obj/item/W, mob/user, params)
+/obj/item/assembly/signaler/cyborg/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	return
 /obj/item/assembly/signaler/cyborg/screwdriver_act(mob/living/user, obj/item/I)
 	return
@@ -193,7 +193,7 @@
 /obj/item/assembly/signaler/internal/ui_state(mob/user)
 	return GLOB.inventory_state
 
-/obj/item/assembly/signaler/internal/attackby(obj/item/W, mob/user, params)
+/obj/item/assembly/signaler/internal/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	return
 
 /obj/item/assembly/signaler/internal/screwdriver_act(mob/living/user, obj/item/I)

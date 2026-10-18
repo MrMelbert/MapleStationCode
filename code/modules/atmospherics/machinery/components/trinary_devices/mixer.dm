@@ -19,6 +19,9 @@
 
 /obj/machinery/atmospherics/components/trinary/mixer/Initialize(mapload)
 	. = ..()
+	var/datum/gas_mixture/air3 = airs[3]
+	air3.volume = 300
+	airs[3] = air3
 	register_context()
 
 /obj/machinery/atmospherics/components/trinary/mixer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -52,17 +55,13 @@
 		if(!(direction & initialize_directions))
 			continue
 
-		. += get_pipe_image(icon, "cap", direction, pipe_color, piping_layer, TRUE)
+		var/image/cap = get_pipe_image(icon, "cap", direction, pipe_color, piping_layer, TRUE)
+		cap.appearance_flags |= RESET_COLOR|KEEP_APART
+		. += cap
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_icon_nopipes()
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
-
-/obj/machinery/atmospherics/components/trinary/mixer/New()
-	..()
-	var/datum/gas_mixture/air3 = airs[3]
-	air3.volume = 300
-	airs[3] = air3
 
 /obj/machinery/atmospherics/components/trinary/mixer/process_atmos()
 	..()

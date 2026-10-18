@@ -3,6 +3,7 @@
 	name = "ammo box (null_reference_exception)"
 	desc = "A box of ammo."
 	icon = 'icons/obj/weapons/guns/ammo.dmi'
+	abstract_type = /obj/item/ammo_box
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	inhand_icon_state = "syringe_kit"
@@ -14,7 +15,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
 	throw_range = 7
-	override_notes = TRUE
 	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 	///list containing the actual ammo within the magazine
@@ -63,22 +63,17 @@
 	stored_ammo -= gone
 	update_appearance()
 
-/obj/item/ammo_box/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_box))
-
-/obj/item/ammo_box/proc/add_notes_box()
-	var/list/readout = list()
+/obj/item/ammo_box/examine_weapon_descriptor(mob/user)
+	var/return_text = ""
 
 	if(caliber && max_ammo) // Text references a 'magazine' as only magazines generally have the caliber variable initialized
-		readout += "Up to [span_warning("[max_ammo] [caliber] [casing_phrasing]s")] can be found within this magazine. \
-		\nAccidentally discharging any of these projectiles may void your insurance contract."
+		return_text += "that can hold up to [max_ammo] [caliber] [casing_phrasing][max_ammo == 1 ? "" : "s"]"
 
 	var/obj/item/ammo_casing/mag_ammo = get_round(TRUE)
-
 	if(istype(mag_ammo))
-		readout += "\n[mag_ammo.add_notes_ammo()]"
+		return_text += ", [mag_ammo.projectile_examine_description("which", include_caliber = FALSE)]"
 
-	return readout.Join("\n")
+	return return_text
 
 /**
  * top_off is used to refill the magazine to max, in case you want to increase the size of a magazine with VV then refill it at once

@@ -7,7 +7,7 @@
 	throw_speed = 1
 	throw_range = 2
 	w_class = WEIGHT_CLASS_TINY
-	flags_inv = HIDEGLOVES|HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+	flags_inv = HIDEGLOVES|HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT|HIDEBELT|HIDEJUMPSUIT
 	alternate_worn_layer = UNDER_HEAD_LAYER
 	species_exception = list(/datum/species/golem)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
@@ -16,6 +16,7 @@
 	. = ..()
 	if(check_holidays(HALLOWEEN))
 		update_icon(UPDATE_OVERLAYS)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
 
 /obj/item/clothing/suit/costume/ghost_sheet/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
@@ -27,4 +28,5 @@
 	name = "spooky ghost"
 	desc = "This is obviously just a bedsheet, but maybe try it on?"
 	user_vars_to_edit = list("name" = "Spooky Ghost", "real_name" = "Spooky Ghost" , "incorporeal_move" = INCORPOREAL_MOVE_BASIC, "appearance_flags" = KEEP_TOGETHER|TILE_BOUND, "alpha" = 150)
+	icon_state = "ghost_sheet"
 	alternate_worn_layer = ABOVE_BODY_FRONT_LAYER //so the bedsheet goes over everything but fire

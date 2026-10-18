@@ -94,7 +94,7 @@
 	)
 	junkiness = 20
 	tastes = list("salt" = 1, "crisps" = 1)
-	foodtypes = JUNKFOOD | FRIED
+	foodtypes = VEGETABLES|JUNKFOOD|FRIED
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/chips/make_leave_trash()
@@ -157,7 +157,7 @@
 
 /obj/item/food/candy_trash
 	name = "candy cigarette butt"
-	icon = 'icons/obj/clothing/masks.dmi'
+	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "candybum"
 	desc = "The leftover from a smoked-out candy cigarette. Can be eaten!"
 	food_reagents = list(

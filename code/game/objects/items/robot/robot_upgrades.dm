@@ -633,7 +633,7 @@
 		return .
 	crew_monitor = new /datum/action/item_action/crew_monitor(src)
 	crew_monitor.Grant(borg)
-	icon_state = "scanner"
+	icon_state = "crew_monitor"
 
 
 /obj/item/borg/upgrade/pinpointer/deactivate(mob/living/silicon/robot/borg, mob/living/user = usr)
@@ -780,7 +780,7 @@
 	icon = 'icons/obj/devices/circuitry_n_data.dmi'
 	icon_state = "cyborg_upgrade1"
 
-/obj/item/borg_restart_board/pre_attack(mob/living/silicon/robot/borgo, mob/living/user, params)
+/obj/item/borg_restart_board/pre_attack(mob/living/silicon/robot/borgo, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!istype(borgo))
 		return ..()
 	if(!borgo.opened)

@@ -11,15 +11,17 @@
 
 // Base type. Subtypes are found in /grown dir. Lavaland-based subtypes can be found in mining/ash_flora.dm
 /obj/item/food/grown
+	name = "fresh produce" // so recipe text doesn't say 'snack'
 	icon = 'icons/obj/service/hydroponics/harvest.dmi'
 	icon_state = "berrypile"
 	worn_icon = 'icons/mob/clothing/head/hydroponics.dmi'
-	name = "fresh produce" // so recipe text doesn't say 'snack'
+	abstract_type = /obj/item/food/grown
 	max_volume = PLANT_REAGENT_VOLUME
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
 	// drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
 	// pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
+	item_flags = CAN_BE_OVERSLOT
 
 	/// type path, gets converted to item on New(). It's safe to assume it's always a seed item.
 	var/obj/item/seeds/seed = null

@@ -44,9 +44,14 @@
 		/datum/pet_command/point_targeting/fetch,
 		/datum/pet_command/play_dead,
 	)
+	///icon state of the collar we can wear
+	var/collar_icon_state
+	///icon state of our cult icon
+	var/cult_icon_state
 
 /mob/living/basic/pet/dog/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/wears_collar, collar_icon_state = collar_icon_state)
 	AddElement(/datum/element/pet_bonus, "woofs happily!")
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW)
 	AddElement(/datum/element/unfriend_attacker, untamed_reaction = "%SOURCE% fixes %TARGET% with a look of betrayal.")
@@ -80,7 +85,7 @@
 	attack_verb_continuous = list("attacks", "bashes", "batters", "bludgeons", "whacks")
 	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 
-/obj/item/dog_bone/pre_attack(atom/target, mob/living/user, params)
+/obj/item/dog_bone/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	if (!isdog(target) || user.combat_mode)
 		return ..()
 	var/mob/living/basic/pet/dog/dog_target = target

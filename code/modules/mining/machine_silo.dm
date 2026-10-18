@@ -7,6 +7,7 @@
 	circuit = /obj/item/circuitboard/machine/ore_silo
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN|INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_OPEN_SILICON
 	processing_flags = NONE
+	examine_feedback_on_ui = TRUE
 
 	/// List of all connected components that are on hold from accessing materials.
 	var/list/holds = list()
@@ -18,22 +19,9 @@
 /obj/machinery/ore_silo/Initialize(mapload)
 	. = ..()
 
-	var/static/list/materials_list = list(
-		/datum/material/iron,
-		/datum/material/glass,
-		/datum/material/silver,
-		/datum/material/gold,
-		/datum/material/diamond,
-		/datum/material/plasma,
-		/datum/material/uranium,
-		/datum/material/bananium,
-		/datum/material/titanium,
-		/datum/material/bluespace,
-		/datum/material/plastic,
-		)
 	materials = AddComponent( \
 		/datum/component/material_container, \
-		materials_list, \
+		SSmaterials.materials_by_category[MAT_CATEGORY_SILO], \
 		INFINITY, \
 		MATCONTAINER_EXAMINE, \
 		container_signals = list( \
@@ -111,7 +99,7 @@
 
 /obj/machinery/ore_silo/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/sheetmaterials)
+		get_asset_datum(/datum/asset/spritesheet_batched/sheetmaterials)
 	)
 
 /obj/machinery/ore_silo/ui_interact(mob/user, datum/tgui/ui)

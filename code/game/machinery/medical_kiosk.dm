@@ -117,7 +117,7 @@
 		active_price = board.custom_cost
 	return
 
-/obj/machinery/medical_kiosk/attackby(obj/item/O, mob/user, params)
+/obj/machinery/medical_kiosk/attackby(obj/item/O, mob/user, list/modifiers, list/attack_modifiers)
 	if(default_deconstruction_screwdriver(user, "[base_icon_state]_open", "[base_icon_state]_off", O))
 		return
 	else if(default_deconstruction_crowbar(O))
@@ -237,7 +237,7 @@
 	var/bleed_status = "Patient is not currently bleeding."
 	var/blood_status = " Patient either has no blood, or does not require it to function."
 	var/blood_percent = round((patient.blood_volume / BLOOD_VOLUME_NORMAL)*100)
-	var/blood_type = "[patient.get_blood_type() || "None"]" // NON-MODULE CHANGE
+	var/blood_type = "[patient.blood_type || "None"]" // NON-MODULE CHANGE
 	var/blood_warning = " "
 	var/blood_alcohol = patient.get_blood_alcohol_content()
 
@@ -288,7 +288,7 @@
 			chemical_list += list(list("name" = reagent.name, "volume" = round(reagent.volume, 0.01)))
 			if(reagent.overdosed)
 				overdose_list += list(list("name" = reagent.name))
-	var/obj/item/organ/internal/stomach/belly = patient.get_organ_slot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = patient.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(belly?.reagents.reagent_list.len) //include the stomach contents if it exists
 		for(var/bile in belly.reagents.reagent_list)
 			var/datum/reagent/bit = bile
@@ -301,7 +301,7 @@
 				if(bit_vol > 0)
 					chemical_list += list(list("name" = bit.name, "volume" = round(bit_vol, 0.01)))
 	for(var/datum/addiction/addiction_type as anything in patient.mind.active_addictions)
-		addict_list += list(list("name" = initial(addiction_type.name)))
+		addict_list += list(list("name" = capitalize(initial(addiction_type.name))))
 
 	if (patient.has_status_effect(/datum/status_effect/hallucination))
 		hallucination_status = "Subject appears to be hallucinating. Suggested treatments: Antipsychotic medication, [/datum/reagent/medicine/haloperidol::name] or [/datum/reagent/medicine/synaptizine::name]."

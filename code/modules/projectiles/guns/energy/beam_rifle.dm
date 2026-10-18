@@ -30,6 +30,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/beam_rifle/hitscan)
 	actions_types = list(/datum/action/item_action/zoom_lock_action)
 	cell_type = /obj/item/stock_parts/power_store/cell/beam_rifle // Non-module change : this'll conflict if you're porting the new one
+	light_color = COLOR_STRONG_BLUE // Non-module change
 	var/aiming = FALSE
 	var/aiming_time = 12
 	var/aiming_time_fire_threshold = 5
@@ -446,6 +447,7 @@
 	armor_flag = ENERGY
 	range = 150
 	jitter = 20 SECONDS
+	hitscan = FALSE
 	var/obj/item/gun/energy/beam_rifle/gun
 	var/structure_pierce_amount = 0 //All set to 0 so the gun can manually set them during firing.
 	var/structure_bleed_coeff = 0

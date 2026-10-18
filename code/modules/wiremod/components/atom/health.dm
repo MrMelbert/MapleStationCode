@@ -37,13 +37,14 @@
 	burn = add_output_port("Burn Damage", PORT_TYPE_NUMBER)
 	toxin = add_output_port("Toxin Damage", PORT_TYPE_NUMBER)
 	oxy = add_output_port("Suffocation Damage", PORT_TYPE_NUMBER)
-	health = add_output_port("Health", PORT_TYPE_NUMBER)
+	health = add_output_port("Overall Health", PORT_TYPE_NUMBER)
 
 /obj/item/circuit_component/health/input_received(datum/port/input/port)
 
 	var/mob/living/organism = input_port.value
 	var/turf/current_turf = get_location()
-	if(!istype(organism) || get_dist(current_turf, organism) > max_range || current_turf.z != organism.z)
+	var/turf/target_location = get_turf(organism)
+	if(!istype(organism) || get_dist(current_turf, target_location) > max_range || current_turf.z != target_location.z)
 		brute.set_output(null)
 		burn.set_output(null)
 		toxin.set_output(null)
@@ -56,4 +57,3 @@
 	toxin.set_output(organism.getToxLoss())
 	oxy.set_output(organism.getOxyLoss())
 	health.set_output(organism.health)
-

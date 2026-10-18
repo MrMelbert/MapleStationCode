@@ -210,9 +210,11 @@ Turf and target are separate in case you want to teleport some distance from a t
  * if the bounds are odd, the true middle turf of the atom is returned
 **/
 /proc/get_turf_pixel(atom/checked_atom)
-	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as it's coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
+	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as its coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
 	if(!atom_turf)
 		return null
+	if(checked_atom.flags_1 & IGNORE_TURF_PIXEL_OFFSET_1)
+		return atom_turf
 
 	var/list/offsets = get_visual_offset(checked_atom)
 	return pixel_offset_turf(atom_turf, offsets)
@@ -232,9 +234,9 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/pixel_y_offset = checked_atom.pixel_y + atom_matrix.get_y_shift()
 
 	//Irregular objects
-	var/list/icon_dimensions = get_icon_dimensions(checked_atom.icon)
-	var/checked_atom_icon_height = icon_dimensions["width"]
-	var/checked_atom_icon_width = icon_dimensions["height"]
+	var/list/icon_dimensions = get_icon_dimensions_pure(checked_atom.icon)
+	var/checked_atom_icon_height = icon_dimensions["height"]
+	var/checked_atom_icon_width = icon_dimensions["width"]
 	if(checked_atom_icon_height != world.icon_size || checked_atom_icon_width != world.icon_size)
 		pixel_x_offset += ((checked_atom_icon_width / world.icon_size) - 1) * (world.icon_size * 0.5)
 		pixel_y_offset += ((checked_atom_icon_height / world.icon_size) - 1) * (world.icon_size * 0.5)

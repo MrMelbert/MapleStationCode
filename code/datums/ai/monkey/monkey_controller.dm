@@ -24,6 +24,7 @@ have ways of interacting with a specific mob and control it.
 		BB_MONKEY_GUN_WORKED = TRUE,
 		BB_SONG_LINES = MONKEY_SONG,
 		BB_RESISTING = FALSE,
+		BB_MONKEY_GIVE_CHANCE = 5,
 	)
 	idle_behavior = /datum/idle_behavior/idle_monkey
 
@@ -51,11 +52,23 @@ have ways of interacting with a specific mob and control it.
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/generic_resist,
 		/datum/ai_planning_subtree/monkey_combat,
+		/datum/ai_planning_subtree/serve_food,
 		/datum/ai_planning_subtree/generic_hunger,
 		/datum/ai_planning_subtree/generic_play_instrument,
-		/datum/ai_planning_subtree/punpun_shenanigans,
+		/datum/ai_planning_subtree/monkey_shenanigans,
 	)
 	idle_behavior = /datum/idle_behavior/idle_monkey/pun_pun
+
+/datum/ai_controller/monkey/pun_pun/TryPossessPawn(atom/new_pawn)
+	. = ..()
+	if(. & AI_CONTROLLER_INCOMPATIBLE)
+		return
+	pawn = new_pawn
+	set_blackboard_key(BB_IGNORE_DRINKS, TRUE)
+	set_blackboard_key(BB_MONKEY_TAMED, TRUE)
+	set_blackboard_key(BB_MONKEY_GIVE_CHANCE, 30)
+	set_blackboard_key(BB_MONKEY_PRESS_TYPEPATH, /obj/structure/desk_bell)
+	set_trip_mode(mode = FALSE)
 
 /datum/ai_controller/monkey/angry
 
@@ -109,8 +122,8 @@ have ways of interacting with a specific mob and control it.
 /datum/ai_controller/monkey/proc/set_trip_mode(mode = TRUE)
 	var/mob/living/carbon/regressed_monkey = pawn
 	var/brain = regressed_monkey.get_organ_slot(ORGAN_SLOT_BRAIN)
-	if(istype(brain, /obj/item/organ/internal/brain/primate)) // In case we are a monkey AI in a human brain by who was previously controlled by a client but it now not by some marvel
-		var/obj/item/organ/internal/brain/primate/monkeybrain = brain
+	if(istype(brain, /obj/item/organ/brain/primate)) // In case we are a monkey AI in a human brain by who was previously controlled by a client but it now not by some marvel
+		var/obj/item/organ/brain/primate/monkeybrain = brain
 		monkeybrain.tripping = mode
 
 ///re-used behavior pattern by monkeys for finding a weapon

@@ -11,11 +11,17 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 	resistance_flags = ACID_PROOF
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/biosuit
+	// Icon_state passed into clothing dirt component
+	var/dirt_state = "bio_dirt"
 
 /obj/item/clothing/head/bio_hood/Initialize(mapload)
 	. = ..()
-	if(flags_inv & HIDEFACE)
-		AddComponent(/datum/component/clothing_fov_visor, FOV_90_DEGREES)
+	if (dirt_state)
+		AddComponent(/datum/component/clothing_dirt, dirt_state)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_HEAD, texture_type)
 
 /datum/armor/head_bio_hood
 	bio = 100
@@ -35,10 +41,17 @@
 	slowdown = 0.5
 	allowed = list(/obj/item/tank/internals, /obj/item/reagent_containers/dropper, /obj/item/flashlight/pen, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/cup/beaker, /obj/item/gun/syringe)
 	armor_type = /datum/armor/suit_bio_suit
-	flags_inv = HIDEGLOVES|HIDEJUMPSUIT
+	flags_inv = HIDEGLOVES|HIDEJUMPSUIT|HIDEBELT
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = ACID_PROOF
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+	var/texture_type = /datum/bodypart_overlay/texture/mesh/biosuit
+
+/obj/item/clothing/suit/bio_suit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 6)
+	AddElement(/datum/element/equipment_bodypart_overlay, BODY_ZONE_CHEST, texture_type)
 
 //Standard biosuit, orange stripe
 /datum/armor/suit_bio_suit
@@ -95,9 +108,11 @@
 //Janitor's biosuit, grey with purple arms
 /obj/item/clothing/head/bio_hood/janitor
 	icon_state = "bio_janitor"
+	texture_type = /datum/bodypart_overlay/texture/mesh/biosuit_dark
 
 /obj/item/clothing/suit/bio_suit/janitor
 	icon_state = "bio_janitor"
+	texture_type = /datum/bodypart_overlay/texture/mesh/biosuit_dark
 
 /obj/item/clothing/suit/bio_suit/janitor/Initialize(mapload)
 	. = ..()
@@ -129,6 +144,7 @@
 	inhand_icon_state = "bio_suit"
 	strip_delay = 40
 	equip_delay_other = 20
+	texture_type = /datum/bodypart_overlay/texture/mesh/black
 
 /obj/item/clothing/suit/bio_suit/plaguedoctorsuit/Initialize(mapload)
 	. = ..()

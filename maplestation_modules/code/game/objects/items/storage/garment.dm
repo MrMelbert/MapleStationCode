@@ -81,9 +81,3 @@
 			continue
 
 		atom_storage.attempt_insert(locker_clothing, override = TRUE, force = TRUE)
-
-/obj/item/storage/bag/garment/magic/quartermaster
-	name = "quartermaster's garment bag"
-	desc = "A bag for storing extra clothes and shoes. This one belongs to the quartermaster."
-	// I don't feel the need to cache this because only 1 should ever exist
-	blacklisted_types = list(/obj/item/clothing/suit/utility/fire, /obj/item/clothing/mask/gas)

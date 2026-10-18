@@ -266,7 +266,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	SSmove_manager.stop_looping(thing, SSconveyors)
 
 // attack with item, place item on conveyor
-/obj/machinery/conveyor/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/conveyor/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(attacking_item.tool_behaviour == TOOL_CROWBAR)
 		user.visible_message(span_notice("[user] struggles to pry up [src] with [attacking_item]."), \
 		span_notice("You struggle to pry up [src] with [attacking_item]."))
@@ -306,11 +306,11 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		new /obj/machinery/conveyor(target_turf, forwards, id)
 
 	else if(!user.combat_mode || (attacking_item.item_flags & NOBLUDGEON))
-		user.transferItemToLoc(attacking_item, drop_location(), silent = FALSE)
+		user.transfer_item_to_turf(attacking_item, drop_location(), silent = FALSE)
 	else
 		return ..()
 
-/obj/machinery/conveyor/attackby_secondary(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/conveyor/attackby_secondary(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(attacking_item.tool_behaviour == TOOL_SCREWDRIVER)
 		attacking_item.play_tool_sound(src)
 		flipped = !flipped
@@ -468,7 +468,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 /obj/machinery/conveyor_switch/attack_robot_secondary(mob/user, list/modifiers)
 	return attack_hand_secondary(user, modifiers)
 
-/obj/machinery/conveyor_switch/attackby(obj/item/attacking_item, mob/user, params)
+/obj/machinery/conveyor_switch/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	if(is_wire_tool(attacking_item))
 		wires.interact(user)
 		return TRUE
@@ -583,7 +583,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	use(1)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/stack/conveyor/attackby(obj/item/item_used, mob/user, params)
+/obj/item/stack/conveyor/attackby(obj/item/item_used, mob/user, list/modifiers, list/attack_modifiers)
 	..()
 	if(istype(item_used, /obj/item/conveyor_switch_construct))
 		to_chat(user, span_notice("You link the switch to the conveyor belt assembly."))
@@ -649,6 +649,12 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	attached_switch = null
 	return ..()
 
+/obj/item/circuit_component/conveyor_switch/input_received(datum/port/input/port)
+	if(!attached_switch)
+		return
+
+	INVOKE_ASYNC(src, PROC_REF(update_conveyors), port)
+
 /obj/item/circuit_component/conveyor_switch/proc/on_switch_changed()
 	attached_switch.update_appearance()
 	attached_switch.update_linked_conveyors()
@@ -668,6 +674,13 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 /obj/item/circuit_component/conveyor_switch/proc/reverse()
 	SIGNAL_HANDLER
 	attached_switch.position = CONVEYOR_BACKWARDS
+	INVOKE_ASYNC(src, PROC_REF(on_switch_changed))
+
+/obj/item/circuit_component/conveyor_switch/proc/update_conveyors(datum/port/input/port)
+	if(!attached_switch)
+		return
+
+	attached_switch.update_position()
 	INVOKE_ASYNC(src, PROC_REF(on_switch_changed))
 
 #undef CONVEYOR_BACKWARDS

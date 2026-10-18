@@ -179,7 +179,7 @@
 	user.visible_message(span_warning("[user] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
 	attach_iv(target, user)
 
-/obj/machinery/iv_drip/attackby(obj/item/W, mob/user, params)
+/obj/machinery/iv_drip/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(use_internal_storage)
 		return ..()
 
@@ -190,15 +190,15 @@
 		/obj/item/reagent_containers/chem_pack,
 	))
 
-	if(is_type_in_typecache(W, drip_containers) || IS_EDIBLE(W))
+	if(is_type_in_typecache(item, drip_containers) || IS_EDIBLE(item))
 		if(reagent_container)
 			to_chat(user, span_warning("[reagent_container] is already loaded on [src]!"))
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.transferItemToLoc(item, src))
 			return
-		reagent_container = W
-		to_chat(user, span_notice("You attach [W] to [src]."))
-		user.log_message("attached a [W] to [src] at [AREACOORD(src)] containing ([reagent_container.reagents.get_reagent_log_string()])", LOG_ATTACK)
+		reagent_container = item
+		to_chat(user, span_notice("You attach [item] to [src]."))
+		user.log_message("attached a [item] to [src] at [AREACOORD(src)] containing ([reagent_container.reagents.get_reagent_log_string()])", LOG_ATTACK)
 		add_fingerprint(user)
 		update_appearance(UPDATE_ICON)
 		return
@@ -242,7 +242,7 @@
 	// Give reagents
 	if(mode)
 		if(drip_reagents.total_volume)
-			drip_reagents.trans_to(attached_to, transfer_rate * seconds_per_tick, methods = INJECT, show_message = FALSE) //make reagents reacts, but don't spam messages
+			drip_reagents.trans_to(attached_to, transfer_rate * seconds_per_tick, methods = INJECT, show_message = FALSE, zone_override = pick(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)) //make reagents reacts, but don't spam messages // NON-MODULE CHANGE
 			update_appearance(UPDATE_ICON)
 
 	// Take blood

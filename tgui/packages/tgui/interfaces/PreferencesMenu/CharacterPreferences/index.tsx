@@ -4,15 +4,16 @@ import { Dropdown, Flex, Stack } from 'tgui-core/components';
 import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { PageButton } from '../components/PageButton';
-import { PreferencesMenuData } from '../types';
+import type { PreferencesMenuData } from '../types';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
 import { AntagsPage } from './AntagsPage';
 import { JobsPage } from './JobsPage';
 import { LoadoutPage } from './loadout';
 import { MainPage } from './MainPage';
-import { QuirksPage } from './QuirksPage';
+import { QuirkPage } from './QuirksPage';
 import { SpeciesPage } from './SpeciesPage';
+import { PersonalityPage } from './PersonalityPage';
 
 enum Page {
   Antags,
@@ -20,6 +21,7 @@ enum Page {
   Jobs,
   Species,
   Quirks,
+  Personality,
   Loadout,
   Limbs, // NON-MODULE CHANGE
   Languages, // NON-MODULE CHANGE
@@ -84,7 +86,11 @@ export function CharacterPreferenceWindow(props) {
 
       break;
     case Page.Quirks:
-      pageContents = <QuirksPage />;
+      pageContents = <QuirkPage />;
+      break;
+
+    case Page.Personality:
+      pageContents = <PersonalityPage />;
       break;
 
     case Page.Loadout:
@@ -140,6 +146,16 @@ export function CharacterPreferenceWindow(props) {
               Character
             </PageButton>
           </Stack.Item>
+          {/* // NON-MODULE CHANGE START */}
+          <Stack.Item grow>
+            <PageButton
+              currentPage={currentPage}
+              page={Page.Limbs}
+              setPage={setCurrentPage}
+            >
+              Body
+            </PageButton>
+          </Stack.Item>
 
           <Stack.Item grow>
             <PageButton
@@ -148,16 +164,6 @@ export function CharacterPreferenceWindow(props) {
               setPage={setCurrentPage}
             >
               Loadout
-            </PageButton>
-          </Stack.Item>
-          {/* // NON-MODULE CHANGE START */}
-          <Stack.Item grow>
-            <PageButton
-              currentPage={currentPage}
-              page={Page.Limbs}
-              setPage={setCurrentPage}
-            >
-              Limbs
             </PageButton>
           </Stack.Item>
 
@@ -205,7 +211,18 @@ export function CharacterPreferenceWindow(props) {
               Quirks
             </PageButton>
           </Stack.Item>
+
+          <Stack.Item grow>
+            <PageButton
+              currentPage={currentPage}
+              page={Page.Personality}
+              setPage={setCurrentPage}
+            >
+              Personality
+            </PageButton>
+          </Stack.Item>
         </Stack>
+
       </Stack.Item>
       <Stack.Divider />
       <Stack.Item grow position="relative" overflowX="hidden" overflowY="auto">

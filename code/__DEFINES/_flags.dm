@@ -56,6 +56,10 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 /// Flag as an optimization, don't make this a trait without profiling
 /// Yes I know this is a stupid flag, no you can't take him from me
 #define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<17)
+/// This atom always returns its turf in get_turf_pixel instead of the turf from its offsets
+#define IGNORE_TURF_PIXEL_OFFSET_1 (1<<18)
+/// This atom does not need to generate its own preview icon for GAGS
+#define NO_NEW_GAGS_PREVIEW_1 (1<<19)
 
 // Update flags for [/atom/proc/update_appearance]
 /// Update the atom's name
@@ -95,40 +99,58 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define IS_SOLID (1<<6)
 /// This turf will never be cleared away by other objects on Initialize.
 #define NO_CLEARING (1<<7)
+/// This atom is a pseudo-floor that blocks map generation's checkPlaceAtom() from placing things like trees ontop of it.
+#define TURF_BLOCKS_POPULATE_TERRAIN_FLORAFEATURES (1<<8)
 
 ////////////////Area flags\\\\\\\\\\\\\\
 /// If it's a valid territory for cult summoning or the CRAB-17 phone to spawn
 #define VALID_TERRITORY (1<<0)
 /// If blobs can spawn there and if it counts towards their score.
 #define BLOBS_ALLOWED (1<<1)
-/// If mining tunnel generation is allowed in this area
-#define CAVES_ALLOWED (1<<2)
-/// If flora are allowed to spawn in this area randomly through tunnel generation
-#define FLORA_ALLOWED (1<<3)
-/// If mobs can be spawned by natural random generation
-#define MOB_SPAWN_ALLOWED (1<<4)
-/// If megafauna can be spawned by natural random generation
-#define MEGAFAUNA_SPAWN_ALLOWED (1<<5)
 /// Are you forbidden from teleporting to the area? (centcom, mobs, wizard, hand teleporter)
-#define NOTELEPORT (1<<6)
+#define NOTELEPORT (1<<2)
 /// Hides area from player Teleport function.
-#define HIDDEN_AREA (1<<7)
-/// If false, loading multiple maps with this area type will create multiple instances.
-#define UNIQUE_AREA (1<<8)
+#define HIDDEN_AREA (1<<3)
 /// If people are allowed to suicide in it. Mostly for OOC stuff like minigames
-#define BLOCK_SUICIDE (1<<9)
+#define BLOCK_SUICIDE (1<<5)
 /// If set, this area will be innately traversable by Xenobiology camera consoles.
-#define XENOBIOLOGY_COMPATIBLE (1<<10)
-/// If Abductors are unable to teleport in with their observation console
-#define ABDUCTOR_PROOF (1<<11)
+#define XENOBIOLOGY_COMPATIBLE (1<<6)
 /// If blood cultists can draw runes or build structures on this AREA.
-#define CULT_PERMITTED (1<<12)
-/// If engravings are persistent in this area
-#define PERSISTENT_ENGRAVINGS (1<<13)
+#define CULT_PERMITTED (1<<7)
 /// Mobs that die in this area don't produce a dead chat message
-#define NO_DEATH_MESSAGE (1<<14)
+#define NO_DEATH_MESSAGE (1<<8)
 /// This area should have extra shielding from certain event effects
-#define EVENT_PROTECTED (1<<15)
+#define EVENT_PROTECTED (1<<9)
+/// This Area Doesn't have Flood or Bomb Admin Messages, but will still log
+#define QUIET_LOGS (1<<10)
+/// This area does not allow the Binary channel
+#define BINARY_JAMMING (1<<11)
+/// This area prevents Bag of Holding rifts from being opened.
+#define NO_BOH (1<<12)
+/// This area prevents fishing from removing unique/limited loot from sources that're also used outside of it.
+#define UNLIMITED_FISHING (1<<13)
+/// This area is prevented from having gravity (ie. space, nearstation, or outside solars)
+#define NO_GRAVITY (1<<14)
+/// This area can be teleported in, but -only- to locations within that same area.
+#define LOCAL_TELEPORT (1<<15)
+
+////////////////Area Mapping Flags\\\\\\\\\\\\\\
+/// If false, loading multiple maps with this area type will create multiple instances.
+#define UNIQUE_AREA (1<<0)
+/// If mining tunnel generation is allowed in this area
+#define CAVES_ALLOWED (1<<1)
+/// If flora are allowed to spawn in this area randomly through tunnel generation
+#define FLORA_ALLOWED (1<<2)
+/// If mobs can be spawned by natural random generation
+#define MOB_SPAWN_ALLOWED (1<<3)
+/// If megafauna can be spawned by natural random generation
+#define MEGAFAUNA_SPAWN_ALLOWED (1<<4)
+/// If engravings are persistent in this area
+#define PERSISTENT_ENGRAVINGS (1<<5)
+/// This is a virtual/bitrunning area
+#define VIRTUAL_AREA (1<<6)
+/// This area does not allow virtual entities to enter.
+#define VIRTUAL_SAFE_AREA (1<<7)
 
 /*
 	These defines are used specifically with the atom/pass_flags bitmask
@@ -196,12 +218,14 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ZAP_FUSION_FLAGS ZAP_OBJ_DAMAGE | ZAP_MOB_DAMAGE | ZAP_MOB_STUN
 #define ZAP_SUPERMATTER_FLAGS ZAP_GENERATES_POWER
 
-///EMP will protect itself.
+///Object will protect itself.
 #define EMP_PROTECT_SELF (1<<0)
-///EMP will protect the contents from also being EMPed.
+///Object will protect its contents from being EMPed.
 #define EMP_PROTECT_CONTENTS (1<<1)
-///EMP will protect the wires.
+///Object will protect its wiring from being EMPed.
 #define EMP_PROTECT_WIRES (1<<2)
+///Don't indicate EMP protection in object examine text.
+#define EMP_NO_EXAMINE (1<<3)
 
 ///Protects against all EMP types.
 #define EMP_PROTECT_ALL (EMP_PROTECT_SELF | EMP_PROTECT_CONTENTS | EMP_PROTECT_WIRES)

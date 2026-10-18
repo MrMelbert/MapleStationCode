@@ -13,6 +13,7 @@
 	integrity_failure = 0.33
 	armor_type = /datum/armor/machinery_airalarm
 	resistance_flags = FIRE_PROOF
+	examine_feedback_on_ui = TRUE
 
 	/// Current alert level of our air alarm.
 	/// [AIR_ALARM_ALERT_NONE], [AIR_ALARM_ALERT_MINOR], [AIR_ALARM_ALERT_SEVERE]
@@ -83,6 +84,9 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	fire = 90
 	acid = 30
 
+/obj/machinery/airalarm/get_save_vars()
+	return ..() - NAMEOF(src, name)
+
 /obj/machinery/airalarm/Initialize(mapload, ndir, nbuild)
 	. = ..()
 	set_wires(new /datum/wires/airalarm(src))
@@ -93,19 +97,17 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		buildstage = AIR_ALARM_BUILD_NO_CIRCUIT
 		set_panel_open(TRUE)
 
-	if(name == initial(name))
-		name = "[get_area_name(src)] Air Alarm"
-
 	tlv_collection = list()
 	tlv_collection["pressure"] = new /datum/tlv/pressure
 	tlv_collection["temperature"] = new /datum/tlv/temperature
-	var/list/meta_info = GLOB.meta_gas_info // shorthand
-	for(var/gas_path in meta_info)
+
+	var/list/cached_gas_info = GLOB.meta_gas_info
+	for(var/datum/gas/gas_path as anything in cached_gas_info[META_GAS_ID])
 		if(ispath(gas_path, /datum/gas/oxygen))
 			tlv_collection[gas_path] = new /datum/tlv/oxygen
 		else if(ispath(gas_path, /datum/gas/carbon_dioxide))
 			tlv_collection[gas_path] = new /datum/tlv/carbon_dioxide
-		else if(meta_info[gas_path][META_GAS_DANGER])
+		else if(cached_gas_info[META_GAS_DANGER][gas_path])
 			tlv_collection[gas_path] = new /datum/tlv/dangerous
 		else
 			tlv_collection[gas_path] = new /datum/tlv/no_checks
@@ -166,7 +168,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 
 /obj/machinery/airalarm/update_name(updates)
 	. = ..()
-	name = "[get_area_name(my_area)] Air Alarm"
+	name = "\improper [get_area_name(my_area, TRUE)] air alarm"
+	article = "the"
 
 /obj/machinery/airalarm/on_exit_area(datum/source, area/area_to_unregister)
 	//we cannot unregister from an area we never registered to in the first place
@@ -260,11 +263,10 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		"danger" = tlv_collection["temperature"].check_value(temp),
 	))
 	if(total_moles)
-		for(var/gas_path in environment.gases)
-			var/moles = environment.gases[gas_path][MOLES]
+		for(var/gas_path, moles in environment.moles)
 			var/portion = moles / total_moles
 			data["envData"] += list(list(
-				"name" = GLOB.meta_gas_info[gas_path][META_GAS_NAME],
+				"name" = GLOB.meta_gas_info[META_GAS_NAME][gas_path],
 				"value" = "[round(moles, 0.01)] moles / [round(100 * portion, 0.01)] % / [round(portion * pressure, 0.01)] kPa",
 				"danger" = tlv_collection[gas_path].check_value(portion * pressure),
 			))
@@ -280,7 +282,7 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 			singular_tlv["name"] = "Temperature"
 			singular_tlv["unit"] = "K"
 		else
-			singular_tlv["name"] = GLOB.meta_gas_info[threshold][META_GAS_NAME]
+			singular_tlv["name"] = GLOB.meta_gas_info[META_GAS_NAME][threshold]
 			singular_tlv["unit"] = "kPa"
 		singular_tlv["id"] = threshold
 		singular_tlv["warning_min"] = tlv.warning_min
@@ -310,9 +312,9 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 		data["scrubbers"] = list()
 		for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/scrubber as anything in my_area.air_scrubbers)
 			var/list/filter_types = list()
-			for (var/path in GLOB.meta_gas_info)
-				var/list/gas = GLOB.meta_gas_info[path]
-				filter_types += list(list("gas_id" = gas[META_GAS_ID], "gas_name" = gas[META_GAS_NAME], "enabled" = (path in scrubber.filter_types)))
+			var/cached_gas_info = GLOB.meta_gas_info
+			for (var/path in cached_gas_info[META_GAS_ID])
+				filter_types += list(list("gas_id" = cached_gas_info[META_GAS_ID][path], "gas_name" = cached_gas_info[META_GAS_NAME][path], "enabled" = (path in scrubber.filter_types)))
 			data["scrubbers"] += list(list(
 				"refID" = REF(scrubber),
 				"long_name" = sanitize(scrubber.name),
@@ -559,8 +561,9 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 
 	danger_level = max(danger_level, tlv_collection["pressure"].check_value(pressure), tlv_collection["temperature"].check_value(temp))
 	if(total_moles)
-		for(var/gas_path in GLOB.meta_gas_info)
-			var/moles = environment.gases[gas_path]?[MOLES] || 0
+		var/list/cached_gas_info = GLOB.meta_gas_info
+		for(var/datum/gas/gas_path as anything in cached_gas_info[META_GAS_ID])
+			var/moles = environment.moles[gas_path] || 0
 			danger_level = max(danger_level, tlv_collection[gas_path].check_value(pressure * moles / total_moles))
 
 	if(danger_level)
@@ -672,7 +675,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 	tlv_collection["temperature"] = new /datum/tlv/no_checks
 	tlv_collection["pressure"] = new /datum/tlv/no_checks
 
-	for(var/gas_path in GLOB.meta_gas_info)
+	for(var/gas_path in GLOB.meta_gas_info[META_GAS_ID])
 		tlv_collection[gas_path] = new /datum/tlv/no_checks
 
 ///Used for air alarm link helper, which connects air alarm to a sensor with corresponding chamber_id

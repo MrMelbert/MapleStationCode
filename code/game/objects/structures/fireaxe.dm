@@ -43,7 +43,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		QDEL_NULL(held_item)
 	return ..()
 
-/obj/structure/fireaxecabinet/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/structure/fireaxecabinet/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(iscyborg(user) || attacking_item.tool_behaviour == TOOL_MULTITOOL)
 		toggle_lock(user)
 	else if(attacking_item.tool_behaviour == TOOL_WELDER && !user.combat_mode && !broken)
@@ -130,8 +130,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 	if(.)
 		return
 	if((open || broken) && held_item)
-		user.put_in_hands(held_item)
-		add_fingerprint(user)
+		try_put_in_hand(held_item, user)
 		update_appearance()
 		return
 	toggle_open(user)

@@ -19,11 +19,11 @@
 	icon_keyboard = "laptop_key"
 	pass_flags = PASSTABLE
 
-/obj/machinery/computer/records/medical/attacked_by(obj/item/attacking_item, mob/living/user)
-	. = ..()
-	if(!istype(attacking_item, /obj/item/photo))
-		return
-	insert_new_record(user, attacking_item)
+/obj/machinery/computer/records/medical/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/photo))
+		return NONE
+	insert_new_record(user, tool)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/records/medical/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -140,7 +140,7 @@
 		return FALSE
 
 	target.age = 18
-	target.blood_type = "[find_blood_type(random_human_blood_type())]" // NON-MODULE CHANGE
+	target.blood_type = /datum/blood_type/crew/human/o_minus::name // NON-MODULE CHANGE
 	target.dna_string = "Unknown"
 	target.gender = "Unknown"
 	target.major_disabilities = ""

@@ -12,6 +12,7 @@
 	tracer_type = /obj/effect/projectile/tracer/stun
 	muzzle_type = /obj/effect/projectile/muzzle/stun
 	impact_type = /obj/effect/projectile/impact/stun
+	light_color = LIGHT_COLOR_DIM_YELLOW
 
 /obj/projectile/energy/electrode/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
@@ -245,6 +246,7 @@
 /datum/status_effect/tased/proc/try_remove_taser(datum/source)
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(try_remove_taser_async), source)
+	return RESIST_HANDLED
 
 /datum/status_effect/tased/proc/try_remove_taser_async()
 	owner.visible_message(
@@ -318,7 +320,7 @@
 
 /obj/effect/ebeam/react_to_entry/electrodes
 	name = "electrodes"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = TRUE
 	light_color = COLOR_YELLOW
 	light_power = 1

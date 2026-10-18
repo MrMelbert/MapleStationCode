@@ -223,7 +223,7 @@
 	volume = 40
 	sound_vary = FALSE
 	no_source = TRUE
-	sound_type = 'sound/magic/curse.ogg'
+	sound_type = 'sound/effects/magic/curse.ogg'
 
 /datum/hallucination/fake_sound/weird/game_over
 	sound_vary = FALSE

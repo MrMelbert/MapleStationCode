@@ -8,16 +8,19 @@
 		set_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	diag_hud.add_atom_to_hud(src)
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	update_fov()
 	gravity_setup()
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
+	if(initial_blood_type && isnull(blood_type))
+		set_blood_type(initial_blood_type)
 	if(!blood_volume)
 		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
+	init_unconscious_appearance()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +29,24 @@
 /mob/living/proc/prepare_data_huds()
 	med_hud_set_health()
 	med_hud_set_status()
+
+/// Inits the human_unconscious appearance for when the mob is unconscious
+/mob/living/proc/init_unconscious_appearance()
+	return
+
+/// Generic helper to add a static-y humanoid appearance shown to other mobs when unconscious
+/mob/living/proc/add_generic_humanoid_static_appearance()
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/image/static_image = image('icons/effects/effects.dmi', src, "static")
+	static_image.override = TRUE
+	static_image.name = "unknown humanoid"
+	add_alt_appearance(
+		/datum/atom_hud/alternate_appearance/basic/unconscious_obscurity,
+		"[REF(src)]_unconscious",
+		static_image,
+		NONE,
+	)
 
 /mob/living/Destroy()
 	for(var/datum/status_effect/effect as anything in status_effects)
@@ -36,8 +57,9 @@
 		else
 			effect.be_replaced()
 
-	if(buckled)
-		buckled.unbuckle_mob(src,force=1)
+	clear_personalities() // must be done for the personalities which process
+
+	buckled?.unbuckle_mob(src,force=1)
 
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
@@ -45,7 +67,7 @@
 		imaginary_group -= src
 		QDEL_LIST(imaginary_group)
 	QDEL_LAZYLIST(diseases)
-	QDEL_LIST(surgeries)
+	QDEL_LAZYLIST(quirks)
 	return ..()
 
 /mob/living/onZImpact(turf/impacted_turf, levels, impact_flags = NONE)
@@ -64,11 +86,17 @@
 	. = SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, impacted_turf)
 	if(. & ZIMPACT_CANCEL_DAMAGE)
 		return .
+	// multiplier for the damage taken from falling
+	var/damage_softening_multiplier = 1
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		damage_softening_multiplier *= potential_spine.athletics_boost_multiplier
 
 	// If you are incapped, you probably can't brace yourself
 	var/can_help_themselves = !incapacitated(IGNORE_RESTRAINTS)
 	if(levels <= 1 && can_help_themselves)
-		var/obj/item/organ/external/wings/gliders = get_organ_by_type(/obj/item/organ/external/wings)
+		var/obj/item/organ/wings/gliders = get_organ_by_type(/obj/item/organ/wings)
 		if(HAS_TRAIT(src, TRAIT_FREERUNNING) || gliders?.can_soften_fall()) // the power of parkour or wings allows falling short distances unscathed
 			visible_message(
 				span_notice("[src] makes a hard landing on [impacted_turf] but remains unharmed from the fall."),
@@ -102,7 +130,7 @@
 		new /obj/effect/temp_visual/mook_dust(impacted_turf)
 
 	if(body_position == STANDING_UP)
-		var/damage_for_each_leg = round(incoming_damage / 2)
+		var/damage_for_each_leg = round((incoming_damage / 2) * damage_softening_multiplier)
 		apply_damage(damage_for_each_leg, BRUTE, BODY_ZONE_L_LEG, wound_bonus = -2.5 * levels)
 		apply_damage(damage_for_each_leg, BRUTE, BODY_ZONE_R_LEG, wound_bonus = -2.5 * levels)
 	else
@@ -150,6 +178,7 @@
 		return TRUE
 
 	SEND_SIGNAL(src, COMSIG_LIVING_MOB_BUMP, M)
+	SEND_SIGNAL(M, COMSIG_LIVING_MOB_BUMPED, src)
 	//Even if we don't push/swap places, we "touched" them, so spread fire
 	spreadFire(M)
 
@@ -339,7 +368,7 @@
 		AM.setDir(current_dir)
 	now_pushing = FALSE
 
-/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
+/mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE, willing_pull = FALSE)
 	if(!AM || !src)
 		return FALSE
 	if(!(AM.can_be_pulled(src, state, force)))
@@ -443,7 +472,7 @@
 		if(isliving(M))
 			var/mob/living/L = M
 
-			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src)
+			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src, willing_pull)
 			//Share diseases that are spread by touch
 			for(var/datum/disease/thing as anything in diseases)
 				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
@@ -547,16 +576,9 @@
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	if(ismob(pointing_at.loc))
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
-			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
-		)
-	else
-		visible_message(
-			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
-			span_notice("You point at [pointing_at]."),
-		)
+	to_chat(src, examining_span_normal("You point at [pointing_at == src ? "yourself" : (pointing_at.loc != src && is_blind()) ? "something" : EXAMINING_WHAT(src, pointing_at)]."))
+	for(var/mob/viewer in oviewers(src))
+		viewer.show_message(examining_span_normal("[span_name("[src]")] points at [WITNESSING_EXAMINE_WHAT(src, pointing_at, viewer)]."), MSG_VISUAL)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
@@ -734,6 +756,13 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
+
+	var/get_up_time = 1 SECONDS
+
+	var/obj/item/organ/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		get_up_time *= potential_spine.athletics_boost_multiplier
+
 	if(!instant && !do_after(src, 1 SECONDS, src, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP, hidden = TRUE))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
@@ -774,6 +803,19 @@
 		set_density(FALSE)
 	else
 		set_density(TRUE)
+
+/mob/living/update_rest_hud_icon()
+	. = ..()
+	if(!.)
+		return FALSE
+	if(!hud_used.sleep_icon || HAS_TRAIT(src, TRAIT_SLEEPIMMUNE))
+		return TRUE
+	if(resting || HAS_TRAIT(src, TRAIT_FLOORED))
+		hud_used.static_inventory |= hud_used.sleep_icon
+	else
+		hud_used.static_inventory -= hud_used.sleep_icon
+	hud_used.show_hud(hud_used.hud_version)
+	return TRUE
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -1063,13 +1105,7 @@
 		if(!storage_is_important_recurisve && !can_reach_active_storage)
 			active_storage.hide_contents(src)
 
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && !buckled && !moving_diagonally && get_turf(src) != was_loc)
-		// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
-		var/blood_flow = get_bleed_rate()
-		var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
-		var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
-		if(health_check || bleeding_check)
-			make_blood_trail(newloc, was_loc, was_facing, direct)
+	passive_blood_trail(newloc, was_loc, was_facing, dir)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
@@ -1081,10 +1117,17 @@
 /mob/living/carbon/alien/adult/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction)
-	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
+/mob/living/proc/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || buckled || moving_diagonally || get_turf(src) == was_loc)
+		return
+	// melbert todo : moving diagonally messes things up particularly if you fail to move (ie against a wall)
+	var/blood_flow = get_bleed_rate()
+	var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
+	var/bleeding_check = blood_flow > 3 && prob(blood_flow * 16)
+	if(!health_check && !bleeding_check)
 		return
 
+	var/blood_to_add = 0
 	var/base_bleed_rate = get_bleed_rate()
 	var/base_brute = getBruteLoss()
 
@@ -1095,15 +1138,44 @@
 	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
 		return
 
-	var/blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+	if(isnull(blood_to_add))
+		blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1
+		blood_to_add += (body_position == LYING_DOWN) ? bleedDragAmount() : base_bleed_rate
+		// if we're very damaged or bleeding a lot, add even more blood to the trail
+		if(base_brute >= 300 || base_bleed_rate >= 7)
+			blood_to_add *= 2
+
+	// this is where people losing extra blood from being dragged is handled
 	if(body_position == LYING_DOWN)
-		blood_to_add += bleedDragAmount()
-		bleed(blood_to_add, drip = FALSE)
-	else
-		blood_to_add += base_bleed_rate
-	// if we're very damaged or bleeding a lot, add even more blood to the trail
-	if(base_brute >= 300 || base_bleed_rate >= 7)
-		blood_to_add *= 2
+		bleed(blood_to_add, leave_pool = FALSE)
+
+	make_blood_trail(new_loc, was_loc, was_facing, now_facing, blood_to_add, get_blood_dna_list(), get_static_viruses())
+
+/mob/living/carbon/human/passive_blood_trail(atom/new_loc, atom/was_loc, was_facing, now_facing)
+	if(!is_bleeding())
+		return
+	return ..()
+
+/**
+ * Leaves a trail of blood.
+ *
+ * This is on the atom level so you can have arbitrary objects leave "blood trails" if desired,
+ * you just need to pass a blood_dna.
+ *
+ * Arguments:
+ * * target_turf - The turf where the blood trail will be made
+ * * start - The turf where the mob started moving from
+ * * was_facing - The direction the mob was facing before moving
+ * * movement_direction - The direction the mob is moving towards
+ * * blood_to_add - The amount of blood to add to the trail
+ * * blood_dna - The DNA to add to the trail. Autoset for mobs.
+ * * static_viruses - The viruses to add to the trail
+ */
+/atom/proc/make_blood_trail(turf/target_turf, turf/start, was_facing, movement_direction, blood_to_add = BLOOD_AMOUNT_PER_DECAL * 0.1, blood_dna, list/static_viruses)
+	if(!has_gravity() || !isturf(start))
+		return
+	if(!islist(blood_dna))
+		CRASH("make_blood_trail called without a valid blood_dna list!")
 
 	var/trail_dir = REVERSE_DIR(movement_direction)
 	// the mob is performing a diagonal movement so we need to make a diagonal trail
@@ -1142,27 +1214,22 @@
 			break
 
 	if(isnull(trail))
-		trail = new(start, get_static_viruses())
+		trail = new(start, static_viruses)
 		if(QDELETED(trail))
 			return
 		trail.bloodiness = blood_to_add
 	else
-		trail.add_viruses(get_static_viruses())
+		trail.add_viruses(static_viruses)
 
 	// update the holder with our new dna and bloodiness
-	trail.add_mob_blood(src)
+	trail.add_blood_DNA(blood_dna)
 	trail.adjust_bloodiness(blood_to_add)
 	// also update the trail component, this is what matters for its appearance
 	var/obj/effect/decal/cleanable/blood/trail/trail_component = trail.add_dir_to_trail(trail_dir, blood_to_add)
 	if(isnull(trail_component))
 		return
-	trail_component.add_mob_blood(src)
+	trail_component.add_blood_DNA(blood_dna)
 	trail_component.adjust_bloodiness(blood_to_add)
-
-/mob/living/carbon/human/make_blood_trail(turf/target_turf, turf/start, direction)
-	if(!is_bleeding())
-		return
-	return ..()
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/make_blood_trail]
 /mob/living/proc/bleedDragAmount()
@@ -1225,7 +1292,9 @@
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
-	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
+	if(SEND_SIGNAL(src, COMSIG_LIVING_RESIST) & RESIST_HANDLED)
+		return
+
 	//resisting grabs (as if it helps anyone...)
 	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
 		log_combat(src, pulledby, "resisted grab")
@@ -1234,42 +1303,54 @@
 
 	//unbuckling yourself
 	if(buckled && last_special <= world.time)
-		resist_buckle()
+		buckled.user_unbuckle_mob(src, src)
 
 	//Breaking out of a container (Locker, sleeper, cryo...)
 	else if(loc != get_turf(src))
 		loc.container_resist_act(src)
 
-	else if(mobility_flags & MOBILITY_MOVE)
-		if(on_fire)
-			resist_fire() //stop, drop, and roll
-		else if(last_special <= world.time)
-			resist_restraints() //trying to remove cuffs.
+	else if((mobility_flags & MOBILITY_MOVE) && on_fire)
+		resist_fire() //stop, drop, and roll
 
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
-		pulledby.stop_pulling()
-		return FALSE
+	//Our effective grab state. GRAB_PASSIVE is equal to 0, so if we have no other altering factors to our grab state, we can break free immediately on resist.
+	var/effective_grab_state = pulledby.grab_state
+	//The amount of damage inflicted on a failed resist attempt.
+	var/damage_on_resist_fail = rand(7, 13)
+	// Base chance to escape a grab. Divided by effective grab state
+	var/escape_chance = BASE_GRAB_RESIST_CHANCE
 
 	var/vulnerability_delta = 0
 	if(isliving(pulledby))
 		var/mob/living/grabber = pulledby
-		// Just compare resist strength vs resist strength
-		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+		// Just compare resist strength vs grab strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_strength()
 	else
 		// Just assume 4 (roughly the same as a human with no buffs)
 		vulnerability_delta = get_grab_resist_strength() - 4
 
-	var/altered_grab_state = pulledby.grab_state
 	if(vulnerability_delta <= 2)
-		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+		effective_grab_state = min(effective_grab_state + 1, GRAB_NECK)
+	escape_chance += (vulnerability_delta * 5) // More vulnerable = higher escape chance, less vulnerable = lower escape chance
 
-	var/resist_chance = BASE_GRAB_RESIST_CHANCE
-	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
-	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(isliving(pulledby))
+		var/mob/living/martial_artist = pulledby
+		var/datum/martial_art/puller_art = GET_ACTIVE_MARTIAL_ART(martial_artist)
+		if(puller_art?.can_use(martial_artist))
+			damage_on_resist_fail += puller_art.grab_damage_modifier
+			escape_chance += puller_art.grab_escape_chance_modifier
+
+	// see defines/combat.dm, this should be baseline 60%
+	// Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
+	var/resist_chance = clamp(escape_chance / effective_grab_state, 0, 100)
+
+	if(effective_grab_state <= GRAB_PASSIVE)
+		pulledby.stop_pulling()
+		return FALSE
+
 	if(prob(resist_chance))
 		visible_message(
 			span_danger("[src] breaks free of [pulledby]'s grip!"),
@@ -1285,7 +1366,7 @@
 		pulledby.stop_pulling()
 		return FALSE
 
-	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	adjustStaminaLoss(damage_on_resist_fail) //failure to escape still imparts a pretty serious penalty
 	visible_message(
 		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
 		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
@@ -1300,9 +1381,6 @@
 	if(moving_resist) //we resisted by trying to move
 		client?.move_delay = world.time + 4 SECONDS
 	return TRUE
-
-/mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return FALSE
@@ -1422,7 +1500,7 @@
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
-	if(stat != CONSCIOUS)
+	if(stat >= UNCONSCIOUS)
 		to_chat(src, span_warning("You are not conscious enough for this action!"))
 		return FALSE
 
@@ -1892,6 +1970,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /// Called when mob changes from a standing position into a prone while lacking the ability to stand up at the moment.
 /mob/living/proc/on_fall()
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_LIVING_THUD)
 	return
 
 /mob/living/forceMove(atom/destination)
@@ -2035,6 +2115,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				return FALSE
 			update_transform(var_value/current_size)
 			. = TRUE
+		if(NAMEOF(src, blood_type))
+			. = set_blood_type(var_value)
+			if(!.)
+				return
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED
@@ -2168,7 +2252,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return
 		to_chat(src, span_warning("There's nothing interesting up there."))
 		return
-	else if(!istransparentturf(ceiling)) //There is no turf we can look through above us
+	else if(!istransparentturf(ceiling) && !HAS_TRAIT(src, TRAIT_XRAY_VISION)) //There is no turf we can look through above us
 		var/turf/front_hole = get_step(ceiling, dir)
 		if(istransparentturf(front_hole))
 			ceiling = front_hole
@@ -2215,7 +2299,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(!lower_level) //We are at the lowest z-level.
 		to_chat(src, span_warning("You can't see through the floor below you."))
 		return
-	else if(!istransparentturf(floor)) //There is no turf we can look through below us
+	else if(!istransparentturf(floor) && !HAS_TRAIT(src, TRAIT_XRAY_VISION)) //There is no turf we can look through below us
 		var/turf/front_hole = get_step(floor, dir)
 		if(istransparentturf(front_hole))
 			floor = front_hole
@@ -2348,11 +2432,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(GRAB_KILL)
 			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
 
-
-/// Only defined for carbons who can wear masks and helmets, we just assume other mobs have visible faces
-/mob/living/proc/is_face_visible()
-	return TRUE
-
+/// Sprite to show for photocopying mob butts
+/mob/living/proc/get_butt_sprite()
+	return null
 
 ///Proc to modify the value of num_legs and hook behavior associated to this event.
 /mob/living/proc/set_num_legs(new_value)
@@ -2360,7 +2442,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_legs
 	num_legs = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_legs and hook behavior associated to this event.
@@ -2411,7 +2493,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	. = num_hands
 	num_hands = new_value
-
+	hud_used?.update_locked_slots()
 
 // NON-MODULE CHANGE START
 ///Proc to modify the value of usable_hands and hook behavior associated to this event.
@@ -2453,6 +2535,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		on_lying_down()
 	else // From lying down to standing up.
 		on_standing_up()
+	update_rest_hud_icon()
 
 
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
@@ -2493,8 +2576,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_exp_list(minutes)
 	var/list/exp_list = list()
 
-	if(mind && mind.special_role && !(mind.datum_flags & DF_VAR_EDITED))
-		exp_list[mind.special_role] = minutes
+	if(!(mind.datum_flags & DF_VAR_EDITED))
+		for(var/datum/antagonist/antag as anything in mind?.antag_datums)
+			var/flag_to_check = antag.jobban_flag || antag.pref_flag
+			if(flag_to_check)
+				exp_list[flag_to_check] = minutes
 
 	if(mind.assigned_role.title in GLOB.exp_specialmap[EXP_TYPE_SPECIAL])
 		exp_list[mind.assigned_role.title] = minutes
@@ -2596,7 +2682,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/add_mood_event(category, type, ...)
 	if(QDELETED(mob_mood))
 		return
-	mob_mood.add_mood_event(arglist(args))
+
+	if(ispath(type, /datum/mood_event/conditional))
+		mob_mood.add_conditional_mood_event(arglist(args))
+	else
+		mob_mood.add_mood_event(arglist(args))
 
 /// Clears a mood event from the mob
 /mob/living/proc/clear_mood_event(category)
@@ -2694,10 +2784,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(isnull(guardian_client))
 		return
 	else if(guardian_client == "Poll Ghosts")
-		var/list/candidates = SSpolling.poll_ghost_candidates("Do you want to play as an admin created Guardian Spirit of [real_name]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, pic_source = src, role_name_text = "guardian spirit")
-		if(LAZYLEN(candidates))
-			var/mob/dead/observer/candidate = pick(candidates)
-			guardian_client = candidate.client
+		var/mob/chosen_one = SSpolling.poll_ghost_candidates("Do you want to play as an admin created [span_notice("Guardian Spirit")] of [span_danger(real_name)]?", check_jobban = ROLE_PAI, poll_time = 10 SECONDS, ignore_category = POLL_IGNORE_HOLOPARASITE, alert_pic = mutable_appearance('icons/mob/nonhuman-player/guardian.dmi', "magicexample"), jump_target = src, role_name_text = "guardian spirit", amount_to_pick = 1)
+		if(chosen_one)
+			guardian_client = chosen_one.client
 		else
 			tgui_alert(admin, "No ghost candidates.", "Guardian Controller")
 			return
@@ -2744,3 +2833,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		end_look_down()
 	else
 		look_down()
+
+/**
+ * Totals the physical cash on the mob and returns the total.
+ */
+/mob/living/verb/tally_physical_credits()
+	//Here is all the possible non-ID payment methods.
+	var/list/counted_money = list()
+	var/physical_cash_total = 0
+	for(var/obj/item/credit as anything in typecache_filter_list(get_all_contents(), GLOB.allowed_money)) //Coins, cash, and credits.
+		physical_cash_total += credit.get_item_credit_value()
+		counted_money += credit
+
+	if(is_type_in_typecache(pulling, GLOB.allowed_money)) //Coins(Pulled).
+		var/obj/item/counted_credit = pulling
+		physical_cash_total += counted_credit.get_item_credit_value()
+		counted_money += counted_credit
+	return round(physical_cash_total)

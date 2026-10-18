@@ -25,33 +25,27 @@
 	unarmed_damage_high = 3
 	unarmed_effectiveness = 0
 	bodypart_trait_source = HEAD_TRAIT
-
-	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
-	var/show_organs_on_examine = TRUE
+	stump_typepath = /obj/item/bodypart/head/stump
 
 	//Limb appearance info:
 	/// Replacement name
 	var/real_name = ""
 	/// Flags related to appearance, such as hair, lips, etc
-	var/head_flags = HEAD_ALL_FEATURES
+	var/head_flags = HEAD_DEFAULT_FEATURES
 
 	/// Hair style
 	var/hairstyle = "Bald"
 	/// Hair colour and style
-	var/hair_color = "#000000"
+	var/hair_color = COLOR_BLACK
 	/// Hair alpha
 	var/hair_alpha = 255
-	/// Is the hair currently hidden by something?
-	var/hair_hidden = FALSE
 
 	///Facial hair style
 	var/facial_hairstyle = "Shaved"
 	///Facial hair color
-	var/facial_hair_color = "#000000"
+	var/facial_hair_color = COLOR_BLACK
 	///Facial hair alpha
 	var/facial_hair_alpha = 255
-	///Is the facial hair currently hidden by something?
-	var/facial_hair_hidden = FALSE
 
 	/// Gradient styles, if any
 	var/list/gradient_styles = null
@@ -70,6 +64,9 @@
 	///Current lipstick trait, if any (such as TRAIT_KISS_OF_DEATH)
 	var/stored_lipstick_trait
 
+	/// How many teeth the head's species has, humans have 32 so that's the default. Used for a limit to dental pill implants.
+	var/teeth_count = 32
+
 	/// Offset to apply to equipment worn on the ears
 	var/datum/worn_feature_offset/worn_ears_offset
 	/// Offset to apply to equipment worn on the eyes
@@ -81,15 +78,8 @@
 	/// Offset to apply to overlays placed on the face
 	var/datum/worn_feature_offset/worn_face_offset
 
-	VAR_PROTECTED
-		/// Draw this head as "debrained"
-		show_debrained = FALSE
-
-		/// Draw this head as missing eyes
-		show_eyeless = FALSE
-
-		/// Can this head be dismembered normally?
-		can_dismember = FALSE
+	/// Can this head be dismembered normally?
+	VAR_PROTECTED/can_dismember = FALSE
 
 	var/missing_eye_file = 'icons/mob/human/human_face.dmi'
 
@@ -103,8 +93,8 @@
 
 /obj/item/bodypart/head/examine(mob/user)
 	. = ..()
-	if(show_organs_on_examine && IS_ORGANIC_LIMB(src))
-		var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+	if(head_flags & HEAD_SHOW_ORGANS_ON_EXAMINE)
+		var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 		if(!brain)
 			. += span_info("The brain has been removed from [src].")
 		else if(brain.suicided || (brain.brainmob && HAS_TRAIT(brain.brainmob, TRAIT_SUICIDED)))
@@ -121,13 +111,13 @@
 		else
 			. += span_info("It's completely lifeless.")
 
-		if(!(locate(/obj/item/organ/internal/eyes) in src))
+		if(!(locate(/obj/item/organ/eyes) in src))
 			. += span_info("[real_name]'s eyes have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/ears) in src))
+		if(!(locate(/obj/item/organ/ears) in src))
 			. += span_info("[real_name]'s ears have been removed.")
 
-		if(!(locate(/obj/item/organ/internal/tongue) in src))
+		if(!(locate(/obj/item/organ/tongue) in src))
 			. += span_info("[real_name]'s tongue has been removed.")
 
 /obj/item/bodypart/head/can_dismember()
@@ -142,7 +132,7 @@
 /obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
 	if(user)
 		user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-	var/obj/item/organ/internal/brain/brain = locate(/obj/item/organ/internal/brain) in src
+	var/obj/item/organ/brain/brain = locate(/obj/item/organ/brain) in src
 	if(brain && violent_removal && prob(90)) //ghetto surgery can damage the brain.
 		to_chat(user, span_warning("[brain] was damaged in the process!"))
 		brain.set_organ_damage(brain.maxHealth)
@@ -152,60 +142,44 @@
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
-	if(!isnull(owner))
-		if(HAS_TRAIT(owner, TRAIT_HUSK))
-			real_name = "Unknown"
-		else
-			real_name = owner.real_name
-	update_hair_and_lips(dropping_limb, is_creating)
+	if(isnull(owner))
+		return
+	if(is_creating)
+		real_name = owner.real_name
+		copy_appearance_from(owner)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/obj/item/bodypart/head/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/toy_talk)
+	if(!IS_ORGANIC_LIMB(src))
+		head_flags &= ~HEAD_SHOW_ORGANS_ON_EXAMINE
+	// specifically to facilitate finding decapitated heads
+	add_smell(smell = /datum/smell/decay, intensity = SMELL_INTENSITY_MODERATE, radius = 2)
+
 /obj/item/bodypart/head/get_limb_icon(dropped)
 	. = ..()
+	if(dropped) // These overlays are applied as standing overlays so we only need them if dropped
+		. += get_hair_overlays(dropped)
+		. += get_eye_overlays(dropped)
 
-	. += get_hair_and_lips_icon(dropped)
-	// We need to get the eyes if we are dropped (ugh)
-	if(dropped)
-		var/obj/item/organ/internal/eyes/eyes = locate(/obj/item/organ/internal/eyes) in src
-		// This is a bit of copy/paste code from eyes.dm:generate_body_overlay
-		if(eyes?.eye_icon_state && (head_flags & HEAD_EYESPRITES))
-			var/image/eye_left = image(eyes.eye_overlay_file, "[eyes.eye_icon_state]_l", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
-			var/image/eye_right = image(eyes.eye_overlay_file, "[eyes.eye_icon_state]_r", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
-			if(head_flags & HEAD_EYECOLOR)
-				if(eyes.eye_color_left)
-					eye_left.color = eyes.eye_color_left
-				if(eyes.eye_color_right)
-					eye_right.color = eyes.eye_color_right
-			if(eyes.overlay_ignore_lighting)
-				eye_left.overlays += emissive_appearance(eye_left.icon, eye_left.icon_state, src, alpha = eye_left.alpha)
-				eye_right.overlays += emissive_appearance(eye_right.icon, eye_right.icon_state, src, alpha = eye_right.alpha)
-			else if(blocks_emissive != EMISSIVE_BLOCK_NONE)
-				var/atom/location = loc || owner || src
-				eye_left.overlays += emissive_blocker(eye_left.icon, eye_left.icon_state, location, alpha = eye_left.alpha)
-				eye_right.overlays += emissive_blocker(eye_right.icon, eye_right.icon_state, location, alpha = eye_right.alpha)
-			if(worn_face_offset)
-				worn_face_offset.apply_offset(eye_left)
-				worn_face_offset.apply_offset(eye_right)
-			. += eye_left
-			. += eye_right
-		else if(!eyes && (head_flags & HEAD_EYEHOLES))
-			var/image/no_eyes = image(missing_eye_file || 'icons/mob/human/human_face.dmi', "eyes_missing", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
-			worn_face_offset?.apply_offset(no_eyes)
-			. += no_eyes
+	. += get_lips_overlays(dropped)
 
-	return
-
-/obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
-	var/mob/headholder = holder
-	if(istype(headholder))
-		headholder.log_talk(message, LOG_SAY, tag = "beheaded talk")
-
-	say(message, language, sanitize = FALSE)
-	return NOPASS
-
-/obj/item/bodypart/head/GetVoice()
+/obj/item/bodypart/head/get_voice(add_id_name)
 	return "The head of [real_name]"
+
+/obj/item/bodypart/head/update_bodypart_damage_state()
+	if (head_flags & HEAD_NO_DISFIGURE)
+		return ..()
+
+	var/old_states = brutestate + burnstate
+	. = ..()
+	var/new_states = brutestate + burnstate
+	if(new_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		add_bodypart_trait(TRAIT_DISFIGURED)
+	else if(old_states >= HUMAN_DISFIGURATION_HEAD_DAMAGE_STATES)
+		remove_bodypart_trait(TRAIT_DISFIGURED)
 
 /obj/item/bodypart/head/monkey
 	icon = 'icons/mob/human/species/monkey/bodyparts.dmi'
@@ -214,7 +188,7 @@
 	husk_type = "monkey"
 	icon_state = "default_monkey_head"
 	limb_id = SPECIES_MONKEY
-	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_MONKEY
 	should_draw_greyscale = FALSE
 	dmg_overlay_type = SPECIES_MONKEY
 	is_dimorphic = FALSE
@@ -231,7 +205,9 @@
 	px_y = 0
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_CORE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodytype = BODYTYPE_ALIEN | BODYTYPE_ORGANIC
+	bodyshape = BODYSHAPE_HUMANOID
+	biological_state = BIO_STANDARD_ALIEN
 
 /obj/item/bodypart/head/larva
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'

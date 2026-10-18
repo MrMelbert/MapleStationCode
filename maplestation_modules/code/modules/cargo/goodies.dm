@@ -24,7 +24,7 @@
 
 /datum/supply_pack/goody/volite_single_pack
 	name = "Volite Crystal Single Pack"
-	desc = "A singular volite crystal, ready for use." // planned to be cut with rework part 2, here for ease of access.
+	desc = "A singular volite crystal, ready for use."
 	cost = PAYCHECK_CREW * 4
 	contains = list(
 		/obj/item/mana_battery/mana_crystal/standard,
@@ -32,7 +32,7 @@
 
 /datum/supply_pack/goody/small_volite_pack
 	name = "Small Volite Crystal Single Pack"
-	desc = "A miniaturized volite crystal." // planned to be cut with rework part 2
+	desc = "A miniaturized volite crystal."
 	cost = PAYCHECK_CREW * 2
 	contains = list(
 		/obj/item/mana_battery/mana_crystal/small,
@@ -44,4 +44,21 @@
 	cost = PAYCHECK_CREW * 2
 	contains = list(
 		/obj/item/mana_battery/mana_crystal/lignite,
+	)
+
+/datum/supply_pack/goody/meditation_guide_single
+	name = "Meditation Guide Single Pack"
+	desc = "Provides a single copy of the Nanotrasen Approved Meditation Guidebook"
+	cost = PAYCHECK_CREW
+	contains = list(
+		/obj/item/book/granter/action/spell/meditation,
+	)
+
+/datum/supply_pack/service/lesser_splattercasting_guide
+	name = "Lesser Splattercasting Guide Multi-Pack"
+	desc = "Provides a single copy of the Nanotrasen Unapproved Meditation Guidebook"
+	cost = PAYCHECK_CREW
+	contraband = TRUE
+	contains = list(
+		/obj/item/book/granter/action/spell/lesser_splattercasting,
 	)

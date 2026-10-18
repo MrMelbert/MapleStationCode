@@ -111,7 +111,7 @@
 /turf/open/openspace/proc/CanBuildHere()
 	return can_build_on
 
-/turf/open/openspace/attackby(obj/item/C, mob/user, params)
+/turf/open/openspace/attackby(obj/item/C, mob/user, list/modifiers)
 	..()
 	if(!CanBuildHere())
 		return

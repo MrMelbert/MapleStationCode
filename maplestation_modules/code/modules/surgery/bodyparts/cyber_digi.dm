@@ -6,12 +6,18 @@
 	id = "digitigrade_cyber_r_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/right/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/borg_l_leg/digi
 	name = "Digitigrade Cybernetic Left Leg"
 	desc = /datum/design/borg_r_leg/digi::desc
 	id = "digitigrade_cyber_l_leg"
 	build_path = /obj/item/bodypart/leg/left/robot/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_r_leg/digi
 	name = "Digitigrade Advanced Right Leg"
@@ -20,6 +26,9 @@
 		though makes it difficult to wear normal shoes."
 	id = "digitigrade_advanced_r_leg"
 	build_path = /obj/item/bodypart/leg/right/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 /datum/design/advanced_l_leg/digi
 	name = "Digitigrade Advanced Left Leg"
@@ -27,6 +36,9 @@
 	id = "digitigrade_advanced_l_leg"
 	build_type = MECHFAB
 	build_path = /obj/item/bodypart/leg/left/robot/advanced/digi
+	category = list(
+		RND_CATEGORY_MECHFAB_CYBORG + RND_SUBCATEGORY_CYBERNETICS_ADVANCED_LIMBS
+	)
 
 // Limbs
 /obj/item/bodypart/leg/right/robot/digi
@@ -34,7 +46,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -51,12 +63,20 @@
 		free_icon = initial(icon_static), \
 	)
 
+/obj/item/bodypart/leg/right/robot/digi/android
+	change_exempt_flags = NONE
+
+/obj/item/bodypart/leg/right/robot/digi/zhp
+	icon_state = "robotic_r_leg"
+	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+
 /obj/item/bodypart/leg/left/robot/digi
 	name = "cyborg digitigrade left leg"
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
@@ -73,12 +93,20 @@
 		free_icon = initial(icon_static), \
 	)
 
+/obj/item/bodypart/leg/left/robot/digi/android
+	change_exempt_flags = NONE
+
+/obj/item/bodypart/leg/left/robot/digi/zhp
+	icon_state = "robotic_l_leg"
+	icon = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+	icon_static = 'maplestation_modules/icons/mob/augmentation/zhpipc.dmi'
+
 /obj/item/bodypart/leg/right/robot/surplus/digi
 	name = "prosthetic digitigrade right leg"
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/surplus/digi/Initialize(mapload)
@@ -97,7 +125,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/robot/surplus/digi/Initialize(mapload)
@@ -116,7 +144,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_r_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
@@ -138,7 +166,7 @@
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_advanced.dmi'
 	icon_state = "digitigrade_l_leg"
-	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	bodyshape = parent_type::bodyshape | BODYSHAPE_DIGITIGRADE
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
@@ -158,48 +186,44 @@
 // Prefs menu
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi
 	name = "Cybernetic Digitigrade Right Leg"
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/right/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/cybernetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi
 	name = "Cybernetic Digitigrade Left Leg"
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/left/robot/digi
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/cybernetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi
 	name = "Prosthetic Digitigrade Right Leg"
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/right/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/prosthetic_r_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi
 	name = "Prosthetic Digitigrade Left Leg"
+	tooltip = "Unique to Digitigrade species."
 	limb_path = /obj/item/bodypart/leg/left/robot/surplus/digi
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_selected(datum/preferences/prefs)
-	if(ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/lizard))
-		return LIMB_AVAILABLE
-	return "This limb is only available to [/datum/species/lizard::plural_form]."
+	return digi_prefs_check(prefs)
 
 /datum/limb_option_datum/bodypart/prosthetic_l_leg/digi/can_be_applied(mob/living/carbon/human/apply_to)
-	return islizard(apply_to)
+	return digi_mob_check(apply_to)

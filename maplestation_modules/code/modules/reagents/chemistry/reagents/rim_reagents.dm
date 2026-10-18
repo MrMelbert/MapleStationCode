@@ -26,9 +26,9 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 12
 	ph = 12.4
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/luciferium = 33) // 3 units = addiction
-	pain_modifier = 0.8
+	chemical_flags = NONE
+	addiction_types = list(/datum/addiction/luciferium = 3)
+	pain_modifier = 0.2
 
 /datum/reagent/medicine/luciferium/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -66,7 +66,7 @@
 		return ..()
 
 	// Heals pain and tons of damage (based on purity)
-	user.cause_pain(BODY_ZONES_ALL, -2 * REM * seconds_per_tick)
+	user.heal_pain(4 * REM * seconds_per_tick)
 	user.adjustBruteLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustFireLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustOxyLoss(-3 * REM * seconds_per_tick, FALSE)
@@ -97,9 +97,8 @@
 
 	// Can cure wounds, too
 	if(SPT_PROB(6, seconds_per_tick))
-		var/list/shuffled_wounds = shuffle(user.all_wounds)
-		for(var/datum/wound/wound as anything in shuffled_wounds)
-			wound.remove_wound()
+		for(var/datum/wound/wound as anything in shuffle(user.all_wounds))
+			qdel(wound)
 			break
 
 	. = ..()
@@ -194,7 +193,7 @@
 	overdose_threshold = 15
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/gojuice = 30) //25-30 units = addiction
+	addiction_types = list(/datum/addiction/gojuice = 30)
 	ph = 5
 	pain_modifier = 0.1
 
@@ -264,7 +263,7 @@
 	color = "#c9ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 60) //5u = ~190 points
+	addiction_types = list(/datum/addiction/psychite = 15)
 	ph = 2.1
 
 /datum/reagent/drug/flake/on_mob_metabolize(mob/living/carbon/user)
@@ -291,7 +290,7 @@
 	color = "#e2e2e2"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 35) //5u = ~90 points
+	addiction_types = list(/datum/addiction/psychite = 30)
 	ph = 2.4
 	pain_modifier = 0.5
 
@@ -330,7 +329,7 @@
 	color = "#f5ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/psychite = 10) //5u = ~30 points
+	addiction_types = list(/datum/addiction/psychite = 100)
 	ph = 6.3
 	pain_modifier = 0.9
 

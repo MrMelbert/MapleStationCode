@@ -41,6 +41,9 @@
 	fill_icon_thresholds = null
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
+	// sound_vary = TRUE
+	// pickup_sound = SFX_POT_PICKUP
+	// drop_sound = SFX_POT_DROP
 
 	/// Max number of ingredients we can add
 	var/max_ingredients = 24
@@ -145,7 +148,7 @@
 		update_appearance(UPDATE_OVERLAYS)
 	return TRUE
 
-/obj/item/reagent_containers/cup/soup_pot/attackby(obj/item/attacking_item, mob/user, params)
+/obj/item/reagent_containers/cup/soup_pot/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

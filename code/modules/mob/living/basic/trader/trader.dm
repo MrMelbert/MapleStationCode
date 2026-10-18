@@ -58,6 +58,9 @@
 	setup_shop.Grant(src)
 	ai_controller.set_blackboard_key(BB_SETUP_SHOP, setup_shop)
 
+/mob/living/basic/trader/init_unconscious_appearance()
+	add_generic_humanoid_static_appearance()
+
 /mob/living/basic/trader/mrbones
 	name = "Mr. Bones"
 	desc = "A skeleton merchant, he seems very humerus."
@@ -77,3 +80,4 @@
 	held_weapon_visual = /obj/item/gun/ballistic/revolver
 
 	trader_data_path = /datum/trader_data/mr_bones
+	initial_blood_type = null

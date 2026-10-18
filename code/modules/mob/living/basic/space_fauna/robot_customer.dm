@@ -20,6 +20,7 @@
 	bodytemp_heat_damage_limit = T0C + 1000
 
 	ai_controller = /datum/ai_controller/robot_customer
+	initial_blood_type = /datum/blood_type/oil
 
 	/// The clothes that we draw on this tourist.
 	var/clothes_set = "amerifat_clothes"
@@ -46,7 +47,7 @@
 	icon = customer_info.base_icon
 	icon_state = customer_info.base_icon_state
 	name = "[pick(customer_info.name_prefixes)]-bot"
-	color = rgb(rand(80,255), rand(80,255), rand(80,255))
+	add_atom_colour(rgb(rand(80,255), rand(80,255), rand(80,255)), FIXED_COLOUR_PRIORITY)
 	clothes_set = pick(customer_info.clothing_sets)
 	update_appearance(UPDATE_ICON)
 
@@ -82,13 +83,8 @@
 		underlays.Cut()
 		underlays += new_underlays
 
-	var/mutable_appearance/features = mutable_appearance(icon, "[icon_state]_features")
-	features.appearance_flags = RESET_COLOR
-	. += features
-
-	var/mutable_appearance/clothes = mutable_appearance(icon, clothes_set)
-	clothes.appearance_flags = RESET_COLOR
-	. += clothes
+	. += mutable_appearance(icon, "[icon_state]_features", appearance_flags = RESET_COLOR|KEEP_APART)
+	. += mutable_appearance(icon, clothes_set, appearance_flags = RESET_COLOR|KEEP_APART)
 
 	var/bonus_overlays = customer_info.get_overlays(src)
 	if(bonus_overlays)

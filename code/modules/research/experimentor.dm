@@ -116,7 +116,7 @@
 	if(in_range(user, src) || isobserver(user))
 		. += span_notice("The status display reads: Malfunction probability reduced by <b>[malfunction_probability_coeff]%</b>.<br>Cooldown interval between experiments at <b>[resetTime*0.1]</b> seconds.")
 
-/obj/machinery/rnd/experimentor/attackby(obj/item/weapon, mob/living/user, params)
+/obj/machinery/rnd/experimentor/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)
 		return ..()
 	if(!is_insertion_ready(user))
@@ -679,7 +679,9 @@
 	)
 	for(var/counter in 1 to rand(1, 25))
 		var/animal_spawn = pick(valid_animals)
-		new animal_spawn(get_turf(src))
+		var/mob/animal = new animal_spawn(get_turf(src))
+		ADD_TRAIT(animal, TRAIT_SPAWNED_MOB, INNATE_TRAIT)
+
 	warn_admins(user, "Mass Mob Spawn")
 	if(prob(60))
 		to_chat(user, span_warning("[src] falls apart!"))

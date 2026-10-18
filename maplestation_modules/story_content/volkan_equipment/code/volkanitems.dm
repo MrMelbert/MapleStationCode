@@ -241,7 +241,7 @@
  * Gives the tractor field component
  */
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield
+/obj/item/organ/cyberimp/chest/tractorfield
 	name = "intricate metal toroid"
 	desc = "A strange toroid shaped mechanism with intricate machined metal shapes interlocked together. Two cables are sticking out from the inside."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/misc_items.dmi'
@@ -249,7 +249,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	slot = ORGAN_SLOT_TRACTOR_FIELD
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
+/obj/item/organ/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
 
 	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
 		owner.AddComponent(/datum/component/tractorfield)
@@ -257,9 +257,9 @@
 		owner.AddComponent(/datum/component/tractorfield/broken) //fleshy beings cannot control it...
 	. = ..()
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
-	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
-		qdel(owner.GetComponent(/datum/component/tractorfield))
+/obj/item/organ/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
+	if (iscyborg(organ_owner) || (organ_owner.mob_biotypes & MOB_ROBOTIC))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield))
 	else
-		qdel(owner.GetComponent(/datum/component/tractorfield/broken))
+		qdel(organ_owner.GetComponent(/datum/component/tractorfield/broken))
 	. = ..()

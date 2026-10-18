@@ -12,7 +12,15 @@
 	trim_state = "trim_scientist"
 	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
 	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_RESEARCH, ACCESS_SCIENCE, ACCESS_TECH_STORAGE)
+	minimal_access = list(
+		ACCESS_AUX_BASE,
+		ACCESS_MAINT_TUNNELS,
+		ACCESS_MECH_SCIENCE,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_RESEARCH,
+		ACCESS_SCIENCE,
+		ACCESS_TECH_STORAGE,
+	)
 
 /datum/id_trim/job/quartermaster
 	trim_state = "trim_quartermaster"

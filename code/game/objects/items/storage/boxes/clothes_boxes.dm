@@ -35,7 +35,7 @@
 	new /obj/item/clothing/head/wizard/tape/fake(src)
 	new /obj/item/clothing/suit/wizrobe/tape/fake(src)
 	new /obj/item/staff/tape(src)
-	new /obj/item/stack/sticky_tape(src)
+	new /obj/item/stack/medical/wrap/sticky_tape(src)
 
 /obj/item/storage/box/fakesyndiesuit
 	name = "boxed space suit and helmet"
@@ -46,11 +46,6 @@
 /obj/item/storage/box/fakesyndiesuit/PopulateContents()
 	new /obj/item/clothing/head/syndicatefake(src)
 	new /obj/item/clothing/suit/syndicatefake(src)
-
-/obj/item/storage/box/syndie_kit/space_dragon/PopulateContents()
-	new /obj/item/dna_probe/carp_scanner(src)
-	new /obj/item/clothing/suit/hooded/carp_costume/spaceproof/old(src)
-	new /obj/item/clothing/mask/gas/carp(src)
 
 /obj/item/storage/box/deputy
 	name = "box of deputy armbands"
@@ -214,3 +209,26 @@
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie/divine_archer(src)
 	new /obj/item/clothing/gloves/divine_archer(src)
 	new /obj/item/clothing/shoes/divine_archer(src)
+
+/obj/item/storage/box/floor_camo
+	name = "floor tile camo box"
+	desc = "Thank you for shopping from Camo-J's, our uniquely designed \
+		floor-tile 'NT scum' styled camouflage fatigues is the ultimate \
+		espionage uniform used by the very best. Providing the best \
+		flexibility, with our latest Camo-tech threads. Perfect for \
+		risky-espionage hallway operations. Enjoy our product!"
+
+/obj/item/storage/box/floor_camo/PopulateContents()
+	new /obj/item/clothing/under/syndicate/floortilecamo(src)
+	new /obj/item/clothing/mask/floortilebalaclava(src)
+	new /obj/item/clothing/gloves/combat/floortile(src)
+	new /obj/item/clothing/shoes/jackboots/floortile(src)
+	new /obj/item/storage/backpack/floortile(src)
+
+/obj/item/storage/box/collar_bomb
+	name = "collar bomb box"
+	desc = "A small print on the back reads 'For research purposes only. Handle with care. In case of emergency, call the following number:'... the rest is scratched out with a marker..."
+
+/obj/item/storage/box/collar_bomb/PopulateContents()
+	var/obj/item/collar_bomb_button/button = new(src)
+	new /obj/item/clothing/neck/collar_bomb(src, button)

@@ -7,28 +7,74 @@
 ///If the structure is only "used" i.e. it checks to see if it's nearby and allows crafting, but doesn't delete it
 #define CRAFTING_STRUCTURE_USE 0
 
+//stack recipe placement check types
+/// Checks if there is an object of the result type in any of the cardinal directions
+#define STACK_CHECK_CARDINALS (1<<0)
+/// Checks if there is an object of the result type within one tile
+#define STACK_CHECK_ADJACENT (1<<1)
+
+//---- Defines for var/crafting_flags
+///If this craft must be learned before it becomes available
+#define CRAFT_MUST_BE_LEARNED (1<<0)
+///Should only one object exist on the same turf?
+#define CRAFT_ONE_PER_TURF (1<<1)
+/// Setting this to true will effectively set check_direction to true.
+#define CRAFT_IS_FULLTILE (1<<2)
+/// If this craft should run the direction check, for use when building things like directional windows where you can have more than one per turf
+#define CRAFT_CHECK_DIRECTION (1<<3)
+/// If the craft requires a floor below
+#define CRAFT_ON_SOLID_GROUND (1<<4)
+/// If the craft checks that there are objects with density in the same turf when being built
+#define CRAFT_CHECK_DENSITY (1<<5)
+/// If the created atom will gain custom mat datums
+#define CRAFT_APPLIES_MATS (1<<6)
+/// Any reagent inputs to the craft will be transferred to the finishing product instead of being deleted
+/// Note this only handles reagents that are SPECIFICALLY ASKED FOR in the component list, not all reagents in all components
+#define CRAFT_TRANSFERS_REAGENT_COMPONENTS (1<<7)
+/// Crafting clears all reagents present in the finished product
+#define CRAFT_CLEARS_REAGENTS (1<<8)
+
 //food/drink crafting defines
-//When adding new defines, please make sure to also add them to the encompassing list
 #define CAT_FOOD "Foods"
-#define CAT_BREAD "Breads"
-#define CAT_BURGER "Burgers"
-#define CAT_CAKE "Cakes"
-#define CAT_EGG "Egg-Based Food"
-#define CAT_LIZARD "Lizard Food"
-#define CAT_MEAT "Meats"
-#define CAT_SEAFOOD "Seafood"
-#define CAT_MARTIAN "Martian Food"
-#define CAT_MISCFOOD "Misc. Food"
-#define CAT_MEXICAN "Mexican Food"
-#define CAT_MOTH "Mothic Food"
-#define CAT_PASTRY "Pastries"
-#define CAT_PIE "Pies"
-#define CAT_PIZZA "Pizzas"
-#define CAT_SALAD "Salads"
-#define CAT_SANDWICH "Sandwiches"
-#define CAT_SOUP "Soups"
-#define CAT_SPAGHETTI "Spaghettis"
-#define CAT_ICE "Frozen"
+	// cuisine categories
+	#define CUISINE_ITALIAN "Italian"
+	#define CUISINE_JAPANESE "Japanese"
+	#define CUISINE_LIZARD "Lizard"
+	#define CUISINE_MARTIAN "Martian"
+	#define CUISINE_MEXICAN "Mexican"
+	#define CUISINE_MOTHIC "Mothic"
+	#define CUISINE_TERRAN "Terran" // catch-all for earth food that we don't have a more specific category for
+	#define CUISINE_STARFRUIT "Starfruit" // NON-MODULE CHANGE
+	// dish categories
+	#define DISH_BREAD "Bread"
+	#define DISH_BURGER "Burger"
+	#define DISH_BURRITO "Burrito" // also includes wraps/enchilada
+	#define DISH_CAKE "Cake"
+	#define DISH_CANDY "Candy"
+	#define DISH_CONDIMENT "Condiment" // catch-all for sauces, dressings, sides, etc
+	#define DISH_COOKIE "Cookie"
+	#define DISH_FROZEN "Frozen" // catch-all for ice cream, popsicles, etc
+	#define DISH_MEAT "Meat" // anything often served on its own as a "meat dish" (like steak), though it may include tofu
+	#define DISH_NOODLES "Noodles"
+	#define DISH_PASTRY "Pastry"
+	#define DISH_PIE "Pie"
+	#define DISH_PIZZA "Pizza"
+	#define DISH_RICE "Rice" // practically anything with rice in it
+	#define DISH_SALAD "Salad" // often includes salad adjacent (ie: coleslaw, stir fry)
+	#define DISH_SANDWICH "Sandwich" // divorced from burger for better filtering. also, yes, includes hotdogs.
+	#define DISH_SOUP "Soup"
+	#define DISH_SUSHI "Sushi"
+	#define DISH_TACO "Taco"
+	#define DISH_UNCATEGORIZED "Uncategorized"
+	// meal categories
+	#define MEAL_APPETIZER "Appetizer"
+	#define MEAL_BREAKFAST "Breakfast"
+	#define MEAL_COMPONENT "Component" // stuff you're not intended to eat
+	#define MEAL_DESSERT "Dessert"
+	#define MEAL_MAIN_COURSE "Main Course"
+	#define MEAL_SNACK "Snack"
+	#define MEAL_UNCATEGORIZED "Uncategorized"
+
 #define CAT_DRINK "Drinks"
 
 //crafting defines

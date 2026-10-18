@@ -11,7 +11,7 @@
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*2)
@@ -141,13 +141,7 @@
 			break
 
 	if(sequence)
-		var/display
-		for(var/i in 0 to length_char(sequence) / DNA_MUTATION_BLOCKS-1)
-			if(i)
-				display += "-"
-			display += copytext_char(sequence, 1 + i*DNA_MUTATION_BLOCKS, DNA_MUTATION_BLOCKS*(1+i) + 1)
-
-		to_chat(user, "[span_boldnotice("[display]")]<br>")
+		to_chat(user, "<span data-component=\"SequenceScannerChatBox\" data-passed_sequence=\"[sequence]\" data-mutation_name=\"[answer]\">[answer]</span><br>")
 
 	ready = FALSE
 	icon_state = "[icon_state]_recharging"

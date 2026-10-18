@@ -249,8 +249,7 @@ a:visited {
 .looc,
 .adminooc,
 .admin,
-.medal,
-.yell {
+.medal {
   font-weight: bold;
 }
 
@@ -422,6 +421,16 @@ em {
 
 .yell {
   font-weight: bold;
+  font-size: 115%;
+}
+.distant_t1 {
+  font-size: 85%;
+}
+.distant_t2 {
+  font-size: 70%;
+}
+.distant_t3 {
+  font-size: 60%;
 }
 
 .alert {
@@ -795,6 +804,14 @@ h2.alert {
   font-size: 60%;
 }
 
+.smaller {
+  font-size: 80%;
+}
+
+.slightly_smaller {
+  font-size: 90%;
+}
+
 .slightly_larger {
   font-size: 115%;
 }
@@ -944,12 +961,13 @@ h2.alert {
 }
 
 .upside_down {
-  display: inline;
-  -moz-transform: scale(-1, -1);
-  -webkit-transform: scale(-1, -1);
-  -o-transform: scale(-1, -1);
-  -ms-transform: scale(-1, -1);
-  transform: scale(-1, -1);
+  transform: rotate(180deg);
+  display: inline-block;
+}
+
+.cyan {
+  color: #95afac;
+  text-shadow: 0 0 6px #95afac;
 }
 
 .connectionClosed,
@@ -992,16 +1010,42 @@ h2.alert {
   margin-left: 3em;
 }
 
-.examine_block {
-  background: hsl(202.5, 44.4%, 96.5%);
-  border: 1px solid hsl(215.5, 39.3%, 11%);
-  margin: 0.5em;
-  padding: 0.5em 0.75em;
-}
-
 .tooltip {
   font-style: italic;
-  border-bottom: 1px dashed #000;
+  border-bottom: 1px dashed;
+}
+
+.fieldset_legend {
+  background: #ffffff; // Chat background color
+
+  &:before {
+    background: #ffffff; // Chat background color
+  }
+}
+
+.boxed_message {
+  background: hsl(220, 100%, 97.5%);
+  border-color: hsla(220, 75%, 25%, 0.5);
+
+  &.red_box {
+    background: hsl(0, 100%, 97.5%);
+    border-color: hsla(0, 100%, 50%, 0.5);
+  }
+
+  &.green_box {
+    background: hsl(140, 100%, 97.5%);
+    border-color: hsl(120, 100%, 33%, 0.5);
+  }
+
+  &.blue_box {
+    background: hsl(220, 100%, 97.5%);
+    border-color: hsla(225, 100%, 50%, 0.5);
+  }
+
+  &.purple_box {
+    background: hsl(260, 100%, 97.5%);
+    border-color: hsla(260, 100%, 50%, 0.5);
+  }
 }
 
 // Provides a horizontal bar with text in the middle
@@ -1010,13 +1054,14 @@ h2.alert {
   display: flex;
   align-items: center;
   text-align: center;
+  --separator-color: hsl(215.5, 39.3%, 11%);
 }
 
 .separator::before,
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid hsl(215.5, 39.3%, 11%);
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .separator:not(:empty)::before {
@@ -1025,6 +1070,10 @@ h2.alert {
 
 .separator:not(:empty)::after {
   margin-left: 0.25em;
+}
+
+.separator.danger {
+  --separator-color: hsl(0, 100%, 50%);
 }
 
 // Used to display images besides text

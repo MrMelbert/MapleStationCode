@@ -41,6 +41,8 @@
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume += BASE_HEAL * seconds_per_tick
 
+	owner.heal_pain(BASE_HEAL * 0.5 * seconds_per_tick)
+
 	if(need_mob_update)
 		owner.updatehealth()
 

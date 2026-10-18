@@ -98,7 +98,7 @@
 	if((buildstage == AIR_ALARM_BUILD_COMPLETE))
 		new /obj/item/stack/cable_coil(loc, 3)
 
-/obj/machinery/airalarm/attackby(obj/item/W, mob/user, params)
+/obj/machinery/airalarm/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	update_last_used(user)
 	switch(buildstage)
 		if(AIR_ALARM_BUILD_COMPLETE)
@@ -160,18 +160,10 @@
 			if(!wires.is_cut(WIRE_AI))
 				aidisabled = FALSE
 
-/obj/machinery/airalarm/proc/shock(mob/user, prb)
-	if((machine_stat & (NOPOWER))) // unpowered, no shock
+/obj/machinery/airalarm/shock(mob/living/shocking, chance, shock_source, siemens_coeff)
+	if(machine_stat & NOPOWER) // unpowered, no shock
 		return FALSE
-	if(!prob(prb))
-		return FALSE //you lucked out, no shock for you
-	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-	s.set_up(5, 1, src)
-	s.start() //sparks always.
-	if (electrocute_mob(user, get_area(src), src, 1, TRUE))
-		return TRUE
-	else
-		return FALSE
+	return ..()
 
 /obj/item/electronics/airalarm
 	name = "air alarm electronics"

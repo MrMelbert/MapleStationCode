@@ -22,7 +22,7 @@ export const _spellbookCustomizationMenu = (props, context) => {
           <Section scrollable>
             {entries.map((element) => (
               <Stack.Item key={element.key}>
-                {element.name + ': '}
+                {`${element.name}: `}
                 {element.interfacetype === 'slider' && (
                   <Slider
                     value={element.current_value}

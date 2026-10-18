@@ -33,7 +33,7 @@
 
 /datum/station_goal/dna_vault/get_report()
 	return list(
-		"<blockquote>Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.",
+		"Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.",
 		"We need you to construct a DNA Vault aboard your station.",
 		"",
 		"The DNA Vault needs to contain samples of:",
@@ -41,7 +41,7 @@
 		"* [plant_count] unique non-standard plant data",
 		"* [human_count] unique sapient humanoid DNA data",
 		"",
-		"Base vault parts are available for shipping via cargo.</blockquote>",
+		"Base vault parts are available for shipping via cargo.",
 	).Join("\n")
 
 
@@ -73,6 +73,7 @@
 	light_range = 3
 	light_power = 1.5
 	light_color = LIGHT_COLOR_CYAN
+	examine_feedback_on_ui = TRUE
 
 	//High defaults so it's not completed automatically if there's no station goal
 	var/animals_max = 100

@@ -1,6 +1,10 @@
 SUBSYSTEM_DEF(mapping)
 	name = "Mapping"
-	init_order = INIT_ORDER_MAPPING
+	dependencies = list(
+		/datum/controller/subsystem/job,
+		/datum/controller/subsystem/processing/station,
+		/datum/controller/subsystem/processing/reagents
+	)
 	runlevels = ALL
 
 	var/list/nuke_tiles = list()
@@ -132,7 +136,7 @@ SUBSYSTEM_DEF(mapping)
 
 	var/start_time
 
-#ifndef LOWMEMORYMODE
+#ifndef SKIP_SPACE_LEVELS
 	start_time = REALTIMEOFDAY
 	SStitle.add_init_text("Empty Space", "> Space", "<font color='yellow'>LOADING...</font>")
 	// Create space ruin levels
@@ -452,7 +456,7 @@ Used by the AI doomsday and the self-destruct nuke.
 		query_round_map_name.Execute()
 		qdel(query_round_map_name)
 
-#ifndef LOWMEMORYMODE
+#ifndef SKIP_LAVALAND
 
 	if(config.minetype == "lavaland")
 		LoadGroup(FailedZs, "Lavaland", "map_files/Mining", "Lavaland.dmm", default_traits = ZTRAITS_LAVALAND)
@@ -487,7 +491,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 /// Generates the global station area list, filling it with typepaths of unique areas found on the station Z.
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
 	for(var/area/station/station_area in GLOB.areas)
-		if (!(station_area.area_flags & UNIQUE_AREA))
+		if (!(station_area.area_flags_mapping & UNIQUE_AREA))
 			continue
 		if (is_station_level(station_area.z))
 			GLOB.the_station_areas += station_area.type
@@ -890,10 +894,9 @@ ADMIN_VERB(load_away_mission, R_FUN, "Load Away Mission", "Load a specific away 
 		GLOB.starlight_objects += starlight_object(offset)
 		GLOB.starlight_overlays += starlight_overlay(offset)
 
-	for(var/datum/gas/gas_type as anything in GLOB.meta_gas_info)
-		var/list/gas_info = GLOB.meta_gas_info[gas_type]
+	for(var/datum/gas/gas_type as anything in GLOB.meta_gas_info[META_GAS_ID])
 		if(initial(gas_type.moles_visible) != null)
-			gas_info[META_GAS_OVERLAY] += generate_gas_overlays(gen_from, new_offset, gas_type)
+			GLOB.meta_gas_info[META_GAS_OVERLAY][gas_type] += generate_gas_overlays(gen_from, new_offset, gas_type)
 
 /datum/controller/subsystem/mapping/proc/create_plane_offsets(gen_from, new_offset)
 	for(var/plane_offset in gen_from to new_offset)

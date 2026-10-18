@@ -10,11 +10,8 @@
 			},
 			"uncommon": {
 				" ": "...huuuhhh...",
-				".": "  *BURP*."
+				".": "... *hic*."
 			}
-		},
-		"string_additions": [
-			"'"
-		]
+		}
 	}
 }

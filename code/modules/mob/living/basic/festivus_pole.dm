@@ -13,6 +13,8 @@
 	gender = NEUTER
 	gold_core_spawnable = HOSTILE_SPAWN
 	basic_mob_flags = DEL_ON_DEATH
+	status_flags = CANPUSH
+	mob_biotypes = MOB_MINERAL
 
 	response_help_continuous = "rubs"
 	response_help_simple = "rub"
@@ -39,6 +41,7 @@
 	death_message = "is hacked into pieces!"
 
 	ai_controller = /datum/ai_controller/basic_controller/festivus_pole
+	initial_blood_type = null
 
 /mob/living/basic/festivus/Initialize(mapload)
 	. = ..()

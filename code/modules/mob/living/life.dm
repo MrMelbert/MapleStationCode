@@ -38,23 +38,18 @@
 		return
 
 	if(!HAS_TRAIT(src, TRAIT_STASIS))
-
 		if(stat != DEAD)
 			//Mutations and radiation
 			handle_mutations(seconds_per_tick, times_fired)
 			//Breathing, if applicable
 			handle_breathing(seconds_per_tick, times_fired)
 
-		handle_diseases(seconds_per_tick, times_fired)// DEAD check is in the proc itself; we want it to spread even if the mob is dead, but to handle its disease-y properties only if you're not.
+		handle_diseases(seconds_per_tick, times_fired) // DEAD check is in the proc itself; we want it to spread even if the mob is dead, but to handle its disease-y properties only if you're not.
 
-		if (QDELETED(src)) // diseases can qdel the mob via transformations
+		if (QDELETED(src)) // Diseases can qdel the mob via transformations
 			return
 
-		if(stat != DEAD)
-			//Random events (vomiting etc)
-			handle_random_events(seconds_per_tick, times_fired)
-
-		//Handle temperature/pressure differences between body and environment
+		// Handle temperature/pressure differences between body and environment
 		var/datum/gas_mixture/environment = loc.return_air()
 		if(environment)
 			handle_environment(environment, seconds_per_tick, times_fired)
@@ -65,7 +60,10 @@
 		handle_gravity(seconds_per_tick, times_fired)
 
 	if(stat != DEAD)
+		if(COOLDOWN_FINISHED(src, smell_cd) && !isnull(mind))
+			smell_something()
 		body_temperature_alerts()
+
 	handle_wounds(seconds_per_tick, times_fired)
 	if(staminaloss)
 		adjustStaminaLoss(-1 * (stat == DEAD ? 100 : 2.5) * seconds_per_tick)
@@ -78,7 +76,7 @@
 		living_flags &= ~QUEUE_NUTRITION_UPDATE
 
 	if(stat != DEAD)
-		return 1
+		return TRUE
 
 /mob/living/proc/handle_breathing(seconds_per_tick, times_fired)
 	SEND_SIGNAL(src, COMSIG_LIVING_HANDLE_BREATHING, seconds_per_tick, times_fired)
@@ -181,9 +179,11 @@
 		if(feels_like > hot_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
 			add_mood_event("hot", /datum/mood_event/overhot)
+			ADD_TRAIT(src, TRAIT_VASODILATED, "extreme_temperature")
 		else if(feels_like > hot_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 			add_mood_event("hot", /datum/mood_event/hot)
+			ADD_TRAIT(src, TRAIT_VASODILATED, "high_temperature")
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
 			add_mood_event("hot", /datum/mood_event/warm)
@@ -199,9 +199,11 @@
 		if(feels_like < cold_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
 			add_mood_event("cold", /datum/mood_event/freezing)
+			ADD_TRAIT(src, TRAIT_VASOCONSTRICTED, "extreme_temperature")
 		else if(feels_like < cold_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 			add_mood_event("cold", /datum/mood_event/cold)
+			ADD_TRAIT(src, TRAIT_VASOCONSTRICTED, "high_temperature")
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
 			add_mood_event("cold", /datum/mood_event/chilly)
@@ -218,6 +220,8 @@
 		clear_mood_event("cold")
 		clear_mood_event("hot")
 		temp_alerts = FALSE
+		REMOVE_TRAITS_IN(src, "extreme_temperature")
+		REMOVE_TRAITS_IN(src, "high_temperature")
 
 /mob/living/silicon/body_temperature_alerts()
 	return // Not yet
@@ -229,9 +233,6 @@
 	return
 
 /mob/living/proc/handle_wounds(seconds_per_tick, times_fired)
-	return
-
-/mob/living/proc/handle_random_events(seconds_per_tick, times_fired)
 	return
 
 /**

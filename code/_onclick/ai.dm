@@ -115,7 +115,9 @@
 	target.AICtrlShiftClick(src)
 
 /mob/living/silicon/ai/ShiftClickOn(atom/target)
-	target.AIShiftClick(src)
+	if(target.AIShiftClick(src))
+		return
+	return ..()
 
 /mob/living/silicon/ai/CtrlClickOn(atom/target)
 	target.AICtrlClick(src)
@@ -154,7 +156,7 @@
 	return
 
 /atom/proc/AIShiftClick(mob/living/silicon/ai/user)
-	return
+	return FALSE
 
 /atom/proc/AICtrlShiftClick(mob/living/silicon/ai/user)
 	return
@@ -179,10 +181,11 @@
 
 /obj/machinery/door/airlock/AIShiftClick(mob/living/silicon/ai/user)  // Opens and closes doors!
 	if(obj_flags & EMAGGED)
-		return
+		return FALSE
 
 	user_toggle_open(user)
 	add_hiddenprint(user)
+	return TRUE
 
 /obj/machinery/door/airlock/AICtrlShiftClick(mob/living/silicon/ai/user)  // Sets/Unsets Emergency Access Override
 	if(obj_flags & EMAGGED)
@@ -205,10 +208,10 @@
 /// Toggle APC environment settings (atmos)
 /obj/machinery/power/apc/AICtrlShiftClick(mob/living/silicon/ai/user)
 	if(!can_use(user, loud = TRUE))
-		return
+		return FALSE
 
 	if(!is_operational || failure_timer)
-		return
+		return FALSE
 
 	environ = environ ? APC_CHANNEL_OFF : APC_CHANNEL_ON
 	if (user)
@@ -218,6 +221,7 @@
 		user.log_message("[enabled_or_disabled] the [src] environment settings", LOG_GAME)
 	update_appearance()
 	update()
+	return TRUE
 
 /// Toggle APC lighting settings
 /obj/machinery/power/apc/AIShiftClick(mob/living/silicon/ai/user)

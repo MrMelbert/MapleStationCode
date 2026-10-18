@@ -32,6 +32,9 @@
 				/obj/item/clothing/head/chaplain/taqiyah/red = 3,
 				/obj/item/clothing/head/hats/tophat = 3,
 				/obj/item/clothing/head/fedora = 3,
+				/obj/item/clothing/head/fedora/white = 3,
+				/obj/item/clothing/head/fedora/beige = 3,
+				/obj/item/clothing/head/fedora/greyscale = 3,
 				/obj/item/clothing/head/hats/bowler = 3,
 				/obj/item/clothing/head/cowboy/white = 1,
 				/obj/item/clothing/head/cowboy/grey = 1,
@@ -49,12 +52,13 @@
 				/obj/item/clothing/accessory/waistcoat = 4,
 				/obj/item/clothing/suit/toggle/suspenders = 4,
 				/obj/item/clothing/neck/tie/horrible = 3,
-				/obj/item/clothing/glasses/regular = 2,
-				/obj/item/clothing/glasses/regular/jamjar = 1,
-				/obj/item/clothing/glasses/orange = 1,
-				/obj/item/clothing/glasses/red = 1,
-				/obj/item/clothing/glasses/monocle = 1,
-				/obj/item/clothing/gloves/fingerless = 2,
+				/obj/item/clothing/neck/robe_cape = 3,
+				/obj/item/clothing/glasses/regular = 3,
+				/obj/item/clothing/glasses/regular/jamjar = 3,
+				/obj/item/clothing/glasses/orange = 3,
+				/obj/item/clothing/glasses/red = 3,
+				/obj/item/clothing/glasses/monocle = 3,
+				/obj/item/clothing/gloves/fingerless = 3,
 				/obj/item/storage/belt/fannypack = 3,
 				/obj/item/storage/belt/fannypack/blue = 3,
 				/obj/item/storage/belt/fannypack/red = 3,
@@ -82,7 +86,7 @@
 				/obj/item/clothing/under/costume/kilt = 1,
 				/obj/item/clothing/under/dress/striped = 1,
 				/obj/item/clothing/under/dress/sailor = 1,
-				/obj/item/clothing/under/dress/redeveninggown = 1,
+				/obj/item/clothing/under/dress/eveninggown = 1,
 				/obj/item/clothing/under/misc/pj/blue = 2,
 				/obj/item/clothing/under/misc/pj/red = 2,
 			),
@@ -93,6 +97,8 @@
 			"icon" = "vest",
 			"products" = list(
 				/obj/item/clothing/suit/toggle/jacket/sweater = 4,
+				/obj/item/clothing/suit/jacket/blazer = 4,
+				/obj/item/clothing/suit/toggle/jacket/trenchcoat = 4,
 				/obj/item/clothing/suit/jacket/oversized = 4,
 				/obj/item/clothing/suit/jacket/fancy = 4,
 				/obj/item/clothing/suit/toggle/lawyer/greyscale = 4,
@@ -219,6 +225,7 @@
 	payment_department = NO_FREEBIES
 	light_mask = "wardrobe-light-mask"
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
+	allow_custom = TRUE
 
 /obj/item/vending_refill/clothing
 	machine_name = "ClothesMate"

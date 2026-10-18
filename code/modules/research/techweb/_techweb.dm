@@ -317,14 +317,11 @@
 	var/points_rewarded
 	if(completed_experiment.points_reward)
 		add_point_list(completed_experiment.points_reward)
-		points_rewarded = ",[refund > 0 ? " and" : ""] rewarding "
-		var/list/english_list_keys = list()
-		for(var/points_type in completed_experiment.points_reward)
-			english_list_keys += "[completed_experiment.points_reward[points_type]] [points_type]"
-		points_rewarded += "[english_list(english_list_keys)] points"
+		points_rewarded = ",[refund > 0 ? " and" : ""] rewarding [completed_experiment.get_points_reward_text()]"
 		result_text += points_rewarded
 	result_text += "!"
 
+	SEND_SIGNAL(src, COMSIG_TECHWEB_EXPERIMENT_COMPLETED, completed_experiment)
 	log_research("[completed_experiment.name] ([completed_experiment.type]) has been completed on techweb [id]/[organization][refund ? ", refunding [refund] points" : ""][points_rewarded].")
 	return result_text
 
@@ -569,3 +566,10 @@
 			handler.announce_message_to_all(announcetext)
 
 	return TRUE
+
+/// Returns a flat list of all design datums this techweb has researched.
+/datum/techweb/proc/get_researched_design_datums()
+	var/list/designs = list()
+	for(var/id in researched_designs)
+		designs += SSresearch.techweb_design_by_id(id)
+	return designs

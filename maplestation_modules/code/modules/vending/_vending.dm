@@ -7,6 +7,8 @@
 
 /// -- Extension of /obj/machinery/vending to add products, contraband, and premium items to vendors. --
 /obj/machinery/vending
+	/// Window theme to use
+	var/theme
 	/// Assoc lazylist of products you want to add or remove.
 	var/list/added_products
 	/// Assoc lazylist of contraband you want to add or remove.
@@ -49,6 +51,10 @@
 		combine_categories()
 
 	return ..()
+
+/obj/machinery/vending/ui_static_data(mob/user)
+	. = ..()
+	.["theme"] = theme
 
 /// Combines the added_categories list and the product_categories list
 /obj/machinery/vending/proc/combine_categories()

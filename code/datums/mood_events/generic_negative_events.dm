@@ -10,10 +10,12 @@
 /datum/mood_event/on_fire
 	description = "I'M ON FIRE!!!"
 	mood_change = -12
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/suffocation
 	description = "CAN'T... BREATHE..."
 	mood_change = -12
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/burnt_thumb
 	description = "I shouldn't play with lighters..."
@@ -23,36 +25,55 @@
 /datum/mood_event/chilly
 	description = "I'm feeling a bit chilly."
 	mood_change = -2
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/cold
 	description = "It's way too cold."
 	mood_change = -3
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/freezing
 	description = "It's freezing cold!"
 	mood_change = -6
+	screentext_color = COLOR_CYAN
+	screentext_id = "temperature"
 
 /datum/mood_event/warm
 	description = "I'm feeling a bit warm."
 	mood_change = -2
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/hot
 	description = "It's way too hot."
 	mood_change = -3
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/overhot
 	description = "It's scorching hot!"
 	mood_change = -6
+	screentext_color = COLOR_ORANGE
+	screentext_id = "temperature"
 
 /datum/mood_event/creampie
 	description = "I've been creamed. Tastes like pie flavor."
 	mood_change = -2
+	timeout = 3 MINUTES
+	event_flags = MOOD_EVENT_WHIMSY // if whimsical, no penalty
+
+/datum/mood_event/inked
+	description = "I've been splashed with squid ink. Tastes like salt."
+	mood_change = -3
 	timeout = 3 MINUTES
 
 /datum/mood_event/slipped
 	description = "I slipped. I should be more careful next time..."
 	mood_change = -2
 	timeout = 3 MINUTES
+	event_flags = MOOD_EVENT_WHIMSY // if whimsical, no penalty
 
 /datum/mood_event/eye_stab
 	description = "I used to be an adventurer like you, until I took a screwdriver to the eye."
@@ -74,15 +95,27 @@
 	mood_change = -10
 	timeout = 2 MINUTES
 
+/datum/mood_event/depression_minimal/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_mild)
+	return BLOCK_NEW_MOOD
+
 /datum/mood_event/depression_mild
 	description = "I feel sad for no particular reason."
 	mood_change = -12
 	timeout = 2 MINUTES
 
+/datum/mood_event/depression_mild/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_moderate)
+	return BLOCK_NEW_MOOD
+
 /datum/mood_event/depression_moderate
 	description = "I feel miserable."
 	mood_change = -14
 	timeout = 2 MINUTES
+
+/datum/mood_event/depression_moderate/be_replaced(datum/mood/home, datum/mood_event/new_event, ...)
+	home.add_mood_event(new_event.category, /datum/mood_event/depression_severe)
+	return BLOCK_NEW_MOOD
 
 /datum/mood_event/depression_severe
 	description = "I've lost all hope."
@@ -107,6 +140,7 @@
 	description = "Ouch! My limb feels like I fell asleep on it."
 	mood_change = -3
 	timeout = 2 MINUTES
+	event_flags = MOOD_EVENT_PAIN
 
 /datum/mood_event/reattachment/add_effects(obj/item/bodypart/limb)
 	if(limb)
@@ -126,17 +160,11 @@
 	mood_change = -2
 	timeout = 2 MINUTES
 
-/datum/mood_event/table/add_effects()
-	if(isfelinid(owner)) //Holy snowflake batman!
-		var/mob/living/carbon/human/feline = owner
-		feline.wag_tail(3 SECONDS)
-		description = "They want to play on the table!"
-		mood_change = 2
-
 /datum/mood_event/table_limbsmash
 	description = "That fucking table, man that hurts..."
 	mood_change = -3
 	timeout = 3 MINUTES
+	event_flags = MOOD_EVENT_PAIN
 
 /datum/mood_event/table_limbsmash/add_effects(obj/item/bodypart/banged_limb)
 	if(banged_limb)
@@ -161,15 +189,18 @@
 /datum/mood_event/photophobia
 	description = "The lights are too bright..."
 	mood_change = -3
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/nyctophobia
 	description = "It sure is dark around here..."
 	mood_change = -3
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/claustrophobia
 	description = "Why do I feel trapped?!  Let me out!!!"
 	mood_change = -7
 	timeout = 1 MINUTES
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/bright_light
 	description = "I hate it in the light...I need to find a darker place..."
@@ -190,30 +221,74 @@
 /datum/mood_event/jittery
 	description = "I'm nervous and on edge and I can't stand still!!"
 	mood_change = -2
+	screentext_cooldown = 2 MINUTES
+
+/datum/mood_event/jittery/add_effects(...)
+	if(HAS_PERSONALITY(owner, /datum/personality/paranoid))
+		mood_change -= 1
 
 /datum/mood_event/choke
 	description = "I CAN'T BREATHE!!!"
 	mood_change = -10
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/vomit
-	description = "I just threw up. Gross."
+	description = "I just threw up. Gross..."
 	mood_change = -2
 	timeout = 2 MINUTES
+	/// Replaces the description with this + taste of blood if it was blood vomid
+	var/bloody_description = "I just threw up..."
+	/// Was it vomitting blood
+	var/was_bloody = FALSE
 
-/datum/mood_event/vomitself
-	description = "I just threw up all over myself. This is disgusting."
+/datum/mood_event/vomit/add_effects(blood = FALSE)
+	was_bloody = blood
+
+	var/datum/blood_type/owner_blood = owner.blood_type
+	if(!was_bloody || isnull(owner_blood))
+		return // probably shouldn't happen but who knows
+
+	description = "[bloody_description] Why do I taste [owner_blood.reagent_type::taste_description]..?"
+	mood_change *= 2
+	timeout *= 1.5
+
+/datum/mood_event/vomit/be_refreshed(datum/mood/home, blood = FALSE)
+	if(!was_bloody && blood)
+		return ALLOW_NEW_MOOD // re-apply with new description
+	return ..() // normal refresh
+
+/datum/mood_event/vomit/self
+	description = "I just threw up all over myself. This is disgusting..."
+	bloody_description = "I just threw up all over myself..."
 	mood_change = -4
 	timeout = 3 MINUTES
 
+/datum/mood_event/vomit/self/be_replaced(datum/mood/home, datum/mood_event/new_event, blood)
+	return be_refreshed(home, blood) // vomit self won't be replaced with vomit other, just refreshed
+
 /datum/mood_event/painful_medicine
 	description = "Medicine may be good for me but right now it stings like hell."
-	mood_change = -5
+	mood_change = -3
 	timeout = 60 SECONDS
+	event_flags = MOOD_EVENT_PAIN
+
+// /datum/mood_event/startled
+// 	description = "Hearing that word made me think about something scary."
+// 	mood_change = -1
+// 	timeout = 1 MINUTES
+// 	event_flags = MOOD_EVENT_FEAR
+
+// /datum/mood_event/phobia
+// 	description = "I saw something very frightening!"
+// 	mood_change = -4
+// 	timeout = 4 MINUTES
+// 	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/spooked
 	description = "The rattling of those bones... It still haunts me."
 	mood_change = -4
 	timeout = 4 MINUTES
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/loud_gong
 	description = "That loud gong noise really hurt my ears!"
@@ -246,6 +321,7 @@
 /datum/mood_event/back_pain
 	description = "Bags never sit right on my back, this hurts like hell!"
 	mood_change = -15
+	event_flags = MOOD_EVENT_PAIN
 
 /datum/mood_event/sad_empath
 	description = "Someone seems upset..."
@@ -259,11 +335,18 @@
 	description = "Those darn savages!"
 	mood_change = -5
 	timeout = 2 MINUTES
+	event_flags = MOOD_EVENT_SPIRITUAL
 
 /datum/mood_event/artbad
 	description = "I've produced better art than that from my ass."
 	mood_change = -2
 	timeout = 2 MINUTES
+	event_flags = MOOD_EVENT_ART
+
+/datum/mood_event/artbad/add_effects()
+	if(HAS_PERSONALITY(owner, /datum/personality/creative))
+		mood_change = 0
+		description = "Everyone has to start their art journey somewhere!"
 
 /datum/mood_event/graverobbing
 	description = "I just desecrated someone's grave... I can't believe I did that..."
@@ -277,6 +360,7 @@
 /datum/mood_event/gunpoint
 	description = "This guy is insane! I better be careful..."
 	mood_change = -10
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/tripped
 	description = "I can't believe I fell for the oldest trick in the book!"
@@ -292,6 +376,7 @@
 	description = "I HAD A GLIMPSE OF THE HORROR BEYOND THIS WORLD. REALITY UNCOILED BEFORE MY EYES!"
 	mood_change = -25
 	timeout = 4 MINUTES
+	event_flags = MOOD_EVENT_FEAR
 
 /datum/mood_event/high_five_alone
 	description = "I tried getting a high-five with no one around, how embarassing!"
@@ -324,10 +409,22 @@
 	mood_change *= people_laughing_at_you
 	return ..()
 
-//These are unused so far but I want to remember them to use them later
-/datum/mood_event/surgery
-	description = "THEY'RE CUTTING ME OPEN!!"
-	mood_change = -8
+// //These are unused so far but I want to remember them to use them later
+// /datum/mood_event/surgery
+// 	description = "THEY'RE CUTTING ME OPEN!!"
+// 	mood_change = -8
+// 	event_flags = MOOD_EVENT_FEAR
+// 	var/surgery_completed = FALSE
+
+// /datum/mood_event/surgery/success
+// 	description = "That surgery really hurt... Glad it worked, I guess..."
+// 	timeout = 3 MINUTES
+// 	surgery_completed = TRUE
+
+// /datum/mood_event/surgery/failure
+// 	description = "AHHHHHGH! THEY FILLETED ME ALIVE!"
+// 	timeout = 10 MINUTES
+// 	surgery_completed = TRUE
 
 /datum/mood_event/bald
 	description = "I need something to cover my head..."
@@ -415,21 +512,35 @@
 /datum/mood_event/gamer_withdrawal
 	description = "I wish I was gaming right now..."
 	mood_change = -5
+	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/gamer_lost
 	description = "If I'm not good at video games, can I truly call myself a gamer?"
-	mood_change = -10
+	mood_change = -6
 	timeout = 10 MINUTES
+	event_flags = MOOD_EVENT_GAMING
 
 /datum/mood_event/lost_52_card_pickup
 	description = "This is really embarrassing! I'm ashamed to pick up all these cards off the floor..."
 	mood_change = -3
 	timeout = 3 MINUTES
+	event_flags = MOOD_EVENT_WHIMSY | MOOD_EVENT_GAMING
+
+/datum/mood_event/russian_roulette_lose_cheater
+	description = "I gambled and lost! Good thing I wasn't aiming for my head..."
+	mood_change = -10
+	timeout = 10 MINUTES
 
 /datum/mood_event/russian_roulette_lose
 	description = "I gambled my life and lost! I guess this is the end..."
 	mood_change = -20
 	timeout = 10 MINUTES
+
+/datum/mood_event/russian_roulette_lose/add_effects()
+	if(HAS_PERSONALITY(owner, /datum/personality/gambler))
+		mood_change *= 0.5
+		description = "I gambled my life and lost! Truth is, the game was rigged from the start..."
+		return
 
 /datum/mood_event/bad_touch_bear_hug
 	description = "I just got squeezed way too hard."
@@ -460,11 +571,22 @@
 	description = "THE MOON JUDGES AND FINDS ME WANTING!!!"
 	mood_change = -3
 	timeout = 5 MINUTES
+	event_flags = MOOD_EVENT_FEAR
 
-/datum/mood_event/amulette_insanity
-	description = "I sEe THe LiGHt, It mUsT BE stOPPed"
+/datum/mood_event/moon_insanity/add_effects()
+	if(HAS_PERSONALITY(owner, /datum/personality/spiritual))
+		mood_change *= 2
+
+/datum/mood_event/amulet_insanity
+	description = "I sEe THe LiGHt, It mUsT BE stOPPed!"
 	mood_change = -6
 	timeout = 5 MINUTES
+	event_flags = MOOD_EVENT_FEAR
+
+/datum/mood_event/mallet_humiliation
+	description = "Getting hit by such a stupid weapon feels rather humiliating..."
+	mood_change = -3
+	timeout = 10 SECONDS
 
 ///Wizard cheesy grand finale - what everyone but the wizard gets
 /datum/mood_event/madness_despair
@@ -476,8 +598,139 @@
 	description = "I didn't sleep at all last night. I'm exhausted."
 	mood_change = -5
 
+//Used by the Veteran Advisor trait job
+/datum/mood_event/desentized
+	description = "Nothing will ever rival with what I seen in the past..."
+	mood_change = -3
+	special_screen_obj = "mood_desentized"
+
 //Used for the psychotic brawling martial art, if the person is a pacifist.
 /datum/mood_event/pacifism_bypassed
 	description = "I DIDN'T MEAN TO HURT THEM!"
 	mood_change = -20
 	timeout = 10 MINUTES
+
+//Gained when you're hit over the head with wrapping paper or cardboard roll
+/datum/mood_event/bapped
+	description = "Ow.. my head, I feel a bit foolish now!"
+	mood_change = -1
+	timeout = 3 MINUTES
+
+/datum/mood_event/bapped/add_effects()
+	// Felinids apparently hate being hit over the head with cardboard
+	if(isfelinid(owner))
+		mood_change = -2
+
+/datum/mood_event/encountered_evil
+	description = "I didn't want to believe it, but there are people out there that are genuinely evil."
+	mood_change = -1
+	timeout = 1 MINUTES
+
+/datum/mood_event/smoke_in_face
+	description = "They just blew disgusting smoke in my face!"
+	mood_change = -3
+	timeout = 30 SECONDS
+
+/datum/mood_event/smoke_in_face/add_effects(param)
+	if(!owner.can_smell())
+		description = "They just blew some unpleasant smoke in my face."
+		mood_change = -1
+	if(HAS_TRAIT(owner, TRAIT_SMOKER))
+		description = "Blowing smoke in my face, really?"
+		mood_change = 0
+
+/datum/mood_event/slots/loss
+	description = "Aww dang it!"
+	mood_change = -2
+	timeout = 5 MINUTES
+	event_flags = MOOD_EVENT_GAMING
+
+/datum/mood_event/slots/loss/add_effects()
+	if(HAS_PERSONALITY(owner, /datum/personality/gambler))
+		mood_change = 0
+		description = "Aww dang it."
+	if(HAS_PERSONALITY(owner, /datum/personality/industrious) || HAS_PERSONALITY(owner, /datum/personality/slacking/diligent))
+		mood_change *= 1.5
+
+/datum/mood_event/lost_control_of_life
+	description = "I've lost control of my life."
+	mood_change = -5
+	timeout = 5 MINUTES
+
+/datum/mood_event/empathetic_sad
+	description = "Seeing sad people makes me sad."
+	mood_change = -2
+	timeout = 3 MINUTES
+
+/datum/mood_event/misanthropic_sad
+	description = "Seeing happy people makes me uneasy."
+	mood_change = -2
+	timeout = 3 MINUTES
+
+/datum/mood_event/paranoid/one_on_one
+	description = "I'm alone with someone - what if they want to kill me?"
+	mood_change = -3
+	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
+
+/datum/mood_event/paranoid/large_group
+	description = "There are so many people around - any one of them could be out to get me!"
+	mood_change = -3
+	event_flags = MOOD_EVENT_FEAR
+	screentext_cooldown = 3 MINUTES
+
+/datum/mood_event/nt_disillusioned
+	description = "I hate the company, and everything it stands for."
+	mood_change = -2
+
+/datum/mood_event/disillusioned_revs_lost
+	description = "The revolution was defeated... greaaaat."
+	mood_change = -2
+	timeout = 10 MINUTES
+
+/datum/mood_event/loyalist_revs_win
+	description = "The revolution was a success... This will hurt quarterly profits."
+	mood_change = -2
+	timeout = 10 MINUTES
+
+/datum/mood_event/slacking_off_diligent
+	description = "I should get back to work."
+	mood_change = -1
+	screentext_cooldown = 10 MINUTES
+
+/datum/mood_event/unimaginative_patronage
+	description = "That felt like a waste of money."
+	mood_change = -2
+	timeout = 5 MINUTES
+
+/datum/mood_event/unimaginative_framing
+	description = "I could've hung something more useful there."
+	mood_change = -2
+	timeout = 5 MINUTES
+
+/datum/mood_event/unimaginative_sculpting
+	description = "That felt like a waste of materials."
+	mood_change = -2
+	timeout = 5 MINUTES
+
+/datum/mood_event/splattered_with_blood
+	description = "Eugh, I just got coated in blood!"
+	mood_change = -4
+	timeout = 4 MINUTES
+	screentext_cooldown = 1 MINUTES
+
+/datum/mood_event/splattered_with_blood/can_effect_mob(datum/mood/home, mob/living/who, ...)
+	if(isvampire(who))
+		return FALSE
+
+	return ..()
+
+/datum/mood_event/splattered_with_blood/add_effects(...)
+	if(HAS_TRAIT(owner, TRAIT_CULT_HALO))
+		mood_change = 2
+		description = "Blood, blood! The Geometer will be pleased."
+		return
+	if(HAS_TRAIT(owner, TRAIT_MORBID))
+		mood_change = 0
+		description = "I just got coated in blood. Fascinating!"
+		return

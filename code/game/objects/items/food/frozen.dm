@@ -24,7 +24,7 @@
 		/datum/reagent/consumable/ice = 4,
 	)
 	tastes = list("ice cream" = 2, "berry" = 2)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -41,7 +41,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 	)
 	tastes = list("blue cherries" = 2, "ice cream" = 2)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/spacefreezy/make_edible()
@@ -60,7 +60,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("ice cream" = 1, "banana" = 1)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/sundae/make_edible()
@@ -79,7 +79,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("ice cream" = 1, "banana" = 1, "a bad joke" = 1)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/honkdae/make_edible()
@@ -106,6 +106,17 @@
 	crafting_complexity = FOOD_COMPLEXITY_2
 	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
+
+/obj/item/food/snowcones/CheckParts(list/parts_list, datum/crafting_recipe/current_recipe)
+	. = ..()
+	if(isnull(current_recipe))
+		return
+	// replaces the ice from the input with water
+	reagents.remove_reagent(/datum/reagent/consumable/ice, 15)
+	reagents.add_reagent(/datum/reagent/water, 11)
+	// then add 1u nutriment for free
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, 1)
+	// the juice component will be transferred in from crafting
 
 /obj/item/food/snowcones/lime
 	name = "lime snowcone"
@@ -165,7 +176,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "orange" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/blue
 	name = "bluecherry snowcone"
@@ -215,7 +226,7 @@
 		/datum/reagent/water = 11,
 	)
 	tastes = list("ice" = 1, "water" = 1, "oranges" = 5, "limes" = 5, "lemons" = 5, "citrus" = 5, "salad" = 5)
-	foodtypes = FRUIT | ORANGES
+	foodtypes = FRUIT
 
 /obj/item/food/snowcones/pineapple
 	name = "pineapple snowcone"
@@ -266,7 +277,7 @@
 	foodtypes = SUGAR
 
 /obj/item/food/snowcones/spacemountainwind
-	name = "Space Mountain Wind snowcone"
+	name = "space mountain wind snowcone"
 	desc = "Space Mountain Wind drizzled over a snowball in a paper cup."
 	icon_state = "mountainwind_sc"
 	food_reagents = list(
@@ -401,7 +412,7 @@
 	if(!do_after(user, 3 SECONDS, interacting_with))
 		return ITEM_INTERACT_BLOCKING
 
-	var/obj/item/organ/internal/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/their_tongue = inspected.get_organ_slot(ORGAN_SLOT_TONGUE)
 	var/report = ""
 	if(isnull(their_tongue))
 		report = "[inspected.p_They()] don't have a tongue to depress"
@@ -456,7 +467,7 @@
 		/datum/reagent/consumable/vanilla = 2,
 		/datum/reagent/consumable/sugar = 4,
 	)
-	foodtypes = FRUIT | DAIRY | SUGAR | ORANGES
+	foodtypes = FRUIT | DAIRY | SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/popsicle/creamsicle_berry
@@ -485,7 +496,7 @@
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/popsicle/licorice_creamsicle
-	name = "Void Bar™"
+	name = "\improper Void Bar™"
 	desc = "A salty licorice ice cream. A salty frozen treat."
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 4,
@@ -512,12 +523,12 @@
 		/datum/reagent/consumable/sugar = 2,
 	)
 	tastes = list("chopped hazelnuts", "waffle")
-	foodtypes = DAIRY | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/popsicle/meatsicle
-	name = "Meatsicle"
+	name = "meatsicle"
 	desc = "A horrific abomination of raw meat, glazed with sugar on a stick, then frozen."
 	food_reagents = list(
 		/datum/reagent/consumable/nutriment = 4,

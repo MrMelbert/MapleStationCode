@@ -22,7 +22,7 @@
 	. += ..()
 	. += span_notice("The reinforcement bolts are [EXAMINE_HINT("wrenched")] firmly in place. Use a [EXAMINE_HINT("wrench")] to remove the plate.")
 
-/turf/open/floor/tram/attackby(obj/item/object, mob/living/user, params)
+/turf/open/floor/tram/attackby(obj/item/object, mob/living/user, list/modifiers)
 	. = ..()
 	if(istype(object, /obj/item/stack/thermoplastic))
 		build_with_transport_tiles(object, user)
@@ -34,7 +34,7 @@
 		return ..()
 	return //unplateable
 
-/turf/open/floor/tram/try_replace_tile(obj/item/stack/tile/replacement_tile, mob/user, params)
+/turf/open/floor/tram/try_replace_tile(obj/item/stack/tile/replacement_tile, mob/user, list/modifiers)
 	return
 
 /turf/open/floor/tram/crowbar_act(mob/living/user, obj/item/item)
@@ -55,7 +55,7 @@
 	if(target == src)
 		ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 		return TRUE
-	if(severity < EXPLODE_DEVASTATE && is_shielded())
+	if(is_explosion_shielded(severity))
 		return FALSE
 
 	switch(severity)
@@ -126,7 +126,7 @@
 /turf/open/floor/tram/plate/energized/burnt_states()
 	return list("energized_plate_damaged")
 
-/turf/open/floor/tram/plate/energized/attackby(obj/item/attacking_item, mob/living/user, params)
+/turf/open/floor/tram/plate/energized/attackby(obj/item/attacking_item, mob/living/user, list/modifiers)
 	if((broken || burnt) && istype(attacking_item, /obj/item/stack/sheet/mineral/titanium))
 		if(attacking_item.use(1))
 			broken = FALSE
@@ -149,7 +149,7 @@
 	clawfootstep = FOOTSTEP_HARD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/open/indestructible/tram/attackby(obj/item/object, mob/living/user, params)
+/turf/open/indestructible/tram/attackby(obj/item/object, mob/living/user, list/modifiers)
 	. = ..()
 	if(istype(object, /obj/item/stack/thermoplastic))
 		build_with_transport_tiles(object, user)
@@ -255,7 +255,7 @@
 		span_notice("You wedge \the [tool] into the tram panel's gap in the frame and start prying..."))
 		if(tool.use_tool(src, user, 1 SECONDS, volume = 50))
 			to_chat(user, span_notice("The panel pops out of the frame."))
-			var/obj/item/stack/thermoplastic/pulled_tile = new()
+			var/obj/item/stack/thermoplastic/pulled_tile = new floor_tile()
 			pulled_tile.update_integrity(atom_integrity)
 			user.put_in_hands(pulled_tile)
 			qdel(src)
@@ -283,8 +283,8 @@
 	icon = 'icons/obj/tiles.dmi'
 	lefthand_file = 'icons/mob/inhands/items/tiles_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/tiles_righthand.dmi'
-	icon_state = "tile_textured_white_large"
-	inhand_icon_state = "tile-neon-glow"
+	icon_state = "tile_tram_dark"
+	inhand_icon_state = "tile-tram"
 	color = COLOR_TRAM_BLUE
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 1
@@ -297,7 +297,9 @@
 	var/tile_type = /obj/structure/thermoplastic
 
 /obj/item/stack/thermoplastic/light
+	icon_state = "tile_tram_light"
 	color = COLOR_TRAM_LIGHT_BLUE
+	merge_type = /obj/item/stack/thermoplastic/light
 	tile_type = /obj/structure/thermoplastic/light
 
 /obj/item/stack/thermoplastic/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)

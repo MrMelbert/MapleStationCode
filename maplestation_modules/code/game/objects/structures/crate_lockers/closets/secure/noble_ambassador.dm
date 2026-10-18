@@ -1,5 +1,6 @@
 /obj/structure/closet/secure_closet/noble_ambassador
-	name = "\proper noble ambassador's locker"
+	name = "noble ambassador's locker"
+	article = "the"
 	desc = "It's a card-locked storage unit. You sure wish it had less spartan decorations."
 	req_access = list(ACCESS_COMMAND)
 	icon = 'maplestation_modules/icons/obj/locker.dmi'

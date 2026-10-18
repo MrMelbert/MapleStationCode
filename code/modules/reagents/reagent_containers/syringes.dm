@@ -24,7 +24,7 @@
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
-/obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
+/obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	return
 
 /obj/item/reagent_containers/syringe/proc/try_syringe(atom/target, mob/user)
@@ -323,7 +323,7 @@
 	list_reagents = list(/datum/reagent/drug/bath_salts = 15)
 
 /obj/item/reagent_containers/syringe/contraband/fentanyl
-	list_reagents = list(/datum/reagent/toxin/fentanyl = 15)
+	list_reagents = list(/datum/reagent/medicine/painkiller/fentanyl = 15)
 
 /obj/item/reagent_containers/syringe/contraband/morphine
 	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 15) // NON-MODULE CHANGE

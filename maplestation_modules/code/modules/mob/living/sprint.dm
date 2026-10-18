@@ -1,11 +1,6 @@
 /atom/movable/screen/mov_intent
 	name = "run/walk/sneak cycle"
 	desc = "Cycles between move intents. Right click to cycle backwards."
-	maptext_width = 64
-	maptext_x = -15
-	maptext_y = 20
-	/// Style applied to the maptext used on the selector
-	var/maptext_style = "text-align:center; -dm-text-outline: 1px black"
 	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
 
@@ -56,12 +51,16 @@
 	var/sprint_regen_per_second = 0.75
 
 /mob/living/carbon/human/toggle_move_intent()
+	var/old_intent = move_intent
 	. = ..()
-	play_movespeed_sound()
+	if(old_intent != move_intent)
+		play_movespeed_sound()
 
 /mob/living/carbon/human/set_move_intent(new_intent)
+	var/old_intent = move_intent
 	. = ..()
-	play_movespeed_sound()
+	if(old_intent != move_intent)
+		play_movespeed_sound()
 
 /mob/living/carbon/human/proc/play_movespeed_sound()
 	if(!client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
@@ -93,19 +92,24 @@
 	for(var/atom/movable/screen/mov_intent/selector in hud_used?.static_inventory)
 		selector.update_appearance(UPDATE_OVERLAYS)
 
-/mob/living/carbon/proc/drain_sprint()
+/mob/living/carbon/proc/drain_sprint(sprint_amt = 1)
 	return
 
-/mob/living/carbon/human/drain_sprint()
-	var/sprint_amt = 1 + floor(length(buckled_mobs) * 0.66)
+/mob/living/carbon/human/drain_sprint(sprint_amt = 1)
+	sprint_amt = abs(sprint_amt * get_skill_modifier(/datum/skill/athletics, SKILL_VALUE_MODIFIER))
 	adjust_sprint_left(-1 * sprint_amt)
+	if((movement_type & FLOATING) || !(mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)))
+		set_move_intent(MOVE_INTENT_WALK)
+		to_chat(src, span_warning("You can't run right now!"))
+		return
+
 	// Sprinting when out of sprint will cost stamina
 	if(sprint_length > 0)
 		return
 
 	// Okay we're tired now
 	if(getStaminaLoss() >= maxHealth * 0.66)
-		to_chat(src, span_warning("You're too tired to keep sprinting!"))
+		to_chat(src, span_warning("You're too tired to keep running!"))
 		set_move_intent(MOVE_INTENT_WALK)
 		return
 

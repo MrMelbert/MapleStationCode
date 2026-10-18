@@ -193,7 +193,7 @@
 	return TRUE
 
 
-/obj/machinery/syndicatebomb/attackby(obj/item/I, mob/user, params)
+/obj/machinery/syndicatebomb/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 
 	if(is_wire_tool(I) && open_panel)
 		wires.interact(user)
@@ -412,7 +412,8 @@
 
 /obj/item/bombcore/badmin/summon/detonate()
 	var/obj/machinery/syndicatebomb/B = loc
-	spawn_and_random_walk(summon_path, src, amt_summon, walk_chance=50, admin_spawn=TRUE, cardinals_only = FALSE)
+	for(var/atom/spawned as anything in spawn_and_random_walk(summon_path, src, amt_summon, walk_chance=50, admin_spawn=TRUE, cardinals_only = FALSE))
+		ADD_TRAIT(spawned, TRAIT_SPAWNED_MOB, INNATE_TRAIT)
 	qdel(B)
 	qdel(src)
 
@@ -510,7 +511,7 @@
 
 	playsound(loc, 'sound/effects/bamf.ogg', 75, TRUE, 5)
 
-/obj/item/bombcore/chemical/attackby(obj/item/I, mob/user, params)
+/obj/item/bombcore/chemical/attackby(obj/item/I, mob/user, list/modifiers, list/attack_modifiers)
 	if(I.tool_behaviour == TOOL_CROWBAR && beakers.len > 0)
 		I.play_tool_sound(src)
 		for (var/obj/item/B in beakers)

@@ -23,6 +23,7 @@
 	response_harm_continuous = "punches"
 	response_harm_simple = "punch"
 	melee_attack_cooldown = CLICK_CD_MELEE
+	initial_blood_type = null
 
 	// Vivid red, cause cult theme
 	lighting_cutoff_red = 30

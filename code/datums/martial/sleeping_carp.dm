@@ -5,21 +5,20 @@
 /datum/martial_art/the_sleeping_carp
 	name = "The Sleeping Carp"
 	id = MARTIALART_SLEEPINGCARP
-	allow_temp_override = FALSE
 	help_verb = /mob/living/proc/sleeping_carp_help
 	display_combos = TRUE
 	/// List of traits applied to users of this martial art.
 	/// List of traits applied to users of this martial art.
 	var/list/scarp_traits = list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD, TRAIT_HARDLY_WOUNDED, TRAIT_NODISMEMBER, TRAIT_HEAVY_SLEEPER)
 
-/datum/martial_art/the_sleeping_carp/on_teach(mob/living/new_holder)
+/datum/martial_art/the_sleeping_carp/activate_style(mob/living/new_holder)
 	. = ..()
 	new_holder.add_traits(scarp_traits, SLEEPING_CARP_TRAIT)
 	RegisterSignal(new_holder, COMSIG_ATOM_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_holder, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(hit_by_projectile))
 	new_holder.faction |= FACTION_CARP //:D
 
-/datum/martial_art/the_sleeping_carp/on_remove(mob/living/remove_from)
+/datum/martial_art/the_sleeping_carp/deactivate_style(mob/living/remove_from)
 	remove_from.remove_traits(scarp_traits, SLEEPING_CARP_TRAIT)
 	UnregisterSignal(remove_from, list(COMSIG_ATOM_ATTACKBY, COMSIG_ATOM_PRE_BULLET_ACT))
 	remove_from.faction -= FACTION_CARP //:(
@@ -108,7 +107,7 @@
 	var/grab_log_description = "grabbed"
 	attacker.do_attack_animation(defender, ATTACK_EFFECT_PUNCH)
 	playsound(defender, 'sound/weapons/punch1.ogg', 25, TRUE, -1)
-	if(defender.stat != DEAD && !defender.IsUnconscious() && defender.getStaminaLoss() >= 80) //We put our target to sleep.
+	if(defender.stat != DEAD && !HAS_TRAIT(defender, TRAIT_KNOCKEDOUT) && defender.getStaminaLoss() >= 80) //We put our target to sleep.
 		defender.visible_message(
 			span_danger("[attacker] carefully pinch a nerve in [defender]'s neck, knocking them out cold!"),
 			span_userdanger("[attacker] pinches something in your neck, and you fall unconscious!"),
@@ -212,7 +211,7 @@
 	return COMPONENT_BULLET_PIERCED
 
 ///Signal from getting attacked with an item, for a special interaction with touch spells
-/datum/martial_art/the_sleeping_carp/proc/on_attackby(mob/living/carp_user, obj/item/attack_weapon, mob/attacker, params)
+/datum/martial_art/the_sleeping_carp/proc/on_attackby(mob/living/carp_user, obj/item/attack_weapon, mob/attacker, list/modifiers)
 	SIGNAL_HANDLER
 
 	if(!istype(attack_weapon, /obj/item/melee/touch_attack))
@@ -274,7 +273,7 @@
 	icon_state = "[base_icon_state]0"
 	return ..()
 
-/obj/item/staff/bostaff/attack(mob/target, mob/living/user, params)
+/obj/item/staff/bostaff/attack(mob/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	add_fingerprint(user)
 	if((HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
 		to_chat(user, span_warning("You club yourself over the head with [src]."))
@@ -293,7 +292,6 @@
 	if(C.stat)
 		to_chat(user, span_warning("It would be dishonorable to attack a foe while they cannot retaliate."))
 		return
-	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if(!HAS_TRAIT(src, TRAIT_WIELDED))
 			return ..()

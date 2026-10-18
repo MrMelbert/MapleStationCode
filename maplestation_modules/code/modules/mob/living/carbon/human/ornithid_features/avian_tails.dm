@@ -1,6 +1,6 @@
 
 
-/obj/item/organ/external/tail/avian
+/obj/item/organ/tail/avian
 	name = "avian tail"
 	desc = "This tail belongs to an ornithid. Used to."
 	preference = "feature_avian_tail"
@@ -13,14 +13,14 @@
 	feature_key = "tail_avian"
 	layers = EXTERNAL_BEHIND | EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_OVERRIDE
+	mesh_in_suits = TRUE
 
 /datum/bodypart_overlay/mutant/tail/avian/get_global_feature_list()
-	return GLOB.tails_list_avian
+	return SSaccessories.tails_list_avian
 
 /datum/bodypart_overlay/mutant/tail/avian/inherit_color(obj/item/bodypart/ownerlimb, force)
 	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
 	return TRUE
-
 
 /datum/sprite_accessory/tails/avian
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'

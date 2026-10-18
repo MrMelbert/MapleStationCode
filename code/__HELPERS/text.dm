@@ -241,12 +241,7 @@
 	if(last_char_group == SPACES_DETECTED)
 		t_out = copytext_char(t_out, 1, -1) //removes the last character (in this case a space)
 
-	for(var/bad_name in list("space","floor","wall","r-wall","monkey","unknown","inactive ai")) //prevents these common metagamey names
-		if(cmptext(t_out,bad_name))
-			return //(not case sensitive)
-
-	// Protects against names containing IC chat prohibited words.
-	if(is_ic_filtered(t_out) || is_soft_ic_filtered(t_out))
+	if(!filter_name_ic(t_out))
 		return
 
 	return t_out
@@ -256,6 +251,39 @@
 #undef NUMBERS_DETECTED
 #undef LETTERS_DETECTED
 
+
+/// Much more permissive version of reject_bad_name().
+/// Returns a trimmed string or null if the name is invalid.
+/// Allows most characters except for IC chat prohibited words.
+/proc/permissive_sanitize_name(value)
+	if(!istext(value)) // Not a string
+		return
+
+	var/name_length = length(value)
+	if(name_length < 3) // Too short
+		return
+
+	if(name_length > 3 * MAX_NAME_LEN) // Bad input
+		return
+
+	var/trimmed = trim(value, MAX_NAME_LEN)
+	if(!filter_name_ic(trimmed)) // Contains IC chat prohibited words
+		return
+
+	return trim_reduced(trimmed)
+
+
+/// Helper proc to check if a name is valid for the IC filter
+/proc/filter_name_ic(name)
+	for(var/bad_name in list("space", "floor", "wall", "r-wall", "monkey", "unknown", "inactive ai")) //prevents these common metagamey names
+		if(cmptext(name, bad_name))
+			return FALSE //(not case sensitive)
+
+	// Protects against names containing IC chat prohibited words.
+	if(is_ic_filtered(name) || is_soft_ic_filtered(name))
+		return FALSE
+
+	return TRUE
 
 
 //html_encode helper proc that returns the smallest non null of two numbers
@@ -785,7 +813,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		return string
 
 	var/base = next_backslash == 1 ? "" : copytext(string, 1, next_backslash)
-	var/macro = lowertext(copytext(string, next_backslash + length(string[next_backslash]), next_space))
+	var/macro = LOWER_TEXT(copytext(string, next_backslash + length(string[next_backslash]), next_space))
 	var/rest = next_backslash > leng ? "" : copytext(string, next_space + length(string[next_space]))
 
 	//See https://secure.byond.com/docs/ref/info.html#/DM/text/macros
@@ -1088,7 +1116,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	var/text_length = length(text)
 
 	//remove caps since words will be shuffled
-	text = lowertext(text)
+	text = LOWER_TEXT(text)
 	//remove punctuation for same reasons as above
 	var/punctuation = ""
 	var/punctuation_hit_list = list("!","?",".","-")
@@ -1217,12 +1245,39 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 			return TRUE
 	return FALSE
 
-/// Round a number to a specific decimal place, while maintaining the decimal if rounded to x.0
-/// EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
-/// EX. round_and_format_decimal(1.0, 0.1) -> "1.0" (NOT "1")
-/// Returns a string
-/proc/round_and_format_decimal(input_number, round_to = 0.1)
-	var/input_rounded = round(input_number, round_to)
-	if(round(input_rounded %% 1, round_to) == 0)
-		return "[input_rounded].0"
-	return "[input_rounded]"
+///
+/**
+ * Round a number to a specific decimal place, while maintaining the decimal place in the output string, even if it's a whole number.
+ *
+ * EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
+ * EX. round_and_format_decimal(1, 1) -> "1.0"
+ * EX. round_and_format_decimal(1.253, 1, 2) -> "1.00"
+ *
+ * Arguments:
+ * * input_number - The number to round and format.
+ * * round_to - The value to round the number to.
+ * * forced_decimal_places - Optional.
+ * If unset, we just use the decimal place of the round_to argument.
+ * If set, we use the decimal place specified by this argument, and round_to is only used for the rounding.
+ *
+ * Returns a string
+ */
+/proc/round_and_format_decimal(input_number, round_to = 0.1, forced_decimal_place)
+	var/rounded_string = "[round(input_number, round_to)]"
+	var/round_to_string = "[round_to]"
+	// this just allows you to do round_and_format_decimal(1.0, 1) to get "1.0" instead of "1"
+	if(round_to %% 1 == 0 && isnull(forced_decimal_place))
+		round_to_string += ".0"
+
+	var/new_decimal_place = isnum(forced_decimal_place) ? forced_decimal_place : (length_char(round_to_string) - findtext(round_to_string, "."))
+	var/existing_decimal_place = findtext(rounded_string, ".")
+
+	if(existing_decimal_place > 0)
+		for(var/i in 1 to new_decimal_place - (length_char(rounded_string) - existing_decimal_place))
+			rounded_string += "0"
+	else
+		rounded_string += "."
+		for(var/i in 1 to new_decimal_place)
+			rounded_string += "0"
+
+	return rounded_string

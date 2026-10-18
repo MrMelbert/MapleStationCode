@@ -27,6 +27,12 @@
 	tool_behaviour = TOOL_KNIFE
 	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
+	// var/list/alt_continuous = list("stabs", "pierces", "shanks")
+	// var/list/alt_simple = list("stab", "pierce", "shank")
+	// sound_vary = TRUE
+	operating_sound = SFX_KNIFE_SLICE
+	// pickup_sound = SFX_KNIFE_PICKUP
+	// drop_sound = SFX_KNIFE_DROP
 
 /datum/armor/item_knife
 	fire = 50
@@ -83,7 +89,7 @@
 	/// Bleed stacks applied when an organic mob target is hit
 	var/bleed_stacks_per_hit = 3
 
-/obj/item/knife/bloodletter/afterattack(atom/target, mob/user, click_parameters)
+/obj/item/knife/bloodletter/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
 	if(!isliving(target))
 		return
 	var/mob/living/M = target

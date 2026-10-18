@@ -72,7 +72,7 @@
 		SENSE_SIGHT = list(
 			"Blindness" = /datum/status_effect/temporary_blindness,
 			"Colorblindness" = /datum/status_effect/color_blindness,
-			"Prosopagnosia" = /datum/status_effect/trait_effect/prosopagnosia,
+			"Prosopagnosia" = /datum/status_effect/prosopagnosia,
 			"Hallucinations" = /datum/status_effect/hallucination,
 			"Blurry Vision" = /datum/status_effect/eye_blur,
 			"Nightmare Vision" = /datum/status_effect/nightmare_vision,

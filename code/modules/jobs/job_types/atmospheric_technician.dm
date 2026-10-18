@@ -1,6 +1,7 @@
 /datum/job/atmospheric_technician
 	title = JOB_ATMOSPHERIC_TECHNICIAN
-	description = "Ensure the air is breathable on the station, fill oxygen tanks, fight fires, purify the air."
+	description = "Ensure the air is breathable on the station, \
+		fill oxygen tanks, fight fires, create fires."
 	department_head = list(JOB_CHIEF_ENGINEER)
 	faction = FACTION_STATION
 	total_positions = 3
@@ -25,7 +26,10 @@
 		/datum/job_department/engineering,
 		)
 
-	family_heirlooms = list(/obj/item/lighter, /obj/item/lighter/greyscale, /obj/item/storage/box/matches)
+	family_heirlooms = list(
+		/obj/item/lighter,
+		/obj/item/lighter/greyscale,
+	)
 
 	mail_goodies = list(
 		/obj/item/rpd_upgrade/unwrench = 30,
@@ -37,6 +41,13 @@
 
 	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Aeromancer"
+
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/eva = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/athletics = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/mechanics = SKILL_LEVEL_EXPERT,
+	)
 
 /datum/outfit/job/atmos
 	name = "Atmospheric Technician"
@@ -55,7 +66,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
 	messenger = /obj/item/storage/backpack/messenger/eng
 
-	box = /obj/item/storage/box/survival/engineer
+	box = /obj/item/storage/pouch/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 
 /datum/outfit/job/atmos/mod

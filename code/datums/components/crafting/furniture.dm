@@ -59,3 +59,49 @@
 	tool_behaviors = list(TOOL_SCREWDRIVER)
 	category = CAT_FURNITURE
 	time = 7 SECONDS
+
+/datum/crafting_recipe/flatpack_cart
+	name = "Flatpack Cart"
+	reqs = list(
+		/obj/item/stack/sheet/iron = 4,
+		/obj/item/stack/sheet/plasteel = 1,
+		/obj/item/stack/rods = 8
+	)
+	result = /obj/structure/flatpack_cart
+	tool_behaviors = list(TOOL_SCREWDRIVER)
+	category = CAT_FURNITURE
+	time = 10 SECONDS
+
+/datum/crafting_recipe/lamp
+	name = "Desk Lamp"
+	result = /obj/item/flashlight/lamp
+	reqs = list(
+		/obj/item/flashlight = 1,
+		/obj/item/stack/rods = 1,
+		/obj/item/light/bulb = 1,
+	)
+	// crafting_flags = CRAFT_SKIP_MATERIALS_PARITY
+	tool_behaviors = list(TOOL_SCREWDRIVER)
+	category = CAT_FURNITURE
+
+/datum/crafting_recipe/lamp/New()
+	. = ..()
+	blacklist += subtypesof(/obj/item/flashlight)
+
+/datum/crafting_recipe/lamp/green
+	name = "Green Desk Lamp"
+	result = /obj/item/flashlight/lamp/green
+
+/datum/crafting_recipe/banana_lamp
+	name = "Banana Lamp"
+	result = /obj/item/flashlight/lamp/bananalamp
+	reqs = list(
+		/obj/item/flashlight/lamp = 1,
+		/obj/item/grown/bananapeel = 1,
+	)
+	blacklist = list(
+		/obj/item/flashlight/lamp/bananalamp,
+	)
+	// requirements_mats_blacklist = list(/obj/item/grown/bananapeel)
+	tool_behaviors = list(TOOL_SCREWDRIVER)
+	category = CAT_FURNITURE

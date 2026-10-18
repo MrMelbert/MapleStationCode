@@ -95,6 +95,7 @@
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
 	. = ..()
+	setup_hud_traits()
 	update_config_movespeed()
 	initialize_actionspeed()
 	update_movespeed(TRUE)
@@ -200,10 +201,10 @@
 
 	var/t = "[span_notice("Coordinates: [x],[y] ")]\n"
 	t += "[span_danger("Temperature: [environment.temperature] ")]\n"
-	for(var/id in environment.gases)
-		var/gas = environment.gases[id]
-		if(gas[MOLES])
-			t+="[span_notice("[gas[GAS_META][META_GAS_NAME]]: [gas[MOLES]] ")]\n"
+	var/list/cached_gas_name = GAS_META[META_GAS_NAME]
+	for(var/gas_id, gas_moles in environment.moles)
+		if(gas_moles)
+			t += "[span_notice("[cached_gas_name[gas_id]]: [gas_moles] ")]\n"
 
 	to_chat(usr, t)
 
@@ -250,6 +251,27 @@
 	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
 	return .
 
+/// Returns a span based on distance from this atom to something else
+/atom/proc/get_distance_based_span(distance)
+	switch(distance)
+		if(5, 6)
+			return "distant_t1"
+		if(7, 8)
+			return "distant_t2"
+		if(9 to INFINITY)
+			return "distant_t3"
+
+	return null
+
+/mob/get_distance_based_span(distance)
+	if(client?.prefs?.read_preference(/datum/preference/toggle/distance_text_shrinking))
+		return ..()
+
+	return null
+
+/mob/dead/get_distance_based_span(distance)
+	return null
+
 /**
  * Generate a visible message from this atom
  *
@@ -284,7 +306,7 @@
 
 	var/raw_msg = message
 	if(visible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b> [message]</span>"
+		message = span_emote("<b>[src]</b> [message]")
 
 	for(var/mob/M in hearers)
 		if(!M.client)
@@ -292,6 +314,7 @@
 
 		//This entire if/else chain could be in two lines but isn't for readibilties sake.
 		var/msg = message
+		var/blind_msg = blind_message
 		var/msg_type = MSG_VISUAL
 
 		if(M.see_invisible < invisibility)//if src is invisible to M
@@ -310,8 +333,9 @@
 		if(visible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = visible_message_flags)
 
-		M.show_message(msg, msg_type, blind_message, MSG_AUDIBLE)
+		var/distance_span = M.get_distance_based_span(get_dist(src, M) - 4) // -4 effective distance
 
+		M.show_message(CONDITIONAL_SPAN(distance_span, msg), msg_type, CONDITIONAL_SPAN(distance_span, blind_msg), MSG_AUDIBLE)
 
 ///Adds the functionality to self_message.
 /mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE)
@@ -321,7 +345,7 @@
 	var/raw_self_message = self_message
 	var/self_runechat = FALSE
 	if(visible_message_flags & EMOTE_MESSAGE)
-		self_message = "<span class='emote'><b>[src]</b> [self_message]</span>" // May make more sense as "You do x"
+		self_message = span_emote("<b>[src]</b> [self_message]") // May make more sense as "You do x"
 
 	if(visible_message_flags & ALWAYS_SHOW_SELF_MESSAGE)
 		to_chat(src, self_message)
@@ -351,11 +375,17 @@
 		hearers -= src
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b> [message]</span>"
+		message = span_emote("<b>[src]</b> [message]")
 	for(var/mob/M in hearers)
+		if(!M.client)
+			continue
+
 		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
-		M.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
+
+		var/distance_span = M.get_distance_based_span(get_dist(src, M) - 2) // -2 effective distance
+
+		M.show_message(CONDITIONAL_SPAN(distance_span, message), MSG_AUDIBLE, CONDITIONAL_SPAN(distance_span, deaf_message), MSG_VISUAL)
 
 /**
  * Show a message to all mobs in earshot of this one
@@ -375,7 +405,7 @@
 	var/raw_self_message = self_message
 	var/self_runechat = FALSE
 	if(audible_message_flags & EMOTE_MESSAGE)
-		self_message = "<span class='emote'><b>[src]</b> [self_message]</span>"
+		self_message = span_emote("<b>[src]</b> [self_message]")
 	if(audible_message_flags & ALWAYS_SHOW_SELF_MESSAGE)
 		to_chat(src, self_message)
 		self_runechat = TRUE
@@ -443,88 +473,6 @@
 	return FALSE
 
 /**
- * Try to equip an item to a slot on the mob
- *
- * This is a SAFE proc. Use this instead of equip_to_slot()!
- *
- * set qdel_on_fail to have it delete W if it fails to equip
- *
- * set disable_warning to disable the 'you are unable to equip that' warning.
- *
- * unset redraw_mob to prevent the mob icons from being redrawn at the end.
- *
- * Initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it
- *
- * set indirect_action to allow insertions into "soft" locked objects, things that are easily opened by the owning mob
- */
-/mob/proc/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, initial = FALSE, indirect_action = FALSE)
-	if(!istype(W) || QDELETED(W)) //This qdeleted is to prevent stupid behavior with things that qdel during init, like say stacks
-		return FALSE
-	if(!W.mob_can_equip(src, slot, disable_warning, bypass_equip_delay_self, indirect_action = indirect_action))
-		if(qdel_on_fail)
-			qdel(W)
-		else if(!disable_warning)
-			to_chat(src, span_warning("You are unable to equip that!"))
-		return FALSE
-	equip_to_slot(W, slot, initial, redraw_mob, indirect_action = indirect_action) //This proc should not ever fail.
-	return TRUE
-
-/**
- * Actually equips an item to a slot (UNSAFE)
- *
- * This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on
- * whether you can or can't equip need to be done before! Use mob_can_equip() for that task.
- *
- *In most cases you will want to use equip_to_slot_if_possible()
- */
-/mob/proc/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
-	return
-
-/**
- * Equip an item to the slot or delete
- *
- * This is just a commonly used configuration for the equip_to_slot_if_possible() proc, used to
- * equip people when the round starts and when events happen and such.
- *
- * Also bypasses equip delay checks, since the mob isn't actually putting it on.
- * Initial is used to indicate whether or not this is the initial equipment (job datums etc) or just a player doing it
- * set indirect_action to allow insertions into "soft" locked objects, things that are easily opened by the owning mob
- */
-/mob/proc/equip_to_slot_or_del(obj/item/W, slot, initial = FALSE, indirect_action = FALSE)
-	return equip_to_slot_if_possible(W, slot, TRUE, TRUE, FALSE, TRUE, initial, indirect_action)
-
-/**
- * Auto equip the passed in item the appropriate slot based on equipment priority
- *
- * puts the item "W" into an appropriate slot in a human's inventory
- *
- * returns 0 if it cannot, 1 if successful
- */
-/mob/proc/equip_to_appropriate_slot(obj/item/W, qdel_on_fail = FALSE, indirect_action = FALSE)
-	if(!istype(W))
-		return FALSE
-	var/slot_priority = W.slot_equipment_priority
-
-	if(!slot_priority)
-		slot_priority = list( \
-			ITEM_SLOT_BACK, ITEM_SLOT_ID,\
-			ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
-			ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-			ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
-			ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
-			ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
-			ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
-			ITEM_SLOT_DEX_STORAGE\
-		)
-
-	for(var/slot in slot_priority)
-		if(equip_to_slot_if_possible(W, slot, disable_warning = TRUE, redraw_mob = TRUE, indirect_action = indirect_action))
-			return TRUE
-
-	if(qdel_on_fail)
-		qdel(W)
-	return FALSE
-/**
  * Reset the attached clients perspective (viewpoint)
  *
  * reset_perspective(null) set eye to common default : mob on turf, loc otherwise
@@ -580,52 +528,83 @@
 
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
 
-/mob/proc/run_examinate(atom/examinify)
+/mob/proc/run_examinate(atom/examinify, force_examinate_more = FALSE)
 
-	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
+	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client?.view || world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
 
 	var/turf/examine_turf = get_turf(examinify)
-	if(is_blind()) //blind people see things differently (through touch)
+	var/blind = is_blind()
+	if(blind)
+		//blind people see things differently (through touch)
 		if(!blind_examine_check(examinify))
 			return
-	else if(examine_turf && !(examine_turf.luminosity || examine_turf.dynamic_lumcount) && \
-		get_dist(src, examine_turf) > 1 && \
-		!has_nightvision()) // If you aren't blind, it's in darkness (that you can't see) and farther then next to you
-		return
+	else
+		// If you aren't blind, it's in darkness (that you can't see) and farther then next to you
+		if(examine_turf \
+			&& !(examine_turf.luminosity || examine_turf.dynamic_lumcount) \
+			&& get_dist(src, examine_turf) > 1 \
+			&& !has_nightvision() \
+		)
+			return
 
 	face_atom(examinify)
 	var/result_combined
+	var/closer_look = FALSE
+	var/eye_contact = FALSE
+	var/removes_double_click = client?.prefs.read_preference(/datum/preference/toggle/remove_double_click)
 	if(client)
 		LAZYINITLIST(client.recent_examines)
 		var/ref_to_atom = REF(examinify)
 		var/examine_time = client.recent_examines[ref_to_atom]
-		if(examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW))
+		if(force_examinate_more || (examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW) && !removes_double_click))
 			var/list/result = examinify.examine_more(src)
-			if(!length(result))
-				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
-			result_combined = jointext(result, "<br>")
+			if(length(result))
+				result.Insert(1, span_info("<i>You examine [examinify] closer.</i>"))
+			else
+				result += span_info("<i>You examine [examinify] closer, but find nothing of note.</i>")
+			result_combined = boxed_message(jointext(result, "<br>"))
+			closer_look = TRUE
 
 		else
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
-			handle_eye_contact(examinify)
 
 	if(!result_combined)
 		var/list/result = examinify.examine(src)
 		var/atom_title = examinify.examine_title(src, thats = TRUE, href = TRUE)
 		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
-		result_combined = (atom_title ? "[span_slightly_larger(separator_hr("[atom_title]."))]" : "") + jointext(result, "<br>")
+		if(removes_double_click)
+			result += span_notice("<i>You can <a href=byond://?src=[REF(src)];run_examinate=[REF(examinify)]>examine</a> [examinify] closer...</i>")
+		result_combined = (atom_title ? fieldset_block("[atom_title]", jointext(result, "<br>"), "boxed_message") : boxed_message(jointext(result, "<br>")))
 
-	to_chat(src, examine_block(span_infoplain(result_combined)))
+	if(!blind)
+		examine_feedback(examinify, closer_look)
+
+	if(eye_contact)
+		handle_eye_contact(examinify)
+
+	to_chat(src, span_infoplain(result_combined))
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
+
+/mob/Topic(href, list/href_list)
+	. = ..()
+	if(.)
+		return
+	if(href_list["run_examinate"])
+		var/atom/examined_atom = locate(href_list["run_examinate"])
+		//run_examinate only early returns this check for turfs for some reason.
+		if(examined_atom in view(client ? client.view : world.view, src))
+			run_examinate(examined_atom, force_examinate_more = TRUE)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
 
-
 /mob/living/blind_examine_check(atom/examined_thing)
+	if(!can_hold_items())
+		return FALSE // SOL
+
 	//need to be next to something and awake
 	if(!Adjacent(examined_thing) || incapacitated())
 		to_chat(src, span_warning("Something is there, but you can't see it!"))
@@ -644,7 +623,7 @@
 
 	//you can only initiate exaimines if you have a hand, it's not disabled, and only as many examines as you have hands
 	/// our active hand, to check if it's disabled/detatched
-	var/obj/item/bodypart/active_hand = has_active_hand()? get_active_hand() : null
+	var/obj/item/bodypart/active_hand = get_active_hand()
 	if(!active_hand || active_hand.bodypart_disabled || do_after_count() >= usable_hands)
 		to_chat(src, span_warning("You don't have a free hand to examine this!"))
 		return FALSE
@@ -679,6 +658,32 @@
 	set_combat_mode(previous_combat_mode)
 	return TRUE
 
+#define EXAMINE_FEEDBACK_RANGE 3
+
+/// Send a feedback message to src, and any nearby viewers, that src is examining examinify
+/mob/proc/examine_feedback(atom/examinify, closer_look = FALSE)
+	return
+
+/mob/living/examine_feedback(atom/examinify, closer_look = FALSE)
+	show_message(examining_span_small("You look[closer_look ? " closely" : ""] at [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	if(!is_eyes_visible())
+		return // your eyes ain't even visible (but future todo : telepaths can skip this check?)
+	if(HAS_TRAIT(examinify, TRAIT_EXAMINE_SKIP) && get(examinify, /mob/living) == src)
+		return // don't leak examine skip stuff
+	for(var/mob/viewer in oviewers(EXAMINE_FEEDBACK_RANGE, src) & viewers(examinify)) // complicated way to say "everyone within 3 tiles who can see us and the thing being examined"
+		viewer.show_message(examining_span_small("[src] look[closer_look ? " closely" : "s"] at [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+
+/mob/living/silicon/ai/examine_feedback(atom/examinify, closer_look = FALSE)
+	show_message(examining_span_small("Your cameras [closer_look ? "zoom in while focusing on" : "focus on"] [EXAMINING_WHAT(src, examinify)]."), MSG_VISUAL)
+	if(!eyeobj || !eyeobj.telegraph_cameras) // stealth cameras
+		return
+	var/list/already_seen_it = list()
+	for(var/obj/machinery/camera/cam as anything in eyeobj.cameras_near_eye)
+		for(var/mob/viewer in (oviewers(EXAMINE_FEEDBACK_RANGE, cam) & viewers(examinify)) - already_seen_it)  // compicated way to say "everyone within 3 tiles who can see our camera(s) and the thing being examined"
+			viewer.show_message(examining_span_small("[cam] [closer_look ? "zooms in while focusing" : "focuses"] on [get_dist(viewer, examinify) > EXAMINE_FEEDBACK_RANGE ? "something" : WITNESSING_EXAMINE_WHAT(src, examinify, viewer)]."), MSG_VISUAL)
+			already_seen_it += viewer
+
+#undef EXAMINE_FEEDBACK_RANGE
 
 /mob/proc/clear_from_recent_examines(ref_to_clear)
 	SIGNAL_HANDLER
@@ -777,7 +782,10 @@
 
 ///Update the resting hud icon
 /mob/proc/update_rest_hud_icon()
-	hud_used?.rest_icon?.update_appearance()
+	if(!hud_used)
+		return FALSE
+	hud_used.rest_icon?.update_appearance()
+	return TRUE
 
 /**
  * Verb to activate the object in your held hand
@@ -901,10 +909,6 @@
 	set category = null
 	return
 
-///Is the mob muzzled (default false)
-/mob/proc/is_muzzled()
-	return FALSE
-
 /// Adds this list to the output to the stat browser
 /mob/proc/get_status_tab_items()
 	. = list("") //we want to offset unique stuff from standard stuff
@@ -984,7 +988,7 @@
 		selected_hand = (active_hand_index % held_items.len)+1
 
 	if(istext(selected_hand))
-		selected_hand = lowertext(selected_hand)
+		selected_hand = LOWER_TEXT(selected_hand)
 		if(selected_hand == "right" || selected_hand == "r")
 			selected_hand = 2
 		if(selected_hand == "left" || selected_hand == "l")
@@ -1094,7 +1098,7 @@
 		antimagic_color = LIGHT_COLOR_DARK_BLUE
 		playsound(src, 'sound/magic/magic_block_mind.ogg', 50, TRUE)
 
-	mob_light(range = 2, color = antimagic_color, duration = 5 SECONDS)
+	mob_light(range = 2, power = 2, color = antimagic_color, duration = 5 SECONDS)
 	add_overlay(antimagic_effect)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, cut_overlay), antimagic_effect), 5 SECONDS)
 
@@ -1555,19 +1559,19 @@
 	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
 	add_consciousness_modifier(HUNGER, round(hungermod, 0.01))
 
-///Apply a proper movespeed modifier based on items we have equipped
+/// Apply a proper movespeed modifier based on items we have equipped
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = 0
 	var/immutable_speedies = 0
 	for(var/obj/item/thing in get_equipped_speed_mod_items())
 		if(thing.item_flags & IMMUTABLE_SLOW)
-			immutable_speedies += thing.slowdown
+			immutable_speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 		else
-			speedies += thing.slowdown
+			speedies += thing.get_slowdown(src) // NON-MODULE CHANGE
 
-	//if our movespeed mod is in the negatives, we don't modify it since that's a benefit
-	if(speedies > 0 && HAS_TRAIT(src, TRAIT_SETTLER))
-		speedies *= 0.2
+	//if  we have TRAIT_STURDY_FRAME, we reduce our overall speed penalty UNLESS that penalty would be a negative value, and therefore a speed boost.
+	if(speedies > 0 && HAS_TRAIT(src, TRAIT_STURDY_FRAME))
+		speedies *= 0.8 // NON-MODULE CHANGE
 
 	if(immutable_speedies)
 		add_or_update_variable_movespeed_modifier(
@@ -1716,3 +1720,49 @@
 /mob/key_down(key, client/client, full_key)
 	..()
 	SEND_SIGNAL(src, COMSIG_MOB_KEYDOWN, key, client, full_key)
+
+/mob/proc/setup_hud_traits()
+	for(var/hud_trait in GLOB.trait_to_hud)
+		RegisterSignal(src, SIGNAL_ADDTRAIT(hud_trait), PROC_REF(hud_trait_enabled))
+		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_disabled))
+	for(var/hud_trait in GLOB.trait_blockers_to_hud)
+		RegisterSignal(src, SIGNAL_ADDTRAIT(hud_trait), PROC_REF(hud_trait_blocker_gained))
+		RegisterSignal(src, SIGNAL_REMOVETRAIT(hud_trait), PROC_REF(hud_trait_blocker_lost))
+
+/mob/proc/hud_trait_enabled(datum/source, new_trait)
+	SIGNAL_HANDLER
+
+	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
+		if(HAS_TRAIT(src, blocker) && (new_trait in blocked_traits))
+			return
+
+	var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[new_trait]]
+	datahud.show_to(src)
+
+/mob/proc/hud_trait_disabled(datum/source, lost_trait)
+	SIGNAL_HANDLER
+
+	for(var/blocker, blocked_traits in GLOB.trait_blockers_to_hud)
+		if(HAS_TRAIT(src, blocker) && (lost_trait in blocked_traits))
+			return // it may seem counterintuitive to check for blockers on trait removal, the blocker now has total reign over whether the hud should come back
+
+	var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[lost_trait]]
+	datahud.hide_from(src)
+
+/mob/proc/hud_trait_blocker_gained(datum/source, new_trait)
+	SIGNAL_HANDLER
+
+	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
+		if(!HAS_TRAIT(src, trait))
+			continue
+		var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[trait]]
+		datahud.hide_from(src)
+
+/mob/proc/hud_trait_blocker_lost(datum/source, new_trait)
+	SIGNAL_HANDLER
+
+	for(var/trait in GLOB.trait_blockers_to_hud[new_trait])
+		if(!HAS_TRAIT(src, trait))
+			continue
+		var/datum/atom_hud/datahud = GLOB.huds[GLOB.trait_to_hud[trait]]
+		datahud.show_to(src)

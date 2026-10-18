@@ -3,6 +3,7 @@
 	desc = "Yell at coderbus."
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "error"
+	abstract_type = /obj/vehicle
 	max_integrity = 300
 	armor_type = /datum/armor/obj_vehicle
 	layer = VEHICLE_LAYER
@@ -103,6 +104,7 @@
 			. += i
 
 /obj/vehicle/proc/return_drivers()
+	RETURN_TYPE(/list/mob)
 	return return_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/driver_amount()

@@ -1,4 +1,4 @@
-GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/effects/acid.dmi', "default"))
+GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/effects/acid.dmi', "default", appearance_flags = RESET_COLOR|KEEP_APART))
 
 /**
  * Component representing acid applied to an object.
@@ -148,8 +148,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	var/acid_used = min(acid_volume * 0.05, 20) * seconds_per_tick
 	var/applied_targets = 0
 	for(var/atom/movable/target_movable as anything in target_turf)
-		// Dont apply acid to things under the turf
-		if(target_turf.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(target_movable, TRAIT_T_RAY_VISIBLE))
+		// Don't apply acid to things under the turf
+		if(HAS_TRAIT(target_movable, TRAIT_UNDERFLOOR))
 			continue
 		// Ignore mobs if turf_acid_ignores_mobs is TRUE
 		if(turf_acid_ignores_mobs && ismob(target_movable))

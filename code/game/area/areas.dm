@@ -24,7 +24,10 @@
 	/// This uses the same nested list format as turfs_by_zlevel
 	var/list/list/turf/turfs_to_uncontain_by_zlevel = list()
 
-	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	/// General flag for area properties
+	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | CULT_PERMITTED
+	/// Flag for mapping related area properties (such as cavegen)
+	var/area_flags_mapping = UNIQUE_AREA
 
 	///Do we have an active fire alarm?
 	var/fire = FALSE
@@ -95,9 +98,9 @@
 	///The volume of the ambient buzz
 	var/ambient_buzz_vol = 35
 	///Used to decide what the minimum time between ambience is
-	var/min_ambience_cooldown = 30 SECONDS
+	var/min_ambience_cooldown = 4 SECONDS
 	///Used to decide what the maximum time between ambience is
-	var/max_ambience_cooldown = 60 SECONDS
+	var/max_ambience_cooldown = 10 SECONDS
 
 	flags_1 = CAN_BE_DIRTY_1
 
@@ -160,7 +163,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /area/New()
 	// This interacts with the map loader, so it needs to be set immediately
 	// rather than waiting for atoms to initialize.
-	if (area_flags & UNIQUE_AREA)
+	if (area_flags_mapping & UNIQUE_AREA)
 		GLOB.areas_by_type[type] = src
 	GLOB.areas += src
 	energy_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
@@ -566,6 +569,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		beauty = 0
 		return FALSE //Too big
 	beauty = totalbeauty / areasize
+	SEND_SIGNAL(src, COMSIG_AREA_BEAUTY_UPDATED)
 
 /**
  * Setup an area (with the given name)

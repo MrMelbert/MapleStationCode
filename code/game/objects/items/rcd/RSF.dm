@@ -45,7 +45,7 @@ RSF
 		/obj/item/toy/cards/deck = 200,
 		/obj/item/paper = 10,
 		/obj/item/pen = 50,
-		/obj/item/clothing/mask/cigarette = 10,
+		/obj/item/cigarette = 10,
 	)
 	///An associated list of fuel and it's value
 	var/list/matter_by_item = list(/obj/item/rcd_ammo = 10,)
@@ -72,7 +72,7 @@ RSF
 /obj/item/rsf/cyborg
 	matter = 30
 
-/obj/item/rsf/attackby(obj/item/W, mob/user, params)
+/obj/item/rsf/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	if(is_type_in_list(W,matter_by_item))//If the thing we got hit by is in our matter list
 		var/tempMatter = matter_by_item[W.type] + matter
 		if(tempMatter > max_matter)
