@@ -42,6 +42,7 @@
 #define BOLTS (1<<2)
 #define SHOCK (1<<3)
 #define SAFE (1<<4)
+#define TOGGLE_UNRES (1<<5)
 
 //defines to be used with the door's open()/close() procs in order to discriminate what type of open is being done. The door will never open if it's been physically disabled (i.e. welded, sealed, etc.).
 /// We should go through the door's normal opening procedure, no overrides.
