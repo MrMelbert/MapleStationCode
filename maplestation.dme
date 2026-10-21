@@ -12,6 +12,10 @@
 #define DEBUG
 // END_PREFERENCES
 
+#ifdef __DEMIR_BAKE__
+#define CBT
+#endif
+
 // BEGIN_INCLUDE
 #include "__odlint.dm"
 #include "_maps\_basemap.dm"
