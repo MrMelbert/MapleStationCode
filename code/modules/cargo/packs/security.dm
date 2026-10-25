@@ -73,14 +73,6 @@
 	contains = list(/obj/item/clothing/head/helmet/sec = 3)
 	crate_name = "helmet crate"
 
-/datum/supply_pack/security/laser
-	name = "Lasers Crate"
-	desc = "Contains three lethal, high-energy laser guns."
-	cost = CARGO_CRATE_VALUE * 4
-	access_view = ACCESS_ARMORY
-	contains = list(/obj/item/gun/energy/laser = 3)
-	crate_name = "laser crate"
-
 /datum/supply_pack/security/securitybarriers
 	name = "Security Barrier Grenades"
 	desc = "Stem the tide with four Security Barrier grenades."
@@ -108,6 +100,7 @@
 				)
 	crate_name = "security clothing crate"
 
+/* NON-MODULE CHANGE : Moved to Armory
 /datum/supply_pack/security/stingpack
 	name = "Stingbang Grenade Pack"
 	desc = "Contains five \"stingbang\" grenades, perfect for stopping \
@@ -116,12 +109,14 @@
 	access_view = ACCESS_ARMORY
 	contains = list(/obj/item/storage/box/stingbangs)
 	crate_name = "stingbang grenade pack crate"
+*/
 
 /datum/supply_pack/security/supplies
 	name = "Security Supplies Crate"
 	desc = "Contains seven flashbangs, seven teargas grenades, six flashes, and seven handcuffs."
 	cost = CARGO_CRATE_VALUE * 3.5
-	access_view = ACCESS_ARMORY
+	//access_view = ACCESS_ARMORY // NON-MODULE CHANGE : This is just regular security equipment they get in vending machines
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/storage/box/flashbangs,
 					/obj/item/storage/box/teargas,
 					/obj/item/storage/box/flashes,
@@ -129,6 +124,7 @@
 				)
 	crate_name = "security supply crate"
 
+/* NON-MODULE CHANGE : Moved to Armory
 /datum/supply_pack/security/firingpins
 	name = "Standard Firing Pins Crate"
 	desc = "Upgrade your arsenal with 10 standard firing pins."
@@ -144,6 +140,7 @@
 	access_view = ACCESS_ARMORY
 	contains = list(/obj/item/storage/box/firingpins/paywall = 2)
 	crate_name = "paywall firing pins crate"
+*/
 
 /datum/supply_pack/security/justiceinbound
 	name = "Standard Justice Enforcer Crate"
@@ -195,6 +192,10 @@
 	access = ACCESS_ARMORY
 	access_view = ACCESS_ARMORY
 	crate_type = /obj/structure/closet/crate/secure/weapon
+	departmental_order_area_override = list(
+		/area/station/ai_monitored/security/armory,
+		/area/station/ai_monitored/security/armory/upper
+		)
 
 /datum/supply_pack/security/armory/bulletarmor
 	name = "Bulletproof Armor Crate"
@@ -382,3 +383,25 @@
 	cost = CARGO_CRATE_VALUE * 7
 	contains = list(/obj/item/storage/box/teleport_blocker)
 	crate_name = "bluespace grounding implant crate"
+
+/datum/supply_pack/security/armory/stingpack
+	name = "Stingbang Grenade Pack"
+	desc = "Contains five \"stingbang\" grenades, perfect for stopping \
+		riots and playing morally unthinkable pranks."
+	cost = CARGO_CRATE_VALUE * 5
+	contains = list(/obj/item/storage/box/stingbangs)
+	crate_name = "stingbang grenade pack crate"
+
+/datum/supply_pack/security/armory/firingpins
+	name = "Standard Firing Pins Crate"
+	desc = "Upgrade your arsenal with 10 standard firing pins."
+	cost = CARGO_CRATE_VALUE * 4
+	contains = list(/obj/item/storage/box/firingpins = 2)
+	crate_name = "firing pins crate"
+
+/datum/supply_pack/security/armory/firingpins/paywall
+	name = "Paywall Firing Pins Crate"
+	desc = "Specialized firing pins with a built-in configurable paywall."
+	cost = CARGO_CRATE_VALUE * 2
+	contains = list(/obj/item/storage/box/firingpins/paywall = 2)
+	crate_name = "paywall firing pins crate"
