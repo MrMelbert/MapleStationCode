@@ -25109,7 +25109,7 @@
 	id = "playerscantreadthis";
 	name = "Kitchen Counter Shutters"
 	},
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /turf/open/floor/iron/checker,
@@ -28146,7 +28146,7 @@
 /area/station/solars/starboard/fore)
 "jgn" = (
 /obj/structure/table/reinforced,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /obj/machinery/light/warm/directional/east,
@@ -53585,7 +53585,7 @@
 "sct" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/spawner/directional/north,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /obj/machinery/light/warm/directional/west,

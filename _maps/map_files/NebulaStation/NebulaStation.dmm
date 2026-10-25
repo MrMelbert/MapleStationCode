@@ -56700,7 +56700,7 @@
 /obj/machinery/light_switch/directional/west,
 /obj/machinery/status_display/evac/directional/north,
 /obj/structure/table/wood/fancy/red,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /turf/open/floor/wood/large,
@@ -120892,7 +120892,7 @@
 /area/space/nearstation)
 "rVX" = (
 /obj/structure/table/wood/fancy/red,
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /obj/machinery/newscaster/directional/south,
