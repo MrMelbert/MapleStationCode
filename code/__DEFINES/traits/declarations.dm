@@ -285,8 +285,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PRESENT_VISION "present-vision"
 #define TRAIT_DISK_VERIFIER "disk-verifier"
 #define TRAIT_NOMOBSWAP "no-mob-swap"
-/// Can examine IDs to see if they are roundstart.
-#define TRAIT_ID_APPRAISER "id_appraiser"
 /// Gives us turf, mob and object vision through walls
 #define TRAIT_XRAY_VISION "xray_vision"
 /// Gives us mob vision through walls and slight night vision
@@ -1048,12 +1046,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Trait given if the mob has a cranial fissure.
 #define TRAIT_HAS_CRANIAL_FISSURE "has_cranial_fissure"
 
-/// Denotes that this id card was given via the job outfit, aka the first ID this player got.
-#define TRAIT_JOB_FIRST_ID_CARD "job_first_id_card"
 /// ID cards with this trait will attempt to forcibly occupy the front-facing ID card slot in wallets.
 #define TRAIT_MAGNETIC_ID_CARD "magnetic_id_card"
-/// ID cards with this trait have special appraisal text.
-#define TRAIT_TASTEFULLY_THICK_ID_CARD "impressive_very_nice"
 /// things with this trait are treated as having no access in /obj/proc/check_access(obj/item)
 #define TRAIT_ALWAYS_NO_ACCESS "alwaysnoaccess"
 

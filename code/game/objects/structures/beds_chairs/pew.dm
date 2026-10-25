@@ -13,6 +13,11 @@
 /obj/structure/chair/pew/MakeRotate()
 	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)
 
+/obj/structure/chair/pew/Initialize(mapload)
+	. = ..()
+	if(name == initial(name))
+		name = "pew"
+
 /obj/structure/chair/pew/left
 	name = "left wooden pew end"
 	icon_state = "pewend_left"
