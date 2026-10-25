@@ -18877,15 +18877,10 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/machinery/camera{
-	c_tag = "Medbay - Morgue";
-	dir = 9;
-	network = list("ss13","medbay")
-	},
 /obj/structure/item_dispenser/bodybag{
 	dir = 4;
 	pixel_x = 32;
-	pixel_y = 16
+	pixel_y = 18
 	},
 /turf/open/floor/iron/dark{
 	dir = 4
@@ -19090,10 +19085,14 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 8
 	},
-/obj/effect/turf_decal/siding/thinplating/dark{
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/siding/thinplating/dark/corner{
 	dir = 8
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/ectoplasm{
+	dir = 4
+	},
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/dark{
 	dir = 4
 	},
@@ -19737,6 +19736,10 @@
 	pixel_y = 0;
 	pixel_x = 0
 	},
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 1
+	},
+/obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/dark{
 	dir = 4
 	},
@@ -19868,6 +19871,16 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lower)
+"goa" = (
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/siding/thinplating/dark/corner,
+/turf/open/floor/iron/dark{
+	dir = 4
+	},
+/area/station/medical/morgue)
 "goc" = (
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 4
@@ -23424,6 +23437,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
+/obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/station/medical/coldroom)
 "hsV" = (
@@ -28721,9 +28735,6 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 4
 	},
-/obj/effect/turf_decal/siding/thinplating/dark{
-	dir = 4
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -31118,6 +31129,7 @@
 "jHv" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/maintenance,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lower)
 "jHG" = (
@@ -48180,6 +48192,13 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
+"oHx" = (
+/obj/machinery/light/small/directional/north,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/science)
 "oHI" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -49872,9 +49891,6 @@
 /turf/open/floor/iron/grimy,
 /area/station/security/prison/rec)
 "pir" = (
-/obj/item/ectoplasm{
-	dir = 4
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
@@ -59782,9 +59798,6 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 8
 	},
-/obj/effect/turf_decal/siding/thinplating/dark{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/light/cold/directional/west,
 /turf/open/floor/iron/dark{
@@ -66222,6 +66235,19 @@
 /obj/structure/flora/bush/leavy/style_random,
 /turf/open/floor/grass,
 /area/station/medical/medbay/central)
+"tYn" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/door/airlock/maintenance,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/airlock/access/any/medical/maintenance,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/lower)
 "tYy" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -70824,9 +70850,6 @@
 	dir = 8
 	},
 /obj/machinery/light_switch/directional/south,
-/obj/effect/mapping_helpers/turn_off_lights_with_lightswitch{
-	dir = 8
-	},
 /obj/machinery/camera/directional/west{
 	c_tag = "Medbay - Virology";
 	network = list("ss13","medbay","virology")
@@ -71851,7 +71874,6 @@
 /area/station/medical/morgue/office)
 "vMu" = (
 /obj/structure/table,
-/obj/structure/closet/crate/bin,
 /turf/open/floor/iron/kitchen,
 /area/station/medical/psychology/ward)
 "vNe" = (
@@ -73962,8 +73984,6 @@
 /obj/structure/sign/poster/official/random/directional/east,
 /turf/open/floor/iron,
 /area/station/hallway/primary/upper)
-"wvx" = (
-/area/station/medical/medbay/upper)
 "wvC" = (
 /obj/effect/spawner/structure/window,
 /obj/machinery/door/poddoor/shutters/preopen{
@@ -77364,6 +77384,13 @@
 	},
 /turf/open/floor/iron/dark/smooth_edge,
 /area/station/security/brig)
+"xxn" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/station/maintenance/starboard/lower)
 "xxz" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -79727,9 +79754,6 @@
 /area/station/maintenance/starboard/fore)
 "yiK" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 8
-	},
-/obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 8
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -115089,7 +115113,7 @@ mbR
 gXm
 gXm
 cMK
-vca
+bDh
 vca
 eoC
 pCp
@@ -117398,10 +117422,10 @@ bLC
 dUR
 gXm
 vca
+pPp
 vca
 vca
-vca
-pWB
+mNT
 dvG
 gXm
 ymg
@@ -117658,7 +117682,7 @@ vca
 vca
 gXm
 gXm
-pxC
+tYn
 gXm
 gXm
 gXm
@@ -118172,9 +118196,9 @@ cRc
 qaE
 gXm
 vca
-wWd
-wWd
-pWB
+vAn
+vAn
+xxn
 blE
 dvN
 bck
@@ -182661,8 +182685,8 @@ xOp
 bvH
 rqK
 dzx
-wvx
-wvx
+fcb
+fcb
 aug
 tEI
 uMs
@@ -182918,8 +182942,8 @@ bxs
 dkr
 aCI
 dzx
-wvx
-wvx
+fcb
+fcb
 aug
 mUt
 qmX
@@ -183959,7 +183983,7 @@ pma
 vMm
 vMm
 iVl
-ggr
+goa
 ggr
 ggr
 wJS
@@ -194210,7 +194234,7 @@ hgw
 wka
 wka
 wka
-fca
+oHx
 ncr
 dJc
 cyQ
@@ -194467,7 +194491,7 @@ ngP
 wka
 vrJ
 tSE
-tgs
+hlD
 jqx
 dJc
 gol
