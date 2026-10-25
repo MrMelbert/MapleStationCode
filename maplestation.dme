@@ -6500,6 +6500,7 @@
 #include "maplestation_modules\code\modules\antagonists\advanced_ling\changeling_rebalancing.dm"
 #include "maplestation_modules\code\modules\antagonists\advanced_ling\changeling_stings.dm"
 #include "maplestation_modules\code\modules\antagonists\advanced_ling\neutered_ling.dm"
+#include "maplestation_modules\code\modules\antagonists\changeling\changeling.dm"
 #include "maplestation_modules\code\modules\art\statuettes.dm"
 #include "maplestation_modules\code\modules\cargo\costumes_toys.dm"
 #include "maplestation_modules\code\modules\cargo\goodies.dm"
