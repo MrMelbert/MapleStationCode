@@ -97,7 +97,7 @@
 	explode()
 	. = ..()
 
-/obj/item/stock_parts/power_store/cell/wondertech/deconstruct(disassembled)
+/obj/item/stock_parts/power_store/cell/wondertech/handle_deconstruct(disassembled)
 	explode()
 	. = ..()
 
@@ -157,8 +157,10 @@
 
 /obj/item/stock_parts/power_store/battery/wondertech/atom_destruction(damage_flag)
 	explode()
+	. = ..()
 
-/obj/item/stock_parts/power_store/battery/wondertech/deconstruct(disassembled)
+/obj/item/stock_parts/power_store/battery/wondertech/handle_deconstruct(disassembled)
+	. = ..()
 	explode()
 
 /obj/item/stock_parts/power_store/battery/wondertech/grind(datum/reagents/target_holder, mob/user)
