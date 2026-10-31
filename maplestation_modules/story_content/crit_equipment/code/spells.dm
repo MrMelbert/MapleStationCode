@@ -189,12 +189,12 @@
 			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/slowdown)
 
 		if("Mana Drain")
-			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/mana_drain)
+			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/mana_drain, owner.mana_pool)
 
 		if(PARAPLEGIC_EFFECT)
 			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/paraplegic)
 
-
+// Used end
 /datum/status_effect/devil_webbed
 	id = "devil_webbed"
 	duration = -1
@@ -210,6 +210,22 @@
 /datum/status_effect/devil_webbed/be_replaced()
 	on_remove()
 	. = ..()
+
+// Unused at the present moment
+/*
+// User end
+/datum/status_effect/puppet_master
+	id = "puppet_master"
+	duration = -1
+	status_type = STATUS_EFFECT_REPLACE
+	alert_type = /atom/movable/screen/alert/status_effect/puppet_master
+
+/atom/movable/screen/alert/status_effect/puppet_master
+	name = "broken effect"
+	desc = "If you're seeing this, someone forgot to set alert_type."
+	icon_state = "paralysis"
+*/
+
 
 /datum/status_effect/devil_webbed/slowdown
 	alert_type = /atom/movable/screen/alert/status_effect/devil_webbed/slowdown
@@ -232,22 +248,26 @@
 
 /datum/status_effect/devil_webbed/mana_drain
 	alert_type = /atom/movable/screen/alert/status_effect/devil_webbed/mana_drain
-	// carbon owner, cached since we're doing things on tick
-	var/mob/living/carbon/carbon_owner
+	// The mana pool of the person we got this status effect from
+	var/datum/mana_pool/transfer_to_pool
+
+/datum/status_effect/devil_webbed/mana_drain/on_creation(mob/living/new_owner, datum/mana_pool/caster_pool)
+	transfer_to_pool = caster_pool
+	. = ..()
 
 /datum/status_effect/devil_webbed/mana_drain/on_apply()
-	if(!iscarbon(owner))
-		return FALSE
-	carbon_owner = owner
+	owner.mana_pool.max_donation_rate_per_second = 5 // pending refactor of how transfer rules are done
+	owner.mana_pool.start_transfer(transfer_to_pool)
 	return ..()
 
-/datum/status_effect/devil_webbed/mana_drain/tick(seconds_between_ticks)
-	if(carbon_owner?.mana_pool)
-		carbon_owner.safe_adjust_personal_mana(-5 * seconds_between_ticks)
+/datum/status_effect/devil_webbed/mana_drain/on_remove()
+	owner.mana_pool.stop_transfer(transfer_to_pool)
+	owner.mana_pool.max_donation_rate_per_second = initial(owner.mana_pool.max_donation_rate_per_second)
 
 /atom/movable/screen/alert/status_effect/devil_webbed/mana_drain
 	name = "Mana Drain"
 	desc = "Your whole body feels tight, and you feel yourself getting weaker and weaker..."
+
 
 /datum/status_effect/devil_webbed/paraplegic
 	alert_type = /atom/movable/screen/alert/status_effect/devil_webbed/paraplegic
