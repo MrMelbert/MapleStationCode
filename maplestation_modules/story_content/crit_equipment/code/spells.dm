@@ -153,6 +153,7 @@
 		"Clear Effect",
 		"Slowdown",
 		"Mana Drain",
+		"Mana Donation",
 		PARAPLEGIC_EFFECT,
 	)
 
@@ -180,16 +181,25 @@
 	. = ..()
 
 	var/chosen_effect = tgui_input_list(owner, "Choose an effect.", name, evil_status_effects_of_doom)
+	cast_on.remove_status_effect(/datum/status_effect/devil_webbed) //This removes based on id rather than specifically checking type
+	var/mob/living/living_owner
+	if(isliving(owner))
+		living_owner = owner
+		living_owner.remove_status_effect(/datum/status_effect/puppet_master)
 	switch(chosen_effect)
 
 		if("Clear Effect")
-			cast_on.remove_status_effect(/datum/status_effect/devil_webbed) //This removes based on id rather than specifically checking type
+			return
 
 		if("Slowdown")
 			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/slowdown)
 
 		if("Mana Drain")
 			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/mana_drain, owner.mana_pool)
+
+		if("Mana Donation")
+			if(living_owner)
+				living_owner.apply_status_effect(/datum/status_effect/puppet_master/give_mana, cast_on.mana_pool)
 
 		if(PARAPLEGIC_EFFECT)
 			cast_on.apply_status_effect(/datum/status_effect/devil_webbed/paraplegic)
@@ -211,8 +221,6 @@
 	on_remove()
 	. = ..()
 
-// Unused at the present moment
-/*
 // User end
 /datum/status_effect/puppet_master
 	id = "puppet_master"
@@ -224,7 +232,6 @@
 	name = "broken effect"
 	desc = "If you're seeing this, someone forgot to set alert_type."
 	icon_state = "paralysis"
-*/
 
 
 /datum/status_effect/devil_webbed/slowdown
@@ -267,6 +274,30 @@
 /atom/movable/screen/alert/status_effect/devil_webbed/mana_drain
 	name = "Mana Drain"
 	desc = "Your whole body feels tight, and you feel yourself getting weaker and weaker..."
+
+
+/datum/status_effect/puppet_master/give_mana
+	alert_type = /atom/movable/screen/alert/status_effect/puppet_master/give_mana
+	// The mana pool of the person we're giving our mana to
+	var/datum/mana_pool/transfer_to_pool
+
+/datum/status_effect/puppet_master/give_mana/on_creation(mob/living/new_owner, datum/mana_pool/casted_on_pool)
+	transfer_to_pool = casted_on_pool
+	. = ..()
+
+/datum/status_effect/puppet_master/give_mana/on_apply()
+	owner.mana_pool.max_donation_rate_per_second = 5 // pending refactor of how transfer rules are done
+	owner.mana_pool.start_transfer(transfer_to_pool)
+	return ..()
+
+/datum/status_effect/puppet_master/give_mana/on_remove()
+	owner.mana_pool.stop_transfer(transfer_to_pool)
+	owner.mana_pool.max_donation_rate_per_second = initial(owner.mana_pool.max_donation_rate_per_second)
+
+/atom/movable/screen/alert/status_effect/puppet_master/give_mana
+	name = "Mana Donation"
+	desc = "Mana flows through the strings."
+	icon_state = "stun"
 
 
 /datum/status_effect/devil_webbed/paraplegic
