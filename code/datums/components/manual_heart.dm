@@ -97,7 +97,7 @@
 
 	if(HAS_TRAIT(carbon_owner, TRAIT_NOBLOOD))
 		return
-	carbon_owner.blood_volume = min(carbon_owner.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_MAXIMUM)
+	carbon_owner.blood_volume = min(carbon_owner.blood_volume + (blood_loss * 0.5), BLOOD_VOLUME_NORMAL * 1.2)
 	carbon_owner.remove_client_colour(/datum/client_colour/manual_heart_blood)
 	add_colour = TRUE
 	carbon_owner.adjustBruteLoss(-heal_brute)
@@ -172,7 +172,7 @@
 	if(!istype(heart_haver) || HAS_TRAIT(heart_haver, TRAIT_NOBLOOD) || heart_haver.stat == DEAD)
 		return FALSE
 	var/obj/item/organ/heart/heart_havers_heart = heart_haver.get_organ_slot(ORGAN_SLOT_HEART)
-	if(isnull(heart_havers_heart))
+	if(isnull(heart_havers_heart) || !heart_havers_heart.is_beating())
 		return FALSE
 	return ..()
 
