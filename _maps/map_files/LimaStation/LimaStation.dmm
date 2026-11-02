@@ -1299,7 +1299,8 @@
 	},
 /obj/machinery/door/poddoor/shutters{
 	id = "medlift";
-	name = "Elevator Shutters"
+	name = "Elevator Shutters";
+	elevator_mode = 1
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/medbay/upper)
@@ -19278,7 +19279,8 @@
 	},
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "medlift";
-	name = "Elevator Shutters"
+	name = "Elevator Shutters";
+	elevator_mode = 1
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/medbay/lower)
