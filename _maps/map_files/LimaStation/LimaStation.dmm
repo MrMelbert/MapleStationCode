@@ -15905,7 +15905,6 @@
 /obj/machinery/door/airlock/research/glass{
 	name = "Genetics Research"
 	},
-/obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/autoname,
 /obj/effect/mapping_helpers/airlock/access/all/science/research,
 /obj/machinery/door/firedoor,
@@ -19279,7 +19278,7 @@
 	},
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "medlift";
-	name = "elevator shutters"
+	name = "Elevator Shutters"
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/medbay/lower)
@@ -76090,7 +76089,7 @@
 /obj/machinery/door/poddoor/shutters/window{
 	dir = 1;
 	id = "paramedicshutter";
-	name = "paramedic dispatch shutters"
+	name = "Paramedic Dispatch Shutters"
 	},
 /turf/open/floor/plating,
 /area/station/medical/paramedic)
