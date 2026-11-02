@@ -61771,7 +61771,8 @@
 	specialfunctions = 32;
 	pixel_x = -26;
 	id = "medbaypublic";
-	name = "medical public access button"
+	name = "medical public access button";
+	normaldoorcontrol = 1
 	},
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
