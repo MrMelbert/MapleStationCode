@@ -241,6 +241,7 @@
 		/obj/item/construction/rcd,
 		/obj/item/fireaxe/metal_h2_axe,
 		/obj/item/storage/bag/construction,
+		/obj/item/crowbar/power,
 	)
 	variants = list(
 		"engineering" = list(
@@ -306,6 +307,7 @@
 		/obj/item/fireaxe/metal_h2_axe,
 		/obj/item/pipe_dispenser,
 		/obj/item/t_scanner,
+		/obj/item/crowbar/power,
 	)
 	variants = list(
 		"atmospheric" = list(
@@ -376,6 +378,7 @@
 		/obj/item/pipe_dispenser,
 		/obj/item/storage/bag/construction,
 		/obj/item/t_scanner,
+		/obj/item/crowbar/power,
 	)
 	variants = list(
 		"advanced" = list(
@@ -620,6 +623,7 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/storage/bag/chemistry,
 		/obj/item/storage/bag/bio,
+		/obj/item/crowbar/power,
 	)
 	variants = list(
 		"medical" = list(
@@ -728,6 +732,7 @@
 		/obj/item/storage/bag/chemistry,
 		/obj/item/storage/bag/bio,
 		/obj/item/melee/baton/telescopic,
+		/obj/item/crowbar/power,
 	)
 	variants = list(
 		"rescue" = list(

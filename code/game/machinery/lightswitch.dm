@@ -13,8 +13,6 @@
 	var/area/area = null
 	///Range of the light emitted when powered, but off
 	var/light_on_range = 1
-	/// Should this lightswitch automatically rename itself to match the area it's in?
-	var/autoname = TRUE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 
@@ -32,8 +30,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		area = GLOB.areas_by_type[area]
 	if(!area)
 		area = get_area(src)
-	if(autoname)
-		name = "light switch ([area.name])"
 	find_and_hang_on_wall(custom_drop_callback = CALLBACK(src, PROC_REF(deconstruct), TRUE))
 	register_context()
 	update_appearance()
@@ -47,6 +43,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
 		return CONTEXTUAL_SCREENTIP_SET
 	return .
+
+/obj/machinery/light_switch/get_name_chaser(mob/user, list/name_chaser)
+	. = ..()
+	. += span_info("It belongs to <b>[get_area_name(area)]</b>.")
 
 /obj/machinery/light_switch/update_appearance(updates=ALL)
 	. = ..()

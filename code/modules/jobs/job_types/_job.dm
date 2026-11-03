@@ -419,7 +419,6 @@
 	var/obj/item/card/id/card = equipped.wear_id
 
 	if(istype(card))
-		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
 		card.registered_name = equipped.real_name
 

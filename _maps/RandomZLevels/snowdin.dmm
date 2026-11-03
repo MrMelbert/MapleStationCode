@@ -10726,7 +10726,7 @@
 /area/awaymission/snowdin/post/mining_main)
 "IV" = (
 /obj/structure/table,
-/obj/machinery/microwave/engineering/cell_included,
+/obj/machinery/microwave,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron,
 /area/awaymission/snowdin/post/mining_main)

@@ -153,7 +153,6 @@
 		"gibber",
 		"monkey_recycler",
 		"reagentgrinder",
-		"microwave_engineering",
 		"smartfridge",
 		"sheetifier",
 		"fat_sucker",
