@@ -2168,6 +2168,11 @@
 	pixel_y = -13;
 	pixel_x = 3
 	},
+/obj/structure/desk_bell/ringer/medical{
+	dir = 8;
+	pixel_x = -5;
+	pixel_y = 6
+	},
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "aEc" = (
@@ -11434,6 +11439,21 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/vault,
 /area/station/ai_monitored/command/nuke_storage)
+"dBE" = (
+/obj/structure/table,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id = "kitchen";
+	name = "Serving Hatch";
+	dir = 4
+	},
+/obj/structure/desk_bell/ringer/chef{
+	pixel_x = 6;
+	pixel_y = -11;
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/station/service/kitchen)
 "dBF" = (
 /turf/closed/wall,
 /area/station/commons/vacant_room/commissary)
@@ -12106,7 +12126,7 @@
 	dir = 4
 	},
 /obj/machinery/airalarm/directional/west,
-/turf/open/floor/carpet/cyan,
+/turf/open/floor/carpet/blue,
 /area/station/service/bar/lower)
 "dMg" = (
 /obj/effect/turf_decal/trimline/brown/filled/line,
@@ -15482,7 +15502,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/duct,
-/turf/open/floor/carpet/cyan,
+/turf/open/floor/carpet/blue,
 /area/station/service/bar/lower)
 "eOL" = (
 /obj/structure/cable,
@@ -21201,10 +21221,7 @@
 	name = "Serving Hatch";
 	dir = 4
 	},
-/obj/structure/desk_bell/ringer/chef{
-	pixel_x = -6;
-	pixel_y = -2
-	},
+/obj/structure/tipjar/prefilled,
 /turf/open/floor/iron,
 /area/station/service/kitchen)
 "gAk" = (
@@ -30148,8 +30165,8 @@
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "jfF" = (
-/obj/item/kirbyplants/random,
 /obj/structure/cable,
+/obj/item/kirbyplants/potty,
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
 	},
@@ -36740,6 +36757,7 @@
 /obj/machinery/newscaster/directional/west,
 /obj/structure/table/wood,
 /obj/structure/cable,
+/obj/structure/tipjar/prefilled,
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
 	},
@@ -41056,6 +41074,23 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
+"mnP" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable,
+/obj/structure/desk_bell/ringer/curator{
+	dir = 8;
+	pixel_x = 29;
+	pixel_y = 31
+	},
+/turf/open/floor/wood/large,
+/area/station/service/library/upper)
 "mnZ" = (
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
@@ -68559,7 +68594,7 @@
 	dir = 4
 	},
 /obj/machinery/duct,
-/turf/open/floor/carpet/cyan,
+/turf/open/floor/carpet/blue,
 /area/station/service/bar/lower)
 "uoK" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -73029,7 +73064,7 @@
 	c_tag = "Service - Lower Bar Service"
 	},
 /obj/item/radio/intercom/directional/east,
-/turf/open/floor/carpet/cyan,
+/turf/open/floor/carpet/blue,
 /area/station/service/bar/lower)
 "vHu" = (
 /obj/machinery/computer/security{
@@ -173952,7 +173987,7 @@ jVl
 kDk
 qWD
 pkY
-hBX
+mnP
 njy
 wrl
 wrl
@@ -178839,7 +178874,7 @@ kvT
 gHk
 qeX
 jjp
-qeX
+dBE
 gAd
 qvO
 jep
