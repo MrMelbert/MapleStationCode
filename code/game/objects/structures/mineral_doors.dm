@@ -263,7 +263,7 @@
 	rad_insulation = RAD_EXTREME_INSULATION
 
 /obj/structure/mineral_door/wood
-	name = "wood door"
+	name = "wooden door"
 	icon_state = "wood"
 	openSound = 'sound/effects/doorcreaky.ogg'
 	closeSound = 'sound/effects/doorcreaky.ogg'
@@ -287,6 +287,24 @@
 		return
 
 	return ..()
+
+/obj/structure/mineral_door/plastic
+	name = "plastic door"
+	sheetType = /obj/item/stack/sheet/mineral/plastic
+	max_integrity = 100
+	rad_insulation = RAD_VERY_LIGHT_INSULATION
+	openSound = 'sound/effects/doorcreaky.ogg'
+	closeSound = 'sound/effects/doorcreaky.ogg'
+	close_delay = 2 SECONDS // when you push open the door and it swings back
+
+/obj/structure/mineral_door/pickaxe_door(mob/living/user, obj/item/I)
+	return
+
+/obj/structure/mineral_door/plastic/welder_act(mob/living/user, obj/item/I)
+	return
+
+/obj/structure/mineral_door/plastic/crowbar_act(mob/living/user, obj/item/I)
+	return crowbar_door(user, I)
 
 /obj/structure/mineral_door/paperframe
 	name = "paper frame door"

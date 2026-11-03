@@ -26058,6 +26058,12 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lower)
+"ibS" = (
+/obj/machinery/holopad,
+/obj/effect/turf_decal/bot,
+/obj/effect/landmark/navigate_destination/bar,
+/turf/open/floor/wood,
+/area/station/service/bar)
 "icc" = (
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
@@ -49091,17 +49097,6 @@
 /obj/machinery/computer/security/telescreen/vault/directional/west,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
-"oPv" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/holopad,
-/obj/effect/turf_decal/bot,
-/obj/effect/landmark/navigate_destination/bar,
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/turf/open/floor/wood,
-/area/station/service/bar)
 "oPO" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/medical/glass{
@@ -77214,7 +77209,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/mineral_door/iron,
+/obj/structure/mineral_door/plastic,
 /turf/open/floor/iron/freezer,
 /area/station/medical/break_room)
 "xho" = (
@@ -78528,7 +78523,7 @@
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden)
 "xBL" = (
-/obj/structure/mineral_door/iron,
+/obj/structure/mineral_door/plastic,
 /turf/open/floor/iron/freezer,
 /area/station/medical/break_room/bathroom)
 "xBS" = (
@@ -177940,8 +177935,8 @@ mbG
 eGz
 gPP
 gPP
-oPv
-ppw
+mYb
+ibS
 raT
 wxq
 yfI
