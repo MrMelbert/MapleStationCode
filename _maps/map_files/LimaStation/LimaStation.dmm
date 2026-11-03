@@ -6959,8 +6959,6 @@
 /turf/open/floor/iron/grimy,
 /area/station/security/prison/safe)
 "chI" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock{
 	name = "Bar"
 	},
@@ -9516,7 +9514,6 @@
 /obj/structure/table/wood/poker,
 /obj/effect/spawner/random/entertainment/money_small,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/grimy,
 /area/station/service/abandoned_gambling_den)
 "cVs" = (
@@ -9852,7 +9849,6 @@
 /turf/open/floor/iron/dark,
 /area/station/service/kitchen)
 "daa" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/maintenance{
 	name = "Service Maintenance"
 	},
@@ -12748,7 +12744,6 @@
 	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/duct,
@@ -15727,7 +15722,6 @@
 /area/station/command/teleporter)
 "eSB" = (
 /obj/effect/landmark/generic_maintenance_landmark,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
@@ -51398,9 +51392,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/structure/cable{
-	dir = 1
-	},
+/obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating{
 	dir = 4
@@ -53850,9 +53842,7 @@
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance{
 	dir = 8
 	},
-/obj/structure/cable{
-	dir = 8
-	},
+/obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/unres,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating{
@@ -68009,9 +67999,7 @@
 /obj/effect/mapping_helpers/airlock/access/any/service/bar{
 	dir = 8
 	},
-/obj/structure/cable{
-	dir = 8
-	},
+/obj/structure/cable,
 /obj/machinery/duct{
 	dir = 8
 	},
@@ -70342,9 +70330,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/port/lower)
 "uQx" = (
