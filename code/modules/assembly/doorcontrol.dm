@@ -67,7 +67,7 @@
 				8= shock (SHOCK)
 				16= door safties (SAFE)
 	*/
-	var/tmp/saved_unres_sides = NONE
+	var/tmp/list/saved_unres_sides
 
 /obj/item/assembly/control/airlock/activate()
 	if(cooldown)
@@ -98,11 +98,12 @@
 			if(specialfunctions & SAFE)
 				D.safe = !D.safe
 			if(specialfunctions & TOGGLE_UNRES)
-				if(saved_unres_sides)
-					D.unres_sides = saved_unres_sides
-					saved_unres_sides = NONE
+				var/airlock_key = REF(D)
+				if(LAZYACCESS(saved_unres_sides, airlock_key))
+					D.unres_sides = LAZYACCESS(saved_unres_sides, airlock_key)
+					LAZYREMOVE(saved_unres_sides, airlock_key)
 				else
-					saved_unres_sides = D.unres_sides
+					LAZYSET(saved_unres_sides, airlock_key, D.unres_sides)
 					D.unres_sides = NONE
 				D.update_appearance()
 
