@@ -290,12 +290,12 @@
 
 /obj/structure/mineral_door/plastic
 	name = "plastic door"
-	sheetType = /obj/item/stack/sheet/mineral/plastic
+	sheetType = /obj/item/stack/sheet/plastic
 	max_integrity = 100
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 	openSound = 'sound/effects/doorcreaky.ogg'
 	closeSound = 'sound/effects/doorcreaky.ogg'
-	close_delay = 2 SECONDS // when you push open the door and it swings back
+	close_delay = 2.4 SECONDS // when you push open the door, and it swings back
 
 /obj/structure/mineral_door/pickaxe_door(mob/living/user, obj/item/I)
 	return
