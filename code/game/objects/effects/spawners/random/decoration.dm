@@ -98,7 +98,6 @@
 	icon_state = "showcase"
 	loot = list(
 		/obj/structure/showcase/machinery/microwave,
-		/obj/structure/showcase/machinery/microwave_engineering,
 	)
 
 /obj/effect/spawner/random/decoration/glowstick

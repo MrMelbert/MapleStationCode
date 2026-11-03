@@ -4847,12 +4847,6 @@
 /obj/machinery/newscaster/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/science/auxlab)
-"biZ" = (
-/obj/machinery/microwave/engineering/cell_included,
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/break_room)
 "bja" = (
 /obj/machinery/vending/cigarette,
 /obj/machinery/camera/autoname/directional/west,
@@ -45848,6 +45842,13 @@
 	},
 /turf/open/floor/iron/dark/textured,
 /area/station/command/heads_quarters/ce)
+"lOX" = (
+/obj/structure/closet/secure_closet/personal,
+/obj/item/clothing/under/misc/assistantformal,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/shoes/winterboots,
+/turf/open/floor/iron/dark,
+/area/station/commons/locker)
 "lPb" = (
 /obj/structure/railing{
 	dir = 1
@@ -46813,12 +46814,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/science/genetics)
-"mbb" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/suit_storage_unit/medical,
-/obj/machinery/camera/autoname/directional/east,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/storage)
 "mbe" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/barricade/wooden{
@@ -60726,13 +60721,6 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/station/service/kitchen/coldroom)
-"pDL" = (
-/obj/structure/closet/secure_closet/personal,
-/obj/item/clothing/under/misc/assistantformal,
-/obj/item/clothing/suit/hooded/wintercoat,
-/obj/item/clothing/shoes/winterboots,
-/turf/open/floor/iron/dark,
-/area/station/commons/locker)
 "pDS" = (
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/white,
@@ -87712,6 +87700,13 @@
 	dir = 8
 	},
 /area/station/medical/chemistry)
+"wAt" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/suit_storage_unit/medical,
+/obj/machinery/camera/autoname/directional/east,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/east,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/storage)
 "wAz" = (
 /obj/machinery/vending/autodrobe,
 /obj/machinery/light_switch/directional/east,
@@ -89259,6 +89254,12 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/commons/dorms/apartment1)
+"wUp" = (
+/obj/machinery/microwave,
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/break_room)
 "wUu" = (
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
@@ -184988,7 +184989,7 @@ hLz
 hLz
 hLz
 hLz
-pDL
+lOX
 heC
 caP
 jjF
@@ -190143,7 +190144,7 @@ xZB
 ccU
 bOx
 hRd
-biZ
+wUp
 lcv
 aal
 xhf
@@ -193736,7 +193737,7 @@ nUa
 iRF
 scD
 fIU
-mbb
+wAt
 kiO
 kyO
 kAU

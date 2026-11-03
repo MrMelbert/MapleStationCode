@@ -1,4 +1,53 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"aaa" = (
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 10
+	},
+/obj/machinery/fax,
+/obj/machinery/newscaster/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/medical/storage)
+"aab" = (
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 8
+	},
+/obj/item/paper_bin{
+	pixel_y = -1;
+	pixel_x = -2
+	},
+/obj/item/pen,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/medical/storage)
+"aac" = (
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 9
+	},
+/obj/item/storage/box/triage_cards{
+	pixel_y = 2;
+	pixel_x = 0
+	},
+/obj/machinery/computer/security/telescreen/entertainment/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/medical/storage)
+"aad" = (
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 6
+	},
+/obj/structure/item_dispenser/latex{
+	pixel_x = -6;
+	pixel_y = -31
+	},
+/obj/structure/item_dispenser/mask{
+	pixel_y = -31;
+	pixel_x = 6
+	},
+/obj/structure/cable,
+/turf/open/floor/iron/white,
+/area/station/medical/storage)
 "aai" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -38500,19 +38549,6 @@
 /obj/structure/sign/warning/directional/west,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/ai_monitored/turret_protected/aisat/maint)
-"lBN" = (
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 8
-	},
-/obj/item/paper_bin{
-	pixel_y = -1;
-	pixel_x = -2
-	},
-/obj/item/pen,
-/obj/machinery/computer/security/telescreen/entertainment/directional/west,
-/turf/open/floor/iron/dark,
-/area/station/medical/storage)
 "lBP" = (
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/purple/fourcorners,
@@ -67294,21 +67330,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
-"tVd" = (
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 6
-	},
-/obj/structure/item_dispenser/latex{
-	pixel_x = -8;
-	pixel_y = -31
-	},
-/obj/structure/item_dispenser/mask{
-	pixel_y = -31;
-	pixel_x = 6
-	},
-/obj/structure/cable,
-/turf/open/floor/iron/white,
-/area/station/medical/storage)
 "tVf" = (
 /obj/structure/sign/warning/directional/north,
 /turf/open/space/basic,
@@ -69357,14 +69378,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
-"uCp" = (
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 10
-	},
-/obj/machinery/fax,
-/turf/open/floor/iron/dark,
-/area/station/medical/storage)
 "uCv" = (
 /obj/structure/sign/warning/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -80473,18 +80486,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/testlab)
-"xUw" = (
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/trimline/blue/filled/line{
-	dir = 9
-	},
-/obj/item/storage/box/triage_cards{
-	pixel_y = 2;
-	pixel_x = 0
-	},
-/obj/machinery/newscaster/directional/west,
-/turf/open/floor/iron/dark,
-/area/station/medical/storage)
 "xUx" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -184503,9 +184504,9 @@ lJV
 czg
 hmb
 nWc
-xUw
-lBN
-uCp
+aac
+aab
+aaa
 hmb
 qwT
 fLQ
@@ -185792,7 +185793,7 @@ tPE
 fYG
 ihA
 fYG
-tVd
+aad
 hmb
 ayy
 vFE

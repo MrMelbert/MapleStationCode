@@ -282,6 +282,14 @@
 	icon_state = "/obj/item/clothing/under/costume/buttondown/slacks/service"
 	greyscale_colors = "#EEEEEE#CBDBFC#17171B#222227"
 
+/obj/item/clothing/under/costume/buttondown/slacks/service/alt_style //automatically rolled up
+	adjusted = ALT_STYLE // for some reason this doesn't always work
+	flags_1 = parent_type::flags_1 | NO_NEW_GAGS_PREVIEW_1
+
+/obj/item/clothing/under/costume/buttondown/slacks/service/alt_style/Initialize(mapload)
+	. = ..()
+	adjust_to_alt()
+
 /obj/item/clothing/under/costume/buttondown/shorts
 	name = "button-down shirt with shorts"
 	desc = "A fancy button-down shirt with shorts."

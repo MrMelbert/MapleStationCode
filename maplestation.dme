@@ -12,6 +12,10 @@
 #define DEBUG
 // END_PREFERENCES
 
+#ifdef __DEMIR_BAKE__
+#define CBT
+#endif
+
 // BEGIN_INCLUDE
 #include "__odlint.dm"
 #include "_maps\_basemap.dm"
@@ -6423,6 +6427,7 @@
 #include "maplestation_modules\code\game\objects\items\tcg\tdatet.dm"
 #include "maplestation_modules\code\game\objects\spawners\cycle_helper.dm"
 #include "maplestation_modules\code\game\objects\spawners\random\contraband.dm"
+#include "maplestation_modules\code\game\objects\structures\cabinet.dm"
 #include "maplestation_modules\code\game\objects\structures\item_dispensers.dm"
 #include "maplestation_modules\code\game\objects\structures\pass_id_panel.dm"
 #include "maplestation_modules\code\game\objects\structures\stasis.dm"

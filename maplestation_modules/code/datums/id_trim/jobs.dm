@@ -19,7 +19,6 @@
 		ACCESS_MINERAL_STOREROOM,
 		ACCESS_RESEARCH,
 		ACCESS_SCIENCE,
-		ACCESS_TECH_STORAGE,
 	)
 	extra_access = list(
 		ACCESS_GENETICS,
@@ -28,6 +27,14 @@
 		ACCESS_ORDNANCE_STORAGE,
 		ACCESS_XENOBIOLOGY,
 	)
+
+/datum/id_trim/job/scientist/technician
+	assignment = "Scientific Technician"
+	honorifics = list("Researcher", "Technician")
+
+/datum/id_trim/job/scientist/technician/New()
+	. = ..()
+	minimal_access |= ACCESS_TECH_STORAGE
 
 /datum/id_trim/job/quartermaster
 	trim_state = "trim_quartermaster"

@@ -28790,6 +28790,7 @@
 	},
 /obj/effect/turf_decal/tile/blue/half,
 /obj/machinery/suit_storage_unit/medical,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/south,
 /turf/open/floor/iron/white/smooth_half,
 /area/station/medical/storage)
 "cmU" = (
