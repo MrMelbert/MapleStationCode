@@ -9,8 +9,12 @@
 	max_integrity = 100
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2)
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR
+	pass_flags = PASSTABLE
+	anchored_tabletop_offset = 6
+	drag_slowdown = 0.5
 
-	var/static/list/tippable_typecache = typecacheof(list(
+	/// Stuff that can fit in the jar
+	VAR_PRIVATE/static/list/tippable_typecache = typecacheof(list(
 		/obj/item/card,
 		/obj/item/cigarette,
 		/obj/item/cigbutt, // jerk!
@@ -29,45 +33,39 @@
 		/obj/item/trash, // jerk!
 	))
 
-	var/static/alist/pos_map = alist(
-		1 = list(-3, -7),
-		2 = list( 3, -7),
-		3 = list( 0, -6),
-		4 = list(-3, -5),
-		5 = list( 3, -5),
-		6 = list( 0, -4),
-		7 = list(-3, -3),
-		8 = list( 3, -3),
-		9 = list( 0, -2),
+	/// Where we position the items in the jar's contents visually on the sprite.
+	/// Index corresponds to the order of items in the contents list.
+	VAR_PRIVATE/static/list/vector/pos_map = list(
+		vector(-3, -7),
+		vector( 3, -7),
+		vector( 0, -6),
+		vector(-3, -5),
+		vector( 3, -5),
+		vector( 0, -4),
+		vector(-3, -3),
+		vector( 3, -3),
+		vector( 0, -2),
 	)
 
-	var/static/list/crack_states = list()
-
-	var/prefilled = FALSE
-
-	var/glass_type = /obj/item/stack/sheet/glass
-	var/shard_type = /obj/item/shard
+	/// If TRUE, we have a chance to spawn with some goodies inside
+	VAR_PROTECTED/prefilled = FALSE
 
 /obj/structure/tipjar/Initialize(mapload)
 	. = ..()
-	if(!length(crack_states))
-		for(var/i in 1 to 9)
-			crack_states += "crack[i]"
-
 	if(mapload)
 		set_anchored(TRUE)
 	if(prefilled)
-		if(prob(8))
+		if(prob(10))
 			for(var/i in 1 to rand(1, 4))
 				new /obj/effect/spawner/random/entertainment/coin(src)
-		if(prob(4))
+		if(prob(10))
 			for(var/i in 1 to rand(1, 3))
 				new /obj/effect/spawner/random/entertainment/money_small(src)
-		if(prob(1))
+		if(prob(2))
 			for(var/i in 1 to rand(1, 2))
 				new /obj/effect/spawner/random/entertainment/money(src)
 
-	AddElement(/datum/element/crackable, 'icons/obj/pipes_n_cables/stationary_canisters.dmi', crack_states)
+	AddElement(/datum/element/crackable)
 	update_appearance()
 
 /obj/structure/tipjar/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -87,17 +85,13 @@
 	. = ..()
 	var/list/all_things = list()
 	for(var/obj/item/thing in src)
-		all_things["\A [thing]"] += 1
+		all_things[thing.name] += 1
 
-	for(var/thing_name in all_things)
-		if(all_things[thing_name] > 1)
-			// we have to remove the "an" or "some" and pluralize it ourselves
-			var/list/split_name = splittext(thing_name, " ")
-			var/reformatted_name = jointext(split_name, " ", 2)
-			all_things += "[all_things[thing_name]] [reformatted_name][plural_s(reformatted_name)]"
-			all_things -= thing_name
+	var/list/all_things_text = list()
+	for(var/thing_name, thing_count in all_things)
+		all_things_text += thing_count > 1 ? "[thing_count] [thing_name][plural_s(thing_name)]" : "\a [thing_name]"
 
-	. += span_info("Inside, you can see: [english_list(all_things)].")
+	. += span_info("Inside, you can see: [english_list(all_things_text)].")
 
 /obj/structure/tipjar/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -118,7 +112,7 @@
 		span_notice("[user] starts fishing around in [src]..."),
 		span_notice("You start fishing around in [src]..."),
 	)
-	Shake(1, 1, 5 SECONDS, 0.1 SECONDS)
+	Shake(1, 1, 5 SECONDS, 0.5 SECONDS)
 	if(!do_after(user, 5 SECONDS, src) || !length(contents))
 		animate(src)
 		pixel_x = base_pixel_x
@@ -133,8 +127,9 @@
 	user.put_in_hands(fished_out)
 
 /obj/structure/tipjar/dump_contents()
+	var/atom/droploc = drop_location()
 	for(var/obj/item/thing in src)
-		thing.forceMove(drop_location())
+		thing.forceMove(droploc)
 		thing.pixel_x += rand(-4, 4)
 		thing.pixel_y += rand(-4, 4)
 
@@ -144,12 +139,11 @@
 
 /obj/structure/tipjar/atom_deconstruct(disassembled = TRUE)
 	if(disassembled)
-		new glass_type(drop_location(), SHEET_MATERIAL_AMOUNT * 2)
+		drop_custom_materials()
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	else
-		for(var/i in 1 to 2)
-			new shard_type(drop_location())
-		playsound(src, SFX_SHATTER, 50, TRUE)
+		drop_material_shards()
+		playsound(src, /datum/sound_effect/shatter, 50, TRUE)
 
 /obj/structure/tipjar/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', 70, TRUE)
@@ -188,8 +182,8 @@
 		content_overlay.transform = content_overlay.transform.Scale(0.5)
 		content_overlay.pixel_x = 0
 		content_overlay.pixel_y = 0
-		content_overlay.pixel_w = pos_map[i][1]
-		content_overlay.pixel_z = pos_map[i][2]
+		content_overlay.pixel_w = pos_map[i].x
+		content_overlay.pixel_z = pos_map[i].y
 		content_overlay.layer = FLOAT_LAYER
 		content_overlay.plane = FLOAT_PLANE
 
@@ -201,5 +195,6 @@
 /obj/structure/tipjar/plasma
 	max_integrity = 300
 	custom_materials = list(/datum/material/alloy/plasmaglass = SHEET_MATERIAL_AMOUNT * 2)
-	glass_type = /obj/item/stack/sheet/plasmaglass
-	shard_type = /obj/item/shard/plasma
+
+/obj/structure/tipjar/plasma/prefilled
+	prefilled = TRUE
