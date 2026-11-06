@@ -1,5 +1,6 @@
 /datum/component/infective
 	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
+	can_transfer = TRUE
 	var/list/datum/disease/diseases //make sure these are the static, non-processing versions!
 	var/expire_time
 	var/required_clean_types = CLEAN_TYPE_DISEASE
@@ -40,6 +41,10 @@
 /datum/component/infective/Destroy()
 	QDEL_LIST(diseases)
 	return ..()
+
+/datum/component/infective/PostTransfer()
+	if(!ismovable(parent))
+		return COMPONENT_INCOMPATIBLE
 
 /datum/component/infective/RegisterWithParent()
 	if(is_weak && isitem(parent))

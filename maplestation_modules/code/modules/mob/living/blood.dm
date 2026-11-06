@@ -180,6 +180,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			if(!QDELETED(splatter) && !splatter.dried)
 				splatter.add_blood_DNA(dna)
 				splatter.adjust_bloodiness(new_blood)
+				splatter.add_viruses(viruses)
 				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				return splatter
 
