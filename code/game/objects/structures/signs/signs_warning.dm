@@ -229,3 +229,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/warning/pods, 32)
 	icon_state = "radshelter"
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/warning/rad_shelter, 32)
+
+/obj/structure/sign/warning/exitonly
+	name = "\improper EXIT ONLY sign"
+	sign_change_name = "Warning - Exit Only"
+	desc = "A warning sign which reads 'EXIT ONLY', \
+		indicating that you probably should not be entering through this way."
+	icon = 'maplestation_modules/icons/obj/signs.dmi'
+	icon_state = "exitonly"
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/warning/exitonly, 32)
+
+/obj/structure/sign/warning/exitonly/emergency_exit
+	name = "\improper EMERGENCY EXIT sign"
+	sign_change_name = "Warning - Emergency Exit"
+	desc = "A warning sign which reads 'EMERGENCY EXIT', \
+		indicating that you probably should not be using this door unless it's an actual emergency."
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/warning/exitonly/emergency_exit, 32)
