@@ -33,11 +33,16 @@
 	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	speech_span = null
 
+	chat_color = "#8f33ff"
+	chat_color_darkened = "#8f33ff"
+
 	var/datum/mind/bound_mind
 	var/level_of_attunement = NO_ATTUNEMENT_LEVEL
+	var/forced_low_attack = FALSE
 
 /obj/item/melee/olivia_blade/Initialize(mapload)
 	. = ..()
+	GLOB.forced_runechat_names[name] = chat_color
 	AddComponent(/datum/component/jousting)
 	AddComponent(/datum/component/butchering, \
 		speed = 3 SECONDS, \
@@ -61,7 +66,7 @@
 	update_appearance()
 
 /obj/item/melee/olivia_blade/proc/modify_stats_with_attunement(mob/living/user)
-	if(check_user_low_mana(user))
+	if(check_user_low_mana(user) || forced_low_attack)
 		force = initial(force)
 		armour_penetration = initial(armour_penetration)
 		wound_bonus = initial(wound_bonus)
@@ -106,6 +111,9 @@
 
 /obj/item/melee/olivia_blade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
 	. = ..()
+	if(ismob(target) && level_of_attunement != NO_ATTUNEMENT_LEVEL)
+		var/mob/mob_target = target
+		forced_low_attack = mob_target.can_block_magic()
 	modify_stats_with_attunement(user)
 
 // THATS RIGHT ITS THE BASEBALL BAT KNOCKBACK
@@ -114,11 +122,12 @@
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
 	. = ..()
-	if(HAS_TRAIT(user, TRAIT_PACIFISM) || level_of_attunement != FULL_ATTUNEMENT_LEVEL || check_user_low_mana(user))
-		return
-	else if(!QDELETED(target) && !target.anchored)
-		var/whack_speed = (prob(60) ? 1 : 3)
-		target.throw_at(throw_target, rand(1, 2), whack_speed, user, gentle = FALSE) // we are NOT gentle
+	if(!HAS_TRAIT(user, TRAIT_PACIFISM) && level_of_attunement == FULL_ATTUNEMENT_LEVEL && !check_user_low_mana(user) && !forced_low_attack)
+		if(!QDELETED(target) && !target.anchored)
+			var/whack_speed = (prob(60) ? 1 : 3)
+			target.throw_at(throw_target, rand(1, 2), whack_speed, user, gentle = FALSE) // we are NOT gentle
+	forced_low_attack = FALSE
+	modify_stats_with_attunement(user) // attacking someone that has anti-magic will mess up our block chance if this isnt here
 
 /obj/item/melee/olivia_blade/on_exit_storage(datum/storage/container)
 	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
