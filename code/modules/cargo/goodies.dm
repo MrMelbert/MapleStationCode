@@ -4,6 +4,8 @@
 	group = "Goodies"
 	goody = TRUE
 	discountable = SUPPLY_PACK_STD_DISCOUNTABLE
+	/// If true, can't be ordered on green alert, used for things like armory weapons
+	var/restricted_green = FALSE
 
 /datum/supply_pack/goody/clear_pda
 	name = "Mint Condition Nanotrasen Clear PDA"
@@ -45,6 +47,7 @@
 	cost = PAYCHECK_COMMAND * 2.5
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/grenade/stingbang)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/Survivalknives_single
 	name = "Survival Knife Single-Pack"
@@ -61,6 +64,7 @@
 		/obj/item/gun/ballistic/shotgun/automatic/combat,
 		/obj/item/storage/belt/bandolier
 	)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/disabler_single
 	name = "Disabler Single-Pack"
@@ -75,6 +79,7 @@
 	cost = PAYCHECK_COMMAND * 12
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/e_gun)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/laser_single
 	name = "Type 5 Laser Gun Single-Pack"
@@ -82,6 +87,7 @@
 	cost = PAYCHECK_COMMAND * 6
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/laser)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/carbine_single
 	name = "Type 5R Laser Carbine Single_Pack"
@@ -89,6 +95,7 @@
 	cost = PAYCHECK_COMMAND * 8
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/laser/carbine)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/laser_pistol_single
 	name = "Type 5C Laser Pistol Single-Pack"
@@ -96,6 +103,7 @@
 	cost = PAYCHECK_COMMAND * 2
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/storage/belt/holster/energy/laser_pistol)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/laser_single_soul
 	name = "Type 3 Laser Gun Single-Pack"
@@ -103,13 +111,15 @@
 	cost = PAYCHECK_COMMAND * 6
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/laser/soul)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/smg_single
-	name = "Disabler SMG Single_Pack"
+	name = "Disabler SMG Single-Pack"
 	desc = "Contains one disabler SMGs, capable of rapidly firing weak disabler beams."
 	cost = PAYCHECK_COMMAND * 6
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/gun/energy/disabler/smg)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/hell_single
 	name = "Hellgun Kit Single-Pack"
@@ -117,6 +127,7 @@
 	cost = PAYCHECK_CREW * 2
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/weaponcrafting/gunkit/hellgun)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/thermal_single
 	name = "Thermal Pistol Holster Single-Pack"
@@ -124,6 +135,7 @@
 	cost = PAYCHECK_COMMAND * 15
 	access_view = ACCESS_WEAPONS
 	contains = list(/obj/item/storage/belt/holster/energy/thermal)
+	restricted_green = TRUE
 
 /datum/supply_pack/goody/sologamermitts
 	name = "Insulated Gloves Single-Pack"

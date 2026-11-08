@@ -177,6 +177,11 @@ SUBSYSTEM_DEF(shuttle)
 		else if(pack.access_view)
 			pack.desc += " Requires [SSid_access.get_access_desc(pack.access_view)] access to purchase."
 
+		if(pack.goody)
+			var/datum/supply_pack/goody/goody_to_check = pack
+			if(goody_to_check.restricted_green)
+				pack.desc += " Requires an alert level above [/datum/security_level/green::name] alert to purchase."
+
 		supply_packs[pack.id] = pack
 
 	for (var/obj/machinery/computer/cargo/express/console as anything in express_consoles)
