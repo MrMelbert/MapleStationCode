@@ -6704,6 +6704,7 @@
 #include "maplestation_modules\code\modules\mob\living\sprint.dm"
 #include "maplestation_modules\code\modules\mob\living\basic\medbots.dm"
 #include "maplestation_modules\code\modules\mob\living\basic\space_fauna\hivebot\_hivebot.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\blood_scribe.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\human.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\modular_sechud_icons.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\skrell_hair.dm"
