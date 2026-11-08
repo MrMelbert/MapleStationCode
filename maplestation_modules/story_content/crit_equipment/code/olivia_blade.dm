@@ -1,6 +1,10 @@
 /// Used for unlocking the second level of /obj/item/melee/olivia_blade 's psychic effects
 #define TRAIT_SWORD_PSIONIC "sword_psionic"
 
+#define NO_ATTUNEMENT_LEVEL 0
+#define SOME_ATTUNEMENT_LEVEL 1
+#define FULL_ATTUNEMENT_LEVEL 2
+
 /obj/item/melee/olivia_blade
 	name = "ornate psi-blade"
 	desc = "An incredibly ornate psionic blade. It's somewhat heavy."
@@ -30,6 +34,7 @@
 	speech_span = null
 
 	var/datum/mind/bound_mind
+	var/level_of_attunement = NO_ATTUNEMENT_LEVEL
 
 /obj/item/melee/olivia_blade/Initialize(mapload)
 	. = ..()
@@ -43,32 +48,65 @@
 
 /// Checks psychic traits of the user, either no psychic, psychic or the special super psychic kind
 /obj/item/melee/olivia_blade/proc/check_psychic_effects(obj/item/source, mob/user, slot)
-	if(HAS_TRAIT(user, TRAIT_FULL_PSIONIC))
-		force = 25
-		armour_penetration = 50
-		wound_bonus = 20
-		block_chance = 50
 	if(HAS_TRAIT(user, TRAIT_SWORD_PSIONIC))
-		// just overwrite everything from the previous one
-		force = 35
-		armour_penetration = 0
-		wound_bonus = 40
-		block_chance = 60
-		sharpness = NONE
-		attack_verb_continuous = list("beats", "smacks")
-		attack_verb_simple = list("beat", "smack")
-		hitsound = 'sound/weapons/resonator_blast.ogg'
+		level_of_attunement = FULL_ATTUNEMENT_LEVEL
+	else if(HAS_TRAIT(user, TRAIT_FULL_PSIONIC))
+		level_of_attunement = SOME_ATTUNEMENT_LEVEL
+	modify_stats_with_attunement(user) // needed here for the block chance to update properly
 	update_appearance()
 
 /obj/item/melee/olivia_blade/proc/remove_psychic_effects(obj/item/source, mob/user)
-	force = initial(force)
-	armour_penetration = initial(armour_penetration)
-	wound_bonus = initial(wound_bonus)
-	sharpness = initial(sharpness)
-	attack_verb_continuous = initial(attack_verb_continuous)
-	attack_verb_simple = initial(attack_verb_simple)
-	hitsound = initial(hitsound)
+	level_of_attunement = NO_ATTUNEMENT_LEVEL
+	modify_stats_with_attunement(user)
 	update_appearance()
+
+/obj/item/melee/olivia_blade/proc/modify_stats_with_attunement(mob/living/user)
+	if(check_user_low_mana(user))
+		force = initial(force)
+		armour_penetration = initial(armour_penetration)
+		wound_bonus = initial(wound_bonus)
+		block_chance = initial(block_chance)
+		sharpness = initial(sharpness)
+		attack_verb_continuous = initial(attack_verb_continuous)
+		attack_verb_simple = initial(attack_verb_simple)
+		hitsound = initial(hitsound)
+	else
+		switch(level_of_attunement)
+			if(NO_ATTUNEMENT_LEVEL)
+				force = initial(force)
+				armour_penetration = initial(armour_penetration)
+				wound_bonus = initial(wound_bonus)
+				block_chance = initial(block_chance)
+				sharpness = initial(sharpness)
+				attack_verb_continuous = initial(attack_verb_continuous)
+				attack_verb_simple = initial(attack_verb_simple)
+				hitsound = initial(hitsound)
+			if(SOME_ATTUNEMENT_LEVEL)
+				force = 25
+				armour_penetration = 50
+				wound_bonus = 20
+				block_chance = 50
+				sharpness = initial(sharpness)
+				attack_verb_continuous = initial(attack_verb_continuous)
+				attack_verb_simple = initial(attack_verb_simple)
+				hitsound = initial(hitsound)
+			if(FULL_ATTUNEMENT_LEVEL)
+				force = 35
+				armour_penetration = 0
+				wound_bonus = 40
+				block_chance = 60
+				sharpness = NONE
+				attack_verb_continuous = list("beats", "smacks")
+				attack_verb_simple = list("beat", "smack")
+				hitsound = 'sound/weapons/resonator_blast.ogg'
+
+// returns true if we're low, dont get it twisted
+/obj/item/melee/olivia_blade/proc/check_user_low_mana(mob/living/user)
+	return user.mana_pool.amount <= (user.mana_pool.softcap * 0.1) // the same as "very low mana"
+
+/obj/item/melee/olivia_blade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	. = ..()
+	modify_stats_with_attunement(user)
 
 // THATS RIGHT ITS THE BASEBALL BAT KNOCKBACK
 /obj/item/melee/olivia_blade/attack(mob/living/target, mob/living/user)
@@ -76,7 +114,7 @@
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
 	. = ..()
-	if(HAS_TRAIT(user, TRAIT_PACIFISM) || !HAS_TRAIT(user, TRAIT_SWORD_PSIONIC))
+	if(HAS_TRAIT(user, TRAIT_PACIFISM) || level_of_attunement != FULL_ATTUNEMENT_LEVEL || check_user_low_mana(user))
 		return
 	else if(!QDELETED(target) && !target.anchored)
 		var/whack_speed = (prob(60) ? 1 : 3)
@@ -91,7 +129,7 @@
 /obj/item/melee/olivia_blade/update_overlays()
 	. = ..()
 
-	if(force >= 25)
+	if(level_of_attunement >= SOME_ATTUNEMENT_LEVEL)
 		. += mutable_appearance(icon, "psi_effect", layer = layer + 0.1)
 
 /obj/item/melee/olivia_blade/ui_action_click(mob/user, actiontype)
@@ -132,7 +170,7 @@
 	if(!bound_blade) // some admin's messin' with me here
 		return
 
-	var/message = tgui_input_text(owner, "What do you want to say as [bound_blade]?", "[src]")
+	var/message = tgui_input_text(owner, "What do you want to say as [bound_blade]?", "[src]", encode = FALSE)
 	if(!message)
 		return
 
@@ -158,6 +196,7 @@
 /obj/item/storage/belt/olivia_blade_sheath/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
+	RegisterSignal(src, COMSIG_ATOM_REMOVED_ITEM, PROC_REF(remove_blade_action))
 
 	atom_storage.max_slots = 1
 	atom_storage.rustle_sound = FALSE
@@ -166,6 +205,29 @@
 	atom_storage.click_alt_open = FALSE
 	atom_storage.locked = STORAGE_FULLY_LOCKED
 	update_appearance()
+
+// very janky
+/obj/item/storage/belt/olivia_blade_sheath/equipped(mob/user, slot, initial)
+	if(slot & ITEM_SLOT_BELT && istype(contents[1], /obj/item/melee/olivia_blade))
+		var/obj/item/melee/olivia_blade/I = contents[1]
+		I.give_item_action(I.actions[1], user, slot)
+	return ..()
+
+/obj/item/storage/belt/olivia_blade_sheath/proc/remove_blade_action(obj/item/source, obj/item/item_removed, atom/remove_loc, silent)
+	if(!ismob(loc))
+		return
+	var/mob/owner = loc
+	if(istype(item_removed, /obj/item/melee/olivia_blade))
+		for(var/datum/action/action_item_has as anything in item_removed.actions)
+			action_item_has.Remove(owner)
+
+/obj/item/storage/belt/olivia_blade_sheath/dropped(mob/user, silent)
+	. = ..()
+	if(istype(contents[1], /obj/item/melee/olivia_blade))
+		var/obj/item/melee/olivia_blade/I = contents[1]
+		for(var/datum/action/action_item_has as anything in I.actions)
+			action_item_has.Remove(user)
+// big block of jank done with
 
 /obj/item/storage/belt/olivia_blade_sheath/examine(mob/user)
 	. = ..()
@@ -233,3 +295,7 @@
 /obj/item/storage/belt/olivia_blade_sheath/PopulateContents()
 	new /obj/item/melee/olivia_blade(src)
 	update_appearance()
+
+#undef NO_ATTUNEMENT_LEVEL
+#undef SOME_ATTUNEMENT_LEVEL
+#undef FULL_ATTUNEMENT_LEVEL
