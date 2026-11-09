@@ -769,6 +769,14 @@
 /obj/item/radio/headset/silicon/ai/get_radio_icon()
 	return default_intercom_icon()
 
+/obj/item/radio/implant
+	name = "internal radio"
+	canhear_range = 0
+
+/obj/item/radio/implant/get_radio_icon()
+	CACHED_ICON(cached_headset, 'icons/obj/clothing/headsets.dmi', "headset")
+	return cached_headset
+
 #undef CACHED_ICON
 
 #undef RADIO_X_OFFSET
