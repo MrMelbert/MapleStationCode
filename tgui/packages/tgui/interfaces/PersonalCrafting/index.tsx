@@ -128,7 +128,6 @@ export function PersonalCrafting(props: any) {
 
   function categoryMatch(recipe: Recipe): boolean {
     if (tabMode === TABS.material) {
-      if (!recipe.reqs) return false;
       return Object.keys(recipe.reqs).includes(activeMaterial);
     } else if (tabMode === TABS.category) {
       if (activeCategory === 'Can Make') {
