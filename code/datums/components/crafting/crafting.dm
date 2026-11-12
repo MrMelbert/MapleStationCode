@@ -614,38 +614,36 @@
 	if(recipe.non_craftable)
 		data["non_craftable"] = recipe.non_craftable
 	data["mass_craftable"] = recipe.mass_craftable
-	if(recipe.steps)
-		data["steps"] = recipe.steps
+	data["steps"] = recipe.steps
 
 	// Tools
-	if(recipe.tool_behaviors)
-		data["tool_behaviors"] = recipe.tool_behaviors
-	if(recipe.tool_paths)
+	data["tool_behaviors"] = recipe.tool_behaviors
+	if(LAZYLEN(recipe.tool_paths))
 		data["tool_paths"] = list()
 		for(var/req_atom in recipe.tool_paths)
 			data["tool_paths"] += datums.Find(req_atom)
 
 	// Machinery
-	if(recipe.machinery)
+	if(LAZYLEN(recipe.machinery))
 		data["machinery"] = list()
 		for(var/req_atom in recipe.machinery)
 			data["machinery"] += datums.Find(req_atom)
 
 	// Structures
-	if(recipe.structures)
+	if(LAZYLEN(recipe.structures))
 		data["structures"] = list()
 		for(var/req_atom in recipe.structures)
 			data["structures"] += datums.Find(req_atom)
 
 	// Ingredients / Materials
-	if(recipe.reqs.len)
-		data["reqs"] = list()
+	data["reqs"] = list()
+	if(length(recipe.reqs))
 		for(var/req_atom in recipe.reqs)
 			var/id = datums.Find(req_atom)
 			data["reqs"]["[id]"] = recipe.reqs[req_atom]
 
 	// Catalysts
-	if(recipe.chem_catalysts.len)
+	if(LAZYLEN(recipe.chem_catalysts))
 		data["chem_catalysts"] = list()
 		for(var/req_atom in recipe.chem_catalysts)
 			var/id = datums.Find(req_atom)
