@@ -12,7 +12,6 @@ import {
   NumberInput,
   Section,
   Stack,
-  Stack,
 } from 'tgui-core/components';
 import { numberOfDecimalDigits, toFixed } from 'tgui-core/math';
 
@@ -24,7 +23,6 @@ const FilterIntegerEntry = (props) => {
   const { act } = useBackend();
   return (
     <NumberInput
-      tickWhileDragging
       value={value || 0}
       minValue={-500}
       maxValue={500}
@@ -51,7 +49,6 @@ const FilterFloatEntry = (props) => {
   return (
     <>
       <NumberInput
-        tickWhileDragging
         value={value || 0}
         minValue={-500}
         maxValue={500}
@@ -307,12 +304,15 @@ const FilterMatrixEntry = (props) => {
         selected={matrix.length}
         options={matrix_sizes.map((size) => `${size} elements`)}
         onSelected={(option) =>
-          matrix.length === parseInt(option.split(' '))
+          matrix.length === parseInt(option.split(' '), 10)
             ? null
             : act('modify_filter_value', {
                 name: filterName,
                 new_data: {
-                  [name]: resize_matrix(matrix, parseInt(option.split(' '))),
+                  [name]: resize_matrix(
+                    matrix,
+                    parseInt(option.split(' '), 10),
+                  ),
                 },
               })
         }
@@ -351,7 +351,7 @@ const FilterMatrixEntry = (props) => {
 };
 
 const FilterDataEntry = (props) => {
-  const { name, value, hasValue, filterName } = props;
+  const { name, value, hasValue, filterName, filterType } = props;
 
   const filterEntryTypes = {
     int: <FilterIntegerEntry {...props} />,
@@ -361,8 +361,6 @@ const FilterDataEntry = (props) => {
     icon: <FilterIconEntry {...props} />,
     flags: <FilterFlagsEntry {...props} />,
     options: <FilterOptionsEntry {...props} />,
-    transform: <FilterTransformEntry {...props} />,
-    matrix: <FilterMatrixEntry {...props} />,
     transform: <FilterTransformEntry {...props} />,
     matrix: <FilterMatrixEntry {...props} />,
     plug: 'Not Implemented',
@@ -376,17 +374,16 @@ const FilterDataEntry = (props) => {
     flags: 'flags',
     size: 'float',
     color: { default: 'color', color: 'matrix' },
-    color: { default: 'color', color: 'matrix' },
     offset: 'float',
-    radius: 'float',
+    radius: 'int',
     falloff: 'float',
     density: 'int',
-    threshold: 'float',
+    alpha: 'int',
+    threshold: { rays: 'float', bloom: 'color' },
     factor: 'float',
     repeat: 'int',
     space: 'options',
     blend_mode: 'options',
-    transform: 'transform',
     transform: 'transform',
   };
 
@@ -398,7 +395,10 @@ const FilterDataEntry = (props) => {
 
   return (
     <LabeledList.Item label={name}>
-      {filterEntryTypes[filterEntryMap[name]] || 'Not Found (This is an error)'}{' '}
+      <Box inline>
+        {filterEntryTypes[filterInputType] ||
+          'Not Found (This is an error)'}{' '}
+      </Box>
       {!hasValue && (
         <Box inline color="average">
           (Default)
@@ -475,7 +475,6 @@ const FilterEntry = (props) => {
 };
 
 export const Filterrific = (props) => {
-export const Filterrific = (props) => {
   const { act, data } = useBackend();
   const name = data.target_name || 'Unknown Object';
   const filters = data.target_filter_data || {};
@@ -485,7 +484,6 @@ export const Filterrific = (props) => {
   const [hiddenSecret, setHiddenSecret] = useState(false);
 
   return (
-    <Window title="Filterrific" width={500} height={500}>
     <Window title="Filterrific" width={500} height={500}>
       <Window.Content scrollable>
         <NoticeBox danger>
@@ -536,7 +534,11 @@ export const Filterrific = (props) => {
             <Box>No filters</Box>
           ) : (
             map(filters, (entry, key) => (
-              <FilterEntry filterDataEntry={entry} name={key} key={key} />
+              <FilterEntry
+                filterDataEntry={entry}
+                name={entry.name}
+                key={entry.name}
+              />
             ))
           )}
         </Section>
