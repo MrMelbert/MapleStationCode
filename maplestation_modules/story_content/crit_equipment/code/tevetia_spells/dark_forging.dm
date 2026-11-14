@@ -63,10 +63,10 @@
 	name = "dark forged weapon"
 	desc = "A weapon shaped from darkness. This description is also a placeholder. god dammit"
 	icon = 'maplestation_modules/story_content/crit_equipment/icons/dark_forging.dmi'
-	icon_state = "axe"
-	inhand_icon_state = "sabre"
-	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
+	icon_state = "halberd"
+	inhand_icon_state = "halberd"
+	lefthand_file = 'maplestation_modules/story_content/crit_equipment/icons/dark_forging_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/crit_equipment/icons/dark_forging_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("slashes", "cuts")
 	attack_verb_simple = list("slash", "cut")
@@ -80,9 +80,10 @@
 	name = "dark forged lance"
 	desc = "A lance formed by darkness. It can be used to lunge at enemies or be thrown for massive damage."
 	icon_state = "lance"
+	inhand_icon_state = "lance"
 	sharpness = SHARP_POINTY
 	force = 25
-	throwforce = 50
+	throwforce = 75 // Keep in mind you've only got one shot at this
 	throw_speed = 4
 	throw_range = 12
 	tk_throw_range = 3 // thing's heavy
@@ -105,6 +106,7 @@
 	name = "dark forged dagger"
 	desc = "A knife made from the shadows by a masterful caster. It can be used to rapidly inflict wounds on a target."
 	icon_state = "dagger"
+	inhand_icon_state = "dagger"
 	sharpness = SHARP_EDGED
 	force = 18
 	wound_bonus = 50
@@ -114,7 +116,8 @@
 /obj/item/melee/dark_forged/halberd
 	name = "dark forged halberd"
 	desc = "A halberd made from darkness. Using it well, you can easily counter any reckless attack."
-	icon_state = "axe"
+	icon_state = "halberd"
+	inhand_icon_state = "halberd"
 	sharpness = SHARP_EDGED
 	force = 30
 	block_chance = 50
@@ -140,6 +143,7 @@
 	name = "dark forged shield"
 	desc = "A shield of shadows. It seems to shape and morph to protect you from attacks you might not have seen coming. The sun, moon and the star are present in the shield's design."
 	icon_state = "shield"
+	inhand_icon_state = "shield"
 	force = 10
 	block_chance = 75
 
@@ -148,6 +152,7 @@
 	name = "dark forged blade"
 	desc = "A masterfully shaped blade, yet made out of nothing but disposable shadow. Takes a greater effort to manifest, but is much more powerful."
 	icon_state = "sword"
+	inhand_icon_state = "sword"
 	sharpness = SHARP_EDGED
 	force = 40
 	armour_penetration = 75

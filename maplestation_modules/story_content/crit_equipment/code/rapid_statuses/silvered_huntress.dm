@@ -8,7 +8,7 @@
 
 /datum/story_rapid_status/silvered_huntress/apply(mob/living/carbon/human/selected)
 	var/list/datum/action/cooldown/spell/spells_to_grant = list(
-		/datum/action/cooldown/spell/smoke/tevetia,
+		/datum/action/cooldown/spell/smoke/hunter_smoke,
 		/datum/action/cooldown/spell/conjure_item/dark_forging,
 	)
 
@@ -30,6 +30,8 @@
 	strengthen(selected, BODY_ZONE_R_LEG)
 
 	ADD_TRAIT(selected, TRAIT_SLEEPIMMUNE, REF(selected)) //needed to prevent chem cheese using wellcheers and sulfonal
+	ADD_TRAIT(selected, TRAIT_TRUE_NIGHT_VISION, REF(selected))
+	selected.update_sight()
 
 	return TRUE
 
