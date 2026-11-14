@@ -1,5 +1,6 @@
 /datum/story_rapid_status/lunar_judge
 	name = "Lunar Judge"
+	selectable = FALSE // Deprecated
 
 /datum/story_rapid_status/lunar_judge/apply(mob/living/carbon/human/selected)
 	var/list/datum/action/cooldown/spell/spells_to_grant = list(

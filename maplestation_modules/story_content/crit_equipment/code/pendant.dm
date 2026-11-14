@@ -1,3 +1,6 @@
+// DEPRECATED
+// Might become a "trophy" item but im not sure how you'd obtain it
+
 /obj/item/clothing/neck/annatto_pendant
 	name = "orange-blue pendant"
 	desc = "A orange and blue swirl pendant with a purple chain made of obsidian-like material. It seems like it can open."

@@ -1,9 +1,12 @@
+// version of the lazy template loader with story maps instead
+// define a subtype of '/datum/lazy_template/story' to use
+
 /datum/lazy_template/story
 	map_dir = "maplestation_modules/story_content/_maps/templates/lazy_templates"
 	// The name of the map that's shown to the user
 	var/shown_map_name
 
-// version of the lazy template loader with story maps instead
+
 ADMIN_VERB(load_story_lazy_template, R_ADMIN, "Load/Jump Story Lazy Template", "Loads a lazy template and/or jumps to it.", ADMIN_CATEGORY_EVENTS)
 	var/list/choices = new()
 	for(var/datum/lazy_template/story/template as anything in subtypesof(/datum/lazy_template/story))

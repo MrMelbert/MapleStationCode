@@ -1,3 +1,5 @@
+// Semi-deprecated as this requires too many mechanics for like a one-time thing of a massive Library of Ruina reference
+
 /area/grand_library
 	name = "Grand Library"
 	icon = 'maplestation_modules/story_content/crit_equipment/icons/areas_library.dmi'

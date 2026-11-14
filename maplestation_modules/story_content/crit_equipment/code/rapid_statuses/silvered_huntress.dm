@@ -1,3 +1,6 @@
+// Semi boss-fight time!
+// A lot of innate resistances because of longer round lengths, greater crew organization and less "murderbone" meaning they're likely going to get hit by like 5+ people with guns
+// and maybe even a mech who knows
 /datum/story_rapid_status/silvered_huntress
 	name = "The Silvered Huntress"
 	selectable = TRUE

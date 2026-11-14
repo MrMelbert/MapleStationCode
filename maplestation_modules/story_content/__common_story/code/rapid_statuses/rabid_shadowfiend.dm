@@ -1,3 +1,4 @@
+// Essentially a wacko world version of what a shadowperson could have that isnt nightmare things
 /datum/story_rapid_status/rabid_shadowfiend
 	name = "Rabid Shadowfiend"
 
@@ -27,7 +28,7 @@
 	selected_arm.unarmed_effectiveness = effectiveness
 	selected_arm.appendage_noun = "clawed hand"
 
-
+// Really only has shadow steel added, but that's significant enough to be its own type
 /datum/story_rapid_status/rabid_shadowfiend/strong
 	name = "Rabid Shadowfiend (Strong)"
 

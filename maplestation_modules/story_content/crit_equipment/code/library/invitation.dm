@@ -1,3 +1,5 @@
+// Semi-deprecated as this requires too many mechanics for like a one-time thing of a massive Library of Ruina reference
+
 /obj/item/grand_library_invitation
 	name = "\improper Grand Library Invitation"
 	desc = "If you see this, somebody messed up and didn't use the proper subtype."

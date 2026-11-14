@@ -1,3 +1,4 @@
+//ice knife variant but instead its darkness so it makes a black knife *music starts playing*
 /datum/action/cooldown/spell/conjure_item/ice_knife/shadow_knife
 	name = "Shadow Knife"
 	desc = "Summon a temporary knife from pure shadow."

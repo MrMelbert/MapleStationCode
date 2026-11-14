@@ -1,3 +1,4 @@
+// Version of Furious Steel with only two, weaker knives
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/shadow_steel
 	name = "Shadow Steel"
 	desc = "Summon two shadow blades which orbit you. \
@@ -12,7 +13,6 @@
 
 	active_msg = "You summon forth two blades from darkness."
 	deactive_msg = "You conceal your black blades."
-	cast_range = 20
 	projectile_type = /obj/projectile/shadow_steel
 	projectile_amount = 2
 

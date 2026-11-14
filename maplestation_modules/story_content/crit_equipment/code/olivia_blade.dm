@@ -1,3 +1,10 @@
+// Super powerful psi-blade that requires attunement aka psionic followed by a special trait
+// The sword can be bound onto someone with the trait to allow it to talk
+// Sword with the trait on a level somewhere above e-sword but below the types of things a near-ascension blade path heretic or wizard could do
+// also has a counter in the form of requiring mana for the strong attacks
+
+// Also includes a sheath that it comes in, sheath is by default locked and requires a spell (meant to be on another person) to unlock
+
 /// Used for unlocking the second level of /obj/item/melee/olivia_blade 's psychic effects
 #define TRAIT_SWORD_PSIONIC "sword_psionic"
 

@@ -73,7 +73,8 @@
 	desc = "You have enhanced power and lifesteal, but this is taxing on your soul. Damage also applies to your mood and consciousness. Low sanity will turn off this spell."
 	icon_state = "lightningorb"
 
-
+/// Unlocking spell for a specific character
+/// Todo: add more things that get unlocked
 /datum/action/cooldown/spell/pointed/unlock_chromatic_world
 	name = "Unlock - ???"
 	desc = "The world knows better than to stand in your way. Use on a supported object to unlock it."
@@ -131,7 +132,8 @@
 /// I'm not typing that whole thing out every single time its referenced
 #define PARAPLEGIC_EFFECT "Savage Spider's Ultimate Technique - Induce Paraplegia (足の感覚がありません)"
 
-// i might move this away from traits and just require story status in order to get into a global list, this SUCKS
+/// Specific character's ability to link up to someone specific and incur status effects on them
+/// Supports linking to multiple people
 /datum/action/cooldown/spell/spiders_webs
 	name = "The Spider's Webs"
 	desc = "Adjust the webs you have woven on somebody else. You can only have one effect active at once."
@@ -160,6 +162,7 @@
 /datum/action/cooldown/spell/spiders_webs/PreActivate(atom/caster)
 	var/list/webbed_up_peeps = list()
 	for(var/mob/living/literally_any_mob in world) // i am so sorry
+		// i might move this away from traits and just require story status in order to get into a global list, this SUCKS
 		if(HAS_TRAIT(literally_any_mob, TRAIT_DEVIL_WEBBED))
 			webbed_up_peeps += literally_any_mob
 

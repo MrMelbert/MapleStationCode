@@ -1,9 +1,12 @@
+// These datums are automatically added into the story rapid status list
+// So yes this is where you make your amazing admin event status for an antag that has stun immunity, health regen and can instantly kill people
+
 /datum/story_rapid_status
 	var/name = "If you see this, something broke"
 	/// If FALSE, doesn't appear in the story rapid status menu
 	var/selectable = TRUE
 
-// Override with what you want to happen.
+// Override with what you want to happen to the mob.
 /datum/story_rapid_status/proc/apply(mob/living/carbon/human/selected)
 	return FALSE
 

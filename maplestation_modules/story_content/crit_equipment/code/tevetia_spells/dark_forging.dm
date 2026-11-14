@@ -1,3 +1,8 @@
+// none of this is anywhere remotely near balanced, although it might actually be too weak considering this is for a wizard-like antagonist
+// weaker than lore but shhhh
+
+// Spell that allows conjuring between more than one weapon type in the dark, weapon can be taken out of the dark
+// conjure all weapon types at least once to be able to conjure a special blade
 /datum/action/cooldown/spell/conjure_item/dark_forging
 	name = "Dark Forging"
 	desc = "Form the darkness around you into one of multiple weapons. \
