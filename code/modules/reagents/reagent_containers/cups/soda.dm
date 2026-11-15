@@ -28,6 +28,8 @@
 	. = ..()
 	AddElement(/datum/element/slapcrafting, string_list(list(/datum/crafting_recipe/improv_explosive)))
 	AddElement(/datum/element/atmos_sensitive, mapload) //Enables soda cans to explode in vaccuum.
+	if(length(list_reagents))
+		article = "a can of"
 
 /obj/item/reagent_containers/cup/soda_cans/random/Initialize(mapload)
 	..()
@@ -181,14 +183,14 @@
 #undef SODA_EXPLOSION_PRESSURE
 
 /obj/item/reagent_containers/cup/soda_cans/cola
-	name = "Space Cola"
+	name = "\improper Space Cola"
 	desc = "Cola. in space."
 	icon_state = "cola"
 	list_reagents = list(/datum/reagent/consumable/space_cola = 30)
 	drink_type = SUGAR
 
 /obj/item/reagent_containers/cup/soda_cans/tonic
-	name = "T-Borg's tonic water"
+	name = "\improper T-Borg's tonic water"
 	desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
 	icon_state = "tonic"
 	volume = 50
@@ -214,62 +216,62 @@
 	name = "lemon-lime soda"
 
 /obj/item/reagent_containers/cup/soda_cans/sol_dry
-	name = "Sol Dry"
+	name = "\improper Sol Dry"
 	desc = "Maybe this will help your tummy feel better. Maybe not."
 	icon_state = "sol_dry"
 	list_reagents = list(/datum/reagent/consumable/sol_dry = 30)
 	drink_type = SUGAR
 
 /obj/item/reagent_containers/cup/soda_cans/space_up
-	name = "Space-Up!"
+	name = "\improper Space-Up!"
 	desc = "Tastes like a hull breach in your mouth."
 	icon_state = "space-up"
 	list_reagents = list(/datum/reagent/consumable/space_up = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/starkist
-	name = "Star-kist"
+	name = "\improper Star-kist"
 	desc = "The taste of a star in liquid form. And, a bit of tuna...?"
 	icon_state = "starkist"
 	list_reagents = list(/datum/reagent/consumable/space_cola = 15, /datum/reagent/consumable/orangejuice = 15)
 	drink_type = SUGAR | FRUIT | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/space_mountain_wind
-	name = "Space Mountain Wind"
+	name = "\improper Space Mountain Wind"
 	desc = "Blows right through you like a space wind."
 	icon_state = "space_mountain_wind"
 	list_reagents = list(/datum/reagent/consumable/spacemountainwind = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/thirteenloko
-	name = "Thirteen Loko"
+	name = "\improper Thirteen Loko"
 	desc = "The CMO has advised crew members that consumption of Thirteen Loko may result in seizures, blindness, drunkenness, or even death. Please Drink Responsibly."
 	icon_state = "thirteen_loko"
 	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/dr_gibb
-	name = "Dr. Gibb"
+	name = "\improper Dr. Gibb"
 	desc = "A delicious mixture of 42 different flavors."
 	icon_state = "dr_gibb"
 	list_reagents = list(/datum/reagent/consumable/dr_gibb = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/pwr_game
-	name = "Pwr Game"
+	name = "\improper Pwr Game"
 	desc = "The only drink with the PWR that true gamers crave. When a gamer talks about gamerfuel, this is what they're literally referring to."
 	icon_state = "purple_can"
 	list_reagents = list(/datum/reagent/consumable/pwr_game = 30)
 
 /obj/item/reagent_containers/cup/soda_cans/shamblers
-	name = "Shambler's juice"
+	name = "\improper Shambler's juice"
 	desc = "~Shake me up some of that Shambler's Juice!~"
 	icon_state = "shamblers"
 	list_reagents = list(/datum/reagent/consumable/shamblers = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/shamblers/eldritch
-	name = "Shambler's juice Eldritch Energy!"
+	name = "\improper Shambler's juice Eldritch Energy!"
 	desc = "~J'I'CE!~"
 	icon_state = "shamblerseldritch"
 	volume = 40
@@ -277,21 +279,21 @@
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/wellcheers
-	name = "Wellcheers Juice"
+	name = "\improper Wellcheers Juice"
 	desc = "A strange purple drink, smelling of saltwater. Somewhere in the distance, you hear seagulls."
 	icon_state = "wellcheers"
 	list_reagents = list(/datum/reagent/consumable/wellcheers = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/grey_bull
-	name = "Grey Bull"
+	name = "\improper Grey Bull"
 	desc = "Grey Bull, it gives you gloves!"
 	icon_state = "energy_drink"
 	list_reagents = list(/datum/reagent/consumable/grey_bull = 20)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/monkey_energy
-	name = "Monkey Energy"
+	name = "\improper Monkey Energy"
 	desc = "Unleash the ape!"
 	icon_state = "monkey_energy"
 	inhand_icon_state = "monkey_energy"
@@ -300,14 +302,14 @@
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/volt_energy
-	name = "24-Volt Energy"
+	name = "\improper 24-Volt Energy"
 	desc = "Recharge, with 24-Volt Energy!"
 	icon_state = "volt_energy"
 	list_reagents = list(/datum/reagent/consumable/volt_energy = 30)
 	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/cup/soda_cans/melon_soda
-	name = "Kansumi Melon Soda"
+	name = "\improper Kansumi Melon Soda"
 	desc = "Japan's favourite melon soda, now available in can form!"
 	icon_state = "melon_soda"
 	list_reagents = list(/datum/reagent/consumable/melon_soda = 30)

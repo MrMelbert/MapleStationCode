@@ -99,8 +99,8 @@
 		GLOB.cooking_recipes,
 	)
 	var/list/atom_lists = list(
-		GLOB.crafting_recipes_atoms,
-		GLOB.cooking_recipes_atoms,
+		GLOB.crafting_recipes_datums,
+		GLOB.cooking_recipes_datums,
 	)
 
 	for(var/list_index in 1 to length(recipe_lists))
@@ -110,25 +110,20 @@
 			// Result
 			atom_list |= recipe.result
 			// Ingredients
-			for(var/atom/req_atom as anything in recipe.reqs)
-				atom_list |= req_atom
+			atom_list |= SANITIZE_LIST(recipe.reqs)
 			// Catalysts
-			for(var/atom/req_atom as anything in recipe.chem_catalysts)
-				atom_list |= req_atom
+			atom_list |= SANITIZE_LIST(recipe.chem_catalysts)
 			// Reaction data - required container
 			if(recipe.reaction)
 				var/required_container = initial(recipe.reaction.required_container)
 				if(required_container)
 					atom_list |= required_container
 			// Tools
-			for(var/atom/req_atom as anything in recipe.tool_paths)
-				atom_list |= req_atom
+			atom_list |= SANITIZE_LIST(recipe.tool_paths)
 			// Machinery
-			for(var/atom/req_atom as anything in recipe.machinery)
-				atom_list |= req_atom
+			atom_list |= SANITIZE_LIST(recipe.machinery)
 			// Structures
-			for(var/atom/req_atom as anything in recipe.structures)
-				atom_list |= req_atom
+			atom_list |= SANITIZE_LIST(recipe.structures)
 
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
@@ -164,7 +159,6 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/structure/secure_safe,
 	/obj/machinery/airalarm,
-	/obj/machinery/bluespace_vendor,
 	/obj/machinery/button,
 	/obj/machinery/computer/security/telescreen,
 	/obj/machinery/computer/security/telescreen/entertainment,

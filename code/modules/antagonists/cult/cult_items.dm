@@ -496,7 +496,7 @@ Striking a noncultist, however, will tear their flesh."}
 		user.adjust_temp_blindness(60 SECONDS)
 
 /obj/item/reagent_containers/cup/beaker/unholywater
-	name = "flask of unholy water"
+	name = "unholy water"
 	desc = "Toxic to nonbelievers; reinvigorating to the faithful - this flask may be sipped or thrown."
 	icon = 'icons/obj/drinks/bottles.dmi'
 	icon_state = "unholyflask"
@@ -504,6 +504,7 @@ Striking a noncultist, however, will tear their flesh."}
 	lefthand_file = 'icons/mob/inhands/items/drinks_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/drinks_righthand.dmi'
 	list_reagents = list(/datum/reagent/fuel/unholywater = 50)
+	article = "a flask of"
 
 ///how many times can the shuttle be cursed?
 #define MAX_SHUTTLE_CURSES 3

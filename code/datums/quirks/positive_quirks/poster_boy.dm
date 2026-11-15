@@ -6,6 +6,7 @@
 	mob_trait = TRAIT_POSTERBOY
 	medical_record_text = "Patient reports a desire to cover walls with homemade objects."
 	mail_goodies = list(/obj/item/poster/random_official)
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 
 /datum/quirk/item_quirk/poster_boy/add_unique()
 	var/mob/living/carbon/human/posterboy = quirk_holder

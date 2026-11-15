@@ -21,6 +21,7 @@
 	closingLayer = CLOSED_FIREDOOR_LAYER
 	armor_type = /datum/armor/door_firedoor
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
+	flags_1 = parent_type::flags_1 | HAS_UNIQUE_SCREENTIP_NAME_1
 
 	COOLDOWN_DECLARE(activation_cooldown)
 
@@ -115,10 +116,22 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
+/obj/machinery/door/firedoor/get_name_chaser(mob/user, list/name_chaser)
+	. = ..()
+	. += span_info("It has an ID serial: <b>[id_tag]</b>, and belongs to [get_area_name(my_area)].")
+
+/obj/machinery/door/firedoor/MouseEntered(location, control, params)
+	. = ..()
+	if(id_tag)
+		winset(usr, null, "mapwindow.status_bar.text=\"[get_screentip_name()]\"" )
+
+/obj/machinery/door/firedoor/get_screentip_name()
+	if(id_tag)
+		return "[name] - [id_tag]"
+	return name
+
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	. += span_info("It belongs to [get_area_name(my_area)], and is ID [id_tag].")
-
 	if(!density)
 		. += span_notice("It is open, but could be <b>pried</b> closed.")
 	else if(!welded)

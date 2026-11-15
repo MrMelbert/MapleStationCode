@@ -31,6 +31,7 @@
 		)
 	armor_type = /datum/armor/toggle_labcoat
 	species_exception = list(/datum/species/golem)
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/toggle/labcoat/Initialize(mapload)
 	. = ..()
@@ -67,6 +68,7 @@
 /obj/item/clothing/suit/toggle/labcoat/paramedic/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
+	allowed += /obj/item/crowbar/power
 
 /obj/item/clothing/suit/toggle/labcoat/mad
 	name = "Mad's labcoat"

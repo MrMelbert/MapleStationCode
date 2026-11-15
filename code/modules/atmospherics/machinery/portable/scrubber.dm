@@ -1,16 +1,17 @@
 /obj/machinery/portable_atmospherics/scrubber
 	name = "portable air scrubber"
+	desc = "A portable variant of the station scrubbers, capable of filtering gas from the air around it or inserted tank. May also be wrenched into a port."
 	icon_state = "scrubber"
 	density = TRUE
 	max_integrity = 250
-	volume = 1000
+	volume = 2000
 
 	///Is the machine on?
 	var/on = FALSE
 	///the rate the machine will scrub air
-	var/volume_rate = 1000
+	var/volume_rate = 650
 	///Multiplier with ONE_ATMOSPHERE, if the enviroment pressure is higher than that, the scrubber won't work
-	var/overpressure_m = 80
+	var/overpressure_m = 100
 	///Should the machine use overlay in update_overlays() when open/close?
 	var/use_overlays = TRUE
 	///List of gases that can be scrubbed
@@ -31,9 +32,9 @@
 		/datum/gas/halon,
 	)
 
-/obj/machinery/portable_atmospherics/scrubber/Destroy()
-	var/turf/T = get_turf(src)
-	T.assume_air(air_contents)
+/obj/machinery/portable_atmospherics/scrubber/on_deconstruction(disassembled)
+	var/turf/local_turf = get_turf(src)
+	local_turf.assume_air(air_contents)
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/update_icon_state()
@@ -59,37 +60,56 @@
 
 	excited = TRUE
 
-	var/atom/target = holding || get_turf(src)
-	scrub(target.return_air())
+	if(!isnull(holding))
+		scrub(holding.return_air())
+		return ..()
+
+	var/turf/epicentre = get_turf(src)
+	if(isopenturf(epicentre))
+		if(scrub(epicentre.return_air()))
+			epicentre.air_update_turf(FALSE, FALSE)
+	for(var/turf/open/openturf as anything in epicentre.get_atmos_adjacent_turfs(alldir = TRUE))
+		if(scrub(openturf.return_air()))
+			openturf.air_update_turf(FALSE, FALSE)
 	return ..()
 
 /**
  * Called in process_atmos(), handles the scrubbing of the given gas_mixture
  * Arguments:
  * * mixture: the gas mixture to be scrubbed
+ * Returns: TRUE if anything was scrubbed, FALSE otherwise
  */
-/obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/mixture)
+/obj/machinery/portable_atmospherics/scrubber/proc/scrub(datum/gas_mixture/environment)
 	if(air_contents.return_pressure() >= overpressure_m * ONE_ATMOSPHERE)
-		return
+		return FALSE
 
-	var/transfer_moles = min(1, volume_rate / mixture.volume) * mixture.total_moles()
+	var/list/cached_moles = environment.moles
 
-	var/datum/gas_mixture/filtering = mixture.remove(transfer_moles) // Remove part of the mixture to filter.
-	var/datum/gas_mixture/filtered = new
-	if(!filtering)
-		return
+	//contains all of the gas we're sucking out of the tile, gets put into our parent pipenet
+	var/datum/gas_mixture/filtered_out = new
 
-	filtered.temperature = filtering.temperature
-	for(var/gas in filtering.gases & scrubbing)
-		filtered.add_gas(gas)
-		filtered.gases[gas][MOLES] = filtering.gases[gas][MOLES] // Shuffle the "bad" gasses to the filtered mixture.
-		filtering.gases[gas][MOLES] = 0
-	filtering.garbage_collect() // Now that the gasses are set to 0, clean up the mixture.
+	filtered_out.temperature = environment.temperature
 
-	air_contents.merge(filtered) // Store filtered out gasses.
-	mixture.merge(filtering) // Returned the cleaned gas.
-	if(!holding)
-		air_update_turf(FALSE, FALSE)
+	//maximum percentage of the turfs gas we can filter
+	var/removal_ratio =  min(1, volume_rate / environment.volume)
+
+	var/total_moles_to_remove = 0
+	for(var/gas_id in cached_moles & scrubbing)
+		total_moles_to_remove += cached_moles[gas_id]
+
+	if(!total_moles_to_remove)//no gases to remove
+		return FALSE
+
+	for(var/gas_id in cached_moles & scrubbing)
+		var/transferred_moles = max(QUANTIZE(cached_moles[gas_id] * removal_ratio * (cached_moles[gas_id] / total_moles_to_remove)), min(MOLAR_ACCURACY*1000, cached_moles[gas_id]))
+
+		filtered_out.moles[gas_id] += transferred_moles
+		cached_moles[gas_id] -= transferred_moles
+
+	environment.garbage_collect()
+	//Remix the resulting gases
+	air_contents.merge(filtered_out)
+	return TRUE
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
 	. = ..()
@@ -118,9 +138,13 @@
 	data["reactionSuppressionEnabled"] = !!suppress_reactions
 
 	data["filterTypes"] = list()
-	for(var/path in GLOB.meta_gas_info)
-		var/list/gas = GLOB.meta_gas_info[path]
-		data["filterTypes"] += list(list("gasId" = gas[META_GAS_ID], "gasName" = gas[META_GAS_NAME], "enabled" = (path in scrubbing)))
+	var/cached_gas_info = GLOB.meta_gas_info
+	for(var/path in cached_gas_info[META_GAS_ID])
+		data["filterTypes"] += list(list(
+			"gasId" = cached_gas_info[META_GAS_ID][path],
+			"gasName" = cached_gas_info[META_GAS_NAME][path],
+			"enabled" = (path in scrubbing)
+		))
 
 	if(holding)
 		data["holding"] = list()
@@ -142,7 +166,7 @@
 	else if(on && holding)
 		user.investigate_log("started a transfer into [holding].", INVESTIGATE_ATMOS)
 
-/obj/machinery/portable_atmospherics/scrubber/ui_act(action, params)
+/obj/machinery/portable_atmospherics/scrubber/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -166,7 +190,7 @@
 			suppress_reactions = !suppress_reactions
 			SSair.start_processing_machine(src)
 			message_admins("[ADMIN_LOOKUPFLW(usr)] turned [suppress_reactions ? "on" : "off"] the [src] reaction suppression.")
-			usr.investigate_log("turned [suppress_reactions ? "on" : "off"] the [src] reaction suppression.")
+			usr.investigate_log("turned [suppress_reactions ? "on" : "off"] the [src] reaction suppression.", INVESTIGATE_ATMOS)
 			. = TRUE
 	update_appearance()
 
@@ -210,7 +234,8 @@
 	if(!holding)
 		var/turf/T = get_turf(src)
 		for(var/turf/AT in T.get_atmos_adjacent_turfs(alldir = TRUE))
-			scrub(AT.return_air())
+			if(scrub(AT.return_air()))
+				AT.air_update_turf(FALSE, FALSE)
 
 	return ..()
 

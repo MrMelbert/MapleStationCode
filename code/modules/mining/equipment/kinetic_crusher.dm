@@ -64,6 +64,16 @@
 	for(var/obj/item/crusher_trophy/crusher_trophy as anything in trophies)
 		. += span_notice("It has \a [crusher_trophy] attached, which causes [crusher_trophy.effect_desc()].")
 
+// melbert todo make this an element
+/obj/item/kinetic_crusher/equipped(mob/living/user, slot)
+	. = ..()
+	if(slot & ITEM_SLOT_HANDS)
+		ADD_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
+/obj/item/kinetic_crusher/dropped(mob/living/user, slot)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
 /obj/item/kinetic_crusher/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/crusher_trophy))
 		var/obj/item/crusher_trophy/crusher_trophy = attacking_item

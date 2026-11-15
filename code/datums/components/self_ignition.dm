@@ -45,7 +45,7 @@
 	if (!environment?.total_moles())
 		return
 
-	if(environment.gases[/datum/gas/hypernoblium] && environment.gases[/datum/gas/hypernoblium][MOLES] >= 5)
+	if(environment.moles[/datum/gas/hypernoblium] >= 5)
 		if(owner.on_fire && owner.fire_stacks > 0)
 			owner.adjust_fire_stacks(-fire_stacks_loss * seconds_per_tick)
 		return
@@ -55,7 +55,7 @@
 
 	active_burning = TRUE
 
-	if(!environment.gases[/datum/gas/oxygen] || environment.gases[/datum/gas/oxygen][MOLES] < 1) //Same threshhold that extinguishes fire
+	if(environment.moles[/datum/gas/oxygen] < 1) //Same threshhold that extinguishes fire
 		return
 
 	owner.adjust_fire_stacks(fire_stacks_per_second * seconds_per_tick)

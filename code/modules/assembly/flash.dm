@@ -27,6 +27,16 @@
 	var/cooldown = 0
 	var/last_trigger = 0 //Last time it was successfully triggered.
 
+// melbert todo make this an element
+/obj/item/assembly/flash/equipped(mob/living/user, slot)
+	. = ..()
+	if(slot & ITEM_SLOT_HANDS)
+		ADD_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
+/obj/item/assembly/flash/dropped(mob/living/user, slot)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_DIRECTION_IS_IMPORTANT, REF(src))
+
 /obj/item/assembly/flash/suicide_act(mob/living/user)
 	if(burnt_out)
 		user.visible_message(span_suicide("[user] raises \the [src] up to [user.p_their()] eyes and activates it ... but it's burnt out!"))
@@ -232,16 +242,17 @@
 	// Attacker lateral to the victim.
 	return DEVIATION_PARTIAL
 
-/obj/item/assembly/flash/attack(mob/living/M, mob/user)
+/obj/item/assembly/flash/attack(mob/living/target_mob, mob/living/user)
 	if(!try_use_flash(user))
 		return FALSE
 
 	. = TRUE
-	if(iscarbon(M))
-		flash_carbon(M, user, confusion_duration = 5 SECONDS, targeted = TRUE)
+	user.combat_lock_on(target_mob, 5 SECONDS)
+	if(iscarbon(target_mob))
+		flash_carbon(target_mob, user, confusion_duration = 5 SECONDS, targeted = TRUE)
 		return
-	if(issilicon(M))
-		var/mob/living/silicon/robot/flashed_borgo = M
+	if(issilicon(target_mob))
+		var/mob/living/silicon/robot/flashed_borgo = target_mob
 		log_combat(user, flashed_borgo, "flashed", src)
 		update_icon(ALL, TRUE)
 		if(flashed_borgo.flash_act(affect_silicon = TRUE))
@@ -258,7 +269,7 @@
 			user.visible_message(span_warning("[user] fails to blind [flashed_borgo] with the flash!"), span_warning("You fail to blind [flashed_borgo] with the flash!"))
 		return
 
-	user.visible_message(span_warning("[user] fails to blind [M] with the flash!"), span_warning("You fail to blind [M] with the flash!"))
+	user.visible_message(span_warning("[user] fails to blind [target_mob] with the flash!"), span_warning("You fail to blind [target_mob] with the flash!"))
 
 /obj/item/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
 	if(holder)

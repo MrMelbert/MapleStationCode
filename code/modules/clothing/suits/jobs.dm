@@ -30,6 +30,8 @@
 	)
 	species_exception = list(/datum/species/golem)
 	armor_type = /datum/armor/suit_apron
+	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/apron/Initialize(mapload)
 	. = ..()
@@ -74,6 +76,9 @@
 	greyscale_colors = COLOR_JOB_DEFAULT
 	icon_state = "/obj/item/clothing/suit/apron/overalls/grey"
 
+/obj/item/clothing/suit/apron/overalls/scientist
+	greyscale_colors = COLOR_JOB_SCI_GENERIC
+
 //Captain
 /obj/item/clothing/suit/jacket/capjacket
 	name = "captain's parade jacket"
@@ -113,6 +118,7 @@
 	toggle_noun = "sleeves"
 	species_exception = list(/datum/species/golem)
 	pocket_slots = 3
+	item_flags = CAN_BE_OVERSLOT
 
 //Cook
 /datum/armor/toggle_chef
@@ -194,18 +200,20 @@
 	inhand_icon_state = null
 	blood_overlay_type = "armor"
 	allowed = list(
+		/obj/item/crowbar/power,
 		/obj/item/fireaxe/metal_h2_axe,
 		/obj/item/flashlight,
+		/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
 		/obj/item/radio,
 		/obj/item/storage/bag/construction,
+		/obj/item/storage/belt/chest_pouch,
+		/obj/item/t_scanner,
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
-		/obj/item/t_scanner,
-		/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
-		/obj/item/storage/belt/chest_pouch,
 	)
 	resistance_flags = NONE
 	species_exception = list(/datum/species/golem)
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/hazardvest/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
@@ -228,6 +236,7 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|ARMS
 	species_exception = list(/datum/species/golem)
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/toggle/lawyer/purple
 	name = "purple formal suit jacket"
@@ -259,6 +268,7 @@
 		/obj/item/storage/bag/mail,
 		/obj/item/universal_scanner,
 	)
+	item_flags = CAN_BE_OVERSLOT
 
 // Quartermaster
 
@@ -306,6 +316,7 @@
 	greyscale_config_worn = /datum/greyscale_config/suspenders/worn
 	greyscale_colors = "#972A2A"
 	flags_1 = IS_PLAYER_COLORABLE_1
+	item_flags = CAN_BE_OVERSLOT
 
 //Security
 /obj/item/clothing/suit/jacket/officer/blue
@@ -436,6 +447,7 @@
 	armor_type = /datum/armor/atmos_overalls
 	species_exception = list(/datum/species/golem)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_MASK
+	item_flags = CAN_BE_OVERSLOT
 	allowed = list(
 		/obj/item/analyzer,
 		/obj/item/construction/rcd,
@@ -446,6 +458,7 @@
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/extinguisher,
+		/obj/item/crowbar/power,
 	)
 
 /obj/item/clothing/suit/atmos_overalls/Initialize(mapload)

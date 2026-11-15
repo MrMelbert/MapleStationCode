@@ -214,8 +214,8 @@
 	// 	overlays += get_emissive_overlays(eye_left, eye_right, my_head)
 
 	if(my_head.head_flags & HEAD_EYECOLOR)
-		eye_right.color = eye_color_right || my_head.owner?.get_right_eye_color()
-		eye_left.color = eye_color_left || my_head.owner?.get_left_eye_color()
+		eye_right.color = my_head.owner?.get_right_eye_color() || eye_color_right
+		eye_left.color = my_head.owner?.get_left_eye_color() || eye_color_left
 		var/list/eyelids = get_eyelid_overlays(eye_left, eye_right, my_head)
 		if (LAZYLEN(eyelids))
 			overlays += eyelids
@@ -328,8 +328,8 @@
 	parent.vis_contents += eyelid_left
 	parent.vis_contents += eyelid_right
 	animate_eyelids(parent)
-	var/mutable_appearance/left_eyelid_overlay = mutable_appearance(layer = -BODY_LAYER, offset_spokesman = parent)
-	var/mutable_appearance/right_eyelid_overlay = mutable_appearance(layer = -BODY_LAYER, offset_spokesman = parent)
+	var/mutable_appearance/left_eyelid_overlay = mutable_appearance(layer = -EYES_LAYER, offset_spokesman = parent)
+	var/mutable_appearance/right_eyelid_overlay = mutable_appearance(layer = -EYES_LAYER, offset_spokesman = parent)
 	left_eyelid_overlay.render_source = "*[REF(parent)]_eyelid_left"
 	right_eyelid_overlay.render_source = "*[REF(parent)]_eyelid_right"
 	return list(left_eyelid_overlay, right_eyelid_overlay)
@@ -408,7 +408,7 @@
 /obj/effect/abstract/eyelid_effect
 	name = "eyelid"
 	icon = 'icons/mob/human/human_face.dmi'
-	layer = -BODY_LAYER
+	layer = -EYES_LAYER
 	vis_flags = VIS_INHERIT_DIR | VIS_INHERIT_PLANE | VIS_INHERIT_ID
 
 /obj/effect/abstract/eyelid_effect/Initialize(mapload, new_state)

@@ -246,6 +246,7 @@
 	name = "delinquent hat"
 	desc = "Good grief."
 	icon_state = "delinquent"
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/head/hats/intern
 	name = "\improper CentCom Head Intern beancap"
@@ -345,6 +346,7 @@
 
 /obj/item/clothing/head/costume/nightcap
 	abstract_type = /obj/item/clothing/head/costume/nightcap
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/head/costume/nightcap/blue
 	name = "blue nightcap"
@@ -364,3 +366,5 @@
 	dog_fashion = /datum/dog_fashion/head
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
+	custom_materials = list(/datum/material/paper = HALF_SHEET_MATERIAL_AMOUNT / 2)
+	item_flags = CAN_BE_OVERSLOT

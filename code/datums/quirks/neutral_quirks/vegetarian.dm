@@ -8,3 +8,4 @@
 	medical_record_text = "Patient reports a vegetarian diet."
 	mail_goodies = list(/obj/effect/spawner/random/food_or_drink/salad)
 	mob_trait = TRAIT_VEGETARIAN
+	quirk_flags = QUIRK_HIDE_FROM_SCAN

@@ -21,6 +21,7 @@
 	resistance_flags = FLAMMABLE
 	// drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
 	// pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
+	item_flags = CAN_BE_OVERSLOT
 
 	/// type path, gets converted to item on New(). It's safe to assume it's always a seed item.
 	var/obj/item/seeds/seed = null

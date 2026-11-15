@@ -73,6 +73,7 @@
 
 // Our only boxing move, which occurs on literally all attacks; the tussle. However, quite a lot morphs the results of this proc. Combos, unlike most martial arts attacks, are checked in this proc rather than our standard unarmed procs
 /datum/martial_art/boxing/proc/tussle(mob/living/attacker, mob/living/defender, atk_verb = "blind jab", atk_verbed = "blind jabbed")
+	set waitfor = FALSE
 
 	if(honorable_boxer) //Being a good sport, you never hit someone on the ground or already knocked down. It shows you're the better person.
 		if(defender.body_position == LYING_DOWN && defender.getStaminaLoss() >= 100 || HAS_TRAIT(defender, TRAIT_KNOCKEDOUT)) //If they're in stamcrit or unconscious, don't bloody punch them

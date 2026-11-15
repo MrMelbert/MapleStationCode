@@ -79,7 +79,7 @@
 /datum/emote/living/cough/can_run_emote(mob/user, status_check = TRUE , intentional)
 	return !HAS_TRAIT(user, TRAIT_SOOTHED_THROAT) && ..()
 
-/datum/emote/living/sneeze/get_sound(mob/living/carbon/human/user)
+/datum/emote/living/cough/get_sound(mob/living/carbon/human/user)
 	if(!istype(user))
 		return
 	return user.dna.species.get_cough_sound(user)

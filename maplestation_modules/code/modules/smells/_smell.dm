@@ -146,3 +146,14 @@
 	description = "What a nice smell."
 	mood_change = 1
 	timeout = 40 SECONDS
+
+/datum/smell/vomit
+	text = "vomit"
+	category = "stench"
+
+/datum/smell/vomit/on_smell(mob/living/whom, intensity)
+	if(isnull(whom.mob_mood) || whom.mob_mood.has_mood_of_category(text))
+		return
+
+	whom.adjust_disgust(intensity)
+	whom.add_mood_event(text, /datum/mood_event/disgust/minor_bad_smell)

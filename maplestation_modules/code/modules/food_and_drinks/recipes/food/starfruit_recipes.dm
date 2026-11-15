@@ -114,6 +114,16 @@
 	result = /obj/item/reagent_containers/condiment/starfruit_jelly
 	category = CAT_DRINK
 
+/datum/crafting_recipe/food/starfruit_jelly_reagent
+	name = "Starfruit Jelly Reagent"
+	reqs = list(
+		/obj/item/food/grown/starfruit = 10,
+		/datum/reagent/water = 25,
+	)
+	result = /datum/reagent/consumable/starfruit_jelly
+	non_craftable = TRUE
+	meal_category = MEAL_COMPONENT
+
 /datum/crafting_recipe/food/macaron/starfruit
 	name = "Starfruit Macaron"
 	reqs = list(
@@ -199,3 +209,8 @@
 	cuisine_category = CUISINE_STARFRUIT
 	dish_category = DISH_PASTRY
 	meal_category = MEAL_DESSERT
+
+/datum/crafting_recipe/food/grinder/starfruit_juice
+	reqs = list(/obj/item/food/grown/starfruit = 1)
+	result = /datum/reagent/consumable/starfruit_juice
+	steps = list("Put into grinder and juice")

@@ -35,12 +35,12 @@
 
 /obj/structure/tank_holder/examine(mob/user)
 	. = ..()
-	. += "It is [anchored ? "wrenched to the floor." : "The <i>bolts</i> on the bottom are unsecured."]<br/>"
 	if(tank)
-		. += "It is holding one [tank]."
+		. += "It is holding \a [tank]."
 	else
 		. += "It is empty."
-	. += span_notice("It is held together by some <b>screws</b>.")
+	. += span_info("[anchored ? "It is <i>bolted</i> to the floor." : "The <i>bolts</i> on the bottom are loose."]")
+	. += span_info("It is held together by some <b>screws</b>.")
 
 /obj/structure/tank_holder/attackby(obj/item/W, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)

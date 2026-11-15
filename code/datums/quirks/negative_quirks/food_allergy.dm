@@ -9,6 +9,7 @@ GLOBAL_LIST_INIT(possible_food_allergies, list(
 	"Seafood" = SEAFOOD,
 	"Sugar" = SUGAR,
 	"Vegetables" = VEGETABLES,
+	"Junk Food" = JUNKFOOD, //MAPLE STATION EDIT
 ))
 
 /datum/quirk/item_quirk/food_allergic

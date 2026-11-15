@@ -55,6 +55,8 @@
 	base_icon_state = "mage_flare"
 	color = COLOR_VERY_SOFT_YELLOW
 	actions_types = null
+	drop_sound = null
+	pickup_sound = null
 	//If it should decay and delete itself after it uses all its fuel
 	var/auto_destroy = TRUE
 

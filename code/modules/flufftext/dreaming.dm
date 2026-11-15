@@ -22,9 +22,16 @@
 /mob/living/carbon/proc/dream()
 	set waitfor = FALSE
 
-	var/datum/dream/chosen_dream = pick_weight(GLOB.dreams)
+	var/list/dream_pool = list()
+
+	SEND_SIGNAL(src, COMSIG_PRE_DREAMING, dream_pool)
+	if(!length(dream_pool))
+		dream_pool = GLOB.dreams
+
+	var/datum/dream/chosen_dream = pick_weight(dream_pool)
 
 	ADD_TRAIT(src, TRAIT_DREAMING, DREAMING_SOURCE)
+	SEND_SIGNAL(src, COMSIG_START_DREAMING, chosen_dream)
 	dream_sequence(chosen_dream.GenerateDream(src), chosen_dream)
 
 /**
@@ -39,9 +46,10 @@
  */
 
 /mob/living/carbon/proc/dream_sequence(list/dream_fragments, datum/dream/current_dream)
-	if(stat >= SOFT_CRIT || !HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+	if(!HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || stat >= HARD_CRIT)
 		REMOVE_TRAIT(src, TRAIT_DREAMING, DREAMING_SOURCE)
 		current_dream.OnDreamEnd(src)
+		SEND_SIGNAL(src, COMSIG_END_DREAMING, current_dream)
 		return
 	var/next_message = dream_fragments[1]
 	dream_fragments.Cut(1,2)
@@ -60,6 +68,7 @@
 	else
 		REMOVE_TRAIT(src, TRAIT_DREAMING, DREAMING_SOURCE)
 		current_dream.OnDreamEnd(src)
+		SEND_SIGNAL(src, COMSIG_END_DREAMING, current_dream)
 
 //-------------------------
 // DREAM DATUMS
@@ -101,11 +110,8 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	weight = 1000
 
 /datum/dream/random/GenerateDream(mob/living/carbon/dreamer)
-	var/list/custom_dream_nouns = list()
+	var/list/custom_dream_nouns = get_dream_nouns(dreamer) || list()
 	var/fragment = ""
-
-	for(var/obj/item/bedsheet/sheet in dreamer.loc)
-		custom_dream_nouns += sheet.dream_messages
 
 	. = list()
 	. += "you see"
@@ -148,6 +154,12 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	if(findtext(fragment, "%A% "))
 		fragment = "\a [replacetext(fragment, "%A% ", "")]"
 	. += fragment
+
+/datum/dream/random/proc/get_dream_nouns(mob/living/carbon/dreamer)
+	var/list/custom_dream_nouns = list()
+	for(var/obj/item/bedsheet/sheet in dreamer.loc)
+		custom_dream_nouns += sheet.dream_messages
+	return custom_dream_nouns
 
 /// Dream plays a random sound at you, chosen from all sounds in the folder
 /datum/dream/hear_something

@@ -380,7 +380,6 @@
 
 	if(long_ranged)
 		. += "It is upgraded with an experimental long-ranged network capabilities, picking up NTNet frequencies while further away."
-	. += span_notice("It has [max_capacity] GQ of storage capacity.")
 
 	if(computer_id_slot)
 		if(Adjacent(user))
@@ -390,7 +389,8 @@
 		. += span_info("Alt-click [src] to eject the identification card.")
 
 	if(internal_cell)
-		. += span_info("Right-click it with a screwdriver to eject the [internal_cell]")
+		. += span_info("Its [internal_cell.name] is hidden by some [EXAMINE_HINT("screws")]. \
+			You could undo them with [EXAMINE_HINT("right-click")].")
 
 /obj/item/modular_computer/examine_more(mob/user)
 	. = ..()
@@ -765,10 +765,7 @@
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	if(!saved_identification && !saved_job)
-		name = initial(name)
-		return
-	name = "[saved_identification] ([saved_job])"
+	return
 
 /obj/item/modular_computer/screwdriver_act_secondary(mob/living/user, obj/item/tool)
 	. = ..()

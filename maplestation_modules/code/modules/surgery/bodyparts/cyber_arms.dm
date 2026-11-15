@@ -4,13 +4,13 @@
 	desc = "An advanced robotic arm with in built sharp claws. Makes you formidable in close combat, \
 		though unfortunately the claws are not retractable, and may make it difficult to manipulate small objects."
 	id = "clawed_advanced_r_arm"
-	build_path = /obj/item/bodypart/arm/left/robot/advanced/claws
+	build_path = /obj/item/bodypart/arm/right/robot/advanced/claws
 
 /datum/design/advanced_l_arm/clawed
 	name = "Advanced Clawed Left Arm"
 	desc = /datum/design/advanced_r_arm/clawed::desc
 	id = "clawed_advanced_l_arm"
-	build_path = /obj/item/bodypart/arm/right/robot/advanced/claws
+	build_path = /obj/item/bodypart/arm/left/robot/advanced/claws
 
 /datum/design/advanced_r_arm/lifting
 	name = "Advanced Lifting Right Arm"
@@ -18,12 +18,12 @@
 		particularly grappling - and better at construction of large objects, \
 		though unfortunately the bulkier design may make it difficult to manipulate small objects."
 	id = "punchy_advanced_r_arm"
-	build_path = /obj/item/bodypart/arm/left/robot/advanced/lifting
+	build_path = /obj/item/bodypart/arm/right/robot/advanced/lifting
 
 /datum/design/advanced_l_arm/lifting
 	name = "Advanced Lifting Left Arm"
 	id = "punchy_advanced_l_arm"
-	build_path = /obj/item/bodypart/arm/right/robot/advanced/lifting
+	build_path = /obj/item/bodypart/arm/left/robot/advanced/lifting
 
 // Limbs
 /obj/item/bodypart/arm/left/robot/advanced/claws

@@ -11,6 +11,10 @@
 	buckle_lying = 90 //we turn to you!
 	///Avoids having to check global everytime by referencing it locally.
 	var/datum/religion_sect/sect_to_altar
+	/// Do we have lit candles?
+	var/lit_candles = TRUE
+	/// Optional emissive overlay
+	var/emissive_icon_state
 
 /obj/structure/altar_of_gods/Initialize(mapload)
 	. = ..()
@@ -23,6 +27,14 @@
 /obj/structure/altar_of_gods/Destroy()
 	GLOB.chaplain_altars -= src
 	return ..()
+
+/obj/structure/altar_of_gods/update_overlays()
+	. = ..()
+	if (lit_candles)
+		. += mutable_appearance(icon, "convertaltarcandle", alpha = src.alpha)
+		. += emissive_appearance(icon, "convertaltarcandle", src, alpha = src.alpha)
+	if(emissive_icon_state)
+		. += emissive_appearance(icon, emissive_icon_state, src, alpha = src.alpha)
 
 /obj/structure/altar_of_gods/update_overlays()
 	var/list/new_overlays = ..()
@@ -65,12 +77,16 @@
 	if(isnull(GLOB.religious_sect))
 		icon = initial(icon)
 		icon_state = initial(icon_state)
+		emissive_icon_state = initial(emissive_icon_state)
 	else
 		sect_to_altar = GLOB.religious_sect
+		lit_candles = GLOB.religious_sect.candle_overlay
 		if(sect_to_altar.altar_icon)
 			icon = sect_to_altar.altar_icon
 		if(sect_to_altar.altar_icon_state)
 			icon_state = sect_to_altar.altar_icon_state
+		if(sect_to_altar.altar_emissive_icon_state)
+			emissive_icon_state = sect_to_altar.altar_emissive_icon_state
 	update_appearance() //Light the candles!
 
 /obj/structure/altar_of_gods/proc/get_chaplains()

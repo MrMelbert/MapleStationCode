@@ -4847,12 +4847,6 @@
 /obj/machinery/newscaster/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/science/auxlab)
-"biZ" = (
-/obj/machinery/microwave/engineering/cell_included,
-/obj/structure/table/reinforced/rglass,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/break_room)
 "bja" = (
 /obj/machinery/vending/cigarette,
 /obj/machinery/camera/autoname/directional/west,
@@ -12870,7 +12864,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/displaycase/forsale/kitchen{
+/obj/structure/tipjar/prefilled{
 	pixel_y = 8
 	},
 /turf/open/floor/iron/dark/smooth_large,
@@ -45848,6 +45842,13 @@
 	},
 /turf/open/floor/iron/dark/textured,
 /area/station/command/heads_quarters/ce)
+"lOX" = (
+/obj/structure/closet/secure_closet/personal,
+/obj/item/clothing/under/misc/assistantformal,
+/obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/shoes/winterboots,
+/turf/open/floor/iron/dark,
+/area/station/commons/locker)
 "lPb" = (
 /obj/structure/railing{
 	dir = 1
@@ -46813,12 +46814,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/science/genetics)
-"mbb" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/suit_storage_unit/medical,
-/obj/machinery/camera/autoname/directional/east,
-/turf/open/floor/iron/white/textured,
-/area/station/medical/storage)
 "mbe" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/barricade/wooden{
@@ -60726,14 +60721,6 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/station/service/kitchen/coldroom)
-"pDL" = (
-/obj/structure/closet/secure_closet/personal,
-/obj/item/clothing/under/misc/assistantformal,
-/obj/item/clothing/suit/hooded/wintercoat,
-/obj/item/clothing/shoes/winterboots,
-/obj/machinery/bluespace_vendor/directional/east,
-/turf/open/floor/iron/dark,
-/area/station/commons/locker)
 "pDS" = (
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/white,
@@ -78562,7 +78549,7 @@
 /area/station/engineering/atmos)
 "umZ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/displaycase/forsale/kitchen,
+/obj/structure/tipjar/prefilled,
 /obj/structure/table/reinforced,
 /turf/open/floor/iron/kitchen/herringbone,
 /area/station/service/kitchen)
@@ -87713,6 +87700,13 @@
 	dir = 8
 	},
 /area/station/medical/chemistry)
+"wAt" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/suit_storage_unit/medical,
+/obj/machinery/camera/autoname/directional/east,
+/obj/structure/fireaxecabinet/jaws_of_life/directional/east,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/storage)
 "wAz" = (
 /obj/machinery/vending/autodrobe,
 /obj/machinery/light_switch/directional/east,
@@ -89260,6 +89254,12 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/commons/dorms/apartment1)
+"wUp" = (
+/obj/machinery/microwave,
+/obj/structure/table/reinforced/rglass,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/turf/open/floor/iron/white/textured,
+/area/station/medical/break_room)
 "wUu" = (
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
@@ -93326,13 +93326,6 @@
 "xWM" = (
 /turf/open/floor/iron/dark,
 /area/station/security/eva)
-"xWO" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/machinery/bluespace_vendor/directional/south,
-/turf/open/floor/iron/dark/side,
-/area/station/hallway/floor1/fore)
 "xWT" = (
 /obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/siding/wood{
@@ -116371,7 +116364,7 @@ xBe
 gVw
 rpj
 gqU
-xWO
+imJ
 hJy
 fZZ
 qAK
@@ -184996,7 +184989,7 @@ hLz
 hLz
 hLz
 hLz
-pDL
+lOX
 heC
 caP
 jjF
@@ -190151,7 +190144,7 @@ xZB
 ccU
 bOx
 hRd
-biZ
+wUp
 lcv
 aal
 xhf
@@ -193744,7 +193737,7 @@ nUa
 iRF
 scD
 fIU
-mbb
+wAt
 kiO
 kyO
 kAU

@@ -447,15 +447,6 @@
 		/obj/item/stack/sheet/glass = 10,
 		/obj/item/stack/sheet/plasteel = 5)
 
-/obj/item/circuitboard/machine/bluespace_sender
-	name = "Bluespace Sender"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/atmospherics/components/unary/bluespace_sender
-	req_components = list(
-		/obj/item/stack/cable_coil = 10,
-		/obj/item/stack/sheet/glass = 10,
-		/obj/item/stack/sheet/plasteel = 5)
-
 //Generic
 /obj/item/circuitboard/machine/component_printer
 	name = "\improper Component Printer (Machine Board)"
@@ -1295,17 +1286,6 @@
 		/obj/item/stack/sheet/glass = 2)
 	needs_anchored = FALSE
 
-/obj/item/circuitboard/machine/microwave/engineering
-	name = "Wireless Microwave Oven"
-	greyscale_colors = CIRCUIT_COLOR_SERVICE
-	build_path = /obj/machinery/microwave/engineering
-	req_components = list(
-		/datum/stock_part/micro_laser = 1,
-		/datum/stock_part/matter_bin = 1,
-		/datum/stock_part/capacitor/tier2 = 1,
-		/obj/item/stack/cable_coil = 4,
-		/obj/item/stack/sheet/glass = 2)
-
 /obj/item/circuitboard/machine/processor
 	name = "Food Processor"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
@@ -1352,13 +1332,6 @@
 	name = "\improper Departmental Techfab - Service"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/rnd/production/techfab/department/service
-
-/obj/item/circuitboard/machine/vendatray
-	name = "Vend-A-Tray"
-	greyscale_colors = CIRCUIT_COLOR_SERVICE
-	build_path = /obj/structure/displaycase/forsale
-	req_components = list(
-		/datum/stock_part/card_reader = 1)
 
 /obj/item/circuitboard/machine/fishing_portal_generator
 	name = "Fishing Portal Generator"

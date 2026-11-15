@@ -379,11 +379,8 @@
 	return null
 
 ///Return the current air environment in this atom
-/atom/proc/return_air()
-	if(loc)
-		return loc.return_air()
-	else
-		return null
+/atom/proc/return_air() as /datum/gas_mixture
+	return loc?.return_air()
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()
@@ -863,7 +860,7 @@
 	var/shift_lmb_ctrl_shift_lmb_line = ""
 	var/extra_lines = 0
 	var/extra_context = ""
-	var/used_name = name
+	var/used_name = (flags_1 & HAS_UNIQUE_SCREENTIP_NAME_1) ? get_screentip_name() : name
 
 	if(isliving(user) || isovermind(user) || isaicamera(user) || (ghost_screentips && isobserver(user)))
 		var/obj/item/held_item = user.get_active_held_item()
@@ -954,6 +951,11 @@
 	WXH_TO_HEIGHT(client.MeasureText(new_maptext, null, active_hud.screentip_text.maptext_width), map_height)
 	active_hud.screentip_text.maptext = new_maptext
 	active_hud.screentip_text.maptext_y = 26 - map_height
+
+/atom/proc/get_screentip_name()
+	stack_trace("Atom with HAS_UNIQUE_SCREENTIP_NAME_1 did not implement get_screentip_name()!")
+	flags_1 &= ~HAS_UNIQUE_SCREENTIP_NAME_1
+	return name
 
 /**
  * This proc is used for telling whether something can pass by this atom in a given direction, for use by the pathfinding system.

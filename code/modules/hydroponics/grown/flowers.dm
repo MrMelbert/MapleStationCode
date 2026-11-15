@@ -357,3 +357,4 @@
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	throw_speed = 1
 	throw_range = 3
+	item_flags = CAN_BE_OVERSLOT

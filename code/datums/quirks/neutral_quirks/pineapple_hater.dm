@@ -6,6 +6,7 @@
 	gain_text = span_notice("You find yourself pondering what kind of idiot actually enjoys pineapples...")
 	lose_text = span_notice("Your feelings towards pineapples seem to return to a lukewarm state.")
 	medical_record_text = "Patient is correct to think that pineapple is disgusting."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list( // basic pizza slices
 		/obj/item/food/pizzaslice/margherita,
 		/obj/item/food/pizzaslice/meat,

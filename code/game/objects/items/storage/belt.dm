@@ -55,6 +55,8 @@
 		/obj/item/radio,
 		/obj/item/melee/sickly_blade/lock,
 	))
+	var/static/list/exception_cache = typecacheof(/obj/item/crowbar/power)
+	atom_storage.exception_hold = exception_cache
 
 /obj/item/storage/belt/utility/chief
 	name = "chief engineer's toolbelt"

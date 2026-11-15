@@ -49,6 +49,7 @@
 	inhand_icon_state = "armor"
 	blood_overlay_type = "armor"
 	dog_fashion = /datum/dog_fashion/back/armorvest
+	item_flags = CAN_BE_OVERSLOT
 
 /obj/item/clothing/suit/armor/vest/alt
 	desc = "A Type I armored vest that provides decent protection against most types of damage."
@@ -200,6 +201,7 @@
 	strip_delay = 70
 	resistance_flags = FLAMMABLE
 	dog_fashion = null
+	item_flags = NONE
 
 /obj/item/clothing/suit/armor/vest/warden/alt
 	name = "warden's armored jacket"
@@ -215,6 +217,7 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	resistance_flags = FLAMMABLE
 	dog_fashion = null
+	item_flags = NONE
 
 /obj/item/clothing/suit/armor/vest/secjacket/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
@@ -251,6 +254,7 @@
 	armor_type = /datum/armor/vest_capcarapace
 	dog_fashion = null
 	resistance_flags = FIRE_PROOF
+	item_flags = NONE
 
 /datum/armor/vest_capcarapace
 	melee = 50
@@ -374,6 +378,7 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	armor_type = /datum/armor/armor_laserproof
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	item_flags = CAN_BE_OVERSLOT
 	var/hit_reflect_chance = 50
 
 /datum/armor/armor_laserproof
@@ -580,6 +585,7 @@
 	inhand_icon_state = null
 	armor_type = /datum/armor/vest_russian
 	dog_fashion = null
+	item_flags = NONE
 
 /datum/armor/vest_russian
 	melee = 25
@@ -599,6 +605,7 @@
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	armor_type = /datum/armor/vest_russian_coat
 	dog_fashion = null
+	item_flags = NONE
 
 /datum/armor/vest_russian_coat
 	melee = 25

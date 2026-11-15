@@ -7,6 +7,7 @@
 	gain_text = span_notice("You know how to tag walls efficiently and quickly.")
 	lose_text = span_danger("You forget how to tag walls properly.")
 	medical_record_text = "Patient was recently seen for possible paint huffing incident."
+	quirk_flags = QUIRK_HIDE_FROM_SCAN
 	mail_goodies = list(
 		/obj/item/toy/crayon/spraycan,
 		/obj/item/canvas/nineteen_nineteen,

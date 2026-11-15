@@ -37,12 +37,12 @@ GLOBAL_LIST_EMPTY(item_to_design_list)
 GLOBAL_LIST_EMPTY(crafting_recipes)
 /// This is a global list of typepaths, these typepaths are atoms or reagents that are associated with crafting recipes.
 /// This includes stuff like recipe components and results.
-GLOBAL_LIST_EMPTY(crafting_recipes_atoms)
+GLOBAL_LIST_EMPTY(crafting_recipes_datums)
 /// Global list of all cooking related crafting recipes.
 GLOBAL_LIST_EMPTY(cooking_recipes)
 /// This is a global list of typepaths, these typepaths are atoms or reagents that are associated with cooking recipes.
 /// This includes stuff like recipe components and results.
-GLOBAL_LIST_EMPTY(cooking_recipes_atoms)
+GLOBAL_LIST_EMPTY(cooking_recipes_datums)
 /// list of Rapid Construction Devices.
 GLOBAL_LIST_EMPTY(rcd_list)
 /// list of wallmounted intercom radios.

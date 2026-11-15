@@ -550,16 +550,6 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 
-/datum/design/board/microwave_engineering
-	name = "Wireless Microwave Board"
-	desc = "The circuit board for a cell-powered microwave."
-	id = "microwave_engineering"
-	build_path = /obj/item/circuitboard/machine/microwave/engineering
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_KITCHEN
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_ENGINEERING
-
 /datum/design/board/gibber
 	name = "Gibber Board"
 	desc = "The circuit board for a gibber."
@@ -984,16 +974,6 @@
 	build_path = /obj/item/circuitboard/machine/restaurant_portal
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_KITCHEN
-	)
-	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
-
-/datum/design/board/vendatray
-	name = "Vend-a-Tray Board"
-	desc = "The circuit board for a Vend-a-Tray."
-	id = "vendatray"
-	build_path = /obj/item/circuitboard/machine/vendatray
-	category = list(
-		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_SERVICE
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SERVICE
 

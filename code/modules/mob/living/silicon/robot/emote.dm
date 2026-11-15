@@ -1,6 +1,7 @@
 /datum/emote/silicon
 	trait_required = TRAIT_SILICON_EMOTES_ALLOWED
 	emote_type = EMOTE_AUDIBLE
+	stat_allowed = SOFT_CRIT
 
 /datum/emote/silicon/boop
 	key = "boop"

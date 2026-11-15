@@ -243,6 +243,7 @@
 		/obj/item/clothing/under/rank/rnd/scientist/skirt = 3,
 		/obj/item/clothing/suit/toggle/labcoat/science = 3,
 		/obj/item/clothing/suit/hooded/wintercoat/science = 3,
+		/obj/item/clothing/suit/apron/overalls/scientist = 3,
 		/obj/item/clothing/gloves/latex = 3,
 		/obj/item/clothing/shoes/sneakers/white = 3,
 		/obj/item/storage/backpack/science = 3,

@@ -10,8 +10,10 @@
 	/// message when you invoke
 	var/invoke_msg
 	var/favor_cost = 0
-	/// does the altar auto-delete the rite
-	var/auto_delete = TRUE
+
+	///Rite flags we use mostly to know when it should be deleted.
+	// RITE_AUTO_DELETE | RITE_ALLOW_MULTIPLE_PERFORMS | RITE_ONE_TIME_USE
+	var/rite_flags = RITE_AUTO_DELETE
 
 /datum/religion_rites/New()
 	. = ..()
@@ -61,9 +63,18 @@
 ///Does the thing if the rite was successfully performed. return value denotes that the effect successfully (IE a harm rite does harm)
 /datum/religion_rites/proc/invoke_effect(mob/living/user, atom/religious_tool)
 	SHOULD_CALL_PARENT(TRUE)
-	GLOB.religious_sect.on_riteuse(user,religious_tool)
+	GLOB.religious_sect.on_riteuse(user, religious_tool)
 	return TRUE
 
+///Called if invoke effect returns TRUE, for effects meant to occur only if the rite passes.
+/datum/religion_rites/proc/post_invoke_effects(mob/living/user, atom/religious_tool)
+	SHOULD_CALL_PARENT(TRUE)
+	if(!(rite_flags & RITE_ONE_TIME_USE))
+		return
+	GLOB.religious_sect.rites_list.Remove(src.type)
+
+/datum/religion_rites/proc/refund(percent = 1.0)
+	GLOB.religious_sect.adjust_favor(favor_cost * percent)
 
 /**** Mechanical God ****/
 
@@ -120,8 +131,10 @@
 	name = "Receive Blessing"
 	desc = "Receive a blessing from the machine god to further your ascension."
 	ritual_length = 5 SECONDS
-	ritual_invocations =list( "Let your will power our forges.",
-							"...Help us in our great conquest!")
+	ritual_invocations = list(
+		"Let your will power our forges.",
+		"...Help us in our great conquest!",
+	)
 	invoke_msg = "The end of flesh is near!"
 	favor_cost = 2000
 
@@ -165,24 +178,11 @@
 	account.adjust_money(-money_cost, "Church Donation: Rite")
 	. = ..()
 
-/datum/religion_rites/greed/vendatray
-	name = "Purchase Vend-a-tray"
-	desc = "Summons a Vend-a-tray. You can use it to sell items!"
-	invoke_msg = "I need a vend-a-tray to make some more money!"
-	money_cost = 300
-
-/datum/religion_rites/greed/vendatray/invoke_effect(mob/living/user, atom/movable/religious_tool)
-	..()
-	var/altar_turf = get_turf(religious_tool)
-	new /obj/structure/displaycase/forsale(altar_turf)
-	playsound(get_turf(religious_tool), 'sound/effects/cashregister.ogg', 60, TRUE)
-	return TRUE
-
 /datum/religion_rites/greed/custom_vending
 	name = "Purchase Personal Vending Machine"
 	desc = "Summons a custom vending machine. You can use it to sell MANY items!"
 	invoke_msg = "If I get a custom vending machine for my products, I can be RICH!"
-	money_cost = 1000 //quite a step up from vendatray
+	money_cost = 1000
 
 /datum/religion_rites/greed/custom_vending/invoke_effect(mob/living/user, atom/movable/religious_tool)
 	..()
@@ -208,7 +208,7 @@
 		return FALSE
 	//uses HAS_TRAIT_FROM because junkies are also hopelessly addicted
 	if(HAS_TRAIT_FROM(user, TRAIT_HOPELESSLY_ADDICTED, "maint_adaptation"))
-		to_chat(user, span_warning("You've already adapted.</b>"))
+		to_chat(user, span_warning("You've already adapted."))
 		return FALSE
 	return ..()
 
