@@ -171,7 +171,7 @@
 		source_spell.Grant(owner)
 
 		if(source_spell.convert_damage)
-			var/caster_percentage = ishuman(caster_mob) ? min(caster_mob.consciousness / CONSCIOUSNESS_MAX, 1) : (caster_mob.get_total_damage() / caster_mob.maxHealth)
+			var/caster_percentage = ishuman(caster_mob) ? clamp(1 - (caster_mob.consciousness / CONSCIOUSNESS_MAX), 0, 1) : (caster_mob.get_total_damage() / caster_mob.maxHealth)
 			owner.apply_damage(owner.maxHealth * caster_percentage, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 			// owner.blood_volume = caster_mob.blood_volume
 
@@ -203,7 +203,7 @@
 		return
 
 	caster_mob.fully_heal(HEAL_DAMAGE|HEAL_PAIN) // Remove all of our damage before setting our health to a proportion of the former transformed mob's health
-	var/owner_percentage = ishuman(owner) ? min(owner.consciousness / CONSCIOUSNESS_MAX, 1) : (owner.get_total_damage() / owner.maxHealth)
+	var/owner_percentage = ishuman(owner) ? clamp(1 - (owner.consciousness / CONSCIOUSNESS_MAX), 0, 1) : (owner.get_total_damage() / owner.maxHealth)
 	caster_mob.apply_damage(caster_mob.maxHealth * owner_percentage, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	// caster_mob.blood_volume = owner.blood_volume
 
