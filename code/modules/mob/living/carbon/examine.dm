@@ -668,38 +668,40 @@
 	switch(height_diff)
 		if(-INFINITY to -16)
 			. = "[p_They()] <b>dwarf</b> you completely."
-		if(-14)
+		if(-14 to -16)
 			. = "[p_They()] <b>tower</b> over you significantly."
-		if(-12)
+		if(-12 to -14)
 			. = "[p_They()] <b>tower</b> over you."
-		if(-10)
+		if(-10 to -12)
 			. = "[p_They()] [p_are()] far taller than you."
-		if(-8)
+		if(-8 to -10)
 			. = "[p_They()] [p_are()] considerably taller than you."
-		if(-6)
+		if(-6 to -8)
 			. = "[p_They()] [p_are()] a fair amount taller than you."
-		if(-4)
+		if(-4 to -6)
 			. = "[p_They()] [p_are()] a bit taller than you."
-		if(-2)
+		if(-2 to -4)
 			. = "[p_They()] [p_are()] slightly taller than you."
-		if(0)
-			. = "[p_They()] [p_are()] about your height."
-		if(2)
-			. = "[p_They()] [p_are()] slightly shorter than you."
-		if(4)
-			. = "[p_They()] [p_are()] a bit shorter than you."
-		if(6)
-			. = "[p_They()] [p_are()] a fair amount shorter than you."
-		if(8)
-			. = "[p_They()] [p_are()] considerably shorter than you."
-		if(10)
-			. = "[p_They()] [p_are()] far shorter than you."
-		if(12)
-			. = "You <b>tower</b> over [p_them()]."
-		if(14)
-			. = "You <b>tower</b> over [p_them()] significantly."
+
 		if(16 to INFINITY)
 			. = "You <b>dwarf</b> [p_them()] completely."
+		if(14 to 16)
+			. = "You <b>tower</b> over [p_them()] significantly."
+		if(12 to 14)
+			. = "You <b>tower</b> over [p_them()]."
+		if(10 to 12)
+			. = "[p_They()] [p_are()] far shorter than you."
+		if(8 to 10)
+			. = "[p_They()] [p_are()] considerably shorter than you."
+		if(6 to 8)
+			. = "[p_They()] [p_are()] a fair amount shorter than you."
+		if(4 to 6)
+			. = "[p_They()] [p_are()] a bit shorter than you."
+		if(2 to 4)
+			. = "[p_They()] [p_are()] slightly shorter than you."
+
+		if(-2 to 2)
+			. = "[p_They()] [p_are()] about your height."
 
 	if(!.)
 		stack_trace("No height difference message for difference of [height_diff]?")
