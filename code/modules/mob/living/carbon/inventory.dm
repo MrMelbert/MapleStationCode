@@ -143,7 +143,7 @@
 			for(var/obj/item/worn in src)
 				if(!(worn.item_flags & IN_INVENTORY))
 					continue
-				if(!istype(worn.atom_storage, /datum/storage/backpack))
+				if(!istype(worn.atom_storage, /datum/storage/backpack) && worn != back)
 					continue
 				if(worn.atom_storage?.attempt_insert(equipping, src, override = TRUE, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED, messages = !initial && !indirect_action))
 					not_handled = FALSE

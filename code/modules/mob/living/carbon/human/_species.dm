@@ -686,7 +686,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			for(var/obj/item/worn in src)
 				if(!(worn.item_flags & IN_INVENTORY))
 					continue
-				if(!istype(worn))
+				if(!istype(worn.atom_storage, /datum/storage/backpack) && worn != H.back)
 					continue
 				if(worn.atom_storage?.can_insert(I, H, messages = !disable_warning && !indirect_action, force = indirect_action ? STORAGE_SOFT_LOCKED : STORAGE_NOT_LOCKED))
 					return TRUE
