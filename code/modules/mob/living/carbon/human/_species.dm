@@ -683,7 +683,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_BACKPACK)
-			for(var/obj/item/worn in src)
+			for(var/obj/item/worn in H)
 				if(!(worn.item_flags & IN_INVENTORY))
 					continue
 				if(!istype(worn.atom_storage, /datum/storage/backpack) && worn != H.back)

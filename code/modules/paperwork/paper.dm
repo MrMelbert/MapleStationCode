@@ -848,14 +848,12 @@
 
 /// Returns the raw contents of the input as html, with **ZERO SANITIZATION**
 /datum/paper_input/proc/to_raw_html()
-	var/final = raw_text
-	if(font)
-		final = "<font face='[font]'>[final]</font>"
-	if(colour)
-		final = "<font color='[colour]'>[final]</font>"
+	var/finaltxt = raw_text
+	if(font || colour)
+		finaltxt = "<font[" color='[colour]'"][" face='[font]'"]>[finaltxt]</font>"
 	if(bold)
-		final = "<b>[final]</b>"
-	return final
+		finaltxt = "<b>[finaltxt]</b>"
+	return finaltxt
 
 /// A single instance of a saved stamp on paper.
 /datum/paper_stamp
