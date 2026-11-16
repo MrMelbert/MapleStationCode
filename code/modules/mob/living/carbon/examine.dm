@@ -668,19 +668,19 @@
 	switch(height_diff)
 		if(-INFINITY to -16)
 			. = "[p_They()] <b>dwarf</b> you completely."
-		if(-14 to -16)
+		if(-16 to -14)
 			. = "[p_They()] <b>tower</b> over you significantly."
-		if(-12 to -14)
+		if(-14 to -12)
 			. = "[p_They()] <b>tower</b> over you."
-		if(-10 to -12)
+		if(-12 to -10)
 			. = "[p_They()] [p_are()] far taller than you."
-		if(-8 to -10)
+		if(-10 to -8)
 			. = "[p_They()] [p_are()] considerably taller than you."
-		if(-6 to -8)
+		if(-8 to -6)
 			. = "[p_They()] [p_are()] a fair amount taller than you."
-		if(-4 to -6)
+		if(-6 to -4)
 			. = "[p_They()] [p_are()] a bit taller than you."
-		if(-2 to -4)
+		if(-4 to -2)
 			. = "[p_They()] [p_are()] slightly taller than you."
 
 		if(16 to INFINITY)
