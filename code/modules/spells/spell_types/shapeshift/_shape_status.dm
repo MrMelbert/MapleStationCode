@@ -76,7 +76,7 @@
 /// Restores the caster back to their human form.
 /// if kill_caster_after is TRUE, the caster will have death() called on them after restoring.
 /datum/status_effect/shapechange_mob/proc/restore_caster(kill_caster_after = FALSE)
-	if(already_restored || !caster_mob)
+	if(already_restored || QDELETED(caster_mob))
 		return
 
 	if(QDELETED(owner))
