@@ -33,9 +33,12 @@
 	inhand_icon_state = null
 	ammo_type = list(/obj/item/ammo_casing/energy/disabler)
 	ammo_x_offset = 2
+	/// Whether the disabler should spawn with a security light attached.
+	var/spawn_with_light = FALSE
 
 /obj/item/gun/energy/disabler/add_seclight_point()
 	AddComponent(/datum/component/seclite_attachable, \
+		starting_light = spawn_with_light ? new /obj/item/flashlight/seclite(src) : null, \
 		light_overlay_icon = 'icons/obj/weapons/guns/flashlights.dmi', \
 		light_overlay = "flight", \
 		overlay_x = 15, \

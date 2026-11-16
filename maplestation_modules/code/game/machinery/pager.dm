@@ -180,7 +180,7 @@
 
 /obj/structure/desk_bell/ringer/botany
 	dept_name = "hydroponics department"
-	target_job_names = list(JOB_HEAD_OF_PERSONNEL, JOB_BOTANIST)
+	target_job_names = list(JOB_BOTANIST)
 
 /obj/structure/desk_bell/ringer/chemistry
 	dept_name = "pharmacy"
@@ -190,13 +190,17 @@
 	dept_name = "coroner"
 	target_job_names = list(JOB_CHIEF_MEDICAL_OFFICER, JOB_CORONER)
 
+/obj/structure/desk_bell/ringer/curator
+	dept_name = "curator"
+	target_job_names = list(JOB_CURATOR)
+
 /obj/structure/desk_bell/ringer/psych
 	dept_name = "psychologist"
-	target_job_names = list(JOB_CHIEF_MEDICAL_OFFICER, JOB_HEAD_OF_PERSONNEL, JOB_PSYCHOLOGIST)
+	target_job_names = list(JOB_PSYCHOLOGIST)
 
 /obj/structure/desk_bell/ringer/chapel
 	dept_name = "chaplain"
-	target_job_names = list(JOB_HEAD_OF_PERSONNEL, JOB_CHAPLAIN)
+	target_job_names = list(JOB_CHAPLAIN)
 
 /obj/structure/desk_bell/ringer/medical
 	dept_name = "medical department"
@@ -220,7 +224,7 @@
 
 /obj/structure/desk_bell/ringer/xenobio
 	dept_name = "xenobiology department"
-	target_job_names = list(JOB_RESEARCH_DIRECTOR, "Xenobiologist")
+	target_job_names = list(JOB_RESEARCH_DIRECTOR, JOB_XENOBIOLOGIST)
 
 /obj/structure/desk_bell/ringer/science
 	dept_name = "science department"
@@ -245,7 +249,7 @@
 
 /obj/structure/desk_bell/ringer/mining
 	dept_name = "mining department"
-	target_job_names = list(JOB_QUARTERMASTER, JOB_SHAFT_MINER, JOB_BITRUNNER)
+	target_job_names = list(JOB_SHAFT_MINER, JOB_BITRUNNER)
 
 /obj/structure/desk_bell/ringer/cargo
 	dept_name = "cargo department"

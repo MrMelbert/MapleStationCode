@@ -67,6 +67,7 @@
 				8= shock (SHOCK)
 				16= door safties (SAFE)
 	*/
+	var/tmp/list/saved_unres_sides
 
 /obj/item/assembly/control/airlock/activate()
 	if(cooldown)
@@ -96,6 +97,16 @@
 					D.set_electrified(MACHINE_NOT_ELECTRIFIED, usr)
 			if(specialfunctions & SAFE)
 				D.safe = !D.safe
+			if(specialfunctions & TOGGLE_UNRES)
+				var/airlock_key = REF(D)
+				if(LAZYACCESS(saved_unres_sides, airlock_key))
+					D.unres_sides = LAZYACCESS(saved_unres_sides, airlock_key)
+					LAZYREMOVE(saved_unres_sides, airlock_key)
+				else
+					LAZYSET(saved_unres_sides, airlock_key, D.unres_sides)
+					D.unres_sides = NONE
+				D.update_appearance()
+
 
 	for(var/D in open_or_close)
 		INVOKE_ASYNC(D,  doors_need_closing ? TYPE_PROC_REF(/obj/machinery/door/airlock, close) : TYPE_PROC_REF(/obj/machinery/door/airlock, open))
