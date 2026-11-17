@@ -183,6 +183,9 @@
 	return ..()
 
 /datum/status_effect/shapechange_mob/from_spell/restore_caster(kill_caster_after)
+	if(QDELETED(caster_mob))
+		return ..()
+
 	var/datum/action/cooldown/spell/shapeshift/source_spell = source_weakref.resolve()
 	// The owner = owner check here is specifically for edge cases in which the owner of the spell
 	// is no longer in control of the shapeshifted mob, such as mindswapping out of a shapeshift
