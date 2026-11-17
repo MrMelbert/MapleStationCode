@@ -204,10 +204,18 @@
 		rank = "Silicon"
 	var/already_signalled = !!department_order
 	var/chosen_delivery_area
-	for(var/delivery_area_type in linked_department_real.department_delivery_areas)
-		if(GLOB.areas_by_type[delivery_area_type])
-			chosen_delivery_area = delivery_area_type
-			break
+
+	if(pack.departmental_order_area_override)
+		for(var/delivery_area_type in pack.departmental_order_area_override)
+			if(GLOB.areas_by_type[delivery_area_type])
+				chosen_delivery_area = delivery_area_type
+				break
+
+	else
+		for(var/delivery_area_type in linked_department_real.department_delivery_areas)
+			if(GLOB.areas_by_type[delivery_area_type])
+				chosen_delivery_area = delivery_area_type
+				break
 
 	if(SSshuttle.supply.get_order_count(pack) == OVER_ORDER_LIMIT)
 		playsound(computer, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
