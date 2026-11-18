@@ -76,7 +76,7 @@
 /// Restores the caster back to their human form.
 /// if kill_caster_after is TRUE, the caster will have death() called on them after restoring.
 /datum/status_effect/shapechange_mob/proc/restore_caster(kill_caster_after = FALSE)
-	if(already_restored || !caster_mob)
+	if(already_restored || QDELETED(caster_mob))
 		return
 
 	if(QDELETED(owner))
@@ -171,10 +171,9 @@
 		source_spell.Grant(owner)
 
 		if(source_spell.convert_damage)
-			var/damage_to_apply = owner.maxHealth * (caster_mob.get_total_damage() / caster_mob.maxHealth)
-
-			owner.apply_damage(damage_to_apply, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
-			owner.blood_volume = caster_mob.blood_volume
+			var/caster_percentage = ishuman(caster_mob) ? clamp(1 - (caster_mob.consciousness / CONSCIOUSNESS_MAX), 0, 1) : (caster_mob.get_total_damage() / caster_mob.maxHealth)
+			owner.apply_damage(owner.maxHealth * caster_percentage, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
+			// owner.blood_volume = caster_mob.blood_volume
 
 	for(var/datum/action/bodybound_action as anything in caster_mob.actions)
 		if(bodybound_action.target != caster_mob)
@@ -184,6 +183,9 @@
 	return ..()
 
 /datum/status_effect/shapechange_mob/from_spell/restore_caster(kill_caster_after)
+	if(QDELETED(caster_mob))
+		return ..()
+
 	var/datum/action/cooldown/spell/shapeshift/source_spell = source_weakref.resolve()
 	// The owner = owner check here is specifically for edge cases in which the owner of the spell
 	// is no longer in control of the shapeshifted mob, such as mindswapping out of a shapeshift
@@ -203,11 +205,10 @@
 	if(QDELETED(source_spell) || !source_spell.convert_damage)
 		return
 
-	caster_mob.fully_heal(HEAL_DAMAGE) // Remove all of our damage before setting our health to a proportion of the former transformed mob's health
-	var/damage_to_apply = caster_mob.maxHealth * (owner.get_total_damage() / owner.maxHealth)
-	caster_mob.apply_damage(damage_to_apply, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
-
-	caster_mob.blood_volume = owner.blood_volume
+	caster_mob.fully_heal(HEAL_DAMAGE|HEAL_PAIN) // Remove all of our damage before setting our health to a proportion of the former transformed mob's health
+	var/owner_percentage = ishuman(owner) ? clamp(1 - (owner.consciousness / CONSCIOUSNESS_MAX), 0, 1) : (owner.get_total_damage() / owner.maxHealth)
+	caster_mob.apply_damage(caster_mob.maxHealth * owner_percentage, source_spell.convert_damage_type, forced = TRUE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
+	// caster_mob.blood_volume = owner.blood_volume
 
 /datum/status_effect/shapechange_mob/from_spell/on_shape_death(datum/source, gibbed)
 	var/datum/action/cooldown/spell/shapeshift/source_spell = source_weakref.resolve()

@@ -704,8 +704,7 @@
 /datum/pain/proc/remove_all_pain(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
-	// Ideally pain would have its own heal flag but we live in a society
-	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
+	if(!(heal_flags & HEAL_PAIN))
 		return
 
 	for(var/obj/item/bodypart/healed_bodypart as anything in parent.get_bodyparts(include_stumps = TRUE))
