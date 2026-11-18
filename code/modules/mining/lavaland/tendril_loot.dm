@@ -538,54 +538,14 @@
 		return
 	if(!(methods & (INGEST | TOUCH)))
 		return
-	var/mob/living/carbon/human/exposed_human = exposed_mob
-	var/obj/item/bodypart/chest/chest = exposed_human.get_bodypart(BODY_ZONE_CHEST)
-	if(!chest.wing_types || reac_volume < 5 || !exposed_human.dna)
-		if((methods & INGEST) && show_message)
-			to_chat(exposed_human, span_notice("<i>You feel nothing but a terrible aftertaste.</i>"))
-		return
-	var/has_wings = !!exposed_human.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
-	if(has_wings)
-		to_chat(exposed_human, span_userdanger("A terrible pain travels down your back as your wings change shape!"))
-	else
-		to_chat(exposed_human, span_userdanger("A terrible pain travels down your back as wings burst out!"))
-	var/obj/item/organ/wings/functional/wings = get_wing_choice(exposed_human, chest)
-	wings = new wings()
-	wings.Insert(exposed_human)
-	playsound(exposed_human.loc, 'sound/items/poster_ripped.ogg', 50, TRUE, -1)
-	exposed_human.apply_damage(20, def_zone = BODY_ZONE_CHEST, forced = TRUE, wound_bonus = CANT_WOUND)
-	if(has_wings)
-		exposed_human.cause_pain(BODY_ZONE_HEAD, 10)
-		exposed_human.cause_pain(BODY_ZONE_CHEST, 45)
-		exposed_human.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
-	else
-		exposed_human.cause_pain(BODY_ZONE_HEAD, 16)
-		exposed_human.cause_pain(BODY_ZONE_CHEST, 75)
-		exposed_human.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 30)
-	exposed_human.pain_emote("scream")
 
-/datum/reagent/flightpotion/proc/get_wing_choice(mob/needs_wings, obj/item/bodypart/chest/chest)
-	var/list/wing_types = chest.wing_types.Copy()
-	if(wing_types.len == 1 || !needs_wings.client)
-		return wing_types[1]
-	var/list/radial_wings = list()
-	var/list/name2type = list()
-	for(var/obj/item/organ/wings/functional/possible_type as anything in wing_types)
-		var/datum/sprite_accessory/accessory = initial(possible_type.sprite_accessory_override) //get the type
-		accessory = SSaccessories.wings_list[initial(accessory.name)] //get the singleton instance
-		var/image/img = image(icon = accessory.icon, icon_state = "m_wingsopen_[accessory.icon_state]_BEHIND") //Process the HUD elements
-		img.transform *= 0.5
-		img.pixel_x = -32
-		if(radial_wings[accessory.name])
-			stack_trace("Different wing types with repeated names. Please fix as this may cause issues.")
-		else
-			radial_wings[accessory.name] = img
-			name2type[accessory.name] = possible_type
-	var/wing_name = show_radial_menu(needs_wings, needs_wings, radial_wings, tooltips = TRUE)
-	var/wing_type = name2type[wing_name]
-	if(!wing_type)
-		wing_type = pick(wing_types)
-	return wing_type
+	var/mob/living/carbon/human/exposed_human = exposed_mob
+	if(reac_volume < 5 || exposed_human.dna?.check_mutation(/datum/mutation/human/wings/flight_potion))
+		if((methods & INGEST) && show_message)
+			to_chat(exposed_mob, span_notice("<i>You feel nothing but a terrible aftertaste.</i>"))
+		return
+
+	exposed_human.dna?.add_mutation(/datum/mutation/human/wings/flight_potion)
 
 /obj/item/jacobs_ladder
 	name = "jacob's ladder"

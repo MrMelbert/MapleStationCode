@@ -1,6 +1,6 @@
 // begin armwings code
 /obj/item/organ/wings/functional/arm_wings
-	name = "Arm Wings"
+	name = "arm wings"
 	desc = "They're wings, that go on your arm. Get your chicken wings jokes out now."
 	dna_block = DNA_ARM_WINGS_BLOCK
 	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/functional/arm_wings

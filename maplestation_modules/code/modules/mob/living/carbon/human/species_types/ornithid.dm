@@ -32,7 +32,7 @@
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 
-	inert_mutation = /datum/mutation/human/dwarfism
+	inert_mutation = /datum/mutation/human/wings/standard
 	species_language_holder = /datum/language_holder/yangyu // doing this because yangyu is really just, mostly unused otherwise.
 
 /datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)

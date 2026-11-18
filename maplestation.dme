@@ -6348,6 +6348,7 @@
 #include "maplestation_modules\code\datums\keybinding\communication.dm"
 #include "maplestation_modules\code\datums\mood_events\quirk_mood_events.dm"
 #include "maplestation_modules\code\datums\mood_events\reagent_mood_events.dm"
+#include "maplestation_modules\code\datums\mutations\wing_mutation.dm"
 #include "maplestation_modules\code\datums\pain\pain.dm"
 #include "maplestation_modules\code\datums\pain\pain_bodyparts.dm"
 #include "maplestation_modules\code\datums\pain\pain_effects.dm"
