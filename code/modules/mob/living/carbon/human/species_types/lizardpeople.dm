@@ -30,7 +30,7 @@
 	skinned_type = /obj/item/stack/sheet/animalhide/lizard
 	exotic_bloodtype = /datum/blood_type/crew/lizard // NON-MODULE CHANGE
 	inert_mutation = /datum/mutation/human/firebreath
-	death_sound = 'sound/voice/lizard/deathsound.ogg'
+	// death_sound = 'sound/voice/lizard/deathsound.ogg'
 	species_language_holder = /datum/language_holder/lizard
 
 	// Standard body temp doesn't really matter as much since we're cold blooded
