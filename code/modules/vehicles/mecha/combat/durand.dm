@@ -274,7 +274,7 @@ own integrity back to max. Shield is automatically dropped if we run out of powe
 	flick("shield_impact", src)
 	if(!.)
 		return
-	if(!chassis.use_energy(. * (STANDARD_CELL_CHARGE / 150)))
+	if(!chassis.use_energy(. * (STANDARD_CELL_CHARGE / 15))) // NON-MODULE CHANGE: energy use multiplied by 10, so EHP of the shield goes from 6000 to 600 on a bluespace cell
 		chassis.cell?.charge = 0
 		for(var/O in chassis.occupants)
 			var/mob/living/occupant = O
