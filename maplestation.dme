@@ -6502,6 +6502,7 @@
 #include "maplestation_modules\code\modules\antagonists\advanced_ling\changeling_stings.dm"
 #include "maplestation_modules\code\modules\antagonists\advanced_ling\neutered_ling.dm"
 #include "maplestation_modules\code\modules\art\statuettes.dm"
+#include "maplestation_modules\code\modules\asset_cache\assets\mecha.dm"
 #include "maplestation_modules\code\modules\cargo\costumes_toys.dm"
 #include "maplestation_modules\code\modules\cargo\goodies.dm"
 #include "maplestation_modules\code\modules\cargo\packs.dm"
