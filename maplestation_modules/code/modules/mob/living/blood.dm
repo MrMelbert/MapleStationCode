@@ -116,10 +116,15 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	blood_data["blood_DNA"] = sampled_from.dna.unique_enzymes
 
 	// virus stuff
-	blood_data["resistances"] = LAZYLISTDUPLICATE(sampled_from.disease_resistances)
-	blood_data["viruses"] = list()
+	var/list/resistances = LAZYLISTDUPLICATE(sampled_from.disease_resistances)
+	if(LAZYLEN(resistances))
+		blood_data["resistances"] = resistances
+
+	var/list/viruses
 	for(var/datum/disease/disease as anything in sampled_from.diseases)
-		blood_data["viruses"] += disease.Copy()
+		LAZYADD(viruses, disease.Copy())
+	if(LAZYLEN(viruses))
+		blood_data["viruses"] = viruses
 
 	// unused but cool
 	var/list/chem_list = list()

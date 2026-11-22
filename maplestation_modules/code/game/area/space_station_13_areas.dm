@@ -234,3 +234,42 @@
 /area/station/ai_monitored/turret_protected/ai_upload_foyer
 	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
 	associated_department = DEPARTMENT_SILICON
+
+/area/station/medical/medbay/lower
+	name = "Lower Medbay"
+
+/area/station/medical/medbay/upper
+	name = "Upper Medbay"
+
+/area/station/medical/break_room/bathroom
+	name = "Medbay Toilets"
+
+/area/station/medical/morgue/office
+	name = "Morgue Office"
+
+/area/station/medical/treatment_room
+	name = "Treatment Room"
+
+/area/station/medical/treatment_room/room_a
+	name = "Treatment Room A"
+
+/area/station/medical/treatment_room/room_b
+	name = "Treatment Room B"
+
+/area/station/medical/surgery/room_a
+	name = "Operating Room A"
+
+/area/station/medical/surgery/room_b
+	name = "Operating Room B"
+
+/area/station/medical/psychology/quiet_room
+	name = "Psychology Quiet Room"
+
+/area/station/medical/psychology/ward
+	name = "Psychology Ward"
+
+/area/station/medical/recovery_ward
+	name = "Recovery Ward"
+
+/area/station/medical/intensive_care
+	name = "Intensive Care Room"

@@ -6689,6 +6689,7 @@
 #include "maplestation_modules\code\modules\magic\story_spells\components\story_spell_component.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\touch_component.dm"
 #include "maplestation_modules\code\modules\magic\subsystems\magic_subsystem.dm"
+#include "maplestation_modules\code\modules\meteors\meteor_types.dm"
 #include "maplestation_modules\code\modules\mining\mining_redemption.dm"
 #include "maplestation_modules\code\modules\mining\order_consumables.dm"
 #include "maplestation_modules\code\modules\mining\ores_coins.dm"

@@ -256,17 +256,20 @@
 /obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
-	add_smell(
-		duration = 30 SECONDS,
-		smell = "gunpowder",
-		intensity = SMELL_INTENSITY_WEAK,
-		radius = 2,
-		wash_type = CLEAN_TYPE_FINGERPRINTS,
-	)
+
+	if(from_firing)
+		add_smell(
+			duration = 30 SECONDS,
+			smell = "gunpowder",
+			intensity = SMELL_INTENSITY_WEAK,
+			radius = 2,
+			wash_type = CLEAN_TYPE_FINGERPRINTS,
+		)
 
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
 	if(istype(casing)) //there's a chambered round
-		casing.is_spent()
+		if(from_firing)
+			casing.is_spent()
 		if(QDELING(casing))
 			stack_trace("Trying to move a qdeleted casing of type [casing.type]!")
 			chambered = null

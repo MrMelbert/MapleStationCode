@@ -136,8 +136,7 @@
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard/update_button_name(atom/movable/screen/movable/action_button/button, force)
 	. = ..()
-	var/mob/living/carbon/lizard_owner = owner
-	if(lizard_owner.dna?.check_mutation(/datum/mutation/human/firebreath))
+	if(owner.has_dna()?.check_mutation(/datum/mutation/human/firebreath))
 		button.name += " (Enhanced)"
 		button.desc = "Prepare a small mote of fire in your mouth - just strong enough to light a cigarette. \
 			No accelerant required, as you can breathe fire!"

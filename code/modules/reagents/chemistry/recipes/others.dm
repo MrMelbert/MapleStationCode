@@ -226,7 +226,6 @@
 	required_reagents = list(/datum/reagent/uranium = 10, /datum/reagent/silver = 10, /datum/reagent/toxin/plasma = 1)
 
 /datum/chemical_reaction/mix_virus
-	results = list(/datum/reagent/blood = 1)
 	required_reagents = list(/datum/reagent/consumable/virus_food = 1)
 	required_catalysts = list(/datum/reagent/blood = 1)
 	var/level_min = 1
