@@ -16,7 +16,7 @@
 	var/obj/machinery/space_heater/improvised_chem_heater/suitcase_heater
 	var/obj/structure/chem_separator/suitcase_chem_separator
 	var/obj/structure/table/reinforced/suitcase_table
-	var/obj/obj/effect/food_cart_stand/vicky/suitcase_tent
+	var/obj/effect/food_cart_stand/vicky/suitcase_tent
 	var/list/packed_things
 
 
