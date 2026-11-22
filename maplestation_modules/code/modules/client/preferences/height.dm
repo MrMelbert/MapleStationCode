@@ -61,6 +61,8 @@
 	else if(value <= HEIGHT_VERY_SMALL)
 		ADD_TRAIT(target, TRAIT_SMALL, INNATE_TRAIT)
 
+	target.dna.features["size"] = resize_amount
+
 	target.update_transform(resize_amount)
 
 /datum/preference/choiced/mob_size/is_accessible(datum/preferences/preferences)
