@@ -31,10 +31,7 @@
 /obj/machinery/food_cart/examine(mob/user)
 	. = ..()
 	if(!(machine_stat & BROKEN))
-		if(cart_chem_heater.machine_stat & BROKEN)
-			. += span_warning("The suitcase's ingredient heater is completely broken!")
-		else
-			. += span_notice("The suitcase's ingredient heater is intact.")
+		. += span_notice("The suitcase's ingredient heater is intact.")
 		. += span_notice("The stand's chem separator seems fine.") //didnt test to see if the chem separator can break, hah! Same with the heater.
 		. += span_notice("The stand's <b>table</b> seems fine.")
 
@@ -49,7 +46,7 @@
 	set_anchored(FALSE)
 	unpacked = FALSE
 
-/obj/effect/food_cart_stand
+/obj/effect/food_cart_stand/vicky
 	name = "Alchemy tent"
 	desc = "A green and purple tent above an alchemy setup! The fabric has a slight sheen to it."
 	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/tent.dmi'
