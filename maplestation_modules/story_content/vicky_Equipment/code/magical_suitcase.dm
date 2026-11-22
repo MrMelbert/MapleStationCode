@@ -9,10 +9,10 @@
 	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyitems.dmi'
 	icon_state = "suitcase"
 	req_access = null
-	cart_griddle = var/obj/machinery/space_heater/improvised_chem_heater
-	cart_smartfridge = var/obj/structure/chem_separator
-	cart_table = var/obj/structure/table/reinforced
-	cart_tent = var/obj/effect/food_cart_stand/vicky
+	cart_griddle = /obj/machinery/space_heater/improvised_chem_heater
+	cart_smartfridge = /obj/structure/chem_separator
+	cart_table = /obj/structure/table/reinforced
+	cart_tent = /obj/effect/food_cart_stand/vicky
 
 
 /obj/machinery/food_cart/Initialize(mapload)
