@@ -1,3 +1,5 @@
+//just some fluff character items. I will prob need an admin to spawn these in.
+
 /obj/item/pestle/crystal
 	name = "crystal pestle"
 	desc = "A pestle made out of a beautiful purple crystal."
