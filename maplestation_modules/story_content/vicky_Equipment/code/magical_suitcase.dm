@@ -15,7 +15,7 @@
 	cart_tent = /obj/effect/food_cart_stand/vicky
 
 
-/obj/machinery/food_cart/Initialize(mapload)
+/obj/machinery/food_cart/magic_suitcase/Initialize(mapload)
 	. = ..()
 	cart_griddle = new(src)
 	cart_smartfridge = new(src)
@@ -28,14 +28,14 @@
 	RegisterSignal(cart_tent, COMSIG_QDELETING, PROC_REF(lost_part))
 
 
-/obj/machinery/food_cart/examine(mob/user)
+/obj/machinery/food_cart/magic_suitcase/examine(mob/user)
 	. = ..()
 	if(!(machine_stat & BROKEN))
 		. += span_notice("The suitcase's ingredient heater is intact.")
 		. += span_notice("The stand's chem separator seems fine.") //didnt test to see if the chem separator can break, hah! Same with the heater.
 		. += span_notice("The stand's <b>table</b> seems fine.")
 
-/obj/machinery/food_cart/proc/pack_up()
+/obj/machinery/food_cart/magic_suitcase/pack_up()
 	if(!unpacked)
 		return
 	visible_message(span_notice("[src] retracts all of it's unpacked components."))
