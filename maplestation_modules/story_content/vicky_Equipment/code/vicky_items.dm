@@ -11,5 +11,5 @@
 	desc = "A specially formed stone bowl of ancient design. This stone mortar is covered in hand carved patterning, depicting some beautiful patterns seen in Murian architecture."
 	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyitems.dmi'
 	icon_state = "mortar"
-	drop_sound = 'maplestation_modules/sound/items/drop/stone.ogg'
+	drop_sound = 'maplestation_modules/sound/items/pickup/stone.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/stone.ogg'
