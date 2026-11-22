@@ -1,0 +1,317 @@
+// Super powerful psi-blade that requires attunement aka psionic followed by a special trait
+// The sword can be bound onto someone with the trait to allow it to talk
+// Sword with the trait on a level somewhere above e-sword but below the types of things a near-ascension blade path heretic or wizard could do
+// also has a counter in the form of requiring mana for the strong attacks
+
+// Also includes a sheath that it comes in, sheath is by default locked and requires a spell (meant to be on another person) to unlock
+
+/// Used for unlocking the second level of /obj/item/melee/olivia_blade 's psychic effects
+#define TRAIT_SWORD_PSIONIC "sword_psionic"
+
+#define NO_ATTUNEMENT_LEVEL 0
+#define SOME_ATTUNEMENT_LEVEL 1
+#define FULL_ATTUNEMENT_LEVEL 2
+
+/obj/item/melee/olivia_blade
+	name = "ornate psi-blade"
+	desc = "An incredibly ornate psionic blade. It's somewhat heavy."
+	icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
+	icon_state = "olivia_blade"
+	inhand_icon_state = "olivia_blade"
+	lefthand_file = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_righthand.dmi'
+	obj_flags = CONDUCTS_ELECTRICITY | UNIQUE_RENAME
+	force = 18
+	throwforce = 15
+	w_class = WEIGHT_CLASS_BULKY
+	block_chance = 25
+	armour_penetration = 20
+	sharpness = SHARP_EDGED
+	attack_verb_continuous = list("slashes", "cuts")
+	attack_verb_simple = list("slash", "cut")
+	block_sound = 'sound/weapons/parry.ogg'
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
+	bare_wound_bonus = 20
+	actions_types = list(/datum/action/item_action/olivia_blade_action)
+	action_slots = ALL
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	speech_span = null
+
+	chat_color = "#8f33ff"
+	chat_color_darkened = "#8f33ff"
+
+	var/datum/mind/bound_mind
+	var/level_of_attunement = NO_ATTUNEMENT_LEVEL
+	var/forced_low_attack = FALSE
+
+/obj/item/melee/olivia_blade/Initialize(mapload)
+	. = ..()
+	GLOB.forced_runechat_names[name] = chat_color
+	AddComponent(/datum/component/jousting)
+	AddComponent(/datum/component/butchering, \
+		speed = 3 SECONDS, \
+		effectiveness = 80, \
+	)
+	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(check_psychic_effects))
+	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(remove_psychic_effects))
+
+/// Checks psychic traits of the user, either no psychic, psychic or the special super psychic kind
+/obj/item/melee/olivia_blade/proc/check_psychic_effects(obj/item/source, mob/user, slot)
+	if(HAS_TRAIT(user, TRAIT_SWORD_PSIONIC))
+		level_of_attunement = FULL_ATTUNEMENT_LEVEL
+	else if(HAS_TRAIT(user, TRAIT_FULL_PSIONIC))
+		level_of_attunement = SOME_ATTUNEMENT_LEVEL
+	modify_stats_with_attunement(user) // needed here for the block chance to update properly
+	update_appearance()
+
+/obj/item/melee/olivia_blade/proc/remove_psychic_effects(obj/item/source, mob/user)
+	level_of_attunement = NO_ATTUNEMENT_LEVEL
+	modify_stats_with_attunement(user)
+	update_appearance()
+
+/obj/item/melee/olivia_blade/proc/modify_stats_with_attunement(mob/living/user)
+	if(check_user_low_mana(user) || forced_low_attack)
+		force = initial(force)
+		armour_penetration = initial(armour_penetration)
+		wound_bonus = initial(wound_bonus)
+		block_chance = initial(block_chance)
+		sharpness = initial(sharpness)
+		attack_verb_continuous = initial(attack_verb_continuous)
+		attack_verb_simple = initial(attack_verb_simple)
+		hitsound = initial(hitsound)
+	else
+		switch(level_of_attunement)
+			if(NO_ATTUNEMENT_LEVEL)
+				force = initial(force)
+				armour_penetration = initial(armour_penetration)
+				wound_bonus = initial(wound_bonus)
+				block_chance = initial(block_chance)
+				sharpness = initial(sharpness)
+				attack_verb_continuous = initial(attack_verb_continuous)
+				attack_verb_simple = initial(attack_verb_simple)
+				hitsound = initial(hitsound)
+			if(SOME_ATTUNEMENT_LEVEL)
+				force = 25
+				armour_penetration = 50
+				wound_bonus = 20
+				block_chance = 50
+				sharpness = initial(sharpness)
+				attack_verb_continuous = initial(attack_verb_continuous)
+				attack_verb_simple = initial(attack_verb_simple)
+				hitsound = initial(hitsound)
+			if(FULL_ATTUNEMENT_LEVEL)
+				force = 35
+				armour_penetration = 0
+				wound_bonus = 40
+				block_chance = 60
+				sharpness = NONE
+				attack_verb_continuous = list("beats", "smacks")
+				attack_verb_simple = list("beat", "smack")
+				hitsound = 'sound/weapons/resonator_blast.ogg'
+
+// returns true if we're low, dont get it twisted
+/obj/item/melee/olivia_blade/proc/check_user_low_mana(mob/living/user)
+	return user.mana_pool.amount <= (user.mana_pool.softcap * 0.1) // the same as "very low mana"
+
+/obj/item/melee/olivia_blade/pre_attack(atom/target, mob/living/user, list/modifiers, list/attack_modifiers)
+	. = ..()
+	if(ismob(target) && level_of_attunement != NO_ATTUNEMENT_LEVEL)
+		var/mob/mob_target = target
+		forced_low_attack = mob_target.can_block_magic()
+	modify_stats_with_attunement(user)
+
+// THATS RIGHT ITS THE BASEBALL BAT KNOCKBACK
+/obj/item/melee/olivia_blade/attack(mob/living/target, mob/living/user)
+	// we obtain the relative direction from the ~~bat~~ SWORD itself to the target
+	var/relative_direction = get_cardinal_dir(src, target)
+	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
+	. = ..()
+	if(!HAS_TRAIT(user, TRAIT_PACIFISM) && level_of_attunement == FULL_ATTUNEMENT_LEVEL && !check_user_low_mana(user) && !forced_low_attack)
+		if(!QDELETED(target) && !target.anchored)
+			var/whack_speed = (prob(60) ? 1 : 3)
+			target.throw_at(throw_target, rand(1, 2), whack_speed, user, gentle = FALSE) // we are NOT gentle
+	forced_low_attack = FALSE
+	modify_stats_with_attunement(user) // attacking someone that has anti-magic will mess up our block chance if this isnt here
+
+/obj/item/melee/olivia_blade/on_exit_storage(datum/storage/container)
+	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
+
+/obj/item/melee/olivia_blade/on_enter_storage(datum/storage/container)
+	playsound(container.parent, 'sound/items/sheath.ogg', 25, TRUE)
+
+/obj/item/melee/olivia_blade/update_overlays()
+	. = ..()
+
+	if(level_of_attunement >= SOME_ATTUNEMENT_LEVEL)
+		. += mutable_appearance(icon, "psi_effect", layer = layer + 0.1)
+
+/obj/item/melee/olivia_blade/ui_action_click(mob/user, actiontype)
+	if(!bound_mind)
+		bound_mind = user.mind
+		qdel(actiontype)
+		actions_types = null
+		actions = null
+		update_item_action_buttons()
+		var/datum/action/olivia_blade_speak/new_action = new /datum/action/olivia_blade_speak(src)
+		new_action.Grant(user)
+		new_action.bound_blade = src
+
+/obj/item/melee/olivia_blade/item_action_slot_check(slot, mob/user, datum/action/action)
+	return TRUE // jank, but necessary to let the action work through containers
+
+/datum/action/item_action/olivia_blade_action
+	name = "Bind Blade"
+
+/datum/action/item_action/olivia_blade_action/IsAvailable(feedback)
+	. = ..()
+	if(!HAS_TRAIT(owner, TRAIT_SWORD_PSIONIC))
+		return FALSE
+
+/datum/action/olivia_blade_speak
+	name = "Miguel's Speech"
+	desc = "Speak as Miguel."
+	button_icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
+	button_icon_state = "olivia_blade"
+	background_icon_state = "bg_default"
+	overlay_icon_state = "bg_default_border"
+
+	var/obj/item/melee/olivia_blade/bound_blade
+
+/datum/action/olivia_blade_speak/Trigger(trigger_flags)
+	. = ..()
+
+	if(!bound_blade) // some admin's messin' with me here
+		return
+
+	var/message = tgui_input_text(owner, "What do you want to say as [bound_blade]?", "[src]", encode = FALSE)
+	if(!message)
+		return
+
+	owner.log_talk(message, LOG_SAY, tag = "blade talk ([bound_blade])")
+	bound_blade.say(message)
+
+// Broken admin verb - gotta figure out how to make it not appear on *everything*
+//ADMIN_VERB_ONLY_CONTEXT_MENU(toggle_olivia_blade_sheath_lock, R_FUN, "Toggle Sheath Lock", obj/item/storage/belt/olivia_blade_sheath/target_sheath in world)
+//	target_sheath.toggle_sheath_lock()
+
+/obj/item/storage/belt/olivia_blade_sheath
+	name = "ornate psiblade sheath"
+	desc = "An ornate sheath designed to hold a psionic blade. It looks heavy enough to bludgeon with."
+	force = 18
+	block_chance = 30
+	icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade.dmi'
+	worn_icon = 'maplestation_modules/story_content/crit_equipment/icons/olivia_blade_sheath.dmi'
+	icon_state = "sheath"
+	worn_icon_state = "sheath"
+	w_class = WEIGHT_CLASS_BULKY
+	interaction_flags_click = parent_type::interaction_flags_click | NEED_DEXTERITY | NEED_HANDS
+
+/obj/item/storage/belt/olivia_blade_sheath/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/update_icon_updates_onmob)
+	RegisterSignal(src, COMSIG_ATOM_REMOVED_ITEM, PROC_REF(remove_blade_action))
+
+	atom_storage.max_slots = 1
+	atom_storage.rustle_sound = FALSE
+	atom_storage.max_specific_storage = WEIGHT_CLASS_BULKY
+	atom_storage.set_holdable(/obj/item/melee/olivia_blade)
+	atom_storage.click_alt_open = FALSE
+	atom_storage.locked = STORAGE_FULLY_LOCKED
+	update_appearance()
+
+// very janky
+/obj/item/storage/belt/olivia_blade_sheath/equipped(mob/user, slot, initial)
+	if(slot & ITEM_SLOT_BELT && istype(contents[1], /obj/item/melee/olivia_blade))
+		var/obj/item/melee/olivia_blade/I = contents[1]
+		I.give_item_action(I.actions[1], user, slot)
+	return ..()
+
+/obj/item/storage/belt/olivia_blade_sheath/proc/remove_blade_action(obj/item/source, obj/item/item_removed, atom/remove_loc, silent)
+	if(!ismob(loc))
+		return
+	var/mob/owner = loc
+	if(istype(item_removed, /obj/item/melee/olivia_blade))
+		for(var/datum/action/action_item_has as anything in item_removed.actions)
+			action_item_has.Remove(owner)
+
+/obj/item/storage/belt/olivia_blade_sheath/dropped(mob/user, silent)
+	. = ..()
+	if(istype(contents[1], /obj/item/melee/olivia_blade))
+		var/obj/item/melee/olivia_blade/I = contents[1]
+		for(var/datum/action/action_item_has as anything in I.actions)
+			action_item_has.Remove(user)
+// big block of jank done with
+
+/obj/item/storage/belt/olivia_blade_sheath/examine(mob/user)
+	. = ..()
+	if(length(contents) && (atom_storage.locked == STORAGE_NOT_LOCKED))
+		. += span_notice("Alt-click it to quickly draw the blade.")
+
+/obj/item/storage/belt/olivia_blade_sheath/click_alt(mob/user)
+	if(length(contents) && (atom_storage.locked == STORAGE_NOT_LOCKED))
+		var/obj/item/I = contents[1]
+		user.visible_message(span_notice("[user] takes [I] out of [src]."), span_notice("You take [I] out of [src]."))
+		user.put_in_hands(I)
+		update_appearance()
+	else if(length(contents) && atom_storage.locked != STORAGE_NOT_LOCKED)
+		balloon_alert(user, "it's not budging!")
+	else
+		balloon_alert(user, "it's empty!")
+	return CLICK_ACTION_SUCCESS
+
+/obj/item/storage/belt/olivia_blade_sheath/proc/toggle_sheath_lock()
+	if(atom_storage.locked != STORAGE_NOT_LOCKED)
+		atom_storage.locked = STORAGE_NOT_LOCKED
+		atom_storage.display_contents = TRUE
+		update_appearance()
+		return TRUE
+	else
+		atom_storage.locked = STORAGE_FULLY_LOCKED
+		atom_storage.display_contents = FALSE
+		atom_storage.close_all()
+		update_appearance()
+		return FALSE
+
+/obj/item/storage/belt/olivia_blade_sheath/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!length(contents) && istype(tool, /obj/item/melee/olivia_blade) && atom_storage.locked == STORAGE_FULLY_LOCKED)
+		if(do_after(user, 4 SECONDS, src))
+			atom_storage.attempt_insert(tool, user, force = STORAGE_FULLY_LOCKED)
+			return ITEM_INTERACT_SUCCESS
+		else
+			return ..()
+
+	if(length(contents) && istype(tool, /obj/item/melee/olivia_blade) && atom_storage.locked == STORAGE_FULLY_LOCKED) // what
+		balloon_alert(user, "it's full.")
+		return ..()
+
+	return ..()
+
+/obj/item/storage/belt/olivia_blade_sheath/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+	. = ..()
+
+	if(contents.len)
+		. += mutable_appearance(worn_icon, "sheath_blade", layer = standing.layer + 0.1)
+
+/obj/item/storage/belt/olivia_blade_sheath/update_overlays()
+	. = ..()
+
+	if(contents.len)
+		. += mutable_appearance(icon, "sheath_sword", layer = layer + 0.1)
+
+	if(atom_storage.locked == STORAGE_FULLY_LOCKED)
+		. += mutable_appearance(icon, "lock", layer = layer + 0.11)
+	else
+		. += mutable_appearance(icon, "lock_inactive", layer = layer + 0.11)
+
+/obj/item/storage/belt/olivia_blade_sheath/PopulateContents()
+	new /obj/item/melee/olivia_blade(src)
+	update_appearance()
+
+#undef NO_ATTUNEMENT_LEVEL
+#undef SOME_ATTUNEMENT_LEVEL
+#undef FULL_ATTUNEMENT_LEVEL
