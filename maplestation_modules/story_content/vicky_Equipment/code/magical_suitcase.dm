@@ -6,7 +6,7 @@
 /obj/machinery/food_cart/magic_suitcase
 	name = "magical suitcase"
 	desc = "A large, magical suitcase that deploys an entire alchemist cooking space."
-	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyitems.dmi'
+	icon = 'maplestation_modules/story_content/vicky_equipment/icons/vickyitems.dmi'
 	icon_state = "suitcase"
 	req_access = null
 	cart_griddle = /obj/machinery/space_heater/improvised_chem_heater
@@ -49,4 +49,4 @@
 /obj/effect/food_cart_stand/vicky
 	name = "Alchemy tent"
 	desc = "A green and purple tent above an alchemy setup! The fabric has a slight sheen to it."
-	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/tent.dmi'
+	icon = 'maplestation_modules/story_content/vicky_equipment/icons/tent.dmi'

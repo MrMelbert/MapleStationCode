@@ -3,8 +3,8 @@
 /obj/item/clothing/under/uniquedress
 	name = "Unique Dress"
 	desc = "A fancy, well worn, yet taken care of dress."
-	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyclothing.dmi'
-	worn_icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyclothing.dmi'
+	icon = 'maplestation_modules/story_content/vicky_equipment/icons/vickyclothing.dmi'
+	worn_icon = 'maplestation_modules/story_content/vicky_equipment/icons/vickyclothing.dmi'
 	icon_state = "vickydress"
 	worn_icon_state = "vickydress"
 	body_parts_covered = CHEST|GROIN
@@ -26,8 +26,8 @@
 /obj/item/clothing/neck/cloak/uniquecape
 	name = "Unique Side Cape"
 	desc = "A green side cape that covers half the back. It has a big tuft of green feathers on the shoulder."
-	icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyclothing.dmi'
-	worn_icon = 'maplestation_modules/story_content/vicky_Equipment/icons/vickyclothing.dmi'
+	icon = 'maplestation_modules/story_content/vicky_equipment/icons/vickyclothing.dmi'
+	worn_icon = 'maplestation_modules/story_content/vicky_equipment/icons/vickyclothing.dmi'
 	icon_state = "vickycloak"
 	worn_icon_state = "vickycloak"
 	body_parts_covered = CHEST|GROIN|ARMS
