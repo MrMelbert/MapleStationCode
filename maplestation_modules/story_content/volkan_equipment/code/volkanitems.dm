@@ -104,7 +104,6 @@
 //--other misc--
 //CE labcoat
 //A CE labcoat that is black and white, fits the modsuit and other white CE items with style. Volkan version: No gold/yellow.
-//TODO: Make a generic version which has gold in it.
 /obj/item/clothing/suit/toggle/labcoat/ce/volkan
 	name = "modified chief engineer's labcoat"
 	desc = "Has black panels unlike the standard labcoat model. All gold patchwork has been removed compared to the standard CE labcoat."
