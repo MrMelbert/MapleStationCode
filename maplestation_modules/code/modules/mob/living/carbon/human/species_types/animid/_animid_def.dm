@@ -1,6 +1,9 @@
 #define MUTANT_ORGANS "mutant"
 #define BODY_MARKINGS "body_markings"
 
+// flags for animids
+#define HAS_SCALES (1<<0)
+
 #define GENERATE_HEAD_ICON(feature_list_key, feature_list_all) \
 	generate_icon_with_head_accessory( \
 		SSaccessories.hairstyles_list[/datum/sprite_accessory/hair/bedheadv4::name], \
@@ -20,3 +23,11 @@
 		relevant_external_organ::bodypart_overlay::feature_key, \
 		given_color, \
 	)
+
+#define SCALED_LIMBS_LIST list( \
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/scaled, \
+		BODY_ZONE_HEAD  = /obj/item/bodypart/head/scaled, \
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/scaled, \
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/scaled, \
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled, \
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled )

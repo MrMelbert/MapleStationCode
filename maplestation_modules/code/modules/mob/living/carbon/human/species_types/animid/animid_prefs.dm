@@ -80,3 +80,23 @@
 		LAZYSET(bodies, key, result)
 
 	return bodies[key].copy()
+
+/datum/preference/toggle/animid_scaled_limbs
+	savefile_key = "animid_scaled_limbs"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	can_randomize = FALSE
+	default_value = TRUE
+
+/datum/preference/toggle/animid_scaled_limbs/apply_to_human(mob/living/carbon/human/target, value)
+	// behavior is only applied on animids by default
+	target.dna.features["limb_scales"] = value
+
+/datum/preference/toggle/animid_scaled_limbs/is_accessible(datum/preferences/preferences)
+	var/animid_check = (ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/human/animid))
+	if(!animid_check)
+		return ..()
+
+	var/animid_id = preferences.read_preference(/datum/preference/choiced/animid_type)
+	var/datum/animid_type/selected_animid = GLOB.animid_singletons[animid_id]
+	return ..() && (selected_animid::animid_flags & HAS_SCALES)
