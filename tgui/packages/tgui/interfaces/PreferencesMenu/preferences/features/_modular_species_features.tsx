@@ -168,6 +168,12 @@ export const liz_tongue_hissing: FeatureToggle = {
   component: CheckboxInput,
 };
 
+export const animid_scaled_limbs: FeatureToggle = {
+  name: 'Scaled Limbs',
+  description: 'If checked, your limbs will have tough scales.',
+  component: CheckboxInput,
+};
+
 export const feature_android_species: FeatureChoiced = {
   name: 'Android Species',
   description: 'Determines what species you are modeled after.',

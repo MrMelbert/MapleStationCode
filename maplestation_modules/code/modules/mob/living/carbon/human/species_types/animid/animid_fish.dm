@@ -5,22 +5,19 @@
 			/obj/item/organ/tail/fish = "Simple",
 			/obj/item/organ/frills = "Aquatic",
 		),
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/scaled,
-		BODY_ZONE_HEAD  = /obj/item/bodypart/head/scaled,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/scaled,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/scaled,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/scaled,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/scaled,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fish,
 		ORGAN_SLOT_EARS = /obj/item/organ/ears/fish,
 	)
 
+	animid_flags = HAS_SCALES
 	name = "Piscinid"
 	icon = FA_ICON_FISH
 
 /datum/animid_type/fish/pre_species_gain(datum/species/human/animid/species, mob/living/carbon/human/new_animid)
 	// ensures we get mutant color rather than a random forced color
 	new_animid.dna?.features["forced_mut_color"] = new_animid.dna?.features["mcolor"]
+	if(new_animid.dna?.features["limb_scales"])
+		species.bodypart_overrides = SCALED_LIMBS_LIST
 
 /datum/animid_type/fish/extra_feature_keys()
 	return list(/datum/preference/color/mutant_color::savefile_key)
@@ -44,7 +41,7 @@
 			SPECIES_PERK_ICON = FA_ICON_HAND_FIST,
 			SPECIES_PERK_NAME = "Scaled Defense",
 			SPECIES_PERK_DESC = "[name] scales provide a minor amount of resistance to bruises and burns. \
-				However, good luck disguising your scaled skin.",
+				However, good luck disguising your scaled skin, if you have it that is.",
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,

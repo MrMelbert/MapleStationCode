@@ -10,6 +10,9 @@
 	/// Fontawesome icon for this animalid type
 	var/icon = FA_ICON_QUESTION
 
+	// Abstract flags used to decide for any additional prefs
+	var/animid_flags = NONE
+
 	/// Cached list of all feature keys this animid type uses
 	VAR_FINAL/list/all_feature_keys
 
